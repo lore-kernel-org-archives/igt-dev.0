@@ -4,55 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1781AFD88EF
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 10:22:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE396FD88EF
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 10:23:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C65C610E9D3;
-	Thu, 12 Mar 2026 10:22:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6512410E9CF;
+	Thu, 12 Mar 2026 10:23:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kiMn7eZx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="izXrVz/i";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D994B10E9CF
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 10:22:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C33FD10E9CF
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 10:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773310927; x=1804846927;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=qPouLZb2WeP/eMZwO+bDcWh7nD4eV8Itwuee0INWJjc=;
- b=kiMn7eZxDST05UR4nmlbOMn3GlASnz1I5kOZWCi5RpUvMFCrdPfKjXO7
- bBzZ6NsM2x+u7LraGa/QEIre9Rqcz86P4vjCuRQj0lVkY65TlAgS+YlRu
- 2PE+k7EEsvANOxbKMyarIVEyp3joqlchNEjN8eVxWOWXF475JEFPHmqsm
- WDB2UevnnpuwndGxzfIOzWcIADZurYxXnVebLOUYJdo9scssJ7bmIoOJL
- PrzHkKTtUl2HA03SwYp4kdyGUXR1x6zRjBlpJco8DO+iyU62WtOEMM6tA
- 3138aZRPgBVkVjnkML5MkgoW0R8bK2ZYMe3EiHIip2+ptuAqQsUuNsexO g==;
-X-CSE-ConnectionGUID: QvLW9SLtRmWBedhoGOH1vA==
-X-CSE-MsgGUID: nPo2OmxPRmy0ym4Z9lEj/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="74310495"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="74310495"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 03:22:07 -0700
-X-CSE-ConnectionGUID: axjPX0RKQ3Ku6wU29FZq3A==
-X-CSE-MsgGUID: 0dX9njyWTxe/SVpL5/2XgQ==
+ t=1773311006; x=1804847006;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=olsZxPEB9lrcKdiEmy8/G3NV4FhAq08Lqe8MbzIbFnM=;
+ b=izXrVz/iV80ciYgRU+9HIPJGzQjAdpF4G/ddXs1BvZrs/p8T2vvPyYCg
+ V6O8kxFU2sLBTqHI/c22oDF/g9ttO7iLiaoOj5XhrZ4gFFTDp6ZWe065T
+ EEdBm9LAIOcj6lyuyCjj4594nNCfkICVU2k25oxtdjO1NIKOY6apKksNc
+ ZQGDATmKJJhaRpHK+7V2YbDjNtJgeONWR1F1zR8KongC+/yuKjlnrHgEz
+ 8atWpcC9pU7qVGd1i9qyxeeaRVnGTBA52XKbTSHsxtKBEbyVrI8ao+q6+
+ E+yhUuoOKjXMlUCjdKycMmKxfJaoDNUCYyFY3qcNPc8TErDRA3drN4Dwo g==;
+X-CSE-ConnectionGUID: pdT1cCedQ7yDQ5YVqC62jA==
+X-CSE-MsgGUID: Ju3axPQUS16O4x0W/K7pQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="85874732"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="85874732"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2026 03:23:26 -0700
+X-CSE-ConnectionGUID: 7qkJ7FLhQuS6hLrgFDZmLw==
+X-CSE-MsgGUID: 2epeyciRQqqePVO4V6KMxg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="246181022"
-Received: from cml-cometlake-client-platform.iind.intel.com ([10.223.55.11])
- by fmviesa001.fm.intel.com with ESMTP; 12 Mar 2026 03:22:06 -0700
-From: Aditya Chauhan <aditya.chauhan@intel.com>
-To: ramadevi.gandi@intel.com, himanshu.girotra@intel.com,
- swati2.sharma@intel.com, kamil.konieczny@intel.com,
- igt-dev@lists.freedesktop.org
-Subject: [PATCH v3 i-g-t 2/2] intel-ci: Add NVL Display blocklist to
- meson.build
-Date: Thu, 12 Mar 2026 15:52:01 +0530
-Message-Id: <20260312102201.53909-3-aditya.chauhan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260312102201.53909-1-aditya.chauhan@intel.com>
-References: <20260312102201.53909-1-aditya.chauhan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="251271418"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 03:23:24 -0700
+Date: Thu, 12 Mar 2026 11:23:06 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Xiandong Wang <xiandong.wang@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org, Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH i-g-t v3 1/1] skip kms_flip case for mtk driver
+Message-ID: <20260312102306.n4kz7i4kewhohpqx@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Xiandong Wang <xiandong.wang@mediatek.com>,
+ igt-dev@lists.freedesktop.org,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>,
+ Singo Chang <singo.chang@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+References: <20260312012507.23682-1-xiandong.wang@mediatek.com>
+ <20260312012507.23682-2-xiandong.wang@mediatek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260312012507.23682-2-xiandong.wang@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,30 +79,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add NVL display blocklist to meson.build which was earlier missing.
-Fixes: 04db3b26c52b ("intel-ci: Add NVL display blocklist")
+Hi Xiandong,
+On 2026-03-12 at 09:24:58 +0800, Xiandong Wang wrote:
+> From: Xiandong Wang <Xiandong.Wang@mediatek.com>
+> 
 
-v2: Make commit message more descriptive(Swati Sharma)
-v3: Use correct subject(intel-ci) and take care of
-Alphabetical order while adding to meson.build(Swati Sharma)
+You forgot to write down here a description. I will copy-paste
+one sentence from your previous mail here and merge it. With this
 
-Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
----
- tests/intel-ci/meson.build | 1 +
- 1 file changed, 1 insertion(+)
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index 3c7fa28b7..2b3266bbd 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -24,6 +24,7 @@ intelci_files = [
-   'xe.lnl.eudebug.blocklist.txt',
-   'xe.multigpu.blocklist.txt',
-   'xe.nvl.core.blocklist.txt',
-+  'xe.nvl.display.blocklist.txt',
-   'xe.ptl.core.blocklist.txt',
-   'xe.ptl.display.blocklist.txt',
-   'xe.sriov-vf.blocklist.txt',
--- 
-2.34.1
+Regards,
+Kamil
 
+> Signed-off-by: Xiandong Wang <Xiandong.Wang@mediatek.com>
+> ---
+>  tests/kms_flip.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index 49a5f4ed1..29a24c6f0 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -2095,6 +2095,8 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>  
+>  		igt_display_require(&display, drm_fd);
+>  
+> +		igt_skip_on(is_mtk_device(drm_fd));
+> +
+>  		kmstest_set_vt_graphics_mode();
+>  		igt_install_exit_handler(kms_flip_exit_handler);
+>  		get_timestamp_format();
+> -- 
+> 2.46.0
+> 
