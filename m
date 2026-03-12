@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B65B1067058
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 16:03:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E99AE11258BE
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 16:03:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDC6D10EA5D;
-	Thu, 12 Mar 2026 16:03:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C5DE10EA61;
+	Thu, 12 Mar 2026 16:03:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZiQGe8Q8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vs0c1O2A";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28BEC10EA5B
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 16:03:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DDF110EA5D
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 16:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773331414; x=1804867414;
+ t=1773331421; x=1804867421;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=f0a7MQVWvCsddqDqSStGt/Mief/BUwcGhfMI/s7NjEY=;
- b=ZiQGe8Q8qB9qPdldX2AzuMfNxOSj9T8mkDVXZqRJpWLppkCVjJOlh561
- 3S/iEwRH5K+lTzS3JuBhshgEVNLUlE4YkF8fbgwzPqL+rIQ56444Oqyil
- 78VgRiovJgNjWNvMEA1Lb4hBDDv5rp3YbdIm1/mD4mHA9K0rTeJjpi5L5
- 1jwrmJeyEuWj714ANzLKHnYdEwIwH5vr/so5vvpidf6ESmyvMnuuVKL+Z
- Pg5202ni4Q2mtL/4Ezsc5l2tZZFdQmqryg181Msg+OsikILJl9LROGG8A
- rXrWPUKQn/ZvdTNx+qaMKmWME56liJKxJe+5VL3R2apcAXFW1jshJNfGQ Q==;
-X-CSE-ConnectionGUID: BCcB2NtaSyC1TcJFCRZqJA==
-X-CSE-MsgGUID: QgfvVUS2TfaQelBBrYNIkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="77037685"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="77037685"
+ bh=dgy2aiNTVuh4tfnAG7AdHfNEz4RHFItT4n6inLtTyTQ=;
+ b=Vs0c1O2Aj03jsh0RSKSYnO3tkdqfRbgWlOv450uBghAkKx7581/sWV3i
+ UW8ezAzJ003NsylXB0KqFE0BPI3wTRlAYlh+f9d9phvKzzLKH3DM2xgwL
+ fnAgQK/Gf1ROdVawk7j6VFg1y5jm6PbiHoa3sb24lICiJOzXZMfyg+Jhr
+ h5qjqXRsm1Q+YmgKdFQZrpkV3sDhwtakPg62lg4WUI/c/kfCD/Mu7pl5R
+ /nDqXIdSAj+xuXYGH6+M+Tn2M83Z/2EskKUbfhDohVBBoRWgp1WVX8JTU
+ CCL4e7nuF7H2nwND+rlaR2pyBno6wRO8tdtVERoQ4aWLZ1Ay945GshmrP A==;
+X-CSE-ConnectionGUID: mZnUuijTQFGZrixfpINi4w==
+X-CSE-MsgGUID: X9cbpA8+TMmf9owZKXR84g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="77037690"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="77037690"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 09:03:34 -0700
-X-CSE-ConnectionGUID: QnTs2YtaS9+W4uB9fghX3Q==
-X-CSE-MsgGUID: GVKAgaYETLOR59dydkpiew==
+ 12 Mar 2026 09:03:41 -0700
+X-CSE-ConnectionGUID: 284nEGIzT822F2J1hScv7g==
+X-CSE-MsgGUID: 6foPAxOvRiqM7Bse+i0/4A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="225839033"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="225839083"
 Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
- by orviesa005.jf.intel.com with ESMTP; 12 Mar 2026 09:03:32 -0700
+ by orviesa005.jf.intel.com with ESMTP; 12 Mar 2026 09:03:39 -0700
 From: himanshu.girotra@intel.com
 To: ramadevi.gandi@intel.com, nishit.sharma@intel.com,
  aditya.chauhan@intel.com, kamil.konieczny@intel.com,
  shekhar.chauhan@intel.com, zbigniew.kempczynski@intel.com,
  igt-dev@lists.freedesktop.org
-Subject: [PATCH v3 i-g-t 1/4] lib/pciids: sync with kernel commit be07d8f707e4
-Date: Thu, 12 Mar 2026 21:33:25 +0530
-Message-ID: <20260312160328.9462-2-himanshu.girotra@intel.com>
+Subject: [PATCH v3 i-g-t 4/4] lib: Add WildcatLake to compute kernel tables
+Date: Thu, 12 Mar 2026 21:33:28 +0530
+Message-ID: <20260312160328.9462-5-himanshu.girotra@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260312160328.9462-1-himanshu.girotra@intel.com>
 References: <20260312160328.9462-1-himanshu.girotra@intel.com>
@@ -70,61 +70,73 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-Synchronize PCI IDs with drm-next kernel up to be07d8f707e4,
-which includes the following changes:
+WildcatLake uses graphics IP 30.03 (Xe3_LPG), distinct from PTL's
+30.00. The compute kernel lookup uses exact ip_ver matching, so without
+a dedicated entry for IP_VER(30, 03), compute tests would skip on WCL
+with "GPU not supported".
 
-commit be07d8f707e4 ("drm/xe/nvlp: Add NVL-P platform definition")
-commit 32620e176443 ("drm/pcids: Split PTL pciids group to make wcl subplatform")
-commit aaecfadc22cc ("drm/intel/bmg: Allow device ID usage with single-argument macros")
+Add IP_VER(30, 03) entries to:
+- intel_compute_square_kernels[]
+- intel_compute_batches[]
+- intel_compute_preempt_batches[]
 
 Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/pciids.h | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ lib/intel_compute.c                | 11 +++++++++++
+ lib/intel_compute_square_kernels.c | 11 +++++++++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/lib/pciids.h b/lib/pciids.h
-index 6e53fb4cd..33b91cb2e 100644
---- a/lib/pciids.h
-+++ b/lib/pciids.h
-@@ -861,7 +861,7 @@
- 	MACRO__(0xE216, ## __VA_ARGS__)
- 
- #define INTEL_BMG_IDS(MACRO__, ...) \
--	INTEL_BMG_G21_IDS(MACRO__, __VA_ARGS__), \
-+	INTEL_BMG_G21_IDS(MACRO__, ## __VA_ARGS__), \
- 	MACRO__(0xE220, ## __VA_ARGS__), \
- 	MACRO__(0xE221, ## __VA_ARGS__), \
- 	MACRO__(0xE222, ## __VA_ARGS__), \
-@@ -880,7 +880,10 @@
- 	MACRO__(0xB08F, ## __VA_ARGS__), \
- 	MACRO__(0xB090, ## __VA_ARGS__), \
- 	MACRO__(0xB0A0, ## __VA_ARGS__), \
--	MACRO__(0xB0B0, ## __VA_ARGS__), \
-+	MACRO__(0xB0B0, ## __VA_ARGS__)
-+
-+/* WCL */
-+#define INTEL_WCL_IDS(MACRO__, ...) \
- 	MACRO__(0xFD80, ## __VA_ARGS__), \
- 	MACRO__(0xFD81, ## __VA_ARGS__)
- 
-@@ -897,4 +900,16 @@
- #define INTEL_CRI_IDS(MACRO__, ...) \
- 	MACRO__(0x674C, ## __VA_ARGS__)
- 
-+/* NVL-P */
-+#define INTEL_NVLP_IDS(MACRO__, ...) \
-+	MACRO__(0xD750, ## __VA_ARGS__), \
-+	MACRO__(0xD751, ## __VA_ARGS__), \
-+	MACRO__(0xD752, ## __VA_ARGS__), \
-+	MACRO__(0xD753, ## __VA_ARGS__), \
-+	MACRO__(0XD754, ## __VA_ARGS__), \
-+	MACRO__(0XD755, ## __VA_ARGS__), \
-+	MACRO__(0XD756, ## __VA_ARGS__), \
-+	MACRO__(0XD757, ## __VA_ARGS__), \
-+	MACRO__(0xD75F, ## __VA_ARGS__)
-+
- #endif /* __PCIIDS_H__ */
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index 0d1e0290f..b3336a7b5 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -2299,6 +2299,11 @@ static const struct {
+ 		.compute_exec = xe2lpg_compute_exec,
+ 		.compat = COMPAT_DRIVER_XE,
+ 	},
++	{
++		.ip_ver = IP_VER(30, 03),
++		.compute_exec = xe2lpg_compute_exec,
++		.compat = COMPAT_DRIVER_XE,
++	},
+ 	{
+ 		.ip_ver = IP_VER(30, 04),
+ 		.compute_exec = xe2lpg_compute_exec,
+@@ -2803,6 +2808,12 @@ static const struct {
+ 		.compat = COMPAT_DRIVER_XE,
+ 		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
+ 	},
++	{
++		.ip_ver = IP_VER(30, 03),
++		.compute_exec = xe2lpg_compute_preempt_exec,
++		.compat = COMPAT_DRIVER_XE,
++		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
++	},
+ 	{
+ 		.ip_ver = IP_VER(30, 04),
+ 		.compute_exec = xe2lpg_compute_preempt_exec,
+diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
+index 7607fadc3..a612092fc 100644
+--- a/lib/intel_compute_square_kernels.c
++++ b/lib/intel_compute_square_kernels.c
+@@ -75,6 +75,17 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
+ 		.loop_kernel = xe3lpg_kernel_loop_bin,
+ 		.loop_kernel_size = sizeof(xe3lpg_kernel_loop_bin),
+ 	},
++	{
++		.ip_ver = IP_VER(30, 03),
++		.size = sizeof(xe3lpg_kernel_square_bin),
++		.kernel = xe3lpg_kernel_square_bin,
++		.long_kernel = xe3lpg_kernel_count_bin,
++		.long_kernel_size = sizeof(xe3lpg_kernel_count_bin),
++		.sip_kernel = xe3lpg_kernel_sip_bin,
++		.sip_kernel_size = sizeof(xe3lpg_kernel_sip_bin),
++		.loop_kernel = xe3lpg_kernel_loop_bin,
++		.loop_kernel_size = sizeof(xe3lpg_kernel_loop_bin),
++	},
+ 	{
+ 		.ip_ver = IP_VER(30, 04),
+ 		.size = sizeof(xe3lpg_kernel_square_bin),
 -- 
 2.50.1
 
