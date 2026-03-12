@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF73A106705A
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 16:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B65B1067058
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 16:03:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8235610EA60;
-	Thu, 12 Mar 2026 16:03:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BDC6D10EA5D;
+	Thu, 12 Mar 2026 16:03:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AbB9WOUV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZiQGe8Q8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0277C10EA5E
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 16:03:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28BEC10EA5B
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 16:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773331419; x=1804867419;
+ t=1773331414; x=1804867414;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=4ji4UTvdS2lloz3GgpfoU1OoacjZkBRiYO+FNVWPLys=;
- b=AbB9WOUV+1ZEhEFpb0t8MWHGNnXuXW6R1PFYH1AEjYXeAEULXvPUSjZr
- 7VzR8a+/doJugr1vbME8pA/sGfdY09YpCqEJDuPJ7T6FEHb3MhdD0TnZP
- Fr+G+2gz/noi9tgjhKXXo6/bDAMD+3qc1LMEa/TUwLxGZNtfKQzZ0owXO
- rnfI0uMWSSO1OurPeF+vXogYUSvHVlEallxvQ2gWTia5I+CWVIp8bar90
- a4jPwITa446eUKRLjc0J25vWDw9mF9xyz4tug2PXE2ITTKOutBPzVt9C6
- 2WX50t9MTt/R1cNtvlkNU/fHC3aSjw7eOKM0mvz3+KB2tHATcSaaG0kQO w==;
-X-CSE-ConnectionGUID: kfZdHQNJTSaGXKyUi32iaw==
-X-CSE-MsgGUID: 76iKBAUwRxS0tssv1xgu8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="77037688"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="77037688"
+ bh=f0a7MQVWvCsddqDqSStGt/Mief/BUwcGhfMI/s7NjEY=;
+ b=ZiQGe8Q8qB9qPdldX2AzuMfNxOSj9T8mkDVXZqRJpWLppkCVjJOlh561
+ 3S/iEwRH5K+lTzS3JuBhshgEVNLUlE4YkF8fbgwzPqL+rIQ56444Oqyil
+ 78VgRiovJgNjWNvMEA1Lb4hBDDv5rp3YbdIm1/mD4mHA9K0rTeJjpi5L5
+ 1jwrmJeyEuWj714ANzLKHnYdEwIwH5vr/so5vvpidf6ESmyvMnuuVKL+Z
+ Pg5202ni4Q2mtL/4Ezsc5l2tZZFdQmqryg181Msg+OsikILJl9LROGG8A
+ rXrWPUKQn/ZvdTNx+qaMKmWME56liJKxJe+5VL3R2apcAXFW1jshJNfGQ Q==;
+X-CSE-ConnectionGUID: BCcB2NtaSyC1TcJFCRZqJA==
+X-CSE-MsgGUID: QgfvVUS2TfaQelBBrYNIkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="77037685"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="77037685"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 09:03:38 -0700
-X-CSE-ConnectionGUID: kaNvYo56TTCg0v1fpcBd4g==
-X-CSE-MsgGUID: jf/TypOQROCc0A1DYFELBg==
+ 12 Mar 2026 09:03:34 -0700
+X-CSE-ConnectionGUID: QnTs2YtaS9+W4uB9fghX3Q==
+X-CSE-MsgGUID: GVKAgaYETLOR59dydkpiew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="225839065"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="225839033"
 Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
- by orviesa005.jf.intel.com with ESMTP; 12 Mar 2026 09:03:37 -0700
+ by orviesa005.jf.intel.com with ESMTP; 12 Mar 2026 09:03:32 -0700
 From: himanshu.girotra@intel.com
 To: ramadevi.gandi@intel.com, nishit.sharma@intel.com,
  aditya.chauhan@intel.com, kamil.konieczny@intel.com,
  shekhar.chauhan@intel.com, zbigniew.kempczynski@intel.com,
  igt-dev@lists.freedesktop.org
-Subject: [PATCH v3 i-g-t 3/4] lib: Add WildcatLake support
-Date: Thu, 12 Mar 2026 21:33:27 +0530
-Message-ID: <20260312160328.9462-4-himanshu.girotra@intel.com>
+Subject: [PATCH v3 i-g-t 1/4] lib/pciids: sync with kernel commit be07d8f707e4
+Date: Thu, 12 Mar 2026 21:33:25 +0530
+Message-ID: <20260312160328.9462-2-himanshu.girotra@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260312160328.9462-1-himanshu.girotra@intel.com>
 References: <20260312160328.9462-1-himanshu.girotra@intel.com>
@@ -70,68 +70,61 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-WildcatLake was previously consumed under INTEL_PTL_IDS but now
-has dedicated PCI IDs following kernel commit 32620e176443
-("drm/pcids: Split PTL pciids group to make wcl subplatform").
+Synchronize PCI IDs with drm-next kernel up to be07d8f707e4,
+which includes the following changes:
+
+commit be07d8f707e4 ("drm/xe/nvlp: Add NVL-P platform definition")
+commit 32620e176443 ("drm/pcids: Split PTL pciids group to make wcl subplatform")
+commit aaecfadc22cc ("drm/intel/bmg: Allow device ID usage with single-argument macros")
 
 Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/intel_chipset.h     |  2 ++
- lib/intel_device_info.c | 13 +++++++++++++
- 2 files changed, 15 insertions(+)
+ lib/pciids.h | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 5df7349df..3fcc5b18d 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -93,6 +93,7 @@ struct intel_device_info {
- 	bool is_lunarlake : 1;
- 	bool is_battlemage : 1;
- 	bool is_pantherlake : 1;
-+	bool is_wildcatlake : 1;
- 	bool is_novalake_s: 1;
- 	bool is_novalake_p : 1;
- 	bool is_crescentisland: 1;
-@@ -213,6 +214,7 @@ void intel_check_pch(void);
- #define IS_LUNARLAKE(devid)	(intel_get_device_info(devid)->is_lunarlake)
- #define IS_BATTLEMAGE(devid)	(intel_get_device_info(devid)->is_battlemage)
- #define IS_PANTHERLAKE(devid)	(intel_get_device_info(devid)->is_pantherlake)
-+#define IS_WILDCATLAKE(devid)	(intel_get_device_info(devid)->is_wildcatlake)
- #define IS_NOVALAKE_S(devid)	(intel_get_device_info(devid)->is_novalake_s)
- #define IS_NOVALAKE_P(devid)	(intel_get_device_info(devid)->is_novalake_p)
- #define IS_CRESCENTISLAND(devid)	(intel_get_device_info(devid)->is_crescentisland)
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index b44b24223..da0b9f398 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -539,6 +539,18 @@ static const struct intel_device_info intel_pantherlake_info = {
- 	.cmds_info = &xe2_cmds_info,
- };
+diff --git a/lib/pciids.h b/lib/pciids.h
+index 6e53fb4cd..33b91cb2e 100644
+--- a/lib/pciids.h
++++ b/lib/pciids.h
+@@ -861,7 +861,7 @@
+ 	MACRO__(0xE216, ## __VA_ARGS__)
  
-+static const struct intel_device_info intel_wildcatlake_info = {
-+	.graphics_ver = 30,
-+	.graphics_rel = 3,
-+	.display_ver = 30,
-+	.has_4tile = true,
-+	.has_flatccs = true,
-+	.has_oam = true,
-+	.is_wildcatlake = true,
-+	.codename = "wildcatlake",
-+	.cmds_info = &xe2_cmds_info,
-+};
+ #define INTEL_BMG_IDS(MACRO__, ...) \
+-	INTEL_BMG_G21_IDS(MACRO__, __VA_ARGS__), \
++	INTEL_BMG_G21_IDS(MACRO__, ## __VA_ARGS__), \
+ 	MACRO__(0xE220, ## __VA_ARGS__), \
+ 	MACRO__(0xE221, ## __VA_ARGS__), \
+ 	MACRO__(0xE222, ## __VA_ARGS__), \
+@@ -880,7 +880,10 @@
+ 	MACRO__(0xB08F, ## __VA_ARGS__), \
+ 	MACRO__(0xB090, ## __VA_ARGS__), \
+ 	MACRO__(0xB0A0, ## __VA_ARGS__), \
+-	MACRO__(0xB0B0, ## __VA_ARGS__), \
++	MACRO__(0xB0B0, ## __VA_ARGS__)
 +
- static const struct intel_device_info intel_novalake_s_info = {
- 	.graphics_ver = 30,
- 	.graphics_rel = 04,
-@@ -690,6 +702,7 @@ static const struct pci_id_match intel_device_match[] = {
- 	INTEL_BMG_IDS(INTEL_PCI_ID_INIT, &intel_battlemage_info),
++/* WCL */
++#define INTEL_WCL_IDS(MACRO__, ...) \
+ 	MACRO__(0xFD80, ## __VA_ARGS__), \
+ 	MACRO__(0xFD81, ## __VA_ARGS__)
  
- 	INTEL_PTL_IDS(INTEL_PCI_ID_INIT, &intel_pantherlake_info),
-+	INTEL_WCL_IDS(INTEL_PCI_ID_INIT, &intel_wildcatlake_info),
+@@ -897,4 +900,16 @@
+ #define INTEL_CRI_IDS(MACRO__, ...) \
+ 	MACRO__(0x674C, ## __VA_ARGS__)
  
- 	INTEL_NVLS_IDS(INTEL_PCI_ID_INIT, &intel_novalake_s_info),
- 
++/* NVL-P */
++#define INTEL_NVLP_IDS(MACRO__, ...) \
++	MACRO__(0xD750, ## __VA_ARGS__), \
++	MACRO__(0xD751, ## __VA_ARGS__), \
++	MACRO__(0xD752, ## __VA_ARGS__), \
++	MACRO__(0xD753, ## __VA_ARGS__), \
++	MACRO__(0XD754, ## __VA_ARGS__), \
++	MACRO__(0XD755, ## __VA_ARGS__), \
++	MACRO__(0XD756, ## __VA_ARGS__), \
++	MACRO__(0XD757, ## __VA_ARGS__), \
++	MACRO__(0xD75F, ## __VA_ARGS__)
++
+ #endif /* __PCIIDS_H__ */
 -- 
 2.50.1
 
