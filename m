@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 134F11067021
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 13:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121AA1067021
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 13:49:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B9DE110E259;
-	Thu, 12 Mar 2026 13:48:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BCBDD10EA0C;
+	Thu, 12 Mar 2026 13:49:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RhjofvYG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f2z1AfDm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E76BD10EA0F
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 13:48:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6FB5310EA0C
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 13:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773323337; x=1804859337;
+ t=1773323336; x=1804859336;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=LYCxtgfAgvmJszSyIUJY/ODBVkdgZN7mXG1JLpBjOqc=;
- b=RhjofvYGsWdgeTRCs7cipHm+6GEowHRIuvErqI157omefHARMHlYAGpO
- Ekd05vxki951EA8KoCALC96V8sZbh0axUXpM3eHorouuzY1FjFZZkN2V7
- nV+cZemopZ6jFLO+yR09UlurbqHFMcRbHrvaMAA1R/ujWz6DVg7f94Ot5
- 3iHQckvb9/j23wWSMUinsrhQ/2DnysWPK5tJi07nio2b7vHxwpiev8veO
- FK7MopeDv6YU81CHFRo6oWgojf5mErQ50AUlpJFtqMzclAxwWxvDQPZey
- qIe1Cti9xE1SVwzjuRBRXEGzboDwo/VP4lpe40Dd0QJhC8rCtcRK/IaPV g==;
-X-CSE-ConnectionGUID: x68PdoDjRlqs0tW8070K9g==
-X-CSE-MsgGUID: moocBtWPR6K5Pr+zQ0Lvlg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="78268094"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="78268094"
+ bh=yvmL92wNUol/h8q74LVNEOF6TnUiGYvpBnZhq5dA4tM=;
+ b=f2z1AfDmahJdKKAm2reRAK183JooWmV4R/3vbK/CmEb3wGTcKRiTQBDk
+ f22i83TAmlEINpAu9aARbI/eMBH3UMkcPXca/hBozuacN9bxy1LZGWR/0
+ Dz3VMscSsH6KjvxptoygypCoasxPf3b6Fc/3jA96gRjWtn9PIYJCFCObw
+ 9groEKMzv7jFNoQ/SVi3O5AiiMDcaU0lvab8jJp9dCY9eLkRmSCL3L7PM
+ Y4W6LwlTQQfKsbkPhmZOicvIsgFPVSWH6n63LSrNCUoelNu5HPv3dCKj0
+ YkrNaTQGx6s1FZSATH5VHUmk+QkPZvHBUxXFVbeP3jTJrOobcsTdi+0bC Q==;
+X-CSE-ConnectionGUID: ZEHRYmVHSn+KUbJJ3jisQw==
+X-CSE-MsgGUID: Vk14ZGtbQBewvOuieYdSww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="78268092"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="78268092"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 06:48:57 -0700
-X-CSE-ConnectionGUID: 9u80gJSXRry4qU/GCfgqBQ==
-X-CSE-MsgGUID: 2JQdQ0MLTyafyPLSuptpdA==
+ 12 Mar 2026 06:48:56 -0700
+X-CSE-ConnectionGUID: QDryUJsUTruw36JHAe/Zrw==
+X-CSE-MsgGUID: uSOWLWzNT+uOu15XeUotEQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="220767534"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="220767530"
 Received: from dut2084bmgfrd.iind.intel.com ([10.223.34.11])
- by orviesa009.jf.intel.com with ESMTP; 12 Mar 2026 06:48:55 -0700
+ by orviesa009.jf.intel.com with ESMTP; 12 Mar 2026 06:48:54 -0700
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org, thomas.hellstrom@intel.com,
  kamil.konieczny@intel.com
-Subject: [PATCH i-g-t v4 2/2] tests/intel/xe_svm_usrptr_madvise: Unify batch
- buffer alignment
-Date: Thu, 12 Mar 2026 13:48:51 +0000
-Message-Id: <20260312134851.647568-3-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v4 1/2] lib/xe: Introduce aligned buffer mapping
+Date: Thu, 12 Mar 2026 13:48:50 +0000
+Message-Id: <20260312134851.647568-2-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260312134851.647568-1-nishit.sharma@intel.com>
 References: <20260312134851.647568-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,64 +68,87 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-This patch refactors the SVM userptr copy test and batch buffer setup
-to use aligned buffer mapping for batch buffers, ensuring compatibility
-across both Ponte Vecchio (PVC) and BMG platforms.
-Batch buffer mapping now uses platform-required alignment, eliminating
-the need for platform-specific address assignment and conditional code
-paths.
+Added aligned buffer mapping which is providing an interface for mapping
+buffer objects with a specified alignment. This API improves
+cross-platform compatibility and simplifies batch buffer setup by
+eliminating the need for platform-specific address handling.
 
+Signed-off-by: Thomas Hellstrom <thomas.hellstrom@intel.com>
 Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- tests/intel/xe_svm_usrptr_madvise.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ lib/xe/xe_ioctl.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_ioctl.h |  1 +
+ 2 files changed, 47 insertions(+)
 
-diff --git a/tests/intel/xe_svm_usrptr_madvise.c b/tests/intel/xe_svm_usrptr_madvise.c
-index bfa5864e4..db7b9ee35 100644
---- a/tests/intel/xe_svm_usrptr_madvise.c
-+++ b/tests/intel/xe_svm_usrptr_madvise.c
-@@ -98,7 +98,8 @@ gpu_batch_init(int fd, uint32_t vm, uint64_t src_addr,
- {
- 	uint32_t width = copy_size / 256;
- 	uint32_t height = 1;
--	uint32_t batch_bo_size = BATCH_SIZE(fd);
-+	uint64_t alignment = xe_get_default_alignment(fd);
-+	uint32_t batch_bo_size = ALIGN(BATCH_SIZE(fd), alignment);
- 	uint32_t batch_bo;
- 	uint64_t batch_addr;
- 	void *batch;
-@@ -108,7 +109,7 @@ gpu_batch_init(int fd, uint32_t vm, uint64_t src_addr,
- 	int i = 0;
- 
- 	batch_bo = xe_bo_create(fd, vm, batch_bo_size, vram_if_possible(fd, 0), 0);
--	batch = xe_bo_map(fd, batch_bo, batch_bo_size);
-+	batch = xe_bo_map_aligned(fd, batch_bo, batch_bo_size, alignment);
- 	cmd = (uint32_t *)batch;
- 	cmd[i++] = MEM_COPY_CMD | (1 << 19);
- 	cmd[i++] = width - 1;
-@@ -140,7 +141,7 @@ gpu_copy_batch_create(int fd, uint32_t vm, uint32_t exec_queue,
- 		      uint64_t src_addr, uint64_t dst_addr,
- 		      uint32_t *batch_bo, uint64_t *batch_addr)
- {
--	gpu_batch_init(fd, vm, src_addr, dst_addr, SZ_4K, batch_bo, batch_addr);
-+	gpu_batch_init(fd, vm, src_addr, dst_addr, SZ_16K, batch_bo, batch_addr);
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 16aae05c9..ea3f2fcaa 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -579,6 +579,52 @@ void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
+ 	return map;
  }
  
- static void
-@@ -209,10 +210,10 @@ static void test_svm_userptr_copy(int fd)
- 			      &batch_bo, &batch_addr);
- 	gpu_exec_sync(fd, vm, exec_queue, &batch_addr);
- 
--	igt_assert(memcmp(svm_ptr, userptr_ptr, SZ_4K) == 0);
-+	igt_assert(memcmp(svm_ptr, userptr_ptr, 64) == 0);
- 
- 	bo_map = xe_bo_map(fd, bo, size);
--	igt_assert(memcmp(bo_map, svm_ptr, SZ_4K) == 0);
-+	igt_assert(memcmp(bo_map, svm_ptr, 64) == 0);
- 
- 	xe_vm_bind_lr_sync(fd, vm, 0, 0, batch_addr, BATCH_SIZE(fd),
- 			   DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR);
++/**
++ * xe_bo_map_aligned: Maps a buffer object (bo) into CPU address space with a specified alignment
++ * @fd: The device file-descriptor
++ * @bo: The buffer object
++ * @size: The size of the map
++ * @alignment: The requested map alignment
++ *
++ * This function reserves a virtual memory range, computes the first aligned address,
++ * maps the buffer object at that address, and asserts on errors. It unmaps any unused
++ * regions before and after the mapped buffer, freeing up memory and leaving only the
++ * aligned mapping.
++ *
++ * Return: Pointer to CPU-Mapped BO with requested alignment
++ */
++void *xe_bo_map_aligned(int fd, uint32_t bo, size_t size, size_t alignment)
++{
++	size_t anon_size = size + alignment;
++	uint64_t anon_addr;
++	void *anon_map, *map;
++	uint64_t map_addr;
++	size_t hole_size;
++
++	/* Reserve a range of virtual space where we can fit an aligned map */
++	anon_map = mmap(NULL, anon_size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	igt_assert(anon_map != MAP_FAILED);
++	anon_addr = to_user_pointer(anon_map);
++
++	/* Compute the first aligned address within the virtual space. */
++	map_addr = ALIGN(anon_addr, alignment);
++	/* Map the bo there, replacing part of the reserved virtual range. */
++	map = xe_bo_map_fixed(fd, bo, size, map_addr);
++	igt_assert_eq((uintptr_t)map % alignment, 0);
++
++	/* Unreserve part of the virtual range (if any) *before* the bo map */
++	hole_size = map_addr - anon_addr;
++	if (hole_size)
++		igt_assert_eq(munmap(anon_map, hole_size), 0);
++
++	/* Unreserve part of the virtual range (if any) *after* the bo map */
++	hole_size = anon_size - hole_size - size;
++	if (hole_size)
++		igt_assert_eq(munmap(map + size, hole_size), 0);
++
++	return map;
++}
++
+ void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot)
+ {
+ 	return __xe_bo_map(fd, bo, size, prot);
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 3ea651063..b62d259fd 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -91,6 +91,7 @@ void xe_exec_queue_destroy(int fd, uint32_t exec_queue);
+ uint64_t xe_bo_mmap_offset(int fd, uint32_t bo);
+ void *xe_bo_map(int fd, uint32_t bo, size_t size);
+ void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr);
++void *xe_bo_map_aligned(int fd, uint32_t bo, size_t size, size_t alignment);
+ void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
+ int __xe_exec(int fd, struct drm_xe_exec *exec);
+ void xe_exec(int fd, struct drm_xe_exec *exec);
 -- 
 2.34.1
 
