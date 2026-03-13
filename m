@@ -4,73 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C97A105F7A6
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 13:53:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E35C0105F7AE
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 14:43:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 086A510E041;
-	Fri, 13 Mar 2026 13:53:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8AAFE10E0B0;
+	Fri, 13 Mar 2026 14:43:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="U8L4fRgH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QX+J42WG";
 	dkim-atps=neutral
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com
- [74.125.82.182])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E96810E041
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2026 13:52:58 +0000 (UTC)
-Received: by mail-dy1-f182.google.com with SMTP id
- 5a478bee46e88-2bea8220c38so1560293eec.1
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2026 06:52:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1773409978; x=1774014778; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uf9z1AtBUgv7hEo/ujZburcdlk7WaWM6HhieXA4rmn0=;
- b=U8L4fRgH/rJ7CHzLKkk6Ptn35Eus4aeFn5sWufaUU2tmjAWOZn25YeXZfhnogWjnuG
- MV9c1V8exo0cDAfBdtL19bX+qMMG3GbMXTWmdZMI9wtXX/SIFHRDi+UF7qpaPCoCR3yY
- QmNS92xzn23j8gAWZdKRYwr+xihF/hy83bj26hpuFQsgbDBntXAs0Yh0QSAxBvT/9Agt
- UCvyJsBzf9ookA4vpgyBBYz2/qL3CYwcSX4Vo92uSZp6HiO468fc2rzTqjeIaD2K79tx
- 70rSd9V/PTyAY0Hsu+kbvAmUQtSVE7HZGEo5RIdiygHgW3HGc7m/OsbJUPKj9XcjcWyr
- 3+pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1773409978; x=1774014778;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=uf9z1AtBUgv7hEo/ujZburcdlk7WaWM6HhieXA4rmn0=;
- b=QK0XvpJx6a/v9v1OhLc6ZOziSwvEq31SVTxC5900aMnSr1NEFI9VLpocb8FNB21dKC
- B4ZpGA/TIOAncIVUOBBGY4XQOjpeGTD/sHPojmGd9Jkl3TIcga4FG3Eb1CPV8SLhv1kA
- 8N/eK3IGpi2TlagbTIF2cHRJU7+p7Uy5CzZkdyp5bPqbMkrgl0s8pRmFUHpmp6c4olg2
- kLx5wLjbiHZe4y8Men4wbcB9LGYgvXasONaEPBzCF0cxu+8r3cAsuP87SNbPNn5L4IcN
- BYN7BmtaT2aFTHjxkK1fFg8GDcsf63x/6Ml8PmFxjlNXuGOr7YlsM5I8PMu+DTDEWfNQ
- JOPQ==
-X-Gm-Message-State: AOJu0YzBsWARvGIEmdT+Jpt7589HN3dFuHrDe/YdSdKp9dJeTK0arQDF
- 8+e4AaffbvXDDt7k/FelBhaewaoG0XxqZYbAc4WYLmL3WbzBVfhXG0edRXqQ+A8t
-X-Gm-Gg: ATEYQzwYayEZ1jtguOPtnmDjgl94R/zs4YHJDoF9BBI4KEnaJwpv9+rvqUmw8Eb/Dga
- APo/QFa0aJlvFDCkN38VrA0BM4ktvzsFL16smzDFvH+YvOA2wdDnwCefgE25hGU3g2VIrxPBlU2
- +89eQZOsmRTNQotpMrw9Te8kyc0oHMvMcM3M/VBY0Es+ReGp5Zh6JfS+ynguQB/f03FTuUFi/FG
- gyhYxoDwBY98YqKrJMQ2lgmo/kgFWVfhC/sm1m70gjp8VEKtT/F91zHT2FUFBKrraSYVsKTzjtu
- HTyfcPE7XaomIAcKJTyy9L/VvwYGJCmhGQGAwTv+OpyZbRdH4u/4/8QZXix9nxi6fsC573Y2O/q
- 6s8RS98yE/adhKvnXP9AzTiOL9aLpo77OXaBbuoM8peb7BqMu135zFT1HwocimkfMndplQJXvyk
- Y7YCyd8yXo6UAmLs0+4D3ugfh1Lqakw0lMTlTkaMW0nMKs8xtbbCesENNoDhU=
-X-Received: by 2002:a05:7300:d513:b0:2be:1dc7:999a with SMTP id
- 5a478bee46e88-2bea5401bf0mr1715296eec.4.1773409975885; 
- Fri, 13 Mar 2026 06:52:55 -0700 (PDT)
-Received: from localhost ([192.55.54.43]) by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2beab555846sm2494290eec.23.2026.03.13.06.52.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Mar 2026 06:52:55 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 8/8] lib/igt_fb: on Intel Xe force Vebox copy on yuv
- formats
-Date: Fri, 13 Mar 2026 15:52:03 +0200
-Message-ID: <20260313135203.1782240-9-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260313135203.1782240-1-juhapekka.heikkila@gmail.com>
-References: <20260313135203.1782240-1-juhapekka.heikkila@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 52B1F10E0B0
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2026 14:43:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1773413005; x=1804949005;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=2djdjb1DbreWMcFphC492uayVbTD09IQO+vtEHNFKWc=;
+ b=QX+J42WGVupooZikz+/Zjrrci4n2StnUv4SjY3tQEUnx9CI5LtKhNfXV
+ hNgt7awWDP/SameFzGjM2MJDag17XgRDq0nDWDHmH8Zs3e1mVW+qyJL8A
+ 09nbeKXSZYG2qBF++/cbnBNrhiThwD+MzoVZ8IE80KezVyedQmohlZl3M
+ FHLoBLUvQ71Me1zrndnUXRtr71t+do3G8v6vEfAhy5EpwMB94Qxha0UeV
+ ig+0eh+HUo58QFdI4bTjMtXFogROn4vWsuQEsOLcHW06qPcHu69EIoe64
+ 4GU82k25rQ4voHqg7ZNhOuX7Nd8HC+fll4nzLz4Bdn/ORyTDc5/AWjz3N A==;
+X-CSE-ConnectionGUID: bhcXdooKQ76QSnsAYBZorQ==
+X-CSE-MsgGUID: 28fBD4WUShWuht5jRL6Brg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="62090941"
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="62090941"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2026 07:43:21 -0700
+X-CSE-ConnectionGUID: 9yc5JkoSQi6ch8XDaxkXoA==
+X-CSE-MsgGUID: nxC1l7EpTvGWPjrJMRl+4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="217597663"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 07:43:19 -0700
+Date: Fri, 13 Mar 2026 15:43:03 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Aditya Chauhan <aditya.chauhan@intel.com>
+Cc: ramadevi.gandi@intel.com, himanshu.girotra@intel.com,
+ swati2.sharma@intel.com, kamil.konieczny@intel.com,
+ igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: Re: [PATCH v4 i-g-t 1/2] intel-ci: Add NVL core blocklist
+Message-ID: <20260313144303.nntt666alua7sf4w@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Aditya Chauhan <aditya.chauhan@intel.com>, ramadevi.gandi@intel.com,
+ himanshu.girotra@intel.com, swati2.sharma@intel.com,
+ kamil.konieczny@intel.com, igt-dev@lists.freedesktop.org,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+References: <20260313123459.64815-1-aditya.chauhan@intel.com>
+ <20260313123459.64815-2-aditya.chauhan@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260313123459.64815-2-aditya.chauhan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,81 +76,150 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is to test Vebox engine along with other engines. Vebox is
-forced to be used when use tile4 needing tile convert and pixel
-format is yuv.
+Hi Aditya,
+On 2026-03-13 at 18:04:58 +0530, Aditya Chauhan wrote:
+> Introduce core blocklist for the NVL platform containing
+> NVL-specific core test exclusions. Also add this blocklist file
+> to meson.build so that this can be used in execution.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- lib/igt_fb.c | 34 +++++++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 9 deletions(-)
+One small nit, see below.
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index cfd5d66fb..766d163e5 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2596,6 +2596,19 @@ static bool block_copy_ok(const struct igt_fb *fb)
- 					       fb_tile_to_blt_tile(fb->modifier));
- }
- 
-+static bool use_vebox_copy(const struct igt_fb *src_fb,
-+			   const struct igt_fb *dst_fb)
-+{
-+	return (is_i915_device(src_fb->fd) &&
-+		(igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
-+		 igt_format_is_yuv(src_fb->drm_format) ||
-+		 igt_format_is_yuv(dst_fb->drm_format))) ||
-+	       (is_xe_device(src_fb->fd) &&
-+		(dst_fb->modifier == I915_FORMAT_MOD_4_TILED ||
-+		 src_fb->modifier == I915_FORMAT_MOD_4_TILED) &&
-+		 igt_format_is_yuv(dst_fb->drm_format));
-+}
-+
- static bool ccs_needs_enginecopy(const struct igt_fb *fb)
- {
- 	if (igt_fb_is_gen12_rc_ccs_cc_modifier(fb->modifier))
-@@ -2624,6 +2637,12 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	    is_xe_device(fb->fd))
- 		return false;
- 
-+	/*
-+	 * This is to utilize Vebox engine for testing on Xe driver.
-+	 */
-+	if (use_vebox_copy(fb, fb) && fb->modifier != DRM_FORMAT_MOD_NONE)
-+		return false;
-+
- 	if (is_xe_device(fb->fd))
- 		return true;
- 
-@@ -2664,6 +2683,12 @@ static bool use_enginecopy(const struct igt_fb *fb)
- 	if (ccs_needs_enginecopy(fb))
- 		return true;
- 
-+	/*
-+	 * This is to utilize Vebox for testing
-+	 */
-+	if (use_vebox_copy(fb, fb))
-+		return true;
-+
- 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
- 		fb->modifier == I915_FORMAT_MOD_X_TILED;
- }
-@@ -2874,15 +2899,6 @@ static void fini_buf(struct intel_buf *buf)
- 	intel_buf_destroy(buf);
- }
- 
--static bool use_vebox_copy(const struct igt_fb *src_fb,
--			   const struct igt_fb *dst_fb)
--{
--
--	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
--	       igt_format_is_yuv(src_fb->drm_format) ||
--	       igt_format_is_yuv(dst_fb->drm_format);
--}
--
- /**
-  * copy_with_engine:
-  * @blit: context for the copy operation
--- 
-2.43.0
+> 
+> v2: Make commit message more descriptive (Swati Sharma)
+> v3:
+>  - Use correct subject (intel-ci) (Swati Sharma)
+>  - Add blocklist in alphabetical order in meson.build (Swati Sharma)
+> v4: Make comments more explanatory (Swati Sharma)
+> 
+> Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
+> ---
+>  tests/intel-ci/meson.build               |  1 +
+>  tests/intel-ci/xe.nvl.core.blocklist.txt | 97 ++++++++++++++++++++++++
+>  2 files changed, 98 insertions(+)
+>  create mode 100644 tests/intel-ci/xe.nvl.core.blocklist.txt
+> 
+> diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+> index cf0023c63..3c7fa28b7 100644
+> --- a/tests/intel-ci/meson.build
+> +++ b/tests/intel-ci/meson.build
+> @@ -23,6 +23,7 @@ intelci_files = [
+>    'xe.lnl.display.blocklist.txt',
+>    'xe.lnl.eudebug.blocklist.txt',
+>    'xe.multigpu.blocklist.txt',
+> +  'xe.nvl.core.blocklist.txt',
+>    'xe.ptl.core.blocklist.txt',
+>    'xe.ptl.display.blocklist.txt',
+>    'xe.sriov-vf.blocklist.txt',
+> diff --git a/tests/intel-ci/xe.nvl.core.blocklist.txt b/tests/intel-ci/xe.nvl.core.blocklist.txt
+> new file mode 100644
+> index 000000000..0f9750961
+> --- /dev/null
+> +++ b/tests/intel-ci/xe.nvl.core.blocklist.txt
+> @@ -0,0 +1,97 @@
+> +##################################################################
+> +# SR-IOV/IOV tests are not applicable for native
+> +# configuration and will be run under its separate configuration
+> +##################################################################
+> +igt@.*iov.*
+> +##################################################################
+> +# All Display related tests are being run under
+> +# separate display configurations
+> +##################################################################
+> +igt@.*kms.*
+> +igt@testdisplay
+> +igt@xe_pat@display-vs-wb-transient
+> +igt@fbdev@.*
+> +##################################################################
+> +# Valid skip: NVL is an integrated GPU and does not have
+> +# dedicated VRAM. Tests requiring device-local memory (VRAM),
+> +# small-BAR configurations, or VRAM eviction are not applicable.
+> +##################################################################
+> +igt@xe_mmap@vram$
+> +igt@xe_mmap@small-bar
+> +igt@xe_noexec_ping_pong
+> +igt@xe_create@create-big-vram
+> +igt@xe_evict.*
+> +igt@xe_pm@d3hot-mmap-vram
+> +igt@xe_eudebug_online@writes-caching-(?!sram-bb-sram-target-sram).*
+> +igt@xe_compute_preempt@.*vram.*
+> +igt@xe_vm@out-of-memory
+> +##################################################################
+> +# Valid skip: PAT index tests targeting older/different platforms
+> +# These PAT (Page Attribute Table) index subtests validate
+> +# platform-specific memory attribute encodings that are only
+> +# defined for their respective GPU generations
+> +# like ADL, MTL, LNL, BMG, PVC.
+> +# NVL uses its own PAT encoding; running these tests would
+> +# produce incorrect results or false failures.
+> +##################################################################
+> +igt@xe_pat@pat-index-xehpc
+> +igt@xe_pat@pat-index-xelp
+> +igt@xe_pat@pat-index-xelpg
+> +igt@xe_media_fill@media-fill
+> +igt@xe_pat@pat-index-xe2
+> +##################################################################
+> +# Valid Skip: Tests requiring multiple CCS (Compute Command
+> +# Streamers) engines — NVL exposes only a single CCS engine.
+> +##################################################################
+> +igt@xe_compute@ccs-mode-basic
+> +igt@xe_compute@ccs-mode-compute-kernel
+> +igt@xe_compute@eu-busy-10s
+> +##################################################################
+> +# Valid skip: Features / hardware blocks not present on NVL
+> +#   - xe_huc_copy@huc_copy: HuC (HEVC µController) firmware is
+> +#     not loaded/present on NVL; HuC copy operations will fail.
+> +#   - xe_exec_balancer@.*: Virtual engine / load balancer tests
+> +#     require multiple physical engines of the same class for
+> +#     balancing, which NVL does not expose.
+> +#   - xe_oa@oa-tlb-invalidate: OA TLB invalidation test relies
+> +#     on a specific OA unit configuration not present on NVL.
+> +#   - xe_pxp@.*: PXP (Protected Xe Path) content protection
 
+I am not sure but imho PXP stands for Protected eXchange Path
++cc Ashutosh
+
+Regards,
+Kamil 
+
+> +#     requires a TEE (Trusted Execution Environment) and
+> +#     associated firmware, which NVL does not support.
+> +#   - xe_exec_system_allocator@.*: System allocator execution
+> +#     tests depend on hardware features (e.g., SVM/USM page
+> +#     fault handling) not enabled on NVL yet.
+> +##################################################################
+> +igt@xe_huc_copy@huc_copy
+> +igt@xe_exec_balancer@.*
+> +igt@xe_oa@oa-tlb-invalidate
+> +igt@xe_pxp@.*
+> +igt@xe_exec_system_allocator@.*
+> +##################################################################
+> +# Valid skip: test applicable only for i2c capable systems
+> +##################################################################
+> +igt@xe_pm@d3hot-i2c
+> +##################################################################
+> +# Valid skip: multigpu/multitile tests are not supported on NVL
+> +##################################################################
+> +igt@.*@.*multigpu.*
+> +igt@xe_peer2peer@.*
+> +igt@.*@.*tiles
+> +##################################################################
+> +# Valid skip: Not Applicable for iGPUs
+> +##################################################################
+> +igt@intel_hwmon@.*
+> +igt@xe_mmap@pci-membarrier.*
+> +igt@xe_configfs@survivability-mode
+> +igt@xe_survivability@.*
+> +##################################################################
+> +# Valid skip: EU debugger and SIP (System Interrupt Protocol)
+> +# support is not yet available in the kernel for NVL. These tests
+> +# will be re-enabled once the required kernel enablement lands.
+> +##################################################################
+> +igt@xe_eudebug@.*
+> +igt@xe_eudebug_online@.*
+> +igt@xe_exec_sip@.*
+> +igt@xe_exec_sip_eudebug@.*
+> +igt@xe_live_ktest@xe_eudebug
+> +##################################################################
+> -- 
+> 2.34.1
+> 
