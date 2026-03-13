@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1598105F78F
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 10:23:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74D05105F791
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 10:24:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 524FF10EB79;
-	Fri, 13 Mar 2026 10:23:48 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EbSLLE50";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D08210EB7A
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2026 10:23:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773397425; x=1804933425;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=5sI8iFGS7kvOtKn72EvJ2C+p5Pjkr1W43q+e/OJ6AFw=;
- b=EbSLLE50DCAb4T2MYSxwKC2b/3QP7bWr5jbyBT5wgGP/uCfYT1BPPjyQ
- 94k6dQ0u9dSQ0JmMdxofVzZ2E3dzorWljutmr+NLZkwZY6az6fb7Xk3An
- lUAlvEnZy/bC8ZjXlJjtYIlraZSanVx1w0AzNpiLdnVwSuZBi/FltIyer
- r0tzrRNuyy0KFDgCyU3N7GBhcZw5J1euIqnEXzSXGvGIuMTHPmxpI9l4Y
- UtN+gt4fy67EbzZNWvsb/CTYDjoztVDJUHcxWV8YqvB373Xb0RFzSHttd
- hoQha9W6UE8dbhjHLtsO+iH4x/y+5EyuMnLuXkDu6uI2ipKXYfp1SQn+P g==;
-X-CSE-ConnectionGUID: auaGGWDHS96SVjQst7u4Fw==
-X-CSE-MsgGUID: N3iFieABTfKVHpAWaePmhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74419448"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="74419448"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2026 03:23:44 -0700
-X-CSE-ConnectionGUID: u+KS+BqkS62OqKTNchdr4w==
-X-CSE-MsgGUID: WFx7KJmfQv6TYi1gkaJ89g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="225811635"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.21])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2026 03:23:43 -0700
-Date: Fri, 13 Mar 2026 12:23:40 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/8] lib/kms: add and use igt_crtc_debugfs_dir()
-Message-ID: <abPlrLjp0RjJk2I0@intel.com>
-References: <cover.1773394225.git.jani.nikula@intel.com>
- <30fc91b2a9d6ced1ec26bad26cecc90af81636d3.1773394225.git.jani.nikula@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 24A1010EB79;
+	Fri, 13 Mar 2026 10:24:56 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9208810EB79;
+ Fri, 13 Mar 2026 10:24:52 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5541913151295365620=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <30fc91b2a9d6ced1ec26bad26cecc90af81636d3.1773394225.git.jani.nikula@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Filr=3A_a?=
+ =?utf-8?q?dd_disallow_replay_debugfs_and_fix_CRC_read_timeout?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ray Wu" <ray.wu@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 13 Mar 2026 10:24:52 -0000
+Message-ID: <177339749257.354757.2170536857923380120@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260313085713.890370-1-ray.wu@amd.com>
+In-Reply-To: <20260313085713.890370-1-ray.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,138 +37,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Mar 13, 2026 at 11:31:53AM +0200, Jani Nikula wrote:
-> Add igt_crtc_debugfs_dir() for getting the debugfs for a CRTC, and use
-> it where applicable. As a side effect, this fixes several cases where
-> pipe is used instead of CRTC index for the debugfs dir.
-> 
-> Note: Looks like it's difficult to add any igt_crtc_t based interfaces
-> in igt_debugfs.h due to header dependencies, so add it to igt_kms.h
-> along with the rest of the crtc based helpers.
+--===============5541913151295365620==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I think that's the better option. This keeps the
-debugfs/etc low level and thus potentially reusable
-even for tools/etc that should not suck in the whole
-igt library. See eg
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/16
+== Series Details ==
 
-> 
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
->  lib/i915/intel_fbc.c                   | 4 ++--
->  lib/igt_kms.c                          | 7 ++++++-
->  lib/igt_kms.h                          | 2 ++
->  tests/intel/kms_frontbuffer_tracking.c | 4 +---
->  tests/nouveau_crc.c                    | 4 +---
->  5 files changed, 12 insertions(+), 9 deletions(-)
-> 
-> diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-> index 9ea5e3cf68fd..b418c95e66bd 100644
-> --- a/lib/i915/intel_fbc.c
-> +++ b/lib/i915/intel_fbc.c
-> @@ -27,7 +27,7 @@ bool intel_fbc_supported(igt_crtc_t *crtc)
->  	char buf[FBC_STATUS_BUF_LEN];
->  	int dir;
->  
-> -	dir = igt_debugfs_crtc_dir(crtc->display->drm_fd, crtc->crtc_index, O_DIRECTORY);
-> +	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
->  	igt_require_fd(dir);
->  	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
->  	close(dir);
-> @@ -44,7 +44,7 @@ static bool _intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level, char *last_fb
->  	bool print = true;
->  	int dir;
->  
-> -	dir = igt_debugfs_crtc_dir(crtc->display->drm_fd, crtc->crtc_index, O_DIRECTORY);
-> +	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
->  	igt_require_fd(dir);
->  	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
->  	close(dir);
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 0b05ddd72977..6ccc9d0e6221 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -5254,6 +5254,11 @@ igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source)
->  	return igt_pipe_crc_new_nonblock(crtc->display->drm_fd, crtc->crtc_index, source);
->  }
->  
-> +int igt_crtc_debugfs_dir(igt_crtc_t *crtc, int mode)
-> +{
-> +	return igt_debugfs_crtc_dir(crtc->display->drm_fd, crtc->crtc_index, mode);
-> +}
-> +
->  const char *igt_crtc_name(igt_crtc_t *crtc)
->  {
->  	if (crtc == NULL)
-> @@ -6638,7 +6643,7 @@ unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc)
->  	int fd, res;
->  	unsigned int current;
->  
-> -	fd = igt_debugfs_crtc_dir(drmfd, crtc->pipe, O_RDONLY);
-> +	fd = igt_crtc_debugfs_dir(crtc, O_RDONLY);
+Series: tests/amdgpu/amd_ilr: add disallow replay debugfs and fix CRC read timeout
+URL   : https://patchwork.freedesktop.org/series/163172/
+State : success
 
-Why do we even have these 'mode' arguments to igt_debugfs_*_dir()?
+== Summary ==
 
-This guy forgets to set O_DIRECTORY (which would make the open 
-fail of the path is not a directory), and everyone else forgets
-to set O_RDONLY (but O_RDONLY==0 so doesn't really matter I guess).
+CI Bug Log - changes from XEIGT_8801_BAT -> XEIGTPW_14756_BAT
+====================================================
 
-I think we should get rid of these 'mode' arguments and
-just make the debugfs code do the right thing all by itself.
+Summary
+-------
 
->  	igt_assert(fd >= 0);
->  
->  	if (is_intel_device(drmfd))
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 081613a4b949..2492dac77e4f 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -595,6 +595,8 @@ typedef struct _igt_pipe_crc igt_pipe_crc_t;
->  igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source);
->  igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source);
->  
-> +int igt_crtc_debugfs_dir(igt_crtc_t *crtc, int mode);
-> +
->  igt_crtc_t *igt_output_get_driving_crtc(igt_output_t *output);
->  const char *igt_output_name(igt_output_t *output);
->  bool kmstest_mode_is_valid(const drmModeModeInfo *mode);
-> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-> index 12f51047d286..e83465c0d478 100644
-> --- a/tests/intel/kms_frontbuffer_tracking.c
-> +++ b/tests/intel/kms_frontbuffer_tracking.c
-> @@ -1534,10 +1534,8 @@ static void set_mode_for_params(struct modeset_params *params)
->  static void __debugfs_read_crtc(const char *param, char *buf, int len)
->  {
->  	int dir;
-> -	enum pipe pipe;
->  
-> -	pipe = prim_mode_params.crtc->pipe;
-> -	dir = igt_debugfs_crtc_dir(drm.fd, pipe, O_DIRECTORY);
-> +	dir = igt_crtc_debugfs_dir(prim_mode_params.crtc, O_DIRECTORY);
->  	igt_require_fd(dir);
->  	igt_debugfs_simple_read(dir, param, buf, len);
->  	close(dir);
-> diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
-> index c080ded3e621..29e2d84e76ac 100644
-> --- a/tests/nouveau_crc.c
-> +++ b/tests/nouveau_crc.c
-> @@ -370,9 +370,7 @@ int igt_main()
->  			igt_plane_set_fb(data.primary, &data.default_fb);
->  			igt_display_commit(&data.display);
->  
-> -			dir = igt_debugfs_crtc_dir(data.drm_fd,
-> -						   data.crtc->pipe,
-> -						   O_DIRECTORY);
-> +			dir = igt_crtc_debugfs_dir(data.crtc, O_DIRECTORY);
->  			igt_require_fd(dir);
->  			data.nv_crc_dir = openat(dir, "nv_crc", O_DIRECTORY);
->  			close(dir);
-> -- 
-> 2.47.3
+  **SUCCESS**
 
--- 
-Ville Syrjälä
-Intel
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14756_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8801/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14756/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#7483]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8801/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14756/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8801 -> IGTPW_14756
+
+  IGTPW_14756: 14756
+  IGT_8801: 246d93c1df887e151d038cee9eb0fc31650c4fb0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4712-4082c266f2930288f1e9faadd4a389f15306a209: 4082c266f2930288f1e9faadd4a389f15306a209
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14756/index.html
+
+--===============5541913151295365620==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_ilr: add disallow replay debugfs and fix CRC read timeout</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163172/">https://patchwork.freedesktop.org/series/163172/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14756/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14756/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8801_BAT -&gt; XEIGTPW_14756_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14756_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8801/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14756/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8801/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14756/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8801 -&gt; IGTPW_14756</li>
+</ul>
+<p>IGTPW_14756: 14756<br />
+  IGT_8801: 246d93c1df887e151d038cee9eb0fc31650c4fb0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4712-4082c266f2930288f1e9faadd4a389f15306a209: 4082c266f2930288f1e9faadd4a389f15306a209</p>
+
+</body>
+</html>
+
+--===============5541913151295365620==--
