@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7F89105F784
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 09:32:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA71C105F784
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 09:32:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6672010EB68;
-	Fri, 13 Mar 2026 09:32:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 90A9910EB68;
+	Fri, 13 Mar 2026 09:32:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZRS/LLHy";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nJ9dpvUc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F1EA10EB68
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2026 09:32:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E4C910EB68
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2026 09:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773394349; x=1804930349;
+ t=1773394364; x=1804930364;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=wj7qZF4pDitkibZvwZe7wduuyFTSCliKO4G1XImSuuU=;
- b=ZRS/LLHyawfkgRoh1O0zwNh+ha8axnNkMMgzfzctXhH3SjfaBIXVbFOo
- 1dgzE9526u7PVxRKdNpIIxMewa2JbhzFRe5DPE3PNCK8hcUhrNu5IulQB
- w3jxBSKXLf2zlHh2Mqa1TxcqeBpTm/DPqYI7uLSgY9RHk03q70mQ6WPGM
- YG5XkKNYruCFPe8j9EtX1x4KTk5am1yfd7leX7D9BJOe3Gg2UozUSqFs7
- 44UI25AW2lqP9r+wYc8i9nSjfXNh5n/qP0SLc2TnPDmoUih0qnfu/oQuh
- vqDBQZbdlIPxH1EZR/yViNQBT1k1a83UirJ3fBs2fuy+1h+tJQuDZD0t7 Q==;
-X-CSE-ConnectionGUID: vb0dOTurRDiUMQ09KFD4Ww==
-X-CSE-MsgGUID: YZI68gK9TRGzWDnfnfTORA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74380923"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="74380923"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2026 02:32:28 -0700
-X-CSE-ConnectionGUID: iNttBpFhT26kramYYdyjYA==
-X-CSE-MsgGUID: /2YkTaq/Qo68O7buIOO1Mw==
+ bh=sTm1ahNc0F0m2gIf2QDzyvnwRy73gQh55sLYk8cTbFk=;
+ b=nJ9dpvUcgfJg56UXV9X96PPJ24BHylXIDflio/XlEyAHiJMs5acoF+Et
+ zRkPOzx8hgxvTjZ2RZ+klXfzlmlvV3dU7X3UDZHW/FXZxcS212Fy1T7Fx
+ THGyTMwVte+rTLqpUqA7iOh5MkVeRwwnu5tqUQXaD17ULB3FZArbiJHGP
+ JLkk6p04MgXyXqxVCc2R3I7tPS0pEcxEmaCjX0MMF1TgHutRxyqSEcMPI
+ uT9gX7ihWEr/CHsoIWbQjjHolw94A+CsStX8ba3ZX3jNjbVSxyN1BswNg
+ JKsSBRHwVJgY1q0VYqGoCIvb6zLgLbZH4EFjvrBdd8FgFuHvv6A+QMzBn w==;
+X-CSE-ConnectionGUID: 6D+OIhJ4R2+0QHC26GvyBg==
+X-CSE-MsgGUID: VAMgIuLbROWPBDkYYrDOFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="78390387"
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="78390387"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2026 02:32:43 -0700
+X-CSE-ConnectionGUID: ricgqrcRR92bVGZxk2ci7g==
+X-CSE-MsgGUID: pfseq1PQQ3u4g4iRb2cwOA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="225801392"
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="221322724"
 Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.158])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2026 02:32:26 -0700
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2026 02:32:41 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: ville.syrjala@linux.intel.com, jani.nikula@intel.com,
- Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t 4/8] Revert "lib/i915/intel_fbc: Add fbc supported check
- based on wa"
-Date: Fri, 13 Mar 2026 11:31:56 +0200
-Message-ID: <9d35516d1af991321245c4c4da26959bf4bb6036.1773394225.git.jani.nikula@intel.com>
+Cc: ville.syrjala@linux.intel.com,
+	jani.nikula@intel.com
+Subject: [PATCH i-g-t 7/8] lib/i915/fbc: convert intel_fbc_{enable,
+ disable}() into proper functions
+Date: Fri, 13 Mar 2026 11:31:59 +0200
+Message-ID: <36f88aedb452336b6371b2f60bbcd262b9ca323e.1773394225.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1773394225.git.jani.nikula@intel.com>
 References: <cover.1773394225.git.jani.nikula@intel.com>
@@ -72,75 +72,114 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This reverts commit e226e9ac37b1f0e2de6f683752f64d3a5bffd156.
+Convert intel_fbc_enable() and intel_fbc_disable() into proper
+functions, and pass igt_display_t* as the parameter.
 
-All the users of intel_is_fbc_disabled_by_wa() have been reverted in
-series [1]. Revert the part adding the function too. Since the commit
-messages give absolutely zero idea why they've been reverted, there's
-nothing much I can add here either. It's unused, and can be removed.
-
-[1] https://lore.kernel.org/r/20251110192454.44385-1-mohammed.thasleem@intel.com
-
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/i915/intel_fbc.c | 27 ---------------------------
- lib/i915/intel_fbc.h |  1 -
- 2 files changed, 28 deletions(-)
+ lib/i915/intel_fbc.c                   | 10 ++++++++++
+ lib/i915/intel_fbc.h                   |  5 ++---
+ tests/intel/kms_dirtyfb.c              |  4 ++--
+ tests/intel/kms_fbc_dirty_rect.c       |  2 +-
+ tests/intel/kms_frontbuffer_tracking.c |  4 ++--
+ 5 files changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index b418c95e66bd..d6c34bb80f2d 100644
+index 1e0da2cf8cd9..a01023babb12 100644
 --- a/lib/i915/intel_fbc.c
 +++ b/lib/i915/intel_fbc.c
-@@ -9,7 +9,6 @@
- #include "igt_psr.h"
- 
- #include "intel_fbc.h"
--#include "intel_wa.h"
+@@ -12,6 +12,16 @@
  
  #define FBC_STATUS_BUF_LEN 128
  
-@@ -198,29 +197,3 @@ bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode)
- 
- 	return fbc_supported;
- }
--
--/**
-- * intel_is_fbc_disabled_by_wa
-- *
-- * @fd: fd of the device
-- *
-- * This function check if WA is present on some GT, which in turn make
-- * FBC not possible
-- *
-- * Returns:
-- * true: if WA is applied and FBC id disabled
-- * false: otherwise
-- */
--bool intel_is_fbc_disabled_by_wa(int fd)
--{
--	int wa;
--	const char *wa_fbc_disabled = "16023588340";
--
--	if (!is_xe_device(fd))
--		return false;
--
--	wa = igt_has_intel_wa(fd, wa_fbc_disabled);
--	igt_assert_f(wa >= 0, "WA path not found on GTs\n");
--
--	return wa == 1;
--}
++void intel_fbc_enable(igt_display_t *display)
++{
++	igt_set_module_param_int(display->drm_fd, "enable_fbc", 1);
++}
++
++void intel_fbc_disable(igt_display_t *display)
++{
++	igt_set_module_param_int(display->drm_fd, "enable_fbc", 0);
++}
++
+ /**
+  * intel_fbc_supported:
+  * @crtc: CRTC
 diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
-index 6d188995de3c..0245719dcf33 100644
+index 2e2786733c5f..d45ff1d77dd1 100644
 --- a/lib/i915/intel_fbc.h
 +++ b/lib/i915/intel_fbc.h
-@@ -19,6 +19,5 @@ bool intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level);
- void intel_fbc_max_plane_size(int fd, uint32_t *width, uint32_t *height);
- bool intel_fbc_plane_size_supported(int device, uint32_t width, uint32_t height);
- bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode);
--bool intel_is_fbc_disabled_by_wa(int fd);
+@@ -8,11 +8,10 @@
  
- #endif
+ #include "igt.h"
+ 
+-#define intel_fbc_enable(device) igt_set_module_param_int(device, "enable_fbc", 1)
+-#define intel_fbc_disable(device) igt_set_module_param_int(device, "enable_fbc", 0)
+-
+ enum psr_mode;
+ 
++void intel_fbc_enable(igt_display_t *display);
++void intel_fbc_disable(igt_display_t *display);
+ bool intel_fbc_supported(igt_crtc_t *crtc);
+ bool intel_fbc_wait_until_enabled(igt_crtc_t *crtc);
+ bool intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level);
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 3d0ad84aac26..b85e09346723 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -147,7 +147,7 @@ static void enable_feature(data_t *data)
+ 	case FEATURE_NONE:
+ 		break;
+ 	case FEATURE_FBC:
+-		intel_fbc_enable(data->drm_fd);
++		intel_fbc_enable(&data->display);
+ 		break;
+ 	case FEATURE_PSR:
+ 		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL);
+@@ -215,7 +215,7 @@ static void check_feature(data_t *data)
+ 
+ static void disable_features(data_t *data)
+ {
+-	intel_fbc_disable(data->drm_fd);
++	intel_fbc_disable(&data->display);
+ 
+ 	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL))
+ 		psr_disable(data->drm_fd, data->debugfs_fd, NULL);
+diff --git a/tests/intel/kms_fbc_dirty_rect.c b/tests/intel/kms_fbc_dirty_rect.c
+index 9a0146460b18..efbd469850b6 100644
+--- a/tests/intel/kms_fbc_dirty_rect.c
++++ b/tests/intel/kms_fbc_dirty_rect.c
+@@ -422,7 +422,7 @@ static bool prepare_test(data_t *data)
+ 	}
+ 
+ 	if (data->feature & FEATURE_FBC)
+-		intel_fbc_enable(data->drm_fd);
++		intel_fbc_enable(&data->display);
+ 
+ 	return intel_pipe_output_combo_valid(&data->display);
+ }
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 789a33e83f3b..5471b8c51c99 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -1902,7 +1902,7 @@ static bool disable_features(const struct test_mode *t)
+ 	if (t->feature == FEATURE_DEFAULT)
+ 		return false;
+ 
+-	intel_fbc_disable(drm.fd);
++	intel_fbc_disable(&drm.display);
+ 	intel_drrs_disable(prim_mode_params.crtc);
+ 
+ 	return psr.can_test ? psr_disable(drm.fd, drm.debugfs, NULL) : false;
+@@ -2535,7 +2535,7 @@ static bool enable_features_for_test(const struct test_mode *t)
+ 		return false;
+ 
+ 	if (t->feature & FEATURE_FBC)
+-		intel_fbc_enable(drm.fd);
++		intel_fbc_enable(&drm.display);
+ 	if (t->feature & FEATURE_PSR)
+ 		ret = psr_enable(drm.fd, drm.debugfs, PSR_MODE_1, NULL);
+ 	if (t->feature & FEATURE_DRRS)
 -- 
 2.47.3
 
