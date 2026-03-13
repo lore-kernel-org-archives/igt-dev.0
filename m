@@ -4,71 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 920F7105F7B3
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 14:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 758FE105F7B3
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 15:12:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 45CE410EC6D;
-	Fri, 13 Mar 2026 14:47:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ncgm/nzQ";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 256CA10EC6D;
- Fri, 13 Mar 2026 14:47:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773413261; x=1804949261;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8wd7fHtewKaJm7sZq65yDpJTdQAz5VaMrQ4fl4BsB4s=;
- b=Ncgm/nzQCxE+G+TMDo6kZq3SDcgvOHcrqUuLJGBcCaoTo9Luxszpu8nl
- RvCqUKUNCd0CyI4/frH5hYD1tKpXvEA8IWxK6RWIUYSLoZoyWS/SDL1C4
- BDgWEKjqm1H//QPWYP9TLrjjPffBXaVa1gApCiVOV2VIUoeV1solEuojP
- DJ7tgMxE1s4WUm1KC1kXQyAIacQuFDjGwAvMJC7tZpcsypMuloORpE8fh
- 1QPPAUQLi5+cF+VumnLpjtWD4DSqIjCGio3zShDP1BwYEQQ3I0LSIZsSe
- 2R8KGEQgzBuk92aP2kjLx4FpDLzzR3HmQtqhNv9QDxiRm7kvpWrcioOGp g==;
-X-CSE-ConnectionGUID: RRJ8uC5nQ4673S2mWAs0Yw==
-X-CSE-MsgGUID: XBwMWjVDRvy0xP97df6KlA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="74491490"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="74491490"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2026 07:47:41 -0700
-X-CSE-ConnectionGUID: Cl4grEaiTX+ojaRaNl1KlQ==
-X-CSE-MsgGUID: dJhH2bEkQf+k4A+e7+ZE0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="220440088"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 07:47:38 -0700
-Date: Fri, 13 Mar 2026 15:47:36 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/3] tests/gem_lmem_swapping: Improve
- concurrency of smem-oom helpers.
-Message-ID: <20260313144736.ealtg6kr3u24vbax@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-References: <20260312181032.20485-5-janusz.krzysztofik@linux.intel.com>
- <20260312181032.20485-6-janusz.krzysztofik@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C04B10E179;
+	Fri, 13 Mar 2026 15:12:19 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4CDB10E179;
+ Fri, 13 Mar 2026 15:12:15 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3017425310588609625=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260312181032.20485-6-janusz.krzysztofik@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci=3A_Add_NVL_display?=
+ =?utf-8?q?_and_core_blocklists_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Aditya Chauhan" <aditya.chauhan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 13 Mar 2026 15:12:15 -0000
+Message-ID: <177341473578.356420.3342407273571333079@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260313123459.64815-1-aditya.chauhan@intel.com>
+In-Reply-To: <20260313123459.64815-1-aditya.chauhan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,103 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2026-03-12 at 19:07:33 +0100, Janusz Krzysztofik wrote:
+--===============3017425310588609625==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-small nit about subject, imho it should have 'intel/' and dot
-removed:
+== Series Details ==
 
-[PATCH i-g-t v2 1/3] tests/intel/gem_lmem_swapping: Improve concurrency of smem-oom helpers
+Series: intel-ci: Add NVL display and core blocklists (rev2)
+URL   : https://patchwork.freedesktop.org/series/163107/
+State : success
 
-With that fixed
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Summary ==
 
-Regards,
-Kamil
+CI Bug Log - changes from XEIGT_8802_BAT -> XEIGTPW_14759_BAT
+====================================================
 
-> The smem-oom subtests re-spawns two different memory leak helpers.  Any of
-> those two may either complete or be killed before the other and not
-> respawned until the other is also completed or killed.  That imbalance may
-> actually affect the shape of OOM conditions, most probably intended to be
-> a compound result of those two memory exhaustion activities of different
-> nature.
-> 
-> Respawn each helper from its own loop.
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> ---
->  tests/intel/gem_lmem_swapping.c | 27 ++++++++++++++++-----------
->  1 file changed, 16 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-> index 77e18f1a3c..3a35318a74 100644
-> --- a/tests/intel/gem_lmem_swapping.c
-> +++ b/tests/intel/gem_lmem_swapping.c
-> @@ -707,7 +707,7 @@ static void test_smem_oom(int i915,
->  		igt_get_total_swap_mb();
->  	const unsigned int alloc = 256 * 1024 * 1024;
->  	const unsigned int num_alloc = 1 + smem_size / (alloc >> 20);
-> -	struct igt_helper_process smem_proc = {};
-> +	struct igt_helper_process smem_loop[2] = {};
->  	unsigned int n;
->  	int lmem_err;
->  
-> @@ -734,8 +734,8 @@ static void test_smem_oom(int i915,
->  		drm_close_driver(fd);
->  	}
->  
-> -	/* smem memory hog process, respawn till the lmem process completes */
-> -	igt_fork_helper(&smem_proc) {
-> +	/* smem memory hog processes, respawn till the lmem process completes */
-> +	igt_fork_helper(&smem_loop[0]) {
->  		while (!READ_ONCE(*lmem_done)) {
->  			igt_fork(child, 1) {
->  				for (int pass = 0; pass < num_alloc; pass++) {
-> @@ -744,6 +744,16 @@ static void test_smem_oom(int i915,
->  					leak(alloc);
->  				}
->  			}
-> +			/*
-> +			 * Wait for grand-child process to finish or be
-> +			 * killed by the oom killer, don't call
-> +			 * igt_waitchildren because of the noise
-> +			 */
-> +			wait(NULL);
-> +		}
-> +	}
-> +	igt_fork_helper(&smem_loop[1]) {
-> +		while (!READ_ONCE(*lmem_done)) {
->  			igt_fork(child, 1) {
->  				int fd = drm_reopen_driver(i915);
->  
-> @@ -754,13 +764,7 @@ static void test_smem_oom(int i915,
->  				}
->  				drm_close_driver(fd);
->  			}
-> -			/*
-> -			 * Wait for grand-child processes to finish or be
-> -			 * killed by the oom killer, don't call
-> -			 * igt_waitchildren because of the noise
-> -			 */
-> -			for (n = 0; n < 2; n++)
-> -				wait(NULL);
-> +			wait(NULL);
->  		}
->  	}
->  
-> @@ -772,7 +776,8 @@ static void test_smem_oom(int i915,
->  		(*lmem_done)++;
->  	munmap(lmem_done, sizeof(*lmem_done));
->  
-> -	igt_wait_helper(&smem_proc);
-> +	for (n = 0; n < 2; n++)
-> +		igt_wait_helper(&smem_loop[n]);
->  
->  	igt_assert_eq(lmem_err, 0);
->  }
-> -- 
-> 2.53.0
-> 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8802 -> IGTPW_14759
+
+  IGTPW_14759: 14759
+  IGT_8802: 8802
+  xe-4713-45618ec6cfed86e72cf6c2325c8f947bfbe7c132: 45618ec6cfed86e72cf6c2325c8f947bfbe7c132
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14759/index.html
+
+--===============3017425310588609625==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci: Add NVL display and core blocklists (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163107/">https://patchwork.freedesktop.org/series/163107/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14759/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14759/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8802_BAT -&gt; XEIGTPW_14759_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8802 -&gt; IGTPW_14759</li>
+</ul>
+<p>IGTPW_14759: 14759<br />
+  IGT_8802: 8802<br />
+  xe-4713-45618ec6cfed86e72cf6c2325c8f947bfbe7c132: 45618ec6cfed86e72cf6c2325c8f947bfbe7c132</p>
+
+</body>
+</html>
+
+--===============3017425310588609625==--
