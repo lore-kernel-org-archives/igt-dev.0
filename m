@@ -4,63 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E35C0105F7AE
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 14:43:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02343105F7AE
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Mar 2026 14:45:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8AAFE10E0B0;
-	Fri, 13 Mar 2026 14:43:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA95C10EC43;
+	Fri, 13 Mar 2026 14:45:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QX+J42WG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e6XJA3mi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52B1F10E0B0
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2026 14:43:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 864C410EC6B;
+ Fri, 13 Mar 2026 14:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773413005; x=1804949005;
+ t=1773413124; x=1804949124;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=2djdjb1DbreWMcFphC492uayVbTD09IQO+vtEHNFKWc=;
- b=QX+J42WGVupooZikz+/Zjrrci4n2StnUv4SjY3tQEUnx9CI5LtKhNfXV
- hNgt7awWDP/SameFzGjM2MJDag17XgRDq0nDWDHmH8Zs3e1mVW+qyJL8A
- 09nbeKXSZYG2qBF++/cbnBNrhiThwD+MzoVZ8IE80KezVyedQmohlZl3M
- FHLoBLUvQ71Me1zrndnUXRtr71t+do3G8v6vEfAhy5EpwMB94Qxha0UeV
- ig+0eh+HUo58QFdI4bTjMtXFogROn4vWsuQEsOLcHW06qPcHu69EIoe64
- 4GU82k25rQ4voHqg7ZNhOuX7Nd8HC+fll4nzLz4Bdn/ORyTDc5/AWjz3N A==;
-X-CSE-ConnectionGUID: bhcXdooKQ76QSnsAYBZorQ==
-X-CSE-MsgGUID: 28fBD4WUShWuht5jRL6Brg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="62090941"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="62090941"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2026 07:43:21 -0700
-X-CSE-ConnectionGUID: 9yc5JkoSQi6ch8XDaxkXoA==
-X-CSE-MsgGUID: nxC1l7EpTvGWPjrJMRl+4g==
+ mime-version:in-reply-to;
+ bh=fg6z950eaeS0hI1K5P1TJOznHBb1w8F8HU4LZiGgtgw=;
+ b=e6XJA3mil56YcsOKfBTJqrDSpZ0OAwp46pTuNU7c5xNi1KZJxC4knhKZ
+ h0VckJk3RhLVbflrfjScGCQ4iohIayTGaT5bykGjctIIlABYi7rF86SHd
+ zYm+OUK52wO+7lPVCMhdEeGHKnqC9VkM2NlG6rwAIEcmtYOV9v0VAmHvV
+ 8B8mNDJMqikDvumE9wBXj/z2CJXblw6xVOkoUv0VUcJ7/+rXMKii6nfv+
+ xNbuntgrueRKRZnkzfENOfC+522AmPhkxsGBSQY9TpHAyDFEgljkHXhAV
+ vNQdmWoqNvR1XxIA4v5JUS0XNT9UP/tfrkP4cBtuaxdxLq9gd4ohIhsRM A==;
+X-CSE-ConnectionGUID: rD6PVNmLTeK3JPVKaok4xA==
+X-CSE-MsgGUID: bI6dG1otR8613U0TamwaqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="85606264"
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="85606264"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2026 07:45:23 -0700
+X-CSE-ConnectionGUID: DRbED+X1RKOsZzwLF5kNVQ==
+X-CSE-MsgGUID: CG5JpfutS6OUsYDt43Ww5g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="217597663"
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; d="scan'208";a="259077842"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 07:43:19 -0700
-Date: Fri, 13 Mar 2026 15:43:03 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2026 07:45:21 -0700
+Date: Fri, 13 Mar 2026 15:45:18 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Aditya Chauhan <aditya.chauhan@intel.com>
-Cc: ramadevi.gandi@intel.com, himanshu.girotra@intel.com,
- swati2.sharma@intel.com, kamil.konieczny@intel.com,
- igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH v4 i-g-t 1/2] intel-ci: Add NVL core blocklist
-Message-ID: <20260313144303.nntt666alua7sf4w@kamilkon-DESK.igk.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Subject: Re: [PATCH i-g-t v2 2/3] tests/intel/gem_lmem_swapping: Be more
+ clear about subprocesses role
+Message-ID: <20260313144518.wxvamh4avi4ggyas@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>, ramadevi.gandi@intel.com,
- himanshu.girotra@intel.com, swati2.sharma@intel.com,
- kamil.konieczny@intel.com, igt-dev@lists.freedesktop.org,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-References: <20260313123459.64815-1-aditya.chauhan@intel.com>
- <20260313123459.64815-2-aditya.chauhan@intel.com>
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+References: <20260312181032.20485-5-janusz.krzysztofik@linux.intel.com>
+ <20260312181032.20485-7-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260313123459.64815-2-aditya.chauhan@intel.com>
+In-Reply-To: <20260312181032.20485-7-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,150 +84,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Aditya,
-On 2026-03-13 at 18:04:58 +0530, Aditya Chauhan wrote:
-> Introduce core blocklist for the NVL platform containing
-> NVL-specific core test exclusions. Also add this blocklist file
-> to meson.build so that this can be used in execution.
-
-One small nit, see below.
-
+Hi Janusz,
+On 2026-03-12 at 19:07:34 +0100, Janusz Krzysztofik wrote:
+> In the smem-oom subtest, helper processes are now spawn with igt_fork(),
+> not with igt_fork_helper() as one might expect.  That unfortunate use
+> of igt_fork() may introduce uncertainty about the role of those
+> subprocesses, whether their failures should count or not.
 > 
-> v2: Make commit message more descriptive (Swati Sharma)
-> v3:
->  - Use correct subject (intel-ci) (Swati Sharma)
->  - Add blocklist in alphabetical order in meson.build (Swati Sharma)
-> v4: Make comments more explanatory (Swati Sharma)
+> Use igt_fork_helper() for clarity.
 > 
-> Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
-> ---
->  tests/intel-ci/meson.build               |  1 +
->  tests/intel-ci/xe.nvl.core.blocklist.txt | 97 ++++++++++++++++++++++++
->  2 files changed, 98 insertions(+)
->  create mode 100644 tests/intel-ci/xe.nvl.core.blocklist.txt
-> 
-> diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-> index cf0023c63..3c7fa28b7 100644
-> --- a/tests/intel-ci/meson.build
-> +++ b/tests/intel-ci/meson.build
-> @@ -23,6 +23,7 @@ intelci_files = [
->    'xe.lnl.display.blocklist.txt',
->    'xe.lnl.eudebug.blocklist.txt',
->    'xe.multigpu.blocklist.txt',
-> +  'xe.nvl.core.blocklist.txt',
->    'xe.ptl.core.blocklist.txt',
->    'xe.ptl.display.blocklist.txt',
->    'xe.sriov-vf.blocklist.txt',
-> diff --git a/tests/intel-ci/xe.nvl.core.blocklist.txt b/tests/intel-ci/xe.nvl.core.blocklist.txt
-> new file mode 100644
-> index 000000000..0f9750961
-> --- /dev/null
-> +++ b/tests/intel-ci/xe.nvl.core.blocklist.txt
-> @@ -0,0 +1,97 @@
-> +##################################################################
-> +# SR-IOV/IOV tests are not applicable for native
-> +# configuration and will be run under its separate configuration
-> +##################################################################
-> +igt@.*iov.*
-> +##################################################################
-> +# All Display related tests are being run under
-> +# separate display configurations
-> +##################################################################
-> +igt@.*kms.*
-> +igt@testdisplay
-> +igt@xe_pat@display-vs-wb-transient
-> +igt@fbdev@.*
-> +##################################################################
-> +# Valid skip: NVL is an integrated GPU and does not have
-> +# dedicated VRAM. Tests requiring device-local memory (VRAM),
-> +# small-BAR configurations, or VRAM eviction are not applicable.
-> +##################################################################
-> +igt@xe_mmap@vram$
-> +igt@xe_mmap@small-bar
-> +igt@xe_noexec_ping_pong
-> +igt@xe_create@create-big-vram
-> +igt@xe_evict.*
-> +igt@xe_pm@d3hot-mmap-vram
-> +igt@xe_eudebug_online@writes-caching-(?!sram-bb-sram-target-sram).*
-> +igt@xe_compute_preempt@.*vram.*
-> +igt@xe_vm@out-of-memory
-> +##################################################################
-> +# Valid skip: PAT index tests targeting older/different platforms
-> +# These PAT (Page Attribute Table) index subtests validate
-> +# platform-specific memory attribute encodings that are only
-> +# defined for their respective GPU generations
-> +# like ADL, MTL, LNL, BMG, PVC.
-> +# NVL uses its own PAT encoding; running these tests would
-> +# produce incorrect results or false failures.
-> +##################################################################
-> +igt@xe_pat@pat-index-xehpc
-> +igt@xe_pat@pat-index-xelp
-> +igt@xe_pat@pat-index-xelpg
-> +igt@xe_media_fill@media-fill
-> +igt@xe_pat@pat-index-xe2
-> +##################################################################
-> +# Valid Skip: Tests requiring multiple CCS (Compute Command
-> +# Streamers) engines — NVL exposes only a single CCS engine.
-> +##################################################################
-> +igt@xe_compute@ccs-mode-basic
-> +igt@xe_compute@ccs-mode-compute-kernel
-> +igt@xe_compute@eu-busy-10s
-> +##################################################################
-> +# Valid skip: Features / hardware blocks not present on NVL
-> +#   - xe_huc_copy@huc_copy: HuC (HEVC µController) firmware is
-> +#     not loaded/present on NVL; HuC copy operations will fail.
-> +#   - xe_exec_balancer@.*: Virtual engine / load balancer tests
-> +#     require multiple physical engines of the same class for
-> +#     balancing, which NVL does not expose.
-> +#   - xe_oa@oa-tlb-invalidate: OA TLB invalidation test relies
-> +#     on a specific OA unit configuration not present on NVL.
-> +#   - xe_pxp@.*: PXP (Protected Xe Path) content protection
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-I am not sure but imho PXP stands for Protected eXchange Path
-+cc Ashutosh
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
-Kamil 
+Kamil
 
-> +#     requires a TEE (Trusted Execution Environment) and
-> +#     associated firmware, which NVL does not support.
-> +#   - xe_exec_system_allocator@.*: System allocator execution
-> +#     tests depend on hardware features (e.g., SVM/USM page
-> +#     fault handling) not enabled on NVL yet.
-> +##################################################################
-> +igt@xe_huc_copy@huc_copy
-> +igt@xe_exec_balancer@.*
-> +igt@xe_oa@oa-tlb-invalidate
-> +igt@xe_pxp@.*
-> +igt@xe_exec_system_allocator@.*
-> +##################################################################
-> +# Valid skip: test applicable only for i2c capable systems
-> +##################################################################
-> +igt@xe_pm@d3hot-i2c
-> +##################################################################
-> +# Valid skip: multigpu/multitile tests are not supported on NVL
-> +##################################################################
-> +igt@.*@.*multigpu.*
-> +igt@xe_peer2peer@.*
-> +igt@.*@.*tiles
-> +##################################################################
-> +# Valid skip: Not Applicable for iGPUs
-> +##################################################################
-> +igt@intel_hwmon@.*
-> +igt@xe_mmap@pci-membarrier.*
-> +igt@xe_configfs@survivability-mode
-> +igt@xe_survivability@.*
-> +##################################################################
-> +# Valid skip: EU debugger and SIP (System Interrupt Protocol)
-> +# support is not yet available in the kernel for NVL. These tests
-> +# will be re-enabled once the required kernel enablement lands.
-> +##################################################################
-> +igt@xe_eudebug@.*
-> +igt@xe_eudebug_online@.*
-> +igt@xe_exec_sip@.*
-> +igt@xe_exec_sip_eudebug@.*
-> +igt@xe_live_ktest@xe_eudebug
-> +##################################################################
+> ---
+>  tests/intel/gem_lmem_swapping.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+> index 3a35318a74..f790dc66e9 100644
+> --- a/tests/intel/gem_lmem_swapping.c
+> +++ b/tests/intel/gem_lmem_swapping.c
+> @@ -737,7 +737,9 @@ static void test_smem_oom(int i915,
+>  	/* smem memory hog processes, respawn till the lmem process completes */
+>  	igt_fork_helper(&smem_loop[0]) {
+>  		while (!READ_ONCE(*lmem_done)) {
+> -			igt_fork(child, 1) {
+> +			struct igt_helper_process smem_proc = {};
+> +
+> +			igt_fork_helper(&smem_proc) {
+>  				for (int pass = 0; pass < num_alloc; pass++) {
+>  					if (READ_ONCE(*lmem_done))
+>  						break;
+> @@ -749,12 +751,14 @@ static void test_smem_oom(int i915,
+>  			 * killed by the oom killer, don't call
+>  			 * igt_waitchildren because of the noise
+>  			 */
+> -			wait(NULL);
+> +			igt_wait_helper(&smem_proc);
+>  		}
+>  	}
+>  	igt_fork_helper(&smem_loop[1]) {
+>  		while (!READ_ONCE(*lmem_done)) {
+> -			igt_fork(child, 1) {
+> +			struct igt_helper_process smem_proc = {};
+> +
+> +			igt_fork_helper(&smem_proc) {
+>  				int fd = drm_reopen_driver(i915);
+>  
+>  				for (int pass = 0; pass < num_alloc; pass++) {
+> @@ -764,7 +768,7 @@ static void test_smem_oom(int i915,
+>  				}
+>  				drm_close_driver(fd);
+>  			}
+> -			wait(NULL);
+> +			igt_wait_helper(&smem_proc);
+>  		}
+>  	}
+>  
 > -- 
-> 2.34.1
+> 2.53.0
 > 
