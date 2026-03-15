@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7DB210854B4
-	for <igt-dev@archiver.kernel.org>; Sun, 15 Mar 2026 00:38:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4CB10854B6
+	for <igt-dev@archiver.kernel.org>; Sun, 15 Mar 2026 00:38:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 22A6E10E1FC;
-	Sun, 15 Mar 2026 00:38:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5CB4D10E46E;
+	Sun, 15 Mar 2026 00:38:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OQqvF0Kc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KmyH4E4p";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74E9C10E1FC
- for <igt-dev@lists.freedesktop.org>; Sun, 15 Mar 2026 00:38:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6AED10E1FC
+ for <igt-dev@lists.freedesktop.org>; Sun, 15 Mar 2026 00:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773535112; x=1805071112;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=GGtAM6YIgBorCONTcuSJzB66lYEjWC6cy3JNAn2FFls=;
- b=OQqvF0KcRXvcyIOc57FdD5dE00RbSvQkRs9zr4UwHXxeBXqMJlAo3WMB
- EAbYCw+0ApHEU4Nrz4P5bx05hxHSoLwP2Lpuch/cdxpot118bodlOQafa
- i4ZQf6qTSt1Xh86SIuRUSvW5ykzExfM6Ai7yLAWN2Xz8yswaP1OxHfJJ9
- EqKOLjNd1KYcA2QzD6dP7id8trU+DaVfeN6+L0uDxevXPgEsrzVggZkZn
- GmMIMel0cZ/KGIrMO5EcxGZFSDnh3nFedg+6pyxTD4kn1CH1sAyD+IZ7+
- DaCxOCLk2nnGHxia9bOMjxfPQU8ry96LOT5M1brHXoMnQ8lAnSPx4bViR A==;
-X-CSE-ConnectionGUID: vuayHdRXTG6gfVlG0VYiwg==
-X-CSE-MsgGUID: ojeIZn/oQDuUbgkK9n3LSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11729"; a="74632784"
-X-IronPort-AV: E=Sophos;i="6.23,119,1770624000"; d="scan'208";a="74632784"
+ t=1773535113; x=1805071113;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=etNSOqcLQEgcs1NDOcAqL3ip2Im4Er/ywWMDi3qOpoo=;
+ b=KmyH4E4pJlGO8EW0ZURX78AGsoZJJ7dNNgetopciOaKG8IWs1qoFYSjl
+ B6P4tp5e0LgbGjaKn4lw/Au9/FnOxli7nJvPQugoTByaYU1Ktyg6CPPhg
+ es8hz5Ok4fwGoeXetkQOIE004BpIEtvCDi4p8MAOz8P+p55NZ/wd+QmRD
+ MyOsJAcP0BDg0849oOTxlPmcgiVqTtkAEOqksiRoS2ZvTDxdLCn9b70Vt
+ OlEa8+1Rxxy3aeXbMCyR6L8bW2YXJvIW+dyTBdpBqPmyoLs0Q7bTPp/M/
+ wwZ8z0o8CC4/rOG6xB1g3TaPuMOOW+fImBYvRAcuNTQvv3uaIrm+yGfu0 A==;
+X-CSE-ConnectionGUID: +75WvT0QTUOBwNk3wUCO7Q==
+X-CSE-MsgGUID: IYNnJFkYQd6T52ps+7Y70A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11729"; a="74632785"
+X-IronPort-AV: E=Sophos;i="6.23,119,1770624000"; d="scan'208";a="74632785"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2026 17:38:32 -0700
-X-CSE-ConnectionGUID: 5HCdLGEvTwqib0d+B0PsaA==
-X-CSE-MsgGUID: /ZlBO6p0Rem1Ey81qINOtQ==
+ 14 Mar 2026 17:38:33 -0700
+X-CSE-ConnectionGUID: 4G0oqsKRRCiZu8BMi17imQ==
+X-CSE-MsgGUID: Al4Wlm0gSRKfcuRbQFKoXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,119,1770624000"; d="scan'208";a="225648740"
+X-IronPort-AV: E=Sophos;i="6.23,119,1770624000"; d="scan'208";a="225648744"
 Received: from administrator-system-product-name.igk.intel.com (HELO
  dev-417.igk.intel.com) ([10.91.214.181])
- by orviesa003.jf.intel.com with ESMTP; 14 Mar 2026 17:38:31 -0700
+ by orviesa003.jf.intel.com with ESMTP; 14 Mar 2026 17:38:32 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/device_reset: unload audio before descriptor
- closure
-Date: Sun, 15 Mar 2026 01:38:25 +0100
-Message-ID: <20260315003826.3785048-1-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/device_reset: unload audio on xe as well
+Date: Sun, 15 Mar 2026 01:38:26 +0100
+Message-ID: <20260315003826.3785048-2-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20260315003826.3785048-1-michal.grzelak@intel.com>
+References: <20260315003826.3785048-1-michal.grzelak@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
@@ -69,40 +70,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently check for audio unloading is done after driver's file
-descriptor has been closed. This renders is_i915_device() useless since
-check bases on the descriptor passed. Move the check before closing the
-descriptor.
+There has been observed errors caused by audio not being unloaded before
+xe is unbound:
+
+<3> [339.178598] xe 0000:00:02.0: [drm] *ERROR* audio power refcount 1 after unbind
+
+This is due audio is being unloaded only when i915 has been loaded.
+Change this behavior to unload audio with any Intel driver.
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tests/device_reset.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tests/device_reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 62b295a06e..b931dff7a0 100644
+index b931dff7a0..b281f4eceb 100644
 --- a/tests/device_reset.c
 +++ b/tests/device_reset.c
-@@ -345,9 +345,6 @@ static bool has_cold_reset(int slot_dir, const char **reason)
- /* Unbind the driver from the device */
- static void driver_unbind(struct device_fds *dev)
- {
--	if (is_i915_device(dev->fds.dev))
--		igt_audio_driver_unload(&dev->snd_driver);
--
- 	igt_debug("unbind the driver from the device\n");
- 	igt_assert(igt_sysfs_set(dev->fds.drv_dir, "unbind",
- 		   dev->dev_bus_addr));
-@@ -429,6 +426,10 @@ static void set_device_filter(const char* dev_path)
+@@ -426,7 +426,7 @@ static void set_device_filter(const char* dev_path)
  
  static void unbind_reset_rebind(struct device_fds *dev, enum reset type)
  {
-+	if (is_i915_device(dev->fds.dev)) {
-+		igt_audio_driver_unload(&dev->snd_driver);
-+	}
-+
- 	igt_debug("close the device\n");
- 	close_if_opened(&dev->fds.dev);
+-	if (is_i915_device(dev->fds.dev)) {
++	if (is_intel_device(dev->fds.dev)) {
+ 		igt_audio_driver_unload(&dev->snd_driver);
+ 	}
  
 -- 
 2.45.2
