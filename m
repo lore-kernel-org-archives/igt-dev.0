@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E10F2F506E1
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 14:49:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4027CF506E2
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 14:55:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8521C10E23C;
-	Mon, 16 Mar 2026 14:49:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E33B810E23C;
+	Mon, 16 Mar 2026 14:55:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B7IRoI1J";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ar8/Efyy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5380310E23C
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 14:49:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C867010E23C
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 14:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773672551; x=1805208551;
+ t=1773672902; x=1805208902;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=Q3AslZ4r4+vaHHrnmXHtJafGdUfjWOzJArGqonBwGAU=;
- b=B7IRoI1JxwkPrFGy6mwPgDUn+q6aQ5KJ9yUq8onT5kJd8sb7A5GC17yQ
- dsOCT5pG5BKJrNiT7/RGLDpox5yJyHCP+hKrVK0kyFjnyft1HELJQTUeU
- V9REYuYef0Vbl97WpvanRCJfq5bbd+HuOmwZDgB69sN+pbAJIcbEVXskG
- ftTQhacRIBPV0kM506Jd1Hd575WBlbpPR/BQX5PuuYgThSe2GDvBFm2UC
- ursDFb22ueTk0QrDsOOjt+WntOjqhH9sm/pjDtsAQVAY5VjPKe6e9R51p
- LFAd0qLXSknO896dfR7Sy8dyS5UV7v/DGOdQVY685jKdYTbYI6Jndb/bQ A==;
-X-CSE-ConnectionGUID: 5S/tkry8SMGwmTv+SypiFg==
-X-CSE-MsgGUID: D+SqSdqETka1+ce8SEUbFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74578982"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="74578982"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 07:49:11 -0700
-X-CSE-ConnectionGUID: OeEb1CU8TzibQr+nrPLuiA==
-X-CSE-MsgGUID: XjQI49JPQaSWlUM/BvXmrA==
+ bh=JfzAZzvp4g5Y1+8ZT70tcX+B7oh80MxKyT83rT7AwGM=;
+ b=ar8/EfyylH0dxzSng2/gPRZFNAFtfsxoyaZ7vkZQQ1QY4QUBx+NPJgzX
+ 5nLKQi1e3cP5d3+0PM91XngGheoWOoJ1oOOZuQM8V2Nx08ITF8d5KRXiD
+ W4Y2YkTo9p/IPyxuq9lC2jnu9aBT7F48IwCcl1UFJxIG7PdddLn4+KMkj
+ Hd/K2eygJjUdqO9rs1+tEs/xQOg78XG1pJAHY7BruD8LVaHJwTuJ5e5gY
+ sococ39sia4EHPfbebqdpRfenRtDyJhKFy0W9E6Sz/3hefy8NUxBX9ICh
+ r8e8kfR7YGRg0O08WBMjOsr8qud7eBqmzHroMHlpTqZESzQ+FLb/UkeOM Q==;
+X-CSE-ConnectionGUID: iEzRNu7LRSOmlqO/DCTmBg==
+X-CSE-MsgGUID: 68RGwUiGQ6S1KQC4StjPsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="77299563"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="77299563"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 07:55:02 -0700
+X-CSE-ConnectionGUID: lU11yIPmSim973jGwRP+3A==
+X-CSE-MsgGUID: AQzX9Zs9Tv64TCz/aIsR2g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226397936"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226068353"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.42])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 07:49:09 -0700
-Date: Mon, 16 Mar 2026 16:49:04 +0200
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 07:55:01 -0700
+Date: Mon, 16 Mar 2026 16:54:58 +0200
 From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
 To: Jani Nikula <jani.nikula@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] lib/igt_debugfs: remove mode parameter from
- igt_debugfs_crtc_dir()
-Message-ID: <abgYYNS15fQimwNe@intel.com>
-References: <20260316112919.1162830-1-jani.nikula@intel.com>
+Subject: Re: [PATCH i-g-t 00/12] Prepare for returning NULL from
+ igt_crtc_for_pipe()
+Message-ID: <abgZwkJhe3g3q2N5@intel.com>
+References: <cover.1773659680.git.jani.nikula@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260316112919.1162830-1-jani.nikula@intel.com>
+In-Reply-To: <cover.1773659680.git.jani.nikula@intel.com>
 X-Patchwork-Hint: comment
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
@@ -73,196 +73,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Mar 16, 2026 at 01:29:19PM +0200, Jani Nikula wrote:
-> The mode for opening the CRTC debugfs directory should always be
-> O_DIRECTORY | O_RDONLY. There's no point in letting the callers pass in
-> the mode. Indeed, most of them omit O_RDONLY, and some omit O_DIRECTORY.
+On Mon, Mar 16, 2026 at 01:19:02PM +0200, Jani Nikula wrote:
+> We want to return NULL for invalid pipes from igt_crtc_for_pipe(), so
+> that we don't need to have igt_crtc_t objects with crtc->valid == false
+> around.
 > 
-> Remove the mode from igt_debugfs_crtc_dir() and subsequently
-> igt_crtc_debugfs_dir(), always using O_DIRECTORY | O_RDONLY.
+> The primary way to prepare for this is to avoid using
+> igt_crtc_for_pipe() altogether. We've done a *lot* of that already, and
+> continue to do so here.
 > 
-> Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> For the remaining ones, start off by ensuring crtc->valid == true, one
+> way or other. This ensures the test logic is sane and actually operates
+> on valid CRTCs. Once this prep is done, we can actually return NULL from
+> igt_crtc_for_pipe(), and check for crtc != NULL instead of crtc->valid
+> == true.
 
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+I was hoping to make igt_crtc_for_pipe() just skip if the CRTC
+doesn't exist. But maybe there are still too many places that
+assume they can ask for any pipe and not skip?
 
-> ---
->  lib/i915/intel_drrs.c                  | 6 +++---
->  lib/i915/intel_fbc.c                   | 4 ++--
->  lib/igt_debugfs.c                      | 5 ++---
->  lib/igt_debugfs.h                      | 2 +-
->  lib/igt_kms.c                          | 8 ++++----
->  lib/igt_kms.h                          | 2 +-
->  tests/intel/kms_frontbuffer_tracking.c | 2 +-
->  tests/nouveau_crc.c                    | 2 +-
->  8 files changed, 15 insertions(+), 16 deletions(-)
 > 
-> diff --git a/lib/i915/intel_drrs.c b/lib/i915/intel_drrs.c
-> index 1ad993c1e90b..bfe58d7a0694 100644
-> --- a/lib/i915/intel_drrs.c
-> +++ b/lib/i915/intel_drrs.c
-> @@ -24,7 +24,7 @@ bool intel_is_drrs_supported(igt_crtc_t *crtc)
->  	char buf[256];
->  	int dir;
->  
-> -	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
-> +	dir = igt_crtc_debugfs_dir(crtc);
->  	igt_require_fd(dir);
->  	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
->  	close(dir);
-> @@ -63,7 +63,7 @@ static void drrs_set(int device, int crtc_index, unsigned int val)
->  	igt_debug("Manually %sabling DRRS. %u\n", val ? "en" : "dis", val);
->  	snprintf(buf, sizeof(buf), "%d", val);
->  
-> -	dir = igt_debugfs_crtc_dir(device, crtc_index, O_DIRECTORY);
-> +	dir = igt_debugfs_crtc_dir(device, crtc_index);
->  	igt_require_fd(dir);
->  	ret = igt_sysfs_write(dir, "i915_drrs_ctl", buf, sizeof(buf) - 1);
->  	close(dir);
-> @@ -125,7 +125,7 @@ bool intel_is_drrs_inactive(igt_crtc_t *crtc)
->  	char buf[256];
->  	int dir;
->  
-> -	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
-> +	dir = igt_crtc_debugfs_dir(crtc);
->  	igt_require_fd(dir);
->  	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
->  	close(dir);
-> diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-> index 9c1767846c25..b8c714d430e9 100644
-> --- a/lib/i915/intel_fbc.c
-> +++ b/lib/i915/intel_fbc.c
-> @@ -36,7 +36,7 @@ bool intel_fbc_supported(igt_crtc_t *crtc)
->  	char buf[FBC_STATUS_BUF_LEN];
->  	int dir;
->  
-> -	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
-> +	dir = igt_crtc_debugfs_dir(crtc);
->  	igt_require_fd(dir);
->  	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
->  	close(dir);
-> @@ -53,7 +53,7 @@ static bool _intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level, char *last_fb
->  	bool print = true;
->  	int dir;
->  
-> -	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
-> +	dir = igt_crtc_debugfs_dir(crtc);
->  	igt_require_fd(dir);
->  	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
->  	close(dir);
-> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-> index 11f5ee9984ee..a184843c9acc 100644
-> --- a/lib/igt_debugfs.c
-> +++ b/lib/igt_debugfs.c
-> @@ -288,7 +288,6 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
->   * igt_debugfs_crtc_dir:
->   * @device: fd of the device
->   * @crtc_index: CRTC index
-> - * @mode: mode bits as used by open()
->   *
->   * This opens the debugfs directory corresponding to the CRTC index on the
->   * device for use with igt_sysfs_get() and related functions. This is just
-> @@ -297,12 +296,12 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
->   * Returns:
->   * The directory fd, or -1 on failure.
->   */
-> -int igt_debugfs_crtc_dir(int device, int crtc_index, int mode)
-> +int igt_debugfs_crtc_dir(int device, int crtc_index)
->  {
->  	char buf[128];
->  
->  	snprintf(buf, sizeof(buf), "crtc-%d", crtc_index);
-> -	return igt_debugfs_open(device, buf, mode);
-> +	return igt_debugfs_open(device, buf, O_DIRECTORY | O_RDONLY);
->  }
->  
->  /**
-> diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-> index 2c546f299a43..30d4b0ff92ba 100644
-> --- a/lib/igt_debugfs.h
-> +++ b/lib/igt_debugfs.h
-> @@ -34,7 +34,7 @@ char *igt_debugfs_path(int device, char *path, int pathlen);
->  
->  int igt_debugfs_dir(int device);
->  int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
-> -int igt_debugfs_crtc_dir(int device, int crtc_index, int mode);
-> +int igt_debugfs_crtc_dir(int device, int crtc_index);
->  
->  int igt_debugfs_open(int fd, const char *filename, int mode);
->  bool igt_debugfs_is_dir(int drm_fd, const char *name, int gt_id);
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 57f5e099a313..9068e3d7bedd 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -1309,7 +1309,7 @@ int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
->  	int debugfs_fd, pipe, res = 0;
->  	char pipe_char;
->  
-> -	debugfs_fd = igt_debugfs_crtc_dir(fd, crtc_index, O_RDONLY);
-> +	debugfs_fd = igt_debugfs_crtc_dir(fd, crtc_index);
->  
->  	if (debugfs_fd >= 0) {
->  		res = igt_debugfs_simple_read(debugfs_fd, "i915_pipe", buf, sizeof(buf));
-> @@ -5254,9 +5254,9 @@ igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source)
->  	return igt_pipe_crc_new_nonblock(crtc->display->drm_fd, crtc->crtc_index, source);
->  }
->  
-> -int igt_crtc_debugfs_dir(igt_crtc_t *crtc, int mode)
-> +int igt_crtc_debugfs_dir(igt_crtc_t *crtc)
->  {
-> -	return igt_debugfs_crtc_dir(crtc->display->drm_fd, crtc->crtc_index, mode);
-> +	return igt_debugfs_crtc_dir(crtc->display->drm_fd, crtc->crtc_index);
->  }
->  
->  const char *igt_crtc_name(igt_crtc_t *crtc)
-> @@ -6643,7 +6643,7 @@ unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc)
->  	int fd, res;
->  	unsigned int current;
->  
-> -	fd = igt_crtc_debugfs_dir(crtc, O_RDONLY);
-> +	fd = igt_crtc_debugfs_dir(crtc);
->  	igt_assert(fd >= 0);
->  
->  	if (is_intel_device(drmfd))
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 0bb2734ea3d7..83d3d5159a9c 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -596,7 +596,7 @@ typedef struct _igt_pipe_crc igt_pipe_crc_t;
->  igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source);
->  igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source);
->  
-> -int igt_crtc_debugfs_dir(igt_crtc_t *crtc, int mode);
-> +int igt_crtc_debugfs_dir(igt_crtc_t *crtc);
->  
->  igt_crtc_t *igt_output_get_driving_crtc(igt_output_t *output);
->  const char *igt_output_name(igt_output_t *output);
-> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-> index 5471b8c51c99..c16f63199bdd 100644
-> --- a/tests/intel/kms_frontbuffer_tracking.c
-> +++ b/tests/intel/kms_frontbuffer_tracking.c
-> @@ -1535,7 +1535,7 @@ static void __debugfs_read_crtc(const char *param, char *buf, int len)
->  {
->  	int dir;
->  
-> -	dir = igt_crtc_debugfs_dir(prim_mode_params.crtc, O_DIRECTORY);
-> +	dir = igt_crtc_debugfs_dir(prim_mode_params.crtc);
->  	igt_require_fd(dir);
->  	igt_debugfs_simple_read(dir, param, buf, len);
->  	close(dir);
-> diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
-> index 29e2d84e76ac..ee63e931616c 100644
-> --- a/tests/nouveau_crc.c
-> +++ b/tests/nouveau_crc.c
-> @@ -370,7 +370,7 @@ int igt_main()
->  			igt_plane_set_fb(data.primary, &data.default_fb);
->  			igt_display_commit(&data.display);
->  
-> -			dir = igt_crtc_debugfs_dir(data.crtc, O_DIRECTORY);
-> +			dir = igt_crtc_debugfs_dir(data.crtc);
->  			igt_require_fd(dir);
->  			data.nv_crc_dir = openat(dir, "nv_crc", O_DIRECTORY);
->  			close(dir);
+> BR,
+> Jani.
+> 
+> 
+> Jani Nikula (12):
+>   tests/amdgpu/amd_mode_switch: Prepare for returning NULL from
+>     igt_crtc_for_pipe()
+>   tests/amdgpu/amd_multidisplay_modeset: Prepare for returning NULL from
+>     igt_crtc_for_pipe()
+>   tests/intel/kms_cdclk: use igt_next_crtc()
+>   tests/intel/kms_joiner: Prepare for returning NULL from
+>     igt_crtc_for_pipe()
+>   tests/intel/kms_joiner_helper: Prepare for returning NULL from
+>     igt_crtc_for_pipe()
+>   tests/intel/kms_pipe_b_c_ivb: Prepare for returning NULL from
+>     igt_crtc_for_pipe()
+>   tests/intel/kms_pipe_stress: Prepare for returning NULL from
+>     igt_crtc_for_pipe()
+>   tests/kms_bw: fix misleading indent
+>   tests/kms_bw: clarify what's going on with proper variable naming
+>   tests/kms_bw: avoid igt_crtc_for_pipe() and crtc->pipe usage
+>   tests/kms_explicit_fence: store igt_crtc_t* instead of pipe in data
+>   lib/kms: convert igt_crtc_for_pipe() into a proper function
+> 
+>  lib/igt_kms.c                           |  8 +++
+>  lib/igt_kms.h                           |  8 +--
+>  tests/amdgpu/amd_mode_switch.c          |  2 +
+>  tests/amdgpu/amd_multidisplay_modeset.c |  2 +
+>  tests/intel/kms_cdclk.c                 | 10 ++--
+>  tests/intel/kms_joiner.c                | 66 ++++++++++++++++++-------
+>  tests/intel/kms_joiner_helper.c         | 16 +++---
+>  tests/intel/kms_pipe_b_c_ivb.c          | 28 +++++++----
+>  tests/intel/kms_pipe_stress.c           |  4 ++
+>  tests/kms_bw.c                          | 48 +++++++++---------
+>  tests/kms_explicit_fence.c              | 14 +++---
+>  11 files changed, 131 insertions(+), 75 deletions(-)
+> 
 > -- 
 > 2.47.3
 
