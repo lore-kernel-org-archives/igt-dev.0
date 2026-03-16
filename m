@@ -4,41 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98CCFF4644B
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5A49F4644A
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:25:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 528CD10E262;
-	Mon, 16 Mar 2026 10:25:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 71C9210E263;
+	Mon, 16 Mar 2026 10:25:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ujItHyUY";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RrhHVbfv";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5F5D10E25A
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2382410E258
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:02 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 0C86EC40404;
- Mon, 16 Mar 2026 10:24:51 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 757D2C40411;
+ Mon, 16 Mar 2026 10:24:24 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 850815FC4A;
- Mon, 16 Mar 2026 10:24:27 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id ED81C5FC4A;
+ Mon, 16 Mar 2026 10:24:00 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 7A8E510369F4A; Mon, 16 Mar 2026 11:24:26 +0100 (CET)
+ with ESMTPSA id E98EB10369F43; Mon, 16 Mar 2026 11:23:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773656667; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773656640; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=yK7Lovs+lPeGuOQEH0Noh3zVGH69K+koDlb0P9oEp9U=;
- b=ujItHyUYhoOyCOVyx3hCO9S7v+fKBFvcrcjQ/xYssnlcqubLO2aais09Song9ua4+6AV6Q
- jEG8w6R0Dn2xkWLrKjC+uVwN43q5FDDAp+8QSrHHgGdykRRN1eGoUNDn+j7uamrasIETjw
- EYFu0+FJsj64hNu0v8fWGU+gr7UDuPNab7v5pHcL+iqbZ+vP5TMpo9dSit1npwuWKOf61L
- Lk5jWvYsW8xW7x2CselHz2332qcvu3ULdUw4laRzFBM1rq7QmPQQUN6DEL1MEzHj3EpvQ9
- Xs0kPJGZtckUMmUuavFtzHhdenRB3WpgcdOFE3OMrAYGXvu9efY7oSpO584KFg==
+ bh=1QiW7MgRMXpHtA86djJ0E1B63shTyf66U5vShvvwSCU=;
+ b=RrhHVbfvILsiR3aq+jlOeOBXfJMz0n5V7OaTf6PIX9tXuJUntM6DH9sjBg4PNDqysJji/6
+ 9mkS2joDK5GW4cKGmxU/gvCH9GnD+tyP7xYHHBqY5/7EOiYmXy8mQsujYUZHMQc7/oKwU2
+ OW2G74NxFH0iQF82PvvLPbG26dP0r9OpbWKUB5jzlSQW8778d/T6FVB++l9NN6oEo6kEw6
+ xBpZzITedZt1N6XeauVdI16HoK0yP72A6AT6YGJcrWYgoLQLhwtPVmrECyIFshcjgOn72c
+ ouM8qSFmHH7iKm82OKu6c+a+g49inCP66OEN/8gApUT5udiIyecx01CQ6srWow==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 11:24:53 +0100
-Subject: [PATCH i-g-t v8 45/49] lib/unigraf: Add lane count configuration
+Date: Mon, 16 Mar 2026 11:24:24 +0100
+Subject: [PATCH i-g-t v8 16/49] lib/monitor_edids: Add helper to get an
+ EDID by its name
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-unigraf-integration-v8-45-4489bf8572be@bootlin.com>
+Message-Id: <20260316-unigraf-integration-v8-16-4489bf8572be@bootlin.com>
 References: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2349;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2485;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=XAlAzu5mQq0zq7YHViRLHBZ5jJLRtKEv9vTyH2R1OTo=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pU4un1HoE1AVEjud2nwhWE4i52YgPTy8eyM
- oQYnZmKz3yJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaVBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIeHA//Wy1C7X2ZUJ2+CcQ0F6X9vI+iSrPcq0F
- u5n/DdDYBvBEUh6qwRu0SyHG0YDNHED1o5luJvNesRg32BBceYZliWzDhR+ylMHQtJkvbokrUjE
- xoCbF102cJbziCayufwDqhuy0yhzyDjeeaROEjcQK9XR/elzXcMQBdmJY2ISuBixYVgLk5jQFIY
- P/qY2+Ljbm4btiXs92Lckq5C82+4VZoloAc0C+uhTTV+EnDnymHS5UGW+iktfR1U1K4maYh7RAa
- tNdoCNAw1Zi7wrcE/lbKdX6vA0Y2UbEXi1yc+91TIjIjbtTTVivz6KKGGcI4wY6sDerGygF4ykr
- SI2aHPFNf3Oqs0scvQvgn6AeswDmtAFOV/hlWwb5U6zNlrUmrNf57hh5giXnkn3AClZnQbp0Okd
- qNS5sOcZxVnalkU4AGOPR/2T0g9EBcADtCfDg6vUdIFpq2V0fwCIkB7ntnn2eLSsfeHTXqtDA3S
- LtrvnD7b2DHULs6CQlLkkW7is6bpulBPV9mbWPI30uKNkjxImg1cvJdn2NUaJQpJaZiccSlId//
- 51L9N+kcRau923GCqGGr2vVaWaTmCFpdMVGoD+yYaWNzoZFSnmF94hDwnV2zeT8XWVgUgY5Z9I3
- +nqBR4sVOpDDfaKIs9/i1XAOFp2P8qqMELaSqUMfDV6RqXetI71o=
+ bh=FhZgqL+h2FrdX1v4H70Wr6eZwvAN9ozyYPrAdOFd580=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pQ6DFbUrIDs/K/EzFEN0+1vdFdiIjwB6NTu
+ ZGSS0GQWu6JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaUBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJ1fw//fRfHW3vwA2c5IGzOFIGzWCd0Fn7g9II
+ aeOb/ulE/2C96Ex9vcIL/q0eR6lV/mHpXPafgbk94IMEXr+onXJxCWyFYjIvtq3iQj0WZWLlDaQ
+ HaM1lwzox1NpsibxiOZXL2B+r2M9u4QwYn4VASpiqT/SLKGB/ePAUYyrh6OXnQqKCir0T8Y42Xg
+ LS8OLKQho1mCcr7FGXvSJcuyat94e8hJvnm7u6PlYGRh+/nEMW/oV2wg32GExm7MEq/I5u37i92
+ U9Z7znEGarVtmAZnwbkYk0p6NM5+aBA471VCK8LCcACYAVVE2KpaUbuMEpFVTni+Dg1kxVwV1hi
+ C+ZmfxqcQlO9NxNHpEA40kSGPknAkO8shicX+FuLQZSia4LLjnaxhcywfSdrhcC/e4tncRzcgxw
+ hTvseL4x3NMwTstQhpWT8o0PtBzztQ2ZmYS2vjSH8vO/nR0Z6stY/TUwq3cL647b0XZuSs71Grp
+ asDW3z8yZcMFHx9+yz4ZA9JTB8UY1VgResbMrNE2C4xlJiF4JmvA18DvdedzWPob32DpelMCZyk
+ VLXVNccVXibYp73KwZqAz85OZxBpEtWJXe/WeLN+XBGlnO4wASs2OdtQfGoaSUr5S3+I22FZh0u
+ DsQO8sUwE+uCg/SvQWp6LLdlQW5OdjRwQlAfVgcl67uWzP2QgvTM=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,73 +80,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As unigraf can emulate 1, 2 or 4 lanes display port connections, add
-helpers to configure the number of lanes.
+For testing specific EDID, it is useful to be able to retrieve an EDID by
+a verbose name.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 29 +++++++++++++++++++++++++++++
- lib/unigraf/unigraf.h |  4 ++++
- 2 files changed, 33 insertions(+)
+ lib/monitor_edids/monitor_edids_helper.c | 30 ++++++++++++++++++++++++++++++
+ lib/monitor_edids/monitor_edids_helper.h |  1 +
+ 2 files changed, 31 insertions(+)
 
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 83ea1eb1f91c..e046fa5bc4fe 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -546,6 +546,7 @@ void unigraf_reset(void)
- 	unigraf_set_sst();
- 	unigraf_load_default_edid();
- 	unigraf_hpd_assert();
-+	unigraf_set_max_lane_count(4);
- }
+diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+index 6043e7a084b3..34446066346e 100644
+--- a/lib/monitor_edids/monitor_edids_helper.c
++++ b/lib/monitor_edids/monitor_edids_helper.c
+@@ -20,6 +20,16 @@
+ #include "drmtest.h"
+ #include "hdmi_edids.h"
  
- /**
-@@ -805,3 +806,31 @@ void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info)
- 	igt_assert_eq(mode_info->vsync_start, unigraf_read_u32(TSI_DPRX_MSA_VSTART_R));
- 	igt_assert_eq(mode_info->hsync_start, unigraf_read_u32(TSI_DPRX_MSA_HSTART_R));
++struct {
++	struct monitor_edid *edid_list;
++	int list_size;
++} ALL_EDIDS[] = {
++	{DP_EDIDS_NON_4K,	DP_EDIDS_NON_4K_COUNT},
++	{DP_EDIDS_4K,		DP_EDIDS_4K_COUNT},
++	{HDMI_EDIDS_NON_4K,	HDMI_EDIDS_NON_4K_COUNT},
++	{HDMI_EDIDS_4K,		HDMI_EDIDS_4K_COUNT},
++};
++
+ static uint8_t convert_hex_char_to_byte(char c)
+ {
+ 	if (c >= '0' && c <= '9')
+@@ -170,3 +180,23 @@ struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count,
+ 		}
+ 	}
  }
 +
 +/**
-+ * unigraf_set_max_lane_count() - Set the maximum number of lanes advertised to the DUT
-+ * @count: The maximum number of lanes to configure on the device
++ * get_edid_by_name:
++ * @name: Name to search in available EDIDs
 + *
-+ * This function sets the maximum number of lanes that the device will advertise on the DP link.
-+ * The actual number of lanes used may be less than the requested count if the
-+ * DUT does not support/use it.
++ * Return the struct edid associated with a specific name. As with edid_from_monitor_edid, the
++ * caller must ensure to free the EDID after use. If no EDID with the exact name is found, returns
++ * NULL.
 + */
-+void unigraf_set_max_lane_count(uint32_t count)
++struct edid *get_edid_by_name(const char *name)
 +{
-+	unigraf_write_u32(TSI_DPRX_MAX_LANES, count);
++	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
++		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
++			if (strncmp(ALL_EDIDS[i].edid_list[j].name, name, EDID_NAME_MAX_LEN) == 0)
++				return edid_from_monitor_edid(&ALL_EDIDS[i].edid_list[j]);
++		}
++	}
++
++	return NULL;
 +}
-+
-+/**
-+ * unigraf_get_max_lane_count() - Get the maximum number of lanes supported by the device
-+ *
-+ * Returns: The maximum number of lanes supported by the device.
-+ */
-+int unigraf_get_max_lane_count(void)
-+{
-+	int max_lanes;
-+
-+	igt_assert(unigraf_device);
-+	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_MAX_LANES,
-+					     &max_lanes, sizeof(max_lanes)));
-+	return max_lanes;
-+}
-diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index 65f00c8d4948..e926855dd059 100644
---- a/lib/unigraf/unigraf.h
-+++ b/lib/unigraf/unigraf.h
-@@ -80,4 +80,8 @@ int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id);
+diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+index e5069868683d..6d9e3fc89592 100644
+--- a/lib/monitor_edids/monitor_edids_helper.h
++++ b/lib/monitor_edids/monitor_edids_helper.h
+@@ -34,5 +34,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
  
- void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info);
+ struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
+ struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
++struct edid *get_edid_by_name(const char *name);
  
-+int unigraf_get_max_lane_count(void);
-+
-+void unigraf_set_max_lane_count(uint32_t count);
-+
- #endif // UNIGRAF_H
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
 
 -- 
 2.52.0
