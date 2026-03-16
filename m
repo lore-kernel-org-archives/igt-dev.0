@@ -4,54 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60EC4EFCBD4
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 08:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1B5FEFCBD4
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 08:23:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0597110E319;
-	Mon, 16 Mar 2026 08:20:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 81E8810E319;
+	Mon, 16 Mar 2026 08:23:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lUhGNvJ7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b1aX5o90";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7ADA010E2F2
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 08:19:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDBD610E319
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 08:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773649194; x=1805185194;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=5XRaH1dOz7yPz0uSUSzJwae2qqzqdCdSThLIj6iT9SI=;
- b=lUhGNvJ7DmVgdL6rlwvRTlfi7wJRyn5BcCGSY3aMcxUu0AsfdqWG9WuV
- z+3qfwyAM/3CIMqMa9Mz33EayRQLKYCS/xkfCE3QEpPCw06PDnmPh7Wqm
- es24sVmxO7I4X2Kdso/SPD1I1ipWp31jKCTHpFdDjwZtcso7kvbaIEXxL
- qLIzox+kp1Hb/CKZq7PhOM0CFQ8iI6VzNKB829L82fkY02dqgc1ePR6+n
- VIoLlXmeDGcfcdS26Ij3J6bJTCWnJrQ70IFtUVnD8XO+quyanye2SMkxN
- 5X2k3gMxofJdNm9BIiIhzd+yUj5A9o28BX8eHxyLM9o4sPaPi1/xf0ra8 g==;
-X-CSE-ConnectionGUID: CmBlo2abS56cgRpiZb1z1g==
-X-CSE-MsgGUID: pwrihHEKQyK9/HrpDUotNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="85359467"
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="85359467"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 01:19:54 -0700
-X-CSE-ConnectionGUID: oaWQFCxaTVmGDiwkhVjO7g==
-X-CSE-MsgGUID: 0q8gJXpmQ0eIe+8C5hKKHQ==
+ t=1773649427; x=1805185427;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=OuluGx1k5Lx3sc0JwtW3IFPsCEakkNZqaQ5gjfup224=;
+ b=b1aX5o909h6jdhmpcCgUN6kiOrvwcGOOW7CdeCOf8iWU13zP7YvTLFCL
+ qj/foyaf+qPeLvMrXvZK0RLGcffiXl9cml43sAmJqKREcnIOYD1mGoDKv
+ 36I3uqLnZ5vuklwhDxS+7Yx+ddaVh7j3CPMpfOMl53dW+wlTW6dNft4oQ
+ HLdOlJpSjhKqp5VX0bXkkYiZetnznj2XQw3lSX6CxunMV7T6TxECaAois
+ F2Xn0017GKQRSoUJ2knuxfOVGICIuKkqUXR/yrvTLOXSOY8rPcYLruaA3
+ zApssxqbLbFjoct60p2tDSF+BZ+zyWa34miY8wFVHrqsrjZ41KofV4lzk Q==;
+X-CSE-ConnectionGUID: nyktLJFdQtmH07jfA22ZzQ==
+X-CSE-MsgGUID: /u+Yh19FQBiz8kCG+tiMbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74576971"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="74576971"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 01:23:47 -0700
+X-CSE-ConnectionGUID: RwEM1hecSHuF/Rqk4HoqAQ==
+X-CSE-MsgGUID: IW2EJWmMSxet2dizHvGiBg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="226300767"
-Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 01:19:53 -0700
-From: Sowmiya S <sowmiya.s@intel.com>
+Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 01:23:46 -0700
+From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: ramanaidu.naladala@intel.com, swati2.sharma@intel.com,
- Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v1 17/17] tests/kms_rotation_crc: Use CRC stop-on-fail
- assertion and cleanup helper
-Date: Mon, 16 Mar 2026 14:10:21 +0530
-Message-ID: <20260316084021.419580-18-sowmiya.s@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260316084021.419580-1-sowmiya.s@intel.com>
-References: <20260316084021.419580-1-sowmiya.s@intel.com>
+Cc: kunal1.joshi@intel.com,
+	Mohammed Bilal <mohammed.bilal@intel.com>
+Subject: [PATCH i-g-t v2] lib/igt_kms: Fix invalid mode timing in
+ igt_kms_get_full_edid()
+Date: Mon, 16 Mar 2026 13:50:53 +0530
+Message-ID: <20260316082053.3333398-1-mohammed.bilal@intel.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,102 +66,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replace igt_assert_crc_equal() with igt_assert_crc_equal_stop_on_fail()
-to automatically stop CRC collection on mismatch.
-Replace manual free+NULL and stop+free patterns with igt_pipe_crc_cleanup()
-in cleanup_crtc(), test_multi_plane_rotation() and fixture teardown.
-Remove now-redundant igt_pipe_crc_free() call from prepare_crtc().
+The mode timing values for 2288x1287 were invalid,
+causing an incorrect refresh rate to be calculated.
 
-Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+Fixed by using proper timing values with correct blanking periods.
+
+v2:
+-Update value based on cvt
+
+Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
 ---
- tests/kms_rotation_crc.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ lib/igt_kms.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 4420053f1..e4139667a 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -284,8 +284,7 @@ static void cleanup_crtc(data_t *data)
- {
- 	igt_display_t *display = &data->display;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 0b05ddd72..da7297669 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -162,16 +162,17 @@ const struct edid *igt_kms_get_full_edid(void)
+ 	static struct edid edid;
+ 	drmModeModeInfo mode = {};
  
--	igt_pipe_crc_free(data->pipe_crc);
--	data->pipe_crc = NULL;
-+	igt_pipe_crc_cleanup(&data->pipe_crc);
+-	mode.clock = 148500;
++	/* 2288x1287 @ 60Hz with proper timing values */
++	mode.clock = 194250;
+ 	mode.hdisplay = 2288;
+-	mode.hsync_start = 2008;
+-	mode.hsync_end = 2052;
+-	mode.htotal = 2200;
++	mode.hsync_start = 2336;
++	mode.hsync_end = 2368;
++	mode.htotal = 2448;
+ 	mode.vdisplay = 1287;
+-	mode.vsync_start = 1084;
+-	mode.vsync_end = 1089;
+-	mode.vtotal = 1125;
+-	mode.vrefresh = 144;
++	mode.vsync_start = 1290;
++	mode.vsync_end = 1295;
++	mode.vtotal = 1324;
++	mode.vrefresh = 60;
+ 	edid_init_with_mode(&edid, &mode);
  
- 	remove_fbs(data);
- 
-@@ -305,8 +304,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, igt_crtc_t *crtc,
- 	igt_plane_set_rotation(plane, IGT_ROTATION_0);
- 
- 	/* create the pipe_crc object for this pipe */
--	igt_pipe_crc_free(data->pipe_crc);
--
- 	/* defer crtc cleanup + crtc active for later on amd - not valid
- 	 * to enable CRTC without a plane active
- 	 */
-@@ -468,6 +465,7 @@ static void test_single_case(data_t *data, igt_crtc_t *crtc,
- {
- 	igt_display_t *display = &data->display;
- 	igt_crc_t crc_output;
-+	igt_crc_t *ref_crc;
- 	int ret;
- 
- 	igt_debug("Testing case %i on pipe %s, format %s\n", rect,
-@@ -502,9 +500,9 @@ static void test_single_case(data_t *data, igt_crtc_t *crtc,
- 		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
- 								 &crc_output);
- 	}
--	igt_assert_crc_equal(
--		&data->crc_rect[data->output_crc_in_use][rect].ref_crc,
--		&crc_output);
-+	ref_crc = &data->crc_rect[data->output_crc_in_use][rect].ref_crc;
-+
-+	igt_assert_crc_equal_stop_on_fail(data->pipe_crc, ref_crc, &crc_output);
- 
- 	/*
- 	 * If flips are requested flip to a different fb and
-@@ -533,8 +531,9 @@ static void test_single_case(data_t *data, igt_crtc_t *crtc,
- 			igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
- 									 &crc_output);
- 		}
--		igt_assert_crc_equal(&data->crc_rect[data->output_crc_in_use][rect].flip_crc,
--				     &crc_output);
-+		ref_crc = &data->crc_rect[data->output_crc_in_use][rect].flip_crc;
-+
-+		igt_assert_crc_equal_stop_on_fail(data->pipe_crc, ref_crc, &crc_output);
- 	}
- }
- 
-@@ -1068,7 +1067,9 @@ static void test_multi_plane_rotation(data_t *data, igt_crtc_t *crtc)
- 						free(str1);
- 						free(str2);
- 
--						igt_assert_crc_equal(&retcrc_sw, &retcrc_hw);
-+						igt_assert_crc_equal_stop_on_fail(data->pipe_crc,
-+										  &retcrc_sw,
-+										  &retcrc_hw);
- 
- 						lastroundjformat = multiplaneformatlist[p[1].formatindex];
- 						lastroundirotation = planeconfigs[i].rotation;
-@@ -1077,8 +1078,7 @@ static void test_multi_plane_rotation(data_t *data, igt_crtc_t *crtc)
- 				}
- 			}
- 		}
--		igt_pipe_crc_stop(data->pipe_crc);
--		igt_pipe_crc_free(data->pipe_crc);
-+		igt_pipe_crc_cleanup(&data->pipe_crc);
- 
- 		igt_plane_set_fb(p[0].plane, NULL);
- 		igt_plane_set_fb(p[1].plane, NULL);
-@@ -1382,6 +1382,7 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	}
- 
- 	igt_fixture() {
-+		igt_pipe_crc_cleanup(&data.pipe_crc);
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.gfx_fd);
- 	}
+ 	std_timing_set(&edid.standard_timings[0], 256, 60, STD_TIMING_16_10);
 -- 
-2.43.0
+2.48.1
 
