@@ -4,65 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24EABF53D8B
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 19:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055CBF53D87
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 19:17:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B8F8C10E023;
-	Mon, 16 Mar 2026 19:06:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AB84D10E118;
+	Mon, 16 Mar 2026 19:17:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JzM9XTW0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mc5Sxmq5";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00E0710E023
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 19:06:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C068910E118
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 19:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773687964; x=1805223964;
+ t=1773688647; x=1805224647;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=jivhOkqxRxy8T5XaaxWhJDcr0K388dQYOroo2SNPw0I=;
- b=JzM9XTW0MvJFXFBmqYeqOxXNv16UjP3MFhwqQklSHVO7Or0gy2ZRlM5P
- z+IN2bE4z1T3M8QTcqa+ukS0nNXz3shQNlW4/LC+uw6uS3f4836jwYnjD
- fLc9d+DMCSzP/73CO2MmTLxUseR/jMTK9cwTwP2EM4PugH+xcMdud8RnE
- WTOMJYA3bCFyPbXJ0oDy7Uf87oj7IiNuOvPOdP8p2u2BoDj4Gs6u4mrNY
- j/k21ADwmiUr5etjG4a0dCAsKYl08EY4UbPFSSI/TPz4HjEERmZIR7RNX
- zX+/VS3Xf7D7Ue1ujiAWFGiSmEswR4xRHGFd9iiwvRvVRwAoVHFqQzLDe A==;
-X-CSE-ConnectionGUID: BpV7HKIzTu+N2wJVVAdkUQ==
-X-CSE-MsgGUID: wg+7oBu/SvCqyRd5I+b9Tw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74829689"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="74829689"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ bh=EBSFUfVaP0//WSyUwNGH0N++Tw8clVE95iLeAdx/RJA=;
+ b=Mc5Sxmq5SVoit+Mc5JjCmc0h4/ozCZ9I5uztQvfB9zrWyeeOo4Fumwk9
+ uBqkDEh41+KyyZ5huQbUZ3khV101/d/DSesZbAMjgxsK54XFgbiknyTdx
+ xPSsXdIQrEetKEeKok59x9gqFnFegXs9chp0os4hkWmZ4WPuBecDM5zO+
+ DXaIYEQ0GNOXjeYEBCnD6qdDwK4MVg5pRxaa0+5QggxGJI9aUfFs8n8T+
+ 05zmztjcyjqurZOHNeHweAkEI6pvvwIxSJ5iELickJkDpL9dnx1irk3lH
+ AFl1FdJpxvExLfzsPTgmFqK5z7kPEJQ5OGaBc80HatMyJEjdV+Q8UsW91 w==;
+X-CSE-ConnectionGUID: 0eiMUxcWQCWpgJO8okh1sA==
+X-CSE-MsgGUID: 0LAsrPDbSVWBUunXv38NNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74830628"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="74830628"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 12:06:04 -0700
-X-CSE-ConnectionGUID: xNW1+b85QFOAGksNeuL34g==
-X-CSE-MsgGUID: ffbbNGKmRKm7YOcnWNfjpA==
+ 16 Mar 2026 12:17:27 -0700
+X-CSE-ConnectionGUID: hlsfepeCTI+lyuuShRFHTQ==
+X-CSE-MsgGUID: Vizo9AamTe21TySJHcSYpQ==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226700305"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 12:06:02 -0700
-Date: Mon, 16 Mar 2026 20:06:00 +0100
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 12:17:26 -0700
+Date: Mon, 16 Mar 2026 20:17:24 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: John Harrison <John.Harrison@Igalia.com>
-Cc: "Kandpal, Suraj" <suraj.kandpal@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/2] tool/intel_hdcp: Show actual HDCP status
-Message-ID: <20260316190600.52rtxdxekh5dh6iw@kamilkon-DESK.igk.intel.com>
+To: Jim Cromie <jim.cromie@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, Gemini CLI <gemini-cli@google.com>
+Subject: Re: [PATCH] lib: implement systemic timeout scaling via
+ IGT_TIMEOUT_MULTIPLIER
+Message-ID: <20260316191724.kgxcroy5kj7lj3sf@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- John Harrison <John.Harrison@Igalia.com>,
- "Kandpal, Suraj" <suraj.kandpal@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-References: <20260216184341.437722-1-John.Harrison@Igalia.com>
- <20260216184341.437722-2-John.Harrison@Igalia.com>
- <DM3PPF208195D8DAFED433B0156A8991F49E36DA@DM3PPF208195D8D.namprd11.prod.outlook.com>
- <852e3018-2ba2-4687-9794-49291636472d@Igalia.com>
- <20260224193044.vf5aauujilkcyth3@kamilkon-DESK.igk.intel.com>
- <8466ebfe-5d07-4330-b87f-d6757a65fadb@Igalia.com>
+ Jim Cromie <jim.cromie@gmail.com>, igt-dev@lists.freedesktop.org,
+ Gemini CLI <gemini-cli@google.com>
+References: <20260219185227.1278271-1-jim.cromie@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8466ebfe-5d07-4330-b87f-d6757a65fadb@Igalia.com>
+In-Reply-To: <20260219185227.1278271-1-jim.cromie@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,150 +71,221 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi John,
-On 2026-02-24 at 14:31:51 -0800, John Harrison wrote:
-> On 2/24/26 11:30, Kamil Konieczny wrote:
-> > Hi John,
-> > On 2026-02-17 at 08:58:01 -0800, John Harrison wrote:
-> > > On 2/16/26 19:00, Kandpal, Suraj wrote:
-> > > > > Subject: [PATCH i-g-t v2 1/2] tool/intel_hdcp: Show actual HDCP status
-> > > > > 
-> > > > > The 'video player' showed what the requested HDCP mode was but not the
-> > > > > actual status. The menu system does redraw the screen with a special colour to
-> > > > > denote the status, but that is immediately overwritten by the player thread. So
-> > > > > all you get is a very brief full screen flicker (to be fixed in next patch).
-> > > > So we do not want to refer to the next "patch" just mention what this patch is doing.
-> > > > Also do not call it a "patch" since once it gets merged it becomes a commit.
-> > > But this patch is part of a series and a series of tightly related patches
-> > > has always explained what is happening as a whole. Otherwise, you
-> > > effectively have this patch/commit saying "this is totally broken and I'm
-> > > not doing anything about it".
-> > > 
-> > > > > Instead, add the current HDCP status as an extra text line of the video player's
-> > > > > output so it is permanently visible and clear.
-> > > > > 
-> > > > > Also, move the enable of HDCP inside the mutex lock with the internal state
-> > > > > change. That way, the newly added 'enabled/desired'
-> > > > > line does not update in advance of the 'requested' line (due to the video player
-> > > > > thread being asynchronous and managing to turn HDCP on while the menu
-> > > > > thread is waiting on the mutex lock).
-> > > > > v2: Split into two patches (review feedback by Kamil)
-> > > > You can just write (Kamil) here
-> > > > 
-> > > > > CC: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-> > > > > CC: Suraj Kandpal <suraj.kandpal@intel.com>
-> > > > > Signed-off-by: John Harrison <John.Harrison@Igalia.com>
-> > > > > Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > > > ---
-> > > > >    tools/intel_hdcp.c | 15 +++++++++++++--
-> > > > >    1 file changed, 13 insertions(+), 2 deletions(-)
-> > > > > 
-> > > > > diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c index cd5d2b6be..8e29c5e32
-> > > > > 100644
-> > > > > --- a/tools/intel_hdcp.c
-> > > > > +++ b/tools/intel_hdcp.c
-> > > > > @@ -482,6 +482,7 @@ static void *video_player_thread(void *arg)
-> > > > >    	char timer_str[32];
-> > > > >    	time_t current_time, elapsed;
-> > > > >    	int minutes, seconds;
-> > > > > +	const char *status = NULL;
-> > > > > 
-> > > > >    	data = (data_t *)arg;
-> > > > >    	cur_type = data->hdcp_type;
-> > > > > @@ -502,6 +503,8 @@ static void *video_player_thread(void *arg)
-> > > > >    			prev_type = cur_type;
-> > > > >    		}
-> > > > > 
-> > > > > +		status = get_hdcp_status(data, data->selected_connector);
-> > > > > +
-> > > > >    		switch (cur_type) {
-> > > > >    		case HDCP_TYPE_1_4:
-> > > > >    			bg_r = 0.0; bg_g = 0.7; bg_b = 0.0;
-> > > > > @@ -544,10 +547,18 @@ static void *video_player_thread(void *arg)
-> > > > >    		cairo_show_text(cr, timer_str);
-> > > > > 
-> > > > >    		/* Draw HDCP status above timer */
-> > > > > +		cairo_set_font_size(cr, font_size);
-> > > > > +		cairo_text_extents(cr, status, &ext);
-> > > > > +		x = data->width - ext.width - 20;
-> > > > > +		y = data->height - ext.height - 20;
-> > > > > +
-> > > > > +		cairo_move_to(cr, x, y);
-> > > > > +		cairo_show_text(cr, status);
-> > > > > +
-> > > > >    		cairo_set_font_size(cr, font_size);
-> > > > >    		cairo_text_extents(cr, hdcp_str, &ext);
-> > > > >    		x = data->width - ext.width - 20;
-> > > > > -		y = data->height - ext.height - 60;
-> > > > > +		y = data->height - ext.height - 120;
-> > > > > 
-> > > > >    		cairo_move_to(cr, x, y);
-> > > > >    		cairo_show_text(cr, hdcp_str);
-> > > > > @@ -605,8 +616,8 @@ static void stop_video_player(data_t *data)
-> > > > > 
-> > > > >    static void enable_hdcp_type(data_t *data, enum hdcp_type type)  {
-> > > > > -		set_hdcp_prop(data, CP_DESIRED, type, data-
-> > > > > > selected_connector);
-> > > > >    		pthread_mutex_lock(&data->lock);
-> > > > > +		set_hdcp_prop(data, CP_DESIRED, type, data-
-> > > > > > selected_connector);
-> > > > Move this change into its own patch logically a different change
-> > > But it is not a logically different change. As per the commit description,
-> > > the only reason for making this change is because the video thread is now
-> > > displaying the HDCP status. Without the display of the status, it does not
-> > > matter that the change occurs asynchronously to that display (because there
-> > > is nothing for it to be asynchronous to). So splitting this out into a later
-> > > patch means this patch would be introducing a bug and the follow up patch
-> > Would it help if this change will be the first one in a series?
-> > 
-> > If yes, then it should go first as a fix. If not, if this one
-> > change do not help in anything then imho it should stay in this
-> > one bigger change.
-> That's the thing, there is no reason for the set_hdcp_prop call to be inside
-> the mutex lock without adding the display of the HDCP status to the video
-> thread. Hence the reason it was previously not inside the lock.
+Hi Jim,
+On 2026-02-19 at 11:52:27 -0700, Jim Cromie wrote:
+> IGT contains numerous hardcoded timing assertions and poll timeouts
+> (e.g., 150ms in kms_sysfs_edid_timing and 1s in prime_busy) that
+> appear to be tuned for bare-metal execution.
 > 
-> The lock is protecting the display thread. If the display thread does not
-> show HDCP status then changing the status asynchronously to that thread is
-> totally fine. But with the changes in this patch to add the status to the
-> display thread, having an asynchronous update does cause 'flickering' of the
-> display - the 'active' line changes before the 'requested' line does.
+> Specifically, DRM-CI testing of DRM_USE_DYNAMIC_DEBUG=y patchset
+> triggers spurious timeouts, because toggling the static-keys under
+> numerous drm_*dbg() callsites takes far longer than just changing the
+> single word under /sys/module/drm/parameters/debug.
 > 
-> You could move the re-order into it's own private patch. But given that it
-> is always best to do the least amount of work inside a lock, that patch
-> would have to have a description of 'moving this because of changes coming
-> in the next commit'. Which is not ideal. Hence I think it is better kept
-> together with the rest of this patch.
+> So this patch introduces a "Time Dilator" system to globally scale the
+> suite's sensitivity, making it adjustable to varying environments.  It
+> adds a global igt_timeout_multiplier, automatically initialized from
+> the IGT_TIMEOUT_MULTIPLIER environment variable via a library
+> constructor in lib/igt_poll.c.
 > 
-> Thanks,
-> John.
+> The system scales timing in two directions:
+> 
+> 1. Clock Dilation: igt_nsec_elapsed() is patched to divide actual
+>    elapsed time by the multiplier. This makes internal test logic
+>    perceive time as moving slower, allowing existing assertions to
+>    pass even when wall-clock duration is longer.
+> 
+> 2. Wait Scaling: Standard poll() and ppoll() calls are intercepted via
+>    variadic macros and redirected to wrappers that multiply the
+>    requested timeout duration.
+> 
+> I considered 2 different "dilations" for these, to allow separate
+> tailoring of the 2 timeout flavors, but had no strong basis to do so,
+> and it felt like "too many knobs".  That said, it might be appropriate
+> to dilate *only* for drm.debug (/sys/module/drm/parameters/debug)
+> adjustments.
+> 
+> This should allow at least IGT tests to be adjusted for environmental
+> variations and kernel configurations, without requiring manual source
+> modifications for every hardcoded constant.
 
-Sound reasonable. Suraj could you please ack or review this series?
-Does it improve this tool and works as intended?
++cc Ashutosh and Karthik
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-Thanks in advance!
+Could you also give a link to a problem you trying to solve?
+
+> 
+> Assisted-by: Gemini CLI <gemini-cli@google.com>
+> Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
+> ---
+>  lib/igt_core.c  |  7 +++++--
+>  lib/igt_core.h  |  8 ++++++++
+>  lib/igt_poll.c  | 50 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/meson.build |  6 ++++--
+>  4 files changed, 67 insertions(+), 4 deletions(-)
+>  create mode 100644 lib/igt_poll.c
+> 
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index 3ee670a41..8a1a07ff6 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -748,6 +748,7 @@ error:
+>  uint64_t igt_nsec_elapsed(struct timespec *start)
+>  {
+>  	struct timespec now;
+> +	uint64_t elapsed;
+>  
+>  	igt_gettime(&now);
+>  	if ((start->tv_sec | start->tv_nsec) == 0) {
+> @@ -755,8 +756,10 @@ uint64_t igt_nsec_elapsed(struct timespec *start)
+>  		return 0;
+>  	}
+>  
+> -	return ((now.tv_nsec - start->tv_nsec) +
+> -		(uint64_t)NSEC_PER_SEC*(now.tv_sec - start->tv_sec));
+> +	elapsed = ((now.tv_nsec - start->tv_nsec) +
+> +		   (uint64_t)NSEC_PER_SEC*(now.tv_sec - start->tv_sec));
+> +
+> +	return elapsed / igt_timeout_multiplier;
+>  }
+>  
+>  void __igt_assert_in_outer_scope(void)
+> diff --git a/lib/igt_core.h b/lib/igt_core.h
+> index 6845f853c..4538375ff 100644
+> --- a/lib/igt_core.h
+> +++ b/lib/igt_core.h
+> @@ -44,6 +44,7 @@
+>  #include <stdarg.h>
+>  #include <getopt.h>
+>  #include <unistd.h>
+> +#include <poll.h>
+>  
+>  #ifdef __FreeBSD__
+>  #include "igt_freebsd.h"
+> @@ -53,6 +54,13 @@
+>  #define IGT_LOG_DOMAIN (NULL)
+>  #endif
+>  
+> +extern double igt_timeout_multiplier;
+> +int igt_poll(struct pollfd *fds, nfds_t nfds, int timeout);
+> +int igt_ppoll(struct pollfd *fds, nfds_t nfds,
+> +              const struct timespec *tmo_p, const sigset_t *sigmask);
+
+Above look ok.
+
+> +#define poll(...) igt_poll(__VA_ARGS__)
+> +#define ppoll(...) igt_ppoll(__VA_ARGS__)
+
+Please avoid such defines, they are good for short-term or RFC
+but not in long term. This will mean there will be more changes
+in tests but imho that is better to have a clear view what is
+going on.
+
+> +
+
+Remove this empty line.
 
 Regards,
 Kamil
 
-> 
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > > would need a 'Fixes' tag. Which is just pointless for the sake of a one line
-> > > delta. Or it could be a prior patch but then it would need to say 'doing
-> > > this thing that is pointless now but is required by a future patch' and you
-> > > have already said you don't like descriptions referring to future changes.
-> > > 
-> > > John.
-> > > 
-> > > > Regards,
-> > > > Suraj Kandpal
-> > > > 
-> > > > >    		data->hdcp_type = type;
-> > > > >    		data->video_start_time = time(NULL);
-> > > > >    		pthread_mutex_unlock(&data->lock);
-> > > > > --
-> > > > > 2.43.0
+>  
+>  #ifndef STATIC_ANALYSIS_BUILD
+>  #if defined(__clang_analyzer__) || defined(__COVERITY__) || defined(__KLOCWORK__)
+> diff --git a/lib/igt_poll.c b/lib/igt_poll.c
+> new file mode 100644
+> index 000000000..d94fc902d
+> --- /dev/null
+> +++ b/lib/igt_poll.c
+> @@ -0,0 +1,50 @@
+> +#include <poll.h>
+> +#include <time.h>
+> +#include <stdint.h>
+> +#include <stdlib.h>
+> +#include "igt_core.h"
+> +
+> +#undef poll
+> +#undef ppoll
+> +
+> +double igt_timeout_multiplier = 1.0;
+> +
+> +static void igt_timeout_multiplier_init(void) __attribute__((constructor));
+> +static void igt_timeout_multiplier_init(void)
+> +{
+> +	const char *env = getenv("IGT_TIMEOUT_MULTIPLIER");
+> +	if (env) {
+> +		igt_timeout_multiplier = atof(env);
+> +		if (igt_timeout_multiplier <= 0.0)
+> +			igt_timeout_multiplier = 1.0;
+> +	}
+> +}
+> +
+> +int igt_poll(struct pollfd *fds, nfds_t nfds, int timeout)
+> +{
+> +	int old_timeout = timeout;
+> +
+> +	if (timeout > 0)
+> +		timeout = (int)(timeout * igt_timeout_multiplier);
+> +
+> +	if (igt_timeout_multiplier != 1.0 && old_timeout > 0)
+> +		igt_debug("igt_poll: scaling timeout %dms -> %dms\n", old_timeout, timeout);
+> +
+> +	return poll(fds, nfds, timeout);
+> +}
+> +
+> +int igt_ppoll(struct pollfd *fds, nfds_t nfds,
+> +	      const struct timespec *tmo_p, const sigset_t *sigmask)
+> +{
+> +	struct timespec scaled_tmo;
+> +
+> +	if (tmo_p) {
+> +		uint64_t nsec = (uint64_t)tmo_p->tv_sec * NSEC_PER_SEC + tmo_p->tv_nsec;
+> +		nsec *= igt_timeout_multiplier;
+> +		scaled_tmo.tv_sec = nsec / NSEC_PER_SEC;
+> +		scaled_tmo.tv_nsec = nsec % NSEC_PER_SEC;
+> +		tmo_p = &scaled_tmo;
+> +	}
+> +
+> +	return ppoll(fds, nfds, tmo_p, sigmask);
+> +}
+> diff --git a/lib/meson.build b/lib/meson.build
+> index ea721ecf7..fb7e83543 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -97,6 +97,7 @@ lib_sources = [
+>  	'igt_core.c',
+>  	'igt_dir.c',
+>  	'igt_draw.c',
+> +	'igt_poll.c',
+>  	'igt_list.c',
+>  	'igt_map.c',
+>  	'igt_panel.c',
+> @@ -328,7 +329,7 @@ lib_igt_chipset = declare_dependency(link_with : lin_igt_chipset_build,
+>                                       include_directories : inc)
+>  
+>  lib_igt_perf_build = static_library('igt_perf',
+> -	['igt_perf.c'],
+> +	['igt_perf.c', 'igt_poll.c'],
+>  	include_directories : inc)
+>  
+>  lib_igt_perf = declare_dependency(link_with : lib_igt_perf_build,
+> @@ -347,6 +348,7 @@ lib_igt_device_scan_build = static_library('igt_device_scan',
+>  	'igt_tools_stub.c',
+>  	'intel_device_info.c',
+>  	'intel_cmds_info.c',
+> +	'igt_poll.c',
+>  	],
+>  	dependencies : scan_dep,
+>  	include_directories : inc)
+> @@ -362,7 +364,7 @@ lib_igt_drm_clients = declare_dependency(link_with : lib_igt_drm_clients_build,
+>  				         include_directories : inc)
+>  
+>  lib_igt_drm_fdinfo_build = static_library('igt_drm_fdinfo',
+> -	['igt_drm_fdinfo.c'],
+> +	['igt_drm_fdinfo.c', 'igt_poll.c'],
+>  	include_directories : inc)
+>  
+>  lib_igt_drm_fdinfo = declare_dependency(link_with : lib_igt_drm_fdinfo_build,
+> -- 
+> 2.53.0
 > 
