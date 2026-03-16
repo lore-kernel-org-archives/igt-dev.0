@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E2E8F013C6
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 07:42:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66BA6EFCBD4
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 07:51:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3FB8310E30A;
-	Mon, 16 Mar 2026 07:42:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D45A10E1D2;
+	Mon, 16 Mar 2026 07:51:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wk9cXt6y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kiAbaE85";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99D8B10E1D2
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 07:42:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6CEB10E1D2
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 07:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773646947; x=1805182947;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=n4Jw0f0TaledQ4mzSfLf62kphoh1MYq54wcJDg9QHqs=;
- b=Wk9cXt6yiK684wmMwezbX//mHF3UTn9ff3OHFQUa/VkmnbM+lky0l4nS
- shPhIwRhYZCeXcMkJ/wSaxZGKV9UKh5XgmS9664l0DtkfjiI1e6kDQXf4
- cVnlK2RqI+bvowRBOYd6qtvXymAoETq6EyCkakppe2ItpJ/jEZ8fbwgIZ
- NsVa7EWV0Aoqjw0HnN7aLTolxSf0hsYarAOVhQBaep7JhKPQJFQnC9J9Y
- i9pRfg341Fhf78orjy59z411Uk3Rz3t1FsbaDlsqCTDMM7RduklvotVBJ
- 24T/zvH1LzwQqbWmjcp4bYCBbRKXaZXCMKC04oiq0roTUPzywPoU3G43g Q==;
-X-CSE-ConnectionGUID: IfMkHpDWSrittq1Pwu5+DA==
-X-CSE-MsgGUID: sO1KAUueSDmSTeWejMA2NQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74772346"
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="74772346"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 00:42:26 -0700
-X-CSE-ConnectionGUID: TlLKediXRg+EwCnzUCKqvw==
-X-CSE-MsgGUID: 0VUred/SRfOY5vzxqXf4lA==
+ t=1773647480; x=1805183480;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=p1XbHTam4Aru951lj5ljsC6ujG41OmqUrKDzvtmxaxI=;
+ b=kiAbaE85TOSNOdDOPrPcLLS1X9exfbgO0fuplyKQiG9nA/wdHlcrnEij
+ thVSadXw+70e5IWKQpGOd6Z0K+WR3rKTiVKp51C49lka2NXa4/Hs0lUjC
+ Ny5fv8HRfdOg6B+OUnobqYKAEaWsM7WTYqWB6INIDJTCEhM9NaMIasaZ1
+ 5Pm6utollOUm5xzJdJccCWrzOxHbvWyzJaG+ysxc6rmS9l5m8EAqOSha6
+ R85BQip0+QkNmVZHFFEvRc547SqDooPBwSbhUBTn6KxbYPfdNybfx+DY+
+ oEOaW+/5NSZCylQMdqigPOL5xEJYgDsPZjxKxf76SOv8oqzp7GPOKeNpf g==;
+X-CSE-ConnectionGUID: ype0iqstQTqrmobhMjlkSg==
+X-CSE-MsgGUID: xNj/bRANR922RPun5NFDZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="85739740"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="85739740"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 00:51:18 -0700
+X-CSE-ConnectionGUID: lq1dg7KQTCSj3HP5vTllRg==
+X-CSE-MsgGUID: eUpXC/49SKWdSgervEubOw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="220878378"
-Received: from dut6245dg2frd.fm.intel.com ([10.80.54.109])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 00:42:26 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	thomas.hellstrom@intel.com
-Cc: nishit.sharma@intel.com,
-	Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH v3 i-g-t 1/1] test/intel/xe_vm: Add oversubscribe concurrent
- bind stress subtest
-Date: Mon, 16 Mar 2026 07:42:11 +0000
-Message-ID: <20260316074211.2308188-2-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260316074211.2308188-1-sobin.thomas@intel.com>
-References: <20260316074211.2308188-1-sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="218121748"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.179])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 00:51:15 -0700
+Date: Mon, 16 Mar 2026 08:51:13 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com
+Subject: Re: [PATCH 1/3] igt/xe: Add temporary helpers for VM_Bind neg test
+Message-ID: <3bkq2cy7kdt6bjhuxp6265hucxm7dksaqzelbvrhferbuwjzs2@bowetcaocvvp>
+References: <20260309060901.642399-1-smitha.balasubramanyam@intel.com>
+ <20260309060901.642399-2-smitha.balasubramanyam@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260309060901.642399-2-smitha.balasubramanyam@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,564 +70,659 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test for oversubscribing VRAM in multi process environment that
-creates VM, bind large BOs and submit workloads nearly simultaneously.
+On Mon, Mar 09, 2026 at 11:38:59AM +0530, Smitha Balasubramanyam wrote:
+> Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+> 
+> Added helper functions and UAPI macro definition required for
+> VM_BIND Decomp negative tests.
+> These helpers and definitions duplicate functionality introduced in
+> VLK-79231, positive test series, which is yet to be merged.
+> They are included here so that the negative
+> tests can be developed and executed independently.
+> 
+> Once the positive test series lands upstream, this patch can be dropped
+> and the tests can reuse the shared helpers and UAPI definitions.
+> Also, includes a few formatting changes suggested by checkpatch.pl.
+> ---
+>  include/drm-uapi/xe_drm.h |   1 +
+>  tests/intel/xe_ccs.c      | 331 +++++++++++++++++++++++++-------------
+>  2 files changed, 220 insertions(+), 112 deletions(-)
+> 
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index 077e66a68..44355f6b5 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -1160,6 +1160,7 @@ struct drm_xe_vm_bind_op {
+>  #define DRM_XE_VM_BIND_FLAG_CHECK_PXP	(1 << 4)
+>  #define DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR	(1 << 5)
+>  #define DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET	(1 << 6)
+> +#define DRM_XE_VM_BIND_FLAG_DECOMPRESS		(1 << 7)
+>  	/** @flags: Bind flags */
+>  	__u32 flags;
+>  
+> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+> index a21922ee5..4424f6f9b 100644
+> --- a/tests/intel/xe_ccs.c
+> +++ b/tests/intel/xe_ccs.c
+> @@ -11,6 +11,8 @@
+>  #endif
+>  #include <sys/ioctl.h>
+>  #include <sys/time.h>
+> +#include <sys/mman.h>
+> +#include <unistd.h>
+>  #include <malloc.h>
+>  #include "drm.h"
+>  #include "igt.h"
+> @@ -97,20 +99,125 @@ struct test_config {
+>  };
+>  
+>  #define PRINT_SURFACE_INFO(name, obj) do { \
+> -	if (param.print_surface_info) \
+> -		blt_surface_info((name), (obj)); } while (0)
+> +	if (param.print_surface_info) { \
+> +		blt_surface_info((name), (obj)); \
+> +	} \
+> +} while (0)
 
-Previous coverage lacked a scenario combining multi-process bind
-with VRAM oversubscription. This generates memory pressure with
-multi-process VM Bind activity and concurrent submission, exercising
-the bind pipeline under eviction pressure.
+This one looks better. 
 
-v2: Removed helper APIs usage clock_nanosleep and commented code.
+>  
+>  #define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
+>  	if (param.write_png) \
+> -		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
+> +	blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
 
-v3: Refactored code to smaller functions.
-    Added check for available SRAM usage and keep the max process to 20.
+But here there's only indentation change.
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- tests/intel/xe_vm.c | 513 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 513 insertions(+)
+> +
+> +static void print_buffer_data(const void *data, size_t size, const char *label, int max_lines)
+> +{
+> +	const u8 *bytes = (const uint8_t *)data;
+> +	size_t lines_to_print = min((size + 15) / 16, (size_t)max_lines);
+> +	size_t i, j;
+> +
+> +	igt_info("Buffer Data [%s] (showing first %zu lines, %zu bytes each):\n",
+> +		 label, lines_to_print, min(size, lines_to_print * 16));
+> +
+> +	for (i = 0; i < lines_to_print && i * 16 < size; i++) {
+> +		igt_info("%s [%04zx]: ", label, i * 16);
+> +
+> +		/* Print hex bytes */
+> +		for (j = 0; j < 16 && (i * 16 + j) < size; j++)
+> +			igt_info("%02x ", bytes[i * 16 + j]);
+> +
+> +		/* Pad if last line is incomplete */
+> +		for (; j < 16; j++)
+> +			igt_info("   ");
+> +
+> +		igt_info("\n");
+> +	}
+> +
+> +	if (size > lines_to_print * 16)
+> +		igt_info("%s [...] (%zu more bytes not shown)\n",
+> +			 label, size - lines_to_print * 16);
+> +}
+> +
+> +/**
+> + * verify_test_pattern() - Verify buffer contains expected test pattern
+> + * @buffer: pointer to buffer data
+> + * @size: buffer size in bytes
+> + * @label: label for debug output
+> + * @return: true if pattern is correct, false otherwise
+> + */
+> +static bool verify_test_pattern(const void *buffer, size_t size, const char *label)
+> +{
+> +	const u32 *buffer_u32 = (const u32 *)buffer;
+> +	size_t num_u32_elements = size / sizeof(uint32_t);
+> +	size_t errors = 0;
+> +	size_t max_errors_to_show = 10;
+> +
+> +	igt_info("Verifying test pattern in %s buffer (%zu elements)...\n",
+> +		 label, num_u32_elements);
+> +
+> +	for (size_t i = 0; i < num_u32_elements && errors < max_errors_to_show; i++) {
+> +		/* Calculate expected value based on sparse pattern with many zeros */
+> +		u32 expected;
+> +
+> +		switch (i & 0xf) {
+> +		case 0:
+> +			expected = 0xdeadbeef; break;
+> +		case 4:
+> +			expected = 0xefbed000; break;
+> +		case 8:
+> +			expected = 0x00cfe111; break;
+> +		case 12:
+> +			expected = 0x11e0f222; break;
+> +		default:
+> +			expected = 0x00000000; break;
+> +		}
+> +
+> +		if (buffer_u32[i] != expected) {
+> +			igt_info("Pattern mismatch at offset %zu: expected 0x%08X, found 0x%08X\n",
+> +				 i * sizeof(uint32_t), expected, buffer_u32[i]);
+> +			errors++;
+> +		}
+> +	}
+> +
+> +	if (errors == 0) {
+> +		igt_info("Pattern verification SUCCESS for %s buffer - all %zu elements correct\n",
+> +			 label, num_u32_elements);
+> +		return true;
+> +	}
+> +
+> +	igt_info("Pattern verification FAILED for %s buffer - %zu errors found%s\n",
+> +		 label, errors, errors >= max_errors_to_show ? " (truncated)" : "");
+> +	return false;
+> +}
+> +
+> +
+> +/* Simple helper to fill buffer with a more compressible pattern */
+> +static void fill_buffer_simple_pattern(void *ptr, size_t size)
+> +{
+> +	u32 *buffer = (uint32_t *)ptr;
+> +	size_t num_elements = size / sizeof(uint32_t);
+> +	size_t i;
+> +
+> +	/* Sparse pattern chosen to produce highly compressible data;
+> +	 * non‑zero sentinels every 16 dwords (0xDEADBEEF, ..)
+> +	 * ensure we aren’t relying on clear-zero CCS encoding.
+> +	 */
+> +	for (i = 0; i < num_elements; i += 16) {
+> +		buffer[i] = 0xdeadbeef;
+> +		if (i + 4 < num_elements)
+> +			buffer[i + 4] = 0xefbed000;
+> +		if (i + 8 < num_elements)
+> +			buffer[i + 8] = 0x00cfe111;
+> +		if (i + 12 < num_elements)
+> +			buffer[i + 12] = 0x11e0f222;
+> +	}
+> +}
+>  
+>  static void surf_copy(int xe,
+> -		      intel_ctx_t *ctx,
+> -		      uint64_t ahnd,
+> -		      const struct blt_copy_object *src,
+> -		      const struct blt_copy_object *mid,
+> -		      const struct blt_copy_object *dst,
+> -		      int run_id, bool suspend_resume)
+> +		intel_ctx_t *ctx,
+> +		uint64_t ahnd,
+> +		const struct blt_copy_object *src,
+> +		const struct blt_copy_object *mid,
+> +		const struct blt_copy_object *dst,
+> +		int run_id, bool suspend_resume)
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index ccff8f804..d9d0b46af 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -19,8 +19,170 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_spin.h"
-+#include <inttypes.h>
- #include <string.h>
- 
-+#define MI_BB_END		(0 << 29 | 0x0A << 23 |  0)
-+#define MI_LOAD_REG_MEM		(0 << 29 | 0x29 << 23 | 0 << 22 | 0 << 21 | 1 << 19 | 2)
-+#define MI_STORE_REG_MEM	(0 << 29 | 0x24 << 23 | 0 << 22 | 0 << 21 | 1 << 19 | 2)
-+#define MI_MATH_R(length)		(0 << 29 | 0x1A << 23 | ((length) & 0xFF))
-+#define GPR_RX_ADDR(x)		(0x600 + (x) * 8)
-+#define ALU_LOAD(dst, src)	(0x080 << 20 | ((dst) << 10) | (src))
-+#define ALU_STORE(dst, src)	(0x180 << 20 | (dst) << 10 | (src))
-+#define ALU_ADD			(0x100 << 20)
-+#define ALU_RX(x)		(x)
-+#define ALU_SRCA		0x20
-+#define ALU_SRCB		0x21
-+#define ALU_ACCU		0x31
-+#define GB(x) (1024ULL * 1024ULL * 1024ULL * (x))
-+#define MAX_THREADS 20
-+struct gem_bo {
-+	uint32_t handle;
-+	uint64_t size;
-+	int *ptr;
-+	uint64_t addr;
-+};
-+
-+struct xe_test_ctx {
-+	int fd;
-+	uint32_t vm_id;
-+	uint32_t exec_queue_id;
-+	uint16_t sram_instance;
-+	uint16_t vram_instance;
-+	bool has_vram;
-+};
-+
-+struct mem_bind_sync {
-+	struct gem_bo *bufs;
-+	int n_bufs;
-+	uint32_t binds_syncobj;
-+};
-+
-+static uint64_t align_to_page_size(uint64_t size)
-+{
-+	return (size + 4095UL) & ~4095UL;
-+}
-+
-+static void create_exec_queue(int fd, struct xe_test_ctx *ctx)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	struct drm_xe_engine_class_instance eci = { 0 };
-+
-+	/* Use first available engine */
-+	xe_for_each_engine(fd, hwe) {
-+		eci = *hwe;
-+		break;
-+	}
-+	ctx->exec_queue_id = xe_exec_queue_create(fd, ctx->vm_id, &eci, 0);
-+}
-+
-+static void vm_bind_single_bo(int fd, struct xe_test_ctx *ctx, struct gem_bo *bo)
-+{
-+	int rc;
-+	uint64_t timeline_val = 1;
-+	uint32_t syncobj_handle = syncobj_create(fd, 0);
-+
-+	struct drm_xe_sync bind_sync = {
-+		.extensions = 0,
-+		.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.handle = syncobj_handle,
-+		.timeline_value = timeline_val,
-+	};
-+	struct drm_xe_vm_bind vm_bind = {
-+		.extensions = 0,
-+		.vm_id = ctx->vm_id,
-+		.exec_queue_id = 0,
-+		.num_binds = 1,
-+		.bind = {
-+			.obj = bo->handle,
-+			.obj_offset = 0,
-+			.range = bo->size,
-+			.addr = bo->addr,
-+			.op = DRM_XE_VM_BIND_OP_MAP,
-+			.flags = 0,
-+		},
-+		.num_syncs = 1,
-+		.syncs = (uintptr_t)&bind_sync,
-+	};
-+	rc = igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &vm_bind);
-+
-+	igt_debug("Bind returned %d\n", rc);
-+	igt_assert(rc == 0);
-+
-+	igt_assert(syncobj_timeline_wait(fd, &syncobj_handle, &timeline_val,
-+					 1, INT64_MAX, 0, NULL));
-+
-+	syncobj_destroy(fd, syncobj_handle);
-+}
-+
-+static uint32_t
-+vm_bind_bo_batch(int fd, struct xe_test_ctx *ctx, struct gem_bo *bos, int size)
-+{
-+	int rc;
-+	uint32_t syncobj_handle = syncobj_create(fd, 0);
-+	uint64_t timeline_val = 1;
-+	struct drm_xe_sync bind_sync = {
-+		.extensions = 0,
-+		.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.handle = syncobj_handle,
-+		.timeline_value = timeline_val,
-+	};
-+	struct drm_xe_vm_bind_op binds[size];
-+	struct drm_xe_vm_bind vm_bind = {
-+		.extensions = 0,
-+		.vm_id = ctx->vm_id,
-+		.exec_queue_id = 0,
-+		.num_binds = size,
-+		.vector_of_binds = (uintptr_t)binds,
-+		.num_syncs = 1,
-+		.syncs = (uintptr_t)&bind_sync,
-+	};
-+
-+	for (int i = 0; i < size; i++) {
-+		binds[i] = (struct drm_xe_vm_bind_op) {
-+			.extensions = 0,
-+			.obj = bos[i].handle,
-+			.pat_index = 0,
-+			.pad = 0,
-+			.obj_offset = 0,
-+			.range = bos[i].size,
-+			.addr = bos[i].addr,
-+			.op = DRM_XE_VM_BIND_OP_MAP,
-+			.flags = 0,
-+			.prefetch_mem_region_instance = 0,
-+			.pad2 = 0,
-+		};
-+	}
-+	rc = igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &vm_bind);
-+	igt_assert(rc == 0);
-+
-+	return syncobj_handle;
-+}
-+
-+static void query_mem_info(int fd, struct xe_test_ctx *ctx)
-+{
-+	uint64_t vram_reg, sys_reg;
-+	struct drm_xe_mem_region *region;
-+
-+	ctx->has_vram = xe_has_vram(fd);
-+	if (ctx->has_vram) {
-+		/* Get VRAM instance - vram_memory returns a bitmask,
-+		 * so we extract the instance from it
-+		 */
-+		vram_reg = vram_memory(fd, 0);
-+		region = xe_mem_region(fd, vram_reg);
-+		ctx->vram_instance = region->instance;
-+	}
-+
-+	/* Get SRAM instance */
-+	sys_reg = system_memory(fd);
-+	region = xe_mem_region(fd, sys_reg);
-+	ctx->sram_instance = region->instance;
-+	igt_debug("has_vram: %d\n", ctx->has_vram);
-+}
-+
- static uint32_t
- addr_low(uint64_t addr)
- {
-@@ -2450,6 +2612,352 @@ static void test_oom(int fd)
- 	}
- }
- 
-+static int build_add_batch(struct gem_bo *batch_bo, struct gem_bo *integers_bo,
-+			   struct gem_bo *result_bo, int ints_to_add)
-+{
-+	int pos = 0;
-+	uint64_t tmp_addr;
-+
-+	batch_bo->ptr[pos++] = MI_LOAD_REG_MEM;
-+	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
-+	tmp_addr = integers_bo->addr + 0 * sizeof(uint32_t);
-+	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+	for (int i = 1; i < ints_to_add; i++) {
-+		/* r1 = integers_bo[i] */
-+		batch_bo->ptr[pos++] = MI_LOAD_REG_MEM;
-+		batch_bo->ptr[pos++] = GPR_RX_ADDR(1);
-+		tmp_addr = integers_bo->addr + i * sizeof(uint32_t);
-+		batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+		batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+		/* r0 = r0 + r1 */
-+		batch_bo->ptr[pos++] = MI_MATH_R(3);
-+		batch_bo->ptr[pos++] = ALU_LOAD(ALU_SRCA, ALU_RX(0));
-+		batch_bo->ptr[pos++] = ALU_LOAD(ALU_SRCB, ALU_RX(1));
-+		batch_bo->ptr[pos++] = ALU_ADD;
-+		batch_bo->ptr[pos++] = ALU_STORE(ALU_RX(0), ALU_ACCU);
-+	}
-+	/* result_bo[0] = r0 */
-+	batch_bo->ptr[pos++] = MI_STORE_REG_MEM;
-+	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
-+	tmp_addr = result_bo->addr + 0 * sizeof(uint32_t);
-+	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+
-+	batch_bo->ptr[pos++] = MI_BB_END;
-+	while (pos % 4 != 0)
-+		batch_bo->ptr[pos++] = MI_NOOP;
-+	return pos;
-+}
-+
-+static void create_test_bos(int fd, struct xe_test_ctx *ctx, struct mem_bind_sync *bind,
-+			    uint32_t  placement, uint64_t *addr)
-+{
-+	const char *mem_type = (placement & vram_memory(fd, 0)) ? "VRAM" : "SRAM";
-+
-+	for (int i = 0; i < bind->n_bufs; i++) {
-+		struct gem_bo *bo = &bind->bufs[i];
-+		int ret;
-+
-+		bo->size = GB(1);
-+		ret = __xe_bo_create_caching(fd, ctx->vm_id, bo->size,
-+					     placement, 0,
-+					     DRM_XE_GEM_CPU_CACHING_WC,
-+					     &bo->handle);
-+		if (ret == -ENOMEM || ret == -ENOSPC) {
-+			bind->n_bufs = i;/* stop creating more */
-+			igt_debug("%s allocation failed at buffer %d\n", mem_type, i);
-+			break;
-+		}
-+		bo->ptr = NULL;
-+		bo->addr = *addr;
-+		*addr += bo->size;
-+		igt_debug("%s buffer %d created at 0x%016lx\n", mem_type, i, bo->addr);
-+	}
-+}
-+
-+static int fill_random_integers(struct gem_bo *int_bo, int ints_to_add)
-+{
-+	uint32_t expected_result = 0;
-+
-+	for (int i = 0; i < ints_to_add; i++) {
-+		int random_int = rand() % 8;
-+
-+		int_bo->ptr[i] = random_int;
-+		expected_result += random_int;
-+
-+		igt_debug("%d", random_int);
-+		if (i + 1 != ints_to_add)
-+			igt_debug(" + ");
-+		else
-+			igt_debug(" = ");
-+	}
-+	igt_debug("%d\n", expected_result);
-+	return expected_result;
-+}
-+
-+static uint32_t setup_batch_syncs(int fd, struct drm_xe_sync *batch_syncs, int *n_batch_syncs,
-+				  uint64_t timeline_val, struct mem_bind_sync *vram_bind,
-+				  struct mem_bind_sync *sram_bind)
-+{
-+	uint32_t batch_syncobj = syncobj_create(fd, 0);
-+
-+	batch_syncs[*n_batch_syncs] = (struct drm_xe_sync) {
-+		.extensions = 0,
-+		.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.handle = batch_syncobj,
-+		.timeline_value = timeline_val,
-+	};
-+	(*n_batch_syncs)++;
-+
-+	if (vram_bind->n_bufs) {
-+		batch_syncs[*n_batch_syncs] = (struct drm_xe_sync) {
-+			.extensions = 0,
-+			.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
-+			.flags = 0, /* wait */
-+			.handle = vram_bind->binds_syncobj,
-+			.timeline_value = 1,
-+		};
-+		(*n_batch_syncs)++;
-+	}
-+
-+	if (sram_bind->n_bufs) {
-+		batch_syncs[*n_batch_syncs] = (struct drm_xe_sync) {
-+			.extensions = 0,
-+			.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
-+			.flags = 0, /* wait */
-+			.handle = sram_bind->binds_syncobj,
-+			.timeline_value = 1,
-+		};
-+		(*n_batch_syncs)++;
-+	}
-+	return batch_syncobj;
-+}
-+
-+static int xe_exec_with_retry(int fd, struct drm_xe_exec *exec, int max_retries)
-+{
-+	int rc, retries = 0;
-+
-+	for (retries = 0; retries < max_retries; retries++) {
-+		rc = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, exec);
-+
-+		if (!(rc && errno == ENOMEM))
-+			break;
-+
-+		usleep(100 * retries);
-+		if (retries == 0)
-+			igt_warn("got ENOMEM\n");
-+	}
-+
-+	if (retries == max_retries)
-+		igt_warn("gave up after %d retries\n", retries);
-+
-+	if (rc) {
-+		igt_warn("errno: %d (%s)\n", errno, strerror(errno));
-+		perror(__func__);
-+	}
-+
-+	if (retries && !rc)
-+		igt_debug("!!!!!! succeeded after %d retries !!!!!!\n", retries);
-+
-+	return rc;
-+}
-+
-+static void cleanup_bo_resources(int fd, struct gem_bo *bo)
-+{
-+	if (bo->ptr) {
-+		igt_assert_eq(munmap(bo->ptr, bo->size), 0);
-+		bo->ptr = NULL;
-+	}
-+	if (bo->handle)
-+		gem_close(fd, bo->handle);
-+}
-+
-+static void cleanup_sram_vram_objs(int fd, struct mem_bind_sync *vram_bind,
-+				   struct mem_bind_sync *sram_bind)
-+{
-+	for (int i = 0; i < vram_bind->n_bufs; i++)
-+		gem_close(fd, vram_bind->bufs[i].handle);
-+	for (int i = 0; i < sram_bind->n_bufs; i++)
-+		gem_close(fd, sram_bind->bufs[i].handle);
-+	free(vram_bind->bufs);
-+	free(sram_bind->bufs);
-+	if (vram_bind->n_bufs)
-+		syncobj_destroy(fd, vram_bind->binds_syncobj);
-+	if (vram_bind->n_bufs)
-+		syncobj_destroy(fd, sram_bind->binds_syncobj);
-+}
-+
-+/**
-+ * SUBTEST: oversubscribe-concurrent-bind
-+ * Description: Test for oversubscribing the VM with multiple processes
-+ * doing binds at the same time, and ensure they all complete successfully.
-+ * Functionality: This check is for a specific bug where if multiple processes
-+ * oversubscribe the VM, some of the binds may fail with  ENOMEM due to
-+ * deadlock in the bind code.
-+ * Test category: stress test
-+ */
-+static void test_vm_oversubscribe_concurrent_bind(int fd)
-+{
-+	#define MIN_BUFS_PER_PROC 2
-+	int n_proc = 0, n_vram_bufs = 0, n_sram_bufs = 0;
-+	uint32_t max_by_mem;
-+	uint64_t total_vram_demand = 0;
-+	uint64_t vram_size = xe_visible_available_vram_size(fd, 0);
-+	uint64_t sram_avail = (uint64_t)igt_get_avail_ram_mb() << 20;
-+	uint64_t target_vram = vram_size * 2;      /* 2 of VRAM */
-+	uint64_t target_sram = sram_avail * 50 / 100;  /* 50% system RAM */
-+
-+	int total_vram_bufs = target_vram / GB(1);
-+	int total_sram_bufs = target_sram / GB(1);
-+
-+	/* determine concurrency from memory pressure */
-+
-+	pthread_barrier_t *barrier;
-+	pthread_barrierattr_t attr;
-+
-+	max_by_mem = min(total_vram_bufs / MIN_BUFS_PER_PROC,
-+			 total_sram_bufs / MIN_BUFS_PER_PROC);
-+	n_proc = min_t(uint32_t, max_by_mem, MIN_BUFS_PER_PROC);
-+	igt_assert(n_proc > 0);
-+
-+	n_vram_bufs = max(2, total_vram_bufs / n_proc);
-+	n_sram_bufs = max(2, total_sram_bufs / n_proc);
-+	total_vram_demand = (uint64_t)n_proc * n_vram_bufs * GB(1);
-+
-+	igt_debug("VRAM size: %" PRIu64 "MB, System RAM available: %" PRIu64 "MB\n",
-+		  vram_size >> 20, sram_avail >> 20);
-+
-+	igt_debug(" n_proc = %d\n", n_proc);
-+	igt_debug("VRAM: %" PRIu64 "GB\n", vram_size >> 30);
-+	igt_debug("VRAM demand: %" PRIu64 "MB (%.2fx oversubscription)\n",
-+		  total_vram_demand >> 20, (double)total_vram_demand / vram_size);
-+	igt_debug("Processes=%d VRAM_bufs=%d SRAM_bufs=%d\n", n_proc,
-+		  n_vram_bufs, n_sram_bufs);
-+
-+	/* Create shared memory barrier for process synchronization */
-+	barrier = mmap(NULL, sizeof(pthread_barrier_t),
-+		       PROT_READ | PROT_WRITE,
-+		       MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(barrier != MAP_FAILED);
-+	pthread_barrierattr_init(&attr);
-+	pthread_barrierattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
-+	pthread_barrier_init(barrier, &attr, n_proc);
-+
-+	igt_fork(child, n_proc) {
-+		struct xe_test_ctx ctx = {0};
-+		int rc;
-+		uint64_t addr = 0x40000000;
-+		int expected_result = 0, ints_to_add = 4;
-+		int max_retries = 1024;
-+		uint32_t batch_syncobj;
-+		/* integers_bo contains the integers we're going to add. */
-+		struct gem_bo integers_bo, result_bo, batch_bo, *vram_bufs,
-+			       *sram_bufs;
-+		struct gem_bo bo_arr[] = {result_bo, batch_bo, integers_bo};
-+		struct drm_xe_sync batch_syncs[3];
-+		int n_batch_syncs = 0;
-+		int pos = 0;
-+		uint64_t timeline_val = 1;
-+		struct drm_xe_exec exec;
-+
-+		struct mem_bind_sync vram_bind = {0};
-+		struct mem_bind_sync sram_bind = {0};
-+
-+		vram_bufs = (struct gem_bo *)calloc(n_vram_bufs, sizeof(struct gem_bo));
-+		sram_bufs = (struct gem_bo *)calloc(n_sram_bufs, sizeof(struct gem_bo));
-+		srand(child);
-+
-+		igt_assert(vram_bufs && sram_bufs);
-+
-+		ctx.vm_id = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
-+		query_mem_info(fd, &ctx);
-+		create_exec_queue(fd, &ctx);
-+		vram_bind.bufs = vram_bufs;
-+		vram_bind.n_bufs = n_vram_bufs;
-+		sram_bind.bufs = sram_bufs;
-+		sram_bind.n_bufs = n_sram_bufs;
-+
-+		create_test_bos(fd, &ctx, &vram_bind, vram_memory(fd, 0), &addr);
-+		create_test_bos(fd, &ctx, &sram_bind, system_memory(fd), &addr);
-+
-+		pthread_barrier_wait(barrier);
-+
-+		if (n_vram_bufs)
-+			vram_bind.binds_syncobj = vm_bind_bo_batch(fd, &ctx, vram_bufs,
-+								   n_vram_bufs);
-+
-+		if (n_sram_bufs)
-+			sram_bind.binds_syncobj = vm_bind_bo_batch(fd, &ctx, sram_bufs,
-+								   n_sram_bufs);
-+
-+		integers_bo.size = align_to_page_size(sizeof(int) * ints_to_add);
-+		integers_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, integers_bo.size,
-+							  system_memory(fd), 0,
-+							  DRM_XE_GEM_CPU_CACHING_WC);
-+		integers_bo.ptr = (int *)xe_bo_map(fd, integers_bo.handle, integers_bo.size);
-+		integers_bo.addr = 0x100000;
-+
-+		expected_result = fill_random_integers(&integers_bo, ints_to_add);
-+		igt_debug("%d\n", expected_result);
-+		igt_debug("Creating the result buffer object\n");
-+
-+		result_bo.size = align_to_page_size(sizeof(int));
-+		result_bo.handle  = xe_bo_create_caching(fd, ctx.vm_id, result_bo.size,
-+							 system_memory(fd), 0,
-+							 DRM_XE_GEM_CPU_CACHING_WC);
-+		result_bo.ptr = NULL;
-+		result_bo.addr = 0x200000;
-+		/* batch_bo contains the commands the GPU will run. */
-+
-+		batch_bo.size = 4096;
-+		batch_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, batch_bo.size,
-+						       system_memory(fd), 0,
-+						       DRM_XE_GEM_CPU_CACHING_WC);
-+
-+		batch_bo.ptr = (int *)xe_bo_map(fd, batch_bo.handle, batch_bo.size);
-+		batch_bo.addr = 0x300000;
-+
-+		pos = build_add_batch(&batch_bo, &integers_bo, &result_bo, ints_to_add);
-+
-+		igt_assert(pos * sizeof(int) <= batch_bo.size);
-+
-+		vm_bind_single_bo(fd, &ctx, &integers_bo);
-+		vm_bind_single_bo(fd, &ctx, &result_bo);
-+		vm_bind_single_bo(fd, &ctx, &batch_bo);
-+		batch_syncobj = setup_batch_syncs(fd, batch_syncs, &n_batch_syncs, timeline_val,
-+						  &vram_bind, &sram_bind);
-+
-+		exec = (struct drm_xe_exec) {
-+			.exec_queue_id = ctx.exec_queue_id,
-+			.num_syncs = n_batch_syncs,
-+			.syncs = (uintptr_t)batch_syncs,
-+			.address = batch_bo.addr,
-+			.num_batch_buffer = 1,
-+		};
-+
-+		rc = xe_exec_with_retry(fd, &exec, max_retries);
-+		igt_assert_eq(rc, 0);
-+
-+		/* We need to wait for the GPU to finish. */
-+		igt_assert(syncobj_timeline_wait(fd, &batch_syncobj,
-+						 &timeline_val, 1, INT64_MAX, 0, NULL));
-+		result_bo.ptr = (int *)xe_bo_map(fd, result_bo.handle, result_bo.size);
-+		igt_assert_eq(result_bo.ptr[0], expected_result);
-+		cleanup_bo_resources(fd, bo_arr);
-+		cleanup_sram_vram_objs(fd, &vram_bind, &sram_bind);
-+		syncobj_destroy(fd, batch_syncobj);
-+		xe_exec_queue_destroy(fd, ctx.exec_queue_id);
-+		xe_vm_destroy(fd, ctx.vm_id);
-+		close(fd);
-+	}
-+	igt_waitchildren();
-+	pthread_barrier_destroy(barrier);
-+	pthread_barrierattr_destroy(&attr);
-+	igt_assert_eq(munmap(barrier, sizeof(pthread_barrier_t)), 0);
-+}
-+
- int igt_main()
- {
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
-@@ -2849,6 +3357,11 @@ int igt_main()
- 		igt_assert(xe_visible_vram_size(fd, 0));
- 		test_oom(fd);
- 	}
-+	igt_subtest("oversubscribe-concurrent-bind")
-+	{
-+	    igt_require(xe_has_vram(fd));
-+	    test_vm_oversubscribe_concurrent_bind(fd);
-+	}
- 
- 	igt_fixture()
- 		drm_close_driver(fd);
--- 
-2.52.0
+A lot of indentation noise. Please fix and resubmit series.
 
+--
+Zbigniew
+
+>  {
+>  	struct blt_copy_data blt = {};
+>  	struct blt_block_copy_data_ext ext = {};
+> @@ -139,9 +246,9 @@ static void surf_copy(int xe,
+>  	blt_ctrl_surf_copy_init(xe, &surf);
+>  	surf.print_bb = param.print_bb;
+>  	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+> -				 uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
+> +			uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
+>  	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
+> -				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+> +			DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+>  	bb_size = xe_bb_size(xe, SZ_4K);
+>  	bb1 = xe_bo_create(xe, 0, bb_size, sysmem, 0);
+>  	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
+> @@ -155,22 +262,22 @@ static void surf_copy(int xe,
+>  		char *orig, *orig2, *newsum, *newsum2;
+>  
+>  		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+> -						   (void *)ccsmap, surf.dst.size);
+> +				(void *)ccsmap, surf.dst.size);
+>  		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+> -						    (void *)mid->ptr, mid->size);
+> +				(void *)mid->ptr, mid->size);
+>  
+>  		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+>  
+>  		blt_set_ctrl_surf_object(&surf.dst, ccs2, system_memory(xe), ccssize,
+> -					 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+> +				0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+>  		blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+>  		intel_ctx_xe_sync(ctx, true);
+>  
+>  		ccsmap2 = xe_bo_map(xe, ccs2, surf.dst.size);
+>  		newsum = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+> -						     (void *)ccsmap2, surf.dst.size);
+> +				(void *)ccsmap2, surf.dst.size);
+>  		newsum2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+> -						      (void *)mid->ptr, mid->size);
+> +				(void *)mid->ptr, mid->size);
+>  
+>  		munmap(ccsmap2, ccssize);
+>  		if (blt_platform_has_flat_ccs_enabled(xe)) {
+> @@ -183,11 +290,11 @@ static void surf_copy(int xe,
+>  					 * uncompressed in xe2+ dgfx
+>  					 */
+>  					igt_assert(!blt_surface_is_compressed(xe, ctx,
+> -							NULL, ahnd, mid));
+> +								NULL, ahnd, mid));
+>  				} else {
+>  					/* ccs should be present in xe2+ igfx */
+>  					igt_assert(blt_surface_is_compressed(xe, ctx,
+> -							NULL, ahnd, mid));
+> +								NULL, ahnd, mid));
+>  				}
+>  			}
+>  		}
+> @@ -201,9 +308,9 @@ static void surf_copy(int xe,
+>  	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+>  		ccsmap[i] = i;
+>  	blt_set_ctrl_surf_object(&surf.src, ccs, sysmem, ccssize,
+> -				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+> +			uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+>  	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
+> -				 uc_mocs, comp_pat_index, INDIRECT_ACCESS);
+> +			uc_mocs, comp_pat_index, INDIRECT_ACCESS);
+>  	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+>  	intel_ctx_xe_sync(ctx, true);
+>  
+> @@ -273,10 +380,10 @@ struct blt_block_copy3_data_ext {
+>  };
+>  
+>  static int blt_block_copy3(int xe,
+> -			   const intel_ctx_t *ctx,
+> -			   uint64_t ahnd,
+> -			   const struct blt_copy3_data *blt3,
+> -			   const struct blt_block_copy3_data_ext *ext3)
+> +		const intel_ctx_t *ctx,
+> +		uint64_t ahnd,
+> +		const struct blt_copy3_data *blt3,
+> +		const struct blt_block_copy3_data_ext *ext3)
+>  {
+>  	struct blt_copy_data blt0;
+>  	struct blt_block_copy_data_ext ext0;
+> @@ -340,11 +447,11 @@ static int blt_block_copy3(int xe,
+>  #define FROM_EXP_WH(w, h) ((w) >= CHECK_FROM_WIDTH && (h) >= CHECK_FROM_HEIGHT)
+>  
+>  static void block_copy(int xe,
+> -		       intel_ctx_t *ctx,
+> -		       uint32_t region1, uint32_t region2,
+> -		       uint32_t width, uint32_t height,
+> -		       enum blt_tiling_type mid_tiling,
+> -		       const struct test_config *config)
+> +		intel_ctx_t *ctx,
+> +		uint32_t region1, uint32_t region2,
+> +		uint32_t width, uint32_t height,
+> +		enum blt_tiling_type mid_tiling,
+> +		const struct test_config *config)
+>  {
+>  	struct blt_copy_data blt = {};
+>  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> @@ -354,7 +461,7 @@ static void block_copy(int xe,
+>  	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
+>  	uint32_t run_id = mid_tiling;
+>  	uint32_t mid_region = (intel_gen(intel_get_drm_devid(xe)) >= 20 &&
+> -			       !xe_has_vram(xe)) ? region1 : region2;
+> +			!xe_has_vram(xe)) ? region1 : region2;
+>  	uint32_t bb;
+>  	enum blt_compression mid_compression = config->compression;
+>  	int mid_compression_format = param.compression_format;
+> @@ -370,11 +477,11 @@ static void block_copy(int xe,
+>  	blt_copy_init(xe, &blt);
+>  
+>  	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> -				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> +			T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+>  	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
+> -				mid_tiling, mid_compression, comp_type, true);
+> +			mid_tiling, mid_compression, comp_type, true);
+>  	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> -				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> +			T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+>  	igt_assert(src->size == dst->size);
+>  	PRINT_SURFACE_INFO("src", src);
+>  	PRINT_SURFACE_INFO("mid", mid);
+> @@ -418,10 +525,10 @@ static void block_copy(int xe,
+>  			exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
+>  			surf_ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
+>  			surf_ahnd = intel_allocator_open(xe, surf_ctx->vm,
+> -							 INTEL_ALLOCATOR_RELOC);
+> +					INTEL_ALLOCATOR_RELOC);
+>  		}
+>  		surf_copy(xe, surf_ctx, surf_ahnd, src, mid, dst, run_id,
+> -			  config->suspend_resume);
+> +				config->suspend_resume);
+>  
+>  		if (surf_ctx != ctx) {
+>  			xe_exec_queue_destroy(xe, exec_queue);
+> @@ -445,8 +552,8 @@ static void block_copy(int xe,
+>  			pat_index = intel_get_pat_idx_uc_comp(xe);
+>  
+>  		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
+> -			       pat_index, T_LINEAR, COMPRESSION_DISABLED,
+> -			       comp_type);
+> +				pat_index, T_LINEAR, COMPRESSION_DISABLED,
+> +				comp_type);
+>  		blt.dst.ptr = mid->ptr;
+>  	}
+>  
+> @@ -474,11 +581,11 @@ static void block_copy(int xe,
+>  }
+>  
+>  static void block_multicopy(int xe,
+> -			    intel_ctx_t *ctx,
+> -			    uint32_t region1, uint32_t region2,
+> -			    uint32_t width, uint32_t height,
+> -			    enum blt_tiling_type mid_tiling,
+> -			    const struct test_config *config)
+> +		intel_ctx_t *ctx,
+> +		uint32_t region1, uint32_t region2,
+> +		uint32_t width, uint32_t height,
+> +		enum blt_tiling_type mid_tiling,
+> +		const struct test_config *config)
+>  {
+>  	struct blt_copy3_data blt3 = {};
+>  	struct blt_copy_data blt = {};
+> @@ -489,7 +596,7 @@ static void block_multicopy(int xe,
+>  	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
+>  	uint32_t run_id = mid_tiling;
+>  	uint32_t mid_region = (intel_gen(intel_get_drm_devid(xe)) >= 20 &&
+> -			       !xe_has_vram(xe)) ? region1 : region2;
+> +			!xe_has_vram(xe)) ? region1 : region2;
+>  	uint32_t bb;
+>  	enum blt_compression mid_compression = config->compression;
+>  	int mid_compression_format = param.compression_format;
+> @@ -505,13 +612,13 @@ static void block_multicopy(int xe,
+>  	blt_copy_init(xe, &blt);
+>  
+>  	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> -				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> +			T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+>  	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
+> -				mid_tiling, mid_compression, comp_type, true);
+> +			mid_tiling, mid_compression, comp_type, true);
+>  	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> -				mid_tiling, COMPRESSION_DISABLED, comp_type, true);
+> +			mid_tiling, COMPRESSION_DISABLED, comp_type, true);
+>  	final = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> -				  T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> +			T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+>  	igt_assert(src->size == dst->size);
+>  	PRINT_SURFACE_INFO("src", src);
+>  	PRINT_SURFACE_INFO("mid", mid);
+> @@ -534,8 +641,8 @@ static void block_multicopy(int xe,
+>  			pat_index = intel_get_pat_idx_uc_comp(xe);
+>  
+>  		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
+> -			       mid->mocs_index, pat_index, mid_tiling,
+> -			       COMPRESSION_DISABLED, comp_type);
+> +				mid->mocs_index, pat_index, mid_tiling,
+> +				COMPRESSION_DISABLED, comp_type);
+>  		blt3.dst.ptr = mid->ptr;
+>  	}
+>  
+> @@ -573,11 +680,11 @@ static void block_multicopy(int xe,
+>  }
+>  
+>  static void block_copy_large(int xe,
+> -			     intel_ctx_t *ctx,
+> -			     uint32_t region1, uint32_t region2,
+> -			     uint32_t width, uint32_t height,
+> -			     enum blt_tiling_type tiling,
+> -			     const struct test_config *config)
+> +		intel_ctx_t *ctx,
+> +		uint32_t region1, uint32_t region2,
+> +		uint32_t width, uint32_t height,
+> +		enum blt_tiling_type tiling,
+> +		const struct test_config *config)
+>  {
+>  	struct blt_copy_data blt = {};
+>  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> @@ -601,11 +708,11 @@ static void block_copy_large(int xe,
+>  	blt_copy_init(xe, &blt);
+>  
+>  	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> -				T_LINEAR, COMPRESSION_DISABLED,
+> -				COMPRESSION_TYPE_3D, true);
+> +			T_LINEAR, COMPRESSION_DISABLED,
+> +			COMPRESSION_TYPE_3D, true);
+>  	dst = blt_create_object(&blt, region2, width, height, bpp, uc_mocs,
+> -				tiling, COMPRESSION_ENABLED,
+> -				COMPRESSION_TYPE_3D, true);
+> +			tiling, COMPRESSION_ENABLED,
+> +			COMPRESSION_TYPE_3D, true);
+>  	PRINT_SURFACE_INFO("src", src);
+>  	PRINT_SURFACE_INFO("dst", dst);
+>  
+> @@ -618,7 +725,7 @@ static void block_copy_large(int xe,
+>  	blt_set_copy_object(&blt.dst, dst);
+>  	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
+>  	blt_set_object_ext(&ext.dst, param.compression_format,
+> -			   width, height, SURFACE_TYPE_2D);
+> +			width, height, SURFACE_TYPE_2D);
+>  	blt_set_batch(&blt.bb, bb, bb_size, region1);
+>  	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
+>  	intel_ctx_xe_sync(ctx, true);
+> @@ -634,9 +741,9 @@ static void block_copy_large(int xe,
+>  	if (!result) {
+>  		for (i = 0; i < size / sizeof(*ptr); i += 8)
+>  			igt_debug("[%08x]: %08x %08x %08x %08x %08x %08x %08x %08x\n",
+> -				  i,
+> -				  ptr[i], ptr[i + 1], ptr[i + 2], ptr[i + 3],
+> -				  ptr[i + 4], ptr[i + 5], ptr[i + 6], ptr[i + 7]);
+> +					i,
+> +					ptr[i], ptr[i + 1], ptr[i + 2], ptr[i + 3],
+> +					ptr[i + 4], ptr[i + 5], ptr[i + 6], ptr[i + 7]);
+>  	}
+>  
+>  	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height, bpp);
+> @@ -663,11 +770,11 @@ enum copy_func {
+>  static const struct {
+>  	const char *suffix;
+>  	void (*copyfn)(int fd,
+> -		       intel_ctx_t *ctx,
+> -		       uint32_t region1, uint32_t region2,
+> -		       uint32_t width, uint32_t height,
+> -		       enum blt_tiling_type btype,
+> -		       const struct test_config *config);
+> +			intel_ctx_t *ctx,
+> +			uint32_t region1, uint32_t region2,
+> +			uint32_t width, uint32_t height,
+> +			enum blt_tiling_type btype,
+> +			const struct test_config *config);
+>  } copyfns[] = {
+>  	[BLOCK_COPY] = { "", block_copy },
+>  	[BLOCK_MULTICOPY] = { "-multicopy", block_multicopy },
+> @@ -675,9 +782,9 @@ static const struct {
+>  };
+>  
+>  static void single_copy(int xe, const struct test_config *config,
+> -			int32_t region1, uint32_t region2,
+> -			uint32_t width, uint32_t height,
+> -			int tiling, enum copy_func copy_function)
+> +		int32_t region1, uint32_t region2,
+> +		uint32_t width, uint32_t height,
+> +		int tiling, enum copy_func copy_function)
+>  {
+>  	struct drm_xe_engine_class_instance inst = {
+>  		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> @@ -706,9 +813,9 @@ static void single_copy(int xe, const struct test_config *config,
+>  }
+>  
+>  static void block_copy_test(int xe,
+> -			    const struct test_config *config,
+> -			    struct igt_collection *set,
+> -			    enum copy_func copy_function)
+> +		const struct test_config *config,
+> +		struct igt_collection *set,
+> +		enum copy_func copy_function)
+>  {
+>  	uint16_t dev_id = intel_get_drm_devid(xe);
+>  	struct igt_collection *regions;
+> @@ -729,7 +836,7 @@ static void block_copy_test(int xe,
+>  
+>  	for_each_tiling(tiling) {
+>  		if (!blt_block_copy_supports_tiling(xe, tiling) ||
+> -		    (param.tiling >= 0 && param.tiling != tiling))
+> +				(param.tiling >= 0 && param.tiling != tiling))
+>  			continue;
+>  
+>  		for_each_variation_r(regions, 2, set) {
+> @@ -747,33 +854,33 @@ static void block_copy_test(int xe,
+>  			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
+>  
+>  			snprintf(testname, sizeof(testname),
+> -				 "%s-%s-compfmt%d-%s%s",
+> -				 blt_tiling_name(tiling),
+> -				 config->compression ?
+> -					 "compressed" : "uncompressed",
+> -				 param.compression_format, regtxt,
+> -				 copyfns[copy_function].suffix);
+> +					"%s-%s-compfmt%d-%s%s",
+> +					blt_tiling_name(tiling),
+> +					config->compression ?
+> +					"compressed" : "uncompressed",
+> +					param.compression_format, regtxt,
+> +					copyfns[copy_function].suffix);
+>  
+>  			if (!config->width_increment) {
+>  				igt_dynamic(testname)
+>  					single_copy(xe, config, region1, region2,
+> -						    width, height,
+> -						    tiling, copy_function);
+> +							width, height,
+> +							tiling, copy_function);
+>  			} else {
+>  				for (int w = param.incdim_width;
+> -				     w < param.incdim_width + config->width_steps;
+> -				     w += config->width_increment) {
+> +						w < param.incdim_width + config->width_steps;
+> +						w += config->width_increment) {
+>  					snprintf(testname, sizeof(testname),
+> -						 "%s-%s-compfmt%d-%s%s-%dx%d",
+> -						 blt_tiling_name(tiling),
+> -						 config->compression ?
+> -							 "compressed" : "uncompressed",
+> -						 param.compression_format, regtxt,
+> -						 copyfns[copy_function].suffix,
+> -						 w, w);
+> +							"%s-%s-compfmt%d-%s%s-%dx%d",
+> +							blt_tiling_name(tiling),
+> +							config->compression ?
+> +							"compressed" : "uncompressed",
+> +							param.compression_format, regtxt,
+> +							copyfns[copy_function].suffix,
+> +							w, w);
+>  					igt_dynamic(testname)
+>  						single_copy(xe, config, region1, region2,
+> -							    w, w, tiling, copy_function);
+> +								w, w, tiling, copy_function);
+>  				}
+>  
+>  			}
+> @@ -809,7 +916,7 @@ static void large_surf_ctrl_copy(int xe, const struct test_config *config)
+>  	}
+>  
+>  	single_copy(xe, config, region1, region2, width, height, tiling,
+> -		    LARGE_SURFCOPY);
+> +			LARGE_SURFCOPY);
+>  }
+>  
+>  static int opt_handler(int opt, int opt_index, void *data)
+> @@ -852,14 +959,14 @@ static int opt_handler(int opt, int opt_index, void *data)
+>  }
+>  
+>  const char *help_str =
+> -	"  -b\tPrint bb\n"
+> -	"  -f\tCompression format (0-31)\n"
+> -	"  -p\tWrite PNG\n"
+> -	"  -s\tPrint surface info\n"
+> -	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
+> -	"  -W\tWidth (default 512)\n"
+> -	"  -H\tHeight (default 512)"
+> -	;
+> +"  -b\tPrint bb\n"
+> +"  -f\tCompression format (0-31)\n"
+> +"  -p\tWrite PNG\n"
+> +"  -s\tPrint surface info\n"
+> +"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
+> +"  -W\tWidth (default 512)\n"
+> +"  -H\tHeight (default 512)"
+> +;
+>  
+>  int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  {
+> @@ -873,8 +980,8 @@ int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  		xe_device_get(xe);
+>  
+>  		set = xe_get_memory_region_set(xe,
+> -					       DRM_XE_MEM_REGION_CLASS_SYSMEM,
+> -					       DRM_XE_MEM_REGION_CLASS_VRAM);
+> +				DRM_XE_MEM_REGION_CLASS_SYSMEM,
+> +				DRM_XE_MEM_REGION_CLASS_VRAM);
+>  	}
+>  
+>  	igt_describe("Check block-copy uncompressed blit");
+> @@ -887,7 +994,7 @@ int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  	igt_describe("Check block-copy uncompressed blit with increment width/height");
+>  	igt_subtest_with_dynamic("block-copy-uncompressed-inc-dimension") {
+>  		struct test_config config = { .width_increment = 15,
+> -					      .width_steps = 512 };
+> +			.width_steps = 512 };
+>  
+>  		block_copy_test(xe, &config, set, BLOCK_COPY);
+>  	}
+> @@ -902,8 +1009,8 @@ int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  	igt_describe("Check block-copy compressed blit with increment width/height");
+>  	igt_subtest_with_dynamic("block-copy-compressed-inc-dimension") {
+>  		struct test_config config = { .compression = true,
+> -					      .width_increment = 15,
+> -					      .width_steps = 512 };
+> +			.width_increment = 15,
+> +			.width_steps = 512 };
+>  
+>  		block_copy_test(xe, &config, set, BLOCK_COPY);
+>  	}
+> @@ -918,7 +1025,7 @@ int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  	igt_describe("Check block-multicopy flatccs inplace decompression blit");
+>  	igt_subtest_with_dynamic("block-multicopy-inplace") {
+>  		struct test_config config = { .compression = true,
+> -					      .inplace = true };
+> +			.inplace = true };
+>  
+>  		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
+>  	}
+> @@ -926,17 +1033,17 @@ int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  	igt_describe("Check flatccs data can be copied from/to surface");
+>  	igt_subtest_with_dynamic("ctrl-surf-copy") {
+>  		struct test_config config = { .compression = true,
+> -					      .surfcopy = true };
+> +			.surfcopy = true };
+>  
+>  		block_copy_test(xe, &config, set, BLOCK_COPY);
+>  	}
+>  
+>  	igt_describe("Check flatccs data are physically tagged and visible"
+> -		     " in different contexts");
+> +			" in different contexts");
+>  	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
+>  		struct test_config config = { .compression = true,
+> -					      .surfcopy = true,
+> -					      .new_ctx = true };
+> +			.surfcopy = true,
+> +			.new_ctx = true };
+>  
+>  		block_copy_test(xe, &config, set, BLOCK_COPY);
+>  	}
+> @@ -955,7 +1062,7 @@ int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  	igt_describe("Check flatccs data can be copied from large surface");
+>  	igt_subtest("large-ctrl-surf-copy") {
+>  		struct test_config config = { .overwrite_width = 4096,
+> -					      .overwrite_height = 4096+64, };
+> +			.overwrite_height = 4096+64, };
+>  
+>  		large_surf_ctrl_copy(xe, &config);
+>  	}
+> -- 
+> 2.43.0
+> 
