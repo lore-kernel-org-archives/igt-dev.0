@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE36F013CA
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 08:19:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F7C0EFCBD4
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 08:19:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5533F10E2F2;
-	Mon, 16 Mar 2026 08:19:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 49B7E10E344;
+	Mon, 16 Mar 2026 08:19:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F3pv/f+9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TPoACM2/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2B8510E2F2
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 08:19:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69C4310E2F2
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 08:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773649173; x=1805185173;
+ t=1773649176; x=1805185176;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tZ/GUI7IQkjjUR/K40U1WReyyH8QZ5TFW1fkkyHUPUw=;
- b=F3pv/f+908y/Xh36mdVZuAUiM2kxakO1BolwsR3A62fJdL5GRioOu7jF
- 4SGfmTkwbCtAuO1I69nEzrJIQvXOXNBC7CKhgOgFFUc3luDX3Qh+//2TU
- OZP6Cn6C181dEGRhQrYfipqKDsBTzZVqfCVbD6OCF639N2n3at6NHqt9r
- dyz6jA8XYZGSsJKrlYFtzC2nJi/ChHAk1fxVAEA4fBMjhchmXrNw76xVg
- 2OxSEinhBL/GULKY3NZyWpAHkmgO8baTHiNtMVVufDggXTKPV7JIOLNxS
- LoJ8y32VL0h8o6AdNHT+/wF4wHIgeKbyCbay+iaADwbi0U2XoEgE44OdZ w==;
-X-CSE-ConnectionGUID: iH9WDbanRA6Z4Xp1t5Kt0w==
-X-CSE-MsgGUID: xK7L/BP3Qb2tfHQc8jhMxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="85359403"
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="85359403"
+ bh=BJpKKHyTkYHemmrlCA3YvYP2T9dMng/aAdMGUS7T0bM=;
+ b=TPoACM2/4pT5g4dYyLS+citO4WjEhomlr+cTBkzgmTe1KTT0pTqHIfeR
+ ZmKXuVqHVW1Yo41+opanjbMNsogXAnI+GzULkRjP2tUbH8Hlq824O8XE8
+ 7/ut9bL0k6+qG5yHyuLW7CCjzumhm7xaaQ+6tkdM7Vxje+vIv+IBJgtW2
+ IeVhrGkVQb93fTAnwo+hVCG3eSjnMuZ9v5p51lWq3zZklK8kCAbBi4Xo3
+ yn+Qep41wBQwGp0q3u4IQqaC4a45P6Dy0zCetRTlX8aJDaAyK9OZN0tUP
+ ruRj/nEeyyhoRgz9XHqc1QXOoWXzBkDJ+DlcG2Eq8HqqOFx7B/LDT4eHe g==;
+X-CSE-ConnectionGUID: ZaYHOJRLTFmh7JPO3NRSDw==
+X-CSE-MsgGUID: /GMwrH0iRhSYpkFfyCfgfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="85359423"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="85359423"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 01:19:33 -0700
-X-CSE-ConnectionGUID: lE5W30RBTjulRQ/hTzJ/pQ==
-X-CSE-MsgGUID: qau7pJChSsehDtG7KQMTnA==
+ 16 Mar 2026 01:19:36 -0700
+X-CSE-ConnectionGUID: bgzvNz/oS8OWRFkIgkH1NA==
+X-CSE-MsgGUID: VH6ymnqHR9erDyNHpOihDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="226300638"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="226300660"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 01:19:32 -0700
+ 16 Mar 2026 01:19:35 -0700
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ramanaidu.naladala@intel.com, swati2.sharma@intel.com,
  Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v1 05/17] tests/intel/kms_flip_tiling: Use CRC
- stop-on-fail assertion and cleanup helper
-Date: Mon, 16 Mar 2026 14:10:09 +0530
-Message-ID: <20260316084021.419580-6-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v1 07/17] tests/kms_async_flips: Use CRC stop-on-fail
+ assertion and cleanup helper
+Date: Mon, 16 Mar 2026 14:10:11 +0530
+Message-ID: <20260316084021.419580-8-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260316084021.419580-1-sowmiya.s@intel.com>
 References: <20260316084021.419580-1-sowmiya.s@intel.com>
@@ -70,72 +70,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Replace igt_assert_crc_equal() with igt_assert_crc_equal_stop_on_fail()
-to automatically stop CRC collection on mismatch.
-Replace local pipe_crc_free() helper and manual free+NULL patterns
-with igt_pipe_crc_cleanup() in test_cleanup(), error path and fixture
-teardown.
+in vblank handler to automatically stop CRC collection on mismatch.
+Replace manual stop+free with igt_pipe_crc_cleanup() in test_crc()
+and add cleanup in fixture teardown.
 
 Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 ---
- tests/intel/kms_flip_tiling.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ tests/kms_async_flips.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
-index b732cd55c..2fbd7d67f 100644
---- a/tests/intel/kms_flip_tiling.c
-+++ b/tests/intel/kms_flip_tiling.c
-@@ -57,16 +57,6 @@ typedef struct {
- 	bool flipevent_in_queue; // if test fails may need to handle rogue event
- } data_t;
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 4a2930968..0b9927fcc 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -733,7 +733,7 @@ static void vblank_handler_crc(int fd_, unsigned int sequence, unsigned int tv_s
+ 	data->frame_count++;
  
--static void pipe_crc_free(data_t *data)
--{
--	if (!data->pipe_crc)
--		return;
--
+ 	igt_pipe_crc_get_single(data->pipe_crc, &crc);
+-	igt_assert_crc_equal(&data->ref_crc, &crc);
++	igt_assert_crc_equal_stop_on_fail(data->pipe_crc, &data->ref_crc, &crc);
+ 
+ 	/* check again next vblank */
+ 	queue_vblank(data);
+@@ -861,8 +861,7 @@ static void test_crc(data_t *data)
+ 		paint_fb(data, &data->bufs[frame], 1, height, rand());
+ 	}
+ 
 -	igt_pipe_crc_stop(data->pipe_crc);
 -	igt_pipe_crc_free(data->pipe_crc);
--	data->pipe_crc = NULL;
--}
--
- static void crtc_crc_new(data_t *data, igt_crtc_t *crtc)
- {
- 	if (data->pipe_crc)
-@@ -163,7 +153,7 @@ test_flip_tiling(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
- 
- 	/* Get a crc and compare with the reference. */
- 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc);
--	igt_assert_crc_equal(&reference_crc, &crc);
-+	igt_assert_crc_equal_stop_on_fail(data->pipe_crc, &reference_crc, &crc);
- 
- 	igt_remove_fb(data->drm_fd, &data->old_fb[0]);
- 	igt_remove_fb(data->drm_fd, &data->old_fb[1]);
-@@ -176,7 +166,7 @@ static void test_cleanup(data_t *data, igt_output_t *output)
- 
- 	/* Clean up. */
- 	igt_plane_set_fb(primary, NULL);
--	pipe_crc_free(data);
 +	igt_pipe_crc_cleanup(&data->pipe_crc);
- 	igt_output_set_crtc(output, NULL);
  
- 	igt_remove_fb(data->drm_fd, &data->fb[0]);
-@@ -233,7 +223,7 @@ int igt_main()
- 			igt_plane_t *plane;
- 
- 			igt_display_reset(&data.display);
--			pipe_crc_free(&data);
-+			igt_pipe_crc_cleanup(&data.pipe_crc);
- 
- 			igt_output_set_crtc(output,
- 					    crtc);
-@@ -279,6 +269,7 @@ int igt_main()
+ 	/* make sure we got at a reasonable number of async flips done */
+ 	igt_assert_lt(data->frame_count * 2, data->flip_count);
+@@ -1244,6 +1243,7 @@ int igt_main()
  	}
  
  	igt_fixture() {
 +		igt_pipe_crc_cleanup(&data.pipe_crc);
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
- 	}
+ 		for (i = 0; i < NUM_FBS; i++) {
+ 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
+ 			igt_remove_fb(data.drm_fd, &data.bufs_overlay[i]);
 -- 
 2.43.0
 
