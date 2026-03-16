@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0606F46455
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 11:50:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4AD1F46455
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 11:50:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 992DA10E4D7;
-	Mon, 16 Mar 2026 11:50:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9D3FC10E3CC;
+	Mon, 16 Mar 2026 11:50:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y2nFQ9qm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eDtSxvcV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AE3710E3CC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84BF910E4BA
  for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 11:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773661808; x=1805197808;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=h4gdQWNG9nsv3fNdE68blJesJFEmvyC3BJ83OHS/opA=;
- b=Y2nFQ9qmuRYj2hucRGH20u2PqdHRjTtZuVIgQPlAT3m0YDe9gFpWOWwZ
- LKZM3W6qagb+KfLOBfK3I9NfDRUmq2hPqQ4yJkZFICjfJvx6URmKkP4uB
- vSle/NHyjBT3oMa9BSWm03Vt4g3HhbO2W7NBow+tuyQLgZnt7V6LM87h4
- oPZ1NR3sHNTLJVRvmns5BqGtHVlYbhU5wHydDUu+16EVsFxpqTlmqwa9Z
- iKEfPdTqm4s6CT/1t9/VF6lNfnYujzCcBP5uoQ7I7VFDEDJXzZFRd+GqI
- GsCu6NTpkp8ap42rr8unS7g25ELt17lE2FP1l5TE29LzIH851Vy/xE2+W Q==;
-X-CSE-ConnectionGUID: 1MmNOoDSRGapH9/R41rqpg==
-X-CSE-MsgGUID: xiwtd88/QlCsah8pVxeJ3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74789872"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="74789872"
+ t=1773661809; x=1805197809;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=VUpnG4DpL2fHOMKiUsX8I9JuJdAEUN2SbEiqF8rN9DA=;
+ b=eDtSxvcVFw9Veu5+aZ6bCadjR+HERkQ8pdOx0tZ7Ua+jUfpEqaDt3Wyp
+ ghbZNlCJNjnY6En0F7Uc9JgyuHbAUihB3n1kfMrJwClccEFPS/+NHew1e
+ kwnixwIHXb+mFldnH5f2za51ax+SiOyMbm7sGrsCu4HSsJwZFBl6v1JcH
+ tvgnHBHBLKPdvCMKzfpBNuRD4zE+vLoMDhJoJ23GGsRJF3M4jDl4v03FK
+ Ui+Ev3A5zQF5LhPCoPGbiFREBiquFoG+RnwSx0x36cxBYOk1CozBIJCcq
+ qYNJW4USwZrZgLUYSJvDDK9KQZwF0zjNhF6/Twgy/09iXEm0RHGQcjmxE A==;
+X-CSE-ConnectionGUID: 65wPkl0AQ2iRVQl6O5NR8g==
+X-CSE-MsgGUID: wtSllhaATJW0t1KSeFLvaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74789874"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="74789874"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Mar 2026 04:50:08 -0700
-X-CSE-ConnectionGUID: i2e2Uvk6Rqe2QYBQx+Uq6A==
-X-CSE-MsgGUID: YClZL618Q8uzOzQA7IC81A==
+X-CSE-ConnectionGUID: zQ0Zore8QpmUDNsff+a8hg==
+X-CSE-MsgGUID: Wj/DXngdSFCUO65gp4vavA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226351313"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226351315"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 04:50:04 -0700
+ 16 Mar 2026 04:50:06 -0700
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevan.b@intel.com, sebastian.brzezinka@intel.com,
  Mohammed Bilal <mohammed.bilal@intel.com>
-Subject: [PATCH v4 0/2] tests/chamelium/audio: Fix resource leaks in audio
- tests
-Date: Mon, 16 Mar 2026 17:17:06 +0530
-Message-ID: <20260316114708.3342278-1-mohammed.bilal@intel.com>
+Subject: [PATCH v4 1/2] tests/chamelium/audio: Fix ALSA handle leak on skipped
+ audio config
+Date: Mon, 16 Mar 2026 17:17:07 +0530
+Message-ID: <20260316114708.3342278-2-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20260316114708.3342278-1-mohammed.bilal@intel.com>
+References: <20260316114708.3342278-1-mohammed.bilal@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,32 +69,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series fixes resource leaks in Chamelium audio tests.
+When the audio configuration check fails, the loop continues without
+closing previously opened ALSA handles. This leads to handle leaks
+across iterations and may eventually cause file descriptor exhaustion
+or configuration failures.
 
-It resolves a handle leak in the audio test loop when the audio
-configuration check fails and the loop continues without cleanup.
+Fix by ensuring the handles are closed before continuing.
 
-It also ensures proper cleanup when assertion failures occur after
-resources are acquired by routing error paths through a common
-cleanup sequence. Exit early on first failure to avoid testing 
-remaining combinations unnecessarily.
+Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+---
+ tests/chamelium/kms_chamelium_audio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-v2:
--Refactor check condition (Sebastien)
-
-v3:
--Update assert logic (Jeevan)
-
-v4:
--Fix memory leak logic and update commit message (Sebastien)
-
-Mohammed Bilal (2):
-  tests/chamelium/audio: Fix ALSA handle leak on skipped audio config
-  tests/chamelium/audio: Fix resource leaks on assertion failure
-
- tests/chamelium/kms_chamelium_audio.c | 60 ++++++++++++++++++---------
- 1 file changed, 40 insertions(+), 20 deletions(-)
-
+diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
+index df8d27c0c..2967e3c50 100644
+--- a/tests/chamelium/kms_chamelium_audio.c
++++ b/tests/chamelium/kms_chamelium_audio.c
+@@ -762,8 +762,10 @@ static void test_display_audio(chamelium_data_t *data,
+ 			sampling_rate = test_sampling_rates[i];
+ 
+ 			if (!check_audio_configuration(alsa, format, channels,
+-						       sampling_rate))
++						       sampling_rate)) {
++				alsa_close_output(alsa);
+ 				continue;
++			}
+ 
+ 			run = true;
+ 
 -- 
 2.48.1
 
