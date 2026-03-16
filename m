@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4C7F4644A
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:25:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25848F4644B
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:25:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2487A10E25E;
-	Mon, 16 Mar 2026 10:25:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF45510E26F;
+	Mon, 16 Mar 2026 10:25:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="dBzUswDR";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="T84GmEoV";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7881E10E25A
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:23:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F043E10E258
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:08 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id D80C7C415A5
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:19 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 5E7D1C40404;
+ Mon, 16 Mar 2026 10:24:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 5B0195FC4A;
- Mon, 16 Mar 2026 10:23:56 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id D714A5FC4A;
+ Mon, 16 Mar 2026 10:24:07 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 05E4910369F12; Mon, 16 Mar 2026 11:23:54 +0100 (CET)
+ with ESMTPSA id BE94610369F53; Mon, 16 Mar 2026 11:24:06 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773656635; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773656647; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=Z5ajQaRUsIJiJU87/cVFtKJLdfKUzq20jkt1ca81vMk=;
- b=dBzUswDRhLZvhmOPDl+IEzYv1iNfNmkthFrZhFsBc+CYVD+3MV4uI+qjsUUbK0o9jz9bkV
- +9poRG049pcqzYF5WEnzPfjGDgSiNWlIZJOK3ijQeJ9mONeK5tOszwMjLQ8Vv8JWACYV3w
- 0at2x3vubNYJbCWsPsmJA3pCsdcOM/wtTbwnp+gb2Y8Dmn0Hml9CrCxIRG4mUrHTCBMBcS
- XgncVr1SU3e8eG+dUqqKczs6o0uvGY6nDlOR+3o9My6Cb2zoZAy5i0nM660JGFYouh29jR
- Jd/RycEeuTPR6cRpADKL9sgxSYCBBxR7lXa39//aDCvjQMt2Z4hzAJvinRe7+Q==
+ bh=ad5C9D3WtJfOusx0TFEMQa/cqs7IlstRJSn4bmen3Cw=;
+ b=T84GmEoVWrV7JHNRLX+soIefqJ+hvxbRdDVgF+EN+Rb/7kNHCHaxXPQEkcCUQXMCV2VCyd
+ Wag/A7FTkbdOIkrErxNOcMwb1d65XsmzRbtrVOxLesO7x/QZyxT4M5oaCwORlgXENeb75v
+ iPNhyBwGSh0hXHvTbAEuJ+LZaZFCg2W3/3ULyaWKQ9TOCeHercJyKX3eSy9HOVpOha6xvO
+ 8A8CT0Sk517d68aYHzmLIpWNWYOleqppgonrMQUeDuHrnlbF6DwTCTD2MrJiawyHImTmsE
+ rs1Zz5twfJZ4jyhJVC59eYPWy6FZET09S9vBJShPpQOa+rMo14SnAgMY/HJ+5A==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 11:24:19 +0100
-Subject: [PATCH i-g-t v8 11/49] lib/igt_debugfs: Move debugfs helpers to
- the proper location
+Date: Mon, 16 Mar 2026 11:24:31 +0100
+Subject: [PATCH i-g-t v8 23/49] lib/unigraf: Introduce role configuration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-unigraf-integration-v8-11-4489bf8572be@bootlin.com>
+Message-Id: <20260316-unigraf-integration-v8-23-4489bf8572be@bootlin.com>
 References: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7734;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3863;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=x4DNomkQbGDgBRiaaDNXCV0OQ2u4JYv7MCZEGaGU3NY=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pPBno/nVP/SBmWQMrThReAlakC5CX5/wo8z
- 64x1ziwh2uJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaTxsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLrkxAAyXW+/yr9tilp5xQRIJ1kzln2MdHgY5d
- UZMCbnq2HjoeuG7BoAE4rMExJjVwuFhVtjp1WRE/2BFj3GIJaqwdyUrxLIt0qldwPPDozIpca5g
- NsPdwULHBEgAbV+dB4ngIQZPiaFd/F/uKnJIUvyTiNcWkAvJfYZZ1Y6ClcLMJawDKK9phAC1xqI
- puXrTR84bGsCbSxVltNDToBxdkLdhK1iDpQDK6CD4/qjKMqbqRWczT/sCqfXRtQTxEnF8Dz4yI/
- VC+RJIaUvAL/Jh6KouRTkxXVtEbpCsiiwspW6LkeqVAhEeU0uhbcr5TN3FMQVH5tYmMPXBMP29j
- BEiz7gGj6meBNwdISPGeRvMPwmgceGMvTVBRJgh8eT6+7UcBl8b/uPtAgrqfY8+FqXErvNPp6TT
- 9wgX79xoCWG+hkb6XU8OY68iheUMUB5jW0BE0lqm2zobYlRMjoITbAdbpj6z7M+RgsQ8zS4LNmr
- al8riDnnPL/z0rLQbdzNDX+yDdz9rzI6lXQbF+CDtbmqEEreGRSCnX+SDN+oeh5QuF1D6WYKIC+
- z8+9MTkdSR2hBzHvFd8ofcGza8sx6e9G7GFpKwh+ah+5XJ+TQB+e/Pd54VT9W2OCVLI83lppsTa
- bNmeNJXSqTQzH0gViPYFtpP8ACp54FcGqXJI/dRYsd3O9cJOJO54=
+ bh=Aeo8ukbe2cUGsE8gBt7g+aam35z+3imFt4EgBng+gBI=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pRfk81Mlu3XIjYxlxP0Ilka5nPD1ErTdpoj
+ tafRiifTEuJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaURsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJ4Cg//c3qYrsBNnYNFfjxGjg4LxbT0BSQ7TSa
+ /DpxqLXgQbvEe7gEzpQH6cxPD278tyzkjgokp/O7otPJQ5VzJLtfhuLdnvd9r/G5yQ2Xop4vsxl
+ 7C80/VUlD8Mp3qHnteoh0FW5jHhMX1D/y9ugG6zlLBCHIvQgcCdnah1I5ykWExX67YREPa7+lBD
+ k9yEp6L6ZA+co35KqKAtRERzi+rj3REJ+L/d0qJTpkRflBYO/fhUCEDDX9jisbmFqxranHEDcGy
+ Jjwhq+rbQboOHfI9cnVdaYG3nqXgzFNT2u2SvV6tSxIbfyihfQlEZ8q7Eg8aJRX83S7p05/oTqA
+ +lfkCqRhF7WfuCykhPZ5QHr9PZp7Nu5aLSIxw7+bGlNYjQDqF8CDx1SpsLURsSjuLs6dB4YJDmA
+ nUUSC9E8GmTYfF8hDeT7mA3/8ylHjuPodQhmxWx8/sjpybg3yAj3XfGCX9I8TnaaPtQGbpe4iOw
+ uK5D584X7i5551ejOFR8QjlkdzfwaOnImJMYwFP8zgxO/cDKK4xmnnDje8Xar2FBBe7pMbJDyRB
+ 54KuLg2irRj804D+BX4D4QJCXTWSotSl+UGde3qL3+8uoCKKmsrcLwyhaNd5A++whLu3YtwGxxH
+ 77ObQWBnsKP4x880UYFqmVjXK9fn59z4I/Zv+i9CX84lrTKSxqsw=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,268 +79,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt_debugfs_read_connector_file and igt_debugfs_write_connector_file are
-debugfs related helpers. To avoid mixing everything in igt_kms, move them
-to igt_debugfs.
+Some unigraf devices, like the UCD-500 can have multiple hardware
+configurations: displayport input/output, usbc input/output.
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+The device configuration can look like:
+
+[Unigraf]
+Device=UCD-500 [2434C620]
+Role=DisplayPort Source and Sink
+
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_debugfs.c | 94 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_debugfs.h | 13 ++++++++
- lib/igt_kms.c     | 93 ------------------------------------------------------
- 3 files changed, 107 insertions(+), 93 deletions(-)
+ lib/unigraf/unigraf.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 56 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index 11f5ee9984ee..6072d7d68025 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -43,6 +43,7 @@
- #include "igt_aux.h"
- #include "igt_kms.h"
- #include "igt_debugfs.h"
-+#include "igt_device.h"
- #include "igt_sysfs.h"
- 
- /**
-@@ -776,3 +777,96 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
- 	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
- 	free(contents);
- }
-+
-+/**
-+ * igt_debugfs_read_connector_file:
-+ * @drm_fd: A drm file descriptor
-+ * @conn_name: Name of the output connector
-+ * @filename: The file to read from in the connector's directory
-+ * @buf: Buffer to store the read content
-+ * @buf_size: Size of the buffer
-+ *
-+ * Reads from a specific file in the connector's debugfs directory.
-+ *
-+ * Returns: 0 on success, -1 on failure.
-+ */
-+int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
-+				    const char *filename, char *buf,
-+				    size_t buf_size)
-+{
-+	int dir, res;
-+
-+	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
-+	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n", conn_name);
-+
-+	res = igt_debugfs_simple_read(dir, filename, buf, buf_size);
-+	close(dir);
-+
-+	if (res < 0)
-+		return -1;
-+
-+	return 0;
-+}
-+
-+/**
-+ * igt_debugfs_write_connector_file:
-+ * @drm_fd: A drm file descriptor
-+ * @conn_name: Name of the output connector
-+ * @filename: The file to write to in the connector's directory
-+ * @data: Data to write to the file
-+ * @data_size: Size of the data to write
-+ *
-+ * Writes to a specific file in the connector's debugfs directory.
-+ *
-+ * Returns: 0 on success, -1 on failure.
-+ */
-+int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
-+				     const char *filename, const char *data,
-+				     size_t data_size)
-+{
-+	int dir, res;
-+
-+	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
-+	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-+		     conn_name);
-+
-+	res = igt_sysfs_write(dir, filename, data, data_size);
-+	close(dir);
-+
-+	if (res < 0)
-+		return -1;
-+
-+	return 0;
-+}
-+
-+bool connector_attr_set_debugfs(int drm_fd,
-+				drmModeConnector *connector,
-+				const char *attr, const char *value,
-+				const char *reset_value,
-+				bool force_reset)
-+{
-+	char name[80];
-+	int idx, dir;
-+
-+	idx = igt_device_get_card_index(drm_fd);
-+	if (idx < 0 || idx > 63)
-+		return false;
-+
-+	snprintf(name, sizeof(name), "%s-%d",
-+		 kmstest_connector_type_str(connector->connector_type),
-+		 connector->connector_type_id);
-+
-+	dir = igt_debugfs_connector_dir(drm_fd, name, O_DIRECTORY);
-+	if (dir < 0)
-+		return false;
-+
-+	if (!connector_attr_set(idx, connector, dir,
-+				igt_sysfs_set, attr,
-+				value, reset_value,
-+				force_reset))
-+		return false;
-+
-+	igt_info("Connector %s/%s is now %s\n", name, attr, value);
-+
-+	return true;
-+}
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index 2c546f299a43..49fbadd2a74c 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -28,6 +28,7 @@
- #include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
-+#include <xf86drmMode.h>
- 
- const char *igt_debugfs_mount(void);
- char *igt_debugfs_path(int device, char *path, int pathlen);
-@@ -176,4 +177,16 @@ int igt_get_stable_obj_count(int driver);
- void __igt_debugfs_dump(int device, const char *filename, int level);
- #define igt_debugfs_dump(d, f) __igt_debugfs_dump(d, f, IGT_LOG_DEBUG)
- 
-+int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
-+				    const char *filename, char *buf,
-+				    size_t buf_size);
-+int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
-+				     const char *filename, const char *data,
-+				     size_t data_size);
-+bool connector_attr_set_debugfs(int drm_fd,
-+				drmModeConnector *connector,
-+				const char *attr, const char *value,
-+				const char *reset_value,
-+				bool force_reset);
-+
- #endif /* __IGT_DEBUGFS_H__ */
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index ce9f70f31f64..97292c5c3dfa 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1755,38 +1755,6 @@ static bool connector_attr_set_sysfs(int drm_fd,
- 	return true;
- }
- 
--static bool connector_attr_set_debugfs(int drm_fd,
--				       drmModeConnector *connector,
--				       const char *attr, const char *value,
--				       const char *reset_value,
--				       bool force_reset)
--{
--	char name[80];
--	int idx, dir;
--
--	idx = igt_device_get_card_index(drm_fd);
--	if (idx < 0 || idx > 63)
--		return false;
--
--	snprintf(name, sizeof(name), "%s-%d",
--		 kmstest_connector_type_str(connector->connector_type),
--		 connector->connector_type_id);
--
--	dir = igt_debugfs_connector_dir(drm_fd, name, O_DIRECTORY);
--	if (dir < 0)
--		return false;
--
--	if (!connector_attr_set(idx, connector, dir,
--				igt_sysfs_set, attr,
--				value, reset_value,
--				force_reset))
--		return false;
--
--	igt_info("Connector %s/%s is now %s\n", name, attr, value);
--
--	return true;
--}
--
- /**
-  * dump_connector_attrs: Display on debug log all the connector attributes
+diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+index 9d5f0a488bed..cf760357c6be 100644
+--- a/lib/unigraf/unigraf.c
++++ b/lib/unigraf/unigraf.c
+@@ -7,6 +7,7 @@
   */
-@@ -7516,67 +7484,6 @@ static int igt_parse_marked_value(const char *buf, char marked_char, int *result
- 	return -1;
+ 
+ #include "igt_core.h"
++#include <asm-generic/errno-base.h>
+ #include <stdint.h>
+ 
+ #include "unigraf.h"
+@@ -35,6 +36,16 @@ static char *unigraf_connector_name;
+  */
+ #define UNIGRAF_CONFIG_DEVICE_NAME "Device"
+ 
++/**
++ * UNIGRAF_CONFIG_DEVICE_ROLE - Key of the device role in the configuration file
++ */
++#define UNIGRAF_CONFIG_DEVICE_ROLE "Role"
++
++/**
++ * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
++ */
++#define UNIGRAF_DEFAULT_ROLE_NAME "USB-C, DP Alt Mode Source and Sink"
++
+ static void unigraf_close_device(void)
+ {
+ 	if (!unigraf_device)
+@@ -96,6 +107,23 @@ static int unigraf_find_device(char *request)
+ 	return -ENODEV;
  }
  
--/**
-- * igt_debugfs_read_connector_file:
-- * @drm_fd: A drm file descriptor
-- * @conn_name: Name of the output connector
-- * @filename: The file to read from in the connector's directory
-- * @buf: Buffer to store the read content
-- * @buf_size: Size of the buffer
-- *
-- * Reads from a specific file in the connector's debugfs directory.
-- *
-- * Returns: 0 on success, -1 on failure.
-- */
--static int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
--				    const char *filename, char *buf,
--				    size_t buf_size)
--{
--	int dir, res;
--
--	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
--	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n", conn_name);
--
--	res = igt_debugfs_simple_read(dir, filename, buf, buf_size);
--	close(dir);
--
--	if (res < 0)
--		return -1;
--
--	return 0;
--}
--
--/**
-- * igt_debugfs_write_connector_file:
-- * @drm_fd: A drm file descriptor
-- * @conn_name: Name of the output connector
-- * @filename: The file to write to in the connector's directory
-- * @data: Data to write to the file
-- * @data_size: Size of the data to write
-- *
-- * Writes to a specific file in the connector's debugfs directory.
-- *
-- * Returns: 0 on success, -1 on failure.
-- */
--static int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
--				     const char *filename, const char *data,
--				     size_t data_size)
--{
--	int dir, res;
--
--	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
--	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
--		     conn_name);
--
--	res = igt_sysfs_write(dir, filename, data, data_size);
--	close(dir);
--
--	if (res < 0)
--		return -1;
--
--	return 0;
--}
--
++static int unigraf_find_role(const char *request)
++{
++	int role_count = unigraf_assert(TSIX_DEV_GetDeviceRoleCount(unigraf_device));
++
++	for (int i = 0; i < role_count; i++) {
++		char role_name[UNIGRAF_NAME_MAX] = "";
++
++		unigraf_assert(TSIX_DEV_GetDeviceRoleName(unigraf_device, i,
++							  role_name,
++							  UNIGRAF_NAME_MAX));
++		unigraf_debug("Role %d: %s\n", i, role_name);
++		if (!strncmp(role_name, request, UNIGRAF_NAME_MAX))
++			return i;
++	}
++	return -ENODEV;
++}
++
  /**
-  * igt_get_current_link_rate:
-  * @drm_fd: A drm file descriptor
+  * unigraf_open_device() - Search and open a device.
+  * @drm_fd: File descriptor of the currently used drm device
+@@ -109,9 +137,10 @@ bool unigraf_open_device(int drm_fd)
+ 	TSI_RESULT r;
+ 	GError *cfg_error = NULL;
+ 	char *cfg_device = NULL;
++	char *cfg_role = NULL;
+ 	int device_count;
+ 	int chosen_device = 0;
+-	int chosen_role = 0;
++	int chosen_role;
+ 	int chosen_input = 0;
+ 
+ 	assert(igt_can_fail());
+@@ -128,6 +157,14 @@ bool unigraf_open_device(int drm_fd)
+ 			unigraf_debug("No device name configured, uses first device available.\n");
+ 			cfg_device = NULL;
+ 		}
++
++		cfg_error = NULL;
++		cfg_role = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
++						 UNIGRAF_CONFIG_DEVICE_ROLE, &cfg_error);
++		if (cfg_error) {
++			unigraf_debug("No device role configured.\n");
++			cfg_role = NULL;
++		}
+ 	}
+ 
+ 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
+@@ -151,6 +188,24 @@ bool unigraf_open_device(int drm_fd)
+ 	igt_assert(unigraf_device);
+ 	unigraf_debug("Successfully opened the unigraf device %d.\n", chosen_device);
+ 
++	if (!cfg_role) {
++		unigraf_debug("No role configured, trying " UNIGRAF_DEFAULT_ROLE_NAME "\n");
++		chosen_role = unigraf_find_role(UNIGRAF_DEFAULT_ROLE_NAME);
++		if (chosen_role < 0) {
++			char role_name[UNIGRAF_NAME_MAX];
++
++			chosen_role = 0;
++			unigraf_assert(TSIX_DEV_GetDeviceRoleName(unigraf_device, chosen_role,
++								  role_name, UNIGRAF_NAME_MAX));
++			unigraf_debug("Role " UNIGRAF_DEFAULT_ROLE_NAME " not found, using role 0 (%s)\n",
++				      role_name);
++		}
++	} else {
++		chosen_role = unigraf_find_role(cfg_role);
++		igt_assert_f(chosen_role >= 0, "TSI:%p: Role %s not found.",
++			     unigraf_device, cfg_role);
++	}
++
+ 	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
+ 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
+ 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
 
 -- 
 2.52.0
