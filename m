@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3354D58B09
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 03:39:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 434DBD58B0D
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 04:06:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 51D4810E2AF;
-	Mon, 16 Mar 2026 03:39:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F077E10E2B7;
+	Mon, 16 Mar 2026 04:06:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cEralxhV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FmkGoRCr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5489E10E2AF
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 03:39:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8FE6810E2B7
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 04:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773632382; x=1805168382;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=obrghbgsewHVDXctTY4Vc3SB7LvcpIn8jPtudALa83Y=;
- b=cEralxhVuCVZnDal8upO8Rfg+8tJsTkR+JolJdto3M1KjX1i1B75ThWX
- OWveWFqSgXfPRNCrw4ji5c8d+fz4KlyF0xdeAMsd9z4It4/OXaN7Q7Vl/
- xaYVCg7MH5Zdi8CSyCy1r/pAJHRhmh92sgCMzfw9UFt99NTLts7JHEDcu
- 2yMj3Gg24krWTg32C6g7HTAc1sQ4OMsV/Bwdn7EmTthu3sbaQYst11VFi
- gsHPPPxsDG6btuSjDoDJr33lfeIhrg7cWySSTNyND2C9KKUKfEtKrzk1f
- tqbZxfiAhlIQy7JJqmijSnCPjpftI9emaj0opqC+LcUez+1KMuIBdgfyS A==;
-X-CSE-ConnectionGUID: BrSx7/0nSAiRm9Vlt2UOTg==
-X-CSE-MsgGUID: Y8+XLS9VQXW5aV8VTvx9GQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="85345292"
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="85345292"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Mar 2026 20:39:41 -0700
-X-CSE-ConnectionGUID: eOcXdjMOS9+GVIMUwb6NHg==
-X-CSE-MsgGUID: ikwP8jogQuOIJNM1pcBh5A==
+ t=1773633971; x=1805169971;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=+MJ9VfnXXOXxBugD0tQm812w04CiFjM75mPEM8pCM+c=;
+ b=FmkGoRCriONG7W+iiiB9lXx0i4ixWhV2sKhpptFvlo27ZTJkkX/usbF2
+ jbnMRaMW3iXwHkt+20J046T0Z43IJVNYI5YZAKiyuK3qD0q+1NBq4Dmuj
+ FIqXZ275GkcpDnvJO5IqyLz/bWdhmpjA8yACLbwKyjiP5+wRPNsSgeGoV
+ AZPW1YyC6JaH0PMp+bfkLLrByJN3z4i7DtF9XR+RmkhXSNqnkzECqiC2l
+ 5oJMzSzC6AOFtRyCuSJV+rbvYbnpYELSihCI7q4QuTVcV1cnBp8rm8AMX
+ wCG6Ie7QqYPwpHb4ojl1FCfhFft1V4oU7frrKGlqt3eIdftzV21rGuMu2 w==;
+X-CSE-ConnectionGUID: CMAIgCrLT2OIDvuuloBj3g==
+X-CSE-MsgGUID: cqsQa0/NSz2+GwzXm1hwVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="78249575"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="78249575"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Mar 2026 21:06:11 -0700
+X-CSE-ConnectionGUID: 4i5mSpt3R6ubga2z2JpqDA==
+X-CSE-MsgGUID: 3bz6nCW/QseN1x6S9KAItw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="252297004"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2026 20:39:38 -0700
-From: Jeevan B <jeevan.b@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="220828983"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2026 21:06:08 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: ramanaidu.naladala@intel.com,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier when
- supported
-Date: Mon, 16 Mar 2026 09:08:07 +0530
-Message-ID: <20260316033807.24078-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
+Cc: suraj.kandpal@intel.com, karthik.b.s@intel.com,
+ mohammed.thasleem@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_content_protection: Get hdcp capable
+ outputs before modeset
+Date: Mon, 16 Mar 2026 09:34:09 +0530
+Message-Id: <20260316040409.15278-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260226164742.1845906-1-santhosh.reddy.guddati@intel.com>
+References: <20260226164742.1845906-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,43 +70,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-While creating the framebuffer, prefer tile4 when it is supported
-instead of always using linear. Fall back to linear if tile4 is not
-available.
+Filter out the hdcp capable outputs from the connected outputs before
+doing a modeset_with_fb. This will make the test to execute on HDCP
+supported panels and avoid commit failures and invalid skips on
+HDCP supported panels.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tests/kms_cursor_legacy.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tests/kms_content_protection.c | 40 ++++++++++++++++++++++++++--------
+ 1 file changed, 31 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 5399ef481..4c4e477a1 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -367,15 +367,21 @@ static void set_fb_on_crtc(igt_display_t *display, igt_crtc_t *crtc,
- {
- 	drmModeModeInfoPtr mode;
- 	igt_plane_t *primary;
-+	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
- 
- 	igt_output_set_crtc(output, crtc);
- 	mode = igt_output_get_mode(output);
- 
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	if (igt_plane_has_format_mod(primary, DRM_FORMAT_XRGB8888,
-+				     I915_FORMAT_MOD_4_TILED))
-+		modifier = I915_FORMAT_MOD_4_TILED;
-+
- 	igt_create_pattern_fb(display->drm_fd,
- 		      mode->hdisplay, mode->vdisplay,
--		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb_info);
-+		      DRM_FORMAT_XRGB8888, modifier, fb_info);
- 
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, fb_info);
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index f35c9fa73..96a62bfc5 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -707,32 +707,54 @@ static bool is_output_hdcp_test_exempt(igt_output_t *output)
+ 	return igt_is_panel_blocked(sink_name, hdcp_blocklist, ARRAY_SIZE(hdcp_blocklist));
  }
  
++static int get_hdcp_outputs(igt_display_t *display, int content_type,
++			    igt_output_t **hdcp_outputs)
++{
++	igt_output_t *output;
++	int count = 0;
++
++	for_each_connected_output(display, output) {
++		if (is_output_hdcp_test_exempt(output)) {
++			igt_info("Skipping HDCP test on %s, as the panel is blocklisted\n",
++				 output->name);
++			continue;
++		}
++
++		if (!output_hdcp_capable(output, content_type))
++			continue;
++
++		hdcp_outputs[count++] = output;
++	}
++
++	return count;
++}
++
+ static void
+ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ {
+ 	igt_display_t *display = &data.display;
+ 	igt_output_t *output;
++	igt_output_t *hdcp_outputs[10];
+ 	igt_crtc_t *crtc;
++	int hdcp_panel_count;
++	int i;
+ 
+ 	if (data.cp_tests & CP_MEI_RELOAD)
+ 		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
+ 			      "mei_hdcp module is not loaded\n");
+ 
++	hdcp_panel_count = get_hdcp_outputs(display, content_type, hdcp_outputs);
++	igt_skip_on_f(hdcp_panel_count == 0, "No connected output with HDCP support found\n");
++
+ 	if (data.cp_tests & CP_UEVENT) {
+ 		data.uevent_monitor = igt_watch_uevents();
+ 		igt_flush_uevents(data.uevent_monitor);
+ 	}
+ 
+-	for_each_connected_output(display, output) {
+-		for_each_crtc(display, crtc) {
+-			if (!output_hdcp_capable(output, content_type))
+-				continue;
+-			if (is_output_hdcp_test_exempt(output)) {
+-				igt_info("Skipping HDCP test on %s, as the panel is blocklisted\n",
+-					  output->name);
+-				continue;
+-			}
++	for (i = 0; i < hdcp_panel_count; i++) {
++		output = hdcp_outputs[i];
+ 
++		for_each_crtc(display, crtc) {
+ 			igt_display_reset(display);
+ 			igt_output_set_crtc(output,
+ 				            crtc);
 -- 
-2.43.0
+2.34.1
 
