@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D77EF013CA
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 08:19:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8455EF013CA
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 08:19:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4ED6110E37E;
-	Mon, 16 Mar 2026 08:19:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3A45F10E369;
+	Mon, 16 Mar 2026 08:19:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YMRilgKK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T1Il1rcn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0BF010E369
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 08:19:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9AAF810E2F2
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 08:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773649184; x=1805185184;
+ t=1773649175; x=1805185175;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2mRlU6MrGIiA0uPa2p4YiBb4Vk3D1BuXDpOJ/hg4lyw=;
- b=YMRilgKKSMj5+9gDw7pyj/nQAKWXLdz+8qd7Np0Ko7S/fa/+GuTr2l5l
- 4YUq9ZBh8ChH1jOck0c5qAt5PvVIQiUyQIo3WVpbDK3Qg2Rcp4YP3l/Et
- kt9Qd9Ys9BPa7Xtm33o8U3k/vH0uHRtQSBgn5CsNwoRS6nJjBBfbEjFxo
- IcUEVkp5+bO8+gqnS65o2dGOtx8KjpbtnEdkZ35ST4V9Mhlf4k0zwnyv/
- 6NwA2T+/B1vUR4ziLOhkNunU6eou1BgT9Z3s5aUWd0BT3SAuCuySZyBoe
- tGMPj0gSNahh6lTC07LIBI+iTC1LJ8taLROHIo+tkw/JJRKc01tvk9qwV g==;
-X-CSE-ConnectionGUID: sl57xqcfTfy/URiu7NWMhQ==
-X-CSE-MsgGUID: o+5qfYdmTYW6Yb/MKSTkSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="85359440"
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="85359440"
+ bh=zPV1qu65A5oIvkSeFV6LTG2WNp5pKy3JK7SwKmOGRaM=;
+ b=T1Il1rcnqaf8SAeT15rn6df0Nw0QZZwiveGXP5gEuRWHk0EkjXqqTM4W
+ NGYS5bycv+VsS3BqYghGt6wxVzukj3RqdoVUud9JyO4BiiFOu3I/s7frL
+ DhuVsP3eOffeWakoqg028xkNmaeeS04xFqH0WKEVCbXCpFXgNAbrNnBz9
+ YC8c61K08Or82lTIvhXhVJ6qIaXGAmZ+d/0//ejwcVIkdRqYtD6UGJgxu
+ HcDt3hmrAf7GLDbVRsbx9NJlGPWLkzD1dXrJBgNA8M/2bG4w8C1KTXQfb
+ pTuY7Vd1LhU3NCX0lmDJoFrmTgkYh2p80zlDpCC/62LD4pQk8Ed8n6Yi9 w==;
+X-CSE-ConnectionGUID: /X2m3uFXQlqJHea7JiEC4w==
+X-CSE-MsgGUID: FSBRZUrrSp2rhaGAjNlzVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="85359418"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="85359418"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 01:19:43 -0700
-X-CSE-ConnectionGUID: +WDKyyghS1OocW+YQC/d7A==
-X-CSE-MsgGUID: lGesaeSBT8qiNTDttwuW7Q==
+ 16 Mar 2026 01:19:34 -0700
+X-CSE-ConnectionGUID: R3ziaEVURBi8HiUbr16uRg==
+X-CSE-MsgGUID: lRJyYOrXR021t72x/Ugk0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="226300711"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="226300647"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 01:19:42 -0700
+ 16 Mar 2026 01:19:33 -0700
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ramanaidu.naladala@intel.com, swati2.sharma@intel.com,
  Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v1 11/17] tests/kms_cursor_legacy: Use CRC stop-on-fail
- assertion and cleanup helper
-Date: Mon, 16 Mar 2026 14:10:15 +0530
-Message-ID: <20260316084021.419580-12-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v1 06/17] tests/intel/kms_pipe_stress: Use CRC
+ stop-on-fail assertion and cleanup helper
+Date: Mon, 16 Mar 2026 14:10:10 +0530
+Message-ID: <20260316084021.419580-7-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260316084021.419580-1-sowmiya.s@intel.com>
 References: <20260316084021.419580-1-sowmiya.s@intel.com>
@@ -71,57 +71,47 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Replace igt_assert_crc_equal() with igt_assert_crc_equal_stop_on_fail()
 to automatically stop CRC collection on mismatch.
-Replace conditional free+NULL with igt_pipe_crc_cleanup() in
-find_connected_pipe() and add cleanup in fixture teardown.
+Replace conditional free with igt_pipe_crc_cleanup() in finish_test()
+and add cleanup loop in fixture teardown.
 
 Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 ---
- tests/kms_cursor_legacy.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ tests/intel/kms_pipe_stress.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 5399ef481..8ee067845 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -424,10 +424,8 @@ find_connected_pipe(igt_display_t *display, bool second, igt_output_t **output)
- 	bool first_output = false;
- 	bool found = false;
+diff --git a/tests/intel/kms_pipe_stress.c b/tests/intel/kms_pipe_stress.c
+index 85ab2ec50..89b184d67 100644
+--- a/tests/intel/kms_pipe_stress.c
++++ b/tests/intel/kms_pipe_stress.c
+@@ -594,7 +594,7 @@ static void stress_pipes(struct data *data, struct timespec *start,
+ 		kmstest_get_vblank(data->display.drm_fd, crtc->pipe, DRM_VBLANK_NEXTONMISS);
+ 		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc[pipe], &crc2);
+ 		igt_pipe_crc_stop(data->pipe_crc[pipe]);
+-		igt_assert_crc_equal(&crc, &crc2);
++		igt_assert_crc_equal_stop_on_fail(data->pipe_crc[pipe], &crc, &crc2);
  
--	if (!second) {
--		igt_pipe_crc_free(pipe_crc);
--		pipe_crc = NULL;
--	}
-+	if (!second)
-+		igt_pipe_crc_cleanup(&pipe_crc);
- 
- 	/* Clear display, events will be eaten by commit.. */
- 	igt_display_reset(display);
-@@ -1666,7 +1664,7 @@ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
- 
- 		igt_pipe_crc_collect_crc(pipe_crc, &crcs[2]);
- 
--		igt_assert_crc_equal(&crcs[i], &crcs[2]);
-+		igt_assert_crc_equal_stop_on_fail(pipe_crc, &crcs[i], &crcs[2]);
+ 		++pipe;
+ 	}
+@@ -837,8 +837,7 @@ static void finish_test(struct data *data)
+ 	for (i = 0; i < IGT_MAX_PIPES; i++) {
+ 		data->num_planes[i] = -1;
+ 		data->last_mode[i] = NULL;
+-		if (data->pipe_crc[i])
+-			igt_pipe_crc_free(data->pipe_crc[i]);
++		igt_pipe_crc_cleanup(&data->pipe_crc[i]);
  	}
  
- 	/* Clean-up */
-@@ -1779,7 +1777,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
- 		igt_plane_set_fb(plane_primary, &fb_info[0]);
- 		igt_display_commit2(display, COMMIT_UNIVERSAL);
- 
--		igt_assert_crc_equal(&crcs[i], &test_crc);
-+		igt_assert_crc_equal_stop_on_fail(pipe_crc, &crcs[i], &test_crc);
- 	}
- 
- 	igt_pipe_crc_stop(pipe_crc);
-@@ -2116,6 +2114,7 @@ int igt_main()
+ 	stop_cpu_threads(data);
+@@ -894,6 +893,9 @@ int igt_main() {
  	}
  
  	igt_fixture() {
-+		igt_pipe_crc_cleanup(&pipe_crc);
- 		if (intel_psr2_restore)
- 			i915_psr2_sel_fetch_restore(display.drm_fd, NULL);
- 		igt_display_fini(&display);
++		for (int i = 0; i < IGT_MAX_PIPES; i++)
++			igt_pipe_crc_cleanup(&data.pipe_crc[i]);
++
+ 		igt_display_fini(&data.display);
+ 	}
+ }
 -- 
 2.43.0
 
