@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A18F46436
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 09:33:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1DE1F46442
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 09:57:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 724F610E38A;
-	Mon, 16 Mar 2026 09:33:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DB1510E395;
+	Mon, 16 Mar 2026 09:57:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PN0gSzP7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NdjNLQMi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 280F810E380
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 09:33:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E89A410E395
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 09:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773653586; x=1805189586;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=LW+MXcFMmNjq8pFDFDDQjs/A41GdvAEBs2koRJktruI=;
- b=PN0gSzP7MlpcLzsL+a7wbsRS1g21h4Lhqx5+6aPjCTqPzp5o8QhqNyEb
- HfI/cdhBE86qWp9QM58ewHThLd9NOMhXbi930sHpxgA0UV4Fxo1roERUs
- ZAkAmOgACVeAKK4nu7dm5R1r/OxA9m2HaImQBl1lc5lrXG3YRTsxNg4Wo
- rm7lz+2AYIzuCW2fJ+EgYIp51b0a6aWCJNvhRE7apyJ5yIfm9mDBpBLzm
- viGiEBUaPNLGmZ+n95iJ6P1EP+DxJ6FhlpoGxCKWQJjVaJKxunXSRjsuX
- XP0DfpqwU5vo+gPC4a0vBFz7im+BybZQA8SXSYv85fYnBRBgLs934pxrh g==;
-X-CSE-ConnectionGUID: ET8Hlyk8Rc+hSoejcfXMcg==
-X-CSE-MsgGUID: 5UIvl2+4S96wlnDaFzSLAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74549301"
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="74549301"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 02:33:05 -0700
-X-CSE-ConnectionGUID: Pbn0+CAcSlqLjNMreQzykQ==
-X-CSE-MsgGUID: ZxuAF08pQy+BFW056kmSow==
+ t=1773655055; x=1805191055;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5G8yrPHBPQcdVPekzgCC419mY3Hb9AK/N1/ap+PyuzY=;
+ b=NdjNLQMimJMQIRMJD14XPBhLGBVhRZBHuV4+BQ5DzkIMp+A9m3vvPER4
+ eJZI/ki8C2NQPZGtTb7MOuuP3S7kOb5vJ3OZXYClVO24OcI6aYfqn7rWR
+ 8o+Fp7DisYTOJEHfYA/TM6bPsz7ZQsAgEQWFD9dgrijD1735NhiBAV6ea
+ S47NxKxFxIbHXdoMU47jpK0P2BiI2yi3nPJOpqU51gT50VNA5zNwJ/BVl
+ fTvD9kzb3H2HxNBiLsg7F6yDgO1ezRjgmL+98uTAD0Fu7u4A/WRYrx52r
+ 4LCYosC8jolMmfG5KW7UOeJoAw+Qyjk+IuTNUNay/fYl7KNNbv2CVsevH A==;
+X-CSE-ConnectionGUID: UuCfbMDZQHSmXmmLZ3294w==
+X-CSE-MsgGUID: tzYGvKRnSs2mXtkFc0ptAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="97276303"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="97276303"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 02:57:34 -0700
+X-CSE-ConnectionGUID: ercJpXUGTZy5ghvQFfR7vQ==
+X-CSE-MsgGUID: XaZdlQmeQbCJPm+rFw4Xdw==
 X-ExtLoop1: 1
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 02:33:01 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, kamil.konieczny@intel.com,
- vinay.belgaumkar@intel.com
-Cc: anshuman.gupta@intel.com,
-	soham.purkait@intel.com
-Subject: [PATCH i-g-t v1 2/2] HAX: Add engine accuracy tests to
- xe-fast-feedback.testlist
-Date: Mon, 16 Mar 2026 14:56:29 +0530
-Message-Id: <20260316092629.1337527-2-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260316092629.1337527-1-soham.purkait@intel.com>
-References: <20260316092629.1337527-1-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; d="scan'208";a="221949954"
+Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
+ by orviesa008.jf.intel.com with ESMTP; 16 Mar 2026 02:57:32 -0700
+From: Nitin Gote <nitin.r.gote@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	marcin.bernatowicz@linux.intel.com
+Cc: lukasz.laguna@intel.com, michal.wajdeczko@intel.com,
+ kamil.konieczny@linux.intel.com, Nitin Gote <nitin.r.gote@intel.com>
+Subject: [PATCH] tests/intel/xe_configfs: Skip ctx-restore subtests on SR-IOV
+ VF
+Date: Mon, 16 Mar 2026 16:01:14 +0530
+Message-ID: <20260316103114.137910-2-nitin.r.gote@intel.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,25 +67,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
----
- tests/intel-ci/xe.fast-feedback.testlist | 3 +++
- 1 file changed, 3 insertions(+)
+The ctx-restore subtests use intel_register_read() via direct MMIO
+(PCI BAR) access to verify that the batch buffer wrote the expected
+register values. On SR-IOV Virtual Functions (VF), only a very limited
+subset of registers is accessible. Registers like 0x4F100 are not
+exposed to VFs, so the read always returns 0, causing a false test
+failure.
 
-diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
-index acff025fa..4ab07db77 100644
---- a/tests/intel-ci/xe.fast-feedback.testlist
-+++ b/tests/intel-ci/xe.fast-feedback.testlist
-@@ -163,6 +163,9 @@ igt@xe_mmap@cpu-caching
- igt@xe_mmap@system
- igt@xe_mmap@vram
- igt@xe_mmap@vram-system
-+igt@xe_pmu@engine-activity-accuracy-2
-+igt@xe_pmu@engine-activity-accuracy-50
-+igt@xe_pmu@engine-activity-accuracy-90
- igt@xe_pm_residency@gt-c6-on-idle
- igt@xe_prime_self_import@basic-with_one_bo
- igt@xe_prime_self_import@basic-with_fd_dup
+Skip all ctx-restore subtests (post-bb, mid-bb, and their invalid
+variants) when the device is running in SR-IOV VF mode.
+
+v2: Use igt_skip_on_f instead of igt_require_f, reads better (Marcin)
+
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+---
+ tests/intel/xe_configfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+index 0db4af201..755524e7c 100644
+--- a/tests/intel/xe_configfs.c
++++ b/tests/intel/xe_configfs.c
+@@ -409,6 +409,7 @@ int igt_main()
+ 
+ 	igt_describe("Validate ctx_restore_post_bb with invalid options");
+ 	igt_subtest("ctx-restore-post-bb-invalid") {
++		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+ 		configfs_device_fd = create_device_configfs_group(configfs_fd);
+ 		test_ctx_restore_invalid(configfs_device_fd, "post");
+ 		close_configfs_group(configfs_fd, configfs_device_fd);
+@@ -416,6 +417,7 @@ int igt_main()
+ 
+ 	igt_describe("Validate ctx_restore_post_bb");
+ 	igt_subtest("ctx-restore-post-bb") {
++		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+ 		configfs_device_fd = create_device_configfs_group(configfs_fd);
+ 		test_ctx_restore(configfs_device_fd, "post");
+ 		close_configfs_group(configfs_fd, configfs_device_fd);
+@@ -423,6 +425,7 @@ int igt_main()
+ 
+ 	igt_describe("Validate ctx_restore_mid_bb with invalid options");
+ 	igt_subtest("ctx-restore-mid-bb-invalid") {
++		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+ 		configfs_device_fd = create_device_configfs_group(configfs_fd);
+ 		test_ctx_restore_invalid(configfs_device_fd, "mid");
+ 		close_configfs_group(configfs_fd, configfs_device_fd);
+@@ -430,6 +433,7 @@ int igt_main()
+ 
+ 	igt_describe("Validate ctx_restore_mid_bb");
+ 	igt_subtest("ctx-restore-mid-bb") {
++		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+ 		configfs_device_fd = create_device_configfs_group(configfs_fd);
+ 		test_ctx_restore(configfs_device_fd, "mid");
+ 		close_configfs_group(configfs_fd, configfs_device_fd);
 -- 
-2.43.0
+2.50.1
 
