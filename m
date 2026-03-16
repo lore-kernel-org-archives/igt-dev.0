@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9DAEF46452
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 11:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A35F46452
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 11:20:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 994DB10E4B3;
-	Mon, 16 Mar 2026 11:20:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA34A10E3B9;
+	Mon, 16 Mar 2026 11:20:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SfYCVgE4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YSJ/wsSV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A890110E4AA
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 11:20:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EBA010E4A6
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 11:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773660008; x=1805196008;
+ t=1773659998; x=1805195998;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yRqaYu/j8r3MSTUfj3JB48AOJOGbafb0rMoGkY/f9uI=;
- b=SfYCVgE4za3EJezbcCczSdOavNnAdjaW8J/cLAOY42H/E1xkiVRmctEp
- 8dqelzmnC/ztLo2AzpjvYZ+jthrccLsdi9UQcP4Ceb9f3nfBO135vtRFX
- Y+HwSaE1dSYhWchz8OYiiJ3pVz+7lqJd+k7W0G77MRkJpnKJM+rVbz1JL
- 9QvnBMFwYknr2bv54nPlkqh91dgOSWwvTgAn6W7M67WJtPzq1UHrixpA9
- D+7p02ztYJiYEFsngnGXD1zZRENrrJf9OKTErHpUCJUrc7c/4ZVneAiwT
- hCdNboPOiOQBzHzR0cX/+ZfVJtN9eXf3X5455L9/8KUp4V7dsfHGwX6D9 g==;
-X-CSE-ConnectionGUID: 5UJcMdrmTqG8IuATg0u11w==
-X-CSE-MsgGUID: CLhq7EegTIulIGs935g06Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74562432"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="74562432"
+ bh=7/0XUgw2NjZtooNd09Hv0o0C7ceRckVSYXwAYi1D5vo=;
+ b=YSJ/wsSVV3ZBHpDV3hqwJkk2FgCGGeGFe3AaFwvokzrhiobidb5cGJmY
+ qolL7MGII7c6L29113suKedMLJmbKx/FiEMvrdjTOCTp4hICzEc0MvbBM
+ Zn9SN9geP0uAolVQdcweqksP9Pc9qTOBHgxu3iLXYiRawynSNe2et+Rhq
+ l1WLUzp4grSjMRJfWf+HKg/hQNCDvblGE0S5LBI6BLwcoEcUQUCgxDugm
+ QhpKNJzpZuVDk++K/27p9YAyH03NT6a95H8J4M1XbJqUURuDZC2tRSrYb
+ 1+UNDORUAOXwy4PnjaC0ulFJ1NCKCnWuABZBFmidLiXFyTbrYOL24zII7 w==;
+X-CSE-ConnectionGUID: xsHcsfaPQ5KaA5R8sXTFqw==
+X-CSE-MsgGUID: QE7wDoy6Qp61F83keOSO5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74562428"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="74562428"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 04:20:08 -0700
-X-CSE-ConnectionGUID: 1LSFN0L+SNSEx9g+uQn1Eg==
-X-CSE-MsgGUID: JokRWw2qR6WIHqecXOkRoQ==
+ 16 Mar 2026 04:19:58 -0700
+X-CSE-ConnectionGUID: PLVeb1YZQsKe6BpdQKVvmg==
+X-CSE-MsgGUID: 0NNnu6bKQqO+Bc57vxgEPg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="221833009"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="221832933"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.238])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 04:20:07 -0700
+ 16 Mar 2026 04:19:38 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 10/12] tests/kms_bw: avoid igt_crtc_for_pipe() and
- crtc->pipe usage
-Date: Mon, 16 Mar 2026 13:19:12 +0200
-Message-ID: <de69d2495b6690cab66e6569141b3e050c9e18bf.1773659680.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 04/12] tests/intel/kms_joiner: Prepare for returning
+ NULL from igt_crtc_for_pipe()
+Date: Mon, 16 Mar 2026 13:19:06 +0200
+Message-ID: <ac74ddc808b179f0de6098758a86190edea75d40.1773659680.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1773659680.git.jani.nikula@intel.com>
 References: <cover.1773659680.git.jani.nikula@intel.com>
@@ -71,56 +71,168 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The test doesn't really care about pipes. It does conflate a lot of
-loops with pipes. Try to avoid that by using the CRTC index instead.
+Assert that the pipe is really there during testing.
+
+Add some local variables to make the logic easier to follow.
+
+This prepares for returning NULL for invalid pipes from
+igt_crtc_for_pipe() by ensuring the test logic is sound.
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tests/kms_bw.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ tests/intel/kms_joiner.c | 66 +++++++++++++++++++++++++++++-----------
+ 1 file changed, 48 insertions(+), 18 deletions(-)
 
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index 056aa667d795..4df5c2cee885 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -125,12 +125,11 @@ static void test_init(data_t *data, bool physical)
- 	data->connected_outputs = 0;
+diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
+index a582f6f93029..f8ea65a3b01a 100644
+--- a/tests/intel/kms_joiner.c
++++ b/tests/intel/kms_joiner.c
+@@ -143,10 +143,13 @@ static enum pipe get_next_master_pipe(data_t *data, uint32_t available_pipe_mask
+ static enum pipe setup_pipe(data_t *data, igt_output_t *output, enum pipe pipe, uint32_t available_pipe_mask)
+ {
+ 	igt_display_t *display = &data->display;
+-	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
++	igt_crtc_t *crtc;
+ 	enum pipe master_pipe;
+ 	uint32_t attempt_mask;
  
- 	for_each_crtc(display, crtc) {
--		data->crtc[crtc->pipe] = crtc;
--		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
--								    DRM_PLANE_TYPE_PRIMARY);
--		data->pipe_crc[crtc->pipe] =
--			igt_crtc_crc_new(crtc,
--					 IGT_PIPE_CRC_SOURCE_AUTO);
-+		data->crtc[crtc->crtc_index] = crtc;
-+		data->primary[crtc->crtc_index] =
-+			igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_PRIMARY);
-+		data->pipe_crc[crtc->crtc_index] =
-+			igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
++	crtc = igt_crtc_for_pipe(display, pipe);
++	igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(pipe));
++
+ 	attempt_mask = BIT(crtc->pipe);
+ 	master_pipe = get_next_master_pipe(data, available_pipe_mask & attempt_mask);
  
- 	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
-@@ -163,8 +162,8 @@ static void test_fini(data_t *data)
- 	igt_crtc_t *crtc;
+@@ -164,14 +167,18 @@ static enum pipe setup_pipe(data_t *data, igt_output_t *output, enum pipe pipe,
+ static void set_joiner_mode(data_t *data, igt_output_t *output, drmModeModeInfo *mode)
+ {
+ 	igt_display_t *display = &data->display;
++	igt_crtc_t *crtc;
++	enum pipe pipe = PIPE_A;
+ 	igt_plane_t *primary;
+ 	igt_fb_t fb;
  
- 	for_each_crtc(display, crtc) {
--		if (data->pipe_crc[crtc->pipe])
--			igt_pipe_crc_free(data->pipe_crc[crtc->pipe]);
-+		if (data->pipe_crc[crtc->crtc_index])
-+			igt_pipe_crc_free(data->pipe_crc[crtc->crtc_index]);
- 	}
+ 	igt_info("Committing joiner mode for output %s with mode %dx%d@%d\n",
+ 		  output->name, mode->hdisplay, mode->vdisplay, mode->vrefresh);
  
- 	igt_display_reset(display);
-@@ -240,7 +239,7 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
+-	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, PIPE_A));
++	crtc = igt_crtc_for_pipe(display, pipe);
++	igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(pipe));
++
++	igt_output_set_crtc(output, crtc);
+ 	igt_output_override_mode(output, mode);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+@@ -374,6 +381,9 @@ static void test_invalid_modeset_two_joiner(data_t *data,
+ 			continue;
  
- 	/* create buffers */
- 	for (i = 0; i < n_crtcs; i++) {
--		crtc = igt_crtc_for_pipe(display, i);
-+		crtc = data->crtc[i];
+ 		for (j = 0; j < INVALID_TEST_OUTPUT; j++) {
++			igt_crtc_t *crtc;
++			enum pipe pipe = data->pipe_seq[i + j];
++
+ 			output = outputs[j];
  
- 		output = physical ? data->connected_output[i] : data->output[i];
- 		if (!output || !output_mode_supported(output, mode)) {
+ 			if (!force_joiner) {
+@@ -385,10 +395,12 @@ static void test_invalid_modeset_two_joiner(data_t *data,
+ 			}
+ 			igt_assert(kmstest_mode_is_valid(&mode));
+ 
+-			igt_output_set_crtc(output,
+-					    igt_crtc_for_pipe(display, data->pipe_seq[i + j]));
++			crtc = igt_crtc_for_pipe(display, pipe);
++			igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(pipe));
++
++			igt_output_set_crtc(output, crtc);
+ 			igt_info("Assigning pipe %s to %s with mode %dx%d@%d%s",
+-				 kmstest_pipe_name(data->pipe_seq[i + j]),
++				 igt_crtc_name(crtc),
+ 				 igt_output_name(output), mode.hdisplay,
+ 				 mode.vdisplay, mode.vrefresh,
+ 				 j == INVALID_TEST_OUTPUT - 1 ? "\n" : ", ");
+@@ -422,6 +434,9 @@ static void test_joiner_on_last_pipe(data_t *data, bool force_joiner)
+ 	outputs = force_joiner ? data->non_big_joiner_output : data->big_joiner_output;
+ 
+ 	for (i = 0; i < len; i++) {
++		igt_crtc_t *crtc;
++		enum pipe pipe = data->pipe_seq[data->n_pipes - 1];
++
+ 		igt_display_reset(&data->display);
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 		output = outputs[i];
+@@ -434,12 +449,14 @@ static void test_joiner_on_last_pipe(data_t *data, bool force_joiner)
+ 			mode = *igt_output_get_mode(output);
+ 		}
+ 
+-		igt_output_set_crtc(output,
+-				    igt_crtc_for_pipe(display, data->pipe_seq[data->n_pipes - 1]));
+-		igt_info(" Assigning pipe %s to %s with mode %dx%d@%d\n",
+-				 kmstest_pipe_name(data->pipe_seq[data->n_pipes - 1]),
+-				 igt_output_name(output), mode.hdisplay,
+-				 mode.vdisplay, mode.vrefresh);
++		crtc = igt_crtc_for_pipe(display, pipe);
++		igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(pipe));
++
++		igt_output_set_crtc(output, crtc);
++		igt_info("Assigning pipe %s to %s with mode %dx%d@%d\n",
++			 igt_crtc_name(crtc),
++			 igt_output_name(output), mode.hdisplay,
++			 mode.vdisplay, mode.vrefresh);
+ 		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 		igt_create_pattern_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+@@ -484,6 +501,9 @@ static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display,
+ 		}
+ 
+ 		for (j = 0; j < data->n_pipes; j++) {
++			igt_crtc_t *crtc;
++			enum pipe pipe;
++
+ 			/* Ultra joiner is only valid on PIPE_A */
+ 			if (invalid_pipe && j == PIPE_A)
+ 				continue;
+@@ -492,8 +512,11 @@ static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display,
+ 			if (two_display && j != PIPE_A)
+ 				continue;
+ 
+-			igt_output_set_crtc(output,
+-					    igt_crtc_for_pipe(display, data->pipe_seq[j]));
++			pipe = data->pipe_seq[j];
++			crtc = igt_crtc_for_pipe(display, pipe);
++			igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(pipe));
++
++			igt_output_set_crtc(output, crtc);
+ 
+ 			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 			igt_create_pattern_fb(data->drm_fd, mode.hdisplay, mode.vdisplay, DRM_FORMAT_XRGB8888,
+@@ -514,8 +537,11 @@ static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display,
+ 
+ 							mode1 = igt_output_get_mode(non_ultra_joiner_output);
+ 
+-							igt_output_set_crtc(non_ultra_joiner_output,
+-									    igt_crtc_for_pipe(display, data->pipe_seq[k]));
++							pipe = data->pipe_seq[k];
++							crtc = igt_crtc_for_pipe(display, pipe);
++							igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(pipe));
++
++							igt_output_set_crtc(non_ultra_joiner_output, crtc);
+ 							plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+ 							igt_plane_set_fb(plane, &fb);
+@@ -562,8 +588,12 @@ static void test_basic_max_non_joiner(data_t *data)
+ 
+ 		for (pipe = 0; pipe < data->n_pipes; pipe++) {
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+-				igt_output_set_crtc(output,
+-						    igt_crtc_for_pipe(display, pipe));
++				igt_crtc_t *crtc;
++
++				crtc = igt_crtc_for_pipe(display, pipe);
++				igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(pipe));
++
++				igt_output_set_crtc(output, crtc);
+ 				igt_require(max_non_joiner_mode_found(data->drm_fd,
+ 								      output->config.connector,
+ 								      max_dotclock, &mode));
 -- 
 2.47.3
 
