@@ -4,41 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2461FF46449
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:24:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A542AF46449
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:24:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C349E10E25E;
-	Mon, 16 Mar 2026 10:24:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 537A710E25A;
+	Mon, 16 Mar 2026 10:24:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="T+6P1mas";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="M2bs+DMW";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 689E310E25A
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:13 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE05610E25A
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:17 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 5BD601A2E70
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:12 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id D80F54E426C1;
+ Mon, 16 Mar 2026 10:24:16 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 33D655FC4A;
- Mon, 16 Mar 2026 10:24:12 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id AEF9F5FC4A;
+ Mon, 16 Mar 2026 10:24:16 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 4550510369977; Mon, 16 Mar 2026 11:24:11 +0100 (CET)
+ with ESMTPSA id A6B0410369977; Mon, 16 Mar 2026 11:24:15 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773656651; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773656656; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=PGvNjft8NFIiyHIBxbAtRJ5lhYjIXqfBMrSzF7ctAhk=;
- b=T+6P1maserqw9JmTiNRd271R8/rL6fKHPg8zaDrd4IQaNCldge1y82F82HpAD4ie8JTnZa
- E0wj3QCaE92Acm4sgUgTIeAFSclcUsoAAcEFUYjwv4SjGPNvD1kOQrSnBR+m/GWa3f0+50
- NAxmULeaT0sN9GtxqQ4stoLPcuTPd0rsgpLZBrc3YtuIZvHlWNpGjXauzRghfrSgcXRVpC
- GvsPlsreqyjiKenkB8FB9praOZGYFhPY82464RtCBnCGgh1bh9L3QwzfDfDrZk5KtPcpHQ
- lPm5Z9tez6d+9pND3RL+KDUTZ8NYmbKwVwTCLi9x01frtvVooc6/aqX8dzPeXQ==
+ bh=IXboLIJ1RAD6LL1Jo4LOfUo2m9HHoKMdyil5Jliikbc=;
+ b=M2bs+DMWhCkDgv91ggoEhJLu+5Qsp50TrnSi8DT+dwXalqyK12lhJ9o6xH1nBYn20D0gi2
+ jvSdmduz/LlYG+4emVoS1/3tNlKjcsMLAUzucEH/msf4/4DVacLpD5MwrV7c9RjXPqzJFf
+ +qnyP45EKhyGNyZ6qStGgjd1uEQdJAhZxUJDib4z+1JT5dn8+upefHUIkGEPBzk3h8RC8K
+ qbdZaNy0EStjEkwi74hJIUYKH7meKwCVDJGEM3icE2g0Bb7bjv0Ym25nq/Up6Gqu8KlsOz
+ Q+L1itqdR50kqOAvW36an1Q4zEcB/sotz5tqkPTuaPVJF7dlqyJDvBQZ5GMMUQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 11:24:36 +0100
-Subject: [PATCH i-g-t v8 28/49] lib/unigraf: Allows sst/mst configuration
+Date: Mon, 16 Mar 2026 11:24:41 +0100
+Subject: [PATCH i-g-t v8 33/49] lib/unigraf: Add configuration for CRC
+ usage
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-unigraf-integration-v8-28-4489bf8572be@bootlin.com>
+Message-Id: <20260316-unigraf-integration-v8-33-4489bf8572be@bootlin.com>
 References: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5434;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2375;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=91z5EYZvWM5irCz5eFnzetXv6+1CWgt5mKOhiDyfQSs=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pSPWFhotuZG2XKF0DknVrrXJ2Bb1LLgjn8I
- gv+QltBYl2JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaUhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOK7Vg//ckMIPENIMaEvO3mu4l6osS3ehghuZmM
- be9cocDTnZp63KrkLOqLacaSQ4PH6plU0e0/FQXdAhvwPTrEqQ6O9OMFRaqdzdAuJgMX6mt7jqw
- WMyRT3n/5hvf1QNB8cMSx3ygTBVdpHCURGEnGIGuiM07NWSSexNoJsqTFIrW8St0t8hjm110nnm
- h9FmsaSk5wOuD/2Cyeyjo1kggh8dRmJZRkYlAdol8YC8OB/cPmMeaerOl1WGiOogRSgazdP3QKq
- lyXCZJAOgoyGEG1j3SnQv8kTNkSyr/PGlbd7zhMvKPIGX3qEasE+/PSBUH09eVrSS69R/TpHLVx
- HkbMJWVrNaZtGQf6PP3y13SvLgUxRK6NwTuDAdKkWNHGOLdUrYG5EzAkc40mPRVegXHLdejBsFJ
- rEtcrbxVSokW9NVezHvI0rHGqxSm9rj2+bf55KxqLSdkDcBwQl/M+HAWxOHAGIdks8tIxz55k+Q
- 9aG3eDf+jGntYlef9BvVetgAB/31qt6A7nimTVvM0Xm5RoLhutk0hkONDUjmg328/GmGQTLhKva
- bi/SUhXuz6DrgX5WLiuyG4YOUJneZBMBc1NcCvjEju8cjcAL8CxmYEOl04OUd0JGQWPBj+Sz/QX
- FphvMH6Oq47W2Np12BvYTk5WRQd+VYnGkul++19R1wGWhxaU2eAg=
+ bh=9ZDafwYO0pmjpDTyzwCl7ntPTZqhqG2CJDGX7ZLCk2k=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pTsW04jZTfp9f7137a1X7Yp2Q3Dc61KEia4
+ RUau7pBJ0mJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaUxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOI/Jw/+IyEKEHXj6rGZbboA5IHRqowlaicRs/F
+ hWUzZ2iw2NG5lhIBuoI/sbh49Fs6neyr6AMUhw8gcll2vkb5H/e7CaSOOp1o8w31MsReVEfzDKm
+ /dPGbJncKzp+O0TrWvQu/1COM0EZ1ioc0G6VlCWYpz3oAi5j0RFZndeausju/imaQppx/a04jXc
+ YfGJrjvrKTyx/fRktWFYETZpHpxMNfgXoF/+F2GqauYmAv/QVR+ZQ0Yc1AiGczXi1Ez0ZwO2yVA
+ xeDxPSc8ZTjNariYimOyT59jAdt17T6i7liPshDhHmP7gIsntlO0r7t55Go2nkyf1cJqKvWdd+c
+ 3eap+CV8DQIAALNR4bRCNJXWl49C56x5aCeBIGY+TazfL8T96DaRJlVKvZfxaj9CttozPQ78WBO
+ 3W9wAxvzE3jocbeMtP1qTLB6mndHB3VyANHFpoRcpH5FLyrt2yiM3jDwfBGxlD6O/WY3mW/bCCc
+ WiggQgbbx6C/WkBtou++B8q3RBFXUp7IgFLZiS+vJF6ChcmShxlbSTJIi5dgRBcnzq4DyUmdsYW
+ hb8K+pm8xQvZ0ysToWLu3aX3II/RvdFiBb6yJpHr2a6oHaO7676aHuICO4t7JvaLXjPJyDV+klv
+ LM73yN6EqSPoBiSNSzANKA2EG+zl1fI4l2P1k987jb0qq/JrugwY=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,171 +80,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Unigraf devices can emulate both SST and MST display port. In order to
-write tests using both, add fews helper to manipulate them.
-
-The define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT is taken from the
-python SDK, as it was not defined by the C sdk nor documented.
+As Unigraf devices are able to compute a CRC for the input image, add a
+configuration file option to use them.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 111 ++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/unigraf/unigraf.h |  12 ++++++
- 2 files changed, 123 insertions(+)
+ lib/unigraf/unigraf.c | 25 +++++++++++++++++++++++++
+ lib/unigraf/unigraf.h |  2 ++
+ 2 files changed, 27 insertions(+)
 
 diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 29283b7751b0..b752ff573ace 100644
+index 0f56ad998c94..e14f1fd5b050 100644
 --- a/lib/unigraf/unigraf.c
 +++ b/lib/unigraf/unigraf.c
-@@ -108,6 +108,25 @@ static void unigraf_init(void)
- 		unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config_id, &v, sizeof(value)));		\
- 	})
- 
-+/**
-+ * unigraf_read_u32 - Read a 32-bit value from a TSI configuration item with error handling
-+ * @config_id: The configuration item ID to read from
-+ *
-+ * This macro reads a 32-bit value from the specified TSI configuration item.
-+ * It includes error handling and debug output. This is a macro to have the proper
-+ * line information when using unigraf_debug.
-+ *
-+ * Returns: The 32-bit value read from the configuration item
-+ */
-+#define unigraf_read_u32(config_id)										\
-+	({													\
-+		uint32_t value;											\
-+		igt_assert(unigraf_device);									\
-+		unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, config_id, &value, sizeof(value)));	\
-+		unigraf_debug("Value read: " #config_id "=%d\n", value);					\
-+		value;												\
-+	})
-+
- /**
-  * unigraf_device_count() - Return the number of scanned devices
-  *
-@@ -306,6 +325,8 @@ void unigraf_require_device(int drm_fd)
- void unigraf_reset(void)
- {
- 	unigraf_plug();
-+	unigraf_set_mst_stream_count(1);
-+	unigraf_set_sst();
- }
+@@ -24,6 +24,7 @@
+ static TSI_HANDLE unigraf_device;
+ static char *unigraf_default_edid;
+ static char *unigraf_connector_name;
++static bool unigraf_crc;
  
  /**
-@@ -368,3 +389,93 @@ void unigraf_plug(void)
+  * UNIGRAF_NAME_MAX - Maximum name length to be used for TSI functions
+@@ -60,6 +61,11 @@ static char *unigraf_connector_name;
+  */
+ #define UNIGRAF_CONFIG_EDID_NAME "EDID"
  
- 	unigraf_write_u32(TSI_DPRX_HPD_FORCE, d);
++/**
++ * UNIGRAF_CONFIG_USE_CRC_NAME - Key of the CRC selection in the configuration file
++ */
++#define UNIGRAF_CONFIG_USE_CRC_NAME "UseCRC"
++
+ /**
+  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
+  */
+@@ -363,6 +369,14 @@ bool unigraf_open_device(int drm_fd)
+ 			unigraf_debug("No default EDID set, use IGT default.\n");
+ 			cfg_edid_name = NULL;
+ 		}
++
++		cfg_error = NULL;
++		unigraf_crc = g_key_file_get_boolean(igt_key_file, UNIGRAF_CONFIG_GROUP,
++						     UNIGRAF_CONFIG_USE_CRC_NAME, &cfg_error);
++		if (cfg_error) {
++			unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
++			unigraf_crc = true;
++		}
+ 	}
+ 
+ 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
+@@ -682,3 +696,14 @@ void unigraf_read_crc(int stream, igt_crc_t *out)
+ 	out->n_words = 3;
+ 	out->has_valid_frame = false;
  }
 +
 +/**
-+ * unigraf_set_sst() - Configure the device for Single Stream Transport mode
++ * unigraf_use_crc() - Check if Unigraf device should be used for CRC computation
 + *
-+ * This function sets the device to operate in Single Stream Transport (SST) mode.
++ * Returns: true if the Unigraf device should be used for CRC computation,
++ *          false otherwise.
 + */
-+void unigraf_set_sst(void)
++bool unigraf_use_crc(void)
 +{
-+	int link_flags = 0xFFFFFFFF;
-+
-+	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_LINK_FLAGS,
-+					     &link_flags, sizeof(link_flags)));
-+	link_flags &= ~(TSI_DPRX_LINK_FLAGS_MST | TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT);
-+	unigraf_write_u32(TSI_DPRX_LINK_FLAGS, link_flags);
-+}
-+
-+/**
-+ * unigraf_set_mst() - Configure the device for Multi Stream Transport mode
-+ *
-+ * This function sets the device to operate in Multi Stream Transport (MST) mode.
-+ */
-+void unigraf_set_mst(void)
-+{
-+	int link_flags = 0xFFFFFFFF;
-+
-+	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_LINK_FLAGS,
-+					     &link_flags, sizeof(link_flags)));
-+	link_flags |= TSI_DPRX_LINK_FLAGS_MST | TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT;
-+	unigraf_write_u32(TSI_DPRX_LINK_FLAGS, link_flags);
-+}
-+
-+/**
-+ * unigraf_get_mst_stream_max_count() - Get the maximum number of stream count accepted by the
-+ * device
-+ * Caution: This function can be destructive to some configuration: the only way to get the
-+ * information is to try and read the new value.
-+ */
-+int unigraf_get_mst_stream_max_count(void)
-+{
-+	struct TSI_DPRX_HW_CAPS_R_s caps;
-+
-+	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_HW_CAPS_R,
-+					     &caps, sizeof(caps)));
-+
-+	return caps.mst_stream_count;
-+}
-+
-+/**
-+ * unigraf_get_mst_stream_count() - Get the current number of MST streams
-+ *
-+ * Returns: The current number of MST streams configured on the device.
-+ */
-+int unigraf_get_mst_stream_count(void)
-+{
-+	return unigraf_read_u32(TSI_DPRX_MST_SINK_COUNT);
-+}
-+
-+/**
-+ * unigraf_set_mst_stream_count() - Set the number of accepted stream count
-+ *
-+ * Returns true when the stream count was properly applied, false if the final stream count
-+ * is not the one requested
-+ */
-+bool unigraf_set_mst_stream_count(int count)
-+{
-+	int new_count;
-+
-+	igt_assert_lte(count, unigraf_get_mst_stream_max_count());
-+
-+	unigraf_write_u32(TSI_DPRX_MST_SINK_COUNT, count);
-+	new_count = unigraf_get_mst_stream_count();
-+
-+	igt_warn_on_f(count != new_count,
-+		      "IGT:%p: Requested MST stream count (%d) differs from what was applied by the device (%d)\n",
-+		      unigraf_device, count, new_count);
-+
-+	return count == new_count;
-+}
-+
-+/**
-+ * unigraf_select_stream() - Select the active stream for the device
-+ * @stream: The stream index to select
-+ *
-+ * This function selects the active stream for the device. The stream index
-+ * should be a valid stream number that the device supports.
-+ */
-+void unigraf_select_stream(int stream)
-+{
-+	unigraf_write_u32(TSI_DPRX_STREAM_SELECT, stream);
++	return unigraf_crc;
 +}
 diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index ae1f0d8955ab..c2caa9c2c54c 100644
+index 8b38261dca09..f22f4c993622 100644
 --- a/lib/unigraf/unigraf.h
 +++ b/lib/unigraf/unigraf.h
-@@ -52,4 +52,16 @@ void unigraf_plug(void);
+@@ -74,4 +74,6 @@ void unigraf_select_stream(int stream);
  
- void unigraf_unplug(void);
+ void unigraf_read_crc(int stream, igt_crc_t *out);
  
-+void unigraf_set_sst(void);
-+
-+void unigraf_set_mst(void);
-+
-+int unigraf_get_mst_stream_count(void);
-+
-+bool unigraf_set_mst_stream_count(int count);
-+
-+int unigraf_get_mst_stream_max_count(void);
-+
-+void unigraf_select_stream(int stream);
++bool unigraf_use_crc(void);
 +
  #endif // UNIGRAF_H
 
