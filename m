@@ -4,151 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01FFDF53D7F
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 17:27:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E5B1F53D7E
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 18:39:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 91AC710E1F5;
-	Mon, 16 Mar 2026 17:27:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3322110E323;
+	Mon, 16 Mar 2026 18:39:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gWoX96vG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eNcpR0BJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50C6710E1F5
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 17:27:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A5F410E323
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 18:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773682040; x=1805218040;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=aUSn1WDhoIemuIaxWyUuBP3mEzKtqHr48S1nAaThyAs=;
- b=gWoX96vGPBK2Xdz/VthgtBSe5EsQCuDSYceu4ckq/rRvtDnGXd23sQEw
- PEeknzIkg8JCghWZnQGhHQP54p8C/p98/2zUwlCCGIRTjB0v0yDsMdDuA
- 1NcXhFVpdfFhTtjUbr4CCulAaDUR8VHDS0LPvo2u/uO4rU7JCZUSOK/oe
- r4YVtT2spqDbaDIkNqyBlL/nukBCG6XtE1pC278X5PKZmB7xgipetczgv
- bKhj2NnyLvQuuizWsmIKzrIfv5T/0BeeVj39g7vOdhSEnSsHzC2iAbQfp
- gMBrl0wlUJM0eA29Lllr6tfJOERt2ac5ktL0zeUTVa3oBr/1uas+rFx/Q A==;
-X-CSE-ConnectionGUID: f2Oxys7nQqKfTjnRR+3YcA==
-X-CSE-MsgGUID: TA3BusZ6QXKeLb5xxMNhbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="86059576"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="86059576"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 10:27:20 -0700
-X-CSE-ConnectionGUID: vymvLUw8RpqTAVNQ4DPvxw==
-X-CSE-MsgGUID: lz9O+UsKQ+G4tiCcIZaQrg==
+ t=1773686371; x=1805222371;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=wSQ+p8GjUaEdAeFOwo1nPOtc2cjBxyRabgQ2cF/+9MI=;
+ b=eNcpR0BJf9P0DzI/62s7ijzI7bZZWLXWtlCQgyn446VSI7v1gVUgkrsA
+ 2ePbm4sQ+/OAmbGE+Abyfz5kkU83WS0yxTkO0vMmWeddzudUf51ksj0lM
+ INYxNNxa464f3YyKhbuY3E/yInpqT346hN5U8vfOZI9LBrePH9Ac1GyJv
+ gPdTs+D7SfO1nsjBpAzT5UOfCqW4VzIv7JnYxlmtb6aJEd7Csa96HsYXc
+ MX2BXDfLbRcoZxEnL+opiYPY9Hx1W9N9B0FR448yLD5JCcqaAuvmMeVyW
+ CZKh2KcxGqSSpt8nnWXt55txeHyYWJ0fYJ7389gmNdXuFD1qXyHE4U4g3 A==;
+X-CSE-ConnectionGUID: Dzno5TqpTUGHIJf2CWsT4g==
+X-CSE-MsgGUID: qrHfeuO+SVGLqHWnWILumA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="78606932"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="78606932"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 11:39:22 -0700
+X-CSE-ConnectionGUID: a+OnqWH1Sf+W5IGJtAZ1Zw==
+X-CSE-MsgGUID: mL1393SmTTCtg3l5L4ARvw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="221227862"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 10:27:20 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 16 Mar 2026 10:27:18 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 16 Mar 2026 10:27:18 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.70) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 16 Mar 2026 10:27:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TMjUbbFy0LKhQiaDI+rF1o+WsTFwazaS6+jscunDTXO5RbB0my75fQRdngAilCJp5NdlVOkePhg7srAJe76tbppGwSKXDxqYCIw7f0GE2i333PKK1yefd34LB6rM+CHbF2YMHrDP8EsRCmYY47kIMgu/C4svozZIou5Lbfzj9CaELGUL5RPwZH/faH50YDS1oDLUJ5vtORtS8i4uMSxvX1NRA6nw4DZ4nyW/F1jyBrhW+OkOWJf9mqp5KWLOC9TJEBNJSkI35eufQG/G5H9UfYXVrDorRgtiuQu2AgdWtwvrQIU0Je5nJnHZHUOAIRroj9SIgGY57nBJpcYqJ3EeFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vhn6iz2XuHKKwlWo3d9n1kt8SlSCQnZTwfj1OCfzamg=;
- b=agWDeHDX4+xpahOlyyoa+8XX4lrWKSk/kYCGyKzgpz7PJlP9AQ9gmSMiThe/8Fm78ZME4fZDG1slGEjj7J3cywd/4cdlt9kIaew8W+Lkse00cQe6qS1rwxqa/gln+B5SLwXc70QeR9RV6zD7qedK/71oi8iYHSwbt3cW0QQ51FzWHYgNfNU1UxR36XkyO10hnzgWlz/AEbZzwcaMqGs9YwhkdfLPrkXRA5MBoWM46B0hFxSLrWGKrmGwg0Mj6Xl7fd2qPI933Kp47maiIDxuo5Iahzdq56GtuqbHs/4rAmhY8qIBh+rIV/sVgFigIotLhoojBtHJhv82H7/tYFoW0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
- SN7PR11MB7509.namprd11.prod.outlook.com (2603:10b6:806:346::9) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.9; Mon, 16 Mar 2026 17:27:16 +0000
-Received: from DM4PR11MB6312.namprd11.prod.outlook.com
- ([fe80::9d51:565a:7572:5318]) by DM4PR11MB6312.namprd11.prod.outlook.com
- ([fe80::9d51:565a:7572:5318%5]) with mapi id 15.20.9723.014; Mon, 16 Mar 2026
- 17:27:16 +0000
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>
-Subject: RE: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier when
- supported
-Thread-Topic: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier
- when supported
-Thread-Index: AQHctPaLDYcsBBeUBEOmmbykcWgRbrWxPO4AgAAtJIA=
-Date: Mon, 16 Mar 2026 17:27:15 +0000
-Message-ID: <DM4PR11MB6312386897459B61FF1CC3BA9040A@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20260316033807.24078-1-jeevan.b@intel.com>
- <abgWhvmToId2i7mj@intel.com>
-In-Reply-To: <abgWhvmToId2i7mj@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|SN7PR11MB7509:EE_
-x-ms-office365-filtering-correlation-id: b3ce5b91-57de-47f8-04d0-08de838144ae
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|38070700021|18002099003|22082099003|56012099003;
-x-microsoft-antispam-message-info: vrrQ1SV7dIz7A56xHTCxV0aydMIRflnbp9y/Fqcy6MFaWLU49A0NUJfKspHsIN6t4iqt4jEBP5M86zpVWtCGL5t69uYnlI+AI5nVSot9iQqgWPeCmZlZcC4PCPgXsLiUJpzKBnlKzCalbRnXLAzxfT9TX6FnpxbLW+ucM8DdQ1JM2NdiPAYQD+4jyZs6OvlNnN79Yy95mTUv9UekVY518EZLZV0RysafDZIXI9gL3ID859MALtZ5KY+JWIWsbw6Z95pVh4lkoXFMrvqbGx/KCmSrCW1ui6hMMirev6iZLSqrgIpf4IoRbrfWE4445xSNXzJcHZHyqaT2l3mS5DUy1/hQsC4obyn2qw10hQ3LZLUsZbJQt/cdhQJ6XN4Bn1mRi0CZzslGzZciSaP25+hcccdiH/ZFuvpIscpblBebhXpo00keLdilcdxO/YlSUYEZRCIRlz4fu9KyISgsBRw3v9qCPCkt7qBX4FgzUGYLvhKkPO5iUwkx1BFCnxU4MnnA40tDIClGJI22yytAzrArg1kolh41TOZPKWVneG/hx7HLESmj+2IyypuFRXJzwcvQP84J4I3loVvHDlBbC7mPsRREtnq+d0lTrdZBTHvAJx/A6zk4aK8V5ulABrx6T9kSSMiPLl07ftBxVTgirH5HcPnIz9IHVHt0LHhgpA1HFDa6CYQaJvAxQNrXSX2T+o8ChNHWvLndS+bcYnMVi2q5jdLuUzwMZUVoaqVNA3YAle92V191yP2pdlDVoywAhB7Z4eXOFEGwirDS51kXnnsJ/uG2JUpapr8HjveMzSpDHUo=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(18002099003)(22082099003)(56012099003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?EVKyZwTVU2XaXZ2slfzEO3n14jpBGtu9oCHbqau6Uv3Qhnpytntuahdib/?=
- =?iso-8859-1?Q?2JCh2YGEI+PMsTmcKDJdk26N9rlvbM8XdsQkuSpAkgTBRWFQSuzLZ1cwo6?=
- =?iso-8859-1?Q?Y046VhEhflULmpkissLSs2sSruqxcOzT4VjnC5ynZ4bmxQv39MAtrJP/sp?=
- =?iso-8859-1?Q?gvTwagLkMdbBd+MgVZg3zL4zOwgP1VtlTijxgg0WHp+c/eCo61NVUzB9Ns?=
- =?iso-8859-1?Q?p+TZnyQpfvTU6P1QX1VgF5XLMxltoz5ZMebjH4scB2iQNhkyfYOXwbVcZZ?=
- =?iso-8859-1?Q?3ZjUsX+CQdCRKneQ/mGaxwtZ7BeIoeM9PgwhKdmZxUFqZana8EyjzJrnHQ?=
- =?iso-8859-1?Q?M8POhVs5wkzPuQNlJYRPZ3Bh1AJsTsXukF6NoXMU7hFacNezy38pqdDoG9?=
- =?iso-8859-1?Q?rF1N0fq7EC4KKIiHHa/ELBfW/GznhIVL/TEJLR/rn5Q230uJhDwyvfeQ/D?=
- =?iso-8859-1?Q?UsiYwR/nnJNA92ZtBrZImF2mQO6EJuyWY24HnIMuVcVKZzbzbzwZgtZwPt?=
- =?iso-8859-1?Q?1aH3APrLOVh7zEtlqCi+hV57XsjIp54vDprAT7eJed9sB3vsprDbcxWSBx?=
- =?iso-8859-1?Q?rzxuzpDCkvhpe9ryEGipzYwflvlnK6bM9fyaO6bMm7vXriHn/h1yLAVPrI?=
- =?iso-8859-1?Q?848DyHXfj8ajXwjSUCrP6dWVEDvCCx2YprpMFjQt/Wloo5YWQ6B8ssMiJJ?=
- =?iso-8859-1?Q?Wxn089SHdpdNJpbsklIiORYTy/eF7VSrT0dR21fgEkByWyKM8t+u+hSsO8?=
- =?iso-8859-1?Q?6mLyUSOvEKGkwOVvyWbXhtCW9f5UjHnWkZogiie11gCdLqH8Cmzit8LUYm?=
- =?iso-8859-1?Q?YW05UFEJzlzTbZF87Wq7w7Pujih7cIl2piMBRTUvLmpTiu5/WQZhNRWpt4?=
- =?iso-8859-1?Q?eEWMqzjt3z4sMUFgZFfDsgU2UJzP1H5zSH60bpzyrvIQJPsQXRwZU8RD9A?=
- =?iso-8859-1?Q?R13Ehq+TSJF6YKJLZ6rWsB0hADNPnWv9AXK30ONrnkkqpb4waCLVTTPnPo?=
- =?iso-8859-1?Q?8sIhGmJ84iWba9R1Hlt21TRmgxwY/+KHuo/A/5A+s4Y2eIKUhiWEvj87Pc?=
- =?iso-8859-1?Q?ezAAdctcEu0eSRF8tm9X4sMeYGyHayBBzcLUvCrmmrLkNUsfacSWwXdKf+?=
- =?iso-8859-1?Q?s5Hf/pVrv+7KfM4dAuF2Ug5tTbQUP8Ie8vj7kwL/p2XsjrKtkeSLTfHvTw?=
- =?iso-8859-1?Q?ZUw5xf3cNAoSVTZjkpAL7ueW1SHjD8nJEOaOCGzcOM3hPg63jGQ7RG6Ckz?=
- =?iso-8859-1?Q?fLxhveLwKvkfJ6kvqSkbmcwcVF9KESu+c6aC9YscS0BrgRE7ROp4c/NEeu?=
- =?iso-8859-1?Q?9uQxkuyr6j5k7dyZaEjdniSVmCuZR1qtOW7Hy44RWPFi7I0SsE49ak6HGn?=
- =?iso-8859-1?Q?kRjwSKsoS2qL5/P357zIOZ7cBZd3OdjLarJZMWHAFOa4Rev+GtVbiReAm1?=
- =?iso-8859-1?Q?gbGP0l/pOEGr8isg9HatFTFDWJiLjrQPUv3hbCwBjqst2Z/LP7ZY4U5BtE?=
- =?iso-8859-1?Q?MedlJ5m3TjZwYHC/s4trh8tlK+M6b+c/+SIy6zGccAAwpcBCO3uasgCydL?=
- =?iso-8859-1?Q?ojvP8tetpZJLbfFF0yt1aQeP40J46k8DhiPUwFWHK+14dc6q8ZApYigQr7?=
- =?iso-8859-1?Q?aQXlu+I4/OLU/bCAPFRr2Xcr2dHvLsK+XRnbTNIEQ/uMKIXqFelcQetYAq?=
- =?iso-8859-1?Q?NuIvP4bkO/ERe9oOCEYdOxJSlbP8sROg0Vb6LiXqUZwfvUFsJgicBjJqhh?=
- =?iso-8859-1?Q?MHVHrAyhHpogVgjJi8HE3DRZa5/k0jt2fVuJNsOKfCz8D9?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="252520189"
+Received: from chu13-desk.fm.intel.com ([10.80.209.210])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 11:39:20 -0700
+From: Austin Hu <austin.hu@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: chris@chris-wilson.co.uk
+Subject: [PATCH i-g-t] tools/intel_framebuffer_dump: dump frame buffers with
+ igt_fb API.
+Date: Mon, 16 Mar 2026 11:36:58 -0700
+Message-Id: <20260316183658.384575-1-austin.hu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: kahGXk0qEmYO0XOsoIS+6A8rTZrxWszDBZ/3Z+yox82peSW4RAOeCvPNqEZIKCXCDSXXro3Vk501fYwNeBJf/+x9z1DO9y9GkU5U5Sn1YKU81mca1/2563cZOjrn/ZSNGdZt0/ldwlD/qcSbWGDNsWtSi1B7H1ipFFvyhUafJgknQAd7Xpz5KK3wr+AqW36W4ISdAytsmPKIYCkw3OEU1RKvljR+YJyaJsv3oYo02WVHDKhangQq/hpm0AoQhuiwqmebaSd9gIC6doZnHY1iSWaC3T+zX0Y5VyvXLGXaRFKVKAyLyWJbWRYnSMRoh/H1B+hd08axbn2ml61t7jl8gA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3ce5b91-57de-47f8-04d0-08de838144ae
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Mar 2026 17:27:15.9115 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yA7NVDoO1XPZRdqb5WzUYlgJ1wV8hEqxwgrJ1D//osFNnZcnqeIgmKYoUQJOtWwADXKSeDfQqh9cTPpMhdCVxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7509
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -164,68 +66,179 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> Sent: Monday, March 16, 2026 8:15 PM
-> To: B, Jeevan <jeevan.b@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Naladala, Ramanaidu
-> <ramanaidu.naladala@intel.com>
-> Subject: Re: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier=
- when
-> supported
->=20
-> On Mon, Mar 16, 2026 at 09:08:07AM +0530, Jeevan B wrote:
-> > While creating the framebuffer, prefer tile4 when it is supported
-> > instead of always using linear. Fall back to linear if tile4 is not
-> > available.
->=20
-> Why?
-On Xe platforms, using the linear modifier takes longer to prepare and subm=
-it a flip compared to tiled modifiers.=20
-On HRR panels, the available frame time is small, and this delay can cause =
-flips to be submitted in the Evasion region,=20
-leading to sequence mismatches.
->=20
-> >
-> > Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> > ---
-> >  tests/kms_cursor_legacy.c | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> > index 5399ef481..4c4e477a1 100644
-> > --- a/tests/kms_cursor_legacy.c
-> > +++ b/tests/kms_cursor_legacy.c
-> > @@ -367,15 +367,21 @@ static void set_fb_on_crtc(igt_display_t
-> > *display, igt_crtc_t *crtc,  {
-> >  	drmModeModeInfoPtr mode;
-> >  	igt_plane_t *primary;
-> > +	uint64_t modifier =3D DRM_FORMAT_MOD_LINEAR;
-> >
-> >  	igt_output_set_crtc(output, crtc);
-> >  	mode =3D igt_output_get_mode(output);
-> >
-> > +	primary =3D igt_output_get_plane_type(output,
-> DRM_PLANE_TYPE_PRIMARY);
-> > +
-> > +	if (igt_plane_has_format_mod(primary, DRM_FORMAT_XRGB8888,
-> > +				     I915_FORMAT_MOD_4_TILED))
-> > +		modifier =3D I915_FORMAT_MOD_4_TILED;
-> > +
-> >  	igt_create_pattern_fb(display->drm_fd,
-> >  		      mode->hdisplay, mode->vdisplay,
-> > -		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> fb_info);
-> > +		      DRM_FORMAT_XRGB8888, modifier, fb_info);
-> >
-> > -	primary =3D igt_output_get_plane_type(output,
-> DRM_PLANE_TYPE_PRIMARY);
-> >  	igt_plane_set_fb(primary, fb_info);
-> >  }
-> >
-> > --
-> > 2.43.0
->=20
-> --
-> Ville Syrj=E4l=E4
-> Intel
+This app is out of date as it opens i915 DRM device to just dump
+the "main" frame buffer connected to a CRTC.
+
+So improve it to support Xe driver as well, and dump all the frame
+buffers attached to active Planes (including Cursor) of each CRTC
+with igt_fb API.
+
+Signed-off-by: Austin Hu <austin.hu@intel.com>
+---
+ tools/intel_framebuffer_dump.c | 137 +++++++++++++++++++--------------
+ 1 file changed, 81 insertions(+), 56 deletions(-)
+
+diff --git a/tools/intel_framebuffer_dump.c b/tools/intel_framebuffer_dump.c
+index 79c0688b1..907c65a14 100644
+--- a/tools/intel_framebuffer_dump.c
++++ b/tools/intel_framebuffer_dump.c
+@@ -36,75 +36,100 @@
+ 
+ #include "intel_io.h"
+ #include "drmtest.h"
++#include "igt_fb.h"
+ 
+-int main(int argc, char **argv)
++static void dump_frame_buffer(int fd, uint32_t crtc_id, uint32_t fb_id)
+ {
+-	drmModeResPtr res;
+-	int fd, n;
++	drmModeFB2Ptr fb = drmModeGetFB2(fd, fb_id);
++
++	if (fb == NULL)
++		return;
++
++	/* Wrap drmModeFB2Ptr object into the igt_fb one. */
++	struct igt_fb igt_fb;
++
++	igt_init_fb(&igt_fb, fd, fb->width, fb->height,
++			fb->pixel_format, fb->modifier,
++			IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
++
++	/* Update more attributes of the igt_fb object. */
++	igt_calc_fb_size(&igt_fb);
++
++	/* Import the GEM handle from drmModeFB2Ptr object into igt_fb object. */
++	igt_fb.gem_handle = fb->handles[0];
++
++	/* Dump the framebuffer contents with igt_fb and Cairo APIs. */
++	/* Note: the FB memory layout may be non-linear (like X/Y-Major Tile). */
++	cairo_surface_t *surface = igt_get_cairo_surface(fd, &igt_fb);
++
++	if (surface != NULL) {
++		char name[80];
+ 
+-	fd = drmOpen("i915", NULL);
++		snprintf(name, sizeof(name), "crtc-%d-fb-%d.png", crtc_id, fb->fb_id);
++		cairo_surface_write_to_png(surface, name);
++		fprintf(stdout, "Framebuffer dumped to %s\n", name);
++
++		cairo_surface_destroy(surface);
++	}
++
++	drmModeFreeFB2(fb);
++}
++
++int main(int argc, char **argv)
++{
++	int fd = drm_open_driver(DRIVER_INTEL | DRIVER_XE);
+ 	if (fd < 0)
+-		return ENOENT;
++		return -ENOENT;
+ 
+-	res = drmModeGetResources(fd);
+-	if (res == NULL)
+-		return ENOMEM;
++	/* To enumerate DRM Plane attached to cursor frame buffer. */
++	drmSetClientCap(fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+ 
+-	for (n = 0; n < res->count_crtcs; n++) {
+-		struct drm_gem_open open_arg;
+-		struct drm_gem_flink flink;
+-		drmModeCrtcPtr crtc;
+-		drmModeFBPtr fb;
++	drmModeResPtr res = drmModeGetResources(fd);
+ 
+-		crtc = drmModeGetCrtc(fd, res->crtcs[n]);
+-		if (crtc == NULL)
+-			continue;
++	if (res == NULL) {
++		close(fd);
++		return -ENOMEM;
++	}
+ 
+-		fb = drmModeGetFB(fd, crtc->buffer_id);
+-		drmModeFreeCrtc(crtc);
+-		if (fb == NULL)
+-			continue;
++	drmModePlaneResPtr pres = drmModeGetPlaneResources(fd);
+ 
+-		flink.handle = fb->handle;
+-		if (drmIoctl(fd, DRM_IOCTL_GEM_FLINK, &flink)) {
+-			drmModeFreeFB(fb);
++	if (pres == NULL) {
++		drmModeFreeResources(res);
++		close(fd);
++		return -ENOMEM;
++	}
++
++	/* Iterate CRTCs. */
++	for (int c = 0; c < res->count_crtcs; c++) {
++		uint32_t cid = res->crtcs[c];
++		drmModeCrtcPtr crtc = drmModeGetCrtc(fd, cid);
++
++		if ((crtc == NULL) || (crtc->buffer_id == 0))
+ 			continue;
+-		}
+ 
+-		open_arg.name = flink.name;
+-		if (drmIoctl(fd, DRM_IOCTL_GEM_OPEN, &open_arg) == 0) {
+-			struct drm_i915_gem_mmap_gtt mmap_arg;
+-			void *ptr;
+-
+-						mmap_arg.handle = open_arg.handle;
+-			if (drmIoctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg) == 0 &&
+-			    (ptr = mmap(0, open_arg.size, PROT_READ, MAP_SHARED, fd, mmap_arg.offset)) != (void *)-1) {
+-				cairo_surface_t *surface;
+-				cairo_format_t format;
+-				char name[80];
+-
+-				snprintf(name, sizeof(name), "fb-%d.png",  fb->fb_id);
+-
+-				switch (fb->depth) {
+-				case 16: format = CAIRO_FORMAT_RGB16_565; break;
+-				case 24: format = CAIRO_FORMAT_RGB24; break;
+-				case 30: format = CAIRO_FORMAT_RGB30; break;
+-				case 32: format = CAIRO_FORMAT_ARGB32; break;
+-				default: format = CAIRO_FORMAT_INVALID; break;
+-				}
+-
+-				surface = cairo_image_surface_create_for_data(ptr, format,
+-									      fb->width, fb->height, fb->pitch);
+-				cairo_surface_write_to_png(surface, name);
+-				cairo_surface_destroy(surface);
+-
+-				munmap(ptr, open_arg.size);
+-			}
+-			drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &open_arg.handle);
+-		}
++		/* Dump the 'main' frame buffer attached to this CRTC. */
++		dump_frame_buffer(fd, cid, crtc->buffer_id);
++
++		/* Iterate and dump other FBs of Planes attached to this CRTC. */
++		for (int p = 0; p < pres->count_planes; p++) {
++			uint32_t pid = pres->planes[p];
++			drmModePlanePtr pl = drmModeGetPlane(fd, pid);
++
++			if (!pl)
++				continue;
++
++			if ((pl->crtc_id == cid) && (pl->fb_id != 0) &&
++					(pl->fb_id != crtc->buffer_id))
++				dump_frame_buffer(fd, cid, pl->fb_id);
+ 
+-		drmModeFreeFB(fb);
++			drmModeFreePlane(pl);
++		}
++		drmModeFreeCrtc(crtc);
+ 	}
+ 
++	drmModeFreePlaneResources(pres);
++	drmModeFreeResources(res);
++	close(fd);
++
+ 	return 0;
+ }
+-- 
+2.34.1
+
