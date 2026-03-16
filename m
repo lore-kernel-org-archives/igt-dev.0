@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77859F46449
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:26:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0589EF46449
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:26:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2951410E25E;
-	Mon, 16 Mar 2026 10:26:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A936110E272;
+	Mon, 16 Mar 2026 10:26:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="xqAsmGdw";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="mJIQZlsa";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6DA810E25A
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:23 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B4C110E25A
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:14 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id BAF761A2E28;
- Mon, 16 Mar 2026 10:24:22 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 7D3A6C415A5;
+ Mon, 16 Mar 2026 10:24:36 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 929B15FC4A;
- Mon, 16 Mar 2026 10:24:22 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 012AB5FC4A;
+ Mon, 16 Mar 2026 10:24:13 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id B79D210369F2E; Mon, 16 Mar 2026 11:24:21 +0100 (CET)
+ with ESMTPSA id 1354010369C02; Mon, 16 Mar 2026 11:24:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773656662; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773656652; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=Cop+2TXC2P4fplyZ9halK+m2khKfOSum4oQxNgNjuWo=;
- b=xqAsmGdwPvViHWyRHQDMFtFJcxI4DfzPqO4aeDsT9X2a5dq9kDyXEY9FqUs+Jhee+jtkQz
- Chy205zxo3QxfIVcLg69RMrXl+CXCJY4bmeAmiZrALLNyXbWcaqSVdJbMgGiO25RhUMlcg
- mXtowZwGQMlwX6s8CQ1Ps++aDPN3a7FV9kq4ePGdoKuBhBOyLYWt7O+YpvvCct2YDiqSE/
- b0tzGN+K2Kb8zVLTahdL/Sif/Ta38vmZPeXGJSjsFDcDovX9qBXEtv3m6TBlqLQ/MqK00d
- Wr9nzysM+IuL0lKbZ8JzwkQpysEqtqyBO1YaxY9qTaOU7Zf+FO9StoAq3RU+Rw==
+ bh=TdRP4hmPZA2esDbyiuR8F4CDPCK2+dAY52QlRUD4NS0=;
+ b=mJIQZlsaMRha/xAK+W6Yz4JMlzke18DxKu01oHTFxVO/wHqrVA26LHCazgjqxKbCREob/M
+ Vw/pZlvc05XIyNAm2at18UbrX8x0u6o0HkeiCbD+/3O8XonnoSH7tTL4FXB0J30zRodVRL
+ /3TAT+lTuc1D3HdZzlkVi0TiAijosdHbWyyokrCk45zmiqFWhKXnR2jGq8O3KioA6K2N5b
+ kWqH8dYLNUkQWLqkqvFwPlxTqyaXo6Lw++m+SDNuAyzrZkerDVMlzP7Mf+Q5iZoFUHPKAG
+ C6dLrswTJhQFXxaTlh8Tgaw6ixDFy0OioUgRKrftoEwiUi9ZzH9kY0cc+Dt7Ww==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 11:24:47 +0100
-Subject: [PATCH i-g-t v8 39/49] lib/i915/dp: Add helper to get maximum
- supported rate
+Date: Mon, 16 Mar 2026 11:24:37 +0100
+Subject: [PATCH i-g-t v8 29/49] lib/unigraf: Add helpers to read and write edid
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-unigraf-integration-v8-39-4489bf8572be@bootlin.com>
+Message-Id: <20260316-unigraf-integration-v8-29-4489bf8572be@bootlin.com>
 References: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2281;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3669;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=SIaFkVKPppQGNRWEns8Gv1U0lRIHnNMr+xr94/2zDVk=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pTaVMft2stdlmcCePhgLlHdW1vmnlCiRlak
- Sr75tzjCimJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaUxsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJt5BAAxqdQRTFsJQv80vm6Xd0lTfmNnOWEN1n
- fAAw3tlYoXjQW75GC5u1847u2lIZACh/mSKmbPWUq5N1J+yuNpGXJLEKnqCoklIWcbJU7WTo/vW
- BAVy2fQLavBNOLa/r5Kl51nqS94pHtE19qB4P6xpokXF7U7Qz+Z7bs5HqwFPnrCaCuy1PxPl0lR
- ROetXxSOO0mcAIIM2kR7JUd2+8TQj7RJHGgVbyXS7Y1fDLzdUDZ0k16YeTzqUQ5Myw8qCfacR9w
- IzyH6EEdgQ3v4q47XNdNJL6GIIp0rD8UmkrPJZL9X0Nb+qON+jb0xhzByBb5252uOSA7Z9bqpKJ
- X/l2buUVuA81h5mGajKcN/iM7SX3W4rpT6BHJw6j3KOGvP3yPOuyfbmzK2EWgZTqqFqQsrKRv9y
- HtdE1NY/DabcJScMXyfTKNJg2jq+t+1AC81PSCv9ZQjHQ19oURFC1Lg/j8Sj7mz/YNahhNVg4uY
- 8uh8hQdp9IqbV+zZc4Ky9LfNLKyruQFab+s2VKcWOg90UjPYn06aCbgi/qNpu3KbdW9DPz+yxNB
- dI/Zuc4YiB1gQ9q1QkdAMZv34ZhLGkteySWHMLxB2HVP/uaYph32B7pPqGgqtTpNlV7IW1EbnhD
- 5g3z2lrRkbLaXyyw5c8TNuRK3QghjqUTxL+KtLty9aYrKGVHM5sM=
+ bh=RhwoazbD6R5Qprtybzf9GSxpW5nhd1HD9MftV+Ywx3c=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pSnG7Dm6Xe5eTI0V1AE1rOrK4nxyV+x7RZr
+ 5OM4AQ/pgmJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaUhsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKCiw//QEwDWuk0o2jTucOeRk3x3Fnajhy06Xh
+ dPmY4Bq1ZmzzMMdDxJmuiXzvOnd/83xXlIUqkHWCqwOUqbKFicdjx7MaXnW6unCEE0i3TP5ShdB
+ LhBzsX9oHT3jlK6EqESe+VOeGBpznPYpha4rcKmBbRAq7l7pmorOjCMwsDVtIVaUZALyZEGC8pQ
+ sC1tu29HKS9CZe0MdSoeEwqdBonw9IZz/rzacpstIGoWtd+9TtC6v9IeGwgx9KwXQ/zTAi4GBU6
+ oBleeDNYSqVrFUYZTs9KfGARGKZvMiJZYhoplOaPFAPF/yF05qqQbLLKW/1Ckf6h5lYR7PNMEae
+ klZfk51vx84LRoWuxtLLsCJ+5VYsioa1I2slyw0RLb6nAcOrtMQ0cp/su/esopbU6705BOGciWA
+ RODu+Nk6oy53bf+SmxeaDYexrBNcdNxIEG4zlpgntX5CWaXsdCiWymkLU66wp3nLQEB7hjQICi3
+ Hy8+oJIEVoKtiwy3mqFBAWDI8rl4HPIU3CnXquXQzz60JcJZrXlnh7GwGCgrLpl9KoWcLuE90rN
+ /AUkgJXCAZf7pfohpE13/3KO30jbDbs93NvM6uSADjSFFZTeacVOMvB3Hu2Avq+DVoKLTKX8vbQ
+ GmIJqk+eei9MQHPLPKSquZ6PkLUpt75E6LoIAjU0mRmFEwn+ubUo=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,79 +79,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some GPU can't reach all the DP rates. To avoid false positive during
-testing with unigraf, add an helper to filter tests based on the maximum
-supported rate of the current GPU.
+Read and writing EDID on unigraf can be useful to emulate different
+screens, add helpers to read and write them.
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+There is a limitation on the libTSI.so, it is only possible to read EDID
+using buffers of size multiple of 128 bytes, and there is no way to query
+the actual EDID size. The current implementation can only read EDID up to
+2048 bytes.
+
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- lib/i915/i915_dp.c | 35 +++++++++++++++++++++++++++++++++++
- lib/i915/i915_dp.h |  1 +
- 2 files changed, 36 insertions(+)
+ lib/unigraf/unigraf.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h |  4 ++++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
-index 48a69e9ff283..da3dd05c3293 100644
---- a/lib/i915/i915_dp.c
-+++ b/lib/i915/i915_dp.c
-@@ -28,7 +28,9 @@
+diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+index b752ff573ace..d06da6742e95 100644
+--- a/lib/unigraf/unigraf.c
++++ b/lib/unigraf/unigraf.c
+@@ -56,6 +56,11 @@ static char *unigraf_connector_name;
   */
+ #define UNIGRAF_DEFAULT_INPUT_NAME "DP RX"
  
- #include <ctype.h>
-+#include <errno.h>
- #include <stdio.h>
-+#include <stdlib.h>
- #include <string.h>
++/**
++ * EDID_MAX_SIZE - Max EDID size that can be read from the unigraf. The
++ */
++#define EDID_MAX_SIZE 2048
++
+ static void unigraf_close_device(void)
+ {
+ 	if (!unigraf_device)
+@@ -127,6 +132,20 @@ static void unigraf_init(void)
+ 		value;												\
+ 	})
  
- #include "i915_dp.h"
-@@ -344,3 +346,36 @@ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
- 	temp = drmModeGetConnector(drm_fd, output->config.connector->connector_id);
- 	drmModeFreeConnector(temp);
++/**
++ * unigraf_write() - Helper to write a value to unigraf
++ * @config: config id to write
++ * @data: data to write
++ * @data_len: length of the data
++ * Returns
++ */
++static void unigraf_write(TSI_CONFIG_ID config, const void *data, size_t data_len)
++{
++	unigraf_debug("Writing %zu bytes to 0x%x\n", data_len, config);
++
++	unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config, data, data_len));
++}
++
+ /**
+  * unigraf_device_count() - Return the number of scanned devices
+  *
+@@ -329,6 +348,46 @@ void unigraf_reset(void)
+ 	unigraf_set_sst();
  }
+ 
++/**
++ * unigraf_read_edid() - Read the EDID from the specified stream
++ * @stream: The stream ID to read the EDID from
++ * @edid_size: Pointer to an integer where the size of the EDID will be stored
++ *
++ * Returns: A pointer to the EDID structure, or NULL if the operation failed. The caller
++ * is responsible to free this pointer.
++ */
++struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size)
++{
++	void *edid;
++
++	unigraf_debug("Read EDID for stream %d...\n", stream);
++
++	edid = calloc(EDID_MAX_SIZE, sizeof(char));
++
++	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
++	*edid_size = unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device,
++							  TSI_EDID_TE_INPUT,
++							  edid, EDID_MAX_SIZE));
++
++	return edid;
++}
 +
 +/**
-+ * i915_dp_get_max_supported_rate:
-+ * @drm_fd: A drm file descriptor
-+ * @output: Target output
++ * unigraf_write_edid() - Write EDID data to the specified stream
++ * @stream: The stream ID to write the EDID to
++ * @edid: Pointer to the EDID structure to write
++ * @edid_size: Size of the EDID data in bytes
 + *
-+ * Returns: Max supported link rate available for output, else -1
++ * This function writes the provided EDID data to the specified stream.
 + */
-+int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output)
++void unigraf_write_edid(uint32_t stream, const struct edid *edid, uint32_t edid_size)
 +{
-+	char buf[512];
-+	int res, max_rate = -EINVAL;
-+	char *token;
++	unigraf_debug("Write EDID for stream %d...\n", stream);
 +
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
-+					      "i915_dp_force_link_rate",
-+					      buf, sizeof(buf));
-+	igt_assert_f(!res, "Unable to read %s/i915_dp_force_link_rate\n",
-+		     igt_output_name(output));
-+
-+	token = strtok(buf, " ");
-+	while (token) {
-+		int rate;
-+
-+		errno = 0;
-+		rate = strtol(token, NULL, 0);
-+		if (!errno && rate > max_rate)
-+			max_rate = rate;
-+		token = strtok(NULL, " ");
-+	}
-+
-+	return max_rate;
++	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
++	unigraf_write(TSI_EDID_TE_INPUT, edid, 2048);
 +}
-diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
-index e4249d179543..b13629147804 100644
---- a/lib/i915/i915_dp.h
-+++ b/lib/i915/i915_dp.h
-@@ -18,5 +18,6 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
- void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
- void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
- 			     char *link_rate, char *lane_count);
-+int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output);
++
+ /**
+  * unigraf_hpd_assert() - Assert Hot Plug Detect signal
+  *
+diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+index c2caa9c2c54c..40f706ebd483 100644
+--- a/lib/unigraf/unigraf.h
++++ b/lib/unigraf/unigraf.h
+@@ -42,6 +42,10 @@ void unigraf_require_device(int drm_fd);
  
- #endif
+ void unigraf_reset(void);
+ 
++struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size);
++
++void unigraf_write_edid(uint32_t stream, const struct edid *edid, uint32_t edid_size);
++
+ void unigraf_hpd_deassert(void);
+ 
+ void unigraf_hpd_pulse(int duration);
 
 -- 
 2.52.0
