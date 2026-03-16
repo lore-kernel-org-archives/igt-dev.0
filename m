@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD0A6F53D6D
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:23:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7B17F53D70
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:23:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 707AD10E5B4;
-	Mon, 16 Mar 2026 16:23:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7046610E3AB;
+	Mon, 16 Mar 2026 16:23:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="xJWKTyQx";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="vY/nBDuJ";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEF4B10E29A
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B49910E2B5
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:22 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 99FFA4E4260B
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:11 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 04EE74E42609;
+ Mon, 16 Mar 2026 16:23:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 70D805FC4A;
- Mon, 16 Mar 2026 16:23:11 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id CA6465FC4A;
+ Mon, 16 Mar 2026 16:23:20 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 3C6B81037220C; Mon, 16 Mar 2026 17:23:10 +0100 (CET)
+ with ESMTPSA id A298F10372212; Mon, 16 Mar 2026 17:23:19 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773678191; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773678200; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=STczcMVk0JCqbGgtFjZji1Rze5+NL+qkw6bbV45a03Y=;
- b=xJWKTyQxYc1Ntdtd1urowwnQNubHZ4G8xRnhX7RMmFapnOC5VRYQO53TSriSMToZKgIQPi
- H8MMzVXALJKXyZ2rybJ6twn0foGnj9uALaaCryADUV9a3QSkWaBx2+X0zOZSABOOOAMxDS
- 66zsEOdFZ26LhP1qnEUcIvrMSsNzsi7iPeBudCEPF4jmkFAkwE28F2IF43+fkIEyu/VSIt
- 0o6irhQySKn79xLyRyrM3q7GStml3JgZ4SgzVsfs6XxWbLCM6p7OPypABE/2ZVa3Si+/GL
- q51B/HgO2HhSyjui2PXswEGPm8DUtD/RgWWidFHWDTjue710MOOBfyOEdOXCow==
+ bh=E0jfLMRFfHQEWChydSeZRJsrsa0fo0QW+ATj3A2xYhQ=;
+ b=vY/nBDuJqpKVRp0/GmsblD+ANloY+HdobDU0dTcNqVGfmZF5n21x6lzlB2+Fyzml0CfN1S
+ NCsAQTKvQkeFvdN3DYR/m6ow3ex1w946+cBqghcID4bn4Uto0sv0WySC8+8SK31+J/3AGt
+ H66gCESrG1WnOmUyrWXOso3659/UHln81i8vgImhE+wwt7vyWZTioGEOXshW/r4hoIHK2f
+ CHk/GFlFkHCMgIt0aBt1ZGulo8QNwMffTlwCWkXXIK7+DzhQ1b+SgQJDYBwk7waiDGxEnh
+ /9PAhlPBXeTILmgEwXyW3vaWifm9/X5HCT5RZw+acwu7Q2iLzXKxQt7s51S6rg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 17:17:25 +0100
-Subject: [PATCH i-g-t v9 04/49] lib/igt_kms: Add helper to obtain a
- connector by its name or MST path
+Date: Mon, 16 Mar 2026 17:17:34 +0100
+Subject: [PATCH i-g-t v9 13/49] lib/igt_amd: Add const when make sense
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-unigraf-integration-v9-4-a01dffc3b0cb@bootlin.com>
+Message-Id: <20260316-unigraf-integration-v9-13-a01dffc3b0cb@bootlin.com>
 References: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4853;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1634;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=rf2J+XcjbZ5kIHDejR76RZXeKXK6Z9SZnxTwhy893qs=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpuC6JROOoUsJmfOZv/9RwBaZYgwsN0q8LoS03Z
- qJbgi507rmJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabguiRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKltQ//dQ48IeGhWBBavz9OnXV+HbCziBeDD2j
- vtDPBzcDeFKerLAgyRToFOT8iIqLJjcI/isN7tn/Cgh8HrFbAn35okUkAIW3x+d+kSDCo93M+9q
- 9WtmL8Qq9G3tCC0YvNEMAxqGR7joNAi6AirmbfNtUL7DUDH1YOHqa4DQRsyg9oMxVLhdOZvcG/W
- pwhHEQHcUtWj7Jku85GyhJjShmprrHmeuJg9Eb4p7vZvZOp6z7pG/S+xZ5PyOk6R573U1IideT6
- 3GErfNBomEYh/pmVrRBO0Sv3KAgquYA9UkvVfSr5kAZKy0kHv325tGIFqwA7Kkwh/ZjszNipie4
- Tl5fpFh3KJxC3VIRmVlh/5HUVYaW6NcK67scRifimYzZSRTx4fhngeNpiA68Vb6K4DK01/Q2ZDS
- GPfbhonh7IfSTA6Qc4mYI5TE4SULshOQNpZWrLjQeWMy6V1Dvn4Y4RDvOaPbT5pxdxXGPqEh5ZF
- gjHFb9gCjiFC6mlw/qHUyHlYEGqj8hy8RtaAjEqxfqAWGFA/Onz8Rq1VlbroY5TvvPMVo9gc60R
- ywPChZB3tf/n5TTh1grH00c5OTZzT+MUSSC71aLSyQZs9TOnVbCO2KW5TAKrydFQ/d+CH5iVMx5
- neyirrKqD++IcZYc/8OUblFhe7TjhTfHA5wuzINn6hQb2lKIxoB8=
+ bh=Qs3TO86JT4LfvE+hJvoqDPdSs4D6kkSYfEFxNnJ2dGk=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpuC6KdxVW+LRrUY4fHKAp/U2rtwey2yz7jkACY
+ mpL5nZn2lOJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabguihsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIHgw//dfNXUppwso4VqZwJN1fAZI+2kVN+NG4
+ T6fFRrnmZseVWt2OBuk7X56UJXiHQaLavZQx/Gp+Rl1tKE1GIM5MqOjmyTg8iCRrUz7UykFVhIQ
+ Yb3tu5hbVJiGw7U4QzdU83iL7P8Z3EUwuzuSRxDMygvBjfhnowT8Owd4hUEOB/DR7ZZsuGSpdsU
+ dQISC/V43Bj+f8Yy6d8ZvYyFbA+YrRlqMFjgm8YijzPXgrvh97vL9CxeHHT72T5cEr6ycWZeVob
+ KzPHXXUcCJ1TYioCAM5MLS3xIT323YH0STU74eMhh+R8PslIoPzJ+cZElQRAgK6U5EpGquwvjv/
+ yxv6ZjfxIy190cdZO1F5xm6wwvcbU551IXsdHFOhQ0aeFmN1giR/0n1hM47zaX/TieUpOMXqgLF
+ SZuwlCOVXtuL5p2Qw4mwkn9+CtqvB4UdnGUfmzAu+W+rmZvK6F0A3hnHx3+ydtIHyl20vJkbkSS
+ fZA9QSueCC7hyTy8HPFrwMC/iJqEr5YvAsb5+E9lrDsNEwo4AGl6nGUH/J/NmAp/vZuAtBW1BuP
+ mELRFk6QVg7Fx5VLjgVhFP6k7yctw/6LlSSHQMSQnP5w2CraE7riX3U4SiiN77i61KNlJc0auF2
+ aBwghTUukcXKWKyC0/TUjBetFcYXtA7upOAVoCN14tGPD1E0VYqg=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,163 +79,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the functions igt_get_connector_from_name() and
-igt_get_connector_id_from_mst_path(). These functions serve to retrieve
-the connector object using a connector name and a connector ID from its
-MST path, respectively.
+Const qualifier helps to avoid unwanted modification of a pointer.
+To help avoiding those errors, modify the function signature to
+use const.
 
-Given that the connector id may not be consistent, especially with MST
-connectors, these functions are essential to recognize each connector even
-after system reboots and plug/unplug events.
-
-The function igt_get_connector_id_from_name() is a convenient wrapper for
-igt_get_connector_from_name() to streamline its usage when the caller only
-requires the connector id.
-
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 108 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |   3 ++
- 2 files changed, 111 insertions(+)
+ lib/igt_amd.c | 2 +-
+ lib/igt_amd.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 72a38334f921..f0f27ccda9d8 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -95,6 +95,10 @@
- #define MAX_EDID 2
- #define DISPLAY_TILE_BLOCK 0x12
- #define MAX_NUM_COLOROPS 256
-+/**
-+ * IGT_KMS_CONNECTOR_NAME_SIZE - Size used when a connector name is needed
-+ */
-+#define IGT_KMS_CONNECTOR_NAME_SIZE 50
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+index 3ddb5f40374e..081bad411355 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -831,7 +831,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name)
+  * values of "Current", "Verified", "Reported", and "Preferred", respectively.
+  */
+ void igt_amd_read_link_settings(
+-	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread)
++	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread)
+ {
+ 	int fd, ret;
+ 	char buf[101];
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+index bce4657cbcfd..217ee6dcbd02 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -210,7 +210,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name);
  
- typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
- 
-@@ -8214,3 +8218,107 @@ int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
- 
- 	return connected_count;
- }
-+
-+/**
-+ * igt_get_connector_from_name:
-+ * @drm_fd: DRM file descriptor
-+ * @port_name: Port name to search
-+ *
-+ * Returns: The connector if found, NULL otherwise. The pointer must
-+ * be freed with drmModeFreeConnector()
-+ */
-+drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name)
-+{
-+	double timeout = igt_default_display_detect_timeout();
-+	drmModeResPtr res = drmModeGetResources(drm_fd);
-+	int i;
-+
-+	if (!res)
-+		return NULL;
-+
-+	for (i = 0; i < res->count_connectors; i++) {
-+		char name[IGT_KMS_CONNECTOR_NAME_SIZE];
-+		int len;
-+
-+		drmModeConnectorPtr connector = igt_wait_for_connector(drm_fd, res->connectors[i],
-+								       timeout);
-+
-+		if (connector) {
-+			/* We have to generate the connector name on our own */
-+			len = snprintf(name, sizeof(name), "%s-%u",
-+				       kmstest_connector_type_str(connector->connector_type),
-+				       connector->connector_type_id);
-+			name[len] = 0;
-+
-+			if (strcmp(port_name, name) == 0) {
-+				drmModeFreeResources(res);
-+
-+				return connector;
-+			}
-+
-+			drmModeFreeConnector(connector);
-+		}
-+	}
-+
-+	drmModeFreeResources(res);
-+
-+	return NULL;
-+}
-+
-+/**
-+ * igt_get_connector_id_from_name:
-+ * @drm_fd: DRM file descriptor
-+ * @port_name: Port name to find in the connector
-+ *
-+ * Returns: The connector id if the port is found, 0 if the port is not found
-+ */
-+uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name)
-+{
-+	drmModeConnectorPtr connector = igt_get_connector_from_name(drm_fd, port_name);
-+
-+	if (connector) {
-+		uint32_t connector_id = connector->connector_id;
-+
-+		drmModeFreeConnector(connector);
-+
-+		return connector_id;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * igt_get_connector_id_from_mst_path:
-+ * @drm_fd: DRM file descriptor
-+ * @mst_path: MST path to find in the connector
-+ *
-+ * Returns: 0 when no connector is found with the correct mst path
-+ */
-+uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path)
-+{
-+	drmModeResPtr res = drmModeGetResources(drm_fd);
-+	int i;
-+
-+	if (!res)
-+		return 0;
-+
-+	for (i = 0; i < res->count_connectors; i++) {
-+		uint32_t connector_id = res->connectors[i];
-+
-+		drmModePropertyBlobPtr path_blob = kmstest_get_path_blob(drm_fd, connector_id);
-+
-+		if (path_blob) {
-+			if (memcmp(path_blob->data, mst_path, path_blob->length) == 0) {
-+				drmModeFreePropertyBlob(path_blob);
-+				drmModeFreeResources(res);
-+				return connector_id;
-+			}
-+
-+			drmModeFreePropertyBlob(path_blob);
-+		}
-+	}
-+
-+	drmModeFreeResources(res);
-+
-+	return 0;
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 4efd40a3ad08..0095d9610e42 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1304,5 +1304,8 @@ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
- bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
- 				   int drm_mode);
- int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
-+drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name);
-+uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name);
-+uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
- 
- #endif /* __IGT_KMS_H__ */
+ /* IGT link helper functions */
+ void igt_amd_read_link_settings(
+-	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread);
++	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread);
+ void igt_amd_write_link_settings(
+ 	int drm_fd, char *connector_name, enum dc_lane_count lane_count,
+ 	enum dc_link_rate link_rate, enum dc_link_training_type training_type);
 
 -- 
 2.52.0
