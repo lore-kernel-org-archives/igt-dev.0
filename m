@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D888CF4644A
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:26:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4379F4644B
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:26:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B74F10E264;
-	Mon, 16 Mar 2026 10:26:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6C34F10E26F;
+	Mon, 16 Mar 2026 10:26:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fDBG5zEB";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="2hd6fqoK";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78C8E10E252
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:23:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6729910E25E
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:00 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 5DD0B4E42627;
- Mon, 16 Mar 2026 10:23:51 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 526CC4E42627
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:23:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 2E2E35FC4A;
- Mon, 16 Mar 2026 10:23:51 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 282D35FC4A;
+ Mon, 16 Mar 2026 10:23:59 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 1EA8F10369E67; Mon, 16 Mar 2026 11:23:49 +0100 (CET)
+ with ESMTPSA id 35F3610369F3C; Mon, 16 Mar 2026 11:23:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773656630; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773656638; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=nBlYPCkAMqVYSJjyUC3WuZqPmcLdKtFcu8JMcAl0+0w=;
- b=fDBG5zEBww3R1dsUY4XnRJ0zTfcstWnKcf6le2uP4WCbZi29CQQJ1hjuUR0u6nXpmcpZY5
- W+uoWrgaekY+PyhvEsf/T0i0FIOqVO2GjB04O3BEjHY7Qy5Pl6VFj6Y4AJ7dvONx5YfAGm
- 8Ldlq4FGYVP87DQy0FKAqXZAgNSzrZQdyIu2gOp1TLVK0KeAvFGuWRAW0HrpRrbpW3kdQ7
- iQ6bd19G4vAt3B1JoNjR7230wXVAjHxqdnHBRrRu3a6/4P1LVhzZ/JM9PiaodIDgTPZaHw
- c3yY+JYGPhcS4+0FT/L/KuBqwTC+Q7jnQSBqwTnEc8sTkRmRfiYg1rfbiyMkiA==
+ bh=S87UgFzvvilr08SmPMFzsSjACHbvg/6oYzWUnTuX0/c=;
+ b=2hd6fqoKPi7YHcxtJN3gSiIfMGDCRb62ubVo0DWW2VaYpaiiCHTpoALb6ITGtGQ86WG0V7
+ SV5S8JO4nl9Yq3gdmgg7NtjPWuc/Il+Omoe1O3GR9PWswivLYMbxyIlZDOYMPx1uRflsC0
+ VM/3NIh1I0ueC1VsziCc2Ql9rTwPRUkdnXBFpGVVwLEIrX/H2I8TK1Or3g5TgczQMU2DrC
+ 8MiUx0ohWxa1oYGVYF8SGr9YTy8bxVcZQNHxQmVMsTQyGxOavvAuTTbETWouf7cE58diKU
+ akgUo4pEXXCjH39peMivV51A70OyFQjIdx9Db440w2A9HkMBh+hv30KNd7+oZg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 11:24:14 +0100
-Subject: [PATCH i-g-t v8 06/49] lib/tests: Add tests for array
- manipulations
+Date: Mon, 16 Mar 2026 11:24:22 +0100
+Subject: [PATCH i-g-t v8 14/49] lib/igt_kms: Add const when make sense
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260316-unigraf-integration-v8-6-4489bf8572be@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260316-unigraf-integration-v8-14-4489bf8572be@bootlin.com>
 References: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4941;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1532;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=sI+60jgoUeiU7Pw+JI9OTeLHGDRyayxKIg7t/JYZ9jE=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pPxhopCwMrZfV4wcDxgI9oJef/pH92Kfc27
- X7k1G/TwKaJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaTxsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOK+Ew//Q8MxFGUXnHXNN8vFi0T6B55w5/46JAx
- 3d11xfBS9Grfwnhj0tMOs+YkV5dZHvSlKY7TIsKOH/xNXMAlNS4dLY+kXKwRiE6Nrr2arSY2u18
- qz1kU+NUiTpc4xBay6KIRIrSPak+VC/pwxbzKAr9GQM7Mo43gEq5xQL3/GWJw6wXv+jQxKerNNr
- 1piI/3uD7v11vQ5Oo5cUZ1rTpMplLZpZIQgniiBbs609K0qTt5ifuhDuCoRdZw1mOXRu6NtlX8/
- sO4KY9Fkl8Emk0f7tPMbCIXBeBC/vLXCKmJtsMe3EvBK5XiYrOxEww86J/jCjlaPUjAywWaYURn
- IGdyx9htZXzkgvso5uvCuaSaDSto7qP5FpicrzUBJtdbQCMjUrw3Ta95xuaz7Qg31Tw9UJYgRpN
- ilej4vQH9l/rmH1mw8+EOsbl0ZRSaHl21v/5lEO/iGyp4mhHrEu6NCplvLnvuNxtp8jk8wbi00x
- DeGGTCmrOuQOxM48KMLJRYq+ygP8jP7PPjyiU8BXF3DKlpMCk+UhBjNsPCsF9tU3TyL8HLhj+PZ
- x4fNtzjRJTrSZF3/2p7if+zUnCCP0EGcYXb2qWcFB7k7Hv3BhDmQRjyIL6Q7dFJftxeM38XvdFD
- Cv5Dj5aG7PXV6iu6pGXOQhFL83dpvLUA2imop+T+rM38iXB+NPac=
+ bh=vRZNBIzASKvXevrwcvO61P5bFt8T5yCdIFbFqTKHgFg=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pQXH9J3oUtlGLD0oMsMn66f1NiSqL6EdhOt
+ 3Hy4zRhlVaJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaUBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLO+g/+JjA90cx4zf6vcDnqwDULL5Bg9UfqV8I
+ 7DEsDekU7+XLlsWg6UnrHE9CeH3vHVLIUWzynzD7UjcR4mzyYiiU+l74+QaNX1yluQuGQN2ZGyi
+ 29cGOYt2RiamNKfCZpOkE1oYUchEFNyUf4gfR5aGPs6XK19bMh2pMiKVl7KmhQMc9NMAKkVgk6G
+ w0V6V/vg1Grwd8NOQ31IBuap4Nb3K/0/7dLKa5zBtJ5doC3SyJ9KK0FxPLkf2PBqQtNAim+kbZ0
+ 4igdKe/LsqCZg9WSFDZI+BBeCrLBZG+W7oCAaNAxmY1R1Pva278lKNyPBpIZygLD/Lg6UjSZp0q
+ TkzXN+lErvKdUgzfAwyuEvAN1qH9Bb9HNrHhPVYnRNrcS9YBltt/hexNVm1+DjX6PvEFxZCiUDu
+ 6WGVpuxn72k555ezHySIr/4UggKHt/I4opBOCtxK91xD9xFlQ268S2CxfAn8tXhMKVItEh5paBB
+ Le+HFOuXYYWnCc3RXeoG7ARZ8MwIKHzQYxaHOKU7NgnHtRSzGur6TP+2NZ+F9nU2ZySz7+BX/I1
+ bQOHqTZNj3fUAW1AmXGG7m54L3lpvP3IywriRxxERroDh3FuJ2ZF5o9VMAub+U7THPMb9T9bUYa
+ tk5XKlVhECGkPe1Kktfx/Hfyt3mm6I/yKV/rt2IGcyu1JwMI/K78=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,192 +79,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As array manipulation functions are not trivial, add few tests to ensure
-they work properly.
+Const qualifier helps to avoid unwanted modification of a pointer.
+To help avoiding those errors, modify the function signature to
+use const.
 
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/tests/igt_kms_array_diff.c | 159 +++++++++++++++++++++++++++++++++++++++++
- lib/tests/meson.build          |   1 +
- 2 files changed, 160 insertions(+)
+ lib/igt_kms.c | 2 +-
+ lib/igt_kms.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/tests/igt_kms_array_diff.c b/lib/tests/igt_kms_array_diff.c
-new file mode 100644
-index 000000000000..db34819b168a
---- /dev/null
-+++ b/lib/tests/igt_kms_array_diff.c
-@@ -0,0 +1,159 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Mistral Vibe <vibe@mistral.ai>
-+ */
-+
-+#include <stdint.h>
-+#include <stdlib.h>
-+
-+#include "drmtest.h"
-+#include "igt_core.h"
-+#include "igt_kms.h"
-+
-+/**
-+ * TEST: get_array_diff
-+ * Category: Core
-+ * Description: Test the get_array_diff() function
-+ *
-+ * SUBTEST: get_array_diff-empty-both
-+ * Description: Test with both arrays empty
-+ *
-+ * SUBTEST: get_array_diff-empty-a
-+ * Description: Test with array_a empty
-+ *
-+ * SUBTEST: get_array_diff-empty-b
-+ * Description: Test with array_b empty
-+ *
-+ * SUBTEST: get_array_diff-no-diff
-+ * Description: Test with identical arrays (no difference)
-+ *
-+ * SUBTEST: get_array_diff-full-diff
-+ * Description: Test with completely different arrays
-+ *
-+ * SUBTEST: get_array_diff-partial-diff
-+ * Description: Test with partial overlap between arrays
-+ *
-+ * SUBTEST: get_array_diff-null-diff
-+ * Description: Test with diff parameter set to NULL (count only)
-+ */
-+
-+static void test_get_array_diff_empty_both(void)
-+{
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(NULL, 0, NULL, 0, &diff);
-+	igt_assert_eq(diff_len, 0);
-+	free(diff);
-+}
-+
-+static void test_get_array_diff_empty_a(void)
-+{
-+	uint32_t array_b[] = {1, 2, 3};
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(NULL, 0, array_b, ARRAY_SIZE(array_b), &diff);
-+	igt_assert_eq(diff_len, 0);
-+	free(diff);
-+}
-+
-+static void test_get_array_diff_empty_b(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3};
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), NULL, 0, &diff);
-+	igt_assert_eq(diff_len, 3);
-+	igt_assert(diff);
-+	igt_assert_eq(diff[0], 1);
-+	igt_assert_eq(diff[1], 2);
-+	igt_assert_eq(diff[2], 3);
-+	free(diff);
-+}
-+
-+static void test_get_array_diff_no_diff(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3};
-+	uint32_t array_b[] = {1, 2, 3};
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
-+				  &diff);
-+	igt_assert_eq(diff_len, 0);
-+	free(diff);
-+}
-+
-+static void test_get_array_diff_full_diff(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3};
-+	uint32_t array_b[] = {4, 5, 6};
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
-+				  &diff);
-+	igt_assert_eq(diff_len, 3);
-+	igt_assert(diff);
-+	igt_assert_eq(diff[0], 1);
-+	igt_assert_eq(diff[1], 2);
-+	igt_assert_eq(diff[2], 3);
-+	free(diff);
-+}
-+
-+static void test_get_array_diff_partial_diff(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3, 4, 5};
-+	uint32_t array_b[] = {2, 3, 6};
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
-+				  &diff);
-+	igt_assert_eq(diff_len, 3);
-+	igt_assert(diff);
-+	igt_assert_eq(diff[0], 1);
-+	igt_assert_eq(diff[1], 4);
-+	igt_assert_eq(diff[2], 5);
-+	free(diff);
-+}
-+
-+static void test_get_array_diff_null_diff(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3};
-+	uint32_t array_b[] = {2, 3};
-+	int diff_len;
-+
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b), NULL);
-+	igt_assert_eq(diff_len, 1);
-+}
-+
-+IGT_TEST_DESCRIPTION("Test get_array_diff() function");
-+int igt_main()
-+{
-+	igt_subtest("get_array_diff-empty-both")
-+		test_get_array_diff_empty_both();
-+
-+	igt_subtest("get_array_diff-empty-a")
-+		test_get_array_diff_empty_a();
-+
-+	igt_subtest("get_array_diff-empty-b")
-+		test_get_array_diff_empty_b();
-+
-+	igt_subtest("get_array_diff-no-diff")
-+		test_get_array_diff_no_diff();
-+
-+	igt_subtest("get_array_diff-full-diff")
-+		test_get_array_diff_full_diff();
-+
-+	igt_subtest("get_array_diff-partial-diff")
-+		test_get_array_diff_partial_diff();
-+
-+	igt_subtest("get_array_diff-null-diff")
-+		test_get_array_diff_null_diff();
-+}
-diff --git a/lib/tests/meson.build b/lib/tests/meson.build
-index 124a9ecae84d..f1db66d07c28 100644
---- a/lib/tests/meson.build
-+++ b/lib/tests/meson.build
-@@ -13,6 +13,7 @@ lib_tests = [
- 	'igt_fork_helper',
- 	'igt_hook',
- 	'igt_hook_integration',
-+	'igt_kms_array_diff',
-         'igt_ktap_parser',
- 	'igt_list_only',
- 	'igt_invalid_subtest_name',
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 97292c5c3dfa..f6ddf25756f1 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5125,7 +5125,7 @@ int igt_display_drop_events(igt_display_t *display)
+  *
+  * Returns: String representing a connector's name, e.g. "DP-1".
+  */
+-const char *igt_output_name(igt_output_t *output)
++const char *igt_output_name(const igt_output_t *output)
+ {
+ 	return output->name;
+ }
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 6298738b452f..aa1599592e68 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -598,7 +598,7 @@ igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source);
+ igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source);
+ 
+ igt_crtc_t *igt_output_get_driving_crtc(igt_output_t *output);
+-const char *igt_output_name(igt_output_t *output);
++const char *igt_output_name(const igt_output_t *output);
+ bool kmstest_mode_is_valid(const drmModeModeInfo *mode);
+ drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
+ drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
 
 -- 
 2.52.0
