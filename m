@@ -4,41 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4379F4644B
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:26:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1F47F4644A
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:26:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C34F10E26F;
-	Mon, 16 Mar 2026 10:26:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 99BDB10E26A;
+	Mon, 16 Mar 2026 10:26:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="2hd6fqoK";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Uyxdombv";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6729910E25E
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:00 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD3CE10E25A
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:19 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 526CC4E42627
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:23:59 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 1753EC415A5;
+ Mon, 16 Mar 2026 10:24:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 282D35FC4A;
- Mon, 16 Mar 2026 10:23:59 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 8FBF75FC4A;
+ Mon, 16 Mar 2026 10:24:18 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 35F3610369F3C; Mon, 16 Mar 2026 11:23:58 +0100 (CET)
+ with ESMTPSA id A624910369E83; Mon, 16 Mar 2026 11:24:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773656638; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773656658; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=S87UgFzvvilr08SmPMFzsSjACHbvg/6oYzWUnTuX0/c=;
- b=2hd6fqoKPi7YHcxtJN3gSiIfMGDCRb62ubVo0DWW2VaYpaiiCHTpoALb6ITGtGQ86WG0V7
- SV5S8JO4nl9Yq3gdmgg7NtjPWuc/Il+Omoe1O3GR9PWswivLYMbxyIlZDOYMPx1uRflsC0
- VM/3NIh1I0ueC1VsziCc2Ql9rTwPRUkdnXBFpGVVwLEIrX/H2I8TK1Or3g5TgczQMU2DrC
- 8MiUx0ohWxa1oYGVYF8SGr9YTy8bxVcZQNHxQmVMsTQyGxOavvAuTTbETWouf7cE58diKU
- akgUo4pEXXCjH39peMivV51A70OyFQjIdx9Db440w2A9HkMBh+hv30KNd7+oZg==
+ bh=3EbGKJKrKUuurLVp+7tB8Q5lX6A0R90zcFIBJqRPfvI=;
+ b=Uyxdombv1g8/zA0YNCs61U60Y3yT4ZhfumuIwktaHLXKD70oEiX2bPClyV16pvYzbng8LP
+ +Qhuy0dr1gl4F01RJkgdJlhZy5gH5z4Pl6zxNkOy+HAxcknXG4jIrsTjQAQgHDhAUTd5eB
+ umPVKtombbEOjHOxRSS/6KeLPiFSdyZpqAZSPRr6m5kfNXMwhP0dmf1wM9kSiTgHWQVG3m
+ We4EkNkXI3OShoEWRSvPNddkhV7zkpBGHN/Ac8cO4FHfp270AAq5Gic/e4GKx4tmQRUChv
+ mU4ko4yqsCeAfQgaWYANGae2i9iP7NvPVMzXZtTHqGCRyou5OdQ7805HEa7Mag==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 11:24:22 +0100
-Subject: [PATCH i-g-t v8 14/49] lib/igt_kms: Add const when make sense
+Date: Mon, 16 Mar 2026 11:24:43 +0100
+Subject: [PATCH i-g-t v8 35/49] lib/unigraf: Add helper to check timings
+ received by unigraf
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-unigraf-integration-v8-14-4489bf8572be@bootlin.com>
+Message-Id: <20260316-unigraf-integration-v8-35-4489bf8572be@bootlin.com>
 References: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1532;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2422;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=vRZNBIzASKvXevrwcvO61P5bFt8T5yCdIFbFqTKHgFg=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pQXH9J3oUtlGLD0oMsMn66f1NiSqL6EdhOt
- 3Hy4zRhlVaJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaUBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLO+g/+JjA90cx4zf6vcDnqwDULL5Bg9UfqV8I
- 7DEsDekU7+XLlsWg6UnrHE9CeH3vHVLIUWzynzD7UjcR4mzyYiiU+l74+QaNX1yluQuGQN2ZGyi
- 29cGOYt2RiamNKfCZpOkE1oYUchEFNyUf4gfR5aGPs6XK19bMh2pMiKVl7KmhQMc9NMAKkVgk6G
- w0V6V/vg1Grwd8NOQ31IBuap4Nb3K/0/7dLKa5zBtJ5doC3SyJ9KK0FxPLkf2PBqQtNAim+kbZ0
- 4igdKe/LsqCZg9WSFDZI+BBeCrLBZG+W7oCAaNAxmY1R1Pva278lKNyPBpIZygLD/Lg6UjSZp0q
- TkzXN+lErvKdUgzfAwyuEvAN1qH9Bb9HNrHhPVYnRNrcS9YBltt/hexNVm1+DjX6PvEFxZCiUDu
- 6WGVpuxn72k555ezHySIr/4UggKHt/I4opBOCtxK91xD9xFlQ268S2CxfAn8tXhMKVItEh5paBB
- Le+HFOuXYYWnCc3RXeoG7ARZ8MwIKHzQYxaHOKU7NgnHtRSzGur6TP+2NZ+F9nU2ZySz7+BX/I1
- bQOHqTZNj3fUAW1AmXGG7m54L3lpvP3IywriRxxERroDh3FuJ2ZF5o9VMAub+U7THPMb9T9bUYa
- tk5XKlVhECGkPe1Kktfx/Hfyt3mm6I/yKV/rt2IGcyu1JwMI/K78=
+ bh=2cBzXqk90tyqprreOeCwZtAFKVdu1J+7vwkfQjKFSY4=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pTVzcjEUHPzMUTOhXpb+N3QzpcZtHRMz1gK
+ brqz3cTLEuJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaUxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKgQQ//emy0BQJi5iE+cu+NtnVKIfHwru1T0Cw
+ UP6DLCBm8BvjEYqsUYqIPzaYbWnr0PUW2LRSOPCe9xJEzGVOKeulNorW64xnKfNhQMb2h2yWuh9
+ jcOmELIj/A0RxwZcJaUBbdC2r43te+3EDpW2GCLxZUaegxB12vnSTpilzS8zWKWsBnoW1Wb91Zg
+ Iyiha4RuWbjgfCPFKQrc140LqKn2oe4eVqFHzISdW7+FZ9hqEYo3YJPdQDO6uIOe734MRaHMJa7
+ rXmBFwPynqEz2OtZm4+L7HGkdfgiQMX0zoRjyn8lv8aA+Lk5KfLZMUNY/uoYgTpuugyKiIQoTs7
+ VWLNh+ND7kSA0B5YyncS8t5AzRqQYbYsBOQ8oogAd3xLVgLmIZkES8tRs612Z1Ek1PXcR7WSxWN
+ g3GuJEqm62HKwxvFX/V/iNp6JvS3jR6Npdfa+tJRcLN0uq8B5fkAhdtfnMR3j4QPSRkpvXKwE8j
+ w1Khyc7vw616gebSA1MhR5DbhL5p+u1wUBTunHZm55OrB8FYefCUAM+5x4qm+fcrC7dBea8ZamL
+ oHcYjb8Vl4VUIBX1qC6QcZXDYpUiLvtbpXAuMdrq3N8NEVyx21NWM97GWVv7tBrZh4jvkUDCHx7
+ bKzo6XlofGb1BkIh9xefPgcmefCYLBtGB8s7SX7gYLRitHSrcsfk=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,44 +80,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Const qualifier helps to avoid unwanted modification of a pointer.
-To help avoiding those errors, modify the function signature to
-use const.
+Unigraf device can check that some input video parameters.
+Add a function to compare a mode with the actual signal
+received by the unigraf.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 2 +-
- lib/igt_kms.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ lib/unigraf/unigraf.c | 35 +++++++++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h |  2 ++
+ 2 files changed, 37 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 97292c5c3dfa..f6ddf25756f1 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5125,7 +5125,7 @@ int igt_display_drop_events(igt_display_t *display)
-  *
-  * Returns: String representing a connector's name, e.g. "DP-1".
-  */
--const char *igt_output_name(igt_output_t *output)
-+const char *igt_output_name(const igt_output_t *output)
+diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+index 6d192ffe36b5..3970c1071cc8 100644
+--- a/lib/unigraf/unigraf.c
++++ b/lib/unigraf/unigraf.c
+@@ -748,3 +748,38 @@ bool unigraf_use_crc(void)
  {
- 	return output->name;
+ 	return unigraf_crc;
  }
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 6298738b452f..aa1599592e68 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -598,7 +598,7 @@ igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source);
- igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source);
++
++static void unigraf_read_msa(void)
++{
++	uint32_t data = 1;
++
++	unigraf_write_u32(TSI_DPRX_MSA_COMMAND_W, data);
++}
++
++/**
++ * unigraf_assert_stream_timings() - Assert that the received stream on unigraf
++ * matches the mode_info
++ * @stream: Stream id on the unigraf
++ * @mode_info: Mode to compare with
++ */
++void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info)
++{
++	uint32_t stream_count;
++
++	igt_assert(mode_info);
++
++	unigraf_read_msa();
++	stream_count = unigraf_read_u32(TSI_DPRX_MSA_STREAM_COUNT_R);
++	igt_assert_lt(stream, stream_count);
++	unigraf_write_u32(TSI_DPRX_MSA_STREAM_SELECT, stream);
++	igt_assert_eq(mode_info->htotal, unigraf_read_u32(TSI_DPRX_MSA_HTOTAL_R));
++	igt_assert_eq(mode_info->vtotal, unigraf_read_u32(TSI_DPRX_MSA_VTOTAL_R));
++	igt_assert_eq(mode_info->hdisplay, unigraf_read_u32(TSI_DPRX_MSA_HACTIVE_R));
++	igt_assert_eq(mode_info->vdisplay, unigraf_read_u32(TSI_DPRX_MSA_VACTIVE_R));
++	igt_assert_eq(mode_info->hsync_end - mode_info->hsync_start,
++		      unigraf_read_u32(TSI_DPRX_MSA_HSYNC_WIDTH_R));
++	igt_assert_eq(mode_info->vsync_end - mode_info->vsync_start,
++		      unigraf_read_u32(TSI_DPRX_MSA_VSYNC_WIDTH_R));
++	igt_assert_eq(mode_info->vsync_start, unigraf_read_u32(TSI_DPRX_MSA_VSTART_R));
++	igt_assert_eq(mode_info->hsync_start, unigraf_read_u32(TSI_DPRX_MSA_HSTART_R));
++}
+diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+index 0ed6d1eb2713..65f00c8d4948 100644
+--- a/lib/unigraf/unigraf.h
++++ b/lib/unigraf/unigraf.h
+@@ -78,4 +78,6 @@ bool unigraf_use_crc(void);
  
- igt_crtc_t *igt_output_get_driving_crtc(igt_output_t *output);
--const char *igt_output_name(igt_output_t *output);
-+const char *igt_output_name(const igt_output_t *output);
- bool kmstest_mode_is_valid(const drmModeModeInfo *mode);
- drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
- drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
+ int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id);
+ 
++void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info);
++
+ #endif // UNIGRAF_H
 
 -- 
 2.52.0
