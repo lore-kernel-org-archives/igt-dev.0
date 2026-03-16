@@ -4,66 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C091F53D6D
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:25:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F67F53D6F
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:25:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2519A10E29A;
-	Mon, 16 Mar 2026 16:25:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8BFD610E2A4;
+	Mon, 16 Mar 2026 16:25:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="kS8X5QlR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OZ45X0HZ";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1029D10E2B5
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:29 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id ED4B74E42609;
- Mon, 16 Mar 2026 16:23:27 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id B3FE05FC4A;
- Mon, 16 Mar 2026 16:23:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id B47841037221C; Mon, 16 Mar 2026 17:23:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773678207; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=lipU7v2SSK6c/4fzbRNKTPdaMUqeEVBLNDSONEu+BgM=;
- b=kS8X5QlRG/R683J8mh6x/ppjaP/i1mPE5pH+XxcvbxwkfoIecSJcPhPqNb0gkQZRNdP6W7
- DZqNKiMgiH09iUQaKOxghbATwfFK2PKxyHOQmNeyrYf/gAtF3UlPjX8cA3YQkfQLsj4lnM
- IeUQomi7/bk9u65Ry/+lvk9Sv0ReAMaitF8OXDr3vw8HDL57EAangX3U2+Xn7i3fMZCWjH
- jADJjpW3Zs1K7O2YlvqvfJ7d1wqAtrfTJn2sY2tycQz8Hkjk894s41qczmrOl9vYaZXfmf
- 2PvdABrTZqWHSxLDGu7DeBdwloeI/10IxZCzH7MuPSpZKU/Z3x/9S6OR7NVY9w==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 17:17:41 +0100
-Subject: [PATCH i-g-t v9 20/49] lib/unigraf: Initial Unigraf support
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F57010E2B5
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1773678211; x=1805214211;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=tQRNMah1Y2gK+Ywma7tN1xZz9b6nUHdNAC1AwDqBSO8=;
+ b=OZ45X0HZ6mQTT/lEf300v4hBvUs+SBcOHg6sRPoe2MDi6C3Nt7DgPbkK
+ gQ3yTuz+ldEg9M26+VYhZjqQMhbPWBXeur/8yHAYQakxjqaBQO0vOgKaf
+ YbyWFe7cx06WuHdmETD8HwpllIXzYoSrS8Gx+a4yu+2k89pYGTKDw5Fei
+ qtxbArmSloQymYulag8GAvWXv58mgwrjMhqfT8n+qujlQZqahy9CYYtVV
+ XAXTCz85fJdPSR6y9AARYklPOO/yWp5SLaKMFSZij3I7B3firolXsCwJJ
+ J7mq48O50iVLBrvqqDteflVgF1Pb9tacHVhLwW1Xtzs3lPNaOpzKT/QD4 A==;
+X-CSE-ConnectionGUID: hSzMWffNTfWrMF0dQ1/1xw==
+X-CSE-MsgGUID: 69eb+MhhRB2w9UXRRJpX3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="85328708"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="85328708"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 09:23:31 -0700
+X-CSE-ConnectionGUID: 2XByCWSwRXmJplFAgrnOrw==
+X-CSE-MsgGUID: Q9DH+J+GQxKM7hIiF32h+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="221005338"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 09:23:28 -0700
+Date: Mon, 16 Mar 2026 17:23:12 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com,
+ Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+ Aurabindo Pillai <aurabindo.pillai@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: Re: [PATCH i-g-t] tests/amdgpu/amd_mode_switch: switch to
+ for_each_crtc()
+Message-ID: <20260316162312.pzh7xgyr7zpu6ml4@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
+ ville.syrjala@linux.intel.com,
+ Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+ Aurabindo Pillai <aurabindo.pillai@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+References: <20260306134937.136749-1-jani.nikula@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260316-unigraf-integration-v9-20-a01dffc3b0cb@bootlin.com>
-References: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
-In-Reply-To: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
-To: igt-dev@lists.freedesktop.org
-Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com, 
- kory.maincent@bootlin.com, markyacoub@google.com, 
- khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7701;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=wUA1VERgsU6m61GqEot+/5Rexs3u0Pf6jrn0J+O9i4Y=;
- b=kA0DAAgBIK0uxlsQLOIByyZiAGm4LozIz8Qb8671Yhw+IheUQnwmmc3qR5AdFZ8NczAy70Hpj
- YkCTwQAAQgAORYhBE+PuD++eDwxDFBZBCCtLsZbECziBQJpuC6MGxSAAAAAAAQADm1hbnUyLDIu
- NSsxLjExLDIsMgAKCRAgrS7GWxAs4iSSD/4hLF+bjliwc+Wr4AMRGoRzH0yVZs2iXiz4FcMpVus
- zFi4/44CIB6EkUZ5PjKaqmkAuHBfpBtaX58ZCT094XdGbahZeXkrUk2GVnOIqc00CZ+8PW82oaq
- J2CSCh/VMnjhM5eELo9P8kQX0zFWqdwuh3mkW1zhui+oyY/O4qlpc12ixTDCnKavI7OpWNfTYOd
- PqHrDmoQyvmM5fe1MubkLH+TX7hnsWaiUPXgzq+w5rRVGIh/NOoxn8gJc8iO6o+vEzVETnGqK1H
- 74xk1xTOGp+BF9Z8RLHg6IhH9tK8LB31zIGhHzsverubKhIGi+wdSvuCSQiAp7kEdRYTNvVj05M
- 5W0IBEgdaSS6dOSXd84XnurWMJ2pP1h8Z6Yy0DjLaJdQshPsSJqlDiklZVbouNOBPHV7TYFf0LZ
- JSL4/kddM4BNgs9VuA67jMVqQxcwF2vK8GTlNAatJRVcfp1cttnkYRaHgog23cy6FNkhfImv6C2
- bwNIi7HY8XMnhab0DTbuTgSI5FxG37/gBPvOXlvGO/VNgy0nS+heVT8nUxyCcM3hQMH/u/W+g3X
- 02tcxoFzoeMrHfCL+1MXjxgCdFSVS3TpUHAm9UloxcHgzo/OZHHWeFNSaWv1zPeqRLN/83mTw2s
- sF0nY7sO9KkyXA4w3RyXLTDDCFJ4erAeI5R+wvgXRSQ==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260306134937.136749-1-jani.nikula@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,273 +77,180 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This introduce the basic boilerplate to connect to a unigraf device.
+Hi Jani,
+On 2026-03-06 at 15:49:37 +0200, Jani Nikula wrote:
+> Convert the test to use for_each_crtc() to avoid having to use
+> igt_crtc_for_pipe(). Prefer crtc->crtc_index over crtc->pipe.
+> 
+> As a side effect, fix an off-by-one in i <= num_pipes loop.
+> 
+> Note: The implementation relies on the fact that on AMD hardware
+> for_each_crtc() returns CRTCs in CRTC index order.
+> 
 
-This integration currently only supports one device opened to simplify
-its usage and cleanup.
++cc amd developers
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-The functions unigraf_open_device and unigraf_require_device will register
-a handler to do proper cleanup on IGT exit.
+Regards,
+Kamil
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- lib/meson.build       |  10 +++++
- lib/unigraf/unigraf.c | 120 ++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/unigraf/unigraf.h |  43 ++++++++++++++++++
- meson.build           |  14 ++++++
- 4 files changed, 187 insertions(+)
-
-diff --git a/lib/meson.build b/lib/meson.build
-index cd03e8f634e4..268f3238cbfa 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -151,6 +151,13 @@ lib_deps = [
- 	zlib
- ]
- 
-+if libtsi.found()
-+	lib_deps += libtsi
-+	lib_sources += [
-+		'unigraf/unigraf.c'
-+	]
-+endif
-+
- if libdrm_nouveau.found()
- 	lib_deps += libdrm_nouveau
- 	lib_sources += [
-@@ -232,6 +239,9 @@ endif
- if chamelium.found()
- 	lib_deps += chamelium
- 	lib_sources += [ 'igt_chamelium.c', 'igt_chamelium_stream.c' ]
-+endif
-+
-+if chamelium.found() or libtsi.found()
- 	lib_sources += 'monitor_edids/monitor_edids_helper.c'
- endif
- 
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-new file mode 100644
-index 000000000000..df18ab178e16
---- /dev/null
-+++ b/lib/unigraf/unigraf.c
-@@ -0,0 +1,120 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Louis Chauvet <louis.chauvet@bootlin.com>
-+ */
-+
-+#include "igt_core.h"
-+#include <stdint.h>
-+
-+#include "unigraf.h"
-+#include "TSI.h"
-+#include "TSI_types.h"
-+
-+#define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device, ##__VA_ARGS__)
-+
-+static TSI_HANDLE unigraf_device;
-+static char *unigraf_default_edid;
-+static char *unigraf_connector_name;
-+
-+static void unigraf_close_device(void)
-+{
-+	if (!unigraf_device)
-+		return;
-+
-+	unigraf_debug("Closing...\n");
-+	unigraf_assert(TSIX_DEV_CloseDevice(unigraf_device));
-+	TSI_Clean();
-+	unigraf_device = NULL;
-+	free(unigraf_default_edid);
-+	free(unigraf_connector_name);
-+}
-+
-+/**
-+ * unigraf_exit_handler - Handle the exit signal and clean up unigraf resources.
-+ * @sig: The signal number received.
-+ *
-+ * This function is called when the program receives an exit signal. It ensures
-+ * that all unigraf resources are properly cleaned up by calling unigraf_deinit
-+ * for each open instance.
-+ */
-+static void unigraf_exit_handler(int sig)
-+{
-+	unigraf_close_device();
-+}
-+
-+static void unigraf_init(void)
-+{
-+	int ret;
-+
-+	unigraf_debug("Initialize unigraf...\n");
-+	ret = TSI_Init(TSI_CURRENT_VERSION);
-+	unigraf_assert(ret);
-+	igt_install_exit_handler(unigraf_exit_handler);
-+}
-+
-+/**
-+ * unigraf_device_count() - Return the number of scanned devices
-+ *
-+ * Must be called after a unigraf_rescan_devices().
-+ */
-+static unsigned int unigraf_device_count(void)
-+{
-+	return unigraf_assert(TSIX_DEV_GetDeviceCount());
-+}
-+
-+/**
-+ * unigraf_open_device() - Search and open a device.
-+ * @drm_fd: File descriptor of the currently used drm device
-+ *
-+ * Returns: true if a device was found and initialized, otherwise false.
-+ *
-+ * This function searches for a compatible device and opens it.
-+ */
-+bool unigraf_open_device(int drm_fd)
-+{
-+	TSI_RESULT r;
-+	int device_count;
-+	int chosen_device = 0;
-+	int chosen_role = 0;
-+	int chosen_input = 0;
-+
-+	assert(igt_can_fail());
-+
-+	if (unigraf_device)
-+		return true;
-+
-+	unigraf_init();
-+
-+	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-+
-+	device_count = unigraf_device_count();
-+	if (device_count < 1) {
-+		unigraf_debug("No device found.\n");
-+		return false;
-+	}
-+
-+	unigraf_device = TSIX_DEV_OpenDevice(chosen_device, &r);
-+	unigraf_assert(r);
-+	igt_assert(unigraf_device);
-+	unigraf_debug("Successfully opened the unigraf device %d.\n", chosen_device);
-+
-+	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
-+	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
-+	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
-+
-+	return true;
-+}
-+
-+/**
-+ * unigraf_require_device() - Search and open a device.
-+ * @drm_fd: File descriptor of the currently used drm device
-+ *
-+ * This is a shorthand to reduce test boilerplate when a unigraf device must be present.
-+ */
-+void unigraf_require_device(int drm_fd)
-+{
-+	igt_require(unigraf_open_device(drm_fd));
-+}
-diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-new file mode 100644
-index 000000000000..c08ce62894c5
---- /dev/null
-+++ b/lib/unigraf/unigraf.h
-@@ -0,0 +1,43 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Louis Chauvet <louis.chauvet@bootlin.com>
-+ */
-+
-+#ifndef UNIGRAF_H
-+#define UNIGRAF_H
-+
-+#include <stdbool.h>
-+#include <stdint.h>
-+
-+/**
-+ * unigraf_assert: Helper macro to assert a TSI return value and retrieve a detailed error message.
-+ * @result: libTSI return value to check
-+ *
-+ * This macro checks the return value of a libTSI function call. If the return value indicates an
-+ * error, it retrieves a detailed error message and asserts with that message.
-+ * If retrieving the error description fails, it asserts with a generic error message.
-+ */
-+#define unigraf_assert(result)									\
-+({												\
-+	char msg[256];										\
-+	TSI_RESULT __r = (result);								\
-+	if (__r < TSI_SUCCESS) {								\
-+		TSI_RESULT __r2 = TSI_MISC_GetErrorDescription(__r, msg, sizeof(msg));		\
-+		if (__r2 < TSI_SUCCESS)								\
-+			igt_assert_f(false,							\
-+				     "unigraf error: %d (get error description failed: %d)\n",	\
-+				     __r, __r2);						\
-+		else										\
-+			igt_assert_f(false, "unigraf error: %d (%s)\n", __r, msg);		\
-+	}											\
-+	(__r);											\
-+})
-+
-+bool unigraf_open_device(int drm_fd);
-+
-+void unigraf_require_device(int drm_fd);
-+
-+#endif // UNIGRAF_H
-diff --git a/meson.build b/meson.build
-index 57849648a377..127abbf62024 100644
---- a/meson.build
-+++ b/meson.build
-@@ -166,6 +166,12 @@ libpci = dependency('libpci', required : true)
- libudev = dependency('libudev', required : true)
- glib = dependency('glib-2.0', required : true)
- 
-+libtsi = cc.find_library('TSI', required : false)
-+
-+if libtsi.found()
-+	config.set('HAVE_UNIGRAF', 1)
-+endif
-+
- xmlrpc = dependency('xmlrpc', required : false)
- xmlrpc_util = dependency('xmlrpc_util', required : false)
- xmlrpc_client = dependency('xmlrpc_client', required : false)
-@@ -290,6 +296,7 @@ amdgpudir = join_paths(libexecdir, 'amdgpu')
- msmdir = join_paths(libexecdir, 'msm')
- panfrostdir = join_paths(libexecdir, 'panfrost')
- panthordir = join_paths(libexecdir, 'panthor')
-+unigrafdir = join_paths(libexecdir, 'unigraf')
- v3ddir = join_paths(libexecdir, 'v3d')
- vc4dir = join_paths(libexecdir, 'vc4')
- vkmsdir = join_paths(libexecdir, 'vkms')
-@@ -372,6 +379,12 @@ if get_option('use_rpath')
- 		vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
- 	endforeach
- 	vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, libdir)
-+
-+	unigraf_rpathdir = '$ORIGIN'
-+	foreach p : unigrafdir.split('/')
-+		unigraf_rpathdir = join_paths(unigraf_rpathdir, '..')
-+	endforeach
-+	unigraf_rpathdir = join_paths(unigraf_rpathdir, libdir)
- else
- 	bindir_rpathdir = ''
- 	libexecdir_rpathdir = ''
-@@ -383,6 +396,7 @@ else
- 	vc4_rpathdir = ''
- 	vkms_rpathdir = ''
- 	vmwgfx_rpathdir = ''
-+	unigraf_rpathdir = ''
- endif
- 
- build_testplan = get_option('testplan')
-
--- 
-2.52.0
-
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> ---
+>  tests/amdgpu/amd_mode_switch.c | 60 +++++++++++++++++++---------------
+>  1 file changed, 34 insertions(+), 26 deletions(-)
+> 
+> diff --git a/tests/amdgpu/amd_mode_switch.c b/tests/amdgpu/amd_mode_switch.c
+> index 4da07c412996..5815ec34cb12 100644
+> --- a/tests/amdgpu/amd_mode_switch.c
+> +++ b/tests/amdgpu/amd_mode_switch.c
+> @@ -39,12 +39,12 @@ static void test_init(data_t *data)
+>  	igt_crtc_t *crtc;
+>  
+>  	for_each_crtc(display, crtc) {
+> -		igt_output_t *output = &display->outputs[crtc->pipe];
+> +		igt_output_t *output = &display->outputs[crtc->crtc_index];
+>  
+> -		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
+> -								    DRM_PLANE_TYPE_PRIMARY);
+> +		data->primary[crtc->crtc_index] = igt_crtc_get_plane_type(crtc,
+> +									  DRM_PLANE_TYPE_PRIMARY);
+>  
+> -		data->output[crtc->pipe] = output;
+> +		data->output[crtc->crtc_index] = output;
+>  	}
+>  
+>  	igt_require(data->output[0]);
+> @@ -79,13 +79,12 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+>  {
+>  	igt_display_t *display = &data->display;
+>  	igt_output_t *output;
+> +	igt_crtc_t *crtc;
+>  	struct igt_fb *buffer1[MAX_PIPES] = { NULL };
+>  	struct igt_fb *buffer2[MAX_PIPES] = { NULL };
+>  	drmModeConnectorPtr conn;
+>  	drmModeModeInfoPtr kmode;
+>  	void *user_data = NULL;
+> -	int i = 0;
+> -	int j = 0;
+>  
+>  	test_init(data);
+>  
+> @@ -94,11 +93,11 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+>  		      "ASIC does not have %d outputs/pipes\n", num_pipes);
+>  
+>  	/* First supported mode */
+> +	for_each_crtc(display, crtc) {
+> +		if (crtc->crtc_index >= num_pipes)
+> +			break;
+>  
+> -	for (j = 0; j < num_pipes; j++) {
+> -		igt_crtc_t *crtc = igt_crtc_for_pipe(display, j);
+> -
+> -		output = data->output[j];
+> +		output = data->output[crtc->crtc_index];
+>  		if (!igt_output_is_connected(output))
+>  			continue;
+>  
+> @@ -106,18 +105,18 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+>  			data->fd, output->config.connector->connector_id);
+>  
+>  		kmode = &conn->modes[0];
+> -		if (buffer1[j] == NULL) {
+> +		if (buffer1[crtc->crtc_index] == NULL) {
+>  			igt_fb_t fb;
+> -			buffer1[j] = &fb;
+> +			buffer1[crtc->crtc_index] = &fb;
+>  			igt_create_color_fb(data->fd, kmode->hdisplay,
+>  					    kmode->vdisplay,
+>  					    DRM_FORMAT_XRGB8888,
+>  					    DRM_FORMAT_MOD_NONE, 1.f, 0.f,
+> -					    0.f, buffer1[j]);
+> +					    0.f, buffer1[crtc->crtc_index]);
+>  		}
+>  		igt_output_set_crtc(output, crtc);
+>  		force_output_mode(data, output, kmode);
+> -		igt_plane_set_fb(data->primary[j], buffer1[j]);
+> +		igt_plane_set_fb(data->primary[crtc->crtc_index], buffer1[crtc->crtc_index]);
+>  		drmModeFreeConnector(conn);
+>  	}
+>  
+> @@ -126,8 +125,11 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+>  
+>  	/* Last supported mode */
+>  
+> -	for (j = 0; j < num_pipes; j++) {
+> -		output = data->output[j];
+> +	for_each_crtc(display, crtc) {
+> +		if (crtc->crtc_index >= num_pipes)
+> +			break;
+> +
+> +		output = data->output[crtc->crtc_index];
+>  		if (!igt_output_is_connected(output))
+>  			continue;
+>  
+> @@ -135,17 +137,17 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+>  			data->fd, output->config.connector->connector_id);
+>  
+>  		kmode = &conn->modes[conn->count_modes - 1];
+> -		if (buffer2[j] == NULL) {
+> +		if (buffer2[crtc->crtc_index] == NULL) {
+>  			igt_fb_t fb;
+> -			buffer2[j] = &fb;
+> +			buffer2[crtc->crtc_index] = &fb;
+>  			igt_create_color_fb(data->fd, kmode->hdisplay,
+>  					    kmode->vdisplay,
+>  					    DRM_FORMAT_XRGB8888,
+>  					    DRM_FORMAT_MOD_NONE, 1.f, 0.f,
+> -					    0.f, buffer2[j]);
+> +					    0.f, buffer2[crtc->crtc_index]);
+>  		}
+>  		force_output_mode(data, output, kmode);
+> -		igt_plane_set_fb(data->primary[j], buffer2[j]);
+> +		igt_plane_set_fb(data->primary[crtc->crtc_index], buffer2[crtc->crtc_index]);
+>  		drmModeFreeConnector(conn);
+>  	}
+>  
+> @@ -153,8 +155,11 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+>  				  user_data);
+>  
+>  	/* First supported again */
+> -	for (j = 0; j < num_pipes; j++) {
+> -		output = data->output[j];
+> +	for_each_crtc(display, crtc) {
+> +		if (crtc->crtc_index >= num_pipes)
+> +			break;
+> +
+> +		output = data->output[crtc->crtc_index];
+>  		if (!igt_output_is_connected(output))
+>  			continue;
+>  
+> @@ -163,7 +168,7 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+>  
+>  		kmode = &conn->modes[0];
+>  		force_output_mode(data, output, kmode);
+> -		igt_plane_set_fb(data->primary[j], buffer1[j]);
+> +		igt_plane_set_fb(data->primary[crtc->crtc_index], buffer1[crtc->crtc_index]);
+>  		drmModeFreeConnector(conn);
+>  	}
+>  
+> @@ -172,9 +177,12 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+>  
+>  	test_fini(data);
+>  
+> -	for (i = 0; i <= num_pipes; i++) {
+> -		igt_remove_fb(data->fd, buffer1[i]);
+> -		igt_remove_fb(data->fd, buffer2[i]);
+> +	for_each_crtc(display, crtc) {
+> +		if (crtc->crtc_index >= num_pipes)
+> +			break;
+> +
+> +		igt_remove_fb(data->fd, buffer1[crtc->crtc_index]);
+> +		igt_remove_fb(data->fd, buffer2[crtc->crtc_index]);
+>  	}
+>  }
+>  
+> -- 
+> 2.47.3
+> 
