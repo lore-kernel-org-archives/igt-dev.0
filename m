@@ -4,41 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46545F53D6D
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:26:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C58F53D70
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:26:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F150D10E292;
-	Mon, 16 Mar 2026 16:26:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A6E9A10E29A;
+	Mon, 16 Mar 2026 16:26:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ViXm7atQ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="P2nAnA1w";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8678E10E3FE
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6221310E2B5
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:36 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 6913B4E4260B
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:47 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 4CB184E42609
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 40A1D5FC4A;
- Mon, 16 Mar 2026 16:23:47 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 1B9B9600E0;
+ Mon, 16 Mar 2026 16:23:35 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 450D41037220C; Mon, 16 Mar 2026 17:23:46 +0100 (CET)
+ with ESMTPSA id E93331037220D; Mon, 16 Mar 2026 17:23:32 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773678226; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773678213; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=/k+lmRxwQtnXIkJsn/o7k2uDURRoM9ndLwKN7AkS2zQ=;
- b=ViXm7atQSS9KrhHveTCZOMFvwIeKky8KBCvKOOQLrA4cmyY9eMvnGVO5XPvsn0IcM8OgXo
- i7CjTWUvO0B/IlDBlW5mhcOgFHU1ktqBFD82vDzjMLQofMSrPCB95Wew7Sf8gOj98foK/s
- IegtBAccZsYIclGTJI5zLHH0vgFDG+prCZL+HORV35LG/rmoEVv8W7gnLaDymWFHSdpjcz
- IX+F77/7TBi/H9cyI/kznWPV2g26QYKAXRihrkJ2dpaTDyH1qwI2Qs3oTk3lb8XCeOXhR6
- Y9BoQh83+MFAWn9VIV/38PyoZw2F5AzaUNeBzXSBZXkGL21jiU69PqTDgYsi4w==
+ bh=6dXeSk1AjbF4Zw53d28QAdfu/fBqghan+P24PRJ+uB4=;
+ b=P2nAnA1wpxMCuko7B51hSAPK5O/GIwf8b5DMYP3gsHo79ykfvDC9jluxQYx4Oam6qg6rzO
+ cBAYou44EvuVFrz1hdhAvVkMTsv0TP+qKoeBLgKuMEOtoNRWYckoqbCJwkDNQHr5rV0H7n
+ Nwj3kQ6GX3y1gjuJ9G+dVf1LZzQsVQAJImm6fkFL9knSkLjwk/sH3N7T+0PwtiJ0Eyc9MV
+ 3CDzBZrrpaMZi8CPFU/Ux46Nd6R/ztmais8MdtuG6R708fegGJEjhtcT+kmOJiSaNTqAnO
+ 6EjVQdW9L1466Oh3ZyO2+87d1RErkWm28tT8eh5rMSCFhbSIKccwJb8U0QAPEQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 17:17:57 +0100
-Subject: [PATCH i-g-t v9 36/49] lib/igt_pipe_crc: Add unigraf crc calculation
+Date: Mon, 16 Mar 2026 17:17:47 +0100
+Subject: [PATCH i-g-t v9 26/49] lib/unigraf: Add unigraf assert and
+ deassert helpers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260316-unigraf-integration-v9-36-a01dffc3b0cb@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260316-unigraf-integration-v9-26-a01dffc3b0cb@bootlin.com>
 References: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3614;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2906;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=/8S4dD5gBmKL6XLGBrmLH6qPctngkCzfg1Za04WN8qY=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpuC6O9UIpqyyTtLrVZyLTLYOUJqTSsvi0ZT+/v
- cAe87kMS+aJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabgujhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKA4xAAv1zdglYu8gVwo7gkVq/eEgBRha/jbzZ
- lLnfLAmb05DnGM4L3l5Z/uhliBVLsLSLTQQPoTTS2ZNWPEaylGYcqDJQ3+F3mzh/rCbZfSUjNTb
- QBbCyidsMqfkbtH/PmEM52GPg/VDSH4UOMIAzIKVnLmKd83IKqyF0nK3mebTv/0ezN5hWPblYde
- Zm6e11YIstvyOdq84wcoh4+2PbZbkLzB+rePDcrXOnbtJQZgEMptWsgpVxKBlFH5rPKUvuBGcwi
- MjBzjVs0cECCsjpwQUgssBVD4Gbb6Mwx2UjCyzrC7R0bltCQeY2wTM5y8AfS9nepXAzKcPB44Mg
- 5mDS0UROfi11c6gVDf74PDiggGTMmkTiB7Ix5/S5jOhGh4aBRtR33Baq+HjCJS+XoediToEd89x
- qZ7/E0GZb35tWeYyaJN4bP9Nia3c71g+19LBCL8rbV6oa/iMH/TELw9hIZ+88m7cYMTuhrm9bfs
- bl/qa634ktEB+58i7VFJ55rWM5TDOOrJQ6kujJVifVSEddNAyGyDKeyXQpz0ZoDYzvRhk5l/GRf
- XLeQhnsa3MenLnQ6ZOLKMWcoG60/lCor1mJ0sOkcgJF4UPfTwsZ5b9R3UsvpSN3hxOD64AP/JfG
- 3XSTVl9Q8oMsOPsJMKpThPK3LKZn35N1kY5jGI237ZUZ3trOUw2I=
+ bh=m+7Si+sviXc1V4jYcoVYXWZ6RCUb9Ou/WmPXGmz51nI=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpuC6Mc3gBBWNrOfxzmgduxyr9Z08mVXYO1XiXk
+ qSSSagjfwOJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabgujBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIyog/9Hf1J7a/2UCPnUa0SZ+wAaZ3Zcfnw8V2
+ ghE3M4t5gQsyO6RSnUiuweJJrk/vlDoUfvg3AZ4ZtS9ZhL9pMWUap9+aNol7VBZoGkdzN1adVXK
+ wllgkjjrOZq8/MBeAlOr/JNacmjSzeOLawehKXJkVR814o+zq++IhBWeEFcV7MgPn04ZbxjIaPq
+ TWLwpC04henfPQAxzW8bLS7ZbsMwcMk8pSzXpPRThCgiD5wnnbNc/tWWFAtY25qsfyJ/Fv+vjAy
+ KANIMd3jdT8m+0xsLgP3T1aBfxEv0OI5ees7WYyA9+4ixb3PoFcQ8W/5zYNEx9n3UgrLd5Qymer
+ neuhXGMC1HIx7Q74L5sBCOMFfYkoM6EYwOKqhaGwDm94Cxrzv5vdpb3mBCzY88snuL6/p8emEwE
+ HweeYoHU7uB6zCVixbm33q33D22JsYQAgRFCxvZzuq71c+B2jPLN/Ac7yHBvXz3FdkGEUx+VXs2
+ IMdF1je5VzgiyToqseDxFw0uTWIg8hrKDnAXp3wGgKADLDONB7Jo9u3aLbd1nNWpiFxARH3tHFD
+ unYVVn85FjtFjaTt8NxTCq6sHJZQgzQCYwI9ossmbZx4ONrnVqLlKnGTWIlGc7gVBRAeT7TEQyn
+ MnBNpRegK7OHNdpxtVvPWurjXnxN2/z7oQI8Mx50GpDw3DVSzmY0=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,130 +80,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Unigraf can read crc from the physical output, use this CRC instead of
-internal CRC when configured. This allows to also test the hardware signal
-generation.
-
-This small addition allows to use the unigraf device for most of the
-kms_* tests.
+Unigraf is able to manipulate the HPD line of the connector, add few
+helpers to manipulate them.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_pipe_crc.c    | 35 +++++++++++++++++++++++++++++++++++
- lib/unigraf/unigraf.c | 22 ++++++++++++++++++++++
- 2 files changed, 57 insertions(+)
+ lib/unigraf/unigraf.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h |  6 ++++++
+ 2 files changed, 59 insertions(+)
 
-diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
-index 9a79edd51531..ad76e5ca37f7 100644
---- a/lib/igt_pipe_crc.c
-+++ b/lib/igt_pipe_crc.c
-@@ -3,9 +3,12 @@
-  * Copyright © 2013 Intel Corporation
-  */
- 
-+#include "igt_core.h"
-+#include "unigraf/unigraf.h"
- #include <inttypes.h>
- #include <sys/stat.h>
- #include <sys/mount.h>
-+#include <xf86drmMode.h>
- #ifdef __linux__
- #include <sys/sysmacros.h>
- #endif
-@@ -359,6 +362,38 @@ static void read_one_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
- 	} while (ret == -EINTR);
- 
- 	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags);
-+
-+#if HAVE_UNIGRAF
-+	if (unigraf_open_device(pipe_crc->fd) && unigraf_use_crc()) {
-+		int crtc_index;
-+		int stream_id;
-+		drmModeConnectorPtr connector = unigraf_get_connector(pipe_crc->fd);
-+
-+		if (!connector)
-+			return;
-+
-+		crtc_index = igt_get_crtc_index_from_connector_id(pipe_crc->fd,
-+								  connector->connector_id);
-+		drmModeFreeConnector(connector);
-+
-+		if (crtc_index && crtc_index == pipe_crc->crtc_index) {
-+			unigraf_read_crc(0, out);
-+			return;
-+		}
-+
-+		for (stream_id = 0; stream_id < unigraf_get_mst_stream_count(); stream_id++) {
-+			int connector_id = unigraf_get_connector_id_by_stream(pipe_crc->fd,
-+									      stream_id);
-+			crtc_index = igt_get_crtc_index_from_connector_id(pipe_crc->fd,
-+									  connector_id);
-+
-+			if (crtc_index && crtc_index == pipe_crc->crtc_index) {
-+				unigraf_read_crc(stream_id, out);
-+				return;
-+			}
-+		}
-+	}
-+#endif
- }
- 
- /**
 diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 3970c1071cc8..83ea1eb1f91c 100644
+index 9cfff8254009..34f3e83e4358 100644
 --- a/lib/unigraf/unigraf.c
 +++ b/lib/unigraf/unigraf.c
-@@ -66,6 +66,13 @@ static bool unigraf_crc;
-  */
- #define UNIGRAF_CONFIG_USE_CRC_NAME "UseCRC"
- 
-+/**
-+ * UNIGRAF_CONFIG_MST_STREAM_COUNT - Key for the stream count configuration
-+ *
-+ * Set to 0 to use SST, 1..4 for MST
-+ */
-+#define UNIGRAF_CONFIG_MST_STREAM_COUNT "MSTStreams"
-+
- /**
-  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
-  */
-@@ -362,6 +369,7 @@ bool unigraf_open_device(int drm_fd)
- 	int chosen_device = 0;
- 	int chosen_role;
- 	int chosen_input;
-+	int unigraf_stream_count;
- 
- 	assert(igt_can_fail());
- 
-@@ -418,6 +426,15 @@ bool unigraf_open_device(int drm_fd)
- 			unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
- 			unigraf_crc = true;
- 		}
-+
-+		cfg_error = NULL;
-+		unigraf_stream_count = g_key_file_get_boolean(igt_key_file, UNIGRAF_CONFIG_GROUP,
-+							      UNIGRAF_CONFIG_MST_STREAM_COUNT,
-+							      &cfg_error);
-+		if (cfg_error) {
-+			unigraf_debug("MST usage not configured, using SST.\n");
-+			unigraf_stream_count = 0;
-+		}
- 	}
- 
- 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-@@ -496,6 +513,11 @@ bool unigraf_open_device(int drm_fd)
- 
- 	unigraf_reset();
- 
-+	if (!unigraf_stream_count)
-+		unigraf_set_sst();
-+	else
-+		unigraf_set_mst_stream_count(unigraf_stream_count);
-+
- 	return unigraf_connector_name != NULL;
+@@ -92,6 +92,22 @@ static void unigraf_init(void)
+ 	igt_install_exit_handler(unigraf_exit_handler);
  }
  
++/**
++ * unigraf_write_u32 - Write a 32-bit value to a TSI configuration item
++ * @config_id: The configuration item ID to write to
++ * @value: The 32-bit value to write
++ *
++ * This macro writes a 32-bit value to the specified TSI configuration item.
++ * This is a macro to have the proper line information when using unigraf_debug.
++ */
++#define unigraf_write_u32(config_id, value)									\
++	({													\
++		uint32_t v = (value);										\
++		igt_assert(unigraf_device);									\
++		unigraf_debug("Value write: " #config_id "=%d...\n", v);					\
++		unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config_id, &v, sizeof(value)));		\
++	})
++
+ /**
+  * unigraf_device_count() - Return the number of scanned devices
+  *
+@@ -289,3 +305,40 @@ void unigraf_require_device(int drm_fd)
+  */
+ void unigraf_reset(void)
+ {}
++
++/**
++ * unigraf_hpd_assert() - Assert Hot Plug Detect signal
++ *
++ * This function asserts the HPD signal, simulating a device connection.
++ */
++void unigraf_hpd_assert(void)
++{
++	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 1);
++}
++
++/**
++ * unigraf_hpd_pulse() - Pulse the Hot Plug Detect signal
++ * @duration: The duration in milliseconds for which the HPD signal should be pulsed
++ *
++ * This function pulses the HPD signal for the specified duration.
++ */
++void unigraf_hpd_pulse(int duration)
++{
++	/* In theory this should work:
++	 * unigraf_write_u32(TSI_DPRX_HPD_PULSE_W, duration);
++	 * But this seems to be broken and this works:
++	 */
++	unigraf_hpd_deassert();
++	usleep(duration);
++	unigraf_hpd_assert();
++}
++
++/**
++ * unigraf_hpd_deassert() - Deassert Hot Plug Detect signal
++ *
++ * This function deasserts the HPD signal, simulating a device disconnection.
++ */
++void unigraf_hpd_deassert(void)
++{
++	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 0);
++}
+diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+index 4c2cbd6b1aa5..77fba4e53912 100644
+--- a/lib/unigraf/unigraf.h
++++ b/lib/unigraf/unigraf.h
+@@ -42,4 +42,10 @@ void unigraf_require_device(int drm_fd);
+ 
+ void unigraf_reset(void);
+ 
++void unigraf_hpd_deassert(void);
++
++void unigraf_hpd_pulse(int duration);
++
++void unigraf_hpd_assert(void);
++
+ #endif // UNIGRAF_H
 
 -- 
 2.52.0
