@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39186F46452
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 11:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1FEBF46452
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 11:20:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D37B210E4AC;
-	Mon, 16 Mar 2026 11:20:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4BBA610E4A6;
+	Mon, 16 Mar 2026 11:20:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LqBaEGxh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aSTViO9o";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFA9610E4A5
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 11:19:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C88810E4A5
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 11:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1773659998; x=1805195998;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ZfswmA2CsNd2u6VLM52X5pjx1uaTXs+rk7kmOdQPPNM=;
- b=LqBaEGxhy5se+MRK2iYvXliBQgjiMczWnJs6AATSP8aerD4YHDuPc3Mx
- qPWIhGib4dYKc51G893cAxPqnjNmBasg6YMqAOpWQzPztawkJ4pz0ZAQN
- fFOcg6Q7JO55+Lb2Udua44DUMVqesg2w9DLK030k+0/7qWzJYUmVco6zT
- tUIwQs0zyML6m+G4Oqls1Nh8Vzd0MjHAsuFfD3iOFX6B+EedhOxkiNbm2
- GMqYzxurs/Obj5GdbY+Ch3bUnNh7unhWz91yDy0C+vRRtjDNw+k1N50PN
- UoMGGJd95noUDiqROSCaeHlOJwcdTD88uC2nlCn23cZJIGYMVuASx1Z2l g==;
-X-CSE-ConnectionGUID: Bcsm9AZNTFK75d4KKTlKQQ==
-X-CSE-MsgGUID: wY7TwWLMSOKqBPgco3oBPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="92240288"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="92240288"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ bh=nEEqsXsuOvXGBhNpQweiFsc/YYNA2I5KkGehyQTIZVk=;
+ b=aSTViO9oqYx2h+wyfWAU8aGppIznpjthTbNxOu0i+2K5dPV1YEGJ3eM5
+ PyU08aqdkp+8kqmKBP/2I46dG6bM2upB2BefafxL+vLdtvYcApTy4fpeB
+ VEq+AbTgsfu0rDB/2fb8lEViGLFTKVdH27v/OQAIfktdeNd3DZCkfX2wg
+ Riwx3Pp7w7nNFfXmsMo2EokFDpFawsRwlCz79VONANjGSxWA6vbP0u7Yf
+ R6th3wQhb8c/LOqnqneDf7IfYLpAR+/LLZG2zmD6T3kYWot60APzKNxTQ
+ gdOL0PC+igKjBW17sYoXD86cWtdNlik2AjEgo4YbAWdEReiawhaP/hYUS A==;
+X-CSE-ConnectionGUID: RAJ6V25WQuWDyqLtXT6T2Q==
+X-CSE-MsgGUID: maoPNeWpQRKXTfzJ+Zc9QA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74562429"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="74562429"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Mar 2026 04:19:58 -0700
-X-CSE-ConnectionGUID: 6aYeMst9Q32CSY3gW1dVHA==
-X-CSE-MsgGUID: 1URKdWBkS7yLnkL9uw3ymg==
+X-CSE-ConnectionGUID: dQmridXAQoSzDPOFHh/vDg==
+X-CSE-MsgGUID: npzVWRDiT4ClUF6U2L+GEA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226874379"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="221832935"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.238])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 04:19:56 -0700
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Mar 2026 04:19:47 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 08/12] tests/kms_bw: fix misleading indent
-Date: Mon, 16 Mar 2026 13:19:10 +0200
-Message-ID: <b6dc3977fa92067605c3fba8c82f30e442a3d085.1773659680.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 06/12] tests/intel/kms_pipe_b_c_ivb: Prepare for
+ returning NULL from igt_crtc_for_pipe()
+Date: Mon, 16 Mar 2026 13:19:08 +0200
+Message-ID: <19c7fd99b8379f2a6e07d359c9ef6e16cfdd5a71.1773659680.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1773659680.git.jani.nikula@intel.com>
 References: <cover.1773659680.git.jani.nikula@intel.com>
@@ -70,40 +71,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt_subtest_f() starts a block. Indent the run_test_linear_tiling()
-calls properly.
+Figure out igt_crtc_t pointers for pipes B and C once the beginning, and
+skip the test if either isn't available.
+
+This is really a no-op, as IVB will have pipes B and C, but prepares for
+cleanly returning NULL from igt_crtc_for_pipe().
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tests/kms_bw.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ tests/intel/kms_pipe_b_c_ivb.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index a6cb46e8244f..1c339f252a3e 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -317,17 +317,15 @@ int igt_main()
- 	 * _amount_ of pipes */
- 	for (i = 0; i < IGT_MAX_PIPES; i++) {
- 		for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
--			igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
--			      test_mode[j].name)
--			run_test_linear_tiling(&data, i, &test_mode[j], false);
-+			igt_subtest_f("linear-tiling-%d-displays-%s", i+1, test_mode[j].name)
-+				run_test_linear_tiling(&data, i, &test_mode[j], false);
- 		}
+diff --git a/tests/intel/kms_pipe_b_c_ivb.c b/tests/intel/kms_pipe_b_c_ivb.c
+index 11c97e23c5e4..0e017706373c 100644
+--- a/tests/intel/kms_pipe_b_c_ivb.c
++++ b/tests/intel/kms_pipe_b_c_ivb.c
+@@ -65,6 +65,8 @@ IGT_TEST_DESCRIPTION(
+ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
++	igt_crtc_t *crtc_b;
++	igt_crtc_t *crtc_c;
+ } data_t;
+ 
+ drmModeModeInfo mode_3_lanes = {
+@@ -173,8 +175,8 @@ find_outputs(data_t *data, igt_output_t **output1, igt_output_t **output2)
+ static void
+ test_dpms(data_t *data)
+ {
+-	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
+-	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
++	igt_crtc_t *crtc_b = data->crtc_b;
++	igt_crtc_t *crtc_c = data->crtc_c;
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -202,8 +204,8 @@ test_dpms(data_t *data)
+ static void
+ test_lane_reduction(data_t *data)
+ {
+-	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
+-	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
++	igt_crtc_t *crtc_b = data->crtc_b;
++	igt_crtc_t *crtc_c = data->crtc_c;
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -235,8 +237,8 @@ test_lane_reduction(data_t *data)
+ static void
+ test_disable_pipe_B(data_t *data)
+ {
+-	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
+-	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
++	igt_crtc_t *crtc_b = data->crtc_b;
++	igt_crtc_t *crtc_c = data->crtc_c;
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -271,8 +273,8 @@ test_disable_pipe_B(data_t *data)
+ static void
+ test_from_C_to_B_with_3_lanes(data_t *data)
+ {
+-	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
+-	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
++	igt_crtc_t *crtc_b = data->crtc_b;
++	igt_crtc_t *crtc_c = data->crtc_c;
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -302,8 +304,8 @@ test_from_C_to_B_with_3_lanes(data_t *data)
+ static void
+ test_fail_enable_pipe_C_while_B_has_3_lanes(data_t *data)
+ {
+-	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
+-	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
++	igt_crtc_t *crtc_b = data->crtc_b;
++	igt_crtc_t *crtc_c = data->crtc_c;
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -339,6 +341,12 @@ int igt_main()
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
++
++		data.crtc_b = igt_crtc_for_pipe(&data.display, PIPE_B);
++		igt_skip_on(!data.crtc_b->valid);
++
++		data.crtc_c = igt_crtc_for_pipe(&data.display, PIPE_C);
++		igt_skip_on(!data.crtc_c->valid);
  	}
  
-         for (i = 0; i < IGT_MAX_PIPES; i++) {
-                 for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
--                        igt_subtest_f("connected-linear-tiling-%d-displays-%s", i+1,
--                              test_mode[j].name)
--                        run_test_linear_tiling(&data, i, &test_mode[j], true);
-+                        igt_subtest_f("connected-linear-tiling-%d-displays-%s", i+1, test_mode[j].name)
-+				run_test_linear_tiling(&data, i, &test_mode[j], true);
-                 }
-         }
- 
+ 	igt_describe("Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B with mode "
 -- 
 2.47.3
 
