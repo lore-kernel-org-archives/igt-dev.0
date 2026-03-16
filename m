@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F01A6F53D6C
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 22:18:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0DC0FB5E83
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 22:36:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A115B10E3F9;
-	Mon, 16 Mar 2026 22:18:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 803CD10E0E3;
+	Mon, 16 Mar 2026 22:36:53 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB92B10E3F9;
- Mon, 16 Mar 2026 22:18:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C23BF10E3FD;
+ Mon, 16 Mar 2026 22:36:49 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2692284745505226633=="
+ boundary="===============3188110404967107184=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/intel=5Fpat=3A_Handle_p?=
- =?utf-8?q?latforms_without_compressed_PAT_index_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_test/intel/xe=5Fvm=3A_Add_o?=
+ =?utf-8?q?versubscribe_concurrent_bind_stress_subtest_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sanjay Yadav" <sanjay.kumar.yadav@intel.com>
+To: "Sobin Thomas" <sobin.thomas@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 16 Mar 2026 22:18:20 -0000
-Message-ID: <177369950088.363826.11706928411236877390@a3b018990fe9>
+Date: Mon, 16 Mar 2026 22:36:49 -0000
+Message-ID: <177370060977.363819.15729362896855945844@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260316065843.287818-2-sanjay.kumar.yadav@intel.com>
-In-Reply-To: <20260316065843.287818-2-sanjay.kumar.yadav@intel.com>
+References: <20260316074211.2308188-1-sobin.thomas@intel.com>
+In-Reply-To: <20260316074211.2308188-1-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2692284745505226633==
+--===============3188110404967107184==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/intel_pat: Handle platforms without compressed PAT index (rev2)
-URL   : https://patchwork.freedesktop.org/series/161756/
+Series: test/intel/xe_vm: Add oversubscribe concurrent bind stress subtest (rev2)
+URL   : https://patchwork.freedesktop.org/series/162866/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8806_BAT -> XEIGTPW_14767_BAT
+CI Bug Log - changes from XEIGT_8806_BAT -> XEIGTPW_14768_BAT
 ====================================================
 
 Summary
@@ -81,17 +81,17 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8806 -> IGTPW_14767
+  * IGT: IGT_8806 -> IGTPW_14768
 
-  IGTPW_14767: 14767
+  IGTPW_14768: 14768
   IGT_8806: 8806
   xe-4731-a25d8c583e1e52bde77d371081a7c3fcd0a2e820: a25d8c583e1e52bde77d371081a7c3fcd0a2e820
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14767/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14768/index.html
 
---===============2692284745505226633==
+--===============3188110404967107184==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,16 +111,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/intel_pat: Handle platforms without compressed PAT index (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161756/">https://patchwork.freedesktop.org/series/161756/</a></td></tr>
+<tr><td><b>Series:</b></td><td>test/intel/xe_vm: Add oversubscribe concurrent bind stress subtest (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162866/">https://patchwork.freedesktop.org/series/162866/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14767/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14767/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14768/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14768/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8806_BAT -&gt; XEIGTPW_14767_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8806_BAT -&gt; XEIGTPW_14768_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -130,13 +130,13 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8806 -&gt; IGTPW_14767</li>
+<li>IGT: IGT_8806 -&gt; IGTPW_14768</li>
 </ul>
-<p>IGTPW_14767: 14767<br />
+<p>IGTPW_14768: 14768<br />
   IGT_8806: 8806<br />
   xe-4731-a25d8c583e1e52bde77d371081a7c3fcd0a2e820: a25d8c583e1e52bde77d371081a7c3fcd0a2e820</p>
 
 </body>
 </html>
 
---===============2692284745505226633==--
+--===============3188110404967107184==--
