@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 430ECF46449
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:26:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03212F4644A
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 10:26:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ECFAB10E264;
-	Mon, 16 Mar 2026 10:26:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AC27610E262;
+	Mon, 16 Mar 2026 10:26:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="xLE7ysgf";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="nbSpbg5P";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7871A10E262
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:24:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9315C10E25A
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:23:48 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 6108B4E426C0;
- Mon, 16 Mar 2026 10:24:30 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 3DE444E42627
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 10:23:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 38D175FC4A;
- Mon, 16 Mar 2026 10:24:30 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 14E025FC4A;
+ Mon, 16 Mar 2026 10:23:46 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 51ABE10369F53; Mon, 16 Mar 2026 11:24:29 +0100 (CET)
+ with ESMTPSA id 5E84F10369977; Mon, 16 Mar 2026 11:23:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773656669; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773656625; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=sLKx7kL29gS3PevNbSGMLolfYFKHwGhccO3OGxrCJ00=;
- b=xLE7ysgfkLEtesiiHqw/gPzbudtZCLp1M/TP0Kqp/FLACMle80IE7oltdSiFR7l/lal0gq
- OUPWljpeLPvzUGnlM3rWa/K+IEnXIdwytSiGCm2ecIWL4eNZICJ8LyJIp7ci5tGmkiPtu7
- Z9B3uUCCQ61pCriTnHZosjthm9uWNlLjmjadPVR4I6xSNcQ4SCM7va04ciRNoOqKahI1EW
- z3wcC0UZyzPvUnLksb+KUZtY1dFyhTeLYi7ZO5gI1fwHb7NF/173XxNfgAHY5Th5L/Qby2
- 21nF7RV4t9U654R+2TApuyC+QGzLknSC35KcVpnT+4mSR8M2ACreUNYcF9vyrw==
+ bh=0WI4LM83PRyfn8NVfmgVWayjosTiA5UTBzdYfXyhbsA=;
+ b=nbSpbg5P+n7/skKKYqKm3+OPYMRyobgy8nLJ2L3uEwIiuaotKc8zD4ZvoX4fzd/0vE908H
+ H9JLSoAm0an9GvSZDIv79kmyLulmx7veFColrUf4luHU/YaS/2ckVjTgHjCDKj79thHATt
+ sHpfHx9kBb4HIRG3KwbAZCXds7mwRSM9QOBkeebar7szfGE4eakurYjIHjB94iE0b3DaAR
+ SOS1vyIk5R0C76TKWJJoQtoY8jlJ5a6ic04gQfNAblRA2izIqyVctFX/75LdskMZnKZujP
+ F+aix70zzV28xfB0uSFDATCJs260kIQKfc4QEARMTWKkWS+1Y8NLStyHgChg1A==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 11:24:56 +0100
-Subject: [PATCH i-g-t v8 48/49] lib/unigraf: Add helpers to get the current
- LT status
+Date: Mon, 16 Mar 2026 11:24:09 +0100
+Subject: [PATCH i-g-t v8 01/49] lib/igt_kms: Add a detect timeout value
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-unigraf-integration-v8-48-4489bf8572be@bootlin.com>
+Message-Id: <20260316-unigraf-integration-v8-1-4489bf8572be@bootlin.com>
 References: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1668;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3697;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=zBoMxWSAP93gccKT8um84KhbAXMd1VMDY96LvQp68co=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pVnHfQJmAu4NmhCDDPHkiav0P9wvZpU8qeY
- s1gH2QX97KJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaVRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIPUg/+KOhoRnXfHA93EeumE9swoMkrsim542w
- KK5B8u3vMEB7Jx/P573RTcuyIG6MmmHtdefYcks2Z2ZJhaGyUWYWguatzoAzhJuKr2Qw5BTIQcU
- LM3vvDf5fRe+8RKUkwOF8b9+fDF9JfA/XXu0DiYKu9Ke9u6quwxWDER6Qq+SJCTQP3xmwMzkCmG
- 69jmug5O271dQ0UOjWzw86GOp1Y9nGctbCYhbupTStHIBlnKrxmB+QECfXYz3Arb4SQ0+XgtYOA
- NGWU2YXxdQ7VK7R3hif7fkZMCv7L+/k3RiMlRANCGiIOlFe9b97MDdor4ljbC759MwQuHR5k6Mn
- T7ueuJSAHBhEkDKzR2/+XRHnIM9q+tu9vfq5n+WJeWN6dq8StOfnWBeYgUYX6yIyksS84Ttr+p8
- Gs/cKNcDbECJDxTwrOpg2sHTD+zJUXIaftcCPQ76VlL10mzgdDPqmKfW91ra1V4nl8TC9rkHF6A
- zW8cTJKUgHNZjEqGlqbjl40LA43Kpfp4dXRvghbZkPxSw4/5qZ/uwFr9WoAeeugaKEGzJPVCoBD
- 3NL8t0MvymtalD/AOEIoxwiJYLXa1pa+ixXlY2fYOf/c6ZK+4mGjKiER27+lNCBvTihe8cVWrce
- NJPFI9d7lWP7NFFih9EEGz3xPoyrBkyCd3irO9jNvxXT3mDGAWDU=
+ bh=wt3R+4f1jZQubLqo1bawUAf6hxlOqiqzuIkv+GJNORI=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpt9pO5+g+k2uXcRBHgOX3qnCZG4/DRRf2E7vUw
+ +Xw1mwvvIOJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabfaThsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJWdxAAkYp0SHLNv7cHIVnJsuogODWYeqoq/Ef
+ kRYjLsb8t5S91vPNcqJYaI7EIifiHxwyuq9pJDcca8eb7Yc6CGTfCZ2UF6rYql663t5tqUe4X3a
+ muOzsLUllen8I4VZpIYoQk3wiv/Elhk8FRu4weP4hR/hHWFLHOCzI2YcijZuWLXCh7uhuHL+wB/
+ MzMeQBN3A2p04SWYitUgBsufNqeiDeL1BHVkfSWZ1Xl4yqLIbSsSOUOeIpoFUjLLzTYUj48bsqk
+ Kn9GOk2EUuY1F7+JgSsnjBmtExAnuoE9FNia0GsKmkQm+FuyRujgAhfR6lzk6rIGidt88FZ2DDN
+ WvFr7qd38ykkMO4mgSdwD/HLcFp/OAnpUG7qZaXYQTT5K5DQfxZsMp1dAwtoYXxHo+wQBeSTTHS
+ dbD726er3W45V1GnXl6GXDJUtrk01oRsEz1lHRzGaniOTdFz6fUR2bIK3jiLT3ir66QwBS0jfO3
+ o8/Mr+D2KImSFOUsB7PGzQXvpAO2qig8LxfvwzgHMypat6BETONidSjyYBqTO6jsjorbfdqowNG
+ B1ODgm6CuyKg7tID+V+HvqxXyjPVuuOy0JYrhxpWHQKDvJnQ13LB0aisov8Ue6iBrNzZdgw9mR2
+ ThOSCOuZUUi8xeRnjrp8FHlgZfPDmUzXembGVu3x5QSm1pn7n1aU=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,60 +79,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To ensure that the link training was correct, grab actual link
-training status from unigraf.
+Some tests need to wait for a specific connector status. In order to make
+the timeout customisable for each target, add an option in the
+configuration file.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 20 ++++++++++++++++++++
- lib/unigraf/unigraf.h |  4 ++++
- 2 files changed, 24 insertions(+)
+ lib/igt_core.c | 33 +++++++++++++++++++++++++++++++++
+ lib/igt_core.h |  9 +++++++++
+ lib/igt_kms.c  |  1 +
+ 3 files changed, 43 insertions(+)
 
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 74957b6b3f5d..2e38dbfc9f1d 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -836,6 +836,26 @@ int unigraf_get_max_lane_count(void)
- 	return max_lanes;
- }
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 3ee670a41a91..e8f31d573512 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -26,6 +26,7 @@
+  *
+  */
+ 
++#include "igt_kms.h"
+ #ifdef HAVE_LIBGEN_H
+ #include <libgen.h>
+ #endif
+@@ -271,6 +272,10 @@
+  *	&num; It is not mandatory and allows overriding default values.
+  *	[DUT]
+  *	SuspendResumeDelay=10
++ *
++ *	&num; The following option define the timeout (in seconds) for detection feature
++ *	&num; (waiting for a connector status)
++ *	DisplayDetectTimeout=10.0
+  * ]|
+  *
+  * Some specific configuration options may be used by specific parts of IGT,
+@@ -379,6 +384,21 @@ static bool stderr_needs_sentinel = false;
+ 
+ static int _igt_dynamic_tests_executed = -1;
  
 +/**
-+ * unigraf_get_lt_rate() - Get the current link training rate
-+ *
-+ * Returns: The current link training rate in units of 270 MHz.
++ * default_display_detect_timeout: Timeout for display detection, in seconds
 + */
-+uint32_t unigraf_get_lt_rate(void)
++static double default_display_detect_timeout;
++
++static void igt_set_default_display_detect_timeout(double timeout)
 +{
-+	return unigraf_read_u32(TSI_DPRX_LT_RATE_R);
++	default_display_detect_timeout = timeout;
 +}
 +
++double igt_default_display_detect_timeout(void)
++{
++	return default_display_detect_timeout;
++}
++
+ static void print_backtrace(void)
+ {
+ #ifndef HAVE_LIBUNWIND
+@@ -1003,6 +1023,7 @@ static void common_init_config(void)
+ {
+ 	GError *error = NULL;
+ 	int ret = 0;
++	static double timeout = 0.0;
+ 
+ 	igt_key_file = igt_load_igtrc();
+ 
+@@ -1023,6 +1044,18 @@ static void common_init_config(void)
+ 	if (ret != 0)
+ 		igt_set_autoresume_delay(ret);
+ 
++	if (igt_key_file)
++		timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",
++						&error);
++	if (error) {
++		igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",
++			  DEFAULT_DETECT_TIMEOUT);
++		g_clear_error(&error);
++		timeout = DEFAULT_DETECT_TIMEOUT;
++	}
++	g_clear_error(&error);
++	igt_set_default_display_detect_timeout(timeout);
++
+ 	/* Adding filters, order .igtrc, IGT_DEVICE, --device filter */
+ 	if (igt_device_filter_count() > 0)
+ 		igt_debug("Notice: using --device filters:\n");
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 6845f853c980..daf83cb5380d 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -143,6 +143,13 @@ struct _GKeyFile *igt_load_igtrc(void);
+  */
+ #define IGT_EXIT_ABORT 112
+ 
 +/**
-+ * unigraf_get_lt_lane_count() - Get the current link training lane count
++ * DEFAULT_DETECT_TIMEOUT
 + *
-+ * Returns: The current number of lanes being used in link training.
++ * Default timeout in second used for some screen detection
++ * functions. It can be overiden by option DetectTimeout in the .igtrc file.
 + */
-+uint32_t unigraf_get_lt_lane_count(void)
-+{
-+	return unigraf_read_u32(TSI_DPRX_LT_LANE_COUNT_R);
-+}
-+
- /**
-  * unigraf_set_max_link_rate() - Set the maximum link rate advertised to the DUT
-  * @bandwidth: The maximum link rate to configure on the device. Actual value is
-diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index 3cba15732daa..8032ef8e7fe6 100644
---- a/lib/unigraf/unigraf.h
-+++ b/lib/unigraf/unigraf.h
-@@ -98,4 +98,8 @@ int unigraf_get_max_link_rate(void);
++#define DEFAULT_DETECT_TIMEOUT 10.0
+ void __igt_assert_in_outer_scope(void);
  
- int unigraf_rate_to_kbs(enum unigraf_rate rate);
+ bool __igt_fixture(void);
+@@ -446,6 +453,8 @@ void __igt_subtest_group_restore(int, int);
+  */
+ #define igt_main() igt_main_args(NULL, NULL, NULL, NULL, NULL)
  
-+uint32_t unigraf_get_lt_rate(void);
++double igt_default_display_detect_timeout(void);
 +
-+uint32_t unigraf_get_lt_lane_count(void);
-+
- #endif // UNIGRAF_H
+ const char *igt_test_name(void);
+ void igt_simple_init_parse_opts(int *argc, char **argv,
+ 				const char *extra_short_opts,
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 0b05ddd72977..692d75b70ecc 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -60,6 +60,7 @@
+ #include "igt_debugfs.h"
+ #include "igt_device.h"
+ #include "igt_pipe_crc.h"
++#include "igt_rc.h"
+ #include "igt_sysfs.h"
+ #include "sw_sync.h"
+ #ifdef HAVE_CHAMELIUM
 
 -- 
 2.52.0
