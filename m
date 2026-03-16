@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10DF8F53D6F
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:23:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DB4BF53D6D
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:23:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B842910E29A;
-	Mon, 16 Mar 2026 16:23:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA52110E2A4;
+	Mon, 16 Mar 2026 16:23:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="E87FMfmI";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ZNoG1RiT";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F130010E292
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:14 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1210F10E292
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:10 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id E3BA41A2E70;
- Mon, 16 Mar 2026 16:23:13 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id CD1974E4260A;
+ Mon, 16 Mar 2026 16:23:08 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id BBA845FC4A;
- Mon, 16 Mar 2026 16:23:13 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id A2BB95FC4A;
+ Mon, 16 Mar 2026 16:23:08 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 51B23103721F9; Mon, 16 Mar 2026 17:23:12 +0100 (CET)
+ with ESMTPSA id 96E8110372204; Mon, 16 Mar 2026 17:23:07 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773678192; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773678188; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=lINCCIVWRinaZLVrucarJDk3GgfHwMPXnWWCP+K/HTA=;
- b=E87FMfmIfHv+d/CH/Up2TJvIrIeZNhriWt1pcjhNbEdi7+/lhLvF/v/vUYY08d4dMlgyAp
- I6Tbm/GcpADSeAOEmbTDxQIpxKOUKr7U4C3G42KkAPbLjA9sMeDKkfFJSlnQljw+lhQOGG
- x3e8kjIJo8NaHOk2jICHub1D/aTAIx5kPaO7FV9XuRllMqyhfFx7YhWphgd6bb/EHuIKEg
- 3RpVcp6DVCXsOk1VdbtcAizIvsh2wDEqrjY70U1NoqUIMtD0Hjl3gL+kKsoOnZpxNfXacd
- /etiinNvDh9ErM+DNt2GxaUuMlYYhWd55U3k1qf0ulEq9zajybgFJBAqrsL7gQ==
+ bh=0WI4LM83PRyfn8NVfmgVWayjosTiA5UTBzdYfXyhbsA=;
+ b=ZNoG1RiTF5UIN2mvLPWYbA0CnOArJIzNLQrxf8C4K3bV0+q9O/ld33ZoXIFkAV3/iyBopW
+ oD8zMGdIbqShotceXVfnevox+Ctp5laK03dJGlh4uGGUW7urOeFFIlUCug7vfsqTEtf17D
+ 7573wogBLCfzC01FXxrLyKLb1g8tzopVyK1i8jyrQ8JYAYNiqTmJPnx1a+gpGw6dHOC3lz
+ bZuqzZfWuKXiW9IWcOyj9J8WUCZKL+vA0tGuejPsmcXOMRFmwWAcVohFLKcabLEVCH8kOL
+ 4uAVzE53cigf3Qi0QKA2/CymFvaVSbcsgT/e7MBylk7xZSQA29rTpju5Xm/bsA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 16 Mar 2026 17:17:27 +0100
-Subject: [PATCH i-g-t v9 06/49] lib/tests: Add tests for array
- manipulations
+Date: Mon, 16 Mar 2026 17:17:22 +0100
+Subject: [PATCH i-g-t v9 01/49] lib/igt_kms: Add a detect timeout value
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260316-unigraf-integration-v9-6-a01dffc3b0cb@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260316-unigraf-integration-v9-1-a01dffc3b0cb@bootlin.com>
 References: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
 In-Reply-To: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4976;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3697;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=dFdSDk8dHwYMEJPeBnY11cSOnc+KSjAvDB856MFwVx4=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpuC6J+1Cf7rsqT6+1wBy0f0JQfns0ThkTDwqpi
- +Y9UGhKzhmJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabguiRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKVIg//dm5Baj0bxd2BktEXdj6IqB8BwEEFhKN
- vlP5QPhQ3V3eN0GU3w+bx179Q7ab3fk8b3kWn/Mzw9drPRCe3YDfXpYq1AUvOcLdENF14/ruZUQ
- zVaRrkm2OYRbL7eWApunPXE1TCS6X2HxMA0/BZXX1sSpXZa8es4lUthdPIgK6kwcpvgA3AOi3Di
- gpKBOPux0m4e5epFM6kLnkMyx7oS3944qS5iOWADQId8x/MXhVQ5RH04T2+nwHiS58bwwb+S3qO
- FrZkB7I1X4lbssA6QRKaEF5CR3N2O3y6c5/WJfLTpOF8NEt7/OI0dhlstjGnoqQ+kflJ7EUufXD
- fxHV0eRSeaiai8+okNsFYOkirERjF1EK00u04wKQSAhVG+AWX5lgHzRNIL7MOtsfk4GIjzdu0bW
- fV6aExqLdMarSmWTvpC5I49txQMQejc6pLxUuqbdlK+9DprocnbROhEkCbUMLpyq44yW9A/V11c
- hwD1zpUP35WfWFBkeuA2PvvxlrDMjCFyOBM1WVAQi1X0woa0/T4XUayt0YEZ03k4CD03hM72NAh
- CVsJwk/eDGr57VjStAka0RTqTTvlc9XdtJhbN+Jxhm/lRsQmzJ4raWDEirlLh9pIMSZO6wsmGjJ
- H/07c7E8sCKiGchV9mvYUvH3WKFjRo4UAMcJYOpdkUyC8i6RxoLE=
+ bh=wt3R+4f1jZQubLqo1bawUAf6hxlOqiqzuIkv+GJNORI=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpuC6JuD2LjxUsgXAoUP1ukpFzD+29E6VlHPP6P
+ I9DcHC24FWJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabguiRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOK1Dg/8CVufG2T9LkFDjNilwmXlca3tDEvUgNx
+ fs2OpHeHQkBX3h0sMBXwjOjpynkrNKXmUazmNzez8cxZExVSYEQxgq86bpAGM6MyMUtdUqIkRzn
+ FuxTeMIjYhYqUR7deYlpHLQrtXcHkkPNral8uxiIFPyYcAamMrOGxzEelA80BmpYwqUM70PtlcP
+ dz1m5Uo0mg1YIDwXD2alyxJv4AVrTUrFMI7Y1UxGlvZSyjg6UWYhK/6dsU5VPX6lCzvhq4QclrN
+ fCA6nYWPe9peLn4zrIukQnoLI9XKq6b+k1kBsM4LmCAGtTPHZCydwkfgHxLQ2zqNXBNrLTTK12I
+ LL1tqopsxRcJA3VIrP8ZaypnWVrL7o1TAQFrL6opKt7JkxZTf8Evz0r7KnwX2t+Aj2WkDuGaf0R
+ 1NQ2jSG36b/Ypp7iHMD301HMAimB5zPv6KaGVeFdq9DmYLEcBGJSxokXGCXYu3jKxUZaGwV935A
+ IwRxxtq4Ur05MqFZSaicAT79xePVypClng1gobjAIozy1mpGRZZLKve0677zudlz9f2C265iTBN
+ koGu+19h7EwoZaZjCYDigRH4qNUy5mJi+iZEBsiiYRS0DWFkPxi42NLMWrhBohnFhA4m3MS19aB
+ sNcUOSPF1V+EK1S1lrr9Dn2K92KWCVO8ulH69n5VlPohOhYMxngA=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,192 +79,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As array manipulation functions are not trivial, add few tests to ensure
-they work properly.
+Some tests need to wait for a specific connector status. In order to make
+the timeout customisable for each target, add an option in the
+configuration file.
 
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/tests/igt_kms_array_diff.c | 159 +++++++++++++++++++++++++++++++++++++++++
- lib/tests/meson.build          |   1 +
- 2 files changed, 160 insertions(+)
+ lib/igt_core.c | 33 +++++++++++++++++++++++++++++++++
+ lib/igt_core.h |  9 +++++++++
+ lib/igt_kms.c  |  1 +
+ 3 files changed, 43 insertions(+)
 
-diff --git a/lib/tests/igt_kms_array_diff.c b/lib/tests/igt_kms_array_diff.c
-new file mode 100644
-index 000000000000..ebdc3b62bc31
---- /dev/null
-+++ b/lib/tests/igt_kms_array_diff.c
-@@ -0,0 +1,159 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Louis Chauvet <louis.chauvet@bootlin.com> (assisted by MistralAI)
-+ */
-+
-+#include <stdint.h>
-+#include <stdlib.h>
-+
-+#include "drmtest.h"
-+#include "igt_core.h"
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 3ee670a41a91..e8f31d573512 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -26,6 +26,7 @@
+  *
+  */
+ 
 +#include "igt_kms.h"
-+
+ #ifdef HAVE_LIBGEN_H
+ #include <libgen.h>
+ #endif
+@@ -271,6 +272,10 @@
+  *	&num; It is not mandatory and allows overriding default values.
+  *	[DUT]
+  *	SuspendResumeDelay=10
++ *
++ *	&num; The following option define the timeout (in seconds) for detection feature
++ *	&num; (waiting for a connector status)
++ *	DisplayDetectTimeout=10.0
+  * ]|
+  *
+  * Some specific configuration options may be used by specific parts of IGT,
+@@ -379,6 +384,21 @@ static bool stderr_needs_sentinel = false;
+ 
+ static int _igt_dynamic_tests_executed = -1;
+ 
 +/**
-+ * TEST: get_array_diff
-+ * Category: Core
-+ * Description: Test the get_array_diff() function
-+ *
-+ * SUBTEST: get_array_diff-empty-both
-+ * Description: Test with both arrays empty
-+ *
-+ * SUBTEST: get_array_diff-empty-a
-+ * Description: Test with array_a empty
-+ *
-+ * SUBTEST: get_array_diff-empty-b
-+ * Description: Test with array_b empty
-+ *
-+ * SUBTEST: get_array_diff-no-diff
-+ * Description: Test with identical arrays (no difference)
-+ *
-+ * SUBTEST: get_array_diff-full-diff
-+ * Description: Test with completely different arrays
-+ *
-+ * SUBTEST: get_array_diff-partial-diff
-+ * Description: Test with partial overlap between arrays
-+ *
-+ * SUBTEST: get_array_diff-null-diff
-+ * Description: Test with diff parameter set to NULL (count only)
++ * default_display_detect_timeout: Timeout for display detection, in seconds
 + */
++static double default_display_detect_timeout;
 +
-+static void test_get_array_diff_empty_both(void)
++static void igt_set_default_display_detect_timeout(double timeout)
 +{
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(NULL, 0, NULL, 0, &diff);
-+	igt_assert_eq(diff_len, 0);
-+	free(diff);
++	default_display_detect_timeout = timeout;
 +}
 +
-+static void test_get_array_diff_empty_a(void)
++double igt_default_display_detect_timeout(void)
 +{
-+	uint32_t array_b[] = {1, 2, 3};
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(NULL, 0, array_b, ARRAY_SIZE(array_b), &diff);
-+	igt_assert_eq(diff_len, 0);
-+	free(diff);
++	return default_display_detect_timeout;
 +}
 +
-+static void test_get_array_diff_empty_b(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3};
-+	uint32_t *diff = NULL;
-+	int diff_len;
+ static void print_backtrace(void)
+ {
+ #ifndef HAVE_LIBUNWIND
+@@ -1003,6 +1023,7 @@ static void common_init_config(void)
+ {
+ 	GError *error = NULL;
+ 	int ret = 0;
++	static double timeout = 0.0;
+ 
+ 	igt_key_file = igt_load_igtrc();
+ 
+@@ -1023,6 +1044,18 @@ static void common_init_config(void)
+ 	if (ret != 0)
+ 		igt_set_autoresume_delay(ret);
+ 
++	if (igt_key_file)
++		timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",
++						&error);
++	if (error) {
++		igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",
++			  DEFAULT_DETECT_TIMEOUT);
++		g_clear_error(&error);
++		timeout = DEFAULT_DETECT_TIMEOUT;
++	}
++	g_clear_error(&error);
++	igt_set_default_display_detect_timeout(timeout);
 +
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), NULL, 0, &diff);
-+	igt_assert_eq(diff_len, 3);
-+	igt_assert(diff);
-+	igt_assert_eq(diff[0], 1);
-+	igt_assert_eq(diff[1], 2);
-+	igt_assert_eq(diff[2], 3);
-+	free(diff);
-+}
+ 	/* Adding filters, order .igtrc, IGT_DEVICE, --device filter */
+ 	if (igt_device_filter_count() > 0)
+ 		igt_debug("Notice: using --device filters:\n");
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 6845f853c980..daf83cb5380d 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -143,6 +143,13 @@ struct _GKeyFile *igt_load_igtrc(void);
+  */
+ #define IGT_EXIT_ABORT 112
+ 
++/**
++ * DEFAULT_DETECT_TIMEOUT
++ *
++ * Default timeout in second used for some screen detection
++ * functions. It can be overiden by option DetectTimeout in the .igtrc file.
++ */
++#define DEFAULT_DETECT_TIMEOUT 10.0
+ void __igt_assert_in_outer_scope(void);
+ 
+ bool __igt_fixture(void);
+@@ -446,6 +453,8 @@ void __igt_subtest_group_restore(int, int);
+  */
+ #define igt_main() igt_main_args(NULL, NULL, NULL, NULL, NULL)
+ 
++double igt_default_display_detect_timeout(void);
 +
-+static void test_get_array_diff_no_diff(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3};
-+	uint32_t array_b[] = {1, 2, 3};
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
-+				  &diff);
-+	igt_assert_eq(diff_len, 0);
-+	free(diff);
-+}
-+
-+static void test_get_array_diff_full_diff(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3};
-+	uint32_t array_b[] = {4, 5, 6};
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
-+				  &diff);
-+	igt_assert_eq(diff_len, 3);
-+	igt_assert(diff);
-+	igt_assert_eq(diff[0], 1);
-+	igt_assert_eq(diff[1], 2);
-+	igt_assert_eq(diff[2], 3);
-+	free(diff);
-+}
-+
-+static void test_get_array_diff_partial_diff(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3, 4, 5};
-+	uint32_t array_b[] = {2, 3, 6};
-+	uint32_t *diff = NULL;
-+	int diff_len;
-+
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
-+				  &diff);
-+	igt_assert_eq(diff_len, 3);
-+	igt_assert(diff);
-+	igt_assert_eq(diff[0], 1);
-+	igt_assert_eq(diff[1], 4);
-+	igt_assert_eq(diff[2], 5);
-+	free(diff);
-+}
-+
-+static void test_get_array_diff_null_diff(void)
-+{
-+	uint32_t array_a[] = {1, 2, 3};
-+	uint32_t array_b[] = {2, 3};
-+	int diff_len;
-+
-+	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b), NULL);
-+	igt_assert_eq(diff_len, 1);
-+}
-+
-+IGT_TEST_DESCRIPTION("Test get_array_diff() function");
-+int igt_main()
-+{
-+	igt_subtest("get_array_diff-empty-both")
-+		test_get_array_diff_empty_both();
-+
-+	igt_subtest("get_array_diff-empty-a")
-+		test_get_array_diff_empty_a();
-+
-+	igt_subtest("get_array_diff-empty-b")
-+		test_get_array_diff_empty_b();
-+
-+	igt_subtest("get_array_diff-no-diff")
-+		test_get_array_diff_no_diff();
-+
-+	igt_subtest("get_array_diff-full-diff")
-+		test_get_array_diff_full_diff();
-+
-+	igt_subtest("get_array_diff-partial-diff")
-+		test_get_array_diff_partial_diff();
-+
-+	igt_subtest("get_array_diff-null-diff")
-+		test_get_array_diff_null_diff();
-+}
-diff --git a/lib/tests/meson.build b/lib/tests/meson.build
-index 124a9ecae84d..f1db66d07c28 100644
---- a/lib/tests/meson.build
-+++ b/lib/tests/meson.build
-@@ -13,6 +13,7 @@ lib_tests = [
- 	'igt_fork_helper',
- 	'igt_hook',
- 	'igt_hook_integration',
-+	'igt_kms_array_diff',
-         'igt_ktap_parser',
- 	'igt_list_only',
- 	'igt_invalid_subtest_name',
+ const char *igt_test_name(void);
+ void igt_simple_init_parse_opts(int *argc, char **argv,
+ 				const char *extra_short_opts,
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 0b05ddd72977..692d75b70ecc 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -60,6 +60,7 @@
+ #include "igt_debugfs.h"
+ #include "igt_device.h"
+ #include "igt_pipe_crc.h"
++#include "igt_rc.h"
+ #include "igt_sysfs.h"
+ #include "sw_sync.h"
+ #ifdef HAVE_CHAMELIUM
 
 -- 
 2.52.0
