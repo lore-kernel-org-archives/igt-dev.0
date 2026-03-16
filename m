@@ -4,73 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB07DF53D69
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19EDCF53D6D
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:23:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9070310E098;
-	Mon, 16 Mar 2026 16:12:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA89010E2A4;
+	Mon, 16 Mar 2026 16:23:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="MwtTPPcC";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="AO1627mM";
 	dkim-atps=neutral
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com
- [209.85.210.171])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39E1A10E098
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:12:16 +0000 (UTC)
-Received: by mail-pf1-f171.google.com with SMTP id
- d2e1a72fcca58-829abaaa92bso3100766b3a.1
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 09:12:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1773677535; x=1774282335; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mzkpEnvNHey4CxEjLXvWYKmo/z8p6HT1HpN9kvUabjg=;
- b=MwtTPPcC83bTx8xe2pFWxAOMASUZHsJNOUcbRSwMeSQBrHJQfHRaKtQ9vFMxuCOfuo
- M7jicpCUI7EBploWvRRRc+92jconKySCpHTw2CXTv4kZ17I01qjExz2YKbss+WkEFozg
- hI0y61XdgyWL7e3SmzsWboRsx1po1B6J0Gh4LeVZnm5qqIkBhLnrXj2cAUxIbloDsrtj
- QmeN7f5pwUAjur/oV68AFrvQhZFSe+J9sNRMJTF1jbEqgEPykwOqvXZUqunm2Cza2qzw
- gaf3noVsZzuj1yUHuNQ9K4meppU9qghL2kmkI7+zHIISP2E+ecquCth2570HOMdt3E9D
- fUYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1773677535; x=1774282335;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=mzkpEnvNHey4CxEjLXvWYKmo/z8p6HT1HpN9kvUabjg=;
- b=ouHVuF+kNB85bsrYF0f4OLtPRPCzVkKexTei2GVeuznllIEevZBPUmc/DL54dahBK3
- Lc+I4uC9++eLI4LqRPcMK+J+2l6IDh2ExdzpvAWYwC+1qP8djBJqjljxQ8nX1mQHRLBU
- dRASUPpDzfDmwdBOZPefvPAY7GTZuDHs3G+g7irP9fAZByM0UEPdptwBgOCMbJ832TLB
- 26rnZvSf3L6GVCLqec0Zodyhcom4Zk2jm1mQrjiLtJatgRldTIddObcGfge4dWkBcSjj
- 4a9m9EMmL0rt9qBeTpciJfNDBbb2eTSg3pyoBn53qgMMIZ5TvSuUO9HqBAyUvnFxlNYl
- yqqA==
-X-Gm-Message-State: AOJu0YzeRNgnhk0FWV7qJmohO9VHhqrDSxKp0aWkUEd1Yc42VSHmpQpr
- VsWCtJMplD/MCyuFMPUGvIDQDEB5UeHmsyh+UXn1u3vnK6zLJ9BkeH5MT2B5WdbZ
-X-Gm-Gg: ATEYQzyCHN8KstSu2e+p66R1aQsSjoVrTSUzESB8dNK24hsHI03nU1QDkiqh8o/BgoV
- 0SOg/AAQt8pZN8Xrb3ejqkeC17C30SlF53QQm/sxXY5bwOd/0JNnBFeNQ/ybnr8Kt4gi2uwS5E9
- aHAfIr5gZU2P3N2eZ/J8TKOlLo44m3xKwnaMN/tDXp9/771y1H4U+x4dK1tr8YI3MxcSaYtAkO/
- 3APJewuz3Urqq+GreZ27p2v2oq+pcQLDFJ/JkB0F09MYbA5aIcBkmzhcVDLaLPqAgP0vPPEMLFN
- 5gO/5cDYDqPXkVLp6p+NRMTAJ84MVPebj9HDxIX0kmPGU1zxJOUB9ggrcnqboCh9o02kBGVmmsa
- g/6MBmssI0x3f0Un0TLyFxF/KaFBQndkgx6K+qG7oA5dnUNsSE9PrwNp1PkMW+8fcLDpcd0x34x
- VhPMUFAuYZwCQ+va7v3PCH7Da5zh2jn6OISC4+1QAPHeMQV5aW9bnqB8e0kVJ/SQ==
-X-Received: by 2002:a05:6a00:3c92:b0:824:9451:c1e2 with SMTP id
- d2e1a72fcca58-82a19937ad3mr12850350b3a.59.1773677535295; 
- Mon, 16 Mar 2026 09:12:15 -0700 (PDT)
-Received: from localhost ([134.134.139.73]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-82a07365090sm13833565b3a.46.2026.03.16.09.12.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Mar 2026 09:12:14 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 1/1] tests/chamelium/kms_chamelium_frames: add intel
- related yuv restrictions
-Date: Mon, 16 Mar 2026 18:11:01 +0200
-Message-ID: <20260316161101.2808556-2-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260316161101.2808556-1-juhapekka.heikkila@gmail.com>
-References: <20260316161101.2808556-1-juhapekka.heikkila@gmail.com>
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CC1510E292
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:23:09 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-02.galae.net (Postfix) with ESMTPS id E53EA1A2E70;
+ Mon, 16 Mar 2026 16:23:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id BB5995FC4A;
+ Mon, 16 Mar 2026 16:23:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id F382A10372205; Mon, 16 Mar 2026 17:23:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+ t=1773678186; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding; bh=UZ2YqUnRpb6dNNo/ypf5iqG57RlbLCtY5jBjp6b9k+o=;
+ b=AO1627mMTCyeobvPTO7Xyi1hwSpQ7zsbh2HS9fyJV2bzBd4zWiMXRdEl8iOtLvXKH0rfCI
+ kz8yLw9z8Ce+ZornrAYetyOKzKXy4+9GyW+z+kl+lJCkHOeXSXxiLLHVWqD6JOZKi2qRne
+ 7dM9ovc4S2nnmN0Rz4qAXILIihygGqzTBlZUM8QBVx2VDxk/nkSTQX8511SMynOcQjWOHD
+ LxZR7YCLH7APov61VoRyU1EdbgASeb+6t774/zcCI1M/3N5SDdCwHJzFglyzrR8u/ZNrMU
+ sDkzZ7dlWl2TrHbUU8EZ0vlRRqTz1t5nWfBY5e5vixLyoGN9oef7h7e2tq3HBQ==
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: [PATCH i-g-t v9 00/49] Unigraf integration
+Date: Mon, 16 Mar 2026 17:17:21 +0100
+Message-Id: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XQUU/EIAwA4L9y4VkMLTCYT/4P48OAsiPRzWxz0
+ Vz2361LdJrjXhra0g/Si5hpKjSLh9NFTLSWuYwDJ+3dScRzN/QkS+JcoEKrDFr5PpR+6rIsw0J
+ 8WPi+BKCktXLWJit48m2iXD529UkU2ctFPHP5XOZlnD73t1bYmztrwVXZFSRIZUwXE4LWKT2Gc
+ VxeynAfx9ddXPFQ3C0FpZLOpaixJetNvFb0oXjUdUWzEhlpks1dqCnmVwEAVVcMKypHFwIEAwq
+ uFfujNArQ1xXLSg4ZqW1dp6CiNIfCoa40rHhtuuwRichdK+6Pcmsv7nu7OsUWjI4+Vv7iD0VDU
+ 1c8K8b4NmRvHQb6r2zb9gV0eHtmqQIAAA==
+X-Change-ID: 20250425-unigraf-integration-11ed330755d5
+To: igt-dev@lists.freedesktop.org
+Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com, 
+ kory.maincent@bootlin.com, markyacoub@google.com, 
+ khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8506;
+ i=louis.chauvet@bootlin.com; h=from:subject:message-id;
+ bh=iCJx9u2EZkt2ZQFdqoYzBURza28aSf7knNsSCPYlk3s=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpuC6JzJeESmwXBfWIIV6cOH68EbrwXyMoQqt0o
+ OZDBRkSoqqJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCabguiRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLNshAAjWNbbV9Bno837E7jyTLebN0evyJK8tW
+ VunL1P9LPELDJb4fdXyQRgyI6D2oamObgT7EwViLTOPhft94FXDX8PiDUyEdSudCfDPD/klohLJ
+ V9VdU2PY6DWGUjC2Pxmhm+KCw2ImZlnnfjfMrAA+CjZ/WZkeZVflH8aTeqaAApLIb7q2aPT9dz4
+ S6Nw8K8OcCS9Eae348Uwdcq0j8Bz7ur1vC1eSOqfDrcxaWOQ4aU5V5BqvUd/XzVfhO4zG6eQIP+
+ LvsyqfVBwity/ePC8WK9o1lNiTPHPTOzjG03Wgb60Xz5Y/N1RB2E3UlQOFfcsk/DOviOFHOPLFM
+ VllvmLVK/W0cV5X6cmb9yit8Z5Rep0RPbcFb8yoQEnQLwxS8SqD7R5kRqYGIHaObsPKA0wPLqw5
+ tXEAzeVj3XqK01l2HPMzr6qwah7ZNaVqt8OujN6Fsl2y2a66Ff2FvBPGokrZ/j0iPsEWsDj/8cj
+ HWcztWb3FSqjpz6I+ZwRx+/uCQyw4dM0rbRaQDJKdZR2ujwz3jDUYW9F2NHwuuOTNP+IzVBG4fy
+ 5Qz7ANEreEfdygoMSJUHJiK6CgmQTvZB+TYNdjUSEto5Pi0LRYi6ihY5VO86HMtPuo88n1RPDyO
+ N44ldaToWY/t6Anv7Q3kjj8Fa7lWGECUlcHkHIo1lyWA6OrgeXZg=
+X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
+ fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
+X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,73 +83,183 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add intel hw yuv related restriction handling; 16bpp yuv formats
-need to be set at even coordinates and even width. Palanar formats
-need to be at even x/y coordinates and even width/height
+Hi everyone,
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+I am excited to share I currently have access to a Unigraf device,
+which I believe could significantly enhance the capabilities within IGT.
+This device has the potential to enable testing of low-level hardware
+features that are currently not covered. Specifically, Unigraf devices can
+assist in testing link training, signal integrity, HDCP, DSC, and more.
+
+It's important to note that the Unigraf SDK is not open-source, and the
+communication protocol with the device is proprietary. As a result, I have
+utilized the libTSI.so library, which can be downloaded from [1]. In this
+series, I have not used the official TSI_types.h header because it was
+incompatible with C, so I hardcoded some necessary values.
+
+This series is a bit longer than I expected, but can be splitted to be
+merged faster:
+-  PATCHES 1..17: Preparation for the series, I decided to move them at the
+                  start to avoid mixing unigraf and igt modifications
+-  PATCHES 18..20: Add basic unigraf configuration
+- *PATCH       21: Autoconnect unigraf when configured
+- *PATCHES 22..24: Add more unigraf configuration
+-  PATCHES 25..30: Add basic unigraf helpers
+- *PATCH       31: First basic unigraf test (connection, MST stream count)
+- *PATCHES 32..36: Add CRC calculation using unigraf instead of GPU CRC
+-  PATCHES 37..44: Move i915-specific helpers and create generic ones,
+                   clean some code
+-  PATCHES 45..48: Add unigraf configuration for link configuration
+- *PATCHES     49: Add link training tests
+
+Each * is a new feature and the series can be partially applied to this
+point.
+
+Thanks,
+Louis Chauvet
+
+PS: sorry for the resend, I found a mistake in the cover and in a patch
+authoship.
+
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/chamelium/kms_chamelium_frames.c | 33 +++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+Changes in v9:
+- Fix numbering in cover letter
+- Clarify authorship in array tests (file skeleton was generated by
+  Mistral, but edited by me)
+- Link to v8: https://lore.kernel.org/r/20260316-unigraf-integration-v8-0-4489bf8572be@bootlin.com
 
-diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
-index efd9ff1b7..404e32b87 100644
---- a/tests/chamelium/kms_chamelium_frames.c
-+++ b/tests/chamelium/kms_chamelium_frames.c
-@@ -333,6 +333,21 @@ static void randomize_plane_setup(chamelium_data_t *data, igt_plane_t *plane,
- 
- 	*width = max((rand() % mode->hdisplay) + 1, 2 * min_dim);
- 	*height = max((rand() % mode->vdisplay) + 1, 2 * min_dim);
-+
-+	/*
-+	 * intel related restrictions for yuv; 16bpp yuv formats have to be
-+	 * even horizontal width/xposition. Planar yuv formats have to be
-+	 * even horizontal/vertical sizes/coordinates.
-+	 */
-+	if (is_intel_device(data->drm_fd)) {
-+		if (*format == DRM_FORMAT_YUYV || *format == DRM_FORMAT_YVYU ||
-+		    *format == DRM_FORMAT_UYVY || *format == DRM_FORMAT_VYUY)
-+			*width &= ~1;
-+		if (igt_format_is_yuv_semiplanar(*format)) {
-+			*width &= ~1;
-+			*height &= ~1;
-+		}
-+	}
- }
- 
- static void configure_plane(igt_plane_t *plane, uint32_t src_w, uint32_t src_h,
-@@ -355,7 +370,8 @@ static void randomize_plane_coordinates(
- 	uint32_t *src_y, uint32_t *crtc_w, uint32_t *crtc_h, int32_t *crtc_x,
- 	int32_t *crtc_y, bool allow_scaling)
- {
--	bool is_yuv = igt_format_is_yuv(fb->drm_format);
-+	uint32_t format = fb->drm_format;
-+	bool is_yuv = igt_format_is_yuv(format);
- 	uint32_t width = fb->width, height = fb->height;
- 	double ratio;
- 	int ret;
-@@ -364,6 +380,21 @@ static void randomize_plane_coordinates(
- 	*src_x = rand() % (width / 2);
- 	*src_y = rand() % (height / 2);
- 
-+	/*
-+	 * intel related restrictions for yuv; 16bpp yuv formats have to be
-+	 * even horizontal width/xposition. Planar yuv formats have to be
-+	 * even horizontal/vertical sizes/coordinates.
-+	 */
-+	if (is_intel_device(data->drm_fd)) {
-+		if (format == DRM_FORMAT_YUYV || format == DRM_FORMAT_YVYU ||
-+		    format == DRM_FORMAT_UYVY || format == DRM_FORMAT_VYUY)
-+			*src_x &= ~1;
-+		if (igt_format_is_yuv_semiplanar(format)) {
-+			*src_x &= ~1;
-+			*src_y &= ~1;
-+		}
-+	}
-+
- 	/* The source size only includes the active source area. */
- 	*src_w = width - *src_x;
- 	*src_h = height - *src_y;
+Changes in v8:
+- Fixed memory leaks found by Köry
+- Renamed list to array (I did not use the existing igt_list, it adds a
+  layer of complexity: new structure to store int + link, custom free
+  function...)
+- Added test for array
+- Link to v7: https://lore.kernel.org/r/20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com
+
+Changes in v7:
+- Applied Kory's comments (I forgot to update this list ...)
+- Link to v6: https://lore.kernel.org/r/20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com
+
+Changes in v6:
+- Fix missed conflicts on master, I don't know how I missed them, sorry
+- Link to v5: https://lore.kernel.org/r/20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com
+
+Changes in v5:
+- Fixed all feedback from Luca (thanks a lot!)
+- Added PATCHES 39..40 to clean i915/dp (checkpatch warning)
+- Reordered 31..48 to be able to apply partially the series if needed.
+- Few modifications of 31..48 to rebase on master and apply some Luca's
+  comments
+- Link to v4: https://lore.kernel.org/r/20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com
+
+Changes in v4:
+- Rebased on master
+- Fixed multiple unigraf callbacks
+- Created link training tests
+- Link to v3: https://lore.kernel.org/r/20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com
+
+Changes in v3:
+- Rebased on master
+- Added support for MST
+- Repair autodetection and CRC usage
+- Link to v2: https://lore.kernel.org/r/20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com
+
+Changes in v2:
+- Splitted in many commits
+- Add CRC support
+- Link to v1: https://lore.kernel.org/r/20250517-unigraf-integration-v1-1-044acd2133dd@bootlin.com
+
+---
+Louis Chauvet (49):
+      lib/igt_kms: Add a detect timeout value
+      lib/igt_kms: Add helper to wait for a specific status on a connector
+      lib/igt_kms: Add function to list connected connectors
+      lib/igt_kms: Add helper to obtain a connector by its name or MST path
+      lib/igt_kms: Add helper to wait for new connectors
+      lib/tests: Add tests for array manipulations
+      lib/igt_kms: Add helper to get a pipe from a connector
+      lib/igt_kms: Expose dump_connector_attrs
+      lib/igt_kms: Expose reset_connectors_at_exit
+      lib/igt_kms: Expose connector_attr_set and igt_connector_attr_set
+      lib/igt_debugfs: Move debugfs helpers to the proper location
+      lib/igt_debugfs: Add const when make sense
+      lib/igt_amd: Add const when make sense
+      lib/igt_kms: Add const when make sense
+      lib/monitor_edids: Add helper functions for using monitor_edid objects
+      lib/monitor_edids: Add helper to get an EDID by its name
+      lib/monitor_edids: Add helper to print all available EDID names
+      lib/unigraf: Add used defines for TSI_Types
+      lib/unigraf: Add TSI.h
+      lib/unigraf: Initial Unigraf support
+      lib/igt_kms: Automatically connect unigraf on display require
+      lib/unigraf: Introduce device configuration
+      lib/unigraf: Introduce role configuration
+      lib/unigraf: Introduce input configuration
+      lib/unigraf: Add reset function
+      lib/unigraf: Add unigraf assert and deassert helpers
+      lib/unigraf: Add plug/unplug helpers
+      lib/unigraf: Allows sst/mst configuration
+      lib/unigraf: Add helpers to read and write edid
+      lib/unigraf: Add connector and EDID configuration
+      tests/unigraf: Add basic unigraf tests
+      lib/unigraf: Add unigraf CRC capture
+      lib/unigraf: Add configuration for CRC usage
+      lib/unigraf: add unigraf_get_connector_by_stream
+      lib/unigraf: Add helper to check timings received by unigraf
+      lib/igt_pipe_crc: Add unigraf crc calculation
+      lib/i915/dp: Move DP-related function for i915 to proper folder
+      lib/i915/dp: Rename functions to avoid confusion
+      lib/i915/dp: Add helper to get maximum supported rate
+      lib/i915/dp: Properly check sscanf results
+      lib/i915/dp: Use igt_output_name instead of private field
+      lib/igt_dp: Create generic helpers for DP information
+      lib/igt_kms: Add asserts to avoid null pointer dereference
+      lib/igt_kms: Add helper to get a CRTC from an output
+      lib/unigraf: Add lane count configuration
+      docs/unigraf: Add unigraf documentation
+      lib/unigraf: Add helpers to set maximum link rate
+      lib/unigraf: Add helpers to get the current LT status
+      tests/unigraf/unigraf_lt: Add test for link training
+
+ docs/unigraf.txt                         |  81 +++
+ lib/i915/i915_dp.c                       | 392 +++++++++++++
+ lib/i915/i915_dp.h                       |  23 +
+ lib/igt_amd.c                            |   2 +-
+ lib/igt_amd.h                            |   2 +-
+ lib/igt_core.c                           |  33 ++
+ lib/igt_core.h                           |   9 +
+ lib/igt_debugfs.c                        |  96 +++-
+ lib/igt_debugfs.h                        |  15 +-
+ lib/igt_dp.c                             | 177 ++++++
+ lib/igt_dp.h                             |  30 +
+ lib/igt_kms.c                            | 844 ++++++++++++++--------------
+ lib/igt_kms.h                            |  41 +-
+ lib/igt_pipe_crc.c                       |  35 ++
+ lib/meson.build                          |  12 +
+ lib/monitor_edids/dp_edids.h             |   3 +
+ lib/monitor_edids/hdmi_edids.h           |   3 +
+ lib/monitor_edids/monitor_edids_helper.c | 126 +++++
+ lib/monitor_edids/monitor_edids_helper.h |  10 +-
+ lib/tests/igt_kms_array_diff.c           | 159 ++++++
+ lib/tests/meson.build                    |   1 +
+ lib/unigraf/TSI.h                        | 228 ++++++++
+ lib/unigraf/TSI_types.h                  | 126 +++++
+ lib/unigraf/unigraf.c                    | 909 +++++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h                    | 105 ++++
+ meson.build                              |  14 +
+ tests/intel/kms_dp_link_training.c       |  19 +-
+ tests/intel/kms_dp_linktrain_fallback.c  |  57 +-
+ tests/meson.build                        |   4 +
+ tests/unigraf/meson.build                |  13 +
+ tests/unigraf/unigraf_connectivity.c     | 138 +++++
+ tests/unigraf/unigraf_lt.c               | 183 +++++++
+ 32 files changed, 3421 insertions(+), 469 deletions(-)
+---
+base-commit: a7e8b577d5f590093bb2aeb65d73666f12941383
+change-id: 20250425-unigraf-integration-11ed330755d5
+
+Best regards,
 -- 
-2.43.0
+Louis Chauvet <louis.chauvet@bootlin.com>
 
