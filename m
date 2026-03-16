@@ -4,60 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4027CF506E2
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 14:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCADEF53D6E
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Mar 2026 16:12:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E33B810E23C;
-	Mon, 16 Mar 2026 14:55:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 819B210E025;
+	Mon, 16 Mar 2026 16:12:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ar8/Efyy";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="AN6D1Lj6";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C867010E23C
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 14:55:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773672902; x=1805208902;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=JfzAZzvp4g5Y1+8ZT70tcX+B7oh80MxKyT83rT7AwGM=;
- b=ar8/EfyylH0dxzSng2/gPRZFNAFtfsxoyaZ7vkZQQ1QY4QUBx+NPJgzX
- 5nLKQi1e3cP5d3+0PM91XngGheoWOoJ1oOOZuQM8V2Nx08ITF8d5KRXiD
- W4Y2YkTo9p/IPyxuq9lC2jnu9aBT7F48IwCcl1UFJxIG7PdddLn4+KMkj
- Hd/K2eygJjUdqO9rs1+tEs/xQOg78XG1pJAHY7BruD8LVaHJwTuJ5e5gY
- sococ39sia4EHPfbebqdpRfenRtDyJhKFy0W9E6Sz/3hefy8NUxBX9ICh
- r8e8kfR7YGRg0O08WBMjOsr8qud7eBqmzHroMHlpTqZESzQ+FLb/UkeOM Q==;
-X-CSE-ConnectionGUID: iEzRNu7LRSOmlqO/DCTmBg==
-X-CSE-MsgGUID: 68RGwUiGQ6S1KQC4StjPsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="77299563"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="77299563"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 07:55:02 -0700
-X-CSE-ConnectionGUID: lU11yIPmSim973jGwRP+3A==
-X-CSE-MsgGUID: AQzX9Zs9Tv64TCz/aIsR2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226068353"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.42])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 07:55:01 -0700
-Date: Mon, 16 Mar 2026 16:54:58 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 00/12] Prepare for returning NULL from
- igt_crtc_for_pipe()
-Message-ID: <abgZwkJhe3g3q2N5@intel.com>
-References: <cover.1773659680.git.jani.nikula@intel.com>
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
+ [209.85.214.169])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4D3810E025
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 16:12:10 +0000 (UTC)
+Received: by mail-pl1-f169.google.com with SMTP id
+ d9443c01a7336-2addb31945aso36518855ad.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2026 09:12:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1773677530; x=1774282330; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=olGoW2wxLJjvSm/LnOA5LBiNtLRzA2AHOU6/qYKz4lo=;
+ b=AN6D1Lj6AzXvxfnKrCOFTGWbcLtLILn2P3N92eNZWYS6Pclc6jgazGo0/i2jNZLO02
+ UUGFRUGzlapB2i8IHRlD6yR6kGcYTHzexm9NbLUfqvra5a1qu/ZyX4QlV0+D0Qj8HC3+
+ Cf0jN1wrdV2oxMRgXnO6N9lGYpPpoLL+5p4Zt77Wdvg/HZM666PYQr3EJCHv78Z2gS8X
+ jZ7Wa5ihqSyW3CTBQFy4Y3VNRwdb1ddC9AiH+dHQt/pKl7nRB02gPUsd8vvIWvUby1fS
+ EXTH3HIX6ta3OkiOrW1uypKYQVl5X/ImihKLTzzJFIa+s/+f7Pz3wzMyS1o7fVjg56EO
+ 3J3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1773677530; x=1774282330;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=olGoW2wxLJjvSm/LnOA5LBiNtLRzA2AHOU6/qYKz4lo=;
+ b=oZwLzDhPalnKQwoBj4FzeJkdWOzMUxuf7/4RHGbM6xbP619avUe/kxCkQdAFF9bsX+
+ 0hD4HWHchIBRdF4e7zGXy/uA1Z86NZo675CVJqJ/b1lcNXVJu8kr6aIUcamYmH90yzWs
+ 7iuaWnV0rfei1bnvqfam3fe8LcdUn3E1P/7Lwus4c+9U95TVxcjiUJUTgamTZv8i1Cz+
+ jLZwHu1xXyQiqdsCQz9TySAaQjgtnMk8iz42eCQUfVItfRBhLDygtRZi0O9J1qMNXTKK
+ /OwFtdT3Zi1jgNh7qOZB0Ht4nlD5mDVSBzf26kI5S1zNghQKldajq3Afw7HTz32EDOYE
+ defg==
+X-Gm-Message-State: AOJu0YzrE1WXwlO53RQfiNrFDFImhdqLizaH72x4hdIui+fKadou+lKs
+ kqD6qbTjq2E0uQjlx9HGUNgNcM0VSso+4uB9/wNWmxoKG/+oJRLhZgDUvh8babIt
+X-Gm-Gg: ATEYQzzcYacpIQWGfgkEe3n4X/QMLM2kIEY9FMShOgVe2EsaKmRS+mW6fdy20sRolUb
+ OnQ1VQ+trNwuUX988S3VAKCxYYhTglUe66TSUeiCDgJUElmNvBIcWVHeGEyYbfJM+8+ZRmAviIg
+ XGi4z5/w3JHUG2OE0Y6MaR0fAp7EPxfWhEVmDwvpaWNjIuR5Id7GmxYwsgNlYr+XFEZ23RAUSvA
+ lUm0dNf5h00WPhbvMGwMERJ95cwGy10Di0i1pf78+rfAweF5xZFgD1Fbm3UrgzcUPkt7CnXlRaP
+ qwHuMB/Gjju7yOjq4OP0hgOXL0dD2VbW4HC//gUxAnRyVBCWiCRBtsXQcZbp7Icg/Ja9p7c87fm
+ 2yrRTCiBo5aYs/3DvCvWUem3N4SimyjlNxzsv6yrtN4io45Eld0gdrnUFolhMRv36RpqyVPbYTA
+ 91x3s4XyqkokjTagzoYTtWNJ6W1wau4YE7m04ouvNSxH950Dlemj3i2F8WlgHlWg==
+X-Received: by 2002:a17:903:f8b:b0:2ae:803b:d370 with SMTP id
+ d9443c01a7336-2aecaaad316mr129924625ad.34.1773677529690; 
+ Mon, 16 Mar 2026 09:12:09 -0700 (PDT)
+Received: from localhost ([134.134.139.73]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2aece8363b4sm111679915ad.76.2026.03.16.09.12.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Mar 2026 09:12:09 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 0/1] add intel related yuv restrictions to
+ kms_chamelium_frames
+Date: Mon, 16 Mar 2026 18:11:00 +0200
+Message-ID: <20260316161101.2808556-1-juhapekka.heikkila@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1773659680.git.jani.nikula@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,66 +83,20 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Mar 16, 2026 at 01:19:02PM +0200, Jani Nikula wrote:
-> We want to return NULL for invalid pipes from igt_crtc_for_pipe(), so
-> that we don't need to have igt_crtc_t objects with crtc->valid == false
-> around.
-> 
-> The primary way to prepare for this is to avoid using
-> igt_crtc_for_pipe() altogether. We've done a *lot* of that already, and
-> continue to do so here.
-> 
-> For the remaining ones, start off by ensuring crtc->valid == true, one
-> way or other. This ensures the test logic is sane and actually operates
-> on valid CRTCs. Once this prep is done, we can actually return NULL from
-> igt_crtc_for_pipe(), and check for crtc != NULL instead of crtc->valid
-> == true.
+kms_chamelium_frames subtests sometimes fail on intel hw due to random
+settings used in tests. Here added modifying coordinates if needed for
+yuv framebuffers.
 
-I was hoping to make igt_crtc_for_pipe() just skip if the CRTC
-doesn't exist. But maybe there are still too many places that
-assume they can ask for any pipe and not skip?
+I don't have chamelium hw at hand hence can't say if this fixes all
+related problems in subtests.
 
-> 
-> BR,
-> Jani.
-> 
-> 
-> Jani Nikula (12):
->   tests/amdgpu/amd_mode_switch: Prepare for returning NULL from
->     igt_crtc_for_pipe()
->   tests/amdgpu/amd_multidisplay_modeset: Prepare for returning NULL from
->     igt_crtc_for_pipe()
->   tests/intel/kms_cdclk: use igt_next_crtc()
->   tests/intel/kms_joiner: Prepare for returning NULL from
->     igt_crtc_for_pipe()
->   tests/intel/kms_joiner_helper: Prepare for returning NULL from
->     igt_crtc_for_pipe()
->   tests/intel/kms_pipe_b_c_ivb: Prepare for returning NULL from
->     igt_crtc_for_pipe()
->   tests/intel/kms_pipe_stress: Prepare for returning NULL from
->     igt_crtc_for_pipe()
->   tests/kms_bw: fix misleading indent
->   tests/kms_bw: clarify what's going on with proper variable naming
->   tests/kms_bw: avoid igt_crtc_for_pipe() and crtc->pipe usage
->   tests/kms_explicit_fence: store igt_crtc_t* instead of pipe in data
->   lib/kms: convert igt_crtc_for_pipe() into a proper function
-> 
->  lib/igt_kms.c                           |  8 +++
->  lib/igt_kms.h                           |  8 +--
->  tests/amdgpu/amd_mode_switch.c          |  2 +
->  tests/amdgpu/amd_multidisplay_modeset.c |  2 +
->  tests/intel/kms_cdclk.c                 | 10 ++--
->  tests/intel/kms_joiner.c                | 66 ++++++++++++++++++-------
->  tests/intel/kms_joiner_helper.c         | 16 +++---
->  tests/intel/kms_pipe_b_c_ivb.c          | 28 +++++++----
->  tests/intel/kms_pipe_stress.c           |  4 ++
->  tests/kms_bw.c                          | 48 +++++++++---------
->  tests/kms_explicit_fence.c              | 14 +++---
->  11 files changed, 131 insertions(+), 75 deletions(-)
-> 
-> -- 
-> 2.47.3
+Juha-Pekka Heikkila (1):
+  tests/chamelium/kms_chamelium_frames: add intel related yuv
+    restrictions
+
+ tests/chamelium/kms_chamelium_frames.c | 33 +++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
 -- 
-Ville Syrjälä
-Intel
+2.43.0
+
