@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79739F506F6
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 05:32:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB594F3029B
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 05:32:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E4AA10E275;
-	Tue, 17 Mar 2026 05:32:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4220710E340;
+	Tue, 17 Mar 2026 05:32:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AaLca0W3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="llBXNJg5";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD37310E098
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 05:32:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA1D810E098
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 05:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773725565; x=1805261565;
+ t=1773725567; x=1805261567;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=kxCnGL5x6rZ/a67DGhVhuOTn21C4X5Ul/y0zilKJyn8=;
- b=AaLca0W3S2bA6Bj+IV3y1FMgTyuOA5ekXEPP6xH7gHzvkB+4fc5u777G
- E80e9EC/jsY0MzgGc9tJ88YZ0B6p0xiSY0/Xr0FhJ9KsrfawZajpZ5fhy
- AnrAHRITykmBi73/nCmv7Lgur0akTP+bfs/Xaie4N1Sys/JKzM2UHMESN
- 1AkOYJS3T/jlXUJd2qpwXAyQYC51Cz1QqYkTstxY+IdOw7oKTsFFNmUB9
- 046E9yOcJoGv7M51xKndQt+jApsxnl2T4lf1gX6TOH56Snvxn2/RDmVNa
- LPzWmngxCKLqnNUvyc6FZfBpoKMVTKZ4thZQzWhohrgHAM1tWjRDeC0qL w==;
-X-CSE-ConnectionGUID: +M3gcjHGQIusznlPAi4CIA==
-X-CSE-MsgGUID: 9pFvVVfHT6Sp7QAvuyGu2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="100204854"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="100204854"
+ bh=dkE2vvuz8s/x+9tzP0OBubKwzETAvNSuM37+4CFwslY=;
+ b=llBXNJg5q3c2rVBdZXZVRd98ZuvlRZ5iuGyqfi4pM/U+Tv34O0xgRC4m
+ 0xeU+AD11ItGpXL7qM7wVY/LJWqiEyXPcq7J6ONltyhblEYoQYV/+hW9+
+ ZaePnoCpmJtO/IB2ZueedGPEdgpI92GPG0a5WSgudpUQYsJZvsz+xN7Hu
+ DM1hDLFxq7xcBACid3Vy6kB9D/oBy70pd2DJV4U952FNMNi3pibJVphcY
+ hYme3cRD9+Fx9wUYZIxBOnSBGwHjGzuhQmiFVebMV2iKYBn5xOQZ+4EaC
+ Ye6fqw0N6O1sErgxsjFo1MuTvui9rj3g7aA7vIJM31ogWvynqP3y9Y4Pb A==;
+X-CSE-ConnectionGUID: OSdCpf5CQhCeMIPfQVS6PA==
+X-CSE-MsgGUID: svIUwP/dQmCnzET59y0wuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="100204857"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="100204857"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 22:32:45 -0700
-X-CSE-ConnectionGUID: MjS7bd7ZTN2EBnem1uZB3Q==
-X-CSE-MsgGUID: Jo5fuL7WSYqSJtB0YwOWZQ==
+ 16 Mar 2026 22:32:47 -0700
+X-CSE-ConnectionGUID: If2bdtujSx+eslhtufJ5xw==
+X-CSE-MsgGUID: tU2LYb3vT5O1xZ5QnxOmXg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226829366"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226829379"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
  by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 22:32:43 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 22:32:45 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
  ramanaidu.naladala@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2 1/2] lib/igt_kms: Add lowclk and highclk modes
-Date: Tue, 17 Mar 2026 11:00:37 +0530
-Message-Id: <20260317053038.51570-2-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2 2/2] tests/kms_async_flips: Use lowest mode for crc
+ subtest
+Date: Tue, 17 Mar 2026 11:00:38 +0530
+Message-Id: <20260317053038.51570-3-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260317053038.51570-1-santhosh.reddy.guddati@intel.com>
 References: <20260317053038.51570-1-santhosh.reddy.guddati@intel.com>
@@ -69,76 +70,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce functions to return low clock and high clock modes when
-connector supports multiple modes.This sorts connector modes by display
-clock rather than resolution.
+Currently The CRC subtest uses mode[0] which maps to preffered high
+refresh mode. On panels with multiple modes, pick the lower mode to
+speed up crc test.
+
+V2: Rename and move the function to lib to re-use. (Ramanaidu)
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- lib/igt_kms.c | 36 ++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  2 ++
- 2 files changed, 38 insertions(+)
+ tests/kms_async_flips.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 8c42909fc..2ba34b034 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5198,6 +5198,42 @@ drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output)
- 	return lowest_mode;
- }
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 4a2930968..e8a3da07c 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -819,8 +819,9 @@ static void test_crc(data_t *data)
  
-+/**
-+ * igt_output_get_lowclk_mode:
-+ * @output: Target output
-+ *
-+ * Returns: A #drmModeModeInfo struct representing the mode with the lowest
-+ * pixel clock.
-+ */
-+drmModeModeInfo *igt_output_get_lowclk_mode(igt_output_t *output)
-+{
-+	drmModeConnector *connector = output->config.connector;
-+
-+	igt_assert_f(connector->count_modes > 0, "No modes for %s\n", igt_output_name(output));
-+
-+	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_asc);
-+
-+	return &connector->modes[0];
-+}
-+
-+/**
-+ * igt_output_get_highclk_mode:
-+ * @output: Target output
-+ *
-+ * Returns: A #drmModeModeInfo struct representing the mode with the highest
-+ * pixel clock.
-+ */
-+drmModeModeInfo *igt_output_get_highclk_mode(igt_output_t *output)
-+{
-+	drmModeConnector *connector = output->config.connector;
-+
-+	igt_assert_f(connector->count_modes > 0, "No modes for %s\n", igt_output_name(output));
-+
-+	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
-+
-+	return &connector->modes[0];
-+}
-+
- /**
-  * igt_output_override_mode:
-  * @output: Output of which the mode will be overridden
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b3def1e73..6c8e60f02 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -604,6 +604,8 @@ bool kmstest_mode_is_valid(const drmModeModeInfo *mode);
- drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
- drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
- drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output);
-+drmModeModeInfo *igt_output_get_lowclk_mode(igt_output_t *output);
-+drmModeModeInfo *igt_output_get_highclk_mode(igt_output_t *output);
- void igt_output_override_mode(igt_output_t *output, const drmModeModeInfo *mode);
- int igt_output_preferred_vrefresh(igt_output_t *output);
- void igt_output_set_crtc(igt_output_t *output, igt_crtc_t *crtc);
+ 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+-	/* make things faster by using a smallish mode */
+-	mode = &data->output->config.connector->modes[0];
++	/* make things faster by using a lower bandwidth mode */
++	mode = igt_output_get_lowclk_mode(data->output);
++	igt_output_override_mode(data->output, mode);
+ 	width = mode->hdisplay;
+ 	height = mode->vdisplay;
+ 
 -- 
 2.34.1
 
