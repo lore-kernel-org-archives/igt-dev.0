@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCD7DFB5EBC
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 04:59:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC944FB5EBB
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 05:08:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9199410E33F;
-	Tue, 17 Mar 2026 04:59:11 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S6kl0rra";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B7D910E343
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 04:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773723542; x=1805259542;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=seO9dPxwkSD7ujdux3VfWWR0fg0bOjPDfbpGLGS6Lkw=;
- b=S6kl0rraj08aMo/6XKgTq8U0OcOe6tM/2dHXli1bypuNXg0c3fb3fyEm
- 0/loU/tLMLawZ156BXLhiGeYHpyS7JA5BSrhta9CtTAuA8cjESW2h+3x0
- aUoNK9siUTnAswc8jlC6GieGUIm3qlDarHjwTXncCxGj0KaTHAUfyh6PX
- IAnu6SBPkpnlP65SdKAtkjtW/bh+UjgQO9BBATUznCSBpq72jlDXUeGCn
- pemwN7YRZZ+ycgP/Y6S5pgqSX5sSxGNw/xq0BxFEVqIGjWzJbtuhYRY2Q
- /sggV404RW0OM08VGtBfBu8jw2Gl94sLWvGt6zM1I26I7dZkg4jHcsHy4 g==;
-X-CSE-ConnectionGUID: Qnmq1mObTZW5zSDHPADN0w==
-X-CSE-MsgGUID: C/9NspQtRZ+gWzAxg/L3Sw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="78642302"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="78642302"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 21:59:02 -0700
-X-CSE-ConnectionGUID: vn0p3Ns1SP2GuD5gkM7V4Q==
-X-CSE-MsgGUID: 2sTtIfeBQr+IyiJC76TPRA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="216552271"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 21:59:00 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
- ramanaidu.naladala@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/kms_async_flips: Use lowest mode for crc
- subtest
-Date: Tue, 17 Mar 2026 10:26:55 +0530
-Message-Id: <20260317045655.45527-2-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260317045655.45527-1-santhosh.reddy.guddati@intel.com>
-References: <20260309082450.1897617-1-santhosh.reddy.guddati@intel.com>
- <20260317045655.45527-1-santhosh.reddy.guddati@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 684C010E322;
+	Tue, 17 Mar 2026 05:08:25 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A5FF10E322;
+ Tue, 17 Mar 2026 05:08:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============9107488773151427488=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fconfigfs?=
+ =?utf-8?q?=3A_Skip_ctx-restore_subtests_on_SR-IOV_VF_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nitin Gote" <nitin.r.gote@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 17 Mar 2026 05:08:22 -0000
+Message-ID: <177372410220.364815.13535826158956030812@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260316103114.137910-2-nitin.r.gote@intel.com>
+In-Reply-To: <20260316103114.137910-2-nitin.r.gote@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,35 +37,170 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently The CRC subtest uses mode[0] which maps to preffered high
-refresh mode. On panels with multiple modes, pick the lower mode to
-speed up crc test.
+--===============9107488773151427488==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-V2: Rename and move the function to lib to re-use (Ramanaidu)
+== Series Details ==
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/kms_async_flips.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Series: tests/intel/xe_configfs: Skip ctx-restore subtests on SR-IOV VF (rev2)
+URL   : https://patchwork.freedesktop.org/series/162056/
+State : success
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 4a2930968..ab1f01d44 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -819,8 +819,8 @@ static void test_crc(data_t *data)
- 
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
--	/* make things faster by using a smallish mode */
--	mode = &data->output->config.connector->modes[0];
-+	/* make things faster by using a lower bandwidth mode */
-+	mode = igt_output_get_lowclk_mode(data->output);
- 	width = mode->hdisplay;
- 	height = mode->vdisplay;
- 
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8806_BAT -> XEIGTPW_14776_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14776_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8806/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  * igt@xe_waitfence@abstime:
+    - bat-dg2-oem2:       [PASS][3] -> [TIMEOUT][4] ([Intel XE#6506])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8806/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [PASS][5] -> [FAIL][6] ([Intel XE#6520])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8806/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [DMESG-WARN][7] ([Intel XE#7483]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8806/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8806 -> IGTPW_14776
+  * Linux: xe-4731-a25d8c583e1e52bde77d371081a7c3fcd0a2e820 -> xe-4732-72df5434544ebbfc63b3649354fb0276b9b4db6a
+
+  IGTPW_14776: 14776
+  IGT_8806: 8806
+  xe-4731-a25d8c583e1e52bde77d371081a7c3fcd0a2e820: a25d8c583e1e52bde77d371081a7c3fcd0a2e820
+  xe-4732-72df5434544ebbfc63b3649354fb0276b9b4db6a: 72df5434544ebbfc63b3649354fb0276b9b4db6a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/index.html
+
+--===============9107488773151427488==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_configfs: Skip ctx-restore subtests on SR-IOV VF (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162056/">https://patchwork.freedesktop.org/series/162056/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8806_BAT -&gt; XEIGTPW_14776_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14776_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8806/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@abstime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8806/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@reltime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8806/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8806/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14776/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8806 -&gt; IGTPW_14776</li>
+<li>Linux: xe-4731-a25d8c583e1e52bde77d371081a7c3fcd0a2e820 -&gt; xe-4732-72df5434544ebbfc63b3649354fb0276b9b4db6a</li>
+</ul>
+<p>IGTPW_14776: 14776<br />
+  IGT_8806: 8806<br />
+  xe-4731-a25d8c583e1e52bde77d371081a7c3fcd0a2e820: a25d8c583e1e52bde77d371081a7c3fcd0a2e820<br />
+  xe-4732-72df5434544ebbfc63b3649354fb0276b9b4db6a: 72df5434544ebbfc63b3649354fb0276b9b4db6a</p>
+
+</body>
+</html>
+
+--===============9107488773151427488==--
