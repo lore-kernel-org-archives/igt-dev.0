@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80040F506CF
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 05:32:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79739F506F6
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 05:32:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3530910E098;
-	Tue, 17 Mar 2026 05:32:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2E4AA10E275;
+	Tue, 17 Mar 2026 05:32:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gvDvUeau";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AaLca0W3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47A1710E098
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 05:32:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD37310E098
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 05:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773725563; x=1805261563;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=MQ5gR21cm6xJRQXSPoeQU4LoH20IGDbWVOhRzfr1XCg=;
- b=gvDvUeaune9R1ifm1kuhROuAf1sitRN4J4pI7lUOroIdKMm6Bg1cjsJ7
- ii+CTVTfFwMJENI9ICwBTKRPdwQ+iczAmW0a7jWmtEnzje6dy7m6D0/mw
- nRgb1aDYmCfKEbhl6i9X1IOoUzZAowzhPA06+NQKE0diabz4hUWZCIEwI
- 82ofEoddumNqK4qwh99dmFH1mVMDsexSAGW+5S1av0zsFun2ofcbxQiZN
- hXevflUXt6dzPT+vLLZ75/USi2KPTIjwxmS+JSr0/iKE6hUEAH9tAEAya
- mSzvQxic0TwddAP6HhzbIZwiSHoYqoUcwIXuiWjwn1aZ3+rtAndV59g5F w==;
-X-CSE-ConnectionGUID: eVm63SyVQNmMUcxLA2JaiQ==
-X-CSE-MsgGUID: MPnKS+GsQbu9dvT/y/19ow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="100204853"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="100204853"
+ t=1773725565; x=1805261565;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=kxCnGL5x6rZ/a67DGhVhuOTn21C4X5Ul/y0zilKJyn8=;
+ b=AaLca0W3S2bA6Bj+IV3y1FMgTyuOA5ekXEPP6xH7gHzvkB+4fc5u777G
+ E80e9EC/jsY0MzgGc9tJ88YZ0B6p0xiSY0/Xr0FhJ9KsrfawZajpZ5fhy
+ AnrAHRITykmBi73/nCmv7Lgur0akTP+bfs/Xaie4N1Sys/JKzM2UHMESN
+ 1AkOYJS3T/jlXUJd2qpwXAyQYC51Cz1QqYkTstxY+IdOw7oKTsFFNmUB9
+ 046E9yOcJoGv7M51xKndQt+jApsxnl2T4lf1gX6TOH56Snvxn2/RDmVNa
+ LPzWmngxCKLqnNUvyc6FZfBpoKMVTKZ4thZQzWhohrgHAM1tWjRDeC0qL w==;
+X-CSE-ConnectionGUID: +M3gcjHGQIusznlPAi4CIA==
+X-CSE-MsgGUID: 9pFvVVfHT6Sp7QAvuyGu2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="100204854"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="100204854"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 22:32:43 -0700
-X-CSE-ConnectionGUID: rqBLWotnQbyENM72Cn/G2g==
-X-CSE-MsgGUID: iX3rvb/YTgWQtgbjLlAgIg==
+ 16 Mar 2026 22:32:45 -0700
+X-CSE-ConnectionGUID: MjS7bd7ZTN2EBnem1uZB3Q==
+X-CSE-MsgGUID: Jo5fuL7WSYqSJtB0YwOWZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226829360"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="226829366"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
  by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 22:32:41 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 22:32:43 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
  ramanaidu.naladala@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2 0/2] Use lowest mode for crc subtest
-Date: Tue, 17 Mar 2026 11:00:36 +0530
-Message-Id: <20260317053038.51570-1-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2 1/2] lib/igt_kms: Add lowclk and highclk modes
+Date: Tue, 17 Mar 2026 11:00:37 +0530
+Message-Id: <20260317053038.51570-2-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260317053038.51570-1-santhosh.reddy.guddati@intel.com>
+References: <20260317053038.51570-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,18 +69,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce helpers to get lowest clk and highest clock modes.
-Use low clock mode in async flip crc test.
+Introduce functions to return low clock and high clock modes when
+connector supports multiple modes.This sorts connector modes by display
+clock rather than resolution.
 
-Santhosh Reddy Guddati (2):
-  lib/igt_kms: Add lowclk and highclk modes
-  tests/kms_async_flips: Use lowest mode for crc subtest
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ lib/igt_kms.c | 36 ++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  2 ++
+ 2 files changed, 38 insertions(+)
 
- lib/igt_kms.c           | 36 ++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h           |  2 ++
- tests/kms_async_flips.c |  5 +++--
- 3 files changed, 41 insertions(+), 2 deletions(-)
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 8c42909fc..2ba34b034 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5198,6 +5198,42 @@ drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output)
+ 	return lowest_mode;
+ }
+ 
++/**
++ * igt_output_get_lowclk_mode:
++ * @output: Target output
++ *
++ * Returns: A #drmModeModeInfo struct representing the mode with the lowest
++ * pixel clock.
++ */
++drmModeModeInfo *igt_output_get_lowclk_mode(igt_output_t *output)
++{
++	drmModeConnector *connector = output->config.connector;
++
++	igt_assert_f(connector->count_modes > 0, "No modes for %s\n", igt_output_name(output));
++
++	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_asc);
++
++	return &connector->modes[0];
++}
++
++/**
++ * igt_output_get_highclk_mode:
++ * @output: Target output
++ *
++ * Returns: A #drmModeModeInfo struct representing the mode with the highest
++ * pixel clock.
++ */
++drmModeModeInfo *igt_output_get_highclk_mode(igt_output_t *output)
++{
++	drmModeConnector *connector = output->config.connector;
++
++	igt_assert_f(connector->count_modes > 0, "No modes for %s\n", igt_output_name(output));
++
++	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
++
++	return &connector->modes[0];
++}
++
+ /**
+  * igt_output_override_mode:
+  * @output: Output of which the mode will be overridden
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index b3def1e73..6c8e60f02 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -604,6 +604,8 @@ bool kmstest_mode_is_valid(const drmModeModeInfo *mode);
+ drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
+ drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
+ drmModeModeInfo *igt_output_get_lowres_mode(igt_output_t *output);
++drmModeModeInfo *igt_output_get_lowclk_mode(igt_output_t *output);
++drmModeModeInfo *igt_output_get_highclk_mode(igt_output_t *output);
+ void igt_output_override_mode(igt_output_t *output, const drmModeModeInfo *mode);
+ int igt_output_preferred_vrefresh(igt_output_t *output);
+ void igt_output_set_crtc(igt_output_t *output, igt_crtc_t *crtc);
 -- 
 2.34.1
 
