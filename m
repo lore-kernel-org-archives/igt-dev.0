@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39661FED9FF
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 17:52:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 561BFFED9F6
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 17:52:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D4B5E10E17F;
-	Tue, 17 Mar 2026 17:52:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 07AAC10E5A5;
+	Tue, 17 Mar 2026 17:52:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="ZnofjVGg";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="LK8gIIAt";
 	dkim-atps=neutral
-Received: from PH0PR06CU001.outbound.protection.outlook.com
- (mail-westus3azon11011054.outbound.protection.outlook.com [40.107.208.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C299C10E17F
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 17:52:02 +0000 (UTC)
+Received: from BL2PR02CU003.outbound.protection.outlook.com
+ (mail-eastusazon11011001.outbound.protection.outlook.com [52.101.52.1])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28E2E10E5A5
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 17:52:20 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yE2Dbb51+yURaAAP57H96koqPw24sZ8Jb8YXd5k4iImPQaJhwHat1InBZyZE7fKOPhhbnlUlAkb/bwdUvys7HCpPK9tXivKeFvKKKezIl+LcmmetfGjBsakit+qFnCA2aKI9JB5fvvD2JVr/jXv+LVsyhs0jTQ8VS/WMDpbqIXAInO3MnvbqSg5Vl8WKy3U4mk+ZAQk216grsVW5voWCY/2JHY7P6onLZCvBhPp78jLdu9ZkAMEMsttRp/6F8Cr9/R0tlVzHy9ssALShKDJK3maOVvGH0RW6K2S90A7rCKHaxZJQhNcIE+gcOBe0dQYRG+ZYBJAdZcLdx1ykwtSQNg==
+ b=xkqR165jAdD0+baW3vGXEviwDQnVp83oC3WfP/o85EtTV3RtLGP80L3azD5uTv5GDC+GI/P37hk7br1OaVXEhwQulnrtUDNrXnOx1KTjMReueLmeV8/G0Fjj+ZK5AVFohnGX+DWNAoCXb1vtdPEqX7awIV4ARaTOIa7xnG7C2cJDghEDYmCSs73A8cgo6QlNWh6m2BcjhbpuQeun02NO0DmHyM5wzo/BHjq4bV9vulb+4vmEVEduIP7b/AdDc1Oc5fCVxtC7YQ8+48u2NifYYBaUThcheqbikZi3bCuLQAfWO9Rw1hZHoIh2AJec36IVBaWwbgcKhBK+Z00RLRUzhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KW+a6Eb75ysv4hBKIxynV/EWVGaA6GM3z00jxkCB93A=;
- b=REBzi0J1qaliGW5uRrfxEhJt2Xai3iULZ0Q1ZRpncg1WQZHy/WZZezPX+bs4hC5IhwLSFBrVZNat1IZZ5naoQ4gFuv4yXhCM48/e3q71rKUHTioSQTzYSi+NGVDsJGRv19whC+KmZXc4hf5US1t8JnrTMU1rVWq/0uo+MP6lJQCANTthPcGSTpjsNHIwKzPcSfvK4HZU61itnKXzJ6pb4ovZvumgSN2SE9C6EBE+c7lwygu+Xrg2b/ZAsO0bC7azSDXWbcszYACwhEFYPiCqvkPHZ7Ld99/eKRbHJtI14/kszOu5h8HI3nyPqGiP9Vo0/HPcBmzKGYhtVefStvYBdg==
+ bh=gvqUzCOa2qorAipI/3klG6/lizd63BWzTsPWFEocip4=;
+ b=nUBmLxgw47xS2mfrJkJmr0e7ufpppyZ2Z1c3fP69nduFLCO3iz9VCflNG8b2OuqS9VBY4JojRE+dWcp4nG9Kn4Qywy0kxKRIKlcN3cot4g2kmUnige+wu8uPswpxsWay3xI/eIo1bgiSiDQeskjVGMArca3OjBe3NGORTPws0dPG+IinT2bLxcG/odyUOriNR7VUCtPu3i6PEvWgyDKK8ufDh4PWCfT34RQr6kv7hiy4g2P6X/kGsYW2vYC/ZQqlc8tCRxvrDJfwaWZ5FL22Nfjc1E/UQ0tN7J79tmxlAGm5PM10kKo9sWS0KVAc3kdJqiXhnAbpERhnzHHYXvAGKA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KW+a6Eb75ysv4hBKIxynV/EWVGaA6GM3z00jxkCB93A=;
- b=ZnofjVGgtI/O1gjpWC98sAntgbXSnCmYfwL8Nbo1S0jUbvRxpeuVIcn9J+QdCxY8gm11LWL11KJO265+QbbOaE0sgJITGr45Ju5W5qY/c8R3vIQGZcsPoU0J+hAZlF865tMxEK2t4MAYC8DV3cfLP9l2XtTAdE+rAQBNPl5NSoI=
-Received: from CH0PR04CA0026.namprd04.prod.outlook.com (2603:10b6:610:76::31)
- by DM4PR12MB9735.namprd12.prod.outlook.com (2603:10b6:8:225::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Tue, 17 Mar
- 2026 17:52:00 +0000
-Received: from CH1PEPF0000AD7D.namprd04.prod.outlook.com
- (2603:10b6:610:76:cafe::77) by CH0PR04CA0026.outlook.office365.com
- (2603:10b6:610:76::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.25 via Frontend Transport; Tue,
- 17 Mar 2026 17:51:33 +0000
+ bh=gvqUzCOa2qorAipI/3klG6/lizd63BWzTsPWFEocip4=;
+ b=LK8gIIAtCv/l48RM98BLMbcG0GmoWNwlvDE8jhCCTbnRdpTEM4duBQ4R8v/VM3XVBliXnAl58z+ZYS2JHBAwNFo/NhQyF+MhSacheK5/MGy4I5jYbtjuFzKsukkT+pf3VvzRhvcagoNIinAGBUfikaGqZ+hR0HLm9f1hYk1E9lw=
+Received: from CH0PR03CA0333.namprd03.prod.outlook.com (2603:10b6:610:11a::7)
+ by SA1PR12MB999252.namprd12.prod.outlook.com (2603:10b6:806:4dd::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Tue, 17 Mar
+ 2026 17:52:17 +0000
+Received: from CH1PEPF0000AD83.namprd04.prod.outlook.com
+ (2603:10b6:610:11a:cafe::e4) by CH0PR03CA0333.outlook.office365.com
+ (2603:10b6:610:11a::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.27 via Frontend Transport; Tue,
+ 17 Mar 2026 17:52:11 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,52 +48,54 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- CH1PEPF0000AD7D.mail.protection.outlook.com (10.167.244.86) with Microsoft
+ CH1PEPF0000AD83.mail.protection.outlook.com (10.167.244.85) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.17 via Frontend Transport; Tue, 17 Mar 2026 17:51:59 +0000
+ 15.20.9700.17 via Frontend Transport; Tue, 17 Mar 2026 17:52:17 +0000
 Received: from kylin.lan (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 17 Mar
- 2026 12:51:58 -0500
+ 2026 12:52:15 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: <wayne.lin@amd.com>, <Mark.Broadworth@amd.com>, Alex Hung
  <alex.hung@amd.com>
-Subject: [PATCH 1/3] lib/igt_hdr: Extract HDR helpers into igt_hdr library
-Date: Tue, 17 Mar 2026 11:51:30 -0600
-Message-ID: <20260317175136.3754576-1-alex.hung@amd.com>
+Subject: [PATCH 2/3] tools: Add amd_hdr_visual for manual HDR verification
+Date: Tue, 17 Mar 2026 11:51:31 -0600
+Message-ID: <20260317175136.3754576-2-alex.hung@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260317175136.3754576-1-alex.hung@amd.com>
+References: <20260317175136.3754576-1-alex.hung@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.180.168.240]
 X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7D:EE_|DM4PR12MB9735:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9ca47f7-5c13-437e-6b56-08de844de398
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD83:EE_|SA1PR12MB999252:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44ab6a21-bfff-4107-0000-08de844dede5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|1800799024|376014|36860700016|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info: 2gUWI8Er7xnlEaubQI3XDGOycmjLvHobxo/udpHQ7/g/BbDjRRriaT0osZ73uCPgRWYDs52TKtOo/LXHbePn08AXFCyORsXqmn4lDlUqVPu7NE/u6R10/4Inb/6ifSEXVHXnbqXFP6CqDnyNvPZUkFgoYC5BF6dGTYcugAdT2J2GwPseiRv4gjKAkRjOSr1ET7gJJM2patZxk1Xv3UICt1Cymbh25kGIHdU54+22USsrcNayxOiw5e0a24fKnisC2fCSoz6GzYKzhQEiKfnDHh/VaFWB/NW1UhkKNA13OoDpR35MPg/IeQ+4vYd1oWEcNK5SgmL7mZhTBd8+yMTD022bRW5kpqujm3LuxLNn4aD6rDt5swZFmTLDKylW2katV9oiGmwS5CR6q+wrTYzIDZLxHFr/JW6tKHA9seq6NI6vbDdpTqCAey3khdy86oWIxtQlK+1Qe6Z0JoMNPyO0aj4X+F7HnYsUkTZyl/X4si2eTmwOZJnRUibHgQBinYiG9MhyxoP9W9/X+DmMssbwTHW30sVE6cJEd9aLZ/er0O4tclAMT1oAZ159TDWX3pc7HbMVF+b/MJ944rCt+ty6AinKhZohyV8d56M3zoumGFtFO/IYn8akfCikOWXIRi7+jbziHZMGkiShgpw89m20dW3x1uyNEWV5m4nvpTpjB/mWjIHXYxdaBW2zd8a9h9pfRRo+dlbKIGR7KobG4X45pNWeGDLx7FRuFA1+p6qGj+qTGXVyhU/vm8esHHUyCxPY0epGh3gdjIpGbMTRyel3Mw==
+ ARA:13230040|36860700016|376014|1800799024|82310400026|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info: pH3G2GmRCNJA5WqFvH3/XvFdpdI3fGZ4uDMGECYSD3yQRu+eOynPk5PrBQ6+2+48ghsWpY0RihYxDSJOW3+g6R/OCxnR05oPCacvqxV8ZFdiWGPsvDJOzzNSifr/IaVkwUo4hm0Vg/ImGC0PXlNCT+XffxCON0p4Had73kucM9OxL3tsC0VbLQ9kc/b2osFXot1iBKJGKnJlHCnmwGT1zBendYjhcZfGt4m1zu/KUMoTI4LNswtNJFWK+aV5DOd1JZXaWHYxTDzcOp9wt7krerFz8x/vnANeBAanYlKsyC0zwOzaeUkF/m8pBtbS+CDBEh4jcHHZuHpSpnISHiGpbNQ7Wz0cXIa1dVAeZlKa6K57DfpETWer3ezWLKrcR2SFz8zDOyTK/KTkr69mzmAOKqMHOgHP9GsdzfJsbcl8Z6maH+BK5Kj8z/i4eC2DITNAiQM9vYWUJV7LeYgJhPvWqvFfo8v76bzmDCt09eOxBjcTdQSchY0trkcKQil0U11R9/cTyta11lPyBJSFf67FY5cvvendLhF7hMtqE78L0+RtKppfmQBMzdaLzfxjKa6IxiltnlDtzYa5FDFRS49P9sBHTNtgr6p4ixlhK9RxMNtkwh9PB9Pza9jEykSq32yUtWcFirEMGG57fxIWzkz0mfxGBaXhK2YdsNcTKt8kDZa+2DqvakkU1ztZPrgAqIjH+MDx+g04ZJOCCe2haSWfu4iGlHN8W62L2tu1efS/K7/smZtfplwttQBHw4IlNdrlYSrETjFXwy9YYXFn1vmP6w==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(56012099003)(18002099003);
+ SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(18002099003)(22082099003)(56012099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: qva5rZ+wgGIZL3Em5ZNf5us+2YHq90kj2lCynQE/KPN7bPjKLsEIK6EAe2B1gwN/BlApumf+lIMqZ9ZlijBSqDbFZnPBEY9WqOdnRkPd9vMYjI/qyCDOA6SU/52yRI2y1qxTKkQuGf46Jcivon8sZ9p+HG71BhTl1WEnqx0y1l44cps0PYUHN7hA/L/8hWrgMIFXy74DWbp/TwxKMfHyfHHOzDRVpBFk8nIQuX+Mpyf4hf5ypAcpGlUJyfBbZ4XI/R0IjzmMJ2kfduLDfbaH1Nguarr6ASLJcw2goaV0azGhwmMq1TTkCvnEfPUM5EloQxboawHrwEG1oQIX4YREzOzDFra+SSRBmmZouIDLmr97x9MYfd0SSXNYjAwtAhIwJbZp/tWKJc7NcE2Jl59mMUB6BeIqoEIAmAodGDt7/kBXXYuAEIffSd8Zftif7n4L
+X-MS-Exchange-AntiSpam-MessageData-0: NR5Xf11754Z/U9eN80eCulZxWdhNXiq0UqzbWtM9gYfGVq1JnzB7E7HuLVWX6N/FkbRvQgRl4OAW1uT7qCekAcYa371LryxZgbKxjRdSbo3TKAr9wpr2Pu9C6R0qSCRS7CbKaiS7h81wBN9Ty9YbzHtC6Dk83Va6QVIutC4vqGhBgxS4nauLMMUftiJkTm/jsfuQhfAc0mZoSGyLkIE6VMiz3VkLoOPPpH+vPbNfi3DMHyR+6is2wnAZDiXZp0kl4SbVsfX6ITuuFCRxl7bzsQ9DhWPVVDH7rn0RxgC4DK2eiF6f1o2JKfO9jJAxCodhz7iFXmvLFtYCUvS54p+E6JIx0MDg90NasNiNDwel22JeMNFespbJjGyYQTZelZS7sEjghPKMKNkecaCvuDqUMtCO14dmo0aVHqjdQZiCn40zkbPQzsq0lg6zTKVWrH+G
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 17:51:59.8411 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9ca47f7-5c13-437e-6b56-08de844de398
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 17:52:17.1202 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44ab6a21-bfff-4107-0000-08de844dede5
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD7D.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD83.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9735
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB999252
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,28 +111,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Move HDR utility functions from kms_hdr test into a reusable library
-module. This includes metadata filling, EDID parsing, and conversion
-functions.
+From: Wayne Lin <wayne.lin@amd.com>
 
+Add a visual verification tool for AMD HDR display output. This tool
+displays HDR test patterns with different metadata types and waits for
+user confirmation, enabling manual inspection of HDR output quality.
+
+Subtests:
+- static-swap-smpte2084: Display with SMPTE ST2084 (PQ) HDR metadata
+- static-swap-traditional-sdr: Display with traditional SDR gamma metadata
+
+Co-developed-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
 ---
- lib/igt_hdr.c   | 220 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_hdr.h   |  58 +++++++++++++
- lib/meson.build |   1 +
- tests/kms_hdr.c | 179 ++-------------------------------------
- 4 files changed, 287 insertions(+), 171 deletions(-)
- create mode 100644 lib/igt_hdr.c
- create mode 100644 lib/igt_hdr.h
+ tools/amd_hdr_visual.c | 372 +++++++++++++++++++++++++++++++++++++++++
+ tools/meson.build      |   5 +
+ 2 files changed, 377 insertions(+)
+ create mode 100644 tools/amd_hdr_visual.c
 
-diff --git a/lib/igt_hdr.c b/lib/igt_hdr.c
+diff --git a/tools/amd_hdr_visual.c b/tools/amd_hdr_visual.c
 new file mode 100644
-index 000000000..6368ae78b
+index 000000000..58decb356
 --- /dev/null
-+++ b/lib/igt_hdr.c
-@@ -0,0 +1,220 @@
++++ b/tools/amd_hdr_visual.c
+@@ -0,0 +1,372 @@
 +/*
-+ * Copyright © 2026 Advanced Micro Devices, Inc.
++ * Copyright 2026 Advanced Micro Devices, Inc.
 + *
 + * Permission is hereby granted, free of charge, to any person obtaining a
 + * copy of this software and associated documentation files (the "Software"),
@@ -139,559 +146,384 @@ index 000000000..6368ae78b
 + * and/or sell copies of the Software, and to permit persons to whom the
 + * Software is furnished to do so, subject to the following conditions:
 + *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
 + *
 + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
 + */
-+
-+#include <string.h>
-+#include <drm.h>
-+#include <drm_mode.h>
 +
 +#include "igt.h"
-+#include "igt_hdr.h"
++#include <fcntl.h>
++#include <termios.h>
++#include <unistd.h>
 +#include "igt_edid.h"
++#include "igt_hdr.h"
 +
-+/**
-+ * SECTION:igt_hdr
-+ * @short_description: HDR (High Dynamic Range) helper library
-+ * @title: HDR
-+ * @include: igt_hdr.h
-+ *
-+ * This library provides helper functions for working with HDR metadata
-+ * and HDR display capabilities.
-+ */
++IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
 +
-+/**
-+ * igt_hdr_calc_hdr_float:
-+ * @val: The value to convert
-+ *
-+ * Converts a double to 861-G spec FP format
-+ *
-+ * Returns: The value converted to HDR floating point format
-+ */
-+uint16_t igt_hdr_calc_hdr_float(double val)
++/* Test flags. */
++enum {
++	TEST_NONE = 1 << 0,
++	TEST_DPMS = 1 << 1,
++	TEST_SUSPEND = 1 << 2,
++	TEST_SWAP = 1 << 3,
++};
++
++/* BPC connector state. */
++typedef struct output_bpc {
++	unsigned int current;
++	unsigned int maximum;
++} output_bpc_t;
++
++/* Common test data. */
++typedef struct data {
++	igt_display_t display;
++	igt_plane_t *primary;
++	igt_output_t *output;
++	igt_crtc_t *pipe;
++	igt_pipe_crc_t *pipe_crc;
++	drmModeModeInfo *mode;
++	enum pipe pipe_id;
++	int fd;
++	int w;
++	int h;
++} data_t;
++
++/* Common test cleanup. */
++static void test_fini(data_t *data)
 +{
-+	return (uint16_t)(val * 50000.0);
++	igt_pipe_crc_free(data->pipe_crc);
++	igt_display_reset(&data->display);
 +}
 +
-+/**
-+ * igt_hdr_fill_output_metadata_st2084:
-+ * @meta: Pointer to hdr_output_metadata structure to fill
-+ *
-+ * Fills HDR output metadata structure with test values for ST2084 (PQ) EOTF.
-+ * Uses Rec. 2020 color primaries and typical HDR mastering display characteristics.
-+ *
-+ * Note: there isn't really a standard for what the metadata is supposed
-+ * to do on the display side of things. The display is free to ignore it
-+ * and clip the output, use it to help tonemap to the content range,
-+ * or do anything they want, really.
-+ */
-+void igt_hdr_fill_output_metadata_st2084(struct hdr_output_metadata *meta)
++static void test_cycle_flags(data_t *data, uint32_t test_flags)
 +{
-+	memset(meta, 0, sizeof(*meta));
-+
-+	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
-+	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
-+
-+	/* Rec. 2020 */
-+	meta->hdmi_metadata_type1.display_primaries[0].x =
-+		igt_hdr_calc_hdr_float(0.708); /* Red */
-+	meta->hdmi_metadata_type1.display_primaries[0].y =
-+		igt_hdr_calc_hdr_float(0.292);
-+	meta->hdmi_metadata_type1.display_primaries[1].x =
-+		igt_hdr_calc_hdr_float(0.170); /* Green */
-+	meta->hdmi_metadata_type1.display_primaries[1].y =
-+		igt_hdr_calc_hdr_float(0.797);
-+	meta->hdmi_metadata_type1.display_primaries[2].x =
-+		igt_hdr_calc_hdr_float(0.131); /* Blue */
-+	meta->hdmi_metadata_type1.display_primaries[2].y =
-+		igt_hdr_calc_hdr_float(0.046);
-+	meta->hdmi_metadata_type1.white_point.x = igt_hdr_calc_hdr_float(0.3127);
-+	meta->hdmi_metadata_type1.white_point.y = igt_hdr_calc_hdr_float(0.3290);
-+
-+	meta->hdmi_metadata_type1.max_display_mastering_luminance =
-+		1000; /* 1000 nits */
-+	meta->hdmi_metadata_type1.min_display_mastering_luminance =
-+		500;				   /* 0.05 nits */
-+	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
-+	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
-+}
-+
-+/**
-+ * igt_hdr_fill_output_metadata_sdr:
-+ * @meta: Pointer to hdr_output_metadata structure to fill
-+ *
-+ * Fills HDR output metadata structure with test values targeting SDR.
-+ */
-+void igt_hdr_fill_output_metadata_sdr(struct hdr_output_metadata *meta)
-+{
-+	memset(meta, 0, sizeof(*meta));
-+
-+	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
-+	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_TRADITIONAL_GAMMA_SDR;
-+
-+	/* Rec. 709 */
-+	meta->hdmi_metadata_type1.display_primaries[0].x =
-+		igt_hdr_calc_hdr_float(0.640); /* Red */
-+	meta->hdmi_metadata_type1.display_primaries[0].y =
-+		igt_hdr_calc_hdr_float(0.330);
-+	meta->hdmi_metadata_type1.display_primaries[1].x =
-+		igt_hdr_calc_hdr_float(0.300); /* Green */
-+	meta->hdmi_metadata_type1.display_primaries[1].y =
-+		igt_hdr_calc_hdr_float(0.600);
-+	meta->hdmi_metadata_type1.display_primaries[2].x =
-+		igt_hdr_calc_hdr_float(0.150); /* Blue */
-+	meta->hdmi_metadata_type1.display_primaries[2].y =
-+		igt_hdr_calc_hdr_float(0.006);
-+	meta->hdmi_metadata_type1.white_point.x = igt_hdr_calc_hdr_float(0.3127);
-+	meta->hdmi_metadata_type1.white_point.y = igt_hdr_calc_hdr_float(0.3290);
-+
-+	meta->hdmi_metadata_type1.max_display_mastering_luminance = 0;
-+	meta->hdmi_metadata_type1.min_display_mastering_luminance = 0;
-+	meta->hdmi_metadata_type1.max_fall = 0;
-+	meta->hdmi_metadata_type1.max_cll = 0;
-+}
-+
-+/**
-+ * igt_hdr_cta_block_has_hdr:
-+ * @edid_ext: Pointer to CTA extension block data
-+ *
-+ * Checks if a CTA extension block indicates HDR support.
-+ *
-+ * Byte 1: 0x07 indicates Extended Tag
-+ * Byte 2: 0x06 indicates HDMI Static Metadata Block
-+ * Byte 3: bits 0 to 5 identify EOTF functions supported by sink
-+ *         where ET_0: Traditional Gamma - SDR Luminance Range
-+ *               ET_1: Traditional Gamma - HDR Luminance Range
-+ *               ET_2: SMPTE ST 2084
-+ *               ET_3: Hybrid Log-Gamma (HLG)
-+ *               ET_4 to ET_5: Reserved for future use
-+ *
-+ * Returns: true if the block indicates HDR support, false otherwise
-+ */
-+bool igt_hdr_cta_block_has_hdr(const char *edid_ext)
-+{
-+	if ((((edid_ext[0] & 0xe0) >> 5 == USE_EXTENDED_TAG) &&
-+	     (edid_ext[1] == HDR_STATIC_METADATA_BLOCK)) &&
-+	    ((edid_ext[2] & HDMI_EOTF_TRADITIONAL_GAMMA_HDR) ||
-+	     (edid_ext[2] & HDMI_EOTF_SMPTE_ST2084)))
-+			return true;
-+
-+	return false;
-+}
-+
-+/**
-+ * igt_hdr_is_panel_hdr:
-+ * @drm_fd: DRM file descriptor
-+ * @connector_id: KMS connector ID
-+ *
-+ * Checks if a panel/display supports HDR by parsing its EDID.
-+ * Looks for HDR Static Metadata Block in CTA extension.
-+ *
-+ * Returns: true if the panel supports HDR, false otherwise
-+ */
-+bool igt_hdr_is_panel_hdr(int drm_fd, uint32_t connector_id)
-+{
-+	bool ok;
-+	int i, j, offset;
-+	uint64_t edid_blob_id;
-+	drmModePropertyBlobRes *edid_blob;
-+	const struct edid_ext *edid_ext;
-+	const struct edid *edid;
-+	const struct edid_cea *edid_cea;
-+	const char *cea_data;
-+	bool ret = false;
-+
-+	ok = kmstest_get_property(drm_fd, connector_id,
-+			DRM_MODE_OBJECT_CONNECTOR, "EDID",
-+			NULL, &edid_blob_id, NULL);
-+
-+	if (!ok || !edid_blob_id)
-+		return ret;
-+
-+	edid_blob = drmModeGetPropertyBlob(drm_fd, edid_blob_id);
-+	igt_assert(edid_blob);
-+
-+	edid = (const struct edid *) edid_blob->data;
-+	igt_assert(edid);
-+
-+	drmModeFreePropertyBlob(edid_blob);
-+
-+	for (i = 0; i < edid->extensions_len; i++) {
-+		edid_ext = &edid->extensions[i];
-+		edid_cea = &edid_ext->data.cea;
-+
-+		/* HDR not defined in CTA Extension Version < 3. */
-+		if ((edid_ext->tag != EDID_EXT_CEA) ||
-+		    (edid_cea->revision != CTA_EXTENSION_VERSION))
-+				continue;
-+		else {
-+			offset = edid_cea->dtd_start;
-+			cea_data = edid_cea->data;
-+
-+			for (j = 0; j < offset; j += (cea_data[j] & 0x1f) + 1) {
-+				ret = igt_hdr_cta_block_has_hdr(cea_data + j);
-+
-+				if (ret)
-+					break;
-+			}
-+		}
++	if (test_flags & TEST_DPMS) {
++		kmstest_set_connector_dpms(data->fd,
++					   data->output->config.connector,
++					   DRM_MODE_DPMS_OFF);
++		kmstest_set_connector_dpms(data->fd,
++					   data->output->config.connector,
++					   DRM_MODE_DPMS_ON);
 +	}
 +
-+	return ret;
++	if (test_flags & TEST_SUSPEND)
++		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++					      SUSPEND_TEST_NONE);
 +}
-diff --git a/lib/igt_hdr.h b/lib/igt_hdr.h
-new file mode 100644
-index 000000000..a6faef443
---- /dev/null
-+++ b/lib/igt_hdr.h
-@@ -0,0 +1,58 @@
-+/*
-+ * Copyright © 2026 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ */
 +
-+#ifndef IGT_HDR_H
-+#define IGT_HDR_H
++/* Returns the current and maximum bpc from the connector debugfs. */
++static output_bpc_t get_output_bpc(data_t *data)
++{
++	char buf[256];
++	char *start_loc;
++	int fd, res;
++	output_bpc_t info;
 +
-+#include "config.h"
++	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
++	igt_assert(fd >= 0);
 +
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <linux/types.h>
++	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
 +
-+struct hdr_output_metadata;
-+struct igt_fb;
++	igt_require(res > 0);
 +
-+/* HDR EDID parsing. */
-+#define CTA_EXTENSION_VERSION		0x03
-+#define HDR_STATIC_METADATA_BLOCK       0x06
-+#define USE_EXTENDED_TAG		0x07
++	close(fd);
 +
-+/* DRM HDR definitions. Not in the UAPI header, unfortunately. */
-+enum hdmi_metadata_type {
-+	HDMI_STATIC_METADATA_TYPE1 = 0,
-+};
++	igt_assert(start_loc = strstr(buf, "Current: "));
++	igt_assert_eq(sscanf(start_loc, "Current: %u", &info.current), 1);
 +
-+enum hdmi_eotf {
-+	HDMI_EOTF_TRADITIONAL_GAMMA_SDR,
-+	HDMI_EOTF_TRADITIONAL_GAMMA_HDR,
-+	HDMI_EOTF_SMPTE_ST2084,
-+};
++	igt_assert(start_loc = strstr(buf, "Maximum: "));
++	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &info.maximum), 1);
 +
-+uint16_t igt_hdr_calc_hdr_float(double val);
-+void igt_hdr_fill_output_metadata_st2084(struct hdr_output_metadata *meta);
-+void igt_hdr_fill_output_metadata_sdr(struct hdr_output_metadata *meta);
-+bool igt_hdr_cta_block_has_hdr(const char *edid_ext);
-+bool igt_hdr_is_panel_hdr(int drm_fd, uint32_t connector_id);
++	return info;
++}
 +
-+#endif /* IGT_HDR_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index cd03e8f63..71ca60e66 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -114,6 +114,7 @@ lib_sources = [
- 	'igt_psr.c',
- 	'igt_amd.c',
- 	'igt_edid.c',
-+	'igt_hdr.c',
- 	'igt_eld.c',
- 	'igt_infoframe.c',
- 	'igt_color.c',
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index f30902b72..382fcd823 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -33,6 +33,7 @@
- #include <termios.h>
- #include <unistd.h>
- #include "igt_edid.h"
-+#include "igt_hdr.h"
++/* Verifies that connector has the correct output bpc. */
++static void assert_output_bpc(data_t *data, unsigned int bpc)
++{
++	output_bpc_t info = get_output_bpc(data);
++
++	igt_require_f(info.maximum >= bpc,
++		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
++		      info.maximum);
++
++	igt_assert_eq(info.current, bpc);
++}
++
++/* Fills the FB with a test HDR pattern. */
++static void draw_hdr_pattern(igt_fb_t *fb)
++{
++	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
++
++	igt_paint_color(cr, 0, 0, fb->width, fb->height, 1.0, 1.0, 1.0);
++	igt_paint_test_pattern(cr, fb->width, fb->height);
++
++	igt_put_cairo_ctx(cr);
++}
++
++/* Prepare test data. */
++static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
++{
++	igt_display_t *display = &data->display;
++
++	data->pipe_id = pipe;
++	data->pipe = &data->display.crtcs[data->pipe_id];
++	igt_assert(data->pipe);
++
++	igt_display_reset(display);
++
++	data->output = output;
++	igt_assert(data->output);
++
++	data->mode = igt_output_get_mode(data->output);
++	igt_assert(data->mode);
++
++	data->primary =
++		igt_crtc_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
++
++	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
++					  IGT_PIPE_CRC_SOURCE_AUTO);
++
++	igt_output_set_crtc(data->output, igt_crtc_for_pipe(display, data->pipe_id));
++
++	data->w = data->mode->hdisplay;
++	data->h = data->mode->vdisplay;
++}
++
++static bool igt_crtc_is_free(igt_display_t *display, igt_crtc_t *crtc)
++{
++	int i;
++
++	for (i = 0; i < display->n_outputs; i++)
++		if (display->outputs[i].pending_crtc == crtc)
++			return false;
++
++	return true;
++}
++
++/* Returns true if an output supports max bpc property. */
++static bool has_max_bpc(igt_output_t *output)
++{
++	return igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC) &&
++	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
++}
++
++
++
++/* Sets the HDR output metadata prop. */
++static void set_hdr_output_metadata(data_t *data,
++				    struct hdr_output_metadata const *meta)
++{
++	igt_output_replace_prop_blob(data->output,
++				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
++				     meta ? sizeof(*meta) : 0);
++}
++
++
++
++static void test_static_toggle(data_t *data, igt_output_t *output,
++			       uint32_t flags)
++{
++	igt_display_t *display = &data->display;
++	struct hdr_output_metadata hdr;
++	igt_crc_t ref_crc, new_crc;
++	igt_crtc_t *crtc;
++	igt_fb_t afb;
++	int afb_id;
++
++	for_each_crtc(display, crtc) {
++		if (!igt_crtc_connector_valid(crtc, output))
++			continue;
++
++		if (!igt_crtc_is_free(display, crtc))
++			continue;
++
++		prepare_test(data, output, crtc->pipe);
++
++		/* 10-bit formats are slow, so limit the size. */
++		afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
++		igt_assert(afb_id);
++
++		draw_hdr_pattern(&afb);
++
++		igt_hdr_fill_output_metadata_st2084(&hdr);
++
++		/* Start with no metadata. */
++		igt_plane_set_fb(data->primary, &afb);
++		igt_plane_set_size(data->primary, data->w, data->h);
++		set_hdr_output_metadata(data, NULL);
++		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		if (is_amdgpu_device(data->fd))
++			assert_output_bpc(data, 8);
++
++		/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
++		set_hdr_output_metadata(data, &hdr);
++		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
++		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		if (is_amdgpu_device(data->fd))
++			assert_output_bpc(data, 10);
++
++		/* Verify that the CRC are equal after DPMS or suspend. */
++		igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
++		test_cycle_flags(data, flags);
++		igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
++
++		/* Disable HDR metadata and drop back to 8bpc. We expect a modeset for exiting. */
++		set_hdr_output_metadata(data, NULL);
++		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		if (is_amdgpu_device(data->fd))
++			assert_output_bpc(data, 8);
++
++		igt_assert_crc_equal(&ref_crc, &new_crc);
++
++		test_fini(data);
++		igt_remove_fb(data->fd, &afb);
++
++		break;
++	}
++}
++
++static void test_static_swap(data_t *data, igt_output_t *output,
++			     void (*fill_metadata)(struct hdr_output_metadata *),
++			     const char *mode_name)
++{
++	igt_display_t *display = &data->display;
++	igt_crtc_t *crtc;
++	igt_fb_t afb;
++	int afb_id;
++	struct hdr_output_metadata hdr;
++
++	for_each_crtc(display, crtc) {
++		if (!igt_crtc_connector_valid(crtc, output))
++			continue;
++
++		if (!igt_crtc_is_free(display, crtc))
++			continue;
++
++		prepare_test(data, output, crtc->pipe);
++
++		/* 10-bit formats are slow, so limit the size. */
++		afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
++		igt_assert(afb_id);
++
++		draw_hdr_pattern(&afb);
++
++		/* Start in the specified HDR mode. */
++		igt_plane_set_fb(data->primary, &afb);
++		igt_plane_set_size(data->primary, data->w, data->h);
++		fill_metadata(&hdr);
++		set_hdr_output_metadata(data, &hdr);
++		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
++		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++		igt_info("wait %s!\n", mode_name);
++		igt_debug_wait_for_keypress(mode_name);
++
++		/* Exit HDR mode and enter 8bpc, cleanup. */
++		set_hdr_output_metadata(data, NULL);
++		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++		test_fini(data);
++		igt_remove_fb(data->fd, &afb);
++
++		break;
++	}
++}
++
++/* Returns true if an output supports HDR metadata property. */
++static bool has_hdr(igt_output_t *output)
++{
++	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
++}
++
++static void test_hdr(data_t *data, const char *test_name, uint32_t flags,
++		    void (*fill_metadata)(struct hdr_output_metadata *),
++		    const char *mode_name)
++{
++	igt_output_t *output;
++	int valid_tests = 0;
++
++	for_each_connected_output(&data->display, output) {
++		/* To test HDR, 10 bpc is required, so we need to
++		 * set MAX_BPC property to 10bpc prior to setting
++		 * HDR metadata property. Therefore, checking.
++		 */
++		if (!has_max_bpc(output) || !has_hdr(output)) {
++			igt_info("%s connector not found with HDR metadata/max_bpc connector property\n", output->name);
++			continue;
++		}
++
++		if (!igt_hdr_is_panel_hdr(data->fd, output->id)) {
++			igt_info("Panel attached via %s connector is non-HDR\n", output->name);
++			continue;
++		}
++
++		igt_info("HDR %s test execution on %s\n", test_name, output->name);
++		if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
++			test_static_toggle(data, output, flags);
++		if (flags & TEST_SWAP)
++			test_static_swap(data, output, fill_metadata, mode_name);
++
++		valid_tests++;
++	}
++
++	igt_require_f(valid_tests, "No connector found with HDR metadata/max_bpc connector property (or) panel is non-HDR\n");
++}
++
++int igt_main()
++{
++	data_t data = { 0 };
++
++	igt_fixture() {
++		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.fd);
++		igt_require(data.display.is_atomic);
++
++		igt_display_require_output(&data.display);
++	}
++
++	igt_describe("Tests swapping to SMPTE ST2084 HDR metadata");
++	igt_subtest("static-swap-smpte2084")
++		test_hdr(&data, "static-swap-smpte2084", TEST_SWAP,
++			 igt_hdr_fill_output_metadata_st2084, "smpte2084");
++
++	igt_describe("Tests swapping to traditional SDR gamma HDR metadata");
++	igt_subtest("static-swap-traditional-sdr")
++		test_hdr(&data, "static-swap-traditional-sdr", TEST_SWAP,
++			 igt_hdr_fill_output_metadata_sdr, "traditional-sdr");
++
++	igt_fixture() {
++		igt_display_fini(&data.display);
++	}
++}
+diff --git a/tools/meson.build b/tools/meson.build
+index 8185ba160..9612acd83 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -104,6 +104,11 @@ executable('amd_hdmi_compliance', 'amd_hdmi_compliance.c',
+ 	   install_rpath : bindir_rpathdir,
+ 	   install : true)
  
- /**
-  * SUBTEST: bpc-switch
-@@ -70,24 +71,8 @@
- 
- IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
- 
--/* HDR EDID parsing. */
--#define CTA_EXTENSION_VERSION		0x03
--#define HDR_STATIC_METADATA_BLOCK       0x06
--#define USE_EXTENDED_TAG		0x07
--
- #define BACKLIGHT_PATH "/sys/class/backlight"
- 
--/* DRM HDR definitions. Not in the UAPI header, unfortunately. */
--enum hdmi_metadata_type {
--	HDMI_STATIC_METADATA_TYPE1 = 0,
--};
--
--enum hdmi_eotf {
--	HDMI_EOTF_TRADITIONAL_GAMMA_SDR,
--	HDMI_EOTF_TRADITIONAL_GAMMA_HDR,
--	HDMI_EOTF_SMPTE_ST2084,
--};
--
- /* Test flags. */
- enum {
- 	TEST_NONE = 1 << 0,
-@@ -148,50 +133,6 @@ static void draw_hdr_pattern(igt_fb_t *fb)
- 	igt_paint_test_pattern_color_fb(fb->fd, fb, 1.0, 1.0, 1.0);
- }
- 
--/* Converts a double to 861-G spec FP format. */
--static uint16_t calc_hdr_float(double val)
--{
--	return (uint16_t)(val * 50000.0);
--}
--
--/* Fills some test values for ST2084 HDR output metadata.
-- *
-- * Note: there isn't really a standard for what the metadata is supposed
-- * to do on the display side of things. The display is free to ignore it
-- * and clip the output, use it to help tonemap to the content range,
-- * or do anything they want, really.
-- */
--static void fill_hdr_output_metadata_st2084(struct hdr_output_metadata *meta)
--{
--	memset(meta, 0, sizeof(*meta));
--
--	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
--	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
--
--	/* Rec. 2020 */
--	meta->hdmi_metadata_type1.display_primaries[0].x =
--		calc_hdr_float(0.708); /* Red */
--	meta->hdmi_metadata_type1.display_primaries[0].y =
--		calc_hdr_float(0.292);
--	meta->hdmi_metadata_type1.display_primaries[1].x =
--		calc_hdr_float(0.170); /* Green */
--	meta->hdmi_metadata_type1.display_primaries[1].y =
--		calc_hdr_float(0.797);
--	meta->hdmi_metadata_type1.display_primaries[2].x =
--		calc_hdr_float(0.131); /* Blue */
--	meta->hdmi_metadata_type1.display_primaries[2].y =
--		calc_hdr_float(0.046);
--	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
--	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
--
--	meta->hdmi_metadata_type1.max_display_mastering_luminance =
--		1000; /* 1000 nits */
--	meta->hdmi_metadata_type1.min_display_mastering_luminance =
--		500;				   /* 0.05 nits */
--	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
--	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
--}
--
- /* Sets the HDR output metadata prop. */
- static void set_hdr_output_metadata(data_t *data,
- 				    struct hdr_output_metadata const *meta)
-@@ -365,80 +306,6 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 	}
- }
- 
--static bool cta_block(const char *edid_ext)
--{
--	/*
--	 * Byte 1: 0x07 indicates Extended Tag
--	 * Byte 2: 0x06 indicates HDMI Static Metadata Block
--	 * Byte 3: bits 0 to 5 identify EOTF functions supported by sink
--	 *	       where ET_0: Traditional Gamma - SDR Luminance Range
--	 *	             ET_1: Traditional Gamma - HDR Luminance Range
--	 *	             ET_2: SMPTE ST 2084
--	 *	             ET_3: Hybrid Log-Gamma (HLG)
--	 *	             ET_4 to ET_5: Reserved for future use
--	 */
--
--	if ((((edid_ext[0] & 0xe0) >> 5 == USE_EXTENDED_TAG) &&
--	      (edid_ext[1] == HDR_STATIC_METADATA_BLOCK)) &&
--	     ((edid_ext[2] & HDMI_EOTF_TRADITIONAL_GAMMA_HDR) ||
--	      (edid_ext[2] & HDMI_EOTF_SMPTE_ST2084)))
--			return true;
--
--	return false;
--}
--
--/* Returns true if panel supports HDR. */
--static bool is_panel_hdr(data_t *data, igt_output_t *output)
--{
--	bool ok;
--	int i, j, offset;
--	uint64_t edid_blob_id;
--	drmModePropertyBlobRes *edid_blob;
--	const struct edid_ext *edid_ext;
--	const struct edid *edid;
--	const struct edid_cea *edid_cea;
--	const char *cea_data;
--	bool ret = false;
--
--	ok = kmstest_get_property(data->fd, output->id,
--			DRM_MODE_OBJECT_CONNECTOR, "EDID",
--			NULL, &edid_blob_id, NULL);
--
--	if (!ok || !edid_blob_id)
--		return ret;
--
--	edid_blob = drmModeGetPropertyBlob(data->fd, edid_blob_id);
--	igt_assert(edid_blob);
--
--	edid = (const struct edid *) edid_blob->data;
--	igt_assert(edid);
--
--	drmModeFreePropertyBlob(edid_blob);
--
--	for (i = 0; i < edid->extensions_len; i++) {
--		edid_ext = &edid->extensions[i];
--		edid_cea = &edid_ext->data.cea;
--
--		/* HDR not defined in CTA Extension Version < 3. */
--		if ((edid_ext->tag != EDID_EXT_CEA) ||
--		    (edid_cea->revision != CTA_EXTENSION_VERSION))
--				continue;
--		else {
--			offset = edid_cea->dtd_start;
--			cea_data = edid_cea->data;
--
--			for (j = 0; j < offset; j += (cea_data[j] & 0x1f) + 1) {
--				ret = cta_block(cea_data + j);
--
--				if (ret)
--					break;
--			}
--		}
--	}
--
--	return ret;
--}
--
- /* Sets the HDR output metadata prop with invalid size. */
- static int set_invalid_hdr_output_metadata(data_t *data,
- 					   struct hdr_output_metadata const *meta,
-@@ -490,7 +357,7 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
- 
- 	draw_hdr_pattern(&afb);
- 
--	fill_hdr_output_metadata_st2084(&hdr);
-+	igt_hdr_fill_output_metadata_st2084(&hdr);
- 
- 	/* Start with no metadata. */
- 	igt_plane_set_fb(data->primary, &afb);
-@@ -559,36 +426,6 @@ cleanup:
- 	igt_remove_fb(data->fd, &afb);
- }
- 
--/* Fills some test values for HDR metadata targeting SDR. */
--static void fill_hdr_output_metadata_sdr(struct hdr_output_metadata *meta)
--{
--	memset(meta, 0, sizeof(*meta));
--
--	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
--	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_TRADITIONAL_GAMMA_SDR;
--
--	/* Rec. 709 */
--	meta->hdmi_metadata_type1.display_primaries[0].x =
--		calc_hdr_float(0.640); /* Red */
--	meta->hdmi_metadata_type1.display_primaries[0].y =
--		calc_hdr_float(0.330);
--	meta->hdmi_metadata_type1.display_primaries[1].x =
--		calc_hdr_float(0.300); /* Green */
--	meta->hdmi_metadata_type1.display_primaries[1].y =
--		calc_hdr_float(0.600);
--	meta->hdmi_metadata_type1.display_primaries[2].x =
--		calc_hdr_float(0.150); /* Blue */
--	meta->hdmi_metadata_type1.display_primaries[2].y =
--		calc_hdr_float(0.006);
--	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
--	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
--
--	meta->hdmi_metadata_type1.max_display_mastering_luminance = 0;
--	meta->hdmi_metadata_type1.min_display_mastering_luminance = 0;
--	meta->hdmi_metadata_type1.max_fall = 0;
--	meta->hdmi_metadata_type1.max_cll = 0;
--}
--
- static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 			     igt_output_t *output, uint32_t flags)
- {
-@@ -625,7 +462,7 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 	}
- 
- 	/* Enter HDR, a modeset is allowed here. */
--	fill_hdr_output_metadata_st2084(&hdr);
-+	igt_hdr_fill_output_metadata_st2084(&hdr);
- 	set_hdr_output_metadata(data, &hdr);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-@@ -654,7 +491,7 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 	/* Enter SDR via metadata, no modeset allowed for
- 	 * amd driver, whereas a modeset is required for
- 	 * intel driver. */
--	fill_hdr_output_metadata_sdr(&hdr);
-+	igt_hdr_fill_output_metadata_sdr(&hdr);
- 	set_hdr_output_metadata(data, &hdr);
- 	if (is_amdgpu_device(data->fd))
- 		igt_display_commit_atomic(display, 0, NULL);
-@@ -687,7 +524,7 @@ static void test_invalid_metadata_sizes(data_t *data, igt_output_t *output)
- 	struct hdr_output_metadata hdr;
- 	size_t metadata_size = sizeof(hdr);
- 
--	fill_hdr_output_metadata_st2084(&hdr);
-+	igt_hdr_fill_output_metadata_st2084(&hdr);
- 
- 	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, 1), -EINVAL);
- 	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size + 1), -EINVAL);
-@@ -725,13 +562,13 @@ static void test_hdr(data_t *data, uint32_t flags)
- 		}
- 
- 		/* For negative test, panel should be non-hdr. */
--		if ((flags & TEST_INVALID_HDR) && is_panel_hdr(data, output)) {
-+		if ((flags & TEST_INVALID_HDR) && igt_hdr_is_panel_hdr(data->fd, output->id)) {
- 			igt_info("%s: Can't run negative test on HDR panel.\n",
- 				 igt_output_name(output));
- 			continue;
- 		}
- 
--		if ((flags & ~TEST_INVALID_HDR) && !is_panel_hdr(data, output)) {
-+		if ((flags & ~TEST_INVALID_HDR) && !igt_hdr_is_panel_hdr(data->fd, output->id)) {
- 			igt_info("%s: Can't run HDR tests on non-HDR panel.\n",
- 				 igt_output_name(output));
- 			continue;
-@@ -760,7 +597,7 @@ static void test_hdr(data_t *data, uint32_t flags)
- 				     crtc);
- 
- 			/* Signal HDR requirement via metadata */
--			fill_hdr_output_metadata_st2084(&hdr);
-+			igt_hdr_fill_output_metadata_st2084(&hdr);
- 			set_hdr_output_metadata(data, &hdr);
- 			if (igt_display_try_commit2(display, display->is_atomic ?
- 						    COMMIT_ATOMIC : COMMIT_LEGACY)) {
++executable('amd_hdr_visual', 'amd_hdr_visual.c',
++	   dependencies : [tool_deps],
++	   install_rpath : bindir_rpathdir,
++	   install : true)
++
+ if libudev.found()
+ 	msm_dp_compliance_src = [
+ 		'msm_dp_compliance.c',
 -- 
 2.43.0
 
