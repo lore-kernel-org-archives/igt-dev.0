@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 278E0F3383D
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 14:50:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF5A7FED9E0
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 14:56:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E2AF10E395;
-	Tue, 17 Mar 2026 14:50:27 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 228D110E395;
- Tue, 17 Mar 2026 14:50:23 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2631832092946709886=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 81A0810E4AA;
+	Tue, 17 Mar 2026 14:56:56 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="PqeBSJGH";
+	dkim-atps=neutral
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA84510E3FC
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 14:56:51 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-03.galae.net (Postfix) with ESMTPS id AB7E24E42656
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 14:56:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 8386B5FC9A;
+ Tue, 17 Mar 2026 14:56:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id 10E1610450604; Tue, 17 Mar 2026 15:56:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+ t=1773759407; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding:in-reply-to:references;
+ bh=pdbG/1rNuMS6ikdkvAi5yBDNowCGO9QFlr4rmflhuuU=;
+ b=PqeBSJGHjgSnYlMmp07ifHvpBPm6fsZXNAJFMPmuREBWq/Fr9i3sRFu3hmx+N1l/Z7iYS9
+ 1EsJI/PTI5LPiVX2uZpfdsYD48FT+OzRmQSJJsMFeOZQRrwMJWiMMM2EIAAJGm8Wrxc67A
+ 4k5YYVI8KuR60xwTfkSsj/aqbOZ5IKfMJ1T2KPBicQYt233oRI4okHrla3ifDjHSiYV9MT
+ Rh0y0jHMBa47GYVQIE4R1Tuy3vMK9PyUXUlVafGSQbcZxSqdGf+5v1+d9+pxvC3ZEHOtA7
+ Ea190SSB0cG0YCYdZ6CmUEB45Ef+U8Pnmjtb+yEk/rnz6Oh3Sl5V4kRYoNh6Cw==
+Date: Tue, 17 Mar 2026 15:56:44 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
+ luca.ceresoli@bootlin.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com
+Subject: Re: [PATCH i-g-t v9 05/49] lib/igt_kms: Add helper to wait for new
+ connectors
+Message-ID: <20260317155644.1d4ed9ab@kmaincent-XPS-13-7390>
+In-Reply-To: <20260316-unigraf-integration-v9-5-a01dffc3b0cb@bootlin.com>
+References: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
+ <20260316-unigraf-integration-v9-5-a01dffc3b0cb@bootlin.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fplane=5Fscali?=
- =?utf-8?q?ng=3A_Use_selective_modes_for_scaling_checks?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Mar 2026 14:50:23 -0000
-Message-ID: <177375902312.366776.8313687183240194965@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260316185218.700329-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20260316185218.700329-1-ramanaidu.naladala@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,200 +62,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2631832092946709886==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, 16 Mar 2026 17:17:26 +0100
+Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-== Series Details ==
+> Add list comparison utilities and a new function to wait for new
+> connectors to appear on the system.
+>=20
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+>  lib/igt_kms.c | 97
+> +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ lib/igt_kms.h=
+ |
+> 6 ++++ 2 files changed, 103 insertions(+)
+>=20
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index f0f27ccda9d8..b220de419a70 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -8322,3 +8322,100 @@ uint32_t igt_get_connector_id_from_mst_path(int
+> drm_fd, const void *mst_path)=20
+>  	return 0;
+>  }
+> +
+> +/**
+> + * array_contains() - Search an element in the array
+> + *
+> + * @array: Pointer to the array to search into
+> + * @array_len: Length of the array
+> + * @value: Value to search in the array
+> + *
+> + * Returns true if @array contains @value
+> + */
+> +static bool array_contains(const uint32_t *array, int array_len, uint32_t
+> value) +{
+> +	igt_assert(array_len =3D=3D 0 || array);
+> +
+> +	for (int i =3D 0; i < array_len; i++)
+> +		if (array[i] =3D=3D value)
+> +			return true;
+> +
+> +	return false;
+> +}
+> +
+> +/**
+> + * get_array_diff() - Compute and return the set difference between two
+> arrays
+> + *
+> + * @array_a: Pointer to the first array to compare
+> + * @array_a_len: Length of the first array
+> + * @array_b: Pointer to the second array to compare
+> + * @array_b_len: Length of the second array
+> + * @diff: Out pointer returning a array of items in @array_a but not
+> + *        in @array_b. Can be NULL to only count the elements.
+> + *
+> + * Returns the number of element which are in @array_a but not in @array=
+_b.
+> + */
+> +int
+> +get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t
+> *array_b, int array_b_len,
+> +	       uint32_t **diff)
+> +{
+> +	int diff_len =3D 0;
+> +
+> +	igt_assert(array_a_len =3D=3D 0 || array_a);
+> +	igt_assert(array_b_len =3D=3D 0 || array_b);
+> +
+> +	if (diff)
+> +		*diff =3D NULL;
+> +
+> +	for (int i =3D 0; i < array_a_len; i++) {
+> +		if (!array_contains(array_b, array_b_len, array_a[i])) {
+> +			if (diff) {
+> +				*diff =3D reallocarray(*diff, diff_len + 1,
+> sizeof(**diff));
+> +				igt_assert(*diff);
+> +				(*diff)[diff_len] =3D array_a[i];
+> +			}
+> +
+> +			diff_len++;
+> +		}
+> +	}
+> +
+> +	return diff_len;
+> +}
+> +
+> +/**
+> + * kms_wait_for_new_connectors() - Wait for new connector to appear
+> + *
+> + * @newly_connected: Out pointer returning the array of connectors curre=
+ntly
+> + *                   found connected
+> + * @already_connected: Input pointer to array of connectors previously
+> + *                     connected
+> + * @already_connected_count: Length of @already_connected
+> + * @drm_fd: DRM file descriptor
+> + *
+> + * Returns the number of connectors not in @already_connected and curren=
+tly
+> + * found connected.
+> + */
+> +int kms_wait_for_new_connectors(uint32_t **newly_connected,
+> +				const uint32_t *already_connected,
+> +				int already_connected_count, int drm_fd)
+> +{
+> +	int newly_connected_count;
+> +	struct timespec start, end;
+> +
+> +	igt_assert(newly_connected);
+> +	igt_assert(drm_fd);
 
-Series: tests/kms_plane_scaling: Use selective modes for scaling checks
-URL   : https://patchwork.freedesktop.org/series/163316/
-State : success
+Are you sure 0 can't be set as DRM file descriptor?
+With that fixed you can add my R-by.
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8806 -> IGTPW_14785
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14785 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [PASS][1] -> [DMESG-WARN][2] ([i915#13735]) +80 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-9:          [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-14:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - fi-cfl-8109u:       [PASS][9] -> [DMESG-WARN][10] ([i915#13735] / [i915#15673]) +49 other tests dmesg-warn
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-mtlp-8/igt@i915_selftest@live.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-mtlp-8/igt@i915_selftest@live.html
-    - bat-dg2-8:          [DMESG-FAIL][13] ([i915#12061]) -> [PASS][14] +1 other test pass
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-dg2-8/igt@i915_selftest@live.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-6:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8806 -> IGTPW_14785
-  * Linux: CI_DRM_18160 -> CI_DRM_18163
-
-  CI-20190529: 20190529
-  CI_DRM_18160: a25d8c583e1e52bde77d371081a7c3fcd0a2e820 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18163: b65472ae36d2a21ac0a1991618db1e9b09b1dcd0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14785: 14785
-  IGT_8806: 8806
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/index.html
-
---===============2631832092946709886==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: Use selective modes for scaling checks</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163316/">https://patchwork.freedesktop.org/series/163316/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8806 -&gt; IGTPW_14785</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14785 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +80 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) +49 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8806/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14785/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8806 -&gt; IGTPW_14785</li>
-<li>Linux: CI_DRM_18160 -&gt; CI_DRM_18163</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18160: a25d8c583e1e52bde77d371081a7c3fcd0a2e820 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18163: b65472ae36d2a21ac0a1991618db1e9b09b1dcd0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14785: 14785<br />
-  IGT_8806: 8806</p>
-
-</body>
-</html>
-
---===============2631832092946709886==--
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
