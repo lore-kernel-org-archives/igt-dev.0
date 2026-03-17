@@ -4,45 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C34D2FED9E4
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 15:46:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 361C0FED9E8
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 15:55:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7920810E6CA;
-	Tue, 17 Mar 2026 15:46:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C8F9810E6DA;
+	Tue, 17 Mar 2026 15:55:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="XnBDxJcS";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="bPfFXe3S";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 66C3110E62E
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 15:46:21 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E77A610E6DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 15:55:50 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 9B63FC5505C
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 15:46:43 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 6F5E01A2E05;
+ Tue, 17 Mar 2026 15:55:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7AB2C5FC9A;
- Tue, 17 Mar 2026 15:46:19 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 42EB95FC9A;
+ Tue, 17 Mar 2026 15:55:49 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id A685810450603; Tue, 17 Mar 2026 16:46:17 +0100 (CET)
+ with ESMTPSA id C3DA41045062E; Tue, 17 Mar 2026 16:55:46 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1773762379; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1773762948; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=5RXeZYgKTcJjtFzXbjljx94T2I8VTgzrbdwNYV9oQJ4=;
- b=XnBDxJcS09BbrfHgyvgQoE9SV2y23E9v7M0ZVGcOYXEtbEEVGV/3EuYQnYND9p9jIZ+VGW
- Zisb/Pg16hc3rtI1/CU2lgGjyaK89J2zmiXVymFIg8ly+sejww4u1nn3WApOFmbUEqB0IR
- aYXo0iEWgrXwkL9hk0C12Ki5gxKJ7twxmaN/2rvca5VtuQm6IrIOYE9tzUNA3vJLD+4Ps1
- J4csnsh1QlfXPpcpDl/wI08xp2l+MPxZHNeCgZ3Wssi7jkMhv54VpBKZthOko1k7pPTMBk
- X8RyM9s+59F7h88jpL4b3fKtMwwQDro/oy0M1mGqjXOI4n3r6d8Hkn8wXNEsxw==
-Date: Tue, 17 Mar 2026 16:46:16 +0100
+ bh=Vaygu8ttdX82GhQq5eRJYJ6Qhjs0odyUR8WhBRqwmCk=;
+ b=bPfFXe3SItoNz4Fivsoq3q80rlvGpirK8MrGEdBkehhQ+yvJ2MxN5uhz300jCzn35w85ex
+ mFfnIhucgvVpaLqN0tHTAcyYV/rTd9+e+Qc03R6sjjjgZ04Dxf6SsvUQMq5bUvtAN8m3GI
+ anTDgGwaSLWj3W3d8PmO8O3/3IJIepEBH8PkqZTzVDc76W2gm5KmO03cIDZwuQb4IhjNFw
+ syC/lxkHxy8XNqYsHXfAINznMbVHVQL2DxGPRpoFp8TWG7/p8bTh1sgn6bBJ+zMUQp/jWN
+ +GGmEwd15uqQycZ+kHn9SBFx/C8Rt/OrLTkmrMUuqFXk8fjXP7wHWgnNKewVtA==
+Date: Tue, 17 Mar 2026 16:55:45 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v9 31/49] tests/unigraf: Add basic unigraf tests
-Message-ID: <20260317164616.1ec0f5a3@kmaincent-XPS-13-7390>
-In-Reply-To: <20260316-unigraf-integration-v9-31-a01dffc3b0cb@bootlin.com>
+Subject: Re: [PATCH i-g-t v9 42/49] lib/igt_dp: Create generic helpers for
+ DP information
+Message-ID: <20260317165545.49adf349@kmaincent-XPS-13-7390>
+In-Reply-To: <20260316-unigraf-integration-v9-42-a01dffc3b0cb@bootlin.com>
 References: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
- <20260316-unigraf-integration-v9-31-a01dffc3b0cb@bootlin.com>
+ <20260316-unigraf-integration-v9-42-a01dffc3b0cb@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -64,63 +65,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 16 Mar 2026 17:17:52 +0100
+On Mon, 16 Mar 2026 17:18:03 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> Adds two tests to validate unigraf communication.
->=20
-> unigraf-connect checks if the device is connected and if the EDID is
-> properly applied.
->=20
-> ungiraf-reconnect checks if the device can be connected/reconnected
-> using SST and MST configurations.
+> With the introduction of unigraf tests, there is no reason to limit the
+> implementation to intel. Create easly extendable generic functions to
+> help supporting multiple GPU.
 >=20
 > Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > ---
->  tests/meson.build                    |   4 +
->  tests/unigraf/meson.build            |  12 +++
->  tests/unigraf/unigraf_connectivity.c | 138
-> +++++++++++++++++++++++++++++++++++ 3 files changed, 154 insertions(+)
+>  lib/igt_dp.c    | 177
+> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ lib/igt_dp.h    |
+> 30 ++++++++++ lib/meson.build |   1 +
+>  3 files changed, 208 insertions(+)
 >=20
-> diff --git a/tests/meson.build b/tests/meson.build
-> index cecb4a8ae34a..4d3399d0eff4 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -475,6 +475,10 @@ foreach prog : intel_progs
->  	endif
->  endforeach
-> =20
-> +if libtsi.found()
-> +	subdir('unigraf')
-> +endif
-> +
->  if chamelium.found()
->  	foreach prog : chamelium_progs
->  		testexe =3D executable(prog,
-> diff --git a/tests/unigraf/meson.build b/tests/unigraf/meson.build
+> diff --git a/lib/igt_dp.c b/lib/igt_dp.c
 > new file mode 100644
-> index 000000000000..4ef8c32151e4
+> index 000000000000..a9c9eb3efede
 > --- /dev/null
-> +++ b/tests/unigraf/meson.build
-> @@ -0,0 +1,12 @@
-> +unigraf_progs =3D [
-> +	'unigraf_connectivity',
-> +]
-> +
-> +foreach prog : unigraf_progs
-> +	test_executables +=3D executable(prog, prog + '.c',
-> +				       dependencies : test_deps,
-> +				       install_dir : unigrafdir,
-> +				       install_rpath : unigraf_rpathdir,
-> +				       install : true)
-> +	test_list +=3D join_paths('unigraf', prog)
-> +endforeach
-> diff --git a/tests/unigraf/unigraf_connectivity.c
-> b/tests/unigraf/unigraf_connectivity.c new file mode 100644
-> index 000000000000..b35149a4de9a
-> --- /dev/null
-> +++ b/tests/unigraf/unigraf_connectivity.c
-> @@ -0,0 +1,138 @@
+> +++ b/lib/igt_dp.c
+> @@ -0,0 +1,177 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
 > + * Copyright =C2=A9 2026 Google
@@ -130,174 +94,201 @@ Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 > + */
 > +
 > +#include <stdint.h>
-> +#include <stdlib.h>
-> +#include <unistd.h>
-> +#include <xf86drmMode.h>
 > +
 > +#include "drmtest.h"
-> +#include "igt_aux.h"
+> +#include "i915/i915_dp.h"
 > +#include "igt_core.h"
 > +#include "igt_kms.h"
-> +#include "unigraf/unigraf.h"
+> +#include "igt_dp.h"
 > +
 > +/**
-> + * TEST: unigraf connectivity
-> + * Category: Core
-> + * Description: Testing connectivity with a unigraf device
+> + * igt_dp_get_current_link_rate: Get current link rate on a display port
+> + * @drm_fd: DRM file descriptor
+> + * @output: igt_output_t object representing the display port
 > + *
-> + * SUBTEST: unigraf-connect-edid
-> + * Description: Verify that the unigraf device is properly connected to =
-the
-> DUT
-> + *              and that the correct EDID is detected and read.
-> + *
-> + * SUBTEST: unigraf-connect-mst
-> + * Description: Ensure that the DUT can correctly detect and handle the
-> unigraf device
-> + *              when it is configured to operate in MST mode.
+> + * Returns:
+> + * The current link rate in kb/s, or a negative error code on failure.
 > + */
-> +
-> +IGT_TEST_DESCRIPTION("Test basic unigraf connectivity");
-> +int igt_main()
+> +int igt_dp_get_current_link_rate(int drm_fd, igt_output_t *output)
 > +{
-> +	int drm_fd;
-> +
-> +	igt_fixture() {
-> +		drm_fd =3D drm_open_driver_master(DRIVER_ANY);
-> +	}
-> +
-> +	igt_describe("Make sure that the unigraf device is connected to the
-> DUT and EDID is properly detected");
-> +	igt_subtest("unigraf-connect-edid") {
-> +		drmModePropertyBlobPtr edid_blob =3D NULL;
-> +		struct igt_display display;
-> +		uint64_t edid_blob_id;
-> +		igt_output_t *output;
-> +		uint32_t unigraf_edid_len;
-> +		void *unigraf_edid;
-> +		bool found =3D false;
-> +
+> +	if (is_intel_device(drm_fd))
 > +		/*
-> +		 * Sleep are required to allow hardware to configure/detect
-> the current
-> +		 * configuration
+> +		 * i915_dp_get_current_link_rate returns the value in tens
+> of kb/s because
+> +		 * that what the kernel uses. Convert it to kb/s to have a
+> sane unit...
 > +		 */
-> +		unigraf_require_device(drm_fd);
-> +		unigraf_hpd_deassert();
-> +		sleep(igt_default_display_detect_timeout());
+> +		return i915_dp_get_current_link_rate(drm_fd, output) * 10;
+> +
+> +	igt_assert_f(false, "Current drm device is not able to report used
+> link rate\n");
+> +	return -EINVAL;
 
-The default display detect timeout is 10 second so you are waiting 10s here?
+Just wondering, shouldn't you use igt_skip() here, to skip the specific test
+without exiting the test process?
+Same question for the other igt_assert of this patch.
 
-> +		unigraf_set_sst();
-> +		unigraf_hpd_assert();
-> +		sleep(igt_default_display_detect_timeout());
-
-10 more seconds?
-
-> +		igt_display_require(&display, drm_fd);
-> +		sleep(igt_default_display_detect_timeout());
-
-again!
-
-Does the hardware so slow that it need 30s to configure and detect the
-configuration?
-
-> +
-> +		unigraf_edid =3D unigraf_read_edid(0, &unigraf_edid_len);
-> +
-> +		for_each_connected_output(&display, output) {
-> +			if (output->config.connector->connector_type =3D=3D
-> +			    DRM_MODE_CONNECTOR_DisplayPort) {
-> +				igt_assert(kmstest_get_property(drm_fd,
-> +
-> output->config.connector->connector_id,
-> +
-> DRM_MODE_OBJECT_CONNECTOR, "EDID",
-> +								NULL,
-> &edid_blob_id, NULL));
-> +				edid_blob =3D drmModeGetPropertyBlob(drm_fd,
-> edid_blob_id);
-> +				if (!edid_blob)
-> +					continue;
-> +
-> +				if (!memcmp(unigraf_edid, edid_blob->data,
-> +					    min(edid_blob->length,
-> unigraf_edid_len)))
-> +					found =3D true;
-> +
-> +				drmModeFreePropertyBlob(edid_blob);
-> +
-> +				if (found)
-> +					break;
-> +			}
-> +		}
-> +		igt_assert_f(found, "No output with the correct EDID was
-> found\n"); +
-> +		free(unigraf_edid);
-> +	}
-> +
-> +	igt_describe("Make sure that the unigraf device can be used as a MST
-> device");
-> +	igt_subtest("unigraf-connect-mst") {
-> +		int newly_connected_count, already_connected_count, diff_len;
-> +		uint32_t *newly_connected =3D NULL, *already_connected =3D NULL,
-> *diff =3D NULL;
-> +		int max_count;
-> +
-> +		unigraf_require_device(drm_fd);
-> +		max_count =3D unigraf_get_mst_stream_max_count();
-> +
-> +		unigraf_hpd_deassert();
-> +
-> +		already_connected_count =3D
-> igt_get_connected_connectors(drm_fd, &already_connected); +
-> +		igt_debug("Already connected count: %d\n",
-> already_connected_count); +
-> +		// i =3D 0 is SST so we need to process max_count + 1 streams
-> +		for (int i =3D 0; i <=3D max_count; i++) {
-> +			unigraf_hpd_deassert();
-> +			// Let the hardware detect the new state
-> +			sleep(igt_default_display_detect_timeout());
-
-10s?
-
-> +
-> +			unigraf_set_mst_stream_count(max(i, 1));
-> +			if (!i)
-> +				unigraf_set_sst();
-> +			else
-> +				unigraf_set_mst();
-> +
-> +			unigraf_hpd_assert();
-> +			// Let the hardware detect the new state
-> +			sleep(igt_default_display_detect_timeout());
-
-10s?
-
-> +
-> +			newly_connected_count =3D
-> kms_wait_for_new_connectors(&newly_connected,
-> +
-> already_connected,
-> +
-> already_connected_count,
-> +
-> drm_fd); +
-> +			diff_len =3D get_array_diff(newly_connected,
-> newly_connected_count,
-> +						  already_connected,
-> already_connected_count, &diff); +
-> +			igt_assert_f(diff_len =3D=3D max(i, 1),
-> +				     "Invalid connected connector count,
-> expected %d found %d\n",
-> +				     max(i, 1), diff_len);
-> +		}
-> +	}
 > +}
->=20
+> +
+> +/**
+> + * igt_dp_get_current_lane_count: Get current lane count on a display po=
+rt
+> + * @drm_fd: DRM file descriptor
+> + * @output: igt_output_t object representing the display port
+> + *
+> + * Returns:
+> + * The number of active lanes, or a negative error code on failure.
+> + */
+> +int igt_dp_get_current_lane_count(int drm_fd, igt_output_t *output)
+> +{
+> +	if (is_intel_device(drm_fd))
+> +		return i915_dp_get_current_lane_count(drm_fd, output);
+> +
+> +	igt_assert_f(false, "Current drm device is not able to report used
+> lane count\n");
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * igt_dp_get_max_link_rate: Get maximum link rate on a display port
+> + * @drm_fd:		DRM file descriptor
+> + * @output:		igt_output_t object representing the display port
+> + *
+> + * Returns:
+> + * The maximum link rate in kb/s, or a negative error code on failure.
+> + */
+> +int igt_dp_get_max_link_rate(int drm_fd, igt_output_t *output)
+> +{
+> +	if (is_intel_device(drm_fd))
+> +		/*
+> +		 * i915_dp_get_max_link_rate returns the value in tens of
+> kb/s because
+> +		 * that what the kernel uses. Convert it to kb/s to have a
+> sane unit...
+> +		 */
+> +		return i915_dp_get_max_link_rate(drm_fd, output) * 10;
+> +
+> +	igt_assert_f(false, "Current drm device is not able to report max
+> link rate\n");
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * igt_dp_get_max_supported_rate: Get maximum supported link rate on a
+> display port
+> + * @drm_fd: DRM file descriptor
+> + * @output: igt_output_t object representing the display port
+> + *
+> + * Returns:
+> + * The maximum supported link rate in kb/s, or a negative error code on
+> failure.
+> + */
+> +int igt_dp_get_max_supported_rate(int drm_fd, igt_output_t *output)
+> +{
+> +	if (is_intel_device(drm_fd))
+> +		/*
+> +		 * i915_dp_get_max_supported_rate returns the value in tens
+> of kb/s because
+> +		 * that what the kernel uses. Convert it to kb/s to have a
+> sane unit...
+> +		 */
+> +		return i915_dp_get_max_supported_rate(drm_fd, output) * 10;
+> +
+> +	igt_assert_f(false, "Current drm device is not able to report max
+> link rate\n");
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * igt_dp_get_max_lane_count: Get maximum lane count on a display port
+> + * @drm_fd: DRM file descriptor
+> + * @output: igt_output_t object representing the display port
+> + *
+> + * Returns:
+> + * The maximum number of lanes, or a negative error code on failure.
+> + */
+> +int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
+> +{
+> +	if (is_intel_device(drm_fd))
+> +		return i915_dp_get_max_lane_count(drm_fd, output);
+> +
+> +	igt_assert_f(false, "Current drm device is not able to report max
+> lane count\n");
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * igt_dp_force_link_retrain: Force link retraining on a display port
+> + * @drm_fd:		DRM file descriptor
+> + * @output:		igt_output_t object representing the display port
+> + * @retrain_count:	Number of times to retrain the link
+> + */
+> +void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int
+> retrain_count) +{
+> +	if (is_intel_device(drm_fd)) {
+> +		i915_dp_force_link_retrain(drm_fd, output, retrain_count);
+> +		return;
+> +	}
+> +
+> +	igt_assert_f(false, "Current drm device does not support link
+> retraining\n"); +}
+> +
+> +/**
+> + * igt_dp_get_pending_retrain: Get pending link retrain count
+> + * @drm_fd:		DRM file descriptor
+> + * @output:		igt_output_t object representing the display port
+> + *
+> + * Returns:
+> + * The number of pending retrain operations, or a negative error code on
+> failure.
+> + */
+> +int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
+> +{
+> +	if (is_intel_device(drm_fd))
+> +		return i915_dp_get_pending_retrain(drm_fd, output);
+> +
+> +	igt_assert_f(false, "Current drm device does not support pending
+> retrain count checking\n");
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * igt_dp_wait_pending_retrain: Wait for pending link retrain operations=
+ to
+> complete
+> + * @drm_fd:		DRM file descriptor
+> + * @output:		igt_output_t object representing the display port
+> + *
+> + * This function waits for any pending link retrain operations to comple=
+te
+> on the
+> + * specified display port. It polls the debugfs interface for the pending
+> retrain
+> + * count until it reaches zero, indicating all retrain operations have
+> completed.
+> + */
+> +void igt_dp_wait_pending_retrain(int drm_fd, igt_output_t *output)
+> +{
+> +	double timeout =3D igt_default_display_detect_timeout();
+> +	struct timespec start, now;
+> +	double elapsed;
+> +
+> +	igt_assert_eq(igt_gettime(&start), 0);
+> +
+> +	while (1) {
+> +		if (!igt_dp_get_pending_retrain(drm_fd, output))
+> +			return;
+> +
+> +		igt_assert_eq(igt_gettime(&now), 0);
+> +		elapsed =3D (now.tv_sec - start.tv_sec) +
+> +					(now.tv_nsec - start.tv_nsec) / 1e9;
+> +
+> +		if (elapsed >=3D timeout)
+> +			break;
 
+igt_time_elapsed() ?
 
-
+Regards,
 --=20
 K=C3=B6ry Maincent, Bootlin
 Embedded Linux and kernel engineering
