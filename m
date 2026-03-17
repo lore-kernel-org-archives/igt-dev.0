@@ -4,98 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E16FED9FE
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 17:52:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEDBBFEDA07
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 18:48:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 77E7010E17F;
-	Tue, 17 Mar 2026 17:52:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E56710E363;
+	Tue, 17 Mar 2026 18:48:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="yR1nBaVt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iSKmw3wT";
 	dkim-atps=neutral
-Received: from PH8PR06CU001.outbound.protection.outlook.com
- (mail-westus3azon11012001.outbound.protection.outlook.com [40.107.209.1])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35E1E10E641
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 17:52:44 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tUeM9P4wLf6WEDXbPf98AijBFGBk/JP3mHflok9j4J5sv352noXmwfYFNK5b1aFw/ZxpgvOVF7V5m6pqaU1bO+MF5J3klublvBLuUk0vO0xSCrT2ZR+IS1/OVCFLl52OVimuD5ZHFaH8fC/oNbA1alYBPb8Aend12VzSjLs/mMB8hNy3bjiAsRmNaB+8H+rYtzkGb+OPaeq30s3QaOie+ZNO13NXh4Vw0KsEAfNHgyJqf6SvvTnb6k2/D4YWedsInEGaV0iLZM4kA17+osZN2seC22D3hBoHTjmqfiBVt9bZXFcKTiSfrDTYI2Np/nBJXOnUdkKqamy1vWuvOtalIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FUziBPmIdQnFdl6Uaq8YDFav80y/1RrIiBoefaXij2w=;
- b=XkZSbuZv9oEx2sTYe/9GUuHECur63ChTgJfoTSAWEV+kecvMN2ZmWvrffmjRT0mdmP4pTbquDy62+0PBRl0E7wvs16MO7PYnsWQYagxKpuf4Q9wkOkw6h2A3JSz+BqNRkyDmfbiGaTixLl9wBTMGnTgT17jn4Ud/tDLQ1hogBnFUkon5OWsHLd3jYhdvDl8kf3m3D/UjHQ6yghowlO3Jvby5WqVpkUa917ujD/E42egigB04dWoS4iGTHCNo9+eXV1bfVNvXYc9YOmLUWHQS5aixkepGsP3cHOjnL1v950Jfw/T1xsV9PSupmVJZbkT3SHwb2gWk9hsfA+HRROufxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FUziBPmIdQnFdl6Uaq8YDFav80y/1RrIiBoefaXij2w=;
- b=yR1nBaVtijk+HIRBK9QcdiR1W/VFYI9hNyETwCjQgcn64f6urRU7fGF2TmyQdwqFLPcP+BQG1ij7WARV3vVcS0Qogdf17Pb69izXBDwwuiQ6Ss61p7pcc6fXnmn4e6qJYV1ewkO4JMvl4whIv0oXqdZSDQHNJ3mD6uV+wG2+3ro=
-Received: from CH0PR03CA0291.namprd03.prod.outlook.com (2603:10b6:610:e6::26)
- by SA1PR12MB9515.namprd12.prod.outlook.com (2603:10b6:806:45a::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Tue, 17 Mar
- 2026 17:52:35 +0000
-Received: from CH1PEPF0000AD80.namprd04.prod.outlook.com
- (2603:10b6:610:e6:cafe::d9) by CH0PR03CA0291.outlook.office365.com
- (2603:10b6:610:e6::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.27 via Frontend Transport; Tue,
- 17 Mar 2026 17:52:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH1PEPF0000AD80.mail.protection.outlook.com (10.167.244.90) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.17 via Frontend Transport; Tue, 17 Mar 2026 17:52:34 +0000
-Received: from kylin.lan (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 17 Mar
- 2026 12:52:33 -0500
-From: Alex Hung <alex.hung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: <wayne.lin@amd.com>, <Mark.Broadworth@amd.com>, Alex Hung
- <alex.hung@amd.com>
-Subject: [PATCH 3/3] lib/igt_hdr: Fix EOTF bit flag checking
-Date: Tue, 17 Mar 2026 11:51:32 -0600
-Message-ID: <20260317175136.3754576-3-alex.hung@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260317175136.3754576-1-alex.hung@amd.com>
-References: <20260317175136.3754576-1-alex.hung@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA8AF10E5DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 18:48:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1773773282; x=1805309282;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=hutnlv6BVvfTrDSSqUHyq0mPgEeHPMCxf33KEySYPvY=;
+ b=iSKmw3wTW/7ZyV35Glw2426kzm4gmrTpkyzLsN/HdIw26KfQDtrjjGNV
+ W6Wzyo6oeGvptW9qwnYm6Lq3EfCyHIlb+a4ONc2m99HwEwj54lPLU/a/F
+ wmEx9/vogsMT1gtUkljTEmeZwUdfMbFU0qDr6NND0SY5XG88Ol5AE5ZWM
+ EPuSEz+Ryz4rIAJfar51aXflrmYRnJHb+dDb5KqhsUisT3HwCswCLxcJl
+ rokwmqmVWCRYDiq5gs2PWwWNqxlv5ehMW2THuEQYEVY10JSqBaiTBpowJ
+ ouiGqBgoB3jschN1usiblRc/zusf7q7OUidahUi3nQdcfyAJFAL2uvbsj Q==;
+X-CSE-ConnectionGUID: XIiVg5GvTfKd/FSkj2VfLg==
+X-CSE-MsgGUID: pvhFS2PnTIaHeejnu04ggg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="92386810"
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; d="scan'208";a="92386810"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2026 11:48:02 -0700
+X-CSE-ConnectionGUID: ZW8yD1RBSgmaC7UIIcGUOg==
+X-CSE-MsgGUID: 7aWu4mw7QaObIfORUJGKtQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; d="scan'208";a="222411168"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO mwauld-desk.intel.com)
+ ([10.245.245.147])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2026 11:48:01 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH i-g-t] tests/xe/xe_fault_injection: add split/skip bind
+ coverage
+Date: Tue, 17 Mar 2026 18:47:36 +0000
+Message-ID: <20260317184735.67051-2-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD80:EE_|SA1PR12MB9515:EE_
-X-MS-Office365-Filtering-Correlation-Id: 544ec70c-b41b-40c6-8bdb-08de844df817
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|36860700016|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: Qwv4F+0UKiugWkpbLbwKF2q1YvRMN4NMnxmiJoRbUs2V+E0KaR4VCOgWKXLtGdNiwI7X4GntiCtVLui/FiID71dM6K9FBdfTv8wydMlMmWKpVW7OV5K9cv6IuNcjD1izqeFL25yMn4ysD3HlvFVpfKft9MxSFrCzFa/9qtKyd43nUkSfpp0+8rc8A198+/A8vIA8QhPjE4i/OqttKbPSYdGNipyusjdD+RGfbFU5Vak/eZkUnHSy49Jd7wP+PhUqw0SRiDc6Z1E19Xg/cKp5cYR1ZaYU/U7zmty4a5JzHwCcIqtreo51gGUHhheeI8lLbbLUEwQyp8vg9ttSqHBmXVCB10/YzISgIwjdaekg8Ir2oJLBpAQOaRi/q5KQH/VpSt6wGdQ/1G7soWdxqiLP73DU0ZeXrmp3FwL8DJonPTSjkBrUs3fh2UN5GAjp0JBcsrHCO5isQ2DJlivbUceMnsnX/+x4iEulc9m6qwtRUSe3EjLUFIp8P1YaRFVa0KRG7alsvj9Iu6pPFQlC7Aj6AR+X6pVy9X1RccY5CapAEGNNxxzd3S/xs58r/WD6RkEeSx6FBlAeKVKuYezTeoNWmFbCFMD6CUt5+oLn4d0jSvylSqg+EU7rT8MIQ5zYEF+QbBudEY0ITpEKE8TUwkPX6EDtPeMCyHpqZ/jVZ8sCLHLIDYk3KDqbKPy1nF4fHKtn/FO/skx47aBxQK6Qhc/v2EH1duKUWgGgsZEGbGouLR+HQUbTi4tWJG8clSOjco3+reRg8fU4YVBJPnYCkmNfdg==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(56012099003)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: a9p1nvOiY++sLML134vC1nut6Jpzk8NJGUKgIOqwV7P+f+vxaDWPkUnTXG8ZrF+kkKNRUPzHRBXqQrKl12xq4GQdixJu+DAaNugcZ8dIErEVn4YYL/deeOVJA7P3TQPq5/YtpI8OFIz+3TDkC6EAA9jZ0kemKTIJN/aEW51mylFp+RIOYO+shTIchlsHjOOFy8wXvLHeEymmJWsg220fzgdJdfAunOOa3WpUHw21axYPE0sDxVP4VQKdzkrA9+NEINlffXEFYM8z4f73tgmHAdYdkOdAI1/ZAMCqsgU77Fc5vJKZXC84UJESjtiYqYXcOP0odvtAroa9r6reZW4t+c1mfETyouDISSOa79s+Jdz21gz4WmrwTJGzvbHXl6BWAphcRj8F/KnR2s4mQFNkO8tW1ehGvdb3cM5V1hqbL5XZ8Qgmu2mKYJ9c7Aio0zsu
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 17:52:34.2286 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 544ec70c-b41b-40c6-8bdb-08de844df817
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD80.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9515
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,29 +67,123 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-EOTF values are bit positions, not masks. Use (1 << value) to create
-proper bit masks when checking HDR support in CTA-861 EDID blocks.
+We were missing something for having to unwind a vector of binds where
+there is splitting, as well as skipping.
 
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+Should explode with a dmesg WARN without the required kernel fix.
+
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7602
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
 ---
- lib/igt_hdr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/intel/xe_fault_injection.c | 87 ++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
 
-diff --git a/lib/igt_hdr.c b/lib/igt_hdr.c
-index 6368ae78b..e1bd69087 100644
---- a/lib/igt_hdr.c
-+++ b/lib/igt_hdr.c
-@@ -151,8 +151,8 @@ bool igt_hdr_cta_block_has_hdr(const char *edid_ext)
- {
- 	if ((((edid_ext[0] & 0xe0) >> 5 == USE_EXTENDED_TAG) &&
- 	     (edid_ext[1] == HDR_STATIC_METADATA_BLOCK)) &&
--	    ((edid_ext[2] & HDMI_EOTF_TRADITIONAL_GAMMA_HDR) ||
--	     (edid_ext[2] & HDMI_EOTF_SMPTE_ST2084)))
-+	    ((edid_ext[2] & (1 << HDMI_EOTF_TRADITIONAL_GAMMA_HDR)) ||
-+	     (edid_ext[2] & (1 << HDMI_EOTF_SMPTE_ST2084))))
- 			return true;
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 4f4a7922c..c69303ba6 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -478,6 +478,89 @@ vm_bind_fail(int fd, const char pci_slot[], const char function_name[])
+ 	igt_assert_eq(simple_vm_bind(fd, vm), 0);
+ }
  
- 	return false;
++static int
++simple_vm_bind_null(int fd, uint32_t vm)
++{
++	struct drm_xe_sync syncobj = {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = syncobj_create(fd, 0),
++	};
++	struct drm_xe_vm_bind bind = {
++		.vm_id = vm,
++		.num_binds = 1,
++		.bind.range = SZ_2G,
++		.bind.addr = 0,
++		.bind.op = DRM_XE_VM_BIND_OP_MAP,
++		.bind.pat_index = intel_get_pat_idx_uc(fd),
++		.bind.flags = DRM_XE_VM_BIND_FLAG_NULL,
++		.num_syncs = 1,
++		.syncs = (uintptr_t)&syncobj,
++	};
++
++        return igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
++}
++
++static int
++vm_unmap_map_split_vector_null(int fd, uint32_t vm)
++{
++	struct drm_xe_sync syncobj = {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = syncobj_create(fd, 0),
++	};
++        struct drm_xe_vm_bind_op ops[] = {
++            {
++                .range = SZ_2G,
++                .addr = 0,
++                .op = DRM_XE_VM_BIND_OP_MAP,
++                .pat_index = intel_get_pat_idx_wb(fd),
++                .flags = DRM_XE_VM_BIND_FLAG_NULL,
++            },
++            {
++                .range = SZ_2M,
++                .addr = SZ_1G - SZ_2M,
++                .op = DRM_XE_VM_BIND_OP_UNMAP,
++            },
++        };
++        struct drm_xe_vm_bind bind = {
++		.vm_id = vm,
++		.num_binds = sizeof(ops)/sizeof(struct drm_xe_vm_bind_op),
++		.vector_of_binds = (uintptr_t)&ops,
++		.num_syncs = 1,
++		.syncs = (uintptr_t)&syncobj,
++	};
++
++	return igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
++}
++/**
++ * SUBTEST: vm-bind-split-unwind-fail-%s
++ * Description: inject an error in function %arg[1] used in vm bind IOCTL
++ *		to make it fail
++ * Functionality: fault
++ *
++ * arg[1]:
++ * @vm_bind_ioctl_ops_create:		vm_bind_ioctl_ops_create
++ * @vm_bind_ioctl_ops_execute:		vm_bind_ioctl_ops_execute
++ * @xe_pt_update_ops_prepare:		xe_pt_update_ops_prepare
++ * @xe_pt_update_ops_run:		xe_pt_update_ops_run
++ * @xe_vma_ops_alloc:			xe_vma_ops_alloc
++ * @xe_sync_entry_parse:		xe_sync_entry_parse
++ */
++static void
++vm_bind_split_unwind_fail(int fd, const char pci_slot[], const char function_name[])
++{
++	uint32_t vm = xe_vm_create(fd, 0, 0);
++
++	igt_assert_eq(simple_vm_bind_null(fd, vm), 0);
++
++	/* See: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7602 */
++	injection_list_add(function_name);
++	set_retval(function_name, INJECT_ERRNO);
++	igt_assert(vm_unmap_map_split_vector_null(fd, vm) != 0);
++	injection_list_remove(function_name);
++}
++
+ /**
+  * SUBTEST: oa-add-config-fail-%s
+  * Description: inject an error in function %arg[1] used in oa add config IOCTL to make it fail
+@@ -644,6 +727,10 @@ int igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 		igt_subtest_f("vm-bind-fail-%s", s->name)
+ 			vm_bind_fail(fd, pci_slot, s->name);
+ 
++	for (const struct section *s = vm_bind_fail_functions; s->name; s++)
++		igt_subtest_f("vm-bind-split-unwind-fail-%s", s->name)
++			vm_bind_split_unwind_fail(fd, pci_slot, s->name);
++
+ 	for (const struct section *s = exec_queue_create_fail_functions; s->name; s++)
+ 		igt_subtest_f("exec-queue-create-fail-%s", s->name)
+ 			xe_for_each_engine(fd, hwe)
 -- 
-2.43.0
+2.53.0
 
