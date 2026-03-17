@@ -4,152 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDA11F506CF
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 05:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FB51F3029A
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Mar 2026 05:56:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 80DDD10E2B2;
-	Tue, 17 Mar 2026 05:41:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FFBF10E0E3;
+	Tue, 17 Mar 2026 05:56:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gRbw2SXV";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="S0oYw2ur";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9787310E098
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 05:41:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773726081; x=1805262081;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=hk8mDKGRcUgdaB6XdEMHyL6PCBU68p/3G2zDB/Grltk=;
- b=gRbw2SXVQ/EIXLvefmpFxlkbX6UZ3Jutb1MgMx9B7CA7QE0XxOxPexHo
- HtiG/CqpsBIJPucTx2yOWD91TzVZreWBvOAdqGafhtrPejIykebbq+3vK
- kIe5Y2KvI8l0D0gEbVcXFF3fWsQmwqnqvR3JVHkPwtTDhtwtlDyy028+/
- 0Y4UxrcwXn59O6W+EWRPGZ1vVZqw2Ji61g9s1WSumhHnSjBomugNZh0MZ
- PpeIiNGVAcrE0Lk5Fk2aDah7xu1SpqGsRxxHafFpsvHOxYKJWUyG5Gf1x
- xWQRVIIj6JAbHd4XWDkIRtULSOd7fWqhbCXDN+2C5u1iSU6blV7cKjyNC g==;
-X-CSE-ConnectionGUID: Rg3dYWCQSzCdfpihhz2TtQ==
-X-CSE-MsgGUID: FBCsx7voRH++lnhytuNhXg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="85831076"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="85831076"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 22:40:35 -0700
-X-CSE-ConnectionGUID: QDc7kTlEQFaRsywPlxB1Cw==
-X-CSE-MsgGUID: Pz3Je3C9QbqUeKepzScJcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; d="scan'208";a="227123865"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Mar 2026 22:40:35 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 16 Mar 2026 22:40:34 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 16 Mar 2026 22:40:34 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.45) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 16 Mar 2026 22:40:33 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com
+ (mail-eastusazon11012040.outbound.protection.outlook.com [52.101.53.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F0DA10E0E3
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2026 05:56:27 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DklPNFuxhsbliqXdUIYgCbnFZCKVs0kjH5NoPGCb+GVuXDEYtSc38GPUdFJ6SVeFZ6J91nEeDUG1I0lBgQ7dR+v34vrmLxN/Z2NoDcXXcfnqhI6F1S0KqfJPPUXgebTCg3E2si6yMhNxZ4YBWT8Ca96mq7RXfT9EaqGeBGfxvfz6G7pvEhJK+Wl1PmmRYBq/xvRuYzWz5NBhyDQVRGCnQMejA0p8zvxpiURFjIgARmAHowJ1SExa+F9Twy3x1wzn0GtqR+s1uo0X1Hnkd51oLanmm8EqVGBS50hyr3aXBzGaCbriK30baQMIjp0Vp4wehrMiIcGF0zerBj/mYleZwQ==
+ b=HuLJrPYNNCUWSJlAdT5MQ4aOVT5rMD/qxb603Mt6xZbz720yFG6SZuZoWfUZigT/ePZ+si/oTsFS4h0gVrWgaIH8nDLeG3vrHOM89FYXYo42Z2muo8CxCEHlVYjlDsqyp024ox95wG6UmYN9JvWb56wiDGsmbZacPLeu0NmagynwEAfiI8r0SUs6MqV8TAxeQFPZW+Y9w2CLoFXG2wzE+VWmhNOUanhrdCcTXGlA/SyXgMsW8cJ4EOtHg5tfBN36UppSJ3qq2CAfc1ckTmifW9HR3KyT3GIR4hwkv0vDLrObtaAt0M6Aqj8tOpdl1xYpqIrWeS1m+ASPE+UbgUrffg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cjGMIsIZ7Cs+jOccYp/zZHx/1gRUxgJ+kv7LTmdsF6o=;
- b=bJn7wGsAXRJWvF9hz+U706eCD17/8FZ6+Jo8GCCkgFt38szfJvm4X7soBzpXMy5wUbJ7lsDR5X8A63Faz7DSJtEltiSHNMTNG0xezv9c/c85bHd1Cwg4cujo7YDlNmBdfeHr1tFyD6i73nv1LHVegT+/YwSPqqu8O4nR/zMjQtFYEdIk67ObWqzl99iVoX6jee0YZ5z/zA+4qUhG+ir2luUfWQttKCvHX/DYHQA0NMHNgKb15BG2J56MTP3AjaMnck621jjwrtOo40hQX0AOf4LuOgQ9xJWvrT0DxxM9C6jcg3aXDvr54Xdljt78REFwUHIiIH/hObsS7b96GTj30Q==
+ bh=8rl3+97RJwaMUmu0CbHlI3hrQLEbPFY86FjbcI4D8jg=;
+ b=VMxsK8Y+P4MyNjZ+K+Ur/ZF3Igd+fgpZ9zUQgmza+aG1fVh++99YYyYbf/h50IMDl21JrxBgL3M1bJvM5xepBt7Z4I1mQKbOMv0WSqGqxISGh5C7oEusGvsAvwSnOsGTrwm6hlrL89GgBncmeG+P0eBX4JFJT5eOhbja2+WZQLiBvuaURASaYEBkqRc2hNYRvICdre9sNPPbHxB2nz6GGadYLB3gzxlYtdU81lDP+IhFJAd2t7uFq2MWSjvbBcJYXutzwPRIt1EyJUwdSkeuiD+HrfSYoqefyp23P6nBhB2QnoaCpnUCV9f85tveZ/ak/XWlYkYm/KMHEU+L8zwDTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6796.namprd11.prod.outlook.com (2603:10b6:510:1ba::6)
- by MN6PR11MB8103.namprd11.prod.outlook.com (2603:10b6:208:473::10)
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8rl3+97RJwaMUmu0CbHlI3hrQLEbPFY86FjbcI4D8jg=;
+ b=S0oYw2urcLuOHtav0pYokim65jJxqtz5Rkl6mQEsecFL99uMpaOR9/Mt8+et/huTcHLNiyf+dK6Z5svJdjBWwJ3sDLvcYscPuuEccleh99/ijaZOLkUhvI98KDUxKQ48M4ZThOlu2zVkFKpj559Mo+gxKwHdO2vN9HuiOVy0/+4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB6611.namprd12.prod.outlook.com (2603:10b6:510:211::11)
+ by IA1PR12MB8585.namprd12.prod.outlook.com (2603:10b6:208:451::17)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.17; Tue, 17 Mar
- 2026 05:40:28 +0000
-Received: from PH7PR11MB6796.namprd11.prod.outlook.com
- ([fe80::60ca:3168:fb41:7ae7]) by PH7PR11MB6796.namprd11.prod.outlook.com
- ([fe80::60ca:3168:fb41:7ae7%5]) with mapi id 15.20.9723.014; Tue, 17 Mar 2026
- 05:40:28 +0000
-From: "S, Sowmiya" <sowmiya.s@intel.com>
-To: "Samala, Pranay" <pranay.samala@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>, "Sharma, Swati2"
- <swati2.sharma@intel.com>
-Subject: RE: [PATCH i-g-t v1 01/17] lib/igt_pipe_crc: Add CRC stop-on-fail
- assertion and cleanup helper
-Thread-Topic: [PATCH i-g-t v1 01/17] lib/igt_pipe_crc: Add CRC stop-on-fail
- assertion and cleanup helper
-Thread-Index: AQHctR2dJ8Yf8aKp4UiaAr441vhJB7WyMlSAgAAAhMA=
-Date: Tue, 17 Mar 2026 05:40:28 +0000
-Message-ID: <PH7PR11MB6796EA81F2272C95691E3A3CE541A@PH7PR11MB6796.namprd11.prod.outlook.com>
-References: <20260316084021.419580-1-sowmiya.s@intel.com>
- <20260316084021.419580-2-sowmiya.s@intel.com>
- <PH7PR11MB6053E0D8A4F03905886786AEE741A@PH7PR11MB6053.namprd11.prod.outlook.com>
-In-Reply-To: <PH7PR11MB6053E0D8A4F03905886786AEE741A@PH7PR11MB6053.namprd11.prod.outlook.com>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Tue, 17 Mar
+ 2026 05:56:22 +0000
+Received: from PH7PR12MB6611.namprd12.prod.outlook.com
+ ([fe80::4f70:b453:55c9:a190]) by PH7PR12MB6611.namprd12.prod.outlook.com
+ ([fe80::4f70:b453:55c9:a190%4]) with mapi id 15.20.9723.016; Tue, 17 Mar 2026
+ 05:56:17 +0000
+Message-ID: <a3d5a09e-090a-4e6e-90da-9a871a0e93e3@amd.com>
+Date: Tue, 17 Mar 2026 13:56:12 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/amdgpu/amd_ilr: add disallow replay debugfs
+ and fix CRC read timeout
+To: Ray Wu <ray.wu@amd.com>, igt-dev@lists.freedesktop.org
+Cc: alex.hung@amd.com, sunpeng.li@amd.com
+References: <20260313085713.890370-1-ray.wu@amd.com>
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6796:EE_|MN6PR11MB8103:EE_
-x-ms-office365-filtering-correlation-id: 501fdfd0-3e28-4697-2fa1-08de83e7b20f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|7053199007|56012099003|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info: f9QLKVJzYrkdDAeY2UzXdvtacnwL+A3J3/EekrTWnxxqFdH7veCD9IvhiiV/xHx90z8HsVz4WYMigbo3fLIh02knK6NcAhWchIqX1bcD0wR+/5wCt+AaWSu1l89HEulaOa7+6HuInU/RwoOWbWmckNNUoY4XOg6PH3GqLy/1s0n1vaQAIbOkGvL+HKuZBMrKZnSelaCS6QKJIUcgn3IkVFjofF+IiYjBg7NV1VLLuAbFNMKCLzi02Nih72JsUUs85MYcXyBttdCJr5E3rwgFwILgYesnJzmm6ZYsM1ih8VgcHXNpV8gS9+gmgrm1DGWdksvCssgQMH5B7vTzOyxm+cyhH9R4sOdHNYQwneEB415hR1cPv7XPyjVMV8fvIWRRM6paixmz9WTrbracsMe42U0pL5TYxgsj9KWoPHMxxkqz/O3TD1fxI7VC1U49QeaPiNLgZ4soAV8yQQTrhcfk+9qJ+I5fS8zmuNzw3fZDFJ3799gMXua8jJFTLfrc1Z3oN3QOx3PO4qqX5eREZU54BsrVsr0TWI3yzIKSrkASPHEq8FHPDpbPIMyvecoICm7ysgT0xTXaxB96nRbYCxqpgFvK/T2Yt2jMl/pUuF4Z4JagbkF3A4Xm1omH9nO+Djf9ryN/WuWULl9eAtVDoRv71HG4c7E/4FPiurYLbbYnCwWb0xQJi2b68aX+wmH3JruNLaxCm4UBY4V6au6rmsqYUs9uJ8l7Nx2h7zIKnVP/bbkqeMnGx9Gp2y14Div3zPfkvnj5WKFVjgQ40lVrGgSNSfX2e9Dx3B/V432B4tQk5RM=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6796.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(7053199007)(56012099003)(18002099003)(22082099003)(38070700021);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?BLh3FYD8uwqqqB69vul0i3OV9XT4PX9uBFjs+2+7FkC8frWKGpMHyG8jO7L1?=
- =?us-ascii?Q?/R5H2zTNAhonyxw032iNTOYmkyf5GYPS78I/i8YQAOm1aG74sKkpFTD/m/K/?=
- =?us-ascii?Q?wtQrqx+irCxJXUVJih/DHOJ/S6nU7MYvi/CWn2obCzGrBPm9kegYMq/WN4oa?=
- =?us-ascii?Q?uqbWEMI3kPN3eJD/5uJWlMke5Pe6piap7NhPlyN/XzzMag4aB5FUHEw0u/lw?=
- =?us-ascii?Q?wN9oTQAgm2SOHV7Zv26FasspKvVwEbx3+zJqNBlgblJ3JfUxZYaFr3z8xy+f?=
- =?us-ascii?Q?xNlOughqQDY6yw+vFsGPVgwOUb32+9s6YLfX1qGoZ2rLDTYLVCkFKSK/rD7a?=
- =?us-ascii?Q?QVCT9vH4Oli862rYdt8lzJrTQ9G41uw+pw53pcYhUEkQXrPHO+xlmAHWxHO6?=
- =?us-ascii?Q?Rv3KHA5gBJBY8150R62mDvujmA4mT3Cdd4jG5K8NIjzilvBJD5zrOqiOTACF?=
- =?us-ascii?Q?jCoKphvg0IlT8xvWbnl6KofKKQv/FjmxXNJ9r0f502a6LLo6n2mcQyrRYsS6?=
- =?us-ascii?Q?QE4LQAHxmL/aBw460Qve1nOKoLIGsO//QYdk/k/Bzx6T3A2oCplF6lffnPVJ?=
- =?us-ascii?Q?nXmlyEtyeLDOibXcsMSO0HvJsaQIlBvYLdBWn5Yt8gr0p6kUhyNmwcJ9BSib?=
- =?us-ascii?Q?qWArMCpn9IGHG5Z52h19MDYn09w7T2neUgegWqlF56ydTQjwJoMD/2Qpo/43?=
- =?us-ascii?Q?sD1z9qIkjrS7NE5X3E8T2cxirtM0/NkGbvOA6e+PdgjmjO8NkJdUpKB3VTBt?=
- =?us-ascii?Q?Y+on8iWKqWPzppKfQjbUz0GqcoQjj/pZKwO5GZ495LUh88QzmllNAOulnCKb?=
- =?us-ascii?Q?nlpfN6FpOJsoq7PMGrrYufsmhvfsF6Vjcb6ckPLH8l6oQi1xFZsJy7O/hV6u?=
- =?us-ascii?Q?6PLFMMK6IEAvRrw6eT8hHlXaPVccbA+YMX66jLQlAS7CxFIr1tIgnSJqpSp0?=
- =?us-ascii?Q?B+E/ZRkVXYDwp8Pj/2sht/6ynMQggMv7IcrxVN1Vp02xcWgVocGjGlGdgYDk?=
- =?us-ascii?Q?BEnEIFiDsJu7GB/sIfXL8Vou8jR8DNbDmVfU179l0H4uYUaj9R94E7i6a75F?=
- =?us-ascii?Q?qns4Byj3dWDJDo80s3V1psZg4iVW4ddmVBnTqx9tgCWMavVjPtVN8ppkg6Gq?=
- =?us-ascii?Q?kCC6DicGbiHa3Viu6R8vfPsuFK1OCyl0S0b1RMmAi9ddsGm4qJFQAKIzTrnT?=
- =?us-ascii?Q?fCZvDP0C5lCuDw7Hmtl/oOQm9hTBarTGAYJ+k88R8P7IsOe23Ey0btY2Vt+z?=
- =?us-ascii?Q?ox/LNQeZyGO5HQdBlz+hwMhfehpbiXlrewZT3p+y4koiUF21OiKp8if2Q+tQ?=
- =?us-ascii?Q?fy+SeGFpXQ8JCpVd8xx8wNKdQQMCwyaCxthtmRwlvNMnjmKR9YewCpi4yuwU?=
- =?us-ascii?Q?LDVVpIRuZnmKD0Zt96l9hXow70PaOzyBs1GzmQzwkylColP/ZEyb2uR3vjFN?=
- =?us-ascii?Q?g+sKf737+m3QUOQH4oyB7MGLUdT6XJS8F4JpH/pWK/yin8iXW1xNmC9QHOmK?=
- =?us-ascii?Q?AvnQ5o64UQyv7Ic7ycwa+ouNcIrnHwfeYZZm2Cl6UIbUgAD16uZaCc9CqPeA?=
- =?us-ascii?Q?nJEzIRM8UVvPufYlwU1hn9KYjcSCUaEfsyBnzOBgk5hrXFittdamAPCaxZ9k?=
- =?us-ascii?Q?UgKI1n/EFfyR+3QS5EidZI+YkGDBp+6jlPdah2QsqwGBwiWQzr2xgz4tOIpb?=
- =?us-ascii?Q?UBjxqSqJWaguBmo8s6hYfRwTAn7gYdmbEfrf14WBGeU8Mg5W?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: Tom Chung <chiahsuan.chung@amd.com>
+In-Reply-To: <20260313085713.890370-1-ray.wu@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TYCP286CA0181.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:382::19) To PH7PR12MB6611.namprd12.prod.outlook.com
+ (2603:10b6:510:211::11)
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: KSfwYhMRy62U2NCWqpYqRSRr9SxJsLKkEubWdIYhQFjfVP0krZpwPj9k46K/1iO6PcAzKIxBxKa+CyjjtFDGSQeo0wsHQ7zztrzjAnHw25+s7CEBNRmnkNLNjNbTvgFkvB6t/u31qmOnV6/Mr9iSW+/Ylov1sRITOkSMoi6VpN9umxNM610qvxwZM30tIcTIHoIRoiegrvGSmkZ3Q75ymFT+aESgPPzE4BT/hNXXAV6TVz/EU62gg4ueI7gBdTc6gh4ZTgoeSqs/bXZwhLza2sOkgA033ir32v9G5tGv7WWTRmH3ncIzNuSgzt4t4HhGoGs4nTcwtUwIMXJyh5lDMg==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6611:EE_|IA1PR12MB8585:EE_
+X-MS-Office365-Filtering-Correlation-Id: 38d2fd7b-0d44-445a-a5ca-08de83e9e793
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|18002099003|56012099003|22082099003; 
+X-Microsoft-Antispam-Message-Info: B1Ld3+sCITdDvID66hW1PMTTn0N4HIa6CZK4IV76+5BN4im61xuaP9IxcdGAZKm/68T/IvGVMFB6c/le/NZb9YodbR4gc5kB+VSj2Ng3VBbiXF0ELBcNAzengPT9JgUZPDgtpNn4dTwJTS0LkPmBEfZAxXcDdcTRVbBTGfrGdasWeISPLt6cJ0OfNcJ+RBNjAUWwaaYa/tIRHdZX8/6GvtyQVB2yt2XE4FbmT1xc8xOQpZSq9iDrsxijbllENE6pw/3nL5alvQXqZohmWeShatzLUs4PQgLu4y68alYjqAFHw1d0ubyp6nP45pEzSK8RksSPgE5TP8ckiKxarEsplYycAJr2EVUhpZ/OFQlXgo2jYZv07DZb13xVJTlUS40Zb205donGUoC5aYVaS2mc8Z28AFZA3JCVlN0gQgaKQwOHDLarbg3COm7vFTPli5mrCiowNod6pyJBSyf3XJF6WIbB33DA8M3QOSWiajlen+F9jljKTVhXpE/YAuyaGquHX3VktuPUOTYL5nHgj7bP2l+/+/sFsL4iGX2V1ed9r9SH1KTPKrASs3umnXP6ftYHmWSioUFP18R81i8xNM7UZ1MYeNZl8H1BFFCqtkGkjYsd3QKJeWEMmXKgYIiZpr8KThV+pYrCgL+4NSodWchimZbbuN6wl3dQqHjqSJyvS35dC+ukXhUS/uA2d1ubi2hhbVP931SLxuRUzzIztxxImWWnIO5hqjmbQv3HdZ7hrTI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB6611.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(56012099003)(22082099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L3E1TWRCVStBMWhTWmxEbmN5bHpZenFCcWxORWtMQkFZbm8yK0lHZittRXBZ?=
+ =?utf-8?B?VFV5Rmszd20vRldrbEFyMTZTUmcrRDBjNmFhUFljemd5cmRVcmowckMvdkZX?=
+ =?utf-8?B?ajlHWWF3MHJLdU9OSUwxc1U5MVpZcWszSC8yK3FYdWV5azNZWHN2K1FwSUJQ?=
+ =?utf-8?B?bDJ2YnlhcFZMcmNZbkliMzUvTmNWTVkwbnZqTzdVZ3d2dXFNMGRTRXdzTFN3?=
+ =?utf-8?B?R2g3eEVFZHFvei9wbi9uS0NvVi9KL0l2SEVIVFRFbEh3SVlTeWZiUTh2RC9r?=
+ =?utf-8?B?OHBHOEpJeGU4cnRtQSs2MENwN3FwMVU1ZTNveFR2aUMxenFVbUt4VHk3L29K?=
+ =?utf-8?B?aCtmcktQakk4OHNMMVRyMWZ5Rk5idE5lR0ZZZEJLa0dHZWVkYTFhZlNsek9F?=
+ =?utf-8?B?b2YydWEwT0R4cXRyS2NGRkdiZEZVMjg2VU43YlFocWFlUmt2QkZYTmhWK0Rp?=
+ =?utf-8?B?djl4YjlGbkxFSWVSa3FOejNRY3NOSzhTV1lRYU1aR3Z3VUxVeFhnSzNrVjFq?=
+ =?utf-8?B?bG1QL1c1T29McXI1NlZxeVV2cmRxanJBVzdRQ3NlRFRYZlB0T04rKzdEUmJJ?=
+ =?utf-8?B?cE5YZlBJQUZ4ODJGczVpT3pHR3FPWUdqYXRiamtCcjUrTWt1OEsxWXhyQ0NN?=
+ =?utf-8?B?eENRTGUvKzE5Rzc3WUdZNk9LeUNTZVJ4b3pKSXlPRFFCenVZa1UxNWxaaW85?=
+ =?utf-8?B?ZFJhV2hiYWsyQk9aZ1h3dU5XL3NXWXZ2VkpGNGs1OWJrcmhWUjNyWld2Q0w1?=
+ =?utf-8?B?VUNhVDlnd3dzbktZZTE5cUNuWnFpeDA4RjJHNTMxaE5QMXJVcGdSU3BDYXBW?=
+ =?utf-8?B?VGFKREF2dmFpMmpyVG4wQm9FTXVrWGJmNmhWU3lxT0dxYlVjMHd0Y2lVdjNZ?=
+ =?utf-8?B?Tm1UVk5kZy9WcC9uSlVDNjJWTkx0UXFwQVdWWXdHM1JMbG82MXA4VWZ4ODgx?=
+ =?utf-8?B?TUF1ekdCeUZZb3Q0Y25QTmN6bWdIRGt4UzV5Z21XeHA4M1FBOUx6Vk0vdVBK?=
+ =?utf-8?B?b29xV2ZuSSswVnh2Zjd5QkxWREpxanJmckU0NFJQUlN3amRkMlhRS3pMd00z?=
+ =?utf-8?B?bjJLVVpJdWkwSUREOFNEd0JNQm1mNzZyaGNmNnZPRC9ZMEZTQ1ljV2svVVVU?=
+ =?utf-8?B?WVBRTGdvQ0llWTU1YXdua2FZbktBOGxvQm9RZDFaMGViK1VCOExHTUlTTDdw?=
+ =?utf-8?B?a3h5V0crRzhlVCtTczE5RmdxSlZ4N0U3SXE0YWl6cFRXOFM4bDRuTXE4aXMz?=
+ =?utf-8?B?NjZsS0xYQ29jaWxOZXlhZVlDbktLM01UMTVQMnNyaDBOZUt0QVQ1U0ljbHlv?=
+ =?utf-8?B?Y3ljUTdJdUlEdHVzYWF4Q1dRd1Z1VHVIaVZuSENLeHlvQmE1SmJmTGl2eTFk?=
+ =?utf-8?B?bjVydzc0Sm5vczF3QnBiTHNCOUxxT3ZWR1F6SGJpOVlHQjdaS2tqMjI1aDEx?=
+ =?utf-8?B?R3hjejJDUCtEbS85Z1RlOWJWQ1E5UDJkbkJ1U3NIQWVuZGF4QVpyMEQvTnNT?=
+ =?utf-8?B?WmxnZWVrZzV5b1dyc3hiSFFVZzUrMVFRWDZiVy9BZzRsMXpUMDNhZXZCNVFL?=
+ =?utf-8?B?dFg2MkxNT0RYV2drQXgxeTUrWW05WElhVzJNVEFDWjhLUVAvVEI3akdTYXpx?=
+ =?utf-8?B?Z0ZxR25qWnhTMjRldDBiSENIYnBWeFVuOFUrZTEzc0hBcnlqblNpQm5ZV1Rq?=
+ =?utf-8?B?WVNXNEQ0NmFDMFFIUzl1aE1obXdNUlYrcnpvWEgyZG9zRmpUWWRHRkM0YWt0?=
+ =?utf-8?B?LzZqZGFCbEdMZnpyZ0ZsanNIRkl2QWlUVzdVV3dPd1pKcHpoc0VSeThBeWhD?=
+ =?utf-8?B?LzdCSDduVk9UMldtcng1QTNNckNHa3F5c0cySFVoajJsRVJ0VVZidjNBYVpZ?=
+ =?utf-8?B?b3FXZGdCWDdOSm8zQnNmd2lMR3NTa1Nod29VeHFuOXozNTc2ek55MENzakMr?=
+ =?utf-8?B?VjdnVlNrck9jb0NGQmYvVjBJSENkV2V1VjFtdFBJVzZMRlRZcGxocVZKSlF1?=
+ =?utf-8?B?K1dwaDVYbTlhMnpISmgyVWJ2cktZWC9QNXlrekJWUHhCZEE3d05nTXpsRnhR?=
+ =?utf-8?B?UkxZbzhOYXFKbHVZb0txTlVjeFB4cW5iRnNtZDNmNVNCOCtHY2U1R0t2aFZO?=
+ =?utf-8?B?Ym5xbVBEZGh4czl3aXVUQ1hhdUZJU1g0clRkSVJuRklDUFlNemRBWU82clBy?=
+ =?utf-8?B?eGFwbjY1bUpoRDJrTXlNdU1sSTdEVWxubW5VMUJOdEd4ZGJqRFlZb1RCQlF5?=
+ =?utf-8?B?SHRCOG1pUmZZMlNSQ1Fjd21jYVN2NzlYRTIxOHQzNmtWenc0S01YcnIwUDlm?=
+ =?utf-8?B?dE5QTHEyYmxoSlhTV2hqQUQxa21ManV0T2FORkR5T1ZiOUxsZFI4QT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38d2fd7b-0d44-445a-a5ca-08de83e9e793
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6611.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6796.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 501fdfd0-3e28-4697-2fa1-08de83e7b20f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2026 05:40:28.0707 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 02KkTOK3GJ4U3RlHC+BF6BacZ50ZYoz1IoKzzHbNo2FMWv+WSw10XVdrykfFWSq5kbA5DNkM7vYuyWmJ6qtVCg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8103
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 05:56:17.2252 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /xx/h7o9HrzGiHbj3lJxcCPICs81AZfVWqNlE8d4jjS+IW6kDO56iuaxygainwH36Ox0QxR/BrrtD75aUbpSOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8585
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -165,177 +135,265 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pranay,
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
 
-> -----Original Message-----
-> From: Samala, Pranay <pranay.samala@intel.com>
-> Sent: 17 March 2026 10:54
-> To: S, Sowmiya <sowmiya.s@intel.com>; igt-dev@lists.freedesktop.org
-> Cc: Naladala, Ramanaidu <ramanaidu.naladala@intel.com>; Sharma, Swati2
-> <swati2.sharma@intel.com>; S, Sowmiya <sowmiya.s@intel.com>
-> Subject: RE: [PATCH i-g-t v1 01/17] lib/igt_pipe_crc: Add CRC stop-on-fai=
-l
-> assertion and cleanup helper
->=20
->=20
-> Hi Sowmiya,
->=20
-> > -----Original Message-----
-> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> > Sowmiya S
-> > Sent: Monday, March 16, 2026 2:10 PM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: Naladala, Ramanaidu <ramanaidu.naladala@intel.com>; Sharma, Swati2
-> > <swati2.sharma@intel.com>; S, Sowmiya <sowmiya.s@intel.com>
-> > Subject: [PATCH i-g-t v1 01/17] lib/igt_pipe_crc: Add CRC stop-on-fail
-> > assertion and cleanup helper
-> >
-> > Introduce two new helper functions to improve CRC-based test robustness=
-:
-> >
-> > - igt_assert_crc_equal_stop_on_fail(): Wraps igt_check_crc_equal() with
-> >   automatic pipe CRC stop on failure. Stops CRC collection before asser=
-ting
-> >   to prevent test hangs and resource leaks when a CRC mismatch is detec=
-ted.
-> >
-> > - igt_pipe_crc_cleanup(): Safe cleanup helper that takes a double point=
-er,
-> >   stops CRC collection if active, frees the pipe_crc object and sets
-> >   caller's pointer to NULL. Handles NULL and uninitialized pointers
-> >   gracefully, making it suitable for use in test fixtures and teardown.
-> >
-> > Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
-> > ---
-> >  lib/igt_pipe_crc.c | 50
-> > ++++++++++++++++++++++++++++++++++++++++++++++
-> >  lib/igt_pipe_crc.h |  4 ++++
-> >  2 files changed, 54 insertions(+)
-> >
-> > diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c index
-> > 9a79edd51..12f13cd62 100644
-> > --- a/lib/igt_pipe_crc.c
-> > +++ b/lib/igt_pipe_crc.c
-> > @@ -134,6 +134,30 @@ bool igt_check_crc_equal(const igt_crc_t *a,
-> > const igt_crc_t *b)
-> >  	return !mismatch;
-> >  }
-> >
-> > +/**
-> > + * igt_assert_crc_equal_stop_on_fail:
-> > + * @pipe_crc: pipe CRC object to stop on assertion failure
-> > + * @a: first pipe CRC value
-> > + * @b: second pipe CRC value
-> > + *
-> > + * Compares two CRC values and asserts they match. Unlike
-> > +igt_assert_crc_equal(),
-> > + * this function automatically stops the pipe CRC collection on
-> > +failure, preventing
-> > + * test hangs and resource leaks.
-> > + *
-> > + * The pipe CRC is stopped before the assertion fails, ensuring clean
-> > +test
-> > + * termination. Detailed debug information (CRC index and values) is
-> > +printed via
-> > + * igt_check_crc_equal().
-> > + */
-> > +void igt_assert_crc_equal_stop_on_fail(igt_pipe_crc_t *pipe_crc,
-> > +				       const igt_crc_t *a,
-> > +				       const igt_crc_t *b)
-> > +{
-> > +	if (!igt_check_crc_equal(a, b) && !igt_skip_crc_compare) {
-> > +		igt_pipe_crc_stop(pipe_crc);
-> > +		igt_assert_f(false, "CRC mismatch\n");
-> > +	}
-> > +}
->=20
-> In my opinion this helper is not really needed. It does two things at onc=
-e (check
-> + cleanup), which can be confusing.
-> I feel existing helper igt_assert_crc_equal() is enough and clear, and te=
-sts can
-> do cleanup where needed.
->=20
-> Regards,
-> Pranay
->=20
-When a CRC mismatch occurs in the middle of a test, if we don't stop the=20
-CRC engine before failing the assertion, the active CRC file descriptor=20
-remains open and continues collecting data.
+Tom Chung
 
-This causes:
-1. CRC buffer overflow during subsequent tests in the same run
-2. Test hangs or cascading failures in later tests
-3. Resource leaks that corrupt test results
-
-The combined helper ensures CRC is stopped BEFORE assertion failure,=20
-preventing these cascade failures. This is especially important in:
-- Long test runs with multiple subtests
-- CI pipelines running many tests in sequence
-- Stress testing scenarios
-
-If you still prefer explicit separation, we could:
-1. Keep igt_pipe_crc_cleanup()=20
-2. Add explicit igt_pipe_crc_stop() calls in error paths before assertions
-
-Regards,
-Sowmiya.
-> > +
-> >  /**
-> >   * igt_crc_to_string_extended:
-> >   * @crc: pipe CRC value to print
-> > @@ -407,6 +431,32 @@ void igt_pipe_crc_stop(igt_pipe_crc_t *pipe_crc)
-> >  	pipe_crc->crc_fd =3D -1;
-> >  }
-> >
-> > +/**
-> > + * igt_pipe_crc_cleanup:
-> > + * @pipe_crc: pointer to pipe CRC object to clean up
-> > + *
-> > + * Safely cleans up a pipe CRC object by stopping CRC collection if
-> > +active,
-> > + * freeing the associated resources, and setting the pointer to NULL.
-> > + *
-> > + * Takes a double pointer to allow the caller's reference to be
-> > +cleared,
-> > + * preventing potential use-after-free bugs. This function safely
-> > +handles
-> > + * NULL pointers and uninitialized CRC objects.
-> > + *
-> > + * This is the recommended cleanup function for use in test fixtures
-> > +and
-> > + * test teardown code.
-> > + */
-> > +void igt_pipe_crc_cleanup(igt_pipe_crc_t **pipe_crc) {
-> > +	if (!pipe_crc || !*pipe_crc)
-> > +		return;
-> > +
-> > +	if ((*pipe_crc)->crc_fd !=3D -1)
-> > +		igt_pipe_crc_stop(*pipe_crc);
-> > +
-> > +	igt_pipe_crc_free(*pipe_crc);
-> > +	*pipe_crc =3D NULL;
-> > +}
-> > +
-> >  /**
-> >   * igt_pipe_crc_get_crcs:
-> >   * @pipe_crc: pipe CRC object
-> > diff --git a/lib/igt_pipe_crc.h b/lib/igt_pipe_crc.h index
-> > f648b2c92..1863edc14 100644
-> > --- a/lib/igt_pipe_crc.h
-> > +++ b/lib/igt_pipe_crc.h
-> > @@ -41,6 +41,10 @@ typedef struct _igt_crc igt_crc_t;  bool
-> > igt_find_crc_mismatch(const igt_crc_t *a, const igt_crc_t *b, int
-> > *index); void igt_assert_crc_equal(const igt_crc_t *a, const igt_crc_t
-> > *b);  bool igt_check_crc_equal(const igt_crc_t *a, const igt_crc_t
-> > *b);
-> > +void igt_assert_crc_equal_stop_on_fail(igt_pipe_crc_t *pipe_crc,
-> > +				       const igt_crc_t *a,
-> > +				       const igt_crc_t *b);
-> > +void igt_pipe_crc_cleanup(igt_pipe_crc_t **pipe_crc);
-> >  char *igt_crc_to_string_extended(igt_crc_t *crc, char delimiter, int
-> > crc_size); char *igt_crc_to_string(igt_crc_t *crc);
-> >
-> > --
-> > 2.43.0
-
+On 3/13/2026 4:57 PM, Ray Wu wrote:
+> [Why]
+> On eDP panels that support Panel Replay, the kernel enables replay during
+> link training. This causes the eDP Rx CRC read to time out because the
+> panel enters replay mode and stops sending CRC data normally.
+>
+> [How]
+> 1. Add igt_amd_disallow_edp_enter_replay() helper in lib/igt_amd that
+>     writes to the disallow_edp_enter_replay debugfs node, following the
+>     same pattern as igt_amd_disallow_edp_enter_psr().
+>
+> 2. In amd_ilr test_flow():
+>     - Call igt_amd_disallow_edp_enter_replay() with enable=true before
+>       reading eDP Rx CRC to prevent the panel from entering replay mode.
+>     - Call igt_amd_disallow_edp_enter_replay() with enable=false after
+>       reading CRC to restore normal replay behavior.
+>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Cc: Tom Chung <chiahsuan.chung@amd.com>
+> Signed-off-by: Ray Wu <ray.wu@amd.com>
+> ---
+>   lib/igt_amd.c          | 44 ++++++++++++++++++++++
+>   lib/igt_amd.h          |  2 +
+>   tests/amdgpu/amd_ilr.c | 83 +++++++++++++++++++++++++++++++-----------
+>   3 files changed, 108 insertions(+), 21 deletions(-)
+>
+> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+> index 3ddb5f403..a97adad43 100644
+> --- a/lib/igt_amd.c
+> +++ b/lib/igt_amd.c
+> @@ -1365,6 +1365,50 @@ void igt_amd_disallow_edp_enter_psr(int drm_fd, char *connector_name, bool enabl
+>   	close(ret);
+>   }
+>   
+> +/**
+> + * igt_amd_disallow_edp_enter_replay: notify kernel skip edp replay setup and enable
+> + * @drm_fd: DRM file descriptor
+> + * @connector_name: The connector's name
+> + * @enable: skip kernel eDP replay setup and enable -- disallow edp enter replay
+> + * example usage: disallow replay
+> + * echo 0x1 >
+> + * /sys/kernel/debug/dri/0/eDP-1/disallow_edp_enter_replay
+> + *
+> + * expected IGT sequence is as below:
+> + * 1. disable eDP PHY and notify eDP rx with dpcd 0x600 = 2.
+> + *    for example, kmstest_set_connector_dpms off will do this.
+> + * 2. echo 0x1 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_replay
+> + * 3. enable eDP PHY and notify eDP rx with dpcd 0x600 = 1 but
+> + *    without dpcd 0x37b.
+> + * 4. read crc from rx dpcd 0x270, 0x246, etc.
+> + *    igt_pipe_crc_collect_crc will do this.
+> + * 5. echo 0x0 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_replay.
+> + *    this will let eDP back to normal with replay setup.
+> + */
+> +void igt_amd_disallow_edp_enter_replay(int drm_fd, char *connector_name, bool enable)
+> +{
+> +	int fd, ret, wr_len;
+> +	const char *allow_edp_replay = "1";
+> +	const char *dis_allow_edp_replay = "0";
+> +
+> +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
+> +	igt_assert(fd >= 0);
+> +	ret = openat(fd, DEBUGFS_DISALLOW_EDP_ENTER_REPLAY, O_WRONLY);
+> +	close(fd);
+> +	igt_skip_on_f(ret < 0, "Skip test: Debugfs %s not supported\n",
+> +		      DEBUGFS_DISALLOW_EDP_ENTER_REPLAY);
+> +
+> +	if (enable) {
+> +		wr_len = write(ret, allow_edp_replay, strlen(allow_edp_replay));
+> +		igt_assert_eq(wr_len, strlen(allow_edp_replay));
+> +	} else {
+> +		wr_len = write(ret, dis_allow_edp_replay, strlen(dis_allow_edp_replay));
+> +		igt_assert_eq(wr_len, strlen(dis_allow_edp_replay));
+> +	}
+> +
+> +	close(ret);
+> +}
+> +
+>   static bool get_dm_capabilities(int drm_fd, char *buf, size_t size)
+>   {
+>   	int ret, fd;
+> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+> index bce4657cb..a45122b68 100644
+> --- a/lib/igt_amd.h
+> +++ b/lib/igt_amd.h
+> @@ -53,6 +53,7 @@
+>   #define DEBUGFS_EDP_PSR_STATE	"psr_state"
+>   #define DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT "allow_edp_hotplug_detection"
+>   #define DEBUGFS_DISALLOW_EDP_ENTER_PSR "disallow_edp_enter_psr"
+> +#define DEBUGFS_DISALLOW_EDP_ENTER_REPLAY "disallow_edp_enter_replay"
+>   
+>   /* amdgpu DM interface entries */
+>   #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
+> @@ -235,6 +236,7 @@ bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name);
+>   int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
+>   void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool enable);
+>   void igt_amd_disallow_edp_enter_psr(int drm_fd, char *connector_name, bool enable);
+> +void igt_amd_disallow_edp_enter_replay(int drm_fd, char *connector_name, bool enable);
+>   
+>   /* DM interface helpers */
+>   bool igt_amd_has_visual_confirm(int drm_fd);
+> diff --git a/tests/amdgpu/amd_ilr.c b/tests/amdgpu/amd_ilr.c
+> index 5dd467b43..f7f480e66 100644
+> --- a/tests/amdgpu/amd_ilr.c
+> +++ b/tests/amdgpu/amd_ilr.c
+> @@ -203,10 +203,12 @@ static void test_flow(data_t *data, enum sub_test option)
+>   		}
+>   
+>   		/* states under /sys/kernel/debug/dri/0/eDP-1:
+> -		 * psr_capability.driver_support (drv_support_psr): yes
+> +		 * psr_capability.driver_support (drv_support_psr): yes/no
+> +		 * replay_capability.driver_support (drv_support_replay): yes/no
+>   		 * ilr_setting (intermediate link rates capabilities,
+>   		 * ilr_cap): yes/no
+>   		 * kernel driver disallow_edp_enter_psr (dis_psr): no
+> +		 * kernel driver disallow_edp_enter_repay (dis_replay): no
+>   		 */
+>   
+>   		/* Init only eDP */
+> @@ -216,9 +218,10 @@ static void test_flow(data_t *data, enum sub_test option)
+>   		 * DPMS on/off will not take effect until
+>   		 * next igt_display_commit_atomic.
+>   		 * eDP enter power saving mode within test_init
+> -		 * drv_support_psr: yes; ilr_cap: no; dis_psr: no
+> +		 * drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: no;
+> +		 * dis_psr: no, dis_replay: no
+>   		 */
+> -
+>   		mode = igt_output_get_mode(output);
+>   		igt_assert(mode);
+>   
+> @@ -228,11 +231,16 @@ static void test_flow(data_t *data, enum sub_test option)
+>   				      0, &data->fb);
+>   		igt_plane_set_fb(data->primary, &data->fb);
+>   
+> -		/* drv_support_psr: yes; ilr_cap: no; dis_psr: no
+> +		/* drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: no;
+> +		 * dis_psr: no & dis_replay: no
+>   		 * commit stream. eDP exit power saving mode.
+>   		 */
+>   		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -		/* drv_support_psr: yes; ilr_cap: yes; dis_psr: no */
+> +		/* drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: yes;
+> +		 * dis_psr: no & dis_replay: no;
+> +		 */
+>   
+>   		/* igt_amd_output_has_ilr_setting only checks if debugfs
+>   		 * exist. ilr settings could be all 0s -- not supported.
+> @@ -247,23 +255,35 @@ static void test_flow(data_t *data, enum sub_test option)
+>   
+>   		igt_info("Testing on output: %s\n", output->name);
+>   
+> -		/* drv_support_psr: yes; ilr_cap: yes; dis_psr: no */
+> +		/* drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: yes;
+> +		 * dis_psr: no & dis_replay: no
+> +		 */
+>   		kmstest_set_connector_dpms(data->drm_fd,
+>   			output->config.connector, DRM_MODE_DPMS_OFF);
+>   		/* eDP enter power saving mode.
+> -		 * drv_support_psr: yes; ilr_cap: no; dis_psr: no.
+> +		 * drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: no;
+> +		 * dis_psr: no & dis_replay: no;
+>   		 */
+>   
+> -		/* Disable eDP PSR to avoid timeout when reading CRC */
+> +		/* Disable eDP PSR / Replay to avoid timeout when reading CRC */
+>   		igt_amd_disallow_edp_enter_psr(data->drm_fd, output->name, true);
+> -		/* drv_support_psr: yes; ilr_cap: no: dis_psr: yes */
+> +		igt_amd_disallow_edp_enter_replay(data->drm_fd, output->name, true);
+> +		/* drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: no;
+> +		 * dis_psr: yes & dis_replay: yes;
+> +		 */
+>   
+>   		/* eDP exit power saving mode and setup psr */
+>   		kmstest_set_connector_dpms(data->drm_fd,
+>   			output->config.connector, DRM_MODE_DPMS_ON);
+> -		/* drv_support_psr: no; ilr_cap: yes: dis_psr: yes
+> -		 * With dis_psr yes, drm kernel driver
+> -		 * disable psr, psr_en is set to no.
+> +		/* drv_support_replay: no & drv_support_psr: no;
+> +		 * ilr_cap: yes;
+> +		 * dis_psr: yes & dis_replay: yes;
+> +		 * With dis_psr yes and dis_replay yes,
+> +		 * drm kernel driver disable psr/replay,
+> +		 * psr_en & replay_en are set to no.
+>   		 */
+>   
+>   		/* Collect info of Reported Lane Count & ILR */
+> @@ -282,33 +302,54 @@ static void test_flow(data_t *data, enum sub_test option)
+>   				break;
+>   		}
+>   
+> -		/* drv_support_psr: no; ilr_cap: yes; dis_psr: yes */
+> +		/* drv_support_replay: no & drv_support_psr: no;
+> +		 * ilr_cap: yes;
+> +		 * dis_psr: yes & dis_replay: yes;
+> +		 */
+>   		kmstest_set_connector_dpms(data->drm_fd,
+>   			output->config.connector, DRM_MODE_DPMS_OFF);
+>   		/* eDP enter power saving mode.
+> -		 * drv_support_psr: no; ilr_cap: no; dis_psr: yes.
+> +		 * drv_support_replay: no & drv_support_psr: no;
+> +		 * ilr_cap: no;
+> +		 * dis_psr: yes & dis_replay: yes;
+>   		 */
+>   
+> -		/* Enable PSR after reading eDP Rx CRC */
+> +		/* Enable PSR / Replay after reading eDP Rx CRC */
+>   		igt_amd_disallow_edp_enter_psr(data->drm_fd, output->name, false);
+> -		/* drv_support_psr: no; ilr_cap: no: dis_psr: no */
+> +		igt_amd_disallow_edp_enter_replay(data->drm_fd, output->name, false);
+> +		/* drv_support_replay: no & drv_support_psr: no;
+> +		 * ilr_cap: no;
+> +		 * dis_psr: no & dis_replay: no;
+> +		 */
+>   
+> -		/* eDP exit power saving mode and setup psr */
+> +		/* eDP exit power saving mode and setup psr/replay */
+>   		kmstest_set_connector_dpms(data->drm_fd,
+>   			output->config.connector, DRM_MODE_DPMS_ON);
+> -		/* drv_support_psr: yes; ilr_cap: yes: dis_psr: no */
+> +		/* drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: yes;
+> +		 * dis_psr: no & dis_replay: no;
+> +		 */
+>   
+>   		/* Reset preferred link settings*/
+>   		memset(data->supported_ilr, 0, sizeof(data->supported_ilr));
+>   		igt_amd_write_ilr_setting(data->drm_fd, output->name, 0, 0);
+> -		/* drv_support_psr: yes; ilr_cap: yes; dis_psr: no */
+> +		/* drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: yes;
+> +		 * dis_psr: no, dis_replay: no;
+> +		 */
+>   
+>   		/* commit 0 stream. eDP enter power saving mode */
+>   		igt_remove_fb(data->drm_fd, &data->fb);
+> -		/* drv_support_psr: yes; ilr_cap: no; dis_psr: no */
+> +		/* drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: no;
+> +		 * dis_psr: no & dis_replay: no;
+> +		 */
+>   
+>   		test_fini(data);
+> -		/* drv_support_psr: yes; ilr_cap: no; dis_psr: no */
+> +		/* drv_support_replay: yes | drv_support_psr: yes;
+> +		 * ilr_cap: no;
+> +		 * dis_psr: no & dis_replay: no;
+> +		 */
+>   	}
+>   }
+>   
