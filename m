@@ -4,61 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 218A210775F9
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Mar 2026 18:04:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DC3410775FE
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Mar 2026 18:17:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BD75910E44F;
-	Wed, 18 Mar 2026 18:04:03 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TYK8Dg+w";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E602810E44F
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Mar 2026 18:03:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773857039; x=1805393039;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1BQmyERBSA+0ivxjx+HBgDTE/QyoMMEKxbOH1I5mPx8=;
- b=TYK8Dg+wG8BluhFs71oi8qekaa4Sd+kZ3AZl9XoxnjdFRbVXRCHhwGOu
- 4Pm10j3yjGP6ljrb51c3yT/vscv1/EQnJ48qa5WgSls7f5lYGpGcCrZOS
- ri5eGURFY3rqjVhci/lEqumptZfZvh4UjzSH/9gpTM4ywbvMgLDvtTz/Q
- y/EtAABwC/oW/iH9G/2JAfwo2J0UL3i8f14Lp32fsv6aEbPW8Jl9dz7tX
- ZPNtbxfDIc6gyC0Pw98c1QTbuJ3NdIZakbjWnbY2/yEWCaklYBdCcBWDd
- +uJQaY26z5C8e6W0DAqBdvW6chsCzb1sFpcX8THc+0DeYoShbq26Ni9G4 A==;
-X-CSE-ConnectionGUID: Gx4tHQQGQDGpMO7BSZ1xEQ==
-X-CSE-MsgGUID: 2Goay6FKT72hQJkz73kAJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="77528843"
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; d="scan'208";a="77528843"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2026 11:03:58 -0700
-X-CSE-ConnectionGUID: emN1Swq8TQGotoB5qvJuAg==
-X-CSE-MsgGUID: jyhPO5SfQWK76byBDKHuNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; d="scan'208";a="218701100"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 11:03:57 -0700
-Date: Wed, 18 Mar 2026 19:03:55 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Alex Hung <alex.hung@amd.com>,
- Hersen Wu <hersenxs.wu@amd.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: Re: [PATCH i-g-t 02/12] tests/amdgpu/amd_multidisplay_modeset:
- Prepare for returning NULL from igt_crtc_for_pipe()
-Message-ID: <20260318180355.y2ozu3vb5d7u53dk@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
- Alex Hung <alex.hung@amd.com>, Hersen Wu <hersenxs.wu@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-References: <cover.1773659680.git.jani.nikula@intel.com>
- <3b9a58fa7b3865f1e57049a9c0bf68caa89f8684.1773659680.git.jani.nikula@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id F400510E4F2;
+	Wed, 18 Mar 2026 18:17:17 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22AFC10E4F2;
+ Wed, 18 Mar 2026 18:17:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0421495955452966443=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3b9a58fa7b3865f1e57049a9c0bf68caa89f8684.1773659680.git.jani.nikula@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsriov=5F?=
+ =?utf-8?q?vfio=3A_Add_basic_VFIO_coverage?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Mar 2026 18:17:13 -0000
+Message-ID: <177385783312.373449.3167842535034211940@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260318161447.961840-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260318161447.961840-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,40 +37,199 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2026-03-16 at 13:19:04 +0200, Jani Nikula wrote:
-> AMD should always have enough CRTCs for the test. Assert this is the
-> case by checking the CRTC is valid.
-> 
-> This prepares for returning NULL for invalid pipes from
-> igt_crtc_for_pipe() by ensuring the test logic is sound.
-> 
-+cc AMD devs
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Hersen Wu <hersenxs.wu@amd.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+--===============0421495955452966443==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
->  tests/amdgpu/amd_multidisplay_modeset.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/amdgpu/amd_multidisplay_modeset.c b/tests/amdgpu/amd_multidisplay_modeset.c
-> index 40d1e5d7f42b..ebcfea8ee35f 100644
-> --- a/tests/amdgpu/amd_multidisplay_modeset.c
-> +++ b/tests/amdgpu/amd_multidisplay_modeset.c
-> @@ -327,6 +327,8 @@ static void multiple_display_test(struct data_t *data, enum sub_test test_mode)
->  
->  			crtc = igt_crtc_for_pipe(display, j);
->  
-> +			igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(j));
-> +
->  			igt_create_pattern_fb(data->fd, kmode->hdisplay,
->  					kmode->vdisplay, DRM_FORMAT_XRGB8888,
->  					0, (buf + j));
-> -- 
-> 2.47.3
-> 
+== Series Details ==
+
+Series: tests/intel/xe_sriov_vfio: Add basic VFIO coverage
+URL   : https://patchwork.freedesktop.org/series/163480/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_8810 -> IGTPW_14807
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/index.html
+
+Participating hosts (42 -> 39)
+------------------------------
+
+  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14807 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@requests:
+    - bat-atsm-1:         [PASS][1] -> [INCOMPLETE][2] ([i915#14564])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-atsm-1/igt@i915_selftest@live@requests.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-atsm-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-tgl-1115g4:      [PASS][5] -> [FAIL][6] ([i915#14867])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-dg2-8/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-dg2-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-6:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][11] ([i915#12061]) -> [INCOMPLETE][12] ([i915#12061] / [i915#14564])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-atsm-1/igt@i915_selftest@live.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-atsm-1/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#14564]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564
+  [i915#14867]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8810 -> IGTPW_14807
+
+  CI-20190529: 20190529
+  CI_DRM_18174: 61409ba11a36fa5aff4ce0f0086a6026a43c5bce @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14807: 14807
+  IGT_8810: eb9035ba642724dc0a7711672805f26d1f34f712 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/index.html
+
+--===============0421495955452966443==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_sriov_vfio: Add basic VFIO coverage</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163480/">https://patchwork.freedesktop.org/series/163480/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8810 -&gt; IGTPW_14807</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/index.html</p>
+<h2>Participating hosts (42 -&gt; 39)</h2>
+<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14807 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-atsm-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-atsm-1/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564">i915#14564</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867">i915#14867</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8810/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14807/bat-atsm-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564">i915#14564</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8810 -&gt; IGTPW_14807</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18174: 61409ba11a36fa5aff4ce0f0086a6026a43c5bce @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14807: 14807<br />
+  IGT_8810: eb9035ba642724dc0a7711672805f26d1f34f712 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0421495955452966443==--
