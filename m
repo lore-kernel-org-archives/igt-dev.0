@@ -4,27 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6E93103E194
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Mar 2026 14:58:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23E46103E198
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Mar 2026 15:05:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 71B9210E048;
-	Wed, 18 Mar 2026 14:58:46 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B554110E13E;
- Wed, 18 Mar 2026 14:58:41 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5142467800720240879=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id CA44A10E853;
+	Wed, 18 Mar 2026 15:05:49 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="fqYHAtDg";
+	dkim-atps=neutral
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C30B10E859
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Mar 2026 15:05:45 +0000 (UTC)
+Received: by mail-dl1-f49.google.com with SMTP id
+ a92af1059eb24-12732e6a123so2426416c88.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Mar 2026 08:05:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1773846344; x=1774451144; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=JAJ6gAiL6Qny8058qd+v6WNvCTYensB0Dd5YLptt1xk=;
+ b=fqYHAtDgFc1tT2VO/aKKkjyBqnvOAnNUt256Dl/DFCWnGPRuoHTPDgJFqOrsv6N7Gi
+ 37HZTH4vdvXyrlwWAkgMo2Nha3hN0CCkaFOvWyk89sXC6860Ym+otcha1X67PeAvUdMJ
+ gqMhTtCD3VMCcIoVzhAn2SvxLTwZXt/W8crdYXApSU3ZXo4WgkfbSBr62XmugLg4+T8m
+ Tm6aiNJ43iBQ4W+JGPu6dK/tjqQXXQ0p+mnNRI0SX205Gp3L+nW2HFqATlyoozrFusEQ
+ IXsaf7Ob1Xbz04mBneqC3Aw6216GpO3fhUdyztqJnMEmRnX9wvnzKspCdkawUUkkibBx
+ oubQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1773846344; x=1774451144;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JAJ6gAiL6Qny8058qd+v6WNvCTYensB0Dd5YLptt1xk=;
+ b=hA+NH8yo/lw5QXKILU8FZohC9meGIkeFWifF6RJCFzkSs8gX2vK86E7Bs4zYyiDkHl
+ pv6MpdEVJ1kQLkwrYS5jeDozUK4wAV00O/yk2UfpRcjQtVZWtlV7othykdrgKdw/WhkT
+ FykJxDR5rJ+6tYfMq7xtZd518s+jWLTQZGNODpGB2xbljBC87gn4pQherryM/G0P0c56
+ MMwAqlZ756JTrnOM2YSjn/NYdhAArCcMwIXW/8CTO6Fg9A+dTi0oP0ujgBgGdgKiSSJU
+ tg8RHB4AJaAMVv8/bx6sWD9o3Ubrd/yyIhS6vfcfNsmWDEf62X72gDCFaWEurgh45w1W
+ /h6A==
+X-Gm-Message-State: AOJu0YwfBATyjrr0TOCFF7gJff1vtF40ziXNIzOkGrtmlEXkhsHHt/AG
+ jCumi58l1EsVu/LSm5oMto0Hvqp2otgKfUrmKf77TWiCOaa9y60+uvcKGVKRuF0X
+X-Gm-Gg: ATEYQzxB4yD/fpZGuMWFZJniNxF5Hcj0olKxX7wTpQ9YuosXKsG/45cUxLQgpGOjTrA
+ KwzKpuuRCXAwmR6adXQDVFAEMSIrfQttz54Oh7kNs0xvIw5+qH0IunrOSW7vIKx59r36+NYW5XZ
+ 0+9oTEwORbLXS0109fiCAxkStHRbtJeD9c5rWWhdJTAe6tM2TDaCFiPDi76cgfs/b8MPZav/Eek
+ lAVZX4zaOezRrb4GQGic08t9I3+f4nFKJpJHkMRP6yaORmyhpccIL9Wn1wnQNFoC563I1/Ofkx5
+ JdBnsM3Yl9nJVOw5+jzWgCf2KFPKwh73iqnnwyzQE6hJEsAyc8FWnPWr8Pn2Htlz+LhQmGGf4wT
+ /d6Lq2lL4hRf8q6/7VtBVeXewLG8BgnuXEXK1jzce5WCH8UPwuwThJkdheW+pLIASWpIBZXkfdR
+ 3v/IQIanLQkxikRHeJid6zg+iqCOkBo7/EbecPGrl8WrEv2T2autP464DJkFoT
+X-Received: by 2002:a05:7022:459a:b0:128:ccaf:85d5 with SMTP id
+ a92af1059eb24-129a71123famr2037064c88.15.1773846344021; 
+ Wed, 18 Mar 2026 08:05:44 -0700 (PDT)
+Received: from localhost ([192.55.54.45]) by smtp.gmail.com with ESMTPSA id
+ a92af1059eb24-129b3e8dc1fsm4944256c88.8.2026.03.18.08.05.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Mar 2026 08:05:43 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 0/8] Enable Vebox engine copy on Intel Xe driver
+Date: Wed, 18 Mar 2026 17:05:09 +0200
+Message-ID: <20260318150517.4049206-1-juhapekka.heikkila@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?b?4pyXIGk5MTUuQ0kuQkFUOiBmYWlsdXJlIGZvciB0ZXN0cy9pbnRlbC9rbXNfY2Rj?=
- =?utf-8?b?bGs6IHVzZSBpZ3RfbmV4dF9jcnRjKCkgKHJldjIp?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jani Nikula" <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 18 Mar 2026 14:58:41 -0000
-Message-ID: <177384592171.372672.14936377343266266853@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260309162311.706849-1-jani.nikula@intel.com>
-In-Reply-To: <20260309162311.706849-1-jani.nikula@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,193 +78,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5142467800720240879==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Here enabled Vebox engine copy of framebuffers and force 4tiled yuv
+framebuffers on Vebox path.
 
-== Series Details ==
+Juha-Pekka Heikkila (8):
+  lib: take out duplicate assert
+  lib/intel_batchbuffer: make __intel_bb_create gt aware
+  lib/xe: add xe_exec_queue_create_class_gt
+  lib/intel_batchbuffer: add intel_bb_create_with_gt function
+  lib/intel_batchbuffer: move engine class selection to helper
+  lib/intel_batchbuffer/xe: add bb exec path to use specific engine and
+    gt
+  lib: Enable Vebox framebuffer copying on Intel Xe2
+  lib/igt_fb: on Intel Xe force Vebox copy on yuv formats
 
-Series: tests/intel/kms_cdclk: use igt_next_crtc() (rev2)
-URL   : https://patchwork.freedesktop.org/series/162884/
-State : failure
+ lib/igt_fb.c            |  51 +++++++++++++++-----
+ lib/intel_batchbuffer.c | 102 ++++++++++++++++++++++++++++------------
+ lib/intel_batchbuffer.h |   3 ++
+ lib/veboxcopy_gen12.c   |   2 -
+ lib/xe/xe_ioctl.c       |  20 ++++++++
+ lib/xe/xe_ioctl.h       |   2 +
+ 6 files changed, 136 insertions(+), 44 deletions(-)
 
-== Summary ==
+-- 
+2.43.0
 
-CI Bug Log - changes from IGT_8809 -> IGTPW_14803
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_14803 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_14803, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_14803:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@evict:
-    - fi-skl-6600u:       [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8809/fi-skl-6600u/igt@i915_selftest@live@evict.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/fi-skl-6600u/igt@i915_selftest@live@evict.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14803 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8809/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8809/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [FAIL][7] ([i915#14867]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8809/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#14867]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8809 -> IGTPW_14803
-
-  CI-20190529: 20190529
-  CI_DRM_18173: 185629feb8aee7cf88f72d1e67531574f1bea7f5 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14803: 14803
-  IGT_8809: 9e55b6cdd3ad1ec8c2264106b035be91d12d8322 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/index.html
-
---===============5142467800720240879==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_cdclk: use igt_next_crtc() (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162884/">https://patchwork.freedesktop.org/series/162884/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8809 -&gt; IGTPW_14803</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_14803 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_14803, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_14803:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@evict:<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8809/fi-skl-6600u/igt@i915_selftest@live@evict.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/fi-skl-6600u/igt@i915_selftest@live@evict.html">INCOMPLETE</a> +1 other test incomplete</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14803 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8809/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8809/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8809/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867">i915#14867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14803/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8809 -&gt; IGTPW_14803</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18173: 185629feb8aee7cf88f72d1e67531574f1bea7f5 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14803: 14803<br />
-  IGT_8809: 9e55b6cdd3ad1ec8c2264106b035be91d12d8322 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5142467800720240879==--
