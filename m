@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93FC410854D0
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Mar 2026 03:13:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C32910854D0
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Mar 2026 03:15:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0BF0C10E6FB;
-	Wed, 18 Mar 2026 03:13:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D1C1I7a/";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C22C10E6FB
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Mar 2026 03:13:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773803619; x=1805339619;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=gClxCBMfVnh5ChFHwu3dKSDzQ9fJ1t6VqnB7f+jnWxc=;
- b=D1C1I7a/Hc9dkDj673cIdM73AlsSzC03ukL+pJlwI86Fr7H++jPLCK3z
- Tenr8kVJdnXVw8v/njdeYqxfG3CcivVyQcq2HJasX0KloHA+349uKntYW
- 16UyQLhROQe6tLZk9qBFN0F72Jyk7qr2r5erchBPO5OeXqwnhftO3LOnX
- 3ljPjtAz6nfiBVsO5S2g1WS1xbi6e3Cf5jivTWGNWKdtvplieYEV+pm0V
- CDA21TNonR9fSbBHd+bJdXijo9RFb+lNXwxsD9GWoE7iOnvDx2eAWMxb8
- Dk00mmMstt0zElQCB8KoZMTQ+qE8DzdThkCK+vYjt25w+nZ2qyMYNYc7I g==;
-X-CSE-ConnectionGUID: opxTNZ1hSp6LBvNnTqxjbg==
-X-CSE-MsgGUID: sDbKyMu2Q4a/5tXUMUtwxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="73869910"
-X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; d="scan'208";a="73869910"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2026 20:13:38 -0700
-X-CSE-ConnectionGUID: aytmwhTTSV+jveb+apQEMQ==
-X-CSE-MsgGUID: JWD7SNhURpGdzPAjsSiA9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; d="scan'208";a="252942223"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 20:13:37 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jouni.hogander@intel.com,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_dirtyfb: Pass output to PSR helpers
-Date: Wed, 18 Mar 2026 08:42:05 +0530
-Message-ID: <20260318031205.70655-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4B77810E070;
+	Wed, 18 Mar 2026 03:15:55 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89CCA10E070;
+ Wed, 18 Mar 2026 03:15:51 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0034991728781980029=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Foa=3A_Ex?=
+ =?utf-8?q?tend_enable-disable_to_read_after_disabling_stream?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Mar 2026 03:15:51 -0000
+Message-ID: <177380375153.369304.14548621974044366191@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260317223910.3539034-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20260317223910.3539034-1-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,69 +37,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replace NULL with data->output in PSR function calls and update the
-log to include the output name when PSR is not supported.
+--===============0034991728781980029==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This change ensures correct behavior in dual eDP setups where PSR
-support may differ between displays. Passing the specific output
-instead of NULL allows PSR checks to be performed per connector,
-ensuring each display is evaluated independently and accurately.
+== Series Details ==
 
-v2: Replace NULL with data->output in all PSR helpers.
-v3: Update commit message.
+Series: tests/intel/xe_oa: Extend enable-disable to read after disabling stream
+URL   : https://patchwork.freedesktop.org/series/163414/
+State : success
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/intel/kms_dirtyfb.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+== Summary ==
 
-diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index b85e09346..b5de63350 100644
---- a/tests/intel/kms_dirtyfb.c
-+++ b/tests/intel/kms_dirtyfb.c
-@@ -120,8 +120,8 @@ static bool check_support(data_t *data)
- 			return false;
- 		}
- 		if (!psr_sink_support(data->drm_fd, data->debugfs_fd,
--				      PSR_MODE_1, NULL)) {
--			igt_info("Output doesn't support PSR\n");
-+				      PSR_MODE_1, data->output)) {
-+			igt_info("Output %s doesn't support PSR\n", igt_output_name(data->output));
- 			return false;
- 		}
- 		return true;
-@@ -150,7 +150,7 @@ static void enable_feature(data_t *data)
- 		intel_fbc_enable(&data->display);
- 		break;
- 	case FEATURE_PSR:
--		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL);
-+		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1, data->output);
- 		break;
- 	case FEATURE_DRRS:
- 		intel_drrs_enable(data->crtc);
-@@ -173,7 +173,7 @@ static void check_feature_enabled(data_t *data)
- 		break;
- 	case FEATURE_PSR:
- 		igt_require(!psr_disabled_check(data->debugfs_fd));
--		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1, NULL),
-+		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1, data->output),
- 			     "PSR still disabled\n");
- 		break;
- 	case FEATURE_DRRS:
-@@ -217,8 +217,8 @@ static void disable_features(data_t *data)
- {
- 	intel_fbc_disable(&data->display);
- 
--	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL))
--		psr_disable(data->drm_fd, data->debugfs_fd, NULL);
-+	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, data->output))
-+		psr_disable(data->drm_fd, data->debugfs_fd, data->output);
- 
- 	intel_drrs_disable(data->crtc);
- }
--- 
-2.43.0
+CI Bug Log - changes from IGT_8807 -> IGTPW_14799
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14799/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14799 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8807/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14799/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-6:         [DMESG-WARN][3] ([i915#15673]) -> [PASS][4] +78 other tests pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8807/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14799/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8807 -> IGTPW_14799
+  * Linux: CI_DRM_18164 -> CI_DRM_18169
+
+  CI-20190529: 20190529
+  CI_DRM_18164: 113073d07f958385b5b80d29b62e10d2cf0181d6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18169: c479cdf62a3f9a6101dd020abbc471f35142b3d1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14799: 14799
+  IGT_8807: 7f44d96d705f1583d689f1f8c2275b685b4ca11d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14799/index.html
+
+--===============0034991728781980029==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_oa: Extend enable-disable to read after disabling stream</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163414/">https://patchwork.freedesktop.org/series/163414/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14799/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14799/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8807 -&gt; IGTPW_14799</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14799/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14799 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8807/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14799/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8807/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14799/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> +78 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8807 -&gt; IGTPW_14799</li>
+<li>Linux: CI_DRM_18164 -&gt; CI_DRM_18169</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18164: 113073d07f958385b5b80d29b62e10d2cf0181d6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18169: c479cdf62a3f9a6101dd020abbc471f35142b3d1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14799: 14799<br />
+  IGT_8807: 7f44d96d705f1583d689f1f8c2275b685b4ca11d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0034991728781980029==--
