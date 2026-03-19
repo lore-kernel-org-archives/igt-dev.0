@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 710D31091926
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Mar 2026 21:51:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 771D91091916
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Mar 2026 21:51:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C28110E15A;
-	Thu, 19 Mar 2026 21:51:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 263AB10E95B;
+	Thu, 19 Mar 2026 21:51:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Us/iDruc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mfXqiWpy";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36D3710E95B
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2026 21:51:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDEFB10E15A
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2026 21:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773957097; x=1805493097;
+ t=1773957101; x=1805493101;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=SL25OMw9PhzWoNQgwEVb7ZMasy5HQEaAtq37Eby3KJw=;
- b=Us/iDrucEbVLZFXqtKtoPK1i1SuKosvSBmrPZLspvKMlxwZA2R2M8pKc
- sXIFzNgAB0ouS3vw2/yBm+DCTVB6j6KRh1Dra5Jid3GMH1nutGwk/9eVF
- ks70EGV4n/K7Iher3hyZGt4toj1G7LD6UWZP53AEPlg8jtLr6pGIT5I3o
- UAQCXnrz3rEMjogIOXgWTiaukvDfRLIgkTXnX/DhdmaYzJb7kzCXB4aYh
- 7wNZs1Ju8dZqc+AlSrxdBK5M3ppFJ+mgbh+4y1pECTwYQcwaY8zThQ2Wg
- YXxMphDqhkM/veEJ0Epgo8W1Nhn2D1YIt4rujxPiJTvFaDSj/Tm4kV+n+ w==;
-X-CSE-ConnectionGUID: cH2occA3QqueTbH6JXZvCg==
-X-CSE-MsgGUID: g/WJRgbHT1q9ws/sG0MdVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75010854"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75010854"
+ bh=Xk3V9W+owK+CUnqVaMG3kvmp5eimMoJQHCNcqmymdfk=;
+ b=mfXqiWpyYuwKU/Hq0uK8Zs1+CKlWMINgJRY3A2kKWEuI2Of8kGQsd8ot
+ BdNVd3OaCuSb2BW44mx0L/CJdrrhzkHUoW7X6IyUJwBzIO4ohFpi83HiQ
+ jyRKeHePhZDGd4qGXBfX9qFX5H4S+l4sGaSM+aMU7whEJGwnMdStBK60u
+ /QnpAaiUoNS/K3sHBT0Eme1Tp2ELM7GapkQmB10P0CtKOuuDLLzL5c6eU
+ 9GyGVthvveuGfl6ILOoQWSOckgowZjQIelGwp18k2GwSh2JXEd3fV2Obp
+ xhwSe8yRfssNz4vkEEIAo9nttPHWcz8BXlApunePMI79vOviU8sjGzLx1 A==;
+X-CSE-ConnectionGUID: WHprrsfzQ1yz/3PSen8klg==
+X-CSE-MsgGUID: hSLfH9SaROiE7GRet8AJkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75010859"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75010859"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2026 14:51:37 -0700
-X-CSE-ConnectionGUID: k7CPIoCOT3C32urghhTL7g==
-X-CSE-MsgGUID: ZMBVbvCfSdWzKRMMIC8PYQ==
+ 19 Mar 2026 14:51:41 -0700
+X-CSE-ConnectionGUID: 1nkuQtxxTfeWb5AVnybU1Q==
+X-CSE-MsgGUID: e9L/vadFSwOCpmGhu1INHw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="253576841"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="253576875"
 Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.244.112])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2026 14:51:35 -0700
+ 19 Mar 2026 14:51:39 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>
-Subject: [PATCH i-g-t 1/4] runner: Rename dirfd to avoid clash with dirfd()
-Date: Thu, 19 Mar 2026 22:51:26 +0100
-Message-ID: <20260319215124.2066611-7-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 2/4] runner: Create attachments directory to use by hooks
+Date: Thu, 19 Mar 2026 22:51:27 +0100
+Message-ID: <20260319215124.2066611-8-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260319215124.2066611-6-zbigniew.kempczynski@intel.com>
 References: <20260319215124.2066611-6-zbigniew.kempczynski@intel.com>
@@ -71,63 +71,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Upcoming change within execute_next_entry() will call dirfd() so
-rename local dirfd variable is necessary.
+Results parsing is currently limited to few predefined files.
+
+Create "attachments" directory and export full path of created directory
+to be used within hooks. From now on environment variable
+IGT_RUNNER_ATTACHMENTS_DIR become visible when igt_runner is used
+to execute tests. This env contains directory where subtests/dynsubtests
+may write auxiliary files which finally be included in results.json.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Ryszard Knop <ryszard.knop@intel.com>
 ---
- runner/executor.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ lib/igt_hook.c    |  4 ++++
+ runner/executor.c | 15 ++++++++++++++-
+ runner/executor.h |  2 ++
+ 3 files changed, 20 insertions(+), 1 deletion(-)
 
+diff --git a/lib/igt_hook.c b/lib/igt_hook.c
+index f86ed56f72..57817bdc12 100644
+--- a/lib/igt_hook.c
++++ b/lib/igt_hook.c
+@@ -518,5 +518,9 @@ available to the command:\n\
+ \n\
+ Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
+ when matching events and running hook commands.\n\
++\n\
++When executed by the igt_runner environment IGT_RUNNER_ATTACHMENTS_DIR\n\
++is passed additionally to the hook script. It contains directory where\n\
++script may write additional attachments like guc logs, etc.\n\
+ ", option_name);
+ }
 diff --git a/runner/executor.c b/runner/executor.c
-index 847abe481a..885a38a99f 100644
+index 885a38a99f..8954073c36 100644
 --- a/runner/executor.c
 +++ b/runner/executor.c
-@@ -1772,7 +1772,7 @@ static int execute_next_entry(struct execute_state *state,
- 			      char **abortreason,
- 			      bool *abort_already_written)
- {
--	int dirfd;
-+	int ddirfd;
- 	int outputs[_F_LAST];
- 	int kmsgfd;
- 	int outpipe[2] = { -1, -1 };
-@@ -1786,19 +1786,19 @@ static int execute_next_entry(struct execute_state *state,
+@@ -1779,18 +1779,30 @@ static int execute_next_entry(struct execute_state *state,
+ 	int errpipe[2] = { -1, -1 };
+ 	int socket[2] = { -1, -1 };
+ 	int outfd, errfd, socketfd;
+-	char name[32];
++	char name[32], attname[32];
++	char resdirname[PATH_MAX - 32];
++	char attdirname[PATH_MAX];
+ 	pid_t child;
+ 	int result;
+ 	size_t idx = state->next;
++	DIR *currdir;
  
  	snprintf(name, sizeof(name), "%zd", idx);
++	snprintf(attname, sizeof(attname), "%zd/%s", idx, DIR_ATTACHMENTS);
  	mkdirat(resdirfd, name, 0777);
--	if ((dirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
-+	if ((ddirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
++	mkdirat(resdirfd, attname, 0777);
+ 	if ((ddirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
  		errf("Error accessing individual test result directory\n");
  		return -1;
  	}
  
--	if (!open_output_files(dirfd, outputs, true)) {
-+	if (!open_output_files(ddirfd, outputs, true)) {
++	currdir = opendir(".");
++	fchdir(ddirfd);
++	getcwd(resdirname, sizeof(resdirname));
++	fchdir(dirfd(currdir));
++	closedir(currdir);
++	snprintf(attdirname, sizeof(attdirname), "%s/%s", resdirname, DIR_ATTACHMENTS);
++
+ 	if (!open_output_files(ddirfd, outputs, true)) {
  		errf("Error opening output files\n");
  		result = -1;
- 		goto out_dirfd;
- 	}
+@@ -1870,6 +1882,7 @@ static int execute_next_entry(struct execute_state *state,
+ 			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
+ 		}
+ 		setenv("IGT_SENTINEL_ON_STDERR", "1", 1);
++		setenv("IGT_RUNNER_ATTACHMENTS_DIR", attdirname, 1);
  
- 	if (settings->sync) {
--		fsync(dirfd);
-+		fsync(ddirfd);
- 		fsync(resdirfd);
- 	}
+ 		execute_test_process(outfd, errfd, socketfd, settings, entry);
+ 		/* unreachable */
+diff --git a/runner/executor.h b/runner/executor.h
+index 3b1cabcf55..bc6ac80dc4 100644
+--- a/runner/executor.h
++++ b/runner/executor.h
+@@ -25,6 +25,8 @@ enum {
+ 	_F_LAST,
+ };
  
-@@ -1900,8 +1900,8 @@ out_pipe:
- 	close_outputs(outputs);
- out_dirfd:
- 	if (settings->sync)
--		fsync(dirfd);
--	close(dirfd);
-+		fsync(ddirfd);
-+	close(ddirfd);
- 	if (settings->sync)
- 		fsync(resdirfd);
- 
++#define DIR_ATTACHMENTS "attachments"
++
+ bool open_output_files(int dirfd, int *fds, bool write);
+ bool open_output_files_rdonly(int dirfd, int *fds);
+ void close_outputs(int *fds);
 -- 
 2.43.0
 
