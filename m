@@ -4,59 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58E501075275
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Mar 2026 08:36:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83FDE107527C
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Mar 2026 08:54:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 05C7410E917;
-	Thu, 19 Mar 2026 08:36:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2861210E7D3;
+	Thu, 19 Mar 2026 08:54:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SsqLicv+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d5ZPrxr5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80B9810E917
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2026 08:36:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0AAE10E7D3
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2026 08:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773909384; x=1805445384;
- h=from:to:subject:in-reply-to:references:date:message-id:
- mime-version; bh=ZDzKoL0qOkzSG7I/1f4hW3OLOUHsik7o+eBUxTguGPc=;
- b=SsqLicv+R34/0HK+f8Np/8x+3YIxB23vdhgmGKj5jJrkCwMqmuW+11wb
- VsnqVtn8P/RY39v+DVVGLZx4WCKaD3nYOEChZe5H0skGxdeO6vxlKVdJw
- Cte1prO7RV8jP9B4mi1D0xu7uZGOc1cICaYrJ1m3wdPdLA7ytummeRqUy
- e/3SzwKb3OgJ9MBN5ZzTaCyAHL9y9LokKmOTBMc1DVKqxHAta/Ge8AVyJ
- GDt5rXAVDOsBjn6UpJl6z6cg7OFkR3LFd99HIhGhHFFccew4oCzpaBHyC
- zYxJBp/0SAXOhUdtqRJy1ajStsDpyiJdKEnesaZx+K8c9lUZ+wDpyOfvH Q==;
-X-CSE-ConnectionGUID: qJAuOPheTnmXhaMDEOstHA==
-X-CSE-MsgGUID: zsVJ3uBQSXma2d6e15CihA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="85603586"
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; d="scan'208";a="85603586"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2026 01:36:23 -0700
-X-CSE-ConnectionGUID: SNJ6p3znSrSZREslKpx1PQ==
-X-CSE-MsgGUID: uMR02kg3TeK13OnCnjttJQ==
+ t=1773910482; x=1805446482;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=TPYp3AQwnI4bbcsKZoJaD2TcIFmqVrJeaS1Iro6EAjk=;
+ b=d5ZPrxr5WhyKfvV7P14mWFDQB8vfYXCbw5kea3vB6PHhWpDiz8G/EDnv
+ b3FNX8Q1i/xR/u5tXaWhDSkv3pLKWbNFOYv4kW3CGyJKZz8vGSrh8+lDf
+ DcnaaFk0v7oFjfv7Rv+JOsUt7FjM9N8pc9lOcJF9ZUfDba7+3SCUeWCJB
+ ZNhrSF1l1yAK8S8vHfwiuI+ijG5im2APflm7VJmuUgGkRut6BvEWHN/xQ
+ HC256GakLdo+IpbOC6r5FBIgiRlCeclJIzPXLjr8ZINoJVe47AWyGap0T
+ pt/vXy9yr4N3mJp9Uwbun0Aexdsj6qkucKTpVMotCdEktgg2NJeWevEaJ g==;
+X-CSE-ConnectionGUID: Y2RykjdpQTy6m59HcmC52g==
+X-CSE-MsgGUID: t2prO0QSRLmuujo7IWuDnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="77584152"
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; d="scan'208";a="77584152"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2026 01:54:42 -0700
+X-CSE-ConnectionGUID: Kp3mB942QcutA5q2GpGSDg==
+X-CSE-MsgGUID: 24+LKsQpT7eOhnOa6Ht8SA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; d="scan'208";a="245919600"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.118])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2026 01:36:21 -0700
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2026 01:54:39 -0700
 From: Jani Nikula <jani.nikula@intel.com>
-To: Harry Wentland <harry.wentland@amd.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, igt-dev@lists.freedesktop.org,
- Aurabindo Pillai <aurabindo.pillai@amd.com>, Vitaly Prosyak
- <vitaly.prosyak@amd.com>
-Subject: Re: [PATCH i-g-t 01/12] tests/amdgpu/amd_mode_switch: Prepare for
- returning NULL from igt_crtc_for_pipe()
-In-Reply-To: <475c8dc6-30b0-4013-93a8-6dcaf49cc163@amd.com>
+To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
+Cc: wayne.lin@amd.com, Mark.Broadworth@amd.com, Alex Hung <alex.hung@amd.com>
+Subject: Re: [PATCH 2/3] tools: Add amd_hdr_visual for manual HDR verification
+In-Reply-To: <20260317175136.3754576-2-alex.hung@amd.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <cover.1773659680.git.jani.nikula@intel.com>
- <9fb29dd8fcfa356cfe1a40e63977870779f277bd.1773659680.git.jani.nikula@intel.com>
- <20260318180108.vnqsmithuivxe3lw@kamilkon-DESK.igk.intel.com>
- <475c8dc6-30b0-4013-93a8-6dcaf49cc163@amd.com>
-Date: Thu, 19 Mar 2026 10:36:17 +0200
-Message-ID: <11c6cbad126854236d48ec92ed0b94330bd2befd@intel.com>
+References: <20260317175136.3754576-1-alex.hung@amd.com>
+ <20260317175136.3754576-2-alex.hung@amd.com>
+Date: Thu, 19 Mar 2026 10:54:36 +0200
+Message-ID: <7f02ddf383a74633529a642954377ed908e8ddac@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -74,68 +69,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 18 Mar 2026, Harry Wentland <harry.wentland@amd.com> wrote:
-> On 2026-03-18 14:01, Kamil Konieczny wrote:
->> Hi Jani,
->> On 2026-03-16 at 13:19:03 +0200, Jani Nikula wrote:
->>> After checking there are enough pipes, AMD should always have the
->>> CRTCs. Assert that the CRTC is valid.
->>>
->>> This prepares for returning NULL for invalid pipes from
->>> igt_crtc_for_pipe() by ensuring the test logic is sound.
->>>
->>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> 
->> +cc AMD devs
->> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
->> Cc: Harry Wentland <harry.wentland@amd.com>
->> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> 
->>> ---
->>>  tests/amdgpu/amd_mode_switch.c | 2 ++
->>>  1 file changed, 2 insertions(+)
->>>
->>> diff --git a/tests/amdgpu/amd_mode_switch.c b/tests/amdgpu/amd_mode_switch.c
->>> index 4da07c412996..ffa2952bb5c2 100644
->>> --- a/tests/amdgpu/amd_mode_switch.c
->>> +++ b/tests/amdgpu/amd_mode_switch.c
->>> @@ -98,6 +98,8 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
->>>  	for (j = 0; j < num_pipes; j++) {
->>>  		igt_crtc_t *crtc = igt_crtc_for_pipe(display, j);
->>>  
->>> +		igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(j));
->>> +
+On Tue, 17 Mar 2026, Alex Hung <alex.hung@amd.com> wrote:
+> From: Wayne Lin <wayne.lin@amd.com>
 >
-> Not sure I follow how this prepares for returning NULL
-> from igt_crtc_for_pipe(). Wouldn't this do the opposite
-> and hit a NULL pointer with crtc->valid if the function
-> returns NULL?
+> Add a visual verification tool for AMD HDR display output. This tool
+> displays HDR test patterns with different metadata types and waits for
+> user confirmation, enabling manual inspection of HDR output quality.
+>
+> Subtests:
+> - static-swap-smpte2084: Display with SMPTE ST2084 (PQ) HDR metadata
+> - static-swap-traditional-sdr: Display with traditional SDR gamma metadata
+>
+> Co-developed-by: Alex Hung <alex.hung@amd.com>
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
+> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+> ---
+>  tools/amd_hdr_visual.c | 372 +++++++++++++++++++++++++++++++++++++++++
+>  tools/meson.build      |   5 +
+>  2 files changed, 377 insertions(+)
+>  create mode 100644 tools/amd_hdr_visual.c
+>
+> diff --git a/tools/amd_hdr_visual.c b/tools/amd_hdr_visual.c
+> new file mode 100644
+> index 000000000..58decb356
+> --- /dev/null
+> +++ b/tools/amd_hdr_visual.c
+> @@ -0,0 +1,372 @@
+> +/*
+> + * Copyright 2026 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + */
+> +
+> +#include "igt.h"
+> +#include <fcntl.h>
+> +#include <termios.h>
+> +#include <unistd.h>
+> +#include "igt_edid.h"
+> +#include "igt_hdr.h"
+> +
+> +IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
+> +
+> +/* Test flags. */
+> +enum {
+> +	TEST_NONE = 1 << 0,
+> +	TEST_DPMS = 1 << 1,
+> +	TEST_SUSPEND = 1 << 2,
+> +	TEST_SWAP = 1 << 3,
+> +};
+> +
+> +/* BPC connector state. */
+> +typedef struct output_bpc {
+> +	unsigned int current;
+> +	unsigned int maximum;
+> +} output_bpc_t;
+> +
+> +/* Common test data. */
+> +typedef struct data {
+> +	igt_display_t display;
+> +	igt_plane_t *primary;
+> +	igt_output_t *output;
+> +	igt_crtc_t *pipe;
+> +	igt_pipe_crc_t *pipe_crc;
+> +	drmModeModeInfo *mode;
+> +	enum pipe pipe_id;
 
-Should've explained myself better.
+Please avoid using enum pipe and crtc->pipe for anything unless you
+actually really *really* need to know the (Intel) hardware pipe.
 
-Currently igt_crtc_for_pipe() always returns a non-NULL pointer to a
-crtc, which may or may not be valid.
-
-Asserting crtc->valid ensures the CRTC really is valid here.
-
-When changing igt_crtc_for_pipe() to return NULL for !crtc->valid CRTCs,
-we'd also change s/crtc->valid/crtc/g.
+Further details at [1].
 
 BR,
 Jani.
 
 
 
->
-> Harry
->
->>>  		output = data->output[j];
->>>  		if (!igt_output_is_connected(output))
->>>  			continue;
->>> -- 
->>> 2.47.3
->>>
->
+[1] https://lore.kernel.org/r/356099f0d5b2c882460e344869720b92c0da538d@intel.com
+
+
+
+> +	int fd;
+> +	int w;
+> +	int h;
+> +} data_t;
 
 -- 
 Jani Nikula, Intel
