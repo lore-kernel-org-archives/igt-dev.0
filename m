@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83D8E1091926
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Mar 2026 21:51:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E1E1091926
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Mar 2026 21:51:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 33E5910E15A;
-	Thu, 19 Mar 2026 21:51:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3835D10E15A;
+	Thu, 19 Mar 2026 21:51:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hz1HZSoN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bllh20kI";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC68F10E95B
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2026 21:51:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8323010E15A
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2026 21:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773957105; x=1805493105;
+ t=1773957109; x=1805493109;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oXj0wmJA09YAXkYyb3VuetlTS8Oj0027eIDH3xouX4Q=;
- b=Hz1HZSoNDkCMjCS0/SDVAfVGq5tyjmfBMmwE4Md0Gx9a56/JU8KC9SSE
- UWYoqYiipufJeRrs23H4B9mkHuAnV1cpaE0+Dfu05o76QmMWuoJ9dOG/Z
- JHHEafBVnYRWF8and9QYcGsTVhpR2T5FlwrPGJ4YM/TS1la0xb+0UP/iu
- WY0yNB4vulDRrkdByuXGWgdjUezfqWXMKQTM1dz6V6upiOPIcpBWpcRJm
- QC5XzQvtaHp3OvE6rmmbr2Csd9b25rSrlYI98j5as7lo/GMX1bQKRUCoD
- 2yhiYyEcuVsSKo6yrCUPLwcwDk9IKFtSMnox0lPLt7JARqxUGy6U7v8WO A==;
-X-CSE-ConnectionGUID: /qQLqsDQQ1aUpVbe3tJMqg==
-X-CSE-MsgGUID: HCYu2cJ+TRWIUJfYYH7vUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75010863"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75010863"
+ bh=TaOANohdYcHgm5sKyJgpXoeNn0RA/NmtS/eWctB7GEc=;
+ b=Bllh20kI+fVtBajSqbwJqoIKTgiB3MuMYXnXz5v9XazSIl/sPpqY4/97
+ rO9uxedvwr8C1HD4KibmzYHLT3p/cctuY1N4vyN9836yTdhdUACZ6HdRL
+ lthl7mQU53z5xcGGZh+4TMteUiEhs2tbU0Hpw6iG/hHfpp38pvPG+//UY
+ 3K6m81EyPFXTgLrnNH6zUi0A4DEtPH+eJSNq2Fee4DNiUMyF2qnN9Fec/
+ eCWVZtlzfmb5Ty07zn/w4rWXHIpnl+DJgU3MxPPXRcpuu9CmgIygrR9Xy
+ sv6po/8ukOxhbHfPK8GNmWushdAnKz4kFaSrlB2Fqp3aPT7XM4nVEQZxm Q==;
+X-CSE-ConnectionGUID: hW4zAvbmTWOlS1+4lMjJxQ==
+X-CSE-MsgGUID: 4elbL1VxS5W/Wg2uvtmQDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75010865"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75010865"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2026 14:51:45 -0700
-X-CSE-ConnectionGUID: tvpDTDnlTFqsI4D5zKPabg==
-X-CSE-MsgGUID: 2JO7l5VtSHKu6/glVuDlFA==
+ 19 Mar 2026 14:51:48 -0700
+X-CSE-ConnectionGUID: up2OhiCVRH+V0ug8LfWvrQ==
+X-CSE-MsgGUID: h01I4A3LS2SUJ5CFZV/Iig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="253576905"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="253576916"
 Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.244.112])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2026 14:51:43 -0700
+ 19 Mar 2026 14:51:47 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>
-Subject: [PATCH i-g-t 3/4] runner: Add attachments directory content in
- subtests results
-Date: Thu, 19 Mar 2026 22:51:28 +0100
-Message-ID: <20260319215124.2066611-9-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 4/4] scripts/hooks: Example guc log copy script to
+ attachments dir
+Date: Thu, 19 Mar 2026 22:51:29 +0100
+Message-ID: <20260319215124.2066611-10-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260319215124.2066611-6-zbigniew.kempczynski@intel.com>
 References: <20260319215124.2066611-6-zbigniew.kempczynski@intel.com>
@@ -72,151 +72,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Files produced by hooks which lands in attachments directory should
-be called in piglit style, what means they should be in form:
+We need to explicitly extract guc logs for failed tests so add
+hook script which does it after subtest/dynsubtest execution.
+As copying to attachments take a lot of time do it only for
+failing subtests.
 
-igt@test@subtest@@unique-filename-from-hook
-igt@test@subtest@dynsubtest@@unique-filename-from-hook
-
-depending is it normal subtest or dynamic subtest.
-
-Hooks introduced IGT_HOOK_TEST_FULLNAME env variable, which contains
-
-igt@test@subtest
-igt@test@subtest@dynsubtest
-
-and it should be used as prefix part (before '@@') of attachment
-filename when hook script writes some content to it.
-
-Such defined contract between hook script and resultgen allows to
-distinguish subtest/dynsubtest attachments structure in results.json.
-So string before '@@' is a subtest/dynsubtest name in results file,
-and string after it is a unique key of a base64 file content added
-to results.
+Adding this hook script to CI will extend its execution time much
+(all failing subtests will copy their guc logs to attachments dir)
+so introducing some form of allow-listing will be necessary. For example
+exiting immediately on tests where we know guc log might be not useful
+is simplest solution.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Ryszard Knop <ryszard.knop@intel.com>
 ---
- runner/resultgen.c | 98 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 98 insertions(+)
+ scripts/hooks/guc_copy_on_fail.sh | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100755 scripts/hooks/guc_copy_on_fail.sh
 
-diff --git a/runner/resultgen.c b/runner/resultgen.c
-index 29fc5cbb15..8d2a37163d 100644
---- a/runner/resultgen.c
-+++ b/runner/resultgen.c
-@@ -1142,6 +1142,100 @@ static bool fill_from_dmesg(int fd,
- 	return true;
- }
- 
-+static char *get_base64(int dirfd, const char *filename)
-+{
-+	struct stat st;
-+	int fd;
-+	unsigned char *data;
-+	char *base64 = NULL;
+diff --git a/scripts/hooks/guc_copy_on_fail.sh b/scripts/hooks/guc_copy_on_fail.sh
+new file mode 100755
+index 0000000000..2360952634
+--- /dev/null
++++ b/scripts/hooks/guc_copy_on_fail.sh
+@@ -0,0 +1,24 @@
++#!/bin/bash
 +
-+	if (fstatat(dirfd, filename, &st, 0)) {
-+		fprintf(stderr, "Can't stat %s\n", filename);
-+		return NULL;
-+	}
++# Hook script for copying guc.log.
++# Suggested usage with:
++# --hook 'post-subtest:scripts/hooks/guc_copy_on_fail.sh' --hook 'post-dyn-subtest:scripts/hooks/guc_copy_on_fail.sh'
 +
-+	fd = openat(dirfd, filename, O_RDONLY);
-+	if (fd < 0) {
-+		fprintf(stderr, "Can't open %s\n", filename);
-+		return NULL;
-+	}
++if [ -z "$IGT_RUNNER_ATTACHMENTS_DIR" ]; then
++	echo "Missing IGT_RUNNER_ATTACHMENTS_DIR env"
++	exit 0
++fi
 +
-+	data = malloc(st.st_size);
-+	if (!data) {
-+		fprintf(stderr, "Cannot allocate %zu bytes for data buffer\n",
-+			st.st_size);
-+		goto err_alloc;
-+	}
++cd "$IGT_RUNNER_ATTACHMENTS_DIR"
 +
-+	if (read(fd, data, st.st_size) != st.st_size) {
-+		fprintf(stderr, "Cannot read %zu bytes from data buffer\n",
-+			st.st_size);
-+		goto err_read;
-+	}
++# Copy only for failed subtests as this is time-consuming
++if [ "${IGT_HOOK_RESULT}" != "FAIL" ]; then
++	exit 0
++fi
 +
-+	base64 = g_base64_encode(data, st.st_size);
++STNAME="${IGT_HOOK_TEST_FULLNAME}"
 +
-+err_read:
-+	free(data);
-+err_alloc:
-+	close(fd);
-+
-+	return base64;
-+}
-+
-+static bool fill_from_attachments(int dirfd, struct json_t *tests)
-+{
-+	struct json_t *obj = NULL, *attobj = NULL;
-+	char attname[32];
-+	int atdir;
-+	struct dirent *entry;
-+	DIR *dir;
-+
-+	snprintf(attname, sizeof(attname), "%s", DIR_ATTACHMENTS);
-+	if ((atdir = openat(dirfd, attname, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
-+		fprintf(stderr, "Error opening '%s' dir\n", DIR_ATTACHMENTS);
-+		return false;
-+	}
-+
-+	dir = fdopendir(atdir);
-+	if (!dir) {
-+		close(atdir);
-+		return false;
-+	}
-+
-+	while ((entry = readdir(dir))) {
-+		char *base64_data, *piglit_name, *p;
-+
-+		if (strcmp(entry->d_name, ".") == 0 ||
-+		    strcmp(entry->d_name, "..") == 0)
-+			continue;
-+
-+		piglit_name = strdup(entry->d_name);
-+		p = strstr(piglit_name, "@@");
-+		if (!p) {
-+			free(piglit_name);
-+			continue;
-+		}
-+		*p = '\0';
-+		p += 2;
-+
-+		obj = get_or_create_json_object(tests, piglit_name);
-+		attobj = get_or_create_json_object(obj, "attachments");
-+
-+		base64_data = get_base64(atdir, entry->d_name);
-+		if (base64_data) {
-+			json_object_set_new(attobj, p,
-+					    escaped_json_stringn(base64_data, strlen(base64_data)));
-+			free(base64_data);
-+		}
-+		free(piglit_name);
-+	}
-+
-+	closedir(dir);
-+
-+	return true;
-+}
-+
- static const char *result_from_exitcode(int exitcode)
- {
- 	switch (exitcode) {
-@@ -2230,6 +2324,10 @@ static bool parse_test_directory(int dirfd,
- 		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
- 	}
- 
-+	if (!fill_from_attachments(dirfd, results->tests)) {
-+		fprintf(stderr, "Error parsing attachments directory\n");
-+	}
-+
- 	override_results(entry->binary, &subtests, results->tests);
- 	prune_subtests(settings, entry, &subtests, results->tests);
- 
++for log in $(find /sys/kernel/debug/dri -iname 'guc_log'); do
++	attout=$(echo ${log:23} | sed -e 's/\//_/g')
++	cp "$log" "${STNAME}@@${attout}"
++done
 -- 
 2.43.0
 
