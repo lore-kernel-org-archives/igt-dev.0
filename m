@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45706108B8F7
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 11:27:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A10C0108B901
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 11:27:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2E2B10EAD7;
-	Fri, 20 Mar 2026 11:27:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5AC0210EAD3;
+	Fri, 20 Mar 2026 11:27:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iTtwjiid";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XFIeoYo1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AAA410EAD7
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 11:26:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44DDC10EAD7
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 11:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774006015; x=1805542015;
+ t=1774006016; x=1805542016;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oveWcOVU0pd83etP2BlxnOx6YzaIlL3QeEDFbfFBrPY=;
- b=iTtwjiidzmi8J1/l+M98b1D7tymLraTZn/fiKv6uZFh0BPG9bm7FSKE4
- fn5O6kPj5Ll3PUzk+EoKYaAwxmlrJaIL+dDRpBMZTWKe2B0GO8K7m3Cxs
- t+TEIiW1CWnMhrReLhyECJdOMGajzIcoaMeQ3euatlor3ERAGXLTsYnfn
- 4sA81+Skq9qg1vH/BMM9FKfDbD5nkp38pN3r2mrOhwMFEeLpWHXkDGlXF
- s87TLpd8UcGRDJdk08HbMwihDf9CvgMYwah2Y6k0ndFfOzsDGqswqcXkD
- OSUEi3LPd5QuYZVxxmX8kBzRp9WmNMLrDzV6c+deWYgaVrMRkQ7moVtz4 w==;
-X-CSE-ConnectionGUID: vp1t0W+2RCO65t5RnoO5mw==
-X-CSE-MsgGUID: IDY7wDRST+elXEY8+4inoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75162693"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75162693"
+ bh=9x8GLMUGOlTtSwBzwIggXuYnI8nQMKD5atVZXNChMXc=;
+ b=XFIeoYo1u9QL588JOxZbPFsn2JH8W2gZdvfJEifVeOVFA6Ij80f9sFHj
+ IKGef1qOPWLZgvpX+l8mQw0JHmVf0wsujB5SdM8fGXVpzZlv8v2o9f8q5
+ bWBRmiH1L7KORJlCRW6fkxw63frJ8kUg8PvxdNcgBJuPxDWMY6kA3r13q
+ kBZSZSmyz2vLOzWPotvbg0cTcEEM6+RUSgbkj6Y0X2QopSCZxHzehc0ue
+ MXWUyNH5Bg4Mm0z9/HbvosQDu5kM1tOhapFVsNT13sPXJ4LYRWbW+4o7n
+ T1wCWP/6iFVzpWd8ZilCrUivmuunRWjkqzUWdLAMpTQGi3wg2ETAiucBX g==;
+X-CSE-ConnectionGUID: lus0It3JQHSKXC74na9MfA==
+X-CSE-MsgGUID: vyiVu+M/TaGIVZZEUj8Wvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75162697"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75162697"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 04:25:36 -0700
-X-CSE-ConnectionGUID: SMPWW1lESOq4wtBlY9bZSg==
-X-CSE-MsgGUID: 94t1ggASQNmgC3X7l0Yr+Q==
+ 20 Mar 2026 04:25:41 -0700
+X-CSE-ConnectionGUID: 4lyPANnDR8WCybYVztNCsQ==
+X-CSE-MsgGUID: JES7s9PbRe224dKzCUn4Og==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="227390044"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="227390083"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.197])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 04:25:33 -0700
+ 20 Mar 2026 04:25:38 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, Aurabindo Pillai <aurabindo.pillai@amd.com>,
  Harry Wentland <harry.wentland@amd.com>,
  Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Hung <alex.hung@amd.com>
-Subject: [PATCH i-g-t 5/7] tests/amdgpu/amd_multidisplay_modeset:
+Subject: [PATCH i-g-t 6/7] tests/amdgpu/amd_vrr_range:
  s/crtc->pipe/crtc->crtc_index/
-Date: Fri, 20 Mar 2026 13:24:55 +0200
-Message-ID: <67f9e10aed3f6d98b9891839bc6ad24c722bdffb.1774005763.git.jani.nikula@intel.com>
+Date: Fri, 20 Mar 2026 13:24:56 +0200
+Message-ID: <b531dec3d486bcfa730d386799ef1cf91960a875.1774005763.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1774005763.git.jani.nikula@intel.com>
 References: <cover.1774005763.git.jani.nikula@intel.com>
@@ -87,75 +87,23 @@ Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Cc: Harry Wentland <harry.wentland@amd.com>
 Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
 Cc: Alex Hung <alex.hung@amd.com>
-
-Review tip: apply and use this to ignore the whitespace changes:
-
-git show --color-words --word-diff-regex="\w+"
 ---
- tests/amdgpu/amd_multidisplay_modeset.c | 30 ++++++++++++-------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ tests/amdgpu/amd_vrr_range.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/amdgpu/amd_multidisplay_modeset.c b/tests/amdgpu/amd_multidisplay_modeset.c
-index 40d1e5d7f42b..98ca2c79470b 100644
---- a/tests/amdgpu/amd_multidisplay_modeset.c
-+++ b/tests/amdgpu/amd_multidisplay_modeset.c
-@@ -160,9 +160,9 @@ static void test_init(struct data_t *data)
- 		 * tested
- 		 */
- 		output = igt_get_single_output_for_crtc(crtc);
--		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
--							   DRM_PLANE_TYPE_PRIMARY);
--		data->output[crtc->pipe] = output;
-+		data->primary[crtc->crtc_index] =
-+			igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_PRIMARY);
-+		data->output[crtc->crtc_index] = output;
- 
- 		/* dp rx crc only available for eDP, SST DP, MST DP */
- 		if ((output->config.connector->connector_type ==
-@@ -173,24 +173,24 @@ static void test_init(struct data_t *data)
- 			ret = dpcd_read_byte(data->fd, output->config.connector,
- 				DPCD_TEST_SINK_MISC, &dpcd_246h);
- 			if (ret && ((dpcd_246h & 0x20) != 0x0))
--				data->pipe_crc_dprx[crtc->pipe] = igt_crtc_crc_new(crtc,
--									  AMDGPU_PIPE_CRC_SOURCE_DPRX);
-+				data->pipe_crc_dprx[crtc->crtc_index] =
-+					igt_crtc_crc_new(crtc, AMDGPU_PIPE_CRC_SOURCE_DPRX);
- 		}
- 
--		data->pipe_crc_otg[crtc->pipe] = igt_crtc_crc_new(crtc,
--							 IGT_PIPE_CRC_SOURCE_AUTO);
-+		data->pipe_crc_otg[crtc->crtc_index] =
-+			igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
- 		/* disable eDP PSR */
--		if (data->output[crtc->pipe]->config.connector->connector_type ==
--				DRM_MODE_CONNECTOR_eDP) {
-+		if (data->output[crtc->crtc_index]->config.connector->connector_type ==
-+		    DRM_MODE_CONNECTOR_eDP) {
- 			kmstest_set_connector_dpms(display->drm_fd,
--				data->output[crtc->pipe]->config.connector,
-+				data->output[crtc->crtc_index]->config.connector,
- 				DRM_MODE_DPMS_OFF);
- 
- 			igt_amd_disallow_edp_enter_psr(data->fd,
--				data->output[crtc->pipe]->name, true);
-+				data->output[crtc->crtc_index]->name, true);
- 
- 			kmstest_set_connector_dpms(display->drm_fd,
--				data->output[crtc->pipe]->config.connector,
-+				data->output[crtc->crtc_index]->config.connector,
- 				DRM_MODE_DPMS_ON);
- 		}
- 	}
-@@ -205,9 +205,9 @@ static void test_fini(struct data_t *data)
+diff --git a/tests/amdgpu/amd_vrr_range.c b/tests/amdgpu/amd_vrr_range.c
+index 9666ed320e35..cc3323df39ad 100644
+--- a/tests/amdgpu/amd_vrr_range.c
++++ b/tests/amdgpu/amd_vrr_range.c
+@@ -189,9 +189,9 @@ static void test_init(data_t *data)
  	igt_crtc_t *crtc;
  
  	for_each_crtc(display, crtc) {
--		if (data->pipe_crc_dprx[crtc->pipe])
--			igt_pipe_crc_free(data->pipe_crc_dprx[crtc->pipe]);
--		igt_pipe_crc_free(data->pipe_crc_otg[crtc->pipe]);
-+		if (data->pipe_crc_dprx[crtc->crtc_index])
-+			igt_pipe_crc_free(data->pipe_crc_dprx[crtc->crtc_index]);
-+		igt_pipe_crc_free(data->pipe_crc_otg[crtc->crtc_index]);
+-		igt_output_t *output = &display->outputs[crtc->pipe];
++		igt_output_t *output = &display->outputs[crtc->crtc_index];
+ 
+-		data->output[crtc->pipe] = output;
++		data->output[crtc->crtc_index] = output;
  	}
  
  	igt_display_reset(display);
