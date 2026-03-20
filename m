@@ -4,54 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CFDE108B8ED
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 10:39:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27292108B8E9
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 10:39:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BEE6A10EA6E;
-	Fri, 20 Mar 2026 10:39:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C94C110E97C;
+	Fri, 20 Mar 2026 10:39:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BolvgwKn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n8XJPLzw";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2DF210EA6E
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 10:39:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6166F10E97C
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 10:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774003183; x=1805539183;
+ t=1774003187; x=1805539187;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hkxktOk/9gyyqbx8nogqeaDpugkgUYN2eJRcnAQUhqQ=;
- b=BolvgwKntkPhNLnN3M92ljKWheWcKCIyQE2HUbVyObq3mT71yZ7fxPwP
- iBxKkSxfGYth3m71vAv4XuuLtzhAt+A36ftcVSocotAJPQquPlJrvqiGz
- QC6jrrjKneRS/CKeD491xflbu5frdiYVBXbYlOObXxgBlFuKn+XT2ThNT
- /FkP41J7Ziyox5WnspdDMpSqSOclY1MQKC9PlaWOMAY58eSnLpeIwf0w5
- jz/uYeb+9NAbaPMtoIUlxkWwUGCy3Yx5jL/F38Eaht39zk680BcsZqV+R
- apogfkjDGRslAMGgZXEC69e7bAKCHb0TTHHUUP1a7LQREEsZX9Hxv1FkM Q==;
-X-CSE-ConnectionGUID: qvBXyaroQq6Zn7xFVa0bww==
-X-CSE-MsgGUID: Po0UJ+FUTMOhFK8GgVP1lg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75159023"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75159023"
+ bh=JeS+EUrFXu9fGwxQtajPsOMUd90o2JehwiCMulb/5U0=;
+ b=n8XJPLzw1CIwT4iPmBd2pruoci8m/U4TqiD/aQfvLQtr/WrrERDX9SEX
+ eRf3OvoP37Vuy1kFMC9ZAEdc7/PPHonRViOWCKsS0gHgBG9iHFuxohs9+
+ HorhlIqW3bTVOSioEQIlQEDUP67Cf0OMpvtAq4HXjg+1qcuJayCwG+aqe
+ 2W3UAZsXg/Cyx0bJBXTbUWjvprWzGzyymLrG/HZBrjoma7mkXSnqEyMsY
+ 7jq16omG6nSqnO43AsXFwLG2jR0SAYmdBGs1u16O0lsWah3uFXD9sb89b
+ 0XKa1sAfFdghEJV0m4LWAQD9LoDmabeMafCBPjCwrC6w+sJpeGUxCqFGl A==;
+X-CSE-ConnectionGUID: OU4s5AncRca6eQUhQYi5mg==
+X-CSE-MsgGUID: Awep0GorQHSmRvqseBLeWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75159032"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75159032"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 03:39:42 -0700
-X-CSE-ConnectionGUID: w1/jpSgsRJOLqV8fCH81aw==
-X-CSE-MsgGUID: uCnV7hXcS8O5bMguif07mA==
+ 20 Mar 2026 03:39:47 -0700
+X-CSE-ConnectionGUID: daTtxcogTIK4hqVPYXXGcA==
+X-CSE-MsgGUID: Q4AIw4rARUe45l0qNkdHAw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="222473334"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="222473342"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.197])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 03:39:41 -0700
+ 20 Mar 2026 03:39:47 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com, Aurabindo Pillai <aurabindo.pillai@amd.com>,
- Harry Wentland <harry.wentland@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Hung <alex.hung@amd.com>,
+Cc: jani.nikula@intel.com, Mika Kahola <mika.kahola@intel.com>,
  =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH i-g-t v2 01/11] tests/amdgpu/amd_multidisplay_modeset: Prepare
- for returning NULL from igt_crtc_for_pipe()
-Date: Fri, 20 Mar 2026 12:39:21 +0200
-Message-ID: <28eded249f6309cc7fc82425007ecd414996b5d2.1774002591.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t v2 02/11] tests/intel/kms_cdclk: use igt_next_crtc()
+Date: Fri, 20 Mar 2026 12:39:22 +0200
+Message-ID: <fb72360008ab66d863c8a5dc02a2d6f60622c59e.1774002591.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1774002591.git.jani.nikula@intel.com>
 References: <cover.1774002591.git.jani.nikula@intel.com>
@@ -75,37 +72,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-AMD should always have enough CRTCs for the test. Assert this is the
-case by checking the CRTC returned from igt_crtc_for_pipe() is valid.
+The test doesn't care about pipes, but rather just another CRTC, so
+prefer igt_next_crtc() over igt_crtc_for_pipe(). The i < count loop is
+really just about count here, not about specific pipes.
 
-This prepares for returning NULL for invalid pipes from
-igt_crtc_for_pipe() by ensuring the test logic is sound. The follow-up
-can change the check from crtc->valid to crtc != NULL with no functional
-change here.
-
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
 Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tests/amdgpu/amd_multidisplay_modeset.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/intel/kms_cdclk.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tests/amdgpu/amd_multidisplay_modeset.c b/tests/amdgpu/amd_multidisplay_modeset.c
-index 40d1e5d7f42b..ebcfea8ee35f 100644
---- a/tests/amdgpu/amd_multidisplay_modeset.c
-+++ b/tests/amdgpu/amd_multidisplay_modeset.c
-@@ -327,6 +327,8 @@ static void multiple_display_test(struct data_t *data, enum sub_test test_mode)
+diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
+index 20b8a5f0a018..662bdbe439e5 100644
+--- a/tests/intel/kms_cdclk.c
++++ b/tests/intel/kms_cdclk.c
+@@ -240,10 +240,13 @@ static void set_mode(data_t *data, int count, drmModeModeInfo *mode,
+ 		     igt_output_t **valid_outputs, struct igt_fb fb)
+ {
+ 	igt_display_t *display = &data->display;
++	igt_crtc_t *crtc = NULL;
  
- 			crtc = igt_crtc_for_pipe(display, j);
- 
-+			igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(j));
+ 	for (int i = 0; i < count; i++) {
+-		igt_crtc_t *crtc = igt_crtc_for_pipe(display, i);
+-		igt_plane_t *plane = igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_PRIMARY);
++		igt_plane_t *plane;
 +
- 			igt_create_pattern_fb(data->fd, kmode->hdisplay,
- 					kmode->vdisplay, DRM_FORMAT_XRGB8888,
- 					0, (buf + j));
++		crtc = igt_next_crtc(display, crtc);
++		plane = igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_PRIMARY);
+ 
+ 		igt_output_override_mode(valid_outputs[i], &mode[i]);
+ 
+@@ -259,6 +262,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 	drmModeModeInfo *mode, mode_highres[IGT_MAX_PIPES] = {0}, mode_lowres[IGT_MAX_PIPES] = {0};
+ 	igt_output_t *valid_outputs[IGT_MAX_PIPES] = {NULL};
+ 	igt_output_t *output;
++	igt_crtc_t *crtc = NULL;
+ 	int count = 0;
+ 	int cdclk_ref, cdclk_new;
+ 	uint16_t width = 0, height = 0;
+@@ -288,7 +292,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 		      "Number of valid outputs (%d) must be greater than or equal to 2\n", count);
+ 
+ 	for (int i = 0; i < count; i++) {
+-		igt_crtc_t *crtc = igt_crtc_for_pipe(display, i);
++		crtc = igt_next_crtc(display, crtc);
+ 
+ 		mode = igt_output_get_mode(valid_outputs[i]);
+ 		igt_assert(mode);
 -- 
 2.47.3
 
