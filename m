@@ -4,157 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A928108B8E1
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 09:41:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8013108B8E6
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 09:54:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 38ECF10EAB3;
-	Fri, 20 Mar 2026 09:41:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A2258911A;
+	Fri, 20 Mar 2026 09:54:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="chodYkil";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lxCY5iM9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0F8810EAB3
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 09:40:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A477D10EAC8
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 09:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773999657; x=1805535657;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=SWgFE8PP9bPpx4tt0hvJ69dQsdgIgknJtJJ/8m8jfcc=;
- b=chodYkild2toIUmaZtueFJ3gHxPt+CV534jRm4aEhSeFGAlLLc974GIQ
- G1kbvsngrk6Q2JeNpbAvt/ZgQ4NF3702OGOb19MczC5VIPovSgpM53CAz
- f1odIh08qbrVKbkE4J6KxJMlF9i4TK3qNocbSQmhtsSHihqy3YEOYqNgw
- Ycs5nDRN9PKnwQ+7ofhoHhLuMdAZXTvaJhtLMybsA4DlBWo+1Q4TpwPec
- tKIw6nK6R7RPd4Za78SOiLasT+S2F3lnrZSu7FT5o7NktXOH3kzN4JZA8
- Vn+HTRLn1qUt4OGeJLVO05nAqlIbhP6SAzoMPAe45RzHN5LWS6shWkV1Q w==;
-X-CSE-ConnectionGUID: tbtBbI0pTZaCyhl/yF0Rag==
-X-CSE-MsgGUID: mzrIosZ0QbqS1gcg4zOfXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="92656080"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="92656080"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 02:40:57 -0700
-X-CSE-ConnectionGUID: r2HX5GY5RH++0cBDy6ZJyA==
-X-CSE-MsgGUID: GBNuQ/TvRj2Nskq+bKglbA==
+ t=1774000454; x=1805536454;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Khnf5KSYlTU1BBErClnUyUgRZPZ5u/KKygzU8GY/1E8=;
+ b=lxCY5iM9++ru855TnqTwAXTUxMDDNfRZeeJowzbsBGzOtby5K72ekmC8
+ TxdQW4SFVpPJ2cxrK8lyE/g9UQppbkKEkntHV176UKHyg96Tp29WPdZ0r
+ w9vuwiAHqhOUph3ScCUAcoKt6ggD44I9mgIPKu313NVMn5bbhYzVABjSp
+ vDoj7VOcNE+Tc/dbjXG5145tgrhwhwnJK405XqCX14194Vd7NhrkNx0Ge
+ d+xfCDXCt8T1bey80Qtbq78U2jRa+EdFjL0qccpjLGdxAZ5tXz2Xz/D+S
+ 0CBduNCpuHV6fEpZv+Q3g6SteKNV9lC5NgK/zvq549XXpYAMQf8N7reac g==;
+X-CSE-ConnectionGUID: Cqsqp3MkTX6yvYuluk0ghA==
+X-CSE-MsgGUID: 6q71DmSVQCSTfojfUS2imw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="74991593"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="74991593"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2026 02:54:13 -0700
+X-CSE-ConnectionGUID: it1S9oI4Q/m9tvrhAiozMA==
+X-CSE-MsgGUID: KV30BAdpQ06CaP23kLlNug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="261140224"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 02:40:56 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 02:40:55 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 20 Mar 2026 02:40:55 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.8) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 02:40:54 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iFJIYOtU14f+6LJOfsFgY5R/IBRE+ASj4OW+hRVy1VTp5MzNV32muvJx7IUopN2fTtDi0J52U9+D3s76qgwwwtfRhfgl6H6qvNq5LhJuWcjo+qcryzCAwwUwjHVReR7mVdcxrMq0PnmK3yWSOkEPL6UEvvK9Mzuq5FobqnAGlQvWlRH+/V9z+rBZScUm3qUzMw6B4MykqKCk/KbyiuxtEWr+a603QYJTOcOc7rNPygVZVw2cQDfyEOvE3utXZ4Ee6lWKm3xKbMngolEWko2VwcsWpM6aJA5QhhDniGXnH5ntGet/xmklSTdCMO0swEobhBBFHBhsg7JRJVHjL1niMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BTX6ZhpOMpeSZIrbGcFrNDDxLxfnCcbETsnLvaJJOS8=;
- b=O0OQt1Q/86AzwACNl6U5Fhp8uul5XxmqzHzObihiZhoX7Fm3BK6AJSr6ISGxTxuTaVHp2drM3y5V9LVWBZj25vuvcS2Wil+BDbjpLfPlBGa23/k1zUo2QMin8SJEudyD/IO4qNNNWPZiXfgJchpZ/SfcQ1Yws0t0CkmupScNX2laVCqLJZySBr9peo4Ny6jd4aYPnfyjgbKNqfsK0h0lorI+ObxI7Na6mb+KGI12sHWKb7PSEVv/a7xHWeP7eFGr8BvOsvvC31ACf9hjaBiGhdDARD6PT7g7VSZ65bS0Vzqi7bKgNxHBi/G1r0bj5OOZ5XlDOLZqosxqogyDEBENDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
- by IA4PR11MB8915.namprd11.prod.outlook.com (2603:10b6:208:560::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
- 2026 09:40:50 +0000
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::246b:dc12:ea88:b19c]) by BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::246b:dc12:ea88:b19c%4]) with mapi id 15.20.9745.007; Fri, 20 Mar 2026
- 09:40:50 +0000
-Message-ID: <38f6a42e-bfc6-4fc9-ba55-d56ff0807ab6@intel.com>
-Date: Fri, 20 Mar 2026 15:10:44 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v1 0/2] Skip intel unsupported downscale tests
-To: "Naladala, Ramanaidu" <Ramanaidu.naladala@intel.com>,
- <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>
-References: <20260311074036.219075-1-ramanaidu.naladala@intel.com>
- <3bca96e1-994a-4984-9088-eaf3f7569638@intel.com>
- <c25692c3-6896-462c-b4d1-36f0df20ee94@intel.com>
-Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <c25692c3-6896-462c-b4d1-36f0df20ee94@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0122.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:11d::16) To BL1PR11MB5979.namprd11.prod.outlook.com
- (2603:10b6:208:386::9)
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="227715651"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.197])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2026 02:54:12 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@intel.com>,
+ =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2] lib/igt_debugfs: remove mode parameter from
+ igt_debugfs_crtc_dir()
+Date: Fri, 20 Mar 2026 11:54:06 +0200
+Message-ID: <20260320095406.2831768-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|IA4PR11MB8915:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc0cadf4-d444-4031-2786-08de8664c5b0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|56012099003|18002099003|22082099003; 
-X-Microsoft-Antispam-Message-Info: kEyrEMmH7PSv/i0VcyJmjvdFQwrM0t5MeLQZAy+3xLjt2IGV72Z4+Rjmdw5LNJnAEwVkH3S9L9IaYfH3ZJLLNY135QEHsw6LyN4lg9sujrqNpknManvL5IKVoqJBa8pCmRyB3oF5bWUIx3XABsZFrF4czFK3A9ndJQAdsjuoXgjGUAJ0WWpJmxhge3jdJj/cd15SviWLUaoQ3TywjhFGjNsbufrqBP8og4nRjalzLMIY9JNTXbr+5BW+shHOLR1pvtuSH/rqVYuPQtHOsZqWCgQAnEoqpUlNiUQNzDFVegbspvliw4UQRSzDucuO+Qeu6yA3V0+tm00AFHroWqreyOTyfibFZovEwV6Mkx3+J/N2Nca8Zg3d1ozSaSnU0l+bhjy2bE1RaeSVqYFQbamwx1Co6gXo7tBOQEkQUI89rBEE+d3D6btVKLYS9RjkX7fOO99u5roArtD5i9igzmTQcYx3S9ObAW+qhiCiYdJRKUpLcgwQsv8hlv48xOkm14xyOKi3Yy+euZwZGiMY1p3eWG3PMFWoFnKj18RfNDAxyJfRZA1kN081npvVYxkipBdxdQ/Um5tyrvotfcGoO0078AqQKozPqkYSnJsDCA1fLzTDoAm0gRfvddQxnk+nYPf/92Dfamn3Pub8pF7In94KVtaE55MfRrGrlsLUn6N+JGtYpLa9wEAT3wbW7ByKmvBydP5h/qXDC2ZdBti2fILo7PRhm8/2Q0QAdr3vspP0Qhs=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(18002099003)(22082099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L3lsVlVpK01hMTJjREs4NFU1UmlsakIwYzhJbWxEMm9FRkR2SXhkS01SaTFi?=
- =?utf-8?B?Mmc3QXdZN3BHc0JtaFUzekxJQWpsWUhTUFdQQlVVd2F6M3hvalUvTGhBS0hs?=
- =?utf-8?B?R2FoVUhpM1RraTh5Tmw3M1ZLZ210TXoxZm9yRU4wb3YyaU9mT2pGNncxWGtx?=
- =?utf-8?B?dkdGVXB1RkNqKy9LK3AwTG1lZHNUMXFLeFAyNXE0V0k4TlAwNVJNLzBMbmxs?=
- =?utf-8?B?emllNkRDVkZORzVyaVZpcVBtN1B5aFRHdE9rQzZQbjBqUExzbnFQT1JkMmcy?=
- =?utf-8?B?dklRNlhSNjdvUkhieGc2WE9HMjl2VmdyNjZ4NUFOSzI3TVNpTWZCdFRDOFpE?=
- =?utf-8?B?dmIzMmh5bTVXWTJhZGx0QmJqREVxdVMvL1Rwb2tKTnRUSmluOHJBZDFkQkJj?=
- =?utf-8?B?bzl1a2x3SkFJaUdtaThsTEpFQ1ZCZ2tDWXkyK2c3MDN2cjJRT2gvbXRRemY4?=
- =?utf-8?B?ZnJVSmYvMWFNekxUZFp0YWFzQzRGSWVMbjM0bW5MQVFrL3pKUnlVTzZHRTZP?=
- =?utf-8?B?ampHVzJnVXpPVlFNSGxuT05pTm05Z0NmVU9IL003L0RHem41NmFDWmE2ekc2?=
- =?utf-8?B?b3VicFlCa0VGN1NsSCs3NTVVbElnMzVmbHRLanRBeENvQWE3Zm52elRPNUtP?=
- =?utf-8?B?Q0FOQ3VoR0RJRFBROGpWRnN4L1pYZHhrOWtjSkpXT3NOS0RYUC96MW5EcGhP?=
- =?utf-8?B?aW5PUHBoYU8vK0ZEME5FOWs2RldjeTUvU1NFNTVkc2JWdGlndkpabXhtbnhj?=
- =?utf-8?B?NWZjeFRJVVczVUxnQnNqc29YeFRMbXg1QkJrbCthR0hnc1RNNyszZ3R2cnA1?=
- =?utf-8?B?Wm9EakNJSUQrWVQ0YWpmRVVMMXRsQUNqS3NMc2dxQnZZYW9lZ2tpREJjTUJF?=
- =?utf-8?B?TG1TdVRHdG5tVndVNUpPWTR5SVlVejZNN0dYSWhGWlBPeHl0RTBmb3NEc2x0?=
- =?utf-8?B?UkVlbGR0eDVNbTlKU0dTYWVXYnFTMCsxWjhKSHhUQ3VzY3JKL1JPSll4Z29G?=
- =?utf-8?B?djA2MVdFcmFtYXNZbXI0dVE3TXhYc0w3czI3SThsUzdTdG4yZXRmMUFIUUdS?=
- =?utf-8?B?YTROZ3V2cjU5bHBYZ0kzRXJzK2tvNmdLK0taRlFScHF6aWlQc2R4emwvdS9o?=
- =?utf-8?B?UnJORnVSY09EMXNZazcxL3FuM0xoTW15dFAwMVJyK3BIcUs0RVVLb09qRHMv?=
- =?utf-8?B?dno4bUtHTi94bEVkeWZ5UURVZnRpVG1KMUN4ajQwY3E1dHZteU9jM3JMSFpB?=
- =?utf-8?B?VVhJRjh3RlBDV3U1UmdkMTlXWFhDZzFKeVVJSzkrUzJMeUd3aFFnTVFndmJm?=
- =?utf-8?B?MiswUExRZHc0OUYxUytLZFJGeUI1d1R1dkxMMjBwR2VXbzgyY2NobWNscHlD?=
- =?utf-8?B?SHozdkNEcjZ1UXU1RlNCWU9lNWZaclJoN1V6QWplZ1YvZU1mWmNUYnY0Z08y?=
- =?utf-8?B?cFk4TWJzSWtxR0V6VklSV3ZXVmR4c1VVMGpGYUFHSU5icXRacFpERm80QlNv?=
- =?utf-8?B?Qk1GNmtNSU82UHBSek5UUUtlWVpGTUxxcDU1NkN4TFdYNGhVTWg3ZlVjK1FT?=
- =?utf-8?B?TzU5QlN2WHNBZ2NvWWxjMWJJYWVFdmU0VnRram0yY2tYNHlDcll3QU1SQUc1?=
- =?utf-8?B?MFhxVnBVeEhqOVh2RlFvWi94OEYzaXJqV0VyRHhibUY2ZTYweHpaY0VET0Q4?=
- =?utf-8?B?NVhCWUZ4R3B3dzdJZlUvZjFBbGtsN0VxYit2SldkeVgzTnljTG9LNDlVQ1RV?=
- =?utf-8?B?M3oxUGpOOEJoblFvdEpYNzh3OGpIMGtWaVc1MkM2b3l2TWh3eEhVcVcvZGdS?=
- =?utf-8?B?YnZWTUFoTi8zRHZzbGxKVkNqWjZtR2Zud0NKK2JtckUwYVVZQkxCWEcrdmUw?=
- =?utf-8?B?aFVxQllaV3hlUi9td3JVY0RyWXhDVVEzL0hiTDMwNnc5MGRrdVo0NytGaVQv?=
- =?utf-8?B?S2pGbjlNRlJwWDlvYWxPUDFXdktHcm13OVdOblNYclUrRllDQktVamdTdm56?=
- =?utf-8?B?WkowdTNva3QwUU9pODFuZzRRR0JDb29PMlBOYUJTUUorS1RiV0paY3lTdUEx?=
- =?utf-8?B?V0MxR3Bab1Q5dFAvd3VNeTJLZjZGS1pQZGpqQ1lLalF2cWgzT25wNDFKTE5Q?=
- =?utf-8?B?UmY1V3I2VysvQkI1SU8rVlFMUmlJcFdLQ2hqTDhjOGFYL1ZpV2N4eGJDemQ2?=
- =?utf-8?B?Y050aURFVm5ueUExY29hNVRha3grNFlsVTA3TGd3ajRrQmZ5NXI5Q2d3NkdK?=
- =?utf-8?B?V0lqaU1ORFFhc1RhNlJWVWhBZW5PbE9Ib2lxVXIzSmxrVnlwa0IvRk4rOXR3?=
- =?utf-8?B?UnROTXNubXcyems0enRpSFIrbzliZTkrTGd6WXhKOHFFWEZTeEtxdz09?=
-X-Exchange-RoutingPolicyChecked: TS5InXKBfxdjT0RYe3fOPExJS5vmDpNsVI5VRRVXb+29PsfOKxsRCT4c9xSVimKA6jzjkQjqrVa9u5uAwvW1e7tM5VLMVAyBYXaHET5oGemX+o6DMNiJhQd5uEVcv5PBzRrCVKCpi83aSNRH/LHDu3H6vRfFzBX4o4eGj+ZfdvzoQODXq8SMCXO0ehP9qNPnc1Z/TsVxbduAogJutyKlstmUExitZ34g5BHxeSafag6KEWdvf+jsDW8Dk9YKb1UpNE9Dr1otZtGYxRgDCYLHlcmSOJr38EMhxgwP5BmRJV8axMuzFyMRUmtqfQhWMHVi6XYIPa5KXl/u6kxV53yLaA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc0cadf4-d444-4031-2786-08de8664c5b0
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 09:40:50.7969 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TOf22N45DXdMHFqIVyZwQyjxTZ4SodeOUp6t1PFv+8CNKFfByveP4GERJEdxwcsg0N0Rbpy/3oB1vvXnnWkM9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB8915
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -170,47 +71,195 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ramanaidu,
+The mode for opening the CRTC debugfs directory should always be
+O_DIRECTORY | O_RDONLY. There's no point in letting the callers pass in
+the mode. Indeed, most of them omit O_RDONLY, and some omit O_DIRECTORY.
 
-On 20-03-2026 02:02 pm, Naladala, Ramanaidu wrote:
-> ++ Karthik
->
-> Hi Swati,
->
-> On 3/20/2026 1:11 PM, Sharma, Swati2 wrote:
->> Hi Ramanaidu,
->>
->> On 11-03-2026 01:10 pm, Naladala Ramanaidu wrote:
->>> Some scaling tests are expected to be skipped, but they still 
->>> iterate over
->>> all display modes, which generates excessive logging and eventually 
->>> hits
->>> CI disk‑usage limits. To address this, early skip logic is added 
->>> before the
->>> dynamic tests begin, preventing unnecessary mode iterations and 
->>> reducing CI
->>> load.
->> Why can't we handle this in blocklists? 
->
-> The tests are already blocklisted, but they continue to run. To 
-> address this limitation, I sent a patch.
->
->  According to Karthik, platform blocklisted tests are only excluded in 
-> Grafana queries, not during execution. CI intends to generate 
-> per‑platform testlists from the blocklists, but it doesn’t seem to be 
-> active yet.
-There shouldn't be any blocker to use these blocklists in CI. I have 
-requested CI to apply those for NVL, if it works well. Same can be done 
-for PTL as a WA until we have platform specific testlists.
->
->>>
->>> Naladala Ramanaidu (2):
->>>    tests/kms_plane_scaling: Skip unsupported scaling scenarios
->>>    HAX patch do not merge
->>>
->>>   tests/intel-ci/i915.fast-feedback.testlist | 216 +++-----------
->>>   tests/intel-ci/xe.fast-feedback.testlist   | 323 
->>> +++------------------
->>>   tests/kms_plane_scaling.c                  |  38 +++
->>>   3 files changed, 128 insertions(+), 449 deletions(-)
->>>
+Remove the mode from igt_debugfs_crtc_dir() and subsequently
+igt_crtc_debugfs_dir(), always using O_DIRECTORY | O_RDONLY.
+
+v2: Rebase
+
+Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+---
+ lib/i915/intel_drrs.c                  | 6 +++---
+ lib/i915/intel_fbc.c                   | 4 ++--
+ lib/igt_debugfs.c                      | 5 ++---
+ lib/igt_debugfs.h                      | 2 +-
+ lib/igt_kms.c                          | 8 ++++----
+ lib/igt_kms.h                          | 2 +-
+ tests/intel/kms_frontbuffer_tracking.c | 2 +-
+ tests/nouveau_crc.c                    | 2 +-
+ 8 files changed, 15 insertions(+), 16 deletions(-)
+
+diff --git a/lib/i915/intel_drrs.c b/lib/i915/intel_drrs.c
+index 1ad993c1e90b..bfe58d7a0694 100644
+--- a/lib/i915/intel_drrs.c
++++ b/lib/i915/intel_drrs.c
+@@ -24,7 +24,7 @@ bool intel_is_drrs_supported(igt_crtc_t *crtc)
+ 	char buf[256];
+ 	int dir;
+ 
+-	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
++	dir = igt_crtc_debugfs_dir(crtc);
+ 	igt_require_fd(dir);
+ 	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
+ 	close(dir);
+@@ -63,7 +63,7 @@ static void drrs_set(int device, int crtc_index, unsigned int val)
+ 	igt_debug("Manually %sabling DRRS. %u\n", val ? "en" : "dis", val);
+ 	snprintf(buf, sizeof(buf), "%d", val);
+ 
+-	dir = igt_debugfs_crtc_dir(device, crtc_index, O_DIRECTORY);
++	dir = igt_debugfs_crtc_dir(device, crtc_index);
+ 	igt_require_fd(dir);
+ 	ret = igt_sysfs_write(dir, "i915_drrs_ctl", buf, sizeof(buf) - 1);
+ 	close(dir);
+@@ -125,7 +125,7 @@ bool intel_is_drrs_inactive(igt_crtc_t *crtc)
+ 	char buf[256];
+ 	int dir;
+ 
+-	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
++	dir = igt_crtc_debugfs_dir(crtc);
+ 	igt_require_fd(dir);
+ 	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
+ 	close(dir);
+diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
+index 9c1767846c25..b8c714d430e9 100644
+--- a/lib/i915/intel_fbc.c
++++ b/lib/i915/intel_fbc.c
+@@ -36,7 +36,7 @@ bool intel_fbc_supported(igt_crtc_t *crtc)
+ 	char buf[FBC_STATUS_BUF_LEN];
+ 	int dir;
+ 
+-	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
++	dir = igt_crtc_debugfs_dir(crtc);
+ 	igt_require_fd(dir);
+ 	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
+ 	close(dir);
+@@ -53,7 +53,7 @@ static bool _intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level, char *last_fb
+ 	bool print = true;
+ 	int dir;
+ 
+-	dir = igt_crtc_debugfs_dir(crtc, O_DIRECTORY);
++	dir = igt_crtc_debugfs_dir(crtc);
+ 	igt_require_fd(dir);
+ 	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
+ 	close(dir);
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 11f5ee9984ee..a184843c9acc 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -288,7 +288,6 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
+  * igt_debugfs_crtc_dir:
+  * @device: fd of the device
+  * @crtc_index: CRTC index
+- * @mode: mode bits as used by open()
+  *
+  * This opens the debugfs directory corresponding to the CRTC index on the
+  * device for use with igt_sysfs_get() and related functions. This is just
+@@ -297,12 +296,12 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
+  * Returns:
+  * The directory fd, or -1 on failure.
+  */
+-int igt_debugfs_crtc_dir(int device, int crtc_index, int mode)
++int igt_debugfs_crtc_dir(int device, int crtc_index)
+ {
+ 	char buf[128];
+ 
+ 	snprintf(buf, sizeof(buf), "crtc-%d", crtc_index);
+-	return igt_debugfs_open(device, buf, mode);
++	return igt_debugfs_open(device, buf, O_DIRECTORY | O_RDONLY);
+ }
+ 
+ /**
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index 2c546f299a43..30d4b0ff92ba 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -34,7 +34,7 @@ char *igt_debugfs_path(int device, char *path, int pathlen);
+ 
+ int igt_debugfs_dir(int device);
+ int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
+-int igt_debugfs_crtc_dir(int device, int crtc_index, int mode);
++int igt_debugfs_crtc_dir(int device, int crtc_index);
+ 
+ int igt_debugfs_open(int fd, const char *filename, int mode);
+ bool igt_debugfs_is_dir(int drm_fd, const char *name, int gt_id);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 197ed15d1380..481b893fc025 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1310,7 +1310,7 @@ int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
+ 	int debugfs_fd, pipe, res = 0;
+ 	char pipe_char;
+ 
+-	debugfs_fd = igt_debugfs_crtc_dir(fd, crtc_index, O_RDONLY);
++	debugfs_fd = igt_debugfs_crtc_dir(fd, crtc_index);
+ 
+ 	if (debugfs_fd >= 0) {
+ 		res = igt_debugfs_simple_read(debugfs_fd, "i915_pipe", buf, sizeof(buf));
+@@ -5255,9 +5255,9 @@ igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source)
+ 	return igt_pipe_crc_new_nonblock(crtc->display->drm_fd, crtc->crtc_index, source);
+ }
+ 
+-int igt_crtc_debugfs_dir(igt_crtc_t *crtc, int mode)
++int igt_crtc_debugfs_dir(igt_crtc_t *crtc)
+ {
+-	return igt_debugfs_crtc_dir(crtc->display->drm_fd, crtc->crtc_index, mode);
++	return igt_debugfs_crtc_dir(crtc->display->drm_fd, crtc->crtc_index);
+ }
+ 
+ const char *igt_crtc_name(igt_crtc_t *crtc)
+@@ -6676,7 +6676,7 @@ unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc)
+ 	int fd, res;
+ 	unsigned int current;
+ 
+-	fd = igt_crtc_debugfs_dir(crtc, O_RDONLY);
++	fd = igt_crtc_debugfs_dir(crtc);
+ 	igt_assert(fd >= 0);
+ 
+ 	if (is_intel_device(drmfd))
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 71ed4604e7e0..ba445eb4ebfd 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -596,7 +596,7 @@ typedef struct _igt_pipe_crc igt_pipe_crc_t;
+ igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source);
+ igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source);
+ 
+-int igt_crtc_debugfs_dir(igt_crtc_t *crtc, int mode);
++int igt_crtc_debugfs_dir(igt_crtc_t *crtc);
+ 
+ igt_crtc_t *igt_output_get_driving_crtc(igt_output_t *output);
+ const char *igt_output_name(igt_output_t *output);
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 5471b8c51c99..c16f63199bdd 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -1535,7 +1535,7 @@ static void __debugfs_read_crtc(const char *param, char *buf, int len)
+ {
+ 	int dir;
+ 
+-	dir = igt_crtc_debugfs_dir(prim_mode_params.crtc, O_DIRECTORY);
++	dir = igt_crtc_debugfs_dir(prim_mode_params.crtc);
+ 	igt_require_fd(dir);
+ 	igt_debugfs_simple_read(dir, param, buf, len);
+ 	close(dir);
+diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
+index bb4711dd66a5..11a491e177ef 100644
+--- a/tests/nouveau_crc.c
++++ b/tests/nouveau_crc.c
+@@ -360,7 +360,7 @@ static void setup_test(data_t *data)
+ 	igt_plane_set_fb(data->primary, &data->default_fb);
+ 	igt_display_commit(&data->display);
+ 
+-	dir = igt_crtc_debugfs_dir(data->crtc, O_DIRECTORY);
++	dir = igt_crtc_debugfs_dir(data->crtc);
+ 	igt_require_fd(dir);
+ 	data->nv_crc_dir = openat(dir, "nv_crc", O_DIRECTORY);
+ 	close(dir);
+-- 
+2.47.3
+
