@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16655108B914
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 12:15:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE4D1108B919
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 12:29:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9FB9C10EAA6;
-	Fri, 20 Mar 2026 12:15:36 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F135310EAA6;
- Fri, 20 Mar 2026 12:15:30 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7681120148497026461=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6FD3210E568;
+	Fri, 20 Mar 2026 12:29:35 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bHa+L7cB";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B08C310E568
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 12:29:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774009770; x=1805545770;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=HDP40iE1Xaswvxe57qG/egDf/SRYGoa7v+o3Ke2mA24=;
+ b=bHa+L7cBopnfLOFly9zxI/1O7z6qBIcksBCFjUBm6QDSjScDQBWGC/9U
+ X0KZ2oufoN/1y0s97g6x8SKD6QO9OOGDTq68Wq0wkIVny7Fv0damT4Ybe
+ jLv8LMjnDJ5sY7Jo7K2DmYOVx71vmve/AqHa9i2LmyesCCNDqmkT/obDj
+ kwXLm3FTXnOxMTCp5PcQVIPZAYL61xO6S80HVxJ89RAv+eQMCGgqLQ6b2
+ 396TO6zcuDSbO1Osg4m0zuvPeYXVjMamkIq4ywhvly4nqwJBexHWt2bhS
+ KoCfzTQxOHFT19XqbA/HK1UxV2JsIwEQWyfoKLbqjkmSoh+gULI0saIMh Q==;
+X-CSE-ConnectionGUID: Vy4avkgSQDaWaM+NHMZprw==
+X-CSE-MsgGUID: 7FhtwfGARnOiOMnRUj97Ng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="86568744"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="86568744"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2026 05:29:30 -0700
+X-CSE-ConnectionGUID: GBoqwz3XQw6jeoQcN5Unqg==
+X-CSE-MsgGUID: YA6iK4VMSVKVW2Zhyvtk5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="246301756"
+Received: from nakshtra-system-product-name.iind.intel.com ([10.190.238.69])
+ by fmviesa002.fm.intel.com with ESMTP; 20 Mar 2026 05:29:27 -0700
+From: nakshtra.goyal@intel.com
+To: igt-dev@lists.freedesktop.org
+Cc: tejas.upadhyay@intel.com,
+	priyanka.dandamudi@intel.com
+Subject: [PATCH v2 i-g-t] tests/intel/xe_pat: Add negetive test to validate
+ pat index
+Date: Fri, 20 Mar 2026 17:59:26 +0530
+Message-Id: <20260320122926.1614740-1-nakshtra.goyal@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Fdebugfs=3A_remove?=
- =?utf-8?q?_mode_parameter_from_igt=5Fdebugfs=5Fcrtc=5Fdir=28=29_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jani Nikula" <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Mar 2026 12:15:30 -0000
-Message-ID: <177400893096.379015.4092251158495439785@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260320095406.2831768-1-jani.nikula@intel.com>
-In-Reply-To: <20260320095406.2831768-1-jani.nikula@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +63,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7681120148497026461==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Nakshtra Goyal <nakshtra.goyal@intel.com>
 
-== Series Details ==
+Adding negative test to validate pat index restrictions, extending tests in
+userptr_coh_none and prime_export for index 18 and adding new svm test
+to validate for diff indexes , index 19 will pass in all cases , 18
+will fail with EINVAL
 
-Series: lib/igt_debugfs: remove mode parameter from igt_debugfs_crtc_dir() (rev2)
-URL   : https://patchwork.freedesktop.org/series/163279/
-State : success
+v2: Adding validation checks directly inside subtest call instead
+    of different functions   (Priyanka)
 
-== Summary ==
+Signed-off-by: Nakshtra Goyal <nakshtra.goyal@intel.com>
+---
+ tests/intel/xe_pat.c | 67 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-CI Bug Log - changes from XEIGT_8814_BAT -> XEIGTPW_14819_BAT
-====================================================
+diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+index e91b037a5..6f107f345 100644
+--- a/tests/intel/xe_pat.c
++++ b/tests/intel/xe_pat.c
+@@ -34,6 +34,11 @@
+ #define XE_COH_NONE          1
+ #define XE_COH_AT_LEAST_1WAY 2
+ 
++/*
++ * PAT index 18: XA (eXclusive Access) + UC (Uncached).
++ */
++#define XE_PAT_IDX_XA_UC     18
++
+ static bool do_slow_check;
+ static char bus_addr[NAME_MAX];
+ static struct pci_device *pci_dev;
+@@ -82,6 +87,10 @@ static void userptr_coh_none(int fd)
+ 				   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
+ 				   intel_get_pat_idx_wt(fd), 0),
+ 		      -EINVAL);
++	igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
++				   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
++				   XE_PAT_IDX_XA_UC, 0),
++		      -EINVAL);
+ 
+ 	munmap(data, size);
+ 	xe_vm_destroy(fd, vm);
+@@ -755,6 +764,54 @@ static void pat_index_dw(struct xe_pat_param *p)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++/**
++ * SUBTEST: l2-flush-opt-svm-pat-restrict
++ * Test category: negative test
++ * Description: Validate that on L2 flush optimized platforms, SVM
++ *		(CPU_ADDR_MIRROR) mappings only accept pat_index 19
++ *		(XA+2WAY) and reject all other pat indices with -EINVAL.
++ */
++static void l2_flush_opt_svm_pat_restrict(int fd)
++{
++	struct drm_xe_query_config *config = xe_config(fd);
++	uint32_t vm;
++	void *buffer;
++	size_t alloc_size = xe_get_default_alignment(fd);
++	struct xe_device *xe_dev = xe_device_get(fd);
++	uint64_t svm_size;
++	size_t size = xe_get_default_alignment(fd);
++
++	svm_size = 1ull << xe_dev->va_bits;
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
++			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++	xe_vm_bind_lr_sync(fd, vm, 0, 0, 0, svm_size,
++			   DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR);
++	buffer = aligned_alloc(alloc_size, SZ_2M);
++
++	igt_require(config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
++		    DRM_XE_QUERY_CONFIG_FLAG_HAS_CPU_ADDR_MIRROR);
++
++	igt_assert_eq(__xe_vm_madvise(fd, vm, to_user_pointer(buffer), size,
++					0, DRM_XE_MEM_RANGE_ATTR_PAT,
++					intel_get_pat_idx_wb(fd), 0, 0), 0);
++
++	igt_assert_eq(__xe_vm_madvise(fd, vm, to_user_pointer(buffer), size,
++					0, DRM_XE_MEM_RANGE_ATTR_PAT,
++					intel_get_pat_idx_uc(fd), 0, 0), -EINVAL);
++
++	igt_assert_eq(__xe_vm_madvise(fd, vm, to_user_pointer(buffer), size,
++					0, DRM_XE_MEM_RANGE_ATTR_PAT,
++					intel_get_pat_idx_wt(fd), 0, 0), -EINVAL);
++
++	igt_assert_eq(__xe_vm_madvise(fd, vm, to_user_pointer(buffer), size,
++					0, DRM_XE_MEM_RANGE_ATTR_PAT,
++					XE_PAT_IDX_XA_UC, 0, 0), -EINVAL);
++
++	free(buffer);
++	xe_vm_unbind_lr_sync(fd, vm, 0, 0, svm_size);
++	xe_vm_destroy(fd, vm);
++}
++
+ /**
+  * SUBTEST: prime-self-import-coh
+  * Test category: functionality test
+@@ -890,6 +947,11 @@ static void prime_external_import_coh(void)
+ 		      0);
+ 	xe_vm_unbind_sync(fd2, vm, 0, 0x40000, size);
+ 
++	igt_assert_eq(__xe_vm_bind(fd2, vm, 0, handle_import, 0, 0x40000,
++				   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
++				   XE_PAT_IDX_XA_UC, 0),
++		      -EINVAL);
++
+ 	xe_vm_destroy(fd2, vm);
+ 
+ 	/*
+@@ -1771,6 +1833,11 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
+ 		}
+ 	}
+ 
++	igt_subtest("l2-flush-opt-svm-pat-restrict") {
++		igt_require(intel_graphics_ver(dev_id) == IP_VER(35, 10));
++		l2_flush_opt_svm_pat_restrict(fd);
++	}
++
+ 	igt_fixture()
+ 		drm_close_driver(fd);
+ }
+-- 
+2.34.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 14)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8814 -> IGTPW_14819
-  * Linux: xe-4749-4ae9f18564e78a5447be68aa1e9232a4f2c37b5a -> xe-4751-b36e6a46f431d16e714f042db718495222a4c48a
-
-  IGTPW_14819: 14819
-  IGT_8814: 8814
-  xe-4749-4ae9f18564e78a5447be68aa1e9232a4f2c37b5a: 4ae9f18564e78a5447be68aa1e9232a4f2c37b5a
-  xe-4751-b36e6a46f431d16e714f042db718495222a4c48a: b36e6a46f431d16e714f042db718495222a4c48a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14819/index.html
-
---===============7681120148497026461==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_debugfs: remove mode parameter from igt_debugfs_crtc_dir() (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163279/">https://patchwork.freedesktop.org/series/163279/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14819/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14819/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8814_BAT -&gt; XEIGTPW_14819_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 14)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8814 -&gt; IGTPW_14819</li>
-<li>Linux: xe-4749-4ae9f18564e78a5447be68aa1e9232a4f2c37b5a -&gt; xe-4751-b36e6a46f431d16e714f042db718495222a4c48a</li>
-</ul>
-<p>IGTPW_14819: 14819<br />
-  IGT_8814: 8814<br />
-  xe-4749-4ae9f18564e78a5447be68aa1e9232a4f2c37b5a: 4ae9f18564e78a5447be68aa1e9232a4f2c37b5a<br />
-  xe-4751-b36e6a46f431d16e714f042db718495222a4c48a: b36e6a46f431d16e714f042db718495222a4c48a</p>
-
-</body>
-</html>
-
---===============7681120148497026461==--
