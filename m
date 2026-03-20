@@ -4,58 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E96D31098796
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 15:17:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84FA1109879A
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 15:19:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9EDBA10E15F;
-	Fri, 20 Mar 2026 15:17:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3DBE110E15F;
+	Fri, 20 Mar 2026 15:19:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gKBkW0pa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aX7QRYQT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEA7710E15F;
- Fri, 20 Mar 2026 15:17:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99D7A10E15F
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 15:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774019827; x=1805555827;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=AjN/7dcZEyVduNRErX2aM0OXk38ohqDVXyeth8eQMaE=;
- b=gKBkW0pacHLsT5xlzutxZvLQsRkuC6OLVwJp6tR8wLvSNielacxa0qIK
- eNf6EOw7kr5r2VpQq6Ub/XImnZWFBHs6jmjEUbOUu++RByMJs45n/CGf0
- CUSmUoMSVCtNgsp7WRNKyFgKcXPzpIhBVmGYrw0lSpXbWWI3amKGYiwH8
- 9/BjVDZRR8jEF6zpV4/1nxnY/MD6Ub8Rv+biZWZ+LGlsTfMl+x03nxVuE
- crlR3pzPAG7uKz8ki8/6sL8KdUEml5EZLo19ZwiFqrCfBKsuqdms2Jv8b
- viIzQuyVj7om43HWhEk4Kz1XnYl0DC6gskVzgDce2ERMTOXW5bR7iPq8F Q==;
-X-CSE-ConnectionGUID: uRk4C6EfRDKulVvFZolXhA==
-X-CSE-MsgGUID: UGgw3BkjTxWvEaev4P0kwA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="78963296"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="78963296"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 08:17:06 -0700
-X-CSE-ConnectionGUID: 6hkrrqvKQQK7/oisDJ3wWQ==
-X-CSE-MsgGUID: naVdarsGTyCo0OXm6hJkKQ==
+ t=1774019993; x=1805555993;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=jGbNWB4jWNu3C5vxSeQ+Ai/15d8bCJs6aQ+k3/quVbQ=;
+ b=aX7QRYQTNfD41OPV5p9Zht7RFWg0rMkbioUM8Je3kzxKAkNEQjXsB4LI
+ 2HyaknH37dKop3L4pL88TYTcRescYQALgotADol2jBNCcAt9MJq4GlnsF
+ v4uigzC9nxom9zcaIrUACdXJ05CSGnnzHgWR/SmltjVl3PpFcTwCGHvii
+ EdD6ploboSUObBnziaTOpir5P1bzkrAP+Vp7w5TwTpHnn0Tq8/NNYUm42
+ Ek73Go1APTfwYeB1LpPUMDEUcdILRnhkr0Xo2tn2J2XPerL8bIJkqZDhG
+ CwvE/U5139aEEy1p1su6y7RCdi3ptXTWPQ/D4g/J24aVrq6eatM1nVqrj Q==;
+X-CSE-ConnectionGUID: 1V6nD49kSQ2hbWX+/+tJCg==
+X-CSE-MsgGUID: nth+wBZST6yps/xPYxTmTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="75017050"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75017050"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2026 08:19:53 -0700
+X-CSE-ConnectionGUID: JxZ8ibgzSbCTaQ4Kjx4O2A==
+X-CSE-MsgGUID: msDpOTdkSauORkxPBLdNTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="261219057"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.197])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 08:17:05 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: i915-ci-infra@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97?= i915.CI.BAT: failure for Prepare for
- returning NULL from igt_crtc_for_pipe() (rev2)
-In-Reply-To: <177401751651.379016.10035260206775763479@a3b018990fe9>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <cover.1774002591.git.jani.nikula@intel.com>
- <177401751651.379016.10035260206775763479@a3b018990fe9>
-Date: Fri, 20 Mar 2026 17:17:02 +0200
-Message-ID: <5a5423ea2fc500dfcb43f64a33d41e31a88239c9@intel.com>
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 08:19:52 -0700
+Date: Fri, 20 Mar 2026 16:19:49 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Ryszard Knop <ryszard.knop@intel.com>
+Subject: Re: [PATCH i-g-t 2/4] runner: Create attachments directory to use by
+ hooks
+Message-ID: <20260320151949.fsnygsxqwdbii4hp@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Ryszard Knop <ryszard.knop@intel.com>
+References: <20260319215124.2066611-6-zbigniew.kempczynski@intel.com>
+ <20260319215124.2066611-8-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260319215124.2066611-8-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,150 +73,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 20 Mar 2026, Patchwork <patchwork@emeril.freedesktop.org> wrote:
-> == Series Details ==
->
-> Series: Prepare for returning NULL from igt_crtc_for_pipe() (rev2)
-> URL   : https://patchwork.freedesktop.org/series/163278/
-> State : failure
->
-> == Summary ==
->
-> CI Bug Log - changes from IGT_8815 -> IGTPW_14822
-> ====================================================
->
-> Summary
-> -------
->
->   **FAILURE**
->
->   Serious unknown changes coming with IGTPW_14822 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_14822, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
->
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/index.html
->
-> Participating hosts (40 -> 39)
-> ------------------------------
->
->   Additional (1): bat-adls-6 
->   Missing    (2): bat-dg2-13 fi-snb-2520m 
->
-> Possible new issues
-> -------------------
->
->   Here are the unknown changes that may have been introduced in IGTPW_14822:
->
-> ### IGT changes ###
->
-> #### Possible regressions ####
->
->   * igt@i915_module_load@load:
->     - fi-cfl-8109u:       [PASS][1] -> [DMESG-WARN][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8815/fi-cfl-8109u/igt@i915_module_load@load.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/fi-cfl-8109u/igt@i915_module_load@load.html
+Hi Zbigniew,
+On 2026-03-19 at 22:51:27 +0100, Zbigniew Kempczyński wrote:
+> Results parsing is currently limited to few predefined files.
+> 
+> Create "attachments" directory and export full path of created directory
+> to be used within hooks. From now on environment variable
+> IGT_RUNNER_ATTACHMENTS_DIR become visible when igt_runner is used
+> to execute tests. This env contains directory where subtests/dynsubtests
+> may write auxiliary files which finally be included in results.json.
+> 
 
-Unrelated, please re-report.
+Thank you for taking this, could you also add a link to GitLab issue?
 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Ryszard Knop <ryszard.knop@intel.com>
+> ---
+>  lib/igt_hook.c    |  4 ++++
+>  runner/executor.c | 15 ++++++++++++++-
+>  runner/executor.h |  2 ++
+>  3 files changed, 20 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_hook.c b/lib/igt_hook.c
+> index f86ed56f72..57817bdc12 100644
+> --- a/lib/igt_hook.c
+> +++ b/lib/igt_hook.c
+> @@ -518,5 +518,9 @@ available to the command:\n\
+>  \n\
+>  Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
+>  when matching events and running hook commands.\n\
+> +\n\
+> +When executed by the igt_runner environment IGT_RUNNER_ATTACHMENTS_DIR\n\
+> +is passed additionally to the hook script. It contains directory where\n\
+> +script may write additional attachments like guc logs, etc.\n\
+>  ", option_name);
+>  }
+> diff --git a/runner/executor.c b/runner/executor.c
+> index 885a38a99f..8954073c36 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -1779,18 +1779,30 @@ static int execute_next_entry(struct execute_state *state,
+>  	int errpipe[2] = { -1, -1 };
+>  	int socket[2] = { -1, -1 };
+>  	int outfd, errfd, socketfd;
+> -	char name[32];
+> +	char name[32], attname[32];
+> +	char resdirname[PATH_MAX - 32];
+> +	char attdirname[PATH_MAX];
+>  	pid_t child;
+>  	int result;
+>  	size_t idx = state->next;
+> +	DIR *currdir;
+>  
+>  	snprintf(name, sizeof(name), "%zd", idx);
+> +	snprintf(attname, sizeof(attname), "%zd/%s", idx, DIR_ATTACHMENTS);
+>  	mkdirat(resdirfd, name, 0777);
+> +	mkdirat(resdirfd, attname, 0777);
 
->
->   
-> Known issues
-> ------------
->
->   Here are the changes found in IGTPW_14822 that come from known issues:
->
-> ### IGT changes ###
->
-> #### Issues hit ####
->
->   * igt@gem_lmem_swapping@parallel-random-engines:
->     - bat-adls-6:         NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html
->
->   * igt@gem_tiled_pread_basic@basic:
->     - bat-adls-6:         NOTRUN -> [SKIP][4] ([i915#15656])
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@gem_tiled_pread_basic@basic.html
->
->   * igt@i915_selftest@live@workarounds:
->     - bat-arls-5:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8815/bat-arls-5/igt@i915_selftest@live@workarounds.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-arls-5/igt@i915_selftest@live@workarounds.html
->
->   * igt@intel_hwmon@hwmon-read:
->     - bat-adls-6:         NOTRUN -> [SKIP][7] ([i915#7707]) +1 other test skip
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@intel_hwmon@hwmon-read.html
->
->   * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
->     - bat-adls-6:         NOTRUN -> [SKIP][8] ([i915#4103]) +1 other test skip
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
->
->   * igt@kms_dsc@dsc-basic:
->     - bat-adls-6:         NOTRUN -> [SKIP][9] ([i915#3555] / [i915#3840])
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@kms_dsc@dsc-basic.html
->
->   * igt@kms_force_connector_basic@force-load-detect:
->     - bat-adls-6:         NOTRUN -> [SKIP][10]
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
->
->   * igt@kms_pm_backlight@basic-brightness:
->     - bat-adls-6:         NOTRUN -> [SKIP][11] ([i915#5354])
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
->
->   * igt@kms_psr@psr-primary-mmap-gtt:
->     - bat-adls-6:         NOTRUN -> [SKIP][12] ([i915#1072] / [i915#9732]) +3 other tests skip
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
->
->   * igt@kms_setmode@basic-clone-single-crtc:
->     - bat-adls-6:         NOTRUN -> [SKIP][13] ([i915#3555])
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
->
->   * igt@prime_vgem@basic-fence-read:
->     - bat-adls-6:         NOTRUN -> [SKIP][14] ([i915#3291]) +2 other tests skip
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-adls-6/igt@prime_vgem@basic-fence-read.html
->
->   
-> #### Possible fixes ####
->
->   * igt@i915_selftest@live@workarounds:
->     - bat-arlh-3:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8815/bat-arlh-3/igt@i915_selftest@live@workarounds.html
->    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-arlh-3/igt@i915_selftest@live@workarounds.html
->     - bat-dg2-14:         [DMESG-FAIL][17] ([i915#12061]) -> [PASS][18] +1 other test pass
->    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8815/bat-dg2-14/igt@i915_selftest@live@workarounds.html
->    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/bat-dg2-14/igt@i915_selftest@live@workarounds.html
->
->   
->   [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
->   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
->   [i915#15656]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656
->   [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
->   [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
->   [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
->   [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
->   [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
->   [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
->   [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
->   [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
->
->
-> Build changes
-> -------------
->
->   * CI: CI-20190529 -> None
->   * IGT: IGT_8815 -> IGTPW_14822
->
->   CI-20190529: 20190529
->   CI_DRM_18181: 7535044a2418d22b59be0eb64af0353971f16bd8 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_14822: 14822
->   IGT_8815: 8815
->
-> == Logs ==
->
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14822/index.html
+This will also needs to be deleted when runner is called
+with -o --overwrite option, currently this is done for
+files dmesg.txt, err.txt, ... so the same deletion needs
+to be done for 'attachents' folder and all files inside it.
 
--- 
-Jani Nikula, Intel
+>  	if ((ddirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
+>  		errf("Error accessing individual test result directory\n");
+>  		return -1;
+>  	}
+>  
+> +	currdir = opendir(".");
+> +	fchdir(ddirfd);
+> +	getcwd(resdirname, sizeof(resdirname));
+> +	fchdir(dirfd(currdir));
+> +	closedir(currdir);
+
+Can you avoid this chdir only for getting its path?
+
+Regards,
+Kamil
+
+> +	snprintf(attdirname, sizeof(attdirname), "%s/%s", resdirname, DIR_ATTACHMENTS);
+> +
+>  	if (!open_output_files(ddirfd, outputs, true)) {
+>  		errf("Error opening output files\n");
+>  		result = -1;
+> @@ -1870,6 +1882,7 @@ static int execute_next_entry(struct execute_state *state,
+>  			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
+>  		}
+>  		setenv("IGT_SENTINEL_ON_STDERR", "1", 1);
+> +		setenv("IGT_RUNNER_ATTACHMENTS_DIR", attdirname, 1);
+>  
+>  		execute_test_process(outfd, errfd, socketfd, settings, entry);
+>  		/* unreachable */
+> diff --git a/runner/executor.h b/runner/executor.h
+> index 3b1cabcf55..bc6ac80dc4 100644
+> --- a/runner/executor.h
+> +++ b/runner/executor.h
+> @@ -25,6 +25,8 @@ enum {
+>  	_F_LAST,
+>  };
+>  
+> +#define DIR_ATTACHMENTS "attachments"
+> +
+>  bool open_output_files(int dirfd, int *fds, bool write);
+>  bool open_output_files_rdonly(int dirfd, int *fds);
+>  void close_outputs(int *fds);
+> -- 
+> 2.43.0
+> 
