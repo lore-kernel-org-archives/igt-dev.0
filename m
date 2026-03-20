@@ -4,60 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84FA1109879A
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 15:19:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F1B109879B
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 15:26:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3DBE110E15F;
-	Fri, 20 Mar 2026 15:19:59 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aX7QRYQT";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99D7A10E15F
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 15:19:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774019993; x=1805555993;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=jGbNWB4jWNu3C5vxSeQ+Ai/15d8bCJs6aQ+k3/quVbQ=;
- b=aX7QRYQTNfD41OPV5p9Zht7RFWg0rMkbioUM8Je3kzxKAkNEQjXsB4LI
- 2HyaknH37dKop3L4pL88TYTcRescYQALgotADol2jBNCcAt9MJq4GlnsF
- v4uigzC9nxom9zcaIrUACdXJ05CSGnnzHgWR/SmltjVl3PpFcTwCGHvii
- EdD6ploboSUObBnziaTOpir5P1bzkrAP+Vp7w5TwTpHnn0Tq8/NNYUm42
- Ek73Go1APTfwYeB1LpPUMDEUcdILRnhkr0Xo2tn2J2XPerL8bIJkqZDhG
- CwvE/U5139aEEy1p1su6y7RCdi3ptXTWPQ/D4g/J24aVrq6eatM1nVqrj Q==;
-X-CSE-ConnectionGUID: 1V6nD49kSQ2hbWX+/+tJCg==
-X-CSE-MsgGUID: nth+wBZST6yps/xPYxTmTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="75017050"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75017050"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 08:19:53 -0700
-X-CSE-ConnectionGUID: JxZ8ibgzSbCTaQ4Kjx4O2A==
-X-CSE-MsgGUID: msDpOTdkSauORkxPBLdNTg==
-X-ExtLoop1: 1
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 08:19:52 -0700
-Date: Fri, 20 Mar 2026 16:19:49 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Ryszard Knop <ryszard.knop@intel.com>
-Subject: Re: [PATCH i-g-t 2/4] runner: Create attachments directory to use by
- hooks
-Message-ID: <20260320151949.fsnygsxqwdbii4hp@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org,
- Ryszard Knop <ryszard.knop@intel.com>
-References: <20260319215124.2066611-6-zbigniew.kempczynski@intel.com>
- <20260319215124.2066611-8-zbigniew.kempczynski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3265F10EA21;
+	Fri, 20 Mar 2026 15:26:38 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CAC610EA21;
+ Fri, 20 Mar 2026 15:26:33 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5504896160531976374=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260319215124.2066611-8-zbigniew.kempczynski@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2C1/2=5D_tests/intel/kms=5Fpipe=5Fstress=3A_use_CRTC_index_not?=
+ =?utf-8?q?_pipe_for_vblank_ioctl?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jani Nikula" <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 20 Mar 2026 15:26:33 -0000
+Message-ID: <177402039348.379016.11103952156590208464@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260320113143.2882422-1-jani.nikula@intel.com>
+In-Reply-To: <20260320113143.2882422-1-jani.nikula@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,114 +38,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
-On 2026-03-19 at 22:51:27 +0100, Zbigniew Kempczyński wrote:
-> Results parsing is currently limited to few predefined files.
-> 
-> Create "attachments" directory and export full path of created directory
-> to be used within hooks. From now on environment variable
-> IGT_RUNNER_ATTACHMENTS_DIR become visible when igt_runner is used
-> to execute tests. This env contains directory where subtests/dynsubtests
-> may write auxiliary files which finally be included in results.json.
-> 
+--===============5504896160531976374==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you for taking this, could you also add a link to GitLab issue?
+== Series Details ==
 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Ryszard Knop <ryszard.knop@intel.com>
-> ---
->  lib/igt_hook.c    |  4 ++++
->  runner/executor.c | 15 ++++++++++++++-
->  runner/executor.h |  2 ++
->  3 files changed, 20 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_hook.c b/lib/igt_hook.c
-> index f86ed56f72..57817bdc12 100644
-> --- a/lib/igt_hook.c
-> +++ b/lib/igt_hook.c
-> @@ -518,5 +518,9 @@ available to the command:\n\
->  \n\
->  Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
->  when matching events and running hook commands.\n\
-> +\n\
-> +When executed by the igt_runner environment IGT_RUNNER_ATTACHMENTS_DIR\n\
-> +is passed additionally to the hook script. It contains directory where\n\
-> +script may write additional attachments like guc logs, etc.\n\
->  ", option_name);
->  }
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 885a38a99f..8954073c36 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -1779,18 +1779,30 @@ static int execute_next_entry(struct execute_state *state,
->  	int errpipe[2] = { -1, -1 };
->  	int socket[2] = { -1, -1 };
->  	int outfd, errfd, socketfd;
-> -	char name[32];
-> +	char name[32], attname[32];
-> +	char resdirname[PATH_MAX - 32];
-> +	char attdirname[PATH_MAX];
->  	pid_t child;
->  	int result;
->  	size_t idx = state->next;
-> +	DIR *currdir;
->  
->  	snprintf(name, sizeof(name), "%zd", idx);
-> +	snprintf(attname, sizeof(attname), "%zd/%s", idx, DIR_ATTACHMENTS);
->  	mkdirat(resdirfd, name, 0777);
-> +	mkdirat(resdirfd, attname, 0777);
+Series: series starting with [i-g-t,1/2] tests/intel/kms_pipe_stress: use CRTC index not pipe for vblank ioctl
+URL   : https://patchwork.freedesktop.org/series/163585/
+State : success
 
-This will also needs to be deleted when runner is called
-with -o --overwrite option, currently this is done for
-files dmesg.txt, err.txt, ... so the same deletion needs
-to be done for 'attachents' folder and all files inside it.
+== Summary ==
 
->  	if ((ddirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
->  		errf("Error accessing individual test result directory\n");
->  		return -1;
->  	}
->  
-> +	currdir = opendir(".");
-> +	fchdir(ddirfd);
-> +	getcwd(resdirname, sizeof(resdirname));
-> +	fchdir(dirfd(currdir));
-> +	closedir(currdir);
+CI Bug Log - changes from XEIGT_8815_BAT -> XEIGTPW_14824_BAT
+====================================================
 
-Can you avoid this chdir only for getting its path?
+Summary
+-------
 
-Regards,
-Kamil
+  **SUCCESS**
 
-> +	snprintf(attdirname, sizeof(attdirname), "%s/%s", resdirname, DIR_ATTACHMENTS);
-> +
->  	if (!open_output_files(ddirfd, outputs, true)) {
->  		errf("Error opening output files\n");
->  		result = -1;
-> @@ -1870,6 +1882,7 @@ static int execute_next_entry(struct execute_state *state,
->  			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
->  		}
->  		setenv("IGT_SENTINEL_ON_STDERR", "1", 1);
-> +		setenv("IGT_RUNNER_ATTACHMENTS_DIR", attdirname, 1);
->  
->  		execute_test_process(outfd, errfd, socketfd, settings, entry);
->  		/* unreachable */
-> diff --git a/runner/executor.h b/runner/executor.h
-> index 3b1cabcf55..bc6ac80dc4 100644
-> --- a/runner/executor.h
-> +++ b/runner/executor.h
-> @@ -25,6 +25,8 @@ enum {
->  	_F_LAST,
->  };
->  
-> +#define DIR_ATTACHMENTS "attachments"
-> +
->  bool open_output_files(int dirfd, int *fds, bool write);
->  bool open_output_files_rdonly(int dirfd, int *fds);
->  void close_outputs(int *fds);
-> -- 
-> 2.43.0
-> 
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14824_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#6520]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8815/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14824/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8815 -> IGTPW_14824
+
+  IGTPW_14824: 14824
+  IGT_8815: 8815
+  xe-4752-7535044a2418d22b59be0eb64af0353971f16bd8: 7535044a2418d22b59be0eb64af0353971f16bd8
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14824/index.html
+
+--===============5504896160531976374==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/intel/kms_pipe_stress: use CRTC index not pipe for vblank ioctl</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163585/">https://patchwork.freedesktop.org/series/163585/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14824/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14824/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8815_BAT -&gt; XEIGTPW_14824_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14824_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_waitfence@reltime:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8815/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14824/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8815 -&gt; IGTPW_14824</li>
+</ul>
+<p>IGTPW_14824: 14824<br />
+  IGT_8815: 8815<br />
+  xe-4752-7535044a2418d22b59be0eb64af0353971f16bd8: 7535044a2418d22b59be0eb64af0353971f16bd8</p>
+
+</body>
+</html>
+
+--===============5504896160531976374==--
