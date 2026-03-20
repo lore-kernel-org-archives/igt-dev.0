@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 645D2108B901
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 11:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6084F108B901
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 11:25:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 18F9D10EAB0;
-	Fri, 20 Mar 2026 11:25:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 187A810EAB0;
+	Fri, 20 Mar 2026 11:25:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XXcNw5Oc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZPubvaKh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EAE5810EAB0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 02C2610EAC3
  for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 11:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1774005931; x=1805541931;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vpxepeVl2PKs3aV3rTP3lPf/AlUubXz0groqYD5Rk0o=;
- b=XXcNw5OcIoBkL3nLyFfEsxiZzANP7L4LCj3XUnodKUzbzGJuDaPWpObm
- 7uP8q+3vYWpNSrr5JjZAAq3MxTKwpwDZIi0K0XGSBqqc9lvVtK6EinzjW
- weqS6rRp2xkdJkHCRTVJqjuyUmEw+HgNP2P2ccfiLTxEdBq6KBKwyFCAB
- a2173mT7OE0t3PjXAd61AbvxbdufYE4+NMFpjRmVZU84Tqe5W7NMbZlTB
- XGnQX1NNXqg4v4P7dMsNEDseRSuRlBoWGjOq+9JmbaC5D/eDRnaJS+92M
- BEXnxwHpW60ICaeYx/LXDcnhRfWC3aNc9nCHXTTn6n46/MK9uqUJHDQbb g==;
-X-CSE-ConnectionGUID: aZJHkonHTymp4dUROjxYyQ==
-X-CSE-MsgGUID: nR5Jdz8GQdix7AEKNkUlng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="97705954"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="97705954"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 04:25:12 -0700
-X-CSE-ConnectionGUID: Zd65QbT0R+uwEbzSO3f52Q==
-X-CSE-MsgGUID: U3H7N7XuQ6iUAEHQdj/uDA==
+ bh=xeZsrYCQYh9bM9KM2sybULanV7oAVQW2dGFOy527f1A=;
+ b=ZPubvaKhvAY4MXgoxnRDnOeSsFtrLwuAxQCBXmXylxhWuWoygVSn5fJc
+ e2lzbxix+ofoc5ieFWhtnlpaOn6MCq972xPvCLp/wIr+0WM6N77mUebg/
+ kQ/9Vi//A38XBWTg+epj4xTnctwhfpM+JKrAQakw52pwIzdMl/TMIkCVY
+ Esc7tQmO/HCzAbqU/nMclWoldkze2PclpBDmZeOMvuP0DI/f9fI+MfqO1
+ cMSjC0daV0Qev2++ot9q7+Af99mlYgW+vmlwjpC0+uYPeiyv4VCIovvxl
+ t6C5VbhFR87UcNreqNVDKYpl8Rk/hDwQK2m2f277F3YIjLmJLRISwo7HI w==;
+X-CSE-ConnectionGUID: yR002DmESdWXjBKCQKYs6Q==
+X-CSE-MsgGUID: ZtdjnheSRym32G3sw1Ceww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="86451014"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="86451014"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2026 04:25:30 -0700
+X-CSE-ConnectionGUID: gf0scPxoSAmoplvi6eYW3Q==
+X-CSE-MsgGUID: C+3xvY4fTLS8gFqtaKjH+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="253759110"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="223286899"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.197])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 04:25:10 -0700
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2026 04:25:28 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, Aurabindo Pillai <aurabindo.pillai@amd.com>,
  Harry Wentland <harry.wentland@amd.com>,
  Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Hung <alex.hung@amd.com>
-Subject: [PATCH i-g-t 1/7] tests/amdgpu/amd_plane:
+Subject: [PATCH i-g-t 4/7] tests/amdgpu/amd_hotplug:
  s/crtc->pipe/crtc->crtc_index/
-Date: Fri, 20 Mar 2026 13:24:51 +0200
-Message-ID: <16b7fc1d6322d827d5539d06d80ad5dd503fc9c7.1774005763.git.jani.nikula@intel.com>
+Date: Fri, 20 Mar 2026 13:24:54 +0200
+Message-ID: <496438e69c6218b997713813d57b489b3287fd6c.1774005763.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1774005763.git.jani.nikula@intel.com>
 References: <cover.1774005763.git.jani.nikula@intel.com>
@@ -92,14 +92,14 @@ Review tip: apply and use this to ignore the whitespace changes:
 
 git show --color-words --word-diff-regex="\w+"
 ---
- tests/amdgpu/amd_plane.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ tests/amdgpu/amd_hotplug.c | 52 ++++++++++++++++++--------------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
 
-diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index 6831fc43e4a6..da0dc7822575 100644
---- a/tests/amdgpu/amd_plane.c
-+++ b/tests/amdgpu/amd_plane.c
-@@ -155,20 +155,17 @@ static void test_init(data_t *data)
+diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c
+index 15092cc9fdec..5049eca88439 100644
+--- a/tests/amdgpu/amd_hotplug.c
++++ b/tests/amdgpu/amd_hotplug.c
+@@ -54,17 +54,15 @@ static void test_init(data_t *data)
  	igt_crtc_t *crtc;
  
  	for_each_crtc(display, crtc) {
@@ -109,9 +109,6 @@ index 6831fc43e4a6..da0dc7822575 100644
 -		data->overlay[crtc->pipe] = igt_crtc_get_plane_type_index(crtc,
 -									  DRM_PLANE_TYPE_OVERLAY,
 -									  0);
--		data->overlay2[crtc->pipe] = igt_crtc_get_plane_type_index(crtc,
--									   DRM_PLANE_TYPE_OVERLAY,
--									   1);
 -		data->cursor[crtc->pipe] = igt_crtc_get_plane_type(crtc,
 -								   DRM_PLANE_TYPE_CURSOR);
 -		data->pipe_crc[crtc->pipe] =
@@ -122,8 +119,6 @@ index 6831fc43e4a6..da0dc7822575 100644
 +			igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_PRIMARY);
 +		data->overlay[crtc->crtc_index] =
 +			igt_crtc_get_plane_type_index(crtc, DRM_PLANE_TYPE_OVERLAY, 0);
-+		data->overlay2[crtc->crtc_index] =
-+			igt_crtc_get_plane_type_index(crtc, DRM_PLANE_TYPE_OVERLAY, 1);
 +		data->cursor[crtc->crtc_index] =
 +			igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_CURSOR);
 +		data->pipe_crc[crtc->crtc_index] =
@@ -131,7 +126,7 @@ index 6831fc43e4a6..da0dc7822575 100644
  	}
  
  	for (i = 0, n = 0; i < display->n_outputs && n < max_pipes; ++i) {
-@@ -199,7 +196,7 @@ static void test_fini(data_t *data)
+@@ -95,7 +93,7 @@ static void test_fini(data_t *data)
  	igt_crtc_t *crtc;
  
  	for_each_crtc(display, crtc) {
@@ -140,6 +135,69 @@ index 6831fc43e4a6..da0dc7822575 100644
  	}
  
  	igt_display_reset(display);
+@@ -154,29 +152,29 @@ static void test_hotplug_basic(data_t *data, bool suspend)
+ 
+ 	/* Setup all outputs */
+ 	for_each_crtc(&data->display, crtc) {
+-		output = data->output[crtc->pipe];
++		output = data->output[crtc->crtc_index];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+ 
+-		igt_create_pattern_fb(data->fd, data->w[crtc->pipe],
+-				      data->h[crtc->pipe],
++		igt_create_pattern_fb(data->fd, data->w[crtc->crtc_index],
++				      data->h[crtc->crtc_index],
+ 				      DRM_FORMAT_XRGB8888, 0,
+-				      &ref_fb[crtc->pipe]);
++				      &ref_fb[crtc->crtc_index]);
+ 		igt_output_set_crtc(output,
+ 				    crtc);
+-		igt_plane_set_fb(data->primary[crtc->pipe],
+-				 &ref_fb[crtc->pipe]);
++		igt_plane_set_fb(data->primary[crtc->crtc_index],
++				 &ref_fb[crtc->crtc_index]);
+ 	}
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+ 
+ 	/* Collect reference CRCs */
+ 	for_each_crtc(&data->display, crtc) {
+-		output = data->output[crtc->pipe];
++		output = data->output[crtc->crtc_index];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+ 
+-		igt_pipe_crc_collect_crc(data->pipe_crc[crtc->pipe],
+-					 &ref_crc[crtc->pipe]);
++		igt_pipe_crc_collect_crc(data->pipe_crc[crtc->crtc_index],
++					 &ref_crc[crtc->crtc_index]);
+ 	}
+ 
+ 	if (suspend) {
+@@ -191,17 +189,17 @@ static void test_hotplug_basic(data_t *data, bool suspend)
+ 
+ 	/* Trigger hotplug and confirm reference image is the same. */
+ 	for_each_crtc(&data->display, crtc) {
+-		output = data->output[crtc->pipe];
++		output = data->output[crtc->crtc_index];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+ 
+ 		igt_amd_trigger_hotplug(data->fd, output->name);
+ 
+-		igt_pipe_crc_collect_crc(data->pipe_crc[crtc->pipe],
+-					 &new_crc[crtc->pipe]);
+-		igt_assert_crc_equal(&ref_crc[crtc->pipe],
+-				     &new_crc[crtc->pipe]);
+-		igt_remove_fb(data->fd, &ref_fb[crtc->pipe]);
++		igt_pipe_crc_collect_crc(data->pipe_crc[crtc->crtc_index],
++					 &new_crc[crtc->crtc_index]);
++		igt_assert_crc_equal(&ref_crc[crtc->crtc_index],
++				     &new_crc[crtc->crtc_index]);
++		igt_remove_fb(data->fd, &ref_fb[crtc->crtc_index]);
+ 	}
+ 
+ 	test_fini(data);
 -- 
 2.47.3
 
