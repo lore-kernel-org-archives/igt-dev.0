@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA10E108B8EB
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 10:16:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 243C4108B8ED
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Mar 2026 10:39:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 85AEA10EACA;
-	Fri, 20 Mar 2026 10:16:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BC40310E97C;
+	Fri, 20 Mar 2026 10:39:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VpkOVkw7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RF7hgJYP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 772BC10EACA
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 10:16:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B57EE10E97C
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2026 10:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774001773; x=1805537773;
+ t=1774003177; x=1805539177;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=Kls6eFRxUW3SkY/KLz8Cv2HvddoRUqykhDZS5aS7LxQ=;
- b=VpkOVkw7eKvR3QKpiovHGW31bsnLt9R8pVxxrRofxGWEXZ/h1DRv/aFX
- RjDyU3hRLGEAl+0pgHjsNMWegqiIPEO4NdipUFcnZhZ/CId+i+uBKkNab
- q63pFGrlh63nfNJlLXZfzWPlMpZixtKOAfwC8xVEqARj4+JKkrTYT6ADh
- Nmue97u6BBfmy8g7EpX7Qpt1OcKH7TVp7BS3tk1V0GB0nPfTYcn4629sh
- x1MOQcvXc6z4mmanLo+wx0DFMsKpQqN90aZMbPbTP8EiSu7mXXfteh+oK
- RU59HPdRWTesDxhvYz80xL66Geg3qLFwDkjpdHuoJ96gmD1SJlLXBi+tM Q==;
-X-CSE-ConnectionGUID: ytG8kksNSFOEsRnVTZYWKQ==
-X-CSE-MsgGUID: EhBYO61ySJKnFBCmnFOfJw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="92471397"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="92471397"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 03:16:12 -0700
-X-CSE-ConnectionGUID: 4+cnoF6ZRRWnvjIRwPUYPQ==
-X-CSE-MsgGUID: ZdFpfmJ6RuWqZ86bbfRRYw==
+ bh=P5hRcJ0+/1Ct3Zh8xP4j6dscYam6Gv+JuvgFvCfIqCs=;
+ b=RF7hgJYPTBRDbmrzn332xsmdZ7p/AcR7Rayva4m20gKXAJ9e4hZcgGqE
+ 1uOPpeGSjeqG0EQ4O+iJ1oPgvRKnbSmo8U6VUW5daMo/uKN2blQW+ysJl
+ +ItKES9hSfr7o3uIcsxLWGFB6oeosXBQn9unVGSf6fVNKizdTp8vp0vl3
+ xc0ux8xYcBHrbTCy8b1Eyv6VHtgXYGvX5WaL0VF90KBjDMLJEdbPXbutv
+ VMZZyP6n0ygiGW51+CRcIb4e2IrtrPVR2poifAfOnYJL3ZwPq0w9Y+RSs
+ PRqEPTFujVFj532XGAg82UzIXd4JOY0itlnJMees5SfAN8PxNFwPFq7th w==;
+X-CSE-ConnectionGUID: OuUuREDjQUi4poWEU+OWmg==
+X-CSE-MsgGUID: 7F297eg4TECqJsWJTinSsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75158992"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="75158992"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2026 03:39:36 -0700
+X-CSE-ConnectionGUID: 8gE/Xxz3Tsmh6XTazIG5hg==
+X-CSE-MsgGUID: HNP1PN+0SwapH9WZXrLu1g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="228183608"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.245.84])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2026 03:16:10 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; d="scan'208";a="222473322"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.197])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2026 03:39:36 -0700
+From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Renjun Wang <renjunw0@foxmail.com>, Swati Sharma <swati2.sharma@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t] tests/kms_plane: Allow planar-pixel-format-settings to
- pass on VKMS
-Date: Fri, 20 Mar 2026 11:16:06 +0100
-Message-ID: <20260320101606.22163-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.53.0
+Cc: jani.nikula@intel.com
+Subject: [PATCH i-g-t v2 00/11] Prepare for returning NULL from
+ igt_crtc_for_pipe()
+Date: Fri, 20 Mar 2026 12:39:20 +0200
+Message-ID: <cover.1774002591.git.jani.nikula@intel.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,120 +70,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Renjun Wang <renjunw0@foxmail.com>
+v2 of [1]. Patch 1 dropped, as it was handled through other means. Commit
+messages amended slightly here and there to explain the logic.
 
-Enable planar-pixel-format-settings subtests when running on VKMS
-driver. VKMS currently accepts odd width|height for NV12, odd
-horizontal panning for NV12, and odd vertical panning for P016
-format.
+The idea is:
 
-v2: remove is_intel var (Kamil), keep all comments (Swati)
+1. In this series, we check crtc->valid for each CRTC returned by
+   igt_crtc_for_pipe(). It currently always returns a non-NULL CRTC, but
+   crtc->valid may be false. Such CRTCs should never be used by tests,
+   obviously. So we check that here, to ensure the tests are sane. (Plus reduce
+   igt_crtc_for_pipe() usage in general.)
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/kms_plane.c | 35 +++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+2. In follow-up, sent separately, we change igt_crtc_for_pipe() to return NULL
+   instead of igt_crtc_t objects that have crtc->valid == false, *and* change
+   all the crtc->valid to just !NULL checks. After the series at hand, this will
+   be a non-functional change.
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index d5bab62bb..7f7e2d9a6 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1365,11 +1365,8 @@ static void test_planar_settings(data_t *data)
- 	int devid;
- 	int display_ver = -1;
- 	int rval;
-+	bool is_vkms = false;
- 
--	/*
--	 * If here is added non-intel tests below require will need to be
--	 * changed to if(..)
--	 */
- 	igt_require_f(data->display.is_atomic, "Atomic mode-set not supported\n");
- 	if (is_intel_device(data->drm_fd)) {
- 		igt_require_intel(data->drm_fd);
-@@ -1377,6 +1374,8 @@ static void test_planar_settings(data_t *data)
- 		igt_require(intel_display_ver(devid) >= 9);
- 		display_ver = intel_display_ver(devid);
- 		igt_require(display_ver >= 9);
-+	} else if (is_vkms_device(data->drm_fd)) {
-+		is_vkms = true;
- 	}
- 
- 	crtc = igt_first_crtc_with_single_output(display, &output);
-@@ -1387,13 +1386,15 @@ static void test_planar_settings(data_t *data)
- 	igt_display_commit_atomic(&data->display,
- 				  DRM_MODE_ATOMIC_ALLOW_MODESET,
- 				  NULL);
--
--	/* test against intel_plane_check_src_coordinates() in i915 */
-+	/*
-+	 * Test odd width for NV12 format.
-+	 * For Intel i915/xe test against intel_plane_check_src_coordinates()
-+	 */
- 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
- 				     DRM_FORMAT_MOD_LINEAR)) {
- 		int expected_rval = -EINVAL;
- 
--		if (display_ver >= 20)
-+		if (display_ver >= 20 || is_vkms)
- 			expected_rval = 0;
- 
- 		igt_create_fb(data->drm_fd, 257, 256,
-@@ -1409,12 +1410,15 @@ static void test_planar_settings(data_t *data)
- 		igt_debug("Odd width NV12 framebuffer test skipped\n");
- 	}
- 
--	/* test against intel_plane_check_src_coordinates() in i915 */
-+	/*
-+	 * Test odd height for NV12 format.
-+	 * For Intel i915/xe test against intel_plane_check_src_coordinates()
-+	 */
- 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
- 				     DRM_FORMAT_MOD_LINEAR)) {
- 		int expected_rval = -EINVAL;
- 
--		if (display_ver >= 20 && display_ver < 35)
-+		if ((display_ver >= 20 && display_ver < 35) || is_vkms)
- 			expected_rval = 0;
- 
- 		igt_create_fb(data->drm_fd, 256, 257,
-@@ -1430,12 +1434,15 @@ static void test_planar_settings(data_t *data)
- 		igt_debug("Odd height NV12 framebuffer test skipped\n");
- 	}
- 
--	/* test against intel_plane_check_src_coordinates() in i915 */
-+	/*
-+	 * Test odd horizontal panning for NV12 format.
-+	 * For Intel i915/xe test against intel_plane_check_src_coordinates()
-+	 */
- 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
- 				     DRM_FORMAT_MOD_LINEAR)) {
- 		int expected_rval = -EINVAL;
- 
--		if (display_ver >= 35)
-+		if (display_ver >= 35 || is_vkms)
- 			expected_rval = 0;
- 
- 		igt_create_fb(data->drm_fd, 810, 590,
-@@ -1452,11 +1459,15 @@ static void test_planar_settings(data_t *data)
- 		igt_debug("Odd horizontal pan NV12 framebuffer test skipped\n");
- 	}
- 
-+	/*
-+	 * Test odd vertical panning for P016 format.
-+	 * For Intel i915/xe test against intel_plane_check_src_coordinates()
-+	 */
- 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
- 					    DRM_FORMAT_MOD_LINEAR)) {
- 		int expected_rval = -EINVAL;
- 
--		if (display_ver >= 20 && display_ver < 35)
-+		if ((display_ver >= 20 && display_ver < 35) || is_vkms)
- 			expected_rval = 0;
- 
- 		igt_create_color_fb(data->drm_fd, 256, 260,
+So the point of this series is to do the test crtc->valid sanity checks commit
+by commit for easy bisectability in case there are any issues. After a few more
+patches, we'll only ever have valid igt_crtc_t objects around, and can simplify
+more.
+
+BR,
+Jani.
+
+
+[1] https://lore.kernel.org/r/cover.1773659680.git.jani.nikula@intel.com
+
+Jani Nikula (11):
+  tests/amdgpu/amd_multidisplay_modeset: Prepare for returning NULL from
+    igt_crtc_for_pipe()
+  tests/intel/kms_cdclk: use igt_next_crtc()
+  tests/intel/kms_joiner: Prepare for returning NULL from
+    igt_crtc_for_pipe()
+  tests/intel/kms_joiner_helper: Prepare for returning NULL from
+    igt_crtc_for_pipe()
+  tests/intel/kms_pipe_b_c_ivb: Prepare for returning NULL from
+    igt_crtc_for_pipe()
+  tests/intel/kms_pipe_stress: Prepare for returning NULL from
+    igt_crtc_for_pipe()
+  tests/kms_bw: fix misleading indent
+  tests/kms_bw: clarify what's going on with proper variable naming
+  tests/kms_bw: avoid igt_crtc_for_pipe() and crtc->pipe usage
+  tests/kms_explicit_fence: store igt_crtc_t* instead of pipe in data
+  lib/kms: convert igt_crtc_for_pipe() into a proper function
+
+ lib/igt_kms.c                           |  8 +++
+ lib/igt_kms.h                           |  8 +--
+ tests/amdgpu/amd_multidisplay_modeset.c |  2 +
+ tests/intel/kms_cdclk.c                 | 10 ++--
+ tests/intel/kms_joiner.c                | 66 ++++++++++++++++++-------
+ tests/intel/kms_joiner_helper.c         | 16 +++---
+ tests/intel/kms_pipe_b_c_ivb.c          | 28 +++++++----
+ tests/intel/kms_pipe_stress.c           |  4 ++
+ tests/kms_bw.c                          | 48 +++++++++---------
+ tests/kms_explicit_fence.c              | 14 +++---
+ 10 files changed, 129 insertions(+), 75 deletions(-)
+
 -- 
-2.53.0
+2.47.3
 
