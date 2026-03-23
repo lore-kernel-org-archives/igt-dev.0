@@ -4,58 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 155B7EC01AC
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 09:25:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E8ADEC01A9
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 09:25:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B5B7310E037;
-	Mon, 23 Mar 2026 09:25:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C2F6910E29A;
+	Mon, 23 Mar 2026 09:25:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HiDUGMsN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bsQVlPPT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C155310E037
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2026 09:25:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF7F910E29A
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2026 09:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774257924; x=1805793924;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=rig0vSvvlJvVbkHH4DZFEnrK4gYyvpMitmVZICbdzL8=;
- b=HiDUGMsNrMPZ1tKy5H2Kmb25eQsZ4m2NKTvt0PSj5yJzRQWYKBhs2QSM
- UpHR4XBjo2sOa9OCAJOTndnD/QyPL+RAT8Pi4KshFimfH4BX9XrneQm55
- iGcQ8bRM7hZ03DDqk8zC/ZiTw9k7iiCQgls7bmjAjEB/s4KujmOKlMqDg
- k1+RNZIUUigbkJEtd9iL2qDHhCqlHgzt7hptj+72Ywvw1vl2/XaO9+LJM
- QzFfdhbPTMwBTG/QXEZf2S86KVjN6tHwGd6vqNMip5g5tqgDyAM1ZotyY
- mo3QRaas9q3qB4G9hIWgTL+WtoGwp5wsrARCqzwW5mF3kJKQ3aTS+QEmZ A==;
-X-CSE-ConnectionGUID: Gub3kcjRRkeHOML8gjWFsg==
-X-CSE-MsgGUID: x71uyoC3S7Cxc/fz2baDsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="100702699"
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="100702699"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Mar 2026 02:25:24 -0700
-X-CSE-ConnectionGUID: OeEKlZZnQQCGdAjZIOoGYA==
-X-CSE-MsgGUID: IIwFJBWzR4GoS+U2+KONFw==
+ t=1774257931; x=1805793931;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=8aK5sj5gFcjR9IInRBNLPOD6R+YtIPGaQpLu9VpHvlg=;
+ b=bsQVlPPTMvDHq8UOenCewAvsBV1j0wI53U/2qZshwsEDbC0nn9GV95NI
+ yFf8+vGlIIOPSBHdudIS/LexJpE9hSuUI7SrsrY2klAgZE6eFqFbwJsqY
+ 53+1PpcSnvwJMa1kqp6TPL1bd+tRCk5FS5IxVQzNQReU69Q6jUZsacanl
+ lqZVEW4DuJsF01NoBzDRDjoFogilaVmB7qnG6Fa/gmoO2+F44GGc6mRYQ
+ ZR8MUjNRKS+OZaR+iq7GIFoL5wtZqhrnaAu/+Ly0ljl2xc4o7eaRuVJP5
+ VEX9AHnNLsqap1RZ088qUrjyG0f47MWClcd2sGx4jXMiyE+FaJxvZ23Wy Q==;
+X-CSE-ConnectionGUID: r8yUrS7TRf2QA7iyfmOD7Q==
+X-CSE-MsgGUID: DXPU3oysTKOA7/AtileJ5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="75221211"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="75221211"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Mar 2026 02:25:31 -0700
+X-CSE-ConnectionGUID: crVtBb9PTEeiKs2tqgVffA==
+X-CSE-MsgGUID: xs4VY19PRWOAOF2QaI+eAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="219621608"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.8])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Mar 2026 02:25:21 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Pranay Samala <pranay.samala@intel.com>, igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_kms: Make helper use out-parameter
-In-Reply-To: <20260323051049.2627387-2-pranay.samala@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260323051049.2627387-1-pranay.samala@intel.com>
- <20260323051049.2627387-2-pranay.samala@intel.com>
-Date: Mon, 23 Mar 2026 11:25:18 +0200
-Message-ID: <bb732b6aa7a415e0e5e9848e74ddfd743994a8cd@intel.com>
+Received: from varungup-desk.iind.intel.com ([10.190.238.71])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Mar 2026 02:25:29 -0700
+From: Varun Gupta <varun.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: nishit.sharma@intel.com,
+	priyanka.dandamudi@intel.com
+Subject: [PATCH i-g-t v5] tests/intel/xe_prefetch_fault: Add SVM and
+ hit-under-miss validation
+Date: Mon, 23 Mar 2026 14:55:21 +0530
+Message-ID: <20260323092521.2984407-1-varun.gupta@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,83 +66,253 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 23 Mar 2026, Pranay Samala <pranay.samala@intel.com> wrote:
-> Convert igt_get_non_joiner_mode() helper from returning a mode
-> pointer to returning bool and filling an output parameter.
->
-> Returning connector-owned pointer becomes invalid after connecter
-> state changes/resets. Hence copying into called-owned argument,
-> which keeps data stable and safe.
-> Also update the doc for the new argument and return semantics.
+Add a second batch to validate hit-under-miss behavior: placing the BB
+at PREFETCH_ADDR ensures the page is already mapped when the shader
+prefetch runs, so the prefetch fault counter should not increment.
 
-This breaks the build and thus bisect.
+Add SVM mode (prefetch-fault-svm subtest) that creates the VM with
+CPU_ADDR_MIRROR and uses mmap() at PREFETCH_ADDR to make the page
+GPU-accessible before the hit-under-miss batch.
 
-Please do something like
+Other changes:
+  - Extract PREFETCH_ADDR and USER_FENCE_VALUE into defines
+  - Update stat name to 'invalid_prefetch_pagefault_count'
+  - Add missing cleanup (intel_buf_destroy, xe_exec_queue_destroy,
+    xe_vm_destroy)
 
-$ git rebase -i origin -x 'ninja -C build'
+v2:
+  - Move xe_vm_create() before if(svm) as it is common to both paths (Nishit)
+  - Separate SVM and non-SVM specific code into if/else blocks (Nishit)
+  - Add BB_OFFSET and BB_OFFSET_SVM defines (Nishit)
+  - Add comments wherever needed (Nishit)
 
-before sending to ensure every commit builds.
+v3:
+  - Drop const from bb_offset and bb_offset2 (Nishit)
+  - Rename prefetch_pos to prefetch_post (Nishit)
 
-BR,
-Jani.
+v4:
+  - Fix build error: misplaced closing bracket.
 
->
-> Fixes: e404926ca0d7 ("lib/igt_kms: Add helper to get non-joiner mode")
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
-> ---
->  lib/igt_kms.c | 10 ++++++----
->  lib/igt_kms.h |  2 +-
->  2 files changed, 7 insertions(+), 5 deletions(-)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 197ed15d1..118890014 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -7057,13 +7057,14 @@ bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
->   * igt_get_non_joiner_mode:
->   * @drm_fd: drm file descriptor
->   * @output: pointer to the output structure
-> + * @mode: a pointer to a drm mode structure
->   *
->   * Finds the display mode from the output that does not require
->   * Big Joiner or Ultra Joiner.
->   *
-> - * Returns: Pointer to non-joiner mode, or NULL if not found.
-> + * Returns: True if non-joiner mode found.
->   */
-> -drmModeModeInfo *igt_get_non_joiner_mode(int drm_fd, igt_output_t *output)
-> +bool igt_get_non_joiner_mode(int drm_fd, igt_output_t *output, drmModeModeInfo *mode)
->  {
->  	drmModeConnector *connector;
->  	int max_dotclock;
-> @@ -7077,11 +7078,12 @@ drmModeModeInfo *igt_get_non_joiner_mode(int drm_fd, igt_output_t *output)
->  		/* Check if mode requires joiner */
->  		if (!igt_bigjoiner_possible(drm_fd, current_mode, max_dotclock) &&
->  		    !igt_ultrajoiner_possible(drm_fd, current_mode, max_dotclock)) {
-> -			return current_mode;
-> +			*mode = *current_mode;
-> +			return true;
->  		}
->  	}
->  
-> -	return NULL;
-> +	return false;
->  }
->  
->  /**
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 71ed4604e..d63836588 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1259,7 +1259,7 @@ bool igt_ultrajoiner_possible(int drmfd, drmModeModeInfo *mode, int max_dotclock
->  bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
->  			  int max_dotclock, drmModeModeInfo *mode);
->  bool igt_has_force_joiner_debugfs(int drmfd, char *conn_name);
-> -drmModeModeInfo *igt_get_non_joiner_mode(int drm_fd, igt_output_t *output);
-> +bool igt_get_non_joiner_mode(int drm_fd, igt_output_t *output, drmModeModeInfo *mode);
->  bool is_joiner_mode(int drm_fd, igt_output_t *output);
->  bool igt_check_force_joiner_status(int drmfd, char *connector_name);
->  bool igt_check_bigjoiner_support(igt_display_t *display);
+v5:
+  - Use xe_supports_faults() in fixture to probe SVM support and store
+    in svm_supported bool; skip prefetch-fault-svm early with igt_skip() (Priyanka)
 
+Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
+Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Signed-off-by: Varun Gupta <varun.gupta@intel.com>
+---
+ tests/intel/xe_prefetch_fault.c | 133 ++++++++++++++++++++++++++------
+ 1 file changed, 108 insertions(+), 25 deletions(-)
+
+diff --git a/tests/intel/xe_prefetch_fault.c b/tests/intel/xe_prefetch_fault.c
+index 4a143374a..fcbf305b5 100644
+--- a/tests/intel/xe_prefetch_fault.c
++++ b/tests/intel/xe_prefetch_fault.c
+@@ -25,6 +25,10 @@
+ #define WALKER_Y_DIM	1
+ #define PAGE_SIZE 4096
+ #define COLOR_C4 0xC4C4C4C4
++#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
++#define PREFETCH_ADDR	0x1f000000
++#define BB_OFFSET	0x1b000000
++#define BB_OFFSET_SVM	0x2b000000
+ 
+ struct dim_t {
+ 	uint32_t x;
+@@ -118,7 +122,7 @@ static struct gpgpu_shader *get_prefetch_shader(int fd)
+ 	static struct gpgpu_shader *shader;
+ 
+ 	shader = gpgpu_shader_create(fd);
+-	gpgpu_shader__prefetch_fault(shader, xe_canonical_va(fd, 0x1f000000));
++	gpgpu_shader__prefetch_fault(shader, xe_canonical_va(fd, PREFETCH_ADDR));
+ 	gpgpu_shader__eot(shader);
+ 
+ 	return shader;
+@@ -126,73 +130,139 @@ static struct gpgpu_shader *get_prefetch_shader(int fd)
+ 
+ /**
+  * SUBTEST: prefetch-fault
+- * Description: Validate L1/L2 cache prefetch fault.
++ * Description: Validate prefetch fault and hit-under-miss behavior
++ * Run type: FULL
++ *
++ * SUBTEST: prefetch-fault-svm
++ * Description: Validate prefetch fault and hit-under-miss behavior in SVM mode
+  * Run type: FULL
+  */
+-
+-static void test_prefetch(int fd, struct drm_xe_engine_class_instance *hwe)
++static void test_prefetch_fault(int fd, struct drm_xe_engine_class_instance *hwe, bool svm)
+ {
+-	/* faulty address 0x1f000000 should be beyond bb_offset+bb_size. */
+-	const uint64_t bb_offset = 0x1b000000;
++	uint64_t bb_offset = BB_OFFSET;
++	/*
++	 * For the hit-under-miss run, place the batch at PREFETCH_ADDR in
++	 * non-SVM mode so the BO bind maps that page before the shader runs.
++	 * In SVM mode PREFETCH_ADDR is reserved for the mmap, so use a
++	 * separate offset that doesn't collide with it.
++	 */
++	uint64_t bb_offset2 = svm ? BB_OFFSET_SVM : PREFETCH_ADDR;
+ 	const size_t bb_size = 4096;
+-	struct dim_t w_dim;
++	static const char *stat = "invalid_prefetch_pagefault_count";
++	struct dim_t w_dim = { .x = WALKER_X_DIM, .y = WALKER_Y_DIM };
+ 	struct gpgpu_shader *shader;
+ 	struct intel_bb *ibb;
+ 	struct intel_buf *buf;
+-	uint32_t *ptr;
+ 	uint32_t exec_queue_id, vm;
+-	int prefetch_pre, prefetch_pos;
+-	static const char *stat = "prefetch_pagefault_count";
+-
+-	w_dim.x = WALKER_X_DIM;
+-	w_dim.y = WALKER_Y_DIM;
++	void *cpu_data = NULL;
++	int prefetch_pre, prefetch_post;
++	uint32_t *ptr;
+ 
+ 	buf = create_buf(fd, w_dim.x, w_dim.y, COLOR_C4);
+ 
+-	prefetch_pre = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
+-
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
+ 			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
+ 
++	if (svm) {
++		/*
++		 * Enable SVM: mirror the full VA space so GPU page faults are
++		 * resolved via HMM against the CPU page tables.
++		 */
++		struct xe_device *xe = xe_device_get(fd);
++		uint64_t vm_sync = 0;
++		struct drm_xe_sync sync[1] = {
++			{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			  .timeline_value = USER_FENCE_VALUE },
++		};
++
++		sync[0].addr = to_user_pointer(&vm_sync);
++		__xe_vm_bind_assert(fd, vm, 0, 0, 0, 0, 0x1ull << xe->va_bits,
++				    DRM_XE_VM_BIND_OP_MAP,
++				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,
++				    sync, 1, 0, 0);
++		xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
++	}
++
+ 	exec_queue_id = xe_exec_queue_create(fd, vm, hwe, 0);
+ 
+-	ibb = xe_bb_create_on_offset(fd, exec_queue_id, vm,
+-				     bb_offset, bb_size);
++	prefetch_pre = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
++
++	/* First run: PREFETCH_ADDR is unmapped, so each shader lane raises a prefetch fault. */
++	ibb = xe_bb_create_on_offset(fd, exec_queue_id, vm, bb_offset, bb_size);
+ 	intel_bb_set_lr_mode(ibb, true);
+ 
+ 	shader = get_prefetch_shader(fd);
+-
+ 	gpgpu_shader_exec(ibb, buf, w_dim.x, w_dim.y, shader, NULL, 0, 0);
+-
+ 	gpgpu_shader_destroy(shader);
++	intel_bb_sync(ibb);
++	intel_bb_destroy(ibb);
+ 
++	prefetch_post = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
++	igt_assert_eq(prefetch_post, prefetch_pre + w_dim.x * w_dim.y);
++
++	/*
++	 * Hit-under-miss: ensure the page at PREFETCH_ADDR is already mapped
++	 * before the prefetch shader runs again. The fault is resolved
++	 * successfully so the prefetch counter must not change.
++	 *
++	 * SVM:     mmap at PREFETCH_ADDR creates a CPU page table entry.
++	 *          The kernel resolves the GPU pagefault via HMM.
++	 * Non-SVM: placing the batch buffer at PREFETCH_ADDR causes the
++	 *          BO fault path to map the page.
++	 */
++	if (svm) {
++		cpu_data = mmap((void *)PREFETCH_ADDR, PAGE_SIZE,
++				PROT_READ | PROT_WRITE,
++				MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED,
++				-1, 0);
++		igt_assert(cpu_data == (void *)PREFETCH_ADDR);
++		/* Touch the page to populate the CPU PTE so HMM can resolve the GPU fault. */
++		memset(cpu_data, 0xAB, PAGE_SIZE);
++		prefetch_pre = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
++	} else {
++		prefetch_pre = prefetch_post;
++	}
++	ibb = xe_bb_create_on_offset(fd, exec_queue_id, vm, bb_offset2, bb_size);
++	intel_bb_set_lr_mode(ibb, true);
++
++	shader = get_prefetch_shader(fd);
++	gpgpu_shader_exec(ibb, buf, w_dim.x, w_dim.y, shader, NULL, 0, 0);
++	gpgpu_shader_destroy(shader);
+ 	intel_bb_sync(ibb);
+ 
+-	ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size, PROT_READ);
++	prefetch_post = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
++	igt_assert_eq(prefetch_post, prefetch_pre);
+ 
++	/* Verify buffer contents */
++	ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size, PROT_READ);
+ 	for (int j = 0; j < w_dim.y; j++)
+ 		for (int i = 0; i < w_dim.x; i++) {
+ 			igt_assert_f(ptr[j * w_dim.x + i] == COLOR_C4,
+ 				     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
+ 				     COLOR_C4, ptr[j * w_dim.x + i], i, j);
+ 		}
+-	/* Validate prefetch count. */
+-	prefetch_pos = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
+-	igt_assert_eq(prefetch_pos, prefetch_pre + w_dim.x * w_dim.y);
+-
+ 	munmap(ptr, buf->size);
+ 
++	/* Cleanup */
++	if (svm && cpu_data)
++		munmap(cpu_data, PAGE_SIZE);
++
+ 	intel_bb_destroy(ibb);
++	intel_buf_destroy(buf);
++	xe_exec_queue_destroy(fd, exec_queue_id);
++	xe_vm_destroy(fd, vm);
+ }
+ 
+ int igt_main()
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
++	bool svm_supported;
+ 	int fd;
+ 
+ 	igt_fixture() {
+ 		fd = drm_open_driver(DRIVER_XE);
+ 		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		svm_supported = !xe_supports_faults(fd);
+ 	}
+ 
+ 	igt_subtest_with_dynamic("prefetch-fault") {
+@@ -201,7 +271,20 @@ int igt_main()
+ 			    hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
+ 				igt_dynamic_f("%s%d", xe_engine_class_string(hwe->engine_class),
+ 					      hwe->engine_instance)
+-					test_prefetch(fd, hwe);
++					test_prefetch_fault(fd, hwe, false);
++			}
++		}
++	}
++
++	igt_subtest_with_dynamic("prefetch-fault-svm") {
++		if (!svm_supported)
++			igt_skip("SVM not supported on this device, skipping.\n");
++		xe_for_each_engine(fd, hwe) {
++			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
++			    hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
++				igt_dynamic_f("%s%d", xe_engine_class_string(hwe->engine_class),
++					      hwe->engine_instance)
++					test_prefetch_fault(fd, hwe, true);
+ 			}
+ 		}
+ 	}
 -- 
-Jani Nikula, Intel
+2.43.0
+
