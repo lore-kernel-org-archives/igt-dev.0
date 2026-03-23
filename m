@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46F0AEC01D4
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 12:06:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C941EC01DD
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 12:06:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C0FFE10E23D;
-	Mon, 23 Mar 2026 12:06:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F300810E23D;
+	Mon, 23 Mar 2026 12:06:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Dtvo1ARh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X3C9gYeB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C71E10E23D
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2026 12:06:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 953B410E33D
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2026 12:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774267599; x=1805803599;
+ t=1774267604; x=1805803604;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9xLR8cpihOdjwGyHqZw+ICEnnrMlaQnV4g3WRzW7R2w=;
- b=Dtvo1ARhPBgV1B2KKyS6HRO2oVvDUOf5Ur5OVtaAiy6hQH31DLzZ8Hwf
- w/b04oQ0VHOxLqxAM22IV4clGILlvMQsLLwPniNaLo2NXaSCBaxFdVIar
- HoV49nVfjpWogzGFI/TkUjXn6cXu6O2OhA/Ov2f0q9ei6gg8BG1jmrArp
- GFmQmPCI2WFK+bHFWEWeTZiN4dkK7BBfjfdrk2VonZ1kR/m6N4XMChOcv
- 8gyYybQrul66NKdVNlbHfMIuOTzHzChMzg2x2i815u6sT11NiyJ1BK8aO
- Zis0Q0tk+8gojfH7FeSFVr1KT7Ag2YmNE/g4XZ+7IcxUEcnWzp9LRhxjB Q==;
-X-CSE-ConnectionGUID: Wsv9XDdfTvyvDYw7wpF5ZA==
-X-CSE-MsgGUID: ykclerWJTKGaNc0SzXBtgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="86333317"
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="86333317"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Mar 2026 05:06:39 -0700
-X-CSE-ConnectionGUID: JfJ441h5SJSpzUMBCqzj+w==
-X-CSE-MsgGUID: kt1Bg9McRwCRoIXSYnxmvA==
+ bh=4st5P+K89FIVSma/J+BW6kEJJcDND9GIwzjylYxPctc=;
+ b=X3C9gYeB1qhuQLl8MZ21WGGyXwJl/xCl3RPHCZe3pvq5PvDDlKp1xQsj
+ APHbf16MGStHrcQO17/bQNw/9lhYyg0kH6tR+BhlVPoSixkpwtlUMBTo3
+ 2C4FUbmwSj6XiBm1yxHGw38Q+OOxghiBsLCu5RlgexvYtSmo8jahXMHt8
+ LMYxqnh7w0M+waEheZwQzdLUUCPFqHaMqZfveIlHBr/jkTJ4OZYimikiM
+ 3HaT/+1ay0m7X49NQsyly6pMM9ICZ/fyI/AV8xftw8u3NYmEbWy1oqRhJ
+ Ud5598qv6wu6b+Glszt/1MxG1TNw87ROGmO3ZTjBVvTsWMPdYRoxI4bdV A==;
+X-CSE-ConnectionGUID: ZlWfesOSQn+9NSJE28VEAA==
+X-CSE-MsgGUID: wUCaqbLVQdqUxatgIVj8DQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="86736257"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="86736257"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Mar 2026 05:06:43 -0700
+X-CSE-ConnectionGUID: IasOFpi/Tx+hb979sKA3zw==
+X-CSE-MsgGUID: AQLUbtkpSpKtsisfH6Cpcg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="219646389"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="254481969"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.8])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Mar 2026 05:06:37 -0700
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Mar 2026 05:06:42 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com,
 	ville.syrjala@linux.intel.com
-Subject: [PATCH i-g-t 1/3] lib/kms: don't special case
- igt_get_single_output_for_crtc() implementation
-Date: Mon, 23 Mar 2026 14:06:24 +0200
-Message-ID: <3e7dac9015f75c2fd295e2b7226c4f23708e8e36.1774267502.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 2/3] lib/kms: refactor
+ for_each_crtc_with_single_output() to avoid igt_crtc_for_pipe()
+Date: Mon, 23 Mar 2026 14:06:25 +0200
+Message-ID: <0bdfa894235e4ae19e47207dc0b7e67f36710ba4.1774267502.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1774267502.git.jani.nikula@intel.com>
 References: <cover.1774267502.git.jani.nikula@intel.com>
@@ -72,47 +72,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt_get_single_output_for_crtc() can be trivially implemented in a more
-generic way using for_each_crtc_with_single_output() instead of using
-__igt_pipe_populate_outputs() and its implementation details directly.
+Using igt_crtc_for_pipe() in for_each_crtc_with_single_output() is
+problematic for further conversion from pipe to igt_crtc_t and CRTC
+index usage. In particular, if we return igt_display_n_crtcs() to mean
+the actual CRTC count for the device, and have a device with a pipe
+fused off in the middle, we'll end up with a buffer overflow.
 
-Do so to make it all easier to understand, and to make refactoring
-for_each_crtc_with_single_output() and __igt_pipe_populate_outputs()
-easier.
+Add a new structure igt_output_crtc_t for holding the valid output/crtc
+pointer combos instead of assuming the index in an igt_output_t pointer
+array is the pipe. This doesn't fix everything yet, but is a step in the
+right direction. Plus makes the whole loop ever so slightly easier to
+understand.
 
-Arguably the iteration is slower, but the bulk of the work is done in
-__igt_pipe_populate_outputs() anyway, and we're talking about O(n)
-search where n is 16.
+For valid combos, both the output and crtc should always be non-NULL,
+and for invalid combos, both of them should always be NULL. However,
+check for both in the loop for good measure.
+
+C macros being dumb, we have to rename the macro parameters to be able
+to use output and crtc as the structure members. Meh.
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/igt_kms.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ lib/igt_kms.c | 12 +++++++-----
+ lib/igt_kms.h | 23 ++++++++++++++---------
+ 2 files changed, 21 insertions(+), 14 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 481b893fc025..b835584bef1e 100644
+index b835584bef1e..42329ad0303c 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -3665,12 +3665,15 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display, igt_output_t
-  */
- igt_output_t *igt_get_single_output_for_crtc(igt_crtc_t *crtc)
- {
--	igt_display_t *display = crtc->display;
--	igt_output_t *chosen_outputs[igt_display_n_crtcs(display)];
-+	igt_output_t *output;
-+	igt_crtc_t *iter;
- 
--	__igt_pipe_populate_outputs(display, chosen_outputs);
-+	for_each_crtc_with_single_output(crtc->display, iter, output) {
-+		if (iter == crtc)
-+			return output;
-+	}
- 
--	return chosen_outputs[crtc->pipe];
-+	return NULL;
+@@ -3588,7 +3588,7 @@ bool output_is_internal_panel(igt_output_t *output)
+ 	}
  }
  
- static igt_output_t *igt_crtc_get_output(igt_crtc_t *crtc)
+-igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display, igt_output_t **chosen_outputs)
++igt_output_crtc_t *__igt_output_crtc_populate(igt_display_t *display, igt_output_crtc_t *chosen_outputs)
+ {
+ 	unsigned int full_crtc_index_mask = 0, assigned_crtc_index_mask = 0;
+ 	igt_output_t *output;
+@@ -3634,15 +3634,17 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display, igt_output_t
+ 					/* We found an unassigned CRTC, use it! */
+ 					found = true;
+ 					assigned_crtc_index_mask |= 1 << crtc->crtc_index;
+-					chosen_outputs[crtc->pipe] = output;
+-				} else if (!chosen_outputs[crtc->pipe] ||
+-					   output_is_internal_panel(chosen_outputs[crtc->pipe])) {
++					chosen_outputs[crtc->pipe].output = output;
++					chosen_outputs[crtc->pipe].crtc = crtc;
++				} else if (!chosen_outputs[crtc->pipe].output ||
++					   output_is_internal_panel(chosen_outputs[crtc->pipe].output)) {
+ 					/*
+ 					 * Overwrite internal panel if not
+ 					 * assigned, external outputs are faster
+ 					 * to do modesets
+ 					 */
+-					chosen_outputs[crtc->pipe] = output;
++					chosen_outputs[crtc->pipe].output = output;
++					chosen_outputs[crtc->pipe].crtc = crtc;
+ 				}
+ 			}
+ 
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index d7cc22d6cd61..aceac18ce240 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -520,6 +520,11 @@ typedef struct {
+ 	uint64_t values[IGT_NUM_CONNECTOR_PROPS];
+ } igt_output_t;
+ 
++typedef struct {
++	igt_output_t *output;
++	igt_crtc_t *crtc;
++} igt_output_crtc_t;
++
+ struct igt_display {
+ 	int drm_fd;
+ 	int log_shift;
+@@ -763,25 +768,25 @@ static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *outp
+ 		     (output) + 1 : ((crtc)++, &(display)->outputs[0])) \
+ 		for_each_if ((crtc)->valid && igt_crtc_connector_valid((crtc), (output)))
+ 
+-igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
+-					   igt_output_t **chosen_outputs);
++igt_output_crtc_t *__igt_output_crtc_populate(igt_display_t *display,
++					      igt_output_crtc_t *chosen_outputs);
+ 
+ /**
+  * for_each_crtc_with_single_output:
+  * @display: a pointer to an #igt_display_t structure
+- * @crtc: The CRTC for which this @crtc / @output combination is valid.
+- * @output: The output for which this @crtc / @output combination is valid.
++ * @_crtc: The CRTC for which this @_crtc / @_output combination is valid.
++ * @_output: The output for which this @_crtc / @_output combination is valid.
+  *
+  * This loop is called over all CRTCs, and will try to find a compatible output
+  * for each CRTC. Unlike for_each_pipe_with_valid_output(), this function will
+  * be called at most once for each pipe.
+  */
+-#define for_each_crtc_with_single_output(display, crtc, output) \
+-	for (igt_output_t *__outputs[igt_display_n_crtcs(display)], \
+-	     **__output = __igt_pipe_populate_outputs((display), __outputs); \
++#define for_each_crtc_with_single_output(display, _crtc, _output) \
++	for (igt_output_crtc_t __outputs[igt_display_n_crtcs(display)], \
++	     *__output = __igt_output_crtc_populate((display), __outputs); \
+ 		 __output < &__outputs[igt_display_n_crtcs(display)]; __output++) \
+-		for_each_if (*__output && \
+-			     ((crtc) = igt_crtc_for_pipe((display), (__output - __outputs)), (output) = *__output, 1))
++		for_each_if (__output->output && __output->crtc && \
++			     ((_output) = __output->output, (_crtc) = __output->crtc, 1))
+ 
+ /**
+  * for_each_valid_output_on_crtc:
 -- 
 2.47.3
 
