@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3BB6F483C8
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 16:14:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 430AFF483C6
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 16:26:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8FADA10E49E;
-	Mon, 23 Mar 2026 16:14:05 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEEA310E5D0;
- Mon, 23 Mar 2026 16:13:59 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8151641671970991845=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id F242B10E0AA;
+	Mon, 23 Mar 2026 16:26:36 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UV4E9vdp";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2177E10E0AA
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2026 16:26:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774283190; x=1805819190;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=N6FzJ+63JDbEKLiDh90mpircXopcxjDL7h+zigmH3fU=;
+ b=UV4E9vdpvqon2MKku9yM0MqL1g8x+A7gYChcwtKxeOgDwPcAw/9z2ie+
+ Y56x51d9xQ55qwmY0oTFyULgVPhR0FIwWEemY1yVF5n6wR26yJ70fVUkm
+ ibUGTvUZe/56FkSTSCrbLpZnlQiSt6Mz11zoYxfbu/JeFb71oqSbW/8nC
+ HMeAIWfEQ51D/T2ryJ4Cyml9j16IKz5ArHkhzrMxrjLbPnZS5iAWxCz/W
+ 1WHKfO+k9DTWEToa91QWJ9llulvhnUmjky6y1SKoPILCKmPDlZNUMvBfs
+ z3yz0hEU2Y/oBEqdl0Z5WJfuTGNxVVt5kSsjo67zC11U1sHFDOg+e81d0 w==;
+X-CSE-ConnectionGUID: PZbSJw3hSNi1MDibHG/yIw==
+X-CSE-MsgGUID: wN8IrVP7Qu6OMhZzqXVFnQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="79196641"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="79196641"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Mar 2026 09:26:30 -0700
+X-CSE-ConnectionGUID: oZDmexrSRb2qcqggKhLeuA==
+X-CSE-MsgGUID: KyGt6V0PRwybUg+vtAQ9dg==
+X-ExtLoop1: 1
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 09:26:28 -0700
+Date: Mon, 23 Mar 2026 17:26:10 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
+ luca.ceresoli@bootlin.com, kory.maincent@bootlin.com,
+ markyacoub@google.com, khaled.almahallawy@intel.com
+Subject: Re: [PATCH i-g-t v9 29/49] lib/unigraf: Add helpers to read and
+ write edid
+Message-ID: <20260323162610.guykjqlaqut5aeq4@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
+ luca.ceresoli@bootlin.com, kory.maincent@bootlin.com,
+ markyacoub@google.com, khaled.almahallawy@intel.com
+References: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
+ <20260316-unigraf-integration-v9-29-a01dffc3b0cb@bootlin.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fprefetch?=
- =?utf-8?q?=5Ffault=3A_Add_SVM_and_hit-under-miss_validation_=28rev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Varun Gupta" <varun.gupta@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 23 Mar 2026 16:13:59 -0000
-Message-ID: <177428243968.387756.2777871695183853254@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260323092521.2984407-1-varun.gupta@intel.com>
-In-Reply-To: <20260323092521.2984407-1-varun.gupta@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260316-unigraf-integration-v9-29-a01dffc3b0cb@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,162 +72,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8151641671970991845==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Louis,
+On 2026-03-16 at 17:17:50 +0100, Louis Chauvet wrote:
+> Read and writing EDID on unigraf can be useful to emulate different
+> screens, add helpers to read and write them.
+> 
+> There is a limitation on the libTSI.so, it is only possible to read EDID
+> using buffers of size multiple of 128 bytes, and there is no way to query
+> the actual EDID size. The current implementation can only read EDID up to
+> 2048 bytes.
+> 
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+>  lib/unigraf/unigraf.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/unigraf/unigraf.h |  4 ++++
 
-== Series Details ==
+Please move all unigraf libs into lib/vendors/unigraf/
+similar to uwildmat use case.
 
-Series: tests/intel/xe_prefetch_fault: Add SVM and hit-under-miss validation (rev5)
-URL   : https://patchwork.freedesktop.org/series/163015/
-State : success
+>  2 files changed, 63 insertions(+)
+> 
+> diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+> index b752ff573ace..d06da6742e95 100644
+> --- a/lib/unigraf/unigraf.c
+> +++ b/lib/unigraf/unigraf.c
+> @@ -56,6 +56,11 @@ static char *unigraf_connector_name;
+>   */
+>  #define UNIGRAF_DEFAULT_INPUT_NAME "DP RX"
+>  
+> +/**
+> + * EDID_MAX_SIZE - Max EDID size that can be read from the unigraf. The
+> + */
+> +#define EDID_MAX_SIZE 2048
+> +
 
-== Summary ==
+Is this unigraf specific? For local def maybe UNIGRAF_EDID_MAX_SIZE?
 
-CI Bug Log - changes from IGT_8819 -> IGTPW_14834
-====================================================
+Regards,
+Kamil
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/index.html
-
-Participating hosts (42 -> 39)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14834 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8819/bat-dg2-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8819/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-9:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8819/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-6:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8819/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8819 -> IGTPW_14834
-
-  CI-20190529: 20190529
-  CI_DRM_18191: 5cb7d14d9bd2061386a0192a4649626a3e3a5ec3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14834: 14834
-  IGT_8819: 8819
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/index.html
-
---===============8151641671970991845==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_prefetch_fault: Add SVM and hit-under-miss validation (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163015/">https://patchwork.freedesktop.org/series/163015/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8819 -&gt; IGTPW_14834</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14834 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8819/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8819/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8819/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8819/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14834/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8819 -&gt; IGTPW_14834</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18191: 5cb7d14d9bd2061386a0192a4649626a3e3a5ec3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14834: 14834<br />
-  IGT_8819: 8819</p>
-
-</body>
-</html>
-
---===============8151641671970991845==--
+>  static void unigraf_close_device(void)
+>  {
+>  	if (!unigraf_device)
+> @@ -127,6 +132,20 @@ static void unigraf_init(void)
+>  		value;												\
+>  	})
+>  
+> +/**
+> + * unigraf_write() - Helper to write a value to unigraf
+> + * @config: config id to write
+> + * @data: data to write
+> + * @data_len: length of the data
+> + * Returns
+> + */
+> +static void unigraf_write(TSI_CONFIG_ID config, const void *data, size_t data_len)
+> +{
+> +	unigraf_debug("Writing %zu bytes to 0x%x\n", data_len, config);
+> +
+> +	unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config, data, data_len));
+> +}
+> +
+>  /**
+>   * unigraf_device_count() - Return the number of scanned devices
+>   *
+> @@ -329,6 +348,46 @@ void unigraf_reset(void)
+>  	unigraf_set_sst();
+>  }
+>  
+> +/**
+> + * unigraf_read_edid() - Read the EDID from the specified stream
+> + * @stream: The stream ID to read the EDID from
+> + * @edid_size: Pointer to an integer where the size of the EDID will be stored
+> + *
+> + * Returns: A pointer to the EDID structure, or NULL if the operation failed. The caller
+> + * is responsible to free this pointer.
+> + */
+> +struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size)
+> +{
+> +	void *edid;
+> +
+> +	unigraf_debug("Read EDID for stream %d...\n", stream);
+> +
+> +	edid = calloc(EDID_MAX_SIZE, sizeof(char));
+> +
+> +	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
+> +	*edid_size = unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device,
+> +							  TSI_EDID_TE_INPUT,
+> +							  edid, EDID_MAX_SIZE));
+> +
+> +	return edid;
+> +}
+> +
+> +/**
+> + * unigraf_write_edid() - Write EDID data to the specified stream
+> + * @stream: The stream ID to write the EDID to
+> + * @edid: Pointer to the EDID structure to write
+> + * @edid_size: Size of the EDID data in bytes
+> + *
+> + * This function writes the provided EDID data to the specified stream.
+> + */
+> +void unigraf_write_edid(uint32_t stream, const struct edid *edid, uint32_t edid_size)
+> +{
+> +	unigraf_debug("Write EDID for stream %d...\n", stream);
+> +
+> +	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
+> +	unigraf_write(TSI_EDID_TE_INPUT, edid, 2048);
+> +}
+> +
+>  /**
+>   * unigraf_hpd_assert() - Assert Hot Plug Detect signal
+>   *
+> diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+> index c2caa9c2c54c..40f706ebd483 100644
+> --- a/lib/unigraf/unigraf.h
+> +++ b/lib/unigraf/unigraf.h
+> @@ -42,6 +42,10 @@ void unigraf_require_device(int drm_fd);
+>  
+>  void unigraf_reset(void);
+>  
+> +struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size);
+> +
+> +void unigraf_write_edid(uint32_t stream, const struct edid *edid, uint32_t edid_size);
+> +
+>  void unigraf_hpd_deassert(void);
+>  
+>  void unigraf_hpd_pulse(int duration);
+> 
+> -- 
+> 2.52.0
+> 
