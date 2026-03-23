@@ -4,27 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 171A9F46139
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 15:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3393DF4613B
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 15:43:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A0D510E043;
-	Mon, 23 Mar 2026 15:18:48 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE5B310E043;
- Mon, 23 Mar 2026 15:18:42 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4335285892558209498=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id DF1B910E153;
+	Mon, 23 Mar 2026 15:43:46 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ewh8uM54";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CFE110E120
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2026 15:43:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774280621; x=1805816621;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=UUxadMReAdWDSih4rMWNwTO2vhkuzAXd53uc08MRs88=;
+ b=ewh8uM54LmjOWtekYw6YhtXE2OZAFFa6xlINxlsp9dAKz7CzDLuLvs+P
+ KL5zH2qwN+QA1Jho7ATCeLgljH2lLOk0JzxKEh+7MHrGG+7hUL6PjI/Pq
+ agESjqv/prjGQkiy+dj53phhhlfPLtKbxmLVS0IMqeuOx0QgPELQWDW4c
+ EYcuaCf9euQGOMV6nJTP7vxQaj7d557byV4IcbHKgZgzryrBSvkGE3Wlw
+ e4USzfF+h1etEFOm2tN193Q3lo25qTDJUj3q3Cac3htj1zXu/OMCpbdLc
+ gKMCl+arv+k2djUb9PsIw5SLtCEM8bt77RbmEoNS8LEJSNVEIKrKN1HbP Q==;
+X-CSE-ConnectionGUID: i8FXYiktRLycte+/DyygzA==
+X-CSE-MsgGUID: 7erQbOO3Tv+oLUeE785TDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="77890814"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="77890814"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Mar 2026 08:43:40 -0700
+X-CSE-ConnectionGUID: gc0zFk2bTrCOSt7GKY11eg==
+X-CSE-MsgGUID: FV7zre0STfa22JO844TYSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="261984276"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.55])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Mar 2026 08:43:37 -0700
+Date: Mon, 23 Mar 2026 17:43:33 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: "Anirban, Sk" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com,
+ soham.purkait@intel.com, mallesh.koujalagi@intel.com,
+ vinay.belgaumkar@intel.com
+Subject: Re: [PATCH] tests/intel/xe_pm_residency: Fix suspend duration
+ calculation
+Message-ID: <acFfpWxozSezlo7E@intel.com>
+References: <20260323070228.1383377-2-sk.anirban@intel.com>
+ <acEPc8IixAYNuP5U@intel.com>
+ <6c1cd079-abbd-4487-b19f-bdf5e9f46c17@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fprefetch?=
- =?utf-8?q?=5Ffault=3A_Add_SVM_and_hit-under-miss_validation_=28rev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Varun Gupta" <varun.gupta@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 23 Mar 2026 15:18:42 -0000
-Message-ID: <177427912265.385996.16605608626545128540@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260323092521.2984407-1-varun.gupta@intel.com>
-In-Reply-To: <20260323092521.2984407-1-varun.gupta@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6c1cd079-abbd-4487-b19f-bdf5e9f46c17@intel.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,170 +76,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4335285892558209498==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Mar 23, 2026 at 08:06:44PM +0530, Anirban, Sk wrote:
+> Hi,
+> 
+> On 23-03-2026 03:31 pm, Ville Syrjälä wrote:
+> > On Mon, Mar 23, 2026 at 12:32:29PM +0530, Sk Anirban wrote:
+> >> Fix the unit mismatch caused by interpreting seconds as milliseconds
+> >> during suspend duration calculations. Apply MSEC_PER_SEC multiplier
+> >> to ensure correct unit handling.
+> >>
+> >> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+> >> ---
+> >>   tests/intel/xe_pm_residency.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+> >> index 61b63ed4f..46718a444 100644
+> >> --- a/tests/intel/xe_pm_residency.c
+> >> +++ b/tests/intel/xe_pm_residency.c
+> >> @@ -223,7 +223,7 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
+> >>   		 * elapsed time during suspend is approximately equal to autoresume delay
+> >>   		 * when a full suspend cycle(SUSPEND_TEST_NONE) is used.
+> >>   		 */
+> >> -		elapsed_ms = igt_get_autoresume_delay(SUSPEND_STATE_FREEZE);
+> >> +		elapsed_ms = igt_get_autoresume_delay(SUSPEND_STATE_FREEZE) * MSEC_PER_SEC;
+> > Why doesn't the test actually measure this?
+> 
+> Since rtcwake is being used to enter s2idle, both paths end up using a 
+> 15‑second delay as the command parameter
+> 
+> and this value is carried through all related calculations. Are you 
+> suggesting switching to a monotonic clock–based approach during resume?
 
-== Series Details ==
+CLOCK_BOOTTIME
 
-Series: tests/intel/xe_prefetch_fault: Add SVM and hit-under-miss validation (rev5)
-URL   : https://patchwork.freedesktop.org/series/163015/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8819_BAT -> XEIGTPW_14834_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 14)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14834_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#7483]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * igt@xe_waitfence@abstime:
-    - bat-dg2-oem2:       [TIMEOUT][5] ([Intel XE#6506]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-
-  * igt@xe_waitfence@reltime:
-    - bat-bmg-2:          [FAIL][7] ([Intel XE#6520]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-bmg-2/igt@xe_waitfence@reltime.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-bmg-2/igt@xe_waitfence@reltime.html
-    - bat-dg2-oem2:       [FAIL][9] ([Intel XE#6520]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-
-  
-  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
-  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
-  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
-
-
-Build changes
--------------
-
-  * IGT: IGT_8819 -> IGTPW_14834
-
-  IGTPW_14834: 14834
-  IGT_8819: 8819
-  xe-4762-5cb7d14d9bd2061386a0192a4649626a3e3a5ec3: 5cb7d14d9bd2061386a0192a4649626a3e3a5ec3
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/index.html
-
---===============4335285892558209498==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_prefetch_fault: Add SVM and hit-under-miss validation (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163015/">https://patchwork.freedesktop.org/series/163015/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8819_BAT -&gt; XEIGTPW_14834_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 14)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14834_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_waitfence@abstime:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_waitfence@reltime:</p>
-<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-bmg-2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-bmg-2/igt@xe_waitfence@reltime.html">PASS</a></li>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8819/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14834/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8819 -&gt; IGTPW_14834</li>
-</ul>
-<p>IGTPW_14834: 14834<br />
-  IGT_8819: 8819<br />
-  xe-4762-5cb7d14d9bd2061386a0192a4649626a3e3a5ec3: 5cb7d14d9bd2061386a0192a4649626a3e3a5ec3</p>
-
-</body>
-</html>
-
---===============4335285892558209498==--
+-- 
+Ville Syrjälä
+Intel
