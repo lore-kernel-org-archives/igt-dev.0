@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D7DBD58CD0
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 05:00:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20DDCD58CD0
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 05:00:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D3DD210E3C4;
-	Mon, 23 Mar 2026 05:00:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C2DA410E3C7;
+	Mon, 23 Mar 2026 05:00:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g3ywDoya";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f+Myg4sC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BF7B10E3C4
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2026 05:00:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E89CD10E3C4
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2026 05:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774242005; x=1805778005;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=7BV+pk1GUOG0WmnzgZw5sJjQ5goyLSM6c5i8zFzGlYo=;
- b=g3ywDoyaU2QzllDssF8nTyoosehnXrqlOxFAygilsBLU67MkaQ7HETwC
- pU599Pr3lJebyO1mhY9O8qeyNunHdc9D6DE7lKRvJQtZplN5p9rSk0pb1
- GuN3BGMu+I53JGO7a19DyEEkUR7mCP4aEZyHE9QWRmOFH88+1AweMPGjL
- apWZPkPPshHNHrbZmLqOf5kY+g4lPO28zCxJC41Vf29tpipTsVqTHWIu2
- Vv1VOlbcO20HcKamNWSkggIaM9eEWY4ZvHOSx5qmS/8ogZ8L7R3d8XidP
- FRFxNjp8SsvC01ZdhaMPjQOWOdX4bx9rDIbHlR5G1hdU0Bv8FHN8f5eF6 w==;
-X-CSE-ConnectionGUID: HS7SotmYSBKqz1LO0p3oJQ==
-X-CSE-MsgGUID: 5vUnrrKVRW6x1jdw2FE0Iw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="100687847"
-X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; d="scan'208";a="100687847"
+ t=1774242008; x=1805778008;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=xtasMQeWmtU7ERZ9sSyN/6M3K6v2QRgGLFuXSbEd+08=;
+ b=f+Myg4sCCo4ibUYtf/IpxhsPY+hjIxkLOo5wKcM3N2cJwGjzedA2m5fe
+ HKPKBWT0DPCZ0m02Bs3lmaQp09G1mLTd03EMdrHd32rp03UDRTvyGou9A
+ LEyyLUXN08vgLFVYDmKk4uI3JBjfN/O2bpZ3qiky1RQrK9eQ5F3VwmFAe
+ d02sU7MIoAsZJ8ZmznlmmTyzdy5wddSZPwlbm9xTnUxRAqpeSQLVe620s
+ 67GSK7VR/chsRniXvFbCpRNxW3QTVBBfM4In7wEgQvnHvWcZxhYLdgW8l
+ QINIggqOSeIw72AFUDGeSzT6a3IJedFf3HuCU7040qiwEH5FRPXh5e1v/ Q==;
+X-CSE-ConnectionGUID: kWeabeicQp2Z3dayTdKysQ==
+X-CSE-MsgGUID: uTXxJNbhRqSJf9CZ+pqcZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="100687852"
+X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; d="scan'208";a="100687852"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2026 22:00:05 -0700
-X-CSE-ConnectionGUID: xSz+hLFkSmS76kn1VW7rXA==
-X-CSE-MsgGUID: seMSFdrORGWMmJV/i9aO4w==
+ 22 Mar 2026 22:00:08 -0700
+X-CSE-ConnectionGUID: 96dPkYY2Q1KT0fQGt1N1Iw==
+X-CSE-MsgGUID: jGYHgWsOQPmjFmEmzkKtWg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; d="scan'208";a="219124913"
+X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; d="scan'208";a="219124950"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by fmviesa006.fm.intel.com with ESMTP; 22 Mar 2026 22:00:03 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 22 Mar 2026 22:00:06 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [PATCH i-g-t 0/2] Fix non-joiner mode helper and use it in test
-Date: Mon, 23 Mar 2026 10:40:47 +0530
-Message-Id: <20260323051049.2627387-1-pranay.samala@intel.com>
+Subject: [PATCH i-g-t 1/2] lib/igt_kms: Make helper use out-parameter
+Date: Mon, 23 Mar 2026 10:40:48 +0530
+Message-Id: <20260323051049.2627387-2-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260323051049.2627387-1-pranay.samala@intel.com>
+References: <20260323051049.2627387-1-pranay.samala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,24 +67,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The get-non-joiner-mode helper returns a pointer to connected-owned
-memory which could become invalid after display state changes, causing
-stale mode data and test failures.
+Convert igt_get_non_joiner_mode() helper from returning a mode
+pointer to returning bool and filling an output parameter.
 
-So 1st patch converts the helper to use an output-parameter, and 2nd patch
-updates the test to use local stable mode for joiner bypass and applies
-the selected mode to output before commit.
+Returning connector-owned pointer becomes invalid after connecter
+state changes/resets. Hence copying into called-owned argument,
+which keeps data stable and safe.
+Also update the doc for the new argument and return semantics.
 
-Pranay Samala (2):
-  lib/igt_kms: Make helper use out-parameter
-  tests/intel/kms_sharpness_filter: Use stable non-joiner mode for
-    joiner bypass
+Fixes: e404926ca0d7 ("lib/igt_kms: Add helper to get non-joiner mode")
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+---
+ lib/igt_kms.c | 10 ++++++----
+ lib/igt_kms.h |  2 +-
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
- lib/igt_kms.c                      | 10 ++++++----
- lib/igt_kms.h                      |  2 +-
- tests/intel/kms_sharpness_filter.c | 10 +++++++---
- 3 files changed, 14 insertions(+), 8 deletions(-)
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 197ed15d1..118890014 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -7057,13 +7057,14 @@ bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
+  * igt_get_non_joiner_mode:
+  * @drm_fd: drm file descriptor
+  * @output: pointer to the output structure
++ * @mode: a pointer to a drm mode structure
+  *
+  * Finds the display mode from the output that does not require
+  * Big Joiner or Ultra Joiner.
+  *
+- * Returns: Pointer to non-joiner mode, or NULL if not found.
++ * Returns: True if non-joiner mode found.
+  */
+-drmModeModeInfo *igt_get_non_joiner_mode(int drm_fd, igt_output_t *output)
++bool igt_get_non_joiner_mode(int drm_fd, igt_output_t *output, drmModeModeInfo *mode)
+ {
+ 	drmModeConnector *connector;
+ 	int max_dotclock;
+@@ -7077,11 +7078,12 @@ drmModeModeInfo *igt_get_non_joiner_mode(int drm_fd, igt_output_t *output)
+ 		/* Check if mode requires joiner */
+ 		if (!igt_bigjoiner_possible(drm_fd, current_mode, max_dotclock) &&
+ 		    !igt_ultrajoiner_possible(drm_fd, current_mode, max_dotclock)) {
+-			return current_mode;
++			*mode = *current_mode;
++			return true;
+ 		}
+ 	}
+ 
+-	return NULL;
++	return false;
+ }
+ 
+ /**
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 71ed4604e..d63836588 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1259,7 +1259,7 @@ bool igt_ultrajoiner_possible(int drmfd, drmModeModeInfo *mode, int max_dotclock
+ bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 			  int max_dotclock, drmModeModeInfo *mode);
+ bool igt_has_force_joiner_debugfs(int drmfd, char *conn_name);
+-drmModeModeInfo *igt_get_non_joiner_mode(int drm_fd, igt_output_t *output);
++bool igt_get_non_joiner_mode(int drm_fd, igt_output_t *output, drmModeModeInfo *mode);
+ bool is_joiner_mode(int drm_fd, igt_output_t *output);
+ bool igt_check_force_joiner_status(int drmfd, char *connector_name);
+ bool igt_check_bigjoiner_support(igt_display_t *display);
 -- 
 2.34.1
 
