@@ -4,66 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3393DF4613B
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 15:43:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A47EF46139
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Mar 2026 15:46:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF1B910E153;
-	Mon, 23 Mar 2026 15:43:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ewh8uM54";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CFE110E120
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2026 15:43:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774280621; x=1805816621;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=UUxadMReAdWDSih4rMWNwTO2vhkuzAXd53uc08MRs88=;
- b=ewh8uM54LmjOWtekYw6YhtXE2OZAFFa6xlINxlsp9dAKz7CzDLuLvs+P
- KL5zH2qwN+QA1Jho7ATCeLgljH2lLOk0JzxKEh+7MHrGG+7hUL6PjI/Pq
- agESjqv/prjGQkiy+dj53phhhlfPLtKbxmLVS0IMqeuOx0QgPELQWDW4c
- EYcuaCf9euQGOMV6nJTP7vxQaj7d557byV4IcbHKgZgzryrBSvkGE3Wlw
- e4USzfF+h1etEFOm2tN193Q3lo25qTDJUj3q3Cac3htj1zXu/OMCpbdLc
- gKMCl+arv+k2djUb9PsIw5SLtCEM8bt77RbmEoNS8LEJSNVEIKrKN1HbP Q==;
-X-CSE-ConnectionGUID: i8FXYiktRLycte+/DyygzA==
-X-CSE-MsgGUID: 7erQbOO3Tv+oLUeE785TDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="77890814"
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="77890814"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Mar 2026 08:43:40 -0700
-X-CSE-ConnectionGUID: gc0zFk2bTrCOSt7GKY11eg==
-X-CSE-MsgGUID: FV7zre0STfa22JO844TYSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; d="scan'208";a="261984276"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.55])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Mar 2026 08:43:37 -0700
-Date: Mon, 23 Mar 2026 17:43:33 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: "Anirban, Sk" <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com,
- soham.purkait@intel.com, mallesh.koujalagi@intel.com,
- vinay.belgaumkar@intel.com
-Subject: Re: [PATCH] tests/intel/xe_pm_residency: Fix suspend duration
- calculation
-Message-ID: <acFfpWxozSezlo7E@intel.com>
-References: <20260323070228.1383377-2-sk.anirban@intel.com>
- <acEPc8IixAYNuP5U@intel.com>
- <6c1cd079-abbd-4487-b19f-bdf5e9f46c17@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B402A10E3CF;
+	Mon, 23 Mar 2026 15:46:33 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D15310E423;
+ Mon, 23 Mar 2026 15:46:28 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1156113744563630108=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6c1cd079-abbd-4487-b19f-bdf5e9f46c17@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fpm=5Fres?=
+ =?utf-8?q?idency=3A_Fix_suspend_duration_calculation?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Anirban, Sk" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 23 Mar 2026 15:46:28 -0000
+Message-ID: <177428078829.386706.7956588757802962252@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260323070228.1383377-2-sk.anirban@intel.com>
+In-Reply-To: <20260323070228.1383377-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,43 +37,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Mar 23, 2026 at 08:06:44PM +0530, Anirban, Sk wrote:
-> Hi,
-> 
-> On 23-03-2026 03:31 pm, Ville Syrjälä wrote:
-> > On Mon, Mar 23, 2026 at 12:32:29PM +0530, Sk Anirban wrote:
-> >> Fix the unit mismatch caused by interpreting seconds as milliseconds
-> >> during suspend duration calculations. Apply MSEC_PER_SEC multiplier
-> >> to ensure correct unit handling.
-> >>
-> >> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-> >> ---
-> >>   tests/intel/xe_pm_residency.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-> >> index 61b63ed4f..46718a444 100644
-> >> --- a/tests/intel/xe_pm_residency.c
-> >> +++ b/tests/intel/xe_pm_residency.c
-> >> @@ -223,7 +223,7 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
-> >>   		 * elapsed time during suspend is approximately equal to autoresume delay
-> >>   		 * when a full suspend cycle(SUSPEND_TEST_NONE) is used.
-> >>   		 */
-> >> -		elapsed_ms = igt_get_autoresume_delay(SUSPEND_STATE_FREEZE);
-> >> +		elapsed_ms = igt_get_autoresume_delay(SUSPEND_STATE_FREEZE) * MSEC_PER_SEC;
-> > Why doesn't the test actually measure this?
-> 
-> Since rtcwake is being used to enter s2idle, both paths end up using a 
-> 15‑second delay as the command parameter
-> 
-> and this value is carried through all related calculations. Are you 
-> suggesting switching to a monotonic clock–based approach during resume?
+--===============1156113744563630108==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-CLOCK_BOOTTIME
+== Series Details ==
 
--- 
-Ville Syrjälä
-Intel
+Series: tests/intel/xe_pm_residency: Fix suspend duration calculation
+URL   : https://patchwork.freedesktop.org/series/163669/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_8818 -> IGTPW_14832
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_14832 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_14832, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/index.html
+
+Participating hosts (42 -> 39)
+------------------------------
+
+  Missing    (3): bat-dg2-13 bat-apl-1 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_14832:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-arlh-3:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-arlh-3/igt@i915_selftest@live@gt_lrc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-arlh-3/igt@i915_selftest@live@gt_lrc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14832 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-dg2-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-dg2-8/igt@i915_selftest@live.html
+    - bat-arlh-3:         [PASS][5] -> [INCOMPLETE][6] ([i915#15622])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-arlh-3/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-arlh-3/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-dg2-14:         [PASS][9] -> [DMESG-FAIL][10] ([i915#12061]) +1 other test dmesg-fail
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-tgl-1115g4:      [FAIL][11] ([i915#14867]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#14867]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867
+  [i915#15622]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15622
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8818 -> IGTPW_14832
+
+  CI-20190529: 20190529
+  CI_DRM_18191: 5cb7d14d9bd2061386a0192a4649626a3e3a5ec3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14832: 14832
+  IGT_8818: 8818
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/index.html
+
+--===============1156113744563630108==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pm_residency: Fix suspend duration calculation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163669/">https://patchwork.freedesktop.org/series/163669/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8818 -&gt; IGTPW_14832</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_14832 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_14832, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/index.html</p>
+<h2>Participating hosts (42 -&gt; 39)</h2>
+<p>Missing    (3): bat-dg2-13 bat-apl-1 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14832:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-arlh-3/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-arlh-3/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14832 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-arlh-3/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15622">i915#15622</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_hdmi_inject@inject-audio:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8818/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867">i915#14867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14832/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8818 -&gt; IGTPW_14832</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18191: 5cb7d14d9bd2061386a0192a4649626a3e3a5ec3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14832: 14832<br />
+  IGT_8818: 8818</p>
+
+</body>
+</html>
+
+--===============1156113744563630108==--
