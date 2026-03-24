@@ -4,63 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EBEAE9A74D
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 09:43:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB362E9A74D
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 09:43:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D064910E55F;
-	Tue, 24 Mar 2026 09:43:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6BC0C10E55F;
+	Tue, 24 Mar 2026 09:43:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oDFKQZBX";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="UDD9rIOL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAD0610E55F;
- Tue, 24 Mar 2026 09:43:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774345402; x=1805881402;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=zxRCYdYpXZt2ZliUznyjPSHMqm+G3PcxMNyKR/nt9PI=;
- b=oDFKQZBXkbYSzZX2fVXrlFjUGCT+8ZGbrP3r5g+FLQRPB6PZ2C74k7ST
- RBBgYSTCC/I+lKw2JmbOb4+YYKpbPD2/eJjkweRqsBTYtftvyxde7cigL
- WlIRwQ20y/qC9KoqQSdrU8JyBguk67Zuks2mHqaQwD/YXac+Re9VmwMJC
- ZFSqQ+nKr17wQIZVbTGQvFztnLkYxkr5gTmKwgyPSr6UJustft0ZR5NVw
- MXAGkrDE6Pr3LlkvF8wojf9R6q0E3BhsxPeFrJY+Wvy8kwRBp62Uah+y4
- bUcdyQ3UUXIGi657LDQScZ4PAj3oGJoyO9PbqmKPWMArpJg4HMsOSfa/M A==;
-X-CSE-ConnectionGUID: uBEi4pYiQlyyYLNIZzDuzQ==
-X-CSE-MsgGUID: BNXYWHpXTxKHQVwmFPRyNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="86053341"
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="86053341"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2026 02:43:22 -0700
-X-CSE-ConnectionGUID: l3lJc060Riqjn/QvMvKzYw==
-X-CSE-MsgGUID: Wf4iTNIaSZSzKrvwL5hB6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="223377998"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 02:43:21 -0700
-Date: Tue, 24 Mar 2026 10:43:18 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZVTEw6IGZhaWx1cg==?= =?utf-8?Q?e?= for
- lib/igt_fb: add YUV|YVU-410|411|444 formats (rev2)
-Message-ID: <20260324094318.pnjaf3hkkngdudfm@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-References: <20260216181610.129209-1-kamil.konieczny@linux.intel.com>
- <177432952945.389452.13551977552710752956@a3b018990fe9>
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8771410E55F
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 09:43:45 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 2AEA04E427C4;
+ Tue, 24 Mar 2026 09:43:44 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 007606011D;
+ Tue, 24 Mar 2026 09:43:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id BE369104511C2; Tue, 24 Mar 2026 10:43:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+ t=1774345408; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding:content-language:in-reply-to:references;
+ bh=423r3FSn0RrbkXA5wq9dnrRJMD8WbBdWhCy2txXUyoI=;
+ b=UDD9rIOLJb7f089rDosA+r42wo20Ao7XB8cgUfTG8j5s0eJfn3MOYy2klkJN7xTN6DENws
+ Dl7mQ8M6B/B//Fqa2Tvj3MU9y5pHTXW32l7ksL6URGWn2QlbRAbT4iUX55TpnM1ns5M8cL
+ Q0NYXiY2GELSm/MutrtzN1fn1WxRTK1K8LusDu74De/cTZK5F5LtGu1f/gcNkgAdar1/J5
+ Z66Hl647l7CwS4F3GLs4atruyJbaDkI+vYK3GUjeILp00183lulNhFGQQb1DdeXbSo31Un
+ PnoZhYseS4nsSF6IEU8cpCjGEG3Q+P5g6KX0yAVL1BtXlYMS68jJFAyTJzadOg==
+Message-ID: <3d23bd04-5f8b-4183-b173-d73196c48e9b@bootlin.com>
+Date: Tue, 24 Mar 2026 10:44:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <177432952945.389452.13551977552710752956@a3b018990fe9>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/kms_plane: Allow planar-pixel-format-settings
+ to pass on VKMS
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Renjun Wang <renjunw0@foxmail.com>, Swati Sharma <swati2.sharma@intel.com>
+References: <20260320101606.22163-1-kamil.konieczny@linux.intel.com>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260320101606.22163-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,71 +63,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-03-24 at 05:18:49 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: lib/igt_fb: add YUV|YVU-410|411|444 formats (rev2)
-> URL   : https://patchwork.freedesktop.org/series/161665/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8820_FULL -> XEIGTPW_14838_FULL
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_14838_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_14838_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (2 -> 2)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_14838_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
->     - shard-bmg:          [PASS][1] -> [FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8820/shard-bmg-4/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14838/shard-bmg-10/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
-> 
 
-Imho this is unrelated, +cc Karthik, Swati and J-P to be sure
-as the change is in IGT library display code.
 
-Regards,
-Kamil
+On 3/20/26 11:16, Kamil Konieczny wrote:
+> From: Renjun Wang <renjunw0@foxmail.com>
+> 
+> Enable planar-pixel-format-settings subtests when running on VKMS
+> driver. VKMS currently accepts odd width|height for NV12, odd
+> horizontal panning for NV12, and odd vertical panning for P016
+> format.
+> 
+> v2: remove is_intel var (Kamil), keep all comments (Swati)
+> 
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+Does it make sense to rename display_ver to intel_display_ver?
+
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+
+> ---
+>   tests/kms_plane.c | 35 +++++++++++++++++++++++------------
+>   1 file changed, 23 insertions(+), 12 deletions(-)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index d5bab62bb..7f7e2d9a6 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1365,11 +1365,8 @@ static void test_planar_settings(data_t *data)
+>   	int devid;
+>   	int display_ver = -1;
+>   	int rval;
+> +	bool is_vkms = false;
 >   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_14838_FULL that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@kms_big_fb@yf-tiled-8bpp-rotate-270:
->     - shard-bmg:          NOTRUN -> [SKIP][3] ([Intel XE#1124])
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14838/shard-bmg-6/igt@kms_big_fb@yf-tiled-8bpp-rotate-270.html
-> 
-...cut...
+> -	/*
+> -	 * If here is added non-intel tests below require will need to be
+> -	 * changed to if(..)
+> -	 */
+>   	igt_require_f(data->display.is_atomic, "Atomic mode-set not supported\n");
+>   	if (is_intel_device(data->drm_fd)) {
+>   		igt_require_intel(data->drm_fd);
+> @@ -1377,6 +1374,8 @@ static void test_planar_settings(data_t *data)
+>   		igt_require(intel_display_ver(devid) >= 9);
+>   		display_ver = intel_display_ver(devid);
+>   		igt_require(display_ver >= 9);
+> +	} else if (is_vkms_device(data->drm_fd)) {
+> +		is_vkms = true;
+>   	}
+>   
+>   	crtc = igt_first_crtc_with_single_output(display, &output);
+> @@ -1387,13 +1386,15 @@ static void test_planar_settings(data_t *data)
+>   	igt_display_commit_atomic(&data->display,
+>   				  DRM_MODE_ATOMIC_ALLOW_MODESET,
+>   				  NULL);
+> -
+> -	/* test against intel_plane_check_src_coordinates() in i915 */
+> +	/*
+> +	 * Test odd width for NV12 format.
+> +	 * For Intel i915/xe test against intel_plane_check_src_coordinates()
+> +	 */
+>   	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+>   				     DRM_FORMAT_MOD_LINEAR)) {
+>   		int expected_rval = -EINVAL;
+>   
+> -		if (display_ver >= 20)
+> +		if (display_ver >= 20 || is_vkms)
+>   			expected_rval = 0;
+>   
+>   		igt_create_fb(data->drm_fd, 257, 256,
+> @@ -1409,12 +1410,15 @@ static void test_planar_settings(data_t *data)
+>   		igt_debug("Odd width NV12 framebuffer test skipped\n");
+>   	}
+>   
+> -	/* test against intel_plane_check_src_coordinates() in i915 */
+> +	/*
+> +	 * Test odd height for NV12 format.
+> +	 * For Intel i915/xe test against intel_plane_check_src_coordinates()
+> +	 */
+>   	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+>   				     DRM_FORMAT_MOD_LINEAR)) {
+>   		int expected_rval = -EINVAL;
+>   
+> -		if (display_ver >= 20 && display_ver < 35)
+> +		if ((display_ver >= 20 && display_ver < 35) || is_vkms)
+>   			expected_rval = 0;
+>   
+>   		igt_create_fb(data->drm_fd, 256, 257,
+> @@ -1430,12 +1434,15 @@ static void test_planar_settings(data_t *data)
+>   		igt_debug("Odd height NV12 framebuffer test skipped\n");
+>   	}
+>   
+> -	/* test against intel_plane_check_src_coordinates() in i915 */
+> +	/*
+> +	 * Test odd horizontal panning for NV12 format.
+> +	 * For Intel i915/xe test against intel_plane_check_src_coordinates()
+> +	 */
+>   	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+>   				     DRM_FORMAT_MOD_LINEAR)) {
+>   		int expected_rval = -EINVAL;
+>   
+> -		if (display_ver >= 35)
+> +		if (display_ver >= 35 || is_vkms)
+>   			expected_rval = 0;
+>   
+>   		igt_create_fb(data->drm_fd, 810, 590,
+> @@ -1452,11 +1459,15 @@ static void test_planar_settings(data_t *data)
+>   		igt_debug("Odd horizontal pan NV12 framebuffer test skipped\n");
+>   	}
+>   
+> +	/*
+> +	 * Test odd vertical panning for P016 format.
+> +	 * For Intel i915/xe test against intel_plane_check_src_coordinates()
+> +	 */
+>   	if (igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
+>   					    DRM_FORMAT_MOD_LINEAR)) {
+>   		int expected_rval = -EINVAL;
+>   
+> -		if (display_ver >= 20 && display_ver < 35)
+> +		if ((display_ver >= 20 && display_ver < 35) || is_vkms)
+>   			expected_rval = 0;
+>   
+>   		igt_create_color_fb(data->drm_fd, 256, 260,
+
