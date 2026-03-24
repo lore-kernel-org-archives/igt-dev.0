@@ -4,51 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B4F7E9A74D
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 09:35:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 925B0E9A743
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 09:37:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 289A210E110;
-	Tue, 24 Mar 2026 09:35:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46F6F10E115;
+	Tue, 24 Mar 2026 09:37:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="JCWRVXE/";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="zLWqTXHC";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB74A10E110
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 09:35:20 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46C7610E110
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 09:37:19 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 0873A1A2FC1;
- Tue, 24 Mar 2026 09:35:19 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id BEE7CC58095;
+ Tue, 24 Mar 2026 09:37:44 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id CE8E56011D;
- Tue, 24 Mar 2026 09:35:18 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 891D76011D;
+ Tue, 24 Mar 2026 09:37:17 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 973A510450EAE; Tue, 24 Mar 2026 10:35:16 +0100 (CET)
+ with ESMTPSA id DE36E10450D32; Tue, 24 Mar 2026 10:37:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774344918; h=from:subject:date:message-id:to:mime-version:content-type:
+ t=1774345037; h=from:subject:date:message-id:to:mime-version:content-type:
  content-transfer-encoding:content-language:in-reply-to:references;
- bh=QYr/7V2vBrjrQsLggY1NHIBQlrw8s4lWOJPPZ3FV3Sg=;
- b=JCWRVXE/a9Vz6beKIzll42UW7MVoyhkT8unxbdphTvlT/K5i4tKglS/4OYJuNfMUWTnPaz
- B4qckyIfTMEWMa1e1WpsqJbBbYeVZIKuV3XeTJIdzDy2zbXJsSj9+RwwxC379EZ6fLCqza
- zk16alftghWI4hQfGpI58U7DR7vYRt3tgbQ9Skl3mZIZ2ohl9sQlKl1FibsW/ZXPuqheNk
- ZrteenpM3EuXBAeN4mVTc7f8QdQv7dCF8zrDA1v4zo0g1OvYGyV2nvXWg9TxcObuOs2S/Y
- ZNd6Kii6K69RGE837IC16d6VE96kCERUA61Ohzy6nuPZ1dpRYRSAZgXisAPnPg==
-Message-ID: <2132e6c3-3341-4145-9a66-66d4b1e1ba1d@bootlin.com>
-Date: Tue, 24 Mar 2026 10:35:54 +0100
+ bh=k5LbSLq2X5zqyxA1vkDJmwI6qnBw8xqlBkWMR169Xsg=;
+ b=zLWqTXHCP6swdDQohcrRf87vPoFjqzZf6/EwTFpjI394PKSAZM55fCmCHWQPZ3xgGmLpt4
+ KSnmyPspWU2MO+az3ofhJA61/vEJ+X7qVXGj5tKLthy33L1QCSTimk9rG7D4OJCQ52psnO
+ uhSaJ+0/736sAtrfbHwmQa3cscQyo5uml8/PsDJ4hUzqARE1nTzsEjVpDFt4mT8gCLPGNF
+ F+K0+gqRuCeA44GpcUIcyDvchdf7ZQDNaFepe0Fz/lHGSdA9ERJuO4vlMkjKCfYNmLfiJO
+ 0w3XsQjUqs++Gaol4dm9wQ6SzKGZjchP6BWgjBGdUa4wifUZZysL0jemZ5BNcA==
+Message-ID: <3b9d04a6-3cab-4a2a-b48f-fd7d437588cc@bootlin.com>
+Date: Tue, 24 Mar 2026 10:37:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v9 29/49] lib/unigraf: Add helpers to read and write
- edid
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
- luca.ceresoli@bootlin.com, kory.maincent@bootlin.com, markyacoub@google.com,
- khaled.almahallawy@intel.com
+Subject: Re: [PATCH i-g-t v9 20/49] lib/unigraf: Initial Unigraf support
+To: "Naladala, Ramanaidu" <Ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org
 References: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
- <20260316-unigraf-integration-v9-29-a01dffc3b0cb@bootlin.com>
- <20260323162610.guykjqlaqut5aeq4@kamilkon-DESK.igk.intel.com>
- <a2d4b73c-8716-40be-8b3d-3e76aa58b393@bootlin.com>
+ <20260316-unigraf-integration-v9-20-a01dffc3b0cb@bootlin.com>
+ <066263f2-9ff2-48ef-8193-eed5b320a4dc@intel.com>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <a2d4b73c-8716-40be-8b3d-3e76aa58b393@bootlin.com>
+In-Reply-To: <066263f2-9ff2-48ef-8193-eed5b320a4dc@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -69,161 +65,322 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-On 3/23/26 18:34, Louis Chauvet wrote:
+On 3/24/26 09:19, Naladala, Ramanaidu wrote:
+> Hi Louis Chauvet,
 > 
-> 
-> On 3/23/26 17:26, Kamil Konieczny wrote:
->> Hi Louis,
->> On 2026-03-16 at 17:17:50 +0100, Louis Chauvet wrote:
->>> Read and writing EDID on unigraf can be useful to emulate different
->>> screens, add helpers to read and write them.
->>>
->>> There is a limitation on the libTSI.so, it is only possible to read EDID
->>> using buffers of size multiple of 128 bytes, and there is no way to 
->>> query
->>> the actual EDID size. The current implementation can only read EDID 
->>> up to
->>> 2048 bytes.
->>>
->>> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
->>> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
->>> ---
->>>   lib/unigraf/unigraf.c | 59 ++++++++++++++++++++++++++++++++++++++++ 
->>> +++++++++++
->>>   lib/unigraf/unigraf.h |  4 ++++
+> On 3/16/2026 9:47 PM, Louis Chauvet wrote:
+>> This introduce the basic boilerplate to connect to a unigraf device.
 >>
->> Please move all unigraf libs into lib/vendors/unigraf/
->> similar to uwildmat use case.
-> 
-> Ack, I will do it for the next iteration.
-> 
->>>   2 files changed, 63 insertions(+)
->>>
->>> diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
->>> index b752ff573ace..d06da6742e95 100644
->>> --- a/lib/unigraf/unigraf.c
->>> +++ b/lib/unigraf/unigraf.c
->>> @@ -56,6 +56,11 @@ static char *unigraf_connector_name;
->>>    */
->>>   #define UNIGRAF_DEFAULT_INPUT_NAME "DP RX"
->>> +/**
->>> + * EDID_MAX_SIZE - Max EDID size that can be read from the unigraf. The
->>> + */
->>> +#define EDID_MAX_SIZE 2048
->>> +
+>> This integration currently only supports one device opened to simplify
+>> its usage and cleanup.
 >>
->> Is this unigraf specific? For local def maybe UNIGRAF_EDID_MAX_SIZE?
+>> The functions unigraf_open_device and unigraf_require_device will 
+>> register
+>> a handler to do proper cleanup on IGT exit.
+>>
+>> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+>> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+>> ---
+>>   lib/meson.build       |  10 +++++
+>>   lib/unigraf/unigraf.c | 120 ++++++++++++++++++++++++++++++++++++++++ 
+>> ++++++++++
+>>   lib/unigraf/unigraf.h |  43 ++++++++++++++++++
+>>   meson.build           |  14 ++++++
+>>   4 files changed, 187 insertions(+)
+>>
+>> diff --git a/lib/meson.build b/lib/meson.build
+>> index cd03e8f634e4..268f3238cbfa 100644
+>> --- a/lib/meson.build
+>> +++ b/lib/meson.build
+>> @@ -151,6 +151,13 @@ lib_deps = [
+>>       zlib
+>>   ]
+>> +if libtsi.found()
+>> +    lib_deps += libtsi
+>> +    lib_sources += [
+>> +        'unigraf/unigraf.c'
+>> +    ]
+>> +endif
+>> +
+>>   if libdrm_nouveau.found()
+>>       lib_deps += libdrm_nouveau
+>>       lib_sources += [
+>> @@ -232,6 +239,9 @@ endif
+>>   if chamelium.found()
+>>       lib_deps += chamelium
+>>       lib_sources += [ 'igt_chamelium.c', 'igt_chamelium_stream.c' ]
+>> +endif
+>> +
+>> +if chamelium.found() or libtsi.found()
+>>       lib_sources += 'monitor_edids/monitor_edids_helper.c'
+>>   endif
+>> diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+>> new file mode 100644
+>> index 000000000000..df18ab178e16
+>> --- /dev/null
+>> +++ b/lib/unigraf/unigraf.c
+>> @@ -0,0 +1,120 @@
+>> +// SPDX-License-Identifier: MIT
+>> +/*
+>> + * Copyright © 2026 Google
+>> + *
+>> + * Authors:
+>> + *   Louis Chauvet <louis.chauvet@bootlin.com>
+>> + */
+>> +
+>> +#include "igt_core.h"
+>> +#include <stdint.h>
+>> +
+>> +#include "unigraf.h"
+>> +#include "TSI.h"
+>> +#include "TSI_types.h"
+>> +
+>> +#define unigraf_debug(fmt, ...)    igt_debug("TSI:%p: " fmt, 
+>> unigraf_device, ##__VA_ARGS__)
+>> +
+>> +static TSI_HANDLE unigraf_device;
+>> +static char *unigraf_default_edid;
+>> +static char *unigraf_connector_name;
+>> +
+>> +static void unigraf_close_device(void)
+>> +{
+>> +    if (!unigraf_device)
+>> +        return;
+>> +
+>> +    unigraf_debug("Closing...\n");
+>> +    unigraf_assert(TSIX_DEV_CloseDevice(unigraf_device));
+>> +    TSI_Clean();
+>> +    unigraf_device = NULL;
+>> +    free(unigraf_default_edid);
+>> +    free(unigraf_connector_name);
+>> +}
+>> +
+>> +/**
+>> + * unigraf_exit_handler - Handle the exit signal and clean up unigraf 
+>> resources.
+>> + * @sig: The signal number received.
+>> + *
+>> + * This function is called when the program receives an exit signal. 
+>> It ensures
+>> + * that all unigraf resources are properly cleaned up by calling 
+>> unigraf_deinit
+>> + * for each open instance.
+>> + */
+>> +static void unigraf_exit_handler(int sig)
+>> +{
+>> +    unigraf_close_device();
+>> +}
 > 
-> This is a limitation of my unigraf hardware. My current implementation was:
+> Unigraf sub test is Success. But the exit handler still asserts due to 
+> invalid argument during unigraf_close_device().
+> 
+> Subtest unigraf-connect-edid: SUCCESS (43.200s)
+> (unigraf_connectivity:5625) igt_core-DEBUG: Exiting with status code 0
+> (unigraf_connectivity:5625) unigraf/unigraf-DEBUG: TSI:0x6010b136c010: 
+> Closing...
+> (unigraf_connectivity:5625) unigraf/unigraf-CRITICAL: Test assertion 
+> failure function unigraf_close_device, file ../lib/unigraf/unigraf.c:97:
+> (unigraf_connectivity:5625) unigraf/unigraf-CRITICAL: Failed assertion: 
+> false
+> (unigraf_connectivity:5625) unigraf/unigraf-CRITICAL: Last errno: 22, 
+> Invalid argument
+> (unigraf_connectivity:5625) unigraf/unigraf-CRITICAL: unigraf error: -50 
+> (Invalid device handle.)
+> Stack trace:
+>    #0 ../lib/igt_core.c:2108 __igt_fail_assert()
+>    #1 ../lib/unigraf/unigraf.c:97 unigraf_exit_handler()
+>    #2 ../lib/igt_core.c:2994 igt_atexit_handler()
+>    #3 ./stdlib/exit.c:119 __run_exit_handlers()
+>    #4 [exit+0x1e]
+>    #5 ../lib/igt_core.c:2419 igt_exit()
+>    #6 [main+0x32]
+>    #7 ../sysdeps/nptl/libc_start_call_main.h:74 __libc_start_call_main()
+>    #8 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+>    #9 [_start+0x25]
 
-s/current/first/ sorry...
+I saw it yesterday while checking the default_dectect_timeout values, it 
+was not the case in the few first iterations of the series. I am 
+currently looking to understand what happen.
 
->      size = TSIX_TS_GetConfigItem(dev,EDID_TE_INPUT,0,0);
->      buf = malloc(size)
->      TSIX_TS_GetConfigItem(dev,EDID_TE_INPUT,buf,size);
-> 
-> but TSIX_TS_GetConfigItem don't give the real size but min(buf_size, 
-> real_edid_size) (and sometimes worse: if size is not % 128, it can do 
-> buffer overflow...)
-> 
-> That why I always allocate a "big" buffer to ensure the %128 and to get 
-> the real_size.
-> 
-> I will rename the constant, thanks!
-> 
->> Regards,
->> Kamil
+My current guess is that unigraf_exit_handler is maybe called twice, 
+because the function itself works well in my tiny C programs.
+
+>> +
+>> +static void unigraf_init(void)
+>> +{
+>> +    int ret;
+>> +
+>> +    unigraf_debug("Initialize unigraf...\n");
+>> +    ret = TSI_Init(TSI_CURRENT_VERSION);
+>> +    unigraf_assert(ret);
+>> +    igt_install_exit_handler(unigraf_exit_handler);
+>> +}
+>> +
+>> +/**
+>> + * unigraf_device_count() - Return the number of scanned devices
+>> + *
+>> + * Must be called after a unigraf_rescan_devices().
+>> + */
+>> +static unsigned int unigraf_device_count(void)
+>> +{
+>> +    return unigraf_assert(TSIX_DEV_GetDeviceCount());
+>> +}
+>> +
+>> +/**
+>> + * unigraf_open_device() - Search and open a device.
+>> + * @drm_fd: File descriptor of the currently used drm device
+>> + *
+>> + * Returns: true if a device was found and initialized, otherwise false.
+>> + *
+>> + * This function searches for a compatible device and opens it.
+>> + */
+>> +bool unigraf_open_device(int drm_fd)
+>> +{
+>> +    TSI_RESULT r;
+>> +    int device_count;
+>> +    int chosen_device = 0;
+>> +    int chosen_role = 0;
+>> +    int chosen_input = 0;
+>> +
+>> +    assert(igt_can_fail());
+>> +
+>> +    if (unigraf_device)
+>> +        return true;
+>> +
+>> +    unigraf_init();
+>> +
+>> +    unigraf_assert(TSIX_DEV_RescanDevices(0, 
+>> TSI_DEVCAP_VIDEO_CAPTURE, 0));
+>> +
+>> +    device_count = unigraf_device_count();
+>> +    if (device_count < 1) {
+>> +        unigraf_debug("No device found.\n");
+>> +        return false;
+>> +    }
+>> +
+>> +    unigraf_device = TSIX_DEV_OpenDevice(chosen_device, &r);
+>> +    unigraf_assert(r);
+>> +    igt_assert(unigraf_device);
+>> +    unigraf_debug("Successfully opened the unigraf device %d.\n", 
+>> chosen_device);
+>> +
+>> +    unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
+>> +    unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
+>> +    unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
+>> +
+>> +    return true;
+>> +}
+>> +
+>> +/**
+>> + * unigraf_require_device() - Search and open a device.
+>> + * @drm_fd: File descriptor of the currently used drm device
+>> + *
+>> + * This is a shorthand to reduce test boilerplate when a unigraf 
+>> device must be present.
+>> + */
+>> +void unigraf_require_device(int drm_fd)
+>> +{
+>> +    igt_require(unigraf_open_device(drm_fd));
+>> +}
+>> diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+>> new file mode 100644
+>> index 000000000000..c08ce62894c5
+>> --- /dev/null
+>> +++ b/lib/unigraf/unigraf.h
+>> @@ -0,0 +1,43 @@
+>> +/* SPDX-License-Identifier: MIT */
+>> +/*
+>> + * Copyright © 2026 Google
+>> + *
+>> + * Authors:
+>> + *   Louis Chauvet <louis.chauvet@bootlin.com>
+>> + */
+>> +
+>> +#ifndef UNIGRAF_H
+>> +#define UNIGRAF_H
+>> +
+>> +#include <stdbool.h>
+>> +#include <stdint.h>
+>> +
+>> +/**
+>> + * unigraf_assert: Helper macro to assert a TSI return value and 
+>> retrieve a detailed error message.
+>> + * @result: libTSI return value to check
+>> + *
+>> + * This macro checks the return value of a libTSI function call. If 
+>> the return value indicates an
+>> + * error, it retrieves a detailed error message and asserts with that 
+>> message.
+>> + * If retrieving the error description fails, it asserts with a 
+>> generic error message.
+>> + */
+>> +#define unigraf_assert(result)                                    \
+>> +({                                                \
+>> +    char msg[256];                                        \
+>> +    TSI_RESULT __r = (result);                                \
+>> +    if (__r < TSI_SUCCESS) {                                \
+>> +        TSI_RESULT __r2 = TSI_MISC_GetErrorDescription(__r, msg, 
+>> sizeof(msg));        \
+>> +        if (__r2 < TSI_SUCCESS)                                \
+>> +            igt_assert_f(false,                            \
+>> +                     "unigraf error: %d (get error description 
+>> failed: %d)\n",    \
+>> +                     __r, __r2);                        \
+>> +        else                                        \
+>> +            igt_assert_f(false, "unigraf error: %d (%s)\n", __r, 
+>> msg);        \
+>> +    }                                            \
+>> +    (__r);                                            \
+>> +})
+>> +
+>> +bool unigraf_open_device(int drm_fd);
+>> +
+>> +void unigraf_require_device(int drm_fd);
+>> +
+>> +#endif // UNIGRAF_H
+>> diff --git a/meson.build b/meson.build
+>> index 57849648a377..127abbf62024 100644
+>> --- a/meson.build
+>> +++ b/meson.build
+>> @@ -166,6 +166,12 @@ libpci = dependency('libpci', required : true)
+>>   libudev = dependency('libudev', required : true)
+>>   glib = dependency('glib-2.0', required : true)
+>> +libtsi = cc.find_library('TSI', required : false)
+>> +
+>> +if libtsi.found()
+>> +    config.set('HAVE_UNIGRAF', 1)
+>> +endif
+>> +
+>>   xmlrpc = dependency('xmlrpc', required : false)
+>>   xmlrpc_util = dependency('xmlrpc_util', required : false)
+>>   xmlrpc_client = dependency('xmlrpc_client', required : false)
+>> @@ -290,6 +296,7 @@ amdgpudir = join_paths(libexecdir, 'amdgpu')
+>>   msmdir = join_paths(libexecdir, 'msm')
+>>   panfrostdir = join_paths(libexecdir, 'panfrost')
+>>   panthordir = join_paths(libexecdir, 'panthor')
+>> +unigrafdir = join_paths(libexecdir, 'unigraf')
+>>   v3ddir = join_paths(libexecdir, 'v3d')
+>>   vc4dir = join_paths(libexecdir, 'vc4')
+>>   vkmsdir = join_paths(libexecdir, 'vkms')
+>> @@ -372,6 +379,12 @@ if get_option('use_rpath')
+>>           vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
+>>       endforeach
+>>       vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, libdir)
+>> +
+>> +    unigraf_rpathdir = '$ORIGIN'
+>> +    foreach p : unigrafdir.split('/')
+>> +        unigraf_rpathdir = join_paths(unigraf_rpathdir, '..')
+>> +    endforeach
+>> +    unigraf_rpathdir = join_paths(unigraf_rpathdir, libdir)
+>>   else
+>>       bindir_rpathdir = ''
+>>       libexecdir_rpathdir = ''
+>> @@ -383,6 +396,7 @@ else
+>>       vc4_rpathdir = ''
+>>       vkms_rpathdir = ''
+>>       vmwgfx_rpathdir = ''
+>> +    unigraf_rpathdir = ''
+>>   endif
+>>   build_testplan = get_option('testplan')
 >>
->>>   static void unigraf_close_device(void)
->>>   {
->>>       if (!unigraf_device)
->>> @@ -127,6 +132,20 @@ static void unigraf_init(void)
->>>           value;                                                \
->>>       })
->>> +/**
->>> + * unigraf_write() - Helper to write a value to unigraf
->>> + * @config: config id to write
->>> + * @data: data to write
->>> + * @data_len: length of the data
->>> + * Returns
->>> + */
->>> +static void unigraf_write(TSI_CONFIG_ID config, const void *data, 
->>> size_t data_len)
->>> +{
->>> +    unigraf_debug("Writing %zu bytes to 0x%x\n", data_len, config);
->>> +
->>> +    unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config, 
->>> data, data_len));
->>> +}
->>> +
->>>   /**
->>>    * unigraf_device_count() - Return the number of scanned devices
->>>    *
->>> @@ -329,6 +348,46 @@ void unigraf_reset(void)
->>>       unigraf_set_sst();
->>>   }
->>> +/**
->>> + * unigraf_read_edid() - Read the EDID from the specified stream
->>> + * @stream: The stream ID to read the EDID from
->>> + * @edid_size: Pointer to an integer where the size of the EDID will 
->>> be stored
->>> + *
->>> + * Returns: A pointer to the EDID structure, or NULL if the 
->>> operation failed. The caller
->>> + * is responsible to free this pointer.
->>> + */
->>> +struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size)
->>> +{
->>> +    void *edid;
->>> +
->>> +    unigraf_debug("Read EDID for stream %d...\n", stream);
->>> +
->>> +    edid = calloc(EDID_MAX_SIZE, sizeof(char));
->>> +
->>> +    unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
->>> +    *edid_size = unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device,
->>> +                              TSI_EDID_TE_INPUT,
->>> +                              edid, EDID_MAX_SIZE));
->>> +
->>> +    return edid;
->>> +}
->>> +
->>> +/**
->>> + * unigraf_write_edid() - Write EDID data to the specified stream
->>> + * @stream: The stream ID to write the EDID to
->>> + * @edid: Pointer to the EDID structure to write
->>> + * @edid_size: Size of the EDID data in bytes
->>> + *
->>> + * This function writes the provided EDID data to the specified stream.
->>> + */
->>> +void unigraf_write_edid(uint32_t stream, const struct edid *edid, 
->>> uint32_t edid_size)
->>> +{
->>> +    unigraf_debug("Write EDID for stream %d...\n", stream);
->>> +
->>> +    unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
->>> +    unigraf_write(TSI_EDID_TE_INPUT, edid, 2048);
->>> +}
->>> +
->>>   /**
->>>    * unigraf_hpd_assert() - Assert Hot Plug Detect signal
->>>    *
->>> diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
->>> index c2caa9c2c54c..40f706ebd483 100644
->>> --- a/lib/unigraf/unigraf.h
->>> +++ b/lib/unigraf/unigraf.h
->>> @@ -42,6 +42,10 @@ void unigraf_require_device(int drm_fd);
->>>   void unigraf_reset(void);
->>> +struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size);
->>> +
->>> +void unigraf_write_edid(uint32_t stream, const struct edid *edid, 
->>> uint32_t edid_size);
->>> +
->>>   void unigraf_hpd_deassert(void);
->>>   void unigraf_hpd_pulse(int duration);
->>>
->>> -- 
->>> 2.52.0
->>>
-> 
 
