@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44137F532FA
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 09:02:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 903AAF532FA
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 09:02:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E9FCB10E634;
-	Tue, 24 Mar 2026 09:02:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E1BA10E637;
+	Tue, 24 Mar 2026 09:02:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OGa7mmsE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UqS0YGX+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BDE410E636
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 09:02:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A89610E637
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 09:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774342935; x=1805878935;
+ t=1774342939; x=1805878939;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ktkSpLbXBjF1qhAqdGClK5yh0f/Gzbu57nwnB0bdsoo=;
- b=OGa7mmsEqwfQ6RKE0wXbBLP7dKCnmfWOP1n5hKp/UFPcn6xQe0u6Un8j
- AQbWUL+7+UrzS4t0zFmROWP9q1StUb1zhi8a5Y70Far61V2jMyWnjaQWo
- 9G9rGe/So8LeLL42PweV+bHjt8sKuoRy9BtgETf4kKeI0PuTvLX1hV047
- tbsshMoYh3g5PqBdh+HRYkHgnSbrR15QKmZceYlsCSAZtAm4JqsrSDYD1
- +DPFupT6yCMd0bz/4hU8D/9+5/1VCPqS8WdY1YVKwrTmjEnL2uuMdAYxg
- /fuVJAV/r9ddh/2+6AtYDXHvyZaapZmfWjRTYYnw+sINUV3xIqUiN04Ny g==;
-X-CSE-ConnectionGUID: ptgumQB+S0uoR2huev56yQ==
-X-CSE-MsgGUID: mwrm1rG8TXavtToQc8kCAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="75545453"
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="75545453"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2026 02:02:14 -0700
-X-CSE-ConnectionGUID: qag/6JANQUSLN43f6UHctA==
-X-CSE-MsgGUID: d418xedbQwq0EwnRJ9XXbA==
+ bh=SpZYbHIPu/jfEHmk9WlYRLHeb7XQpw1Z+AOQeYSux4E=;
+ b=UqS0YGX+AHbJeaSGwk2qZNSpRK96O5J4pQgzrOvGcpCgnn4zdGiyeynR
+ mmnux1nAIqqoyMgUuCnL+6aG8yZEIDnWfzvjvk1WPh7c6lYrvcHgoGLq0
+ w1acPo0X2a3zUR4V99PwzOX9WHBE2jSJu71Wk2YLyL7CVRx6zio1WTQ5N
+ ynTdHpN9oUf8hWP5SbmEbsjeL4QTcotgQh7FIfQaQsKBOM7wFh1zsoJbD
+ U/XySb6W8gAOYpv4g8oOG3pgt09PYi7icA5vCk2VuwqE8CnJFrZu5Mqd/
+ q6ofiRV/Rk49vl4y5yqty1l+lR0++gQX3fLvNX+Ulu8HA8mEvcr+xBk9D A==;
+X-CSE-ConnectionGUID: QHSQhU3hTq+maLt4yOu8+Q==
+X-CSE-MsgGUID: nqbX3TyeS5yGYIw3ypso6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="74536291"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="74536291"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2026 02:02:19 -0700
+X-CSE-ConnectionGUID: xv62MsmDRoWfgF/tD4oqdQ==
+X-CSE-MsgGUID: XNxV225KQDGRjoaLDRJUyA==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="224526801"
 Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.246.52])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2026 02:02:12 -0700
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2026 02:02:18 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com,
  =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [CI 4/5] tests/kms_explicit_fence: store igt_crtc_t* instead of pipe
- in data
-Date: Tue, 24 Mar 2026 11:01:50 +0200
-Message-ID: <49966370e1585280b9bda8128e9500b93d89b8a9.1774342824.git.jani.nikula@intel.com>
+Subject: [CI 5/5] lib/kms: convert igt_crtc_for_pipe() into a proper function
+Date: Tue, 24 Mar 2026 11:01:51 +0200
+Message-ID: <34be225409522d0697318b37cdbf0ee78fce41d5.1774342824.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1774342824.git.jani.nikula@intel.com>
 References: <cover.1774342824.git.jani.nikula@intel.com>
@@ -72,87 +72,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The CRTC originates from for_each_crtc_with_single_output() and is thus
-always valid. Just store the igt_crtc_t* pointer instead of the pipe in
-data, so that we can avoid igt_crtc_for_pipe() lookups and its return
-value checks.
-
-While at it, also fix the call to igt_pipe_crc_new() by passing the CRTC
-index instead of pipe to it.
+The usage of igt_crtc_for_pipe() has been reduced so much that having it
+as static inline is no longer justified for performance reasons. Prefer
+hiding the implementation details instead by turning it into a proper
+function.
 
 Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tests/kms_explicit_fence.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ lib/igt_kms.c | 8 ++++++++
+ lib/igt_kms.h | 8 +-------
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/tests/kms_explicit_fence.c b/tests/kms_explicit_fence.c
-index a7d127c93afc..0b85a9402383 100644
---- a/tests/kms_explicit_fence.c
-+++ b/tests/kms_explicit_fence.c
-@@ -54,7 +54,7 @@ typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
- 	igt_output_t *output;
--	enum pipe pipe;
-+	igt_crtc_t *crtc;
- 	igt_plane_t *primary;
- 	igt_plane_t *overlay1;
- 	igt_plane_t *overlay2;
-@@ -91,7 +91,7 @@ static void setup_output(data_t *data)
- 								       DRM_PLANE_TYPE_OVERLAY,
- 								       1);
- 			data->output = output;
--			data->pipe = crtc->pipe;
-+			data->crtc = crtc;
- 			data->mode = igt_output_get_mode(output);
- 			data->width = data->mode->hdisplay;
- 			data->height = data->mode->vdisplay;
-@@ -141,7 +141,7 @@ static void create_fbs(data_t *data)
- static void setup_initial_modeset(data_t *data)
- {
- 	/* Initial modeset to establish baseline (no fences) */
--	igt_output_set_crtc(data->output, igt_crtc_for_pipe(&data->display, data->pipe));
-+	igt_output_set_crtc(data->output, data->crtc);
- 	igt_plane_set_fb(data->primary, &data->primary_fb);
- 	igt_plane_set_fb(data->overlay1, &data->overlay1_fb);
- 	igt_plane_set_position(data->overlay1, OVERLAY1_POS_X, OVERLAY1_POS_Y);
-@@ -250,7 +250,7 @@ static void multiplane_atomic_fence_wait(data_t *data)
- 				data->overlay1_fb.width, OVERLAY1_POS_Y);
- 
- 	/* Request OUT_FENCE to track when display update completes */
--	igt_crtc_request_out_fence(igt_crtc_for_pipe(&data->display, data->pipe));
-+	igt_crtc_request_out_fence(data->crtc);
- 
- 	/*
- 	 * The atomic commit should succeed immediately (NONBLOCK mode),
-@@ -268,7 +268,7 @@ static void multiplane_atomic_fence_wait(data_t *data)
- 	igt_assert_eq(ret, 0);
- 
- 	/* Get the out fence to monitor completion */
--	out_fence = igt_crtc_for_pipe(&data->display, data->pipe)->out_fence_fd;
-+	out_fence = data->crtc->out_fence_fd;
- 	igt_assert(out_fence >= 0);
- 
- 	/* Verify overlay2 fence (last one) is still unsignaled */
-@@ -324,7 +324,7 @@ static void multiplane_atomic_fence_wait(data_t *data)
- 		igt_plane_set_fence_fd(planes[i], -1);
- 	}
- 	close(out_fence);
--	igt_crtc_for_pipe(&data->display, data->pipe)->out_fence_fd = -1;
-+	data->crtc->out_fence_fd = -1;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 481b893fc025..56289eec55e5 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -8065,6 +8065,14 @@ igt_crtc_t *igt_crtc_for_crtc_index(igt_display_t *display, int crtc_index)
+ 	return NULL;
  }
  
- static void reset_display_state(data_t *data)
-@@ -349,7 +349,7 @@ int igt_main()
- 		setup_output(&data);
- 		create_fbs(&data);
++igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
++{
++	if (pipe == PIPE_NONE)
++		return NULL;
++
++	return &display->crtcs[pipe];
++}
++
+ /*
+  * igt_first_crtc:
+  * @display: pointer to igt_display_t
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index d7cc22d6cd61..10ef5a56a1ed 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -575,15 +575,9 @@ int igt_display_n_crtcs(igt_display_t *display);
  
--		data.pipe_crc = igt_pipe_crc_new(data.drm_fd, data.pipe,
-+		data.pipe_crc = igt_pipe_crc_new(data.drm_fd, data.crtc->crtc_index,
- 						 IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
+ const char *igt_crtc_name(igt_crtc_t *crtc);
  
+-static inline igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
+-{
+-	if (pipe == PIPE_NONE)
+-		return NULL;
+-
+-	return &display->crtcs[pipe];
+-}
+ igt_crtc_t *igt_crtc_for_crtc_id(igt_display_t *display, uint32_t crtc_id);
+ igt_crtc_t *igt_crtc_for_crtc_index(igt_display_t *display, int crtc_index);
++igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe);
+ igt_crtc_t *igt_first_crtc(igt_display_t *display);
+ igt_crtc_t *igt_first_crtc_with_single_output(igt_display_t *display, igt_output_t **ret_output);
+ igt_crtc_t *igt_next_crtc(igt_display_t *display, igt_crtc_t *crtc);
 -- 
 2.47.3
 
