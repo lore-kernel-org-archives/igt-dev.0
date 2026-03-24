@@ -4,27 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1E6CFEC0FC
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 21:10:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81A74FEC0FC
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 21:11:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5FBF010E072;
-	Tue, 24 Mar 2026 21:10:22 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3295710E072;
- Tue, 24 Mar 2026 21:10:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8298362879691027073=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3467910E072;
+	Tue, 24 Mar 2026 21:11:37 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f8krw1nH";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E099210E072
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 21:11:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774386691; x=1805922691;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:to:cc;
+ bh=kZGJxuFyaj7Kve20zsEynoV8OQeTOjfR/rd5OapW5Qo=;
+ b=f8krw1nHQbwX2MWTS8hdYacdE/lEFgK+/kIVjCp9otvWFqHIF93Gyqez
+ kQkDSZukaMHHbUQGUY7DW0c8hugsE0teT5NUabK8TgGQbQjUbhoxeYiS0
+ jUYvFmnzPNa33t+kyrfI0Wx8iCusUNOQm7y3AhZya2vAPaKUQpH4zy1jw
+ JEy1FK1uAs1BFjEe/F3/soSL+ThyNHLZTfoFUAgzTfyJU5zn6ru6yyhuq
+ KvepfNQKCDDqtamZsTXdT7MwuRP+dTYun1alz8Hf5PpG8ud9+yuu7Bwxr
+ eRpe/kG+B3AQfdubzZCwdj1t+REr8rHCJqYPAlYFlKEUIguSkJMyyM0k3 g==;
+X-CSE-ConnectionGUID: YQpN4m6pTymVNS36dFgv9g==
+X-CSE-MsgGUID: vetsn1p1RPiYctJhvvBUJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="86891137"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="86891137"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2026 14:11:30 -0700
+X-CSE-ConnectionGUID: 1RL0PTlUQwunZjfKUyJoYg==
+X-CSE-MsgGUID: pSmAkOGwT/a4/pFuyIB+Yg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="221579244"
+Received: from mdroper-desk1.fm.intel.com (HELO
+ mdroper-desk1.amr.corp.intel.com) ([10.1.39.133])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2026 14:11:30 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+Date: Tue, 24 Mar 2026 14:11:16 -0700
+Subject: [PATCH i-g-t v2] tests/intel/xe_debugfs: Add subtest for reg_sr
+ programming failures
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_RFC=3A_Add_attachments_su?=
- =?utf-8?q?pport_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Mar 2026 21:10:15 -0000
-Message-ID: <177438661518.393007.6459849825339102219@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260324131235.712916-8-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20260324131235.712916-8-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260324-reg_sr_check-v2-1-7206032f6b26@intel.com>
+X-B4-Tracking: v=1; b=H4sIAPT9wmkC/1XM0QrCIBTG8VcZ5zpDTct11XvEGE3P5qE2Q4cUY
+ ++eDbro8v/B91sgYSRMcK4WiJgpUZhKyF0F1t+mARm50iC5PPKDkCzi0KbYWo/2zmqNvVVSmU4
+ rKJdnxJ5eG3dtSntKc4jvTc/iu/4g8w9lwQQzSjteO3nqnLjQNONjb8MIzbquH8XYI26oAAAA
+X-Change-ID: 20260312-reg_sr_check-95efc4248b54
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Matt Roper <matthew.d.roper@intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4988;
+ i=matthew.d.roper@intel.com; h=from:subject:message-id;
+ bh=kZGJxuFyaj7Kve20zsEynoV8OQeTOjfR/rd5OapW5Qo=;
+ b=owEBbQKS/ZANAwAKAU15JAXIcpAEAcsmYgBpwv4C3sDqUAlnfUEjczMPrk9CFxvAiIaJWiFWx
+ xN1BR69PiuJAjMEAAEKAB0WIQTCZ8MJRH/rTz8hbaxNeSQFyHKQBAUCacL+AgAKCRBNeSQFyHKQ
+ BFauD/48oGXvye47nwj9e77sZRrGYMNsvcQk/OY7XNzrxW7RQc0AqsPouoATX/x5Mz6D6MUWWM+
+ rSob/ocXPlStKTP7N+0wA8I7ql9LKKL5Xs1NHekwArNHng2fL4lgzyCVTdy3IEDI5fnPWglo/jI
+ CjI7IXbLjKYDOOpf/KPzvaABb+lU3m8s4c7cwGVBKyjOqaLlZkWIIphkHr5k3xMecxlNVY7K/E5
+ dyK10ToUUkga9NOH22BIwjPBnkBE0z5xZhYIIGEUxe4foY2En+VAdM4MYrFokGJHTRBT6Bsq6FW
+ JBhMJSgOk50Q6br5LkzCR8C8+OUCYHuiMv0JjUvmVhSORlpaz9Zr5GkITb9PFlNHV7/y/KRqRNy
+ AzaaoT19JRamgbRSfOp1O1iMA3uvGmThSMcagd46JnhvWu7cPQ796RXE54uVm4nVCX5dVYrbROw
+ UsIOreMTgGVJYqg00jLdGiPqExXG0wTQyOQ1+JsIDjIFBxn34GlnO/BBFFOQzJOfxeTElO5sGOK
+ GCbB7ekZioqRJNLIy3zA5sUpv1iahN2k4xatoOzYc1gpwDuCFGAOmNbMMyF0xPuUFuAi+NXzxqO
+ kHcrRK0OI/BlNtDO+TOuRzNoFubMPTS/CX0cm23qXb64TtLdwqvITfggG9p8gkhHsiOHCCwSqkM
+ 4T/lMOeuv9E/ylA==
+X-Developer-Key: i=matthew.d.roper@intel.com; a=openpgp;
+ fpr=C267C309447FEB4F3F216DAC4D792405C8729004
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,145 +87,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8298362879691027073==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The kernel provides a 'register-save-restore-check' debugfs entry that
+allows developers to easily check and see whether any of the driver's
+'register save/restore' (reg_sr) programming is no longer in effect.
+Wrap a simple IGT test around this debugfs entry so that CI can help
+flag any unexpected changes via a dedicated test.
 
-== Series Details ==
+Note that we're intentionally avoiding i915's approach of having the
+driver do immediate readback and verification of workaround/tuning
+programming.  That wound up being very problematic since any programming
+failure (even benign/expected failures) would show up as a problem on
+driver probe, and CI would treat that as a fatal error and refuse to run
+any other tests.
 
-Series: RFC: Add attachments support (rev2)
-URL   : https://patchwork.freedesktop.org/series/163548/
-State : success
+At the moment this test will already report gt0 failures on some Xe2
+platforms (specifically for workaround registers 0xb104, 0xb108, and
+0xb158) --- this reflects a legitimate kernel bug that's been root
+caused to incorrect bspec documentation about MCR register steering
+(fortunately the bug only affects the register readback used for
+verification; the actual programming did indeed reach the hardware as
+expected in this case).  The fix for that failure will be implemented in
+the kernel once the necessary hardware documentation is available, at
+which point this test should start passing on those platforms.
 
-== Summary ==
+At the moment there's an "exception" list containing one register
+(GUC_INTR_CHICKEN_GUC_REG) which is expected to show up in the debugfs
+entry.  This is a case where once the KMD completes its initial
+programming, ownership of the register transfers to an external agent
+(the GuC firmware) and further changes to its value are legitimate and
+not indicative of any hardware or software problem.  Other exceptions
+may show up in the future, either due to cases where ownership of a
+register transfers, or cases where reg_sr programming targets "write
+only" registers that are expected to not read back properly.
 
-CI Bug Log - changes from IGT_8824 -> IGTPW_14844
-====================================================
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+---
+Changes in v2:
+- Moved subtest to xe_debugfs. (Kamil)
+- Add missing parameter to igt_info().
+- Link to v1: https://lore.kernel.org/r/20260318-reg_sr_check-v1-1-845d09d27bd1@intel.com
+---
+ tests/intel/xe_debugfs.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 53 insertions(+), 1 deletion(-)
 
-Summary
--------
+diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+index 7fc4a3cbec4b925a40a37a18a5ebd256ba927e0f..587e3e785f6782317f4555035ca59dee060d82ef 100644
+--- a/tests/intel/xe_debugfs.c
++++ b/tests/intel/xe_debugfs.c
+@@ -28,6 +28,8 @@ struct {
+  * Feature: core
+  * Test category: uapi
+  *
++ * SUBTEST: check-gt-reg-sr
++ * Description: Check the reg_sr list associated with GTs for missing reg values
+  */
+ 
+ IGT_TEST_DESCRIPTION("Validate Xe debugfs devnodes and their contents");
+@@ -365,6 +367,50 @@ static void test_info_read(struct xe_device *xe_dev)
+ 
+ }
+ 
++/*
++ * A small number of reg_sr programming mismatches are expected and not
++ * indicative of hardware/software problems.
++ */
++static const unsigned long reg_sr_exceptions[] = {
++	/* GUC_INTR_CHICKEN_GUC_REG: GuC takes ownership after initial programming */
++	0xC50C,
++};
++
++static void check_gt_reg_sr(int fd, int gt)
++{
++	char buf[1024];
++	int debugfs_fd;
++	FILE *file;
++	int problems = 0;
++
++	debugfs_fd = igt_debugfs_gt_open(fd, gt, "register-save-restore-check",
++					 O_RDONLY);
++	igt_require(debugfs_fd);
++	file = fdopen(debugfs_fd, "r");
++	while (fgets(buf, sizeof(buf), file) != NULL) {
++		unsigned long offset = strtoul(buf, NULL, 16);
++		bool ok = false;
++
++		for (int ex = 0; ex < ARRAY_SIZE(reg_sr_exceptions); ex++) {
++			if (offset == reg_sr_exceptions[ex]) {
++				igt_info("Mismatch on %#lx is not a problem\n", offset);
++				ok = true;
++				break;
++			}
++		}
++
++		if (!ok) {
++			igt_warn("Mismatch on %#lx, Driver reports: %s", offset, buf);
++			problems++;
++		}
++	}
++
++	fclose(file);
++	close(debugfs_fd);
++
++	igt_assert_eq(problems, 0);
++}
++
+ const char *help_str =
+ 	"  --warn-not-hit|--w\tWarn about devfs nodes that have no tests";
+ 
+@@ -390,7 +436,7 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ {
+ 	struct xe_device *xe_dev;
+ 	unsigned int t;
+-	int fd = -1;
++	int fd = -1, gt;
+ 
+ 	igt_fixture() {
+ 		fd = drm_open_driver_master(DRIVER_XE);
+@@ -412,6 +458,12 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	igt_describe("Check info debugfs devnode contents.");
+ 	igt_subtest("info-read")
+ 		test_info_read(xe_dev);
++
++	igt_subtest_with_dynamic("check-gt-reg-sr")
++		xe_for_each_gt(fd, gt)
++			igt_dynamic_f("gt%d", gt)
++				check_gt_reg_sr(fd, gt);
++
+ 	igt_fixture() {
+ 		drm_close_driver(fd);
+ 	}
 
-  **SUCCESS**
+---
+base-commit: 4c8773922f643932cc017ba94d164d2b9d3dd546
+change-id: 20260312-reg_sr_check-95efc4248b54
 
-  No regressions found.
+Best regards,
+-- 
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14844/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14844 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8824/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14844/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8824/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14844/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8824 -> IGTPW_14844
-
-  CI-20190529: 20190529
-  CI_DRM_18203: 0be244ee3139de3578e9acc56e1b917a4bd162cd @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14844: 14844
-  IGT_8824: 8824
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14844/index.html
-
---===============8298362879691027073==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>RFC: Add attachments support (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163548/">https://patchwork.freedesktop.org/series/163548/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14844/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14844/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8824 -&gt; IGTPW_14844</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14844/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14844 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8824/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14844/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8824/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14844/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8824 -&gt; IGTPW_14844</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18203: 0be244ee3139de3578e9acc56e1b917a4bd162cd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14844: 14844<br />
-  IGT_8824: 8824</p>
-
-</body>
-</html>
-
---===============8298362879691027073==--
