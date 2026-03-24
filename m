@@ -4,63 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05AAEE9A75C
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 10:11:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2F1FE9A75A
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 10:13:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A98B710E5CA;
-	Tue, 24 Mar 2026 10:11:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6308E10E654;
+	Tue, 24 Mar 2026 10:13:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RiST4RCC";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="nUHF5UDa";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44AF410E5CA
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 10:11:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774347076; x=1805883076;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=9qZ7agN4f/gTKuDRZeJ05p2w01W9sDhHiEsg6UWuE+I=;
- b=RiST4RCCXbaN042VTlsrX4+jM133C/OLz+p1SkHqG9JgISmmZ9ZiIWb7
- SUOpTib5W4gL94lcvBD2c7N4ApbH6GDw94kyYuTVPved/EoTJ1T6Lmv2m
- aAKMsOIsBZpCMfb59UJ8YDa2Rcj0PpTvaAUXFmo7HO3zdjor/1IXsm156
- Z3HdhrTUCIG9RP8O/59Y1UCfCw6Q0UfZBCaIDxtU33VMPOKFLOLP5jow1
- XH8lGRHBvCoFGiIHey11vMB6jVoi8GxEiezyb1/90nazZcZGN4fW1XfHM
- CI+evboX5CdqAMplpPcUEaYR/PYoIN+b+8gqwoq3/5tnuG1vihG16/3eq Q==;
-X-CSE-ConnectionGUID: 8xf8TUNvQsS8o4So33ujzg==
-X-CSE-MsgGUID: mwpNhlJyRSKR0T++EhAHmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="62910182"
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="62910182"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2026 03:11:15 -0700
-X-CSE-ConnectionGUID: 6QXY9QuqTj+Gj17pNzdX4w==
-X-CSE-MsgGUID: 2anuR6SRQaqSPtWFnRokmA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="262231501"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2026 03:11:14 -0700
-Date: Tue, 24 Mar 2026 11:11:11 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
- luca.ceresoli@bootlin.com, kory.maincent@bootlin.com,
- markyacoub@google.com, khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v9 05/49] lib/igt_kms: Add helper to wait for new
- connectors
-Message-ID: <20260324101111.62xsmn5hb7hkcbfq@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
- luca.ceresoli@bootlin.com, kory.maincent@bootlin.com,
- markyacoub@google.com, khaled.almahallawy@intel.com
-References: <20260316-unigraf-integration-v9-0-a01dffc3b0cb@bootlin.com>
- <20260316-unigraf-integration-v9-5-a01dffc3b0cb@bootlin.com>
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com
+ [209.85.215.177])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 87B6A10E654
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 10:13:49 +0000 (UTC)
+Received: by mail-pg1-f177.google.com with SMTP id
+ 41be03b00d2f7-c7358a7a8d1so617389a12.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 03:13:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774347229; cv=none;
+ d=google.com; s=arc-20240605;
+ b=hXXQeuVo80MoL9ax9pFE0xtznzyEZMUOeggePNWztxXpxC06ZTFj/u0zNHSkfPzaRc
+ 2uy9jsBUyE3njF61RiecjZ1ej1exhLfIYzqw5MuZm+3u1oX4kJFLMF/wNf9r0RjzaZmz
+ nGWWUbxjiiAqA2XA1fsPpjK9pJxUC0cvafi5kCHQSGxG4ckJbbrf9/A9YP5TQGDv8qIy
+ n9ANHhe93/WjirLqtWKnSsK++Hr8stXVxQEA5XJCSxiwVFz1H/aj9c6RxWxfhYs2K3YO
+ ptrE9GfetNo6aKRC776nmihqvvTIQ0Tz3N+ooEpGvAjsENtE7yuijtkEDPXKBPudqahP
+ abig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=LaMVmTR/n+J7gQ7+rXENnMv4HvpepqYlyieqMVN9zh4=;
+ fh=rfiFcsVNkq/pOwzHNlLFFP2bLjGGbcAfjZMc111wurs=;
+ b=Gd1h1u3QBxBn47xJ+Og44r3fxuR3ghKpRj65sbTjVU4S2f/CPleVhUsUjlv8FdvoId
+ XK6bha4VT8ygURSYROkjhJwiN8TKVjMD+YGrqsmeZXmN96ooDTJYODuddmEXXtaw8LUQ
+ YiBcKiuX+XdzT2jNp55kWk+ja+3Tr0/anOSP3qn6+hDikaKo7qeV/AIlSOQc0sv3Ot7s
+ X8VAsZKvkMdAlhbqHIeEvUPjW43IqAH5uAyqNHoaw8VfGagvT6pY29lguSgb6+zyXT4f
+ 11Ps0160IUlduIOdWHzYKMZPVTaKG61m0ESvPzzlsKoEvba+ykLjDaYj2LxBF2QknSz7
+ oKBA==; darn=lists.freedesktop.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20251104; t=1774347229; x=1774952029; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LaMVmTR/n+J7gQ7+rXENnMv4HvpepqYlyieqMVN9zh4=;
+ b=nUHF5UDaDsY9TFMqVWem76JaG9R7P8XvMnPbhzjm4FC9666W1VxA68bESXUAP58MSL
+ 20qAAn4ND2jckrGv2m0yTX/2fmwdLmKZBUEgO7Tw/GRhXbIfU5S1eUR9Nz5hjP72j/oT
+ 3YFbk8gDH0omuxDf+ZuDXXPe4Mtu2PCVF2yArgSSP5I5dv9SqOQVxyP3T8rtkRslNAJp
+ GgCRCHbyafnW4wbzkuzdktcXegvpQyOkKfEAxjX4V6zPFKo86AwW4Y2XMRkzAzJIGid/
+ cvEfyL8nPWFd+1U2oaOcrCAwRs/zSIhOuXbi0FkJ/5Sn/f8FxeDe0Ja4etmrvaXnq7EM
+ xZmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1774347229; x=1774952029;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=LaMVmTR/n+J7gQ7+rXENnMv4HvpepqYlyieqMVN9zh4=;
+ b=fVejm91MjvyFKIj6MTx+v8i+Oa6j86BN6Pa4ZmV5ZyE8Z/h0Z9hFUIslZXheTpGqrq
+ dmRNOpKjJB7e1JJWR+HC5dwZjqonGgUC3gwxeZriHfXIKSSBjrVbMxjDcetb9CNxCEq/
+ vs/3NoZ1jhw47cHL4kPso3KbmDwUHVnvID9UyZC06X4X0L04P9bail1jAo5rK0f8+NaL
+ 9sLdCgn+Ec8FkZ6GHZzKXOYy1R+fSWfGwxxBd+a5+IFMXID1au6SQM2D/QGA06k4w7RP
+ evpTmoxz2/rGKmrSLl/Ss16Qm3q/WS18odJvEbbxn8RXqBagppEwZJqNx/fCffUybL0y
+ VaoQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWscbmdctXbnAMX9zPRbF5BKGrlq2TsSPYOIPIKJ67I1yymOKME577A1FwEWJTpHKjkr6d1/qGW@lists.freedesktop.org
+X-Gm-Message-State: AOJu0Yxz8v4o+Y5OnSIsz6BPo4WGl3a4f9VktslYIg1FpsukNXZlNBeR
+ /mgR5/mYZ8oxvFrncCB52Cc0JPEuimPLWo29tAgJdlZTh4zmnhLeqd23+UnyhpEPBYt4lExTrCa
+ 4Vr6/F8nvtM1pDa4q/DNT3N0kw00Nao4=
+X-Gm-Gg: ATEYQzwBO+PIvuZjUs1m/otwspCS5J9v9Ro+lStCkEG3kk1gRV5mDb2bWGK8wzxt5rg
+ S6L59SJTU4uDlKxdcwpDN8TvOEifk+/9QCkPwjZ/ecqZnYeeaeZAwOtKaTIMKzE9s7QzkTog9zZ
+ 46YxubH99Fp/qt9ngSFG7HpROpD+DXI6VpExv0k7FEfrninZQ0Kygbfb3h366C708rjMnYCTBOH
+ EBPHLREtHeH80segY/TOZWh0omdipRgZf5YD+ylAbEM30DIVbeh1gUXsn2y09JeiWDoLqwAEWDK
+ o3qKsnV9Q9ug1KLGjXW4nnYeB6YK3Z6QoACMccmzBA==
+X-Received: by 2002:a05:6a20:748d:b0:398:a5c7:3dce with SMTP id
+ adf61e73a8af0-39bceaa20afmr14424631637.23.1774347228875; Tue, 24 Mar 2026
+ 03:13:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260316-unigraf-integration-v9-5-a01dffc3b0cb@bootlin.com>
+References: <20260216181610.129209-1-kamil.konieczny@linux.intel.com>
+ <177432952945.389452.13551977552710752956@a3b018990fe9>
+ <20260324094318.pnjaf3hkkngdudfm@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20260324094318.pnjaf3hkkngdudfm@kamilkon-DESK.igk.intel.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Tue, 24 Mar 2026 12:13:36 +0200
+X-Gm-Features: AaiRm51dDVZ7bWlIdwJnxrbMhUSRYzF8JA9bHHrTkG4POjSECbaB6Jmy5K5LD78
+Message-ID: <CAJ=qYWT-fsW=A_Oz3AHpZ7CwbO7UOk2oCcm+R2ZUUGuXeUe0Pw@mail.gmail.com>
+Subject: =?UTF-8?B?UmU6IOKclyBYZS5DSS5GVUxMOiBmYWlsdXJlIGZvciBsaWIvaWd0X2ZiOiBhZGQgWVVWfA==?=
+ =?UTF-8?B?WVZVLTQxMHw0MTF8NDQ0IGZvcm1hdHMgKHJldjIp?=
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org, 
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>, 
+ Swati Sharma <swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,156 +110,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Louis,
-On 2026-03-16 at 17:17:26 +0100, Louis Chauvet wrote:
-> Add list comparison utilities and a new function to wait for new
-> connectors to appear on the system.
-> 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
->  lib/igt_kms.c | 97 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_kms.h |  6 ++++
->  2 files changed, 103 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index f0f27ccda9d8..b220de419a70 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -8322,3 +8322,100 @@ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path)
->  
->  	return 0;
->  }
-> +
-> +/**
-> + * array_contains() - Search an element in the array
-> + *
-> + * @array: Pointer to the array to search into
-> + * @array_len: Length of the array
-> + * @value: Value to search in the array
-> + *
-> + * Returns true if @array contains @value
-> + */
-> +static bool array_contains(const uint32_t *array, int array_len, uint32_t value)
-> +{
-> +	igt_assert(array_len == 0 || array);
-> +
-> +	for (int i = 0; i < array_len; i++)
-> +		if (array[i] == value)
-> +			return true;
-> +
-> +	return false;
-> +}
-> +
-> +/**
-> + * get_array_diff() - Compute and return the set difference between two arrays
-> + *
-> + * @array_a: Pointer to the first array to compare
-> + * @array_a_len: Length of the first array
-> + * @array_b: Pointer to the second array to compare
-> + * @array_b_len: Length of the second array
-> + * @diff: Out pointer returning a array of items in @array_a but not
-> + *        in @array_b. Can be NULL to only count the elements.
-> + *
-> + * Returns the number of element which are in @array_a but not in @array_b.
-> + */
-> +int
-> +get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b, int array_b_len,
-> +	       uint32_t **diff)
-> +{
-> +	int diff_len = 0;
-> +
-> +	igt_assert(array_a_len == 0 || array_a);
-> +	igt_assert(array_b_len == 0 || array_b);
-> +
-> +	if (diff)
-> +		*diff = NULL;
-> +
-> +	for (int i = 0; i < array_a_len; i++) {
-> +		if (!array_contains(array_b, array_b_len, array_a[i])) {
-> +			if (diff) {
-> +				*diff = reallocarray(*diff, diff_len + 1, sizeof(**diff));
-> +				igt_assert(*diff);
-> +				(*diff)[diff_len] = array_a[i];
-> +			}
-> +
-> +			diff_len++;
-> +		}
-> +	}
-> +
-> +	return diff_len;
-> +}
-> +
-> +/**
-> + * kms_wait_for_new_connectors() - Wait for new connector to appear
-> + *
-> + * @newly_connected: Out pointer returning the array of connectors currently
-> + *                   found connected
-> + * @already_connected: Input pointer to array of connectors previously
-> + *                     connected
-> + * @already_connected_count: Length of @already_connected
-> + * @drm_fd: DRM file descriptor
-> + *
-> + * Returns the number of connectors not in @already_connected and currently
-> + * found connected.
+On Tue, Mar 24, 2026 at 11:43=E2=80=AFAM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
+>
+> Hi igt-dev,
+> On 2026-03-24 at 05:18:49 -0000, Patchwork wrote:
+> > =3D=3D Series Details =3D=3D
+> >
+> > Series: lib/igt_fb: add YUV|YVU-410|411|444 formats (rev2)
+> > URL   : https://patchwork.freedesktop.org/series/161665/
+> > State : failure
+> >
+> > =3D=3D Summary =3D=3D
+> >
+> > CI Bug Log - changes from XEIGT_8820_FULL -> XEIGTPW_14838_FULL
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+> >
+> > Summary
+> > -------
+> >
+> >   **FAILURE**
+> >
+> >   Serious unknown changes coming with XEIGTPW_14838_FULL absolutely nee=
+d to be
+> >   verified manually.
+> >
+> >   If you think the reported changes have nothing to do with the changes
+> >   introduced in XEIGTPW_14838_FULL, please notify your bug team (I915-c=
+i-infra@lists.freedesktop.org) to allow them
+> >   to document this new failure mode, which will reduce false positives =
+in CI.
+> >
+> >
+> >
+> > Participating hosts (2 -> 2)
+> > ------------------------------
+> >
+> >   No changes in participating hosts
+> >
+> > Possible new issues
+> > -------------------
+> >
+> >   Here are the unknown changes that may have been introduced in XEIGTPW=
+_14838_FULL:
+> >
+> > ### IGT changes ###
+> >
+> > #### Possible regressions ####
+> >
+> >   * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
+> >     - shard-bmg:          [PASS][1] -> [FAIL][2]
+> >    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8820/shard-bmg-4/=
+igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
+> >    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14838/shard-bmg=
+-10/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
+> >
+>
+> Imho this is unrelated, +cc Karthik, Swati and J-P to be sure
+> as the change is in IGT library display code.
+>
 
-Document when this function will assert.
+I don't see how proposed change could cause this error. Look like
+usual noise from ci that just sometimes happen.
 
-> + */
-> +int kms_wait_for_new_connectors(uint32_t **newly_connected,
-> +				const uint32_t *already_connected,
-> +				int already_connected_count, int drm_fd)
-> +{
-> +	int newly_connected_count;
-> +	struct timespec start, end;
-> +
-> +	igt_assert(newly_connected);
-> +	igt_assert(drm_fd);
-
-This will fail only for 0, but invalid drm_fd could be -1.
-There is a separate assert macro for fd.
-
-> +
-> +	igt_assert_eq(igt_gettime(&start), 0);
-> +	igt_assert_eq(igt_gettime(&end), 0);
-
-You do not need it here, it will be filled just before 'while'.
-
-> +	do {
-> +		if (*newly_connected)
-> +			free(*newly_connected);
-
-Also document that it will free anything passed to it in newly_connected
-and refill it.
-
-Regards,
-Kamil
-
-> +		newly_connected_count = igt_get_connected_connectors(drm_fd, newly_connected);
-> +		igt_assert_eq(igt_gettime(&end), 0);
-> +	} while (!get_array_diff(*newly_connected, newly_connected_count,
-> +			       already_connected, already_connected_count,
-> +			       NULL) &&
-> +		 igt_time_elapsed(&start, &end) <= igt_default_display_detect_timeout());
-> +
-> +	return newly_connected_count;
-> +}
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 0095d9610e42..c6aae034b5b9 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1308,4 +1308,10 @@ drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_nam
->  uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name);
->  uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
->  
-> +int kms_wait_for_new_connectors(uint32_t **newly_connected,
-> +				const uint32_t *already_connected,
-> +				int already_connected_count, int drm_fd);
-> +int
-> +get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b, int array_b_len,
-> +	       uint32_t **diff);
->  #endif /* __IGT_KMS_H__ */
-> 
-> -- 
-> 2.52.0
-> 
+>
+> >
+> > Known issues
+> > ------------
+> >
+> >   Here are the changes found in XEIGTPW_14838_FULL that come from known=
+ issues:
+> >
+> > ### IGT changes ###
+> >
+> > #### Issues hit ####
+> >
+> >   * igt@kms_big_fb@yf-tiled-8bpp-rotate-270:
+> >     - shard-bmg:          NOTRUN -> [SKIP][3] ([Intel XE#1124])
+> >    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14838/shard-bmg=
+-6/igt@kms_big_fb@yf-tiled-8bpp-rotate-270.html
+> >
+> ...cut...
