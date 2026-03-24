@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA11EF54AAD
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 13:10:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08A29F54AAE
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Mar 2026 13:12:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6878810E5D5;
-	Tue, 24 Mar 2026 13:10:27 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2687A10E5D5;
- Tue, 24 Mar 2026 13:10:21 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6206490410804944219=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD30110E6A8;
+	Tue, 24 Mar 2026 13:12:50 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bmJ2JCzs";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AA1110E661
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2026 13:12:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774357965; x=1805893965;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=XPjwQV3uHY3MyNZPCXRADvKrVGPCktYwRfdcdmKiCIM=;
+ b=bmJ2JCzs1bZoznP+3ealh7b42vdfS+rEDw+Nh23WfaL5zUo+UTiucRXS
+ NFWy56LPri2Y/hC7XFkaDqOKSDhunepccKteGcapGStD4dX52msNppsOX
+ IZgGngm0DleWT2TxvIKMErQixTOtZNPKwaVGHvf1wNz8ao8+uzgUtTjyV
+ f5p0TlgvHhoHA6Hp4SpJuCoVMis/SAgT0rFqlCyVb9AvyZts7+XI1wwyQ
+ T2qgbsBlMCZ8nbfW58jdPU0Oc01JeIIxo7BgJ47pGsCCedYnWPV4R+rdK
+ o/V92VaVJFWawOx+l7o1WKHqIsuPdX9h/I5q1w//y9dA1zlRgsIJ0UGFL A==;
+X-CSE-ConnectionGUID: qTXYU/cLRGmJCfFkB+pXoA==
+X-CSE-MsgGUID: 1hiDl3S6ROWr6gPtoAnURA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="75440590"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="75440590"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2026 06:12:44 -0700
+X-CSE-ConnectionGUID: X2rebEFFT1yrMeWkDXOl4w==
+X-CSE-MsgGUID: ZGhmsa4oS/SM2GtWLd+0Ug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; d="scan'208";a="262281263"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.143])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2026 06:12:42 -0700
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+Subject: [PATCH i-g-t v2 0/6] RFC: Add attachments support
+Date: Tue, 24 Mar 2026 14:12:36 +0100
+Message-ID: <20260324131235.712916-8-zbigniew.kempczynski@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests=3A_some_igt=5Fcrtc?=
- =?utf-8?q?=5Ffor=5Fpipe=28=29_reduction?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jani Nikula" <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Mar 2026 13:10:21 -0000
-Message-ID: <177435782113.389881.11910380785379155076@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <cover.1774342824.git.jani.nikula@intel.com>
-In-Reply-To: <cover.1774342824.git.jani.nikula@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,163 +68,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6206490410804944219==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series introduces support for hook/test written attachments.
+It is somehow limited and stiff but allows to write anything test/hook
+wants to attachments directory and if naming contract will be fulfiled
+content in base64 form will be included in appropriate subtest/dynsubtest
+results.json part.
 
-== Series Details ==
+Series targets our need to include guc logs for failed tests especially
+in the point of time when it occurs.
 
-Series: tests: some igt_crtc_for_pipe() reduction
-URL   : https://patchwork.freedesktop.org/series/163761/
-State : success
+v2: - added clearing of attachments dir in overwrite mode
+    - guc-log hook script is now installed to igt datadir/hooks dir
+    - added hook-exec-allowlist to selectively execute hook scripts
 
-== Summary ==
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
 
-CI Bug Log - changes from IGT_8822 -> IGTPW_14842
-====================================================
+Zbigniew Kempczyński (6):
+  runner: Rename dirfd to avoid clash with dirfd()
+  runner: Create attachments directory to use by hooks
+  runner: Add attachments directory content in subtests results
+  scripts/hooks: Example guc log copy script to attachments dir
+  runner: Rename parsing function
+  runner: Add hook-exec-allowlist to execute hooks selectively
 
-Summary
--------
+ lib/igt_hook.c                    |  4 ++
+ runner/executor.c                 | 88 ++++++++++++++++++++++++----
+ runner/executor.h                 |  2 +
+ runner/resultgen.c                | 97 +++++++++++++++++++++++++++++++
+ runner/settings.c                 | 31 +++++++---
+ runner/settings.h                 |  2 +
+ scripts/hooks/guc_copy_on_fail.sh | 24 ++++++++
+ scripts/meson.build               |  2 +
+ 8 files changed, 230 insertions(+), 20 deletions(-)
+ create mode 100755 scripts/hooks/guc_copy_on_fail.sh
 
-  **SUCCESS**
+-- 
+2.43.0
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/index.html
-
-Participating hosts (41 -> 39)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14842 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] ([i915#15673]) +78 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8822/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8822/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8822/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8822 -> IGTPW_14842
-  * Linux: CI_DRM_18196 -> CI_DRM_18199
-
-  CI-20190529: 20190529
-  CI_DRM_18196: 9951377bd719c783792edfb3c7aa27a088ecdab9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18199: 4b7edcc15b85ee23b9928da304c47cc1cdb30e87 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14842: 14842
-  IGT_8822: 8822
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/index.html
-
---===============6206490410804944219==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests: some igt_crtc_for_pipe() reduction</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163761/">https://patchwork.freedesktop.org/series/163761/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8822 -&gt; IGTPW_14842</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14842 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8822/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) +78 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8822/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8822/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14842/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8822 -&gt; IGTPW_14842</li>
-<li>Linux: CI_DRM_18196 -&gt; CI_DRM_18199</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18196: 9951377bd719c783792edfb3c7aa27a088ecdab9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18199: 4b7edcc15b85ee23b9928da304c47cc1cdb30e87 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14842: 14842<br />
-  IGT_8822: 8822</p>
-
-</body>
-</html>
-
---===============6206490410804944219==--
