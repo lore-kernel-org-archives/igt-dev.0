@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C81F0FEA82C
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 07:30:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1231FEA830
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 07:52:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6587910E038;
-	Wed, 25 Mar 2026 07:30:13 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F71410E038;
- Wed, 25 Mar 2026 07:30:06 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8369942771809018710=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 716FA10E4EB;
+	Wed, 25 Mar 2026 07:52:07 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R0yiimSK";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B923910E4EB
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 07:52:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774425120; x=1805961120;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=k7j2Qyg5y3E+E7foWI30SUPpWkSowi0JcsIxTxx1RR8=;
+ b=R0yiimSKHfHj2Ec9ylX1ZVhOLhNDVcT/qytsyLTUWlS0lHB71330vGa9
+ t6oOcMUcSKhJRqmyO3SuHk4e/P4WJ/b+XWGv75S2dqXL0u/lPN9lYxbNg
+ LqMwnShWgmHOGdaRBkcgRD2YLyQFOg4snEQvfY7mRyDbc84VkkfaBokef
+ WEJkSFAKCxy5+A1vTTtXF84cpXCl/JoH+8Le0Tkr/IodDCHFqLeRj1Uaw
+ 6sqra4VX+YitYWG8nxvtcxKNq6px4vw1KkZrECf3+ROMj3XfWFiHyASwr
+ yGxNSjOJy1Ikq+NoIMn3YqW/sXNKA0AOS8lElpuFMdov0NA4ngd++uC1W w==;
+X-CSE-ConnectionGUID: UodgnsN1TWOpqx5oQu2WVA==
+X-CSE-MsgGUID: wmygvrjmTX2F7C5lFc0CYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="86150315"
+X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; d="scan'208";a="86150315"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2026 00:52:00 -0700
+X-CSE-ConnectionGUID: 2Hb80gybQeOzyFBMkD75YA==
+X-CSE-MsgGUID: Fa58tctST5ePq/Bu0JmX/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; d="scan'208";a="221274072"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 00:51:59 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, pranay.samala@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_async_flips: Fix timestamp print format
+Date: Wed, 25 Mar 2026 13:19:23 +0530
+Message-Id: <20260325074923.103348-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260324081729.91949-1-santhosh.reddy.guddati@intel.com>
+References: <20260324081729.91949-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Ad?=
- =?utf-8?q?d_support_for_overcommit_tests_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Mar 2026 07:30:06 -0000
-Message-ID: <177442380662.394878.14167635154261131223@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260325060339.2499618-1-sobin.thomas@intel.com>
-In-Reply-To: <20260325060339.2499618-1-sobin.thomas@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,147 +65,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8369942771809018710==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Update timestamp print to use unsigned format specifiers.
+Change from %ld to %lu.
 
-== Series Details ==
+This changes fix the below wrong log formatting.
 
-Series: tests/intel/xe_vm: Add support for overcommit tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/163579/
-State : success
+v2: Fix cosmetic changes. (Pranay)
 
-== Summary ==
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ tests/kms_async_flips.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-CI Bug Log - changes from IGT_8824 -> IGTPW_14846
-====================================================
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 4a2930968..305bd5190 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -599,9 +599,10 @@ static void test_timestamp(data_t *data)
+ 	/* TODO: Make changes to do as many flips as possbile between two vblanks */
+ 
+ 	igt_assert_f(seq1 == seq + 1,
+-		     "Vblank sequence is expected to be incremented by one(%d != (%d + 1)\n", seq1, seq);
++		     "Vblank sequence is expected to be incremented by one(%u != (%u + 1)\n",
++		     seq1, seq);
+ 
+-	igt_info("vbl1_timestamp = %ldus\nflip_timestamp = %ldus\nvbl2_timestamp = %ldus\n",
++	igt_info("vbl1_timestamp = %lu us\nflip_timestamp = %lu us\nvbl2_timestamp = %lu us\n",
+ 		 vbl_time, data->flip_timestamp_us, vbl_time1);
+ 
+ 	igt_assert_f(vbl_time <= data->flip_timestamp_us && vbl_time1 > data->flip_timestamp_us,
+-- 
+2.34.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14846/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14846 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8824/bat-dg2-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14846/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8824/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14846/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8824 -> IGTPW_14846
-  * Linux: CI_DRM_18203 -> CI_DRM_18205
-
-  CI-20190529: 20190529
-  CI_DRM_18203: 0be244ee3139de3578e9acc56e1b917a4bd162cd @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18205: 14e4110238694e33cbb1e4fc54d034cd5b45f3fe @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14846: 2af6f72c995b5c7261dd7dc1d9e96d000cd84fb4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8824: 8824
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14846/index.html
-
---===============8369942771809018710==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Add support for overcommit tests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163579/">https://patchwork.freedesktop.org/series/163579/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14846/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14846/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8824 -&gt; IGTPW_14846</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14846/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14846 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8824/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14846/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8824/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14846/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8824 -&gt; IGTPW_14846</li>
-<li>Linux: CI_DRM_18203 -&gt; CI_DRM_18205</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18203: 0be244ee3139de3578e9acc56e1b917a4bd162cd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18205: 14e4110238694e33cbb1e4fc54d034cd5b45f3fe @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14846: 2af6f72c995b5c7261dd7dc1d9e96d000cd84fb4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8824: 8824</p>
-
-</body>
-</html>
-
---===============8369942771809018710==--
