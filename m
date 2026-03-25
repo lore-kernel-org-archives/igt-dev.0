@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8AC3106B526
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 12:44:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 791E3106B526
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 12:44:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 89EAC10E230;
-	Wed, 25 Mar 2026 12:44:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 353D010E230;
+	Wed, 25 Mar 2026 12:44:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J9qf+1So";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bCHuQTQc";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB3EF10E7B7
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 12:44:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55BC110E560
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 12:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774442683; x=1805978683;
+ t=1774442686; x=1805978686;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=j3AhinyjJgXW6GJgYYz9wE8l6krnW+ORPxj3eejolZ4=;
- b=J9qf+1SoxIGaA3LLir4TyjeobHMDs4vtNQ+v36c9bxyDJbcZlW+/TXWR
- BTT5AMXSldSfeIVXkUm8aplO3iDNjAmLsIEK0WfhGVDP1Trf6PcBTrJFB
- yAdtB7Uap1gF4akmrWVVmYvgPITeB/F+XZFDp293VOR9BJZVqkA7/DRhY
- Sy0ouIHmDA10EtPo0dEAn+nG0X+Viq8tFVRdNWB6IcDdrlNwWOoRwAy1i
- PfxA/UnOqSmWXnNvF5LILhHpnP8FhxrGr2VjDjuKvKEwpTmRpyRDp+ESr
- 4eXW+FOXC6K0IhKUL0n3Erf2BXQXUqPUUQPNAjUz7ZWXoJMSGVTJwr3Lr Q==;
-X-CSE-ConnectionGUID: ta+k+eTcQ0uXF7FLr7uwxw==
-X-CSE-MsgGUID: BW+hhPg3R7CbReSZxqJE4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="86555503"
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="86555503"
+ bh=X7Z1X3L+OcoB8SvLL3N/64lPStv2KkVAQqBI7G7LtZk=;
+ b=bCHuQTQcamQvrwg/fLfQKGH9rVWI6QtdtdoYg8NbOvRMaCYN058YGCB+
+ QcYpxkOBw6AU1TNSs4etDGGbgyJYpp28y9AAEuY0pzRHC7hyuLMl7aC9U
+ ng3e3v1pzP40BOMMXHWjoQV6oycWJYvLLE+DbHjvO0rAerbCej6+/nlmm
+ p5FX5A1m045SyJt+V2FglwjbfwcGEflGJJVKioh/6Wg0jNpr/HASV8oyQ
+ BhAfKG7pYg4Bz/c3HQn6dna8/NTukMdYHYYeyPaJb6KOrlyNeegSWHKFz
+ 0eyMXwlA6+bIr+2w4smS6lgCAM/PQIDqNoo3GNAeoeIQY3DatqJa2qjue A==;
+X-CSE-ConnectionGUID: COiQ/STvQiO5FVPFBW/Vow==
+X-CSE-MsgGUID: wpsrHsM6SxmdLChxDfJf2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="86555505"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="86555505"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 05:44:43 -0700
-X-CSE-ConnectionGUID: 1baVidKpQuahfgl40y3lmw==
-X-CSE-MsgGUID: UAQZul5VSDKRgQCakzzYyQ==
+ 25 Mar 2026 05:44:46 -0700
+X-CSE-ConnectionGUID: t3VoJrHxRD2ZTjxXv9X+SA==
+X-CSE-MsgGUID: n77kSp+RQ0mwo/F2YMOVIw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="223876346"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="223876356"
 Received: from varungup-desk.iind.intel.com ([10.190.238.71])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 05:44:42 -0700
+ 25 Mar 2026 05:44:44 -0700
 From: Arvind Yadav <arvind.yadav@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: matthew.brost@intel.com, himal.prasad.ghimiray@intel.com,
  thomas.hellstrom@linux.intel.com, nishit.sharma@intel.com,
  pravalika.gurram@intel.com
-Subject: [PATCH i-g-t v6 2/9] lib/xe: Add purgeable memory ioctl support
-Date: Wed, 25 Mar 2026 18:14:16 +0530
-Message-ID: <20260325124426.3265234-3-arvind.yadav@intel.com>
+Subject: [PATCH i-g-t v6 3/9] tests/intel/xe_madvise: Add dontneed-before-mmap
+ subtest
+Date: Wed, 25 Mar 2026 18:14:17 +0530
+Message-ID: <20260325124426.3265234-4-arvind.yadav@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260325124426.3265234-1-arvind.yadav@intel.com>
 References: <20260325124426.3265234-1-arvind.yadav@intel.com>
@@ -70,26 +71,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add xe_vm_madvise_purgeable() helper function to support purgeable
-memory management through the XE madvise ioctl. This allows applications
-to hint to the kernel about buffer object usage patterns for better
-memory management under pressure.
+This test validates that mmap() fails with -EBUSY when attempting to
+map a BO marked DONTNEED. The mmap offset ioctl succeeds (it just
+returns the pre-allocated offset); the purgeable check happens in
+xe_gem_object_mmap() at mmap() time.
 
-The function provides a clean interface to:
-- Mark buffer objects as DONTNEED (purgeable)
-- Mark buffer objects as WILLNEED (not purgeable)
+  - DONTNEED BOs: return -EBUSY (temporary purgeable state, BO still
+    has backing store but can be purged at any time)
+  - Purged BOs: return -EINVAL (permanent, backing store discarded)
 
-Returns the retained value directly (1 if backing store exists, 0 if
-purged).
-
-Also update __xe_vm_madvise() to reject purgeable state operations
-and direct users to the dedicated helper.
-
-v2:
-  - retained must be initialized to 0(Thomas)
+v4:
+  - Move unmap outside the block. (Pravalika)
+  - Added proper resource cleanup before calling igt_skip(). (Nishit)
+  - Added assertion for xe_bo_map. (Nishit)
 
 v5:
-  - Rename retained to retained_ptr. (Jose)
+  - Add kernel capability check *_FLAG_HAS_PURGING_SUPPORT for
+    purgeable support. (Jose)
+  - Drop memory pressure trigger path; mark DONTNEED directly and
+    assert -EBUSY from mmap offset ioctl; restore WILLNEED before
+    cleanup.
+
+v6:
+  - Support iGPU by using total system RAM as the pressure baseline
+    instead of VRAM size (which is 0 on iGPU).
+  - Raise overpressure from 25% to 50% of the baseline to ensure the
+    kernel shrinker is forced to reclaim on systems with large free RAM.
+  - The DONTNEED enforcement point is mmap() itself, not the
+    DRM_IOCTL_XE_GEM_MMAP_OFFSET ioctl. Update the test to mark DONTNEED
+    first, then verify DRM_IOCTL_XE_GEM_MMAP_OFFSET still succeeds, and
+    finally verify that mmap() fails with -EBUSY
 
 Cc: Nishit Sharma <nishit.sharma@intel.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
@@ -98,74 +109,262 @@ Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 Cc: Pravalika Gurram <pravalika.gurram@intel.com>
 Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
 ---
- lib/xe/xe_ioctl.c | 33 +++++++++++++++++++++++++++++++++
- lib/xe/xe_ioctl.h |  2 ++
- 2 files changed, 35 insertions(+)
+ tests/intel/xe_madvise.c | 233 +++++++++++++++++++++++++++++++++++++++
+ tests/meson.build        |   1 +
+ 2 files changed, 234 insertions(+)
+ create mode 100644 tests/intel/xe_madvise.c
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index ea3f2fcaa..955607f93 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -785,6 +785,9 @@ int __xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- 	case DRM_XE_MEM_RANGE_ATTR_PAT:
- 		madvise.pat_index.val = op_val;
- 		break;
-+	case DRM_XE_VMA_ATTR_PURGEABLE_STATE:
-+		/* Purgeable state handled by xe_vm_madvise_purgeable */
-+		return -EINVAL;
- 	default:
- 		igt_warn("Unknown attribute\n");
- 		return -EINVAL;
-@@ -821,6 +824,36 @@ void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- 				      instance), 0);
- }
- 
-+/**
-+ * xe_vm_madvise_purgeable:
-+ * @fd: xe device fd
-+ * @vm_id: vm_id of the virtual range
-+ * @start: start of the virtual address range
-+ * @range: size of the virtual address range
-+ * @state: purgeable state (DRM_XE_VMA_PURGEABLE_STATE_WILLNEED or DONTNEED)
-+ *
-+ * Sets the purgeable state for a virtual memory range. This allows applications
-+ * to hint to the kernel about buffer object usage patterns for better memory management.
-+ *
-+ * Returns: retained value (1 if backing store exists, 0 if purged)
+diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
+new file mode 100644
+index 000000000..de4a6e34c
+--- /dev/null
++++ b/tests/intel/xe_madvise.c
+@@ -0,0 +1,233 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
 + */
-+uint32_t xe_vm_madvise_purgeable(int fd, uint32_t vm_id, uint64_t start,
-+				 uint64_t range, uint32_t state)
-+{
-+	uint32_t retained_val = 0;
-+	struct drm_xe_madvise madvise = {
-+		.vm_id = vm_id,
-+		.start = start,
-+		.range = range,
-+		.type = DRM_XE_VMA_ATTR_PURGEABLE_STATE,
-+		.purge_state_val.val = state,
-+		.purge_state_val.retained_ptr = (uint64_t)(uintptr_t)&retained_val,
-+	};
 +
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_MADVISE, &madvise), 0);
-+	return retained_val;
++/**
++ * TEST: Validate purgeable BO madvise functionality
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: madvise, purgeable
++ */
++
++#include "igt.h"
++#include "xe_drm.h"
++
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++static bool xe_has_purgeable_support(int fd)
++{
++	struct drm_xe_query_config *config = xe_config(fd);
++
++	return config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
++		DRM_XE_QUERY_CONFIG_FLAG_HAS_PURGING_SUPPORT;
 +}
 +
- #define	BIND_SYNC_VAL	0x686868
- void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 			uint64_t addr, uint64_t size, uint32_t flags)
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index b62d259fd..a02d68cfe 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -108,6 +108,8 @@ int __xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t
- 		    uint32_t type, uint32_t op_val, uint16_t policy, uint16_t instance);
- void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t ext,
- 		   uint32_t type, uint32_t op_val, uint16_t policy, uint16_t instance);
-+uint32_t xe_vm_madvise_purgeable(int fd, uint32_t vm_id, uint64_t start,
-+				 uint64_t range, uint32_t state);
- int xe_vm_number_vmas_in_range(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr);
- int xe_vm_vma_attrs(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr,
- 		    struct drm_xe_mem_range_attr *mem_attr);
++/* Purgeable test constants */
++#define PURGEABLE_ADDR		0x1a0000
++#define PURGEABLE_BO_SIZE	4096
++
++/**
++ * trigger_memory_pressure - Fill VRAM/RAM + 50% to force purgeable reclaim
++ * @fd: DRM file descriptor
++ * @vm: VM handle (unused, kept for API compatibility)
++ *
++ * Allocates BOs in a temporary VM until memory is overcommitted by 50%,
++ * forcing the kernel to purge DONTNEED-marked BOs.
++ */
++static void trigger_memory_pressure(int fd, uint32_t vm)
++{
++	uint64_t vram_size, mem_size, overpressure;
++	const uint64_t chunk = 8ull << 20; /* 8 MiB */
++	int max_objs, n = 0;
++	uint32_t *handles;
++	uint64_t total;
++	void *p;
++	uint32_t handle, temp_vm;
++
++	/* Use a separate VM so pressure BOs don't affect the test VM */
++	temp_vm = xe_vm_create(fd, 0, 0);
++
++	vram_size = xe_visible_vram_size(fd, 0);
++	if (vram_size > 0) {
++		/* dGPU: pressure VRAM to trigger purgeable reclaim */
++		mem_size = vram_size;
++	} else {
++		/*
++		 * iGPU: purgeable BOs reside in system memory. Use *total*
++		 * RAM (not just available) as the baseline so that we always
++		 * over-commit regardless of how much is already in use.
++		 */
++		mem_size = igt_get_total_ram_mb() << 20;
++	}
++
++	/* Scale overpressure to 50% of memory, minimum 64MB */
++	overpressure = mem_size / 2;
++	if (overpressure < (64 << 20))
++		overpressure = 64 << 20;
++
++	max_objs = (mem_size + overpressure) / chunk + 1;
++	handles = malloc(max_objs * sizeof(*handles));
++	igt_assert(handles);
++
++	total = 0;
++	while (total < mem_size + overpressure && n < max_objs) {
++		uint32_t err;
++
++		err = __xe_bo_create(fd, temp_vm, chunk,
++				     vram_if_possible(fd, 0),
++				     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++				     NULL, &handle);
++		if (err) /* Out of memory — sufficient pressure achieved */
++			break;
++
++		handles[n++] = handle;
++		total += chunk;
++
++		p = xe_bo_map(fd, handle, chunk);
++		igt_assert(p != MAP_FAILED);
++
++		/* Fault in all pages so they actually consume memory */
++		memset(p, 0xCD, chunk);
++		munmap(p, chunk);
++	}
++
++	/* Allow shrinker time to process pressure */
++	usleep(100000);
++
++	for (int i = 0; i < n; i++)
++		gem_close(fd, handles[i]);
++
++	free(handles);
++
++	xe_vm_destroy(fd, temp_vm);
++}
++
++static jmp_buf jmp;
++
++__noreturn static void sigtrap(int sig)
++{
++	siglongjmp(jmp, sig);
++}
++
++/**
++ * purgeable_mark_and_verify_purged - Mark DONTNEED, pressure, check purged
++ * @fd: DRM file descriptor
++ * @vm: VM handle
++ * @addr: Virtual address of the BO
++ * @size: Size of the BO
++ *
++ * Returns true if the BO was purged under memory pressure.
++ */
++static bool purgeable_mark_and_verify_purged(int fd, uint32_t vm, uint64_t addr, size_t size)
++{
++	uint32_t retained;
++
++	/* Mark as DONTNEED */
++	retained = xe_vm_madvise_purgeable(fd, vm, addr, size,
++					   DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
++	if (retained != 1)
++		return false;
++
++	/* Trigger memory pressure */
++	trigger_memory_pressure(fd, vm);
++
++	/* Verify purged */
++	retained = xe_vm_madvise_purgeable(fd, vm, addr, size,
++					   DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
++	return retained == 0;
++}
++
++/**
++ * purgeable_setup_simple_bo - Setup VM and bind a single BO
++ * @fd: DRM file descriptor
++ * @vm: Output VM handle
++ * @bo: Output BO handle
++ * @addr: Virtual address to bind at
++ * @size: Size of the BO
++ * @use_scratch: Whether to use scratch page flag
++ *
++ * Helper to create VM, BO, and bind it at the specified address.
++ */
++static void purgeable_setup_simple_bo(int fd, uint32_t *vm, uint32_t *bo,
++				      uint64_t addr, size_t size, bool use_scratch)
++{
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.timeline_value = 1,
++	};
++	uint64_t sync_val = 0;
++
++	*vm = xe_vm_create(fd, use_scratch ? DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE : 0, 0);
++	*bo = xe_bo_create(fd, *vm, size, vram_if_possible(fd, 0),
++			   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++
++	sync.addr = to_user_pointer(&sync_val);
++	xe_vm_bind_async(fd, *vm, 0, *bo, 0, addr, size, &sync, 1);
++	xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC);
++}
++
++/**
++ * SUBTEST: dontneed-before-mmap
++ * Description: Mark BO as DONTNEED before mmap, verify mmap() fails with -EBUSY
++ * Test category: functionality test
++ */
++static void test_dontneed_before_mmap(int fd)
++{
++	uint32_t bo, vm;
++	uint64_t addr = PURGEABLE_ADDR;
++	size_t bo_size = PURGEABLE_BO_SIZE;
++	struct drm_xe_gem_mmap_offset mmo = {};
++	uint32_t retained;
++	void *ptr;
++
++	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, false);
++
++	/* Mark BO as DONTNEED - new mmap operations must be blocked */
++	retained = xe_vm_madvise_purgeable(fd, vm, addr, bo_size,
++					   DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
++	igt_assert_eq(retained, 1);
++
++	/* Ioctl succeeds even for DONTNEED BO; blocking happens at mmap() time. */
++	mmo.handle = bo;
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo), 0);
++
++	/* mmap() on a DONTNEED BO must fail with EBUSY. */
++	ptr = mmap(NULL, bo_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, mmo.offset);
++	igt_assert_eq_u64((uint64_t)ptr, (uint64_t)MAP_FAILED);
++	igt_assert_eq(errno, EBUSY);
++
++	/* Restore to WILLNEED before cleanup */
++	xe_vm_madvise_purgeable(fd, vm, addr, bo_size,
++				DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
++
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
++}
++
++int igt_main()
++{
++	struct drm_xe_engine_class_instance *hwe;
++	int fd;
++
++	igt_fixture() {
++		fd = drm_open_driver(DRIVER_XE);
++		xe_device_get(fd);
++		igt_require_f(xe_has_purgeable_support(fd),
++			      "Kernel does not support purgeable buffer objects\n");
++	}
++
++	igt_subtest("dontneed-before-mmap")
++		xe_for_each_engine(fd, hwe) {
++			test_dontneed_before_mmap(fd);
++			break;
++		}
++
++	igt_fixture() {
++		xe_device_put(fd);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index cecb4a8ae..a6370b685 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -314,6 +314,7 @@ intel_xe_progs = [
+ 	'xe_huc_copy',
+ 	'xe_intel_bb',
+ 	'xe_live_ktest',
++	'xe_madvise',
+ 	'xe_media_fill',
+ 	'xe_mmap',
+         'xe_module_load',
 -- 
 2.43.0
 
