@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7002C109C046
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 16:53:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B160109C048
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 17:19:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A73B10E820;
-	Wed, 25 Mar 2026 16:53:40 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QluH2djF";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7169610E822
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 16:53:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774457589; x=1805993589;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=YY0U5yG08Y3FSmq2d+hZi/96JYGcieLCluFpLt6OPoQ=;
- b=QluH2djFtFdV30wmrfLzhnuLB81GJmQj6C/aCaJvgSC/ZEnPo9NiVLTm
- myz98U/c2ml8EseQG+TNCT5ZLCIxarZZCiF1wZBc4py6ZSFyyGHkB4FUb
- xsYVk0bWivsJ5l3ikRewivW+HJ3urJ+Q2slyE05mkb9N1K1ZMnaqiUMFX
- Bj4VtAV/qqDNwasHsrAwqbvf44JR7rr8fLl0KAIC+T/uX85cyIRjm3vvX
- 0Oo8VINfHBIOEhG7BfbPxXd7UOw2Wb9GBBxvwdG3Ot7gza70RruqiX9W1
- B+UFHY986gTwXQF8VY2GSHZC28LhZuvkJZwUFodpCN5VTlaAWfqaUq4nk g==;
-X-CSE-ConnectionGUID: tnbISyJtSKuta09rsm50iw==
-X-CSE-MsgGUID: AEdsil5JTVGWytIL8fQGaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="92880605"
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="92880605"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 09:53:09 -0700
-X-CSE-ConnectionGUID: NrfdIYAnSeqN57orBINQSA==
-X-CSE-MsgGUID: a25XeBSER3e0Ep10eMBHdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="224991845"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 09:53:08 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: pranay.samala@intel.com,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v2 1/4] tests/intel/kms_fbc_dirty_rect: Use per-output
- PSR check before disabling
-Date: Wed, 25 Mar 2026 22:21:37 +0530
-Message-ID: <20260325165140.115520-2-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260325165140.115520-1-jeevan.b@intel.com>
-References: <20260325165140.115520-1-jeevan.b@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC12D10E160;
+	Wed, 25 Mar 2026 17:19:42 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBD9510E160;
+ Wed, 25 Mar 2026 17:19:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3296356920951874446=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_lib/intel=5Fpat=3A_Fix_typ?=
+ =?utf-8?q?o_PAT=5FMODE_-=3E_PTA=5FMODE?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 25 Mar 2026 17:19:35 -0000
+Message-ID: <177445917580.397746.6272498500387033878@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260325092134.112722-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20260325092134.112722-2-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,46 +37,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Pass output to psr_sink_support so PSR/PR is disabled only when
-the sink supports it. Using NULL performs a global check and can
-be incorrect on multi-eDP systems.
+--===============3296356920951874446==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Update title, include PR and output name in log, check
-    psr_disable return value.
+== Series Details ==
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/intel/kms_fbc_dirty_rect.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+Series: lib/intel_pat: Fix typo PAT_MODE -> PTA_MODE
+URL   : https://patchwork.freedesktop.org/series/163832/
+State : success
 
-diff --git a/tests/intel/kms_fbc_dirty_rect.c b/tests/intel/kms_fbc_dirty_rect.c
-index efbd46985..c58ab3465 100644
---- a/tests/intel/kms_fbc_dirty_rect.c
-+++ b/tests/intel/kms_fbc_dirty_rect.c
-@@ -414,11 +414,15 @@ static bool prepare_test(data_t *data)
- 	igt_require_f(intel_fbc_supported(data->crtc),
- 		      "FBC not supported by the chipset on pipe\n");
- 
--	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL) ||
--	    psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_2, NULL) ||
--	    psr_sink_support(data->drm_fd, data->debugfs_fd, PR_MODE, NULL)) {
--		igt_info("PSR is supported by the sink. Disabling PSR to test Dirty FBC functionality.\n");
--		psr_disable(data->drm_fd, data->debugfs_fd, data->output);
-+	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, data->output) ||
-+	    psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_2, data->output) ||
-+	    psr_sink_support(data->drm_fd, data->debugfs_fd, PR_MODE, data->output)) {
-+		igt_info("PSR/PR supported on %s, disabling for dirty FBC test\n",
-+			 igt_output_name(data->output));
-+
-+		igt_require_f(psr_disable(data->drm_fd, data->debugfs_fd, data->output),
-+			      "Failed to disable PSR/PR on %s\n",
-+			      igt_output_name(data->output));
- 	}
- 
- 	if (data->feature & FEATURE_FBC)
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8825_FULL -> XEIGTPW_14849_FULL
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 2)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14849_FULL that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@flip-vs-expired-vblank@a-edp1:
+    - shard-lnl:          [PASS][1] -> [FAIL][2] ([Intel XE#301]) +3 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8825/shard-lnl-5/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
+
+  * igt@kms_pm_dc@dc5-psr:
+    - shard-lnl:          [PASS][3] -> [FAIL][4] ([Intel XE#7340])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8825/shard-lnl-8/igt@kms_pm_dc@dc5-psr.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/shard-lnl-2/igt@kms_pm_dc@dc5-psr.html
+
+  * igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma:
+    - shard-lnl:          [PASS][5] -> [FAIL][6] ([Intel XE#5625])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8825/shard-lnl-1/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/shard-lnl-4/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_vrr@cmrr@pipe-a-edp-1:
+    - shard-lnl:          [FAIL][7] ([Intel XE#4459]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8825/shard-lnl-2/igt@kms_vrr@cmrr@pipe-a-edp-1.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/shard-lnl-6/igt@kms_vrr@cmrr@pipe-a-edp-1.html
+
+  
+  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
+  [Intel XE#4459]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459
+  [Intel XE#5625]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625
+  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8825 -> IGTPW_14849
+  * Linux: xe-4776-14e4110238694e33cbb1e4fc54d034cd5b45f3fe -> xe-4778-41579e12882a0a3b881bfade003fcb1fd39c347c
+
+  IGTPW_14849: 14849
+  IGT_8825: 531ebe0606453021b88f794aad255d9e1a234d3d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4776-14e4110238694e33cbb1e4fc54d034cd5b45f3fe: 14e4110238694e33cbb1e4fc54d034cd5b45f3fe
+  xe-4778-41579e12882a0a3b881bfade003fcb1fd39c347c: 41579e12882a0a3b881bfade003fcb1fd39c347c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/index.html
+
+--===============3296356920951874446==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/intel_pat: Fix typo PAT_MODE -&gt; PTA_MODE</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163832/">https://patchwork.freedesktop.org/series/163832/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8825_FULL -&gt; XEIGTPW_14849_FULL</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14849_FULL that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank@a-edp1:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8825/shard-lnl-5/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a>) +3 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc5-psr:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8825/shard-lnl-8/igt@kms_pm_dc@dc5-psr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/shard-lnl-2/igt@kms_pm_dc@dc5-psr.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8825/shard-lnl-1/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/shard-lnl-4/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625">Intel XE#5625</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_vrr@cmrr@pipe-a-edp-1:<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8825/shard-lnl-2/igt@kms_vrr@cmrr@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459">Intel XE#4459</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14849/shard-lnl-6/igt@kms_vrr@cmrr@pipe-a-edp-1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8825 -&gt; IGTPW_14849</li>
+<li>Linux: xe-4776-14e4110238694e33cbb1e4fc54d034cd5b45f3fe -&gt; xe-4778-41579e12882a0a3b881bfade003fcb1fd39c347c</li>
+</ul>
+<p>IGTPW_14849: 14849<br />
+  IGT_8825: 531ebe0606453021b88f794aad255d9e1a234d3d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4776-14e4110238694e33cbb1e4fc54d034cd5b45f3fe: 14e4110238694e33cbb1e4fc54d034cd5b45f3fe<br />
+  xe-4778-41579e12882a0a3b881bfade003fcb1fd39c347c: 41579e12882a0a3b881bfade003fcb1fd39c347c</p>
+
+</body>
+</html>
+
+--===============3296356920951874446==--
