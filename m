@@ -4,57 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70EDDFEA80D
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 06:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B852FEA810
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 06:31:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2640C10E77C;
-	Wed, 25 Mar 2026 06:04:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EAA2010E473;
+	Wed, 25 Mar 2026 06:31:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ErJ4iOtX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EC4W1DIQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E111510E77C
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 06:03:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A8C5C10E473
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 06:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774418636; x=1805954636;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0Cy530WiTAXaQdR6J24jJcIZrOtgDywtPY9IyRhPcsw=;
- b=ErJ4iOtXfhv+SVQvcZc6NdqEfP3+r3cIApBlMx1PCeCU4j6+sddJn4q3
- IUyNmqEG0SnhcU7QV1krGir48cpQkg1f8TRE2NBc4XQsIwfwSY2xU+BbR
- zTeudQSvdXLZ8L1/Z/RFjZ8MPJE9K9Ime86KNLfZK/MD1ryoH9hRsVjVL
- MljDCt/8yakxt2A3G2sSNn7MPuxOxeNJZGzZdQKDxpJkZd8SHz3AQEbcA
- h/liMXJd/Er0rfvgjAVZluLrLMXzsv/epDY2b4l98yJpOkyu67YFfib13
- GoaREszKQHRGNjZXJeWxY6zpwMMX+AcNfsArajqiBgTF8iHJfDljwbVB+ g==;
-X-CSE-ConnectionGUID: qDgBGfqoSsOUabH+noyRqA==
-X-CSE-MsgGUID: 2fmByFvYTT24vCDyETY3QA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="86925849"
-X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; d="scan'208";a="86925849"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2026 23:03:56 -0700
-X-CSE-ConnectionGUID: W4PSz2caSMut13jvCAejwQ==
-X-CSE-MsgGUID: Bh8C4aaYQFG5SSvG4vFjbA==
+ t=1774420289; x=1805956289;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=1CRUDDlqJ+g22mrdqpq/O804VF/rpBvwSaCV+/dFp9U=;
+ b=EC4W1DIQ4P9NWidGunekj9RQYt5QvznQjwTvGNnR8YwsIJYozVeDZhgY
+ 5exWlGrjsUAxAkWGHkLrDuDQBKpM13j7kEpWPg/a2nNdL1Y6XCA/vz4Lv
+ sYjAu9mia50lxElcA57iVOqk3IWIpI+MLxB8QPNzPl4/nL0zYh0U+8Xxj
+ Dnp/OyQb+LXKuhI0xU7vOTQIVjOX8NcuD2iAB2tzwvTfIrRmOcAZ1b3DX
+ ZrjJrY+6cV6+qhaFHELpsWckM+04SGhjQuH1b9khzl7tw9uTWCirCmlPp
+ DO35P6fL+5oA1EjF3ARpGqmrACH3t+t7X+nFKmj8BBbh5k55ir75xwS1Z g==;
+X-CSE-ConnectionGUID: pa//EXy3TJux9BCEOENo0w==
+X-CSE-MsgGUID: E4Bob5rpTcWiz7adHjPlMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="75518980"
+X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; d="scan'208";a="75518980"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2026 23:31:29 -0700
+X-CSE-ConnectionGUID: VNsAVXdWTEeWiMV8mqUA4Q==
+X-CSE-MsgGUID: pIaP0YeoTYiSBDnb1cx4uA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; d="scan'208";a="228649320"
-Received: from dut6245dg2frd.fm.intel.com ([10.80.54.109])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2026 23:03:55 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: thomas.hellstrom@intel.com, nishit.sharma@intel.com,
- Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH v7 i-g-t 3/3] tests/intel/xe_vm: Add support for overcommit
- tests
-Date: Wed, 25 Mar 2026 06:03:35 +0000
-Message-ID: <20260325060339.2499618-4-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260325060339.2499618-1-sobin.thomas@intel.com>
-References: <20260325060339.2499618-1-sobin.thomas@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; d="scan'208";a="224850625"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Mar 2026 23:31:29 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 24 Mar 2026 23:31:27 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 24 Mar 2026 23:31:27 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.50) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 24 Mar 2026 23:31:26 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nHLneLDEMEkLC52TAeY+/pDEoUYMj/U59NZVX/HE72XU37jIlsnF+GlZFoBiQ/J5Oq89G1frD9gh+4Al+oOMz75B0cazqZoNe8lGg9u6q89hy7SBTgzf/Ioewd+3WMGgePhYCjg5/VTahri8Xxkabu3SvKsmNRw1S9C236X/O6MoIqQWYYZ/NBqRW3D57UERKX1lPD+Eey+ImnIjUAHPJDxjssDzjqlL6gptwZKheMKEg9sNl2MNyRKOhr1lfQzYJ42y2iEwUnt2QvqOliv8p3l9c4lmciZR6Im9NJJzln7lKyCghK9DPyIKBJr1PxDapIbU79kY8y4vb6Kws8QZGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tgfwrmr30QJCeQF2m2wcGEhmenD5pzkT844ez/BbDuo=;
+ b=NobpztyB5wK/10QtsBgkX4DrI1lq/hfxjYSV4JKAzjcl007xUEzigb16pKv2eyKUF8UGHh9bqXpnccD3aEprrLrwIV85DmOezpGgZGbNAwRxvXqHJ4DXZcPM/cLDQnfM5hx2IBfhzoII/50ArV24qTIjKBjvFEET9sfNenvDr5C1e4muV5Xlth9eFrbWAdL4MDy5HHx4L8kYurDGxtGupKxqsE0YSywW5PU3RzL9T5P0T4omFayx48q6Nt+kqO/uahX8dGRvbE8UKKvCcVwR4KQ/Oaz36NisBfpvpn9EdQvTLjWjnWUbhYwihwz9FyEuzn1V9w+PSU4cmH6WmUywcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL1PR11MB5400.namprd11.prod.outlook.com (2603:10b6:208:311::20)
+ by SJ0PR11MB4894.namprd11.prod.outlook.com (2603:10b6:a03:2d4::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
+ 2026 06:31:20 +0000
+Received: from BL1PR11MB5400.namprd11.prod.outlook.com
+ ([fe80::a05c:135b:a254:23df]) by BL1PR11MB5400.namprd11.prod.outlook.com
+ ([fe80::a05c:135b:a254:23df%4]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
+ 06:31:19 +0000
+Message-ID: <1bc76e3d-a590-4dc1-b0e8-82b72ad9efbf@intel.com>
+Date: Wed, 25 Mar 2026 12:01:11 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2] tests/kms_properties: Add skip on headless
+ machines
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+CC: <igt-dev@lists.freedesktop.org>, <karthik.b.s@intel.com>
+References: <20260318140120.283593-1-sumit.kishore@intel.com>
+ <abr3mcfHCmNGsnR2@intel.com>
+Content-Language: en-US
+From: "Kishore, Sumit" <sumit.kishore@intel.com>
+In-Reply-To: <abr3mcfHCmNGsnR2@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5PR01CA0214.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1f3::10) To BL1PR11MB5400.namprd11.prod.outlook.com
+ (2603:10b6:208:311::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR11MB5400:EE_|SJ0PR11MB4894:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0bf96f72-023a-49a9-b64f-08de8a382018
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|366016|18002099003|22082099003|56012099003; 
+X-Microsoft-Antispam-Message-Info: klZikH/N9yOnJ1uMfkX1ZEMroIOxb2tLCaM/BZPFHyXaLp3x3zSnxMV0baYfGT3HnVtxreIR+zKxWgVgIRdeGfHAcEKpgcV+qos6qfrDOavkf0YXHK9YoKhpDqeXAm/Y1UFv79nNR16XQ+vbbKC2Uw6MtA8847SM6GliWIykuXPTpO6tgRaj7Rf79rLiqspIUSK08ZR7BBiQLrfaAAUmmxwVTHXvR9PDw27ugfY9v56vJjpaT1YqjW4jUpM0P9b4nI8UF6VKm1VOCnTiJ8Zhxkz3llR850ubAOv/DkFKhKHqCTB8NuK9xbJ4hOKsuuSCQb/r+zsvHS/fnNYVU78UMuw/2AiCUxq8/qzS+FWqubRoYh9LmQeV9IX8KDEYfHz968f0ANO7A36DmEtI31rLA0KJUBlCDIumQ9nQwvK69NPEH/TQEknYHP/bxEdlUD3bjXMhVZfDX9XrEYuAqSHIGnaKMzM/w5xMiEd0/VsY4W5/1m7LSL+I9U5Pmta7nkD5llI3WJGD8UVfKG6p8ucfu6/qDOYKstf1b/yFFDXnEotCCGsm2x7wdFAiDHGbzfnlWsHVb/4rot8XwjUOIvmBXNYZzgzeInyzW5i6W3ZzzhuBe+xt/WZbB3YRz/SCVSx9mnqk/YwkHLsVG/D1b2ITzODy28xiY5wDDs8ZrIQjDaqZMiPyPSrfBO0IDsYBVg15+j5jjJ6TKPyPsK4mYQrBCbXlhKZwq3dRqNXPSRi1YHE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR11MB5400.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(18002099003)(22082099003)(56012099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UG43OHFqRnUwckJjRjNjUFNlQ2o3aEl4REJGQklZNFVtUWg0MnNnT28zMTEz?=
+ =?utf-8?B?UWE3UUM5dVFCd0haT1g2TForeUZndC85TDA4SmJYdHRqSjIvT1FqQlcxeFAz?=
+ =?utf-8?B?RUxDVExwaFMxYXNpZVFoblFCUmErY1RzR0FjemRwdXhHRXVyMVZ2LzFWSm5P?=
+ =?utf-8?B?REFUOTdsdWg2QTZiQ2Z2NlBBcXI5UmcvNFJTODNrdXJFRm1maHBRb2FjVll6?=
+ =?utf-8?B?Rnk0RlRTZXZXRGNXVHRwUExEaVN4NlU4S2tnUFZrUk95UzJRSFdVTkFTRlg2?=
+ =?utf-8?B?SkljY1A0U0VLTFJuSDVSYk9GaFNSckZZN2dyQ1g1R2dQUHYvaFNTK2dTRlhE?=
+ =?utf-8?B?SlhjUnZsM2w3eVRHeGwvWEdnQUxOVE1nbmc0MFVtZUZTTzZrL3VidGlwektP?=
+ =?utf-8?B?Yk9BTk9sR1YxUWFUYVBYK2pHalQwSTl5dytwS252OVVKVTRBZ0x2N3p1K1dX?=
+ =?utf-8?B?V3RmZmhYM2lCTEtCUlpjemRvNnBqN05EQjliN1U4RVZETHZtbTNjVlVHdVRj?=
+ =?utf-8?B?YTRwVWRQUm4xRnVvNjF0QTZtN2JlL3pUUmM4ek5sVW5LTGRubU5BTHE1NTk5?=
+ =?utf-8?B?RWxxKzNqRTJiNmo3R05FN2NqMW5iTWlFSHVOMktwK25TTHFibGtnQVhydFRZ?=
+ =?utf-8?B?eTg0M1F5d3RnaSt5SG13VjRXM1FQbVJSaUY0UFVldzZUcDBwbFZUYlRKWWpF?=
+ =?utf-8?B?aWZVSHNzODRNZzc1OEdWOFp1cUgya3FENm1hY0FYZDJ0MHNGRXNjT0R2aGVU?=
+ =?utf-8?B?L0NSaDlQNk1HZDZJdmdGSUZISmw2eFh4bG4xK1N6SER5N3VlTUNTWklWQWow?=
+ =?utf-8?B?MmtyOVBLeU9icjFMcHJialpNSEp4ODNsZExRcWVlVjdzZm1nUHMyYkpvaHJW?=
+ =?utf-8?B?KzJsdHRvMW5ZR3l6R2NzUmtVdG9hcEdMZUtlZzhVVU92MzQvWStsb3VLN0Jm?=
+ =?utf-8?B?bE5LYnJudGNBRHVoSlVuMUx1Y3c5Q244bUlzemdQNVE2cVAyS0VpU0lTTTVO?=
+ =?utf-8?B?NjFiNjBQWGRncW0vNkcyV0VMeW5OTUNPbG55TEZZcVdOcEk1YWtocGdxdWFk?=
+ =?utf-8?B?QTBlTjQ2RExJZkhwcXByMkk0dllBcFVObHRkTmRmSzRRUGtRQ2lDSGVuMXc5?=
+ =?utf-8?B?bjhkTXg1bjlvQ0lra01RTWJDVEh0R2NEMGVYL2EyVEU0YlVhTlM5Qy9wcEpO?=
+ =?utf-8?B?YkF4clYvZTh1YVNhTVhnM0VaclNQcnRwYkYwWW9XQmxLQ0JXUE5FdWpvYTAv?=
+ =?utf-8?B?bHhqT2dMWWIxSTdhLzY4NXRVWXlyOE9hcUZwcjBnYjFIU3dLbmpGZjVhS2Rx?=
+ =?utf-8?B?RklzWVNPd3kyaDU3aWtkT1duZUIxNVFYc1pHc0VRUC90dWhmTHpiVkY1NURJ?=
+ =?utf-8?B?N1BZb3VsR0JSM3htVkZjSGZoYlBVNmp0aWlBT0JnTWdzWk1uU2RnZXdSZm5T?=
+ =?utf-8?B?VXQ0L0l3L25RdFZLcGp6VTJ1aWNoTjRQRjFzT0VRSi9ZSG1KMG9nTFdEeDVu?=
+ =?utf-8?B?aHVaSzVrRHVIZzZ2SjBnMSs0azJhckg4Q0RsN0xIMXVoR0NJdWZ5ZHBNWTVT?=
+ =?utf-8?B?TG5iKzNNVEJEU3ZSMzRBbHZ3VE1zMkRqVUdOTnVuYTl5VitQTTQzcXQ4dzd1?=
+ =?utf-8?B?Z3VkWEhGV0FHbklKMGlBbkRFeUVYT3ozUVRXOXplYlR5LzFGWW9PMmpCRlBx?=
+ =?utf-8?B?WnhDczBWa00yTUplcmFpUUtmRUM0SU5RcVhrcFdMRjZUOHBoQjFDZlcrUnBH?=
+ =?utf-8?B?WDZxa3dxamhOZVFSektTYUFBQ1VDdENJZzI2V2tNS1daekxFU1NkWllGZVo4?=
+ =?utf-8?B?enI2NndBOGNDTUZaenJMdWE5ckVuYkpEUHZyOC9LTC9PbXlvZGZKWFRMYzdm?=
+ =?utf-8?B?YTFYR0VPcTN4dk10d0pUQWhsWHdCVmdIUG9WMlg5aUkzQUNoZEJWanRJZWtk?=
+ =?utf-8?B?ZjJGZnlYcFRHZnFmcHFscEszRFN4OUhCb1RJcTZ1OGZrRk5IODMvWnNHWUxs?=
+ =?utf-8?B?ZkprWUJBSHFOV0pGcHJpZjhpWGhnaUxjeU5peVZRS0Q2RFNxK3dpVWp6K01R?=
+ =?utf-8?B?YjNmTXovM2N5UWphUlNIU1puaGVVWmZFQm5DK050ak5IdXFMYnpReUdQckxl?=
+ =?utf-8?B?b0lGTXBTR0VYL3lHUVBhSjRIL3NnbEcxNHF2Z0UrcHJKbncvSlZzK3k1dmln?=
+ =?utf-8?B?aXlBTGdES0I4MUhXNSsrWGFXNGNPNmlEMVhmRHgzTWp2eXRmQTM4RExkaFow?=
+ =?utf-8?B?Rlczb09qblRrNmRaVENXN05ybHhyTExWY2lYRXJSNzBpZFI5eFlodHo1eXdB?=
+ =?utf-8?B?YXoxN3BkL1cyODc2RkJBc3ZEakR6b3I0OGhnaDNJUFd6Q3BxejQ0dz09?=
+X-Exchange-RoutingPolicyChecked: NpdgnU/+FaXXX3pPWu+J8AbNuG9NOUQmimJOqf/iJBMptUqDZiZ+/ZfeTSG4g3ovtJtuJl3C5PdRIFJqtNTgTrB2ksoG8mlVODmXxbP0fqPKVLu9Key/CSRZ9q42Sy/ROYyhgy0xDzUUDiydPuy7mlddtdhrMQdfKlgtETg6cpSj41xXZjeN5kSm3yOmRJ+oVhnupP1Tb980qdqX6GeIRslZEE2gR8B5UEgxvxSSawMTRxKH0h8raHveYcNVj4upIUsPMLmBAmyQ0V1MAWHfYw3TktBtUrI4Ga5Jxt3K6TdU/PGe5TWETYyi/e8uLK5yHOjlDf/zdo6Qp44K2e6Gmg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0bf96f72-023a-49a9-b64f-08de8a382018
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5400.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 06:31:19.8350 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FP3pfeiCKOslyo9q9IvFlkY+laFnDTVRG7Pz8nAkW7/yUcrJR8UlTUPzlwfrs9Fk4uwcLG+FYB8YapPCpHA8qA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4894
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,493 +170,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Current tests focus on VM creation with basic mode selection and do not
-support overcommit scenarios.
 
-This change adds tests to verify overcommit behavior across different VM
-modes.
+On 19-03-2026 00:36, Ville Syrjälä wrote:
+> On Wed, Mar 18, 2026 at 07:31:20PM +0530, sumit kishore wrote:
+>> Print debug messages for sub-tests which are expected to
+>> skip on headless display systems.
+>>
+>> v2: Use existing library function, instead of
+>>      defining new (karthik)
+>>
+>> Signed-off-by: sumit kishore <sumit.kishore@intel.com>
+>> ---
+>>   tests/kms_properties.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+>> index f735839da..9f5649c90 100644
+>> --- a/tests/kms_properties.c
+>> +++ b/tests/kms_properties.c
+>> @@ -377,6 +377,8 @@ static void plane_properties(igt_display_t *display, bool atomic)
+>>   	igt_output_t *output;
+>>   	igt_crtc_t *crtc;
+>>   
+>> +	igt_display_require_output(display);
+>> +
+>>   	for_each_crtc_with_single_output(display, crtc, output) {
+>>   		igt_display_reset(display);
+>>   
+>> @@ -400,6 +402,8 @@ static void crtc_properties(igt_display_t *display, bool atomic)
+>>   	igt_crtc_t *crtc;
+>>   	igt_output_t *output;
+>>   
+>> +	igt_display_require_output(display);
+>> +
+> I'm thinking these tests shouldn't even need an output. It should be
+> possible to set (at least most) plane/crtc properties regardless of
+> whether they're active or not.
 
-Non-fault mode tests:
- - vram-lr-defer: DEFER_BACKING rejects overcommit at bind time
- - vram-lr-external-nodefer: Long-running mode with external BO and
-                             no defer backing
- - vram-no-lr: Non-LR mode
+this test is already being skipped on headless displays, when it hits 
+the check "for_each_crtc_with_single_output".
 
-Fault mode tests:
- - vram-lr-fault: Fault handling allows graceful overcommit via page
-   faults
- - vram-lr-fault-no-overcommit: Verifies NO_VM_OVERCOMMIT blocks same-VM
-   BO eviction during VM_BIND while still allowing eviction during
-   pagefault OOM
+my changes are printing the reason for the skip to add more clarity in 
+the logs.
 
-These tests validate that VMs handle memory pressure appropriately based
-on their configuration—rejecting at bind, failing at exec, or handling
-it gracefully via page faults.
+in case if we need to set the properties at crtc level, regardless of 
+headless/active displays,
 
-v2 - Added Additional test cases for LR mode and No Overcommit.
+it can be taken as a separate iGT improvement task as it will require 
+changes at multiple places, or re-design of the test case itself.
 
-v3 - Refactored into single api call  based on the VM / BO Flags.
-
-v5 - Addressed review comments (reset sync objects and nits).
-     Added check in cleanup
-v6 - Replaced __xe_vm_bind with xe_vm_bind_lr_sync and refactored.
-v7 - Introduce failable xe_vm_bind_lr_sync to handle the failure in the
-vm bind in case over commit happens.
-
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- tests/intel/xe_vm.c | 417 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 416 insertions(+), 1 deletion(-)
-
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index ccff8f804..c4e9bdcd3 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -20,6 +20,7 @@
- #include "xe/xe_query.h"
- #include "xe/xe_spin.h"
- #include <string.h>
-+#define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
- 
- static uint32_t
- addr_low(uint64_t addr)
-@@ -2376,6 +2377,409 @@ static void invalid_vm_id(int fd)
- 	do_ioctl_err(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy, ENOENT);
- }
- 
-+static void xe_async_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-+			     uint64_t offset, uint64_t addr, uint64_t size,
-+			     struct drm_xe_sync *sync, uint32_t num_syncs, bool *overcommit)
-+{
-+	int bind_err = 0;
-+
-+	bind_err = __xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
-+				DRM_XE_VM_BIND_OP_MAP, 0, sync, num_syncs, 0,
-+				DEFAULT_PAT_INDEX, 0);
-+	if (bind_err) {
-+		if (bind_err == -ENOMEM) {
-+			igt_debug("\n Setting overcommit to true");
-+			*overcommit = true;
-+		} else {
-+			igt_assert_f(0, "Unexpected bind error %d (%s)\n", -bind_err,
-+				     strerror(-bind_err));
-+		}
-+	}
-+}
-+
-+static void bo_create_check_overcommit(int fd, uint32_t vm, uint32_t bind_exec_queue,
-+				       uint32_t *bos, int num_bos, uint64_t nf_bo_size,
-+				       uint32_t placement, uint64_t data_addr,
-+				       bool *overcommit_detected, struct drm_xe_sync *bind_sync,
-+				       uint32_t bo_flags)
-+{
-+	uint32_t create_ret;
-+
-+	for (int i = 0; i < num_bos; i++) {
-+		struct {
-+			uint64_t vm_sync;
-+		} *data;
-+
-+		/* Create BO using the case's create function */
-+		create_ret = __xe_bo_create(fd, vm, nf_bo_size, placement,
-+					    bo_flags, NULL, &bos[i]);
-+
-+		if (create_ret == -ENOMEM) {
-+			*overcommit_detected = true;
-+			num_bos = i;
-+			igt_debug("BO create failed at %d/%d with error %d (%s) - overcommit detected\n",
-+				  i, num_bos, -create_ret, strerror(-create_ret));
-+			break;
-+		}
-+
-+		/* Map and bind BO */
-+		data = xe_bo_map(fd, bos[i], nf_bo_size);
-+		igt_assert(data);
-+		memset(data, 0, nf_bo_size);
-+
-+		bind_sync[0].addr = to_user_pointer(&data->vm_sync);
-+		xe_async_vm_bind(fd, vm, bind_exec_queue, bos[i], 0, data_addr + (i * nf_bo_size),
-+				 nf_bo_size, bind_sync, 1, overcommit_detected);
-+
-+		if (*overcommit_detected) {
-+			munmap(data, nf_bo_size);
-+			igt_debug("\n Overcommit detected while vm bind");
-+			break;
-+		}
-+
-+		if (data->vm_sync != USER_FENCE_VALUE)
-+			xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE,
-+				       bind_exec_queue, 20 * NSEC_PER_SEC);
-+		data->vm_sync = 0;
-+		munmap(data, nf_bo_size);
-+
-+		igt_debug("Created and bound BO %d/%d at 0x%llx\n",
-+			  i + 1, num_bos,
-+			  (unsigned long long)(data_addr + (i * nf_bo_size)));
-+	}
-+}
-+
-+static void verify_bo(int fd, uint32_t *bos, int num_bos, uint64_t nf_bo_size, uint64_t stride)
-+{
-+	for (int i = 0; i < num_bos; i++) {
-+		uint32_t *verify_data;
-+		int errors = 0;
-+
-+		verify_data = xe_bo_map(fd, bos[i], nf_bo_size);
-+		igt_assert(verify_data);
-+
-+		for (int off = 0; off < nf_bo_size; off += stride) {
-+			uint32_t expected = 0xBB;
-+			uint32_t actual = *(uint32_t *)((char *)verify_data + off);
-+
-+			if (actual != expected) {
-+				if (errors < 5)
-+					igt_debug("Mismatch at BO %d offset 0x%llx",
-+						  i, (unsigned long long)off);
-+				errors++;
-+			}
-+		}
-+
-+		munmap(verify_data, nf_bo_size);
-+		igt_assert_f(errors == 0, "Data verification failed for BO %d with %d errors\n",
-+			     i, errors);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: overcommit-fault-%s
-+ * Description: Test VM overcommit behavior in fault mode with %arg[1] configuration
-+ * Functionality: overcommit
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @vram-lr-fault:VRAM with LR and fault mode, expects exec to pass
-+ * @vram-lr-fault-no-overcommit:VRAM with LR, fault and NO_VM_OVERCOMMIT, expects bind rejection
-+ */
-+
-+/**
-+ * SUBTEST: overcommit-nonfault-%s
-+ * Description: Test VM overcommit behavior in nonfault mode with %arg[1] configuration
-+ * Functionality: overcommit
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @vram-lr-defer:VRAM with LR and defer backing, expects bind rejection
-+ * @vram-lr-external-nodefer:VRAM with LR and external BO without defer, expects exec fail
-+ * @vram-no-lr:VRAM without LR mode, expects exec to fail
-+ */
-+struct vm_overcommit_case {
-+	const char *name;
-+	uint32_t vm_flags;
-+	uint32_t bo_flags;
-+	bool use_vram;
-+	bool external;
-+	uint64_t data_addr;
-+	uint32_t pat_index;
-+	int overcommit_mult;
-+};
-+
-+static const struct vm_overcommit_case overcommit_cases[] = {
-+	/* Case 1: DEFER_BACKING */
-+	{
-+		.name = "vram-lr-defer",
-+		.vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE,
-+		.bo_flags = DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING |
-+			    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+		.external = false,
-+		.use_vram = true,
-+		.data_addr = 0x1a0000,
-+		.overcommit_mult = 2,
-+	},
-+	/* Case 1b: External BO without defer backing */
-+	{
-+		.name = "vram-lr-external-nodefer",
-+		.vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE,
-+		.bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+		.external = true,
-+		.use_vram = true,
-+		.data_addr = 0x1a0000,
-+		.overcommit_mult = 2,
-+	},
-+	/* Case 2: LR + FAULT - should not fail on exec */
-+	{
-+		.name = "vram-lr-fault",
-+		.vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+			    DRM_XE_VM_CREATE_FLAG_FAULT_MODE,
-+		.bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+		.external = false,
-+		.use_vram = true,
-+		.data_addr = 0x300000000,
-+		.overcommit_mult = 2,
-+	},
-+	/* Case 3: !LR - overcommit should fail on exec */
-+	{
-+		.name = "vram-no-lr",
-+		.vm_flags = 0,
-+		.bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+		.external = false,
-+		.use_vram = true,
-+		.data_addr = 0x300000000,
-+		.overcommit_mult = 2,
-+	},
-+	/* Case 4: LR + FAULT + NO_VM_OVERCOMMIT */
-+	{
-+		.name = "vram-lr-fault-no-overcommit",
-+		.vm_flags = DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT | DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+			    DRM_XE_VM_CREATE_FLAG_FAULT_MODE,
-+		.bo_flags = DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING |
-+			    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+		.external = false,
-+		.use_vram = true,
-+		.data_addr = 0x300000000,
-+		.overcommit_mult = 2,
-+	},
-+	{ }
-+};
-+
-+static void
-+test_vm_overcommit(int fd, struct drm_xe_engine_class_instance *eci,
-+		   const struct vm_overcommit_case *c,
-+		   uint64_t system_size, uint64_t vram_size)
-+{
-+	size_t sync_size, nf_bo_size = 64 * 1024 * 1024;  // 64MB per BO
-+	uint64_t overcommit_size, off, bind_exec_queue, data_addr;
-+	uint32_t vm = 0, *bos, batch_bo = 0, exec_queue = 0, placement = 0;
-+	uint64_t sync_addr = 0x101a0000, batch_addr = 0x200000000;
-+	uint64_t stride = 1024 * 1024, base_size;
-+	int64_t timeout = 20 * NSEC_PER_SEC, ret;
-+	int i, b_idx, res, num_bos, bind_err;
-+	bool overcommit_detected = false;
-+	bool is_fault_mode = (c->vm_flags & DRM_XE_VM_CREATE_FLAG_FAULT_MODE) != 0;
-+	bool is_lr_mode = (c->vm_flags & DRM_XE_VM_CREATE_FLAG_LR_MODE) != 0;
-+	struct drm_xe_sync bind_sync[1] = {
-+		{
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE
-+		},
-+	};
-+
-+	/* For fault mode: user fence, for non-fault mode: syncobj */
-+	struct drm_xe_sync exec_sync[1] = {
-+		{
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE,
-+			.handle = 0,
-+		},
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(exec_sync),
-+	};
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+		uint64_t vm_sync;
-+	} *batch_data;
-+	uint64_t *user_fence_sync = NULL;
-+
-+	data_addr = c->data_addr;
-+
-+	base_size = c->use_vram ? vram_size : system_size;
-+	overcommit_size = (uint64_t)(base_size * c->overcommit_mult);
-+	overcommit_size = ALIGN(overcommit_size, 4096);
-+
-+	num_bos = (overcommit_size / nf_bo_size) + 1;
-+	bos = calloc(num_bos, sizeof(*bos));
-+	igt_assert(bos);
-+
-+	igt_debug("Overcommit test: allocating %d BOs of %llu MB each",
-+		  num_bos, (unsigned long long)(nf_bo_size >> 20));
-+	igt_debug(" total=%llu MB, vram=%llu MB\n",
-+		  (unsigned long long)(num_bos * nf_bo_size >> 20),
-+		  (unsigned long long)(vram_size >> 20));
-+	/* Create VM with appropriate flags */
-+	vm = xe_vm_create(fd, c->vm_flags, 0);
-+	igt_assert(vm);
-+	bind_exec_queue = xe_bind_exec_queue_create(fd, vm, 0);
-+	placement = c->use_vram ? vram_memory(fd, eci->gt_id) : system_memory(fd);
-+	sync_size = sizeof(uint64_t) * num_bos;
-+	sync_size = xe_bb_size(fd, sync_size);
-+	user_fence_sync = mmap(NULL, sync_size, PROT_READ | PROT_WRITE,
-+			       MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(user_fence_sync != MAP_FAILED);
-+	memset(user_fence_sync, 0, sync_size);
-+	/* Create and bind BOs */
-+	bo_create_check_overcommit(fd, vm, bind_exec_queue, bos, num_bos,
-+				   nf_bo_size, placement, data_addr,
-+				   &overcommit_detected, bind_sync, c->bo_flags);
-+
-+	if (overcommit_detected) {
-+		igt_debug("Overcommit correctly rejected at BO creation/bind (created %d BOs)\n",
-+			  num_bos);
-+		goto cleanup;
-+	}
-+
-+	 /* Create batch buffer */
-+	batch_bo = xe_bo_create(fd, vm, 0x1000, vram_memory(fd, eci->gt_id) | system_memory(fd),
-+				0);
-+
-+	igt_debug("Mapping the created BO");
-+	batch_data = xe_bo_map(fd, batch_bo, 0x1000);
-+	igt_assert(batch_data);
-+	memset(batch_data, 0, 0x1000);
-+
-+	/* Bind batch buffer and sync areas */
-+	if (is_fault_mode) {
-+		batch_data[0].vm_sync = 0;
-+		bind_sync[0].addr = to_user_pointer(&batch_data[0].vm_sync);
-+
-+		xe_vm_bind_userptr_async(fd, vm, bind_exec_queue, to_user_pointer(user_fence_sync),
-+					 sync_addr, sync_size, bind_sync, 1);
-+		if (batch_data[0].vm_sync != USER_FENCE_VALUE)
-+			xe_wait_ufence(fd, &batch_data[0].vm_sync, USER_FENCE_VALUE,
-+				       bind_exec_queue, NSEC_PER_SEC);
-+
-+		batch_data[0].vm_sync = 0;
-+		bind_err = xe_vm_bind_lr_failable(fd, vm, bind_exec_queue, batch_bo, 0, batch_addr,
-+						  0x1000, 0);
-+		if (bind_err) {
-+			if (bind_err == -ENOMEM) {
-+				igt_debug("\n Setting overcommit to true");
-+				overcommit_detected = true;
-+				goto cleanup;
-+			} else {
-+				igt_assert_f(0, "Unexpected bind error %d (%s)\n", -bind_err,
-+					     strerror(-bind_err));
-+			}
-+		}
-+	}  else {
-+		bind_err = xe_vm_bind_lr_failable(fd, vm, bind_exec_queue, batch_bo, 0, batch_addr,
-+						  0x1000, 0);
-+		if (bind_err) {
-+			if (bind_err == -ENOMEM) {
-+				igt_debug("\n Setting overcommit to true");
-+				overcommit_detected = true;
-+				goto cleanup;
-+			} else {
-+				igt_assert_f(0, "Unexpected bind error %d (%s)\n", -bind_err,
-+					     strerror(-bind_err));
-+			}
-+		}
-+	}
-+
-+	igt_debug("VM binds done - batch_bo at 0x%llx\n", (unsigned long long)batch_addr);
-+	/* Create exec queue */
-+	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-+
-+	/* Setup sync for exec */
-+	if (is_fault_mode) {
-+		exec_sync[0].addr = sync_addr;
-+	} else if (is_lr_mode) {
-+		/* LR mode - use batch_data->vm_sync (GPU accessible memory) */
-+		batch_data->vm_sync = 0;
-+		exec_sync[0].addr = to_user_pointer(&batch_data->vm_sync);
-+	}
-+
-+	/* Use GPU to write to each BO */
-+	for (i = 0; i < num_bos; i++) {
-+		igt_debug("Writing to BO %d/%d via GPU\n", i + 1, num_bos);
-+
-+		for (off = 0; off < nf_bo_size; off += stride) {
-+			uint64_t target_addr = data_addr + (i * nf_bo_size) + off;
-+
-+			b_idx = 0;
-+			batch_data->batch[b_idx++] = MI_STORE_DWORD_IMM_GEN4;
-+			batch_data->batch[b_idx++] = target_addr & 0xFFFFFFFF;
-+			batch_data->batch[b_idx++] = (target_addr >> 32) & 0xFFFFFFFF;
-+			batch_data->batch[b_idx++] = 0xBB;
-+			batch_data->batch[b_idx++] = MI_BATCH_BUFFER_END;
-+
-+			/* Submit batch */
-+			exec.exec_queue_id = exec_queue;
-+			exec.address = batch_addr;
-+
-+			res = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec);
-+			if (res != 0) {
-+				if (errno == ENOMEM || errno == ENOSPC) {
-+					igt_debug("Expected fault/error: %d (%s)\n",
-+						  errno, strerror(errno));
-+					goto cleanup;
-+				}
-+				igt_assert_f(0, "Unexpected exec error: %d\n", errno);
-+			}
-+			xe_wait_ufence(fd, &user_fence_sync[0], USER_FENCE_VALUE, exec_queue,
-+				       timeout ? timeout : INT64_MAX);
-+			user_fence_sync[0] = 0;
-+
-+			if (ret != 0) {
-+				igt_debug("Batch wait failed at BO %d offset 0x%lx\n",
-+					  i, off);
-+				goto cleanup;
-+			}
-+		}
-+		igt_debug("Accessed BO %d/%d via GPU\n", i + 1, num_bos);
-+	}
-+	igt_debug("All batches submitted - waiting for GPU completion\n");
-+
-+	/* Verify GPU writes */
-+	verify_bo(fd, bos, num_bos, nf_bo_size, stride);
-+
-+cleanup:
-+	/* Cleanup */
-+	if (exec_queue)
-+		xe_exec_queue_destroy(fd, exec_queue);
-+	if (bind_exec_queue)
-+		xe_exec_queue_destroy(fd, bind_exec_queue);
-+	if (batch_data)
-+		munmap(batch_data, 0x1000);
-+	if (batch_bo)
-+		gem_close(fd, batch_bo);
-+
-+	munmap(user_fence_sync, sync_size);
-+
-+	if (bos) {
-+		for (i = 0; i < num_bos; i++) {
-+			if (bos[i])
-+				gem_close(fd, bos[i]);
-+		}
-+		free(bos);
-+	}
-+	if (vm > 0)
-+		xe_vm_destroy(fd, vm);
-+}
-+
- /**
-  * SUBTEST: out-of-memory
-  * Description: Test if vm_bind ioctl results in oom
-@@ -2385,7 +2789,6 @@ static void invalid_vm_id(int fd)
-  */
- static void test_oom(int fd)
- {
--#define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
- #define BO_SIZE xe_bb_size(fd, SZ_512M)
- #define MAX_BUFS ((int)(xe_visible_vram_size(fd, 0) / BO_SIZE))
- 	uint64_t addr = 0x1a0000;
-@@ -2850,6 +3253,18 @@ int igt_main()
- 		test_oom(fd);
- 	}
- 
-+	for (int i = 0; overcommit_cases[i].name; i++) {
-+		const struct vm_overcommit_case *c = &overcommit_cases[i];
-+		const char *mode = (c->vm_flags & DRM_XE_VM_CREATE_FLAG_FAULT_MODE) ?
-+					"fault" : "nonfault";
-+		igt_subtest_f("overcommit-%s-%s", mode, c->name) {
-+			igt_require(xe_has_vram(fd));
-+			igt_assert(xe_visible_vram_size(fd, 0));
-+			test_vm_overcommit(fd, hwe, c, (igt_get_avail_ram_mb() << 20),
-+					   xe_visible_vram_size(fd, 0));
-+		}
-+	}
-+
- 	igt_fixture()
- 		drm_close_driver(fd);
- }
--- 
-2.43.0
-
+>>   	for_each_crtc_with_single_output(display, crtc, output) {
+>>   		igt_display_reset(display);
+>>   
+>> -- 
+>> 2.43.0
