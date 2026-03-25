@@ -4,152 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B44F7109C02F
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 15:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACF7A109C036
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 16:19:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6401110E7C6;
-	Wed, 25 Mar 2026 15:39:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6141C10E7E1;
+	Wed, 25 Mar 2026 16:19:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AvEw8aPZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M2LLcsy2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A03BF10E7C2
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 15:39:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A55FB10E7E1
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 16:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774453147; x=1805989147;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=ok2xqep86QN45Tp4oEXnm/sTat1xbTlQL0Ih/Tzq4ic=;
- b=AvEw8aPZ3Po+PEk4Uq6g++vvi+nNJVv9rfb6Z6xVwfREM8p4Be0EwfRa
- IjAhzGhWdXqNDFBsPM7wMViEznjt7rZo6MdX4MlADnESBGnAqbSkvDqnx
- g4Hd7kFMUToaPt9fOFBhpiz9hIxdP/2rpDWYzJysXv1PvXdaDmS1LgAAl
- XQmgmA+YvX6ApYd3m3wAFQNqQ7VI7ZdEz3wY7olKy7c8af7e0xH9mMeJ2
- HWj0FphymuzGrWm96fbvgCYaUZ2stkbBjGSeJsTiJPmWeFeP0zp6H4aAN
- IDkCt6HlWU6F4je9pu6G7ELE0GUFUGeHnyibLYFPoDjscCkpbgKKbD7wu Q==;
-X-CSE-ConnectionGUID: MlfWJTv0Su2qGYChrFe3pg==
-X-CSE-MsgGUID: VWmlV/zfRmGCYe6li6Q+WQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="85804017"
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="85804017"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 08:39:04 -0700
-X-CSE-ConnectionGUID: /EaQc7bqSvCrc81WCKE8dA==
-X-CSE-MsgGUID: bLOaeKIdTS6L/x2xy2JZuQ==
+ t=1774455576; x=1805991576;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=MPuoPJuu8ai9Dq0/lObWqW+xyUKoJJcx2qcJx6B0n6Y=;
+ b=M2LLcsy20KPfg1XKjEm+c7nmlRqRd8UtxYG8/KcaNvQAA8rMLIFyqKJR
+ hrwMs8ArqRFcxK5ed2I1pYqYSG4dwR5Q1Ut1QK+yh+4AorLM6Qm/t0gpj
+ YTORovJlg0lOW8VMrM0nhlSD7yFCyvnd7C2GKUGmB5btIXUOGTrbF8BPN
+ J8Ma72fvNcMyr/0v11WG+hDBmvBOlNxaFZ3B+Uw3+UKdjBx7eQdTO+o3e
+ lpVAXO3F/CcTDoJEuYycEusDO8jFuQfQ0m2PGQtrsKl2s8K82jmYtJLWb
+ /M71sws40OkXGk3lWQDErAUQkuM9wGXzECRg10+3Xqng2qhFPT8PV8RXs Q==;
+X-CSE-ConnectionGUID: XHc1YYThSCiNAQ0eNAhJhA==
+X-CSE-MsgGUID: eMiTiktbS5qkbyUe06OCIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86875799"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="86875799"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2026 09:19:35 -0700
+X-CSE-ConnectionGUID: bPTFGf9VTo+5uOMna9Urrg==
+X-CSE-MsgGUID: K1y6t69ZRUy5fOg4Rj+v6w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="220308570"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 08:39:03 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 25 Mar 2026 08:39:02 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 25 Mar 2026 08:39:02 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.70) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 25 Mar 2026 08:39:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SJIXhtdI5BGWww4TZtl46iruVvavETgDRfErZuLL+H5xxo+1g2JSlSyvtgGC/5aDGBk9r47To0+7V3v5f17hlmU5bDBPf+6zEb9YXQoRpbFzeyyeBzH9nkp6sY+9NCZjAtwZADCVrF/VCjIcw8EflxA3YIsW3Sv9q5yo8JoQlbL58KBz4eSYcC+ntyjaDXSJmwERTK9EwCRvCo0h0bmtt7oYY0QDYqa7hAVPHZB0uMcJUxwKhIuW0FaAnaOGKXk6yh8Yc/PIbGwXPv7VZzRzvURP748KbxzDX78DKMgoEDNZA3GrGfLAx6bO+19XF2UHYarqmlv0o9YY79dHdYKG1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=93Cj7YygLJBosiC4SJCCbcgycZx6IwzF5zxE+r9SeGM=;
- b=KXdgBBZv298P+OkUoMAArWOccWOJ+N9k3o3+9Bk7XtLQvjgPJEvwKAKQvzP6C5k+00DFodmmbnck7DBwI95VhMP3tm2fxDbfgl1RjRvoq4lnCg/sgLO5lZEzgfEsVztr1L2T0nnySNU28fxWPZRsiBYqA21onT0GRkWT3hngO37sQLUF0ezTpIuQuJKai651LT4xW8qqaDk/S8z30GBAmA/2TOw1c56rKT/96Ug3/Fz3Jj8dtkbZlyLRdq5otcG3RVXDOGLVT3t8Y7puijkUjluk6CfMLlvAjbAoKmEfZhcGU2pbM7rfw3+MocHXhk4PP+PJpuem1jSHrGhZKIFojQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
- by DM4PR11MB7349.namprd11.prod.outlook.com (2603:10b6:8:106::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
- 2026 15:38:56 +0000
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::3e15:8d62:5e58:a513]) by PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::3e15:8d62:5e58:a513%2]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
- 15:38:56 +0000
-From: "Samala, Pranay" <pranay.samala@intel.com>
-To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: "Hogander, Jouni" <jouni.hogander@intel.com>, "B, Jeevan"
- <jeevan.b@intel.com>
-Subject: RE: [PATCH i-g-t 3/4] tests/intel/kms_psr_stress_test: Select
- PSR-capable output
-Thread-Topic: [PATCH i-g-t 3/4] tests/intel/kms_psr_stress_test: Select
- PSR-capable output
-Thread-Index: AQHcuqVxIGseLEdfQUuqPPWHQaYV9bW/YkIQ
-Date: Wed, 25 Mar 2026 15:38:56 +0000
-Message-ID: <PH7PR11MB60539579CA44BD47FFD36722E749A@PH7PR11MB6053.namprd11.prod.outlook.com>
-References: <20260323091205.100585-1-jeevan.b@intel.com>
- <20260323091205.100585-4-jeevan.b@intel.com>
-In-Reply-To: <20260323091205.100585-4-jeevan.b@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|DM4PR11MB7349:EE_
-x-ms-office365-filtering-correlation-id: 099a5393-7419-4585-2b03-08de8a84a068
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|38070700021|18002099003|56012099003|22082099003|7053199007;
-x-microsoft-antispam-message-info: OB4q82rvUuZXasPo/StR5iD+9jUHgmEEoCKU/41ErHa1YB9Ht3DnxOlovwRhL0ngA7nNPhvIJS9e3PaNyRr6bhHXpOzQ4pwiObQDFHU5WNZpcENhDq8Pt5dihynTGrLdzATFwE6xaP4MpwlyGWaMS/Ns2EwCRqQGqr7Z8b/ip9WWs+qKqcLMCuANVsNTg7RCkdl2OkvuQJFDX+siQBRgrMPbOMFEGGr0xDeCEzMQBzNVxGQcyZMi8F+2PjFlBh3TutqqvKIdb0JQi2R9hJriRtt7T3vqNIC0pGWCD+pL/XrBiP50JJBBVrmWOWeAArd6wglGM6SAHmVeQiIDKjfZJNW10jEk2m/cKjht2VF296M/gH2C2pFrDPCcmiuiYIDewkWvWU8JFliAEwXChsWKUPJl2tRxN/1GiFx5vw0cc4OgfFd3ZyHrmT4wsqb//uuSp0uXqP9Lj5D2u8LVqf7qphdkK0WuwG2CbRw9Ng3uSa8kumMgF6ydejxJFUIqMbZ1c5t6VYgQhN/MxnnlE69B1K/W0VoeGPUPUzcjYpTHtS08yWz6K4v1EsW9AykqGUEsmxN0EbYPz+2z5x7KW/cN1j8qJ7Q8u7i1nAax7ctRamKm+dtDmgx8V+y8JmGeHC5/T02tuidKrbHFyIhNzerG0TgRnxn1AMPcFHNwm5I1qlfnC1/x07n9/ibARQjPNVfesHKIlvaa4dcWpi9LuaBkmZL//eTa1FozSgua9YlVqeezbougxmk+MRxzkhiFFJ9828KdQFPuPmruLZq2DR7J9ZkikZXvWOu4E1js89oyclc=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(38070700021)(18002099003)(56012099003)(22082099003)(7053199007);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?hjq05+Lq4SHnLWR2iWb+U4Hi+szlMCh34oaqXQbS8MI4lwSHo5g1WFiV3r/o?=
- =?us-ascii?Q?cTNyiNZZIQy5vxRcvv89Np16WHAH+Yx3XS3giXa9upQlA9bpYSyYtbrpFcj6?=
- =?us-ascii?Q?04IPULIOthZegD4yYtnkBNaTi/qkEwGMSkk9OypQjZttroeALq3IGYoWaA/V?=
- =?us-ascii?Q?9d/aoze/5towPGhLcAnNgu1lZlTHlgXhTTX/fI7xj1IbAtGyRBpn6apASj2B?=
- =?us-ascii?Q?UyrzCCZjhSSqqltsQA4QgmKLRhTMSwIp57hwxHFmVAnCXx+ak4f7w5BhkRZb?=
- =?us-ascii?Q?F7aRYRwtn4Uqh7fTMTISSFHgnka1Siu06IZxqsYQxW5mIpquIir2Prc0a8CO?=
- =?us-ascii?Q?amE0fwgxmJ+fkzOzlQY3UkmalBh6743UChsj4+7aOTu1BQyH0fJKZorlRxmO?=
- =?us-ascii?Q?V/gxj1Ep16kY20Q041ekPYBQGWTBZFdKXY7msv/iiPAzIzwzumh/ANh1z2mP?=
- =?us-ascii?Q?+SJWO19FpSqsFl61MY2QqCpkYsUVSUcBrQs9QdwSv7pFoKT4izrGGUYQP2L2?=
- =?us-ascii?Q?S7f9aZlcOBaCIguTqCgYk6wLgHFEqVPPE0nY9ZS+zXAslOELCpwZfT8vnzOO?=
- =?us-ascii?Q?RGn25wH7ma5PPicdUD7eSvRYrgHOG9DDO+IDgtFQXk3Z9puF6C2lFRlAiBuy?=
- =?us-ascii?Q?VKzjSlkJt2ZIyQHAPxxRAzlmQZvePcfWfzERMu3wwFEsJHaA7YbuuJR2NJ6n?=
- =?us-ascii?Q?WcR+hn/f9VMnTddKRSlNDl+06f+J4qop7r20MBWUOvhKUDigATNnpIBGvFD8?=
- =?us-ascii?Q?Z5iF64kNhXtjP72hqgK69jDzepoLTuJSHe+4cvk7zf0s/+4RQ8F3xAifyHQS?=
- =?us-ascii?Q?P4zMQ6eKjRONZ45cOUeNynZloy8o9/cIqWvIjFCabUCVaE0aGb4bbimGf9Vq?=
- =?us-ascii?Q?7MPDwaPjHUpSZhm7eOnijs6ufrrQLb4uupldYVw/adcPLsZW9xmgEKEQkUJb?=
- =?us-ascii?Q?0t38LKpD0CyBa4BsIYPDdDjhi73w4c6TPOUVZFkwjSYQfHXd2IIhFu/BEaIW?=
- =?us-ascii?Q?6jQFup9voyw/HnReVmJRi2NDXxRAZdpgxDkRl1b6ZwbqSIUHYSTUpfMJje1v?=
- =?us-ascii?Q?26EGCNlfoLGcFTGEaY1yNt4ox7k3rIWF/K5M+zodNOUmHVocnlp5djtz7DpE?=
- =?us-ascii?Q?LkilK4u23U9c3dGFL+Bw45vkzEBXDBP18ZcnflHkV3kO2U6p8iLhuFhXmWb5?=
- =?us-ascii?Q?8xorHuubfgNaFPA6DRU3EDYqnzXErDnFRX+oUO75Rkt+G+kpMvJ/KMymkto4?=
- =?us-ascii?Q?GvJucbMR6gMoY8NE/yjP30gIYx78j38TowxmtVj0Bb7jAnZ/wYQfq8mBzMfx?=
- =?us-ascii?Q?kh+ISqWQWOe4dJ0My4BiQSMcvPUAXNd+MsgEHVDHZ47JyFZvElWRor+hY6AV?=
- =?us-ascii?Q?X9u2sOMIJRdUOp0OQZuslVqovFNG8gN8gJ9Xh2gkLO06/YqOdlNf3fgbbAPE?=
- =?us-ascii?Q?0AQjvJ9hkBfS1ovGT4x8iPw1fBrJSPUeKm3DPLPLmv6crYJtqbf6VfHq5Jpt?=
- =?us-ascii?Q?Azz8O3QFrtoG6bHY+rPEUHqNNmRukqfkwopyJN4Nb3BrBGceNC5riEKnP3fl?=
- =?us-ascii?Q?6u0g5wrC1eus1e3lYvrjywuIiCCqmlUfM262LETLFNbs5AdW0zUWlwtaJOyF?=
- =?us-ascii?Q?EnEHLlDI9Rb0AtAG9IJjAdet8jcdijGQaItpppAPhnoFUBQOmMl864v5q+ND?=
- =?us-ascii?Q?uqc496Bhgg9A7otPRcVPCHjHj5CXTnwSEwaCIQoKW5b1YB+tP8pV+q0s3l4r?=
- =?us-ascii?Q?56Ors91f6g=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="221839810"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 09:19:34 -0700
+Date: Wed, 25 Mar 2026 17:19:06 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Renjun Wang <renjunw0@foxmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_fb: add YUV|YVU-410|411|444 formats
+Message-ID: <20260325161906.hnzrowfenvrdrkot@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "Sharma, Swati2" <swati2.sharma@intel.com>,
+ igt-dev@lists.freedesktop.org, Renjun Wang <renjunw0@foxmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+References: <20260216181610.129209-1-kamil.konieczny@linux.intel.com>
+ <294245f1-b410-4374-a90e-bde2303be29e@intel.com>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: i5P0B/hFfkOEtrL7L4b+BB2rCC+XSsNJppwBlCN277SIThRJvJJbsJP0Gayh/uxp9ZiQt1ZwuJi4P/Nubwx10DZ8xxeP7GkOkpfhNjoIFnYSOzLH2b/4ljG/3+eBOT+mb24CBgaDp+yQe9SQAP2tYFZugy6Ui42Kiej6whmmX+xpKOEj/ph2vG9B4+UcSolazFWDTlggCbZlrWfr6CsZjt4FnDbpogQGebYrnh2ak9/hYwXi7EOAu3LPyO7Lj2jTR/kA4p6GCYv+Ibb2fR0tphyGKnhziiXieCmyK25N0tIVwzACBhatHllVRg1Tr0zH2moVnCjVVxHhbnRW2wi9eA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 099a5393-7419-4585-2b03-08de8a84a068
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Mar 2026 15:38:56.4634 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eiQyqXg2veXMsjX/7KwpimWyz+xZ7D22zNYSJTBha45A3h3KWUpMXPf1PynGnRZKehM8C/lyXon2kyRvaGssoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7349
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <294245f1-b410-4374-a90e-bde2303be29e@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -165,122 +75,243 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevan,
+Hi Sharma,,
+On 2026-02-17 at 01:29:07 +0530, Sharma, Swati2 wrote:
+> Hi Kamil/Renjun
+> 
+> Overall patch LGTM. Can you add these formats to igt_reduce_format()?
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Jeevan
-> B
-> Sent: Monday, March 23, 2026 2:42 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Hogander, Jouni <jouni.hogander@intel.com>; B, Jeevan
-> <jeevan.b@intel.com>
-> Subject: [PATCH i-g-t 3/4] tests/intel/kms_psr_stress_test: Select PSR-ca=
-pable
-> output
->=20
-> Iterate over all eDP outputs and select one that supports PSR instead of
-> picking the first available eDP. Skip the test only if no PSR-capable out=
-put is
-> found.
->=20
-> Previously, the test relied on a global PSR capability check and could se=
-lect an
-> eDP panel without PSR support on systems with multiple eDPs. This could
-> lead to incorrect behavior. this ensures the test runs only on a valid PS=
-R sink
+I created an issue in GitLab fdo for this: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/202
+so it should help to remember as todo.
 
-*This
+> 
+> These formats are not supported by i915/xe driver; so can't be validated on
+> intel h/w.
+> 
+> Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-> and avoids unnecessary failures on multi-eDP systems.
->=20
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  tests/intel/kms_psr_stress_test.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
->=20
-> diff --git a/tests/intel/kms_psr_stress_test.c
-> b/tests/intel/kms_psr_stress_test.c
-> index 09e73bd49..7ef076e1c 100644
-> --- a/tests/intel/kms_psr_stress_test.c
-> +++ b/tests/intel/kms_psr_stress_test.c
-> @@ -84,6 +84,7 @@ static void setup_output(data_t *data)
->  	igt_display_t *display =3D &data->display;
->  	igt_output_t *output;
->  	igt_crtc_t *crtc;
-> +	bool found =3D false;
-
-I think this variable is not needed, data->output is already NULL from init=
- and=20
-get sets only on psr support success. Just check the data->output at the di=
-rectly.
-
->=20
->  	igt_display_require(&data->display, data->drm_fd);
->=20
-> @@ -93,6 +94,10 @@ static void setup_output(data_t *data)
->  		if (c->connector_type !=3D DRM_MODE_CONNECTOR_eDP)
->  			continue;
->=20
-> +		if (!psr_sink_support(data->drm_fd, data->debugfs_fd,
-> +				      PSR_MODE_1, output))
-> +			continue;
-> +
->  		igt_display_reset(display);
->  		igt_output_set_crtc(output,
->  				    crtc);
-> @@ -103,11 +108,12 @@ static void setup_output(data_t *data)
->=20
->  		data->output =3D output;
->  		data->mode =3D igt_output_get_mode(output);
-> +		found =3D true;
->=20
->  		return;
->  	}
->=20
-> -	igt_require(data->output);
-> +	igt_require_f(found, "No eDP output with PSR support found\n");
-
-With found removed, update it with data->output.
+Thank you all, I merged it.
 
 Regards,
-Pranay.
+Kamil 
 
->  }
->=20
->  static void primary_draw(data_t *data, struct igt_fb *fb, uint8_t i) @@ =
--
-> 232,7 +238,7 @@ static void prepare(data_t *data)
->  	r =3D timerfd_settime(data->completed_timerfd, 0, &interval, NULL);
->  	igt_require_f(r !=3D -1, "Error setting completed_timerfd\n");
->=20
-> -	data->initial_state =3D psr_get_mode(data->debugfs_fd, NULL);
-> +	data->initial_state =3D psr_get_mode(data->debugfs_fd, data->output);
->  	igt_require(data->initial_state !=3D PSR_DISABLED);
->  	igt_require(psr_wait_entry(data->debugfs_fd, data->initial_state,
-> data->output));  } @@ -345,7 +351,7 @@ static void run(data_t *data)
->  	}
->=20
->  	/* Check if after all this stress the PSR is still in the same state */
-> -	igt_assert(psr_get_mode(data->debugfs_fd, NULL) =3D=3D data-
-> >initial_state);
-> +	igt_assert(psr_get_mode(data->debugfs_fd, data->output) =3D=3D
-> +data->initial_state);
->  	psr_sink_error_check(data->debugfs_fd, data->initial_state, data-
-> >output);  }
->=20
-> @@ -359,10 +365,6 @@ int igt_main()
->  		data.bops =3D buf_ops_create(data.drm_fd);
->  		kmstest_set_vt_graphics_mode();
->=20
-> -		igt_require_f(psr_sink_support(data.drm_fd,
-> data.debugfs_fd,
-> -					       PSR_MODE_1, NULL),
-> -			      "Sink does not support PSR\n");
-> -
->  		setup_output(&data);
->=20
->  		data.invalidate_timerfd =3D
-> timerfd_create(CLOCK_MONOTONIC, 0);
-> --
-> 2.43.0
-
+> 
+> On 16-02-2026 11:46 pm, Kamil Konieczny wrote:
+> > From: Renjun Wang <renjunw0@foxmail.com>
+> > 
+> > Add support for additional YUV and YVU format variants in
+> > framebuffer and color encoding handling. Extend format
+> > descriptors, color encoding configuration, YUV|YVU buffer
+> > clearing, parameter calculation, and format conversions to
+> > support 4:1:0, 4:1:1, and 4:4:4 chroma subsampling formats.
+> > 
+> > Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+> > Cc: Karthik B S <karthik.b.s@intel.com>
+> > Cc: Swati Sharma <swati2.sharma@intel.com>
+> > Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> > Reformatted subject, added Cc [Kamil]
+> > 
+> >   lib/igt_color_encoding.c |  6 ++++
+> >   lib/igt_fb.c             | 72 ++++++++++++++++++++++++++++++++++++++++
+> >   2 files changed, 78 insertions(+)
+> > 
+> > diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
+> > index a7bd2b22f..da56b2b10 100644
+> > --- a/lib/igt_color_encoding.c
+> > +++ b/lib/igt_color_encoding.c
+> > @@ -140,10 +140,16 @@ static const struct color_encoding_format {
+> >   	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> >   	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> >   	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> > +	{ DRM_FORMAT_YUV410, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> > +	{ DRM_FORMAT_YUV411, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> >   	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> >   	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> > +	{ DRM_FORMAT_YUV444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> > +	{ DRM_FORMAT_YVU410, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> > +	{ DRM_FORMAT_YVU411, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> >   	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> >   	{ DRM_FORMAT_YVU422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> > +	{ DRM_FORMAT_YVU444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> >   	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> >   	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> >   	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index d59fe133b..fa9220953 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -282,6 +282,16 @@ static const struct format_desc_struct {
+> >   	  .num_planes = 1, .plane_bpp = { 16, },
+> >   	  .hsub = 2, .vsub = 1,
+> >   	},
+> > +	{ .name = "YU10", .depth = -1, .drm_id = DRM_FORMAT_YUV410,
+> > +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> > +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> > +	  .hsub = 4, .vsub = 4,
+> > +	},
+> > +	{ .name = "YU11", .depth = -1, .drm_id = DRM_FORMAT_YUV411,
+> > +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> > +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> > +	  .hsub = 4, .vsub = 1,
+> > +	},
+> >   	{ .name = "YU12", .depth = -1, .drm_id = DRM_FORMAT_YUV420,
+> >   	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> >   	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> > @@ -292,6 +302,21 @@ static const struct format_desc_struct {
+> >   	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> >   	  .hsub = 2, .vsub = 1,
+> >   	},
+> > +	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
+> > +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> > +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> > +	  .hsub = 1, .vsub = 1,
+> > +	},
+> > +	{ .name = "YV10", .depth = -1, .drm_id = DRM_FORMAT_YVU410,
+> > +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> > +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> > +	  .hsub = 4, .vsub = 4,
+> > +	},
+> > +	{ .name = "YV11", .depth = -1, .drm_id = DRM_FORMAT_YVU411,
+> > +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> > +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> > +	  .hsub = 4, .vsub = 1,
+> > +	},
+> >   	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
+> >   	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> >   	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> > @@ -302,6 +327,11 @@ static const struct format_desc_struct {
+> >   	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> >   	  .hsub = 2, .vsub = 1,
+> >   	},
+> > +	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
+> > +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> > +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> > +	  .hsub = 1, .vsub = 1,
+> > +	},
+> >   	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
+> >   	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
+> >   	  .num_planes = 1, .plane_bpp = { 32, },
+> > @@ -1164,10 +1194,16 @@ static void clear_yuv_buffer(struct igt_fb *fb)
+> >   			 full_range ? 0x800000008000ULL : 0x800010008000ULL,
+> >   			 plane_size[0] / sizeof(uint64_t));
+> >   		break;
+> > +	case DRM_FORMAT_YUV410:
+> > +	case DRM_FORMAT_YUV411:
+> >   	case DRM_FORMAT_YUV420:
+> >   	case DRM_FORMAT_YUV422:
+> > +	case DRM_FORMAT_YUV444:
+> > +	case DRM_FORMAT_YVU410:
+> > +	case DRM_FORMAT_YVU411:
+> >   	case DRM_FORMAT_YVU420:
+> >   	case DRM_FORMAT_YVU422:
+> > +	case DRM_FORMAT_YVU444:
+> >   		igt_assert(ARRAY_SIZE(plane_size) == 3);
+> >   		memset(ptr + fb->offsets[0],
+> >   		       full_range ? 0x00 : 0x10,
+> > @@ -3675,10 +3711,16 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+> >   		params->uv_inc = 2;
+> >   		break;
+> > +	case DRM_FORMAT_YUV410:
+> > +	case DRM_FORMAT_YUV411:
+> >   	case DRM_FORMAT_YUV420:
+> >   	case DRM_FORMAT_YUV422:
+> > +	case DRM_FORMAT_YUV444:
+> > +	case DRM_FORMAT_YVU410:
+> > +	case DRM_FORMAT_YVU411:
+> >   	case DRM_FORMAT_YVU420:
+> >   	case DRM_FORMAT_YVU422:
+> > +	case DRM_FORMAT_YVU444:
+> >   		params->ay_inc = 1;
+> >   		params->uv_inc = 1;
+> >   		break;
+> > @@ -3709,10 +3751,16 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+> >   	case DRM_FORMAT_NV16:
+> >   	case DRM_FORMAT_NV21:
+> >   	case DRM_FORMAT_NV61:
+> > +	case DRM_FORMAT_YUV410:
+> > +	case DRM_FORMAT_YUV411:
+> >   	case DRM_FORMAT_YUV420:
+> >   	case DRM_FORMAT_YUV422:
+> > +	case DRM_FORMAT_YUV444:
+> > +	case DRM_FORMAT_YVU410:
+> > +	case DRM_FORMAT_YVU411:
+> >   	case DRM_FORMAT_YVU420:
+> >   	case DRM_FORMAT_YVU422:
+> > +	case DRM_FORMAT_YVU444:
+> >   	case DRM_FORMAT_P010:
+> >   	case DRM_FORMAT_P012:
+> >   	case DRM_FORMAT_P016:
+> > @@ -3752,15 +3800,21 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+> >   		params->v_offset = fb->offsets[1];
+> >   		break;
+> > +	case DRM_FORMAT_YUV410:
+> > +	case DRM_FORMAT_YUV411:
+> >   	case DRM_FORMAT_YUV420:
+> >   	case DRM_FORMAT_YUV422:
+> > +	case DRM_FORMAT_YUV444:
+> >   		params->y_offset = fb->offsets[0];
+> >   		params->u_offset = fb->offsets[1];
+> >   		params->v_offset = fb->offsets[2];
+> >   		break;
+> > +	case DRM_FORMAT_YVU410:
+> > +	case DRM_FORMAT_YVU411:
+> >   	case DRM_FORMAT_YVU420:
+> >   	case DRM_FORMAT_YVU422:
+> > +	case DRM_FORMAT_YVU444:
+> >   		params->y_offset = fb->offsets[0];
+> >   		params->u_offset = fb->offsets[2];
+> >   		params->v_offset = fb->offsets[1];
+> > @@ -4497,11 +4551,17 @@ static void fb_convert(struct fb_convert *cvt)
+> >   		case DRM_FORMAT_NV61:
+> >   		case DRM_FORMAT_UYVY:
+> >   		case DRM_FORMAT_VYUY:
+> > +		case DRM_FORMAT_YUV410:
+> > +		case DRM_FORMAT_YUV411:
+> >   		case DRM_FORMAT_YUV420:
+> >   		case DRM_FORMAT_YUV422:
+> > +		case DRM_FORMAT_YUV444:
+> >   		case DRM_FORMAT_YUYV:
+> > +		case DRM_FORMAT_YVU410:
+> > +		case DRM_FORMAT_YVU411:
+> >   		case DRM_FORMAT_YVU420:
+> >   		case DRM_FORMAT_YVU422:
+> > +		case DRM_FORMAT_YVU444:
+> >   		case DRM_FORMAT_YVYU:
+> >   			convert_yuv_to_rgb24(cvt);
+> >   			return;
+> > @@ -4515,11 +4575,17 @@ static void fb_convert(struct fb_convert *cvt)
+> >   		case DRM_FORMAT_NV61:
+> >   		case DRM_FORMAT_UYVY:
+> >   		case DRM_FORMAT_VYUY:
+> > +		case DRM_FORMAT_YUV410:
+> > +		case DRM_FORMAT_YUV411:
+> >   		case DRM_FORMAT_YUV420:
+> >   		case DRM_FORMAT_YUV422:
+> > +		case DRM_FORMAT_YUV444:
+> >   		case DRM_FORMAT_YUYV:
+> > +		case DRM_FORMAT_YVU410:
+> > +		case DRM_FORMAT_YVU411:
+> >   		case DRM_FORMAT_YVU420:
+> >   		case DRM_FORMAT_YVU422:
+> > +		case DRM_FORMAT_YVU444:
+> >   		case DRM_FORMAT_YVYU:
+> >   			convert_rgb24_to_yuv(cvt);
+> >   			return;
+> > @@ -5095,9 +5161,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
+> >   	case DRM_FORMAT_NV21:
+> >   	case DRM_FORMAT_NV61:
+> >   	case DRM_FORMAT_YUV420:
+> > +	case DRM_FORMAT_YUV410:
+> > +	case DRM_FORMAT_YUV411:
+> >   	case DRM_FORMAT_YUV422:
+> > +	case DRM_FORMAT_YUV444:
+> >   	case DRM_FORMAT_YVU420:
+> > +	case DRM_FORMAT_YVU410:
+> > +	case DRM_FORMAT_YVU411:
+> >   	case DRM_FORMAT_YVU422:
+> > +	case DRM_FORMAT_YVU444:
+> >   	case DRM_FORMAT_P010:
+> >   	case DRM_FORMAT_P012:
+> >   	case DRM_FORMAT_P016:
