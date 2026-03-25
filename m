@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33219106B526
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 12:45:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 668B8106B53C
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 13:44:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D35B810E7B7;
-	Wed, 25 Mar 2026 12:45:45 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AT3+XMzY";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C903610E230
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 12:44:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774442690; x=1805978690;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0rGGNeaVwzAL4rZs1nS701WHP/DwNMh7gZ9f6LZArFg=;
- b=AT3+XMzYVjCeWBkUX1rS5rVijVEtrwE4egh/Moejjj1xZJaF4WM0Sf5T
- j3AEigyd6nP6eMloCzA0V4DizRrVtsVGRC7YEwNx7eJ20MVM6XOHri7LJ
- 8QXYyK97+OrHMQHWjj9YER4AkPrVoYN7ymq/NwbQroivFKY0pPtC977Wu
- AFSstYgRnOoIf8iS8Wkuth5aek+UrD2sOhb7DOmsW1+TbetjpoD4rpIsS
- XByabVWY2IyrjQnurOvtxCF9x3cMXlrKTTVlMJsGlKOg6OC0t2wNPWgIS
- YQRTHV1ovOSGcGoZ3dfRTgccIXs9hrcxGaD8/GMX2WvIGuUldeKaLqTOJ Q==;
-X-CSE-ConnectionGUID: mh0EVISGSIaSGIWziH56Zg==
-X-CSE-MsgGUID: 2hcJzXM5SxqzA/NmS+UZgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="86555511"
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="86555511"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 05:44:50 -0700
-X-CSE-ConnectionGUID: TpylalMMTtqUphgNausNMA==
-X-CSE-MsgGUID: hSKseK8RTB6NWbj1L6zA/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="223876376"
-Received: from varungup-desk.iind.intel.com ([10.190.238.71])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 05:44:49 -0700
-From: Arvind Yadav <arvind.yadav@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.brost@intel.com, himal.prasad.ghimiray@intel.com,
- thomas.hellstrom@linux.intel.com, nishit.sharma@intel.com,
- pravalika.gurram@intel.com
-Subject: [PATCH i-g-t v6 5/9] tests/intel/xe_madvise: Add dontneed-after-mmap
- subtest
-Date: Wed, 25 Mar 2026 18:14:19 +0530
-Message-ID: <20260325124426.3265234-6-arvind.yadav@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260325124426.3265234-1-arvind.yadav@intel.com>
-References: <20260325124426.3265234-1-arvind.yadav@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1914A10E1B4;
+	Wed, 25 Mar 2026 13:44:25 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA5D810E1EE;
+ Wed, 25 Mar 2026 13:44:18 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6685992606543946329=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_tests/intel/xe=5Fvm=3A_Add?=
+ =?utf-8?q?_support_for_overcommit_tests_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sobin Thomas" <sobin.thomas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 25 Mar 2026 13:44:18 -0000
+Message-ID: <177444625894.397331.18199880400276787897@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260325060339.2499618-1-sobin.thomas@intel.com>
+In-Reply-To: <20260325060339.2499618-1-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,116 +37,261 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test verifies that an existing mmap becomes invalid after the BO
-is marked as purgeable and purged. The test creates a BO, maps it,
-writes data, then marks it DONTNEED and triggers memory pressure.
-Accessing the previously valid mapping should now trigger SIGBUS or
-SIGSEGV, confirming that existing mappings are correctly invalidated
-when the backing store is purged.
+--===============6685992606543946329==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v4:
-  - Added proper resource cleanup before calling igt_skip(). (Nishit)
-  - Added assertion for xe_bo_map. (Nishit)
+== Series Details ==
 
-v6:
-  - Fix sigsetjmp(jmp, SIGBUS | SIGSEGV) to sigsetjmp(jmp, 1). The
-    second argument is a plain boolean savemask, not a signal set.
+Series: tests/intel/xe_vm: Add support for overcommit tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/163579/
+State : failure
 
-Cc: Nishit Sharma <nishit.sharma@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Pravalika Gurram <pravalika.gurram@intel.com>
-Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
----
- tests/intel/xe_madvise.c | 64 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+== Summary ==
 
-diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
-index 81e05b6d4..9a157de1d 100644
---- a/tests/intel/xe_madvise.c
-+++ b/tests/intel/xe_madvise.c
-@@ -244,6 +244,64 @@ static void test_dontneed_before_mmap(int fd)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+/**
-+ * SUBTEST: dontneed-after-mmap
-+ * Description: Mark BO as DONTNEED after mmap, verify SIGBUS on accessing purged mapping
-+ * Test category: functionality test
-+ */
-+static void test_dontneed_after_mmap(int fd)
-+{
-+	uint32_t bo, vm;
-+	uint64_t addr = PURGEABLE_ADDR;
-+	size_t bo_size = PURGEABLE_BO_SIZE;
-+	void *map;
-+
-+	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, true);
-+
-+	map = xe_bo_map(fd, bo, bo_size);
-+	igt_assert(map != MAP_FAILED);
-+	memset(map, 0xAB, bo_size);
-+
-+	if (!purgeable_mark_and_verify_purged(fd, vm, addr, bo_size)) {
-+		munmap(map, bo_size);
-+		gem_close(fd, bo);
-+		xe_vm_destroy(fd, vm);
-+		igt_skip("Unable to induce purge on this platform/config");
-+	}
-+
-+	/* Access purged mapping - should trigger SIGBUS/SIGSEGV */
-+	{
-+		sighandler_t old_sigsegv, old_sigbus;
-+		char *ptr = (char *)map;
-+		int sig;
-+
-+		old_sigsegv = signal(SIGSEGV, (__sighandler_t)sigtrap);
-+		old_sigbus = signal(SIGBUS, (__sighandler_t)sigtrap);
-+
-+		sig = sigsetjmp(jmp, 1); /* savemask=1: save/restore signal mask */
-+		switch (sig) {
-+		case SIGBUS:
-+		case SIGSEGV:
-+			/* Expected - purged mapping access failed */
-+			break;
-+		case 0:
-+			*ptr = 0;
-+		default:
-+			igt_assert_f(false,
-+				     "Access to purged mapping should trigger SIGBUS, got sig=%d\n",
-+				     sig);
-+			break;
-+		}
-+
-+		signal(SIGBUS, old_sigbus);
-+		signal(SIGSEGV, old_sigsegv);
-+	}
-+
-+	munmap(map, bo_size);
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- int igt_main()
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -268,6 +326,12 @@ int igt_main()
- 			break;
- 		}
- 
-+	igt_subtest("dontneed-after-mmap")
-+		xe_for_each_engine(fd, hwe) {
-+			test_dontneed_after_mmap(fd);
-+			break;
-+		}
-+
- 	igt_fixture() {
- 		xe_device_put(fd);
- 		drm_close_driver(fd);
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_8824_FULL -> XEIGTPW_14846_FULL
+====================================================
 
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_14846_FULL absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_14846_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (2 -> 2)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_14846_FULL:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_vm@overcommit-nonfault-vram-lr-defer (NEW):
+    - shard-lnl:          NOTRUN -> [SKIP][1] +4 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/shard-lnl-8/igt@xe_vm@overcommit-nonfault-vram-lr-defer.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8824_FULL and XEIGTPW_14846_FULL:
+
+### New IGT tests (5) ###
+
+  * igt@xe_vm@overcommit-fault-vram-lr-fault:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_vm@overcommit-fault-vram-lr-fault-no-overcommit:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_vm@overcommit-nonfault-vram-lr-defer:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_vm@overcommit-nonfault-vram-lr-external-nodefer:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_vm@overcommit-nonfault-vram-no-lr:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14846_FULL that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_async_flips@alternate-sync-async-flip:
+    - shard-lnl:          [PASS][2] -> [FAIL][3] ([Intel XE#3718] / [Intel XE#7265]) +1 other test fail
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8824/shard-lnl-6/igt@kms_async_flips@alternate-sync-async-flip.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/shard-lnl-5/igt@kms_async_flips@alternate-sync-async-flip.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@flip-vs-expired-vblank@a-edp1:
+    - shard-lnl:          [FAIL][4] ([Intel XE#301]) -> [PASS][5] +1 other test pass
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8824/shard-lnl-5/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/shard-lnl-1/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
+
+  * igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter:
+    - shard-lnl:          [DMESG-WARN][6] -> [PASS][7] +1 other test pass
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8824/shard-lnl-7/igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/shard-lnl-8/igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter.html
+
+  
+  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
+  [Intel XE#3718]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3718
+  [Intel XE#7265]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7265
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8824 -> IGTPW_14846
+  * Linux: xe-4774-0be244ee3139de3578e9acc56e1b917a4bd162cd -> xe-4776-14e4110238694e33cbb1e4fc54d034cd5b45f3fe
+
+  IGTPW_14846: 2af6f72c995b5c7261dd7dc1d9e96d000cd84fb4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8824: 8824
+  xe-4774-0be244ee3139de3578e9acc56e1b917a4bd162cd: 0be244ee3139de3578e9acc56e1b917a4bd162cd
+  xe-4776-14e4110238694e33cbb1e4fc54d034cd5b45f3fe: 14e4110238694e33cbb1e4fc54d034cd5b45f3fe
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/index.html
+
+--===============6685992606543946329==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Add support for overcommit tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163579/">https://patchwork.freedesktop.org/series/163579/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8824_FULL -&gt; XEIGTPW_14846_FULL</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_14846_FULL absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_14846_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_14846_FULL:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_vm@overcommit-nonfault-vram-lr-defer (NEW):<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/shard-lnl-8/igt@xe_vm@overcommit-nonfault-vram-lr-defer.html">SKIP</a> +4 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8824_FULL and XEIGTPW_14846_FULL:</p>
+<h3>New IGT tests (5)</h3>
+<ul>
+<li>
+<p>igt@xe_vm@overcommit-fault-vram-lr-fault:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_vm@overcommit-fault-vram-lr-fault-no-overcommit:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_vm@overcommit-nonfault-vram-lr-defer:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_vm@overcommit-nonfault-vram-lr-external-nodefer:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_vm@overcommit-nonfault-vram-no-lr:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14846_FULL that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_async_flips@alternate-sync-async-flip:<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8824/shard-lnl-6/igt@kms_async_flips@alternate-sync-async-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/shard-lnl-5/igt@kms_async_flips@alternate-sync-async-flip.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3718">Intel XE#3718</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7265">Intel XE#7265</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank@a-edp1:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8824/shard-lnl-5/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/shard-lnl-1/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8824/shard-lnl-7/igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14846/shard-lnl-8/igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8824 -&gt; IGTPW_14846</li>
+<li>Linux: xe-4774-0be244ee3139de3578e9acc56e1b917a4bd162cd -&gt; xe-4776-14e4110238694e33cbb1e4fc54d034cd5b45f3fe</li>
+</ul>
+<p>IGTPW_14846: 2af6f72c995b5c7261dd7dc1d9e96d000cd84fb4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8824: 8824<br />
+  xe-4774-0be244ee3139de3578e9acc56e1b917a4bd162cd: 0be244ee3139de3578e9acc56e1b917a4bd162cd<br />
+  xe-4776-14e4110238694e33cbb1e4fc54d034cd5b45f3fe: 14e4110238694e33cbb1e4fc54d034cd5b45f3fe</p>
+
+</body>
+</html>
+
+--===============6685992606543946329==--
