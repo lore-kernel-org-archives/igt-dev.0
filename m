@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DC07109C045
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 16:53:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67D8E109C046
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 16:53:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 010C510E160;
-	Wed, 25 Mar 2026 16:53:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 19E9B10E160;
+	Wed, 25 Mar 2026 16:53:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DuZKtYq/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QYlkHMPG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26FEC10E820
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 16:53:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC5BC10E160
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 16:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774457596; x=1805993596;
+ t=1774457594; x=1805993594;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1Iylnboe0CjtqUXH2X7OhyT6Q+ygfONBUAELo0VS3sE=;
- b=DuZKtYq/35DZtILrSIwqmUwQac3aFByH+EcL9j3CwV2ZyF599pshMmIl
- 0grIPaFoX5ICoAbFzlRLJxFMlnWiYgbg3mUhtgmUA7ho7odjnCFpCwt2F
- TFiPQjdQNOUmDGWA+lf1/Mmd7u0V1Reaz3Q3DQHQcxmeZTqoBHDXKkstp
- AeiB6vhn2wF+CCumUvaskefUhARhGSaPg+QUSdEIUd1pRiwWGDMC34c52
- aPrRNZGR4HdbswZ5p8Q25xev8yeDPtdWTI6hpf+DsUjAtwhSm3+drzTCK
- uRRhCZ4t5FXg4bRYLxmtIezim3eVwao1aV82maw26OLrSQc7rJrg3F5BG w==;
-X-CSE-ConnectionGUID: pHrXvsAZQ8eswnQg6qKycw==
-X-CSE-MsgGUID: pm/2S1nORWi2FGeYNLxHBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="92880615"
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="92880615"
+ bh=jqKgS+HAQq6BYQsZ1zPaL+oG+GRGsrvcUGGITjCF5lg=;
+ b=QYlkHMPGU2ft3QwzNtjMpjyhBodo9MiHfh9lblBG+dn+nG7bWaQDB5XU
+ QNz2othncUH0FtZbgHa4JG6KGKiUYJDllAwe4LS4777l+FfQP5XTXx/G7
+ 16+3jKL2iCGF0vcyKxZvl8LrVLvbUsiw3S2SZBIKsa3wxtSDic5FK2tLS
+ PVfX02zyp7oA7t4gPErTkYGnF0fDnGmey0iFFKRGS3c1MM1NfWmvOm0Oa
+ TBcmgiObnbKPurF0icOHPSTy0L21y2yUgNe8G1veADMXIrmH2Okb53m01
+ yYh0/hiQ8Gbl7H5W6wHh2wR8XjZzmJcBmdgvzcm55zxXSsu6ZiHqhVlkY A==;
+X-CSE-ConnectionGUID: UIxENyRZQUujfQpu2NcDMg==
+X-CSE-MsgGUID: +xRG6iNKRCykCtlpxV36NQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="92880611"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="92880611"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 09:53:16 -0700
-X-CSE-ConnectionGUID: /N7E07U6RQ+dZRqV3dMPRw==
-X-CSE-MsgGUID: RJRs2i78Tq+D2SmtbCn+zQ==
+ 25 Mar 2026 09:53:13 -0700
+X-CSE-ConnectionGUID: RICdKCfDQM2c8A63micutA==
+X-CSE-MsgGUID: 3ug1rV84RIqwg1IX+HrfNQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="224991868"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="224991856"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 09:53:14 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 09:53:12 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: pranay.samala@intel.com,
 	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v2 4/4] tests/intel/kms_pm_dc: Scope PSR handling to
- output
-Date: Wed, 25 Mar 2026 22:21:40 +0530
-Message-ID: <20260325165140.115520-5-jeevan.b@intel.com>
+Subject: [PATCH i-g-t v2 3/4] tests/intel/kms_psr_stress_test: Select
+ PSR-capable output
+Date: Wed, 25 Mar 2026 22:21:39 +0530
+Message-ID: <20260325165140.115520-4-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260325165140.115520-1-jeevan.b@intel.com>
 References: <20260325165140.115520-1-jeevan.b@intel.com>
@@ -69,112 +69,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Stop using global PSR checks by passing NULL to PSR helpers.
-Select a PSR-capable eDP output and scope PSR enablement and
-verification to that output.
+Iterate over all eDP outputs and select one that supports PSR
+instead of picking the first available eDP. Skip the test only
+if no PSR-capable output is found.
 
-This fixes incorrect behavior on multi-eDP systems where PSR
-capability differs across panels.
+Previously, the test relied on a global PSR capability check and
+could select an eDP panel without PSR support on systems with
+multiple eDPs. This could lead to incorrect behavior. this ensures
+the test runs only on a valid PSR sink and avoids unnecessary
+failures on multi-eDP systems.
+
+v2: Drop redundant 'found' variable.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/kms_pm_dc.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ tests/intel/kms_psr_stress_test.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 39e94f36b..1a88c54bd 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -162,6 +162,10 @@ static void setup_output(data_t *data)
+diff --git a/tests/intel/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
+index 09e73bd49..0c9f0a0ef 100644
+--- a/tests/intel/kms_psr_stress_test.c
++++ b/tests/intel/kms_psr_stress_test.c
+@@ -93,6 +93,10 @@ static void setup_output(data_t *data)
  		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
  			continue;
  
 +		if (!psr_sink_support(data->drm_fd, data->debugfs_fd,
-+				      data->op_psr_mode, output))
++				      PSR_MODE_1, output))
 +			continue;
 +
- 		igt_output_set_crtc(output, crtc);
- 		data->output = output;
- 		data->mode = igt_output_get_mode(output);
-@@ -318,9 +322,8 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
- 
- static void setup_dc3co(data_t *data)
- {
--	data->op_psr_mode = PSR_MODE_2;
--	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode, NULL);
--	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL),
-+	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode, data->output);
-+	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output),
- 		      "PSR2 is not enabled\n");
- }
- 
-@@ -342,7 +345,7 @@ static void test_dc5_retention_flops(data_t *data, int dc_flag)
- 	dc_counter_before_psr = igt_read_dc_counter(data->debugfs_fd, dc_flag);
- 	set_output_on_pipe_b(data);
- 	setup_primary(data);
--	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output));
- 	check_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	cleanup_dc_psr(data);
- }
-@@ -356,7 +359,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
- 	setup_output(data);
- 	setup_primary(data);
- 	igt_require(!psr_disabled_check(data->debugfs_fd));
--	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output));
- 	check_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data->output);
- 	cleanup_dc_psr(data);
-@@ -615,6 +618,7 @@ static void kms_poll_state_restore(int sig)
- int igt_main()
- {
- 	data_t data = {};
-+	data.op_psr_mode = PSR_MODE_1;
- 
- 	igt_fixture() {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-@@ -640,8 +644,9 @@ int igt_main()
- 	igt_describe("In this test we make sure that system enters DC3CO "
- 		     "when PSR2 is active and system is in SLEEP state");
- 	igt_subtest("dc3co-vpb-simulation") {
-+		data.op_psr_mode = PSR_MODE_2;
- 		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
--					     PSR_MODE_2, NULL));
-+					     data.op_psr_mode, NULL));
- 		test_dc3co_vpb_simulation(&data);
+ 		igt_display_reset(display);
+ 		igt_output_set_crtc(output,
+ 				    crtc);
+@@ -107,7 +111,7 @@ static void setup_output(data_t *data)
+ 		return;
  	}
  
-@@ -649,8 +654,7 @@ int igt_main()
- 		     "while PSR is active");
- 	igt_subtest("dc5-psr") {
- 		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
--					     PSR_MODE_1, NULL));
--		data.op_psr_mode = PSR_MODE_1;
-+					     data.op_psr_mode, NULL));
- 		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
- 		test_dc_state_psr(&data, IGT_INTEL_CHECK_DC5);
+-	igt_require(data->output);
++	igt_require_f(data->output, "No eDP output with PSR support found\n");
+ }
+ 
+ static void primary_draw(data_t *data, struct igt_fb *fb, uint8_t i)
+@@ -232,7 +236,7 @@ static void prepare(data_t *data)
+ 	r = timerfd_settime(data->completed_timerfd, 0, &interval, NULL);
+ 	igt_require_f(r != -1, "Error setting completed_timerfd\n");
+ 
+-	data->initial_state = psr_get_mode(data->debugfs_fd, NULL);
++	data->initial_state = psr_get_mode(data->debugfs_fd, data->output);
+ 	igt_require(data->initial_state != PSR_DISABLED);
+ 	igt_require(psr_wait_entry(data->debugfs_fd, data->initial_state, data->output));
+ }
+@@ -345,7 +349,7 @@ static void run(data_t *data)
  	}
-@@ -659,8 +663,7 @@ int igt_main()
- 		     "while PSR is active");
- 	igt_subtest("dc6-psr") {
- 		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
--					     PSR_MODE_1, NULL));
--		data.op_psr_mode = PSR_MODE_1;
-+					     data.op_psr_mode, NULL));
- 		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
- 		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
- 			      "PC8+ residencies not supported\n");
-@@ -688,8 +691,7 @@ int igt_main()
- 		igt_require_f(intel_display_ver(data.devid) >= 30,
- 			      "Test not supported on this platform.\n");
- 		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
--					     PSR_MODE_1, NULL));
--		data.op_psr_mode = PSR_MODE_1;
-+					     data.op_psr_mode, NULL));
- 		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
- 		igt_require(!psr_disabled_check(data.debugfs_fd));
- 		test_dc5_retention_flops(&data, IGT_INTEL_CHECK_DC5);
+ 
+ 	/* Check if after all this stress the PSR is still in the same state */
+-	igt_assert(psr_get_mode(data->debugfs_fd, NULL) == data->initial_state);
++	igt_assert(psr_get_mode(data->debugfs_fd, data->output) == data->initial_state);
+ 	psr_sink_error_check(data->debugfs_fd, data->initial_state, data->output);
+ }
+ 
+@@ -359,10 +363,6 @@ int igt_main()
+ 		data.bops = buf_ops_create(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_require_f(psr_sink_support(data.drm_fd, data.debugfs_fd,
+-					       PSR_MODE_1, NULL),
+-			      "Sink does not support PSR\n");
+-
+ 		setup_output(&data);
+ 
+ 		data.invalidate_timerfd = timerfd_create(CLOCK_MONOTONIC, 0);
 -- 
 2.43.0
 
