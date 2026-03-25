@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5FD8109C045
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 16:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E3C2109C046
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Mar 2026 16:53:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E5B410E823;
-	Wed, 25 Mar 2026 16:51:17 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8FD2410E820;
- Wed, 25 Mar 2026 16:51:11 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0081918879398221566=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C0E4210E828;
+	Wed, 25 Mar 2026 16:53:12 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nyjqK7s1";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C680610E822
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2026 16:53:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774457587; x=1805993587;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=WLmNeRZDwAKhToKxgejEHPXpTPLIxeaM+QK+IIUJeGE=;
+ b=nyjqK7s1j37PPEZhv4EbntSRdE7hnnrTWM9j5C69avifjlRDX/dE+Mpq
+ 5dmbPaPTaznrS+eP5/29mxI/vyLLwv+G+HJRNrFcMAn3Hpj0NycA4Wids
+ pbSZv+0pc+sjdfOY/CAqEKZFDyrk8XICJb8FduLotVKeDskdcBsMpcZqr
+ 31QtFBoBdrBh6SZKoD4uxiqgum6SIX6FvKO6yX0wemHmcZE8xgDL8q6bZ
+ WQuGO+uq5lyFtCWA1zCzNjKqvQFC7XYZdrF6EznZXhinpCJB1PIHqkiS3
+ ezekvIKKsvLGTRGoDwcwSqrmlrhyWBQFHJK24Eboqt4cbnI6RPwVrj1D4 w==;
+X-CSE-ConnectionGUID: nvKdCND7Tc6BCWEUkSO2IQ==
+X-CSE-MsgGUID: cw17oKz/TrSWC03nyHQ80w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="92880599"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="92880599"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2026 09:53:06 -0700
+X-CSE-ConnectionGUID: D3hiR3y7Q5uNBbYnwNJyHg==
+X-CSE-MsgGUID: bgXkbkfyQK6Dpo1uuY541w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; d="scan'208";a="224991842"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 09:53:05 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: pranay.samala@intel.com,
+	Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t v2 0/4] Fix PSR handling for multi-eDP systems
+Date: Wed, 25 Mar 2026 22:21:36 +0530
+Message-ID: <20260325165140.115520-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fsharpne?=
- =?utf-8?q?ss=5Ffilter=3A_Fix_stale_mode_pointer_in_joiner_bypass_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Samala, Pranay" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Mar 2026 16:51:11 -0000
-Message-ID: <177445747156.397746.2441021088183263295@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260325112320.2879230-1-pranay.samala@intel.com>
-In-Reply-To: <20260325112320.2879230-1-pranay.samala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,143 +63,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0081918879398221566==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+PSR handling in a few tests currently relies on global checks by
+passing NULL to PSR helper functions. This works on single eDP
+systems, but breaks on platforms with multiple eDP panels where PSR
+capability can differ per output.
 
-== Series Details ==
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Jeevan B (4):
+  tests/intel/kms_fbc_dirty_rect: Use per-output PSR check before
+    disabling
+  tests/kms_vrr: Avoid unnecessary PSR disable
+  tests/intel/kms_psr_stress_test: Select PSR-capable output
+  tests/intel/kms_pm_dc: Scope PSR handling to output
 
-Series: tests/intel/kms_sharpness_filter: Fix stale mode pointer in joiner bypass (rev2)
-URL   : https://patchwork.freedesktop.org/series/163702/
-State : success
+ tests/intel/kms_fbc_dirty_rect.c  | 14 +++++++++-----
+ tests/intel/kms_pm_dc.c           | 26 ++++++++++++++------------
+ tests/intel/kms_psr_stress_test.c | 14 +++++++-------
+ tests/kms_vrr.c                   |  6 +++---
+ 4 files changed, 33 insertions(+), 27 deletions(-)
 
-== Summary ==
+-- 
+2.43.0
 
-CI Bug Log - changes from IGT_8826 -> IGTPW_14851
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14851/index.html
-
-Participating hosts (41 -> 39)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14851 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8826/bat-mtlp-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14851/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8826/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14851/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8826 -> IGTPW_14851
-
-  CI-20190529: 20190529
-  CI_DRM_18213: cfe3d5f3eb5cf3b8aff1710c1c5c1d666f932aa8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14851: 14851
-  IGT_8826: 8826
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14851/index.html
-
---===============0081918879398221566==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_sharpness_filter: Fix stale mode pointer in joiner bypass (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163702/">https://patchwork.freedesktop.org/series/163702/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14851/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14851/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8826 -&gt; IGTPW_14851</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14851/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14851 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8826/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14851/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8826/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14851/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8826 -&gt; IGTPW_14851</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18213: cfe3d5f3eb5cf3b8aff1710c1c5c1d666f932aa8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14851: 14851<br />
-  IGT_8826: 8826</p>
-
-</body>
-</html>
-
---===============0081918879398221566==--
