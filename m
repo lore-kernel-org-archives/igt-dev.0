@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9A0A109E54B
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 06:21:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D29F0109E557
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 06:21:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7B98710E236;
-	Thu, 26 Mar 2026 06:21:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B6D010E236;
+	Thu, 26 Mar 2026 06:21:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SdP1AB9Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KFuraOqo";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D45F10E1F8
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 06:21:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75DBD10E2C3
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 06:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774506064; x=1806042064;
+ t=1774506067; x=1806042067;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ulReS/D21NgBvqyRlMCJLNMm48n5ikMWrUMqdgYASSE=;
- b=SdP1AB9YJbP2++w5Tu17SbwRl7bIfy2d0+Jx5WqpyTNpRGupJdZD2hfA
- OSFRwPGyI7yMuFmrZ89QpE8M7bd5a9focc13Gbf1lnn1c31m0geYQdA9x
- E9ewyP+DDAxP3DytvwxKsU4n3dgcRzsoWzp8F1zYeWtg7cyKfwLJ9gr56
- oGeEq5r2yVxCUWT4/SDnzn/BSjfrAIkt9hoK3k7VmdEqrRFsmpWuWYBQj
- R4DGw4oLAHopxHEJ0hF0d2JK10KN14BqP8F5re4eqZEgMjOmgUtrNmpQr
- 148m0pXmpvMfoqqbg7hdbLEiQamUplxztLhQJiYgIIsfg1YcP70d1y0re Q==;
-X-CSE-ConnectionGUID: KUK45uLmRPKdhFMd9NkaWw==
-X-CSE-MsgGUID: ye0G+LpMR8+q87z5fhro7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="98175231"
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="98175231"
+ bh=iAt9WVhn4uyrfT5KtjsL7eHpwAOrlYvv1E2PFdMAW5c=;
+ b=KFuraOqoVocGMrZve9rSfNP/Qy2NvZI2Yj1QDtMkaNObTLN3fHE8ju3N
+ ShKjDXMQR0f7IEjlzs9EOdk8QO7RJtW83bKpfB3dD3liiPwlmYMK+z/dR
+ bw/ahkxF/L+Vr9GjgPbA9K+XEYbpOKLO+04chfZi5graUE+pxUdkOkTTM
+ pFI768S1K+9aBNnbRkf8dAH7cdtcTxIHz8qj/jUWtxeollOTLA+y6qch3
+ wHVtKLicb6rAG7rj2vvXqcard6TRaRRyGhv4K7K4Ucwat7jJmpw2aXR+w
+ DhscJqZrL3aohcbnXgmrAiOTfYEqbwpzwfsL5RMBfzGr7RGm5H09DjWdG Q==;
+X-CSE-ConnectionGUID: LaftZjOnQhqWow4su4lvsg==
+X-CSE-MsgGUID: rsl5E5IHRqmiBkr4yO7DmA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="98175242"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="98175242"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 23:21:04 -0700
-X-CSE-ConnectionGUID: qlM12lT+RcK4dySlFE22Ww==
-X-CSE-MsgGUID: lWHk6HfuQRmeULHRoF4Yfw==
+ 25 Mar 2026 23:21:07 -0700
+X-CSE-ConnectionGUID: Gc57E5WMQfmM1ptjKyzlXQ==
+X-CSE-MsgGUID: WB0o5I2LSBqCsSjXXhMT4Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="224935951"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="224935977"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 23:21:03 -0700
+ 25 Mar 2026 23:21:06 -0700
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com,
-	Mohammed Bilal <mohammed.bilal@intel.com>
-Subject: [PATCH i-g-t v4 2/4] intel: Add Xe FULL chamelium run type to
- kms_test_config
-Date: Thu, 26 Mar 2026 12:11:59 +0530
-Message-ID: <20260326064201.783311-3-sowmiya.s@intel.com>
+Cc: swati2.sharma@intel.com, Mohammed Bilal <mohammed.bilal@intel.com>,
+ Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v4 4/4] intel-ci: Enable hdmi 4k resolution test in
+ chamelium testlist
+Date: Thu, 26 Mar 2026 12:12:01 +0530
+Message-ID: <20260326064201.783311-5-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260326064201.783311-1-sowmiya.s@intel.com>
 References: <20260326064201.783311-1-sowmiya.s@intel.com>
@@ -71,41 +71,40 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 
-Add Xe FULL chamelium include mapping pointing to the shared
-chamelium-only.testlist and update exclude labels to apply
-xe.blocklist.txt to the new run type. Also rename i915 chamelium
-to i915 FULL chamelium for consistency.
+Remove inline comment and enable the test in the testlist as the
+exclusion is already handled via i915 and Xe blocklists.
 
+v4: Add caution comment (Swati)
+
+Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
 Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/intel/kms_test_config.json | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tests/intel-ci/chamelium-only.testlist | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-index 61a70a9bb..7eab10b04 100644
---- a/tests/intel/kms_test_config.json
-+++ b/tests/intel/kms_test_config.json
-@@ -15,14 +15,15 @@
-                     "include": [
-                         { "i915 BAT": "../intel-ci/i915.fast-feedback.testlist" },
-                         { "i915 BAT chamelium": "../intel-ci/i915.fast-feedback-chamelium-only.testlist" },
--                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
-+                        { "i915 FULL chamelium": "../intel-ci/chamelium-only.testlist" },
- 
-                         { "Xe BAT": "../intel-ci/xe.fast-feedback.testlist" },
--                        { "Xe BAT chamelium": "../intel-ci/xe.fast-feedback-chamelium-only.testlist" }
-+                        { "Xe BAT chamelium": "../intel-ci/xe.fast-feedback-chamelium-only.testlist" },
-+                        { "Xe FULL chamelium": "../intel-ci/chamelium-only.testlist" }
-                     ],
-                     "exclude": [
--                        { "i915 BAT, i915 BAT chamelium, i915 chamelium, i915 FULL": "../intel-ci/i915.blocklist.txt" },
--                            { "Xe BAT, Xe BAT chamelium, Xe FULL": "../intel-ci/xe.blocklist.txt" }
-+                        { "i915 BAT, i915 BAT chamelium, i915 FULL chamelium, i915 FULL": "../intel-ci/i915.blocklist.txt" },
-+                            { "Xe BAT, Xe BAT chamelium, Xe FULL chamelium, Xe FULL": "../intel-ci/xe.blocklist.txt" }
-                     ]
-                 }
-             },
+diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
+index 0e7c8e301..d627ad414 100644
+--- a/tests/intel-ci/chamelium-only.testlist
++++ b/tests/intel-ci/chamelium-only.testlist
+@@ -1,3 +1,5 @@
++# NOTE: Do NOT add blocklist entries here.
++# To blocklist tests, use the appropriate xe/i915 blocklist files instead
+ igt@kms_feature_discovery@chamelium
+ igt@kms_chamelium_audio@dp-audio
+ igt@kms_chamelium_audio@dp-audio-edid
+@@ -18,10 +20,7 @@ igt@kms_chamelium_edid@dp-edid-stress-resolution-4k
+ igt@kms_chamelium_edid@dp-edid-stress-resolution-non-4k
+ igt@kms_chamelium_edid@dp-mode-timings
+ igt@kms_chamelium_edid@hdmi-edid-read
+-# Chamelium v1 board HDMI receiver supports max 4k@30 resolution 
+-# removed test as its having a mode 4k@60 resulting 
+-# TMDS config errors on v1 board
+-#igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
++igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
+ igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k
+ igt@kms_chamelium_edid@hdmi-mode-timings
+ igt@kms_chamelium_edid@vga-edid-read
 -- 
 2.48.1
 
