@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF12A109E54B
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 06:21:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9A2C109E54B
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 06:21:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5E2AB10E1F8;
-	Thu, 26 Mar 2026 06:21:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B67C10E2C3;
+	Thu, 26 Mar 2026 06:21:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Dum8/sd4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KCmcv0ke";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0624710E1F8
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 06:21:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A18210E1F8
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 06:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774506061; x=1806042061;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=YWqWYPOR86Lzofjhj2YOLoWxzL2975FPbgZdMcfqV04=;
- b=Dum8/sd4RLY0AXW0HSr0ztXEviGoiZKHXkrBrEcklwGXVKs0KsmTO6Rc
- kN3gwWt2S2FY7cajYtg3UNBHnTENFpT5VeFKTk151nzvUcjk/g4L/TsM9
- oZvTUbXj7ISLJxBmmIVXBUU7UfAUZknhb6ejCXdsljeDKjsnrdG7L3GfE
- QivWFz40aVSeRZXx7+cgioverj7FF/FFhgoVG8gB7FXcpYp/4BldxX+7b
- TbS9sXl9jN6cyvZWA9WwtO1wlRKIJ+9k/UKnBmOdjw8y4f3GKPhTHvnox
- jh7ZdsBwucRG35HOztwlMpbvsrxHBXjkNbhQxT6omCTduTPNwuaitJqMa w==;
-X-CSE-ConnectionGUID: DtkdyZpzTV+nQ1mUpbgj+w==
-X-CSE-MsgGUID: sNbG3sgjSGSTR6F3kfqIGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="98175227"
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="98175227"
+ t=1774506062; x=1806042062;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=pg120JWCh91XVPGfp2NZtcK2zyda48Bh/k/SY3oZ7CM=;
+ b=KCmcv0ke7Yo+7PBC2+JzHf1X0aTAqnG22d9WbUGqw7y+094OE04VQFmK
+ lNu8J23FAkQpFYKO+Tc5JQwQ1bicIXh2T8krX8Lb0xe6rWGYr5CfwH6rc
+ 89Ti55Eb804wg9z9TDH8GhhuBv3NmEvnW9GGjSePAsJkM5foa5ZKQ8IGJ
+ eIVMG8GZ9lBVKXQtTnaHqec06c22KhQVmVZIVHlgUf9DeABsh492bdA4U
+ /SRk7RwnL4/NvUVSCpWwGz152K13a2HqJMYL8rS2w8Nk6+rmDt54KxxPb
+ S2vVVgEKjnE4OKow6V05VNn9MjxH5WuEJuZxLNknYKK2zBipNOmo8EBNr Q==;
+X-CSE-ConnectionGUID: RyCoq+U/R4+ZhEzoo4ZYVw==
+X-CSE-MsgGUID: Mkt1J9l0TIiQ39LugV434g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="98175229"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="98175229"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 23:21:00 -0700
-X-CSE-ConnectionGUID: 89V+MKr0T/CsZlInk1J+9A==
-X-CSE-MsgGUID: 4tCjq1gUSKuI3NA7u2fPhg==
+ 25 Mar 2026 23:21:02 -0700
+X-CSE-ConnectionGUID: qS/6Qdp1SbakxYlS5GqhBA==
+X-CSE-MsgGUID: NbCCOltwTBeY5fsU8rglgQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="224935934"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="224935945"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2026 23:20:59 -0700
+ 25 Mar 2026 23:21:01 -0700
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com,
-	Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v4 0/4] intel-ci: Add Xe FULL chamelium run type and
- testlist improvements 
-Date: Thu, 26 Mar 2026 12:11:57 +0530
-Message-ID: <20260326064201.783311-1-sowmiya.s@intel.com>
+Cc: swati2.sharma@intel.com, Mohammed Bilal <mohammed.bilal@intel.com>,
+ Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v4 1/4] intel-ci: Move suspend/resume chamelium tests to
+ end
+Date: Thu, 26 Mar 2026 12:11:58 +0530
+Message-ID: <20260326064201.783311-2-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260326064201.783311-1-sowmiya.s@intel.com>
+References: <20260326064201.783311-1-sowmiya.s@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,36 +69,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series adds Xe driver support for FULL chamelium CI runs by
-introducing the Xe FULL chamelium run type in kms_test_config.json,
-sharing the existing chamelium-only.testlist between i915 and Xe,
-and using driver-specific blocklists to handle platform differences.
+From: Mohammed Bilal <mohammed.bilal@intel.com>
 
-Additionally, it improves testlist reliability by moving suspend/resume
-tests to the end to avoid system hangs affecting main test execution,
-migrating inline test exclusions to blocklists for consistent filtering,
-and adding non-deterministic random-plane tests to xe blocklist.
-
-v2:
--Update commit message
+Suspend operations can cause system hangs or connection timeouts,
+so isolating them at the tail ensures stability of main test
+execution.
 
 v3:
 -Sort tests alphabetically (Kamil)
+v4: Add detailed comment (Swati)
 
-v4:
--Add detailed comment (Swati)
+Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
+---
+ tests/intel-ci/chamelium-only.testlist | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-Mohammed Bilal (4):
-  intel-ci: Move suspend/resume chamelium tests to end
-  intel: Add Xe FULL chamelium run type to kms_test_config
-  intel-ci: Add VGA chamelium exclusion to Xe blocklist
-  intel-ci: Enable hdmi 4k resolution test in chamelium testlist
-
- tests/intel-ci/chamelium-only.testlist | 22 ++++++++++++----------
- tests/intel-ci/xe.blocklist.txt        |  4 ++++
- tests/intel/kms_test_config.json       |  9 +++++----
- 3 files changed, 21 insertions(+), 14 deletions(-)
-
+diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
+index 9adace28c..0e7c8e301 100644
+--- a/tests/intel-ci/chamelium-only.testlist
++++ b/tests/intel-ci/chamelium-only.testlist
+@@ -12,13 +12,11 @@ igt@kms_chamelium_color@ctm-negative
+ igt@kms_chamelium_color@ctm-red-to-blue
+ igt@kms_chamelium_color@degamma
+ igt@kms_chamelium_color@gamma
+-igt@kms_chamelium_edid@dp-edid-change-during-suspend
+ igt@kms_chamelium_edid@dp-edid-read
+ igt@kms_chamelium_edid@dp-edid-resolution-list
+ igt@kms_chamelium_edid@dp-edid-stress-resolution-4k
+ igt@kms_chamelium_edid@dp-edid-stress-resolution-non-4k
+ igt@kms_chamelium_edid@dp-mode-timings
+-igt@kms_chamelium_edid@hdmi-edid-change-during-suspend
+ igt@kms_chamelium_edid@hdmi-edid-read
+ # Chamelium v1 board HDMI receiver supports max 4k@30 resolution 
+ # removed test as its having a mode 4k@60 resulting 
+@@ -41,9 +39,7 @@ igt@kms_chamelium_frames@hdmi-crc-planes-random
+ igt@kms_chamelium_frames@hdmi-crc-single
+ igt@kms_chamelium_frames@hdmi-frame-dump
+ igt@kms_chamelium_frames@vga-frame-dump
+-igt@kms_chamelium_hpd@common-hpd-after-suspend
+ igt@kms_chamelium_hpd@dp-hpd
+-igt@kms_chamelium_hpd@dp-hpd-after-suspend
+ igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode
+ igt@kms_chamelium_hpd@dp-hpd-fast
+ igt@kms_chamelium_hpd@dp-hpd-for-each-pipe
+@@ -51,7 +47,6 @@ igt@kms_chamelium_hpd@dp-hpd-storm
+ igt@kms_chamelium_hpd@dp-hpd-storm-disable
+ igt@kms_chamelium_hpd@dp-hpd-with-enabled-mode
+ igt@kms_chamelium_hpd@hdmi-hpd
+-igt@kms_chamelium_hpd@hdmi-hpd-after-suspend
+ igt@kms_chamelium_hpd@hdmi-hpd-enable-disable-mode
+ igt@kms_chamelium_hpd@hdmi-hpd-fast
+ igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe
+@@ -61,7 +56,6 @@ igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode
+ igt@kms_chamelium_audio@hdmi-audio
+ igt@kms_chamelium_audio@hdmi-audio-edid
+ igt@kms_chamelium_hpd@vga-hpd
+-igt@kms_chamelium_hpd@vga-hpd-after-suspend
+ igt@kms_chamelium_hpd@vga-hpd-enable-disable-mode
+ igt@kms_chamelium_hpd@vga-hpd-fast
+ igt@kms_chamelium_hpd@vga-hpd-for-each-pipe
+@@ -75,3 +69,12 @@ igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate
+ igt@kms_chamelium_hpd@common-hpd-after-hibernate
+ igt@kms_chamelium_hpd@dp-hpd-after-hibernate
+ igt@kms_chamelium_hpd@hdmi-hpd-after-hibernate
++# Suspend operations can cause system hangs or connection timeouts,
++# so isolating them at the tail ensures stability of main test
++# execution.
++igt@kms_chamelium_edid@dp-edid-change-during-suspend
++igt@kms_chamelium_edid@hdmi-edid-change-during-suspend
++igt@kms_chamelium_hpd@common-hpd-after-suspend
++igt@kms_chamelium_hpd@dp-hpd-after-suspend
++igt@kms_chamelium_hpd@hdmi-hpd-after-suspend
++igt@kms_chamelium_hpd@vga-hpd-after-suspend
 -- 
 2.48.1
 
