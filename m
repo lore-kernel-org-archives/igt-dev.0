@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B1C8106F2EB
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 07:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93CE0106F2EA
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 07:59:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F32ED10E9D5;
-	Thu, 26 Mar 2026 07:59:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4593910E9D6;
+	Thu, 26 Mar 2026 07:59:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JJdLqqpS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j9EBckdv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C208B10E9E8
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 07:59:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 605E710E9D6
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 07:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774511943; x=1806047943;
+ t=1774511948; x=1806047948;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ulReS/D21NgBvqyRlMCJLNMm48n5ikMWrUMqdgYASSE=;
- b=JJdLqqpS9voYskZCXwW3d4GOcZRhkZwS8MoxYtrAVlEK7Es4+Kta12LY
- 9uphVm2CXen/fqCfXc1rHc3/Wm4WHZrz1PV+KjglcT3MvL2sob3n4iZu7
- pFN56hWgw9aRiWLZUTxRrfOFs1NztPXov0yHHfOeHGAQmRGZK1ZGxFmjR
- Ie+KyxGW0VnGOs0Ad1X9Kg2Z7mUaRszb8ZqFEYmT7HIqpTanPD7Ld9Uaf
- WVw4S6qM/n5AvaV+ooLp37kozCvzS6sqTykV4lOw5E+ui2K9BVRZ9uAGL
- vA9lo5nd/YQeDt/fnZWF+PD2qBHR1Np2c4Fc2u3RMDujBTVz5ZB69y/wP A==;
-X-CSE-ConnectionGUID: 9rFrz7gHQ8eWpnTbMnq5FA==
-X-CSE-MsgGUID: bMEm5DAsT22YN34xrqQRMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75757714"
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="75757714"
+ bh=mPeYwE+Gf6zufl3iJV0G3l7U2HmT3CrTAeF+9OgTJ8c=;
+ b=j9EBckdvJ0XyAW8k6xkSd5jwLuJmWOx54zpC20VJrQ4ubk0YRD6YWdTs
+ X0mL9HfNHNK5oUZtXgYZQGZYQb7El0Ba4tZWouHyuN1/gv5oT7D6GsP5m
+ 2e0L9b/lmM9onQrnBPCDPj1npgnOfQ4R6kqLiBQfp9RnMQkb6Fkp+o/rj
+ YpUgIToBdw/btYuV3fKnoA8TxcFgnXBNHC0+eD5j3TB7gVj0Z5i05Wd7c
+ p8C9Pjysl2hWV3zTy9lzcHKg+92V+uznzD6e0msaYxL/e7WgXwCPTjkn/
+ nkbhXc3ORtv6PzEhzJVgC4eH3atpdmpdKAEgBBNX+6G5iIowe8N2bVHME Q==;
+X-CSE-ConnectionGUID: QxgAwDbXS2KVBq2+LRWFJg==
+X-CSE-MsgGUID: PEVmZ0KwRVCE8cmrNpvcFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75757718"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="75757718"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 00:59:03 -0700
-X-CSE-ConnectionGUID: 9wWW6/3xRLapHM/dPMseJQ==
-X-CSE-MsgGUID: cpAJIDkfQ/+1+FZPJfmMoQ==
+ 26 Mar 2026 00:59:07 -0700
+X-CSE-ConnectionGUID: VhjfndvMQyOUNfJWb3XQMA==
+X-CSE-MsgGUID: ofBdec0+RpOv8ed+dwcX3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="221623268"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="221623285"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 00:59:01 -0700
+ 26 Mar 2026 00:59:06 -0700
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com,
-	Mohammed Bilal <mohammed.bilal@intel.com>
-Subject: [PATCH i-g-t v5 2/5] intel: Add Xe FULL chamelium run type to
- kms_test_config
-Date: Thu, 26 Mar 2026 13:49:54 +0530
-Message-ID: <20260326081957.860183-3-sowmiya.s@intel.com>
+	Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v5 5/5] tests/intel-ci/i915.blocklist: Remove
+ kms_chamelium_frames from i915 blocklist
+Date: Thu, 26 Mar 2026 13:49:57 +0530
+Message-ID: <20260326081957.860183-6-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260326081957.860183-1-sowmiya.s@intel.com>
 References: <20260326081957.860183-1-sowmiya.s@intel.com>
@@ -69,43 +69,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mohammed Bilal <mohammed.bilal@intel.com>
+Remove igt@kms_chamelium_frames@hdmi-.*-planes-random
+from i915 blocklist as we have a fix for it.
 
-Add Xe FULL chamelium include mapping pointing to the shared
-chamelium-only.testlist and update exclude labels to apply
-xe.blocklist.txt to the new run type. Also rename i915 chamelium
-to i915 FULL chamelium for consistency.
-
-Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Fixes: https://patchwork.freedesktop.org/series/163296/
+Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 ---
- tests/intel/kms_test_config.json | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tests/intel-ci/i915.blocklist.txt | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-index 61a70a9bb..7eab10b04 100644
---- a/tests/intel/kms_test_config.json
-+++ b/tests/intel/kms_test_config.json
-@@ -15,14 +15,15 @@
-                     "include": [
-                         { "i915 BAT": "../intel-ci/i915.fast-feedback.testlist" },
-                         { "i915 BAT chamelium": "../intel-ci/i915.fast-feedback-chamelium-only.testlist" },
--                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
-+                        { "i915 FULL chamelium": "../intel-ci/chamelium-only.testlist" },
- 
-                         { "Xe BAT": "../intel-ci/xe.fast-feedback.testlist" },
--                        { "Xe BAT chamelium": "../intel-ci/xe.fast-feedback-chamelium-only.testlist" }
-+                        { "Xe BAT chamelium": "../intel-ci/xe.fast-feedback-chamelium-only.testlist" },
-+                        { "Xe FULL chamelium": "../intel-ci/chamelium-only.testlist" }
-                     ],
-                     "exclude": [
--                        { "i915 BAT, i915 BAT chamelium, i915 chamelium, i915 FULL": "../intel-ci/i915.blocklist.txt" },
--                            { "Xe BAT, Xe BAT chamelium, Xe FULL": "../intel-ci/xe.blocklist.txt" }
-+                        { "i915 BAT, i915 BAT chamelium, i915 FULL chamelium, i915 FULL": "../intel-ci/i915.blocklist.txt" },
-+                            { "Xe BAT, Xe BAT chamelium, Xe FULL chamelium, Xe FULL": "../intel-ci/xe.blocklist.txt" }
-                     ]
-                 }
-             },
+diff --git a/tests/intel-ci/i915.blocklist.txt b/tests/intel-ci/i915.blocklist.txt
+index 1068e2e15..95eb9391c 100644
+--- a/tests/intel-ci/i915.blocklist.txt
++++ b/tests/intel-ci/i915.blocklist.txt
+@@ -89,17 +89,6 @@ igt@kms_frontbuffer_tracking@.*drrs.*
+ ###############################################
+ igt@kms_plane_scaling@.*downscale-factor-0-25.*
+ ###############################################
+-# Tends to generate invalid configurations
+-# using CCS planes or configurations that
+-# exceed HW capabilities resulting in sporadic
+-# failure with -EINVAL.
+-#
+-# Maintaining extra constraints for Intel's HW
+-# is too costly in comparison to the value
+-# provided.
+-###############################################
+-igt@kms_chamelium_frames@hdmi-.*-planes-random
+-###############################################
+ # Broadcom
+ ###############################################
+ igt@vc4.*
 -- 
 2.48.1
 
