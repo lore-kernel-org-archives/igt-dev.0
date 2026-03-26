@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0AFD103A9A0
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 07:26:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED8EA1099B5F
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 07:26:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 95DA910E2F6;
-	Thu, 26 Mar 2026 07:26:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A1C6F10E8F2;
+	Thu, 26 Mar 2026 07:26:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ioKue025";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F6uWrDDh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E0E110E2EA
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 07:26:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC92810E2EA
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 07:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774509997; x=1806045997;
+ t=1774509994; x=1806045994;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Fq2GyuTHCw+6qwyk1VzkmzBHOT+AcIVguHO/NPKCv/c=;
- b=ioKue025Ai2HcRUMUjS/5qyZzjf4pY2g8gSKSZPnGRkvLH4xNvkCo0li
- YlFgk9bACy1MQ83vJ/umoG9TxASqHf72pQUhXNI1J/+t2k9GSy4CpQhSw
- b+jDHmgkNLyEMqQB2yi3+56AMuEPdOiYRMjsOdrc/6VJLsPHPVNijtAcU
- 1uQuhJorL9xKeqE0qLgG6+aI5/mXKc+k/+4+Fh/uAURImKpigoXctxWrF
- 5wo9pG7+W5SQiq8n33KAavkLb2Bl5YqqSkcd6vgUGYcdylrvmh7mkKTMB
- cxx+zxVC8BjEJX9iMcpzAMJiXF2GdDoB+7UEUiTN4kIJV+cBpgaprPJzH Q==;
-X-CSE-ConnectionGUID: PlFz4OB1Tfq3Rvc8GLMQXQ==
-X-CSE-MsgGUID: Gq4KBlQGTKqW3yy4TBNSJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="85866205"
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="85866205"
+ bh=thqGR7wIDVxN247UdF1VuV8WeMSjyoAc80x3pWpF1G0=;
+ b=F6uWrDDhkG+YRrA6Fh5lV4n1dExtbTtBP0HtD8Fx5vejRbBVwMW3ffcl
+ QCGm8ZTj2p0k4ZVQ8oVO568mAUZvsDU4yxQCsQggL1qMOI6T2U2GYstCj
+ equbYIhan2Z2k2M5gd1kET62sCqt2qbALCzDbgoipsn4SGSMM1G/Cqpcv
+ 0XrxSHERA4K6Eye3klxYdyuG6Fn32SpkSBi5jCNt/L1rv4gdmUmvf4/J/
+ OrJU5xHlSV8Yat7zGLpSpb1323hcZOk07gYg49IAZhhlQWDCfIv9Rz2Bp
+ 89UfIAJQfYt15QxrKvTlTYt/cFnLDNldfh1lJEqIURl9obMCM7KV7q2uf w==;
+X-CSE-ConnectionGUID: FntM4j2BSU2i3nbnDyUUCA==
+X-CSE-MsgGUID: nnOa3MsESs219ANAeHPJpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="85866197"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="85866197"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 00:26:36 -0700
-X-CSE-ConnectionGUID: rtyy8XCKQ6W0yuus9jeFag==
-X-CSE-MsgGUID: JUgucBSVR3qHchnvgocFzQ==
+ 26 Mar 2026 00:26:34 -0700
+X-CSE-ConnectionGUID: c2WFXk5FR/uMEroZUFfahA==
+X-CSE-MsgGUID: D4aVQxc5TQmwtNAu2IlSZA==
 X-ExtLoop1: 1
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO
  vgovind2-mobl4.intel.com) ([10.245.245.223])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 00:26:34 -0700
+ 26 Mar 2026 00:26:32 -0700
 From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
  swati2.sharma@intel.com
-Subject: [PATCH i-g-t 2/4] lib/i915/fbc: extract intel_fbc_get_fbc_status()
-Date: Thu, 26 Mar 2026 09:25:53 +0200
-Message-ID: <20260326072555.160329-3-vinod.govindapillai@intel.com>
+Subject: [PATCH i-g-t 1/4] tests/intel/kms_frontbuffer_tracking: update the
+ outdated fbc status checks
+Date: Thu, 26 Mar 2026 09:25:52 +0200
+Message-ID: <20260326072555.160329-2-vinod.govindapillai@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260326072555.160329-1-vinod.govindapillai@intel.com>
 References: <20260326072555.160329-1-vinod.govindapillai@intel.com>
@@ -70,89 +71,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Code to read the FBC status from the debugfs is being duplicated
-in many places. Extract intel_fbc_get_fbc_status() to be used as
-the single source to read the current FBC status.
+Replace the fbc status check for "mode too large for compression" wchich
+is no longer being set by the driver with "plane size too big" and
+"surface size too big" fbc status checks.
 
 Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
 ---
- lib/i915/intel_fbc.c | 35 +++++++++++++++++++++++++----------
- lib/i915/intel_fbc.h |  1 +
- 2 files changed, 26 insertions(+), 10 deletions(-)
+ tests/intel/kms_frontbuffer_tracking.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index b8c714d43..81aa5c5a5 100644
---- a/lib/i915/intel_fbc.c
-+++ b/lib/i915/intel_fbc.c
-@@ -22,6 +22,27 @@ void intel_fbc_disable(igt_display_t *display)
- 	igt_set_module_param_int(display->drm_fd, "enable_fbc", 0);
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index c16f63199..e764c9ce1 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -1664,15 +1664,23 @@ static bool fbc_stride_not_supported(void)
+ 	char buf[128];
+ 
+ 	debugfs_read_crtc("i915_fbc_status", buf);
+-	return strstr(buf, "FBC disabled: framebuffer stride not supported\n");
++	return strstr(buf, "FBC disabled: stride not supported\n");
  }
  
-+/**
-+ * intel_fbc_get_fbc_status
-+ * @crtc: CRTC
-+ * @fbc_status: Buffer to fill the current fbc status
-+ * @buf_size: Size of the buffer to be filled
-+ *
-+ * Read the debugfs entry for current fbc status of a crtc
-+ *
-+ * Returns:
-+ * None
-+ */
-+void intel_fbc_get_fbc_status(igt_crtc_t *crtc, char *fbc_status, int buf_size)
-+{
-+	int dir;
-+
-+	dir = igt_crtc_debugfs_dir(crtc);
-+	igt_require_fd(dir);
-+	igt_debugfs_simple_read(dir, "i915_fbc_status", fbc_status, buf_size);
-+	close(dir);
+-static bool fbc_mode_too_large(void)
++static bool fbc_plane_size_too_big(void)
+ {
+ 	char buf[128];
+ 
+ 	debugfs_read_crtc("i915_fbc_status", buf);
+-	return strstr(buf, "FBC disabled: mode too large for compression\n");
++	return strstr(buf, "FBC disabled: plane size too big\n");
 +}
 +
- /**
-  * intel_fbc_supported:
-  * @crtc: CRTC
-@@ -34,12 +55,9 @@ void intel_fbc_disable(igt_display_t *display)
- bool intel_fbc_supported(igt_crtc_t *crtc)
- {
- 	char buf[FBC_STATUS_BUF_LEN];
--	int dir;
- 
--	dir = igt_crtc_debugfs_dir(crtc);
--	igt_require_fd(dir);
--	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
--	close(dir);
-+	intel_fbc_get_fbc_status(crtc, buf, sizeof(buf));
++static bool fbc_surface_size_too_big(void)
++{
++	char buf[128];
 +
- 	if (*buf == '\0')
- 		return false;
++	debugfs_read_crtc("i915_fbc_status", buf);
++	return strstr(buf, "FBC disabled: surface size too big\n");
+ }
  
-@@ -51,12 +69,9 @@ static bool _intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level, char *last_fb
- {
- 	char buf[FBC_STATUS_BUF_LEN];
- 	bool print = true;
--	int dir;
- 
--	dir = igt_crtc_debugfs_dir(crtc);
--	igt_require_fd(dir);
--	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
--	close(dir);
-+	intel_fbc_get_fbc_status(crtc, buf, sizeof(buf));
-+
- 	if (log_level != IGT_LOG_DEBUG)
- 		last_fbc_buf[0] = '\0';
- 	else if (strcmp(last_fbc_buf, buf))
-diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
-index 8e2662824..99ea3ffe1 100644
---- a/lib/i915/intel_fbc.h
-+++ b/lib/i915/intel_fbc.h
-@@ -17,5 +17,6 @@ bool intel_fbc_wait_until_enabled(igt_crtc_t *crtc);
- bool intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level);
- bool intel_fbc_plane_size_supported(igt_display_t *display, uint32_t width, uint32_t height);
- bool intel_fbc_supported_for_psr_mode(igt_display_t *display, enum psr_mode mode);
-+void intel_fbc_get_fbc_status(igt_crtc_t *crtc, char *fbc_status, int buf_size);
- 
- #endif
+ static bool fbc_psr_not_possible(void)
+@@ -2356,7 +2364,8 @@ static void do_status_assertions(int flags)
+ 	if (flags & ASSERT_FBC_ENABLED) {
+ 		igt_require(!fbc_not_enough_stolen());
+ 		igt_require(!fbc_stride_not_supported());
+-		igt_require(!fbc_mode_too_large());
++		igt_require(!fbc_plane_size_too_big());
++		igt_require(!fbc_surface_size_too_big());
+ 		igt_require(!fbc_psr_not_possible());
+ 		if (!intel_fbc_wait_until_enabled(prim_mode_params.crtc)) {
+ 			igt_assert_f(intel_fbc_is_enabled(prim_mode_params.crtc, IGT_LOG_WARN),
 -- 
 2.43.0
 
