@@ -4,59 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C2CB106F311
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 09:29:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58DE2106F30F
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 09:30:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FDBE10EA78;
-	Thu, 26 Mar 2026 09:29:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0D25810EA91;
+	Thu, 26 Mar 2026 09:30:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DxXng3yW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JAeV07cP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44B8310EA77
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 09:28:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F2A8410EA91
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 09:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774517334; x=1806053334;
- h=date:from:to:cc:subject:in-reply-to:message-id:
- references:mime-version:content-id;
- bh=hRLK+BZuruwnHRf9DKpWrbG2PlZTYZ/nMUxTw66IFTw=;
- b=DxXng3yWgsmhjnRdQpsHOvFVeb6PaztiNGe+21EKP4NZcKKG8se1/mrV
- 5NZEoDWPRs5Xvd/VuhK9vthaOJ4jvQ4ikx4EPQ+MwMNoELRYYVF3sG+uV
- ht1I65w+eFJdQJyrTyOO0ae/yqT3UL3eOvpXnsSodjRlge9NtElOl1Rha
- zvhOpk/jgs8po62IPDs0DxPttH1GaA7hQlbdAAMjqKk+VLyqV0eJk/qzn
- DAfR9MSxmIZzURVrJ9FaWrHn7BenXx+M7TEK8FuGANQx3/24M05lxxYtD
- mglsjjf1Ss4HAX5p0AfLujnwD2e4C4IX+rW6asKU59DVP5grTK5z/fjb8 w==;
-X-CSE-ConnectionGUID: 3WPAcrW5TGWg2cwnUnkIyg==
-X-CSE-MsgGUID: OegU0oWdTYyfgKjc5jotlQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86261192"
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="86261192"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 02:28:54 -0700
-X-CSE-ConnectionGUID: k/OF+9C6RZu5NmHYPC7rlQ==
-X-CSE-MsgGUID: krDFeQ61TYuEe3aemrylNQ==
+ t=1774517423; x=1806053423;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=M+HVgpOUocuEKfih4z5HVFrUm538bCglsdruuk1K4bk=;
+ b=JAeV07cPa3Jo/0bTSuDvHwEX/IhcctQXoXo4bNn3l2Yz6qMeZV0uUw5I
+ lZNCvaRP5d/vSdjeRGTtHbOc7uhS081i0r3qyc8h2lEF5v13aHhtj1cQQ
+ LpZfiTZoRlRXOrycA1g0LvRSDvpahxPFaCU7suPNUdLh46tRw2xtsjKr1
+ eUp/feV4T3mVhgk3AdbTmUbK0S4H13A+4Pc59e115NfVG13KB5vBFrtbL
+ WszhShCM3hj8RLPwBaanorSM/Rku+P+PPmLbHDYG9N3q8+2dVEptmvTuM
+ bWzN6rZp8YrAbDDWfrrz5T8unbuIds2lhCfZOmeCZB8Q/hEWt/qlo1PW7 g==;
+X-CSE-ConnectionGUID: fHXN9ZnNTQu2n7tatiDNdw==
+X-CSE-MsgGUID: pugfjzIYSnynIunsRynJ/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="101023389"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="101023389"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2026 02:30:23 -0700
+X-CSE-ConnectionGUID: YxUuXYsWSe6nmplgMor56Q==
+X-CSE-MsgGUID: KMFeiII4RRqonLELTpvowg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="229887861"
-Received: from administrator-system-product-name.igk.intel.com
- ([10.91.214.181])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 02:28:52 -0700
-Date: Thu, 26 Mar 2026 10:28:50 +0100 (CET)
-From: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-cc: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>, 
- igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v8 6/6] tests/kms_flip: test suspend at most twice
- on SNB && BMG
-In-Reply-To: <a9ecfa3b-5ae3-40c1-9a5f-04c598386fdc@intel.com>
-Message-ID: <17afd2fc-7994-2e40-02da-f7725c58ccc5@intel.com>
-References: <20260309092528.3336467-1-michal.grzelak@intel.com>
- <20260309092528.3336467-7-michal.grzelak@intel.com>
- <a9ecfa3b-5ae3-40c1-9a5f-04c598386fdc@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="224014365"
+Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2026 02:30:20 -0700
+From: Sk Anirban <sk.anirban@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
+Subject: [PATCH v2] tests/intel/xe_pm_residency: Fix suspend duration
+ calculation
+Date: Thu, 26 Mar 2026 14:59:57 +0530
+Message-ID: <20260326092956.2154139-2-sk.anirban@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-6274226-1774481949=:320572"
-Content-ID: <ff7562e9-2e0d-addf-2bce-e715b4e9b34c@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,84 +68,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Calculate actual suspend duration using CLOCK_BOOTTIME instead of
+relying on the autoresume delay approximation. This ensures accurate
+validation of idle residency measurements during suspend cycles.
 
---8323329-6274226-1774481949=:320572
-Content-Type: text/plain; CHARSET=ISO-8859-2; format=flowed
-Content-Transfer-Encoding: 8BIT
-Content-ID: <65437ef2-131f-cebe-8052-ba2495b6dc94@intel.com>
+v2: Use CLOCK_BOOTTIME (Ville)
+    Use Fixes (Jani)
 
-On Wed, 25 Mar 2026, Thasleem, Mohammed wrote:
-> On 09-03-2026 02:55 pm, Micha³ Grzelak wrote:
-> 
-> gettime_us() on SNB and BMG does not return proper time after starting
-> suspend tests. This results in too many suspends issued before we hit
-> the duration_ms. Break the loop on second execution.
-> 
-> Signed-off-by: Micha³ Grzelak <michal.grzelak@intel.com>
-> ---
->  tests/kms_flip.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> index f17d027cc..3c5428ff0 100755
-> --- a/tests/kms_flip.c
-> +++ b/tests/kms_flip.c
-> @@ -1322,6 +1322,12 @@ static bool event_loop(struct test_output *o, unsigned duration_ms,
->  {
->  	unsigned long start, end;
->  	int count = 0;
-> +	int devid;
-> +	bool wa;
-> +
-> +	devid = intel_get_drm_devid(drm_fd);
-> +
-> +	wa = IS_SANDYBRIDGE(devid) || IS_BATTLEMAGE(devid);
-> 
-> Why only two specific platforms?
+Fixes: 5c85b336f75b ("tests/xe: Add a test that validates residency during s2idle")
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+---
+ tests/intel/xe_pm_residency.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-That I would also like to know. :)
-As it is described in the first sentence of the commit message, these
-two platforms have been reported by CI to encounter such issue. If it is
-not clear, I can update the commit message.
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index 61b63ed4f..f2b802273 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -215,18 +215,27 @@ static unsigned long read_idle_residency(int fd, int gt)
+ static void test_idle_residency(int fd, int gt, enum test_type flag)
+ {
+ 	unsigned long elapsed_ms, residency_start, residency_end;
++	struct timespec ts_start, ts_end;
++	long elapsed_sec, elapsed_nsec;
+ 
+ 	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
+ 
+ 	if (flag == TEST_S2IDLE) {
+-		/*
+-		 * elapsed time during suspend is approximately equal to autoresume delay
+-		 * when a full suspend cycle(SUSPEND_TEST_NONE) is used.
+-		 */
+-		elapsed_ms = igt_get_autoresume_delay(SUSPEND_STATE_FREEZE);
++		clock_gettime(CLOCK_BOOTTIME, &ts_start);
+ 		residency_start = read_idle_residency(fd, gt);
+ 		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+ 		residency_end = read_idle_residency(fd, gt);
++		clock_gettime(CLOCK_BOOTTIME, &ts_end);
++
++		elapsed_sec = ts_end.tv_sec - ts_start.tv_sec;
++		elapsed_nsec = ts_end.tv_nsec - ts_start.tv_nsec;
++
++		if (elapsed_nsec < 0) {
++			elapsed_sec--;
++			elapsed_nsec += NSEC_PER_SEC;
++		}
++
++		elapsed_ms = (elapsed_sec * MSEC_PER_SEC) + (elapsed_nsec / NSEC_PER_MSEC);
+ 	}
+ 
+ 	if (flag == TEST_IDLE) {
+-- 
+2.43.0
 
-> I think, platform specific wa not needed here, instead we can have generic execution for all,
-> which can work on all platforms. plz check.
-
-Since we are observing the issue only on those two platforms, I don't
-see how to work around it without specifying those two platforms,
-without changing the already present functionality.
-
->
->
->  	start = gettime_us();
-> 
-> @@ -1342,6 +1348,9 @@ static bool event_loop(struct test_output *o, unsigned duration_ms,
->  		if (count && (gettime_us() - start) / 1000 >= duration_ms)
->  			break;
-> 
-> +		if (count && wa && o->flags & TEST_SUSPEND)
-> 
-> if (count && wa && o->flags & TEST_SUSPEND) --> if (count && o->flags & TEST_SUSPEND)
-> 
-> +			break;
-> +
-
-I am unsure of this approach. This will break the loop on second run on
-every suspend test, on every platform. While commit c75dcbdac51d
-("tests/kms_flip: various improvements") says explicitly to do at least
-two rounds of tests, so it would change functionality on every platform.
-I can refactor the patch, but I would retain the WA. Can you provide
-some rationale for changing the functionality on non-affected platforms?
-
-BR,
-Micha³
-
->  		count++;
->  	}
-> 
-> 
-> 
->
---8323329-6274226-1774481949=:320572--
