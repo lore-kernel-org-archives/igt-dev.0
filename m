@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9018810A88E3
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 16:11:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AED3C10A88E0
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 16:11:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4476F10EA50;
-	Thu, 26 Mar 2026 16:11:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6081610EB32;
+	Thu, 26 Mar 2026 16:11:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I8/uvL0f";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d3Xyu0Z9";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE38D10EA44
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 16:10:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7C5C10E25F
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 16:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774541435; x=1806077435;
+ t=1774541430; x=1806077430;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=sRfRcyWzHgBpX0g4oFg0z307nZ4MDZupjwkIsX1l7bw=;
- b=I8/uvL0f34AihgEMaRa76Mb9O9mpwqT7mjzMUKNWIPW4+zP/CT6Dv/AT
- 1zpg0LvL4B3DYo1ndF7+YOqeam3ZGpfsvcfcY4vm37LFAwXbwQicpKEaA
- CbihQhms31kiybMLbR+WWpqjar+b+p25T4q3BDCUt7spJD7EPm5sS5vtf
- woaSAyy4q2Z7n2MFB6tH/EaleDNR4+iLACco0rbDkcpt53hYsiPEzqsEZ
- 9n8Kh86JnhAwTYGiURxZ72QQqsj/uCXmREO56GENJnZGwcmbvL6SYYeXD
- t5LYAiYX1XpPAFW8KloRWPvXBhaYD/r4sP6wwmP9XrNks5iJaxu+3FChp A==;
-X-CSE-ConnectionGUID: P5giW0lfT2W8XZlaJaUq2w==
-X-CSE-MsgGUID: N3bw5Vj/RZGhXHocXStpAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75488984"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; d="scan'208";a="75488984"
+ bh=2RS6wOVdbOLCX299nClWSxhsmecoc5CdaoePzKk1r/I=;
+ b=d3Xyu0Z9vL7zX9QldeNuJ7SdsnLrBKFnm8cXLmmuKRIqALdGQ3DXgDcJ
+ AW3aHcmXokREFfSXyu8qYvcJsa3b5yHKqrmWivK3z0uaOHxxYExLtr95p
+ ei4BFzgjxkQbz3v1DGEaTsOiu6UTlOg/14u+V1r6oQFIG2heWeULMv/Nm
+ kQIp05ZKgU2zHCCybIaiP4r4+FXtG2KYEz9euTfdX7YHW+rE4SGMwRI8B
+ eCeXCYO+hF69Y2/J87eiW2nBQPS5w7Yfi0zw0GFpuGr/77sl4Ud9emSdw
+ buaKOqB/KDj+LXcmfv0ED9OlpGmKYCxriK1spsZKc3MW8pH03RCc28Lgs w==;
+X-CSE-ConnectionGUID: LFvfRWybTOiIiX36Z9rhrw==
+X-CSE-MsgGUID: ZTnQp6T7S9uTbFTf21JTCQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75488972"
+X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; d="scan'208";a="75488972"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 09:10:35 -0700
-X-CSE-ConnectionGUID: dRQEp4m/Q3C8Ty4BnIgpqA==
-X-CSE-MsgGUID: itDtdGVaReu9lJJW5E+zpg==
+ 26 Mar 2026 09:10:30 -0700
+X-CSE-ConnectionGUID: 7PMhQ0Y/TvqwtMYps0utzg==
+X-CSE-MsgGUID: auTSJcTOTdad5lyyT+uZtg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; d="scan'208";a="229505986"
+X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; d="scan'208";a="229505952"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO fedora)
  ([10.245.245.251])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 09:10:34 -0700
+ 26 Mar 2026 09:10:29 -0700
 From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: dev@lankhorst.se,
  =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH i-g-t 5/5] tests/xe_cgroups: add dmem cgroup eviction test
-Date: Thu, 26 Mar 2026 17:10:07 +0100
-Message-ID: <20260326161007.39294-6-thomas.hellstrom@linux.intel.com>
+Subject: [PATCH i-g-t 2/5] tests/cgroup_dmem: add dmem cgroup controller test
+Date: Thu, 26 Mar 2026 17:10:04 +0100
+Message-ID: <20260326161007.39294-3-thomas.hellstrom@linux.intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260326161007.39294-1-thomas.hellstrom@linux.intel.com>
 References: <20260326161007.39294-1-thomas.hellstrom@linux.intel.com>
@@ -70,349 +70,134 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add xe_cgroups, a test exercising the dmem cgroup controller on xe
-devices.
+Add a test that exercises the cgroup v2 dmem controller interface using
+the new igt_cgroup library.
 
-The write_eviction subtest:
- - Skips if the dmem cgroup controller is not available.
- - Skips if no VRAM region is registered with the dmem controller.
- - Creates a sub-cgroup and moves the test process into it.
- - Sets a 4 GiB dmem.max limit on the first VRAM region.
- - Creates an LR VM and fills VRAM by repeatedly creating BOs with
-   DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING and binding them via
-   __xe_vm_bind_lr_sync() until -ENOMEM or -ENOSPC is returned.
- - Verifies that cgroup current usage is within the expected range when
-   the limit is hit.
- - Lowers dmem.max in 256 MiB steps, waiting for usage to follow each
-   reduction.  -EBUSY is accepted when usage is already at or below
-   256 MiB.
-
-The write_eviction_interruptible subtest runs the same test with
-SIGCONT signals injected via igt_fork_signal_helper() and reports the
-number of signals received.
+The test uses igt_simple_main and:
+  - Skips if no dmem regions are registered (no cgroup v2 or no
+   dmem-capable device).
+  - Creates a sub-cgroup and moves the test process into it.
+  - Enumerates all registered device memory regions and prints their
+   capacity, system-wide current usage, per-cgroup current usage, and
+   configured min, low and max limits.
+  - Destroys the cgroup on completion.
 
 Assisted-by: GitHub Copilot:claude-sonnet-4.6
 Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- tests/intel/xe_cgroups.c | 296 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 2 files changed, 297 insertions(+)
- create mode 100644 tests/intel/xe_cgroups.c
+ tests/cgroup_dmem.c | 92 +++++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build   |  1 +
+ 2 files changed, 93 insertions(+)
+ create mode 100644 tests/cgroup_dmem.c
 
-diff --git a/tests/intel/xe_cgroups.c b/tests/intel/xe_cgroups.c
+diff --git a/tests/cgroup_dmem.c b/tests/cgroup_dmem.c
 new file mode 100644
-index 000000000..08cf8e3bd
+index 000000000..442c965f9
 --- /dev/null
-+++ b/tests/intel/xe_cgroups.c
-@@ -0,0 +1,296 @@
++++ b/tests/cgroup_dmem.c
+@@ -0,0 +1,92 @@
 +// SPDX-License-Identifier: MIT
 +/*
-+ * Copyright © 2026 Intel Corporation
++ * Copyright © 2025 Intel Corporation
 + */
 +
 +/**
-+ * TEST: xe_cgroups
-+ * DESCRIPTION: Tests exercising the dmem cgroup controller on xe devices.
++ * TEST: cgroup dmem
++ * Description: Exercises the cgroup v2 dmem controller interface.  Creates a
++ *              cgroup, moves the process into it, enumerates all dmem regions,
++ *              prints their capacity, system-wide current usage, per-cgroup
++ *              current usage and configured limits, then destroys the cgroup.
 + * Category: Core
 + * Mega feature: General Core features
-+ * Sub-category: cgroup
-+ * FUNCTIONALITY: cgroup dmem controller
-+ * SUBSETS: xe
++ * Sub-category: uapi
++ * Functionality: cgroup
++ * Feature: dmem
++ * Test category: uapi
 + */
 +
-+#include <errno.h>
-+#include <signal.h>
-+#include <stdatomic.h>
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
++#include <inttypes.h>
 +
-+#include "drmtest.h"
 +#include "igt.h"
-+#include "igt_aux.h"
 +#include "igt_cgroup.h"
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
 +
-+#define BO_SIZE			SZ_128M
-+#define MAX_LIMIT		((uint64_t)4 * SZ_1G)
-+#define EVICT_STEP		SZ_256M
-+#define BIND_BASE		0x100000000ULL	/* 4 GiB VA base */
-+#define USAGE_SLACK		SZ_128M		/* tolerance above the set max */
-+#define USAGE_POLL_MS		10		/* polling interval for usage drop */
-+#define USAGE_DROP_TIMEOUT_MS	50		/* max wait for usage to drop */
++IGT_TEST_DESCRIPTION("Exercises the cgroup v2 dmem controller interface.");
 +
-+#define TEST_INTERRUPTIBLE	(1 << 0)
-+
-+/**
-+ * SUBTEST: write_eviction
-+ * DESCRIPTION:
-+ *   Create a dmem cgroup, move the current process into it and set the max
-+ *   device memory limit for the first VRAM region to 4 GiB.  Then fill VRAM
-+ *   by creating BOs with %DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING (so that the
-+ *   physical allocation is deferred until VM_BIND) and binding them into an
-+ *   LR VM until the cgroup limit is hit.  Verify that the reported cgroup
-+ *   current usage is within the expected range when the error occurs.
-+ *   Finally lower the max limit in 256 MiB steps and verify that the cgroup
-+ *   usage follows.
-+ * REQUIREMENTS: must run as root; xe device with at least one VRAM region
-+ */
-+
-+/**
-+ * SUBTEST: write_eviction_interruptible
-+ * DESCRIPTION:
-+ *   Same as write_eviction but with SIGCONT signals injected throughout via
-+ *   igt_fork_signal_helper() to verify that the dmem.max write path handles
-+ *   signal interruption correctly.  A signal handler counts received signals
-+ *   and the count is reported as debug output at the end of the test.
-+ * REQUIREMENTS: must run as root; xe device with at least one VRAM region
-+ */
-+
-+static atomic_int signal_count;
-+static struct sigaction sigcont_oldact;
-+
-+static void sigcont_handler(int sig)
++static void fmt_bytes(uint64_t v, char *buf, size_t len)
 +{
-+	atomic_fetch_add(&signal_count, 1);
-+
-+	/* Chain to the previous handler (IGT's dummy sig_handler) */
-+	if (sigcont_oldact.sa_handler &&
-+	    sigcont_oldact.sa_handler != SIG_IGN &&
-+	    sigcont_oldact.sa_handler != SIG_DFL)
-+		sigcont_oldact.sa_handler(sig);
++	if (v == IGT_CGROUP_DMEM_MAX)
++		snprintf(buf, len, "max");
++	else
++		snprintf(buf, len, "%" PRIu64, v);
 +}
 +
-+static void install_sigcont_counter(void)
-+{
-+	struct sigaction sa;
-+
-+	atomic_store(&signal_count, 0);
-+	igt_fork_signal_helper();
-+	/*
-+	 * Install the counter after igt_fork_signal_helper() so our handler
-+	 * is not overwritten.  Save the old handler so we can chain to it.
-+	 */
-+	memset(&sa, 0, sizeof(sa));
-+	sa.sa_handler = sigcont_handler;
-+	sigemptyset(&sa.sa_mask);
-+	sigaction(SIGCONT, &sa, &sigcont_oldact);
-+}
-+
-+static uint64_t wait_for_usage_drop(struct igt_cgroup *cg, const char *region,
-+				    uint64_t limit)
-+{
-+	uint64_t current;
-+	unsigned int elapsed = 0;
-+
-+	do {
-+		igt_cgroup_dmem_get_current(cg, region, &current);
-+		if (current <= limit)
-+			return current;
-+		usleep(USAGE_POLL_MS * 1000);
-+		elapsed += USAGE_POLL_MS;
-+	} while (elapsed < USAGE_DROP_TIMEOUT_MS);
-+
-+	return current;
-+}
-+
-+static int fill_vram(int fd, uint32_t vm, uint64_t vram_region,
-+		     uint32_t *handles, int max_bo)
-+{
-+	uint32_t handle;
-+	uint64_t addr = BIND_BASE;
-+	int n_bo, err = 0;
-+
-+	for (n_bo = 0; n_bo < max_bo; n_bo++) {
-+		err = __xe_bo_create(fd, 0, BO_SIZE, vram_region,
-+				     DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING,
-+				     NULL, &handle);
-+		if (err)
-+			break;
-+
-+		handles[n_bo] = handle;
-+
-+		err = __xe_vm_bind_lr_sync(fd, vm, handle, 0, addr, BO_SIZE, 0);
-+		if (err)
-+			break;
-+
-+		addr += BO_SIZE;
-+	}
-+
-+	igt_assert_f(err == -ENOMEM || err == -ENOSPC,
-+		     "Expected -ENOMEM or -ENOSPC, got %d (%s)\n",
-+		     err, strerror(-err));
-+
-+	return n_bo;
-+}
-+
-+static void unfill_vram(int fd, uint32_t vm, uint32_t *handles, int n_bo)
-+{
-+	uint64_t addr = BIND_BASE;
-+	int i;
-+
-+	for (i = 0; i < n_bo; i++) {
-+		if (handles[i]) {
-+			xe_vm_unbind_lr_sync(fd, vm, 0, addr, BO_SIZE);
-+			gem_close(fd, handles[i]);
-+		}
-+		addr += BO_SIZE;
-+	}
-+	free(handles);
-+}
-+
-+static void test_write_eviction(int fd, unsigned int flags)
++int igt_simple_main()
 +{
 +	struct igt_cgroup *cg;
-+	char *cg_region;
-+	uint32_t vm;
-+	uint64_t vram_region = 0;
-+	uint64_t region;
-+	uint32_t *handles = NULL;
-+	int n_bo = 0, max_bo;
-+	uint64_t current, capacity, cg_max, limit, after;
-+	int set_err;
++	const char *region;
++	char **regions;
++	uint64_t capacity, sys_current, cg_current, min, low, max;
++	char cap_s[32], sys_s[32], cg_s[32];
++	char min_s[32], low_s[32], max_s[32];
++	int i;
 +
-+	/* Check dmem cgroup controller is available before doing anything else */
 +	igt_require_f(igt_cgroup_dmem_available(),
-+		      "dmem cgroup controller not available (no cgroup v2 or no registered regions)\n");
++		      "No dmem regions found; is cgroup v2 with the "
++		      "dmem controller available?\n");
 +
-+	/* Find first VRAM region */
-+	xe_for_each_mem_region(fd, all_memory_regions(fd), region) {
-+		if (xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_VRAM) {
-+			vram_region = region;
-+			break;
-+		}
-+	}
-+	igt_require_f(vram_region, "No VRAM region found on this device\n");
++	cg = igt_cgroup_new("igt-cgroup-dmem-test");
++	igt_assert_f(cg, "Failed to create cgroup\n");
 +
-+	cg_region = xe_cgroup_region_name(fd, vram_region);
-+	igt_require_f(cg_region, "Region not tracked by dmem cgroup controller\n");
-+
-+	igt_cgroup_dmem_get_capacity(cg_region, &capacity);
-+	igt_require_f(capacity >= 4 * BO_SIZE,
-+		      "VRAM capacity (%"PRIu64" MiB) too small to test\n",
-+		      capacity / SZ_1M);
-+
-+	/*
-+	 * Use up to 4 GiB, or the full capacity if the device has less.
-+	 * Leave one BO_SIZE worth of headroom so the device isn't completely
-+	 * exhausted before the cgroup limit is hit.
-+	 */
-+	cg_max = min(MAX_LIMIT, capacity - BO_SIZE);
-+	cg_max = ALIGN_DOWN(cg_max, EVICT_STEP);
-+
-+	if (flags & TEST_INTERRUPTIBLE)
-+		install_sigcont_counter();
-+
-+	/* Create cgroup and move into it */
-+	cg = igt_cgroup_new("xe_cgroups_test");
 +	igt_cgroup_move_current(cg);
-+	igt_cgroup_dmem_set_max(cg, cg_region, cg_max);
 +
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
++	regions = igt_cgroup_dmem_regions();
++	igt_assert_f(regions, "Failed to enumerate dmem regions\n");
 +
-+	max_bo = (cg_max / BO_SIZE) + 8; /* headroom for overcommit */
-+	handles = calloc(max_bo, sizeof(*handles));
-+	igt_assert(handles);
++	igt_info("%-40s %16s %16s %16s %16s %16s %16s\n",
++		 "region", "capacity", "system-current",
++		 "cgroup-current", "min", "low", "max");
++	igt_info("%-40s %16s %16s %16s %16s %16s %16s\n",
++		 "------", "--------", "--------------",
++		 "--------------", "---", "---", "---");
 +
-+	n_bo = fill_vram(fd, vm, vram_region, handles, max_bo);
++	for (i = 0; regions[i]; i++) {
++		region = regions[i];
 +
-+	igt_cgroup_dmem_get_current(cg, cg_region, &current);
-+	igt_debug("After fill: cgroup current = %"PRIu64" MiB, "
-+		  "max = %"PRIu64" MiB\n",
-+		  current / SZ_1M, cg_max / SZ_1M);
++		igt_cgroup_dmem_get_capacity(region, &capacity);
++		fmt_bytes(capacity, cap_s, sizeof(cap_s));
 +
-+	igt_assert_f(current <= cg_max + USAGE_SLACK,
-+		     "Usage %"PRIu64" MiB exceeds max %"PRIu64" MiB + slack\n",
-+		     current / SZ_1M, cg_max / SZ_1M);
++		igt_cgroup_dmem_get_system_current(region, &sys_current);
++		fmt_bytes(sys_current, sys_s, sizeof(sys_s));
 +
-+	/* Phase 2: lower max in 256 MiB steps, verify usage follows */
-+	limit = cg_max;
-+	while (limit >= EVICT_STEP) {
++		igt_cgroup_dmem_get_current(cg, region, &cg_current);
++		fmt_bytes(cg_current, cg_s, sizeof(cg_s));
 +
-+		limit -= EVICT_STEP;
-+		set_err = __igt_cgroup_dmem_set_max(cg, cg_region, limit);
-+		if (set_err == -EBUSY) {
-+			igt_cgroup_dmem_get_current(cg, cg_region, &after);
-+			igt_assert_f(after <= (uint64_t)EVICT_STEP,
-+				     "dmem.max rejected with -EBUSY but usage "
-+				     "%"PRIu64" MiB > %"PRIu64" MiB\n",
-+				     after / SZ_1M,
-+				     (uint64_t)EVICT_STEP / SZ_1M);
-+			igt_debug("dmem.max set to %"PRIu64" MiB returned "
-+				  "-EBUSY, usage = %"PRIu64" MiB (acceptable)\n",
-+				  limit / SZ_1M, after / SZ_1M);
-+			break;
-+		}
-+		igt_assert_f(set_err == 0,
-+			     "Failed to set dmem.max to %"PRIu64" MiB: %s\n",
-+			     limit / SZ_1M, strerror(-set_err));
++		igt_cgroup_dmem_get_min(cg, region, &min);
++		fmt_bytes(min, min_s, sizeof(min_s));
 +
-+		after = wait_for_usage_drop(cg, cg_region, limit);
++		igt_cgroup_dmem_get_low(cg, region, &low);
++		fmt_bytes(low, low_s, sizeof(low_s));
 +
-+		igt_debug("Lowered max to %"PRIu64" MiB: usage = %"PRIu64" MiB\n",
-+			  limit / SZ_1M, after / SZ_1M);
++		igt_cgroup_dmem_get_max(cg, region, &max);
++		fmt_bytes(max, max_s, sizeof(max_s));
 +
-+		igt_assert_f(after <= limit + USAGE_SLACK,
-+			     "Usage %"PRIu64" MiB did not follow max %"PRIu64" MiB\n",
-+			     after / SZ_1M, limit / SZ_1M);
++		igt_info("%-40s %16s %16s %16s %16s %16s %16s\n",
++			 region, cap_s, sys_s, cg_s,
++			 min_s, low_s, max_s);
 +	}
 +
-+	if (flags & TEST_INTERRUPTIBLE) {
-+		igt_stop_signal_helper();
-+		igt_info("Signals received during test: %d\n",
-+			 atomic_load(&signal_count));
-+	}
-+
-+	/* Cleanup */
-+	igt_cgroup_dmem_set_max(cg, cg_region, IGT_CGROUP_DMEM_MAX);
-+	unfill_vram(fd, vm, handles, n_bo);
-+	handles = NULL;
-+	xe_vm_destroy(fd, vm);
-+	free(cg_region);
++	igt_cgroup_dmem_regions_free(regions);
 +	igt_cgroup_free(cg);
 +}
-+
-+static const struct {
-+	const char *name;
-+	unsigned int flags;
-+} subtests[] = {
-+	{ "write_eviction",		0 },
-+	{ "write_eviction_interruptible",	TEST_INTERRUPTIBLE },
-+	{ }
-+};
-+
-+int igt_main()
-+{
-+	int fd = -1;
-+
-+	igt_fixture() {
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_require_f(getuid() == 0, "Test requires root\n");
-+	}
-+
-+	for (int i = 0; subtests[i].name; i++)
-+		igt_subtest(subtests[i].name)
-+			test_write_eviction(fd, subtests[i].flags);
-+
-+	igt_fixture() {
-+		drm_close_driver(fd);
-+	}
-+}
 diff --git a/tests/meson.build b/tests/meson.build
-index f2326d293..cee0d89e2 100644
+index cecb4a8ae..f2326d293 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -292,6 +292,7 @@ intel_xe_progs = [
- 	'xe_dma_buf_sync',
- 	'xe_drm_fdinfo',
- 	'xe_eu_stall',
-+	'xe_cgroups',
- 	'xe_evict',
- 	'xe_evict_ccs',
- 	'xe_exec_atomic',
+@@ -1,4 +1,5 @@
+ test_progs = [
++	'cgroup_dmem',
+ 	'core_auth',
+ 	'core_debugfs',
+ 	'core_getclient',
 -- 
 2.53.0
 
