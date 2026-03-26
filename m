@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA42B106F30F
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 09:19:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AB62106F311
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Mar 2026 09:28:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A0D6710EA0F;
-	Thu, 26 Mar 2026 09:19:32 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B113810E9E8;
- Thu, 26 Mar 2026 09:19:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2607945503883416448=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id F19C610EA74;
+	Thu, 26 Mar 2026 09:28:00 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XmCuGnuc";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2075510EA74
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2026 09:27:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774517274; x=1806053274;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=4OwV+WD9t39Vj3Au8z/udlwAloNTk1fIzY03tYtkGeA=;
+ b=XmCuGnucPhpV7UZfZmrMTMcV6PkW8XLdRwaPHUn/+Cbfy0O/nbBN8/pA
+ 7JD9PQtr6h3qXqXUmPys4hV+WKzwGESDI6eW3kY6U4l/WTN6qBOIr9PFy
+ L7+bRlvnhDH6Iv0vyMMCHejV7Cf7OrC63v5NNkxJ4eCoQBDBRraQ574UT
+ X5CO5XYGZ2wZaN7RJl6AJMAZ4CAlHc5h0lhsC6FGbHdtSqk2GRcFW9p8a
+ noChQFewzsN4v0idhyTnN17Y07H6C9Rf0+gMVR2J6qZAG7/RIbQ0lKdQs
+ xvNxnwMwAmeIPByIhlHYmpKW2x9DAuLNmqH6FD9IsTasWHUFkBANZ2FNW w==;
+X-CSE-ConnectionGUID: iAeKzmsFT6G7MPyT1QsOHQ==
+X-CSE-MsgGUID: 2FAmEAIGSLCPUXItAYsdCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="78165613"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="78165613"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2026 02:27:53 -0700
+X-CSE-ConnectionGUID: Y6T9DUmKSLmlx9FMcWFeHg==
+X-CSE-MsgGUID: 6wmiBjTpRSyp7QwVSYAZqA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; d="scan'208";a="229719467"
+Received: from ettammin-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.169])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2026 02:27:51 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Vinod Govindapillai <vinod.govindapillai@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
+ swati2.sharma@intel.com
+Subject: Re: [PATCH i-g-t 1/4] tests/intel/kms_frontbuffer_tracking: update
+ the outdated fbc status checks
+In-Reply-To: <20260326072555.160329-2-vinod.govindapillai@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260326072555.160329-1-vinod.govindapillai@intel.com>
+ <20260326072555.160329-2-vinod.govindapillai@intel.com>
+Date: Thu, 26 Mar 2026 11:27:47 +0200
+Message-ID: <e2800fef737c676e44f15a7be8441ce89cae66f3@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_tests/xe=3A_Add_purgeable_?=
- =?utf-8?q?memory_madvise_tests_for_system_allocator_=28rev6=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Arvind Yadav" <arvind.yadav@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 26 Mar 2026 09:19:25 -0000
-Message-ID: <177451676569.400391.7182477949768229258@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260325124426.3265234-1-arvind.yadav@intel.com>
-In-Reply-To: <20260325124426.3265234-1-arvind.yadav@intel.com>
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,319 +70,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2607945503883416448==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, 26 Mar 2026, Vinod Govindapillai <vinod.govindapillai@intel.com> wrote:
+> Replace the fbc status check for "mode too large for compression" wchich
+> is no longer being set by the driver with "plane size too big" and
+> "surface size too big" fbc status checks.
+>
+> Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+> ---
+>  tests/intel/kms_frontbuffer_tracking.c | 17 +++++++++++++----
+>  1 file changed, 13 insertions(+), 4 deletions(-)
+>
+> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> index c16f63199..e764c9ce1 100644
+> --- a/tests/intel/kms_frontbuffer_tracking.c
+> +++ b/tests/intel/kms_frontbuffer_tracking.c
+> @@ -1664,15 +1664,23 @@ static bool fbc_stride_not_supported(void)
+>  	char buf[128];
+>  
+>  	debugfs_read_crtc("i915_fbc_status", buf);
+> -	return strstr(buf, "FBC disabled: framebuffer stride not supported\n");
+> +	return strstr(buf, "FBC disabled: stride not supported\n");
+>  }
+>  
+> -static bool fbc_mode_too_large(void)
+> +static bool fbc_plane_size_too_big(void)
+>  {
+>  	char buf[128];
+>  
+>  	debugfs_read_crtc("i915_fbc_status", buf);
+> -	return strstr(buf, "FBC disabled: mode too large for compression\n");
+> +	return strstr(buf, "FBC disabled: plane size too big\n");
+> +}
+> +
+> +static bool fbc_surface_size_too_big(void)
+> +{
+> +	char buf[128];
+> +
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+> +	return strstr(buf, "FBC disabled: surface size too big\n");
+>  }
+>  
+>  static bool fbc_psr_not_possible(void)
+> @@ -2356,7 +2364,8 @@ static void do_status_assertions(int flags)
+>  	if (flags & ASSERT_FBC_ENABLED) {
+>  		igt_require(!fbc_not_enough_stolen());
+>  		igt_require(!fbc_stride_not_supported());
+> -		igt_require(!fbc_mode_too_large());
+> +		igt_require(!fbc_plane_size_too_big());
+> +		igt_require(!fbc_surface_size_too_big());
 
-== Series Details ==
+I think the problem with the current implementation and this series is
+that it still keeps all those i915_fbc_status reads in place, instead of
+reading it *once* and then figuring it out.
 
-Series: tests/xe: Add purgeable memory madvise tests for system allocator (rev6)
-URL   : https://patchwork.freedesktop.org/series/160333/
-State : failure
+You could e.g. have a function that reads i915_fbc_status, parses it
+into, I don't know, an enum on the igt side, with some handling of
+unknown "FBC disabled: xxx" messages, and returns that.
 
-== Summary ==
+And then you get that status once, and check that, instead of reading
+the file N times.
 
-CI Bug Log - changes from XEIGT_8829_FULL -> XEIGTPW_14855_FULL
-====================================================
+BR,
+Jani.
 
-Summary
--------
+>  		igt_require(!fbc_psr_not_possible());
+>  		if (!intel_fbc_wait_until_enabled(prim_mode_params.crtc)) {
+>  			igt_assert_f(intel_fbc_is_enabled(prim_mode_params.crtc, IGT_LOG_WARN),
 
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_14855_FULL absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_14855_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (2 -> 2)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_14855_FULL:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_exec_system_allocator@eu-fault-64k-once-device-host:
-    - shard-lnl:          [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-5/igt@xe_exec_system_allocator@eu-fault-64k-once-device-host.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-5/igt@xe_exec_system_allocator@eu-fault-64k-once-device-host.html
-
-  * igt@xe_madvise@dontneed-before-exec (NEW):
-    - shard-lnl:          NOTRUN -> [SKIP][3] +6 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-5/igt@xe_madvise@dontneed-before-exec.html
-
-  
-New tests
----------
-
-  New tests have been introduced between XEIGT_8829_FULL and XEIGTPW_14855_FULL:
-
-### New IGT tests (7) ###
-
-  * igt@xe_madvise@dontneed-after-exec:
-    - Statuses : 1 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_madvise@dontneed-after-mmap:
-    - Statuses : 1 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_madvise@dontneed-before-exec:
-    - Statuses : 1 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_madvise@dontneed-before-mmap:
-    - Statuses : 1 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_madvise@per-vma-protection:
-    - Statuses : 1 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_madvise@per-vma-tracking:
-    - Statuses : 1 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_madvise@purged-mmap-blocked:
-    - Statuses : 1 skip(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14855_FULL that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pm_dc@dc5-dpms:
-    - shard-lnl:          [PASS][4] -> [FAIL][5] ([Intel XE#7340] / [Intel XE#7504])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-4/igt@kms_pm_dc@dc5-dpms.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-5/igt@kms_pm_dc@dc5-dpms.html
-
-  * igt@kms_pm_dc@deep-pkgc:
-    - shard-lnl:          [PASS][6] -> [FAIL][7] ([Intel XE#2029] / [Intel XE#7395])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-3/igt@kms_pm_dc@deep-pkgc.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-8/igt@kms_pm_dc@deep-pkgc.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1:
-    - shard-lnl:          [FAIL][8] ([Intel XE#301]) -> [PASS][9] +2 other tests pass
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-2/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-3/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html
-
-  * igt@kms_pm_dc@dc6-dpms:
-    - shard-lnl:          [FAIL][10] ([Intel XE#7340]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html
-
-  * igt@kms_setmode@basic@pipe-a-edp-1:
-    - shard-lnl:          [FAIL][12] ([Intel XE#6361]) -> [PASS][13] +2 other tests pass
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-3/igt@kms_setmode@basic@pipe-a-edp-1.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-1/igt@kms_setmode@basic@pipe-a-edp-1.html
-
-  
-  [Intel XE#2029]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2029
-  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
-  [Intel XE#6361]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6361
-  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
-  [Intel XE#7395]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7395
-  [Intel XE#7504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504
-
-
-Build changes
--------------
-
-  * IGT: IGT_8829 -> IGTPW_14855
-
-  IGTPW_14855: 14855
-  IGT_8829: 8829
-  xe-4785-ec0484d20b9f962d04a62ff1feb03676c3ce7611: ec0484d20b9f962d04a62ff1feb03676c3ce7611
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/index.html
-
---===============2607945503883416448==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe: Add purgeable memory madvise tests for system allocator (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160333/">https://patchwork.freedesktop.org/series/160333/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8829_FULL -&gt; XEIGTPW_14855_FULL</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_14855_FULL absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_14855_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (2 -&gt; 2)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_14855_FULL:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@xe_exec_system_allocator@eu-fault-64k-once-device-host:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-5/igt@xe_exec_system_allocator@eu-fault-64k-once-device-host.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-5/igt@xe_exec_system_allocator@eu-fault-64k-once-device-host.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_madvise@dontneed-before-exec (NEW):</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-5/igt@xe_madvise@dontneed-before-exec.html">SKIP</a> +6 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_8829_FULL and XEIGTPW_14855_FULL:</p>
-<h3>New IGT tests (7)</h3>
-<ul>
-<li>
-<p>igt@xe_madvise@dontneed-after-exec:</p>
-<ul>
-<li>Statuses : 1 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_madvise@dontneed-after-mmap:</p>
-<ul>
-<li>Statuses : 1 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_madvise@dontneed-before-exec:</p>
-<ul>
-<li>Statuses : 1 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_madvise@dontneed-before-mmap:</p>
-<ul>
-<li>Statuses : 1 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_madvise@per-vma-protection:</p>
-<ul>
-<li>Statuses : 1 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_madvise@per-vma-tracking:</p>
-<ul>
-<li>Statuses : 1 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_madvise@purged-mmap-blocked:</p>
-<ul>
-<li>Statuses : 1 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14855_FULL that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_pm_dc@dc5-dpms:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-4/igt@kms_pm_dc@dc5-dpms.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-5/igt@kms_pm_dc@dc5-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504">Intel XE#7504</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_dc@deep-pkgc:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-3/igt@kms_pm_dc@deep-pkgc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-8/igt@kms_pm_dc@deep-pkgc.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2029">Intel XE#2029</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7395">Intel XE#7395</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-2/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-3/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_dc@dc6-dpms:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic@pipe-a-edp-1:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8829/shard-lnl-3/igt@kms_setmode@basic@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6361">Intel XE#6361</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14855/shard-lnl-1/igt@kms_setmode@basic@pipe-a-edp-1.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8829 -&gt; IGTPW_14855</li>
-</ul>
-<p>IGTPW_14855: 14855<br />
-  IGT_8829: 8829<br />
-  xe-4785-ec0484d20b9f962d04a62ff1feb03676c3ce7611: ec0484d20b9f962d04a62ff1feb03676c3ce7611</p>
-
-</body>
-</html>
-
---===============2607945503883416448==--
+-- 
+Jani Nikula, Intel
