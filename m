@@ -4,126 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1447310AB838
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 00:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C90A10BA420
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 03:45:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BCE7010EC27;
-	Fri, 27 Mar 2026 00:49:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="yh6bMEGd";
-	dkim-atps=neutral
-Received: from CY3PR05CU001.outbound.protection.outlook.com
- (mail-westcentralusazon11013053.outbound.protection.outlook.com
- [40.93.201.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E936F10EC27
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2026 00:49:36 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vfSuvk832Pih1+33Wat+qkqpeZiOzZx7r/wS4L3YRV1DEHZPQNHw7t81knnJi76pjISE/7dwzOfpt/iscAwAL7xQ+9ucb4jYxGkPzCz6c2vbESm22IYdz8AICuvP5YKaIGJ38IoyDq7+WadGLEKkEzd6BokGn5ZtBTIMm1PLS+PjskqYsuSQZUx1pCl6q2WRAoI5na5xa5ZA13b1jBsYaHRa0mRo1EGzZdh7XtUrOUwftVlkosopaHQXqt62DpzASdFiQlRsl4W/igBpGEvMH4gUD9cWjgrZgeRiCKvfUjVZ+W/Ke6pLksFa3urkEv8FlZNXmePekNF2a0vntuQu8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+lXWj1TjP32zFB6u8PCkUhpmLJ5At7myWk8ms4GM0T0=;
- b=sTK9nhoNZDPPC0m4hZH6+KMc75OGNdcnuzQGZ9LIQ7SbC2RRdgp2Ew4jnrF1odeLgZM4Za4JEu0YA7xbAoxqlK2ZSXmfHh0KTR6O48RMamgBl/TeSaXX2zOZlF8+OhXGmBSC3O5jMDJcoXTafhnd4lpfzSZRZljOPGge8SWlmaeBe876Fivci0S7LOMohtGalWgLvGxwDUI+qHb2bj2730hq49VNMiYgXhfOrYWkAUa+pOHPN7GEseejYcsSzeMDg1lIKGHae8G0n3pIvSao6UDcX74bB4VcbRVZ03i2ZL7UuBLMcB+A5xsT2hpkPSRJMMvBDUkwFzPJWBVqTdVhKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+lXWj1TjP32zFB6u8PCkUhpmLJ5At7myWk8ms4GM0T0=;
- b=yh6bMEGd6+0Buvxw/aNxOFFy/dEOCeEGCDDMcpdUOI0WR+NdUiBaRz4scn00AOIzqTM0r6/qwwpyUecz+7iMLq5UOwkBT2X1H2HDa4oCP1JC87KnbS0vfhHTdVY548i6/4y6bZAc/L7a4yT6Zz9h3c7VB58yjabH8stCUcFpZII=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
- by LV8PR12MB9333.namprd12.prod.outlook.com (2603:10b6:408:1fa::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Fri, 27 Mar
- 2026 00:49:34 +0000
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2d79:122f:c62b:1cd8]) by DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2d79:122f:c62b:1cd8%7]) with mapi id 15.20.9769.009; Fri, 27 Mar 2026
- 00:49:33 +0000
-Message-ID: <29138133-adad-4586-a2e0-30772cb915e0@amd.com>
-Date: Thu, 26 Mar 2026 18:49:32 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 1/5] tests/amdgpu/amd_multidisplay_modeset:
- Prepare for returning NULL from igt_crtc_for_pipe()
-To: Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org
-Cc: ville.syrjala@linux.intel.com, Aurabindo Pillai
- <aurabindo.pillai@amd.com>, Harry Wentland <harry.wentland@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-References: <cover.1774529527.git.jani.nikula@intel.com>
- <42c82fdc808ed80c3b3eebc8e2d324bf06c4cb87.1774529527.git.jani.nikula@intel.com>
-Content-Language: en-US
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <42c82fdc808ed80c3b3eebc8e2d324bf06c4cb87.1774529527.git.jani.nikula@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR02CA0023.namprd02.prod.outlook.com
- (2603:10b6:303:16d::16) To DM4PR12MB8476.namprd12.prod.outlook.com
- (2603:10b6:8:17e::15)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D5BB388130;
+	Fri, 27 Mar 2026 03:45:24 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1732E10EC6D;
+ Fri, 27 Mar 2026 03:45:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7345204181046750477=="
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|LV8PR12MB9333:EE_
-X-MS-Office365-Filtering-Correlation-Id: 710250a3-8107-47d8-c85c-08de8b9ab687
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|18002099003|22082099003|56012099003; 
-X-Microsoft-Antispam-Message-Info: klg/0745U3EiyYf0gz4sahA/5b5ocHbSAzoOSiCHYHcmhidWLtIRFx0RX605l0GeUUlsaX2jaiYiz3tiEnZfKiTvvDmeyc8ra+sHwPqYkt7mzW3W7mF0nyWrkrzTCDDEAMe60id6RSTs0CKhjyCEA0k/+gaMArhHrquiodRA6VVSpGZz+zd/8W86v4MBAjkIk12FKR55aqcdcvR3UrQmrqjI36iSz2dfgMvZht+U5GlD6v6po7iY5Olpu7qQZmVuux4xNKLnPta377+c/3vHqjC4okyt2VfzYDIVIVNL0SegnVhL8NlAURxNZHVVRX/GHhNsG+lxcrE1faS1ZJGBMXUe/29eI/AiIJPKS+/wcNWo7GPrMMoxm5HacqtY9aFtLokcFbr6fbAK/5ca7/1v80oPTrSbRpu6f0q9cMhR1pD8t+4mC+ZGXm42tApYhkZeaoTAtyRyn8OxlrgclLxCVNbiaobQhPaTOT6vA6nJYiSp42+ELcFGuvTZEMTXHXZiZykV4TCo50Twm+HOsYgcRWJTkbFqsaI0jXV+uZd2oKLzocsUUSZEHkneTvTHABoWzx4DXw7yehEF45h30MygCXjIIH+Hzd8n6x66yGWbPnASyRb4Y0nAg7oXD8jqMZZCWosFQ5OGsmfCeU2wVEF7nxsku/gawgzPJKzHwmI+FY619YwhPPopClOFRqPJ41+owYIMamOoC7/gjFR5mYoevao+tnoa7B3E7jZsw8Xn8e8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR12MB8476.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(22082099003)(56012099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bDV0bkQvRnhJNmRsSU1RaGtrRFNKNGlJR1gzcUVKTmpBWk55Rmh2NXZ3SFJK?=
- =?utf-8?B?N0dhK0QrMUkxc2tiZUZwMHlia2xCNkNRK1BEU1NueDAyZldIK2xrWXFMVk9h?=
- =?utf-8?B?amU0M3lnU0J1OGxCSUlSVzhNQS9uV3RyTmp0cUFSTEJrcFNuOWNya1R6b3Ew?=
- =?utf-8?B?dXJnbXREREc5aW45TTBCbEdCdE9LZlg2T1ZaRWtPYXhQM3prbm1OWVRIMjhI?=
- =?utf-8?B?ZzhDSW4raWZlR0dFTDJoVG5VS2ZDbENTNklHL0pkUzA1SUpVeXN0ZUtQcmRC?=
- =?utf-8?B?TG14VDlYY1JGMVRQT1lkMVBTMlQ1MWJhb0ZwMk03VUpmRGNzRWVkcXFJMFcr?=
- =?utf-8?B?MHhBVEtUYkJ6dFZ3dFJpdVgyVTh6c3VUd3lPU3ZkN294eW9yeDV6d2NpMHMy?=
- =?utf-8?B?cTNXZ1E4NTBjV2d4STZ0WnRNSjQ4OUp6ZUpkTmxvSERmeGlIZ2VyYXNwL1B1?=
- =?utf-8?B?em00MFV1YlU0bTVDOUFuM2JaRnpwN1UrSXhIT2ZBN3l6M1ByK1pjSzJSZVFl?=
- =?utf-8?B?MER6WkNqdjlKZitoaEVvdktTeldCQXRtYzhDNDlXRW81REFjWUJoemd2N2Iz?=
- =?utf-8?B?WWdseGl3Q09wN3pxc0dheGxqZ3dJZFhQZ0NpaFpzU0hFYzFyakJ6a3ExaGhU?=
- =?utf-8?B?Y1g5Mk1BbitWeUJERFBReFNzTUFQeVNmTU1Ua2Q2WitrQzFYTlRkK1hUNjVU?=
- =?utf-8?B?NkRob2Vqalh5VWpMbDdRdkZLaGJkNVFlRHFCNXlub0JaMUNPeHRhNUhCNFpX?=
- =?utf-8?B?bmZsWHBsWkt6WTdrNDkrdWxzZG9qZW9jQk8zRHhla1h5cVZtWC9MM0tmanhu?=
- =?utf-8?B?SU9VVnczTTRoUXZlNmpGdytEUHpuRS9vT1o1eGRCajJJejFzSkVLWDhDVXM0?=
- =?utf-8?B?YlVVRnIrQXNxbXBOU25aWTNKaU4xZEVXb1NxeXlVbDR1cTZneXFHRnRQUTdG?=
- =?utf-8?B?UDQ1QUh4TXZEL3pSRTVSV2pmZEVrSGU0S25mUEEzNVVKNnhzc2R5T3BIV1dh?=
- =?utf-8?B?ZlNtQU5tWVcrNWpHK1kwQmFQRHRLV2JoK2NDUnNIWXRTN0JPYkQ2MEpoWFBz?=
- =?utf-8?B?alkzdFR6MEJwRnlWT1Fpa2tTRjAveDQ0b2taRjVXU3FGQW5sNk15dnlTRUpp?=
- =?utf-8?B?ekorb3lUaTI3NlFZUFpHd1dxbFZTTEYwQTlRZ1QzeEFGU0NNRUh2aVRPdzc3?=
- =?utf-8?B?TVVMTkNXOXEyK1F1Q2JyWW1rdklqbUkwWm94SnhLbXRXSEd4R0NPdi9qZGQ1?=
- =?utf-8?B?SXVBNHRuZ1IrL2FaRXZ6NnVNNEJoTUNmWUk3QXBFT3d3NWZac3ZMNzJ1ZjZv?=
- =?utf-8?B?cGtRMnZBWVNZa1MrQnI5M2pZSXE4a2RZQXJDWjBDbS9kNXltcjVKSVp0SklW?=
- =?utf-8?B?MC80RlZ1V2FZUnlITC96Wml6VU9qL1IzMFg0VENKRXZpUE41cEo4T2JXYVNJ?=
- =?utf-8?B?L3Z0cm5lS3ZtbHp6N1VrRnRtVlZOeUl3OGVDcVV1ZWVabHlsajlhTXVjb3Jy?=
- =?utf-8?B?TkFJR3kyOWJFTm94bjNTV2Z6UUhaaFdMOUQzVkEwM1Q4Z2RHTml5b29GTWlm?=
- =?utf-8?B?WjJUTURHU0gzTUt4eDJhemtKNnVyZ3QydEg0eEVOeUJSblpXQmJ2RW1mYUpt?=
- =?utf-8?B?VWN2dWV4VkU5Y0RXTkw5K3lHOXl5cERIQWlzaGxRdk40NGtUWTRPLyttY3BG?=
- =?utf-8?B?SkIxRTFMWkpOeWxweDBnSzNsWlRiUDBPVllSUDIyK244VmRiT2VrWitnR0E0?=
- =?utf-8?B?ZTBiVFhBZ0kxU1ZqQy9TWEFramFCSENiK0pzamMrMFdLMll0ZXBuTjZLWlBw?=
- =?utf-8?B?RXpBTlR2RVZuM0lTMTdsVzI3ckpWSytVR2ZxclA5OVVDTXJMbWZoc203dFF3?=
- =?utf-8?B?b1AwRmVYcldWcTlHT0NaQzlpb2o5ZmtQUll5cXAxNm10UWRkMEVwN3lsdGlu?=
- =?utf-8?B?ZDhBNlJBOWJWdktFY0VndHZIcUtiTGJpcC93TWk5QWJuMDNOUkRKbW1lbmpU?=
- =?utf-8?B?RWFCdmI3UmV5UTczUEJUbEEzTXAxcFJhTlB5bFpkaXdkVUJmbVBhMERrT1h1?=
- =?utf-8?B?aWtzME0wcGw4Vk5kalVOZC91NVFycTE1YjRWZ3YranFzQUd5MUZEczZnTFdv?=
- =?utf-8?B?Z0pNSVhhWGNsN3ZFWk5FRVo3eE9Vc1FJWDB0ZVp1SEp4RXFZbmJOZzVpVHZV?=
- =?utf-8?B?TlNNQVJTNmNUM09XRTErYTFsUDJKYzl2b2MxRzlrNWl6SlF6M0RRZis0NE1Y?=
- =?utf-8?B?bk16SFdiQXM3aDg4RVVJS2phUHd6dU1obVdaN1lua3Y0YW9lcjlqNFRwbFdh?=
- =?utf-8?B?WFdtZ3ZQenV4Tk50WUZ5bnhmbWVTeTJwSXdkUlhIMGNxRWlVNzViQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 710250a3-8107-47d8-c85c-08de8b9ab687
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 00:49:33.8497 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jhEZpeVRdp+XNCMM3JdMokfW/xBCwN/cmlACod5OUwaPRnVe6rQsNARkBaeGwhnUkDvZIZHH09k9siJcRKDQ+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9333
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_updates_to_fbc_tests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vinod Govindapillai" <vinod.govindapillai@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 27 Mar 2026 03:45:17 -0000
+Message-ID: <177458311707.404841.1703867482997033234@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260326072555.160329-1-vinod.govindapillai@intel.com>
+In-Reply-To: <20260326072555.160329-1-vinod.govindapillai@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,41 +36,190 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
+--===============7345204181046750477==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 3/26/26 06:53, Jani Nikula wrote:
-> AMD should always have enough CRTCs for the test. Assert this is the
-> case by checking the CRTC returned from igt_crtc_for_pipe() is valid.
-> 
-> This prepares for returning NULL for invalid pipes from
-> igt_crtc_for_pipe() by ensuring the test logic is sound. The follow-up
-> can change the check from crtc->valid to crtc != NULL with no functional
-> change here.
-> 
-> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Cc: Alex Hung <alex.hung@amd.com>
-> Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
->   tests/amdgpu/amd_multidisplay_modeset.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/amdgpu/amd_multidisplay_modeset.c b/tests/amdgpu/amd_multidisplay_modeset.c
-> index 98ca2c79470b..3aa7b3483a28 100644
-> --- a/tests/amdgpu/amd_multidisplay_modeset.c
-> +++ b/tests/amdgpu/amd_multidisplay_modeset.c
-> @@ -327,6 +327,8 @@ static void multiple_display_test(struct data_t *data, enum sub_test test_mode)
->   
->   			crtc = igt_crtc_for_pipe(display, j);
->   
-> +			igt_assert_f(crtc->valid, "There is no pipe %s\n", kmstest_pipe_name(j));
-> +
->   			igt_create_pattern_fb(data->fd, kmode->hdisplay,
->   					kmode->vdisplay, DRM_FORMAT_XRGB8888,
->   					0, (buf + j));
+== Series Details ==
 
+Series: updates to fbc tests
+URL   : https://patchwork.freedesktop.org/series/163896/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8834_FULL -> XEIGTPW_14862_FULL
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 2)
+------------------------------
+
+  No changes in participating hosts
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8834_FULL and XEIGTPW_14862_FULL:
+
+### New IGT tests (3) ###
+
+  * igt@xe_fault_injection@inject-fault-probe-function-xe_device_probe_early:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.03] s
+
+  * igt@xe_fault_injection@inject-fault-probe-function-xe_mmio_probe_early:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.02] s
+
+  * igt@xe_fault_injection@inject-fault-probe-function-xe_pcode_probe_early:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.03] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14862_FULL that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@flip-vs-expired-vblank-interruptible:
+    - shard-lnl:          [PASS][1] -> [FAIL][2] ([Intel XE#301] / [Intel XE#3149]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-2/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14862/shard-lnl-6/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pm_dc@dc5-dpms:
+    - shard-lnl:          [FAIL][3] ([Intel XE#7340] / [Intel XE#7504]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@kms_pm_dc@dc5-dpms.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14862/shard-lnl-7/igt@kms_pm_dc@dc5-dpms.html
+
+  
+  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
+  [Intel XE#3149]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3149
+  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
+  [Intel XE#7504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8834 -> IGTPW_14862
+
+  IGTPW_14862: 14862
+  IGT_8834: 8834
+  xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14862/index.html
+
+--===============7345204181046750477==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>updates to fbc tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163896/">https://patchwork.freedesktop.org/series/163896/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14862/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14862/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8834_FULL -&gt; XEIGTPW_14862_FULL</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8834_FULL and XEIGTPW_14862_FULL:</p>
+<h3>New IGT tests (3)</h3>
+<ul>
+<li>
+<p>igt@xe_fault_injection@inject-fault-probe-function-xe_device_probe_early:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_fault_injection@inject-fault-probe-function-xe_mmio_probe_early:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_fault_injection@inject-fault-probe-function-xe_pcode_probe_early:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.03] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14862_FULL that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@flip-vs-expired-vblank-interruptible:<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-2/igt@kms_flip@flip-vs-expired-vblank-interruptible.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14862/shard-lnl-6/igt@kms_flip@flip-vs-expired-vblank-interruptible.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3149">Intel XE#3149</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_pm_dc@dc5-dpms:<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@kms_pm_dc@dc5-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504">Intel XE#7504</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14862/shard-lnl-7/igt@kms_pm_dc@dc5-dpms.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8834 -&gt; IGTPW_14862</li>
+</ul>
+<p>IGTPW_14862: 14862<br />
+  IGT_8834: 8834<br />
+  xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf</p>
+
+</body>
+</html>
+
+--===============7345204181046750477==--
