@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FAE910F2865
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 19:07:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FCBD10F2867
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 19:38:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3488E10EF62;
-	Fri, 27 Mar 2026 19:07:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DEE7B10E492;
+	Fri, 27 Mar 2026 19:38:58 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6535410EF62;
- Fri, 27 Mar 2026 19:07:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBD0010E061;
+ Fri, 27 Mar 2026 19:38:51 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2389272392438708116=="
+ boundary="===============6732979316919542099=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_xe/eudebug=3A_Add_dead-peer?=
- =?utf-8?q?_context_logging?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Add_?=
+ =?utf-8?q?support_for_overcommit_tests_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Piotr Rudnicki" <piotr.rudnicki@intel.com>
+To: "Sobin Thomas" <sobin.thomas@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Mar 2026 19:07:17 -0000
-Message-ID: <177463843738.407612.10712151328029586324@a3b018990fe9>
+Date: Fri, 27 Mar 2026 19:38:51 -0000
+Message-ID: <177464033194.407612.10171655286441304995@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260327121042.1133617-1-piotr.rudnicki@intel.com>
-In-Reply-To: <20260327121042.1133617-1-piotr.rudnicki@intel.com>
+References: <20260327132427.2681193-1-sobin.thomas@intel.com>
+In-Reply-To: <20260327132427.2681193-1-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2389272392438708116==
+--===============6732979316919542099==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: xe/eudebug: Add dead-peer context logging
-URL   : https://patchwork.freedesktop.org/series/163987/
+Series: tests/intel/xe_vm: Add support for overcommit tests (rev4)
+URL   : https://patchwork.freedesktop.org/series/163579/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8834_BAT -> XEIGTPW_14872_BAT
+CI Bug Log - changes from XEIGT_8834_BAT -> XEIGTPW_14873_BAT
 ====================================================
 
 Summary
@@ -71,48 +71,29 @@ Participating hosts (14 -> 14)
 
   No changes in participating hosts
 
-Known issues
-------------
 
-  Here are the changes found in XEIGTPW_14872_BAT that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14872/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#7483]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14872/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  
-  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
+  No changes found
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8834 -> IGTPW_14872
-  * Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -> xe-4810-b41c4d2aa654dcf4dbf6c71be843b8aba3439b86
+  * IGT: IGT_8834 -> IGTPW_14873
+  * Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -> xe-4811-d699fa2d9776038b13f7b8153738a850676d0641
 
-  IGTPW_14872: 14872
+  IGTPW_14873: 14873
   IGT_8834: 8834
   xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf
-  xe-4810-b41c4d2aa654dcf4dbf6c71be843b8aba3439b86: b41c4d2aa654dcf4dbf6c71be843b8aba3439b86
+  xe-4811-d699fa2d9776038b13f7b8153738a850676d0641: d699fa2d9776038b13f7b8153738a850676d0641
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14872/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14873/index.html
 
---===============2389272392438708116==
+--===============6732979316919542099==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -132,49 +113,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>xe/eudebug: Add dead-peer context logging</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163987/">https://patchwork.freedesktop.org/series/163987/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Add support for overcommit tests (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163579/">https://patchwork.freedesktop.org/series/163579/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14872/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14872/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14873/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14873/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8834_BAT -&gt; XEIGTPW_14872_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8834_BAT -&gt; XEIGTPW_14873_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (14 -&gt; 14)</h2>
 <p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14872_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14872/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14872/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8834 -&gt; IGTPW_14872</li>
-<li>Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -&gt; xe-4810-b41c4d2aa654dcf4dbf6c71be843b8aba3439b86</li>
+<li>IGT: IGT_8834 -&gt; IGTPW_14873</li>
+<li>Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -&gt; xe-4811-d699fa2d9776038b13f7b8153738a850676d0641</li>
 </ul>
-<p>IGTPW_14872: 14872<br />
+<p>IGTPW_14873: 14873<br />
   IGT_8834: 8834<br />
   xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf<br />
-  xe-4810-b41c4d2aa654dcf4dbf6c71be843b8aba3439b86: b41c4d2aa654dcf4dbf6c71be843b8aba3439b86</p>
+  xe-4811-d699fa2d9776038b13f7b8153738a850676d0641: d699fa2d9776038b13f7b8153738a850676d0641</p>
 
 </body>
 </html>
 
---===============2389272392438708116==--
+--===============6732979316919542099==--
