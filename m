@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E648F10ED67E
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 14:06:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B6010ED67C
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 14:06:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6CB4010E050;
-	Fri, 27 Mar 2026 14:06:18 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6043E10E050;
- Fri, 27 Mar 2026 14:06:11 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6550049449024152404=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F97E10EC98;
+	Fri, 27 Mar 2026 14:06:41 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c+9UmEda";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B72B10E050
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2026 14:06:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774620395; x=1806156395;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=3ImOuG6ivfppMxf3R+2J4IlFaBx+ZmDLoexINuOSolE=;
+ b=c+9UmEda77NchTk8tQ6UxprCpW+DH/NY/+Kpw2ckMt3cH3D3p/qVgOmQ
+ F7OkIsx+C8kchIzXypXJnINeCCRgUwgbITMhq8zzKJHEet5EisflY2sEi
+ GQuXrg8s0IkAQrgUGoK3SusXHJhlbfeqpB4ZIAZ5C+dXtvGwRDEpr9hSG
+ QQ/Rv60qOZ2MFCi4NuwW/a9vJNeTauC8/UIzduOv6XdcmtGm22egtOyAg
+ ZFq9BVwiKWWGUdkGit8BZMIWlfcZAr1leUbh3KRuVzZfxr18x8f1J5LA6
+ T/H/8vnaGdQOS+PatqdopPrTCPvIpPSNOwhCLBsbrGTjBni26aX5MdffS Q==;
+X-CSE-ConnectionGUID: wEGCBlMHRoK2g6UZh69DwQ==
+X-CSE-MsgGUID: NxLq67r9SumdP6/rODGDgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="79295381"
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; d="scan'208";a="79295381"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2026 07:06:34 -0700
+X-CSE-ConnectionGUID: f4zdt2qXTti+bKkdOLG6sA==
+X-CSE-MsgGUID: zrOor1Q/Tai1NGkEGB/Rzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; d="scan'208";a="220925765"
+Received: from lvasutx-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.246.16.239])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2026 07:06:31 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, adam.miszczak@linux.intel.com,
+ jakub1.kolakowski@intel.com, lukasz.laguna@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 0/4] tests/intel/xe_sriov_vfio: Add basic VFIO
+ coverage
+Date: Fri, 27 Mar 2026 15:06:23 +0100
+Message-ID: <20260327140627.64574-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_Verify_PTA_entries_contain?=
- =?utf-8?q?s_expected_values?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Mar 2026 14:06:11 -0000
-Message-ID: <177462037136.407468.10205791823555290356@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260326113425.520545-4-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20260326113425.520545-4-zbigniew.kempczynski@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,279 +66,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6550049449024152404==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add xe_sriov_vfio test covering basic xe-vfio-pci module handling
+and VFIO smoke-test paths for SR-IOV VFs.
 
-== Series Details ==
+The first patch adds standalone module load/unload subtest. The second
+adds a dynamic bind-unbind-vfs subtest that enables VFs and binds each
+of them to xe-vfio-pci through driver_override. The remaining patches
+add basic VFIO coverage by opening the VFIO group and querying VFIO
+region information for a VF bound to xe-vfio-pci.
 
-Series: Verify PTA entries contains expected values
-URL   : https://patchwork.freedesktop.org/series/163910/
-State : success
+v2:
+- Keep as a single load/unload subtest skipping
+  when module already loaded (Lukasz)
+- Split bound-driver assertion helper and remove
+  redundant pre-bind unbind (Lukasz)
+- Simplify restore_xe_vfio_module() logic (Lukasz)
 
-== Summary ==
+Marcin Bernatowicz (4):
+  tests/intel/xe_sriov_vfio: Add VFIO module load/unload subtest
+  tests/intel/xe_sriov_vfio: Add dynamic bind-unbind-vfs subtest
+  tests/intel/xe_sriov_vfio: Add open-basic subtest
+  tests/intel/xe_sriov_vfio: Add region-info subtest
 
-CI Bug Log - changes from XEIGT_8834_FULL -> XEIGTPW_14865_FULL
-====================================================
+ tests/intel/xe_sriov_vfio.c | 435 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 2 files changed, 436 insertions(+)
+ create mode 100644 tests/intel/xe_sriov_vfio.c
 
-Summary
--------
+-- 
+2.43.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (2 -> 2)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_14865_FULL:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@xe_pat@pt-pta-suspend} (NEW):
-    - shard-lnl:          NOTRUN -> [SKIP][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-6/igt@xe_pat@pt-pta-suspend.html
-
-  
-New tests
----------
-
-  New tests have been introduced between XEIGT_8834_FULL and XEIGTPW_14865_FULL:
-
-### New IGT tests (3) ###
-
-  * igt@xe_pat@pt-pta-check:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pt-pta-reset-gt:
-    - Statuses : 1 pass(s)
-    - Exec time: [1.00] s
-
-  * igt@xe_pat@pt-pta-suspend:
-    - Statuses : 1 skip(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14865_FULL that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@flip-vs-expired-vblank@a-edp1:
-    - shard-lnl:          [PASS][2] -> [FAIL][3] ([Intel XE#301]) +3 other tests fail
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-2/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-6/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
-
-  * igt@kms_vrr@max-min@pipe-a-edp-1:
-    - shard-lnl:          [PASS][4] -> [FAIL][5] ([Intel XE#4227]) +1 other test fail
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-2/igt@kms_vrr@max-min@pipe-a-edp-1.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-7/igt@kms_vrr@max-min@pipe-a-edp-1.html
-
-  * igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma:
-    - shard-lnl:          [PASS][6] -> [FAIL][7] ([Intel XE#5625])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_pm_dc@dc5-dpms:
-    - shard-lnl:          [FAIL][8] ([Intel XE#7340] / [Intel XE#7504]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@kms_pm_dc@dc5-dpms.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-4/igt@kms_pm_dc@dc5-dpms.html
-
-  * igt@kms_vrr@cmrr@pipe-a-edp-1:
-    - shard-lnl:          [FAIL][10] ([Intel XE#4459]) -> [PASS][11] +1 other test pass
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@kms_vrr@cmrr@pipe-a-edp-1.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-5/igt@kms_vrr@cmrr@pipe-a-edp-1.html
-
-  
-#### Warnings ####
-
-  * igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:
-    - shard-lnl:          [SKIP][12] ([Intel XE#7675]) -> [SKIP][13] ([Intel XE#7675] / [Intel XE#7679]) +7 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-1/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-3/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
-  [Intel XE#4227]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4227
-  [Intel XE#4459]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459
-  [Intel XE#5625]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625
-  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
-  [Intel XE#7504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504
-  [Intel XE#7675]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7675
-  [Intel XE#7679]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7679
-
-
-Build changes
--------------
-
-  * IGT: IGT_8834 -> IGTPW_14865
-  * Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -> xe-4799-e7f370d78d32ed29cc3f100fbc3d1fe1a844978f
-
-  IGTPW_14865: b1e02135f223063877fae7d450a93329fb9e39b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8834: 8834
-  xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf
-  xe-4799-e7f370d78d32ed29cc3f100fbc3d1fe1a844978f: e7f370d78d32ed29cc3f100fbc3d1fe1a844978f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/index.html
-
---===============6550049449024152404==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Verify PTA entries contains expected values</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163910/">https://patchwork.freedesktop.org/series/163910/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8834_FULL -&gt; XEIGTPW_14865_FULL</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (2 -&gt; 2)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_14865_FULL:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>{igt@xe_pat@pt-pta-suspend} (NEW):<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-6/igt@xe_pat@pt-pta-suspend.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_8834_FULL and XEIGTPW_14865_FULL:</p>
-<h3>New IGT tests (3)</h3>
-<ul>
-<li>
-<p>igt@xe_pat@pt-pta-check:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pt-pta-reset-gt:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [1.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pt-pta-suspend:</p>
-<ul>
-<li>Statuses : 1 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14865_FULL that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@flip-vs-expired-vblank@a-edp1:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-2/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-6/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a>) +3 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@max-min@pipe-a-edp-1:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-2/igt@kms_vrr@max-min@pipe-a-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-7/igt@kms_vrr@max-min@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4227">Intel XE#4227</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625">Intel XE#5625</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_pm_dc@dc5-dpms:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@kms_pm_dc@dc5-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504">Intel XE#7504</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-4/igt@kms_pm_dc@dc5-dpms.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@cmrr@pipe-a-edp-1:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@kms_vrr@cmrr@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459">Intel XE#4459</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-5/igt@kms_vrr@cmrr@pipe-a-edp-1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-1/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7675">Intel XE#7675</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14865/shard-lnl-3/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7675">Intel XE#7675</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7679">Intel XE#7679</a>) +7 other tests skip</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8834 -&gt; IGTPW_14865</li>
-<li>Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -&gt; xe-4799-e7f370d78d32ed29cc3f100fbc3d1fe1a844978f</li>
-</ul>
-<p>IGTPW_14865: b1e02135f223063877fae7d450a93329fb9e39b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8834: 8834<br />
-  xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf<br />
-  xe-4799-e7f370d78d32ed29cc3f100fbc3d1fe1a844978f: e7f370d78d32ed29cc3f100fbc3d1fe1a844978f</p>
-
-</body>
-</html>
-
---===============6550049449024152404==--
