@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F55210BA42D
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 05:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43AB610BA431
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 06:28:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3F46910EC86;
-	Fri, 27 Mar 2026 05:41:20 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ADXUMgeI";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 905D310EC70
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2026 05:41:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774590073; x=1806126073;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=primKyZ2R9mmvMMhtx9eaoDsNh+ejsACbmEVEuRLTEE=;
- b=ADXUMgeI2XKyVJhZZJTcVqbu+Uav+HOc7S5T41njIPqkmjheStUc5VJ2
- runv0/LnaWq4aCEHZmLFJFxPmgLHFJ5KfHNxo9AYioqXoTn++z+yUEuJU
- 1Fe77j4wwHLVbVTROywBAKvdc6NWkjU3RNBA0SnVg7LkBb/ed+ZKqLjUh
- iicT4AvtQX0Tt+bnNU9rnGdFeVs1AY+yCjrxZkQ609HG+sfYyLeZAgc/I
- VE3IUkHWBeQtSJIg4Z/pcqKqJ1DqjWqOjD91KjxUZi7N6ha14FHrlq6Od
- DfdJtQrDbYs2FUgJXM2yISSa59AvdmltHWGxP2sfMjA/PkeWK+aOITX4m w==;
-X-CSE-ConnectionGUID: uQ0r/jOmTXip7wilpp1RRA==
-X-CSE-MsgGUID: DEBKKjSiS4+3l9a58eNBVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="79517822"
-X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; d="scan'208";a="79517822"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 22:41:13 -0700
-X-CSE-ConnectionGUID: YumaJcoKQseseYQ2I/uRLg==
-X-CSE-MsgGUID: Dtg9LNIfRUGx3dxGywEtgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; d="scan'208";a="248554061"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.116])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 22:41:12 -0700
-Date: Fri, 27 Mar 2026 06:41:09 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/2] tests/xe_pat: Verify PTA PAT entries contain
- expected values
-Message-ID: <hu6jygswuw66v6wwuot4dosu2zvtnjwr5ibqepn7q5aqiqots4@xowfuyhjbhaq>
-References: <20260326113425.520545-4-zbigniew.kempczynski@intel.com>
- <20260326113425.520545-6-zbigniew.kempczynski@intel.com>
- <822d4aef-ea23-4c91-9e9f-bd3a52baa364@intel.com>
- <54lfamjft2hmwikrxjxas23r5bz2rthvvedr3zyeojtnhl5jh5@ewnj4ca3spw7>
+	by gabe.freedesktop.org (Postfix) with ESMTP id D7F5C10EC7D;
+	Fri, 27 Mar 2026 06:28:38 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 919A410EC7D;
+ Fri, 27 Mar 2026 06:28:31 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3225401220645160614=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <54lfamjft2hmwikrxjxas23r5bz2rthvvedr3zyeojtnhl5jh5@ewnj4ca3spw7>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/intel=5Fpat=3A_add_ha?=
+ =?utf-8?q?rdcoded_PAT_fallback_for_older_kernels?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: himanshu.girotra@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 27 Mar 2026 06:28:31 -0000
+Message-ID: <177459291157.404950.12007348041412651157@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260327052212.27431-1-himanshu.girotra@intel.com>
+In-Reply-To: <20260327052212.27431-1-himanshu.girotra@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,163 +37,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Mar 27, 2026 at 06:36:42AM +0100, Zbigniew Kempczyński wrote:
-> On Thu, Mar 26, 2026 at 03:52:38PM +0000, Matthew Auld wrote:
-> > On 26/03/2026 11:34, Zbigniew Kempczyński wrote:
-> > > Debugfs exposes PTA PAT entries for different GTs so verify they
-> > > contain expected values. Verify they are correct also in reset
-> > > and suspend scenarios.
-> > 
-> > Is this just validating the sw angle? i.e that the debugfs interface still
-> > reports the correct thing?
-> 
-> You're right, definitely preconfigured software table is not I want
-> to compare.
-> 
-> > 
-> > If this is hw angle then this might be tricky to validate, since the debugfs
-> > dump is just the static array of indices, AFAIK. Not what is actually
-> > programmed in each PAT register. For example, if we somehow forget to
-> > reprogram the PTA registers after suspend/reset, I don't think this test
-> > would catch this, right?
-> 
-> Right, I roughly took a look and I thought xe2_dump() was used but I was
-> wrong. Do you think adding pat_hw_config debugfs entry will be accepted?
-> Definitely I want to compare with current registers, not predefined
-> table.
+--===============3225401220645160614==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I see there's 'pat' file which contains exactly what I need. Doesn't
-work for vf, but I think this is not a problem.
+== Series Details ==
 
---
-Zbigniew
+Series: lib/intel_pat: add hardcoded PAT fallback for older kernels
+URL   : https://patchwork.freedesktop.org/series/163963/
+State : success
 
-> 
-> --
-> Zbigniew
-> 
-> > 
-> > > 
-> > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > > Cc: Matthew Auld <matthew.auld@intel.com>
-> > > ---
-> > >   tests/intel/xe_pat.c | 97 ++++++++++++++++++++++++++++++++++++++++++++
-> > >   1 file changed, 97 insertions(+)
-> > > 
-> > > diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-> > > index 2e2d7e01e7..7e5dc9f44f 100644
-> > > --- a/tests/intel/xe_pat.c
-> > > +++ b/tests/intel/xe_pat.c
-> > > @@ -2115,6 +2115,93 @@ static void pt_caching_test(int xe, enum pt_test_opts opts)
-> > >   	pt_destroy_objects(xe, objs2, num_objs);
-> > >   }
-> > > +enum pt_pta_test_opts {
-> > > +	PT_PTA_CHECK = 1,
-> > > +	PT_PTA_RESET_GT = 2,
-> > > +	PT_PTA_SUSPEND = 3,
-> > > +};
-> > > +
-> > > +#define XE2_PAT(no_promote, comp_en, l3clos, l3_policy, l4_policy, __coh_mode) \
-> > > +		((no_promote << 10) | \
-> > > +		(comp_en << 9) | \
-> > > +		(l3clos << 6) | \
-> > > +		(l3_policy << 4) | \
-> > > +		(l4_policy << 2) | \
-> > > +		(__coh_mode))
-> > > +
-> > > +
-> > > +#define NUMGT 2
-> > > +static uint32_t xe2_pta[NUMGT] = {
-> > > +	XE2_PAT( 0, 0, 0, 0, 3, 0 ),
-> > > +	XE2_PAT( 0, 0, 0, 0, 3, 0 )
-> > > +};
-> > > +
-> > > +static uint32_t xe3p_pta[NUMGT] = {
-> > > +	XE2_PAT( 0, 0, 0, 0, 0, 3 ),
-> > > +	XE2_PAT( 0, 0, 0, 0, 0, 2 )
-> > > +};
-> > > +
-> > > +static uint32_t xe3p_xpc_pta[NUMGT] = {
-> > > +	XE2_PAT( 0, 0, 0, 0, 0, 0 ),
-> > > +	XE2_PAT( 0, 0, 0, 0, 0, 0 )
-> > > +};
-> > > +
-> > > +static uint32_t get_expected_pta(int fd, int gt)
-> > > +{
-> > > +	uint32_t devid = intel_get_drm_devid(fd);
-> > > +	uint32_t ip_ver = intel_graphics_ver(devid);
-> > > +	int ver = intel_gen(devid);
-> > > +	uint32_t pta = 0;
-> > > +
-> > > +	igt_assert_lt(gt, NUMGT);
-> > > +
-> > > +	if (ip_ver == IP_VER(35, 11))
-> > > +		pta = xe3p_xpc_pta[gt];
-> > > +	else if (ver == 35 && !xe_has_vram(fd))
-> > > +		pta = xe3p_pta[gt];
-> > > +	else if ((ver == 30 || ver == 20) && xe_has_vram(fd))
-> > > +		pta = xe2_pta[gt];
-> > > +
-> > > +	return pta;
-> > > +}
-> > > +
-> > > +static void pt_check_pta_for_gts(int fd)
-> > > +{
-> > > +	struct intel_pat_cache pat_sw_config = {};
-> > > +	int gt;
-> > > +
-> > > +	xe_for_each_gt(fd, gt) {
-> > > +		xe_get_pat_sw_config(fd, &pat_sw_config, gt);
-> > > +		igt_debug("gt: %d, pta: %x, pta expected: %x\n",
-> > > +			  gt, pat_sw_config.pta_mode, get_expected_pta(fd, gt));
-> > > +		igt_assert_eq(pat_sw_config.pta_mode, get_expected_pta(fd, gt));
-> > > +	}
-> > > +}
-> > > +
-> > > +/**
-> > > + * SUBTEST: pt-pta-check
-> > > + * Description: verify pta value is expected
-> > > + *
-> > > + * SUBTEST: pt-pta-reset-gt
-> > > + * Description: verify pta value is expected before and after gt reset
-> > > + *
-> > > + * SUBTEST: pt-pta-suspend
-> > > + * Description: verify pta value is expected before and after suspend/resume
-> > > + */
-> > > +static void pt_pta_check(int fd, enum pt_pta_test_opts opts)
-> > > +{
-> > > +	pt_check_pta_for_gts(fd);
-> > > +
-> > > +	if (opts == PT_PTA_RESET_GT) {
-> > > +		xe_force_gt_reset_all(fd);
-> > > +		sleep(1);
-> > > +		pt_check_pta_for_gts(fd);
-> > > +	} else if (opts == PT_PTA_SUSPEND) {
-> > > +		igt_system_suspend_autoresume(SUSPEND_STATE_STANDBY, SUSPEND_TEST_NONE);
-> > > +		pt_check_pta_for_gts(fd);
-> > > +	}
-> > > +}
-> > > +
-> > >   static int opt_handler(int opt, int opt_index, void *data)
-> > >   {
-> > >   	switch (opt) {
-> > > @@ -2253,6 +2340,16 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
-> > >   	igt_subtest("pt-caching-update-pat-and-pte")
-> > >   		pt_caching_test(fd, PT_UPDATE_PAT_AND_PTE);
-> > > +	igt_subtest("pt-pta-check")
-> > > +		pt_pta_check(fd, PT_PTA_CHECK);
-> > > +
-> > > +	igt_subtest("pt-pta-reset-gt")
-> > > +		pt_pta_check(fd, PT_PTA_RESET_GT);
-> > > +
-> > > +	igt_subtest("pt-pta-suspend")
-> > > +		pt_pta_check(fd, PT_PTA_SUSPEND);
-> > > +
-> > > +
-> > >   	igt_fixture()
-> > >   		drm_close_driver(fd);
-> > >   }
-> > 
+== Summary ==
+
+CI Bug Log - changes from IGT_8834 -> IGTPW_14870
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14870/index.html
+
+Participating hosts (41 -> 38)
+------------------------------
+
+  Missing    (3): bat-dg2-13 bat-mtlp-9 bat-adls-6 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14870 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8834/bat-dg2-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14870/bat-dg2-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8834/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14870/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8834 -> IGTPW_14870
+  * Linux: CI_DRM_18222 -> CI_DRM_18232
+
+  CI-20190529: 20190529
+  CI_DRM_18222: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18232: 0a7844908d3616b88a7887704eb6dfa0d315be1b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14870: 944293f093a579d387e2f6566bd32dac1c9ff9bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8834: 8834
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14870/index.html
+
+--===============3225401220645160614==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/intel_pat: add hardcoded PAT fallback for older kernels</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163963/">https://patchwork.freedesktop.org/series/163963/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14870/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14870/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8834 -&gt; IGTPW_14870</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14870/index.html</p>
+<h2>Participating hosts (41 -&gt; 38)</h2>
+<p>Missing    (3): bat-dg2-13 bat-mtlp-9 bat-adls-6 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14870 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8834/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14870/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8834/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14870/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8834 -&gt; IGTPW_14870</li>
+<li>Linux: CI_DRM_18222 -&gt; CI_DRM_18232</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18222: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18232: 0a7844908d3616b88a7887704eb6dfa0d315be1b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14870: 944293f093a579d387e2f6566bd32dac1c9ff9bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8834: 8834</p>
+
+</body>
+</html>
+
+--===============3225401220645160614==--
