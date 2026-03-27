@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC3C510F286F
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 20:45:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8645B10F286F
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 20:56:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5C1FE10EF2B;
-	Fri, 27 Mar 2026 20:45:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 303B010EF66;
+	Fri, 27 Mar 2026 20:56:04 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C7A410EF2B;
- Fri, 27 Mar 2026 20:45:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A934710EF5A;
+ Fri, 27 Mar 2026 20:55:56 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8363571692835809047=="
+ boundary="===============0694650349727230529=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Verify_PTA_entries_contai?=
- =?utf-8?q?ns_expected_values_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_tests/kms=5Fcontent=5Fprot?=
+ =?utf-8?q?ection=3A_Optimize_framebuffer_management_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Jason-JH Lin" <jason-jh.lin@mediatek.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Mar 2026 20:45:05 -0000
-Message-ID: <177464430554.407612.8678205270247214921@a3b018990fe9>
+Date: Fri, 27 Mar 2026 20:55:56 -0000
+Message-ID: <177464495665.407613.962797630476409326@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260327132617.974862-5-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20260327132617.974862-5-zbigniew.kempczynski@intel.com>
+References: <20260327035405.3151190-1-jason-jh.lin@mediatek.com>
+In-Reply-To: <20260327035405.3151190-1-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8363571692835809047==
+--===============0694650349727230529==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Verify PTA entries contains expected values (rev2)
-URL   : https://patchwork.freedesktop.org/series/163910/
+Series: tests/kms_content_protection: Optimize framebuffer management (rev3)
+URL   : https://patchwork.freedesktop.org/series/163255/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8834 -> IGTPW_14874
+CI Bug Log - changes from XEIGT_8834_FULL -> XEIGTPW_14869_FULL
 ====================================================
 
 Summary
@@ -64,54 +64,66 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14874/index.html
+  
 
-Participating hosts (41 -> 38)
+Participating hosts (2 -> 2)
 ------------------------------
 
-  Missing    (3): fi-kbl-7567u bat-dg2-13 bat-adls-6 
+  No changes in participating hosts
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_14874 that come from known issues:
+  Here are the changes found in XEIGTPW_14869_FULL that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8834/bat-mtlp-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14874/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-9:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8834/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14874/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+  * igt@kms_pm_dc@dc6-psr:
+    - shard-lnl:          [PASS][1] -> [FAIL][2] ([Intel XE#7340]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-8/igt@kms_pm_dc@dc6-psr.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14869/shard-lnl-4/igt@kms_pm_dc@dc6-psr.html
 
   
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+#### Possible fixes ####
+
+  * igt@kms_pm_dc@dc5-dpms:
+    - shard-lnl:          [FAIL][3] ([Intel XE#7340] / [Intel XE#7504]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@kms_pm_dc@dc5-dpms.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14869/shard-lnl-5/igt@kms_pm_dc@dc5-dpms.html
+
+  
+#### Warnings ####
+
+  * igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:
+    - shard-lnl:          [SKIP][5] ([Intel XE#7675]) -> [SKIP][6] ([Intel XE#7675] / [Intel XE#7679]) +7 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-1/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14869/shard-lnl-4/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html
+
+  
+  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
+  [Intel XE#7504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504
+  [Intel XE#7675]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7675
+  [Intel XE#7679]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7679
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8834 -> IGTPW_14874
-  * Linux: CI_DRM_18222 -> CI_DRM_18240
+  * IGT: IGT_8834 -> IGTPW_14869
+  * Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -> xe-4802-113d411a9890a805edaffd3c3dd2cf436a868b68
 
-  CI-20190529: 20190529
-  CI_DRM_18222: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18240: d699fa2d9776038b13f7b8153738a850676d0641 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14874: 14874
+  IGTPW_14869: 8fbaa114ec8c8c1890c7d32fc5f7dc4d273ba011 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8834: 8834
+  xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf
+  xe-4802-113d411a9890a805edaffd3c3dd2cf436a868b68: 113d411a9890a805edaffd3c3dd2cf436a868b68
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14874/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14869/index.html
 
---===============8363571692835809047==
+--===============0694650349727230529==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -131,53 +143,56 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Verify PTA entries contains expected values (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163910/">https://patchwork.freedesktop.org/series/163910/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_content_protection: Optimize framebuffer management (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163255/">https://patchwork.freedesktop.org/series/163255/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14874/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14874/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14869/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14869/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8834 -&gt; IGTPW_14874</h1>
+    <h1>CI Bug Log - changes from XEIGT_8834_FULL -&gt; XEIGTPW_14869_FULL</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14874/index.html</p>
-<h2>Participating hosts (41 -&gt; 38)</h2>
-<p>Missing    (3): fi-kbl-7567u bat-dg2-13 bat-adls-6 </p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14874 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_14869_FULL that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8834/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14874/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>igt@kms_pm_dc@dc6-psr:<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-8/igt@kms_pm_dc@dc6-psr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14869/shard-lnl-4/igt@kms_pm_dc@dc6-psr.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a>) +1 other test fail</li>
 </ul>
 </li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
+</ul>
+<h4>Possible fixes</h4>
 <ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8834/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14874/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>igt@kms_pm_dc@dc5-dpms:<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-6/igt@kms_pm_dc@dc5-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504">Intel XE#7504</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14869/shard-lnl-5/igt@kms_pm_dc@dc5-dpms.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8834/shard-lnl-1/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7675">Intel XE#7675</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14869/shard-lnl-4/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7675">Intel XE#7675</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7679">Intel XE#7679</a>) +7 other tests skip</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8834 -&gt; IGTPW_14874</li>
-<li>Linux: CI_DRM_18222 -&gt; CI_DRM_18240</li>
+<li>IGT: IGT_8834 -&gt; IGTPW_14869</li>
+<li>Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -&gt; xe-4802-113d411a9890a805edaffd3c3dd2cf436a868b68</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18222: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18240: d699fa2d9776038b13f7b8153738a850676d0641 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14874: 14874<br />
-  IGT_8834: 8834</p>
+<p>IGTPW_14869: 8fbaa114ec8c8c1890c7d32fc5f7dc4d273ba011 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8834: 8834<br />
+  xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf<br />
+  xe-4802-113d411a9890a805edaffd3c3dd2cf436a868b68: 113d411a9890a805edaffd3c3dd2cf436a868b68</p>
 
 </body>
 </html>
 
---===============8363571692835809047==--
+--===============0694650349727230529==--
