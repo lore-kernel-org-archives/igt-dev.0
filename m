@@ -4,41 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96AD010F2870
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 21:06:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E20F410F2870
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 21:06:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B15910E045;
-	Fri, 27 Mar 2026 21:06:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8C88810ECCA;
+	Fri, 27 Mar 2026 21:06:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="qQ5RNJyr";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="G4K/xDw8";
 	dkim-atps=neutral
-Received: from BYAPR05CU005.outbound.protection.outlook.com
- (mail-westusazon11010029.outbound.protection.outlook.com [52.101.85.29])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 443D910E045
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2026 21:06:15 +0000 (UTC)
+Received: from CH1PR05CU001.outbound.protection.outlook.com
+ (mail-northcentralusazon11010039.outbound.protection.outlook.com
+ [52.101.193.39])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76C7710E045
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2026 21:06:16 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SKu6jIZVWYKI82Y6ZdIGvpKMGfwZHRLo54ISqUrdnxpesSRvtjlWABsdy+IOXFTycTFpX4NEgSb8Nu2bguygJlwYd9W273BVKMsItF6aA106aX6sYOXU+x6/bo4mz8XaiMow21utwU/MJrmsEYJ8WhYMtFFHwxil9h/zrDnfEVgPhnkMaY21rx4E0pTP5krccRGsouEDyd2gSnDxB5uLN0mIeZskDVxyTtMPZwAgiZizNIIc7hjUFZ7JuAA6KTMDs/zZ0VUi98wnutWrJOZX1XRaE0JVUlHyN5tGrZ9bR+opgLaKIq2mvO6wQbs/W53CUV/z4hX7yI/B7nH1tDiOZA==
+ b=FdhqwJajAryJXa84UWlEq29DN1bq0Hzdgvltmu9Ik1qjRjoQE++zBADuWk+/4ZlUYg5TU2wTz1bB8tjsAn+spGuybl7ix8jZY/+TPgDwyvaIytYDJC3ZJpggwXCfLphNgVM3GaI4q0tszMAvv5sb+F7c991yhXCLPX89Odjqes/0ScsCCKxkVD/St8NX9hd+eI4RcwGh752ixb60afFlDf/5mbFDd1z5BVduKFZYRfgxk4Qd5EB4SKACaqczBxaG39OwfM9DhvLicxakXpMGOx5kWQ1iHIAnvPpvtqkVRd82vGSObC/aGPs3p9pyZmmbqu7n0Zi2Qfha5omnuhqJXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YnzeorRhrLJCovvRttUZbN05c2r3v4MVXowYCNUXWXg=;
- b=hLI5Wf7f7f4GE/YttkDH9zXMh+90yo1FkbJn0U9Q/0Y5giWPA0QqOY9dUP/nNE8F80itatoWUI9wI5jdoGzjih7gQdKa2VSjpko6TTJQttpTUpM18OupcuwjqG5jhvpEb1QZehtIiMFJTcv+A8FC0CpeZRymXL3u8MjP5bIobVUi0HTY9oCjn5Db25dMNlMynFEEjy+oZTRaFu64AV6+npddmE9YOAkGpLLGS7bj/aum5xvVCP3Ue13MRTjuOrSbYTzz/PujAjNPrFTyATXgOIwKZpebGEqfUM7MeDINDkROxo2VZbmIVp6QPLW5YkG+gWjMCFfMSjpSov5q70f46Q==
+ bh=trs//KFLHFJHtWRjvTKfkO5K/vGB9GJDLfsRYr5gWPI=;
+ b=fj9pQLz8OnM3Q4UTtD94KDIygYi6GFyyyCEb/1UJbZdtqlWzjNwQioR9z587LvPXY9qErC+DMVJscvGyBGftCgJ6XSOfkqfoy3lChXB/yccGlQe+s1mkkEAcBQRWiF2vVf/iQPiu38wi/k6c4R5+Z2Yydy4y5shVyRh7QAEIp0zPRsOs4QznM+jK+tP0t1OYe1MY0+0+7AvbK9lLVeLvqPZzmSdMx3tfCE0AvHsWgTanzDJ8yzAmb77jnxWVpr5PDxi4ued866snVG+QpXjZDj/Sd1zjSrNdwOOpoThNAY9wyqz5HwdxpmMo/M2Yuxubipbt/sn0ChAdpwr6sXwlfg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YnzeorRhrLJCovvRttUZbN05c2r3v4MVXowYCNUXWXg=;
- b=qQ5RNJyrn0EJYMxdIZIX2qAUt44W6j5sJ9XnF3rQDvmmDclWtkEZqsHmDXYMBdiVwjQTmBIIWeCg4v4YCxkFLUFctpxniOSpud/eJJ8f0ifZZAD5hWGPsV1OittUwKQ6eU49ZyP1XE++kiBegwb5K/iuormyKCyHxZYenH7LyBw=
-Received: from PH7P221CA0042.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:33c::10)
- by DM6PR12MB4188.namprd12.prod.outlook.com (2603:10b6:5:215::18) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=trs//KFLHFJHtWRjvTKfkO5K/vGB9GJDLfsRYr5gWPI=;
+ b=G4K/xDw8bX4lySuJHMr/CHuz4U9JJur3ydKznfb90KR3UH8q8uHYrJFK6mQEcsD7ncdjWvEL7tnXws0+gLr/uzGt7dqXM+zbN9CjCLHbSo18P/3rrpMuWdDfyFiuDhmDaCy1/mNJxw/kJpsP+xQI7SrCkaf/h0hThlP8ijuvs3o=
+Received: from PH7P221CA0054.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:33c::34)
+ by SA0PR12MB4349.namprd12.prod.outlook.com (2603:10b6:806:98::21)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Fri, 27 Mar
  2026 21:06:08 +0000
 Received: from CY4PEPF0000EDD6.namprd03.prod.outlook.com
- (2603:10b6:510:33c:cafe::7a) by PH7P221CA0042.outlook.office365.com
- (2603:10b6:510:33c::10) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:510:33c:cafe::87) by PH7P221CA0054.outlook.office365.com
+ (2603:10b6:510:33c::34) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.22 via Frontend Transport; Fri,
  27 Mar 2026 21:06:07 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
@@ -54,53 +55,53 @@ Received: from satlexmb07.amd.com (165.204.84.17) by
 Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 27 Mar
- 2026 16:06:08 -0500
+ 2026 16:06:07 -0500
 Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
  (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 27 Mar
- 2026 14:06:08 -0700
+ 2026 14:06:07 -0700
 Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Fri, 27 Mar 2026 16:06:07 -0500
+ Transport; Fri, 27 Mar 2026 16:06:01 -0500
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Jesse Zhang <Jesse.Zhang@amd.com>, Alex Deucher
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: [PATCH 4/4] tests/amdgpu: add concurrent user queue fuzzing tests
-Date: Fri, 27 Mar 2026 17:04:45 -0400
-Message-ID: <20260327210546.67038-4-vitaly.prosyak@amd.com>
+ Jesse Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
+Subject: [PATCH 3/4] tests/amdgpu: add lifecycle/sequence ioctl fuzzing
+Date: Fri, 27 Mar 2026 17:04:44 -0400
+Message-ID: <20260327210546.67038-3-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260327210546.67038-1-vitaly.prosyak@amd.com>
 References: <20260327210546.67038-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD6:EE_|DM6PR12MB4188:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6922ac4-27c9-47bc-7f91-08de8c44aae6
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD6:EE_|SA0PR12MB4349:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57186323-17c4-4776-f43e-08de8c44aaae
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|36860700016|82310400026|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: Akm6/F+HjkfE7Z2ZF0YSSl44YGeoVnI/hgcdEDMt9ca+hKDsgblbQl4JJrzX/y0xpQLinrY5zOo1KoYlgZaJBTYR8zywQSMxwMJS2GTC/Nb4Cd5D6HXDVL3aSO3ZuWCVdfflOLk0F5NWb6bQuNVsgMVzoE+nRc+R+cnUILjGBot9UR5TJe/d1xmAJdgA6tsR/T0a0nUyCJQsdkTpW7+OIx+EEq4ElagiIuzptb/GtRKiJAMyrQ6NGKsJ+DU1QMeUWgvQ12kFLEiC9+mwKodg2ftq9dLUSaIMydxlJnCbRnNc/dVwk9YpujPLcHxvS01a/Cf3UzEswymZXFt+o7QhvGGkfxY8SySGYX73znSL2Lu6HOCVH106VcS9BuOHii6OZdPsC8ub5aXyww9EgNhtEtW9sgYO31iUO6+yeb6Ghxeyht87LFa2pXeEHbhkrWK0q77CCvU5Hw9Pw13iNxbwN2hJSYIUR2h75BNNGiv6BCDazL9YNoF5pn3rkJMOfWsacdOIEkjqOg/YZ0qOU+M5tDNL1CYHjiMVhGwT8q9o1nZyPaXEkk/3jER3JXJSbLh+FAEwzMja64AtW4ZwUw8ktDkXcEsfztpspu0D2hLJxnnisvEkXoMyyY/VxAtdYaf6wVnZKgFhJ/3eujpUvnxTDa5HZRJPNkE2sgQPPgXBgYA217ar4zsEWS3250G2MyY1PiS86IZ4/WPfTFBWd1rCoIw/71X9gEaEeeWQ2kEXPfH71TkdrJPHy22ICTMsrrifGWBvt5e5uX563mMUbFKYwg==
+ ARA:13230040|82310400026|36860700016|376014|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: Dy5avPw0MVJ4/hKUWd38zkeIeiLYE9XKktMdoxrLGYIFv+UwmUI+KPoVNXhAfrrvpcryOaKBJtj6Gfb5xOpmNF0lTxmSKrPFXtXIPOkQXWy1zdYXeyNE7Z38u1g01ce66ZXHNkmJOuArpMQCtjDPNBQGB2Br/Ux6qGQKyjCNAEi2w682H7YGtpVfQzlQOTqhdJra6a5KaEytb52qOEvn8ZvD5CLDryUeQRD1g9CTJLPx+FC+XSzuxuB1bDa1erVx8gYgD/4aK1GyNl9eRw8CrgZPOIl9s5paphCVNY8uY4o/N/a6oB94d2Ggz4DJiyXXulWb7OyRUPO1r9RwAg9hERE/aizYvKoqq4RlMbGlDVgYAO9Wj3/HgFIsj+57pmeg+tuFLD9J8tkYNut0I5bcbAQzu4VyDbj/UxSKDqmC1cf5eORQUAtxXV537t7l9r6vX1uw83PFRPLwFD5KKVMM8FHJAnkCLkGS5UX47GHwZgPhs7x+5xvCY+t7ehrybReLS/jCNeJOBrH7EkF0Nkkmj7kZiBoJV7gXEfY9p9OzmiXTCqHO1CYwvqyAPqmyZYKyYdwlwb9UFVu9hq2WTAoZ0jxI0AvHRj5AhV8TsSLTzwWpC69u0N3ycz6/sIbSNspHgX3kc6nEoHkSobVFG1FFjxFRtrZ26J/Ba2JnyOEvmT6gPNB7YjBpviEFzBfxt32BfH1j77ZZgQvpwLHFueDh5MHvsIWuPFjlkb28WgV1q6LC0++EPsiQxfX11wZznynZUemGBFh+BuXU+jLxUBNRDQ==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(36860700016)(82310400026)(56012099003)(18002099003)(22082099003);
+ SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(56012099003)(22082099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: VIvfOmKEShhsSJIbWJMQA1jwMEXDY6DV5ijDqggDBHDvboWfy8+o+Mtlt8vwgyh0c8hYD2IekmD62LPBffkQgDs+gozpf9xoZCQyzMsPPmxcXqObd7J0IjqzqlBSz7XKzS5g2+Qen6wEEawc/2pp+g3oD+Hbio2arW+B8NcbA/yMfbBqgKsMr55fyqUXYdFcuqRmMINOFp7VSIx6qRv3TPXsFAZWU51aFCZc+dURAvD4ywfWRE5JvtJcYeokl/PJwF4bBICKrqSlPeDAbhKji3DSK06pwcnx/CMu1Mxwzj7dpyXSNHy+WqoOGDH8/jHM+Nft1BYbjuLVmTS2bckXqQORjdlave4pFGk2R4zeG/LAe1hr++EZ8jVut9j+1AqY7fyv2lGwLItWNmeREnFq6P1FPYpDP79j/EkYkvSqE83LCCSLefdH8d21sW7vSQH8
+X-MS-Exchange-AntiSpam-MessageData-0: Kv4m8ijeKmPjzcUqeTbHyUb1uVgi/OXxoTP0ZzOOuW1YtUyyUW7I1ca55HybE1K3Ozex7zyk5+X+Y4j/bxUKf1PJ78YjyuvjEkHZfU8EBZTjTXveRYoG8T5E1ZlD817s7prmaAhxskAzAW6/DrABR3aHaMfQg5jCnN7c8Y9YJdEPyKvQimTHxIUkTqTMtSi7nwKUOPwRrKGu1qTUY2/pE1xwuG4UbH6WRbcOGNDYnIO/3Ad5eWCMvwM2wHzM0170HHs+yGUw10hojer++/w3yQjw/nhzj6DBRhZBtPFEf5nu9ZbLkuGuHq92NG+VS+bWIm1WYCuM1IV9daXbPzq9TS4sJGiR7XOk2RrFywbEti3fBlQ3Bvj2mbdOUvabdyVoKLG95i5NcU0+90f9A5wOJcbWTAstdZuN704FaOe29iAzoJBHvSvkKe7z2hPQdWz6
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 21:06:08.5678 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6922ac4-27c9-47bc-7f91-08de8c44aae6
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 21:06:08.1478 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57186323-17c4-4776-f43e-08de8c44aaae
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD6.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4188
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4349
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,797 +117,367 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Jesse Zhang <Jesse.Zhang@amd.com>
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Introduce fuzzing tests for user queue operations to exercise race
-conditions in the AMDGPU user queue handling. The new tests cover:
+Add lifecycle-fuzzing subtest covering operations on freed/closed
+resources to verify the kernel handles them gracefully:
 
-- Concurrent USERQ_CREATE and USERQ_DESTROY across multiple threads
-- USERQ_SIGNAL racing USERQ_DESTROY
-- Concurrent double USERQ_DESTROY on the same queue
-- USERQ_WAIT racing USERQ_DESTROY
+  - GEM double-close
+  - mmap after GEM close
+  - wait-idle on closed BO
+  - CTX double-free
+  - CS submit after CTX free
+  - wait-cs after CTX free
+  - GEM metadata set/get on closed handle
+  - GEM op on closed handle
+  - BO list with closed GEM handle
+  - PRIME export-close-reimport sequence
+  - VM double-unreserve
+  - GEM_USERPTR unmap-before-free
+  - Fence-to-handle on stale seq
 
-These tests help validate the driver's XArray lookup, doorbell management,
-and MQD teardown paths under parallel execution. The tests are guarded
-by AMDGPU_USERQ_ENABLED and run only when the kernel supports user queues.
+Each case must return an error (not crash or hang).
 
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
 ---
- tests/amdgpu/amd_fuzzing.c | 721 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 720 insertions(+), 1 deletion(-)
+ tests/amdgpu/amd_fuzzing.c | 317 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 317 insertions(+)
 
 diff --git a/tests/amdgpu/amd_fuzzing.c b/tests/amdgpu/amd_fuzzing.c
-index d7bf12f14..21dab4afe 100644
+index c709973e3..d7bf12f14 100644
 --- a/tests/amdgpu/amd_fuzzing.c
 +++ b/tests/amdgpu/amd_fuzzing.c
-@@ -5,6 +5,9 @@
- 
- #include "lib/amdgpu/amd_memory.h"
- #include "lib/amdgpu/amd_gfx.h"
-+#include "lib/amdgpu/amd_ip_blocks.h"
-+#include "lib/amdgpu/amd_PM4.h"
-+#include "lib/amdgpu/amd_sdma.h"
- #include "lib/ioctl_wrappers.h"
- 
- #include <errno.h>
-@@ -15,6 +18,18 @@
- #include <string.h>
- #include <sys/ioctl.h>
- #include <unistd.h>
-+#include <pthread.h>
-+
-+#define AMD_CONC_THREADS 4
-+#define AMD_CONC_ITERS   128
-+
-+#ifdef AMDGPU_USERQ_ENABLED
-+struct amd_test_userq_ctx;
-+
-+static bool
-+amd_test_try_create_userq(int fd, amdgpu_device_handle amdgpu_dev, uint32_t ip_type,
-+			 struct amd_test_userq_ctx *userq);
-+#endif
- 
- /* GEM_LIST_HANDLES ioctl — may not be present in older installed libdrm headers */
- #ifndef DRM_AMDGPU_GEM_LIST_HANDLES
-@@ -856,6 +871,7 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
- 		struct drm_amdgpu_userq_fence_info out_fences[1];
- 		/* This block targets early validation; real queue behavior is in userq-fuzzing. */
- 		static const struct amd_ioctl_field_case cases[] = {
-+			/* After updating the struct, uncomment it. */
- 			//{ "userq_wait.waitq_id.invalid", offsetof(struct drm_amdgpu_userq_wait, waitq_id), sizeof(uint32_t), UINT32_MAX },
- 			{ "userq_wait.syncobj_handles.invalid", offsetof(struct drm_amdgpu_userq_wait, syncobj_handles), sizeof(uint64_t), 0x1 },
- 			{ "userq_wait.timeline_handles.invalid", offsetof(struct drm_amdgpu_userq_wait, syncobj_timeline_handles), sizeof(uint64_t), 0x1 },
-@@ -2015,11 +2031,698 @@ amd_lifecycle_fuzzing(int fd)
+@@ -1702,6 +1702,319 @@ amd_boundary_fuzzing(int fd)
  	}
  }
  
-+#ifdef AMDGPU_USERQ_ENABLED
-+struct amd_test_userq_ctx {
-+	uint32_t ip_type;
-+	struct amdgpu_ring_context *ring_context;
-+	uint32_t queue_id;
-+	bool created;
-+};
-+
-+static bool
-+amd_test_map_hw_to_ip_block_type(uint32_t hw_ip_type,
-+				 enum amd_ip_block_type *block_type)
-+{
-+	if (!block_type)
-+		return false;
-+
-+	switch (hw_ip_type) {
-+	case AMDGPU_HW_IP_GFX:
-+		*block_type = AMD_IP_GFX;
-+		return true;
-+	case AMDGPU_HW_IP_COMPUTE:
-+		*block_type = AMD_IP_COMPUTE;
-+		return true;
-+	case AMDGPU_HW_IP_DMA:
-+		*block_type = AMD_IP_DMA;
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
++/*
++ * Lifecycle and sequence fuzzing tests.
++ *
++ * These tests validate the driver handles wrong-order operations safely:
++ * double-close, use-after-free patterns, and operations on freed resources.
++ * Many of these patterns mirror real Syzkaller-found bugs.
++ */
 +static void
-+amd_test_userq_cleanup(int fd, amdgpu_device_handle amdgpu_dev,
-+		      struct amd_test_userq_ctx *userq)
++amd_lifecycle_fuzzing(int fd)
 +{
-+	const struct amdgpu_ip_block_version *ip_block = NULL;
-+	enum amd_ip_block_type block_type;
-+	int r;
-+	bool need_wait = false;
-+
-+	(void)fd;
-+
-+	if (!userq)
-+		return;
-+	if (!userq->ring_context)
-+		return;
-+
-+	if (amdgpu_dev && amd_test_map_hw_to_ip_block_type(userq->ip_type, &block_type))
-+		ip_block = get_ip_block(amdgpu_dev, block_type);
-+
-+	if (userq->created && ip_block && ip_block->funcs && ip_block->funcs->userq_destroy) {
-+		ip_block->funcs->userq_destroy(amdgpu_dev, userq->ring_context,
-+					      ip_block->type);
-+		userq->created = false;
-+	} else {
-+		/* Queue may already be destroyed by a race thread; free remaining BOs only. */
-+		switch (userq->ip_type) {
-+		case AMDGPU_HW_IP_GFX:
-+			if (userq->ring_context->csa.handle) {
-+				amdgpu_bo_unmap_and_free(userq->ring_context->csa.handle,
-+						 userq->ring_context->csa.va_handle,
-+						 userq->ring_context->csa.mc_addr,
-+						 userq->ring_context->info.gfx.csa_size);
-+				userq->ring_context->csa.handle = NULL;
-+				need_wait = true;
-+			}
-+
-+			if (userq->ring_context->shadow.handle) {
-+				amdgpu_bo_unmap_and_free(userq->ring_context->shadow.handle,
-+						 userq->ring_context->shadow.va_handle,
-+						 userq->ring_context->shadow.mc_addr,
-+						 userq->ring_context->info.gfx.shadow_size);
-+				userq->ring_context->shadow.handle = NULL;
-+				need_wait = true;
-+			}
-+			break;
-+
-+		case AMDGPU_HW_IP_COMPUTE:
-+			if (userq->ring_context->eop.handle) {
-+				amdgpu_bo_unmap_and_free(userq->ring_context->eop.handle,
-+						 userq->ring_context->eop.va_handle,
-+						 userq->ring_context->eop.mc_addr,
-+						 256);
-+				userq->ring_context->eop.handle = NULL;
-+				need_wait = true;
-+			}
-+			break;
-+
-+		case AMDGPU_HW_IP_DMA:
-+			if (userq->ring_context->csa.handle) {
-+				amdgpu_bo_unmap_and_free(userq->ring_context->csa.handle,
-+						 userq->ring_context->csa.va_handle,
-+						 userq->ring_context->csa.mc_addr,
-+						 userq->ring_context->info.gfx.csa_size);
-+				userq->ring_context->csa.handle = NULL;
-+				need_wait = true;
-+			}
-+			break;
-+
-+		default:
-+			break;
-+		}
-+
-+		if (need_wait && userq->ring_context->timeline_syncobj_handle) {
-+			r = amdgpu_timeline_syncobj_wait(amdgpu_dev,
-+							 userq->ring_context->timeline_syncobj_handle,
-+							 userq->ring_context->point);
-+			if (r)
-+				igt_info("userq cleanup wait failed: ip=%u ret=%d\n", userq->ip_type, r);
-+		}
-+
-+		if (userq->ring_context->timeline_syncobj_handle) {
-+			r = amdgpu_cs_destroy_syncobj(amdgpu_dev,
-+						     userq->ring_context->timeline_syncobj_handle);
-+			if (r)
-+				igt_info("userq cleanup destroy syncobj failed: ip=%u ret=%d\n", userq->ip_type, r);
-+			userq->ring_context->timeline_syncobj_handle = 0;
-+		}
-+
-+		if (userq->ring_context->doorbell.handle) {
-+			r = amdgpu_bo_cpu_unmap(userq->ring_context->doorbell.handle);
-+			if (r)
-+				igt_info("userq cleanup doorbell unmap failed: ip=%u ret=%d\n", userq->ip_type, r);
-+
-+			r = amdgpu_bo_free(userq->ring_context->doorbell.handle);
-+			if (r)
-+				igt_info("userq cleanup doorbell free failed: ip=%u ret=%d\n", userq->ip_type, r);
-+
-+			userq->ring_context->doorbell.handle = NULL;
-+		}
-+
-+		if (userq->ring_context->rptr.handle) {
-+			amdgpu_bo_unmap_and_free(userq->ring_context->rptr.handle,
-+						 userq->ring_context->rptr.va_handle,
-+						 userq->ring_context->rptr.mc_addr, 8);
-+			userq->ring_context->rptr.handle = NULL;
-+		}
-+
-+		if (userq->ring_context->wptr.handle) {
-+			amdgpu_bo_unmap_and_free(userq->ring_context->wptr.handle,
-+						 userq->ring_context->wptr.va_handle,
-+						 userq->ring_context->wptr.mc_addr, 8);
-+			userq->ring_context->wptr.handle = NULL;
-+		}
-+
-+		if (userq->ring_context->queue.handle) {
-+			amdgpu_bo_unmap_and_free(userq->ring_context->queue.handle,
-+						 userq->ring_context->queue.va_handle,
-+						 userq->ring_context->queue.mc_addr,
-+						 USERMODE_QUEUE_SIZE);
-+			userq->ring_context->queue.handle = NULL;
-+		}
-+	}
-+
-+	free(userq->ring_context);
-+	userq->ring_context = NULL;
-+	userq->queue_id = 0;
-+}
-+
-+static bool
-+amd_test_try_create_userq(int fd, amdgpu_device_handle amdgpu_dev, uint32_t ip_type,
-+			 struct amd_test_userq_ctx *userq)
-+{
-+	const struct amdgpu_ip_block_version *ip_block;
-+	enum amd_ip_block_type block_type;
-+
-+	(void)fd;
-+
-+	if (!amdgpu_dev || !userq)
++	/*
++	 * Double-close GEM handle: closing the same BO twice must not
++	 * crash the driver.  The second close should fail with EINVAL.
++	 */
 +	{
-+		igt_info("userq create failed: invalid args dev=%p userq=%p ip=%u\n",
-+			 amdgpu_dev, userq, ip_type);
-+		return false;
++		union drm_amdgpu_gem_create gem;
++		struct drm_gem_close close_arg;
++		int ret;
++		memset(&gem, 0, sizeof(gem));
++		gem.in.bo_size = 4096;
++		gem.in.alignment = 0;
++		gem.in.domains = AMDGPU_GEM_DOMAIN_GTT;
++		gem.in.domain_flags = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_CREATE, &gem);
++		igt_assert_eq(ret, 0);
++		close_arg.handle = gem.out.handle;
++		close_arg.pad = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &close_arg);
++		igt_assert_eq(ret, 0);
++		/* Second close -- must not crash */
++		errno = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &close_arg);
++		igt_assert_neq(ret, 0);
++		igt_info("double-close GEM handle: ret=%d errno=%d\n", ret, errno);
 +	}
-+
-+	memset(userq, 0, sizeof(*userq));
-+	userq->ip_type = ip_type;
-+	if (!amd_test_map_hw_to_ip_block_type(ip_type, &block_type)) {
-+		igt_info("userq create failed: unsupported hw ip_type=%u\n", ip_type);
-+		return false;
-+	}
-+
-+	ip_block = get_ip_block(amdgpu_dev, block_type);
-+	if (!ip_block || !ip_block->funcs || !ip_block->funcs->userq_create) {
-+		igt_info("userq create unavailable: ip=%u block=%p funcs=%p create=%p\n",
-+			 ip_type,
-+			 ip_block,
-+			 ip_block ? ip_block->funcs : NULL,
-+			 (ip_block && ip_block->funcs) ? ip_block->funcs->userq_create : NULL);
-+		return false;
-+	}
-+
-+	userq->ring_context = calloc(1, sizeof(*userq->ring_context));
-+	if (!userq->ring_context) {
-+		igt_info("userq create failed: ring_context alloc failed ip=%u\n", ip_type);
-+		return false;
-+	}
-+
-+	ip_block->funcs->userq_create(amdgpu_dev, userq->ring_context, ip_block->type);
-+	if (!userq->ring_context->queue.handle) {
-+		igt_info("userq create failed: queue.handle is NULL ip=%u\n", ip_type);
-+		free(userq->ring_context);
-+		userq->ring_context = NULL;
-+		return false;
-+	}
-+
-+	userq->queue_id = userq->ring_context->queue_id;
-+	userq->created = true;
-+	return true;
-+}
-+
-+
-+/*
-+ * ------------------------------------------------------------------
-+ * USERQ concurrency / race-condition fuzzing
-+ *
-+ * Runs on GFX / COMPUTE / DMA queues when supported by the ASIC.
-+ *
-+ * Race D – Concurrent USERQ_CREATE + USERQ_DESTROY:
-+ *   N threads simultaneously create/destroy queues of the same ip_type.
-+ *
-+ * Race E – USERQ_SIGNAL racing USERQ_DESTROY (2 threads, 1 queue).
-+ *
-+ * Race F – Concurrent USERQ_DESTROY on the same queue_id (2 threads).
-+ *
-+ * Race G – USERQ_WAIT racing USERQ_DESTROY (2 threads, 1 queue).
-+ *
-+ * Race H – USERQ queue writes racing negative ioctls + DESTROY:
-+ *   Writer thread submits tiny packets to the queue while another thread
-+ *   injects invalid ioctls and then destroys the queue.
-+ *
-+ * No specific errno is asserted – the real signal is clean dmesg.
-+ * ------------------------------------------------------------------
-+ */
-+
-+static const char *
-+amd_userq_ip_name(uint32_t ip_type)
-+{
-+	switch (ip_type) {
-+	case AMDGPU_HW_IP_GFX:
-+		return "GFX";
-+	case AMDGPU_HW_IP_COMPUTE:
-+		return "COMPUTE";
-+	case AMDGPU_HW_IP_DMA:
-+		return "DMA";
-+	default:
-+		return "UNKNOWN";
-+	}
-+}
-+
-+/* Race D: per-thread args for concurrent create/destroy. */
-+struct amd_conc_userq_args {
-+	int                  fd;
-+	amdgpu_device_handle dev;
-+	pthread_barrier_t   *barrier;
-+	int                  iters;
-+	uint32_t             ip_type;
-+};
-+
-+/* Races E / G: state shared between the op-thread and the destroyer. */
-+struct amd_conc_userq_op_state {
-+	int                  fd;
-+	amdgpu_device_handle dev;
-+	pthread_barrier_t    barrier;
-+	uint32_t             ip_type;
-+	uint32_t             queue_id;
-+	volatile int         destroyed;
-+};
-+
-+/* Race H: writer + negative ops + destroy on one live queue. */
-+struct amd_conc_userq_write_state {
-+	int                          fd;
-+	amdgpu_device_handle         dev;
-+	pthread_barrier_t            barrier;
-+	uint32_t                     ip_type;
-+	uint32_t                     queue_id;
-+	struct amdgpu_ring_context  *ring_context;
-+	volatile int                 destroyed;
-+};
-+
-+/* Race F: per-thread args for concurrent double-destroy. */
-+struct amd_conc_userq_destroy_args {
-+	int               fd;
-+	uint32_t          queue_id;
-+	pthread_barrier_t *barrier;
-+};
-+
-+/* Race D thread: create own queue, immediately destroy it, N times. */
-+static void *
-+thread_userq_create_destroy(void *arg)
-+{
-+	struct amd_conc_userq_args *a = arg;
-+	struct amd_test_userq_ctx local_ctx;
-+	int i;
-+
-+	pthread_barrier_wait(a->barrier);
-+	for (i = 0; i < a->iters; i++) {
-+		memset(&local_ctx, 0, sizeof(local_ctx));
-+		if (amd_test_try_create_userq(a->fd, a->dev,
-+					      a->ip_type, &local_ctx))
-+			amd_test_userq_cleanup(a->fd, a->dev, &local_ctx);
-+	}
-+	return NULL;
-+}
-+
-+/*
-+ * Queue write helper for Race H.
-+ * Writes a tiny NOP packet and rings doorbell to exercise queue write path.
-+ */
-+static void
-+amd_test_userq_write_once(struct amdgpu_ring_context *ctx, uint32_t ip_type,
-+			 uint32_t tag)
-+{
-+	struct amdgpu_ring_context *ring_context = ctx;
-+
-+	if (!ring_context || !ring_context->queue_cpu || !ring_context->wptr_cpu ||
-+	    !ring_context->doorbell_cpu)
-+		return;
-+
-+	if (ip_type == AMDGPU_HW_IP_DMA) {
-+		amdgpu_sdma_pkt_begin();
-+		amdgpu_pkt_add_dw(SDMA_PKT_HEADER_OP(SDMA_NOP));
-+		amdgpu_pkt_add_dw(tag);
-+		amdgpu_sdma_pkt_end();
-+	} else {
-+		amdgpu_pkt_begin();
-+		amdgpu_pkt_add_dw(PACKET3(PACKET3_NOP, 0));
-+		amdgpu_pkt_add_dw(tag);
-+		amdgpu_pkt_end();
-+	}
-+
-+	ring_context->doorbell_cpu[DOORBELL_INDEX] = *ring_context->wptr_cpu;
-+}
-+
-+/* Race H writer: keep writing tiny packets until queue is destroyed. */
-+static void *
-+thread_userq_writer(void *arg)
-+{
-+	struct amd_conc_userq_write_state *s = arg;
-+	int iter;
-+
-+	pthread_barrier_wait(&s->barrier);
-+	for (iter = 0; iter < AMD_CONC_ITERS; iter++) {
-+		amd_test_userq_write_once(s->ring_context, s->ip_type,
-+					  0xabc00000u | (uint32_t)iter);
-+		if (s->destroyed)
-+			break;
-+		usleep(100);
-+	}
-+
-+	return NULL;
-+}
-+
-+/* Race H negative thread: inject invalid ioctls while writer is active, then destroy. */
-+static void *
-+thread_userq_negative_destroyer(void *arg)
-+{
-+	struct amd_conc_userq_write_state *s = arg;
-+	int iter;
-+
-+	pthread_barrier_wait(&s->barrier);
-+
-+	for (iter = 0; iter < 8; iter++) {
-+		struct drm_amdgpu_userq_signal sig;
-+		struct drm_amdgpu_userq_wait wait;
-+		union drm_amdgpu_userq free_arg;
-+
-+		memset(&sig, 0, sizeof(sig));
-+		sig.queue_id = UINT32_MAX;
-+		drmIoctl(s->fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &sig);
-+
-+		memset(&wait, 0, sizeof(wait));
-+		/* After updating the struct, uncomment it. */
-+		//wait.waitq_id = UINT32_MAX;
-+		drmIoctl(s->fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &wait);
-+
-+		/* Invalid free should fail gracefully. */
-+		memset(&free_arg, 0, sizeof(free_arg));
-+		free_arg.in.op = AMDGPU_USERQ_OP_FREE;
-+		free_arg.in.queue_id = UINT32_MAX;
-+		drmIoctl(s->fd, DRM_IOCTL_AMDGPU_USERQ, &free_arg);
-+
-+		usleep(150);
-+	}
-+
-+	/* destroy while writer may still be updating queue + doorbell */
-+	s->destroyed = 1;
-+	amdgpu_free_userqueue(s->dev, s->queue_id);
-+
-+	return NULL;
-+}
-+
-+/*
-+ * Race E thread: repeatedly SIGNAL the queue.
-+ * Return value is not asserted – calls will fail once the queue is gone.
-+ */
-+static void *
-+thread_userq_signaler(void *arg)
-+{
-+	struct amd_conc_userq_op_state *s = arg;
-+	int iter;
-+
-+	pthread_barrier_wait(&s->barrier);
-+	for (iter = 0; iter < AMD_CONC_ITERS; iter++) {
-+		struct drm_amdgpu_userq_signal sig;
-+
-+		memset(&sig, 0, sizeof(sig));
-+		sig.queue_id = s->queue_id;
-+		/* empty payload: exercises queue_id XArray lookup vs teardown */
-+		drmIoctl(s->fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &sig);
-+		if (s->destroyed)
-+			break;
-+	}
-+	return NULL;
-+}
-+
-+/*
-+ * Race G thread: repeatedly WAIT on the queue.
-+ * Return value is not asserted – calls will fail once the queue is gone.
-+ */
-+static void *
-+thread_userq_waiter(void *arg)
-+{
-+	struct amd_conc_userq_op_state *s = arg;
-+	int iter;
-+
-+	pthread_barrier_wait(&s->barrier);
-+	for (iter = 0; iter < AMD_CONC_ITERS; iter++) {
-+		struct drm_amdgpu_userq_wait wait;
-+
-+		memset(&wait, 0, sizeof(wait));
-+		/* After updating the struct, uncomment it. */
-+		//wait.waitq_id = s->queue_id;
-+		/* empty payload: exercises waitq_id lookup vs teardown */
-+		drmIoctl(s->fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &wait);
-+		if (s->destroyed)
-+			break;
-+	}
-+	return NULL;
-+}
-+
-+/* Shared destroyer for Races E and G. */
-+static void *
-+thread_userq_op_destroyer(void *arg)
-+{
-+	struct amd_conc_userq_op_state *s = arg;
-+
-+	pthread_barrier_wait(&s->barrier);
 +	/*
-+	 * Brief delay increases the probability that the op-thread is
-+	 * inside a SIGNAL/WAIT ioctl when teardown fires.
++	 * GEM_MMAP on closed handle: mmap after close must fail gracefully.
 +	 */
-+	usleep(1000);
-+	s->destroyed = 1;
-+	amdgpu_free_userqueue(s->dev, s->queue_id);
-+	return NULL;
-+}
-+
-+/* Race F thread: attempt AMDGPU_USERQ_OP_FREE on a shared queue_id. */
-+static void *
-+thread_userq_double_destroy(void *arg)
-+{
-+	struct amd_conc_userq_destroy_args *a = arg;
-+	union drm_amdgpu_userq userq_arg;
-+
-+	pthread_barrier_wait(a->barrier);
-+	memset(&userq_arg, 0, sizeof(userq_arg));
-+	userq_arg.in.op       = AMDGPU_USERQ_OP_FREE;
-+	userq_arg.in.queue_id = a->queue_id;
++	{
++		union drm_amdgpu_gem_create gem;
++		union drm_amdgpu_gem_mmap mmap_arg;
++		struct drm_gem_close close_arg;
++		int ret;
++		memset(&gem, 0, sizeof(gem));
++		gem.in.bo_size = 4096;
++		gem.in.alignment = 0;
++		gem.in.domains = AMDGPU_GEM_DOMAIN_GTT;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_CREATE, &gem);
++		igt_assert_eq(ret, 0);
++		close_arg.handle = gem.out.handle;
++		close_arg.pad = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &close_arg);
++		igt_assert_eq(ret, 0);
++		memset(&mmap_arg, 0, sizeof(mmap_arg));
++		mmap_arg.in.handle = gem.out.handle;
++		errno = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_MMAP, &mmap_arg);
++		igt_assert_neq(ret, 0);
++		igt_info("mmap-after-close: ret=%d errno=%d\n", ret, errno);
++	}
 +	/*
-+	 * Return value intentionally unchecked: exactly one thread should
-+	 * succeed; the driver must not crash on either outcome.
++	 * GEM_WAIT_IDLE on closed handle: must fail, not crash.
 +	 */
-+	drmIoctl(a->fd, DRM_IOCTL_AMDGPU_USERQ, &userq_arg);
-+	return NULL;
-+}
-+
-+static void
-+amd_userq_run_create_destroy_race(int fd, amdgpu_device_handle dev,
-+				 uint32_t ip_type)
-+{
-+	pthread_t threads[AMD_CONC_THREADS];
-+	struct amd_conc_userq_args args[AMD_CONC_THREADS];
-+	pthread_barrier_t barrier;
-+	int i;
-+
-+	igt_info("concurrent-userq-fuzzing[%s]: concurrent-create-destroy "
-+		 "(%d threads x 4 iters)\n",
-+		 amd_userq_ip_name(ip_type), AMD_CONC_THREADS);
-+	igt_assert(pthread_barrier_init(&barrier, NULL, AMD_CONC_THREADS) == 0);
-+	for (i = 0; i < AMD_CONC_THREADS; i++) {
-+		args[i].fd      = fd;
-+		args[i].dev     = dev;
-+		args[i].barrier = &barrier;
-+		args[i].iters   = 4;
-+		args[i].ip_type = ip_type;
-+		igt_assert(pthread_create(&threads[i], NULL,
-+					  thread_userq_create_destroy,
-+					  &args[i]) == 0);
++	{
++		union drm_amdgpu_gem_create gem;
++		union drm_amdgpu_gem_wait_idle wait;
++		struct drm_gem_close close_arg;
++		int ret;
++		memset(&gem, 0, sizeof(gem));
++		gem.in.bo_size = 4096;
++		gem.in.domains = AMDGPU_GEM_DOMAIN_GTT;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_CREATE, &gem);
++		igt_assert_eq(ret, 0);
++		close_arg.handle = gem.out.handle;
++		close_arg.pad = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &close_arg);
++		igt_assert_eq(ret, 0);
++		memset(&wait, 0, sizeof(wait));
++		wait.in.handle = gem.out.handle;
++		wait.in.timeout = 1000;
++		errno = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_WAIT_IDLE, &wait);
++		igt_assert_neq(ret, 0);
++		igt_info("wait-idle-after-close: ret=%d errno=%d\n", ret, errno);
 +	}
-+	for (i = 0; i < AMD_CONC_THREADS; i++)
-+		pthread_join(threads[i], NULL);
-+	pthread_barrier_destroy(&barrier);
-+}
-+
-+static void
-+amd_userq_run_signal_destroy_race(int fd, amdgpu_device_handle dev,
-+				 uint32_t ip_type)
-+{
-+	struct amd_conc_userq_op_state s;
-+	struct amd_test_userq_ctx userq;
-+	pthread_t signaler, destroyer;
-+
-+	memset(&userq, 0, sizeof(userq));
-+	if (!amd_test_try_create_userq(fd, dev, ip_type, &userq)) {
-+		igt_info("concurrent-userq-fuzzing[%s]: queue unavailable, "
-+			 "skip signal-vs-destroy\n", amd_userq_ip_name(ip_type));
-+		return;
-+	}
-+
-+	memset(&s, 0, sizeof(s));
-+	s.fd       = fd;
-+	s.dev      = dev;
-+	s.ip_type  = ip_type;
-+	s.queue_id = userq.queue_id;
-+	userq.created = false;
-+	igt_assert(pthread_barrier_init(&s.barrier, NULL, 2) == 0);
-+	igt_info("concurrent-userq-fuzzing[%s]: signal-vs-destroy start "
-+		 "(queue_id=%u)\n", amd_userq_ip_name(ip_type), s.queue_id);
-+	igt_assert(pthread_create(&signaler, NULL, thread_userq_signaler, &s) == 0);
-+	igt_assert(pthread_create(&destroyer, NULL, thread_userq_op_destroyer, &s) == 0);
-+	pthread_join(signaler, NULL);
-+	pthread_join(destroyer, NULL);
-+	pthread_barrier_destroy(&s.barrier);
-+	amd_test_userq_cleanup(fd, dev, &userq);
-+}
-+
-+static void
-+amd_userq_run_double_destroy_race(int fd, amdgpu_device_handle dev,
-+				 uint32_t ip_type)
-+{
-+	struct amd_conc_userq_destroy_args dargs[2];
-+	struct amd_test_userq_ctx userq;
-+	pthread_barrier_t barrier;
-+	pthread_t threads[2];
-+	int i;
-+
-+	memset(&userq, 0, sizeof(userq));
-+	if (!amd_test_try_create_userq(fd, dev, ip_type, &userq)) {
-+		igt_info("concurrent-userq-fuzzing[%s]: queue unavailable, "
-+			 "skip double-destroy\n", amd_userq_ip_name(ip_type));
-+		return;
-+	}
-+
-+	igt_assert(pthread_barrier_init(&barrier, NULL, 2) == 0);
-+	igt_info("concurrent-userq-fuzzing[%s]: double-destroy start "
-+		 "(queue_id=%u)\n", amd_userq_ip_name(ip_type), userq.queue_id);
-+	for (i = 0; i < 2; i++) {
-+		dargs[i].fd       = fd;
-+		dargs[i].queue_id = userq.queue_id;
-+		dargs[i].barrier  = &barrier;
-+		igt_assert(pthread_create(&threads[i], NULL,
-+					  thread_userq_double_destroy,
-+					  &dargs[i]) == 0);
-+	}
-+	pthread_join(threads[0], NULL);
-+	pthread_join(threads[1], NULL);
-+	pthread_barrier_destroy(&barrier);
-+	userq.created = false;
-+	amd_test_userq_cleanup(fd, dev, &userq);
-+}
-+
-+static void
-+amd_userq_run_wait_destroy_race(int fd, amdgpu_device_handle dev,
-+				 uint32_t ip_type)
-+{
-+	struct amd_conc_userq_op_state s;
-+	struct amd_test_userq_ctx userq;
-+	pthread_t waiter, destroyer;
-+
-+	memset(&userq, 0, sizeof(userq));
-+	if (!amd_test_try_create_userq(fd, dev, ip_type, &userq)) {
-+		igt_info("concurrent-userq-fuzzing[%s]: queue unavailable, "
-+			 "skip wait-vs-destroy\n", amd_userq_ip_name(ip_type));
-+		return;
-+	}
-+
-+	memset(&s, 0, sizeof(s));
-+	s.fd       = fd;
-+	s.dev      = dev;
-+	s.ip_type  = ip_type;
-+	s.queue_id = userq.queue_id;
-+	userq.created = false;
-+	igt_assert(pthread_barrier_init(&s.barrier, NULL, 2) == 0);
-+	igt_info("concurrent-userq-fuzzing[%s]: wait-vs-destroy start "
-+		 "(queue_id=%u)\n", amd_userq_ip_name(ip_type), s.queue_id);
-+	igt_assert(pthread_create(&waiter, NULL, thread_userq_waiter, &s) == 0);
-+	igt_assert(pthread_create(&destroyer, NULL, thread_userq_op_destroyer, &s) == 0);
-+	pthread_join(waiter, NULL);
-+	pthread_join(destroyer, NULL);
-+	pthread_barrier_destroy(&s.barrier);
-+	amd_test_userq_cleanup(fd, dev, &userq);
-+}
-+
-+static void
-+amd_userq_run_write_negative_destroy_race(int fd, amdgpu_device_handle dev,
-+					 uint32_t ip_type)
-+{
-+	struct amd_conc_userq_write_state s;
-+	struct amd_test_userq_ctx userq;
-+	pthread_t writer, neg_destroyer;
-+
-+	memset(&userq, 0, sizeof(userq));
-+	if (!amd_test_try_create_userq(fd, dev, ip_type, &userq)) {
-+		igt_info("concurrent-userq-fuzzing[%s]: queue unavailable, "
-+			 "skip write-vs-negative-vs-destroy\n",
-+			 amd_userq_ip_name(ip_type));
-+		return;
-+	}
-+
-+	memset(&s, 0, sizeof(s));
-+	s.fd = fd;
-+	s.dev = dev;
-+	s.ip_type = ip_type;
-+	s.queue_id = userq.queue_id;
-+	s.ring_context = userq.ring_context;
-+	userq.created = false;
-+
-+	igt_assert(pthread_barrier_init(&s.barrier, NULL, 2) == 0);
-+	igt_info("concurrent-userq-fuzzing[%s]: write-vs-negative-vs-destroy "
-+		 "start (queue_id=%u)\n", amd_userq_ip_name(ip_type), s.queue_id);
-+	igt_assert(pthread_create(&writer, NULL, thread_userq_writer, &s) == 0);
-+	igt_assert(pthread_create(&neg_destroyer, NULL,
-+				  thread_userq_negative_destroyer, &s) == 0);
-+	pthread_join(writer, NULL);
-+	pthread_join(neg_destroyer, NULL);
-+	pthread_barrier_destroy(&s.barrier);
-+	amd_test_userq_cleanup(fd, dev, &userq);
-+}
-+
-+static void
-+amd_userq_concurrent_fuzzing(int fd, amdgpu_device_handle dev,
-+				    const bool userq_arr_cap[AMD_IP_MAX])
-+{
-+	static const uint32_t ip_types[] = {
-+		AMDGPU_HW_IP_GFX,
-+		AMDGPU_HW_IP_COMPUTE,
-+		AMDGPU_HW_IP_DMA,
-+	};
-+	unsigned int i;
-+
-+	if (!dev) {
-+		igt_info("concurrent-userq-fuzzing: no amdgpu device, skip\n");
-+		return;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(ip_types); i++) {
-+		uint32_t ip_type = ip_types[i];
-+		enum amd_ip_block_type block_type;
-+
-+		if (!amd_test_map_hw_to_ip_block_type(ip_type, &block_type)) {
-+			igt_info("concurrent-userq-fuzzing[%s]: unsupported hw ip, skip all races\n",
-+				 amd_userq_ip_name(ip_type));
-+			continue;
++	/*
++	 * Double-free CTX: freeing context twice must not crash.
++	 */
++	{
++		union drm_amdgpu_ctx ctx;
++		int ret;
++		memset(&ctx, 0, sizeof(ctx));
++		ctx.in.op = AMDGPU_CTX_OP_ALLOC_CTX;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_CTX, &ctx);
++		igt_assert_eq(ret, 0);
++		{
++			union drm_amdgpu_ctx free_ctx;
++			uint32_t saved_id = ctx.out.alloc.ctx_id;
++			memset(&free_ctx, 0, sizeof(free_ctx));
++			free_ctx.in.op = AMDGPU_CTX_OP_FREE_CTX;
++			free_ctx.in.ctx_id = saved_id;
++			ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_CTX, &free_ctx);
++			igt_assert_eq(ret, 0);
++			/* Second free -- must not crash */
++			errno = 0;
++			ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_CTX, &free_ctx);
++			igt_assert_neq(ret, 0);
++			igt_info("double-free CTX: ret=%d errno=%d\n", ret, errno);
 +		}
-+
-+		if (!userq_arr_cap[block_type]) {
-+			igt_info("concurrent-userq-fuzzing[%s]: userq capability not present, skip all races\n",
-+				 amd_userq_ip_name(ip_type));
-+			continue;
++	}
++	/*
++	 * CS submit with freed CTX: must fail, not crash or UAF.
++	 */
++	{
++		union drm_amdgpu_ctx ctx;
++		union drm_amdgpu_cs cs;
++		int ret;
++		memset(&ctx, 0, sizeof(ctx));
++		ctx.in.op = AMDGPU_CTX_OP_ALLOC_CTX;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_CTX, &ctx);
++		igt_assert_eq(ret, 0);
++		{
++			union drm_amdgpu_ctx free_ctx;
++			uint32_t saved_id = ctx.out.alloc.ctx_id;
++			memset(&free_ctx, 0, sizeof(free_ctx));
++			free_ctx.in.op = AMDGPU_CTX_OP_FREE_CTX;
++			free_ctx.in.ctx_id = saved_id;
++			ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_CTX, &free_ctx);
++			igt_assert_eq(ret, 0);
++			/* Submit with freed ctx -- must not crash */
++			memset(&cs, 0, sizeof(cs));
++			cs.in.ctx_id = saved_id;
++			errno = 0;
++			ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_CS, &cs);
++			igt_assert_neq(ret, 0);
++			igt_info("CS-after-ctx-free: ret=%d errno=%d\n", ret, errno);
 +		}
-+
-+		igt_info("concurrent-userq-fuzzing[%s]: start\n",
-+			 amd_userq_ip_name(ip_type));
-+		amd_userq_run_create_destroy_race(fd, dev, ip_type);
-+		amd_userq_run_signal_destroy_race(fd, dev, ip_type);
-+		amd_userq_run_double_destroy_race(fd, dev, ip_type);
-+		amd_userq_run_wait_destroy_race(fd, dev, ip_type);
-+		amd_userq_run_write_negative_destroy_race(fd, dev, ip_type);
-+		igt_info("concurrent-userq-fuzzing[%s]: done\n",
-+			 amd_userq_ip_name(ip_type));
++	}
++	/*
++	 * WAIT_CS with freed CTX: must fail gracefully.
++	 */
++	{
++		union drm_amdgpu_ctx ctx;
++		union drm_amdgpu_wait_cs wait;
++		int ret;
++		memset(&ctx, 0, sizeof(ctx));
++		ctx.in.op = AMDGPU_CTX_OP_ALLOC_CTX;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_CTX, &ctx);
++		igt_assert_eq(ret, 0);
++		{
++			union drm_amdgpu_ctx free_ctx;
++			uint32_t saved_id = ctx.out.alloc.ctx_id;
++			memset(&free_ctx, 0, sizeof(free_ctx));
++			free_ctx.in.op = AMDGPU_CTX_OP_FREE_CTX;
++			free_ctx.in.ctx_id = saved_id;
++			ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_CTX, &free_ctx);
++			igt_assert_eq(ret, 0);
++			memset(&wait, 0, sizeof(wait));
++			wait.in.ctx_id = saved_id;
++			wait.in.ip_type = AMDGPU_HW_IP_GFX;
++			wait.in.timeout = 1000;
++			errno = 0;
++			ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_WAIT_CS, &wait);
++			igt_assert_neq(ret, 0);
++			igt_info("wait-cs-after-ctx-free: ret=%d errno=%d\n", ret, errno);
++		}
++	}
++	/*
++	 * GEM_METADATA on closed handle: get/set metadata on freed BO.
++	 */
++	{
++		union drm_amdgpu_gem_create gem;
++		struct drm_amdgpu_gem_metadata meta;
++		struct drm_gem_close close_arg;
++		int ret;
++		memset(&gem, 0, sizeof(gem));
++		gem.in.bo_size = 4096;
++		gem.in.domains = AMDGPU_GEM_DOMAIN_GTT;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_CREATE, &gem);
++		igt_assert_eq(ret, 0);
++		close_arg.handle = gem.out.handle;
++		close_arg.pad = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &close_arg);
++		igt_assert_eq(ret, 0);
++		memset(&meta, 0, sizeof(meta));
++		meta.handle = gem.out.handle;
++		meta.op = AMDGPU_GEM_METADATA_OP_GET_METADATA;
++		errno = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_METADATA, &meta);
++		igt_assert_neq(ret, 0);
++		igt_info("metadata-get-after-close: ret=%d errno=%d\n", ret, errno);
++		meta.op = AMDGPU_GEM_METADATA_OP_SET_METADATA;
++		errno = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_METADATA, &meta);
++		igt_assert_neq(ret, 0);
++		igt_info("metadata-set-after-close: ret=%d errno=%d\n", ret, errno);
++	}
++	/*
++	 * GEM_OP on closed handle: must fail, not UAF.
++	 */
++	{
++		union drm_amdgpu_gem_create gem;
++		struct drm_amdgpu_gem_op gem_op;
++		struct drm_gem_close close_arg;
++		int ret;
++		memset(&gem, 0, sizeof(gem));
++		gem.in.bo_size = 4096;
++		gem.in.domains = AMDGPU_GEM_DOMAIN_GTT;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_CREATE, &gem);
++		igt_assert_eq(ret, 0);
++		close_arg.handle = gem.out.handle;
++		close_arg.pad = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &close_arg);
++		igt_assert_eq(ret, 0);
++		memset(&gem_op, 0, sizeof(gem_op));
++		gem_op.handle = gem.out.handle;
++		gem_op.op = AMDGPU_GEM_OP_GET_GEM_CREATE_INFO;
++		errno = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_OP, &gem_op);
++		igt_assert_neq(ret, 0);
++		igt_info("gem-op-after-close: ret=%d errno=%d\n", ret, errno);
++	}
++	/*
++	 * BO_LIST with closed BO handle: create a bo_list referencing
++	 * a handle that was already closed.
++	 */
++	{
++		union drm_amdgpu_gem_create gem;
++		union drm_amdgpu_bo_list bo_list;
++		struct drm_amdgpu_bo_list_entry entry;
++		struct drm_gem_close close_arg;
++		int ret;
++		memset(&gem, 0, sizeof(gem));
++		gem.in.bo_size = 4096;
++		gem.in.domains = AMDGPU_GEM_DOMAIN_GTT;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_CREATE, &gem);
++		igt_assert_eq(ret, 0);
++		close_arg.handle = gem.out.handle;
++		close_arg.pad = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &close_arg);
++		igt_assert_eq(ret, 0);
++		memset(&entry, 0, sizeof(entry));
++		entry.bo_handle = gem.out.handle;
++		memset(&bo_list, 0, sizeof(bo_list));
++		bo_list.in.operation = AMDGPU_BO_LIST_OP_CREATE;
++		bo_list.in.bo_number = 1;
++		bo_list.in.bo_info_size = sizeof(entry);
++		bo_list.in.bo_info_ptr = (uintptr_t)&entry;
++		errno = 0;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_BO_LIST, &bo_list);
++		igt_assert_neq(ret, 0);
++		igt_info("bo-list-with-closed-handle: ret=%d errno=%d\n", ret, errno);
++	}
++	/*
++	 * PRIME export + close + import-back: must not crash.
++	 * Tests the DMA-BUF handle lifecycle.
++	 */
++	{
++		union drm_amdgpu_gem_create gem;
++		struct drm_prime_handle prime;
++		struct drm_gem_close close_arg;
++		int ret;
++		memset(&gem, 0, sizeof(gem));
++		gem.in.bo_size = 4096;
++		gem.in.domains = AMDGPU_GEM_DOMAIN_GTT;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_CREATE, &gem);
++		igt_assert_eq(ret, 0);
++		/* Export to DMA-BUF fd */
++		memset(&prime, 0, sizeof(prime));
++		prime.handle = gem.out.handle;
++		prime.flags = DRM_CLOEXEC | DRM_RDWR;
++		ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &prime);
++		if (ret == 0) {
++			int dmabuf_fd = prime.fd;
++			/* Close the GEM handle */
++			close_arg.handle = gem.out.handle;
++			close_arg.pad = 0;
++			drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &close_arg);
++			/* Import back from the DMA-BUF fd */
++			memset(&prime, 0, sizeof(prime));
++			prime.fd = dmabuf_fd;
++			ret = drmIoctl(fd, DRM_IOCTL_PRIME_FD_TO_HANDLE, &prime);
++			igt_info("prime-reimport-after-close: ret=%d handle=%u\n",
++				 ret, prime.handle);
++			/* Clean up */
++			if (ret == 0) {
++				close_arg.handle = prime.handle;
++				drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &close_arg);
++			}
++			close(dmabuf_fd);
++		}
++	}
++	/*
++	 * VM reserve/unreserve double-free: unreserving VMID twice.
++	 */
++	{
++		union drm_amdgpu_vm vm;
++		int ret;
++		memset(&vm, 0, sizeof(vm));
++		vm.in.op = AMDGPU_VM_OP_RESERVE_VMID;
++		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_VM, &vm);
++		if (ret == 0) {
++			vm.in.op = AMDGPU_VM_OP_UNRESERVE_VMID;
++			ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_VM, &vm);
++			igt_assert_eq(ret, 0);
++			/* Second unreserve -- must not crash */
++			errno = 0;
++			ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_VM, &vm);
++			igt_info("vm-double-unreserve: ret=%d errno=%d\n", ret, errno);
++		}
 +	}
 +}
-+#endif /* AMDGPU_USERQ_ENABLED */
 +
  int igt_main()
  {
  	int fd = -1;
- 	amdgpu_device_handle amdgpu_dev = NULL;
- 	uint32_t major_version = 0, minor_version = 0;
-+	struct amdgpu_gpu_info gpu_info = {0};
-+	bool userq_arr_cap[AMD_IP_MAX] = {0};
-+	int r;
- 	const enum amd_ip_block_type arr_types[] = {
- 			AMD_IP_GFX, AMD_IP_COMPUTE, AMD_IP_DMA, AMD_IP_UVD,
- 			AMD_IP_VCE, AMD_IP_UVD_ENC, AMD_IP_VCN_DEC, AMD_IP_VCN_ENC,
-@@ -2029,7 +2732,17 @@ int igt_main()
- 	igt_fixture() {
- 		fd = drm_open_driver(DRIVER_AMDGPU);
- 		igt_require(fd != -1);
--		amdgpu_device_initialize(fd, &major_version, &minor_version, &amdgpu_dev);
-+		r = amdgpu_device_initialize(fd, &major_version, &minor_version, &amdgpu_dev);
-+		igt_require(r == 0);
-+
-+		r = amdgpu_query_gpu_info(amdgpu_dev, &gpu_info);
-+		igt_require(r == 0);
-+
-+		r = setup_amdgpu_ip_blocks(major_version, minor_version,
-+					    &gpu_info, amdgpu_dev);
-+		igt_require(r == 0);
-+
-+		asic_userq_readiness(amdgpu_dev, userq_arr_cap);
- 	}
+@@ -1739,6 +2052,10 @@ int igt_main()
+ 	igt_subtest("boundary-fuzzing")
+ 		amd_boundary_fuzzing(fd);
  
- 	igt_describe("Check user ptr fuzzing with huge size and not valid address");
-@@ -2056,6 +2769,12 @@ int igt_main()
- 	igt_subtest("lifecycle-fuzzing")
- 		amd_lifecycle_fuzzing(fd);
- 
-+#ifdef AMDGPU_USERQ_ENABLED
-+	igt_describe("USERQ concurrency fuzzing: concurrent CREATE/DESTROY, SIGNAL/WAIT racing DESTROY, double-DESTROY");
-+	igt_subtest("concurrent-userq-fuzzing")
-+		amd_userq_concurrent_fuzzing(fd, amdgpu_dev, userq_arr_cap);
-+#endif
++	igt_describe("Lifecycle/sequence fuzzing: double-free, use-after-free, operations on freed resources");
++	igt_subtest("lifecycle-fuzzing")
++		amd_lifecycle_fuzzing(fd);
 +
  	igt_fixture() {
  		drm_close_driver(fd);
