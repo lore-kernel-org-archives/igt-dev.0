@@ -4,53 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8520B10BA42C
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 05:22:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16BB710BA42D
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 05:38:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B05F10E1A2;
-	Fri, 27 Mar 2026 05:22:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A790F10EC6C;
+	Fri, 27 Mar 2026 05:38:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DalZpRgx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ULPTN46C";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62CEE10E1A2
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2026 05:22:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 522F910EC6C
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2026 05:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774588936; x=1806124936;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=k/oVYEqOuTg6K75Lv9Fx3mB6E2zI3mEaZb1sO1dO3/s=;
- b=DalZpRgxxjkYPRzyRMW7PJ4PvdFGnbtSi8U4iX2u798+CiiPmE6l6HrX
- e+yHncO0yVa+gmyqtw8/fq8shhQGFFbA5q9R5pBrDawLrWfy1OSl91Exb
- Q7ul0CTiGs1EW3Dppg2H2UINbIBbf0pgK8ef5VKm6xUA42HAO2zXQTjym
- h4BI04e/dbTt/VA0F8JM+5RXY3LezzS5cshYwhpG4x07nQVIBpVrfEn++
- yLiJdP8x6tJ38kkEQZ5qwPtxVHKLlZNVmnEUD6QfiSZhsYUDwnmNxWxZ9
- A2ChOHuGpY4Algzam50svzuG4YvW50WSweekGtUThyHYkKplIQd46XFmH g==;
-X-CSE-ConnectionGUID: I0QimTxIR3OmjfqZQB548Q==
-X-CSE-MsgGUID: fRb7jnrjRPKOu4ZCad3jTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="85964284"
-X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; d="scan'208";a="85964284"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2026 22:22:15 -0700
-X-CSE-ConnectionGUID: uxMpz91AQjWUNAhFJkX9PA==
-X-CSE-MsgGUID: A15Gl1bLRYSxBMSI/H2XVA==
+ t=1774589883; x=1806125883;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=7Hl2TscePE9w8Ct3TBVB2qTumvpze0gunu1ajKPJKhQ=;
+ b=ULPTN46C0Mya4abG7qFmg8QQo4ASxZVRIKoeeIiliZPy0+kSfraIETW4
+ 9J3lp3xaTWOF1bPHuvYLIPn3h8zO8u+zZYJLs5xqNdD5JcqyGRpWzoSVt
+ NWKzj0/2pd80vm3eWYAybhBnDOym6iCa/8LzRRMuQcMMmEaHBr4pOnHR2
+ R+U0XNUH+tlNvlhTelLbzfELeGGUMWm3ttz/sShtBQytIUx0zE9ZX/Drr
+ cIVKaKS/rehRwIK7WF9Iyql7xyk3Yry8GylDkXsGXN7/C8s8sedJhjOrf
+ XdrpRWSRBgadWs129EaxjyIOxMMsNtvOHxxAoYvnpmUz2iatZrb58A/JC Q==;
+X-CSE-ConnectionGUID: LXCDkSX1StWMoVHCkeJBLg==
+X-CSE-MsgGUID: dpNPeO3LQB+lMZdi7cbqAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="86736106"
+X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; d="scan'208";a="86736106"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2026 22:38:02 -0700
+X-CSE-ConnectionGUID: Mob9sxbjS0aQbgF7naBrYg==
+X-CSE-MsgGUID: P2SD103FTVWfJkKP+MKbjw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; d="scan'208";a="225224668"
-Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
- by orviesa008.jf.intel.com with ESMTP; 26 Mar 2026 22:22:14 -0700
-From: himanshu.girotra@intel.com
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.d.roper@intel.com, francois.dugast@intel.com,
- matthew.auld@intel.com
-Subject: [PATCH i-g-t] lib/intel_pat: add hardcoded PAT fallback for older
- kernels
-Date: Fri, 27 Mar 2026 10:52:12 +0530
-Message-ID: <20260327052212.27431-1-himanshu.girotra@intel.com>
-X-Mailer: git-send-email 2.50.1
+X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; d="scan'208";a="255712170"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.116])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2026 22:36:44 -0700
+Date: Fri, 27 Mar 2026 06:36:42 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 2/2] tests/xe_pat: Verify PTA PAT entries contain
+ expected values
+Message-ID: <54lfamjft2hmwikrxjxas23r5bz2rthvvedr3zyeojtnhl5jh5@ewnj4ca3spw7>
+References: <20260326113425.520545-4-zbigniew.kempczynski@intel.com>
+ <20260326113425.520545-6-zbigniew.kempczynski@intel.com>
+ <822d4aef-ea23-4c91-9e9f-bd3a52baa364@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <822d4aef-ea23-4c91-9e9f-bd3a52baa364@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,127 +72,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Himanshu Girotra <himanshu.girotra@intel.com>
+On Thu, Mar 26, 2026 at 03:52:38PM +0000, Matthew Auld wrote:
+> On 26/03/2026 11:34, Zbigniew Kempczyński wrote:
+> > Debugfs exposes PTA PAT entries for different GTs so verify they
+> > contain expected values. Verify they are correct also in reset
+> > and suspend scenarios.
+> 
+> Is this just validating the sw angle? i.e that the debugfs interface still
+> reports the correct thing?
 
-When IGT runs on kernels that lack the gt0/pat_sw_config debugfs entry
-(commit "drm/xe: expose PAT software config to debugfs"), the PAT cache
-is NULL and intel_get_pat_idx() hits a fatal assertion.  This breaks
-basic tests like xe_exec_basic on stock distro kernels (e.g. Ubuntu
-25.10).
+You're right, definitely preconfigured software table is not I want
+to compare.
 
-Add xe_pat_fallback() with hardcoded PAT indices matching the kernel's
-xe_pat_init_early() for platforms up to Crescent Island (xe3p XPC).
-When the debugfs is unavailable, the fallback provides correct values
-instead of crashing.  Newer platforms (xe3p LPG and beyond) are not
-covered because their kernel support arrived after the debugfs entry
-was already in place.
+> 
+> If this is hw angle then this might be tricky to validate, since the debugfs
+> dump is just the static array of indices, AFAIK. Not what is actually
+> programmed in each PAT register. For example, if we somehow forget to
+> reprogram the PTA registers after suspend/reset, I don't think this test
+> would catch this, right?
 
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
-Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
----
- lib/intel_pat.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 72 insertions(+), 4 deletions(-)
+Right, I roughly took a look and I thought xe2_dump() was used but I was
+wrong. Do you think adding pat_hw_config debugfs entry will be accepted?
+Definitely I want to compare with current registers, not predefined
+table.
 
-diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index b202a6241..71633b314 100644
---- a/lib/intel_pat.c
-+++ b/lib/intel_pat.c
-@@ -97,6 +97,62 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache)
- 	return parsed;
- }
- 
-+/*
-+ * Hardcoded PAT indices for Xe platforms, used as a fallback when the
-+ * kernel doesn't expose gt0/pat_sw_config in debugfs.
-+ *
-+ * Covers platforms up to Crescent Island (xe3p XPC) that have Xe driver
-+ * support in current stable kernels.  Anything newer must run a kernel
-+ * that provides the pat_sw_config debugfs entry.
-+ *
-+ * TODO: drop this fallback once stable kernels ship with pat_sw_config.
-+ */
-+static bool xe_pat_fallback(int fd, struct intel_pat_cache *pat)
-+{
-+	uint16_t dev_id = intel_get_drm_devid(fd);
-+
-+	pat->uc_comp = XE_PAT_IDX_INVALID;
-+
-+	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
-+		/* Xe3p XPC (GFX ver 35.11): no WT, no compression */
-+		pat->uc = 3;
-+		pat->wt = 3;   /* No WT on XPC; use UC */
-+		pat->wb = 2;
-+		pat->max_index = 31;
-+	} else if (intel_get_device_info(dev_id)->graphics_ver == 30 ||
-+		   intel_get_device_info(dev_id)->graphics_ver == 20) {
-+		/* Xe2 / Xe3: GFX ver 20 / 30 */
-+		pat->uc = 3;
-+		pat->wt = 15;
-+		pat->wb = 2;
-+		pat->uc_comp = 12;
-+		pat->max_index = 31;
-+
-+		/* Wa_16023588340: CLOS3 entries at end of table are unusable */
-+		if (intel_graphics_ver(dev_id) == IP_VER(20, 1))
-+			pat->max_index -= 4;
-+	} else if (IS_METEORLAKE(dev_id)) {
-+		pat->uc = 2;
-+		pat->wt = 1;
-+		pat->wb = 3;
-+		pat->max_index = 3;
-+	} else if (IS_PONTEVECCHIO(dev_id)) {
-+		pat->uc = 0;
-+		pat->wt = 2;
-+		pat->wb = 3;
-+		pat->max_index = 7;
-+	} else if (IS_DG2(dev_id) || intel_graphics_ver(dev_id) <= IP_VER(12, 10)) {
-+		pat->uc = 3;
-+		pat->wt = 2;
-+		pat->wb = 0;
-+		pat->max_index = 3;
-+	} else {
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
- {
- 	uint16_t dev_id;
-@@ -105,14 +161,26 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
- 	 * For Xe, use the PAT cache stored in struct xe_device.
- 	 * xe_device_get() populates the cache while still root; forked
- 	 * children that inherit the xe_device can use it post-drop_root().
-+	 *
-+	 * Fall back to hardcoded values when the kernel lacks the
-+	 * pat_sw_config debugfs. Platforms newer than Crescent Island
-+	 * must have the debugfs available.
- 	 */
- 	if (is_xe_device(fd)) {
- 		struct xe_device *xe_dev = xe_device_get(fd);
- 
--		igt_assert_f(xe_dev->pat_cache,
--			     "PAT sw_config not available -- "
--			     "debugfs not accessible (missing root or not mounted?)\n");
--		*pat = *xe_dev->pat_cache;
-+		if (xe_dev->pat_cache) {
-+			*pat = *xe_dev->pat_cache;
-+		} else if (xe_pat_fallback(fd, pat)) {
-+			igt_info("PAT sw_config debugfs not available, "
-+				 "using hardcoded fallback\n");
-+		} else {
-+			igt_assert_f(false,
-+				     "PAT sw_config not available and no "
-+				     "hardcoded fallback for this platform -- "
-+				     "kernel with 'drm/xe: expose PAT software "
-+				     "config to debugfs' required\n");
-+		}
- 		return;
- 	}
- 
--- 
-2.50.1
+--
+Zbigniew
 
+> 
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Matthew Auld <matthew.auld@intel.com>
+> > ---
+> >   tests/intel/xe_pat.c | 97 ++++++++++++++++++++++++++++++++++++++++++++
+> >   1 file changed, 97 insertions(+)
+> > 
+> > diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+> > index 2e2d7e01e7..7e5dc9f44f 100644
+> > --- a/tests/intel/xe_pat.c
+> > +++ b/tests/intel/xe_pat.c
+> > @@ -2115,6 +2115,93 @@ static void pt_caching_test(int xe, enum pt_test_opts opts)
+> >   	pt_destroy_objects(xe, objs2, num_objs);
+> >   }
+> > +enum pt_pta_test_opts {
+> > +	PT_PTA_CHECK = 1,
+> > +	PT_PTA_RESET_GT = 2,
+> > +	PT_PTA_SUSPEND = 3,
+> > +};
+> > +
+> > +#define XE2_PAT(no_promote, comp_en, l3clos, l3_policy, l4_policy, __coh_mode) \
+> > +		((no_promote << 10) | \
+> > +		(comp_en << 9) | \
+> > +		(l3clos << 6) | \
+> > +		(l3_policy << 4) | \
+> > +		(l4_policy << 2) | \
+> > +		(__coh_mode))
+> > +
+> > +
+> > +#define NUMGT 2
+> > +static uint32_t xe2_pta[NUMGT] = {
+> > +	XE2_PAT( 0, 0, 0, 0, 3, 0 ),
+> > +	XE2_PAT( 0, 0, 0, 0, 3, 0 )
+> > +};
+> > +
+> > +static uint32_t xe3p_pta[NUMGT] = {
+> > +	XE2_PAT( 0, 0, 0, 0, 0, 3 ),
+> > +	XE2_PAT( 0, 0, 0, 0, 0, 2 )
+> > +};
+> > +
+> > +static uint32_t xe3p_xpc_pta[NUMGT] = {
+> > +	XE2_PAT( 0, 0, 0, 0, 0, 0 ),
+> > +	XE2_PAT( 0, 0, 0, 0, 0, 0 )
+> > +};
+> > +
+> > +static uint32_t get_expected_pta(int fd, int gt)
+> > +{
+> > +	uint32_t devid = intel_get_drm_devid(fd);
+> > +	uint32_t ip_ver = intel_graphics_ver(devid);
+> > +	int ver = intel_gen(devid);
+> > +	uint32_t pta = 0;
+> > +
+> > +	igt_assert_lt(gt, NUMGT);
+> > +
+> > +	if (ip_ver == IP_VER(35, 11))
+> > +		pta = xe3p_xpc_pta[gt];
+> > +	else if (ver == 35 && !xe_has_vram(fd))
+> > +		pta = xe3p_pta[gt];
+> > +	else if ((ver == 30 || ver == 20) && xe_has_vram(fd))
+> > +		pta = xe2_pta[gt];
+> > +
+> > +	return pta;
+> > +}
+> > +
+> > +static void pt_check_pta_for_gts(int fd)
+> > +{
+> > +	struct intel_pat_cache pat_sw_config = {};
+> > +	int gt;
+> > +
+> > +	xe_for_each_gt(fd, gt) {
+> > +		xe_get_pat_sw_config(fd, &pat_sw_config, gt);
+> > +		igt_debug("gt: %d, pta: %x, pta expected: %x\n",
+> > +			  gt, pat_sw_config.pta_mode, get_expected_pta(fd, gt));
+> > +		igt_assert_eq(pat_sw_config.pta_mode, get_expected_pta(fd, gt));
+> > +	}
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: pt-pta-check
+> > + * Description: verify pta value is expected
+> > + *
+> > + * SUBTEST: pt-pta-reset-gt
+> > + * Description: verify pta value is expected before and after gt reset
+> > + *
+> > + * SUBTEST: pt-pta-suspend
+> > + * Description: verify pta value is expected before and after suspend/resume
+> > + */
+> > +static void pt_pta_check(int fd, enum pt_pta_test_opts opts)
+> > +{
+> > +	pt_check_pta_for_gts(fd);
+> > +
+> > +	if (opts == PT_PTA_RESET_GT) {
+> > +		xe_force_gt_reset_all(fd);
+> > +		sleep(1);
+> > +		pt_check_pta_for_gts(fd);
+> > +	} else if (opts == PT_PTA_SUSPEND) {
+> > +		igt_system_suspend_autoresume(SUSPEND_STATE_STANDBY, SUSPEND_TEST_NONE);
+> > +		pt_check_pta_for_gts(fd);
+> > +	}
+> > +}
+> > +
+> >   static int opt_handler(int opt, int opt_index, void *data)
+> >   {
+> >   	switch (opt) {
+> > @@ -2253,6 +2340,16 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
+> >   	igt_subtest("pt-caching-update-pat-and-pte")
+> >   		pt_caching_test(fd, PT_UPDATE_PAT_AND_PTE);
+> > +	igt_subtest("pt-pta-check")
+> > +		pt_pta_check(fd, PT_PTA_CHECK);
+> > +
+> > +	igt_subtest("pt-pta-reset-gt")
+> > +		pt_pta_check(fd, PT_PTA_RESET_GT);
+> > +
+> > +	igt_subtest("pt-pta-suspend")
+> > +		pt_pta_check(fd, PT_PTA_SUSPEND);
+> > +
+> > +
+> >   	igt_fixture()
+> >   		drm_close_driver(fd);
+> >   }
+> 
