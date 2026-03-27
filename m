@@ -4,66 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE8B10ED655
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 10:41:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0AFA10ED64A
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Mar 2026 11:37:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE4CB10EC8D;
-	Fri, 27 Mar 2026 10:41:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9A4A510EDB7;
+	Fri, 27 Mar 2026 11:37:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jfefXutd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OuxSGcBS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97A2A10EC8D
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2026 10:41:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BBAA10EDC4
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2026 11:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774608061; x=1806144061;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=owpw7IQfjBogsvgrVGpLMFYwn93+y2PPVYs1vW2Dc30=;
- b=jfefXutdbE8S5sv1SYutqrZFSotsiYfrAsIosyoMVLbe4tjgT+u6a/JU
- xb6a08MbWlFIOIS5+Hr2cYyMPBhNIUIHMDXtx61N5wcknkfuGBgtd/eZG
- 5cpNyHr4Ip2LDBhaL9X880WWo9pWVFLpeB+aV9Ly819KUfcyn9x00MF8q
- ASB8s7GMxPcEhOyHw6FcgxXkoPqQWuOLttUFTWwP80pwmurXBj920cPE6
- Jn2xQwPW0p8dgNtR73IyoTZTGLJKNCpJhHzwFchyQuutWEnE/mzA2TazU
- zRNMcBxCbEjVh2SvMhYqu+kxCY/P7kxg9jRAkK6aKHBMbMpOKjSeMiLG5 Q==;
-X-CSE-ConnectionGUID: 4iQEtgy9RvqL2AmFiY/SIg==
-X-CSE-MsgGUID: LqrQVZgyRimAawKFdgD1BA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="86755400"
-X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; d="scan'208";a="86755400"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2026 03:41:00 -0700
-X-CSE-ConnectionGUID: wLK7fowsQVyPSFUJmQ/CvA==
-X-CSE-MsgGUID: CEIsAR9MTriUjpPweO08Jw==
+ t=1774611440; x=1806147440;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=GLHlCzBeOgEMken+hXX2LIrGL+7AFQ5aDmpkWSzv+GQ=;
+ b=OuxSGcBSustKWvm+U2vMnBImKFC/wCGXqr5zbxtf9hqh7I83etTR8DIQ
+ dIWNfsxXmT89FF/THaA6OZ6wzblgaEbIIGxd0Wbn76LDnh7mkHnmrA26G
+ p7WCx+OP2h8W8XrB8AVCWtp/BeoC9lXfcIwI2fObmpo1rw6SGmy+9GJKt
+ oUrWG60PLv6Y1IKKqNlxiGU7hluo7MSRHHXmqS5P451yzQgWIMb24kLGx
+ FRu72i4cyXG2LUfhKAvdyvRlzu4adQbw4Uo4+LWnA+DgP0eSoj6idoLZq
+ qoZPA8QM0IpZ4wYNuvP1UE93cd5u0ME1yh6jQBQISlEWombf+HnTLnjdM g==;
+X-CSE-ConnectionGUID: XstsZ5ZaQXGF+l6jw2nDnw==
+X-CSE-MsgGUID: uaev/dw6RCeDo2lZRexVcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="74713665"
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; d="scan'208";a="74713665"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2026 04:37:20 -0700
+X-CSE-ConnectionGUID: sYcGD+tuRmiLEWkrwCBl+g==
+X-CSE-MsgGUID: VY/+Xq5SRICTPadKn61L3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; d="scan'208";a="225530558"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.226])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2026 03:40:56 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Jason-JH Lin <jason-jh.lin@mediatek.com>, igt-dev@lists.freedesktop.org,
- Karthik B S <karthik.b.s@intel.com>, Swati Sharma
- <swati2.sharma@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@gmail.com>, Fei Shao <fshao@chromium.org>
-Cc: Jason-JH Lin <jason-jh.lin@mediatek.com>, Paul-PL Chen
- <paul-pl.chen@mediatek.com>, Nancy Lin <nancy.lin@mediatek.com>, Singo
- Chang <singo.chang@mediatek.com>, Gil Dekel <gildekel@google.com>, Yacoub
- <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com
-Subject: Re: [PATCH i-g-t v4] tests/kms_content_protection: Optimize
- framebuffer management
-In-Reply-To: <20260327035405.3151190-1-jason-jh.lin@mediatek.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260327035405.3151190-1-jason-jh.lin@mediatek.com>
-Date: Fri, 27 Mar 2026 12:40:51 +0200
-Message-ID: <9500f111b76bdfd7dfe77dfb5d70b7d525cfa0f5@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; d="scan'208";a="221962691"
+Received: from tejasupa-desk.iind.intel.com (HELO tejasupa-desk)
+ ([10.190.239.37])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2026 04:37:18 -0700
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: matthew.auld@intel.com, matthew.brost@intel.com,
+ thomas.hellstrom@linux.intel.com, himal.prasad.ghimiray@intel.com,
+ Tejas Upadhyay <tejas.upadhyay@intel.com>
+Subject: [PATCH i-g-t] [DO_NOT_REVIEW] tests/xe_mempage_offline: Add Tests for
+ memory page offline feature
+Date: Fri, 27 Mar 2026 17:06:48 +0530
+Message-ID: <20260327113651.2677665-2-tejas.upadhyay@intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,96 +70,272 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 27 Mar 2026, Jason-JH Lin <jason-jh.lin@mediatek.com> wrote:
-> Refactor framebuffer management to improve reusability:
-> - Create framebuffers once per CRTC at test initialization via
->   create_fbs() and reuse them across all subtests
-> - Centralize cleanup in remove_fbs() called at test fixture end
-> - Use per-CRTC framebuffer array (data.fbs[IGT_MAX_PIPES]) indexed
->   by crtc->crtc_index instead of single global framebuffers
->
-> Each framebuffer is created with the actual resolution of the first
-> output that can connect to that CRTC, avoiding buffer size mismatch
-> issues (e.g., 3504x2190 panel incorrectly using 3840x2160 buffer).
->
-> For MST tests, multiple outputs share bandwidth and may require mode
-> override to fit within bandwidth constraints. When mode override
-> changes the resolution, properly detach planes before removing the
-> existing framebuffers, then recreate them with the new dimensions.
+Add below tests for memory page offlining feature on CRI.
+./build/tests/xe_mempage_offline --l
+unallocated
+user-allocated
+user-ggtt-allocated
+user-ppgtt-allocated
+critical-allocated
+reserved
 
-Feels like there's a bunch of changes grouped together in one commit
-that should probably be split up.
+Note: These tests are going to be fit in RASs IGT tests later, so marked as do not review.
+This is more towards supporting reviews and general testing of feature on CRI.
 
-For example, passing the crtc around is a change. Adding the fb cleanup
-is another. Adding multiple fbs is another.
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+---
+ tests/intel/xe_mempage_offline.c | 229 +++++++++++++++++++++++++++++++
+ tests/meson.build                |   1 +
+ 2 files changed, 230 insertions(+)
+ create mode 100644 tests/intel/xe_mempage_offline.c
 
-The point is, if a bisected regression landed here, would you be able to
-immediately tell what the problem is?
-
-> Suggested-by: Karthik B.S <karthik.b.s@intel.com>
-> Reviewed-by: Fei Shao <fshao@chromium.org>
-> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-> ---
->  tests/kms_content_protection.c | 190 ++++++++++++++++++++++++---------
->  1 file changed, 142 insertions(+), 48 deletions(-)
->
-> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> index caf3d7a56ae4..8b131277ffea 100644
-> --- a/tests/kms_content_protection.c
-> +++ b/tests/kms_content_protection.c
-
-> @@ -258,7 +263,15 @@ commit_display_and_wait_for_flip(enum igt_commit_style commit_style)
->  	}
->  }
->  
-> -static void modeset_with_fb(igt_output_t *output,
-> +static igt_crtc_t *output_get_driving_crtc_assert(igt_output_t *output)
-> +{
-> +	igt_crtc_t *crtc = igt_output_get_driving_crtc(output);
-> +
-> +	igt_assert(crtc);
-> +	return crtc;
-> +}
-
-I'm personally not fond of abstracting/hiding asserts like this. Do you
-even need it really? It's a test logic issue if you hit this.
-
-> +
-> +static void modeset_with_fb(igt_output_t *output, igt_crtc_t *crtc,
->  			    enum igt_commit_style commit_style)
->  {
->  	igt_display_t *display = &data.display;
-> @@ -268,18 +281,19 @@ static void modeset_with_fb(igt_output_t *output,
-
-
-> @@ -1180,9 +1264,18 @@ static const struct {
->  int igt_main()
->  {
->  	igt_fixture() {
-> +		igt_crtc_t *crtc;
-> +
->  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->  		igt_display_require(&data.display, data.drm_fd);
->  		igt_display_require_output(&data.display);
-> +
-> +		/* Ensure all CRTCs can be indexed within our framebuffer array */
-> +		for_each_crtc(&data.display, crtc)
-> +			igt_assert_f(crtc->crtc_index < IGT_MAX_PIPES,
-> +				     "crtc_index %u exceeds IGT_MAX_PIPES %u\n",
-> +				     crtc->crtc_index, IGT_MAX_PIPES);
-
-This is handled by igt_display_require(), and is completely unnecessary
-here.
-
-BR,
-Jani.
-
-
-> +
->  		create_fbs();
->  	}
->  
-> @@ -1241,6 +1334,7 @@ int igt_main()
-
+diff --git a/tests/intel/xe_mempage_offline.c b/tests/intel/xe_mempage_offline.c
+new file mode 100644
+index 000000000..4e7a6106e
+--- /dev/null
++++ b/tests/intel/xe_mempage_offline.c
+@@ -0,0 +1,229 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
++
++/**
++ * TEST: cause specific category phy address error and check if it got offlined
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: driver
++ * Functionality: memory page offline
++ * Test category: functionality test
++ */
++
++#include <limits.h>
++#include <dirent.h>
++
++#include "igt.h"
++#include "igt_device.h"
++#include "igt_kmod.h"
++#include "igt_sriov_device.h"
++#include "igt_syncobj.h"
++#include "igt_sysfs.h"
++
++#include "xe_drm.h"
++#include "xe/xe_gt.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_spin.h"
++
++/**
++ * SUBTEST: unallocated
++ * Description: Test if device is able to offline unallocated phy address error
++ */
++/**
++ * SUBTEST: user-allocated
++ * Description: Test if device is able to offline user-allocated phy address error
++ */
++/**
++ * SUBTEST: user-ggtt-allocated
++ * Description: Test if device is able to offline ggtt phy address error
++ */
++/**
++ * SUBTEST: user-ppgtt-allocated
++ * Description: Test if device is able to offline ppgtt phy address error
++ */
++/**
++ * SUBTEST: critical-allocated
++ * Description: Test if device is able to offline critical-allocated phy address error
++ */
++/**
++ * SUBTEST: reserved
++ * Description: Test if device is able to handle stolen phy address error
++ */
++	static void
++create_noncritical_bo_with_exec(int fd, uint32_t *bo, size_t bo_size, uint32_t *vm,
++				uint32_t *exec_queue, struct drm_xe_engine_class_instance *inst,
++				uint64_t addr, struct drm_xe_sync *sync, uint32_t placement,
++				struct drm_xe_exec *exec, uint32_t flags)
++{
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++	} *data;
++	uint64_t batch_offset;
++	uint64_t batch_addr;
++	uint64_t sdi_offset;
++	uint64_t sdi_addr;
++	int b = 0;
++
++	*vm = xe_vm_create(fd, 0, 0);
++
++	igt_require_f(placement, "Device doesn't support such memory region\n");
++
++	*bo = xe_bo_create(fd, 0, bo_size, placement, flags);
++	data = xe_bo_map(fd, *bo, bo_size);
++	xe_vm_bind_async(fd, *vm, 0, *bo, 0, addr, bo_size, sync, 1);
++	memset(data, 0, bo_size);
++
++	*exec_queue = xe_exec_queue_create(fd, *vm, inst, 0);
++	batch_offset = (char *)&data[0].batch - (char *)data;
++	batch_addr = addr + batch_offset;
++	sdi_offset = (char *)&data[0].data - (char *)data;
++	sdi_addr = addr + sdi_offset;
++
++	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++	data[0].batch[b++] = sdi_addr;
++	data[0].batch[b++] = sdi_addr >> 32;
++	data[0].batch[b++] = 0xc0ffee;
++	data[0].batch[b++] = MI_BATCH_BUFFER_END;
++
++	sync->flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++
++	exec->exec_queue_id = *exec_queue;
++	exec->address = batch_addr;
++}
++
++	static void
++create_noncritical_user_bo(int fd, uint32_t *bo, size_t bo_size, uint32_t placement,
++			   void *map, uint32_t flags)
++{
++
++	igt_require_f(placement, "Device doesn't support such memory region\n");
++
++	*bo = xe_bo_create(fd, 0, bo_size, placement, flags);
++
++	map = xe_bo_map(fd, *bo, bo_size);
++	strcpy(map, "Write some data to the BO!");
++}
++
++igt_main
++{
++	int fd;
++	int dir, ret;
++#define MODE_SIZE	2
++	char mode[MODE_SIZE];
++	uint16_t devid;
++	enum mempage_offline_mode {
++		MEMPAGE_OFFLINE_UNALLOCATED = 0,
++		MEMPAGE_OFFLINE_USER_ALLOCATED = 1,
++		MEMPAGE_OFFLINE_KERNEL_USER_GGTT_ALLOCATED = 2,
++		MEMPAGE_OFFLINE_KERNEL_USER_PPGTT_ALLOCATED = 3,
++		MEMPAGE_OFFLINE_KERNEL_CRITICAL_ALLOCATED = 4,
++		MEMPAGE_OFFLINE_RESERVED = 5,
++	};
++
++	igt_fixture {
++
++		fd = drm_open_driver(DRIVER_XE);
++		devid = intel_get_drm_devid(fd);
++		igt_require(intel_get_device_info(devid)->is_crescentisland);
++		igt_require(igt_debugfs_exists(fd, "invalid_addr_vram0", O_RDWR));
++		dir = igt_debugfs_dir(fd);
++	}
++
++	igt_subtest("unallocated") {
++		snprintf(mode, sizeof(mode), "%d", MEMPAGE_OFFLINE_UNALLOCATED);
++		ret = igt_sysfs_write(dir, "invalid_addr_vram0", mode, sizeof(mode));
++		igt_assert_f(ret == MODE_SIZE, "Test failed with err:%d\n", ret);
++	}
++	igt_subtest("user-allocated") {
++		uint32_t bo;
++		void *map;
++		size_t bo_size = xe_get_default_alignment(fd);
++		create_noncritical_user_bo(fd, &bo, bo_size, vram_memory(fd, 0), map,
++					   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		snprintf(mode, sizeof(mode), "%d", MEMPAGE_OFFLINE_USER_ALLOCATED);
++		ret = igt_sysfs_write(dir, "invalid_addr_vram0", mode, sizeof(mode));
++		igt_assert_f(ret == MODE_SIZE, "Test failed with err:%d\n", ret);
++		munmap(map, bo_size);
++		gem_close(fd, bo);
++	}
++	igt_subtest("user-ggtt-allocated") {
++		uint32_t bo, vm, exec_queue;
++		struct drm_xe_sync sync = {
++			.handle = syncobj_create(fd, 0),
++			.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		};
++
++		struct drm_xe_exec exec = {
++			.num_batch_buffer = 1,
++			.num_syncs = 1,
++			.syncs = to_user_pointer(&sync),
++		};
++
++		struct drm_xe_engine_class_instance inst = {
++			.engine_class = DRM_XE_ENGINE_CLASS_RENDER,
++		};
++		uint64_t addr = 0x1a0000;
++		size_t bo_size = xe_get_default_alignment(fd);
++		create_noncritical_bo_with_exec(fd, &bo, bo_size, &vm, &exec_queue, &inst,
++						addr, &sync, vram_memory(fd, 0), &exec,
++						DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		snprintf(mode, sizeof(mode), "%d", MEMPAGE_OFFLINE_KERNEL_USER_GGTT_ALLOCATED);
++		igt_assert_eq(__xe_exec(fd, &exec), 0);
++		ret = igt_sysfs_write(dir, "invalid_addr_vram0", mode, sizeof(mode));
++		igt_assert_neq(__xe_exec(fd, &exec), 0);
++		xe_exec_queue_destroy(fd, exec_queue);
++		xe_vm_destroy(fd, vm);
++		gem_close(fd, bo);
++		igt_assert_f(ret == MODE_SIZE, "Test failed with err:%d\n", ret);
++	}
++	igt_subtest("user-ppgtt-allocated") {
++		uint32_t bo, vm, exec_queue;
++		struct drm_xe_sync sync = {
++			.handle = syncobj_create(fd, 0),
++			.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		};
++		struct drm_xe_exec exec = {
++			.num_batch_buffer = 1,
++			.num_syncs = 1,
++			.syncs = to_user_pointer(&sync),
++		};
++
++		struct drm_xe_engine_class_instance inst = {
++			.engine_class = DRM_XE_ENGINE_CLASS_RENDER,
++		};
++		uint64_t addr = 0x1a0000;
++		size_t bo_size = xe_get_default_alignment(fd);
++		create_noncritical_bo_with_exec(fd, &bo, bo_size, &vm, &exec_queue, &inst,
++						addr, &sync, vram_memory(fd, 0), &exec,
++						DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		igt_assert_eq(__xe_exec(fd, &exec), 0);
++		snprintf(mode, sizeof(mode), "%d", MEMPAGE_OFFLINE_KERNEL_USER_PPGTT_ALLOCATED);
++		ret = igt_sysfs_write(dir, "invalid_addr_vram0", mode, sizeof(mode));
++		igt_assert_neq(__xe_exec(fd, &exec), 0);
++		xe_exec_queue_destroy(fd, exec_queue);
++		xe_vm_destroy(fd, vm);
++		gem_close(fd, bo);
++		igt_assert_f(ret == MODE_SIZE, "Test failed with err:%d\n", ret);
++	}
++	igt_subtest("critical-allocated") {
++		snprintf(mode, sizeof(mode), "%d", MEMPAGE_OFFLINE_KERNEL_CRITICAL_ALLOCATED);
++		ret = igt_sysfs_write(dir, "invalid_addr_vram0", mode, sizeof(mode));
++		igt_assert_f(ret == MODE_SIZE, "Test failed with err:%d\n", ret);
++	}
++	igt_subtest("reserved") {
++		snprintf(mode, sizeof(mode), "%d", MEMPAGE_OFFLINE_RESERVED);
++		ret = igt_sysfs_write(dir, "invalid_addr_vram0", mode, sizeof(mode));
++		igt_assert_f(ret == MODE_SIZE, "Test failed with err:%d\n", ret);
++	}
++	igt_fixture {
++		close(dir);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index cecb4a8ae..f38f5a88b 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -169,6 +169,7 @@ intel_i915_progs = [
+ 	'gem_lut_handle',
+ 	'gem_madvise',
+ 	'gem_media_fill',
++	'xe_mempage_offline',
+ 	'gem_media_vme',
+ 	'gem_mmap',
+ 	'gem_mmap_gtt',
 -- 
-Jani Nikula, Intel
+2.52.0
+
