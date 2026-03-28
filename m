@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C04EA10F3DC2
-	for <igt-dev@archiver.kernel.org>; Sat, 28 Mar 2026 01:01:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC63C10F3DC4
+	for <igt-dev@archiver.kernel.org>; Sat, 28 Mar 2026 01:15:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6811A10E092;
-	Sat, 28 Mar 2026 01:01:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B1B610EFB0;
+	Sat, 28 Mar 2026 01:15:51 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13FD410E092;
- Sat, 28 Mar 2026 01:00:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A75610E11B;
+ Sat, 28 Mar 2026 01:15:44 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7136133059141067645=="
+ boundary="===============1705912960393122915=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5B1/4?=
- =?utf-8?q?=5D_tests/amdgpu=3A_add_field-level_negative_ioctl_fuzzing_tests?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Foa=3A_Exte?=
+ =?utf-8?q?nd_enable-disable_to_read_after_disabling_stream_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Sat, 28 Mar 2026 01:00:59 -0000
-Message-ID: <177465965905.409209.1962911833128980573@a3b018990fe9>
+Date: Sat, 28 Mar 2026 01:15:44 -0000
+Message-ID: <177466054421.409154.12047133781674117@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260327210546.67038-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20260327210546.67038-1-vitaly.prosyak@amd.com>
+References: <20260317223910.3539034-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20260317223910.3539034-1-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7136133059141067645==
+--===============1705912960393122915==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [1/4] tests/amdgpu: add field-level negative ioctl fuzzing tests
-URL   : https://patchwork.freedesktop.org/series/164022/
+Series: tests/intel/xe_oa: Extend enable-disable to read after disabling stream (rev2)
+URL   : https://patchwork.freedesktop.org/series/163414/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8834_BAT -> XEIGTPW_14877_BAT
+CI Bug Log - changes from XEIGT_8834_BAT -> XEIGTPW_14878_BAT
 ====================================================
 
 Summary
@@ -81,19 +81,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8834 -> IGTPW_14877
+  * IGT: IGT_8834 -> IGTPW_14878
   * Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -> xe-4814-457f49574f26444c7089f03d86b8b5993d05ff60
 
-  IGTPW_14877: 1b00d40be7274acf642eefcafea98595e21091a5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_14878: 14878
   IGT_8834: 8834
   xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf
   xe-4814-457f49574f26444c7089f03d86b8b5993d05ff60: 457f49574f26444c7089f03d86b8b5993d05ff60
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14877/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14878/index.html
 
---===============7136133059141067645==
+--===============1705912960393122915==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,16 +113,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [1/4] tests/amdgpu: add field-level negative ioctl fuzzing tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164022/">https://patchwork.freedesktop.org/series/164022/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_oa: Extend enable-disable to read after disabling stream (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163414/">https://patchwork.freedesktop.org/series/163414/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14877/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14877/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14878/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14878/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8834_BAT -&gt; XEIGTPW_14877_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8834_BAT -&gt; XEIGTPW_14878_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -132,10 +132,10 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8834 -&gt; IGTPW_14877</li>
+<li>IGT: IGT_8834 -&gt; IGTPW_14878</li>
 <li>Linux: xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf -&gt; xe-4814-457f49574f26444c7089f03d86b8b5993d05ff60</li>
 </ul>
-<p>IGTPW_14877: 1b00d40be7274acf642eefcafea98595e21091a5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_14878: 14878<br />
   IGT_8834: 8834<br />
   xe-4793-2ccc868c40a9048ecf287b7bb002d73b5d25c7bf: 2ccc868c40a9048ecf287b7bb002d73b5d25c7bf<br />
   xe-4814-457f49574f26444c7089f03d86b8b5993d05ff60: 457f49574f26444c7089f03d86b8b5993d05ff60</p>
@@ -143,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============7136133059141067645==--
+--===============1705912960393122915==--
