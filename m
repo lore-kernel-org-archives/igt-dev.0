@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 661BC1061B1E
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 20:15:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94621061B18
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 21:56:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 19ADA10E7BE;
-	Mon, 30 Mar 2026 20:15:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7EAD510E02B;
+	Mon, 30 Mar 2026 21:56:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BxUXr2pD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lDkWdo+4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F35010E7BE
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 20:15:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F94010E02B
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 21:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774901701; x=1806437701;
+ t=1774907779; x=1806443779;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=XQGEHRRgRcxni13XsvZ/lz9cbgRlPbzH16y9B1p6JDM=;
- b=BxUXr2pDU5QAHkaxLJvIOiy571sFwWlbQ4e/fCjQ5LKEKkbvUZPbjZ+w
- 1ye8HAmXqOg/A/B38v6Ua2ZIW0RNJa3mWyWLRwJvNWyV2NRDcD2Yoqx34
- QvgZC+h2R5/s4qrzo0n+W9ZkKkKY0OOZua6mVlg7X1rZVyp5oo7SfIIov
- NVI3x1+yJyJVKhUWTiAU8ArbnnDy86fxKs9idldRiMY2tPZpD6WZkT2/w
- 9EpYS1vVmZGOutP015TaRyWYhvUKXykIzQUr3j2Z+5huxPHH/xQGdGurZ
- xGjsrC9PpSCMF3SLoyrIt5R5yRealm4YbFlX0ovEVahSgtf3g/y2kB9Fl w==;
-X-CSE-ConnectionGUID: am0wgP35R8e7LMO5MnQJcQ==
-X-CSE-MsgGUID: Ri8gPGpKRgSJvZrjxEM/JA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="76096430"
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; d="scan'208";a="76096430"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 13:15:01 -0700
-X-CSE-ConnectionGUID: rCwae7YpQPm4w9/lZ5OZKQ==
-X-CSE-MsgGUID: +UiW+DVeQFaKszIP2E3POA==
+ bh=gNTo7cdts2xFpBDYQ11ZMAoIN1LtupWV0VaYwr5NTWo=;
+ b=lDkWdo+4SqOCpA/QVviZl3QXqrhG/+R/GWulJX4tfwRgl8bS3thEgVrr
+ bz8PDoAzh/Ds7wHJ58vvGVyH/Ccu22nhbO4b2wqBv567l5AHaYaHwKDNC
+ I7tH8FLAhZnxAoMoceZNd4qpkwDYnZWUAHdAM7zAbQtaF11h44jhHaQi4
+ V2hX/ZleuKEsr+FxzUP38jEGw7vQ1/PvKAJsiJMrfKuuMHUQUfjq+TNbl
+ jpo5WcDKDCGpMU4dZc1sNLWPz4Uj2w2yYul9U9zlDQR5XL+gqXL88ao/F
+ aS4/B9ergSve9BzufeV4+YfTsbcqf2G4b8Hym+2M4NllQBoCVNQkMJe0w w==;
+X-CSE-ConnectionGUID: JMsdBujcSU+dAIU/hMT8cA==
+X-CSE-MsgGUID: /3hUlBMBQ7CkZthOxwsGpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="79812726"
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; d="scan'208";a="79812726"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Mar 2026 14:56:18 -0700
+X-CSE-ConnectionGUID: i4Te4CezRIWQIxEn9If0jw==
+X-CSE-MsgGUID: TlwAU6YOQFKhV69WwEC8GA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; d="scan'208";a="231082645"
-Received: from btannenx-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
- ([10.125.41.43])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 13:15:00 -0700
-Date: Mon, 30 Mar 2026 13:14:59 -0700
-Message-ID: <87zf3pxef0.wl-ashutosh.dixit@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; d="scan'208";a="221306779"
+Received: from unknown (HELO adixit-MOBL3.intel.com) ([10.241.243.110])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Mar 2026 14:56:19 -0700
+Date: Mon, 30 Mar 2026 14:56:18 -0700
+Message-ID: <87y0j9x9q5.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t] tests/intel/xe_oa: Extend enable-disable to read
- after disabling stream
-In-Reply-To: <acq54YO/p+vH/cY3@soc-5CG1426VCC.clients.intel.com>
-References: <20260317223910.3539034-1-ashutosh.dixit@intel.com>	<acq54YO/p+vH/cY3@soc-5CG1426VCC.clients.intel.com>
+Cc: <igt-dev@lists.freedesktop.org>, <jose.souza@intel.com>,
+ <sushma.venkatesh.reddy@intel.com>
+Subject: Re: [PATCH i-g-t 1/2] lib/xe/oa: Add CRI metrics XML
+In-Reply-To: <acrU97JYHHwRvOXh@soc-5CG1426VCC.clients.intel.com>
+References: <20260224004151.1836090-1-ashutosh.dixit@intel.com>	<20260224004151.1836090-2-ashutosh.dixit@intel.com>	<acrU97JYHHwRvOXh@soc-5CG1426VCC.clients.intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,63 +70,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 30 Mar 2026 10:58:57 -0700, Umesh Nerlige Ramappa wrote:
->
-> On Tue, Mar 17, 2026 at 03:39:10PM -0700, Ashutosh Dixit wrote:
-> > Extend enable-disable subtest to validate the new feature of reading after
-> > disabling OA stream.
-> >
-> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->
-> LGTM,
->
-> Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+On Mon, 30 Mar 2026 12:54:31 -0700, Umesh Nerlige Ramappa wrote:
 >
 
-Thanks Umesh, but if you see Xe.CI.FULL results, the test actually
-fails. See below.
+Hi Umesh,
 
-> > ---
-> > tests/intel/xe_oa.c | 25 +++++++++++++++++++++++++
-> > 1 file changed, 25 insertions(+)
-> >
-> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> > index 387f29535e..6a602a014c 100644
-> > --- a/tests/intel/xe_oa.c
-> > +++ b/tests/intel/xe_oa.c
-> > @@ -2774,6 +2774,31 @@ test_enable_disable(const struct drm_xe_oa_unit *oau)
-> >	get_stream_status(stream_fd);
-> >	igt_assert_eq(ret, sizeof(buf));
-> >
-> > +	/*
-> > +	 * Wait again for number of reports specified in
-> > +	 * DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS
-> > +	 */
-> > +	pollfd.fd = stream_fd;
-> > +	pollfd.events = POLLIN;
-> > +	poll(&pollfd, 1, -1);
-> > +	igt_assert(pollfd.revents & POLLIN);
-> > +
-> > +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
-> > +
-> > +	/* Ensure num_reports can be read even with disabled stream */
-> > +	while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 && errno == EINTR)
-> > +		;
-> > +	get_stream_status(stream_fd);
-> > +	igt_assert_eq(ret, sizeof(buf));
+> > diff --git a/lib/xe/oa-configs/oa-metricset-codegen.py b/lib/xe/oa-configs/oa-metricset-codegen.py
+> > index 922fae58cb..c5c7a2c8d4 100644
+> > --- a/lib/xe/oa-configs/oa-metricset-codegen.py
+> > +++ b/lib/xe/oa-configs/oa-metricset-codegen.py
+> > @@ -138,9 +138,9 @@ def generate_metric_sets(args, gen):
+> >                     metric_set->c_offset = metric_set->b_offset + 8;
+> >                     metric_set->perfcnt_offset = metric_set->c_offset + 8;
+> >                 """))
+> > -        elif gen.chipset == "lnl" or gen.chipset == "bmg" or gen.chipset == "ptl":
+> > +        elif gen.chipset == "lnl" or gen.chipset == "bmg" or gen.chipset == "ptl" or gen.chipset == "cri":
+> >             # See intel_xe_perf_accumulate_reports for the offsets
+> > -            if set.oa_format == "128B_MPEC8_NOA16":
+> > +            if set.oa_format == "128B_MPEC8_NOA16" or set.oa_format == "128B_MERT_PEC8":
+>
+> Since you are handling multiple platforms with this if block, I would
+> change it to:
+>
+> if set.oa_format == "128B_MPEC8_NOA16" or
+>   (set.oa_format == "128B_MERT_PEC8" and gen.chipset == "cri"):
+>
+> Rest looks good.
+>
+> >                 c(textwrap.dedent("""\
+> >                     metric_set->perf_oa_format = XE_OAM_FORMAT_MPEC8u32_B8_C8;
 
-The failure is here, where we sometimes see 1 report instead of 5
-(wait_num_reports is 5). I finally figured out how it could happen.
 
-Let's say 6 reports were available in the *previous* read (before disabling
-the stream). Now if we read with a buffer size of 5 reports, in the kernel
-pollin would remain set. So when we read the next time we only will read 1
-report.
+I think this is fine as is. First, MERT may be present on other platforms
+too (other than cri). So I am thinking the format is specific to MERT,
+rather than to any particular platform. So we just say here that both
+"128B_MERT_PEC8" and "128B_MPEC8_NOA16" formats in the XML's get mapped
+into XE_OAM_FORMAT_MPEC8u32_B8_C8 in the code. So the formats themselves
+are not platform specific. So I would like this to be format related,
+rather than platform related.
 
-To get around this I have changed the above assert to just 'igt_assert(ret >
-0)' basically:
-
-	igt_assert_lt(0, ret);
+So I think it is ok as is. Let me know what you think.
 
 Thanks.
 --
@@ -135,18 +117,32 @@ Ashutosh
 
 
 
-> > +
-> > +	/* In non-blocking mode read till we see a -EAGAIN, signifying all available data is read */
-> > +	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
-> > +	while ((ret = read(stream_fd, buf, sizeof(buf))) > 0 ||
-> > +	       (ret == -1 && (errno == EINTR || errno == EIO)))
-> > +		;
-> > +	igt_assert_eq(ret, -1);
-> > +	igt_assert_eq(errno, EAGAIN);
-> > +
-> >	__perf_close(stream_fd);
-> > }
+
 > >
+> > diff --git a/lib/xe/oa-configs/oa_guid_registry.py b/lib/xe/oa-configs/oa_guid_registry.py
+> > index 55c4968161..75939cfa2b 100644
+> > --- a/lib/xe/oa-configs/oa_guid_registry.py
+> > +++ b/lib/xe/oa-configs/oa_guid_registry.py
+> > @@ -104,6 +104,7 @@ class Registry:
+> >                            'LNL',
+> >                            'BMG',
+> >                            'PTL',
+> > +                           'CRI',
+> >                           )
+> >         if name in known_chipsets:
+> >             return name
+> > diff --git a/lib/xe/oa-configs/update-guids.py b/lib/xe/oa-configs/update-guids.py
+> > index c3f5a37c6e..d55958a0c0 100755
+> > --- a/lib/xe/oa-configs/update-guids.py
+> > +++ b/lib/xe/oa-configs/update-guids.py
+> > @@ -168,6 +168,7 @@ chipsets = [ 'hsw',
+> >              'lnl',
+> >              'bmg',
+> >              'ptl',
+> > +             'cri',
+> > ]
+> >
+> > for chipset in chipsets:
 > > --
 > > 2.48.1
 > >
