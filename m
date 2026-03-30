@@ -4,67 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D800A10D14AC
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 13:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9E1B10D14AC
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 13:22:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8432510E795;
-	Mon, 30 Mar 2026 13:17:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6CC9C10E7A3;
+	Mon, 30 Mar 2026 13:22:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DPPfSqII";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Dkmi1mNl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF74710E795
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 13:17:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 364E410E7A3
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 13:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774876669; x=1806412669;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=0t4YDFsYRZjFy84TjD3TYSwrEO4adfSNraX9Lt+ehgo=;
- b=DPPfSqIIzEmhb41BkhKRkcUCKwAfSYQFg+U6MrUopDPTHiYqSu8uoAZE
- lYinppAMEbj45XfKLfUAXn3hFWhPsExB66C0HV2SENcd+40+pcX+W79do
- tzJ3Wyfez9qrB+y634oTl1SvSk6HkXvvoDeH5YfqnTS/W0MsAqMZGE+Z0
- gWk+lJkY9QiDZFTeP8aXHKcF0/zhygiHEfqIdw2sAovsKwpFNjyRn5MVm
- /5MKbFdS2B+j1jBea6f63g2uKVI0G04qPHPERvwHNhBBjcFRCV+N5aA2J
- yqAJGfiWGrWzJ1z1eRPR3owmIc7ZMWUd6Aot/OKlaUpTFJlMhqY3VKsSP A==;
-X-CSE-ConnectionGUID: aWPQRQvaRleMSzJWh/l1vg==
-X-CSE-MsgGUID: hrC/EsVNR4u3CItAsB6LQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="87338230"
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; d="scan'208";a="87338230"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 06:17:49 -0700
-X-CSE-ConnectionGUID: M/6IofY/QOq2IDvyttraTg==
-X-CSE-MsgGUID: yBQOSim1ScyYznRjcZY0yg==
+ t=1774876947; x=1806412947;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=JXgj8j2sazG59IYuRQIgHRvoNS1aj8NOwi6QACi/Q8g=;
+ b=Dkmi1mNlgThY8vEbcyAYCOxLZqDAgg2Ty4+61bALxyJflt4+7dbdmbN4
+ BCGS8cnaLN+JBqUSpKSsbtTBgy6LJGgf7/XPWKP+ZsIY29n96aoOvfWmF
+ YyoYui/CWlRO7WRAOd2CzlSpPfE3HJPjD8350sjMeQOMfFGb+BEX/azaB
+ 9D1h+4Dfpx/deh+C2NSiH0oEb9KLDDFPhoXM2BeNVokTfS09vSrHTcuI5
+ /RmHR53KqFMxgMMLkyVp4mm328phB43hKEjZniMd6q5VKGE9/zmWoSI2+
+ Ntdk7xltq1e4f7CbrRLzIRBlZZkWpatUSpcvwIhLL/XWN6zvCmPs+cc/g w==;
+X-CSE-ConnectionGUID: aqCFakJITa2yudHFS87wrA==
+X-CSE-MsgGUID: ffpPJvOYSfmP2zlN6VU3qA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="75757002"
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; d="scan'208";a="75757002"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Mar 2026 06:22:26 -0700
+X-CSE-ConnectionGUID: iApkj8FnQuOsygFqFMvgfA==
+X-CSE-MsgGUID: CB8DvxlDS8e3wfPL7CP3xw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; d="scan'208";a="219412563"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 06:17:45 -0700
-Date: Mon, 30 Mar 2026 15:17:30 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Knop, Ryszard" <ryszard.knop@intel.com>
-Cc: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Karas, Krzysztof" <krzysztof.karas@intel.com>,
- "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>,
- "Sousa, Gustavo" <gustavo.sousa@intel.com>
-Subject: Re: [PATCH i-g-t v2 0/6] RFC: Add attachments support
-Message-ID: <20260330131730.jpfzopbtti4cdje5@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Knop, Ryszard" <ryszard.knop@intel.com>,
- "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Karas, Krzysztof" <krzysztof.karas@intel.com>,
- "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>,
- "Sousa, Gustavo" <gustavo.sousa@intel.com>
-References: <20260324131235.712916-8-zbigniew.kempczynski@intel.com>
- <d259eb2e14d5c60f4e4da139616dbb5b87ac0254.camel@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; d="scan'208";a="222746227"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO [10.245.245.123])
+ ([10.245.245.123])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Mar 2026 06:22:24 -0700
+Message-ID: <3d0a84d6-228b-4fc1-a654-12179bb80e4a@intel.com>
+Date: Mon, 30 Mar 2026 14:22:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3 3/4] tests/xe_pat: Verify PTA PAT entries contain
+ expected values
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260330054551.1729437-6-zbigniew.kempczynski@intel.com>
+ <20260330054551.1729437-9-zbigniew.kempczynski@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260330054551.1729437-9-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d259eb2e14d5c60f4e4da139616dbb5b87ac0254.camel@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,66 +72,146 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Knop,,
-On 2026-03-30 at 09:01:39 +0000, Knop, Ryszard wrote:
-> Hey Zbigniew,
+On 30/03/2026 06:45, Zbigniew Kempczyński wrote:
+> Debugfs exposes PTA PAT entries for different GTs so verify they
+> contain expected values. Verify they are correct also in reset
+> and suspend scenarios.
 > 
-> In general, I'm not convinced putting all attachments into the
-> results.json file is a good idea. This introduces a significant amount
-> of overhead for CI reporting processes that don't care about those
-> attachments (vis, CBL, JP Heikkila's SISO), makes those files extremely
-> large and difficult for manual inspection.
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
 > 
-> Can you consider specifying attachments as filenames that should be
-> present in a directory relative to the results.json instead?
+> ---
+> v2: - use pat file instead pat_sw_config as it accesses pat regs (Matt)
+>      - ignore PTAs which were not explicitely configured during PAT
+>        initialization (ZK)
+> ---
+>   tests/intel/xe_pat.c | 102 +++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 102 insertions(+)
 > 
-> Thanks, Ryszard
+> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+> index 2e2d7e01e7..b976d2c6a8 100644
+> --- a/tests/intel/xe_pat.c
+> +++ b/tests/intel/xe_pat.c
+> @@ -2115,6 +2115,98 @@ static void pt_caching_test(int xe, enum pt_test_opts opts)
+>   	pt_destroy_objects(xe, objs2, num_objs);
+>   }
+>   
+> +enum pt_pta_test_opts {
+> +	PT_PTA_CHECK = 1,
+> +	PT_PTA_RESET_GT = 2,
+> +	PT_PTA_SUSPEND = 3,
+> +};
+> +
+> +#define XE2_PAT(no_promote, comp_en, l3clos, l3_policy, l4_policy, __coh_mode) \
+> +		((no_promote << 10) | \
+> +		(comp_en << 9) | \
+> +		(l3clos << 6) | \
+> +		(l3_policy << 4) | \
+> +		(l4_policy << 2) | \
+> +		(__coh_mode))
+> +
+> +
+> +#define NUMGT 2
+> +static uint32_t xe2_pta[NUMGT] = {
+> +	XE2_PAT( 0, 0, 0, 0, 3, 0 ),
+> +	XE2_PAT( 0, 0, 0, 0, 3, 0 )
+> +};
+> +
+> +static uint32_t xe3p_pta[NUMGT] = {
+> +	XE2_PAT( 0, 0, 0, 0, 0, 3 ),
+> +	XE2_PAT( 0, 0, 0, 0, 0, 2 )
+> +};
+> +
+> +static uint32_t xe3p_xpc_pta[NUMGT] = {
+> +	XE2_PAT( 0, 0, 0, 0, 0, 0 ),
+> +	XE2_PAT( 0, 0, 0, 0, 0, 0 )
+> +};
 
-Could it be an option --attachments[=log|json] with default log?
+Would it be possible to get these from the kernel through the sw query 
+debugfs thing? Just to make this type of stuff easier to maintain going 
+forward. We have been doing that for the other PAT stuff. What are your 
+thoughts here?
 
-So by default files would only be saved in results/N/attachment
-(where N is a number of test in testlist) and also reported in test
-output (hence the 'log', there could be also 'none' for no report).
+> +
+> +static uint32_t get_expected_pta(int fd, int gt)
+> +{
+> +	uint32_t devid = intel_get_drm_devid(fd);
+> +	uint32_t ip_ver = intel_graphics_ver(devid);
+> +	int ver = intel_gen(devid);
+> +	uint32_t pta = UINT32_MAX;
+> +
+> +	igt_assert_lt(gt, NUMGT);
+> +
+> +	if (ip_ver == IP_VER(35, 11))
+> +		pta = xe3p_xpc_pta[gt];
+> +	else if (ver == 35 && !xe_has_vram(fd))
+> +		pta = xe3p_pta[gt];
+> +	else if ((ver == 30 || ver == 20) && xe_has_vram(fd))
+> +		pta = xe2_pta[gt];
+> +
+> +	return pta;
+> +}
+> +
+> +static void pt_check_pta_for_gts(int fd)
+> +{
+> +	struct intel_pat_cache pat_hw_config = {};
+> +	int gt;
+> +
+> +	xe_for_each_gt(fd, gt) {
+> +		xe_get_pat_hw_config(fd, &pat_hw_config, gt);
+> +
+> +		 /* Ignore if PTA is not explicitly programmed */
+> +		if (get_expected_pta(fd, gt) == UINT32_MAX)
+> +			continue;
+> +
+> +		igt_debug("gt: %d, pta: %x, pta expected: %x\n",
+> +			  gt, pat_hw_config.pta_mode, get_expected_pta(fd, gt));
+> +		igt_assert_eq(pat_hw_config.pta_mode, get_expected_pta(fd, gt));
+> +	}
+> +}
+> +
+> +/**
+> + * SUBTEST: pt-pta-check
+> + * Description: verify pta value is expected
+> + *
+> + * SUBTEST: pt-pta-reset-gt
+> + * Description: verify pta value is expected before and after gt reset
+> + *
+> + * SUBTEST: pt-pta-suspend
+> + * Description: verify pta value is expected before and after suspend/resume
+> + */
+> +static void pt_pta_check(int fd, enum pt_pta_test_opts opts)
+> +{
+> +	pt_check_pta_for_gts(fd);
+> +
+> +	if (opts == PT_PTA_RESET_GT) {
+> +		xe_force_gt_reset_all(fd);
+> +		sleep(1);
+> +		pt_check_pta_for_gts(fd);
+> +	} else if (opts == PT_PTA_SUSPEND) {
+> +		igt_system_suspend_autoresume(SUSPEND_STATE_STANDBY, SUSPEND_TEST_NONE);
+> +		pt_check_pta_for_gts(fd);
+> +	}
+> +}
+> +
+>   static int opt_handler(int opt, int opt_index, void *data)
+>   {
+>   	switch (opt) {
+> @@ -2253,6 +2345,16 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
+>   	igt_subtest("pt-caching-update-pat-and-pte")
+>   		pt_caching_test(fd, PT_UPDATE_PAT_AND_PTE);
+>   
+> +	igt_subtest("pt-pta-check")
+> +		pt_pta_check(fd, PT_PTA_CHECK);
+> +
+> +	igt_subtest("pt-pta-reset-gt")
+> +		pt_pta_check(fd, PT_PTA_RESET_GT);
+> +
+> +	igt_subtest("pt-pta-suspend")
+> +		pt_pta_check(fd, PT_PTA_SUSPEND);
+> +
+> +
+>   	igt_fixture()
+>   		drm_close_driver(fd);
+>   }
 
-Regards,
-Kamil
-
-> 
-> On Tue, 2026-03-24 at 14:12 +0100, Zbigniew Kempczyński wrote:
-> > This series introduces support for hook/test written attachments.
-> > It is somehow limited and stiff but allows to write anything test/hook
-> > wants to attachments directory and if naming contract will be fulfiled
-> > content in base64 form will be included in appropriate subtest/dynsubtest
-> > results.json part.
-> > 
-> > Series targets our need to include guc logs for failed tests especially
-> > in the point of time when it occurs.
-> > 
-> > v2: - added clearing of attachments dir in overwrite mode
-> >     - guc-log hook script is now installed to igt datadir/hooks dir
-> >     - added hook-exec-allowlist to selectively execute hook scripts
-> > 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Cc: Ryszard Knop <ryszard.knop@intel.com>
-> > Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-> > Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-> > 
-> > Zbigniew Kempczyński (6):
-> >   runner: Rename dirfd to avoid clash with dirfd()
-> >   runner: Create attachments directory to use by hooks
-> >   runner: Add attachments directory content in subtests results
-> >   scripts/hooks: Example guc log copy script to attachments dir
-> >   runner: Rename parsing function
-> >   runner: Add hook-exec-allowlist to execute hooks selectively
-> > 
-> >  lib/igt_hook.c                    |  4 ++
-> >  runner/executor.c                 | 88 ++++++++++++++++++++++++----
-> >  runner/executor.h                 |  2 +
-> >  runner/resultgen.c                | 97 +++++++++++++++++++++++++++++++
-> >  runner/settings.c                 | 31 +++++++---
-> >  runner/settings.h                 |  2 +
-> >  scripts/hooks/guc_copy_on_fail.sh | 24 ++++++++
-> >  scripts/meson.build               |  2 +
-> >  8 files changed, 230 insertions(+), 20 deletions(-)
-> >  create mode 100755 scripts/hooks/guc_copy_on_fail.sh
