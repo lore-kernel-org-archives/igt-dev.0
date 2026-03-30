@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72EA6FF4956
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 08:01:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B32DFF4959
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 08:01:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 002C310E484;
-	Mon, 30 Mar 2026 08:01:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CDFB210E486;
+	Mon, 30 Mar 2026 08:01:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e0UM5DIo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IQ7TCUew";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6501710E346
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 08:01:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45D7410E346
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 08:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774857677; x=1806393677;
+ t=1774857676; x=1806393676;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Pg8UNr8ocnavIHGneYxfgj2qdiMXIXRnXwidNo3y9kI=;
- b=e0UM5DIoYr/gMeSlgkR6dXUIpmJ4cTsveVGMS/UW8ZFm+jfkIQuosmku
- zCRHmdw68aaUIH20UbXpuMBF3PVVWHsDSdcYGpOFDf+JQUXNA5JIrxqj5
- nGL8gsgAVZu6D8t32k46PVhtokUxnMpjUfY8RBwNkVY1BBWT4di+tPNfy
- EebVlr5yysm05TnBKUCl/0/tG/zPUSq0xFshbEWXqGtdK67QNEY9ibZLz
- 87kFHCih8TP8lTajXzwhwPUQrn/i+6nxq49WLtdnoP2Wa3IkwOtUDNYDN
- LuBA/c/67GJ7bUF7Uyr9bEeP72xMTBwuij46xIn/KaLz+RFoFn+jYCKyS Q==;
-X-CSE-ConnectionGUID: hJ88XCicSQ+P+yhzAxu+fg==
-X-CSE-MsgGUID: 62+PKrhgQrOyB3fjwk1SUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="79445531"
-X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="79445531"
+ bh=4kLLF+awXTvFvTPUDOwfkNAiEtuc5csuQOeYoY6gAi0=;
+ b=IQ7TCUewszHEzTNARph4xyFCvkJos95hn2gn+BGk1aa5p+KEQOm/Qu/l
+ syy2wBykU/SvRp6lqyw5dJqgU29jMrpAt640aSHlc28fCFhrv4Rr82g+R
+ cBmyyAHRNiNXELrpMGFtz2ux1y8gC16OcCThA4VhYUEgepLeWJs4JWsv4
+ 31w0yxSPOo1FBodi9fc3sxeqr1WN/h6SRlhbSfbcFFVrj5FsgxlBbN0dj
+ E0absyo0GwE2MkB4ca2PDtaYZJI41UcXN39SFCH/2Dvb/qU4WzHnpO4xK
+ N8X7egQn3qFPPp3UV0RArVcwuLBPNySncM1fgfuZSf2PsjQ9KXLtKpOk9 g==;
+X-CSE-ConnectionGUID: +qCPyoY1QSe5zm01x+f87g==
+X-CSE-MsgGUID: w9TIQ5akTuCJIacyF4u6hQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="79445530"
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="79445530"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 01:01:17 -0700
-X-CSE-ConnectionGUID: B7Knp/vNSG+hYhwwhDFCJA==
-X-CSE-MsgGUID: Uf+31v4eSCKVOFSUJer7vQ==
+ 30 Mar 2026 01:01:16 -0700
+X-CSE-ConnectionGUID: 6JU6dp6/TmaOOw0GokoYBA==
+X-CSE-MsgGUID: V1BzhuUJTTifcSt8/dIxCA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="256495560"
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="256495547"
 Received: from dut6245dg2frd.fm.intel.com ([10.80.54.109])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 01:01:16 -0700
+ 30 Mar 2026 01:01:15 -0700
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.hellstrom@intel.com, nishit.sharma@intel.com,
- Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v9 2/3] lib/xe: Add failable variant of
- xe_vm_bind_lr_sync()
-Date: Mon, 30 Mar 2026 08:01:02 +0000
-Message-ID: <20260330080104.2956810-3-sobin.thomas@intel.com>
+ Sobin Thomas <sobin.thomas@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v9 1/3] drm-uapi/xe: sync with kernel header
+Date: Mon, 30 Mar 2026 08:01:01 +0000
+Message-ID: <20260330080104.2956810-2-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260330080104.2956810-1-sobin.thomas@intel.com>
 References: <20260330080104.2956810-1-sobin.thomas@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,89 +70,88 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add __xe_vm_bind_lr_sync helper function which returns standard error
-codes instead of asserting on failure. This allows calling function
-to handle VM bind failures explicitly while preserving the existing
-xe_vm_bind_lr_sync() wrapper for tests. This enables callers that
-expect bind / overcommit failures.
-
-v7: Introduced xe_vm_bind_lr_sync_failable (Thomas)
-v8: Modified xe_vm_bind_lr_sync_failable and xe_vm_bind_lr_sync to call
-    __xe_vm_bind_lr_sync
-v9: Removed redundant typecast and removed xe_vm_bind_lr_sync_failable
+This commit is for sync with kernel header.
+Align with kernel commit 369cc8804985 ("drm/xe/uapi: Introduce a flag to
+disallow VM overcommit in fault mode").
 
 Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/xe/xe_ioctl.c | 35 +++++++++++++++++++++++++----------
- lib/xe/xe_ioctl.h |  2 ++
- 2 files changed, 27 insertions(+), 10 deletions(-)
+ include/drm-uapi/xe_drm.h | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index ea3f2fcaa..daa725d0c 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -822,23 +822,38 @@ void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- }
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 077e66a68..fc71a6cd1 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -3,8 +3,8 @@
+  * Copyright © 2023 Intel Corporation
+  */
  
- #define	BIND_SYNC_VAL	0x686868
--void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
--			uint64_t addr, uint64_t size, uint32_t flags)
-+int __xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-+			 uint64_t addr, uint64_t size, uint32_t flags)
- {
--	volatile uint64_t *sync_addr = malloc(sizeof(*sync_addr));
-+	uint64_t *sync_addr = malloc(sizeof(*sync_addr));
- 	struct drm_xe_sync sync = {
- 		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
- 		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
--		.addr = to_user_pointer((uint64_t *)sync_addr),
-+		.addr = to_user_pointer(sync_addr),
- 		.timeline_value = BIND_SYNC_VAL,
- 	};
--
--	igt_assert(!!sync_addr);
--	xe_vm_bind_async_flags(fd, vm, 0, bo, 0, addr, size, &sync, 1, flags);
--	if (*sync_addr != BIND_SYNC_VAL)
--		xe_wait_ufence(fd, (uint64_t *)sync_addr, BIND_SYNC_VAL, 0, NSEC_PER_SEC * 10);
-+	int ret = 0;
-+
-+	if (!sync_addr)
-+		return -ENOMEM;
-+	WRITE_ONCE(*sync_addr, 0);
-+	ret = __xe_vm_bind(fd, vm, 0, bo, offset, addr, size, DRM_XE_VM_BIND_OP_MAP, flags,
-+			   &sync, 1, 0,  DEFAULT_PAT_INDEX, 0);
-+	if (ret)
-+		goto out;
-+
-+	if (READ_ONCE(*sync_addr) != BIND_SYNC_VAL)
-+		xe_wait_ufence(fd, sync_addr, BIND_SYNC_VAL, 0, NSEC_PER_SEC * 10);
- 	/* Only free if the wait succeeds */
--	free((void *)sync_addr);
-+out:
-+	free(sync_addr);
-+	return ret;
-+}
-+
-+void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-+			uint64_t addr, uint64_t size, uint32_t flags)
-+{
-+	igt_assert_eq(__xe_vm_bind_lr_sync(fd, vm, bo, offset, addr, size, flags), 0);
- }
+-#ifndef _UAPI_XE_DRM_H_
+-#define _UAPI_XE_DRM_H_
++#ifndef _XE_DRM_H_
++#define _XE_DRM_H_
  
- void xe_vm_unbind_lr_sync(int fd, uint32_t vm, uint64_t offset,
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index b62d259fd..2e4bd3b50 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -117,6 +117,8 @@ struct drm_xe_mem_range_attr
- void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo,
- 			uint64_t offset, uint64_t addr,
- 			uint64_t size, uint32_t flags);
-+int __xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-+			 uint64_t addr, uint64_t size, uint32_t flags);
- void xe_vm_unbind_lr_sync(int fd, uint32_t vm, uint64_t offset,
- 			  uint64_t addr, uint64_t size);
- #endif /* XE_IOCTL_H */
+ #include "drm.h"
+ 
+@@ -142,7 +142,7 @@ extern "C" {
+  * redefine the interface more easily than an ever growing struct of
+  * increasing complexity, and for large parts of that interface to be
+  * entirely optional. The downside is more pointer chasing; chasing across
+- * the __user boundary with pointers encapsulated inside u64.
++ * the boundary with pointers encapsulated inside u64.
+  *
+  * Example chaining:
+  *
+@@ -335,10 +335,6 @@ struct drm_xe_mem_region {
+ 	__u64 total_size;
+ 	/**
+ 	 * @used: Estimate of the memory used in bytes for this region.
+-	 *
+-	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
+-	 * accounting.  Without this the value here will always equal
+-	 * zero.
+ 	 */
+ 	__u64 used;
+ 	/**
+@@ -363,9 +359,7 @@ struct drm_xe_mem_region {
+ 	 * @cpu_visible_used: Estimate of CPU visible memory used, in
+ 	 * bytes.
+ 	 *
+-	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
+-	 * accounting. Without this the value here will always equal
+-	 * zero.  Note this is only currently tracked for
++	 * Note this is only currently tracked for
+ 	 * DRM_XE_MEM_REGION_CLASS_VRAM regions (for other types the value
+ 	 * here will always be zero).
+ 	 */
+@@ -975,6 +969,11 @@ struct drm_xe_gem_mmap_offset {
+  *    demand when accessed, and also allows per-VM overcommit of memory.
+  *    The xe driver internally uses recoverable pagefaults to implement
+  *    this.
++ *  - %DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT - Requires also
++ *    DRM_XE_VM_CREATE_FLAG_FAULT_MODE. This disallows per-VM overcommit
++ *    but only during a &DRM_IOCTL_XE_VM_BIND operation with the
++ *    %DRM_XE_VM_BIND_FLAG_IMMEDIATE flag set. This may be useful for
++ *    user-space naively probing the amount of available memory.
+  */
+ struct drm_xe_vm_create {
+ 	/** @extensions: Pointer to the first extension struct, if any */
+@@ -983,6 +982,7 @@ struct drm_xe_vm_create {
+ #define DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE	(1 << 0)
+ #define DRM_XE_VM_CREATE_FLAG_LR_MODE	        (1 << 1)
+ #define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(1 << 2)
++#define DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT  (1 << 3)
+ 	/** @flags: Flags */
+ 	__u32 flags;
+ 
+@@ -2361,4 +2361,4 @@ struct drm_xe_exec_queue_set_property {
+ }
+ #endif
+ 
+-#endif /* _UAPI_XE_DRM_H_ */
++#endif /* _XE_DRM_H_ */
 -- 
 2.52.0
 
