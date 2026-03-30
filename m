@@ -4,58 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33CC8FF4958
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 07:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F118FF4959
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 08:01:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BD03B10E46C;
-	Mon, 30 Mar 2026 07:56:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 45F5A10E346;
+	Mon, 30 Mar 2026 08:01:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dkHlhk6w";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EU2N9n7B";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA8D810E3EA
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 07:55:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 346F610E346
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 08:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774857320; x=1806393320;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=J16kE5k9ejYXeQ8DGdp5GcmRvymOXeO/ZnTEWkos7Bo=;
- b=dkHlhk6wcpIhWIL2klY6lSjpdne6rH66Fk72DuSXWeHfV9xTj37z3Hln
- 7HihMsvCswPLnt10nbSU845wvh7oj1AJxlFUXnTO+DtoJgcBXAJMZbqhc
- pHw3cjFqbYlbKcpEsCjxTBf6K+VMLknyF5gMYFSeKXdpqCkFnyZDtEWE8
- MkkkETnzAfbM5MneQP4SRsGSEJecdBCFYpy3YC20kBqqV3rg7LwGdRnVc
- kCkI16vWCEGCN6q6gBiGhBQ3pD4CsOB1TVkZW8SyP3czaK0heN4agKjpQ
- AZ2GCcYiyCn7Gc09eibOPDzaTyc4iojmKa4K68mqdMW5JNtcoRlc+rPsL w==;
-X-CSE-ConnectionGUID: kshQ4gQ2ShipQFlySqGyNw==
-X-CSE-MsgGUID: c/RQzx+6Rmy69N0GzGggrA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="75729073"
-X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="75729073"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 00:55:19 -0700
-X-CSE-ConnectionGUID: Shmfs1MZRfej4QToQBLSzg==
-X-CSE-MsgGUID: aKaC6b7dSruvSmBMCSYmeg==
+ t=1774857674; x=1806393674;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=yf3aJcALHg+QRNJt4N0miWfsRjhBSp58IXoTC6iVAwE=;
+ b=EU2N9n7B5VuXNbRS3WapE8Hz/w3NzU68HBdziAemCrFvki/VWYSyeNIb
+ U/X+A2yV2JSQbYANlKix1lcMMfnAzVTK+Le8sBqnKkfM5EAjyHbQLuswO
+ /+xiweKL07AlHI7u3kZuqb1elu8HSaEaCxINbqr8fwX6omGCHShvFQ0cE
+ El8fmu7NAdzcymCInbhkwAqJxmhqe5CkZbixosDGuDwH1aFR5Bq99aX6p
+ AKlZCD9yBzVp9+VwXdbqV5QigN1MDvUK81dQLIDCqrJMp6I+PIlLgwr68
+ z0Jo5l8PbRjiB8Fb1WYk444d/rwjVIQB7ADOBab2ePRFwFA6l+ltz0bOi A==;
+X-CSE-ConnectionGUID: 9wUCFUfcQhGkuAlXNZE88A==
+X-CSE-MsgGUID: kAWfhsCATlu+NGQjiYqKLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="79445528"
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="79445528"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Mar 2026 01:01:13 -0700
+X-CSE-ConnectionGUID: enaXRu8dSfaNFaMXIiogEw==
+X-CSE-MsgGUID: EjougC+JRx6VQ8Gc30zAng==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="227595683"
-Received: from administrator-system-product-name.igk.intel.com (HELO
- dev-417.igk.intel.com) ([10.91.214.181])
- by fmviesa004.fm.intel.com with ESMTP; 30 Mar 2026 00:55:18 -0700
-From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="256495512"
+Received: from dut6245dg2frd.fm.intel.com ([10.80.54.109])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Mar 2026 01:01:13 -0700
+From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v9 6/6] tests/kms_flip: test suspend at most twice on
- SNB && BMG
-Date: Mon, 30 Mar 2026 09:55:08 +0200
-Message-ID: <20260330075508.1003899-7-michal.grzelak@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260330075508.1003899-1-michal.grzelak@intel.com>
-References: <20260330075508.1003899-1-michal.grzelak@intel.com>
+Cc: thomas.hellstrom@intel.com, nishit.sharma@intel.com,
+ Sobin Thomas <sobin.thomas@intel.com>
+Subject: [PATCH i-g-t v9 0/3] tests/intel/xe_vm: Add support for overcommit
+ tests
+Date: Mon, 30 Mar 2026 08:01:00 +0000
+Message-ID: <20260330080104.2956810-1-sobin.thomas@intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -72,46 +68,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-gettime_us() on SNB and BMG from CI does not return proper time after
-starting suspend tests. This results in too many suspends issued before
-we hit the duration_ms. Break the loop on second execution.
+Current tests focus on VM creation and basic mode selection, but do not
+cover overcommit scenarios.
 
-This WA explicitly conflicts with commit c75dcbdac51d ("tests/kms_flip:
-various improvements"). This WA is therefore only used by SNB and BMG.
+This change adds tests to verify overcommit behavior across different VM
+modes.
 
-Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
----
- tests/kms_flip.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Non-fault mode tests:
+ - vram-lr-defer: DEFER_BACKING rejects overcommit at bind time
+ - vram-lr-external-nodefer: Long-running mode with an external BO and
+                             no deferred backing
+ - vram-no-lr: Non-long-running mode
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 1a0517bcef..81fa8dd5c0 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1325,7 +1325,13 @@ static bool event_loop(struct test_output *o, unsigned duration_ms,
- 		       unsigned *elapsed)
- {
- 	unsigned long start, end;
-+	uint32_t devid;
- 	int count = 0;
-+	bool wa;
-+
-+	devid = intel_get_drm_devid(drm_fd);
-+
-+	wa = IS_SANDYBRIDGE(devid) || IS_BATTLEMAGE(devid);
- 
- 	start = gettime_us();
- 
-@@ -1346,6 +1352,9 @@ static bool event_loop(struct test_output *o, unsigned duration_ms,
- 		if (count && (gettime_us() - start) / 1000 >= duration_ms)
- 			break;
- 
-+		if (count && wa && o->flags & TEST_SUSPEND)
-+			break;
-+
- 		count++;
- 	}
- 
+Fault mode tests:
+ - vram-lr-fault: Fault handling allows graceful overcommit via page faults
+ - vram-lr-fault-no-overcommit: Verifies NO_VM_OVERCOMMIT blocks same-VM
+   BO eviction during VM_BIND, while still allowing eviction during
+   page-fault OOM handling
+
+These tests validate that VMs respond correctly to memory pressure based
+on their configuration—by rejecting at bind time, failing during execution,
+or handling overcommit gracefully via page faults.
+
+Currently, overcommit behavior is tested for VRAM only.
+
+--------------------------------------
+Link (historical context):
+https://patchwork.freedesktop.org/series/161557/
+
+Sobin Thomas (3):
+  drm-uapi/xe: sync with kernel header
+  lib/xe: Add failable variant of xe_vm_bind_lr_sync()
+  tests/intel/xe_vm: Add support for overcommit tests
+
+ include/drm-uapi/xe_drm.h |  22 +--
+ lib/xe/xe_ioctl.c         |  41 +++-
+ lib/xe/xe_ioctl.h         |   4 +
+ tests/intel/xe_vm.c       | 394 +++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 439 insertions(+), 22 deletions(-)
+
 -- 
-2.45.2
+2.52.0
 
