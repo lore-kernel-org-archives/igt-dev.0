@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D19FF495F
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 08:19:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B127F3D5E7
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 08:19:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B5CE10E4FA;
-	Mon, 30 Mar 2026 08:19:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E578A10E4FF;
+	Mon, 30 Mar 2026 08:19:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KkNkooLk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xh2ixyO0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3647C10E4FA
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 08:18:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F5B210E4FF
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 08:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774858733; x=1806394733;
+ t=1774858749; x=1806394749;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=U3F4Xlrm01d9Ji3mOSX3tn2Mlm3OJ//SINsb1Ct5Etc=;
- b=KkNkooLkKGNFQrjW95T41iqpnVFZeLSu37NQReJiqpywC52CcDsiKiDA
- lQbgoLboOlUAGU4bkcjhcA5IKPwMnqbUZY949/2TbibI1oOYPwuNGfEO4
- 7p030Pzx1h18586zacLeUnArJ+sG5XvgWEk8zxNvvox6ovQYyFFXzs3jA
- PWh3HWu1cyU4vFFIF/coQTZz1L/NFhuLViwXMN1qFnccWzyXuTGcZOJ9K
- P+QTGyCP431urIOJ0jQnFAvEQSI0cKXJlykMmeD5aye4w67bwN2kJZypz
- FIlqxDm6UFouSIEZygwhGnkPiyx/AaJ5NSEGnVe12pek42gT9u+hcSfbF w==;
-X-CSE-ConnectionGUID: X1+hDhx/Qn6yRtiMx3Pu7w==
-X-CSE-MsgGUID: uMAKYJAvTkCZMFR1riKt8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="63396916"
-X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="63396916"
+ bh=XwyHV3v1A4XPzQjrXjUhqW++7ML0K0Dmjn3EtqxLnWc=;
+ b=Xh2ixyO0Ka22AWo5oHtmMQCfCniuv1ElEPa+3Ns5SqfjHebg7ZYps76B
+ umZpzpdx4H6EyZVcQmw+kjIf2UuWjkHwzXgIZdltI7hEsYk8H32Kh80fG
+ O0aVnM/fjCJQ3muU1IvoVldDlqIeS6/MjFvfM7Kof7/umfxhq1OBAwKut
+ qWCHaZAVxvEO27JiuHfqNJyKqBvKO7Pfg10HvWcSyYKX2EGoFRO1ByTac
+ V3hQGE9R9OOYOAOhpSSW9F6jUrLgtqqGSwZeSJxY5tAoE5W9UiCDYwDKn
+ APGqvYNaVOZb1h2HxWwVQeHemKmRUZAE0QKaUe9Tth0uxZKgbucvizqGs g==;
+X-CSE-ConnectionGUID: RI5cODCrQpG/Lk9r7yIpzw==
+X-CSE-MsgGUID: zMG+oMi9RQeGhkvDjfaErQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="63396971"
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="63396971"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 01:18:53 -0700
-X-CSE-ConnectionGUID: +GAebjLZSoeFZ0evcXKO4A==
-X-CSE-MsgGUID: Th1yHDPnQtaUj6rBClRvhw==
+ 30 Mar 2026 01:19:09 -0700
+X-CSE-ConnectionGUID: fhTbp1+nSe6LboKKLBIPLg==
+X-CSE-MsgGUID: oNMn/vxLSYevu2J3avIg1w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="230899234"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="230899272"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 01:18:52 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 30 Mar 2026 01:19:08 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 30 Mar 2026 01:18:51 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.37; Mon, 30 Mar 2026 01:19:08 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 30 Mar 2026 01:18:51 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.54) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Mon, 30 Mar 2026 01:19:08 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.11) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 30 Mar 2026 01:18:51 -0700
+ 15.2.2562.37; Mon, 30 Mar 2026 01:19:07 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WvnkXHMe6UgT4mrACtReBx+yZTAzrNZyCAbY27aEb14iyWruXm2lQuLUsMS/W1BEEWO4Y1ObZHs4We1kGwekEmpGZGYPdw/TjlKRC37taGBXYWKDBxsNcdw74ocWCyjnnZyXVndWKx2cseaRpdsoYnae7AD9NfwSRiKb/iCMVTG/8Sv/bVujcjOiIRv8pM5jRzX45Qplcg20anhJ38hX3OVhyb0BPAmgCTkuma91csQv2lgBkpXOPqywhPYSxtPKIlNOQMoXFflmXv+LsdNmAGHMrsxQYRC1G9lWO+eCpLKQeBmbkcusqHM5bM+7JFBiP56XthWvTMDuMCHiINmppQ==
+ b=LcktIL95AdgWADFSXgw7INSJ4yvoV2eSSr7wge4MphIQBrL3Ggaua7RVSqHwnspG2GtJmJ3D+vqLsQyYEr2b2yAk5OmYkcJHgZ5g/mPSHQ4U+VrwGEKcOPoIPCqdDrYA2dKQaLDtMcBRVLfH5TpY1uhCbFb3ouEy9pmuoccyn4o3Cn/zgG7X8d76mJzYUt34Jf3qx8H+6d0Cay822Od8RDGyruAvebpfLWNb8jtAzu9wQ/XAHxWH6RpRnkpZXAi/Bc8Ads9LD6d8KZu5P2189tVmm+xO+LqIB/r3+k94Y8RXh+X7KkqGxMuwIabirwPgXnKJg2av24yZ9VUfT1S5fQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PAJM5PtOge8gw8q4lcZFd+nw4T5Q+CFcR2lNhwxkZKg=;
- b=ZU5Zi/Mqvwmy2qsIvHbScQ+5lgA5pDHKTZXwXZngSp+J6VmSmjKv646TVu/cM2qHuv5faMtk9vktBBLH2LXsm4oD8DB0267ZA0MZGrevyPpnrB6+2TkRjnkUioryZDWRpP/ov1ni8Buo3+KYIhjzzLIPoJnIGppp3/l5sQdDPmWk2ibdgxWC/nk5/LpYGTeoq8anbd5XGt4fLW1Irm+eszCVQ7W7+OdRbM8pkbZAjtMA1o0TBm1YNBiwv0HfdLgi7+KqudR6MHsaUBP0ujkmAv2RlJnsAdwjgDcx5SUcrEvzn6V0bnLqnJhoeIwbSK0pw1RoW5gMEQCaN7wGTqNzUA==
+ bh=MAvyElqoCz5CdK3HMK41COxcclB63S0zbpwsdkLifUo=;
+ b=eFR/DQQXq880DTDPnL1nKMGEpcYc8KSEN10M4lQMKB9A9/LrJIAeyIZ8AVvpx6kYTEycoZQ4EQ1Ep30lTeJsgONBNFoV46bcp3DEEKfBVDE7kcNWfkNdbRFkEPzCzjqNeopPgnEdSEwouzgNEES2cMxVnj09KskiFxhG8F/KczoR66Q/m1QZNvO7dWoItpZwjiXxF2/fXDN57qFVjf6Jq2IEkFCFtw01Z13eP1hf+tPq4yB0u6gXsrTo0GZ6Ef52lBezyjiCNn3r7qeXsyLqB0NeN9Wtgse9P6yrp7FlZOMHBipwNWYchxwQ3M+OXwOx3+FpnE+gwm+YgzzFeklxBQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,92 +69,92 @@ Received: from IA1PR11MB6195.namprd11.prod.outlook.com (2603:10b6:208:3e9::8)
  by SA2PR11MB5019.namprd11.prod.outlook.com (2603:10b6:806:f8::10)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 08:18:49 +0000
+ 2026 08:19:05 +0000
 Received: from IA1PR11MB6195.namprd11.prod.outlook.com
  ([fe80::9ca6:19ac:7036:d391]) by IA1PR11MB6195.namprd11.prod.outlook.com
  ([fe80::9ca6:19ac:7036:d391%6]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
- 08:18:49 +0000
-Message-ID: <8bb8baf4-e291-4c48-940b-13a1339d17f8@intel.com>
-Date: Mon, 30 Mar 2026 10:18:45 +0200
+ 08:19:05 +0000
+Message-ID: <e7fa1ab4-ec46-4e1b-a73c-e4d92ea2bf26@intel.com>
+Date: Mon, 30 Mar 2026 10:19:01 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 i-g-t 2/4] tests/intel/xe_sriov_vfio: Add dynamic
- bind-unbind-vfs subtest
+Subject: Re: [PATCH v2 i-g-t 3/4] tests/intel/xe_sriov_vfio: Add open-basic
+ subtest
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: <kamil.konieczny@linux.intel.com>, <adam.miszczak@linux.intel.com>,
  <jakub1.kolakowski@intel.com>
 References: <20260327140627.64574-1-marcin.bernatowicz@linux.intel.com>
- <20260327140627.64574-3-marcin.bernatowicz@linux.intel.com>
+ <20260327140627.64574-4-marcin.bernatowicz@linux.intel.com>
 Content-Language: en-US
 From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
-In-Reply-To: <20260327140627.64574-3-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260327140627.64574-4-marcin.bernatowicz@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BE1P281CA0372.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:82::14) To IA1PR11MB6195.namprd11.prod.outlook.com
- (2603:10b6:208:3e9::8)
+X-ClientProxiedBy: VI6PEPF0000022D.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:808:1::8e7) To DM4PR11MB6214.namprd11.prod.outlook.com
+ (2603:10b6:8:ac::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: IA1PR11MB6195:EE_|SA2PR11MB5019:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7864e29-1558-48e7-921a-08de8e34f892
+X-MS-Office365-Filtering-Correlation-Id: e4308d88-7874-429f-9c0d-08de8e350209
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|376014|1800799024|366016|56012099003|22082099003|18002099003; 
-X-Microsoft-Antispam-Message-Info: RumnCtHU+dbTR9EWAc+SduA70w3uvETkMMQWjjhtFPMbGPM4q5ksMjDlFfEzb8xfOp2E7iMNAU1AdpIQ+nBHBjxr7mek2pQ4UpUU0br0TvVvNEqF46pP+hZWask6Vy1yjhJFSnnR3Jre1TBaXft1WsJXL1QPwC8qxWOQdVtQ1+KX/Hm4DcrjNkYZCwkOxKXlNeg7Fu4YATRQAjqiW8ogYvJgZCwXF0ar3rvgEE+acPNDl7mNP2CWoSkZ062l6DnpfdT3vejAm/fLTGFEhMN13daNQuecFIar0MyaF30K6cbjHGzHYyYdsL+9eB+x/VfLnCEuZPhVmYsF6RrxjfQEU5u3mGedd0cFQ43XLWz07LGTl1uGBu5ShcYzI4JmvZtBVBojOqChME5ljR6LfDHpg/IcVaXzZrcilD5poUwzkM2dcDMFsw+TmCSF3xUOtw1fEfop6L+AlVS+jCdr6TJo9zZ+phbj5+jWa/1jYajjyqaoQipUl31YSj0LKvbOW/C6eo5FKN5kqqZKIL9akro0XrOdYIxzv1gLqV3+0xiW3LrQpRbFBaO6bIsr2ctS52A79G1MlOCIkc8Nqib/OM5CCl+1/aI4Aa6qJAySJbR0Qv8eEaKU59QWOlNsapp7DsxzbFQb0uV9TjtUqCkJvweUiFKHiSQTP67/duEckAUpxtose1HZsTaP6zJ21SOTwWM5CYNLvMChb6dMCNtPW/+eS/JoZ6Uv9yoApTXMMnvpZJw=
+X-Microsoft-Antispam-Message-Info: Ily2W/OKi74SC/VmccNRp1JZB0x2SWvaJOucCR3ZgLHe5YGZ2Jh6ixzoytOP/P3nKsvGrI8m9mfXFPxERfmJT2wVxZbSTVJ+mB1dbKVQnT510XYxuHe4YkBgws+T6XQ9Bf4lsu/ntIyqELfuLIaupP3A152VRKy4xUkFBCh0DEqeuAa7NapmVYdWLFc/6rpSufGCgKA1tn70e4a9JS5TT+fWj4bFuZL23sP5sON6u3wD+6MOEkqChSZvO2cFwIA4ZQsXzjbWGqllN/8ry9buSUXSYm05ZDOK7u0Gx63p6YnluXWPvwfi9Z0UmbFn/OBFatyLxWHws6FndaUa3fIbFeY1qw1MOBRODGsFNRIfCKBNsi/wI1kcBD/bNMLq17A7jfoKSoclaifa/5G99K2HIGEGWSnBumm57F7aFQO9oE750xq8S1aSFnoTfFTrfLXZx+Nzd6023ZnNERJRoTZ2cnmeHHgWYSLfK/0bQlHZ+9sxb6Z8348b2ewA7JPFxstBbRI1G9tcdMkVrsFMLuEn4rcmyvvzVH/dhMjxlkkn6PJYulqbuhHuklNdO0k/u7VQFohPqpaHNUw1rItBLin+lCjTnTcWzRyRIsPQs2N9RawkYLQECw6ZR4GkapZDcGCxXEIdeOtBDPQlegayCfiPDrn0Q6AyCrCdnXRXbfZiiNYPpcEiCLDbaded7FFfhJDP/vmbVL0E8TXhUlDO9UqYTHqBfbKvgQei7Q/Bm21P/Lw=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA1PR11MB6195.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(1800799024)(366016)(56012099003)(22082099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VHY2RTZxNGtIUENjcy9EV1hXNDlwbkc5eGFlQzVJOER3MFBPVEp1SWRJV3p5?=
- =?utf-8?B?WFpTOWlsclpYWW9KeENENHczeld3MmFqRE5reVVCcHNmdGdKZG51ZzJqQStK?=
- =?utf-8?B?dldLcUFWNGRRYzVVUk5RcWZicE5kUnBnVzl0NjY5MjdmNmtnUGdKNnVOT2U4?=
- =?utf-8?B?L3hVN3hCUUJVbVl3S3duVXpzWVdJNHA0bHA2Z25Yc29iVkpWVWE2SmI3UHpn?=
- =?utf-8?B?aHdrU29TSlQvQVV1VC83ajl6REdHcFZRbDllY3F2dWdubTJNMk85QXR1bmNx?=
- =?utf-8?B?Ny8rdWFKNDU2UWZjK2xQYmNBK3F0ZTdQYVRSZEhuUTJYc04wdXdDUjM3Kzdh?=
- =?utf-8?B?YkdXeE4raW9qRkVFUUY0WFduNHRNWGZlOFlXR3AwYnJXdnZSR3BvYytKd1JQ?=
- =?utf-8?B?WExEZDNUdEhrOEg3cFFVV0s2V24rb1hBcFEzS3NWYUJtZjRiRXVmRzdyMTZE?=
- =?utf-8?B?R0NsUWJvK2g1NlRTdWdjQVpwYkQ1blBlcmt5eEpRQkt0Z3RUZDJqVDdTQUpK?=
- =?utf-8?B?UTF5bzNSNU16QVRxeS9UMGo2dnFEcjdENjJNMXRtWElkOWpKcmZwSFlKSHYv?=
- =?utf-8?B?dFlwRnpaeXdWS2ZuTnczbHZ5Y0NDdXlUNndLRDdXekN3c1F4N2w0NzNXU3lH?=
- =?utf-8?B?d1pZREM1SjNhdUcvWWkwQzRjdXdNeWlsNnJEU1Bmekh2MjBjNGpiVXRoZjZF?=
- =?utf-8?B?ZFZSUmhZMFBVRVZJbER0b2ZhUHVXdzliSTJaUURZZVJuZHRSNUJrRnFDaHpN?=
- =?utf-8?B?b0JZcUZkd1FzSFpQVXVpbWJxdXhyenBwQXFzZXdKU1hOc2dxc1FYSW82eG9q?=
- =?utf-8?B?QzAyRUZsNFBmeHhya3dJaHd4dmNJQzk4YnhnSnRhQmYwdTl0UXhTSERVSXl6?=
- =?utf-8?B?S0NROWxJNFk4L1dNYWsvZXRpc3BzdVI0VFJ2SUdmTTlaVmU3a3UyTC80V0ps?=
- =?utf-8?B?ZGNDa242R2tDM3FHaGp5ajhkOURPeVlVbjZlY3F0WW5tZXUzL29ISldXZ3dC?=
- =?utf-8?B?S0Qxb01xcjNia3FwRXg2Zk5MYXF5R1Zaekw2UmpQZCs3L1RnUVdPa1RGelRo?=
- =?utf-8?B?QTA3SmJCTzZPdEo5UkJva0d2MHRRK2FDT1J0eVc0QmhyNjFNaHdKUzEyMXlZ?=
- =?utf-8?B?UjVxYWdPWFFpZDUwMTJDNkpIOVJMMS9oZE5Iek1rVlBZZEZHZFVpM2FUY1NK?=
- =?utf-8?B?TXlITDZnZStwKzgvZFZTanA1R1lTalE2R3pMdkV4QmUrSmFaMDI2ZldkSE1D?=
- =?utf-8?B?Wi85b2dkRHpwaHdORWM1eUoweEtZMVA0NytWMmJYNHpnQ2N4OC9CaEZEM0Rx?=
- =?utf-8?B?bkRGa25lWk9JQ1kvNXFnVTZwN05JcUtPdjN0SSsxUzVqZzl3eFZOYXoxOE9Z?=
- =?utf-8?B?U2tYeU9aL1dkcG1LQnhhNndmVTQ2aEVPaU1yZFhMRllDU2t2S2tLR3hxT1pZ?=
- =?utf-8?B?Zk8vVlhsekNRZXR0OWp3NXJUdyt4clZDWG85SHBhUUZmYzROVWYvQ251anZZ?=
- =?utf-8?B?OFo3Yks2RjhRQzlJeStmSllFUHd2K2Mwdy9iVkc4S2RxMXM4YitzQ0NacDlD?=
- =?utf-8?B?bXp5eVYyL1BDUGlRaXhpck41MGVmQndkTkZqZ281ck1FaGlrcHNyQ2hWVGEr?=
- =?utf-8?B?Q3ZJc1VZQ2hKMkl2eFVjSDFIYXN6V1JMYy9qQzRtcFUwRG91aVczMFVTbzd4?=
- =?utf-8?B?Rnd1VktJNnNBNjloRDFIVnhpd2V0TnQ0THhwaGFaa25mV3l3WTRwVUtPYXNQ?=
- =?utf-8?B?NlVlekpxNFlUYWlJL1FMTzJINE96T3hTdm9XSDgybmxsR1Zvd1FqdVl0NXFG?=
- =?utf-8?B?bmdUKzFOaWlsN1h1Q2ZXWndtQ1M0MzRNdHNrM3lYR3lLdllMck05L3dhdmU4?=
- =?utf-8?B?Vk1Va1lVcUhyTFQ1MFZjMmUyaTZvTDlGZDBDVkhrVDdWeHZQbGZWZk9zZzJ4?=
- =?utf-8?B?VjVodkhTS0xwU2xjVzk4UUhMSHpZLzE3TEJ1TzN6bWJnSFc2SitXK3MxK3pt?=
- =?utf-8?B?R0wzemN5U0J0SVpxVUVGcVFFWXE3dUZPSEZOSm5XWE9OM2czQWloREY5ZW1V?=
- =?utf-8?B?M1E4SUVmbWkybXVPdTRkQUJFYm5qMFZONkErcHA3cjlGemJQUzJDVXd0VjQy?=
- =?utf-8?B?ekw3QmdXT1VFUzRBb1lHL1NDMkduMG5la1JpU3F2UnNzWG1JRnpaTXdEOENu?=
- =?utf-8?B?SXVObjVacXFoZGQyQlRweXRYSmt4Y1hsSk9zWHExQkIza01jTWpJQWZMYjFG?=
- =?utf-8?B?dUc2MnJJYzRFbWZHcEVjVU1MaDdnZFVZTmZxUmJzaXNpS0JTeG1ZUWJPQzZI?=
- =?utf-8?B?S1A1R2NJTWdGN25SaU42WjcwN3lvcy9NNk9MRi9KWTZtY2I0T2tpZz09?=
-X-Exchange-RoutingPolicyChecked: k86hOKFVKz68Ek7YwCfcPTXRTetGz/rW+jPaTrdbW7/z/cjiXMbK/meXAkLSiQu1mSuUYPaqmlF49dsTUyyVT5xHv7I4H2vA0C01RVK5odRttoVMUk9nWeWxeO2ZevdM+tvtDOZNeu1245EbPbV24PVS3b7sMvdkpPB3TRr+d9+eTx8irIs9YWrzaXeWJ2iNKycQ21l1bv1/6v6/Facb87WTLLLe65wJk3A1jJXeqPKM3rKsPsRJtlOYJ+aciuziTpPxlbVvlflgO/bMKLGDw7cFcrIttDwMs/cgkVSUuvWPX3rPnuEt21Nz8GELttUeL7lWfWLyeCmVRxu83MVP2Q==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7864e29-1558-48e7-921a-08de8e34f892
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6195.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UHlLNHA5VlBFOGFIK01sa0hQRlZhUXptd0xqN1pMMm4wRnFhUmp0eHREQVNj?=
+ =?utf-8?B?VjZnYzBMY1pCVEdYa3lJcTZvbHRvcGJjN2tXSHFmdy9aWXcrbEswajREODVL?=
+ =?utf-8?B?WGp1V2YzTERteEIzbmxPeUFqeUxCdE1YcjREZVZiUnErL3pkL3pMMmwzeWdj?=
+ =?utf-8?B?bnZ6ZEhQSHlHa1FuUnRCKzBDTlViam83QWdqZFJuTVBDTmtRSVBZcGR6VXF0?=
+ =?utf-8?B?L3I2TlRBUFgvTFV0TUZhRFNrNndUbU5wd3Z0SDcvUkVpS0RXc05vYXVlY3hE?=
+ =?utf-8?B?d0dmTDA5MkY0WkVvNVdHaVF4NGkzRDhJSTJvSnQ1aC9LbE92Wk8vN3BxNnlC?=
+ =?utf-8?B?dDV5Qk82aW5EL2JIVElnVjJXbU9IcDJvVlVNbXp0b1lIaW9Lb05UU1VEMDJq?=
+ =?utf-8?B?N3BINElVOGw5WWN4ZlFKcFRnRW9NUFplZEMxM0E4R1JNUE5KOUZXaDV6UXFr?=
+ =?utf-8?B?QmM5TktBQytNbW9NbGo1TXdQTVQvVHhtNXNieCsvL0RNaE9yc3FRN0NxVCtF?=
+ =?utf-8?B?cWZqclZNVktqTlRZNWRnTFZUN2tFWnFmVnZlR2ZUdndvZms2TjBCTFIrN0g2?=
+ =?utf-8?B?RGNYSXpzZ2ZuN1hXakM5V1JLRW82RFhtRTNtRlBNelA3cDMzRHpCaVRoSkw5?=
+ =?utf-8?B?R3liSGs0ZjNoejFqalhzWk5LMjNmcXhDT3F2MlBUZzdya3JIZk1oWE5qZXhD?=
+ =?utf-8?B?TXNSbGRIMTlMNjdpSHhMUGpUVGdBelBNZlI2UnV6L0QwMG12RG9xZ3F0dnds?=
+ =?utf-8?B?SjZqMVRNWVBqeHY1Y3VNdzl2NFkxZzRUKy81Q2swUUU2WnZ0VldNcTV5LzZo?=
+ =?utf-8?B?V0dEYWNGc0FYMStNWXIrMG9xQW83aG1JWUZXdTVNcE1uRGFkRVZ0SGtvUVpx?=
+ =?utf-8?B?bC9LRlg5eE8xQkx2aG5CaEMwb2tMTGd4YTh3cHZvTy9SOXZMM2tnT1hSVDdm?=
+ =?utf-8?B?ZE5WajRNc0thZUhBYU1RRlkzWkZNOUNrOVhhL2VPUit1dHoxR2IrNjhzWW5o?=
+ =?utf-8?B?MWVLaWI5MXRmbTRFbjExQ2t0QjZHU3J5c3V0b0RFWmZvM1pqNGdqUHRGUllh?=
+ =?utf-8?B?UDBTczBzRS9FL0NlbmZkRW01ZzNPc3cyNnZ5Y0xxamEycFF6TllZcUhqT1JT?=
+ =?utf-8?B?cWQ2R2Nmd204REtRYkNva2kwZ1UvSUlpL2NBQmt2anlpUGtsOGFoVTRIbFMz?=
+ =?utf-8?B?Z1YrWnZ1eVFpQURURVBBdThyWG4wMTdRNkY3Nkw5VXpwMW5zcDRmU0hxdlNi?=
+ =?utf-8?B?OC9vbkd3QWxUMXcvVjVvTXgzdGRJVkVEQTYwNVF2Vys4WVJQZGp0YjBOOGxk?=
+ =?utf-8?B?dDhGbXIzSm9oaGpzNGNLcTJ2Y0NET1RBTlhKcWpnWjNZOFVBaDdJN3NRRlBL?=
+ =?utf-8?B?UHZlVWVtUDZXZW1xdTl1N2FzV0wxV3hWQXdJZDhZOU5mancxOWV6dUV4Yk9E?=
+ =?utf-8?B?N25LbHNLUkxISmt4RVZvcUdVeW4vbkpkYnM3OEpjRTVyOGNZa1ovb01iZjJE?=
+ =?utf-8?B?RWpKaFQyeHJaWUJ1aHNZSk0zWnhSNGt3emo1Yzh6QnNpdE9UK3VIZ3hSK0xX?=
+ =?utf-8?B?WkpsQklkNmZvM09KeEVlQTZyb01nbWlOTnlDZDlrelFGbUs1WlI3aFZzcnlS?=
+ =?utf-8?B?aTRNVTlXSlN0QTRER3pMS25lZ1ZDZXduVW5lbDBIeFkyd2VvL05yb1FUWkRO?=
+ =?utf-8?B?YmhuRDVJZkNUTzM5NS9GSXhaZ1hmNmxGbWZOcVZJUlpaR2lPZ1VpaGNOWTBn?=
+ =?utf-8?B?dFJOOUpVNmY2djlWeksyUlRFc3Q0eW9FdStwZnZRWkFneWpkclJncCs5OUNk?=
+ =?utf-8?B?UXJqMTd4c1VzVExNTVErdGYvUXZHMVMzSmVXSmRYeEZBbXMwMEh0RmZjU0FV?=
+ =?utf-8?B?VXg3aExBTWt6MGhrNXpnREQzVGtpRGJqRXAwQktJK2FMb3VKZ01UYkxTVDl0?=
+ =?utf-8?B?MW95eW5hMTFaRGx4WGR3aGFqOTRzbWM4bjBpK0piRmFMdlhYK3pKS1Z1TWhq?=
+ =?utf-8?B?YllYaGw2QWdES0dLejZsZ3pwTHFyZy9YTC9oNXcxNGpzM25KTFFYWGhyQ0tV?=
+ =?utf-8?B?dCtqTTMrSXhITFpjK0w3aW9OeW5JRlJrZWk4K2N6QmprK2dycnZtbzM5bWVx?=
+ =?utf-8?B?YUFZR1FLbXh0eFZqbVg5WkgxYmU3MzZ6RXREYTQ0V1FJTW1UWHRvNmpCVG14?=
+ =?utf-8?B?WEV6U25GU0pQZ1Uya1ZjYldkMkdFYUNObDFoSGRkdk5hbFVsNHBUWlRXMy9Q?=
+ =?utf-8?B?MHZxVnY0OEFDWXlMeEVjT0xoa2l4QWQyS1lDbVU5VmRzV2Z4QXo3MUZabExY?=
+ =?utf-8?B?OFgvS204Vi9NYjAxQzBqUGpTakJsVVpkNDFGeWNQZ0RCZzN4bTFFQT09?=
+X-Exchange-RoutingPolicyChecked: K78s96tJ51GQWZCoEWIdx4J+MUFZEMWUs0cyRLLGD47ASUbznvgdMb4DohusZGhmYKbofpY0QvuRnfY+OLdapegtp2gPMye2ckIphGgOZh0Z5sALz5UcPyKqch86FEbBS71XumrApd14PBYtZYnrMzZEDkT2iNlK/8LB8hm5+HyxZDqGgtakNWq0JA6l2lk7mTvtOpo7CV+2/DD2OCIXHPgn8GSM94qnJgPCsEwezl5zLY1Mbc1qFSvtV/uFX0TnHkfEkncj8BIAz+9hkXhte9PahCJ2oYbgO5KxUga3Je0CaJJz0VwgT5AJDO9+e+Dl9jVG7VaympsuEOrWJsFc0g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4308d88-7874-429f-9c0d-08de8e350209
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6214.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 08:18:49.4110 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 08:19:05.7224 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /H4Ae1ZJRA4tyswBg/iCf08uPR2McZmUo4boi6cPRzXBWahrpv1RqtTIk7OFEszcmZG0JjqjRQLDdsUJHstS2Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: LUj/DypPaiq3zMs+3vn0CuAb2Sy3Oi6SF5tjXkGjtJ8BVgu2d8/lVHuY9UfShBdwJ6oxfC1Jp0jlO9O97RPqLQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5019
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -174,8 +174,9 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 3/27/2026 15:06, Marcin Bernatowicz wrote:
-> For each supported numvfs-N configuration, enable N VFs and
-> bind/unbind each VF to xe-vfio-pci through driver_override.
+> The subtest binds a VF to xe-vfio-pci, opens its VFIO group, and
+> verifies basic VFIO access with a minimal group status query. This
+> provides a simple smoke test for VFIO device setup.
 >
 > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -187,184 +188,177 @@ Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 
 > ---
 > v2:
-> - Split assert_bound_driver_is into two helpers (Lukasz)
-> - Remove unnecessary unbind before bind (Lukasz)
+> - Introduce vf_num variable for clarity (Lukasz)
+> - Remove unnecessary unbind (Lukasz)
 > ---
->   tests/intel/xe_sriov_vfio.c | 139 ++++++++++++++++++++++++++++++++++++
->   1 file changed, 139 insertions(+)
+>   tests/intel/xe_sriov_vfio.c | 136 ++++++++++++++++++++++++++++++++++++
+>   1 file changed, 136 insertions(+)
 >
 > diff --git a/tests/intel/xe_sriov_vfio.c b/tests/intel/xe_sriov_vfio.c
-> index ef92fb233..fa9026741 100644
+> index fa9026741..6a86b3780 100644
 > --- a/tests/intel/xe_sriov_vfio.c
 > +++ b/tests/intel/xe_sriov_vfio.c
-> @@ -3,8 +3,11 @@
+> @@ -2,6 +2,9 @@
+>   /*
 >    * Copyright(c) 2026 Intel Corporation. All rights reserved.
 >    */
+> +#include <linux/vfio.h>
+> +#include <limits.h>
+> +#include <sys/ioctl.h>
 >   
-> +#include "drmtest.h"
+>   #include "drmtest.h"
 >   #include "igt_core.h"
->   #include "igt_kmod.h"
-> +#include "igt_pci.h"
-> +#include "igt_sriov_device.h"
->   
->   /**
->    * TEST: xe_sriov_vfio
-> @@ -16,14 +19,135 @@
+> @@ -22,6 +25,9 @@
 >    *
->    * SUBTEST: load-unload-xe-vfio-pci
->    * Description: Attempt to load xe_vfio_pci module and then unload it.
+>    * SUBTEST: bind-unbind-vfs
+>    * Description: Enable VFs and bind/unbind each one to xe-vfio-pci via driver_override.
 > + *
-> + * SUBTEST: bind-unbind-vfs
-> + * Description: Enable VFs and bind/unbind each one to xe-vfio-pci via driver_override.
+> + * SUBTEST: open-basic
+> + * Description: Bind VF to xe-vfio-pci and perform minimal VFIO group open and status ioctl.
 >    */
 >   
 >   IGT_TEST_DESCRIPTION("Xe SR-IOV VFIO tests (xe-vfio-pci)");
+> @@ -109,6 +115,109 @@ static void bind_unbind_vfs(unsigned int num_vfs)
+>   	igt_sriov_disable_vfs(pf_fd);
+>   }
 >   
-> +#define DRIVER_OVERRIDE_TIMEOUT_MS 200
-> +
->   static const char *XE_VFIO_PCI_MOD = "xe_vfio_pci";
-> +static const char *XE_VFIO_PCI_DRV = "xe-vfio-pci";
->   
-> +static int pf_fd = -1;
-> +static bool autoprobe;
->   static bool xe_vfio_loaded_initially;
->   
-> +static void assert_xe_vfio_pci_is_bound(const char *pci_slot)
+> +static bool vf_iommu_group_id_alloc(const char *pci_slot, char **out_group_id)
 > +{
-> +	char bound[64];
+> +	char path[PATH_MAX];
+> +	char link[PATH_MAX];
+> +	ssize_t len;
+> +	const char *base;
+> +
+> +	igt_assert(out_group_id);
+> +	*out_group_id = NULL;
+> +
+> +	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/iommu_group", pci_slot);
+> +	len = readlink(path, link, sizeof(link) - 1);
+> +	if (len < 0)
+> +		return false;
+> +
+> +	link[len] = '\0';
+> +	base = strrchr(link, '/');
+> +	if (!base || !base[1])
+> +		return false;
+> +
+> +	*out_group_id = strdup(base + 1);
+> +	igt_assert(*out_group_id);
+> +
+> +	return true;
+> +}
+> +
+> +struct vfio_dev_fds {
+> +	int container_fd;
+> +	int group_fd;
+> +	int device_fd;
+> +	char *group_id;
+> +};
+> +
+> +static void vfio_open_group(const char *pci_slot, struct vfio_dev_fds *out,
+> +			    struct vfio_group_status *out_group_status)
+> +{
+> +	char group_path[PATH_MAX];
 > +	int ret;
 > +
-> +	ret = igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound));
-> +	igt_assert_f(ret >= 0, "Failed to read bound driver for %s (%d)\n", pci_slot, ret);
-> +	igt_assert_f(ret > 0, "Expected %s to be bound to %s, but it is unbound\n",
-> +		     pci_slot, XE_VFIO_PCI_DRV);
-> +	igt_assert_f(!strcmp(bound, XE_VFIO_PCI_DRV),
-> +		     "Expected %s to be bound to %s, got %s\n",
-> +		     pci_slot, XE_VFIO_PCI_DRV, bound);
-> +}
+> +	igt_assert(out);
+> +	*out = (struct vfio_dev_fds){
+> +		.container_fd = -1,
+> +		.group_fd = -1,
+> +		.device_fd = -1,
+> +		.group_id = NULL,
+> +	};
 > +
-> +static void assert_driver_unbound(const char *pci_slot)
-> +{
-> +	char bound[64];
-> +	int ret;
+> +	if (out_group_status)
+> +		*out_group_status = (struct vfio_group_status){
+> +					.argsz = sizeof(*out_group_status)
+> +				    };
 > +
-> +	ret = igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound));
-> +	igt_assert_f(ret >= 0, "Failed to read bound driver for %s (%d)\n", pci_slot, ret);
-> +	igt_assert_f(ret == 0, "Expected %s to be unbound, but is bound to %s\n",
-> +		     pci_slot, bound);
-> +}
+> +	if (!vf_iommu_group_id_alloc(pci_slot, &out->group_id))
+> +		igt_skip("No IOMMU group (IOMMU disabled or not exposed)\n");
 > +
-> +static char *vf_pci_slot_alloc(unsigned int vf_id)
-> +{
-> +	char *slot = igt_sriov_get_vf_pci_slot_alloc(pf_fd, vf_id);
+> +	out->container_fd = open("/dev/vfio/vfio", O_RDWR | O_CLOEXEC);
+> +	if (out->container_fd < 0)
+> +		igt_skip("/dev/vfio/vfio not available\n");
 > +
-> +	igt_assert_f(slot, "Failed to get VF%u PCI slot\n", vf_id);
-> +	return slot;
-> +}
+> +	snprintf(group_path, sizeof(group_path), "/dev/vfio/%s", out->group_id);
+> +	out->group_fd = open(group_path, O_RDWR | O_CLOEXEC);
+> +	igt_require_f(out->group_fd >= 0, "Failed to open %s (%d)\n", group_path, -errno);
 > +
-> +static void vf_bind_override(unsigned int vf_id, const char *driver)
-> +{
-> +	char *slot = vf_pci_slot_alloc(vf_id);
-> +	int ret;
-> +
-> +	ret = igt_pci_bind_driver_override(slot, driver, DRIVER_OVERRIDE_TIMEOUT_MS);
-> +	igt_assert_f(ret == 0, "bind %s (VF%u) to %s failed (%d)\n", slot, vf_id, driver, ret);
-> +	assert_xe_vfio_pci_is_bound(slot);
-> +
-> +	free(slot);
-> +}
-> +
-> +static void vf_unbind_override(unsigned int vf_id)
-> +{
-> +	char *slot = vf_pci_slot_alloc(vf_id);
-> +	int ret;
-> +
-> +	ret = igt_pci_unbind_driver_override(slot, DRIVER_OVERRIDE_TIMEOUT_MS);
-> +	igt_assert_f(ret == 0, "unbind %s (VF%u) failed (%d)\n", slot, vf_id, ret);
-> +	assert_driver_unbound(slot);
-> +
-> +	free(slot);
-> +}
-> +
-> +static void bind_unbind_vfs(unsigned int num_vfs)
-> +{
-> +	igt_sriov_disable_driver_autoprobe(pf_fd);
-> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
-> +
-> +	igt_require_f(!igt_pci_system_reinit(), "Failed to refresh PCI state\n");
-> +
-> +	igt_sriov_enable_driver_autoprobe(pf_fd);
-> +
-> +	for (unsigned int vf_id = 1; vf_id <= num_vfs; vf_id++) {
-> +		vf_bind_override(vf_id, XE_VFIO_PCI_DRV);
-> +		vf_unbind_override(vf_id);
+> +	if (out_group_status) {
+> +		ret = ioctl(out->group_fd, VFIO_GROUP_GET_STATUS, out_group_status);
+> +		igt_require_f(ret == 0, "VFIO_GROUP_GET_STATUS failed (%d)\n", -errno);
 > +	}
-> +
-> +	igt_sriov_disable_vfs(pf_fd);
 > +}
 > +
-> +static void open_pf(void)
+> +static void vfio_close_device(struct vfio_dev_fds *fds)
 > +{
-> +	int fd;
-> +
-> +	if (pf_fd >= 0)
+> +	if (!fds)
 > +		return;
 > +
-> +	fd = drm_open_driver(DRIVER_XE);
-> +	igt_assert_fd(fd);
+> +	if (fds->device_fd >= 0)
+> +		close(fds->device_fd);
 > +
-> +	if (!igt_sriov_is_pf(fd)) {
-> +		drm_close_driver(fd);
-> +		igt_skip("Xe device is not an SR-IOV PF\n");
-> +	}
+> +	if (fds->group_fd >= 0 && fds->container_fd >= 0)
+> +		ioctl(fds->group_fd, VFIO_GROUP_UNSET_CONTAINER, &fds->container_fd);
 > +
-> +	if (igt_sriov_get_enabled_vfs(fd) != 0) {
-> +		drm_close_driver(fd);
-> +		igt_skip("VFs must be disabled before running this test\n");
-> +	}
+> +	if (fds->group_fd >= 0)
+> +		close(fds->group_fd);
+> +	if (fds->container_fd >= 0)
+> +		close(fds->container_fd);
 > +
-> +	autoprobe = igt_sriov_is_driver_autoprobe_enabled(fd);
-> +	pf_fd = fd;
+> +	free(fds->group_id);
+> +
+> +	fds->container_fd = -1;
+> +	fds->group_fd = -1;
+> +	fds->device_fd = -1;
+> +	fds->group_id = NULL;
 > +}
 > +
-> +static void cleanup_pf(void)
+> +static void vfio_open_basic(const char *pci_slot)
 > +{
-> +	if (pf_fd < 0)
-> +		return;
+> +	struct vfio_dev_fds fds;
+> +	struct vfio_group_status group_status;
 > +
-> +	igt_sriov_disable_vfs(pf_fd);
-> +	igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)\n");
-> +	autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
-> +		   igt_sriov_disable_driver_autoprobe(pf_fd);
-> +	igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
-> +		       "Failed to restore sriov_drivers_autoprobe value\n");
-> +	drm_close_driver(pf_fd);
-> +	pf_fd = -1;
+> +	vfio_open_group(pci_slot, &fds, &group_status);
+> +	igt_info("VFIO group %s status flags=0x%x\n", fds.group_id, group_status.flags);
+> +	vfio_close_device(&fds);
 > +}
 > +
->   static void restore_xe_vfio_module(void)
+>   static void open_pf(void)
 >   {
->   	bool loaded;
-> @@ -69,7 +193,22 @@ int igt_main()
->   		igt_assert(igt_kmod_is_loaded(XE_VFIO_PCI_MOD) == false);
+>   	int fd;
+> @@ -207,6 +316,33 @@ int igt_main()
+>   		}
 >   	}
 >   
-> +	igt_describe("Enable VFs and bind/unbind each one to xe-vfio-pci via driver_override.");
-> +	igt_subtest_with_dynamic("bind-unbind-vfs") {
+> +	igt_describe("Bind VF to xe-vfio-pci and do minimal VFIO open and GET_STATUS.");
+> +	igt_subtest("open-basic") {
+> +		unsigned int vf_num = 1;
+> +		char *slot = NULL;
+> +
 > +		igt_skip_on_f(igt_kmod_load(XE_VFIO_PCI_MOD, NULL),
 > +			      "Failed to load %s\n", XE_VFIO_PCI_MOD);
 > +
 > +		open_pf();
 > +
-> +		for_each_sriov_num_vfs(pf_fd, num_vfs) {
-> +			igt_dynamic_f("numvfs-%u", num_vfs) {
-> +				bind_unbind_vfs(num_vfs);
-> +			}
-> +		}
+> +		igt_sriov_disable_driver_autoprobe(pf_fd);
+> +		igt_sriov_enable_vfs(pf_fd, vf_num);
+> +
+> +		igt_require_f(!igt_pci_system_reinit(), "Failed to refresh PCI state\n");
+> +		igt_sriov_enable_driver_autoprobe(pf_fd);
+> +
+> +		slot = vf_pci_slot_alloc(vf_num);
+> +
+> +		vf_bind_override(vf_num, XE_VFIO_PCI_DRV);
+> +
+> +		vfio_open_basic(slot);
+> +
+> +		vf_unbind_override(vf_num);
+> +		free(slot);
+> +		igt_sriov_disable_vfs(pf_fd);
 > +	}
 > +
 >   	igt_fixture() {
-> +		cleanup_pf();
+>   		cleanup_pf();
 >   		restore_xe_vfio_module();
->   	}
->   }
