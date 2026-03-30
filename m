@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24911FF495C
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 07:37:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECE57FF4958
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Mar 2026 07:55:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C3BBA10E4C1;
-	Mon, 30 Mar 2026 07:37:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A50A510E3EA;
+	Mon, 30 Mar 2026 07:55:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UDh/BBsA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SXwnm0aN";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FEE910E4B5
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 07:36:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFC8510E3FC
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2026 07:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774856210; x=1806392210;
+ t=1774857314; x=1806393314;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=48QZf+Z2ItNN7yeq82I8hcSNK9AuIm9LrC59ZeHi3iY=;
- b=UDh/BBsAtznJ0J6Nl3lULK7jTnR/S5PGm5CXZk7AeZRpT7TeEMvpoL77
- bUMNgQ1LE6AH4tr1s8NTtE0zA6lZDoHMw765GgtIntnlheQIuYFH9zvc8
- jd6DKAsuWoE4MhEWq1wW5bHizkxgsRG97pCFcS10EqKYA1836G5FunSGo
- OTpocaokyEbSIEQPcB7rhcPz2PWOcM9BNCQsEoZfFPfSgQRD0rQBQfyPC
- bM7S1qGhCGRRn2Q4sTblcJL67w+BWoNpl5VzMqleRW0fdBWE5aaLF584Y
- E0CpCzmss3pViY8P/b2Oq2imYanMZvU7y1QJkTWyTYsq7iXUExHv5eGDZ A==;
-X-CSE-ConnectionGUID: 6tKyA+J8Te2B0vwg7Xo5zw==
-X-CSE-MsgGUID: b5dCJS1rQbyx0aBRwik1Jg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="79744455"
-X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="79744455"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 00:36:50 -0700
-X-CSE-ConnectionGUID: nWCY+ZfCQAqgfkDSAayqnA==
-X-CSE-MsgGUID: J4Q0fh9NSqmt3qE48E+EmA==
+ bh=6tBThaoGxi6ZQ5FS0n0Y0aISSWYW6ZVP980QVjbz50s=;
+ b=SXwnm0aNy0/yIVjctFm/T/Rbu9qmGARO3FlaHwLDCK/W3wG2tqgkTI+x
+ yq6TFzeD0t2+XTElapk4DCfIzd8D+olxbmGnCxI44l161fehrppsVwPEE
+ 2GtxhaSmmIK2/Hf5oxyQejjI+qQ4i+oifWKKwn/6ksca0c+2rUj1mmCA8
+ xvcYQmW4Cadg/Z1UC9DYfNXcFDbrqNWlAv0Xphcix8Y806hm4ahrv+y8j
+ 7vdSjC1hVsTc7GjPEJVw6dEFKs2v/5L4TaYJh55J5RIXB7dgwFlCAoTpb
+ S+hEymjJaML+CdQJd4fbKl3+xb+8mXzDqTccd+PKaKlqaNCnayot7YZn3 g==;
+X-CSE-ConnectionGUID: u3ujpRPPTiqwQuRhA56IKA==
+X-CSE-MsgGUID: lXGIwL+HQqWLK9pEnu7r5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="75729064"
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="75729064"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Mar 2026 00:55:13 -0700
+X-CSE-ConnectionGUID: APUddT+xRSyEb0LsBUwMuQ==
+X-CSE-MsgGUID: Hwg5jyjgSxCW8JTe6OEoCg==
 X-ExtLoop1: 1
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.17])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2026 00:36:49 -0700
-From: Jani Nikula <jani.nikula@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; d="scan'208";a="227595609"
+Received: from administrator-system-product-name.igk.intel.com (HELO
+ dev-417.igk.intel.com) ([10.91.214.181])
+ by fmviesa004.fm.intel.com with ESMTP; 30 Mar 2026 00:55:12 -0700
+From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	ville.syrjala@linux.intel.com
-Subject: [PATCH i-g-t 3/3] lib/kms: only keep valid CRTCs in display->crtcs[]
-Date: Mon, 30 Mar 2026 10:36:30 +0300
-Message-ID: <08338ac33b622174da70ac5d6bbf8eb5ede91322.1774856079.git.jani.nikula@intel.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1774856079.git.jani.nikula@intel.com>
-References: <cover.1774856079.git.jani.nikula@intel.com>
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v9 1/6] tests/kms_flip: test suspend on one pair of pipes
+Date: Mon, 30 Mar 2026 09:55:03 +0200
+Message-ID: <20260330075508.1003899-2-michal.grzelak@intel.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20260330075508.1003899-1-michal.grzelak@intel.com>
+References: <20260330075508.1003899-1-michal.grzelak@intel.com>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,117 +71,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Previously, display->crtcs[] would contain igt_crtc_t for all pipes,
-whether they were valid or not, and you could have igt_crtc_t pointers
-to CRTCs that were not valid.
+Currently, every pair of ({pipe1, pipe2}, {output1, output2}) is being
+tested in 2x-* subtests. Since suspend shouldn't be tested per pipe, it
+causes unnecessary overhead: with 4 pipes & 4 displays it runs up to 36
+tests. Given that each suspend's dynamic subtest can take up to tens of
+seconds, total duration of the test easily exceeds timeout.
 
-Only create igt_crtc_t for valid CRTCs, and make igt_display_n_crtcs()
-reflect the number of valid CRTCs. (This will unlock further cleanups in
-tests.)
+When testing suspend, for each pair of outputs test only first and last
+pipe unless it is said to run on all pipes.
 
-For Intel, which might not have 1:1 CRTC index <-> pipe mapping, keep
-the display->crtcs[] array sorted in pipe order, even if it can no
-longer be indexed using the pipe. This means for_each_crtc() etc. will
-keep iterating the CRTCs in pipe order like before. For simplicity, do
-the sorting in a separate step.
-
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- lib/igt_kms.c | 24 ++++++++++++++++--------
- lib/igt_kms.h | 14 ++------------
- 2 files changed, 18 insertions(+), 20 deletions(-)
+ tests/kms_flip.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 558a366f29b4..04b1f3972307 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -3107,6 +3107,13 @@ static void igt_crtc_init(igt_display_t *display, drmModeRes *resources, igt_crt
- 		igt_assert_lte(0, crtc->planes[j].index);
- }
- 
-+static int crtc_pipe_compare(const void *_a, const void *_b)
-+{
-+	const igt_crtc_t *a = _a, *b = _b;
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 518543ce9a..7d2143889e 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1922,6 +1922,12 @@ static void run_pair(int duration, int flags)
+ 		for (n = 0; n < resources->count_crtcs; n++) {
+ 			for (j = i + 1; j < resources->count_connectors; j++) {
+ 				for (m = n + 1; m < resources->count_crtcs; m++) {
++					/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
++					if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_crtcs &&
++					    ((n != 0 && n != resources->count_crtcs) ||
++					    m != resources->count_crtcs - 1))
++						continue;
 +
-+	return a->pipe - b->pipe;
-+}
-+
- /**
-  * igt_display_require:
-  * @display: a pointer to an #igt_display_t structure
-@@ -3164,24 +3171,25 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 		     "count_crtcs exceeds IGT_MAX_PIPES, resources->count_crtcs=%d, IGT_MAX_PIPES=%d\n",
- 		     resources->count_crtcs, IGT_MAX_PIPES);
+ 					memset(&o, 0, sizeof(o));
+ 					o.count = 2;
+ 					o._connector[0] = resources->connectors[i];
+@@ -1967,8 +1973,8 @@ static void run_pair(int duration, int flags)
+ 					crtc_idxs[0] = n;
+ 					crtc_idxs[1] = m;
  
--	display->n_crtcs = IGT_MAX_PIPES;
--	display->crtcs = calloc(igt_display_n_crtcs(display),
--				sizeof(igt_crtc_t));
-+	display->n_crtcs = resources->count_crtcs;
-+	display->crtcs = calloc(igt_display_n_crtcs(display), sizeof(igt_crtc_t));
- 	igt_assert_f(display->crtcs,
- 		     "Failed to allocate memory for %d CRTCs\n",
- 		     igt_display_n_crtcs(display));
- 
- 	for (crtc_index = 0; crtc_index < resources->count_crtcs; crtc_index++) {
--		int pipe_enum = is_intel_dev ? __intel_get_pipe_from_crtc_index(drm_fd, crtc_index) : crtc_index;
--
--		crtc = &display->crtcs[pipe_enum];
--		crtc->pipe = pipe_enum;
-+		crtc = &display->crtcs[crtc_index];
- 
--		crtc->valid = true;
- 		crtc->crtc_id = resources->crtcs[crtc_index];
- 		crtc->crtc_index = crtc_index;
-+		crtc->pipe = is_intel_dev ? __intel_get_pipe_from_crtc_index(drm_fd, crtc_index) : crtc_index;
- 	}
- 
-+	/* For Intel, sort the CRTCs in pipe order */
-+	if (is_intel_dev)
-+		qsort(display->crtcs, igt_display_n_crtcs(display),
-+		      sizeof(display->crtcs[0]), crtc_pipe_compare);
-+
- 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
- 
- 	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 97647d92f4f0..f994d91d3aa0 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -475,15 +475,6 @@ struct igt_crtc {
- 	/* ID of a hardware pipe */
- 	enum pipe pipe;
- 
--        /*
--         * Indicates whether this pipe struct is valid and can be used. This can
--         * be false when the pipe is allocated as part of an array indexed by
--         * enum pipe, but the respective pipe is not reported by DRM, meaning
--         * that the pipe could not exist in the underlying hardware, could have
--         * been fused off, etc.
--         */
--        bool valid;
--
- 	int n_planes;
- 	int num_primary_planes;
- 	igt_plane_t *planes;
-@@ -738,8 +729,7 @@ static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *outp
- #define for_each_crtc(display, crtc) \
- 	for ((crtc) = &(display)->crtcs[0]; \
- 	     (crtc) < &(display)->crtcs[(display)->n_crtcs]; \
--	     (crtc)++) \
--		for_each_if ((crtc)->valid)
-+	     (crtc)++)
- 
- /**
-  * for_each_crtc_with_valid_output:
-@@ -760,7 +750,7 @@ static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *outp
- 		     (output) < &(display)->outputs[(display)->n_outputs]; \
- 	     (output) = (output) + 1 < &(display)->outputs[(display)->n_outputs] ? \
- 		     (output) + 1 : ((crtc)++, &(display)->outputs[0])) \
--		for_each_if ((crtc)->valid && igt_crtc_connector_valid((crtc), (output)))
-+		for_each_if (igt_crtc_connector_valid((crtc), (output)))
- 
- igt_output_crtc_t *__igt_output_crtc_populate(igt_display_t *display,
- 					      igt_output_crtc_t *chosen_outputs);
+-					/* Limit the execution to 2 CRTCs (first & last) for hang tests */
+-					if ((flags & TEST_HANG) && !all_crtcs &&
++					/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
++					if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_crtcs &&
+ 					    ((n != 0 && n != resources->count_crtcs) ||
+ 					    m != resources->count_crtcs - 1))
+ 						continue;
 -- 
-2.47.3
+2.45.2
 
