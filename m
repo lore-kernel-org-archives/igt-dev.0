@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4ECA10F92E3
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:15:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D77B10F92E3
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:15:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 88DF510ECF8;
-	Tue, 31 Mar 2026 17:15:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1DFB410ECEF;
+	Tue, 31 Mar 2026 17:15:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="nN4NAPUL";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="i5eOErER";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 46BA110EC39
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:05 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8358110EC43
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:14 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id BDDB3C59957
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:34 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 6F1F84E4288B;
+ Tue, 31 Mar 2026 17:11:13 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 2656D6029D;
- Tue, 31 Mar 2026 17:11:04 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 468116029D;
+ Tue, 31 Mar 2026 17:11:13 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 3FAEE104504A9; 
- Tue, 31 Mar 2026 19:11:03 +0200 (CEST)
+ with ESMTPSA id A239310450627; 
+ Tue, 31 Mar 2026 19:11:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977063; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977072; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=4cYPnVniSqdMydoIExrLLXOWFts8uqC9+HZKuZcerms=;
- b=nN4NAPUL+6W4GxubwtAwFLX7pW4PwtdGtMh3Fi2hufz8pdgs4F2q0xCfq29KXVa/Ti7nvj
- N5xqUDzoofB21Q8g9kvLESpGkwz+J4eip/RvAg7124lqH4EUFViMAKVAcKWjkHhR/4hn1k
- pGhNd44tD8cEtfUILgugloyWOwCUFV5lzQ39aqXmFdOu2BDX+ap81orSR8Z0jOQoGsU5RV
- oKbQmuere4cBHk3c079ffySILMDvmpqgG+cRNHGhVGvraqgbSfm420x2jQXLhNPNPbtdKu
- Q7SKRUcwwxdJBxmTDSB+/w37v6uJso0vFGIpvXsPdS/f036JrUtALn8WYcQa9A==
+ bh=oZ8ts7vCdQ73qWLzROxDjuLCNG/RPcf2xY0mRhDiKtk=;
+ b=i5eOErERevCvOZ7U3hRYSA9Ta1K031438rzQ17pZLIG5lG0mxN8m5x3KDc2XgbpFusfaMb
+ n5vsE4cfn1LbqG/nFdZoM36ABCj4IKGZHuqNwR14hO1C1oJ30TNxjpjEy7DCn1Cb+r0B0V
+ +GQh+RhxbLDnrM5QpuTu4RfM5IBZFpU+ZtZYZTT8BuFyCoU8O2jkRtZHzYXXaOIACN7qnF
+ eOjrBwj1Np0hV/DslqugEr/nY1Yp26Bnr2Fbqxo71Fp31cXAemK0MTODf5+vNCB+gxbFVW
+ +TWcvlNg55tcAgccxBak2hVwZpuVV9Ar2wieqvoISRW5s7CPGwUCk4YbdQ/72w==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:11:33 +0200
-Subject: [PATCH i-g-t v10 16/49] lib/monitor_edids: Add helper to get an
- EDID by its name
+Date: Tue, 31 Mar 2026 19:11:43 +0200
+Subject: [PATCH i-g-t v10 26/49] lib/unigraf: Add unigraf assert and
+ deassert helpers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-unigraf-integration-v10-16-12266c34cc1d@bootlin.com>
+Message-Id: <20260331-unigraf-integration-v10-26-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -48,21 +48,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2492;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2968;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=FhxwpMf8xhEmuKmHmmmcbTmDLH+jv/88caE7kToynGo=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA9Mk4Iqilw1WkiA8VHI5YwOQkONbG5cRzKu
- 06lKDDsYsiJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKDRw/+MZy9DZGhkypWi/oldlJbNbSYiXmlwR5
- N8Sd48a9B9RyeoraE6EcWM+ZXD8w3feFx3sXVmWoRcyQAG0a1ON5gJ13rvTN6isRhhJTGaULsvy
- +dXahcGuL7GtNyjTmLq4cxnWFHd9C5XZ5Z6xuiSgOmsxwjS9BdZThAjKOB31MUITLvnD1G6HInl
- y0dDITK5Qb4pZkhde/tbBCnaosQhXOLkzTqLI+Wj6COTnmJQO4ECySwFmpc3VV6OOI4zZ5lQzkF
- HsvW9vCg07I4957D0zZB1fcoYODZJxXf1mNSdyQBdULbOGz9C2hI0YfOo5U0Jm1xCds+EQnMGKY
- VK4GDC303nGCiqyH/9IzVNrAPDG0fkiy///LlTQ13WkPoRst3+o7kebDJCUbPXN3xAf8Q6ylliw
- Dm+fWbOsN+NaEKkE64Y+hb4pXRTPB+FbJ+lwhxiJZhwm0wvvd7mO43KlP5Jv5XsrRAbAzAoCqar
- c/DUsQMAMxSvt2JKJIO6acrf+3DqIitComIM43y9MLtpS8AuVWZmyUZlkkgLWjXlcmVueY0FKrL
- Ai7UCwobEzhahMXdIWSGOiUcZvwuAXUeDlR1kW/J4ebcsc/1dpMWwfzEy1h5dkz+pzUVHS1p5HL
- +KYfc8DzSPSXG+axvp8xqhdcBDpGBUXW1eSUSFH3g4YnlizbQuVY=
+ bh=KDqm7CKmLOtaKjfg8U6FnHACnxlOStNMxw9iJfPUCRw=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA/DpDc8SBoXjIpft7pSzMH/Ih/zr2ZTTStV
+ mpoKDDzPIWJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOL0JxAAhjQtl/OZE9UNojGdqZGN0wBR9zwkjtf
+ pLXoThvAzfrup3agMnYpkhXQAt3DikdCcAmmkoQHz6GsvTg8LLmGLXUsy/pi1FuaJ9afPdveU6Q
+ tfq0MD0x+O2VcStysLq5VvBDO88eHu12ZlgNyHYSNHQa4d7woGFQpCCMIJMBO5k6NaVxCX8IEEv
+ eBNsAV3PgD6sjXX+ww6+e5p6GugDMKAIePru+ZEdOEHnAp1ga/JZBlIS+TTEsyx2SiFsA0F4Cra
+ VjhjAzxmyeF2GOH3ke9t3dmhzCbFcwjsSGmCdIynYraSP94XxvFfsD27K9yQlH2EkK9INniGK6F
+ y2ziy9It6vyOu5IGw4hokDZgmmw3uAAm4TpdkvqdjEbV4oiqDUXzPYAmU9bBWsBQnMmEGnkJqc/
+ 8IOdyoDfKNkaUt8S3Kd5nJ1tU+n3ZFyWYqKFOzdPbndNiVPKmtkOj28W/zMqVXejUnnSbazszFi
+ EFTnNhN4XSjFZkiJ6QnBqDIUUzez3KqhfTIL/ekggpHET9raGyydyB0ysSvbLXbnod+w5MO37Uq
+ kmDZht8vLh1qoHJpEwruypFLqEe2G8pDadrBH0Rt0sj3KN2AsnDhaYB9bvfq3rOBTrLQrHCLDWv
+ 0ahdEYUCU34Fd4YzgzRbQuXYr4qH+5tjRKYX2l1i0rLEK7ulHmOU=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -81,73 +81,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For testing specific EDID, it is useful to be able to retrieve an EDID by
-a verbose name.
+Unigraf is able to manipulate the HPD line of the connector, add few
+helpers to manipulate them.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/monitor_edids/monitor_edids_helper.c | 30 ++++++++++++++++++++++++++++++
- lib/monitor_edids/monitor_edids_helper.h |  1 +
- 2 files changed, 31 insertions(+)
+ lib/vendor/unigraf/unigraf.c | 53 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/vendor/unigraf/unigraf.h |  6 +++++
+ 2 files changed, 59 insertions(+)
 
-diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
-index 9cb9c7e1a665..e2ad7dbd4185 100644
---- a/lib/monitor_edids/monitor_edids_helper.c
-+++ b/lib/monitor_edids/monitor_edids_helper.c
-@@ -20,6 +20,16 @@
- #include "drmtest.h"
- #include "hdmi_edids.h"
- 
-+struct {
-+	struct monitor_edid *edid_list;
-+	int list_size;
-+} ALL_EDIDS[] = {
-+	{DP_EDIDS_NON_4K,	DP_EDIDS_NON_4K_COUNT},
-+	{DP_EDIDS_4K,		DP_EDIDS_4K_COUNT},
-+	{HDMI_EDIDS_NON_4K,	HDMI_EDIDS_NON_4K_COUNT},
-+	{HDMI_EDIDS_4K,		HDMI_EDIDS_4K_COUNT},
-+};
-+
- static uint8_t convert_hex_char_to_byte(char c)
- {
- 	if (c >= '0' && c <= '9')
-@@ -170,3 +180,23 @@ const struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *c
- 		}
- 	}
+diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+index e6760ba84386..aca26fe06cc5 100644
+--- a/lib/vendor/unigraf/unigraf.c
++++ b/lib/vendor/unigraf/unigraf.c
+@@ -93,6 +93,22 @@ static void unigraf_init(void)
+ 	igt_install_exit_handler(unigraf_exit_handler);
  }
+ 
++/**
++ * unigraf_write_u32 - Write a 32-bit value to a TSI configuration item
++ * @config_id: The configuration item ID to write to
++ * @value: The 32-bit value to write
++ *
++ * This macro writes a 32-bit value to the specified TSI configuration item.
++ * This is a macro to have the proper line information when using unigraf_debug.
++ */
++#define unigraf_write_u32(config_id, value)									\
++	({													\
++		uint32_t v = (value);										\
++		igt_assert(unigraf_device);									\
++		unigraf_debug("Value write: " #config_id "=%d...\n", v);					\
++		unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config_id, &v, sizeof(value)));		\
++	})
++
+ /**
+  * unigraf_device_count() - Return the number of scanned devices
+  *
+@@ -293,3 +309,40 @@ void unigraf_require_device(int drm_fd)
+  */
+ void unigraf_reset(void)
+ {}
 +
 +/**
-+ * get_edid_by_name:
-+ * @name: Name to search in available EDIDs
++ * unigraf_hpd_assert() - Assert Hot Plug Detect signal
 + *
-+ * Return the struct edid associated with a specific name. As with edid_from_monitor_edid, the
-+ * caller must ensure to free the EDID after use. If no EDID with the exact name is found, returns
-+ * NULL.
++ * This function asserts the HPD signal, simulating a device connection.
 + */
-+struct edid *get_edid_by_name(const char *name)
++void unigraf_hpd_assert(void)
 +{
-+	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
-+		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
-+			if (strncmp(ALL_EDIDS[i].edid_list[j].name, name, EDID_NAME_MAX_LEN) == 0)
-+				return edid_from_monitor_edid(&ALL_EDIDS[i].edid_list[j]);
-+		}
-+	}
-+
-+	return NULL;
++	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 1);
 +}
-diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
-index f5f6f6824411..e76fed2cb4b9 100644
---- a/lib/monitor_edids/monitor_edids_helper.h
-+++ b/lib/monitor_edids/monitor_edids_helper.h
-@@ -34,5 +34,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
++
++/**
++ * unigraf_hpd_pulse() - Pulse the Hot Plug Detect signal
++ * @duration: The duration in milliseconds for which the HPD signal should be pulsed
++ *
++ * This function pulses the HPD signal for the specified duration.
++ */
++void unigraf_hpd_pulse(int duration)
++{
++	/* In theory this should work:
++	 * unigraf_write_u32(TSI_DPRX_HPD_PULSE_W, duration);
++	 * But this seems to be broken and this works:
++	 */
++	unigraf_hpd_deassert();
++	usleep(duration);
++	unigraf_hpd_assert();
++}
++
++/**
++ * unigraf_hpd_deassert() - Deassert Hot Plug Detect signal
++ *
++ * This function deasserts the HPD signal, simulating a device disconnection.
++ */
++void unigraf_hpd_deassert(void)
++{
++	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 0);
++}
+diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
+index 4c2cbd6b1aa5..77fba4e53912 100644
+--- a/lib/vendor/unigraf/unigraf.h
++++ b/lib/vendor/unigraf/unigraf.h
+@@ -42,4 +42,10 @@ void unigraf_require_device(int drm_fd);
  
- struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
- const struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
-+struct edid *get_edid_by_name(const char *name);
+ void unigraf_reset(void);
  
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
++void unigraf_hpd_deassert(void);
++
++void unigraf_hpd_pulse(int duration);
++
++void unigraf_hpd_assert(void);
++
+ #endif // UNIGRAF_H
 
 -- 
 2.52.0
