@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB114FF60F4
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:13:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C5B210F92E6
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:13:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7838710EC8E;
-	Tue, 31 Mar 2026 17:13:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C33DD10EC92;
+	Tue, 31 Mar 2026 17:13:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="UCuS4Gm2";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="NTHhrz2E";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C5A110EC39
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACDF910EC39
  for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:07 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id F40D01A30B3
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:05 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 2FE74C59956
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:37 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id CA62C6029D;
- Tue, 31 Mar 2026 17:11:05 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 8A0CF6029D;
+ Tue, 31 Mar 2026 17:11:06 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id B48031045059C; 
- Tue, 31 Mar 2026 19:11:04 +0200 (CEST)
+ with ESMTPSA id 953D910450495; 
+ Tue, 31 Mar 2026 19:11:05 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977065; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977066; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=FxffI9EjMYd18D+0pJ6hRbDCqgXzLmDSYkMhts5quME=;
- b=UCuS4Gm2Txu72G2r9v3JPEpLUvl5qRAq6Rx0h6ZLZ9Uluo8/vf8FNdXuVHeyhzyTr0KoD4
- C0wuh4qv6Tzf2leqBL92bwWcfHAdp2hurYxizZot8eiSNHJU16vnv+8yvnypv8xkklYAK0
- Mo639ST/4gxPe+8CVP7PWj81Tc89MYW/M8ESvQqJV33PWeIBSth5FMdmHOvCVTAvLn2J8B
- WmPZ6ZrjtWVhNWUWUxMAsBgqYOVJECqVX1TMAd/9r+AgJnRHXPVoU7TEmhy10z2NBUdv3p
- xXVp8zVdN80nobHCDid4o3INYx2PFnBTN0mynxhldmb7ci69Wo5R+qVXvo3ETg==
+ bh=Zv/UoWHlEpI3pcvUtNMnUAXDRKwuxqM7EO8dn/vuj3k=;
+ b=NTHhrz2EyUeolwMgSf+X8k7QNX59PEBeJfr1lD+eP/23yNQZ6LQ4W5j25hXjOYTXSx2ITU
+ +MCW1yjd0DHVK9B6c+1YYtv3g5+OYZKh0dTvlrRyJnP2fjzQAiMI6oQ7iCohCDjeAI5VMx
+ aToMrK2W9isBl6mBfCEGrVR8bS9rwUdpG2zbfSmVpTlNE49JZCWhNkXOPQOrrwv9mD0EE+
+ MJWJxunwZnvFiSyxCy4X7Q4Vco/IbcfqmxTId4PEnt9DvseJYFDvOM1akTcE8feujJpsWW
+ skQMU0LqiJYaSiti6gOflbdT3E7A8hvDKcBgOH2gFmPYoLz03o7IK4936KcMmQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:11:35 +0200
-Subject: [PATCH i-g-t v10 18/49] lib/unigraf: Add used defines for
- TSI_Types
+Date: Tue, 31 Mar 2026 19:11:36 +0200
+Subject: [PATCH i-g-t v10 19/49] lib/unigraf: Add TSI.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-unigraf-integration-v10-18-12266c34cc1d@bootlin.com>
+Message-Id: <20260331-unigraf-integration-v10-19-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -48,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6085;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9993;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=8KuUT7vU5w/32PDwWXHaKT3BILIzo/kBonWZO5r0BPs=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA97J0aFhaaq0OP2HFzDK03yS8NvQq72dH0g
- xBDtV8PCj+JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLmZhAA06FT0d/mzELRmdG7tOIsL9K6uZMNhcU
- TU/vmRTMiViZ5IFmXJezyVKdqmeWGJsU1pNzFnO0AWHwK/OPjjp1Nr8s0fXtjoZ+G36bwybaP8P
- Lx4uUYfvRsVb36dHHLqIbisfipP9UARljVnsmVgE846HVXP0na8DhaB6NtyRRzmLvi+FAeT/nkU
- pehahHKTFJIGq1yPcmpGLz7MzIcXsE6yx2ZI3Zzrio8broe/Am6IJTXFRTjcfBaJC179HDGpWCx
- CgQhq/8HEolDm0OZItqPp9m2M/sMnH+B2eGLF10jabMkPhiy+4PHzibq6xS07tKj0KTwfmtgIo1
- OSDHbTsoicEWZs7zt/D5UcLWIavcfoED1OHtFNEArKYAE6VGdf4P3IawRlmmnNxLj0MuSHh6bdv
- 27KJRI1B2k6kEXc4teuTESTrQzQgHu+F+wOyUfjowTbxAE3GITDh8Q5AUWDzt7qnEOTo0soOrBG
- Sghzhz28dn4fwTV1QQvBCpwgQcsF3mKUp+AZa8ek6zGcraIavJ08YyOoCeZhsBo5hBALqrqNgrx
- wwqnBK5LWfxkD/pFMRLQmN8dfK/Mu1IiyosUN2koHIEMKKnTw4Z6zE2NLFAbj5uOP1hoIWNASQm
- hSZBeCOmo4m617+DGRns1OoTagcXj0BO7xCKnJ58V/K6vSYdNM2w=
+ bh=xuw+vB3Wdn6WymDL8tL8aADVQFQ+dZ73QXGR+JmZ8PY=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA98dtDno3SyIU9piNroCbBtoWfULpGcauQJ
+ an92FSA8giJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKepg/9FwYbGBNoxQ48x/fEZQBY9FmETsQP7CH
+ kcEfvZTyZLoEuBe2HpbUi/zlBTSxDrsf1YDTVsOrHeYJfVG/SjjuPTnJj3WEpMw3I9zTpuW29Zf
+ hxcrWk1+CBtF5sSbqbAlOrjHl9u8xopj7xXgp/sGkgmW4/c5OAU9IhmXu+sMHYIkLpNcpaB4h9u
+ jhficHwYWVovxq4bd4bxbso27lFM9yn5WOct/yeWwF2Ks1tUw0S+bT4vCsabpUlwyUyoH33Rn5O
+ y9+2RU6SCAClQJL7iCPhXdtI8AY1E71HVx3vmPyXUYl5EozFbOpUNXttmmsL0qw7NwVCxfxFftu
+ KYmmmOE57RwEUHihKdL5btV7tNOyZcv0XdDjMTKtyEGePRuSJnWv9YqSSNEgcI/j1sZlyTV0iSX
+ SPxPVLim0Vujmw1F/NuMMwvM113o85Xpva0/uK5bBcLAeS7nvDcRq48GTXIT8sfEZEmv41Fr3k/
+ TX+vGe2wsAKlwnGpCxAC4u9YKdnGkkZEJk7mHMkRyc3vkuFX+fethTAQ79zVdN7/DpC8mXwSj2a
+ ocaHDyY1IIPkAl9JrUGpc1JODH+LO9NmDqytM39rLj2DD1k1fHw/JyHSDjfaHPYTtf8FYnwUgl0
+ 9oMMIIXgvEccRmTvpk2CAo+6h/a8pLX5S6HYHQbHUl5rKUSWDrVg=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -81,148 +80,252 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Current unigraf public release are not c-compatible, this file hardcode
-some values. One future release of libTSI may include a c-compatible
-TSI_types.h file with full structure definition, but until then.
+Unigraf does not provide header for the libTSI.so file, only dynamic
+library loading helpers for windows.
+
+In order to link against this library and use unigraf devices, add the
+function declaration used in the dynamic library loading wrappers.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/TSI_types.h | 126 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 126 insertions(+)
+ lib/vendor/unigraf/TSI.h | 228 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 228 insertions(+)
 
-diff --git a/lib/vendor/unigraf/TSI_types.h b/lib/vendor/unigraf/TSI_types.h
+diff --git a/lib/vendor/unigraf/TSI.h b/lib/vendor/unigraf/TSI.h
 new file mode 100644
-index 000000000000..c387ab4e1941
+index 000000000000..ee822c19a055
 --- /dev/null
-+++ b/lib/vendor/unigraf/TSI_types.h
-@@ -0,0 +1,126 @@
++++ b/lib/vendor/unigraf/TSI.h
+@@ -0,0 +1,228 @@
 +/* SPDX-License-Identifier: MIT */
 +
-+// Current unigraf public release are not c-compatible, this file hardcode some values.
-+// The next release of libTSI should include a c-compatible TSI_types.h file, that will
-+// be directly used in place of this file.
++/*
++ * tsi.h - Header for libTSI.so
++ * Documentation here is taken from official documentation and developer observation.
++ */
 +
-+#ifndef TSI_REG_H
++#ifndef TSI_H
++#define TSI_H
 +
-+#include <stdbool.h>
-+#include <stdint.h>
++#define TSI_CURRENT_VERSION	12
++#define MAX_EDID_SIZE		4096
 +
-+#define TSI_VERSION_TEXT			0x80000001
-+#define TSI_DEVCAP_VIDEO_CAPTURE		0x00000001
-+#define TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE	0x00000001
++#define TSI_SUCCESS		0
 +
-+#define TSI_EDID_TE_INPUT			0x1100
-+#define TSI_EDID_SELECT_STREAM			0x1102
-+
-+#define TSI_BASE_LEGACY_GENERIC(offset)		(0x210 + (offset))
-+#define	TSI_FORCE_HOT_PLUG_STATE_W		TSI_BASE_LEGACY_GENERIC(0x2)
-+
-+#define TSI_BASE_LEGACY_DPRX_MSA(offset)		(0x260 + (offset))
-+#define TSI_DPRX_MSA_COMMAND_W				TSI_BASE_LEGACY_DPRX_MSA(0x0)
-+#define TSI_DPRX_MSA_STREAM_COUNT_R			TSI_BASE_LEGACY_DPRX_MSA(0x1)
-+#define TSI_DPRX_MSA_STREAM_SELECT			TSI_BASE_LEGACY_DPRX_MSA(0x3)
-+#define TSI_DPRX_MSA_HTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x6)
-+#define TSI_DPRX_MSA_VTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x7)
-+#define TSI_DPRX_MSA_HACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x8)
-+#define TSI_DPRX_MSA_VACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x9)
-+#define TSI_DPRX_MSA_HSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xa)
-+#define TSI_DPRX_MSA_VSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xb)
-+#define TSI_DPRX_MSA_HSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xc)
-+#define TSI_DPRX_MSA_VSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xd)
-+
-+#define TSI_DPRX_LINK_FLAGS_MST				0x01
-+#define TSI_DPRX_LINK_FLAGS_TPS3			0x02
-+#define TSI_DPRX_LINK_FLAGS_TPS4			0x03
-+#define TSI_DPRX_LINK_FLAGS_EDP				0x04
-+#define TSI_DPRX_NOT_DOCUMENTED_DP_128_132_SUPPORTED	0x10
-+#define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT	0x20
-+
-+#define TSI_BASE_DPRX(offset)			(0x50000000u + 0x21000 + (offset))
-+#define TSI_DPRX_HW_CAPS_R			TSI_BASE_DPRX(0x4)
++typedef unsigned int		TSI_VERSION_ID;
++typedef unsigned int		TSI_SEARCH_OPTIONS;
++typedef unsigned int		TSI_DEVICE_CAPS;
++typedef unsigned int		TSI_CONFIG_ID;
++typedef unsigned int		TSI_DEVICE_ID;
++typedef unsigned int		TSI_INPUT_ID;
++typedef int			TSI_RESULT;
++typedef void			*TSI_HANDLE;
++typedef int			TSI_FLAGS;
 +
 +/**
-+ * struct TSI_DPRX_HW_CAPS_R_s - Structure representing the hardware capabilities of the DP RX.
++ * TSI_MISC_GetErrorDescription() - Get a human readable error message
++ * @ErrorCode: Error code for which you want the message
++ * @ErrorString: Pointer where to copy the message
++ * @StringMaxLen: Size of the allocated string @ErrorString
 + *
-+ * This structure defines the bitfields and fields that describe the hardware
-+ * capabilities of the DP RX (DisplayPort Receiver) interface. Each field
-+ * corresponds to a specific capability or feature supported by the hardware.
++ * The official documentation states: If the function succeeds, the
++ * return value is the number of characters required for the complete
++ * error description string.
++ * In reality, this function always returns 0 or < 0 (error), so there is no way to
++ * tell if the allocated memory was big enough
 + *
-+ * This structure is used to interpret the value read from the
-+ * TSI_DPRX_HW_CAPS_R register.
-+ *
-+ * @mst: MST support
-+ * @hdcp_1_x: HDCP 1.x support.
-+ * @hdcp_2_x: HDCP 2.x support.
-+ * @fec_8_10_b: FEC for 8/10 link support.
-+ * @dsc_8_10_b: DSC for 8/10 link support.
-+ * @three_lanes: Three lane link configuration support.
-+ * @edp_link_rate: eDP link rates are supported.
-+ * @mst_stream_count: Number of MST streams supported.
-+ * @max_link_rate: Maximum link rate supported. The unit is not specified in documentation,
-+ *                 it is probably like other config rate = 0.27GHz * value
-+ * @force_link_config: Forced link configuration support.
-+ * @power_provision: Power provision support on DP_PWR pin of receptacle connector.
-+ * @aux_swing_voltage_control: AUX output voltage swing control support.
-+ * @custom_dp_rate: Custom DP 2.0 rate support.
-+ * @custom_bit_rate: Custom bit rate support.
-+ * @fec_128_132_b: FEC for 128/132 link support.
-+ * @dsc_128_132_b: DSC for 128/132 link support.
++ * Returns:
++ * - >= 0 on success, theorically the required string len to store the message
++ * - < 0 on failure
 + */
-+struct TSI_DPRX_HW_CAPS_R_s {
-+	bool mst:1;
-+	bool hdcp_1_x:1;
-+	bool hdcp_2_x:1;
-+	bool fec_8_10_b:1;
-+	bool dsc_8_10_b:1;
-+	bool reserved_1:1;
-+	bool three_lanes:1;
-+	bool edp_link_rates_supported:1;
-+	uint8_t mst_stream_count:3;
-+	uint8_t reserved_2:5;
-+	uint8_t max_link_rate;
-+	bool force_link_config:1;
-+	bool reserved_3:1;
-+	bool power_provision:1;
-+	bool aux_swing_voltage_control:1;
-+	bool custom_dp_rate:1;
-+	bool custom_bit_rate:1;
-+	bool fec_128_132_b:1;
-+	bool dsc_128_132_b:1;
-+};
++TSI_RESULT TSI_MISC_GetErrorDescription(TSI_RESULT ErrorCode,
++					char *ErrorString,
++					unsigned int StringMaxLen);
 +
-+#define TSI_DPRX_LT_LANE_COUNT_R		TSI_BASE_DPRX(0x0B)
-+#define TSI_DPRX_LT_RATE_R			TSI_BASE_DPRX(0x0C)
-+#define TSI_DPRX_HPD_FORCE			TSI_BASE_DPRX(0x12)
-+#define TSI_DPRX_MST_SINK_COUNT			TSI_BASE_DPRX(0x9D)
++/**
++ * TSI_Init() - Initialize the TSI library
++ * @ClientVersion: Indicates the version used to call the libTSI.so functions.
++ *
++ * Initialize libTSI for use and sets up internal state. It can be called
++ * multiple times, but TSI_Clean must be called the exact same number of time.
++ *
++ * Returns:
++ * - In case of success: Reference count to the API (number of times to call TSI_Clean)
++ * - TSI_ERROR_NOT_COMPATIBLE if the requested client version is not supported
++ *   by the library
++ * - TSI_ERROR_COMPATIBILITY_MISMATCH if TSI_Init is called twice with
++ *   different client version
++ */
++TSI_RESULT TSI_Init(TSI_VERSION_ID ClientVersion);
 +
-+#define TSI_BASE_DP_RX(offset)                  (0x00010100 + (offset))
-+#define TSI_DP_RX_DUT_MAX_LANE_COUNT		TSI_BASE_DP_RX(0xf)
++/**
++ * TSI_Clean() - Cleans and closes the TSI library
++ *
++ * When TSI_Clean is called for the last time, cleanup the internal state. It
++ * should be called exactly the same number of times as TSI_Init
++ */
++TSI_RESULT TSI_Clean(void);
 +
-+#define TSI_BASE_DP_LTT(offset)                 (0x00010700 + (offset))
-+#define TSI_DP_LTT_MAX_LANE_COUNT		TSI_BASE_DP_LTT(0x01)
++/**
++ * TSIX_DEV_RescanDevices() - Refresh the internal list of devices for libTSI
++ * @SearchOptions: Options to filter the list of devices (e.g.,
++ *                 TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE to include
++ *                 devices already in use).
++ * @RequiredCaps: Filter to list only devices with specific capabilities.
++ * @UnallowedCaps: Filter to list only devices without specific capabilities.
++ *
++ * Returns: >=0 in case of success, <0 on error. The value is not the number of devices,
++ *          you need to use TSIX_DEV_GetDeviceCount to get the discovered devices count.
++ *
++ * This function should be called every time you need to update the list of connected devices,
++ * and it must be called at least once before calling TSI_DEV_GetDeviceCount.
++ */
++TSI_RESULT TSIX_DEV_RescanDevices(TSI_SEARCH_OPTIONS SearchOptions,
++				  TSI_DEVICE_CAPS RequiredCaps,
++				  TSI_DEVICE_CAPS UnallowedCaps);
 +
-+#define TSI_BASE_LEGACY_DPRX(offset)		(0x2b0 + (offset))
-+#define TSI_DPRX_DPCD_BASE_W			TSI_BASE_LEGACY_DPRX(0x9)
-+#define TSI_DPRX_DPCD_DATA			TSI_BASE_LEGACY_DPRX(0xA)
-+#define TSI_DPRX_MAX_LANES			TSI_BASE_LEGACY_DPRX(0x10)
-+#define TSI_DPRX_MAX_LINK_RATE			TSI_BASE_LEGACY_DPRX(0x11)
-+#define TSI_DPRX_LINK_FLAGS			TSI_BASE_LEGACY_DPRX(0x12)
-+#define TSI_DPRX_STREAM_SELECT			TSI_BASE_LEGACY_DPRX(0x13)
-+#define TSI_DPRX_CRC_R_R			TSI_BASE_LEGACY_DPRX(0x14)
-+#define TSI_DPRX_CRC_G_R			TSI_BASE_LEGACY_DPRX(0x15)
-+#define TSI_DPRX_CRC_B_R			TSI_BASE_LEGACY_DPRX(0x16)
-+#define TSI_DPRX_HPD_PULSE_W			TSI_BASE_LEGACY_DPRX(0x1B)
++/**
++ * TSIX_DEV_GetDeviceCount() - Get the count of scanned devices
++ * Returns: the number of devices that the previous call to TSIX_DEV_RescanDevices() detected
++ *
++ * Must be called after a TSIX_DEV_RescanDevices.
++ */
++TSI_RESULT TSIX_DEV_GetDeviceCount(void);
 +
-+#define H2_SINK_LOAD_PROD_KEYS                         0x002
-+#define H2_SINK_UNLOAD_KEYS                            0x003
-+#define H2_SINK_SET_CAPABLE                            0x004
-+#define H2_SINK_CLEAR_CAPABLE                          0x005
++/**
++ * TSIX_DEV_GetDeviceName() - Get the name of a device from the scanned list
++ * @DeviceID: Index in the TSI_DEV_RescanDevices list
++ * @DevNameString: Pointer to store the device name
++ * @NameStringMaxLength: Size of the allocated memory for @DevNameString
++ *
++ * Returns: >=0 in case of success, the length of the device name string
++ * Note: If the return value is larger than NameStringMaxLength, the string may be truncated
++ */
++TSI_RESULT TSIX_DEV_GetDeviceName(TSI_DEVICE_ID DeviceID, char *DevNameString,
++				  unsigned int NameStringMaxLength);
 +
-+#define TSI_BASE_LEGACY_HDCP2(offset)                  (0x290 + (offset))
-+#define TSI_HDCP_2X_COMMAND_W                          TSI_BASE_LEGACY_HDCP2(0x1)
++/**
++ * TSIX_DEV_OpenDevice() - Open a device from the scanned list
++ * @DeviceID: index in the TSI_DEV_RescanDevices list
++ * @Result: Pointer to store the error code returned while opening the device
++ * Returns: if the device is found, an opaque pointer that can be used for other
++ * API calls, or NULL on error.
++ */
++TSI_HANDLE TSIX_DEV_OpenDevice(TSI_DEVICE_ID DeviceID, TSI_RESULT *Result);
 +
-+#endif /* TSI_REG_H */
++/**
++ * TSIX_DEV_CloseDevice() - Close the device handle when finished
++ * @Device: Device handle to close
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_DEV_CloseDevice(TSI_HANDLE Device);
++
++/**
++ * TSIX_DEV_GetDeviceRoleCount() - Get the number of roles available for a device
++ * @Device: Device handle to query
++ *
++ * Returns: >=0 in case of success, the number of roles available for the device
++ */
++TSI_RESULT TSIX_DEV_GetDeviceRoleCount(TSI_HANDLE Device);
++
++/**
++ * TSIX_DEV_GetDeviceRoleName() - Get the name of a specific role for a device
++ * @Device: Device handle to query
++ * @RoleIndex: Index of the role to get the name for
++ * @RoleNameString: Pointer to store the role name
++ * @RoleStringMaxLength: Size of the allocated memory for @RoleNameString
++ *
++ * Returns: >=0 in case of success, the length of the role name string
++ * Note: If the return value is larger than RoleStringMaxLength, the string may be truncated
++ */
++TSI_RESULT TSIX_DEV_GetDeviceRoleName(TSI_HANDLE Device, int RoleIndex,
++				      char *RoleNameString, unsigned int RoleStringMaxLength);
++
++/**
++ * TSIX_DEV_SelectRole() - Select a specific role for the specified device
++ * @Device: Device handle on which to assign the role
++ * @RoleIndex: Index of the role to assign
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_DEV_SelectRole(TSI_HANDLE Device, int RoleIndex);
++
++/**
++ * TSIX_VIN_GetInputCount() - Get the number of video inputs available on a device
++ * @Device: Device handle to query
++ *
++ * Returns: >=0 in case of success, the number of video inputs available on the device
++ */
++TSI_RESULT TSIX_VIN_GetInputCount(TSI_HANDLE Device);
++
++/**
++ * TSIX_VIN_GetInputName() - Get the name of a specific video input on a device
++ * @Device: Device handle to query
++ * @InputID: Identifier of the input to get the name for
++ * @InputNameString: Pointer to store the input name
++ * @NameStringMaxLen: Size of the allocated memory for @InputNameString
++ *
++ * Returns: >=0 in case of success, the length of the input name string
++ * Note: If the return value is larger than NameStringMaxLen, the string may be truncated
++ */
++TSI_RESULT TSIX_VIN_GetInputName(TSI_HANDLE Device, TSI_INPUT_ID InputID,
++				 char *InputNameString, unsigned int NameStringMaxLen);
++
++/**
++ * TSIX_VIN_Disable() - Disable video input on the specified device
++ * @Device: Device handle to disable video input on
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_VIN_Disable(TSI_HANDLE Device);
++
++/**
++ * TSIX_VIN_Select() - Select a specific video input on the specified device
++ * @Device: Device handle on which to select the input
++ * @InputID: Identifier of the input to select
++ * Returns: >=0 in case of success
++ */
++
++TSI_RESULT TSIX_VIN_Select(TSI_HANDLE Device, TSI_INPUT_ID InputID);
++/**
++ * TSIX_VIN_Enable() - Enable video input on the specified device
++ * @Device: Device handle to enable video input on
++ * @Flags: Flags to specify the options for enabling the video input
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_VIN_Enable(TSI_HANDLE Device, TSI_FLAGS Flags);
++
++/**
++ * TSIX_TS_GetConfigItem() - Read a configuration item from the UCD device
++ * @Device: Device handle to read config from. Can be NULL for certain configuration items,
++ *          for example TSI_VERSION_TEXT.
++ * @ConfigItemID: Identifier of the requested configuration item.
++ * @ConfigItemData: Pointer to store the read value.
++ * @ItemMaxSize: Size of the allocated memory for @ConfigItemData.
++ *
++ * Returns: The size of the raw data. If the return value is larger than ItemMaxSize, no data
++ *          is copied to ConfigItemData.
++ * Note:
++ * - Some configurations require specific size and alignment for the allocated buffer. Refer to
++ *   the specific item configuration documentation for details.
++ * - Data may still be written to @ConfigItemData even if the return value is larger than
++ *   @ItemMaxSize, potentially causing buffer overflow.
++ */
++TSI_RESULT TSIX_TS_GetConfigItem(TSI_HANDLE Device, TSI_CONFIG_ID ConfigItemID,
++				 void *ConfigItemData,
++				 unsigned int ItemMaxSize);
++
++/**
++ * TSIX_TS_SetConfigItem() - Set a configuration item on the specified device
++ * @Device: Device handle to set the configuration on
++ * @ConfigItemID: Identifier of the configuration item to set
++ * @ItemData: Pointer to the data to set
++ * @ItemSize: Size of the data to set
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_TS_SetConfigItem(TSI_HANDLE Device, TSI_CONFIG_ID ConfigItemID,
++				 const void *ItemData, unsigned int ItemSize);
++
++#endif
 
 -- 
 2.52.0
