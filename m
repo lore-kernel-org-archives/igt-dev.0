@@ -4,158 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BC59FF60DE
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 07:38:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 123DAFF60D8
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 07:45:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC5FD10E8CD;
-	Tue, 31 Mar 2026 07:38:03 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DRPYrRWn";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E3C610E8C5
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 07:37:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774942676; x=1806478676;
- h=message-id:date:subject:to:references:from:in-reply-to:
- mime-version; bh=7Fc+RDcuSBcuwI5f0RhWql7SCDuSL2B3tlyti6GRCcU=;
- b=DRPYrRWnm+pUR5E59rYLQSI5GItvofW+7fCv7Tnov3qDpZzsf5weRvxj
- d/sfAGwvFaLtUiMyaKAZeQ9Gfx/yHmOOgLS2oMMsa8stW3XyapaP8fOJU
- AxXVVE4mu2zf3gDOLfIqTyKBaPkLjDV1H5eooeP/zkvjWs2drPDHTKb/7
- gqagnZprZuyLzlDI47iEjzQe+mIJLdkEhFhvLAXXDbW4tVh4emEuQUlQS
- WAszCev/xJVvZA/dnpsQBKtL6b5dDFVTOgE3p9VdIEgLQMTFTGoGNDnIe
- MKvf/LAqJD0KV2Pk8Y3GfJoVjblB1LhndBL09Fo9OwFPKzqZ+U3mdjORI Q==;
-X-CSE-ConnectionGUID: ZyfDtxXtRQ6aSS7HkDNxgg==
-X-CSE-MsgGUID: oeJLUccfStuxVQZu/8DRtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="79845011"
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; d="scan'208,217";a="79845011"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 00:37:56 -0700
-X-CSE-ConnectionGUID: VCWv6PDxQziLiL4a7h83ew==
-X-CSE-MsgGUID: YCSHRenzQ+GmYgo9BSZqSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
- d="scan'208,217";a="225458612"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 00:37:55 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 31 Mar 2026 00:37:55 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 31 Mar 2026 00:37:55 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.7) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 31 Mar 2026 00:37:54 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UYSUrlCQyCEd/peSrm8d9hlkAQr1kgYrH5ZqePL+o0aOE0QpjaM8/NxAoAx8vnFFzccxcwN38wgim6JG6TbzabIu+kkAv7xWXThDMeg2in8iN3mNmGDz47MmCy0FL1hPQQnqCCZXRxkb5kQdoEJtk6QDuIQwdB+nZS4Y4+azwMVL9Zz1Ze0/QXAwUC+y31CG8vJdNeaHrPBrMmn6rtk1a2g0HXp7hlOHjZnocSRPqCiGdKtfbBDrdVBOkEqHYmgrG2Z2fvDJ5ZJjB8GgzUmOm1er5F6ppzC8fbcKDPtraXQ4HujC39g9/tJpI7xxw+1OdWbdehdJFn3zVtq4WNWLUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4kOCrW7qnujIdwkTEdZd/OZhLd3oto1SIlwbDKSC4kA=;
- b=EwOsP943R/+pbIvgI3/S6PR+Hc9BJIzSsLgrA8cuwI2Mqc4n/ohxtkf0ih+SBSg0BJQJMf9sYe6uXTZb4SKHOiXy2RUYZOqH9krpc5JdlxnR6JKa0Vdqi0c+kM7lwBqGrkSY+Wv22+xCxRJ11SgHsEobJdSFCgXH+LzLUqLx0p8korZpGoQiKcb3/MMIRd8QoIi8haeqdrS1WNB7PY1SExM62xtIZSBjacfv1P1saHpeP6fvTkRoYSBzEbdi73WDhMHLkzmeKSTUoRPFlShgvo8ixl0HahFQ0MGvsvNGx9PQXh4DLmkDeanThxYIAHRLTMIfS+2/ZHhgGAgqDZg5YQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV8PR11MB8485.namprd11.prod.outlook.com (2603:10b6:408:1e6::13)
- by IA3PR11MB8968.namprd11.prod.outlook.com (2603:10b6:208:57b::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
- 2026 07:37:51 +0000
-Received: from LV8PR11MB8485.namprd11.prod.outlook.com
- ([fe80::9ec6:998a:b515:890c]) by LV8PR11MB8485.namprd11.prod.outlook.com
- ([fe80::9ec6:998a:b515:890c%4]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
- 07:37:50 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA07010E168;
+	Tue, 31 Mar 2026 07:45:57 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C6F610E168;
+ Tue, 31 Mar 2026 07:45:50 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="------------CClDBkbGwO0Mm65H3YRrnBwa"
-Message-ID: <b4232c6a-fda6-483e-b13c-b451433da96a@intel.com>
-Date: Tue, 31 Mar 2026 13:07:44 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v9 4/6] tests/kms_flip: limit number of outputs wrt
- suspend
-Content-Language: en-GB
-To: =?UTF-8?Q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20260330075508.1003899-1-michal.grzelak@intel.com>
- <20260330075508.1003899-5-michal.grzelak@intel.com>
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-In-Reply-To: <20260330075508.1003899-5-michal.grzelak@intel.com>
-X-ClientProxiedBy: MA1PR01CA0153.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:71::23) To LV8PR11MB8485.namprd11.prod.outlook.com
- (2603:10b6:408:1e6::13)
+ boundary="===============2742582077712032366=="
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR11MB8485:EE_|IA3PR11MB8968:EE_
-X-MS-Office365-Filtering-Correlation-Id: bab7fc9c-f955-4274-e2c8-08de8ef86951
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|8096899003|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info: EFOeJffPmHxfRSRgKjZ+uv0qO56veh6dEQMn+J7fBdu2/BqGVUVQUuC02EamRWWscGJXiByL+YVIqk5NhFMy3/dv7sSEebyCCSnHvNrosmcSRVBbhALbPBp1w7UaD+2RA/bG7KwrZTl5t5XQYwTCxI1QF00SGn71qCBp2c3jv5fpN8a0Q6vBHbkhGtTR3ZeQW8CchmrNFHeNpT+BtgRFAm0qH1Fg+12ZWlaCNGqoWK1BzRDOeNgmWESMLLMFOwmtdvDWi3KAGnXo2ucicWkH6BfLFHT7mU8Gp3lzIoYjfkVDcqTBQcELN7czHshPwmPMhhoZIKysFu/lfZ5rzOTCvsCgH/4xWJGt32C3iGLtFmrjDQQKpyOjVfMbIbLHW1oUdHvS4yPIylGSuuqkky7vewqAf0lTr8iT+F1pNkuakmxDnTG3DXEDZVMq/dGUGmQKWdNoaQXoAkN4Tazv5uXeWyNLi/ob0RDgZFb8f47Mq0tj7KAjfnnlEJrIbFAvc4TpKbrGdznFQOJFFgpMiWoWJ8c3/t247mCkotJ+k+yZt1Tcj1ZJ458HUDZTRWwWg/bL6ezvuykN968I7xcC4YtcoU8+C5xR1jt5eSNcIuZzTPORTuHt4gFkImnKTnWgB0O/1r5lLCN5YOgD6eIvGh6pggQFB4pgB4cnwMy7i4lq9qnrooPHgx+tWvU16YguHxLcoyAD6uMyfjpW7Jv62QcWwnevMp7DiR0GoVODlsC4mCI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:LV8PR11MB8485.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(8096899003)(18002099003)(56012099003)(22082099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y3FkREdlczltSVRJMG5URThWV3pLNVVsQlhnMjVVU1BjNFJ6NUk0a3BpUFpV?=
- =?utf-8?B?Y0FuNVREcGt3Rk11djZ4a0NxV2lxdjRhQy9SY2llTGdmTlRXVHZuNVJXRi9V?=
- =?utf-8?B?cHpXdE5yTXBRelBBZlhoWnVGQ1JwU2RPZ3BydCs4NGsxMTVFNkQ1K1k0R2Q5?=
- =?utf-8?B?UTJnV0pLRFdtM0lMTjJDMmRnLzZ4Z3BhMDVIY3FldytBWmtxL1pnV0JvZDQ3?=
- =?utf-8?B?WmErMm9xdnFZdk1pbGtMM1FmV0x2amMvU1g2Q2ZmZ2pGdlBqcSs1czJGcnpv?=
- =?utf-8?B?SlBSV1h4MmF2MEdVSDIzaVNPemVhMDVNZjZpWXVQNVpyWVdBdFFHY3ZDNHpT?=
- =?utf-8?B?b2VTamFtb0VveDVoZUt5ZmlLMU5sYzF4TTBrbkcyWkZmRExDdDg2dnI1eC9i?=
- =?utf-8?B?dTV6bEs4c3ViMmY4aWw4UHJQNDhsZEgwM2pSU0MxUmduWlZLblVqcE02czVK?=
- =?utf-8?B?SExDbHpFV3dCN0w4NmVSWFJVcDF0ZW9Qc3NIY2RaMXpTeWlnSzNoOGtsckds?=
- =?utf-8?B?Q2toZmFGS2Y5eVFYRXp3ajVobG95eHl4VlBwcmkzYWN2bC9FajdMeHZXZ3ox?=
- =?utf-8?B?TVA3QmJTUlVoWWtWNWNRLzJXaHoyb2pKWG5YM29Ic21iVHdJVVZrZnZGRFYx?=
- =?utf-8?B?K0IwbThmVXhSUlBvUG5QQ2J2Q2pXcU1WNXgxYk1HQkQrLzYzY1dtZzIzc01R?=
- =?utf-8?B?NEd2R0t4ZzEyT09WbUxRcUJwdkZOMXIxM1FoNDhTWFBOeU5KZTJJQzBCeDJS?=
- =?utf-8?B?UXpGT1AvVi9JNm5FT05SWjFKdWRKNXRHMGdJazRPdzMzQ2YyTnVlUXdjQnBW?=
- =?utf-8?B?R0FpNWhZeWliYUc3S0NiQytBcm41WFgzcHlzQzh4cm4rbENUbkZLcFYvaS9B?=
- =?utf-8?B?T3ZoL0ZSRGIwMWJxN1pDTTFjV1FKZHpOMHhrRGxpUU5PQTBpVE5BYjNvS0tm?=
- =?utf-8?B?MWczcVNyMitUaitWbE5ONkpFVzdDYUQ4VWdkTTBwYlI5VXhhQkRqOVVucUoy?=
- =?utf-8?B?YzBpMFExSVNXQ09XSXF6NGVMbENCdzUrU2lzakUzTUtaRE8rRmpwMnlLcExk?=
- =?utf-8?B?bVdKc0dydzNhbUwrMERER0NYc2lGdk9BcDZOR1plcHJ1dkt2bVVILy90SkJG?=
- =?utf-8?B?MGd4SUZZQ3c3V1dMbktTbWwydFkxRk5PZi9DU1NwcmJxTXEwSlhpb09EQ0tI?=
- =?utf-8?B?TFNNZ2ZjbDNXTG5CYW9ReUNUQ0djRHVZZVdvbVdRUytrdUpGZnpxdmFUSzgz?=
- =?utf-8?B?M3U0eVBoN2V4emk0NTZkZGgybFcxcXFMZlU1ZmV5V0xMWitPTXpWdkY1b3NO?=
- =?utf-8?B?bUtxM3JyVDFSSkVUd0pjZENyN0U2ZDRNVGpJcGZ0KzdvVEVwamluaUtrYXZU?=
- =?utf-8?B?VkhOcG01ZjVwTnQ4Vml6RzYyQXVkRzM4YWtXY0J6N21QSnFLczR5U3ZJQldD?=
- =?utf-8?B?VDZWdjZlSTBNaWtXaWJ5M0R2RzNuWWw2TndudWgwUEFWVWM4N1JKckhBcENv?=
- =?utf-8?B?YXIyc01rdmc5WTJCcUhGWmI3cldxRU1iMXU1TjBjN1ZiQ08yR1ZDdjlNSnZy?=
- =?utf-8?B?QlJSdEhRTk9wNUgyVDRCb2J6Wm1DKytmQmZWN2FyUmJ6TW4zV0VSOXNvdk1w?=
- =?utf-8?B?U0RMRzg3ZlBnak94WnBiUTdVTmNDRm9lUjBPZzY3VGx5aUdZSkJKNnlYbnhV?=
- =?utf-8?B?Sm8xY0UxN09ncDJjRWYyQWV1aVVHVzhmd29oUk1meDg3NkZ2SExRUjhXaHNs?=
- =?utf-8?B?VTF5MDhtSklQSHU1cTBxWU1lUlVRYy9CVU9kSTdacFp6UW9iUEhlNGl2Y2JN?=
- =?utf-8?B?SDZQdCtIV0FqQ2tEWlpCcnpZRnFIUTREMkVwcFppdHV2TDF0L3Nuek0raDFE?=
- =?utf-8?B?TTBBT1hzVHVFTXZaUFNDanUrVHF0eGhWN2JYTk9sbnAxaUVuS1hrOE1iQTlv?=
- =?utf-8?B?bDZmRncxVFZKUzNYTHA5aVJhU2FWcTVlNUFDRmRVbTExL2ZVNXZTSGJ1a0Nx?=
- =?utf-8?B?Umk4enJRNm5XdGUzVVcrM1oybk1lUHVWU2VRcGQyZHpyRGN3MjBoSHVCaTVJ?=
- =?utf-8?B?RnF3QWRIYWR2dVNPSXMrVjk3dklKNU9UR2x5UjNSNVRDR01QY2dZR0RJcjA1?=
- =?utf-8?B?L3BPL3FmNlRiZU9rUkJJNm9EVnV1SXZEanc2WWRxZjBROWlnNXhHTVlqa1h5?=
- =?utf-8?B?aG94T3RINUNud1hZRXI2aGVRekRzZVBVMW9IVFpqQVEwV1JTK29jQkI1VVBm?=
- =?utf-8?B?VG8yQjZNTVdpejVYY1UrQ0V5R1B0ZjF2b0hKWG8wQXZiRGpmZzNLYkVCT0RM?=
- =?utf-8?B?dXhkVGJ3QlltTHIwcGlNQ20xVVdPcWRvcmNWQnJyTUpkalpHcEVEcDBwRVpY?=
- =?utf-8?Q?AFTfgzTzQxlgPuFU=3D?=
-X-Exchange-RoutingPolicyChecked: v38BRZpmMGH9i0xsAHzCLkn9jprJKPGhjw3dd/VdYK/cSlZh/GFikurrtZUstzdyPONwtnWRBclKCWI4CvalJfj1sV8IvbwR5wxwxuRmEDVNPeMqjKXiSLBabhy/zpZUdskMx1zotX2ut88oEyypQ2EFDe/rTF2gIi3CiiyBGPv4oGLDQyabnUOZB9JFlwUBQIIzScC0ah2DBLD57ktO8bwjCvsYPD1M1bJfdAzZ2qGw5zV3gXpVjEGWm+3fXtlgdcuuq9DXq+a/eREj22m17HZp4mZRm1z4G0xDcsPKqc3E2TZQPIQxuIhd29HfJ9ETg9Iegv/YJaOU5tSKZoL0CA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: bab7fc9c-f955-4274-e2c8-08de8ef86951
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR11MB8485.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 07:37:50.7596 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Kif952EA+CbS/YiOhymOg8LtGX/crEGHe8WlcjtwixzVYS2a+mQI1JgSAdPR2e4Hb8hVlymsKKH6MOWcHWMT4qgVXW8COsF64ZW1VECRYI0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB8968
-X-OriginatorOrg: intel.com
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_Add_CSC_Fixed-Function_=28?=
+ =?utf-8?q?CSC=5FFF=29_colorop_tests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 31 Mar 2026 07:45:50 -0000
+Message-ID: <177494315028.414888.12584695148699714718@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260330115057.963395-1-swati2.sharma@intel.com>
+In-Reply-To: <20260330115057.963395-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -168,217 +37,1351 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------CClDBkbGwO0Mm65H3YRrnBwa
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+--===============2742582077712032366==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Add CSC Fixed-Function (CSC_FF) colorop tests
+URL   : https://patchwork.freedesktop.org/series/164080/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8836_FULL -> XEIGTPW_14884_FULL
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 2)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_14884_FULL:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-c-plane-1} (NEW):
+    - shard-lnl:          NOTRUN -> [SKIP][1] +63 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-lnl-8/igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-c-plane-1.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8836_FULL and XEIGTPW_14884_FULL:
+
+### New IGT tests (80) ###
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020:
+    - Statuses : 1 skip(s)
+    - Exec time: [3.20] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-a-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-a-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-a-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-b-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-b-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-b-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-c-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-c-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-c-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601:
+    - Statuses : 1 skip(s)
+    - Exec time: [3.20] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-a-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-a-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-a-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-b-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-b-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-b-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-c-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-c-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-c-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709:
+    - Statuses : 1 skip(s)
+    - Exec time: [3.09] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-a-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-a-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-a-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-b-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-b-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-b-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-c-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-c-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-c-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020:
+    - Statuses : 1 skip(s)
+    - Exec time: [3.08] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-a-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-a-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-a-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-b-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-b-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-b-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-c-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-c-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-c-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020:
+    - Statuses : 1 skip(s)
+    - Exec time: [3.33] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-a-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-a-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-a-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-b-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-b-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-b-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-c-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-c-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-c-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601:
+    - Statuses : 1 skip(s)
+    - Exec time: [3.18] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-a-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-a-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-a-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-b-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-b-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-b-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-c-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.00] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-c-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-c-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709:
+    - Statuses : 1 skip(s)
+    - Exec time: [3.15] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-a-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-a-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-a-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-b-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-b-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-b-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.00] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-c-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-c-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.00] s
+
+  * igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-c-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020:
+    - Statuses : 1 skip(s)
+    - Exec time: [3.25] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-a-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-a-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-a-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-b-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-b-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-b-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-c-plane-0:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.00] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-c-plane-1:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-c-plane-2:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14884_FULL that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * {igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-c-plane-2} (NEW):
+    - shard-lnl:          NOTRUN -> [SKIP][2] ([Intel XE#7006]) +15 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-lnl-2/igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-c-plane-2.html
+
+  * igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1:
+    - shard-lnl:          [PASS][3] -> [FAIL][4] ([Intel XE#301]) +1 other test fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-lnl-3/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-lnl-7/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html
+
+  * igt@kms_pm_dc@dc5-dpms:
+    - shard-lnl:          [PASS][5] -> [FAIL][6] ([Intel XE#7340] / [Intel XE#7504])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-lnl-8/igt@kms_pm_dc@dc5-dpms.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-lnl-5/igt@kms_pm_dc@dc5-dpms.html
+
+  * igt@kms_psr_stress_test@invalidate-primary-flip-overlay:
+    - shard-lnl:          [PASS][7] -> [SKIP][8] ([Intel XE#4692] / [Intel XE#7508])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-lnl-2/igt@kms_psr_stress_test@invalidate-primary-flip-overlay.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-lnl-4/igt@kms_psr_stress_test@invalidate-primary-flip-overlay.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_vrr@cmrr@pipe-a-edp-1:
+    - shard-lnl:          [FAIL][9] ([Intel XE#4459]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-lnl-5/igt@kms_vrr@cmrr@pipe-a-edp-1.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-lnl-1/igt@kms_vrr@cmrr@pipe-a-edp-1.html
+
+  * igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:
+    - shard-lnl:          [FAIL][11] ([Intel XE#2142]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-lnl-8/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-lnl-7/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html
+
+  
+#### Warnings ####
+
+  * igt@xe_module_load@load:
+    - shard-bmg:          ([PASS][13], [DMESG-WARN][14], [DMESG-WARN][15], [DMESG-WARN][16], [DMESG-WARN][17], [DMESG-WARN][18], [DMESG-WARN][19], [DMESG-WARN][20], [DMESG-WARN][21], [DMESG-WARN][22], [DMESG-WARN][23], [DMESG-WARN][24], [DMESG-WARN][25], [DMESG-WARN][26], [DMESG-WARN][27], [DMESG-WARN][28], [DMESG-WARN][29], [DMESG-WARN][30], [DMESG-WARN][31], [DMESG-WARN][32], [DMESG-WARN][33], [DMESG-WARN][34], [DMESG-WARN][35], [DMESG-WARN][36], [PASS][37]) ([Intel XE#7433]) -> ([DMESG-WARN][38], [DMESG-WARN][39], [DMESG-WARN][40], [DMESG-WARN][41], [DMESG-WARN][42], [DMESG-WARN][43], [DMESG-WARN][44], [DMESG-WARN][45], [DMESG-WARN][46], [DMESG-WARN][47], [DMESG-WARN][48], [DMESG-WARN][49], [DMESG-WARN][50], [DMESG-WARN][51], [DMESG-WARN][52], [DMESG-WARN][53], [DMESG-WARN][54], [DMESG-WARN][55], [DMESG-WARN][56], [DMESG-WARN][57], [DMESG-WARN][58], [DMESG-WARN][59], [DMESG-WARN][60], [DMESG-WARN][61], [DMESG-WARN][62]) ([Intel XE#7433])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-5/igt@xe_module_load@load.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-8/igt@xe_module_load@load.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-8/igt@xe_module_load@load.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-4/igt@xe_module_load@load.html
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-4/igt@xe_module_load@load.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-10/igt@xe_module_load@load.html
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-10/igt@xe_module_load@load.html
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-10/igt@xe_module_load@load.html
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-1/igt@xe_module_load@load.html
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-1/igt@xe_module_load@load.html
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-1/igt@xe_module_load@load.html
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-7/igt@xe_module_load@load.html
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-7/igt@xe_module_load@load.html
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-9/igt@xe_module_load@load.html
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-9/igt@xe_module_load@load.html
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-9/igt@xe_module_load@load.html
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-2/igt@xe_module_load@load.html
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-2/igt@xe_module_load@load.html
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-2/igt@xe_module_load@load.html
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-3/igt@xe_module_load@load.html
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-3/igt@xe_module_load@load.html
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-3/igt@xe_module_load@load.html
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-6/igt@xe_module_load@load.html
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-6/igt@xe_module_load@load.html
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-5/igt@xe_module_load@load.html
+   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-3/igt@xe_module_load@load.html
+   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-3/igt@xe_module_load@load.html
+   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-6/igt@xe_module_load@load.html
+   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-6/igt@xe_module_load@load.html
+   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-6/igt@xe_module_load@load.html
+   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-4/igt@xe_module_load@load.html
+   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-4/igt@xe_module_load@load.html
+   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-8/igt@xe_module_load@load.html
+   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-8/igt@xe_module_load@load.html
+   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-8/igt@xe_module_load@load.html
+   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-10/igt@xe_module_load@load.html
+   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-10/igt@xe_module_load@load.html
+   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-10/igt@xe_module_load@load.html
+   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-1/igt@xe_module_load@load.html
+   [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-1/igt@xe_module_load@load.html
+   [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-1/igt@xe_module_load@load.html
+   [54]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-7/igt@xe_module_load@load.html
+   [55]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-7/igt@xe_module_load@load.html
+   [56]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-9/igt@xe_module_load@load.html
+   [57]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-9/igt@xe_module_load@load.html
+   [58]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-9/igt@xe_module_load@load.html
+   [59]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-2/igt@xe_module_load@load.html
+   [60]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-2/igt@xe_module_load@load.html
+   [61]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-2/igt@xe_module_load@load.html
+   [62]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-3/igt@xe_module_load@load.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#2142]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2142
+  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
+  [Intel XE#4459]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459
+  [Intel XE#4692]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4692
+  [Intel XE#7006]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7006
+  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
+  [Intel XE#7433]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7433
+  [Intel XE#7504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504
+  [Intel XE#7508]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7508
 
 
-On 30-03-2026 01:25 pm, Michał Grzelak wrote:
-> When running suspend subtests on single output, we can still hit the
-> timeout by testing too much outputs. Default to testing 3 outputs. Add
-> command-line parameter to run on all outputs.
->
-> Signed-off-by: Michał Grzelak<michal.grzelak@intel.com>
-LGTM:
+Build changes
+-------------
 
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+  * IGT: IGT_8836 -> IGTPW_14884
+  * Linux: xe-4822-169e5b6f809026c4a0cb3a736b48378ca8e8fecb -> xe-4824-8d31b64e763bc1c7b508ae3dc01b4dfcab973729
 
-> ---
->   tests/kms_flip.c | 24 +++++++++++++++++++++---
->   1 file changed, 21 insertions(+), 3 deletions(-)
->
-> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> index 9ea5eb0352..3b3d2d40aa 100755
-> --- a/tests/kms_flip.c
-> +++ b/tests/kms_flip.c
-> @@ -264,12 +264,14 @@
->   #define RUN_PAIR		2
->   
->   #define PAIR_LIMIT 		3
-> +#define CONN_LIMIT 		3
->   
->   #ifndef DRM_CAP_TIMESTAMP_MONOTONIC
->   #define DRM_CAP_TIMESTAMP_MONOTONIC 6
->   #endif
->   
->   static bool all_crtcs = false;
-> +static bool all_conns = false;
->   static bool all_pairs = false;
->   
->   drmModeRes *resources;
-> @@ -1826,6 +1828,7 @@ static void run_test(int duration, int flags)
->   {
->   	struct test_output o;
->   	int i, n, modes = 0;
-> +	int conn_count = 0;
->   
->   	/* No tiling support in XE. */
->   	if (is_xe_device(drm_fd) && flags & TEST_FENCE_STRESS)
-> @@ -1891,6 +1894,10 @@ static void run_test(int duration, int flags)
->   			if ((flags & TEST_SUSPEND) && !all_crtcs && n != 0)
->   				continue;
->   
-> +			/* Limit number of displays run */
-> +			if ((flags & TEST_SUSPEND) && !all_conns && conn_count >= CONN_LIMIT)
-> +				continue;
-> +
->   			memset(&o, 0, sizeof(o));
->   			o.count = 1;
->   			o._connector[0] = resources->connectors[i];
-> @@ -1899,8 +1906,15 @@ static void run_test(int duration, int flags)
->   			o.depth = 24;
->   
->   			crtc_idx = n;
-> -			run_test_on_crtc_set(&o, &crtc_idx, RUN_TEST,
-> -					     resources->count_crtcs, duration);
-> +
-> +			connector_find_preferred_mode(o._connector[0], n, &o);
-> +			if (o.mode_valid) {
-> +				run_test_on_crtc_set(&o, &crtc_idx, RUN_TEST,
-> +						     resources->count_crtcs, duration);
-> +				conn_count++;
-> +			} else {
-> +				free_test_output(&o);
-> +			}
->   		}
->   	}
->   
-> @@ -2061,6 +2075,9 @@ static void test_nonblocking_read(int in)
->   static int opt_handler(int opt, int opt_index, void *data)
->   {
->   	switch (opt) {
-> +		case 'c':
-> +			all_conns = true;
-> +			break;
->   		case 'e':
->   			all_crtcs = true;
->   			break;
-> @@ -2075,10 +2092,11 @@ static int opt_handler(int opt, int opt_index, void *data)
->   }
->   
->   const char *help_str =
-> +	"  -c \tRun on all connectors. (By default suspend subtests will run on 3 connectors)\n"
->   	"  -e \tRun on all CRTCs. (By default subtests will run on two CRTCs)\n"
->   	"  -p \tRun on all output pairs. (By default 2x-* suspend subtests will run on 3 pairs)\n";
->   
-> -int igt_main_args("ep", NULL, help_str, opt_handler, NULL)
-> +int igt_main_args("cep", NULL, help_str, opt_handler, NULL)
->   {
->   	struct {
->   		int duration;
---------------CClDBkbGwO0Mm65H3YRrnBwa
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+  IGTPW_14884: e3b0f9b21a2cc1ab4be507643cb8c14e15f93a87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8836: 8836
+  xe-4822-169e5b6f809026c4a0cb3a736b48378ca8e8fecb: 169e5b6f809026c4a0cb3a736b48378ca8e8fecb
+  xe-4824-8d31b64e763bc1c7b508ae3dc01b4dfcab973729: 8d31b64e763bc1c7b508ae3dc01b4dfcab973729
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 30-03-2026 01:25 pm, Michał Grzelak
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20260330075508.1003899-5-michal.grzelak@intel.com">
-      <pre wrap="" class="moz-quote-pre">When running suspend subtests on single output, we can still hit the
-timeout by testing too much outputs. Default to testing 3 outputs. Add
-command-line parameter to run on all outputs.
+== Logs ==
 
-Signed-off-by: Michał Grzelak <a class="moz-txt-link-rfc2396E" href="mailto:michal.grzelak@intel.com">&lt;michal.grzelak@intel.com&gt;</a></pre>
-    </blockquote>
-    LGTM:&nbsp;
-    <pre class="content" style="box-sizing: border-box; overflow: auto; font-family: Menlo, Monaco, Consolas, &quot;Courier New&quot;, monospace; font-size: 13px; display: block; padding: 9.5px; margin: 0px 0px 10px; line-height: 14.3px; color: rgb(51, 51, 51); word-break: break-all; overflow-wrap: break-word; background-color: white; border: 0px; border-radius: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><span class="reviewed-by" style="box-sizing: border-box;">Reviewed-by: Mohammed Thasleem <a class="moz-txt-link-rfc2396E" href="mailto:mohammed.thasleem@intel.com">&lt;mohammed.thasleem@intel.com&gt;</a></span></pre>
-    <blockquote type="cite" cite="mid:20260330075508.1003899-5-michal.grzelak@intel.com">
-      <pre wrap="" class="moz-quote-pre">
----
- tests/kms_flip.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/index.html
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 9ea5eb0352..3b3d2d40aa 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -264,12 +264,14 @@
- #define RUN_PAIR		2
- 
- #define PAIR_LIMIT 		3
-+#define CONN_LIMIT 		3
- 
- #ifndef DRM_CAP_TIMESTAMP_MONOTONIC
- #define DRM_CAP_TIMESTAMP_MONOTONIC 6
- #endif
- 
- static bool all_crtcs = false;
-+static bool all_conns = false;
- static bool all_pairs = false;
- 
- drmModeRes *resources;
-@@ -1826,6 +1828,7 @@ static void run_test(int duration, int flags)
- {
- 	struct test_output o;
- 	int i, n, modes = 0;
-+	int conn_count = 0;
- 
- 	/* No tiling support in XE. */
- 	if (is_xe_device(drm_fd) &amp;&amp; flags &amp; TEST_FENCE_STRESS)
-@@ -1891,6 +1894,10 @@ static void run_test(int duration, int flags)
- 			if ((flags &amp; TEST_SUSPEND) &amp;&amp; !all_crtcs &amp;&amp; n != 0)
- 				continue;
- 
-+			/* Limit number of displays run */
-+			if ((flags &amp; TEST_SUSPEND) &amp;&amp; !all_conns &amp;&amp; conn_count &gt;= CONN_LIMIT)
-+				continue;
-+
- 			memset(&amp;o, 0, sizeof(o));
- 			o.count = 1;
- 			o._connector[0] = resources-&gt;connectors[i];
-@@ -1899,8 +1906,15 @@ static void run_test(int duration, int flags)
- 			o.depth = 24;
- 
- 			crtc_idx = n;
--			run_test_on_crtc_set(&amp;o, &amp;crtc_idx, RUN_TEST,
--					     resources-&gt;count_crtcs, duration);
-+
-+			connector_find_preferred_mode(o._connector[0], n, &amp;o);
-+			if (o.mode_valid) {
-+				run_test_on_crtc_set(&amp;o, &amp;crtc_idx, RUN_TEST,
-+						     resources-&gt;count_crtcs, duration);
-+				conn_count++;
-+			} else {
-+				free_test_output(&amp;o);
-+			}
- 		}
- 	}
- 
-@@ -2061,6 +2075,9 @@ static void test_nonblocking_read(int in)
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
-+		case 'c':
-+			all_conns = true;
-+			break;
- 		case 'e':
- 			all_crtcs = true;
- 			break;
-@@ -2075,10 +2092,11 @@ static int opt_handler(int opt, int opt_index, void *data)
- }
- 
- const char *help_str =
-+	&quot;  -c \tRun on all connectors. (By default suspend subtests will run on 3 connectors)\n&quot;
- 	&quot;  -e \tRun on all CRTCs. (By default subtests will run on two CRTCs)\n&quot;
- 	&quot;  -p \tRun on all output pairs. (By default 2x-* suspend subtests will run on 3 pairs)\n&quot;;
- 
--int igt_main_args(&quot;ep&quot;, NULL, help_str, opt_handler, NULL)
-+int igt_main_args(&quot;cep&quot;, NULL, help_str, opt_handler, NULL)
- {
- 	struct {
- 		int duration;
-</pre>
-    </blockquote>
-  </body>
+--===============2742582077712032366==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+
+
+<!DOCTYPE html>
+<html xmlns=3D"http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id=3D"css-table-select" type=3D"text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add CSC Fixed-Function (CSC_FF) colorop test=
+s</td></tr>
+<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
+ries/164080/">https://patchwork.freedesktop.org/series/164080/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
+tree/intel-xe/IGTPW_14884/index.html">https://intel-gfx-ci.01.org/tree/inte=
+l-xe/IGTPW_14884/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8836_FULL -&gt; XEIGTPW_14884_FULL<=
+/h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_14=
+884_FULL:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>{igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-c-plane-1=
+} (NEW):<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14884/shard-lnl-8/igt@kms_color_pipeline@plane-csc-ff-=
+lut1d-yuv601-rgb601@pipe-c-plane-1.html">SKIP</a> +63 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8836_FULL and XEIGTPW_14884=
+_FULL:</p>
+<h3>New IGT tests (80)</h3>
+<ul>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [3.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-a-plane-0=
+:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-a-plane-1=
+:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-a-plane-2=
+:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-b-plane-0=
+:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-b-plane-1=
+:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-b-plane-2=
+:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-c-plane-0=
+:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-c-plane-1=
+:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv2020-rgb2020@pipe-c-plane-2=
+:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [3.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-a-plane-0:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-a-plane-1:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-a-plane-2:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-b-plane-0:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-b-plane-1:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-b-plane-2:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-c-plane-0:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-c-plane-1:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv601-rgb601@pipe-c-plane-2:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [3.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-a-plane-0:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-a-plane-1:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-a-plane-2:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-b-plane-0:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-b-plane-1:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-b-plane-2:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-c-plane-0:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-c-plane-1:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-c-plane-2:<=
+/p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [3.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-a-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-a-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-a-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-b-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-b-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-b-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-c-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-c-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-rgb709-rgb2020@pipe-c-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [3.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-a-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-a-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-a-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-b-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-b-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-b-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-c-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-c-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv2020-rgb2020@pipe-c-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [3.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-a-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-a-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-a-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-b-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-b-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-b-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-c-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-c-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv601-rgb601@pipe-c-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [3.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-a-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-a-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-a-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-b-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-b-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-b-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-c-plane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-c-plane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-csc-ff-yuv709-rgb709@pipe-c-plane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [3.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-a-pl=
+ane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-a-pl=
+ane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-a-pl=
+ane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-b-pl=
+ane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-b-pl=
+ane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-b-pl=
+ane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-c-pl=
+ane-0:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-c-pl=
+ane-1:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-lut1d-csc-ff-lut1d-rgb709-rgb2020@pipe-c-pl=
+ane-2:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14884_FULL that come from known is=
+sues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>{igt@kms_color_pipeline@plane-csc-ff-lut1d-yuv709-rgb709@pipe-c-plane-2}=
+ (NEW):</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14884/shard-lnl-2/igt@kms_color_pipeline@plane-csc-ff-=
+lut1d-yuv709-rgb709@pipe-c-plane-2.html">SKIP</a> (<a href=3D"https://gitla=
+b.freedesktop.org/drm/xe/kernel/issues/7006">Intel XE#7006</a>) +15 other t=
+ests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1:</p>
+<ul>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8836/shard-lnl-3/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-=
+edp1.html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel=
+-xe/IGTPW_14884/shard-lnl-7/igt@kms_flip@flip-vs-expired-vblank-interruptib=
+le@b-edp1.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/=
+kernel/issues/301">Intel XE#301</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc5-dpms:</p>
+<ul>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8836/shard-lnl-8/igt@kms_pm_dc@dc5-dpms.html">PASS</a> -&gt; <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-lnl-5/igt@k=
+ms_pm_dc@dc5-dpms.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org=
+/drm/xe/kernel/issues/7340">Intel XE#7340</a> / <a href=3D"https://gitlab.f=
+reedesktop.org/drm/xe/kernel/issues/7504">Intel XE#7504</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr_stress_test@invalidate-primary-flip-overlay:</p>
+<ul>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8836/shard-lnl-2/igt@kms_psr_stress_test@invalidate-primary-flip-over=
+lay.html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-=
+xe/IGTPW_14884/shard-lnl-4/igt@kms_psr_stress_test@invalidate-primary-flip-=
+overlay.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ke=
+rnel/issues/4692">Intel XE#4692</a> / <a href=3D"https://gitlab.freedesktop=
+.org/drm/xe/kernel/issues/7508">Intel XE#7508</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_vrr@cmrr@pipe-a-edp-1:</p>
+<ul>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8836/shard-lnl-5/igt@kms_vrr@cmrr@pipe-a-edp-1.html">FAIL</a> (<a hre=
+f=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459">Intel XE#445=
+9</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_148=
+84/shard-lnl-1/igt@kms_vrr@cmrr@pipe-a-edp-1.html">PASS</a> +1 other test p=
+ass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:</p>
+<ul>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8836/shard-lnl-8/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.=
+html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/iss=
+ues/2142">Intel XE#2142</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/t=
+ree/intel-xe/IGTPW_14884/shard-lnl-7/igt@kms_vrr@seamless-rr-switch-virtual=
+@pipe-a-edp-1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_module_load@load:<ul>
+<li>shard-bmg:          (<a href=3D"https://intel-gfx-ci.01.org/tree/intel-=
+xe/IGT_8836/shard-bmg-5/igt@xe_module_load@load.html">PASS</a>, <a href=3D"=
+https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-8/igt@xe_modul=
+e_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tr=
+ee/intel-xe/IGT_8836/shard-bmg-8/igt@xe_module_load@load.html">DMESG-WARN</=
+a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg=
+-4/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-g=
+fx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-4/igt@xe_module_load@load.htm=
+l">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT=
+_8836/shard-bmg-10/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D=
+"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-10/igt@xe_mod=
+ule_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/=
+tree/intel-xe/IGT_8836/shard-bmg-10/igt@xe_module_load@load.html">DMESG-WAR=
+N</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-=
+bmg-1/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://inte=
+l-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-1/igt@xe_module_load@load.=
+html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/=
+IGT_8836/shard-bmg-1/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-7/igt@xe_m=
+odule_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.or=
+g/tree/intel-xe/IGT_8836/shard-bmg-7/igt@xe_module_load@load.html">DMESG-WA=
+RN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard=
+-bmg-9/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://int=
+el-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-9/igt@xe_module_load@load=
+.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe=
+/IGT_8836/shard-bmg-9/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-2/igt@xe_m=
+odule_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.or=
+g/tree/intel-xe/IGT_8836/shard-bmg-2/igt@xe_module_load@load.html">DMESG-WA=
+RN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard=
+-bmg-2/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://int=
+el-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-3/igt@xe_module_load@load=
+.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe=
+/IGT_8836/shard-bmg-3/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-3/igt@xe_m=
+odule_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.or=
+g/tree/intel-xe/IGT_8836/shard-bmg-6/igt@xe_module_load@load.html">DMESG-WA=
+RN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard=
+-bmg-6/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://int=
+el-gfx-ci.01.org/tree/intel-xe/IGT_8836/shard-bmg-5/igt@xe_module_load@load=
+.html">PASS</a>) (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/i=
+ssues/7433">Intel XE#7433</a>) -&gt; (<a href=3D"https://intel-gfx-ci.01.or=
+g/tree/intel-xe/IGTPW_14884/shard-bmg-3/igt@xe_module_load@load.html">DMESG=
+-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884=
+/shard-bmg-3/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https=
+://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-6/igt@xe_module_=
+load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
+/intel-xe/IGTPW_14884/shard-bmg-6/igt@xe_module_load@load.html">DMESG-WARN<=
+/a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard=
+-bmg-6/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://int=
+el-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-4/igt@xe_module_load@l=
+oad.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel=
+-xe/IGTPW_14884/shard-bmg-4/igt@xe_module_load@load.html">DMESG-WARN</a>, <=
+a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-8=
+/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx=
+-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-8/igt@xe_module_load@load.ht=
+ml">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IG=
+TPW_14884/shard-bmg-8/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-10/igt@=
+xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.0=
+1.org/tree/intel-xe/IGTPW_14884/shard-bmg-10/igt@xe_module_load@load.html">=
+DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_=
+14884/shard-bmg-10/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D=
+"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-1/igt@xe_m=
+odule_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.or=
+g/tree/intel-xe/IGTPW_14884/shard-bmg-1/igt@xe_module_load@load.html">DMESG=
+-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884=
+/shard-bmg-1/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https=
+://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-7/igt@xe_module_=
+load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
+/intel-xe/IGTPW_14884/shard-bmg-7/igt@xe_module_load@load.html">DMESG-WARN<=
+/a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard=
+-bmg-9/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://int=
+el-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-9/igt@xe_module_load@l=
+oad.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel=
+-xe/IGTPW_14884/shard-bmg-9/igt@xe_module_load@load.html">DMESG-WARN</a>, <=
+a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-2=
+/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx=
+-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-2/igt@xe_module_load@load.ht=
+ml">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IG=
+TPW_14884/shard-bmg-2/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14884/shard-bmg-3/igt@x=
+e_module_load@load.html">DMESG-WARN</a>) (<a href=3D"https://gitlab.freedes=
+ktop.org/drm/xe/kernel/issues/7433">Intel XE#7433</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when comput=
+ing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8836 -&gt; IGTPW_14884</li>
+<li>Linux: xe-4822-169e5b6f809026c4a0cb3a736b48378ca8e8fecb -&gt; xe-4824-8=
+d31b64e763bc1c7b508ae3dc01b4dfcab973729</li>
+</ul>
+<p>IGTPW_14884: e3b0f9b21a2cc1ab4be507643cb8c14e15f93a87 @ https://gitlab.f=
+reedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8836: 8836<br />
+  xe-4822-169e5b6f809026c4a0cb3a736b48378ca8e8fecb: 169e5b6f809026c4a0cb3a7=
+36b48378ca8e8fecb<br />
+  xe-4824-8d31b64e763bc1c7b508ae3dc01b4dfcab973729: 8d31b64e763bc1c7b508ae3=
+dc01b4dfcab973729</p>
+
+</body>
 </html>
 
---------------CClDBkbGwO0Mm65H3YRrnBwa--
+--===============2742582077712032366==--
