@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF731109B46F
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 14:06:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4143109B46D
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 14:15:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7150F10EA06;
-	Tue, 31 Mar 2026 14:06:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FgRFQAkL";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0D3510E2B3
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 14:06:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774965978; x=1806501978;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=aW6VFbadlyZRUqi1g56n0QojQGNhB2ffyC3NlIpomyQ=;
- b=FgRFQAkLz+x2Jg8O2n6N4h20S3FGU3oX4pj5F8e1jOESCziMmmAPhLh9
- 9gMbrE2sQhdXdaiMQOisk+MELDbacFHfS4HF0Db+2vKLKO1n+TwG0KNpc
- rby0/y0tNgz0cVHWPkZ8DenfB0loV0PUJudVTAnTjKTg6/+HaDaDf7wFP
- oviJ7NlF3s5HU7j94yqSXi40G6wEDBZt3beJXjpfKYMFkNUjDtHkHG2Ko
- EOUWBWsrRNqugtN+PIg30dT7wE21NsRnaSkPqktB2ku/Iz54WAVwsUAAC
- GWz3RuR97ktzuqNFU4DPLkdoHxR+QKlssYtH4mmzF8gawPu5fikvVXxYM g==;
-X-CSE-ConnectionGUID: OqLVEgttTvK+ySztXwyMFw==
-X-CSE-MsgGUID: msaDG2EZRByyAnqiiFcLHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76040780"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="76040780"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 07:06:18 -0700
-X-CSE-ConnectionGUID: jEuDZrM0SlOWtq5xdc4ZsQ==
-X-CSE-MsgGUID: nZXhd0fMQAmQRqPeHa3oCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="230839484"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.212])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 07:06:16 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Matthew Auld <matthew.auld@intel.com>,
- Matt Roper <matthew.d.roper@intel.com>
-Subject: [PATCH i-g-t v5 4/4] tests/xe_pat: Verify PAT entries contain
- expected values
-Date: Tue, 31 Mar 2026 16:05:46 +0200
-Message-ID: <20260331140541.2561104-10-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260331140541.2561104-6-zbigniew.kempczynski@intel.com>
-References: <20260331140541.2561104-6-zbigniew.kempczynski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5535010EA38;
+	Tue, 31 Mar 2026 14:15:42 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BC4610EA38;
+ Tue, 31 Mar 2026 14:15:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1101647848610280900=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpm=5Fresid?=
+ =?utf-8?q?ency=3A_Fix_suspend_duration_calculation_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sk Anirban" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 31 Mar 2026 14:15:34 -0000
+Message-ID: <177496653461.415443.4062544501440261160@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260331103816.2489563-2-sk.anirban@intel.com>
+In-Reply-To: <20260331103816.2489563-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,119 +37,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Debugfs exposes PAT entries for different GTs so verify they
-contain expected values. Verify they are correct also in reset
-and suspend scenarios.
+--===============1101647848610280900==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
----
-v4: Test is rewritten to support PAT + PTA + ATS entries.
----
- tests/intel/xe_pat.c | 79 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 2e2d7e01e7..4fbe2714ad 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -238,6 +238,76 @@ static void pat_sanity(int fd)
- 	}
- }
- 
-+enum pat_test_opts {
-+	PAT_CHECK = 1,
-+	PAT_RESET_GT = 2,
-+	PAT_SUSPEND = 3,
-+};
-+
-+/**
-+ * SUBTEST: pat-sw-hw-compare
-+ * Description: verify debugfs 'pat' reflects 'pat_sw_config'
-+ *
-+ * SUBTEST: pat-sw-hw-reset-compare
-+ * Description: verify debugfs 'pat' reflects 'pat_sw_config' after gt reset
-+ *
-+ * SUBTEST: pat-sw-hw-suspend
-+ * Description: verify debugfs 'pat' reflects 'pat_sw_config' after suspend
-+ */
-+static void pat_sw_hw_compare(int fd, enum pat_test_opts opts)
-+{
-+	bool matches = true;
-+	int gt;
-+
-+	xe_for_each_gt(fd, gt) {
-+		struct intel_pat_cache pat_hw_config = {};
-+		struct intel_pat_cache pat_sw_config = {};
-+		int hw_entries, sw_entries;
-+
-+		if (opts == PAT_RESET_GT)
-+			xe_force_gt_reset_sync(fd, gt);
-+		else if (opts == PAT_SUSPEND)
-+			igt_system_suspend_autoresume(SUSPEND_STATE_STANDBY, SUSPEND_TEST_NONE);
-+
-+		hw_entries = xe_get_pat_hw_config(fd, &pat_hw_config, gt);
-+		sw_entries = xe_get_pat_sw_config(fd, &pat_sw_config, gt);
-+		igt_assert_eq(hw_entries, sw_entries);
-+
-+		igt_debug("[GT%d] hw_entries: %d, sw_entries: %d\n", gt, hw_entries, sw_entries);
-+
-+		for (int i = 0; i < hw_entries; i++) {
-+			uint32_t hw_pat, sw_pat;
-+
-+			hw_pat = pat_hw_config.entries[i].pat;
-+			sw_pat = pat_sw_config.entries[i].pat;
-+			if (hw_pat != sw_pat) {
-+				igt_debug("[GT%d] Mismatch of pat register vs sw config "
-+					  "- index: %i, entries: %08x <> %08x\n",
-+					  gt, i, hw_pat, sw_pat);
-+				matches = false;
-+			}
-+		}
-+
-+		/* Check PTA if was explicitly programmed */
-+		if (pat_sw_config.pta_mode != UINT32_MAX &&
-+			pat_hw_config.pta_mode != pat_sw_config.pta_mode) {
-+			igt_debug("[GT%d] Mismatch of PTA_MODE - pta: %x, pta expected: %x\n",
-+				  gt, pat_hw_config.pta_mode, pat_sw_config.pta_mode);
-+			matches = false;
-+		}
-+
-+		/* Check ATS if was explicitly programmed */
-+		if (pat_sw_config.pat_ats != UINT32_MAX &&
-+			pat_hw_config.pat_ats != pat_sw_config.pat_ats) {
-+			igt_debug("[GT%d] Mismatch of PAT_ATS - ats: %x, ats expected: %x\n",
-+				  gt, pat_hw_config.pat_ats, pat_sw_config.pat_ats);
-+			matches = false;
-+		}
-+	}
-+
-+	igt_assert_eq(matches, true);
-+}
-+
- /**
-  * SUBTEST: pat-index-all
-  * Test category: functionality test
-@@ -2152,6 +2222,15 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
- 	igt_subtest("pat-sanity")
- 		pat_sanity(fd);
- 
-+	igt_subtest("pat-sw-hw-compare")
-+		pat_sw_hw_compare(fd, 0);
-+
-+	igt_subtest("pat-sw-hw-reset-compare")
-+		pat_sw_hw_compare(fd, PAT_RESET_GT);
-+
-+	igt_subtest("pat-sw-hw-suspend")
-+		pat_sw_hw_compare(fd, PAT_SUSPEND);
-+
- 	igt_subtest("pat-index-all")
- 		pat_index_all(fd);
- 
--- 
-2.43.0
+Series: tests/intel/xe_pm_residency: Fix suspend duration calculation (rev3)
+URL   : https://patchwork.freedesktop.org/series/163669/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8839_BAT -> XEIGTPW_14891_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14891_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#7483]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8839 -> IGTPW_14891
+  * Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -> xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c
+
+  IGTPW_14891: 14891
+  IGT_8839: 8839
+  xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d
+  xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c: 779129c7868f4c7205901d6e57b25de52b411d1c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/index.html
+
+--===============1101647848610280900==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pm_residency: Fix suspend duration calculation (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163669/">https://patchwork.freedesktop.org/series/163669/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8839_BAT -&gt; XEIGTPW_14891_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14891_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8839 -&gt; IGTPW_14891</li>
+<li>Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -&gt; xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c</li>
+</ul>
+<p>IGTPW_14891: 14891<br />
+  IGT_8839: 8839<br />
+  xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d<br />
+  xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c: 779129c7868f4c7205901d6e57b25de52b411d1c</p>
+
+</body>
+</html>
+
+--===============1101647848610280900==--
