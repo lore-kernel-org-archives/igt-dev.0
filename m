@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ECE310F92EF
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 19:05:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D3F810F92EF
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 19:05:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 338D110EA6E;
-	Tue, 31 Mar 2026 19:05:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BD6EA10EA91;
+	Tue, 31 Mar 2026 19:05:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="X86bU8mL";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="QdPMsgSQ";
 	dkim-atps=neutral
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com
- [74.125.82.177])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A304210E9D5
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 19:04:43 +0000 (UTC)
-Received: by mail-dy1-f177.google.com with SMTP id
- 5a478bee46e88-2c87871133dso933662eec.0
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 12:04:43 -0700 (PDT)
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0489210EA6E
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 19:04:54 +0000 (UTC)
+Received: by mail-dl1-f49.google.com with SMTP id
+ a92af1059eb24-12713e56abdso169920c88.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 12:04:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1774983883; x=1775588683; darn=lists.freedesktop.org;
+ d=gmail.com; s=20251104; t=1774983893; x=1775588693; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B60BoVVI/rLerUir3XxNguEOhIUwU8x7snz5mrgypOI=;
- b=X86bU8mLabZgI8GBywqzIEpq2DxUgh+vpwVjKBrpZhTmKmZ1gA4r4aFeqOkzA28tRQ
- eUeqzkdxu7aO3xd+26RkecbrtlgZePsjxCCHLNNlQv/irlV0kAGmcBFql+v2d1/71O3z
- nabdENSgINbP9V+PJtNgMp20K80pFPYyWEgnd3tK45ACnfosCAjhz54S7wsE2s8Bqsk9
- 1fVzlxadCH05TCfcGz2TEXaM58h50MmIdOmkCQYw8j9iAU53yfVGaUYNf598oGdVkDiT
- gutN6BetUNPbNt/4dFbPu+XabMBSBfU+YbwvPySQnFIXiM4ezMic21JPTwkiuLRtLrkq
- mO1g==
+ bh=6VVy+DKodFEDWMukOqWzpa/88K6AA0OTZjxDJZEG32U=;
+ b=QdPMsgSQk0+aYa5WpBwR57teBOu7JEsaZHDRyND5ou4tpD5WIV+ZcIWNeZ1F12dxDE
+ IZG7KklDxUefCDK4U2T0xzhWAnz8I4smMnWJFAZzX3MYMiOIrf9vOny/05uSFRkLtw0H
+ iOyGzlKNcxAiTSpxm8qoV11qoj67CPCKZVT4FaRMPCrsjF5lSW6llfO+R8/RetWQkokD
+ tSyHZy7d3REc7NAKKI9KrY/FEBEzZ7hmE6O8YlBarzZJvrhkG0o89TpVW+taDGdiO2v6
+ kk7yt1laZxZogHvEtRKrN3oByDV5TN1YFwkMy1dbH1XrN5hhMYHO1ZEy2raGVC98E+OE
+ 6JSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1774983883; x=1775588683;
+ d=1e100.net; s=20251104; t=1774983893; x=1775588693;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=B60BoVVI/rLerUir3XxNguEOhIUwU8x7snz5mrgypOI=;
- b=GXI1Q0OYG/WD59vSf6DI/1gQasWrHtrXLtSipo/Dj44cmgec+mKJuqKLfRmsmoI1CC
- IhiHO7wi1UpeM72ohMKVifIen+ZL7arV6wTaCGefUn2Q0Zly8StT1Evk0LtYsSeXLIvL
- ofcjQwZk9paL26KzHGaQ5FbvYJFiy6cbTKmCAXetW3hI8eORyXkRzkxwr6rFiKO3yvZw
- BFRgt21gk2NnU8djQjKMConzGLvoMiTMYdqVJ4kYnZYZr2du1+np646xZiBuOwE2q63u
- oc6L8CQq0Jez1uzFSVb1a2RdgOkqoWysgHYXAIxbhkVMA7pd+/LKt/lNOnOtz7BSLlKD
- MEbA==
-X-Gm-Message-State: AOJu0YxqZrXb3Bw0YIa5e5TbhrASm+eGAF17xCfpRL7ohpec/OAa55i+
- uduFDmSHz5B7gGZMZFxMYPUO8mPjZGEdgxf5e+mAuRT9gxf5n1Fged7fim0e2Et8
-X-Gm-Gg: ATEYQzzr1XRP+d8jVLApZjjZaVH1wQ3ICxHUr+ilB5dIOJDQOohpb36CyqRnJ9C6Otw
- n3KWxBzndyum1lXssIpOWTN4Hq7vTb5ZZITHHrlCIT914DPQOCXvXsyl3zPtSpBW1ndfyLur3QT
- fhL7126LgQgxa6swoDMdZ1RRz69G0MJIlezk4bWQL8joyt0T+M0dh/o3u++K1TQQ7ZOXNvzEWp0
- 90Uhae3I3zEABg0QHfTukkRSRj8/CUcoRknrI1JG2PD2fDujZZvnXjwjqGKMz2xouTm7uGolnwF
- 2oAamFvcXrl5n0Gbsrq+4EitPyrzoOoLQwfKCfIh2XwM+Yy8RfIh0mpXLE1hylHIfVVstdCpXfa
- 5dRd1s6OAp9W3QEuNvVPsd+ptEoeiC/SQov2x7KLA8LklxN4z+MbFuBgSRqhiJcdjToOMsyVO+R
- xmktjB3Ks6TMLOef+OMcdR61hBatmNpJKte1vocSqCYO1+3PJfY+TV4rAJWho=
-X-Received: by 2002:a05:7300:2151:b0:2c1:7afc:df06 with SMTP id
- 5a478bee46e88-2c930499056mr285037eec.5.1774983882555; 
- Tue, 31 Mar 2026 12:04:42 -0700 (PDT)
+ bh=6VVy+DKodFEDWMukOqWzpa/88K6AA0OTZjxDJZEG32U=;
+ b=biECqLbp51aOgd5QBfxcSkvVVpAOfH1B5iAqd9ApOoTAI4lbvNBUxApIvb+Ixl+/S3
+ DENlKOvmNq+PhAHugGSC1DYZWgHkmoC/OThIZq8sTHIPXfZAk/yXQmHIwM0PHefx0Jiy
+ 6hS4QuYFLcHl8TgJ1eOV+4BRMcwSvKzux8lpDAgqOofKNUbVnTMXgt49RxBNvAuBOTiN
+ vohe5gUMH14Vnm8Uw+1EpXJgz8T2BrakEol0yIpAVi2W424dOxLdSGmtje5R0OS9Dm7A
+ dpQ2wJoSAjYMx1pB/0HUpFHQXkiUE9blAXXs7KHUR3rjdv9hiqaEt9zAJQwfmmkKjb47
+ zAzA==
+X-Gm-Message-State: AOJu0YxTVvqtpIf70IrEGxqLOj+ujfpEl+ZO0mdHLCVeJjDrRt0NSlaq
+ Xab+xRzUUab6jwZ2DouwSLo2CYAF7kH1pMAfZQFBIxf2jk3v76pXhCQ4hQplzZk0
+X-Gm-Gg: ATEYQzxsWn0wBaLFN4Q6fF9oeF+Mxal9vvA+mg3jfuEWQpuiaVkuY7PN43KLLi9kLgo
+ 8Mf8+PhLjYv4hN0XqtTxA2L+l3IM1co7F/HJKfgkaLBYkFDRBaScdTwbjB5xu2/+S1TfGBD0LXZ
+ SHbyiN281TU6j164oM9sNRtq23NBjB7/GUEUS+cBshF0+dtMUS2k1d+/MB8mD9y2xN7b/PbftIb
+ zzgTKuwBDypdk38p3hWkvps4SO9bdGuxYy9yGndJWFOuzGmszJ7iMa9eN0l3Va4wFWOuUiPMmlL
+ 2+y31gfAIB3uk2se/jSHqoarkTm2q1p8DjxqXXjBCLjOYfnGIyqQb2MKJW5NciPgjyhl3fXQ6FC
+ AmURzcpxUZRSX1JcQ1MvX78yOtpJUrY8i+pu/OiSsL5ySWWbNXlRdNVjsQAbI1cZ4P9P8E/sLKM
+ EalL8EGyA3akzryV78ZPq3VrU+++DhuNHF5pxGLxckk2qXfiOfe3wRECxZ29Y=
+X-Received: by 2002:a05:7022:684:b0:11c:883d:1ef0 with SMTP id
+ a92af1059eb24-12bddedccdfmr2300418c88.15.1774983892945; 
+ Tue, 31 Mar 2026 12:04:52 -0700 (PDT)
 Received: from localhost ([192.55.55.46]) by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2c3c74825a0sm10925278eec.27.2026.03.31.12.04.41
+ a92af1059eb24-12ac4a0fa8dsm8025112c88.15.2026.03.31.12.04.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Mar 2026 12:04:42 -0700 (PDT)
+ Tue, 31 Mar 2026 12:04:52 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 2/4] tests/intel/kms_sharpness_filter: refactor
- test_sharpness_filter function
-Date: Tue, 31 Mar 2026 22:04:10 +0300
-Message-ID: <20260331190412.1907571-3-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 4/4] tests/intel/kms_sharpness_filter: Find mode with
+ lowest bw requirement for test
+Date: Tue, 31 Mar 2026 22:04:12 +0300
+Message-ID: <20260331190412.1907571-5-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260331190412.1907571-1-juhapekka.heikkila@gmail.com>
 References: <20260331190412.1907571-1-juhapekka.heikkila@gmail.com>
@@ -86,177 +85,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-refactor to make it look more nice
+choose mode from connector with lowest bandwidth requirement
+for tests to try to fit tests into bandwidth limitations
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/intel/kms_sharpness_filter.c | 108 ++++++++++++++++-------------
- 1 file changed, 59 insertions(+), 49 deletions(-)
+ tests/intel/kms_sharpness_filter.c | 34 +++++++++++++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
-index 029b735bd..ed8d2e48c 100644
+index f08d33d7a..10061b5d9 100644
 --- a/tests/intel/kms_sharpness_filter.c
 +++ b/tests/intel/kms_sharpness_filter.c
-@@ -88,15 +88,6 @@ IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
- #define MAX_PIXELS_FOR_3_TAP_FILTER	(1920 * 1080)
- #define MAX_PIXELS_FOR_5_TAP_FILTER	(3840 * 2160)
- #define NROUNDS				10
--#define INVALID_TEST ((type == TEST_INVALID_FILTER_WITH_SCALER) \
--		   || (type == TEST_INVALID_FILTER_WITH_PLANE) \
--		   || (type == TEST_INVALID_PLANE_WITH_FILTER) \
--		   || (type == TEST_INVALID_FILTER_WITH_SCALING_MODE))
--#define SET_PLANES ((type == TEST_FILTER_UPSCALE) \
--		||  (type == TEST_FILTER_DOWNSCALE) \
--		||  (type == TEST_INVALID_FILTER_WITH_SCALER) \
--		||  (type == TEST_INVALID_FILTER_WITH_PLANE) \
--		||  (type == TEST_INVALID_FILTER_WITH_SCALING_MODE))
- 
- enum test_type {
- 	TEST_FILTER_BASIC,
-@@ -327,12 +318,37 @@ static int test_filter_toggle(data_t *data)
- 	return ret;
+@@ -609,6 +609,24 @@ static void build_test_suffix(data_t *data, enum test_type type,
+ 	}
  }
  
--static void test_sharpness_filter(data_t *data,  enum test_type type)
-+static bool is_invalid_test(enum test_type type)
++static drmModeModeInfo *find_lowest_mode(igt_output_t *output)
 +{
-+	switch (type) {
-+	case TEST_INVALID_FILTER_WITH_SCALER:
-+	case TEST_INVALID_FILTER_WITH_PLANE:
-+	case TEST_INVALID_PLANE_WITH_FILTER:
-+	case TEST_INVALID_FILTER_WITH_SCALING_MODE:
-+		return true;
-+	default:
-+		return false;
++	drmModeConnector *connector = output->config.connector;
++	drmModeModeInfo *low = NULL;
++
++	for (int i = 0; i < connector->count_modes; i++) {
++		drmModeModeInfo *mode = &connector->modes[i];
++		int pixels = mode->hdisplay * mode->vdisplay;
++		int low_pixels = low ? low->hdisplay * low->vdisplay : INT_MAX;
++
++		if (pixels < low_pixels ||
++		    (pixels == low_pixels && mode->vrefresh < low->vrefresh))
++			low = mode;
 +	}
++
++	return low;
 +}
 +
-+static bool needs_extra_planes(enum test_type type)
-+{
-+	switch (type) {
-+	case TEST_FILTER_UPSCALE:
-+	case TEST_FILTER_DOWNSCALE:
-+	case TEST_INVALID_FILTER_WITH_SCALER:
-+	case TEST_INVALID_FILTER_WITH_PLANE:
-+	case TEST_INVALID_FILTER_WITH_SCALING_MODE:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static void test_sharpness_filter(data_t *data, enum test_type type)
+ static void
+ run_sharpness_filter_test(data_t *data, enum test_type type)
  {
- 	igt_output_t *output = data->output;
- 	drmModeModeInfo *mode = data->mode;
--	int height = mode->hdisplay;
--	int width =  mode->vdisplay;
- 	igt_crc_t ref_crc, crc;
- 	igt_pipe_crc_t *pipe_crc = NULL;
- 	int ret;
-@@ -343,57 +359,31 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
- 		      "No requested format/modifier on pipe %s\n",
- 		      igt_crtc_name(data->crtc));
- 
--	setup_fb(data->drm_fd, height, width, data->format, data->modifier, &data->fb[0]);
-+	setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+		 data->format, data->modifier, &data->fb[0]);
- 	igt_plane_set_fb(data->plane[0], &data->fb[0]);
- 
- 	if (type == TEST_FILTER_ROTATION) {
--		if (igt_plane_has_rotation(data->plane[0], data->rotation))
--			igt_plane_set_rotation(data->plane[0], data->rotation);
--		else
--			igt_skip("No requested rotation on pipe %s\n",
--				 igt_crtc_name(data->crtc));
-+		igt_skip_on_f(!igt_plane_has_rotation(data->plane[0],
-+						      data->rotation),
-+			      "No requested rotation on pipe %s\n",
-+			      igt_crtc_name(data->crtc));
-+		igt_plane_set_rotation(data->plane[0], data->rotation);
- 	}
- 
- 	if (type == TEST_INVALID_FILTER_WITH_SCALING_MODE)
- 		igt_require_f(has_scaling_mode(output), "No connecter scaling mode found on %s\n", output->name);
- 
--	if (SET_PLANES)
-+	if (needs_extra_planes(type))
- 		set_planes(data, type);
- 
- 	set_filter_strength_on_pipe(data);
- 
--	if (!INVALID_TEST && data->filter_strength != 0)
--		igt_debug("Sharpened image should be observed for filter strength > 0\n");
--
- 	if (type == TEST_INVALID_FILTER_WITH_SCALING_MODE)
- 		ret = igt_display_try_commit_atomic(&data->display, 0, NULL);
- 	else
- 		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
- 
--	if (type == TEST_FILTER_DPMS || type == TEST_FILTER_SUSPEND) {
--		pipe_crc = igt_crtc_crc_new(data->crtc,
--					    IGT_PIPE_CRC_SOURCE_AUTO);
--		igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
--	}
--
--	if (type == TEST_FILTER_DPMS) {
--		kmstest_set_connector_dpms(data->drm_fd,
--					   output->config.connector,
--					   DRM_MODE_DPMS_OFF);
--		kmstest_set_connector_dpms(data->drm_fd,
--					   output->config.connector,
--					   DRM_MODE_DPMS_ON);
--	}
--
--	if (type == TEST_FILTER_SUSPEND)
--		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
--					      SUSPEND_TEST_NONE);
--
--	if (type == TEST_FILTER_DPMS || type == TEST_FILTER_SUSPEND) {
--		igt_pipe_crc_collect_crc(pipe_crc, &crc);
--		igt_assert_crc_equal(&crc, &ref_crc);
--	}
--
- 	if (type == TEST_FILTER_TOGGLE)
- 		ret |= test_filter_toggle(data);
- 
-@@ -409,13 +399,33 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
- 		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
- 	}
- 
--	if (INVALID_TEST)
-+	if (type == TEST_FILTER_DPMS || type == TEST_FILTER_SUSPEND) {
-+		pipe_crc = igt_crtc_crc_new(data->crtc,
-+					    IGT_PIPE_CRC_SOURCE_AUTO);
-+		igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
+@@ -645,7 +663,21 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+ 					 data->mode->vdisplay,
+ 					 data->mode->vrefresh);
+ 			} else {
+-				data->mode = igt_output_get_mode(data->output);
++				if (is_invalid_test(type)) {
++					data->mode = igt_output_get_mode(data->output);
++				} else {
++					data->mode = find_lowest_mode(data->output);
++					if (!data->mode) {
++						igt_info("No mode found on output %s\n",
++							igt_output_name(data->output));
++						continue;
++					}
 +
-+		if (type == TEST_FILTER_DPMS) {
-+			kmstest_set_connector_dpms(data->drm_fd,
-+						   output->config.connector,
-+						   DRM_MODE_DPMS_OFF);
-+			kmstest_set_connector_dpms(data->drm_fd,
-+						   output->config.connector,
-+						   DRM_MODE_DPMS_ON);
-+		} else {
-+			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+						      SUSPEND_TEST_NONE);
-+		}
-+
-+		igt_pipe_crc_collect_crc(pipe_crc, &crc);
-+		igt_assert_crc_equal(&crc, &ref_crc);
-+		igt_pipe_crc_free(pipe_crc);
-+	}
-+
-+	if (is_invalid_test(type))
- 		igt_assert_eq(ret, -EINVAL);
- 	else
- 		igt_assert_eq(ret, 0);
++					igt_info("Executing on lowest mode %dx%d@%d\n",
++						data->mode->hdisplay,
++						data->mode->vdisplay,
++						data->mode->vrefresh);
++				}
+ 			}
  
--	/* clean-up */
--	igt_pipe_crc_free(pipe_crc);
- 	cleanup(data);
- }
- 
+ 			igt_output_override_mode(data->output, data->mode);
 -- 
 2.43.0
 
