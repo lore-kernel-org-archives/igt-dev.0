@@ -4,54 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 852CF109B463
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 13:00:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27730109B461
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 13:06:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3918810E393;
-	Tue, 31 Mar 2026 13:00:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C106410E19F;
+	Tue, 31 Mar 2026 13:06:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ixWb/POr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TYUz1L0L";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 665A410E393
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 13:00:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 777AE10E264
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 13:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774962045; x=1806498045;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=oix+2r0iZbFqINWYbqljEzM41aGLGLalu6BJHCpT3VU=;
- b=ixWb/POrSeEisyyfoCXknCvL0rvQ8ut0Jg8GyPDDoOb0ku7As86NVWVl
- 2nehoYkcUox1vBUaeKug/xyMl1vX7915lQ8evel9Q5CQ3OuOjo8Yu3wJm
- vUajrpQA37klr0bSHmH/ULK9P5QHf/YSxgOf+/NuqM3U/9YQtIUmStk8+
- NECg1L8YiHftAQjygI9l6AG+jcKGvpjc514KIaLc2rdSIGYJXR7lWJP0K
- qZSQDG34CxiiXGa3FrehOEuISa25OM8W/az7sJq1sQyo4aH2dJk8U17vm
- uMQyi0bQFho4odS12nwQ/eYLsjSJuwD+k5Z2lh9rXETvmrvNd1cEyhOi9 Q==;
-X-CSE-ConnectionGUID: xd9XC20ZQ6Kyly5ddj2LTA==
-X-CSE-MsgGUID: PWV93O8cTUKXI/LiIlBQ8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76035626"
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; d="scan'208";a="76035626"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 06:00:43 -0700
-X-CSE-ConnectionGUID: Jl8CBEX6Sqiklbat+UOelw==
-X-CSE-MsgGUID: LOsH9kegTZictMVNN5+b7g==
+ t=1774962384; x=1806498384;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=Xd3eM7SwQHGMLJyvPBEKZLYOU/aIYIhFT6lO3aj3EL8=;
+ b=TYUz1L0LuS70y43PGyCv3xMK4+TRST95JfVQOHLbjqhiNSyTdUFdUfXv
+ 4HQEl0hFCJc08PxsNVrMF5HFKiVHLU7acGBjZUu6dC66yBHP10A2qjOiy
+ Rhaj7wo4TZJIvk3M6WynVy0O8+0DbXC8KFS7OEt7LWFYbXrx/XlkOUqYt
+ rhGr4isDZqB+panwPLgAKfJN4RdwP8GMWzuWmW4Bdm47ayS73LvhC5fZG
+ 6tKF4/vxPnYj58Z/4KpPd0kfEcVtvlIeFgNA/0vL4JecJQIzMh7liIyyb
+ wMCtWxVc4U6fpR0AUxU9zakKdWcqD7T3fOgTLtydODcnJnI0kOd0cEcAz w==;
+X-CSE-ConnectionGUID: ABbUrSJYTFOQfrordiFTWA==
+X-CSE-MsgGUID: 1SNT5SIWQ/CdDieXu+zB/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75868869"
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; d="scan'208";a="75868869"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Mar 2026 06:06:23 -0700
+X-CSE-ConnectionGUID: iljJnKI6T36tUjnM9gzusg==
+X-CSE-MsgGUID: xm5pVEFISnOJPSovOIzwUw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; d="scan'208";a="264294757"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 06:00:41 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com, jani.nikula@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v3] tests/kms_setmode: Add HDMI 2.0 clock limit for mode
- selection
-Date: Tue, 31 Mar 2026 18:29:19 +0530
-Message-ID: <20260331125919.615218-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; d="scan'208";a="223482722"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Mar 2026 06:06:22 -0700
+Date: Tue, 31 Mar 2026 16:06:19 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org, ankit.k.nautiyal@intel.com
+Subject: Re: [PATCH i-g-t v2] tests/kms_setmode: Add HDMI 2.0 clock limit for
+ mode selection
+Message-ID: <acvGy0C97UmDxLg2@intel.com>
+References: <20260331104100.614718-1-jeevan.b@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260331104100.614718-1-jeevan.b@intel.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,83 +72,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-eDP modes with high clock rates were being forced on HDMI 2.0 displays,
-causing kernel to reject with EINVAL. Add clock validation to skip
-incompatible eDP modes and fall back to supported modes.
+On Tue, Mar 31, 2026 at 04:11:00PM +0530, Jeevan B wrote:
+> eDP modes with high clock rates were being forced on HDMI 2.0 displays,
+> causing kernel to reject with EINVAL. Add clock validation to skip
+> incompatible eDP modes and fall back to supported modes.
+> 
+> v2: Add HDMI 2.0 clock limit helper, drop crtc_supports_mode(),
+>     and ensure per-connector compatibility to avoid invalid modes.
+> 
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  tests/kms_setmode.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 42 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index 1f2849bc2..f1c1afe45 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -79,6 +79,9 @@
+>  /* restricted pipe count */
+>  #define CRTC_RESTRICT_CNT 2
+>  
+> +/* Clock limit for HDMI 2.0 */
+> +#define HDMI_2_0_MAX_CLOCK_KHZ 600000
+> +
+>  static int drm_fd;
+>  static drmModeRes *drm_resources;
+>  static int filter_test_id;
+> @@ -165,6 +168,16 @@ static bool connector_supports_mode(drmModeConnector *connector,
+>  	return false;
+>  }
+>  
+> +static bool hdmi_connector_mode_exceeds_hdmi20_limit(drmModeConnector *connector,
+> +						     drmModeModeInfo *mode)
+> +{
+> +	if (connector->connector_type != DRM_MODE_CONNECTOR_HDMIA &&
+> +	    connector->connector_type != DRM_MODE_CONNECTOR_HDMIB)
+> +		return false;
+> +
+> +	return mode->clock > HDMI_2_0_MAX_CLOCK_KHZ;
 
-v2: Add HDMI 2.0 clock limit helper, drop crtc_supports_mode(),
-    and ensure per-connector compatibility to avoid invalid modes.
-v3: Refactor connector compatibility checks into helper for clarity.
+Starting to test all kinds of random thing here does not seem
+maintainable.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_setmode.c | 39 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 37 insertions(+), 2 deletions(-)
+I think the one sensible option is to make the test skip rather
+than fail if it couldn't find a common mode between the connectors
+and the modeset subsequently failed.
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 1f2849bc2..4d4f980f6 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -79,6 +79,9 @@
- /* restricted pipe count */
- #define CRTC_RESTRICT_CNT 2
- 
-+/* Clock limit for HDMI 2.0 */
-+#define HDMI_2_0_MAX_CLOCK_KHZ 600000
-+
- static int drm_fd;
- static drmModeRes *drm_resources;
- static int filter_test_id;
-@@ -165,6 +168,35 @@ static bool connector_supports_mode(drmModeConnector *connector,
- 	return false;
- }
- 
-+static bool hdmi_connector_mode_exceeds_hdmi20_limit(drmModeConnector *connector,
-+						     drmModeModeInfo *mode)
-+{
-+	if (connector->connector_type != DRM_MODE_CONNECTOR_HDMIA &&
-+	    connector->connector_type != DRM_MODE_CONNECTOR_HDMIB)
-+		return false;
-+
-+	return mode->clock > HDMI_2_0_MAX_CLOCK_KHZ;
-+}
-+
-+static bool mode_compatible_with_connectors(struct crtc_config *crtc,
-+					    drmModeModeInfo *mode)
-+{
-+	int k;
-+
-+	for (k = 0; k < crtc->connector_count; k++) {
-+		drmModeConnector *conn = crtc->cconfs[k].connector;
-+
-+		/* Check HDMI 2.0 clock + per-connector compatibility */
-+		if (hdmi_connector_mode_exceeds_hdmi20_limit(conn, mode))
-+			return false;
-+
-+		if (!connector_supports_mode(conn, mode))
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static bool crtc_supports_mode(struct crtc_config *crtc, drmModeModeInfo *mode)
- {
- 	int i;
-@@ -270,8 +302,11 @@ static void get_mode_for_crtc(struct crtc_config *crtc,
- 				if (conn->modes[j].clock < mode->clock)
- 					mode = &conn->modes[j];
- 			}
--			*mode_ret = *mode;
--			return;
-+
-+			if (mode_compatible_with_connectors(crtc, mode)) {
-+				*mode_ret = *mode;
-+				return;
-+			}
- 		}
- 	}
- 
+As for the external vs. internal connector situation, the test should
+probably try to find a mode on the external connector(s) that has the
+same refresh rate as one of the modes on the internal connector, and
+has the same resolution (or less) than the internal panel. That way
+we can use pfit to upscale content on the internal panel instead of
+attempting to force the external connectors to use the internal
+panel's native mode.
+
+> +}
+> +
+>  static bool crtc_supports_mode(struct crtc_config *crtc, drmModeModeInfo *mode)
+>  {
+>  	int i;
+> @@ -270,8 +283,35 @@ static void get_mode_for_crtc(struct crtc_config *crtc,
+>  				if (conn->modes[j].clock < mode->clock)
+>  					mode = &conn->modes[j];
+>  			}
+> -			*mode_ret = *mode;
+> -			return;
+> +
+> +			/* Check HDMI 2.0 clock + per-connector compatibility */
+> +			{
+> +				int k;
+> +				bool compatible = true;
+> +
+> +				for (k = 0; k < crtc->connector_count; k++) {
+> +					drmModeConnector *other_conn =
+> +						crtc->cconfs[k].connector;
+> +
+> +					/* HDMI 2.0 clock constraint */
+> +					if (hdmi_connector_mode_exceeds_hdmi20_limit(other_conn,
+> +										     mode)) {
+> +						compatible = false;
+> +						break;
+> +					}
+> +
+> +					/* Ensure connector supports the mode */
+> +					if (!connector_supports_mode(other_conn, mode)) {
+> +						compatible = false;
+> +						break;
+> +					}
+> +				}
+> +
+> +				if (compatible) {
+> +					*mode_ret = *mode;
+> +					return;
+> +				}
+> +			}
+>  		}
+>  	}
+>  
+> -- 
+> 2.43.0
+
 -- 
-2.43.0
-
+Ville Syrjälä
+Intel
