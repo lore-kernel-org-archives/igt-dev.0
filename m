@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07AFF10F92E0
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:16:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF35610F92E0
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:16:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A512710ED4C;
-	Tue, 31 Mar 2026 17:16:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A1D9110ED4D;
+	Tue, 31 Mar 2026 17:16:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="sx8F9hu1";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="rvDJWsAf";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9146410EC48
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:33 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFD2210EC43
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:18 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 7DA9C4E4288A;
- Tue, 31 Mar 2026 17:11:32 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id E405E1A30C6;
+ Tue, 31 Mar 2026 17:11:17 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 552AD6029D;
- Tue, 31 Mar 2026 17:11:32 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id B9A2B6029D;
+ Tue, 31 Mar 2026 17:11:17 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 5B541104505DF; 
- Tue, 31 Mar 2026 19:11:31 +0200 (CEST)
+ with ESMTPSA id CA79010450340; 
+ Tue, 31 Mar 2026 19:11:16 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977091; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977077; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=3jDn4Ddbs6yLmzQCIMm4XPnlFV4TLEc8eEUohBey+G8=;
- b=sx8F9hu1/I4BsD1xMBt/qDbeAT08YunKhs9NbFpIJu2Cc7fIFE5XhcPiwgjJsIdzqRqlh6
- uEs1usMAY2cZg9Lp6xQSCUO7LRceR09dtdiG1+kBNghXPVmJmj9Zw7z2lkYZzdZhO8NT+U
- 7+I51Gy40HdSXwqFRFlnGwoNg0EDPjTC3MWrn35a/muOZrpYhXQlJk95hiuxRvy9BfBuSi
- eQecVOPo71gXiQspQMmf4jml5cewn5qXcmzZe7sMeVZGc7LzJlZlCUFC0qVR2Vuc+EtPtw
- uedJAYsyZ0sGx9aB1104NCD5n6RlsfTuUT1oxIm1BUvDFYQUyHEWbuAtX8Xe/A==
+ bh=gRytbQ4MVTygcDBlLkcEsHaD/jQLaFDhDzhkD/bfPqM=;
+ b=rvDJWsAftumXrHmWRZVDi4qKzI61Nh2nY6PAyi9gGDd5ddssJUMtjygbqr4kjFaIvpA0ml
+ XmdT1kLJ4R231xp7yv9z9Y2wqq9kS7QRUIq96Y8nXKKz2AF3s9291j0p7OnWt1/HsI1P3p
+ KQMQxUB0Z3t0vAzctsPBIeIVAPng6S+6qxISNXZpu19lloXYP+jE3BZWo0RJCHw3ivPeYu
+ fz42kor/YZqdyyACb9vbCx7lyuUpaJpTEZLqSiqOvAOcHtlCVu0IMNVg40FfINH9THOW4l
+ Y+UeHpExMFk7KwuBJzyXRlSVL3dWw2SRBlxjr/AwYv0FW6jD3QS+2m1Tr94YrQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:12:06 +0200
-Subject: [PATCH i-g-t v10 49/49] tests/unigraf/unigraf_lt: Add test for
- link training
+Date: Tue, 31 Mar 2026 19:11:48 +0200
+Subject: [PATCH i-g-t v10 31/49] tests/unigraf: Add basic unigraf tests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260331-unigraf-integration-v10-49-12266c34cc1d@bootlin.com>
+Message-Id: <20260331-unigraf-integration-v10-31-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -48,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6519;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5846;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=uZIy3Eev5ZDPksmM1li7duNvPbpbIgPaTtiS165alS4=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzABCG03vbVuBXzrkGeGr1vg3jVfhomMJvZyNP
- RAiXgpeemaJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAQhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJfSw//dh++JhNFWdcEttq4OndWjJtZFTDJBXd
- uJLeNPdGXLcUga6EQCprLHnwiJwxOIRdAkTmqCrMQ0jFvwGwFESTC7+dlu0NuuBbs2XSO9pOhnb
- 1tU0vM2mBaXgDD29EcrxyPhTpENykwa+fQdP9rs2Y02kT7wt5J8t8uyGlY4SbCW5LfcmU+A3nIX
- 4su4FR1eTc6qrs+TmWEILRhTF9wELYAMeut6+vqtJLeWDSLsr0vPasyD04PtMvoC4dsVM+t6klC
- /ANAD/YfSgIZz6RR+AXD2nZmg+cLSoR57yYBZYxLUHbfnz/t/EJM3/6nXwzNNmaPEJDCdX3HD+d
- 8xKD9+gd26O7PBH0Jpu9O1Dkj137CtA3EWthtp+8BAr44++eY5p1ij0Rpdy6T+LFAAShKkC096k
- qrlj0Tzz3c74JcAhnwTay0+N6O9EbgP5MGuBZFIbkSM4UvMjDeUxLZ3rUD7eu89gVBhCK4K+gOR
- ULV+d4mXSVeWc9q6UQ411rBFZLDCZTHdef8yYrrEyBAEyULgpVo/OKw40IrwWw7CzV4xORHArcH
- DdhnfvRVG1Elr5TP54RabkK5wuJbcAk3nKWTovRj+ILp6COv1o+GFLjTSXNHcrduYvSTBOkzC4N
- hAAYW0F13C8gt0ROYcAQfReMaaBNUGyal4Bd8k+FfkvkuABdnHY0=
+ bh=JPJOg38+ajr+rg6hD2ou/TLsJh3TjzmhsxDurgBxjaE=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA/UnWo985uzdX2ROqTGmRz9A1RAx/Hywix0
+ 6Oq2SNrG0+JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOL6+RAAqivBuZoML4KBTYA5yiVYc5w/F/GWUId
+ DNN7GKz+onsWYmgfVyjp9wD6BUTSEAaq3IHD0LtvEfrNb+gdQQDaGS5WDteOV1vut8T8n8roUXG
+ ZGTvPG2wQ9MMg7laSjAM0WITqNsxeaWEBXAa1CIW3mfdqILeHs0lMBZDg7emGpoUnVxK20fKbj9
+ YUn2m7O8FxSdOE3+vNCq3wLTti8EssPhC9i8pFoagvf4qq3/YHro5115KWW5f60bMY7sIs3f4i0
+ NORdyxYoYeApEg5shd2Zke+T1hp6i0IFwuUp0mox5VEFue2mEDkK6C8H9M2aOpVK5QpGebP9NLP
+ ylP1f/aaDKmBNlkET6LdKZBFo2myHaC2ilpPQNe2LJRY12i8kqm7qCalXHH7Fsnb/V/rnLRngvV
+ uw5W5yxT0S9behyRzw/g5dvOF5Ojiudi90x8AdnYB7gcZdMmifIdHKmlE21B4lj1k7XtKusauQC
+ nTGqWxh7egGRR8FQRdGwTYivSoBU96XC131oKSLr9KEB47jioUz2/Su4VchsEEv63fxDHb+FT0u
+ XOwX5s53PVFLcOAvo5BztgGf7ocv//3QwlKxPUZCoVkXsp9T7NY26y6l9SEYm5RPzdmGtpypw6p
+ 8C90vT2uoA2gR3SkbIesPL92pZ5dQu4BouLwbEjzIl59Q3wGgxvw=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -81,33 +80,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To test link training on various situation, add multiple link
-training scenarios.
+Adds two tests to validate unigraf communication.
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+unigraf-connect checks if the device is connected and if the EDID is
+properly applied.
+
+ungiraf-reconnect checks if the device can be connected/reconnected
+using SST and MST configurations.
+
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/unigraf/meson.build  |   1 +
- tests/unigraf/unigraf_lt.c | 183 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 184 insertions(+)
+ tests/meson.build                    |   4 +
+ tests/unigraf/meson.build            |  12 +++
+ tests/unigraf/unigraf_connectivity.c | 138 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 154 insertions(+)
 
-diff --git a/tests/unigraf/meson.build b/tests/unigraf/meson.build
-index 4ef8c32151e4..22e64c0f389d 100644
---- a/tests/unigraf/meson.build
-+++ b/tests/unigraf/meson.build
-@@ -1,5 +1,6 @@
- unigraf_progs = [
- 	'unigraf_connectivity',
-+	'unigraf_lt',
- ]
+diff --git a/tests/meson.build b/tests/meson.build
+index cecb4a8ae34a..4d3399d0eff4 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -475,6 +475,10 @@ foreach prog : intel_progs
+ 	endif
+ endforeach
  
- foreach prog : unigraf_progs
-diff --git a/tests/unigraf/unigraf_lt.c b/tests/unigraf/unigraf_lt.c
++if libtsi.found()
++	subdir('unigraf')
++endif
++
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+ 		testexe = executable(prog,
+diff --git a/tests/unigraf/meson.build b/tests/unigraf/meson.build
 new file mode 100644
-index 000000000000..81e6ecd3fae4
+index 000000000000..4ef8c32151e4
 --- /dev/null
-+++ b/tests/unigraf/unigraf_lt.c
-@@ -0,0 +1,183 @@
++++ b/tests/unigraf/meson.build
+@@ -0,0 +1,12 @@
++unigraf_progs = [
++	'unigraf_connectivity',
++]
++
++foreach prog : unigraf_progs
++	test_executables += executable(prog, prog + '.c',
++				       dependencies : test_deps,
++				       install_dir : unigrafdir,
++				       install_rpath : unigraf_rpathdir,
++				       install : true)
++	test_list += join_paths('unigraf', prog)
++endforeach
+diff --git a/tests/unigraf/unigraf_connectivity.c b/tests/unigraf/unigraf_connectivity.c
+new file mode 100644
+index 000000000000..b35149a4de9a
+--- /dev/null
++++ b/tests/unigraf/unigraf_connectivity.c
+@@ -0,0 +1,138 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2026 Google
@@ -117,178 +143,133 @@ index 000000000000..81e6ecd3fae4
 + */
 +
 +#include <stdint.h>
-+#include <sys/types.h>
++#include <stdlib.h>
 +#include <unistd.h>
-+#include <xf86drm.h>
 +#include <xf86drmMode.h>
 +
-+#include "drm_fourcc.h"
 +#include "drmtest.h"
 +#include "igt_aux.h"
 +#include "igt_core.h"
-+#include "igt_dp.h"
-+#include "igt_edid.h"
 +#include "igt_kms.h"
 +#include "unigraf/unigraf.h"
 +
 +/**
-+ * TEST: unigraf link training
++ * TEST: unigraf connectivity
 + * Category: Core
-+ * Description: Testing DP link training with a unigraf device
++ * Description: Testing connectivity with a unigraf device
 + *
-+ * SUBTEST: unigraf-dp-lane-count
-+ * Description: Make sure that the link training goes well for different lane count
++ * SUBTEST: unigraf-connect-edid
++ * Description: Verify that the unigraf device is properly connected to the DUT
++ *              and that the correct EDID is detected and read.
 + *
-+ * SUBTEST: unigraf-dp-link-rate
-+ * Description: Make sure that the link training goes well for different link rates
++ * SUBTEST: unigraf-connect-mst
++ * Description: Ensure that the DUT can correctly detect and handle the unigraf device
++ *              when it is configured to operate in MST mode.
 + */
 +
-+static void init_output_and_display_pattern(igt_display_t *display, igt_output_t *output)
-+{
-+	igt_crtc_t *crtc;
-+	struct igt_fb fb;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	int fb_id;
-+
-+	igt_modeset_disable_all_outputs(display);
-+	igt_display_reset(display);
-+
-+	igt_output_set_crtc(output, 0);
-+	crtc = igt_get_crtc_for_output(display, output);
-+	igt_output_set_crtc(output, crtc);
-+
-+	/* Get the current mode */
-+	mode = igt_output_get_mode(output);
-+	igt_assert(mode);
-+
-+	/* Create a framebuffer with a solid color pattern */
-+	fb_id = igt_create_color_pattern_fb(display->drm_fd, mode->hdisplay,
-+					    mode->vdisplay, DRM_FORMAT_XRGB8888,
-+					    DRM_FORMAT_MOD_LINEAR, 0, 0, 0, &fb);
-+	igt_assert(fb_id > 0);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_assert(primary);
-+
-+	igt_plane_set_size(primary, mode->hdisplay, mode->vdisplay);
-+	igt_plane_set_fb(primary, &fb);
-+	igt_output_override_mode(output, mode);
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	/* Set the framebuffer to the plane */
-+	igt_plane_set_fb(primary, &fb);
-+
-+	/* Set the plane properties atomically */
-+	igt_plane_set_prop_value(primary, IGT_PLANE_FB_ID, fb.fb_id);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_X, 0);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_Y, 0);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_W, mode->hdisplay);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_H, mode->vdisplay);
-+
-+	/* Commit the changes atomically */
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+}
-+
-+IGT_TEST_DESCRIPTION("Test unigraf device functionality");
++IGT_TEST_DESCRIPTION("Test basic unigraf connectivity");
 +int igt_main()
 +{
-+	int drm_fd = -1;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	drmModeConnectorPtr connector;
-+	int i;
++	int drm_fd;
 +
 +	igt_fixture() {
-+		drm_fd = drm_open_driver(DRIVER_ANY);
-+		igt_assert(drm_fd >= 0);
++		drm_fd = drm_open_driver_master(DRIVER_ANY);
++	}
 +
-+		igt_display_require(&display, drm_fd);
++	igt_describe("Make sure that the unigraf device is connected to the DUT and EDID is properly detected");
++	igt_subtest("unigraf-connect-edid") {
++		drmModePropertyBlobPtr edid_blob = NULL;
++		struct igt_display display;
++		uint64_t edid_blob_id;
++		igt_output_t *output;
++		uint32_t unigraf_edid_len;
++		void *unigraf_edid;
++		bool found = false;
++
++		/*
++		 * Sleep are required to allow hardware to configure/detect the current
++		 * configuration
++		 */
 +		unigraf_require_device(drm_fd);
++		unigraf_hpd_deassert();
++		sleep(igt_default_display_detect_timeout());
++		unigraf_set_sst();
++		unigraf_hpd_assert();
++		sleep(igt_default_display_detect_timeout());
++		igt_display_require(&display, drm_fd);
++		sleep(igt_default_display_detect_timeout());
 +
-+		connector = unigraf_get_connector(drm_fd);
-+	}
++		unigraf_edid = unigraf_read_edid(0, &unigraf_edid_len);
 +
-+	igt_subtest_with_dynamic("unigraf-dp-lane-count") {
-+		int lane_counts[3] = {1, 2, 4};
-+		int current_lanes;
++		for_each_connected_output(&display, output) {
++			if (output->config.connector->connector_type ==
++			    DRM_MODE_CONNECTOR_DisplayPort) {
++				igt_assert(kmstest_get_property(drm_fd,
++								output->config.connector->connector_id,
++								DRM_MODE_OBJECT_CONNECTOR, "EDID",
++								NULL, &edid_blob_id, NULL));
++				edid_blob = drmModeGetPropertyBlob(drm_fd, edid_blob_id);
++				if (!edid_blob)
++					continue;
 +
-+		for (i = 0; i < ARRAY_SIZE(lane_counts); i++) {
-+			igt_dynamic_f("unigraf-dp-lane-count-%d", lane_counts[i]) {
-+				unigraf_reset();
-+				unigraf_set_max_lane_count(lane_counts[i]);
-+				unigraf_hpd_pulse(500000);
++				if (!memcmp(unigraf_edid, edid_blob->data,
++					    min(edid_blob->length, unigraf_edid_len)))
++					found = true;
 +
-+				igt_display_require_output(&display);
-+				output = igt_output_from_connector(&display, connector);
-+				igt_assert(output);
-+				igt_dp_force_link_retrain(drm_fd, output, 2);
-+				init_output_and_display_pattern(&display, output);
++				drmModeFreePropertyBlob(edid_blob);
 +
-+				current_lanes = igt_dp_get_current_lane_count(drm_fd, output);
-+				igt_assert_eq(current_lanes, lane_counts[i]);
++				if (found)
++					break;
 +			}
 +		}
++		igt_assert_f(found, "No output with the correct EDID was found\n");
++
++		free(unigraf_edid);
 +	}
 +
-+	igt_subtest_with_dynamic("unigraf-dp-link-rate") {
-+		int rates[] = {UNIGRAF_RATE_1_62_GHZ,
-+			       UNIGRAF_RATE_2_7_GHZ,
-+			       UNIGRAF_RATE_5_4_GHZ,
-+			       UNIGRAF_RATE_6_75_GHZ,
-+			       UNIGRAF_RATE_8_10_GHZ};
-+		int current_rate;
-+		int max_supported_rate;
++	igt_describe("Make sure that the unigraf device can be used as a MST device");
++	igt_subtest("unigraf-connect-mst") {
++		int newly_connected_count, already_connected_count, diff_len;
++		uint32_t *newly_connected = NULL, *already_connected = NULL, *diff = NULL;
++		int max_count;
 +
-+		for (i = 0; i < ARRAY_SIZE(rates); i++) {
-+			igt_dynamic_f("unigraf-dp-link-rate-%d", rates[i]) {
-+				unigraf_reset();
-+				unigraf_set_max_link_rate(rates[i]);
-+				unigraf_hpd_pulse(1000000);
-+				igt_display_require_output(&display);
-+				igt_display_reset(&display);
-+				igt_display_require_output(&display);
-+				output = igt_output_from_connector(&display, connector);
-+				igt_assert(output);
-+				igt_dp_force_link_retrain(drm_fd, output, 2);
++		unigraf_require_device(drm_fd);
++		max_count = unigraf_get_mst_stream_max_count();
 +
-+				init_output_and_display_pattern(&display, output);
++		unigraf_hpd_deassert();
 +
-+				current_rate = igt_dp_get_max_link_rate(drm_fd, output);
-+				max_supported_rate = igt_dp_get_max_supported_rate(drm_fd, output);
-+				igt_require(max_supported_rate >= unigraf_rate_to_kbs(rates[i]));
-+				igt_assert_eq(current_rate, unigraf_rate_to_kbs(rates[i]));
-+			}
++		already_connected_count = igt_get_connected_connectors(drm_fd, &already_connected);
++
++		igt_debug("Already connected count: %d\n", already_connected_count);
++
++		// i = 0 is SST so we need to process max_count + 1 streams
++		for (int i = 0; i <= max_count; i++) {
++			unigraf_hpd_deassert();
++			// Let the hardware detect the new state
++			sleep(igt_default_display_detect_timeout());
++
++			unigraf_set_mst_stream_count(max(i, 1));
++			if (!i)
++				unigraf_set_sst();
++			else
++				unigraf_set_mst();
++
++			unigraf_hpd_assert();
++			// Let the hardware detect the new state
++			sleep(igt_default_display_detect_timeout());
++
++			newly_connected_count = kms_wait_for_new_connectors(&newly_connected,
++									    already_connected,
++									    already_connected_count,
++									    drm_fd);
++
++			diff_len = get_array_diff(newly_connected, newly_connected_count,
++						  already_connected, already_connected_count, &diff);
++
++			igt_assert_f(diff_len == max(i, 1),
++				     "Invalid connected connector count, expected %d found %d\n",
++				     max(i, 1), diff_len);
 +		}
-+	}
-+
-+	igt_subtest("unigraf-dp-link-suspend-resume") {
-+		int current_rate, current_lanes;
-+
-+		unigraf_reset();
-+		igt_display_require_output(&display);
-+		igt_display_reset(&display);
-+		igt_display_require_output(&display);
-+		output = igt_output_from_connector(&display, connector);
-+		igt_assert(output);
-+
-+		/* Get initial link parameters */
-+		current_rate = igt_dp_get_current_link_rate(drm_fd, output);
-+		current_lanes = igt_dp_get_current_lane_count(drm_fd, output);
-+
-+		/* Suspend the system */
-+		igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
-+
-+		/* Verify link parameters are maintained */
-+		igt_assert_eq(igt_dp_get_current_link_rate(drm_fd, output), current_rate);
-+		igt_assert_eq(igt_dp_get_current_lane_count(drm_fd, output), current_lanes);
-+	}
-+
-+	igt_fixture() {
-+		igt_display_fini(&display);
-+		close(drm_fd);
 +	}
 +}
 
