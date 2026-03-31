@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A52C1061B21
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 10:39:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FBF71061B21
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 10:42:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE27B10EA45;
-	Tue, 31 Mar 2026 10:39:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A474610EA52;
+	Tue, 31 Mar 2026 10:42:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="feQaxmHd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hp6yyTmc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F350710EA45
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 10:39:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE61510EA52
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 10:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774953548; x=1806489548;
+ t=1774953744; x=1806489744;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=zcuaB/gxK2KmfSZA7raFJMTai8HdxrZ72h9scHRLvzU=;
- b=feQaxmHdBxvb6JzTS/PEc9o7HxuFppAMSYEJeO/f6g00Z6S2DgMURZ+I
- 9PLkhXEuCGBziqYeT+fC0kXM8aQE0HDOeYEdkJdqie0Fa6VzZvST2/2qj
- oiDFwnpLG+q1fRYpia5oduBWZ023i+wV1wwOXeWPzbVk9+j5FmJ33X9Xf
- PHxSmdLr5rZwEvY85DK7nFJG5EwwPXV2shahNdy5YYwxaEWLf6egfmDK1
- Vs82w4/QFC/hdt64Jmy3ZTm/UJyT/DiZy8vBDRsSiF23RCd43JUcBid0M
- VIzWRPAbRKK3xV61HTxpdbduD3QTZ158ucR3flhljKvHTue4cG6Wqs087 g==;
-X-CSE-ConnectionGUID: AXzqfsPzR7KyplUJ9hKWew==
-X-CSE-MsgGUID: zKn4rsygSw+CR6A1KC2eHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="75679217"
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; d="scan'208";a="75679217"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 03:39:08 -0700
-X-CSE-ConnectionGUID: YMX06AxfQqe7+vFTycj3Fw==
-X-CSE-MsgGUID: G7U43U5GSQGcHGjkkt1Frg==
+ bh=6pgtilMGgLt+mMC1R7xlxVJGgiiR63CAswS0btwjuI4=;
+ b=hp6yyTmck8/YCA2ulMIPu92/Czt4O7LkcYsZhCG0CkzR9beJRtmPm5nx
+ UMzu/4ygNx1/YOKVts1giZePfp1x69shjgW34WT5JGlB9vfpaBNlyIg8N
+ dQIBd2KCMdQ7HTlOP0tMR5n+MFCQQhdGOmOFlfHgO6sbo7wzsymsSIJCj
+ ER44/ySzNMRn8UVk55khRvpFs3TDqDpoMkji7TuAvumAW2a5j8oqanfHX
+ QLuZb2CTK8HIDltd9GHiDCTVA9/WVtV9FOrPb8VdIToPJWcv7DFHD7eZp
+ dj+gb1p4MOoepNTuV9m5WejmQ7JOusVyccc4eW/Y7fbpMlOFNVVx3SizK Q==;
+X-CSE-ConnectionGUID: xsJkZjq/TsiFrRBGw5iR4w==
+X-CSE-MsgGUID: 6gUlqgqQQVORsP5Fbfqwmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="78555267"
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; d="scan'208";a="78555267"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Mar 2026 03:42:24 -0700
+X-CSE-ConnectionGUID: ZVEJTf1+TdWJieM0c6Sv+A==
+X-CSE-MsgGUID: E3c2Yq+WRcussPCGAsTPxQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; d="scan'208";a="226303750"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 03:39:04 -0700
-From: Sk Anirban <sk.anirban@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; d="scan'208";a="256828259"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 03:42:21 -0700
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, ville.syrjala@intel.com,
- jani.nikula@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH v3] tests/intel/xe_pm_residency: Fix suspend duration
- calculation
-Date: Tue, 31 Mar 2026 16:08:17 +0530
-Message-ID: <20260331103816.2489563-2-sk.anirban@intel.com>
+Cc: ankit.k.nautiyal@intel.com,
+	Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_setmode: Add HDMI 2.0 clock limit for mode
+ selection
+Date: Tue, 31 Mar 2026 16:11:00 +0530
+Message-ID: <20260331104100.614718-1-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -69,63 +67,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Calculate actual suspend duration using CLOCK_BOOTTIME instead of
-relying on the autoresume delay approximation. This ensures accurate
-validation of idle residency measurements during suspend cycles.
+eDP modes with high clock rates were being forced on HDMI 2.0 displays,
+causing kernel to reject with EINVAL. Add clock validation to skip
+incompatible eDP modes and fall back to supported modes.
 
-v2: Use CLOCK_BOOTTIME (Ville)
-    Use Fixes (Jani)
-v3: Use igt_time_elapsed (Riana)
-    Remove check (Riana)
+v2: Add HDMI 2.0 clock limit helper, drop crtc_supports_mode(),
+    and ensure per-connector compatibility to avoid invalid modes.
 
-Fixes: 5c85b336f75b ("tests/xe: Add a test that validates residency during s2idle")
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/xe_pm_residency.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ tests/kms_setmode.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index 61b63ed4f..70dcf432e 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -215,18 +215,18 @@ static unsigned long read_idle_residency(int fd, int gt)
- static void test_idle_residency(int fd, int gt, enum test_type flag)
- {
- 	unsigned long elapsed_ms, residency_start, residency_end;
-+	struct timespec ts_start, ts_end;
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index 1f2849bc2..f1c1afe45 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -79,6 +79,9 @@
+ /* restricted pipe count */
+ #define CRTC_RESTRICT_CNT 2
  
- 	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
- 
- 	if (flag == TEST_S2IDLE) {
--		/*
--		 * elapsed time during suspend is approximately equal to autoresume delay
--		 * when a full suspend cycle(SUSPEND_TEST_NONE) is used.
--		 */
--		elapsed_ms = igt_get_autoresume_delay(SUSPEND_STATE_FREEZE);
-+		clock_gettime(CLOCK_BOOTTIME, &ts_start);
- 		residency_start = read_idle_residency(fd, gt);
- 		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
- 		residency_end = read_idle_residency(fd, gt);
-+		clock_gettime(CLOCK_BOOTTIME, &ts_end);
++/* Clock limit for HDMI 2.0 */
++#define HDMI_2_0_MAX_CLOCK_KHZ 600000
 +
-+		elapsed_ms = igt_time_elapsed(&ts_start, &ts_end) * 1000;
- 	}
- 
- 	if (flag == TEST_IDLE) {
-@@ -238,14 +238,6 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
- 	igt_info("Measured %lums of idle residency in %lums\n",
- 		 residency_end - residency_start, elapsed_ms);
- 
--	/*
--	 * When suspended (system or runtime suspend), device needs to be woken up to read
--	 * residency. Idle residency may increase during resume thus being greater than
--	 * elapsed ms.
--	 */
--	if ((residency_end - residency_start) >= elapsed_ms)
--		return;
--
- 	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
+ static int drm_fd;
+ static drmModeRes *drm_resources;
+ static int filter_test_id;
+@@ -165,6 +168,16 @@ static bool connector_supports_mode(drmModeConnector *connector,
+ 	return false;
  }
+ 
++static bool hdmi_connector_mode_exceeds_hdmi20_limit(drmModeConnector *connector,
++						     drmModeModeInfo *mode)
++{
++	if (connector->connector_type != DRM_MODE_CONNECTOR_HDMIA &&
++	    connector->connector_type != DRM_MODE_CONNECTOR_HDMIB)
++		return false;
++
++	return mode->clock > HDMI_2_0_MAX_CLOCK_KHZ;
++}
++
+ static bool crtc_supports_mode(struct crtc_config *crtc, drmModeModeInfo *mode)
+ {
+ 	int i;
+@@ -270,8 +283,35 @@ static void get_mode_for_crtc(struct crtc_config *crtc,
+ 				if (conn->modes[j].clock < mode->clock)
+ 					mode = &conn->modes[j];
+ 			}
+-			*mode_ret = *mode;
+-			return;
++
++			/* Check HDMI 2.0 clock + per-connector compatibility */
++			{
++				int k;
++				bool compatible = true;
++
++				for (k = 0; k < crtc->connector_count; k++) {
++					drmModeConnector *other_conn =
++						crtc->cconfs[k].connector;
++
++					/* HDMI 2.0 clock constraint */
++					if (hdmi_connector_mode_exceeds_hdmi20_limit(other_conn,
++										     mode)) {
++						compatible = false;
++						break;
++					}
++
++					/* Ensure connector supports the mode */
++					if (!connector_supports_mode(other_conn, mode)) {
++						compatible = false;
++						break;
++					}
++				}
++
++				if (compatible) {
++					*mode_ret = *mode;
++					return;
++				}
++			}
+ 		}
+ 	}
  
 -- 
 2.43.0
