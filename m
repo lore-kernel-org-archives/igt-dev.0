@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 036DD10F9307
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 23:45:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F063710F9310
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 23:56:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AA3BE10EAA3;
-	Tue, 31 Mar 2026 23:45:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5AC1210EAEC;
+	Tue, 31 Mar 2026 23:56:18 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 783B110EAA3;
- Tue, 31 Mar 2026 23:45:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC77910EAEC;
+ Tue, 31 Mar 2026 23:56:09 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4644098475423370818=="
+ boundary="===============8028062777388305305=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_Unigraf_integration_=28rev?=
- =?utf-8?q?9=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Update_xe=5Fpm_test_with_hi?=
+ =?utf-8?q?gh_VRAM_usage?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Louis Chauvet" <louis.chauvet@bootlin.com>
+To: "Karthik Poosa" <karthik.poosa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 31 Mar 2026 23:45:13 -0000
-Message-ID: <177500071346.420766.8066410384990013908@a3b018990fe9>
+Date: Tue, 31 Mar 2026 23:56:09 -0000
+Message-ID: <177500136994.420766.10182420472298179183@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
-In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
+References: <20260331181356.4133309-1-karthik.poosa@intel.com>
+In-Reply-To: <20260331181356.4133309-1-karthik.poosa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4644098475423370818==
+--===============8028062777388305305==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Unigraf integration (rev9)
-URL   : https://patchwork.freedesktop.org/series/151772/
+Series: Update xe_pm test with high VRAM usage
+URL   : https://patchwork.freedesktop.org/series/164190/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8839_FULL -> XEIGTPW_14895_FULL
+CI Bug Log - changes from XEIGT_8839_BAT -> XEIGTPW_14897_BAT
 ====================================================
 
 Summary
@@ -66,7 +66,7 @@ Summary
 
   
 
-Participating hosts (2 -> 2)
+Participating hosts (13 -> 13)
 ------------------------------
 
   No changes in participating hosts
@@ -74,57 +74,43 @@ Participating hosts (2 -> 2)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_14895_FULL that come from known issues:
+  Here are the changes found in XEIGTPW_14897_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1:
-    - shard-lnl:          [PASS][1] -> [FAIL][2] ([Intel XE#301]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/shard-lnl-8/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html
+  * igt@xe_waitfence@abstime:
+    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/bat-dg2-oem2/igt@xe_waitfence@abstime.html
 
-  * igt@kms_pm_dc@dc6-dpms:
-    - shard-lnl:          [PASS][3] -> [FAIL][4] ([Intel XE#7340])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@kms_pm_dc@dc6-dpms.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/shard-lnl-1/igt@kms_pm_dc@dc6-dpms.html
-
-  * igt@xe_exec_multi_queue@many-queues-close-fd:
-    - shard-lnl:          NOTRUN -> [SKIP][5] ([Intel XE#6874])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/shard-lnl-4/igt@xe_exec_multi_queue@many-queues-close-fd.html
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4] ([Intel XE#6520])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/bat-dg2-oem2/igt@xe_waitfence@reltime.html
 
   
-#### Possible fixes ####
-
-  * igt@kms_vrr@cmrr@pipe-a-edp-1:
-    - shard-lnl:          [FAIL][6] ([Intel XE#4459]) -> [PASS][7] +1 other test pass
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-5/igt@kms_vrr@cmrr@pipe-a-edp-1.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/shard-lnl-2/igt@kms_vrr@cmrr@pipe-a-edp-1.html
-
-  
-  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
-  [Intel XE#4459]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459
-  [Intel XE#6874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874
-  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8839 -> IGTPW_14895
-  * Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -> xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c
+  * IGT: IGT_8839 -> IGTPW_14897
+  * Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -> xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e
 
-  IGTPW_14895: 14895
+  IGTPW_14897: f2480466fcf94b2f7f79033a738ed175da641166 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8839: 8839
   xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d
-  xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c: 779129c7868f4c7205901d6e57b25de52b411d1c
+  xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e: 278bbcb469a2ab0d521e910e4ecefc8372a05c1e
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/index.html
 
---===============4644098475423370818==
+--===============8028062777388305305==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -144,63 +130,50 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Unigraf integration (rev9)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151772/">https://patchwork.freedesktop.org/series/151772/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Update xe_pm test with high VRAM usage</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164190/">https://patchwork.freedesktop.org/series/164190/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8839_FULL -&gt; XEIGTPW_14895_FULL</h1>
+    <h1>CI Bug Log - changes from XEIGT_8839_BAT -&gt; XEIGTPW_14897_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (2 -&gt; 2)</h2>
+<h2>Participating hosts (13 -&gt; 13)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14895_FULL that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_14897_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1:</p>
+<p>igt@xe_waitfence@abstime:</p>
 <ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/shard-lnl-8/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a>) +1 other test fail</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_pm_dc@dc6-dpms:</p>
+<p>igt@xe_waitfence@reltime:</p>
 <ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@kms_pm_dc@dc6-dpms.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/shard-lnl-1/igt@kms_pm_dc@dc6-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_multi_queue@many-queues-close-fd:</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/shard-lnl-4/igt@xe_exec_multi_queue@many-queues-close-fd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874">Intel XE#6874</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_vrr@cmrr@pipe-a-edp-1:<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-5/igt@kms_vrr@cmrr@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459">Intel XE#4459</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14895/shard-lnl-2/igt@kms_vrr@cmrr@pipe-a-edp-1.html">PASS</a> +1 other test pass</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8839 -&gt; IGTPW_14895</li>
-<li>Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -&gt; xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c</li>
+<li>IGT: IGT_8839 -&gt; IGTPW_14897</li>
+<li>Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -&gt; xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e</li>
 </ul>
-<p>IGTPW_14895: 14895<br />
+<p>IGTPW_14897: f2480466fcf94b2f7f79033a738ed175da641166 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8839: 8839<br />
   xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d<br />
-  xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c: 779129c7868f4c7205901d6e57b25de52b411d1c</p>
+  xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e: 278bbcb469a2ab0d521e910e4ecefc8372a05c1e</p>
 
 </body>
 </html>
 
---===============4644098475423370818==--
+--===============8028062777388305305==--
