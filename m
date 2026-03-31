@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5DCBFF60F4
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:13:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0AE510F92E0
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:13:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F44E10ECA0;
-	Tue, 31 Mar 2026 17:13:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 61F1010ECA9;
+	Tue, 31 Mar 2026 17:13:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="zV/+uGGz";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="VsZjk32k";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C58010EC43
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 972F110EC43
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:20 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 99EDCC59955
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:42 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 20AFBC59957;
+ Tue, 31 Mar 2026 17:11:50 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 021C96029D;
- Tue, 31 Mar 2026 17:11:12 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 7E3516029D;
+ Tue, 31 Mar 2026 17:11:19 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id EB32C104505E2; 
- Tue, 31 Mar 2026 19:11:10 +0200 (CEST)
+ with ESMTPSA id C735F1045043E; 
+ Tue, 31 Mar 2026 19:11:18 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977071; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977079; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=OK1NE7aw2HQgx/9W0ZXtJ7kHhoMlwfIv927ys3oKsKg=;
- b=zV/+uGGz+8Gll8YRp1RG8q49L5nRNT4jVtLaLIzNbGJ/bpPKTpSVAJP4W5BbjhdvYNSGPP
- cYFfaDybSdfM6lB1Qlst3Eygye0wKO0wLue2Wu7kWCnArAZWc/HlDZ2VXwEWDBgLTHW6+e
- z/8smvbQYOulnixCt6SLTPV8YJZA0HjYfa5i5PX1IAGysK5+ldcV+csVtIQOiWbqsWbJGu
- 2fFQ/uC2TEN0wcz+X0889PbHypaeh+Rv581VBL9P1ulZCQCAwQUIvfZp8apJkvP/vpFnPd
- xbjL5bz4duc87KNHJSFKOn2CYBsEsvUIs6lMflYoST1fFRK2qQJVCQw+0EPhTg==
+ bh=OgcXDu4JlSRKLAgyKdzGWmp5q8TM0eJm4n1z5PbmkGc=;
+ b=VsZjk32kwa2bMP94RJVGzGDlMba5usw/waHcBoZPbHE+gsDu0+Aq5N0A6RZia8y9UmTQEa
+ uS/S7AwlG6KIiZK1XWrxyzj8gYeuQvhnx5/iC00TUWlSS3me7OZHYPX0tr7ELlyGBVQBNf
+ rheMO8/K8C8jhvQeeoryIbW/FWdWzS93lZVWIEGW9HzoIkN57XHIB/oV7+EcAHkuYckaSg
+ VRa2FVnfVuDqApTuKjIA+KVSSwELuWddWbN+W5nqlP4vldGJJ+utMXjUi681E2ZOa93XdR
+ /rsnPVXsEcWApaktJlsHbTVRzP4Ogn7EOlS1FLvySZD1/AQhNV67k8mV4Ct4GQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:11:42 +0200
-Subject: [PATCH i-g-t v10 25/49] lib/unigraf: Add reset function
+Date: Tue, 31 Mar 2026 19:11:51 +0200
+Subject: [PATCH i-g-t v10 34/49] lib/unigraf: add
+ unigraf_get_connector_by_stream
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-unigraf-integration-v10-25-12266c34cc1d@bootlin.com>
+Message-Id: <20260331-unigraf-integration-v10-34-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +48,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1644;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2424;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=2iWK6bU+FAyawE5RW1LnN4c0tXoF68CO7K5KX2DHD+8=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA+KSgxnOUTmforxFQW4pNxGF2RBvz0F6XKw
- kwU04/oVSqJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJS5hAAopCld/n4kruP9T/qigl0NDxQCjHk89E
- v7sFVCLrKQn00PN5FHiDbK0LPDLTbeB+MXvYud5qIb8czj20WtXFSJSW4ueRnQfP+VwIuOxED4m
- 4S0bqmrmlPRJA1GQuyvao7Upt5xkY/OERTivcbV9Ultr+GMD6O4i/KTaVmrrt8ay4uY1rlMm6Qb
- e4UR6PMpaHDY/hFNQ+dw4gabSjjvotUQ2/UL8HybjQh47a1Ez5+8myODCbPhpdqvnwRIV4TYHOD
- gX8qRaAmcaNQCDbKdFkIqzfbOxXMGmOgHyP/wdIPSUMevPiEp6gFsKJMizC+o1hKa9v2daMLhPc
- KOZomd6zppMxLny2VJLhAZK64ty3kQsGA0xfxZvbRm246PESzGBrlwHOcI2/iQRtT3XHH7ToR0A
- hYDszzRZQUmjxirYw+St2TA0nlKFTty26G2TYssQDkkcbWejFZg3qJ8NlZjz94Q0bYa22NckUW4
- oArgFy56dLJ27RgY+ouYXfCXiiRiqMS5cNfSlR79ZR9OSp16yNG4nwTILXzsdS1GznS096pJ/Th
- WhdNWlmzhQ06v9xi1LTu8kD+nHYJ+zwWXH9j40t92VQLhox5gfS1nxByzjQMfIQ5fN0V089Ndm5
- F/LUJsGNs5xfT1g2A6q4Q0/EnN4+PO3hKFZCB/uTiMr9bWmVmWBY=
+ bh=KqX1nwMYomTb4NPqnKixAAhaNQL6xkgmZpW77yV63wo=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzABAPiLUDHHnPhRW34lsoPBxd1aEKZFDhTF8j
+ 3VGFGtDiB2JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAQBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKIaw/+PyDOnLhn83Lihq0M+R8WPZYA9cnRIzr
+ ocweTKqT+BeAf9VJj//YSqrMUrfr2SFTAWNj5UGvvqlZ/yy78c2sqr+y3zRNxJ3234zn8blZ46B
+ 07deXYARyqlaK8W7VqbybzvWAeP/GPLCIExGXIry5cWXDL0jn0lHY61pxrkWNAtHDMX0Z2zkee2
+ SjT7/lXybAXYKcwt9TP9GpUr03gxGJazMKQJIGml9yXFLw9bdPQKO3Bpbsva35bekWPh9ZqdS3h
+ HSQHM0lC1CuN07ibPLVbmC2Qxyx+5WGUygnrx+mCcNtBjdN+rjTBkD2JHUMNUXwbk3LU5cXy+/z
+ tGwNelAgxIF4QbTC+eCYsjaAkYw92B/l8cCUEF7sL2JVbIw5P40fBO9cZZ3DuSMJvBVIVjMoseA
+ CORt4JlubVMYiW6BlcZdXieMGtrXMKQAmnL/8fZifNn6Jo3QoMvqWLF675LsO7Qbx6i/5scuORZ
+ sIgFxdvpNXKrL+RYkegS19F3sDJEk0hYL5+yv6dH77WaCa+3hYVcb8pSpEGXoH/0wC/G/nfiegQ
+ cv9ZBLS6xyobvXHWPCLMlFcmSxCfXrE9y/3N/5VctpOyyGuXa58tZK3F8cZFI7N8SCEVhhX1oQs
+ RujE9uJ547wkGgDmeg/TUi+YqOXK03WNFlBOEWtz7jJbARstuuB8=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,53 +81,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To have a consistent state at the beginning of tests, add a unigraf_reset
-function that will restore a known state.
+As unigraf can emulate MST, we need a way to grab the corresponding DRM
+connector from the stream id.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/unigraf.c | 12 ++++++++++++
+ lib/vendor/unigraf/unigraf.c | 41 +++++++++++++++++++++++++++++++++++++++++
  lib/vendor/unigraf/unigraf.h |  2 ++
- 2 files changed, 14 insertions(+)
+ 2 files changed, 43 insertions(+)
 
 diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index 591e99e938b4..e6760ba84386 100644
+index d6e0c36062ae..dd7d3cbadd2f 100644
 --- a/lib/vendor/unigraf/unigraf.c
 +++ b/lib/vendor/unigraf/unigraf.c
-@@ -268,6 +268,8 @@ bool unigraf_open_device(int drm_fd)
- 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
- 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
- 
-+	unigraf_reset();
-+
- 	return true;
+@@ -303,6 +303,47 @@ drmModeConnectorPtr unigraf_get_connector(int drm_fd)
+ 	return igt_get_connector_from_name(drm_fd, unigraf_connector_name);
  }
  
-@@ -281,3 +283,13 @@ void unigraf_require_device(int drm_fd)
- {
- 	igt_require(unigraf_open_device(drm_fd));
- }
-+
 +/**
-+ * unigraf_reset() - Reset the Unigraf device
-+ *
-+ * This function performs a hardware reset of the Unigraf device, restoring it to a
-+ * default state. This includes resetting all configuration parameters, stream settings,
-+ * and link parameters to default values.
++ * unigraf_get_connector_id_by_stream() - Get a connector id from a stream id
++ * @drm_fd: DRM device where the unigraf is attached
++ * @stream_id: Stream id in the MST streams
 + */
-+void unigraf_reset(void)
-+{}
++int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id)
++{
++	drmModeConnectorPtr main_connector = unigraf_get_connector(drm_fd);
++	drmModeResPtr res = drmModeGetResources(drm_fd);
++
++	char *mst_path;
++	int mst_path_len = asprintf(&mst_path, "mst:%d-", main_connector->connector_id);
++
++	igt_assert(mst_path_len >= 0);
++
++	for (int i = 0; i < res->count_connectors; i++) {
++		drmModePropertyBlobPtr path_blob = kmstest_get_path_blob(drm_fd,
++									 res->connectors[i]);
++
++		if (!path_blob || path_blob->length < mst_path_len)
++			continue;
++
++		if (!memcmp(path_blob->data, mst_path, mst_path_len)) {
++			if (!stream_id) {
++				drmModeFreePropertyBlob(path_blob);
++				drmModeFreeResources(res);
++				drmModeFreeConnector(main_connector);
++				return res->connectors[i];
++			}
++			stream_id--;
++		}
++
++		drmModeFreePropertyBlob(path_blob);
++	}
++
++	drmModeFreeResources(res);
++	drmModeFreeConnector(main_connector);
++
++	return 0;
++}
++
+ /**
+  * unigraf_open_device() - Search and open a device.
+  * @drm_fd: File descriptor of the currently used drm device
 diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
-index c08ce62894c5..4c2cbd6b1aa5 100644
+index 34bdf15ed04b..e07ca6745292 100644
 --- a/lib/vendor/unigraf/unigraf.h
 +++ b/lib/vendor/unigraf/unigraf.h
-@@ -40,4 +40,6 @@ bool unigraf_open_device(int drm_fd);
+@@ -77,4 +77,6 @@ void unigraf_read_crc(int stream, igt_crc_t *out);
  
- void unigraf_require_device(int drm_fd);
+ bool unigraf_use_crc(void);
  
-+void unigraf_reset(void);
++int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id);
 +
  #endif // UNIGRAF_H
 
