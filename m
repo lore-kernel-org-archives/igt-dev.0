@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A40E010F92E6
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 18:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E12910F92E6
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 18:16:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4500910E92A;
-	Tue, 31 Mar 2026 18:15:13 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8674E10E92A;
- Tue, 31 Mar 2026 18:15:04 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7953665238145794592=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E569010E96C;
+	Tue, 31 Mar 2026 18:16:20 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MFWYLPCa";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19C3B10E96C
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 18:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774980973; x=1806516973;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=f7rw3oNgL8QGU4TwBtTdL/ZbddKt+2fqp5Krr1Ytxeo=;
+ b=MFWYLPCaRx0QXwdTdedI8IkUYjfLwgU8jFrwuUfEnvNHLXDZYn4XkIrP
+ 33vJMCw11yg60qWuT22VYLybbBoq+wsgQh3bXmWuCTEZAefwR6RvJOIIb
+ wJWfwjCvyuPva/MK4pT0GEwEA1CCwtzLuUUhbO1MDh9pYjiU1aZwqJzNc
+ H5UBc8g6kPCT8KxeHMSbn8zbuBJhsiPiHq3c8GCpQrOyx8q/NmsoTADzK
+ bVX+76etG1JHDfCFbJtiP5bBezSeX+lULrkF+3brBWpoQd5LUxV2/6Fqx
+ apb+pwutTKGcDbX+dygy4vVRdMZEVaJJcyAGJOpNU/AlT3mmN2HgpadhZ w==;
+X-CSE-ConnectionGUID: YcWDZpwlR7yDCs4+EsXNjQ==
+X-CSE-MsgGUID: IuLGym9PT/yo/NGvoHhIcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75722647"
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="75722647"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Mar 2026 11:16:13 -0700
+X-CSE-ConnectionGUID: 2mHmLuOXTreatKcu6m9gFw==
+X-CSE-MsgGUID: UGMwAlsTSG6d3XztveOS0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="231367823"
+Received: from lnl1-rocket-lake-client-platform.iind.intel.com ([10.223.55.16])
+ by orviesa005.jf.intel.com with ESMTP; 31 Mar 2026 11:16:12 -0700
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_pm_dc: Skip runtime PM active check on
+ headless systems
+Date: Tue, 31 Mar 2026 23:46:06 +0530
+Message-ID: <20260331181606.22367-1-mohammed.thasleem@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_tests/intel/xe=5Fpm=5Fresi?=
- =?utf-8?q?dency=3A_Fix_suspend_duration_calculation_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sk Anirban" <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 31 Mar 2026 18:15:04 -0000
-Message-ID: <177498090453.415443.17067084440112591995@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260331103816.2489563-2-sk.anirban@intel.com>
-In-Reply-To: <20260331103816.2489563-2-sk.anirban@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,159 +62,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7953665238145794592==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Skip runtime PM active check on disconnected displays in DPMS_ON.
+On headless systems, DPMS_ON operations don't enable CRTCs or acquire
+RPM wakerefs, leaving the device suspended.
+Skip the active state wait when no outputs are connected.
 
-== Series Details ==
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/intel/kms_pm_dc.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-Series: tests/intel/xe_pm_residency: Fix suspend duration calculation (rev3)
-URL   : https://patchwork.freedesktop.org/series/163669/
-State : success
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 39e94f36b..39d00bb6e 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -385,6 +385,17 @@ static void setup_dc_dpms(data_t *data)
+ 	}
+ }
+ 
++static bool has_connected_outputs(data_t *data)
++{
++	igt_display_t *display = &data->display;
++	igt_output_t *output;
++
++	for_each_connected_output(display, output)
++		return true;
++
++	return false;
++}
++
+ static void dpms_off(data_t *data)
+ {
+ 	for (int i = 0; i < data->display.n_outputs; i++) {
+@@ -406,7 +417,13 @@ static void dpms_on(data_t *data)
+ 					   DRM_MODE_DPMS_ON);
+ 	}
+ 
+-	if (!data->runtime_suspend_disabled)
++	/*
++	 * DPMS_ON on disconnected connectors does not enable any pipe
++	 * or acquire a runtime PM wakeref, so the device will never
++	 * transition to active state. Skip the wait when no outputs
++	 * are physically connected.
++	 */
++	if (!data->runtime_suspend_disabled && has_connected_outputs(data))
+ 		igt_assert(igt_wait_for_pm_status
+ 			   (IGT_RUNTIME_PM_STATUS_ACTIVE));
+ }
+-- 
+2.48.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8839_FULL -> XEIGTPW_14891_FULL
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (2 -> 2)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14891_FULL that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_multi_queue@many-queues-close-fd:
-    - shard-lnl:          NOTRUN -> [SKIP][1] ([Intel XE#6874])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/shard-lnl-5/igt@xe_exec_multi_queue@many-queues-close-fd.html
-
-  * igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma:
-    - shard-lnl:          [PASS][2] -> [FAIL][3] ([Intel XE#5625])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/shard-lnl-1/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma.html
-
-  
-#### Warnings ####
-
-  * igt@kms_big_fb@4-tiled-8bpp-rotate-90:
-    - shard-lnl:          [SKIP][4] ([Intel XE#1407]) -> [ABORT][5] ([Intel XE#4760]) +1 other test abort
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-8/igt@kms_big_fb@4-tiled-8bpp-rotate-90.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/shard-lnl-2/igt@kms_big_fb@4-tiled-8bpp-rotate-90.html
-
-  
-  [Intel XE#1407]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1407
-  [Intel XE#4760]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4760
-  [Intel XE#5625]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625
-  [Intel XE#6874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874
-
-
-Build changes
--------------
-
-  * IGT: IGT_8839 -> IGTPW_14891
-  * Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -> xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c
-
-  IGTPW_14891: 14891
-  IGT_8839: 8839
-  xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d
-  xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c: 779129c7868f4c7205901d6e57b25de52b411d1c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/index.html
-
---===============7953665238145794592==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pm_residency: Fix suspend duration calculation (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163669/">https://patchwork.freedesktop.org/series/163669/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8839_FULL -&gt; XEIGTPW_14891_FULL</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (2 -&gt; 2)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14891_FULL that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_exec_multi_queue@many-queues-close-fd:</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/shard-lnl-5/igt@xe_exec_multi_queue@many-queues-close-fd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874">Intel XE#6874</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/shard-lnl-1/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-single-vma.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625">Intel XE#5625</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_big_fb@4-tiled-8bpp-rotate-90:<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-8/igt@kms_big_fb@4-tiled-8bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1407">Intel XE#1407</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14891/shard-lnl-2/igt@kms_big_fb@4-tiled-8bpp-rotate-90.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4760">Intel XE#4760</a>) +1 other test abort</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8839 -&gt; IGTPW_14891</li>
-<li>Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -&gt; xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c</li>
-</ul>
-<p>IGTPW_14891: 14891<br />
-  IGT_8839: 8839<br />
-  xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d<br />
-  xe-4827-779129c7868f4c7205901d6e57b25de52b411d1c: 779129c7868f4c7205901d6e57b25de52b411d1c</p>
-
-</body>
-</html>
-
---===============7953665238145794592==--
