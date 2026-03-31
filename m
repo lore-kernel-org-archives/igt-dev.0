@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCCC710F92E0
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:11:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D679310F92E0
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:11:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 73F1C10EC48;
-	Tue, 31 Mar 2026 17:11:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7EC9910EC4F;
+	Tue, 31 Mar 2026 17:11:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="UPG/mlWW";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="xFVmYOi4";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90F6A10EC43
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:10 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B193810EC39
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:01 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 168C0C59955;
- Tue, 31 Mar 2026 17:11:40 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id A65AE1A30B4;
+ Tue, 31 Mar 2026 17:11:00 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7368C6029D;
- Tue, 31 Mar 2026 17:11:09 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 7D1746029D;
+ Tue, 31 Mar 2026 17:11:00 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 568F2104505DF; 
- Tue, 31 Mar 2026 19:11:08 +0200 (CEST)
+ with ESMTPSA id 8FD4C104504A1; 
+ Tue, 31 Mar 2026 19:10:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977068; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977060; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=7p88wpHydXZxpCIC0EYwEi+EAjYHkOUfV5q2CxDBqrY=;
- b=UPG/mlWWUU+4VFTZio3Czod6+zElMnYlqXEc6sWVyEE0iNu7SOtPRV087KaGxUHSazCWqp
- /TipNf2Xt0Jc4Fv+9TIPi8qyLTQzTpaIThohLxCmwiUqsQ9U4XZ4BsFkwtDEeqxuowXL7S
- 5uk/DOhh52raKfGZZ3yAvXEuOR4Nmf8sA1Ic+ZyKFWeXrr1gF/kDIpCNI8UW+NtOm/TTjJ
- vc6JIgw3YjupJGGk3NebY5YMiqzuq8fQpH5fGLpJx59SgxX1hbnW+Oiq6czZkiW1nDqv2G
- xUrr4TxOB5Xqj2WfWq2U9zdWxAWwbMwiFng8uDjQEwPksSXteCCyrHWfNspCYw==
+ bh=sslOeQSDexx3qv6aX+eUznVLOc9+QPCccqWFhqhJ42E=;
+ b=xFVmYOi42frO8gDrECRTMWCg/YA/UnKfXyDzhioKKGPd06nPl8HksncSlypl9k3czOaZCt
+ nOirrv4sd/CfP+02t0HCNFqkFiX10yYhSAQSDxgo3FeBzI5QmROEBBGLrugKnFdy/Ft6FB
+ nwuR/GL36eSNGVM4WQN0UCrZTirngs7ieVx1/0cTltKVux0eQ4dJqxH4451gG58i4JWLxq
+ 8Fi2bgyEPD/5mBRfkCsJUPEgbBiYDKmxngoy1mHqsyl7S86bjRWPZdgBs88oigovHFAy4w
+ ujWPj9/IuUMNFQTfhZunTlwG0qjBYouhuelCeKB/pkJxxKpBnARIuB11MMxqEA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:11:39 +0200
-Subject: [PATCH i-g-t v10 22/49] lib/unigraf: Introduce device
- configuration
+Date: Tue, 31 Mar 2026 19:11:29 +0200
+Subject: [PATCH i-g-t v10 12/49] lib/igt_debugfs: Add const when make sense
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-unigraf-integration-v10-22-12266c34cc1d@bootlin.com>
+Message-Id: <20260331-unigraf-integration-v10-12-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -48,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3356;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2833;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=40h1dKEIAc475DtFEIy2yx+wN+N+wXh2aEklcgAkc2I=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA+sOZcrVVebqndhcncAnAmFwehbszspp9Wp
- Q6x7VNSBn+JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLFVg/+Oxv01w+/pQHe+/Ph5cT1B+68KGyR7Fl
- t/bIIPzT3aelDZSBgWZHKSkq+GhF1KaYMlzkKQcpMeb1IAWFaJeGsVZDm0MimlS94iKxZQKvT5D
- 8iUOfiYS1cpfqt7NOhTTHGO3Kr4V9Ym1SHd5dhaRZz2O8sK3Tj/CTF/nD0fFg5I8dMuD8+QeE5V
- up5WTargFaJ2GPeyVJOwaXXCrgtUE9n08X7JbZY4De879orkjwdJLgKNGoIsDo30EsOj7g8ZidA
- elqgjn3HXaV6e9ZNNbwnKOMdMqivm9wg/WoZetpZRTkRTBZEEO5XLd/nRv7iTX5C8Q0O9ew7qp7
- AhcTeqkkJQv5rTae3FNixzjHtmbnj5196KG77eZK7y5hO3ocpQUsuOakuv/hCWVS+n9y8EGScTD
- rBVNK2ilLPiYKSxxBk30AM3LGZ6Qdy2aWJdOCD6Hx0dBGWBHAcdpz9CVriX/yJU1ElTjx/EEbFU
- VTc+qj5zyAJQUeWUKuna5on1dZWjeHtdjRFHewivQsVQ4ucZA+X/NiG7JC7VsDRv193hgbCILCG
- s5eEApel5MDAIQg8mnRMUjzXVQ08gd/+pKbDY1ciToDcGBfJ3Ttkem26WSBc9m5ZzPXfxcNOiT7
- cdNw5Zu83BC/2MbQMqpcz4Xwv61ChF+0TD0nri6Z+1e80069wVNA=
+ bh=1DFky+uJTXjmax38AWNlbyuViwErnOzcU+yyFbKKziY=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA8FDFNh0zbYNScfEcpwXXIze1+WkNWEjEJ6
+ WFwsRdc8FiJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOL4MxAAmoUSeABudcaHnbqKOY+BMlNi5la88Ek
+ RUaEa/T5XaNHGC8GJXTVKjnMDkmzURAWyX/zd3q/JZoCmMlQbjYpL3R6Z+xFu74jjj+GnF+ac3U
+ HuKBGeB9Jszm3eW42xOyUHMs/02av5i0TrPsp6HEfT1VC+C6FNPeESz/bECEAYS2/TRalLGmL+p
+ 4a/lLmviVDnkwq9zNgzUPcMBBSVWMZ9LTeJFM1E/qQ+zQbc/soXZMc+ZTu+HW+o0lcOPAlOzXqi
+ GuyrIxa753E6uPWNkHV/VJtscQqzLj3qmxsLNFu54wkQ+jPBOTqB3sF2/Lc6VQNG70k3c+U8y1m
+ 90VDe8aCMJztVG1yNEp7LC1+PhTTxvt+O/Z+EZ2X9Ul+bk7ut4mYA3HRjzZ9aX8bfuTq4gQQ4nz
+ PGqaE/9TsP2HWxTUb32NL4zd+3SK+hJWC5hUU6FLu4gQUsBK0BLzgyOMTKlFYRSOMslCTg483E5
+ bGvsbG9j1mcNpKdJ3seaA6T25dSa+utuW9iKjpojIOIhwG/FrZwuJ/QguFUQO7oznUgjQ/M8zWF
+ 7TmQgA5NqzHCg9P1yC1AdI1FXkK+iXjdYXO8ovUoO6F5XP8Ttts+pLaAlUlfS3PqmbiG6qpbobp
+ 5d0omCNcI/Ml0k8/Rf5tjovjcUSawluKqxup7kNPK1IM+9gQvHBo=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -81,118 +80,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As there could be multiple devices detected by libTSI, add a configuration
-field to ensure that igt will use the proper unigraf device.
+Const qualifier avoid unwanted modifications. Add const at place where
+it make sense.
 
-The unigraf integration will search for a [Unigraf] entry containing a
-Device=
-
-For example, it can look like:
-
-[Unigraf]
-Device=UCD-500 [2434C620]
-
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/unigraf.c | 50 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ lib/igt_debugfs.c | 6 +++---
+ lib/igt_debugfs.h | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index 81ffae7a8ac3..bf52357e1dc9 100644
---- a/lib/vendor/unigraf/unigraf.c
-+++ b/lib/vendor/unigraf/unigraf.c
-@@ -13,6 +13,7 @@
- #include "unigraf.h"
- #include "TSI.h"
- #include "TSI_types.h"
-+#include "igt_rc.h"
- 
- #define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device, ##__VA_ARGS__)
- 
-@@ -20,6 +21,21 @@ static TSI_HANDLE unigraf_device;
- static char *unigraf_default_edid;
- static char *unigraf_connector_name;
- 
-+/**
-+ * UNIGRAF_NAME_MAX - Maximum name length to be used for TSI functions
-+ */
-+#define UNIGRAF_NAME_MAX 1024
-+
-+/**
-+ * UNIGRAF_CONFIG_GROUP - Name of the unigraf group in the configuration file
-+ */
-+#define UNIGRAF_CONFIG_GROUP "Unigraf"
-+
-+/**
-+ * UNIGRAF_CONFIG_DEVICE_NAME - Key of the device name in the configuration file
-+ */
-+#define UNIGRAF_CONFIG_DEVICE_NAME "Device"
-+
- static void unigraf_close_device(void)
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 0b74afe3374f..ed0a2077368e 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -270,7 +270,7 @@ int igt_debugfs_tile_dir(int device, uint8_t tile)
+  * Returns:
+  * The directory fd, or -1 on failure.
+  */
+-int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
++int igt_debugfs_connector_dir(int device, const char *conn_name, int mode)
  {
- 	if (!unigraf_device)
-@@ -66,6 +82,21 @@ static unsigned int unigraf_device_count(void)
- 	return unigraf_assert(TSIX_DEV_GetDeviceCount());
- }
+ 	int dir, ret;
  
-+static int unigraf_find_device(char *request)
-+{
-+	int device_count = unigraf_device_count();
-+
-+	for (int i = 0; i < device_count; i++) {
-+		char dev_name[UNIGRAF_NAME_MAX] = "";
-+
-+		unigraf_assert(TSIX_DEV_GetDeviceName(i, dev_name, UNIGRAF_NAME_MAX));
-+		unigraf_debug("Detected unigraf device %d: %s\n", i, dev_name);
-+		if (!strncmp(dev_name, request, UNIGRAF_NAME_MAX))
-+			return i;
-+	}
-+	return -ENODEV;
-+}
-+
- /**
-  * unigraf_open_device() - Search and open a device.
-  * @drm_fd: File descriptor of the currently used drm device
-@@ -80,6 +111,8 @@ static unsigned int unigraf_device_count(void)
- bool unigraf_open_device(int drm_fd)
+@@ -789,7 +789,7 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
+  *
+  * Returns: 0 on success, -1 on failure.
+  */
+-int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
++int igt_debugfs_read_connector_file(int drm_fd, const char *conn_name,
+ 				    const char *filename, char *buf,
+ 				    size_t buf_size)
  {
- 	TSI_RESULT r;
-+	GError *cfg_error = NULL;
-+	char *cfg_device = NULL;
- 	int device_count;
- 	int chosen_device = 0;
- 	int chosen_role = 0;
-@@ -92,6 +125,15 @@ bool unigraf_open_device(int drm_fd)
+@@ -819,7 +819,7 @@ int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
+  *
+  * Returns: 0 on success, -1 on failure.
+  */
+-int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
++int igt_debugfs_write_connector_file(int drm_fd, const char *conn_name,
+ 				     const char *filename, const char *data,
+ 				     size_t data_size)
+ {
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index eb2a0b70c28b..9686cdbd1818 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -34,7 +34,7 @@ const char *igt_debugfs_mount(void);
+ char *igt_debugfs_path(int device, char *path, int pathlen);
  
- 	unigraf_init();
+ int igt_debugfs_dir(int device);
+-int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
++int igt_debugfs_connector_dir(int device, const char *conn_name, int mode);
+ int igt_debugfs_crtc_dir(int device, int crtc_index);
  
-+	if (igt_key_file) {
-+		cfg_device = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-+						   UNIGRAF_CONFIG_DEVICE_NAME, &cfg_error);
-+		if (cfg_error) {
-+			unigraf_debug("No device name configured, uses first device available.\n");
-+			cfg_device = NULL;
-+		}
-+	}
-+
- 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
+ int igt_debugfs_open(int fd, const char *filename, int mode);
+@@ -177,10 +177,10 @@ int igt_get_stable_obj_count(int driver);
+ void __igt_debugfs_dump(int device, const char *filename, int level);
+ #define igt_debugfs_dump(d, f) __igt_debugfs_dump(d, f, IGT_LOG_DEBUG)
  
- 	device_count = unigraf_device_count();
-@@ -100,6 +142,14 @@ bool unigraf_open_device(int drm_fd)
- 		return false;
- 	}
- 
-+	if (cfg_device) {
-+		chosen_device = unigraf_find_device(cfg_device);
-+		if (chosen_device < 0) {
-+			igt_warn("The requested unigraf device %s is not found, err: %d.\n", cfg_device, chosen_device);
-+			return false;
-+		}
-+	}
-+
- 	unigraf_device = TSIX_DEV_OpenDevice(chosen_device, &r);
- 	unigraf_assert(r);
- 	igt_assert(unigraf_device);
+-int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
++int igt_debugfs_read_connector_file(int drm_fd, const char *conn_name,
+ 				    const char *filename, char *buf,
+ 				    size_t buf_size);
+-int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
++int igt_debugfs_write_connector_file(int drm_fd, const char *conn_name,
+ 				     const char *filename, const char *data,
+ 				     size_t data_size);
+ bool connector_attr_set_debugfs(int drm_fd,
 
 -- 
 2.52.0
