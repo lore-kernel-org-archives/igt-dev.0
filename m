@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22E91FF60F4
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:12:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6159C10F92E0
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:12:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CB53E10EC54;
-	Tue, 31 Mar 2026 17:12:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1922B10EC63;
+	Tue, 31 Mar 2026 17:12:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="hgl47wpV";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Url3hUlk";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36C7910EC48
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:30 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 421D910EC39
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:10:54 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 2ACE61A30B3
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:29 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 26DDAC59955;
+ Tue, 31 Mar 2026 17:11:23 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id EE6676029D;
- Tue, 31 Mar 2026 17:11:28 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 83FA86029D;
+ Tue, 31 Mar 2026 17:10:52 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id F2F6E1045051E; 
- Tue, 31 Mar 2026 19:11:27 +0200 (CEST)
+ with ESMTPSA id 86E221045043E; 
+ Tue, 31 Mar 2026 19:10:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977088; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977052; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=+uUmNzB+h+4nBGKe8o6/h1BPXVDIr7y5s8U1Mljb0u8=;
- b=hgl47wpVEJMbo9x8RfeJ+EawKL5qWcAqH3YuTTLxx55JIWiB01VspcqUyxzQfMqqWXSR1A
- J7jGeNTRJ2v98yxJLIUWw1GxfbY19urlX1bX+dXVYW9mhTVtBw0lI0hfj0Zr2O+Ha/zKwE
- q9DiQGUW3VMom98ad5QHDzNp3TAgq8eDYf6s9o8TuYjkfFbUulPE7q7M3saXb8C2D4jB11
- ruWBdsUYtrvnIbBnb6qjSPDnonQXTFHmGAwBQbwMhOVu5n0wzHGG+g0gOfa/EGbgcV6eMu
- URyeCM+AgjplMI2wNiZ2WOAOl1jyQVWKxJhCW4y7phMzLF8LzdfsHpIqIuhivQ==
+ bh=X/NhR72njfHjPR/JIEupBrewcujG8uvnozK9ljWJITA=;
+ b=Url3hUlkEFZu6xhSt71IH2VS3/tF23aUnAaUwVjt1uGtyelnHMrqUjPY3hTssn0ojpWY02
+ pvUkmdjisrANCn97hqowKu6+t4IgHHDQ3CweqnEtSvdNK+TaP8WWcsipFW/qYws4/ST4EL
+ VV0rN1/X+vxG/W/bGg/TYgr+pFB5Xva14IleKHRYzGAwsmkfTX1C7I/EquPCcZxdlF2fkx
+ bwQnV+y0ryU7fyR/+MjvoBUOSVqJvE6iIXDE0c+jCjPyXnZyz31pwtmNcLoiR8EEO5BR6c
+ HtYptRbMOkki+cpMryyafclPpj7trGh90+2SgCMtKWgnQHfFWNkrmXPURVaePg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:12:02 +0200
-Subject: [PATCH i-g-t v10 45/49] lib/unigraf: Add lane count configuration
+Date: Tue, 31 Mar 2026 19:11:19 +0200
+Subject: [PATCH i-g-t v10 02/49] lib/igt_kms: Add helper to wait for a
+ specific status on a connector
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-unigraf-integration-v10-45-12266c34cc1d@bootlin.com>
+Message-Id: <20260331-unigraf-integration-v10-2-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +48,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2419;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2804;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=rpl6rk6x1kD1gJiyw2d+bFlfIZu9buY6tBXqwfZsKBk=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzABBbVCB69R/Re4tM4xxymZNEcPpCS6UjXi+V
- Ob20N391iOJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAQRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJgFQ//fUJZRII7VeoN0VG4rt4fthJ3JV6VNEH
- gsxL7c1IX6ODzDWV9ya0z4gYNA+Ao4ilfgcBujfzhZ9J/Mv0GQmhU01pgj1kIOlJNlhcOWMDaQy
- wFjdzM9ahEM/l/5Mwwl/cZt8aIGxvN0Kw0xEp1zMzdHU/T1a7YdxLbvUPChgnbpEBwXJ0jSnKUd
- g2YI4Mkxo64T0cbMwQYS7nDH+AN00ngDK9GuNVMqQBfhbxkiZZUxBjhTSxkn07y3vrQBa/qWru2
- x8HuzmDLlgq9uqJ9I4rCw/53t3LM3zyi17BxuGBPlRPry7bnu3yrQlfIRaDE1fAps0LfB6y/eN4
- hmXrVU0Z8UWrCYpD5B1qv3cXL6bIOvDrFaDypLi/dGJA651hgIEZBazBIeqw0sdlUSFmzuos48m
- 7HztaHe5vyqAM3w8XSf4LVyOvZ0dvdysyzXumdsIbwlZPpv9laUEScXvbgZT+R1UHpIWg/mxMqy
- 8SaIEosGmsSqx/86xBL10b4mM1DpGMNx0g5IREZm1UXeGpEPQoGNb8G118O53gpLpT0eV35bF0Q
- wVoX9JKsBv7fT0LZf+zTImd4tZypKDKw7LPdsioo+TOzrHPR7VSDQ6hppws0SmBOSFc5sM3PaeL
- iTfVVvGJl+93mCjZOebAncXkS2+/JlarYhSCp39EoUYi1K7bQzz0=
+ bh=7bUT1q7Vnfv0QUhTa4uLX3ASNABA/l/zoI7f0RsLDL4=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA7qetGAGWLdaAcznhsGoj6HLAofaPl6AlBb
+ 9HpdSwig5aJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAOxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJAiBAAymz1oBXHh4wvT6kqP0FUKEI3H3zvwml
+ vonCaIlKO9RjJXIehcs7YaWWHWxWJcVoH1VETHWUF1CJ0t6M041F5KF84XoztQOo8ijPGYgdOZF
+ aPy5RtAc3vnsSlQ8WS7M9mfUA5HcNTif92wo+2hp1syT5hjqRSNDZw+i/agWqf+BcNGbIs7VtuZ
+ B2mqI1gtrIBchhI9T4y9oOsvyLjXIoj2x6z0eBgvwbOs9W0FJAkxdqOUbEkr7Ub4fBLzA/Vb6U/
+ kjvnq8reGbNOcEAlyOiU81UJJlNf1kdxhi6ol+Fz+zpgfNsHW/2g5JQbC8DyFJoKYuN63EqrQlQ
+ peObKOhFpFaVv+amJwRezurLocAPMk5EDlKfmmCf/0orcxnr0LXM0gHH7UlUu0ux9ZdSMIQRTtg
+ BKg1pSHf+2ZVRBRJmhlV8qpwtp089eiv7wAvETLnfpnfIlNhTmu2sDMXJGMxKuyrf3QUqFiV6ey
+ 3CFg84KP3BecFj89OBZklEK2iTM7IiNvl3cLi1jCnRbwFEXUmyUBZWP0t6Qk99wfIXXNwL5je2/
+ VQp5fyRgd8m7+fo4K5y9/LHHRHJdmDko59M/+dLMMtu0MonBteunHUDRFv1tKhubDcKCuIVuRvT
+ cIuEUZaEBgFC2mTTxWHCbImsd5QQ7UfpSTW7KUYGKU5XFdBvFfTc=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,73 +81,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As unigraf can emulate 1, 2 or 4 lanes display port connections, add
-helpers to configure the number of lanes.
+During testing with chamelium, it is frequent to wait for a specific
+connector status. This new helper is polling the DRM API to wait for this
+status. This allows detecting it without notifier systems which can fail
+if hot plug detection is not working properly on the device under test.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/unigraf.c | 29 +++++++++++++++++++++++++++++
- lib/vendor/unigraf/unigraf.h |  4 ++++
- 2 files changed, 33 insertions(+)
+ lib/igt_kms.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  3 +++
+ 2 files changed, 46 insertions(+)
 
-diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index ae8036526156..7dbde1279d31 100644
---- a/lib/vendor/unigraf/unigraf.c
-+++ b/lib/vendor/unigraf/unigraf.c
-@@ -551,6 +551,7 @@ void unigraf_reset(void)
- 	unigraf_set_sst();
- 	unigraf_load_default_edid();
- 	unigraf_hpd_assert();
-+	unigraf_set_max_lane_count(4);
- }
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index f557fe35e1a4..5c78e0552034 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -90,6 +90,8 @@
+  * library as a dependency.
+  */
  
- /**
-@@ -810,3 +811,31 @@ void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info)
- 	igt_assert_eq(mode_info->vsync_start, unigraf_read_u32(TSI_DPRX_MSA_VSTART_R));
- 	igt_assert_eq(mode_info->hsync_start, unigraf_read_u32(TSI_DPRX_MSA_HSTART_R));
++#define WAIT_FOR_CONNECTOR_LOOP_SLEEP_US 10000
++
+ /* list of connectors that need resetting on exit */
+ #define MAX_CONNECTORS 32
+ #define MAX_EDID 2
+@@ -8147,3 +8149,44 @@ igt_crtc_t *igt_random_crtc(igt_display_t *display)
+ 
+ 	return crtcs[rand() % n];
  }
 +
 +/**
-+ * unigraf_set_max_lane_count() - Set the maximum number of lanes advertised to the DUT
-+ * @count: The maximum number of lanes to configure on the device
++ * igt_wait_for_connector_status:
++ * @drm_fd: drm file descriptor
++ * @connector_id: connector to monitor
++ * @timeout: maximum duration to wait, in second. Use -1.0 to set the timeout
++ *           to igt_default_detect_timeout().
++ * @drm_mode: mode to wait for, see enum drmModeConnection
 + *
-+ * This function sets the maximum number of lanes that the device will advertise on the DP link.
-+ * The actual number of lanes used may be less than the requested count if the
-+ * DUT does not support/use it.
++ * Wait for at most @timeout that the connector @connector_id  status
++ * become @drm_mode
++ * Returns: true when the status is reached, false if there is a timeout
 + */
-+void unigraf_set_max_lane_count(uint32_t count)
++bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
++				   int drm_mode)
 +{
-+	unigraf_write_u32(TSI_DPRX_MAX_LANES, count);
++	drmModeConnector *connector;
++	struct timespec start, end;
++
++	if (timeout < 0.0)
++		timeout = igt_default_display_detect_timeout();
++
++	igt_assert_eq(igt_gettime(&start), 0);
++	end = start;
++
++	while (igt_time_elapsed(&start, &end) <= timeout) {
++		connector = drmModeGetConnector(drm_fd, connector_id);
++		if (connector && connector->connection == drm_mode) {
++			drmModeFreeConnector(connector);
++			return true;
++		}
++		drmModeFreeConnector(connector);
++		usleep(WAIT_FOR_CONNECTOR_LOOP_SLEEP_US);
++		igt_assert_eq(igt_gettime(&end), 0);
++	}
++
++	igt_debug("Timeout waiting for connection status %d on connector %d\n", drm_mode,
++		  connector_id);
++
++	return false;
 +}
-+
-+/**
-+ * unigraf_get_max_lane_count() - Get the maximum number of lanes supported by the device
-+ *
-+ * Returns: The maximum number of lanes supported by the device.
-+ */
-+int unigraf_get_max_lane_count(void)
-+{
-+	int max_lanes;
-+
-+	igt_assert(unigraf_device);
-+	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_MAX_LANES,
-+					     &max_lanes, sizeof(max_lanes)));
-+	return max_lanes;
-+}
-diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
-index f3ea499292be..56a9d910dcb1 100644
---- a/lib/vendor/unigraf/unigraf.h
-+++ b/lib/vendor/unigraf/unigraf.h
-@@ -81,4 +81,8 @@ int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id);
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index d7cc22d6cd61..f70976cf042c 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1293,4 +1293,7 @@ void igt_get_and_wait_out_fence(igt_output_t *output);
  
- void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info);
+ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
  
-+int unigraf_get_max_lane_count(void);
++bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
++				   int drm_mode);
 +
-+void unigraf_set_max_lane_count(uint32_t count);
-+
- #endif // UNIGRAF_H
+ #endif /* __IGT_KMS_H__ */
 
 -- 
 2.52.0
