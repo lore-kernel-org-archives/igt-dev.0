@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4827110F9308
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 22:57:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62BB610F9309
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 23:06:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E829D10E1AE;
-	Tue, 31 Mar 2026 22:57:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F0B6A10E315;
+	Tue, 31 Mar 2026 23:06:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AvHDzFdI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FH1pdVyB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1398D10E1AE
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 22:56:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB6DD10E315
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 23:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774997819; x=1806533819;
+ t=1774998403; x=1806534403;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=qYEsKHgb9L7peZY1J8193MqMZ+1PX2IeuBgl15hC0bQ=;
- b=AvHDzFdII60Evp7y5VGxuXwkn5aIP5zofDx0biSTmb2AXgEWk5Tcp0Ax
- H+UhiKfN8/DvY89aWNAscQBTrv9xKywWLlUdSxIbW5AwPsAeGaJwvpaRw
- ubvX+gn7bQ/ta1o03SIUudWk7V7cT2jAqNu/rrQlntfCHm4q1RPdvwh0r
- e8JahqC1zBTypszZPJ6TRMSix8BVYoR8m/9RTL/0f9/CptSeEcL5QJPUm
- Z7BaFFnrdNOBe/MlUOLeyyjxKvy9BuKPtkKZN3eIz/d+apV1ol4OCB9We
- W8QO2alfbY7ni6OTP3mZoaS1CcgOI3KQ0e4k7EzXutvwGaP5v37KShYMi w==;
-X-CSE-ConnectionGUID: to/WCItmRb6sEyCtTvew1w==
-X-CSE-MsgGUID: YIklLvCJS0WYHNlUAUecIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="93419966"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="93419966"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ bh=R/DM6g4dfBQ52kmeIfteYDS4Tk0ZR3RoGHJ5/VlRpbs=;
+ b=FH1pdVyBbhEN0/EHv6zTHCZCG1mLCe5Lqfw8iHZUhPwL7wp3frsEylbB
+ sYR7WJmSaTcDPRs3s3F7CgFYokUAYE2iYgIXU7QjmYyNV9+jFb17yV1cW
+ 9ijIgsRWkIDZFe/qAvRsbIRkgANhD5zn2jKFLfH18N/Xi7l1w6D5bV03g
+ FO0sGwQEXEo/JWIvAgLEjw37uSDgZM2Fro9s7EYh/8Rf2FP0BWKTk0RBJ
+ g9DEvFHhHilmhdqCbnK4qOrxIm9Zb/EfjDnEZnfBim2NEgDFcBJg8UZ7y
+ yXGVuG18JSrA/203m8T2V3SUrEXlb2xxle0S964KTMXyF/KLl9wX9wByW g==;
+X-CSE-ConnectionGUID: vZJII3uHS3eqzi+okmGTMQ==
+X-CSE-MsgGUID: qDNSS1KzTu+Uw4/oIt/M+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="93420733"
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="93420733"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 15:56:58 -0700
-X-CSE-ConnectionGUID: lv3F2D6rQLOhwaOtD3isVQ==
-X-CSE-MsgGUID: tFiqPVH/TZuhstd+yuwSrQ==
+ 31 Mar 2026 16:06:42 -0700
+X-CSE-ConnectionGUID: vLuOvtF6QYO1lT563uXWDA==
+X-CSE-MsgGUID: hPLPlZJ5TVq8s9D78z/JtA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="228104465"
 Received: from unknown (HELO adixit-MOBL3.intel.com) ([10.241.243.168])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 15:56:58 -0700
-Date: Tue, 31 Mar 2026 15:56:57 -0700
-Message-ID: <87se9fy5dy.wl-ashutosh.dixit@intel.com>
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Mar 2026 16:06:41 -0700
+Date: Tue, 31 Mar 2026 16:06:40 -0700
+Message-ID: <87qzozy4xr.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: himanshu.girotra@intel.com
-Cc: igt-dev@lists.freedesktop.org, matthew.d.roper@intel.com,
- francois.dugast@intel.com, matthew.auld@intel.com
+To: <himanshu.girotra@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>, <matthew.d.roper@intel.com>,
+ <francois.dugast@intel.com>, <matthew.auld@intel.com>
 Subject: Re: [PATCH i-g-t] lib/intel_pat: add hardcoded PAT fallback for older
  kernels
-In-Reply-To: <20260327052212.27431-1-himanshu.girotra@intel.com>
+In-Reply-To: <87se9fy5dy.wl-ashutosh.dixit@intel.com>
 References: <20260327052212.27431-1-himanshu.girotra@intel.com>
+ <87se9fy5dy.wl-ashutosh.dixit@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,134 +71,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 26 Mar 2026 22:22:12 -0700, himanshu.girotra@intel.com wrote:
+On Tue, 31 Mar 2026 15:56:57 -0700, Dixit, Ashutosh wrote:
 >
-> From: Himanshu Girotra <himanshu.girotra@intel.com>
+> > @@ -105,14 +161,26 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
+> >	 * For Xe, use the PAT cache stored in struct xe_device.
+> >	 * xe_device_get() populates the cache while still root; forked
+> >	 * children that inherit the xe_device can use it post-drop_root().
+> > +	 *
+> > +	 * Fall back to hardcoded values when the kernel lacks the
+> > +	 * pat_sw_config debugfs. Platforms newer than Crescent Island
+> > +	 * must have the debugfs available.
+> >	 */
+> >	if (is_xe_device(fd)) {
+> >		struct xe_device *xe_dev = xe_device_get(fd);
+> >
+> > -		igt_assert_f(xe_dev->pat_cache,
+> > -			     "PAT sw_config not available -- "
+> > -			     "debugfs not accessible (missing root or not mounted?)\n");
+> > -		*pat = *xe_dev->pat_cache;
+> > +		if (xe_dev->pat_cache) {
+> > +			*pat = *xe_dev->pat_cache;
+> > +		} else if (xe_pat_fallback(fd, pat)) {
 >
-> When IGT runs on kernels that lack the gt0/pat_sw_config debugfs entry
-> (commit "drm/xe: expose PAT software config to debugfs"), the PAT cache
-> is NULL and intel_get_pat_idx() hits a fatal assertion.  This breaks
-> basic tests like xe_exec_basic on stock distro kernels (e.g. Ubuntu
-> 25.10).
->
-> Add xe_pat_fallback() with hardcoded PAT indices matching the kernel's
-> xe_pat_init_early() for platforms up to Crescent Island (xe3p XPC).
-> When the debugfs is unavailable, the fallback provides correct values
-> instead of crashing.  Newer platforms (xe3p LPG and beyond) are not
-> covered because their kernel support arrived after the debugfs entry
-> was already in place.
->
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
-> ---
->  lib/intel_pat.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 72 insertions(+), 4 deletions(-)
->
-> diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-> index b202a6241..71633b314 100644
-> --- a/lib/intel_pat.c
-> +++ b/lib/intel_pat.c
-> @@ -97,6 +97,62 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache)
->	return parsed;
->  }
->
-> +/*
-> + * Hardcoded PAT indices for Xe platforms, used as a fallback when the
-> + * kernel doesn't expose gt0/pat_sw_config in debugfs.
-> + *
-> + * Covers platforms up to Crescent Island (xe3p XPC) that have Xe driver
-> + * support in current stable kernels.  Anything newer must run a kernel
-> + * that provides the pat_sw_config debugfs entry.
-> + *
-> + * TODO: drop this fallback once stable kernels ship with pat_sw_config.
-> + */
-> +static bool xe_pat_fallback(int fd, struct intel_pat_cache *pat)
-> +{
-> +	uint16_t dev_id = intel_get_drm_devid(fd);
-> +
-> +	pat->uc_comp = XE_PAT_IDX_INVALID;
-> +
-> +	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
-> +		/* Xe3p XPC (GFX ver 35.11): no WT, no compression */
-> +		pat->uc = 3;
-> +		pat->wt = 3;   /* No WT on XPC; use UC */
-> +		pat->wb = 2;
-> +		pat->max_index = 31;
-> +	} else if (intel_get_device_info(dev_id)->graphics_ver == 30 ||
-> +		   intel_get_device_info(dev_id)->graphics_ver == 20) {
-> +		/* Xe2 / Xe3: GFX ver 20 / 30 */
-> +		pat->uc = 3;
-> +		pat->wt = 15;
-> +		pat->wb = 2;
-> +		pat->uc_comp = 12;
-> +		pat->max_index = 31;
-> +
-> +		/* Wa_16023588340: CLOS3 entries at end of table are unusable */
-> +		if (intel_graphics_ver(dev_id) == IP_VER(20, 1))
-> +			pat->max_index -= 4;
-> +	} else if (IS_METEORLAKE(dev_id)) {
-> +		pat->uc = 2;
-> +		pat->wt = 1;
-> +		pat->wb = 3;
-> +		pat->max_index = 3;
-> +	} else if (IS_PONTEVECCHIO(dev_id)) {
-> +		pat->uc = 0;
-> +		pat->wt = 2;
-> +		pat->wb = 3;
-> +		pat->max_index = 7;
-> +	} else if (IS_DG2(dev_id) || intel_graphics_ver(dev_id) <= IP_VER(12, 10)) {
-> +		pat->uc = 3;
-> +		pat->wt = 2;
-> +		pat->wb = 0;
-> +		pat->max_index = 3;
-> +	} else {
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->  static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
->  {
->	uint16_t dev_id;
-> @@ -105,14 +161,26 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
->	 * For Xe, use the PAT cache stored in struct xe_device.
->	 * xe_device_get() populates the cache while still root; forked
->	 * children that inherit the xe_device can use it post-drop_root().
-> +	 *
-> +	 * Fall back to hardcoded values when the kernel lacks the
-> +	 * pat_sw_config debugfs. Platforms newer than Crescent Island
-> +	 * must have the debugfs available.
->	 */
->	if (is_xe_device(fd)) {
->		struct xe_device *xe_dev = xe_device_get(fd);
->
-> -		igt_assert_f(xe_dev->pat_cache,
-> -			     "PAT sw_config not available -- "
-> -			     "debugfs not accessible (missing root or not mounted?)\n");
-> -		*pat = *xe_dev->pat_cache;
-> +		if (xe_dev->pat_cache) {
-> +			*pat = *xe_dev->pat_cache;
-> +		} else if (xe_pat_fallback(fd, pat)) {
+> Shouldn't this be "else if (!xe_pat_fallback(fd, pat)"? Or return 0 from
+> xe_pat_fallback() on success?
 
-Shouldn't this be "else if (!xe_pat_fallback(fd, pat)"? Or return 0 from
-xe_pat_fallback() on success?
-
-
-> +			igt_info("PAT sw_config debugfs not available, "
-> +				 "using hardcoded fallback\n");
-> +		} else {
-> +			igt_assert_f(false,
-> +				     "PAT sw_config not available and no "
-> +				     "hardcoded fallback for this platform -- "
-> +				     "kernel with 'drm/xe: expose PAT software "
-> +				     "config to debugfs' required\n");
-> +		}
->		return;
->	}
->
-> --
-> 2.50.1
->
+Sorry, misread the code, please ignore, code is correct!
