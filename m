@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88AB910F92E0
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:11:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD4F5FF60F4
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:11:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 38BD610EC46;
-	Tue, 31 Mar 2026 17:11:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F62C10EC43;
+	Tue, 31 Mar 2026 17:11:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="zD4H9V9/";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="qRTwEPv0";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0600910EC39
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:01 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14D5110EC39
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:10:57 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id EC91B1A30B3
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:10:59 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id E973F4E4288D
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:10:55 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id BDAA56029D;
- Tue, 31 Mar 2026 17:10:59 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id B6BAA6029D;
+ Tue, 31 Mar 2026 17:10:55 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 9929F10450340; 
- Tue, 31 Mar 2026 19:10:58 +0200 (CEST)
+ with ESMTPSA id C25BE10450448; 
+ Tue, 31 Mar 2026 19:10:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977059; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977055; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=GnAb5vEd9X4ctlg2xc8736BirSaZdeo6S+Bh4pPKc+4=;
- b=zD4H9V9/NpZzwifTNeMg1fNud0QwQ5+Z4MVvL9mIs6IBuAMt9yhvV0OsJBroG0LKNxXP0g
- 3qicIncQMXxZFX8igLn5N0CnytJfqZKmAYyCmXtSLxINnzgzfpxrFUjCH6ZcGD6pZSispQ
- +H1/TVwJQ/F6sezEGg/2rpSr94tQaLjp6F3+Fmmq1Sz6KTzIRdbTkQiOKc8dqL90RfPivn
- EBdAKQMCkvRBLJLvE8Y5fETGBrpfc6oAR/r9/p8HhDC8X2DfvLn9U8i0fEwJdpS7BASGSt
- K+ZUvM/F0OO9YW2NKDrOIYSjUjqMuQWpymv3CtRRaRD/MzPNNw4XZDLjVAzucg==
+ bh=lINCCIVWRinaZLVrucarJDk3GgfHwMPXnWWCP+K/HTA=;
+ b=qRTwEPv0kf0m1dl3QFM31F5RK/l+qWjwZkx8pMqfnQGIfiRSxlko4LnvHvDJZRT+o0LXej
+ k60F7KTVXWKvjFqzwSOvYXG37J492lTFt494lMtKqHuBGw1O4pK0672rNhyFZU5Sma82gl
+ deyfIwjhoWe0jjX/lqK7ZnE4n5F3nZcPVP6HdX+8dztJ8tP+VIqmKyZopFyGNRjvCRL5yf
+ xKggfaMJwMjUfJI8GeYaA5e4SB3pI/273R9EdQkMyjOWEKFbFfou+IQGN3MfmfD6eTZnYm
+ +NnpL6SJcIHueoQCDQPuG5zYnY9qk+euA/WQk/TckVJCpoO3keeprvJ+YJj2BA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:11:28 +0200
-Subject: [PATCH i-g-t v10 11/49] lib/igt_debugfs: Move debugfs helpers to
- the proper location
+Date: Tue, 31 Mar 2026 19:11:23 +0200
+Subject: [PATCH i-g-t v10 06/49] lib/tests: Add tests for array manipulations
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-unigraf-integration-v10-11-12266c34cc1d@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260331-unigraf-integration-v10-6-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -48,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7734;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4976;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=HqbpN5CjmUWgEjOly24SN9NaI6/tiuUSLvFMGEV/+Ek=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA8+2IaPhtrdby9+05oV3Cf1YM1SBzQ93niT
- 6PT/54lmxaJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLvjxAAgta0RxmN7pgI0mDvvB1D3Slw2VEatZj
- AYjSNFoNYQsjZR7joVk58YTZ6k9Qu47xlQAWWw21P3hZznm8NwU7Frj+yFbMOTD/peER5C3CwXD
- /lq5VYFtRqP384PGS17lCLM9Z5IdBmj443ttvorRcOxLH4vzGuAIpZMG/8oCyF0kXaqHDLUw4Ua
- wSs0DeWtA/z0BtZFVLQUNOdR9DFS4zHnXlEfYTCDAXXc5185rbukBXmIC6GN5zjMLodZXZHadHH
- QQnSwunshFKjy8k9z5WVVwZvYlrRkRSK7evkcUSZiKI2dYtwUzgodFVJrjCocWSl8IQijr+2Ae2
- NuN2fAusB8OGdyjgtZW3lFZlbpG2UonOG26O2WZuviezF0WXfUJstGDcCChgmYHhpblnbcIsI9j
- lfFuPiJKAR9mfKgJQS0BhG90KhND/Rwuwbhob9/f5JN3vPSGIaS+1XFOHamAQKkS7Gi1Bi9/1rz
- jReSTc8ktw11yjubin5PLcM4NoWvmN6dYj78ICKKda+ELa4hnLIAyhVmPNmwLGwmLwwmqUT+Pz/
- niJnydUhhwKxLbuWcsur5TluKXG6Zb1cbQXuwFw6yxse7UaO9IDmWKU1SDnvX7m0kD/w1AKHKAs
- pDn4Xp8/YBhcJfDs8A1x6t4H3GBMUTlpROLaOG1Wb6sBgLsIXLb0=
+ bh=dFdSDk8dHwYMEJPeBnY11cSOnc+KSjAvDB856MFwVx4=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA8rqB2BxcErdzwmd+ZmhA/RT5QgWw+sNwxu
+ sVIlkBLoByJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLGMA/+IGL7QDXqB/RNI+4miNQV0BBPjHLz6iA
+ HvibT+FFRxmJvrGO640E+xFjDrvxXTz2GbukAJpofLVjazduwZrZ9ckqh8tDxDzQCBHQ6Gv7MVx
+ kuib5QCDCaWXV9EHKykJyST3Lrb5xfAXySfEkUHmHdobbFvSbcocuLWbVKJyYA9asgY2cYqL+ew
+ wpmFxof+zMy2XQaNyvF9+M7HIS6J8VZ0KvUQI5p0Be1t3qBVVE9/4p+t0s0coNbucahulQnbNpa
+ Xf9b/7yCyL1MQFKp2JuOM5kBznSX3AXsVEjw2dahQ3k41+FiOyUKZbeI7dpiiut4psxIp1QN/g3
+ r2+5gPhxvM6ka5J2pClRzaHmOx0Mq4j95OL49hYL31oHlFK2nq84o67op4HZn02NRRZEA0mOizq
+ P42mf7UoFN57x2lb57eZD8moD3NKfdNbE5xU4EfjDoV4CDcybN6v14QCdQxWhRMLBc0X8isH1Zq
+ msl4Ewech9rgBgycqKYmzYxD0q3rMvJ3G31ws/G0BffwdPNu2gVf5luej3wFrRSP+P2ADSbU3qi
+ Oe1Qss/jIiQnkup2jcac/SggJyJzg/FI5PXqLRQgaTo8Mtip/u2dOYD8tvOWg2Sey/Y2PpKFW0+
+ w2yaxrqoKiQ5MbIm8UCtLc6HmTV8iMC1ih7Lo8OgGT73asQy4C0c=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -81,268 +80,192 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt_debugfs_read_connector_file and igt_debugfs_write_connector_file are
-debugfs related helpers. To avoid mixing everything in igt_kms, move them
-to igt_debugfs.
+As array manipulation functions are not trivial, add few tests to ensure
+they work properly.
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_debugfs.c | 94 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_debugfs.h | 13 ++++++++
- lib/igt_kms.c     | 93 ------------------------------------------------------
- 3 files changed, 107 insertions(+), 93 deletions(-)
+ lib/tests/igt_kms_array_diff.c | 159 +++++++++++++++++++++++++++++++++++++++++
+ lib/tests/meson.build          |   1 +
+ 2 files changed, 160 insertions(+)
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index a184843c9acc..0b74afe3374f 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -43,6 +43,7 @@
- #include "igt_aux.h"
- #include "igt_kms.h"
- #include "igt_debugfs.h"
-+#include "igt_device.h"
- #include "igt_sysfs.h"
- 
- /**
-@@ -775,3 +776,96 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
- 	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
- 	free(contents);
- }
+diff --git a/lib/tests/igt_kms_array_diff.c b/lib/tests/igt_kms_array_diff.c
+new file mode 100644
+index 000000000000..ebdc3b62bc31
+--- /dev/null
++++ b/lib/tests/igt_kms_array_diff.c
+@@ -0,0 +1,159 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Google
++ *
++ * Authors:
++ *   Louis Chauvet <louis.chauvet@bootlin.com> (assisted by MistralAI)
++ */
++
++#include <stdint.h>
++#include <stdlib.h>
++
++#include "drmtest.h"
++#include "igt_core.h"
++#include "igt_kms.h"
 +
 +/**
-+ * igt_debugfs_read_connector_file:
-+ * @drm_fd: A drm file descriptor
-+ * @conn_name: Name of the output connector
-+ * @filename: The file to read from in the connector's directory
-+ * @buf: Buffer to store the read content
-+ * @buf_size: Size of the buffer
++ * TEST: get_array_diff
++ * Category: Core
++ * Description: Test the get_array_diff() function
 + *
-+ * Reads from a specific file in the connector's debugfs directory.
++ * SUBTEST: get_array_diff-empty-both
++ * Description: Test with both arrays empty
 + *
-+ * Returns: 0 on success, -1 on failure.
++ * SUBTEST: get_array_diff-empty-a
++ * Description: Test with array_a empty
++ *
++ * SUBTEST: get_array_diff-empty-b
++ * Description: Test with array_b empty
++ *
++ * SUBTEST: get_array_diff-no-diff
++ * Description: Test with identical arrays (no difference)
++ *
++ * SUBTEST: get_array_diff-full-diff
++ * Description: Test with completely different arrays
++ *
++ * SUBTEST: get_array_diff-partial-diff
++ * Description: Test with partial overlap between arrays
++ *
++ * SUBTEST: get_array_diff-null-diff
++ * Description: Test with diff parameter set to NULL (count only)
 + */
-+int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
-+				    const char *filename, char *buf,
-+				    size_t buf_size)
++
++static void test_get_array_diff_empty_both(void)
 +{
-+	int dir, res;
++	uint32_t *diff = NULL;
++	int diff_len;
 +
-+	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
-+	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n", conn_name);
-+
-+	res = igt_debugfs_simple_read(dir, filename, buf, buf_size);
-+	close(dir);
-+
-+	if (res < 0)
-+		return -1;
-+
-+	return 0;
++	diff_len = get_array_diff(NULL, 0, NULL, 0, &diff);
++	igt_assert_eq(diff_len, 0);
++	free(diff);
 +}
 +
-+/**
-+ * igt_debugfs_write_connector_file:
-+ * @drm_fd: A drm file descriptor
-+ * @conn_name: Name of the output connector
-+ * @filename: The file to write to in the connector's directory
-+ * @data: Data to write to the file
-+ * @data_size: Size of the data to write
-+ *
-+ * Writes to a specific file in the connector's debugfs directory.
-+ *
-+ * Returns: 0 on success, -1 on failure.
-+ */
-+int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
-+				     const char *filename, const char *data,
-+				     size_t data_size)
++static void test_get_array_diff_empty_a(void)
 +{
-+	int dir, res;
++	uint32_t array_b[] = {1, 2, 3};
++	uint32_t *diff = NULL;
++	int diff_len;
 +
-+	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
-+	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-+		     conn_name);
-+
-+	res = igt_sysfs_write(dir, filename, data, data_size);
-+	close(dir);
-+
-+	if (res < 0)
-+		return -1;
-+
-+	return 0;
++	diff_len = get_array_diff(NULL, 0, array_b, ARRAY_SIZE(array_b), &diff);
++	igt_assert_eq(diff_len, 0);
++	free(diff);
 +}
 +
-+bool connector_attr_set_debugfs(int drm_fd,
-+				drmModeConnector *connector,
-+				const char *attr, const char *value,
-+				const char *reset_value,
-+				bool force_reset)
++static void test_get_array_diff_empty_b(void)
 +{
-+	char name[80];
-+	int idx, dir;
++	uint32_t array_a[] = {1, 2, 3};
++	uint32_t *diff = NULL;
++	int diff_len;
 +
-+	idx = igt_device_get_card_index(drm_fd);
-+	if (idx < 0 || idx > 63)
-+		return false;
-+
-+	snprintf(name, sizeof(name), "%s-%d",
-+		 kmstest_connector_type_str(connector->connector_type),
-+		 connector->connector_type_id);
-+
-+	dir = igt_debugfs_connector_dir(drm_fd, name, O_DIRECTORY);
-+	if (dir < 0)
-+		return false;
-+
-+	if (!connector_attr_set(idx, connector, dir,
-+				igt_sysfs_set, attr,
-+				value, reset_value,
-+				force_reset))
-+		return false;
-+
-+	igt_info("Connector %s/%s is now %s\n", name, attr, value);
-+
-+	return true;
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), NULL, 0, &diff);
++	igt_assert_eq(diff_len, 3);
++	igt_assert(diff);
++	igt_assert_eq(diff[0], 1);
++	igt_assert_eq(diff[1], 2);
++	igt_assert_eq(diff[2], 3);
++	free(diff);
 +}
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index 30d4b0ff92ba..eb2a0b70c28b 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -28,6 +28,7 @@
- #include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
-+#include <xf86drmMode.h>
- 
- const char *igt_debugfs_mount(void);
- char *igt_debugfs_path(int device, char *path, int pathlen);
-@@ -176,4 +177,16 @@ int igt_get_stable_obj_count(int driver);
- void __igt_debugfs_dump(int device, const char *filename, int level);
- #define igt_debugfs_dump(d, f) __igt_debugfs_dump(d, f, IGT_LOG_DEBUG)
- 
-+int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
-+				    const char *filename, char *buf,
-+				    size_t buf_size);
-+int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
-+				     const char *filename, const char *data,
-+				     size_t data_size);
-+bool connector_attr_set_debugfs(int drm_fd,
-+				drmModeConnector *connector,
-+				const char *attr, const char *value,
-+				const char *reset_value,
-+				bool force_reset);
 +
- #endif /* __IGT_DEBUGFS_H__ */
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f78acd2c1f3b..f3166d0ef402 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1758,38 +1758,6 @@ static bool connector_attr_set_sysfs(int drm_fd,
- 	return true;
- }
- 
--static bool connector_attr_set_debugfs(int drm_fd,
--				       drmModeConnector *connector,
--				       const char *attr, const char *value,
--				       const char *reset_value,
--				       bool force_reset)
--{
--	char name[80];
--	int idx, dir;
--
--	idx = igt_device_get_card_index(drm_fd);
--	if (idx < 0 || idx > 63)
--		return false;
--
--	snprintf(name, sizeof(name), "%s-%d",
--		 kmstest_connector_type_str(connector->connector_type),
--		 connector->connector_type_id);
--
--	dir = igt_debugfs_connector_dir(drm_fd, name, O_DIRECTORY);
--	if (dir < 0)
--		return false;
--
--	if (!connector_attr_set(idx, connector, dir,
--				igt_sysfs_set, attr,
--				value, reset_value,
--				force_reset))
--		return false;
--
--	igt_info("Connector %s/%s is now %s\n", name, attr, value);
--
--	return true;
--}
--
- /**
-  * dump_connector_attrs: Display on debug log all the connector attributes
-  */
-@@ -7556,67 +7524,6 @@ static int igt_parse_marked_value(const char *buf, char marked_char, int *result
- 	return -1;
- }
- 
--/**
-- * igt_debugfs_read_connector_file:
-- * @drm_fd: A drm file descriptor
-- * @conn_name: Name of the output connector
-- * @filename: The file to read from in the connector's directory
-- * @buf: Buffer to store the read content
-- * @buf_size: Size of the buffer
-- *
-- * Reads from a specific file in the connector's debugfs directory.
-- *
-- * Returns: 0 on success, -1 on failure.
-- */
--static int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
--				    const char *filename, char *buf,
--				    size_t buf_size)
--{
--	int dir, res;
--
--	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
--	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n", conn_name);
--
--	res = igt_debugfs_simple_read(dir, filename, buf, buf_size);
--	close(dir);
--
--	if (res < 0)
--		return -1;
--
--	return 0;
--}
--
--/**
-- * igt_debugfs_write_connector_file:
-- * @drm_fd: A drm file descriptor
-- * @conn_name: Name of the output connector
-- * @filename: The file to write to in the connector's directory
-- * @data: Data to write to the file
-- * @data_size: Size of the data to write
-- *
-- * Writes to a specific file in the connector's debugfs directory.
-- *
-- * Returns: 0 on success, -1 on failure.
-- */
--static int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
--				     const char *filename, const char *data,
--				     size_t data_size)
--{
--	int dir, res;
--
--	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
--	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
--		     conn_name);
--
--	res = igt_sysfs_write(dir, filename, data, data_size);
--	close(dir);
--
--	if (res < 0)
--		return -1;
--
--	return 0;
--}
--
- /**
-  * igt_get_current_link_rate:
-  * @drm_fd: A drm file descriptor
++static void test_get_array_diff_no_diff(void)
++{
++	uint32_t array_a[] = {1, 2, 3};
++	uint32_t array_b[] = {1, 2, 3};
++	uint32_t *diff = NULL;
++	int diff_len;
++
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
++				  &diff);
++	igt_assert_eq(diff_len, 0);
++	free(diff);
++}
++
++static void test_get_array_diff_full_diff(void)
++{
++	uint32_t array_a[] = {1, 2, 3};
++	uint32_t array_b[] = {4, 5, 6};
++	uint32_t *diff = NULL;
++	int diff_len;
++
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
++				  &diff);
++	igt_assert_eq(diff_len, 3);
++	igt_assert(diff);
++	igt_assert_eq(diff[0], 1);
++	igt_assert_eq(diff[1], 2);
++	igt_assert_eq(diff[2], 3);
++	free(diff);
++}
++
++static void test_get_array_diff_partial_diff(void)
++{
++	uint32_t array_a[] = {1, 2, 3, 4, 5};
++	uint32_t array_b[] = {2, 3, 6};
++	uint32_t *diff = NULL;
++	int diff_len;
++
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
++				  &diff);
++	igt_assert_eq(diff_len, 3);
++	igt_assert(diff);
++	igt_assert_eq(diff[0], 1);
++	igt_assert_eq(diff[1], 4);
++	igt_assert_eq(diff[2], 5);
++	free(diff);
++}
++
++static void test_get_array_diff_null_diff(void)
++{
++	uint32_t array_a[] = {1, 2, 3};
++	uint32_t array_b[] = {2, 3};
++	int diff_len;
++
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b), NULL);
++	igt_assert_eq(diff_len, 1);
++}
++
++IGT_TEST_DESCRIPTION("Test get_array_diff() function");
++int igt_main()
++{
++	igt_subtest("get_array_diff-empty-both")
++		test_get_array_diff_empty_both();
++
++	igt_subtest("get_array_diff-empty-a")
++		test_get_array_diff_empty_a();
++
++	igt_subtest("get_array_diff-empty-b")
++		test_get_array_diff_empty_b();
++
++	igt_subtest("get_array_diff-no-diff")
++		test_get_array_diff_no_diff();
++
++	igt_subtest("get_array_diff-full-diff")
++		test_get_array_diff_full_diff();
++
++	igt_subtest("get_array_diff-partial-diff")
++		test_get_array_diff_partial_diff();
++
++	igt_subtest("get_array_diff-null-diff")
++		test_get_array_diff_null_diff();
++}
+diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+index 124a9ecae84d..f1db66d07c28 100644
+--- a/lib/tests/meson.build
++++ b/lib/tests/meson.build
+@@ -13,6 +13,7 @@ lib_tests = [
+ 	'igt_fork_helper',
+ 	'igt_hook',
+ 	'igt_hook_integration',
++	'igt_kms_array_diff',
+         'igt_ktap_parser',
+ 	'igt_list_only',
+ 	'igt_invalid_subtest_name',
 
 -- 
 2.52.0
