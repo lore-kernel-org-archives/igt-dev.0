@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2131A10F92E0
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 16:12:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB2F910F92E5
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 16:25:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C3CF510E14B;
-	Tue, 31 Mar 2026 16:12:01 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE4F710E14B;
- Tue, 31 Mar 2026 16:11:53 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1835524953828541282=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 75E1E10EB5D;
+	Tue, 31 Mar 2026 16:25:04 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OJB00eKs";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DDC6810EAE9
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 16:24:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1774974296; x=1806510296;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=lrkqLsjma8YrFv1K1qjW3OLuQ4XonBW39+Y0s6Qz/6o=;
+ b=OJB00eKsNG0IuP1SnN+LV4ZTmQsL99PSgIgpr/I8l8RUMCvZn4hA6XVQ
+ d+FxVMkgJH0pLt9vTBW+2mb+MuQKztvwyEMc3tOea6u/5ZITc/oRvCLhO
+ hlhx/ViPxAdy3eaNm13Y/OdhlkH25wc+XlGE1zn/f9JXFBdEoIytKFHCE
+ JlKT9jB0xNvS5iZ4oSGd+FLf7YAMi237DkvqPIFeu0MnZnTBDqlBZT0YW
+ a8jbd8b9MxPd+D/rfAUkPOXP/S/wr5r3F4ZpLrQ1xMq7Y28efXP05fcmP
+ Q2AgNjSpJJ4nuQR5X0rHW27hKmO37UQ7ydjWLAwCmNn4z8VYaNjn2lwPb A==;
+X-CSE-ConnectionGUID: Gly1laXNSOGGfFuja0d/rw==
+X-CSE-MsgGUID: Cxxrz+c6QBODYxX4iN+7JA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="86691101"
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="86691101"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Mar 2026 09:24:55 -0700
+X-CSE-ConnectionGUID: qf8lMcN3Q+Cy82K5BewBHQ==
+X-CSE-MsgGUID: wOshmwvsShy8SDFIZI4oMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="256908882"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO [10.245.244.19])
+ ([10.245.244.19])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Mar 2026 09:24:53 -0700
+Message-ID: <4d9f07de-178a-4259-9b34-5a92e842196f@intel.com>
+Date: Tue, 31 Mar 2026 17:24:50 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Verify_PTA_entries_contai?=
- =?utf-8?q?ns_expected_values_=28rev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 31 Mar 2026 16:11:53 -0000
-Message-ID: <177497351382.417276.15748888774404708379@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260331140541.2561104-6-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20260331140541.2561104-6-zbigniew.kempczynski@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 3/4] tests/intel/xe_vm: Add
+ DRM_IOCTL_XE_VM_GET_PROPERTY validation tests
+To: Jonathan Cavitt <jonathan.cavitt@intel.com>, igt-dev@lists.freedesktop.org
+Cc: saurabhg.gupta@intel.com, alex.zuo@intel.com,
+ joonas.lahtinen@linux.intel.com, matthew.brost@intel.com,
+ jianxun.zhang@intel.com, stuart.summers@intel.com, shuicheng.lin@intel.com,
+ nishit.sharma@intel.com
+References: <20260331155700.7245-6-jonathan.cavitt@intel.com>
+ <20260331155700.7245-9-jonathan.cavitt@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260331155700.7245-9-jonathan.cavitt@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,147 +72,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1835524953828541282==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 31/03/2026 16:57, Jonathan Cavitt wrote:
+> Add tests to xe_vm that exercise the new DRM_IOCTL_XE_VM_GET_PROPERTY
+> ioctl.  Specifically, add input validation tests that exercise the
+> return values for improperly formatted ioctl structures.
+> 
+> v2:
+> - Make vm creation consistent between patches (jcavitt)
+> 
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
+> ---
+>   tests/intel/xe_vm.c | 81 +++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 81 insertions(+)
+> 
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index ccff8f8046..778d9ac86d 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -2450,6 +2450,71 @@ static void test_oom(int fd)
+>   	}
+>   }
+>   
+> +/**
+> + * SUBTEST: vm-get-property-invalid-reserved
+> + * Functionality: ioctl_input_validation
+> + * Description: Check query with invalid reserved returns expected error code
+> + *
+> + * SUBTEST: vm-get-property-invalid-vm-id
+> + * Functionality: ioctl_input_validation
+> + * Description: Check query with invalid vm_id returns expected error code
+> + *
+> + * SUBTEST: vm-get-property-invalid-size
+> + * Functionality: ioctl_input_validation
+> + * Description: Check query with invalid size return expected error code
+> + *
+> + * SUBTEST: vm-get-property-invalid-property
+> + * Functionality: ioctl_input_validation
+> + * Description: Check query with invalid property returns expected error code
+> + */
+> +static void get_property_invalid_reserved(int fd, uint32_t vm)
+> +{
+> +	struct drm_xe_vm_get_property query = {
+> +		.reserved[0] = 0xdeadbeef,
 
-== Series Details ==
+What about also validating .pad? Also I think .extensions? It looks like 
+KMD is missing an MBZ check for those?
 
-Series: Verify PTA entries contains expected values (rev5)
-URL   : https://patchwork.freedesktop.org/series/163910/
-State : success
+> +	};
+> +
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query, EINVAL);
+> +}
+> +
+> +static void get_property_invalid_vm_id(int fd, uint32_t vm)
+> +{
+> +	struct drm_xe_vm_get_property query = {
+> +		.vm_id = 0xdeadbeef,
+> +	};
+> +
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query, ENOENT);
+> +}
+> +
+> +static void get_property_invalid_size(int fd, uint32_t vm)
+> +{
+> +	struct drm_xe_vm_get_property query = {
+> +		.vm_id = vm,
+> +		.property = DRM_XE_VM_GET_PROPERTY_FAULTS,
+> +		.size = -1,
+> +	};
+> +
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query, EINVAL);
+> +}
+> +
+> +static void get_property_invalid_property(int fd, uint32_t vm)
+> +{
+> +	struct drm_xe_vm_get_property query = {
+> +		.vm_id = vm,
+> +		.property = 0xdeadbeef,
+> +	};
+> +
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query, EINVAL);
+> +}
+> +
+> +static void test_get_property(int fd, void (*func)(int fd, uint32_t vm))
+> +{
+> +	uint32_t vm;
+> +
+> +	vm = xe_vm_create(fd, 0, 0);
+> +	func(fd, vm);
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+>   int igt_main()
+>   {
+>   	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
+> @@ -2562,6 +2627,17 @@ int igt_main()
+>                   { }
+>           };
+>   
+> +	const struct vm_get_property {
+> +		const char *name;
+> +		void (*test)(int fd, uint32_t vm);
+> +	} xe_vm_get_property_tests[] = {
+> +		{ "invalid-reserved", get_property_invalid_reserved },
+> +		{ "invalid-vm-id", get_property_invalid_vm_id },
+> +		{ "invalid-size", get_property_invalid_size },
+> +		{ "invalid-property", get_property_invalid_property },
+> +		{ }
+> +	};
+> +
+>   	igt_fixture() {
+>   		fd = drm_open_driver(DRIVER_XE);
+>   
+> @@ -2850,6 +2926,11 @@ int igt_main()
+>   		test_oom(fd);
+>   	}
+>   
+> +	for (const struct vm_get_property *f = xe_vm_get_property_tests; f->name; f++) {
+> +		igt_subtest_f("vm-get-property-%s", f->name)
+> +			test_get_property(fd, f->test);
+> +	}
+> +
+>   	igt_fixture()
+>   		drm_close_driver(fd);
+>   }
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8839 -> IGTPW_14893
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14893 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8839 -> IGTPW_14893
-  * Linux: CI_DRM_18255 -> CI_DRM_18256
-
-  CI-20190529: 20190529
-  CI_DRM_18255: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18256: 779129c7868f4c7205901d6e57b25de52b411d1c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14893: 14893
-  IGT_8839: 8839
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html
-
---===============1835524953828541282==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Verify PTA entries contains expected values (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163910/">https://patchwork.freedesktop.org/series/163910/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8839 -&gt; IGTPW_14893</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14893 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8839 -&gt; IGTPW_14893</li>
-<li>Linux: CI_DRM_18255 -&gt; CI_DRM_18256</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18255: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18256: 779129c7868f4c7205901d6e57b25de52b411d1c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14893: 14893<br />
-  IGT_8839: 8839</p>
-
-</body>
-</html>
-
---===============1835524953828541282==--
