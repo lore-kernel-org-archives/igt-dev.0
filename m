@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EB7610F92E3
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:16:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3BB910F92E3
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:16:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B255C10ED49;
-	Tue, 31 Mar 2026 17:16:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6A42510ED4A;
+	Tue, 31 Mar 2026 17:16:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="yLE8CXiP";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="xVNkYPiN";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9046410EC39
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:02 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F82710EC43
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:15 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 821541A30B3
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:01 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id AD1F3C59955
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:44 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 40A026029D;
- Tue, 31 Mar 2026 17:11:01 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 15B5D6029D;
+ Tue, 31 Mar 2026 17:11:14 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 468EC104504A4; 
- Tue, 31 Mar 2026 19:11:00 +0200 (CEST)
+ with ESMTPSA id 0131C104506AF; 
+ Tue, 31 Mar 2026 19:11:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977060; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977073; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=VYJ2qMGdu+p7w/fQ4lSjin8q4XWPCrM1/0kXm+uV9AE=;
- b=yLE8CXiPUnXFTtgQDQQYVcfLMJHvw+lUQJfzDIp2BIfIa5dRvzdilZ9uXfgJ/W/klthucN
- V6eSa7U7F8hJ3v3MX+yXoZK8H3+qY1mNGR9XihPexB1lQd54rrKp1WeqK7SEM9U47RolC+
- gvCTHGzFk2fL/s0k9qh2opRCEp167cQz4PpM34CkCZSjGOyJzxRS4MaWZmF4kI5zqnbtew
- xIofZg4rZQYYGbsTKVlAzfPT/An1SsZ2gXnBKFCSpSRkwMmy9yz1nrYTnI5JT5D9faRQ2S
- 34smSkWvRR22w71B+ln1mKb4CQ13uIKPz1XC9imxUpBtwBpw+2dtHIER1z/35g==
+ bh=Wi8ZXlaFqE8yQXLg34RcvnbOw/WMDaFCTTj0bNb+tiA=;
+ b=xVNkYPiNCuB3t141L7Xecd1Sx0kOLjABpM69KgmsyPXn8o5FkGKQQ5P3zMDPdgU1T9Qiqk
+ p1Shi43elpOjyTcUxnd6/iHo0dX+jXgEIdImwNL0rxPg5uPfNa+T8Hv2saxiac0ru3FxkF
+ vmCC4lAiI5RM6gL/E2QOUSEkXwrnNCDYC/UGwgVczjGm75+kw92ALYGiJhIaqLj7ofqMUA
+ CltwKOCmlqG72S2p5uu+mKqoItZgrFAMC06dNYz1TeELu5MUkMLKY0DzKfQg/d/ojRJDTQ
+ XcEuXBCs7nPghjFPlCYmkn8qAYvYqKLl4ErGAR2DYtilzJ6AdItJQnHP+tCq+Q==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:11:30 +0200
-Subject: [PATCH i-g-t v10 13/49] lib/igt_amd: Add const when make sense
+Date: Tue, 31 Mar 2026 19:11:44 +0200
+Subject: [PATCH i-g-t v10 27/49] lib/unigraf: Add plug/unplug helpers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-unigraf-integration-v10-13-12266c34cc1d@bootlin.com>
+Message-Id: <20260331-unigraf-integration-v10-27-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1634;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1836;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=q13I25UczY/okw86YiX0j8jUCFQErtLGO0RbZ44XlbI=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA9q21QBKOMPPwYlXbKQGZJtI+7Zfhre4LdW
- ltTNyPLfvqJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLMfRAAqNJO9P/5QhLlb+gRh3BNHnjUGlO7vz0
- ZZc5BaUQleMn/HJ3Hd/3GF2s6/p38fl3jHWbzP6q5Zo4NbVrOx7erggqZ25lJMgTQS0t5zXquB6
- rYc2KAorv/dkhfYmstBNzgw1lkhMkYz/b3txvtfA2GdS4bYOPw0y2GK2R+OxdciPbVCUwRuzjuD
- TCHrfdARc5BUXYVvulwtGXtg8YUVnwoZWKydPIX0Oj4R1gXJptkrYZVfmUG8Av/9RYGiylQwzpa
- LMgmSUctBguP/XGrHhH9HzsoKksCa808uvP1bKLMOt80NAHXggNJg+5QeLwjBurAKesa5Xq4fJ9
- dagA6tt4P9uU9gisup51emYMAqOGXKdwccynDtJmJe7NhDITgFTIhrSm8x7vOc5wNNA9xLL1JJI
- AV887cwYB80ZQhzHIbHi2g6xcwkO0meu97ELASKaMvFcOKI6E2mEfC/5AT57WpOQ0IX39mc1xmz
- AE6idY9koX4Nt3361VJdW0u7w+U1pyv3a7FkmgKUgrz3kQdwOaCdShu0MLa8vdctVhVMCXCpRTD
- ipOfpUsUk7ARAGbZmqCyy2NVGh4SLsinbnniwj2HsFQY97l8ctkPQgVtGypn/95S0A+4SGZnug7
- KHGwj1h2xI/tiJNcKVlfAHkd11hyRRq5T22jCL7hJV4RGYQGbfpo=
+ bh=5H+zFJpin+fqX/UZl7pEU5QSFis7XQlUyT6JJzruNEw=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA/V1Zia9sWuPa4uGaej/k10FwWHqY/qAsAo
+ GoPOBs0tcSJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOI2IQ/+O+Ch46bs2dH10hM/tt/NOmvFabw6QKJ
+ KF3NWb4R0HjuN6+dnynFYG5kHEGjrcM4mky5eGl1FPrqrmfJmR2OCpXClU1TQQz0ZgSiytIi4AT
+ wtJea9vN4d/ES5WBMt1fg+MEo9V4i1Dt6LJGqsURQDfWz9A/hRjaw4al4vvJ39KSMizo6DpFwSt
+ KPV2B//FpukJFgAW28Gq7GzRs/5Hs4h1Irs0Bn5JJHwMJbAyAgFMmEMat0G3onzlKFVCcmfWIWh
+ noyeQWBZ/179U34JQ3x6AYqE3KTnI6X1E/QmNi8bhLLRlB3tmeip4ehgNhStx8Af+p+p58Epa4h
+ OxpdpF9dqmE8LR/C4J69aYhUJEEUfnp/CGjIrl+zWudb4/udw9knUgHvzj/aJXFacBXRmOABKMI
+ guKfHhU+8jJXBm3Jx+oB694eQ1HtJ7rMFqlRdQjyjC417BQDrkirj4MBql5t0u+6ygw5NrA2kNY
+ sr/30V5macvTZT/xVv4yfS5RKSXCCLExBDt58XdKy/1BsPXLzazbMl6JratVNzxGA2BggM82RRK
+ ILNtmhZLAMZj1RU69hG84jF+Cdlth7lOpOwFNsh2gruRLSsn0o7s9Akryq3OiUI+Mm8dKZUk448
+ RlIHdZ1BkUrpNOLhHZqksfaDiYqw11SL3M6ZOdosbGx6Wirj/sXk=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,44 +80,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Const qualifier helps to avoid unwanted modification of a pointer.
-To help avoiding those errors, modify the function signature to
-use const.
+The unigraf can emulate a full cable plug/unplug, so add helper to emulate
+this.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_amd.c | 2 +-
- lib/igt_amd.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ lib/vendor/unigraf/unigraf.c | 28 +++++++++++++++++++++++++++-
+ lib/vendor/unigraf/unigraf.h |  4 ++++
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index a97adad43998..004bd2fe83e4 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -831,7 +831,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name)
-  * values of "Current", "Verified", "Reported", and "Preferred", respectively.
+diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+index aca26fe06cc5..1552a90e05b6 100644
+--- a/lib/vendor/unigraf/unigraf.c
++++ b/lib/vendor/unigraf/unigraf.c
+@@ -308,7 +308,9 @@ void unigraf_require_device(int drm_fd)
+  * and link parameters to default values.
   */
- void igt_amd_read_link_settings(
--	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread)
-+	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread)
- {
- 	int fd, ret;
- 	char buf[101];
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index a45122b68239..90ec4582850a 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -211,7 +211,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name);
+ void unigraf_reset(void)
+-{}
++{
++	unigraf_plug();
++}
  
- /* IGT link helper functions */
- void igt_amd_read_link_settings(
--	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread);
-+	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread);
- void igt_amd_write_link_settings(
- 	int drm_fd, char *connector_name, enum dc_lane_count lane_count,
- 	enum dc_link_rate link_rate, enum dc_link_training_type training_type);
+ /**
+  * unigraf_hpd_assert() - Assert Hot Plug Detect signal
+@@ -346,3 +348,27 @@ void unigraf_hpd_deassert(void)
+ {
+ 	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 0);
+ }
++
++/**
++ * unigraf_plug() - Emulate a cable unplug
++ *
++ * This function will emulate a full cable unplug (not a simple HPD line change)
++ */
++void unigraf_unplug(void)
++{
++	int d = 2 << 2;
++
++	unigraf_write_u32(TSI_DPRX_HPD_FORCE, d);
++}
++
++/**
++ * unigraf_plug() - Emulate a cable plug
++ *
++ * This function will emulate a full cable plug (not a simple HPD line change)
++ */
++void unigraf_plug(void)
++{
++	int d = 3 << 2;
++
++	unigraf_write_u32(TSI_DPRX_HPD_FORCE, d);
++}
+diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
+index 77fba4e53912..ae1f0d8955ab 100644
+--- a/lib/vendor/unigraf/unigraf.h
++++ b/lib/vendor/unigraf/unigraf.h
+@@ -48,4 +48,8 @@ void unigraf_hpd_pulse(int duration);
+ 
+ void unigraf_hpd_assert(void);
+ 
++void unigraf_plug(void);
++
++void unigraf_unplug(void);
++
+ #endif // UNIGRAF_H
 
 -- 
 2.52.0
