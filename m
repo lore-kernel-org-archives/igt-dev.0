@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85609109B492
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 16:05:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2131A10F92E0
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 16:12:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 284D910E127;
-	Tue, 31 Mar 2026 16:05:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K2NJmjMG";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 340B810E127
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 16:05:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1774973136; x=1806509136;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=OIcMvG2Ti/Q165A4zcx23EsUynAEodY3Ydu0tqFxLXQ=;
- b=K2NJmjMGLtNibCS01QOkhO+ai14LVmIWWojikkfKAfqLHN8+Yu9vbjob
- l87N+qoavWkmUtyhqibKP1G7uIlPzaV9PQt9FQLkvmInnXOnP6w22T4lA
- RL8LEsvivbhJJ1j8eI9ulU4M7eZf1rId1dQe5SGqJTt6WPpVIJFj9dfmL
- MbesKE33UpMZSv6fzN2XmujA9lpkkEg6Eo6GJh/SRJO+h1kSRREEoCNNQ
- Ih/Rxrok+lgMAvkqCQe8Auz2DjVNfxjW1AoaZixSYrXmci0LdHP6PbWx+
- TgTUcjsZX1Ai0v0tfA02Zbyqvm/+MEWN+GXHE7L7KjM5fw7/HHWwEQLIB Q==;
-X-CSE-ConnectionGUID: a6vYS3ftQIWsVn/pEDYTAg==
-X-CSE-MsgGUID: DzatPhG3RtmtCg8RXqYUCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75165080"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="75165080"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 09:05:36 -0700
-X-CSE-ConnectionGUID: JclBiD7sSBGQrddBVWV7AA==
-X-CSE-MsgGUID: 2SDoxRuNQauUF43ZCqHayg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; d="scan'208";a="230472162"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.212])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Mar 2026 09:05:34 -0700
-Date: Tue, 31 Mar 2026 18:05:31 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Gustavo Sousa <gustavo.sousa@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>, 
- Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/6] runner: Create attachments directory to use
- by hooks
-Message-ID: <vol4afvr2gi2axnhfw5bducei2uqquz32gdmqzimnl2qhobtme@pvzjij6yz3ob>
-References: <20260324131235.712916-8-zbigniew.kempczynski@intel.com>
- <20260324131235.712916-10-zbigniew.kempczynski@intel.com>
- <87mrzpxutd.fsf@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C3CF510E14B;
+	Tue, 31 Mar 2026 16:12:01 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE4F710E14B;
+ Tue, 31 Mar 2026 16:11:53 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1835524953828541282=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87mrzpxutd.fsf@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Verify_PTA_entries_contai?=
+ =?utf-8?q?ns_expected_values_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 31 Mar 2026 16:11:53 -0000
+Message-ID: <177497351382.417276.15748888774404708379@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260331140541.2561104-6-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20260331140541.2561104-6-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,184 +37,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Mar 30, 2026 at 11:20:46AM -0300, Gustavo Sousa wrote:
-> Zbigniew Kempczyński <zbigniew.kempczynski@intel.com> writes:
-> 
-> > Results parsing is currently limited to few predefined files.
-> >
-> > Create "attachments" directory and export full path of created directory
-> > to be used within hooks. From now on environment variable
-> > IGT_RUNNER_ATTACHMENTS_DIR become visible when igt_runner is used
-> > to execute tests. This env contains directory where subtests/dynsubtests
-> > may write auxiliary files which finally be included in results.json.
-> >
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Cc: Ryszard Knop <ryszard.knop@intel.com>
-> > Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-> > ---
-> > v2: simplify attachment dirname concatenation (Kamil)
-> >     remove files in attachments dir when overwrite is set (Kamil)
-> > ---
-> >  lib/igt_hook.c    |  4 ++++
-> >  runner/executor.c | 44 +++++++++++++++++++++++++++++++++++++++++---
-> >  runner/executor.h |  2 ++
-> >  3 files changed, 47 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/lib/igt_hook.c b/lib/igt_hook.c
-> > index f86ed56f72..57817bdc12 100644
-> > --- a/lib/igt_hook.c
-> > +++ b/lib/igt_hook.c
-> > @@ -518,5 +518,9 @@ available to the command:\n\
-> >  \n\
-> >  Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
-> >  when matching events and running hook commands.\n\
-> > +\n\
-> > +When executed by the igt_runner environment IGT_RUNNER_ATTACHMENTS_DIR\n\
-> 
-> Nitpick: s/igt_runner environment/igt_runner, environment/
+--===============1835524953828541282==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Ack.
+== Series Details ==
 
-> 
-> > +is passed additionally to the hook script. It contains directory where\n\
-> > +script may write additional attachments like guc logs, etc.\n\
-> 
-> Looking at how this is implemented, the attachments directory is not a
-> hook-specific thing, so I believe documentation for it would be better
-> placed in igt_runner's help/docs.
+Series: Verify PTA entries contains expected values (rev5)
+URL   : https://patchwork.freedesktop.org/series/163910/
+State : success
 
-That's true, I placed it here because --help-hook is first place where
-I would look for environment vars I can use. What do you think to place
-information about this variable in both places?
+== Summary ==
 
-> 
-> >  ", option_name);
-> >  }
-> > diff --git a/runner/executor.c b/runner/executor.c
-> > index 1485b59d1f..bc421f7dbb 100644
-> > --- a/runner/executor.c
-> > +++ b/runner/executor.c
-> > @@ -1779,17 +1779,22 @@ static int execute_next_entry(struct execute_state *state,
-> >  	int errpipe[2] = { -1, -1 };
-> >  	int socket[2] = { -1, -1 };
-> >  	int outfd, errfd, socketfd;
-> > -	char name[32];
-> > +	char name[32], attname[32];
-> > +	char attdirname[PATH_MAX];
-> >  	pid_t child;
-> >  	int result;
-> >  	size_t idx = state->next;
-> >  
-> >  	snprintf(name, sizeof(name), "%zd", idx);
-> > +	snprintf(attname, sizeof(attname), "%zd/%s", idx, DIR_ATTACHMENTS);
-> >  	mkdirat(resdirfd, name, 0777);
-> > +	mkdirat(resdirfd, attname, 0777);
-> >  	if ((idirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
-> >  		errf("Error accessing individual test result directory\n");
-> >  		return -1;
-> >  	}
-> > +	snprintf(attdirname, sizeof(attdirname), "%s/%s",
-> > +		 settings->results_path, attname);
-> >  
-> >  	if (!open_output_files(idirfd, outputs, true)) {
-> >  		errf("Error opening output files\n");
-> > @@ -1870,6 +1875,7 @@ static int execute_next_entry(struct execute_state *state,
-> >  			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
-> >  		}
-> >  		setenv("IGT_SENTINEL_ON_STDERR", "1", 1);
-> > +		setenv("IGT_RUNNER_ATTACHMENTS_DIR", attdirname, 1);
-> >  
-> >  		execute_test_process(outfd, errfd, socketfd, settings, entry);
-> >  		/* unreachable */
-> > @@ -1950,7 +1956,10 @@ static int remove_file(int dirfd, const char *name)
-> >  
-> >  static bool clear_test_result_directory(int dirfd)
-> >  {
-> > -	int i;
-> > +	DIR *dir;
-> > +	struct dirent *entry;
-> > +	int i, adirfd;
-> > +	int ret = false;
-> >  
-> >  	for (i = 0; i < _F_LAST; i++) {
-> >  		if (remove_file(dirfd, filenames[i])) {
-> > @@ -1960,7 +1969,33 @@ static bool clear_test_result_directory(int dirfd)
-> >  		}
-> >  	}
-> >  
-> > -	return true;
-> > +	if ((adirfd = openat(dirfd, DIR_ATTACHMENTS, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
-> > +		errf("Cannot open attachments directory\n");
-> > +		return false;
-> > +	}
-> > +
-> > +	if ((dir = fdopendir(adirfd)) == NULL) {
-> > +		errf("Cannot fdopen attachments directory\n");
-> > +		goto out1;
-> > +	}
-> > +
-> > +	while ((entry = readdir(dir)) != NULL) {
-> > +		if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
-> > +			continue;
-> > +
-> > +		if (unlinkat(adirfd, entry->d_name, 0))  {
-> > +			errf("Error removing %s\n", entry->d_name);
-> > +			goto out2;
-> > +		}
-> > +	}
-> 
-> Since we can't predict that the attachments directory will remain flat,
-> I think it would be safer to do a recursive cleanup here.  I guess we
-> could use nftw() in a post-order fashion here?
+CI Bug Log - changes from IGT_8839 -> IGTPW_14893
+====================================================
 
-I wondered about recursive removal, what prevented me from doing this
-was if there'll bug here I can remove too much. At the moment I guess
-guc logs will be only user so I would try to stay in flatten structure.
+Summary
+-------
 
---
-Zbigniew
+  **SUCCESS**
 
-> 
-> --
-> Gustavo Sousa
-> 
-> > +
-> > +	ret = true;
-> > +out2:
-> > +	closedir(dir);
-> > +out1:
-> > +	close(adirfd);
-> > +
-> > +	return ret;
-> >  }
-> >  
-> >  static bool clear_old_results(char *path)
-> > @@ -2002,6 +2037,9 @@ static bool clear_old_results(char *path)
-> >  			close(dirfd);
-> >  			return false;
-> >  		}
-> > +		if (unlinkat(resdirfd, DIR_ATTACHMENTS, AT_REMOVEDIR))
-> > +			errf("Warning: Cannot remove attachments directory\n");
-> > +
-> >  		close(resdirfd);
-> >  		if (unlinkat(dirfd, name, AT_REMOVEDIR)) {
-> >  			errf("Warning: Result directory %s contains extra files\n",
-> > diff --git a/runner/executor.h b/runner/executor.h
-> > index 3b1cabcf55..bc6ac80dc4 100644
-> > --- a/runner/executor.h
-> > +++ b/runner/executor.h
-> > @@ -25,6 +25,8 @@ enum {
-> >  	_F_LAST,
-> >  };
-> >  
-> > +#define DIR_ATTACHMENTS "attachments"
-> > +
-> >  bool open_output_files(int dirfd, int *fds, bool write);
-> >  bool open_output_files_rdonly(int dirfd, int *fds);
-> >  void close_outputs(int *fds);
-> > -- 
-> > 2.43.0
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14893 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/bat-dg2-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8839 -> IGTPW_14893
+  * Linux: CI_DRM_18255 -> CI_DRM_18256
+
+  CI-20190529: 20190529
+  CI_DRM_18255: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18256: 779129c7868f4c7205901d6e57b25de52b411d1c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14893: 14893
+  IGT_8839: 8839
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html
+
+--===============1835524953828541282==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Verify PTA entries contains expected values (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163910/">https://patchwork.freedesktop.org/series/163910/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8839 -&gt; IGTPW_14893</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14893 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14893/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8839 -&gt; IGTPW_14893</li>
+<li>Linux: CI_DRM_18255 -&gt; CI_DRM_18256</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18255: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18256: 779129c7868f4c7205901d6e57b25de52b411d1c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14893: 14893<br />
+  IGT_8839: 8839</p>
+
+</body>
+</html>
+
+--===============1835524953828541282==--
