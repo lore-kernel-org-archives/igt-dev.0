@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE1C610F92E0
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:11:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2158FF60F4
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:11:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 927D510EC59;
-	Tue, 31 Mar 2026 17:11:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F24910EC50;
+	Tue, 31 Mar 2026 17:11:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="d9j5o+6N";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="1n2Va3M+";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45F7C10EC39
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:06 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80D2510EC43
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:08 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 22FDD4E4288A;
- Tue, 31 Mar 2026 17:11:05 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 081C6C59957;
+ Tue, 31 Mar 2026 17:11:38 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id EC90F6029D;
- Tue, 31 Mar 2026 17:11:04 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 64D4D6029D;
+ Tue, 31 Mar 2026 17:11:07 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id E8AB21045051E; 
- Tue, 31 Mar 2026 19:11:03 +0200 (CEST)
+ with ESMTPSA id 5D4A010450574; 
+ Tue, 31 Mar 2026 19:11:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977064; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977066; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=Kc2AT2Tx1AvlvqhFiNJ6gzqFXgZzmLX0KBGSiVvlsoI=;
- b=d9j5o+6NNFkfaN2JkhpTkej6rOTJNnTV/Sr4uSDDOKpsDry97ncnS5uDIIsd3Tz0e6DpzQ
- Fp6gw08i7SI5tjyDh4/LApsI4L8SORu6RDTI0LVruued+ChErl9nZd3/DHhoNfJRV6JEJc
- bjKkDuAGy9fK8Y+GQmMchw+UqUhqKxrVqTdCIqoMuqr+8jpVNnz764R6veSK9bEh19YMao
- Fif1kg+AdBbyMNjQJSJ5c3XtiSoyppLFxeZmNuhpKgW6ZVtf1TTXUdSxhoVz4heT3M1bJa
- 7vJW4njsTgii/RhjPdhSBIsaj3bKuNwwsyaBNo6HTK4KhLFcC6cdYJvQH41KzQ==
+ bh=w57g6xSW5hPj0JLRKlSDjUAxEQbne20D4o6YBf35KGo=;
+ b=1n2Va3M+J3E+yUZsqV2kABoXusGO+EaeduGPVr0RNs8tjQnuy52FV2a20qiq8pBEt3CkiX
+ MtSx/Gf6A/Q0oESv8nXEcgV6GHweKwWprH/na04Ppjb/qLxPsNNbflqxsFvKbapukAlmTV
+ pWoprSDMO6Pjls/FgF0t4fWIxo2f9qVAexYFKMGOtJeiDViH67d/jE7DvpngAO3WhhWTlL
+ 8oz6cIDOBiECeGsdkFbmSw/G5NS3byh7jXIaM+SKDvDoiUdUcWko6Th2j7v62CB3yZd7V+
+ 3EQsrNkvKGwwAKttRa7X7FCwM+9lClj0H3pIq12BF/fkCZCWjBOppvzAwRQzQQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:11:34 +0200
-Subject: [PATCH i-g-t v10 17/49] lib/monitor_edids: Add helper to print all
- available EDID names
+Date: Tue, 31 Mar 2026 19:11:37 +0200
+Subject: [PATCH i-g-t v10 20/49] lib/unigraf: Initial Unigraf support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-unigraf-integration-v10-17-12266c34cc1d@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260331-unigraf-integration-v10-20-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -48,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2068;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7877;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=R1CiOr3azNJU5hRGBit/SNB6fx1S3wgXci+s+r8f5tQ=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA9euQb4kqYMWF8c7gjVYJKLmSoTpMxIxjKA
- E8ytx9q6zGJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJluQ//Us+K7K3kMmgV24ULQABNlJ0yVREr7rq
- P7edQVquvM7NMbpjV+8TiBUetFscdPtNMdWDMD2kajnQLVotZ3RCl2sa/+qK1TWe+nHqSIZcHkn
- S2x9q+InB8Jp9OuLLcirk88lCFO5Y4SMRUh65IiMGYeVnsPTEJWCFmtXQn+4hebkJVyOy5Gl0Zs
- +ZUsQGc/8mcb0NbrkrihmirBrYpR35Aa/k6k0+odFWLW5cEvGXtqUPie4vH0f6zrR8lRRZkziK1
- L07aGHyqHS+jRgl/dRPXS3em6hnVRE9wQ5Fo2/leSH9j0uJIHqTI65ZiLOusRlX6xp5NF+SLK9t
- l039aHsegR5KW6xLiZMIBkLW7bDbl8qba6/NZx71mnnMgvLvE7f2BnBkfd8tomKvudBulhrgYUH
- z9+Ri1y8t6VvHk1x/57tOPmQDgnaXvLtQ/1gX1UmKGluDaSiaT2SETFd6BIepspybl9+3+dSR28
- wrTnXiGEM3GFzOzfD5CzedG18KkQZ8PvDurBjuUVs6NS+0IgPwMdS3pIx/0RIaUDlJRBkEyJyAp
- h6z42hoXNcMlNN3YF2zL/2rjh+NQeBTYrd7YraJWAAO0P58RgpOiT/bG4GNZlZ4WveMqL1HoIxg
- GD5io12gJtatoU2NYCELcxZ3WdVUCFBgk7hCGIc6an/q2ebUtyro=
+ bh=PJejE7C8C9aCYDjVW99zF6iSz1YkiNyWtVvflJh/X6c=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA+Qx+AVMqSNfOpsmaYCJ22lHDd/Ur14VbLs
+ kqdL+WIaFeJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAPhsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLOoQ/8CxjbSTEXKFoibhxeVj9glKMBbB4lly5
+ CmxAgj5e+Y25OkFIidx++uzvnk8ERYT8I1Zx5r9AtIL+lUFGYmau9XEReUo5hC358MOC0dKeYUT
+ wsyiTykV/PzjjelSck3vvNwpTAuiJpKLcE1nEd07I3yeLeBuL2EhS4fkD35U3YEOLLXaacO+0o4
+ na0N8VoPf6B/bFkyF7knJKbH+9OkF+CdCfT890WPqyV1QZ696IbzpnDpXPjKRaofUpCqyZkBAsQ
+ 3Eg0WUfr/sChFHVnSkDPLdHNjxbT/QHnUYGAhPkiveKVain9tmjKtc7I9SkZAmPUhyxBsbeKvat
+ vfjT9N7Uo8jKlUlXa0rNYJb52qiq/ACIAkPIJ9Xw3ds7y6FLXd/T75gVxAghF2sSn4X7nlR4wgg
+ ef1CV3bGadTSwibzgJYJ1PsSchS44P5lGfwCGzTXN/pt5q03ap5sy1tN6tGPuBStcJEj/88t6N8
+ QCOgRezP158UukrOUEnTnZPGiLow1ZZSGJA8GSmlSNU0MYTRs0dMSTViEPbiPzkJX9sJrU6WHML
+ VAa2sJJkFjE0zXwo1Rw04hruibTfFi6d1iTOM629uiMBLu5kzlm0Qi7ku7dPp8YY7T4eOokO93c
+ mZNoKnDLWn2kfdAzHlvTbiuOlLMzbCbQ/pL1Vfhb8AfIhy5WRLEI=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -81,60 +80,276 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-During the unigraf configuration, it may be required to know the list
-of supported EDID names, so add an helper to print them.
+This introduce the basic boilerplate to connect to a unigraf device.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+This integration currently only supports one device opened to simplify
+its usage and cleanup.
+
+The functions unigraf_open_device and unigraf_require_device will register
+a handler to do proper cleanup on IGT exit.
+
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/monitor_edids/monitor_edids_helper.c | 16 ++++++++++++++++
- lib/monitor_edids/monitor_edids_helper.h |  2 ++
- 2 files changed, 18 insertions(+)
+ lib/meson.build              |  10 ++++
+ lib/vendor/unigraf/unigraf.c | 124 +++++++++++++++++++++++++++++++++++++++++++
+ lib/vendor/unigraf/unigraf.h |  43 +++++++++++++++
+ meson.build                  |  14 +++++
+ 4 files changed, 191 insertions(+)
 
-diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
-index e2ad7dbd4185..a3434e20f900 100644
---- a/lib/monitor_edids/monitor_edids_helper.c
-+++ b/lib/monitor_edids/monitor_edids_helper.c
-@@ -200,3 +200,19 @@ struct edid *get_edid_by_name(const char *name)
+diff --git a/lib/meson.build b/lib/meson.build
+index 5c4829345e93..82d6ea9a5ceb 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -155,6 +155,13 @@ lib_deps = [
  
- 	return NULL;
- }
+ inc = [ inc, include_directories('vendor') ]
+ 
++if libtsi.found()
++	lib_deps += libtsi
++	lib_sources += [
++		'vendor/unigraf/unigraf.c'
++	]
++endif
 +
+ if libdrm_nouveau.found()
+ 	lib_deps += libdrm_nouveau
+ 	lib_sources += [
+@@ -236,6 +243,9 @@ endif
+ if chamelium.found()
+ 	lib_deps += chamelium
+ 	lib_sources += [ 'igt_chamelium.c', 'igt_chamelium_stream.c' ]
++endif
++
++if chamelium.found() or libtsi.found()
+ 	lib_sources += 'monitor_edids/monitor_edids_helper.c'
+ endif
+ 
+diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+new file mode 100644
+index 000000000000..81ffae7a8ac3
+--- /dev/null
++++ b/lib/vendor/unigraf/unigraf.c
+@@ -0,0 +1,124 @@
++// SPDX-License-Identifier: MIT
 +/*
-+ * list_edid_names:
-+ * @level: Log level to write the names on
++ * Copyright © 2026 Google
 + *
-+ * Print all the EDID available in igt.
++ * Authors:
++ *   Louis Chauvet <louis.chauvet@bootlin.com>
 + */
-+void list_edid_names(enum igt_log_level level)
-+{
-+	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
-+		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
-+			igt_log(IGT_LOG_DOMAIN, level, " - \"%s\"\n",
-+				ALL_EDIDS[i].edid_list[j].name);
-+		}
-+	}
-+}
-diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
-index e76fed2cb4b9..e0c4bd55ed36 100644
---- a/lib/monitor_edids/monitor_edids_helper.h
-+++ b/lib/monitor_edids/monitor_edids_helper.h
-@@ -15,6 +15,7 @@
- #include <stdbool.h>
- #include <stdint.h>
- 
++
++#include <stdint.h>
++
 +#include "igt_core.h"
- #include "igt_chamelium.h"
++
++#include "unigraf.h"
++#include "TSI.h"
++#include "TSI_types.h"
++
++#define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device, ##__VA_ARGS__)
++
++static TSI_HANDLE unigraf_device;
++static char *unigraf_default_edid;
++static char *unigraf_connector_name;
++
++static void unigraf_close_device(void)
++{
++	if (!unigraf_device)
++		return;
++
++	unigraf_debug("Closing...\n");
++	unigraf_assert(TSIX_DEV_CloseDevice(unigraf_device));
++	TSI_Clean();
++	unigraf_device = NULL;
++	free(unigraf_default_edid);
++	free(unigraf_connector_name);
++}
++
++/**
++ * unigraf_exit_handler - Handle the exit signal and clean up unigraf resources.
++ * @sig: The signal number received.
++ *
++ * This function is called when the program receives an exit signal. It ensures
++ * that all unigraf resources are properly cleaned up by calling unigraf_deinit
++ * for each open instance.
++ */
++static void unigraf_exit_handler(int sig)
++{
++	unigraf_close_device();
++}
++
++static void unigraf_init(void)
++{
++	int ret;
++
++	unigraf_debug("Initialize unigraf...\n");
++	ret = TSI_Init(TSI_CURRENT_VERSION);
++	unigraf_assert(ret);
++	igt_install_exit_handler(unigraf_exit_handler);
++}
++
++/**
++ * unigraf_device_count() - Return the number of scanned devices
++ *
++ * Must be called after a unigraf_rescan_devices().
++ */
++static unsigned int unigraf_device_count(void)
++{
++	return unigraf_assert(TSIX_DEV_GetDeviceCount());
++}
++
++/**
++ * unigraf_open_device() - Search and open a device.
++ * @drm_fd: File descriptor of the currently used drm device
++ *
++ * Assert if:
++ * - called outside tests / fixup
++ * - TSI library raise errors
++ * Returns: true if a device was found and initialized, otherwise false.
++ *
++ * This function searches for a compatible device and opens it.
++ */
++bool unigraf_open_device(int drm_fd)
++{
++	TSI_RESULT r;
++	int device_count;
++	int chosen_device = 0;
++	int chosen_role = 0;
++	int chosen_input = 0;
++
++	assert(igt_can_fail());
++
++	if (unigraf_device)
++		return true;
++
++	unigraf_init();
++
++	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
++
++	device_count = unigraf_device_count();
++	if (device_count < 1) {
++		unigraf_debug("No device found.\n");
++		return false;
++	}
++
++	unigraf_device = TSIX_DEV_OpenDevice(chosen_device, &r);
++	unigraf_assert(r);
++	igt_assert(unigraf_device);
++	unigraf_debug("Successfully opened the unigraf device %d.\n", chosen_device);
++
++	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
++	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
++	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
++
++	return true;
++}
++
++/**
++ * unigraf_require_device() - Search and open a device.
++ * @drm_fd: File descriptor of the currently used drm device
++ *
++ * This is a shorthand to reduce test boilerplate when a unigraf device must be present.
++ */
++void unigraf_require_device(int drm_fd)
++{
++	igt_require(unigraf_open_device(drm_fd));
++}
+diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
+new file mode 100644
+index 000000000000..c08ce62894c5
+--- /dev/null
++++ b/lib/vendor/unigraf/unigraf.h
+@@ -0,0 +1,43 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2026 Google
++ *
++ * Authors:
++ *   Louis Chauvet <louis.chauvet@bootlin.com>
++ */
++
++#ifndef UNIGRAF_H
++#define UNIGRAF_H
++
++#include <stdbool.h>
++#include <stdint.h>
++
++/**
++ * unigraf_assert: Helper macro to assert a TSI return value and retrieve a detailed error message.
++ * @result: libTSI return value to check
++ *
++ * This macro checks the return value of a libTSI function call. If the return value indicates an
++ * error, it retrieves a detailed error message and asserts with that message.
++ * If retrieving the error description fails, it asserts with a generic error message.
++ */
++#define unigraf_assert(result)									\
++({												\
++	char msg[256];										\
++	TSI_RESULT __r = (result);								\
++	if (__r < TSI_SUCCESS) {								\
++		TSI_RESULT __r2 = TSI_MISC_GetErrorDescription(__r, msg, sizeof(msg));		\
++		if (__r2 < TSI_SUCCESS)								\
++			igt_assert_f(false,							\
++				     "unigraf error: %d (get error description failed: %d)\n",	\
++				     __r, __r2);						\
++		else										\
++			igt_assert_f(false, "unigraf error: %d (%s)\n", __r, msg);		\
++	}											\
++	(__r);											\
++})
++
++bool unigraf_open_device(int drm_fd);
++
++void unigraf_require_device(int drm_fd);
++
++#endif // UNIGRAF_H
+diff --git a/meson.build b/meson.build
+index 57849648a377..2092dbddbdbe 100644
+--- a/meson.build
++++ b/meson.build
+@@ -166,6 +166,12 @@ libpci = dependency('libpci', required : true)
+ libudev = dependency('libudev', required : true)
+ glib = dependency('glib-2.0', required : true)
  
- /* Max Length can be increased as needed, when new EDIDs are added. */
-@@ -35,5 +36,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
- struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
- const struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
- struct edid *get_edid_by_name(const char *name);
-+void list_edid_names(enum igt_log_level level);
++libtsi = cc.find_library('TSI', required : false)
++
++if libtsi.found()
++	config.set('HAVE_UNIGRAF', 1)
++endif
++
+ xmlrpc = dependency('xmlrpc', required : false)
+ xmlrpc_util = dependency('xmlrpc_util', required : false)
+ xmlrpc_client = dependency('xmlrpc_client', required : false)
+@@ -290,6 +296,7 @@ amdgpudir = join_paths(libexecdir, 'amdgpu')
+ msmdir = join_paths(libexecdir, 'msm')
+ panfrostdir = join_paths(libexecdir, 'panfrost')
+ panthordir = join_paths(libexecdir, 'panthor')
++unigrafdir = join_paths(libexecdir, 'unigraf')
+ v3ddir = join_paths(libexecdir, 'v3d')
+ vc4dir = join_paths(libexecdir, 'vc4')
+ vkmsdir = join_paths(libexecdir, 'vkms')
+@@ -367,6 +374,12 @@ if get_option('use_rpath')
+ 	endforeach
+ 	vkms_rpathdir = join_paths(vkms_rpathdir, libdir)
  
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
++	unigraf_rpathdir = '$ORIGIN'
++	foreach p : unigrafdir.split('/')
++		unigraf_rpathdir = join_paths(unigraf_rpathdir, '..')
++	endforeach
++	unigraf_rpathdir = join_paths(unigraf_rpathdir, libdir)
++
+ 	vmwgfx_rpathdir = '$ORIGIN'
+ 	foreach p : vmwgfxdir.split('/')
+ 		vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
+@@ -382,6 +395,7 @@ else
+ 	v3d_rpathdir = ''
+ 	vc4_rpathdir = ''
+ 	vkms_rpathdir = ''
++	unigraf_rpathdir = ''
+ 	vmwgfx_rpathdir = ''
+ endif
+ 
 
 -- 
 2.52.0
