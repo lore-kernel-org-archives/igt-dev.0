@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 265F510F92E0
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:13:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3F0610F92E0
+	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 17:13:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD7D210ECBE;
-	Tue, 31 Mar 2026 17:13:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9920B10ECC2;
+	Tue, 31 Mar 2026 17:13:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="R+/fM83U";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="E/Dj3AIX";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B95A610EC3A
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:10:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EC2310EC48
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:25 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 8BC5E4E4288B
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:10:53 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 28D984E42889
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2026 17:11:24 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 62ABE6029D;
- Tue, 31 Mar 2026 17:10:53 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id F354B6029D;
+ Tue, 31 Mar 2026 17:11:23 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 5611D1045028A; 
- Tue, 31 Mar 2026 19:10:52 +0200 (CEST)
+ with ESMTPSA id 076AD1045043E; 
+ Tue, 31 Mar 2026 19:11:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1774977052; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1774977083; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=pPBgQzLRDUT0tU0f8hQz3VMH+F1haaxzU+dHF1K9njU=;
- b=R+/fM83UUn9jCUNBShIuTRDK6jEjq5LdpqKVMTgTCynh0QqdbS56cmBiZWwP/EVq4Ki50Y
- KpMfhC7utRoGXran1K4Epx7gCejOl/oNuuSJfhnqV//5pjc7xU8WMaukIW6Gs0ll5DzFGk
- HCsvcE7LjcHpSftnqWy3IKEqLsVD76SGAlyhYRZotm9qbbAAHytLpymwo5ZtmQa7MhGyqq
- urUhCcLKZiH0QORRgtZLqv1fRYX/GvXiKev5ET4TzuCOejg5BPwTGKStc1oYS7REuMv+u6
- bn4q5ter/foi/nxYJzq/5zmAglIe6HXcnXmMUZK/ArJIOtukc2xBuzin/ZctZg==
+ bh=Cop+2TXC2P4fplyZ9halK+m2khKfOSum4oQxNgNjuWo=;
+ b=E/Dj3AIXnxzI0O5YYDr++ueuAh78A6EIKQXNzcMJ2pvnNDpBS8OIQmq6VJ8w2zlI4vw1oI
+ ZMNs50tvclEXD/pfi0jMlvW7/SICouJaViCHeRptlnBF8ZXeeQfGagOawB6rUt/TQLwT3B
+ rxTLZnNCO6ON/A68bFJ+sRDtnOnYTFvZ9LkhWxv/4IF7xCHcF9yVcheFWuujWgIw81lLqa
+ yjPbkAC211IMdkeP7Fb4ApCemqdneYPdWFd9J18UjuzQ/8HNJIiUwB0qLZtadS6G5HK12G
+ QS3LGxUh3rnwnVLzoKkrZQs/KAi2hy2w3dIrCjvF8tjN7zn5ULz2h889r8MgAA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 31 Mar 2026 19:11:20 +0200
-Subject: [PATCH i-g-t v10 03/49] lib/igt_kms: Add function to list
- connected connectors
+Date: Tue, 31 Mar 2026 19:11:56 +0200
+Subject: [PATCH i-g-t v10 39/49] lib/i915/dp: Add helper to get maximum
+ supported rate
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-unigraf-integration-v10-3-12266c34cc1d@bootlin.com>
+Message-Id: <20260331-unigraf-integration-v10-39-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 In-Reply-To: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -48,21 +48,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4164;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2281;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=f/mMRxXoDiCKGfiZnjH0mGI9yfHpEyO0+9rEPW38GI4=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzAA74ZKOoMWOzvF2WM4LvCrYnPiBCrXqCkk6F
- OWeLcArX+aJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAOxsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKCpA//dK7F81ANVqJ0ZNsXaIhIJb2MLOi5z/9
- HZpDQfOiQfG6Kx91FPj6AazoaouhemCv+ad/1FmkY8HH+sKxrUDiZ9jnEhFzHivc6ARsBQ/TgiF
- aPkGPZW7s16fQ+MrQPIvsZo42B2WSr5kNgncFhuPaoE0lsJ6u8sXEQcyMzWTh5kD6fRbvLLvIXp
- stkQYFqoA2zN1FM/IlxYD454BjacddAZxN/jrIiZbfYuGIIvMp/GLuwREQVXwlqz4/O3yXPq/T2
- HndLD3vPQR6dJEKmhF2EtgPaCYKXTfl4N1xAwzif7Mowd6sCqdrdFjjOIgIijGEiLBhyilYiAdB
- HBniAk5tykKtNmxPzXmr9uxvTr1HSqRjpwBuDJ38xV9XmQq7G77CCf8E4Rta10TX4FlXHBbxrjq
- IYgp19lcdBo/9kIOg6YTz0qf+OakV98N3d7WNEKbM0cRrgHCrjMaOI6bj1CfnKUKQbC0hPCjVtb
- 8eBa/UiYHd3RCdIWQ0nyNMM5ATClQAnVtMxZXe7+pGEOyzGSgxBLzjFP8KjF0i9BaAeHzmJTMrm
- 0hJfXOeIm+LQmDe+8x0hHgU0vIDZfg9SnOHt0VLVvK5wDD/OF1B3VENJYppUMFS2TcM/kQkHzXw
- +4iQrI23T0dA3/YzYO3iCW22xc2MlBkze1O0tYNJ1P/YGTBhVX34=
+ bh=SIaFkVKPppQGNRWEns8Gv1U0lRIHnNMr+xr94/2zDVk=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpzABAUWuWK9LVefrn3RVbrlrKtru9cutlhUVFE
+ jrqIhZZVoaJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCacwAQBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIQPg//RCCRxrHZspN2pKZBS13IQx32LO7ss3g
+ KeBEKw76Ndu0s7JvdzO8MqezJ/QbleTCQOoS/b2bsFLGm4LcM7yWJwkdDtC+Bwb1Lsji5+ibMpf
+ oKnkbUsSHgcYucL7XdTHixm4xUYilkREdcN2rCNUtqqszzLZmgPafmHOIJl9jlesO/npLuh/YwP
+ 6KYHjXf2hsqqcPPmOkqw3v4xGluClJDAJpPL+Vyf8XLqmCgMLRsK6KcoKd+sQB2o3c0uqOjIEzD
+ 5PxO2ZLioiWeIq5va12NCi5uDX1/WZSUzm/i0htHhW7Fk1WzDpCQLnFVq5oXkqJaEPYnplqkdGM
+ 5XP6pVbPDVasaLbsSY0OlhgYfZeALDv1fzKPTWprwfYunRdMH1oxI8g9NpSAs3YautPOlKzmyjz
+ qQL4RAmWHLuUNnoBJbWIBcCyWswU7F3bRDwEG3Gm8RzxPyUHGuCRtBa5n04XSRsnOsYsSjbzI5J
+ 5UlnIcwE8AHsYL51NIkyhW5VFNzYn3pO+qkSMpcG7xik7m+fXuyfmODAu3XBB34cAWCHhp7IoNa
+ SfD8DuGKGbqIoXe5/71hfsvYu8o30dsiIuUZOxEa5Aed3vuSY2wBm7zBDS+ToiTHaJ8tkGGeQYS
+ DTyQJifb/sXPjL/nVJnnDKtTqHHhhGCvCC+aOaStj7eUjlvb3V2w=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -81,133 +81,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the igt_get_connected_connectors() function, which returns a
-list of connector IDs that are currently connected according to DRM.
-
-This function includes a timeout mechanism because connectors can be
-unplugged at any time. Also, especially with MST, the connector can be
-listed by drmModeGetResources() but not yet accessible with
-drmModeGetConnector().
+Some GPU can't reach all the DP rates. To avoid false positive during
+testing with unigraf, add an helper to filter tests based on the maximum
+supported rate of the current GPU.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 86 insertions(+)
+ lib/i915/i915_dp.c | 35 +++++++++++++++++++++++++++++++++++
+ lib/i915/i915_dp.h |  1 +
+ 2 files changed, 36 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 5c78e0552034..c542282eca34 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -8150,6 +8150,31 @@ igt_crtc_t *igt_random_crtc(igt_display_t *display)
- 	return crtcs[rand() % n];
- }
+diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
+index 48a69e9ff283..da3dd05c3293 100644
+--- a/lib/i915/i915_dp.c
++++ b/lib/i915/i915_dp.c
+@@ -28,7 +28,9 @@
+  */
  
-+static drmModeConnectorPtr igt_wait_for_connector(int drm_fd, unsigned int connector_id,
-+						  double timeout)
-+{
-+	drmModeConnectorPtr connector = NULL;
-+	struct timespec start, end;
-+
-+	connector = drmModeGetConnector(drm_fd, connector_id);
-+	/*
-+	 * This time is required as sometimes some id in the connector list are not totally
-+	 * ready or can disappear
-+	 */
-+	igt_assert_eq(igt_gettime(&start), 0);
-+	end = start;
-+
-+	while (!connector &&
-+	       igt_time_elapsed(&start, &end) <= timeout) {
-+		drmModeFreeConnector(connector);
-+		connector = drmModeGetConnector(drm_fd, connector_id);
-+		usleep(WAIT_FOR_CONNECTOR_LOOP_SLEEP_US);
-+		igt_assert_eq(igt_gettime(&end), 0);
-+	}
-+
-+	return connector;
-+}
-+
- /**
-  * igt_wait_for_connector_status:
-  * @drm_fd: drm file descriptor
-@@ -8190,3 +8215,63 @@ bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double
+ #include <ctype.h>
++#include <errno.h>
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <string.h>
  
- 	return false;
+ #include "i915_dp.h"
+@@ -344,3 +346,36 @@ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+ 	temp = drmModeGetConnector(drm_fd, output->config.connector->connector_id);
+ 	drmModeFreeConnector(temp);
  }
 +
 +/**
-+ * igt_get_connected_connectors:
++ * i915_dp_get_max_supported_rate:
++ * @drm_fd: A drm file descriptor
++ * @output: Target output
 + *
-+ * @drm_fd: DRM file descriptor
-+ * @connector_ids: Out pointer for the array of connector ids connected. The function
-+ * will allocate and store the pointer in this out pointer. The caller is
-+ * responsible to free the inner pointer using free(*connector_ids).
-+ *
-+ * This will probe all the connectors and return the list of all
-+ * connected connectors.
-+ *
-+ * Asserts if:
-+ * - drm_fd is invalid
-+ * - drmModeGetResources fails
-+ * - reallocarray fails
-+ * Returns: The number of connectors in @connector_ids
++ * Returns: Max supported link rate available for output, else -1
 + */
-+int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
++int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output)
 +{
-+	uint32_t *tmp_alloc;
-+	int connected_count = 0;
-+	double timeout = igt_default_display_detect_timeout();
-+	drmModeResPtr resources;
++	char buf[512];
++	int res, max_rate = -EINVAL;
++	char *token;
 +
-+	igt_assert_fd(drm_fd);
-+	*connector_ids = NULL;
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
++					      "i915_dp_force_link_rate",
++					      buf, sizeof(buf));
++	igt_assert_f(!res, "Unable to read %s/i915_dp_force_link_rate\n",
++		     igt_output_name(output));
 +
-+	resources = drmModeGetResources(drm_fd);
-+	igt_assert_f(resources, "drmModeGetResources failed");
-+	for (int j = 0; j < resources->count_connectors; j++) {
-+		int status = DRM_MODE_UNKNOWNCONNECTION;
++	token = strtok(buf, " ");
++	while (token) {
++		int rate;
 +
-+		drmModeConnectorPtr connector = igt_wait_for_connector(drm_fd,
-+								       resources->connectors[j],
-+								       timeout);
-+
-+		if (connector)
-+			status = connector->connection;
-+		drmModeFreeConnector(connector);
-+
-+		if (status == DRM_MODE_CONNECTED) {
-+			tmp_alloc = reallocarray(*connector_ids,
-+						 connected_count + 1,
-+						 sizeof(**connector_ids));
-+			if (!tmp_alloc) {
-+				free(*connector_ids);
-+				drmModeFreeResources(resources);
-+				igt_assert_f(false, "Failed to allocate connector_ids list");
-+			}
-+
-+			*connector_ids = tmp_alloc;
-+			(*connector_ids)[connected_count] = resources->connectors[j];
-+			connected_count++;
-+		}
++		errno = 0;
++		rate = strtol(token, NULL, 0);
++		if (!errno && rate > max_rate)
++			max_rate = rate;
++		token = strtok(NULL, " ");
 +	}
-+	drmModeFreeResources(resources);
 +
-+	return connected_count;
++	return max_rate;
 +}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index f70976cf042c..b2e463f9be9d 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1295,5 +1295,6 @@ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
+diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
+index e4249d179543..b13629147804 100644
+--- a/lib/i915/i915_dp.h
++++ b/lib/i915/i915_dp.h
+@@ -18,5 +18,6 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
+ void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
+ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+ 			     char *link_rate, char *lane_count);
++int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output);
  
- bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
- 				   int drm_mode);
-+int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
- 
- #endif /* __IGT_KMS_H__ */
+ #endif
 
 -- 
 2.52.0
