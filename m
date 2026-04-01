@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D2C1D35162
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 11:36:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ADBBD35176
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 11:36:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D9F0C10ED45;
-	Wed,  1 Apr 2026 11:36:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C3A9410ED66;
+	Wed,  1 Apr 2026 11:36:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GsxuVGZ9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OSRE64C+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A957410ECE4
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77CE010ECE4
  for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 11:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775043343; x=1806579343;
+ t=1775043342; x=1806579342;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hQookn2/v0pUueuTXYLQZkKJ5EB8hBmW6SL2I2oY5Ow=;
- b=GsxuVGZ9FHFag9Hr1YEAROTFxw4MVLSQd6b+oVzaIvzKWBgxKbWPYBDD
- 5UyJUJeNyWDCG0wRSCLnuUQYuxjDmLUZVD4CBqL45J9cgBgLm6UAShOoN
- DzBsVpYRtQPKHunfnuREnbre1QXZSnNlPfvRg+06BMMoCpQiWZnzZioDC
- IfRp5jyByrewgZ1XXS9XilulBqIy1fK1NZd+dXQGnkA8bFQA1Ucr5XSP/
- yQD/hox2MbULniziWEZ5xIEIFNa1xms9xutzCMy0PVtvwMt6CDoQRbKC4
- WSDrXpt7nK2NSgVv5lGmxkkZYvYUj95YKPYb08bhyaHaX8MjRIgjKKxwV A==;
-X-CSE-ConnectionGUID: peGu5ES0T2GgUq+3guswkw==
-X-CSE-MsgGUID: 5JqtWf0ZQWa+Fgp0Z2rbDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78669800"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="78669800"
+ bh=9oK/rcF4iZBL2CBGOnmrKrOw5OfQPdyFJvNJXuc5ho0=;
+ b=OSRE64C+YG2plTomj2G8vlb53dhdZCyMTBorr9VNe5m1ODJGCjPbTpd+
+ Tj0PVIKXiU81xPWxZGjAjlO0oWYa1p2Z9WElpV3vMY/XlV5tvkEyIScdz
+ 00Cttb/c8TTzNX5SsjcN6Boptw4b2JUb7w5DZsbu3k+MUWcT98QOIafpy
+ jvlc/WrF5CJV11os37BkGaGRDDUGobqxRulZyhAWNKuZyIh0WGyhAWrRd
+ ALSdgtVeJp2GUCiYB6mYZ+dzhz/YIsUIU52jmkjpo2TngyymwNK2Ne5xu
+ 7Sk4FJ63ZBscAYh/vhM/753L30UXdWsDJEgCHVenVzq2k+yCMeHZ7hh54 Q==;
+X-CSE-ConnectionGUID: cvIQjxjoRba1fGzTegIW7Q==
+X-CSE-MsgGUID: Vti8KzCnTbaJqnMp/QP3aQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78669797"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="78669797"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  01 Apr 2026 04:35:42 -0700
-X-CSE-ConnectionGUID: +ZjxshrYQvKuNY3qiQvkAg==
-X-CSE-MsgGUID: dj8w8Xl0QvCS0FD5Guq6RQ==
+X-CSE-ConnectionGUID: gx8a2jvtTOCPeEIMuzGkUw==
+X-CSE-MsgGUID: SYB5/vEDTeq0FPLXmo9UEQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="228263474"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="228263470"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 04:34:27 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 04:34:24 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 4/6] lib/igt_kms: Export get_max_pipe_hdisplay as public
- helper
-Date: Wed,  1 Apr 2026 17:25:40 +0530
-Message-Id: <20260401115542.1074290-5-kunal1.joshi@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>,
+ Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t 2/6] tests/intel/kms_mst_helper: Add helper to check for
+ MST outputs
+Date: Wed,  1 Apr 2026 17:25:38 +0530
+Message-Id: <20260401115542.1074290-3-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260401115542.1074290-1-kunal1.joshi@intel.com>
 References: <20260401115542.1074290-1-kunal1.joshi@intel.com>
@@ -68,67 +69,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rename the static get_max_pipe_hdisplay to igt_get_max_pipe_hdisplay
-and export it as a public API. This function returns the maximum
-hdisplay a single pipe can drive. Tests like basic-max-non-joiner
-need this value to distinguish outputs that can reach the single-pipe
-boundary from those that cannot
+Add igt_display_has_mst_output() to check
+if a display has at least one DP MST output
+connected. This is useful for tests that need
+to verify MST output availability before running.
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- lib/igt_kms.c | 8 ++++----
- lib/igt_kms.h | 1 +
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ tests/intel/kms_mst_helper.c | 19 +++++++++++++++++++
+ tests/intel/kms_mst_helper.h |  1 +
+ 2 files changed, 20 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index dbd419a9b..961538932 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6907,12 +6907,12 @@ int igt_get_current_cdclk(int fd)
+diff --git a/tests/intel/kms_mst_helper.c b/tests/intel/kms_mst_helper.c
+index 38859cffc..1918c8d10 100644
+--- a/tests/intel/kms_mst_helper.c
++++ b/tests/intel/kms_mst_helper.c
+@@ -47,3 +47,22 @@ int igt_find_all_mst_output_in_topology(int drm_fd, igt_display_t *display,
+ 	}
+ 	return 0;
  }
- 
- /**
-- * get_max_hdisplay:
-+ * igt_get_max_pipe_hdisplay:
-  * @drm_fd: drm file descriptor
-  *
-  * Returns: The maximum hdisplay supported per pipe.
-  */
--static int get_max_pipe_hdisplay(int drm_fd)
-+int igt_get_max_pipe_hdisplay(int drm_fd)
- {
- 	int dev_id = intel_get_drm_devid(drm_fd);
- 
-@@ -6933,7 +6933,7 @@ static int get_max_pipe_hdisplay(int drm_fd)
-  */
- bool igt_bigjoiner_possible(int drm_fd, drmModeModeInfo *mode, int max_dotclock)
- {
--	return (mode->hdisplay > get_max_pipe_hdisplay(drm_fd) ||
-+	return (mode->hdisplay > igt_get_max_pipe_hdisplay(drm_fd) ||
- 		mode->clock > max_dotclock);
- }
- 
-@@ -7047,7 +7047,7 @@ bool igt_is_joiner_enabled_for_pipe(int drmfd, enum pipe pipe)
-  */
- bool igt_ultrajoiner_possible(int drm_fd, drmModeModeInfo *mode, int max_dotclock)
- {
--	return (mode->hdisplay > 2 * get_max_pipe_hdisplay(drm_fd) ||
-+	return (mode->hdisplay > 2 * igt_get_max_pipe_hdisplay(drm_fd) ||
- 		mode->clock > 2 * max_dotclock);
- }
- 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index f994d91d3..2b5196c90 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1236,6 +1236,7 @@ void igt_sort_connector_modes(drmModeConnector *connector,
- bool igt_max_bpc_constraint(igt_display_t *display, igt_crtc_t *crtc,
- 			    igt_output_t *output, int bpc);
- int igt_get_max_dotclock(int fd);
-+int igt_get_max_pipe_hdisplay(int drm_fd);
- int igt_get_max_cdclk(int fd);
- int igt_get_current_cdclk(int fd);
- bool igt_bigjoiner_possible(int drm_fd, drmModeModeInfo *mode, int max_dotclock);
++
++/**
++ * igt_display_has_mst_output:
++ * @display: pointer to #igt_display_t structure
++ *
++ * Check if a display has at least one DP MST output connected.
++ *
++ * Returns: true if MST output is found, false otherwise
++ */
++bool igt_display_has_mst_output(igt_display_t *display)
++{
++	igt_output_t *output;
++
++	for_each_connected_output(display, output) {
++		if (igt_check_output_is_dp_mst(output))
++			return true;
++	}
++	return false;
++}
+diff --git a/tests/intel/kms_mst_helper.h b/tests/intel/kms_mst_helper.h
+index 7391494ab..0e8ece0a0 100644
+--- a/tests/intel/kms_mst_helper.h
++++ b/tests/intel/kms_mst_helper.h
+@@ -12,4 +12,5 @@ int igt_find_all_mst_output_in_topology(int drm_fd, igt_display_t *display,
+ 					igt_output_t *output,
+ 					igt_output_t *mst_outputs[],
+ 					int *num_mst_outputs);
++bool igt_display_has_mst_output(igt_display_t *display);
+ #endif
 -- 
 2.48.1
 
