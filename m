@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45B8DD3516F
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 10:29:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A031D35162
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 11:21:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E6E2210EC65;
-	Wed,  1 Apr 2026 10:29:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C40F410EA55;
+	Wed,  1 Apr 2026 11:21:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OCBXw7mQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DKvPQcNy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B65310E9E0
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 10:29:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36A0C10E3A3
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 11:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775039381; x=1806575381;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=1A6TVmyvAnA0wTz5F5sX/7W+Fay9xXdCzegxzwYWNRg=;
- b=OCBXw7mQn/852AbMLh/j2hPyVlo6XxgwjLod91J7w56pyZVvmwRiEMSn
- K7yMnY2L346YF+TNHY5e6k5IzSiehld2eBqBoyodqA/lC6GbppMHsX+rz
- gWRoDk0PaISvDCrr6mSWEeYxeyqUzWcgfvawYPsJDQeLsHb78Kp1SNkdI
- eeY9P7KORSBOWHVrwwo47iPq285yEPpuepYdWmukXCN2nZ7oKEeh2tk+5
- xd14KVt3wk+VvnhJDhz4JBAQYQjaCgfldfEbGuzRmKMgYdRTdbvsmg3Tr
- VmqMXqwzyOaeTBdyJ7bWI3pKYyxlGDD/giQBJ64/t7YK+98p+aloOPA4j A==;
-X-CSE-ConnectionGUID: PKAAu+pAQO6gMaN2im2bOg==
-X-CSE-MsgGUID: hzk2NPmhSiSf2vDeqgoFWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="101524373"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="101524373"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 03:29:41 -0700
-X-CSE-ConnectionGUID: rpHdHsvNQveYeEQ1HUFs/Q==
-X-CSE-MsgGUID: Z6TCQm8zRB+AfI422zUvOg==
+ t=1775042481; x=1806578481;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=RLADK2jR3/mtOAaaCeYuUhfyMl0BTBUBbjqlyB11MnI=;
+ b=DKvPQcNyvNz/1XM10KfKrLIlLaoDIMEByNqUF6rF4r03z2sOwOLQGEu/
+ Py2mE7EBY1pV+t1BlR8Wn0JpPyYqbOP1gL208FAVnUMlp7T2oFquw8zA+
+ KPG+Y0e9yj08GMedq8Qbscp1Q7AiVCikKQCYKfjSnMB5wrD5IvzFqnTpY
+ hgONCe54f9fQHxJHvWJv0197cMUHE8FC6e9I3RgNbQ68genn2qWdYOEJl
+ kcomOgUcI4QRDQi2tN5xXR+MItA6FiXmomWbC6zJ0DxJHI89nbYmuFMFh
+ j2PHWcHv5V/jxFlIQEK5qhpaTpdt/hTb0M1LetObuUOPEf1Y7xJhHBtwS w==;
+X-CSE-ConnectionGUID: 13c5nL8HTIGCPTKl1jP4lw==
+X-CSE-MsgGUID: 0rSwXfC8Sg+hd2PSVr37BQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="87466186"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="87466186"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 04:21:21 -0700
+X-CSE-ConnectionGUID: d4gvOM6oT1SZqCRRggpTBQ==
+X-CSE-MsgGUID: OPZgw6wfSWiVBRVXG4UZ/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="264566045"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.244.182])
- ([10.245.244.182])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 03:29:39 -0700
-Message-ID: <ea87318d-3405-4083-a5d9-b4a04ce91343@intel.com>
-Date: Wed, 1 Apr 2026 11:29:36 +0100
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="231063987"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.206])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 04:21:19 -0700
+Date: Wed, 1 Apr 2026 13:21:17 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Wang, X" <x.wang@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>, 
+ Matt Roper <matthew.d.roper@intel.com>
+Subject: Re: [PATCH i-g-t v5 4/4] tests/xe_pat: Verify PAT entries contain
+ expected values
+Message-ID: <4btf4v4wig7xudqhl7ritew5qjsr6y5vt6hj54l4jkuiwtmplc@nisikzbtd4ug>
+References: <20260331140541.2561104-6-zbigniew.kempczynski@intel.com>
+ <20260331140541.2561104-10-zbigniew.kempczynski@intel.com>
+ <c33f51c3-9dd1-429b-b1d9-d487ffebda95@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v1 1/1] drm/xe/xe_pm: Have high VRAM usage during
- system suspend
-To: Karthik Poosa <karthik.poosa@intel.com>, igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com, 
- rodrigo.vivi@intel.com, raag.jadav@intel.com
-References: <20260331181356.4133309-1-karthik.poosa@intel.com>
- <20260331181356.4133309-2-karthik.poosa@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20260331181356.4133309-2-karthik.poosa@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <c33f51c3-9dd1-429b-b1d9-d487ffebda95@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,177 +73,143 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 31/03/2026 19:13, Karthik Poosa wrote:
-> Create high VRAM usage by allocating a large BO prior to system suspend.
-> This increases eviction time, helping to expose any unknown issues in the
-> suspend‑resume flow.
+On Tue, Mar 31, 2026 at 02:20:12PM -0700, Wang, X wrote:
 > 
-> Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
-> ---
->   tests/intel/xe_pm.c | 86 +++++++++++++++++++++++++++++++++++++++++++--
->   1 file changed, 84 insertions(+), 2 deletions(-)
+> On 3/31/2026 07:05, Zbigniew Kempczyński wrote:
+> > Debugfs exposes PAT entries for different GTs so verify they
+> > contain expected values. Verify they are correct also in reset
+> > and suspend scenarios.
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Matthew Auld <matthew.auld@intel.com>
+> > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > ---
+> > v4: Test is rewritten to support PAT + PTA + ATS entries.
+> > ---
+> >   tests/intel/xe_pat.c | 79 ++++++++++++++++++++++++++++++++++++++++++++
+> >   1 file changed, 79 insertions(+)
+> > 
+> > diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+> > index 2e2d7e01e7..4fbe2714ad 100644
+> > --- a/tests/intel/xe_pat.c
+> > +++ b/tests/intel/xe_pat.c
+> > @@ -238,6 +238,76 @@ static void pat_sanity(int fd)
+> >   	}
+> >   }
+> > +enum pat_test_opts {
+> > +	PAT_CHECK = 1,
+> > +	PAT_RESET_GT = 2,
+> > +	PAT_SUSPEND = 3,
+> > +};
+> > +
+> > +/**
+> > + * SUBTEST: pat-sw-hw-compare
+> > + * Description: verify debugfs 'pat' reflects 'pat_sw_config'
+> > + *
+> > + * SUBTEST: pat-sw-hw-reset-compare
+> > + * Description: verify debugfs 'pat' reflects 'pat_sw_config' after gt reset
+> > + *
+> > + * SUBTEST: pat-sw-hw-suspend
+> > + * Description: verify debugfs 'pat' reflects 'pat_sw_config' after suspend
+> > + */
+> > +static void pat_sw_hw_compare(int fd, enum pat_test_opts opts)
+> > +{
+> > +	bool matches = true;
+> > +	int gt;
+> > +
+> > +	xe_for_each_gt(fd, gt) {
+> > +		struct intel_pat_cache pat_hw_config = {};
+> > +		struct intel_pat_cache pat_sw_config = {};
+> > +		int hw_entries, sw_entries;
+> > +
+> > +		if (opts == PAT_RESET_GT)
+> > +			xe_force_gt_reset_sync(fd, gt);
+> > +		else if (opts == PAT_SUSPEND)
+> > +			igt_system_suspend_autoresume(SUSPEND_STATE_STANDBY, SUSPEND_TEST_NONE);
+> > +
+> > +		hw_entries = xe_get_pat_hw_config(fd, &pat_hw_config, gt);
+> > +		sw_entries = xe_get_pat_sw_config(fd, &pat_sw_config, gt);
+> > +		igt_assert_eq(hw_entries, sw_entries);
+> > +
+
+Thank you for the comments.
+
+> I think there might be two issues with this block:
+> 1. False success on read failure: if an incorrect KMD is used or the
+> debugfs file fails to read, both hw_entries and sw_entries may return
+> -1. In that case, igt_assert_eq(hw_entries, sw_entries) would still
+> pass, silently masking the underlying failure.
+
+In case of incorrect KMD I prefer to fail, not to skip. I think adding
+asserts which expects hw_entries > 0 and sw_entries > 0 will detect
+such case (you're right, eq is not enough.
+
+
+> 2. SRIOV compatibility: when running under SRIOV, hw_entries = -1
+> since the HW PAT table may not be readable, causing the test to fail
+> unnecessarily.
+> Would it make sense to use igt_skip_on_f() when hw_entries returns -1?
+> That way the test is skipped rather than silently passing or failing
+> with a potentially misleading result.
+
+I think this check should skip on !pf:
+
+igt_require(igt_sriov_is_pf(fd));
+
+--
+Zbigniew
+
 > 
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 54f2e9d18..bff3b1cac 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -69,6 +69,8 @@ static pthread_cond_t suspend_cond = PTHREAD_COND_INITIALIZER;
->   static pthread_mutex_t child_ready_lock = PTHREAD_MUTEX_INITIALIZER;
->   static pthread_cond_t child_ready_cond = PTHREAD_COND_INITIALIZER;
->   static bool child_ready = false;
-> +uint32_t *map_large_buf;
-> +uint64_t buf_size = 0;
->   
->   typedef struct {
->   	device_t device;
-> @@ -871,6 +873,75 @@ static void i2c_test(device_t device, int sysfs_fd, enum igt_acpi_d_state d_stat
->   	close(i2c_fd);
->   }
->   
-> +static void alloc_large_buf(int fd_xe)
-> +{
-> +	struct drm_xe_query_mem_regions *mem_regions;
-> +	uint64_t vram_used_mb = 0, vram_total_mb = 0;
-> +	struct drm_xe_device_query query = {
-> +		.extensions = 0,
-> +		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
-> +		.size = 0,
-> +		.data = 0,
-> +	};
-> +	uint32_t bo, placement;
-> +	int i = 0;
-> +
-> +	igt_require(xe_has_vram(fd_xe));
-
-IIUC this is going to now skip the entire subtest on igpu?
-
-> +	placement = vram_memory(fd_xe, 0);
-> +	igt_require_f(placement, "Device doesn't support vram memory region\n");
-> +
-> +	igt_assert_eq(igt_ioctl(fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +	igt_assert_neq(query.size, 0);
-> +
-> +	mem_regions = malloc(query.size);
-> +	igt_assert(mem_regions);
-> +
-> +	query.data = to_user_pointer(mem_regions);
-> +	igt_assert_eq(igt_ioctl(fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +
-> +	for (i = 0; i < mem_regions->num_mem_regions; i++) {
-> +		if (mem_regions->mem_regions[i].mem_class == DRM_XE_MEM_REGION_CLASS_VRAM) {
-> +			vram_used_mb +=  (mem_regions->mem_regions[i].used / (1024 * 1024));
-> +			vram_total_mb += (mem_regions->mem_regions[i].total_size / (1024 * 1024));
-> +		}
-
-Will this be well behaved on multi-tile? Maybe add a break on the first 
-instance?
-
-Also will this potentially run into issues with RAM sizing? When we move 
-stuff out of VRAM we kick it out to RAM, so needs to fit.
-
-> +	}
-> +
-> +	igt_debug("Before large_buf alloc vram total %lu MB, used vram_used %lu MB\n", vram_total_mb, vram_used_mb);
-> +
-> +	// Allocate a BO of the size of available free VRAM
-> +	buf_size = (vram_total_mb-vram_used_mb-1)*1024*1024;
-> +	buf_size = ALIGN(buf_size, xe_get_default_alignment(fd_xe));
-> +	igt_debug("Creating large_buf of size %lu MB\n", (buf_size/(1024*1024)));
-> +	bo = xe_bo_create(fd_xe, 0, buf_size , placement, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	igt_require(bo);
-> +	map_large_buf = xe_bo_map(fd_xe, bo, buf_size);
-> +	igt_assert(map_large_buf != MAP_FAILED);
-> +	memset(map_large_buf, 0, buf_size);
-> +
-> +	for (i = 0; i < buf_size / sizeof(*map_large_buf); i++) {
-> +		map_large_buf[i] = 0xDEADBEAF;
-
-Is this not going to be too slow, if this massive BO? Also do we need 
-non-zero pages for this scenario?
-
-Other option is maybe creating a few hundred small VRAM BOs, and then 
-trigger suspend. I think that was roughly my original repro. Main thing 
-is just to somehow get a good number of GPU jobs from the suspend, with 
-the hope that at least one is signalled but not yet freed. There should 
-be at least one job per BO. Big BO also works though, with roughly one 
-GPU job per ~8M. Maybe if we go with one big BO we can make the size 
-something like ~80% or perhaps even way smaller? RAM sizing is one 
-concern, but also some small allocation triggering eviction before the 
-suspend kicks in. It might be that going really big doesn't actually 
-help much with hitting the race.
-
-> +	}
-> +
-> +	query.data = to_user_pointer(mem_regions);
-> +	igt_assert_eq(igt_ioctl(fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +	for (i = 0; i < mem_regions->num_mem_regions; i++) {
-> +		if (mem_regions->mem_regions[i].mem_class == DRM_XE_MEM_REGION_CLASS_VRAM) {
-> +			vram_used_mb +=  (mem_regions->mem_regions[i].used / (1024 * 1024));
-> +			vram_total_mb += (mem_regions->mem_regions[i].total_size / (1024 * 1024));
-> +		}
-> +	}
-> +	igt_info("After alloc vram total %lu MB, used vram_used %lu MB\n", vram_total_mb, vram_used_mb);
-> +
-> +	free(mem_regions);
-> +}
-> +
-> +static void free_large_buf(int fd_xe)
-> +{
-> +	igt_info("Freeing large_buf\n");
-> +	if (map_large_buf)
-> +		munmap(map_large_buf, buf_size);
-> +}
-> +
->   int igt_main()
->   {
->   	device_t device;
-> @@ -925,26 +996,34 @@ int igt_main()
->   	}
->   
->   	for (const struct s_state *s = s_states; s->name; s++) {
-> +
->   		igt_subtest_f("%s-basic", s->name) {
->   			enum igt_suspend_test test = s->state == SUSPEND_STATE_DISK ?
->   				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
-> +			alloc_large_buf(device.fd_xe);
->   			igt_system_suspend_autoresume(s->state, test);
-> +			free_large_buf(device.fd_xe);
->   		}
->   
->   		igt_subtest_f("%s-basic-exec", s->name) {
-> +			alloc_large_buf(device.fd_xe);
->   			test_exec(device, 1, 2, s->state, NO_RPM, 0);
-> +			free_large_buf(device.fd_xe);
->   		}
->   
->   		igt_subtest_f("%s-exec-after", s->name) {
->   			enum igt_suspend_test test = s->state == SUSPEND_STATE_DISK ?
->   				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
-> -
-> +			alloc_large_buf(device.fd_xe);
->   			igt_system_suspend_autoresume(s->state, test);
->   			test_exec(device, 1, 2, NO_SUSPEND, NO_RPM, 0);
-> +			free_large_buf(device.fd_xe);
->   		}
->   
->   		igt_subtest_f("%s-multiple-execs", s->name) {
-> +			alloc_large_buf(device.fd_xe);
->   			test_exec(device, 16, 32, s->state, NO_RPM, 0);
-> +			free_large_buf(device.fd_xe);
->   		}
->   
->   		for (const struct vm_op *op = vm_op; op->name; op++) {
-> @@ -962,8 +1041,11 @@ int igt_main()
->   			}
->   		}
->   
-> -		igt_subtest_f("%s-mocs", s->name)
-> +		igt_subtest_f("%s-mocs", s->name) {
-> +			alloc_large_buf(device.fd_xe);
->   			test_mocs_suspend_resume(device, s->state, NO_RPM);
-> +			free_large_buf(device.fd_xe);
-> +		}
->   	}
->   
->   	igt_fixture() {
-
+> Xin
+> > +		igt_debug("[GT%d] hw_entries: %d, sw_entries: %d\n", gt, hw_entries, sw_entries);
+> > +
+> > +		for (int i = 0; i < hw_entries; i++) {
+> > +			uint32_t hw_pat, sw_pat;
+> > +
+> > +			hw_pat = pat_hw_config.entries[i].pat;
+> > +			sw_pat = pat_sw_config.entries[i].pat;
+> > +			if (hw_pat != sw_pat) {
+> > +				igt_debug("[GT%d] Mismatch of pat register vs sw config "
+> > +					  "- index: %i, entries: %08x <> %08x\n",
+> > +					  gt, i, hw_pat, sw_pat);
+> > +				matches = false;
+> > +			}
+> > +		}
+> > +
+> > +		/* Check PTA if was explicitly programmed */
+> > +		if (pat_sw_config.pta_mode != UINT32_MAX &&
+> > +			pat_hw_config.pta_mode != pat_sw_config.pta_mode) {
+> > +			igt_debug("[GT%d] Mismatch of PTA_MODE - pta: %x, pta expected: %x\n",
+> > +				  gt, pat_hw_config.pta_mode, pat_sw_config.pta_mode);
+> > +			matches = false;
+> > +		}
+> > +
+> > +		/* Check ATS if was explicitly programmed */
+> > +		if (pat_sw_config.pat_ats != UINT32_MAX &&
+> > +			pat_hw_config.pat_ats != pat_sw_config.pat_ats) {
+> > +			igt_debug("[GT%d] Mismatch of PAT_ATS - ats: %x, ats expected: %x\n",
+> > +				  gt, pat_hw_config.pat_ats, pat_sw_config.pat_ats);
+> > +			matches = false;
+> > +		}
+> > +	}
+> > +
+> > +	igt_assert_eq(matches, true);
+> > +}
+> > +
+> >   /**
+> >    * SUBTEST: pat-index-all
+> >    * Test category: functionality test
+> > @@ -2152,6 +2222,15 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
+> >   	igt_subtest("pat-sanity")
+> >   		pat_sanity(fd);
+> > +	igt_subtest("pat-sw-hw-compare")
+> > +		pat_sw_hw_compare(fd, 0);
+> > +
+> > +	igt_subtest("pat-sw-hw-reset-compare")
+> > +		pat_sw_hw_compare(fd, PAT_RESET_GT);
+> > +
+> > +	igt_subtest("pat-sw-hw-suspend")
+> > +		pat_sw_hw_compare(fd, PAT_SUSPEND);
+> > +
+> >   	igt_subtest("pat-index-all")
+> >   		pat_index_all(fd);
