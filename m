@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D10BBD35171
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 11:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F1ECD35171
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 11:34:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8411A10ECC8;
-	Wed,  1 Apr 2026 11:34:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CAC8D10E4F0;
+	Wed,  1 Apr 2026 11:34:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZnZoqDt1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l0gft7ia";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60EDF10ECC6
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 11:34:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 995BF10ECC6
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 11:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775043246; x=1806579246;
+ t=1775043249; x=1806579249;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=orFXMGW+oomEHQ8I6G0w+P3OWR/ONEYdsSoaVUWWfN4=;
- b=ZnZoqDt1uOitTt29OhkJPa3dwBeB6XF7rKk1U3lnetGc2v5caB4Mtqup
- D/OQLAq0ufevMUfazb7AgZJQhuAfIx/it7rO5m0xVaEzQB5QtaU5eu6Uz
- yobHCtAL0evm00JcEryJ9KDsPiqQkSve6cnHE5s87Cf1GDPLora/xH7Ls
- r5o/sdbJ+SDIzkBxSdYp+widQUTq/EalBpd2sYd4gb7uO+sZ0LlzPupZl
- YPrxX/UP9to7FRrMJcg2LdsXr90k58rb+dwP3krzHwzCC15CwyDZpm8cc
- gQuZ+ss4HQ8qttPzug0bFwIOXM6zX541vKTca5h9HYPpVlBmLC1nXExxa g==;
-X-CSE-ConnectionGUID: 3NzDVWdTRDS+uyKulBedmA==
-X-CSE-MsgGUID: SbM2wrL7QlWeHrE+Vjbwxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76092217"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="76092217"
+ bh=Ostf5+6vI+7uxQtGHt4LFcjFnJzj9v+6RvH80n1eYf8=;
+ b=l0gft7iah0BWf1tmB71H1HUwmkFY3S6S+EHbJUMjTq/dDEFLyHYnIMNa
+ BXfZuRTzt+87WkNp72taDAtNManlZUVNxfygZMCHLRNC3G1rlwEpSuseF
+ xGHGZBWQUVie45oZ0GmU3+2bggGL3JVC67sWS44cavdIjkEVIYniYu4oq
+ 7abdUklRviSV6eBEFJdihB5BRbAP+rkXyicSOC1TBYPo9RAMQfAsdcxAs
+ tYxHCgmAoIdHXq4jO/juw+Kgcw5PYmf+FNlH40vCM2frCMnQvKDknJz5v
+ 8J3mOzyz8vJwT3K341SqMzgHYREj22iM3NH2LU6eo4K/emyESGv1ga5BE g==;
+X-CSE-ConnectionGUID: AQmV68TeQ9avH2loHCQ0+A==
+X-CSE-MsgGUID: n6qhyZWpRnSX5Ui3hFIrWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76092220"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="76092220"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 04:34:06 -0700
-X-CSE-ConnectionGUID: ECy6uC8wSceMJbVLP4sNSQ==
-X-CSE-MsgGUID: LIq8t6ZvR0mZ6zaZJwKTsg==
+ 01 Apr 2026 04:34:09 -0700
+X-CSE-ConnectionGUID: Q5/ijwy+Rjme2VYJTJ9Mdw==
+X-CSE-MsgGUID: seVvSYvqROOMgbIi1ULTHA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="231450349"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="231450358"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.206])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 04:34:05 -0700
+ 01 Apr 2026 04:34:08 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH i-g-t v6 1/4] lib/intel_pat: Support other than gt0 during
- parsing debugfs PAT
-Date: Wed,  1 Apr 2026 13:33:55 +0200
-Message-ID: <20260401113353.2825367-7-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v6 2/4] lib/intel_pat: Expose getter of PAT registers
+Date: Wed,  1 Apr 2026 13:33:56 +0200
+Message-ID: <20260401113353.2825367-8-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260401113353.2825367-6-zbigniew.kempczynski@intel.com>
 References: <20260401113353.2825367-6-zbigniew.kempczynski@intel.com>
@@ -71,87 +70,110 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Main and media GTs may define different PTA entries so add gt as an
-argument during debugfs pat config selection.
+Kernel exposes two debugfs files (per gt) which describe PAT configuration
+- pat_sw_config and pat. First contain table which is written to PAT
+registers whereas second one returns tables via registers access.
+
+Add possibility to parse second file which might be handy for tests
+which wants to verify register state.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Matthew Auld <matthew.auld@intel.com>
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 ---
- lib/intel_pat.c      | 7 +++++--
- lib/intel_pat.h      | 2 +-
- lib/xe/xe_query.c    | 2 +-
- tests/intel/xe_pat.c | 2 +-
- 4 files changed, 8 insertions(+), 5 deletions(-)
+ lib/intel_pat.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
+ lib/intel_pat.h |  1 +
+ 2 files changed, 45 insertions(+), 2 deletions(-)
 
 diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index 71633b3141..2693228a73 100644
+index 2693228a73..f1f5644dce 100644
 --- a/lib/intel_pat.c
 +++ b/lib/intel_pat.c
-@@ -14,11 +14,12 @@
-  *
-  * @drm_fd: DRM device fd to use with igt_debugfs_open
-  * @xe_pat_cache: Pointer to a struct that will receive the parsed PAT configuration
-+ * @gt: gt id number
-  *
+@@ -8,6 +8,11 @@
+ #include "intel_pat.h"
+ #include "xe/xe_query.h"
+ 
++enum xe_pat_config {
++	PAT_SW_CONFIG,
++	PAT_HW_CONFIG
++};
++
+ /**
+  * xe_get_pat_sw_config - Helper to read PAT (Page Attribute Table) software configuration
+  * from debugfs
+@@ -19,7 +24,8 @@
   * Returns: The number of PAT entries successfully read on success, or a negative error
   *          code on failure
   */
--int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache)
-+int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
+-int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
++static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cache,
++				 int gt, enum xe_pat_config pat_config)
  {
  	char *line = NULL;
  	size_t line_len = 0;
-@@ -26,8 +27,10 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache)
- 	int32_t parsed = 0;
- 	int dbgfs_fd;
+@@ -29,7 +35,11 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, i
  	FILE *dbgfs_file = NULL;
-+	char config[64];
+ 	char config[64];
  
--	dbgfs_fd = igt_debugfs_open(drm_fd, "gt0/pat_sw_config", O_RDONLY);
-+	snprintf(config, sizeof(config), "gt%d/pat_sw_config", gt);
-+	dbgfs_fd = igt_debugfs_open(drm_fd, config, O_RDONLY);
+-	snprintf(config, sizeof(config), "gt%d/pat_sw_config", gt);
++	if (pat_config == PAT_SW_CONFIG)
++		snprintf(config, sizeof(config), "gt%d/pat_sw_config", gt);
++	else
++		snprintf(config, sizeof(config), "gt%d/pat", gt);
++
+ 	dbgfs_fd = igt_debugfs_open(drm_fd, config, O_RDONLY);
  	if (dbgfs_fd < 0)
  		return dbgfs_fd;
- 	dbgfs_file = fdopen(dbgfs_fd, "r");
+@@ -100,6 +110,38 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, i
+ 	return parsed;
+ }
+ 
++/**
++ * xe_get_pat_sw_config - Helper to read PAT (Page Attribute Table) software configuration
++ * from debugfs
++ *
++ * @drm_fd: DRM device fd to use with igt_debugfs_open
++ * @xe_pat_cache: Pointer to a struct that will receive the parsed PAT configuration
++ * @gt: gt id number
++ *
++ * Returns: The number of PAT entries successfully read on success, or a negative error
++ *          code on failure
++ */
++int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
++{
++	return xe_get_pat_config(drm_fd, xe_pat_cache, gt, PAT_SW_CONFIG);
++}
++
++/**
++ * xe_get_pat_hw_config - Helper to read PAT (Page Attribute Table)
++ * configuration programmed in PAT registers from debugfs.
++ *
++ * @drm_fd: DRM device fd to use with igt_debugfs_open
++ * @xe_pat_cache: Pointer to a struct that will receive the parsed PAT configuration
++ * @gt: gt id number
++ *
++ * Returns: The number of PAT entries successfully read on success, or a negative error
++ *          code on failure
++ */
++int32_t xe_get_pat_hw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
++{
++	return xe_get_pat_config(drm_fd, xe_pat_cache, gt, PAT_HW_CONFIG);
++}
++
+ /*
+  * Hardcoded PAT indices for Xe platforms, used as a fallback when the
+  * kernel doesn't expose gt0/pat_sw_config in debugfs.
 diff --git a/lib/intel_pat.h b/lib/intel_pat.h
-index 1772785205..a658c6ffeb 100644
+index a658c6ffeb..a31b60e86e 100644
 --- a/lib/intel_pat.h
 +++ b/lib/intel_pat.h
-@@ -37,6 +37,6 @@ uint8_t intel_get_pat_idx_wb(int fd);
- 
+@@ -38,5 +38,6 @@ uint8_t intel_get_pat_idx_wb(int fd);
  uint8_t intel_get_pat_idx_uc_comp(int fd);
  
--int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache);
-+int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt);
+ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt);
++int32_t xe_get_pat_hw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt);
  
  #endif /* INTEL_PAT_H */
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 3afca353ea..00331c628b 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -314,7 +314,7 @@ struct xe_device *xe_device_get(int fd)
- 	 */
- 	xe_dev->pat_cache = calloc(1, sizeof(*xe_dev->pat_cache));
- 	igt_assert(xe_dev->pat_cache);
--	if (xe_get_pat_sw_config(xe_dev->fd, xe_dev->pat_cache) <= 0) {
-+	if (xe_get_pat_sw_config(xe_dev->fd, xe_dev->pat_cache, 0) <= 0) {
- 		free(xe_dev->pat_cache);
- 		xe_dev->pat_cache = NULL;
- 	}
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index b385a678c8..2e2d7e01e7 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -173,7 +173,7 @@ static bool pat_entry_is_compressed(unsigned int gfx_ver, uint32_t pat)
- 
- static int xe_fetch_pat_sw_config(int fd, struct intel_pat_cache *pat_sw_config)
- {
--	int32_t parsed = xe_get_pat_sw_config(fd, pat_sw_config);
-+	int32_t parsed = xe_get_pat_sw_config(fd, pat_sw_config, 0);
- 
- 	igt_assert_f(parsed > 0, "Couldn't get Xe PAT software configuration\n");
- 
 -- 
 2.43.0
 
