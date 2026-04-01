@@ -4,54 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ADBBD35176
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 11:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 275DED35179
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 11:44:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C3A9410ED66;
-	Wed,  1 Apr 2026 11:36:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC67410ED26;
+	Wed,  1 Apr 2026 11:44:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OSRE64C+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bTatp+yM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77CE010ECE4
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 11:35:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24B2E10EF8E
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 11:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775043342; x=1806579342;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=9oK/rcF4iZBL2CBGOnmrKrOw5OfQPdyFJvNJXuc5ho0=;
- b=OSRE64C+YG2plTomj2G8vlb53dhdZCyMTBorr9VNe5m1ODJGCjPbTpd+
- Tj0PVIKXiU81xPWxZGjAjlO0oWYa1p2Z9WElpV3vMY/XlV5tvkEyIScdz
- 00Cttb/c8TTzNX5SsjcN6Boptw4b2JUb7w5DZsbu3k+MUWcT98QOIafpy
- jvlc/WrF5CJV11os37BkGaGRDDUGobqxRulZyhAWNKuZyIh0WGyhAWrRd
- ALSdgtVeJp2GUCiYB6mYZ+dzhz/YIsUIU52jmkjpo2TngyymwNK2Ne5xu
- 7Sk4FJ63ZBscAYh/vhM/753L30UXdWsDJEgCHVenVzq2k+yCMeHZ7hh54 Q==;
-X-CSE-ConnectionGUID: cvIQjxjoRba1fGzTegIW7Q==
-X-CSE-MsgGUID: Vti8KzCnTbaJqnMp/QP3aQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78669797"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="78669797"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 04:35:42 -0700
-X-CSE-ConnectionGUID: gx8a2jvtTOCPeEIMuzGkUw==
-X-CSE-MsgGUID: SYB5/vEDTeq0FPLXmo9UEQ==
+ t=1775043855; x=1806579855;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zQ+sOsuRlcLXbHwjR84m4aAfyP55hnEV7NJVFM6FkHM=;
+ b=bTatp+yMtEC4yOSr6IBx29PpKyDmhlI/j1wvMlzh40v0j07NJYsPoLXy
+ xw5jzGdh3iTVNTA7C6C/ou/qvti59aKNxtpT7cV9Y42ug9IGi5JWV81ZV
+ o9j53gJ63ROHiYxqHbQAgadkJfFN37w0hs0egqmQdlTSBijViB3U1JHM+
+ K6fRyJ6GsuIESCmmxdYovpd3S5C+k35sqc4PVkVuFvOWyw+hEQ9y/cR5e
+ 1GyHSYVkVXzk+4XaGPEN9/61JOxJRzMi/m06lfZgouWKDea69A4tfKQE5
+ v2A420Q3G/3ayoZNa8IU/0ey14KXdo/tpxsJiPZxGVD4yC+BtQ5uq3wSk w==;
+X-CSE-ConnectionGUID: e1GvVCcASJCGdfhJlDfQgA==
+X-CSE-MsgGUID: 1V4tXbraQ1aOV+8PXmhzLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="79964433"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="79964433"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 04:44:15 -0700
+X-CSE-ConnectionGUID: YdrjcYbpRK64rCNoikib6Q==
+X-CSE-MsgGUID: 44gM7VqJSue0fm8MTRyUEQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="228263470"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 04:34:24 -0700
-From: Kunal Joshi <kunal1.joshi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="223365675"
+Received: from skishor1-nuc12snki73.iind.intel.com ([10.227.88.189])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 04:44:13 -0700
+From: sumit kishore <sumit.kishore@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>,
- Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t 2/6] tests/intel/kms_mst_helper: Add helper to check for
- MST outputs
-Date: Wed,  1 Apr 2026 17:25:38 +0530
-Message-Id: <20260401115542.1074290-3-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260401115542.1074290-1-kunal1.joshi@intel.com>
-References: <20260401115542.1074290-1-kunal1.joshi@intel.com>
+Cc: pranay.samala@intel.com,
+	Sumit Kishore <sumit.kishore@intel.com>
+Subject: [PATCH i-g-t v3] tests/kms_properties: Add skip on headless machines
+Date: Wed,  1 Apr 2026 17:12:44 +0530
+Message-ID: <20260401114244.410255-1-sumit.kishore@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,55 +66,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add igt_display_has_mst_output() to check
-if a display has at least one DP MST output
-connected. This is useful for tests that need
-to verify MST output availability before running.
+From: Sumit Kishore <sumit.kishore@intel.com>
 
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Print debug messages for sub-tests which are expected to
+skip on headless display systems.
+
+v2: Use existing library function, instead of
+    defining new (karthik)
+v3: Add headless display check in,
+    colorop_properties function (Pranay)
+
+Signed-off-by: Sumit Kishore <sumit.kishore@intel.com>
 ---
- tests/intel/kms_mst_helper.c | 19 +++++++++++++++++++
- tests/intel/kms_mst_helper.h |  1 +
- 2 files changed, 20 insertions(+)
+ tests/kms_properties.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/intel/kms_mst_helper.c b/tests/intel/kms_mst_helper.c
-index 38859cffc..1918c8d10 100644
---- a/tests/intel/kms_mst_helper.c
-+++ b/tests/intel/kms_mst_helper.c
-@@ -47,3 +47,22 @@ int igt_find_all_mst_output_in_topology(int drm_fd, igt_display_t *display,
- 	}
- 	return 0;
- }
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index f735839da..5164277b3 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -341,6 +341,8 @@ static void colorop_properties(igt_display_t *display, bool atomic)
+ 	igt_output_t *output;
+ 	igt_crtc_t *crtc;
+ 
++	igt_display_require_output(display);
 +
-+/**
-+ * igt_display_has_mst_output:
-+ * @display: pointer to #igt_display_t structure
-+ *
-+ * Check if a display has at least one DP MST output connected.
-+ *
-+ * Returns: true if MST output is found, false otherwise
-+ */
-+bool igt_display_has_mst_output(igt_display_t *display)
-+{
-+	igt_output_t *output;
+ 	/* colorops are only available with atomic */
+ 	igt_skip_on(!display->is_atomic);
+ 
+@@ -377,6 +379,8 @@ static void plane_properties(igt_display_t *display, bool atomic)
+ 	igt_output_t *output;
+ 	igt_crtc_t *crtc;
+ 
++	igt_display_require_output(display);
 +
-+	for_each_connected_output(display, output) {
-+		if (igt_check_output_is_dp_mst(output))
-+			return true;
-+	}
-+	return false;
-+}
-diff --git a/tests/intel/kms_mst_helper.h b/tests/intel/kms_mst_helper.h
-index 7391494ab..0e8ece0a0 100644
---- a/tests/intel/kms_mst_helper.h
-+++ b/tests/intel/kms_mst_helper.h
-@@ -12,4 +12,5 @@ int igt_find_all_mst_output_in_topology(int drm_fd, igt_display_t *display,
- 					igt_output_t *output,
- 					igt_output_t *mst_outputs[],
- 					int *num_mst_outputs);
-+bool igt_display_has_mst_output(igt_display_t *display);
- #endif
+ 	for_each_crtc_with_single_output(display, crtc, output) {
+ 		igt_display_reset(display);
+ 
+@@ -400,6 +404,8 @@ static void crtc_properties(igt_display_t *display, bool atomic)
+ 	igt_crtc_t *crtc;
+ 	igt_output_t *output;
+ 
++	igt_display_require_output(display);
++
+ 	for_each_crtc_with_single_output(display, crtc, output) {
+ 		igt_display_reset(display);
+ 
 -- 
-2.48.1
+2.43.0
 
