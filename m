@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34F6710F6FBF
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 15:27:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47CF410F6FBF
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 15:27:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBFEB10EE30;
-	Wed,  1 Apr 2026 15:27:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED3DC10EE34;
+	Wed,  1 Apr 2026 15:27:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="khPilREI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K3jqOwEW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 129FB10EE35
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 15:27:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4D2D10EE1B
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 15:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775057226; x=1806593226;
+ t=1775057224; x=1806593224;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=HRscozhgbGb9ISOo12cgmJbkX5fwowHPf0y2gwoFkDE=;
- b=khPilREIpW7kOnTxbaFYVqH/65ZayVhMxsCzw+zfmT13rEWkNoIsay76
- jL4hLCE6DBkYWfs8MCksmh5Uueo+Ncbc2FOp/YPWVZU01oEUsQO7qBiQV
- jWc3Mye8Iri4yjrSomiBEPylQ0hvAvm0+rh/irlHipDBIEVsub+BIUSSI
- WACHYYKJcCagLM4iq8l1oH3KBlZFpbLCsjtnJ+5gaf5sRiPKYA85VTo8N
- 9KDjRQRCtmue6xqaFCKEd9/qCDUr2QarrJkUmCQgovwBgVUbS7/S3EzPB
- 20UMFK6ldzdK9ojIsRu0Y9cG/ueYMFqJ8BJaNhPLA7Os7s8LEUNFsic5d Q==;
-X-CSE-ConnectionGUID: CdYpqWPcQWmWw3MfaBfOaA==
-X-CSE-MsgGUID: d850ZC7nSMy6NbSjYLxWiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="79704705"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="79704705"
+ bh=2xEObrodlSpHypZBjBzWdIXEVFdbFnJMwdwBCcsdtIU=;
+ b=K3jqOwEWLH5BMSHSuyA+9A06u1L82MNzRDKpYiQWi9WdDEfKO8Cz/rjM
+ Lz83Z3mRFst7UYuWV82AppdnP9D2TqqjjjzfLUPNr4nlFzY4fEZReA1v6
+ 4pSJ1dX3IC3hL9eykUg/zKt3rUijvqZr7JwNSzp+z/wbj+l27W2GBexPy
+ jM5s8zqZZB8ixllMBFFiLWTw6TrXm+WSaWw+YOMYEyX2xAJ6XSCG8hRfF
+ Qw147xiGrFrQhawfYAhaNprb3JcSzHx5wjBTxmzXiMQCcu7gWAgBjlnYz
+ onKd+cgbxVT9svqcTYtPlWZaMyKvUcE2auzDJXbn2w0rD85ZgJ8XmsUBT w==;
+X-CSE-ConnectionGUID: /uyZbFyPTP6p/Pb92IVuKw==
+X-CSE-MsgGUID: PiNUqtF3QeaCwFdv3qk8Dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="79704701"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="79704701"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 08:27:06 -0700
-X-CSE-ConnectionGUID: EpGPDi5tT/i7gh6QYLHbTg==
-X-CSE-MsgGUID: eMNmanDoSVOfKjY4Odzg7w==
+ 01 Apr 2026 08:27:03 -0700
+X-CSE-ConnectionGUID: +Y/8vBloQMaER5IAEQFzMQ==
+X-CSE-MsgGUID: o/527t1ASqqgkr8P5Uir2Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="228324392"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="228324388"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:27:04 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:27:02 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: uma.shankar@intel.com, jani.nikula@intel.com, Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v2 2/2] DONT_MERGE: Add kms_modifier_list test to verify
- new modifier helper
-Date: Wed,  1 Apr 2026 20:55:37 +0530
-Message-ID: <20260401152538.632846-3-jeevan.b@intel.com>
+Subject: [PATCH i-g-t v2 1/2] lib: Add modifier helper for querying
+ driver-supported modifiers
+Date: Wed,  1 Apr 2026 20:55:36 +0530
+Message-ID: <20260401152538.632846-2-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260401152538.632846-1-jeevan.b@intel.com>
 References: <20260401152538.632846-1-jeevan.b@intel.com>
@@ -69,161 +69,315 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Temporary test to check that the new lib modifier functions work and
-print all supported modifiers.
+Introduce a new helper library that collects DRM format modifiers
+reported by KMS planes via the IN_FORMATS property. Two functions are
+added:
+
+ - igt_get_all_supported_modifiers()
+ - igt_get_basic_tiling_modifiers()
+
+These helpers return unique modifier lists for a given format and will
+be used by modifier-related tests.
+
+v2: Update license headers, removes unnecessary inline usage,
+    standardizes loops to use int, drops unused casts, introduces
+    a small struct to manage modifier lists more cleanly, improves
+    allocation handling, simplifies the basic modifier selection
+    logic, and update coding‑style improvements.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_modifier_list.c | 127 ++++++++++++++++++++++++++++++++++++++
- tests/meson.build         |   1 +
- 2 files changed, 128 insertions(+)
- create mode 100644 tests/kms_modifier_list.c
+ lib/igt_modifier.c | 242 +++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_modifier.h |  18 ++++
+ lib/meson.build    |   1 +
+ 3 files changed, 261 insertions(+)
+ create mode 100644 lib/igt_modifier.c
+ create mode 100644 lib/igt_modifier.h
 
-diff --git a/tests/kms_modifier_list.c b/tests/kms_modifier_list.c
+diff --git a/lib/igt_modifier.c b/lib/igt_modifier.c
 new file mode 100644
-index 000000000..2e203855c
+index 000000000..ffcf09bc9
 --- /dev/null
-+++ b/tests/kms_modifier_list.c
-@@ -0,0 +1,127 @@
++++ b/lib/igt_modifier.c
+@@ -0,0 +1,242 @@
 +/* SPDX-License-Identifier: MIT */
 +
 +/*
 + * Copyright © 2026 Intel Corporation
 + */
 +
-+#include "igt.h"
-+#include "igt_modifier.h"
++
++#include <stdlib.h>
++#include <string.h>
++#include <stdbool.h>
++
 +#include <drm_fourcc.h>
-+#include <inttypes.h>
++#include <xf86drm.h>
++#include <xf86drmMode.h>
 +
-+IGT_TEST_DESCRIPTION("Validate igt_get_basic_tiling_modifiers() and "
-+                     "igt_get_all_supported_modifiers().");
++#include "igt_modifier.h"
++#include "igt_core.h"
++#include "drmtest.h"
 +
-+/**
-+ * TEST: kms modifier list
-+ * Category: Display
-+ * Description: Validate the igt_get_basic_tiling_modifiers() and
-+ *              igt_get_all_supported_modifiers() helper functions.
-+ * Driver requirement: i915, xe
-+ * Mega feature: General Display Features
++/*
++ * Modifier array with dynamic allocation.
 + */
++struct modifiers {
++	uint64_t *array;
++	int nelems;
++	int alloc;
++};
 +
-+/**
-+ * SUBTEST: basic-modifiers-nonempty
-+ * Description: Verify that igt_get_basic_tiling_modifiers() returns a
-+ *              non-empty list for DRM_FORMAT_XRGB8888.
-+ *
-+ * SUBTEST: all-modifiers-nonempty
-+ * Description: Verify that igt_get_all_supported_modifiers() returns a
-+ *              non-empty list for DRM_FORMAT_XRGB8888.
-+ *
-+ * SUBTEST: basic-subset-of-all
-+ * Description: Verify that every modifier in the basic list is also present
-+ *              in the all-modifiers list.
-+ */
-+
-+static int drm_fd;
-+static igt_display_t display;
-+
-+int igt_main()
++static void modifiers_init(struct modifiers *m)
 +{
-+	igt_fixture() {
-+		drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		igt_display_require(&display, drm_fd);
++	m->array = NULL;
++	m->nelems = 0;
++	m->alloc = 0;
++}
++
++static bool modifiers_contains(const struct modifiers *m, uint64_t val)
++{
++	for (int i = 0; i < m->nelems; i++)
++		if (m->array[i] == val)
++			return true;
++	return false;
++}
++
++static void modifiers_append_unique(struct modifiers *m, uint64_t val)
++{
++	if (modifiers_contains(m, val))
++		return;
++
++	if (m->nelems == m->alloc) {
++		int new_alloc = m->alloc ? m->alloc * 2 : 8;
++		m->array = realloc(m->array, new_alloc * sizeof(uint64_t));
++		igt_assert(m->array);
++
++		m->alloc = new_alloc;
 +	}
 +
-+	igt_subtest("basic-modifiers-nonempty") {
-+		uint64_t *mods = NULL;
-+		int count;
++	m->array[m->nelems++] = val;
++}
 +
-+		count = igt_get_basic_tiling_modifiers(drm_fd,
-+						       DRM_FORMAT_XRGB8888,
-+						       &mods);
-+		igt_assert_f(count > 0,
-+			     "igt_get_basic_tiling_modifiers() returned empty list\n");
++static void modifiers_finalize(struct modifiers *m, uint64_t **out, int *count)
++{
++	*out = m->array;
++	*count = m->nelems;
++}
 +
-+		igt_info("Basic modifiers (%d):\n", count);
-+		for (int i = 0; i < count; i++) {
-+			const char *name = igt_fb_modifier_name(mods[i]);
-+			igt_info("  [basic] 0x%" PRIx64 " (%s)\n", mods[i], name);
++
++static const uint32_t *
++blob_formats_ptr(const struct drm_format_modifier_blob *blob)
++{
++	return (const uint32_t *)((const char *)blob + blob->formats_offset);
++}
++
++static const struct drm_format_modifier *
++blob_modifiers_ptr(const struct drm_format_modifier_blob *blob)
++{
++	return (const struct drm_format_modifier *)
++		((const char *)blob + blob->modifiers_offset);
++}
++
++static void collect_modifiers_from_blob(struct modifiers *m,
++		const struct drm_format_modifier_blob *blob,
++		uint32_t format)
++{
++	const uint32_t *formats = blob_formats_ptr(blob);
++	const struct drm_format_modifier *mods = blob_modifiers_ptr(blob);
++
++	int fmt_idx = -1;
++
++	for (int i = 0; i < (int)blob->count_formats; i++) {
++		if (formats[i] == format) {
++			fmt_idx = i;
++			break;
 +		}
-+		free(mods);
 +	}
 +
-+	igt_subtest("all-modifiers-nonempty") {
-+		uint64_t *mods = NULL;
-+		int count;
++	if (fmt_idx < 0)
++		return;
 +
-+		count = igt_get_all_supported_modifiers(drm_fd,
-+							DRM_FORMAT_XRGB8888,
-+							&mods);
-+		igt_assert_f(count > 0,
-+			     "igt_get_all_supported_modifiers() returned empty list\n");
++	for (int i = 0; i < (int)blob->count_modifiers; i++) {
++		const struct drm_format_modifier *entry = &mods[i];
++		int rel = fmt_idx - entry->offset;
 +
-+		igt_info("All supported modifiers (%d):\n", count);
-+		for (int i = 0; i < count; i++) {
-+			const char *name = igt_fb_modifier_name(mods[i]);
-+			igt_info("  [all] 0x%" PRIx64 " (%s)\n", mods[i], name);
-+		}
++		if (rel < 0 || rel >= 64)
++			continue;
 +
-+		free(mods);
-+	}
-+
-+	igt_subtest("basic-subset-of-all") {
-+		uint64_t *basic = NULL, *all = NULL;
-+		int basic_count, all_count;
-+
-+		basic_count = igt_get_basic_tiling_modifiers(drm_fd,
-+							     DRM_FORMAT_XRGB8888,
-+							     &basic);
-+		all_count = igt_get_all_supported_modifiers(drm_fd,
-+							    DRM_FORMAT_XRGB8888,
-+							    &all);
-+
-+		igt_assert(basic_count > 0);
-+		igt_assert(all_count > 0);
-+
-+		igt_info("Checking: basic-subset-of-all\n");
-+		for (int i = 0; i < basic_count; i++) {
-+			bool found = false;
-+			const char *name = igt_fb_modifier_name(basic[i]);
-+
-+			for (int j = 0; j < all_count; j++) {
-+				if (basic[i] == all[j]) {
-+					found = true;
-+					break;
-+				}
-+			}
-+
-+			igt_info("  [basic] 0x%" PRIx64 " (%s) -> %s\n",
-+				 basic[i], name, found ? "FOUND" : "NOT FOUND");
-+
-+			igt_assert_f(found,
-+				     "basic modifier 0x%"PRIx64" not in all-modifiers list\n",
-+				     basic[i]);
-+		}
-+
-+		free(basic);
-+		free(all);
-+	}
-+
-+	igt_fixture() {
-+		igt_display_fini(&display);
-+		drm_close_driver(drm_fd);
++		if (entry->formats & (1ULL << rel))
++			modifiers_append_unique(m, entry->modifier);
 +	}
 +}
-diff --git a/tests/meson.build b/tests/meson.build
-index cecb4a8ae..348cb9c74 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -46,6 +46,7 @@ test_progs = [
- 	'kms_hdr',
- 	'kms_invalid_mode',
- 	'kms_lease',
-+        'kms_modifier_list',
- 	'kms_multipipe_modeset',
- 	'kms_panel_fitting',
- 	'kms_pipe_crc_basic',
++
++static int query_plane_modifiers(int drm_fd, uint32_t format,
++				 uint64_t **out)
++{
++	struct modifiers mods;
++	drmModePlaneResPtr pres;
++
++	modifiers_init(&mods);
++
++	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
++
++	pres = drmModeGetPlaneResources(drm_fd);
++	if (!pres)
++		goto fallback;
++
++	for (int i = 0; i < (int)pres->count_planes; i++) {
++		drmModePlanePtr p;
++		drmModeObjectPropertiesPtr props;
++		drmModePropertyBlobPtr blob;
++		bool supported;
++		int f, j;
++
++		p = drmModeGetPlane(drm_fd, pres->planes[i]);
++		if (!p)
++			continue;
++
++		supported = false;
++
++		for (f = 0; f < (int)p->count_formats; f++) {
++			if (p->formats[f] == format) {
++				supported = true;
++				break;
++			}
++		}
++
++		if (!supported) {
++			drmModeFreePlane(p);
++			continue;
++		}
++
++		props =	drmModeObjectGetProperties(drm_fd, p->plane_id,
++						   DRM_MODE_OBJECT_PLANE);
++
++		blob = NULL;
++
++		if (props) {
++			for ( j = 0; j < props->count_props; j++) {
++				drmModePropertyPtr prop =
++					drmModeGetProperty(drm_fd, props->props[j]);
++				if (!prop)
++					continue;
++
++				if (!strcmp(prop->name, "IN_FORMATS") &&
++				    drm_property_type_is(prop, DRM_MODE_PROP_BLOB) &&
++				    props->prop_values[j] != 0) {
++					blob = drmModeGetPropertyBlob(
++							drm_fd, props->prop_values[j]);
++				}
++
++				drmModeFreeProperty(prop);
++
++				if (blob)
++					break;
++			}
++			drmModeFreeObjectProperties(props);
++		}
++
++		if (blob) {
++			const struct drm_format_modifier_blob *b =
++				(const struct drm_format_modifier_blob *)blob->data;
++
++			collect_modifiers_from_blob(&mods, b, format);
++			drmModeFreePropertyBlob(blob);
++		} else {
++			modifiers_append_unique(&mods, DRM_FORMAT_MOD_LINEAR);
++		}
++
++		drmModeFreePlane(p);
++	}
++
++	drmModeFreePlaneResources(pres);
++
++fallback:
++	int count;
++
++	if (mods.nelems == 0)
++		modifiers_append_unique(&mods, DRM_FORMAT_MOD_LINEAR);
++
++	modifiers_finalize(&mods, out, &count);
++	return count;
++}
++
++int igt_get_all_supported_modifiers(int drm_fd, uint32_t format,
++				    uint64_t **modifiers_out)
++{
++	igt_assert(modifiers_out);
++	return query_plane_modifiers(drm_fd, format, modifiers_out);
++}
++
++static const uint64_t basic_mods[] = {
++	DRM_FORMAT_MOD_LINEAR,
++	I915_FORMAT_MOD_X_TILED,
++	I915_FORMAT_MOD_Y_TILED,
++	I915_FORMAT_MOD_4_TILED,
++};
++
++int igt_get_basic_tiling_modifiers(int drm_fd, uint32_t format,
++				   uint64_t **modifiers_out)
++{
++	uint64_t *all = NULL;
++	int all_count = query_plane_modifiers(drm_fd, format, &all);
++	int count;
++
++	struct modifiers out;
++	modifiers_init(&out);
++
++	for (int i = 0; i < all_count; i++) {
++		for (int j = 0; j < (int)(sizeof(basic_mods)/sizeof(basic_mods[0])); j++) {
++			if (all[i] == basic_mods[j]) {
++				modifiers_append_unique(&out, all[i]);
++				break;
++			}
++		}
++	}
++
++	free(all);
++
++	if (out.nelems == 0)
++		modifiers_append_unique(&out, DRM_FORMAT_MOD_LINEAR);
++
++	modifiers_finalize(&out, modifiers_out, &count);
++	return count;
++}
+diff --git a/lib/igt_modifier.h b/lib/igt_modifier.h
+new file mode 100644
+index 000000000..069ea334a
+--- /dev/null
++++ b/lib/igt_modifier.h
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: MIT */
++
++/*
++ * Copyright © 2026 Intel Corporation
++ */
++
++#ifndef __IGT_MODIFIER_H__
++#define __IGT_MODIFIER_H__
++
++#include <stdint.h>
++
++int igt_get_all_supported_modifiers(int drm_fd, uint32_t format,
++				    uint64_t **modifiers_out);
++
++int igt_get_basic_tiling_modifiers(int drm_fd, uint32_t format,
++				   uint64_t **modifiers_out);
++
++#endif /* __IGT_MODIFIER_H__ */
+diff --git a/lib/meson.build b/lib/meson.build
+index 5c4829345..ca2867eed 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -99,6 +99,7 @@ lib_sources = [
+ 	'igt_draw.c',
+ 	'igt_list.c',
+ 	'igt_map.c',
++        'igt_modifier.c',
+ 	'igt_panel.c',
+ 	'igt_pm.c',
+ 	'igt_dummyload.c',
 -- 
 2.43.0
 
