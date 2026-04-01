@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44A02D2ED08
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 13:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B54A107637D
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 13:54:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E55CA10ECE6;
-	Wed,  1 Apr 2026 13:54:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 420D110E574;
+	Wed,  1 Apr 2026 13:54:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B3PoK92S";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kcFkL+lv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 502AF10ECE4
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 13:54:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55F3810ECDF
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 13:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775051645; x=1806587645;
+ t=1775051633; x=1806587633;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=StT4zG2+Pttzjt6vFX/sPOHVwx+DPIATd3vg85udjUc=;
- b=B3PoK92SprLtmgdRyAIHx/QLrN0wWxmJFJqsUzBF2geSx1cx08DA2mQp
- PHz1tcDqu+M6qo6lJ2nNxOV91Qie+vWc1PtIP31qu9rREAgrIJO3lWLRH
- F7KreeMWc2xl/yr2aRWkaIfQqVRhlDFUYU8eV1LDdKYlA3Yi5E9BzYx1W
- B7DPycVWvhNVEtj+vf0pGH/ncs4CKOpRXzOnlIDGT3pKK7gWvAyUmhQRm
- 1khliS/0gOEOHe6wGm64ZjsF01oHmvKLgwVFysltBAp4/FKgDbePNtzf3
- maCsbUQ5FzNr7yhY+55g7gcOfiOSD3eSbxCP9D6fBMkRQaq2Lj6gNxsyy g==;
-X-CSE-ConnectionGUID: jVavt10DTGOuxOcx7coI5A==
-X-CSE-MsgGUID: UO8kn3SLRvK9RcQXxTGpxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75972748"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="75972748"
+ bh=orFXMGW+oomEHQ8I6G0w+P3OWR/ONEYdsSoaVUWWfN4=;
+ b=kcFkL+lvSbCuIPteokSrEEo4ElgCAqPS3nJJF8BIE/Kk9P5BcZTMbwc9
+ ElfOCJZyzvPRNK+xttS59EIeT5wzqbmwDaJE9wOFMNbZq/WN1I10EMBM2
+ xtMSTV9qGjP6EZ5XXNMGhkzLxECnC2j08FSMttYjTUK+sulf13vueBShQ
+ JkDI2nzLt7aaXMb32x8IZoHWv5EKIueMoDgE7ICUzIO4mmuPibwHrZTNf
+ CcNlB8hG9odpO6VWDX0Q/4eu42To22t1YTNP/GsTMW19syEEiBhCG+pkT
+ 51TyHcwYa3vxDczFazUTX1F4MyuSd8F5MmfVj0GRzPg+uA7AH8fFk3hOV Q==;
+X-CSE-ConnectionGUID: h2dnjuxHRQaWoEalO11rVw==
+X-CSE-MsgGUID: wnEHOkKOQlagM2sQIYqjuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75972726"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="75972726"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 06:54:05 -0700
-X-CSE-ConnectionGUID: 7OAdR3IVTi+5w/jcgPOAGg==
-X-CSE-MsgGUID: j3g/PQtSSX6jU5dejl5m0w==
+ 01 Apr 2026 06:53:53 -0700
+X-CSE-ConnectionGUID: d1L3Cz1BTDWcjlXzgO6PmQ==
+X-CSE-MsgGUID: ID6cMQnsTBOcHGbmqRHl4A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="257161894"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="257161801"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.206])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 06:54:03 -0700
+ 01 Apr 2026 06:53:52 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Matthew Auld <matthew.auld@intel.com>,
- Matt Roper <matthew.d.roper@intel.com>, X Wang <x.wang@intel.com>
-Subject: [PATCH i-g-t v7 4/4] tests/xe_pat: Verify PAT entries contain
- expected values
-Date: Wed,  1 Apr 2026 15:53:48 +0200
-Message-ID: <20260401135343.2874239-10-zbigniew.kempczynski@intel.com>
+ Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH i-g-t v7 1/4] lib/intel_pat: Support other than gt0 during
+ parsing debugfs PAT
+Date: Wed,  1 Apr 2026 15:53:45 +0200
+Message-ID: <20260401135343.2874239-7-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260401135343.2874239-6-zbigniew.kempczynski@intel.com>
 References: <20260401135343.2874239-6-zbigniew.kempczynski@intel.com>
@@ -72,131 +71,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Debugfs exposes PAT entries for different GTs so verify they
-contain expected values. Verify they are correct also in reset
-and suspend scenarios.
+Main and media GTs may define different PTA entries so add gt as an
+argument during debugfs pat config selection.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: X Wang <x.wang@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 ---
-v4: Test is rewritten to support PAT + PTA + ATS entries.
-v6: Skip on !pf and assert in case of problem with access PAT (Wang)
-v7: Skip on vf
----
- tests/intel/xe_pat.c | 85 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
+ lib/intel_pat.c      | 7 +++++--
+ lib/intel_pat.h      | 2 +-
+ lib/xe/xe_query.c    | 2 +-
+ tests/intel/xe_pat.c | 2 +-
+ 4 files changed, 8 insertions(+), 5 deletions(-)
 
+diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+index 71633b3141..2693228a73 100644
+--- a/lib/intel_pat.c
++++ b/lib/intel_pat.c
+@@ -14,11 +14,12 @@
+  *
+  * @drm_fd: DRM device fd to use with igt_debugfs_open
+  * @xe_pat_cache: Pointer to a struct that will receive the parsed PAT configuration
++ * @gt: gt id number
+  *
+  * Returns: The number of PAT entries successfully read on success, or a negative error
+  *          code on failure
+  */
+-int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache)
++int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
+ {
+ 	char *line = NULL;
+ 	size_t line_len = 0;
+@@ -26,8 +27,10 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache)
+ 	int32_t parsed = 0;
+ 	int dbgfs_fd;
+ 	FILE *dbgfs_file = NULL;
++	char config[64];
+ 
+-	dbgfs_fd = igt_debugfs_open(drm_fd, "gt0/pat_sw_config", O_RDONLY);
++	snprintf(config, sizeof(config), "gt%d/pat_sw_config", gt);
++	dbgfs_fd = igt_debugfs_open(drm_fd, config, O_RDONLY);
+ 	if (dbgfs_fd < 0)
+ 		return dbgfs_fd;
+ 	dbgfs_file = fdopen(dbgfs_fd, "r");
+diff --git a/lib/intel_pat.h b/lib/intel_pat.h
+index 1772785205..a658c6ffeb 100644
+--- a/lib/intel_pat.h
++++ b/lib/intel_pat.h
+@@ -37,6 +37,6 @@ uint8_t intel_get_pat_idx_wb(int fd);
+ 
+ uint8_t intel_get_pat_idx_uc_comp(int fd);
+ 
+-int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache);
++int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt);
+ 
+ #endif /* INTEL_PAT_H */
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 3afca353ea..00331c628b 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -314,7 +314,7 @@ struct xe_device *xe_device_get(int fd)
+ 	 */
+ 	xe_dev->pat_cache = calloc(1, sizeof(*xe_dev->pat_cache));
+ 	igt_assert(xe_dev->pat_cache);
+-	if (xe_get_pat_sw_config(xe_dev->fd, xe_dev->pat_cache) <= 0) {
++	if (xe_get_pat_sw_config(xe_dev->fd, xe_dev->pat_cache, 0) <= 0) {
+ 		free(xe_dev->pat_cache);
+ 		xe_dev->pat_cache = NULL;
+ 	}
 diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 2e2d7e01e7..81c28677ac 100644
+index b385a678c8..2e2d7e01e7 100644
 --- a/tests/intel/xe_pat.c
 +++ b/tests/intel/xe_pat.c
-@@ -19,6 +19,7 @@
- #include "igt_fs.h"
- #include "igt_kmod.h"
- #include "igt_map.h"
-+#include "igt_sriov_device.h"
- #include "igt_syncobj.h"
- #include "igt_sysfs.h"
- #include "igt_vgem.h"
-@@ -238,6 +239,81 @@ static void pat_sanity(int fd)
- 	}
- }
+@@ -173,7 +173,7 @@ static bool pat_entry_is_compressed(unsigned int gfx_ver, uint32_t pat)
  
-+enum pat_test_opts {
-+	PAT_CHECK = 1,
-+	PAT_RESET_GT = 2,
-+	PAT_SUSPEND = 3,
-+};
-+
-+/**
-+ * SUBTEST: pat-sw-hw-compare
-+ * Description: verify debugfs 'pat' reflects 'pat_sw_config'
-+ *
-+ * SUBTEST: pat-sw-hw-reset-compare
-+ * Description: verify debugfs 'pat' reflects 'pat_sw_config' after gt reset
-+ *
-+ * SUBTEST: pat-sw-hw-suspend
-+ * Description: verify debugfs 'pat' reflects 'pat_sw_config' after suspend
-+ */
-+static void pat_sw_hw_compare(int fd, enum pat_test_opts opts)
-+{
-+	bool matches = true;
-+	int gt;
-+
-+	igt_skip_on(intel_is_vf_device(fd));
-+
-+	xe_for_each_gt(fd, gt) {
-+		struct intel_pat_cache pat_hw_config = {};
-+		struct intel_pat_cache pat_sw_config = {};
-+		int hw_entries, sw_entries;
-+
-+		if (opts == PAT_RESET_GT)
-+			xe_force_gt_reset_sync(fd, gt);
-+		else if (opts == PAT_SUSPEND)
-+			igt_system_suspend_autoresume(SUSPEND_STATE_STANDBY, SUSPEND_TEST_NONE);
-+
-+		hw_entries = xe_get_pat_hw_config(fd, &pat_hw_config, gt);
-+		sw_entries = xe_get_pat_sw_config(fd, &pat_sw_config, gt);
-+
-+		igt_debug("[GT%d] hw_entries: %d, sw_entries: %d\n", gt, hw_entries, sw_entries);
-+
-+		igt_assert_eq(hw_entries, sw_entries);
-+		igt_assert_lt(0, hw_entries);
-+		igt_assert_lt(0, sw_entries);
-+
-+		for (int i = 0; i < hw_entries; i++) {
-+			uint32_t hw_pat, sw_pat;
-+
-+			hw_pat = pat_hw_config.entries[i].pat;
-+			sw_pat = pat_sw_config.entries[i].pat;
-+			if (hw_pat != sw_pat) {
-+				igt_debug("[GT%d] Mismatch of pat register vs sw config "
-+					  "- index: %i, entries: %08x <> %08x\n",
-+					  gt, i, hw_pat, sw_pat);
-+				matches = false;
-+			}
-+		}
-+
-+		/* Check PTA if was explicitly programmed */
-+		if (pat_sw_config.pta_mode != UINT32_MAX &&
-+			pat_hw_config.pta_mode != pat_sw_config.pta_mode) {
-+			igt_debug("[GT%d] Mismatch of PTA_MODE - pta: %x, pta expected: %x\n",
-+				  gt, pat_hw_config.pta_mode, pat_sw_config.pta_mode);
-+			matches = false;
-+		}
-+
-+		/* Check ATS if was explicitly programmed */
-+		if (pat_sw_config.pat_ats != UINT32_MAX &&
-+			pat_hw_config.pat_ats != pat_sw_config.pat_ats) {
-+			igt_debug("[GT%d] Mismatch of PAT_ATS - ats: %x, ats expected: %x\n",
-+				  gt, pat_hw_config.pat_ats, pat_sw_config.pat_ats);
-+			matches = false;
-+		}
-+	}
-+
-+	igt_assert_eq(matches, true);
-+}
-+
- /**
-  * SUBTEST: pat-index-all
-  * Test category: functionality test
-@@ -2152,6 +2228,15 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
- 	igt_subtest("pat-sanity")
- 		pat_sanity(fd);
+ static int xe_fetch_pat_sw_config(int fd, struct intel_pat_cache *pat_sw_config)
+ {
+-	int32_t parsed = xe_get_pat_sw_config(fd, pat_sw_config);
++	int32_t parsed = xe_get_pat_sw_config(fd, pat_sw_config, 0);
  
-+	igt_subtest("pat-sw-hw-compare")
-+		pat_sw_hw_compare(fd, 0);
-+
-+	igt_subtest("pat-sw-hw-reset-compare")
-+		pat_sw_hw_compare(fd, PAT_RESET_GT);
-+
-+	igt_subtest("pat-sw-hw-suspend")
-+		pat_sw_hw_compare(fd, PAT_SUSPEND);
-+
- 	igt_subtest("pat-index-all")
- 		pat_index_all(fd);
+ 	igt_assert_f(parsed > 0, "Couldn't get Xe PAT software configuration\n");
  
 -- 
 2.43.0
