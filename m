@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98E10D35162
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 09:10:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A568D35160
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 09:11:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 450CA10EFF1;
-	Wed,  1 Apr 2026 09:10:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09D9110EFF3;
+	Wed,  1 Apr 2026 09:10:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y70CFRvh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fAq2wEgg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 626EB10EFDB
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 09:10:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3AEB10ECE3
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 09:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775034637; x=1806570637;
+ t=1775034629; x=1806570629;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Iir97K6R3jWFwZTcRmj+S8Y75baa10UvwCAnaWZxC2Y=;
- b=Y70CFRvhCG+YjvlwjcU41lN0yyUF+jq7a/Bro5vnJl6mFkZzk7gKBlBd
- 2TNfTfeRgiTh2PlF0/rotErB0J+FqBI1f7RmLLY+jwAbxFyDN2ZiYcXZV
- ByDQwApYGx3GhwRWX8oF0fkziVvXDVsjNMMAiVGZQAwKVvP8rzKefw4yS
- ldxRdYgRBWcAIOuFyQfFfnSUOCwWqz3gjGX+9UYgs/aCx2KE25KLOy+qM
- 3GujSajbOZv2vSYtEswJr+hqBBNkNVMZerj6/hmDl5mbtpXYQQZw1Khex
- fS+s8akEa3vSjAtenc7Inqpq7w4Pafspt6wVKFK10WYxViOwiMMPYyCnl w==;
-X-CSE-ConnectionGUID: 3ZSiTUV/Qe+VXmVnIrKvbQ==
-X-CSE-MsgGUID: Dnau/zzoRuCZQQvvJX8UKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="86762939"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="86762939"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 02:10:37 -0700
-X-CSE-ConnectionGUID: jpVNKk6tSgihcqgOtuA8Uw==
-X-CSE-MsgGUID: H9yGlfO9TImGhO+I3EV1nw==
+ bh=UXkjMMTokeF/yaf+5/fOvRShRpV+5ugJl2xJeV47tvI=;
+ b=fAq2wEggQHphePV/jK4zPugXKynBeqzEtr65vgoKlppmZO2Mpd1vwshL
+ qz6f6mSaXil9yOCXKm4nugll/WDqd9wJMWcI7+tShpkEaCL2fn+vPK9h+
+ pDZexuMh+K34XoOHtjIU5dZD+qWA5P72y6sBXfEaZ+jDUWalvSo4ADC7I
+ Iyp9OANr1OMLuLJgQnMGRPjd2Jd3CZLCUmYbiJr9KoRrdWv2hrGi38iMi
+ TxEk5G5jvv+YM9af9nZ9i7ozYOFeSXxmhu7leV9QnMvXSl9XmBeX/wMIX
+ ACkOj4q8vk1SEW4k7rv88bBEU63+uZAOomSGBHkoVlssNGnWgncn0nmQ+ A==;
+X-CSE-ConnectionGUID: mBbJxRp/QpSXzaViSaNYBw==
+X-CSE-MsgGUID: 1zi5wZfaT7u22O+y6lkdyw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78659424"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="78659424"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 02:10:29 -0700
+X-CSE-ConnectionGUID: CF7GV3mmRdGWGczU57lZpw==
+X-CSE-MsgGUID: 01jg/u6UQU6C6b9u01J3BA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="226867517"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="222255533"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.181])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 02:10:36 -0700
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 02:10:28 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/xe_compute: Exercise larger buffers passed
- from the user
-Date: Wed,  1 Apr 2026 11:10:21 +0200
-Message-ID: <20260401091017.2772519-8-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 1/3] lib/intel_compute: Print handle in list of bindings
+Date: Wed,  1 Apr 2026 11:10:19 +0200
+Message-ID: <20260401091017.2772519-6-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260401091017.2772519-5-zbigniew.kempczynski@intel.com>
 References: <20260401091017.2772519-5-zbigniew.kempczynski@intel.com>
@@ -71,74 +70,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify larger buffers are properly handled in intel library when
-they are passed via userenv.
+Add handle during printing bo bindings in compute library. It is
+useful to debug what's wrong when user passes its own env.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/intel/xe_compute.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ lib/intel_compute.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index ef2d891667..406d708bcd 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -519,6 +519,14 @@ test_compute_square(int fd)
-  *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
-  *	taking buffers from userenv.
-  *
-+ * SUBTEST: compute-square-userenv-large-buffer
-+ * Mega feature: Compute
-+ * Sub-category: compute tests
-+ * Functionality: OpenCL kernel
-+ * Description:
-+ *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
-+ *	taking large buffers from userenv.
-+ *
-  * SUBTEST: compute-square-userenv-isvm
-  * Mega feature: Compute
-  * Sub-category: compute tests
-@@ -546,6 +554,8 @@ test_compute_square(int fd)
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index b3336a7b5b..7dda423c80 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -352,8 +352,8 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
+ 				memset(bo_dict[i].data, 0, bo_dict[i].size);
+ 			}
  
- #define INPUT_IN_SVM		(1 << 0)
- #define OUTPUT_IN_SVM		(1 << 1)
-+#define LARGE_BUFFER		(1 << 2)
-+#define LARGE_BUFFER_SIZE	(SZ_2M + SZ_1M)
- #define INPUT_BO_ADDR		0x30000000
- #define OUTPUT_BO_ADDR		0x31000000
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-@@ -568,6 +578,8 @@ test_compute_square_userenv(int fd, uint32_t flags)
- 	float *input, *output;
- 	int i;
- 
-+	if (flags & LARGE_BUFFER)
-+		size = LARGE_BUFFER_SIZE;
- 	size = ALIGN(size, xe_get_default_alignment(fd));
- 	env.array_size = size / sizeof(float);
- 
-@@ -616,7 +628,10 @@ test_compute_square_userenv(int fd, uint32_t flags)
- 		env.output_addr = OUTPUT_BO_ADDR;
- 	}
- 
--	env.loop_count = env.array_size / 2;
-+	if (flags == LARGE_BUFFER)
-+		env.loop_count = env.array_size;
-+	else
-+		env.loop_count = env.array_size / 2;
- 
- 	/* Skip check in the library and verify user controls data locally */
- 	env.skip_results_check = true;
-@@ -670,6 +685,9 @@ int igt_main()
- 	igt_subtest("compute-square-userenv")
- 		test_compute_square_userenv(xe, 0);
- 
-+	igt_subtest("compute-square-userenv-large-buffer")
-+		test_compute_square_userenv(xe, LARGE_BUFFER);
-+
- 	igt_subtest("compute-square-userenv-isvm")
- 		test_compute_square_userenv(xe, INPUT_IN_SVM);
- 
+-			igt_debug("[i: %2d name: %20s] data: %p, addr: %16llx, size: %llx\n",
+-				  i, bo_dict[i].name, bo_dict[i].data,
++			igt_debug("[i: %2d name: %20s] data: %p, handle: %u, addr: %16llx, size: %llx\n",
++				  i, bo_dict[i].name, bo_dict[i].data, bo_dict[i].handle,
+ 				  (long long)bo_dict[i].addr,
+ 				  (long long)bo_dict[i].size);
+ 		}
 -- 
 2.43.0
 
