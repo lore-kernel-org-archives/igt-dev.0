@@ -4,57 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 398C1D35162
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 11:34:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03D9D35176
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 11:35:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CA6A310EC9D;
-	Wed,  1 Apr 2026 11:34:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5371210ECE4;
+	Wed,  1 Apr 2026 11:35:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jjrs0yqU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UWRM3twM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0597510ECC8
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 11:34:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D65010ED24
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 11:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775043253; x=1806579253;
+ t=1775043342; x=1806579342;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=c/EWCLrste7iqukbynk5AayGc5e1MoYAwwL0yL6ndmw=;
- b=Jjrs0yqUsL1NIFp36E6FCE3TrHv3CgcH0u/VUGwhVdveAjXdWNrqT0uv
- qc8NMRklK1ZexBZv8GVfzEMnMmlLXg6mAWoJdZldUtTw7sWoYI/6NnOnA
- LF4tAXYccJg0HlVkyJ75H4Jb8Mgit5hLLjmggJYz3CWlVq1mHm0SeVvwK
- jDkTL2vAcZ7Kigo2LlvJp/S66xJg/+s6panjHwZF4Zbcr2vlBkMrncvA1
- M7GW5F/gFYnhievQMbtu6P2fchTjRzeircVqQg2E7/n/qeOF5I9w8M/pu
- 3erX3oXIt08QobSPa4CKNFp5WYO8Mb4pTU57hXN6LiuSxsDU4Mp9r35su Q==;
-X-CSE-ConnectionGUID: VGZtyjphSIynMheLbFyZHQ==
-X-CSE-MsgGUID: XvHRPNOwSUq7NN0M094rUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76092222"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="76092222"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 04:34:12 -0700
-X-CSE-ConnectionGUID: 6bjy4P2PR6SXSjiDGQmksw==
-X-CSE-MsgGUID: VfeHpzhnT9eJlwvn8Yy8pQ==
+ bh=gWiBkP1wZXl6V9YE2KUAiu8oDgJw67p12HDOaqxgmJQ=;
+ b=UWRM3twMj2Kd10SQTbQoKPtY5zibbFVCT6ssghtNsOYpLPtpx077MZ3s
+ K/LzA48JlWtEQvh1WUjxorZrkafrT+4GqxFNK1empy369E6E0eHnD4p4o
+ fOs9PUXHAFIVnPkrg+o5xaz3lrULfmZr6mrviiFV10T3iFzySn8WFYyow
+ KjgV30TNjEeGYrEKQaPBtpRbsl+2v29CDSfvJNg0C3Zbi589x25fzWuEL
+ 4TpTQ8SfkN2zW9xDxzU2KGQMmR8fpGfd01tE7m/uK8BxqNxkNLEGF4Rny
+ 2RuzDTcRSzmNL8/sWEkbq6MWQUieMxDxeeJSoTan24TcwdOpzetyDNL/Z w==;
+X-CSE-ConnectionGUID: Ngt911FUR36gQSC7VD5Dyw==
+X-CSE-MsgGUID: A85OO4IIRYaSioHI0qftQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78669796"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="78669796"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 04:35:42 -0700
+X-CSE-ConnectionGUID: gwbyU7uOSwCH31yhjuMcdA==
+X-CSE-MsgGUID: VuCmXOV4SwKj9gpEQiFH2Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="231450367"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.244.206])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 04:34:12 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="228263467"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 04:34:22 -0700
+From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH i-g-t v6 3/4] lib/intel_pat: Set PTA + ATS PAT entries to
- invalid value
-Date: Wed,  1 Apr 2026 13:33:57 +0200
-Message-ID: <20260401113353.2825367-9-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260401113353.2825367-6-zbigniew.kempczynski@intel.com>
-References: <20260401113353.2825367-6-zbigniew.kempczynski@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 1/6] tests/intel/kms_mst_helper: Add kernel-doc for
+ existing function
+Date: Wed,  1 Apr 2026 17:25:37 +0530
+Message-Id: <20260401115542.1074290-2-kunal1.joshi@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260401115542.1074290-1-kunal1.joshi@intel.com>
+References: <20260401115542.1074290-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,32 +68,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some platforms (like LNL) requires PTA PAT entries shouldn't be
-programmed and default register value should be used.
+Convert the doc comment on igt_find_all_mst_output_in_topology
+to proper kernel-doc.
 
-Setting this to max during parsing pat_sw_config or pat debugfs
-allows detect these platforms and ignore some actions if necessary.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/intel_pat.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/intel/kms_mst_helper.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index f1f5644dce..2f35bb7724 100644
---- a/lib/intel_pat.c
-+++ b/lib/intel_pat.c
-@@ -51,6 +51,8 @@ static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cach
+diff --git a/tests/intel/kms_mst_helper.c b/tests/intel/kms_mst_helper.c
+index aef74cd31..38859cffc 100644
+--- a/tests/intel/kms_mst_helper.c
++++ b/tests/intel/kms_mst_helper.c
+@@ -5,11 +5,12 @@
  
- 	memset(xe_pat_cache, 0, sizeof(*xe_pat_cache));
- 	xe_pat_cache->uc_comp = XE_PAT_IDX_INVALID;
-+	xe_pat_cache->pta_mode = UINT32_MAX;
-+	xe_pat_cache->pat_ats = UINT32_MAX;
+ #include "kms_mst_helper.h"
  
- 	while ((nread = getline(&line, &line_len, dbgfs_file)) != -1) {
- 		uint32_t value = 0;
+-/*
++/**
++ * igt_find_all_mst_output_in_topology:
+  * @drm_fd: DRM file descriptor
+  * @display: pointer to #igt_display_t structure
+  * @output: target output
+- * @mst_outputs: filled with mst output of same toplogy as @output
++ * @mst_outputs: filled with mst output of same topology as @output
+  * @num_mst_outputs: filled with count of mst outputs found in topology
+  *
+  * Iterates over all connected outputs and adds each DP MST
 -- 
-2.43.0
+2.48.1
 
