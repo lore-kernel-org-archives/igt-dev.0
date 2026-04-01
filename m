@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAF3B10F6FB5
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 14:52:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2868410F6FBF
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 15:27:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 76BAE10E0CE;
-	Wed,  1 Apr 2026 14:52:18 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CE7E10E0CE;
- Wed,  1 Apr 2026 14:52:10 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============9170779670989415779=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id CCA4010EE2D;
+	Wed,  1 Apr 2026 15:27:09 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DMLxURw1";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3441110EE1B
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 15:27:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1775057221; x=1806593221;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zicyPbIVUPNdKIUqJbcYqUt4MGoBcJKhBa6EIxQjaIo=;
+ b=DMLxURw1NynrLoByycpnZOak5nWRa9syqGq7AD3k7ZzgXyMI+murCkfW
+ 87n9B4AcuISO2skxaAxZmuBzOQEgXbv3NICW/IvRs1EbNwXM8HwhpeRUf
+ 3AI4DnQJv5hF7J/Ne/vqIQxmDB/ZKs5onR8tYHBMTP7R64B8OZb2fQtoo
+ u0u+njCP/UHgOkTwpUHPNvOG9PhlLR85bLfU3D0BPD+PZgKHWVt2yDSnq
+ jXG5/M7qwLwqrx2Zf+7zA7oyePcnAJU6ouOzeUv1RZ/zFoeoFcmWJxCm6
+ ZVYvLGhPNlsptWjnMwhz4lnTwZkgtbiSfzL/PcMDpYq+zzIz8IT7KkOGq w==;
+X-CSE-ConnectionGUID: ZlPGCceTRF6eHcADEXe0mA==
+X-CSE-MsgGUID: pQTUnGl0RCeslt1dkt2ihQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="79704699"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="79704699"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 08:27:00 -0700
+X-CSE-ConnectionGUID: YhNz/wLiTTG1zK4fTf1eyQ==
+X-CSE-MsgGUID: ezHqEpVdSVqsDdaNDfrmzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="228324384"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:26:59 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: uma.shankar@intel.com, jani.nikula@intel.com, Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t v2 0/2] RFC: Add modifier helper and temporary test
+Date: Wed,  1 Apr 2026 20:55:35 +0530
+Message-ID: <20260401152538.632846-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_RFC=3A_Add_modifier_helper_?=
- =?utf-8?q?and_temporary_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 01 Apr 2026 14:52:10 -0000
-Message-ID: <177505513035.424361.17397197668218247856@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260401085851.627453-1-jeevan.b@intel.com>
-In-Reply-To: <20260401085851.627453-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +63,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9170779670989415779==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series adds a new helper for querying driver-supported format
+modifiers and a temporary test to verify that the helper outputs the
+expected modifier list.
 
-== Series Details ==
+Jeevan B (2):
+  lib: Add modifier helper for querying driver-supported modifiers
+  DONT_MERGE: Add kms_modifier_list test to verify new modifier helper
 
-Series: RFC: Add modifier helper and temporary test
-URL   : https://patchwork.freedesktop.org/series/164225/
-State : success
+ lib/igt_modifier.c        | 242 ++++++++++++++++++++++++++++++++++++++
+ lib/igt_modifier.h        |  18 +++
+ lib/meson.build           |   1 +
+ tests/kms_modifier_list.c | 127 ++++++++++++++++++++
+ tests/meson.build         |   1 +
+ 5 files changed, 389 insertions(+)
+ create mode 100644 lib/igt_modifier.c
+ create mode 100644 lib/igt_modifier.h
+ create mode 100644 tests/kms_modifier_list.c
 
-== Summary ==
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8840_BAT -> XEIGTPW_14903_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 14)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14903_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_waitfence@engine:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#6519])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8840/bat-dg2-oem2/igt@xe_waitfence@engine.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14903/bat-dg2-oem2/igt@xe_waitfence@engine.html
-
-  
-  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
-
-
-Build changes
--------------
-
-  * IGT: IGT_8840 -> IGTPW_14903
-
-  IGTPW_14903: 14903
-  IGT_8840: 8840
-  xe-4833-5d36e6d54e963f0c1137aaf2249d2baa781f08c2: 5d36e6d54e963f0c1137aaf2249d2baa781f08c2
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14903/index.html
-
---===============9170779670989415779==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>RFC: Add modifier helper and temporary test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164225/">https://patchwork.freedesktop.org/series/164225/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14903/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14903/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8840_BAT -&gt; XEIGTPW_14903_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 14)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14903_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_waitfence@engine:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8840/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14903/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8840 -&gt; IGTPW_14903</li>
-</ul>
-<p>IGTPW_14903: 14903<br />
-  IGT_8840: 8840<br />
-  xe-4833-5d36e6d54e963f0c1137aaf2249d2baa781f08c2: 5d36e6d54e963f0c1137aaf2249d2baa781f08c2</p>
-
-</body>
-</html>
-
---===============9170779670989415779==--
