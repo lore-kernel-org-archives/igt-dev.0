@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18876D3514A
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 07:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A444FD35144
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 07:29:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BEA2910EE67;
-	Wed,  1 Apr 2026 07:08:47 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A53DC10EE67;
- Wed,  1 Apr 2026 07:08:39 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3408558328168406732=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3F63610E2DA;
+	Wed,  1 Apr 2026 07:29:47 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iMtGJiuu";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D79510EC61
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 07:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1775028579; x=1806564579;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=qKPHFYSSYlKEGa2Z7D/UJASqQxaVszQDPkt+CYfERuA=;
+ b=iMtGJiuunytSKlm7JVCxGkxAe39Oq40OljT9ieuCGhhO7U3pX5RXkuUR
+ m12CaDEFVg0VpWcV7KyoCGZeaSZUPhWJwu1NzhsfvP64hyNIijGNXX3UV
+ 26QmNj0bnbiqJI1FzJbDYZC837gD7wiSwEw57CwzxhMZpljxV6N/88T44
+ UHWNVVyHlVVB/ngxUBLWbR3F7PXbhjSkOOpwgPbMSxGkdkbbf62Jlapw1
+ 3uoJlVppklssFShNqFQxvyKutB/6401LmdUwqOTLgHZIbVwY+R8bRk2Rx
+ kXhzXhwHMQtB7VzRqysMSouSIvW4CEd9W3gL3Vtzz3L7lrq2tvltR3HM0 w==;
+X-CSE-ConnectionGUID: V0TEfIXUShqMvoYClbpaRw==
+X-CSE-MsgGUID: 2iQf6ovLSUCWIIoAaeS1aw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75230255"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="75230255"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 00:29:38 -0700
+X-CSE-ConnectionGUID: TTaet50sQHaeIcqMXI//hw==
+X-CSE-MsgGUID: jSmLUmSiQPi/oiF3ohTiyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="225593262"
+Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Apr 2026 00:29:37 -0700
+From: Mohammed Bilal <mohammed.bilal@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com,
+	Mohammed Bilal <mohammed.bilal@intel.com>
+Subject: [PATCH v1 0/2] tests/kms_hdmi_inject: Add low refresh rate subtests
+Date: Wed,  1 Apr 2026 12:56:13 +0530
+Message-ID: <20260401072615.3456135-1-mohammed.bilal@intel.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_Update_xe=5Fpm_test_with_h?=
- =?utf-8?q?igh_VRAM_usage?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karthik Poosa" <karthik.poosa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 01 Apr 2026 07:08:39 -0000
-Message-ID: <177502731965.421729.10797683776444091869@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260331181356.4133309-1-karthik.poosa@intel.com>
-In-Reply-To: <20260331181356.4133309-1-karthik.poosa@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,262 +63,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3408558328168406732==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series adds two subtests to validate low refresh rate (11Hz, 10Hz,
+5Hz, 4Hz) mode handling on HDMI connectors. The tests verify driver
+behavior around the hardware minimum pixel clock threshold (34.38 MHz).
 
-== Series Details ==
+Patch 1 adds a positive test that validates low refresh rates are
+achievable when pixel clock is maintained at the hardware minimum by
+adjusting vtotal.
 
-Series: Update xe_pm test with high VRAM usage
-URL   : https://patchwork.freedesktop.org/series/164190/
-State : failure
+Patch 2 adds a negative test that validates the driver correctly rejects
+modes when the standard pixel clock calculation drops below the hardware
+minimum.
 
-== Summary ==
+Together these tests ensure the driver properly enforces hardware
+constraints while still supporting valid low refresh rate configurations.
 
-CI Bug Log - changes from XEIGT_8839_FULL -> XEIGTPW_14897_FULL
-====================================================
+Mohammed Bilal (2):
+  tests/kms_hdmi_inject: Add inject-low-refresh-fixed-clock subtest
+  tests/kms_hdmi_inject: Add inject-low-refresh-default-clock subtest
 
-Summary
--------
+ tests/kms_hdmi_inject.c | 295 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 295 insertions(+)
 
-  **FAILURE**
+-- 
+2.48.1
 
-  Serious unknown changes coming with XEIGTPW_14897_FULL absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_14897_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (2 -> 2)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_14897_FULL:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter:
-    - shard-lnl:          [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-4/igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-2/igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter.html
-
-  * igt@xe_pm@s4-basic:
-    - shard-lnl:          [PASS][3] -> [SKIP][4] +9 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-8/igt@xe_pm@s4-basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-4/igt@xe_pm@s4-basic.html
-
-  
-#### Warnings ####
-
-  * igt@xe_pm@s3-mocs:
-    - shard-lnl:          [SKIP][5] ([Intel XE#584] / [Intel XE#7369]) -> [SKIP][6] +4 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-4/igt@xe_pm@s3-mocs.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-4/igt@xe_pm@s3-mocs.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14897_FULL that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pm_dc@dc6-dpms:
-    - shard-lnl:          [PASS][7] -> [FAIL][8] ([Intel XE#7340])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@kms_pm_dc@dc6-dpms.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html
-
-  * igt@xe_exec_multi_queue@many-queues-close-fd:
-    - shard-lnl:          NOTRUN -> [SKIP][9] ([Intel XE#6874])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-2/igt@xe_exec_multi_queue@many-queues-close-fd.html
-
-  * igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma:
-    - shard-lnl:          [PASS][10] -> [FAIL][11] ([Intel XE#5625])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma.html
-
-  
-#### Warnings ####
-
-  * igt@xe_pat@pat-index-xehpc:
-    - shard-lnl:          [SKIP][12] ([Intel XE#1420] / [Intel XE#2838]) -> [SKIP][13] ([Intel XE#1420] / [Intel XE#2838] / [Intel XE#7590])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-2/igt@xe_pat@pat-index-xehpc.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-3/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelp:
-    - shard-lnl:          [SKIP][14] ([Intel XE#977]) -> [SKIP][15] ([Intel XE#7590] / [Intel XE#977])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-8/igt@xe_pat@pat-index-xelp.html
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-7/igt@xe_pat@pat-index-xelp.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - shard-lnl:          [SKIP][16] ([Intel XE#979]) -> [SKIP][17] ([Intel XE#7590] / [Intel XE#979])
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@xe_pat@pat-index-xelpg.html
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-6/igt@xe_pat@pat-index-xelpg.html
-
-  
-  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#5625]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625
-  [Intel XE#584]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/584
-  [Intel XE#6874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874
-  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
-  [Intel XE#7369]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7369
-  [Intel XE#7590]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-
-
-Build changes
--------------
-
-  * IGT: IGT_8839 -> IGTPW_14897
-  * Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -> xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e
-
-  IGTPW_14897: f2480466fcf94b2f7f79033a738ed175da641166 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8839: 8839
-  xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d
-  xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e: 278bbcb469a2ab0d521e910e4ecefc8372a05c1e
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/index.html
-
---===============3408558328168406732==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Update xe_pm test with high VRAM usage</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164190/">https://patchwork.freedesktop.org/series/164190/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8839_FULL -&gt; XEIGTPW_14897_FULL</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_14897_FULL absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_14897_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (2 -&gt; 2)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_14897_FULL:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-4/igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-2/igt@kms_sharpness_filter@invalid-plane-with-filter@pipe-a-edp-1-invalid-plane-with-filter.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pm@s4-basic:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-8/igt@xe_pm@s4-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-4/igt@xe_pm@s4-basic.html">SKIP</a> +9 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_pm@s3-mocs:<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-4/igt@xe_pm@s3-mocs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/584">Intel XE#584</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7369">Intel XE#7369</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-4/igt@xe_pm@s3-mocs.html">SKIP</a> +4 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14897_FULL that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_pm_dc@dc6-dpms:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@kms_pm_dc@dc6-dpms.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_multi_queue@many-queues-close-fd:</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-2/igt@xe_exec_multi_queue@many-queues-close-fd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874">Intel XE#6874</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-6/igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-uc-multi-vma.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625">Intel XE#5625</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-3/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-8/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-7/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/shard-lnl-6/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/shard-lnl-6/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8839 -&gt; IGTPW_14897</li>
-<li>Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -&gt; xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e</li>
-</ul>
-<p>IGTPW_14897: f2480466fcf94b2f7f79033a738ed175da641166 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8839: 8839<br />
-  xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d<br />
-  xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e: 278bbcb469a2ab0d521e910e4ecefc8372a05c1e</p>
-
-</body>
-</html>
-
---===============3408558328168406732==--
