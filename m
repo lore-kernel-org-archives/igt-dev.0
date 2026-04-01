@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28DF010F6FD6
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 15:45:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DDB110F6FD6
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 15:45:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D1E3D10EDBD;
-	Wed,  1 Apr 2026 15:45:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4042710E5BD;
+	Wed,  1 Apr 2026 15:45:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JG5/f0ft";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Km43Ie3e";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 844A810E5BD
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 15:45:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 107D010EE17
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2026 15:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775058309; x=1806594309;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=N1etiSNh+6ZqrvfeT9u0t9w2dbxPZRLiFzpvKLUAI+M=;
- b=JG5/f0ftY7kfhKKlFPCG0ur8MiOgEqpJR7fKJoInAx46OkvfQl+KEesy
- 9NsSO4DFXGOYybODQ04JQZDKtlBCjOCVaoQp6txN1jAtpISO0GXoRBpdT
- JSMx0fYbT38MxOrzPNZacY2MiYcQiJWL7r2o4oMEeROc/TbB6a7Xl17jY
- A7ntGi4vZjLMBkLsx9EorBNz6xAddWgW1ChQEekaIi869NkSCppCy4yCM
- q7d6m2PyJI+rL2Z5UjQFGVs/HPCttKdtsbDmoOEQBfir2EgCXHvZtDSUn
- xLRNeIHNHivO2U9VXVzl0LIzFKbztX7SQbLkA8oixP4p3ahuF9a1ZD2e5 A==;
-X-CSE-ConnectionGUID: mU2lWCjbRCuL97xLFlHlYw==
-X-CSE-MsgGUID: Qw95ivfTTI2Y7w3O8363TQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="79988958"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="79988958"
+ t=1775058316; x=1806594316;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=JEYOcTV/0Igi54L4U12Xx39rxz2vnLPRytcW/XxDPBc=;
+ b=Km43Ie3e92SJBCts6BKbHYbFWes+zNx5/vydj0+XL6aHIy7lOFA8VD2F
+ 2hSaNjusD0rFUycVpRLNywWlE+TTw4PZPIhe8sJhqcBPsQ7kV6/zJ9cF9
+ vAE/wFs0uRioRD+O7GBhAFz77UFntX8DNFJzxydLakUhgRlU6DSVg3Rbu
+ eaX3BebjI8SgQuU2WtNSHjKDGtqq61Xa6ikh7aNeXl5Zd2d5Pw9gGe0gQ
+ IjnNndRv+JfOvVIZ0Yo8xwWA0lBjtbiNUt/rPE9IqmKv6kfDRIQOPK+sN
+ zRExojSOSf7LgZwrIojdSbsIuvIOmQXwVpCs34aL6aDGCfAW2LdJc8cR7 Q==;
+X-CSE-ConnectionGUID: n7azumtISKquzBtBusrMYA==
+X-CSE-MsgGUID: 7Lla1F4UScyUbMbQO2pyWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="79988974"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="79988974"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2026 08:45:08 -0700
-X-CSE-ConnectionGUID: iz6U36OuR2WYA/Qu0qA/4w==
-X-CSE-MsgGUID: fw97SVtxQFa6L2JdWSZbrw==
+ 01 Apr 2026 08:45:16 -0700
+X-CSE-ConnectionGUID: Ad7wgLOvR5etVyJijrQCBw==
+X-CSE-MsgGUID: AWWoS9eKSsOdxlhXg6980Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="226960019"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; d="scan'208";a="226960116"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:45:07 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:45:15 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 0/7] tests/kms_pipe_crc_basic: add mst suspend-resume
- test
-Date: Wed,  1 Apr 2026 21:36:20 +0530
-Message-Id: <20260401160627.1338526-1-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 5/7] tests/intel/kms_joiner_helper: Move
+ max_non_joiner_mode_found
+Date: Wed,  1 Apr 2026 21:36:25 +0530
+Message-Id: <20260401160627.1338526-6-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260401160627.1338526-1-kunal1.joshi@intel.com>
+References: <20260401160627.1338526-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,36 +68,138 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch series introduces MST suspend-resume test
-to kms_mst. The MST test validates there
-is no corruption/blank out across suspend/resume cycles
-for all possible subsets.
+max_non_joiner_mode_found() is Intel-specific since it relies on
+igt_bigjoiner_possible() which checks Intel platform pipe limits.
+Move it out of the generic lib/igt_kms.[ch] into the Intel-specific
+tests/intel/kms_joiner_helper.[ch] where it belongs.
 
-Note : Subtest is now part of new binary kms_mst
-       Didn't change subject to avoid new patch series
+v2: Move the function out from lib/igt_kms.[ch] (Jani)
 
-Kunal Joshi (7):
-  tests/intel/kms_mst_helper: Add kernel-doc for existing function
-  tests/intel/kms_mst_helper: Add helper to check for MST outputs
-  lib/igt_kms: Fix max_non_joiner_mode_found
-  lib/igt_kms: Export get_max_pipe_hdisplay as
-    intel_get_max_pipe_hdisplay
-  tests/intel/kms_joiner_helper: Move max_non_joiner_mode_found
-  tests/intel/kms_joiner: Require boundary mode for basic-max-non-joiner
-  tests/intel/kms_mst: Add MST suspend-resume test
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ lib/igt_kms.c                   | 36 ---------------------------------
+ lib/igt_kms.h                   |  2 --
+ tests/intel/kms_joiner_helper.c | 36 +++++++++++++++++++++++++++++++++
+ tests/intel/kms_joiner_helper.h |  2 ++
+ 4 files changed, 38 insertions(+), 38 deletions(-)
 
- lib/igt_kms.c                   |  39 +---
- lib/igt_kms.h                   |   3 +-
- tests/intel/kms_joiner.c        |   4 +
- tests/intel/kms_joiner_helper.c |  36 ++++
- tests/intel/kms_joiner_helper.h |   2 +
- tests/intel/kms_mst.c           | 349 ++++++++++++++++++++++++++++++++
- tests/intel/kms_mst_helper.c    |  24 ++-
- tests/intel/kms_mst_helper.h    |   1 +
- tests/meson.build               |   4 +
- 9 files changed, 423 insertions(+), 39 deletions(-)
- create mode 100644 tests/intel/kms_mst.c
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 323446780..afea8598b 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6965,42 +6965,6 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 	return found;
+ }
+ 
+-/**
+- * max_non_joiner_mode_found:
+- * @drm_fd: drm file descriptor
+- * @connector: libdrm connector
+- * @max_dot_clock: max dot clock frequency
+- * @mode: libdrm mode to be filled
+- *
+- * Finds the highest possible display mode that does
+- * not require a big joiner.
+- *
+- * Returns: True if a valid non-joiner mode is found,
+- * false otherwise.
+- */
+-bool max_non_joiner_mode_found(int drm_fd, drmModeConnector *connector,
+-			       int max_dotclock, drmModeModeInfo *mode)
+-{
+-	bool found = false;
+-
+-	for (int i = 0; i < connector->count_modes; i++) {
+-		drmModeModeInfo *current_mode = &connector->modes[i];
+-
+-		if (igt_bigjoiner_possible(drm_fd, current_mode, max_dotclock))
+-			continue;
+-
+-		if (!found ||
+-		    current_mode->hdisplay > mode->hdisplay ||
+-		    (current_mode->hdisplay == mode->hdisplay &&
+-		     current_mode->clock > mode->clock)) {
+-			*mode = *current_mode;
+-			found = true;
+-		}
+-	}
+-
+-	return found;
+-}
+-
+ /* TODO: Move these lib functions to the joiner-specific library file
+  *	 once those patches are merged.
+  */
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index a9f02a10a..2ada64fc8 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1242,8 +1242,6 @@ int igt_get_current_cdclk(int fd);
+ bool igt_bigjoiner_possible(int drm_fd, drmModeModeInfo *mode, int max_dotclock);
+ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 			  int max_dotclock, drmModeModeInfo *mode);
+-bool max_non_joiner_mode_found(int drm_fd, drmModeConnector *connector,
+-			       int max_dotclock, drmModeModeInfo *mode);
+ bool igt_is_joiner_enabled_for_pipe(int drmfd, enum pipe pipe);
+ bool igt_ultrajoiner_possible(int drmfd, drmModeModeInfo *mode, int max_dotclock);
+ bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
+diff --git a/tests/intel/kms_joiner_helper.c b/tests/intel/kms_joiner_helper.c
+index e24d7ce94..ac1bef2e3 100644
+--- a/tests/intel/kms_joiner_helper.c
++++ b/tests/intel/kms_joiner_helper.c
+@@ -183,3 +183,39 @@ bool igt_assign_pipes_for_outputs(int drm_fd,
+ 	}
+ 	return true;
+ }
++
++/**
++ * max_non_joiner_mode_found:
++ * @drm_fd: drm file descriptor
++ * @connector: libdrm connector
++ * @max_dot_clock: max dot clock frequency
++ * @mode: libdrm mode to be filled
++ *
++ * Finds the highest possible display mode that does
++ * not require a big joiner.
++ *
++ * Returns: True if a valid non-joiner mode is found,
++ * false otherwise.
++ */
++bool max_non_joiner_mode_found(int drm_fd, drmModeConnector *connector,
++			       int max_dotclock, drmModeModeInfo *mode)
++{
++	bool found = false;
++
++	for (int i = 0; i < connector->count_modes; i++) {
++		drmModeModeInfo *current_mode = &connector->modes[i];
++
++		if (igt_bigjoiner_possible(drm_fd, current_mode, max_dotclock))
++			continue;
++
++		if (!found ||
++		    current_mode->hdisplay > mode->hdisplay ||
++		    (current_mode->hdisplay == mode->hdisplay &&
++		     current_mode->clock > mode->clock)) {
++			*mode = *current_mode;
++			found = true;
++		}
++	}
++
++	return found;
++}
+diff --git a/tests/intel/kms_joiner_helper.h b/tests/intel/kms_joiner_helper.h
+index 6d21e7eb0..3fef18f67 100644
+--- a/tests/intel/kms_joiner_helper.h
++++ b/tests/intel/kms_joiner_helper.h
+@@ -17,6 +17,8 @@ bool igt_assign_pipes_for_outputs(int drm_fd,
+ 				  uint32_t *used_pipes_mask,
+ 				  uint32_t master_pipes_mask,
+ 				  uint32_t valid_pipes_mask);
++bool max_non_joiner_mode_found(int drm_fd, drmModeConnector *connector,
++			       int max_dotclock, drmModeModeInfo *mode);
+ 
+ enum force_joiner_mode {
+ 	FORCE_JOINER_ENABLE = 0,
 -- 
 2.25.1
 
