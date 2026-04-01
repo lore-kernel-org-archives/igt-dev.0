@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F063710F9310
-	for <igt-dev@archiver.kernel.org>; Tue, 31 Mar 2026 23:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3354710F9310
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Apr 2026 00:01:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5AC1210EAEC;
-	Tue, 31 Mar 2026 23:56:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CA70D10EB12;
+	Wed,  1 Apr 2026 00:01:40 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC77910EAEC;
- Tue, 31 Mar 2026 23:56:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A090A10EB12;
+ Wed,  1 Apr 2026 00:01:32 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8028062777388305305=="
+ boundary="===============3377414569401658649=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Update_xe=5Fpm_test_with_hi?=
- =?utf-8?q?gh_VRAM_usage?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpm=5Fdc?=
+ =?utf-8?q?=3A_Skip_runtime_PM_active_check_on_headless_systems?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karthik Poosa" <karthik.poosa@intel.com>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 31 Mar 2026 23:56:09 -0000
-Message-ID: <177500136994.420766.10182420472298179183@a3b018990fe9>
+Date: Wed, 01 Apr 2026 00:01:32 -0000
+Message-ID: <177500169263.420767.2778157546667757237@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260331181356.4133309-1-karthik.poosa@intel.com>
-In-Reply-To: <20260331181356.4133309-1-karthik.poosa@intel.com>
+References: <20260331181606.22367-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20260331181606.22367-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8028062777388305305==
+--===============3377414569401658649==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Update xe_pm test with high VRAM usage
-URL   : https://patchwork.freedesktop.org/series/164190/
+Series: tests/intel/kms_pm_dc: Skip runtime PM active check on headless systems
+URL   : https://patchwork.freedesktop.org/series/164192/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8839_BAT -> XEIGTPW_14897_BAT
+CI Bug Log - changes from IGT_8839 -> IGTPW_14898
 ====================================================
 
 Summary
@@ -64,53 +64,57 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/index.html
 
-Participating hosts (13 -> 13)
+Participating hosts (42 -> 40)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_14897_BAT that come from known issues:
+  Here are the changes found in IGTPW_14898 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@xe_waitfence@abstime:
-    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/bat-dg2-8/igt@i915_selftest@live.html
 
-  * igt@xe_waitfence@reltime:
-    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4] ([Intel XE#6520])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+    - bat-arls-6:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/bat-arls-6/igt@i915_selftest@live@workarounds.html
 
   
-  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
-  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8839 -> IGTPW_14897
-  * Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -> xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8839 -> IGTPW_14898
+  * Linux: CI_DRM_18255 -> CI_DRM_18258
 
-  IGTPW_14897: f2480466fcf94b2f7f79033a738ed175da641166 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  CI-20190529: 20190529
+  CI_DRM_18255: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18258: 278bbcb469a2ab0d521e910e4ecefc8372a05c1e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14898: a04ec4a6af9722203d46a6c6e0af392448e52643 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8839: 8839
-  xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d
-  xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e: 278bbcb469a2ab0d521e910e4ecefc8372a05c1e
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/index.html
 
---===============8028062777388305305==
+--===============3377414569401658649==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,50 +134,54 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Update xe_pm test with high VRAM usage</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164190/">https://patchwork.freedesktop.org/series/164190/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_dc: Skip runtime PM active check on headless systems</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164192/">https://patchwork.freedesktop.org/series/164192/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8839_BAT -&gt; XEIGTPW_14897_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8839 -&gt; IGTPW_14898</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14897_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_14898 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@xe_waitfence@abstime:</p>
+<p>igt@i915_selftest@live:</p>
 <ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_waitfence@reltime:</p>
+<p>igt@i915_selftest@live@workarounds:</p>
 <ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8839/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14897/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8839/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14898/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8839 -&gt; IGTPW_14897</li>
-<li>Linux: xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d -&gt; xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e</li>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8839 -&gt; IGTPW_14898</li>
+<li>Linux: CI_DRM_18255 -&gt; CI_DRM_18258</li>
 </ul>
-<p>IGTPW_14897: f2480466fcf94b2f7f79033a738ed175da641166 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8839: 8839<br />
-  xe-4826-e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d<br />
-  xe-4829-278bbcb469a2ab0d521e910e4ecefc8372a05c1e: 278bbcb469a2ab0d521e910e4ecefc8372a05c1e</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18255: e15bf8dd9e5cd3aa1352b5b9a16eeffd3b1b193d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18258: 278bbcb469a2ab0d521e910e4ecefc8372a05c1e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14898: a04ec4a6af9722203d46a6c6e0af392448e52643 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8839: 8839</p>
 
 </body>
 </html>
 
---===============8028062777388305305==--
+--===============3377414569401658649==--
