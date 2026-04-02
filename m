@@ -4,58 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F151CC6B02
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 14:56:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0CADD3943C
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 14:57:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8AA3110E0BF;
-	Thu,  2 Apr 2026 14:56:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 33E4510E07E;
+	Thu,  2 Apr 2026 14:57:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Al/pNbkW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mjvW5Gpe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4DAE10E0BF
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 14:56:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B947610F2BE
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 14:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775141777; x=1806677777;
+ t=1775141861; x=1806677861;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=R+m8crYOSqfDbHE8eoQhYx2p0eT8P+FwQQ9x5tAI070=;
- b=Al/pNbkW9TJVy59H8XkVFQAEDBB1bv+vl+Vx79PB//yptXQp3CkmF2CC
- +KDSDyREm3c9qGRvr+k8iZuj9QQexRl1QANSuIOu7LA4uj2eykKo9gWyq
- aA5Qe3aAdQZwkQ7QgDjqHnJN221EUaulgLqiI1rYLmaCwUZDnbE05oNuH
- IajHET0Bab1T/MMtHPhpZEwt4p5WaNzYAEy+nj4pr3tZFX2raXz+tpT/L
- dFabiAYyxrtHR9p8jhon5vnmuux3BfuvEMMmmNlCHIfl1i1krgo+CbFnX
- NvCLpa0SbtWK7cKs3aychQCyPSlNoUGC8+hJ0ar74y6dLRXfo1F3Z/Xa7 Q==;
-X-CSE-ConnectionGUID: z5KvixhlSSG7L1JLawtZSg==
-X-CSE-MsgGUID: 5BA7KbGSTqC7v+zc7h+JBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="86821343"
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="86821343"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 07:56:17 -0700
-X-CSE-ConnectionGUID: zkq/uluzSOqCQFicvaSyig==
-X-CSE-MsgGUID: U4S4m23yS7GNsFhMYafnQw==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=bTRjMp2aLy3hQjqr5OhKcS6JvpQHbvSqz+l2Ams/M14=;
+ b=mjvW5Gpe9KrQ8ea1ftyMvuSMFb3XzaXyvqQirczgFMlyEMAbqOeavio5
+ KeqDS4fA4p6zdJnRg34Xb1IKcPo6tV/CN4XAXUUgU3aEATwHzqTZvvAOM
+ 5jvNPwtbVrzbG4jyJfB17nCyOvq7v2xsQsWhRnXL74mRbPERMnJdpsbtH
+ 8Qxvl47Xg8P+g4y+O8GVpnkJ52SHb1vwcd+oWPGRuBZiomzWhl29W+DPV
+ Lc1l12xKMsPPYTK7n9IzOpNnJIK21OkJxCHiOJHjo4y0QyTX2h4C3YCd7
+ LUj7ux73OwfLQNjeEoPs4tSzy3SzsHJezekVDTOeGhA9ntmWVqzCyMwPW A==;
+X-CSE-ConnectionGUID: lhJ+ltRzQH6B5qRgPSXPbA==
+X-CSE-MsgGUID: KEK2AbboSkiLrvio3yktjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="93595137"
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="93595137"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2026 07:57:40 -0700
+X-CSE-ConnectionGUID: v0quO7tJQX6WBgIjkrd42g==
+X-CSE-MsgGUID: 9N4YibaxR0m8pmlCq9sY6w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="222146838"
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="231805323"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 07:56:17 -0700
-Date: Thu, 2 Apr 2026 16:56:00 +0200
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 07:57:38 -0700
+Date: Thu, 2 Apr 2026 16:57:36 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Vidya Srinivas <vidya.srinivas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH] tools/gputop: Fix zero output when stdout is not a
- terminal
-Message-ID: <20260402145600.4m3qwxyqwowsvcr2@kamilkon-DESK.igk.intel.com>
+To: "Hajda, Andrzej" <andrzej.hajda@intel.com>
+Cc: Maciej Patelczyk <maciej.patelczyk@intel.com>,
+ igt-dev@lists.freedesktop.org, piotr.rudnicki@intel.com
+Subject: Re: [PATCH i-g-t] drm-uapi-experimental/xe_drm_eudebug: Adjust
+ definition in xe_drm_eudebug.h
+Message-ID: <20260402145736.3txn6vjolmdadzz2@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Vidya Srinivas <vidya.srinivas@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20260402134522.108322-1-vidya.srinivas@intel.com>
+ "Hajda, Andrzej" <andrzej.hajda@intel.com>,
+ Maciej Patelczyk <maciej.patelczyk@intel.com>,
+ igt-dev@lists.freedesktop.org, piotr.rudnicki@intel.com
+References: <20260402132004.1712065-1-maciej.patelczyk@intel.com>
+ <a25ed362-ffd3-4004-8b34-7f436a641ea2@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260402134522.108322-1-vidya.srinivas@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a25ed362-ffd3-4004-8b34-7f436a641ea2@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,61 +75,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vidya,
-On 2026-04-02 at 19:15:21 +0530, Vidya Srinivas wrote:
-> When gputop output is redirected to a file or pipe, such as:
+Hi Hajda,,
+On 2026-04-02 at 16:04:08 +0200, Hajda, Andrzej wrote:
+> W dniu 2.04.2026 o 15:20, Maciej Patelczyk pisze:
+> > Adjust the IOCTL numbers an exec_queue eudebug extension number to
+> > match drm-tip.
+> > 
+> > Signed-off-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
 > 
->   gputop -n 5 -d 1 > results.txt
->   gputop -n 3 -d 2 | grep rcs
+> Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 > 
-> ioctl(0, TIOCGWINSZ) fails with -1 since stdin is not a terminal.
-> update_console_size() then returns without setting *w and *h, leaving
-> con_w and con_h at their initial value of -1.
+> Regards
+> Andrzej
 > 
-> The main display loop uses 'if (lines >= con_h) break' to limit output
-> to the terminal height. With con_h = -1, the condition (0 >= -1) is
-> immediately true on the very first line, causing all client output to be
-> silently suppressed. The result is that gputop produces only ANSI clear-
-> screen escape sequences and zero actual data.
-> 
-> This affects anyone using gputop in automation, CI pipelines, or any
-> non-interactive context on Linux or Android where output is redirected
-> or piped.
-> 
-> Fix this by falling back to a default console size of 80x50 when the
-> ioctl fails, consistent with the existing fallback for serial consoles
-> (where ws_col and ws_row are both 0).
-> 
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 
-Good catch, LGTM
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Thank you, pushed.
 
 Regards,
 Kamil
 
-> ---
->  tools/gputop.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/gputop.c b/tools/gputop.c
-> index 9b2e8cb6f..112ec5ddb 100644
-> --- a/tools/gputop.c
-> +++ b/tools/gputop.c
-> @@ -505,8 +505,11 @@ static void update_console_size(int *w, int *h)
->  {
->  	struct winsize ws = {};
->  
-> -	if (ioctl(0, TIOCGWINSZ, &ws) == -1)
-> +	if (ioctl(0, TIOCGWINSZ, &ws) == -1) {
-> +		*w = 80;
-> +		*h = 50;
->  		return;
-> +	}
->  
->  	*w = ws.ws_col;
->  	*h = ws.ws_row;
-> -- 
-> 2.45.2
+> > ---
+> >   include/drm-uapi-experimental/xe_drm_eudebug.h | 8 ++++----
+> >   1 file changed, 4 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/include/drm-uapi-experimental/xe_drm_eudebug.h b/include/drm-uapi-experimental/xe_drm_eudebug.h
+> > index 8e74ced2f..a1733f543 100644
+> > --- a/include/drm-uapi-experimental/xe_drm_eudebug.h
+> > +++ b/include/drm-uapi-experimental/xe_drm_eudebug.h
+> > @@ -19,9 +19,9 @@ extern "C" {
+> >    */
+> >   /* XXX: BEGIN section moved from xe_drm.h as temporary solution */
+> > -#define DRM_XE_EUDEBUG_CONNECT		0x0f
+> > -#define DRM_XE_DEBUG_METADATA_CREATE	0x10
+> > -#define DRM_XE_DEBUG_METADATA_DESTROY	0x11
+> > +#define DRM_XE_EUDEBUG_CONNECT		0x10
+> > +#define DRM_XE_DEBUG_METADATA_CREATE	0x11
+> > +#define DRM_XE_DEBUG_METADATA_DESTROY	0x12
+> >   /* ... */
+> > @@ -54,7 +54,7 @@ struct drm_xe_vm_bind_op_ext_attach_debug {
+> >   /* ... */
+> > -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG		6
+> > +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG		7
+> >   #define     DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE		(1 << 0)
+> >   /* ... */
 > 
