@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B6BDD39417
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 11:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A3C1D39417
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 11:30:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 007AF10E032;
-	Thu,  2 Apr 2026 11:30:45 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CDA7E10F1FB;
- Thu,  2 Apr 2026 11:30:35 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4595462802813373462=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_kms=5Fflip=3A_limit_number_?=
- =?utf-8?q?of_subtests_run_=28rev13=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0286C10F0A2;
+	Thu,  2 Apr 2026 11:30:52 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VBTX6VBH";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 758F710F21C
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 11:30:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1775129436; x=1806665436;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=qljeGmDZ4LaHRwPN09gQ9S8gdytlJN4QrNvJ3UpoI+4=;
+ b=VBTX6VBHH1qvkp1bImoOMt+uIkwaPHjYgDL+dYBk2PM9g1v2PZrKY5he
+ aXptagn3bs1Mdlxm4Ccn3nf8Z8liRjST/6kGVcLOvqq1O9M4dwFskoell
+ HBbPQHO4N6eO1uI8gmkaZoeUGAcGZtmP2XwT+65edeeREaGVi3ZXKGszl
+ xfibQa0VNfixjKHZOhXYQdpDf88CaH32K3aLQfIMyjTy4VTmf7j2iOflG
+ oXquOz2SdldUcBDuRHByUzbxIUhFJssRT1y50WuwMt399VkqxfAWWrU39
+ Rzu89CmAiV9iOsmhMgzCaYfj739JKXXqRsnmZQCPvIUwfQDpW8Mjm0lAh g==;
+X-CSE-ConnectionGUID: Ju1IXjZ9QlejV0S4ca2cAQ==
+X-CSE-MsgGUID: gdijwk1RQgSE9w1lFs4slQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="63736664"
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="63736664"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2026 04:30:36 -0700
+X-CSE-ConnectionGUID: YV3dgZ8ZTWKFWN2S9e1/IQ==
+X-CSE-MsgGUID: sTrr6Zu6QQS8vPJEDh6IIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="226929360"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.1])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2026 04:30:34 -0700
+Date: Thu, 2 Apr 2026 13:30:32 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Piotr Rudnicki <piotr.rudnicki@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 02 Apr 2026 11:30:35 -0000
-Message-ID: <177512943582.427876.6019466520467645002@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260330075508.1003899-1-michal.grzelak@intel.com>
-In-Reply-To: <20260330075508.1003899-1-michal.grzelak@intel.com>
+Subject: Re: [PATCH i-g-t 1/2] lib/xe/eudebug: add dead-peer context logging
+ for token waits
+Message-ID: <couje6bbi3mvs777k5uyzxkazl5ixjal5kaelyiuwf5ctxwk6i@wcrnskrt2r6a>
+References: <20260327121042.1133617-1-piotr.rudnicki@intel.com>
+ <20260327121042.1133617-2-piotr.rudnicki@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260327121042.1133617-2-piotr.rudnicki@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,185 +68,170 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4595462802813373462==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Mar 27, 2026 at 01:10:41PM +0100, Piotr Rudnicki wrote:
+> When token synchronization fails due to a dead peer (crashed client),
+> log the token, pipe name, and last events from client and debugger logs to
+> aid diagnosis of synchronization failures.
 
-== Series Details ==
+I can't test it but looks correct to me. Due to lack of testing:
 
-Series: kms_flip: limit number of subtests run (rev13)
-URL   : https://patchwork.freedesktop.org/series/161389/
-State : success
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-== Summary ==
+--
+Zbigniew
 
-CI Bug Log - changes from XEIGT_8842_BAT -> XEIGTPW_14918_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 13)
-------------------------------
-
-  Missing    (1): bat-ptl-vm 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14918_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#7483]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * igt@sriov_basic@enable-vfs-autoprobe-on:
-    - bat-bmg-2:          [DMESG-WARN][5] ([Intel XE#7433]) -> [PASS][6] +3 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-on.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-on.html
-    - bat-bmg-1:          [DMESG-WARN][7] ([Intel XE#7433]) -> [PASS][8] +3 other tests pass
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-on.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-on.html
-
-  * igt@xe_module_load@load:
-    - bat-bmg-3:          [DMESG-WARN][9] ([Intel XE#7433]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-bmg-3/igt@xe_module_load@load.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-bmg-3/igt@xe_module_load@load.html
-
-  * igt@xe_waitfence@engine:
-    - bat-dg2-oem2:       [FAIL][11] ([Intel XE#6519]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@engine.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-dg2-oem2/igt@xe_waitfence@engine.html
-
-  
-  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
-  [Intel XE#7433]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7433
-  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
-
-
-Build changes
--------------
-
-  * IGT: IGT_8842 -> IGTPW_14918
-  * Linux: xe-4837-35370a958ae250844fbacb7a26230032a4fa661c -> xe-4841-7b7e57c49dffb4329964027a09420a3e9998e65a
-
-  IGTPW_14918: b91b8ff819ce4f63a3b67b1dc6a4bca115891f33 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8842: 8842
-  xe-4837-35370a958ae250844fbacb7a26230032a4fa661c: 35370a958ae250844fbacb7a26230032a4fa661c
-  xe-4841-7b7e57c49dffb4329964027a09420a3e9998e65a: 7b7e57c49dffb4329964027a09420a3e9998e65a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/index.html
-
---===============4595462802813373462==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>kms_flip: limit number of subtests run (rev13)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161389/">https://patchwork.freedesktop.org/series/161389/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8842_BAT -&gt; XEIGTPW_14918_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 13)</h2>
-<p>Missing    (1): bat-ptl-vm </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14918_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@sriov_basic@enable-vfs-autoprobe-on:</p>
-<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-on.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7433">Intel XE#7433</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-on.html">PASS</a> +3 other tests pass</li>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-on.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7433">Intel XE#7433</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-on.html">PASS</a> +3 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_module_load@load:</p>
-<ul>
-<li>bat-bmg-3:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-bmg-3/igt@xe_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7433">Intel XE#7433</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-bmg-3/igt@xe_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_waitfence@engine:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14918/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8842 -&gt; IGTPW_14918</li>
-<li>Linux: xe-4837-35370a958ae250844fbacb7a26230032a4fa661c -&gt; xe-4841-7b7e57c49dffb4329964027a09420a3e9998e65a</li>
-</ul>
-<p>IGTPW_14918: b91b8ff819ce4f63a3b67b1dc6a4bca115891f33 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8842: 8842<br />
-  xe-4837-35370a958ae250844fbacb7a26230032a4fa661c: 35370a958ae250844fbacb7a26230032a4fa661c<br />
-  xe-4841-7b7e57c49dffb4329964027a09420a3e9998e65a: 7b7e57c49dffb4329964027a09420a3e9998e65a</p>
-
-</body>
-</html>
-
---===============4595462802813373462==--
+> 
+> Signed-off-by: Piotr Rudnicki <piotr.rudnicki@intel.com>
+> ---
+>  lib/xe/xe_eudebug.c | 92 ++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 86 insertions(+), 6 deletions(-)
+> 
+> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+> index 3bffda561..b80d9bebd 100644
+> --- a/lib/xe/xe_eudebug.c
+> +++ b/lib/xe/xe_eudebug.c
+> @@ -375,6 +375,76 @@ static void pipe_close(int pipe[2])
+>  
+>  #define DEAD_CLIENT 0xccccdead
+>  
+> +static struct drm_xe_eudebug_event *__event_log_last_event(struct xe_eudebug_event_log *log)
+> +{
+> +	struct drm_xe_eudebug_event *event = NULL, *last = NULL;
+> +
+> +	if (!log || !log->head)
+> +		return NULL;
+> +
+> +	xe_eudebug_for_each_event(event, log)
+> +		last = event;
+> +
+> +	return last;
+> +}
+> +
+> +static const char *event_log_last_event_to_str(struct xe_eudebug_event_log *log,
+> +					       char *buf, size_t len)
+> +{
+> +	struct drm_xe_eudebug_event *last;
+> +
+> +	if (!log || !buf || !len)
+> +		return NULL;
+> +
+> +	pthread_mutex_lock(&log->lock);
+> +	last = __event_log_last_event(log);
+> +	if (last)
+> +		xe_eudebug_event_to_str(last, buf, len);
+> +	pthread_mutex_unlock(&log->lock);
+> +
+> +	if (!last)
+> +		return NULL;
+> +
+> +	return buf;
+> +}
+> +
+> +static void log_dead_client_context(struct xe_eudebug_client *c,
+> +				    struct xe_eudebug_event_log *debugger_log,
+> +				    bool waiter_is_client,
+> +				    const char *pipe_name,
+> +				    uint64_t token)
+> +{
+> +	char event_str[XE_EUDEBUG_EVENT_STRING_MAX_LEN];
+> +	char dbg_event_str[XE_EUDEBUG_EVENT_STRING_MAX_LEN];
+> +	const char *client_ctx;
+> +	const char *client_ctx_prefix;
+> +	const char *last_client_event;
+> +	const char *token_str;
+> +	const char *last_dbg_event;
+> +
+> +	token_str = token_to_str(token);
+> +	last_dbg_event = waiter_is_client ? NULL :
+> +		event_log_last_event_to_str(debugger_log, dbg_event_str, sizeof(dbg_event_str));
+> +
+> +	last_client_event = event_log_last_event_to_str(c->log, event_str, sizeof(event_str));
+> +	if (last_client_event) {
+> +		client_ctx_prefix = "last client event: ";
+> +		client_ctx = last_client_event;
+> +	} else {
+> +		client_ctx_prefix = "";
+> +		client_ctx = !c->done ?
+> +			(waiter_is_client ?
+> +			 "log has no events yet" :
+> +			 "log may be incomplete") :
+> +			"no client events";
+> +	}
+> +
+> +	igt_info("dead peer while waiting on token '%s' via %s; %s%s%s%s\n",
+> +		 token_str, pipe_name, client_ctx_prefix, client_ctx,
+> +		 last_dbg_event ? "; last dbg event:\n\t" : "",
+> +		 last_dbg_event ? last_dbg_event : "");
+> +}
+> +
+>  static uint64_t __wait_token(int pipe[2], const uint64_t token, int timeout_ms)
+>  {
+>  	uint64_t in;
+> @@ -412,21 +482,31 @@ static uint64_t client_wait_token(struct xe_eudebug_client *c, const uint64_t to
+>  	igt_debug("client: %d waiting for token '%s'\n", getpid(), token_to_str(token));
+>  
+>  	ret = __wait_token(c->p_in, token, c->timeout_ms);
+> -	if (ret == DEAD_CLIENT)
+> +	if (ret == DEAD_CLIENT) {
+> +		if (!c->allow_dead_client)
+> +			log_dead_client_context(c, NULL, true, "c->p_in", token);
+> +
+>  		igt_assert(c->allow_dead_client);
+> +	}
+>  
+>  	return ret;
+>  }
+>  
+> -static uint64_t wait_from_client(struct xe_eudebug_client *c, const uint64_t token)
+> +static uint64_t wait_from_client(struct xe_eudebug_client *c,
+> +				 struct xe_eudebug_event_log *debugger_log,
+> +				 const uint64_t token)
+>  {
+>  	uint64_t ret = 0;
+>  
+>  	igt_debug("debugger: %d waiting for token '%s'\n", getpid(), token_to_str(token));
+>  
+>  	ret = __wait_token(c->p_out, token, c->timeout_ms);
+> -	if (ret == DEAD_CLIENT)
+> +	if (ret == DEAD_CLIENT) {
+> +		if (!c->allow_dead_client)
+> +			log_dead_client_context(c, debugger_log, false, "c->p_out", token);
+> +
+>  		igt_assert(c->allow_dead_client);
+> +	}
+>  
+>  	return ret;
+>  }
+> @@ -1518,7 +1598,7 @@ void xe_eudebug_debugger_wait_stage(struct xe_eudebug_session *s, uint64_t stage
+>  	igt_debug("debugger xe client fd: %d pausing for stage %" PRIu64 "\n", s->debugger->master_fd,
+>  		  stage);
+>  
+> -	stage_in = wait_from_client(s->client, DEBUGGER_STAGE);
+> +	stage_in = wait_from_client(s->client, s->debugger->log, DEBUGGER_STAGE);
+>  	igt_debug("debugger xe client fd: %d stage %" PRIu64 ", expected %" PRIu64 ", stage\n",
+>  		  s->debugger->master_fd, stage_in, stage);
+>  
+> @@ -1608,7 +1688,7 @@ struct xe_eudebug_client *xe_eudebug_client_create(int master_fd, xe_eudebug_cli
+>  	close(c->p_in[0]);
+>  	c->p_in[0] = -1;
+>  
+> -	c->pid = wait_from_client(c, CLIENT_PID);
+> +	c->pid = wait_from_client(c, NULL, CLIENT_PID);
+>  
+>  	igt_info("client running with pid %d\n", c->pid);
+>  
+> @@ -1694,7 +1774,7 @@ void xe_eudebug_client_start(struct xe_eudebug_client *c)
+>  void xe_eudebug_client_wait_done(struct xe_eudebug_client *c)
+>  {
+>  	if (!c->done) {
+> -		c->seqno = wait_from_client(c, CLIENT_FINI);
+> +		c->seqno = wait_from_client(c, NULL, CLIENT_FINI);
+>  		event_log_read_from_fd(c->log, c->p_out[0]);
+>  		c->done = 1;
+>  	}
+> -- 
+> 2.43.0
+> 
