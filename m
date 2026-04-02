@@ -4,27 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA75D39406
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 09:58:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 057FFD39406
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 09:59:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2AC6010F1A6;
-	Thu,  2 Apr 2026 09:58:32 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51B5D10F1A6;
- Thu,  2 Apr 2026 09:58:24 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2153927862203489290=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id AAB6110E409;
+	Thu,  2 Apr 2026 09:59:26 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DxoI+2q+";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC83A10F1BC
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 09:59:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1775123959; x=1806659959;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=PPQJ89mQHQxMCBdO+wYMvbF01wEFwhfrCSZsKv1SbTI=;
+ b=DxoI+2q+lhAyXIJ/1IcXoI/g1qJ0+wngAuK+jaenhHME4HLyCTJU3a+0
+ bpDsBIo8aV6gewvNhrxFXo6OeRwkG+GzTA6HUnFXbl68lp6L+NUXCPDBB
+ L19F9AEulcVY5pJWX5tUls4wZXozova4saIwG8FxmhZSm8EdV6qXb8bfX
+ LilCskvESUwU2672qQgjbQU7/GTKURO2PApZnOBRKHlMfiO8dAPQY7P/9
+ psc+tRpRi1Ot2sPS8j4OK0gDp56Oww8D3l8bcBCuxkkXB2UzbWbBc02Hd
+ q6AQm9FVmI9b9ODoqVW4Of2UxBBrjAObCu6H9ooiiSxYptzsLUbKInDDP Q==;
+X-CSE-ConnectionGUID: rTwq9/QbTWyjmv72ZY50ew==
+X-CSE-MsgGUID: 0xWETZAJRdKzf8lR5PI3lw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="76298275"
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="76298275"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2026 02:59:19 -0700
+X-CSE-ConnectionGUID: USUyqei3SEmemHidtqgcIg==
+X-CSE-MsgGUID: wLcOC4v5SFaLvCZoOm9QWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="257415546"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 02:59:16 -0700
+Date: Thu, 2 Apr 2026 11:59:13 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Sowmiya S <sowmiya.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
+ swati2.sharma@intel.com, Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>
+Subject: Re: [PATCH i-g-t v1] README: Document skip message format
+Message-ID: <20260402095913.4kwtzd2bowukjvev@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Sowmiya S <sowmiya.s@intel.com>, igt-dev@lists.freedesktop.org,
+ karthik.b.s@intel.com, swati2.sharma@intel.com,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>
+References: <20260401043317.890733-1-sowmiya.s@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Ffuzzing?=
- =?utf-8?q?=3A_Remove_unused_variable?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karthik B S" <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 02 Apr 2026 09:58:24 -0000
-Message-ID: <177512390431.427878.17763106969477107020@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260402085039.1655070-1-karthik.b.s@intel.com>
-In-Reply-To: <20260402085039.1655070-1-karthik.b.s@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260401043317.890733-1-sowmiya.s@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,143 +78,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2153927862203489290==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Sowmiya,
+On 2026-04-01 at 10:03:01 +0530, Sowmiya S wrote:
+> Add a concise guide for writing consistent, machine-friendly skip
+> messages in IGT tests. Defines the format:
+> 
+>   SKIP: <reason> [(<context_type>: <value>)]
 
-== Series Details ==
+Should this also include subsystem like display? For example:
 
-Series: tests/amdgpu/amd_fuzzing: Remove unused variable
-URL   : https://patchwork.freedesktop.org/series/164283/
-State : success
+  SKIP: <subsystem> <reason> [(<context_type>: <value>)]
 
-== Summary ==
+Example:
 
-CI Bug Log - changes from XEIGT_8842_BAT -> XEIGTPW_14917_BAT
-====================================================
+  SKIP: display: no suitable connector available`
 
-Summary
--------
+  SKIP: core: unsupported on DG2`
 
-  **SUCCESS**
++cc Ashutosh, J-P, Jani and Ville
 
-  No regressions found.
+> 
+> along with common context types, example messages and a code snippet.
+> 
 
-  
+Please give a link here to GitLab issue it is related, btw GitLab
+changed recently 'issues' into 'work items':
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/24
 
-Participating hosts (14 -> 14)
-------------------------------
+Regards,
+Kamil 
 
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14917_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_waitfence@abstime:
-    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-
-  * igt@xe_waitfence@reltime:
-    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4] ([Intel XE#6520])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-
-  
-  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
-  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
-
-
-Build changes
--------------
-
-  * IGT: IGT_8842 -> IGTPW_14917
-  * Linux: xe-4837-35370a958ae250844fbacb7a26230032a4fa661c -> xe-4840-5ab3838428d9d2baa881cb9b23a30cc77e5c893c
-
-  IGTPW_14917: 958bcb525cd315525b0919da7eb380008edbaf21 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8842: 8842
-  xe-4837-35370a958ae250844fbacb7a26230032a4fa661c: 35370a958ae250844fbacb7a26230032a4fa661c
-  xe-4840-5ab3838428d9d2baa881cb9b23a30cc77e5c893c: 5ab3838428d9d2baa881cb9b23a30cc77e5c893c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/index.html
-
---===============2153927862203489290==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_fuzzing: Remove unused variable</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164283/">https://patchwork.freedesktop.org/series/164283/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8842_BAT -&gt; XEIGTPW_14917_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 14)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14917_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_waitfence@abstime:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_waitfence@reltime:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8842 -&gt; IGTPW_14917</li>
-<li>Linux: xe-4837-35370a958ae250844fbacb7a26230032a4fa661c -&gt; xe-4840-5ab3838428d9d2baa881cb9b23a30cc77e5c893c</li>
-</ul>
-<p>IGTPW_14917: 958bcb525cd315525b0919da7eb380008edbaf21 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8842: 8842<br />
-  xe-4837-35370a958ae250844fbacb7a26230032a4fa661c: 35370a958ae250844fbacb7a26230032a4fa661c<br />
-  xe-4840-5ab3838428d9d2baa881cb9b23a30cc77e5c893c: 5ab3838428d9d2baa881cb9b23a30cc77e5c893c</p>
-
-</body>
-</html>
-
---===============2153927862203489290==--
+> Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+> ---
+>  README.md | 37 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+> 
+> diff --git a/README.md b/README.md
+> index b4b9a37ea..a652cc0d1 100644
+> --- a/README.md
+> +++ b/README.md
+> @@ -188,3 +188,40 @@ Imported non-DRM uapi headers from airlied's drm-next branch.
+>  
+>  Then, commit with a note of which exact commit from airlied's branch
+>  was used to generate them.
+> +
+> +Skip Message Format
+> +-------------------
+> +
+> +Keep skip messages consistent and machine-friendly. Use this concise
+> +format and include a single, most-relevant context when available:
+> +
+> +- Format: `SKIP: <reason> [(<context_type>: <value>)]` (always end with `\n`)
+> +- Rules: start with `SKIP:`, use a short lowercase `reason`, include at
+> +    most one `context` in parentheses, use `0x%llx` for modifiers, and
+> +    do not add a trailing period.
+> +
+> +### `Common context types and examples:`
+> +
+> +- `connector`: display connector name — `(connector: HDMI-A-1)`
+> +- `plane`: plane type — `(plane: primary)`
+> +- `format`: fourcc format — `(format: NV12)`
+> +- `modifier`: buffer modifier (hex) — `(modifier: 0x%llx)`
+> +- `pipe`: pipe id/name — `(pipe: A)`
+> +- `platform`: GPU/platform name — `(platform: i915)`
+> +
+> +### `Common concise messages:`
+> +
+> +- `SKIP: no suitable connector available`
+> +- `SKIP: connector is disconnected (connector: %s)`
+> +- `SKIP: no suitable display mode available (connector: %s)`
+> +- `SKIP: format not supported (plane: %s, format: %s)`
+> +- `SKIP: modifier not supported (modifier: 0x%llx)`
+> +- `SKIP: plane not available (plane: %s)`
+> +
+> +### `Example usage:`
+> +
+> +```c
+> +        igt_skip_on_f(!fmt_supported(plane, fmt),
+> +                            "SKIP: format not supported (plane: %s, format: %s)\n",
+> +                            igt_plane_name(plane), igt_format_str(fmt));
+> +```
+> -- 
+> 2.43.0
+> 
