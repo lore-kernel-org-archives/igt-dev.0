@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FD0CD3941D
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 13:07:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E094D3941E
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 13:08:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CAEC710EDEC;
-	Thu,  2 Apr 2026 13:07:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D872E10E4E8;
+	Thu,  2 Apr 2026 13:08:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dfYs3kVI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EJAww7Uy";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB16210E40B
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 13:07:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43FF710E40B
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 13:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775135260; x=1806671260;
+ t=1775135262; x=1806671262;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Sl4bsrP1kPAZORc7wp2dqQJsjzqIlyqzQeLrET1cS3I=;
- b=dfYs3kVIo5u5GigpE0mXCFkc3yLpqY2ZuZNT24rqV4sKrEVLedVyBXPp
- YMfEs+sQ2NNFk8Nv6FvDYrZn/xRbcMHmYEdgrPCRBM9Rkp1wXYXZOm1gP
- yR9tCFj24HAvTyPqql/Yb8CZU/3kF7QHO5kSWdOopBRtfCXy2Afi5RW9E
- +/f/eGjVS08vko9VDNd46C2pBJpPCEg+3aTK7XcDmumvkligG6tSYbxsy
- AP8EsfqwZcD6Yj7uPT7NJxNER3WC6cz4XtLDKpV6Cg+LyK6n3uoceQ4/y
- KpMkK4eq6wrrarjn/+nrrXS4iOpiI9egcgywrTdEDDF/NuZEzwX+C56xz A==;
-X-CSE-ConnectionGUID: Fq5ujn0YQdG+VpS30FevLQ==
-X-CSE-MsgGUID: 7+l0v645TNWGQrAmkn2BjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="93584983"
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="93584983"
+ bh=gl2m4B3hXGUHfHQ7XmcHdV8EbCM2HwW1b+Q3p2ZZLY8=;
+ b=EJAww7UyB7DapqBmykfcCbuFNIsjuo/Cd2ExHVDodlhGA8vKYf6Asb5r
+ RuPdSQJ6OlZZgYPqvI4URr/eF+kuNJkEaMlJ/ewd0Mjzc5LhF1UVijLuJ
+ Ymc5H3vv54zbj9atHf6+680+y8/5E08/wPapDXKfnmIliH160i1+XJeuR
+ V9dtyjb39k3DDyLu0glozvx1xUSpBgsp9jfMP4lTKxTET2DLprjhE3aWy
+ 6hHepOzUn89IKGvEwX/P/FINQcM212wJ+xKqlHXEB4i3YlcIldz38fqyb
+ to5yQNuH/Dw4BCyIZWqVJVh0S2YLmXFlt02Tm57BNfa1k3vaSZ/WJJ9jN w==;
+X-CSE-ConnectionGUID: kqnsIAtvRHCHEOorjsyQWA==
+X-CSE-MsgGUID: zVXjGK4eTL+TbODaJlNAuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="93584987"
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="93584987"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 06:07:39 -0700
-X-CSE-ConnectionGUID: A4A/yf3KSUeoOPjrHcuGHw==
-X-CSE-MsgGUID: p9xWHXhITZqVQQXejEXjoA==
+ 02 Apr 2026 06:07:42 -0700
+X-CSE-ConnectionGUID: UocFrBmORg6shWBcNJGHgQ==
+X-CSE-MsgGUID: XOvr233yQ1eI4jXZOFnouA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="222119724"
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="222119739"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 06:07:37 -0700
+ 02 Apr 2026 06:07:40 -0700
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com, kamil.konieczny@intel.com,
  vinay.belgaumkar@intel.com
 Cc: anshuman.gupta@intel.com,
 	soham.purkait@intel.com
-Subject: [PATCH i-g-t 1/3] lib/igt_drm_clients: Add helper to list and count
- the DRM client processes
-Date: Thu,  2 Apr 2026 18:30:24 +0530
-Message-Id: <20260402130026.2687520-2-soham.purkait@intel.com>
+Subject: [PATCH i-g-t 2/3] tests/intel/xe_pmu: Add check for the other drm
+ clients using the device
+Date: Thu,  2 Apr 2026 18:30:25 +0530
+Message-Id: <20260402130026.2687520-3-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260402130026.2687520-1-soham.purkait@intel.com>
 References: <20260402130026.2687520-1-soham.purkait@intel.com>
@@ -71,147 +71,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a helper that scans all DRM clients for a card fd, optionally
-populating a list of client processes as an array of
-struct igt_drm_client_proc, and always returns the count of client
-processes excluding the caller process.
-
-This allows callers (like tests) to find other DRM clients which are
-using the card.
+If other processes are using the DRM device while idle residency test
+is running, GPU engines may be in use, and idle residency might be lower
+than expected leading to false positives.
+To help identify this issue, a check for the DRM clients, except the very
+test, is used and a warning message is printed if any such processes
+are found and the test is skipped.
 
 Signed-off-by: Soham Purkait <soham.purkait@intel.com>
 ---
- lib/igt_drm_clients.c | 93 +++++++++++++++++++++++++++++++++++++++++++
- lib/igt_drm_clients.h | 10 +++++
- 2 files changed, 103 insertions(+)
+ tests/intel/xe_pmu.c | 27 +++++++++++++++++++++++++--
+ tests/meson.build    |  1 +
+ 2 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index 858cd3645..2baea1b17 100644
---- a/lib/igt_drm_clients.c
-+++ b/lib/igt_drm_clients.c
-@@ -608,3 +608,96 @@ next:
+diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+index fb4b871e7..c907b6207 100644
+--- a/tests/intel/xe_pmu.c
++++ b/tests/intel/xe_pmu.c
+@@ -100,6 +100,7 @@
+ #include "igt_sysfs.h"
  
- 	return clients;
+ #include "xe/xe_gt.h"
++#include "igt_drm_clients.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_spin.h"
+ #include "xe/xe_sriov_admin.h"
+@@ -865,17 +866,39 @@ static void engine_activity_multi_client(int fd, struct drm_xe_engine_class_inst
+ 
+ static void test_gt_c6_idle(int xe, unsigned int gt)
+ {
+-	int pmu_fd;
++	int pmu_fd, num_clients = 0;
+ 	uint64_t pmu_config;
+ 	uint64_t ts[2];
+-	unsigned long slept, start, end;
++	unsigned long slept, start, end, wait = 100000;
+ 	uint64_t val;
++	struct igt_drm_client_proc *procs = NULL;
+ 
+ 	/* Get the PMU config for the gt-c6 event */
+ 	pmu_config = get_event_config(gt, NULL, "gt-c6-residency");
+ 
+ 	pmu_fd = open_pmu(xe, pmu_config);
+ 
++	/* Wait for other processes using the DRM device ends */
++	for (int pass = 0; pass < 50; pass++) {
++		if (!igt_drm_get_client_procs(xe, getpid(), NULL))
++			break;
++		usleep(wait);
++	}
++
++	num_clients = igt_drm_get_client_procs(xe, getpid(), &procs);
++
++	/* Check if any process is still using the DRM device */
++	if (num_clients) {
++		for (unsigned int i = 0; i < num_clients; i++) {
++			igt_warn("%s (pid=%u client=%lu) is using DRM device.\n",
++				 procs[i].print_name, procs[i].pid, procs[i].id);
++		}
++		free(procs);
++		procs = NULL;
++		igt_skip("As other processes are using the DRM device, "
++			 "measured idle_residency may be lower than expected.\n");
++	}
++
+ 	igt_require_f(igt_wait(xe_gt_is_in_c6(xe, gt), 1000, 10), "GT %d should be in C6\n", gt);
+ 
+ 	/* While idle check full RC6. */
+diff --git a/tests/meson.build b/tests/meson.build
+index 26d9345ec..e682ed9dd 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -425,6 +425,7 @@ extra_dependencies = {
+ 	'sw_sync': [ libatomic ],
+ 	'xe_fault_injection': [ lib_igt_xe_oa ],
+ 	'xe_oa': [ lib_igt_xe_oa ],
++	'xe_pmu': [ lib_igt_drm_clients ],
+         'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
  }
-+
-+/**
-+ * igt_drm_get_client_procs:
-+ * @card_fd: DRM device fd to query
-+ * @self_pid: Self PID to be excluded from the results
-+ * @procs: Array of struct igt_drm_client_proc holding the list of client
-+ *         processes, to be populated by the function
-+ *
-+ * Scan all processes for DRM clients using @card_fd and return the count
-+ * of client processes, excluding @self_pid.
-+ * If @procs is NULL, the function only returns the number of client
-+ * processes.
-+ * If @procs is not NULL, it points to a newly allocated array of %struct
-+ * igt_drm_client_proc.
-+ * On allocation failure, the function triggers an assert.
-+ */
-+int igt_drm_get_client_procs(int card_fd,
-+			     pid_t self_pid,
-+			     struct igt_drm_client_proc **procs)
-+{
-+	struct igt_drm_clients *clients;
-+	struct igt_drm_client *c;
-+	struct stat st;
-+	pid_t *seen_pids = NULL;
-+	unsigned int drm_minor;
-+	unsigned int seen = 0;
-+	int i, count = 0;
-+
-+	assert(fstat(card_fd, &st) == 0 &&
-+	       S_ISCHR(st.st_mode) &&
-+	       major(st.st_rdev) == 226);
-+
-+	drm_minor = minor(st.st_rdev);
-+
-+	clients = igt_drm_clients_init(NULL);
-+	assert(clients);
-+
-+	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-+
-+	if (clients->num_clients) {
-+		seen_pids = calloc(clients->num_clients, sizeof(*seen_pids));
-+		assert(seen_pids);
-+	}
-+
-+	if (procs)
-+		*procs = NULL;
-+
-+	igt_for_each_drm_client(clients, c, i) {
-+		unsigned int j;
-+		bool duplicate = false;
-+
-+		if (c->status != IGT_DRM_CLIENT_ALIVE)
-+			continue;
-+
-+		if (c->drm_minor != drm_minor)
-+			continue;
-+
-+		for (j = 0; j < seen; j++) {
-+			if (seen_pids[j] == (pid_t)c->pid) {
-+				duplicate = true;
-+				break;
-+			}
-+		}
-+
-+		if (duplicate)
-+			continue;
-+
-+		if (seen_pids)
-+			seen_pids[seen++] = c->pid;
-+
-+		if ((pid_t)c->pid == self_pid)
-+			continue;
-+
-+		if (procs) {
-+			struct igt_drm_client_proc *tmp;
-+
-+			tmp = realloc(*procs, (count + 1) * sizeof(struct igt_drm_client_proc));
-+			assert(tmp);
-+
-+			tmp[count].pid = c->pid;
-+			tmp[count].id = c->id;
-+			strncpy(tmp[count].print_name, c->print_name,
-+				sizeof(tmp[count].print_name) - 1);
-+			tmp[count].print_name[sizeof(tmp[count].print_name) - 1] = '\0';
-+			*procs = tmp;
-+		}
-+		count++;
-+	}
-+
-+	free(seen_pids);
-+	igt_drm_clients_free(clients);
-+	return count;
-+}
-diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index 946d709de..4d47c06f9 100644
---- a/lib/igt_drm_clients.h
-+++ b/lib/igt_drm_clients.h
-@@ -54,6 +54,12 @@ struct igt_drm_client_regions {
- 	char **names; /* Array of region names, either auto-detected or from the passed in region map. */
- };
  
-+struct igt_drm_client_proc {
-+	unsigned int pid;
-+	unsigned long id;
-+	char print_name[64];
-+};
-+
- struct igt_drm_clients;
- 
- struct igt_drm_client {
-@@ -119,4 +125,8 @@ struct igt_drm_clients *
- igt_drm_clients_sort(struct igt_drm_clients *clients,
- 		     int (*cmp)(const void *, const void *, void *));
- 
-+int igt_drm_get_client_procs(int card_fd,
-+			     pid_t self_pid,
-+			     struct igt_drm_client_proc **procs);
-+
- #endif /* IGT_DRM_CLIENTS_H */
 -- 
 2.34.1
 
