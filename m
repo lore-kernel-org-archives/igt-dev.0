@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CB5CD39405
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 09:39:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA75D39406
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 09:58:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E7C4310E070;
-	Thu,  2 Apr 2026 09:39:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TzlvGUjq";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73D5D10E070
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 09:39:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775122776; x=1806658776;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=U/4BHU2mqp+XfZpbvIbygVUiCAIb9NAETCrqjJ6Amjw=;
- b=TzlvGUjqr3UWCcawTGcz+Qti8app4V3r2zOyzLH+GkaUVCabhsjR1BYv
- Ys+pieyf5qEzHGzEqyUy7L5GuRX/j7UhAIKZ602jejPd3G7E5D4sdRSh1
- +6veTqd+PGK58yZDvzf0t2Lu27OIgw9bWg5XSPeLC7G9HQ5G7B+eCiKPi
- MCiReReIH+IAO3rGbbK9FRgJ8P1W8/qd6qKNjomF6Ko6p5yF+DSzBH8Kr
- d+tb2E4Ojis84Re9yEIqJi9IY3vYSDxK6yg1NQ36CB0Khci3I03XUlkk6
- q4StQIt3obuF3ynjGjLnD9ZB0X4Nu/CtUnjCJk95WAEFmmrdZ5NEGb0tZ Q==;
-X-CSE-ConnectionGUID: S8R9zbkWSeWjqp978O6vDg==
-X-CSE-MsgGUID: FKbGtq2jSe2OLDOutkObpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="87573270"
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="87573270"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 02:39:35 -0700
-X-CSE-ConnectionGUID: cxWOHukATfC512uDraoX7w==
-X-CSE-MsgGUID: MU3lAqkNTJyFkxrmGoz7Sg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="227200145"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 02:39:34 -0700
-Date: Thu, 2 Apr 2026 11:39:18 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/xe_oa: Use MAP_FAILED for mmap failures
-Message-ID: <20260402093918.nqkkr3roy6t6sfk2@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- igt-dev@lists.freedesktop.org,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-References: <20260401223215.111418-1-ashutosh.dixit@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2AC6010F1A6;
+	Thu,  2 Apr 2026 09:58:32 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51B5D10F1A6;
+ Thu,  2 Apr 2026 09:58:24 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2153927862203489290=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260401223215.111418-1-ashutosh.dixit@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Ffuzzing?=
+ =?utf-8?q?=3A_Remove_unused_variable?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik B S" <karthik.b.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 02 Apr 2026 09:58:24 -0000
+Message-ID: <177512390431.427878.17763106969477107020@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260402085039.1655070-1-karthik.b.s@intel.com>
+In-Reply-To: <20260402085039.1655070-1-karthik.b.s@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,37 +37,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ashutosh,
-On 2026-04-01 at 15:32:15 -0700, Ashutosh Dixit wrote:
-> Detect mmap failure using MAP_FAILED instead of NULL.
-> 
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+--===============2153927862203489290==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Regards,
-Kamil
+== Series Details ==
 
-> ---
->  tests/intel/xe_oa.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 387f29535e..9444f70cd6 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -4367,7 +4367,7 @@ static void *map_oa_buffer(u32 *size)
->  {
->  	void *vaddr = mmap(0, default_oa_buffer_size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
->  
-> -	igt_assert(vaddr != NULL);
-> +	igt_assert(vaddr != MAP_FAILED);
->  	*size = default_oa_buffer_size;
->  	return vaddr;
->  }
-> -- 
-> 2.48.1
-> 
+Series: tests/amdgpu/amd_fuzzing: Remove unused variable
+URL   : https://patchwork.freedesktop.org/series/164283/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8842_BAT -> XEIGTPW_14917_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14917_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_waitfence@abstime:
+    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4] ([Intel XE#6520])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8842 -> IGTPW_14917
+  * Linux: xe-4837-35370a958ae250844fbacb7a26230032a4fa661c -> xe-4840-5ab3838428d9d2baa881cb9b23a30cc77e5c893c
+
+  IGTPW_14917: 958bcb525cd315525b0919da7eb380008edbaf21 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8842: 8842
+  xe-4837-35370a958ae250844fbacb7a26230032a4fa661c: 35370a958ae250844fbacb7a26230032a4fa661c
+  xe-4840-5ab3838428d9d2baa881cb9b23a30cc77e5c893c: 5ab3838428d9d2baa881cb9b23a30cc77e5c893c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/index.html
+
+--===============2153927862203489290==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_fuzzing: Remove unused variable</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164283/">https://patchwork.freedesktop.org/series/164283/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8842_BAT -&gt; XEIGTPW_14917_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14917_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_waitfence@abstime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@reltime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8842/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14917/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8842 -&gt; IGTPW_14917</li>
+<li>Linux: xe-4837-35370a958ae250844fbacb7a26230032a4fa661c -&gt; xe-4840-5ab3838428d9d2baa881cb9b23a30cc77e5c893c</li>
+</ul>
+<p>IGTPW_14917: 958bcb525cd315525b0919da7eb380008edbaf21 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8842: 8842<br />
+  xe-4837-35370a958ae250844fbacb7a26230032a4fa661c: 35370a958ae250844fbacb7a26230032a4fa661c<br />
+  xe-4840-5ab3838428d9d2baa881cb9b23a30cc77e5c893c: 5ab3838428d9d2baa881cb9b23a30cc77e5c893c</p>
+
+</body>
+</html>
+
+--===============2153927862203489290==--
