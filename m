@@ -4,58 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80AFBD3941A
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 12:52:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ED19D3941E
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 13:07:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 32EA410F27B;
-	Thu,  2 Apr 2026 12:52:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B192C10E40B;
+	Thu,  2 Apr 2026 13:07:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lSKDyjpn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ct+L5YsV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7355110F27B
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 12:52:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 30C8B10E40B
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 13:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775134325; x=1806670325;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version:content-transfer-encoding;
- bh=tUH1qdxemWSvKuI5Tk5AReFHPp3ab07Z2MMDfqcWYM8=;
- b=lSKDyjpnlGLS1e8NSfaPO5IbkOWROvza14Q0a4U9PX8fEPD+zMAwtzNS
- zSEUuLIKeS/zeycJQzt7GN8kLsSy/61D6kG0NviOfjM/Vwr1Zes/dZYc4
- fEGJS3Ij+MWlfF1IwR4xda44YY4euxj66yDxizSa9klxKc3FK8zLUnLDd
- FBxV0SKQBEYQl/11Ez8UfGC98MVWsvV8FaA+2lnMWQYU+LWupOSCvkyCB
- NyYs0y9eZBA5tLZcF/bCTmubDqcwAOM5VasYwvgdx7+fY+NtAZHEwl7Aw
- wEXcopT87JnbeyZrJaNDISBtY6SncbdX+mNqaSZPznCo959bKMBqYwmM3 w==;
-X-CSE-ConnectionGUID: aUcr2zJ0T4qu+7F8bPOLww==
-X-CSE-MsgGUID: DwbWqJ5+TJWcdI/VfUMupQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="87585931"
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="87585931"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 05:52:05 -0700
-X-CSE-ConnectionGUID: 8aMLjO2ORW2m9meTaXohww==
-X-CSE-MsgGUID: X+amIxuISviLPuYxU6doFA==
+ t=1775135258; x=1806671258;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=xfAXup0yMdEpLNOnBrjN6jyEGPFQgrXuB5m8PVZyNt4=;
+ b=Ct+L5YsVJs+6uOWAnY7L2oYcprKhUvhSBKc5BYJR5bHWvWa5Fy5t0/cz
+ m+GLKg+scDtebYeI2SnfUWlUf1hrpvqM1OKSTzOQfy4GE9xXYHyDlPS4X
+ u5bs+Y45pu55PebMZ2b1GyKPUvM1OifOqyo9lMqkZeXpHr5Oc+m35W/i+
+ d7zzbLZq1VTOMDu5Xg3cGnHDNYepYZMPy/MLzJ8ao5F0FJPLNy4YHUtqa
+ A7lD7VDqFBp8HwtrLoihxnEE2i6SZCFC3SQhbVXGdCzqbMDn5ZobrS7z/
+ xVe8pJHBUCHaIAmdCCVFDLtky3NWYgSoC6hzVaBlph2UNI8ByuD85Z+/8 A==;
+X-CSE-ConnectionGUID: CVGfXyRrSCiytmDDYyLsbw==
+X-CSE-MsgGUID: EsgKiY48QUCVRxJ9dHV4lg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="93584978"
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="93584978"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2026 06:07:37 -0700
+X-CSE-ConnectionGUID: EjVxTUEKShS/+ed6+SHcLg==
+X-CSE-MsgGUID: JL8m9YHbR3y5Wpfz2wNdOQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="227234001"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.183])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 05:52:03 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Sowmiya S <sowmiya.s@intel.com>, igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, swati2.sharma@intel.com, Sowmiya S
- <sowmiya.s@intel.com>
-Subject: Re: [PATCH i-g-t v1] README: Document skip message format
-In-Reply-To: <20260401043317.890733-1-sowmiya.s@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260401043317.890733-1-sowmiya.s@intel.com>
-Date: Thu, 02 Apr 2026 15:51:59 +0300
-Message-ID: <27e9a4b4a37b220b0cf36901987ae7787d938922@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="222119710"
+Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2026 06:07:35 -0700
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ badal.nilawar@intel.com, kamil.konieczny@intel.com,
+ vinay.belgaumkar@intel.com
+Cc: anshuman.gupta@intel.com,
+	soham.purkait@intel.com
+Subject: [PATCH i-g-t 0/3] Guard gt-c6-idle test against busy DRM clients
+Date: Thu,  2 Apr 2026 18:30:23 +0530
+Message-Id: <20260402130026.2687520-1-soham.purkait@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,77 +68,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 01 Apr 2026, Sowmiya S <sowmiya.s@intel.com> wrote:
-> Add a concise guide for writing consistent, machine-friendly skip
-> messages in IGT tests. Defines the format:
->
->   SKIP: <reason> [(<context_type>: <value>)]
->
-> along with common context types, example messages and a code snippet.
->
-> Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
-> ---
->  README.md | 37 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
->
-> diff --git a/README.md b/README.md
-> index b4b9a37ea..a652cc0d1 100644
-> --- a/README.md
-> +++ b/README.md
-> @@ -188,3 +188,40 @@ Imported non-DRM uapi headers from airlied's drm-nex=
-t branch.
->=20=20
->  Then, commit with a note of which exact commit from airlied's branch
->  was used to generate them.
-> +
-> +Skip Message Format
-> +-------------------
-> +
-> +Keep skip messages consistent and machine-friendly. Use this concise
-> +format and include a single, most-relevant context when available:
-> +
-> +- Format: `SKIP: <reason> [(<context_type>: <value>)]` (always end with =
-`\n`)
-> +- Rules: start with `SKIP:`, use a short lowercase `reason`, include at
-> +    most one `context` in parentheses, use `0x%llx` for modifiers, and
-> +    do not add a trailing period.
-> +
-> +### `Common context types and examples:`
-> +
-> +- `connector`: display connector name =E2=80=94 `(connector: HDMI-A-1)`
-> +- `plane`: plane type =E2=80=94 `(plane: primary)`
-> +- `format`: fourcc format =E2=80=94 `(format: NV12)`
-> +- `modifier`: buffer modifier (hex) =E2=80=94 `(modifier: 0x%llx)`
-> +- `pipe`: pipe id/name =E2=80=94 `(pipe: A)`
-> +- `platform`: GPU/platform name =E2=80=94 `(platform: i915)`
-> +
-> +### `Common concise messages:`
-> +
-> +- `SKIP: no suitable connector available`
-> +- `SKIP: connector is disconnected (connector: %s)`
-> +- `SKIP: no suitable display mode available (connector: %s)`
-> +- `SKIP: format not supported (plane: %s, format: %s)`
-> +- `SKIP: modifier not supported (modifier: 0x%llx)`
-> +- `SKIP: plane not available (plane: %s)`
-> +
-> +### `Example usage:`
-> +
-> +```c
-> +        igt_skip_on_f(!fmt_supported(plane, fmt),
-> +                            "SKIP: format not supported (plane: %s, form=
-at: %s)\n",
-> +                            igt_plane_name(plane), igt_format_str(fmt));
-> +```
+      The gt-c6-idle subtests are sensitive to unrelated
+DRM clients on the same card. When other processes keep the device busy,
+the measured engine activity can be higher than expected and trigger
+false failures.
 
-"SKIP:" comes from the plumbing already, doesn't it? There's no point in
-having every igt_skip* call in the codebase add that.
+This series improves the robustness of the subtest by first introducing
+a helper to enumerate DRM client processes associated with a given card
+fd, and subsequently using it in gt-c6-idle test to detect competing
+clients triggering a warning, and skipping the test.
 
-In general, you'd do well to document current usage first, and then
-suggest changes. Writing a wishlist documenting what you'd like to see
-is not going to make it magically happen.
+Soham Purkait (3):
+  lib/igt_drm_clients: Add helper to list and count the DRM client
+    processes
+  tests/intel/xe_pmu: Add check for the other drm clients using the
+    device
+  HAX: Add gt-c6-idle test to xe-fast-feedback.testlist
 
-BR,
-Jani.
+ lib/igt_drm_clients.c                    | 93 ++++++++++++++++++++++++
+ lib/igt_drm_clients.h                    | 10 +++
+ tests/intel-ci/xe.fast-feedback.testlist |  1 +
+ tests/intel/xe_pmu.c                     | 27 ++++++-
+ tests/meson.build                        |  1 +
+ 5 files changed, 130 insertions(+), 2 deletions(-)
 
---=20
-Jani Nikula, Intel
+-- 
+2.34.1
+
