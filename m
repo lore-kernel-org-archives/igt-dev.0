@@ -4,56 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51722D3941E
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 13:08:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1644DD39420
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Apr 2026 13:20:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1B6110F199;
-	Thu,  2 Apr 2026 13:08:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B39A310F09F;
+	Thu,  2 Apr 2026 13:20:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TU2UPmj4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LMa2r6KI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7736910E40B
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 13:07:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9D0E10F09F
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2026 13:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775135265; x=1806671265;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=uqKrRfN/cwppYEtU0EojbzyRw8KucIQ8lp+7a8Vyg3U=;
- b=TU2UPmj4vsKTgbm5aIcl22+5cpMN2rUujSETOVMX7K+BViRWZ3o3CEHH
- CiayVbcUvugQ/y51xnn6RXWeU0JuCvsWaBx4CbNFJB6geD9Wg3Agx1IbP
- PWQNV9nU+0hU1j8d457IvmSkmeEkK9MJNUJ5Qfq46sMbW5+2At9TlcvDO
- tgt+tME5jP/3hYRcjFMRZe1+ge7COmweJIs2QSnjGWQNMHOF8fbXB5XHw
- IQSnXzfSp1qhNrYD4qCyntbLfAhSSpajTP3lRO/wIkDhOHIq6+nShd+aG
- jN8ZZp1SRZ5qFkZcRRX/xlV+x5de1Zox3loID4qJSPR5Tp5mjjA+sOP/Y w==;
-X-CSE-ConnectionGUID: YaAijwE+SM6n8uzlL0HXfg==
-X-CSE-MsgGUID: PPX5Jp0nRLCshep3NkoXbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="93584993"
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="93584993"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 06:07:44 -0700
-X-CSE-ConnectionGUID: EpZlLyTkSuig+37egf4DJw==
-X-CSE-MsgGUID: p5RbzxMXQH+J/6ddxM5rlw==
+ t=1775136018; x=1806672018;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BNI87r22JLrBNDBh6dZl9JC1jDj+9Ua4Fs64i4UGBqM=;
+ b=LMa2r6KIs8e0J7IsjmUTgYCxRyUG//tDUxmYzDyR4nnXxUKeCvdgzmvM
+ 4W45Z5dqaIt/r8vWTQwzJAaEs1MRj31b1sP+4I0B+aVT/pkCL3pkVhtiA
+ Zur2tnXgqXHzAHU+sbAxNQO+lPL/UZhu1SoY/62bBdpb4+WYjS6e/dmwV
+ l7GwmpmQfK06+ak2zvA2kWh9+VdaamQadjt1ZFgyRkMRzwWqPu2cJ5Pf7
+ xWTLi8AjKyEWRi6YthZCM5LJu+fYBhAgVtWQXP5so0nVFywLrtAVZp3MX
+ wD5b6uaUW8kuJvf5uXNJSzj1R1HKmFgGDD4wwwmzjsfahf02IEPhicu+M Q==;
+X-CSE-ConnectionGUID: EKykJI4LR7uUxiOsR+/4RA==
+X-CSE-MsgGUID: twRAZvjFRE2+ur7mSGs4vQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="86894501"
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="86894501"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2026 06:20:17 -0700
+X-CSE-ConnectionGUID: Hw0PfHhTSjufmy8l1J0jcw==
+X-CSE-MsgGUID: 8q3XXm49S4yNbn8Hn5Fffg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="222119748"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 06:07:42 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, kamil.konieczny@intel.com,
- vinay.belgaumkar@intel.com
-Cc: anshuman.gupta@intel.com,
-	soham.purkait@intel.com
-Subject: [PATCH i-g-t 3/3] HAX: Add gt-c6-idle test to
- xe-fast-feedback.testlist
-Date: Thu,  2 Apr 2026 18:30:26 +0530
-Message-Id: <20260402130026.2687520-4-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260402130026.2687520-1-soham.purkait@intel.com>
-References: <20260402130026.2687520-1-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; d="scan'208";a="231036875"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO
+ mpatelcz-mobl.intel.com) ([10.245.245.90])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2026 06:20:16 -0700
+From: Maciej Patelczyk <maciej.patelczyk@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: piotr.rudnicki@intel.com,
+	Maciej Patelczyk <maciej.patelczyk@intel.com>
+Subject: [PATCH i-g-t] drm-uapi-experimental/xe_drm_eudebug: Adjust definition
+ in xe_drm_eudebug.h
+Date: Thu,  2 Apr 2026 15:20:04 +0200
+Message-ID: <20260402132004.1712065-1-maciej.patelczyk@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,25 +68,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add gt-c6-idle test to xe-fast-feedback.testlist
+Adjust the IOCTL numbers an exec_queue eudebug extension number to
+match drm-tip.
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+Signed-off-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
 ---
- tests/intel-ci/xe.fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+ include/drm-uapi-experimental/xe_drm_eudebug.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
-index acff025fa..be41e438b 100644
---- a/tests/intel-ci/xe.fast-feedback.testlist
-+++ b/tests/intel-ci/xe.fast-feedback.testlist
-@@ -163,6 +163,7 @@ igt@xe_mmap@cpu-caching
- igt@xe_mmap@system
- igt@xe_mmap@vram
- igt@xe_mmap@vram-system
-+igt@xe_pmu@gt-c6-idle
- igt@xe_pm_residency@gt-c6-on-idle
- igt@xe_prime_self_import@basic-with_one_bo
- igt@xe_prime_self_import@basic-with_fd_dup
+diff --git a/include/drm-uapi-experimental/xe_drm_eudebug.h b/include/drm-uapi-experimental/xe_drm_eudebug.h
+index 8e74ced2f..a1733f543 100644
+--- a/include/drm-uapi-experimental/xe_drm_eudebug.h
++++ b/include/drm-uapi-experimental/xe_drm_eudebug.h
+@@ -19,9 +19,9 @@ extern "C" {
+  */
+ 
+ /* XXX: BEGIN section moved from xe_drm.h as temporary solution */
+-#define DRM_XE_EUDEBUG_CONNECT		0x0f
+-#define DRM_XE_DEBUG_METADATA_CREATE	0x10
+-#define DRM_XE_DEBUG_METADATA_DESTROY	0x11
++#define DRM_XE_EUDEBUG_CONNECT		0x10
++#define DRM_XE_DEBUG_METADATA_CREATE	0x11
++#define DRM_XE_DEBUG_METADATA_DESTROY	0x12
+ 
+ /* ... */
+ 
+@@ -54,7 +54,7 @@ struct drm_xe_vm_bind_op_ext_attach_debug {
+ 
+ /* ... */
+ 
+-#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG		6
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG		7
+ #define     DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE		(1 << 0)
+ 
+ /* ... */
 -- 
-2.34.1
+2.43.0
 
