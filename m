@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CE64D6AAFA
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Apr 2026 01:41:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76F53D3940A
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Apr 2026 01:41:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3EB3710F386;
-	Fri,  3 Apr 2026 01:41:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2CA1F10F394;
+	Fri,  3 Apr 2026 01:41:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QMxv4Cpc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K5s9j1EA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EC7410F362
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58B8010F333
  for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2026 01:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1775180444; x=1806716444;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ADD8pPnSpGvNOSR9cQkMOAFdiz+mZcgxywv8cD8y0SU=;
- b=QMxv4Cpcw1BIES6hi08/i3dSw9zYyYy4bj89+GrwDw8BLso+u1fhQUoI
- ExB2xOxTjNwewqQlYDSOhNU/BkRgLzMKXTy+L1KRUNvb7xJDu9h9D6ojD
- QGiEIfy8N/DkEIXPsFprY90C9JgbKxt5U+5ip18WYHVk3+prXhdYqHVJ/
- e1HrL1Kf0PqSNherpPie4sotV0o6elVVTSChGL6SaILfPZS4QY+HJB88B
- bjVEBkvifpI1yVt1QTL7lK++ZTJ2FLosAOUM6MupIo0jGZj74KE+qzRYQ
- fs42ij9Mj/f/6HYgcqVQFjpQGDZxlZ108J+RlNdoq1eka46IFf2HqKt4w g==;
-X-CSE-ConnectionGUID: YtTBzB8lQ2ankGwFzJQyYQ==
-X-CSE-MsgGUID: u+skBAvWQ162BY87vWBj1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="98861874"
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="98861874"
+ bh=Xdc+TnegXXE7NFSSarjILyuaYbZS3XAiqBPqXqUrvUQ=;
+ b=K5s9j1EAx12z/oWlexOAjUw0hHCB8jRI8lh3eMoxtFLHGxloFgq0STIW
+ 59iz9yRw84Xf0S9rhs4GdOHq45GgU2fYEDs1VODq6T4Xm7/f/6WJPp90T
+ e5foNY0jFuEuhhMPVfK5igQMF2OknwocpjPAcdkWOnmKnNnnCNTleH2QW
+ 9RDyIyY32LUV2Inr9Pat9DHnuYUdacE30TbK5Vhb/JabMJzVaXlKHR9Qk
+ aO6Za8fRuX8nUYv7DUrgvT14ordfWr+5V5f7ANkwsBO9QgMG4vxRJG8RT
+ atuxEf24hlkGTXl/uVPkf7PIPzeWwfCjJ48xc25x+6KB5TmjzLl96+sG7 g==;
+X-CSE-ConnectionGUID: frlnl/vlRuquqw1osRbzpg==
+X-CSE-MsgGUID: qJflO6XuQo+vRAYTyScCPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="98861873"
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="98861873"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Apr 2026 18:40:43 -0700
-X-CSE-ConnectionGUID: G4V+eCl3Tx6HZ0Pi2QfVUg==
-X-CSE-MsgGUID: UocwTgPzRYaVAWY3KwR9BA==
+X-CSE-ConnectionGUID: pTb0zFKSRmG1gUvpHwpvyg==
+X-CSE-MsgGUID: QRtwgaIVTwmyXbD8glQeyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="224291589"
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="224291586"
 Received: from xwang-desk.fm.intel.com ([10.121.64.134])
  by fmviesa008.fm.intel.com with ESMTP; 02 Apr 2026 18:40:41 -0700
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Xin Wang <x.wang@intel.com>
-Subject: [PATCH 5/5] tests/intel: skip multi-LRC tests for engine classes that
- do not support it
-Date: Thu,  2 Apr 2026 18:40:40 -0700
-Message-ID: <20260403014040.310758-6-x.wang@intel.com>
+Subject: [PATCH 4/5] tests/intel/xe_exec_multi_queue: fix expected error for
+ parallel queue creation
+Date: Thu,  2 Apr 2026 18:40:39 -0700
+Message-ID: <20260403014040.310758-5-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260403014040.310758-1-x.wang@intel.com>
 References: <20260403014040.310758-1-x.wang@intel.com>
@@ -67,89 +67,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-xe_engine_class_supports_multi_lrc() now queries the kernel-reported
-capability via debugfs.  Guard the balancer and multi-LRC codepaths in
-xe_exec_balancer, xe_exec_reset, xe_exec_threads and xe_drm_fdinfo with
-this check so that tests are skipped rather than failing on engine
-classes whose hardware does not support multi-LRC submission.
+Multi-LRC capable engine classes (vcs, vecs) are able to process the
+multi-queue create request and reject it with -EINVAL when num_placements
+is greater than 1.  Engine classes that do not support multi-LRC cannot
+form a parallel queue at all and return -EOPNOTSUPP instead.
+
+Use xe_engine_class_supports_multi_lrc() to pick the correct expected
+error code rather than hard-coding -EINVAL for every engine class.
 
 Signed-off-by: Xin Wang <x.wang@intel.com>
 ---
- tests/intel/xe_drm_fdinfo.c    | 2 +-
- tests/intel/xe_exec_balancer.c | 6 +++---
- tests/intel/xe_exec_reset.c    | 2 +-
- tests/intel/xe_exec_threads.c  | 1 +
- 4 files changed, 6 insertions(+), 5 deletions(-)
+ tests/intel/xe_exec_multi_queue.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 411ca6ec4..3c113ed5d 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -673,7 +673,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
- 	igt_assert(virtual ^ parallel);
+diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
+index b5ded0633..dca791fb5 100644
+--- a/tests/intel/xe_exec_multi_queue.c
++++ b/tests/intel/xe_exec_multi_queue.c
+@@ -113,7 +113,8 @@ __test_sanity(int fd, int gt, int class, bool preempt_mode)
+ 	/* Multi-Queue can't be a parallel queue */
+ 	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
+ 	if (n > 1)
+-		igt_assert_eq(__xe_exec_queue_create(fd, vm, 2, 1, eci, ext, &val), -EINVAL);
++		igt_assert_eq(__xe_exec_queue_create(fd, vm, 2, 1, eci, ext, &val),
++			      xe_engine_class_supports_multi_lrc(fd, class) ? -EINVAL : -EOPNOTSUPP);
  
- 	num_placements = xe_gt_fill_engines_by_class(fd, gt, class, eci);
--	if (num_placements < 2)
-+	if (num_placements < 2 || !xe_engine_class_supports_multi_lrc(fd, class))
- 		return;
- 
- 	igt_debug("Target class: %s\n", engine_map[class]);
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 9cd641b4e..3c6ec45f1 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -57,7 +57,7 @@ static bool test_all_active(int fd, int gt, int class)
- 	int i, num_placements;
- 
- 	num_placements = xe_gt_fill_engines_by_class(fd, gt, class, eci);
--	if (num_placements < 2)
-+	if (num_placements < 2 || !xe_engine_class_supports_multi_lrc(fd, class))
- 		return false;
- 
- 	vm = xe_vm_create(fd, 0, 0);
-@@ -187,7 +187,7 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
- 
- 	num_placements = xe_gt_fill_engines_by_class(fd, gt, class, eci);
--	if (num_placements < 2)
-+	if (num_placements < 2 || !xe_engine_class_supports_multi_lrc(fd, class))
- 		return false;
- 
- 	vm = xe_vm_create(fd, 0, 0);
-@@ -402,7 +402,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
- 
- 	num_placements = xe_gt_fill_engines_by_class(fd, gt, class, eci);
--	if (num_placements < 2)
-+	if (num_placements < 2 || !xe_engine_class_supports_multi_lrc(fd, class))
- 		return false;
- 
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 7aaee31dd..95191139d 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -184,7 +184,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		fd = drm_open_driver(DRIVER_XE);
- 
- 	num_placements = xe_gt_fill_engines_by_class(fd, gt, class, eci);
--	if (num_placements < 2)
-+	if (num_placements < 2 || !xe_engine_class_supports_multi_lrc(fd, class))
- 		return;
- 
- 	vm = xe_vm_create(fd, 0, 0);
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index ab9565beb..7b8100c5b 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -85,6 +85,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	num_placements = xe_gt_fill_engines_by_class(fd, gt, class, eci);
- 	igt_assert_lt(1, num_placements);
-+	igt_assert(xe_engine_class_supports_multi_lrc(fd, class));
- 
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = xe_bb_size(fd, bo_size);
+ 	/* Specifying multiple MULTI_GROUP property is invalid */
+ 	multi_queue.base.next_extension = to_user_pointer(&multi_queue);
 -- 
 2.43.0
 
