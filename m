@@ -4,60 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F82D730A2
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Apr 2026 06:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38AF5D730AC
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Apr 2026 07:00:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C68A610E449;
-	Fri,  3 Apr 2026 06:43:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C17E310F2D6;
+	Fri,  3 Apr 2026 07:00:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i502FRbq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ASqNwiGp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0909E10E43B
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2026 06:43:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41A8D89453
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2026 07:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775198628; x=1806734628;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=f+F57ZJjGwzpBCXOjFjitpVJv79jEa7Ss0JhoS+FBHo=;
- b=i502FRbqUTCE1BfmYqWAPpPOkbTJVzfkiP1gI2DgG/60mZfr1bznkRsf
- RiXdoJF2VUpDJncVq1m1N3nBVN1utfacjs6a2jpnlds+ZAHWhqotvIlyY
- W4YVFA457z9urokK4Jrfj527X+usv8/aTjHUuZyLAzVqSu9pe1BW/AVhk
- i7VNtJtnmoGP6M1Np0NaAG2FWaXaUYta2v6jODZlljN2umS7NXVqiBdKx
- td4UGAFNg0Vs8EmO7Y/OUCbQG9BAUQr+Cnny/Hvs1e9O4VvycKQU6muoI
- 2n7IIr02eklTxypI9+SRVfCEk8mELgil+Y9HumW4mPmSVXA25DY88HqSM w==;
-X-CSE-ConnectionGUID: vdjEpcXMTCKZNl+gaUEjrA==
-X-CSE-MsgGUID: LJikJBUHSneaX1A1dGJ8pw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="93659161"
-X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; d="scan'208";a="93659161"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 23:43:47 -0700
-X-CSE-ConnectionGUID: iAHz5P3vRz+dqz6Zpq9eOA==
-X-CSE-MsgGUID: auUCOgb+RHOCXoFMvC715g==
+ t=1775199615; x=1806735615;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=LNC4KnNbe8hyAVYl1bD1SmP2CsYYskIlSMkYAYTkT2k=;
+ b=ASqNwiGpw9Ag6HLMeesjv/R7eE1q/W0YcUFij3zN/hhQlS43FTTQRMHz
+ hpdVXA6dj0d17RKg4S+RxILRCDZNkS2Z0p+VeiZzZw1Ru0woBdNTL8Qpn
+ kwXBC50N/+gQG8IUjUPU0dftqvO4q2E/vPwm7qV37zWvELckLVSS7Qpm2
+ tFPd6HSDtR10RtOAw/PBAHVdFKjpD3I5Zdfx83ZvrVU+i7jylM7aFOTLm
+ hNQgeMOLKPeiVUFH/07TPds0u9VeglxsNT5EIVRQTjBcvEZ7e85hJ+dRG
+ /iWcrhY1LzhkPtMu0pvhg8vRsPwMzq6Q1sXjcrWTVw6npAH6rExIHFeiu g==;
+X-CSE-ConnectionGUID: 9sP1qGIsRq2fomzO0vt/IQ==
+X-CSE-MsgGUID: yybh7rzsTwOc9zCI21ic4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="80123149"
+X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; d="scan'208";a="80123149"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2026 00:00:14 -0700
+X-CSE-ConnectionGUID: wc85LtEGRR6+98emDH1IVQ==
+X-CSE-MsgGUID: 3m47JJQvRjW3FOUlHjEg/w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; d="scan'208";a="222335041"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.154])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2026 23:43:45 -0700
-Date: Fri, 3 Apr 2026 08:43:42 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karthik Poosa <karthik.poosa@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com, 
- badal.nilawar@intel.com, riana.tauro@intel.com, rodrigo.vivi@intel.com, 
- matthew.auld@intel.com, raag.jadav@intel.com
-Subject: Re: [PATCH i-g-t v1 1/1] drm/xe/xe_pm: Have high VRAM usage during
- system suspend
-Message-ID: <f4q7luk2x6mipt4cm2kgi7mdjtkegb7dfvmzh62ri7rymaa35l@hgtci7p7un67>
-References: <20260331181356.4133309-1-karthik.poosa@intel.com>
- <20260331181356.4133309-2-karthik.poosa@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; d="scan'208";a="265115990"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2026 00:00:14 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 3 Apr 2026 00:00:12 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 3 Apr 2026 00:00:12 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.23) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 3 Apr 2026 00:00:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ieYRurTZDsTcpQ8NyLSocjo89GcjGR5aXGMlW4qb6/YbwetQYioQjz5/bTUCGxGPns8CuAsdyXBUC98PoIK4NpARgzNg3XeAsthOwerjtiyrefgmTSfyvs2te52lTdqyHhpanf9H2aOEcELvbYk/1rynDVVuU54MaKuOstn7oUMgftTw1hX6PcISc0yxInb4F66BlPn30Gkc2JVgonkzTBfiVD5OYSqHw08Insp07KhKfvgyAgvzGDC/ByY6hFbrlusqjIM5GHpOEvKqNJt800c/3Xn6agP9oI6STYtwj/non0qAE4pwWha0NeTnUmdKz4Scq/cYHl2ZQYd3Elw26w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AhV4EtdOvpjxcI21lAbs5utLerrqdK13LsKKDUR57v4=;
+ b=VEfxR72h8D/oEat5x+Kj+FoOGCoSBWz87e3N7anHnZQ0NZQ8EmDuAdqO6USL3pr5XQYW/duLu+SHCvg2r8KBbJK5wQI8YFG/fiVwSLfs9Sq0Lvh2+G/XCKtuZbfHhwE8b63UuD6Mzxz5+yQvV4BgRzedMzhlLhrjz17uAJuyJMcO1vR9K1cXu1AwBSTtO97DJlq3f51Ji9SApAbYIbSVlkPwOmh5SrLJaEU4zunpydmGvIvtkfBDPPf8wdDbJ7YGin63oWn8jIzDo8g80xk4EI87GDafOZTi9GQ1QJUFPyhiHm7epedkcZZViR2AQluS6q7KRbq+ElwJZCxfHkCenw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA3PR11MB8046.namprd11.prod.outlook.com (2603:10b6:806:2fb::22)
+ by PH7PR11MB6857.namprd11.prod.outlook.com (2603:10b6:510:1ed::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Fri, 3 Apr
+ 2026 07:00:10 +0000
+Received: from SA3PR11MB8046.namprd11.prod.outlook.com
+ ([fe80::87cd:16d5:8dbe:2286]) by SA3PR11MB8046.namprd11.prod.outlook.com
+ ([fe80::87cd:16d5:8dbe:2286%4]) with mapi id 15.20.9769.020; Fri, 3 Apr 2026
+ 07:00:10 +0000
+Message-ID: <9a7334ec-27ac-4245-9916-0c993f15506e@intel.com>
+Date: Fri, 3 Apr 2026 00:00:09 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] tests/intel/xe_exec_multi_queue: fix expected error
+ for parallel queue creation
+To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20260403014040.310758-1-x.wang@intel.com>
+ <20260403014040.310758-5-x.wang@intel.com> <ac8yY4EbPkjA1XnG@nvishwa1-desk>
+Content-Language: en-US
+From: "Wang, X" <x.wang@intel.com>
+In-Reply-To: <ac8yY4EbPkjA1XnG@nvishwa1-desk>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260331181356.4133309-2-karthik.poosa@intel.com>
+X-ClientProxiedBy: SJ0PR13CA0032.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::7) To SA3PR11MB8046.namprd11.prod.outlook.com
+ (2603:10b6:806:2fb::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR11MB8046:EE_|PH7PR11MB6857:EE_
+X-MS-Office365-Filtering-Correlation-Id: cfb593f6-4006-4e97-e2c2-08de914ea57f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|42112799006|366016|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info: hA1jCgH1XSJsXNjzWi4vtVpIeerQp22VhqohEtZXN/oJ6LoCPrmSpu+WMehTBpCwyLRXd6waOVYO/LfLZtf/YJ3tPK44UiEqicpcuHr98c1rfU78T4CgxeoKyPwWIdudqhre7i6/RcKQGLHYsaWRQfL1cS6JFum//+GVzjzqeEGLDHIDmzUEwqPrMrEs+Um8cbKnz5z8tTMBJt9kXmiDAEzFw4wBvvop1f5r0qBaPjYG7nzNOBlZjq4gtdqrVUsKNObOyfP3b2vTH+5n3gjpaJW4zYo9UROTrLkKXJH480pQgHmglsadFUrKnNou3t5tfxddCN1BK/6USSyp18iRTL5Z7Cs9txKS0hxpMw38D3/IWUJk2I8LfsEOYI2SUI0T5RxnnFmSROOpsYbXl+Z8lJz+5s6cLYzitfcSiAUH3VVOOaOwjiwuU6mLD/k0SJJ3X2jSFLpbGGyBeIpCyRCcIuvqnqX/F5r+M8EhIwbEfV2zKaVXENRnL9X0EI1gZ+1hwCCCqgbuvix+Ve7yFT9tNczibs7vFu3r8c0hsKwOlbyhU85Q3q8ZbPF6ulb7z0buaeWN2pAUU5m04RgE2d/50/Whw/cerFWEqKE9dhhCncTLyKw5KI6AlWgk7SfTBbDO5GrcWa1aFRpBMzMOB4SGTDpy/RyppBENMqhk5nm5rIBATxrfWFzl9pel3gvOqm4mmgOPE7h9w/lSKLns1e4yE08EUPP62SeC8Txt+/k+yxs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA3PR11MB8046.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(42112799006)(366016)(18002099003)(56012099003)(22082099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bXNscjh0a3B4TFhVdWVSdk5kSkZsWVdDaEg1SEtaZ0hrQXVZMWhLUUtNZ0Vq?=
+ =?utf-8?B?VFJvUm5idkM2eWdMZlV2Nk50N0RxQi9Md3V0Ylk4N3RQZ0d5dFBMeXZvZlJO?=
+ =?utf-8?B?bHpzakd6SEIrLzRBaWMwdlpMQ1JMK1hsbkhlS1hsalVxKzBkV284cnJESGlV?=
+ =?utf-8?B?STU2WFFnUFFxeE1ud3hzc3daVUtaSndlblZVaFl3ajJFV3Rva2QwMFVlM3VI?=
+ =?utf-8?B?dklDb0M2ZExtNEVucE1pWFE4cGI0ek56RUJyZU00YWFXbTIrWXE5S3VYT0dI?=
+ =?utf-8?B?WjhXcDJDblFIR2lhZVEyVXFKUEVJREptWmZSeTNUNStNYmxjSWQ5ckFiVkJT?=
+ =?utf-8?B?bjAyWFhpc0lxTkxkYXo4RUZDRWt5MTBQaGhXS1huYkRoTXkra3BMaEVnUlBa?=
+ =?utf-8?B?YnpVR2FRRm5udmVpZ1I5NC82NWd4L3NaZ0lGcXg5SHJrRW5ld0cwdVNMSm4x?=
+ =?utf-8?B?SXpvR0xldWFQOXA5ZVlUWmNKOHlwdWpBNTkwbjlYVzEyOGJWZkZwSkRYRWg5?=
+ =?utf-8?B?YWxuQjV3ZzNTWlBQcE0yNm0wdS9HVytrUzFOeER3SFk1MmZzeWRuZ3hXeEp1?=
+ =?utf-8?B?MkEvU2pHbm1Ra3YzUS9kTFMwcndYOTFCbUU3K3VGTUtXWEhEYm0yaW9tUE9K?=
+ =?utf-8?B?MDZYaXRqQkhSR0tVVnpxdmJnYnVoTEI5RytVN1U1SXBBci9oTDlzS28wMW5F?=
+ =?utf-8?B?QktZdUR0NTlCYmdpcWVNVk85d24zSjdGQjJnMG5BQjlrcFEreXNWdFdyRDhi?=
+ =?utf-8?B?YnF6MGpkOGZkYTBObVY3QklWQVhWM1UrR3kvZkp4NktiK1ppcUROUFpuMUJx?=
+ =?utf-8?B?UVkxQm1JOHFHd1NiMUgxTjNOR1RDTSszTnJYYnpqeWNlNkhGU2U0ZjMvRWhx?=
+ =?utf-8?B?VXdwYnlYOVNURnFueEpjemMyK2hrSTJaZTV6TFQwZWNsNnRDT284QmRpSDgw?=
+ =?utf-8?B?eWVVdXZUYVljWFNyOTRrWjIrdGxLYVpZZXhwc3ZYR2RKSnBEUlg1VjUrOW1X?=
+ =?utf-8?B?Yng4QWpFbzZ5R0NtaXUrT3pwL01CWTlPOWR3bE1TWllCblJ3T080WjhlbnRs?=
+ =?utf-8?B?N01tWlJZMzVKSkVKdThYcEJYczJrM1Y0ZlNlM1cxWGU5T3BwNkUxTW8rTnk1?=
+ =?utf-8?B?VFNJWHowMndlWDk1R1k2QUN5alE5eG52VkpiQVZPWUlSNVcxSURLVzZYWjBy?=
+ =?utf-8?B?aCtxRzI1djZoOGh5U0VLeGFMdzN1d2hhK0UyNDNZZEhtRHFvcTYxUE5hU1BC?=
+ =?utf-8?B?UkJQQTlnOXIvWXAwdERaajRUUytTanZsY3F4Y0JBYisxcE05RXdZV1pTaFFE?=
+ =?utf-8?B?N2JqbkFrTHRXMm43TGZienUzNWJYMis4L2pHRURROTlteTZRb00rSzVKZzJF?=
+ =?utf-8?B?QlZGTnVRbmk5VjNHZU9BSG1WOUM2S1lReDRyUHp2UG1CQ3lFcWRxaXFaWFdL?=
+ =?utf-8?B?cHRyVi9Idko0OUlzY2NheHRHZksydFM2SUxZNCtpUE9TK0w0cDQvTVRIbm5H?=
+ =?utf-8?B?YUV0ZTdDb0U2aURiOTZMci9XU20wNnhVQUszSWxaSXMzYmVjQkNTUDFZV3B4?=
+ =?utf-8?B?THI1SFVsUGZzeFNpTTJmWW1NcHQxMUgvbUR3cTFodW9oeXZUT3pIM2FUc1p1?=
+ =?utf-8?B?WjN4cHppcHE3R0pUeGVoaktuTlI5YWRNYTFmRllJQ3dHdjRiek1GK05ueVI2?=
+ =?utf-8?B?OENqVFpNTWhOd0lJOW41dmJIc2xabldkZUlIWmVYTlZGemV2aDFrSUlEWXpm?=
+ =?utf-8?B?TThBdXJtYWozNDlaTUhnOHVDN2c3T2VvMUxZVVg0c3JzNWtkM3EvK0NqTmxm?=
+ =?utf-8?B?eDVTajViTSsyNE43eUh6QWJ0NFF6RnNnR3J3UHdwSEFsUXdPQVVkVGxWSDhh?=
+ =?utf-8?B?alZ5NWh4VktkUUFzVjVFanBPM3FOOTR4d3ZIMGxCcDdQQ3dPa3p3aWtXWFlW?=
+ =?utf-8?B?UHRoYzVBOFlnVElCL1k4dFlHelc1ZXN5QTlwbzVzWHpWZ2lmTERrMDJ0WmN0?=
+ =?utf-8?B?aDV0eGRJS0FaK2RzNGlRUnlXVFpoVDJialR6Um1TdmdUTDRNbHNTWUdleFdP?=
+ =?utf-8?B?NitFQSt1Z2pHZ0F2TjdPRVNoeEp4d3FlSkZsUkxQQUF5Q2hWK0hqU3JYTFkv?=
+ =?utf-8?B?TEZnVVdETG9QUXg4SW1kWWREb1hjdkM2Y0tXaXM4UVQyRXdvTGI4YnJOMlht?=
+ =?utf-8?B?RENvRFZnbVlmYzd5WWRNS2ZCY0w2bkg2VkVNL2JicmhqaENqMzFDKzBETHJ0?=
+ =?utf-8?B?elZKN0hteFUybmF6VlJsdTZMM2VSK2xKczJQdDZRVVQvMzh5dU9kZWluVkpl?=
+ =?utf-8?B?b2t4Q2xkS1kwUG9hVUQ5djBaQm14WVhWc2QwNisvY3NsT3BvQll1Zz09?=
+X-Exchange-RoutingPolicyChecked: HCfAXuQ+CiF4sfebYDtmdpM5FxuLslJkvIdyd5oM95o1+S5lLt3iiyOrwdYH/PjPa3UQ1IWt0D/noiG4/67dv3s0UFaE7L56zhliviB/tBa6L4aXFpWmRPbJ9v6KyGynDwVAq2g49afOjG7wk+wPfSHbUklPkXAeAOmFJR5m4/tJ+XNM6l4V5wKCGg32cQtcHlDrpFs8P9/x4POiH3Ot1HJ02dFxT+vLV/YcvYsuu3Oy2nKg/Ce08QnKmKbTaHLItCWZay8he+AvJtt+/DnDfh06rvZvugJ9PSmIgShUVusAtjQwrpo+u5pJ6DvhENFR6xKZtjPzYbU97PL+VntaQQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfb593f6-4006-4e97-e2c2-08de914ea57f
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB8046.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2026 07:00:10.4929 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BAWdK5XApt3dIzYBs6IJwgltpKsy87bhpjCgBYdsoez++dn0UmuPd1+jUSzpiOwz0Hj9SRvJCLhNceU/uXkD5g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6857
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,161 +170,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Mar 31, 2026 at 11:43:56PM +0530, Karthik Poosa wrote:
-> Create high VRAM usage by allocating a large BO prior to system suspend.
-> This increases eviction time, helping to expose any unknown issues in the
-> suspend‑resume flow.
-> 
-> Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
-> ---
->  tests/intel/xe_pm.c | 86 +++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 84 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 54f2e9d18..bff3b1cac 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -69,6 +69,8 @@ static pthread_cond_t suspend_cond = PTHREAD_COND_INITIALIZER;
->  static pthread_mutex_t child_ready_lock = PTHREAD_MUTEX_INITIALIZER;
->  static pthread_cond_t child_ready_cond = PTHREAD_COND_INITIALIZER;
->  static bool child_ready = false;
-> +uint32_t *map_large_buf;
-> +uint64_t buf_size = 0;
->  
->  typedef struct {
->  	device_t device;
-> @@ -871,6 +873,75 @@ static void i2c_test(device_t device, int sysfs_fd, enum igt_acpi_d_state d_stat
->  	close(i2c_fd);
->  }
->  
-> +static void alloc_large_buf(int fd_xe)
-> +{
-> +	struct drm_xe_query_mem_regions *mem_regions;
-> +	uint64_t vram_used_mb = 0, vram_total_mb = 0;
-> +	struct drm_xe_device_query query = {
-> +		.extensions = 0,
-> +		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
-> +		.size = 0,
-> +		.data = 0,
-> +	};
-> +	uint32_t bo, placement;
-> +	int i = 0;
-> +
-> +	igt_require(xe_has_vram(fd_xe));
-> +	placement = vram_memory(fd_xe, 0);
-> +	igt_require_f(placement, "Device doesn't support vram memory region\n");
-> +
-> +	igt_assert_eq(igt_ioctl(fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +	igt_assert_neq(query.size, 0);
-> +
-> +	mem_regions = malloc(query.size);
-> +	igt_assert(mem_regions);
-> +
-> +	query.data = to_user_pointer(mem_regions);
-> +	igt_assert_eq(igt_ioctl(fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +
-> +	for (i = 0; i < mem_regions->num_mem_regions; i++) {
-> +		if (mem_regions->mem_regions[i].mem_class == DRM_XE_MEM_REGION_CLASS_VRAM) {
-> +			vram_used_mb +=  (mem_regions->mem_regions[i].used / (1024 * 1024));
 
-It will be a little more readable: 1024 * 1024 => SZ_1M
+On 4/2/2026 20:22, Niranjana Vishwanathapura wrote:
+> On Thu, Apr 02, 2026 at 06:40:39PM -0700, Xin Wang wrote:
+>> Multi-LRC capable engine classes (vcs, vecs) are able to process the
+>> multi-queue create request and reject it with -EINVAL when 
+>> num_placements
+>> is greater than 1.  Engine classes that do not support multi-LRC cannot
+>> form a parallel queue at all and return -EOPNOTSUPP instead.
+>>
+>> Use xe_engine_class_supports_multi_lrc() to pick the correct expected
+>> error code rather than hard-coding -EINVAL for every engine class.
+>>
+>> Signed-off-by: Xin Wang <x.wang@intel.com>
+>> ---
+>> tests/intel/xe_exec_multi_queue.c | 3 ++-
+>> 1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/intel/xe_exec_multi_queue.c 
+>> b/tests/intel/xe_exec_multi_queue.c
+>> index b5ded0633..dca791fb5 100644
+>> --- a/tests/intel/xe_exec_multi_queue.c
+>> +++ b/tests/intel/xe_exec_multi_queue.c
+>> @@ -113,7 +113,8 @@ __test_sanity(int fd, int gt, int class, bool 
+>> preempt_mode)
+>>     /* Multi-Queue can't be a parallel queue */
+>>     multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
+>>     if (n > 1)
+>> -        igt_assert_eq(__xe_exec_queue_create(fd, vm, 2, 1, eci, ext, 
+>> &val), -EINVAL);
+>> +        igt_assert_eq(__xe_exec_queue_create(fd, vm, 2, 1, eci, ext, 
+>> &val),
+>> +                  xe_engine_class_supports_multi_lrc(fd, class) ? 
+>> -EINVAL : -EOPNOTSUPP);
+>
+> We don't want to validate multi-lrc error handling here. We only want 
+> to validate
+> multi-queue error handling. So, I think below would be appropriate.
+>
+> if (n > 1 && xe_engine_class_supports_multi_lrc(fd, class))
+>      igt_assert_eq(__xe_exec_queue_create(fd, vm, 2, 1, eci, ext, 
+> &val), -EINVAL);
+>
+Good point. I will merge this change to patch 5 in this series.
 
---
-Zbigniew
+Thanks,
 
+Xin
 
-> +			vram_total_mb += (mem_regions->mem_regions[i].total_size / (1024 * 1024));
-> +		}
-> +	}
-> +
-> +	igt_debug("Before large_buf alloc vram total %lu MB, used vram_used %lu MB\n", vram_total_mb, vram_used_mb);
-> +
-> +	// Allocate a BO of the size of available free VRAM
-> +	buf_size = (vram_total_mb-vram_used_mb-1)*1024*1024;
-> +	buf_size = ALIGN(buf_size, xe_get_default_alignment(fd_xe));
-> +	igt_debug("Creating large_buf of size %lu MB\n", (buf_size/(1024*1024)));
-> +	bo = xe_bo_create(fd_xe, 0, buf_size , placement, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	igt_require(bo);
-> +	map_large_buf = xe_bo_map(fd_xe, bo, buf_size);
-> +	igt_assert(map_large_buf != MAP_FAILED);
-> +	memset(map_large_buf, 0, buf_size);
-> +
-> +	for (i = 0; i < buf_size / sizeof(*map_large_buf); i++) {
-> +		map_large_buf[i] = 0xDEADBEAF;
-> +	}
-> +
-> +	query.data = to_user_pointer(mem_regions);
-> +	igt_assert_eq(igt_ioctl(fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +	for (i = 0; i < mem_regions->num_mem_regions; i++) {
-> +		if (mem_regions->mem_regions[i].mem_class == DRM_XE_MEM_REGION_CLASS_VRAM) {
-> +			vram_used_mb +=  (mem_regions->mem_regions[i].used / (1024 * 1024));
-> +			vram_total_mb += (mem_regions->mem_regions[i].total_size / (1024 * 1024));
-> +		}
-> +	}
-> +	igt_info("After alloc vram total %lu MB, used vram_used %lu MB\n", vram_total_mb, vram_used_mb);
-> +
-> +	free(mem_regions);
-> +}
-> +
-> +static void free_large_buf(int fd_xe)
-> +{
-> +	igt_info("Freeing large_buf\n");
-> +	if (map_large_buf)
-> +		munmap(map_large_buf, buf_size);
-> +}
-> +
->  int igt_main()
->  {
->  	device_t device;
-> @@ -925,26 +996,34 @@ int igt_main()
->  	}
->  
->  	for (const struct s_state *s = s_states; s->name; s++) {
-> +
->  		igt_subtest_f("%s-basic", s->name) {
->  			enum igt_suspend_test test = s->state == SUSPEND_STATE_DISK ?
->  				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
-> +			alloc_large_buf(device.fd_xe);
->  			igt_system_suspend_autoresume(s->state, test);
-> +			free_large_buf(device.fd_xe);
->  		}
->  
->  		igt_subtest_f("%s-basic-exec", s->name) {
-> +			alloc_large_buf(device.fd_xe);
->  			test_exec(device, 1, 2, s->state, NO_RPM, 0);
-> +			free_large_buf(device.fd_xe);
->  		}
->  
->  		igt_subtest_f("%s-exec-after", s->name) {
->  			enum igt_suspend_test test = s->state == SUSPEND_STATE_DISK ?
->  				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
-> -
-> +			alloc_large_buf(device.fd_xe);
->  			igt_system_suspend_autoresume(s->state, test);
->  			test_exec(device, 1, 2, NO_SUSPEND, NO_RPM, 0);
-> +			free_large_buf(device.fd_xe);
->  		}
->  
->  		igt_subtest_f("%s-multiple-execs", s->name) {
-> +			alloc_large_buf(device.fd_xe);
->  			test_exec(device, 16, 32, s->state, NO_RPM, 0);
-> +			free_large_buf(device.fd_xe);
->  		}
->  
->  		for (const struct vm_op *op = vm_op; op->name; op++) {
-> @@ -962,8 +1041,11 @@ int igt_main()
->  			}
->  		}
->  
-> -		igt_subtest_f("%s-mocs", s->name)
-> +		igt_subtest_f("%s-mocs", s->name) {
-> +			alloc_large_buf(device.fd_xe);
->  			test_mocs_suspend_resume(device, s->state, NO_RPM);
-> +			free_large_buf(device.fd_xe);
-> +		}
->  	}
->  
->  	igt_fixture() {
-> -- 
-> 2.25.1
-> 
+> And change commit text saying that we are ensuring validating with 
+> parallel
+> queues only when the engine class supports it.
+>
+> Thanks,
+> Niranjana
+>
+>>
+>>     /* Specifying multiple MULTI_GROUP property is invalid */
+>>     multi_queue.base.next_extension = to_user_pointer(&multi_queue);
+>> -- 
+>> 2.43.0
+>>
