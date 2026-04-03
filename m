@@ -4,52 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23E7ED3940A
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Apr 2026 01:40:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3573FD3940A
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Apr 2026 01:40:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B110B10E3E8;
-	Fri,  3 Apr 2026 01:40:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D22FC10E43C;
+	Fri,  3 Apr 2026 01:40:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cqtis+Sh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WMZx43TL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BFB510E43C
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2026 01:40:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B37110E3E8
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2026 01:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775180444; x=1806716444;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ckhbvDiCOFlkSThIbttxu+EI5ohSmqb3k9mxbRn7luo=;
- b=Cqtis+Sh4VgCbstBPkXiUqdNSVVWlaDMS74i7VhThrT8pt2seMMo64X5
- EWgBqjXtGtmfLuUsixtODvRWbIGd4lQaYKEPoiCaEoFTh+h6MECsAjEkM
- afe3t3Ry+yl9uKD6w8Kr1X4UNxNM6mwSf/qowcUScYL/rF+r0S8e/SuMI
- GiOZ9O2UMwuIAfhJdBYY+Hp2msAizSYn9oNH4A6tfJso9s2u/lcDaZtiJ
- v4BUwGIny/vxs6CKzaWwdldLQNzkr7C2LFt3g5zfLl901O3LVVQgR218b
- tf9tx2gzFBA4GMVc2WQDmAUCNv0dOsgBxCYcqKBTe3C3x+2n8/mSiU4Tf Q==;
-X-CSE-ConnectionGUID: VI1J1rD7Rb60RM8RDlaM5Q==
-X-CSE-MsgGUID: 88UjaqDkR8GBtzG0jFzeCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="98861872"
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="98861872"
+ t=1775180443; x=1806716443;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/18vN1HpW6aNUmfvksZWspoFI46Dn1wA6u94HRvSjGg=;
+ b=WMZx43TLtacMFKPbTL+RdAQsgCbaGOF1GL8YNQ/NAm9UQ0XdI+SNxG2m
+ yXrl5wmKpccCoQmnwAk5drfxlqOm69VW4EtYRw3R7cXBa/rDtMCPisnLY
+ 8a8YLZwE0ak4JH7zRPOmmUsPXABc73nlN3j1N/mQmlU6ce1GCtdo27Gc/
+ SJvZmh5rJjMw4s2raBFq3gcEVqrZ76hCYwvh9R1B5CNNW/WrUYBa7/2jx
+ rTMOMnp8UYO+iw/us8uEuPYMcglSAcPsTTfr/jD6wsAx0RPXIy40rxpxF
+ P/Va+hsLxucy7QRuyxJRgRz+8v8JNfQIrTdsFB2aQ9ZOfVeQE6WwoyJpZ w==;
+X-CSE-ConnectionGUID: mT3u8o22QYKodV/ipiks1A==
+X-CSE-MsgGUID: g2liA3jcRRO7tgfUZXPcaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="98861869"
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="98861869"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Apr 2026 18:40:42 -0700
-X-CSE-ConnectionGUID: 5H6pqcHgSjCUKfJBXUyqdA==
-X-CSE-MsgGUID: TnPu5Te6RnSWkpwKWZRFlA==
+X-CSE-ConnectionGUID: 3QR7X1AETzOsUPXrVdkv9A==
+X-CSE-MsgGUID: MdilorLSSDiiuZsMw1uxDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="224291582"
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; d="scan'208";a="224291573"
 Received: from xwang-desk.fm.intel.com ([10.121.64.134])
  by fmviesa008.fm.intel.com with ESMTP; 02 Apr 2026 18:40:41 -0700
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Xin Wang <x.wang@intel.com>
-Subject: [PATCH 3/5] lib/xe: use debugfs info to implement
- xe_engine_class_supports_multi_queue()
-Date: Thu,  2 Apr 2026 18:40:38 -0700
-Message-ID: <20260403014040.310758-4-x.wang@intel.com>
+Subject: [PATCH 0/5] lib/xe: query engine class capabilities from debugfs info
+Date: Thu,  2 Apr 2026 18:40:35 -0700
+Message-ID: <20260403014040.310758-1-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260403014040.310758-1-x.wang@intel.com>
-References: <20260403014040.310758-1-x.wang@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,162 +64,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Update xe_engine_class_supports_multi_queue() to take a device fd and
-use the kernel-reported multi_queue_engine_classes bitmask from debugfs
-when available, with a fallback to the hardcoded default for older KMD.
+The xe kernel driver recently started exposing engine class capability
+bitmasks in the debugfs "info" node:
 
-Propagate the new fd argument through the xe_for_each_multi_queue_engine
-and xe_for_each_multi_queue_engine_class macros and all their call sites.
+  multi_lrc_engine_classes vcs vecs
+  gt0 multi_queue_engine_classes bcs ccs
 
-Signed-off-by: Xin Wang <x.wang@intel.com>
----
- lib/xe/xe_query.c                 | 52 ++++++++++++++++++-------------
- lib/xe/xe_query.h                 |  8 ++---
- tests/intel/xe_exec_multi_queue.c |  4 +--
- tests/intel/xe_exec_threads.c     |  4 +--
- 4 files changed, 38 insertions(+), 30 deletions(-)
+These entries were introduced by the following KMD series:
+  https://patchwork.freedesktop.org/series/163802/
+  - drm/xe: improve readability of debugfs engine info output
+  - drm/xe: expose multi-lrc engine classes in debugfs info
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index e13d5e143..3286a3b37 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -215,28 +215,6 @@ static uint16_t xe_device_query_engine_class_mask(int fd, const char *key)
- 	return mask;
- }
- 
--/**
-- * xe_engine_class_supports_multi_queue:
-- * @engine_class: engine class
-- *
-- * Returns true if multi queue supported by engine class or false.
-- */
--bool xe_engine_class_supports_multi_queue(uint32_t engine_class)
--{
--	switch (engine_class) {
--		case DRM_XE_ENGINE_CLASS_COPY:
--		case DRM_XE_ENGINE_CLASS_COMPUTE:
--			return true;
--		case DRM_XE_ENGINE_CLASS_RENDER:
--		case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
--		case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
--			return false;
--		default:
--			igt_warn("Engine class 0x%x unknown\n", engine_class);
--			return false;
--	}
--}
--
- /**
-  * xe_engine_class_string:
-  * @engine_class: engine class
-@@ -338,6 +316,36 @@ bool xe_engine_class_supports_multi_lrc(int fd, uint32_t engine_class)
- 	}
- }
- 
-+/**
-+ * xe_engine_class_supports_multi_queue:
-+ * @fd: xe device fd
-+ * @engine_class: engine class
-+ *
-+ * Returns true if multi queue supported by engine class or false.
-+ * Uses the kernel-reported bitmask from debugfs when available, otherwise
-+ * falls back to the hardcoded per-class default.
-+ */
-+bool xe_engine_class_supports_multi_queue(int fd, uint32_t engine_class)
-+{
-+	struct xe_device *xe_dev = find_in_cache(fd);
-+
-+	if (xe_dev && xe_dev->multi_queue_engine_class_mask != UINT16_MAX)
-+		return !!(xe_dev->multi_queue_engine_class_mask & BIT(engine_class));
-+
-+	switch (engine_class) {
-+	case DRM_XE_ENGINE_CLASS_COPY:
-+	case DRM_XE_ENGINE_CLASS_COMPUTE:
-+		return true;
-+	case DRM_XE_ENGINE_CLASS_RENDER:
-+	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
-+	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-+		return false;
-+	default:
-+		igt_warn("Engine class 0x%x unknown\n", engine_class);
-+		return false;
-+	}
-+}
-+
- static void xe_device_free(struct xe_device *xe_dev)
- {
- 	free(xe_dev->config);
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 5c26a3e88..8815c6c66 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -113,10 +113,10 @@ struct xe_device {
- 
- #define xe_for_each_multi_queue_engine(__fd, __hwe)	\
- 	xe_for_each_engine(__fd, __hwe)			\
--		for_if(xe_engine_class_supports_multi_queue((__hwe)->engine_class))
--#define xe_for_each_multi_queue_engine_class(__class)			\
-+		for_if(xe_engine_class_supports_multi_queue(__fd, (__hwe)->engine_class))
-+#define xe_for_each_multi_queue_engine_class(__fd, __class)		\
- 	xe_for_each_engine_class(__class)				\
--		for_if(xe_engine_class_supports_multi_queue(__class))
-+		for_if(xe_engine_class_supports_multi_queue(__fd, __class))
- 
- #define XE_IS_CLASS_SYSMEM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_SYSMEM)
- #define XE_IS_CLASS_VRAM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_VRAM)
-@@ -161,7 +161,7 @@ uint32_t xe_get_default_alignment(int fd);
- uint32_t xe_va_bits(int fd);
- uint16_t xe_dev_id(int fd);
- int xe_supports_faults(int fd);
--bool xe_engine_class_supports_multi_queue(uint32_t engine_class);
-+bool xe_engine_class_supports_multi_queue(int fd, uint32_t engine_class);
- bool xe_engine_class_supports_multi_lrc(int fd, uint32_t engine_class);
- const char *xe_engine_class_string(uint32_t engine_class);
- const char *xe_engine_class_short_string(uint32_t engine_class);
-diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
-index f987f8d6a..b5ded0633 100644
---- a/tests/intel/xe_exec_multi_queue.c
-+++ b/tests/intel/xe_exec_multi_queue.c
-@@ -1052,7 +1052,7 @@ int igt_main()
- 
- 	igt_subtest_f("sanity")
- 		xe_for_each_gt(fd, gt)
--			xe_for_each_multi_queue_engine_class(class)
-+			xe_for_each_multi_queue_engine_class(fd, class)
- 				test_sanity(fd, gt, class);
- 
- 	igt_subtest_f("exec-sanity")
-@@ -1061,7 +1061,7 @@ int igt_main()
- 
- 	igt_subtest_f("virtual")
- 		xe_for_each_gt(fd, gt)
--			xe_for_each_multi_queue_engine_class(class)
-+			xe_for_each_multi_queue_engine_class(fd, class)
- 				test_exec_virtual(fd, gt, class);
- 
- 	igt_subtest_f("priority")
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index f082a0eda..ab9565beb 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -1141,7 +1141,7 @@ static void threads(int fd, int flags)
- 	int gt;
- 
- 	xe_for_each_engine(fd, hwe) {
--		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(hwe->engine_class))
-+		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(fd, hwe->engine_class))
- 			continue;
- 		++n_engines;
- 	}
-@@ -1170,7 +1170,7 @@ static void threads(int fd, int flags)
- 	}
- 
- 	xe_for_each_engine(fd, hwe) {
--		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(hwe->engine_class))
-+		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(fd, hwe->engine_class))
- 			continue;
- 		threads_data[i].mutex = &mutex;
- 		threads_data[i].cond = &cond;
+This series wires up IGT to consume these debugfs entries:
+
+Patch 1 adds two bitmask fields to struct xe_device (multi_lrc_mask and
+multi_queue_engine_class_mask) and populates them in xe_device_get() by
+reading the debugfs "info" file line-by-line.  UINT16_MAX is used as a
+sentinel meaning "not available" so that older kernels that do not expose
+these entries continue to work via the existing hardcoded fallbacks.
+
+Patch 2 implements xe_engine_class_supports_multi_lrc(fd, engine_class).
+When the kernel-reported bitmask is available it is used directly; otherwise
+the function falls back to returning true only for VIDEO_DECODE and
+VIDEO_ENHANCE, matching the previous hardcoded behaviour.
+
+Patch 3 refactors xe_engine_class_supports_multi_queue() in the same way,
+adding an fd parameter so it can consult the kernel-reported bitmask.  All
+callers (direct calls in xe_exec_threads.c and macro users in
+xe_exec_multi_queue.c) are updated accordingly.  Note that
+xe_for_each_multi_queue_engine_class() gains a mandatory fd parameter as
+part of this change.
+
+Patch 4 fixes xe_exec_multi_queue __test_sanity() to expect -EINVAL (instead
+of -EOPNOTSUPP) when attempting to create a parallel exec queue for an engine
+class that supports multi-LRC, which is what the kernel now returns in that
+case.
+
+Patch 5 guards the balancer and multi-LRC codepaths in xe_exec_balancer,
+xe_exec_reset, xe_exec_threads and xe_drm_fdinfo with
+xe_engine_class_supports_multi_lrc() so that tests are skipped rather than
+failing on engine classes whose hardware does not support multi-LRC
+submission.
+
+Xin Wang (5):
+  lib/xe: cache engine class masks from debugfs info
+  lib/xe: add xe_engine_class_supports_multi_lrc()
+  lib/xe: use debugfs info to implement
+    xe_engine_class_supports_multi_queue()
+  tests/intel/xe_exec_multi_queue: fix expected error for parallel queue
+    creation
+  tests/intel: skip multi-LRC tests for engine classes that do not
+    support it
+
+ lib/xe/xe_query.c                 | 156 +++++++++++++++++++++++++++---
+ lib/xe/xe_query.h                 |  21 +++-
+ tests/intel/xe_drm_fdinfo.c       |   2 +-
+ tests/intel/xe_exec_balancer.c    |   6 +-
+ tests/intel/xe_exec_multi_queue.c |   7 +-
+ tests/intel/xe_exec_reset.c       |   2 +-
+ tests/intel/xe_exec_threads.c     |   5 +-
+ 7 files changed, 169 insertions(+), 30 deletions(-)
+
 -- 
 2.43.0
 
