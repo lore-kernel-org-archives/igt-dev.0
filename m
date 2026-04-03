@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CE0DD730AF
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Apr 2026 07:13:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46A3AD730AF
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Apr 2026 07:13:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CBD6710E3EE;
-	Fri,  3 Apr 2026 07:13:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D8E8510E43B;
+	Fri,  3 Apr 2026 07:13:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FQGFy0yM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BXU0Xtug";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FD4510E3D6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E65F010E3D6
  for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2026 07:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1775200406; x=1806736406;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=P4uK6rWqN+Te1jxiHw3SqVspJ/dCPriW5vuC6MgSoLM=;
- b=FQGFy0yMrMtoQfg1hPL5fgEKSDPi5HwVLCJ39+3KGxrhQQWRj6GlC+HQ
- sKSGBUow38HWlJPBKnzSkC3vnTcMbc5Fs6rio/TRliXp/Ah/49gal81k8
- JS2NhHygkitnBKM8L3sqoiMQdg0O5OXtPXUbH+1615nDGlJ6+p5QlDVXv
- eGGda0xb41hACEDYKsYGMA8nUKjrpyrnPqRAVICENLe2JrCISYV2WHwaa
- QNJcgNCChWA/I8LDyVorFMtBW47EOCtlgb3Y43feY8Q2MhvokbtW9YMa7
- cGnAHQ2lWjNXdE97T0mB/CXxLbS8dy3+U6rc4pZ38avUt3Mz3l3m//Ra/ g==;
-X-CSE-ConnectionGUID: QQMwKyvjT7KGARjstdUuvw==
-X-CSE-MsgGUID: x3PbvBwXS8WxHFC6XfPf4w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="76151709"
-X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; d="scan'208";a="76151709"
+ bh=ckhbvDiCOFlkSThIbttxu+EI5ohSmqb3k9mxbRn7luo=;
+ b=BXU0XtugopiHAy5Wi6ZJIGh1/exVYflVNAdiohzkOzFgzfI7dmID3hL/
+ Bp8WPIyScQavgOsbR9q09brj9ex+rk/DRuARtG7P4A4CiSun0HsudsHic
+ 3MTPBVlccaNwwv2PxMCpwlleA/ArQ2WndUKhr1h1i0Gx/MU5oU4TxlZW4
+ rkghFNUgYx7rXSGS0zH9IoWw10FDp2Nfm1pGnVsfhTdXVFuqGcpYDe3tv
+ nb86SJLWMU8/jSzUOhmvH99gNmYgfkn5zB6kaVMcGvo+r3ujrZ2At/MWR
+ mIuicXELMilIG01CTxvL83aCfer43Y7t3q7C/os0KlR2sXqhLDUaXwdgP Q==;
+X-CSE-ConnectionGUID: 5pQg81OpSmyQw/M5X1Es5Q==
+X-CSE-MsgGUID: weLKZmVfTVaZ8XTxJkwj4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="76151711"
+X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; d="scan'208";a="76151711"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2026 00:13:25 -0700
-X-CSE-ConnectionGUID: q+NF6v1JS4KXM25OtjcKjg==
-X-CSE-MsgGUID: BmzPu3qCTlCDQ8SalIKh6w==
+ 03 Apr 2026 00:13:26 -0700
+X-CSE-ConnectionGUID: ZDr0+y3kR+++AiJr2eSROA==
+X-CSE-MsgGUID: Xfa9RsYZQzGdpVHK9l/UOA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; d="scan'208";a="228819962"
+X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; d="scan'208";a="228819968"
 Received: from xwang-desk.fm.intel.com ([10.121.64.134])
  by fmviesa004.fm.intel.com with ESMTP; 03 Apr 2026 00:13:25 -0700
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Xin Wang <x.wang@intel.com>
-Subject: [PATCH v2 1/4] lib/xe: cache engine class masks from debugfs info
-Date: Fri,  3 Apr 2026 00:13:19 -0700
-Message-ID: <20260403071322.366766-2-x.wang@intel.com>
+Subject: [PATCH v2 3/4] lib/xe: use debugfs info to implement
+ xe_engine_class_supports_multi_queue()
+Date: Fri,  3 Apr 2026 00:13:21 -0700
+Message-ID: <20260403071322.366766-4-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260403071322.366766-1-x.wang@intel.com>
 References: <20260403071322.366766-1-x.wang@intel.com>
@@ -66,161 +67,162 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Read the multi_lrc_engine_classes and multi_queue_engine_classes lines
-from the xe debugfs info node and cache them in struct xe_device as
-bitmasks indexed by DRM_XE_ENGINE_CLASS_* values.
+Update xe_engine_class_supports_multi_queue() to take a device fd and
+use the kernel-reported multi_queue_engine_classes bitmask from debugfs
+when available, with a fallback to the hardcoded default for older KMD.
 
-The new fields are set to UINT16_MAX when the kernel does not yet expose
-the information (i.e. when the key is not present in the info node), so
-callers can distinguish "not available" from "empty set".
+Propagate the new fd argument through the xe_for_each_multi_queue_engine
+and xe_for_each_multi_queue_engine_class macros and all their call sites.
 
 Signed-off-by: Xin Wang <x.wang@intel.com>
 ---
- lib/xe/xe_query.c | 86 +++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_query.h | 12 +++++++
- 2 files changed, 98 insertions(+)
+ lib/xe/xe_query.c                 | 52 ++++++++++++++++++-------------
+ lib/xe/xe_query.h                 |  8 ++---
+ tests/intel/xe_exec_multi_queue.c |  4 +--
+ tests/intel/xe_exec_threads.c     |  4 +--
+ 4 files changed, 38 insertions(+), 30 deletions(-)
 
 diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 00331c628..441e95794 100644
+index e13d5e143..3286a3b37 100644
 --- a/lib/xe/xe_query.c
 +++ b/lib/xe/xe_query.c
-@@ -6,6 +6,7 @@
-  *    Matthew Brost <matthew.brost@intel.com>
-  */
- 
-+#include <fcntl.h>
- #include <stdlib.h>
- #include <pthread.h>
- 
-@@ -19,6 +20,7 @@
- #endif
- 
- #include "drmtest.h"
-+#include "igt_debugfs.h"
- #include "ioctl_wrappers.h"
- #include "igt_map.h"
- #include "intel_pat.h"
-@@ -134,6 +136,85 @@ static uint32_t __mem_default_alignment(struct drm_xe_query_mem_regions *mem_reg
- 	return alignment;
+@@ -215,28 +215,6 @@ static uint16_t xe_device_query_engine_class_mask(int fd, const char *key)
+ 	return mask;
  }
  
-+/*
-+ * parse_engine_class_mask - parse a space-separated list of engine class names
-+ * into a bitmask indexed by DRM_XE_ENGINE_CLASS_* values.
-+ *
-+ * @names: the engine class names string, e.g. " vcs vecs" or "bcs ccs"
-+ *
-+ * The kernel debugfs "info" output for multi_lrc_engine_classes and
-+ * multi_queue_engine_classes uses the same short names as
-+ * xe_engine_class_short_string(): "rcs", "bcs", "vcs", "vecs", "ccs".
-+ *
-+ * Returns the bitmask, or 0 if no known class names were found.
-+ */
-+static uint16_t parse_engine_class_mask(const char *names)
-+{
-+	static const struct {
-+		const char *name;
-+		uint32_t engine_class;
-+	} class_map[] = {
-+		{ "rcs",    DRM_XE_ENGINE_CLASS_RENDER },
-+		{ "bcs",    DRM_XE_ENGINE_CLASS_COPY },
-+		{ "vcs",    DRM_XE_ENGINE_CLASS_VIDEO_DECODE },
-+		{ "vecs",   DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE },
-+		{ "ccs",    DRM_XE_ENGINE_CLASS_COMPUTE },
-+	};
-+	uint16_t mask = 0;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(class_map); i++) {
-+		if (strstr(names, class_map[i].name))
-+			mask |= BIT(class_map[i].engine_class);
-+	}
-+
-+	return mask;
-+}
-+
-+/*
-+ * Read the debugfs "info" file and OR together the engine class bitmasks from
-+ * every line that contains @key.  Returns UINT16_MAX if @key is not found
-+ * (kernel too old to expose this information).
-+ *
-+ * multi_lrc_engine_classes is printed once at device level; multi_queue_engine_classes
-+ * is printed once per GT, so the OR handles the multi-GT case transparently.
-+ */
-+static uint16_t xe_device_query_engine_class_mask(int fd, const char *key)
-+{
-+	char *line = NULL;
-+	size_t line_len = 0;
-+	uint16_t mask = UINT16_MAX;
-+	size_t key_len = strlen(key);
-+	int dbgfs_fd;
-+	FILE *dbgfs_file;
-+
-+	dbgfs_fd = igt_debugfs_open(fd, "info", O_RDONLY);
-+	if (dbgfs_fd < 0)
-+		return mask;
-+
-+	dbgfs_file = fdopen(dbgfs_fd, "r");
-+	if (!dbgfs_file) {
-+		close(dbgfs_fd);
-+		return mask;
-+	}
-+
-+	while (getline(&line, &line_len, dbgfs_file) != -1) {
-+		const char *p = strstr(line, key);
-+
-+		if (!p)
-+			continue;
-+
-+		if (mask == UINT16_MAX)
-+			mask = 0;
-+		mask |= parse_engine_class_mask(p + key_len);
-+	}
-+
-+	free(line);
-+	fclose(dbgfs_file);
-+
-+	return mask;
-+}
-+
+-/**
+- * xe_engine_class_supports_multi_queue:
+- * @engine_class: engine class
+- *
+- * Returns true if multi queue supported by engine class or false.
+- */
+-bool xe_engine_class_supports_multi_queue(uint32_t engine_class)
+-{
+-	switch (engine_class) {
+-		case DRM_XE_ENGINE_CLASS_COPY:
+-		case DRM_XE_ENGINE_CLASS_COMPUTE:
+-			return true;
+-		case DRM_XE_ENGINE_CLASS_RENDER:
+-		case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
+-		case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
+-			return false;
+-		default:
+-			igt_warn("Engine class 0x%x unknown\n", engine_class);
+-			return false;
+-	}
+-}
+-
  /**
-  * xe_engine_class_supports_multi_queue:
+  * xe_engine_class_string:
   * @engine_class: engine class
-@@ -330,6 +411,11 @@ struct xe_device *xe_device_get(int fd)
+@@ -338,6 +316,36 @@ bool xe_engine_class_supports_multi_lrc(int fd, uint32_t engine_class)
  	}
- 	pthread_mutex_unlock(&cache.cache_mutex);
- 
-+	xe_dev->multi_lrc_mask =
-+		xe_device_query_engine_class_mask(fd, "multi_lrc_engine_classes");
-+	xe_dev->multi_queue_engine_class_mask =
-+		xe_device_query_engine_class_mask(fd, "multi_queue_engine_classes");
-+
- 	return xe_dev;
  }
  
++/**
++ * xe_engine_class_supports_multi_queue:
++ * @fd: xe device fd
++ * @engine_class: engine class
++ *
++ * Returns true if multi queue supported by engine class or false.
++ * Uses the kernel-reported bitmask from debugfs when available, otherwise
++ * falls back to the hardcoded per-class default.
++ */
++bool xe_engine_class_supports_multi_queue(int fd, uint32_t engine_class)
++{
++	struct xe_device *xe_dev = find_in_cache(fd);
++
++	if (xe_dev && xe_dev->multi_queue_engine_class_mask != UINT16_MAX)
++		return !!(xe_dev->multi_queue_engine_class_mask & BIT(engine_class));
++
++	switch (engine_class) {
++	case DRM_XE_ENGINE_CLASS_COPY:
++	case DRM_XE_ENGINE_CLASS_COMPUTE:
++		return true;
++	case DRM_XE_ENGINE_CLASS_RENDER:
++	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
++	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
++		return false;
++	default:
++		igt_warn("Engine class 0x%x unknown\n", engine_class);
++		return false;
++	}
++}
++
+ static void xe_device_free(struct xe_device *xe_dev)
+ {
+ 	free(xe_dev->config);
 diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 05e2ad84f..f33562bda 100644
+index 5c26a3e88..8815c6c66 100644
 --- a/lib/xe/xe_query.h
 +++ b/lib/xe/xe_query.h
-@@ -79,6 +79,18 @@ struct xe_device {
+@@ -113,10 +113,10 @@ struct xe_device {
  
- 	/** @pat_cache: cached PAT index configuration, NULL if not yet populated */
- 	struct intel_pat_cache *pat_cache;
-+
-+	/**
-+	 * @multi_lrc_mask: bitmask of engine classes supporting multi-LRC.
-+	 * UINT16_MAX if not available (older kernel).
-+	 */
-+	uint16_t multi_lrc_mask;
-+
-+	/**
-+	 * @multi_queue_engine_class_mask: bitmask of engine classes supporting
-+	 * multi-queue. UINT16_MAX if not available (older kernel).
-+	 */
-+	uint16_t multi_queue_engine_class_mask;
- };
+ #define xe_for_each_multi_queue_engine(__fd, __hwe)	\
+ 	xe_for_each_engine(__fd, __hwe)			\
+-		for_if(xe_engine_class_supports_multi_queue((__hwe)->engine_class))
+-#define xe_for_each_multi_queue_engine_class(__class)			\
++		for_if(xe_engine_class_supports_multi_queue(__fd, (__hwe)->engine_class))
++#define xe_for_each_multi_queue_engine_class(__fd, __class)		\
+ 	xe_for_each_engine_class(__class)				\
+-		for_if(xe_engine_class_supports_multi_queue(__class))
++		for_if(xe_engine_class_supports_multi_queue(__fd, __class))
  
- #define xe_for_each_engine(__fd, __hwe) \
+ #define XE_IS_CLASS_SYSMEM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_SYSMEM)
+ #define XE_IS_CLASS_VRAM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_VRAM)
+@@ -161,7 +161,7 @@ uint32_t xe_get_default_alignment(int fd);
+ uint32_t xe_va_bits(int fd);
+ uint16_t xe_dev_id(int fd);
+ int xe_supports_faults(int fd);
+-bool xe_engine_class_supports_multi_queue(uint32_t engine_class);
++bool xe_engine_class_supports_multi_queue(int fd, uint32_t engine_class);
+ bool xe_engine_class_supports_multi_lrc(int fd, uint32_t engine_class);
+ const char *xe_engine_class_string(uint32_t engine_class);
+ const char *xe_engine_class_short_string(uint32_t engine_class);
+diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
+index f987f8d6a..b5ded0633 100644
+--- a/tests/intel/xe_exec_multi_queue.c
++++ b/tests/intel/xe_exec_multi_queue.c
+@@ -1052,7 +1052,7 @@ int igt_main()
+ 
+ 	igt_subtest_f("sanity")
+ 		xe_for_each_gt(fd, gt)
+-			xe_for_each_multi_queue_engine_class(class)
++			xe_for_each_multi_queue_engine_class(fd, class)
+ 				test_sanity(fd, gt, class);
+ 
+ 	igt_subtest_f("exec-sanity")
+@@ -1061,7 +1061,7 @@ int igt_main()
+ 
+ 	igt_subtest_f("virtual")
+ 		xe_for_each_gt(fd, gt)
+-			xe_for_each_multi_queue_engine_class(class)
++			xe_for_each_multi_queue_engine_class(fd, class)
+ 				test_exec_virtual(fd, gt, class);
+ 
+ 	igt_subtest_f("priority")
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index f082a0eda..ab9565beb 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -1141,7 +1141,7 @@ static void threads(int fd, int flags)
+ 	int gt;
+ 
+ 	xe_for_each_engine(fd, hwe) {
+-		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(hwe->engine_class))
++		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(fd, hwe->engine_class))
+ 			continue;
+ 		++n_engines;
+ 	}
+@@ -1170,7 +1170,7 @@ static void threads(int fd, int flags)
+ 	}
+ 
+ 	xe_for_each_engine(fd, hwe) {
+-		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(hwe->engine_class))
++		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(fd, hwe->engine_class))
+ 			continue;
+ 		threads_data[i].mutex = &mutex;
+ 		threads_data[i].cond = &cond;
 -- 
 2.43.0
 
