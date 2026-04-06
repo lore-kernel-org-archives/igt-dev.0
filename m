@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09B02FB5173
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 23:16:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4350FB5177
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 23:16:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9417C10E056;
-	Mon,  6 Apr 2026 23:16:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A8A1C10E056;
+	Mon,  6 Apr 2026 23:16:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OREu+MtQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZCkBdwaX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADA0010E056
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E881810E056
  for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2026 23:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1775517344; x=1807053344;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=sJJKDdFy+iog+vhT4HWFbTznC2qAIteV9koq7VZaOBo=;
- b=OREu+MtQWnFsItx18YrU79X0a/Fg78tshYT0W6MLs+/qlp5d4tUhwRK3
- gZXabggaDjrcJdswEIiInDXn4Suj4Bf0JOiKyMKjMcMp6w0KQeev30NJC
- hwn7q0eFbWQWa1y9wy9lMKNBRUG+44FxcXN74zCxgjBg5+ELwqPKdM1YK
- w9k3v20cQ4fdngv33BCpqyNc0IzxjwZgySyVTkp9et7bcAR3FTAvvxxra
- lBHA/+N5HSRTyIADv+r5wqelK4pmSkw116G2QC/vGJ3SEkuksqJCPxHbV
- gfrjdOgKeIbfrBS/GthArDwzp9YbjvfcC3gygfHIo4u5KE/Ziqs6FLRls w==;
-X-CSE-ConnectionGUID: 1DP8WAvqQTOn7fcJn7l9jg==
-X-CSE-MsgGUID: MKMypGsPQ3awKxm2tkZ6JA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76660628"
-X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="76660628"
+ bh=NdqM9fZYZo6Xlesg+TaijY9jEQEQzXvyvvc3FJq6Cwg=;
+ b=ZCkBdwaXe8QVF3MUDR/BrdJFArqilhw/mFJZEpANi52NdTxj4QqzcULn
+ 0KCo0cPr0BzCpnEase38z89BpiQBVAc0cmoLxL2fA7HqpQaSpW73yFArn
+ fQXmKj6QuZsFoljTluUl9SAp3xp/LJD1vrDsooctOIy4sqg9fC4I6+PUW
+ 8oI7Jqb5n4EvwAuEaklMk+y/tQDXQCo1dRQPN5laU7dEAfVAnv6kkf1pD
+ vvGZi3lASp+bR+J+bn18s7dL5Mn7w+ae3vrvT4Uv1Rxm0VL0u9yEHQIv8
+ IF7pQsaSv5aRT7GXr3XSvo0awBmx5wgg+OGXwYSJuDDYQ0nhku95r0gcE Q==;
+X-CSE-ConnectionGUID: /IW0lyZUTqK4LwUuU0hpaQ==
+X-CSE-MsgGUID: rxGYDd51SLOf8yFrlp5UmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76660630"
+X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="76660630"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  06 Apr 2026 16:15:44 -0700
-X-CSE-ConnectionGUID: LMrDGzlAQLe79H4vVcUfCA==
-X-CSE-MsgGUID: sG+GEKnsSgefTPyzI//QMQ==
+X-CSE-ConnectionGUID: bX8wqrjBQ7KZb/Bz1dOvjw==
+X-CSE-MsgGUID: ZTAYASQ+TSK2/YKhG+tFvA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="227164739"
+X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="227164747"
 Received: from dut4072bmgfrd.fm.intel.com ([10.105.8.119])
- by orviesa010.jf.intel.com with ESMTP; 06 Apr 2026 16:15:43 -0700
+ by orviesa010.jf.intel.com with ESMTP; 06 Apr 2026 16:15:44 -0700
 From: Zongyao Bai <zongyao.bai@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: x.wang@intel.com, Zongyao Bai <zongyao.bai@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH v3 2/5] tests/intel/xe_pat: drop redundant manual srand
- initialization
-Date: Mon,  6 Apr 2026 23:15:37 +0000
-Message-ID: <20260406231540.3238758-3-zongyao.bai@intel.com>
+Cc: x.wang@intel.com,
+	Zongyao Bai <zongyao.bai@intel.com>
+Subject: [PATCH v3 4/5] tests/intel/xe_pat: detect wt support from cached PAT
+ entries
+Date: Mon,  6 Apr 2026 23:15:39 +0000
+Message-ID: <20260406231540.3238758-5-zongyao.bai@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260406231540.3238758-1-zongyao.bai@intel.com>
 References: <20251119231900.3797119-1-zongyao.bai@intel.com>
@@ -69,35 +69,123 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Remove manual seed initialization and srand() call from igt_fixture().
-The IGT framework already handles random seed initialization via igt_srandom()
+Use local_pat_cache.has_wt instead of hardcoded platform checks when
+validating and exercising wt PAT modes.
 
 Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_pat.c | 7 -------
- 1 file changed, 7 deletions(-)
+ tests/intel/xe_pat.c | 64 +++++++++++++++++++++++---------------------
+ 1 file changed, 34 insertions(+), 30 deletions(-)
 
 diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index e53e08877..79f9a87aa 100644
+index 94c82ff29..c799c7b67 100644
 --- a/tests/intel/xe_pat.c
 +++ b/tests/intel/xe_pat.c
-@@ -2213,15 +2213,8 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
- 	int fd;
+@@ -136,10 +136,12 @@ static void userptr_coh_none(int fd)
+ 				   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
+ 				   intel_get_pat_idx_uc(fd), 0),
+ 		      -EINVAL);
+-	igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
+-				   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
+-				   intel_get_pat_idx_wt(fd), 0),
+-		      -EINVAL);
++	if (local_pat_cache.has_wt) {
++		igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
++					   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
++					   intel_get_pat_idx_wt(fd), 0),
++			      -EINVAL);
++	}
+ 	igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
+ 				   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
+ 				   XE_PAT_IDX_XA_UC, 0),
+@@ -254,28 +256,26 @@ static void pat_sanity(int fd)
+ 	uint16_t dev_id = intel_get_drm_devid(fd);
+ 	unsigned int gfx_ver = intel_graphics_ver(dev_id);
+ 	struct intel_pat_cache pat_sw_config = {};
+-	int32_t parsed;
+-	bool has_uc_comp = false, has_wt = false;
++	bool has_uc_comp = false;
++
++	xe_fetch_pat_sw_config(fd, &pat_sw_config);
  
- 	igt_fixture() {
--		uint32_t seed;
--
- 		fd = drm_open_driver(DRIVER_XE);
- 		dev_id = intel_get_drm_devid(fd);
--
--		seed = time(NULL);
--		srand(seed);
--		igt_debug("seed: %d\n", seed);
--
- 		xe_device_get(fd);
+-	parsed = xe_fetch_pat_sw_config(fd, &pat_sw_config);
++	if (local_pat_cache.has_comp_en) {
++		for (int i = 0; i < local_pat_cache.n_entries; i++) {
++			struct local_pat_entry *e = &local_pat_cache.entries[i];
+ 
+-	if (gfx_ver >= IP_VER(20, 0)) {
+-		for (int i = 0; i < parsed; i++) {
+-			uint32_t pat = pat_sw_config.entries[i].pat;
+-			if (pat_sw_config.entries[i].rsvd)
++			if (e->rsvd)
++				continue;
++
++			if (!e->comp_en)
+ 				continue;
+-			if (!!(pat & XE2_COMP_EN) &&
+-			    REG_FIELD_GET(XE2_L3_POLICY, pat) == L3_CACHE_POLICY_UC &&
+-			    REG_FIELD_GET(XE2_L4_POLICY, pat) == L4_CACHE_POLICY_UC) {
++
++			if (e->l3_policy == L3_CACHE_POLICY_UC &&
++			    e->l4_policy == L4_CACHE_POLICY_UC) {
+ 				has_uc_comp = true;
+-			}
+-			if (REG_FIELD_GET(XE2_L3_POLICY, pat) == L3_CACHE_POLICY_XD &&
+-			    REG_FIELD_GET(XE2_L4_POLICY, pat) == L4_CACHE_POLICY_WT) {
+-				has_wt = true;
++				break;
+ 			}
+ 		}
+-	} else {
+-		has_wt = true;
  	}
  
+ 	/*
+@@ -288,7 +288,7 @@ static void pat_sanity(int fd)
+ 	igt_assert_f(pat_entry_is_wb(gfx_ver, pat_sw_config.entries[pat_sw_config.wb].pat),
+ 		     "WB index %d does not point to a WB/XA/XD entry (pat=%#x)\n",
+ 		     pat_sw_config.wb, pat_sw_config.entries[pat_sw_config.wb].pat);
+-	if (has_wt)
++	if (local_pat_cache.has_wt)
+ 		igt_assert_f(pat_entry_is_wt(gfx_ver, pat_sw_config.entries[pat_sw_config.wt].pat),
+ 			     "WT index %d does not point to a WT entry (pat=%#x)\n",
+ 			     pat_sw_config.wt, pat_sw_config.entries[pat_sw_config.wt].pat);
+@@ -400,11 +400,13 @@ static void pat_index_all(int fd)
+ 		      0);
+ 	xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
+ 
+-	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
+-				   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
+-				   intel_get_pat_idx_wt(fd), 0),
+-		      0);
+-	xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
++	if (local_pat_cache.has_wt) {
++		igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
++					   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
++					   intel_get_pat_idx_wt(fd), 0),
++			      0);
++		xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
++	}
+ 
+ 	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
+ 				   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
+@@ -474,10 +476,12 @@ static void pat_index_all(int fd)
+ 				   intel_get_pat_idx_uc(fd), 0),
+ 		      -EINVAL);
+ 
+-	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
+-				   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
+-				   intel_get_pat_idx_wt(fd), 0),
+-		      -EINVAL);
++	if (local_pat_cache.has_wt) {
++		igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
++					   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
++					   intel_get_pat_idx_wt(fd), 0),
++			      -EINVAL);
++	}
+ 
+ 	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
+ 				   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
 -- 
 2.43.0
 
