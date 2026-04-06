@@ -4,158 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62A98F46C4E
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 16:34:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A36FF46C5A
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 16:49:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 12CD110E283;
-	Mon,  6 Apr 2026 16:34:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2A2B110E283;
+	Mon,  6 Apr 2026 16:49:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bu/LViy6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GO3mArLg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 996A010E283
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2026 16:34:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7587B10E283
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2026 16:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775493288; x=1807029288;
- h=message-id:date:subject:to:references:from:in-reply-to:
- mime-version; bh=psNwu++qwJlo1K02iGP2W6HCtklV1t8Nrhb0GygLN7M=;
- b=bu/LViy667DDuf0hr+fy8jFwmTbHWR5XAfbAcgt1TnEvJcoHksPbTa8j
- 47UUHyRQ+n2VCml8SLBPWVm4EeE+5M9+CaQoQSukzQvaPti5Wek/mt89p
- SSUWBsnjM0NPnWewxLz8XSupo61IHNSoEvgF8EYlTV+mGMsVSuezPaIo3
- kYZea3kVATD04Jy1L38vO8j5BHKy4bNBJ+KVdeyLu+3laHqDEHH+cTTIU
- 1AblwmT1YrPAe5UskR8AHkbT24QC1GrLX+ioAZlOKrIWUjChCD18Gwurv
- HwfNWcQoKVyewN6QgCl1bADPU8ZG6ZkeYhl+Vue1WgmCyzctd3kLM2EOv w==;
-X-CSE-ConnectionGUID: eQgYLmC+Th6hQhD8M7asww==
-X-CSE-MsgGUID: jT1otpcuTemxaRG2XpQ8dQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76323375"
-X-IronPort-AV: E=Sophos;i="6.23,163,1770624000"; d="scan'208,217";a="76323375"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Apr 2026 09:34:48 -0700
-X-CSE-ConnectionGUID: Yd9MWbtJRaaI8rPs7hhWXA==
-X-CSE-MsgGUID: ccDplAF5Tv2M6HHEjcOp9Q==
+ t=1775494138; x=1807030138;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=oSU1CmT37xiZ22WmIdYaFKX/19XpLwkRXqyIfcJxKAk=;
+ b=GO3mArLgKSxeiNdg36xbtQCYMVfZCdPQaSE2syxgSoQLfCFkoy72bNyD
+ lmxM7G3mfBBBSDpQOaSKSxYxrVvaV5+L9942nVmLIJaFMAPI2qXZI8QI6
+ Iz+spv7WBi97mLOIiAfQsfbIIXmWR+UaPh6N358BTWIDZRmrsKUK5f3qT
+ 46vgdZPrj2nR9/+K1dg4rBwFEJ2Du9tC83CZfcdYC8/nbS/bThAGEtOFl
+ 96VhKQXgmjSChsWTsqSc4MTS/EOcFr3NIbmdQSd6fLC6K003dzBkdY/KT
+ 6jNCcYg+qP2nSL/QfoRkD/KQpgytTAfM1tVFsyYjh/E15MUpTq65ATqV2 A==;
+X-CSE-ConnectionGUID: linSkrlcQye8pNP/KVugIQ==
+X-CSE-MsgGUID: B6xWquPdSDWwTYGMUDUUjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="80040404"
+X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="80040404"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Apr 2026 09:48:56 -0700
+X-CSE-ConnectionGUID: 1JEZHjZ2RmOWsRa7/PaDBg==
+X-CSE-MsgGUID: h3wk6fjHTZSuKr4YSsE8Vg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,163,1770624000"; 
- d="scan'208,217";a="227822797"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Apr 2026 09:34:48 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="225164869"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Apr 2026 09:48:52 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 6 Apr 2026 09:34:46 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.37; Mon, 6 Apr 2026 09:48:51 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 6 Apr 2026 09:34:46 -0700
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.37) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Mon, 6 Apr 2026 09:48:51 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.32) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 6 Apr 2026 09:34:45 -0700
+ 15.2.2562.37; Mon, 6 Apr 2026 09:48:49 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d4czHKPy1T25iUOV6aSJrK6axtDdClWd5wdudM9p39cqMg2LWeeqUeAU49gEusK1wwizdwWLTldeShfqOP9KhDk8ek4IyftCmpCuF3shDHIFIGox0A1h/d7Vziwt1mVsSiNBMyTvwGUPdAfTZZSygMJo9iK7Vi6YHAo4AoK4lvXhI9BRHS29VxyYwGREgxa70w98bbV2UQpSFjhlTkRgokhPYXL9ZgqBBItH07Dek7CtsrYI+VgQ0Gd2J+iYMHIpgMdYGMOp+qIWTiRaaGVtpoQ0qlHI4HG6P+b97MykwfkyHQ4lb6Ov5kUUj0x1PtnLUAsjURQ9cVtOAiOhSZaj1Q==
+ b=W5tFZph9sKzOUqL2HGU2X2JgHzPU2aYwApkn7DG9M5m1fs5GgYVAEjQ1r6prpEdTv0fxANSKHI8NQoghn3yhuNgIskmCRMPrWaj4y5SPTeZAwDR/hv2OwmJU7xYRZ5fO5ryfq05TB/dj/WhGuVpRubxuiespthfbLAwK6hXaxeWyZNEyHsBUM5o0wftaciO+LQ5iegGYUeXu22WFykh80LX8aKLD4+eFUU+3nIKjGtgMVG892WBbKd0Nl+f7Filf7QIyd2UwpPHShe+mNrd2Kwpfv1GnxPy3ALVO6atdd6X6OMSnu9ZYYNeJiTSmyAiM1AnMznZ04kQNUb2I5cW7nA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xf2OLHu4RLWFPEflvnkmmYMjt70h5s/2wWxW5Skhr5M=;
- b=Ilmsr1rEjYVNCdAPA4q2pyPteX12RZe3BZt7Z5X3i9f3zyzFLeDnuMb5gVq0O9lxb/jiX/nwYLFER39xST542Zx1OAmUdZjImVh37epXp/xa8Pa2682imcnogZYgGBylwwFvsDnfSYCmmHfzdK/aDWnFwALY8IZp/Ol9peqtT59PzlQf404+1rz2tsRAUrld5lcdEaJEWPgYIAb6hjpHAjXjyd48idzcWoQoIN+W1Qian+Gbr7QajbuFu7klAoqGSPvJMUvlL+f4/nYs+gx8conxwBfdhhd2NYY7g/0IeClJ0EC1/lLFf3J1l6IyyWKSbAIYsyHW/aVNHP3OYWs4Pw==
+ bh=eVmo0KdEi/+cmhRIXsp1ngZDJMjkiQqO77xrmQ9P3XY=;
+ b=EQD0l6/dxth/dQm9qgUydCUDnaHmIaaJ0TT9/109RYFVpOHCGsn53q99qgNQ6rnsaFypVDHfnoZ0ArlF5WSXHcogVVgzmHfh7AVjvTIUTsPfo7Fjtblo7I4VpL9KpBIAkZ2b+JyrfycJZJrSkNguGs6FRfdrnpKelPQnoRs48eEx4f3Bub87V+Z0AZFF6sQFPH+CzM1dL4KeUspCwwidjJb5ZQUpcOgsiCqETedwTRHfL7TgWfMFLoHRolYGWEFBmY+bsmUKucmHlKkegco3Hws2HZJ9uPiF9w1zoMXBY0GCLUQRDMQQYcQ1tBbuqH587hPmZL95d288rng1BifaOA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com (2603:10b6:610:1d1::22)
- by MW3PR11MB4604.namprd11.prod.outlook.com (2603:10b6:303:2f::16)
+Received: from MW4PR11MB7151.namprd11.prod.outlook.com (2603:10b6:303:220::5)
+ by CH0PR11MB8216.namprd11.prod.outlook.com (2603:10b6:610:192::14)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.21; Mon, 6 Apr
- 2026 16:34:43 +0000
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::e419:ae5c:91ec:1e9d]) by CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::e419:ae5c:91ec:1e9d%6]) with mapi id 15.20.9769.016; Mon, 6 Apr 2026
- 16:34:43 +0000
-Content-Type: multipart/alternative;
- boundary="------------JYUdJJDykwOkzr5EglfAR9kf"
-Message-ID: <13484d88-3cd6-429d-a083-b7af1fd93aac@intel.com>
-Date: Mon, 6 Apr 2026 22:04:35 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.12; Mon, 6 Apr
+ 2026 16:48:45 +0000
+Received: from MW4PR11MB7151.namprd11.prod.outlook.com
+ ([fe80::5263:1353:4122:ddb8]) by MW4PR11MB7151.namprd11.prod.outlook.com
+ ([fe80::5263:1353:4122:ddb8%7]) with mapi id 15.20.9769.018; Mon, 6 Apr 2026
+ 16:48:45 +0000
+Message-ID: <a0303680-5405-46d4-8cd6-32c96f9e2720@intel.com>
+Date: Mon, 6 Apr 2026 22:18:36 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: tools/gputop: Fix zero output when stdout is not a terminal
-To: "Srinivas, Vidya" <vidya.srinivas@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Konieczny,
- Kamil" <kamil.konieczny@intel.com>
-References: <20260402134522.108322-1-vidya.srinivas@intel.com>
- <14383743-685c-4d61-9c58-b1b563f588ab@intel.com>
- <PH7PR11MB82525EF1740193ACABD30E52895DA@PH7PR11MB8252.namprd11.prod.outlook.com>
+Subject: Re: [PATCH i-g-t v6 6/9] tests/intel/xe_madvise: Add
+ dontneed-before-exec subtest
+To: Arvind Yadav <arvind.yadav@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <matthew.brost@intel.com>, <himal.prasad.ghimiray@intel.com>,
+ <thomas.hellstrom@linux.intel.com>, <pravalika.gurram@intel.com>
+References: <20260325124426.3265234-1-arvind.yadav@intel.com>
+ <20260325124426.3265234-7-arvind.yadav@intel.com>
 Content-Language: en-US
-From: "Purkait, Soham" <soham.purkait@intel.com>
-In-Reply-To: <PH7PR11MB82525EF1740193ACABD30E52895DA@PH7PR11MB8252.namprd11.prod.outlook.com>
-X-ClientProxiedBy: MA5PR01CA0104.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1d1::13) To CH3PR11MB8706.namprd11.prod.outlook.com
- (2603:10b6:610:1d1::22)
+From: "Sharma, Nishit" <nishit.sharma@intel.com>
+In-Reply-To: <20260325124426.3265234-7-arvind.yadav@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0020.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:179::8) To MW4PR11MB7151.namprd11.prod.outlook.com
+ (2603:10b6:303:220::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8706:EE_|MW3PR11MB4604:EE_
-X-MS-Office365-Filtering-Correlation-Id: c04094d5-216e-4607-0069-08de93fa6801
+X-MS-TrafficTypeDiagnostic: MW4PR11MB7151:EE_|CH0PR11MB8216:EE_
+X-MS-Office365-Filtering-Correlation-Id: f28ebb8c-f2e3-4d96-d622-08de93fc5de4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|18002099003|22082099003|56012099003|8096899003;
-X-Microsoft-Antispam-Message-Info: uAm3BORiiinarwhU+WT+TILMVx2S6QRqUgkOKIU0v8ZqOMV8uNNXS0lYnBLMlKc/j+8O8Ypd+26UblC10lm0etFYxYNyabv2AMrUCHHr7BZ1i/CDHKF6HKVjtibDATanAMSzSRMrcCi88rMTDR8oynghrTkeOGXxzuagDa84vvNMYHXJDBFuLkIGVU8k1IlYbu3ftnArdysijNXnGKrjhkYuDBmgIrqBny1ttrmWd/Xng0niHo+rARBD0YpYHzZzFplAd+j/aV0viW1aXmbVgzyOjFdHrIVHOWyM5vh4GPydQBjXx0GPb45LjLD7EcTNmqEs8DKgpRVC1tmTMEvz17tQp0hM0TMHZInIEZdWRZGyWEax7RtrYtxyV+5/e+r6FL7RPdjdYi55iRE1bSYnyc6RCAeLI0Q1XduxvewFm96vMIXKdXDkwU41qDlfatlTeTdUQwzaGeAL6je/xFuRGE8obzdIpDFCQUu2iFkVbuGVWp1E8grKN8Hp5ACGpNb/kDytkU3FXXAr+Cc4Wv1tHCZXrx5WdJYKkGkyJTxyzivbdmOf4TSt8ccfPafPpCzjauVGtw+yiapHL+5ctYTVgOBKRdQoNZWRZZqzWycUZwG2lOox2P2lcOa+2aA+1DgEL4QYEu2hLxF9r2yP2HauUCnt++1IM31IhCpf+lbcSiRwFy+jlCfhv9+IjmycukFScQo3O+PkccTJxVzdhaficxKb7i+nKB18ErJvqyRo6E4=
+ ARA:13230040|366016|376014|1800799024|22082099003|56012099003|18002099003; 
+X-Microsoft-Antispam-Message-Info: Bc3U1BKDpjK2EeDG5nHnuKqN/BqCDNeb5bYo5FuPBb57RPrPVo+YT6SJVU1IHNAKxMtl+mWrt23E2frXXtxt/pM2klJiVQyGVnGgEd+m5GgLQQkHCyj2rWGbmKoNF3AxFb1jvssg/1WOu2yb7tVe8oOrxAklMvVjNx7iXHnenz7H5Pw5ViHWCvCBh1yeHbPYkMVAPnyYlu60BsruiLnQ++HZSuS8ZgN+2cVPG4wd9iLdENuSwvkk7MgzaRuMuPeDCv2pshkGvIomKIUefpkCayHgZZQ97L9Ym+1O3X1OSk/3tMQ/Gh2z+9kmaawiQwTtarpV8zbs/NBMK4Z92hOvZTZiQV/Dk9HBXumBjxuANpA5ls9qzOicf3Hw05UOxP7n6uCQldPJlip87KlxThtKM/Hvw8cGlRfeJpKdw3bBdYq8NGhTAGt52NdjKU4uXQaY10jbERZQr2GaWHibpjG57Jkpw7lpH2UuOlF/9q0O+a3j57dwJffuLzgR19dfBpNzfsgssCABE41dcJ6aIAnqWcg4XEPLCAwGZD42yagGJYvJXS+XXOX535ff8Z7Wr6F/JzVoe9U8CfhmArvcfJmci5HeMfOtEK5++kiIjw+WTBgQanq/GG/6f7Rxs/eNHHo++pLQNOCLq65U2RInS7jpwfyZiAjyvEAPegjafJETRqwMlY84kuh/DhExHQccvM5/iKryTcmUEPlzGvEovM96x5V8FvTC7sq8vdgY7osoINw=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8706.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(22082099003)(56012099003)(8096899003);
+ IPV:NLI; SFV:NSPM; H:MW4PR11MB7151.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(22082099003)(56012099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZHFaWEpDVXRaTEc1allBVU9GT0JBR1I5Ky9Sc05nNHZrR1ZGdHRjNnY3TzM1?=
- =?utf-8?B?Yk9qQVlPKzQvN05XQzZGeUVGSk14N29aSFNoR3lwTFRnUEpqcHVvUU81RVpu?=
- =?utf-8?B?NThuOUJzY2lBRFNjVlBkZ01HTktZeEhVQzJtZWxUeVJuLytScnRrM1k2eFdH?=
- =?utf-8?B?RUFJZ2ptVFJiVWlvWHpjVDdNOWRycExnczBBQWljMU9jSW56TForL2MxQUJu?=
- =?utf-8?B?K29nV2pCRFNDTG1aWVlZdjMvUGZ3dW5KdndVWkNLYk1xTnhWNGkxcFZEemdy?=
- =?utf-8?B?T045TEtVb2lOaXZpV0lOVHRnOEVpTHJ5T3g3QmNYRkN3VFFQeFAxbjJObmJM?=
- =?utf-8?B?aFpPc0haaFIwTjF4aUpSWkFEM3VzdDRKV1dEWWVqN3p3VjZYeDc1TjFscVBn?=
- =?utf-8?B?QWV2Wk1nOUtuSkw2WWxZLzZVSnZ1bnRiSnBCM3c0WEFDZG9JclRkdlVsa0hs?=
- =?utf-8?B?V1lzeEwzRjBxT1dZVm00Zk9Md3IyWXNrUXBVT2dUZWxUWmZ2R05KT21zMStj?=
- =?utf-8?B?bVUzZ0Y2bEVIZm1ZNWh0dmhrMXdxWWJVa254M29ONU1ET3YyRHdYRWVrNERG?=
- =?utf-8?B?aDFkVFA3L2NqWFdqdURGRGQxYTdsSG83SUZtS3YrWHJQOXBlVzVlYVR6dTgy?=
- =?utf-8?B?UkhjUURrWEV1K3lHcFFyTExKempOVXNoaVpPeVFyc0U3K2dXVEdMVVdVR2po?=
- =?utf-8?B?bGpVdER3MG1ZWWFrYWdiZ1lkenZhZkltMG9UcGVXRFYzSG5QTUlFc09JYXpq?=
- =?utf-8?B?NFZ4Tk1SYTNoR2dCUmo1VDNMM2U2VFVBZmt6OHhHcEt3QStUMXBVYXUyRFFt?=
- =?utf-8?B?RTVRdGplTktrejdSVnArWE14Ulkzbm5OcjZhKytyc3g3WkFqaFpTZmQvTFFq?=
- =?utf-8?B?M3pja1BoOXZPZEl6TUx6czl3TWxERzQrSTdweDhyakE4Z1Bkb0RyR0tjQ2o2?=
- =?utf-8?B?Rzh2Y1VKVG1SNGxYRzlDMS9DSmJYMFB1ZXJBUWIrSnQxQnFtaVdaUmJyZ1Bs?=
- =?utf-8?B?a3lNbmZIQmxpWjBYM1RtSzZkdDFseGE3cDZYbEVmZVpVVVRtdHE2UXBBa2xU?=
- =?utf-8?B?MTF6bW9RNXM1OEEyWHJGMkVKaXQ3R2thWkpQMEE5SDR6V2FOeDJQRWtmRk9a?=
- =?utf-8?B?UTliME1jS3NXdjFnL2U1cDJLQ3hSSy9maUUrT3BnTUNVVW5Cai9nclZSd25V?=
- =?utf-8?B?N0hvM1RLYWZJN0R0NzNOS2phOW5CcEFFTUtJZ01PSFFzWHJNdy9Nc3pBUEgw?=
- =?utf-8?B?UExLRlNyQldIMEY0aENhKzFXTC9LM3RjRGd2STB5V3l2cm1WcjdTT3JWbWh1?=
- =?utf-8?B?eG5jYmw3bytheUtWcWFSRGh5T1BEQ0dJVDhMVVVQenFLNkRIZ1FmWkZIMkNW?=
- =?utf-8?B?VkdkZHRGb0pva0hHNkhnSlo0bno1Zk5IZTBoRTZxS3BDNWhySUp0ejdRcmFz?=
- =?utf-8?B?cjMrUWZrMWdtWHFlNFMwTitBN3JnN3ZTNERYaTVkRGZRN2NOaFJ2eGlPM0R5?=
- =?utf-8?B?dkV5UWZiS2l0WC8wVy9sNWF6OE51MmxHQWxKVmU1SlZqbVNDcy9xZDk0OWpS?=
- =?utf-8?B?a0U5Z25OZXJxcStRMHlVSFA4ekt5eVM3WTJpL3ZFemVpZGZrYjkrMXFPVEkw?=
- =?utf-8?B?NlNnTmhLeE1raFpoUWt5bFhMQURlcUxlUWxEZk9hZUtITjNtbVBJRG91ZXgr?=
- =?utf-8?B?c29DazVsZCtmMlhvTWdwZXVudmhRdkZJbXRhN2h6L0s1a3dMV2dqUk1ZSit4?=
- =?utf-8?B?SzVjYk93VGNiNnNTRXY5N2luK0F3b01uSUF4UlJyQUNWblcvMUowS2Vrbyt1?=
- =?utf-8?B?WWxhMHRtWnpQT0VpRnlWdzNCMUYxTjRkQVJKSEtkSFZBTzN4L2s5cUZQWkIy?=
- =?utf-8?B?MVBNazA2YmFCazJpNEsxVnAwMlRoN3pya2NoUzZVOGFLa2NwQk95NmlER3Nt?=
- =?utf-8?B?ZFpLbTlEWk1WR2pzbEQ5Mlh0RmIzay8vQ0xyOENZL1graFhvRmNKTVdIY0xz?=
- =?utf-8?B?SWpIMG9uSjJQdWhYeHhoOUJqVlE1Y3R2YnI1T013bzFVNUNqZzgwdG9WbElO?=
- =?utf-8?B?bHoreVJQelVOKzVpUDVKK1ptcHRBcS8rSnNZdWFuc3NmclJWRHAzQ3M1U2cz?=
- =?utf-8?B?SFEvaHdPbmtYWiswWnFJTnFhOWFvdlhYS3I5cmxmYnpHWk5kN2VtQnZ6aGpj?=
- =?utf-8?B?T1JoWEU4Q29Qa2FVMExRelZhazk4N0swVGd1QjVjd2x1M2k3SythbE1vUlcz?=
- =?utf-8?B?Tm5PSWc3TkZIMWNZWE1kbG5kRVdoTFF2eDh3emtRVFF1blZ5SG5sUGFKc1gw?=
- =?utf-8?B?TkRQUE5mL0R2SGZaUi81RG9MaFJOUUswRXZWYWZRWWpzOHpXaTUwYWVIN1ZR?=
- =?utf-8?Q?ReWjdr138fLRai28=3D?=
-X-Exchange-RoutingPolicyChecked: U9MIruksiIfgXnMBp3tFy+LzgrSA4QP3dt8RVOD3DzkF0FDqKRjxwLnlhF/X8Y6KsWA73opjD96oXomWNIbHuoe7/fmQz9sx+vp3B5J4git0BiCOXZfUM3RT3n1TlhupNpG1EVWeH8aKxbPSwX+L5c+3UHaalopexzDK3g/OyU9+2M5LVuMOEUzP0dXLXi+B+hJrmLZJCWFQKK7Zus21hvSUL2EXurikKDc8QsHlEDrt7FXAmGdY4ufLPPBSyWFf/1CkF/2UVG4O6BIimOsHc5v0Emxe872BihDRnJW+l1T6PgHNfnCyNGJMJ9ImP9uyhU45vT6qr1YkqwJut8SmpA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c04094d5-216e-4607-0069-08de93fa6801
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8706.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y1hFVTVXREFzakl6VVNJTzM2YjJzTEU5K1Q4eHRZSUFwcE9PaDJJcld4cXBL?=
+ =?utf-8?B?OExOQkJpS1BVa2Z0YzM0YStRTmlIRllkYnJPRWZBSEFBKytLNDZYSDN2WHJU?=
+ =?utf-8?B?RWp6YitHREVNRDhFNWxyNHJxc2hDbWpuWm80WE52ZXdaN1lzTC9JcllsaGhu?=
+ =?utf-8?B?RDZYRVBPNHNyZGYra08rVzk2THczWnF2L1A4bWhFMXdJQlRvWE1LNjlUZjZZ?=
+ =?utf-8?B?bTZJelJpdjJVVTYzUGNaUTZhM1B3NzJHanNBQ0lUdEt6RGgwSFVDM0FZRmlB?=
+ =?utf-8?B?VDdDM25iOHg4RU1hbDc1R3cxUFpFMGF3NjVmRkg5M2dGY3Q0OUlZcEMxVUFq?=
+ =?utf-8?B?Y0JldGRwTU9ZTXBUa0FPZ3YvV3dzUm1VMlo5SG1EWkxxOGg3U1VVY1ZzL3VE?=
+ =?utf-8?B?YmNHbVZLdHNmaUlTSmZoVFg5SW1hQmJuVlBBR1V1cDI1ZTJVN2VBNlU2U2hE?=
+ =?utf-8?B?MUJVZUhVQ1lZMDQ2MExRYUo4SjNwWldwRlJFMVBMNU5hZTE2bk1NcWZVWkMr?=
+ =?utf-8?B?aWZTMzNKbnVLTUpScVdvYndBMS9rMm9KNUhmdHhqZ01jVmQybE00eS9PdGYw?=
+ =?utf-8?B?Uk8yQ0NKVWRWbG1nZENDaTJNUmE1TnhKZnd2eDJzRVMvUWc3R1A0TVlWdEpE?=
+ =?utf-8?B?SGYyL215dFJhc3ptOFltRXQzVlkxRVU4VWxzUG1lbVVwNDZyOUljczhLTktX?=
+ =?utf-8?B?QWV2N2ludmxrV3gzSGVrNzR4dExIdm1nQ3NDY3pKc2JYRG9CZ01XRFFoLzdi?=
+ =?utf-8?B?b3UxTjFFYkxNS1BRVXRBNElXc2V1RXlTNFo2RkhUWlNPUlRrUHhISFBJZERC?=
+ =?utf-8?B?K3c2cEFDelZZRVJMVVFrYndpbUpQUmJsWjIrL0pHL1VMTlBVL0hKYlpya0lx?=
+ =?utf-8?B?ZS9pUTF1Y09lUjZTN2dsQllQWS9WL0VUZnIvZ284VW0yWGNaR1FPaDFRRStQ?=
+ =?utf-8?B?UTRGTXRNUXpWcGVxelJ6RkFUbFE4M21WUE9va2kxUnZRTkN6QnFHMERBUmpE?=
+ =?utf-8?B?Z3dwNCtuMEcweXZNQkFZRk5oQXdkSTlvWmJJRVVySmtveE4yaGt5bHdDSWFW?=
+ =?utf-8?B?S0tkL3UzTkRSRlFoMkY2dC84VDBzWGFHSlpodEgyZHl6NFFEb25hMW41N0h4?=
+ =?utf-8?B?YUlYV2VRUmZCOVlHdkUrL0g1ZXVsZmUwZHl1YndGeUIvK2YyQVdJMi9aOVpF?=
+ =?utf-8?B?V1IyRVlRdHgrenVER09CclBGMmRzeDI5Y3k1RWo3ZHhDMnRsMWkrS3JWbHF3?=
+ =?utf-8?B?ZGoyc0tvT2VjMlAzbWM2TWJsaTZEcDBtRXF6c3h4UmJETTA5Nnc4dzEybm5N?=
+ =?utf-8?B?WituUHZwSkJjcERYTUFZVzRoS2ZybGdwTWo0TmVsVWkyUi9DQlF4ei9JaTcy?=
+ =?utf-8?B?WTFVZVhtTWM1cXh2WnlHd25WaS9XdjNNZ01FRTJNdU5UYms3WnZBVy9sWWZG?=
+ =?utf-8?B?SFN2U1pHMEU4bUtzeVBLUC9MVi9NOHJxOXJFTDNJZ2xXOUpNNVpmRHZMLzFq?=
+ =?utf-8?B?QndEWHg5YXNQcS9FTGc3ZGJRVXlYZkJRbmtibkVQNUlnN0tWNWNxTUJzcHBu?=
+ =?utf-8?B?UEY1T0tpaU5KYnFpejNlYkRpT2J4U2lhT0JyTTUydmFQQ0RybEZsc1czODdE?=
+ =?utf-8?B?Zlg2OVYrM3o1cGZ0Nld6Rlo0NHJGa2N4ci9taktFOFkyQ3FyWktQK0FTTlBK?=
+ =?utf-8?B?Mk5XVkgxY1QxajQ1Vm50dVhVaDRyS3M4Vkg0ZkliaUNNNE1WQVBiR2NxVWtI?=
+ =?utf-8?B?b1JQekY0QzhUSVRDbllJMHdtUFJxcmJUZHV5cnozOUpzc0xRcUFXdXFDcTBX?=
+ =?utf-8?B?cjZUZHpyNlVEUmpLQ09nZFRZODdkQzdkTHVCRHJmMWtxUlFCWHU4OXdHemFI?=
+ =?utf-8?B?Y0VwRVByWmFpUEx1MzQzZGNrSTJuL0xYc0dLTVZHY2gwZmFPU0NvSGFKYy90?=
+ =?utf-8?B?YWpXSkpJZzd3RXBCL3hrUFpjYzNhaG9TWUovRGJ0R1ZCZG0rdUUycWtQZTYr?=
+ =?utf-8?B?Sy9YQlZpaU9GZUxYT0hTcTY0Z0VPMnN6dnhBb2d2RkpreFRrQmh6QllpaXFl?=
+ =?utf-8?B?REtIOEdqcXVSeWJHejM3bEh3Q1JyUWpzbG84UEw2M3F1bFdSVzBNVnAwWm9q?=
+ =?utf-8?B?R21IQXpkQktFNTMyNXNzeDVQQ0pJc1FoM3FQNVdRRzhlWEh2bE1vQ2lVL3VW?=
+ =?utf-8?B?cjkyRlB5WlN5akZ0eVlwZWNKa3hVeFNUYlN2ZkVSZWtJN1RzT0ZWdTJ6L00r?=
+ =?utf-8?B?Tml5ZUdnVUxHbk9PK1dDa0szUTMweWhVT3NCQ3V4and3dC9vYVBFZDA2MS9l?=
+ =?utf-8?B?ajhRcDZqWXNmQWxaYVdtemlJRmw3LzBzTDFvN0lBT3hUUHhwYmVxcFhTN0s3?=
+ =?utf-8?Q?Cl/QLFUvIeZ4UQK0=3D?=
+X-Exchange-RoutingPolicyChecked: uOATNQnz+F1OJMr9XoziOEhD5NWj1EzWUQ4veg7frSYe1g6dZHFDi5kKi+MoH6Oejw4xl+3F+nYEq8o774Vsi6DPwpV/DkfRt85mxcmw+h6KlM3awN5z5l84jjC+Tpg5qoCkEdKySnIXb+ESirLfc7aPQI5eZ2ZvYGfzTC/fYjc1WM7G55xDGfeckeyaSRneaq14p35AQUnFNmBwfCA1YHsw93s++RdEAvFMtzo64dJAlBk78LoScXNdRwXf8/AU9ohHX3fJiaMb+/gYshhdaJU1EOBiD5c341GT6AcTJJsXSDu9SFHuYlATtRUj0xM8WmVXV1QcWP2HOkc3R2fqAg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: f28ebb8c-f2e3-4d96-d622-08de93fc5de4
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB7151.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 16:34:43.2632 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 16:48:45.1574 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P1tPWAK63jMUBHwnAqbLBScKlTITa/8uK/+0Egu7/8H/aN25S5LWy0JiQZdmKUjKV3J39nZzOBdWbSyfAXAnYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4604
+X-MS-Exchange-CrossTenant-UserPrincipalName: OdRU7Sr/oVDYHFtuymLdHp/gefP99Dj0zqKRqgy9ow/5hZ5jwZXNRN63ibqDeLOxyllNZI2Cdw7NzWYDoRRagw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB8216
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -172,254 +172,210 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------JYUdJJDykwOkzr5EglfAR9kf
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Hi Vidya,
-
-On 06-04-2026 11:11, Srinivas, Vidya wrote:
+On 3/25/2026 6:14 PM, Arvind Yadav wrote:
+> This test validates GPU execution behavior when a data BO is purged
+> before submission. The test creates a batch that writes to a data BO,
+> purges the data BO (while keeping the batch BO valid to avoid GPU
+> reset), then submits for execution. With VM_CREATE_FLAG_SCRATCH_PAGE,
+> the GPU write may succeed by landing on scratch memory instead of the
+> purged BO, demonstrating graceful handling of purged memory during
+> GPU operations.
 >
->> -----Original Message-----
->> From: Purkait, Soham<soham.purkait@intel.com>
->> Sent: 06 April 2026 10:27
->> To: Srinivas, Vidya<vidya.srinivas@intel.com>;igt-dev@lists.freedesktop.org;
->> Konieczny, Kamil<kamil.konieczny@intel.com>
->> Subject: Re: tools/gputop: Fix zero output when stdout is not a terminal
->>
->> Hi Vidya,
->>
->> On 02-04-2026 19:15, Vidya Srinivas wrote:
->>> When gputop output is redirected to a file or pipe, such as:
->>>
->>>     gputop -n 5 -d 1 > results.txt
->> Isn’t only stdout (fd 1) redirected to the file here?
->>
->> I guess some thing like "echo test | ./gputop" would be returning the default
->> value (-1 in this case) for con_h.
-> Hello,
+> v4:
+>    - Added proper resource cleanup before calling igt_skip(). (Nishit)
 >
-> Many thanks for the review.
-> I will update the patch like this. Should be okay?
+> Cc: Nishit Sharma <nishit.sharma@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> Reviewed-by: Pravalika Gurram <pravalika.gurram@intel.com>
+> Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
+> ---
+>   tests/intel/xe_madvise.c | 148 +++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 148 insertions(+)
 >
-> if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 &&
->      ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) == -1 &&
->      ioctl(STDERR_FILENO, TIOCGWINSZ, &ws) == -1) {
-
-I assume it's better to keep this : "if (ioctl(0, TIOCGWINSZ, &ws) == 
--1)" as is. As it won't make any  issue if the gputop output is 
-redirected to any file or so (which only involve stdout).  The 
-expression  will only be true when stdin is not a terminal, may be 
-during running gputop in a ci.
-And Its better to assign the default values to con_w and con_h in main. 
-(please see below)
-
->      ws.ws_col = 80;
->      ws.ws_row = 50;
-> }
->
-> Regards
-> Vidya
->
->>>     gputop -n 3 -d 2 | grep rcs
->>>
->>> ioctl(0, TIOCGWINSZ) fails with -1 since stdin is not a terminal.
->>> update_console_size() then returns without setting *w and *h, leaving
->>> con_w and con_h at their initial value of -1.
->>>
->>> The main display loop uses 'if (lines >= con_h) break' to limit output
->>> to the terminal height. With con_h = -1, the condition (0 >= -1) is
->>> immediately true on the very first line, causing all client output to
->>> be silently suppressed. The result is that gputop produces only ANSI
->>> clear- screen escape sequences and zero actual data.
->>>
->>> This affects anyone using gputop in automation, CI pipelines, or any
->>> non-interactive context on Linux or Android where output is redirected
->>> or piped.
->>>
->>> Fix this by falling back to a default console size of 80x50 when the
->>> ioctl fails, consistent with the existing fallback for serial consoles
->>> (where ws_col and ws_row are both 0).
->>>
->>> Signed-off-by: Vidya Srinivas<vidya.srinivas@intel.com>
->>> Reviewed-by: Kamil Konieczny<kamil.konieczny@linux.intel.com>
->>> ---
->>>    tools/gputop.c | 5 ++++-
->>>    1 file changed, 4 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/tools/gputop.c b/tools/gputop.c index
->>> 9b2e8cb6f..112ec5ddb 100644
->>> --- a/tools/gputop.c
->>> +++ b/tools/gputop.c
->>> @@ -505,8 +505,11 @@ static void update_console_size(int *w, int *h)
->>>    {
->>>    	struct winsize ws = {};
->>>
->>> -	if (ioctl(0, TIOCGWINSZ, &ws) == -1)
->>> +	if (ioctl(0, TIOCGWINSZ, &ws) == -1) {
->>> +		*w = 80;
->>> +		*h = 50;
-
-Imho instead of setting the values (*w = 80;*h = 50) here , it's better 
-to initialize these as default values in main as "int con_w = 80, con_h 
-= 50;"
-
-Thanks, Soham
-
->> How about assigning the values during initialization in the main function ?
->>
->> eg : int con_w = 80, con_h = 50;
->>
->> Thanks,
->> Soham
->>
->>>    		return;
->>> +	}
->>>
->>>    	*w = ws.ws_col;
->>>    	*h = ws.ws_row;
---------------JYUdJJDykwOkzr5EglfAR9kf
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Hi Vidya,</p>
-    <div class="moz-cite-prefix">On 06-04-2026 11:11, Srinivas, Vidya
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:PH7PR11MB82525EF1740193ACABD30E52895DA@PH7PR11MB8252.namprd11.prod.outlook.com">
-      <pre wrap="" class="moz-quote-pre">
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">-----Original Message-----
-From: Purkait, Soham <a class="moz-txt-link-rfc2396E" href="mailto:soham.purkait@intel.com">&lt;soham.purkait@intel.com&gt;</a>
-Sent: 06 April 2026 10:27
-To: Srinivas, Vidya <a class="moz-txt-link-rfc2396E" href="mailto:vidya.srinivas@intel.com">&lt;vidya.srinivas@intel.com&gt;</a>; <a class="moz-txt-link-abbreviated" href="mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.org</a>;
-Konieczny, Kamil <a class="moz-txt-link-rfc2396E" href="mailto:kamil.konieczny@intel.com">&lt;kamil.konieczny@intel.com&gt;</a>
-Subject: Re: tools/gputop: Fix zero output when stdout is not a terminal
-
-Hi Vidya,
-
-On 02-04-2026 19:15, Vidya Srinivas wrote:
-</pre>
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">When gputop output is redirected to a file or pipe, such as:
-
-   gputop -n 5 -d 1 &gt; results.txt
-</pre>
-        </blockquote>
-        <pre wrap="" class="moz-quote-pre">
-Isn’t only stdout (fd 1) redirected to the file here?
-
-I guess some thing like &quot;echo test | ./gputop&quot; would be returning the default
-value (-1 in this case) for con_h.
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-Hello,
-
-Many thanks for the review.
-I will update the patch like this. Should be okay?
-
-if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &amp;ws) == -1 &amp;&amp;
-    ioctl(STDIN_FILENO, TIOCGWINSZ, &amp;ws) == -1 &amp;&amp;
-    ioctl(STDERR_FILENO, TIOCGWINSZ, &amp;ws) == -1) {</pre>
-    </blockquote>
-    <p>I assume it's better to keep this : &quot;if (ioctl(0, TIOCGWINSZ,
-      &amp;ws) == -1)&quot; as is. As it won't make any&nbsp; issue if the gputop
-      output is redirected to any file or so (which only involve
-      stdout).&nbsp; The expression&nbsp; will only be true when stdin is not a
-      terminal, may be during running gputop in a ci.<br>
-      And Its better to assign the default values to con_w and con_h in
-      main. (please see below)</p>
-    <blockquote type="cite" cite="mid:PH7PR11MB82525EF1740193ACABD30E52895DA@PH7PR11MB8252.namprd11.prod.outlook.com">
-      <pre wrap="" class="moz-quote-pre">
-    ws.ws_col = 80;
-    ws.ws_row = 50;
-}
-
-Regards
-Vidya
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">
-</pre>
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">   gputop -n 3 -d 2 | grep rcs
-
-ioctl(0, TIOCGWINSZ) fails with -1 since stdin is not a terminal.
-update_console_size() then returns without setting *w and *h, leaving
-con_w and con_h at their initial value of -1.
-
-The main display loop uses 'if (lines &gt;= con_h) break' to limit output
-to the terminal height. With con_h = -1, the condition (0 &gt;= -1) is
-immediately true on the very first line, causing all client output to
-be silently suppressed. The result is that gputop produces only ANSI
-clear- screen escape sequences and zero actual data.
-
-This affects anyone using gputop in automation, CI pipelines, or any
-non-interactive context on Linux or Android where output is redirected
-or piped.
-
-Fix this by falling back to a default console size of 80x50 when the
-ioctl fails, consistent with the existing fallback for serial consoles
-(where ws_col and ws_row are both 0).
-
-Signed-off-by: Vidya Srinivas <a class="moz-txt-link-rfc2396E" href="mailto:vidya.srinivas@intel.com">&lt;vidya.srinivas@intel.com&gt;</a>
-Reviewed-by: Kamil Konieczny <a class="moz-txt-link-rfc2396E" href="mailto:kamil.konieczny@linux.intel.com">&lt;kamil.konieczny@linux.intel.com&gt;</a>
----
-  tools/gputop.c | 5 ++++-
-  1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/tools/gputop.c b/tools/gputop.c index
-9b2e8cb6f..112ec5ddb 100644
---- a/tools/gputop.c
-+++ b/tools/gputop.c
-@@ -505,8 +505,11 @@ static void update_console_size(int *w, int *h)
-  {
-  	struct winsize ws = {};
-
--	if (ioctl(0, TIOCGWINSZ, &amp;ws) == -1)
-+	if (ioctl(0, TIOCGWINSZ, &amp;ws) == -1) {
-+		*w = 80;
-+		*h = 50;</pre>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-    <p>&nbsp;<span style="white-space: pre-wrap">Imho </span>instead of
-      setting the values (<span style="white-space: pre-wrap">*w = 80;*h = 50) here ,  it's better to initialize these as default values in main as &quot;int con_w = 80, con_h = 50;&quot; </span></p>
-    <p><span style="white-space: pre-wrap">Thanks,
-Soham</span></p>
-    <blockquote type="cite" cite="mid:PH7PR11MB82525EF1740193ACABD30E52895DA@PH7PR11MB8252.namprd11.prod.outlook.com">
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">
-</pre>
-        </blockquote>
-        <pre wrap="" class="moz-quote-pre">How about assigning the values during initialization in the main function ?
-
-eg : int con_w = 80, con_h = 50;
-
-Thanks,
-Soham
-
-</pre>
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">  		return;
-+	}
-
-  	*w = ws.ws_col;
-  	*h = ws.ws_row;
-</pre>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------JYUdJJDykwOkzr5EglfAR9kf--
+> diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
+> index 9a157de1d..d126db9ed 100644
+> --- a/tests/intel/xe_madvise.c
+> +++ b/tests/intel/xe_madvise.c
+> @@ -27,7 +27,11 @@ static bool xe_has_purgeable_support(int fd)
+>   
+>   /* Purgeable test constants */
+>   #define PURGEABLE_ADDR		0x1a0000
+> +#define PURGEABLE_BATCH_ADDR	0x3c0000
+>   #define PURGEABLE_BO_SIZE	4096
+> +#define PURGEABLE_FENCE_VAL	0xbeef
+> +#define PURGEABLE_TEST_PATTERN	0xc0ffee
+> +#define PURGEABLE_DEAD_PATTERN	0xdead
+>   
+>   /**
+>    * trigger_memory_pressure - Fill VRAM/RAM + 50% to force purgeable reclaim
+> @@ -206,6 +210,62 @@ static void test_purged_mmap_blocked(int fd)
+>   	xe_vm_destroy(fd, vm);
+>   }
+>   
+> +/**
+> + * purgeable_setup_batch_and_data - Setup VM with batch and data BOs for GPU exec
+> + * @fd: DRM file descriptor
+> + * @vm: Output VM handle
+> + * @bind_engine: Output bind engine handle
+> + * @batch_bo: Output batch BO handle
+> + * @data_bo: Output data BO handle
+> + * @batch: Output batch buffer pointer
+> + * @data: Output data buffer pointer
+> + * @batch_addr: Batch virtual address
+> + * @data_addr: Data virtual address
+> + * @batch_size: Batch buffer size
+> + * @data_size: Data buffer size
+> + *
+> + * Helper to create VM, bind engine, batch and data BOs, and bind them.
+> + */
+> +static void purgeable_setup_batch_and_data(int fd, uint32_t *vm,
+> +					   uint32_t *bind_engine,
+> +					   uint32_t *batch_bo,
+> +					   uint32_t *data_bo,
+> +					   uint32_t **batch,
+> +					   uint32_t **data,
+> +					   uint64_t batch_addr,
+> +					   uint64_t data_addr,
+> +					   size_t batch_size,
+> +					   size_t data_size)
+> +{
+> +	struct drm_xe_sync sync = {
+> +		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +		.timeline_value = PURGEABLE_FENCE_VAL,
+> +	};
+> +	uint64_t vm_sync = 0;
+> +
+> +	*vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
+> +	*bind_engine = xe_bind_exec_queue_create(fd, *vm, 0);
+> +
+> +	/* Create and bind batch BO */
+> +	*batch_bo = xe_bo_create(fd, *vm, batch_size, vram_if_possible(fd, 0),
+> +				 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	*batch = xe_bo_map(fd, *batch_bo, batch_size);
+> +
+> +	sync.addr = to_user_pointer(&vm_sync);
+> +	xe_vm_bind_async(fd, *vm, *bind_engine, *batch_bo, 0, batch_addr, batch_size, &sync, 1);
+> +	xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL, 0, NSEC_PER_SEC);
+> +
+> +	/* Create and bind data BO */
+> +	*data_bo = xe_bo_create(fd, *vm, data_size, vram_if_possible(fd, 0),
+> +				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	*data = xe_bo_map(fd, *data_bo, data_size);
+> +
+> +	vm_sync = 0;
+> +	xe_vm_bind_async(fd, *vm, *bind_engine, *data_bo, 0, data_addr, data_size, &sync, 1);
+> +	xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL, 0, NSEC_PER_SEC);
+> +}
+> +
+>   /**
+>    * SUBTEST: dontneed-before-mmap
+>    * Description: Mark BO as DONTNEED before mmap, verify mmap() fails with -EBUSY
+> @@ -302,6 +362,88 @@ static void test_dontneed_after_mmap(int fd)
+>   	xe_vm_destroy(fd, vm);
+>   }
+>   
+> +/**
+> + * SUBTEST: dontneed-before-exec
+> + * Description: Mark BO as DONTNEED before GPU exec, verify GPU behavior with SCRATCH_PAGE
+> + * Test category: functionality test
+> + */
+> +static void test_dontneed_before_exec(int fd, struct drm_xe_engine_class_instance *hwe)
+> +{
+> +	uint32_t vm, exec_queue, bo, batch_bo, bind_engine;
+> +	uint64_t data_addr = PURGEABLE_ADDR;
+> +	uint64_t batch_addr = PURGEABLE_BATCH_ADDR;
+> +	size_t data_size = PURGEABLE_BO_SIZE;
+> +	size_t batch_size = PURGEABLE_BO_SIZE;
+> +	struct drm_xe_sync sync[1] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +		  .timeline_value = PURGEABLE_FENCE_VAL },
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(sync),
+> +	};
+> +	uint32_t *data, *batch;
+> +	uint64_t vm_sync = 0;
+> +	int b, ret;
+> +
+> +	purgeable_setup_batch_and_data(fd, &vm, &bind_engine, &batch_bo,
+> +				       &bo, &batch, &data, batch_addr,
+> +				       data_addr, batch_size, data_size);
+> +
+> +	/* Prepare batch */
+> +	b = 0;
+> +	batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+> +	batch[b++] = data_addr;
+> +	batch[b++] = data_addr >> 32;
+> +	batch[b++] = PURGEABLE_DEAD_PATTERN;
+> +	batch[b++] = MI_BATCH_BUFFER_END;
+> +
+> +	/* Phase 1: Purge data BO, batch BO still valid */
+> +	if (!purgeable_mark_and_verify_purged(fd, vm, data_addr, data_size)) {
+Same comment as in patch-4/9.
+> +		munmap(data, data_size);
+> +		munmap(batch, batch_size);
+> +		gem_close(fd, bo);
+> +		gem_close(fd, batch_bo);
+> +		xe_exec_queue_destroy(fd, bind_engine);
+> +		xe_vm_destroy(fd, vm);
+> +		igt_skip("Unable to induce purge on this platform/config");
+> +	}
+> +
+> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+> +	exec.exec_queue_id = exec_queue;
+> +	exec.address = batch_addr;
+> +
+> +	vm_sync = 0;
+> +	sync[0].addr = to_user_pointer(&vm_sync);
+> +
+> +	/*
+> +	 * VM has SCRATCH_PAGE — exec may succeed with the GPU write
+> +	 * landing on scratch instead of the purged data BO.
+> +	 */
+> +	ret = __xe_exec(fd, &exec);
+You can use xe_exec(fd, &exec) which is internally calling __xe_exec() 
+and after use xe_wait_fence()
+> +	if (ret == 0) {
+> +		int64_t timeout = NSEC_PER_SEC;
+> +
+> +		__xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL,
+> +				 exec_queue, &timeout);
+> +	}
+> +
+> +	/*
+> +	 * Don't purge the batch BO — GPU would fetch zeroed scratch
+> +	 * instructions and trigger an engine reset.
+> +	 */
+> +
+> +	munmap(data, data_size);
+> +	munmap(batch, batch_size);
+> +	gem_close(fd, bo);
+> +	gem_close(fd, batch_bo);
+> +	xe_exec_queue_destroy(fd, bind_engine);
+> +	xe_exec_queue_destroy(fd, exec_queue);
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+>   int igt_main()
+>   {
+>   	struct drm_xe_engine_class_instance *hwe;
+> @@ -332,6 +474,12 @@ int igt_main()
+>   			break;
+>   		}
+>   
+> +	igt_subtest("dontneed-before-exec")
+> +		xe_for_each_engine(fd, hwe) {
+> +			test_dontneed_before_exec(fd, hwe);
+> +			break;
+> +		}
+> +
+>   	igt_fixture() {
+>   		xe_device_put(fd);
+>   		drm_close_driver(fd);
