@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49318FB5173
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 23:16:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F5D3FB5177
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 23:16:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB69E10E056;
-	Mon,  6 Apr 2026 23:16:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3F3DC10E2EC;
+	Mon,  6 Apr 2026 23:16:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RM+zByhi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dL/hXuXf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1195710E2EC
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2026 23:15:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB4A110E2EC
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2026 23:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775517345; x=1807053345;
+ t=1775517344; x=1807053344;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DGwU1T2Ske5XtCD7GbNKvRz51KukF4Tkttlo+7qy9G0=;
- b=RM+zByhiCYlhGDeWWEpCIW6t6tdRc1YV47j6NemSfgkoG9YK7VbtXOkB
- 9TsDT/DeBkEU10qKHXH1AQPDGts+VnDqVGDvovIB/avIZK8/BERsP4Cg+
- Vy8DyL8GSmk6mTWVrrxOKcpeiQ2RH7uMHHfBZYetK2LZ2SYIQUR6k4sCe
- XBrQNwqncsn5Tl/RYqE2lbM0c4pvns76+UayTJbxOuYeifv8mnbUXc44Z
- cl8/SYfv2+Herk8iNvBNbj7qBnRVZnVrUYldCOdaOerammxIrSyniZ0DF
- sDz0ObbrshgNWFAJ1S9Jji+y535r0uox9N0Ejpo0+7vPzoKYXlRNVULlL Q==;
-X-CSE-ConnectionGUID: jnTt6E57RkKUL050fCvGWg==
-X-CSE-MsgGUID: PxEMf0gJR6KSn/vUWZKK6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76660631"
-X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="76660631"
+ bh=r2M9UGh2e4AHFOHtxnupESwXTDLVedki8O1AsJ+IsgU=;
+ b=dL/hXuXf8SxAoXs5ujWulkcu2cPZsTDaQgNrneIR/P+3fWpu/afeWvnj
+ DJVWvKzgo45EPvOsslD9A8QnIrtT1frXcbhUxWdwZs2Ft24hUa85M508U
+ w6fdMg3Kvj2ZRYYMl19pyFUbOVpvXHIJzzN1V7YnIj8LBqy2g9mEGVeYx
+ X7DFUSa2W7+G3BzUaOpNyvueEx9/o2XlwYAjr0I6yobjkSV4oWuk/7Swu
+ 8PXe4VuyAedW/n9i9vpBFaHVr8ti3cfflw/06oTUtXE65gUJzyJvYxgpK
+ YCWjKPD2lGz69DZt17Hc9f1MYteKWNPH8Vq587ICSELRULMDLX6J7yAKS Q==;
+X-CSE-ConnectionGUID: QgvcWYXZRHmJYkfGfs6dtg==
+X-CSE-MsgGUID: 8RImmPVlTmmx7TOgRqfb/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76660629"
+X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="76660629"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  06 Apr 2026 16:15:44 -0700
-X-CSE-ConnectionGUID: aNHwuSnJT86ejo3YaE2K8w==
-X-CSE-MsgGUID: ENfFwB4vRHyXTnBtnkoOcw==
+X-CSE-ConnectionGUID: ogIh1gz9TWK8c66hyMR//g==
+X-CSE-MsgGUID: 2gJNPKw1ReS8UoTnHsid1Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="227164752"
+X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="227164744"
 Received: from dut4072bmgfrd.fm.intel.com ([10.105.8.119])
- by orviesa010.jf.intel.com with ESMTP; 06 Apr 2026 16:15:44 -0700
+ by orviesa010.jf.intel.com with ESMTP; 06 Apr 2026 16:15:43 -0700
 From: Zongyao Bai <zongyao.bai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: x.wang@intel.com,
 	Zongyao Bai <zongyao.bai@intel.com>
-Subject: [PATCH v3 5/5] tests/intel/xe_pat: randomly generate test PAT set to
- cover more PAT index
-Date: Mon,  6 Apr 2026 23:15:40 +0000
-Message-ID: <20260406231540.3238758-6-zongyao.bai@intel.com>
+Subject: [PATCH v3 3/5] tests/intel/xe_pat: cache and decode PAT entries
+Date: Mon,  6 Apr 2026 23:15:38 +0000
+Message-ID: <20260406231540.3238758-4-zongyao.bai@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260406231540.3238758-1-zongyao.bai@intel.com>
 References: <20251119231900.3797119-1-zongyao.bai@intel.com>
@@ -69,217 +68,186 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replace hardcoded xe2_pat_index_modes[] and bmg_g21_pat_index_modes[]
-tables with dynamic generation test PAT set.
+Add local PAT cache structures to store raw and decoded PAT entry data,
+along with helpers to decode PAT fields and initialize the cache from
+the Xe PAT software configuration.
 
-Generate descriptive mode names from decoded PAT fields, keep a small
-set of common modes first, then fill the remaining slots from a
-shuffled set of valid entries.
-
-This exercises more PAT indices than the previous handpicked subset.
-It avoids manual updates to platform-specific Xe2 PAT tables.
+This prepares xe_pat for dynamically generating test modes from the
+platform PAT layout instead of relying solely on hardcoded tables.
 
 Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
 ---
- tests/intel/xe_pat.c | 168 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 141 insertions(+), 27 deletions(-)
+ tests/intel/xe_pat.c | 130 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 99 insertions(+), 31 deletions(-)
 
 diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index c799c7b67..f11bd4a30 100644
+index 79f9a87aa..94c82ff29 100644
 --- a/tests/intel/xe_pat.c
 +++ b/tests/intel/xe_pat.c
-@@ -1346,7 +1346,7 @@ struct pat_index_entry {
- 	uint8_t pat_index;
- 	bool    compressed;
+@@ -33,14 +33,65 @@
+ #include "xe/xe_query.h"
+ #include "xe/xe_util.h"
  
--	const char *name;
-+	char     name[PAT_NAME_MAX_LEN];
- 	uint16_t   coh_mode;
- 	bool       force_cpu_wc;
- };
-@@ -1388,29 +1388,147 @@ const struct pat_index_entry xelpg_pat_index_modes[] = {
- 	{ NULL, 4, false, "2way-atomics-cpu-wc", XE_COH_AT_LEAST_1WAY, true },
- };
+-#define XE_COH_NONE          1
+-#define XE_COH_AT_LEAST_1WAY 2
++#define XE_COH_NONE			1
++#define XE_COH_AT_LEAST_1WAY		2
++#define XE_COH_1WAY			2
++#define XE_COH_2WAY			3
++#define TEST_MODE_CNT			12
++#define TEST_MODE_CNT_SIMULATE		5
++#define TEST_COMMON_MODE_MAX		4
++#define PAT_NAME_MAX_LEN		64
  
--const struct pat_index_entry xe2_pat_index_modes[] = {
--	XE_COMMON_PAT_INDEX_MODES,
-+static struct pat_index_entry pat_index_modes[TEST_MODE_CNT * 2];
+ /*
+  * PAT index 18: XA (eXclusive Access) + UC (Uncached).
+  */
+ #define XE_PAT_IDX_XA_UC     18
  
--	/* Too many, just pick some of the interesting ones */
--	{ NULL, 1,  false, "1way",        XE_COH_AT_LEAST_1WAY       },
--	{ NULL, 2,  false, "2way",        XE_COH_AT_LEAST_1WAY       },
--	{ NULL, 2,  false, "2way-cpu-wc", XE_COH_AT_LEAST_1WAY, true },
--	{ NULL, 5,  false, "uc-1way",     XE_COH_AT_LEAST_1WAY       },
--	{ NULL, 12, true,  "uc-comp",     XE_COH_NONE                },
--	{ NULL, 31, false, "c3-2way",     XE_COH_AT_LEAST_1WAY       },
--};
-+static void generate_pat_entry_name(struct local_pat_entry *entry, char *name_buf,
-+				    bool cpu_wc)
-+{
-+	const char *l3_policy_str[] = { "-l3_wb", "-l3_xd", "-l3_xa", "-l3_uc" };
-+	const char *l4_policy_str[] = { "-l4_wb", "-l4_wt", "", "-l4_uc" };
-+	const char *coh_str;
++#define REG_FIELD_GET(__mask, __val) \
++	((uint32_t)FIELD_GET(__mask, __val))
 +
-+	if (entry->coh_mode == XE_COH_1WAY)
-+		coh_str = "-1way";
-+	else if (entry->coh_mode == XE_COH_2WAY)
-+		coh_str = "-2way";
++#define XE2_NO_PROMOTE	REG_BIT(10)
++#define XE2_COMP_EN	REG_BIT(9)
++#define XE2_L3_CLOS	GENMASK(7, 6)
++#define XE2_L3_POLICY	GENMASK(5, 4)
++#define XE2_L4_POLICY	GENMASK(3, 2)
++#define XE2_COH_MODE	GENMASK(1, 0)
++
++#define L3_CACHE_POLICY_WB	0
++#define L3_CACHE_POLICY_XD	1
++#define L3_CACHE_POLICY_XA	2
++#define L3_CACHE_POLICY_UC	3
++
++#define L4_CACHE_POLICY_WB	0
++#define L4_CACHE_POLICY_WT	1
++#define L4_CACHE_POLICY_UC	3
++
++/* Pre-Xe2 PAT bit fields (from kernel xe_pat.c) */
++#define XELP_MEM_TYPE_MASK	GENMASK(1, 0)
++
++struct local_pat_entry {
++	uint8_t index;		/* PAT index (0-31) */
++	uint32_t pat;		/* Raw register value from debugfs */
++	bool rsvd;		/* Reserved entry (marked with * in debugfs) */
++	/* Decoded fields from pat register */
++	bool no_promote;
++	bool comp_en;
++	uint8_t pat_clos;
++	uint8_t l3_policy;
++	uint8_t l4_policy;
++	uint8_t coh_mode;
++};
++
++struct local_pat_cache {
++	struct local_pat_entry entries[XE_PAT_MAX_ENTRIES];
++	int n_entries;		/* Number of platform valid entries */
++	bool has_comp_en;	/* true if platform has COMP_EN (Compression Enable) PAT entry */
++	bool has_wt;		/* true if platform has WT (Write-Through) PAT entry */
++};
++
++/* Global PAT cache - populated once from debugfs, reused by all subtests */
++static struct local_pat_cache local_pat_cache;
++
+ static bool do_slow_check;
+ static char bus_addr[NAME_MAX];
+ static struct pci_device *pci_dev;
+@@ -97,35 +148,6 @@ static void userptr_coh_none(int fd)
+ 	munmap(data, size);
+ 	xe_vm_destroy(fd, vm);
+ }
+-#define REG_FIELD_GET(__mask, __val) \
+-	((uint32_t)FIELD_GET(__mask, __val))
+-
+-#define XE2_NO_PROMOTE	REG_BIT(10)
+-#define XE2_COMP_EN	REG_BIT(9)
+-#define XE2_L3_CLOS	GENMASK(7, 6)
+-#define XE2_L3_POLICY	GENMASK(5, 4)
+-#define XE2_L4_POLICY	GENMASK(3, 2)
+-#define XE2_COH_MODE	GENMASK(1, 0)
+-
+-#define L3_CLOS1		1
+-#define L3_CLOS2		2
+-#define L3_CLOS3		3
+-
+-#define L3_CACHE_POLICY_WB	0
+-#define L3_CACHE_POLICY_XD	1
+-#define L3_CACHE_POLICY_UC	3
+-
+-#define L4_CACHE_POLICY_WB	0
+-#define L4_CACHE_POLICY_WT	1
+-#define L4_CACHE_POLICY_UC	3
+-
+-#define COH_MODE_NONE	  	0
+-#define COH_MODE_1WAY		2
+-#define COH_MODE_2WAY		3
+-
+-/* Pre-Xe2 PAT bit fields (from kernel xe_pat.c) */
+-#define XELP_MEM_TYPE_MASK	GENMASK(1, 0)
+-
+ static bool pat_entry_is_uc(unsigned int gfx_ver, uint32_t pat)
+ {
+ 	if (gfx_ver >= IP_VER(20, 0))
+@@ -181,6 +203,47 @@ static int xe_fetch_pat_sw_config(int fd, struct intel_pat_cache *pat_sw_config)
+ 	return parsed;
+ }
+ 
++static void decode_pat_entry(struct local_pat_entry *entry, bool has_comp_en)
++{
++	uint32_t pat = entry->pat;
++
++	entry->no_promote = !!(pat & XE2_NO_PROMOTE);
++	entry->pat_clos = REG_FIELD_GET(XE2_L3_CLOS, pat);
++	entry->l3_policy = REG_FIELD_GET(XE2_L3_POLICY, pat);
++	entry->l4_policy = REG_FIELD_GET(XE2_L4_POLICY, pat);
++	entry->coh_mode = REG_FIELD_GET(XE2_COH_MODE, pat);
++
++	if (has_comp_en)
++		entry->comp_en = !!(pat & XE2_COMP_EN);
 +	else
-+		coh_str = "";
-+
-+	snprintf(name_buf, PAT_NAME_MAX_LEN, "c%u%s%s%s%s%s",
-+		 entry->pat_clos,
-+		 l3_policy_str[entry->l3_policy & 3],
-+		 l4_policy_str[entry->l4_policy & 3],
-+		 coh_str,
-+		 entry->comp_en ? "-comp" : "",
-+		 cpu_wc ? "-cpu_wc" : "");
++		entry->comp_en = false;
 +}
- 
--const struct pat_index_entry bmg_g21_pat_index_modes[] = {
--	XE_COMMON_PAT_INDEX_MODES,
-+static void add_pat_mode(struct pat_index_entry *modes, int idx, int pat_idx, bool cpu_wc)
++
++/* init local_pat_cache */
++static void init_pat_cache(int fd)
 +{
-+	struct local_pat_entry *entry = &local_pat_cache.entries[pat_idx];
++	struct intel_pat_cache raw_cache = {};
 +
-+	modes[idx].get_pat_index = NULL;
-+	modes[idx].pat_index = pat_idx;
-+	modes[idx].compressed = entry->comp_en;
-+	modes[idx].coh_mode =
-+		(entry->coh_mode >= XE_COH_1WAY) ? XE_COH_AT_LEAST_1WAY : XE_COH_NONE;
-+	modes[idx].force_cpu_wc = cpu_wc;
-+	generate_pat_entry_name(entry, modes[idx].name, cpu_wc);
++	local_pat_cache.n_entries = xe_fetch_pat_sw_config(fd, &raw_cache);
++	local_pat_cache.has_comp_en = HAS_FLATCCS(intel_get_drm_devid(fd));
++	local_pat_cache.has_wt = false;
++
++	for (int i = 0; i < local_pat_cache.n_entries; i++) {
++		local_pat_cache.entries[i].index = i;
++		local_pat_cache.entries[i].pat = raw_cache.entries[i].pat;
++		local_pat_cache.entries[i].rsvd = raw_cache.entries[i].rsvd;
++		decode_pat_entry(&local_pat_cache.entries[i], local_pat_cache.has_comp_en);
++
++		if (!local_pat_cache.entries[i].rsvd &&
++		    local_pat_cache.entries[i].l4_policy == L4_CACHE_POLICY_WT)
++			local_pat_cache.has_wt = true;
++	}
++
++	igt_debug("PAT cache initialized: n_entries=%d, has_comp_en=%d, has_wt=%d\n",
++		  local_pat_cache.n_entries, local_pat_cache.has_comp_en,
++		  local_pat_cache.has_wt);
 +}
- 
--	/* Too many, just pick some of the interesting ones */
--	{ NULL, 1,  false, "1way",        XE_COH_AT_LEAST_1WAY       },
--	{ NULL, 2,  false, "2way",        XE_COH_AT_LEAST_1WAY       },
--	{ NULL, 2,  false, "2way-cpu-wc", XE_COH_AT_LEAST_1WAY, true },
--	{ NULL, 5,  false, "uc-1way",     XE_COH_AT_LEAST_1WAY       },
--	{ NULL, 12, true,  "uc-comp",     XE_COH_NONE                },
--	{ NULL, 27, false, "c2-2way",     XE_COH_AT_LEAST_1WAY       },
--};
-+/*
-+ * Build pat_index_modes[] test table:
-+ * 1. Common modes first (WT, Coherent, Non-coherent)
-+ * 2. Random modes (shuffled remaining entries)
-+ */
-+static int init_pat_index_modes(void)
-+{
-+	int test_cnt = (igt_run_in_simulation()) ? TEST_MODE_CNT_SIMULATE : TEST_MODE_CNT;
-+	struct pat_index_entry common_modes[TEST_COMMON_MODE_MAX];
-+	struct pat_index_entry random_modes[XE_PAT_MAX_ENTRIES * 2];
-+	struct pat_index_entry tmp;
-+	int n_common = 0;
-+	int n_random = 0;
-+	int n_picked = 0;
-+	int i, j;
 +
-+	bool ensure_picked_wt = true;
-+	bool ensure_picked_coh = true;
-+	bool ensure_picked_noncoh = true;
+ /**
+  * SUBTEST: pat-sanity
+  * Test category: functionality test
+@@ -2216,6 +2279,11 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
+ 		fd = drm_open_driver(DRIVER_XE);
+ 		dev_id = intel_get_drm_devid(fd);
+ 		xe_device_get(fd);
 +
-+	igt_assert(local_pat_cache.n_entries > 0);
-+
-+	/* Step 1: Split entries into common_modes and random_modes */
-+	for (i = 0; i < local_pat_cache.n_entries; i++) {
-+		struct local_pat_entry *entry = &local_pat_cache.entries[i];
-+
-+		if (entry->rsvd)
-+			continue;
-+
-+		/* Common pat index type 1: WT mode (l3=xd, l4=wt, coh=0) */
-+		if (ensure_picked_wt && local_pat_cache.has_wt &&
-+		    entry->pat_clos == 0 &&
-+		    entry->l3_policy == L3_CACHE_POLICY_XD &&
-+		    entry->l4_policy == L4_CACHE_POLICY_WT &&
-+		    entry->coh_mode == 0) {
-+			add_pat_mode(common_modes, n_common, i, false);
-+			n_common++;
-+			ensure_picked_wt = false;
-+			continue;
-+		}
-+		/* Common pat index type 2: Coherent mode (l3=wb, l4=uc, coh>=1way) */
-+		if (ensure_picked_coh &&
-+		    entry->pat_clos == 0 &&
-+		    entry->l3_policy == L3_CACHE_POLICY_WB &&
-+		    entry->l4_policy == L4_CACHE_POLICY_UC &&
-+		    entry->coh_mode >= XE_COH_1WAY) {
-+			add_pat_mode(common_modes, n_common, i, false);
-+			n_common++;
-+			add_pat_mode(common_modes, n_common, i, true);
-+			n_common++;
-+			ensure_picked_coh = false;
-+			continue;
-+		}
-+		/* Common pat index type 3: Non-coherent mode (l3=uc, l4=uc, coh=0) */
-+		if (ensure_picked_noncoh &&
-+		    entry->pat_clos == 0 &&
-+		    entry->l3_policy == L3_CACHE_POLICY_UC &&
-+		    entry->l4_policy == L4_CACHE_POLICY_UC &&
-+		    entry->coh_mode == 0) {
-+			add_pat_mode(common_modes, n_common, i, false);
-+			n_common++;
-+			ensure_picked_noncoh = false;
-+			continue;
-+		}
-+
-+		/* Add to random_modes */
-+		add_pat_mode(random_modes, n_random, i, false);
-+		n_random++;
-+		if (entry->coh_mode >= XE_COH_1WAY) {
-+			add_pat_mode(random_modes, n_random, i, true);
-+			n_random++;
-+		}
-+	}
-+	igt_assert(n_common + n_random > 0);
-+
-+	/* Step 2: Fisher-Yates shuffle on random_modes */
-+	for (i = n_random - 1; i > 0; i--) {
-+		j = rand() % (i + 1);
-+		tmp = random_modes[i];
-+		random_modes[i] = random_modes[j];
-+		random_modes[j] = tmp;
-+	}
-+
-+	/* Step 3: Merge common_modes and random_modes into pat_index_modes */
-+	for (i = 0; i < n_common; i++)
-+		pat_index_modes[n_picked++] = common_modes[i];
-+	for (i = 0; i < n_random; i++)
-+		pat_index_modes[n_picked++] = random_modes[i];
-+
-+	/* Step 4: Truncate to test_cnt */
-+	if (n_picked > test_cnt)
-+		n_picked = test_cnt;
-+
-+	for (i = 0; i < n_picked; i++) {
-+		igt_debug("  [%d] idx=%2u comp=%d coh=%u cpu_wc=%d name=%s%s\n",
-+			  i, pat_index_modes[i].pat_index, pat_index_modes[i].compressed,
-+			  pat_index_modes[i].coh_mode, pat_index_modes[i].force_cpu_wc,
-+			  pat_index_modes[i].name,
-+			  (i < n_common) ? " (common)" : " (random)");
-+	}
-+
-+	return n_picked;
-+}
- 
- const struct pat_index_entry xe3p_lpg_coherency_pat_index_modes[] = {
- 	{ NULL, 18, false, "xa-l3-uc",	 XE_COH_NONE          },
-@@ -2339,12 +2457,8 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
- 		igt_require(intel_get_device_info(dev_id)->graphics_ver >= 20);
- 		igt_assert(HAS_FLATCCS(dev_id));
- 
--		if (intel_graphics_ver(dev_id) == IP_VER(20, 1))
--			subtest_pat_index_modes_with_regions(fd, bmg_g21_pat_index_modes,
--							     ARRAY_SIZE(bmg_g21_pat_index_modes));
--		else
--			subtest_pat_index_modes_with_regions(fd, xe2_pat_index_modes,
--							     ARRAY_SIZE(xe2_pat_index_modes));
-+		subtest_pat_index_modes_with_regions(fd, pat_index_modes,
-+			init_pat_index_modes());
++		if (intel_graphics_ver(dev_id) >= IP_VER(20, 0))
++			init_pat_cache(fd);
++		else
++			local_pat_cache.has_wt = true;
  	}
  
- 	igt_subtest("display-vs-wb-transient")
+ 	igt_subtest("pat-sanity")
 -- 
 2.43.0
 
