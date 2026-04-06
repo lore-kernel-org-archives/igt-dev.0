@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5FA2EF4EC6
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 08:42:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25140EF4EC2
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 08:48:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7124510E184;
-	Mon,  6 Apr 2026 08:42:36 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB58B10E184;
- Mon,  6 Apr 2026 08:42:27 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4539631184144109318=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C796B10E184;
+	Mon,  6 Apr 2026 08:48:17 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y7bGnUCz";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65EA510E184
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2026 08:48:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1775465289; x=1807001289;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=gV3gTOsPOFbRstjhq30ZttabjmY3A7znq5+ZlHBw4Rc=;
+ b=Y7bGnUCzaHfR4wv3l80r2pCqbVw6n2L1KsK91MwI6XlCT9eXa00Q3H68
+ enJzV8bX8n02FchoVw054xUJIk+X4r3/r//2Kg5emgW/QemCGLuxkhLLQ
+ PdhyCs4GNo/gYcCzi4rMVVTAwklcSVuJaJ8IZPmVguFYiQ2OpSx737O7J
+ KMXmSUzlcSqo4QE4bD9/Ou7KI9P56xD0ohCPJWqVzIKU9g6zXywrCGaWr
+ 0O3E1SnYMa2b/DIjQJg8bvjxogwH3EiuhxZ65xCVjyGe7A++LO78mzDft
+ 9NRlwnPfCmctHtQVvEUgmBufUzSD38R1lQ9gKlQ1IByrVEwtV2g9d0wcR A==;
+X-CSE-ConnectionGUID: 9qLUGBAHSnC/j8pcnaNb5Q==
+X-CSE-MsgGUID: m/1uSrrFTRe87/c4M89YVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11750"; a="80276814"
+X-IronPort-AV: E=Sophos;i="6.23,163,1770624000"; d="scan'208";a="80276814"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Apr 2026 01:48:08 -0700
+X-CSE-ConnectionGUID: nLChNZRKRZuV/CTRUToJYA==
+X-CSE-MsgGUID: w2P810UUT8+6Y97LnLcZRw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,163,1770624000"; d="scan'208";a="265795810"
+Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Apr 2026 01:48:06 -0700
+From: Sowmiya S <sowmiya.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
+ Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v2] README: Document skip message format
+Date: Mon,  6 Apr 2026 14:38:55 +0530
+Message-ID: <20260406090902.1001161-1-sowmiya.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Close_any_open_drm_device?=
- =?utf-8?q?_after_engine_initialization_in_GPUTOP_=28rev11=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Soham Purkait" <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 06 Apr 2026 08:42:27 -0000
-Message-ID: <177546494781.433781.2181846279718654330@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260406060428.2734117-1-soham.purkait@intel.com>
-In-Reply-To: <20260406060428.2734117-1-soham.purkait@intel.com>
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,192 +64,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4539631184144109318==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+KMS tests currently skip in different ways when a machine does not have
+the required connectors or display modes.  Because every test invents its
+own wording, capitalisation and punctuation, automated tools cannot
+reliably match skip reasons across tests, making bug filing harder.
+provide a consistent style for new and updated KMS tests to follow.
 
-== Series Details ==
+Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+---
+ README.md | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-Series: Close any open drm device after engine initialization in GPUTOP (rev11)
-URL   : https://patchwork.freedesktop.org/series/158161/
-State : success
+diff --git a/README.md b/README.md
+index b4b9a37ea..4812ff0a6 100644
+--- a/README.md
++++ b/README.md
+@@ -188,3 +188,55 @@ Imported non-DRM uapi headers from airlied's drm-next branch.
+ 
+ Then, commit with a note of which exact commit from airlied's branch
+ was used to generate them.
++
++Skip Messages
++-------------
++
++KMS tests currently skip in many different ways when a machine does not
++have the required connectors or display modes.  For example, tests
++checking for a connected output use all of the following today:
++
++```c
++igt_require_f(found, "No valid outputs found\n");
++igt_require_f(found, "No second valid output found\n");
++igt_require_f(first_output, "No display connected to iGPU\n");
++igt_require_f(connector, "No HDMI connector found.\n");
++```
++
++Tests checking for a usable mode or pipe similarly diverge:
++
++```c
++igt_require_f(found, "No valid mode combo found.\n");
++igt_require_f(found, "No valid connector/pipe found\n");
++igt_require_f(found, "No valid pipe/output combo found.\n");
++igt_skip_on_f(!has_supported_mode, "Unsupported mode for all pipes\n");
++```
++
++Different wording, capitalisation and punctuation for the same class of
++skip makes automated bug filing harder — tools cannot reliably match or
++group skip reasons across tests.
++
++For new and updated KMS tests, write skip messages as short,
++human-readable strings, always terminated with `\n`.  Include the
++relevant context (connector name, pipe, format, modifier) inline via
++printf-style format specifiers so that logs identify exactly which
++resource was missing:
++
++```c
++/* no connected output */
++igt_require_f(output, "no connected output found\n");
++
++/* no valid connector/pipe combination */
++igt_require_f(found, "no valid connector/pipe combination found\n");
++
++/* no usable mode on a specific output */
++igt_require_f(mode, "no suitable mode found on %s\n", output->name);
++
++/* feature not supported on a specific pipe/format */
++igt_skip_on_f(!igt_display_has_format_mod(display, fmt, modifier),
++	      "modifier 0x%llx not supported on pipe %s\n",
++	      modifier, kmstest_pipe_name(pipe));
++```
++
++Use the same phrasing for the same class of skip across tests so that
++results can be grouped and tracked reliably.
+-- 
+2.48.1
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8848 -> IGTPW_14929
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/index.html
-
-Participating hosts (40 -> 40)
-------------------------------
-
-  Additional (1): fi-glk-j4005 
-  Missing    (1): bat-dg2-13 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14929 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8848/bat-dg2-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8848/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][7] +12 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-9:         [DMESG-FAIL][8] ([i915#12061]) -> [PASS][9] +1 other test pass
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8848/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8848 -> IGTPW_14929
-
-  CI-20190529: 20190529
-  CI_DRM_18281: d873f0156bd08a3031097d459e2d3604bfe1b1bf @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14929: 14929
-  IGT_8848: 8848
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/index.html
-
---===============4539631184144109318==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Close any open drm device after engine initialization in GPUTOP (rev11)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158161/">https://patchwork.freedesktop.org/series/158161/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8848 -&gt; IGTPW_14929</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/index.html</p>
-<h2>Participating hosts (40 -&gt; 40)</h2>
-<p>Additional (1): fi-glk-j4005 <br />
-  Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14929 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8848/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8848/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +12 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8848/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14929/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8848 -&gt; IGTPW_14929</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18281: d873f0156bd08a3031097d459e2d3604bfe1b1bf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14929: 14929<br />
-  IGT_8848: 8848</p>
-
-</body>
-</html>
-
---===============4539631184144109318==--
