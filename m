@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61BDBF46C71
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 18:42:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0083F46C71
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Apr 2026 18:42:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EF1B210E29E;
-	Mon,  6 Apr 2026 18:42:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46C7810E29C;
+	Mon,  6 Apr 2026 18:42:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WlfjJSt+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZybDhhVo";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9EAF110E29C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B10110E29E
  for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2026 18:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775500949; x=1807036949;
+ t=1775500948; x=1807036948;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FsOUtLOkoMXfPB2d6EBA0vlagv0/g23SrRiovXJ6SgE=;
- b=WlfjJSt+aoxAvBxX29dvHJ2AJcuHmLvrqdYp6VoQUuJj7r3o9orkvvd5
- 4tfGsUwL4oTF76FEgmrglC/+H3H9aGkNiBY9aKVqF3lDUUiffdLs/v0yR
- nwNvwSMRWYm3dtW474QtyIgM5PmxFZWrsM4apX6LvshxmGOlBOPCJ/Jjq
- uMsy95gdoXApWHNw9fV5lRKIfhTRmOXpNo15X1HXX5IAS95rRYyr+3I9v
- uye1z6oXOS8gyPZS5OqkfbbJe9Vd68DgtpUvivBij9AA70FnoYGqm83tJ
- 9bkiAO6hSa/ZKPwO3Ef+9Q28snipYImQ19UAOjGHMDoispobcDhipuVN1 g==;
-X-CSE-ConnectionGUID: 6mzqaAByRYO+zwfj+cDd6g==
-X-CSE-MsgGUID: +wrSMnyWRpOG2ZUakdcxuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="80342967"
-X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="80342967"
+ bh=Y0n2Rg30aDvMy30ca+cEpbst4egkdtsJZTywRFZQg78=;
+ b=ZybDhhVo0a6m8k5RhiK9CzbkPUySPUfa5ibk/57j4Be3I5q2r8UqNVb2
+ bRZ2tKcGU8Wr82y4XFeP9O6DG/iso8Om3A9i6IH0wEZ+6TIrSAsLe9HbZ
+ 5Y+x4LxuH65fGAXQSOxzwxHwAb06UKvdA81EJrtWBZq/vBTzAWQKeJWAL
+ jcuSMUtvtK+uhWO0YaHQxqVIgLfzkjReV0wxySrW+9IgudX4ykWyH4IKG
+ usTrbpMIcA+PwASvRvcBdv0ItM+veqlpiUR7DcpMWkGHNVnB9KMAPNAjh
+ sJinzKkMT91sUt316wgj3cSVHVQ/+lgv1GjtbV1lIAMYcC5dAijY3SP17 A==;
+X-CSE-ConnectionGUID: qJ4/6CwWQHSdRED4ZGd1eQ==
+X-CSE-MsgGUID: kzCUUX3RRfKdwHKV7k1Mqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="80342964"
+X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="80342964"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Apr 2026 11:42:28 -0700
-X-CSE-ConnectionGUID: WNAa2TaFRUitszkpk629Tw==
-X-CSE-MsgGUID: Hw396McmTUum7vYFp9iG7w==
+ 06 Apr 2026 11:42:27 -0700
+X-CSE-ConnectionGUID: YS8X7m7YSU6vPRo5wBqWsg==
+X-CSE-MsgGUID: cdkKnzmLR1mAwSh54HYDkA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="225193411"
+X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; d="scan'208";a="225193402"
 Received: from dut4463arlhx.fm.intel.com ([10.105.10.192])
  by fmviesa008.fm.intel.com with ESMTP; 06 Apr 2026 11:42:27 -0700
 From: Brian Nguyen <brian3.nguyen@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: x.wang@intel.com,
 	Brian Nguyen <brian3.nguyen@intel.com>
-Subject: [PATCH 4/4] tests/xe: Add large VMA range tests for better coverage
-Date: Mon,  6 Apr 2026 18:42:31 +0000
-Message-ID: <20260406184226.1294486-10-brian3.nguyen@intel.com>
+Subject: [PATCH 1/4] tests/xe: Add page reclaim test
+Date: Mon,  6 Apr 2026 18:42:28 +0000
+Message-ID: <20260406184226.1294486-7-brian3.nguyen@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260406184226.1294486-6-brian3.nguyen@intel.com>
 References: <20260406184226.1294486-6-brian3.nguyen@intel.com>
@@ -68,186 +68,484 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests that require multi-binds to ensure that the handling of PTEs
-are behaving as expected even in split VMA ranges.
+Page Reclamation is a feature enabled in Xe3p that allows for some
+performance gain by optimizing TLB invalidations. Xe2 and beyond has
+an physical noncoherent L2 cache that requires a full PPC flush
+everytime a TLB invalidation occurs. With page reclamation it will
+only take the corresponding pages associated with the unmap that
+triggers the TLB invalidation.
+
+xe_page_reclaim test cases create pages of a specific size, binds them
+to a VM, and unbinds, observing if the expected pages are added to the
+PRL, through the use of gt stats.
 
 Signed-off-by: Brian Nguyen <brian3.nguyen@intel.com>
+Cc: Xin Wang <x.wang@intel.com>
 ---
- tests/intel/xe_page_reclaim.c | 147 ++++++++++++++++++++++++++++++++++
- 1 file changed, 147 insertions(+)
+ tests/intel/xe_page_reclaim.c | 441 ++++++++++++++++++++++++++++++++++
+ tests/meson.build             |   1 +
+ 2 files changed, 442 insertions(+)
+ create mode 100644 tests/intel/xe_page_reclaim.c
 
 diff --git a/tests/intel/xe_page_reclaim.c b/tests/intel/xe_page_reclaim.c
-index 6cc29d8d3..3bd44285c 100644
---- a/tests/intel/xe_page_reclaim.c
+new file mode 100644
+index 000000000..acc237d43
+--- /dev/null
 +++ b/tests/intel/xe_page_reclaim.c
-@@ -107,6 +107,20 @@ static void compare_prl_stats(struct xe_prl_stats *before, struct xe_prl_stats *
- 		      expected->prl_aborted_count);
- }
- 
-+static void xe_vm_null_bind_sync(int fd, uint32_t vm, uint64_t addr, uint64_t size)
-+{
-+	struct drm_xe_sync sync = {
-+		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.handle = syncobj_create(fd, 0),
-+	};
+@@ -0,0 +1,441 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
 +
-+	xe_vm_bind_async_flags(fd, vm, 0, 0, 0, addr, size, &sync, 1,
-+			       DRM_XE_VM_BIND_FLAG_NULL);
-+	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-+	syncobj_destroy(fd, sync.handle);
++#include <fcntl.h>
++
++#include "ioctl_wrappers.h"
++#include "xe/xe_gt.h"
++#include "xe/xe_ioctl.h"
++
++#define OVERFLOW_PRL_SIZE 512
++
++/**
++ * TEST: xe_page_reclaim
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: VM bind
++ * Functionality: Page Reclamation
++ * Test category: functionality test
++ */
++struct xe_prl_stats {
++	int prl_4k_entry_count;
++	int prl_64k_entry_count;
++	int prl_2m_entry_count;
++	int prl_issued_count;
++	int prl_aborted_count;
++};
++
++/*
++ * PRL is only active on the render GT (gt0); media tiles do not participate
++ * in page reclamation. Callers typically pass gt=0.
++ */
++static struct xe_prl_stats get_prl_stats(int fd, int gt)
++{
++	struct xe_prl_stats stats = {0};
++
++	stats.prl_4k_entry_count = xe_gt_stats_get_count(fd, gt, "prl_4k_entry_count");
++	stats.prl_64k_entry_count = xe_gt_stats_get_count(fd, gt, "prl_64k_entry_count");
++	stats.prl_2m_entry_count = xe_gt_stats_get_count(fd, gt, "prl_2m_entry_count");
++	stats.prl_issued_count = xe_gt_stats_get_count(fd, gt, "prl_issued_count");
++	stats.prl_aborted_count = xe_gt_stats_get_count(fd, gt, "prl_aborted_count");
++
++	return stats;
 +}
 +
- /* Helper with more flexibility on unbinding and offsets */
- static void vma_range_list_with_unbind_and_offsets(int fd, const uint64_t *vma_sizes, unsigned int n_vmas,
- 				 uint64_t start_addr, uint64_t unbind_size, const uint64_t *vma_offsets)
-@@ -623,6 +637,130 @@ static void test_pat_index_xd(int fd)
- 	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
- }
- 
-+/**
-+ * SUBTEST: binds-large-split
-+ * Description: Bind a large BO (256MB + 4K) split across two adjacent
-+ *      VM bind operations at non-2M-aligned boundaries, then unbind each
-+ *      range separately to verify that page reclamation correctly handles
-+ *      split binds producing a mix of 2M and 4K PRL entries across two
-+ *      distinct page reclaim list operations.
-+ */
-+static void test_binds_large_split(int fd)
++static void log_prl_stat_diff(struct xe_prl_stats *stats_before, struct xe_prl_stats *stats_after)
 +{
-+	struct xe_prl_stats stats_before, stats_after, expected_stats = { 0 };
++	igt_debug("PRL stats diff: 4K: %d->%d, 64K: %d->%d, 2M: %d -> %d, issued: %d->%d, aborted: %d->%d\n",
++		  stats_before->prl_4k_entry_count,
++		  stats_after->prl_4k_entry_count,
++		  stats_before->prl_64k_entry_count,
++		  stats_after->prl_64k_entry_count,
++		  stats_before->prl_2m_entry_count,
++		  stats_after->prl_2m_entry_count,
++		  stats_before->prl_issued_count,
++		  stats_after->prl_issued_count,
++		  stats_before->prl_aborted_count,
++		  stats_after->prl_aborted_count);
++}
 +
-+	uint64_t bo_size = SZ_256M;
-+	uint64_t split_offset = SZ_4K;
-+	uint32_t bo, vm;
++/* Compare differences between stats and determine if expected */
++static void compare_prl_stats(struct xe_prl_stats *before, struct xe_prl_stats *after,
++			      struct xe_prl_stats *expected)
++{
++	log_prl_stat_diff(before, after);
 +
-+	uint64_t addr = (1ull << 30);
++	igt_assert_eq(after->prl_4k_entry_count - before->prl_4k_entry_count,
++		      expected->prl_4k_entry_count);
++	igt_assert_eq(after->prl_64k_entry_count - before->prl_64k_entry_count,
++		      expected->prl_64k_entry_count);
++	igt_assert_eq(after->prl_2m_entry_count - before->prl_2m_entry_count,
++		      expected->prl_2m_entry_count);
++	igt_assert_eq(after->prl_issued_count - before->prl_issued_count,
++		      expected->prl_issued_count);
++	igt_assert_eq(after->prl_aborted_count - before->prl_aborted_count,
++		      expected->prl_aborted_count);
++}
 +
-+	expected_stats.prl_4k_entry_count = 1;
-+	expected_stats.prl_64k_entry_count = 0;
-+	expected_stats.prl_2m_entry_count = 128;
-+	expected_stats.prl_issued_count = 2;
-+	expected_stats.prl_aborted_count = 0;
++/* Helper with more flexibility on unbinding and offsets */
++static void vma_range_list_with_unbind_and_offsets(int fd, const uint64_t *vma_sizes, unsigned int n_vmas,
++				 uint64_t start_addr, uint64_t unbind_size, const uint64_t *vma_offsets)
++{
++	uint32_t vm;
++	uint32_t *bos;
++	uint64_t addr;
 +
-+	stats_before = get_prl_stats(fd, 0);
++	igt_assert(vma_sizes);
++	igt_assert(n_vmas);
 +
 +	vm = xe_vm_create(fd, 0, 0);
-+	/* Slightly larger BO to see behavior of split */
-+	bo = xe_bo_create(fd, 0, bo_size + split_offset, system_memory(fd), 0);
-+	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size / 2);
-+	xe_vm_bind_sync(fd, vm, bo, bo_size / 2, addr + bo_size / 2, bo_size / 2 + split_offset);
-+	xe_vm_unbind_sync(fd, vm, 0, addr, bo_size / 2);
-+	xe_vm_unbind_sync(fd, vm, 0, addr + bo_size / 2, bo_size / 2 + split_offset);
 +
-+	stats_after = get_prl_stats(fd, 0);
++	bos = calloc(n_vmas, sizeof(*bos));
++	igt_assert(bos);
 +
-+	gem_close(fd, bo);
++	addr = start_addr;
++	for (unsigned int i = 0; i < n_vmas; i++) {
++		igt_assert(vma_sizes[i]);
++
++		bos[i] = xe_bo_create(fd, 0, vma_sizes[i], system_memory(fd), 0);
++		if (vma_offsets)
++			addr = start_addr + vma_offsets[i];
++		xe_vm_bind_sync(fd, vm, bos[i], 0, addr, vma_sizes[i]);
++		addr += vma_sizes[i];
++	}
++
++	/* Unbind the whole contiguous VA span in one operation. */
++	xe_vm_unbind_sync(fd, vm, 0, start_addr, unbind_size ? unbind_size : addr - start_addr);
++
++	for (unsigned int i = 0; i < n_vmas; i++)
++		gem_close(fd, bos[i]);
++
++	free(bos);
 +	xe_vm_destroy(fd, vm);
++}
 +
-+	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
++/*
++ * Takes in an array of vma sizes and allocates/binds individual BOs for each given size,
++ * then unbinds them all at once
++ */
++static void test_vma_ranges_list(int fd, const uint64_t *vma_sizes,
++				 unsigned int n_vmas, uint64_t start_addr)
++{
++	vma_range_list_with_unbind_and_offsets(fd, vma_sizes, n_vmas, start_addr, 0, NULL);
 +}
 +
 +/**
-+ * SUBTEST: binds-full-pd
-+ * Description: Fill almost an entire 1G page directory (1G minus 4K)
-+ *      by splitting a single BO across two adjacent VM bind operations,
-+ *      then unbind each range separately to verify correct page reclamation
-+ *      when most entries of a page directory are present, producing a mix
-+ *      of 2M, 64K, and 4K PRL entries across two page reclaim list
-+ *      operations.
++ * SUBTEST: basic-mixed
++ * Description: Create multiple different sizes of page (4K, 64K, 2M)
++ *      GPU VMA ranges, bind them into a VM at unique addresses, then
++ *      unbind all to trigger page reclamation on different page sizes
++ *      in one page reclaim list.
 + */
-+static void test_binds_full_pd(int fd)
++static void test_vma_ranges_basic_mixed(int fd)
 +{
 +	struct xe_prl_stats stats_before, stats_after, expected_stats = { 0 };
-+	uint32_t bo, vm;
-+	uint64_t addr = (1ull << 30);
++	const uint64_t num_4k_pages = 16;
++	const uint64_t num_64k_pages = 31;
++	const uint64_t num_2m_pages = 2;
++	uint64_t *sizes = calloc(num_4k_pages + num_64k_pages + num_2m_pages, sizeof(uint64_t));
++	int count = 0;
 +
-+	expected_stats.prl_4k_entry_count = 15;
-+	expected_stats.prl_64k_entry_count = 31;
-+	expected_stats.prl_2m_entry_count = 511;
-+	expected_stats.prl_issued_count = 2;
-+	expected_stats.prl_aborted_count = 0;
++	igt_assert(sizes);
++	for (int i = 0; i < num_4k_pages; i++)
++		sizes[count++] = SZ_4K;
 +
-+	stats_before = get_prl_stats(fd, 0);
++	for (int i = 0; i < num_64k_pages; i++)
++		sizes[count++] = SZ_64K;
 +
-+	vm = xe_vm_create(fd, 0, 0);
-+	bo = xe_bo_create(fd, 0, SZ_1G - SZ_4K, system_memory(fd), 0);
-+	xe_vm_bind_sync(fd, vm, bo, 0, addr, SZ_512M);
-+	xe_vm_bind_sync(fd, vm, bo, SZ_512M, addr + SZ_512M, SZ_512M - SZ_4K);
-+	xe_vm_unbind_sync(fd, vm, 0, addr, SZ_512M);
-+	xe_vm_unbind_sync(fd, vm, 0, addr + SZ_512M, SZ_512M - SZ_4K);
++	for (int i = 0; i < num_2m_pages; i++)
++		sizes[count++] = SZ_2M;
 +
-+	stats_after = get_prl_stats(fd, 0);
-+
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
-+
-+	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
-+}
-+
-+/**
-+ * SUBTEST: binds-null-vma
-+ * Description: Verify handling of null VMAs by creating a VM with real
-+ *      BO mappings followed by a large null VMA mapping, then trigger
-+ *      page reclamation across the entire range.
-+ */
-+static void test_binds_null_vma(int fd)
-+{
-+	struct xe_prl_stats stats_before, stats_after, expected_stats = { 0 };
-+	uint32_t bo, vm;
-+	/* 512G aligned */
-+	uint64_t addr = 0;
-+
-+	/*
-+	 * Layout:
-+	 *   [0,      2M)      : real 2M BO   → allocates the level-3[0] subtree
-+	 *   [2M,  512G)       : null VMA     → fills the rest of the level-3[0] span
-+	 *   UNMAP [0, 512G)   → walk covers exactly one level-3 entry (512G each)
-+	 *
-+	 * Only the real 2M BO produces a PRL entry; the null VMA has no
-+	 * hardware PTEs and is skipped by the page-reclaim walker.
-+	 */
-+	expected_stats.prl_4k_entry_count = 0;
-+	expected_stats.prl_64k_entry_count = 0;
-+	expected_stats.prl_2m_entry_count = 1;
++	expected_stats.prl_4k_entry_count = num_4k_pages;
++	expected_stats.prl_64k_entry_count = num_64k_pages;
++	expected_stats.prl_2m_entry_count = num_2m_pages;
 +	expected_stats.prl_issued_count = 1;
 +	expected_stats.prl_aborted_count = 0;
 +
 +	stats_before = get_prl_stats(fd, 0);
++	test_vma_ranges_list(fd, sizes, count, 1ull << 30);
++	stats_after = get_prl_stats(fd, 0);
++
++	free(sizes);
++	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
++}
++
++/**
++ * SUBTEST: prl-invalidate-full
++ * Description: Create 512 4K page entries at the maximum page reclaim list
++ *      size boundary and bind them into a VM.
++ *      Expects to trigger a fallback to full PPC flush due to page reclaim
++ *      list size limitations (512 entries max).
++ *
++ * SUBTEST: prl-max-entries
++ * Description: Create the maximum page reclaim list without overflow
++ *      bind them into a VM.
++ *      Expects no fallback to PPC flush due to page reclaim
++ *      list size limitations (512 entries max).
++ */
++static void test_vma_ranges_prl_entries(int fd, unsigned int num_entries,
++					int expected_issued, int expected_aborted)
++{
++	struct xe_prl_stats stats_before, stats_after, expected_stats = { 0 };
++	const uint64_t page_size = SZ_4K;
++	/* Start address aligned but offset by a page to ensure no large PTE are created */
++	uint64_t addr = (1ull << 30) + page_size;
++
++	/* Capped at OVERFLOW_PRL_SIZE - 1: on overflow the last entry triggers abort */
++	expected_stats.prl_4k_entry_count = min_t(int, num_entries, OVERFLOW_PRL_SIZE - 1);
++	expected_stats.prl_64k_entry_count = 0;
++	expected_stats.prl_2m_entry_count = 0;
++	expected_stats.prl_issued_count = expected_issued;
++	expected_stats.prl_aborted_count = expected_aborted;
++
++	stats_before = get_prl_stats(fd, 0);
++	test_vma_ranges_list(fd, &(uint64_t){page_size * num_entries}, 1, addr);
++	stats_after = get_prl_stats(fd, 0);
++	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
++}
++
++/*
++ * Bind the BOs to multiple VA ranges and unbind all VA with one range.
++ * BO size is chosen as the maximum of the requested VMA sizes.
++ */
++static void test_many_ranges_one_bo(int fd,
++				    const uint64_t vma_size,
++				    unsigned int n_vmas,
++				    uint64_t start_addr)
++{
++	uint32_t vm;
++	uint64_t addr;
++	uint32_t bo;
++
++	igt_assert(n_vmas);
 +
 +	vm = xe_vm_create(fd, 0, 0);
-+	bo = xe_bo_create(fd, 0, SZ_2M, system_memory(fd), 0);
-+	xe_vm_bind_sync(fd, vm, bo, 0, addr, SZ_2M);
-+	xe_vm_null_bind_sync(fd, vm, addr + SZ_2M, 512ull * SZ_1G - SZ_2M);
-+	xe_vm_unbind_sync(fd, vm, 0, addr, 512ull * SZ_1G);
 +
-+	stats_after = get_prl_stats(fd, 0);
++	igt_assert(vma_size);
++	bo = xe_bo_create(fd, 0, vma_size, system_memory(fd), 0);
++
++	addr = start_addr;
++	for (unsigned int i = 0; i < n_vmas; i++) {
++		/* Bind the same BO (offset 0) at a new VA location */
++		xe_vm_bind_sync(fd, vm, bo, 0, addr, vma_size);
++		addr += vma_size;
++	}
++
++	/* Unbind all VMAs */
++	xe_vm_unbind_sync(fd, vm, 0, start_addr, addr - start_addr);
 +
 +	gem_close(fd, bo);
 +	xe_vm_destroy(fd, vm);
++}
++
++/**
++ * SUBTEST: many-vma-same-bo
++ * Description: Create multiple 4K page VMA ranges bound to the same BO,
++ *      bind them into a VM at unique addresses, then unbind all to trigger
++ *      page reclamation handling when the same BO is bound to multiple
++ *      virtual addresses.
++ */
++static void test_vma_ranges_many_vma_same_bo(int fd, uint64_t vma_size, unsigned int n_vmas)
++{
++	struct xe_prl_stats stats_before, stats_after, expected_stats = { 0 };
++
++	expected_stats.prl_4k_entry_count = n_vmas;
++	expected_stats.prl_issued_count = 1;
++
++	stats_before = get_prl_stats(fd, 0);
++	test_many_ranges_one_bo(fd, vma_size, n_vmas, 1ull << 30);
++	stats_after = get_prl_stats(fd, 0);
++	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
++}
++
++/**
++ * SUBTEST: invalid-1g
++ * Description: Create a 1G page VMA followed by a 4K page VMA to test
++ *      handling of 1G page mappings during page reclamation.
++ *      Expected is to fallback to invalidation.
++ */
++static void test_vma_range_invalid_1g(int fd)
++{
++	struct xe_prl_stats stats_before, stats_after, expected_stats = { 0 };
++	static const uint64_t sizes[] = {
++		SZ_1G,
++		SZ_4K,
++	};
++	int delta_4k, delta_64k, delta_2m, delta_issued, delta_aborted;
++	bool expected_2m_entries, all_entries_dropped;
++
++	/* 1G page broken into 512 2M pages, but it should invalidate the last entry */
++	expected_stats.prl_2m_entry_count = OVERFLOW_PRL_SIZE - 1;
++	/* No page size because PRL should be invalidated before the second page */
++	expected_stats.prl_4k_entry_count = 0;
++	expected_stats.prl_issued_count = 0;
++	expected_stats.prl_aborted_count = 1;
++
++	stats_before = get_prl_stats(fd, 0);
++	/* Offset 2G to avoid alignment issues */
++	test_vma_ranges_list(fd, sizes, ARRAY_SIZE(sizes), SZ_2G);
++	stats_after = get_prl_stats(fd, 0);
++	log_prl_stat_diff(&stats_before, &stats_after);
++
++	/*
++	 * Depending on page placement, 1G page directory could be dropped from page walk
++	 * which would not generate any entries
++	 */
++	delta_4k = stats_after.prl_4k_entry_count - stats_before.prl_4k_entry_count;
++	delta_64k = stats_after.prl_64k_entry_count - stats_before.prl_64k_entry_count;
++	delta_2m = stats_after.prl_2m_entry_count - stats_before.prl_2m_entry_count;
++	delta_issued = stats_after.prl_issued_count - stats_before.prl_issued_count;
++	delta_aborted = stats_after.prl_aborted_count - stats_before.prl_aborted_count;
++	expected_2m_entries = (delta_2m == expected_stats.prl_2m_entry_count);
++	all_entries_dropped = (delta_2m == 0 && delta_64k == 0 && delta_4k == 0);
++
++	igt_assert_eq(delta_issued, expected_stats.prl_issued_count);
++	igt_assert_eq(delta_aborted, expected_stats.prl_aborted_count);
++	igt_assert_eq(delta_4k, expected_stats.prl_4k_entry_count);
++	igt_assert(expected_2m_entries || all_entries_dropped);
++}
++
++/**
++ * SUBTEST: pde-vs-pd
++ * Description: Test case to trigger invalidation of both PDE (2M pages)
++ *      and PD (page directory filled with 64K pages) to determine correct
++ *      handling of both cases for PRL.
++ */
++static void test_vma_ranges_pde_vs_pd(int fd)
++{
++	struct xe_prl_stats stats_before, stats_after, expected_stats = { 0 };
++	/* Ensure no alignment issue by using 1G */
++	uint64_t start_addr = 1ull << 30;
++	/* 32 pages of 64K to fill one page directory */
++	static const unsigned int num_pages = SZ_2M / SZ_64K;
++	static const uint64_t size_pde[] = {
++		SZ_2M,
++	};
++	uint64_t size_pd[num_pages];
++
++	for (int i = 0; i < num_pages; i++)
++		size_pd[i] = SZ_64K;
++
++	expected_stats = (struct xe_prl_stats) {
++		.prl_64k_entry_count = num_pages,
++		.prl_issued_count = 1,
++	};
++	stats_before = get_prl_stats(fd, 0);
++	test_vma_ranges_list(fd, size_pd, ARRAY_SIZE(size_pd), start_addr);
++	stats_after = get_prl_stats(fd, 0);
++	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
++
++	expected_stats = (struct xe_prl_stats) {
++		.prl_2m_entry_count = 1,
++		.prl_issued_count = 1,
++	};
++	stats_before = get_prl_stats(fd, 0);
++	test_vma_ranges_list(fd, size_pde, ARRAY_SIZE(size_pde), start_addr);
++	stats_after = get_prl_stats(fd, 0);
++	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
++}
++
++/**
++ * SUBTEST: boundary-split
++ * Description: Test case to trigger PRL generation beyond a page size alignment
++ *      to ensure correct handling of PRL entries that span page size boundaries.
++ */
++static void test_boundary_split(int fd)
++{
++	struct xe_prl_stats stats_before, stats_after, expected_stats = { 0 };
++	/* Dangle a page past the boundary with a combination of address offset and size */
++	uint64_t size_boundary = 64 * SZ_2M + SZ_4K;
++	uint64_t addr = (1ull << 30) + 64 * SZ_2M;
++
++	expected_stats.prl_4k_entry_count = 1;
++	expected_stats.prl_64k_entry_count = 0;
++	expected_stats.prl_2m_entry_count = 64;
++	expected_stats.prl_issued_count = 1;
++	expected_stats.prl_aborted_count = 0;
++
++	stats_before = get_prl_stats(fd, 0);
++	test_vma_ranges_list(fd, &(uint64_t){size_boundary}, 1, addr);
++	stats_after = get_prl_stats(fd, 0);
++	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
++}
++
++/**
++ * SUBTEST: binds-1g-partial
++ * Description: Bind a 1G VMA and a 2M VMA into a VM and unbind only
++ *      the 1G range to verify that decomposing a 1G mapping into its
++ *      constituent 2M PRL entries overflows the PRL capacity limit,
++ *      triggering a full TLB invalidation fallback (aborted PRL) instead
++ *      of a targeted page reclaim list flush.
++ */
++static void test_binds_1g_partial(int fd)
++{
++	struct xe_prl_stats stats_before, stats_after, expected_stats = { 0 };
++
++	uint64_t sizes[]   = { SZ_1G, SZ_2M };
++	uint64_t offsets[] = { 0, SZ_1G };
++	int count = ARRAY_SIZE(sizes);
++
++	expected_stats.prl_4k_entry_count = 0;
++	expected_stats.prl_64k_entry_count = 0;
++	expected_stats.prl_2m_entry_count = 0;
++	expected_stats.prl_issued_count = 0;
++	expected_stats.prl_aborted_count = 1;
++
++	stats_before = get_prl_stats(fd, 0);
++	vma_range_list_with_unbind_and_offsets(fd, sizes, count, (1ull << 30), SZ_1G + SZ_2M, offsets);
++	stats_after = get_prl_stats(fd, 0);
 +
 +	compare_prl_stats(&stats_before, &stats_after, &expected_stats);
 +}
 +
- int igt_main()
- {
- 	int fd;
-@@ -674,6 +812,15 @@ int igt_main()
- 	igt_subtest("pat-index-xd")
- 		test_pat_index_xd(fd);
- 
-+	igt_subtest("binds-large-split")
-+		test_binds_large_split(fd);
++int igt_main()
++{
++	int fd;
++	/* Buffer to read debugfs entries boolean */
++	char buf[16] = {0};
 +
-+	igt_subtest("binds-full-pd")
-+		test_binds_full_pd(fd);
++	igt_fixture() {
++		fd = drm_open_driver(DRIVER_XE);
 +
-+	igt_subtest("binds-null-vma")
-+		test_binds_null_vma(fd);
++		igt_require_f(igt_debugfs_exists(fd, "page_reclaim_hw_assist", O_RDONLY),
++			      "Page Reclamation feature is not supported.\n");
 +
- 	igt_fixture()
- 		drm_close_driver(fd);
- }
++		igt_debugfs_read(fd, "page_reclaim_hw_assist", buf);
++		igt_require_f(buf[0] == '1',
++			      "Page Reclamation feature is not enabled.\n");
++
++		igt_require_f(xe_gt_stats_get_count(fd, 0, "prl_4k_entry_count") >= 0,
++			      "gt_stats is required for Page Reclamation tests.\n");
++	}
++
++	igt_subtest("basic-mixed")
++		test_vma_ranges_basic_mixed(fd);
++
++	igt_subtest("prl-invalidate-full")
++		test_vma_ranges_prl_entries(fd, OVERFLOW_PRL_SIZE, 0, 1);
++
++	igt_subtest("prl-max-entries")
++		test_vma_ranges_prl_entries(fd, OVERFLOW_PRL_SIZE - 1, 1, 0);
++
++	igt_subtest("many-vma-same-bo")
++		test_vma_ranges_many_vma_same_bo(fd, SZ_4K, 16);
++
++	igt_subtest("pde-vs-pd")
++		test_vma_ranges_pde_vs_pd(fd);
++
++	igt_subtest("invalid-1g")
++		test_vma_range_invalid_1g(fd);
++
++	igt_subtest("boundary-split")
++		test_boundary_split(fd);
++
++	igt_subtest("binds-1g-partial")
++		test_binds_1g_partial(fd);
++
++	igt_fixture()
++		drm_close_driver(fd);
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 26d9345ec..2637033ea 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -321,6 +321,7 @@ intel_xe_progs = [
+ 	'xe_noexec_ping_pong',
+         'xe_non_msix',
+ 	'xe_oa',
++	'xe_page_reclaim',
+ 	'xe_pat',
+ 	'xe_peer2peer',
+ 	'xe_pm',
 -- 
 2.43.0
 
