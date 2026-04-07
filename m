@@ -4,58 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC52EDB7E7
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 10:00:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D988AEDB7F6
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 10:53:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C5DEC10E2EF;
-	Tue,  7 Apr 2026 10:00:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 75BFC10E2A9;
+	Tue,  7 Apr 2026 10:53:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bNlIuvVR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kqUHx0AX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EAF3210E3C1
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2026 09:59:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43B0210E3E5
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2026 10:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775555980; x=1807091980;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=N6EE0b8MGhyj1a0jmX+60uSu836oq29R0QIdf7ze8pQ=;
- b=bNlIuvVRsg4Hv1+dxlEQSe0RFVZJ3rSjyzohhDI+pXk8+2Bo23Rn4eqG
- cQI9eGBkWAnTlxE06Tm9fMj8jqL/WG0jE2G2RChTpoPFGayd6e+BQ1Gv+
- ckDxbYAyB5VZUM6eo9gOuU60q92EVyrBSqAQTkU01tndn3oABl8rLvtDT
- JdUvLxEgLqxJkAIb/uG9xUW4hPnjsEbxocgFueNSc8rr6FnLwamV9sFQJ
- mgBHtD1brnef5w+p3pfShh4fQBmi4EPj100U1KpcrTjY5hm4BjNOi4hTj
- BVuP3mju7ENx+eNsAFYx4DV4F6Uu0VbiTB/d3QayoG212qk3n+eeRbr0a A==;
-X-CSE-ConnectionGUID: nuruQRHIRzSNwu31R0D79w==
-X-CSE-MsgGUID: FFY/Kym0TrCIATFIDk3wEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="87589088"
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="87589088"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2026 02:59:40 -0700
-X-CSE-ConnectionGUID: 9BtQjbNuR2mAaGq8UnzfOQ==
-X-CSE-MsgGUID: 5hZD4NxPT4KTZPhaxaK2TA==
+ t=1775559183; x=1807095183;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Ql7jr8dheNCGqhz3Q/mR8kmTcYMc67qCHiWatsNGQdY=;
+ b=kqUHx0AXGh9hWZZUC9pQNjIU/iNYD5ou9vk8i3hxmY9bvaIyXe0P0atM
+ lRPep1tz8uBMc/uqQbzeDbRaTt5HnZwmJ73t/C21D6F6yVsl8WfeodXHU
+ 0tfy1eDt2a6WikF8175RR4VAjJJSbymXlFulc0VudjQJ5RtcoHRfSmGgW
+ 0esmjjqCKGmg/gCYkR8gWluXWCe627wXIN/9PSbCWH0GdWZVYQQ8UHPGQ
+ YOsCTT9oIZhrWM9uG8erLsUyy3vWe4muRg2UByCt3QEYIOhjRVE5M2/Y2
+ 3w1OaiNSD1UjlPxq+rkIZGupn0ZViGUBkzXUPy3PuUBp+rujCd5OJC3Jz A==;
+X-CSE-ConnectionGUID: UOx9sbKTQaSBF0UKR/7QdQ==
+X-CSE-MsgGUID: 3a8CuoP+SLabHHWnIjhPxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="75559815"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="75559815"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Apr 2026 03:53:03 -0700
+X-CSE-ConnectionGUID: 8PxFjzgASwul1EoX5jCyrw==
+X-CSE-MsgGUID: Mv2YtyIdSgCuTsi/fuO1lw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="228400117"
-Received: from abityuts-desk.ger.corp.intel.com (HELO
- vgovind2-mobl4.intel.com) ([10.245.244.134])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2026 02:59:38 -0700
-From: Vinod Govindapillai <vinod.govindapillai@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="223349045"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
+ ([10.245.246.1])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Apr 2026 03:53:01 -0700
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
- swati2.sharma@intel.com, jani.nikula@intel.com, ville.syrjala@intel.com
-Subject: [PATCH i-g-t v2 6/8] tests/intel/kms_fbcon_fbt: use a bigger fbc
- status buffer
-Date: Tue,  7 Apr 2026 12:58:41 +0300
-Message-ID: <20260407095843.43679-7-vinod.govindapillai@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260407095843.43679-1-vinod.govindapillai@intel.com>
-References: <20260407095843.43679-1-vinod.govindapillai@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t v2] tests/intel/gem_exec_endless: Use the per-gt
+ interface to set frequencies
+Date: Tue,  7 Apr 2026 12:52:13 +0200
+Message-ID: <20260407105212.43821-2-krzysztof.niemiec@intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -72,63 +71,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As the FBC status now include plane specific FBC status as well, we
-need a bigger buffer to capture the complete FBC status. Use the
-already defined buffer length to assess the FBC status
+The test alters the environment, specifically the gt frequencies, for
+its duration. Using the legacy interface however makes it impossible for
+the pre-test state to be restored due to its limitations in multi-gt
+systems. Use the per-gt interface instead to properly clean up.
 
-Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 ---
- tests/intel/kms_fbcon_fbt.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index e44be15f6..b36582011 100644
---- a/tests/intel/kms_fbcon_fbt.c
-+++ b/tests/intel/kms_fbcon_fbt.c
-@@ -33,6 +33,7 @@
-  * Mega feature: General Display Features
-  */
+v2:
+  - Remove the redundant fd open from the i915_for_each_gt loop, as one
+    is already created as part of the loop (Sebastian)
+  - Remove extra newline (Krzysztof K)
+
+ tests/intel/gem_exec_endless.c | 33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
+
+diff --git a/tests/intel/gem_exec_endless.c b/tests/intel/gem_exec_endless.c
+index 7f35e985c..f3ed8556c 100644
+--- a/tests/intel/gem_exec_endless.c
++++ b/tests/intel/gem_exec_endless.c
+@@ -316,28 +316,28 @@ static void endless_dispatch(int i915, const struct intel_execution_engine2 *e)
+ 		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
+ 			igt_dynamic_f("%s", (e)->name)
  
-+#include "i915/intel_fbc.h"
- #include "igt.h"
- #include "igt_device.h"
- #include "igt_psr.h"
-@@ -81,7 +82,7 @@ static void wait_user(const char *msg)
- 
- static bool fbc_supported_on_chipset(int device, int debugfs_fd)
+-static void pin_rps(int sysfs)
++static void pin_rps(int sysfs_gt)
  {
--	char buf[128];
-+	char buf[FBC_STATUS_BUF_LEN];
- 	int ret;
+ 	unsigned int max;
  
- 	ret = igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status",
-@@ -100,7 +101,7 @@ static bool connector_can_fbc(drmModeConnectorPtr connector)
+-	if (igt_sysfs_scanf(sysfs, "gt_RP0_freq_mhz", "%u", &max) != 1)
++	if (igt_sysfs_scanf(sysfs_gt, "rps_RP0_freq_mhz", "%u", &max) != 1)
+ 		return;
  
- static void fbc_print_status(int debugfs_fd)
+-	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", max);
+-	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", max);
+-	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%u", max);
++	igt_sysfs_printf(sysfs_gt, "rps_min_freq_mhz", "%u", max);
++	igt_sysfs_printf(sysfs_gt, "rps_max_freq_mhz", "%u", max);
++	igt_sysfs_printf(sysfs_gt, "rps_boost_freq_mhz", "%u", max);
+ }
+ 
+-static void unpin_rps(int sysfs)
++static void unpin_rps(int sysfs_gt)
  {
--	static char buf[128];
-+	static char buf[FBC_STATUS_BUF_LEN];
+ 	unsigned int v;
  
- 	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf,
- 				sizeof(buf));
-@@ -109,7 +110,7 @@ static void fbc_print_status(int debugfs_fd)
+-	if (igt_sysfs_scanf(sysfs, "gt_RPn_freq_mhz", "%u", &v) == 1)
+-		igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", v);
++	if (igt_sysfs_scanf(sysfs_gt, "rps_RPn_freq_mhz", "%u", &v) == 1)
++		igt_sysfs_printf(sysfs_gt, "rps_min_freq_mhz", "%u", v);
  
- static bool fbc_check_status(int debugfs_fd, bool enabled)
- {
--	char buf[128];
-+	char buf[FBC_STATUS_BUF_LEN];
+-	if (igt_sysfs_scanf(sysfs, "gt_RP0_freq_mhz", "%u", &v) == 1) {
+-		igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", v);
+-		igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%u", v);
++	if (igt_sysfs_scanf(sysfs_gt, "rps_RP0_freq_mhz", "%u", &v) == 1) {
++		igt_sysfs_printf(sysfs_gt, "rps_max_freq_mhz", "%u", v);
++		igt_sysfs_printf(sysfs_gt, "rps_boost_freq_mhz", "%u", v);
+ 	}
+ }
  
- 	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf,
- 				sizeof(buf));
-@@ -310,7 +311,7 @@ static void fbc_skips_on_fbcon(int debugfs_fd)
- 		"plane height + offset is non-modulo of 4"
- 	};
- 	bool skip = false;
--	char buf[128];
-+	char buf[FBC_STATUS_BUF_LEN];
- 	int i;
+@@ -355,7 +355,7 @@ int igt_main()
  
- 	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf, sizeof(buf));
+ 	igt_subtest_group() {
+ 		struct intel_mmio_data mmio;
+-		int sysfs;
++		int sysfs_gt, gt;
+ 
+ 		igt_fixture() {
+ 			igt_require(gem_scheduler_enabled(i915));
+@@ -365,16 +365,17 @@ int igt_main()
+ 						   igt_device_get_pci_device(i915),
+ 						   false);
+ 
+-			sysfs = igt_sysfs_open(i915);
+-			pin_rps(sysfs);
++			i915_for_each_gt(i915, sysfs_gt, gt)
++				pin_rps(sysfs_gt);
+ 		}
+ 
+ 		test_each_engine("dispatch", i915, e)
+ 				endless_dispatch(i915, e);
+ 
+ 		igt_fixture() {
+-			unpin_rps(sysfs);
+-			close(sysfs);
++			i915_for_each_gt(i915, sysfs_gt, gt)
++				unpin_rps(sysfs_gt);
++
+ 			intel_register_access_fini(&mmio);
+ 		}
+ 	}
 -- 
-2.43.0
+2.45.2
 
