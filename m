@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01BD2EDB7E7
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 10:00:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC52EDB7E7
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 10:00:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E66810E3A9;
-	Tue,  7 Apr 2026 10:00:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5DEC10E2EF;
+	Tue,  7 Apr 2026 10:00:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aSkXm41v";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bNlIuvVR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C79A10E2EF
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2026 09:59:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAF3210E3C1
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2026 09:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775555991; x=1807091991;
+ t=1775555980; x=1807091980;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=RELR/V6R2mLAhO2PHiQ27dfElRK26snoEaQ3D5iu3gI=;
- b=aSkXm41vqNP51s9OXScFAaoFD7Cvhriv3PFwHhypDJPAAPmJ7qtnKGTt
- CyfhjQuKXGtAKD3sXEyqLMEOVHHO7QcuzB148tKpN0LqpIbtqRIqUGsMh
- 4tpYgS2wdmxIA9LqCqA6vzZSuunVsOwi6prjSobZ5x+jbRz44PNPoao2Q
- PdIory+LPxyjBJDRaZJJHE4B+fUTTErAgwrxi9LpIMya6fsKrMH9L2QiD
- Wh9nxHHokxkZ0glgrjbpe6QJndTeH8dOV7Elgc/uUcjk1xL8clB3S2G8v
- 13IS4c8wT9+fCf7iTzrHR9iULmRApON/l/IM8TBa8DQq8wHwvfM8ZbrkD Q==;
-X-CSE-ConnectionGUID: OxWhpbFrQ+yEUjopdivorQ==
-X-CSE-MsgGUID: fCVYSS2NSUCh3UdUNuduPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="87589101"
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="87589101"
+ bh=N6EE0b8MGhyj1a0jmX+60uSu836oq29R0QIdf7ze8pQ=;
+ b=bNlIuvVRsg4Hv1+dxlEQSe0RFVZJ3rSjyzohhDI+pXk8+2Bo23Rn4eqG
+ cQI9eGBkWAnTlxE06Tm9fMj8jqL/WG0jE2G2RChTpoPFGayd6e+BQ1Gv+
+ ckDxbYAyB5VZUM6eo9gOuU60q92EVyrBSqAQTkU01tndn3oABl8rLvtDT
+ JdUvLxEgLqxJkAIb/uG9xUW4hPnjsEbxocgFueNSc8rr6FnLwamV9sFQJ
+ mgBHtD1brnef5w+p3pfShh4fQBmi4EPj100U1KpcrTjY5hm4BjNOi4hTj
+ BVuP3mju7ENx+eNsAFYx4DV4F6Uu0VbiTB/d3QayoG212qk3n+eeRbr0a A==;
+X-CSE-ConnectionGUID: nuruQRHIRzSNwu31R0D79w==
+X-CSE-MsgGUID: FFY/Kym0TrCIATFIDk3wEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="87589088"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="87589088"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2026 02:59:50 -0700
-X-CSE-ConnectionGUID: OIf5Aj3TSCWGfsnTYKQ43w==
-X-CSE-MsgGUID: CuavCCSrSJyr6tmvOs7lrw==
+ 07 Apr 2026 02:59:40 -0700
+X-CSE-ConnectionGUID: 9BtQjbNuR2mAaGq8UnzfOQ==
+X-CSE-MsgGUID: 5hZD4NxPT4KTZPhaxaK2TA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="228400139"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="228400117"
 Received: from abityuts-desk.ger.corp.intel.com (HELO
  vgovind2-mobl4.intel.com) ([10.245.244.134])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2026 02:59:48 -0700
+ 07 Apr 2026 02:59:38 -0700
 From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
  swati2.sharma@intel.com, jani.nikula@intel.com, ville.syrjala@intel.com
-Subject: [PATCH i-g-t v2 8/8] tests/intel/kms_fbcon_fbt: use a common source
- for checking fbc tests skips
-Date: Tue,  7 Apr 2026 12:58:43 +0300
-Message-ID: <20260407095843.43679-9-vinod.govindapillai@intel.com>
+Subject: [PATCH i-g-t v2 6/8] tests/intel/kms_fbcon_fbt: use a bigger fbc
+ status buffer
+Date: Tue,  7 Apr 2026 12:58:41 +0300
+Message-ID: <20260407095843.43679-7-vinod.govindapillai@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260407095843.43679-1-vinod.govindapillai@intel.com>
 References: <20260407095843.43679-1-vinod.govindapillai@intel.com>
@@ -72,76 +72,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There could be few reasons where fbc cannot be enabled and the tests
-could be skipped. There is a common array declarred in intel_fbc.h
-which act as source of fbc skip reasons for kms_frontbuffer_tracking
-tests. Use that array for kms_fbcon_fbt tests as well and also update
-the array with reasons from this tests also. All those reasons are
-valid and declared by the driver as a reason for not enabling FBC in
-a pipe.
+As the FBC status now include plane specific FBC status as well, we
+need a bigger buffer to capture the complete FBC status. Use the
+already defined buffer length to assess the FBC status
 
 Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
 ---
- lib/i915/intel_fbc.h        |  7 +++++++
- tests/intel/kms_fbcon_fbt.c | 16 ++--------------
- 2 files changed, 9 insertions(+), 14 deletions(-)
+ tests/intel/kms_fbcon_fbt.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
-index 3dd15de31..2b6f21bc4 100644
---- a/lib/i915/intel_fbc.h
-+++ b/lib/i915/intel_fbc.h
-@@ -14,10 +14,17 @@ enum psr_mode;
- 
- const char *const no_fbc_reasons[] = {
- 	"FBC disabled: not enough stolen memory",
-+	"FBC disabled: pixel format not supported",
-+	"FBC disabled: tiling not supported",
-+	"FBC disabled: rotation not supported",
- 	"FBC disabled: stride not supported",
-+	"FBC disabled: per-pixel alpha not supported",
- 	"FBC disabled: plane size too big",
- 	"FBC disabled: surface size too big",
- 	"FBC disabled: PSR1 enabled (Wa_14016291713)"
-+	"FBC disabled: plane start Y offset misaligned",
-+	"FBC disabled: plane end Y offset misaligned",
-+	"FBC disabled: pixel rate too high"
- };
- 
- void intel_fbc_enable(igt_display_t *display);
 diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index 78c6cc4b2..95a4f66b7 100644
+index e44be15f6..b36582011 100644
 --- a/tests/intel/kms_fbcon_fbt.c
 +++ b/tests/intel/kms_fbcon_fbt.c
-@@ -296,18 +296,6 @@ static inline void psr_debugfs_enable(int device, int debugfs_fd)
+@@ -33,6 +33,7 @@
+  * Mega feature: General Display Features
+  */
  
- static void fbc_skips_on_fbcon(int debugfs_fd)
++#include "i915/intel_fbc.h"
+ #include "igt.h"
+ #include "igt_device.h"
+ #include "igt_psr.h"
+@@ -81,7 +82,7 @@ static void wait_user(const char *msg)
+ 
+ static bool fbc_supported_on_chipset(int device, int debugfs_fd)
  {
--	const char *reasons[] = {
--		"pixel format not supported",
--		"tiling not supported",
--		"rotation not supported",
--		"stride not supported",
--		"per-pixel alpha not supported",
--		"plane size too big",
--		"surface size too big",
--		"plane start Y offset misaligned",
--		"plane end Y offset misaligned",
--		"pixel rate too high"
--	};
+-	char buf[128];
++	char buf[FBC_STATUS_BUF_LEN];
+ 	int ret;
+ 
+ 	ret = igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status",
+@@ -100,7 +101,7 @@ static bool connector_can_fbc(drmModeConnectorPtr connector)
+ 
+ static void fbc_print_status(int debugfs_fd)
+ {
+-	static char buf[128];
++	static char buf[FBC_STATUS_BUF_LEN];
+ 
+ 	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf,
+ 				sizeof(buf));
+@@ -109,7 +110,7 @@ static void fbc_print_status(int debugfs_fd)
+ 
+ static bool fbc_check_status(int debugfs_fd, bool enabled)
+ {
+-	char buf[128];
++	char buf[FBC_STATUS_BUF_LEN];
+ 
+ 	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf,
+ 				sizeof(buf));
+@@ -310,7 +311,7 @@ static void fbc_skips_on_fbcon(int debugfs_fd)
+ 		"plane height + offset is non-modulo of 4"
+ 	};
  	bool skip = false;
- 	char buf[FBC_STATUS_BUF_LEN];
+-	char buf[128];
++	char buf[FBC_STATUS_BUF_LEN];
  	int i;
-@@ -316,8 +304,8 @@ static void fbc_skips_on_fbcon(int debugfs_fd)
- 	if (strstr(buf, "FBC enabled\n"))
- 		return;
  
--	for (i = 0; skip == false && i < ARRAY_SIZE(reasons); i++)
--		skip = strstr(buf, reasons[i]);
-+	for (i = 0; !skip && i < ARRAY_SIZE(no_fbc_reasons); i++)
-+		skip = strstr(buf, no_fbc_reasons[i]);
- 
- 	igt_skip_on_f(skip, "fbcon modeset is not compatible with FBC\n");
- }
+ 	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf, sizeof(buf));
 -- 
 2.43.0
 
