@@ -4,158 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FED6FB5192
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 05:09:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CBC8FB5192
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 05:15:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D313610E030;
-	Tue,  7 Apr 2026 05:09:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AC09A10E222;
+	Tue,  7 Apr 2026 05:15:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lPAkQoTQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iGBZNe6e";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E33410E030
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2026 05:09:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D80A710E222
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2026 05:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775538584; x=1807074584;
+ t=1775538935; x=1807074935;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=7I9ff/JfzdmGflspf8wA59UkaxTUPbJIQ2mhxcG8PrI=;
- b=lPAkQoTQb0dwCucfhgkMTjt4DyoSpe3hR9HrYafawyJNtODPZI4nWTQp
- s8cTwiErCtNGZv2jT5Y1+c/3fXE9d0frzwwP9T3jVvYXLliAO4SKauTTI
- 9YSw92uctN3rGDrIl/mH5R3QHZSQyehi3Iq80KIzY1JvG6fC9+OooMA4x
- 9eiXmETWqagbkcBUf222jNoqrag9qBzB9FGdQV4XPGWZzZUQD1LDHQQrb
- /8aE5JgLR8pwwP81piOaS56AFlwDs980pqQPbvSa5nW+UEDyQ4Sj6OQ9r
- IVKiOtVMzYvH1r2pmflmhB7TyJVhqQMe0kW8YPRvobg5BuPeBqMVXYiqg w==;
-X-CSE-ConnectionGUID: 6kco05KuSjaMC+EBe3dRoA==
-X-CSE-MsgGUID: HS4zxwBDScisY+Gtomicww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="87117999"
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="87117999"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Apr 2026 22:09:43 -0700
-X-CSE-ConnectionGUID: sz1IgE+oTMWDZJLuSUHMGg==
-X-CSE-MsgGUID: QhbnV/C8TzKxRBM3FTOOSQ==
+ bh=fRPuhHDtGWKbIRvmshEd6xa4jcHlc/kHfSyklsw7gnA=;
+ b=iGBZNe6eM8lGVc1BG0glUKp1kNxWpvQqMWhsnoDrokTn042v58b79Isi
+ 5Q2sJgvoZ2GEaGyv+ACu/iseIapZdWywOJG6hL+UcX87HTn+4tGCT0SVF
+ 3RbO8/NV3T3zm9cnsVDUQFtEvykAJXvQyy8ldloSGvDnJ9TliV/nfJ4Vl
+ zqHL3MKuIfOwld1Tc9oDs4OLhDaZaDBQhSuOl+hUn7y897SxAYndnBB+4
+ qZ3b6ybmFzCd6l+pzyFyaDCBS4kl890CKwmMqPpSQPwERkgMHt6/9Lk+r
+ nO3QAo6pU9gbtH9Ke2+EEdHCpF0DwOAo1/LcCKkvyCwTA5SJP9N4PFS4A g==;
+X-CSE-ConnectionGUID: mBgeo6xAS262khUNwYxpaw==
+X-CSE-MsgGUID: 2cBs9H+JTb2vU9NUnN9xOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="80350813"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="80350813"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Apr 2026 22:15:34 -0700
+X-CSE-ConnectionGUID: rD7BD3L7QQGrCpCRL/mL3Q==
+X-CSE-MsgGUID: o/HhMJo1QdGqq8vg23Ad0w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="232468792"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="266047504"
 Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Apr 2026 22:09:43 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Apr 2026 22:15:35 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 6 Apr 2026 22:09:43 -0700
+ 15.2.2562.37; Mon, 6 Apr 2026 22:15:34 -0700
 Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 6 Apr 2026 22:09:43 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.7) by
+ 15.2.2562.37 via Frontend Transport; Mon, 6 Apr 2026 22:15:34 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.38) by
  edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 6 Apr 2026 22:09:42 -0700
+ 15.2.2562.37; Mon, 6 Apr 2026 22:15:33 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b9nwBb7ylpVaHGaw0kTKDlKjqA7x7rNipyPmCYD6w7tV0GR8zPdPg1GBruAveMge3nU6Wh3PtufYPtyddfWPzoLcTZ0tUkb8e7QQ+OToZGcQb/mZlMrB9Yo6w3SeBZKWb6ffyra9PkqZ+3//7G3bewgrIWTc9dpw2IcpEsjvBD7dwMk9ZynjQnGukEd1biIRa7q5BSCIWSh7u7CXHTOwD2LgvmvV9UdssoN44o2ALW07yZOWbP82oUWGXMDprjMvQ/PyH6oO4egRvtY48BPCaWsKo6xdOCXZMjdyNTi4GjD8qe2sgw88W2BP6CdBfe4kzuR9s7rzHvJzFgt5vJ1Irw==
+ b=bgrkvrusHcmfv3vaMaAW4QCj06GDypsuMbTUd3NX7u/kdqUKrtxRT7LuAk6yCTF3Lk7G8/2t+Tv9/DXif5Hh3JWjyGVcBxsw2dwS2R0usfN2XsDrILuPzWYKcLRDUP0D0pjro2Y07+4eNbjRK6CFLHvIoHoBcS0q1w2iCuG5RB+Y3mGTPULH4YWwJvxN9wjK2TBHl66HfTGj40iOU/if/PibawH0Ph7w2Fxech0i/5jO1uiqXgRKomFmgaSH86+KoMNtqlT76qJgIq01HeiK7z4gW5iHdR3TzNrPEYI7YBi3cEhYknDUxSL7HW9e5VJoay1FEI8sOK1MvvLpEEUVDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/LvrFMhDuzs9JstJMMGuNkRlrT2rB7oOPPTp80Hv5bA=;
- b=gh+VaEjiTzELsHasL4h6P9G+DC7Tti+SQaTOMB/vV3xcjCxo32iiYg6TnXgAX9+0CWKKLdHFalJQTz2MycvUSBEvkv4MtZSFo2gFPyKDu+ysHhwzYPG5SLYaIc2wZkJDtXlwYO/VwN1rXJ8IS7YwMgQh0qrc8Y55sZhYQo/g/SXsaTyHpb4sp3p+buQ3Ko5mSHMtIh/YQRo/NMsHckxfGkio6azz+Dj8IHOxOEq4WEywPekeN0w+PXZAoWYo0nW0WDtbT+OokzpCnHd6y1/TOxrMLH1m3pC0930oRx6eFSux2E/9BEHnYlr478dor3W2MI5sKpbJu5KwB4T++S5OnQ==
+ bh=SLRi+7SMNap2UGJkbIceUOiJQDbm1HIi/YQvRqu00Ls=;
+ b=mGuoljRBTTucwbHKGg+BB9Vwz049k0sOB0S7P4Graey4BKEP58CQfBH0rxudHqfLa0mlJ2Qdrld0fjQjYYoYz4RCjEciXKzxnEFCOwXfDN3mwSfJDYr49rfLaeWu86Z8AX8JQWg1gS+p9hj5QOUaO5cOE4PT+aiB8t5iLcpJdJ1OrzBP7PkIbxg0g/Hb8R/XpvpnOonYpLCUbLROdLts8e0D/Ppnb0aak5UHcMPQtjAsY9P1J2nTuYLA5ubUuCmWOwpYn2om0ltnVre683/XPO48LKBrcGcUSz3IUAxzp0NmMrVglXbR9cp1EapRCmFHvMDOCbSOSeeg/qOEWGwa2A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from BN0PR11MB5709.namprd11.prod.outlook.com (2603:10b6:408:148::6)
- by IA1PR11MB6220.namprd11.prod.outlook.com (2603:10b6:208:3e8::11)
+ by PH8PR11MB7990.namprd11.prod.outlook.com (2603:10b6:510:259::6)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.7; Tue, 7 Apr
- 2026 05:09:39 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Tue, 7 Apr
+ 2026 05:15:25 +0000
 Received: from BN0PR11MB5709.namprd11.prod.outlook.com
  ([fe80::ad31:3f30:20b8:26c]) by BN0PR11MB5709.namprd11.prod.outlook.com
  ([fe80::ad31:3f30:20b8:26c%6]) with mapi id 15.20.9769.020; Tue, 7 Apr 2026
- 05:09:38 +0000
-Message-ID: <d004c9a4-94a5-464f-86c1-6eab9dafc3d9@intel.com>
-Date: Tue, 7 Apr 2026 10:39:30 +0530
+ 05:15:25 +0000
+Message-ID: <f20adf13-a01a-4a93-aa96-23cd8de2caf8@intel.com>
+Date: Tue, 7 Apr 2026 10:45:17 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v6 4/9] tests/intel/xe_madvise: Add
- purged-mmap-blocked subtest
+Subject: Re: [PATCH i-g-t v6 5/9] tests/intel/xe_madvise: Add
+ dontneed-after-mmap subtest
 To: "Sharma, Nishit" <nishit.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 CC: <matthew.brost@intel.com>, <himal.prasad.ghimiray@intel.com>,
  <thomas.hellstrom@linux.intel.com>, <pravalika.gurram@intel.com>
 References: <20260325124426.3265234-1-arvind.yadav@intel.com>
- <20260325124426.3265234-5-arvind.yadav@intel.com>
- <41012de6-8a70-49ed-9332-1746598c8e51@intel.com>
+ <20260325124426.3265234-6-arvind.yadav@intel.com>
+ <928258d0-0e95-465e-9cc4-f1ca8846deb2@intel.com>
 Content-Language: en-US
 From: "Yadav, Arvind" <arvind.yadav@intel.com>
-In-Reply-To: <41012de6-8a70-49ed-9332-1746598c8e51@intel.com>
+In-Reply-To: <928258d0-0e95-465e-9cc4-f1ca8846deb2@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA1P287CA0007.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:35::24) To BN0PR11MB5709.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA1P287CA0018.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a00:35::27) To BN0PR11MB5709.namprd11.prod.outlook.com
  (2603:10b6:408:148::6)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR11MB5709:EE_|IA1PR11MB6220:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1547eebb-068c-4b89-4b05-08de9463de4e
+X-MS-TrafficTypeDiagnostic: BN0PR11MB5709:EE_|PH8PR11MB7990:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55998650-2fc3-4b79-7b95-08de9464acec
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|22082099003|18002099003|56012099003; 
-X-Microsoft-Antispam-Message-Info: Qrjzwys6fNtnFGwafTEXBWeO5gFPhxLrRLXB7l9uBsn+163Cenj+nJnkUmpf957gPcbG04Zr3MYTS3ov/IgBfy0BdlwFVCqR7EV4rS1hA1hSAbYx0OVAZS1lfEROIPNmPhT46lqQdQn4iNFQGm6BFZmED3gedDL0k1sENqQ58kwWVY4mMy/Kby+wCBBTm9NbpEh0izQfkpjgBUhuCWF8M11xCv5pv+bamUNvoEgWimJJZG4rb6wJth+MGxuzKW05T3nAjNAASnevhRdG0dikrKNsH1kVe6VtCWNHZGs1OHkgIF4+SccE2+b/eYmudKbXJip859ByNGojG8ZNRBs9H4HQUV37iGD8RSfZE0fpxBIUxpTrkjrhWDflhkbrQ+9gU0Zgs5ciNfl436SqAd10LgUu7fz73myJHBn60cP0q/kgqF/sbpqWrGDFF0qUZ0I/Y1SnLECbKGxF/mflPVJBqpR1JXEncB2bngoJ+eJMrz0i11h8nboN7kmhBY3wY5sdzZVpkJt5t6sphOujLw28fUooJuUlox9ED9x936uRnr5aPEOJL7MLgmaiyY14eD6nmzdidPOsbitBR5IptEllQ7ooO1bFRjwStWym2TekZtCm3mM4XUKVMYE+lZuREE/KYpegu3yx7536YPK2JSViX8Zjqk92UVNZeE7TP+w22DYBAquaYYyN6UlX6/+cWbds4HeZqO8LFjb4Jkl85vVFj8LETOYHnyGkwGyoq4JUh+M=
+ ARA:13230040|376014|366016|1800799024|56012099003|18002099003|22082099003; 
+X-Microsoft-Antispam-Message-Info: OBeMaHBFEm7yQpMTif2fsCMUZ52nMRcJzW0QcmdsG+wRDrSyGz+YM3q/cRMMW/GjapYi8h9pGwchkbdjCSryuBru7dOzBC7pk+StQVCYY9Lm+2jDuotjFz8vfJSKI1fO08VSsGRsvWug1sZOlql3zxNLuexLrXMZA8D5B0yAdUJipU/6UQXXzVsGcoXrgPyKcPlY3NU4CxNf4s/LJfxkWHMqYf3f4y51DLE9dzo1SLjBX/bs8cNm6i2uIGppvNvHAZOIRLHEoboZxA3qTj+6V7k2BGVJfRfVN1jhfxoIR2+gGh2C88H9CNpW4XP948EnW6gEJbiSHmKxTQSIS7yoTzR9j+coa8hsYFzZDHiNSdmA6cN9RDqZESrwI3aTYwhHdhv/Vwm0OU7pBvENDPuNLPJQPW97hSZxtZ+BuRsaK73cHfHd1Qo6ppISdIE7s/xz0yp7swRG+OPGGtxYeFGGz+QH15vk4Nm1DF0Knb/3wUOzDUVrblYpfcRtPN+NeFplnRbmcol9R2Z1BU/fD/hxBfmB04RKXA2JCU01a+I6FLzf5gcycM7938nMFuDFAcFWFak622cInULqZ6VUDP6jAbUTLy67auaNqfDpRHZ3MqAMCBrcxHCK8P54kSvALcN92MeMsCSiJvVyQWB1rJD5dr7cHkOItLSYENtCUfLw4UOBvpmDwKoIS9StB2jatDzZiz+LIPdSL9YpPaU1AVY+L2urn+REDFaOnRW72K252jM=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BN0PR11MB5709.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099003);
+ SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YkxWdjhncFN3MTVaajNLTVBQc3VvT1prUmhZdmJWbXNDTG5pVEFTRHBxTDl0?=
- =?utf-8?B?TVJlQVY0Y1hycUNLSTU1R0Uva3ovdEVDODErS2YxRVZEUjQzWnBwWXRDZ05a?=
- =?utf-8?B?bW54QXFGTnpVYVJyTHhReFN1d1FsRWFtVTNXL2huazYzZytTMlljd2d6MG9z?=
- =?utf-8?B?RFF6YTRwVlB5U1kxTHFiZmdDbHc0NDROTk9pczgwUmpiNjF1MXkveWRkU0F2?=
- =?utf-8?B?YzBOVXV4clhhV28yL3dlQ1lEb0VhS1llUWc1WU9KTFp0ZUs0VjlxUWZCbmwr?=
- =?utf-8?B?Smd0RVJJWm01Q2hZSHFPNDcvcU1MMHFoUzVjc2IyNmpIUDA0cmhseGs2cnJa?=
- =?utf-8?B?RjNrUnFib1Z6Q2hPT2lhbGlBY2tMUkV2M2hKajFiNTlHS0VqOUUvSVhCWjUr?=
- =?utf-8?B?cHFoWjh4TktSalBVQ3haUkZ2dVoySEorbnA0VER5VEZXMlNRbWpXaVZIMnE0?=
- =?utf-8?B?blkxUkJlRlZvTWcyUHF2ZkV3YUV3SUlRMW5BRGh3WnRUN0IrK1ZYdGJFVjJk?=
- =?utf-8?B?OGlkOEk4L0d0TE53WlphRXNSc3djb0JrZlJUYnRCSXEwY3I2ZzlEdkU0bU4y?=
- =?utf-8?B?Y24ySTZubW16dVlnNUkvRVUxT0hmMjBJS0dOSkxDOGVNblpwa25OME5oL0tR?=
- =?utf-8?B?cGZ3Yzd3N1BteHdaRFp1S0M5K1l4bmc5bDVEc2ZyQlRrYWQveGk4cXJ2Vk1X?=
- =?utf-8?B?djlNaGd6STVSYmtKeFpobW5CNnA1dHNjYjZvcHJJdTZDN0JLZWlsRW1mZ0pK?=
- =?utf-8?B?Mk0rWFkyaWtKc0JwcEZINy9GYUx2ajg2cHREb2xmQXRZYnUzRHorTkJMZjcx?=
- =?utf-8?B?K21xSkwyNTlmV1JMK2xtbDRDZVhKN093WXNaZE9ZbTBsTmFVampCUDhBSjQ2?=
- =?utf-8?B?RWZtMExvMTIvY05lUEozZFZXMC9hKzhsTzRXSmFlcFNUaEYxeFA3aERTZ2JU?=
- =?utf-8?B?Uk9JRzJFOWxrd0tUTGp6UHJtTEFKUzBYaGQ4QU1DcG9HTjVycEdxSnZ5d2U3?=
- =?utf-8?B?ZktveHNCVHV1U1pPQlN5d0lDeVJ2RFRWb3ZVWGVDcDd1Q3RwajlickNqWFlz?=
- =?utf-8?B?V0V6bkpIWWNaK3RhbGRuUTNLdStiV0dxTlREWXc1ZGpvZHpBVzFnenkwR3NG?=
- =?utf-8?B?TXduYlJBWXFzRFFtVTJIb2QrS0FYelBOTnh0N3pKQlc3eThkZDFPTWJUYmVM?=
- =?utf-8?B?RkV1Qisxb20xa3N4ejJGQjFzWDhhMkZFRTBiUWNkYkVBVjlBbHVCaU1kTnEx?=
- =?utf-8?B?TkJBYytWV0dEbklzV2NKWk1FTWlOblNwQTJWSThlL1FSeDJzM0U2cEVta0hR?=
- =?utf-8?B?N0wzNzhrYmw0d2ljSXZySGRkdDNleUZwa0xuam9yWTlrZ1RibE04R3lxcVcr?=
- =?utf-8?B?WTZSVnd5WjhJeFozR01veUptTVR4UXF4R1FvUkR4ZjNGS05DVVBlRGpmTVM1?=
- =?utf-8?B?RExoWWd5cVp0VG5UaHpWYjU4d2cvU0x6NEJUaUU4d0xqQmtnQVdzSnZYajRY?=
- =?utf-8?B?b01KL21UV3RvbThoUDJuZEUwWmlWSnJpb0VmYlRsck9PWWpORzVlWW1mQXlV?=
- =?utf-8?B?KzdvckJ6MFRlaVo4KzJRQmRwSzgyYlNNbTV0cVdOZ0tEa1VmYVpjYk5ST2py?=
- =?utf-8?B?NmhRalhmOGVYc2tDNkhDYXk5eHlSaXI4QmFPMVVxam1wNzJMbVVDMzdKVlBr?=
- =?utf-8?B?dzE1YTI2YzNCQ2o2eEhKbEV1cEo2L2RQbks2bUQyNDI2M1AzYmd0aG0zY1lk?=
- =?utf-8?B?cHRaSG1ES3VKaDNHTkxaLzRSWno2aWZYd0k0eFpSK2sraHRxZmU2RU5ZRVFW?=
- =?utf-8?B?bjVxVlFZaFp3N1VMQTZMYUR6K0tXN1FyTjArS2FtVzVnQWVPT3RkTXNtZmJq?=
- =?utf-8?B?WUpOWVNxWkxvcUpJWTFHdHByYTh3Mi9MK2xGaERsT2laRFJXR3FFNGxUTk1I?=
- =?utf-8?B?Q3JadWtid2ljM09hZkIyTldXTk96OEFEK3gvWWJnbVh6RWlGdGxpOXc1YXRx?=
- =?utf-8?B?NzFDam1ocUpqSHFMZmw4dkJVcGxkdnZ6ZG9NOXlGczFsYzFrQ1p1ZENpMGNW?=
- =?utf-8?B?YmQ1SXpkSzNnZGNSTkdkTHdsWm13bHRKeDJvK0dVYS9XV2Mrb0hBajV4SGps?=
- =?utf-8?B?RDNsV014MXc1RE8zdlRSYUZuRmFaRXdXN0xVMzE2Lzlkb2I0S2ZuSFJuZSt4?=
- =?utf-8?B?SUlrM1orNFJhT0ZoYzlMY2FJcUc2VXZPbm9VTDNCNmZLcjVvcjFEYXVxcGlS?=
- =?utf-8?B?K2ZrK2hYTWpuNjdoWEVZMXhkWjZGYlhKb2RJU2JqMytnemVrU2d6MEd4UnFk?=
- =?utf-8?B?MGJia0kwV1FlN0FEbjR2MWxtRWI3aDMxSWtDdFNnazMwVUtWOEdDZz09?=
-X-Exchange-RoutingPolicyChecked: u+d2x6pR7dSZm5cyZY8GPxPiZus4Iyx5fAZsCLUI0RwEjb6FOuXjFvwwaPN34Zg9WrY1EZEewe6120Vi7A/s5a06xJ7W+9XjFcuASWywq4Jg6vfFLIMp8aogc/B3OVbnbE2Hrm/DPSXfCboWlytx0mwEcjpXj8OzwbzL/HGK63K6BtoG5s96VnRjgpprCCWftRKdJPS5lGj6LcVyY5s+qHSdyaajXv9JXGL5DksFRA9+ietQgq6xFo23gQYbjp/P3xrhbO4aGynd+EoIwlsCJZxqCBiD5wZW7AR0cgGDihCJDIf5cVHvVAryudTgWth8fTLjlplp4v/L6GLYuP6bNQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1547eebb-068c-4b89-4b05-08de9463de4e
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SGdkTVpseUlNT3VxemhiMUlGUkloU0dPTjdaZzZlZzY2OWFSYk1pb1hRMHpl?=
+ =?utf-8?B?K1BJbmZzQjRIckxCbFRNeEhvMnlnTEdoZGZvbm05V3ZQRXdxQ1hIR3hwbGUr?=
+ =?utf-8?B?VnExTk1CQ0tNN08xQ05rRHAwYzdxTnhKeUluWjJ0UjRXcEJIM0pHZkc4U0xp?=
+ =?utf-8?B?NFFLc2QzM2FuZWh1VG5vU0hpdDd4M0FabkdmdkQwYm1COGN6ZC9RMzhKS1dN?=
+ =?utf-8?B?WXVBZjhsWkh3ZEZmZXY2bjArc0d1cnZFSVNPTGhjeHZIYWt1V0xjZlpXVWdo?=
+ =?utf-8?B?UFFlTGJvRExKVWRQalRqTFJ6VlpSOXJsVE1lcDIzZC9UMGhVVDZXUjZmekp2?=
+ =?utf-8?B?L01xbysxb21RYmVVVUVrSmRHUVBkN0diQ0xHYXNlS0ZjWi9kbkhQNGtNMk81?=
+ =?utf-8?B?dUZRNHVpc3lpck1Oam1NUjh1b1JXRldGNHRBUEI3dGJQWHJOamdsS1NxeDBW?=
+ =?utf-8?B?UHhtU1F1akQxZ0tHSXFwZG44WU9vQjJxMmR2cWNObGNQMi9PLzN1UERuaFRj?=
+ =?utf-8?B?K01DZFgxeFRPMFB4dDgxbmRFekhHMmFOZlMyTHBiMjRyMGJTNEZ0encrNXh3?=
+ =?utf-8?B?MFl2d1BiOTNhZm85ODVyb0RDK0ZUeXJaYlROMCtGWGQ4dWVqbm1reEx2eUJh?=
+ =?utf-8?B?Z0EvcWllMkdhVGZnV2RWZGo3ZnJHZldyVkUzNUZkS1NNTWhvUk1Xei9PNEFs?=
+ =?utf-8?B?SWRwTnRKbXljTG9ndFdNbjNSSTJJd25zQVE4bGZDV3dSTWhKempQUDhWYXdt?=
+ =?utf-8?B?NjdLamlGQlFjeU93Mk1tRUgxVHFqWEVmbzhJalQ5SUFnQlh3MnJIMEpSb21Q?=
+ =?utf-8?B?WmN3T1FWLy8wbGo3MjBsN21zMlNNWmkrRGovWjN6MXZ2S0NoRjN6dTZYa2tH?=
+ =?utf-8?B?YVpNLzc4My9tN2QrbFhLMzh6andaMzdoZm9vSFBPYnJ2ZVFlTTduWmY2bURC?=
+ =?utf-8?B?aGpycmpwK1JQUTVJOGhqS1A5ZFZ2VmF1bWw3ZzlVQmVCUlRyN1VPamhPTm5B?=
+ =?utf-8?B?cGRhdFdiWUlkMHUzZmRlR3ZjVGFVbmVjR0pKT3g4MmM1SGRyZm4xWHM1a0dp?=
+ =?utf-8?B?K0dDc2tZSnBwSlFwVnhKMGJyazU4b244TTJESk9vYzhUZUdwU3pTejVWMHhX?=
+ =?utf-8?B?dzFpejVsUmVVUTNuSUZkb2RoYnFYODlCU0RzWjllVVNJTW4vZmdzSStGZ1A4?=
+ =?utf-8?B?U3BCUGJtQm5OZGxZeXYybDRBZEdMTG5DZFFxekhlL2RHcWdpeVkzT3htU3lD?=
+ =?utf-8?B?N2VOSVZBQmREdFFBMDRJcWxKQytkZHQ2QllibzVrWTFNOWoyY3UwRlFPNmFp?=
+ =?utf-8?B?bXh2Mk5EQ0NHWXVUL2YzOURZeWZ6bnR4Yy9aTXhvL0t6VHBiQ21LeGxkL2ZN?=
+ =?utf-8?B?ZEE3RkZYaDhkNTY4MWZNd2d4eWIwUXR3YW9DUkliNitBWXhGbS9ERlBHVlRP?=
+ =?utf-8?B?dzlOZWpob2t2UDFzb1I5VGI3YjJqRVVleG9kbkxuOEM4Q3V3R1dOVXR2NGpv?=
+ =?utf-8?B?NXRxMzRrZStkdXJuUkJjYTBOcVNLSVZnNmduM3c2dS84ZW9PcDFzTGhFNm15?=
+ =?utf-8?B?a1BrTDNsWDQ3WVVDakhWVTB4cHIzdHJRSzhTQmM0ZFZERkI4L1o5aGFSTkl4?=
+ =?utf-8?B?YkhSYjVXWkJsZC84T08zOFRISi94Zkdsb2o1V0dQaVNBOTNHeDBLK3pVUmUy?=
+ =?utf-8?B?VEQxN1ZiTGQ2Yk54QzIvVlFBOEJZQVRrWGNweUFERWxoRGhWQ2tUSnQ4TWFC?=
+ =?utf-8?B?VnZXbEttL0hWaUFmdTlTWVU1UTJrTDZkU0JJTnd3dWcrVU1oQjZqdzRSWTlp?=
+ =?utf-8?B?RlFXaXU3VlBDa0N5SmJwVlBaQlNVRDdCaFNnYmpFY1RFQ1hoaDY4SXVHakZx?=
+ =?utf-8?B?ZmVrT2g1S1YvY1Y1TjV3WXNSQk9qQ2RkOWZpU1g2dFNRSlo2Z1Myc0JFNXB2?=
+ =?utf-8?B?WEJkcU1yc21TTE9TNjV2NU94SUltaGJoZ3BBblJWdGhpbUtYdTI3WFdkSllJ?=
+ =?utf-8?B?bHJuRUsrQXp2cHFHczBUdkd1ZHgyNzBnUUVlWFZiSkpFL3R6L2lKZmdqL3A4?=
+ =?utf-8?B?MEJ4RFpBVDk2N2o5TWo2SHQ4ZW1Ddnh4M2YvSUE4WENPQTFaa3h4SDU5WHA1?=
+ =?utf-8?B?OWZWRlNidmZWNkpLSkZjL0xHYnBFNThyTzhxWmRtTysxbmhYYm9aNzRmK1d6?=
+ =?utf-8?B?UlNjZm83R29uT1VPQ1NQOWdwSlZQcktTWVBnMHRrRTZqQjZIL2lOeUc0Z2pm?=
+ =?utf-8?B?Z1VIbkw5eG9UcW5LbUJKU3V2TVlKUW0vdGZhdXljY2NQSFB6cGZXTTU4U2Rk?=
+ =?utf-8?B?OHRJVXlYaHN0L2ZSTTl3b1BsVDlieHVCdFY2ZUxKM0J3V3VuTEZBUT09?=
+X-Exchange-RoutingPolicyChecked: jUsutZiXd+qi+iu8Z9guEt+2mInLa/iC1YtEKwOI71N4rzwq0RbXaH76msyLqF2agE1CT9h6PxtEoU5q1KSMC4tmM/ftWG/rtCUA76LjaJN83Htwws+x8HT19pV2Cc+wfQ4YKBkA5hecIanyOdJ0gy4GEVBaBSkKftuEcgiHpjAH83yzKbnMzK8aL18swIIWde3j/fSjhQoaU8N3A1+HzB9NNyOWhNi2b5bmBAQDZGlEwu6QS7MLR4sFBHsPQpPUKOvFwiDRww91CGkVLFQ8+NoPr80QTi388OB9nvxdXTYqjqqq39p0Cf1ciEtCc+4HxM1kxQFes7zNrOJEkYR/+Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55998650-2fc3-4b79-7b95-08de9464acec
 X-MS-Exchange-CrossTenant-AuthSource: BN0PR11MB5709.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2026 05:09:38.8143 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2026 05:15:25.4893 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XKKzKgSqnOnLTuoVcoZ/OVkS31eepE6hgK6DATuoOlOpDQOp3U7pCHET3mYWDNRZCi67pSFPxhr7yoe4FwP2ow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6220
+X-MS-Exchange-CrossTenant-UserPrincipalName: +4DIiiqtSj3IT5fxgb2j7EQXYp1cqo2GnN+aMvUYXFBD605aaWNI3+XCq9oSo9+n9h55PO6MO3E/v9t9upLe3g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7990
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -173,31 +173,23 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 06-04-2026 18:04, Sharma, Nishit wrote:
+On 06-04-2026 19:03, Sharma, Nishit wrote:
 >
 > On 3/25/2026 6:14 PM, Arvind Yadav wrote:
->> Add a new purged-mmap-blocked subtest that triggers an actual purge
->> via memory pressure and verifies that mmap() fails with -EINVAL once
->> the BO backing store has been permanently discarded.
+>> This test verifies that an existing mmap becomes invalid after the BO
+>> is marked as purgeable and purged. The test creates a BO, maps it,
+>> writes data, then marks it DONTNEED and triggers memory pressure.
+>> Accessing the previously valid mapping should now trigger SIGBUS or
+>> SIGSEGV, confirming that existing mappings are correctly invalidated
+>> when the backing store is purged.
 >>
->> The purgeable check moved from xe_gem_mmap_offset_ioctl()
->> into a new xe_gem_object_mmap() callback, so the blocking point is now
->> mmap() itself rather than the mmap offset ioctl:
->>
->>    - DRM_IOCTL_XE_GEM_MMAP_OFFSET: always succeeds regardless of
->>      purgeable state (just returns the pre-allocated offset)
->>    - mmap() on DONTNEED BO: fails with -EBUSY (temporary state)
->>    - mmap() on purged BO: fails with -EINVAL (permanent, no backing 
->> store)
->>
->> v5:
->>    - Add purged-mmap-blocked subtest to verify mmap is blocked after
->>      BO backing store is permanently purged.
+>> v4:
+>>    - Added proper resource cleanup before calling igt_skip(). (Nishit)
+>>    - Added assertion for xe_bo_map. (Nishit)
 >>
 >> v6:
->>    - DRM_IOCTL_XE_GEM_MMAP_OFFSET always succeeds; the purgeable check
->>      now happens in xe_gem_object_mmap() at mmap() time. For purged BOs,
->>      assert mmap() fails with -EINVAL.
+>>    - Fix sigsetjmp(jmp, SIGBUS | SIGSEGV) to sigsetjmp(jmp, 1). The
+>>      second argument is a plain boolean savemask, not a signal set.
 >>
 >> Cc: Nishit Sharma <nishit.sharma@intel.com>
 >> Cc: Matthew Brost <matthew.brost@intel.com>
@@ -206,180 +198,94 @@ On 06-04-2026 18:04, Sharma, Nishit wrote:
 >> Cc: Pravalika Gurram <pravalika.gurram@intel.com>
 >> Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
 >> ---
->>   tests/intel/xe_madvise.c | 42 ++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 42 insertions(+)
+>>   tests/intel/xe_madvise.c | 64 ++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 64 insertions(+)
 >>
 >> diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
->> index de4a6e34c..81e05b6d4 100644
+>> index 81e05b6d4..9a157de1d 100644
 >> --- a/tests/intel/xe_madvise.c
 >> +++ b/tests/intel/xe_madvise.c
->> @@ -170,6 +170,42 @@ static void purgeable_setup_simple_bo(int fd, 
->> uint32_t *vm, uint32_t *bo,
->>       xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC);
+>> @@ -244,6 +244,64 @@ static void test_dontneed_before_mmap(int fd)
+>>       xe_vm_destroy(fd, vm);
 >>   }
 >>   +/**
->> + * SUBTEST: purged-mmap-blocked
->> + * Description: After BO is purged, verify mmap() fails with -EINVAL
+>> + * SUBTEST: dontneed-after-mmap
+>> + * Description: Mark BO as DONTNEED after mmap, verify SIGBUS on 
+>> accessing purged mapping
 >> + * Test category: functionality test
 >> + */
->> +static void test_purged_mmap_blocked(int fd)
+>> +static void test_dontneed_after_mmap(int fd)
 >> +{
 >> +    uint32_t bo, vm;
 >> +    uint64_t addr = PURGEABLE_ADDR;
 >> +    size_t bo_size = PURGEABLE_BO_SIZE;
->> +    struct drm_xe_gem_mmap_offset mmo = {};
->> +    void *ptr;
+>> +    void *map;
 >> +
->> +    purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, false);
+>> +    purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, true);
+>> +
+>> +    map = xe_bo_map(fd, bo, bo_size);
+>> +    igt_assert(map != MAP_FAILED);
+>> +    memset(map, 0xAB, bo_size);
+>> +
 >> +    if (!purgeable_mark_and_verify_purged(fd, vm, addr, bo_size)) {
->
-> This function should be defined in this patch. Going through 
-> implementation available in Patch-3/9. In that below code used
->
->     vram_size = xe_visible_vram_size(fd, 0);
->
-> What it returns in igfx platforms? Instead we can use
->
-> /* Purgeable BO either in VRAM or SMEM */
-> mem_size = xe_has_vram(pf_fd)?xe_visible_vram_size(fd, 
-> 0):igt_get_total_ram_mb() << 20;
+> same comment as in Patch-4/9
 
 
-Agreed — using xe_has_vram() is more explicit. Will switch to this.
-
-
-> if (vram_size > 0) {
->                 /* dGPU: pressure VRAM to trigger purgeable reclaim */
->                 mem_size = vram_size;
->         } else {
->                 /*
->                  * iGPU: purgeable BOs reside in system memory. Use 
-> *total*
->                  * RAM (not just available) as the baseline so that we 
-> always
->                  * over-commit regardless of how much is already in use.
->                  */
->                 mem_size = igt_get_total_ram_mb() << 20;
->         }
->
->> +        gem_close(fd, bo);
->> +        xe_vm_destroy(fd, vm);
->> +        igt_skip("Unable to induce purge on this platform/config");
->> +    }
-> static bool purgeable_mark_and_verify_purged(int fd, uint32_t vm, 
-> uint64_t addr, size_t size) --> this should be part of this patch
-> {
->         uint32_t retained;
->
->         /* Mark as DONTNEED */
->         retained = xe_vm_madvise_purgeable(fd, vm, addr, size,
->  DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
->
->         if (retained != 1)
->
-> So here if BO was purged after above call it'll return 0, so if (0 != 
-> 1) will be true and it'll return false.
-
-
-You're right — if the BO is already purged when we mark DONTNEED 
-(retained == 0), the function incorrectly returns false, causing the 
-test to skip. Will fix to treat retained == 0 from DONTNEED as already 
-purged and return true.
-
-
->
->                 return false;
->
->         /* Trigger memory pressure */
->         trigger_memory_pressure(fd, vm);
->
->         /* Verify purged */
->         retained = xe_vm_madvise_purgeable(fd, vm, addr, size,
->  DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
->         return retained == 0;
->
-> }
->
-> static void test_purged_mmap_blocked(int fd)
-> {
->         uint32_t bo, vm;
->         uint64_t addr = PURGEABLE_ADDR;
->         size_t bo_size = PURGEABLE_BO_SIZE;
->         struct drm_xe_gem_mmap_offset mmo = {};
->         void *ptr;
->
->         purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, false);
->         if (!purgeable_mark_and_verify_purged(fd, vm, addr, bo_size)) {
->
-> Here if returned false from above which is basically if BO was purged 
-> retained  = 0 then skip is called which is not the intention
-
-
-Noted,
+Noted.
 
 Thanks,
 Arvind
 
->         gem_close(fd, bo);
->                 xe_vm_destroy(fd, vm);
->                 igt_skip("Unable to induce purge on this 
-> platform/config");
->         }
->
->         /*
->          * Getting the mmap offset is always allowed regardless of 
-> purgeable
->          * state - the blocking happens at mmap() time 
-> (xe_gem_object_mmap).
->          * For a purged BO, mmap() must fail with -EINVAL (no backing 
-> store).
->          */
->         mmo.handle = bo;
->         igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, 
-> &mmo), 0);
->
->         ptr = mmap(NULL, bo_size, PROT_READ | PROT_WRITE, MAP_SHARED, 
-> fd, mmo.offset);
->         igt_assert_eq_u64((uint64_t)ptr, (uint64_t)MAP_FAILED);
->         igt_assert_eq(errno, EINVAL);
->
->         gem_close(fd, bo);
->         xe_vm_destroy(fd, vm);
-> }
->
->
+>> +        munmap(map, bo_size);
+>> +        gem_close(fd, bo);
+>> +        xe_vm_destroy(fd, vm);
+>> +        igt_skip("Unable to induce purge on this platform/config");
+>> +    }
 >> +
->> +    /*
->> +     * Getting the mmap offset is always allowed regardless of 
->> purgeable
->> +     * state - the blocking happens at mmap() time 
->> (xe_gem_object_mmap).
->> +     * For a purged BO, mmap() must fail with -EINVAL (no backing 
->> store).
->> +     */
->> +    mmo.handle = bo;
->> +    igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo), 
->> 0);
+>> +    /* Access purged mapping - should trigger SIGBUS/SIGSEGV */
+>> +    {
+>> +        sighandler_t old_sigsegv, old_sigbus;
+>> +        char *ptr = (char *)map;
+>> +        int sig;
 >> +
->> +    ptr = mmap(NULL, bo_size, PROT_READ | PROT_WRITE, MAP_SHARED, 
->> fd, mmo.offset);
->> +    igt_assert_eq_u64((uint64_t)ptr, (uint64_t)MAP_FAILED);
->> +    igt_assert_eq(errno, EINVAL);
+>> +        old_sigsegv = signal(SIGSEGV, (__sighandler_t)sigtrap);
+>> +        old_sigbus = signal(SIGBUS, (__sighandler_t)sigtrap);
 >> +
+>> +        sig = sigsetjmp(jmp, 1); /* savemask=1: save/restore signal 
+>> mask */
+>> +        switch (sig) {
+>> +        case SIGBUS:
+>> +        case SIGSEGV:
+>> +            /* Expected - purged mapping access failed */
+>> +            break;
+>> +        case 0:
+>> +            *ptr = 0;
+>> +        default:
+>> +            igt_assert_f(false,
+>> +                     "Access to purged mapping should trigger 
+>> SIGBUS, got sig=%d\n",
+>> +                     sig);
+>> +            break;
+>> +        }
+>> +
+>> +        signal(SIGBUS, old_sigbus);
+>> +        signal(SIGSEGV, old_sigsegv);
+>> +    }
+>> +
+>> +    munmap(map, bo_size);
 >> +    gem_close(fd, bo);
 >> +    xe_vm_destroy(fd, vm);
 >> +}
 >> +
->>   /**
->>    * SUBTEST: dontneed-before-mmap
->>    * Description: Mark BO as DONTNEED before mmap, verify mmap() 
->> fails with -EBUSY
->> @@ -226,6 +262,12 @@ int igt_main()
+>>   int igt_main()
+>>   {
+>>       struct drm_xe_engine_class_instance *hwe;
+>> @@ -268,6 +326,12 @@ int igt_main()
 >>               break;
 >>           }
->>   +    igt_subtest("purged-mmap-blocked")
+>>   +    igt_subtest("dontneed-after-mmap")
 >> +        xe_for_each_engine(fd, hwe) {
->> +            test_purged_mmap_blocked(fd);
+>> +            test_dontneed_after_mmap(fd);
 >> +            break;
 >> +        }
 >> +
