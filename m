@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33FFDEDB7DF
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 09:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE5B5EDB7E3
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 09:59:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6A8810E2EF;
-	Tue,  7 Apr 2026 09:59:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 722CC10E3BB;
+	Tue,  7 Apr 2026 09:59:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TSrPvhoK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JToMubmF";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 826B910E2EF
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2026 09:59:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D63110E2EF
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2026 09:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775555964; x=1807091964;
+ t=1775555974; x=1807091974;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=thqGR7wIDVxN247UdF1VuV8WeMSjyoAc80x3pWpF1G0=;
- b=TSrPvhoKCWs2GmVSq5qxVMPalE3uz3Bzo4pVtvwaB986o1EKktVxcXAh
- 2LFkzPCNCe5gqI/UkuehH6Td1WYwh72vkL7o/ydhaFw08HGARlvH9YIL0
- IbOMhszftOAZ0I99E+cB0rhQ3xp7TPLiIFDOd27l/mUb/PGwmaOf1z+/G
- N23bVoMJFgA6kaH1b2X+QRCqs/HLoP3UiLskN8IXtGeueDdXLJbGGYC4V
- BNfIJ94m0O2HxKaWJ2SPDlERtEXwVXVbhR4U06x+EyEIuk8NWLeEwlz3a
- y6Oxw6mPMIsncLPdJFLjeqePxlYX8udg5+9i0XnwlA3TLs39C88NekLMc g==;
-X-CSE-ConnectionGUID: ELQjgYMXRgmcL9nZBAwK0A==
-X-CSE-MsgGUID: sbHGCjZJS4+9/9Y08Ywxgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="87589073"
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="87589073"
+ bh=yC7r1XN2M/FVRK7JXfejRxn0IypJ5oINJKH3eP0JAcs=;
+ b=JToMubmFU9aeg8C9/zbM4ELhnLSrK5lxk3mdwwyOIW2nMDo46rB6HJLl
+ ZaPBfb/Qvpq2HohfrcdsbwTlc/SQJ4omucrCfLGWdtsmVBce4pCUZv7P5
+ kE8Rc1X0xkMkvKqaqtRG21aOm/2JB5iJg8COHzUuPxH1yfhZpmFhzLWdP
+ J5JcUEb+SuXwVw2OS6RtTN1/Y/YLVTnmjEJLLYZAfsC+9zSQJXYZOkVGi
+ RRS++wlQd1JuSssOZULE5/tKlbLnWOc7Z+ktpW9gsZ1ofh4KzAudpNrUz
+ bkjJAg/4XSL3NQNUtfVtX8A1qw2NP1E88BJ3LzxBG6xmF5gxImtbr+DjS g==;
+X-CSE-ConnectionGUID: b5icQjVMQ/K4WCq4dQgkAw==
+X-CSE-MsgGUID: Ss3L1eijT0id6qwVssAuDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="87589082"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="87589082"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2026 02:59:24 -0700
-X-CSE-ConnectionGUID: O6+i7jmxTZiNtdb8dYx4MA==
-X-CSE-MsgGUID: akJjQ7IOSOifmUBs2kEZjg==
+ 07 Apr 2026 02:59:34 -0700
+X-CSE-ConnectionGUID: yQttNCC4SNCFWzn44/SCRA==
+X-CSE-MsgGUID: K6eOdNA0SXqfBakJ/vka4Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="228400078"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="228400098"
 Received: from abityuts-desk.ger.corp.intel.com (HELO
  vgovind2-mobl4.intel.com) ([10.245.244.134])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2026 02:59:21 -0700
+ 07 Apr 2026 02:59:31 -0700
 From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
  swati2.sharma@intel.com, jani.nikula@intel.com, ville.syrjala@intel.com
-Subject: [PATCH i-g-t v2 1/8] tests/intel/kms_frontbuffer_tracking: update the
- outdated fbc status checks
-Date: Tue,  7 Apr 2026 12:58:36 +0300
-Message-ID: <20260407095843.43679-2-vinod.govindapillai@intel.com>
+Subject: [PATCH i-g-t v2 4/8] tests/intel/kms_frontbuffer_tracking: use
+ intel_fbc_get_fbc_status()
+Date: Tue,  7 Apr 2026 12:58:39 +0300
+Message-ID: <20260407095843.43679-5-vinod.govindapillai@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260407095843.43679-1-vinod.govindapillai@intel.com>
 References: <20260407095843.43679-1-vinod.govindapillai@intel.com>
@@ -72,56 +72,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replace the fbc status check for "mode too large for compression" wchich
-is no longer being set by the driver with "plane size too big" and
-"surface size too big" fbc status checks.
+Use the common intel_fbc_get_fbc_status() to get the fbc status
 
 Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ tests/intel/kms_frontbuffer_tracking.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index c16f63199..e764c9ce1 100644
+index 427cf3262..602dd86d0 100644
 --- a/tests/intel/kms_frontbuffer_tracking.c
 +++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1664,15 +1664,23 @@ static bool fbc_stride_not_supported(void)
+@@ -1574,8 +1574,8 @@ static struct timespec fbc_get_last_action(void)
+ 	char *action;
+ 	ssize_t n_read;
+ 
++	intel_fbc_get_fbc_status(prim_mode_params.crtc, buf, sizeof(buf));
+ 
+-	debugfs_read_crtc("i915_fbc_status", buf);
+ 	action = strstr(buf, "\nLast action:");
+ 	igt_assert(action);
+ 
+@@ -1623,8 +1623,8 @@ static void fbc_setup_last_action(void)
  	char buf[128];
+ 	char *action;
  
- 	debugfs_read_crtc("i915_fbc_status", buf);
--	return strstr(buf, "FBC disabled: framebuffer stride not supported\n");
-+	return strstr(buf, "FBC disabled: stride not supported\n");
- }
++	intel_fbc_get_fbc_status(prim_mode_params.crtc, buf, sizeof(buf));
  
--static bool fbc_mode_too_large(void)
-+static bool fbc_plane_size_too_big(void)
+-	debugfs_read_crtc("i915_fbc_status", buf);
+ 	action = strstr(buf, "\nLast action:");
+ 	if (!action) {
+ 		igt_info("FBC last action not supported\n");
+@@ -1642,7 +1642,8 @@ static bool fbc_is_compressing(void)
  {
  	char buf[128];
  
- 	debugfs_read_crtc("i915_fbc_status", buf);
--	return strstr(buf, "FBC disabled: mode too large for compression\n");
-+	return strstr(buf, "FBC disabled: plane size too big\n");
-+}
+-	debugfs_read_crtc("i915_fbc_status", buf);
++	intel_fbc_get_fbc_status(prim_mode_params.crtc, buf, sizeof(buf));
 +
-+static bool fbc_surface_size_too_big(void)
-+{
-+	char buf[128];
-+
-+	debugfs_read_crtc("i915_fbc_status", buf);
-+	return strstr(buf, "FBC disabled: surface size too big\n");
+ 	return strstr(buf, "\nCompressing: yes\n") != NULL;
  }
  
- static bool fbc_psr_not_possible(void)
-@@ -2356,7 +2364,8 @@ static void do_status_assertions(int flags)
- 	if (flags & ASSERT_FBC_ENABLED) {
- 		igt_require(!fbc_not_enough_stolen());
- 		igt_require(!fbc_stride_not_supported());
--		igt_require(!fbc_mode_too_large());
-+		igt_require(!fbc_plane_size_too_big());
-+		igt_require(!fbc_surface_size_too_big());
- 		igt_require(!fbc_psr_not_possible());
- 		if (!intel_fbc_wait_until_enabled(prim_mode_params.crtc)) {
- 			igt_assert_f(intel_fbc_is_enabled(prim_mode_params.crtc, IGT_LOG_WARN),
+@@ -1657,7 +1658,7 @@ static bool fbc_found_skip_reason(void)
+ 	char fbc_status[128];
+ 	int i;
+ 
+-	debugfs_read_crtc("i915_fbc_status", fbc_status);
++	intel_fbc_get_fbc_status(prim_mode_params.crtc, fbc_status, sizeof(fbc_status));
+ 
+ 	if (strstr(fbc_status, "FBC Enabled\n"))
+ 		return false;
+@@ -1675,7 +1676,8 @@ static bool fbc_enable_per_plane(int plane_index, igt_crtc_t *crtc)
+ 
+ 	sprintf(buf_plane, "%d%s", plane_index, igt_crtc_name(crtc));
+ 
+-	debugfs_read_crtc("i915_fbc_status", buf);
++	intel_fbc_get_fbc_status(prim_mode_params.crtc, buf, sizeof(buf));
++
+ 	return strstr(strstr(buf, "*"), buf_plane);
+ }
+ 
 -- 
 2.43.0
 
