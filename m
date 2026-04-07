@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03842FB5179
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 05:43:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECCE1E9D832
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Apr 2026 06:50:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8BA5910E330;
-	Tue,  7 Apr 2026 05:43:20 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iNXTjo+X";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B71210E222
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2026 05:43:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775540591; x=1807076591;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=HNA+1lGhAjMYMG7bI5GuEjZbTDCLMOqSnJwXmNkax8A=;
- b=iNXTjo+X/x/SzsVLfQByVDvdROHuS3yZAnMyfWLiQGtb1+7vnZhZtign
- y1q0U6jJIeDTUbceUINVz6UjaCUDbfmbkXZSHkCszQIzOk1W2XzetxuMY
- lWDkFnvG7rTQeQL5LDwCPvux/fTMyjnVprkCi7HXKu4Ujbvz0JciZ8Bwj
- 8aHZ1GZTA9WSY1EDF/NTT6hFnyzTphpbPtsffhlp2hS1wfikE5RztRePH
- VHJHkPjzmb3sDcD4wB+o+Z2SoWGlWzx20tdA6cJpe5IROK2Smwr2q3llV
- IKSTJKaF2gay7l17HHCYi5aLCkNoFFiom5EeXPM2s2FRCxFmPoyIwMRLE Q==;
-X-CSE-ConnectionGUID: TZBtVB7IRICWX7Lhhq3p6w==
-X-CSE-MsgGUID: oHZ+jdeGRJCQkdcIR6JzSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76460528"
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="76460528"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Apr 2026 22:43:10 -0700
-X-CSE-ConnectionGUID: rV8UQV2/Td+f5EJh1JSe3A==
-X-CSE-MsgGUID: MFUobhwtT7a3+tWknqSKuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; d="scan'208";a="228015635"
-Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.10])
- by orviesa008.jf.intel.com with ESMTP; 06 Apr 2026 22:43:09 -0700
-From: Suraj Kandpal <suraj.kandpal@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com, Suraj Kandpal <suraj.kandpal@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v2] tests/intel/kms_pm_backlight: Setup output before
- reading writing backlight
-Date: Tue,  7 Apr 2026 11:13:02 +0530
-Message-Id: <20260407054302.1454584-1-suraj.kandpal@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260331073400.1316874-1-suraj.kandpal@intel.com>
-References: <20260331073400.1316874-1-suraj.kandpal@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 92A6189109;
+	Tue,  7 Apr 2026 06:50:33 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B21289109;
+ Tue,  7 Apr 2026 06:50:24 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8619709593038398820=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpm=5Fback?=
+ =?utf-8?q?light=3A_Setup_output_before_reading_writing_backlight_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Suraj Kandpal" <suraj.kandpal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 07 Apr 2026 06:50:24 -0000
+Message-ID: <177554462461.435999.16949648802253446981@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260331073400.1316874-1-suraj.kandpal@intel.com>
+In-Reply-To: <20260331073400.1316874-1-suraj.kandpal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,74 +37,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently many pm backlight tests assume that panel will stay up until
-unless we tell it to go down or AUX transactions are happening.
-That is not the case, some panels when they detect that there are no
-changes or commits going in, it will go to a lower power state. This
-causes issue in this test like AUX suddenly timing out (mostly in
-fade tests where each backlight change has a 10ms sleep and many
-steps giving panel to internally go in low power state). Also since
-changing backlight has its own interface it does not count as a commit
-hence does not contribute to the panel staying on.
-Also trying to change a backlight when panel is not up does not make sense.
-To solve this setup the output and do a flip to make sure panel is not
-down to simulate a real life use case on when backlight is changed.
+--===============8619709593038398820==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
----
-v1 -> v2:
-- Remove setup and commit function from check dpms as it is not
-needed there (Karthik)
+== Series Details ==
 
- tests/intel/kms_pm_backlight.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Series: tests/intel/kms_pm_backlight: Setup output before reading writing backlight (rev2)
+URL   : https://patchwork.freedesktop.org/series/164138/
+State : success
 
-diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
-index daa70c716..f108e8387 100644
---- a/tests/intel/kms_pm_backlight.c
-+++ b/tests/intel/kms_pm_backlight.c
-@@ -84,6 +84,24 @@ enum {
- 
- IGT_TEST_DESCRIPTION("Basic backlight sysfs test");
- 
-+static void setup_output_and_commit(igt_backlight_context_t *context)
-+{
-+	igt_output_t *output = context->output;
-+	igt_display_t *display = output->display;
-+	drmModeModeInfo *mode;
-+	igt_plane_t *primary;
-+	struct igt_fb fb;
-+
-+	mode = igt_output_get_mode(output);
-+	igt_create_pattern_fb(display->drm_fd,
-+			      mode->hdisplay, mode->vdisplay,
-+			      DRM_FORMAT_XRGB8888,
-+			      DRM_FORMAT_MOD_LINEAR, &fb);
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, &fb);
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+}
-+
- static void test_and_verify(igt_backlight_context_t *context, int val)
- {
- 	const int tolerance = val * TOLERANCE / 100;
-@@ -133,10 +151,12 @@ static void test_fade(igt_backlight_context_t *context)
- 
- 	/* Fade out, then in */
- 	for (i = context->max; i > 0; i -= context->max / FADESTEPS) {
-+		setup_output_and_commit(context);
- 		test_and_verify(context, i);
- 		nanosleep(&ts, NULL);
- 	}
- 	for (i = 0; i <= context->max; i += context->max / FADESTEPS) {
-+		setup_output_and_commit(context);
- 		test_and_verify(context, i);
- 		nanosleep(&ts, NULL);
- 	}
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8849_BAT -> XEIGTPW_14937_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14937_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-bmg-2:          NOTRUN -> [SKIP][1] ([Intel XE#2229])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [ABORT][2] ([Intel XE#7249] / [Intel XE#7578]) -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8849/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@xe_waitfence@abstime:
+    - bat-dg2-oem2:       [TIMEOUT][4] ([Intel XE#6506]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8849/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+
+  * igt@xe_waitfence@engine:
+    - bat-dg2-oem2:       [FAIL][6] ([Intel XE#6519]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8849/bat-dg2-oem2/igt@xe_waitfence@engine.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/bat-dg2-oem2/igt@xe_waitfence@engine.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
+  [Intel XE#7249]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7249
+  [Intel XE#7578]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7578
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8849 -> IGTPW_14937
+  * Linux: xe-4852-d873f0156bd08a3031097d459e2d3604bfe1b1bf -> xe-4854-0255f4a35fec9e5d237d82310b28ad1aff12c6b3
+
+  IGTPW_14937: 1b7bc018c727bd6e230de754b40a0a0fb7b3e26b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8849: 8849
+  xe-4852-d873f0156bd08a3031097d459e2d3604bfe1b1bf: d873f0156bd08a3031097d459e2d3604bfe1b1bf
+  xe-4854-0255f4a35fec9e5d237d82310b28ad1aff12c6b3: 0255f4a35fec9e5d237d82310b28ad1aff12c6b3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/index.html
+
+--===============8619709593038398820==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_backlight: Setup output before reading writing backlight (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164138/">https://patchwork.freedesktop.org/series/164138/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8849_BAT -&gt; XEIGTPW_14937_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14937_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8849/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7249">Intel XE#7249</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7578">Intel XE#7578</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@abstime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8849/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@engine:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8849/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14937/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8849 -&gt; IGTPW_14937</li>
+<li>Linux: xe-4852-d873f0156bd08a3031097d459e2d3604bfe1b1bf -&gt; xe-4854-0255f4a35fec9e5d237d82310b28ad1aff12c6b3</li>
+</ul>
+<p>IGTPW_14937: 1b7bc018c727bd6e230de754b40a0a0fb7b3e26b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8849: 8849<br />
+  xe-4852-d873f0156bd08a3031097d459e2d3604bfe1b1bf: d873f0156bd08a3031097d459e2d3604bfe1b1bf<br />
+  xe-4854-0255f4a35fec9e5d237d82310b28ad1aff12c6b3: 0255f4a35fec9e5d237d82310b28ad1aff12c6b3</p>
+
+</body>
+</html>
+
+--===============8619709593038398820==--
