@@ -4,61 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A64D010F9951
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Apr 2026 15:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C2B10F9958
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Apr 2026 15:45:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4A06210E68B;
-	Wed,  8 Apr 2026 15:29:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8C8B510E68D;
+	Wed,  8 Apr 2026 15:45:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dwJHATUI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OgNEev99";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECA3710E4D2
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Apr 2026 15:29:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D1CD10E68D
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Apr 2026 15:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775662161; x=1807198161;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version:content-transfer-encoding;
- bh=HDZKH9hVeZvM+h0WP/aLT+bY+CTHC9MJiJizN+ji6YI=;
- b=dwJHATUIkTSzTygK8MYWyv7Y+3d2z2LHp7HQPdno3x0BBA0K2iE3awsm
- EJCjBFmjgWabMeOElz2bQPPBWUFEZwH1/gdMHEyhcNBdiXScMaxclWqjw
- u/aVRCNrbgAd0/2lmZ8JLA9u5k/3SIIwrRagVGwcS/EGDHUrXTPQsOFJS
- S9YEkkzOM0f6q7y2Yel5SR4ZaGw6hDaRTHlxSTWw2i0IOtznxhgPWo+rw
- 23Xn3YtVDOyLshPnxIq5sEIHiz2fGZ9z1AHaWxdXvi6ch4psQnXSYDuGE
- ZjDNVG+sfejmmOuCkcux/rIm19nvXsmPHo+tPnMMCzGGyn7UkKbUoDvSd Q==;
-X-CSE-ConnectionGUID: GUuFFzwiR+KlieBkTY4XuQ==
-X-CSE-MsgGUID: 9G+Iu/OQTVewpjJyQy4OLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="86940094"
-X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; d="scan'208";a="86940094"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2026 08:29:21 -0700
-X-CSE-ConnectionGUID: qyoeSJA7SXy+0rO0yzO8yA==
-X-CSE-MsgGUID: g1hgFo4yQ5m/MoSwb5qm4g==
+ t=1775663103; x=1807199103;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=vALyRTZ6Gpab5enVMumEc5yoY5ExwMxuqJej2xNrUu0=;
+ b=OgNEev99w3h2gU9FieQKT9FfzYY6cN5mbALUT89OaYKMSObcRr7yBwyw
+ KfyFAp6YPGQ/1sDx6rJAGdFk4A2xjARuqwrt/0959G+JG83lpF+Mv83BO
+ 8GNHC8A/QJD5EvJx71Gjd2QnGnrgDFbJli9QD251rUGsAJC1RuF0hfMkP
+ +6FMXLJBOPmYGh/XKdfV67qvvwVomWo5JI9DepDto43a4GUp09sZF069p
+ G4iXVtBxpJokAcgbWayoFl1nap6F5aW7fosjZgRbV/UFJeJtXq3kPY3iX
+ gqswvUJhGYDBTwlmx64kBGevQg9Y7e8FWynh8vK5CyU7uudFWJBfE0EGi w==;
+X-CSE-ConnectionGUID: QXQuTP72TFaiEUcg9JLlJQ==
+X-CSE-MsgGUID: Bpq3WaI7TMy719VcRog3YA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="102105228"
+X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; d="scan'208";a="102105228"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Apr 2026 08:45:03 -0700
+X-CSE-ConnectionGUID: 0XpCkDL5QoWt3QrVGIoUuw==
+X-CSE-MsgGUID: zgUm2l8QRmOpnq+8DWQ2pg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; d="scan'208";a="233451673"
-Received: from krybak-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.32])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2026 08:29:19 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: rob.clark@oss.qualcomm.com
-Cc: Harshdeep Dhatt <harshdeepdhatt@gmail.com>,
- igt-dev@lists.freedesktop.org, Dmitry Baryshkov <lumag@kernel.org>
-Subject: Re: [PATCH i-g-t] lib/igt_kms: Identify writeback connectors in msm
- driver on android
-In-Reply-To: <CACSVV02OyKqnJv5r0raGq6n+ajRsUg+zxre_gMjDR6V++aDjNA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260407202953.3871752-1-harshdeepdhatt@gmail.com>
- <9019ee70c852a5dd27bad9877d8fefca656b50c6@intel.com>
- <CACSVV02OyKqnJv5r0raGq6n+ajRsUg+zxre_gMjDR6V++aDjNA@mail.gmail.com>
-Date: Wed, 08 Apr 2026 18:29:15 +0300
-Message-ID: <8e61be678da46c7ec762d9d4c3069ce141d7aea1@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; d="scan'208";a="228438458"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 08:45:02 -0700
+Date: Wed, 8 Apr 2026 17:44:59 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jan Maslak <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com
+Subject: Re: [PATCH 1/3] lib/genxml: Import genxml definitions and generators
+ from Mesa
+Message-ID: <20260408154459.nxwp5os5t3b6rdnh@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jan Maslak <jan.maslak@intel.com>, igt-dev@lists.freedesktop.org,
+ zbigniew.kempczynski@intel.com
+References: <20260407132620.1397340-1-jan.maslak@intel.com>
+ <20260407132620.1397340-2-jan.maslak@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20260407132620.1397340-2-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,169 +72,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 08 Apr 2026, Rob Clark <rob.clark@oss.qualcomm.com> wrote:
-> On Wed, Apr 8, 2026 at 2:17=E2=80=AFAM Jani Nikula <jani.nikula@intel.com=
-> wrote:
->>
->> On Tue, 07 Apr 2026, Harshdeep Dhatt <harshdeepdhatt@gmail.com> wrote:
->> > The msm drm driver that runs on android platforms sets up its writeback
->> > connectors as DRM_MODE_CONNECTOR_VIRTUAL instead of DRM_MODE_CONNECTOR=
-_WRITEBACK.
->> > This means when setting up the drm resources, these connectors get exp=
-osed
->> > to userspace even though userspace has not explicitly asked for writeb=
-ack
->> > connectors. These connectors are by default in the connected state. Wh=
-en we
->> > try to configure one of the crtc's for this output (to get the primary=
- plane),
->> > the msm driver bails because this connector (being a writeback connect=
-or)
->> > doesn't have an output framebuffer assigned to it. To avoid this failu=
-re, get the
->> > correct property id for setting up the output framebuffer id for write=
-back connectors
->> > as defined by the msm driver on android. Allocate and bind a dummy out=
-put fb for
->> > these connectors.
->>
->> Is this msm android driver in upstream linux kernel?
->
-> I _think_ this is about the downstream android driver.  Which AFAIU
-> relies enough on custom properties/etc that there may be a lot of
-> "quirks" compared to an upstream drm/kms driver.
+Hi Jan,
+On 2026-04-07 at 15:26:18 +0200, Jan Maslak wrote:
+> Import the hardware command/state XML definitions, gen_pack_header.py, and
+> intel_genxml.py from Mesa (MIT-licensed, Mesa commit 3a62dc0218d3).  Add a
+> new gen_decode_header.py written for IGT.  The generators produce per-platform
+> *_pack.h and *_decode.h headers at build time into the build directory - no
+> generated files are committed to the source tree.  Meson custom_target rules
+> build headers for gen9 through xe3p covering the render, blitter, and compute
+> engines.
+> 
+> gen_pack_header.py produces type-safe pack and emit functions for every
+> command, struct, and register in the XML.  Callers fill a typed struct and
+> call the pack function; the generator handles all bit-field packing.
+> 
+> gen_decode_header.py (new, IGT-only) produces decoders that identify a command
+> from its opcode and print each decoded field's name and value.  Also decodes
+> structs and registers embedded within commands.
+> 
+> IGT-specific changes to gen_pack_header.py over the upstream Mesa version:
+> 
+>  - C90 compliance: block-scope each dword's local variable declarations in the
+>    generated pack functions.
+>  - Baseline deduplication: when a platform's layout exactly matches any older
+>    generation, the item is omitted entirely - no #define aliases are emitted.
+>    A comment names the oldest generation that first defined that layout so
+>    the definition can be found in one grep.  Upstream Mesa has no
+>    deduplication; this keeps the generated headers free of noise as the
+>    number of platform variants grows.
+> 
+> See individual file headers for per-file copyright notices.
+> 
+> Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+> ---
+>  lib/genxml/gen110.xml           | 3358 +++++++++++++++++++++++++
 
-Right.
+All this imho should be placed in lib/intel/genxml
+as this is Intel specific. Could you also split this into
+commits under 1MB each? For example, two commits for XMLs
+and third for python scripts?
 
->> If not, why should we add this in upstream IGT?
+Also, as Jani noted, please describe 'Why?' part in one of commits,
+preferably python one so it will stay in git history.
 
-So the question remains. And where do you draw the line with the
-plethora of downstream vendor kernels and drivers?
+Regards,
+Kamil
 
-BR,
-Jani.
-
->>
->> BR,
->> Jani.
->>
->>
->> >
->> > Signed-off-by: Harshdeep Dhatt <harshdeepdhatt@gmail.com>
->> > ---
->> >  lib/drmtest.c |  5 +++++
->> >  lib/drmtest.h |  1 +
->> >  lib/igt_kms.c | 28 ++++++++++++++++++++++++++++
->> >  3 files changed, 34 insertions(+)
->> >
->> > diff --git a/lib/drmtest.c b/lib/drmtest.c
->> > index 4a788ea7a..2e6895618 100644
->> > --- a/lib/drmtest.c
->> > +++ b/lib/drmtest.c
->> > @@ -143,6 +143,11 @@ bool is_msm_device(int fd)
->> >       return __is_device(fd, "msm");
->> >  }
->> >
->> > +bool is_msm_android_device(int fd)
->> > +{
->> > +     return __is_device(fd, "msm_drm");
->> > +}
->> > +
->> >  bool is_nouveau_device(int fd)
->> >  {
->> >       /* Currently all nouveau-specific codepaths require libdrm */
->> > diff --git a/lib/drmtest.h b/lib/drmtest.h
->> > index 37874d729..c042a2b20 100644
->> > --- a/lib/drmtest.h
->> > +++ b/lib/drmtest.h
->> > @@ -147,6 +147,7 @@ bool is_amdgpu_device(int fd);
->> >  bool is_i915_device(int fd);
->> >  bool is_mtk_device(int fd);
->> >  bool is_msm_device(int fd);
->> > +bool is_msm_android_device(int fd);
->> >  bool is_nouveau_device(int fd);
->> >  bool is_vc4_device(int fd);
->> >  bool is_xe_device(int fd);
->> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->> > index 04b1f3972..3948426bc 100644
->> > --- a/lib/igt_kms.c
->> > +++ b/lib/igt_kms.c
->> > @@ -950,6 +950,14 @@ igt_atomic_fill_connector_props(igt_display_t *di=
-splay, igt_output_t *output,
->> >       for (i =3D 0; i < props->count_props; i++) {
->> >               drmModePropertyPtr prop =3D
->> >                       drmModeGetProperty(fd, props->props[i]);
->> > +             /*
->> > +              * msm android driver installs writeback fb id as a cust=
-om property which can be
->> > +              * identified by "FB_ID" string
->> > +              */
->> > +             if (is_msm_android_device(fd) && (!strcmp("FB_ID", prop-=
->name))) {
->> > +                     output->props[IGT_CONNECTOR_WRITEBACK_FB_ID] =3D=
- props->props[i];
->> > +                     continue;
->> > +             }
->> >
->> >               for (j =3D 0; j < num_connector_props; j++) {
->> >                       if (strcmp(prop->name, conn_prop_names[j]) !=3D =
-0)
->> > @@ -1003,6 +1011,7 @@ static igt_plane_t *igt_get_assigned_primary(igt=
-_output_t *output,
->> >       int drm_fd =3D output->display->drm_fd;
->> >       drmModeModeInfo *mode;
->> >       struct igt_fb fb;
->> > +     struct igt_fb out_fb =3D {0};
->> >       igt_plane_t *plane =3D NULL;
->> >       uint32_t crtc_id;
->> >       int i;
->> > @@ -1016,6 +1025,23 @@ static igt_plane_t *igt_get_assigned_primary(ig=
-t_output_t *output,
->> >
->> >       crtc_id =3D crtc->crtc_id;
->> >
->> > +     /*
->> > +      * msm android driver exposes writeback connectors as DRM_MODE_C=
-ONNECTOR_VIRTUAL and not
->> > +      * DRM_MODE_CONNECTOR_WRITEBACK. The driver will bail if the out=
-put fb is not specified for
->> > +      * this connector. Hence, allocate a dummy output fb here and as=
-sign it to the connector.
->> > +      */
->> > +     if (is_msm_android_device(drm_fd) && igt_output_has_prop(output,=
- IGT_CONNECTOR_WRITEBACK_FB_ID)) {
->> > +             igt_require(igt_create_fb(drm_fd, mode->hdisplay, mode->=
-vdisplay,
->> > +                     DRM_FORMAT_XRGB8888,
->> > +                     DRM_FORMAT_MOD_NONE,
->> > +                     &out_fb) =3D=3D 0);
->> > +             igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBAC=
-K_FB_ID, out_fb.fb_id);
->> > +             igt_assert(drmModeConnectorSetProperty(drm_fd, output->i=
-d,
->> > +                     output->props[IGT_CONNECTOR_WRITEBACK_FB_ID],
->> > +                     output->values[IGT_CONNECTOR_WRITEBACK_FB_ID]) =
-=3D=3D 0);
->> > +     }
->> > +
->> > +
->> >       /*
->> >        * Do a legacy SETCRTC to start things off, so that we know that
->> >        * the kernel will pick the correct primary plane and attach it
->> > @@ -1039,6 +1065,8 @@ static igt_plane_t *igt_get_assigned_primary(igt=
-_output_t *output,
->> >
->> >       /* Removing the FB will also shut down the display for us: */
->> >       igt_remove_fb(drm_fd, &fb);
->> > +     if (out_fb.fb_id !=3D 0)
->> > +             igt_remove_fb(drm_fd, &out_fb);
->> >       igt_assert_f(plane, "Valid assigned primary plane for CRTC_ID %d=
- not found.\n", crtc_id);
->> >
->> >       return plane;
->>
->> --
->> Jani Nikula, Intel
-
---=20
-Jani Nikula, Intel
+>  lib/genxml/gen120.xml           | 2432 ++++++++++++++++++
+>  lib/genxml/gen125.xml           | 2628 +++++++++++++++++++
+>  lib/genxml/gen40.xml            | 1012 ++++++++
+>  lib/genxml/gen45.xml            |  507 ++++
+>  lib/genxml/gen50.xml            |  648 +++++
+>  lib/genxml/gen60.xml            | 2606 +++++++++++++++++++
+>  lib/genxml/gen70.xml            | 3067 ++++++++++++++++++++++
+>  lib/genxml/gen75.xml            | 2424 ++++++++++++++++++
+>  lib/genxml/gen80.xml            | 2993 ++++++++++++++++++++++
+>  lib/genxml/gen90.xml            | 4192 +++++++++++++++++++++++++++++++
+>  lib/genxml/gen_decode_header.py |  487 ++++
+>  lib/genxml/gen_pack_header.py   |  799 ++++++
+>  lib/genxml/igt_genxml.h         |  112 +
+>  lib/genxml/igt_genxml_decode.h  |   60 +
+>  lib/genxml/igt_genxml_defs.h    |  335 +++
+>  lib/genxml/intel_genxml.py      |  553 ++++
+>  lib/genxml/util.py              |   39 +
+>  lib/genxml/xe2.xml              | 1969 +++++++++++++++
+>  lib/genxml/xe3.xml              |  816 ++++++
+>  lib/genxml/xe3p.xml             |    4 +
+>  lib/meson.build                 |   65 +-
+>  22 files changed, 31105 insertions(+), 1 deletion(-)
+>  create mode 100644 lib/genxml/gen110.xml
+>  create mode 100644 lib/genxml/gen120.xml
+>  create mode 100644 lib/genxml/gen125.xml
+>  create mode 100644 lib/genxml/gen40.xml
+>  create mode 100644 lib/genxml/gen45.xml
+>  create mode 100644 lib/genxml/gen50.xml
+>  create mode 100644 lib/genxml/gen60.xml
+>  create mode 100644 lib/genxml/gen70.xml
+>  create mode 100644 lib/genxml/gen75.xml
+>  create mode 100644 lib/genxml/gen80.xml
+>  create mode 100644 lib/genxml/gen90.xml
+>  create mode 100644 lib/genxml/gen_decode_header.py
+>  create mode 100644 lib/genxml/gen_pack_header.py
+>  create mode 100644 lib/genxml/igt_genxml.h
+>  create mode 100644 lib/genxml/igt_genxml_decode.h
+>  create mode 100644 lib/genxml/igt_genxml_defs.h
+>  create mode 100644 lib/genxml/intel_genxml.py
+>  create mode 100644 lib/genxml/util.py
+>  create mode 100644 lib/genxml/xe2.xml
+>  create mode 100644 lib/genxml/xe3.xml
+>  create mode 100644 lib/genxml/xe3p.xml
+> 
+[cut]
