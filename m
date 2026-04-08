@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14F8410F9972
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Apr 2026 20:21:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CEF210F9972
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Apr 2026 20:21:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9215E10E260;
-	Wed,  8 Apr 2026 20:21:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EA49F10E3BE;
+	Wed,  8 Apr 2026 20:21:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LP5rvwF6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X7j5qMRE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59C6D10E260
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Apr 2026 20:21:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 30A9810E260
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Apr 2026 20:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775679681; x=1807215681;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=BW9CLYr3fTvKxd77Siaz88XX2knCwFuGbeWxzstPUuA=;
- b=LP5rvwF6l6aOmp4ZeckhnzwYHF3oO5BSPQjifJQIThlPr40ZSYC/aTtM
- Eu1l0rmERqzbEC7R2jZb4ESGhQAk+fgpDidEPZEUoNq6JXkeLpe1reZc0
- MtqCA/47y8A7Gw34XfGd8fKjzGlj/coYYZ4zcV5QT+HwVUBYYiJxJxDHW
- wplST5cQ1+xy0iKwdBQXZ1bBic9GtDQJdk4fav1/mPb6hfr08RBxDA7u1
- lEk+vM/VH+yDh365HKiXwUhO4PK5+ZHEfsSjhUgk2QXDJ9Of+42n2sofg
- aS8xrA4r31F1CMACifivSu7UQZKBaH8nwYYD5iiDBTAT0UxW5UxBXLy0c w==;
-X-CSE-ConnectionGUID: Mr8Gu5IrTVuiv8GBTWIAlQ==
-X-CSE-MsgGUID: 5qJ3aVveRGSyO1UBaPT4Gw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="75713364"
-X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; d="scan'208";a="75713364"
+ t=1775679690; x=1807215690;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=McP98sB7lOXQbn8JRA/u7kYtWiQ1sUmOm8CjEFMIXPM=;
+ b=X7j5qMREF11i6Ntn1Kap4qgSmslH51jgTjQMRnrgOp3Y5YN49Wmt2fqC
+ XkIVSPL82jJM/wtkouRubTQV09vkuszikC30kEoEJQl8RbLgFCu5xtGCP
+ R3oUOF+hrgBdoYApZoDC8QemkSzKeHJTgDNt3oX0jvHEwG8Ll//1cKl09
+ IoOeSVFcARaEWs2OItd1vICjv42GV5jI1nQ/zeOx/urME3ksJhDeGxTAM
+ RBdiYeg1s3t/6JctjM7IRm9+eoKT93aIYNnvFiWOVWAEwTDsS/pgPpIYL
+ fybiTlKoEV3OLkwKCk3btyRA/+rP9Osel1ZeE3Wj9sPYiEaOD19H5lkZD A==;
+X-CSE-ConnectionGUID: uXch+7hoTzKh4HYHNc1tSw==
+X-CSE-MsgGUID: IsKOdFW6Siqx9HwFByr12w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="75713379"
+X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; d="scan'208";a="75713379"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2026 13:21:21 -0700
-X-CSE-ConnectionGUID: k0xw5FvsSEqqtvN4ITIoYg==
-X-CSE-MsgGUID: FmCrC+xYRxuzBZuHLdyB8A==
+ 08 Apr 2026 13:21:30 -0700
+X-CSE-ConnectionGUID: v1lq83b8SkWg3DHEFngOYw==
+X-CSE-MsgGUID: qoTqddr4Q861hotUO4cIeA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; d="scan'208";a="223810467"
+X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; d="scan'208";a="223810504"
 Received: from krybak-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.32])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2026 13:21:19 -0700
+ 08 Apr 2026 13:21:28 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 0/7] igt: for_each_connector_mode() cleanups
-Date: Wed,  8 Apr 2026 23:21:06 +0300
-Message-ID: <cover.1775679624.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 2/7] tests/intel/kms_dp_linktrain_fallback: remove mode
+ from data
+Date: Wed,  8 Apr 2026 23:21:08 +0300
+Message-ID: <03424800c9ea0e5f3cb4c1fa8de62e5a58f79b21.1775679624.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1775679624.git.jani.nikula@intel.com>
+References: <cover.1775679624.git.jani.nikula@intel.com>
 MIME-Version: 1.0
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
@@ -68,31 +71,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make the for_each_connector_mode() helper a bit nicer, and use it more.
+The data->mode member is only used within the mode loop. Just remove it.
 
-Jani Nikula (7):
-  lib/kms: pass mode parameter to for_each_connector_mode()
-  tests/intel/kms_dp_linktrain_fallback: remove mode from data
-  tests/intel/kms_flip_scaled_crc: use for_each_connector_mode()
-  tests/intel/kms_pm_rpm: use for_each_connector_mode()
-  tests/kms_plane_lowres: use for_each_connector_mode()
-  tests/kms_plane_scaling: use for_each_connector_mode()
-  tests/kms_writeback: use for_each_connector_mode()
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+---
+ tests/intel/kms_dp_linktrain_fallback.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
- benchmarks/kms_fb_stress.c              |  3 +--
- lib/igt_kms.c                           | 10 ++++++----
- lib/igt_kms.h                           |  7 +++++--
- tests/intel/kms_dp_linktrain_fallback.c | 15 +++++++--------
- tests/intel/kms_flip_scaled_crc.c       | 12 ++++++------
- tests/intel/kms_pm_dc.c                 |  5 +++--
- tests/intel/kms_pm_lpsp.c               |  4 +---
- tests/intel/kms_pm_rpm.c                |  6 ++----
- tests/kms_plane.c                       | 10 +++++-----
- tests/kms_plane_lowres.c                |  4 +---
- tests/kms_plane_scaling.c               | 23 ++++++++++-------------
- tests/kms_writeback.c                   | 10 +++++++---
- 12 files changed, 54 insertions(+), 55 deletions(-)
-
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+index c09e9ce36928..2db5422c211d 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -38,7 +38,6 @@ static int traversed_mst_output_count;
+ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
+-	drmModeModeInfo *mode;
+ 	igt_output_t *output;
+ 	igt_crtc_t *crtc;
+ 	struct igt_fb fb;
+@@ -477,12 +476,11 @@ static void test_dsc_sst_fallback(data_t *data)
+ 
+ 	/* Find a mode that doesn't require DSC initially */
+ 	for_each_connector_mode(data->output, mode) {
+-		data->mode = mode;
+-		igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
+-				    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
++		igt_create_color_fb(data->drm_fd, mode->hdisplay,
++				    mode->vdisplay, DRM_FORMAT_XRGB8888,
+ 				    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
+ 				    &data->fb);
+-		igt_output_override_mode(data->output, data->mode);
++		igt_output_override_mode(data->output, mode);
+ 		igt_output_set_crtc(data->output,
+ 				    data->crtc);
+ 		data->primary = igt_output_get_plane_type(data->output,
+@@ -495,8 +493,8 @@ static void test_dsc_sst_fallback(data_t *data)
+ 						    NULL);
+ 		if (ret != 0) {
+ 			igt_debug("Skipping mode %dx%d@%d on %s\n",
+-				 data->mode->hdisplay, data->mode->vdisplay,
+-				 data->mode->vrefresh,
++				 mode->hdisplay, mode->vdisplay,
++				 mode->vrefresh,
+ 				 igt_output_name(data->output));
+ 			continue;
+ 		}
 -- 
 2.47.3
 
