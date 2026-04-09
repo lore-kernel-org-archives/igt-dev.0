@@ -4,60 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F4B8EA3C5D
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 13:23:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B06CEA3C4E
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 13:40:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D691110E7F0;
-	Thu,  9 Apr 2026 13:23:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D266210E0D2;
+	Thu,  9 Apr 2026 13:40:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="etJx55+2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dUKxFv4D";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F7BD10E7F0
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 13:23:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A78D610E0D2
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 13:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775741003; x=1807277003;
+ t=1775742031; x=1807278031;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=JLSSitV2hRO4/XT8L8uH0mGS5fBz2GHcyR9R+Vuu83U=;
- b=etJx55+2/9WAyWaArQYOdpAL9Yh2nfTk8oM5iAo6krAmG1EFXs4jhPmx
- sLos1GShfohCpwixP7wD1ndczeQSIoJjpveatsGQXyd0HT+jNYmRhMXD5
- uSIt5fJb+QOSXXpDD3H6j6Z1ExksUvvJsM//r2tzQ1kd3QWsKSOmeILgJ
- 2biVtVPGtum6QBt0mHfuk2+90a+mR6BlpxnjKQlFdTNjvaEcQTMqIRrf2
- udiWmRPCtosDzZfQdgmOc1FM/NGQiCl7i4zsdUkUAxj4hOUsdq/jWv+Co
- xsOke43p9IUUEQclZOhPcVGu881IawYCVAD2YSweaQjfCtSnuc6wsClY8 g==;
-X-CSE-ConnectionGUID: kNl68uCzTSeIKp/dZfJStg==
-X-CSE-MsgGUID: tXRD2D1tTJCwnsE6JWkS6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="87819797"
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="87819797"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2026 06:23:23 -0700
-X-CSE-ConnectionGUID: t9MecuyCR4WzAHcVMhoAqA==
-X-CSE-MsgGUID: pnnS241aQSunhcU+6Pp85Q==
+ bh=1cYLcbM7yBn/g98zO8Zzd6WNzpeCTyhb4MwVtXeq5wA=;
+ b=dUKxFv4DWBB0LNg3Sx/Ps4rXTVfdN5hkDiA1EJlSJY2GfdWxLH9q0hH6
+ b3XyQ9JlWmgpDlX9fwY6wvCJvZ/7n44OPp5WqRVVygb/z9eBJx/w/2ELU
+ u86QrHbcfYLPiw6zgzEO2UYEIu1O6DgbldapIP6NuGbOhY2YRHSX4S+9z
+ 9bh+l6jIdy0Q/7cH8cruMqadePjkdyuJD2ZvC18jQt3TNgtZ/qsHn85bq
+ IoobMSztWT6DudRcz1Nlp8uUNjPJVwtWts1mxsHMUiP3JLE3UsaXNwKcp
+ 1U8ZNJKKJ4FUBs7qGiePbpMDDmpeliyOlaPZmBZQFduxwMBjv/16ITR23 g==;
+X-CSE-ConnectionGUID: vHNiPUygQEidJ4flN4DL8g==
+X-CSE-MsgGUID: 9UhhlbpTRt2H90cVhHGK1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="87035386"
+X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="87035386"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2026 06:40:31 -0700
+X-CSE-ConnectionGUID: zd+DOcc2SvCgm0rt/XAUOA==
+X-CSE-MsgGUID: sC7xJ8DPQ1uLuLrDCKuhRg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="230441098"
+X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="224461052"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 06:23:21 -0700
-Date: Thu, 9 Apr 2026 15:23:04 +0200
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 06:40:08 -0700
+Date: Thu, 9 Apr 2026 15:40:05 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Vidya Srinivas <vidya.srinivas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Soham Purkait <soham.purkait@intel.com>
-Subject: Re: [PATCH] tools/gputop: Fix zero output when stdout is not a
- terminal
-Message-ID: <20260409132304.pchgqzvvrru2evfg@kamilkon-DESK.igk.intel.com>
+To: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+Cc: Alex Hung <alex.hung@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "harry.wentland@amd.com" <harry.wentland@amd.com>,
+ "aurabindo.pillai@amd.com" <aurabindo.pillai@amd.com>
+Subject: Re: [PATCH] tests/kms_writeback: fix coding style issues
+Message-ID: <20260409134005.rfajti6xtz3d5yaz@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Vidya Srinivas <vidya.srinivas@intel.com>,
- igt-dev@lists.freedesktop.org,
- Soham Purkait <soham.purkait@intel.com>
-References: <20260402134522.108322-1-vidya.srinivas@intel.com>
- <20260407133940.134931-1-vidya.srinivas@intel.com>
+ "Kandpal, Suraj" <suraj.kandpal@intel.com>,
+ Alex Hung <alex.hung@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "harry.wentland@amd.com" <harry.wentland@amd.com>,
+ "aurabindo.pillai@amd.com" <aurabindo.pillai@amd.com>
+References: <20260408230245.442843-1-alex.hung@amd.com>
+ <DM3PPF208195D8D0FEB3A265EA65CF1332BE3582@DM3PPF208195D8D.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260407133940.134931-1-vidya.srinivas@intel.com>
+In-Reply-To: <DM3PPF208195D8D0FEB3A265EA65CF1332BE3582@DM3PPF208195D8D.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,89 +77,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vidya,
-On 2026-04-07 at 19:09:40 +0530, Vidya Srinivas wrote:
-> When gputop output is redirected to a file or run via adb shell
-
-I checked and
-
-./gputop -n10 -d0.1 > out
-
-works perfectly fine.
-
-> (e.g., on Android), update_console_size() calls ioctl(0, TIOCGWINSZ)
-> on stdin which may not be a terminal. If stdin is a pipe or
-> redirected, the ioctl returns -1 and con_w/con_h remain at their
-> initial value of -1.
-
-Adding few more nits to what Soham wrote, it could be
-shortened a little here to something like:
-
-When gputop is run via adb shell on Android, it could have no
-terminal, so calls ioctl(0, TIOCGWINSZ) will return -1 and
-function update_console_size() will not fill con_w/con_h.
-
+Hi Kandpal,,
+On 2026-04-09 at 08:06:17 +0000, Kandpal, Suraj wrote:
+> > Subject: [PATCH] tests/kms_writeback: fix coding style issues
+> > 
+> > Fix missing spaces after comma in two igt_skip_on_f() calls and in the
+> > writeback-invalid-parameters subtest description strings.
+> > 
+> > Signed-off-by: Alex Hung <alex.hung@amd.com>
 > 
-> This causes the main display loop to immediately break since
-> lines >= con_h evaluates to true (0 >= -1), resulting in zero
-> output being produced.
-> 
-> Fix this by initializing con_w and con_h to default values of
-> 80 and 50 respectively, so that when ioctl fails the display
-> loop still produces output with sensible dimensions.
-> 
-> v2: Try stdout, stdin, and stderr for terminal size before falling
->     back to defaults (Soham Purkait)
-
-Please add to Cc developer which did a review.
-
-> 
-> v3: Initialize defaults in main() instead of adding fallback logic
->     in update_console_size() (Soham Purkait)
+> LGTM,
+> Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 > 
 
-So here:
-
-Cc: Soham Purkait <soham.purkait@intel.com>
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-
-You could keep my r-b, so this will be:
-
-Cc: Soham Purkait <soham.purkait@intel.com>
-Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Please keep only one r-b, also imho when you change your code
-from version 1, when you got r-b, to another version, and that
-new one did major changes then imho you should remove r-b from
-your patch. Here it was small change and rather trivial but
-please keep that in mind for future development.
-
-Imho you do not need to send new version, please just discuss
-with Soham and agree on final description.
+Thank you all, pushed.
 
 Regards,
 Kamil
 
-> ---
->  tools/gputop.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/gputop.c b/tools/gputop.c
-> index 9b2e8cb6f..0ed5af456 100644
-> --- a/tools/gputop.c
-> +++ b/tools/gputop.c
-> @@ -609,7 +609,7 @@ int main(int argc, char **argv)
->  	unsigned int period_us;
->  	struct igt_profiled_device *profiled_devices = NULL;
->  	struct igt_drm_clients *clients = NULL;
-> -	int con_w = -1, con_h = -1;
-> +	int con_w = 80, con_h = 50;
->  	int ret;
->  	long n;
->  
-> -- 
-> 2.45.2
+> > ---
+> >  tests/kms_writeback.c | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c index
+> > f15abba96..5031fcb83 100644
+> > --- a/tests/kms_writeback.c
+> > +++ b/tests/kms_writeback.c
+> > @@ -58,8 +58,8 @@
+> >   * Description: Validate WRITEBACK_FB_ID with valid and invalid options
+> >   *
+> >   * SUBTEST: writeback-invalid-parameters
+> > - * Description: Writeback has a couple of parameters linked together(output
+> > - *              framebuffer and fence); this test goes throughthe combination
+> > + * Description: Writeback has a couple of parameters linked together (output
+> > + *              framebuffer and fence); this test goes through the combination
+> >   *              of possible bad options
+> >   *
+> >   * SUBTEST: writeback-pixel-formats
+> > @@ -620,8 +620,8 @@ int igt_main_args("b:c:f:dl", long_options, help_str,
+> > opt_handler, NULL)
+> >  		drmModeFreePropertyBlob(formats_blob);
+> >  	}
+> > 
+> > -	igt_describe("Writeback has a couple of parameters linked together"
+> > -		     "(output framebuffer and fence); this test goes through"
+> > +	igt_describe("Writeback has a couple of parameters linked together "
+> > +		     "(output framebuffer and fence); this test goes through "
+> >  		     "the combination of possible bad options");
+> >  	igt_subtest("writeback-invalid-parameters") {
+> >  		igt_fb_t invalid_output_fb;
+> > @@ -644,7 +644,7 @@ int igt_main_args("b:c:f:dl", long_options, help_str,
+> > opt_handler, NULL)
+> >  		igt_fb_t output_fb;
+> > 
+> >  		igt_skip_on(data.dump_check || data.list_modes);
+> > -		igt_skip_on_f(!(data.supported_colors &
+> > XRGB8888),"DRM_FORMAT_XRGB8888 is unsupported\n");
+> > +		igt_skip_on_f(!(data.supported_colors & XRGB8888),
+> > +"DRM_FORMAT_XRGB8888 is unsupported\n");
+> >  		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
+> > mode.vdisplay,
+> >  				      DRM_FORMAT_XRGB8888,
+> >  				      DRM_FORMAT_MOD_LINEAR,
+> > @@ -678,7 +678,7 @@ int igt_main_args("b:c:f:dl", long_options, help_str,
+> > opt_handler, NULL)
+> >  		igt_fb_t output_fb;
+> > 
+> >  		igt_skip_on(data.dump_check || data.list_modes);
+> > -		igt_skip_on_f(!(data.supported_colors &
+> > XRGB8888),"DRM_FORMAT_XRGB8888 is unsupported\n");
+> > +		igt_skip_on_f(!(data.supported_colors & XRGB8888),
+> > +"DRM_FORMAT_XRGB8888 is unsupported\n");
+> >  		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
+> > mode.vdisplay,
+> >  				      DRM_FORMAT_XRGB8888,
+> >  				      igt_fb_mod_to_tiling(0),
+> > --
+> > 2.43.0
 > 
