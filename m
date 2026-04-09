@@ -4,27 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 689B5F36B94
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 23:18:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 324C5F36B95
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 23:28:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 16EF310E873;
-	Thu,  9 Apr 2026 23:18:50 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15C8E10E873;
- Thu,  9 Apr 2026 23:18:40 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7182543670422425602=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D50F510E0CB;
+	Thu,  9 Apr 2026 23:28:42 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="LNbSvOUv";
+	dkim-atps=neutral
+Received: from BN1PR04CU002.outbound.protection.outlook.com
+ (mail-eastus2azon11010000.outbound.protection.outlook.com [52.101.56.0])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A80EF10E873
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 23:28:32 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PiDlfpAkML7GRe0Rj+0mBbnBPonK0MilJdBw/ZztFNCr9NwIbsTcB37fOJH/CvjVdVFBoqafgBI883ZTLr9ZmVrVF+r6u8qE6Zgj8HRcKXaB/pbcmwdEuzY0GZOBcos1XueOZViNNJ9a+5Kpa7wzHp18NKkra6f+w1ILebI46yMAgAJgnGo2C1rzpu9ztV/0YN6tKbSbSbkm4WF3ExWSMrw04g10uqs9VlHLk2Z3O04HebHtc3C8WRt5nohT7LSc0/ggPZrWptHnX6fwOdG54xStY6mplll8+wsp+LIfUfoQbXHRpZxFUsJgNVTuUBvS8tl3zRCpD1MSJ9FBWlWhvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vM7Lg0vCnbJLcdfA3PQk5QubMWpYsslvXiyv7adIUU0=;
+ b=yqLzZdiKwNV4PmJ95m72BKztfGLZg2DmmPor+GjMsEXaOOi62XlqFkwmaoxukxFiwdBcZPNC0dzKA36JvccEp075/+oocpKN+sYbhOJaZzGl5rnWRjtOB6Djy7hlaX483MLHRY+fW0gqIf1wPfZpeFOAkp9sdb18oeKIQPYZ3K2AoGpFuVK6FeD1B6BSEn6hhEuQ5uE8c4ECzi2B7wVBe3DM4F97EfIS7oD33CB+S6qjEsOiUTsWbP2HK4S9oS3w3Uy0VxqJP+BVtjGIa3d4wN2ooLt4F4fogDg/n7mumbrL5UjOLrFYIubYDx7sce/TJ2OJfb/YRXVYy59ppQeW1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vM7Lg0vCnbJLcdfA3PQk5QubMWpYsslvXiyv7adIUU0=;
+ b=LNbSvOUvApUMgglpPVy+GqYC3f5rFoeyjnqKrEfvrkXMt0kdfPBBUrDPiDi9VcHHQawgR/WvnwhqoPVlKjzA9q5DNYuHWeBraezl8T8qexq0ztAR6uNpoeOrZTd0WQSNNJ/MrJFxZOx9FRp6hxso56u9FVmcR38QjJYXbEM+sLY=
+Received: from CY5PR17CA0055.namprd17.prod.outlook.com (2603:10b6:930:12::26)
+ by LV9PR12MB9807.namprd12.prod.outlook.com (2603:10b6:408:2eb::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.21; Thu, 9 Apr
+ 2026 23:28:27 +0000
+Received: from CY4PEPF0000EE37.namprd05.prod.outlook.com
+ (2603:10b6:930:12:cafe::92) by CY5PR17CA0055.outlook.office365.com
+ (2603:10b6:930:12::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.41 via Frontend Transport; Thu,
+ 9 Apr 2026 23:28:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY4PEPF0000EE37.mail.protection.outlook.com (10.167.242.43) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17 via Frontend Transport; Thu, 9 Apr 2026 23:28:27 +0000
+Received: from kylin.lan (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 9 Apr
+ 2026 18:28:25 -0500
+From: Alex Hung <alex.hung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: <alex.hung@amd.com>, <sunpeng.li@amd.com>, <Ethan.Cheung@amd.com>
+Subject: [PATCH] tests/kms_flip: Fix regression on non-Intel devices in
+ event_loop
+Date: Thu, 9 Apr 2026 17:28:07 -0600
+Message-ID: <20260409232807.631457-1-alex.hung@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/amdgpu=3A_fix_sched?=
- =?utf-8?q?=5Fmask_leak_on_igt=5Fassert_failure_in_dispatch_tests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 09 Apr 2026 23:18:40 -0000
-Message-ID: <177577672006.448419.12837144848969879462@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260409014335.79604-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20260409014335.79604-1-vitaly.prosyak@amd.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE37:EE_|LV9PR12MB9807:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71cdf771-d5e3-440f-a5a8-08de968fb3a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|1800799024|376014|36860700016|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info: cvckTp4GoUtpTI95oW2dKsQpQMcnZHSPIJu+Ow2HU80Rd4ygf3xbKgGV0LS0k5D0aVDHMTDciTRNzxNhjSJVu+FVOZqCETdtjs+quXT9RMY0HVOjxqdTJM4dvgw+uxn0c9UhOGADVaLz9QB2x1raERtiHagnNhIU2gFcSVyzuhBCEdu+mIcMAIlkwOF+RSVpLE0q/BmJZGKiQ+0MAjcgdMWu8qFxSfsgPhwN0Iklyntbp+iF4U+B3q/uODE+QQ9BrNzeSepkULN2tcdPurVWo5lT3rTNnbzkarDYsQe2PlUcxFX4EH4jWnGAUgYmm+hD1eLam7ddw6/Jkm37bdVR3aZCrTYdGybvrf9MBwBpTMgxH6M95DtIyUHNGE0oIhrtCkgCL/79MSAi5Z11I0PaQvb4LrqYziOro8zX6M859OvwYTlJmZWRSmoFth1pUpjXoHccEFZm4hHFRc1JcXeUmYnwGOxZJC28HSJ5ydgrlSBgO10Lfj7pN0Ccr+i+QSdx9OqDX4l6H0M3nNh1TPvgojQfYtTuonmvUBXNzEMvXDYndVRRpQLYKTCEcqiifGUfRpA/j4cxsR5UmvrKfUtELulvZE2aBxYjnHuQB1NiFaUVEf6ZLz9Ydmo84rYSEc8CnQInIxkRpMxs02c1jF1qW4TbiDmwYcHOkMBlqlBN6wP2WAywwoxzqgJMp1cIm0OvsKrdRxnlJoYT4vz7Qt1dDPT/fvniBVtW7ae/V7RDtqxUjihOikDNPPp+bNp/EixVFcqDAhQcNgGyVClab1Lybw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(18002099003)(56012099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: f9pMjwFWu/SPZhWzwbiW7KydDZxeHPoYxbTNEm+0P1DIMYyUBs3TX/UmjrvEDR15yQf9kB7CtEjDtpdwJjHMMBp5RajJ7aKmtgySF5XVKc95GVrRq5wXfKRxsgEDe5DfKScujqHDokjwm+RiP5i5DUNPLUtoKtfVaGjdqy5rsXGmXrsT7yP3c2oKOniHZ73MF/dF002AYdLO5Fw0qZhmOWKc6HePJ49XTy7D1+/qHzvj49mPszf5U4UyO88bZnKmGvHro0DK7ZykuNW7q3X3Tk/T8qq1b/EuRoEXszgPpcfuHy1Ijx6Ik89u2RTeh4qm4APoYryqI2m9QHtMcg2BM+SUlqlYNr9zGY+/4eCStJxMrssqUtm5haAr4z/vGvd1OO60XGkrGcA51UOrgeVCMq4bRWV0R0aCl0DgLdb7lf5f15bDI+ZX2w53CbjNm9Vw
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 23:28:27.0594 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71cdf771-d5e3-440f-a5a8-08de968fb3a2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE37.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR12MB9807
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,151 +106,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7182543670422425602==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Guard the device-id query with is_intel_device() so the "wa" flag is
+only computed on Intel hardware, restoring the pre-regression behavior
+for all other drivers.
 
-== Series Details ==
+This fixes the following regression:
 
-Series: lib/amdgpu: fix sched_mask leak on igt_assert failure in dispatch tests
-URL   : https://patchwork.freedesktop.org/series/164586/
-State : success
+(kms_flip:15463) intel_chipset-CRITICAL: Test assertion failure function intel_get_drm_devid, file ../lib/intel_chipset.c:145:
+(kms_flip:15463) intel_chipset-CRITICAL: Failed assertion: is_intel_device(fd)
 
-== Summary ==
+Fixes: 2a9f1c1ae ("tests/kms_flip: test suspend at most twice on SNB && BMG")
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+---
+ tests/kms_flip.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-CI Bug Log - changes from IGT_8852 -> IGTPW_14948
-====================================================
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 81fa8dd5c..1ef9492ba 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1327,11 +1327,12 @@ static bool event_loop(struct test_output *o, unsigned duration_ms,
+ 	unsigned long start, end;
+ 	uint32_t devid;
+ 	int count = 0;
+-	bool wa;
++	bool wa = false;
+ 
+-	devid = intel_get_drm_devid(drm_fd);
+-
+-	wa = IS_SANDYBRIDGE(devid) || IS_BATTLEMAGE(devid);
++	if (is_intel_device(drm_fd)) {
++		devid = intel_get_drm_devid(drm_fd);
++		wa = IS_SANDYBRIDGE(devid) || IS_BATTLEMAGE(devid);
++	}
+ 
+ 	start = gettime_us();
+ 
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/index.html
-
-Participating hosts (42 -> 37)
-------------------------------
-
-  Missing    (5): fi-snb-2520m bat-rpls-4 bat-adls-6 bat-dg2-13 fi-skl-6600u 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14948 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [DMESG-FAIL][1] ([i915#12061]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-dg2-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-14:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8852 -> IGTPW_14948
-  * Linux: CI_DRM_18303 -> CI_DRM_18306
-
-  CI-20190529: 20190529
-  CI_DRM_18303: 7fa61e7003dda66c77b7f63a555658d8fb10bacf @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18306: 97d8833ffba6bd3d6aaa51169069620ac17a2e37 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14948: 14948
-  IGT_8852: 8852
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/index.html
-
---===============7182543670422425602==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/amdgpu: fix sched_mask leak on igt_assert failure in dispatch tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164586/">https://patchwork.freedesktop.org/series/164586/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8852 -&gt; IGTPW_14948</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/index.html</p>
-<h2>Participating hosts (42 -&gt; 37)</h2>
-<p>Missing    (5): fi-snb-2520m bat-rpls-4 bat-adls-6 bat-dg2-13 fi-skl-6600u </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14948 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14948/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8852 -&gt; IGTPW_14948</li>
-<li>Linux: CI_DRM_18303 -&gt; CI_DRM_18306</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18303: 7fa61e7003dda66c77b7f63a555658d8fb10bacf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18306: 97d8833ffba6bd3d6aaa51169069620ac17a2e37 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14948: 14948<br />
-  IGT_8852: 8852</p>
-
-</body>
-</html>
-
---===============7182543670422425602==--
