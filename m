@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D69E9DE42
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 07:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCC10E9DE59
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 07:16:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C2CB10E2D1;
-	Thu,  9 Apr 2026 07:16:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 898E810E2D1;
+	Thu,  9 Apr 2026 07:16:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="LNZI7Gve";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="3BOrS4V6";
 	dkim-atps=neutral
 Received: from MW6PR02CU001.outbound.protection.outlook.com
- (mail-westus2azon11012046.outbound.protection.outlook.com [52.101.48.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0094E10E746
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 07:16:17 +0000 (UTC)
+ (mail-westus2azon11012045.outbound.protection.outlook.com [52.101.48.45])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5941C10E2D1
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 07:16:24 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KnF4VDgPD6a0DYP5xIEfnIC5xnVEG7Oy0Ymxil8ROhUYWAs/ikwjCre//ZExnnPuEsj35fkT2PMjZlojzBg71xKsKqifiSMgtf/KlVaeTHfuZUEMjkNhpX8QtZ7le1nD5oe+vcCJ2fz/3+RWj6cKlVDJ3Bb+k0PPkq5x7mKj6XrrjdOdpOv63xZ47eLYfF2zjnimEPIKPo9frMhFwDOwVGC3Hw6nTtTlftoDfhp9QRLDSy3QbJBNRqvJBvPyZ5tt7aaFWtlgpQ1cN+oFK841ymc9jN8XUWoThNpUwXpVeXqjb77vzLwrZ2xyruDQgYhObp9EjDIkS2qvv+/AwebJBA==
+ b=awuAr95lkllhhnCCRzSsJoCo977/1Aw5HfB6aAwT5CZw5sqL+D7H3iPlOfF3CLIqQ82SS4HO4eLoxZ/kF+Y5/Dy+Um2GWz+Y7DZGAI1CZ8hwa1uZKBRqCAZRohfR2XJGotshJ1dEKDJZg0qEQjiKoLsYG0tQwLrHOCC5kM9zu4NakmmnbR/JGmYLrGxxLjNZVL+qGOy8w3WyXPq9OmolcEvSxk72XFwFBywAhlJ6CF6XSwCZGeMpsg0s6l6OKG34y24gwrllZMyHr8wqKQD7fSsbEgNvvWi15p/Ioo8gVvzacQnc9z5vfccH2lLgOL/Iei3A8Wbfktsf0yFp5WMZ6A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SWcxm4Hx4x1j04HSTGqFHaobGGtndlZEBrHZlpB4xlw=;
- b=g1dhAP4oem7R/41aeAbojSugJXRrBF1VQBTduUMGrvt/+q63SBzgZ/yDSixjWM0lNWFCLERM+K0lsZHI5SxLaX9Sp+S8AQ4Y9WCfBwTYQm5JipRqvBInbQbQwtPg8imT9EXfUyyG4i7wq13L2GIXRGUVMqZTeLmakkF1WWI0BvPr4SFW0VGWvY12rvPxAZEIxVnrE7PY/fYtdEK3cQtz5xw1GSzb0tylvlVPprtGmOVdC3qcrSZjqNly/YhiB1Vz0Gpuu/0w/AEBjHvqFZG9evh2GUe8hKeZJitRko0sAjLAj0tb+ggkmYlEsMWB010aHpdZUhe++t7Ejz8hLelZug==
+ bh=cPq0yVmZUS//NxOgn/AgV1CawOTyrJ0NqA+xRvPchBk=;
+ b=fjG9pOCey3aiEUV0V0UAC6MKq5WfJwMUCJ2ylazEMzJGmqp6wdKgcfJ5vkUrm+sB2aUqOKYf/4Di4KB4ZVYGccSW2017Wp/85zepljjfLoBkJbtZ8KVERdge/NNrblfA6cqs8pgzJtf3oV2nA5NLvvfAE1aK5TE3rUPQF2o+QsBoLePyai6Z85kfaaDhN6bMHv0tZN+FQZ+5rBh+D8wJEjCCl+hIHTeD9rQ0W2aCj598HyRViTtHKIUTZvPVqAidh6di/6koQ5a+mFuP2ApUoppx7jtEFYw1XiCb2Km2gjmGyQN7uP92KKHK28ZJGmnfUdws+KlS+l8T06QqcwvVJg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SWcxm4Hx4x1j04HSTGqFHaobGGtndlZEBrHZlpB4xlw=;
- b=LNZI7GveV6JXVfKpOMxCbmeRlfr8G8UQZIMuylTErgDBRMW1+vxqkqZkl26Q1OnghekvDxLhbpbhdxEaByi2ACoeaU1zQ4mqSTIP5AhLHZqA/v5u73sg7swbOO33HtlDkwvje33M3a+sDYKD8qvxBAhv9uKsWGJ5y/VepdUtqgg=
-Received: from BL1PR13CA0297.namprd13.prod.outlook.com (2603:10b6:208:2bc::32)
- by LV8PR12MB9334.namprd12.prod.outlook.com (2603:10b6:408:20b::8)
+ bh=cPq0yVmZUS//NxOgn/AgV1CawOTyrJ0NqA+xRvPchBk=;
+ b=3BOrS4V6RViN3v3z8wjdm9OPQablRKFcRgkFibtJDAXT2Vl2YGnLGcsygcIqyrULX74NRFxg+jiTh82M3Jc/132Me4ro2sL3pdVSk9qfD5t1y1G1AnSL7ahcw2IWwCoZxN1eXSWwfplXwaivectyiLpPDxA0uk5xfw7x3Kzj4hs=
+Received: from MN2PR11CA0007.namprd11.prod.outlook.com (2603:10b6:208:23b::12)
+ by CY3PR12MB9701.namprd12.prod.outlook.com (2603:10b6:930:103::18)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 9 Apr
- 2026 07:16:12 +0000
-Received: from BL6PEPF00020E66.namprd04.prod.outlook.com
- (2603:10b6:208:2bc:cafe::61) by BL1PR13CA0297.outlook.office365.com
- (2603:10b6:208:2bc::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.37 via Frontend Transport; Thu,
- 9 Apr 2026 07:16:12 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Thu, 9 Apr
+ 2026 07:16:21 +0000
+Received: from BL6PEPF00020E65.namprd04.prod.outlook.com
+ (2603:10b6:208:23b:cafe::fc) by MN2PR11CA0007.outlook.office365.com
+ (2603:10b6:208:23b::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.41 via Frontend Transport; Thu,
+ 9 Apr 2026 07:16:21 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,61 +48,62 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- BL6PEPF00020E66.mail.protection.outlook.com (10.167.249.27) with Microsoft
+ BL6PEPF00020E65.mail.protection.outlook.com (10.167.249.26) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Thu, 9 Apr 2026 07:16:11 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
+ 15.20.9769.17 via Frontend Transport; Thu, 9 Apr 2026 07:16:20 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Thu, 9 Apr
- 2026 02:16:11 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 02:16:18 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 9 Apr
- 2026 02:16:10 -0500
+ 2026 02:16:17 -0500
 Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 9 Apr 2026 02:16:03 -0500
+ Transport; Thu, 9 Apr 2026 02:16:11 -0500
 From: Jesse Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Jesse Zhang <Jesse.Zhang@amd.com>, Pierre-Eric Pelloux-Prayer
- <pierre-eric.pelloux-prayer@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t 1/2] lib/amdgpu: restore sched_mask after abnormal
- subtest exits
-Date: Thu, 9 Apr 2026 15:15:48 +0800
-Message-ID: <20260409071558.2658707-1-Jesse.Zhang@amd.com>
+ Jesse Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
+Subject: [PATCH i-g-t 2/2] tests/amdgpu/queue_reset: Add test for oversize
+ packet length
+Date: Thu, 9 Apr 2026 15:15:49 +0800
+Message-ID: <20260409071558.2658707-2-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260409071558.2658707-1-Jesse.Zhang@amd.com>
+References: <20260409071558.2658707-1-Jesse.Zhang@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: None (SATLEXMB04.amd.com: Jesse.Zhang@amd.com does not designate
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB03.amd.com: Jesse.Zhang@amd.com does not designate
  permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E66:EE_|LV8PR12MB9334:EE_
-X-MS-Office365-Filtering-Correlation-Id: 675069ff-9e6d-4a61-7bcd-08de9607e0cb
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E65:EE_|CY3PR12MB9701:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8abad090-8f02-46b7-c015-08de9607e625
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|376014|36860700016|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info: LKpQbJzfCwpL/JDcJnnb7x0fvTRB60uQ+F8TB0oeZ82ZPurBRBiILBK4ZMIfI1CvXipKFW0pyhj65XxBFU2HtfH4FWztQn3OIUXjrriS4cbHaKHROFq0fuYLe4CE5UAd03Rf+foW/2sA9vEOZO6bdRAWCxY5YX7tM8Q0vo2Kea5sjH+8zVrp4V2J9sw61dswDipG9Z01LWyezLmV67OC7H15vvK40XlY/4spoZH3DplP4scZO/P19FlNLjp9cvuYQDdEvnzJtupXGqS37OvZLSaok0HP146iB/8IvEFTWLXjYbF2FRCCOEN+yWibbRVtvMrGN1XH8U3UMOqEqquM38CJmYYxJ6EvRef1hyg1j48o8I58ZhjKDeFEXvXyOZOj3t7ZnFl9d4BRrNXTPruAit2q7ruNOgQNklauRQsbfXpoI4RLaSKwDvAPPea6twKQF76euw8fGkMDlPkUo7TnkDa4jeEeZaVqxanznELHY4V+pPO1iFkgvj1XSRW6zzb4xnZwAQEHGbh0oZs7qsKgbUEMTBA0FbEAne5x1oApAKudQSGRJ5Si+SdWWs4D/se7+ffF4cfJg3SWtLs1eCH6K+cSR7B3RefdTX2j3thMBZw3MNykAf6b1Yx5aJ2/+jrBY/XMpjDyvkyNZ35r3EmMXc1VESeCbKi6yaAhCBqBNJYpYjt9paUyKMXqA4xF3ELPS6Zawb29u1TE/sa4Z7+inr32ulBWEWqdelfY1rmbaRaz9KosWDpkUQNihvTzhk0OrJvCMkZ0h0ChjTSGJ8HD7Q==
+ ARA:13230040|36860700016|376014|82310400026|1800799024|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info: 1yBKMrET7Sx3UCGS0crsoL8tCRIx2jO+mIJDI3pLfH0dVZ/9QoMRfwtSQNFVqKAmpepfJKDEUu6Ieo400HQv3Z00qejACFOO/QX2E4SJRYrAsK1XY32s90gy3eMhT03eSwVLYtWuCULOPOE48ngWWzneIBz328rVBIRxeTyVHeVl/AX4WPmTRBzJ6s0ntiLE35/VWXl/56lvFg1pbOTv5/lA/UohRo7usDGdIOkANGuxotQi11kjrwxXHELTb2eT6gyDGmYPPO3A6tLQJJsM88MLleoatC2FpYa0QkNWijpbwGGsDP0Mal7BQY2rWbGvkFC23ET6tfiBnay3JM5rIN9R5mZe2OntT8BkGj6on7yZKZxjZubvjOkKHB8AxjWCc23B/y+GPNkOscU67BMQlVtKjL0bHisvSTMfuwHFuPbsYZ7FYltEKVwCTi76buQ1ZuKXyxMENvy9C+ZhSVLdpCPvW6DzejAf2pU55mi4VGjFkE77qpcRDFd6C8MpDp9ryWDXI8LrGeo06FXnDxxdjAul1EdcG5VBTd3MuzncU493dxLBaBp/rKzC71SzbeeEcEJnkyfFxG3XCdgJ7rdTdJbX4MAM4dtvygfu7TDWKU+3CZ0qxUjkikJUgEULL4yDPe7PN3L0CRYECmkZCufacbt4WcjBP3CSDCp7yW2RYmBg43WEJBEtTmRGHhkxwKzB4ykxs/icPM4dZtBI8TpIBZhJ3ghTMpTxuxJtn0MPgD+2GDpY6M/CWB3ESs0sABr169THjfpmDNGnLLqjtf6RtQ==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(376014)(36860700016)(18002099003)(56012099003);
+ SFS:(13230040)(36860700016)(376014)(82310400026)(1800799024)(18002099003)(22082099003)(56012099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: z5k/z85W4iRvAOMRdCULsYBPrmfsXUrWZ9ruqGkWvvh1tCPiHtxvctDk8JuJ//3kB+loaYxR35K582KMqFV1ZM1aUd5pssOKKXN9LYIwYW0tRvgXiJl7NgYGArIUh+WrPaRYEIud/yxFd4XdAhokJ8E9QR64YlwwBqQPvagd1LFQ+QTKHldYD3T/k8zw8XDKDeYRktaWfZIkytxohm5qAoJdBZ+02tFrtH+/0+KFTymBFKwEtZFf2RqQ5xSgfa72Pb2rv5Er6kNyxQw9e1qnTDlpqD7l5gRy7YRZtSEpN05TSXVPK1jT8HQEkXknIEt4siqtxZ2J2g0dWmAn+r8jwuWKXpeHTj9M2F4byKtJdFTQdMcEFJIYhLNbPGEqCfXbxQqQwj+jsnavZeEkzYf/1wLaXJNSmulMXDN2TRelAbrCHh0b7sV8FGZvXDnGG6gN
+X-MS-Exchange-AntiSpam-MessageData-0: lOhN7OXdgXIdiFacTM2qbKzYeBfd3MiNHFAZQiWNx+AOJ88JSqGLb2sUNJswyRbPuklEB4jjYnXZTISNR/8EnqQM3QWPYQZvkVBA0/WWAuh5cWbpzNd556kH0kMSRtG6XnfO4qzYbBZbXfebfGuB6SVgoUFFAlXJUw9DAR4873EhNqcPzjtL3apEwFQlbRYQrQ3t6b+KDBeQqop3xRdXjkYKWDlWUJQtmzvb1qEQkNhR9DeLRTjCpDmud2xN9kgFLF34AtrNG+Fgg/3ayp94Dr7SGkwY/HKfAgjurBER9mx7cYUmYkiAtPKVUXER0fOx4SvLKQn4BpeanvnBSxmAiMClZ4ErZz/znbbnKtWfZTJO5d9sSjjtDmZQaPFDyupWSUUI4EbtpQaOKEa/jM9I5Knwh547qvDAiktjw+D2hOd/eE/i4hqKQ2pO4hqb7LsF
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 07:16:11.3126 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 675069ff-9e6d-4a61-7bcd-08de9607e0cb
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 07:16:20.2939 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8abad090-8f02-46b7-c015-08de9607e625
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00020E66.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00020E65.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9334
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9701
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,229 +119,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-amdgpu_wait_memory_helper(), bad_access_ring_helper(),
-amdgpu_hang_sdma_ring_helper(), and mm_queue_test_helper()
-temporarily isolate individual rings by writing a reduced mask to the
-sched_mask sysfs nodes and restore the original mask only at the end of
-the function.
+Add a new test case entry for CMD_STREAM_EXEC_INVALID_PACKET_LENGTH_OVERSIZE
+to the queue reset test matrix.
 
-When an igt_assert fires inside the ring iteration loop or in a helper
-called from it, IGT unwinds via siglongjmp back to the subtest entry
-point and bypasses the normal restore path. This leaves all-but-one ring
-disabled for the rest of the test process, so later subtests can observe
-disabled schedulers and run into follow-up failures.
+Fixes 81169c743e75(tests/amdgpu: add string mapping for oversized packet length error)
 
-Fix this by adding the same three-layer protection used in the dispatch
-helpers:
-- register a file-scoped igt exit handler that restores the saved mask
-  when the process exits with a dirty sched_mask state
-- restore a stale dirty mask lazily at the start of the next helper
-- keep the existing happy-path restore and clear the dirty flag once the
-  mask is restored successfully
-
-This makes the deadlock and multimedia helpers resilient to abnormal
-subtest exits without changing their normal ring-isolation behavior.
-
-Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-
-Suggested-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
 ---
- lib/amdgpu/amd_deadlock_helpers.c | 56 +++++++++++++++++++++++++++++++
- lib/amdgpu/amd_mmd_shared.c       | 47 +++++++++++++++++++++++++-
- 2 files changed, 102 insertions(+), 1 deletion(-)
+ tests/amdgpu/amd_queue_reset.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-index cb37a3564..06c577085 100644
---- a/lib/amdgpu/amd_deadlock_helpers.c
-+++ b/lib/amdgpu/amd_deadlock_helpers.c
-@@ -27,6 +27,50 @@ struct thread_param {
- static int
- use_uc_mtype = 1;
- 
-+/*
-+ * Static state for sched_mask cleanup on abnormal subtest exit.
-+ *
-+ * A failing assert in ring iteration helpers can jump over the normal
-+ * sched_mask restore path, leaving non-selected rings disabled for later
-+ * subtests. Keep one file-scoped backup and restore it from an exit handler.
-+ */
-+static char sched_mask_sysfs[256];
-+static uint64_t sched_mask_saved;
-+static bool sched_mask_dirty;
-+static bool sched_mask_handler_installed;
-+
-+static void sched_mask_exit_handler(int sig)
-+{
-+	char cmd[1024];
-+
-+	(void)sig;
-+
-+	if (!sched_mask_dirty)
-+		return;
-+
-+	sched_mask_dirty = false;
-+	snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" PRIx64 " > %s",
-+		 sched_mask_saved, sched_mask_sysfs);
-+	system(cmd);
-+}
-+
-+static void sched_mask_arm(const char *sysfs, uint64_t mask)
-+{
-+	/* Restore stale state first if a prior subtest exited abnormally. */
-+	if (sched_mask_dirty)
-+		sched_mask_exit_handler(0);
-+
-+	strncpy(sched_mask_sysfs, sysfs, sizeof(sched_mask_sysfs) - 1);
-+	sched_mask_sysfs[sizeof(sched_mask_sysfs) - 1] = '\0';
-+	sched_mask_saved = mask;
-+	sched_mask_dirty = true;
-+
-+	if (!sched_mask_handler_installed) {
-+		igt_install_exit_handler(sched_mask_exit_handler);
-+		sched_mask_handler_installed = true;
-+	}
-+}
-+
- static void*
- write_mem_address(void *data)
- {
-@@ -239,6 +283,9 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
- 		igt_info("The scheduling ring only enables one for ip %d\n", ip_type);
- 	}
- 
-+	if (sched_mask > 1)
-+		sched_mask_arm(sysfs, sched_mask);
-+
- 	for (ring_id = 0; ((uint64_t)0x1 << ring_id) <= sched_mask; ring_id += 1) {
- 		/* check sched is ready is on the ring. */
- 		if (!((1 << ring_id) & sched_mask))
-@@ -289,6 +336,7 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
- 		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" PRIx64 " > %s", sched_mask, sysfs);
- 		r = system(cmd);
- 		igt_assert_eq(r, 0);
-+		sched_mask_dirty = false;
- 	}
- 
- }
-@@ -494,6 +542,9 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
- 		igt_info("The scheduling ring only enables one for ip %d\n", ip_type);
- 	}
- 
-+	if (sched_mask > 1)
-+		sched_mask_arm(sysfs, sched_mask);
-+
- 	for (ring_id = 0; ((uint64_t)0x1 << ring_id) <= sched_mask; ring_id++) {
- 		/* check sched is ready is on the ring. */
- 		if (!((1 << ring_id) & sched_mask))
-@@ -544,6 +595,7 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
- 		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" PRIx64 " > %s", sched_mask, sysfs);
- 		r = system(cmd);
- 		igt_assert_eq(r, 0);
-+		sched_mask_dirty = false;
- 	}
- 
- }
-@@ -581,6 +633,9 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
- 	} else
- 		sched_mask = 1;
- 
-+	if (sched_mask > 1)
-+		sched_mask_arm(sysfs, sched_mask);
-+
- 	for (ring_id = 0; ((uint64_t)0x1 << ring_id) <= sched_mask; ring_id++) {
- 		/* check sched is ready is on the ring. */
- 		if (!((1 << ring_id) & sched_mask))
-@@ -613,6 +668,7 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
- 		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" PRIx64 " > %s", sched_mask, sysfs);
- 		r = system(cmd);
- 		igt_assert_eq(r, 0);
-+		sched_mask_dirty = false;
- 	}
- }
- 
-diff --git a/lib/amdgpu/amd_mmd_shared.c b/lib/amdgpu/amd_mmd_shared.c
-index 588f2302c..39d4eea68 100644
---- a/lib/amdgpu/amd_mmd_shared.c
-+++ b/lib/amdgpu/amd_mmd_shared.c
-@@ -4,6 +4,47 @@
-  */
- #include "amd_mmd_shared.h"
- 
-+/*
-+ * Static state for sched_mask cleanup when subtests abort out of the
-+ * per-ring loop before reaching the normal restore path.
-+ */
-+static char sched_mask_sysfs[256];
-+static long sched_mask_saved;
-+static bool sched_mask_dirty;
-+static bool sched_mask_handler_installed;
-+
-+static void sched_mask_exit_handler(int sig)
-+{
-+	char cmd[1024];
-+
-+	(void)sig;
-+
-+	if (!sched_mask_dirty)
-+		return;
-+
-+	sched_mask_dirty = false;
-+	snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s",
-+		 sched_mask_saved, sched_mask_sysfs);
-+	system(cmd);
-+}
-+
-+static void sched_mask_arm(const char *sysfs, long mask)
-+{
-+	/* Restore stale state first if a prior subtest exited abnormally. */
-+	if (sched_mask_dirty)
-+		sched_mask_exit_handler(0);
-+
-+	strncpy(sched_mask_sysfs, sysfs, sizeof(sched_mask_sysfs) - 1);
-+	sched_mask_sysfs[sizeof(sched_mask_sysfs) - 1] = '\0';
-+	sched_mask_saved = mask;
-+	sched_mask_dirty = true;
-+
-+	if (!sched_mask_handler_installed) {
-+		igt_install_exit_handler(sched_mask_exit_handler);
-+		sched_mask_handler_installed = true;
-+	}
-+}
-+
- bool
- is_gfx_pipe_removed(uint32_t family_id, uint32_t chip_id, uint32_t chip_rev)
- {
-@@ -214,7 +255,7 @@ int
- mm_queue_test_helper(amdgpu_device_handle device_handle, struct mmd_shared_context *context,
- 		mm_test_callback callback, int err_type, const struct pci_addr *pci)
- {
--	int r;
-+	int r = 0;
- 	char cmd[1024];
- 	long sched_mask = 0;
- 	long mask = 0;
-@@ -230,6 +271,9 @@ mm_queue_test_helper(amdgpu_device_handle device_handle, struct mmd_shared_conte
- 		sched_mask = 1;
- 	}
- 
-+	if (sched_mask > 1)
-+		sched_mask_arm(sysfs, sched_mask);
-+
- 	mask = sched_mask;
- 	for (ring_id = 0;  mask > 0; ring_id++) {
- 		/* check sched is ready is on the ring. */
-@@ -251,6 +295,7 @@ mm_queue_test_helper(amdgpu_device_handle device_handle, struct mmd_shared_conte
- 		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
- 		r = system(cmd);
- 		igt_assert_eq(r, 0);
-+		sched_mask_dirty = false;
- 	}
- 	return r;
- }
+diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
+index 73a99bb89..c770c5ee2 100644
+--- a/tests/amdgpu/amd_queue_reset.c
++++ b/tests/amdgpu/amd_queue_reset.c
+@@ -1176,6 +1176,10 @@ int igt_main()
+ 				"Stressful-and-multiple-cs-of-bad and good length-operations-using-multiple-processes",
+ 				{ {FAMILY_AI, 0x32, 0xFF} },
+ 				{-ECANCELED, -ECANCELED, -ECANCELED }, true},
++			{CMD_STREAM_EXEC_INVALID_PACKET_LENGTH_OVERSIZE, "CMD_STREAM_EXEC_INVALID_PACKET_LENGTH_OVERSIZE",
++				"Stressful-and-multiple-cs-of-bad and good length-operations-using-multiple-processes",
++				{ {FAMILY_AI, 0x32, 0xFF} },
++				{-ECANCELED, -ECANCELED, -ECANCELED }, true},
+ 			{CMD_STREAM_EXEC_INVALID_OPCODE, "CMD_STREAM_EXEC_INVALID_OPCODE",
+ 				"Stressful-and-multiple-cs-of-bad and good opcode-operations-using-multiple-processes",
+ 				{}, {-ECANCELED, -ECANCELED, -ECANCELED }, true },
 -- 
 2.49.0
 
