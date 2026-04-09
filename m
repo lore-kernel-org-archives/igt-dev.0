@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC74EE9DE6F
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 09:39:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D64B9E98FD2
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 09:48:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3CBDB10E2E9;
-	Thu,  9 Apr 2026 09:39:21 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cgs/CiP7";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0495C10E747
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 09:38:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775727527; x=1807263527;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=S3+nbhMbfzcqwFztMOL7n699b5uhN1yf2H5alSyEjQ8=;
- b=Cgs/CiP7wn8B8ropkg1O3ukVPVWDKBOMS0FTG54RH8YKbRpHShLtu73S
- TXoe5r8UTYqi0h69+g1vgt39+XYzNFfxz523dkcX3LNmukmPeZe87rJwr
- aw6eht02y4YlRXnuL0EG7JgpBmhezWU8wRVfBsFQDOTiGWeUOUvz2beju
- 2LZRH2d4ek3PuP+njQ3WIyrOf8bz9SE4E6FR8MfSkR2QrM/Yg9xWMjRmt
- 9crQLSTwENbSVAvhL52v2bHAu+KHMAoes9z5Hh4JEI+6IJD7TZV3IMVUl
- c1DJj5bDsR+mDJRvxJsnV1JDcqdlHU9WCxzj89cB3bmPRIKlT2iP9qA4N Q==;
-X-CSE-ConnectionGUID: tWoRLC1ATiiXHai8w3DTYA==
-X-CSE-MsgGUID: HASPNIw9RFmsLzcjTqi+hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="76798823"
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="76798823"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2026 02:38:47 -0700
-X-CSE-ConnectionGUID: gdyn8fyNR++JxJSgyB1gkg==
-X-CSE-MsgGUID: IOBHNj2sQw+ICFIsbRoTVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="230391537"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 02:38:45 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: arun.r.murthy@intel.com,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 2/3] DONT_MERGE: include/drm-uapi: Add ERROR_REPORTING
- capability
-Date: Thu,  9 Apr 2026 15:06:38 +0530
-Message-ID: <20260409093639.27449-3-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260409093639.27449-1-jeevan.b@intel.com>
-References: <20260409093639.27449-1-jeevan.b@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8697B10E77B;
+	Thu,  9 Apr 2026 09:48:39 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A8E410E77E;
+ Thu,  9 Apr 2026 09:48:29 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8640003617832763154=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Add_?=
+ =?utf-8?q?support_for_overcommit_tests_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sobin Thomas" <sobin.thomas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 09 Apr 2026 09:48:29 -0000
+Message-ID: <177572810954.445910.4080756252669912944@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260408073546.3500698-1-sobin.thomas@intel.com>
+In-Reply-To: <20260408073546.3500698-1-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,40 +37,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-KMD adds error reporting on atomic_ioctl failure. A capability has
-been added for the same to check the compatability.
+--===============8640003617832763154==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-KMD patch is under review
-https://patchwork.freedesktop.org/series/152275/
+== Series Details ==
 
-Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- include/drm-uapi/drm.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Series: tests/intel/xe_vm: Add support for overcommit tests (rev6)
+URL   : https://patchwork.freedesktop.org/series/163579/
+State : success
 
-diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
-index baa620e3f..381b6eba4 100644
---- a/include/drm-uapi/drm.h
-+++ b/include/drm-uapi/drm.h
-@@ -776,6 +776,14 @@ struct drm_gem_open {
-  */
- #define DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP	0x15
- 
-+/**
-+ * DRM_CAP_ATOMIC_ERROR_REPORTING
-+ *
-+ * If set to 1, the driver supports reporting of failure codes on error in
-+ * atomic ioctl().
-+ */
-+#define DRM_CAP_ATOMIC_ERROR_REPORTING 0x16
-+
- /* DRM_IOCTL_GET_CAP ioctl argument type */
- struct drm_get_cap {
- 	__u64 capability;
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8851_BAT -> XEIGTPW_14943_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14943_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [PASS][1] -> [ABORT][2] ([Intel XE#7249] / [Intel XE#7578])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8851/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14943/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-ptl-vm:         [PASS][3] -> [DMESG-WARN][4] ([Intel XE#7110]) +1 other test dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8851/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14943/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html
+
+  
+  [Intel XE#7110]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7110
+  [Intel XE#7249]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7249
+  [Intel XE#7578]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7578
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8851 -> IGTPW_14943
+
+  IGTPW_14943: 14943
+  IGT_8851: 8851
+  xe-4860-5ee75b2816df74bfe606d4dfc061547d5cda4ebf: 5ee75b2816df74bfe606d4dfc061547d5cda4ebf
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14943/index.html
+
+--===============8640003617832763154==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Add support for overcommit tests (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163579/">https://patchwork.freedesktop.org/series/163579/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14943/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14943/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8851_BAT -&gt; XEIGTPW_14943_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14943_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8851/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14943/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7249">Intel XE#7249</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7578">Intel XE#7578</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2@render:</p>
+<ul>
+<li>bat-ptl-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8851/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14943/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7110">Intel XE#7110</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8851 -&gt; IGTPW_14943</li>
+</ul>
+<p>IGTPW_14943: 14943<br />
+  IGT_8851: 8851<br />
+  xe-4860-5ee75b2816df74bfe606d4dfc061547d5cda4ebf: 5ee75b2816df74bfe606d4dfc061547d5cda4ebf</p>
+
+</body>
+</html>
+
+--===============8640003617832763154==--
