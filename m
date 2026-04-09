@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A03E9DE41
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 07:01:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62889E9DE43
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 07:01:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 85FF310E746;
-	Thu,  9 Apr 2026 07:01:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D7E610E746;
+	Thu,  9 Apr 2026 07:01:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tv4qmOT/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eZoFlmF8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29E7610E746
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 07:01:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6186710E74A
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 07:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775718099; x=1807254099;
+ t=1775718101; x=1807254101;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6kXBkTIbRbYKTQ6y6Mt05XwTRjcwuLUvuEeyryxLhyk=;
- b=Tv4qmOT/HHRhZPp28JWxZvxMXJB9jwJw+KJeJ8jXkvKWzzF9hPL9MLfR
- 20lw3DCDTI8A2vlug0GZ1ci3xL9+2EkTOpsUNhM8ufKnm7Ft/KnShrXLm
- t6KCp7XPk/WbelKjDQa+QZmqmOVI/GuWdD3pLOUNVdnmZ2vlTRY8Nr1+i
- 6NpzdHJvEgqN0blQxDK+/k8z2HmTox/Vxaa3GQLmGq3/T0L02tjaaJRaX
- 1azhVWGGCyE1KBgKCzIviFKQ/rFDdGCvJpksFYXjH4qj+LaE/UTtv+U6y
- xMm5zlic17185h0aPucZ2d44IbY5s4wK0LuOoEjhR+YSoQySYIUFeZ/Lj A==;
-X-CSE-ConnectionGUID: k5MYl/G6RiGcBWDbTh46KQ==
-X-CSE-MsgGUID: fOWIpnWmR52LAUDtnXRCWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="88165051"
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="88165051"
+ bh=TlwMHPBk/+D/gRyz7TZtx12wiifLgmqeb7/xr2+CSj4=;
+ b=eZoFlmF8rWxfhiynKc/WVZUNLv/NXThAR4fVcMW/BooW6nRevC9iWzJJ
+ 1yOEGZA8nGS86brfqM0g/IXLAgWb/Uh7Cc/bPMONapVkYRSz8eE8Bil4y
+ w8FF3MbCPEHWBBxiJugTggcj5kU7J2XjwjjAYeOvUIwfGKjCfoiPP+y6S
+ ppvmnEBAHUn/fSrkqVfounPdJMT4kHTfdjOpR/WGPK/0Gmq1GP2Ku98pd
+ Hq6ieH9iOyDZzTsWjr9B6H8OZs8PxxwUzWObWkiRvoCdAhetU0b161zNW
+ H3jatfaG0flbVreSXRwFvnRq+19D6AOU3RmBdQhSMlL+wUCVqYKvgD8sm g==;
+X-CSE-ConnectionGUID: v/FYFH8uS4+FE6lgCUKEAg==
+X-CSE-MsgGUID: PkrV+L+PSmu5uPti2nwYfA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="88165060"
+X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="88165060"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2026 00:01:39 -0700
-X-CSE-ConnectionGUID: x6Kjk6EdSG+bIw382pgnJg==
-X-CSE-MsgGUID: Xs+BheESRTq61E2cYhE60Q==
+ 09 Apr 2026 00:01:41 -0700
+X-CSE-ConnectionGUID: 6j2dQND0SH687wg7fG5YPw==
+X-CSE-MsgGUID: QkCLzAFlQcekODx0fk6V+w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="224384058"
+X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="224384091"
 Received: from varungup-desk.iind.intel.com ([10.190.238.71])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2026 00:01:37 -0700
+ 09 Apr 2026 00:01:39 -0700
 From: Arvind Yadav <arvind.yadav@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: matthew.brost@intel.com, himal.prasad.ghimiray@intel.com,
  thomas.hellstrom@linux.intel.com, nishit.sharma@intel.com,
  pravalika.gurram@intel.com
-Subject: [PATCH i-g-t v7 4/9] tests/intel/xe_madvise: Add purged-mmap-blocked
+Subject: [PATCH i-g-t v7 5/9] tests/intel/xe_madvise: Add dontneed-after-mmap
  subtest
-Date: Thu,  9 Apr 2026 12:31:13 +0530
-Message-ID: <20260409070118.2211602-5-arvind.yadav@intel.com>
+Date: Thu,  9 Apr 2026 12:31:14 +0530
+Message-ID: <20260409070118.2211602-6-arvind.yadav@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260409070118.2211602-1-arvind.yadav@intel.com>
 References: <20260409070118.2211602-1-arvind.yadav@intel.com>
@@ -71,37 +71,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new purged-mmap-blocked subtest that triggers an actual purge
-via memory pressure and verifies that mmap() fails with -EINVAL once
-the BO backing store has been permanently discarded.
+This test verifies that an existing mmap becomes invalid after the BO
+is marked as purgeable and purged. The test creates a BO, maps it,
+writes data, then marks it DONTNEED and triggers memory pressure.
+Accessing the previously valid mapping should now trigger SIGBUS or
+SIGSEGV, confirming that existing mappings are correctly invalidated
+when the backing store is purged.
 
-The purgeable check moved from xe_gem_mmap_offset_ioctl()
-into a new xe_gem_object_mmap() callback, so the blocking point is now
-mmap() itself rather than the mmap offset ioctl:
-
-  - DRM_IOCTL_XE_GEM_MMAP_OFFSET: always succeeds regardless of
-    purgeable state (just returns the pre-allocated offset)
-  - mmap() on DONTNEED BO: fails with -EBUSY (temporary state)
-  - mmap() on purged BO: fails with -EINVAL (permanent, no backing store)
-
-v5:
-  - Add purged-mmap-blocked subtest to verify mmap is blocked after
-    BO backing store is permanently purged.
+v4:
+  - Added proper resource cleanup before calling igt_skip(). (Nishit)
+  - Added assertion for xe_bo_map. (Nishit)
 
 v6:
-  - DRM_IOCTL_XE_GEM_MMAP_OFFSET always succeeds; the purgeable check
-    now happens in xe_gem_object_mmap() at mmap() time. For purged BOs,
-    assert mmap() fails with -EINVAL.
+  - Fix sigsetjmp(jmp, SIGBUS | SIGSEGV) to sigsetjmp(jmp, 1). The
+    second argument is a plain boolean savemask, not a signal set.
 
 v7:
-  - Moved trigger_memory_pressure() and purgeable_mark_and_verify_purged()
-    here. (Nishit)
-  - Use xe_has_vram() instead of checking xe_visible_vram_size() > 0 for
-    clearer dGPU/iGPU detection. (Nishit)
-  - Fix purgeable_mark_and_verify_purged(): handle retained == 0 from
-    DONTNEED (BO already purged) as success instead of incorrectly
-    returning false. (Nishit)
-  - Drop unused vm parameter from trigger_memory_pressure(). (Nishit)
+  - Move sigtrap/jmp_buf in this patch. (Nishit)
 
 Cc: Nishit Sharma <nishit.sharma@intel.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
@@ -110,157 +96,99 @@ Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 Cc: Pravalika Gurram <pravalika.gurram@intel.com>
 Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
 ---
- tests/intel/xe_madvise.c | 136 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 136 insertions(+)
+ tests/intel/xe_madvise.c | 71 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
 diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
-index 2c8c27fa9..619d64b46 100644
+index 619d64b46..2d5acc347 100644
 --- a/tests/intel/xe_madvise.c
 +++ b/tests/intel/xe_madvise.c
-@@ -59,6 +59,136 @@ static void purgeable_setup_simple_bo(int fd, uint32_t *vm, uint32_t *bo,
- 	xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC);
+@@ -153,6 +153,13 @@ static bool purgeable_mark_and_verify_purged(int fd, uint32_t vm, uint64_t addr,
+ 	return retained == 0;
+ }
+ 
++static jmp_buf jmp;
++
++__noreturn static void sigtrap(int sig)
++{
++	siglongjmp(jmp, sig);
++}
++
+ /**
+  * SUBTEST: purged-mmap-blocked
+  * Description: After BO is purged, verify mmap() fails with -EINVAL
+@@ -227,6 +234,64 @@ static void test_dontneed_before_mmap(int fd)
+ 	xe_vm_destroy(fd, vm);
  }
  
 +/**
-+ * trigger_memory_pressure - Fill VRAM/RAM + 50% to force purgeable reclaim
-+ * @fd: DRM file descriptor
-+ *
-+ * Allocates BOs in a temporary VM until memory is overcommitted by 50%,
-+ * forcing the kernel to purge DONTNEED-marked BOs.
-+ */
-+static void trigger_memory_pressure(int fd)
-+{
-+	uint64_t mem_size, overpressure;
-+	const uint64_t chunk = 8ull << 20; /* 8 MiB */
-+	int max_objs, n = 0;
-+	uint32_t *handles;
-+	uint64_t total;
-+	void *p;
-+	uint32_t handle, vm;
-+
-+	/* Use a separate VM so pressure BOs don't affect the test VM */
-+	vm = xe_vm_create(fd, 0, 0);
-+
-+	/* Purgeable BOs reside in VRAM (dGPU) or system memory (iGPU) */
-+	mem_size = xe_has_vram(fd) ? xe_visible_vram_size(fd, 0) :
-+		   igt_get_total_ram_mb() << 20;
-+
-+	/* Scale overpressure to 50% of memory, minimum 64MB */
-+	overpressure = mem_size / 2;
-+	if (overpressure < (64 << 20))
-+		overpressure = 64 << 20;
-+
-+	max_objs = (mem_size + overpressure) / chunk + 1;
-+	handles = malloc(max_objs * sizeof(*handles));
-+	igt_assert(handles);
-+
-+	total = 0;
-+	while (total < mem_size + overpressure && n < max_objs) {
-+		uint32_t err;
-+
-+		err = __xe_bo_create(fd, vm, chunk,
-+				     vram_if_possible(fd, 0),
-+				     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+				     NULL, &handle);
-+		if (err) /* Out of memory — sufficient pressure achieved */
-+			break;
-+
-+		handles[n++] = handle;
-+		total += chunk;
-+
-+		p = xe_bo_map(fd, handle, chunk);
-+		igt_assert(p != MAP_FAILED);
-+
-+		/* Fault in all pages so they actually consume memory */
-+		memset(p, 0xCD, chunk);
-+		munmap(p, chunk);
-+	}
-+
-+	/* Allow shrinker time to process pressure */
-+	usleep(100000);
-+
-+	for (int i = 0; i < n; i++)
-+		gem_close(fd, handles[i]);
-+
-+	free(handles);
-+
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+/**
-+ * purgeable_mark_and_verify_purged - Mark DONTNEED, pressure, check purged
-+ * @fd: DRM file descriptor
-+ * @vm: VM handle
-+ * @addr: Virtual address of the BO
-+ * @size: Size of the BO
-+ *
-+ * Returns true if the BO was purged under memory pressure.
-+ */
-+static bool purgeable_mark_and_verify_purged(int fd, uint32_t vm, uint64_t addr, size_t size)
-+{
-+	uint32_t retained;
-+
-+	/* Mark as DONTNEED */
-+	retained = xe_vm_madvise_purgeable(fd, vm, addr, size,
-+					   DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
-+	if (retained == 0)
-+		return true; /* Already purged */
-+
-+	/* Trigger memory pressure */
-+	trigger_memory_pressure(fd);
-+
-+	/* Verify purged */
-+	retained = xe_vm_madvise_purgeable(fd, vm, addr, size,
-+					   DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
-+	return retained == 0;
-+}
-+
-+/**
-+ * SUBTEST: purged-mmap-blocked
-+ * Description: After BO is purged, verify mmap() fails with -EINVAL
++ * SUBTEST: dontneed-after-mmap
++ * Description: Mark BO as DONTNEED after mmap, verify SIGBUS on accessing purged mapping
 + * Test category: functionality test
 + */
-+static void test_purged_mmap_blocked(int fd)
++static void test_dontneed_after_mmap(int fd)
 +{
 +	uint32_t bo, vm;
 +	uint64_t addr = PURGEABLE_ADDR;
 +	size_t bo_size = PURGEABLE_BO_SIZE;
-+	struct drm_xe_gem_mmap_offset mmo = {};
-+	void *ptr;
++	void *map;
 +
-+	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, false);
++	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, true);
++
++	map = xe_bo_map(fd, bo, bo_size);
++	igt_assert(map != MAP_FAILED);
++	memset(map, 0xAB, bo_size);
++
 +	if (!purgeable_mark_and_verify_purged(fd, vm, addr, bo_size)) {
++		munmap(map, bo_size);
 +		gem_close(fd, bo);
 +		xe_vm_destroy(fd, vm);
 +		igt_skip("Unable to induce purge on this platform/config");
 +	}
 +
-+	/*
-+	 * Getting the mmap offset is always allowed regardless of purgeable
-+	 * state - the blocking happens at mmap() time (xe_gem_object_mmap).
-+	 * For a purged BO, mmap() must fail with -EINVAL (no backing store).
-+	 */
-+	mmo.handle = bo;
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo), 0);
++	/* Access purged mapping - should trigger SIGBUS/SIGSEGV */
++	{
++		sighandler_t old_sigsegv, old_sigbus;
++		char *ptr = (char *)map;
++		int sig;
 +
-+	ptr = mmap(NULL, bo_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, mmo.offset);
-+	igt_assert_eq_u64((uint64_t)ptr, (uint64_t)MAP_FAILED);
-+	igt_assert_eq(errno, EINVAL);
++		old_sigsegv = signal(SIGSEGV, (__sighandler_t)sigtrap);
++		old_sigbus = signal(SIGBUS, (__sighandler_t)sigtrap);
 +
++		sig = sigsetjmp(jmp, 1); /* savemask=1: save/restore signal mask */
++		switch (sig) {
++		case SIGBUS:
++		case SIGSEGV:
++			/* Expected - purged mapping access failed */
++			break;
++		case 0:
++			*ptr = 0;
++		default:
++			igt_assert_f(false,
++				     "Access to purged mapping should trigger SIGBUS, got sig=%d\n",
++				     sig);
++			break;
++		}
++
++		signal(SIGBUS, old_sigbus);
++		signal(SIGSEGV, old_sigsegv);
++	}
++
++	munmap(map, bo_size);
 +	gem_close(fd, bo);
 +	xe_vm_destroy(fd, vm);
 +}
 +
- /**
-  * SUBTEST: dontneed-before-mmap
-  * Description: Mark BO as DONTNEED before mmap, verify mmap() fails with -EBUSY
-@@ -115,6 +245,12 @@ int igt_main()
+ int igt_main()
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -251,6 +316,12 @@ int igt_main()
  			break;
  		}
  
-+	igt_subtest("purged-mmap-blocked")
++	igt_subtest("dontneed-after-mmap")
 +		xe_for_each_engine(fd, hwe) {
-+			test_purged_mmap_blocked(fd);
++			test_dontneed_after_mmap(fd);
 +			break;
 +		}
 +
