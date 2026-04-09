@@ -4,54 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C2EEE9DE68
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 08:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B45AFE9DE6D
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 08:58:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 115D410E777;
-	Thu,  9 Apr 2026 08:52:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 655B610E779;
+	Thu,  9 Apr 2026 08:58:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="JAVRUIZP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lpOL7LJn";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71D3210E777
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 08:52:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=4k5jOWeLvwVRwQ/QRIgsVSk/fk9aKr7NAurB0gLlDqE=; b=JAVRUIZPmNDTJA25cG/xlU4i70
- eSo6kzo7CGgVioVBBSQ+CqC5GQjONnCYdcv6kYXNJFCPG/qK33aBHpyzUHpYp7Be+QF29zft1iHJr
- JVpn7qHxa5R1cMMND+3axhtkFrvdbAnv71ubcqwK3NjAQELpiKfrH9bP4pREKftsR227eKDInrNFU
- CylHJCOK+vY9g01C+uCEqZjCyxf1gUTng2BoUiJ2GOjplB2+U18i7hTiZYu+RhRHuMee+j2g7FAhW
- xyLTE7dAwT+dzzOE4uW6RoRIdSiAKyl9G8cHNkgmsar9CEHATWgwlF4COmkEuWQq1FZRn00BMKqbL
- GGqeAT9Q==;
-Received: from [90.240.106.137] (helo=[192.168.0.101])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1wAl7r-00DrRg-Jj; Thu, 09 Apr 2026 10:52:35 +0200
-Message-ID: <e589ef3a-7703-40aa-a121-701c11955b24@igalia.com>
-Date: Thu, 9 Apr 2026 09:52:34 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB26A10E778
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2026 08:57:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1775725072; x=1807261072;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=RVtg3mF6vs9GxVIgJYax5lAgLrURMwTgV1uF82nNTNE=;
+ b=lpOL7LJnfPiU+2pLF/gB5pMiuQH0QMNWfZDeanFTvhOCTVSS7xgcc9kD
+ O1Cxp2QvyIn1q1fU8ZYD2e8kneq3Vxb0fWYyWBsJZvyG436zLrPqodN1f
+ 7qJT53fTgqdKgATwe3CbwAL5PNvcZyv9SOLzgZp4YDko10UGUeCrAzuEY
+ 4lh0aXPXIjrX3esP37OmMaiQCnQu40gfm36bWn0gZ+Kpatj2QvYPG+LXz
+ PyF6KLBJGVTkHY8hFBiyxfasmy3TRcVT9Gh+s4cQ5snYRluw7oP5XYGnf
+ +s0mYJl0w5GwiHAZ1UoKy8qQYB8X3tmoME9ZWBFgDOuIaQdqCiLorgCb1 w==;
+X-CSE-ConnectionGUID: T2EOf+MMT+2hfZHg9YQ1ew==
+X-CSE-MsgGUID: vgsVN1AkQxy4rbq+oLd0iQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="79312674"
+X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="79312674"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2026 01:57:52 -0700
+X-CSE-ConnectionGUID: 48r3W+LdTg2j8vNPxKqiXA==
+X-CSE-MsgGUID: 3WMY9Gb1TPG0OFL/go6UNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; d="scan'208";a="251853466"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2026 01:57:52 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 9 Apr 2026 01:57:51 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 9 Apr 2026 01:57:51 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.25) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 9 Apr 2026 01:57:49 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CzIOcZhY4g8HGlSqxc9jn1lDt9JCdPMaailgAelxYSP+IQbX19Fx789zNNrtwFgVyFppYc6kPGD//zOOSVuj5fCvUfa1dKbU5KMuCrOOHqF8kUelcgPkLsKqueyPv1nG0/8Y3T8nuTc9zu+Zq8AuwcMnfGaOygQutAZd6y4QyfSwXqigtLobSydSVOTW4oxvfygX1vRKIni2veeBi5sFE3ZayaO9eWT7//koLBwvnBsAJ/gHQIaQf8O9SOgE0eCqXWUTBU3uSTbJBkk1tXk5h2PkX93YjA4QGtkvuIAffi342XcnK0fpa5GFbWb8g+yDRO8n9r4kPHTcDG5NDCGUbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/BS+ewlthevmkOyAx+CjZF65cYkAWGZjoapTYJj9Qmg=;
+ b=JsRKwWasHap4e7Y7a2iq93mwSdpFl2+Rwsv/ABYW5nCyS8cOFWj38BKbGgMz7uZAKa/S+tQrw+sUNKZn3Q1lVEKly0MEai8gfpYtgq6KkENMcXlj8v1yPY5tnsDmsxzYjT8yfWLxMnub9RxzbTTGSsxMk0Kv5OT2kRV9a7mKcxBb9GMlZo90DTlt8rM/Xkp4UHP4OPahHA/CjIaoDOWV4asOsYDiXUdywS5nGx3SllnJUypCkHTf/zzRm9fU821Kq580CfefU5bDfghxHcsuzWrIQyElnwl97Af0WB8f8DurbKIGXeau+rYRlpWYi4pl+Uw8MMqegMTJEbcUxpLD8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
+ by PH7PR11MB6860.namprd11.prod.outlook.com (2603:10b6:510:200::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Thu, 9 Apr
+ 2026 08:57:42 +0000
+Received: from PH7PR11MB6053.namprd11.prod.outlook.com
+ ([fe80::3e15:8d62:5e58:a513]) by PH7PR11MB6053.namprd11.prod.outlook.com
+ ([fe80::3e15:8d62:5e58:a513%2]) with mapi id 15.20.9769.017; Thu, 9 Apr 2026
+ 08:57:42 +0000
+From: "Samala, Pranay" <pranay.samala@intel.com>
+To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "B S, Karthik" <karthik.b.s@intel.com>, Jason-JH Lin
+ <jason-jh.lin@mediatek.com>, "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Subject: RE: [PATCH i-g-t] tests/kms_bw: Allow custom modes for external panels
+Thread-Topic: [PATCH i-g-t] tests/kms_bw: Allow custom modes for external
+ panels
+Thread-Index: AQHcxnTcgtQFP2dEDk2zRY0r+m5D7bXWZ0Gg
+Date: Thu, 9 Apr 2026 08:57:42 +0000
+Message-ID: <PH7PR11MB60533AC5B809DE83844C1009E7582@PH7PR11MB6053.namprd11.prod.outlook.com>
+References: <20260407095234.1728691-1-karthik.b.s@intel.com>
+In-Reply-To: <20260407095234.1728691-1-karthik.b.s@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|PH7PR11MB6860:EE_
+x-ms-office365-filtering-correlation-id: 1b161bd1-1fab-47e8-f7de-08de96160f22
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|376014|1800799024|38070700021|56012099003|22082099003|18002099003;
+x-microsoft-antispam-message-info: XgsOHZeWcvJVNuNtykZryf5MzwaB/fpH5c6qefcRYN6yPQ/aQRgH031FUcYwWxQj+5owtEGdm8+JL2aPA1ohfF2jHtYM5ZLTC8imzCk4UvJK8oYhxGmfBnex1MT6BOcC4okg6NGHKzkFZvqfk65qmHjjJHmG4LpbBfLQMlJ8dpjK9cJNGASvgw3XNU8Gwu6P74CSaPepprQfhDPrcRkiRAzrEodh1nTO+NlnU2qlFXV1T+QS4eTfuPrfoyY8A5ty7/mTCaP7A3r2WT2sjEAHVv8p2b4kacW05B+B0AEo8MADKYcx0kP5IXdId46YsTaNL4zABfFFj1fXMcXCeTl6NGWgrJpOneJGEfRZPZejeawdNnTbI7fyLtR4cxGMrEW2JveUD+YFBxAvcClqjfWt06cIWbcEdIA0bQJE6670eKJtwyYWtQKIwRaKzjoka/fLMB52z4wv/2K8KGA/pJYkXgp7yKKwASaqLEC6/GWNj1cvLpQYegK6Iutiuo87bnSHLVcpoMlK7aPLcHuQL0gtxbEw9DvmzPm73RFlJA01EbZSZ9/IrdH+hXWDkY7EYkM/jWHUkYl8S2vXs4EhvM8Ph8x5Kzc2weWAdG2hesJU6NLu1RT3LT46CXM2fVC9Ufh2ZEkkmtRdV3jTI4gSDpv+OL8km2tKilFoEOwPbSl8yBQy8DQT+slVQC1W74JseSAFd0+PFwSBue5cMFvnULLJTnSVyUm00Wz5TFpr3AcGa5W0vwuYUEoR6PdmamEkYrtFjXoKN6UqnkR/3EZngzKD1PPHbK0vEVyEI+uF9mfIyU0=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(38070700021)(56012099003)(22082099003)(18002099003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?E1j6rocLOy4gu1Vsb1tsxccjD+JT7sYgm1ocy87VO1HooNsQcw8Qp5kDt+6x?=
+ =?us-ascii?Q?MUWEgiV/RtkkWPvkbXhTvF+SPbublyMBRPc/8ChIATj5baUl6W7ZW2p6oWXq?=
+ =?us-ascii?Q?moOFIAwO0o6GsO10vShIC55Wrd+aZE9qo4yGdzDVIrQvGWfrRCfKYYhiU73c?=
+ =?us-ascii?Q?C9an1tG4hMpRuY3Z20p2f32inFb7FPv10z2VfAheSzoTdY/PAawMVCAiYwiH?=
+ =?us-ascii?Q?zo9QvOSQ4L9dQWg9cxIzb8fjXwrBcxUgnkxVysGICHf+Qx32k15A6wIMzbx5?=
+ =?us-ascii?Q?wMo9vvREaEjLUIYwhjSWrVos3oPhrDSMwQj6D40fmlsCxZFoNDO6zUteA2TD?=
+ =?us-ascii?Q?SzjKgKAoRlXzdA6vNaDLDMWgPTtB6P4cmPgNlbV8WQw4LPucRRD4DJl+aaMz?=
+ =?us-ascii?Q?/lbGyy7hiqQojnQjoTe/q9wyqb97c5UhykEiUAf5yVJuv5oDCTLGuKp5mMLB?=
+ =?us-ascii?Q?H/NG8YFdh905hgRDwsfJHSNn174tSUqFJyRYh5hUx25smyg5ZuSxBkNxeyhb?=
+ =?us-ascii?Q?nX8ae2kZ2NYDKYu1re1ZmNmDFcsoGVb/c8Wt8nHpJvZ+UqRq0QCiiOMJlQwb?=
+ =?us-ascii?Q?bpjhUz6PS/dnIr/wktM6QQVu87rn6tMhhqzlhtkAczoR1Y3YIKtuBR4Hirtp?=
+ =?us-ascii?Q?DSUkg19hmsJ4AxWhyVBpF/OQEQp/CRQ6bxfBavfZO3CKUl29i2SA28+7cCIv?=
+ =?us-ascii?Q?Plw80df4YEKbtoJY39Y7ko/SjybpMgSngeAH9JU5wwqGXO/shgsNQRVdpTPK?=
+ =?us-ascii?Q?873tYtJLEjShbdJNB7B+5IUMQIO4VIeOKc8700SutJJWSzBCKrJjMsMUB23F?=
+ =?us-ascii?Q?NF7uTUpiSKOGidZ35Bxfh1aMm/EvcVug0b8kjMLLkgnYR4jqo+0XkaQLexAn?=
+ =?us-ascii?Q?/7RDT0pa9Bk94DEnSGjqmg0v5ac8yMauXVNQ/ZWhANKi0Jn19UuYkA7XoKqB?=
+ =?us-ascii?Q?vJ/HbixHkWWC9eb5jmgeGSJI0Hl22mch2HGQ7pGetDop+4gbY2qVuCTt/5Nt?=
+ =?us-ascii?Q?d9NUSK9n3+kn7i2CSzJanu8Mh1oHbc3/XnfK/H6DEZsG8mXqwNHsAugi5eg2?=
+ =?us-ascii?Q?rRc+7KZ1FJy0+HiYlniTZ86sviJX17xzgrRd7Mv1Io75kU4XFC1ORC4JKvrd?=
+ =?us-ascii?Q?9HmZ4Qbt0vNHDdeaHhzb+M5CIkb5B9+42kKDkGlBdZxdOc953gHHCW1fhfiG?=
+ =?us-ascii?Q?PMW3cZERt38+p67Th1YaOuEtzfHhmrX1ttLA6chsc/hDYzV875p0lkplVlUr?=
+ =?us-ascii?Q?nHqTS/zFizFn67R9GjqNfyOp45G8JMc8l52x8gfq0WTSD6Jz20jTMeAkJ7hO?=
+ =?us-ascii?Q?+ahpIq2gNuRH1AdEZ+EfuXSqf/w3r/3IkTn3/LZCL74W9v5jf+xuix9UKE+J?=
+ =?us-ascii?Q?C1eUYhx6vTqo88rqTnGSC4ewZUliwL1xbuZ/+dJ6MGa8mtPe4H4pqqEQnLHR?=
+ =?us-ascii?Q?cBDqRgDIr03eIk8E9I3C8rA+S37GPEI+MrKbUNMTUlDtk0sP2Bf/9vkE+/80?=
+ =?us-ascii?Q?Teb0mlWu2u6Lq1U5wF4wV4Odf1k1jVlkr/Hq1Yyy72bT7VDtVzM/EOYbVO1Z?=
+ =?us-ascii?Q?btLCsXRRJtzCCdldWdDtitmza3isDRkJMdEHWliW0PqSYXkEfNFtfODr/o8M?=
+ =?us-ascii?Q?Fa3dzDLd08MUsIwjIAtZ60ejHipYUxBnfcCFVx9N9RlfkBEBboWoFCzQZ3iY?=
+ =?us-ascii?Q?m/RUubYROI7yCnPa4QRGugdgWl4cy2M2vb+0UM4gBtBLQLMo4J/5RLvx6oQP?=
+ =?us-ascii?Q?s3ceAQ07/Q=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v10 4/5] tools/gputop.src/gputop: Add support for
- per-engine busyness monitoring
-To: "Purkait, Soham" <soham.purkait@intel.com>,
- igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, kamil.konieczny@intel.com,
- vinay.belgaumkar@intel.com
-Cc: anshuman.gupta@intel.com, tursulin@ursulin.net, lucas.de.marchi@gmail.com
-References: <20260406060428.2734117-1-soham.purkait@intel.com>
- <20260406060428.2734117-5-soham.purkait@intel.com>
- <e9d47e1d-138e-4742-9ea2-abe21a071c8c@igalia.com>
- <ba0b9f73-db89-4845-aecc-8c8fdf037ba4@intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <ba0b9f73-db89-4845-aecc-8c8fdf037ba4@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: dXffJIEFmYRgu1UT4rxRWuj8CoRv4IqqEFjHtkJQXTBW6zWc7pXaDC7An/pgM315EntE7f7vyPJepCGp7uoQze6Us3Vmi5Q+sorVUJsYoB98b7ROGlYyww2nASfAV6Skb2tEgbY0p8xDnlSTBh++W+kkt68f9zvwOaFOMwkFKbmMnLvVzBDz+88qW9O1e6j55OLyac9PA+hIGkQ380Sl9CAPiJX0jYoTsgG07xc5ZY/uIPWV6OKbA7fnE3FanTXzgd8vsGM+PB4fkZyTgxxKk+K5BHXBE4C7z7JJYrTAALIXYgSFEKQsnDChKSWwK2H9rFQegfmqusPXRmvw23hWVA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b161bd1-1fab-47e8-f7de-08de96160f22
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2026 08:57:42.0396 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: g18ckZUgiyhts5klAXBrSK39pMSfq7/Lx3gHBDF1lJdEayKnA1yd89lMrCxFvZrnI6u4YPf02fkolYxqkvFpEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6860
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,487 +163,215 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Karthik,
 
-On 08/04/2026 08:50, Purkait, Soham wrote:
-> Hi Tvrtko,
-> 
-> On 06-04-2026 14:34, Tvrtko Ursulin wrote:
->>
->> On 06/04/2026 07:04, Soham Purkait wrote:
->>> This introduce support for monitoring per-engine busyness in gputop,
->>> extending existing per-client monitoring to handle multiple GPUs, when
->>> present, including support for multi-engine instances, enabling
->>> finer-grained engine busyness reporting.
->>>
->>> v1:
->>>   - Refactor GPUTOP into a vendor-agnostic tool. (Lucas)
->>> v2:
->>>   - Cosmetic changes. (Riana)
->>>   - Avoid three level indentation. (Riana)
->>> v3:
->>>   - Add device filter to populate the array of cards for
->>>     all supported drivers. (Zbigniew)
->>> v4:
->>>   - Add user message for running without root privileges. (Kamil)
->>>   - Add support for GPU client-only busyness on unsupported
->>>     drivers as a fallback mechanism. (Kamil)
->>>   - Remove unused dependencies and headers. (Kamil)
->>> v5:
->>>   - Replace hardcoded values with Enum for driver number. (Vinay)
->>>   - Rename driver_no to driver_num for better readability. (Vinay)
->>>
->>> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
->>> ---
->>>   tools/gputop.src/gputop.c    | 305 ++++++++++++++++++++++++++++++-----
->>>   tools/gputop.src/meson.build |   2 +-
->>>   tools/meson.build            |   3 +-
->>>   3 files changed, 268 insertions(+), 42 deletions(-)
->>>
->>> diff --git a/tools/gputop.src/gputop.c b/tools/gputop.src/gputop.c
->>> index 9b2e8cb6f..479897f40 100644
->>> --- a/tools/gputop.src/gputop.c
->>> +++ b/tools/gputop.src/gputop.c
->>> @@ -1,6 +1,6 @@
->>>   // SPDX-License-Identifier: MIT
->>>   /*
->>> - * Copyright © 2023 Intel Corporation
->>> + * Copyright © 2023-2026 Intel Corporation
->>>    */
->>>     #include <assert.h>
->>> @@ -14,22 +14,71 @@
->>>   #include <math.h>
->>>   #include <poll.h>
->>>   #include <signal.h>
->>> +#include <stdbool.h>
->>>   #include <stdint.h>
->>>   #include <stdio.h>
->>>   #include <stdlib.h>
->>>   #include <string.h>
->>>   #include <sys/ioctl.h>
->>>   #include <sys/stat.h>
->>> +#include <sys/sysmacros.h>
->>>   #include <sys/types.h>
->>> -#include <unistd.h>
->>>   #include <termios.h>
->>> -#include <sys/sysmacros.h>
->>> -#include <stdbool.h>
->>> +#include <unistd.h>
->>>     #include "igt_core.h"
->>>   #include "igt_drm_clients.h"
->>>   #include "igt_drm_fdinfo.h"
->>>   #include "igt_profiling.h"
->>> +#include "xe_gputop.h"
->>> +
->>> +/**
->>> + * Supported Drivers
->>> + *
->>> + * Adhere to the following requirements when implementing support 
->>> for the
->>> + * new driver:
->>> + * @drivers: Update drivers[] with new driver string and so the enum 
->>> drivers
->>> + * with the new driver entry.
->>> + * @sizeof_gputop_obj: Update this function as per new driver 
->>> support included.
->>> + * @operations: Update the respective operations of the new driver:
->>> + * gputop_init,
->>> + * discover_engines,
->>> + * pmu_init,
->>> + * pmu_sample,
->>> + * print_engines,
->>> + * clean_up
->>> + * @per_driver_contexts: Update per_driver_contexts[] array of type 
->>> "struct gputop_driver" with the
->>> + * initial values.
->>> + */
->>> +static const char * const drivers[] = {
->>> +    "xe",
->>> +    /* Keep the last one as NULL */
->>> +    NULL
->>> +};
->>> +
->>> +/**
->>> + * Supported operations on driver instances. Update the ops[] array for
->>> + * each individual driver specific function. Maintain the sequence 
->>> as per
->>> + * drivers[] array.
->>> + */
->>> +struct device_operations ops[] = {
->>> +    {
->>> +        xe_gputop_init,
->>> +        xe_populate_engines,
->>> +        xe_pmu_init,
->>> +        xe_pmu_sample,
->>> +        xe_print_engines,
->>> +        xe_clean_up
->>> +    }
->>> +};
->>> +
->>> +/*
->>> + * per_driver_contexts[] array of type struct gputop_driver which 
->>> keeps track of the devices
->>> + * and related info discovered per driver.
->>> + */
->>> +struct gputop_driver per_driver_contexts[] = {
->>> +    {false, 0, NULL}
->>> +};
->>>     enum utilization_type {
->>>       UTILIZATION_TYPE_ENGINE_TIME,
->>> @@ -37,50 +86,84 @@ enum utilization_type {
->>>   };
->>>     enum intel_driver_type {
->>> -    INTEL_DRIVER_I915,
->>>       INTEL_DRIVER_XE,
->>> +    INTEL_DRIVER_I915,
->>>       INTEL_DRIVER_UNKNOWN,
->>>   };
->>>     #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
->>>   -static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", 
->>> "▉", "█" };
->>> -
->>> -#define ANSI_HEADER "\033[7m"
->>> -#define ANSI_RESET "\033[0m"
->>> -
->>> -static void n_spaces(const unsigned int n)
->>> +static size_t sizeof_gputop_obj(int driver_num)
->>>   {
->>> -    unsigned int i;
->>> -
->>> -    for (i = 0; i < n; i++)
->>> -        putchar(' ');
->>> +    switch (driver_num) {
->>> +    case INTEL_DRIVER_XE:
->>> +        return sizeof(struct xe_gputop);
->>> +    default:
->>> +        fprintf(stderr,
->>> +            "Driver object size does not exist.\n");
->>> +        exit(EXIT_FAILURE);
->>> +    }
->>>   }
->>>   -static void print_percentage_bar(double percent, int max_len)
->>> +static void gputop_clean_up(void)
->>>   {
->>> -    int bar_len, i, len = max_len - 1;
->>> -    const int w = 8;
->>> -
->>> -    len -= printf("|%5.1f%% ", percent);
->>> -
->>> -    /* no space left for bars, do what we can */
->>> -    if (len < 0)
->>> -        len = 0;
->>> +    for (int i = 0; drivers[i]; i++) {
->>> +        ops[i].clean_up(per_driver_contexts[i].instances, 
->>> per_driver_contexts[i].len);
->>> +        free(per_driver_contexts[i].instances);
->>> +        per_driver_contexts[i].device_present = false;
->>> +        per_driver_contexts[i].len = 0;
->>> +    }
->>> +}
->>>   -    bar_len = ceil(w * percent * len / 100.0);
->>> -    if (bar_len > w * len)
->>> -        bar_len = w * len;
->>> +static int find_driver(struct igt_device_card *card)
->>> +{
->>> +    for (int i = 0; drivers[i]; i++) {
->>> +        if (strcmp(drivers[i], card->driver) == 0)
->>> +            return i;
->>> +    }
->>> +    return -1;
->>> +}
->>>   -    for (i = bar_len; i >= w; i -= w)
->>> -        printf("%s", bars[w]);
->>> -    if (i)
->>> -        printf("%s", bars[i]);
->>> +static int populate_device_instances(const char *filter)
->>> +{
->>> +    struct igt_device_card *cards = NULL;
->>> +    struct igt_device_card *card_inplace = NULL;
->>> +    struct gputop_driver *driver_entry =  NULL;
->>> +    int driver_num;
->>> +    int count, final_count = 0;
->>> +
->>> +    count = igt_device_card_match_all(filter, &cards);
->>> +    for (int j = 0; j < count; j++) {
->>> +        if (strcmp(cards[j].subsystem, "pci") != 0)
->>> +            continue;
->>>   -    len -= (bar_len + (w - 1)) / w;
->>> -    n_spaces(len);
->>> +        driver_num = find_driver(&cards[j]);
->>> +        if (driver_num < 0)
->>> +            continue;
->>>   -    putchar('|');
->>> +        driver_entry = &per_driver_contexts[driver_num];
->>> +        if (!driver_entry->device_present)
->>> +            driver_entry->device_present = true;
->>> +        driver_entry->len++;
->>> +        driver_entry->instances = realloc(driver_entry->instances,
->>> +                          driver_entry->len
->>> +                          * sizeof_gputop_obj(driver_num));
->>> +        if (!driver_entry->instances) {
->>> +            fprintf(stderr,
->>> +                "Device instance realloc failed (%s)\n",
->>> +                strerror(errno));
->>> +            exit(EXIT_FAILURE);
->>> +        }
->>> +        card_inplace = (struct igt_device_card *)
->>> +                calloc(1, sizeof(struct igt_device_card));
->>> +        memcpy(card_inplace, &cards[j], sizeof(struct 
->>> igt_device_card));
->>> +        ops[driver_num].gputop_init(driver_entry->instances, 
->>> (driver_entry->len - 1),
->>> +            card_inplace);
->>> +        final_count++;
->>> +    }
->>> +    if (count)
->>> +        free(cards);
->>> +    return final_count;
->>>   }
->>>     /* Get the correct sysfs prefix based on DRM minor number */
->>> @@ -526,8 +609,31 @@ static void clrscr(void)
->>>   struct gputop_args {
->>>       long n_iter;
->>>       unsigned long delay_usec;
->>> +    bool verbose;
->>>   };
->>>   +static void countdown(const char *msg, const int start_sec)
->>> +{
->>> +    struct pollfd pfd;
->>> +    int i, ret;
->>> +    char ch;
->>> +
->>> +    for (i = start_sec; i > 0; i--) {
->>> +        printf("\r%s%d... second(s)", msg, i);
->>> +        fflush(stdout);
->>> +
->>> +        pfd.fd = STDIN_FILENO;
->>> +        pfd.events = POLLIN;
->>> +
->>> +        ret = poll(&pfd, 1, 1000);
->>> +        if (ret > 0 && (pfd.revents & POLLIN)) {
->>> +            while ((ch = getchar()) != '\n' && ch != EOF)
->>> +                continue;
->>> +            return;
->>> +        }
->>> +    }
->>> +}
->>> +
->>>   static void help(char *full_path)
->>>   {
->>>       const char *short_program_name = strrchr(full_path, '/');
->>> @@ -541,18 +647,47 @@ static void help(char *full_path)
->>>              "\t%s [options]\n\n"
->>>              "Options:\n"
->>>              "\t-h, --help                show this help\n"
->>> +           "\t-v, --verbose             wait 5 seconds before 
->>> starting client-only busyness in"
->>> +           " non-root mode if neither CAP_PERFMON is set nor 
->>> perf_event_paranoid is"
->>> +           " permissive.\n"
->>>              "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS 
->>> [.TENTHS]\n"
->>> -           "\t-n, --iterations =NUMBER  number of executions\n"
->>> +           "\t-n, --iterations =NUMBER  number of executions\n\n"
->>> +           "Running without root:\n"
->>> +           "\tAs a non-root user, CAP_PERFMON or perf_event_paranoid 
->>> is required to\n"
->>> +           "\taccess engine busyness\n"
->>> +           "\t" ANSI_HEADER "Steps to run without root (using 
->>> CAP_PERFMON):"
->>> +        ANSI_RESET "\n"
->>> +           "\tcd /path/to/igt-gpu-tools/\n"
->>> +           "\tsudo setcap cap_perfmon=+ep $(pwd)/build/tools/gputop\n"
->>> +           "\tsudo sh -c \"echo $(pwd)/build/lib > /etc/ 
->>> ld.so.conf.d/lib-igt.conf\"\n"
->>> +           "\tsudo ldconfig\n"
->>> +           "\t" ANSI_HEADER "Steps to revert once done:" ANSI_RESET 
->>> "\n"
->>> +           "\tsudo setcap cap_perfmon=-ep $(pwd)/build/tools/gputop\n"
->>> +           "\tsudo rm /etc/ld.so.conf.d/lib-igt.conf\n"
->>> +           "\tsudo ldconfig\n"
->>> +           "\n"
->>> +           "\t" ANSI_HEADER "Steps to run without root (using 
->>> perf_event_paranoid):"
->>> +           ANSI_RESET "\n"
->>> +           "\t\033[32m# Save current perf_event_paranoid 
->>> value\033[0m\n"
->>> +           "\torig_val=$(sysctl -n kernel.perf_event_paranoid)\n"
->>> +           "\tsudo sysctl -w kernel.perf_event_paranoid=-1\n"
->>> +           "\t" ANSI_HEADER "Steps to revert once done:" ANSI_RESET 
->>> "\n"
->>> +           "\t\033[32m# Restore original value\033[0m\n"
->>> +           "\tsudo sysctl -w kernel.perf_event_paranoid=$orig_val\n\n"
->>> +           "\tFor details, see 'Perf events and tool security':\n"
->>> +           "\thttps://www.kernel.org/doc/html/"
->>> +           "latest/admin-guide/perf-security.html\n\n"
->>>              , short_program_name);
->>>   }
->>>     static int parse_args(int argc, char * const argv[], struct 
->>> gputop_args *args)
->>>   {
->>> -    static const char cmdopts_s[] = "hn:d:";
->>> +    static const char cmdopts_s[] = "hvn:d:";
->>>       static const struct option cmdopts[] = {
->>>              {"help", no_argument, 0, 'h'},
->>>              {"delay", required_argument, 0, 'd'},
->>>              {"iterations", required_argument, 0, 'n'},
->>> +           {"verbose", no_argument, 0, 'v'},
->>>              { }
->>>       };
->>>   @@ -560,6 +695,7 @@ static int parse_args(int argc, char * const 
->>> argv[], struct gputop_args *args)
->>>       memset(args, 0, sizeof(*args));
->>>       args->n_iter = -1;
->>>       args->delay_usec = 2 * USEC_PER_SEC;
->>> +    args->verbose = false;
->>>         for (;;) {
->>>           int c, idx = 0;
->>> @@ -573,6 +709,9 @@ static int parse_args(int argc, char * const 
->>> argv[], struct gputop_args *args)
->>>           case 'n':
->>>               args->n_iter = strtol(optarg, NULL, 10);
->>>               break;
->>> +        case 'v':
->>> +            args->verbose = true;
->>> +            break;
->>>           case 'd':
->>>               args->delay_usec = strtoul(optarg, &end_ptr, 10) * 
->>> USEC_PER_SEC;
->>>               if (*end_ptr == '.')
->>> @@ -610,9 +749,12 @@ int main(int argc, char **argv)
->>>       struct igt_profiled_device *profiled_devices = NULL;
->>>       struct igt_drm_clients *clients = NULL;
->>>       int con_w = -1, con_h = -1;
->>> +    bool is_root;
->>>       int ret;
->>>       long n;
->>>   +    is_root = (geteuid() == 0);
->>> +
->>>       ret = parse_args(argc, argv, &args);
->>>       if (ret < 0)
->>>           return EXIT_FAILURE;
->>> @@ -621,6 +763,62 @@ int main(int argc, char **argv)
->>>         n = args.n_iter;
->>>       period_us = args.delay_usec;
->>> +    populate_device_instances("device:subsystem=pci,card=all");
->>> +
->>> +    for (int i = 0; drivers[i]; i++) {
->>> +        if (!per_driver_contexts[i].device_present)
->>> +            continue;
->>> +
->>> +        for (int j = 0; j < per_driver_contexts[i].len; j++) {
->>> +            if (! 
->>> ops[i].init_engines(per_driver_contexts[i].instances, j)) {
->>> +                fprintf(stderr,
->>> +                    "Failed to initialize engines! (%s)\n",
->>> +                    strerror(errno));
->>> +                    gputop_clean_up();
->>> +                return EXIT_FAILURE;
->>> +            }
->>> +            ret = ops[i].pmu_init(per_driver_contexts[i].instances, j);
->>> +
->>> +            if (ret) {
->>> +                if (errno == EACCES && !is_root) {
->>> +                    igt_devices_free();
->>> +                    gputop_clean_up();
->>> +                    if (args.verbose) {
->>> +                        fprintf(stderr,
->>> +                            "\n"
->>> +                            "Running without root privileges.\n"
->>> +                            "Engine busyness may not be available "
->>> +                            "without root privileges.\n"
->>> +                            "See \"--help\" to enable engine "
->>> +                            "busyness without root.\n\n");
->>> +                        countdown("Resuming with only gpu client "
->>> +                                "busyness in ", 5);
->>> +                    }
->>> +                } else {
->>> +                    fprintf(stderr,
->>> +                        "Failed to initialize PMU! (%s)\n",
->>> +                        strerror(errno));
->>> +                    igt_devices_free();
->>> +                    gputop_clean_up();
->>> +                    return EXIT_FAILURE;
->>> +                }
->>> +            }
->>> +        }
->>> +    }
->>> +
->>> +    for (int i = 0; drivers[i]; i++) {
->>> +        for (int j = 0;
->>> +             per_driver_contexts[i].device_present && j < 
->>> per_driver_contexts[i].len;
->>> +             j++)
->>> +            if (ops[i].pmu_sample(per_driver_contexts[i].instances, 
->>> j)) {
->>> +                fprintf(stderr,
->>> +                    "Failed to sample PMU! (%s)\n",
->>> +                    strerror(errno));
->>> +                igt_devices_free();
->>> +                gputop_clean_up();
->>> +                return EXIT_FAILURE;
->>> +            }
->>> +    }
->>>         clients = igt_drm_clients_init(NULL);
->>>       if (!clients)
->>> @@ -642,22 +840,49 @@ int main(int argc, char **argv)
->>>         while ((n != 0) && !stop_top) {
->>>           struct igt_drm_client *c, *prevc = NULL;
->>> -        int i, engine_w = 0, lines = 0;
->>> +        int k, engine_w = 0, lines = 0;
->>>             igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
->>> +
->>> +        for (int i = 0; drivers[i]; i++) {
->>> +            for (int j = 0;
->>> +                 per_driver_contexts[i].device_present &&
->>> +                 j < per_driver_contexts[i].len;
->>> +                 j++)
->>> +                if 
->>> (ops[i].pmu_sample(per_driver_contexts[i].instances, j)) {
->>> +                    fprintf(stderr,
->>> +                        "Failed to sample PMU! (%s)\n",
->>> +                        strerror(errno));
->>> +                    igt_devices_free();
->>> +                    gputop_clean_up();
->>> +                    return EXIT_FAILURE;
->>
->> Imagine abstracting this all to a library akin to igt_drm_clients and 
->> then both xe_gputop and intel_gpu_top could use it. Then the step 
->> where latter would work with both i915 and xe could be very near, all 
->> the code would be only in the new library and not duplicated, plus, 
->> one day extending the support to a non-intel driver could be quite 
->> plausible.
-> At present, the planned scope is focused on adding Xe support in GPUTOP 
-> and support for i915 will also be added in the near future if necessary. 
-> In addition, GPUTOP is designed to be extensible and can be adapted to 
-> support non-Intel drivers as well.
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Karthi=
+k
+> B S
+> Sent: Tuesday, April 7, 2026 3:23 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: B S, Karthik <karthik.b.s@intel.com>; Jason-JH Lin <jason-
+> jh.lin@mediatek.com>; Joshi, Kunal1 <kunal1.joshi@intel.com>
+> Subject: [PATCH i-g-t] tests/kms_bw: Allow custom modes for external pane=
+ls
+>=20
+> Currently the test is rejecting all the outputs where the mode is not
+> matching. This is leading to excessive skips on configs wherer the tests =
+were
+> passing previouly.
+>=20
+> Instead of this, use default mode for fixed mode panels if the required
+> custom mode is not found. And use custom mode for external panels as
 
-Yes I designed it to be driver agnostic and so extensible. So I think it 
-would be better to continue with that direction and not make it worse.
+The current code always uses default mode on internal panels even=20
+if the custom mode is missing.=20
+Imho, if this behavior is intentional, please update the commit message.
+Remove this " if the required custom mode is not found".
 
-Specifically that would mean not having things such as 
-intel_driver_type, xe device operations, get_num_gts, 
-get_intel_frequencies, etc, and even assumption that all devices are 
-PCI, _directly_ in gputop.c. Rather move it to a library and abstract 
-the concepts.
+> these are allowed and have also been passing previously.
+>=20
+> Cc: Jason-JH Lin <jason-jh.lin@mediatek.com>
+> Cc: Kunal Joshi <kunal1.joshi@intel.com>
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>  tests/kms_bw.c | 57 ++++++++++++++++++++++++++++++++------------------
+>  1 file changed, 37 insertions(+), 20 deletions(-)
+>=20
+> diff --git a/tests/kms_bw.c b/tests/kms_bw.c index 4df5c2cee..4a32ec811
+> 100644
+> --- a/tests/kms_bw.c
+> +++ b/tests/kms_bw.c
+> @@ -186,14 +186,16 @@ static void force_output_mode(data_t *d,
+> igt_output_t *output,
+>  	igt_output_override_mode(output, mode);  }
+>=20
+> -static bool output_mode_supported(igt_output_t *output, const
+> drmModeModeInfo *mode)
+> +/* Check if output has a matching mode and call it out if mode is being
+> +forced */ static void output_mode_supported(igt_output_t *output, const
+> +drmModeModeInfo *mode)
+>  {
+>  	drmModeConnector *connector =3D output->config.connector;
+> +	drmModeModeInfo *default_mode;
+>  	int i;
+>=20
+>  	/* Virtual/forced sinks support all modes */
+>  	if (!igt_output_is_connected(output))
+> -		return true;
+> +		return;
+>=20
+>  	for (i =3D 0; i < connector->count_modes; i++) {
+>  		drmModeModeInfo *conn_mode =3D &connector->modes[i];
+> @@ -204,26 +206,32 @@ static bool output_mode_supported(igt_output_t
+> *output, const drmModeModeInfo *m
+>  			igt_debug("Found matching mode for %dx%d@%dHz
+> on %s\n",
+>  				  mode->hdisplay, mode->vdisplay, mode-
+> >vrefresh,
+>  				  igt_output_name(output));
+> -			return true;
+>  		}
+>  	}
+>=20
+> -	igt_info("Mode %dx%d@%dHz not supported by %s (has %d
+> modes)\n",
+> -		 mode->hdisplay, mode->vdisplay, mode->vrefresh,
+> -		 igt_output_name(output), connector->count_modes);
+> -
+> -	return false;
+> +	if (output_is_internal_panel(output)) {
+> +		default_mode =3D igt_output_get_mode(output);
+> +		igt_info("Mode %dx%d@%dHz not supported by %s (has %d
+> modes).\n"
+> +			 "%s Default mode: %dx%d@%dHz\n",
+> +			 mode->hdisplay, mode->vdisplay, mode->vrefresh,
+> +			 igt_output_name(output), connector-
+> >count_modes, igt_output_name(output),
+> +			 default_mode->hdisplay, default_mode->vdisplay,
+> default_mode->vrefresh);
+> +	} else {
+> +		igt_info("Mode %dx%d@%dHz not supported by %s (has %d
+> modes). Forcing mode.\n",
+> +			 mode->hdisplay, mode->vdisplay, mode->vrefresh,
+> +			 igt_output_name(output), connector-
+> >count_modes);
+> +	}
 
-Then there is countdown() which is, well, novel, and a pretty verbose 
-help text.
+Here since we are anyhow never using the requested mode even if we found it=
+,=20
+A suggestion, can we move this internal panel "if check" before scanning fo=
+r the=20
+requested mode for loop earlier.
 
-The diff of the series is quite bad as well since it deals with the mess 
-created so far. For example this patch removes some functions which are 
-needed and not added anywhere in this series. So the series is very hard 
-to review on it's own.
+For eg:
+Void output_mode_supported() {
+	If (internal_panel)
+		Get default mode and return
+	Else
+		Scan and get the requested mode if exists and return
+	Log & force it.
+}
 
-And finally, but not least, it still breaks the tool for non-root:
+>  }
+>=20
+>  static void run_test_linear_tiling(data_t *data, int n_crtcs, const
+> drmModeModeInfo *mode, bool physical) {
+>  	igt_display_t *display =3D &data->display;
+>  	igt_output_t *output;
+> +	drmModeModeInfo fb_mode;
+>  	struct igt_fb buffer[IGT_MAX_PIPES];
+>  	igt_crc_t zero, captured[IGT_MAX_PIPES];
+>  	int i =3D 0, num_pipes =3D 0;
+>  	igt_crtc_t *crtc;
+>  	int ret;
+> -	bool has_supported_mode =3D false;
+>=20
+>  	/* Cannot use igt_display_n_crtcs() due to fused pipes on i915 where
+> they do
+>  	 * not give the numver of valid crtcs and always return
+> IGT_MAX_PIPES */ @@ -242,14 +250,26 @@ static void
+> run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
+>  		crtc =3D data->crtc[i];
+>=20
+>  		output =3D physical ? data->connected_output[i] : data-
+> >output[i];
+> -		if (!output || !output_mode_supported(output, mode)) {
+> +		if (!output)
+>  			continue;
+> -		}
+>=20
+> -		force_output_mode(data, output, mode);
+> +		output_mode_supported(output, mode);
+> +
+> +		/*
+> +		 * On fixed mode panels trying to force a custom mode can
+> lead to failures or
+> +		 * implicit handling where the default mode is used even
+> though custom mode is requested.
 
-$ tools/gputop
-Engine query failed!
-Failed to initialize engines! (Bad file descriptor)
-
-At least on xe. But still not nice since there is no need to regress 
-that. Just make it access what it can and hide what it can't.
+Line length exceeds 100 columns.
 
 Regards,
+Pranay.
 
-Tvrtko
+> +		 * To avoid this use default mode on fixed mode panels and
+> +		 * use custom modes only on external panels.
+> +		 */
+> +		if (output_is_internal_panel(output)) {
+> +			fb_mode =3D *igt_output_get_mode(output);
+> +		} else {
+> +			force_output_mode(data, output, mode);
+> +			fb_mode =3D *mode;
+> +		}
+>=20
+> -		igt_create_color_fb(display->drm_fd, mode->hdisplay,
+> -				    mode->vdisplay, DRM_FORMAT_XRGB8888,
+> +		igt_create_color_fb(display->drm_fd, fb_mode.hdisplay,
+> +				    fb_mode.vdisplay,
+> DRM_FORMAT_XRGB8888,
+>  				    DRM_FORMAT_MOD_LINEAR, 1.f, 0.f, 0.f,
+>  				    &buffer[i]);
+>=20
+> @@ -258,10 +278,8 @@ static void run_test_linear_tiling(data_t *data, int
+> n_crtcs, const drmModeModeI
+>  		igt_plane_set_fb(data->primary[i], &buffer[i]);
+>  		igt_info("Assigning pipe %s to output %s with mode %s\n",
+>  			 igt_crtc_name(crtc), igt_output_name(output),
+> -			 mode->name);
+> -		has_supported_mode =3D true;
+> +			 fb_mode.name);
+>  	}
+> -	igt_skip_on_f(!has_supported_mode, "Unsupported mode for all
+> pipes\n");
+>=20
+>  	ret =3D igt_display_try_commit_atomic(display,
+>=20
+> DRM_MODE_ATOMIC_ALLOW_MODESET | @@ -273,9 +291,8 @@ static void
+> run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
+>=20
+>  	for (i =3D 0; i < n_crtcs; i++) {
+>  		output =3D physical ? data->connected_output[i] : data-
+> >output[i];
+> -		if (!output || !output_mode_supported(output, mode)) {
+> +		if (!output)
+>  			continue;
+> -		}
+>=20
+>  		igt_pipe_crc_collect_crc(data->pipe_crc[i], &captured[i]);
+>  		igt_assert_f(!igt_check_crc_equal(&zero, &captured[i]), @@
+> -284,7 +301,7 @@ static void run_test_linear_tiling(data_t *data, int n_c=
+rtcs,
+> const drmModeModeI
+>=20
+>  	for (i =3D n_crtcs - 1; i >=3D 0; i--) {
+>  		output =3D physical ? data->connected_output[i] : data-
+> >output[i];
+> -		if (!output || !output_mode_supported(output, mode))
+> +		if (!output)
+>  			continue;
+>=20
+>  		igt_remove_fb(display->drm_fd, &buffer[i]);
+> --
+> 2.43.0
 
