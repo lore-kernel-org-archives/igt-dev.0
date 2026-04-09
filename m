@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22136E9DE5B
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 07:43:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E50E9DE5D
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 07:48:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C0E5710E754;
-	Thu,  9 Apr 2026 07:43:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D255010E756;
+	Thu,  9 Apr 2026 07:48:22 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E081F10E754;
- Thu,  9 Apr 2026 07:43:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8FF8F10E756;
+ Thu,  9 Apr 2026 07:48:13 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2455158169992620095=="
+ boundary="===============7000075927653486592=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/gem=5Fexec=5Fen?=
- =?utf-8?q?dless=3A_Use_the_per-gt_interface_to_set_frequencies_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2C1/2=5D_lib/amdgpu=3A_add_oversized_invalid_packet_length_err?=
+ =?utf-8?q?or_handling?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Krzysztof Niemiec" <krzysztof.niemiec@intel.com>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 09 Apr 2026 07:43:16 -0000
-Message-ID: <177572059689.445249.14170339274732593602@a3b018990fe9>
+Date: Thu, 09 Apr 2026 07:48:13 -0000
+Message-ID: <177572089356.445249.7390265740943980819@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260407105212.43821-2-krzysztof.niemiec@intel.com>
-In-Reply-To: <20260407105212.43821-2-krzysztof.niemiec@intel.com>
+References: <20260408024821.2515174-1-Jesse.Zhang@amd.com>
+In-Reply-To: <20260408024821.2515174-1-Jesse.Zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,57 +42,24 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2455158169992620095==
+--===============7000075927653486592==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/gem_exec_endless: Use the per-gt interface to set frequencies (rev2)
-URL   : https://patchwork.freedesktop.org/series/164291/
-State : success
+Series: series starting with [i-g-t,1/2] lib/amdgpu: add oversized invalid packet length error handling
+URL   : https://patchwork.freedesktop.org/series/164484/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8851_BAT -> XEIGTPW_14940_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 14)
-------------------------------
-
-  No changes in participating hosts
+Series 164484 revision 1 was fully merged or fully failed: no git log
 
 
-Changes
--------
 
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8851 -> IGTPW_14940
-
-  IGTPW_14940: 14940
-  IGT_8851: 8851
-  xe-4860-5ee75b2816df74bfe606d4dfc061547d5cda4ebf: 5ee75b2816df74bfe606d4dfc061547d5cda4ebf
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14940/index.html
-
---===============2455158169992620095==
+--===============7000075927653486592==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,32 +79,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/gem_exec_endless: Use the per-gt interface to set frequencies (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164291/">https://patchwork.freedesktop.org/series/164291/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14940/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14940/index.html</a></td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib/amdgpu: add oversized invalid packet length error handling</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164484/">https://patchwork.freedesktop.org/series/164484/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8851_BAT -&gt; XEIGTPW_14940_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 14)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8851 -&gt; IGTPW_14940</li>
-</ul>
-<p>IGTPW_14940: 14940<br />
-  IGT_8851: 8851<br />
-  xe-4860-5ee75b2816df74bfe606d4dfc061547d5cda4ebf: 5ee75b2816df74bfe606d4dfc061547d5cda4ebf</p>
+    <p>Series 164484 revision 1 was fully merged or fully failed: no git log</p>
 
 </body>
 </html>
 
---===============2455158169992620095==--
+--===============7000075927653486592==--
