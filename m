@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97C74F364C3
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 22:35:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFDE1F364CA
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Apr 2026 23:03:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3FCD610E88E;
-	Thu,  9 Apr 2026 22:35:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7191A10E873;
+	Thu,  9 Apr 2026 23:03:35 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C09410E890;
- Thu,  9 Apr 2026 22:35:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 587EF10E873;
+ Thu,  9 Apr 2026 23:03:25 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2349996883245394472=="
+ boundary="===============7140574379316815654=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/kms=5Fwriteback=3A_fi?=
- =?utf-8?q?x_coding_style_issues?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/amdgpu=3A_fix_sched=5Fm?=
+ =?utf-8?q?ask_leak_on_igt=5Fassert_failure_in_dispatch_tests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Alex Hung" <alex.hung@amd.com>
+To: vitaly.prosyak@amd.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 09 Apr 2026 22:35:49 -0000
-Message-ID: <177577414902.448419.11026696886921174771@a3b018990fe9>
+Date: Thu, 09 Apr 2026 23:03:25 -0000
+Message-ID: <177577580533.448205.1985261922253279928@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260408230245.442843-1-alex.hung@amd.com>
-In-Reply-To: <20260408230245.442843-1-alex.hung@amd.com>
+References: <20260409014335.79604-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20260409014335.79604-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,84 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2349996883245394472==
+--===============7140574379316815654==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_writeback: fix coding style issues
-URL   : https://patchwork.freedesktop.org/series/164575/
-State : failure
+Series: lib/amdgpu: fix sched_mask leak on igt_assert failure in dispatch tests
+URL   : https://patchwork.freedesktop.org/series/164586/
+State : success
 
 == Summary ==
 
-Series 164575 revision 1 was fully merged or fully failed: no git log
+CI Bug Log - changes from XEIGT_8852_BAT -> XEIGTPW_14948_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14948_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8852/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14948/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#7483]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8852/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14948/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#6520]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8852/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14948/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
 
 
+Build changes
+-------------
 
---===============2349996883245394472==
+  * IGT: IGT_8852 -> IGTPW_14948
+  * Linux: xe-4860-5ee75b2816df74bfe606d4dfc061547d5cda4ebf -> xe-4877-97d8833ffba6bd3d6aaa51169069620ac17a2e37
+
+  IGTPW_14948: 14948
+  IGT_8852: 8852
+  xe-4860-5ee75b2816df74bfe606d4dfc061547d5cda4ebf: 5ee75b2816df74bfe606d4dfc061547d5cda4ebf
+  xe-4877-97d8833ffba6bd3d6aaa51169069620ac17a2e37: 97d8833ffba6bd3d6aaa51169069620ac17a2e37
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14948/index.html
+
+--===============7140574379316815654==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,16 +138,57 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_writeback: fix coding style issues</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164575/">https://patchwork.freedesktop.org/series/164575/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>lib/amdgpu: fix sched_mask leak on igt_assert failure in dispatch tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164586/">https://patchwork.freedesktop.org/series/164586/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14948/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14948/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 164575 revision 1 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from XEIGT_8852_BAT -&gt; XEIGTPW_14948_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14948_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8852/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14948/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8852/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14948/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@reltime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8852/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14948/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8852 -&gt; IGTPW_14948</li>
+<li>Linux: xe-4860-5ee75b2816df74bfe606d4dfc061547d5cda4ebf -&gt; xe-4877-97d8833ffba6bd3d6aaa51169069620ac17a2e37</li>
+</ul>
+<p>IGTPW_14948: 14948<br />
+  IGT_8852: 8852<br />
+  xe-4860-5ee75b2816df74bfe606d4dfc061547d5cda4ebf: 5ee75b2816df74bfe606d4dfc061547d5cda4ebf<br />
+  xe-4877-97d8833ffba6bd3d6aaa51169069620ac17a2e37: 97d8833ffba6bd3d6aaa51169069620ac17a2e37</p>
 
 </body>
 </html>
 
---===============2349996883245394472==--
+--===============7140574379316815654==--
