@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C232E99056
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 08:29:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0CF7E99056
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 08:29:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C2A2410E87C;
-	Fri, 10 Apr 2026 08:29:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AC74A10E87C;
+	Fri, 10 Apr 2026 08:29:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hvSeAnsW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wyvjr2yD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E552910E87C
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Apr 2026 08:28:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6193510E1B0
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Apr 2026 08:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775809683; x=1807345683;
+ t=1775809688; x=1807345688;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=SuwViKHdq1GrRd7bZKvWGbKfbTTv2vV0u+Edy0FRZSE=;
- b=hvSeAnsW1ZP6YuKJHrH6QXmDzLmRDVsZuJfo/5XvIvrOJOpuLF9I/pIq
- 3UU1x1MtDUQ28+0CyLjHj1eNpPzb39Cx7x8A0FF2z2vU26Gq1gObNCHqU
- A/ggf9hmJUAEEiH7tMVCh9ziJv3TZd1C0tCGhvwZ92we5EjmRDiWymHPH
- I0ao/tYaIHYy50979PkMTchyqKPbe4m9Q7OXsNk1tS+bH5XA1uiAv0Id7
- 2Q1IMqh5INFhoKvwTEZSjvVrtvbvURfbvxnnPuo8EjpVOeMNgNQgcg0vy
- TzAq8DuApuOJGaDyK3rCsfG1jUGZJNy9GNFTK2x+Vd6ZrNXvA0D7OtXvg w==;
-X-CSE-ConnectionGUID: l1dU1IaeTMWF1IZT+I6s6Q==
-X-CSE-MsgGUID: GON2NBY/TQKxvC4FCqXRFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="64361546"
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="64361546"
+ bh=jD29nN7tls3M1XKo4V+KwLkt3rJV6LEM7VEVHrcso9Y=;
+ b=Wyvjr2yD+aPu2FfHozR/UjPhD606gB4Ac8AkjzSRr1ofcSfgjYK4BkhJ
+ mzDt+2Bf/sAAQQf8E2ElcWHkxCH+1rC5uW5RWeTyMRtlN2NHJqe6Dizyf
+ VLqOqT/yFPaqIWKQmILaiSbBR7Fa+lUTId6plWOVVWwou7BQY3TCIOrFS
+ 3F9KOyrMewDMVJgBdMDyVuIcNhSjlog9xkLujQggSWq1iV5MhiuvHwfX6
+ cUIE+H/9hDjp681Kfp4hNJd061oPnzln8u/wzHP8MiH5sFwOslvZWbvON
+ Ntpb8ydyAQ1WdJMmPL77sHzXjO1T828f+FNr2L9njfvK4g1NDVugFbKxy w==;
+X-CSE-ConnectionGUID: NXochBJMRA2NyjI40qlRvA==
+X-CSE-MsgGUID: Cwoc7rGWS6mEE6EKNAbqcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="64361564"
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="64361564"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2026 01:28:03 -0700
-X-CSE-ConnectionGUID: ArhjJsVtSzidsM/Q/RHPJw==
-X-CSE-MsgGUID: Z3l9GSa1TQ2UHMIjG0aRCA==
+ 10 Apr 2026 01:28:08 -0700
+X-CSE-ConnectionGUID: ZfmihoXzQ3K9JmQX4bXAqw==
+X-CSE-MsgGUID: ygbMqpckRIK58gJcT2U8yw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="229301963"
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="229301974"
 Received: from varungup-desk.iind.intel.com ([10.190.238.71])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2026 01:28:01 -0700
+ 10 Apr 2026 01:28:06 -0700
 From: Arvind Yadav <arvind.yadav@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: matthew.brost@intel.com, himal.prasad.ghimiray@intel.com,
  thomas.hellstrom@linux.intel.com, nishit.sharma@intel.com,
  pravalika.gurram@intel.com
-Subject: [PATCH i-g-t v8 6/8] tests/intel/xe_madvise: Add dontneed-after-exec
+Subject: [PATCH i-g-t v8 8/8] tests/intel/xe_madvise: Add per-vma-protection
  subtest
-Date: Fri, 10 Apr 2026 13:57:23 +0530
-Message-ID: <20260410082729.2383886-7-arvind.yadav@intel.com>
+Date: Fri, 10 Apr 2026 13:57:25 +0530
+Message-ID: <20260410082729.2383886-9-arvind.yadav@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260410082729.2383886-1-arvind.yadav@intel.com>
 References: <20260410082729.2383886-1-arvind.yadav@intel.com>
@@ -71,55 +71,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test verifies that memory can be marked purgeable and reclaimed
-after successful GPU execution. The test first executes a batch that
-writes to a data BO and verifies the result. It then marks the BO as
-DONTNEED, triggers memory pressure to purge it, and attempts a second
-execution. The second execution may fail or succeed with scratch
-rebind, validating that the kernel correctly handles purged BOs in
-GPU submissions.
+This test validates that a WILLNEED VMA protects a shared BO from being
+purged even when other VMAs are marked DONTNEED. The test creates a BO
+shared across two VMs, marks VMA1 as DONTNEED while keeping VMA2 as
+WILLNEED, then triggers memory pressure. The BO should survive and GPU
+execution should succeed. After marking both VMAs as DONTNEED and
+triggering pressure again, the BO should be purged, demonstrating that
+all VMAs must be DONTNEED for the BO to be purgeable.
 
 v4:
-   - Added proper resource cleanup before calling igt_skip(). (Nishit)
-   - Added assertion for xe_bo_map. (Nishit)
-   - Now using sync[0] consistently. (Nishit)
-   - Added clarifying comment. (Nishit)
+  - Added syncobj_wait() after the second exec. (Nishit)
+
+v6:
+  - Move resource cleanup before igt_skip() to avoid leaking VM and BO
+    handles on platforms where memory pressure cannot be induced; replace
+    igt_assert_eq(retained, 0) with a graceful skip. (Nishit)
 
 Cc: Matthew Brost <matthew.brost@intel.com>
 Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>
 Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
-Reviewed-by: Pravalika Gurram <pravalika.gurram@intel.com>
 Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
 ---
- tests/intel/xe_madvise.c | 108 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 108 insertions(+)
+ tests/intel/xe_madvise.c | 127 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 127 insertions(+)
 
 diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
-index b30290f27..18bec198e 100644
+index 28a77e938..8d952070f 100644
 --- a/tests/intel/xe_madvise.c
 +++ b/tests/intel/xe_madvise.c
-@@ -16,6 +16,7 @@
+@@ -644,6 +644,127 @@ static void test_per_vma_tracking(int fd)
  
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-+#include "lib/igt_syncobj.h"
- 
- /* Purgeable test constants */
- #define PURGEABLE_ADDR		0x1a0000
-@@ -434,6 +435,107 @@ static void test_dontneed_before_exec(int fd, struct drm_xe_engine_class_instanc
- 	xe_vm_destroy(fd, vm);
  }
  
 +/**
-+ * SUBTEST: dontneed-after-exec
-+ * Description: Mark BO as DONTNEED after GPU exec, verify memory becomes inaccessible
++ * SUBTEST: per-vma-protection
++ * Description: WILLNEED VMA protects BO from purging; both DONTNEED makes BO purgeable
 + * Test category: functionality test
 + */
-+static void test_dontneed_after_exec(int fd, struct drm_xe_engine_class_instance *hwe)
++static void test_per_vma_protection(int fd, struct drm_xe_engine_class_instance *hwe)
 +{
-+	uint32_t vm, exec_queue, bo, batch_bo, bind_engine;
-+	uint64_t data_addr = PURGEABLE_ADDR;
++	uint32_t vm1, vm2, exec_queue, bo, batch_bo, bind_engine;
++	uint64_t data_addr1 = PURGEABLE_ADDR;
++	uint64_t data_addr2 = PURGEABLE_ADDR2;
 +	uint64_t batch_addr = PURGEABLE_BATCH_ADDR;
 +	size_t data_size = PURGEABLE_BO_SIZE;
 +	size_t batch_size = PURGEABLE_BO_SIZE;
@@ -132,76 +127,91 @@ index b30290f27..18bec198e 100644
 +	};
 +	struct drm_xe_exec exec = {
 +		.num_batch_buffer = 1,
-+		.num_syncs = 2,
-+		.syncs = to_user_pointer(sync),
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync[1]),
 +	};
 +	uint32_t *data, *batch;
-+	uint32_t syncobj;
++	uint64_t vm_sync = 0;
++	uint32_t retained, syncobj;
 +	int b, ret;
 +
-+	purgeable_setup_batch_and_data(fd, &vm, &bind_engine, &batch_bo,
-+				       &bo, &batch, &data, batch_addr,
-+				       data_addr, batch_size, data_size);
++	/* Create two VMs and bind shared data BO */
++	data = purgeable_setup_two_vms_shared_bo(fd, &vm1, &vm2, &bo,
++						 data_addr1, data_addr2,
++						 data_size, true);
 +	memset(data, 0, data_size);
++	bind_engine = xe_bind_exec_queue_create(fd, vm2, 0);
 +
-+	syncobj = syncobj_create(fd, 0);
++	/* Create and bind batch BO in VM2 */
++	batch_bo = xe_bo_create(fd, vm2, batch_size, vram_if_possible(fd, 0),
++				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	batch = xe_bo_map(fd, batch_bo, batch_size);
++	igt_assert(batch != MAP_FAILED);
 +
-+	/* Prepare batch to write to data BO */
++	sync[0].addr = to_user_pointer(&vm_sync);
++	vm_sync = 0;
++	xe_vm_bind_async(fd, vm2, bind_engine, batch_bo, 0, batch_addr, batch_size, sync, 1);
++	xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL, 0, NSEC_PER_SEC);
++
++	/* Mark VMA1 as DONTNEED, VMA2 stays WILLNEED */
++	retained = xe_vm_madvise_purgeable(fd, vm1, data_addr1, data_size,
++					   DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
++	igt_assert_eq(retained, 1);
++
++	/* Trigger pressure - BO should survive */
++	trigger_memory_pressure(fd);
++
++	retained = xe_vm_madvise_purgeable(fd, vm2, data_addr2, data_size,
++					   DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
++	igt_assert_eq(retained, 1);
++
++	/* GPU workload - should succeed */
 +	b = 0;
 +	batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	batch[b++] = data_addr;
-+	batch[b++] = data_addr >> 32;
-+	batch[b++] = 0xfeed0001;
++	batch[b++] = data_addr2;
++	batch[b++] = data_addr2 >> 32;
++	batch[b++] = PURGEABLE_TEST_PATTERN;
 +	batch[b++] = MI_BATCH_BUFFER_END;
 +
-+	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
++	syncobj = syncobj_create(fd, 0);
++	sync[1].handle = syncobj;
++	exec_queue = xe_exec_queue_create(fd, vm2, hwe, 0);
 +	exec.exec_queue_id = exec_queue;
 +	exec.address = batch_addr;
 +
-+	/* Use only syncobj for exec (not USER_FENCE) */
-+	sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-+	sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[0].handle = syncobj;
-+	exec.num_syncs = 1;
-+	exec.syncs = to_user_pointer(&sync[0]);
-+
 +	ret = __xe_exec(fd, &exec);
 +	igt_assert_eq(ret, 0);
-+
 +	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++
 +	munmap(data, data_size);
 +	data = xe_bo_map(fd, bo, data_size);
 +	igt_assert(data != MAP_FAILED);
-+	igt_assert_eq(data[0], 0xfeed0001);
++	igt_assert_eq(data[0], PURGEABLE_TEST_PATTERN);
 +
-+	if (!purgeable_mark_and_verify_purged(fd, vm, data_addr, data_size)) {
-+		munmap(data, data_size);
-+		munmap(batch, batch_size);
-+		gem_close(fd, bo);
-+		gem_close(fd, batch_bo);
-+		syncobj_destroy(fd, syncobj);
-+		xe_exec_queue_destroy(fd, bind_engine);
-+		xe_exec_queue_destroy(fd, exec_queue);
-+		xe_vm_destroy(fd, vm);
-+		igt_skip("Unable to induce purge on this platform/config");
++	/* Mark both VMAs DONTNEED */
++	retained = xe_vm_madvise_purgeable(fd, vm2, data_addr2, data_size,
++					   DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
++	igt_assert_eq(retained, 1);
++
++	/* Trigger pressure - BO should be purged */
++	trigger_memory_pressure(fd);
++
++	retained = xe_vm_madvise_purgeable(fd, vm2, data_addr2, data_size,
++					   DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
++
++	if (retained != 0)
++		goto out;
++
++	/* GPU workload - should fail or succeed with NULL rebind */
++	batch[3] = PURGEABLE_DEAD_PATTERN;
++
++	ret = __xe_exec(fd, &exec);
++	if (ret == 0) {
++		/* Exec succeeded, wait for completion before cleanup */
++		syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL);
 +	}
 +
-+	/* Prepare second batch (different value) */
-+	b = 0;
-+	batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	batch[b++] = data_addr;
-+	batch[b++] = data_addr >> 32;
-+	batch[b++] = 0xfeed0002;
-+	batch[b++] = MI_BATCH_BUFFER_END;
-+
-+	/*
-+	 * Second exec with purged BO - may succeed (scratch rebind) or fail.
-+	 * Either is valid, so don't check results.
-+	 */
-+	ret = __xe_exec(fd, &exec);
-+	if (ret == 0)
-+		syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL);
-+
++out:
 +	munmap(data, data_size);
 +	munmap(batch, batch_size);
 +	gem_close(fd, bo);
@@ -209,19 +219,23 @@ index b30290f27..18bec198e 100644
 +	syncobj_destroy(fd, syncobj);
 +	xe_exec_queue_destroy(fd, bind_engine);
 +	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_vm_destroy(fd, vm);
++	xe_vm_destroy(fd, vm1);
++	xe_vm_destroy(fd, vm2);
++
++	if (retained != 0)
++		igt_skip("Unable to induce purge on this platform/config");
 +}
 +
  int igt_main()
  {
  	struct drm_xe_engine_class_instance *hwe;
-@@ -470,6 +572,12 @@ int igt_main()
+@@ -692,6 +813,12 @@ int igt_main()
  			break;
  		}
  
-+	igt_subtest("dontneed-after-exec")
++	igt_subtest("per-vma-protection")
 +		xe_for_each_engine(fd, hwe) {
-+			test_dontneed_after_exec(fd, hwe);
++			test_per_vma_protection(fd, hwe);
 +			break;
 +		}
 +
