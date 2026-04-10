@@ -4,61 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83BD6F44847
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 12:16:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73F73F44853
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 12:33:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 303CF10E965;
-	Fri, 10 Apr 2026 12:16:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F2AE010E130;
+	Fri, 10 Apr 2026 12:33:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YCHi+dCo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dBvsV2Ci";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5714810E962
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Apr 2026 12:16:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F91810E130
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Apr 2026 12:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775823400; x=1807359400;
- h=message-id:subject:from:to:cc:date:in-reply-to:
- references:content-transfer-encoding:mime-version;
- bh=KobhimEFzMusabhtsZYNl8z+g6JqjKVHnw3bkRBuNxY=;
- b=YCHi+dCocXeUGLznuohRTApv13DhFQMdvd/tjmU5KKLD0LfCKTE6mGZJ
- SLt7uFcjZImBsvU3X3z1zo65ARX7WH3HQ0XxkSiFi4g0tsrpPbbM0i1SZ
- xby3MBDycsptmGGJh/G9BkcseVzr0hmdTC7g6jowVf+nzyt4yf66rgX1H
- jjOt9iACp4Ff+yAd6hEVB1nVgU4uB0Y14T+ixrG5IGsBjuG8SQiJyvK/L
- eTRdk6udoQd6SCIxc8pSqqafqPhJR9gUOKfQOyL3Ykr1ANjmMhzSyXyy7
- 3zXcrI/oKt6AEPQIn2EllB1xgpCbIvHarU2ScVNFTLDh2244sHeU5pgz5 A==;
-X-CSE-ConnectionGUID: kYvSzpEdRlypCd+D96tyxw==
-X-CSE-MsgGUID: 1KQFjG4kTnGfRr6M3+zIxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="94234633"
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="94234633"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2026 05:16:38 -0700
-X-CSE-ConnectionGUID: KT82gefkRu+5d71QsqVB+Q==
-X-CSE-MsgGUID: M0e6fPF1SuC7VPXYduSuLQ==
+ t=1775824381; x=1807360381;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5Hf7tiyhwngSb2cba0e+2yR2H0lGVOIrMIcj/HyepHg=;
+ b=dBvsV2Cij7JC8I7QAieRBvCNKO3zdfn5dxcby+wO9cCAvkQNgVgPsLFc
+ GwQtIHO7H8Ur8cWJ18S7TZARJucb5sp/Pklp6ZfpAPDoDjldI8qPgVCYr
+ sTWEmvT95vRJZBbtcOQ4BQdSLpUq2BxrYJ4AUhaBSShRKmlNHOY+tZGVJ
+ HlF1gkZHlJYBrUI+/Y6mUzwh5BolpLn4TzZh8cEXm2a8chsV5ogcMxG2L
+ vVJ6qpxhVJPMUbaL9Pc8z0WWqQnCzgz4JmQ+EseeeYgM5KdqTZ+UQPR0/
+ HUciYIgGhMl9Sls4QWD/dvhUb8kVdZlOWVlRGuirTIlRPquLjaq8h6uVN A==;
+X-CSE-ConnectionGUID: yjxYdBrwQnuYPDcxBJ0Lrw==
+X-CSE-MsgGUID: rFXwJLYUSVe0eS5uDSe2XA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="76720405"
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="76720405"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2026 05:33:01 -0700
+X-CSE-ConnectionGUID: l5XNzIYqTSajCzfPhh4hqw==
+X-CSE-MsgGUID: MymkWDbOSJCQYSj4iuckMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="234072815"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.142])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2026 05:16:36 -0700
-Message-ID: <80fb52072aec29387944507afc63ceda0fc72210.camel@linux.intel.com>
-Subject: Re: [PATCH i-g-t v3] tests/intel/gem_exec_endless: Use the per-gt
- interface to set frequencies
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>, 
- igt-dev@lists.freedesktop.org
-Cc: Andi Shyti <andi.shyti@linux.intel.com>, Krzysztof Karas	
- <krzysztof.karas@intel.com>, Sebastian Brzezinka
- <sebastian.brzezinka@intel.com>
-Date: Fri, 10 Apr 2026 14:16:33 +0200
-In-Reply-To: <20260409140640.48827-2-krzysztof.niemiec@intel.com>
-References: <20260409140640.48827-2-krzysztof.niemiec@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="259539708"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 05:32:59 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Swati Sharma <swati2.sharma@intel.com>,
+ =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_cdclk: Skip CDCLK bump validation when
+ dotclocks match
+Date: Fri, 10 Apr 2026 18:11:43 +0530
+Message-Id: <20260410124143.1015272-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,114 +68,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 2026-04-09 at 16:06 +0200, Krzysztof Niemiec wrote:
-> The test alters the environment, specifically the gt frequencies, for
-> its duration. Using the legacy interface however makes it impossible for
-> the pre-test state to be restored due to its limitations in multi-gt
-> systems; by using the legacy interface only a single value can be set,
-> but each gt might accept values from a different range and default to
-> a different value that we might want to restore.
->=20
-> Use the per-gt interface instead of the legacy one to properly clean up.
->=20
-> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+When the highest and lowest resolution modes share the same dotclock,
+no CDCLK bump is expected.
 
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Skip CDCLK bump validation when the highres and lowres modes have the
+same dotclock, replacing the previous resolution-based is_equal() check
+with a dotclock comparison via has_same_dotclock().
 
-NIT: Please note we have a habit, in IGT and i915 at least, of including
-change logs into commit descriptions.
+Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/intel/kms_cdclk.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-Thanks,
-Janusz
+diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
+index 662bdbe43..48bd7276f 100644
+--- a/tests/intel/kms_cdclk.c
++++ b/tests/intel/kms_cdclk.c
+@@ -84,11 +84,9 @@ static bool is_4k(drmModeModeInfo mode)
+ 	        mode.vrefresh >= VREFRESH);
+ }
+ 
+-static bool is_equal(drmModeModeInfo mode_hi, drmModeModeInfo mode_lo)
++static bool has_same_dotclock(drmModeModeInfo mode_hi, drmModeModeInfo mode_lo)
+ {
+-	return (mode_hi.hdisplay == mode_lo.hdisplay &&
+-		mode_hi.vdisplay == mode_lo.vdisplay &&
+-		mode_hi.vrefresh == mode_lo.vrefresh);
++	return mode_hi.clock == mode_lo.clock;
+ }
+ 
+ static drmModeModeInfo *get_lowres_mode(igt_output_t *output)
+@@ -204,7 +202,7 @@ static void test_mode_transition(data_t *data, igt_crtc_t *crtc,
+ 	igt_require_f(is_4k(mode_hi), "Mode >= 4K not found on output %s\n",
+ 	              igt_output_name(output));
+ 
+-	igt_skip_on_f(is_equal(mode_hi, mode_lo), "Highest and lowest mode resolutions are same; no transition\n");
++	igt_skip_on_f(has_same_dotclock(mode_hi, mode_lo), "Highest and lowest modes have same dotclock; no CDCLK bump expected\n");
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+@@ -278,8 +276,8 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 
+ 		mode_lowres[count] = *get_lowres_mode(output);
+ 
+-		if (is_equal(mode_highres[count], mode_lowres[count])) {
+-			igt_info("Highest and lowest mode resolutions are same on output %s; no transition will occur, skipping\n",
++		if (has_same_dotclock(mode_highres[count], mode_lowres[count])) {
++			igt_info("Highest and lowest modes have same dotclock on output %s; no CDCLK bump expected, skipping\n",
+ 				  igt_output_name(output));
+ 			continue;
+ 		}
+-- 
+2.25.1
 
-
-> ---
->=20
-> v3:
->   - Expand the commit description for extra clarity (Janusz)
->=20
-> v2:
->   - Remove the redundant fd open from the i915_for_each_gt loop, as one
->     is already created as part of the loop (Sebastian)
->   - Remove extra newline (Krzysztof K)
->=20
->  tests/intel/gem_exec_endless.c | 33 +++++++++++++++++----------------
->  1 file changed, 17 insertions(+), 16 deletions(-)
->=20
-> diff --git a/tests/intel/gem_exec_endless.c b/tests/intel/gem_exec_endles=
-s.c
-> index 7f35e985c..f3ed8556c 100644
-> --- a/tests/intel/gem_exec_endless.c
-> +++ b/tests/intel/gem_exec_endless.c
-> @@ -316,28 +316,28 @@ static void endless_dispatch(int i915, const struct=
- intel_execution_engine2 *e)
->  		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
->  			igt_dynamic_f("%s", (e)->name)
-> =20
-> -static void pin_rps(int sysfs)
-> +static void pin_rps(int sysfs_gt)
->  {
->  	unsigned int max;
-> =20
-> -	if (igt_sysfs_scanf(sysfs, "gt_RP0_freq_mhz", "%u", &max) !=3D 1)
-> +	if (igt_sysfs_scanf(sysfs_gt, "rps_RP0_freq_mhz", "%u", &max) !=3D 1)
->  		return;
-> =20
-> -	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", max);
-> -	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", max);
-> -	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%u", max);
-> +	igt_sysfs_printf(sysfs_gt, "rps_min_freq_mhz", "%u", max);
-> +	igt_sysfs_printf(sysfs_gt, "rps_max_freq_mhz", "%u", max);
-> +	igt_sysfs_printf(sysfs_gt, "rps_boost_freq_mhz", "%u", max);
->  }
-> =20
-> -static void unpin_rps(int sysfs)
-> +static void unpin_rps(int sysfs_gt)
->  {
->  	unsigned int v;
-> =20
-> -	if (igt_sysfs_scanf(sysfs, "gt_RPn_freq_mhz", "%u", &v) =3D=3D 1)
-> -		igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", v);
-> +	if (igt_sysfs_scanf(sysfs_gt, "rps_RPn_freq_mhz", "%u", &v) =3D=3D 1)
-> +		igt_sysfs_printf(sysfs_gt, "rps_min_freq_mhz", "%u", v);
-> =20
-> -	if (igt_sysfs_scanf(sysfs, "gt_RP0_freq_mhz", "%u", &v) =3D=3D 1) {
-> -		igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", v);
-> -		igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%u", v);
-> +	if (igt_sysfs_scanf(sysfs_gt, "rps_RP0_freq_mhz", "%u", &v) =3D=3D 1) {
-> +		igt_sysfs_printf(sysfs_gt, "rps_max_freq_mhz", "%u", v);
-> +		igt_sysfs_printf(sysfs_gt, "rps_boost_freq_mhz", "%u", v);
->  	}
->  }
-> =20
-> @@ -355,7 +355,7 @@ int igt_main()
-> =20
->  	igt_subtest_group() {
->  		struct intel_mmio_data mmio;
-> -		int sysfs;
-> +		int sysfs_gt, gt;
-> =20
->  		igt_fixture() {
->  			igt_require(gem_scheduler_enabled(i915));
-> @@ -365,16 +365,17 @@ int igt_main()
->  						   igt_device_get_pci_device(i915),
->  						   false);
-> =20
-> -			sysfs =3D igt_sysfs_open(i915);
-> -			pin_rps(sysfs);
-> +			i915_for_each_gt(i915, sysfs_gt, gt)
-> +				pin_rps(sysfs_gt);
->  		}
-> =20
->  		test_each_engine("dispatch", i915, e)
->  				endless_dispatch(i915, e);
-> =20
->  		igt_fixture() {
-> -			unpin_rps(sysfs);
-> -			close(sysfs);
-> +			i915_for_each_gt(i915, sysfs_gt, gt)
-> +				unpin_rps(sysfs_gt);
-> +
->  			intel_register_access_fini(&mmio);
->  		}
->  	}
