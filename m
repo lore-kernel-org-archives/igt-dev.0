@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42E09F459FC
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 18:27:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD026F45A0A
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 18:33:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE34110E9B8;
-	Fri, 10 Apr 2026 18:27:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 82CBC10E9B8;
+	Fri, 10 Apr 2026 18:33:14 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AED0B10E9B8;
- Fri, 10 Apr 2026 18:27:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A1AB10E9B8;
+ Fri, 10 Apr 2026 18:33:04 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============9009137476628831431=="
+ boundary="===============3311491953523152103=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Frotation=5Fcrc?=
- =?utf-8?q?=3A_Add_MTK_device_support?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fcdclk=3A_?=
+ =?utf-8?q?Skip_CDCLK_bump_validation_when_dotclocks_match?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jason-JH Lin" <jason-jh.lin@mediatek.com>
+To: "Swati Sharma" <swati2.sharma@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Apr 2026 18:27:26 -0000
-Message-ID: <177584564669.452220.11298495359521801755@a3b018990fe9>
+Date: Fri, 10 Apr 2026 18:33:04 -0000
+Message-ID: <177584598409.452221.6845777955126333987@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260410100806.62906-1-jason-jh.lin@mediatek.com>
-In-Reply-To: <20260410100806.62906-1-jason-jh.lin@mediatek.com>
+References: <20260410124143.1015272-1-swati2.sharma@intel.com>
+In-Reply-To: <20260410124143.1015272-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9009137476628831431==
+--===============3311491953523152103==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_rotation_crc: Add MTK device support
-URL   : https://patchwork.freedesktop.org/series/164684/
+Series: tests/intel/kms_cdclk: Skip CDCLK bump validation when dotclocks match
+URL   : https://patchwork.freedesktop.org/series/164696/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8854_BAT -> XEIGTPW_14963_BAT
+CI Bug Log - changes from XEIGT_8854_BAT -> XEIGTPW_14964_BAT
 ====================================================
 
 Summary
@@ -81,17 +81,17 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8854 -> IGTPW_14963
+  * IGT: IGT_8854 -> IGTPW_14964
 
-  IGTPW_14963: f8c5397d0fdc6e67c654b269f5cb41ddc70f4a6c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_14964: 14964
   IGT_8854: 93abaf0170728f69bc27577e5b405f7a2a01b6fd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-4884-3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5: 3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14963/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14964/index.html
 
---===============9009137476628831431==
+--===============3311491953523152103==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,16 +111,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_rotation_crc: Add MTK device support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164684/">https://patchwork.freedesktop.org/series/164684/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_cdclk: Skip CDCLK bump validation when dotclocks match</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164696/">https://patchwork.freedesktop.org/series/164696/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14963/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14963/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14964/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14964/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8854_BAT -&gt; XEIGTPW_14963_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8854_BAT -&gt; XEIGTPW_14964_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -130,13 +130,13 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8854 -&gt; IGTPW_14963</li>
+<li>IGT: IGT_8854 -&gt; IGTPW_14964</li>
 </ul>
-<p>IGTPW_14963: f8c5397d0fdc6e67c654b269f5cb41ddc70f4a6c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_14964: 14964<br />
   IGT_8854: 93abaf0170728f69bc27577e5b405f7a2a01b6fd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-4884-3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5: 3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5</p>
 
 </body>
 </html>
 
---===============9009137476628831431==--
+--===============3311491953523152103==--
