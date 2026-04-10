@@ -4,159 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA00DF36BA9
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 05:36:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9425F36BAA
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 05:41:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 83F0510E117;
-	Fri, 10 Apr 2026 05:36:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 73DE910E0F1;
+	Fri, 10 Apr 2026 05:41:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TU8VuaVV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gvAdd7uy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 369FA10E117
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Apr 2026 05:36:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CE5C10E0F1
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Apr 2026 05:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775799368; x=1807335368;
+ t=1775799650; x=1807335650;
  h=message-id:date:subject:to:references:from:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=7t7/illj83/n6d8SC7neuYrQJIPtSz1dPmX4yWzU1nA=;
- b=TU8VuaVVqZ3O/q2Qz4lTSR17sc/gLMuplXRMOQiOcxXhS7AW7pWqfmoT
- S45Uky5KCQ/xnuwlbW4SbPNUH5jDVtH6Gae01YrsguIe0UtxA5qGcUnfF
- 7PJ0hB0vJFKXlcXNj23u4PTyd3Fc9rkuFaYo9JTfDzWB+l9anliX79nj2
- QyuZ2FegozlUtiTRed6fj/l8PKa3QCc05UG4y6ZLgGiDdbFpVCgEl1SEE
- 8pB8gufsVsuf6+gm4r/roOsqwZJw3u8TMkFc4u5RVTjredNu7F3JcAKNd
- ptGmOd3Q3T86sh00w2xZq5rFHs/vDyMKm8bRSDpYTQtFM+gkIpZ40DNLI g==;
-X-CSE-ConnectionGUID: /W/ckWT8SQe7pJFRHHL6VQ==
-X-CSE-MsgGUID: uypVze4LTZuWXRgw1hhicQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="64350679"
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="64350679"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2026 22:36:07 -0700
-X-CSE-ConnectionGUID: cyuYT3qFTLeiNHM778Wc4A==
-X-CSE-MsgGUID: 2rY/SRXSSL2OrXX5YRcCxg==
+ bh=+49PUq0gAO81S/YYTUVXP/9kX+cwvnyBS+YjbqywLWY=;
+ b=gvAdd7uy7HtNQrTsNYAiJHcoTtZoIgvjmj2prHs/xH0Fx+mpu8e7Bx86
+ hc/jKj2wd1p86FkPm/2iUCO9IQdOGA1YdtlOycltyctu8qKxBVxtqawKX
+ PFY6QFbCVcFo0vm8puZXCU6Q67pi0cK0b+qXKcL9FRmFX51A7nD7PoSZv
+ gcXCKaPacude9tQ4RAWftlcZK5MK+bgpV/wHxcNBq4RxdWifz2n8o8zBr
+ GhNsfIC+1UqOqZuLcmsGm41pM22KWA5+PPafnzwRk9VlDxx/s1OrcvOOR
+ GWYnqfHAiPSKnxxxV1T/iswUQc96v5xszofHO18CV98xvA4EJqreN4V9p A==;
+X-CSE-ConnectionGUID: /X51c6mdTbOMnkyLdPytnw==
+X-CSE-MsgGUID: //ORRq6bSZm1P8zfkNWJEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="79401505"
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="79401505"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2026 22:40:49 -0700
+X-CSE-ConnectionGUID: PWogUT9pSheiVY8BIzVsKg==
+X-CSE-MsgGUID: bC/tVx7ITC602e7y1xHjCQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="233068829"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2026 22:36:08 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="229272952"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2026 22:40:49 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 9 Apr 2026 22:36:07 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.37; Thu, 9 Apr 2026 22:40:48 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 9 Apr 2026 22:36:07 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.5) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Thu, 9 Apr 2026 22:40:48 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.54) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 9 Apr 2026 22:36:07 -0700
+ 15.2.2562.37; Thu, 9 Apr 2026 22:40:48 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dmQoi5GvFHNDl51qIkDBkwIBNVpp8ZyKUn1H/9PrInoIfAuRSWIhdtlKf3HGd3JbMebGP429Zd1iSaJvVClWxMh/G953NTAQ7kQZCKoBrvSdwcuaedK6Om5cbAaGCrEdKDDiGN+Webkn6HESroXHEnEEn0hc35xqv/3IP2yMXXr35dh6A0dCXmOGz7qTzr13pko3rW2fuQ0YMETRlp18We3ahJHGf+tFPfLlqLcOzVQvAUF/D4FXvNHnzWjfXpLjJx3ex6n4WQUUOwxHutzUjszvhglLdj4ZFvobHEHo4qSJv8mSC1OcAgj63Brro3STJZuKaKSv3ETtJGiIG+MAEQ==
+ b=P3Vqs+nAcihgfglECEDG6PA0N6yTBOwC2LSKfL3xSgldbNkU7xNWD9bMkHgCn5AHjlqY+dhx76fdR8LU7nmFFFqmiH87AKPGVYBpidizSGSXYa3Kn/JJzkKaP/v3zxdfS8u43iXjLlO4L4lZLUM39UDtHYPzHIDNxmx8U/ADJ2srqOUI11BPHnj304X9wZmFJJgGnwuD6ViC6Rg3BQspvWCQ4z2FFmepmfqVnxrnoabL6lasJG9oPV5z7dHFWhtA0Xvj+GJVr6D4WmGaskwO2hR/iLhG6ikKqbqXsIUrYNtJnTo6bCLalZUHwLBL/Xbu6xYNkjlg+aZWo81NmaQRzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8BobfPjIYDLo01m/dL+9NLrzeisMlWcwUuMoo3lGpzE=;
- b=XXSRVOPRAeCMqH4R1KAbpwnK3Xi+WwBUd051EbUktJ8uaEI2/VTnT1igO/ciWnpok2kzW6Jnr3VLidB6cHcMbVqUEyK7bwzYFrdSm3LYp66qiQRIRVUp4OxymA+zzB10W+Kfi4EslT+EQRzuP5tNkcVltYpmnKgYVHJj3HbfLHD6/Ft/7G5/ocZKOuumsqcJYyLJ1ak/ESSsijpdRxtTXUigOxGHISBRSMl7lKR7G8txSCUNwd0hIuxY8KqLvq262Mn1dbI50mXA98byMT7THEM87n4KlfV9uAj0+J5k/FPopo3lo/bPKoAtIons3M78438igNWIBKakC8bv0fpv+g==
+ bh=lmhCfpVl+diFwLgSey3S9twBz6/uI+V9W8jc6aFymjU=;
+ b=lIyuoq9seV28FjbxD6VxoP1YRKYjJpaeqV/l1ksuEUvC/uokIlMOn7nt1NlxbiYs29VMjfCQP1J4hw9VMItu0pfQBNnKfHIvWMNw3MW2NX3eAlogAz2Dlr2JrodBxSlaN+sBmf5/P3lBW8eugwDVgqW1RMADWdX3jSrHFMeFFUKpU2prLYoMjkingbx9TwGZ8wC43FLsrFYLEM8rN+zTzbpYlKwBOvsMHx103vd7KGFovJ2a7Wj4C/iy45wkF4P7ivKlMRmLu65AUVGMMrfL5T4OIfCBMILAq2olO4Rd7zc0bTaJx7zWT97lOlG/T1/BqeP8hVL1aCX/4K14MiXiBA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN0PR11MB5709.namprd11.prod.outlook.com (2603:10b6:408:148::6)
- by PH0PR11MB7494.namprd11.prod.outlook.com (2603:10b6:510:283::18)
+Received: from PH0PR11MB5880.namprd11.prod.outlook.com (2603:10b6:510:143::14)
+ by SA1PR11MB7110.namprd11.prod.outlook.com (2603:10b6:806:2b3::19)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.42; Fri, 10 Apr
- 2026 05:36:04 +0000
-Received: from BN0PR11MB5709.namprd11.prod.outlook.com
- ([fe80::ad31:3f30:20b8:26c]) by BN0PR11MB5709.namprd11.prod.outlook.com
- ([fe80::ad31:3f30:20b8:26c%6]) with mapi id 15.20.9769.020; Fri, 10 Apr 2026
- 05:36:04 +0000
-Message-ID: <22ce481a-7936-4b2a-bf76-3caa60ec1927@intel.com>
-Date: Fri, 10 Apr 2026 11:05:56 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Fri, 10 Apr
+ 2026 05:40:46 +0000
+Received: from PH0PR11MB5880.namprd11.prod.outlook.com
+ ([fe80::b706:268e:9753:cdfd]) by PH0PR11MB5880.namprd11.prod.outlook.com
+ ([fe80::b706:268e:9753:cdfd%5]) with mapi id 15.20.9769.018; Fri, 10 Apr 2026
+ 05:40:46 +0000
+Message-ID: <4d0e9678-1d51-4d20-9122-448b7a5f957c@intel.com>
+Date: Fri, 10 Apr 2026 11:10:39 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v7 1/9] drm-uapi/xe_drm: Sync with Add UAPI support
- for purgeable buffer objects
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, <matthew.brost@intel.com>,
- <himal.prasad.ghimiray@intel.com>, <thomas.hellstrom@linux.intel.com>,
- <nishit.sharma@intel.com>, <pravalika.gurram@intel.com>
-References: <20260409070118.2211602-1-arvind.yadav@intel.com>
- <20260409070118.2211602-2-arvind.yadav@intel.com>
- <20260409154216.7how4uzxrkeroxp5@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 1/4] tests/intel/kms_sharpness_filter: sanitize
+ subtest init
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20260331190412.1907571-1-juhapekka.heikkila@gmail.com>
+ <20260331190412.1907571-2-juhapekka.heikkila@gmail.com>
 Content-Language: en-US
-From: "Yadav, Arvind" <arvind.yadav@intel.com>
-In-Reply-To: <20260409154216.7how4uzxrkeroxp5@kamilkon-DESK.igk.intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20260331190412.1907571-2-juhapekka.heikkila@gmail.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA1P287CA0017.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:35::36) To BN0PR11MB5709.namprd11.prod.outlook.com
- (2603:10b6:408:148::6)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0102.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:af::18) To PH0PR11MB5880.namprd11.prod.outlook.com
+ (2603:10b6:510:143::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR11MB5709:EE_|PH0PR11MB7494:EE_
-X-MS-Office365-Filtering-Correlation-Id: a717d6d7-9913-496b-4b98-08de96c30eab
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5880:EE_|SA1PR11MB7110:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40bf56f0-880c-40fe-cb1b-08de96c3b6a6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|22082099003|18002099003|56012099003; 
-X-Microsoft-Antispam-Message-Info: FCIBCCwk2N0z5V6rj7jWnuzwr5v8Lp4eqT1n1+279ZyKo9nmurmJvDMtZsDpidXQ5EIa0rIP+d5bWsQScySDvFBzR73AU+u9qN6nXPidIg7jNc/14BGGATWzbtVOB470AvWVv6OGxZI8MLoUjFEx2wdNlANWThEBHaiZMwfTXfpsvSqxANb/19broNgqyMuNv3El9KQRjG4wABd13vuGwgd/AVZYQnvkWOAoIhGBSzxd/CXeioHfZX570VwuL4nwDKBTm45a46hZAlOWO3LGoOA6NqlQmDuLzVjErL8K2FShfHY1eNT5K7W28CkxEZssM9yK20qtfEtFnzXCkoUPP2NYI40k0Zuy0OKkQ0TEuYn04746b+Qbi26DZ5JcUpRvBZWkasN3BeR1njCnvw8bfbHyuEmofkL/lBiZ5F62DfL2R2YNmtFqr3vsmiIcwjImmMN5YMt7QnHjX6zPNw7Kot5y4GRwBb5ygghXXA1rNXUjV8hSMp0gSEtnifcAn2AU1omdbP+/f8HLxBHsveu6dcmn43qEgtQjLyvl8FQ2LwKTSrEytGCqOush3m+6UpzxwS+JOhDPfp1ppxJG+z9yAWpcB0+xgOzrF6W6UuG9KW6MiRGe3pO/rw9Z6EfAYJxWgbvRu4RsOK6jHRZqdyjDR9JBm1XDphgsp+X2A5SDOixCCxTs8/Aby7Z6EDazLKxcNkon4F1XdWjrvU8qgo6dJVXKu1ZYteUcuHzrEAtGsBk=
+ ARA:13230040|1800799024|366016|376014|22082099003|56012099003|18002099003; 
+X-Microsoft-Antispam-Message-Info: 2OC581xaGaYWtrLscK77lcX3rJtLWu7OAqMkVrKkvYA44THyGMYoK3IlEcyRrBgYawYA5omEoDHhJ0e4fAoJZLF6I2Evu4Oarh4hb/iqPBj41VQh857quTHpfrNWmb1lHak38H4Ne/6kb6MjjrIr2Ot40HZ2wzgw9246nGIacSBhVWvElbFzOFPeq7ctdpFP/ugcCRpsHynjm+iNsy2Ry9Q2dkeF9ElPD9uv9teZ2kPHuDgFFuQsxPXj2vDuWaHnYSyCRPSiMPKxcQGNy21WU8B8KqAHcACEvE/x+vXL2+RNZcPNbfFIgEVZq+L4/EPEV8T57r5SZMBLasc1f0pJRJb/PbDNhxwOIHEDKM9KdLc5kLnx7eb1X7ZBq3nLVxRmV6k98uTEh+Xjzb4rluDGNEmBcBuMW1NncFUgXQoOe/Y4OGX0hViua5xBhDiVROq7pnIKU5eD3spK+3XBXiYtQjktsL412k4lm0tBwpDiKV1iZHjhWDXbo4cA+2CLwsZdQ4nC0eSatd0aD+1a5Z4IiV5ZQO+GYH1C2hHHZ7ZXJDB9nd/FwiQHgKRKPkIltcDYJLxlVpzE5bimt4SXbL+ki1/+HMiJlGob4+TUc5aDl5vLO5EeD3gVo3WeKX0Vz8hv9wTCbUJCJoGNnx/mNdU55ywldwsc4GxammQvHy2U/hUFlI+Kn6N//2I2hO1UYj+/bNA6xxnWuUw8vJ1gaFpMUmfIvitp5hfj3xy7r/cGLBo=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN0PR11MB5709.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003);
+ IPV:NLI; SFV:NSPM; H:PH0PR11MB5880.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(22082099003)(56012099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ajE1dXZUZFdwMERCbEJkVlJvdUd0eG10UVVuWVNYcUhDQURhSFRkR0EyQUpU?=
- =?utf-8?B?bGJZa1pVdTBTdFl5dmZ6SWRhT3JtYzEzU2JINnpJZWhpUXMrVU9IdkZrZ0pR?=
- =?utf-8?B?U0pqVkExUnl5UTdncE1Iak0zcmt1OEtXcWxBdDFtNFVTUHM4RGluc1prUW9M?=
- =?utf-8?B?MGZRbEhIMHh3OHZzc2tpd3lnWnI4cVhBay9iNzVqN3Bla0RMeUZsdEtVMmJn?=
- =?utf-8?B?VjIwQVRyakxFclJCWE9iRFMrUjBYQmhsWDhaeVBob0ZzbmF6dVBXSnRIbUFJ?=
- =?utf-8?B?dTBNdE9iKzMwYTlGcXZMSXRRcjl3K3ZjNkhlVmsyM3F2N0ViaHpuMGQzYUlo?=
- =?utf-8?B?RmdWNDhTbGR6WnBKTS9XNnZjbHpXSVJyR3VkOEtaWGhYYzR1U2lJajNrNkIw?=
- =?utf-8?B?cmRZYko1SUlxR1VZTW9ERHg4MTBUeXBaejR3SThjUCtmamZmTWpnVFZiN1J2?=
- =?utf-8?B?MythRGp2bDNjYmR3Qm1oUWJXWWhJaGQ1cnQ1WFRvUXlVYmZhK3pDYksxZGRF?=
- =?utf-8?B?SzVwdGpZMm81N2l6eW1zcFBzd3d6ZUMvMEpXNzMyLzl5Z1hxOHYwa2pSMmRW?=
- =?utf-8?B?eGpwQWh1SWxkaTJKU00rUzVJMHNkOUNyOGNyaEp6NnRHQmV5SlgyOHFnWm8v?=
- =?utf-8?B?S3hadStmUkdPS1pkaDhLYkFUSFAvVlB4bXo1RWFsejdUcVAyZ2RKRXZYTzBZ?=
- =?utf-8?B?YkptNElzWnR5andpaGc5L2ZQMllod1JyeFhCRWJwZ2g2VjVNcjd0R1VaUkli?=
- =?utf-8?B?Uy9SOVdRSzNmb1VRajlpRzZUc2pEc1Q4d2xRc1VHdHc1UStlSEpIUVI0Vkxt?=
- =?utf-8?B?TmFsTWlhVXVneW0za0lMd3Jia01Md3A4ZmM5b1NIc2VGMTFLRkx6c2NxN253?=
- =?utf-8?B?dWg0dmZpMGdXdHh1aGRWSnlLeDN5TEdaakkxbVRlQWFKZjBPcW5EdmlBbnBj?=
- =?utf-8?B?VnNGVWNPSFUxcGtmd1AxZW1zZHJOV2taY1lxUGRLSjdFRVZmWkVDSVF1MFI5?=
- =?utf-8?B?RHRyWDVVN3RFVjJTN1hTdkl1a1JGYzRNWFJ6aHNGbGYyR2d5R2hkakNhckh5?=
- =?utf-8?B?ZXpINWp2akJzc1dDMVdyMEozRG4wR3ZpOHBNN1Qzd05RMjhxdzJPVzBNRnpz?=
- =?utf-8?B?bjRSOTJDTXlQM1lUczN1aWE1aHRXZHpOMG5YbzhlUytmcDJibGhFT2VFM0pw?=
- =?utf-8?B?RXlyclBObGx1QXBzd0xBQW5kN3o5c0w0RDVWUEd0RHFZZ01nR2JkUW5qMFJq?=
- =?utf-8?B?WlVPSlBKbTk1SVZiVG5MQkVHdjZFZ2JLUVZlREszeEdTNmVOR29EWXFIMUlT?=
- =?utf-8?B?Q3Z1WDZJU0phVnYyYnNjelJ4TWFlOHM1blpqSmtKL3NDeTBkS2JJU1BpUXNh?=
- =?utf-8?B?T2RQZEFlRFlNeUlQaHpzb2I1d3duNENIMFpValhZWTF5NkRKcytSZk9rSCsy?=
- =?utf-8?B?T2RGREEvODNFVGV1L1AvVzhwQngxbEFhdVh5UGE3bkZkRHlqSEZFbWlTQkJL?=
- =?utf-8?B?TklqTUhmemM5aFcyS21vS3FwdEFkZFJBUGZtRVAyUDdjU09uTjRNa3NGa3h0?=
- =?utf-8?B?ZDVoSXFYc0pUM21PM2hPMGl2OVFIZmM2QjRFc3kyVTQvSXRvMElaSGRoR1lV?=
- =?utf-8?B?bjFLMmhXM0RYMEdwdjlHZUFUZFFCNkRScHRscDE4UCtqRmN6SFhJYU80V2xI?=
- =?utf-8?B?eTRoMktQSFpNanZnVExDSk80M3RPSkFGbm1Xek1TRmt2SXdLRjNNUGtidDI5?=
- =?utf-8?B?eEpkeXdWQm1RczJsc0dzMU1CMFZqL3RVRTJKYURkOVNmK3l2a3psRE5CRURn?=
- =?utf-8?B?Z0JRV0NXTWljQzdvNmM0Sm13QmU4U28vRmpReUJsMk9xYnFNV2toL0s4QzVy?=
- =?utf-8?B?UWtPTmkwT3Y3enFTZmRFVWUrT2RoVW51NnBMY1NqK1JNd1hwelF2cUdXNmo0?=
- =?utf-8?B?QllaUTgwUnEyZlVoS2RGU0FDTGtEcDFDbmloeHI1aENJdEZGTGx3Z0dCVDBx?=
- =?utf-8?B?LzJEK0l5bUcrVVRLb1Z6M2l5Z0JyRmZ4bWZlSHQyUUg1RGRNdHREa21sVHEy?=
- =?utf-8?B?MkVLL0tpeE85T0I3ZUdzUm8rQUVnVkdzNTVEd3ozTjU0bENQUXREcERYcFgx?=
- =?utf-8?B?dU1aS0dqMjllb0ZLOGozWlcxbTcrVUp1V0t0VFNldDlLc1RhWkY1R0lYVUU1?=
- =?utf-8?B?bnNuZjVzelExUUZnNUtHZmdwQnhJcHRVWGpkbXczeDVDcEY2KzRvUCt5VzdF?=
- =?utf-8?B?dlozTkJiTThMNEYzSHVub1BVelp4ZXI3dUJ6VmI4VGhKUFFrRmVESzJ6VHNn?=
- =?utf-8?B?SXdNY1RZd3B0bEtOeWc3ZXppT3ZFWDlzS1ZDWXlkMS9OY3JqamM5QT09?=
-X-Exchange-RoutingPolicyChecked: WS1Jtpd9vG886NU0Nk2/HhQ1OF9OQB/FGeWlJJv33Vgc6N4einEN4S+mvzxA1XSIBZMoSyEQu/Y8lm7p8+bRn/b8Zjkob/G0cYCa6XmTIBY81XT03zbb3Pv3h0+HyaQ4QzSmtYe9Tf99+3j+b8tAraii5m3xcSgrRrsIrLEhs7mdq9YXtQGy9GJ0/Qo9BzZiY48Ez1X4aeTtnU/mLI2W18TegbUMMkro2/pktS/t36mVu6RmovGmPEiZqbYYKe0eo2x4BN6748byrm0k69mVr8ejoGIpbbjIGRFNBk2SrxRrDLv4xEThvT3ygKJ2wp20AymnLA4MxV0ndmxjJh9MYQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a717d6d7-9913-496b-4b98-08de96c30eab
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR11MB5709.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VDFDL1VIajdYNzRQTHRTSzZnQlhwL2NFUnlQdlc2aTdjUXhNVkJhZGdrNURN?=
+ =?utf-8?B?L3JPRWEycGNDU2dHUkY1K05TR0ZjUUhrYjhjc01LQ09odmptUDBJOHdXN3dH?=
+ =?utf-8?B?MU9OeUNHZzliYzJ5OXp1SG0rK0ZtK0x6cmVlTzNoc1p5bWh3cGQvaGF2d3ho?=
+ =?utf-8?B?aGIwU29yQ0xxci84S3B6ZGpKSnFuSURjVmRyRGczb0pCM1ZHcU1PeXN0NThX?=
+ =?utf-8?B?eDhyOGEvQXhwWUw1Z3JkN1dXQTFURWRBRy9KVnR2ZVl1Y3c1WGh0dENBakoy?=
+ =?utf-8?B?K0Zld0VYclFjeDhzQmhFOGpzL1RveCtJNEV4TDU3MVBCMG5NZU53dVpDRXdN?=
+ =?utf-8?B?V1ZCRlNqV0FEYkg1QWIzQUxsRlJiY1RxYlkxcnZqa29uS2tQNFdEMThDL0VI?=
+ =?utf-8?B?TTJ1bG5VV2NBK255Snh6eklZU05DSlNYbjNjakI5S1VFL21NeFVSRno4Yko1?=
+ =?utf-8?B?YlFkaTR4dFAwRUdXZk4rTG9ERDUwM2FBWUFjdTVhd01oT2lNbktSSHdjTUhF?=
+ =?utf-8?B?TzNic3drWi8xd2ZaVllHNGhUMFVNcEkyOHNBZy9DaFBBaVBGU3NEOFdJSmFp?=
+ =?utf-8?B?ZnU3UFgrbEp5aGozOVRDRlpJUTJzZGF6Skk2NmFKYnJpd2FCUG1PQkNxVWQ3?=
+ =?utf-8?B?TElmR0RvLzJrT1BlQWZvcWlDSmwwUFc1YysreDJ5UVJIbmQ3MXQwVm9kTWcr?=
+ =?utf-8?B?TW92YS9Pb0czNUs2WHd3Z3pPVHluSGk5MEtLWEgrMXVWNC9yNE9WWTRUN2pR?=
+ =?utf-8?B?aGlTT3BqWWROT3A5Zkt3WFBSTldVR2w3cVA3aU1xdmloN2ovbWtjTTYzWDNT?=
+ =?utf-8?B?bko1YXN0Sk9aNHVTZTJJMUhRYWdGTEV1bDB5d1pFMmZrTHYwb1BVRmNVcmNL?=
+ =?utf-8?B?ZTExWWhHQktRbUVFNTI5WER4bEZHRlIzWE40cS9scC9HMUIyNFBoWTNaM3dJ?=
+ =?utf-8?B?Mk11ZkV3dTA1Z3FFYmEzcFVtU0NmemlmcHRJSlhiU1R5eWhBbThLU1UvU00v?=
+ =?utf-8?B?QnZTOXlFNHY5RzhJZVlhL3dzWkRxZTdEZGNwZ1JUTnBKb3l3OVFwaml2dW1y?=
+ =?utf-8?B?c3VLOGdZZnlEd0NHZDYyVnBqbVIxWllEaFdwV1JZMVdQZTU3SVhqL1o5a3pT?=
+ =?utf-8?B?WVJKejVNYUZ3TFd5cmppMStJU2tBeHFIS0VYOTdPa3Vpcks2RnhLeHpPeDlq?=
+ =?utf-8?B?eDBGRjQ0bU5yMW42WWhRcGlwQ21kcjdyOUlMd1ZMZE1rYVptNFZzOG1NNitw?=
+ =?utf-8?B?VFh6d2NRNlEwWTNNME4wVlA0ajhZaisvRTI0bWtNdnJYemoyM0R1bHdCZVRE?=
+ =?utf-8?B?eDBwNitLNVNvQ2xKU1YzeUVudkcvWE13ZmVLRmhaTkJEV3RFaXhDMDVYSVFX?=
+ =?utf-8?B?aFRId1djME9kRzBIbnM4Mks1NVVhZG5qRXJzWml5aFZtdDBOQ3lldEg0azhv?=
+ =?utf-8?B?SnZnSWc4ZENqRWgvV2dFZ0daOTE3N0dodzM3TXpMM0ZDUDg5WmVwNWNkTTNu?=
+ =?utf-8?B?djhEeDJzUXgzZG9XSnJOQ0MydnQ2REw4MXhGOFZWR1pKSzlJUGl5MDJwaDNt?=
+ =?utf-8?B?UkV4a0R5ejlxeEtrT1pwY2U0SFhiSWxGYVVQNnZKUjJ1b2VXTU1YWEdkYjJo?=
+ =?utf-8?B?dXlrY2dERVhyNjN2KzdFQmhKS0ZGUlBwK04xY0NXNVNPSFAvRXExRHJ5c0Yr?=
+ =?utf-8?B?cGJjNCszcW51SDgvMXh5bFQ1aS9OUndVck04eGdhRG12bWlVVW96aEc5OWhl?=
+ =?utf-8?B?SEI5ZW9lQ21GWGNlMWpkbHpYZGJiSktvVjlmZ2wvVmxEbzUremVPSnpZT2xj?=
+ =?utf-8?B?cndSbDVjU3hqVldzUmpNd29tS29LYUEzYmtOVWV6UEljU1VsUWM3NkNNMnRJ?=
+ =?utf-8?B?ejBGQnRMd1pCM0xYVVR1WVFkWXpTU05pbXIwZGptb3NPd2piUE1UWnZOWU1C?=
+ =?utf-8?B?c1JCOTlWTUl1ZnZsSFA4WC9BclhJZlMyNG4rNitkdldiM0trWWxsek5HN1g2?=
+ =?utf-8?B?VDV5elpSLzRtNFNBZkNpSFZ1eE5hazJRSkJPSXVTME0rb2oyY3ZneVRTTkFV?=
+ =?utf-8?B?a25xV1hDQkE3TEg1OW5CTGpWVU1jM1BSZ2hIRzhQQVlmUlFmN3grRTVLU1hh?=
+ =?utf-8?B?S3BlTmgvNzlYOENqWmxSK3ZOTzRpVjJyYStSeGdjSVl5QXhaSy9yQkNPd0h3?=
+ =?utf-8?B?VkxDR3d4bGJEejEvWUQrSHZpdURvSVFzVUNoaUZWTDV6QlRKUG9uNFA4cWpL?=
+ =?utf-8?B?Y251MnpYUGtKdnJFTVE5eUpwUkZqZWQzdGNMYk43QmdDS3VzT29wSThCMjdo?=
+ =?utf-8?B?bktER0RRMDRraXlCZnRzb0pGdEs3L2Vpek9qMzFUeHpNUEpLa2tQZz09?=
+X-Exchange-RoutingPolicyChecked: KXEOk19e31ej9Bob8R5H9b7P5CxJhIbzOkhIo3IdePGZ0sexWUw5p7TRHXnommFRIwq8GFzb6Gtx7ZMR+6HEXwkP0wf9l5qOISkgAfbFLQTLBL5cx4WG0iyxn7YCpxuiX7UvlGkucB3bs5a74x/SnMRhew8Or19LiDoOpF9fSiLzg/1WskmbIB3otqGlmAXmRIIQi6gjCFz+w20KJVvFpU08Lq1VBB14ePzXZ4IfKuNZJ8O65ewsLnA00xMVJjejT/WPOUtK/3OBFeLoMItV49GsbW7+ikjMyicDPrF25fjV7z4BySem0rEs23KySaFg2z7fgAIlyFyyoRKMOPlkwA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40bf56f0-880c-40fe-cb1b-08de96c3b6a6
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5880.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2026 05:36:04.5790 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2026 05:40:46.3687 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OnFfCUly/DCerAeBp1qhAP5fOlpCY2dEcWa/QH79S1jHeVoFZPSfiZttAltbVUuuGMkJL5t3BaDCudwm4+Ql8Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7494
+X-MS-Exchange-CrossTenant-UserPrincipalName: MIzzLdbDskVwMV7RNOj3G47QHqSJNdNozfqRY8FdE/w8ONgN80kQxezp5fvFWwkiRm/RM9EQeqUF3kk6i7xUTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB7110
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -173,204 +170,375 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi JP
 
-On 09-04-2026 21:12, Kamil Konieczny wrote:
-> Hi Arvind,
-> On 2026-04-09 at 12:31:10 +0530, Arvind Yadav wrote:
->> From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
->>
->> Extend the DRM_XE_MADVISE ioctl to support purgeable buffer object
->> management by adding DRM_XE_VMA_ATTR_PURGEABLE_STATE attribute type.
->>
->> This allows userspace applications to provide memory usage hints to
->> the kernel for better memory management under pressure:
->>
->> - WILLNEED: Buffer is needed and should not be purged. If the BO was
->>    previously purged, retained field returns 0 indicating backing store
->>    was lost (once purged, always purged semantics matching i915).
->>
->> - DONTNEED: Buffer is not currently needed and may be purged by the
->>    kernel under memory pressure to free resources. Only applies to
->>    non-shared BOs.
->>
->>    To prevent undefined behavior, the following operations are blocked
->>    while a BO is in DONTNEED state:
->>    - New mmap() operations return -EBUSY
->>    - VM_BIND operations return -EBUSY
->>    - New dma-buf exports return -EBUSY
->>    - CPU/GPU page faults return SIGBUS
->>
->>    This ensures applications cannot use a BO while marked as DONTNEED,
->>    preventing erratic behavior when the kernel purges the backing store.
->>
->> The implementation includes a 'retained' output field (matching i915's
->> drm_i915_gem_madvise.retained) that indicates whether the BO's backing
->> store still exists (1) or has been purged (0).
->>
->> Added DRM_XE_QUERY_CONFIG_FLAG_HAS_PURGING_SUPPORT flag to allow
->> userspace to detect kernel support for purgeable buffer objects
->> before attempting to use the feature.
->>
->> Align with kernel 'commit f99a05cc0b85 ("drm/xe/uapi: Add UAPI support
->> for purgeable buffer objects")'
->>
->> v2:
->>    - Update UAPI documentation to clarify retained must be initialized
->>      to 0(Thomas)
->>
->> v5:
->>    - Document DONTNEED BO access blocking behavior to prevent undefined
->>      behavior and clarify uAPI contract (Thomas, Matt)
->>    - Add query flag DRM_XE_QUERY_CONFIG_FLAG_HAS_PURGING_SUPPORT for
->>      feature detection. (Jose)
->>    - Renamed retained to retained_ptr. (Jose)
->>
->> v6:
->>    - Updated UAPI documentation as suggested. (Jose)
->>
->> v7:
->>    - Commit message updated with kernel UAPI details. (Nishit)
->>
->> Cc: Nishit Sharma <nishit.sharma@intel.com>
->> Cc: Matthew Brost <matthew.brost@intel.com>
->> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->> Cc: Pravalika Gurram <pravalika.gurram@intel.com>
->> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
->> Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
-> Looks like this commit is already in igt so you could drop first
-> patch and resend. For example:
->
-> grep DRM_XE_VMA_ATTR_PURGEABLE_STATE include/drm-uapi/xe_drm.h
->
->   *  - DRM_XE_VMA_ATTR_PURGEABLE_STATE: Set purgeable state for BOs.
-> #define DRM_XE_VMA_ATTR_PURGEABLE_STATE         3
-> * Used when @type == DRM_XE_VMA_ATTR_PURGEABLE_STATE.
-> /** @purge_state_val.val: value for DRM_XE_VMA_ATTR_PURGEABLE_STATE */
->
-> grep purge_state_val include/drm-uapi/xe_drm.h
->
-> * @purge_state_val: Purgeable state configuration
-> * Supported values for @purge_state_val.val:
-> /** @purge_state_val.val: value for DRM_XE_VMA_ATTR_PURGEABLE_STATE */
-> /** @purge_state_val.pad: MBZ */
-> * @purge_state_val.retained_ptr: Pointer to a __u32 output
-> } purge_state_val;
+Patch LGTM
 
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-Noted, I will drop this patch.
-
-Thanks,
-Arvind
-
+On 01-04-2026 12:34 am, Juha-Pekka Heikkila wrote:
+> reset flags to defaults in one place as well as table test names.
 >
-> Regards,
-> Kamil
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>   tests/intel/kms_sharpness_filter.c | 204 ++++++++++++-----------------
+>   1 file changed, 87 insertions(+), 117 deletions(-)
 >
->> ---
->>   include/drm-uapi/xe_drm.h | 69 +++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 69 insertions(+)
->>
->> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
->> index 077e66a68..cf0eb3f99 100644
->> --- a/include/drm-uapi/xe_drm.h
->> +++ b/include/drm-uapi/xe_drm.h
->> @@ -431,6 +431,7 @@ struct drm_xe_query_config {
->>   	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_LOW_LATENCY	(1 << 1)
->>   	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_CPU_ADDR_MIRROR	(1 << 2)
->>   	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_NO_COMPRESSION_HINT (1 << 3)
->> +	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_PURGING_SUPPORT	(1 << 5)
->>   #define DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT		2
->>   #define DRM_XE_QUERY_CONFIG_VA_BITS			3
->>   #define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	4
->> @@ -2067,6 +2068,7 @@ struct drm_xe_query_eu_stall {
->>    *  - DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC: Set preferred memory location.
->>    *  - DRM_XE_MEM_RANGE_ATTR_ATOMIC: Set atomic access policy.
->>    *  - DRM_XE_MEM_RANGE_ATTR_PAT: Set page attribute table index.
->> + *  - DRM_XE_VMA_ATTR_PURGEABLE_STATE: Set purgeable state for BOs.
->>    *
->>    * Example:
->>    *
->> @@ -2099,6 +2101,7 @@ struct drm_xe_madvise {
->>   #define DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC	0
->>   #define DRM_XE_MEM_RANGE_ATTR_ATOMIC		1
->>   #define DRM_XE_MEM_RANGE_ATTR_PAT		2
->> +#define DRM_XE_VMA_ATTR_PURGEABLE_STATE		3
->>   	/** @type: type of attribute */
->>   	__u32 type;
->>   
->> @@ -2189,6 +2192,72 @@ struct drm_xe_madvise {
->>   			/** @pat_index.reserved: Reserved */
->>   			__u64 reserved;
->>   		} pat_index;
->> +
->> +		/**
->> +		 * @purge_state_val: Purgeable state configuration
->> +		 *
->> +		 * Used when @type == DRM_XE_VMA_ATTR_PURGEABLE_STATE.
->> +		 *
->> +		 * Configures the purgeable state of buffer objects in the specified
->> +		 * virtual address range. This allows applications to hint to the kernel
->> +		 * about bo's usage patterns for better memory management.
->> +		 *
->> +		 * By default all VMAs are in WILLNEED state.
->> +		 *
->> +		 * Supported values for @purge_state_val.val:
->> +		 *  - DRM_XE_VMA_PURGEABLE_STATE_WILLNEED (0): Marks BO as needed.
->> +		 *    If the BO was previously purged, the kernel sets the __u32 at
->> +		 *    @retained_ptr to 0 (backing store lost) so the application knows
->> +		 *    it must recreate the BO.
->> +		 *
->> +		 *  - DRM_XE_VMA_PURGEABLE_STATE_DONTNEED (1): Marks BO as not currently
->> +		 *    needed. Kernel may purge it under memory pressure to reclaim memory.
->> +		 *    Only applies to non-shared BOs. The kernel sets the __u32 at
->> +		 *    @retained_ptr to 1 if the backing store still exists (not yet purged),
->> +		 *    or 0 if it was already purged.
->> +		 *
->> +		 *    Important: Once marked as DONTNEED, touching the BO's memory
->> +		 *    is undefined behavior. It may succeed temporarily (before the
->> +		 *    kernel purges the backing store) but will suddenly fail once
->> +		 *    the BO transitions to PURGED state.
->> +		 *
->> +		 *    To transition back: use WILLNEED and check @retained_ptr —
->> +		 *    if 0, backing store was lost and the BO must be recreated.
->> +		 *
->> +		 *    The following operations are blocked in DONTNEED state to
->> +		 *    prevent the BO from being re-mapped after madvise:
->> +		 *    - New mmap() calls: Fail with -EBUSY
->> +		 *    - VM_BIND operations: Fail with -EBUSY
->> +		 *    - New dma-buf exports: Fail with -EBUSY
->> +		 *    - CPU page faults (existing mmap): Fail with SIGBUS
->> +		 *    - GPU page faults (fault-mode VMs): Fail with -EACCES
->> +		 */
->> +		struct {
->> +#define DRM_XE_VMA_PURGEABLE_STATE_WILLNEED	0
->> +#define DRM_XE_VMA_PURGEABLE_STATE_DONTNEED	1
->> +			/** @purge_state_val.val: value for DRM_XE_VMA_ATTR_PURGEABLE_STATE */
->> +			__u32 val;
->> +
->> +			/** @purge_state_val.pad: MBZ */
->> +			__u32 pad;
->> +			/**
->> +			 * @purge_state_val.retained_ptr: Pointer to a __u32 output
->> +			 * field for backing store status.
->> +			 *
->> +			 * Userspace must initialize the __u32 value at this address
->> +			 * to 0 before the ioctl. Kernel writes a __u32 after the
->> +			 * operation:
->> +			 * - 1 if backing store exists (not purged)
->> +			 * - 0 if backing store was purged
->> +			 *
->> +			 * If userspace fails to initialize to 0, ioctl returns -EINVAL.
->> +			 * This ensures a safe default (0 = assume purged) if kernel
->> +			 * cannot write the result.
->> +			 *
->> +			 * Similar to i915's drm_i915_gem_madvise.retained field.
->> +			 */
->> +			__u64 retained_ptr;
->> +		} purge_state_val;
->>   	};
->>   
->>   	/** @reserved: Reserved */
->> -- 
->> 2.43.0
->>
+> diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
+> index c9fc191fd..029b735bd 100644
+> --- a/tests/intel/kms_sharpness_filter.c
+> +++ b/tests/intel/kms_sharpness_filter.c
+> @@ -424,6 +424,56 @@ static bool has_sharpness_filter(igt_crtc_t *crtc)
+>   	return igt_crtc_has_prop(crtc, IGT_CRTC_SHARPNESS_STRENGTH);
+>   }
+>   
+> +static const char * const test_type_names[] = {
+> +	[TEST_FILTER_BASIC]                     = "basic",
+> +	[TEST_FILTER_MODIFIERS]                 = NULL,
+> +	[TEST_FILTER_ROTATION]                  = NULL,
+> +	[TEST_FILTER_FORMATS]                   = NULL,
+> +	[TEST_FILTER_STRENGTH]                  = NULL,
+> +	[TEST_FILTER_TOGGLE]                    = "toggle",
+> +	[TEST_FILTER_TAP]                       = NULL,
+> +	[TEST_FILTER_DPMS]                      = "dpms",
+> +	[TEST_FILTER_SUSPEND]                   = "suspend",
+> +	[TEST_FILTER_UPSCALE]                   = "upscale",
+> +	[TEST_FILTER_DOWNSCALE]                 = "downscale",
+> +	[TEST_INVALID_FILTER_WITH_SCALER]       = "invalid-filter-with-scaler",
+> +	[TEST_INVALID_FILTER_WITH_PLANE]        = "invalid-filter-with-plane",
+> +	[TEST_INVALID_PLANE_WITH_FILTER]        = "invalid-plane-with-filter",
+> +	[TEST_INVALID_FILTER_WITH_SCALING_MODE] = NULL,
+> +};
+> +
+> +static void build_test_suffix(data_t *data, enum test_type type,
+> +			       char *name, size_t len)
+> +{
+> +	if (test_type_names[type]) {
+> +		snprintf(name, len, "-%s", test_type_names[type]);
+> +		return;
+> +	}
+> +
+> +	/* suffix depends on the current test parameters */
+> +	switch (type) {
+> +	case TEST_FILTER_MODIFIERS:
+> +		snprintf(name, len, "-%s", data->modifier_name);
+> +		break;
+> +	case TEST_FILTER_ROTATION:
+> +		snprintf(name, len, "-%srot",
+> +			 igt_plane_rotation_name(data->rotation));
+> +		break;
+> +	case TEST_FILTER_FORMATS:
+> +		snprintf(name, len, "-%s", igt_format_str(data->format));
+> +		break;
+> +	case TEST_FILTER_STRENGTH:
+> +		snprintf(name, len, "-strength-%d", data->filter_strength);
+> +		break;
+> +	case TEST_INVALID_FILTER_WITH_SCALING_MODE:
+> +		snprintf(name, len, "-invalid-filter-with-scaling-mode-%s",
+> +			 kmstest_scaling_mode_str(data->scaling_mode));
+> +		break;
+> +	default:
+> +		igt_assert_f(false, "Unhandled test type %d\n", type);
+> +	}
+> +}
+> +
+>   static void
+>   run_sharpness_filter_test(data_t *data, enum test_type type)
+>   {
+> @@ -447,7 +497,8 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+>   			 * Until then, run on non-joiner mode in joiner configuration.
+>   			 */
+>   			if (is_joiner_mode(data->drm_fd, data->output)) {
+> -				data->mode = igt_get_non_joiner_mode(data->drm_fd, data->output);
+> +				data->mode = igt_get_non_joiner_mode(data->drm_fd,
+> +								     data->output);
+>   				if (!data->mode) {
+>   					igt_info("No non-joiner mode found on output %s\n",
+>   						 igt_output_name(data->output));
+> @@ -477,9 +528,6 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+>   
+>   			if (type == TEST_FILTER_TAP) {
+>   				drmModeModeInfo *modes[3] = { NULL, NULL, NULL };
+> -				int num_taps = ARRAY_SIZE(filter_tap_list);
+> -
+> -				igt_assert(num_taps == 3);
+>   
+>   				get_modes_for_filter_taps(output, modes);
+>   				for (int i = 0; i < 3; i++) {
+> @@ -487,11 +535,16 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+>   					if (!modes[i])
+>   						continue;
+>   					data->mode = modes[i];
+> -				        igt_info("Mode %dx%d@%d on output %s\n", data->mode->hdisplay, data->mode->vdisplay,
+> -						  data->mode->vrefresh, igt_output_name(data->output));
+> -					igt_output_override_mode(data->output, data->mode);
+> +					igt_info("Mode %dx%d@%d on output %s\n",
+> +						 data->mode->hdisplay,
+> +						 data->mode->vdisplay,
+> +						 data->mode->vrefresh,
+> +						 igt_output_name(data->output));
+> +					igt_output_override_mode(data->output,
+> +								 data->mode);
+>   
+> -					snprintf(name, sizeof(name), "-tap-%d", data->filter_tap);
+> +					snprintf(name, sizeof(name), "-tap-%d",
+> +						 data->filter_tap);
+>   					igt_dynamic_f("pipe-%s-%s%s",
+>   						       igt_crtc_name(data->crtc),
+>   						       data->output->name, name)
+> @@ -500,59 +553,13 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+>   
+>   				if (data->limited)
+>   					break;
+> -
+>   				continue;
+>   			}
+>   
+> -			switch (type) {
+> -			case TEST_FILTER_BASIC:
+> -				snprintf(name, sizeof(name), "-basic");
+> -				break;
+> -			case TEST_FILTER_MODIFIERS:
+> -				snprintf(name, sizeof(name), "-%s", data->modifier_name);
+> -				break;
+> -			case TEST_FILTER_ROTATION:
+> -				snprintf(name, sizeof(name), "-%srot", igt_plane_rotation_name(data->rotation));
+> -				break;
+> -			case TEST_FILTER_FORMATS:
+> -				snprintf(name, sizeof(name), "-%s", igt_format_str(data->format));
+> -				break;
+> -			case TEST_FILTER_STRENGTH:
+> -				snprintf(name, sizeof(name), "-strength-%d", data->filter_strength);
+> -				break;
+> -			case TEST_FILTER_TOGGLE:
+> -				snprintf(name, sizeof(name), "-toggle");
+> -				break;
+> -			case TEST_FILTER_DPMS:
+> -				snprintf(name, sizeof(name), "-dpms");
+> -				break;
+> -			case TEST_FILTER_SUSPEND:
+> -				snprintf(name, sizeof(name), "-suspend");
+> -				break;
+> -			case TEST_FILTER_UPSCALE:
+> -				snprintf(name, sizeof(name), "-upscale");
+> -				break;
+> -			case TEST_FILTER_DOWNSCALE:
+> -				snprintf(name, sizeof(name), "-downscale");
+> -				break;
+> -			case TEST_INVALID_FILTER_WITH_SCALER:
+> -				snprintf(name, sizeof(name), "-invalid-filter-with-scaler");
+> -				break;
+> -			case TEST_INVALID_FILTER_WITH_PLANE:
+> -				snprintf(name, sizeof(name), "-invalid-filter-with-plane");
+> -				break;
+> -			case TEST_INVALID_PLANE_WITH_FILTER:
+> -				snprintf(name, sizeof(name), "-invalid-plane-with-filter");
+> -				break;
+> -			case TEST_INVALID_FILTER_WITH_SCALING_MODE:
+> -				snprintf(name, sizeof(name), "-invalid-filter-with-scaling-mode-%s", kmstest_scaling_mode_str(data->scaling_mode));
+> -				break;
+> -			default:
+> -				igt_assert(0);
+> -			}
+> +			build_test_suffix(data, type, name, sizeof(name));
+>   
+>   			igt_dynamic_f("pipe-%s-%s%s",
+> -				        igt_crtc_name(data->crtc),
+> +				      igt_crtc_name(data->crtc),
+>   				      data->output->name, name)
+>   				test_sharpness_filter(data, type);
+>   
+> @@ -562,6 +569,15 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+>   	}
+>   }
+>   
+> +static void set_data_defaults(data_t *data)
+> +{
+> +	data->modifier        = DRM_FORMAT_MOD_LINEAR;
+> +	data->modifier_name   = modifiers[0].name;
+> +	data->rotation        = IGT_ROTATION_0;
+> +	data->format          = DRM_FORMAT_XRGB8888;
+> +	data->filter_strength = MID_FILTER_STRENGTH;
+> +}
+> +
+>   static int opt_handler(int opt, int opt_index, void *_data)
+>   {
+>   	data_t *data = _data;
+> @@ -596,20 +612,14 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   
+>   	igt_describe("Verify basic content adaptive sharpness filter.");
+>   	igt_subtest_with_dynamic("filter-basic") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> -
+> +		set_data_defaults(&data);
+>   		run_sharpness_filter_test(&data, TEST_FILTER_BASIC);
+>   	}
+>   
+>   	igt_describe("Verify that varying strength(0-255), affects "
+>   		     "the degree of sharpeness applied.");
+>   	igt_subtest_with_dynamic("filter-strength") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> +		set_data_defaults(&data);
+>   
+>   		for (int i = 0; i < ARRAY_SIZE(filter_strength_list); i++) {
+>   			data.filter_strength = filter_strength_list[i];
+> @@ -621,9 +631,7 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   	igt_describe("Verify content adaptive sharpness filter with "
+>   		     "varying modifiers.");
+>   	igt_subtest_with_dynamic("filter-modifiers") {
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> +		set_data_defaults(&data);
+>   
+>   		for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
+>   			data.modifier = modifiers[i].modifier;
+> @@ -636,9 +644,7 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   	igt_describe("Verify content adaptive sharpness filter with "
+>   		     "varying rotations.");
+>   	igt_subtest_with_dynamic("filter-rotations") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> +		set_data_defaults(&data);
+>   
+>   		for (int i = 0; i < ARRAY_SIZE(rotations); i++) {
+>   			data.rotation = rotations[i];
+> @@ -650,9 +656,7 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   	igt_describe("Verify content adaptive sharpness filter with "
+>   		     "varying formats.");
+>   	igt_subtest_with_dynamic("filter-formats") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> +		set_data_defaults(&data);
+>   
+>   		for (int i = 0; i < ARRAY_SIZE(formats); i++) {
+>   			data.format = formats[i];
+> @@ -664,10 +668,7 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   	igt_describe("Verify toggling between enabling and disabling "
+>   		     "content adaptive sharpness filter.");
+>   	igt_subtest_with_dynamic("filter-toggle") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -
+> +		set_data_defaults(&data);
+>   		data.filter_strength = MAX_FILTER_STRENGTH;
+>   		run_sharpness_filter_test(&data, TEST_FILTER_TOGGLE);
+>   	}
+> @@ -675,55 +676,35 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   	igt_describe("Verify that following a resolution change, "
+>   		     "distict taps are selected.");
+>   	igt_subtest_with_dynamic("filter-tap") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> -
+> +		set_data_defaults(&data);
+>   		run_sharpness_filter_test(&data, TEST_FILTER_TAP);
+>   	}
+>   
+>   	igt_describe("Verify content adaptive sharpness filter "
+>   		     "with DPMS.");
+>   	igt_subtest_with_dynamic("filter-dpms") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> -
+> +		set_data_defaults(&data);
+>   		run_sharpness_filter_test(&data, TEST_FILTER_DPMS);
+>   	}
+>   
+>   	igt_describe("Verify content adaptive sharpness filter "
+>   		     "with suspend.");
+>   	igt_subtest_with_dynamic("filter-suspend") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> -
+> +		set_data_defaults(&data);
+>   		run_sharpness_filter_test(&data, TEST_FILTER_SUSPEND);
+>   	}
+>   
+>   	igt_describe("Verify content adaptive sharpness filter "
+>   		     "with 1 plane scaler enabled.");
+>   	igt_subtest_with_dynamic("filter-scaler-upscale") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> -
+> +		set_data_defaults(&data);
+>   		run_sharpness_filter_test(&data, TEST_FILTER_UPSCALE);
+>   	}
+>   
+>   	igt_describe("Verify content adaptive sharpness filter "
+>   		     "with 1 plane scaler enabled.");
+>   	igt_subtest_with_dynamic("filter-scaler-downscale") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> -
+> +		set_data_defaults(&data);
+>   		run_sharpness_filter_test(&data, TEST_FILTER_DOWNSCALE);
+>   	}
+>   
+> @@ -731,11 +712,7 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   		     "when 2 plane scalers have already been enabled and "
+>   		     "attempt is made to enable sharpness filter.");
+>   	igt_subtest_with_dynamic("invalid-filter-with-scaler") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> -
+> +		set_data_defaults(&data);
+>   		run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_SCALER);
+>   	}
+>   
+> @@ -743,10 +720,8 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   		     "when 2 NV12 planes have already been enabled and attempt is "
+>   		     "made to enable the sharpness filter.");
+>   	igt_subtest_with_dynamic("invalid-filter-with-plane") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> +		set_data_defaults(&data);
+>   		data.format = DRM_FORMAT_NV12;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+>   
+>   		run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_PLANE);
+>   	}
+> @@ -755,10 +730,8 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   		     "when 1 NV12 plane and sharpness filter have already been enabled "
+>   		     "and attempt is made to enable the second NV12 plane.");
+>   	igt_subtest_with_dynamic("invalid-plane-with-filter") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> +		set_data_defaults(&data);
+>   		data.format = DRM_FORMAT_NV12;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+>   
+>   		run_sharpness_filter_test(&data, TEST_INVALID_PLANE_WITH_FILTER);
+>   	}
+> @@ -767,10 +740,7 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   		     "when scaling mode is already enabled and attempt is made "
+>   		     "to enable sharpness filter.");
+>   	igt_subtest_with_dynamic("invalid-filter-with-scaling-mode") {
+> -		data.modifier = DRM_FORMAT_MOD_LINEAR;
+> -		data.rotation = IGT_ROTATION_0;
+> -		data.format = DRM_FORMAT_XRGB8888;
+> -		data.filter_strength = MID_FILTER_STRENGTH;
+> +		set_data_defaults(&data);
+>   
+>   		for (int k = 0; k < ARRAY_SIZE(scaling_modes); k++) {
+>   			data.scaling_mode = scaling_modes[k];
