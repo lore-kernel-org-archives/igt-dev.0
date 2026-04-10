@@ -4,158 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3553E99055
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 08:23:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DA44E99056
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 08:28:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2F27210E1A3;
-	Fri, 10 Apr 2026 08:23:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 067E610E1B0;
+	Fri, 10 Apr 2026 08:28:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ASF4RxKT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ExglnAre";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A22B10E1A3
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Apr 2026 08:22:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3581210E1B0
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Apr 2026 08:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1775809374; x=1807345374;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=mGFv7A9q07fd7sIO++tP9HenykB3AkkOrOjp82zAI00=;
- b=ASF4RxKTEnkvb17f6+zqog9tXbJMAFNhtBia4ciarGESv5Usjty7n0P7
- OcKHqONiyYXxvc5U7WjdhSrDIOsUEu2J5lvy0XZTJl/YvxJjOOBdtWCOW
- ooQZb2X1NFdhGFaCfrF9mTc6IcFA9JDPWLFW54enBADictR2rdnYq5W/U
- lB8Dn9FTWjcBPljq07X4pcgdjulqCJNi8PEWfsRq7QM6laFiHIx/BdAVh
- zcO1Q0ftf0vQmXfJE40HQnJ6s/zpo+PCTooBBABNoxQMg16XDxl9G34mU
- gO9WlzNKcd2wvnZkPB3st0q04P/yDM5ZQdd+gGGB7Y1gZqrsHiEUP+2l5 w==;
-X-CSE-ConnectionGUID: ZUHH3UQRR7K5+JZY8jkkYw==
-X-CSE-MsgGUID: o5qg5IFeS1WgM4a2zZfdLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="64361198"
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="64361198"
+ t=1775809673; x=1807345673;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=YdyQnhGX8LEKGcz+xVzoSbvImohUQURgcxXxXPi2CpM=;
+ b=ExglnAreXvLpBLw+1lb1ibToj2nRTPutmZQV305x5kLNPr7MFWleR1xl
+ U+tHDCy2rxxj19a4Jalzk/loFcNfYVGE8LqO5U7M9NzJCeh3wiuId9Gkr
+ DbwylD+GzgLHvpPg6KKMOMRyFxv9kD3Q2hZuAMNi4rHpKJsg+N1qIAyCM
+ 20GzC5jTsYSg972DwbEZ21VhQdmZJudMWwd24fjognOpGblrwI+mptRET
+ 4jxg4N3R9XcHI3Roh1fOfCtHMouQGCG4My890BSqZuaojr1lPL0nYD7WW
+ /KYEOKohdmSQoUpeiiDTf1j8dBfx/mfVxoqKBmD0ULg0aHnU9XG3P2Pjz g==;
+X-CSE-ConnectionGUID: ei44YV1iTMi4vlOwyV+MWQ==
+X-CSE-MsgGUID: z83mdhlbRZ6eZ87YVqKp9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="64361531"
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="64361531"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2026 01:22:53 -0700
-X-CSE-ConnectionGUID: qCLrT2CjQ7WFfI+k7ifTBw==
-X-CSE-MsgGUID: rwQhqgFgSvm0C8K1vijgvg==
+ 10 Apr 2026 01:27:50 -0700
+X-CSE-ConnectionGUID: Qjrq1QqbREGPZff0A/z7eg==
+X-CSE-MsgGUID: Omb8x8lKTkyR7jE/aHsUuw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="229301457"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2026 01:22:53 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 10 Apr 2026 01:22:52 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 10 Apr 2026 01:22:52 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.47) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 10 Apr 2026 01:22:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lYwwD/73fcPZFfvzy0b7K+tD50pwdv4ZIWWE7icoj88QdyXqKsReZopTjN3fSKf13bD8CG7ZBwRl3wvW+W23MtwCsX6lBDhhi2hns3uoQ2lHYDJvbRhL/8ZMtl3N+NhWU09dP/CA4sB7orv4XfCYQr1VFVuk7fHjxJpsfiUpwa9cdA0eTqD6t+C5a2O1rBjrlTZDKhOEZ1m8LwkO0XaQWPMKDqdINQ7HNVeNHzjAPQy4zmSnpQ+qWPZhBm/DuMv8uRJSSL/AFwKpJpo4AMy9ecFCBL1mzGrvkznQurLd7oBUWz0oSqIM0BIXp8VdaHZ8Qra9wqrsHVNRYBVh49keeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CVj0DXNgY/ejvlxpkD953+hlgI/ALnm+1O/KiA/i7/k=;
- b=WJSOgy/l5fyyDF8jCedb2Iw3AeQbKenESqtd0FRhkh16teGreiZgj/82wnhi6X/5Z3DH/EM2xNHCnRtp2nVFveSFMK5eCu4dF0ekOmjDWZcUMUuEVUnj0EXFPd1t/P/cbpUZk1edL/aVVEht0DycZRwAvkRD3EIQkaaKNO6suY3tvc3bZXI7V/lX9cimcJafAGTp6KfyHQRo7HIXINFO85Pz9KJSLxK12vfI8OYigNaFwWZLMNH2OedahreWdoSuQVKUKwWVdEQUKdIktZXjHiXe8xEjC3blbOH8hdhTnYHH16lXqh6OjEz4bD/IlgCYoWBIn5o6cVF9oV7svaRxIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MW4PR11MB7151.namprd11.prod.outlook.com (2603:10b6:303:220::5)
- by IA1PR11MB8097.namprd11.prod.outlook.com (2603:10b6:208:457::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9791.33; Fri, 10 Apr
- 2026 08:22:49 +0000
-Received: from MW4PR11MB7151.namprd11.prod.outlook.com
- ([fe80::5263:1353:4122:ddb8]) by MW4PR11MB7151.namprd11.prod.outlook.com
- ([fe80::5263:1353:4122:ddb8%7]) with mapi id 15.20.9791.032; Fri, 10 Apr 2026
- 08:22:49 +0000
-Message-ID: <958dbd9c-cbaf-48aa-8375-16e7b8f304d3@intel.com>
-Date: Fri, 10 Apr 2026 13:52:40 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v7 5/9] tests/intel/xe_madvise: Add
- dontneed-after-mmap subtest
-To: Arvind Yadav <arvind.yadav@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <matthew.brost@intel.com>, <himal.prasad.ghimiray@intel.com>,
- <thomas.hellstrom@linux.intel.com>, <pravalika.gurram@intel.com>
-References: <20260409070118.2211602-1-arvind.yadav@intel.com>
- <20260409070118.2211602-6-arvind.yadav@intel.com>
-Content-Language: en-US
-From: "Sharma, Nishit" <nishit.sharma@intel.com>
-In-Reply-To: <20260409070118.2211602-6-arvind.yadav@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0177.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1af::10) To MW4PR11MB7151.namprd11.prod.outlook.com
- (2603:10b6:303:220::5)
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="229301940"
+Received: from varungup-desk.iind.intel.com ([10.190.238.71])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2026 01:27:48 -0700
+From: Arvind Yadav <arvind.yadav@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: matthew.brost@intel.com, himal.prasad.ghimiray@intel.com,
+ thomas.hellstrom@linux.intel.com, nishit.sharma@intel.com,
+ pravalika.gurram@intel.com
+Subject: [PATCH i-g-t v8 0/8] tests/xe: Add purgeable memory madvise tests for
+ system allocator
+Date: Fri, 10 Apr 2026 13:57:17 +0530
+Message-ID: <20260410082729.2383886-1-arvind.yadav@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB7151:EE_|IA1PR11MB8097:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ded91b6-ef85-43c2-b42f-08de96da59d7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|56012099003|22082099003|18002099003; 
-X-Microsoft-Antispam-Message-Info: uIjphssveQGozdnajm9Rxe2QrAZehFUhJeTnFq5SL6MSfaO+DUGpqR5FLZlNIhpFNSivqGLAAsnCufSCzx8bM0YCqnXHaIEKsLNs7Kz73PNqlGxSkqSP2EJRRLf/TlM6BJJaIgdVWm5CxZF5mlvpus7IYT6i8JWugo9YpWYZK2PCEXB/cg1vaiva3tn4HJfLZXFD+6tMuyJkDef5EOwCJgb9U/5nJNfxdRU1TK01qfGj8kpyEXtggG3HEd9IzrgCH/GDrYbwjBw/T+BIYJC3FTTLrmF8roaqlE7JE/+2PEAHSFNVTswGogAuSTKreXqjFIvHEFj1ey2Etx6dYc57CdA+Yf0pGBERcL5ZTvKfLphCl+cM+YA78Ul1MBU3CspcoYWZyvEtd3JFRlrw5n8V3ueIHJLJS1eKmFzJMRgKnxHAgCdRg0o5v2ar6ncfjEuJn+1J5PL/j7TTtwrwGobC3jGYGaIjshRpxOmQ4sT5NjA07Tbt1P9HKmnr00N0/K6asrrheVOeq2m3YYJbPcyR8I5hvzWWRDOFqmsO3PA6KpMyivla6fhgEN5TMznbv4PjGZaePKxrtqKkIuwptQbraj6Xd8AxCUYYaZMR3EkNvYxcO3GU2asllhl69VKdzMEROUXmRWFoogVhBaVErtDcAIacXiOKOPwC7BArpfUDvoWLyif9Cy3F/lORzPxRLIzGA42P7Q6YjXetjpIUxiFKkxBTs9EsFSvj0lhd9W8pzX8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW4PR11MB7151.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Ync0cXNZSmgwMXBEai9nS1JrcForeDJxcnVCVU10MTZzNXNXVUhiclErRHZ1?=
- =?utf-8?B?OW5XdEE1aHp3SlA3RFVKSUZDUzlrY3BOQ3QwWjliVmhBNlVPOEttdFdhSDFR?=
- =?utf-8?B?dlVJYlNuVzdMbkhrWmVqclRsUTVaNXB5R1BudjBTVy9NRHBQSUpVa1lWR3Zp?=
- =?utf-8?B?eTFPRlZWR0RhRFZ1YUp6Z0UwZGxWYy9LcXROalJpK2ZBdmxYSy9jc2tCRlVH?=
- =?utf-8?B?SGRNRGllTlFvVG91SWdUVXloM2VVU00wYkI0RnExQ09Sc3lCWVRYcHNwQmFw?=
- =?utf-8?B?UC9LdU1ySVpJVWZUekthc0JRQzV6R1pJMGVqd1hzRVdJdkFaaVlmYXZOaU4y?=
- =?utf-8?B?S0hJRlJFSmYrUjVLaUJZYVZ4bHVLRUUzbGJXOWxsUWs3aUNNZWF0MDc3cFFi?=
- =?utf-8?B?YkxYa2hRVml5eEV3YUNUZnA5K21NY2VEdlk2dDNlU1FKS1NtSWJhNEUxWnZY?=
- =?utf-8?B?NGI4elVkYzJiVkNma0NLMURIMW9MdDFtY2oxR1RxR2lZYkRVVHo1Zk54K1Jm?=
- =?utf-8?B?NVNybkNVVFdNUzRxU0VFK25lcnlqbTh3ZmlNRFJVeEJyMWxuYzNlRndCWGYz?=
- =?utf-8?B?VlNBQXRsK1N2UWF6NlNVb1VkU0tSd1RIaWx3bGsvQksxWmRKblJNeHlGK2M2?=
- =?utf-8?B?Vk8wU1ZYOHJEeVJDSmtVTHlwZWU0ZVZ3ZlhabTEvcjBSUEpFN3lmWjlCWFNx?=
- =?utf-8?B?TDhkbUJ6b0hxT3FnRE1vZndzbEVKL2JlMThOendWSnR5ZEdkbWlySWtRUFNZ?=
- =?utf-8?B?bDhqSHV0cUYvMXhoWHV1Q1RqaHFMMjRtZDI4a04zNXp4eW91WjdVOCtLUytW?=
- =?utf-8?B?OGUyYno4S0NHQ3pYcFJnRzBvUm14T3lsZTF3cXRTbzVvQjM5TThrYitQdGdu?=
- =?utf-8?B?dUxPZ00vSHhUclVLNmQrM1hWVG9kR0liUE1zb0hFVU5XV0J4VnorQTJXeitj?=
- =?utf-8?B?RDhGVmV2L0RXWHdKZTZKV24vTDhYalFvSVVEMUl4eTZpV2krbCtDeFN4TDd5?=
- =?utf-8?B?cU41cE56WGtnalNXNFdvekJ2ODJVUGFoN0FvZFlYSS9MSXBMbEZxRHMvdlcy?=
- =?utf-8?B?MTFRYmZRNWEzRDN6QytyRGViYW5Xa0V0aW5tSVdHRVoybXQyUFlXTWwzSWhT?=
- =?utf-8?B?Smlac2s2VEcyK1BKZ1FsUGdZWFRPcm5ZL2EyMmhGTStEb2ZVZFdjQXFzcDZN?=
- =?utf-8?B?YnRpMTd1ZjNIWXlpaEs2TTd1UTRmbkMwVVltaFltMGpaYThieEpYT25YT1px?=
- =?utf-8?B?bi9XRjlDam10QURNODZQdmpYSGtSTTBhTFVZMUNUU2R1YjBKYytRQUZ0eEtF?=
- =?utf-8?B?K2MzeXpBVjhzQkR3TDBHWGtma3IraklocUVEL3VMR05yN296YzlzVGdMUDI4?=
- =?utf-8?B?d21PamtybWRYZU0rYmU0Skh0eEdmWU5WdEc1UC9ld3BWR1g5T09vNGlobVNu?=
- =?utf-8?B?bTZhRDNqK2E1NzNWM0J1S3o3Qk5YQ3drcTdjRk9vZ1REdE5pZ0NSSDlXQmNj?=
- =?utf-8?B?ODlwd2IyMEh3RlI4NUhYS3lyMUtxNWNtNzRONlF2bkJqdzloc0xwYkhOVzhR?=
- =?utf-8?B?M2tVaWtJMDcrVlhYZTJvTHRjM0F2RWRFdTFCSWp0VVNWTThab05aWlR3NTJY?=
- =?utf-8?B?QWtWTTJJYkM1cG1KQjVjK1kzTkxxd1ZOVUFTVk9YaFREb3AwVTE2SXVXUW9x?=
- =?utf-8?B?RGd5NFppMDJ3MU9xLzBFWWx4RW1OQUxaMWQ1TlAvbUt4L3ZKc3BCTXA3RGJF?=
- =?utf-8?B?aVRxNjNXQzduRmxlL2tZRFlSZ25lUEY0WWJyMmhFemNVb2FkN2Vza1NBaXBi?=
- =?utf-8?B?ZWxGTWR2VzA3Rmg0SGcrNWpLdmJkYmJUZ084N1RLU3VBMzNTaVdsS0FZME14?=
- =?utf-8?B?clA3ci9KQXY2a1ZUWFJOb0M2cTVmaXFmWm1VdDBINWo4ck5QQ0dncG1DWkE2?=
- =?utf-8?B?WmZRRGN3UjVSamZrWWl2OTNRTXpidUhEeDFzOXVFSGJHN3BuTVBFS0V4NkVl?=
- =?utf-8?B?T2xwbzM4aS9WMXRRaDF3NHd4UVZnNnBlaTZGQ2ZucTZ6UWE4WEtBb3pTeGNI?=
- =?utf-8?B?NTZXTTZlU3FJY3VWT25NUzNyTTNndTRFK2VNV1BsTExESUJuWEw1a1pMRXpn?=
- =?utf-8?B?ek10WURBUDZUN0JjWTU1SlQ4b2RncGtuMFJXT2VqcHgrNjZhUlI4bUxIMTlS?=
- =?utf-8?B?cnFTZ0xxNUFYZFJvVldiNEZ4enhpNDBKSjcrODBMUldjWUdJNFl6TFJBWHpr?=
- =?utf-8?B?MTM3a0VQZWtEaHJFZ1NPMjBSTTBSWHBqdUcwNnV2QlIxa1ZLeXRvNHVLcUpG?=
- =?utf-8?B?SXNHNzZiTU95YkhscXYxYnVhbEdkTG5vN1V2Tnd6YkE5MU4weS96QT09?=
-X-Exchange-RoutingPolicyChecked: UUrTfz4E0ibg8qauOqURH2yycgXkmPxHuRcgom26YXIp+tWxeyIw9g10LGFsKFHbHwsUbdRXtrj8dr5Kf8fkcQzbLeBLy0E1/WKs6+60/jgV39ITaK1wzYhlkfna73xWnVN4aXg4OsLq+QIAAG4K7IOXa3hKnrq9fG776J6YO+aJAbQL4q8bf8huO2benKqoaAdaggrUq4hNfAwjOJp2qBr1ev/VXr6J6vOXZkPM5JlKWczIi1wnJavasSndOJhIlmECqCV1zs9Q2x9kpewDAh0Eo0nL4+7aORu967gYfwH51GZCJO9K64itf+Tlukh0zrA2iFKKx7fbzMHsF1LMQQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ded91b6-ef85-43c2-b42f-08de96da59d7
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB7151.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2026 08:22:48.9106 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nf2wQtuZdkdbqRkJaOyUwRRGWkZHyPszh0AEBFZmR037p6gqXa4FMBRd72ESB3RbqLUZ1BpIcZMxaEAkuMMadA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8097
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=yes
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -171,141 +69,136 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+This series adds IGT tests for the purgeable memory madvise functionality
+in the XE driver's system allocator path.
 
-On 4/9/2026 12:31 PM, Arvind Yadav wrote:
-> This test verifies that an existing mmap becomes invalid after the BO
-> is marked as purgeable and purged. The test creates a BO, maps it,
-> writes data, then marks it DONTNEED and triggers memory pressure.
-> Accessing the previously valid mapping should now trigger SIGBUS or
-> SIGSEGV, confirming that existing mappings are correctly invalidated
-> when the backing store is purged.
->
-> v4:
->    - Added proper resource cleanup before calling igt_skip(). (Nishit)
->    - Added assertion for xe_bo_map. (Nishit)
->
-> v6:
->    - Fix sigsetjmp(jmp, SIGBUS | SIGSEGV) to sigsetjmp(jmp, 1). The
->      second argument is a plain boolean savemask, not a signal set.
->
-> v7:
->    - Move sigtrap/jmp_buf in this patch. (Nishit)
->
-> Cc: Nishit Sharma <nishit.sharma@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> Cc: Pravalika Gurram <pravalika.gurram@intel.com>
-> Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
-> ---
->   tests/intel/xe_madvise.c | 71 ++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 71 insertions(+)
->
-> diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
-> index 619d64b46..2d5acc347 100644
-> --- a/tests/intel/xe_madvise.c
-> +++ b/tests/intel/xe_madvise.c
-> @@ -153,6 +153,13 @@ static bool purgeable_mark_and_verify_purged(int fd, uint32_t vm, uint64_t addr,
->   	return retained == 0;
->   }
->   
-> +static jmp_buf jmp;
-> +
-> +__noreturn static void sigtrap(int sig)
-> +{
-> +	siglongjmp(jmp, sig);
-> +}
-> +
->   /**
->    * SUBTEST: purged-mmap-blocked
->    * Description: After BO is purged, verify mmap() fails with -EINVAL
-> @@ -227,6 +234,64 @@ static void test_dontneed_before_mmap(int fd)
->   	xe_vm_destroy(fd, vm);
->   }
->   
-> +/**
-> + * SUBTEST: dontneed-after-mmap
-> + * Description: Mark BO as DONTNEED after mmap, verify SIGBUS on accessing purged mapping
-> + * Test category: functionality test
-> + */
-> +static void test_dontneed_after_mmap(int fd)
-> +{
-> +	uint32_t bo, vm;
-> +	uint64_t addr = PURGEABLE_ADDR;
-> +	size_t bo_size = PURGEABLE_BO_SIZE;
-> +	void *map;
-> +
-> +	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, true);
-> +
-> +	map = xe_bo_map(fd, bo, bo_size);
-> +	igt_assert(map != MAP_FAILED);
-> +	memset(map, 0xAB, bo_size);
-> +
-> +	if (!purgeable_mark_and_verify_purged(fd, vm, addr, bo_size)) {
-> +		munmap(map, bo_size);
-> +		gem_close(fd, bo);
-> +		xe_vm_destroy(fd, vm);
-> +		igt_skip("Unable to induce purge on this platform/config");
-Same Nit as in Patch-4/9.
-> +	}
-> +
-> +	/* Access purged mapping - should trigger SIGBUS/SIGSEGV */
-> +	{
-> +		sighandler_t old_sigsegv, old_sigbus;
-> +		char *ptr = (char *)map;
-> +		int sig;
-> +
-> +		old_sigsegv = signal(SIGSEGV, (__sighandler_t)sigtrap);
-> +		old_sigbus = signal(SIGBUS, (__sighandler_t)sigtrap);
-> +
-> +		sig = sigsetjmp(jmp, 1); /* savemask=1: save/restore signal mask */
-> +		switch (sig) {
-> +		case SIGBUS:
-> +		case SIGSEGV:
-> +			/* Expected - purged mapping access failed */
-> +			break;
-> +		case 0:
-> +			*ptr = 0;
+Purgeable memory allows userspace to mark buffer objects as DONTNEED,
+making them eligible for kernel reclamation under memory pressure. This
+is critical for mobile and memory-constrained platforms to prevent OOM
+conditions while managing temporary or regeneratable GPU data.
 
-Here if suppose SIGBUS/SIGSEGV is not hit but mapping is invalidated, 
-here you'll get segfault. Remove *ptr = 0 and club case 0: and default and
+The test suite validates:
+- Basic purgeable lifecycle (WILLNEED -> DONTNEED -> PURGED)
+- "Once purged, always purged" semantics (i915 compatibility)
+- Per-VMA purgeable state tracking for shared buffers
+- CPU fault handling on purged BOs (SIGBUS/SIGSEGV)
+- GPU execution with purged memory and scratch page protection
+- Proper state transitions across multiple VMs
 
-let it assert as available
+Purgeable Memory States:-
+ - **WILLNEED (0)**: Memory is actively needed, kernel should not
+                     reclaim it.
+ - **DONTNEED (1)**: Application doesn't need this memory right now,
+                     kernel can reclaim it if needed
 
-> +		default:
-> +			igt_assert_f(false,
-> +				     "Access to purged mapping should trigger SIGBUS, got sig=%d\n",
-> +				     sig);
-> +			break;
-> +		}
-> +
-> +		signal(SIGBUS, old_sigbus);
-> +		signal(SIGSEGV, old_sigsegv);
-> +	}
-> +
-> +	munmap(map, bo_size);
-> +	gem_close(fd, bo);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
->   int igt_main()
->   {
->   	struct drm_xe_engine_class_instance *hwe;
-> @@ -251,6 +316,12 @@ int igt_main()
->   			break;
->   		}
->   
-> +	igt_subtest("dontneed-after-mmap")
-> +		xe_for_each_engine(fd, hwe) {
-> +			test_dontneed_after_mmap(fd);
-> +			break;
-> +		}
-> +
->   	igt_fixture() {
->   		xe_device_put(fd);
->   		drm_close_driver(fd);
+Retained Value
+ When querying purgeable state, the kernel returns:
+ - retained = 1: Memory is still present (not purged)
+ - retained = 0: Memory was purged/reclaimed
 
-With above changes LGTM:
+Kernel dependency: https://patchwork.freedesktop.org/series/156651/
+ 
+Test Cases :
+  1. dontneed-before-mmap
+        Purpose: Validate that mmap fails on dontneed BO
 
-Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
+  2. purged-mmap-blocked
+        Purpose: Validate that mmap fails on already-purged
+      
+  3. dontneed-after-mmap
+        Purpose: Validate that accessing an existing mapping of purged memory
+                 triggers SIGBUS/SIGSEGV.
+
+  4. dontneed-before-exec
+        Purpose: Validate GPU execution on purgeable BO (before it's used).
+
+  5. dontneed-after-exec
+        Purpose: Validate that previously-used BO can be purged and becomes
+                 inaccessible.
+
+  6. per-vma-tracking
+        Purpose: Validate per-VMA purgeable state tracking
+
+  7. per-vma-protection
+        Purpose: Validate that WILLNEED VMA protects BO from purging during
+                 GPU operations.
+v2:
+   - Move tests from xe_exec_system_allocator.c to dedicated
+     xe_madvise.c (Thomas Hellström).
+   - Fix trigger_memory_pressure to use scalable overpressure
+    (25% of VRAM, minimum 64MB instead of fixed 64MB). (Pravalika)
+   - Add MAP_FAILED check in trigger_memory_pressure.
+   - Touch all pages in allocated chunks, not just first 4KB. (Pravalika)
+   - Add 100ms sleep before freeing BOs to allow shrinker time
+     to process memory pressure.  (Pravalika)
+   - Rename 'bo2' to 'handle' for clarity in trigger_memory_pressure.(Pravalika)
+   - Add NEEDS_VISIBLE_VRAM flag to purgeable_setup_simple_bo
+     for consistent CPU mapping support on discrete GPUs.  (Pravalika)
+   - Add proper NULL mmap handling in test_dontneed_before_mmap
+      with cleanup and early return.  (Pravalika)
+
+v3:
+   - Added separate commits for each individual test case. (Pravalika)
+
+v4:
+   - Move unmap outside the block. (Pravalika)
+   - Added proper resource cleanup before calling igt_skip(). (Nishit)
+   - Added assertion for xe_bo_map. (Nishit)
+   - Now using sync[0] consistently. (Nishit)
+   - Added clarifying comment. (Nishit)
+
+v5:
+  - Document DONTNEED BO access blocking behavior to prevent undefined
+    behavior and clarify uAPI contract (Thomas, Matt)
+  - Add query flag DRM_XE_QUERY_CONFIG_FLAG_HAS_PURGING_SUPPORT for
+    feature detection. (Jose)
+  - For DONTNEED BO's mmap offset ioctl blocked with -EBUSY.
+  - Rename retained to retained_ptr. (Jose)
+  - Add new subtest purged-mmap-blocked.
+
+v6:
+  - Support iGPU in trigger_memory_pressure() by using total system RAM
+    as pressure baseline; raise overpressure to 50% to force shrinker.
+  - DONTNEED mmap blocking now enforced at mmap() time (xe_gem_object_mmap),
+    not at DRM_IOCTL_XE_GEM_MMAP_OFFSET. Update dontneed-before-mmap and
+    purged-mmap-blocked accordingly.
+  - Fix graceful skip (instead of fail) in per-vma-tracking and
+    per-vma-protection when purge cannot be induced. (Nishit)
+
+v7:
+  - Commit message updated with kernel UAPI details (Nishit)
+  - Moved trigger_memory_pressure(), purgeable_mark_and_verify_purged()
+    and sigtrap() in 4/9 and other patch. (Nishit)
+  - Use xe_has_vram() instead of checking xe_visible_vram_size() > 0 for
+    clearer dGPU/iGPU detection. (Nishit)
+  - Fix purgeable_mark_and_verify_purged(): handle retained == 0 from
+    DONTNEED (BO already purged) as success instead of incorrectly
+    returning false. (Nishit)
+  - Drop unused vm parameter from trigger_memory_pressure(). (Nishit)
+  - Mentioned this new ioctl instead of __xe_vm_madvise(). (Nishit)
+
+v8:
+  - rebased. 
+  - Drop this "[i-g-t,v7,1/9] drm-uapi/xe_drm: Sync with Add UAPI
+    support for purgeable buffer objects" patch. (Kamil)
+
+Arvind Yadav (8):
+  lib/xe: Add purgeable memory ioctl support
+  tests/intel/xe_madvise: Add dontneed-before-mmap subtest
+  tests/intel/xe_madvise: Add purged-mmap-blocked subtest
+  tests/intel/xe_madvise: Add dontneed-after-mmap subtest
+  tests/intel/xe_madvise: Add dontneed-before-exec subtest
+  tests/intel/xe_madvise: Add dontneed-after-exec subtest
+  tests/intel/xe_madvise: Add per-vma-tracking subtest
+  tests/intel/xe_madvise: Add per-vma-protection subtest
+
+ lib/xe/xe_ioctl.c        |  33 ++
+ lib/xe/xe_ioctl.h        |   2 +
+ tests/intel/xe_madvise.c | 826 +++++++++++++++++++++++++++++++++++++++
+ tests/meson.build        |   1 +
+ 4 files changed, 862 insertions(+)
+ create mode 100644 tests/intel/xe_madvise.c
+
+-- 
+2.43.0
 
