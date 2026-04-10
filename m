@@ -4,28 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CBC4F44841
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 11:46:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC1E7F44845
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Apr 2026 11:56:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F318710E946;
-	Fri, 10 Apr 2026 11:46:15 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4AC210E946;
- Fri, 10 Apr 2026 11:46:05 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5864737241547646599=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A012410E21F;
+	Fri, 10 Apr 2026 11:56:55 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mRdd4Dgs";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A108110E21F
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Apr 2026 11:56:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1775822206; x=1807358206;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=A9W7jYFxUk60NTJ9ZR7mrYXaBtAhZILPhu+h+k3cDYs=;
+ b=mRdd4DgsuphCtX+WBQVyZlc2SXN8GDeSFqK+wtkuY1PAL+zUTeGEoLsq
+ jeL9XP1XLwQnsNr0KqfJQdofhuNY6EKEA+Vi3vHlb68AUlEdZ1NrGXhDs
+ UXf6bYxNa+j69zCpTHR8hHRH+88h7FeNh7gmg2eB5RGslHsZ0FVmlqSkU
+ HLjelzanXwinctjsDMXRht7D6tgLSKU4q2sktVU7iJ+BVNaVNQF0M1Vfd
+ FndImmOEwKghBZhT4I9H6FK30sWUxgTnrXPFy+UAhjJ/SC+9YHBqsFcCT
+ q9X4rt5aTvKdYCS6DrT1hDUWkFY5FJAj24CzSmUaFBN4aXHbFQ5ooLpYN g==;
+X-CSE-ConnectionGUID: VktueslcSSW09Dj96dAaDw==
+X-CSE-MsgGUID: z9FOK4KBS1GC5i4Kl2RIZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="76857198"
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="76857198"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2026 04:56:45 -0700
+X-CSE-ConnectionGUID: ZOiDJ6ixRHiUa7YL8S+FLg==
+X-CSE-MsgGUID: ocpg29UMQqy5erN8kXzBUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; d="scan'208";a="252433166"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2026 04:56:42 -0700
+Date: Fri, 10 Apr 2026 13:56:40 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: Harshdeep Dhatt <harshdeepdhatt@gmail.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Simona Vetter <simona.vetter@ffwll.ch>, rob.clark@oss.qualcomm.com,
+ igt-dev@lists.freedesktop.org, lumag@kernel.org,
+ Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_kms: Identify writeback connectors in msm
+ driver on android
+Message-ID: <20260410115640.kgykepdeomc4rgl2@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Harshdeep Dhatt <harshdeepdhatt@gmail.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Simona Vetter <simona.vetter@ffwll.ch>, rob.clark@oss.qualcomm.com,
+ igt-dev@lists.freedesktop.org, lumag@kernel.org,
+ Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+References: <8e61be678da46c7ec762d9d4c3069ce141d7aea1@intel.com>
+ <20260408162505.2131099-1-harshdeepdhatt@gmail.com>
+ <910f940a2aa6ba76976e9b8d1eb4c7171c3a1a05@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
- =?utf-8?q?-g-t=2C1/1=5D_lib/xe/xe=5Feudebug=3A_Remove_unnecessary_debug_mes?=
- =?utf-8?q?sage?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jan Sokolowski" <jan.sokolowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Apr 2026 11:46:05 -0000
-Message-ID: <177582156590.451162.8536435608730510513@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260410081044.783673-1-jan.sokolowski@intel.com>
-In-Reply-To: <20260410081044.783673-1-jan.sokolowski@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <910f940a2aa6ba76976e9b8d1eb4c7171c3a1a05@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,167 +82,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5864737241547646599==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Jani,
+On 2026-04-08 at 20:21:44 +0300, Jani Nikula wrote:
+> On Wed, 08 Apr 2026, Harshdeep Dhatt <harshdeepdhatt@gmail.com> wrote:
+> > Thanks for the feedback.
+> >
+> > Yes, this quirk is specifically for the downstream MSM DRM driver used on
+> > Android devices. The upstream MSM driver does not need this, and the intent
+> > is not to modify or affect upstream MSM behavior in any way.
+> >
+> > The goal here is to allow IGT to run on Qualcomm-based Android platforms,
+> > which currently expose writeback connectors differently (as VIRTUAL
+> > connectors with a custom "FB_ID" property). Without assigning a writeback
+> > FB, the driver rejects the atomic commit, causing several IGT tests to fail
+> > early.
 
-== Series Details ==
+Why is it different from mainstream Linux?
+imho better way would be to bring that changes to upstream MSM driver
+or just fork IGT source for your testing purposes.
 
-Series: series starting with [i-g-t,1/1] lib/xe/xe_eudebug: Remove unnecessary debug message
-URL   : https://patchwork.freedesktop.org/series/164677/
-State : success
+> >
+> > All of the logic in this patch is fully isolated behind detection of the
+> > downstream Android MSM driver (`"msm_drm"`). Upstream MSM continues to use
+> > the existing code paths unchanged.
+> >
+> > IGT’s documentation states that it aims to be a universal test suite for
+> > DRM/KMS drivers on Linux *and similar platforms*. Supporting the downstream
+> > MSM driver helps extend IGT coverage to a widely deployed class of devices
+> > without impacting upstream users.
+> >
+> > If it would be preferable, I can restructure this into a dedicated
+> > “msm-android quirk” helper or move the detection/handling into a separate
+> > file so that the core paths remain untouched. 
+> >
+> > This keeps all non-upstream behavior contained in one place, avoids
+> > polluting the main code paths, and provides a maintainable structure for
+> > any future quirks that may be needed for other platforms. Upstream MSM
+> > remains unaffected, and the quirk only activates when running on the
+> > downstream Android MSM driver.
+> >
+> > I’m happy to adjust the approach based on your guidance.
+> 
+> Cc'd some more folks.
+> 
+> As a contributor, I'm not very fond of the idea of tiptoeing around code
+> in IGT that caters for some downstream vendor kernels. I'm not going to
+> go hunting for those sources. Hardly anyone will.
+> 
+> I'm not an IGT maintainer. I'm not making decisions on what is, and is
+> not, acceptable new maintenance burden to take on.
+> 
+> But the maintainers do have a decision to make. The options are to
+> support either 0 or N downstream kernels. If you take one, you can't
+> reasonably refuse anything after that. Even if the patch at hand is
+> benign, the precedent it sets is emphatically not.
+> 
+> 
+> BR,
+> Jani.
+> 
+> 
+> -- 
+> Jani Nikula, Intel
 
-== Summary ==
+Added few more KMS devs on Cc
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
 
-CI Bug Log - changes from IGT_8852 -> IGTPW_14961
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/index.html
-
-Participating hosts (42 -> 37)
-------------------------------
-
-  Missing    (5): bat-adlp-9 fi-snb-2520m fi-pnv-d510 bat-adls-6 bat-dg2-13 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14961 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-rpls-4:         [PASS][1] -> [DMESG-WARN][2] ([i915#13400])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-mtlp-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/bat-mtlp-8/igt@i915_selftest@live.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-9:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8852 -> IGTPW_14961
-  * Linux: CI_DRM_18303 -> CI_DRM_18311
-
-  CI-20190529: 20190529
-  CI_DRM_18303: 7fa61e7003dda66c77b7f63a555658d8fb10bacf @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18311: 645a9910880f44919269478accf620dd33cb2656 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14961: 14961
-  IGT_8852: 8852
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/index.html
-
---===============5864737241547646599==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/1] lib/xe/xe_eudebug: Remove unnecessary debug message</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164677/">https://patchwork.freedesktop.org/series/164677/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8852 -&gt; IGTPW_14961</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/index.html</p>
-<h2>Participating hosts (42 -&gt; 37)</h2>
-<p>Missing    (5): bat-adlp-9 fi-snb-2520m fi-pnv-d510 bat-adls-6 bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14961 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8852/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14961/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8852 -&gt; IGTPW_14961</li>
-<li>Linux: CI_DRM_18303 -&gt; CI_DRM_18311</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18303: 7fa61e7003dda66c77b7f63a555658d8fb10bacf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18311: 645a9910880f44919269478accf620dd33cb2656 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14961: 14961<br />
-  IGT_8852: 8852</p>
-
-</body>
-</html>
-
---===============5864737241547646599==--
+Regards,
+Kamil
