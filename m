@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEFB6F531CA
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 20:01:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7932F531CB
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 20:17:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 86D2210E031;
-	Mon, 13 Apr 2026 20:01:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B35710E52D;
+	Mon, 13 Apr 2026 20:17:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GYtbowUW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WpM4TxZe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A73C10E031
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 20:00:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2C2A10E52D
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 20:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776110438; x=1807646438;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=aXbjagnH1myPJdkbRMRC4w2XDZMY56w5aIkYMlOXFVg=;
- b=GYtbowUWV7Vv7Ps3LjUL2lJn2J2bwkdIsOPsld8+Jp7m+0NjWyiEr8V7
- uyH77MtVI8tf04uDl7x4pTUbS9ZTBDZfzKI3aKDfp9P/0DjtBl3Ve8q4G
- DJTfegxmRIcK33QqoWWWBy3fuSr+Ld3fhI8DqAg+M9kDUFxDCZQQVvcW1
- Pbn3x8kqOf8Fugze95BjC59mMWeWSh+T4U2jkXlDzXQPJ9wKbNAboV8ta
- q8xAP/vd0RlVACjXNSnnq1H7B+8ggv1vNLMdOvYk37NvkeHdC8j/wVL06
- Ulw4xqgThdjd+oTs+hdeMzDnpLqQT3Fs8rBUkHGyEk79NZPspD0W5LaTw Q==;
-X-CSE-ConnectionGUID: ZubjQErhSv2UJaRJ7Zw0mQ==
-X-CSE-MsgGUID: kjwkW8cgTKqYfuUISFkmLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="87357150"
-X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="87357150"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Apr 2026 13:00:38 -0700
-X-CSE-ConnectionGUID: Ll7NEqs4TP2HZR2DFhRvrQ==
-X-CSE-MsgGUID: kbZ7xW6ETPevyCR1OLaOPA==
+ t=1776111458; x=1807647458;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=h1YvIvukKhW8DHP15e3YlWPIi64sCR7d+NVuKk2arTo=;
+ b=WpM4TxZe4tWwTSbNyEFt9LiA8sQbgFuSNZuqvD7y29/8xedyChPBHoYv
+ ACfF7ZlzNP8DTlL0qmcy6REKgccxEM0OGh08U5Wlk/tqUN4sw/enb2RX4
+ zKHOKCE5L20rgwqRiY1pHBlEFWv2zOagowOvgqbohIn1dm9RGJUpicbpE
+ Gx7iXs/Eb4391inpUXQmdbgaxrchBDLN9pivV5fBvIzRf/htFin6Ucj9C
+ JWdr8LzQWzFQy3iGGR75iJrZbO8L3rkAjrtOVZfQqkYermAJ6C4cyVJv2
+ oPON6dfr0H8yKW0yOau5AIpyglOlGsJaNzjpPI6e+4C8gwRFTXRjlmsLl g==;
+X-CSE-ConnectionGUID: gz5McnivQkSKjgXVR1pQgQ==
+X-CSE-MsgGUID: WaZkD+2MRYqYXV9lP13swA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="80918897"
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="80918897"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Apr 2026 13:17:37 -0700
+X-CSE-ConnectionGUID: yFuINViTQ6WO6/ttvwAkvg==
+X-CSE-MsgGUID: TIhx8r2uSBS4kL1XbQ/GHA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="234860997"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.245.97])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Apr 2026 13:00:37 -0700
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="226721244"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.10])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Apr 2026 13:17:35 -0700
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 3/3] tests/kms: Use for_each_crtc_with_valid_output()
-Date: Mon, 13 Apr 2026 23:00:21 +0300
-Message-ID: <20260413200021.29485-4-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260413200021.29485-1-ville.syrjala@linux.intel.com>
-References: <20260413200021.29485-1-ville.syrjala@linux.intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+Subject: [PATCH i-g-t v3 0/5] RFC: Add attachments support
+Date: Mon, 13 Apr 2026 22:17:23 +0200
+Message-ID: <20260413201722.808673-7-zbigniew.kempczynski@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,187 +71,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+This series introduces support for hook/test written attachments.
+It is somehow limited and stiff but allows to write anything test/hook
+wants in attachments directory. File names which occured in attachments
+directory are added to results.json.
 
-A few tests are doing nested for_each_crtc() and
-for_each_valid_output_on_crtc() loops. This is basically
-the same as for_each_crtc_with_valid_output(), so just
-use that instead. This drops the indentation by two levels,
-which is nice.
+Series targets our need to include guc logs for failed tests especially
+in the point of time when it occurs.
 
-Note that the original code had the crtc as the outer loop
-and output as the inner loop, whereas for_each_crtc_with_valid_output()
-does it the other way around. I don't think the difference
-should matter here.
+v2: - added clearing of attachments dir in overwrite mode
+    - guc-log hook script is now installed to igt datadir/hooks dir
+    - added hook-exec-allowlist to selectively execute hook scripts
+v3: - drop hook-exec-allowlist in runner, now scripts are filtering
+      allowlist on their own
+    - add support for attachments in recursive directories
 
-And while at it, rename the 'crtc' variable to 'crtc1'
-to match the naming of the corresponding output variables.
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/kms_display_modes.c  | 61 +++++++++++++++---------------------
- tests/kms_plane_multiple.c | 63 +++++++++++++++-----------------------
- 2 files changed, 49 insertions(+), 75 deletions(-)
+Zbigniew Kempczyński (5):
+  runner: Rename dirfd to avoid clash with dirfd()
+  runner: Create attachments directory to use by hooks
+  scripts/hooks: Example guc log copy script and allowlist
+  runner/resultgen: Add json array create/get helper
+  runner/resultgen: Insert attachments list into results.json
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index 76e73152a2ab..d8aae4256122 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -178,49 +178,36 @@ static void run_extendedmode_basic(data_t *data, igt_crtc_t *crtc1,
- }
- 
- static void run_extendedmode_test(data_t *data) {
--	igt_crtc_t *crtc2;
--	igt_crtc_t *crtc;
- 	bool sim_flag = igt_run_in_simulation();
-+	igt_crtc_t *crtc1, *crtc2;
- 	igt_output_t *output1, *output2;
- 	igt_display_t *display = &data->display;
- 
- 	igt_display_reset(display);
- 
--	for_each_crtc(display, crtc) {
--		for_each_valid_output_on_crtc(display,
--					      crtc,
--					      output1) {
--
--			for_each_crtc(display, crtc2) {
--				if (crtc == crtc2)
--					continue;
--
--				for_each_valid_output_on_crtc(display, crtc2, output2) {
--					if (output1 == output2)
--						continue;
--
--					igt_display_reset(display);
--
--					igt_output_set_crtc(output1,
--							    crtc);
--					igt_output_set_crtc(output2,
--							    crtc2);
--
--					if (!intel_pipe_output_combo_valid(display))
--						continue;
--
--					igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
--						      igt_crtc_name(crtc),
--						      igt_output_name(output1),
--						      igt_crtc_name(crtc2),
--						      igt_output_name(output2))
--						run_extendedmode_basic(data,
--								       crtc,
--								       output1,
--								       crtc2,
--								       output2);
--				}
--			}
-+	for_each_crtc_with_valid_output(display, crtc1, output1) {
-+		for_each_crtc_with_valid_output(display, crtc2, output2) {
-+			if (crtc1 == crtc2)
-+				continue;
-+
-+			if (output1 == output2)
-+				continue;
-+
-+			igt_display_reset(display);
-+
-+			igt_output_set_crtc(output1, crtc1);
-+			igt_output_set_crtc(output2, crtc2);
-+
-+			if (!intel_pipe_output_combo_valid(display))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
-+				      igt_crtc_name(crtc1), igt_output_name(output1),
-+				      igt_crtc_name(crtc2), igt_output_name(output2))
-+				run_extendedmode_basic(data,
-+						       crtc1, output1,
-+						       crtc2, output2);
-+
- 			/*
- 			 * In simulation env, only run the test once with a
- 			 * single valid pipe/output pair instead of all combos.
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 55cee260d01f..0d338eeb5acb 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -524,8 +524,7 @@ static void test_plane_position_2_display(data_t *data, igt_crtc_t *crtc1,
- 
- static void run_2_display_test(data_t *data, uint64_t modifier, const char *name)
- {
--	igt_crtc_t *crtc2;
--	igt_crtc_t *crtc;
-+	igt_crtc_t *crtc1, *crtc2;
- 	igt_output_t *output1, *output2;
- 	igt_display_t *display = &data->display;
- 
-@@ -534,42 +533,30 @@ static void run_2_display_test(data_t *data, uint64_t modifier, const char *name
- 
- 	igt_display_reset(display);
- 
--	for_each_crtc(display, crtc) {
--		for_each_valid_output_on_crtc(display,
--					      crtc,
--					      output1) {
--			for_each_crtc(display, crtc2) {
--				if (crtc == crtc2)
--					continue;
--
--				for_each_valid_output_on_crtc(display, crtc2, output2) {
--					if (output1 == output2)
--						continue;
--
--					igt_display_reset(display);
--
--					igt_output_set_crtc(output1,
--							    crtc);
--					igt_output_set_crtc(output2,
--							    crtc2);
--
--					if (!intel_pipe_output_combo_valid(display))
--						continue;
--
--					igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
--						       igt_crtc_name(crtc),
--						       output1->name,
--						       igt_crtc_name(crtc2),
--						       output2->name)
--						test_plane_position_2_display(data,
--									      crtc,
--									      crtc2,
--									      output1, output2,
--									      modifier);
--
--					test_fini_2_display(data);
--				}
--			}
-+	for_each_crtc_with_valid_output(display, crtc1, output1) {
-+		for_each_crtc_with_valid_output(display, crtc2, output2) {
-+			if (crtc1 == crtc2)
-+				continue;
-+
-+			if (output1 == output2)
-+				continue;
-+
-+			igt_display_reset(display);
-+
-+			igt_output_set_crtc(output1, crtc1);
-+			igt_output_set_crtc(output2, crtc2);
-+
-+			if (!intel_pipe_output_combo_valid(display))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
-+				      igt_crtc_name(crtc1), output1->name,
-+				      igt_crtc_name(crtc2), output2->name)
-+				test_plane_position_2_display(data,
-+							      crtc1, crtc2,
-+							      output1, output2,
-+							      modifier);
-+			test_fini_2_display(data);
- 		}
- 	}
- }
+ lib/igt_hook.c                    |  4 ++
+ runner/executor.c                 | 87 +++++++++++++++++++++++++++----
+ runner/executor.h                 |  2 +
+ runner/resultgen.c                | 77 +++++++++++++++++++++++++++
+ scripts/hooks/guc_copy.allowlist  |  2 +
+ scripts/hooks/guc_copy_on_fail.sh | 47 +++++++++++++++++
+ scripts/meson.build               |  3 ++
+ 7 files changed, 213 insertions(+), 9 deletions(-)
+ create mode 100644 scripts/hooks/guc_copy.allowlist
+ create mode 100755 scripts/hooks/guc_copy_on_fail.sh
+
 -- 
-2.52.0
+2.43.0
 
