@@ -4,57 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AA9BEBFD16
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 08:46:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5472EBFD22
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 09:21:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1482010E37E;
-	Mon, 13 Apr 2026 08:46:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C43710E39B;
+	Mon, 13 Apr 2026 09:21:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bb3qNwqD";
+	dkim=pass (2048-bit key; unprotected) header.d=lankhorst.se header.i=@lankhorst.se header.b="Q+Fx6W0J";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8FF9D10E37E
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 08:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776069951; x=1807605951;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/1NknvllpG8YvR/j+0muB0NB6qLS/nmxlpj/T+DlLrU=;
- b=Bb3qNwqD/fvBCWuSfrHDoKrw5ZxyJoPqFfCO8a6Xd3jWAfKu++PzXK2G
- mNejvEqeMiGWsATfRI0qF2N+yz1F1tOkWMRTfWIwNp0if3r69REsxHOfB
- A+ya4eJGu1S69iyI+vBOjyNT5Yu2EXKpAQb8WClq8hvCM0QG6yvIB7cUh
- uSwTvg+vRx0tKNFbUSBwotRS4CYNCQg6xeIeCX66VHb/lu48kXGR/9P2r
- NYE6c4ootUZqDNvvuC+ozLOZMCPRwOUTGdXkpjK1lXFsgLPmdfPibRXLK
- epCS0yP7GZXfXSBYBWWHazaaMyjagR+hgH2yo7Xv4foXhqMCiKkcLNiqY A==;
-X-CSE-ConnectionGUID: k7tlCsvmQimWaHvwBUe6oA==
-X-CSE-MsgGUID: kpd9MbI0T56+TltPx5IsGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="76961620"
-X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; d="scan'208";a="76961620"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Apr 2026 01:45:50 -0700
-X-CSE-ConnectionGUID: qcWgp13OTeCkoKIc7iNe5g==
-X-CSE-MsgGUID: L2td+0+bSumPOplLqpwsxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; d="scan'208";a="260170900"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
- ([10.245.244.235])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Apr 2026 01:45:49 -0700
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH i-g-t v2] tests/intel/kms_busy: Verify display reset happened
-Date: Mon, 13 Apr 2026 11:45:45 +0300
-Message-ID: <20260413084545.2491-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260409200924.5409-1-ville.syrjala@linux.intel.com>
-References: <20260409200924.5409-1-ville.syrjala@linux.intel.com>
+Received: from lankhorst.se (unknown [141.105.120.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A997210E3A2
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 09:21:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
+ s=default; t=1776072070;
+ bh=XSCcnjZOGFKWOPuJN/NtzfrqY424XiLQHnsf7H7mCqw=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=Q+Fx6W0Jrva0JYTgRfn7fBs1XgG54lWu2Hvu1eyWddZ0p9Sh18/7AryNYsJ1VZ0Xv
+ nv0wOcZ9m5OyMY/o2Z12T9T0Qw/gmJPkLI6IliQyjDH48r5tJ7Z2Pw+l4Hwuv9q+Vm
+ Lw/6lCKvlQ2ZTWm4NXJk9yj3+x0lbXQP4OXkKlteSWrwj9LXrNw+S6ome0MULLpfHJ
+ kddGqF4/x9Y6Z1e9AWB5tVkW77/Z332uJLWvEv/BEalW2ombSCGu7P3lqOujcxC6G/
+ ZpPFQ55F+rv7XCX/EHBnUa2ijqsXFNJbjx3ELOPK5sj40Ds3cNa/Wy23aQFMZPqB3K
+ pu/7DpOSG+DMA==
+Message-ID: <c60ad161-ae0a-47a3-acf0-85a517f6199e@lankhorst.se>
+Date: Mon, 13 Apr 2026 11:21:09 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier when
+ supported
+To: "B, Jeevan" <jeevan.b@intel.com>,
+ "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20260316033807.24078-1-jeevan.b@intel.com>
+ <abgWhvmToId2i7mj@intel.com>
+ <DM4PR11MB6312386897459B61FF1CC3BA9040A@DM4PR11MB6312.namprd11.prod.outlook.com>
+ <7b527da4-787f-4623-9bed-f574daec7fb4@intel.com>
+ <DM4PR11MB6312D0A1A5310AF1ECBF47EB904EA@DM4PR11MB6312.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <DM4PR11MB6312D0A1A5310AF1ECBF47EB904EA@DM4PR11MB6312.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,76 +59,102 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Hey,
 
-Use the new "intel_display_reset_count" debugfs file to confirm that the
-kernel did in fact perform the display reset.
+My thoughts at the end, I think the focus on linear formats is misguided.
 
-v2: Give the file an "intel_" namespace (Jani)
-    Don't leak the debugfs dirfd
+Den 2026-03-18 kl. 05:19, skrev B, Jeevan:
+> Hi Ramanaidu,
+> 
+>  
+> 
+> Apart from set_fb_on_crtc I don’t think we need to add this change anywhere else, There are few fb creation happening for cursor.
+> 
+>  
+> 
+> Thanks
+> 
+> Jeevan B
+> 
+>  
+> 
+> *From:*Naladala, Ramanaidu <ramanaidu.naladala@intel.com>
+> *Sent:* Wednesday, March 18, 2026 1:14 AM
+> *To:* B, Jeevan <jeevan.b@intel.com>; Ville Syrjälä <ville.syrjala@linux.intel.com>; Murthy, Arun R <arun.r.murthy@intel.com>
+> *Cc:* igt-dev@lists.freedesktop.org
+> *Subject:* Re: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier when supported
+> 
+>  
+> 
+> ++ Arun
+> 
+> Hi Ville,
+> 
+> On 3/16/2026 10:57 PM, B, Jeevan wrote:
+> 
+>         -----Original Message-----
+> 
+>         From: Ville Syrjälä <ville.syrjala@linux.intel.com> <mailto:ville.syrjala@linux.intel.com>
+> 
+>         Sent: Monday, March 16, 2026 8:15 PM
+> 
+>         To: B, Jeevan <jeevan.b@intel.com> <mailto:jeevan.b@intel.com>
+> 
+>         Cc: igt-dev@lists.freedesktop.org <mailto:igt-dev@lists.freedesktop.org>; Naladala, Ramanaidu
+> 
+>         <ramanaidu.naladala@intel.com> <mailto:ramanaidu.naladala@intel.com>
+> 
+>         Subject: Re: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier when
+> 
+>         supported
+> 
+>          
+> 
+>         On Mon, Mar 16, 2026 at 09:08:07AM +0530, Jeevan B wrote:
+> 
+>             While creating the framebuffer, prefer tile4 when it is supported
+> 
+>             instead of always using linear. Fall back to linear if tile4 is not
+> 
+>             available.
+> 
+>          
+> 
+>         Why?
+> 
+>     On Xe platforms, using the linear modifier takes longer to prepare and submit a flip compared to tiled modifiers. 
+> 
+>     On HRR panels, the available frame time is small, and this delay can cause flips to be submitted in the Evasion region, 
+> 
+>     leading to sequence mismatches.
+> 
+>  
+> 
+> Adding some points:
+> 
+> XE does not include memory optimizations for linear surfaces, which leads to higher processing time for linear buffers. Consequently, linear stress tests are intermittently failing.
 
-Cc: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/intel/kms_busy.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+I've been working on GGTT and pinning. The problem with linear pinning is
+that you pin the entire FB into GGTT, using uncached writes.
 
-diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
-index e82380276666..039cc6ae8dab 100644
---- a/tests/intel/kms_busy.c
-+++ b/tests/intel/kms_busy.c
-@@ -35,6 +35,7 @@
- 
- #include "i915/gem.h"
- #include "igt.h"
-+#include "igt_sysfs.h"
- 
- /**
-  * SUBTEST: basic
-@@ -413,6 +414,18 @@ static void gpu_engines_restore_timeouts(int fd, int num_engines, const struct g
- 		gem_engine_properties_restore(fd, &props[i]);
- }
- 
-+static uint32_t display_reset_count(int drm_fd)
-+{
-+	uint32_t count;
-+	int dir;
-+
-+	dir = igt_debugfs_dir(drm_fd);
-+	count = igt_sysfs_get_u32(dir, "intel_display_reset_count");
-+	close(dir);
-+
-+	return count;
-+}
-+
- const char *help_str =
- 	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n";
- 
-@@ -549,16 +562,22 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 					continue;
- 
- 				igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
--					if (tests[i].reset)
-+					uint32_t reset_count_pre = 0;
-+
-+					if (tests[i].reset) {
- 						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 1);
-+						reset_count_pre = display_reset_count(display.drm_fd);
-+					}
- 
- 					test_hang(&display,
- 						  crtc,
- 						  output,
- 						  tests[i].modeset, tests[i].hang_newfb);
- 
--					if (tests[i].reset)
-+					if (tests[i].reset) {
- 						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 0);
-+						igt_assert_neq(reset_count_pre, display_reset_count(display.drm_fd));
-+					}
- 				}
- 			}
- 
--- 
-2.52.0
+Compositors are already aware that linear framebuffers are slow on all
+drivers, not just xe, and will avoid using them at all costs.
 
+The tests should similarly avoid using linear framebuffers, as they will
+not be representive of real workloads.
+Any non-linear modifier is good, 4-tiled probably bst.
+
+If you keep using linear, the XRGB101010 format on a 4K monitor
+(3840x2160) would need to over 8000 uncached writes in a row into GGTT,
+stalling synchronously each time on the completion of the write by the
+display hardware.
+This only gets worse when you use other formats with the linear modifier.
+
+If there is still a problem when using tiled modifiers, and tests
+continue to fail, I have some ideas to make DPT even faster, without
+requiring unbound usage of GGTT.
+
+Acked-by: Maarten Lankhorst <dev@lankhorst.se>
+
+Kind regards,
+~Maarten Lankhorst
