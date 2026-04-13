@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D00FBF531CB
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 20:17:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F3DDF531CA
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 20:18:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 801A710E52D;
-	Mon, 13 Apr 2026 20:17:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF47210E52D;
+	Mon, 13 Apr 2026 20:18:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OK1coiHn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QmeTzPpn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A68F10E52D
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 20:17:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5BDE10E530
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 20:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776111465; x=1807647465;
+ t=1776111469; x=1807647469;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=B7M6i1Ll7iG8TWrs2zADlLOj/HU994d6kYB1XvnXzno=;
- b=OK1coiHn+XYTDR3pyZt/7hxufZei7nvAke65CSKnuyk+sxkz7HIlYXm/
- /af/W+p7OSAYDDML+AeYtvGft7/eQl8ja5P2ydRU+IKgSs6ZLYnh1hIMT
- zUIETb6poIYl1Lp9FMDR41I5bZvuWtB6lfAZQ9YEkKvt+4d/ewNp8dReZ
- cMY+0TxtEFgaQHxBJ/xIVaxMpnjOvZlV7vWsyXJ2W+LU9Z1H6E7hIeIqQ
- QxcUkGUf/cpsFEGcp1oYr9Q8rOaWkqsPc7h00JBuBWAlpFp8IgdSBFSSG
- hG6nfmC1bXj5woizG6RM8S22U8R/B2+/y+oMymTjqByCqBt5tHtIQb86y w==;
-X-CSE-ConnectionGUID: VPk6gmVeSOiAra2gY7hrpA==
-X-CSE-MsgGUID: arx3g8utStqKIurEh9oKcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="80918919"
-X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="80918919"
+ bh=pGpgB0RCnyU95xwnC/heIchk7Cu46yi5/XpDqSskGqw=;
+ b=QmeTzPpnC9dS7Q4k3aplw8QXpLRSNK5/0CXytG9x+TrSeU+m0aw97CdO
+ qgb6o4/EJLtFRuZa8le+2+6/JHeycVlEXuJZgrN8W/xddYLvw9wChL1WA
+ zxhCgLCjheJjLEfOQ8genfC14Y6H+XFG/qHVHgUtQxJWCgrEWCNx8HfUQ
+ +zD6Ygo7eVko6PYQJPkqlbUiPqTMZb/8lRK73Pi9pmgTGbpZA80+QpOvd
+ +dJjVN42xNADm5dzy4iZcITzz0+SXKnWTftHwfBsGneLvE1t4L7QeoWCa
+ 0Fp+vGfytqcPnhWvyUQPeLKqTwaXf4bdMqTNPP/PnxeCogrcEqrJ324ij Q==;
+X-CSE-ConnectionGUID: 52RBDBPIT/WFMr/aTlZfGg==
+X-CSE-MsgGUID: ALjO0bf6QPOei6EdlXT+yA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="80918921"
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="80918921"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Apr 2026 13:17:45 -0700
-X-CSE-ConnectionGUID: sQye8fpyQFSkHxlFO638OA==
-X-CSE-MsgGUID: LtzbRelgRSiiK/ZaGk/X/w==
+ 13 Apr 2026 13:17:49 -0700
+X-CSE-ConnectionGUID: LqwVA31qSiWjrWqZKXbiEg==
+X-CSE-MsgGUID: kidlUbM7QiSekpMaHw9aJA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="229816443"
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="229816446"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.10])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Apr 2026 13:17:44 -0700
+ 13 Apr 2026 13:17:48 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>,
  Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: [PATCH i-g-t v3 2/5] runner: Create attachments directory to use by
- hooks
-Date: Mon, 13 Apr 2026 22:17:25 +0200
-Message-ID: <20260413201722.808673-9-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v3 3/5] scripts/hooks: Example guc log copy script and
+ allowlist
+Date: Mon, 13 Apr 2026 22:17:26 +0200
+Message-ID: <20260413201722.808673-10-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260413201722.808673-7-zbigniew.kempczynski@intel.com>
 References: <20260413201722.808673-7-zbigniew.kempczynski@intel.com>
@@ -73,189 +73,104 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Results parsing is currently limited to few predefined files.
+We need to explicitly extract guc logs for failed tests so add hook
+script which does it after subtest/dynsubtest execution. As copying to
+attachments takes a lot of time do it only for failing subtests.
 
-Create "attachments" directory and export full path of created directory
-to be used within hooks. From now on environment variable
-IGT_RUNNER_ATTACHMENTS_DIR become visible when igt_runner is used
-to execute tests. This env contains directory where subtests/dynsubtests
-may write auxiliary files which finally be included in results.json.
+Adding this hook script to CI will extend execution time much and
+using allowlist is necessary. Instead of allowlist argument in the
+runner (previous attempt) now script filters such list on its own and
+decides when to move forward and do some post-test actions. Such
+approach is more flexible but moves decision to script what causes
+it is more prone buggy.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Ryszard Knop <ryszard.knop@intel.com>
 Cc: Krzysztof Karas <krzysztof.karas@intel.com>
 ---
-v2: simplify attachment dirname concatenation (Kamil)
-    remove files in attachments dir when overwrite is set (Kamil)
-v3: unify 'attdir*' variables (Krzysztof)
-    do recursive removal in attachments directories (Gustavo)
+v2: install hook to datadir/hooks
+v3: migrate allowlist from runner to script
 ---
- lib/igt_hook.c    |  4 +++
- runner/executor.c | 75 +++++++++++++++++++++++++++++++++++++++++++++--
- runner/executor.h |  2 ++
- 3 files changed, 78 insertions(+), 3 deletions(-)
+ scripts/hooks/guc_copy.allowlist  |  2 ++
+ scripts/hooks/guc_copy_on_fail.sh | 47 +++++++++++++++++++++++++++++++
+ scripts/meson.build               |  3 ++
+ 3 files changed, 52 insertions(+)
+ create mode 100644 scripts/hooks/guc_copy.allowlist
+ create mode 100755 scripts/hooks/guc_copy_on_fail.sh
 
-diff --git a/lib/igt_hook.c b/lib/igt_hook.c
-index f86ed56f72..b8f25b6c7a 100644
---- a/lib/igt_hook.c
-+++ b/lib/igt_hook.c
-@@ -518,5 +518,9 @@ available to the command:\n\
- \n\
- Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
- when matching events and running hook commands.\n\
-+\n\
-+When executed by the igt_runner, environment IGT_RUNNER_ATTACHMENTS_DIR\n\
-+is passed additionally to the hook script. It contains directory where\n\
-+script may write additional attachments like guc logs, etc.\n\
- ", option_name);
- }
-diff --git a/runner/executor.c b/runner/executor.c
-index 1485b59d1f..af39b12aea 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -1,6 +1,7 @@
- #include <ctype.h>
- #include <errno.h>
- #include <fcntl.h>
-+#include <ftw.h>
- #ifdef ANDROID
- #include "android/glib.h"
- #else
-@@ -1779,17 +1780,22 @@ static int execute_next_entry(struct execute_state *state,
- 	int errpipe[2] = { -1, -1 };
- 	int socket[2] = { -1, -1 };
- 	int outfd, errfd, socketfd;
--	char name[32];
-+	char name[32], attname[32];
-+	char attdirname[PATH_MAX];
- 	pid_t child;
- 	int result;
- 	size_t idx = state->next;
- 
- 	snprintf(name, sizeof(name), "%zd", idx);
-+	snprintf(attname, sizeof(attname), "%zd/%s", idx, DIR_ATTACHMENTS);
- 	mkdirat(resdirfd, name, 0777);
-+	mkdirat(resdirfd, attname, 0777);
- 	if ((idirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
- 		errf("Error accessing individual test result directory\n");
- 		return -1;
- 	}
-+	snprintf(attdirname, sizeof(attdirname), "%s/%s",
-+		 settings->results_path, attname);
- 
- 	if (!open_output_files(idirfd, outputs, true)) {
- 		errf("Error opening output files\n");
-@@ -1870,6 +1876,7 @@ static int execute_next_entry(struct execute_state *state,
- 			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
- 		}
- 		setenv("IGT_SENTINEL_ON_STDERR", "1", 1);
-+		setenv("IGT_RUNNER_ATTACHMENTS_DIR", attdirname, 1);
- 
- 		execute_test_process(outfd, errfd, socketfd, settings, entry);
- 		/* unreachable */
-@@ -1948,9 +1955,61 @@ static int remove_file(int dirfd, const char *name)
- 	return unlinkat(dirfd, name, 0) && errno != ENOENT;
- }
- 
-+static int ftw_attachment_removal(const char *fpath, const struct stat *sb,
-+				  int typeflag, struct FTW *ftwbuf)
-+{
-+	(void)sb;
-+	(void)ftwbuf;
+diff --git a/scripts/hooks/guc_copy.allowlist b/scripts/hooks/guc_copy.allowlist
+new file mode 100644
+index 0000000000..04cb3f8298
+--- /dev/null
++++ b/scripts/hooks/guc_copy.allowlist
+@@ -0,0 +1,2 @@
++igt@xe_compute@compute-square
++igt@xe_exec_basic@once-basic@ccs0
+diff --git a/scripts/hooks/guc_copy_on_fail.sh b/scripts/hooks/guc_copy_on_fail.sh
+new file mode 100755
+index 0000000000..595cf5205e
+--- /dev/null
++++ b/scripts/hooks/guc_copy_on_fail.sh
+@@ -0,0 +1,47 @@
++#!/bin/bash
 +
-+	if (typeflag == FTW_F) {
-+		if (unlink(fpath)) {
-+			errf("Cannot remove file %s\n", fpath);
-+			return -1;
-+		}
-+	} else if (typeflag == FTW_DP) {
-+		if (rmdir(fpath)) {
-+			errf("Cannot remove directory %s\n", fpath);
-+			return -1;
-+		}
-+	} else {
-+		errf("Cannot remove %s (unsupported file type)\n", fpath);
-+		return -1;
-+	}
++# Hook script for copying guc.log.
++# Suggested usage with:
++# --hook 'post-subtest:scripts/hooks/guc_copy_on_fail.sh' --hook 'post-dyn-subtest:scripts/hooks/guc_copy_on_fail.sh'
 +
-+	return 0;
-+}
++# Copy only for failed subtests as this is time-consuming
++if [ "${IGT_HOOK_RESULT}" != "FAIL" ]; then
++	exit 0
++fi
 +
-+static bool clear_attachments_dir_recursively(int attdirfd)
-+{
-+	char attdirname[PATH_MAX];
-+	DIR *currdir;
-+	int ret;
++# Process and copy guc logs only for those specified in allowlist
++ALLOWLIST="guc_copy.allowlist"
++scriptdir=$(dirname $(realpath $0))
 +
-+	currdir = opendir(".");
-+	fchdir(attdirfd);
-+	getcwd(attdirname, sizeof(attdirname));
++if [ -z "$IGT_RUNNER_ATTACHMENTS_DIR" ]; then
++	echo "Missing IGT_RUNNER_ATTACHMENTS_DIR env"
++	exit 0
++fi
 +
-+	/* Sanity check we're in attachments directory structure */
-+	if (!strstr(attdirname, DIR_ATTACHMENTS)) {
-+		errf("Cowardly refusing removing in directory which is not "
-+		     "attachments directory [currdir: %s]!\n", attdirname);
-+		ret = -1;
-+		goto out;
-+	}
++cd "$IGT_RUNNER_ATTACHMENTS_DIR"
 +
-+	ret = nftw(attdirname, ftw_attachment_removal, 4, FTW_PHYS | FTW_DEPTH);
++# Look for allowlist in following places:
++# 1. Try in IGT_HOOK_ALLOWLIST_DIR if this environment exists
++# 2. Try in <scriptdir>
 +
-+out:
-+	fchdir(dirfd(currdir));
-+	closedir(currdir);
++if [ ! -z "$IGT_HOOK_ALLOWLIST_DIR" ]; then
++	ALLOWLIST_PATH="${IGT_HOOK_ALLOWLIST_DIR}/${ALLOWLIST}"
++else
++	ALLOWLIST_PATH="${scriptdir}/${ALLOWLIST}"
++fi
 +
-+	return ret ? false : true;
-+}
++if [ ! -e "${ALLOWLIST_PATH}" ]; then
++	exit 0
++fi
 +
- static bool clear_test_result_directory(int dirfd)
- {
--	int i;
-+	int i, attdirfd;
-+	int ret = true;
- 
- 	for (i = 0; i < _F_LAST; i++) {
- 		if (remove_file(dirfd, filenames[i])) {
-@@ -1960,7 +2019,16 @@ static bool clear_test_result_directory(int dirfd)
- 		}
- 	}
- 
--	return true;
-+	if ((attdirfd = openat(dirfd, DIR_ATTACHMENTS, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
-+		errf("Cannot open attachments directory\n");
-+		return false;
-+	}
++STNAME="${IGT_HOOK_TEST_FULLNAME}"
++echo "${STNAME}" | grep -q -f "${ALLOWLIST_PATH}"
++if [ $? -ne 0 ]; then
++	exit 0
++fi
 +
-+	ret = clear_attachments_dir_recursively(attdirfd);
-+	if (!ret)
-+		errf("Cannot clear attachments dir recursively\n");
++for log in $(find /sys/kernel/debug/dri -iname 'guc_log'); do
++	attout=$(echo ${log:23} | sed -e 's/\//_/g')
++	mkdir -p "${STNAME}"
++	cp "$log" "${STNAME}/${attout}"
++done
+diff --git a/scripts/meson.build b/scripts/meson.build
+index 6e64065c5e..2ce961898d 100644
+--- a/scripts/meson.build
++++ b/scripts/meson.build
+@@ -15,3 +15,6 @@ endif
+ igt_doc_script = find_program('igt_doc.py', required : build_testplan)
+ gen_rst_index = find_program('gen_rst_index', required : build_sphinx)
+ generate_iga64_codes = find_program('generate_iga64_codes')
 +
-+	return ret;
- }
- 
- static bool clear_old_results(char *path)
-@@ -2002,6 +2070,7 @@ static bool clear_old_results(char *path)
- 			close(dirfd);
- 			return false;
- 		}
-+
- 		close(resdirfd);
- 		if (unlinkat(dirfd, name, AT_REMOVEDIR)) {
- 			errf("Warning: Result directory %s contains extra files\n",
-diff --git a/runner/executor.h b/runner/executor.h
-index 3b1cabcf55..bc6ac80dc4 100644
---- a/runner/executor.h
-+++ b/runner/executor.h
-@@ -25,6 +25,8 @@ enum {
- 	_F_LAST,
- };
- 
-+#define DIR_ATTACHMENTS "attachments"
-+
- bool open_output_files(int dirfd, int *fds, bool write);
- bool open_output_files_rdonly(int dirfd, int *fds);
- void close_outputs(int *fds);
++install_data('hooks/guc_copy_on_fail.sh', install_dir : datadir / 'hooks')
++install_data('hooks/guc_copy.allowlist', install_dir : datadir / 'hooks')
 -- 
 2.43.0
 
