@@ -4,59 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA132EBFD28
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 09:44:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6F41EBFD36
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 10:28:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 732B810E3A7;
-	Mon, 13 Apr 2026 09:44:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6BFA610E32A;
+	Mon, 13 Apr 2026 10:28:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D0RWIOvg";
+	dkim=pass (2048-bit key; unprotected) header.d=lankhorst.se header.i=@lankhorst.se header.b="c7T/EHal";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA43A10E3A7
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 09:43:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776073440; x=1807609440;
- h=from:to:subject:in-reply-to:references:date:message-id:
- mime-version:content-transfer-encoding;
- bh=n5LWuLsoQ1tZaSt+aub/3yPDgU1aw+3F7OZFhIE2/Q8=;
- b=D0RWIOvgEyBunNIOqoZla2ti2qmbyxXeyMoIqq0TIJfOdzFE1vz786mT
- UbTPDCdTqRT1li/AqEQwd4zNZCxMS33M7ZtnoebGxjak+7gdOZx5cYemm
- 0uqwOAYzYBdmQscyVgSBNJ/tcwGDGQ+bTcfm9y/FkgiPoOTMX3AdKuJI2
- 5KDrhwP7EferaBxHdG/oQyhz5l8G75hDLHj2tCwRIbK1b6kuYu540WBdS
- VLAbmV8wKJcOf3femEt1z+tSNsKeFITqY3Zn/aGqyzNtyVa6AN2Z8tqVD
- lx+Qp7XgFf4qlw98ch5pqPeMUWRNnEOB4gcEzMD5vsc59E22PWGH7XcxW g==;
-X-CSE-ConnectionGUID: c6e9xnokQOCjzsA7OeKagw==
-X-CSE-MsgGUID: 1T2CaDGIQzGrNcp84gyxsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="80864969"
-X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="80864969"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Apr 2026 02:43:59 -0700
-X-CSE-ConnectionGUID: V0WA0FBvQ4qCIAeWaHSZ8Q==
-X-CSE-MsgGUID: PaV1sXg+SbGqfUFzb0Vnvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; d="scan'208";a="252927844"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.182])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Apr 2026 02:43:57 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2] tests/intel/kms_busy: Verify display reset
- happened
-In-Reply-To: <20260413084545.2491-1-ville.syrjala@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260409200924.5409-1-ville.syrjala@linux.intel.com>
- <20260413084545.2491-1-ville.syrjala@linux.intel.com>
-Date: Mon, 13 Apr 2026 12:43:54 +0300
-Message-ID: <276919d225ea11ee5187f581c3078520a80dcbfe@intel.com>
+Received: from lankhorst.se (unknown [141.105.120.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48B1B10E32A
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 10:28:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
+ s=default; t=1776076113;
+ bh=D6KSqActCiCcrn+lLF3OoHC5AMJZJqBoZnc3P0yzA3w=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=c7T/EHalyZWVm/HvCWHM9YxN1GX++Ktq2zePOO3qSC+c/LwXrbvvRGEU3/vSkmTzF
+ T53tNyg4fsuL+UMWyUQqRFxF3R8euEmpCw+iGO4xO7yAw+yHRAUyR5lVgwp0YGCJta
+ fIh+BIlRt4sxbuW/sphScgjE49uwVR3LqGmu++XfNbGVOxx2uwPvhHToxPJnid3KEs
+ eIk2zUIe1OSC4t1hw/B6IJKZ7vtV4JKMvNhypPPMguFysgzELw+1zYiie11OMgcDh3
+ UF3QIS85ONL1DabbMr1GHWuKSAaX+lpHLC9JBA8ZXUdcq3j8+3wsg+45VNxGBvMy4F
+ kPAn6waCa1ffw==
+Message-ID: <e26ffc22-41dd-4ad8-9415-b2628151a645@lankhorst.se>
+Date: Mon, 13 Apr 2026 12:28:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier when
+ supported
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: "B, Jeevan" <jeevan.b@intel.com>,
+ "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20260316033807.24078-1-jeevan.b@intel.com>
+ <abgWhvmToId2i7mj@intel.com>
+ <DM4PR11MB6312386897459B61FF1CC3BA9040A@DM4PR11MB6312.namprd11.prod.outlook.com>
+ <7b527da4-787f-4623-9bed-f574daec7fb4@intel.com>
+ <DM4PR11MB6312D0A1A5310AF1ECBF47EB904EA@DM4PR11MB6312.namprd11.prod.outlook.com>
+ <c60ad161-ae0a-47a3-acf0-85a517f6199e@lankhorst.se>
+ <ady3cgAzN2t-HCpH@intel.com>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <ady3cgAzN2t-HCpH@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,88 +62,131 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 13 Apr 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->
-> Use the new "intel_display_reset_count" debugfs file to confirm that the
-> kernel did in fact perform the display reset.
->
-> v2: Give the file an "intel_" namespace (Jani)
->     Don't leak the debugfs dirfd
->
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+Hey,
 
-Seems reasonable.
+Den 2026-04-13 kl. 11:29, skrev Ville Syrjälä:
+> On Mon, Apr 13, 2026 at 11:21:09AM +0200, Maarten Lankhorst wrote:
+>> Hey,
+>>
+>> My thoughts at the end, I think the focus on linear formats is misguided.
+> 
+> What's misguided is adding driver specific hacks to each and every
+> test. If we think that the default modifier used for most things
+> should be something other than linear, then we need to introduce
+> a proper driver agnostic mechanism tests can use to pick the preferred
+> modifier.
 
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+I think we should indeed try to abstract it so that it's not driver specific.
+Looking into igt_fb.c, there is already tiling support for VC4, amd, nouveau,
+xe and i915.
 
+We already specify all the parameters needed to determine the best tiling
+format when calling igt_create_fb, so the cleanest solution for IGT is
+likely adding a new IGT-specific modifier that igt_fb.c maps to the
+best performing tiled for this FB or fallbacks to linear.
 
-> ---
->  tests/intel/kms_busy.c | 23 +++++++++++++++++++++--
->  1 file changed, 21 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
-> index e82380276666..039cc6ae8dab 100644
-> --- a/tests/intel/kms_busy.c
-> +++ b/tests/intel/kms_busy.c
-> @@ -35,6 +35,7 @@
->=20=20
->  #include "i915/gem.h"
->  #include "igt.h"
-> +#include "igt_sysfs.h"
->=20=20
->  /**
->   * SUBTEST: basic
-> @@ -413,6 +414,18 @@ static void gpu_engines_restore_timeouts(int fd, int=
- num_engines, const struct g
->  		gem_engine_properties_restore(fd, &props[i]);
->  }
->=20=20
-> +static uint32_t display_reset_count(int drm_fd)
-> +{
-> +	uint32_t count;
-> +	int dir;
-> +
-> +	dir =3D igt_debugfs_dir(drm_fd);
-> +	count =3D igt_sysfs_get_u32(dir, "intel_display_reset_count");
-> +	close(dir);
-> +
-> +	return count;
-> +}
-> +
->  const char *help_str =3D
->  	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n=
-";
->=20=20
-> @@ -549,16 +562,22 @@ int igt_main_args("e", NULL, help_str, opt_handler,=
- NULL)
->  					continue;
->=20=20
->  				igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
-> -					if (tests[i].reset)
-> +					uint32_t reset_count_pre =3D 0;
-> +
-> +					if (tests[i].reset) {
->  						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test=
-", 1);
-> +						reset_count_pre =3D display_reset_count(display.drm_fd);
-> +					}
->=20=20
->  					test_hang(&display,
->  						  crtc,
->  						  output,
->  						  tests[i].modeset, tests[i].hang_newfb);
->=20=20
-> -					if (tests[i].reset)
-> +					if (tests[i].reset) {
->  						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test=
-", 0);
-> +						igt_assert_neq(reset_count_pre, display_reset_count(display.drm_fd=
-));
-> +					}
->  				}
->  			}
+The intended usecase of IGT is testing, so this would be the right way to
+handle this.
 
---=20
-Jani Nikula, Intel
+Kind regards,
+~Maarten Lankhorst
+
+> 
+>>
+>> Den 2026-03-18 kl. 05:19, skrev B, Jeevan:
+>>> Hi Ramanaidu,
+>>>
+>>>  
+>>>
+>>> Apart from set_fb_on_crtc I don’t think we need to add this change anywhere else, There are few fb creation happening for cursor.
+>>>
+>>>  
+>>>
+>>> Thanks
+>>>
+>>> Jeevan B
+>>>
+>>>  
+>>>
+>>> *From:*Naladala, Ramanaidu <ramanaidu.naladala@intel.com>
+>>> *Sent:* Wednesday, March 18, 2026 1:14 AM
+>>> *To:* B, Jeevan <jeevan.b@intel.com>; Ville Syrjälä <ville.syrjala@linux.intel.com>; Murthy, Arun R <arun.r.murthy@intel.com>
+>>> *Cc:* igt-dev@lists.freedesktop.org
+>>> *Subject:* Re: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier when supported
+>>>
+>>>  
+>>>
+>>> ++ Arun
+>>>
+>>> Hi Ville,
+>>>
+>>> On 3/16/2026 10:57 PM, B, Jeevan wrote:
+>>>
+>>>         -----Original Message-----
+>>>
+>>>         From: Ville Syrjälä <ville.syrjala@linux.intel.com> <mailto:ville.syrjala@linux.intel.com>
+>>>
+>>>         Sent: Monday, March 16, 2026 8:15 PM
+>>>
+>>>         To: B, Jeevan <jeevan.b@intel.com> <mailto:jeevan.b@intel.com>
+>>>
+>>>         Cc: igt-dev@lists.freedesktop.org <mailto:igt-dev@lists.freedesktop.org>; Naladala, Ramanaidu
+>>>
+>>>         <ramanaidu.naladala@intel.com> <mailto:ramanaidu.naladala@intel.com>
+>>>
+>>>         Subject: Re: [PATCH i-g-t] tests/kms_cursor_legacy: Prefer tile4 modifier when
+>>>
+>>>         supported
+>>>
+>>>          
+>>>
+>>>         On Mon, Mar 16, 2026 at 09:08:07AM +0530, Jeevan B wrote:
+>>>
+>>>             While creating the framebuffer, prefer tile4 when it is supported
+>>>
+>>>             instead of always using linear. Fall back to linear if tile4 is not
+>>>
+>>>             available.
+>>>
+>>>          
+>>>
+>>>         Why?
+>>>
+>>>     On Xe platforms, using the linear modifier takes longer to prepare and submit a flip compared to tiled modifiers. 
+>>>
+>>>     On HRR panels, the available frame time is small, and this delay can cause flips to be submitted in the Evasion region, 
+>>>
+>>>     leading to sequence mismatches.
+>>>
+>>>  
+>>>
+>>> Adding some points:
+>>>
+>>> XE does not include memory optimizations for linear surfaces, which leads to higher processing time for linear buffers. Consequently, linear stress tests are intermittently failing.
+>>
+>> I've been working on GGTT and pinning. The problem with linear pinning is
+>> that you pin the entire FB into GGTT, using uncached writes.
+>>
+>> Compositors are already aware that linear framebuffers are slow on all
+>> drivers, not just xe, and will avoid using them at all costs.
+>>
+>> The tests should similarly avoid using linear framebuffers, as they will
+>> not be representive of real workloads.
+>> Any non-linear modifier is good, 4-tiled probably bst.
+>>
+>> If you keep using linear, the XRGB101010 format on a 4K monitor
+>> (3840x2160) would need to over 8000 uncached writes in a row into GGTT,
+>> stalling synchronously each time on the completion of the write by the
+>> display hardware.
+>> This only gets worse when you use other formats with the linear modifier.
+>>
+>> If there is still a problem when using tiled modifiers, and tests
+>> continue to fail, I have some ideas to make DPT even faster, without
+>> requiring unbound usage of GGTT.
+>>
+>> Acked-by: Maarten Lankhorst <dev@lankhorst.se>
+>>
+>> Kind regards,
+>> ~Maarten Lankhorst
+> 
+
