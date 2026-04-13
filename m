@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A974BE9380A
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 02:30:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11FB1E9380B
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 02:32:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59C4C10E2F2;
-	Mon, 13 Apr 2026 02:30:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8578C10E2F2;
+	Mon, 13 Apr 2026 02:32:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ofd862RJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N+ZatK5n";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8549010E2F2
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 02:30:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B4E610E2F2
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 02:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776047421; x=1807583421;
+ t=1776047538; x=1807583538;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=qkNYUwQ/3tVk9MBLOrP+jWpMoO4z7y30apCwqNDQYrI=;
- b=Ofd862RJCnQ8zEfEcDxmKgvv4EXOH2jX5Bk1i2gZMXuWZFVBCpnZBeIH
- eWxTFFxHY1YJcfthtJY8VbEBvI90xukXFGy6ysGeG5F9ggCZh2FT6UJEf
- P1JjelimGAur2HhDE1Xr+1w4dzyZqIxeSjHObcMhA9HSOhM1s9OBk6k6k
- ai37EiGyJKeHOBg1KLVMBdnijMnibgooyP8EobtLGoOxrN1KifuWjaV5P
- i1BdXVtZrgiLxqBx3G0VOwEmHK/4NWiTp9AeT7aZffgBbjlfilocHpjOr
- cI+QRP8GRk2hJNEHLj7w7EpjyFoOfGAqCWp0AIRbYCU4H5RO631EpFMMY Q==;
-X-CSE-ConnectionGUID: urFt2lbERaCtzIYxwiTXbA==
-X-CSE-MsgGUID: DsRkc4b4Rlqc8g8Y92MRHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="102436537"
-X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; d="scan'208";a="102436537"
+ bh=BQM7kGC23RfnT2D6SzPJomqADYmSZF6BE0nzGXPBX8M=;
+ b=N+ZatK5nwjjzJq2XwiSR1d129DR9yqCfYSuITKh9edHkoknfHq4QXNNt
+ 9U0je/qr7lw5n6OW/b5PjPemATohjtJ+oCZ2nY37Hav5Hor5ziysfnhRU
+ URGMyrepLULb5/KPojxNeT+zMf77DguJgMYjtipc+jTI2XzY6kR7qZVvC
+ vtR4T6tTJRBVKKZg2v3tvbCd5vaX85O1blNAjhEovKF69/FxEqlz0Llug
+ N8A8da8PioMCAGefvy7GucSf/RbYNu6J+FBUcpWz8+YOgxMgFqjBWjDYu
+ Cc43YfcuMt2OGqZNzQRsNTltZg10l+2MkTy/+uCGOqygElbn6CP4xmgL3 g==;
+X-CSE-ConnectionGUID: YI4ig5WgRI6/gnImGlX3Bg==
+X-CSE-MsgGUID: YhcvKpv2QRmm+wxHJrrSzg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="102436670"
+X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; d="scan'208";a="102436670"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Apr 2026 19:30:20 -0700
-X-CSE-ConnectionGUID: HJyvPIBUSliSFiqLAuubJA==
-X-CSE-MsgGUID: DvMo5cpCQjmNKXBuW2yMyg==
+ 12 Apr 2026 19:32:17 -0700
+X-CSE-ConnectionGUID: IMrwIbSlS/ub9kHbp16wkA==
+X-CSE-MsgGUID: ySzz2TJsTMWEwEpCOkQa0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; d="scan'208";a="234580594"
+X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; d="scan'208";a="234580880"
 Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Apr 2026 19:30:20 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ 12 Apr 2026 19:32:17 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
  fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 12 Apr 2026 19:30:19 -0700
+ 15.2.2562.37; Sun, 12 Apr 2026 19:32:16 -0700
 Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Sun, 12 Apr 2026 19:30:19 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.4) by
+ 15.2.2562.37 via Frontend Transport; Sun, 12 Apr 2026 19:32:16 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.18) by
  edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 12 Apr 2026 19:30:19 -0700
+ 15.2.2562.37; Sun, 12 Apr 2026 19:32:16 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FaptOpP8gh4GYm5PlBoQ3hyh6+8SsJRtrruvjYNUKoBmxZMy5Nf8RM6LnHUf4X7ZXzPMGNRKFcPh10qIVSM7YQzNT3mq8OPyzqXTSO6lXPSnfPjuE8coDjsrHgRsF6EQtpzwTvlmMsCANoL2kJskg9TA2wPnwtW4583xkIOVZydaoFJFKKEAjTou6/RejrxyVJS51iuwo0hNDKaL6ZuA0IYpLSyGMOMoOI652M7gqEGiyOCNuJB5yTGEPHlG4Z0OH7ZBf96jgy4jS+XqmfN8YAcWDKmmyr1ic5pkyBya+HNHIyXt+bvFu7Xc7CRY5FHD6Y46Hv5D3pVs1YkIZ8ZXow==
+ b=EvdA6TB5oDhywsXEj5GaXdJl9IJvonTSKlI64JZpjp7gzw5S7nBMyhVRST126Ek+Axzc65mZmbjyLXqSbGEPIvrDS0rTUm43gMAkvGFRteC7o5c1l6o/ETnJHShEN8x0yZBzgC4NeFIEr475Atpg+kWefXPnxp/PSvr6gd5bLhbcEPzUNcY4WI21tNpWRVDZJOGoDBgkDNDEPhGQapSxobDA5N4oYuWhfKg3teDOU5CIWzp3Dba+du3iIrNeGiwj0FLBx5Dz28oP3POnFj1yXQXwAFNpuEXRJNPLiPnblHLvlP8OnuLZZn+846thyJ3vmixEFSLlB/TrwCXfGzMREg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bciB0x4TIGjN8K55n4WDmCcHbvUj6CaKML1ZFRDIo3g=;
- b=YYozGDwBRXDJ+pFd5dPRfz/FGveVuAQyy9BnBsqljxC08ljHTJLfZFnV/I36mZMxs00riEXvN+FQYJfiCQdh88qMGHaKhYZEJI8uoUYw12DVwpS8fgAOFPNEo5j2l7b+7PF8yxQGxaAcQGGV/JBckZ/CVavi+cIR1XZM8bgViwWCimbsJrwEbeRUCmmjbulBrmy+zI9G7tL3kVzy7lZkzb1IAR199zIwYZ9PXBQVJTL48urm91l193cNrEQys2G3BMk/xI3Q2jCW+BJdxbBXd4PSUXBco0Dt4V0zbSm+OJ/BM92GyMiSaPf1kXfXhdzeZy3F0ybCwK6fSNn/xbekQQ==
+ bh=6ej+UJJT1U4E6Llzh66c2VSEKjcMm/K2AN+tRVzc8HU=;
+ b=asjCgICOdVnzztaFVsSOSVw6ax9L2C0iAlwultSQ5ookUpUPpO6xJXyBD7hvsXNucwGUyzBKGEnh162LbG6NqXkpbu0SDm644i0LqrQTEijavEq35PJ+zKmQy8IMgm+3gKWr8AKskMz0hzzq6aUzxXGB3LQdnMiWHN6l+aCoZLCSYQnKpZoagzf1AdkKzyaV3BMx2pHI8KRXNLuTB2+AvPCg/xfrrFdYSDeuaQXugtGOLyEpScVOYcvfY3bBbL8ZJs3/HnZUdf7Cl09PXNnm9RLpqO8BmzOPNdFz+q2+pQ7SYApRYPF3HZO7DZYC2uWFCtXibQgj5N7x2/jwx65KiQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,79 +69,83 @@ Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
  by CY5PR11MB6257.namprd11.prod.outlook.com (2603:10b6:930:26::22)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.47; Mon, 13 Apr
- 2026 02:30:17 +0000
+ 2026 02:32:14 +0000
 Received: from BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc%6]) with mapi id 15.20.9769.018; Mon, 13 Apr 2026
- 02:30:17 +0000
-Date: Sun, 12 Apr 2026 19:30:14 -0700
+ 02:32:14 +0000
+Date: Sun, 12 Apr 2026 19:32:11 -0700
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: Stuart Summers <stuart.summers@intel.com>
-CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 2/3] tests/intel/xe_exec_reset: Add checks for
- hanging queue wait_ufence return
-Message-ID: <adxVNkrvqsNIrhvg@nvishwa1-desk>
+CC: <igt-dev@lists.freedesktop.org>, Apoorva Singh <apoorva.singh@intel.com>, 
+ Fei Yang <fei.yang@intel.com>, Katarzyna Piecielska
+ <katarzyna.piecielska@intel.com>, Priyanka Dandamudi
+ <priyanka.dandamudi@intel.com>, Daniel Charles <daniel.charles@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t 3/3] tests/intel/xe_exec_reset: Add multi queue
+ subtests
+Message-ID: <adxVq9WK-jdbqZQf@nvishwa1-desk>
 References: <20260409203702.4350-1-stuart.summers@intel.com>
- <20260409203702.4350-3-stuart.summers@intel.com>
+ <20260409203702.4350-4-stuart.summers@intel.com>
 Content-Type: text/plain; charset="us-ascii"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260409203702.4350-3-stuart.summers@intel.com>
-X-ClientProxiedBy: SJ0PR13CA0158.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::13) To BL3PR11MB6410.namprd11.prod.outlook.com
+In-Reply-To: <20260409203702.4350-4-stuart.summers@intel.com>
+X-ClientProxiedBy: BY1P220CA0007.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:59d::13) To BL3PR11MB6410.namprd11.prod.outlook.com
  (2603:10b6:208:3b9::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|CY5PR11MB6257:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2c61138-55c1-477f-f861-08de9904999a
+X-MS-Office365-Filtering-Correlation-Id: fedbd1b8-59fa-4c4a-dd51-08de9904df5b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|1800799024|366016|376014|56012099003|18002099003|22082099003; 
-X-Microsoft-Antispam-Message-Info: onJatz+OxnEjPcA+N1tUd+ktMTU9IJPrl9LR9gYJbZ5bkcRVB4NHieNEAlCwpqJGUcQ+F5sBsk6VwDJxROLuC+kzEap9/ckCth3LVyrFx0sKRW27dgmNBQIWAhGVJ2yxcQLgAh9CQGsv8j2vrVZpbkEaV+fM/QZYj+Eu6rMAuWt+Gq4VP1NphN6SmB7DxFlRXkVlUKwTeyaZslVyEDNnA6rZ/JB0P9IuHBTvF/3kYzFmxIRCD43fB3Y2NkP9LLaRkY12SQxqxhfhFH/2cHZNijwSGXP0/cqzUq5JG0dkZlEJspm9kn2crEvu3k1fgEcC9El0PFfBsE/AecYaY6fLZK70Qr+21vfd2D3ev8PPM9iruTDVs7rqnCaUGBpfTNkKj8dFr9QEu4S+1henxOtnSnALujQ2UOjoX85wraXYbNzGXPOLG48oXTcYc+uHMzN9hBfkS91GJ7TzVuq4cBro81w0SCPX2LtmYItWTaZjt0ZDk98oN9RVC3j3XsCrqpZOdzYPo7v21ZiUBNArZ1Bc4CKYPxbpSfuKGamTE9Led4TZH0EiswiXPWulERxoGcObLq4dquD2zfbqvj0xU88+7NG9V9SxODRPBDPcPN9o2St9Dicj7z/DDYPhVjS8sJdz4LQmvgkgjZWVEZ4mfq5JYLDukHlGMe4crYq7aDJfut0bMLLcsNfdeddBGJB00PZvc7X1Pzd6byvgCtJuobKi1zBa+bhV1ulME4f7qBKZSY4=
+X-Microsoft-Antispam-Message-Info: mzoXTkGY0jcMm4YuX+tuvCgtbA0xzftp+mxMfSRAPpXnypj46x54K3WFVw1TebhsQTTxXWzq+djq6soYiY44wsS+x0C+TcMWTW0pmokNudalPZY8NFbuvGBMHosCC7x/24zbbUN9I79cXGdqyu56maTWfoPjWc5iznIzaE+F4pk+ZlfVCLZmuGyjenSQgtaBsE1XYaG1HsEAVJ+Uh04GOmoaSyjN0xP0z7BkzevRJlyto0pIlXQMxBe3rE0W58fWVSo9xFg+vTY7pGUuZYw8awSreLt3g9U7srXCnMXJIHW2Bfh4IeUWasvkATjnVP0ubtRlefQ/u/S6C1FUOCZ8nSEwQjr1pcyZtEt1AQIJOBWiS3VatlAzCfxMlqnxAzoy/bzXP5gLjDvdSx9uwybqKvfqvVHErn+5PScLDyCSI9mXMsgXBNm9TBEPvFco5ri6EDCwaeMdHtkKpleZiYxhDFvhyv6YCGqWwZOBR1INPahToXRpru+GfuF8bqTBeFGD4WwLWMnjxcbFoBjeRG+lHd4IUp/lLmRztjOC0ddnqiyKgUHmwI2k5B6vFMQ2IRwY3rTrNpQGSm0bd9+jlxvjQxBRjB/mR7XKCddgusi2YjluAqeL/7eJ1mxPwx3y6B+kYJbd5UNrwXtgMbzpZ22tZCqhWbkzY0eLdtBiSsf6niJ39bkzV7Bxh4qDOObVuPP3wN3hiWsuAF5P9JdhjZBMp5Cy3LdVIfaS4H7/4YNNZOE=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(366016)(376014)(56012099003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7fE91/QvNkdj34fLnde3lTN0hwS2Eh2lLDW0quj29rWqBs3OnqlinFsZ4yyz?=
- =?us-ascii?Q?6Hl4srJviiZHEWX/fDyPHVaiEB51YzgtaAk4JTvAYDsR7ljZn4cOfY41UwCC?=
- =?us-ascii?Q?X9shVsGcammLKZnKwEdKJCLBi3445wqDvYXpjF/r9gUMPKF1Sbl6s/k88yTq?=
- =?us-ascii?Q?hJG/qfKnwgqNkLQ0PylPrkSaJbjWqLsQLqmxz31A0IhwGWZM6/Qdy1eeOOJd?=
- =?us-ascii?Q?G8gL+KmyWq9JMjxTKAYVKzWdYgI0TqShT1W2wPMrfy905WIfbQiAe1c+xTAg?=
- =?us-ascii?Q?sYknjvHMQLCvdJJhVn0dgJlFoJ+FTW/r6b52JHJ5vEuzeA4cuEZYCRAqXRtm?=
- =?us-ascii?Q?yrdiUJBfD6B7UIs1j1rLFaG3aJyv8T0arU5ATgcWGGejkWKNFCj5M0nxjizj?=
- =?us-ascii?Q?qe+SINn2jZQXnLgMQxWfCw9Ej5ApXKwi6qF72UuNDXz+5/I6ID2WIw1NK3Jv?=
- =?us-ascii?Q?JNy6QdD0Ac0IajF+Pmx+OzoHW+BbDLnF7Xrx0nyT2rHwvw401elLnGWGUqyY?=
- =?us-ascii?Q?1+Pv0LNF/wB+GnYT1jmK7WnbXS8lR195Ku0kcpjgpZZ4P/h5/0X+369MNaKL?=
- =?us-ascii?Q?kM2Y7Ukq05v1mzL+WB60QFD0rc8cnwwAxj+j16ogiy1oxNHlyCPj5JIIGZPb?=
- =?us-ascii?Q?Z2nwY22j3R2afhRgy0f3KBHDs7SNVaJ2nd2O9ZMLBdUN7ay+E6cv/rjwxmBC?=
- =?us-ascii?Q?REjQm0trqQHAf9Dv8JqXL4wDwROG9HfJ6sebd3spKVvrp9n9nY0cfqAdytOR?=
- =?us-ascii?Q?itZbz5u648TO2g1mYWSEnb6iITt7Z8Kt4u9gvpE0vvRqMvc/BBA1JeQxme9W?=
- =?us-ascii?Q?wR+nPl9dhCsuKfGwYKJoHJ/Yt+TsOnNmjk08wxRmBi5EgylgfKv2g3gUcdkI?=
- =?us-ascii?Q?BoiLyU7xDDNSSY9B/YuYRv47jEuvuHe/ZHGabngEZRYZo25CMGQC4SohUsO2?=
- =?us-ascii?Q?Bfaj34Vut8GKqnjYm89hkRfoTut9msH2fHnaVJRrtmSv/OwbYK/WGcGv5urU?=
- =?us-ascii?Q?RSLJgs6eT53jI/iA20Q+VL0Mz1/Fe9UwxY5voUG/nC97WR1L6oNkEiYaAnsv?=
- =?us-ascii?Q?3htd6RTyJsrwpud9dUcxKFKYC3IvvSKKbkFFGiC4P9LTQf5Zh/3DQ8meUwaH?=
- =?us-ascii?Q?he7r+urgRCJPnYq95QHU9QICN24EPIXfKIvDMWFdHMwCq2QS8xsIZbavUXDu?=
- =?us-ascii?Q?hQTCN9hYnQIm1IDV7jJ9LqTbYrsQkK1sUAuUsrWk8DUMxlqOY1v9ZELI+1Te?=
- =?us-ascii?Q?AIYnMcVOWQEbzBYkNs1+7H0wYYP+U1+4yzOZjtddexgqgx1fcKtwTdVh/J9k?=
- =?us-ascii?Q?MnGl2I7yHQ6zdCvxtT9IYoTST48nFmgP2c8ok3GTh5TcV6TFyATsU/UsDU6Q?=
- =?us-ascii?Q?cE+qP7lb75LFOnsl0hBsy0kYjw3MRII9MvPpOlcAjVT55IyJQYQjarmr5SIT?=
- =?us-ascii?Q?qFATd8MNAzTccI69r1vb/fTbVmQI6AYDOBaILOoMyX2oN2kgTnpC5DvH9qRj?=
- =?us-ascii?Q?bSamQn4aDeci97vQoLZpPAgK6irBMDQgVTl6lNawLmLvCcblnR/3/OztQaKn?=
- =?us-ascii?Q?XVaBraBfeHPQaNPXdtnzJ1DCajT0QU3dqo0K2lUlz5JlJ5vY1hkh49+nld/B?=
- =?us-ascii?Q?LT7y5Q891v49rdIQcx44EIX70q1jv8u629LGIED677LaVI0Qw72juBJ548PZ?=
- =?us-ascii?Q?y+pLNM27EDD+AgnDd48hu1jQYFFPnOw+RQ2krDGYdnyXuvCnxOCEjbSGtkU7?=
- =?us-ascii?Q?A0447xVHJdvwJ5FTZlDxd7LyBtv0q1q6ncDacfm9NkV6AD+hv2mB?=
-X-Exchange-RoutingPolicyChecked: Qzyaugt/KNJUYCgiXMkdII54Gg/BxsIuwHr1n+avcBeJWy31cUbpeh8rn1A7cN89mJV5iMsAJ1kqaNAhmGWC6b/VHfpY/7zPUaBcNonv/lP1ZcFqujmvAtHi8hqiE0Iv2NPpczYgbyCpiU0zEdPZHMScArYxQQaC0T+eACGwejo8it1W+nx+/Tlaww9icfcSHY6kKN1O2hIk4E/5jf1U5zX+B6FwS7pq8dtqE0QHfs20Uuj5iC3vhLFiOJopxNNE3G0U4Cinrc1GIugDwuObu/Ul9YbuP5JH3asmQ6eXz/MpBuHydHDC2RBsmhdnyc5zVPYAVJrwIgGU8O5Jso8aAQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2c61138-55c1-477f-f861-08de9904999a
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9AGbRN4X3mlxjZRjLI0SBTUQNve18WVfNbkTkrPpy8rOQptDs69VjmnLdb6y?=
+ =?us-ascii?Q?5AY48rf1pPxxG0yCFB3CLvqa243rjA878CjQ8cfiIuEFT4TJgadCtwi+q5Sq?=
+ =?us-ascii?Q?WVNPnLUwdWVsUMhXdcIbr0kX+ExWEwrUP57NWrsYjnQNOL4hS9i9tohNCsM9?=
+ =?us-ascii?Q?5zBu/N4lvHvgIQ8FXY0Z3Z86vNq5lQ56zRgYgWiC8Vlw8xbqLU/0KVJaO6AP?=
+ =?us-ascii?Q?ilAJLizp0gy5l+XeJvctUGd2QcwUWwS/3fg66CvDyGCkcWkva/dMx9d9PY6Q?=
+ =?us-ascii?Q?we9X/gYFvY8LdHbJ7QGpcSqIdmezd/0UAisaHGbGCYbS10BYyj4xaVn9p9l7?=
+ =?us-ascii?Q?6MPmq/pvpMoU4Ndkr92Rfpv1g+9JVyIWFYjYa0ZkBLYe7PLVoXg6TzdftxiC?=
+ =?us-ascii?Q?+vjpP/o6I7SqjPQLQt29WBn6k5tZ6zO40dZ8doEtpac960jPAxqXxcJE9jja?=
+ =?us-ascii?Q?9jvNrQb7X0NwxgQdhDWH0AMKRQ2HuU9r+513UDSxaNHhVUUtHc20WqAIEJfU?=
+ =?us-ascii?Q?Ve09GwBaO3+uoAmZSzH6OgI9Nh0Wglag5a+RvzhUpMklFcvYmM9axifGgSqX?=
+ =?us-ascii?Q?3BAjL3uFPRXFLhWgUVDkevhsYtDWs4iJa8861+3tOo+C1JFC/d1msJ90R5Om?=
+ =?us-ascii?Q?CmaCcALRFng/Ha5ho6Qge87Qosdf3VY54vrZNJU+92Lv2bClUjM2Cyb0Mhhp?=
+ =?us-ascii?Q?y3NEAGoMbWZIxLXpoiYzZ2stYtYhj2/xykQ9ukvLnd0FRJ0GQUwd/EU/vp08?=
+ =?us-ascii?Q?5EXeqI2BVpOgey3HZvLkLuvGBtmupMHY8wSEcnp1ELXRXX3r12Wow8pdNfdw?=
+ =?us-ascii?Q?A77KI5qSt5caE4Nz3bX3JGcywyUW1ALbVk9ho8mpRfhY7pATNajO6+pfFm3p?=
+ =?us-ascii?Q?31oblhCQ/f/YpbW/Q3PtE8Q8r65CiYumVgrBwiI2OQFqn2xP3VOa3AOD34nB?=
+ =?us-ascii?Q?3RyyhUbYZSwM+QWoPmDoHgkm/daBQvCMetD1d+Xb+IhXRICMg8jFWw51v1Jh?=
+ =?us-ascii?Q?mg/2E8gP0XwtWN6n74gpeZAzv+iyIMzYT9gEF7UOigl+0+ElwRXp8VEVS5eG?=
+ =?us-ascii?Q?oWX9j8jgcZ2vN5ywPprFnbFxmsqWdNhAm3i/U27UdK9GC5EJKefjeb2NgTMm?=
+ =?us-ascii?Q?hmpHku4APz2Peu5Qq3hGMkS0tA/239G6FfyMjFmm1rwGNNHQ/7GS1KZXUI6n?=
+ =?us-ascii?Q?MrtLn0ae/xUZZH/ww/I3z5DZAw2mBsHBdjOifB+fqWMUS2AMXK6uVPWdUD31?=
+ =?us-ascii?Q?fazhr9Dx0FSWZQvvc4s8M6mZFmf0QMBol4YQ87ci4Oiez1Y6klMbD6JgZOj8?=
+ =?us-ascii?Q?ZMYLbnEoGp+bNDmHaoGYKokXqxz4Fk9QhRoEKRlAmkR2hx0ArqBFs62Thnpe?=
+ =?us-ascii?Q?TqJVNeUIT/l5BTFF9DbqIZ3oW2jl4k2gnNBSaZMu3MhUE+LTVkVP5srVw14K?=
+ =?us-ascii?Q?A75vN2db697PHQrk5YWDbHVPnukcivn7u83UWSHAYJJvyu9yZDVrn8XPGtIU?=
+ =?us-ascii?Q?drXc1Y9zdIOvWZlprq6kwt0KXJcYQQf8DTX4rfoYosBguZfgybPWYQ39OiLx?=
+ =?us-ascii?Q?K1VpiQIBBTHPUJ1cegjGhBYncK0/sT9Gr15TZ2XGZljziJConnYQzsrMu81/?=
+ =?us-ascii?Q?MFf7o+XZG75Ttd82mXTjPnMghnITEXR/TbV5LobXIA/7Ot+08lrHPge9axQQ?=
+ =?us-ascii?Q?cZ80afi2jipCiu5J+LUecx50jDO5K7LxXUB9RY65b1N2xivI7FBVCc6FoMi5?=
+ =?us-ascii?Q?doNP344b6agmyt5l18ps/7MW2g7LHdMFZIESXso2oGH2ihFgut/N?=
+X-Exchange-RoutingPolicyChecked: W1OFvWeBlB7vsPReMqjBEZrmOmVwOSsuLlxVoFMP5u5IQ2XPLjwGB7fjxU8PljHL2N9hdRbDzqt12ZMLiho3GOiHxmBn46g1kverBpg3LPlyTJ2E7y9224DanS5HSb+lAyMdXmM/TCuQxs2ucdizza0U3ARad2Oy+txixxFxHz5QnZjyWiwjDJm+sNDJ65Mm/hBJWvM8tel6IEcW06Iaj6nwv8Ab1zG431SsS3KEpTbzHjUK0psgGdpUTBzVsR5cthQXvrIZFjGYxsEqR+kgwvrB/CG+onZfdyHKmNy17sFI3YOT+/OY3hZgD8l7u6HcxNzGFsrznR8e84lWhPA8dQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: fedbd1b8-59fa-4c4a-dd51-08de9904df5b
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2026 02:30:17.0207 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2026 02:32:14.0502 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8bgJ/XljzREPfoNeBrD6CTkgmqGvShjTtaOysMxFFfyRh/7ib12rS40kVWy5Hpct9jVUztg7Tec2t2MWGymVToaVkUays7StzLXSt5LMe1jgkWDn8u2fUmDxbFW4gg/x
+X-MS-Exchange-CrossTenant-UserPrincipalName: 94k98YBxcL2flOmvo6X9El5gmZNaBt/170D3YPO7L3MHALFo6ZkM2ZvEYlTW1NPjfbP0dy0LWka7wQGaJ4tIoCs+NDfryoOkNtlXclEZ0nFU6eflXE3TXh4DRJhZeP3q
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6257
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -159,90 +163,494 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 09, 2026 at 08:37:00PM +0000, Stuart Summers wrote:
->There is a 3 second wait user fence timeout for the compute mode
->variants of this test. Instead of just skipping the wait altogether,
->let's make sure this does in fact return -ETIME as expected there.
+On Thu, Apr 09, 2026 at 08:37:01PM +0000, Stuart Summers wrote:
+>From: Apoorva Singh <apoorva.singh@intel.com>
 >
->Also add the i == 0 cases for legacy and compute path for the actual
->data checks to stay consistent and to be a little more explicit
->about what we're checking there.
+>Extend the existing test cases in tests/intel/xe_exec_reset.c
+>to include testing of reset flows for both primary queue
+>and secondary queues.
 >
->This also let's us add a little more detail to the cases in some
->planned changes around hanging multi queue secondary queues.
+>Engine resets without CAT faults are triggered via the *-cancel
+>cases. These don't include the CANCEL flag as this causes a spinner
+>on each queue which isn't adding any extra coverage for multi queue
+>over non multi queue.
 >
+>Since the *-cancel cases are currently implemented only for the
+>legacy cases, do the same for multi queue.
+>
+>New MULTI_QUEUE and SECONDARY_QUEUE flags are added to cover
+>the general multi queue cases and the cases where we are triggering
+>engine resets and/or cat faults on secondary queues specifically.
+>
+>Note for multi queue it is interesting to test these secondary
+>queue reset scenarios since these are communicated to the driver
+>from GuC via the primary queue and after this, the entire queue
+>group is torn down. The test cases here are to ensure nothing
+>breaks when we hit a scenario like this.
+>
+>Signed-off-by: Apoorva Singh <apoorva.singh@intel.com>
+>Signed-off-by: Fei Yang <fei.yang@intel.com>
+>Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+>Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>Signed-off-by: Daniel Charles <daniel.charles@intel.com>
+>Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 >Signed-off-by: Stuart Summers <stuart.summers@intel.com>
 >---
-> lib/xe/xe_legacy.c          |  8 ++++++--
-> tests/intel/xe_exec_reset.c | 15 +++++++++++----
-> 2 files changed, 17 insertions(+), 6 deletions(-)
+> lib/xe/xe_legacy.c          |  71 ++++++++++--
+> tests/intel/xe_exec_reset.c | 222 ++++++++++++++++++++++++++++++++++--
+> 2 files changed, 274 insertions(+), 19 deletions(-)
 >
 >diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
->index 6aeddc578..3371a91ac 100644
+>index 3371a91ac..f9bd5bcb6 100644
 >--- a/lib/xe/xe_legacy.c
 >+++ b/lib/xe/xe_legacy.c
->@@ -230,9 +230,13 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
-> 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+>@@ -13,6 +13,8 @@
 >
-> 	if (!use_capture_mode && !(flags & (GT_RESET | CANCEL | COMPRESSION))) {
->-		for (i = flags & LONG_SPIN ? n_exec_queues : 1;
->-		     i < n_execs + extra_execs; i++)
->+		for (i = flags & LONG_SPIN ? n_exec_queues : 0;
->+		     i < n_execs + extra_execs; i++) {
->+			if (!i)
->+				continue;
+> /* Batch buffer element count, in number of dwords(u32) */
+> #define BATCH_DW_COUNT			16
+>+#define SECONDARY_QUEUE			(0x1 << 15)
+>+#define MULTI_QUEUE			(0x1 << 14)
+> #define COMPRESSION			(0x1 << 13)
+> #define SYSTEM				(0x1 << 12)
+> #define LONG_SPIN_REUSE_QUEUE		(0x1 << 11)
+>@@ -70,10 +72,14 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> 			xe_spin_nsec_to_ticks(fd, 0, THREE_SEC) : 0,
+> 	};
+> 	int i, b;
+>+	int hang_position = flags & SECONDARY_QUEUE ? 1 : 0;
+> 	int extra_execs = (flags & LONG_SPIN_REUSE_QUEUE) ? n_exec_queues : 0;
+>
+> 	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
+>
+>+	igt_assert_f(!(flags & SECONDARY_QUEUE) || (flags & MULTI_QUEUE),
+>+		     "SECONDARY_QUEUE requires MULTI_QUEUE to be set");
 >+
-> 			igt_assert_eq(data[i].data, 0xc0ffee);
+> 	if (flags & COMPRESSION)
+> 		igt_require(intel_gen(intel_get_drm_devid(fd)) >= 20);
+>
+>@@ -101,7 +107,20 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> 	data = xe_bo_map(fd, bo, bo_size);
+>
+> 	for (i = 0; i < n_exec_queues; i++) {
+>-		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+>+		if (flags & MULTI_QUEUE) {
+>+			struct drm_xe_ext_set_property multi_queue = {
+>+				.base.next_extension = 0,
+>+				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>+				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
+>+			};
+>+
+>+			uint64_t ext = to_user_pointer(&multi_queue);
+>+
+>+			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
+>+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
+>+		} else {
+>+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
 >+		}
+> 		syncobjs[i] = syncobj_create(fd, 0);
 > 	}
 >
-> 	syncobj_destroy(fd, sync[0].handle);
+>@@ -123,17 +142,22 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> 	}
+>
+> 	for (i = 0; i < n_execs; i++) {
+>-		u64 base_addr = (!use_capture_mode && (flags & CAT_ERROR) && !i)
+>-			? (addr + bo_size * 128) : addr;
+>+		u64 base_addr = (!use_capture_mode && flags & CAT_ERROR &&
+>+				 i == hang_position) ?
+>+				(addr + bo_size * 128) : addr;
+> 		u64 batch_offset = (char *)&data[i].batch - (char *)data;
+> 		u64 batch_addr = base_addr + batch_offset;
+> 		u64 spin_offset = (char *)&data[i].spin - (char *)data;
+> 		u64 sdi_offset = (char *)&data[i].data - (char *)data;
+> 		u64 sdi_addr = base_addr + sdi_offset;
+> 		u64 exec_addr;
+>-		int e = i % n_exec_queues;
+>+		int err, e = i % n_exec_queues;
+>
+>-		if (!i || flags & CANCEL ||
+>+		/*
+>+		 * For cat fault on a secondary queue the fault will
+>+		 * be on the spinner.
+>+		 */
+>+		if (i == hang_position || flags & CANCEL ||
+> 		    (flags & LONG_SPIN && i < n_exec_queues)) {
+> 			spin_opts.addr = base_addr + spin_offset;
+> 			xe_spin_init(&data[i].spin, &spin_opts);
+>@@ -160,10 +184,17 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> 		if (e != i)
+> 			syncobj_reset(fd, &syncobjs[e], 1);
+>
+>-		xe_exec(fd, &exec);
+>+		/*
+>+		 * Secondary queues are reset when the primary queue
+>+		 * is reset. The submission can race here and it is
+>+		 * expected for those to fail submission if the primary
+>+		 * reset has already happened.
+>+		 */
+>+		err = __xe_exec(fd, &exec);
+>+		igt_assert(!err || ((flags & MULTI_QUEUE) && err == -ECANCELED));
+>
+>-		if (!i && !(flags & CAT_ERROR) && !use_capture_mode &&
+>-		    !(flags & COMPRESSION))
+>+		if (i == hang_position && !(flags & CAT_ERROR) &&
+>+		    !use_capture_mode && !(flags & COMPRESSION))
+> 			xe_spin_wait_started(&data[i].spin);
+> 	}
+>
+>@@ -186,7 +217,21 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> 		 * Expectation here is that on reset, submissions will
+> 		 * still satisfy the syncobj_wait.
+> 		 */
+>-		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
+>+		int err = syncobj_wait_err(fd, &syncobjs[i], 1, INT64_MAX, 0);
+>+
+>+		/*
+>+		 * Currently any time GuC resets a queue which is part of a
+>+		 * multi queue queue group submitted by the KMD, the KMD
+>+		 * will tear down the entire group. This means we don't know
+>+		 * whether a particular queue submitted prior to the hanging
+>+		 * queue will complete or not. So we have to check all possible
+>+		 * return values here.
+>+		 *
+>+		 * In the event we get an -ECANCELED at the exec above and the
+>+		 * syncobj was not installed, we expect this to return -EINVAL
+>+		 * here instead.
+>+		 */
+>+		igt_assert(!err || ((flags & MULTI_QUEUE) && err == -EINVAL));
+> 	}
+>
+> 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+>@@ -232,7 +277,13 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> 	if (!use_capture_mode && !(flags & (GT_RESET | CANCEL | COMPRESSION))) {
+> 		for (i = flags & LONG_SPIN ? n_exec_queues : 0;
+> 		     i < n_execs + extra_execs; i++) {
+>-			if (!i)
+>+			/*
+>+			 * For multi-queue there is no guarantee which
+>+			 * queue will be scheduled first as they are all
+>+			 * submitted at the same priority in this test.
+>+			 * So we can't guarantee any data integrity here.
+>+			 */
+>+			if (i == hang_position || flags & MULTI_QUEUE)
+> 				continue;
+>
+> 			igt_assert_eq(data[i].data, 0xc0ffee);
 >diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
->index 95191139d..6b71d9144 100644
+>index 6b71d9144..ea50567c0 100644
 >--- a/tests/intel/xe_exec_reset.c
 >+++ b/tests/intel/xe_exec_reset.c
->@@ -461,17 +461,20 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
-> 		return;
+>@@ -112,7 +112,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
+> #define MAX_N_EXECQUEUES	16
+> #define GT_RESET			(0x1 << 0)
+> #define CLOSE_FD			(0x1 << 1)
+>-#define CLOSE_EXEC_QUEUES	(0x1 << 2)
+>+#define CLOSE_EXEC_QUEUES		(0x1 << 2)
+> #define VIRTUAL				(0x1 << 3)
+> #define PARALLEL			(0x1 << 4)
+> #define CAT_ERROR			(0x1 << 5)
+>@@ -124,6 +124,8 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
+> #define LONG_SPIN_REUSE_QUEUE		(0x1 << 11)
+> #define SYSTEM				(0x1 << 12)
+> #define COMPRESSION			(0x1 << 13)
+>+#define MULTI_QUEUE			(0x1 << 14)
+>+#define SECONDARY_QUEUE			(0x1 << 15)
+>
+> /**
+>  * SUBTEST: %s-cat-error
+>@@ -353,6 +355,57 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>  *
+>  * SUBTEST: cm-close-execqueues-close-fd
+>  * Description: Test compute mode close exec_queues close fd
+>+ *
+>+ * SUBTEST: multi-queue-cat-error
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test cat error with multi_queue
+>+ *
+>+ * SUBTEST: multi-queue-cat-error-on-secondary
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test cat error with multi_queue
+>+ *              on a secondary queue
+>+ *
+>+ * SUBTEST: multi-queue-gt-reset
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test GT reset with multi_queue
+>+ *
+>+ * SUBTEST: multi-queue-cancel
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test engine reset with multi_queue
+>+ *
+>+ * SUBTEST: multi-queue-cancel-on-secondary
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test engine reset with multi_queue
+>+ *              on a secondary queue
+>+ *
+>+ * SUBTEST: multi-queue-close-fd
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test close fd with multi_queue
+>+ *
+>+ * SUBTEST: multi-queue-close-execqueues
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test close execqueues with multi_queue
+>+ *
+>+ * SUBTEST: cm-multi-queue-cat-error
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test compute mode cat error with multi_queue
+>+ *
+>+ * SUBTEST: cm-multi-queue-cat-error-on-secondary
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test compute mode cat error with multi_queue
+>+ *              on a secondary queue
+>+ *
+>+ * SUBTEST: cm-multi-queue-gt-reset
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test compute mode GT reset with multi_queue
+>+ *
+>+ * SUBTEST: cm-multi-queue-close-fd
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test compute mode close fd with multi_queue
+>+ *
+>+ * SUBTEST: cm-multi-queue-close-execqueues
+>+ * Sub-category: MultiQ tests
+>+ * Description: Test compute mode close execqueues with multi_queue
+
+Remove 'Sub-category' tags here as it is not consistent with other
+multi-queue tests (Besides, MultiQ is not a consistent naming used
+either).
+
+Other than that, patch LGTM
+Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+
+>  */
+>
+> static void
+>@@ -384,9 +437,14 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> 	} *data;
+> 	struct xe_spin_opts spin_opts = { .preempt = flags & PREEMPT };
+> 	int i, b;
+>+	int hang_position = flags & SECONDARY_QUEUE ? 1 : 0;
+>
+> 	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
+>
+>+	igt_assert_f(!(flags & SECONDARY_QUEUE) ||
+>+		     ((flags & MULTI_QUEUE) && (flags & CAT_ERROR)),
+>+		     "SECONDARY_QUEUE requires MULTI_QUEUE and CAT_ERROR to be set");
+>+
+> 	if (flags & CLOSE_FD)
+> 		fd = drm_open_driver(DRIVER_XE);
+>
+>@@ -401,7 +459,20 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> 	memset(data, 0, bo_size);
+>
+> 	for (i = 0; i < n_exec_queues; i++) {
+>-		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+>+		if (flags & MULTI_QUEUE) {
+>+			struct drm_xe_ext_set_property multi_queue = {
+>+				.base.next_extension = 0,
+>+				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>+				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
+>+			};
+>+
+>+			uint64_t ext = to_user_pointer(&multi_queue);
+>+
+>+			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
+>+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
+>+		} else {
+>+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+>+		}
+> 	};
+>
+> 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+>@@ -411,17 +482,21 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> 	data[0].vm_sync = 0;
+>
+> 	for (i = 0; i < n_execs; i++) {
+>-		uint64_t base_addr = flags & CAT_ERROR && !i ?
+>-			addr + bo_size * 128 : addr;
+>+		uint64_t base_addr = (flags & CAT_ERROR && i == hang_position) ?
+>+				     (addr + bo_size * 128) : addr;
+> 		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+> 		uint64_t batch_addr = base_addr + batch_offset;
+> 		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+> 		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+> 		uint64_t sdi_addr = base_addr + sdi_offset;
+> 		uint64_t exec_addr;
+>-		int e = i % n_exec_queues;
+>+		int err, e = i % n_exec_queues;
+>
+>-		if (!i || flags & CANCEL) {
+>+		/*
+>+		 * For cat fault on a secondary queue the fault will
+>+		 * be on the spinner.
+>+		 */
+>+		if (i == hang_position || flags & CANCEL) {
+> 			spin_opts.addr = base_addr + spin_offset;
+> 			xe_spin_init(&data[i].spin, &spin_opts);
+> 			exec_addr = spin_opts.addr;
+>@@ -442,7 +517,18 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>
+> 		exec.exec_queue_id = exec_queues[e];
+> 		exec.address = exec_addr;
+>-		xe_exec(fd, &exec);
+>+
+>+		/*
+>+		 * Secondary queues are reset when the primary queue
+>+		 * is reset. The submission can race here and it is
+>+		 * expected for those to fail submission if the primary
+>+		 * reset has already happened.
+>+		 */
+>+		err = __xe_exec(fd, &exec);
+>+		igt_assert(!err || ((flags & MULTI_QUEUE) && err == -ECANCELED));
+>+
+>+		if (i == hang_position && !(flags & CAT_ERROR))
+>+			xe_spin_wait_started(&data[i].spin);
 > 	}
 >
->-	for (i = 1; i < n_execs; i++) {
->+	for (i = 0; i < n_execs; i++) {
-> 		int64_t timeout = 3 * NSEC_PER_SEC;
-> 		int err;
+> 	if (flags & GT_RESET) {
+>@@ -467,8 +553,18 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
 >
 > 		err = __xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
 > 				       exec_queues[i % n_exec_queues], &timeout);
->-		if (flags & GT_RESET || flags & CAT_ERROR)
->+		if (!i) {
->+			igt_assert(err == -ETIME || err == -EIO);
->+		} else if (flags & GT_RESET || flags & CAT_ERROR) {
+>-		if (!i) {
+>+		if (i == hang_position) {
+> 			igt_assert(err == -ETIME || err == -EIO);
+>+		} else if (flags & MULTI_QUEUE) {
+>+			/*
+>+			 * Currently any time GuC resets a queue submitted
+>+			 * by the KMD, the KMD will tear down the entire
+>+			 * queue group. This means we don't know whether
+>+			 * a particular queue submitted prior to the hanging
+>+			 * queue will complete or not. So we have to check
+>+			 * all possible return values here.
+>+			 */
+>+			igt_assert(err == -ETIME || err == -EIO || !err);
+> 		} else if (flags & GT_RESET || flags & CAT_ERROR) {
 > 			/* exec races with reset: may return -EIO or complete */
 > 			igt_assert(err == -EIO || !err);
->-		else
->+		} else {
-> 			igt_assert_eq(err, 0);
->+		}
-> 	}
->
-> 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
->@@ -479,8 +482,12 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
-> 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, 3 * NSEC_PER_SEC);
+>@@ -483,7 +579,13 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
 >
 > 	if (!(flags & (GT_RESET | CANCEL))) {
->-		for (i = 1; i < n_execs; i++)
->+		for (i = 0; i < n_execs; i++) {
->+			if (!i)
->+				continue;
->+
-> 			igt_assert_eq(data[i].data, 0xc0ffee);
->+		}
-> 	}
+> 		for (i = 0; i < n_execs; i++) {
+>-			if (!i)
+>+			/*
+>+			 * For multi-queue there is no guarantee which
+>+			 * queue will be scheduled first as they are all
+>+			 * submitted at the same priority in this test.
+>+			 * So we can't guarantee any data integrity here.
+>+			 */
+>+			if (i == hang_position || flags & MULTI_QUEUE)
+> 				continue;
 >
-> 	for (i = 0; i < n_exec_queues; i++)
-
-LGTM
-Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-
+> 			igt_assert_eq(data[i].data, 0xc0ffee);
+>@@ -986,6 +1088,108 @@ int igt_main()
+> 		xe_for_each_gt(fd, gt)
+> 			gt_mocs_reset(fd, gt);
+>
+>+	igt_subtest("multi-queue-cat-error") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			xe_legacy_test_mode(fd, hwe, 16, 16,
+>+					    CAT_ERROR | MULTI_QUEUE,
+>+					    LEGACY_MODE_ADDR,
+>+					    false);
+>+	}
+>+
+>+	igt_subtest("multi-queue-cat-error-on-secondary") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			xe_legacy_test_mode(fd, hwe, 16, 16,
+>+					    CAT_ERROR | MULTI_QUEUE |
+>+					    SECONDARY_QUEUE,
+>+					    LEGACY_MODE_ADDR,
+>+					    false);
+>+	}
+>+
+>+	igt_subtest("multi-queue-gt-reset") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			xe_legacy_test_mode(fd, hwe, 16, 16,
+>+					    GT_RESET | MULTI_QUEUE,
+>+					    LEGACY_MODE_ADDR,
+>+					    false);
+>+	}
+>+
+>+	igt_subtest("multi-queue-cancel") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			xe_legacy_test_mode(fd, hwe, 16, 16,
+>+					    MULTI_QUEUE,
+>+					    LEGACY_MODE_ADDR,
+>+					    false);
+>+	}
+>+
+>+	igt_subtest("multi-queue-cancel-on-secondary") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			xe_legacy_test_mode(fd, hwe, 16, 16,
+>+					    MULTI_QUEUE | SECONDARY_QUEUE,
+>+					    LEGACY_MODE_ADDR,
+>+					    false);
+>+	}
+>+
+>+	igt_subtest("multi-queue-close-fd") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			xe_legacy_test_mode(-1, hwe, 16, 256,
+>+					    CLOSE_FD | MULTI_QUEUE,
+>+					    LEGACY_MODE_ADDR,
+>+					    false);
+>+	}
+>+
+>+	igt_subtest("multi-queue-close-execqueues") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			xe_legacy_test_mode(-1, hwe, 16, 256,
+>+					    CLOSE_EXEC_QUEUES | CLOSE_FD |
+>+					    MULTI_QUEUE,
+>+					    LEGACY_MODE_ADDR,
+>+					    false);
+>+	}
+>+
+>+	igt_subtest("cm-multi-queue-cat-error") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			test_compute_mode(fd, hwe, 16, 16,
+>+					  CAT_ERROR | MULTI_QUEUE);
+>+	}
+>+
+>+	igt_subtest("cm-multi-queue-cat-error-on-secondary") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			test_compute_mode(fd, hwe, 16, 16,
+>+					  CAT_ERROR | MULTI_QUEUE |
+>+					  SECONDARY_QUEUE);
+>+	}
+>+
+>+	igt_subtest("cm-multi-queue-gt-reset") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			test_compute_mode(fd, hwe, 16, 16,
+>+					  GT_RESET | MULTI_QUEUE);
+>+	}
+>+
+>+	igt_subtest("cm-multi-queue-close-fd") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			test_compute_mode(-1, hwe, 16, 256,
+>+					  CLOSE_FD | MULTI_QUEUE);
+>+	}
+>+
+>+	igt_subtest("cm-multi-queue-close-execqueues") {
+>+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+		xe_for_each_multi_queue_engine(fd, hwe)
+>+			test_compute_mode(-1, hwe, 16, 256,
+>+					  CLOSE_EXEC_QUEUES | CLOSE_FD |
+>+					  MULTI_QUEUE);
+>+	}
+>+
+> 	igt_fixture()
+> 		drm_close_driver(fd);
+> }
 >-- 
 >2.43.0
 >
