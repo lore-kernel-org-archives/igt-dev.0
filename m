@@ -4,47 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A2D3F531DE
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 23:38:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20262F531CE
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Apr 2026 23:42:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D62510E557;
-	Mon, 13 Apr 2026 23:38:15 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="g63q8xhq";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09C6B10E557
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2026 23:37:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=3IlCgE0ZyRhMu0UaskQkZP9355pjIWQXicUWjEVoKZU=; b=g63q8xhqP+/paORd7IEUCSSjwn
- tzTv7LCgReqCjJnB/UMCNpLboCs0j5h9ua53Nvs/K6HzJUGA5bHFm9WOoxG9q+B9L0z64Ga3Y2L1G
- uciu3w3YO0SiX9y5ponzP8917bL8X6ODUb1+iR4wdYRLekH3IfEbu0nsa6Gue1N9v2BIXHDJLpkXE
- qfpjU7dLnQlbv3Ey8/7qtrqcZD/URWBKEM1oo7eVKSqYU26cYF1MnbmbZZzhnRrg9exPxQfFMS208
- pxbxPebbsjTQD7xq+bcGuisnyT3JzqdGAPo9qRmTeSAyQsBSQujd1nZVRlxGjXq/TLK+fg1r5T0Su
- HTbsi0KQ==;
-Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
- helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wCQqN-00FeK3-08; Tue, 14 Apr 2026 01:37:27 +0200
-From: John Harrison <John.Harrison@Igalia.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
- Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH i-g-t v3 2/4] tools/intel_hdcp: Move text rendering into
- helper function
-Date: Mon, 13 Apr 2026 16:36:27 -0700
-Message-ID: <20260413233629.771034-3-John.Harrison@Igalia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260413233629.771034-1-John.Harrison@Igalia.com>
-References: <20260413233629.771034-1-John.Harrison@Igalia.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A7A5D10E557;
+	Mon, 13 Apr 2026 23:42:17 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 690AE10E557;
+ Mon, 13 Apr 2026 23:42:06 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2620253647615785452=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci=3A_Block_SR-IOV_te?=
+ =?utf-8?q?sts_on_i915?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jakub Kolakowski" <jakub1.kolakowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 13 Apr 2026 23:42:06 -0000
+Message-ID: <177612372638.458495.17931697204188186655@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260413112013.102762-1-jakub1.kolakowski@intel.com>
+In-Reply-To: <20260413112013.102762-1-jakub1.kolakowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,71 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rather than duplicate the text rendering calculations over and over,
-add a helper function.
+--===============2620253647615785452==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-CC: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-CC: Suraj Kandpal <suraj.kandpal@intel.com>
-Signed-off-by: John Harrison <John.Harrison@Igalia.com>
----
- tools/intel_hdcp.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+== Series Details ==
 
-diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-index c9968f329..4dfeda594 100644
---- a/tools/intel_hdcp.c
-+++ b/tools/intel_hdcp.c
-@@ -468,6 +468,17 @@ static void *keypress_thread(void *arg)
- 	return NULL;
- }
- 
-+static double draw_text_right(cairo_t *cr, double font_size, double x, double y, const char *str )
-+{
-+	cairo_text_extents_t ext;
-+
-+	cairo_set_font_size(cr, font_size);
-+	cairo_text_extents(cr, str, &ext);
-+	cairo_move_to(cr, x - ext.width, y);
-+	cairo_show_text(cr, str);
-+	return y - ext.height - (font_size / 4);
-+}
-+
- static void *video_player_thread(void *arg)
- {
- 	double font_size, x, y, edge_gap;
-@@ -476,7 +487,6 @@ static void *video_player_thread(void *arg)
- 	igt_plane_t *primary;
- 	const char *hdcp_str;
- 	double bg_r = 0.0, bg_g = 0.0, bg_b = 0.0;
--	cairo_text_extents_t ext;
- 	enum hdcp_type cur_type, prev_type;
- 	data_t *data;
- 	char timer_str[32];
-@@ -542,19 +552,10 @@ static void *video_player_thread(void *arg)
- 		minutes = elapsed / 60;
- 		seconds = elapsed % 60;
- 		snprintf(timer_str, sizeof(timer_str), "%02d:%02d", minutes, seconds);
--
--		cairo_set_font_size(cr, font_size / 2.0);
--		cairo_text_extents(cr, timer_str, &ext);
--		cairo_move_to(cr, x - ext.width, y);
--		cairo_show_text(cr, timer_str);
--		y -= ext.height + edge_gap;
-+		y = draw_text_right(cr, font_size / 2.0, x, y, timer_str );
- 
- 		/* Draw HDCP status above timer */
--		cairo_set_font_size(cr, font_size);
--		cairo_text_extents(cr, hdcp_str, &ext);
--		cairo_move_to(cr, x - ext.width, y);
--		cairo_show_text(cr, hdcp_str);
--		y -= ext.height + edge_gap;
-+		y = draw_text_right(cr, font_size, x, y, hdcp_str );
- 
- 		cairo_destroy(cr);
- 
--- 
-2.43.0
+Series: intel-ci: Block SR-IOV tests on i915
+URL   : https://patchwork.freedesktop.org/series/164787/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8854_BAT -> XEIGTPW_14970_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 11)
+------------------------------
+
+  Missing    (3): bat-dg2-oem2 bat-adlp-vm bat-ptl-vm 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8854 -> IGTPW_14970
+  * Linux: xe-4884-3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5 -> xe-4897-c8bad7becc008716c8475847328c549e178c813c
+
+  IGTPW_14970: be03cd284c36013396122d682b5e5d2377cedf60 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8854: 93abaf0170728f69bc27577e5b405f7a2a01b6fd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4884-3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5: 3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5
+  xe-4897-c8bad7becc008716c8475847328c549e178c813c: c8bad7becc008716c8475847328c549e178c813c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14970/index.html
+
+--===============2620253647615785452==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci: Block SR-IOV tests on i915</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164787/">https://patchwork.freedesktop.org/series/164787/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14970/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14970/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8854_BAT -&gt; XEIGTPW_14970_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 11)</h2>
+<p>Missing    (3): bat-dg2-oem2 bat-adlp-vm bat-ptl-vm </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8854 -&gt; IGTPW_14970</li>
+<li>Linux: xe-4884-3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5 -&gt; xe-4897-c8bad7becc008716c8475847328c549e178c813c</li>
+</ul>
+<p>IGTPW_14970: be03cd284c36013396122d682b5e5d2377cedf60 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8854: 93abaf0170728f69bc27577e5b405f7a2a01b6fd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4884-3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5: 3751e2e5a19aba3949a3f12aa5b917eb8bbb1eb5<br />
+  xe-4897-c8bad7becc008716c8475847328c549e178c813c: c8bad7becc008716c8475847328c549e178c813c</p>
+
+</body>
+</html>
+
+--===============2620253647615785452==--
