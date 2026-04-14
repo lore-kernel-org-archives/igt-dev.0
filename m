@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 156E0F9D0CA
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 12:22:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 586F9F9D0CA
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 12:25:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ACAC310E5D7;
-	Tue, 14 Apr 2026 12:22:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BCFA310E5D7;
+	Tue, 14 Apr 2026 12:25:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EOr+rzPI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QWbOYoEQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F9C610E4B8
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 12:22:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEF7910E5D7
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 12:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776169338; x=1807705338;
+ t=1776169537; x=1807705537;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=HKoDMHJcYptTHoVG1hQtahUuEigZY+4ZYUBnlfiKOgw=;
- b=EOr+rzPId7S6fIQIVAhEgI2QC8FZNzFwphl9tIP4eIwJYvRaRMTgEYZJ
- 9uNOxO4h4k+MAZAkwDkOeY1oXNrkzmimINMNQzW3e+m5trzXC7/rOZrPw
- 4uy7MHJerM3CzCznIwazl1oVLM3ZB9BCm97R3v884fw4TSJbdKUIx4iUn
- DSXxYSDxUeTNIMN1+ygbyeQheuKxWSoQWuZBNlpfN07w7VedEIKDTgYBl
- Uwqwpg+GbLfMxTWfqDSpzaloNpk4ZHERdoyv7pugniHUxA0HcMOcZfEN4
- 6LPAm2mQwRzFGcjrUEXVqko1X4UoIngOKjZN1WgQtUaBQZGuYMq1zQvnP Q==;
-X-CSE-ConnectionGUID: /JiplNDdQdSoBc4mLdSuNA==
-X-CSE-MsgGUID: /7Ea6yVnSFuNN/R3wgRzgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77234920"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="77234920"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 05:22:17 -0700
-X-CSE-ConnectionGUID: VvpKr2lcT7emwemKhhD23A==
-X-CSE-MsgGUID: 2OMWWMJES6CmEuU1FI5rgg==
+ bh=XZG2Pmz4ChE45I1UBjVlhhMRLrjK10BvDYDpeP013WM=;
+ b=QWbOYoEQ+f184VIF0oJBLD1spvvDmMy/+Vr7B4ABpmXJtCFfrhyMEuc4
+ xT9bKF5jekZAbxxrc58d58++K8ISjlU7rhWMLyKl2QFJkHRu2Y2vGQaaY
+ Vyz+0lvpF7sn0Y9yz7EPE7/7koJAdpPwYUwBfzAdS95/ZEQWkApj7mOfF
+ xcYA873QTLPJ+jx70z+9qU1HjH4PXH3ZHSRbQ48Hu/qN4xWYN1nnrY9DO
+ S4qAnUgbmAmHX/jzPypzRqNhejcrr7/93RMeQWTKh5Xykg2k7H4YuCrKK
+ 15oz7vTny+uxDNjFs3D1GGybzWCFroPDRLPbxLt1ICun/8GuEgDdr6P8q A==;
+X-CSE-ConnectionGUID: n4WfixYiTZ6bqKfAvFwL+Q==
+X-CSE-MsgGUID: djLTghG/Rj6fi2FnV5kv0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77195528"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="77195528"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 05:25:36 -0700
+X-CSE-ConnectionGUID: bz4MkUApThiOTbj9Zwa1Bw==
+X-CSE-MsgGUID: HnAi5faaQqKhYnpspEK1xw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="253301365"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 05:22:03 -0700
-Date: Tue, 14 Apr 2026 14:21:44 +0200
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 05:25:35 -0700
+Date: Tue, 14 Apr 2026 14:25:33 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
 Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  matthew.auld@intel.com
-Subject: Re: [PATCH 1/3] igt/xe: Add temporary helpers for VM_Bind neg test
-Message-ID: <20260414122144.34kapvreg26guimp@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH v2 1/2] tests/intel : Add data structs & helper utilities
+ for VM_Bind Neg tests
+Message-ID: <20260414122533.fbxjfbuwc3gyspdg@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>,
  igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  matthew.auld@intel.com
 References: <20260309060901.642399-1-smitha.balasubramanyam@intel.com>
- <20260309060901.642399-2-smitha.balasubramanyam@intel.com>
+ <20260405115046.939344-1-smitha.balasubramanyam@intel.com>
+ <20260405115046.939344-2-smitha.balasubramanyam@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260309060901.642399-2-smitha.balasubramanyam@intel.com>
+In-Reply-To: <20260405115046.939344-2-smitha.balasubramanyam@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,65 +75,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Smitha,
-On 2026-03-09 at 11:38:59 +0530, Smitha Balasubramanyam wrote:
-> Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
-> 
-> Added helper functions and UAPI macro definition required for
-> VM_BIND Decomp negative tests.
-> These helpers and definitions duplicate functionality introduced in
-> VLK-79231, positive test series, which is yet to be merged.
-> They are included here so that the negative
-> tests can be developed and executed independently.
-> 
-> Once the positive test series lands upstream, this patch can be dropped
-> and the tests can reuse the shared helpers and UAPI definitions.
-> Also, includes a few formatting changes suggested by checkpatch.pl.
-> ---
->  include/drm-uapi/xe_drm.h |   1 +
->  tests/intel/xe_ccs.c      | 331 +++++++++++++++++++++++++-------------
->  2 files changed, 220 insertions(+), 112 deletions(-)
-> 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 077e66a68..44355f6b5 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -1160,6 +1160,7 @@ struct drm_xe_vm_bind_op {
->  #define DRM_XE_VM_BIND_FLAG_CHECK_PXP	(1 << 4)
->  #define DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR	(1 << 5)
->  #define DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET	(1 << 6)
-> +#define DRM_XE_VM_BIND_FLAG_DECOMPRESS		(1 << 7)
->  	/** @flags: Bind flags */
->  	__u32 flags;
+On 2026-04-05 at 17:20:44 +0530, Smitha Balasubramanyam wrote:
 
-Drop this change, it is already there, also the format for
-changing uapi is different, it should be in separate commit.
+please improve subject, add test name and also imho change description
+into something more descriptive, so imho better:
 
-grep DRM_XE_VM_BIND_FLAG_DECOMPRESS  include/drm-uapi/xe_drm.h
- *  - %DRM_XE_VM_BIND_FLAG_DECOMPRESS - Request on-device decompression for a MAP.
-#define DRM_XE_VM_BIND_FLAG_DECOMPRESS (1 << 7)
+[PATCH v2 1/2] tests/intel/xe_ccs: Add helpers for neagtive tests
 
->  
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index a21922ee5..4424f6f9b 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -11,6 +11,8 @@
->  #endif
->  #include <sys/ioctl.h>
->  #include <sys/time.h>
-> +#include <sys/mman.h>
-> +#include <unistd.h>
->  #include <malloc.h>
-
-While at this, could you move <malloc.h> to proper place?
+This could be done at next revision or, if you will got r-b,
+without sending new series.
 
 Regards,
 Kamil
 
-
->  #include "drm.h"
->  #include "igt.h"
-> @@ -97,20 +99,125 @@ struct test_config {
->  };
->  
+> Introduce data structures and helper utilities used by the VM
+> negative tests in xe_vm.
+> 
+> These helpers provide resource management and setup/cleanup
+> logic that simplifies the implementation of the test cases
+> introduced in subsequent patches.
+> 
+> No functional tests are introduced in this patch.
+> 
+> Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+> ---
+>  tests/intel/xe_ccs.c | 279 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 279 insertions(+)
+> 
+> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+> index 4c5fe0311..029b8bdaa 100644
+> --- a/tests/intel/xe_ccs.c
+> +++ b/tests/intel/xe_ccs.c
 [cut]
