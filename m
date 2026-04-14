@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B85A6F531F8
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:15:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A83ECF531FA
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:15:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 68F8510E072;
-	Tue, 14 Apr 2026 07:15:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3881810E072;
+	Tue, 14 Apr 2026 07:15:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PF2omFO2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IMQ3OApC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF5A910E28D
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:14:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB9A010E072
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776150899; x=1807686899;
+ t=1776150890; x=1807686890;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=In2p/+gAN1GJN6L/0Z+beW7R/Xkhw6SZ+d1oFlFfHys=;
- b=PF2omFO2r+OfaGALnEorl0P2t31M9gXQoWsE4gnXpo86F+zhNixIKrK7
- LoBS6qWnsDFGXXL+PTDwj8zng6OFmKoz1x6fjeonYbBsIrfVpkPfYcQuX
- Qfa9jFJfyMckdVfxJeTV03cwZFZ+/LqUwuCchq6oCRt61lW9lusgXAMvq
- NGhrXgLsS/UGBd3vRJXRjLXuXwje/JM1irGawLmUJuHicEwMw4vtnnXot
- lw8Wlh0YD0uuikH3xuYKqpgeAd390x8+fPQD3/pBITPk/8mijp+vfTObE
- mL/IguwDC/QhrQ7PCuRYWu+m9qPGrZkKEK2tRkF3sgHpYqsBrmDlDtTzP Q==;
-X-CSE-ConnectionGUID: qHO8dQxbST274AGCt+MLAw==
-X-CSE-MsgGUID: jwFxZowESrqT0qG/rZYNdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="102555746"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="102555746"
+ bh=UpbRexXM9vooHZVFGBUOV8+dt1YDtI1lKiz9/BUczBY=;
+ b=IMQ3OApCAHzTAH8F+wk3Z1PEV5RKQNXs10HRERshEr+cfCPnPQfn/WlB
+ OUCwYYCVCuAQTGkpwe7xhg6djFqQ7eXMNJpsggYGKo2vyHObx3dZ1i1K5
+ XKeYHqpWH1Z5YHWUAHsXmOlcyOKaPVZkYI3bThRr9y3QPTMYOlG7zOto5
+ 8YN4J/EzLx6aSyvcBbap2dUW3Ohy3hwek+nLapfy51D200uUSQMUJ4ldI
+ cpW2gVJT7c0dyEIC6FX5nUdlql96MSdyfRxoGy/5/R9o4QpSxdY2S/teL
+ plSgeBDxqXtUNkO+Gt6VoOaw09XOBo22d0VuVC18uqPjx+fZYV0bHfOnM g==;
+X-CSE-ConnectionGUID: zE+iAe+2S7axi/hFR7QpHQ==
+X-CSE-MsgGUID: 1yl5CWZ5TlaomeY3dFZvRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="102555709"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="102555709"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:14:59 -0700
-X-CSE-ConnectionGUID: +lZGM2s2T2qGXOvbAi2Q1w==
-X-CSE-MsgGUID: DqJTxYtERYmKl1I+ZrSYRQ==
+ 14 Apr 2026 00:14:50 -0700
+X-CSE-ConnectionGUID: MgGQkUnPR5Klyw9LWTuE6w==
+X-CSE-MsgGUID: oSERLM8OT96HBEn5RCxqbg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="234046851"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="234046728"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.238])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:14:57 -0700
+ 14 Apr 2026 00:14:48 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 03/16] tests: prefer igt_display_t over struct
- igt_display
-Date: Tue, 14 Apr 2026 10:14:23 +0300
-Message-ID: <e70a3bad698012a95c36c9d50e968885c25c47f4.1776150714.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 01/16] tests: prefer igt_plane_t over struct igt_plane
+Date: Tue, 14 Apr 2026 10:14:21 +0300
+Message-ID: <2a3928d26fff5a57743d8a7d312bf953522673c1.1776150714.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1776150714.git.jani.nikula@intel.com>
 References: <cover.1776150714.git.jani.nikula@intel.com>
@@ -75,49 +74,90 @@ The typedefs are meant to be used instead of the plain structs.
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tests/kms_getfb.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/intel/kms_dp_link_training.c      |  4 ++--
+ tests/intel/kms_dp_linktrain_fallback.c | 12 ++++++------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index 5b0eea161163..7ceca73f3997 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -129,7 +129,7 @@ static bool has_getfb_iface(int fd)
- /**
-  * Find and return an arbitrary valid property ID.
+diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
+index d859db64b4ff..6aa63cdd8062 100644
+--- a/tests/intel/kms_dp_link_training.c
++++ b/tests/intel/kms_dp_link_training.c
+@@ -118,7 +118,7 @@ static void assert_link_status_good(data_t *data, bool mst)
   */
--static uint32_t get_any_prop_id(struct igt_display *display)
-+static uint32_t get_any_prop_id(igt_display_t *display)
+ static void setup_planes_fbs(data_t *data, igt_output_t *outs[],
+ 			     int count, drmModeModeInfo *modes[],
+-			     struct igt_fb fbs[], struct igt_plane *planes[])
++			     struct igt_fb fbs[], igt_plane_t *planes[])
  {
- 	for (int i = 0; i < display->n_outputs; i++) {
- 		igt_output_t *output = &display->outputs[i];
-@@ -140,7 +140,7 @@ static uint32_t get_any_prop_id(struct igt_display *display)
- 	return 0;
- }
+ 	int i;
  
--static void test_handle_input(struct igt_display *display)
-+static void test_handle_input(igt_display_t *display)
- {
+@@ -148,7 +148,7 @@ static void do_modeset(data_t *data, bool mst)
+ 	igt_output_t *outs[IGT_MAX_PIPES];
+ 	drmModeModeInfo *modes[IGT_MAX_PIPES];
+ 	struct igt_fb fbs[IGT_MAX_PIPES];
+-	struct igt_plane *planes[IGT_MAX_PIPES];
++	igt_plane_t *planes[IGT_MAX_PIPES];
+ 	int n_pipes = 0;
+ 	int out_count = 0;
+ 	igt_crtc_t *crtc;
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+index 2db5422c211d..661af7d165e7 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -41,7 +41,7 @@ typedef struct {
+ 	igt_output_t *output;
+ 	igt_crtc_t *crtc;
  	struct igt_fb fb;
+-	struct igt_plane *primary;
++	igt_plane_t *primary;
+ 	int n_pipes;
+ } data_t;
  
-@@ -196,7 +196,7 @@ static void test_handle_input(struct igt_display *display)
- 		igt_remove_fb(display->drm_fd, &fb);
- }
- 
--static void test_duplicate_handles(struct igt_display *display)
-+static void test_duplicate_handles(igt_display_t *display)
+@@ -115,7 +115,7 @@ static void setup_modeset_on_outputs(data_t *data,
+ 				     int *output_count,
+ 				     drmModeModeInfo *mode[],
+ 				     struct igt_fb fb[],
+-				     struct igt_plane *primary[])
++				     igt_plane_t *primary[])
  {
- 	struct igt_fb fb;
+ 	int i;
  
-@@ -256,7 +256,7 @@ static void test_duplicate_handles(struct igt_display *display)
- 		igt_remove_fb(display->drm_fd, &fb);
- }
- 
--static void test_getfb2(struct igt_display *display)
-+static void test_getfb2(igt_display_t *display)
+@@ -159,7 +159,7 @@ static bool validate_modeset_for_outputs(data_t *data,
+ 					int *output_count,
+ 					drmModeModeInfo *mode[],
+ 					struct igt_fb fb[],
+-					struct igt_plane *primary[])
++					igt_plane_t *primary[])
  {
- 	struct igt_fb fb;
+ 	igt_require_f(*output_count > 0, "Require at least 1 output\n");
+ 	setup_pipe_on_outputs(data, outputs, output_count);
+@@ -173,7 +173,7 @@ static bool validate_modeset_for_outputs(data_t *data,
+ static bool setup_outputs(data_t *data, bool is_mst,
+ 		      igt_output_t *outputs[],
+ 		      int *output_count, drmModeModeInfo *mode[],
+-		      struct igt_fb fb[], struct igt_plane *primary[])
++		      struct igt_fb fb[], igt_plane_t *primary[])
+ {
+ 	bool ret;
  
+@@ -307,7 +307,7 @@ static bool fix_link_status_and_recommit(data_t *data,
+ 					 int *output_count,
+ 					 drmModeModeInfo * modes[],
+ 					 struct igt_fb fbs[],
+-					 struct igt_plane *primaries[])
++					 igt_plane_t *primaries[])
+ {
+ 	int i;
+ 	igt_output_t *out;
+@@ -347,7 +347,7 @@ static void test_fallback(data_t *data, bool is_mst)
+ 	igt_output_t *outputs[IGT_MAX_PIPES];
+ 	drmModeModeInfo * modes[IGT_MAX_PIPES];
+ 	struct igt_fb fbs[IGT_MAX_PIPES];
+-	struct igt_plane *primaries[IGT_MAX_PIPES];
++	igt_plane_t *primaries[IGT_MAX_PIPES];
+ 	struct udev_monitor *mon;
+ 
+ 	retries = SPURIOUS_HPD_RETRY;
 -- 
 2.47.3
 
