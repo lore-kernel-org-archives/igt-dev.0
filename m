@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2A42F531F8
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:15:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8261F531F8
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:15:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6A72D10E28D;
-	Tue, 14 Apr 2026 07:15:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7EB1010E072;
+	Tue, 14 Apr 2026 07:15:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LZd7EX1c";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m/P2bXHC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D72110E590
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:15:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF33310E072
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776150912; x=1807686912;
+ t=1776150922; x=1807686922;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6t2/whJAxMNb8spxL5MuU2g9CnkaUoVpRpBn2pAcv/4=;
- b=LZd7EX1cvLEKHGoaNf/HWppHFtQlfDpVdpGmIBMEfYXZM4bZ+ptD1DzC
- c4o7sS7UOpo4ViG/JGtfqGThvxYrYc0g5Vl36c0lGuPPU9mI2+Ux53Xut
- lOFAmUkhY4DwntKlZPuuG4MUxzjobw8tJOrXIa25XyvkTIQolYy6iGbcU
- CKOLQkDhW74Dv/CnbWvFXJ1PUgZnlNnvAO9BHMo+hLFMSlhYgvJylPwcf
- oVWhmyLM9lB96NcXfqcjaZisXb8LyqOwNpTVnKCKM54NX4PHMXUjOPFOj
- vRb0t3YA+Sua8krFpWVgiv3LE/FefdXqKPE1erq64UoIQbQSG4TPHuJC8 g==;
-X-CSE-ConnectionGUID: kV7qyHVoSVqwImOdEWkyIA==
-X-CSE-MsgGUID: k2l5fjZDQQidlFKWeZap2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="102555770"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="102555770"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:15:12 -0700
-X-CSE-ConnectionGUID: d4tDBQfqQdWtR7yD1lVyxQ==
-X-CSE-MsgGUID: ZRJHApvHRIW13SoZ62Ea0A==
+ bh=mLdAHoOCPl7Ve9H8glRzK8Whie66KW7Ikh8IbB1ds2c=;
+ b=m/P2bXHCBwEXtJPdSQboXUoMV72IejkHsGQ7L3XUIar/WE21Jgfjppg9
+ ulFGeTMELxH2Y5jOvONp96wnRGMfKWvUdaRD3qtLqvkXov5dH8GWVLLOQ
+ H+hV2t/rWwQZr5gA2XOQAEHHtPlk9IHlynW/eQl0NXMTKbiEa9fJasjjO
+ jEgGnVvIfXeGWWR/iAbQnVqZnsVG5XwI2O7s0BLk6E0ePgkhiG+SM2cU2
+ MJhaGMbzmE47WeDuM/rI5JATaR/cmo5Gg1+jEpkAZrDQXSg9wT6Efx2/w
+ DW4b7eGlEPZpy67W+ZNCSop6qPP8Y8OYvfqtFbnvq+FGRuuNu6KEhnPfP A==;
+X-CSE-ConnectionGUID: 766Nrg1DSZaEH7ojLQsCeg==
+X-CSE-MsgGUID: lw9ggH3BQq6TU5ykgbr63Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="80690974"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="80690974"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 00:15:21 -0700
+X-CSE-ConnectionGUID: +7JzEcXuSS2HJelsnFsvag==
+X-CSE-MsgGUID: 9Kb3NxOiTK+s/VZmY4z3/g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="234047167"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="225712431"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.238])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:15:11 -0700
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 00:15:20 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 06/16] lib/kms: drop struct igt_colorop definition
-Date: Tue, 14 Apr 2026 10:14:26 +0300
-Message-ID: <a2f0849693f45bc54755e0a7fe6a9597df53fdcb.1776150714.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 08/16] tests/amdgpu/amd_hotplug: use for_each_output()
+Date: Tue, 14 Apr 2026 10:14:28 +0300
+Message-ID: <d96f785b326d8160859f7276dcc33b1738f65b82.1776150714.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1776150714.git.jani.nikula@intel.com>
 References: <cover.1776150714.git.jani.nikula@intel.com>
@@ -70,26 +70,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There is no need for the struct igt_colorop definition, we can simply
-use the igt_colorop_t typedef.
+Use for_each_output() instead of manually iterating display->outputs[i].
+
+Tweak the CRTC limit check slightly when removing the for loop.
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/igt_kms.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/amdgpu/amd_hotplug.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index e785dce8b105..9e7eb499fdfb 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -411,7 +411,7 @@ static inline bool igt_rotation_90_or_270(igt_rotation_t rotation)
+diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c
+index 5049eca88439..83ad55ea0cf6 100644
+--- a/tests/amdgpu/amd_hotplug.c
++++ b/tests/amdgpu/amd_hotplug.c
+@@ -50,7 +50,8 @@ typedef struct data {
+ static void test_init(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+-	int i, n, max_pipes = igt_display_n_crtcs(display);
++	int n = 0;
++	igt_output_t *output;
+ 	igt_crtc_t *crtc;
  
- typedef struct _igt_plane igt_plane_t;
+ 	for_each_crtc(display, crtc) {
+@@ -65,8 +66,9 @@ static void test_init(data_t *data)
+ 			igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
+ 	}
  
--typedef struct igt_colorop {
-+typedef struct {
- 	uint32_t id;
- 	igt_plane_t *plane;
+-	for (i = 0, n = 0; i < display->n_outputs && n < max_pipes; ++i) {
+-		igt_output_t *output = &display->outputs[i];
++	for_each_output(display, output) {
++		if (n == igt_display_n_crtcs(display))
++			break;
+ 
+ 		data->output[n] = output;
  
 -- 
 2.47.3
