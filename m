@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D9BAF531F1
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:16:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0CCEF531F8
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:16:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D49FC10E072;
-	Tue, 14 Apr 2026 07:16:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6040510E072;
+	Tue, 14 Apr 2026 07:16:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R3gzx+mP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T2hucS0U";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2196910E072
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:15:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F87710E580
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776150935; x=1807686935;
+ t=1776150949; x=1807686949;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0BiI28jRMgxvonbY8Ix1dERU8UlqD4OJ1qzxlYHf3hA=;
- b=R3gzx+mPzGQio95bETNZzpTC00Re7WOkwUkHoUWU+68IE1v8QbRFmAok
- 2eiZqFiJfENbgrFRFBNialmLD0BEs+qUvqM2zNlmtVtYNwqitNkFGm9cq
- MP3tz8qwGNltVEKbu4sgBxHKehU9t6BisRjMvxgvhvspKZDiR+cRnNVgr
- QFcpp3KmW4s5g5oN1uqw+OkLfGDE+tpZS95vSdHxsTVxCzmtsqxR69S8k
- 8JOblu/t8G02B5tAQ74WKGZ4Nd/dU+xzRntEa+WdI1PXdLB1EhYu4Gpt0
- k2SNfWM5jZ4vvnvF+hOzxp3M8PdWKQhTl3/PZS6VkMmP40qeI1jLX2UhP w==;
-X-CSE-ConnectionGUID: hedJfmPvQ++blQjYtT/0qw==
-X-CSE-MsgGUID: XeC3S7m5RMy1zBDuSHYCiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="80690988"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="80690988"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:15:35 -0700
-X-CSE-ConnectionGUID: 295xFQ05S7+ozb31n5hRZg==
-X-CSE-MsgGUID: q+KPaSNYS6CneILMoUZ6xQ==
+ bh=nWNSybmpZzaEsKfBLePF5GvBP91SPwyH1sEEPvYNzS0=;
+ b=T2hucS0UmnqFuCXNm8d4PSznT7uuug1YDdWE6uVeKnwqShfhSbbZrfXx
+ ZGnCqDE5kDdf2lQwIbE+gFPYZNG5NyzGNQTQQ0P0gKxEqz0C7m6DmSLzI
+ ps47OrwvkbHjt8EbTXIj6bsijjR4g5A6wDXXSmeiTM5htcMs/OZiFqSI8
+ qmFz3oIQTdt4sekygXNfWcDMwZc/d7aQqlHlxUhpJkxrZAASAGQkmGGVZ
+ anaTRIZjUmgFFFczUTFk+XwfcWVlavT9wnjeApulbjH5DusgvWvlCa9aC
+ WKb0+1+vKX6HQsSEy91G3/Bc/sN0nDNJuxMkjYbwBDHLFQj8/MTuFVLam Q==;
+X-CSE-ConnectionGUID: uf7uNyAKSouGsdGf0HhzLw==
+X-CSE-MsgGUID: eYhCvB+fRoKDWt0afF5LqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="64633912"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="64633912"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 00:15:48 -0700
+X-CSE-ConnectionGUID: WIybvFlFTDC2OA1+y8TCCg==
+X-CSE-MsgGUID: K6Ntbq9+S6aN0Hjp6PSyqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="225712584"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="229889136"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.238])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:15:33 -0700
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 00:15:47 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 11/16] tests/amdgpu/amd_plane: use for_each_output()
-Date: Tue, 14 Apr 2026 10:14:31 +0300
-Message-ID: <ee620888571be67cbfb7fcec01f2fe158b299176.1776150714.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 14/16] tests/kms_content_protection: use
+ for_each_output()
+Date: Tue, 14 Apr 2026 10:14:34 +0300
+Message-ID: <6ae71c5b775eb9bbca4aac2613d631d26e746807.1776150714.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1776150714.git.jani.nikula@intel.com>
 References: <cover.1776150714.git.jani.nikula@intel.com>
@@ -72,40 +73,29 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Use for_each_output() instead of manually iterating display->outputs[i].
 
-Tweak the CRTC limit check slightly when removing the for loop.
-
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tests/amdgpu/amd_plane.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tests/kms_content_protection.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index da0dc7822575..412a220b255f 100644
---- a/tests/amdgpu/amd_plane.c
-+++ b/tests/amdgpu/amd_plane.c
-@@ -151,8 +151,9 @@ enum test {
- static void test_init(data_t *data)
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index caf3d7a56ae4..a42f699e9c64 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -395,10 +395,10 @@ static void test_cp_enable_with_retry(igt_output_t *output,
+ static bool igt_crtc_is_free(igt_crtc_t *crtc)
  {
- 	igt_display_t *display = &data->display;
--	int i, n, max_pipes = igt_display_n_crtcs(display);
+ 	igt_display_t *display = crtc->display;
+-	int i;
 +	igt_output_t *output;
- 	igt_crtc_t *crtc;
-+	int n = 0;
  
- 	for_each_crtc(display, crtc) {
- 		data->crtc[crtc->crtc_index] = crtc;
-@@ -168,8 +169,9 @@ static void test_init(data_t *data)
- 			igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
+-	for (i = 0; i < display->n_outputs; i++)
+-		if (igt_output_get_driving_crtc(&display->outputs[i]) == crtc)
++	for_each_output(display, output)
++		if (igt_output_get_driving_crtc(output) == crtc)
+ 			return false;
  
--	for (i = 0, n = 0; i < display->n_outputs && n < max_pipes; ++i) {
--		igt_output_t *output = &display->outputs[i];
-+	for_each_output(display, output) {
-+		if (n == igt_display_n_crtcs(display))
-+			break;
- 
- 		data->output[n] = output;
- 
+ 	return true;
 -- 
 2.47.3
 
