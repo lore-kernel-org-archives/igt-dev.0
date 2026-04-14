@@ -4,27 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B59D1F9D0CD
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 13:34:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 208C6F9D0CA
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 13:40:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 66C0110E596;
-	Tue, 14 Apr 2026 13:34:45 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B26F810E601;
- Tue, 14 Apr 2026 13:34:34 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5911395490839578814=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id CA00010E605;
+	Tue, 14 Apr 2026 13:40:20 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k6C8EdGW";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43FBB10E605
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 13:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1776174009; x=1807710009;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=+gS05xk+TLL7EtWOPqfAatoviocydu4Ehrc7JjJZLFg=;
+ b=k6C8EdGWXmFBsZQswAxb6g0ehz3/qVkpPKM3ONoF3VZ1oCMDjjCBmqQt
+ 1Ah+XK5ssexmn6j4w1JyV9oi0rL1YZ1H3LyFY5IwQfyh0cen56gW6MR90
+ 1HRq8jRQdvzG6jJAvIos5KZnkPt/ZfRDCySlWdof1JAfXb6uPwPIkIBcC
+ 3LLS5+91//gAPbxPDOmsUk1/Oj/Ixc3KY7cuit8LkK2+AQY8LG99PgSvK
+ u7Z1w1JDc8NNUdb+eCIRQ5IDrUATWBDdQF8fu+D+A5680Ymk9ScFTRN+o
+ jYkx/lwltMmwXttEUqTesprAxNAsegFZu/ISeARll5OUiQOhqVDSIikNG w==;
+X-CSE-ConnectionGUID: WmicSLqUS86yiWZxisKMxQ==
+X-CSE-MsgGUID: ORSpkWUmRxSzckrTYozgmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77240786"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="77240786"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 06:40:09 -0700
+X-CSE-ConnectionGUID: qzWK2almRFWl5ktRUPqzAw==
+X-CSE-MsgGUID: 1/bMGd/zSX2PDjlAUDhmsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="226920195"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.235])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 06:40:05 -0700
+Date: Tue, 14 Apr 2026 16:40:02 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>
+Cc: "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
+ "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
+ "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
+ "jani.nikula@intel.com" <jani.nikula@intel.com>,
+ Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
+ Nancy Lin =?utf-8?B?KOael+aso+ieoik=?= <Nancy.Lin@mediatek.com>,
+ "bhanuprakash.modem@gmail.com" <bhanuprakash.modem@gmail.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ Paul-pl Chen =?utf-8?B?KOmZs+afj+mclik=?= <Paul-pl.Chen@mediatek.com>,
+ "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>,
+ Project_Global_Chrome_Upstream_Group
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
+ "gildekel@google.com" <gildekel@google.com>,
+ "fshao@chromium.org" <fshao@chromium.org>,
+ "markyacoub@chromium.org" <markyacoub@chromium.org>
+Subject: Re: [PATCH i-g-t] tests/kms_rotation_crc: Add MTK device support
+Message-ID: <ad5De-s-yxyyTt7s@intel.com>
+References: <20260410100806.62906-1-jason-jh.lin@mediatek.com>
+ <adjQJE8Ok5K_sNuc@intel.com>
+ <7c20c056822e3bb860f48c23f3830a8ae93a67ef.camel@mediatek.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Finvalid=5Fmod?=
- =?utf-8?q?e=3A_Allow_clock-too-high_test_on_non-Intel_platforms?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jason-JH Lin" <jason-jh.lin@mediatek.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Apr 2026 13:34:34 -0000
-Message-ID: <177617367470.460945.12033925328552446813@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260414101108.1920755-1-jason-jh.lin@mediatek.com>
-In-Reply-To: <20260414101108.1920755-1-jason-jh.lin@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7c20c056822e3bb860f48c23f3830a8ae93a67ef.camel@mediatek.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,194 +85,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5911395490839578814==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, Apr 14, 2026 at 03:11:21AM +0000, Jason-JH Lin (林睿祥) wrote:
+> On Fri, 2026-04-10 at 13:25 +0300, Ville Syrjälä wrote:
+> > On Fri, Apr 10, 2026 at 06:07:31PM +0800, Jason-JH Lin wrote:
+> > > Adapt rotation CRC tests for MTK devices by using Intel-like pipe
+> > > CRC
+> > > approach with explicit vblank synchronization.
+> > > MTK devices require a vblank wait to ensure rotation completes
+> > > before
+> > > CRC capture.
+> > 
+> > Instead of adding these checks all over igt I think you should
+> > try to fix you kernel CRC implementation to not hand out garbage
+> > CRCs.
+> > 
+> 
+> The issue is fundamental to MTK's HW design where all HW configurations
+> are applied by GCE (Global Command Engine) triggered by EOF signal.
+> 
+> MTK HW Configuration Flow:
+> 
+> igt_display_commit2(display, COMMIT_ATOMIC)
+>             │
+>             ▼
+>        atomic_commit()
+>             │
+>             ▼
+>        CMDQ submit
+>             │
+>             ▼
+>     Wait for next EOF signal ─────────────────┐
+>                                               │
+>                                               ▼
+>                                   GCE applies HW config
+>                                   (Rotation parameters, etc.)
+>                                   during VBlanking period
+>                                 & GCE reads HW CRC from HW register
+>                                   into DRAM buffer
+>                                               │
+>                                               ▼
+>                                   Next Active Display Period
+>                                   HW renders with new config
+>                                               │
+>                                               ▼
+>                                   EOF → GCE reads HW CRC from
+>                                     HW register into DRAM buffer
+>                                               │
+>                                               ▼
+>                                   VBlank+1 → read CRC from DRAM
+>                                            → drm_crtc_add_crc_entry() ✅
+>                                   (MTK always reports CRC at VBlank+1
+>                                    after the EOF capture)
+> 
+> 
+> This design is intentional to ensure all HW settings are fully applied
+> within the VBlanking period, guaranteeing tearing-free display updates.
+> At the EOF signal, GCE reads the HW CRC from the HW register into a
+> DRAM buffer. Note that MTK always reports the CRC at VBlank+1 after the
+> EOF capture, which means there is already an inherent one-frame delay
+> before the CRC is reported to IGT via drm_crtc_add_crc_entry().
+> 
+> IGT Expected Behavior (Intel/AMD):
+> 
+>   igt_display_commit2(display, COMMIT_ATOMIC)
+>             │
+>             ▼
+>        atomic_commit()
+>             │
+>             ▼
+>         VBlank N ──► HW config takes effect immediately ✅
+>             │
+>             ▼
+>         EOF N ──► CRC captured with new config ✅
+>             │
+>             ▼
+>         VBlank N+1 ──────────────────────► igt_pipe_crc_get_current() ✅
+> 
+> 
+> 
+> MTK Actual Behavior:
+> 
+>   igt_display_commit2(display, COMMIT_ATOMIC)
+>             │
+>             ▼
+>        atomic_commit()
+>             │
+>             ▼
+>        CMDQ submit
+>             │
+>             ▼
+>         EOF N ──► GCE applies new config
+>                ──► GCE reads CRC(old) from HW register into DRAM
+>             │
+>       VBlanking N ──► HW updated with new config (tearing-free ✅)
+>             │
+>         VBlank N+1 ──► CRC(old) reported via drm_crtc_add_crc_entry()
+>             │
+>         EOF N+1 ──► GCE reads CRC(new) from HW register into DRAM
+>             │
+>         VBlank N+2 ──► CRC(new) reported via drm_crtc_add_crc_entry()
+>             │
+>             ▼
+>     igt_wait_for_vblank() is needed to ensure
+>     igt_pipe_crc_get_current() captures the correct CRC ✅
+> 
+> As shown above, due to MTK's GCE-based HW architecture, there is an
+> inherent multi-frame latency between igt_display_commit2() and the
+> correct CRC being available. Unlike Intel/AMD where the new
+> configuration takes effect immediately at the next VBlank, MTK requires
+> at least 2 VBlanks after atomic_commit() before the correct CRC can be
+> captured. Therefore, igt_wait_for_vblank() is necessary to ensure
+> igt_pipe_crc_get_current() captures the correct CRC reflecting the new
+> rotation configuration.
+> 
+> Since this timing behavior is inherent to MTK's GCE-based HW
+> architecture and cannot be eliminated at the kernel driver level,
+> adding igt_wait_for_vblank() in IGT is the appropriate solution.
 
-== Series Details ==
+It doesn't matter how long the latency is. The kernel should accompany
+each CRC with the correct frame number for which the CRC was generated.
+igt should have to do nothing but wait for the CRC with the correct
+frame number to appear.
 
-Series: tests/kms_invalid_mode: Allow clock-too-high test on non-Intel platforms
-URL   : https://patchwork.freedesktop.org/series/164848/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8855 -> IGTPW_14981
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/index.html
-
-Participating hosts (42 -> 39)
-------------------------------
-
-  Missing    (3): bat-dg2-13 bat-atsm-1 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14981 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8855/bat-dg2-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-9:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8855/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][7] +12 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [DMESG-FAIL][8] ([i915#12061]) -> [PASS][9] +1 other test pass
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8855/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8855 -> IGTPW_14981
-  * Linux: CI_DRM_18326 -> CI_DRM_18329
-
-  CI-20190529: 20190529
-  CI_DRM_18326: c8bad7becc008716c8475847328c549e178c813c @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18329: 4e3f5ea9aacc227f8dc56389af013d1a15ccb323 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14981: 93e0ffd1a11399b14830c29134e24539fbf0742f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8855: 3c05ee1076cee44a2bc3c176ec21e651f6eca600 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/index.html
-
---===============5911395490839578814==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_invalid_mode: Allow clock-too-high test on non-Intel platforms</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164848/">https://patchwork.freedesktop.org/series/164848/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8855 -&gt; IGTPW_14981</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): bat-dg2-13 bat-atsm-1 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14981 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8855/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8855/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +12 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8855/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14981/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8855 -&gt; IGTPW_14981</li>
-<li>Linux: CI_DRM_18326 -&gt; CI_DRM_18329</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18326: c8bad7becc008716c8475847328c549e178c813c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18329: 4e3f5ea9aacc227f8dc56389af013d1a15ccb323 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14981: 93e0ffd1a11399b14830c29134e24539fbf0742f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8855: 3c05ee1076cee44a2bc3c176ec21e651f6eca600 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5911395490839578814==--
+-- 
+Ville Syrjälä
+Intel
