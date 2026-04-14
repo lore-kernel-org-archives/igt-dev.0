@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56769F9D0EC
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 19:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B1EF9D0EF
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 19:39:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E003A10E057;
-	Tue, 14 Apr 2026 19:34:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA2FF10E057;
+	Tue, 14 Apr 2026 19:39:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YRSGmrGB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fZMV+kSQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A28CE10E057
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 19:34:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0825F10E057
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 19:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776195287; x=1807731287;
+ t=1776195550; x=1807731550;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=eW+kvelWeuBqDbrmn6GEbOqBl2xmkBe2yjLu0WJ6WsM=;
- b=YRSGmrGBwMpK06feI07w1ZzD2C51/7sVysR14SvVItBo3/u0YeMWBZdk
- v7wao0f+Qu3JPBQVtMbRkLgwOph7k1omhQxx5GHeKER5kYXeLkxdznhfg
- 66XY+VGhMBQQ1ADhEVRBNd3QlcYUnJxbb7zF3UORS1Da53vB1qOd9Xx5J
- i36t2hNqxoBCIU9EaQUw7Darlz+UF2rmRzSScAcdnQ5ELbnAT4W3oQL5J
- ee9hBOlPP9WDQ+gpqb8mSg/lX7v7+12xgYl9CHi256vxbXAZ3NO+pj5s/
- YG0gYfUScVfosmzQR8U0KpMBsEOc2/hI3Nc+LvpVSEqsX2z7SrRbZaOWu w==;
-X-CSE-ConnectionGUID: 6++9+yHeQSGu3x5WwHnk1Q==
-X-CSE-MsgGUID: V0UrPIhMTjGZpMqUpKU6sQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="102623902"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="102623902"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 12:34:47 -0700
-X-CSE-ConnectionGUID: tNui7P7cSPeTbjrYjaGBgQ==
-X-CSE-MsgGUID: 6BEVspZcQg64t+q1qhH+Hw==
+ mime-version:in-reply-to;
+ bh=F2nlH5MOAeQdcENfwv1R+n94HffjEZkMSqGHklxi0ks=;
+ b=fZMV+kSQeA2BLVR/Zv0D7ap0LDmn2TPg62DukqszYymW+u1Wal39tyDx
+ EEN3HNxhnZnuzXK/4I0mQrqJ2WWmTwFptbvz0D9rift/RjjqYRKj0EGQI
+ bHHMEokATR/A3ZvCKrHKLlX85CNXJ79fgp2gg+rJecrox8+tk/Zf6JHmh
+ ijQHK7ITRZaEQO218mcb0rSycW1LRS90+/Gp+7/Q8UVvRucDHaaodnr3Y
+ iv2BWuXhUv1PRPKvV4IHh+oOKy4FnlCXHQ46WYXBW1sXY56maZDKa7ze4
+ Ce248XgDHVxwFHvx2GyCgWIw17ZNL6Ow4kx2OnhLzeVB/1DQ4ZOs+/sJ1 w==;
+X-CSE-ConnectionGUID: 9WK+d2UPT8yUXSb1MMylkQ==
+X-CSE-MsgGUID: 2jjckPyxSoaY5AYYf6x56w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77040650"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="77040650"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 12:39:09 -0700
+X-CSE-ConnectionGUID: UWsqQK27Q+OtoO697OsyMQ==
+X-CSE-MsgGUID: +BGneiKkSkm8y17f4cD/0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="227007983"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="225893034"
 Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost)
  ([10.245.245.163])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 12:34:46 -0700
-Date: Tue, 14 Apr 2026 21:34:44 +0200
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 12:39:07 -0700
+Date: Tue, 14 Apr 2026 21:39:06 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Krzysztof Karas <krzysztof.karas@intel.com>
 Cc: igt-dev@lists.freedesktop.org, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>
-Subject: Re: [PATCH i-g-t v3 3/5] scripts/hooks: Example guc log copy script
- and allowlist
-Message-ID: <mosb4o4wfnpgmq5ksg5l5xxoevv5pwvpasbcqq3dfnh65ujnzn@eeigbnqxs3kg>
+Subject: Re: [PATCH i-g-t v3 5/5] runner/resultgen: Insert attachments list
+ into results.json
+Message-ID: <sasrzl6xxdxav46j2unv6pb6lgxjzey6ye4isnjps5kuh6yofn@lvx6bti2iko5>
 References: <20260413201722.808673-7-zbigniew.kempczynski@intel.com>
- <20260413201722.808673-10-zbigniew.kempczynski@intel.com>
- <jn26ku5x5vntbwlnipmy7o26eato73wi56odeghml6auke7idt@2li7wvim6jiw>
+ <20260413201722.808673-12-zbigniew.kempczynski@intel.com>
+ <yhjkjwbyv244n7w6hcaplvvb4hhj7ofnbjua3krba4jcsz6lij@5nfw7wjy2l64>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <jn26ku5x5vntbwlnipmy7o26eato73wi56odeghml6auke7idt@2li7wvim6jiw>
+In-Reply-To: <yhjkjwbyv244n7w6hcaplvvb4hhj7ofnbjua3krba4jcsz6lij@5nfw7wjy2l64>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,90 +73,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Apr 14, 2026 at 08:06:52AM +0000, Krzysztof Karas wrote:
+On Tue, Apr 14, 2026 at 09:35:37AM +0000, Krzysztof Karas wrote:
 > Hi Zbigniew,
 > 
-> On 2026-04-13 at 22:17:26 +0200, Zbigniew Kempczyński wrote:
-> > We need to explicitly extract guc logs for failed tests so add hook
-> > script which does it after subtest/dynsubtest execution. As copying to
-> > attachments takes a lot of time do it only for failing subtests.
-> > 
-> > Adding this hook script to CI will extend execution time much and
-> > using allowlist is necessary. Instead of allowlist argument in the
-> > runner (previous attempt) now script filters such list on its own and
-> No need to mention development process (previous attempt,
-> previous version). Otherwise, it seems like you are referring
-> to the way this mechanism worked before your patch was
-> introduced, which is not true, as it did not exist yet.
+> [...]
+> 
+> >  
+> >  #include <jansson.h>
+> > @@ -1156,6 +1159,63 @@ static bool fill_from_dmesg(int fd,
+> >  	return true;
+> >  }
+> >  
+> > +struct json_t *tmp_tests;
+> > +static int ftw_attachments_list(const char *fpath, const struct stat *sb,
+> > +				int typeflag, struct FTW *ftwbuf)
+> > +{
+> > +	struct json_t *obj = NULL, *attobj = NULL;
+> > +	(void)sb;
+> > +	(void)ftwbuf;
+> Is this so there are no unused parameter warnings?
 
-To be honest I wondered should I add an info about previous attempt
-regarding allowlist implementation as a runner argument. I know
-implementation wasn't yet merged, but decision why scripts have to
-filter allowed tests on their own might be important for the reader.
-Short info we considered to contain allowlist in the runner might
-answer questions why we migrated this responsibility to script itself,
-even if it is at the end of food chain.
+Yes, that's my habit to mark unused arguments as void to silence
+the compiler warnings.
 
 > 
-> I'd split this section and leave the following in the commit
-> message:
-> 
->  Adding this hook script to CI will extend execution time much and
->  using allowlist is necessary. The script filters such list on its
->  own and decides when to move forward and do some post-test actions.
-> 
-> and move the reset to --- section:
-> 
->  Using this approach, instead of previous versions, is more flexible,
->  but moves decision to script what causes it to be more prone to bugs.
-> 
-> > decides when to move forward and do some post-test actions. Such
-> > approach is more flexible but moves decision to script what causes
-> > it is more prone buggy.
-> > 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Cc: Ryszard Knop <ryszard.knop@intel.com>
-> > Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-> > ---
-> > v2: install hook to datadir/hooks
-> > v3: migrate allowlist from runner to script
-> > ---
-> >  scripts/hooks/guc_copy.allowlist  |  2 ++
-> >  scripts/hooks/guc_copy_on_fail.sh | 47 +++++++++++++++++++++++++++++++
-> >  scripts/meson.build               |  3 ++
-> >  3 files changed, 52 insertions(+)
-> >  create mode 100644 scripts/hooks/guc_copy.allowlist
-> >  create mode 100755 scripts/hooks/guc_copy_on_fail.sh
-> > 
-> > diff --git a/scripts/hooks/guc_copy.allowlist b/scripts/hooks/guc_copy.allowlist
-> > new file mode 100644
-> > index 0000000000..04cb3f8298
-> > --- /dev/null
-> > +++ b/scripts/hooks/guc_copy.allowlist
-> > @@ -0,0 +1,2 @@
-> > +igt@xe_compute@compute-square
-> > +igt@xe_exec_basic@once-basic@ccs0
-> Are these the most prone to fail in our CI? It would be good to
-> mention in the commit message why you chose these particular
-> subtests. 
+> > +
+> > +	if (typeflag == FTW_F) {
+> > +		char *p;
+> > +
+> > +		p = strstr(fpath + 2, "/");
+> > +		if (!p)
+> > +			return -1;
+> > +		*p = '\0'; /* temporary for acquiring the piglit name */
+> > +		obj = get_or_create_json_object(tmp_tests, fpath + 2);
+> > +		attobj = get_or_create_json_array(obj, "attachments");
+> > +		*p = '/'; /* bring '/' back */
+> > +		json_array_append_new(attobj, escaped_json_stringn(fpath + 2, strlen(fpath + 2)));
+> > +	} else if (typeflag == FTW_DP) {
+> > +		;
+> I think returning 0 here is not much of a code duplication and
+> would look better.
 
-Good question. I've picked random tests to create an allowlist and
-parse it in a script. In real world scenario we should modify this file
-according to bugs we notice in which we want to dump guc logs.
+Ok, v4 will contain the change.
 
-There're two goals I would like to achieve - dump guc logs for tests
-which guc log is important, and second - how to not slow down CI much.
-Everything I propose adds some overhead to CI (execution scripts
-modification, etc), but as guc log is important from debug perspective
-and we have to collect it even at cost of introducing some complexity
-in the CI workflow.
+> 
+> > +	} else {
+> > +		return -1;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static bool fill_from_attachments(int idirfd, struct json_t *tests)
+> > +{
+> > +	char attname[32];
+> > +	int attdirfd;
+> > +	DIR *currdir;
+> > +	int ret;
+> > +
+> > +	snprintf(attname, sizeof(attname), "%s", DIR_ATTACHMENTS);
+> > +	if ((attdirfd = openat(idirfd, attname, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
+> > +		fprintf(stderr, "Error opening '%s' dir\n", DIR_ATTACHMENTS);
+> > +		return false;
+> > +	}
+> > +
+> > +	currdir = opendir(".");
+> Should attdirfd and currdir be closed at the end of this
+> function? Or somewhere?
+
+Yes, I missed the cleanup. Will be fixed in v4, thanks!
 
 --
 Zbigniew
 
 > 
-> [...]
+> > +	fchdir(attdirfd);
+> > +
+> > +	/*
+> > +	 * ftw doesn't support passing user data so *tests has to be
+> > +	 * set to some global for being visible in callback function.
+> > +	 * As results.json is not processed in multiple threads it is
+> > +	 * not a big problem.
+> > +	 */
+> > +	tmp_tests = tests;
+> > +	ret = nftw(".", ftw_attachments_list, 4, FTW_PHYS | FTW_DEPTH);
+> > +	fchdir(dirfd(currdir));
+> > +
+> > +	return ret ? false : true;
+> > +}
+> > +
+> >  static const char *result_from_exitcode(int exitcode)
+> >  {
+> >  	switch (exitcode) {
+> > @@ -2244,6 +2304,9 @@ static bool parse_test_directory(int dirfd,
+> >  		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
+> >  	}
+> >  
+> > +	if (!fill_from_attachments(dirfd, results->tests))
+> > +		fprintf(stderr, "Error parsing attachments directory\n");
+> > +
+> >  	override_results(entry->binary, &subtests, results->tests);
+> >  	prune_subtests(settings, entry, &subtests, results->tests);
+> >  
+> > -- 
+> > 2.43.0
+> > 
 > 
 > -- 
 > Best Regards,
