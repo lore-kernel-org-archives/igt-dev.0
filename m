@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A12AEF531F8
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A5C9F531F1
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:17:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5BB8B10E072;
-	Tue, 14 Apr 2026 07:17:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1818710E072;
+	Tue, 14 Apr 2026 07:17:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GKMMzpuB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B5BwocLy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01F7410E590
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:15:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EEFE10E072
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776150908; x=1807686908;
+ t=1776150953; x=1807686953;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gdU9yuMV38osP7ngXUq7FxgG9IZZw+/+AgqWUpnwR5Q=;
- b=GKMMzpuBE8A9x0FZaxvV2FMOlUq/z/Ptupr/ywK/xT/PnSntGBJtbiAm
- upbdcj9xWb0RV2eT9rW1p4y30acHfwcFamAN+JU5g6bqZ3OrRgBYjOVxW
- qVCi2t/7bMCl/VKIiHvoeeMbuwRthUOVM9WbfRZpO2lSWIPUuFAJU1qCr
- ITiH77EGfax0IPWIAfENlcU2A+gt091b1+Z4kX7HN22pDKdwKmoQUOfA1
- AY/js2rAgCRpyyGfGWc7aEuweRBbq6ZQdOSiGMTnZqqDZeVo3O7fE8g1F
- +EBRYXooQmz4E5fWXZqCebSOrNSxvMDZAJfcXuJIly/HV80XLhLrTFpm0 w==;
-X-CSE-ConnectionGUID: pPBNqQSMSfeRX7cXAD0Fbg==
-X-CSE-MsgGUID: 6x1RCjspT8iKZXWk9TSI6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="102555760"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="102555760"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:15:08 -0700
-X-CSE-ConnectionGUID: 1YEB/2hUSqqSh1fgv1Umyw==
-X-CSE-MsgGUID: 9BNswtOdTNuvS4xxGkgS3Q==
+ bh=k2+H27Rh/gMAP27OE0/yiwmhb4ZFmxJ0LY72ekd1m50=;
+ b=B5BwocLytva1FyexEypOtidwldxrg6xihwINHRCCVGgQLvIGiYmgvUeh
+ 9rAO5BDuQ70xZiCeY8wcRTD5fOZrozQZ2SbJ9sWnM1OGQqMtLkspeTqus
+ yUv8iDOHGcCf7tMxdRJlq0IzmmEdwSqf5wFT/ykZL4eskHaocnaQmY5Ap
+ KLz0p8GLNmjCIs7shnR1edAsfFxPBaaYxgq9vWyhIMKN+WtSkoDC7YHjI
+ vcliUZigcSFhUdiY5wWTXSBMydbZ3X+qsyzHnBdpRUyGmJ2L4WyQweUEB
+ tbd/GD6LTLjd9VQ6gfW24x84p6McLpw9BXXKvMmW93yPhKdUKnNTj+7KB w==;
+X-CSE-ConnectionGUID: yzfvbxarTPajV7KQP5QreQ==
+X-CSE-MsgGUID: sLYCBTeRSTKySMlBm5rZ/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="64633920"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="64633920"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 00:15:53 -0700
+X-CSE-ConnectionGUID: BW98FLKvSRqL+MLmNKgqiw==
+X-CSE-MsgGUID: euUKefokRbC4tPAN3fAqkQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="234047071"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="229889141"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.238])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:15:06 -0700
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 00:15:52 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 05/16] lib/kms: rename struct igt_crtc to _igt_crtc
-Date: Tue, 14 Apr 2026 10:14:25 +0300
-Message-ID: <87d0748fd2221f33ee8f5782864bc39f7f65cf80.1776150714.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 15/16] tests/kms_getfb: use for_each_output()
+Date: Tue, 14 Apr 2026 10:14:35 +0300
+Message-ID: <931245711347c0edcb0ce805044f6d3d9fb96b1a.1776150714.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1776150714.git.jani.nikula@intel.com>
 References: <cover.1776150714.git.jani.nikula@intel.com>
@@ -70,36 +70,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rename the struct to avoid accidental use. The named struct is only
-needed for the typedef declaration.
+Use for_each_output() instead of manually iterating display->outputs[i].
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/igt_kms.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/kms_getfb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 2e2870854634..e785dce8b105 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -379,7 +379,7 @@ extern const char * const igt_plane_prop_names[];
- extern const char * const igt_colorop_prop_names[];
- 
- typedef struct _igt_display igt_display_t;
--typedef struct igt_crtc igt_crtc_t;
-+typedef struct _igt_crtc igt_crtc_t;
- typedef uint32_t igt_fixed_t;			/* 16.16 fixed point */
- 
- #define IGT_NUM_PLANE_COLOR_PIPELINES 4
-@@ -470,7 +470,7 @@ typedef struct _igt_plane {
- /*
-  * This struct represents a hardware pipe
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index 7ceca73f3997..972a38d7d6e7 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -131,8 +131,9 @@ static bool has_getfb_iface(int fd)
   */
--struct igt_crtc {
-+struct _igt_crtc {
- 	igt_display_t *display;
- 	/* ID of a hardware pipe */
- 	enum pipe pipe;
+ static uint32_t get_any_prop_id(igt_display_t *display)
+ {
+-	for (int i = 0; i < display->n_outputs; i++) {
+-		igt_output_t *output = &display->outputs[i];
++	igt_output_t *output;
++
++	for_each_output(display, output) {
+ 		if (output->props[IGT_CONNECTOR_DPMS] != 0)
+ 			return output->props[IGT_CONNECTOR_DPMS];
+ 	}
 -- 
 2.47.3
 
