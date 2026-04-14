@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EF34F531F1
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B85A6F531F8
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Apr 2026 07:15:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0DA8610E585;
-	Tue, 14 Apr 2026 07:15:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 68F8510E072;
+	Tue, 14 Apr 2026 07:15:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X5g822/A";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PF2omFO2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71D5D10E072
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:14:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF5A910E28D
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2026 07:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776150894; x=1807686894;
+ t=1776150899; x=1807686899;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=EO4YH7pL/b24TzanXqjlBCCwGmO5iR6T73Dqs0Xx1KQ=;
- b=X5g822/As1gmPiES72ugEps122ojJ1iWb002bso+8GuAtpo3xQP0nIf8
- Bla1arKIJ2xpIT0qbJGsydAbZwfikO0KsyysEAt57xmkjR9PSntJSwBpE
- TEkf0MtHYkWGZF20u5CzxDyfGx/xN7L3+q88FPIcq5S1RDQYw7jmUTQAw
- q+i0WHuBhO/rmYP2Klgh+lch4LA7ZrOx5JaqnMdju9ZV2X2SLVlgIgMY8
- ldtR8S7ZHQSiDYpXTbsdX9G6hnzhjC0X6jOFUGwDOTjsN3TPCMwW2Mv/Z
- RxLUqQewKYCSxSrViwSgmzph3e36vkQiyRSCI7za3dttFD080sXbrDr/r w==;
-X-CSE-ConnectionGUID: VodEBmy8QB2nj2dO2qdn/Q==
-X-CSE-MsgGUID: vnSF7Q0+Q/yENTRI5Dj4vQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="102555727"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="102555727"
+ bh=In2p/+gAN1GJN6L/0Z+beW7R/Xkhw6SZ+d1oFlFfHys=;
+ b=PF2omFO2r+OfaGALnEorl0P2t31M9gXQoWsE4gnXpo86F+zhNixIKrK7
+ LoBS6qWnsDFGXXL+PTDwj8zng6OFmKoz1x6fjeonYbBsIrfVpkPfYcQuX
+ Qfa9jFJfyMckdVfxJeTV03cwZFZ+/LqUwuCchq6oCRt61lW9lusgXAMvq
+ NGhrXgLsS/UGBd3vRJXRjLXuXwje/JM1irGawLmUJuHicEwMw4vtnnXot
+ lw8Wlh0YD0uuikH3xuYKqpgeAd390x8+fPQD3/pBITPk/8mijp+vfTObE
+ mL/IguwDC/QhrQ7PCuRYWu+m9qPGrZkKEK2tRkF3sgHpYqsBrmDlDtTzP Q==;
+X-CSE-ConnectionGUID: qHO8dQxbST274AGCt+MLAw==
+X-CSE-MsgGUID: jwFxZowESrqT0qG/rZYNdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="102555746"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="102555746"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:14:54 -0700
-X-CSE-ConnectionGUID: 7CnncvKKQJ6FKEsMxUszGQ==
-X-CSE-MsgGUID: rKXWcCs5RhSfP06haXrAvg==
+ 14 Apr 2026 00:14:59 -0700
+X-CSE-ConnectionGUID: +lZGM2s2T2qGXOvbAi2Q1w==
+X-CSE-MsgGUID: DqJTxYtERYmKl1I+ZrSYRQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="234046786"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="234046851"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.238])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 00:14:53 -0700
+ 14 Apr 2026 00:14:57 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 02/16] lib/kms: rename struct igt_plane to _igt_plane
-Date: Tue, 14 Apr 2026 10:14:22 +0300
-Message-ID: <ee878a5eebe4f0d870760443db56b56a36c9271b.1776150714.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 03/16] tests: prefer igt_display_t over struct
+ igt_display
+Date: Tue, 14 Apr 2026 10:14:23 +0300
+Message-ID: <e70a3bad698012a95c36c9d50e968885c25c47f4.1776150714.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1776150714.git.jani.nikula@intel.com>
 References: <cover.1776150714.git.jani.nikula@intel.com>
@@ -70,41 +71,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Prefer igt_plane_t over struct igt_plane, and rename the struct to avoid
-accidental use. The named struct is only needed for the typedef
-declaration.
+The typedefs are meant to be used instead of the plain structs.
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/igt_kms.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/kms_getfb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index bb50ed7ff908..9b8614c4e6b8 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -409,7 +409,7 @@ static inline bool igt_rotation_90_or_270(igt_rotation_t rotation)
- 	return rotation & (IGT_ROTATION_90 | IGT_ROTATION_270);
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index 5b0eea161163..7ceca73f3997 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -129,7 +129,7 @@ static bool has_getfb_iface(int fd)
+ /**
+  * Find and return an arbitrary valid property ID.
+  */
+-static uint32_t get_any_prop_id(struct igt_display *display)
++static uint32_t get_any_prop_id(igt_display_t *display)
+ {
+ 	for (int i = 0; i < display->n_outputs; i++) {
+ 		igt_output_t *output = &display->outputs[i];
+@@ -140,7 +140,7 @@ static uint32_t get_any_prop_id(struct igt_display *display)
+ 	return 0;
  }
  
--typedef struct igt_plane igt_plane_t;
-+typedef struct _igt_plane igt_plane_t;
+-static void test_handle_input(struct igt_display *display)
++static void test_handle_input(igt_display_t *display)
+ {
+ 	struct igt_fb fb;
  
- typedef struct igt_colorop {
- 	uint32_t id;
-@@ -423,10 +423,10 @@ typedef struct igt_colorop {
+@@ -196,7 +196,7 @@ static void test_handle_input(struct igt_display *display)
+ 		igt_remove_fb(display->drm_fd, &fb);
+ }
  
- } igt_colorop_t;
+-static void test_duplicate_handles(struct igt_display *display)
++static void test_duplicate_handles(igt_display_t *display)
+ {
+ 	struct igt_fb fb;
  
--typedef struct igt_plane {
-+typedef struct _igt_plane {
- 	/*< private >*/
- 	igt_crtc_t *crtc;
--	struct igt_plane *ref;
-+	igt_plane_t *ref;
- 	int index;
- 	/* capabilities */
- 	int type;
+@@ -256,7 +256,7 @@ static void test_duplicate_handles(struct igt_display *display)
+ 		igt_remove_fb(display->drm_fd, &fb);
+ }
+ 
+-static void test_getfb2(struct igt_display *display)
++static void test_getfb2(igt_display_t *display)
+ {
+ 	struct igt_fb fb;
+ 
 -- 
 2.47.3
 
