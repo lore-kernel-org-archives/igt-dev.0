@@ -4,92 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE7D6F4198B
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Apr 2026 11:43:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB1B9F4199B
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Apr 2026 12:16:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4853410E6CC;
-	Wed, 15 Apr 2026 11:43:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B1CF10E6CF;
+	Wed, 15 Apr 2026 12:16:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="ijlsx3uU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nJT48sNl";
 	dkim-atps=neutral
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com
- [209.85.215.181])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7CC610E225
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 11:43:38 +0000 (UTC)
-Received: by mail-pg1-f181.google.com with SMTP id
- 41be03b00d2f7-c742723c863so4217843a12.0
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 04:43:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776253418; cv=none;
- d=google.com; s=arc-20240605;
- b=GBws0uXIlDzvW8b8E4sFaLR1zErg7jFgd87SWJdRmPvxSowM5bt+CqF5kg5Ymt+H+k
- YXer9vksyPd3lZhkbDRtc7DpEW611vEWoh4ZiZgdK92zipO0dZ6GyIiG06CCz20P4Xgi
- 2DRlP7WHJizDCL3iMhDs53Cfw/UbYQYcfTl9MtqVli1gelQD70hBoG7DYDRpegm273E2
- ZVcIUkFLOQbkYb5qMv2TreEjCrcpJxKbf45QNLE77QL2KtN0fXkvKAp4AbIL3QeysHEd
- hIRF1VROUgga9FeMkTC4m7VT3qnSaXZ0BT0nZAKPrLd/p1gXlCmxDWwmVQUZhHoKxxb3
- Mgqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:dkim-signature;
- bh=MfF4Yn4+sie4v6vInVP4w0WbBGX0tO9l39PAAyDuwtU=;
- fh=bBOdEspSDe+Fu2GFdpJBv3sDvIILUygPFC6gbgyi0co=;
- b=RFW813Hr08MAV30U2eVXncq0zZQabxbddXyMsyzRSzf7kFXe8vjpP9m/rGdCfN/YGW
- JLbnB36rbWOI9Bfe48znGbUxZx5CcnciIh1knBSAYaHOrLydUVJGnjPxrEiQjB+kZWt4
- ENCGR2OtVOKNoalpnMko8PPUaPzqlrV2E3sQYfexOelCh9tz7JKmvxXVYdmSmPUtF2U5
- gCCEbmuqHGTwRfcRsbSFNdxYPTYGe4ywCR9W3fJLSkA03k9GKa61/Rb2D0NlnCAPMEoN
- /GXdSCwmb0lloghwBO7SC42aSnSv3GfxHth/nl9Uz2xq+79QLkWM+v2sQp9Lz7wZyjhr
- mRag==; darn=lists.freedesktop.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1776253418; x=1776858218; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MfF4Yn4+sie4v6vInVP4w0WbBGX0tO9l39PAAyDuwtU=;
- b=ijlsx3uUrEGWSeqxqnQ6jjxOTw9AqayzjzxUVrVQhYffK5Q/dV4yV6Yu7n1Z/ZmI4z
- jlKE69fMZIoMHxGxLfn2dsSWuYV+0E7C3h4vc8Tbz/fkG49BVfqW95QAu17pmN+O7wDW
- w1ZkinfwemZE6oa/iEIQHxZgYgJOy/Vk4F5GezOh56hMLSOB0lDF7bXnME4k1n2jObA9
- JaAwR9qrwayUT/5Bnt6gcab8L+kTaDfB14pn28otweCyxEOuOPrV794nmMavwjajed40
- eiMAZysMWi5C+fzc8tm37myItxQ7ItN/7KISz9MLVqhp6sJTKFOvvkgVf1hxgdh/ejoN
- PGmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1776253418; x=1776858218;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=MfF4Yn4+sie4v6vInVP4w0WbBGX0tO9l39PAAyDuwtU=;
- b=LJl2x9vt42xU3mai4iyIU47/xljShYano1gKdFE3Ys0eEutV6oaYIpBXJrgrqPJ+CV
- SZIstl3w0K/3QHsXc/VrHWGN6bc8KxEtq4tIBnbZL5kPg8ImVssgCQoxGlxcdgxQrS/y
- b3yYDPiD9evt4h1k0o+yCTbMiD3eVo0cGCVIBOURuJMssBx710NmPB86DNZ8jZqBHZJF
- Fa5IT6dbaaX+xIzXcJZ/WHpa54wemJzWDieDkJF9LsjtDySQabByO6lGM4kB/pM9ssob
- jQ8ejFBKNCRC2f3s2jf5pEugprpfYXaAHg2aNU8/XVeznExQX0jVcC0mlZFStwGSR+4Z
- NbpA==
-X-Gm-Message-State: AOJu0YxvvulgD0AaVTybKgRQH7cR0X2+73oltwNlzMJkAsfJpaLblkPC
- gU0NuSTz9n0/45V5RrwiHRXX76FvBD4bdY4G0YyHzu1jzd9WlKovofzihZTHnsZpV/2IFrS8YE9
- HEb7ezQPsxjvuElWajlhaXBx/SImKidk6WFP7znZvEQ==
-X-Gm-Gg: AeBDievDRuX83I/2uxBm4LKtGdP7CgQ05Ofc6Ybfm53oEAqeMpgPIkpkSHvhG9HtDft
- Fk0rlZvjEY48KJZDup2OFmCsLFOp/XWW0vfqcCUMYxN+rw7Y/hw3at9rcsYtMKCvywNe+RVzZeu
- ZEqK+Tz+XLVoSRZ+nIHsfpty9+JC4R6UoB0S+8RvFaR1hZ2MWcc9X0bp+bjeoaQyadbc8nv8HZC
- 245ifoLs4JaNLYhT4YiH61lR7OcnEKBdG93xus4cMYzE8vSkyELlipqxZrMGWUuqAlr2a+7Dv+4
- Flk6cOx2XIGFqkPRlpW44cY69r9mhKK3nVQ6Ud/XjDZN+WvRoUjW
-X-Received: by 2002:a05:6a20:7d9d:b0:398:d70f:e012 with SMTP id
- adf61e73a8af0-39fe400f810mr23534880637.47.1776253418013; Wed, 15 Apr 2026
- 04:43:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260331190412.1907571-1-juhapekka.heikkila@gmail.com>
- <20260331190412.1907571-3-juhapekka.heikkila@gmail.com>
- <5d92caab-f7c2-40a8-952f-b0b0f6629e47@intel.com>
-In-Reply-To: <5d92caab-f7c2-40a8-952f-b0b0f6629e47@intel.com>
-From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Wed, 15 Apr 2026 14:43:26 +0300
-X-Gm-Features: AQROBzBw3Yr3LaOEGcbHf2n3U9YowkFQoQpA7NFnLH2oPympPkja7J04as8aojY
-Message-ID: <CAJ=qYWQGiwPsu3ObRyWkgHnL=Mjph6Op5Ntw3sxah2LGRbHddw@mail.gmail.com>
-Subject: Re: [PATCH i-g-t 2/4] tests/intel/kms_sharpness_filter: refactor
- test_sharpness_filter function
-To: "Sharma, Swati2" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3541A10E05F
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 12:16:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1776255402; x=1807791402;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:content-transfer-encoding:mime-version;
+ bh=tc8JC32G60itnO18VnqNHr01EOvrzaJ6aRPrqL4gldo=;
+ b=nJT48sNl9ocDORQwRsV/gxU5mScGiceMfI9Jf8KQEFPxcyzNAraPOPmd
+ 53syey5d95kr4FkDXROKds1j/WZ1Nb66jHP8PprSRggc3HaS0OGffw6qQ
+ DvYOSFJYYUgRZ61+hqvbTwTZTOYF6wPVLtDjNA1gAarveGPq8bkmiOiva
+ 4woYXlDvsQuaCFKrXFczGGE42rK32Ri/oRH4AQYyLtq9veXMtiQfRZ3b4
+ a+n8bSWJSIKGKFqpHCnNSiDIekHuQ/C2hb4lx7cSL30VKhZZ/Bj5QyaDn
+ e16eEenMA+YeSxaSLWw9XRBzHpNHry/yQFIv2Sy1dg5/Lh62qjyPGGd+9 A==;
+X-CSE-ConnectionGUID: qQyXIkB6S16YzdtVCTjoMA==
+X-CSE-MsgGUID: RQ6T0ECjSIyLvvnooypOYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="88310191"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="88310191"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Apr 2026 05:16:42 -0700
+X-CSE-ConnectionGUID: M8iYCdEVRTCRnoChS2J9qw==
+X-CSE-MsgGUID: 8cQKfknaR+K3S5nW/1Gmvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="253819718"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Apr 2026 05:16:41 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 15 Apr 2026 05:16:41 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 15 Apr 2026 05:16:41 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.18) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 15 Apr 2026 05:16:40 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DbaVWys+td2i9Ko7U9mpvo8rWSI6AGQvNUldKHUZloaMPlKyt9ybVWb9/XvyCddL6uDavATTadKvQVAuUVSgTaQyTe4h7ZWDiZGnmJD1pyBhI+nqx4aBEcn3PbUIX6EfagJjGtmkHgNEgr0oCEOUA6xQva/e7DtUdHrhswD4iRhyS/BtzszPoUmjclR00UUoe/5BSEKY9WIpB2q/EPRbklfiBmtcz3h9CU7/pWsE4vlpPFtxTkMrrXnRc75tac4vQ48PmN077ELHVoOhL4ZX/j6053maezA8e0remL78SwGa5vr3/3mkRpJ/+Hu/efQxeHn1wXNBYX0xgvDaI8ZyXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SoQ8bsivQFe6amgYMeIEbCEtl6mVZtY31ibBQPfx/fw=;
+ b=BZ2mIUXbazL9TN0f/h1nNlVBKzkzv92SomrrwHozjuIJs42MGFMKTABrfUPrKTz+qVTEI9CMu7YZrMZ3M7iXqdqDSC8N9cFJvvmQLwU286KktwvOUAjN4ArqR7YOBaEYzY5cyg55rYtHxqqstqFedt+2xDZm0ej90K00jE2EwhaB6cHPvVY4sJL8ObukVAqUeVAvETo57JKNoNbjUQYnXpWUeqE97g56iq/FEpAvvYIU40PkYqxhpFU5+NTFHu9rBvzFGenvjgIyYL0WvoREH72H2op38bVJuKJQ9aDRmnHFv68cPT0weVBjUVDKWQ0TbFx9rOoNgVLauoVE6Hey0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8287.namprd11.prod.outlook.com (2603:10b6:510:1c7::14)
+ by PH0PR11MB7588.namprd11.prod.outlook.com (2603:10b6:510:28b::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Wed, 15 Apr
+ 2026 12:16:39 +0000
+Received: from PH8PR11MB8287.namprd11.prod.outlook.com
+ ([fe80::a0e5:e99c:ee7b:620a]) by PH8PR11MB8287.namprd11.prod.outlook.com
+ ([fe80::a0e5:e99c:ee7b:620a%3]) with mapi id 15.20.9769.046; Wed, 15 Apr 2026
+ 12:16:38 +0000
+From: Gustavo Sousa <gustavo.sousa@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+CC: <igt-dev@lists.freedesktop.org>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Ryszard Knop <ryszard.knop@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+Subject: Re: [PATCH i-g-t v3 5/5] runner/resultgen: Insert attachments list
+ into results.json
+In-Reply-To: <h75a4hpy25g4u6tge5kigkm4x33df47z4oj2yoruf3pem4lpe6@nwlnm4fhzofg>
+References: <20260413201722.808673-7-zbigniew.kempczynski@intel.com>
+ <20260413201722.808673-12-zbigniew.kempczynski@intel.com>
+ <87eckhw7an.fsf@intel.com>
+ <h75a4hpy25g4u6tge5kigkm4x33df47z4oj2yoruf3pem4lpe6@nwlnm4fhzofg>
+Date: Wed, 15 Apr 2026 09:16:33 -0300
+Message-ID: <87h5pczae6.fsf@intel.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SJ0PR03CA0143.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::28) To PH8PR11MB8287.namprd11.prod.outlook.com
+ (2603:10b6:510:1c7::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8287:EE_|PH0PR11MB7588:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8deeb666-cade-4594-8a24-08de9ae8d843
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|366016|56012099003|22082099003|18002099003|18096099003;
+X-Microsoft-Antispam-Message-Info: VGuMnZcIUSIzJI1muQAuPrW7Xp4GG1N5uG+T15aRe0PnFDgFuE2NuUpNAEGiFDBWHY3K405uxES5KZCxVkpEyd6gritx2GfN+gVbzlXOdvJxLCmgL2aowcK4d30iD6QKuM6W0JXWuJFogmcZjVs2YCBgQ/sUB+ym1JG4w6myMDEGHasa8BZbVwbgAOzBoEDZc9mlWTAnh1FoH/sWuH50KcUpTA1B5MPium+LlJyWhlGrbCF2FdNT+zrdYAFgXxlfjXchclpneivF/aFu55kAGyLJ+JXvXJQNkNzu7XbdM9//MJIJzMmLhBq5J6zvD8EtXTNnILVy2+hTkV/cdnEF/W5/7I0wm4gFwkCCJ2uvUoFe05g757CCWWhKgU/WzgsuUTG+DivwTstjuEhH2ChFu2zQitZ3QjOog3WVlFjaDXwAleiwzwomuCmC1NSVuH/Uf/DtarC2azoJ11qolMP1LTqOw5sfC3AEfQlJ8ZyvzVyrCiIY3eOIpyrDc5KE46al+T2Mk8mPdkEHhLxhKc54rnQNrTHEJHrXq1wMyd2R95frp1SqtaChec3BbuxG6Ciybl/LuqgZCttAIvV/kYnnUy87X3pEX2qGVq6Zxa1DC92iZTp/aEWrSyAN17ppxE4GCqphjwy+h/WZvZi22dp/aB7gszZHVWxxEEktGSLfsdcXKpWo6MSnTU4uFpykhMkI9SIzrY66NXD/pTfW/d/yGW33t1iSQwav/Pzj1t6OPLE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR11MB8287.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(22082099003)(18002099003)(18096099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TGNuMGpWaEpFWG1ZVTBpcWcvRFBYVzNMeUorL0ZjN08xZE5WK3RZVE9wRWYr?=
+ =?utf-8?B?VmJ0N0xjayt0QURUN0tIS3NIYTRkdEQ5QzJCZDA4SnkySEtIckdydmpzSU96?=
+ =?utf-8?B?NGdTTlZHblZmQVdPMFJpN3ZscDdXOWxpdlA1VnZhb3VEVWQyQ0E5RGE0N25K?=
+ =?utf-8?B?N0E1SENwdmorNEdvZ0JOOWUrQWV4cTk5YWFYMDdLeVZ3ZzhBbHdNQVFhQzJQ?=
+ =?utf-8?B?czVzc3NFZWtuN0l4OVJCeVk5Sk1DWkJseTIycC93MW9sVVl3aHpydlRhUUgy?=
+ =?utf-8?B?L3lLdXZFZ3hHeXJ6MC9GcGVUQW13K0NXMFQyaVhqd3BESHB6RE9HNlpMUXRZ?=
+ =?utf-8?B?dHIwbWxUZVZ2REQyWEdVUHFqNFRrQzg4S1hIYnNEbGhTM2dqd2k2T2dVbFA1?=
+ =?utf-8?B?Nit3YVdveXcxYnhQUEdya0RlYTAvSUtpU3lXTW15aFo3Vjl1ei96ekgwcDhx?=
+ =?utf-8?B?czlnbWlKblhLbFZ5WHUvNWUyWEd6ZFd6TExiQzFoRWliS3ZYenIyaFBUWURa?=
+ =?utf-8?B?VVd6SS91TW41dlB5ZHNZMEozR3g3N3ZwSzgyeDgyMGw4cys1Wmg4K2lLYVp6?=
+ =?utf-8?B?ZlpjOGRYWlVKOE9CV041RndudVhLRy9ubmNDRVV3RjJBQmFCZk5jU3I1U0l5?=
+ =?utf-8?B?YzBtNSthN0xHTnJXYVlxUVd2dzlIcWtRTFJYYkliOFRhRmNFaDJBZjRXNUk2?=
+ =?utf-8?B?dWd3d0d1S0Fpb2plY1V3VVhzZCszWUF4ajNJTTh0bHY5RlphK0w0ZTF4KzA5?=
+ =?utf-8?B?Z2RBVFA4NEJDTDQ2aVljVWh4NDZFaG43S0twQmJldkJQcmNqbERoS1R6K2ND?=
+ =?utf-8?B?Unppck05OEVhNGRtOE1MYnRHbkNYa1lsbStaNUxFejRJcUoyUmJPamd6NzZZ?=
+ =?utf-8?B?ZFd1UDlGVUFQaTVRVXNPVkJneFM4aEYxb0NnMEJ0OFhnN1g3U2phYlhpN0VE?=
+ =?utf-8?B?NHRRYzZuQTVDZm9CVjBXWHEzNzl0YU9QT2JDNnFTS01sSHNrTTZwQ01vRDlU?=
+ =?utf-8?B?UHd2OGVBbG95eXJ0dE9tWUFhdlRlRXFLWmttKzM2SnRNUDZLZG1qNHR2R0Ux?=
+ =?utf-8?B?WE5xTzVMd2lFcFNnUWVEbUxGV2VyRFBSTjdzQzVvclJTelUydFJUNHJNTHlz?=
+ =?utf-8?B?YnUwM0xUOElleGZjaEpKZzRrSDlTcHBDYSt2RldKSnNrM3lNc0JEbEJVQ1dL?=
+ =?utf-8?B?bDYvRE9uK0ptNEZnZTlySEFIaE8ranp1QUY0UXVycitxc1FwSTBreXpUeElN?=
+ =?utf-8?B?RjU1TVBOUnBIbGVHeC9oTnNiZmxYZGdyQjZCU0IvUWpaL3hqaTMvaGRFbldM?=
+ =?utf-8?B?VkVjWUdJcTVGYkY4ajZWRlA1SVNrdEU1cU12TjVyR0FmM2V4a2ZLdnFveEs5?=
+ =?utf-8?B?c2h5ZDV1OFhpeU5qZ0FSYWJqR0xrakFzZmlnUERjWW9USDQyT0FvYzA2WHB6?=
+ =?utf-8?B?M1ZHTFBHbjZ2dm92ZHhHa0dNTnEzbFI0UnUweWxNOWlDRHlkWG5kaUhkM0hN?=
+ =?utf-8?B?QTZOL2RtWEI0WkFvbCsrUWZYUlpQV0FnZjJXS2hZbkVUSGpVWm1PZGZXbXZI?=
+ =?utf-8?B?bExHcFExa0ZRMkZQZjV0S1M3OWpSWnZZUEJ5Nkd6YWdiNURJdWhOZFZLNFlH?=
+ =?utf-8?B?ek9GNEVtNENrSTN2Q3R3RHJ4aURwRU5JNkVnVkRBaVlGbFRHSy9nYXkwb1hu?=
+ =?utf-8?B?VUEvSTNxNXJZcEtMc3FCck5Hdm10U05sOGtaV3JwZU5ZZS9ua3ZtZEZOM2dV?=
+ =?utf-8?B?SGkxZ09hT0tNVFZEZzdORXZveFhpR1NJOWhwTnlnMm5ocllxTkhrSElLRWt4?=
+ =?utf-8?B?enJvUEtHaGdnQ2tPdys0UE9obDlqaGlqMG5xN01YZ1RWbkFvaHF6aVlnQkp5?=
+ =?utf-8?B?alY5TDNTL0Nxc2JtT1F3dmo3ZXVlQlh6VStQSU5tOENFRWFMdDJXTHlRL0px?=
+ =?utf-8?B?b3JMVkpOblZ3YzFOeUxLZExqWHNXb1lKY0NjRHA0WDk2NUZVYlZSdmxwOWtU?=
+ =?utf-8?B?czhiNXR5dVpLVzUxZlk4WVZ6VFBuTCtuVW9ISVVsOWIvUExCODVvaDlGOEUx?=
+ =?utf-8?B?UHR2MC9Yc1BZK1prakYxcjF5SUxSMmt4VFJrZlNwQi9hLytFdXRrRGl0NFVu?=
+ =?utf-8?B?TU1WTklqMUtFbzk4b3RQUnNWMzBZako2aFd4UVlLTW92QnE3RENDcmRsNURU?=
+ =?utf-8?B?RUtYV0lJR3pvMkMxTnNnWGtlU3VycloyRWFKRm90cWwxOFUvRUxhRTZ3MFdV?=
+ =?utf-8?B?UUIxM0luTHRybisvRXQ4VnAxVW1adGN2QzBnS2hCRFZzWE4wbWNhSEJzRjdt?=
+ =?utf-8?B?SWFBbDUzWS9qNk5KVmlBeGxLMGg2ZHJUNWZ3cXFuNlhQRXE0UFJ0QT09?=
+X-Exchange-RoutingPolicyChecked: dP5yB/tYrf7NO/tdxhGy9o3MOfp4Xy6eyGjWtO8RuC4nAmRaftDXrO7LHY6neaIuAXUSpQPzTqQvhgJ/p+mnaD/zMEftDLYOzt/OovPIPwDX78pLSgJ7lJbFHISALmDAEPYcx2269w3hqf+SOUBHcacP3TriTufS/YjcuQ3RGu2n9Cfu2DtJGsVAFw4qyrnKRqLh7XR9ylq72UGJ7ntpQR4oN4v1zYrEKcX/aZGtSJ5Zcz/MfvrwcK9q+k1cHaLGwvu8SM8eIVK03k6/r+6POc3ysaSvDa/nKVMNuL7Vyix9Qd4lzjcHNW8PWV2zX/biOTOzBBbzD8ih87W3uO7OxA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8deeb666-cade-4594-8a24-08de9ae8d843
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8287.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 12:16:38.6467 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JxExzZe7Ok00bbpPtO0jKY+pJnPn0spumLIamlfjbb4i0cS5pqY89A4avMin+E03LJf5PpFyqerDLeWybXi4Xw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7588
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,206 +172,195 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 9, 2026 at 3:04=E2=80=AFPM Sharma, Swati2 <swati2.sharma@intel.=
-com> wrote:
->
-> Hi JP,
->
-> Overall patch LGTM. One small nit.
->
-> On 01-04-2026 12:34 am, Juha-Pekka Heikkila wrote:
-> > refactor to make it look more nice
-> >
-> > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > ---
-> >   tests/intel/kms_sharpness_filter.c | 108 ++++++++++++++++------------=
--
-> >   1 file changed, 59 insertions(+), 49 deletions(-)
-> >
-> > diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharp=
-ness_filter.c
-> > index 029b735bd..ed8d2e48c 100644
-> > --- a/tests/intel/kms_sharpness_filter.c
-> > +++ b/tests/intel/kms_sharpness_filter.c
-> > @@ -88,15 +88,6 @@ IGT_TEST_DESCRIPTION("Test to validate content adapt=
-ive sharpness filter");
-> >   #define MAX_PIXELS_FOR_3_TAP_FILTER (1920 * 1080)
-> >   #define MAX_PIXELS_FOR_5_TAP_FILTER (3840 * 2160)
-> >   #define NROUNDS                             10
-> > -#define INVALID_TEST ((type =3D=3D TEST_INVALID_FILTER_WITH_SCALER) \
-> > -                || (type =3D=3D TEST_INVALID_FILTER_WITH_PLANE) \
-> > -                || (type =3D=3D TEST_INVALID_PLANE_WITH_FILTER) \
-> > -                || (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE)=
-)
-> > -#define SET_PLANES ((type =3D=3D TEST_FILTER_UPSCALE) \
-> > -             ||  (type =3D=3D TEST_FILTER_DOWNSCALE) \
-> > -             ||  (type =3D=3D TEST_INVALID_FILTER_WITH_SCALER) \
-> > -             ||  (type =3D=3D TEST_INVALID_FILTER_WITH_PLANE) \
-> > -             ||  (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE))
-> >
-> >   enum test_type {
-> >       TEST_FILTER_BASIC,
-> > @@ -327,12 +318,37 @@ static int test_filter_toggle(data_t *data)
-> >       return ret;
-> >   }
-> >
-> > -static void test_sharpness_filter(data_t *data,  enum test_type type)
-> > +static bool is_invalid_test(enum test_type type)
-> > +{
-> > +     switch (type) {
-> > +     case TEST_INVALID_FILTER_WITH_SCALER:
-> > +     case TEST_INVALID_FILTER_WITH_PLANE:
-> > +     case TEST_INVALID_PLANE_WITH_FILTER:
-> > +     case TEST_INVALID_FILTER_WITH_SCALING_MODE:
-> > +             return true;
-> > +     default:
-> > +             return false;
-> > +     }
-> > +}
-> > +
-> > +static bool needs_extra_planes(enum test_type type)
-> > +{
-> > +     switch (type) {
-> > +     case TEST_FILTER_UPSCALE:
-> > +     case TEST_FILTER_DOWNSCALE:
-> > +     case TEST_INVALID_FILTER_WITH_SCALER:
-> > +     case TEST_INVALID_FILTER_WITH_PLANE:
-> > +     case TEST_INVALID_FILTER_WITH_SCALING_MODE:
-> > +             return true;
-> > +     default:
-> > +             return false;
-> > +     }
-> > +}
-> > +
-> > +static void test_sharpness_filter(data_t *data, enum test_type type)
-> >   {
-> >       igt_output_t *output =3D data->output;
-> >       drmModeModeInfo *mode =3D data->mode;
-> > -     int height =3D mode->hdisplay;
-> > -     int width =3D  mode->vdisplay;
-> >       igt_crc_t ref_crc, crc;
-> >       igt_pipe_crc_t *pipe_crc =3D NULL;
-> >       int ret;
-> > @@ -343,57 +359,31 @@ static void test_sharpness_filter(data_t *data,  =
-enum test_type type)
-> >                     "No requested format/modifier on pipe %s\n",
-> >                     igt_crtc_name(data->crtc));
-> >
-> > -     setup_fb(data->drm_fd, height, width, data->format, data->modifie=
-r, &data->fb[0]);
-> > +     setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> > +              data->format, data->modifier, &data->fb[0]);
-> >       igt_plane_set_fb(data->plane[0], &data->fb[0]);
-> >
-> >       if (type =3D=3D TEST_FILTER_ROTATION) {
-> > -             if (igt_plane_has_rotation(data->plane[0], data->rotation=
-))
-> > -                     igt_plane_set_rotation(data->plane[0], data->rota=
-tion);
-> > -             else
-> > -                     igt_skip("No requested rotation on pipe %s\n",
-> > -                              igt_crtc_name(data->crtc));
-> > +             igt_skip_on_f(!igt_plane_has_rotation(data->plane[0],
-> > +                                                   data->rotation),
-> > +                           "No requested rotation on pipe %s\n",
-> > +                           igt_crtc_name(data->crtc));
-> > +             igt_plane_set_rotation(data->plane[0], data->rotation);
-> >       }
-> >
-> >       if (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE)
-> >               igt_require_f(has_scaling_mode(output), "No connecter sca=
-ling mode found on %s\n", output->name);
-> >
-> > -     if (SET_PLANES)
-> > +     if (needs_extra_planes(type))
-> >               set_planes(data, type);
-> >
-> >       set_filter_strength_on_pipe(data);
-> >
-> > -     if (!INVALID_TEST && data->filter_strength !=3D 0)
-> > -             igt_debug("Sharpened image should be observed for filter =
-strength > 0\n");
-> Since this in NON-CRC based test, should we keep this debug msg?
+Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com> writes:
 
-I don't think this debug message help here. Maybe these tests should
-be moved behind command line flag so they wouldn't be run on CI?
+> On Tue, Apr 14, 2026 at 06:39:28PM -0300, Gustavo Sousa wrote:
+>> Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com> writes:
+>>=20
+>> > Add list of filenames which were created by hooks in attachments direc=
+tory
+>> > (like GuC log copy) to results.json for allow presenting it in CI.
+>> >
+>> > Due to lack of userdata pointer in nftw() implementation main json
+>> > object is passed via temporary static variable. It shouldn't be the
+>> > problem because results.json is created in single thread. This change
+>> > is not too elegant but allows to minimize the code change and is
+>> > much easier to read comparing to recursive readdir().
+>> >
+>> > Signed-off-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.c=
+om>
+>> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>> > Cc: Ryszard Knop <ryszard.knop@intel.com>
+>> > Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+>> > ---
+>> >  runner/resultgen.c | 63 +++++++++++++++++++++++++++++++++++++++++++++=
++
+>> >  1 file changed, 63 insertions(+)
+>> >
+>> > diff --git a/runner/resultgen.c b/runner/resultgen.c
+>> > index f8459385c3..d37f01a433 100644
+>> > --- a/runner/resultgen.c
+>> > +++ b/runner/resultgen.c
+>> > @@ -1,11 +1,14 @@
+>> >  #include <assert.h>
+>> >  #include <ctype.h>
+>> > +#include <dirent.h>
+>> >  #include <fcntl.h>
+>> > +#include <ftw.h>
+>> >  #include <inttypes.h>
+>> >  #include <stdio.h>
+>> >  #include <string.h>
+>> >  #include <sys/mman.h>
+>> >  #include <sys/stat.h>
+>> > +#include <sys/types.h>
+>> >  #include <unistd.h>
+>> > =20
+>> >  #include <jansson.h>
+>> > @@ -1156,6 +1159,63 @@ static bool fill_from_dmesg(int fd,
+>> >  	return true;
+>> >  }
+>> > =20
+>> > +struct json_t *tmp_tests;
+>> > +static int ftw_attachments_list(const char *fpath, const struct stat =
+*sb,
+>> > +				int typeflag, struct FTW *ftwbuf)
+>> > +{
+>> > +	struct json_t *obj =3D NULL, *attobj =3D NULL;
+>> > +	(void)sb;
+>> > +	(void)ftwbuf;
+>> > +
+>> > +	if (typeflag =3D=3D FTW_F) {
+>> > +		char *p;
+>> > +
+>> > +		p =3D strstr(fpath + 2, "/");
+>> > +		if (!p)
+>> > +			return -1;
+>> > +		*p =3D '\0'; /* temporary for acquiring the piglit name */
+>> > +		obj =3D get_or_create_json_object(tmp_tests, fpath + 2);
+>>=20
+>> For this to be trully recursive, I think we should create the JSON
+>> object in the FTW_DP case.
+>
+> What for? Imo attachments array for test/subtest which contains
+> relative paths from test/subtest is enough. I see no value by adding
+> recursive arrays apart of increasing complexity to the code. Be aware CI =
+has
+> to present these attachments as well, so more we complicate results.json
+> more work will be on CI side to alter javascript.
+>
+>>=20
+>> > +		attobj =3D get_or_create_json_array(obj, "attachments");
+>> > +		*p =3D '/'; /* bring '/' back */
+>> > +		json_array_append_new(attobj, escaped_json_stringn(fpath + 2, strle=
+n(fpath + 2)));
+>> > +	} else if (typeflag =3D=3D FTW_DP) {
+>> > +		;
+>> > +	} else {
+>> > +		return -1;
+>> > +	}
+>> > +
+>> > +	return 0;
+>> > +}
+>> > +
+>> > +static bool fill_from_attachments(int idirfd, struct json_t *tests)
+>> > +{
+>> > +	char attname[32];
+>> > +	int attdirfd;
+>> > +	DIR *currdir;
+>> > +	int ret;
+>> > +
+>> > +	snprintf(attname, sizeof(attname), "%s", DIR_ATTACHMENTS);
+>> > +	if ((attdirfd =3D openat(idirfd, attname, O_DIRECTORY | O_RDONLY | O=
+_CLOEXEC)) < 0) {
+>> > +		fprintf(stderr, "Error opening '%s' dir\n", DIR_ATTACHMENTS);
+>> > +		return false;
+>> > +	}
+>> > +
+>> > +	currdir =3D opendir(".");
+>> > +	fchdir(attdirfd);
+>> > +
+>> > +	/*
+>> > +	 * ftw doesn't support passing user data so *tests has to be
+>> > +	 * set to some global for being visible in callback function.
+>> > +	 * As results.json is not processed in multiple threads it is
+>> > +	 * not a big problem.
+>> > +	 */
+>> > +	tmp_tests =3D tests;
+>> > +	ret =3D nftw(".", ftw_attachments_list, 4, FTW_PHYS | FTW_DEPTH);
+>>=20
+>> I think another option is to use fts(3)? Since it is a streaming API,
+>> you can keep the state (i.e. the current json object) as a local
+>> variable and update as you walk the tree.
+>
+> CI folks want minimize changes in results.json, so according to above
+> I would keep everything in flat attachments array.
+>
+>>=20
+>> It seems it is not POSIX though.  Not sure if that's a real issue for
+>> IGT, since stuff in IGT are supposed to run on Linux, right?
+>
+> And Android if I'm not wrong.
 
-> > -
-> >       if (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE)
-> >               ret =3D igt_display_try_commit_atomic(&data->display, 0, =
-NULL);
-> >       else
-> >               ret =3D igt_display_try_commit2(&data->display, COMMIT_AT=
-OMIC);
-> >
-> > -     if (type =3D=3D TEST_FILTER_DPMS || type =3D=3D TEST_FILTER_SUSPE=
-ND) {
-> > -             pipe_crc =3D igt_crtc_crc_new(data->crtc,
-> > -                                         IGT_PIPE_CRC_SOURCE_AUTO);
-> > -             igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
-> > -     }
-> > -
-> > -     if (type =3D=3D TEST_FILTER_DPMS) {
-> > -             kmstest_set_connector_dpms(data->drm_fd,
-> > -                                        output->config.connector,
-> > -                                        DRM_MODE_DPMS_OFF);
-> > -             kmstest_set_connector_dpms(data->drm_fd,
-> > -                                        output->config.connector,
-> > -                                        DRM_MODE_DPMS_ON);
-> > -     }
-> > -
-> > -     if (type =3D=3D TEST_FILTER_SUSPEND)
-> > -             igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> > -                                           SUSPEND_TEST_NONE);
-> > -
-> > -     if (type =3D=3D TEST_FILTER_DPMS || type =3D=3D TEST_FILTER_SUSPE=
-ND) {
-> > -             igt_pipe_crc_collect_crc(pipe_crc, &crc);
-> > -             igt_assert_crc_equal(&crc, &ref_crc);
-> > -     }
-> > -
-> >       if (type =3D=3D TEST_FILTER_TOGGLE)
-> >               ret |=3D test_filter_toggle(data);
-> >
-> > @@ -409,13 +399,33 @@ static void test_sharpness_filter(data_t *data,  =
-enum test_type type)
-> >               ret =3D igt_display_try_commit2(&data->display, COMMIT_AT=
-OMIC);
-> >       }
-> >
-> > -     if (INVALID_TEST)
-> > +     if (type =3D=3D TEST_FILTER_DPMS || type =3D=3D TEST_FILTER_SUSPE=
-ND) {
-> > +             pipe_crc =3D igt_crtc_crc_new(data->crtc,
-> > +                                         IGT_PIPE_CRC_SOURCE_AUTO);
-> > +             igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
-> > +
-> > +             if (type =3D=3D TEST_FILTER_DPMS) {
-> > +                     kmstest_set_connector_dpms(data->drm_fd,
-> > +                                                output->config.connect=
-or,
-> > +                                                DRM_MODE_DPMS_OFF);
-> > +                     kmstest_set_connector_dpms(data->drm_fd,
-> > +                                                output->config.connect=
-or,
-> > +                                                DRM_MODE_DPMS_ON);
-> > +             } else {
-> > +                     igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> > +                                                   SUSPEND_TEST_NONE);
-> > +             }
-> > +
-> > +             igt_pipe_crc_collect_crc(pipe_crc, &crc);
-> > +             igt_assert_crc_equal(&crc, &ref_crc);
-> > +             igt_pipe_crc_free(pipe_crc);
-> > +     }
-> > +
-> > +     if (is_invalid_test(type))
-> >               igt_assert_eq(ret, -EINVAL);
-> >       else
-> >               igt_assert_eq(ret, 0);
-> >
-> > -     /* clean-up */
-> > -     igt_pipe_crc_free(pipe_crc);
-> >       cleanup(data);
-> >   }
-> >
+That's Linux as well, no?  Perhaps just need to have a sanity check to
+see if those functions are also available there.
+
+>
+>>=20
+>> Thinking back, I guess it could fts(3) could even be used for the
+>> recursive removal.
+>
+> Question - do we really need this? I can live with ugly static
+> json at cost of simplicity especially this is only result generator
+> which likely won't be touched by next months/years...
+
+I would say: if the right tool is available for the job, why not using
+it?
+
+Not going to block on this though...
+
+>
+> For attachments case imo allowing recursive creation from hooks scripts
+> is an overkill.
+
+The hook mechanism is not something created for exclusive use by CI. It
+is a tool for developers to use are they see fit.  That was my original
+intention when I first developed the hooks infrastructure.
+
+I don't like the fact that we are making assumptions of how the hooks
+will behave here.
+
+If CI wants a flat structure, that's fine: let CI provide hooks that
+generate files in a flat hierarchy.  I just think that it is not right
+to assume that all hooks will behave like that.
+
+--
+Gustavo Sousa
+
+>
+> --
+> Zbigniew
+>
+>>=20
+>> --
+>> Gustavo Sousa
+>>=20
+>> > +	fchdir(dirfd(currdir));
+>> > +
+>> > +	return ret ? false : true;
+>> > +}
+>> > +
+>> >  static const char *result_from_exitcode(int exitcode)
+>> >  {
+>> >  	switch (exitcode) {
+>> > @@ -2244,6 +2304,9 @@ static bool parse_test_directory(int dirfd,
+>> >  		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
+>> >  	}
+>> > =20
+>> > +	if (!fill_from_attachments(dirfd, results->tests))
+>> > +		fprintf(stderr, "Error parsing attachments directory\n");
+>> > +
+>> >  	override_results(entry->binary, &subtests, results->tests);
+>> >  	prune_subtests(settings, entry, &subtests, results->tests);
+>> > =20
+>> > --=20
+>> > 2.43.0
