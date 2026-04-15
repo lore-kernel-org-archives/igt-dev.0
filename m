@@ -4,161 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 224BDF43858
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Apr 2026 16:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3714FF43854
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Apr 2026 16:37:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C95D010E140;
-	Wed, 15 Apr 2026 16:21:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC2D910E181;
+	Wed, 15 Apr 2026 16:37:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UNwNLieS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CS+l66zF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6B0110E140
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 16:21:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA0FC10E181
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 16:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776270063; x=1807806063;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:content-transfer-encoding:mime-version;
- bh=jrXK9chEldz80oLscwDGJDjnXF6+m5cphsg8VJfBCWE=;
- b=UNwNLieScDl0LfyRtyq9FrLSd/SysdMTi/TkEIGowND15y55eXUhJkWY
- nkkCLcpe98+UvmEGzggpunQaaRhWu+bkkTDlVacjSMossaH+1ZjSOZ6WU
- B8Z5lFwFr9n4QcTBI+E6b/5oigftu4OIKpFvDxScSHDLbiFhhcNm3Sj3x
- QJxKCmHRIu9coZV2VQ0SCj6iaF2OesWqfX4tSulDeQGQVElGmOFeBai3b
- OSUbfOxR5d4vE4qi9Fqaubo+/fCvNdg+awTbR+aZrDGq+znoyk/sopytJ
- 0HMrUAwaZNmNbAvZ07TCkxpd/1ZYdD70QI7wd3DdRgE7dI4d6jmCZK5U9 Q==;
-X-CSE-ConnectionGUID: 4PFyztlSSsO4Siq7LEOq9A==
-X-CSE-MsgGUID: 0dks6QemRhSJ0lK/uq85FA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="102714911"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="102714911"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2026 09:20:50 -0700
-X-CSE-ConnectionGUID: aHJgoEqeQtKr9AVgQWDWEA==
-X-CSE-MsgGUID: sZucLwiqRwWpJ2YkobvkKQ==
+ t=1776271052; x=1807807052;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=TXoJ7QsrmkIel60F4iqMpJarEzhDdk4wSxxRrAfiRBw=;
+ b=CS+l66zFdiwtCqhvMTSijSUqSfTgNfmVfLkNGYPB/FbK+qDp/hI0++DT
+ lQO3nBoK56QRorIkZYGwYZ9zsyfeT6qTuVwxr3xigE5p33y1BQHLhyyek
+ GRFIDcJyVdPtm9WiVwkERv51uWhR2QOWvqOTkZm03zHPSHWkFNwSGZD3v
+ wYez7II4hmZDEhoq5S42epdPnbgJZD0mp4qUed9EMfTP8rklqcpB0om3h
+ inz0pXSHsKNs79UQavhifw8GAtMGzjDMw5F1sTJhiYmcPyOkdrM7dCNc/
+ zDHz5evj/KT5HYPTBsuSxTcAHIS9aMmYyusqKochsG7gV5XvFSc3D8KKN g==;
+X-CSE-ConnectionGUID: quUv5jXFRLebhrV/Gs+v6g==
+X-CSE-MsgGUID: fcHbulpUSeiws1y72BwXyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="76291301"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="76291301"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Apr 2026 09:37:32 -0700
+X-CSE-ConnectionGUID: rLnIVvxcQN+0jLMktIvadA==
+X-CSE-MsgGUID: qSZa6PZVQJSAqrZnZ4MAJw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="253705519"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2026 09:20:49 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 15 Apr 2026 09:20:49 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 15 Apr 2026 09:20:49 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.62) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 15 Apr 2026 09:20:48 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aZJnG+bNGXIR+Q/7J7AIXrAFyyPAssAp1Ny/1tTXJANTFOuF+7OVMiwPUsDkkQ40Ltn1c4FhMqigD/A9QQd2w+kf6eSqcAEkql94NiMJHuZAbgMhBidFCbL4PBC0poZTLzgVaJqSvYkmRPY48ltRt8B15nCoQVcd4s7jYqFmfjqSNUE/DyV3TiYTyf818Hp8YSd7zm49ygi0gS4aod37PTNrSjmd3coIk8IG9Ch2SgA5gF3N6VAnOZ9fNxeCBRiOx4WejpU/S5V7EtBifaGcu+LMCSvpsnpfQnPJY5plz0hs4qGSEwpJFkJXUuMQ8BAFwq75zty5I+Cm0CDR6FFjyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T3KFYBHk03+C9BntxjYkc1x4N3rUWnSNxR30cSeANrA=;
- b=a8gih4Mk/tP7gpUH7SmwPOrEAR8/cpeG+r8lR317glALM2dUzQnvigjg2LaV8jVVlotnmdnHoJr+cvPsIIFRjdKHPU3G94/1sVafQVFp6MD3kF5vy5e23PkZi8JeRKl/NS4oCl5gR6jP6FzCdpqfLIZBpEkooF5EtjTH4EFKQJiJf2vzNUoYQek36MjzwDZDZfBysCHMLeUYpS6eR6tHS0V332BFaqEpT+6P7mlCbBO9pikaX8n4oP0smopnqszSBzSxH5/QfEcOs19qH0n9TVRbnRXZApJVYouYHWQZrtWJZzBWihlkhsZbOlXr1RIFV+lGV5X38rTtbr0pKcZx+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8287.namprd11.prod.outlook.com (2603:10b6:510:1c7::14)
- by DS3PR11MB9820.namprd11.prod.outlook.com (2603:10b6:8:366::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Wed, 15 Apr
- 2026 16:20:47 +0000
-Received: from PH8PR11MB8287.namprd11.prod.outlook.com
- ([fe80::a0e5:e99c:ee7b:620a]) by PH8PR11MB8287.namprd11.prod.outlook.com
- ([fe80::a0e5:e99c:ee7b:620a%3]) with mapi id 15.20.9769.046; Wed, 15 Apr 2026
- 16:20:47 +0000
-From: Gustavo Sousa <gustavo.sousa@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Ryszard Knop <ryszard.knop@intel.com>,
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="227300441"
+Received: from zzombora-mobl1 (HELO localhost) ([10.245.244.25])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Apr 2026 09:37:31 -0700
+Date: Wed, 15 Apr 2026 18:37:28 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Gustavo Sousa <gustavo.sousa@intel.com>
+Cc: igt-dev@lists.freedesktop.org, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>, 
  Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: Re: [PATCH i-g-t v3 5/5] runner/resultgen: Insert attachments list
- into results.json
-In-Reply-To: <eq74fj354iicdqvutrsjcf52h2s7lbkfiyn3zunqx7ys6oxblt@3d7wrtjwfted>
+Subject: Re: [PATCH i-g-t v3 2/5] runner: Create attachments directory to use
+ by hooks
+Message-ID: <camhvxi7igps4qhkjts3ngqydq3es2ds4iuttka2nm3gqj35eh@ttehveoegmlu>
 References: <20260413201722.808673-7-zbigniew.kempczynski@intel.com>
- <20260413201722.808673-12-zbigniew.kempczynski@intel.com>
- <87eckhw7an.fsf@intel.com>
- <h75a4hpy25g4u6tge5kigkm4x33df47z4oj2yoruf3pem4lpe6@nwlnm4fhzofg>
- <87h5pczae6.fsf@intel.com>
- <eq74fj354iicdqvutrsjcf52h2s7lbkfiyn3zunqx7ys6oxblt@3d7wrtjwfted>
-Date: Wed, 15 Apr 2026 13:20:42 -0300
-Message-ID: <878qaoyz39.fsf@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: SJ0PR05CA0143.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::28) To PH8PR11MB8287.namprd11.prod.outlook.com
- (2603:10b6:510:1c7::14)
+ <20260413201722.808673-9-zbigniew.kempczynski@intel.com>
+ <87jyu9wde3.fsf@intel.com>
+ <k5tyhor5k6z4fr6z3l7kgruc4dwefgbuqu7vpisczqxgc7nhpy@5pvm2oxodcsy>
+ <87bjfkz64r.fsf@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8287:EE_|DS3PR11MB9820:EE_
-X-MS-Office365-Filtering-Correlation-Id: d62ba1ac-6c64-406f-894e-08de9b0af372
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|18096099003|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: 0fg4FYDht9i5ZvbtXTluf7+TFfh9O1DytaW0F9Q+Osmc/NpB8mkq7LepG47lbCbe2r6RMlm8i5YsF1IgVCGzWDzaQhY5Ej5B9GUsweW4BOgAI7gocBD0qk91Wj/Bug/wMaaMiCwRrgI5kt6Q8P00lD6D1t3aqFz/a+VpCRPYTywwsWNn3nGiZkvjDFFqa9COfXFsspiVw425LvVc9UYJbQhO0bI9bgZULZGUReNNJy5HyLzaO28fRC7ktMEBRA8HfRMCwLcDS7Ly6/aj4yuh9xG2ohzQrZjdu2VTbi/zmWVEG5wsk7c9dAlKx5gOQ1iAE4JV9TL92NzhAlmdVtSOnJBGLforH2jRlbS1XUoQ/AZkiCtZsB1PFc/Mrmzb+1e+/iWryslcBahloewlfWStRsEsoMwgEh4botnIk1/m782TqywSUwzYYS/tlhMf6rrLhxztqYiswWI9DcugpdygxdhbyvWhdypjVT1r2RkMZEzBRwxHE24akE7ErPBiFTGi1tIB8lvP9mv1gzEiTmVLkmw5VPMkmIImW3O4IuNq20gUy5jEe3AWOpZvioxsk37VP8o2iis1jtEovmgPy/RaClhyoIyzqjNsK9Olw6nP1SwxnorYYIllXEKwNhwK74SOERyZcvwGYaCvBJvAG2gJ2vXyeDCiGmwfQy0d6gPMQ3y6MY7yfzHA1a2RpGZirnsDjyfIal01Vu3Kdm8+Hvw4CtPGrCL9ihvQQeD1bxGtYug=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR11MB8287.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(18096099003)(56012099003)(18002099003)(22082099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cHZnOTQraUlaZGtTTHlHMlZiV0pndTNBd1dQVGIxSkpuUjM0L2N6T3E3c1NN?=
- =?utf-8?B?eHY5YXBmeklSeXFEVjRCNDhwUGEzQWhYZUNWRjlkdmRSSEMyTHJ3NlNwa09v?=
- =?utf-8?B?dWFHdGNsOXlVTFVSWXBsV0RZSGF4cGZRaE9BcTNvNTQydVRHRmt0MThpbjNN?=
- =?utf-8?B?YkJiVTdUVm5BcjVzL2xWcW9VSFVlNm1sYWJnRTFpbk1HR2J2MzBHbVdMcTRy?=
- =?utf-8?B?V3QxNFlhWDd4cGVDanJLRTZNdG5iR0V3Rm82U1FaRk5iSTlhVWo3V0Rhby9B?=
- =?utf-8?B?aHcyQ3BRTVRGMWtocWZqdjFhRTlUWS94bGJ3MHcwejBONjMxMGorbzNvRGxT?=
- =?utf-8?B?WHJQMUtKTXNqWE1SZHduU1NMUUYyMmRqVWc2OVpJZS9CekE3a25XalowMUE3?=
- =?utf-8?B?WHp5aWh4R3ZieURodm1iVnUreEorT2J6YXMwWVIxUi9tNzgwYzV1TlhIMURB?=
- =?utf-8?B?L1Z6YmJUeSs5WVVJN2lycnFxN3NpMmZ4dVpsUHFDdkRnQWRmaHh0QmhLZVo0?=
- =?utf-8?B?TXpkZ0oyQk5HWnh5LytLa1B3QS9IUjdxTUhjckRUeHpSN2RDdVhWSW5zODFT?=
- =?utf-8?B?NXhua016M05IVVNoV2FwamdJNVVNL1V2VER3em1pWisvV0Zsa1ZlSkZsQVlC?=
- =?utf-8?B?QVJaM0JRNmkxUXBtZHd0SVZ0d2FRVmNQNDFPeGdJanhhTnd1V2ZVQ3ZYT0Vp?=
- =?utf-8?B?YlNkY3J6SzU0Y0wySDNPUFJDd0lWZTR0V2RSLzBqcmluaHdXK1RGVzZEd3dY?=
- =?utf-8?B?ZGg3ZmlpWm0vOXNwUVA5czVvZmJqTlczbzFyejlFQlNuUTBEd0tmZWJ2TkZi?=
- =?utf-8?B?dzlGUG1XNW5XT2tMNXZiUVhBMEZHZmU1RVl6WW45RmtOeUEzNXJUSGsxWDRL?=
- =?utf-8?B?Mm1OZ3NuanJHZEdUN0JJTVRwSnFFQ0dWSlh0a0krODVxUEtOK3VrY0ZCWTZt?=
- =?utf-8?B?ZEVEcjRHc1RyZVRVUW9iazVPOHZEaHg1aS85UjZOYkQxV0ZwaUo3UlZETGtu?=
- =?utf-8?B?emYrdW10dmFrd1REaG5zVFBQdDcwSmFUU1FKTjlTUzVMb3lFYjZQSG9Vd3RI?=
- =?utf-8?B?elZBM3VSUXl3TEFlaEw4OWFqUmhUQXpsTW5HY2dua0RXTlVjcWtaelFkR3h3?=
- =?utf-8?B?Q0MrWG9GN0ZnVFVITFByRkhWZm1YZnZzMStFVTlvaWxnRFJjZXJHZ2xncDR3?=
- =?utf-8?B?ZnlUNkNIaldGVmpQYkdHdjdqU3lTK1A2dllxamlwbnhGaDFQRmd1T29ldURM?=
- =?utf-8?B?Qm5Dc3J6WStEdDJSWjV2TEgyWVpkczZ5b2Z1UUU0UjVOYVliM3oyQ1cyM3hC?=
- =?utf-8?B?djVjSVQzK3pnTXQrRURTcWVjSWZRQ2pFUWhkQlk4WGgrV2lvdHQ3cnVJcklr?=
- =?utf-8?B?eXdOVHpvdktFK2tYM0xaczlTb0xCb2NaN2xXYm1zYzZIb2JTL3N6cUMvRW03?=
- =?utf-8?B?U29lOVFlSCtkOXIvR0hWYWdrWW11Q3d5NXhFUjFmSkRwWlRDVVNBUnFqaTcz?=
- =?utf-8?B?ZHExNHRxcW11WVZjclkwUXVicHNRQmRMWDB6alBoZ0tXaEdGVWE5V0xzWE1T?=
- =?utf-8?B?cDdqSEIrOEZOaE5tMXMvOU8wZm80Sk5oVnRRcFVDOW16a012aG9uamw1TGZC?=
- =?utf-8?B?UnVsWG5FVlU2SlVCSXVxMGI0eGdLV0NKL1hnczM4a2lhTXlRZzYzNE9sYTRR?=
- =?utf-8?B?dElNWkI0SC81bktCUDB5QTV3U0VUanByWHpCSDRJQnhnMlNtZGdPUytoWTl5?=
- =?utf-8?B?dUdxRElZTWprcXJmc24zKzlVdlQ5WnVBWFk0dm5UTVVPUk1ad1d2d2pmSE5P?=
- =?utf-8?B?eXVBSnZZSS9xNFVKWnI3TFN6c2ZzOW5Uem15YWpYcGQ2TVBWSlNxeUhPdHN5?=
- =?utf-8?B?OUdieVUrQVZobmlES0pSbitndTVZU0lGam5wSEhGbmRwNWV5enJEZ1dscUhW?=
- =?utf-8?B?VkJIemkvWHF4M0xmclVlaFQzY0hsWEVsT3FTaEVkRjkvT0V3d3VYRnVBKzdO?=
- =?utf-8?B?WmZHSGI5SWhidUFRNU00NEMrajI5SzUzN0RpVENPOS9kcFMzdXU5dFBTaEVm?=
- =?utf-8?B?d3pKUFhvNFJORnVhb2N2L080WjgrbS9iRHhEYWlqM2RZb0wyQ21VVnJFd0pq?=
- =?utf-8?B?aExYeEY5SG9mSmZJUEdETmVyOVJIczk3Qk90WjA5MGxhODg3TkZ4OW1vUG1i?=
- =?utf-8?B?UzE2MVYzek1tTEovZzEzUzJIcThkTE50V0NsUlRVTys2ZlVTVlE1QmdrUkRX?=
- =?utf-8?B?WGNuc1lpcUVZQUJxVDZUbHVKaExWV3dZZHJMVkt5LzJoZkhobURIUVVCZ0ty?=
- =?utf-8?B?TStwSzVjdmtiNy9KMnoreUx6NGw1R0dKUlF2c0xJSUlsRW1JNHl4UT09?=
-X-Exchange-RoutingPolicyChecked: p3PpZ4FKF2wQ7vx8MvDPH/OPP/cUu102t9P7siwy7ZyLf5JFQ8qu+PMzmyUlSyQACImRq6jWJl4l5aPYPXg6e+MZB1+XBmAz8YC2Ki7IaoFwZGNBvw1qVYDy+wtTV8MSKBIBcWqiagSrIFb3Y7gQisIVTvEuLOV3aX2/B9enOIMVRD4/63H6N6w9gcIwWr6eMp1Z+dVGFe4rzm8fEsDAAVqiQlPZsSoJpLFxeuICvFDKzHOp4Yl43BQlk/RDq1Ry/aZnopaLVSyupmjGreH8mzT82f6ZKxtGhKB5YAF4MOVFdFNbWpjREmZVm8oUC17fb2esq/ut3cIcjc4rVliiQA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d62ba1ac-6c64-406f-894e-08de9b0af372
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8287.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 16:20:47.1327 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EZscNdU9GgQmaTrxii6c1LfXBFOFXeTWqlsDmAS2uaanRF+Xb9By/mQSUX5i1jY8pvZDIHxKcR0lzy/TRi0kxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS3PR11MB9820
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87bjfkz64r.fsf@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -174,223 +75,214 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com> writes:
+I hope you don't mind I truncated thread to interesting part of our discussion:
 
-> On Wed, Apr 15, 2026 at 09:16:33AM -0300, Gustavo Sousa wrote:
->> Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com> writes:
->>=20
->> > On Tue, Apr 14, 2026 at 06:39:28PM -0300, Gustavo Sousa wrote:
->> >> Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com> writes:
->> >>=20
->> >> > Add list of filenames which were created by hooks in attachments di=
-rectory
->> >> > (like GuC log copy) to results.json for allow presenting it in CI.
->> >> >
->> >> > Due to lack of userdata pointer in nftw() implementation main json
->> >> > object is passed via temporary static variable. It shouldn't be the
->> >> > problem because results.json is created in single thread. This chan=
-ge
->> >> > is not too elegant but allows to minimize the code change and is
->> >> > much easier to read comparing to recursive readdir().
->> >> >
->> >> > Signed-off-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@inte=
-l.com>
->> >> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> >> > Cc: Ryszard Knop <ryszard.knop@intel.com>
->> >> > Cc: Krzysztof Karas <krzysztof.karas@intel.com>
->> >> > ---
->> >> >  runner/resultgen.c | 63 ++++++++++++++++++++++++++++++++++++++++++=
-++++
->> >> >  1 file changed, 63 insertions(+)
->> >> >
->> >> > diff --git a/runner/resultgen.c b/runner/resultgen.c
->> >> > index f8459385c3..d37f01a433 100644
->> >> > --- a/runner/resultgen.c
->> >> > +++ b/runner/resultgen.c
->> >> > @@ -1,11 +1,14 @@
->> >> >  #include <assert.h>
->> >> >  #include <ctype.h>
->> >> > +#include <dirent.h>
->> >> >  #include <fcntl.h>
->> >> > +#include <ftw.h>
->> >> >  #include <inttypes.h>
->> >> >  #include <stdio.h>
->> >> >  #include <string.h>
->> >> >  #include <sys/mman.h>
->> >> >  #include <sys/stat.h>
->> >> > +#include <sys/types.h>
->> >> >  #include <unistd.h>
->> >> > =20
->> >> >  #include <jansson.h>
->> >> > @@ -1156,6 +1159,63 @@ static bool fill_from_dmesg(int fd,
->> >> >  	return true;
->> >> >  }
->> >> > =20
->> >> > +struct json_t *tmp_tests;
->> >> > +static int ftw_attachments_list(const char *fpath, const struct st=
-at *sb,
->> >> > +				int typeflag, struct FTW *ftwbuf)
->> >> > +{
->> >> > +	struct json_t *obj =3D NULL, *attobj =3D NULL;
->> >> > +	(void)sb;
->> >> > +	(void)ftwbuf;
->> >> > +
->> >> > +	if (typeflag =3D=3D FTW_F) {
->> >> > +		char *p;
->> >> > +
->> >> > +		p =3D strstr(fpath + 2, "/");
->> >> > +		if (!p)
->> >> > +			return -1;
->> >> > +		*p =3D '\0'; /* temporary for acquiring the piglit name */
->> >> > +		obj =3D get_or_create_json_object(tmp_tests, fpath + 2);
->> >>=20
->> >> For this to be trully recursive, I think we should create the JSON
->> >> object in the FTW_DP case.
->> >
->> > What for? Imo attachments array for test/subtest which contains
->> > relative paths from test/subtest is enough. I see no value by adding
->> > recursive arrays apart of increasing complexity to the code. Be aware =
-CI has
->> > to present these attachments as well, so more we complicate results.js=
-on
->> > more work will be on CI side to alter javascript.
->> >
->> >>=20
->> >> > +		attobj =3D get_or_create_json_array(obj, "attachments");
->> >> > +		*p =3D '/'; /* bring '/' back */
->> >> > +		json_array_append_new(attobj, escaped_json_stringn(fpath + 2, st=
-rlen(fpath + 2)));
->> >> > +	} else if (typeflag =3D=3D FTW_DP) {
->> >> > +		;
->> >> > +	} else {
->> >> > +		return -1;
->> >> > +	}
->> >> > +
->> >> > +	return 0;
->> >> > +}
->> >> > +
->> >> > +static bool fill_from_attachments(int idirfd, struct json_t *tests=
-)
->> >> > +{
->> >> > +	char attname[32];
->> >> > +	int attdirfd;
->> >> > +	DIR *currdir;
->> >> > +	int ret;
->> >> > +
->> >> > +	snprintf(attname, sizeof(attname), "%s", DIR_ATTACHMENTS);
->> >> > +	if ((attdirfd =3D openat(idirfd, attname, O_DIRECTORY | O_RDONLY =
-| O_CLOEXEC)) < 0) {
->> >> > +		fprintf(stderr, "Error opening '%s' dir\n", DIR_ATTACHMENTS);
->> >> > +		return false;
->> >> > +	}
->> >> > +
->> >> > +	currdir =3D opendir(".");
->> >> > +	fchdir(attdirfd);
->> >> > +
->> >> > +	/*
->> >> > +	 * ftw doesn't support passing user data so *tests has to be
->> >> > +	 * set to some global for being visible in callback function.
->> >> > +	 * As results.json is not processed in multiple threads it is
->> >> > +	 * not a big problem.
->> >> > +	 */
->> >> > +	tmp_tests =3D tests;
->> >> > +	ret =3D nftw(".", ftw_attachments_list, 4, FTW_PHYS | FTW_DEPTH);
->> >>=20
->> >> I think another option is to use fts(3)? Since it is a streaming API,
->> >> you can keep the state (i.e. the current json object) as a local
->> >> variable and update as you walk the tree.
->> >
->> > CI folks want minimize changes in results.json, so according to above
->> > I would keep everything in flat attachments array.
->> >
->> >>=20
->> >> It seems it is not POSIX though.  Not sure if that's a real issue for
->> >> IGT, since stuff in IGT are supposed to run on Linux, right?
->> >
->> > And Android if I'm not wrong.
->>=20
->> That's Linux as well, no?  Perhaps just need to have a sanity check to
->> see if those functions are also available there.
->>=20
->> >
->> >>=20
->> >> Thinking back, I guess it could fts(3) could even be used for the
->> >> recursive removal.
->> >
->> > Question - do we really need this? I can live with ugly static
->> > json at cost of simplicity especially this is only result generator
->> > which likely won't be touched by next months/years...
->>=20
->> I would say: if the right tool is available for the job, why not using
->> it?
->>=20
->> Not going to block on this though...
->>=20
->> >
->> > For attachments case imo allowing recursive creation from hooks script=
-s
->> > is an overkill.
->>=20
->> The hook mechanism is not something created for exclusive use by CI. It
->> is a tool for developers to use are they see fit.  That was my original
->> intention when I first developed the hooks infrastructure.
->>=20
->> I don't like the fact that we are making assumptions of how the hooks
->> will behave here.
->>=20
->> If CI wants a flat structure, that's fine: let CI provide hooks that
->> generate files in a flat hierarchy.  I just think that it is not right
->> to assume that all hooks will behave like that.
->
-> Executing hooks out of igt_runner won't provide results.json, right?
-> So all that recursive removal / etc doesn't makes sense when you execute
-> tests standalone.
+On Wed, Apr 15, 2026 at 10:48:36AM -0300, Gustavo Sousa wrote:
 
-My comment above is not about running igt_runner vs standalone tests;
-it is about the users having their own custom hook scripts, which could
-be used as part of an igt_runner call.
+<cut>
 
-By the way, did we reach an agreement about whether we should or not be
-adding the attachments to the results.json?  I remember Ryszard had his
-doubts.  I might have missed some conversation about it.
+> >> 
+> >> > +			return -1;
+> >> > +		}
+> >> > +	} else if (typeflag == FTW_DP) {
+> >> > +		if (rmdir(fpath)) {
+> >> > +			errf("Cannot remove directory %s\n", fpath);
+> >> 
+> >> Ditto.
+> >> 
+> >> > +			return -1;
+> >> > +		}
+> >> > +	} else {
+> >> > +		errf("Cannot remove %s (unsupported file type)\n", fpath);
+> >> > +		return -1;
+> >> 
+> >> I think it would be sensible to drop symbolic links as well (I think it
+> >> could be handled in the same brace for FTW_F.
+> >
+> > I wondered about this, but I would be strict - only files and dirs
+> > are allowed in the attachments directory. What for user/script would do
+> > symbolic links there?
+> 
+> Not sure, but I don't see a reason to disallow them.  We can't predict
+> what a user hook will do, so I would be in favor of being more flexible
+> when we can.
+
+Ok, unlinking symlink is safe so you've conviced me. Especially
+it can be simply handled within same switch/case section.
+
+<cut>
+
+> >> > +static bool clear_attachments_dir_recursively(int attdirfd)
+> >> > +{
+> >> > +	char attdirname[PATH_MAX];
+> >> > +	DIR *currdir;
+> >> > +	int ret;
+> >> > +
+> >> > +	currdir = opendir(".");
+> >> 
+> >> Why do we need this call?
+> >
+> > nftw() requires path, not fd so I have to ensure I leave working
+> > directory intact when I quit the function. I don't know any method
+> > apart of fchdir/getcwd() to get dirname I would like to pass to
+> > nftw(). And I won't assume I know where's current working dir.
+> 
+> Ah, I overlooked the fact that currdir is used to get back to the
+> directory at the end of the function. My bad.
+> 
+> That said, I do feel like we are doing a bit too much here and passing
+> the path directly would make it simpler (that is, if we were to continue
+> to use a separate clear_attachments_dir_recursively() function, as
+> opposed to my suggestion below).
+> 
+> >
+> >> 
+> >> > +	fchdir(attdirfd);
+> >> > +	getcwd(attdirname, sizeof(attdirname));
+> >> > +
+> >> > +	/* Sanity check we're in attachments directory structure */
+> >> > +	if (!strstr(attdirname, DIR_ATTACHMENTS)) {
+> >> > +		errf("Cowardly refusing removing in directory which is not "
+> >> > +		     "attachments directory [currdir: %s]!\n", attdirname);
+> >> > +		ret = -1;
+> >> > +		goto out;
+> >> > +	}
+> >> 
+> >> This function is static and only called for DIR_ATTACHMENTS.  I believe
+> >> this check is unnecessary.
+> >
+> > Assuming no bug is here you're right, but I would like to do double check
+> > directory content I want to remove is really I expect to.
+> 
+> I think this check would make sense if things were more complex and
+> would make it hard to predict how this function would be called.  I
+> don't think that's the case here, though: this is a simple case where
+> there is only one call site for this function and it is for the
+> DIR_ATTACHMENTS.
+> 
+> I even think, as mentioned in an earlier reply, that this function could
+> be avoided completely, but I won't block on that.
+
+Ok, I'm going to eliminate it. Lets see how it will look like after this
+change.
+
+> 
+> >
+> >> 
+> >> > +
+> >> > +	ret = nftw(attdirname, ftw_attachment_removal, 4, FTW_PHYS | FTW_DEPTH);
+> >> > +
+> >> > +out:
+> >> > +	fchdir(dirfd(currdir));
+> >> > +	closedir(currdir);
+> >> > +
+> >> > +	return ret ? false : true;
+> >> > +}
+> >> > +
+> >> >  static bool clear_test_result_directory(int dirfd)
+> >> 
+> >> I think we need to have the path to the test result dir passed as
+> >> argument here so that we can build attdirname without having the change
+> >> dir + get cwd dance.
+> >
+> > I didn't want to rewrite clear_old_results() function. Current code
+> > uses mostly fd's and only place where I really need path is nftw().
+> > I will rewrite to passing paths if you insist but personally I wouldn't
+> > do this.
+> 
+> I think this scenario justifies rewriting clear_old_results() to pass
+> the path as well.  We are doing extra steps -- creating attdirfd and
+> then, inside clear_attachments_dir_recursively(), all that handling of
+> fds -- for no real benefit besides conforming to a "fd as argument"
+> standard IMO.
+
+Ok, I walked over the code and probably you're right - providing
+path will be simpler then workarounding with fchdir/getcwd.
+
+> 
+> >
+> >> 
+> >> >  {
+> >> > -	int i;
+> >> > +	int i, attdirfd;
+> >> > +	int ret = true;
+> >> 
+> >> I guess we don't need this ret variable. If the removal of the
+> >> attachments directory fails, we can just print an error message and
+> >> return false.
+> >
+> > Ok.
+> >
+> >> 
+> >> >  
+> >> >  	for (i = 0; i < _F_LAST; i++) {
+> >> >  		if (remove_file(dirfd, filenames[i])) {
+> >> > @@ -1960,7 +2019,16 @@ static bool clear_test_result_directory(int dirfd)
+> >> >  		}
+> >> >  	}
+> >> >  
+> >> > -	return true;
+> >> > +	if ((attdirfd = openat(dirfd, DIR_ATTACHMENTS, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
+> >> > +		errf("Cannot open attachments directory\n");
+> >> > +		return false;
+> >> > +	}
+> >> > +
+> >> > +	ret = clear_attachments_dir_recursively(attdirfd);
+> >> > +	if (!ret)
+> >> > +		errf("Cannot clear attachments dir recursively\n");
+> >> 
+> >> Why not simply call nftw() directly from here? I don't see much value in
+> >> having the function clear_attachments_dir_recursively().
+> >
+> > I created a separate function because I like dividing logical tasks
+> > to separate functions. I can unfold this function here if you think
+> > this will be better.
+> 
+> I can live with the separate function.  I just think dropping it greatly
+> simplifies the current code.  Your call.
+
+Ok, we'll see how it goes in v4.
 
 --
-Gustavo Sousa
+Zbigniew
 
->
+> 
 > --
-> Zbigniew
->
->
->>=20
->> --
->> Gustavo Sousa
->>=20
->> >
->> > --
->> > Zbigniew
->> >
->> >>=20
->> >> --
->> >> Gustavo Sousa
->> >>=20
->> >> > +	fchdir(dirfd(currdir));
->> >> > +
->> >> > +	return ret ? false : true;
->> >> > +}
->> >> > +
->> >> >  static const char *result_from_exitcode(int exitcode)
->> >> >  {
->> >> >  	switch (exitcode) {
->> >> > @@ -2244,6 +2304,9 @@ static bool parse_test_directory(int dirfd,
->> >> >  		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
->> >> >  	}
->> >> > =20
->> >> > +	if (!fill_from_attachments(dirfd, results->tests))
->> >> > +		fprintf(stderr, "Error parsing attachments directory\n");
->> >> > +
->> >> >  	override_results(entry->binary, &subtests, results->tests);
->> >> >  	prune_subtests(settings, entry, &subtests, results->tests);
->> >> > =20
->> >> > --=20
->> >> > 2.43.0
+> Gustavo Sousa
+> 
+> >
+> > --
+> > Zbigniew
+> >
+> >> 
+> >> --
+> >> Gustavo Sousa
+> >> 
+> >> > +
+> >> > +	return ret;
+> >> >  }
+> >> >  
+> >> >  static bool clear_old_results(char *path)
+> >> > @@ -2002,6 +2070,7 @@ static bool clear_old_results(char *path)
+> >> >  			close(dirfd);
+> >> >  			return false;
+> >> >  		}
+> >> > +
+> >> >  		close(resdirfd);
+> >> >  		if (unlinkat(dirfd, name, AT_REMOVEDIR)) {
+> >> >  			errf("Warning: Result directory %s contains extra files\n",
+> >> > diff --git a/runner/executor.h b/runner/executor.h
+> >> > index 3b1cabcf55..bc6ac80dc4 100644
+> >> > --- a/runner/executor.h
+> >> > +++ b/runner/executor.h
+> >> > @@ -25,6 +25,8 @@ enum {
+> >> >  	_F_LAST,
+> >> >  };
+> >> >  
+> >> > +#define DIR_ATTACHMENTS "attachments"
+> >> > +
+> >> >  bool open_output_files(int dirfd, int *fds, bool write);
+> >> >  bool open_output_files_rdonly(int dirfd, int *fds);
+> >> >  void close_outputs(int *fds);
+> >> > -- 
+> >> > 2.43.0
