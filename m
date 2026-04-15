@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C22F5F4198B
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Apr 2026 11:38:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE7D6F4198B
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Apr 2026 11:43:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B1E310E6CC;
-	Wed, 15 Apr 2026 11:38:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4853410E6CC;
+	Wed, 15 Apr 2026 11:43:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="MmcSdEAl";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="ijlsx3uU";
 	dkim-atps=neutral
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com
- [209.85.216.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8B2710E6CC
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 11:38:46 +0000 (UTC)
-Received: by mail-pj1-f52.google.com with SMTP id
- 98e67ed59e1d1-35691a231a7so4257072a91.3
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 04:38:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776253126; cv=none;
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com
+ [209.85.215.181])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7CC610E225
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 11:43:38 +0000 (UTC)
+Received: by mail-pg1-f181.google.com with SMTP id
+ 41be03b00d2f7-c742723c863so4217843a12.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 04:43:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776253418; cv=none;
  d=google.com; s=arc-20240605;
- b=YHRwRzoehbH/jC1h9EQqeNkbHhMuaFKwbDxgMGGQQZx6MCceYVugXU6G263Rs2dbCu
- 6RUOGIhUbpleKxKOUUq8gTivCJD/XBR1fe2h3CBIb7+fptmOCtg9HTQgGklAwUMx+YDn
- C83Uq13Q6m68VD/60Vuxlg2QC0QjnoD7Fd4yuYYbKjmVszBOkblWKnryROoz390WzUen
- MARZRHfcM9xlOpTiI8iCSqvYaum4M8IOKF0dhkevLpJv47bxZj/wAYCPuyiCh2pu276H
- ErW4vvbaZDEXDiKyxEmjfhxsRzjscyz//wiMYE0RECxx2b/g8nIHPd6//9gXHNvVs1sd
- cmQg==
+ b=GBws0uXIlDzvW8b8E4sFaLR1zErg7jFgd87SWJdRmPvxSowM5bt+CqF5kg5Ymt+H+k
+ YXer9vksyPd3lZhkbDRtc7DpEW611vEWoh4ZiZgdK92zipO0dZ6GyIiG06CCz20P4Xgi
+ 2DRlP7WHJizDCL3iMhDs53Cfw/UbYQYcfTl9MtqVli1gelQD70hBoG7DYDRpegm273E2
+ ZVcIUkFLOQbkYb5qMv2TreEjCrcpJxKbf45QNLE77QL2KtN0fXkvKAp4AbIL3QeysHEd
+ hIRF1VROUgga9FeMkTC4m7VT3qnSaXZ0BT0nZAKPrLd/p1gXlCmxDWwmVQUZhHoKxxb3
+ Mgqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
  s=arc-20240605; 
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:dkim-signature;
- bh=wijxYeyVcqGuWJ+1BN8AahHE9zCb9S3ad4QgDKy+mNU=;
+ bh=MfF4Yn4+sie4v6vInVP4w0WbBGX0tO9l39PAAyDuwtU=;
  fh=bBOdEspSDe+Fu2GFdpJBv3sDvIILUygPFC6gbgyi0co=;
- b=NCGUGP0mlhggCtfLkJTTiJdFddktOpVlyd53lleBxDOe+vPNpgyKTbtkTS7nApZEog
- m+pDD8YcACtRs9ntXiPgmzEt8AoRa4DWKWyZbyoExpO8+pEsvgx1s0ZeDDAVYXwIMvo9
- Ermi1MQ0D31YlqBW1g7fnuPtVI81b+D3lTrhM7eIAkAeyonBvyvZVxZUrgpl/0m4Q2O7
- SZg5ezbHb792iJHO+BaxRsIuGXNNngd5ihk3ztGhlbQslxlLG6/wHA4W8AteXEUG1jF0
- GRaBq4nZrpzDSonBiROXVgH44fSd7hEq9WzQHvHd0vbftwbeayOGMdzDwgscqzlL02EM
- CggQ==; darn=lists.freedesktop.org
+ b=RFW813Hr08MAV30U2eVXncq0zZQabxbddXyMsyzRSzf7kFXe8vjpP9m/rGdCfN/YGW
+ JLbnB36rbWOI9Bfe48znGbUxZx5CcnciIh1knBSAYaHOrLydUVJGnjPxrEiQjB+kZWt4
+ ENCGR2OtVOKNoalpnMko8PPUaPzqlrV2E3sQYfexOelCh9tz7JKmvxXVYdmSmPUtF2U5
+ gCCEbmuqHGTwRfcRsbSFNdxYPTYGe4ywCR9W3fJLSkA03k9GKa61/Rb2D0NlnCAPMEoN
+ /GXdSCwmb0lloghwBO7SC42aSnSv3GfxHth/nl9Uz2xq+79QLkWM+v2sQp9Lz7wZyjhr
+ mRag==; darn=lists.freedesktop.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1776253126; x=1776857926; darn=lists.freedesktop.org;
+ d=gmail.com; s=20251104; t=1776253418; x=1776858218; darn=lists.freedesktop.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wijxYeyVcqGuWJ+1BN8AahHE9zCb9S3ad4QgDKy+mNU=;
- b=MmcSdEAlXEETKNOugXmDtc8CbRLy8d0ByQL2QSEsG7Kk6M5koA3P8/CeVrNZkCEt1Z
- svK40dqt5fVGIl6gXVkrcHpwxeZftKVEmB62e3mFgppujhfN1psjjQXz6E3z6ZAZ85ih
- grT4qFQ+SEE5pwF1kBycBDJpNOU3ZtBxLvP6dMjzfm4uFosmQY8FT+827FsOdlU1x/f7
- nL54JLfghJDlLXJAWZjSJyW0nQxxgArzx24dhuxFzSZbylbzRub9880qVwDJ9ZGKAmBe
- 2zXv7LIC5UidYvQRfg8sDH8BlDCORTcpHccN4G2SGR0atl0SARDol9wMKh1WCW+USnHU
- Ilow==
+ bh=MfF4Yn4+sie4v6vInVP4w0WbBGX0tO9l39PAAyDuwtU=;
+ b=ijlsx3uUrEGWSeqxqnQ6jjxOTw9AqayzjzxUVrVQhYffK5Q/dV4yV6Yu7n1Z/ZmI4z
+ jlKE69fMZIoMHxGxLfn2dsSWuYV+0E7C3h4vc8Tbz/fkG49BVfqW95QAu17pmN+O7wDW
+ w1ZkinfwemZE6oa/iEIQHxZgYgJOy/Vk4F5GezOh56hMLSOB0lDF7bXnME4k1n2jObA9
+ JaAwR9qrwayUT/5Bnt6gcab8L+kTaDfB14pn28otweCyxEOuOPrV794nmMavwjajed40
+ eiMAZysMWi5C+fzc8tm37myItxQ7ItN/7KISz9MLVqhp6sJTKFOvvkgVf1hxgdh/ejoN
+ PGmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1776253126; x=1776857926;
+ d=1e100.net; s=20251104; t=1776253418; x=1776858218;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=wijxYeyVcqGuWJ+1BN8AahHE9zCb9S3ad4QgDKy+mNU=;
- b=QZLMou/lvrjqiSU+jT0pn5YlUCDDldtbKvzlzR6ydK5IoxSFV6kqYZ1sekFzgLumfC
- g1OHavfHtk+LH04glUvYVTYmjjq6CYsgO0I/eDtafMcXptyMczqHsM0gKE6QtElLvfjd
- OFfQ3VxUEBFTjwCi2++Nlh1/lXhvS0Sk3orXgcSs9+uictHPysyIEJ1DrSPo7b14yy3t
- hdLkgqf+oP189TqoCTmwdwwypR9cY+Wp87pTA1K4aX4jm1r+81qyPdMWPh3A/F1EHbGR
- rn5MjlLnQoWulR2wpVSLigZpmjsXPNTNm1jIgOOkiJ90FQomVqNwnIuyp0Br1zELuDtb
- 6frA==
-X-Gm-Message-State: AOJu0YxGvQL9hmcxGOm9akKxOOm7W5Bgolics0kEOJZExYel8l2w2z/a
- rFe1UJ9fHT7fvVNQO4Bqid/BKk6XNI0rWWrfVDlQkV7CmpPeKpSftenEmhXjJzjGf9mMzHPCE4Q
- q9Dy6RUP8SpWKA2IjElvubBYxAQig5G9TcAkxmKyPjQ==
-X-Gm-Gg: AeBDievLYlkPaTVoGyAIYEg++G1CEBsOsLjL1vY+5bgGESB4F4VbBVgoykvyfBjwgK6
- pnPLXx3qe0ujgSmzGSPSXuls9JFiaMSOqdGATlkxVPWq/6FNRtlZLCotTNvkMJ8rSnwkLiq/n7w
- +yAvbd/wGVdhBvAnAmyGDPMig3giLdVeygw5HMLAG9GaUVHesutGPPZRu8p5xJ6CWNOZR1btKbN
- 7g/GfFz5yM8KPBYC4aSDQO/KRnb/kdspMYgs9NV7Rx3M7luCYYFHnct5hrwIBuKdQuNVUcLAC2O
- Ik2/1ZHiODAFrQ7RlNQ+2bzsJXEaQbmRfxRBMyFcph3TQ8eB2xDT
-X-Received: by 2002:a17:90a:fc4e:b0:35f:bddd:3860 with SMTP id
- 98e67ed59e1d1-35fbddd407fmr10230999a91.6.1776253126267; Wed, 15 Apr 2026
- 04:38:46 -0700 (PDT)
+ bh=MfF4Yn4+sie4v6vInVP4w0WbBGX0tO9l39PAAyDuwtU=;
+ b=LJl2x9vt42xU3mai4iyIU47/xljShYano1gKdFE3Ys0eEutV6oaYIpBXJrgrqPJ+CV
+ SZIstl3w0K/3QHsXc/VrHWGN6bc8KxEtq4tIBnbZL5kPg8ImVssgCQoxGlxcdgxQrS/y
+ b3yYDPiD9evt4h1k0o+yCTbMiD3eVo0cGCVIBOURuJMssBx710NmPB86DNZ8jZqBHZJF
+ Fa5IT6dbaaX+xIzXcJZ/WHpa54wemJzWDieDkJF9LsjtDySQabByO6lGM4kB/pM9ssob
+ jQ8ejFBKNCRC2f3s2jf5pEugprpfYXaAHg2aNU8/XVeznExQX0jVcC0mlZFStwGSR+4Z
+ NbpA==
+X-Gm-Message-State: AOJu0YxvvulgD0AaVTybKgRQH7cR0X2+73oltwNlzMJkAsfJpaLblkPC
+ gU0NuSTz9n0/45V5RrwiHRXX76FvBD4bdY4G0YyHzu1jzd9WlKovofzihZTHnsZpV/2IFrS8YE9
+ HEb7ezQPsxjvuElWajlhaXBx/SImKidk6WFP7znZvEQ==
+X-Gm-Gg: AeBDievDRuX83I/2uxBm4LKtGdP7CgQ05Ofc6Ybfm53oEAqeMpgPIkpkSHvhG9HtDft
+ Fk0rlZvjEY48KJZDup2OFmCsLFOp/XWW0vfqcCUMYxN+rw7Y/hw3at9rcsYtMKCvywNe+RVzZeu
+ ZEqK+Tz+XLVoSRZ+nIHsfpty9+JC4R6UoB0S+8RvFaR1hZ2MWcc9X0bp+bjeoaQyadbc8nv8HZC
+ 245ifoLs4JaNLYhT4YiH61lR7OcnEKBdG93xus4cMYzE8vSkyELlipqxZrMGWUuqAlr2a+7Dv+4
+ Flk6cOx2XIGFqkPRlpW44cY69r9mhKK3nVQ6Ud/XjDZN+WvRoUjW
+X-Received: by 2002:a05:6a20:7d9d:b0:398:d70f:e012 with SMTP id
+ adf61e73a8af0-39fe400f810mr23534880637.47.1776253418013; Wed, 15 Apr 2026
+ 04:43:38 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260331190412.1907571-1-juhapekka.heikkila@gmail.com>
- <20260331190412.1907571-4-juhapekka.heikkila@gmail.com>
- <16c209b3-7a17-4ab3-8e97-1946fb8b05b1@intel.com>
-In-Reply-To: <16c209b3-7a17-4ab3-8e97-1946fb8b05b1@intel.com>
+ <20260331190412.1907571-3-juhapekka.heikkila@gmail.com>
+ <5d92caab-f7c2-40a8-952f-b0b0f6629e47@intel.com>
+In-Reply-To: <5d92caab-f7c2-40a8-952f-b0b0f6629e47@intel.com>
 From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Wed, 15 Apr 2026 14:38:34 +0300
-X-Gm-Features: AQROBzBH3X3cJh6ClzWCzDXT6x2R4bN6BQ0rctyCiNg7MFJBPu0g2EG2OHRb1xM
-Message-ID: <CAJ=qYWR99KWUAy9Jcfv7O3xH9ccTicOJvcTL+GYrprsL3UVuHw@mail.gmail.com>
-Subject: Re: [PATCH i-g-t 3/4] tests/intel/kms_sharpness_filter: restructure
- igt_main
+Date: Wed, 15 Apr 2026 14:43:26 +0300
+X-Gm-Features: AQROBzBw3Yr3LaOEGcbHf2n3U9YowkFQoQpA7NFnLH2oPympPkja7J04as8aojY
+Message-ID: <CAJ=qYWQGiwPsu3ObRyWkgHnL=Mjph6Op5Ntw3sxah2LGRbHddw@mail.gmail.com>
+Subject: Re: [PATCH i-g-t 2/4] tests/intel/kms_sharpness_filter: refactor
+ test_sharpness_filter function
 To: "Sharma, Swati2" <swati2.sharma@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
@@ -105,387 +105,206 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Apr 10, 2026 at 8:31=E2=80=AFAM Sharma, Swati2 <swati2.sharma@intel=
-.com> wrote:
+On Thu, Apr 9, 2026 at 3:04=E2=80=AFPM Sharma, Swati2 <swati2.sharma@intel.=
+com> wrote:
 >
-> Hi JP
+> Hi JP,
+>
+> Overall patch LGTM. One small nit.
 >
 > On 01-04-2026 12:34 am, Juha-Pekka Heikkila wrote:
->
-> collect tests into list and call them through there
->
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  tests/intel/kms_sharpness_filter.c | 312 +++++++++++++++++------------
->  1 file changed, 180 insertions(+), 132 deletions(-)
->
-> diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpne=
-ss_filter.c
-> index ed8d2e48c..f08d33d7a 100644
-> --- a/tests/intel/kms_sharpness_filter.c
-> +++ b/tests/intel/kms_sharpness_filter.c
-> @@ -143,6 +143,131 @@ static const uint32_t scaling_modes[] =3D {
->   DRM_MODE_SCALE_ASPECT,
->  };
->
-> +enum subtest_iter {
-> + ITER_NONE,
-> + ITER_STRENGTH,
-> + ITER_MODIFIER,
-> + ITER_ROTATION,
-> + ITER_FORMAT,
-> + ITER_SCALING_MODE,
-> +};
-> +
-> +const struct subtest_entry {
->
-> Make this static
->
-> + const char *name;
-> + const char *describe;
-> + enum test_type type;
-> + int filter_strength;
-> + uint32_t format;
-> + enum subtest_iter iter;
-> +} subtests[] =3D {
-> + {
-> + .name     =3D "filter-basic",
-> + .describe =3D "Verify basic content adaptive sharpness filter.",
-> + .type     =3D TEST_FILTER_BASIC,
-> + .filter_strength =3D -1,
->
-> Can we have #define DEFAULT_FILTER_STRENGTH as -1 ?
->
-> Also, shall we make iter/format explicit for clarity?
->
-> .iter =3D ITER_NONE,
-> .format =3D DRM_FORMAT_XRGB8888,
+> > refactor to make it look more nice
+> >
+> > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> > ---
+> >   tests/intel/kms_sharpness_filter.c | 108 ++++++++++++++++------------=
+-
+> >   1 file changed, 59 insertions(+), 49 deletions(-)
+> >
+> > diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharp=
+ness_filter.c
+> > index 029b735bd..ed8d2e48c 100644
+> > --- a/tests/intel/kms_sharpness_filter.c
+> > +++ b/tests/intel/kms_sharpness_filter.c
+> > @@ -88,15 +88,6 @@ IGT_TEST_DESCRIPTION("Test to validate content adapt=
+ive sharpness filter");
+> >   #define MAX_PIXELS_FOR_3_TAP_FILTER (1920 * 1080)
+> >   #define MAX_PIXELS_FOR_5_TAP_FILTER (3840 * 2160)
+> >   #define NROUNDS                             10
+> > -#define INVALID_TEST ((type =3D=3D TEST_INVALID_FILTER_WITH_SCALER) \
+> > -                || (type =3D=3D TEST_INVALID_FILTER_WITH_PLANE) \
+> > -                || (type =3D=3D TEST_INVALID_PLANE_WITH_FILTER) \
+> > -                || (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE)=
+)
+> > -#define SET_PLANES ((type =3D=3D TEST_FILTER_UPSCALE) \
+> > -             ||  (type =3D=3D TEST_FILTER_DOWNSCALE) \
+> > -             ||  (type =3D=3D TEST_INVALID_FILTER_WITH_SCALER) \
+> > -             ||  (type =3D=3D TEST_INVALID_FILTER_WITH_PLANE) \
+> > -             ||  (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE))
+> >
+> >   enum test_type {
+> >       TEST_FILTER_BASIC,
+> > @@ -327,12 +318,37 @@ static int test_filter_toggle(data_t *data)
+> >       return ret;
+> >   }
+> >
+> > -static void test_sharpness_filter(data_t *data,  enum test_type type)
+> > +static bool is_invalid_test(enum test_type type)
+> > +{
+> > +     switch (type) {
+> > +     case TEST_INVALID_FILTER_WITH_SCALER:
+> > +     case TEST_INVALID_FILTER_WITH_PLANE:
+> > +     case TEST_INVALID_PLANE_WITH_FILTER:
+> > +     case TEST_INVALID_FILTER_WITH_SCALING_MODE:
+> > +             return true;
+> > +     default:
+> > +             return false;
+> > +     }
+> > +}
+> > +
+> > +static bool needs_extra_planes(enum test_type type)
+> > +{
+> > +     switch (type) {
+> > +     case TEST_FILTER_UPSCALE:
+> > +     case TEST_FILTER_DOWNSCALE:
+> > +     case TEST_INVALID_FILTER_WITH_SCALER:
+> > +     case TEST_INVALID_FILTER_WITH_PLANE:
+> > +     case TEST_INVALID_FILTER_WITH_SCALING_MODE:
+> > +             return true;
+> > +     default:
+> > +             return false;
+> > +     }
+> > +}
+> > +
+> > +static void test_sharpness_filter(data_t *data, enum test_type type)
+> >   {
+> >       igt_output_t *output =3D data->output;
+> >       drmModeModeInfo *mode =3D data->mode;
+> > -     int height =3D mode->hdisplay;
+> > -     int width =3D  mode->vdisplay;
+> >       igt_crc_t ref_crc, crc;
+> >       igt_pipe_crc_t *pipe_crc =3D NULL;
+> >       int ret;
+> > @@ -343,57 +359,31 @@ static void test_sharpness_filter(data_t *data,  =
+enum test_type type)
+> >                     "No requested format/modifier on pipe %s\n",
+> >                     igt_crtc_name(data->crtc));
+> >
+> > -     setup_fb(data->drm_fd, height, width, data->format, data->modifie=
+r, &data->fb[0]);
+> > +     setup_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> > +              data->format, data->modifier, &data->fb[0]);
+> >       igt_plane_set_fb(data->plane[0], &data->fb[0]);
+> >
+> >       if (type =3D=3D TEST_FILTER_ROTATION) {
+> > -             if (igt_plane_has_rotation(data->plane[0], data->rotation=
+))
+> > -                     igt_plane_set_rotation(data->plane[0], data->rota=
+tion);
+> > -             else
+> > -                     igt_skip("No requested rotation on pipe %s\n",
+> > -                              igt_crtc_name(data->crtc));
+> > +             igt_skip_on_f(!igt_plane_has_rotation(data->plane[0],
+> > +                                                   data->rotation),
+> > +                           "No requested rotation on pipe %s\n",
+> > +                           igt_crtc_name(data->crtc));
+> > +             igt_plane_set_rotation(data->plane[0], data->rotation);
+> >       }
+> >
+> >       if (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE)
+> >               igt_require_f(has_scaling_mode(output), "No connecter sca=
+ling mode found on %s\n", output->name);
+> >
+> > -     if (SET_PLANES)
+> > +     if (needs_extra_planes(type))
+> >               set_planes(data, type);
+> >
+> >       set_filter_strength_on_pipe(data);
+> >
+> > -     if (!INVALID_TEST && data->filter_strength !=3D 0)
+> > -             igt_debug("Sharpened image should be observed for filter =
+strength > 0\n");
+> Since this in NON-CRC based test, should we keep this debug msg?
 
-I think this would hide the changes that differ from defaults.
+I don't think this debug message help here. Maybe these tests should
+be moved behind command line flag so they wouldn't be run on CI?
 
->
-> + },
-> + {
-> + .name     =3D "filter-strength",
-> + .describe =3D "Verify that varying strength (0-255) affects the degree =
-of sharpeness applied.",
->
-> Typo s/sharpeness/sharpness
->
-> + .type     =3D TEST_FILTER_STRENGTH,
-> + .filter_strength =3D -1,
-> + .iter     =3D ITER_STRENGTH,
-> + },
-> + {
-> + .name     =3D "filter-modifiers",
-> + .describe =3D "Verify content adaptive sharpness filter with varying mo=
-difiers.",
-> + .type     =3D TEST_FILTER_MODIFIERS,
-> + .filter_strength =3D -1,
-> + .iter     =3D ITER_MODIFIER,
-> + },
-> + {
-> + .name     =3D "filter-rotations",
-> + .describe =3D "Verify content adaptive sharpness filter with varying ro=
-tations.",
-> + .type     =3D TEST_FILTER_ROTATION,
-> + .filter_strength =3D -1,
-> + .iter     =3D ITER_ROTATION,
-> + },
-> + {
-> + .name     =3D "filter-formats",
-> + .describe =3D "Verify content adaptive sharpness filter with varying fo=
-rmats.",
-> + .type     =3D TEST_FILTER_FORMATS,
-> + .filter_strength =3D -1,
-> + .iter     =3D ITER_FORMAT,
-> + },
-> + {
-> + .name     =3D "filter-toggle",
-> + .describe =3D "Verify toggling between enabling and disabling content a=
-daptive sharpness filter.",
-> + .type     =3D TEST_FILTER_TOGGLE,
-> + .filter_strength =3D MAX_FILTER_STRENGTH,
-> + },
-> + {
-> + .name     =3D "filter-tap",
-> + .describe =3D "Verify content adaptive sharpness filter with resolution=
- change; "
-> +    "resolution change will lead to selection of distinct taps.",
-> + .type     =3D TEST_FILTER_TAP,
-> + .filter_strength =3D -1,
-> + },
-> + {
-> + .name     =3D "filter-dpms",
-> + .describe =3D "Verify content adaptive sharpness filter with DPMS.",
-> + .type     =3D TEST_FILTER_DPMS,
-> + .filter_strength =3D -1,
-> + },
-> + {
-> + .name     =3D "filter-suspend",
-> + .describe =3D "Verify content adaptive sharpness filter with suspend.",
-> + .type     =3D TEST_FILTER_SUSPEND,
-> + .filter_strength =3D -1,
-> + },
-> + {
-> + .name     =3D "filter-scaler-upscale",
-> + .describe =3D "Verify content adaptive sharpness filter with 1 plane sc=
-aler enabled during upscaling.",
-> + .type     =3D TEST_FILTER_UPSCALE,
-> + .filter_strength =3D -1,
-> + },
-> + {
-> + .name     =3D "filter-scaler-downscale",
-> + .describe =3D "Verify content adaptive sharpness filter with 1 plane sc=
-aler enabled during downscaling.",
-> + .type     =3D TEST_FILTER_DOWNSCALE,
-> + .filter_strength =3D -1,
-> + },
-> + {
-> + .name     =3D "invalid-filter-with-scaler",
-> + .describe =3D "Negative check for content adaptive sharpness filter "
-> +    "when 2 plane scalers have already been enabled and "
-> +    "attempt is made to enable sharpness filter.",
-> + .type     =3D TEST_INVALID_FILTER_WITH_SCALER,
-> + .filter_strength =3D -1,
-> + },
-> + {
-> + .name     =3D "invalid-filter-with-plane",
-> + .describe =3D "Negative check for content adaptive sharpness filter "
-> +    "when 2 NV12 planes have already been enabled and "
-> +    "attempt is made to enable the sharpness filter.",
-> + .type     =3D TEST_INVALID_FILTER_WITH_PLANE,
-> + .filter_strength =3D -1,
-> + .format   =3D DRM_FORMAT_NV12,
-> + },
-> + {
-> + .name     =3D "invalid-plane-with-filter",
-> + .describe =3D "Negative check for content adaptive sharpness filter "
-> +    "when 1 NV12 plane and sharpness filter have already been enabled "
-> +    "and attempt is made to enable the second NV12 plane.",
-> + .type     =3D TEST_INVALID_PLANE_WITH_FILTER,
-> + .filter_strength =3D -1,
-> + .format   =3D DRM_FORMAT_NV12,
-> + },
-> + {
-> + .name     =3D "invalid-filter-with-scaling-mode",
-> + .describe =3D "Negative check for content adaptive sharpness filter "
-> +    "when scaling mode is already enabled and attempt is made "
-> +    "to enable sharpness filter.",
-> + .type     =3D TEST_INVALID_FILTER_WITH_SCALING_MODE,
-> + .filter_strength =3D -1,
-> + .iter     =3D ITER_SCALING_MODE,
-> + },
-> +};
-> +
->  typedef struct {
->   int drm_fd;
->   bool limited;
-> @@ -588,6 +713,48 @@ static void set_data_defaults(data_t *data)
->   data->filter_strength =3D MID_FILTER_STRENGTH;
->  }
->
-> +static int iter_count(enum subtest_iter iter)
-> +{
-> + switch (iter) {
-> + case ITER_STRENGTH:
-> + return ARRAY_SIZE(filter_strength_list);
-> + case ITER_MODIFIER:
-> + return ARRAY_SIZE(modifiers);
-> + case ITER_ROTATION:
-> + return ARRAY_SIZE(rotations);
-> + case ITER_FORMAT:
-> + return ARRAY_SIZE(formats);
-> + case ITER_SCALING_MODE:
-> + return ARRAY_SIZE(scaling_modes);
-> + default:
-> + return 1;
-> + }
-> +}
-> +
-> +static void apply_iter_param(data_t *data, const struct subtest_entry *s=
-t, int idx)
-> +{
-> + switch (st->iter) {
-> + case ITER_STRENGTH:
-> + data->filter_strength =3D filter_strength_list[idx];
-> + break;
-> + case ITER_MODIFIER:
-> + data->modifier =3D modifiers[idx].modifier;
-> + data->modifier_name =3D modifiers[idx].name;
-> + break;
-> + case ITER_ROTATION:
-> + data->rotation =3D rotations[idx];
-> + break;
-> + case ITER_FORMAT:
-> + data->format =3D formats[idx];
-> + break;
-> + case ITER_SCALING_MODE:
-> + data->scaling_mode =3D scaling_modes[idx];
-> + break;
-> + default:
-> + break;
-> + }
-> +}
-> +
->  static int opt_handler(int opt, int opt_index, void *_data)
->  {
->   data_t *data =3D _data;
-> @@ -620,142 +787,23 @@ int igt_main_args("l", NULL, help_str, opt_handler=
-, &data)
->   igt_display_require_output(&data.display);
->   }
->
-> - igt_describe("Verify basic content adaptive sharpness filter.");
-> - igt_subtest_with_dynamic("filter-basic") {
-> - set_data_defaults(&data);
-> - run_sharpness_filter_test(&data, TEST_FILTER_BASIC);
-> - }
-> -
-> - igt_describe("Verify that varying strength(0-255), affects "
-> -     "the degree of sharpeness applied.");
-> - igt_subtest_with_dynamic("filter-strength") {
-> - set_data_defaults(&data);
-> -
-> - for (int i =3D 0; i < ARRAY_SIZE(filter_strength_list); i++) {
-> - data.filter_strength =3D filter_strength_list[i];
-> -
-> - run_sharpness_filter_test(&data, TEST_FILTER_STRENGTH);
-> - }
-> - }
-> -
-> - igt_describe("Verify content adaptive sharpness filter with "
-> -     "varying modifiers.");
-> - igt_subtest_with_dynamic("filter-modifiers") {
-> - set_data_defaults(&data);
-> -
-> - for (int i =3D 0; i < ARRAY_SIZE(modifiers); i++) {
-> - data.modifier =3D modifiers[i].modifier;
-> - data.modifier_name =3D modifiers[i].name;
-> -
-> - run_sharpness_filter_test(&data, TEST_FILTER_MODIFIERS);
-> - }
-> - }
-> -
-> - igt_describe("Verify content adaptive sharpness filter with "
-> -     "varying rotations.");
-> - igt_subtest_with_dynamic("filter-rotations") {
-> - set_data_defaults(&data);
-> -
-> - for (int i =3D 0; i < ARRAY_SIZE(rotations); i++) {
-> - data.rotation =3D rotations[i];
-> -
-> - run_sharpness_filter_test(&data, TEST_FILTER_ROTATION);
-> - }
-> - }
-> -
-> - igt_describe("Verify content adaptive sharpness filter with "
-> -     "varying formats.");
-> - igt_subtest_with_dynamic("filter-formats") {
-> - set_data_defaults(&data);
-> -
-> - for (int i =3D 0; i < ARRAY_SIZE(formats); i++) {
-> - data.format =3D formats[i];
-> -
-> - run_sharpness_filter_test(&data, TEST_FILTER_FORMATS);
-> - }
-> - }
-> -
-> - igt_describe("Verify toggling between enabling and disabling "
-> -     "content adaptive sharpness filter.");
-> - igt_subtest_with_dynamic("filter-toggle") {
-> - set_data_defaults(&data);
-> - data.filter_strength =3D MAX_FILTER_STRENGTH;
-> - run_sharpness_filter_test(&data, TEST_FILTER_TOGGLE);
-> - }
-> -
-> - igt_describe("Verify that following a resolution change, "
-> -     "distict taps are selected.");
-> - igt_subtest_with_dynamic("filter-tap") {
-> - set_data_defaults(&data);
-> - run_sharpness_filter_test(&data, TEST_FILTER_TAP);
-> - }
-> -
-> - igt_describe("Verify content adaptive sharpness filter "
-> -     "with DPMS.");
-> - igt_subtest_with_dynamic("filter-dpms") {
-> - set_data_defaults(&data);
-> - run_sharpness_filter_test(&data, TEST_FILTER_DPMS);
-> - }
-> -
-> - igt_describe("Verify content adaptive sharpness filter "
-> -     "with suspend.");
-> - igt_subtest_with_dynamic("filter-suspend") {
-> - set_data_defaults(&data);
-> - run_sharpness_filter_test(&data, TEST_FILTER_SUSPEND);
-> - }
-> -
-> - igt_describe("Verify content adaptive sharpness filter "
-> -     "with 1 plane scaler enabled.");
-> - igt_subtest_with_dynamic("filter-scaler-upscale") {
-> - set_data_defaults(&data);
-> - run_sharpness_filter_test(&data, TEST_FILTER_UPSCALE);
-> - }
-> -
-> - igt_describe("Verify content adaptive sharpness filter "
-> -     "with 1 plane scaler enabled.");
-> - igt_subtest_with_dynamic("filter-scaler-downscale") {
-> - set_data_defaults(&data);
-> - run_sharpness_filter_test(&data, TEST_FILTER_DOWNSCALE);
-> - }
-> -
-> - igt_describe("Negative check for content adaptive sharpness filter "
-> -     "when 2 plane scalers have already been enabled and "
-> -     "attempt is made to enable sharpness filter.");
-> - igt_subtest_with_dynamic("invalid-filter-with-scaler") {
-> - set_data_defaults(&data);
-> - run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_SCALER);
-> - }
-> -
-> - igt_describe("Negative check for content adaptive sharpness filter "
-> -     "when 2 NV12 planes have already been enabled and attempt is "
-> -     "made to enable the sharpness filter.");
-> - igt_subtest_with_dynamic("invalid-filter-with-plane") {
-> - set_data_defaults(&data);
-> - data.format =3D DRM_FORMAT_NV12;
-> -
-> - run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_PLANE);
-> - }
-> -
-> - igt_describe("Negative check for content adaptive sharpness filter "
-> -     "when 1 NV12 plane and sharpness filter have already been enabled "
-> -     "and attempt is made to enable the second NV12 plane.");
-> - igt_subtest_with_dynamic("invalid-plane-with-filter") {
-> - set_data_defaults(&data);
-> - data.format =3D DRM_FORMAT_NV12;
-> + for (int s =3D 0; s < ARRAY_SIZE(subtests); s++) {
-> + const struct subtest_entry *p =3D &subtests[s];
->
-> - run_sharpness_filter_test(&data, TEST_INVALID_PLANE_WITH_FILTER);
-> - }
-> + igt_describe(p->describe);
-> + igt_subtest_with_dynamic(p->name) {
-> + set_data_defaults(&data);
->
-> - igt_describe("Negative check for content adaptive sharpness filter "
-> -     "when scaling mode is already enabled and attempt is made "
-> -     "to enable sharpness filter.");
-> - igt_subtest_with_dynamic("invalid-filter-with-scaling-mode") {
-> - set_data_defaults(&data);
-> + if (p->filter_strength !=3D -1)
-> + data.filter_strength =3D p->filter_strength;
->
-> - for (int k =3D 0; k < ARRAY_SIZE(scaling_modes); k++) {
-> - data.scaling_mode =3D scaling_modes[k];
-> + if (p->format !=3D 0)
-> + data.format =3D p->format;
->
-> - run_sharpness_filter_test(&data, TEST_INVALID_FILTER_WITH_SCALING_MODE)=
-;
-> + for (int i =3D 0; i < iter_count(p->iter); i++) {
-> + apply_iter_param(&data, p, i);
-> + run_sharpness_filter_test(&data, p->type);
-> + }
->   }
->   }
->
+> > -
+> >       if (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE)
+> >               ret =3D igt_display_try_commit_atomic(&data->display, 0, =
+NULL);
+> >       else
+> >               ret =3D igt_display_try_commit2(&data->display, COMMIT_AT=
+OMIC);
+> >
+> > -     if (type =3D=3D TEST_FILTER_DPMS || type =3D=3D TEST_FILTER_SUSPE=
+ND) {
+> > -             pipe_crc =3D igt_crtc_crc_new(data->crtc,
+> > -                                         IGT_PIPE_CRC_SOURCE_AUTO);
+> > -             igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
+> > -     }
+> > -
+> > -     if (type =3D=3D TEST_FILTER_DPMS) {
+> > -             kmstest_set_connector_dpms(data->drm_fd,
+> > -                                        output->config.connector,
+> > -                                        DRM_MODE_DPMS_OFF);
+> > -             kmstest_set_connector_dpms(data->drm_fd,
+> > -                                        output->config.connector,
+> > -                                        DRM_MODE_DPMS_ON);
+> > -     }
+> > -
+> > -     if (type =3D=3D TEST_FILTER_SUSPEND)
+> > -             igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> > -                                           SUSPEND_TEST_NONE);
+> > -
+> > -     if (type =3D=3D TEST_FILTER_DPMS || type =3D=3D TEST_FILTER_SUSPE=
+ND) {
+> > -             igt_pipe_crc_collect_crc(pipe_crc, &crc);
+> > -             igt_assert_crc_equal(&crc, &ref_crc);
+> > -     }
+> > -
+> >       if (type =3D=3D TEST_FILTER_TOGGLE)
+> >               ret |=3D test_filter_toggle(data);
+> >
+> > @@ -409,13 +399,33 @@ static void test_sharpness_filter(data_t *data,  =
+enum test_type type)
+> >               ret =3D igt_display_try_commit2(&data->display, COMMIT_AT=
+OMIC);
+> >       }
+> >
+> > -     if (INVALID_TEST)
+> > +     if (type =3D=3D TEST_FILTER_DPMS || type =3D=3D TEST_FILTER_SUSPE=
+ND) {
+> > +             pipe_crc =3D igt_crtc_crc_new(data->crtc,
+> > +                                         IGT_PIPE_CRC_SOURCE_AUTO);
+> > +             igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
+> > +
+> > +             if (type =3D=3D TEST_FILTER_DPMS) {
+> > +                     kmstest_set_connector_dpms(data->drm_fd,
+> > +                                                output->config.connect=
+or,
+> > +                                                DRM_MODE_DPMS_OFF);
+> > +                     kmstest_set_connector_dpms(data->drm_fd,
+> > +                                                output->config.connect=
+or,
+> > +                                                DRM_MODE_DPMS_ON);
+> > +             } else {
+> > +                     igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> > +                                                   SUSPEND_TEST_NONE);
+> > +             }
+> > +
+> > +             igt_pipe_crc_collect_crc(pipe_crc, &crc);
+> > +             igt_assert_crc_equal(&crc, &ref_crc);
+> > +             igt_pipe_crc_free(pipe_crc);
+> > +     }
+> > +
+> > +     if (is_invalid_test(type))
+> >               igt_assert_eq(ret, -EINVAL);
+> >       else
+> >               igt_assert_eq(ret, 0);
+> >
+> > -     /* clean-up */
+> > -     igt_pipe_crc_free(pipe_crc);
+> >       cleanup(data);
+> >   }
+> >
