@@ -4,61 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 500EBFA0C2B
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Apr 2026 05:34:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96F29FA0C30
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Apr 2026 05:47:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E73D110E05A;
-	Wed, 15 Apr 2026 05:34:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3F60A10E0F5;
+	Wed, 15 Apr 2026 05:47:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ONaeyED9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FH2GfKy7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D02110E05A
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 05:34:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DF7A10E0F5
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2026 05:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776231284; x=1807767284;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=NGYOXIT9SL8SSQem5I7/GPaapCDLpDddtwjvf+jBbwc=;
- b=ONaeyED9qSU9v3bbTYMXOt8uW0GaknVKpz/nDw4u6Rb3JnHuGvFXcMvE
- IL44QDV8PYhPvBVa0UJcv5+00wcyyEKM9Ji5yw+meDabpb8TD5+f3nDsf
- 8g9WLrO8boHVFmvxXOUZydzg231OgyeALGrwYQYs8npFBW2z49+DvlPEu
- Sgk2cNdtXbaDnliFRzyi0bpGA732XLmW4gzLhf/GOSeItClIp0UQ0R2EJ
- 04Ki0SPGIvqWsfQkn++E0T7NP45YA002R+Xd1v/WWkGlhKLua102/NWYq
- 8WDKjgdIL4d4/sTHeZPbyd58ufi+oxfomDfQuvJqPmW0rx2YdaBdOvqHZ A==;
-X-CSE-ConnectionGUID: zckpbDiaTmu6wnUIiOTjMw==
-X-CSE-MsgGUID: IJ5fS8SJQlWmVunN2CXoFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77076680"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="77076680"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 22:34:44 -0700
-X-CSE-ConnectionGUID: XVAXK3CCTpepYKuKQKPW4A==
-X-CSE-MsgGUID: 3vuiyOErSq2yj7TB3NxFZQ==
+ t=1776232020; x=1807768020;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=C7hmr1yiF/FP0XT/lgQWm9sOz5+aAqmUi9hjNlZ+Bpc=;
+ b=FH2GfKy70En3FpSIxm5sfpha9H6r0fFuTN9CasWTfy2xKWlfz9RzU5K7
+ FHLPvzT179fepeqW+z353B3/ysNVGtE0zwc9t1W9mtYfLWPWdJ5LVINBk
+ oLSREWZ4hyxkc+d7qVllk828kAfn3y8f5WdhOAgMgmz+irHhfdZqqvrSp
+ Ye1VvRlbHZmxclXLFuOXe5MLVIdk77RZ6QOPqggAGN2tWNvYISO8tVqo3
+ bEt7cQ+57kfSc3eYY6OIL7MhnJ/IsBDajaUdHbC8CJcwsg8bPfT7hYxyg
+ oqgYNVofgLlM39CjT3XGSACxPuaWVVn06wzLECtz8pGq1o+oVHqTpFuPg g==;
+X-CSE-ConnectionGUID: U55q7ZcxQfivsLANgpdXBQ==
+X-CSE-MsgGUID: f6BnhaKVT3ylJMPfNmZCww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="99842545"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="99842545"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2026 22:47:00 -0700
+X-CSE-ConnectionGUID: yDfxMHccQ0qY5+89VJU8Zg==
+X-CSE-MsgGUID: lOaz+yFTQsK7sBJyDV3hyg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="253516241"
-Received: from zzombora-mobl1 (HELO localhost) ([10.245.244.25])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2026 22:34:43 -0700
-Date: Wed, 15 Apr 2026 07:34:40 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Gustavo Sousa <gustavo.sousa@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>, 
- Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: Re: [PATCH i-g-t v3 2/5] runner: Create attachments directory to use
- by hooks
-Message-ID: <k5tyhor5k6z4fr6z3l7kgruc4dwefgbuqu7vpisczqxgc7nhpy@5pvm2oxodcsy>
-References: <20260413201722.808673-7-zbigniew.kempczynski@intel.com>
- <20260413201722.808673-9-zbigniew.kempczynski@intel.com>
- <87jyu9wde3.fsf@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; d="scan'208";a="223810098"
+Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
+ by fmviesa009.fm.intel.com with ESMTP; 14 Apr 2026 22:46:58 -0700
+From: Nitin Gote <nitin.r.gote@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@intel.com
+Subject: [PATCH] tests/intel/xe_configfs: Fix ctx-restore subtests register
+Date: Wed, 15 Apr 2026 11:51:38 +0530
+Message-ID: <20260415062137.745993-2-nitin.r.gote@intel.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87jyu9wde3.fsf@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,278 +64,131 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Apr 14, 2026 at 04:27:48PM -0300, Gustavo Sousa wrote:
-> Zbigniew Kempczyński <zbigniew.kempczynski@intel.com> writes:
-> 
-> > Results parsing is currently limited to few predefined files.
-> >
-> > Create "attachments" directory and export full path of created directory
-> > to be used within hooks. From now on environment variable
-> > IGT_RUNNER_ATTACHMENTS_DIR become visible when igt_runner is used
-> > to execute tests. This env contains directory where subtests/dynsubtests
-> > may write auxiliary files which finally be included in results.json.
-> >
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Cc: Ryszard Knop <ryszard.knop@intel.com>
-> > Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-> > ---
-> > v2: simplify attachment dirname concatenation (Kamil)
-> >     remove files in attachments dir when overwrite is set (Kamil)
-> > v3: unify 'attdir*' variables (Krzysztof)
-> >     do recursive removal in attachments directories (Gustavo)
-> > ---
-> >  lib/igt_hook.c    |  4 +++
-> >  runner/executor.c | 75 +++++++++++++++++++++++++++++++++++++++++++++--
-> >  runner/executor.h |  2 ++
-> >  3 files changed, 78 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/lib/igt_hook.c b/lib/igt_hook.c
-> > index f86ed56f72..b8f25b6c7a 100644
-> > --- a/lib/igt_hook.c
-> > +++ b/lib/igt_hook.c
-> > @@ -518,5 +518,9 @@ available to the command:\n\
-> >  \n\
-> >  Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
-> >  when matching events and running hook commands.\n\
-> > +\n\
-> > +When executed by the igt_runner, environment IGT_RUNNER_ATTACHMENTS_DIR\n\
-> > +is passed additionally to the hook script. It contains directory where\n\
-> > +script may write additional attachments like guc logs, etc.\n\
-> >  ", option_name);
-> >  }
-> > diff --git a/runner/executor.c b/runner/executor.c
-> > index 1485b59d1f..af39b12aea 100644
-> > --- a/runner/executor.c
-> > +++ b/runner/executor.c
-> > @@ -1,6 +1,7 @@
-> >  #include <ctype.h>
-> >  #include <errno.h>
-> >  #include <fcntl.h>
-> > +#include <ftw.h>
-> >  #ifdef ANDROID
-> >  #include "android/glib.h"
-> >  #else
-> > @@ -1779,17 +1780,22 @@ static int execute_next_entry(struct execute_state *state,
-> >  	int errpipe[2] = { -1, -1 };
-> >  	int socket[2] = { -1, -1 };
-> >  	int outfd, errfd, socketfd;
-> > -	char name[32];
-> > +	char name[32], attname[32];
-> > +	char attdirname[PATH_MAX];
-> >  	pid_t child;
-> >  	int result;
-> >  	size_t idx = state->next;
-> >  
-> >  	snprintf(name, sizeof(name), "%zd", idx);
-> > +	snprintf(attname, sizeof(attname), "%zd/%s", idx, DIR_ATTACHMENTS);
-> >  	mkdirat(resdirfd, name, 0777);
-> > +	mkdirat(resdirfd, attname, 0777);
-> >  	if ((idirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
-> >  		errf("Error accessing individual test result directory\n");
-> >  		return -1;
-> >  	}
-> > +	snprintf(attdirname, sizeof(attdirname), "%s/%s",
-> > +		 settings->results_path, attname);
-> >  
-> >  	if (!open_output_files(idirfd, outputs, true)) {
-> >  		errf("Error opening output files\n");
-> > @@ -1870,6 +1876,7 @@ static int execute_next_entry(struct execute_state *state,
-> >  			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
-> >  		}
-> >  		setenv("IGT_SENTINEL_ON_STDERR", "1", 1);
-> > +		setenv("IGT_RUNNER_ATTACHMENTS_DIR", attdirname, 1);
-> >  
-> >  		execute_test_process(outfd, errfd, socketfd, settings, entry);
-> >  		/* unreachable */
-> > @@ -1948,9 +1955,61 @@ static int remove_file(int dirfd, const char *name)
-> >  	return unlinkat(dirfd, name, 0) && errno != ENOENT;
-> >  }
-> >  
-> > +static int ftw_attachment_removal(const char *fpath, const struct stat *sb,
-> > +				  int typeflag, struct FTW *ftwbuf)
-> > +{
-> > +	(void)sb;
-> > +	(void)ftwbuf;
-> 
-> I was able to compile without warnings after dropping this.  Is there a
-> reason to keep them here?
+The ctx-restore-post-bb and ctx-restore-mid-bb subtests fail due to
+two independent issues:
 
-I'm trying to keep code I write clean according to warnings. We have
-'-Wno-unused-parameter' in meson.build so above lines could be dropped.
-But if someone will decide to clean the code I won't give him/her more
-work. And imo this is in good taste to annotate unused arguments.
+1. Register not suitable for software use: The test uses GEN7_GT_SCRATCH
+   (0x4f100/0x4f104), which per BSpec is reserved for hardware use and
+   must not be used by software. Readback may not return the expected
+   value.
 
-> 
-> > +
-> > +	if (typeflag == FTW_F) {
-> > +		if (unlink(fpath)) {
-> > +			errf("Cannot remove file %s\n", fpath);
-> 
-> Maybe append strerror(errno) to the message here?
+2. No render engine on XPC/HPC platforms: The test uses "rcs" (render
+   engine class), but XPC platforms like CRI (Xe3p_XPC) and HPC
+   platforms like PVC (Xe_HPC) have no Render Command Streamer. The BB
+   is stored via configfs but never injected into any engine's LRC.
 
-Yes, why not.
+Fix by:
+- Replacing GEN7_GT_SCRATCH with CCS0 CS_GPR3/GPR4 (0x1a618/0x1a620),
+  MI_MATH scratch registers safe for software use. LRI writes go
+  through global MMIO space, so rcs engine can write to CCS0 register
+  addresses.
+- Adding igt_require_f(has_rcs) to skip ctx-restore subtests on
+  platforms without a render engine instead of failing silently.
 
-> 
-> > +			return -1;
-> > +		}
-> > +	} else if (typeflag == FTW_DP) {
-> > +		if (rmdir(fpath)) {
-> > +			errf("Cannot remove directory %s\n", fpath);
-> 
-> Ditto.
-> 
-> > +			return -1;
-> > +		}
-> > +	} else {
-> > +		errf("Cannot remove %s (unsupported file type)\n", fpath);
-> > +		return -1;
-> 
-> I think it would be sensible to drop symbolic links as well (I think it
-> could be handled in the same brace for FTW_F.
+Bspec: 53105, 60309
 
-I wondered about this, but I would be strict - only files and dirs
-are allowed in the attachments directory. What for user/script would do
-symbolic links there?
+Fixes: b6abdc26e01b ("tests/intel/xe_configfs: Check ctx_restore_post_bb")
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+---
+ tests/intel/xe_configfs.c | 46 ++++++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 17 deletions(-)
 
-> 
-> > +	}
-> 
-> I think this would look nicer if it was handled with a "switch"
-> statement.
+diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+index 755524e7c..1447edf2b 100644
+--- a/tests/intel/xe_configfs.c
++++ b/tests/intel/xe_configfs.c
+@@ -276,35 +276,35 @@ static void test_ctx_restore(int configfs_device_fd, const char *type)
+ 		 * previous execution set a specific value in the HW
+ 		 */
+ 		{ .test = "cmd-single",
+-		  .in = "rcs cmd 11000001 4F100 DEA0BEE0",
+-		  .out = "rcs: 11000001 0004f100 dea0bee0\n",
+-		  .reg = { 0x4f100 },
++		  .in = "rcs cmd 11000001 1A618 DEA0BEE0",
++		  .out = "rcs: 11000001 0001a618 dea0bee0\n",
++		  .reg = { 0x1a618 },
+ 		  .reg_val = { 0xdea0bee0 },
+ 		},
+ 		{ .test = "cmd-single-multi-values",
+-		  .in = "rcs cmd 11000003 4F100 DEA1BEE1 4F104 DEA2BEE2",
+-		  .out = "rcs: 11000003 0004f100 dea1bee1 0004f104 dea2bee2\n",
+-		  .reg = { 0x4f100, 0x4f104 },
++		  .in = "rcs cmd 11000003 1A618 DEA1BEE1 1A620 DEA2BEE2",
++		  .out = "rcs: 11000003 0001a618 dea1bee1 0001a620 dea2bee2\n",
++		  .reg = { 0x1a618, 0x1a620 },
+ 		  .reg_val = { 0xdea1bee1, 0xdea2bee2 },
+ 		},
+ 		{ .test = "cmd-multi",
+-		  .in = "rcs cmd 11000001 4F100 DEA3BEE3\n"
+-			"rcs cmd 11000001 4F104 DEA4BEE4",
+-		  .out = "rcs: 11000001 0004f100 dea3bee3 11000001 0004f104 dea4bee4\n",
+-		  .reg = { 0x4f100, 0x4f104 },
++		  .in = "rcs cmd 11000001 1A618 DEA3BEE3\n"
++			"rcs cmd 11000001 1A620 DEA4BEE4",
++		  .out = "rcs: 11000001 0001a618 dea3bee3 11000001 0001a620 dea4bee4\n",
++		  .reg = { 0x1a618, 0x1a620 },
+ 		  .reg_val = { 0xdea3bee3, 0xdea4bee4 },
+ 		},
+ 		{ .test = "reg-single",
+-		  .in = "rcs reg 4F100 DEA5BEE5",
+-		  .out = "rcs: 11000001 0004f100 dea5bee5\n",
+-		  .reg = { 0x4f100 },
++		  .in = "rcs reg 1A618 DEA5BEE5",
++		  .out = "rcs: 11000001 0001a618 dea5bee5\n",
++		  .reg = { 0x1a618 },
+ 		  .reg_val = { 0xdea5bee5 },
+ 		},
+ 		{ .test = "reg-multi",
+-		  .in = "rcs reg 4F100 DEA6BEE6\n"
+-			"rcs reg 4F104 DEA7BEE7",
+-		  .out = "rcs: 11000001 0004f100 dea6bee6 11000001 0004f104 dea7bee7\n",
+-		  .reg = { 0x4f100, 0x4f104 },
++		  .in = "rcs reg 1A618 DEA6BEE6\n"
++			"rcs reg 1A620 DEA7BEE7",
++		  .out = "rcs: 11000001 0001a618 dea6bee6 11000001 0001a620 dea7bee7\n",
++		  .reg = { 0x1a618, 0x1a620 },
+ 		  .reg_val = { 0xdea6bee6, 0xdea7bee7 },
+ 		},
+ 	};
+@@ -364,12 +364,22 @@ int igt_main()
+ 	int fd, configfs_fd, configfs_device_fd;
+ 	uint32_t devid;
+ 	bool is_vf_device;
++	bool has_rcs = false;
+ 
+ 	igt_fixture() {
++		struct drm_xe_engine_class_instance *hwe;
++
+ 		fd = drm_open_driver(DRIVER_XE);
+ 		devid = intel_get_drm_devid(fd);
+ 		is_vf_device = intel_is_vf_device(fd);
+ 		set_bus_addr(fd);
++
++		xe_for_each_engine(fd, hwe)
++			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER) {
++				has_rcs = true;
++				break;
++			}
++
+ 		drm_close_driver(fd);
+ 
+ 		configfs_fd = igt_configfs_open("xe");
+@@ -418,6 +428,7 @@ int igt_main()
+ 	igt_describe("Validate ctx_restore_post_bb");
+ 	igt_subtest("ctx-restore-post-bb") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
++		igt_require_f(has_rcs, "Platform has no render engine\n");
+ 		configfs_device_fd = create_device_configfs_group(configfs_fd);
+ 		test_ctx_restore(configfs_device_fd, "post");
+ 		close_configfs_group(configfs_fd, configfs_device_fd);
+@@ -434,6 +445,7 @@ int igt_main()
+ 	igt_describe("Validate ctx_restore_mid_bb");
+ 	igt_subtest("ctx-restore-mid-bb") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
++		igt_require_f(has_rcs, "Platform has no render engine\n");
+ 		configfs_device_fd = create_device_configfs_group(configfs_fd);
+ 		test_ctx_restore(configfs_device_fd, "mid");
+ 		close_configfs_group(configfs_fd, configfs_device_fd);
+-- 
+2.50.1
 
-Agree, switch with default will look better in this case. I'll
-replace if's to switch in v4.
-
-> 
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static bool clear_attachments_dir_recursively(int attdirfd)
-> > +{
-> > +	char attdirname[PATH_MAX];
-> > +	DIR *currdir;
-> > +	int ret;
-> > +
-> > +	currdir = opendir(".");
-> 
-> Why do we need this call?
-
-nftw() requires path, not fd so I have to ensure I leave working
-directory intact when I quit the function. I don't know any method
-apart of fchdir/getcwd() to get dirname I would like to pass to
-nftw(). And I won't assume I know where's current working dir.
-
-> 
-> > +	fchdir(attdirfd);
-> > +	getcwd(attdirname, sizeof(attdirname));
-> > +
-> > +	/* Sanity check we're in attachments directory structure */
-> > +	if (!strstr(attdirname, DIR_ATTACHMENTS)) {
-> > +		errf("Cowardly refusing removing in directory which is not "
-> > +		     "attachments directory [currdir: %s]!\n", attdirname);
-> > +		ret = -1;
-> > +		goto out;
-> > +	}
-> 
-> This function is static and only called for DIR_ATTACHMENTS.  I believe
-> this check is unnecessary.
-
-Assuming no bug is here you're right, but I would like to do double check
-directory content I want to remove is really I expect to.
-
-> 
-> > +
-> > +	ret = nftw(attdirname, ftw_attachment_removal, 4, FTW_PHYS | FTW_DEPTH);
-> > +
-> > +out:
-> > +	fchdir(dirfd(currdir));
-> > +	closedir(currdir);
-> > +
-> > +	return ret ? false : true;
-> > +}
-> > +
-> >  static bool clear_test_result_directory(int dirfd)
-> 
-> I think we need to have the path to the test result dir passed as
-> argument here so that we can build attdirname without having the change
-> dir + get cwd dance.
-
-I didn't want to rewrite clear_old_results() function. Current code
-uses mostly fd's and only place where I really need path is nftw().
-I will rewrite to passing paths if you insist but personally I wouldn't
-do this.
-
-> 
-> >  {
-> > -	int i;
-> > +	int i, attdirfd;
-> > +	int ret = true;
-> 
-> I guess we don't need this ret variable. If the removal of the
-> attachments directory fails, we can just print an error message and
-> return false.
-
-Ok.
-
-> 
-> >  
-> >  	for (i = 0; i < _F_LAST; i++) {
-> >  		if (remove_file(dirfd, filenames[i])) {
-> > @@ -1960,7 +2019,16 @@ static bool clear_test_result_directory(int dirfd)
-> >  		}
-> >  	}
-> >  
-> > -	return true;
-> > +	if ((attdirfd = openat(dirfd, DIR_ATTACHMENTS, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
-> > +		errf("Cannot open attachments directory\n");
-> > +		return false;
-> > +	}
-> > +
-> > +	ret = clear_attachments_dir_recursively(attdirfd);
-> > +	if (!ret)
-> > +		errf("Cannot clear attachments dir recursively\n");
-> 
-> Why not simply call nftw() directly from here? I don't see much value in
-> having the function clear_attachments_dir_recursively().
-
-I created a separate function because I like dividing logical tasks
-to separate functions. I can unfold this function here if you think
-this will be better.
-
---
-Zbigniew
-
-> 
-> --
-> Gustavo Sousa
-> 
-> > +
-> > +	return ret;
-> >  }
-> >  
-> >  static bool clear_old_results(char *path)
-> > @@ -2002,6 +2070,7 @@ static bool clear_old_results(char *path)
-> >  			close(dirfd);
-> >  			return false;
-> >  		}
-> > +
-> >  		close(resdirfd);
-> >  		if (unlinkat(dirfd, name, AT_REMOVEDIR)) {
-> >  			errf("Warning: Result directory %s contains extra files\n",
-> > diff --git a/runner/executor.h b/runner/executor.h
-> > index 3b1cabcf55..bc6ac80dc4 100644
-> > --- a/runner/executor.h
-> > +++ b/runner/executor.h
-> > @@ -25,6 +25,8 @@ enum {
-> >  	_F_LAST,
-> >  };
-> >  
-> > +#define DIR_ATTACHMENTS "attachments"
-> > +
-> >  bool open_output_files(int dirfd, int *fds, bool write);
-> >  bool open_output_files_rdonly(int dirfd, int *fds);
-> >  void close_outputs(int *fds);
-> > -- 
-> > 2.43.0
