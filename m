@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 371E8F8A151
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 09:28:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 730A8F8A14D
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 09:28:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E087010E878;
-	Thu, 16 Apr 2026 09:28:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 20D2810E84B;
+	Thu, 16 Apr 2026 09:28:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VrvAbC+Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="akPbNDsx";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10F8B10E098
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 09:26:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B34310E84B
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 09:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776331602; x=1807867602;
+ t=1776331605; x=1807867605;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=p+44jeC3si2GUcH2R8JnkzITUvwNsTvRHtjpNR7ZkSk=;
- b=VrvAbC+YyguLXBSigBAA2jgbX2tEJrCBVNgrGjK3Vu8oGhCBhWMSOpWO
- /myGPY6XiheV5tWALuJdPGJV2CZJPaPrAeUXca58pGDgMfjc+VF3k+3TF
- xlZU2azR3tutE3PxTnY9t3/5lBjmvdh+1BFiZehP8RaVf9hkf/LXa27+f
- +U1T5pIXTyrrvrokqwx+7QGojMwudFc1eyJnYNqmT4ulaplVoSybnHyoI
- o1/C3+fj2MYxJhpcMBOmI5sheOTa9SU7+ODmk8vX9dfTgTmHsF0BOi514
- tltipCg5xt/qGyT9r9rDIDq2NxNBy/Ph3UXTL6gYADa5KCzi/FCl0LOSF A==;
-X-CSE-ConnectionGUID: F2joXt1uTYuoHU1yV3L3Jg==
-X-CSE-MsgGUID: BtVH97HrQx2nYRI95o74YA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="88775929"
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="88775929"
+ bh=816JZR7ONAFI1yAgU3/HBU8aMFz/7QQwB1p91trWlk4=;
+ b=akPbNDsxlhKmgORoMXHs6cmRLGUViojY7gYbumf2VMEPLCLwzDLgg2y5
+ ITAVFJYwZzqdguZ6fa7bcwtIycBV0KlXeGk2eyWDSq750YKWxZcN/KwVL
+ ks/HWtYl+UGcUQlFwpD5+s+/bQxlmkUgHDpkEq2i9bWMwHb8aB5Ehh5Y0
+ 0Qok//BQPz1AiFQEn+QmFdNHkg1OCyzBvPYLy/IWpBIcvBSe3s/00rx6c
+ S8wGNsiGjWWvs9rpyRSF/d+qIyK13V0aS1ib3QcatOknJE7WrNAkgsRn5
+ wGy8J3zrGlvkaq4yqV6egoKgAiGHLdiq/dsfAUzFjlJrgYkIWIqHOjBTV Q==;
+X-CSE-ConnectionGUID: MuFySy8yRrq/+2nPCx8A9w==
+X-CSE-MsgGUID: /tiQkwpcSkacm9TLW889VQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="88775930"
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="88775930"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2026 02:26:42 -0700
-X-CSE-ConnectionGUID: bHxCzNiXSLejDl4rXXZ/ZQ==
-X-CSE-MsgGUID: I1qkWPXVSEe/vsmeEWpj1A==
+ 16 Apr 2026 02:26:45 -0700
+X-CSE-ConnectionGUID: rKyr8sxVSDqUQ2dp01zj5Q==
+X-CSE-MsgGUID: zfULsbxKQDGbv00zbIa/9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="235063056"
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="235063064"
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO
  vgovind2-mobl4.intel.com) ([10.245.244.194])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2026 02:26:40 -0700
+ 16 Apr 2026 02:26:43 -0700
 From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
  swati2.sharma@intel.com, jani.nikula@intel.com
-Subject: [PATCH i-g-t v3 09/11] tests/intel/kms_fbcon_fbt: find and store the
- crtc index
-Date: Thu, 16 Apr 2026 12:25:57 +0300
-Message-ID: <20260416092559.88735-10-vinod.govindapillai@intel.com>
+Subject: [PATCH i-g-t v3 10/11] tests/intel/kms_fbcon_fbt: find the correct
+ fbc status of a pipe
+Date: Thu, 16 Apr 2026 12:25:58 +0300
+Message-ID: <20260416092559.88735-11-vinod.govindapillai@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260416092559.88735-1-vinod.govindapillai@intel.com>
 References: <20260416092559.88735-1-vinod.govindapillai@intel.com>
@@ -72,49 +72,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As we need to find the fbc status from crtc debugfs entry, find
-and keep the crtc index from the crtc_id and use it wherever
-required.
+Use the right function for access the fbc status from crtc debugfs
+entry.
 
 Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
 ---
- tests/intel/kms_fbcon_fbt.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/intel/kms_fbcon_fbt.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index 5863c9e68..96136f8ff 100644
+index 96136f8ff..f738e243f 100644
 --- a/tests/intel/kms_fbcon_fbt.c
 +++ b/tests/intel/kms_fbcon_fbt.c
-@@ -68,7 +68,7 @@ IGT_TEST_DESCRIPTION("Test the relationship between fbcon and the frontbuffer "
- #define MAX_CONNECTORS 32
+@@ -83,12 +83,9 @@ static void wait_user(const char *msg)
+ static bool fbc_supported_on_chipset(struct drm_info *drm)
+ {
+ 	char buf[FBC_STATUS_BUF_LEN];
+-	int ret;
  
- struct drm_info {
--	int fd, debugfs_fd, crtc_id, devid;
-+	int fd, debugfs_fd, crtc_id, crtc_index, devid;
- 	struct igt_fb fb;
- 	drmModeResPtr res;
- 	drmModeConnectorPtr connectors[MAX_CONNECTORS];
-@@ -149,10 +149,9 @@ static bool fbc_check_cursor_blinking(struct drm_info *drm)
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_crc_t crc[2];
- 	bool ret;
--	int i, crtc_index;
-+	int i;
+-	ret = igt_debugfs_simple_read(drm->debugfs_fd, "i915_fbc_status",
+-				      buf, sizeof(buf));
+-	if (ret < 0)
+-		return false;
++	intel_fbc_get_fbc_status_crtc_index(drm->fd, drm->crtc_index, buf,
++					    sizeof(buf));
  
--	crtc_index = kmstest_get_crtc_index_from_id(drm->fd, drm->crtc_id);
--	pipe_crc = igt_pipe_crc_new(drm->fd, crtc_index, IGT_PIPE_CRC_SOURCE_AUTO);
-+	pipe_crc = igt_pipe_crc_new(drm->fd, drm->crtc_index, IGT_PIPE_CRC_SOURCE_AUTO);
+ 	return !strstr(buf, "FBC unsupported on this chipset\n") &&
+ 		!strstr(buf, "stolen memory not initialised\n");
+@@ -103,8 +100,9 @@ static void fbc_print_status(struct drm_info *drm)
+ {
+ 	static char buf[FBC_STATUS_BUF_LEN];
  
- 	igt_pipe_crc_start(pipe_crc);
- 	igt_pipe_crc_drain(pipe_crc);
-@@ -222,6 +221,7 @@ static void set_mode_for_one_screen(struct drm_info *drm,
- 		      "No connector available\n");
+-	igt_debugfs_simple_read(drm->debugfs_fd, "i915_fbc_status", buf,
+-				sizeof(buf));
++	intel_fbc_get_fbc_status_crtc_index(drm->fd, drm->crtc_index, buf,
++					    sizeof(buf));
++
+ 	igt_debug("FBC status: %s\n", buf);
+ }
  
- 	drm->crtc_id = kmstest_find_crtc_for_connector(drm->fd, drm->res, c, 0);
-+	drm->crtc_index = kmstest_get_crtc_index_from_id(drm->fd, drm->crtc_id);
+@@ -112,8 +110,9 @@ static bool fbc_check_status(struct drm_info *drm, bool enabled)
+ {
+ 	char buf[FBC_STATUS_BUF_LEN];
  
- 	buffer_id = igt_create_fb(drm->fd, mode->hdisplay, mode->vdisplay,
- 				  DRM_FORMAT_XRGB8888,
+-	igt_debugfs_simple_read(drm->debugfs_fd, "i915_fbc_status", buf,
+-				sizeof(buf));
++	intel_fbc_get_fbc_status_crtc_index(drm->fd, drm->crtc_index, buf,
++					    sizeof(buf));
++
+ 	if (enabled)
+ 		return strstr(buf, "FBC enabled\n");
+ 	else
 -- 
 2.43.0
 
