@@ -4,61 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96CC5F8A16D
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 12:40:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E40DAF8A176
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 13:28:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3845710E1D3;
-	Thu, 16 Apr 2026 12:40:27 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QHB2iud5";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFFE510E1D3
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 12:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776343217; x=1807879217;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=cZwgrCHxYajMF2D85Ue5/7rhHdkR021HxtBSmS+i8vI=;
- b=QHB2iud5rs5X6Chs6Bqs6+XzgwlnvezktRfDXfAljY9YxHSwrI+w3z8l
- aXpIWsMcP/IbM7dZtWcCG16wz/g8stX3I76VrFII96PV8UTRZil6CU3dZ
- 4qGwxrcar6tlNDkKAnMlGn/2CYbLuWvPw8efkJ3N3kTRG8LamDa9ori50
- gxEJjXM8KvNjPBF80+rplYNChFkOYt/U9GPwQSxt1WzqKTcYrdELrtUz5
- +zgKpPFTtxyy01DjB0uxKiJJDZXuK2qRnbwS5Apur8SCGfjFUrW0H6AdJ
- 1EEuaqlQC+XGES8VULOTJSq/XSndZnJqGnu5dyz+mPdmKMBxCMRt6LEZI Q==;
-X-CSE-ConnectionGUID: WUh6QnRVT1Kdg25YaQ2Fjw==
-X-CSE-MsgGUID: L+szxx/CQxiElq/n+4XGlQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="77214092"
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="77214092"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2026 05:40:16 -0700
-X-CSE-ConnectionGUID: 5dhgiQGZRbOsXldeIxsoSg==
-X-CSE-MsgGUID: PSkKH8PARRSmpPLY158xsA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="230576543"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 05:40:13 -0700
-Date: Thu, 16 Apr 2026 14:39:47 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jan Sokolowski <jan.sokolowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- peter.senna@linux.intel.com, piotr.rudnicki@intel.com,
- mika.kuoppala@intel.com
-Subject: Re: [PATCH i-g-t v2 1/1] lib/igt_core: flush output on each line
-Message-ID: <20260416123947.k4y4plmrb75urbqo@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jan Sokolowski <jan.sokolowski@intel.com>,
- igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- peter.senna@linux.intel.com, piotr.rudnicki@intel.com,
- mika.kuoppala@intel.com
-References: <20260416083910.1011732-1-jan.sokolowski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 954DC10E1E9;
+	Thu, 16 Apr 2026 13:28:51 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4D0A10E1E9;
+ Thu, 16 Apr 2026 13:28:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7599606652019000887=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260416083910.1011732-1-jan.sokolowski@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fconfigfs?=
+ =?utf-8?q?=3A_Skip_ctx-restore_subtests_on_platforms_without_RCS?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nitin Gote" <nitin.r.gote@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 16 Apr 2026 13:28:39 -0000
+Message-ID: <177634611979.468958.13502726833008282128@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260416083004.2723418-2-nitin.r.gote@intel.com>
+In-Reply-To: <20260416083004.2723418-2-nitin.r.gote@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,67 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jan,
-On 2026-04-16 at 10:39:10 +0200, Jan Sokolowski wrote:
-> It was found while running tests that if a test launches threads with
+--===============7599606652019000887==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-imho you could write directly here:
+== Series Details ==
 
-I found while running ....
+Series: tests/intel/xe_configfs: Skip ctx-restore subtests on platforms without RCS
+URL   : https://patchwork.freedesktop.org/series/164975/
+State : success
 
-> even more subthreads, some igt_debug calls might not print their lines.
-> 
-> Fflush after each line to make sure we see everything we want to see.
-> 
-> Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+== Summary ==
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+CI Bug Log - changes from XEIGT_8862_BAT -> XEIGTPW_14993_BAT
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
-> ---
-> 
-> v2: Only flushes if no runner is connected as it's not needed otherwise.
-> 
-> ---
->  lib/igt_core.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index 65325f08d4..4479201972 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -3294,10 +3294,8 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
->  	pthread_mutex_lock(&print_mutex);
->  
->  	/* use stderr for warning messages and above */
-> -	if (level >= IGT_LOG_WARN) {
-> +	if (level >= IGT_LOG_WARN)
->  		file = stderr;
-> -		fflush(stdout);
-> -	}
->  	else
->  		file = stdout;
->  
-> @@ -3309,6 +3307,13 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
->  		_log_line_fprintf(file, "%s%s", thread_id, line);
->  	}
->  
-> +	/* Ensure output is flushed explicitly, as concurrent test threads
-> +	 * may otherwise cause messages to be dropped or reordered.
-> +	 * Runner uses sockets so it's not needed there.
-> +	 */
-> +	if (!runner_connected())
-> +		fflush(file);
-> +
->  	pthread_mutex_unlock(&print_mutex);
->  
->  out:
-> -- 
-> 2.43.0
-> 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8862 -> IGTPW_14993
+  * Linux: xe-4912-7f72587254d9c0142ac57eb050acd8f817585623 -> xe-4913-207a25698a481a39132b52060d7bb294384876ac
+
+  IGTPW_14993: 02e61d5d8b50e0d583c539a936915644169bd0e5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8862: 9b95600c4ae2cb683a8a19ad2a7c006263811a8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4912-7f72587254d9c0142ac57eb050acd8f817585623: 7f72587254d9c0142ac57eb050acd8f817585623
+  xe-4913-207a25698a481a39132b52060d7bb294384876ac: 207a25698a481a39132b52060d7bb294384876ac
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14993/index.html
+
+--===============7599606652019000887==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_configfs: Skip ctx-restore subtests on platforms without RCS</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164975/">https://patchwork.freedesktop.org/series/164975/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14993/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14993/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8862_BAT -&gt; XEIGTPW_14993_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8862 -&gt; IGTPW_14993</li>
+<li>Linux: xe-4912-7f72587254d9c0142ac57eb050acd8f817585623 -&gt; xe-4913-207a25698a481a39132b52060d7bb294384876ac</li>
+</ul>
+<p>IGTPW_14993: 02e61d5d8b50e0d583c539a936915644169bd0e5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8862: 9b95600c4ae2cb683a8a19ad2a7c006263811a8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4912-7f72587254d9c0142ac57eb050acd8f817585623: 7f72587254d9c0142ac57eb050acd8f817585623<br />
+  xe-4913-207a25698a481a39132b52060d7bb294384876ac: 207a25698a481a39132b52060d7bb294384876ac</p>
+
+</body>
+</html>
+
+--===============7599606652019000887==--
