@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF53F8D74B
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 14:13:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A1AAF8D74B
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 14:14:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 35F4A10E8CE;
-	Thu, 16 Apr 2026 14:13:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1581510E8CE;
+	Thu, 16 Apr 2026 14:14:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jsjoufnT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mOizmZiW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 191BA10E8CF
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 14:13:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A6F210E8CE
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 14:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776348819; x=1807884819;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=sxVQJUKqmrBXPexWDfLmzYARq5R8KqHqggy3e5GdDF8=;
- b=jsjoufnT7XQ/Uetil4mQwuETvDBz7/zmgHhuyUF6zAshg0JxiZiOlEZ7
- +0lleK8aQekZC/lAI8Yq8rS2vIuwQdpmZDmJDWdKT2sjDBPnj7/D/0KAZ
- b57oQ4okd0OQes8I9wjFKUKZHISYa6d839sE6ePJofF47Cg8BNguV08oV
- bSuzBWirzussg0UBGSUMF+bGfAeBL5HdcQMBtaJWlTpU9up2qfackS/s5
- rb2MHgXNwRixl3zwyKdsSAGsXkfiE9iOdMocjEN8/bvfklbpui6XJBJaL
- UL+WJXAYBuwzT9Qx02ubfy/lF85V7nWo5H8hYIfe2bzZBUPZdiYI4t5dt A==;
-X-CSE-ConnectionGUID: OYU231qDTZmnlKjqB4luyQ==
-X-CSE-MsgGUID: QI5imRcGT6ibeBRx/YskCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="88731131"
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="88731131"
+ t=1776348827; x=1807884827;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=rThzxwHvY8pAalxe7lTgDzPcaQwcvLMy+leo5KMFc0k=;
+ b=mOizmZiWwUzIckKC5hFplcBaA++aGAKpYL7isQpv27Bj3WCnVRT6lknb
+ VqJswfVZQxENzEa/52x7ugXlYDQwwnD8UT3mk4tb3e9vocnedgbyBDvAZ
+ MnJZ0+uxchLf12pu3dzahAEdoj9LUMbee/kFva6fqwYiNeKfyjo/O7ueL
+ HpTA/fMpg9cnEypDAdA86jdRpBWd1vWY639mIwHxelq0y8NEQSRHdQGe9
+ ADXC1bMbZTCDXXI3oNZiqKb2fOr6NpLAm4dt+9oRqGU473im7NV9NW7uV
+ umo13H5c/XVypkc0BOo+Z+8VK/iokCN3ynoRdNETh1z7LnkBtf8Vu5M7H A==;
+X-CSE-ConnectionGUID: K8FX1bK4ReeJxXrMNkE8DQ==
+X-CSE-MsgGUID: zufwBa+mR6K3FT1ip3TDjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="88731152"
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="88731152"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2026 07:13:38 -0700
-X-CSE-ConnectionGUID: 9FVSRjb3QEa7H3yQQvPJQQ==
-X-CSE-MsgGUID: Y4Dh9m+1QCyk8oKDkPJgFw==
+ 16 Apr 2026 07:13:47 -0700
+X-CSE-ConnectionGUID: 6VNd3TjlRl6v9yjRmJGkHA==
+X-CSE-MsgGUID: 8v1XwEepTPuAKVmOLq9gTQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="226410267"
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="226410283"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.241])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2026 07:13:37 -0700
+ 16 Apr 2026 07:13:46 -0700
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/3] lib/kms: Introduce for_each_plane_format()
-Date: Thu, 16 Apr 2026 17:13:32 +0300
-Message-ID: <20260416141334.20086-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 3/3] tests/kms: Use for_each_plane_format()
+Date: Thu, 16 Apr 2026 17:13:34 +0300
+Message-ID: <20260416141334.20086-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260416141334.20086-1-ville.syrjala@linux.intel.com>
+References: <20260416141334.20086-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
@@ -70,38 +72,68 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-A few places want to iterate just the formats supported by a plane,
-ignoring the modifier aspect entirely. Add a new iterator for this
-(for_each_plane_format()) to avoid everyone just open coding it.
+Replace the open coded copies of for_each_plane_format()
+with the real thing.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tests/kms_plane_scaling.c | 8 ++++----
+ tests/kms_rotation_crc.c  | 7 +++----
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index fcbb6a5ade3a..a58cb5cd3430 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -816,6 +816,18 @@ igt_output_crtc_t *__igt_output_crtc_populate(igt_display_t *display,
- 	     (mode) < &(output)->config.connector->modes[(output)->config.connector->count_modes]; \
- 	     (mode)++)
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index fde8b8370c9f..90dc5593579f 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -800,16 +800,16 @@ test_scaler_with_pixel_format_crtc(data_t *d, double sf_plane,
  
-+/**
-+ * for_each_plane_format:
-+ * @plane: a pointer to an #igt_plane_t structure
-+ * @format: format iterator
-+ *
-+ * This for loop iterates over all formats supported by @plane.
-+ */
-+#define for_each_plane_format(plane, format) \
-+	for (int __i = 0; __i < (plane)->drm_plane->count_formats; __i++) \
-+		for_each_if (((format) = (plane)->drm_plane->formats[__i], \
-+			      1))
-+
- #define IGT_FIXED(i,f)	((i) << 16 | (f))
+ 	for_each_plane_on_crtc(crtc, plane) {
+ 		struct igt_vec tested_formats;
++		int iteration = 0;
++		uint32_t format;
  
- /**
+ 		if (plane->type == DRM_PLANE_TYPE_CURSOR)
+ 			continue;
+ 
+ 		igt_vec_init(&tested_formats, sizeof(uint32_t));
+ 
+-		for (int j = 0; j < plane->drm_plane->count_formats; j++) {
+-			uint32_t format = plane->drm_plane->formats[j];
+-
+-			if (!test_crtc_iteration(d, crtc, j))
++		for_each_plane_format(plane, format) {
++			if (!test_crtc_iteration(d, crtc, iteration++))
+ 				continue;
+ 
+ 			if (test_format(d, &tested_formats, format) &&
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 4420053f1c6d..4a249ed21801 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -606,7 +606,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 
+ 	for_each_crtc_with_valid_output(display, crtc, output) {
+ 		igt_plane_t *plane;
+-		int i, j, c;
++		int i, c;
+ 
+ 		igt_display_reset(display);
+ 
+@@ -678,12 +678,11 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 
+ 			if (!data->override_fmt) {
+ 				struct igt_vec tested_formats;
++				uint32_t format;
+ 
+ 				igt_vec_init(&tested_formats, sizeof(uint32_t));
+ 
+-				for (j = 0; j < plane->drm_plane->count_formats; j++) {
+-					uint32_t format = plane->drm_plane->formats[j];
+-
++				for_each_plane_format(plane, format) {
+ 					if (!test_format(data, &tested_formats, format))
+ 						continue;
+ 
 -- 
 2.52.0
 
