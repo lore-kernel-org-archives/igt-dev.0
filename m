@@ -4,27 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E40DAF8A176
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 13:28:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71E88F8A171
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 13:37:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 954DC10E1E9;
-	Thu, 16 Apr 2026 13:28:51 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4D0A10E1E9;
- Thu, 16 Apr 2026 13:28:39 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7599606652019000887=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B04610E8B6;
+	Thu, 16 Apr 2026 13:37:34 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=lankhorst.se header.i=@lankhorst.se header.b="LEYywRYk";
+	dkim-atps=neutral
+Received: from lankhorst.se (unknown [141.105.120.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC9C610E8AF
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 13:37:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
+ s=default; t=1776346641;
+ bh=OnVGzznDA1t5U/Id6T5up2yNRGCcUjezMLRV6v8Ig00=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=LEYywRYkot3gnyJFhzEa9vjXvW9U8zRrrJ5+P+MAo9y/6/grG7h92Kf3l/VTikYqX
+ ztLUXB1O8jFMw5QHAcbYj9LpPXtJC7ZCDwFCBp0v89Ec6stPwsRhR9ZAYTXuLh53XY
+ 519sXK+4ozbs7o2XA1PdtzPeMoi67Xu40gkMa1dZoyp+zY0AwgiqwI38273ZzgxbG0
+ 9DDbjKh8nc/4uI0vucmd5uEL0pX4LD3hhK9lPbGuTKSec9WRJkQLhCo602gTbKRDRf
+ b9cg1hqni+vCOQwuR1eyUlzAOsmqR5EMq9ouL1Kz2iuoU1UsA5kGRQsYSK14DBitmg
+ P8EEc75HMRTwA==
+Message-ID: <2921c1ac-4683-40c2-ab8a-b94eec34520d@lankhorst.se>
+Date: Thu, 16 Apr 2026 15:37:20 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fconfigfs?=
- =?utf-8?q?=3A_Skip_ctx-restore_subtests_on_platforms_without_RCS?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nitin Gote" <nitin.r.gote@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 16 Apr 2026 13:28:39 -0000
-Message-ID: <177634611979.468958.13502726833008282128@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260416083004.2723418-2-nitin.r.gote@intel.com>
-In-Reply-To: <20260416083004.2723418-2-nitin.r.gote@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/2] lib/igt_fb: Add IGT_FORMAT_MOD_PREFERRED helper
+ modifier
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org, ramanaidu.naladala@intel.com
+References: <20260413165006.46987-1-jeevan.b@intel.com>
+ <20260413165006.46987-2-jeevan.b@intel.com> <ad0wr0skJmvyL70E@intel.com>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <ad0wr0skJmvyL70E@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +53,188 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7599606652019000887==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hey,
 
-== Series Details ==
+Den 2026-04-13 kl. 20:06, skrev Ville Syrjälä:
+> On Mon, Apr 13, 2026 at 10:20:05PM +0530, Jeevan B wrote:
+>> Add a new IGT‑internal framebuffer modifier,
+>> IGT_FORMAT_MOD_PREFERRED, allowing tests to request the preferred
+>> non‑linear tiling for a platform without hardcoding
+>> driver‑specific modifiers.
+>>
+>> The modifier is resolved in igt_fb_resolve_modifier() using simple
+>> platform rules (Intel, VC4, fallback to linear) and is never passed to
+>> the kernel. It is defined outside the valid DRM modifier range and used
+>> only as an internal sentinel.
+>>
+>> This provides a driver‑agnostic way for tests to pick an optimal
+>> modifier, avoiding per‑test hacks.
+>>
+>> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+>> ---
+>>  lib/igt_fb.c | 27 ++++++++++++++++++++++++++-
+>>  lib/igt_fb.h | 21 +++++++++++++++++++++
+>>  2 files changed, 47 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+>> index fa9220953..9c3d0338b 100644
+>> --- a/lib/igt_fb.c
+>> +++ b/lib/igt_fb.c
+>> @@ -790,6 +790,29 @@ static int fb_num_planes(const struct igt_fb *fb)
+>>  	return num_planes;
+>>  }
+>>  
+>> +static uint64_t igt_fb_resolve_modifier(int fd, uint64_t modifier)
+>> +{
+>> +	if (modifier != IGT_FORMAT_MOD_PREFERRED)
+>> +		return modifier;
+>> +
+>> +	if (is_xe_device(fd)) {
+>> +		return I915_FORMAT_MOD_4_TILED;
+>> +	} else if (is_i915_device(fd)) {
+> 
+> That is wrong for tgl/adl. I think i915 and xe need to use
+> the same logic here.
+> 
+>> +		int ver = intel_display_ver(intel_get_drm_devid(fd));
+>> +
+>> +		if (ver >= 13)
+>> +			return I915_FORMAT_MOD_4_TILED;
+> 
+> Still borked for adl.
+> 
+>> +		else if (ver >= 9)
+>> +			return I915_FORMAT_MOD_Y_TILED;
+> 
+> I don't think we want Y tile, at least on skl class hardware.
+> It has much higher watermark requirements and could therefore
+> prevent some tests from working.
+> 
+>> +		else
+>> +			return I915_FORMAT_MOD_X_TILED;
+> 
+> I'm thinking we may want to prefer X tile on all the hardware
+> that still has it. Though I suppose anything that has tile4 also
+> has pretty large DDBs, so tile4 might be fine. Shrug.
+> 
+> 
+> Anyways, this should perhaps just be something simple like
+> 
+> if (display_has_format_mod(XRGB8888, X_TILE))
+> 	return X_TILE;
+> if (display_has_format_mod(XRGB8888, 4_TILE))
+> 	return 4_TILE;
+> return LINEAR;
+> 
+> Doesn't even need any driver checks.
+> 
+> 
+> Hmm. We might still prefer fenced GGTT access for X tile, so
+> it might actually end up slowing down some things. We may
+> need to change the policy to prefer a different method for
+> tiled<->linear conversion even for X tile. It would be good
+> get actual numbers on the overall execution time for whatever
+> we choose here vs. LINEAR...
+> 
+>> +	} else if (is_vc4_device(fd))
+>> +		return DRM_FORMAT_MOD_BROADCOM_VC4_T_TILED;
+>> +
+>> +	/* For AMD, nouveau, and any other driver, fall back to linear. */
+>> +	return DRM_FORMAT_MOD_LINEAR;
+>> +}
+>> +
+>>  void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
+>>  		 uint32_t drm_format, uint64_t modifier,
+>>  		 enum igt_color_encoding color_encoding,
+>> @@ -803,7 +826,7 @@ void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
+>>  
+>>  	fb->width = width;
+>>  	fb->height = height;
+>> -	fb->modifier = modifier;
+>> +	fb->modifier = igt_fb_resolve_modifier(fd, modifier);
+> 
+> I think it should have been resolved long before that.
+> 
+> AFAICS you could just add a display->preferred_modifier, figure out
+> what that is during display init, and then switch tests to use that.
+> No need for this magic IGT_FORMAT_MOD_PREFERRED at all then I think.
+> 
+> And I'm thinking we might also want to print it out in the debug logs.
+> 
+> And for some extra fun we could add a debug knob (maybe env variable,
+> or a standard igt command line parameter) to force a specific modifier.
+> This would allow running the test with a specific modifier, even if
+> the test doesn't have explicit support for it.
+> 
+> The downside of using !LINEAR is that we will now depend even
+> more on all the magic stuff to convert between linear and tiled
+> for software rendering. So we may end up running more code under
+> the hood in most tests. I suppose we just have to hope that code
+> doesn't have too many bugs.
 
-Series: tests/intel/xe_configfs: Skip ctx-restore subtests on platforms without RCS
-URL   : https://patchwork.freedesktop.org/series/164975/
-State : success
+The reason I chose IGT_FORMAT_MOD_PREFERRED is that is's a simple change
+showing intention in the test, you don't care what the modifier is, just
+that it's reasonably fast
 
-== Summary ==
+On some drivers like nouveau, and maybe AMD the preferred modifier may
+change depending on width/height/format, so there's no such thing as a
+single display->preferred_modifier.
 
-CI Bug Log - changes from XEIGT_8862_BAT -> XEIGTPW_14993_BAT
-====================================================
+See #DRM_FORMAT_MOD_NVIDIA_BLOCK_LINEAR_2D.
 
-Summary
--------
+The only place to resolve it, is during FB creation, hence the extra parameter.
 
-  **SUCCESS**
+>>  	fb->drm_format = drm_format;
+>>  	fb->fd = fd;
+>>  	fb->num_planes = fb_num_planes(fb);
+>> @@ -5266,6 +5289,8 @@ void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
+>>  const char *igt_fb_modifier_name(uint64_t modifier)
+>>  {
+>>  	switch (modifier) {
+>> +	case IGT_FORMAT_MOD_PREFERRED:
+>> +		return "preferred";
+>>  	case DRM_FORMAT_MOD_LINEAR:
+>>  		return "linear";
+>>  	case I915_FORMAT_MOD_X_TILED:
+>> diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+>> index 8e5907dab..5380b3dfa 100644
+>> --- a/lib/igt_fb.h
+>> +++ b/lib/igt_fb.h
+>> @@ -50,6 +50,27 @@ typedef struct _igt_crc igt_crc_t;
+>>   */
+>>  #define IGT_FORMAT_FLOAT fourcc_code('I', 'G', 'F', 'x')
+>>  
+>> +/**
+>> + * IGT_FORMAT_MOD_PREFERRED:
+>> + *
+>> + * Modifier used by tests to request the best tiling format for the
+>> + * current device. The actual modifier is selected inside igt_init_fb(),
+>> + * so tests don’t need to handle driver-specific details.
+>> + *
+>> + * Selection rules:
+>> + *  - Intel Xe:              4_TILED
+>> + *  - Intel i915 (gen ≥13):  4_TILED
+>> + *  - Intel i915 (gen 9–12): Y_TILED
+>> + *  - Intel i915 (gen <9):   X_TILED
+>> + *  - Broadcom VC4:          T_TILED
+>> + *  - Others:                LINEAR (fallback)
+>> + *
+>> + * Note: This is a special placeholder value and must never be sent to
+>> + * the kernel.
+>> + */
+>> +#define IGT_FORMAT_MOD_PREFERRED  UINT64_C(0xfffffffffffffffe)
+>> +
+>> +
+>>  #define IGT_FORMAT_FMT "%c%c%c%c(0x%08x)"
+>>  #define IGT_FORMAT_ARGS(f) ((f) >> 0) & 0xff, ((f) >> 8) & 0xff, \
+>>  		((f) >> 16) & 0xff, ((f) >> 24) & 0xff, (f)
+>> -- 
+>> 2.43.0
+> 
 
-  No regressions found.
+Kind regards,
+~Maarten Lankhorst
 
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8862 -> IGTPW_14993
-  * Linux: xe-4912-7f72587254d9c0142ac57eb050acd8f817585623 -> xe-4913-207a25698a481a39132b52060d7bb294384876ac
-
-  IGTPW_14993: 02e61d5d8b50e0d583c539a936915644169bd0e5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8862: 9b95600c4ae2cb683a8a19ad2a7c006263811a8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4912-7f72587254d9c0142ac57eb050acd8f817585623: 7f72587254d9c0142ac57eb050acd8f817585623
-  xe-4913-207a25698a481a39132b52060d7bb294384876ac: 207a25698a481a39132b52060d7bb294384876ac
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14993/index.html
-
---===============7599606652019000887==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_configfs: Skip ctx-restore subtests on platforms without RCS</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164975/">https://patchwork.freedesktop.org/series/164975/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14993/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14993/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8862_BAT -&gt; XEIGTPW_14993_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8862 -&gt; IGTPW_14993</li>
-<li>Linux: xe-4912-7f72587254d9c0142ac57eb050acd8f817585623 -&gt; xe-4913-207a25698a481a39132b52060d7bb294384876ac</li>
-</ul>
-<p>IGTPW_14993: 02e61d5d8b50e0d583c539a936915644169bd0e5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8862: 9b95600c4ae2cb683a8a19ad2a7c006263811a8f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4912-7f72587254d9c0142ac57eb050acd8f817585623: 7f72587254d9c0142ac57eb050acd8f817585623<br />
-  xe-4913-207a25698a481a39132b52060d7bb294384876ac: 207a25698a481a39132b52060d7bb294384876ac</p>
-
-</body>
-</html>
-
---===============7599606652019000887==--
