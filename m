@@ -4,50 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78F29F8D770
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 19:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46F35F8D770
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Apr 2026 19:19:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B1FC10E16B;
-	Thu, 16 Apr 2026 19:18:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB7E110E16B;
+	Thu, 16 Apr 2026 19:19:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X46/cfDA";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="imdlsSb+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9681310E209
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 19:18:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4667610E209
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 19:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776367126; x=1807903126;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=hV9Rpba+4iYbEowRjM0DODi/nsHODkDrASRp/IiYmpU=;
- b=X46/cfDA6u8P8+8gXtZiRRKdOcJt2oWgfHNGLL4UU3Fc3Du+3GoyKv+C
- pc1+E4Dn/mMF4K7c+Wn9QPpCNclq4h/Yb0GgbduDOSc6r7OVtb5BHtDd6
- +kLXYs7CAETvvWDYbOASpq2BP0jOzZDkJRE2g9rFkvjY7dxRrXUuVKbMq
- yiBIhamjGmuWpg5CBLNYUug17tw+2TSL8njVx14rymoIx61EjPOL0t57T
- MKGVVocmvrDc4onzDR+qJGGNSLpJGhRaCpdHD7poDAbOjdZCUagXvWPlS
- hZrodpVfYZzGTAuRWV6ju1rHpJM/w0QG82Ef1Bz5aGzVnioWu6AYdOOHS Q==;
-X-CSE-ConnectionGUID: JOkeVlUoTVOQkpqKbWWinw==
-X-CSE-MsgGUID: pWRw2HJlRlOzWWNMDHEUeA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81260621"
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="81260621"
+ t=1776367127; x=1807903127;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=z4nFWMwm6EGXGrcN/BXR2uFZmEnIY+Ncw5ydKBYDwRA=;
+ b=imdlsSb+q63etBOVx7gyuy3CzsL4HMgQIeyAzGxZju6o9ALrwb4Apo9N
+ WeD1wYMc2ZjqrgAIUFl5B5R+okLHiBxKXY4MWYGMv+/oXZY5j9LUTqYkF
+ jg6pIPvzUSAr3zgfNsV6NKW7CGKlg+P6rNO7bJChcI7WMAKXBSdFcofvj
+ 8ycYcHW5UUtiyhOhuc985JKPZiWQ+D2v81E6L3lAb3ORNm+xKoouxbRWW
+ Yjifxl8B9W+Q6gS0SLbMo8Z0sGDtBZaMB8HuvG04TM2KvthzO2Qnhv2tm
+ vaROKyclJERjDCFzU6yCzjfWEVzF4PTmqg3w/0yJj/aFoomkyO+DxNQwx Q==;
+X-CSE-ConnectionGUID: RmcE7lHTR5i7CRRn7Kcssg==
+X-CSE-MsgGUID: a9VTttW9QEexBwYtzIgqLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81260630"
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="81260630"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2026 12:18:22 -0700
-X-CSE-ConnectionGUID: 6/lnQQxoRpCfDEK3mzZQ2Q==
-X-CSE-MsgGUID: pC5oG5anSxqvkpJSUAJbLg==
+ 16 Apr 2026 12:18:28 -0700
+X-CSE-ConnectionGUID: Fim4+OXDS0WAfxjrV7F12A==
+X-CSE-MsgGUID: zLHSCaIYSYmq0P3Gtpui/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="229818004"
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; d="scan'208";a="229818035"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 12:18:20 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 12:18:27 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [RFC PATCH i-g-t v3 0/5] Add FIXED_MATRIX colorop tests
-Date: Fri, 17 Apr 2026 00:56:55 +0530
-Message-Id: <20260416192700.1579042-1-swati2.sharma@intel.com>
+Subject: [RFC PATCH,
+ v2 5/5] tests/kms_color_pipeline: Remove unused color_depth and
+ drm_format
+Date: Fri, 17 Apr 2026 00:57:00 +0530
+Message-Id: <20260416192700.1579042-6-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260416192700.1579042-1-swati2.sharma@intel.com>
+References: <20260416192700.1579042-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,70 +69,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series adds IGT test support for the DRM_COLOROP_FIXED_MATRIX
-colorop type, which represents a fixed-function matrix block in Intel
-display hardware. Unlike programmable CSC matrices, FIXED_MATRIX
-selects from predefined hardware modes via the FIXED_MATRIX_TYPE enum
-property.
+Remove the data->color_depth and data->drm_format assignments from
+run_tests_for_plane() as they are not used anywhere in the color
+pipeline test path.
 
-With this, the SDR plane color pipeline looks like:
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Co-developed-by: Claude Opus 4.6
+---
+ tests/kms_color_pipeline.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-[YUV Range Correct] -> [1D LUT] -> [CSC] -> [1D LUT]
-
-The series is structured as follows:
-
-Patch 1: Syncs the DRM UAPI header to add the DRM_COLOROP_FIXED_MATRIX
-         enum definition.
-Patch 2: Registers the FIXED_MATRIX_TYPE property in the IGT KMS
-         library so IGT can discover and set the enum property on
-         FIXED_MATRIX colorops.
-Patch 3: Extends the kms_colorop_helper with FIXED_MATRIX type
-         handling, including can_use_colorop(), set_colorop(), and
-         reset_colorop() support, plus the enum name table for:
-            - YCbCr 601 Full to RGB
-            - YCbCr 709 Full to RGB
-            - YCbCr 2020 Full to RGB NC
-            - YCbCr limited to full
-            - RGB709 to RGB2020
-Patch 4: Adds the actual plane color pipeline subtests for
-         FIXED_MATRIX covering standalone FIXED_MATRIX,
-         FIXED_MATRIX + 1D LUT, 1D LUT + FIXED_MATRIX + 1D LUT,
-         and YCbCr range correction (limited/full) pipelines.
-         For YUV input tests, a YUYV framebuffer is created with
-         the appropriate color encoding and range. Also refactors
-         ctm_colorop_only() into a generic colorop_type_only()
-         helper.
-Patch 5: Removes unused color_depth and drm_format assignments from
-         run_tests_for_plane() that were left over from earlier
-         refactoring.
-
-This depends on the corresponding kernel series that introduces
-FIXED_MATRIX colorop support for Intel display hardware:
-https://patchwork.freedesktop.org/series/162786/#rev2
-
-v2: -Naming changes (CSC_FF -> FIXED_MATRIX) to align with KMD
-    -Add YCbCr limited-to-full range correction tests (yuv-lim/yuv-full)
-    -Add chained range-correct + FIXED_MATRIX tests for bt601/bt709/bt2020
-
-Note: During local validation, CRC mismatches were observed on a few
-tests. This is still under investigation and is the reason for the
-RFC tag.
-
-Swati Sharma (5):
-  include/drm-uapi: Add DRM_COLOROP_FIXED_MATRIX definition
-  lib/igt_kms: Add FIXED_MATRIX_TYPE colorop property
-  tests/kms_colorop_helper: Add FIXED_MATRIX colorop support
-  tests/kms_color_pipeline: Add FIXED_MATRIX colorop tests
-  tests/kms_color_pipeline: Remove unused color_depth and drm_format
-
- include/drm-uapi/drm_mode.h |  11 +
- lib/igt_kms.c               |   1 +
- lib/igt_kms.h               |   1 +
- tests/kms_color_pipeline.c  | 395 +++++++++++++++++++++++++++++++++++-
- tests/kms_colorop_helper.c  |  20 ++
- tests/kms_colorop_helper.h  |  20 +-
- 6 files changed, 441 insertions(+), 7 deletions(-)
-
+diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
+index 6cc5e9bfc..5e9a63551 100644
+--- a/tests/kms_color_pipeline.c
++++ b/tests/kms_color_pipeline.c
+@@ -336,9 +336,6 @@ run_tests_for_plane(data_t *data)
+ 				test_setup(data,
+ 					   crtc);
+ 
+-				data->color_depth = 8;
+-				data->drm_format = DRM_FORMAT_XRGB8888;
+-
+ 				test_plane_colorops(data, crtc,
+ 						    plane_colorops_tests[i].fb_colors,
+ 						    plane_colorops_tests[i].exp_colors,
 -- 
 2.25.1
 
