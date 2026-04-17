@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C77E4F8E49D
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 07:30:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C83EF8E4B7
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 07:41:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7EB5A10E988;
-	Fri, 17 Apr 2026 07:30:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BC5F910E988;
+	Fri, 17 Apr 2026 07:41:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jw5FpZFI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XHqh1hLW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E57E10E988
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 07:29:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB6C810E988
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 07:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776410966; x=1807946966;
+ t=1776411701; x=1807947701;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hBm1rrJjQjL17LcaDlo2Wgzlh3KvuA+DpQrThlVOMz0=;
- b=jw5FpZFIV4Fw+VjUvsx9tbZ5fxBN2sS0kW72tswniz0R7I7WjhObIltj
- F2Lj4BQzJJkKH80v+T2DtVuDPbKFHldKe57AkrZ/W1X0P8KbgXhtDQyio
- MLrnwEE1WlmsVtRqF/n71PwQK6uv+xEGpwfVjoSoYs+DMW5E/oqXeqW+O
- 0KxQcjyTlgPK6PxrFy0lrfArdkZzLXfnk5HYvDN2RLTT8EVjG5B7N4thH
- 8nAxQElgUsFlz0h3rKRw4U359I17YytIf9y9A+x6QXzRJj+dy/WhdWiWz
- 2peFcuYdCTRNGc6aspVevHQMGzXnOuOXUwaz3gQUwihiOOEEyDorC5M5k w==;
-X-CSE-ConnectionGUID: +PFXMWAwTSqD8RceXn1nSg==
-X-CSE-MsgGUID: 6qw+c35sRBq12XDhPUi6YA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81021127"
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="81021127"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2026 00:29:26 -0700
-X-CSE-ConnectionGUID: FMfVVnapSIm8mz9l14pAsA==
-X-CSE-MsgGUID: gFUhcYoBQKCLnzi8vmChKA==
+ bh=bLIqpp9IDM0znPAjsEZ36Oar3OzYQdRqJcb74iMU0hk=;
+ b=XHqh1hLWZ3cLQXSEypI+Q6fl2ddtI4xSRv5Wu4zIWUoq2mcUvX785lmE
+ wEjYrCeQ2y0C2HsCgvwlaq8ooixCCRjrQzGw2To1wreqUstluelKhe0CO
+ StRBvE82lCCyfBm2upsY9/6XhY1FfIgNzbkXnxyI1xAuS3EqXjglHwt00
+ t6MAPvQ9BTOnAv8QrO3W4IBfYKg4P3HdDY7qaM+UnYn32ZqGLBqZPogtK
+ yijhcI5G0hdUQGc81JNUtPGeYajiceMx3sjVkUtNdv8J4/KHEJbEJTKaz
+ GUU2xscJvkoWySbdhpgALrgGOIRRHvOLkHulxvLwiqo5ApuEudRkde/ga A==;
+X-CSE-ConnectionGUID: y51Bw2SIT/Cksfm1BWCTgw==
+X-CSE-MsgGUID: IXXxhEd+TMa2inL6Dg6xBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="87727435"
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="87727435"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2026 00:41:28 -0700
+X-CSE-ConnectionGUID: rWzgr1rgQAiQ1iTO4v6GIA==
+X-CSE-MsgGUID: ckUnfZKlSKWFjk+DiNejWQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="268985279"
-Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2026 00:29:25 -0700
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="235921852"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 00:41:20 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, karthik.b.s@intel.com,
- Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH i-g-t 3/4] tools/intel_vbt_decode: sync intel_vbt_defs.h with
- commit 4d33c77cf2c3
-Date: Fri, 17 Apr 2026 12:44:31 +0530
-Message-ID: <20260417071432.2252380-4-ankit.k.nautiyal@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260417071432.2252380-1-ankit.k.nautiyal@intel.com>
-References: <20260417071432.2252380-1-ankit.k.nautiyal@intel.com>
+Cc: swati2.sharma@intel.com, kamil.konieczny@intel.com,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v3] Revert "tests/kms_vrr: New subtest for CMRR"
+Date: Fri, 17 Apr 2026 13:12:02 +0530
+Message-ID: <20260417074202.3687119-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260417053620.3685837-1-ramanaidu.naladala@intel.com>
+References: <20260417053620.3685837-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,55 +68,213 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Synchronize intel_vbt_defs.h with kernel commit:
-4d33c77cf2c3 ("drm/i915/vbt: Add eDP Data rate overrride field in VBT")
+This reverts commit 7f0a262891b7888a09e4a1838eb688ad9c676324.
 
-v2: Correct the commit id that matches with changes in intel_vbt_defs.h
-(Kamil)
+Remove the CMRR subtest due to a change in test approach requiring
+a complete rewrite. The subtest will be reintroduced in a future
+patch with a revised test methodology.
 
-v3: Split the header sync and tool update into separate patches. (Ville)
+v2: Update the git subject and commit message. (Kamil)
+v3: Address review comments. (Swati)
 
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tools/intel_vbt_defs.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/kms_vrr.c | 132 +-----------------------------------------------
+ 1 file changed, 1 insertion(+), 131 deletions(-)
 
-diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
-index 52468fc99e62..feca1f46f56d 100644
---- a/tools/intel_vbt_defs.h
-+++ b/tools/intel_vbt_defs.h
-@@ -437,6 +437,22 @@ enum vbt_gmbus_ddi {
- #define BDB_230_VBT_DP_MAX_LINK_RATE_UHBR13P5	6
- #define BDB_230_VBT_DP_MAX_LINK_RATE_UHBR20	7
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index ec0692b2f..01f078d2c 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -36,10 +36,6 @@
+ #include <signal.h>
  
-+/* EDP link rate 263+ */
-+#define BDB_263_VBT_EDP_LINK_RATE_1_62		(1 << 0)
-+#define BDB_263_VBT_EDP_LINK_RATE_2_16		(1 << 1)
-+#define BDB_263_VBT_EDP_LINK_RATE_2_43		(1 << 2)
-+#define BDB_263_VBT_EDP_LINK_RATE_2_7		(1 << 3)
-+#define BDB_263_VBT_EDP_LINK_RATE_3_24		(1 << 4)
-+#define BDB_263_VBT_EDP_LINK_RATE_4_32		(1 << 5)
-+#define BDB_263_VBT_EDP_LINK_RATE_5_4		(1 << 6)
-+#define BDB_263_VBT_EDP_LINK_RATE_6_75		(1 << 7)
-+#define BDB_263_VBT_EDP_LINK_RATE_8_1		(1 << 8)
-+#define BDB_263_VBT_EDP_LINK_RATE_10		(1 << 9)
-+#define BDB_263_VBT_EDP_LINK_RATE_13_5		(1 << 10)
-+#define BDB_263_VBT_EDP_LINK_RATE_20		(1 << 11)
-+#define BDB_263_VBT_EDP_NUM_RATES		12
-+#define BDB_263_VBT_EDP_RATES_MASK		0xfff
-+
- /*
-  * The child device config, aka the display device data structure, provides a
-  * description of a port and its configuration on the platform.
-@@ -547,6 +563,8 @@ struct child_device_config {
- 	u8 dp_max_link_rate:3;					/* 216+ */
- 	u8 dp_max_link_rate_reserved:5;				/* 216+ */
- 	u8 efp_index;						/* 256+ */
-+	u32 edp_data_rate_override:12;                          /* 263+ */
-+	u32 edp_data_rate_override_reserved:20;                 /* 263+ */
- } __packed;
+ /**
+- * SUBTEST: cmrr
+- * Description: Test to validate the content rate to exactly match with the
+- * 		requested rate without any frame drops.
+- *
+  * SUBTEST: flip-basic
+  * Description: Tests that VRR is enabled and that the difference between flip
+  *              timestamps converges to the requested rate
+@@ -90,9 +86,6 @@
+  */
+ #define TEST_DURATION_NS (5000000000ull)
  
- struct bdb_general_definitions {
+-#define CMRR_PRECISION_TOLERANCE	10
+-#define VREFRESH_MODIFIER	0.1
+-
+ enum {
+ 	TEST_BASIC = 1 << 0,
+ 	TEST_DPMS = 1 << 1,
+@@ -103,7 +96,6 @@ enum {
+ 	TEST_SEAMLESS_VIRTUAL_RR = 1 << 6,
+ 	TEST_FASTSET = 1 << 7,
+ 	TEST_MAXMIN = 1 << 8,
+-	TEST_CMRR = 1 << 9,
+ 	TEST_LINK_OFF = 1 << 10,
+ 	TEST_NEGATIVE = 1 << 11,
+ 	TEST_FORCE_RR = 1 << 12,
+@@ -252,21 +244,6 @@ virtual_rr_vrr_range_mode(drmModeModeInfo *mode, float virtual_refresh_rate)
+ 	mode->vrefresh = virtual_refresh_rate;
+ }
+ 
+-static bool
+-is_cmrr_mode(drmModeModeInfoPtr mode)
+-{
+-	int calculated_refresh, actual_refresh, pixel_clock_per_line;
+-
+-	actual_refresh = mode->vrefresh * 100;
+-	pixel_clock_per_line = mode->clock * 1000 / mode->htotal;
+-	calculated_refresh = pixel_clock_per_line * 100 / mode->vtotal;
+-
+-	if ((actual_refresh - calculated_refresh) < CMRR_PRECISION_TOLERANCE)
+-		return false;
+-
+-	return true;
+-}
+-
+ /* Read min and max vrr range from the connector debugfs. */
+ static range_t
+ get_vrr_range(data_t *data, igt_output_t *output)
+@@ -600,57 +577,6 @@ flip_and_measure(data_t *data, igt_output_t *output,
+ 	return 0;
+ }
+ 
+-static uint32_t
+-flip_and_measure_cmrr(data_t *data, igt_output_t *output,
+-		      uint64_t duration_ns)
+-{
+-	uint64_t start_ns, last_event_ns, event_ns;
+-	uint32_t total_flip = 0, total_pass = 0;
+-	bool front = false;
+-	drmModeModeInfoPtr mode = igt_output_get_mode(output);
+-	uint64_t req_rate_ns = igt_kms_frame_time_from_vrefresh(mode->vrefresh + VREFRESH_MODIFIER);
+-	uint64_t exp_rate_ns = igt_kms_frame_time_from_vrefresh(mode->vrefresh);
+-	uint64_t threshold_ns = exp_rate_ns / mode->vdisplay; /* Upto 1 scan line. */
+-
+-	igt_info("CMRR on: requested rate: %"PRIu64" ns (%.2f Hz) "
+-		 "expected rate: %"PRIu64" ns - %"PRIu64" ns (%.2f-%.2f Hz)\n",
+-		 req_rate_ns, (mode->vrefresh + VREFRESH_MODIFIER),
+-		 (exp_rate_ns - threshold_ns), (exp_rate_ns + threshold_ns),
+-		 (float)NSECS_PER_SEC / (exp_rate_ns + threshold_ns),
+-		 (float)NSECS_PER_SEC / (exp_rate_ns - threshold_ns));
+-
+-	do_flip(data, &data->fb[0]);
+-	start_ns = last_event_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
+-	do {
+-		int64_t target_ns, wait_ns, diff_ns = exp_rate_ns;
+-
+-		front = !front;
+-		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
+-
+-		event_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
+-		igt_debug("event_ns - last_event_ns: %"PRIu64" ns (%.2f Hz)\n",
+-			  event_ns - last_event_ns, (float)NSECS_PER_SEC / (event_ns - last_event_ns));
+-
+-		diff_ns -= event_ns - last_event_ns;
+-		if (llabs(diff_ns) <= threshold_ns)
+-			total_pass += 1;
+-
+-		last_event_ns = event_ns;
+-		total_flip += 1;
+-
+-		diff_ns = event_ns - start_ns;
+-		wait_ns = ((diff_ns + req_rate_ns - 1) / req_rate_ns) * req_rate_ns;
+-		wait_ns -= diff_ns;
+-		target_ns = event_ns + wait_ns;
+-		while (get_time_ns() < target_ns - 10);
+-	} while (event_ns - start_ns <= duration_ns);
+-
+-	igt_info("Completed %u flips, %u vblanks were in threshold for (%.2f Hz) %"PRIu64"ns.\n",
+-		 total_flip, total_pass, (mode->vrefresh + VREFRESH_MODIFIER), req_rate_ns);
+-
+-	return total_flip ? ((total_pass * 100) / total_flip) : 0;
+-}
+-
+ /* Basic VRR flip functionality test - enable, measure, disable, measure */
+ static void
+ test_basic(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
+@@ -946,54 +872,6 @@ test_lobf(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
+ 	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
+ }
+ 
+-static void
+-test_cmrr(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
+-	  uint32_t flags)
+-{
+-	uint32_t result;
+-	int i;
+-	bool found = false;
+-	drmModeConnectorPtr connector = output->config.connector;
+-	drmModeModeInfo mode = *igt_output_get_mode(output);
+-
+-	igt_info("CMRR test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
+-		 output->name, igt_crtc_name(crtc), data->range.min,
+-		 data->range.max);
+-
+-	for (i = 0; i < connector->count_modes; i++) {
+-		if (is_cmrr_mode(&connector->modes[i])) {
+-			mode = connector->modes[i];
+-
+-			found = true;
+-			break;
+-		}
+-	}
+-
+-	igt_info("Selected mode: ");
+-	kmstest_dump_mode(&mode);
+-
+-	if (!found) {
+-		igt_info("No CMRR mode found on %s, try to tweak the clock.\n", output->name);
+-
+-		mode.clock = (mode.htotal * mode.vtotal * (mode.vrefresh + VREFRESH_MODIFIER)) / 1000;
+-
+-		igt_info("Tweaked mode: ");
+-		kmstest_dump_mode(&mode);
+-	}
+-
+-	igt_output_override_mode(output, &mode);
+-
+-	if (!igt_display_try_commit2(&data->display, COMMIT_ATOMIC)) {
+-		prepare_test(data, output,
+-			     crtc);
+-		result = flip_and_measure_cmrr(data, output, TEST_DURATION_NS * 2);
+-		igt_assert_f(result > 75,
+-			     "Refresh rate (%u Hz) %"PRIu64"ns: Target CMRR on threshold not reached, result was %u%%\n",
+-			     mode.vrefresh, igt_kms_frame_time_from_vrefresh(mode.vrefresh),
+-			     result);
+-	}
+-}
+-
+ static void test_cleanup(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
+ {
+ 	igt_crtc_set_prop_value(crtc,
+@@ -1013,7 +891,7 @@ static void test_cleanup(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
+ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags)
+ {
+ 
+-	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS | TEST_CMRR)) &&
++	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)) &&
+ 	    output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP) {
+ 		igt_info("%s: Connected panel is not eDP.\n", igt_output_name(output));
+ 		return false;
+@@ -1226,14 +1104,6 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
+ 		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
+ 			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
+ 
+-		igt_describe("Test to validate the content rate exactly matches with the "
+-			     "requested rate without any frame drops.");
+-		igt_subtest_with_dynamic("cmrr") {
+-			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20);
+-
+-			run_vrr_test(&data, test_cmrr, TEST_CMRR);
+-		}
+-
+ 		igt_describe("Test to validate the link-off between active frames in "
+ 			     "non-PSR operation.");
+ 		igt_subtest_with_dynamic("lobf") {
 -- 
-2.45.2
+2.43.0
 
