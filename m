@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF406F8E4B4
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 07:21:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1109EF8E4B5
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 07:28:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D4ADB10E222;
-	Fri, 17 Apr 2026 07:21:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A95C310E987;
+	Fri, 17 Apr 2026 07:28:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GD9xkIf0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BbD/h8z9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83D8D10E98A
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 07:21:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A257E10E987
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 07:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776410474; x=1807946474;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=Oj87qjyOeGgyQWIWLlVb5v6pGLGQYXNGJFsqP5X1A64=;
- b=GD9xkIf0A62SdCdOwhJ4TskEdMkert9ps0jsTaPfcsvRRNrS/vJbP8Q/
- lNDZiWkEX0CoMjFOgUv3uNGmR6rnOqsLZFQ9sk5ajytvowOo7MoWnJPxb
- o/En3k/MEBLvBruJZw0YKH1OaFIHf3SvpPwcPP6D2+NKJ5g4C2aj1R1PC
- VNVF5xQAlAYoCaveFbsNBW1CjJQEqIIvA9vK7sCunUCVj1chKhIxUlEFW
- C+G8E6EOQ/vAcHXKl4lZWnJ2Rc2arsXCUHVROuh8RmqAOiPxqoLm+11aR
- HbXFaSNEdNBjaqJ0MUbUTxjChMB08VzHwT4ncSx1IKSq5C0ZDMEgQAfMi g==;
-X-CSE-ConnectionGUID: K2S7tOnkRbGpt9a/rNfdAA==
-X-CSE-MsgGUID: vp9q37C3QAqsUFKwBnECbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="87726270"
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="87726270"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2026 00:21:13 -0700
-X-CSE-ConnectionGUID: ipH+/0JqSPyvlBAbTkTjUw==
-X-CSE-MsgGUID: nuJgrzZ8Q9i5GPKsyX/iqg==
+ t=1776410915; x=1807946915;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=ChMAE/Gz76u8VHJohRwXp20F2hdgHWALlMpKgYXsGNM=;
+ b=BbD/h8z9VdDASQFlOTfXiuLkIRo3bVXhYOB/stSOESSMsiClYx5gykXR
+ zPhgbcddkN9VrMAelJczhywfodtep2I8SVuHz+CmEveoCJAI5DW/Wqrgy
+ OqxeKEHzQlwXlejd2jnCCB+ovKbbLEJ1/KjdAdiMoln1hzejtbxePMiO5
+ M2p17BgghHSTmH7RKrZSe1umdh60geea9ddBGLLLk1Nr+RGGqvl2Lcxyk
+ CJB987WwlTziWp4e3T1uCmuq5R54CmcmTjSnK8yT99Mn7ZfGg5GyxB/h0
+ KguWXWWz32XMciQw8piBIcwbnCjhX+uTXrZBv1uS3hUS3wSfinWFDDoM5 A==;
+X-CSE-ConnectionGUID: B2onDvb+S8u1NEJZuEvF8Q==
+X-CSE-MsgGUID: 6iSByINAQqqfT/BG9Cwlhg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="100069717"
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="100069717"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2026 00:28:34 -0700
+X-CSE-ConnectionGUID: FaAv0QCMRoSypK4VyRwkpg==
+X-CSE-MsgGUID: AXTovfDdRgiLZtakxVufzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="232717144"
-Received: from ajayshan-mobl1.ger.corp.intel.com (HELO [10.245.17.109])
- ([10.245.17.109])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2026 00:21:11 -0700
-Message-ID: <17bda989-1bc2-43c6-b1db-bc301b85d0af@linux.intel.com>
-Date: Fri, 17 Apr 2026 09:21:08 +0200
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="228295101"
+Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.245.127])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 00:28:33 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: Re: [PATCH i-g-t v2 4/4] tests/intel/kms_sharpness_filter: Find
+ mode with lowest bw requirement for test
+In-Reply-To: <20260416155421.2000-5-juhapekka.heikkila@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260416155421.2000-1-juhapekka.heikkila@gmail.com>
+ <20260416155421.2000-5-juhapekka.heikkila@gmail.com>
+Date: Fri, 17 Apr 2026 10:28:30 +0300
+Message-ID: <211893c124d2fc3418b729e7ccfa19029536b182@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/intel/xe_configfs: Skip ctx-restore subtests on
- platforms without RCS
-To: Nitin Gote <nitin.r.gote@intel.com>, igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com
-References: <20260416083004.2723418-2-nitin.r.gote@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260416083004.2723418-2-nitin.r.gote@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,67 +71,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-On 4/16/2026 10:30 AM, Nitin Gote wrote:
-> The ctx-restore-post-bb and ctx-restore-mid-bb subtests inject a batch
-> buffer via configfs using the "rcs" (render) engine class. However,
-> platforms like CRI, PVC don't have render. The BB is stored via configfs
-> but never injected into any engine's LRC, causing the subsequent register
-> readback to fail.
+On Thu, 16 Apr 2026, Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com> wrote:
+> choose mode from connector with lowest bandwidth requirement
+> for tests to try to fit tests into bandwidth limitations
 >
-> Fix by adding runtime detection of the render engine using
-> xe_for_each_engine() and skip the ctx-restore subtests with
-> igt_require_f(has_rcs) on platforms without a render engine instead
-> of failing silently.
->
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Fixes: b6abdc26e01b ("tests/intel/xe_configfs: Check ctx_restore_post_bb")
-> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > ---
->   tests/intel/xe_configfs.c | 12 ++++++++++++
->   1 file changed, 12 insertions(+)
+>  tests/intel/kms_sharpness_filter.c | 35 +++++++++++++++++++++++++++++-
+>  1 file changed, 34 insertions(+), 1 deletion(-)
 >
-> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-> index 755524e7c..445f35431 100644
-> --- a/tests/intel/xe_configfs.c
-> +++ b/tests/intel/xe_configfs.c
-> @@ -364,12 +364,22 @@ int igt_main()
->   	int fd, configfs_fd, configfs_device_fd;
->   	uint32_t devid;
->   	bool is_vf_device;
-> +	bool has_rcs = false;
->   
->   	igt_fixture() {
-> +		struct drm_xe_engine_class_instance *hwe;
+> diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
+> index 98eb671d1..cf5b0d2c7 100644
+> --- a/tests/intel/kms_sharpness_filter.c
+> +++ b/tests/intel/kms_sharpness_filter.c
+> @@ -609,6 +609,24 @@ static void build_test_suffix(data_t *data, enum test_type type,
+>  	}
+>  }
+>  
+> +static drmModeModeInfo *find_lowest_mode(igt_output_t *output)
+> +{
+> +	drmModeConnector *connector = output->config.connector;
+> +	drmModeModeInfo *low = NULL;
 > +
->   		fd = drm_open_driver(DRIVER_XE);
->   		devid = intel_get_drm_devid(fd);
->   		is_vf_device = intel_is_vf_device(fd);
->   		set_bus_addr(fd);
+> +	for (int i = 0; i < connector->count_modes; i++) {
+
+for_each_connector_mode()
+
+> +		drmModeModeInfo *mode = &connector->modes[i];
+> +		int pixels = mode->hdisplay * mode->vdisplay;
+> +		int low_pixels = low ? low->hdisplay * low->vdisplay : INT_MAX;
 > +
-> +		xe_for_each_engine(fd, hwe)
-> +			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER) {
-> +				has_rcs = true;
-> +				break;
-> +			}
+> +		if (pixels < low_pixels ||
+> +		    (pixels == low_pixels && mode->vrefresh < low->vrefresh))
+> +			low = mode;
+> +	}
 > +
-Does it mean the feature is designed and used for RCS only ?
->   		drm_close_driver(fd);
->   
->   		configfs_fd = igt_configfs_open("xe");
-> @@ -418,6 +428,7 @@ int igt_main()
->   	igt_describe("Validate ctx_restore_post_bb");
->   	igt_subtest("ctx-restore-post-bb") {
->   		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
-> +		igt_require_f(has_rcs, "Platform has no render engine\n");
->   		configfs_device_fd = create_device_configfs_group(configfs_fd);
->   		test_ctx_restore(configfs_device_fd, "post");
->   		close_configfs_group(configfs_fd, configfs_device_fd);
-> @@ -434,6 +445,7 @@ int igt_main()
->   	igt_describe("Validate ctx_restore_mid_bb");
->   	igt_subtest("ctx-restore-mid-bb") {
->   		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
-> +		igt_require_f(has_rcs, "Platform has no render engine\n");
->   		configfs_device_fd = create_device_configfs_group(configfs_fd);
->   		test_ctx_restore(configfs_device_fd, "mid");
->   		close_configfs_group(configfs_fd, configfs_device_fd);
+> +	return low;
+> +}
+> +
+>  static void
+>  run_sharpness_filter_test(data_t *data, enum test_type type)
+>  {
+> @@ -647,7 +665,22 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+>  					 data->mode->vdisplay,
+>  					 data->mode->vrefresh);
+>  			} else {
+> -				data->mode = igt_output_get_mode(data->output);
+> +				if (is_invalid_test(type)) {
+> +					data->mode = igt_output_get_mode(data->output);
+> +				} else {
+> +					data->mode = find_lowest_mode(data->output);
+> +					if (!data->mode) {
+> +						igt_info("No mode found on output %s\n",
+> +							 igt_output_name(data->output));
+> +						continue;
+> +					}
+> +
+> +					igt_info("Executing on lowest mode %dx%d@%d@%s\n",
+> +						 data->mode->hdisplay,
+> +						 data->mode->vdisplay,
+> +						 data->mode->vrefresh,
+> +						 data->output->name);
+> +				}
+>  			}
+>  
+>  			if (!has_sharpness_filter(data->crtc)) {
+
+-- 
+Jani Nikula, Intel
