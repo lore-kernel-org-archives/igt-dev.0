@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D86C7F8E4A7
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 04:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE4C4F8E4A7
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 04:25:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 40BC710E28C;
-	Fri, 17 Apr 2026 04:18:23 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E57A910E28C;
- Fri, 17 Apr 2026 04:18:11 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7683223021009386985=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 47EBF10E28E;
+	Fri, 17 Apr 2026 04:25:32 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eSm8LmQu";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFEEB10E28E
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 04:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1776399920; x=1807935920;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=bvghHCgcf3e8vWwtmzXrawV4ltwSTUAUNyPvWUxHnMU=;
+ b=eSm8LmQuDd/den989aJKA5JxISpaMN6bsMK+Mmqqf9PWLhXxHriE1C5P
+ S+6s0lHnrjimVec2JofHEBWcnx2Ol/Hk5iE2yh7w9EamsAp0dNxYBTbEB
+ BsV405GFYp4cRb6vTCJxIiBYV/8lHZcHTjePsLeUvimz5JnqoCI363zsA
+ 9DSvF69OPuzAMuoz4KAoxZenictQLyJ8h28+mim1vNIAFItw3qz6w82R/
+ /4mcUq9/1JitBJZhII7wRPkem/3dE61K+QE/TWd4iDofezykg8XFWBR1o
+ lnk2rDJ3csxeGeFkBlFGhJqgS0YuyXohP6KgYtfZzRDCt6WXGQICPTD7Y g==;
+X-CSE-ConnectionGUID: bWMQp7j7S7+F43Nkvj78+w==
+X-CSE-MsgGUID: 8lkpszIvS9SSoJ/zIeaPvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81282678"
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="81282678"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2026 21:25:19 -0700
+X-CSE-ConnectionGUID: yrGOSBU+QfOkHlf6KQ29bQ==
+X-CSE-MsgGUID: 41qJA23IQUisotJGzG/IrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="229922442"
+Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2026 21:25:18 -0700
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com,
+ Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Subject: [PATCH i-g-t 0/4] intel_vbt_decode: Sync intel_vbt_defs.h with latest
+ changes
+Date: Fri, 17 Apr 2026 09:40:27 +0530
+Message-ID: <20260417041031.2187889-1-ankit.k.nautiyal@intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/xe/oa=3A_Add_support_?=
- =?utf-8?q?for_192B=5FMPEC8LL=5FNOA16_OAM_format_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 17 Apr 2026 04:18:11 -0000
-Message-ID: <177639949192.471029.10413026869952717107@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260417033334.933419-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20260417033334.933419-1-ashutosh.dixit@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,237 +64,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7683223021009386985==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add VBT bits for:
+ - eDP Data override:
+   - 4d33c77cf2c3 ("drm/i915/vbt: Add eDP Data rate overrride field in VBT")
+ - eDP Pipe Joiner Feature:
+   - 1b85a9b04681 ("drm/i915/vbt: Add edp pipe joiner enable/disable bits")
 
-== Series Details ==
+Note :
+ - The commit:
+   f3c65a8e9b09 ("drm/i915/vbt: split up DSI VBT defs to a separate file")
+   only moved MIPI definitions to intel_dsi_vbt_defs.h which are already
+   synced with definitions in IGT.
 
-Series: lib/xe/oa: Add support for 192B_MPEC8LL_NOA16 OAM format (rev3)
-URL   : https://patchwork.freedesktop.org/series/164949/
-State : success
+Ankit Nautiyal (4):
+  tools/intel_vbt_decode: sync intel_vbt_defs.h with commit 1b85a9b04681
+  tools/intel_vbt_decode: dump eDP joiner enable field
+  tools/intel_vbt_decode: sync intel_vbt_defs.h with commit 4d33c77cf2c3
+  tools/intel_vbt_decode: dump eDP data rate override field
 
-== Summary ==
+ tools/intel_vbt_decode.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ tools/intel_vbt_defs.h   | 19 +++++++++++++++++++
+ 2 files changed, 59 insertions(+)
 
-CI Bug Log - changes from IGT_8863 -> IGTPW_15006
-====================================================
+-- 
+2.45.2
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15006 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-skl-6600u/igt@dmabuf@all-tests.html
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][2] -> [DMESG-FAIL][3] ([i915#12061]) +1 other test dmesg-fail
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/bat-mtlp-8/igt@i915_selftest@live.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/bat-mtlp-8/igt@i915_selftest@live.html
-    - bat-dg2-8:          [PASS][4] -> [DMESG-FAIL][5] ([i915#12061]) +1 other test dmesg-fail
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/bat-dg2-8/igt@i915_selftest@live.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][6] -> [DMESG-FAIL][7] ([i915#12061]) +1 other test dmesg-fail
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - fi-skl-6600u:       [INCOMPLETE][8] ([i915#15859]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-skl-6600u/igt@i915_selftest@live.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-skl-6600u/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gtt:
-    - fi-skl-6600u:       [INCOMPLETE][10] -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-skl-6600u/igt@i915_selftest@live@gtt.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-skl-6600u/igt@i915_selftest@live@gtt.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [DMESG-WARN][12] ([i915#13735]) -> [PASS][13] +79 other tests pass
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-6:         [DMESG-FAIL][14] ([i915#12061]) -> [PASS][15] +1 other test pass
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [DMESG-WARN][16] ([i915#13735] / [i915#180]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [DMESG-WARN][18] ([i915#13735] / [i915#15673] / [i915#180]) -> [PASS][19] +52 other tests pass
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#15859]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15859
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8863 -> IGTPW_15006
-  * Linux: CI_DRM_18347 -> CI_DRM_18348
-
-  CI-20190529: 20190529
-  CI_DRM_18347: 2a1c604bebed8cbbe6aea00f761777eed424dc55 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18348: 3b9ca4c40814c96c38986ae2ba6651e43757ca5f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15006: 9854ea8994244d65a9dcb98222429fcd3521856e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8863: 5b279a8b71dc1672099205a1a9e8135c7c7fadb5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/index.html
-
---===============7683223021009386985==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/xe/oa: Add support for 192B_MPEC8LL_NOA16 OAM format (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164949/">https://patchwork.freedesktop.org/series/164949/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8863 -&gt; IGTPW_15006</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15006 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-skl-6600u/igt@dmabuf@all-tests.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-skl-6600u/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15859">i915#15859</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-skl-6600u/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gtt:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-skl-6600u/igt@i915_selftest@live@gtt.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-skl-6600u/igt@i915_selftest@live@gtt.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +79 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8863/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15006/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +52 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8863 -&gt; IGTPW_15006</li>
-<li>Linux: CI_DRM_18347 -&gt; CI_DRM_18348</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18347: 2a1c604bebed8cbbe6aea00f761777eed424dc55 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18348: 3b9ca4c40814c96c38986ae2ba6651e43757ca5f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15006: 9854ea8994244d65a9dcb98222429fcd3521856e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8863: 5b279a8b71dc1672099205a1a9e8135c7c7fadb5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7683223021009386985==--
