@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E03B6F436B4
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 16:16:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A693AF436BF
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 18:12:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8029310E2C4;
-	Fri, 17 Apr 2026 16:16:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B41A10EA81;
+	Fri, 17 Apr 2026 18:12:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R02vWcfl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W4fLlYzw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A130110E2C4
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 16:16:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0DD910EA48
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 18:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776442575; x=1807978575;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=dLsqj/WlsyV1A9N18rTzLrxxUn1kyBh5PjctDsO4Mpo=;
- b=R02vWcflZ/c+Pbr9YarX0m2ZFgdtux2RGjg/Y/Fl/gVEyL61UnGQoH2l
- c96CNQloxu0nLFR523cf5ZG+vnhOlQKOQMaQT7zDH0PdHCJQOaQEpdP81
- nheRHjE8to1cfRfs/acxzitrCMbG0pEUCoGFkHU8b2IUUsoFsAFFEKxJ0
- 6BScqoPePvJd5aVSkAI/Y/UJ6ZSyjaeQAYqwJPDpSklFg7j2L5tm8ngkk
- qk0I9yvT5Q31X6trvGhJdngM1XYBamGq2IGTSDfQztZM4YuAewRleaM+R
- B4S6s4g6sd9sJxFHWJr40YOjLsDmop7pHuhuPdfIRaTOOXdqTe2u5cGKs A==;
-X-CSE-ConnectionGUID: Z+Xmfw72QuSI01da+uRkPA==
-X-CSE-MsgGUID: U+nU9LzXR9OPXtkE4UstLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="87759966"
-X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; d="scan'208";a="87759966"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2026 09:16:14 -0700
-X-CSE-ConnectionGUID: gJqq1EJQR7enodz1FV3D9A==
-X-CSE-MsgGUID: A8rwebTVTxetmciQGOHbDA==
+ t=1776449523; x=1807985523;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Y3PR4yzJKutbr52xaK/cliXOVAXO87s9caf/Csqwfns=;
+ b=W4fLlYzwSE+zfl3qQdUJINDPAcqz8REkvqVoGgU7PWG8CicYL2SLG0Bn
+ XBwAZy+sqrLr/43nNUdmBOEhhqqq7kwpP57PRCNiwynqW/XurOTTEgTrW
+ c2PKcUW75jqpBFcvhXUjQYUiZzeoAVvAIh/lr3vUBaiJL7AEM8AI19CYq
+ Fdty4njnBV2wJhysNAKQp/gTjLZKFYn6DTkepfOK3Ckm8m7JzMo8PovPC
+ xsVjHk92EleYLPMD20Kyyy3ESSEBKqciMCPcRlfdppZyq/E+3JCrxjNRY
+ KIMKQ+ICg6SodKe5R1oGl7OulvMsGa5UzCp6baxqG7q/cE1LQCDwQ1ael w==;
+X-CSE-ConnectionGUID: ya1eg54RQhOOv86HzAYGSg==
+X-CSE-MsgGUID: 0Hm/K2rMQrKC4yB7dmyELw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77480834"
+X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; d="scan'208";a="77480834"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2026 11:12:03 -0700
+X-CSE-ConnectionGUID: 1k84YJ2uTMyEvZiLt+Vx2w==
+X-CSE-MsgGUID: cF4e1nP8THeDnyxlnkVu5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; d="scan'208";a="230221494"
-Received: from zzombora-mobl1 (HELO localhost) ([10.245.245.211])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2026 09:16:13 -0700
-Date: Fri, 17 Apr 2026 18:16:10 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Arvind Yadav <arvind.yadav@intel.com>, 
- Nishit Sharma <nishit.sharma@intel.com>
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_madvise: Fix armhf compilation
-Message-ID: <va66uz77nq6evnwdiwzcbob3oy3j6oau7k35qrtkvkkxyrnyxa@jnctmtw6qge2>
-References: <20260417124416.64731-1-kamil.konieczny@linux.intel.com>
- <20260417124416.64731-3-kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; d="scan'208";a="236070101"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.166])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2026 11:12:01 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Nishit Sharma <nishit.sharma@intel.com>,
+ Arvind Yadav <arvind.yadav@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 0/2] Add assert for pointers compare and fix armhf
+ compilation
+Date: Fri, 17 Apr 2026 20:11:55 +0200
+Message-ID: <20260417181157.177299-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260417124416.64731-3-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,54 +71,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Apr 17, 2026 at 02:44:16PM +0200, Kamil Konieczny wrote:
-> There are a compiler errors on armhf, related to a cast from pointer
-> to uint64_t:
-> 
-> ../tests/intel/xe_madvise.c:201:20: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
->   201 |  igt_assert_eq_u64((uint64_t)ptr, (uint64_t)MAP_FAILED);
->       |                    ^
-> 
-> Fix it by using igt_assert_eq_ptr() macro.
-> 
-> Cc: Arvind Yadav <arvind.yadav@intel.com>
-> Cc: Nishit Sharma <nishit.sharma@intel.com>
-> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/intel/xe_madvise.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
-> index 805de793a..e9bf55ff5 100644
-> --- a/tests/intel/xe_madvise.c
-> +++ b/tests/intel/xe_madvise.c
-> @@ -198,7 +198,7 @@ static void test_purged_mmap_blocked(int fd)
->  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo), 0);
->  
->  	ptr = mmap(NULL, bo_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, mmo.offset);
-> -	igt_assert_eq_u64((uint64_t)ptr, (uint64_t)MAP_FAILED);
+Recent commits break amrhf compilation as could be seen on GitLab:
 
-If you would user to_user_pointer(ptr), to_user_pointer(MAP_FAILED)
-you could drop 1/2.
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/jobs/97703144
 
---
-Zbigniew
+with errors:
+../tests/intel/xe_madvise.c:201:35: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
+  201 |  igt_assert_eq_u64((uint64_t)ptr, (uint64_t)MAP_FAILED);
+      |                                   ^
+../lib/igt_core.h:796:33: note: in definition of macro ‘igt_assert_cmpu64’
+  796 |   uint64_t __n1 = (n1), __n2 = (n2); \
+      |                                 ^~
+../tests/intel/xe_madvise.c:201:2: note: in expansion of macro ‘igt_assert_eq_u64’
+  201 |  igt_assert_eq_u64((uint64_t)ptr, (uint64_t)MAP_FAILED);
+      |  ^~~~~~~~~~~~~~~~~
 
+This series introduces new macro for pointer comparision
+and uses it for fixing compilation for armhf platform.
 
-> +	igt_assert_eq_ptr(ptr, MAP_FAILED);
->  	igt_assert_eq(errno, EINVAL);
->  
->  	gem_close(fd, bo);
-> @@ -340,7 +340,7 @@ static void test_dontneed_before_mmap(int fd)
->  
->  	/* mmap() on a DONTNEED BO must fail with EBUSY. */
->  	ptr = mmap(NULL, bo_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, mmo.offset);
-> -	igt_assert_eq_u64((uint64_t)ptr, (uint64_t)MAP_FAILED);
-> +	igt_assert_eq_ptr(ptr, MAP_FAILED);
->  	igt_assert_eq(errno, EBUSY);
->  
->  	/* Restore to WILLNEED before cleanup */
-> -- 
-> 2.53.0
-> 
+v2: add cast to 'void *' in macro (Zbigniew)
+
+Cc: Nishit Sharma <nishit.sharma@intel.com>
+Cc: Arvind Yadav <arvind.yadav@intel.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+
+Kamil Konieczny (2):
+  lib/igt_core: Create asserts for pointer comparision
+  tests/intel/xe_madvise: Fix armhf compilation
+
+ lib/igt_core.h           | 42 ++++++++++++++++++++++++++++++++++++++++
+ tests/intel/xe_madvise.c |  4 ++--
+ 2 files changed, 44 insertions(+), 2 deletions(-)
+
+-- 
+2.53.0
+
