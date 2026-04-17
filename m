@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC2B3F8E4A8
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 04:26:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4152F8E4A7
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 04:26:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8528810E28E;
-	Fri, 17 Apr 2026 04:26:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B7F910E28E;
+	Fri, 17 Apr 2026 04:26:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UVqlgoyC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="clrC5exq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 473F210E28E
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 04:25:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0388F10E28E
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 04:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776399921; x=1807935921;
+ t=1776399926; x=1807935926;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Nc5koUzOSDsIiqZjEc0ZgTR69bAHvsPrcRRcQQUlu1E=;
- b=UVqlgoyCmyk8Vrt2fodYCHXBTJIR4b20MBBD8mGErnUzgB5CB29GUAu7
- sAG+IVy2XvHdna8YTmsCnkcgdEUq0CjbG7nqHaSGPVrQcRy9MX2Ug/soN
- RPTT0Y6R2BkK+dQtY2mMu+eiv22wLeCQfdzA+0R44pcr+hKYedxSM5FgX
- WhZd6vSCidyuHU0b7uWsIeZLgBG1xMRwWjKvd3jXhAGP0r7lyrfeb25EC
- lfaWkzGNbF9DRKdBzGxiK+tUhomoJKGchvOUIuSnEhBvzIYsN8m2bAinv
- L/DRclozrKAcLr7WzDTWpqJHa6v3j28VILu4vB/1v98/qYAokwQafujRT A==;
-X-CSE-ConnectionGUID: 65Eg6exqSai9zw6Wf6WILg==
-X-CSE-MsgGUID: bylkm58UTHmkMnANRJ8Qrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81282680"
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="81282680"
+ bh=mbfv8rjo46AcHOH4NMst07RNe0KbGwnI9Gqfz0fRgEY=;
+ b=clrC5exq7p/wt3vnY3+/NASFYWI07s4gynhP1QPIq9nG+VcjNBzndAaI
+ nLSKrhYiSLuLWHAQJTzaSgv/JJTRXhbulftVfNSo4GuwyCYF9HWyRtqYA
+ vhUGiGwDl+mHApuE6+z8+ChgMOJPRaZh4DSy8udXiGd7QnvwyoZfRfUzJ
+ CqVOyUXFHqe5IlRisZiSB3lhkT8cBzsHJlQHpTvcL8eovs4Fjl/hFfM1T
+ ZucVT+iZ2GZG3+W3jQwtkOOGB85d9gU/bea/zYFTixhJkbw24r2fLLOvn
+ unRoMlGsyeciEhrGdU1L6tc36h2GVqJ0dL7rzR/rjY/VVkt+8ncVx/8G7 w==;
+X-CSE-ConnectionGUID: CFP2ITu0QMecBlTYdrPNjw==
+X-CSE-MsgGUID: G9/hfYj/RHeSxSKf42hRng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81282696"
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="81282696"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2026 21:25:21 -0700
-X-CSE-ConnectionGUID: KqitmoOeSCeWnQG5KiP0tg==
-X-CSE-MsgGUID: a2ew/FsFRbmlH+pG3hbXBg==
+ 16 Apr 2026 21:25:26 -0700
+X-CSE-ConnectionGUID: fXhxPaNmS7OsnL4ZL7NsvQ==
+X-CSE-MsgGUID: JA2CePyiR1mEY4asLv3gyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="229922452"
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="229922475"
 Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2026 21:25:20 -0700
+ 16 Apr 2026 21:25:24 -0700
 From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com,
  Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH i-g-t 1/4] tools/intel_vbt_decode: sync intel_vbt_defs.h with
- commit 1b85a9b04681
-Date: Fri, 17 Apr 2026 09:40:28 +0530
-Message-ID: <20260417041031.2187889-2-ankit.k.nautiyal@intel.com>
+Subject: [PATCH i-g-t 4/4] tools/intel_vbt_decode: dump eDP data rate override
+ field
+Date: Fri, 17 Apr 2026 09:40:31 +0530
+Message-ID: <20260417041031.2187889-5-ankit.k.nautiyal@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260417041031.2187889-1-ankit.k.nautiyal@intel.com>
 References: <20260417041031.2187889-1-ankit.k.nautiyal@intel.com>
@@ -69,28 +69,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Synchronize intel_vbt_defs.h with kernel commit:
-1b85a9b04681 ("drm/i915/vbt: Add edp pipe joiner enable/disable bits")
+Add decoding support for the eDP data rate override field introduced
+in VBT version 263+.
 
-Bspec:20142
 Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tools/intel_vbt_defs.h | 1 +
- 1 file changed, 1 insertion(+)
+ tools/intel_vbt_decode.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
-index 6612d3a4ec49..550a9bfba868 100644
---- a/tools/intel_vbt_defs.h
-+++ b/tools/intel_vbt_defs.h
-@@ -1090,6 +1090,7 @@ struct bdb_edp {
- 	u16 edp_dsc_disable;					/* 251+ */
- 	u16 t6_delay_support;					/* 260+ */
- 	u16 link_idle_time[16];					/* 260+ */
-+	u16 joiner_enable;					/* 261+ */
- } __packed;
+diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+index a96b936d4b8e..1cc863f59808 100644
+--- a/tools/intel_vbt_decode.c
++++ b/tools/intel_vbt_decode.c
+@@ -1125,6 +1125,39 @@ static const char * const hdmi_frl_rate_str[] = {
+ 	[5] = "12 GT/s",
+ };
  
- /*
++static void dump_edp_data_rate_override(uint32_t edp_data_rate_override)
++{
++	int i;
++	static const uint32_t link_rates[BDB_263_VBT_EDP_NUM_RATES][2] = {
++		{ BDB_263_VBT_EDP_LINK_RATE_1_62, 162000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_2_16, 216000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_2_43, 243000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_2_7, 270000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_3_24, 324000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_4_32, 432000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_5_4, 540000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_6_75, 675000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_8_1, 810000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_10, 1000000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_13_5, 1350000 },
++		{ BDB_263_VBT_EDP_LINK_RATE_20, 2000000},
++	};
++
++	edp_data_rate_override &= BDB_263_VBT_EDP_RATES_MASK;
++
++	printf("\t\teDP data rate override:");
++
++	if (!edp_data_rate_override) {
++		printf("(none)\n");
++		return;
++	}
++	printf("\n");
++
++	for (i = 0; i < BDB_263_VBT_EDP_NUM_RATES; i++)
++		if (link_rates[i][0] & edp_data_rate_override)
++			printf("\t\t\t%d kbps\n", link_rates[i][1]);
++}
++
+ static void dump_child_device(struct context *context,
+ 			      const struct child_device_config *child)
+ {
+@@ -1285,6 +1318,9 @@ static void dump_child_device(struct context *context,
+ 
+ 	if (context->bdb->version >= 256)
+ 		printf("\t\tEFP panel index: %d\n", child->efp_index);
++
++	if (context->bdb->version >= 263)
++		dump_edp_data_rate_override(child->edp_data_rate_override);
+ }
+ 
+ static void dump_child_devices(struct context *context, const uint8_t *devices,
 -- 
 2.45.2
 
