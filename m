@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5701BF8DFEA
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 08:44:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CD63F8DFEA
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 08:44:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0500710E992;
-	Fri, 17 Apr 2026 08:44:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A67D10E992;
+	Fri, 17 Apr 2026 08:44:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OywVW0xV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="loUwu3uy";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A824810E992
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 08:43:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05AC410E992
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 08:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776415432; x=1807951432;
+ t=1776415436; x=1807951436;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=uLMMNzusGk19iXwoM3VxEcRll3lRuOeplimmSpksg6E=;
- b=OywVW0xVrk7vQjFVOwWuAuzM0YgV/6eJOnU8buSbXaLPhI30PrbY73wq
- EATSRFJS6kUxbwSfPAknbe3YpBPdTAKtgYWfvkY496akIP9+5afPQw+N2
- YGKM5KWIJgJLUcyOZtM+PM+zfSIbRpodAkk9jBr9Hsd1CyW3xKxOAzxSy
- oks3mEYnTkemyESD1lUxD6PlInXH7PQpRIabP1cpTeviOG1msd9NgC+6r
- MelUASJKy/HRn0zdLhttfG6j4alMDTbhXWo8y731TbZRzLoob1YYuVgQb
- 39EJx96HIc7kcN8jh4MZqdaneJx29AeiPLnx6WI9m6JBc3YtE/h4aV3WC A==;
-X-CSE-ConnectionGUID: Ei6ocBooQgG/O/V/btVL5Q==
-X-CSE-MsgGUID: tmUlwIxUQgm4hsCgkem4Qg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81308443"
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="81308443"
+ bh=T+eMKQTu+cyZ4BX5/XbP2RStcMfYDHv3VogFkmKUzLc=;
+ b=loUwu3uyZjPZUCHZSyZRyogJklk3qHbsXBQ3K2if4vyvWDhCy5OXOfDs
+ 1lIa/4Vv9LeT71KxJrlPTEt/YNbKz2Yi613qLhITylS8Y2ee/1Tp6BCnl
+ yvRcsGy87wWqm1klE4613HhSbEE//qfd2iUWBv6gTenTEKC52BKuKNZSP
+ /6I3wfwIkcb2ECUdPmMCtGRT0TbBluH8foJ6TULickZF9OLR8WQRzf5QN
+ 284wBIJAbRfJ5UNdOuUrKcVQBoPAybLwpIeS+kTIBdmTT0RFE+Ug0rq5k
+ 8vM/BgB6qFXyeZqZuhvC1LyQkjN3TSnveUJyL9FxTp9ekCghgvkTHboeo Q==;
+X-CSE-ConnectionGUID: 1SSUTktiRqWyteVBUQeteg==
+X-CSE-MsgGUID: Z87cBqClQDmaDOYkiFXuTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81308448"
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="81308448"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2026 01:43:52 -0700
-X-CSE-ConnectionGUID: 3SyYPksATPuLwSpdQa15cg==
-X-CSE-MsgGUID: aeDi5s9FS6yXILEc8l4FcA==
+ 17 Apr 2026 01:43:56 -0700
+X-CSE-ConnectionGUID: tmrWVdVhSh2F+dnmnqObXQ==
+X-CSE-MsgGUID: 1OJvAEqeRaC9XJi8+xbH6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="235361741"
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; d="scan'208";a="235361750"
 Received: from unknown (HELO linux-Meteor-Lake-Client-Platform.iind.intel.com)
  ([10.223.55.75])
- by orviesa004.jf.intel.com with ESMTP; 17 Apr 2026 01:43:51 -0700
+ by orviesa004.jf.intel.com with ESMTP; 17 Apr 2026 01:43:55 -0700
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com,
 	Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH v2 4/7] Revert "tests/intel/kms_pm_dc: Update VRR handling and
- eDP output check"
-Date: Fri, 17 Apr 2026 14:05:03 +0530
-Message-ID: <20260417083506.33404-5-mohammed.thasleem@intel.com>
+Subject: [PATCH v2 7/7] tests/intel/kms_pm_dc: Remove unused pkgc functions
+Date: Fri, 17 Apr 2026 14:05:06 +0530
+Message-ID: <20260417083506.33404-8-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260417083506.33404-1-mohammed.thasleem@intel.com>
 References: <20260417083506.33404-1-mohammed.thasleem@intel.com>
@@ -69,78 +68,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This reverts commit e08151940f034f976632d99798f2097b2ee5e04e.
+Clean up unused pkgc residency functions.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_pm_dc.c | 33 ++++++++++-----------------------
- 1 file changed, 10 insertions(+), 23 deletions(-)
+ tests/intel/kms_pm_dc.c | 48 -----------------------------------------
+ 1 file changed, 48 deletions(-)
 
 diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 3f93a2a82..91c9cebf2 100644
+index e268b0696..bf2d22ddc 100644
 --- a/tests/intel/kms_pm_dc.c
 +++ b/tests/intel/kms_pm_dc.c
-@@ -541,7 +541,7 @@ static void test_deep_pkgc_state(data_t *data)
- 	time_t start = time(NULL), duration = 2, delay;
- 	enum pipe pipe;
- 	bool pkgc_flag = false;
--	bool flip = true;
-+	bool vrr_supported = false, flip = true;
+@@ -530,54 +530,6 @@ static int has_panels_without_dc_support(igt_display_t *display)
+ 	return external_panel;
+ }
  
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *primary;
-@@ -549,42 +549,29 @@ static void test_deep_pkgc_state(data_t *data)
- 	drmModeModeInfo *mode;
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
--		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
--			igt_skip("No eDP output found, skipping the test.\n");
- 		/* Check VRR capabilities before setting up */
- 		if (igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE) &&
- 		    igt_output_get_prop(output, IGT_CONNECTOR_VRR_CAPABLE)) {
--			/*
--			 * TODO: Add check for vmin = vmax = flipline if VRR enabled
--			 * when KMD allows for such capability.
--			 */
--			igt_pipe_set_prop_value(display, pipe,
--						IGT_CRTC_VRR_ENABLED, false);
--			igt_assert(igt_display_try_commit_atomic(display,
--								 DRM_MODE_ATOMIC_ALLOW_MODESET,
--								 NULL) == 0);
-+			vrr_supported = true;
- 			break;
- 		}
- 	}
-+
-+	/* Skip the test if no VRR capable output is found */
-+	igt_skip_on_f(!vrr_supported,
-+		      "No VRR capable output found, skipping the test.\n");
-+
- 	igt_display_reset(display);
- 
--	igt_output_set_crtc(output, crtc);
--	for_each_connector_mode(output, mode) {
--		data->mode = mode;
--		delay = (MSEC / (data->mode->vrefresh));
--		/*
--		 * Should be 5ms vblank time required to program higher
--		 * watermark levels
--		 */
--		if (delay >= (5 * MSEC))
--			break;
--	}
-+	igt_output_set_pipe(output, pipe);
- 
- 	data->output = output;
-+	data->mode = igt_output_get_mode(output);
- 	setup_videoplayback(data);
- 
- 	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
- 	pre_val = read_pkgc_counter(data->debugfs_root_fd);
-+	delay = (MSEC / (data->mode->vrefresh - 10));
- 
- 	igt_plane_set_fb(primary, &data->fb_rgb);
- 	igt_display_commit(&data->display);
+-static unsigned int read_pkgc_counter(int debugfs_root_fd)
+-{
+-	char buf[4096];
+-	char *str;
+-	int len;
+-
+-	len = igt_sysfs_read(debugfs_root_fd, PACKAGE_CSTATE_PATH, buf, sizeof(buf) - 1);
+-	igt_skip_on_f(len < 0, "PKGC state file not found\n");
+-	buf[len] = '\0';
+-	str = strstr(buf, "Package C10");
+-	igt_skip_on_f(!str, "PKGC10 is not supported.\n");
+-
+-	return get_dc_counter(str);
+-}
+-
+-static void test_pkgc_state_dpms(data_t *data)
+-{
+-	unsigned int timeout_sec = 6;
+-	unsigned int prev_value = 0, cur_value = 0;
+-
+-	prev_value = read_pkgc_counter(data->debugfs_root_fd);
+-	setup_dc_dpms(data);
+-	dpms_off(data);
+-	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
+-		  timeout_sec * 1000, 100);
+-	igt_assert_f(cur_value > prev_value, "PKGC10 is not achieved.\n");
+-	dpms_on(data);
+-	cleanup_dc_dpms(data);
+-}
+-
+-static void test_pkgc_state_psr(data_t *data)
+-{
+-	unsigned int timeout_sec = 6;
+-	unsigned int prev_value = 0, cur_value = 0;
+-
+-	prev_value = read_pkgc_counter(data->debugfs_root_fd);
+-	setup_output(data);
+-	setup_primary(data);
+-	igt_require(!psr_disabled_check(data->debugfs_fd));
+-	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
+-	psr_dpms(data, DRM_MODE_DPMS_OFF);
+-	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
+-		  timeout_sec * 1000, 100);
+-	igt_assert_f(cur_value > prev_value, "PKGC10 is not achieved.\n");
+-	psr_dpms(data, DRM_MODE_DPMS_ON);
+-	cleanup_dc_psr(data);
+-}
+-
+ static void kms_poll_state_restore(int sig)
+ {
+ 	int sysfs_fd;
 -- 
 2.43.0
 
