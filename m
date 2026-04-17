@@ -4,91 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9035F8E4A8
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 04:13:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1538F8E4A7
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Apr 2026 04:16:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5249810E288;
-	Fri, 17 Apr 2026 04:13:47 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="cinvgnl7";
-	dkim-atps=neutral
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com
- [209.85.221.171])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A98BA10E288
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2026 04:13:35 +0000 (UTC)
-Received: by mail-vk1-f171.google.com with SMTP id
- 71dfb90a1353d-56d8a5f0e44so1211111e0c.1
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 21:13:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1776399214; x=1777004014;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MjWIQ5pyZ4x9UgDGxLpl8gJ10Z4YYvFivpP7X03AGA8=;
- b=cinvgnl79lBGoJsIGY3nI3XqOgHsd/MnmZrTZA1I2P0HAz91v8jy4hUX83sdZ3+QQ7
- jQ06N1XsooS6etY3E176Ug6VuMdtnG4vCTkg7gr63n8StY0N6xcPnjPSYH9irOA0X/rU
- hWHQPK+Yey8dL8y/2T6Tx8rPtIJrInEBV+lvw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1776399214; x=1777004014;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=MjWIQ5pyZ4x9UgDGxLpl8gJ10Z4YYvFivpP7X03AGA8=;
- b=gTeKri6YYdxwTgzTNrMDmot4aqTks74U0XI+br7qoNPtuTO3g/LZn5d1yGCjHR7QKH
- X0sh6awiSpbMzqsv/oXZNg/Ztw56vvTd+AcxdOMkdS6fOeVsVlCZ3DccM/mjkJAHFgPk
- O9Wutj49BHZOoPSYjzlDH/3ubg6WQjuVn2bvw8z2b1GREOTByrdsjqlCAQgZK1jK8Rre
- hmHfHgWYlnj+jAZkGgisM0LS8Gq0ueVNXT/3bJ1Q0/uRviJ2GRYXAEAMN1+y5hXkyP0D
- sBGuHU68XcrfaqeHLz+meJKReHaSHJDwuBxDHfqKM/liMu2IOMFm8TRRPnMThFUvY+ym
- vReg==
-X-Gm-Message-State: AOJu0YwtW4Hhtdxu1aMKCkxQ8AIaEb+spYwB9eN1nQc3+KoAuueFJ2V3
- ecZhPSRlnCe6l6i2LrP/hn1VtzEq4b5ODkdOvL+Oiub6aEe8bgJQyHZg9e1MsgZx6IfK9b/RkG3
- albY=
-X-Gm-Gg: AeBDiet7WYkmgEJ+PLTKvOSZdUkujUuujYUGNZZlS2wOG6IyJlsyzLHJnBXOUFN6L5Q
- a4rFjAR9fTqnL6J63RtWe+aMAbOUyVbHfxe4+rL7Gdmxyz7obAjapP3ddcFFWG4CaESQcvHMtbA
- OCkRxIu0NKU1EKWp3Hsii1RQdDpfusg/cD2EPZ2Rtr4CcU5gtLAcqmhg+Wjve8RM6fIkX+VDOTF
- SRoN766nuq+1mFz29ZClZZoQ+aThRqfhMsy9MLWlSIdR5qTNZhvNbWA51VZuGkA13QmCMVgPNvo
- oslsdJwXkjxBo79+7gHPIH4uyziKRnzFrQFJU5D8psg01/dk53JA5fpEfCO2t641BBs4k+UlFI4
- 7lAGFNpuPXlinUVPppN3eR3h5T6Y/PXJaaWYifsJ/5/st6flxdfEWDpK+pDEVFRlXKoM+gLJT6z
- DS6e6Nx97Ekm7DmRYJE2+pcxdf3xYjfhrqJ+4ZlTf2u84A7XC2sFrUlDF+oUhpdvQhgKp+
-X-Received: by 2002:a05:6122:130c:b0:56f:a0c1:2517 with SMTP id
- 71dfb90a1353d-56fa67104e9mr360263e0c.8.1776399214123; 
- Thu, 16 Apr 2026 21:13:34 -0700 (PDT)
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com.
- [209.85.217.52]) by smtp.gmail.com with ESMTPSA id
- 71dfb90a1353d-56fa92f22a4sm226361e0c.12.2026.04.16.21.13.33
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Apr 2026 21:13:33 -0700 (PDT)
-Received: by mail-vs1-f52.google.com with SMTP id
- ada2fe7eead31-6058a955e04so205282137.0
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2026 21:13:33 -0700 (PDT)
-X-Received: by 2002:a05:6102:5e94:b0:610:347f:9f3b with SMTP id
- ada2fe7eead31-616fb8a0537mr377875137.3.1776399212663; Thu, 16 Apr 2026
- 21:13:32 -0700 (PDT)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 73FB610E28C;
+	Fri, 17 Apr 2026 04:16:33 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D68A210E28C;
+ Fri, 17 Apr 2026 04:16:20 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7257179363486013931=="
 MIME-Version: 1.0
-References: <20260330032205.467130-1-jason-jh.lin@mediatek.com>
- <20260330032205.467130-3-jason-jh.lin@mediatek.com>
-In-Reply-To: <20260330032205.467130-3-jason-jh.lin@mediatek.com>
-From: Fei Shao <fshao@chromium.org>
-Date: Fri, 17 Apr 2026 12:12:56 +0800
-X-Gmail-Original-Message-ID: <CAC=S1ngoriNOHz_8m3Z_CZ8ZL0D-oUKTsSoD_c2z6q4T3fo65w@mail.gmail.com>
-X-Gm-Features: AQROBzBaoOZjUA4CRxFOiTZpfcQTPPCw11AeR7gSDrAT-Q70k44tCNVua8Tctaw
-Message-ID: <CAC=S1ngoriNOHz_8m3Z_CZ8ZL0D-oUKTsSoD_c2z6q4T3fo65w@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v5 2/3] tests/kms_content_protection: Pass crtc
- parameter and use per-CRTC FBs
-To: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>, 
- Swati Sharma <swati2.sharma@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>, Jani <jani.nikula@intel.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>, Nancy Lin <nancy.lin@mediatek.com>, 
- Singo Chang <singo.chang@mediatek.com>, Gil Dekel <gildekel@google.com>, 
- Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/xe/oa=3A_Add_support_fo?=
+ =?utf-8?q?r_192B=5FMPEC8LL=5FNOA16_OAM_format_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 17 Apr 2026 04:16:20 -0000
+Message-ID: <177639938086.471030.4335770768665133312@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260417033334.933419-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20260417033334.933419-1-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,23 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Mar 30, 2026 at 11:22=E2=80=AFAM Jason-JH Lin <jason-jh.lin@mediate=
-k.com> wrote:
->
-> Refactor functions to accept crtc parameter and use per-CRTC
-> framebuffers (data.fbs[crtc->crtc_index]).
->
-> Modified: modeset_with_fb(), test_cp_enable/disable(),
-> test_cp_enable_with_retry(), test_mst_cp_disable(),
-> prepare_modeset_on_mst_output(), test_fini(),
-> test_content_protection_cleanup().
->
-> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-> ---
->  tests/kms_content_protection.c | 74 ++++++++++++++++++++--------------
->  1 file changed, 43 insertions(+), 31 deletions(-)
+--===============7257179363486013931==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Fei Shao <fshao@chromium.org>
+== Series Details ==
+
+Series: lib/xe/oa: Add support for 192B_MPEC8LL_NOA16 OAM format (rev3)
+URL   : https://patchwork.freedesktop.org/series/164949/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8863_BAT -> XEIGTPW_15006_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8863 -> IGTPW_15006
+  * Linux: xe-4917-ff84b38d86b994ebb03d940be1c73a63e231f454 -> xe-4919-3b9ca4c40814c96c38986ae2ba6651e43757ca5f
+
+  IGTPW_15006: 9854ea8994244d65a9dcb98222429fcd3521856e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8863: 5b279a8b71dc1672099205a1a9e8135c7c7fadb5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4917-ff84b38d86b994ebb03d940be1c73a63e231f454: ff84b38d86b994ebb03d940be1c73a63e231f454
+  xe-4919-3b9ca4c40814c96c38986ae2ba6651e43757ca5f: 3b9ca4c40814c96c38986ae2ba6651e43757ca5f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15006/index.html
+
+--===============7257179363486013931==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/xe/oa: Add support for 192B_MPEC8LL_NOA16 OAM format (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164949/">https://patchwork.freedesktop.org/series/164949/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15006/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15006/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8863_BAT -&gt; XEIGTPW_15006_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8863 -&gt; IGTPW_15006</li>
+<li>Linux: xe-4917-ff84b38d86b994ebb03d940be1c73a63e231f454 -&gt; xe-4919-3b9ca4c40814c96c38986ae2ba6651e43757ca5f</li>
+</ul>
+<p>IGTPW_15006: 9854ea8994244d65a9dcb98222429fcd3521856e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8863: 5b279a8b71dc1672099205a1a9e8135c7c7fadb5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4917-ff84b38d86b994ebb03d940be1c73a63e231f454: ff84b38d86b994ebb03d940be1c73a63e231f454<br />
+  xe-4919-3b9ca4c40814c96c38986ae2ba6651e43757ca5f: 3b9ca4c40814c96c38986ae2ba6651e43757ca5f</p>
+
+</body>
+</html>
+
+--===============7257179363486013931==--
