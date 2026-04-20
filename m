@@ -4,52 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 006EBF588F2
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 16:50:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 177A4F5A8A5
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 18:13:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 95BE210E0C6;
-	Mon, 20 Apr 2026 16:50:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B839010EB07;
+	Mon, 20 Apr 2026 18:13:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="iBqXY+ou";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="isj6gMcU";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE2C110E0C6
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 16:49:55 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 757C24E42A74;
- Mon, 20 Apr 2026 16:49:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 4CBFC5FFA5;
- Mon, 20 Apr 2026 16:49:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 4C10410460A04; 
- Mon, 20 Apr 2026 18:49:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1776703793; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=I8EeMuNiVE21WaW4b/FVtIcH+sn+qJeo3X1auKYi8rI=;
- b=iBqXY+oubTLAknKXXOgHVpN6bXlzR2/AF4CMdXpIo1ROvtZXZu2nghwuvM7+7NB5VYysq0
- pejJcCf0HeDHWnBkAjQWp9iWNZm18ORr3e43Ch+Fxw3K9x9lL46ufDt7i1TDvQxtMdA7EZ
- kycPUuoy1reswReb7xOjkVSIjj61gB18px4vXAvh2U+B9lgfhlNfp0m8ZyvnXq3V6t+Vwk
- SUa2Ic36mQVqPkcjsqRd+C8/rpi4rD9BLV8aUmQaZAaCs2wZjMPZS2FTgyRZtDru1ccT+7
- HQmGw9Aj7ltFXQvv/0ixgOqSOQc+e64YV7AG2YStiXcSpZ9IrCDwqlRErmPUig==
-Date: Mon, 20 Apr 2026 18:49:51 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
- luca.ceresoli@bootlin.com, markyacoub@google.com,
- khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v10 31/49] tests/unigraf: Add basic unigraf tests
-Message-ID: <20260420184951.0adfd89c@kmaincent-XPS-13-7390>
-In-Reply-To: <20260331-unigraf-integration-v10-31-12266c34cc1d@bootlin.com>
-References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
- <20260331-unigraf-integration-v10-31-12266c34cc1d@bootlin.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B331010EB07
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 18:12:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1776708772; x=1808244772;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=MnZj7hDpqmHcpBXCYVuam2QdzRVKw8ZHQRFKJmvkb3E=;
+ b=isj6gMcUL9Iq/qE7/VNzpRyGH9Y5Qzrf/TVk5vMUVuinSb2gV+ZM/n8b
+ /KDiKFVBPBBV0yULW7WQckMeFbJGziM7n377pwXZjoYdd37PDqPuOW73P
+ GSTUKAD+7EYHrSSceYBiAPX9f9nREvijIn9iecGiV7nR5BAenu4VsMHy+
+ LESZjz43fHqjEgoVwp+x3o0efy1aWoF6ZucVxouFhHSVdv98OLnIkvzrH
+ yjXDOqePuE7cBqmsL/VoDqckLt1k0NqEBDaZnIOEIA5rFaBxLrqbVIjxr
+ mtvAedg59ubJenwwQsDDN9zAApnxzaBDvmgyn8bxg25QZWpgpZgB2Kgc7 w==;
+X-CSE-ConnectionGUID: kkti0qD6RiW1MbnvD8aOdw==
+X-CSE-MsgGUID: CBMefMUnTPiKBM09q7mcKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="88332959"
+X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; d="scan'208";a="88332959"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Apr 2026 11:12:51 -0700
+X-CSE-ConnectionGUID: A63zYbTwQoaBdn8fIY7QCQ==
+X-CSE-MsgGUID: XEvwHITFRqy49wGCwQAMgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; d="scan'208";a="231668551"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 11:12:50 -0700
+Date: Mon, 20 Apr 2026 20:12:32 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH] tests/intel: ctx_restore rollback on invalid input
+Message-ID: <20260420181232.66b6rti7gerai7p7@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260420063816.1054855-1-smitha.balasubramanyam@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260420063816.1054855-1-smitha.balasubramanyam@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,164 +70,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 31 Mar 2026 19:11:48 +0200
-Louis Chauvet <louis.chauvet@bootlin.com> wrote:
+Hi Smitha,
+On 2026-04-20 at 12:08:16 +0530, Smitha Balasubramanyam wrote:
+> Add a test vector with a partially invalid second command in the
+> ctx_restore_*_bb invalid-case suite to ensure a malformed multi-line
+> BB is rejected and the stored BB remains empty (rollback).
+> 
+> Replaced the hardcoded "ctx_restore_post_bb" write with the computed
+> file name ("ctx_restore_%s_bb") in test_ctx_restore_invalid so the
+> invalid-case tests work for both "post" and "mid" variants.
+> 
+> Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+> ---
+>  tests/intel/xe_configfs.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+> index 755524e7c..97ea95da8 100644
+> --- a/tests/intel/xe_configfs.c
+> +++ b/tests/intel/xe_configfs.c
+> @@ -225,12 +225,16 @@ static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
+>  		{ .test = "invalid-engine-instance",
+>  		  .in = "rcs0 reg 4F100 DEADBEEF",
+>  		},
+> +		{ .test = "invalid-second-command",
+> +			.in = "rcs cmd 11000001 4F100 DEADBEEF\n"
 
-> Adds two tests to validate unigraf communication.
->=20
-> unigraf-connect checks if the device is connected and if the EDID is
-> properly applied.
->=20
-> ungiraf-reconnect checks if the device can be connected/reconnected
-> using SST and MST configurations.
->=20
+Keep it aligned to '.test' above.
 
-Only nitpicking here.
+> +				"rcs cmd 11000001 4F10G DEADBEEF",
 
-With these fixed you can add my Rd-by.
+Align this to previous string.
 
-...
+> +		},
+>  	};
+>  	char buf[4096] = { };
+>  	char file[64] = { };
+>  
+>  	snprintf(file, sizeof(file), "ctx_restore_%s_bb", type);
+> -	igt_sysfs_set(configfs_device_fd, "ctx_restore_post_bb", "");
+> +	igt_sysfs_set(configfs_device_fd, file, "");
 
-> +int igt_main()
-> +{
-> +	int drm_fd;
-> +
-> +	igt_fixture() {
-> +		drm_fd =3D drm_open_driver_master(DRIVER_ANY);
-> +	}
-> +
-> +	igt_describe("Make sure that the unigraf device is connected to the
-> DUT and EDID is properly detected");
-> +	igt_subtest("unigraf-connect-edid") {
-> +		drmModePropertyBlobPtr edid_blob =3D NULL;
-> +		struct igt_display display;
-> +		uint64_t edid_blob_id;
-> +		igt_output_t *output;
-> +		uint32_t unigraf_edid_len;
-> +		void *unigraf_edid;
-> +		bool found =3D false;
-> +
-> +		/*
-> +		 * Sleep are required to allow hardware to configure/detect
-> the current
-> +		 * configuration
-> +		 */
-> +		unigraf_require_device(drm_fd);
-> +		unigraf_hpd_deassert();
-> +		sleep(igt_default_display_detect_timeout());
-> +		unigraf_set_sst();
-> +		unigraf_hpd_assert();
-> +		sleep(igt_default_display_detect_timeout());
-> +		igt_display_require(&display, drm_fd);
-> +		sleep(igt_default_display_detect_timeout());
-> +
-> +		unigraf_edid =3D unigraf_read_edid(0, &unigraf_edid_len);
-> +
-> +		for_each_connected_output(&display, output) {
-> +			if (output->config.connector->connector_type =3D=3D
-> +			    DRM_MODE_CONNECTOR_DisplayPort) {
+Please send a fix as a separate patch with a proper Fixes: tag.
 
-Will there be other connector type check added in the future?
-Else you could simply do:=20
-if (output->config.connector->connector_type !=3D DRM_MODE_CONNECTOR_Displa=
-yPort)
-	continue;
+Regards,
+Kamil
 
-> +				igt_assert(kmstest_get_property(drm_fd,
-> +
-> output->config.connector->connector_id,
-> +
-> DRM_MODE_OBJECT_CONNECTOR, "EDID",
-> +								NULL,
-> &edid_blob_id, NULL));
-> +				edid_blob =3D drmModeGetPropertyBlob(drm_fd,
-> edid_blob_id);
-> +				if (!edid_blob)
-> +					continue;
-> +
-> +				if (!memcmp(unigraf_edid, edid_blob->data,
-> +					    min(edid_blob->length,
-> unigraf_edid_len)))
-> +					found =3D true;
-> +
-> +				drmModeFreePropertyBlob(edid_blob);
-> +
-> +				if (found)
-> +					break;
-> +			}
-> +		}
-> +		igt_assert_f(found, "No output with the correct EDID was
-> found\n"); +
-> +		free(unigraf_edid);
-> +	}
-> +
-> +	igt_describe("Make sure that the unigraf device can be used as a MST
-> device");
-> +	igt_subtest("unigraf-connect-mst") {
-> +		int newly_connected_count, already_connected_count, diff_len;
-> +		uint32_t *newly_connected =3D NULL, *already_connected =3D NULL,
-> *diff =3D NULL;
-> +		int max_count;
-> +
-> +		unigraf_require_device(drm_fd);
-> +		max_count =3D unigraf_get_mst_stream_max_count();
-> +
-> +		unigraf_hpd_deassert();
-> +
-> +		already_connected_count =3D
-> igt_get_connected_connectors(drm_fd, &already_connected); +
-> +		igt_debug("Already connected count: %d\n",
-> already_connected_count); +
-> +		// i =3D 0 is SST so we need to process max_count + 1 streams
-
-/* ... */
-I don't know the igt rules but in kernel /* ... */ is preferable.
-
-> +		for (int i =3D 0; i <=3D max_count; i++) {
-> +			unigraf_hpd_deassert();
-> +			// Let the hardware detect the new state
-
-Same.
-
-> +			sleep(igt_default_display_detect_timeout());
-> +
-> +			unigraf_set_mst_stream_count(max(i, 1));
-> +			if (!i)
-> +				unigraf_set_sst();
-> +			else
-> +				unigraf_set_mst();
-> +
-> +			unigraf_hpd_assert();
-> +			// Let the hardware detect the new state
-
-Same
-
-> +			sleep(igt_default_display_detect_timeout());
-> +
-> +			newly_connected_count =3D
-> kms_wait_for_new_connectors(&newly_connected,
-> +
-> already_connected,
-> +
-> already_connected_count,
-> +
-> drm_fd); +
-> +			diff_len =3D get_array_diff(newly_connected,
-> newly_connected_count,
-> +						  already_connected,
-> already_connected_count, &diff); +
-> +			igt_assert_f(diff_len =3D=3D max(i, 1),
-> +				     "Invalid connected connector count,
-> expected %d found %d\n",
-> +				     max(i, 1), diff_len);
-> +		}
-> +	}
-> +}
->=20
-
-
-
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+>  
+>  	/*
+>  	 * These only test if command parsing is correct,
+> -- 
+> 2.43.0
+> 
