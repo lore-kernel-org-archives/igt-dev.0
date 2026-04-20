@@ -4,150 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B26CEF99C86
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 05:40:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55E4FFC72A4
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 06:16:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4696910E421;
-	Mon, 20 Apr 2026 05:40:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EEBEF10E0DC;
+	Mon, 20 Apr 2026 06:16:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hwk0br6s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jDFJQvHR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48C7710E421
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 05:40:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0EE310E0DC
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 06:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776663631; x=1808199631;
- h=from:to:subject:date:message-id:references:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=luxSOUWJFi/K+8pxKX/AjV/er0gVVNld31K6apPnsCI=;
- b=Hwk0br6sAHZl1AmaTdC7ievWCtoUvj1mfB2XOvsSZjemT75c8eNab0GP
- ti8UU9KRyWcd5ct3hDXpSrJvPKFN5qjenT1IkywAT81fXGx8/ihIt7Ctn
- Sg3h8Gg818EfRZdPOMeCSQfs4LZtGuAXC/kGLjUjSW3T7x85rPTE/VIIP
- SmMgnCA5PyibRkhSesH6jAFQMzU1ikX9Vuow3bIPyG0b2X1Vlfio6+g0N
- 91LsdTRgdXJQ8MidQAZfWnqUfKq34GWdMnAvDE0q31eSpXnP+EaRagvrR
- cAvXT7JWhtIf8rmnkhLr7GEubGd8k53ZFG9Yu8uGCQyfVt9jKkyBTBBJ/ A==;
-X-CSE-ConnectionGUID: Dkb6ZujtTeCiyobX4Z+SLQ==
-X-CSE-MsgGUID: wYuDjQX4RkGL6Pcay+irzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="88268959"
-X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="88268959"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Apr 2026 22:40:31 -0700
-X-CSE-ConnectionGUID: IwLFVyoMStWXACWOFMJNGg==
-X-CSE-MsgGUID: eQSIzN11S9CTOPu75xuiug==
+ t=1776665785; x=1808201785;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=YJ+6ma/Ebn03fJRciahEfd0ZJjZp4QyDj8suxRHySIY=;
+ b=jDFJQvHRHsT1nYjA1Ans1IYwuyMYrCXS4o8JaBH5zFfycZ7G6rT3b82s
+ IM4O2NRPwvAz6uQFhTmD252zEbGb8AV8tXCGGcHVEI4mH636onbIuPZP1
+ Llw8Btw2VTiZcHkW13Ubr54RKVuI+8FrfCd5olG8lmUk2H3TK//4nVO7f
+ xDYT2MJFHOIm/EJPx6eKRQ9hRv1E+hFYK6jevHc450YY8gUdN55mC5Y/m
+ Ox19W8+uKYKazB9XHA7IeGU2tnYpoUKRGHWC6Rfdtb21lnw6UWD8sVhA6
+ 6OPv8ZKyKaM2y04SjHiI50hMsFQu8XaLtS9eHmuUWI7dYnk5Uq/jF9sbX g==;
+X-CSE-ConnectionGUID: qUvSSK9xSl6pU63jsPxY8w==
+X-CSE-MsgGUID: gi+T0JGfSryWTaTixRMfOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="100232033"
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="100232033"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Apr 2026 23:16:24 -0700
+X-CSE-ConnectionGUID: ryvUQPHfQ0S4J7mDezI/Cg==
+X-CSE-MsgGUID: X0sbedPrSoWDb6HO85Q8Mw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="228470824"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Apr 2026 22:40:31 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 19 Apr 2026 22:40:30 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Sun, 19 Apr 2026 22:40:30 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.9) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 19 Apr 2026 22:40:30 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TgpsLbc+enOItyQY9/1eYBz+6S85idj47fKLncuNSQRmmBIFOD7YkKFh12ECU+QvUVZe6hFwNsXZv7lb/plYYOhqpWR462K4voR707aGc18qW9DBWcgrsvVxs0PyaWbEGaj18vO3TSTDYJUdya8rodPhekaUTW9MgwiPVrc6Wci8N8+ZwAB7alcNbnwl6tB4wVDH801B1Mq6D4qGMVhj5iGMeh7m93WOEc5ItkruBWCPKmfGHvZdhS22bzS/6w3Cly777oFd64m6qqU76cbjMXvCZL9MITyUfCp+5lMSV3w8Os03dpMcfA3DCTLKfuTXh8jLNUEPp/F4QCh6NoSYIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VdXxQ5aTFgL4OfalzRDxK+idWnGS7GCZmslGcE2Hgp0=;
- b=gA7m6lwmjejuGbmgiobG7MLytoUBJr9zh3XxhQzU2nVn48RaRT5yrs3hKbP4gFCI99AuQ2VUpMcHhUmpReY8Dd3rwEipJVEXa5IkPm+3TiZNGW6tUqsBwRcS1RHKvnoDCswKGCk3v878I8piEslDVb1bRIjPvhuLq6Nk2wlubUSu4oaAUq+MTm2UZwQhhNnW/KEJqRlZWrCGcrnB+h9KP4I/JqUZuhK0MsHw8oWpAHs6muMOnilWxSWCZFIg8dyuZXelYuncaVM009oRCTWFSqBP+As2F2odA5QrQy1VWIbhesCul5qobM0dWPWSPCnJ3p8dNGEkNSuzu0cWtNRIOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
- by CH3PR11MB7297.namprd11.prod.outlook.com (2603:10b6:610:140::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.15; Mon, 20 Apr
- 2026 05:40:22 +0000
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::3e15:8d62:5e58:a513]) by PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::3e15:8d62:5e58:a513%2]) with mapi id 15.20.9846.012; Mon, 20 Apr 2026
- 05:40:22 +0000
-From: "Samala, Pranay" <pranay.samala@intel.com>
-To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH i-g-t v3 4/4] tests/intel/kms_pm_dc: Scope PSR handling to
- output
-Thread-Topic: [PATCH i-g-t v3 4/4] tests/intel/kms_pm_dc: Scope PSR handling
- to output
-Thread-Index: AQHczVToosJAu6hfiUuB8qiErgTKH7XndJ7A
-Date: Mon, 20 Apr 2026 05:40:22 +0000
-Message-ID: <PH7PR11MB60532A99FBB7D6D5DA397FD3E72F2@PH7PR11MB6053.namprd11.prod.outlook.com>
-References: <20260416035333.69004-1-jeevan.b@intel.com>
- <20260416035333.69004-5-jeevan.b@intel.com>
-In-Reply-To: <20260416035333.69004-5-jeevan.b@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|CH3PR11MB7297:EE_
-x-ms-office365-filtering-correlation-id: c0b42760-1527-4a6b-26cf-08de9e9f50d2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: IDFitPj5YnQ/Zkt4vldLzM/3MyPDLJbvMx1sda2lsD+p2U09meNVb14MPzUbQWtUopO4yBfnIoUkz+Z1Ckawm4A207vBa+G1aeAifLiCAdt1X++/iPvVIngidZ9qY5lgil0JZy02UTHqup4XsEY8iUqaDuUCWpf89VieeYO0ldZCvD4CQm+dR3/MmzrCC78gR0NPqEKYa6Fv3escJPIlNXz3bLn0CnlO/cBA2Abuq+5GYeubalpT/2ncxnZIq/EVb6vsE13FfwW2U8nXo3UJZF5lyVGWlq2Nk8gK5TtHoM1de3i4jUZU0cmWr11rhFDvEoppz0f8dlwvS3hcHY0OmQ67uvbLu7Ik+x1YyrJfk+ph/XRQAnqVnwqGzTtPJY7wp85p3py93gCI6+vfTz0VSBen96nFt7J6pNk/X1e+OeCSgSDOcKACQtZF7JylN2cs8tE4rwhDjCks/q6lZf9rmpdS+DwnZsd2QuWc+FmCYC36ECPqyNTB/BH83TFwg6QuXSKd9J6jpS4z+1f97njZU206svd/UWP74hjy9RLDcTQioujzQWwAffOUUwIy1pBTWHpnsBs0/gINlXIFKu9UdWwJSlHTn5l6UDJr0nkkmaJuvhrpgx4iFHu6F0UmNfLrpk3nTfwY3Pk3NJxnWBBDQ/VdqQIY1gSt/HgsOONCKCJDnKy+77Q/o9Pe6zr2WZ11Iw2HSC9NGFseo7lgBkX/UwkCWGKYZyqQak5B6wTMZo5/K7r25HvAjao5ebeFBeEbfttjYwelEpioVpeynHgaTXmWctQ9PlaNmEvaBG3UGGc=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(56012099003)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?jtNX3pIzbICpLePjKUbjl+3rSZek+/jVNbY/dRZTFgpSbKSWhfUfnaNZD/X8?=
- =?us-ascii?Q?p3Pae3RYVTs2iv5JXvJrhoxLe747AiCWhoh8P4D+bI6rL5SY9THdqFDyev8O?=
- =?us-ascii?Q?uS2pt93B6fHmG/1HmBtzCiuIRQ55VhW5j/b40G0j/RHAkgUQm8FR+amdw6jE?=
- =?us-ascii?Q?OHxvdR9PgaykDNBEm0GnFefPD2wIGYtGb4RieALOL1EKI6XGmH+X4kbpgt56?=
- =?us-ascii?Q?0Ul9YngBuemVCzwHE3d+f8TErQZdTsjCWERmFy5Zq+Q1z2j0P95JOfKqqz1X?=
- =?us-ascii?Q?cmANj8oinZ+eiy/JJdqD7XY4nlsKoLgaNlsykft52GpbZutm00VhGc8BnF9T?=
- =?us-ascii?Q?gb0DoB1YjmCqJzs+blVvz36Bj6yH3OHauoDJKXl9q7Fzvs88gqRgTBksou5m?=
- =?us-ascii?Q?ZM6g27ZM+ec6KU15Iay00Zh/2k67Stsd3Wxd6VCruCdfB3aE1/lxMtaFIJto?=
- =?us-ascii?Q?kaJFteOsdarrnBUjAmfhNqmh8aODfLRjBd8qE7Ff0mDI5nyVEOZbQWuwsJns?=
- =?us-ascii?Q?KwHUEBZydeUU1Kr0UVN0PXKI3vuvSdl1n9Zxz1hDEN9v0V0A4s5OBYTrg+4T?=
- =?us-ascii?Q?e5gZlDl8sU4Ee651b3ne2XWfdEG571sZYCR5BeuV48NmiO5DIczqv2asyQ8G?=
- =?us-ascii?Q?X0OQexJ2hWdG7T3v6umiryKb2cwJKEGRuPMJR6c/IzD2Hi9T5ZhyS50VMNR3?=
- =?us-ascii?Q?pXw7f+TRWQPNJB47pEUzzXS8my18N85Xv2kNAcZLgA2KebpaWpz4+sKfELqc?=
- =?us-ascii?Q?I1haJkkDN7R6k3Es56VXnbLMZIJW2TmtMszaidWWdEeItWjcSyWvzVpK64lG?=
- =?us-ascii?Q?Tt5dCbJuEzyWV8m97Suzcid2Cy8IO2dn6IeI9PzrNiTc/jbulNG7QGJDpqPn?=
- =?us-ascii?Q?whFNb3Nrr1xvAcRM49X2+1irSmz4aT3I0N/iggSdHWgdLRm53ONDk6gWTXaA?=
- =?us-ascii?Q?CmtW6pSLaZqisF9ZajZ9Ahug//Pr5Rfna589Wjid39j0l+SKZ2ZjfMTqV3Er?=
- =?us-ascii?Q?nvcLcqnd5IKeoTlH3VEP9IG49UlnCEuXHM0dOegXxKfBEIAlnXeqOI6Zd0N+?=
- =?us-ascii?Q?XGRqyMB39bG32G+DVvwpfHLn+ya+//QYBY0+IAmQP1ro0t3saxpq0YV/xNil?=
- =?us-ascii?Q?ibwDuhLFKIpveKPZVLWjQQfTd5xbco4VBm7BZlOrywpPXsALNw6A0EkFHyhS?=
- =?us-ascii?Q?X2LdbDHw43S+ZMV5vNS/Kc9cbhHU8ctgVTxyDPkwCPOcuJEgiSIhT+5NZiKx?=
- =?us-ascii?Q?KebDgfmlHPgdddqzoUm4m7y/BlZycZRyqteg1uIPkjHT1UgMVSszXEtSvJ2E?=
- =?us-ascii?Q?3YAREPNALmzdv70sLG7Nxt0Sc2kCE+3v34zhiAyjlyuiB9pSDQj0O9/VV3PW?=
- =?us-ascii?Q?0DJtaoNeFYg0b32GYNPWRHyhjV1QSKRJLuCtuyS896YvD1vl4CJ5prdlKzot?=
- =?us-ascii?Q?SxdrVPrgPwBLv0HfN8dI+0/a2ZSjG3cmYsFgzH3YrYL2vjAJ7dC2AxUSj4kH?=
- =?us-ascii?Q?3rXuRHZYcqKAUENcSbQnGFt9D/ZxTmp9koH1zOpW5l+N4GiEHnNlJqu3BVQF?=
- =?us-ascii?Q?YeGASACw7P/UqZrk0NPQ8cNjEI/Yo0OYCj/01vKdEd+ig7Pybp/SX7EvE1yQ?=
- =?us-ascii?Q?fChdAQesVvV+V/2G6VKjENufK/eoexODEGSz3QeSYA2SuDZXCDn33Ht340cw?=
- =?us-ascii?Q?DQeN5a24OMtwczinAvwRpV00aPOEGJ+tnfX+HjEAaqkXSUE+vVH0MDdttspf?=
- =?us-ascii?Q?5YBME4jPKQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="255111848"
+Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Apr 2026 23:16:22 -0700
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: pranay.samala@intel.com, Karthik B S <karthik.b.s@intel.com>,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t v3] tests/kms_bw: Allow custom modes for external panels
+Date: Mon, 20 Apr 2026 11:42:31 +0530
+Message-ID: <20260420061231.1952346-1-karthik.b.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: f0RUiop5BHV1oYmr3Uyf9SjTVTlcSk6WasImG2iY+9yrIUyDflKzqBv3bFA8BZ2JiXqrN96Y9haY9bvwEfzdS1cgnBkZE4cuTgKvpdg9N1b4YevJyVFYAvbO3XL2g6fSNCuECX3hQUNFAODUl4/kHhjjEHyZNmeGF7lOVkxoWpnZYWS9axBom7N4bX7+IYBVX3GNUuabpAH+Zq/MVFDBmPadZamt3gYzAoJtwx5gdStxJWugzFT2RMOwpw7XsJdURMWTwRdtIruCci9ZlioFbs7B/BNGv8IyeyXzmPMSEl74/0+y28yvfYHfizFbqvnuCH/MBjCsaDDg1jxUh5v5YQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0b42760-1527-4a6b-26cf-08de9e9f50d2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Apr 2026 05:40:22.5874 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Zqa7GkHC3fPfP+zABn6zj5d6svUxlMPSacUv1pevN5iyxuu2CQb70Ydn63NHirfhGqvnZzBJSK3EmDZNHSnWfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7297
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -163,151 +67,207 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevan,
+Currently, the test is rejecting outputs where the mode does not match.
+This is leading to excessive skips on configs where the tests
+were passing previously.
 
-> -----Original Message-----
-> From: B, Jeevan <jeevan.b@intel.com>
-> Sent: Thursday, April 16, 2026 9:24 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Samala, Pranay <pranay.samala@intel.com>; B, Jeevan
-> <jeevan.b@intel.com>
-> Subject: [PATCH i-g-t v3 4/4] tests/intel/kms_pm_dc: Scope PSR handling t=
-o
-> output
->=20
-> Stop using global PSR checks by passing NULL to PSR helpers.
-> Select a PSR-capable eDP output and scope PSR enablement and verification
-> to that output.
->=20
-> This fixes incorrect behavior on multi-eDP systems where PSR capability
-> differs across panels.
->=20
-> v2: Keep op_psr_mode assignment explicit per subtest.
->=20
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  tests/intel/kms_pm_dc.c | 28 ++++++++++++++++------------
->  1 file changed, 16 insertions(+), 12 deletions(-)
->=20
-> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c index
-> 8138933d4..423a5c4a4 100644
-> --- a/tests/intel/kms_pm_dc.c
-> +++ b/tests/intel/kms_pm_dc.c
-> @@ -162,6 +162,10 @@ static void setup_output(data_t *data)
->  		if (c->connector_type !=3D DRM_MODE_CONNECTOR_eDP)
->  			continue;
->=20
-> +		if (!psr_sink_support(data->drm_fd, data->debugfs_fd,
-> +				      data->op_psr_mode, output))
-> +			continue;
-> +
->  		igt_output_set_crtc(output, crtc);
->  		data->output =3D output;
->  		data->mode =3D igt_output_get_mode(output); @@ -318,9
-> +322,8 @@ static void check_dc3co_with_videoplayback_like_load(data_t
-> *data)
->=20
->  static void setup_dc3co(data_t *data)
->  {
-> -	data->op_psr_mode =3D PSR_MODE_2;
-> -	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode,
-> NULL);
-> -	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode,
-> NULL),
-> +	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode,
-> data->output);
-> +	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode,
-> +data->output),
->  		      "PSR2 is not enabled\n");
->  }
->=20
-> @@ -342,7 +345,7 @@ static void test_dc5_retention_flops(data_t *data, in=
-t
-> dc_flag)
->  	dc_counter_before_psr =3D igt_read_dc_counter(data->debugfs_fd,
-> dc_flag);
->  	set_output_on_pipe_b(data);
->  	setup_primary(data);
-> -	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode,
-> NULL));
-> +	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode,
-> +data->output));
->  	check_dc_counter(data, dc_flag, dc_counter_before_psr);
->  	cleanup_dc_psr(data);
->  }
-> @@ -356,7 +359,7 @@ static void test_dc_state_psr(data_t *data, int
-> dc_flag)
->  	setup_output(data);
->  	setup_primary(data);
->  	igt_require(!psr_disabled_check(data->debugfs_fd));
-> -	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode,
-> NULL));
-> +	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode,
-> +data->output));
->  	check_dc_counter(data, dc_flag, dc_counter_before_psr);
->  	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data-
-> >output);
->  	cleanup_dc_psr(data);
-> @@ -658,17 +661,18 @@ int igt_main()
->  	igt_describe("In this test we make sure that system enters DC3CO "
->  		     "when PSR2 is active and system is in SLEEP state");
->  	igt_subtest("dc3co-vpb-simulation") {
+Instead of this, use default mode for fixed-mode panels if the required
+custom mode is not found, and use custom mode for external panels as
+these are allowed and have also been passing previously.
 
-Please add the below changes intent to commit message also.
-Apart from this, changes LGTM.
-Reviewed-by: Pranay Samala <pranay.samala@intel.com>
+v2: Fixes in output_supported_mode (Kunal)
+    Add description to call out fixed-mode on internal panels (Kunal)
 
-Regards,
-Pranay
+v3: Fix documentation issue on compilation.
 
-> +		data.op_psr_mode =3D PSR_MODE_2;
->  		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-> -					     PSR_MODE_2, NULL));
-> +					     data.op_psr_mode, NULL));
->  		test_dc3co_vpb_simulation(&data);
->  	}
->=20
->  	igt_describe("This test validates display engine entry to DC5 state "
->  		     "while PSR is active");
->  	igt_subtest("dc5-psr") {
-> -		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-> -					     PSR_MODE_1, NULL));
->  		data.op_psr_mode =3D PSR_MODE_1;
-> +		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-> +					     data.op_psr_mode, NULL));
->  		psr_enable(data.drm_fd, data.debugfs_fd,
-> data.op_psr_mode, NULL);
->  		test_dc_state_psr(&data, IGT_INTEL_CHECK_DC5);
->  	}
-> @@ -676,9 +680,9 @@ int igt_main()
->  	igt_describe("This test validates display engine entry to DC6 state "
->  		     "while PSR is active");
->  	igt_subtest("dc6-psr") {
-> -		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-> -					     PSR_MODE_1, NULL));
->  		data.op_psr_mode =3D PSR_MODE_1;
-> +		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-> +					     data.op_psr_mode, NULL));
->  		psr_enable(data.drm_fd, data.debugfs_fd,
-> data.op_psr_mode, NULL);
->=20
-> 	igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
->  			      "PC8+ residencies not supported\n"); @@ -703,11
-> +707,11 @@ int igt_main()
->  	igt_describe("This test validates display engine entry to DC5 state "
->  		     "while PSR is active on Pipe B");
->  	igt_subtest("dc5-retention-flops") {
-> +		data.op_psr_mode =3D PSR_MODE_1;
->  		igt_require_f(intel_display_ver(data.devid) >=3D 30,
->  			      "Test not supported on this platform.\n");
->  		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-> -					     PSR_MODE_1, NULL));
-> -		data.op_psr_mode =3D PSR_MODE_1;
-> +					     data.op_psr_mode, NULL));
->  		psr_enable(data.drm_fd, data.debugfs_fd,
-> data.op_psr_mode, NULL);
->  		igt_require(!psr_disabled_check(data.debugfs_fd));
->  		test_dc5_retention_flops(&data, IGT_INTEL_CHECK_DC5);
-> --
-> 2.43.0
+Cc: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+Tested-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+---
+ tests/kms_bw.c | 82 +++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 58 insertions(+), 24 deletions(-)
+
+diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+index 4df5c2cee..fea7d9d38 100644
+--- a/tests/kms_bw.c
++++ b/tests/kms_bw.c
+@@ -35,7 +35,7 @@
+ #include <xf86drmMode.h>
+ 
+ /**
+- * SUBTEST: linear-tiling-%d-displays-%s
++ * SUBTEST: linear-tiling-%d-displays-target-%s
+  * Description: bw test with %arg[2]
+  *
+  * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+@@ -47,7 +47,7 @@
+  * @3840x2160p:       3840x2160 resolution
+  * @2160x1440p:       2160x1440 resolution
+  *
+- * SUBTEST: connected-linear-tiling-%d-displays-%s
++ * SUBTEST: connected-linear-tiling-%d-displays-target-%s
+  * Description: bw test with %arg[2]
+  *
+  * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+@@ -186,14 +186,16 @@ static void force_output_mode(data_t *d, igt_output_t *output,
+ 	igt_output_override_mode(output, mode);
+ }
+ 
+-static bool output_mode_supported(igt_output_t *output, const drmModeModeInfo *mode)
++/* Check if output has a matching mode and call it out if mode is being forced */
++static void log_output_mode_support(igt_output_t *output, const drmModeModeInfo *mode)
+ {
+ 	drmModeConnector *connector = output->config.connector;
++	drmModeModeInfo *default_mode;
+ 	int i;
+ 
+ 	/* Virtual/forced sinks support all modes */
+ 	if (!igt_output_is_connected(output))
+-		return true;
++		return;
+ 
+ 	for (i = 0; i < connector->count_modes; i++) {
+ 		drmModeModeInfo *conn_mode = &connector->modes[i];
+@@ -204,26 +206,33 @@ static bool output_mode_supported(igt_output_t *output, const drmModeModeInfo *m
+ 			igt_debug("Found matching mode for %dx%d@%dHz on %s\n",
+ 				  mode->hdisplay, mode->vdisplay, mode->vrefresh,
+ 				  igt_output_name(output));
+-			return true;
++			return;
+ 		}
+ 	}
+ 
+-	igt_info("Mode %dx%d@%dHz not supported by %s (has %d modes)\n",
+-		 mode->hdisplay, mode->vdisplay, mode->vrefresh,
+-		 igt_output_name(output), connector->count_modes);
+-
+-	return false;
++	if (output_is_internal_panel(output)) {
++		default_mode = igt_output_get_mode(output);
++		igt_info("Mode %dx%d@%dHz not supported by %s (has %d modes).\n"
++			 "%s Default mode: %dx%d@%dHz\n",
++			 mode->hdisplay, mode->vdisplay, mode->vrefresh,
++			 igt_output_name(output), connector->count_modes, igt_output_name(output),
++			 default_mode->hdisplay, default_mode->vdisplay, default_mode->vrefresh);
++	} else {
++		igt_info("Mode %dx%d@%dHz not supported by %s (has %d modes). Forcing mode.\n",
++			 mode->hdisplay, mode->vdisplay, mode->vrefresh,
++			 igt_output_name(output), connector->count_modes);
++	}
+ }
+ 
+ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeInfo *mode, bool physical) {
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
++	drmModeModeInfo fb_mode;
+ 	struct igt_fb buffer[IGT_MAX_PIPES];
+ 	igt_crc_t zero, captured[IGT_MAX_PIPES];
+ 	int i = 0, num_pipes = 0;
+ 	igt_crtc_t *crtc;
+ 	int ret;
+-	bool has_supported_mode = false;
+ 
+ 	/* Cannot use igt_display_n_crtcs() due to fused pipes on i915 where they do
+ 	 * not give the numver of valid crtcs and always return IGT_MAX_PIPES */
+@@ -242,14 +251,28 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
+ 		crtc = data->crtc[i];
+ 
+ 		output = physical ? data->connected_output[i] : data->output[i];
+-		if (!output || !output_mode_supported(output, mode)) {
++		if (!output)
+ 			continue;
+-		}
+ 
+-		force_output_mode(data, output, mode);
++		log_output_mode_support(output, mode);
++
++		/*
++		 * On fixed mode panels trying to force a custom mode can lead
++		 * to failures or implicit handling where the default mode is
++		 * used even though custom mode is requested.
++		 *
++		 * To avoid this use default mode on fixed mode panels and
++		 * use custom modes only on external panels.
++		 */
++		if (output_is_internal_panel(output)) {
++			fb_mode = *igt_output_get_mode(output);
++		} else {
++			force_output_mode(data, output, mode);
++			fb_mode = *mode;
++		}
+ 
+-		igt_create_color_fb(display->drm_fd, mode->hdisplay,
+-				    mode->vdisplay, DRM_FORMAT_XRGB8888,
++		igt_create_color_fb(display->drm_fd, fb_mode.hdisplay,
++				    fb_mode.vdisplay, DRM_FORMAT_XRGB8888,
+ 				    DRM_FORMAT_MOD_LINEAR, 1.f, 0.f, 0.f,
+ 				    &buffer[i]);
+ 
+@@ -258,10 +281,8 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
+ 		igt_plane_set_fb(data->primary[i], &buffer[i]);
+ 		igt_info("Assigning pipe %s to output %s with mode %s\n",
+ 			 igt_crtc_name(crtc), igt_output_name(output),
+-			 mode->name);
+-		has_supported_mode = true;
++			 fb_mode.name);
+ 	}
+-	igt_skip_on_f(!has_supported_mode, "Unsupported mode for all pipes\n");
+ 
+ 	ret = igt_display_try_commit_atomic(display,
+ 					    DRM_MODE_ATOMIC_ALLOW_MODESET |
+@@ -273,9 +294,8 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
+ 
+ 	for (i = 0; i < n_crtcs; i++) {
+ 		output = physical ? data->connected_output[i] : data->output[i];
+-		if (!output || !output_mode_supported(output, mode)) {
++		if (!output)
+ 			continue;
+-		}
+ 
+ 		igt_pipe_crc_collect_crc(data->pipe_crc[i], &captured[i]);
+ 		igt_assert_f(!igt_check_crc_equal(&zero, &captured[i]),
+@@ -284,7 +304,7 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
+ 
+ 	for (i = n_crtcs - 1; i >= 0; i--) {
+ 		output = physical ? data->connected_output[i] : data->output[i];
+-		if (!output || !output_mode_supported(output, mode))
++		if (!output)
+ 			continue;
+ 
+ 		igt_remove_fb(display->drm_fd, &buffer[i]);
+@@ -319,7 +339,14 @@ int igt_main()
+ 		n_crtcs = i + 1;
+ 
+ 		for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
+-			igt_subtest_f("linear-tiling-%d-displays-%s", n_crtcs, test_mode[j].name)
++			igt_describe("Exercise bandwidth test using linear tiling across multiple pipes "
++				     "on a combination of phical and/or virtual outputs."
++				     "The test targets a bandwidth configuration corresponding to the "
++				     "requested mode, forcing the mode on external or virtual outputs"
++				     "(where supported).On fixed-mode internal panels, if the native mode "
++				     "is used even if it does not match the requested mode.");
++			igt_subtest_f("linear-tiling-%d-displays-target-%s",
++				      n_crtcs, test_mode[j].name)
+ 				run_test_linear_tiling(&data, n_crtcs, &test_mode[j], false);
+ 		}
+ 	}
+@@ -328,7 +355,14 @@ int igt_main()
+ 		n_crtcs = i + 1;
+ 
+                 for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
+-                        igt_subtest_f("connected-linear-tiling-%d-displays-%s", n_crtcs, test_mode[j].name)
++			igt_describe("Exercise bandwidth test using linear tiling across multiple pipes "
++				     "on physically connected outputs only."
++				     "The test targets a bandwidth configuration corresponding to the "
++				     "requested mode, forcing the mode on external panels."
++				     "On fixed-mode internal panels, if the native mode "
++				     "is used even if it does not match the requested mode.");
++			igt_subtest_f("connected-linear-tiling-%d-displays-target-%s",
++				      n_crtcs, test_mode[j].name)
+ 				run_test_linear_tiling(&data, n_crtcs, &test_mode[j], true);
+                 }
+         }
+-- 
+2.43.0
 
