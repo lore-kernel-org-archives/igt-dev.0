@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29BC7F588E1
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 15:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A7DCF588E5
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 15:14:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C91FD10E688;
-	Mon, 20 Apr 2026 15:00:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2FC7A10E69D;
+	Mon, 20 Apr 2026 15:14:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CFKp4Rmg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cT/3D9pa";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD02810E0E2
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 15:00:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 295F310E69B
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 15:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776697212; x=1808233212;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=GHwv8ctaMKJrU5d5Q930AWDCkvW7Bgch3qKNwDv1B1c=;
- b=CFKp4RmgaXiNm5FJfyHgDaeJiUZI+QDdiPYuiDXWBiveTawmlFPshNgU
- bE+A1pWLJPOA9x8RUPPsfCz86TtEYBONdEM9ykH3zxLWwAOiTKn24sLYj
- MSsxB6vV1oUbxhGPPkiD8N7dmXT0V2+YPvo+VpabNvRCxrRAcC/dCmALy
- lyaA0T2uhkwUQYnl+ioolZCoz6XWQzPhMFXV7x8FT9E/4H2CWZLgdkPKh
- 7s/zs0vJNUCQjHW48XGyI+W0Wpp3lFj158ZYhDl6nG86L2PudX2fkCUXs
- j+7cLHjBEDTtBbipkbckIjyakOPwvxMDrCLXo/iXesglohPCq8H2v9NQk Q==;
-X-CSE-ConnectionGUID: x/7n059yQme0xw2AV1R3vQ==
-X-CSE-MsgGUID: w4cjMRUdSTaBfshBSECzPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77489160"
-X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; d="scan'208";a="77489160"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Apr 2026 08:00:12 -0700
-X-CSE-ConnectionGUID: 1BXwzmQoRhOg0uUG/Z25Tg==
-X-CSE-MsgGUID: 5NGBlbRfQcKsvyqW3UKyNw==
+ t=1776698030; x=1808234030;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=MY7MWsNk3ZU5yq1wniz8+hrWhQmDPv27y3ZT4U1ccNg=;
+ b=cT/3D9paGVfGrr25rrNUmWkjWok/k/qbFSnX7g3YgihASYiXMwajykFb
+ PmsCKG+I4OtVLTtGrjs+pE0jI+9LkDc4eyzwgnu7e3PDhbW0Foi+Vet2S
+ 2UhH9sh4hBh7JxupeufkoumxZz5ESqeuo9U83j7G8QgotxK+VOI6ebwGt
+ DcopPXNV5icYuulH4rGeCHlKlLxzZzjeVGJMf0N8P7XdeTFk95rNBBk96
+ znPoWpIyVkrWEyPdt+8V1EplHobLZ6h2cqJRn0UZAtPKHQYPHKoU/OtKR
+ K2Xyr2jKh/ec5cCF7QHO7fVqdfnPsxgCQDz5NQOUmphHcICBuYFyUgai0 A==;
+X-CSE-ConnectionGUID: wiPi8xx9TfSdv9fZ/FAhTw==
+X-CSE-MsgGUID: jSd/IvkWT5WxVKXXdz/lnQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="88315960"
+X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; d="scan'208";a="88315960"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Apr 2026 08:08:00 -0700
+X-CSE-ConnectionGUID: B1ckUjFsRBitM5wxEthBBA==
+X-CSE-MsgGUID: XzjLJZijSv243K0PSIjoHQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; d="scan'208";a="231622209"
-Received: from dut6245dg2frd.fm.intel.com ([10.80.54.109])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Apr 2026 08:00:12 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	thomas.hellstrom@intel.com
-Cc: nishit.sharma@intel.com,
-	Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v11 1/2] lib/xe: Add failable variant of
- xe_vm_bind_lr_sync()
-Date: Mon, 20 Apr 2026 15:00:00 +0000
-Message-ID: <20260420150001.270588-2-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260420150001.270588-1-sobin.thomas@intel.com>
-References: <20260420150001.270588-1-sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; d="scan'208";a="236723049"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.202])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Apr 2026 08:07:57 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_pwrite_crc: Create basic subtest
+Date: Mon, 20 Apr 2026 17:07:52 +0200
+Message-ID: <20260420150753.96250-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,89 +67,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add __xe_vm_bind_lr_sync helper function which returns standard error
-codes instead of asserting on failure. This allows calling function
-to handle VM bind failures explicitly while preserving the existing
-xe_vm_bind_lr_sync() wrapper for tests. This enables callers that
-expect bind / overcommit failures.
+Create a basic subtests which allows to properly cleanup after
+any failure or a skip. Also while at this, move an igt header
+to proper place.
 
-v7: Introduced xe_vm_bind_lr_sync_failable (Thomas)
-v8: Modified xe_vm_bind_lr_sync_failable and xe_vm_bind_lr_sync to call
-    __xe_vm_bind_lr_sync
-v9: Removed redundant typecast and removed xe_vm_bind_lr_sync_failable
-
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/xe/xe_ioctl.c | 35 +++++++++++++++++++++++++----------
- lib/xe/xe_ioctl.h |  2 ++
- 2 files changed, 27 insertions(+), 10 deletions(-)
+ tests/intel/kms_pwrite_crc.c | 39 +++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 1dae56444..e13195e16 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -860,23 +860,38 @@ uint32_t xe_vm_madvise_purgeable(int fd, uint32_t vm_id, uint64_t start,
+diff --git a/tests/intel/kms_pwrite_crc.c b/tests/intel/kms_pwrite_crc.c
+index bd536007c..92f5292dd 100644
+--- a/tests/intel/kms_pwrite_crc.c
++++ b/tests/intel/kms_pwrite_crc.c
+@@ -30,15 +30,16 @@
+  * Mega feature: General Display Features
+  */
+ 
+-#include "igt.h"
+ #include <errno.h>
+ #include <limits.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
+ 
++#include "igt.h"
++
+ /**
+- * SUBTEST:
++ * SUBTEST: basic
+  * Description: Use the display CRC support to validate pwrite to an already
+  *              uncached future scanout buffer.
+  */
+@@ -192,22 +193,32 @@ static void run_test(data_t *data)
+ 	igt_skip("no valid crtc/connector combinations found\n");
  }
  
- #define	BIND_SYNC_VAL	0x686868
--void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
--			uint64_t addr, uint64_t size, uint32_t flags)
-+int __xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-+			 uint64_t addr, uint64_t size, uint32_t flags)
+-static data_t data;
++static data_t data = { };
+ 
+-int igt_simple_main()
++int igt_main()
  {
--	volatile uint64_t *sync_addr = malloc(sizeof(*sync_addr));
-+	uint64_t *sync_addr = malloc(sizeof(*sync_addr));
- 	struct drm_xe_sync sync = {
- 		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
- 		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
--		.addr = to_user_pointer((uint64_t *)sync_addr),
-+		.addr = to_user_pointer(sync_addr),
- 		.timeline_value = BIND_SYNC_VAL,
- 	};
--
--	igt_assert(!!sync_addr);
--	xe_vm_bind_async_flags(fd, vm, 0, bo, 0, addr, size, &sync, 1, flags);
--	if (*sync_addr != BIND_SYNC_VAL)
--		xe_wait_ufence(fd, (uint64_t *)sync_addr, BIND_SYNC_VAL, 0, NSEC_PER_SEC * 10);
-+	int ret = 0;
-+
-+	if (!sync_addr)
-+		return -ENOMEM;
-+	WRITE_ONCE(*sync_addr, 0);
-+	ret = __xe_vm_bind(fd, vm, 0, bo, offset, addr, size, DRM_XE_VM_BIND_OP_MAP, flags,
-+			   &sync, 1, 0,  DEFAULT_PAT_INDEX, 0);
-+	if (ret)
-+		goto out;
-+
-+	if (READ_ONCE(*sync_addr) != BIND_SYNC_VAL)
-+		xe_wait_ufence(fd, sync_addr, BIND_SYNC_VAL, 0, NSEC_PER_SEC * 10);
- 	/* Only free if the wait succeeds */
--	free((void *)sync_addr);
-+out:
-+	free(sync_addr);
-+	return ret;
-+}
-+
-+void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-+			uint64_t addr, uint64_t size, uint32_t flags)
-+{
-+	igt_assert_eq(__xe_vm_bind_lr_sync(fd, vm, bo, offset, addr, size, flags), 0);
- }
+-	data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+-	kmstest_set_vt_graphics_mode();
++	igt_fixture() {
++		data.drm_fd = -1;
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		kmstest_set_vt_graphics_mode();
  
- void xe_vm_unbind_lr_sync(int fd, uint32_t vm, uint64_t offset,
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index ceb380685..768f77246 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -120,6 +120,8 @@ struct drm_xe_mem_range_attr
- void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo,
- 			uint64_t offset, uint64_t addr,
- 			uint64_t size, uint32_t flags);
-+int __xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-+			 uint64_t addr, uint64_t size, uint32_t flags);
- void xe_vm_unbind_lr_sync(int fd, uint32_t vm, uint64_t offset,
- 			  uint64_t addr, uint64_t size);
- #endif /* XE_IOCTL_H */
+-	igt_display_require(&data.display, data.drm_fd);
+-	igt_display_require_output(&data.display);
+-	igt_require_pipe_crc(data.drm_fd);
++		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
++		igt_require_pipe_crc(data.drm_fd);
+ 
+-	data.devid = intel_get_drm_devid(data.drm_fd);
+-	data.pipe_crc = NULL;
++		data.devid = intel_get_drm_devid(data.drm_fd);
++		data.pipe_crc = NULL;
++	}
+ 
+-	run_test(&data);
++	igt_describe("Use the display CRC support to validate pwrite "
++		     "to an already uncached future scanout buffer.");
++	igt_subtest("basic")
++		run_test(&data);
+ 
+-	igt_display_fini(&data.display);
+-	drm_close_driver(data.drm_fd);
++	igt_fixture() {
++		if (data.drm_fd != -1) {
++			igt_display_fini(&data.display);
++			drm_close_driver(data.drm_fd);
++		}
++	}
+ }
 -- 
-2.52.0
+2.53.0
 
