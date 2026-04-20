@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2DDF557EB
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 08:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65E87F557EC
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 08:57:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2240110F4A6;
-	Mon, 20 Apr 2026 08:57:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D64410F4A6;
+	Mon, 20 Apr 2026 08:57:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JdCjpaxV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YQyAy+Rd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1F2010F4A6
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 08:57:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12C9710F4A7
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 08:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776675427; x=1808211427;
+ t=1776675435; x=1808211435;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oAjy8P0GdqqNcT8l9iP5JxhS4HUSm5f2T7lf5lSTodg=;
- b=JdCjpaxVT2TkAJiP1shMgRtpnZplGZBJtnC2PC0fQ4MA21q+1YEvgkZw
- ggoZxHmsO7HTfMoWBpvTSpxh54vGu1aJhEck0qSVx/FdMT6PlUUIujrrS
- okF8CyRSYjnBW4DmeJLt4TeCyZ2Dud16I8kWZWEPxpBszjAF2hkhVH1+j
- skklyBq9G00vWNBEjWkgXDhnhN+FVZ4HHHzGVhPQUzzSHGyhjJX+McvPl
- JtHE6z0Hvcz62OI+IZAlCfnBErrDsEOk8jwW2j8bjAwOvFFJVSby6O37Y
- hM0YtBsTRdUadzGOlFEXfJNWay9EE2Fri9iKRHVYFstSfa05Qguk4tNqI g==;
-X-CSE-ConnectionGUID: zSP+YQ8YQ+y7iwYQjPCg+g==
-X-CSE-MsgGUID: SvW6Ve8LSN2Kp1M+gY9LAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="76613853"
-X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="76613853"
+ bh=dCsQjBmX9bVYWaGdTQDcPEtAJRFg30RAacuZ+C9BdbQ=;
+ b=YQyAy+Rd6WdT8+C1jW/07eyxGRDSMNYYN656UkCB5jQScptXfLNVlANZ
+ 5G05IsQFoDj9Xoy9rHatcqE/bKTRa9vRWByHjhbLXn2ncgxIDkKouq1Li
+ AqHiZAaNL5mPMlsfo9lKTai/Pof1IBQxFjFjw/wXZrWxJWCXrtfkssK49
+ UBEIcrf9OY4vKdpj3zxxcUWfCZV/fZO0OoP1ldD3GRE+ZZ5fKQoko+JoF
+ LeVFfMtTx9X++mjuYOG/MOrgvDar9s33pEdJrOZZ0G8tmYnMoE+J6bLLr
+ wvc09v8YEfE+OeIIPWPZBWSobgvvpZcmHLDIwv5CpjsG0IxDxi4iehsjJ A==;
+X-CSE-ConnectionGUID: EQVWeZ2XRZ65c1fVpNfDuA==
+X-CSE-MsgGUID: shgOiAY2QPWb4E13/8Yh+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="76613861"
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="76613861"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Apr 2026 01:57:06 -0700
-X-CSE-ConnectionGUID: +HoWZr1aSjqqpMUGXWpOYw==
-X-CSE-MsgGUID: BqUFL0ASR5SsOL0DzwKuFw==
+ 20 Apr 2026 01:57:15 -0700
+X-CSE-ConnectionGUID: VPNumBM8RJK3cHtwNrOFMQ==
+X-CSE-MsgGUID: t1+rA8+3SVmx7Esv4AA+yg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="231539675"
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="231539729"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.56])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Apr 2026 01:57:04 -0700
+ 20 Apr 2026 01:57:13 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>,
  Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: [PATCH i-g-t v4 2/4] runner: Create attachments directory to use by
- hooks
-Date: Mon, 20 Apr 2026 10:56:56 +0200
-Message-ID: <20260420085653.2587750-8-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v4 4/4] runner/resultgen: Insert attachments list into
+ results.json
+Date: Mon, 20 Apr 2026 10:56:58 +0200
+Message-ID: <20260420085653.2587750-10-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260420085653.2587750-6-zbigniew.kempczynski@intel.com>
 References: <20260420085653.2587750-6-zbigniew.kempczynski@intel.com>
@@ -73,201 +73,141 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Results parsing is currently limited to few predefined files.
+Add list of filenames which were created by hooks in attachments directory
+(like GuC log copy) to results.json for allow presenting it in CI.
 
-Create "attachments" directory and export full path of created directory
-to be used within hooks. From now on environment variable
-IGT_RUNNER_ATTACHMENTS_DIR become visible when igt_runner is used
-to execute tests. This env contains directory where subtests/dynsubtests
-may write auxiliary files which filenames will be included in results.json.
+Due to lack of userdata pointer in nftw() implementation main json
+object is passed via temporary static variable. It shouldn't be the
+problem because results.json is created in single thread. This change
+is not too elegant but allows to minimize the code change and is
+much easier to read comparing to recursive readdir().
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Ryszard Knop <ryszard.knop@intel.com>
 Cc: Krzysztof Karas <krzysztof.karas@intel.com>
 ---
-v2: - simplify attachment dirname concatenation (Kamil)
-    - remove files in attachments dir when overwrite is set (Kamil)
-v3: - unify 'attdir*' variables (Krzysztof)
-    - do recursive removal in attachments directories (Gustavo)
-v4: - remove noise newline leftover (Krzysztof)
-    - pass path instead of fd to clear function and simplify
-      the code (compact attachments function within main clear) (Gustavo)
+v4: use switch/case (Gustavo)
 ---
- lib/igt_hook.c    |  4 +++
- runner/executor.c | 77 +++++++++++++++++++++++++++++++++++++++--------
- runner/executor.h |  2 ++
- 3 files changed, 71 insertions(+), 12 deletions(-)
+ runner/resultgen.c | 79 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
-diff --git a/lib/igt_hook.c b/lib/igt_hook.c
-index f86ed56f72..b8f25b6c7a 100644
---- a/lib/igt_hook.c
-+++ b/lib/igt_hook.c
-@@ -518,5 +518,9 @@ available to the command:\n\
- \n\
- Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
- when matching events and running hook commands.\n\
-+\n\
-+When executed by the igt_runner, environment IGT_RUNNER_ATTACHMENTS_DIR\n\
-+is passed additionally to the hook script. It contains directory where\n\
-+script may write additional attachments like guc logs, etc.\n\
- ", option_name);
- }
-diff --git a/runner/executor.c b/runner/executor.c
-index 1485b59d1f..496ca1a4ea 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -1,6 +1,7 @@
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 29fc5cbb15..34253bc735 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -1,11 +1,14 @@
+ #include <assert.h>
  #include <ctype.h>
- #include <errno.h>
++#include <dirent.h>
  #include <fcntl.h>
 +#include <ftw.h>
- #ifdef ANDROID
- #include "android/glib.h"
- #else
-@@ -1779,17 +1780,22 @@ static int execute_next_entry(struct execute_state *state,
- 	int errpipe[2] = { -1, -1 };
- 	int socket[2] = { -1, -1 };
- 	int outfd, errfd, socketfd;
--	char name[32];
-+	char name[32], attname[32];
-+	char attdirname[PATH_MAX];
- 	pid_t child;
- 	int result;
- 	size_t idx = state->next;
+ #include <inttypes.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <sys/mman.h>
+ #include <sys/stat.h>
++#include <sys/types.h>
+ #include <unistd.h>
  
- 	snprintf(name, sizeof(name), "%zd", idx);
-+	snprintf(attname, sizeof(attname), "%zd/%s", idx, DIR_ATTACHMENTS);
- 	mkdirat(resdirfd, name, 0777);
-+	mkdirat(resdirfd, attname, 0777);
- 	if ((idirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
- 		errf("Error accessing individual test result directory\n");
- 		return -1;
- 	}
-+	snprintf(attdirname, sizeof(attdirname), "%s/%s",
-+		 settings->results_path, attname);
- 
- 	if (!open_output_files(idirfd, outputs, true)) {
- 		errf("Error opening output files\n");
-@@ -1870,6 +1876,7 @@ static int execute_next_entry(struct execute_state *state,
- 			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
- 		}
- 		setenv("IGT_SENTINEL_ON_STDERR", "1", 1);
-+		setenv("IGT_RUNNER_ATTACHMENTS_DIR", attdirname, 1);
- 
- 		execute_test_process(outfd, errfd, socketfd, settings, entry);
- 		/* unreachable */
-@@ -1948,19 +1955,66 @@ static int remove_file(int dirfd, const char *name)
- 	return unlinkat(dirfd, name, 0) && errno != ENOENT;
+ #include <jansson.h>
+@@ -271,6 +274,19 @@ static struct json_t *get_or_create_json_object(struct json_t *base, const char
+ 	return ret;
  }
  
--static bool clear_test_result_directory(int dirfd)
-+static int ftw_attachment_removal(const char *fpath, const struct stat *sb,
-+				  int typeflag, struct FTW *ftwbuf)
++static struct json_t *get_or_create_json_array(struct json_t *base, const char *key)
++{
++	struct json_t *ret = json_object_get(base, key);
++
++	if (ret)
++		return ret;
++
++	ret = json_array();
++	json_object_set_new(base, key, ret);
++
++	return ret;
++}
++
+ static void set_result(struct json_t *obj, const char *result)
  {
--	int i;
+ 	if (!result)
+@@ -1142,6 +1158,66 @@ static bool fill_from_dmesg(int fd,
+ 	return true;
+ }
+ 
++struct json_t *tmp_tests;
++static int ftw_attachments_list(const char *fpath, const struct stat *sb,
++				int typeflag, struct FTW *ftwbuf)
++{
++	struct json_t *obj = NULL, *attobj = NULL;
++
 +	(void)sb;
 +	(void)ftwbuf;
 +
 +	switch (typeflag) {
 +	case FTW_F:
-+	case FTW_SL:
-+		if (unlink(fpath)) {
-+			errf("Error removing file %s: %s\n",
-+			     fpath, strerror(errno));
++		char *p, *currpath = (char *) fpath + 2;
++
++		p = strstr(currpath, "/");
++		if (!p)
 +			return -1;
-+		}
++		*p = '\0'; /* temporary for acquiring the piglit name */
++		obj = get_or_create_json_object(tmp_tests, currpath);
++		attobj = get_or_create_json_array(obj, "attachments");
++		*p = '/'; /* bring '/' back */
++		json_array_append_new(attobj, escaped_json_stringn(currpath, strlen(currpath)));
 +		break;
 +	case FTW_DP:
-+		if (rmdir(fpath)) {
-+			errf("Error removing directory %s: %s\n",
-+			     fpath, strerror(errno));
-+			return -1;
-+		}
 +		break;
 +	default:
-+		errf("Cannot remove %s (unsupported file type)\n", fpath);
 +		return -1;
 +	}
 +
 +	return 0;
 +}
 +
-+static bool clear_test_result_directory(const char *name)
++static bool fill_from_attachments(int idirfd, struct json_t *tests)
 +{
-+	char *attdirname;
-+	int i, resdirfd;
++	char attname[32];
++	int attdirfd;
++	DIR *currdir;
 +	int ret;
 +
-+	if ((resdirfd = open(name, O_DIRECTORY | O_RDONLY)) < 0)
-+		return false;
- 
- 	for (i = 0; i < _F_LAST; i++) {
--		if (remove_file(dirfd, filenames[i])) {
-+		if (remove_file(resdirfd, filenames[i])) {
- 			errf("Error deleting %s from test result directory: %m\n",
- 			     filenames[i]);
-+			close(resdirfd);
- 			return false;
- 		}
- 	}
- 
--	return true;
-+	close(resdirfd);
-+
-+	if (strlen(name) + strlen(DIR_ATTACHMENTS) + 1 >= PATH_MAX) {
-+		errf("Attachments directory length exceeds PATH_MAX\n");
++	snprintf(attname, sizeof(attname), "%s", DIR_ATTACHMENTS);
++	if ((attdirfd = openat(idirfd, attname, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
++		fprintf(stderr, "Error opening '%s' dir\n", DIR_ATTACHMENTS);
 +		return false;
 +	}
 +
-+	asprintf(&attdirname, "%s/%s", name, DIR_ATTACHMENTS);
-+	ret = nftw(attdirname, ftw_attachment_removal, 4, FTW_PHYS | FTW_DEPTH);
-+	free(attdirname);
++	currdir = opendir(".");
++	fchdir(attdirfd);
++
++	/*
++	 * ftw doesn't support passing user data so *tests has to be
++	 * set to some global for being visible in callback function.
++	 * As results.json is not processed in multiple threads it is
++	 * not a big problem.
++	 */
++	tmp_tests = tests;
++	ret = nftw(".", ftw_attachments_list, 4, FTW_PHYS | FTW_DEPTH);
++	fchdir(dirfd(currdir));
 +
 +	return ret ? false : true;
- }
- 
- static bool clear_old_results(char *path)
-@@ -1990,20 +2044,19 @@ static bool clear_old_results(char *path)
- 		return false;
++}
++
+ static const char *result_from_exitcode(int exitcode)
+ {
+ 	switch (exitcode) {
+@@ -2230,6 +2306,9 @@ static bool parse_test_directory(int dirfd,
+ 		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
  	}
  
++	if (!fill_from_attachments(dirfd, results->tests))
++		fprintf(stderr, "Error parsing attachments directory\n");
 +
- 	for (i = 0; true; i++) {
--		int resdirfd;
-+		struct stat st;
+ 	override_results(entry->binary, &subtests, results->tests);
+ 	prune_subtests(settings, entry, &subtests, results->tests);
  
--		snprintf(name, sizeof(name), "%zd", i);
--		if ((resdirfd = openat(dirfd, name, O_DIRECTORY | O_RDONLY)) < 0)
-+		snprintf(name, sizeof(name), "%s/%zd", path, i);
-+		if (stat(name, &st))
- 			break;
- 
--		if (!clear_test_result_directory(resdirfd)) {
--			close(resdirfd);
-+		if (!clear_test_result_directory(name)) {
- 			close(dirfd);
- 			return false;
- 		}
--		close(resdirfd);
--		if (unlinkat(dirfd, name, AT_REMOVEDIR)) {
-+		if (rmdir(name)) {
- 			errf("Warning: Result directory %s contains extra files\n",
- 			     name);
- 		}
-diff --git a/runner/executor.h b/runner/executor.h
-index 3b1cabcf55..bc6ac80dc4 100644
---- a/runner/executor.h
-+++ b/runner/executor.h
-@@ -25,6 +25,8 @@ enum {
- 	_F_LAST,
- };
- 
-+#define DIR_ATTACHMENTS "attachments"
-+
- bool open_output_files(int dirfd, int *fds, bool write);
- bool open_output_files_rdonly(int dirfd, int *fds);
- void close_outputs(int *fds);
 -- 
 2.43.0
 
