@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50DCFF588EE
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 16:07:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9B41F588EE
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 16:08:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED73E10E6DE;
-	Mon, 20 Apr 2026 16:07:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8233210E6E0;
+	Mon, 20 Apr 2026 16:08:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="GKqFd95X";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="yAHTLW28";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 396E110E6DE
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 16:07:17 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADDFA10E6DE
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 16:08:32 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 8626E4E429F8;
- Mon, 20 Apr 2026 16:07:15 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 550441A3371;
+ Mon, 20 Apr 2026 16:08:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 5C2A35FFA5;
- Mon, 20 Apr 2026 16:07:15 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 2C4B55FFA5;
+ Mon, 20 Apr 2026 16:08:31 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id B28A910460A04; 
- Mon, 20 Apr 2026 18:07:13 +0200 (CEST)
+ with ESMTPSA id 6CBAD104609FD; 
+ Mon, 20 Apr 2026 18:08:29 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1776701234; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1776701310; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=Pa7q90H6Tua9Mls9kl/o+FNhkg97b4QbUtuFOhzRVNg=;
- b=GKqFd95XNTfks4EW+Ih3xVRBxQ8ed3pNt+1s39+XIFpbL456MqVdbdI+octTk6wcWlMQeb
- r5c/sXnJ082UNiSJlaOk+F5/NwvffX4/dcCczorJ3eYUJM084zFpnZQVd5HbDy726mV2hp
- nT2/OTDxU1CQNiqHWsNPlFUzbQHbz5mTInJlvZ/gXaLEfBz1mVIMsdCUq1HyoazoVkXBDU
- n1FfyQmKIYhgaT93jnbjfrixxFDACc8Nu5mrO2FQkOdg1Xi3/JujIch6CQ3y2BHcgYaGL4
- FoNSwvzNdJ8en8lNKo4nsjbtlWz2GRNXUR6Bg2ZwY58cn5/rpgAAwMy4zKDHxA==
-Date: Mon, 20 Apr 2026 18:07:13 +0200
+ bh=NXL8JqjiZoOZ+NX5eZJtK3Xhs1Qo4d/82FzEgVKnLNU=;
+ b=yAHTLW283TE8fmtu2fyBriW9ZVKTUcrcqK61OUl3D/Uzhz84ddZV5j7pMO9B+Tyzfn+/S5
+ oFPQIqq+Smk4kLa+kDe7jr+BKorU26o1MoakTwdRiWEDeGpN1/FU2qQroBpkb0jCOIxBpV
+ q/F61r0GPBwJy2oCUjNa49DonDMB52owISdMAK43OniU95ZrakYQoAeqqSzyXcd+q+/irB
+ /l7/FD0Fh8nJSClGrRJzCTAIqDNrFiGxBLxBrvNAoztXGcYlP1Pckmtv6GY4e6eeuqYxLW
+ PzJ/1N60miEy7ac0pygZb59r+xOJk/La5AWXLwf4dczBkx4XajBYDvAZDfWaVA==
+Date: Mon, 20 Apr 2026 18:08:28 +0200
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v10 44/49] lib/igt_kms: Add helper to get a CRTC
- from an output
-Message-ID: <20260420180713.591558a6@kmaincent-XPS-13-7390>
-In-Reply-To: <20260331-unigraf-integration-v10-44-12266c34cc1d@bootlin.com>
+Subject: Re: [PATCH i-g-t v10 06/49] lib/tests: Add tests for array
+ manipulations
+Message-ID: <20260420180828.3b777965@kmaincent-XPS-13-7390>
+In-Reply-To: <20260331-unigraf-integration-v10-6-12266c34cc1d@bootlin.com>
 References: <20260331-unigraf-integration-v10-0-12266c34cc1d@bootlin.com>
- <20260331-unigraf-integration-v10-44-12266c34cc1d@bootlin.com>
+ <20260331-unigraf-integration-v10-6-12266c34cc1d@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -66,11 +66,11 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 31 Mar 2026 19:12:01 +0200
+On Tue, 31 Mar 2026 19:11:23 +0200
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> Grabbing a valid CRTC from a specific output is useful when testing
-> the output.
+> As array manipulation functions are not trivial, add few tests to ensure
+> they work properly.
 >=20
 > Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
