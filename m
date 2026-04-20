@@ -4,49 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6080FF36C28
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 06:35:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B7CAF36C41
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 08:09:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 13AC810E422;
-	Mon, 20 Apr 2026 06:35:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DDB0710E13A;
+	Mon, 20 Apr 2026 08:09:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z0wmcFTB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PaLlG4JE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2285C10E422
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 06:35:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A87110E0FE
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 08:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776666918; x=1808202918;
- h=from:to:subject:date:message-id:mime-version:
+ t=1776672586; x=1808208586;
+ h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=IUEG65OmlUFbqBEbedSvuVImBFsu5HWXd9gYC9N43T0=;
- b=Z0wmcFTBx2uFruPy0/+oKU87jNRKhychLY01Gp5Ke68U8qsaJNW6WK7n
- pXJHzyhQyhkPd1m899d8Sz7wJEvVOMR8Vqfzf6OiMkcCkOt9e944Hk5Cn
- zPPhOykWGsnZc8ztGVimTSNhNE11Z5UWoxP6JLekCpvrF9uLlHlrlMupY
- qu+WL/XdLdm/zY+amdVAQeAkSSrRHN4+TnTUqfeChUnauzj/8CkmyMjI8
- MDzP3q08j/L+bz8ayfV8TVmamqmWjWJ8l4r/zbViqSxCdCMC1GiodnrLL
- bridlV3b7vrxsVZTd01RlbMXTiwJMajFnQj0z3BxL7BhZQB/FJDovEyPs w==;
-X-CSE-ConnectionGUID: pjSuTvZbSuawXb4MXIwQwQ==
-X-CSE-MsgGUID: YmVJjjr8R7uP0i0aJTy7Kg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77649308"
-X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="77649308"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Apr 2026 23:35:18 -0700
-X-CSE-ConnectionGUID: rvXCW0EQSMqE+9pIK5uEdA==
-X-CSE-MsgGUID: /10f9Br+SVSSY9Zf9V9ejw==
+ bh=s4ZPIcjNrmzhoINxE1aTY5/WZzNarnpFEiBPesLbiD8=;
+ b=PaLlG4JE9xuCB56XtSe6CsLeS+tZLiIjz+UPlQtsIyn464Pii72+bNdd
+ 9i7rO25uFO6Q9fnFegK/grkUwGHd0NULx3OvzYtYHGAhaFQ8eYs0cK6kv
+ S7rA7gwu8W74Z+phKOD9fezj1Mvx3wZHN4DSEMeM0OhDcLED6H8xqyx7U
+ o+4JoPHOa+lTOasQWp2N40JXNT0CZZ4EZPGZ94+jfEUOBR2Zr2UXQUcF2
+ EwSUaWXC3InhVArDykPdJoMxum1+iKZUFAoiyEDopcctE7IXndaYEsex9
+ eai42q7TZrXKWPRCYzD80L/uL+GgEyFhEQeMRDTfpJ9Wjz39dy0cqiYCy A==;
+X-CSE-ConnectionGUID: M3cAVTgTTLygH3DTJNbGIA==
+X-CSE-MsgGUID: 0isZWYyrTayO6mU11TH0kQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77596243"
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="77596243"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Apr 2026 01:09:45 -0700
+X-CSE-ConnectionGUID: sC77JYevSAGDYjo0lMeYlg==
+X-CSE-MsgGUID: wCKbM+AiQ8CS2FUakil42A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="233397299"
-Received: from jeevan24.iind.intel.com ([10.223.74.58])
- by fmviesa004.fm.intel.com with ESMTP; 19 Apr 2026 23:35:17 -0700
-From: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="225160427"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.126])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Apr 2026 01:09:43 -0700
+From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH] tests/intel: ctx_restore rollback on invalid input
-Date: Mon, 20 Apr 2026 12:08:16 +0530
-Message-ID: <20260420063816.1054855-1-smitha.balasubramanyam@intel.com>
-X-Mailer: git-send-email 2.43.0
+Cc: jani.nikula@intel.com
+Subject: [PATCH i-g-t] tests/kms_bw: use igt_display_n_crtcs()
+Date: Mon, 20 Apr 2026 11:09:33 +0300
+Message-ID: <20260420080933.2850063-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -63,41 +68,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test vector with a partially invalid second command in the
-ctx_restore_*_bb invalid-case suite to ensure a malformed multi-line
-BB is rejected and the stored BB remains empty (rollback).
+Now that igt_display_n_crtcs() returns the actual number of CRTCs again,
+use it instead of iterating and counting separately.
 
-Replaced the hardcoded "ctx_restore_post_bb" write with the computed
-file name ("ctx_restore_%s_bb") in test_ctx_restore_invalid so the
-invalid-case tests work for both "post" and "mid" variants.
-
-Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tests/intel/xe_configfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tests/kms_bw.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index 755524e7c..97ea95da8 100644
---- a/tests/intel/xe_configfs.c
-+++ b/tests/intel/xe_configfs.c
-@@ -225,12 +225,16 @@ static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
- 		{ .test = "invalid-engine-instance",
- 		  .in = "rcs0 reg 4F100 DEADBEEF",
- 		},
-+		{ .test = "invalid-second-command",
-+			.in = "rcs cmd 11000001 4F100 DEADBEEF\n"
-+				"rcs cmd 11000001 4F10G DEADBEEF",
-+		},
- 	};
- 	char buf[4096] = { };
- 	char file[64] = { };
+diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+index 4df5c2cee885..00677b4ae765 100644
+--- a/tests/kms_bw.c
++++ b/tests/kms_bw.c
+@@ -220,16 +220,12 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
+ 	igt_output_t *output;
+ 	struct igt_fb buffer[IGT_MAX_PIPES];
+ 	igt_crc_t zero, captured[IGT_MAX_PIPES];
+-	int i = 0, num_pipes = 0;
++	int i = 0;
+ 	igt_crtc_t *crtc;
+ 	int ret;
+ 	bool has_supported_mode = false;
  
- 	snprintf(file, sizeof(file), "ctx_restore_%s_bb", type);
--	igt_sysfs_set(configfs_device_fd, "ctx_restore_post_bb", "");
-+	igt_sysfs_set(configfs_device_fd, file, "");
+-	/* Cannot use igt_display_n_crtcs() due to fused pipes on i915 where they do
+-	 * not give the numver of valid crtcs and always return IGT_MAX_PIPES */
+-	for_each_crtc(display, crtc) num_pipes++;
+-
+-	igt_skip_on_f(n_crtcs > num_pipes,
++	igt_skip_on_f(n_crtcs > igt_display_n_crtcs(display),
+                       "ASIC does not have %d pipes\n", n_crtcs);
  
- 	/*
- 	 * These only test if command parsing is correct,
+ 	test_init(data, physical);
 -- 
-2.43.0
+2.47.3
 
