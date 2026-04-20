@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6192EF55810
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 11:37:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7898AF5581D
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Apr 2026 11:37:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 13BAE10E50E;
-	Mon, 20 Apr 2026 11:37:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D86510E50E;
+	Mon, 20 Apr 2026 11:37:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GwGz3dkr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HJ+0jQWZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C1EA10E518
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 11:37:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C0BE10E50E
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2026 11:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776685024; x=1808221024;
+ t=1776685027; x=1808221027;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0A+zlQKrd1WioUCQB9KytIjhhl7BeX0Uh2HaaTDaS3w=;
- b=GwGz3dkrUn+/tx2wSrhqWZWLTRdJ+ueh3TDMg+G4AjxutU7ZDoiKRaTi
- JJquKI22Bg+7tRJSvw9oAvKwcocJ7JUaD0lXX/8DwaiwLH9ajI5AyktsZ
- 7p7ihjSh2PqU3GskaPsfpK/GSeMsoedx0CecjPhBp1XIpmhY36y+1KZlO
- x7J7eSMDJHcvfTCpW7cjXQjEPt5NIIWmqcV65nqoD7zc0T2+qgQ2j/Eck
- Vjiei8E1GpcV53Q0/LyCHAedzZvhbvliJep80w8FoyFzHCLw9yhZ4RsZO
- ZiZvdvtE8tzswY412lkrni7eREd5xdXFRXe8yXGhHth/P+7qhEUs8oeTv Q==;
-X-CSE-ConnectionGUID: XzBSk/O7RNiJdq7pipLIDA==
-X-CSE-MsgGUID: JDi7LBSATvqmhmWiYc4Hrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="89064533"
-X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="89064533"
+ bh=oEgGW+YqX8Sxy9WxFEBLkErw7VDFbvj5q2+fZV7VygI=;
+ b=HJ+0jQWZ222r3uCDhtXKenneTgr7iNKtg9UWj9tgeT/c89KuLK5ApIQ8
+ 8fiB2w6vzDU/8zDs97m6HWhVnfXW6tePBotnLAnP+xX54jeSnb/RQI1ZA
+ SGhBEcV80tvuAsnZFW29cTG7cJFHG9q3m0J+LhqutbtJugf95ngN9VunK
+ VaDW9wMSb/OKE4inFSXGupphuthR6nVyE6O8FPv8HJYn9CzSTjmYUhd2M
+ Sl84KTv9S/MC13t/Nks4MYUe9zm5SodCJg8iCHYoNwn2H/mTV8dUfnRFQ
+ 5oNbJmVIiTS0LKMHefftB4xDIAZd8fZAbfFnitbHdJNUtXcfPAjcs6gzH g==;
+X-CSE-ConnectionGUID: 1ocOKPJGSlm6MVMQOMV7kw==
+X-CSE-MsgGUID: 7hrjz7jxR5uHspxKgFxVzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="89064535"
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="89064535"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Apr 2026 04:37:03 -0700
-X-CSE-ConnectionGUID: TUkzxS72RC+PDOpnOKGhtA==
-X-CSE-MsgGUID: qiqCmIqJSSeiW9vqHPnBxg==
+ 20 Apr 2026 04:37:06 -0700
+X-CSE-ConnectionGUID: HdzSU+ZjQP6UFZRkTFrtsQ==
+X-CSE-MsgGUID: +soyOfCeRfCF/4Ys4BSr0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="228550972"
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; d="scan'208";a="228550998"
 Received: from linux-meteor-lake-client-platform.iind.intel.com
  ([10.223.55.75])
- by fmviesa007.fm.intel.com with ESMTP; 20 Apr 2026 04:37:01 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 20 Apr 2026 04:37:04 -0700
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, jani.nikula@intel.com,
  Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH v3 1/6] Revert "tests/intel/kms_pm_dc: Ensure eDP detection
- before skipping test"
-Date: Mon, 20 Apr 2026 16:58:21 +0530
-Message-ID: <20260420112826.35220-2-mohammed.thasleem@intel.com>
+Subject: [PATCH v3 3/6] Revert "tests/intel/kms_pm_dc: Update test duration to
+ 4 seconds"
+Date: Mon, 20 Apr 2026 16:58:23 +0530
+Message-ID: <20260420112826.35220-4-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260420112826.35220-1-mohammed.thasleem@intel.com>
 References: <20260420112826.35220-1-mohammed.thasleem@intel.com>
@@ -69,72 +69,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This reverts commit d063ceaeaf2d2d561670945e9e81b8976a16f080.
+This reverts commit 4eba89501947cf67d34475b4493489334a292f23.
 
-v3: Fix compilation issue. (Jani)
+v3: Fix compilation issues. (Jani)
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_pm_dc.c | 36 ++++++++++++++----------------------
- 1 file changed, 14 insertions(+), 22 deletions(-)
+ tests/intel/kms_pm_dc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 8138933d4..2d6fa794f 100644
+index 1eade8f1f..a9f00f21c 100644
 --- a/tests/intel/kms_pm_dc.c
 +++ b/tests/intel/kms_pm_dc.c
-@@ -543,7 +543,7 @@ static void test_deep_pkgc_state(data_t *data)
- 	time_t delay;
- 	igt_crtc_t *crtc;
+@@ -538,12 +538,10 @@ static int has_panels_without_dc_support(igt_display_t *display)
+ static void test_deep_pkgc_state(data_t *data)
+ {
+ 	unsigned int pre_val = 0, cur_val = 0;
+-	time_t start = time(NULL);
+-	time_t duration = (4 * SEC);
+-	time_t delay;
+-	igt_crtc_t *crtc;
++	time_t start = time(NULL), duration = 2, delay;
  	bool pkgc_flag = false;
--	bool flip = true, edp_found = false;
-+	bool flip = true;
+ 	bool flip = true;
++	igt_crtc_t *crtc;
  
  	igt_display_t *display = &data->display;
  	igt_plane_t *primary;
-@@ -551,30 +551,22 @@ static void test_deep_pkgc_state(data_t *data)
- 	drmModeModeInfo *mode;
- 
- 	for_each_crtc_with_valid_output(display, crtc, output) {
--		if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
--
--			edp_found = true;
--			/* Check VRR capabilities before setting up */
--			if (igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE) &&
--			    igt_output_get_prop(output, IGT_CONNECTOR_VRR_CAPABLE)) {
--				/*
--				 * TODO: Add check for vmin = vmax = flipline if VRR enabled
--				 * when KMD allows for such capability.
--				 */
--				igt_crtc_set_prop_value(crtc, IGT_CRTC_VRR_ENABLED, false);
--				igt_assert(igt_display_try_commit_atomic(display,
--									 DRM_MODE_ATOMIC_ALLOW_MODESET,
--									 NULL) == 0);
--			}
-+		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
-+			igt_skip("No eDP output found, skipping the test.\n");
-+		/* Check VRR capabilities before setting up */
-+		if (igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE) &&
-+		    igt_output_get_prop(output, IGT_CONNECTOR_VRR_CAPABLE)) {
-+			/*
-+			 * TODO: Add check for vmin = vmax = flipline if VRR enabled
-+			 * when KMD allows for such capability.
-+			 */
-+			igt_crtc_set_prop_value(crtc, IGT_CRTC_VRR_ENABLED, false);
-+			igt_assert(igt_display_try_commit_atomic(display,
-+								 DRM_MODE_ATOMIC_ALLOW_MODESET,
-+								 NULL) == 0);
- 			break;
- 		}
- 	}
--
--	if (!edp_found) {
--		igt_skip("No eDP output found, skipping the test.\n");
--		return;
--	}
--
- 	igt_display_reset(display);
- 
- 	igt_output_set_crtc(output, crtc);
 -- 
 2.43.0
 
