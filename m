@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8FE4F8FA70
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Apr 2026 12:50:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3B95F8FA6F
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Apr 2026 13:01:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9BFD410E13B;
-	Tue, 21 Apr 2026 12:50:32 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA5A210E13B;
- Tue, 21 Apr 2026 12:50:20 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7543675682498953357=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4BBA410EC98;
+	Tue, 21 Apr 2026 13:01:42 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N9MlK6Fq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 913FB10EC81
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2026 13:01:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1776776491; x=1808312491;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=pFesjpF5F+BHnmT++t4+1yRWszntuA7xIuTufVrLLMw=;
+ b=N9MlK6FqVL8HwhSnktMRGofbBzvq40F+Qv7snV3SfFVXUWmfqpTr7zw2
+ w5xgewIJtwTbL/M/rWsY2d8YoYYAJgm58hXzDj1IdGGaVz3Vf/NoxZhPi
+ BhNdnN2zsGwJoFxH3g+8Hf3YxnFCA8OR0s5gKxFDSqIYH5kgIprSaMeKS
+ PXn+0xmW8iuZsMF6H0qqOMBMMNf90q1NfH/M/cXBdGltEdX2tcJFCyzXv
+ 2P4drJZ3ajLw159QtDuGrn1+7Ens/FOJ20eCzBxhAQRxLkf8i+htJjjwW
+ KnuuiHQZnh9EiTWUQSlAVB7C0OxTL994x6w8PbBQPAlt1RDvwn6oH3++R g==;
+X-CSE-ConnectionGUID: 0EZyq5iGSD2glrXMQC0Lrw==
+X-CSE-MsgGUID: 8qSUgAHwTjyVrLN1n7lt5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="76869304"
+X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; d="scan'208";a="76869304"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Apr 2026 06:01:30 -0700
+X-CSE-ConnectionGUID: 2W6gEQi4QfyMsHhCHI0oJA==
+X-CSE-MsgGUID: ZfDrgbJETUiDVVdx54+4yQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; d="scan'208";a="232312284"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.38])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Apr 2026 06:01:28 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>, Adam Miszczak
+ <adam.miszczak@linux.intel.com>, Lukasz Laguna <lukasz.laguna@intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>, Katarzyna
+ Piecielska <katarzyna.piecielska@intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_sriov_device: Update igt_sriov_enable_vfs
+ helper
+In-Reply-To: <20260420104720.14881-1-jakub1.kolakowski@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260420104720.14881-1-jakub1.kolakowski@intel.com>
+Date: Tue, 21 Apr 2026 16:01:25 +0300
+Message-ID: <4dfdb0cc3dd54263bdeee5fc9d1ac447b4b81603@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Enable_HDR_in_IGT_Frontbuff?=
- =?utf-8?q?er_Feature_Tests_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 21 Apr 2026 12:50:20 -0000
-Message-ID: <177677582094.481576.7309691642480503559@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260417213818.2050571-1-swati2.sharma@intel.com>
-In-Reply-To: <20260417213818.2050571-1-swati2.sharma@intel.com>
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,193 +71,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7543675682498953357==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, 20 Apr 2026, Jakub Kolakowski <jakub1.kolakowski@intel.com> wrote:
+> Some platforms may expose sriov capability and sriov_totalvfs will be
+> greater than 0 while the driver actually doesn't support the platform.
+> In such case igt_sriov_is_pf() helper that checks for sriov_totalvfs
+> will pass.
+> Add additional check within igt_sriov_enable_vfs() function to check if
+> writing to sriov_numvfs was successfull and what errno was returned
+> during this operation. ENOENT will mean that SR-IOV isn't supported for
+> given configuration. In such case test will skip instead of failing.
+>
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> ---
+>  lib/igt_sriov_device.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
+> index 1f4c3ac04..3fadcf0aa 100644
+> --- a/lib/igt_sriov_device.c
+> +++ b/lib/igt_sriov_device.c
+> @@ -174,10 +174,16 @@ unsigned int igt_sriov_get_enabled_vfs(int pf)
+>   */
+>  void igt_sriov_enable_vfs(int pf, unsigned int num_vfs)
+>  {
+> +	bool ret;
+> +
+>  	igt_assert(num_vfs > 0);
+>  
+>  	igt_debug("Enabling %u VFs\n", num_vfs);
+> -	pf_attr_set_u32(pf, "device/sriov_numvfs", num_vfs);
+> +	ret = __pf_attr_set_u32(pf, "device/sriov_numvfs", num_vfs);
+> +
+> +	igt_require_f(!(ret == false && errno == ENOENT), "SR-IOV not supported\n");
 
-== Series Details ==
+You can only trust errno immediately after the failing libc function.
 
-Series: Enable HDR in IGT Frontbuffer Feature Tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/158425/
-State : success
+There are so many things happening in __pf_attr_set_u32() and the IGT
+functions it calls that this is completely unreliable.
 
-== Summary ==
+The way the igt_sysfs_set_u32() stuff are written, you need to make them
+propagate an int -errno return value from deep down to check for ENOENT.
 
-CI Bug Log - changes from XEIGT_8865_BAT -> XEIGTPW_15012_BAT
-====================================================
+Or check for SR-IOV separately some other way.
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 13)
-------------------------------
-
-  Additional (1): bat-ptl-vm 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_15012_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_evict@evict-beng-small-cm:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][1] ([Intel XE#5764]) +10 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_evict@evict-beng-small-cm.html
-
-  * igt@xe_exec_balancer@twice-parallel-basic:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][2] ([Intel XE#7482]) +17 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_exec_balancer@twice-parallel-basic.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][3] ([Intel XE#5775])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  * igt@xe_mmap@vram:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][4] ([Intel XE#5776])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_mmap@vram.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][5] ([Intel XE#5777] / [Intel XE#7590])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelp:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][6] ([Intel XE#5771] / [Intel XE#7590])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_pat@pat-index-xelp.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][7] ([Intel XE#5780] / [Intel XE#7590])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_pat@pat-index-xelpg.html
-
-  
-  [Intel XE#5764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764
-  [Intel XE#5771]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771
-  [Intel XE#5775]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775
-  [Intel XE#5776]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776
-  [Intel XE#5777]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777
-  [Intel XE#5780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780
-  [Intel XE#7482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482
-  [Intel XE#7590]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590
+BR,
+Jani.
 
 
-Build changes
--------------
+> +
+> +	igt_assert_f(ret, "Failed to write %u to device/sriov_numvfs (%s)\n", num_vfs, strerror(errno));
+>  }
+>  
+>  /**
 
-  * IGT: IGT_8865 -> IGTPW_15012
-
-  IGTPW_15012: 8703843c5af18edce4918177b99d3c6742aefad3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8865: 1c23bc1bdf01bf0ded2344cb217d7fe88de3b726 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4921-898b5aa235c5b269d6c745fd84270b296aa75469: 898b5aa235c5b269d6c745fd84270b296aa75469
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/index.html
-
---===============7543675682498953357==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Enable HDR in IGT Frontbuffer Feature Tests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158425/">https://patchwork.freedesktop.org/series/158425/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8865_BAT -&gt; XEIGTPW_15012_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 13)</h2>
-<p>Additional (1): bat-ptl-vm </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15012_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-small-cm:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764">Intel XE#5764</a>) +10 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_balancer@twice-parallel-basic:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_exec_balancer@twice-parallel-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482">Intel XE#7482</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775">Intel XE#5775</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776">Intel XE#5776</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777">Intel XE#5777</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771">Intel XE#5771</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15012/bat-ptl-vm/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780">Intel XE#5780</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8865 -&gt; IGTPW_15012</li>
-</ul>
-<p>IGTPW_15012: 8703843c5af18edce4918177b99d3c6742aefad3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8865: 1c23bc1bdf01bf0ded2344cb217d7fe88de3b726 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4921-898b5aa235c5b269d6c745fd84270b296aa75469: 898b5aa235c5b269d6c745fd84270b296aa75469</p>
-
-</body>
-</html>
-
---===============7543675682498953357==--
+-- 
+Jani Nikula, Intel
