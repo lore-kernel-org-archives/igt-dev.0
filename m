@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 567A2F8FA62
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Apr 2026 11:51:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4A1DF8FA62
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Apr 2026 11:55:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2DDD10E830;
-	Tue, 21 Apr 2026 11:51:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5438810E889;
+	Tue, 21 Apr 2026 11:55:19 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 719C610E830;
- Tue, 21 Apr 2026 11:51:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E923A10E889;
+ Tue, 21 Apr 2026 11:55:06 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6276005500516629173=="
+ boundary="===============2989880527701567957=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_Add_assert_for_pointers_com?=
- =?utf-8?q?pare_and_fix_armhf_compilation_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/xe=5Fexec=3A_Add_VM_r?=
+ =?utf-8?q?ebind_stress_test_under_workqueue_cpumask_cycling?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+To: "S Sebinraj" <s.sebinraj@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 21 Apr 2026 11:51:20 -0000
-Message-ID: <177677228045.481576.3036864394490746179@a3b018990fe9>
+Date: Tue, 21 Apr 2026 11:55:06 -0000
+Message-ID: <177677250694.481575.17475995985980265060@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260417181157.177299-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20260417181157.177299-1-kamil.konieczny@linux.intel.com>
+References: <20260417120135.3100557-1-s.sebinraj@intel.com>
+In-Reply-To: <20260417120135.3100557-1-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,98 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6276005500516629173==
+--===============2989880527701567957==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add assert for pointers compare and fix armhf compilation (rev2)
-URL   : https://patchwork.freedesktop.org/series/165068/
-State : failure
+Series: tests/xe_exec: Add VM rebind stress test under workqueue cpumask cycling
+URL   : https://patchwork.freedesktop.org/series/165066/
+State : success
 
 == Summary ==
 
-Series 165068 revision 2 was fully merged or fully failed: no git log
+CI Bug Log - changes from XEIGT_8865_BAT -> XEIGTPW_15010_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 13)
+------------------------------
+
+  Additional (1): bat-ptl-vm 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15010_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-beng-small-cm:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][1] ([Intel XE#5764]) +10 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_evict@evict-beng-small-cm.html
+
+  * igt@xe_exec_balancer@twice-parallel-basic:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][2] ([Intel XE#7482]) +17 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_exec_balancer@twice-parallel-basic.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][3] ([Intel XE#5775])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  * igt@xe_mmap@vram:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][4] ([Intel XE#5776])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][5] ([Intel XE#5777] / [Intel XE#7590])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][6] ([Intel XE#5771] / [Intel XE#7590])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][7] ([Intel XE#5780] / [Intel XE#7590])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_pat@pat-index-xelpg.html
+
+  
+  [Intel XE#5764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764
+  [Intel XE#5771]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771
+  [Intel XE#5775]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775
+  [Intel XE#5776]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776
+  [Intel XE#5777]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777
+  [Intel XE#5780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780
+  [Intel XE#7482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482
+  [Intel XE#7590]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590
 
 
+Build changes
+-------------
 
---===============6276005500516629173==
+  * IGT: IGT_8865 -> IGTPW_15010
+
+  IGTPW_15010: 7b47cc44d23ae797e49444d095958f36cfff3c0b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8865: 1c23bc1bdf01bf0ded2344cb217d7fe88de3b726 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4921-898b5aa235c5b269d6c745fd84270b296aa75469: 898b5aa235c5b269d6c745fd84270b296aa75469
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/index.html
+
+--===============2989880527701567957==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,16 +152,78 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add assert for pointers compare and fix armhf compilation (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165068/">https://patchwork.freedesktop.org/series/165068/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/xe_exec: Add VM rebind stress test under workqueue cpumask cycling</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165066/">https://patchwork.freedesktop.org/series/165066/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 165068 revision 2 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from XEIGT_8865_BAT -&gt; XEIGTPW_15010_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 13)</h2>
+<p>Additional (1): bat-ptl-vm </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15010_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-small-cm:</p>
+<ul>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764">Intel XE#5764</a>) +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_balancer@twice-parallel-basic:</p>
+<ul>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_exec_balancer@twice-parallel-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482">Intel XE#7482</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775">Intel XE#5775</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776">Intel XE#5776</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777">Intel XE#5777</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771">Intel XE#5771</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15010/bat-ptl-vm/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780">Intel XE#5780</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8865 -&gt; IGTPW_15010</li>
+</ul>
+<p>IGTPW_15010: 7b47cc44d23ae797e49444d095958f36cfff3c0b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8865: 1c23bc1bdf01bf0ded2344cb217d7fe88de3b726 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4921-898b5aa235c5b269d6c745fd84270b296aa75469: 898b5aa235c5b269d6c745fd84270b296aa75469</p>
 
 </body>
 </html>
 
---===============6276005500516629173==--
+--===============2989880527701567957==--
