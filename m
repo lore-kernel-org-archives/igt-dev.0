@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7515DF8FA7B
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Apr 2026 14:06:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA261F8FA80
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Apr 2026 14:22:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 23AD210E8B6;
-	Tue, 21 Apr 2026 14:06:22 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J0jlYBG6";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B01FE10E8AD
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2026 14:06:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776780371; x=1808316371;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/GR4wlaRxfVew6IUjbh5bsiXj2TA/I1vL/1Csn8a0pw=;
- b=J0jlYBG6fx23qC+yMAhUWvhDSadyjOL4hlmbKHZ22Kh2yfFIsBEYE1QZ
- nf5cIJDll+6XM1zYOethhXUECn88LvvzbOKfHukI72Z4pAfDeaebhuiJO
- BODLPfJ7CbFOlC1MYhQJ/4ciZCbRHemmkVuXlIIl+Qfq+y4CmWAcqkcK/
- bj+yWVNgND0hi0WgxBZnbaL18nriS5hEXbbJeVS40MDinmdvC4BgU7fQ3
- liFBYr8AdRaNXWvf8ygjCasB3uTQoR9vu458yHxlZkuRUrz8I/NXo0obo
- VQZ9fRz2e9M+HSgyHrYj2pc5gcmCpvn+Hkeifqt7XT65fcOLyFZDJhVdb A==;
-X-CSE-ConnectionGUID: UnnhM+XsQ3q4SyabW7MzwA==
-X-CSE-MsgGUID: 1Hp5XDIWRzSWTTrKi2DdUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="89183369"
-X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; d="scan'208";a="89183369"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Apr 2026 07:06:11 -0700
-X-CSE-ConnectionGUID: jVZm9de5TumElsURxtkQ0A==
-X-CSE-MsgGUID: ikL+hB82TmyJqhd0Rr7cgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; d="scan'208";a="231154583"
-Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
- by orviesa010.jf.intel.com with ESMTP; 21 Apr 2026 07:06:09 -0700
-From: Nitin Gote <nitin.r.gote@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@linux.intel.com, kamil.konieczny@linux.intel.com,
- nitin.r.gote@intel.com
-Subject: [PATCH] tests/intel/xe_configfs: Use available engine for ctx-restore
- subtests
-Date: Tue, 21 Apr 2026 20:10:42 +0530
-Message-ID: <20260421144041.1365713-2-nitin.r.gote@intel.com>
-X-Mailer: git-send-email 2.50.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E9CA10E8BF;
+	Tue, 21 Apr 2026 14:22:38 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 727BC10E8C8;
+ Tue, 21 Apr 2026 14:22:26 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7137919073498369551=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Negative_tests_for_VM=5FB?=
+ =?utf-8?q?IND_decompression?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Smitha Balasubramanyam" <smitha.balasubramanyam@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 21 Apr 2026 14:22:26 -0000
+Message-ID: <177678134645.481576.17055059712462176259@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260420045724.1053946-1-smitha.balasubramanyam@intel.com>
+In-Reply-To: <20260420045724.1053946-1-smitha.balasubramanyam@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,168 +37,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The ctx-restore-post-bb and ctx-restore-mid-bb subtests were hardcoded
-to use the "rcs" engine class. Platforms without a render engine (e.g.
-PVC, CRI) fail because the batch buffer is never injected into any
-engine's LRC, causing register readback to fail.
+--===============7137919073498369551==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Fix by dynamically detecting an available engine in the fixture using
-xe_for_each_engine(). Prefer render ("rcs") when available, otherwise
-fall back to compute ("ccs"). Every xe platform has at least one of
-these engine classes. Remove the hardcoded "rcs" from test data and
-add the detected engine name at runtime.
+== Series Details ==
 
-Fixes: b6abdc26e01b ("tests/intel/xe_configfs: Check ctx_restore_post_bb")
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
----
- tests/intel/xe_configfs.c | 61 ++++++++++++++++++++++++++-------------
- 1 file changed, 41 insertions(+), 20 deletions(-)
+Series: Negative tests for VM_BIND decompression
+URL   : https://patchwork.freedesktop.org/series/165126/
+State : success
 
-diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index 755524e7c..1d5ea1503 100644
---- a/tests/intel/xe_configfs.c
-+++ b/tests/intel/xe_configfs.c
-@@ -261,11 +261,12 @@ static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
-  * SUBTEST: ctx-restore-mid-bb
-  * Description: Validate ctx_restore_mid_bb attribute
-  */
--static void test_ctx_restore(int configfs_device_fd, const char *type)
-+static void test_ctx_restore(int configfs_device_fd, const char *type,
-+			     const char *engine)
- {
- 	static const struct value {
- 		const char *test;
--		const char *in;
-+		const char *in[3];
- 		const char *out;
- 		uint32_t reg[4];
- 		uint32_t reg_val[4];
-@@ -276,38 +277,40 @@ static void test_ctx_restore(int configfs_device_fd, const char *type)
- 		 * previous execution set a specific value in the HW
- 		 */
- 		{ .test = "cmd-single",
--		  .in = "rcs cmd 11000001 4F100 DEA0BEE0",
--		  .out = "rcs: 11000001 0004f100 dea0bee0\n",
-+		  .in = { "cmd 11000001 4F100 DEA0BEE0" },
-+		  .out = "11000001 0004f100 dea0bee0",
- 		  .reg = { 0x4f100 },
- 		  .reg_val = { 0xdea0bee0 },
- 		},
- 		{ .test = "cmd-single-multi-values",
--		  .in = "rcs cmd 11000003 4F100 DEA1BEE1 4F104 DEA2BEE2",
--		  .out = "rcs: 11000003 0004f100 dea1bee1 0004f104 dea2bee2\n",
-+		  .in = { "cmd 11000003 4F100 DEA1BEE1 4F104 DEA2BEE2" },
-+		  .out = "11000003 0004f100 dea1bee1 0004f104 dea2bee2",
- 		  .reg = { 0x4f100, 0x4f104 },
- 		  .reg_val = { 0xdea1bee1, 0xdea2bee2 },
- 		},
- 		{ .test = "cmd-multi",
--		  .in = "rcs cmd 11000001 4F100 DEA3BEE3\n"
--			"rcs cmd 11000001 4F104 DEA4BEE4",
--		  .out = "rcs: 11000001 0004f100 dea3bee3 11000001 0004f104 dea4bee4\n",
-+		  .in = { "cmd 11000001 4F100 DEA3BEE3",
-+			  "cmd 11000001 4F104 DEA4BEE4" },
-+		  .out = "11000001 0004f100 dea3bee3 11000001 0004f104 dea4bee4",
- 		  .reg = { 0x4f100, 0x4f104 },
- 		  .reg_val = { 0xdea3bee3, 0xdea4bee4 },
- 		},
- 		{ .test = "reg-single",
--		  .in = "rcs reg 4F100 DEA5BEE5",
--		  .out = "rcs: 11000001 0004f100 dea5bee5\n",
-+		  .in = { "reg 4F100 DEA5BEE5" },
-+		  .out = "11000001 0004f100 dea5bee5",
- 		  .reg = { 0x4f100 },
- 		  .reg_val = { 0xdea5bee5 },
- 		},
- 		{ .test = "reg-multi",
--		  .in = "rcs reg 4F100 DEA6BEE6\n"
--			"rcs reg 4F104 DEA7BEE7",
--		  .out = "rcs: 11000001 0004f100 dea6bee6 11000001 0004f104 dea7bee7\n",
-+		  .in = { "reg 4F100 DEA6BEE6",
-+			  "reg 4F104 DEA7BEE7" },
-+		  .out = "11000001 0004f100 dea6bee6 11000001 0004f104 dea7bee7",
- 		  .reg = { 0x4f100, 0x4f104 },
- 		  .reg_val = { 0xdea6bee6, 0xdea7bee7 },
- 		},
- 	};
-+	char in[4096] = { };
-+	char out[4096] = { };
- 	char buf[4096] = { };
- 	char file[64] = { };
- 
-@@ -319,14 +322,19 @@ static void test_ctx_restore(int configfs_device_fd, const char *type)
- 		igt_audio_driver_unload(NULL);
- 		igt_kmod_unbind("xe", bus_addr);
- 
-+		for (int j = 0, off = 0; v->in[j]; j++)
-+			off += snprintf(in + off, sizeof(in) - off, "%s %s\n",
-+					engine, v->in[j]);
-+		snprintf(out, sizeof(out), "%s: %s\n", engine, v->out);
-+
- 		igt_info("Test %s\n", v->test);
--		igt_debug("bb '%s'\n", v->in);
--		igt_assert(igt_sysfs_set(configfs_device_fd, file, v->in));
-+		igt_debug("bb '%s'\n", in);
-+		igt_assert(igt_sysfs_set(configfs_device_fd, file, in));
- 
- 		igt_assert(igt_sysfs_read(configfs_device_fd, file, buf,
- 					  sizeof(buf) - 1));
--		if (strcmp(v->out, buf)) {
--			igt_debug("Expecting '%s' but found '%s'\n", v->out, buf);
-+		if (strcmp(out, buf)) {
-+			igt_debug("Expecting '%s' but found '%s'\n", out, buf);
- 			igt_fail(IGT_EXIT_FAILURE);
- 		}
- 
-@@ -364,12 +372,25 @@ int igt_main()
- 	int fd, configfs_fd, configfs_device_fd;
- 	uint32_t devid;
- 	bool is_vf_device;
-+	const char *engine = NULL;
- 
- 	igt_fixture() {
-+		struct drm_xe_engine_class_instance *hwe;
-+
- 		fd = drm_open_driver(DRIVER_XE);
- 		devid = intel_get_drm_devid(fd);
- 		is_vf_device = intel_is_vf_device(fd);
- 		set_bus_addr(fd);
-+
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER) {
-+				engine = "rcs";
-+				break;
-+			}
-+			if (!engine && hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+				engine = "ccs";
-+		}
-+
- 		drm_close_driver(fd);
- 
- 		configfs_fd = igt_configfs_open("xe");
-@@ -419,7 +440,7 @@ int igt_main()
- 	igt_subtest("ctx-restore-post-bb") {
- 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
- 		configfs_device_fd = create_device_configfs_group(configfs_fd);
--		test_ctx_restore(configfs_device_fd, "post");
-+		test_ctx_restore(configfs_device_fd, "post", engine);
- 		close_configfs_group(configfs_fd, configfs_device_fd);
- 	}
- 
-@@ -435,7 +456,7 @@ int igt_main()
- 	igt_subtest("ctx-restore-mid-bb") {
- 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
- 		configfs_device_fd = create_device_configfs_group(configfs_fd);
--		test_ctx_restore(configfs_device_fd, "mid");
-+		test_ctx_restore(configfs_device_fd, "mid", engine);
- 		close_configfs_group(configfs_fd, configfs_device_fd);
- 	}
- 
--- 
-2.50.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8865 -> IGTPW_15014
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15014/index.html
+
+Participating hosts (40 -> 39)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15014 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8865/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15014/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - fi-bsw-n3050:       [DMESG-FAIL][3] ([i915#14808]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8865/fi-bsw-n3050/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15014/fi-bsw-n3050/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#14808]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8865 -> IGTPW_15014
+
+  CI-20190529: 20190529
+  CI_DRM_18350: 898b5aa235c5b269d6c745fd84270b296aa75469 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15014: 23764c1b368a62fdead783467626f9b5bc8cfa1e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8865: 1c23bc1bdf01bf0ded2344cb217d7fe88de3b726 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15014/index.html
+
+--===============7137919073498369551==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Negative tests for VM_BIND decompression</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165126/">https://patchwork.freedesktop.org/series/165126/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15014/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15014/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8865 -&gt; IGTPW_15014</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15014/index.html</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15014 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8865/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15014/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8865/fi-bsw-n3050/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808">i915#14808</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15014/fi-bsw-n3050/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8865 -&gt; IGTPW_15014</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18350: 898b5aa235c5b269d6c745fd84270b296aa75469 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15014: 23764c1b368a62fdead783467626f9b5bc8cfa1e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8865: 1c23bc1bdf01bf0ded2344cb217d7fe88de3b726 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7137919073498369551==--
