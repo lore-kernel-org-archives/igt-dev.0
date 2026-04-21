@@ -4,57 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1855FF55805
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Apr 2026 05:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D29FF327A3
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Apr 2026 05:50:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 823E910E175;
-	Tue, 21 Apr 2026 05:18:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 06B8410E7CD;
+	Tue, 21 Apr 2026 05:50:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fgbDPoRW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gGu8EDOz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36DE410E175
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2026 05:18:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D2C610E17D
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2026 05:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776748697; x=1808284697;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=90BrytbQy+232qkaoU5Y6La3OnxcC3gqY0b6pdWKbss=;
- b=fgbDPoRW5vt+fQfIwMyfXo9d6OzK5caB+6bFYFaHuOZwLqZXPHCXlbwQ
- oWwt2jklWOY22qoyVC235TlXg+nDTX1z61cmBxh7iRs+XcamBM+WlrBH0
- znu+zGeWYmysxb1KnDBzK1ii6RBPZ0vlGpDzd+a4bw3Iij+Yr674bxsM0
- BTdxoWIOfkmiVByvnyVIaxN0b/SzEdHwUDMjpbyYKFsWN3AG/0K04mrOa
- ciFQysh7LFubonjVReLbXvV/c9up/CCFLZLWCPrG9aclO99LINDH72mK8
- Tag/bfQ7XN1VfQaeVIMmg6PMmN1fdvajJDXFuvTkMkYOgRmfFD8xwx85Q w==;
-X-CSE-ConnectionGUID: oprcNLA9QQufucF11zRZYw==
-X-CSE-MsgGUID: kqxZ/+xzQ3eS3s1AJYdaSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77654075"
-X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; d="scan'208";a="77654075"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Apr 2026 22:18:16 -0700
-X-CSE-ConnectionGUID: 9K0GwzQwRyOZngfzZe+7GA==
-X-CSE-MsgGUID: uPBuWmt+QPeqWRDzmMWZYA==
+ t=1776750611; x=1808286611;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=usho2dnkxdvllUjGYHyQcc7gBL3qOc+P1/WNlv8cpNI=;
+ b=gGu8EDOzBeRh9rjnZnoqloeR0X5ANCLuPxibYwyv376iDuq0bKlDDmls
+ Vqzrlpf0cfLdiu4yvzqxb8BojN5qCQ0Ucj9Sic6/ACDsHmIhPYmoRRfrC
+ wXDiPx6XT8Je8N9EAoqIQk+foox/TRHeScyzxdttJ3Bob+EHpHqWiWK+T
+ QF3TaM6Efh2/hFgJscC9/d8qdfN2h+7fFQYrJyc3xzfKYoqbsI5hlghLe
+ 5IppOukJOLXYhGGbpEkZCnB5kZP2yB+FQJ9uNS6NAiOVCKUzHUTX40JqO
+ EujIrIgvH3F4yq9Jujhfn3FVSAFTtxSeYph/ejcrSL5qeQ7bLVuFQubV4 w==;
+X-CSE-ConnectionGUID: rP8Rq22WSJ6GZ6iSR40Pvg==
+X-CSE-MsgGUID: CB49QeX1RvK+uD8RgNZQ/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="81288124"
+X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; d="scan'208";a="81288124"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Apr 2026 22:50:10 -0700
+X-CSE-ConnectionGUID: dHzypMeeTWq/jHMyeums0A==
+X-CSE-MsgGUID: RRJnhltJQNOr3vaNGRooxg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; d="scan'208";a="235944115"
-Received: from soc-dcgdq34.clients.intel.com (HELO [10.66.99.119])
- ([10.66.99.119])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Apr 2026 22:18:14 -0700
-Message-ID: <8d6c7aba-2f3d-43d6-b729-8ec8774d2f2f@intel.com>
-Date: Tue, 21 Apr 2026 10:48:15 +0530
+X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; d="scan'208";a="225449826"
+Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Apr 2026 22:50:08 -0700
+From: Sowmiya S <sowmiya.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com, kunal1.joshi@intel.com,
+ Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v1 0/2] Fix 2-display test for MST shared-link BW
+Date: Tue, 21 Apr 2026 11:41:12 +0530
+Message-ID: <20260421061114.2262809-1-sowmiya.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,v3] tests/kms_bw: Allow custom modes for external panels
-To: Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org
-Cc: pranay.samala@intel.com, Jason-JH Lin <jason-jh.lin@mediatek.com>
-References: <20260420061231.1952346-1-karthik.b.s@intel.com>
-Content-Language: en-US
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20260420061231.1952346-1-karthik.b.s@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,216 +66,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On MST hubs / daisy-chain setups two display streams
+share one DP link; a joint atomic commit can be rejected
+by the driver if the combined mode bandwidth exceeds the
+link capacity. The driver therefore adjusts per-pipe
+settings (for example reducing pipe bpp and enabling
+dithering) when both streams are committed together,
+so tests must pick a mode combination the driver will accept.
 
-On 20-04-2026 11:42, Karthik B S wrote:
-> Currently, the test is rejecting outputs where the mode does not match.
-> This is leading to excessive skips on configs where the tests
-> were passing previously.
->
-> Instead of this, use default mode for fixed-mode panels if the required
-> custom mode is not found, and use custom mode for external panels as
-> these are allowed and have also been passing previously.
->
-> v2: Fixes in output_supported_mode (Kunal)
->      Add description to call out fixed-mode on internal panels (Kunal)
->
-> v3: Fix documentation issue on compilation.
->
-> Cc: Jason-JH Lin <jason-jh.lin@mediatek.com>
-> Cc: Kunal Joshi <kunal1.joshi@intel.com>
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> Tested-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-> ---
->   tests/kms_bw.c | 82 +++++++++++++++++++++++++++++++++++---------------
->   1 file changed, 58 insertions(+), 24 deletions(-)
->
-> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-> index 4df5c2cee..fea7d9d38 100644
-> --- a/tests/kms_bw.c
-> +++ b/tests/kms_bw.c
-> @@ -35,7 +35,7 @@
->   #include <xf86drmMode.h>
->   
->   /**
-> - * SUBTEST: linear-tiling-%d-displays-%s
-> + * SUBTEST: linear-tiling-%d-displays-target-%s
->    * Description: bw test with %arg[2]
->    *
->    * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-> @@ -47,7 +47,7 @@
->    * @3840x2160p:       3840x2160 resolution
->    * @2160x1440p:       2160x1440 resolution
->    *
-> - * SUBTEST: connected-linear-tiling-%d-displays-%s
-> + * SUBTEST: connected-linear-tiling-%d-displays-target-%s
->    * Description: bw test with %arg[2]
->    *
->    * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-> @@ -186,14 +186,16 @@ static void force_output_mode(data_t *d, igt_output_t *output,
->   	igt_output_override_mode(output, mode);
->   }
->   
-> -static bool output_mode_supported(igt_output_t *output, const drmModeModeInfo *mode)
-> +/* Check if output has a matching mode and call it out if mode is being forced */
-> +static void log_output_mode_support(igt_output_t *output, const drmModeModeInfo *mode)
->   {
->   	drmModeConnector *connector = output->config.connector;
-> +	drmModeModeInfo *default_mode;
->   	int i;
->   
->   	/* Virtual/forced sinks support all modes */
->   	if (!igt_output_is_connected(output))
-> -		return true;
-> +		return;
->   
->   	for (i = 0; i < connector->count_modes; i++) {
->   		drmModeModeInfo *conn_mode = &connector->modes[i];
-> @@ -204,26 +206,33 @@ static bool output_mode_supported(igt_output_t *output, const drmModeModeInfo *m
->   			igt_debug("Found matching mode for %dx%d@%dHz on %s\n",
->   				  mode->hdisplay, mode->vdisplay, mode->vrefresh,
->   				  igt_output_name(output));
-> -			return true;
-> +			return;
->   		}
->   	}
->   
-> -	igt_info("Mode %dx%d@%dHz not supported by %s (has %d modes)\n",
-> -		 mode->hdisplay, mode->vdisplay, mode->vrefresh,
-> -		 igt_output_name(output), connector->count_modes);
-> -
-> -	return false;
-> +	if (output_is_internal_panel(output)) {
-> +		default_mode = igt_output_get_mode(output);
-> +		igt_info("Mode %dx%d@%dHz not supported by %s (has %d modes).\n"
-> +			 "%s Default mode: %dx%d@%dHz\n",
-> +			 mode->hdisplay, mode->vdisplay, mode->vrefresh,
-> +			 igt_output_name(output), connector->count_modes, igt_output_name(output),
-> +			 default_mode->hdisplay, default_mode->vdisplay, default_mode->vrefresh);
-> +	} else {
-> +		igt_info("Mode %dx%d@%dHz not supported by %s (has %d modes). Forcing mode.\n",
-> +			 mode->hdisplay, mode->vdisplay, mode->vrefresh,
-> +			 igt_output_name(output), connector->count_modes);
-> +	}
->   }
->   
->   static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeInfo *mode, bool physical) {
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
-> +	drmModeModeInfo fb_mode;
->   	struct igt_fb buffer[IGT_MAX_PIPES];
->   	igt_crc_t zero, captured[IGT_MAX_PIPES];
->   	int i = 0, num_pipes = 0;
->   	igt_crtc_t *crtc;
->   	int ret;
-> -	bool has_supported_mode = false;
->   
->   	/* Cannot use igt_display_n_crtcs() due to fused pipes on i915 where they do
->   	 * not give the numver of valid crtcs and always return IGT_MAX_PIPES */
-> @@ -242,14 +251,28 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
->   		crtc = data->crtc[i];
->   
->   		output = physical ? data->connected_output[i] : data->output[i];
-> -		if (!output || !output_mode_supported(output, mode)) {
-> +		if (!output)
->   			continue;
-> -		}
->   
-> -		force_output_mode(data, output, mode);
-> +		log_output_mode_support(output, mode);
-> +
-> +		/*
-> +		 * On fixed mode panels trying to force a custom mode can lead
-> +		 * to failures or implicit handling where the default mode is
-> +		 * used even though custom mode is requested.
-> +		 *
-> +		 * To avoid this use default mode on fixed mode panels and
-> +		 * use custom modes only on external panels.
-> +		 */
-> +		if (output_is_internal_panel(output)) {
-> +			fb_mode = *igt_output_get_mode(output);
-> +		} else {
-> +			force_output_mode(data, output, mode);
-> +			fb_mode = *mode;
-> +		}
->   
-> -		igt_create_color_fb(display->drm_fd, mode->hdisplay,
-> -				    mode->vdisplay, DRM_FORMAT_XRGB8888,
-> +		igt_create_color_fb(display->drm_fd, fb_mode.hdisplay,
-> +				    fb_mode.vdisplay, DRM_FORMAT_XRGB8888,
->   				    DRM_FORMAT_MOD_LINEAR, 1.f, 0.f, 0.f,
->   				    &buffer[i]);
->   
-> @@ -258,10 +281,8 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
->   		igt_plane_set_fb(data->primary[i], &buffer[i]);
->   		igt_info("Assigning pipe %s to output %s with mode %s\n",
->   			 igt_crtc_name(crtc), igt_output_name(output),
-> -			 mode->name);
-> -		has_supported_mode = true;
-> +			 fb_mode.name);
->   	}
-> -	igt_skip_on_f(!has_supported_mode, "Unsupported mode for all pipes\n");
->   
->   	ret = igt_display_try_commit_atomic(display,
->   					    DRM_MODE_ATOMIC_ALLOW_MODESET |
-> @@ -273,9 +294,8 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
->   
->   	for (i = 0; i < n_crtcs; i++) {
->   		output = physical ? data->connected_output[i] : data->output[i];
-> -		if (!output || !output_mode_supported(output, mode)) {
-> +		if (!output)
->   			continue;
-> -		}
->   
->   		igt_pipe_crc_collect_crc(data->pipe_crc[i], &captured[i]);
->   		igt_assert_f(!igt_check_crc_equal(&zero, &captured[i]),
-> @@ -284,7 +304,7 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
->   
->   	for (i = n_crtcs - 1; i >= 0; i--) {
->   		output = physical ? data->connected_output[i] : data->output[i];
-> -		if (!output || !output_mode_supported(output, mode))
-> +		if (!output)
->   			continue;
->   
->   		igt_remove_fb(display->drm_fd, &buffer[i]);
-> @@ -319,7 +339,14 @@ int igt_main()
->   		n_crtcs = i + 1;
->   
->   		for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
-> -			igt_subtest_f("linear-tiling-%d-displays-%s", n_crtcs, test_mode[j].name)
-> +			igt_describe("Exercise bandwidth test using linear tiling across multiple pipes "
-> +				     "on a combination of phical and/or virtual outputs."
-NIT : Typo : physical
-Can be fixed while merging.
-> +				     "The test targets a bandwidth configuration corresponding to the "
-> +				     "requested mode, forcing the mode on external or virtual outputs"
-> +				     "(where supported).On fixed-mode internal panels, if the native mode "
-> +				     "is used even if it does not match the requested mode.");
-> +			igt_subtest_f("linear-tiling-%d-displays-target-%s",
-> +				      n_crtcs, test_mode[j].name)
->   				run_test_linear_tiling(&data, n_crtcs, &test_mode[j], false);
->   		}
->   	}
-> @@ -328,7 +355,14 @@ int igt_main()
->   		n_crtcs = i + 1;
->   
->                   for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
-> -                        igt_subtest_f("connected-linear-tiling-%d-displays-%s", n_crtcs, test_mode[j].name)
-> +			igt_describe("Exercise bandwidth test using linear tiling across multiple pipes "
-> +				     "on physically connected outputs only."
-> +				     "The test targets a bandwidth configuration corresponding to the "
-> +				     "requested mode, forcing the mode on external panels."
-> +				     "On fixed-mode internal panels, if the native mode "
-> +				     "is used even if it does not match the requested mode.");
-NIT : Remove if, Can be fixed while merging
-On fixed-mode internal panels, [if] the native mode is used even if it 
-does not match the requested mode.
-On fixed-mode internal panels, the native mode is used even if it does 
-not match the requested mode.
+Sowmiya S (2):
+  lib/igt_kms: Add MST bandwidth-fitting support and helpers
+  tests/kms_plane_multiple: Fix 2-display test for MST shared-link BW
 
-LGTM
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
-> +			igt_subtest_f("connected-linear-tiling-%d-displays-target-%s",
-> +				      n_crtcs, test_mode[j].name)
->   				run_test_linear_tiling(&data, n_crtcs, &test_mode[j], true);
->                   }
->           }
+ lib/igt_kms.c              | 33 +++++++++++++++
+ lib/igt_kms.h              |  3 ++
+ tests/kms_plane_multiple.c | 87 ++++++++++++++++++++++++++++++++------
+ 3 files changed, 109 insertions(+), 14 deletions(-)
+
+-- 
+2.43.0
+
