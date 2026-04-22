@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FF0CF9B614
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Apr 2026 10:48:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87E98F5A8DE
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Apr 2026 11:28:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3424A10E0A3;
-	Wed, 22 Apr 2026 10:48:47 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEB9910E0A3;
- Wed, 22 Apr 2026 10:48:34 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5813597933690948611=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D766F10E9B2;
+	Wed, 22 Apr 2026 11:28:06 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d4aVl206";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E041E10E08C
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2026 11:27:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1776857274; x=1808393274;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=v6Gb5nriyrQSM7D2dMFqX0DILZtrfLRBOceFs7oM7tw=;
+ b=d4aVl206O6OBLNOtV8aTf2UScDjUrwsK98CNyZv9lRr1XcrpZB2ViHRJ
+ xrse6pI28vuhC83ZLAjgD3k7aeHkTtQOMi7DRtBfdcqJNA2e5Kyn6C2YX
+ UEvgp0Si0U1J9W3VbNn1B/IKNYXyB8WEQWnz5LkRkUOKoDcCpotThJQXs
+ 2tXOKQr+uiOr8+NgIzvW9g1Bgk5YFRsSKwjtCaelakqTBAo8kzrOviKXG
+ 38Rspi2M/ILX385aKD3V4eBiRVU6HltGlRf1K++JOVpaqFll9cprjvJV1
+ pxDOCb2LNMxwDxNx44nrJBEwzImlyaif+q6JTHzje/+Uahy2YuAyOgGEE Q==;
+X-CSE-ConnectionGUID: ODKKR2EJSIy1qSku+UxPKw==
+X-CSE-MsgGUID: Mf5VR3zxSzyzHJ6UysmV5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="89275682"
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; d="scan'208";a="89275682"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2026 04:27:53 -0700
+X-CSE-ConnectionGUID: coN7fnJMSoWj24qkknll5g==
+X-CSE-MsgGUID: 7EoAQBONRGeGp7LYlxKpzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; d="scan'208";a="262717347"
+Received: from sinjan-super-server.iind.intel.com ([10.190.239.39])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2026 04:27:51 -0700
+From: Karthik Poosa <karthik.poosa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ raag.jadav@intel.com, jari.tahvanainen@intel.com, sk.anirban@intel.com,
+ kamil.konieczny@intel.com, katarzyna.piecielska@intel.com,
+ himanshu.girotra@intel.com, ramadevi.gandi@intel.com,
+ Karthik Poosa <karthik.poosa@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_survivability: Update category and mega
+ feature
+Date: Wed, 22 Apr 2026 17:04:03 +0530
+Message-Id: <20260422113403.843322-1-karthik.poosa@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel=3A_ctx=5Frestor?=
- =?utf-8?q?e_rollback_on_invalid_input_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Smitha Balasubramanyam" <smitha.balasubramanyam@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Apr 2026 10:48:34 -0000
-Message-ID: <177685491496.484982.2852461919988685215@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260420063816.1054855-1-smitha.balasubramanyam@intel.com>
-In-Reply-To: <20260420063816.1054855-1-smitha.balasubramanyam@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +67,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5813597933690948611==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Update category and mega feature of xe_survivability same as xe_pmu for
+proper tracking in internal visualization tools.
 
-== Series Details ==
+Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+---
+ tests/intel/xe_survivability.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Series: tests/intel: ctx_restore rollback on invalid input (rev2)
-URL   : https://patchwork.freedesktop.org/series/165130/
-State : success
+diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
+index e842a76ec..d5d7e048c 100644
+--- a/tests/intel/xe_survivability.c
++++ b/tests/intel/xe_survivability.c
+@@ -23,8 +23,8 @@
+ 
+ /**
+  * TEST: Comprehensive survivability mode testing
+- * Category: Core
+- * Mega feature: General Core features
++ * Category: Metrics
++ * Mega feature: Performance Monitoring Unit
+  * Sub-category: Telemetry
+  * Functionality: survivability mode
+  * Description: Validate survivability mode functionality
+-- 
+2.25.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8867_BAT -> XEIGTPW_15035_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8867 -> IGTPW_15035
-
-  IGTPW_15035: 580bfa7b398623b993d2aa1f98a0766798d72f87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8867: e927534a37db761655abb06191ce5c6390ad307a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4924-84de0c4efa971d100d339d4b4aef24676b86c58e: 84de0c4efa971d100d339d4b4aef24676b86c58e
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15035/index.html
-
---===============5813597933690948611==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel: ctx_restore rollback on invalid input (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165130/">https://patchwork.freedesktop.org/series/165130/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15035/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15035/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8867_BAT -&gt; XEIGTPW_15035_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8867 -&gt; IGTPW_15035</li>
-</ul>
-<p>IGTPW_15035: 580bfa7b398623b993d2aa1f98a0766798d72f87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8867: e927534a37db761655abb06191ce5c6390ad307a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4924-84de0c4efa971d100d339d4b4aef24676b86c58e: 84de0c4efa971d100d339d4b4aef24676b86c58e</p>
-
-</body>
-</html>
-
---===============5813597933690948611==--
