@@ -4,60 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2BF4FA1FD6
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Apr 2026 16:41:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D07A1FA1FD8
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Apr 2026 16:58:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 69BD110EA54;
-	Wed, 22 Apr 2026 16:41:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6455210EEF2;
+	Wed, 22 Apr 2026 16:58:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OjV0CnQn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mzdu5/KU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC1B910EA54
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2026 16:41:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 200E010EEF2
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2026 16:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776876074; x=1808412074;
+ t=1776877100; x=1808413100;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=Uq6nUyNs9qfuWxXOgwvE2IySlqOtkqyQ2dum/reT/gQ=;
- b=OjV0CnQnIGhQ2/BYpEmf97xveJBcfrcHO/ziFXO8Cjk0i64TvZTWa2v1
- lrM5dgxGJ5FZJirO0DnRYpSck4VKsXCFFbEgO0WdanqyQdIzfoM2A5IhN
- UACKKN+tkAHCXsfWxL0KT8AEjQsnQgBE+VpX9eEDxSk0BRTX4RHPSLIwW
- Q1MRPyNYc6cSpi+I+HluYFewMLSQQk76SLuerU+EoX2I4PWLtA8c545zu
- rOpCT5DB45UNqKG0aPJdwlK8/nv5RhAyCoUwwttOYn+7+lA1IG9HgUFIN
- 5V2EGYGt0ch7ErixFX0FsWJ1PbStNj6i0geqpN/FlHe8acv4LvWLtjNd2 g==;
-X-CSE-ConnectionGUID: TWZNn1ueSSuYwmTvNXvbZg==
-X-CSE-MsgGUID: bDwz5DKIQPKk17k8oBwmNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="65369590"
-X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; d="scan'208";a="65369590"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2026 09:41:13 -0700
-X-CSE-ConnectionGUID: YLYxIDM+SzGbUeACZs4fvA==
-X-CSE-MsgGUID: AQWvx78ARwC7+YQ+Gl0FMQ==
+ bh=K1y7bZ8TsJMC1hFY0ntdg9eSjU3tTS7tjMux9NgviXk=;
+ b=Mzdu5/KURV2jSjJ6moJf2b4Hlz5f2gcf+8+fl13ZrOLDIVBK5iSoMfbf
+ LvNLU3uIGGoVRTklKsK+RP/Z6MevOhAzHPZ3hEVtQMFViY/xEHLziK/f8
+ dTfGyk3+hMrQLEy2S+svLf7c4OKGMiC2nEGkIsIbAfdWnvFZPTMpXf+Yi
+ hbSAAI8mTEiQjEY3/LSPaLG69RglF4SDsjuqrjAfUDalqNL9ok5tb2rmz
+ bqMjbMSqihPuIodez+TyG7CDpRbK33ZNXqp/m+igVa5VV15f51xacdmCw
+ 9CKOyAz8OQOy1rgC1USFCw05bPg32sn21jtoPhu9yAkbBnCfeGVlYRYt2 g==;
+X-CSE-ConnectionGUID: fwszsewaT2qKpP3dBfk2kg==
+X-CSE-MsgGUID: wrIzw5zDT/mgfvlo7lEyVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77714580"
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; d="scan'208";a="77714580"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2026 09:58:20 -0700
+X-CSE-ConnectionGUID: xChiRtoeRgCDtxoTShuzhg==
+X-CSE-MsgGUID: gWjHZDsqRe2NElBA1qrkrw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; d="scan'208";a="237382334"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.244.47])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2026 09:41:12 -0700
-Date: Wed, 22 Apr 2026 18:41:09 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>, 
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; d="scan'208";a="237449331"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 09:58:18 -0700
+Date: Wed, 22 Apr 2026 18:58:02 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>,
  Karthik B S <karthik.b.s@intel.com>
 Subject: Re: [PATCH i-g-t v2] lib/drmtest: Create proper error report when
  open driver fails
-Message-ID: <fnos4wekls4mbxfuiy6wczqz63rkk6j5ldjxuzkthojsiifqx7@3frsnsuq64oa>
+Message-ID: <20260422165802.qbjbna3wqltfvfkp@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
 References: <20260421145950.55091-1-kamil.konieczny@linux.intel.com>
- <9ad9cc9138328823892f7319c1e3bb2c2b879e0c@intel.com>
+ <sxd77athu3dccaza6poyxj2quzezvkuqel3bwbdxbcg4tklz7g@tokhbcpvqfqg>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9ad9cc9138328823892f7319c1e3bb2c2b879e0c@intel.com>
+In-Reply-To: <sxd77athu3dccaza6poyxj2quzezvkuqel3bwbdxbcg4tklz7g@tokhbcpvqfqg>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,12 +76,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Apr 22, 2026 at 10:44:14AM +0300, Jani Nikula wrote:
-> On Tue, 21 Apr 2026, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+Hi Zbigniew,
+On 2026-04-21 at 17:42:51 +0200, Zbigniew Kempczyński wrote:
+> On Tue, Apr 21, 2026 at 04:59:50PM +0200, Kamil Konieczny wrote:
 > > When first try for opening driver fails then opening function is
 > > searching for next available device. When that also fails
 > > reporting is printing last errno which could mislead developer:
-> >
+> > 
 > > $ build/tests/kms_dp_aux_dev
 > > IGT-Version: 2.3-NO-GIT (x86_64) (Linux: 6.17.0-19-generic x86_64)
 > > Test requirement not met in function drm_open_driver, file ../lib/drmtest.c:754:
@@ -86,57 +90,17 @@ On Wed, Apr 22, 2026 at 10:44:14AM +0300, Jani Nikula wrote:
 > > No known gpu found for chipset flags 0x4294965755 (any)
 > > Last errno: 2, No such file or directory
 > > SKIP (0.006s)
-> >
+> > 
 > > ls /dev/dri
 > > by-path  card1  renderD128
-> >
+> > 
 > > The real problem here is lack of permissions as there was a card
 > > but program could not open it. Break looking for a card as soon
 > > as an error is different from ENOENT. It will create a proper
 > > error report which will print:
-> >
+> > 
 > > Last errno: 13, Permission denied
-> 
-> Isn't it also a problem that errno is really only valid right after a
-> failed libc call, and unspecified later?
-
-Yes, you're right.
-
-But in this particular case I think errno has no chance to be changed,
-I mean in sequence:
-
-fd = drm_open_driver()
-  -> __drm_open_driver()
-    -> __drm_open_driver_another()
-       -> __open_driver()
-          -> __search_and_open()
-igt_assert_fd(fd)
-
-we call __igt_fail_assert() immediately after library call, and this
-function fetches errno immediately so consecutive libc calls won't
-affect captured value (and error string looks valid).
-
->
-> All asserts lead to __igt_fail_assert(), which logs the last errno, but
-> anything could've happened before then. Most crucially, the errno
-> could've happened and been handled a while back, but the subsequent libc
-> calls won't clear the previous errno on success. So errno at assert
-> might have nothing to do with the assert itself.
-
-All igt code is prone to some false error messages if there's a code
-between failed call and assert. To be honest I didn't realize until
-you've mentioned that assert code might produce false error message. In
-some tests I do assert after releasing resources so in case of failure
-assert might be misleading.
-
---
-Zbigniew
-
-> 
-> BR,
-> Jani.
-> 
-> >
+> > 
 > > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > > Cc: Karthik B S <karthik.b.s@intel.com>
 > > Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
@@ -144,7 +108,7 @@ Zbigniew
 > > ---
 > >  lib/drmtest.c | 5 +++++
 > >  1 file changed, 5 insertions(+)
-> >
+> > 
 > > diff --git a/lib/drmtest.c b/lib/drmtest.c
 > > index 4a788ea7a..66982f653 100644
 > > --- a/lib/drmtest.c
@@ -156,11 +120,29 @@ Zbigniew
 > > +
 > > +		if (errno == ENOENT)
 > > +			continue;
+
+This 'if' is redundand, ENOENT will be catched before reaching
+__drm_open_device, in line with a call to _is_already_opened(),
+so here only break is needed. I will float v3 with that and
+will keep your r-b. The only thing I am not sure is it will
+break flow for any error, not only EPERM.
+
+Regards,
+Kamil
+
 > > +
 > > +		break;
+> 
+> LGTM,
+> 
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> 
+> --
+> Zbigniew
+> 
 > >  	}
 > >  
 > >  	return -1;
-> 
-> -- 
-> Jani Nikula, Intel
+> > -- 
+> > 2.53.0
+> > 
