@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E56DFA1FC9
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Apr 2026 15:45:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EFCEFA1FC7
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Apr 2026 15:45:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE25110E04D;
-	Wed, 22 Apr 2026 15:45:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14BA410E04D;
+	Wed, 22 Apr 2026 15:45:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HlYUbWpG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QQhkJ8my";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A100310E04D
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2026 15:44:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60E6C10E04D
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2026 15:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776872685; x=1808408685;
+ t=1776872689; x=1808408689;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9/F9KeHYnX0KCpMC5M+hcFbL9UpgTImL5p0UUj3khs8=;
- b=HlYUbWpGtCMwBaQjMv3n/0qtWbAoe1OA4A1ZcUrbqJ7GSTM15fIxBMV+
- J2K1fjD+RjugyYlTF0xji358tgk2Vy7hIOh4SbqIxNH/Ry1uV80PRtX7h
- UltCG8tXvLhNRn2Aox6yfYTU0z+2oxRy51PTRsq6J4BwntIS4qzW9SzJj
- bn1cl1+0Cw714eyK5AWrU719E6ZqXciYLWYBfiGRM7DI1BmUQlX/5cbw7
- eeDA+76xfkavzIWmLTdQl47umwosvOgKzCuECk7gPiR/LwAZrFG7+Aa2q
- sskc5VbDDP6eDF3hyD9CXJk3TxCbH1s49G6R/r56E0Pzpj66j+GOyebZX Q==;
-X-CSE-ConnectionGUID: 1Lkwqm7ZQl2Qw/WMFw/9OQ==
-X-CSE-MsgGUID: 7rrAmCVrRTyE/sgB7q2qkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="81692683"
-X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; d="scan'208";a="81692683"
+ bh=la3Z+LlYP+YBmg2V8U7DZQIAyDkIh6zK7NvHSDmPiLc=;
+ b=QQhkJ8my2FFZf8rxaFCgfzM4icI3QtBBcTa/RdeLGRMxtTuaL8cJU62X
+ 8rE2Kj0yCDJ4KEyMYEbXTSYes4aFCltXFmIFY1IQpZENYaJjpFLXSnG4z
+ XhK4dsj3CGOG0OOqVTMhnnrVq9XiC2b+xmPWqeo2WDgfUWjPqgJyYYwjp
+ wZon2y6t04aUPDWro58yiE4yVBRgI85kFqvVYokMvT72iYjxwW4KIcXlT
+ dcXRIt+UUMNPXMkgsK/5moR7md0ZAkCnu7MIT9OU2x3BOqodHsSoaxsuY
+ jhulGeU2DswgkKGm5QkAqUXjDwofQ3uBzvCmKGCVhTCcM6j7old/Lqapy A==;
+X-CSE-ConnectionGUID: UOH+WGWWTeyQpArMDMKMFg==
+X-CSE-MsgGUID: dKGVue7rT4yBrDk+ppGudg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="81692684"
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; d="scan'208";a="81692684"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2026 08:44:45 -0700
-X-CSE-ConnectionGUID: Isdbzzx3RguKD0rg+8dH/w==
-X-CSE-MsgGUID: saTREiXkQuuk8BDvZeosQw==
+ 22 Apr 2026 08:44:49 -0700
+X-CSE-ConnectionGUID: GlDyxFqOQIuAcvN47nlS0g==
+X-CSE-MsgGUID: M4AEa7KDQlqvTXMtfGNE+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; d="scan'208";a="236762677"
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; d="scan'208";a="236762681"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.245.235])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2026 08:44:44 -0700
+ 22 Apr 2026 08:44:48 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v2 4/5] tests/prime_udl: Fix i915 device opening
-Date: Wed, 22 Apr 2026 17:44:22 +0200
-Message-ID: <20260422154423.141908-5-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 5/5] tests/prime_udl: Rename into i915_prime_udl
+Date: Wed, 22 Apr 2026 17:44:23 +0200
+Message-ID: <20260422154423.141908-6-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260422154423.141908-1-kamil.konieczny@linux.intel.com>
 References: <20260422154423.141908-1-kamil.konieczny@linux.intel.com>
@@ -69,31 +69,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are now Intel cards handled by Xe driver so make sure we
-open one handled by i915.
+This is an i915 test so rename it and move it to tests/intel/.
+Add documentation so build will not become broken.
 
+Cc: Karthik B S <karthik.b.s@intel.com>
+Suggested-by: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/prime_udl.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/{prime_udl.c => intel/i915_prime_udl.c} | 17 +++++++++++++++++
+ tests/meson.build                             |  2 +-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+ rename tests/{prime_udl.c => intel/i915_prime_udl.c} (88%)
 
-diff --git a/tests/prime_udl.c b/tests/prime_udl.c
-index 5d2c952d5..db83152fc 100644
+diff --git a/tests/prime_udl.c b/tests/intel/i915_prime_udl.c
+similarity index 88%
+rename from tests/prime_udl.c
+rename to tests/intel/i915_prime_udl.c
+index db83152fc..0f2dd50c0 100644
 --- a/tests/prime_udl.c
-+++ b/tests/prime_udl.c
-@@ -49,6 +49,11 @@ static int find_and_open_devices(void)
- 			intel_fd = open(path, O_RDWR);
- 			if (intel_fd == -1)
- 				return -1;
++++ b/tests/intel/i915_prime_udl.c
+@@ -13,6 +13,23 @@
+ 
+ #include "i915/gem_create.h"
+ 
++/**
++ * TEST: i915 prime udl
++ * Category: Display
++ * Description: Basic set of prime tests between Intel and DisplayLink.
++ * Driver requirement: i915
++ * Mega feature: General Display Features
++ * Sub-category: Memory management tests
++ * Functionality: prime import/export
++ * Test category: GEM_Legacy
++ * Feature: prime
++ *
++ * SUBTEST: share-import
++ *
++ * SUBTEST: share-import-addfb
++ *
++ */
 +
-+			if (!is_i915_device(intel_fd)) {
-+				close(intel_fd);
-+				intel_fd = -1;
-+			}
- 		} else if (venid == 0x17e9 && udl_fd == -1) {
- 			udl_fd = open(path, O_RDWR);
- 			if (udl_fd == -1)
+ IGT_TEST_DESCRIPTION("Basic set of prime tests between Intel and DisplayLink");
+ 
+ int intel_fd = -1, udl_fd = -1;
+diff --git a/tests/meson.build b/tests/meson.build
+index 4c1a39e9e..196fff8ca 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -72,7 +72,6 @@ test_progs = [
+ 	'kms_vrr',
+ 	'kms_writeback',
+ 	'meta_test',
+-	'prime_udl',
+ 	'prime_vgem',
+ 	'sriov_basic',
+ 	'syncobj_basic',
+@@ -231,6 +230,7 @@ intel_i915_progs = [
+ 	'i915_pm_rps',
+ 	'i915_pm_sseu',
+ 	'i915_power',
++	'i915_prime_udl',
+ 	'i915_query',
+ 	'i915_selftest',
+ 	'i915_suspend',
 -- 
 2.54.0
 
