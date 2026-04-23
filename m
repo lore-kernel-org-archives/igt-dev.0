@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B012F9935C
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 09:32:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60EB3F9935C
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 09:35:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A7C9710F003;
-	Thu, 23 Apr 2026 09:32:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14ECD10F034;
+	Thu, 23 Apr 2026 09:35:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GDNLElCT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lyXKcKaC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AECB510EFFC
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 09:32:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C967510E345
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 09:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776936764; x=1808472764;
+ t=1776936905; x=1808472905;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=jH8/1JQHoB0GG9r0du0jqQFWS2/sgyCH0PUcnkZGqR0=;
- b=GDNLElCTqqJ05EyhQGQ0rntRSET9kfgN0GabkpmQCtqTfgwATokB4hHU
- oVmwuLmDZTRMcnYt1q/6/RaMEqtqe9U5rxmFhyzYadJs6IRvjf75I6p49
- uIZqh+bb4/N51iz/nxqvPRGLu1XDepb9xTKZJ+u7ICIYo6UVHJEz0Kuo3
- Ma4siWSUKF4LtGmjuZaQ9KUuLfTohsPDCcq/e4Xdm+p5tkgcvI0MU7N1x
- DmVxaCYoKi5Qivai1EYnPIOZEIqQutA+T5kbZwBkJcmzNVk0PXlu6iqdQ
- Hba+ZSxr91BkksSIoVWOFb7Mh/jHugiZ5MHZqGS9619EPemEoBUNsA1Rh g==;
-X-CSE-ConnectionGUID: yJzYCe7ETHSqWFyrIJjIpA==
-X-CSE-MsgGUID: ZTBLQ2fVTnWsDL8/hJwj7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="95315003"
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="95315003"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 02:32:43 -0700
-X-CSE-ConnectionGUID: 6gtf5sI5SICBnqheyyFYeA==
-X-CSE-MsgGUID: Sa6rHs+hQMOJVnXDl1O8DA==
+ bh=yLrI0C+SJOqvAb/yiPnkCc4qRsumoeJsEpRyOmi4hHM=;
+ b=lyXKcKaCIQLLz0HUAkZiQrBLAFHA5U4SdksBY1KlXWAMtG73ySY5kQ6m
+ l6Ad+OTLgaJiCt3jQPJPMTTh35Ya/4GmcgdE1BUdIgcBDvB5/EXTZOST4
+ 4Zl9expOvypgv4BtxjIxE2TEBDM71ZcSZQ6+7Hrh2XK+2aMqH0UvcGwOG
+ e44ujsVTlfNvYOnya9kOwIrK3HszvTtCJzjXf3RtFB1qp7MvP/Nq239JT
+ XaopfWIXTgDO8T/6YaSdmf2jawgJSkRYgHNetT3tcoBbBEg26p1uvvubt
+ oXnmxiM1+uEMsKdhO+2VI9FqgOkHMKlcZ+KDSb+xrIXrXnuNMaHZjudEi A==;
+X-CSE-ConnectionGUID: 3bon1TU6REqcI6RWUYHlLw==
+X-CSE-MsgGUID: fafL31ECSZeBtBrDZbNpcQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="95462818"
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="95462818"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2026 02:35:05 -0700
+X-CSE-ConnectionGUID: 4/teGSAIQpCdQVkLvR/4Fg==
+X-CSE-MsgGUID: rbu42sQbRpOtDlINcpMnQg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="256090057"
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="226085002"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.133])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 02:32:41 -0700
-Date: Thu, 23 Apr 2026 11:32:38 +0200
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2026 02:35:02 -0700
+Date: Thu, 23 Apr 2026 11:35:00 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Jan Maslak <jan.maslak@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH 01/10] lib/intel/genxml: Add genxml generators, headers,
- and build integration
-Message-ID: <3i5z26iespmagu6p6zsildqeoi3vs75guwmxsipk6nwq4ynmli@rxqtwvfevcsu>
+Subject: Re: [PATCH 04/10] lib/intel/genxml: Import Xe2/Xe3/Xe3p XML hardware
+ definitions from Mesa
+Message-ID: <io5745lchrypc45p5cgpmnv44idrlvqzgxbupffypowb73fpru@o5kchospkbev>
 References: <20260415220720.1594414-1-jan.maslak@intel.com>
- <20260415220720.1594414-2-jan.maslak@intel.com>
+ <20260415220720.1594414-5-jan.maslak@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260415220720.1594414-2-jan.maslak@intel.com>
+In-Reply-To: <20260415220720.1594414-5-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,2617 +71,2862 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 16, 2026 at 12:07:11AM +0200, Jan Maslak wrote:
-> Currently IGT uses raw intel_bb_out() calls for setting up the render /
-> compute pipelines. Fields are set by shifting and OR-ing hand-computed
-> constants, with field names and bit positions hardcoded and sometimes
-> explained in comments. A lot of code has branching based on generations,
-> making pipeline setup more complex as the new generations come in.
+On Thu, Apr 16, 2026 at 12:07:14AM +0200, Jan Maslak wrote:
+> Import xe2.xml, xe3.xml, and xe3p.xml from Mesa (MIT-licensed, Mesa commit
+> 3a62dc0218d3) unchanged.
 > 
-> Meanwhile Mesa uses a system called genxml in which XML files describe GPU
-> commands, state objects, enums, and registers - specifying the field layout
-> down to individual bits. A Python generator then produces C headers with
-> typed structs, pack functions, and named constants for each command/state.
-> 
-> By bringing genxml to IGT, we can achieve a more maintainable and less
-> error-prone codebase. Instead of manually calculating bit positions and
-> creating complex branching logic, we can fill out the structs generated
-> from XML descriptions, and the packing functions will handle the bit
-> manipulation automatically.
-> 
-> Import gen_pack_header.py and intel_genxml.py from Mesa (MIT-licensed, Mesa
-> commit 3a62dc0218d3). Add gen_decode_header.py written for IGT.
-> Add igt_genxml.h, igt_genxml_defs.h, and igt_genxml_decode.h written for IGT.
-> Wire everything into the Meson build in lib/meson.build.
-> 
-> gen_pack_header.py produces type-safe pack and emit functions for every
-> command, struct, and register defined in the XML.  Callers fill a typed
-> C struct and call the generated pack function; the generator handles all
-> bit-field packing and relocation recording.
-> 
-> gen_decode_header.py (new, IGT-only) produces decoders that identify a
-> command from its opcode and print each decoded field's name and value,
-> including structs and registers embedded within commands.
-> 
-> IGT-specific changes to gen_pack_header.py over the upstream Mesa version:
-> 
->  - C90 compliance: block-scope each dword's local variable declarations in
->    the generated pack functions.
->  - Baseline deduplication: when a platform's layout exactly matches any older
->    generation the item is omitted entirely - no #define aliases are emitted.
->    A comment names the oldest generation that first defined that layout so
->    the definition can be found in one grep.  Upstream Mesa has no
->    deduplication; this keeps the generated headers free of noise as the
->    number of platform variants grows.
-> 
-> The Meson rules build pack and decode headers for gen9 through xe3p covering
-> the render, blitter, and compute engines.  No generated files are committed
-> to the source tree.
-> 
-> See individual file headers for per-file copyright notices.
+> These files define the hardware command, struct, and register layouts for
+> Xe2 (LNL/BMG), Xe3 (PTL), and Xe3p (WHL) Intel graphics generations.
+> xe3p.xml is a stub that imports xe3.xml; the Xe3p architecture shares its
+> command encoding with Xe3.
 > 
 > Signed-off-by: Jan Maslak <jan.maslak@intel.com>
-> ---
->  lib/intel/genxml/gen_decode_header.py | 487 ++++++++++++++++
->  lib/intel/genxml/gen_pack_header.py   | 799 ++++++++++++++++++++++++++
->  lib/intel/genxml/igt_genxml.h         | 112 ++++
->  lib/intel/genxml/igt_genxml_decode.h  |  60 ++
->  lib/intel/genxml/igt_genxml_defs.h    | 335 +++++++++++
->  lib/intel/genxml/intel_genxml.py      | 553 ++++++++++++++++++
->  lib/intel/genxml/util.py              |  39 ++
->  lib/meson.build                       |  51 +-
->  8 files changed, 2435 insertions(+), 1 deletion(-)
->  create mode 100644 lib/intel/genxml/gen_decode_header.py
->  create mode 100644 lib/intel/genxml/gen_pack_header.py
->  create mode 100644 lib/intel/genxml/igt_genxml.h
->  create mode 100644 lib/intel/genxml/igt_genxml_decode.h
->  create mode 100644 lib/intel/genxml/igt_genxml_defs.h
->  create mode 100644 lib/intel/genxml/intel_genxml.py
->  create mode 100644 lib/intel/genxml/util.py
-> 
-> diff --git a/lib/intel/genxml/gen_decode_header.py b/lib/intel/genxml/gen_decode_header.py
-> new file mode 100644
-> index 000000000..170d2f60f
-> --- /dev/null
-> +++ b/lib/intel/genxml/gen_decode_header.py
-> @@ -0,0 +1,487 @@
-> +#encoding=utf-8
-> +#
-> +# Copyright (C) 2025 Intel Corporation
 
-s/2025/2026/
-
-> +#
-> +# Permission is hereby granted, free of charge, to any person obtaining a
-> +# copy of this software and associated documentation files (the "Software"),
-> +# to deal in the Software without restriction, including without limitation
-> +# the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> +# and/or sell copies of the Software, and to permit persons to whom the
-> +# Software is furnished to do so, subject to the following conditions:
-> +#
-> +# The above copyright notice and this permission notice (including the next
-> +# paragraph) shall be included in all copies or substantial portions of the
-> +# Software.
-> +#
-> +# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> +# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> +# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> +# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> +# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> +# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> +# IN THE SOFTWARE.
-> +#
-> +
-> +"""Generate batch-buffer decode/annotate headers from genxml.
-> +
-> +For each instruction, emits a _decode() function that prints annotated
-> +dwords with field names and values.  Enum fields show symbolic names
-> +alongside numeric values.
-> +
-> +Usage:
-> +    python gen_decode_header.py [--baseline BASELINE.xml] [--engines ...] INPUT.xml
-> +"""
-> +
-> +import argparse
-> +import intel_genxml
-> +import sys
-> +from util import safe_name
-> +
-> +license = """/*
-> + * Copyright (C) 2025 Intel Corporation
-
-I wonder should we hardcode or read current year?
-
-> + * SPDX-License-Identifier: MIT
-> + *
-> + * Batch buffer decode functions for %s.
-> + *
-> + * This file has been generated, do not hand edit.
-> + */
-> +"""
-> +
-> +
-> +def field_mask(bits):
-> +    """Return (start_bit, end_bit, mask) for a field."""
-> +    end_bit, start_bit = map(int, bits.split(':'))
-> +    width = end_bit - start_bit + 1
-> +    mask = (1 << width) - 1
-
-I wondered why you're not left shifting mask by start_bit here
-but IIUC it's for checking field value.
-
-> +    return start_bit, end_bit, mask
-> +
-> +
-> +def compute_opcode_key(instruction):
-> +    """Compute opcode key and mask from default field values in DW0.
-> +
-> +    Returns (key, mask) where key has the default values shifted into
-> +    position and mask has 1s for every bit covered by a field with a
-> +    default.  Using the full mask for dispatch avoids collisions between
-> +    instructions that share the same top 16 bits but differ in lower
-> +    opcode fields (e.g. 3DPRIMITIVE vs 3DPRIMITIVE_EXTENDED).
-> +    """
-> +    key = 0
-> +    mask = 0
-> +    for field in instruction:
-> +        if field.tag != 'field':
-> +            continue
-> +        if int(field.attrib.get('dword', '-1')) != 0:
-> +            continue
-> +        default = field.attrib.get('default')
-> +        if default is None:
-> +            continue
-> +        start_bit, end_bit, field_mask_val = field_mask(field.attrib['bits'])
-> +        key |= (int(default, 0) & field_mask_val) << start_bit
-> +        mask |= field_mask_val << start_bit
-> +    return key, mask
-> +
-> +
-> +def get_length_bias(instruction):
-> +    return int(instruction.attrib.get('bias', '2'))
-> +
-> +
-> +def get_length(instruction):
-> +    return instruction.attrib.get('length')
-> +
-> +
-> +def collect_enum_values(field_elem, enum_defs):
-> +    """Collect value->name mapping from inline <value> children or
-> +    from a referenced standalone <enum>."""
-> +    values = {}
-> +
-> +    # Inline values (children of the <field>)
-> +    for v in field_elem:
-> +        if v.tag == 'value':
-> +            vname = safe_name(v.attrib['name'])
-> +            vval = int(v.attrib['value'], 0)
-> +            values[vval] = vname
-> +
-> +    # If the field type references a standalone enum and we didn't
-> +    # find inline values, look it up
-> +    if not values:
-> +        ftype = field_elem.attrib.get('type', '')
-> +        if ftype in enum_defs:
-> +            for v in enum_defs[ftype]:
-> +                if v.tag == 'value':
-> +                    vname = safe_name(v.attrib['name'])
-> +                    vval = int(v.attrib['value'], 0)
-> +                    values[vval] = vname
-> +
-> +    return values
-> +
-> +
-> +class DecodeGenerator:
-> +    def __init__(self, gen, platform, struct_defs, enum_defs):
-> +        self.gen = gen
-> +        self.platform = platform
-> +        self.struct_defs = struct_defs  # name -> XML element
-> +        self.enum_defs = enum_defs     # name -> XML element
-> +        self.instructions = []
-
-Is array necessary here? I mean each xml file has no duplicate
-instruction so imo more natural would keep instructions defs
-in dict.
-
-$ egrep 'instruction name' *xml | sort | uniq -c | less
-
-shows count == 1 for all xmls.
-
-> +
-> +    def gen_prefix(self, name):
-> +        if name[0] == '_':
-> +            return 'GFX%s%s' % (self.gen, name)
-> +        return 'GFX%s_%s' % (self.gen, name)
-> +
-> +    def is_enum_type(self, ftype):
-> +        """Check if a field type is a standalone enum or has inline values."""
-> +        return ftype in self.enum_defs
-> +
-> +    def is_struct_type(self, ftype):
-> +        return ftype in self.struct_defs
-> +
-> +    def is_builtin_type(self, ftype):
-> +        builtins = ('address', 'bool', 'float', 'uint', 'int',
-> +                    'offset', 'mbo', 'mbz')
-> +        if ftype in builtins:
-> +            return True
-> +        # ufixed/sfixed patterns like u4.8, s3.13
-> +        if len(ftype) > 1 and ftype[0] in ('u', 's') and '.' in ftype:
-> +            return True
-> +        return False
-> +
-> +    def collect_fields(self, instruction):
-> +        """Collect fields grouped by dword index."""
-> +        by_dw = {}
-> +        self._collect_fields_recursive(instruction, by_dw, prefix="", dw_offset=0)
-> +        return by_dw
-> +
-> +    def _collect_fields_recursive(self, parent, by_dw, prefix, dw_offset):
-> +        for child in parent:
-> +            if child.tag == 'field':
-> +                dword = int(child.attrib['dword']) + dw_offset
-> +                name = safe_name(child.attrib['name'])
-> +                start_bit, end_bit, mask = field_mask(child.attrib['bits'])
-> +                ftype = child.attrib.get('type', 'uint')
-> +
-> +                if ftype in ('mbo', 'mbz'):
-> +                    continue
-> +
-> +                # Expand struct-type fields
-> +                if not self.is_builtin_type(ftype) and \
-> +                   not self.is_enum_type(ftype) and \
-> +                   self.is_struct_type(ftype):
-> +                    struct_xml = self.struct_defs[ftype]
-> +                    self._collect_fields_recursive(
-> +                        struct_xml, by_dw, prefix + name + ".",
-> +                        dw_offset + dword)
-> +                    continue
-> +
-> +                values = collect_enum_values(child, self.enum_defs)
-> +
-> +                if dword not in by_dw:
-> +                    by_dw[dword] = []
-> +                by_dw[dword].append((prefix + name, start_bit, end_bit, ftype, values))
-> +
-> +            elif child.tag == 'group':
-> +                group_dw = int(child.attrib.get('dword', '0'))
-> +                count = int(child.attrib.get('count', '1'))
-> +                size_bits = int(child.attrib.get('size', '32'))
-> +                size_dw = size_bits // 32
-> +
-> +                for i in range(count):
-> +                    idx_prefix = prefix
-> +                    if count > 1:
-> +                        idx_prefix = "%s[%d]." % (prefix.rstrip('.'), i)
-> +                    self._collect_fields_recursive(
-> +                        child, by_dw, idx_prefix,
-> +                        dw_offset + group_dw + i * size_dw)
-> +
-> +    def add_instruction(self, instruction):
-> +        name = safe_name(instruction.attrib['name'])
-> +        prefixed = self.gen_prefix(name)
-> +        opcode_key, opcode_mask = compute_opcode_key(instruction)
-> +        length = get_length(instruction)
-> +        bias = get_length_bias(instruction)
-> +        fields_by_dw = self.collect_fields(instruction)
-> +        self.instructions.append((prefixed, opcode_key, opcode_mask, length, bias, fields_by_dw))
-> +
-> +    def emit_header(self):
-> +        guard = 'GFX%s_%s_DECODE_H' % (self.gen, self.platform.upper())
-> +        print(license % self.platform)
-> +        print('#ifndef %s' % guard)
-> +        print('#define %s' % guard)
-> +        print('')
-> +        print('#include <stdio.h>')
-> +        print('#include <stdint.h>')
-> +        print('')
-> +
-> +    def emit_footer(self):
-> +        guard = 'GFX%s_%s_DECODE_H' % (self.gen, self.platform.upper())
-> +        print('#endif /* %s */' % guard)
-> +
-> +    def emit_decode_function(self, prefixed, opcode_key, opcode_mask, length, bias, fields_by_dw):
-> +        print('static inline unsigned')
-> +        print('%s_decode(FILE *fp, uint32_t base, const uint32_t *dw, unsigned remaining)' % prefixed)
-
-What if I would like to dump via igt_info()? Direct writing
-to stdout might be problematic in runner case.
-
-> +        print('{')
-> +
-> +        if length is not None:
-> +            print('   unsigned len = %s;' % length)
-> +        else:
-> +            print('   unsigned len = (dw[0] & 0xff) + %d;' % bias)
-> +
-> +        print('   if (len > remaining)')
-> +        print('      len = remaining;')
-> +        print('   fprintf(fp, "[0x%%04x] 0x%%08x  %s (len=%%u)\\n", base, dw[0], len);' % prefixed)
-> +
-> +        if not fields_by_dw:
-> +            print('   for (unsigned i = 1; i < len; i++)')
-> +            print('      fprintf(fp, "[0x%04x] 0x%08x\\n", base + i * 4, dw[i]);')
-> +            print('   return len;')
-> +            print('}')
-> +            print('')
-> +            return
-> +
-> +        max_dw = max(fields_by_dw.keys()) if fields_by_dw else 0
-> +
-> +        # Decode DW0 fields (subopcode, length, flags) if present
-> +        if 0 in fields_by_dw:
-> +            # Filter out identity fields already shown in the header line
-> +            dw0_fields = [(n, s, e, t, v) for n, s, e, t, v in fields_by_dw[0]
-> +                          if n not in ('DWordLength', 'CommandType',
-> +                                       'CommandSubType', '_3DCommandOpcode',
-> +                                       '_3DCommandSubOpcode', 'MICommandOpcode',
-> +                                       'CommandOpcode', 'InstructionType')]
-> +            if dw0_fields:
-> +                self._emit_dword_decode(0, dw0_fields)
-> +
-> +        for dw_idx in range(1, max_dw + 1):
-> +            print('   if (%d < len) {' % dw_idx)
-> +            if dw_idx not in fields_by_dw:
-> +                print('   fprintf(fp, "[0x%%04x] 0x%%08x\\n", base + %d, dw[%d]);' %
-> +                      (dw_idx * 4, dw_idx))
-> +            else:
-> +                fields = fields_by_dw[dw_idx]
-> +                self._emit_dword_decode(dw_idx, fields)
-> +            print('   }')
-> +
-> +        if length is not None:
-> +            total = int(length)
-> +        else:
-> +            total = None
-> +
-> +        if total is not None and total > max_dw + 1:
-> +            print('   for (unsigned i = %d; i < %d; i++)' % (max_dw + 1, total))
-> +            print('      fprintf(fp, "[0x%04x] 0x%08x\\n", base + i * 4, dw[i]);')
-> +        elif total is None:
-> +            print('   for (unsigned i = %d; i < len; i++)' % (max_dw + 1,))
-> +            print('      fprintf(fp, "[0x%04x] 0x%08x\\n", base + i * 4, dw[i]);')
-> +
-> +        print('   return len;')
-> +        print('}')
-> +        print('')
-> +
-> +    def _emit_enum_decode(self, var_expr, values, sep, name):
-> +        """Emit a switch that prints 'NAME (num)' for known values,
-> +        or just 'num' for unknown ones. Always shows the raw number."""
-> +        print('   { uint32_t _v = %s;' % var_expr)
-> +        print('     fprintf(fp, "%s.%s = ");' % (sep, name))
-> +        print('     switch (_v) {')
-> +        for val, vname in sorted(values.items()):
-> +            print('     case %d: fprintf(fp, "%s (%%u)", _v); break;' % (val, vname))
-> +        print('     default: fprintf(fp, "%u", _v); break;')
-> +        print('     }')
-> +        print('   }')
-> +
-> +    def _emit_dword_decode(self, dw_idx, fields):
-> +        """Emit decode for a single dword's fields."""
-> +        fields = sorted(fields, key=lambda f: f[1])
-> +
-> +        interesting = [(name, start, end, ftype, values)
-> +                       for name, start, end, ftype, values in fields
-> +                       if ftype not in ('mbo', 'mbz')]
-> +
-> +        if not interesting:
-> +            print('   fprintf(fp, "[0x%%04x] 0x%%08x\\n", base + %d, dw[%d]);' %
-> +                  (dw_idx * 4, dw_idx))
-> +            return
-> +
-> +        print('   fprintf(fp, "[0x%%04x] 0x%%08x   ", base + %d, dw[%d]);' %
-> +              (dw_idx * 4, dw_idx))
-> +
-> +        for i, (name, start, end, ftype, values) in enumerate(interesting):
-> +            width = end - start + 1
-> +            mask = (1 << width) - 1
-> +            sep = ', ' if i > 0 else ''
-> +            extract = '(dw[%d] >> %d) & 0x%x' % (dw_idx, start, mask)
-> +
-> +            if ftype == 'bool':
-> +                print('   fprintf(fp, "%s.%s = %%s", %s ? "true" : "false");' %
-> +                      (sep, name, extract))
-> +            elif ftype == 'address':
-> +                # Mask off the low reserved bits using the actual field
-> +                # start position from the XML, not a hardcoded 12.
-> +                if start > 0:
-> +                    addr_mask = (1 << start) - 1
-> +                    print('   fprintf(fp, "%s.%s = 0x%%lx", '
-> +                          '(unsigned long)(((uint64_t)dw[%d] | ((uint64_t)dw[%d] << 32)) & ~0x%xUL));' %
-> +                          (sep, name, dw_idx, dw_idx + 1, addr_mask))
-> +                else:
-> +                    print('   fprintf(fp, "%s.%s = 0x%%lx", '
-> +                          '(unsigned long)((uint64_t)dw[%d] | ((uint64_t)dw[%d] << 32)));' %
-> +                          (sep, name, dw_idx, dw_idx + 1))
-> +            elif ftype == 'float':
-> +                print('   { union { uint32_t u; float f; } _fv = { .u = dw[%d] };' % dw_idx)
-> +                print('     fprintf(fp, "%s.%s = %%f", _fv.f); }' % (sep, name))
-> +            elif values:
-> +                # Enum or field with named values - show symbolic name + raw number
-> +                self._emit_enum_decode(extract, values, sep, name)
-> +            elif width > 32:
-> +                print('   fprintf(fp, "%s.%s = 0x%%lx", '
-> +                      '(unsigned long)((uint64_t)(dw[%d] >> %d) | ((uint64_t)dw[%d] << %d)));' %
-> +                      (sep, name, dw_idx, start, dw_idx + 1, 32 - start))
-> +            else:
-> +                print('   fprintf(fp, "%s.%s = %%u", %s);' %
-> +                      (sep, name, extract))
-> +
-> +        print('   fprintf(fp, "\\n");')
-> +
-> +    def emit_dispatch(self):
-> +        """Emit command dispatch function.
-> +
-> +        Uses the full opcode key and mask rather than just the top 16 bits
-> +        so that instructions differing only in lower opcode fields
-> +        (e.g. 3DPRIMITIVE vs 3DPRIMITIVE_EXTENDED) are dispatched correctly.
-> +        Instructions with more specific masks (more default bits) are checked
-> +        first so that a more general match does not shadow a specific one.
-> +        """
-> +        prefix = 'gfx%s' % self.gen
-> +
-> +        print('static inline unsigned')
-> +        print('%s_decode_command(FILE *fp, uint32_t offset, const uint32_t *dw, unsigned remaining)' % prefix)
-> +        print('{')
-> +
-> +        # Collect unique (key, mask) -> prefixed mappings.
-> +        # Sort by popcount of mask descending so more specific matches
-> +        # are tried first (e.g. 3DPRIMITIVE_EXTENDED before 3DPRIMITIVE).
-> +        entries = []
-> +        seen = set()
-> +        for prefixed, opcode_key, opcode_mask, length, bias, fields_by_dw in self.instructions:
-> +            if opcode_key == 0 or (opcode_key, opcode_mask) in seen:
-> +                continue
-> +            seen.add((opcode_key, opcode_mask))
-> +            entries.append((opcode_key, opcode_mask, prefixed))
-> +
-> +        entries.sort(key=lambda e: -bin(e[1]).count('1'))
-> +
-> +        first = True
-> +        for key, mask, prefixed in entries:
-> +            keyword = 'if' if first else '} else if'
-> +            print('   %s ((dw[0] & 0x%08xu) == 0x%08xu) {' % (keyword, mask, key))
-> +            print('      return %s_decode(fp, offset, dw, remaining);' % prefixed)
-> +            first = False
-> +
-> +        if not first:
-> +            print('   } else {')
-> +        print('      fprintf(fp, "[0x%04x] 0x%08x  UNKNOWN\\n", offset, dw[0]);')
-> +        print('      return 1;')
-> +        if not first:
-> +            print('   }')
-> +        print('}')
-> +        print('')
-> +
-> +    def emit_batch_decode(self):
-> +        """Emit the batch buffer walker."""
-> +        prefix = 'gfx%s' % self.gen
-> +
-> +        print('static inline void')
-> +        print('%s_decode_batch(FILE *fp, const uint32_t *batch, unsigned batch_dwords)' % prefix)
-> +        print('{')
-> +        print('   unsigned offset = 0;')
-> +        print('')
-> +        print('   while (offset < batch_dwords * 4) {')
-> +        print('      const uint32_t *dw = &batch[offset / 4];')
-> +        print('      uint32_t cmd = dw[0];')
-> +        print('      unsigned len;')
-> +        print('')
-> +        print('      /* MI_BATCH_BUFFER_END */')
-> +        print('      if (cmd == 0x05000000) {')
-> +        print('         fprintf(fp, "[0x%04x] 0x%08x  MI_BATCH_BUFFER_END\\n", offset, cmd);')
-> +        print('         break;')
-> +        print('      }')
-> +        print('')
-> +        print('      /* MI_NOOP: opcode is all zeros, single dword */')
-> +        print('      if (cmd == 0) {')
-> +        print('         fprintf(fp, "[0x%04x] 0x%08x  MI_NOOP\\n", offset, cmd);')
-> +        print('         offset += 4;')
-> +        print('         continue;')
-> +        print('      }')
-> +        print('')
-> +        print('      len = %s_decode_command(fp, offset, dw, batch_dwords - offset / 4);' % prefix)
-> +        print('      offset += len * 4;')
-> +        print('   }')
-> +        print('}')
-> +
-> +    def generate(self):
-> +        self.emit_header()
-> +        for inst in self.instructions:
-> +            self.emit_decode_function(*inst)
-> +        self.emit_dispatch()
-> +        self.emit_batch_decode()
-> +        self.emit_footer()
-> +
-> +
-> +def parse_args():
-> +    p = argparse.ArgumentParser(description=__doc__)
-> +    p.add_argument('xml_source', metavar='XML_SOURCE')
-> +    p.add_argument('--engines', type=str, default='render',
-> +                   help="Comma-separated engine list")
-> +    p.add_argument('--baseline', type=str, action='append', default=[],
-> +                   help="Previous gen XML files (oldest first); skip identical instructions")
-> +    return p.parse_args()
-> +
-> +
-> +def main():
-> +    pargs = parse_args()
-> +    engines = set(pargs.engines.split(','))
-> +
-> +    genxml = intel_genxml.GenXml(pargs.xml_source)
-> +    genxml.merge_imported()
-> +    genxml.filter_engines(engines)
-> +
-> +    root = genxml.et.getroot()
-> +    platform = root.attrib['name']
-> +    gen = root.attrib['gen'].replace('.', '')
-> +
-> +    # Collect struct and enum definitions
-> +    struct_defs = {}
-> +    enum_defs = {}
-> +    for item in root:
-> +        if item.tag == 'struct':
-> +            struct_defs[item.attrib['name']] = item
-> +        elif item.tag == 'enum':
-> +            enum_defs[item.attrib['name']] = item
-> +
-> +    # Optional baseline filtering
-> +    baseline_fps = {}
-> +    if pargs.baseline:
-> +        from gen_pack_header import _build_baselines, _item_fingerprint
-> +        baseline_fps, _, _ = _build_baselines(pargs.baseline, engines)
-> +
-> +    decoder = DecodeGenerator(gen, platform, struct_defs, enum_defs)
-> +
-> +    for item in root:
-> +        if item.tag != 'instruction':
-> +            continue
-> +        item_name = item.attrib.get('name')
-> +        if not item_name:
-> +            continue
-
-Above check is imo unnecessary, all instructions have non-empty name.
-
-> +
-> +        if baseline_fps:
-> +            from gen_pack_header import _item_fingerprint
-> +            fp = baseline_fps.get(item_name)
-> +            if fp is not None and _item_fingerprint(item) == fp:
-> +                continue
-> +
-> +        decoder.add_instruction(item)
-> +
-> +    decoder.generate()
-> +
-> +
-> +if __name__ == '__main__':
-> +    main()
-> diff --git a/lib/intel/genxml/gen_pack_header.py b/lib/intel/genxml/gen_pack_header.py
-> new file mode 100644
-> index 000000000..1d14dd8c5
-> --- /dev/null
-> +++ b/lib/intel/genxml/gen_pack_header.py
-
-Is this taken from specific mesa version? I've compared last one and it
-seems there're some differences. Maybe it would be worth to mention in
-commit message from what mesa version it was taken.
-
-> @@ -0,0 +1,799 @@
-> +#encoding=utf-8
-> +# SPDX-License-Identifier: MIT
-> +
-> +import argparse
-> +import ast
-> +import intel_genxml
-> +import re
-> +import sys
-> +import copy
-> +import textwrap
-> +from util import *
-> +
-> +license =  """/*
-> + * Copyright (C) 2016 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
-> + */
-> +"""
-> +
-> +pack_header = """%(license)s
-> +
-> +/* Instructions, enums and structures for %(platform)s.
-> + *
-> + * This file has been generated, do not hand edit.
-> + */
-> +
-> +#ifndef %(guard)s
-> +#define %(guard)s
-> +
-> +#include <stdio.h>
-> +#include "intel/genxml/igt_genxml_defs.h"
-> +
-> +"""
-> +
-> +def num_from_str(num_str):
-> +    if num_str.lower().startswith('0x'):
-> +        return int(num_str, base=16)
-> +
-> +    assert not num_str.startswith('0'), 'octals numbers not allowed'
-> +    return int(num_str)
-> +
-> +def bool_from_str(bool_str):
-> +    options = { "true": True, "false": False }
-> +    return options[bool_str];
-> +
-> +class Field(object):
-> +    ufixed_pattern = re.compile(r"u(\d+)\.(\d+)")
-> +    sfixed_pattern = re.compile(r"s(\d+)\.(\d+)")
-> +
-> +    def __init__(self, parser, attrs):
-> +        self.parser = parser
-> +        if "name" in attrs:
-> +            self.name = safe_name(attrs["name"])
-> +
-> +        dword = int(attrs["dword"])
-> +        end_bit, start_bit = map(int, attrs["bits"].split(":"))
-> +
-> +        self.start = dword * 32 + start_bit
-> +        self.end = dword * 32 + end_bit
-> +
-> +        self.type = attrs["type"]
-> +        self.nonzero = bool_from_str(attrs.get("nonzero", "false"))
-> +        self.prefix = attrs["prefix"] if "prefix" in attrs else None
-> +
-> +        assert self.start <= self.end, \
-> +               'field {} has end ({}) < start ({})'.format(self.name, self.end,
-> +                                                           self.start)
-> +        if self.type == 'bool':
-> +            assert self.end == self.start, \
-> +                   'bool field ({}) is too wide'.format(self.name)
-> +
-> +        if "default" in attrs:
-> +            # Base 0 recognizes 0x, 0o, 0b prefixes in addition to decimal ints.
-> +            self.default = int(attrs["default"], base=0)
-> +        else:
-> +            self.default = None
-> +
-> +        ufixed_match = Field.ufixed_pattern.match(self.type)
-> +        if ufixed_match:
-> +            self.type = 'ufixed'
-> +            self.fractional_size = int(ufixed_match.group(2))
-> +
-> +        sfixed_match = Field.sfixed_pattern.match(self.type)
-> +        if sfixed_match:
-> +            self.type = 'sfixed'
-> +            self.fractional_size = int(sfixed_match.group(2))
-> +
-> +    def is_builtin_type(self):
-> +        builtins =  [ 'address', 'bool', 'float', 'ufixed',
-> +                      'offset', 'sfixed', 'offset', 'int', 'uint',
-> +                      'mbo', 'mbz' ]
-> +        return self.type in builtins
-> +
-> +    def is_struct_type(self):
-> +        return self.type in self.parser.structs
-> +
-> +    def is_enum_type(self):
-> +        return self.type in self.parser.enums
-> +
-> +    def emit_template_struct(self, dim):
-> +        if self.type == 'address':
-> +            type = '__gen_address_type'
-> +        elif self.type == 'bool':
-> +            type = 'bool'
-> +        elif self.type == 'float':
-> +            type = 'float'
-> +        elif self.type == 'ufixed':
-> +            type = 'float'
-> +        elif self.type == 'sfixed':
-> +            type = 'float'
-> +        elif self.type == 'uint' and self.end - self.start > 32:
-> +            type = 'uint64_t'
-> +        elif self.type == 'offset':
-> +            type = 'uint64_t'
-> +        elif self.type == 'int':
-> +            type = 'int32_t'
-> +        elif self.type == 'uint':
-> +            type = 'uint32_t'
-> +        elif self.is_struct_type():
-> +            type = 'struct ' + self.parser.gen_prefix_for_type(self.type)
-> +        elif self.is_enum_type():
-> +            type = 'enum ' + self.parser.gen_prefix(safe_name(self.type))
-> +        elif self.type == 'mbo' or self.type == 'mbz':
-> +            return
-> +        else:
-> +            print("#error unhandled type: %s" % self.type)
-> +            return
-> +
-> +        print("   %-36s %s%s;" % (type, self.name, dim))
-> +
-> +    def emit_value_defines(self):
-> +        for value in self.values:
-> +            defname = self.parser.gen_value_name(
-> +                value.name,
-> +                prefix=self.prefix,
-> +                strip_prefixed_leading_underscore=True)
-> +            print("#ifndef %s" % defname)
-> +            print("#define %-40s %d" % (defname, value.value))
-> +            print("#endif")
-> +
-> +class Group(object):
-> +    def __init__(self, parser, parent, start, count, size):
-> +        self.parser = parser
-> +        self.parent = parent
-> +        self.start = start
-> +        self.count = count
-> +        self.size = size
-> +        self.fields = []
-> +
-> +    def emit_template_struct(self, dim):
-> +        if self.count == 0:
-> +            print("   /* variable length fields follow */")
-> +        else:
-> +            if self.count > 1:
-> +                dim = "%s[%d]" % (dim, self.count)
-> +
-> +            for field in self.fields:
-> +                field.emit_template_struct(dim)
-> +
-> +    def emit_value_defines(self):
-> +        for field in self.fields:
-> +            if isinstance(field, Group):
-> +                field.emit_value_defines()
-> +            else:
-> +                field.emit_value_defines()
-> +
-> +    class DWord:
-> +        def __init__(self):
-> +            self.size = 32
-> +            self.fields = []
-> +            self.address = None
-> +
-> +    def collect_dwords(self, dwords, start, dim):
-> +        for field in self.fields:
-> +            if isinstance(field, Group):
-> +                if field.count == 1:
-> +                    field.collect_dwords(dwords, start + field.start, dim)
-> +                else:
-> +                    for i in range(field.count):
-> +                        field.collect_dwords(dwords,
-> +                                             start + field.start + i * field.size,
-> +                                             "%s[%d]" % (dim, i))
-> +                continue
-> +
-> +            index = (start + field.start) // 32
-> +            if not index in dwords:
-> +                dwords[index] = self.DWord()
-> +
-> +            clone = copy.copy(field)
-> +            clone.start = clone.start + start
-> +            clone.end = clone.end + start
-> +            clone.dim = dim
-> +            dwords[index].fields.append(clone)
-> +
-> +            if field.type == "address":
-> +                # assert dwords[index].address == None
-> +                dwords[index].address = clone
-> +
-> +            # Coalesce all the dwords covered by this field. The two cases we
-> +            # handle are where multiple fields are in a 64 bit word (typically
-> +            # and address and a few bits) or where a single struct field
-> +            # completely covers multiple dwords.
-> +            while index < (start + field.end) // 32:
-> +                if index + 1 in dwords and not dwords[index] == dwords[index + 1]:
-> +                    dwords[index].fields.extend(dwords[index + 1].fields)
-> +                dwords[index].size = 64
-> +                dwords[index + 1] = dwords[index]
-> +                index = index + 1
-> +
-> +    def collect_dwords_and_length(self, repack=False):
-> +        dwords = {}
-> +        self.collect_dwords(dwords, 0, "")
-> +
-> +        # Determine number of dwords in this group. If we have a size, use
-> +        # that, since that'll account for MBZ dwords at the end of a group
-> +        # (like dword 8 on BDW+ 3DSTATE_HS). Otherwise, use the largest dword
-> +        # index we've seen plus one.
-> +        if self.size > 0:
-> +            length = self.size // 32
-> +        elif dwords:
-> +            length = max(dwords.keys()) + 1
-> +        else:
-> +            length = 0
-> +
-> +        return (dwords, length)
-> +
-> +    def emit_pack_function(self, dwords, length, repack=False):
-> +        for index in range(length):
-> +            # Handle MBZ dwords
-> +            if not index in dwords:
-> +                print("")
-> +                print("   dw[%d] = 0;" % index)
-> +                continue
-> +
-> +            # For 64 bit dwords, we aliased the two dword entries in the dword
-> +            # dict it occupies. Now that we're emitting the pack function,
-> +            # skip the duplicate entries.
-> +            dw = dwords[index]
-> +            if index > 0 and index - 1 in dwords and dw == dwords[index - 1]:
-> +                continue
-> +
-> +            # Special case: only one field and it's a struct at the beginning
-> +            # of the dword. In this case we pack directly into the
-> +            # destination. This is the only way we handle embedded structs
-> +            # larger than 32 bits.
-> +            if len(dw.fields) == 1:
-> +                field = dw.fields[0]
-> +                name = field.name + field.dim
-> +                if field.is_struct_type() and field.start % 32 == 0:
-> +                    print("")
-> +                    if repack:
-> +                        print("   %s_repack(data, &dw[%d], &origin[%d], &values->%s);" %
-> +                              (self.parser.gen_prefix_for_type(field.type), index, index, name))
-> +                    else:
-> +                        print("   %s_pack(data, &dw[%d], &values->%s);" %
-> +                              (self.parser.gen_prefix_for_type(field.type), index, name))
-> +                    continue
-> +
-> +            # Open a block scope for C90 compliance (declarations must
-> +            # precede code within each block).
-> +            print("")
-> +            print("   {")
-> +
-> +            # Pack any fields of struct type first so we have integer values
-> +            # to the dword for those fields.
-> +            # Emit all declarations first, then all pack calls (C90).
-> +            field_index = 0
-> +            struct_fields = []
-> +            for field in dw.fields:
-> +                if isinstance(field, Field) and field.is_struct_type():
-> +                    name = field.name + field.dim
-> +                    struct_fields.append((field, name, field_index))
-> +                    field_index = field_index + 1
-> +
-> +            if struct_fields:
-> +                for field, name, fi in struct_fields:
-> +                    print("   uint32_t v%d_%d;" % (index, fi))
-> +                for field, name, fi in struct_fields:
-> +                    if repack:
-> +                        print("   %s_repack(data, &v%d_%d, &origin[%d], &values->%s);" %
-> +                              (self.parser.gen_prefix_for_type(field.type), index, fi, index, name))
-> +                    else:
-> +                        print("   %s_pack(data, &v%d_%d, &values->%s);" %
-> +                              (self.parser.gen_prefix_for_type(field.type), index, fi, name))
-> +
-> +            dword_start = index * 32
-> +            if dw.address == None:
-> +                address_count = 0
-> +            else:
-> +                address_count = 1
-> +
-> +            # Assert in dont_use values
-> +            for field in dw.fields:
-> +                for value in field.values:
-> +                    if value.dont_use:
-> +                        print("   assert(values->%s != %s);" %
-> +                              (field.name,
-> +                               self.parser.gen_value_name(value.name,
-> +                                                          prefix=field.prefix)))
-> +
-> +            if dw.size == 32 and dw.address == None:
-> +                v = None
-> +                print("   dw[%d] =" % index)
-> +            elif len(dw.fields) > address_count or repack:
-> +                v = "v%d" % index
-> +                print("   const uint%d_t %s =" % (dw.size, v))
-> +            else:
-> +                v = "0"
-> +
-> +            field_index = 0
-> +            non_address_fields = []
-> +
-> +            if repack:
-> +                non_address_fields.append("origin[%d]" % index)
-> +                if dw.size > 32:
-> +                    non_address_fields.append("((uint64_t)origin[%d] << 32)" % (index + 1))
-> +
-> +            for field in dw.fields:
-> +                if field.type != "mbo" and field.type != "mbz" and field.type != "repack":
-> +                    name = field.name + field.dim
-> +
-> +                nz = "_nonzero" if field.nonzero else ""
-> +
-> +                if field.type == "repack":
-> +                    non_address_fields.append("origin[%d]" % index)
-> +                elif field.type == "mbo":
-> +                    non_address_fields.append("util_bitpack_ones(%d, %d)" % \
-> +                        (field.start - dword_start, field.end - dword_start))
-> +                elif field.type == "mbz":
-> +                    assert not field.nonzero
-> +                elif field.type == "address":
-> +                    pass
-> +                elif field.type == "uint":
-> +                    non_address_fields.append("util_bitpack_uint%s(values->%s, %d, %d)" % \
-> +                        (nz, name, field.start - dword_start, field.end - dword_start))
-> +                elif field.is_enum_type():
-> +                    non_address_fields.append("util_bitpack_uint%s(values->%s, %d, %d)" % \
-> +                        (nz, name, field.start - dword_start, field.end - dword_start))
-> +                elif field.type == "int":
-> +                    non_address_fields.append("util_bitpack_sint%s(values->%s, %d, %d)" % \
-> +                        (nz, name, field.start - dword_start, field.end - dword_start))
-> +                elif field.type == "bool":
-> +                    non_address_fields.append("util_bitpack_uint%s(values->%s, %d, %d)" % \
-> +                        (nz, name, field.start - dword_start, field.end - dword_start))
-> +                elif field.type == "float":
-> +                    non_address_fields.append("util_bitpack_float%s(values->%s)" % (nz, name))
-> +                elif field.type == "offset":
-> +                    non_address_fields.append("__gen_offset%s(values->%s, %d, %d)" % \
-> +                        (nz, name, field.start - dword_start, field.end - dword_start))
-> +                elif field.type == 'ufixed':
-> +                    non_address_fields.append("util_bitpack_ufixed%s(values->%s, %d, %d, %d)" % \
-> +                        (nz, name, field.start - dword_start, field.end - dword_start, field.fractional_size))
-> +                elif field.type == 'sfixed':
-> +                    non_address_fields.append("util_bitpack_sfixed%s(values->%s, %d, %d, %d)" % \
-> +                        (nz, name, field.start - dword_start, field.end - dword_start, field.fractional_size))
-> +                elif field.is_struct_type():
-> +                    non_address_fields.append("util_bitpack_uint(v%d_%d, %d, %d)" % \
-> +                        (index, field_index, field.start - dword_start, field.end - dword_start))
-> +                    field_index = field_index + 1
-> +                else:
-> +                    non_address_fields.append("/* unhandled field %s, type %s */\n" % \
-> +                                              (name, field.type))
-> +
-> +            if non_address_fields:
-> +                print(" |\n".join("      " + f for f in non_address_fields) + ";")
-> +
-> +            if dw.size == 32:
-> +                if dw.address:
-> +                    print("   dw[%d] = __gen_address(data, &dw[%d], values->%s, %s, %d, %d);" %
-> +                          (index, index, dw.address.name + field.dim, v,
-> +                           dw.address.start - dword_start, dw.address.end - dword_start))
-> +                print("   }")
-> +                continue
-> +
-> +            if dw.address:
-> +                v_address = "v%d_address" % index
-> +                print("   const uint64_t %s =\n      __gen_address(data, &dw[%d], values->%s, %s, %d, %d);" %
-> +                      (v_address, index, dw.address.name + field.dim, v,
-> +                       dw.address.start - dword_start, dw.address.end - dword_start))
-> +                if len(dw.fields) > address_count:
-> +                    print("   dw[%d] = %s;" % (index, v_address))
-> +                    print("   dw[%d] = (%s >> 32) | (%s >> 32);" % (index + 1, v_address, v))
-> +                    print("   }")
-> +                    continue
-> +                else:
-> +                    v = v_address
-> +            print("   dw[%d] = %s;" % (index, v))
-> +            print("   dw[%d] = %s >> 32;" % (index + 1, v))
-> +            print("   }")
-> +
-> +class Value(object):
-> +    def __init__(self, attrs):
-> +        self.name = safe_name(attrs["name"])
-> +        self.value = ast.literal_eval(attrs["value"])
-> +        self.dont_use = int(attrs["dont_use"]) != 0 if "dont_use" in attrs else False
-> +
-> +class Parser(object):
-> +    def __init__(self, repack):
-> +        self.instruction = None
-> +        self.structs = {}
-> +        # Set of enum names we've seen.
-> +        self.enums = set()
-> +        self.registers = {}
-> +        self.repack = repack
-> +        # Maps struct/register type names to the origin gen label for types
-> +        # that were omitted (no definition emitted for this gen).
-> +        self.skipped_type_origins = {}
-> +
-> +    def gen_prefix(self, name):
-> +        if name[0] == "_":
-> +            return 'GFX%s%s' % (self.gen, name)
-> +        return 'GFX%s_%s' % (self.gen, name)
-> +
-> +    def gen_prefix_for_type(self, type_name):
-> +        """Like gen_prefix but resolves skipped (omitted) types to their
-> +        origin gen so that struct/pack references still compile."""
-> +        origin = self.skipped_type_origins.get(type_name)
-> +        if origin:
-> +            safe = safe_name(type_name)
-> +            if safe[0] == '_':
-> +                return 'GFX%s%s' % (origin, safe)
-> +            return 'GFX%s_%s' % (origin, safe)
-> +        return self.gen_prefix(safe_name(type_name))
-> +
-> +    def gen_value_name(self, value_name, prefix=None,
-> +                       strip_prefixed_leading_underscore=False):
-> +        name = value_name
-> +        if prefix:
-> +            if strip_prefixed_leading_underscore and name[0] == '_':
-> +                name = name[1:]
-> +            name = prefix + "_" + name
-> +
-> +        return self.gen_prefix(name.upper())
-> +
-> +    def gen_guard(self):
-> +        return self.gen_prefix("{0}_PACK_H".format(self.platform))
-> +
-> +    def _should_skip_item(self, item):
-> +        """Check if this item is bit-identical to any previous gen
-> +        and should be skipped (applies to instructions, structs, and
-> +        registers)."""
-> +        if not self.baseline_fingerprints:
-> +            return False
-> +        item_name = item.attrib.get('name')
-> +        if not item_name:
-> +            return False
-> +        baseline_fp = self.baseline_fingerprints.get(item_name)
-> +        if baseline_fp is None:
-> +            return False  # New item, must emit
-> +        return _item_fingerprint(item) == baseline_fp
-> +
-> +    def process_item(self, item):
-> +        name = item.tag
-> +        assert name != "genxml"
-> +        attrs = item.attrib
-> +
-> +        # Skip items that are bit-identical to any previous gen.
-> +        # Emit a comment pointing to the oldest gen that defined this
-> +        # layout so that a developer can grep and find it in one hop.
-> +        if name in ("instruction", "struct", "register") and self._should_skip_item(item):
-> +            safe = safe_name(attrs["name"])
-> +            origin = self.origin_gens.get(attrs["name"], self.baseline_gen)
-> +            if safe[0] == "_":
-> +                origin_name = 'GFX%s%s' % (origin, safe)
-> +            else:
-> +                origin_name = 'GFX%s_%s' % (origin, safe)
-> +            print("/* %s omitted: identical to %s */" %
-> +                  (self.gen_prefix(safe), origin_name))
-> +            print('')
-> +            # Register skipped structs/registers so later items can
-> +            # still reference them as field types, resolved to origin gen.
-> +            if name == "struct":
-> +                self.structs[attrs["name"]] = 1
-> +                self.skipped_type_origins[attrs["name"]] = origin
-> +            elif name == "register":
-> +                self.registers[attrs["name"]] = 1
-> +                self.skipped_type_origins[attrs["name"]] = origin
-> +            return
-> +
-> +        if name in ("instruction", "struct", "register"):
-> +            if name == "instruction":
-> +                self.instruction = safe_name(attrs["name"])
-> +                self.length_bias = int(attrs["bias"])
-> +            elif name == "struct":
-> +                self.struct = safe_name(attrs["name"])
-> +                self.structs[attrs["name"]] = 1
-> +            elif name == "register":
-> +                self.register = safe_name(attrs["name"])
-> +                self.reg_num = num_from_str(attrs["num"])
-> +                self.registers[attrs["name"]] = 1
-> +            if "length" in attrs:
-> +                self.length = int(attrs["length"])
-> +                size = self.length * 32
-> +            else:
-> +                self.length = None
-> +                size = 0
-> +            self.group = Group(self, None, 0, 1, size)
-> +
-> +        elif name == "group":
-> +            dword = int(attrs["dword"])
-> +            offset_bits = int(attrs.get("offset_bits", 0))
-> +            start = dword * 32 + offset_bits
-> +
-> +
-> +            group = Group(self, self.group,
-> +                          start, int(attrs["count"]), int(attrs["size"]))
-> +            self.group.fields.append(group)
-> +            self.group = group
-> +        elif name == "field":
-> +            self.group.fields.append(Field(self, attrs))
-> +            self.values = []
-> +        elif name == "enum":
-> +            self.values = []
-> +            self.enum = safe_name(attrs["name"])
-> +            self.enums.add(attrs["name"])
-> +            if "prefix" in attrs:
-> +                self.prefix = safe_name(attrs["prefix"])
-> +            else:
-> +                self.prefix = None
-> +        elif name == "value":
-> +            self.values.append(Value(attrs))
-> +        elif name in ("import", "exclude"):
-> +            pass
-> +        else:
-> +            assert False
-> +
-> +        for child_item in item:
-> +            self.process_item(child_item)
-> +
-> +        if name  == "instruction":
-> +            self.emit_instruction()
-> +            self.instruction = None
-> +            self.group = None
-> +        elif name == "struct":
-> +            self.emit_struct()
-> +            self.struct = None
-> +            self.group = None
-> +        elif name == "register":
-> +            self.emit_register()
-> +            self.register = None
-> +            self.reg_num = None
-> +            self.group = None
-> +        elif name == "group":
-> +            self.group = self.group.parent
-> +        elif name  == "field":
-> +            self.group.fields[-1].values = self.values
-> +        elif name  == "enum":
-> +            self.emit_enum()
-> +            self.enum = None
-> +        elif name in ("import", "exclude", "value"):
-> +            pass
-> +        else:
-> +            assert False
-> +
-> +    def emit_template_struct(self, name, group):
-> +        print("struct %s {" % self.gen_prefix(name))
-> +        group.emit_template_struct("")
-> +        print("};\n")
-> +
-> +
-> +    def emit_pack_function(self, name, group, repack=False):
-> +        name = self.gen_prefix(name)
-> +        if repack:
-> +            print(textwrap.dedent("""\
-> +            static inline __attribute__((always_inline)) void
-> +            %s_repack(__attribute__((unused)) __gen_user_data *data,
-> +                    %s__attribute__((unused)) void * restrict dst,
-> +                    %s__attribute__((unused)) const uint32_t * origin,
-> +                    %s__attribute__((unused)) const struct %s * restrict values)
-> +            {""") % (name, ' ' * len(name), ' ' * len(name), ' ' * len(name), name))
-> +        else:
-> +            print(textwrap.dedent("""\
-> +            static inline __attribute__((always_inline)) void
-> +            %s_pack(__attribute__((unused)) __gen_user_data *data,
-> +                  %s__attribute__((unused)) void * restrict dst,
-> +                  %s__attribute__((unused)) const struct %s * restrict values)
-> +            {""") % (name, ' ' * len(name), ' ' * len(name), name))
-> +
-> +        (dwords, length) = group.collect_dwords_and_length(repack)
-> +        if length:
-> +            # Cast dst to make header C++ friendly
-> +            type_name = "uint32_t * restrict"
-> +            print("   %s dw = (%s) dst;" % (type_name, type_name))
-> +
-> +            group.emit_pack_function(dwords, length, repack)
-> +
-> +        print("}\n")
-> +
-> +    def emit_instruction(self):
-> +        name = self.instruction
-> +
-> +        if not self.length is None:
-> +            print('#define %-33s %6d' %
-> +                  (self.gen_prefix(name + "_length"), self.length))
-> +        print('#define %-33s %6d' %
-> +              (self.gen_prefix(name + "_length_bias"), self.length_bias))
-> +
-> +        default_fields = []
-> +        for field in self.group.fields:
-> +            if not isinstance(field, Field):
-> +                continue
-> +            if field.default is None:
-> +                continue
-> +
-> +            if field.is_builtin_type():
-> +                default_fields.append("   .%-35s = %6d" % (field.name, field.default))
-> +            else:
-> +                # Default values should not apply to structures
-> +                assert field.is_enum_type()
-> +                default_fields.append("   .%-35s = (enum %s) %6d" % (field.name, self.gen_prefix(safe_name(field.type)), field.default))
-> +
-> +        if default_fields:
-> +            print('#define %-40s\\' % (self.gen_prefix(name + '_header')))
-> +            print(",  \\\n".join(default_fields))
-> +            print('')
-> +
-> +        self.emit_template_struct(self.instruction, self.group)
-> +        self.emit_pack_function(self.instruction, self.group)
-> +        if self.repack:
-> +            self.emit_pack_function(self.instruction, self.group, repack=True)
-> +        self.group.emit_value_defines()
-> +
-> +    def emit_register(self):
-> +        name = self.register
-> +        if not self.reg_num is None:
-> +            print('#define %-33s 0x%04x' %
-> +                  (self.gen_prefix(name + "_num"), self.reg_num))
-> +
-> +        if not self.length is None:
-> +            print('#define %-33s %6d' %
-> +                  (self.gen_prefix(name + "_length"), self.length))
-> +
-> +        self.emit_template_struct(self.register, self.group)
-> +        self.emit_pack_function(self.register, self.group)
-> +        self.group.emit_value_defines()
-> +
-> +    def emit_struct(self):
-> +        name = self.struct
-> +        if not self.length is None:
-> +            print('#define %-33s %6d' %
-> +                  (self.gen_prefix(name + "_length"), self.length))
-> +
-> +        self.emit_template_struct(self.struct, self.group)
-> +        self.emit_pack_function(self.struct, self.group)
-> +        if self.repack:
-> +            self.emit_pack_function(self.struct, self.group, repack=True)
-> +        self.group.emit_value_defines()
-> +
-> +    def emit_enum(self):
-> +        enum_name = self.gen_prefix(self.enum)
-> +        print('enum %s {' % enum_name)
-> +        for value in self.values:
-> +            name = self.gen_value_name(value.name, prefix=self.prefix)
-> +            print('   %-36s = %6d,' % (name.upper(), value.value))
-> +        print('};')
-> +        print('')
-> +
-> +    def emit_genxml(self, genxml):
-> +        root = genxml.et.getroot()
-> +        self.platform = root.attrib["name"]
-> +        self.gen = root.attrib["gen"].replace('.', '')
-> +        print(pack_header % {'license': license, 'platform': self.platform, 'guard': self.gen_guard()})
-> +        for item in root:
-> +            self.process_item(item)
-> +        print('#endif /* %s */' % self.gen_guard())
-> +
-> +def _element_fingerprint(elem, skip_attrs=frozenset()):
-> +    """Canonical string representation of an XML element for structural
-> +    comparison.  Captures tag, attributes (sorted, minus skip_attrs),
-> +    and all children recursively."""
-> +    parts = [elem.tag]
-> +    for k, v in sorted(elem.attrib.items()):
-> +        if k not in skip_attrs:
-> +            parts.append('%s=%s' % (k, v))
-> +    for child in elem:
-> +        parts.append(_element_fingerprint(child))
-> +    return '(%s)' % '|'.join(parts)
-> +
-> +def _item_fingerprint(item):
-> +    """Structural fingerprint for an XML element (instruction, struct,
-> +    or register).  Skips identity attributes ('name', 'engine', 'num')
-> +    so that two items are considered identical when their bit-layout
-> +    matches, regardless of naming or register offset."""
-> +    return _element_fingerprint(item, skip_attrs={'name', 'engine', 'num'})
-> +
-> +def _build_baseline(xml_source, engines):
-> +    """Load a single baseline gen's XML file and build a dict of
-> +    item name -> fingerprint.  Kept for use by gen_decode_header."""
-> +    genxml = intel_genxml.GenXml(xml_source)
-> +    genxml.merge_imported()
-> +    genxml.filter_engines(engines)
-> +    root = genxml.et.getroot()
-> +    baseline = {}
-> +    baseline_gen = root.attrib["gen"].replace('.', '')
-> +    for item in root:
-> +        if item.tag in ('instruction', 'struct', 'register'):
-> +            item_name = item.attrib.get('name')
-> +            if item_name:
-> +                baseline[item_name] = _item_fingerprint(item)
-> +    return baseline, baseline_gen
-> +
-> +def _build_baselines(xml_sources, engines):
-> +    """Load a sequence of baseline gen XML files (oldest first) and build:
-> +     - fingerprints: item_name -> fingerprint (from most recent occurrence)
-> +     - baseline_gen: gen label of the most recent baseline
-> +     - origin_gens: item_name -> gen label of the oldest gen with the
-> +       current fingerprint for that item
-> +    An item's origin resets when its fingerprint changes."""
-> +    fingerprints = {}
-> +    origin_gens = {}
-> +    baseline_gen = None
-> +    for xml_source in xml_sources:
-> +        genxml = intel_genxml.GenXml(xml_source)
-> +        genxml.merge_imported()
-> +        genxml.filter_engines(engines)
-> +        root = genxml.et.getroot()
-> +        gen_label = root.attrib["gen"].replace('.', '')
-> +        baseline_gen = gen_label
-> +        for item in root:
-> +            if item.tag in ('instruction', 'struct', 'register'):
-> +                item_name = item.attrib.get('name')
-> +                if item_name:
-> +                    fp = _item_fingerprint(item)
-> +                    if item_name not in fingerprints or fingerprints[item_name] != fp:
-> +                        # New item or fingerprint changed: this gen is the origin
-> +                        fingerprints[item_name] = fp
-> +                        origin_gens[item_name] = gen_label
-> +                    # else: same fingerprint, keep existing (older) origin
-> +    return fingerprints, baseline_gen, origin_gens
-> +
-> +def parse_args():
-> +    p = argparse.ArgumentParser()
-> +    p.add_argument('xml_source', metavar='XML_SOURCE',
-> +                   help="Input xml file")
-> +    p.add_argument('--engines', nargs='?', type=str, default='render',
-> +                   help="Comma-separated list of engines whose instructions should be parsed (default: %(default)s)")
-> +    p.add_argument('--include-symbols', nargs='?', type=str, action='store',
-> +                   help="List of instruction/structures to generate")
-> +    p.add_argument('--repack', action='store_true', help="Emit repacking code")
-> +    p.add_argument('--baseline', type=str, action='append', default=[],
-> +                   help="Previous gen XML files (oldest first); skip items identical to any baseline")
-> +
-> +    pargs = p.parse_args()
-> +
-> +    if pargs.engines is None:
-> +        print("No engines specified")
-> +        sys.exit(1)
-> +
-> +    return pargs
-> +
-> +def main():
-> +    pargs = parse_args()
-> +
-> +    engines = set(pargs.engines.split(','))
-> +    valid_engines = [ 'render', 'blitter', 'video', 'compute' ]
-> +    if engines - set(valid_engines):
-> +        print("Invalid engine specified, valid engines are:\n")
-> +        for e in valid_engines:
-> +            print("\t%s" % e)
-> +        sys.exit(1)
-> +
-> +    baseline_fingerprints = {}
-> +    baseline_gen = None
-> +    origin_gens = {}
-> +    if pargs.baseline:
-> +        baseline_fingerprints, baseline_gen, origin_gens = _build_baselines(
-> +            pargs.baseline, engines)
-> +
-> +    genxml = intel_genxml.GenXml(pargs.xml_source)
-> +
-> +    genxml.merge_imported()
-> +    genxml.filter_engines(engines)
-> +    if pargs.include_symbols:
-> +        genxml.filter_symbols(pargs.include_symbols.split(','))
-> +    p = Parser(pargs.repack)
-> +    p.baseline_fingerprints = baseline_fingerprints
-> +    p.baseline_gen = baseline_gen
-> +    p.origin_gens = origin_gens
-> +    p.emit_genxml(genxml)
-> +
-> +if __name__ == '__main__':
-> +    main()
-> diff --git a/lib/intel/genxml/igt_genxml.h b/lib/intel/genxml/igt_genxml.h
-> new file mode 100644
-> index 000000000..7b8c59338
-> --- /dev/null
-> +++ b/lib/intel/genxml/igt_genxml.h
-> @@ -0,0 +1,112 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2025 Intel Corporation
-
-2026.
-
-> + *
-> + * Emit / pack macros for using genxml-generated pack headers with
-> + * IGT's intel_bb batch-buffer infrastructure.
-> + *
-> + * Relocations are handled automatically: when an address field in a
-> + * genxml struct is assigned a struct igt_address with a non-zero
-> + * handle, __gen_combine_address (in igt_genxml_defs.h) registers the
-> + * relocation during packing.
-> + */
-> +
-> +#ifndef IGT_GENXML_H
-> +#define IGT_GENXML_H
-> +
-> +#include <stdint.h>
-> +#include "igt_core.h"
-> +#include "intel_batchbuffer.h"
-> +#include "intel_bufops.h"
-> +#include "igt_genxml_defs.h"
-> +
-> +/*
-> + * igt_genxml_emit - emit a fixed-length GPU command into the batch.
-> + *
-> + * Usage:
-> + *   igt_genxml_emit(ibb, GFX9_3DSTATE_CLIP, clip) {
-> + *       clip.MaximumVPIndex = 0;
-> + *       ...
-> + *   }
-> + *
-> + * The struct is zero-initialised with the default header fields, packed
-> + * into the batch at the current pointer, and the pointer is advanced by
-> + * cmd##_length dwords.
-> + */
-> +#define igt_genxml_emit(ibb, cmd, name)                                    \
-> +	for (struct cmd name = { cmd##_header },                           \
-> +	     *_dst = (struct cmd *)intel_bb_ptr(ibb);                      \
-> +	     __builtin_expect(_dst != NULL, 1);                            \
-> +	     ({                                                            \
-> +		     cmd##_pack((ibb), (void *)_dst, &name);               \
-> +		     intel_bb_ptr_add((ibb), cmd##_length * 4);            \
-> +		     _dst = NULL;                                          \
-> +	     }))
-> +
-> +/*
-> + * igt_genxml_pack_state - pack a state object at an arbitrary location.
-> + *
-> + * Usage:
-> + *   void *ptr = intel_bb_ptr_align(ibb, 64);
-> + *   igt_genxml_pack_state(ibb, GFX9_RENDER_SURFACE_STATE, ptr, rss) {
-> + *       rss.SurfaceType = GFX9_SURFTYPE_2D;
-> + *       rss.SurfaceBaseAddress = igt_address_of(buf, 0, rd, wd);
-> + *       ...
-> + *   }
-> + *   intel_bb_ptr_add(ibb, GFX9_RENDER_SURFACE_STATE_length * 4);
-> + *
-> + * Address fields with a non-zero handle get their relocations
-> + * registered automatically during packing.
-> + */
-> +#define igt_genxml_pack_state(ibb, cmd, dst_ptr, name)                     \
-> +	for (struct cmd name = { 0 },                                      \
-> +	     *_done = (struct cmd *)1;                                     \
-> +	     __builtin_expect(_done != NULL, 1);                           \
-> +	     ({                                                            \
-> +		     cmd##_pack((ibb), (void *)(dst_ptr), &name);          \
-> +		     _done = NULL;                                         \
-> +	     }))
-> +
-> +/*
-> + * igt_address_of - construct an igt_address for a buffer object.
-> + *
-> + * @buf:          intel_buf owning the BO
-> + * @bo_offset:    offset within the BO (e.g. surface[0].offset, cc.offset)
-> + * @read_domains: GEM read domains
-> + * @write_domain: GEM write domain
-> + */
-> +static inline struct igt_address
-> +igt_address_of(const struct intel_buf *buf, uint64_t bo_offset,
-> +	       uint32_t read_domains, uint32_t write_domain)
-> +{
-> +	return (struct igt_address){
-> +		.offset = buf->addr.offset + bo_offset,
-> +		.handle = buf->handle,
-> +		.read_domains = read_domains,
-> +		.write_domain = write_domain,
-> +		.presumed_offset = buf->addr.offset,
-> +	};
-> +}
-> +
-> +/*
-> + * igt_address_of_batch - construct an igt_address pointing into the
-> + * batch buffer itself (e.g. for STATE_BASE_ADDRESS).
-> + *
-> + * @ibb:          batch buffer
-> + * @read_domains: GEM read domains
-> + * @write_domain: GEM write domain
-> + */
-> +static inline struct igt_address
-> +igt_address_of_batch(struct intel_bb *ibb,
-> +		     uint32_t read_domains, uint32_t write_domain)
-> +{
-> +	return (struct igt_address){
-> +		.offset = ibb->batch_offset,
-> +		.handle = ibb->handle,
-> +		.read_domains = read_domains,
-> +		.write_domain = write_domain,
-> +		.presumed_offset = ibb->batch_offset,
-> +	};
-> +}
-> +
-> +#endif /* IGT_GENXML_H */
-> diff --git a/lib/intel/genxml/igt_genxml_decode.h b/lib/intel/genxml/igt_genxml_decode.h
-> new file mode 100644
-> index 000000000..316c4b250
-> --- /dev/null
-> +++ b/lib/intel/genxml/igt_genxml_decode.h
-> @@ -0,0 +1,60 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2025 Intel Corporation
-
-Ditto.
-
-> + *
-> + * Batch buffer annotated decode using genxml-generated decode headers.
-> + *
-> + * Usage:
-> + *   igt_genxml_decode_batch(fp, gen, batch_ptr, batch_dwords);
-> + *
-> + * This dispatches to the appropriate per-gen decode function based on
-> + * the gen number.  Each gen's decode header provides command identification
-> + * and field-level annotation.
-> + */
-> +
-> +#ifndef IGT_GENXML_DECODE_H
-> +#define IGT_GENXML_DECODE_H
-> +
-> +#include <stdio.h>
-> +#include <stdint.h>
-> +#include "intel_chipset.h"
-> +
-> +#include "gen90_decode.h"
-> +#include "gen110_decode.h"
-> +#include "gen120_decode.h"
-> +#include "gen125_decode.h"
-> +#include "xe2_decode.h"
-> +#include "xe3_decode.h"
-> +#include "xe3p_decode.h"
-> +
-> +/*
-> + * igt_genxml_decode_batch - walk and annotate a batch buffer.
-> + *
-> + * @fp:            output file
-> + * @devid:         PCI device ID (used to select the right gen decoder)
-> + * @batch:         pointer to batch buffer dwords
-> + * @batch_dwords:  number of dwords in the batch
-> + */
-> +static inline void
-> +igt_genxml_decode_batch(FILE *fp, uint32_t devid,
-> +			const uint32_t *batch, unsigned batch_dwords)
-> +{
-> +	unsigned gen = intel_gen(devid);
-> +
-> +	if (gen >= 35)
-> +		gfx35_decode_batch(fp, batch, batch_dwords);
-> +	else if (gen >= 30)
-> +		gfx30_decode_batch(fp, batch, batch_dwords);
-> +	else if (gen >= 20)
-> +		gfx20_decode_batch(fp, batch, batch_dwords);
-> +	else if (HAS_4TILE(devid) || gen > 12)
-> +		gfx125_decode_batch(fp, batch, batch_dwords);
-> +	else if (gen >= 12)
-> +		gfx12_decode_batch(fp, batch, batch_dwords);
-> +	else if (gen >= 11)
-> +		gfx11_decode_batch(fp, batch, batch_dwords);
-> +	else
-> +		gfx9_decode_batch(fp, batch, batch_dwords);
-> +}
-> +
-> +#endif /* IGT_GENXML_DECODE_H */
-> diff --git a/lib/intel/genxml/igt_genxml_defs.h b/lib/intel/genxml/igt_genxml_defs.h
-> new file mode 100644
-> index 000000000..3acedf0b1
-> --- /dev/null
-> +++ b/lib/intel/genxml/igt_genxml_defs.h
-> @@ -0,0 +1,335 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2016 Intel Corporation
-> + * Copyright © 2025 Intel Corporation
-> + *
-> + * Self-contained header providing all definitions that genxml-generated
-> + * pack headers need.  Replaces Mesa's util/bitpack_helpers.h and
-> + * genX_helpers.h so that IGT can use genxml without pulling in Mesa's
-
-+genX_cl_helpers.h
-
-> + * build system.
-> + */
-> +
-> +#ifndef IGT_GENXML_DEFS_H
-> +#define IGT_GENXML_DEFS_H
-> +
-> +#include <assert.h>
-> +#include <math.h>
-> +#include <stdbool.h>
-> +#include <stdint.h>
-> +#include <string.h>
-> +
-> +/* -- compiler helpers ----------------------------------------------- */
-> +
-> +#ifndef ALWAYS_INLINE
-> +#define ALWAYS_INLINE inline __attribute__((always_inline))
-> +#endif
-> +
-> +#ifndef ASSERTED
-> +#ifdef NDEBUG
-> +#define ASSERTED __attribute__((unused))
-> +#else
-> +#define ASSERTED
-> +#endif
-> +#endif
-> +
-> +#ifndef UNUSED
-> +#define UNUSED __attribute__((unused))
-> +#endif
-> +
-> +#ifndef CLAMP
-> +#define CLAMP(x, lo, hi) ((x) < (lo) ? (lo) : ((x) > (hi) ? (hi) : (x)))
-> +#endif
-> +
-> +/* -- bit-field helpers ---------------------------------------------- */
-> +
-> +#ifndef BITFIELD64_BIT
-> +#define BITFIELD64_BIT(b)  (1ull << (b))
-> +#endif
-> +
-> +#ifndef BITFIELD64_MASK
-> +#define BITFIELD64_MASK(b) \
-> +	((b) == 64 ? (~0ull) : BITFIELD64_BIT(b) - 1)
-> +#endif
-> +
-> +/* -- int-range helpers (Mesa u_math.h equivalents) ------------------ */
-> +
-> +static inline ALWAYS_INLINE int64_t
-> +u_intN_min(unsigned bits)
-> +{
-> +	return -(INT64_C(1) << (bits - 1));
-> +}
-> +
-> +static inline ALWAYS_INLINE int64_t
-> +u_intN_max(unsigned bits)
-> +{
-> +	return (INT64_C(1) << (bits - 1)) - 1;
-> +}
-> +
-> +static inline ALWAYS_INLINE uint64_t
-> +u_uintN_max(unsigned bits)
-> +{
-> +	return (bits == 64) ? UINT64_MAX : (UINT64_C(1) << bits) - 1;
-> +}
-> +
-> +/* -- validation hook (no-op outside Valgrind) ----------------------- */
-> +
-> +#ifndef util_bitpack_validate_value
-> +#define util_bitpack_validate_value(x)
-> +#endif
-> +
-> +/* -- bitpack functions ---------------------------------------------- */
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_ones(uint32_t start, uint32_t end)
-> +{
-> +	return (UINT64_MAX >> (64 - (end - start + 1))) << start;
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_uint(uint64_t v, uint32_t start, UNUSED uint32_t end)
-> +{
-> +#ifndef NDEBUG
-> +	const int bits = end - start + 1;
-> +	if (bits < 64) {
-> +		const uint64_t max = u_uintN_max(bits);
-> +		assert(v <= max);
-> +	}
-> +#endif
-> +	util_bitpack_validate_value(v);
-> +	return v << start;
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_uint_nonzero(uint64_t v, uint32_t start, uint32_t end)
-> +{
-> +	assert(v != 0ull);
-> +	return util_bitpack_uint(v, start, end);
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_sint(int64_t v, uint32_t start, uint32_t end)
-> +{
-> +	const int bits = end - start + 1;
-> +	const uint64_t mask = BITFIELD64_MASK(bits);
-> +	util_bitpack_validate_value(v);
-> +#ifndef NDEBUG
-> +	if (bits < 64) {
-> +		const int64_t min = u_intN_min(bits);
-> +		const int64_t max = u_intN_max(bits);
-> +		assert(min <= v && v <= max);
-> +	}
-> +#endif
-> +	return (v & mask) << start;
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_sint_nonzero(int64_t v, uint32_t start, uint32_t end)
-> +{
-> +	assert(v != 0ll);
-> +	return util_bitpack_sint(v, start, end);
-> +}
-> +
-> +ALWAYS_INLINE static uint32_t
-> +util_bitpack_float(float v)
-> +{
-> +	union { float f; uint32_t dw; } x;
-> +	util_bitpack_validate_value(v);
-> +	x.f = v;
-> +	return x.dw;
-> +}
-> +
-> +ALWAYS_INLINE static uint32_t
-> +util_bitpack_float_nonzero(float v)
-> +{
-> +	assert(v != 0.0f);
-> +	return util_bitpack_float(v);
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_sfixed(float v, uint32_t start, uint32_t end,
-> +		    uint32_t fract_bits)
-> +{
-> +	const float factor = (1 << fract_bits);
-> +	const int64_t int_val = llroundf(v * factor);
-> +	const uint64_t mask = UINT64_MAX >> (64 - (end - start + 1));
-> +	util_bitpack_validate_value(v);
-> +#ifndef NDEBUG
-> +	{
-> +		const int total_bits = end - start + 1;
-> +		const float min = u_intN_min(total_bits) / factor;
-> +		const float max = u_intN_max(total_bits) / factor;
-> +		assert(min <= v && v <= max);
-> +	}
-> +#endif
-> +	return (int_val & mask) << start;
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_sfixed_clamp(float v, uint32_t start, uint32_t end,
-> +			  uint32_t fract_bits)
-> +{
-> +	const float factor = (1 << fract_bits);
-> +	const int total_bits = end - start + 1;
-> +	const float min = u_intN_min(total_bits) / factor;
-> +	const float max = u_intN_max(total_bits) / factor;
-> +	const int64_t int_val = llroundf(CLAMP(v, min, max) * factor);
-> +	const uint64_t mask = UINT64_MAX >> (64 - (end - start + 1));
-> +	util_bitpack_validate_value(v);
-> +	return (int_val & mask) << start;
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_sfixed_nonzero(float v, uint32_t start, uint32_t end,
-> +			    uint32_t fract_bits)
-> +{
-> +	assert(v != 0.0f);
-> +	return util_bitpack_sfixed(v, start, end, fract_bits);
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_ufixed(float v, uint32_t start, ASSERTED uint32_t end,
-> +		    uint32_t fract_bits)
-> +{
-> +	const float factor = (1 << fract_bits);
-> +	const uint64_t uint_val = llroundf(v * factor);
-> +	util_bitpack_validate_value(v);
-> +#ifndef NDEBUG
-> +	{
-> +		const int total_bits = end - start + 1;
-> +		const float min = 0.0f;
-> +		const float max = u_uintN_max(total_bits) / factor;
-> +		assert(min <= v && v <= max);
-> +	}
-> +#endif
-> +	return uint_val << start;
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_ufixed_clamp(float v, uint32_t start, ASSERTED uint32_t end,
-> +			  uint32_t fract_bits)
-> +{
-> +	const float factor = (1 << fract_bits);
-> +	const int total_bits = end - start + 1;
-> +	const float min = 0.0f;
-> +	const float max = u_uintN_max(total_bits) / factor;
-> +	const uint64_t uint_val = llroundf(CLAMP(v, min, max) * factor);
-> +	util_bitpack_validate_value(v);
-> +	return uint_val << start;
-> +}
-> +
-> +ALWAYS_INLINE static uint64_t
-> +util_bitpack_ufixed_nonzero(float v, uint32_t start, uint32_t end,
-> +			    uint32_t fract_bits)
-> +{
-> +	assert(v != 0.0f);
-> +	return util_bitpack_ufixed(v, start, end, fract_bits);
-> +}
-> +
-> +/* -- address type and combine function ------------------------------ */
-> +
-> +struct igt_address {
-> +	uint64_t offset;          /* full GPU address to pack into dwords */
-> +	uint32_t handle;          /* GEM handle; 0 = no reloc needed */
-> +	uint32_t read_domains;
-> +	uint32_t write_domain;
-> +	uint64_t presumed_offset; /* BO base address (for computing bo_delta) */
-> +};
-> +
-> +struct intel_bb;
-> +
-> +/*
-> + * Declared here so __gen_combine_address can call it.
-> + * Also declared in intel_batchbuffer.h; suppress the warning
-> + * when both headers are included.
-> + */
-> +#pragma GCC diagnostic push
-> +#pragma GCC diagnostic ignored "-Wredundant-decls"
-> +uint64_t intel_bb_offset_reloc_with_delta(struct intel_bb *ibb,
-> +					  uint32_t handle,
-> +					  uint32_t read_domains,
-> +					  uint32_t write_domain,
-> +					  uint32_t delta,
-> +					  uint32_t offset,
-> +					  uint64_t presumed_offset);
-> +#pragma GCC diagnostic pop
-> +
-> +#define __gen_address_type  struct igt_address
-> +#define __gen_user_data     struct intel_bb
-> +
-> +/*
-> + * __gen_combine_address - called by genxml pack functions for every
-> + * address field.  If the address carries a GEM handle, automatically
-> + * register a relocation with intel_bb.
-> + *
-> + * @ibb:      batch buffer (passed as __gen_user_data*)
-> + * @location: pointer to the dword(s) being written in the batch
-> + * @addr:     address descriptor (offset + optional reloc metadata)
-> + * @delta:    flag bits that genxml packed below the address field
-> + */
-> +static inline ALWAYS_INLINE uint64_t
-> +__gen_combine_address(struct intel_bb *ibb,
-> +		      void *location,
-> +		      struct igt_address addr, uint32_t delta)
-> +{
-> +	if (addr.handle) {
-> +		uint32_t batch_offset =
-> +			(uint8_t *)location - (uint8_t *)ibb->batch;
-> +		uint32_t bo_delta =
-> +			(uint32_t)(addr.offset - addr.presumed_offset);
-> +
-> +		intel_bb_offset_reloc_with_delta(ibb, addr.handle,
-> +						 addr.read_domains,
-> +						 addr.write_domain,
-> +						 bo_delta + delta,
-> +						 batch_offset,
-> +						 addr.presumed_offset);
-> +	}
-> +
-> +	return addr.offset + delta;
-> +}
-> +
-> +/* -- validation hook (no-op) ---------------------------------------- */
-> +
-> +#ifndef __gen_validate_value
-> +#define __gen_validate_value(x)
-> +#endif
-> +
-> +/* -- offset helper -------------------------------------------------- */
-> +
-> +static inline ALWAYS_INLINE uint64_t
-> +__gen_offset(uint64_t v, ASSERTED uint32_t start, ASSERTED uint32_t end)
-> +{
-> +#ifndef NDEBUG
-> +	uint64_t mask = (~0ull >> (64 - (end - start + 1))) << start;
-> +	assert((v & ~mask) == 0);
-> +#endif
-> +	__gen_validate_value(v);
-> +	return v;
-> +}
-> +
-> +static inline ALWAYS_INLINE uint64_t
-> +__gen_offset_nonzero(uint64_t v, uint32_t start, uint32_t end)
-> +{
-> +	assert(v != 0ull);
-> +	return __gen_offset(v, start, end);
-> +}
-> +
-> +/* -- address helper ------------------------------------------------- */
-> +
-> +static inline ALWAYS_INLINE uint64_t
-> +__gen_address(__gen_user_data *data, void *location,
-> +	      __gen_address_type address, uint32_t delta,
-> +	      __attribute__((unused)) uint32_t start, uint32_t end)
-> +{
-> +	uint64_t addr_u64 = __gen_combine_address(data, location, address, delta);
-> +	if (end == 31) {
-> +		return addr_u64;
-> +	} else if (end < 63) {
-> +		const unsigned shift = 63 - end;
-> +		return (addr_u64 << shift) >> shift;
-> +	} else {
-> +		return addr_u64;
-> +	}
-> +}
-> +
-> +#endif /* IGT_GENXML_DEFS_H */
-> diff --git a/lib/intel/genxml/intel_genxml.py b/lib/intel/genxml/intel_genxml.py
-> new file mode 100644
-> index 000000000..a20e8e0ae
-> --- /dev/null
-> +++ b/lib/intel/genxml/intel_genxml.py
-> @@ -0,0 +1,553 @@
-> +#!/usr/bin/env python3
-> +# Copyright © 2019, 2022 Intel Corporation
-> +# SPDX-License-Identifier: MIT
-> +
-> +from __future__ import annotations
-> +from collections import OrderedDict
-> +import copy
-> +import io
-> +import pathlib
-> +import os.path
-> +import re
-> +import xml.etree.ElementTree as et
-> +import typing
-> +
-> +if typing.TYPE_CHECKING:
-> +    class Args(typing.Protocol):
-> +
-> +        files: typing.List[pathlib.Path]
-> +        validate: bool
-> +        quiet: bool
-> +
-> +
-> +def get_filename(element: et.Element) -> str:
-> +    return element.attrib['filename']
-> +
-> +def get_name(element: et.Element) -> str:
-> +    return element.attrib['name']
-> +
-> +def get_value(element: et.Element) -> int:
-> +    return int(element.attrib['value'], 0)
-> +
-> +def get_start(element: et.Element) -> int:
-> +    attrs = element.attrib
-> +
-> +    if 'start' in attrs:
-> +        return int(attrs['start'], 0)
-> +
-> +    dword = int(attrs['dword'])
-> +    offset = 0
-> +
-> +    if 'bits' in attrs:
-> +        offset = int(attrs['bits'].split(':')[1])
-> +    elif 'offset_bits' in attrs:
-> +        offset = int(attrs['offset_bits'])
-> +
-> +    return dword * 32 + offset
-> +
-> +
-> +BASE_TYPES = {
-> +    'address',
-> +    'offset',
-> +    'int',
-> +    'uint',
-> +    'bool',
-> +    'float',
-> +    'mbz',
-> +    'mbo',
-> +}
-> +
-> +FIXED_PATTERN = re.compile(r"(s|u)(\d+)\.(\d+)")
-> +
-> +def is_base_type(name: str) -> bool:
-> +    return name in BASE_TYPES or FIXED_PATTERN.match(name) is not None
-> +
-> +def add_struct_refs(items: typing.OrderedDict[str, bool], node: et.Element) -> None:
-> +    if node.tag == 'field':
-> +        if 'type' in node.attrib and not is_base_type(node.attrib['type']):
-> +            t = node.attrib['type']
-> +            items[t] = True
-> +        return
-> +    if node.tag not in {'struct', 'group'}:
-> +        return
-> +    for c in node:
-> +        add_struct_refs(items, c)
-> +
-> +
-> +class Struct(object):
-> +    def __init__(self, xml: et.Element):
-> +        self.xml = xml
-> +        self.name = xml.attrib['name']
-> +        self.deps: typing.OrderedDict[str, Struct] = OrderedDict()
-> +
-> +    def find_deps(self, struct_dict, enum_dict) -> None:
-> +        deps: typing.OrderedDict[str, bool] = OrderedDict()
-> +        add_struct_refs(deps, self.xml)
-> +        for d in deps.keys():
-> +            if d in struct_dict:
-> +                self.deps[d] = struct_dict[d]
-> +
-> +    def add_xml(self, items: typing.OrderedDict[str, et.Element]) -> None:
-> +        for d in self.deps.values():
-> +            d.add_xml(items)
-> +        items[self.name] = self.xml
-> +
-> +
-> +# ordering of the various tag attributes
-> +GENXML_DESC = {
-> +    'genxml'      : [ 'name', 'gen', ],
-> +    'import'      : [ 'name', ],
-> +    'exclude'     : [ 'name', ],
-> +    'enum'        : [ 'name', 'value', 'prefix', ],
-> +    'struct'      : [ 'name', 'length', ],
-> +    'field'       : [ 'name', 'dword', 'bits', 'start', 'end', 'type', 'default', 'prefix', 'nonzero' ],
-> +    'instruction' : [ 'name', 'bias', 'length', 'engine', ],
-> +    'value'       : [ 'name', 'value', 'dont_use', ],
-> +    'group'       : [ 'count', 'dword', 'offset_bits', 'start', 'size', ],
-> +    'register'    : [ 'name', 'length', 'num', ],
-> +}
-> +
-> +
-> +def node_validator(old: et.Element, new: et.Element) -> bool:
-> +    """Compare to ElementTree Element nodes.
-> +
-> +    There is no builtin equality method, so calling `et.Element == et.Element` is
-> +    equivalent to calling `et.Element is et.Element`. We instead want to compare
-> +    that the contents are the same, including the order of children and attributes
-> +    """
-> +    return (
-> +        # Check that the attributes are the same
-> +        old.tag == new.tag and
-> +        old.text == new.text and
-> +        (old.tail or "").strip() == (new.tail or "").strip() and
-> +        list(old.attrib.items()) == list(new.attrib.items()) and
-> +        len(old) == len(new) and
-> +
-> +        # check that there are no unexpected attributes
-> +        set(new.attrib).issubset(GENXML_DESC[new.tag]) and
-> +
-> +        # check that the attributes are sorted
-> +        list(new.attrib) == list(old.attrib) and
-> +        all(node_validator(f, s) for f, s in zip(old, new))
-> +    )
-> +
-> +
-> +def process_attribs(elem: et.Element) -> None:
-> +    valid = GENXML_DESC[elem.tag]
-> +    # sort and prune attributes
-> +    elem.attrib = OrderedDict(sorted(((k, v) for k, v in elem.attrib.items() if k in valid),
-> +                                     key=lambda x: valid.index(x[0])))
-> +    for e in elem:
-> +        process_attribs(e)
-> +
-> +
-> +def sort_xml(xml: et.ElementTree) -> None:
-> +    genxml = xml.getroot()
-> +
-> +    imports = xml.findall('import')
-> +
-> +    enums = sorted(xml.findall('enum'), key=get_name)
-> +    enum_dict: typing.Dict[str, et.Element] = {}
-> +    for e in enums:
-> +        e[:] = sorted(e, key=get_value)
-> +        enum_dict[e.attrib['name']] = e
-> +
-> +    # Structs are a bit annoying because they can refer to each other. We sort
-> +    # them alphabetically and then build a graph of dependencies. Finally we go
-> +    # through the alphabetically sorted list and print out dependencies first.
-> +    structs = sorted(xml.findall('./struct'), key=get_name)
-> +    wrapped_struct_dict: typing.Dict[str, Struct] = {}
-> +    for s in structs:
-> +        s[:] = sorted(s, key=get_start)
-> +        ws = Struct(s)
-> +        wrapped_struct_dict[ws.name] = ws
-> +
-> +    for ws in wrapped_struct_dict.values():
-> +        ws.find_deps(wrapped_struct_dict, enum_dict)
-> +
-> +    sorted_structs: typing.OrderedDict[str, et.Element] = OrderedDict()
-> +    for s in structs:
-> +        _s = wrapped_struct_dict[s.attrib['name']]
-> +        _s.add_xml(sorted_structs)
-> +
-> +    instructions = sorted(xml.findall('./instruction'), key=get_name)
-> +    for i in instructions:
-> +        i[:] = sorted(i, key=get_start)
-> +
-> +    registers = sorted(xml.findall('./register'), key=get_name)
-> +    for r in registers:
-> +        r[:] = sorted(r, key=get_start)
-> +
-> +    new_elems = (imports + enums + list(sorted_structs.values()) +
-> +                 instructions + registers)
-> +    for n in new_elems:
-> +        process_attribs(n)
-> +    genxml[:] = new_elems
-> +
-> +
-> +# `default_imports` documents which files should be imported for our
-> +# genxml files. This is only useful if a genxml file does not already
-> +# include imports.
-> +#
-> +# Basically, this allows the genxml_import.py tool used with the
-> +# --import switch to know which files should be added as an import.
-> +# (genxml_import.py uses GenXml.add_xml_imports, which relies on
-> +# `default_imports`.)
-> +default_imports = OrderedDict([
-> +    ('gen40.xml', ()),
-> +    ('gen45.xml', ('gen40.xml',)),
-> +    ('gen50.xml', ('gen45.xml',)),
-> +    ('gen60.xml', ('gen50.xml',)),
-> +    ('gen70.xml', ('gen60.xml',)),
-> +    ('gen75.xml', ('gen70.xml',)),
-> +    ('gen80.xml', ('gen75.xml',)),
-> +    ('gen90.xml', ('gen80.xml',)),
-> +    ('gen110.xml', ('gen90.xml',)),
-> +    ('gen120.xml', ('gen110.xml',)),
-> +    ('gen125.xml', ('gen120.xml',)),
-> +    ('gen125_rt.xml', ()),
-> +    ('xe2.xml', ('gen125.xml',)),
-> +    ('xe2_rt.xml', ('gen125_rt.xml',)),
-> +    ('xe3.xml', ('xe2.xml',)),
-> +    ('xe3_rt.xml', ('xe2_rt.xml',)),
-> +    ('xe3p.xml', ('xe3.xml',)),
-> +    ('xe3p_rt.xml', ('xe3_rt.xml',)),
-> +    ])
-> +known_genxml_files = list(default_imports.keys())
-> +
-> +
-> +def genxml_path_to_key(path):
-> +    try:
-> +        return known_genxml_files.index(path.name)
-> +    except ValueError:
-> +        return len(known_genxml_files)
-> +
-> +
-> +def sort_genxml_files(files):
-> +    files.sort(key=genxml_path_to_key)
-> +
-> +
-> +class GenXml(object):
-> +    def __init__(self, filename, import_xml=False, files=None):
-> +        if files is not None:
-> +            self.files = files
-> +        else:
-> +            self.files = set()
-> +        self.filename = pathlib.Path(filename)
-> +
-> +        # Assert that the file hasn't already been loaded which would
-> +        # indicate a loop in genxml imports, and lead to infinite
-> +        # recursion.
-> +        assert self.filename not in self.files
-> +
-> +        self.files.add(self.filename)
-> +        self.et = et.parse(self.filename)
-> +        if import_xml:
-> +            self.merge_imported()
-> +
-> +    def process_imported(self, merge=False, drop_dupes=False):
-> +        """Processes imported genxml files.
-> +
-> +        This helper function scans imported genxml files and has two
-> +        mutually exclusive operating modes.
-> +
-> +        If `merge` is True, then items will be merged into the
-> +        `self.et` data structure.
-> +
-> +        If `drop_dupes` is True, then any item that is a duplicate to
-> +        an item imported will be droped from the `self.et` data
-> +        structure. This is used by `self.optimize_xml_import` to
-> +        shrink the size of the genxml file by reducing duplications.
-> +
-> +        """
-> +        assert merge != drop_dupes
-> +        orig_elements = set(self.et.getroot())
-> +        name_and_obj = lambda i: (get_name(i), i)
-> +        filter_ty = lambda s: filter(lambda i: i.tag == s, orig_elements)
-> +        filter_ty_item = lambda s: dict(map(name_and_obj, filter_ty(s)))
-> +
-> +        # orig_by_tag stores items defined directly in the genxml
-> +        # file. If a genxml item is defined in the genxml directly,
-> +        # then any imported items of the same name are ignored.
-> +        orig_by_tag = {
-> +            'enum': filter_ty_item('enum'),
-> +            'struct': filter_ty_item('struct'),
-> +            'instruction': filter_ty_item('instruction'),
-> +            'register': filter_ty_item('register'),
-> +        }
-> +
-> +        for item in orig_elements:
-> +            if item.tag == 'import':
-> +                assert 'name' in item.attrib
-> +                filename = os.path.split(item.attrib['name'])
-> +                exceptions = set()
-> +                for e in item:
-> +                    assert e.tag == 'exclude'
-> +                    exceptions.add(e.attrib['name'])
-> +                # We should be careful to restrict loaded files to
-> +                # those under the source or build trees. For now, only
-> +                # allow siblings of the current xml file.
-> +                assert filename[0] == '', 'Directories not allowed with import'
-> +                filename = os.path.join(os.path.dirname(self.filename),
-> +                                        filename[1])
-> +                assert os.path.exists(filename), f'{self.filename} {filename}'
-> +
-> +                # Here we load the imported genxml file. We set
-> +                # `import_xml` to true so that any imports in the
-> +                # imported genxml will be merged during the loading
-> +                # process.
-> +                #
-> +                # The `files` parameter is a set of files that have
-> +                # been loaded, and it is used to prevent any cycles
-> +                # (infinite recursion) while loading imported genxml
-> +                # files.
-> +                genxml = GenXml(filename, import_xml=True, files=self.files)
-> +                imported_elements = set(genxml.et.getroot())
-> +
-> +                # `to_add` is a set of items that were imported an
-> +                # should be merged into the `self.et` data structure.
-> +                # This is only used when the `merge` parameter is
-> +                # True.
-> +                to_add = set()
-> +                # `to_remove` is a set of items that can safely be
-> +                # imported since the item is equivalent. This is only
-> +                # used when the `drop_duped` parameter is True.
-> +                to_remove = set()
-> +                for i in imported_elements:
-> +                    if i.tag not in orig_by_tag:
-> +                        continue
-> +                    if i.attrib['name'] in exceptions:
-> +                        continue
-> +                    if i.attrib['name'] in orig_by_tag[i.tag]:
-> +                        if merge:
-> +                            # An item with this same name was defined
-> +                            # in the genxml directly. There we should
-> +                            # ignore (not merge) the imported item.
-> +                            continue
-> +                    else:
-> +                        if drop_dupes:
-> +                            # Since this item is not the imported
-> +                            # genxml, we can't consider dropping it.
-> +                            continue
-> +                    if merge:
-> +                        to_add.add(i)
-> +                    else:
-> +                        assert drop_dupes
-> +                        orig_element = orig_by_tag[i.tag][i.attrib['name']]
-> +                        if not node_validator(i, orig_element):
-> +                            continue
-> +                        to_remove.add(orig_element)
-> +
-> +                if len(to_add) > 0:
-> +                    # Now that we have scanned through all the items
-> +                    # in the imported genxml file, if any items were
-> +                    # found which should be merged, we add them into
-> +                    # our `self.et` data structure. After this it will
-> +                    # be as if the items had been directly present in
-> +                    # the genxml file.
-> +                    assert len(to_remove) == 0
-> +                    self.et.getroot().extend(list(to_add))
-> +                    sort_xml(self.et)
-> +                elif len(to_remove) > 0:
-> +                    self.et.getroot()[:] = list(orig_elements - to_remove)
-> +                    sort_xml(self.et)
-> +
-> +    def merge_imported(self):
-> +        """Merge imported items from genxml imports.
-> +
-> +        Genxml <import> tags specify that elements should be brought
-> +        in from another genxml source file. After this function is
-> +        called, these elements will become part of the `self.et` data
-> +        structure as if the elements had been directly included in the
-> +        genxml directly.
-> +
-> +        Items from imported genxml files will be completely ignore if
-> +        an item with the same name is already defined in the genxml
-> +        file.
-> +
-> +        """
-> +        self.process_imported(merge=True)
-> +
-> +    def flatten_imported(self):
-> +        """Flattens the genxml to not include any imports
-> +
-> +        Essentially this helper will put the `self.et` into a state
-> +        that includes all imported items directly, and does not
-> +        contain any <import> tags. This is used by the
-> +        genxml_import.py with the --flatten switch to "undo" any
-> +        genxml imports.
-> +
-> +        """
-> +        self.merge_imported()
-> +        root = self.et.getroot()
-> +        imports = root.findall('import')
-> +        for i in imports:
-> +            root.remove(i)
-> +
-> +    def add_xml_imports(self):
-> +        """Adds imports to the genxml file.
-> +
-> +        Using the `default_imports` structure, we add imports to the
-> +        genxml file.
-> +
-> +        """
-> +        # `imports` is a set of filenames currently imported by the
-> +        # genxml.
-> +        imports = self.et.findall('import')
-> +        imports = set(map(lambda el: el.attrib['name'], imports))
-> +        new_elements = []
-> +        self_flattened = copy.deepcopy(self)
-> +        self_flattened.flatten_imported()
-> +        old_names = { el.attrib['name'] for el in self_flattened.et.getroot() }
-> +        for import_xml in default_imports.get(self.filename.name, tuple()):
-> +            if import_xml in imports:
-> +                # This genxml is already imported, so we don't need to
-> +                # add it as an import.
-> +                continue
-> +            el = et.Element('import', {'name': import_xml})
-> +            import_path = self.filename.with_name(import_xml)
-> +            imported_genxml = GenXml(import_path, import_xml=True)
-> +            imported_names = { el.attrib['name']
-> +                               for el in imported_genxml.et.getroot()
-> +                               if el.tag != 'import' }
-> +            # Importing this genxml could add some new items. When
-> +            # adding a genxml import, we don't want to add new items,
-> +            # unless they were already in the current genxml. So, we
-> +            # put them into a list of items to exclude when importing
-> +            # the genxml.
-> +            exclude_names = imported_names - old_names
-> +            for n in sorted(exclude_names):
-> +                el.append(et.Element('exclude', {'name': n}))
-> +            new_elements.append(el)
-> +        if len(new_elements) > 0:
-> +            self.et.getroot().extend(new_elements)
-> +            sort_xml(self.et)
-> +
-> +    def optimize_xml_import(self):
-> +        """Optimizes the genxml by dropping items that can be imported
-> +
-> +        Scans genxml <import> tags, and loads the imported file. If
-> +        any item in the imported file is a duplicate to an item in the
-> +        genxml file, then it will be droped from the `self.et` data
-> +        structure.
-> +
-> +        """
-> +        self.process_imported(drop_dupes=True)
-> +
-> +    def filter_engines(self, engines):
-> +        changed = False
-> +        items = []
-> +        for item in self.et.getroot():
-> +            # When an instruction doesn't have the engine specified,
-> +            # it is considered to be for all engines. Otherwise, we
-> +            # check to see if it's tagged for the engines requested.
-> +            if item.tag == 'instruction' and 'engine' in item.attrib:
-> +                i_engines = set(item.attrib["engine"].split('|'))
-> +                if not (i_engines & engines):
-> +                    # Drop this instruction because it doesn't support
-> +                    # the requested engine types.
-> +                    changed = True
-> +                    continue
-> +            items.append(item)
-> +        if changed:
-> +            self.et.getroot()[:] = items
-> +
-> +    def filter_symbols(self, symbol_list):
-> +        symbols_allowed = {}
-> +        for sym in symbol_list:
-> +            symbols_allowed[sym] = sym
-> +
-> +        changed = False
-> +        items = []
-> +        for item in self.et.getroot():
-> +            if item.tag in ('instruction', 'struct', 'register') and \
-> +               item.attrib['name'] not in symbols_allowed:
-> +                # Drop the item from the tree
-> +                changed = True
-> +                continue
-> +            items.append(item)
-> +        if changed:
-> +            self.et.getroot()[:] = items
-> +
-> +    def sort(self):
-> +        sort_xml(self.et)
-> +
-> +    def sorted_copy(self):
-> +        clone = copy.deepcopy(self)
-> +        clone.sort()
-> +        return clone
-> +
-> +    def is_equivalent_xml(self, other):
-> +        if len(self.et.getroot()) != len(other.et.getroot()):
-> +            return False
-> +        return all(node_validator(old, new)
-> +                   for old, new in zip(self.et.getroot(), other.et.getroot()))
-> +
-> +    def normalize_to_old_bits_format(self):
-> +        def convert_elem(elem):
-> +            attrs = elem.attrib
-> +            if elem.tag == 'field' and 'dword' in attrs and 'bits' in attrs:
-> +                dword = int(attrs['dword'])
-> +                end_bit, start_bit = map(int, attrs['bits'].split(':'))
-> +
-> +                attrs['start'] = str(dword * 32 + start_bit)
-> +                attrs['end'] = str(dword * 32 + end_bit)
-> +
-> +                attrs.pop('dword', None)
-> +                attrs.pop('bits', None)
-> +
-> +            elif elem.tag == 'group' and 'dword' in attrs:
-> +                dword = int(attrs['dword'])
-> +                offset_bits = int(attrs.get('offset_bits', 0))
-> +
-> +                attrs['start'] = str(dword * 32 + offset_bits)
-> +
-> +                attrs.pop('dword', None)
-> +                attrs.pop('offset_bits', None)
-> +
-> +            for child in elem:
-> +                convert_elem(child)
-> +        convert_elem(self.et.getroot())
-> +
-> +    def normalize_to_new_bits_format(self):
-> +        def convert_elem(elem):
-> +            attrs = elem.attrib
-> +            if elem.tag == 'field' and 'start' in attrs and 'end' in attrs:
-> +                dword, start = divmod(int(attrs['start']), 32)
-> +                end = int(attrs['end']) - (dword * 32)
-> +
-> +                attrs['dword'] = str(dword)
-> +                attrs['bits'] = f"{end}:{start}"
-> +
-> +                attrs.pop('start', None)
-> +                attrs.pop('end', None)
-> +
-> +            elif elem.tag == 'group' and 'start' in attrs:
-> +                dword, offset_bits = divmod(int(attrs['start']), 32)
-> +
-> +                attrs['dword'] = str(dword)
-> +                if offset_bits:
-> +                    attrs['offset_bits'] = str(offset_bits)
-> +
-> +                attrs.pop('start', None)
-> +
-> +            for child in elem:
-> +                convert_elem(child)
-> +        convert_elem(self.et.getroot())
-> +
-> +    def write_file(self):
-> +        try:
-> +            old_genxml = GenXml(self.filename)
-> +            if self.is_equivalent_xml(old_genxml):
-> +                return
-> +        except Exception:
-> +            pass
-> +
-> +        b_io = io.BytesIO()
-> +        et.indent(self.et, space='  ')
-> +        self.et.write(b_io, encoding="utf-8", xml_declaration=True)
-> +        b_io.write(b'\n')
-> +
-> +        tmp = self.filename.with_suffix(f'{self.filename.suffix}.tmp')
-> +        tmp.write_bytes(b_io.getvalue())
-> +        tmp.replace(self.filename)
-> diff --git a/lib/intel/genxml/util.py b/lib/intel/genxml/util.py
-> new file mode 100644
-> index 000000000..81906b724
-> --- /dev/null
-> +++ b/lib/intel/genxml/util.py
-> @@ -0,0 +1,39 @@
-> +#encoding=utf-8
-> +# SPDX-License-Identifier: MIT
-> +#
-> +# Copyright © 2020 Intel Corporation
-> +#
-> +# Permission is hereby granted, free of charge, to any person obtaining a
-> +# copy of this software and associated documentation files (the "Software"),
-> +# to deal in the Software without restriction, including without limitation
-> +# the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> +# and/or sell copies of the Software, and to permit persons to whom the
-> +# Software is furnished to do so, subject to the following conditions:
-> +#
-> +# The above copyright notice and this permission notice (including the next
-> +# paragraph) shall be included in all copies or substantial portions of the
-> +# Software.
-> +#
-> +# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> +# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> +# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> +# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> +# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> +# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> +# IN THE SOFTWARE.
-> +#
-> +
-> +# A few utility functions reused across genxml scripts
-> +
-> +import re
-> +
-> +alphanum_nono = re.compile(r'[ /\[\]()\-:.,=>#&*\'"+\\]+')
-> +def to_alphanum(name):
-> +    global alphanum_nono
-> +    return alphanum_nono.sub('', name)
-> +
-> +def safe_name(name):
-> +    name = to_alphanum(name)
-> +    if not name[0].isalpha():
-> +        name = '_' + name
-> +    return name
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 0e7efadf3..ac8d94b3e 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -290,13 +290,62 @@ foreach f: iga64_assembly_sources
->  	)
->  endforeach
->  
-> +# genxml pack-header generation
-> +genxml_gen_deps = files(
-> +    'intel/genxml/gen_pack_header.py',
-> +    'intel/genxml/gen_decode_header.py',
-> +    'intel/genxml/intel_genxml.py',
-> +    'intel/genxml/util.py',
-> +)
-> +
-> +# Ordered list of all gens, oldest first.  Each gen's baselines are all
-> +# the gens that precede it.  Items unchanged since their introduction are
-> +# omitted from the generated header; the comment points directly to the
-> +# oldest gen that defined that layout so that a developer can find the
-> +# real struct in one grep.
-> +genxml_gens = []
-> +
-> +genxml_pack_headers = []
-> +genxml_decode_headers = []
-> +genxml_prev_gens = []
-> +foreach gen : genxml_gens
-> +    cmd = [python3, '@INPUT@', '--engines=render,blitter,compute']
-> +    decode_cmd = [python3, '@INPUT@', '--engines=render,blitter,compute']
-> +    foreach baseline : genxml_prev_gens
-> +        cmd += ['--baseline',
-> +                meson.current_source_dir() / 'intel' / 'genxml' / baseline + '.xml']
-> +        decode_cmd += ['--baseline',
-> +                       meson.current_source_dir() / 'intel' / 'genxml' / baseline + '.xml']
-> +    endforeach
-> +    genxml_prev_gens += gen
-> +    genxml_pack_headers += custom_target(gen + '_pack.h',
-> +        input : ['intel/genxml/gen_pack_header.py', 'intel/genxml/' + gen + '.xml'],
-> +        output : gen + '_pack.h',
-> +        command : cmd,
-> +        capture : true,
-> +        depend_files : genxml_gen_deps,
-> +    )
-> +    genxml_decode_headers += custom_target(gen + '_decode.h',
-> +        input : ['intel/genxml/gen_decode_header.py', 'intel/genxml/' + gen + '.xml'],
-> +        output : gen + '_decode.h',
-> +        command : decode_cmd,
-> +        capture : true,
-> +        depend_files : genxml_gen_deps,
-> +    )
-> +endforeach
-> +
-> +genxml_dep = declare_dependency(
-> +    sources : genxml_pack_headers + genxml_decode_headers,
-> +    include_directories : include_directories('.'),
-> +)
-> +
->  lib_intermediates = []
->  foreach f: lib_sources
->      name = f.underscorify()
->      lib = static_library('igt-' + name,
->  	[ f, lib_version ],
->  	include_directories: inc,
-> -	dependencies : lib_deps,
-> +	dependencies : lib_deps + [genxml_dep],
->  	c_args : [
->  	    '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
->  	    '-DIGT_SRCDIR="@0@"'.format(srcdir),
-> -- 
-> 2.34.1
-> 
-
-Great you've worked on this. This definitely brings new quality
-to IGT, especially mesa emitting instructions to build pipeline
-is much cleaner and better maintainable.
+Reviewed-by: Zbigniew Kempczy≈Ñski <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
+> ---
+>  lib/intel/genxml/xe2.xml  | 1969 +++++++++++++++++++++++++++++++++++++
+>  lib/intel/genxml/xe3.xml  |  816 +++++++++++++++
+>  lib/intel/genxml/xe3p.xml |    4 +
+>  lib/meson.build           |    5 +-
+>  4 files changed, 2793 insertions(+), 1 deletion(-)
+>  create mode 100644 lib/intel/genxml/xe2.xml
+>  create mode 100644 lib/intel/genxml/xe3.xml
+>  create mode 100644 lib/intel/genxml/xe3p.xml
+> 
+> diff --git a/lib/intel/genxml/xe2.xml b/lib/intel/genxml/xe2.xml
+> new file mode 100644
+> index 000000000..6fe36a5b6
+> --- /dev/null
+> +++ b/lib/intel/genxml/xe2.xml
+> @@ -0,0 +1,1969 @@
+> +<?xml version='1.0' encoding='utf-8'?>
+> +<genxml name="XE2" gen="20">
+> +  <import name="gen125.xml">
+> +    <exclude name="3DSTATE_CLEAR_PARAMS" />
+> +    <exclude name="CLEAR_COLOR" />
+> +    <exclude name="L3ALLOC" />
+> +  </import>
+> +  <enum name="PREF_SLM_ALLOCATION_SIZE">
+> +    <value name="SLM_ENCODES_0K" value="0" />
+> +    <value name="SLM_ENCODES_16K" value="1" />
+> +    <value name="SLM_ENCODES_32K" value="2" />
+> +    <value name="SLM_ENCODES_64K" value="3" />
+> +    <value name="SLM_ENCODES_96K" value="4" />
+> +    <value name="SLM_ENCODES_128K" value="5" />
+> +    <value name="SLM_ENCODES_160K" value="6" />
+> +    <value name="SLM_ENCODES_192K" value="7" />
+> +    <value name="SLM_ENCODES_224K" value="8" />
+> +    <value name="SLM_ENCODES_256K" value="9" />
+> +    <value name="SLM_ENCODES_384K" value="10" />
+> +  </enum>
+> +  <enum name="RESOURCE_BARRIER_STAGE" prefix="RESOURCE_BARRIER_STAGE">
+> +    <value name="None" value="0" />
+> +    <value name="TOP" value="1" />
+> +    <value name="Color" value="2" />
+> +    <value name="Gpgpu" value="4" />
+> +    <value name="Color and Compute" value="6" />
+> +    <value name="Geom" value="16" />
+> +    <value name="Geometry and Compute" value="20" />
+> +    <value name="Raster" value="32" />
+> +    <value name="Depth" value="64" />
+> +    <value name="Pixel" value="128" />
+> +  </enum>
+> +  <enum name="RESOURCE_BARRIER_TYPE" prefix="RESOURCE_BARRIER_TYPE">
+> +    <value name="Immediate" value="0" />
+> +    <value name="Signal" value="1" />
+> +    <value name="Wait" value="2" />
+> +    <value name="UAV" value="3" />
+> +  </enum>
+> +  <enum name="UNIFIED_COMPRESSION_FORMAT">
+> +    <value name="CMF_R8" value="0" />
+> +    <value name="CMF_R8_G8" value="1" />
+> +    <value name="CMF_R8_G8_B8_A8" value="2" />
+> +    <value name="CMF_R10_G10_B10_A2" value="3" />
+> +    <value name="CMF_R11_G11_B10" value="4" />
+> +    <value name="CMF_R16" value="5" />
+> +    <value name="CMF_R16_G16" value="6" />
+> +    <value name="CMF_R16_G16_B16_A16" value="7" />
+> +    <value name="CMF_R32" value="8" />
+> +    <value name="CMF_R32_G32" value="9" />
+> +    <value name="CMF_R32_G32_B32_A32" value="10" />
+> +    <value name="CMF_Y16_U16_Y16_V16" value="11" />
+> +    <value name="CMF_ML8" value="15" />
+> +  </enum>
+> +  <struct name="INTERFACE_DESCRIPTOR_DATA" length="8">
+> +    <field name="Kernel Start Pointer" dword="0" bits="31:6" type="offset" />
+> +    <field name="Software Exception Enable" dword="2" bits="7:7" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="2" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="2" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="2" bits="18:18" type="bool" />
+> +    <field name="Denorm Mode" dword="2" bits="19:19" type="uint">
+> +      <value name="Ftz" value="0" />
+> +      <value name="SetByKernel" value="1" />
+> +    </field>
+> +    <field name="Thread Preemption" dword="2" bits="20:20" type="bool" default="1" />
+> +    <field name="Sampler Count" dword="3" bits="4:2" type="uint">
+> +      <value name="No samplers used" value="0" />
+> +      <value name="Between 1 and 4 samplers used" value="1" />
+> +      <value name="Between 5 and 8 samplers used" value="2" />
+> +      <value name="Between 9 and 12 samplers used" value="3" />
+> +      <value name="Between 13 and 16 samplers used" value="4" />
+> +    </field>
+> +    <field name="Sampler State Pointer" dword="3" bits="31:5" type="offset" />
+> +    <field name="Binding Table Entry Count" dword="4" bits="4:0" type="uint" />
+> +    <field name="Binding Table Pointer" dword="4" bits="20:5" type="offset" />
+> +    <field name="Number of Threads in GPGPU Thread Group" dword="5" bits="9:0" type="uint" />
+> +    <field name="Thread group forward progress guarantee" dword="5" bits="13:13" type="bool" />
+> +    <field name="Shared Local Memory Size" dword="5" bits="20:16" type="uint">
+> +      <value name="Encodes 0K" value="0" />
+> +      <value name="Encodes 1K" value="1" />
+> +      <value name="Encodes 2K" value="2" />
+> +      <value name="Encodes 4K" value="3" />
+> +      <value name="Encodes 8K" value="4" />
+> +      <value name="Encodes 16K" value="5" />
+> +      <value name="Encodes 32K" value="6" />
+> +      <value name="Encodes 64K" value="7" />
+> +      <value name="Encodes 96K" value="10" />
+> +      <value name="Encodes 128K" value="11" />
+> +      <value name="Encodes 192K" value="12" />
+> +      <value name="Encodes 256K" value="13" />
+> +      <value name="Encodes 384K" value="14" />
+> +    </field>
+> +    <field name="Rounding Mode" dword="5" bits="23:22" type="uint">
+> +      <value name="RTNE" value="0" />
+> +      <value name="RU" value="1" />
+> +      <value name="RD" value="2" />
+> +      <value name="RTZ" value="3" />
+> +    </field>
+> +    <field name="Thread Group Dispatch Size" dword="5" bits="27:26" type="uint">
+> +      <value name="TG size 8" value="0" />
+> +      <value name="TG size 4" value="1" />
+> +      <value name="TG size 2" value="2" />
+> +      <value name="TG size 1" value="3" />
+> +    </field>
+> +    <field name="Number Of Barriers" dword="5" bits="30:28" type="uint" prefix="BARRIER_SIZE">
+> +      <value name="NONE" value="0" />
+> +      <value name="B1" value="1" />
+> +      <value name="B2" value="2" />
+> +      <value name="B4" value="3" />
+> +      <value name="B8" value="4" />
+> +      <value name="B16" value="5" />
+> +      <value name="B24" value="6" />
+> +      <value name="B32" value="7" />
+> +    </field>
+> +    <field name="BTD Mode" dword="5" bits="31:31" type="uint" />
+> +    <field name="Preferred SLM Allocation Size" dword="7" bits="3:0" type="PREF_SLM_ALLOCATION_SIZE" />
+> +  </struct>
+> +  <struct name="POSTSYNC_DATA" length="5">
+> +    <field name="Operation" dword="0" bits="1:0" type="uint" default="0">
+> +      <value name="No Write" value="0" />
+> +      <value name="Write Immediate Data" value="1" />
+> +      <value name="Write Timestamp" value="3" />
+> +    </field>
+> +    <field name="HDC Pipeline Flush" dword="0" bits="2:2" type="bool" />
+> +    <field name="MOCS" dword="0" bits="10:4" type="uint" nonzero="true" />
+> +    <field name="System Memory Fence Request" dword="0" bits="11:11" type="bool" />
+> +    <field name="Dataport Subslice Cache Flush" dword="0" bits="12:12" type="bool" />
+> +    <field name="Destination Address" dword="1" bits="63:0" type="address" />
+> +    <field name="Immediate Data" dword="3" bits="63:0" type="uint" />
+> +  </struct>
+> +  <struct name="COMPUTE_WALKER_BODY" length="39">
+> +    <field name="Indirect Data Length" dword="1" bits="16:0" type="uint" />
+> +    <field name="L3 prefetch disable" dword="1" bits="17:17" type="bool" />
+> +    <field name="Partition Dispatch Parameter" dword="1" bits="29:18" type="uint" />
+> +    <field name="Partition Type" dword="1" bits="31:30" type="uint">
+> +      <value name="PartitionX" value="1" />
+> +      <value name="PartitionY" value="2" />
+> +      <value name="PartitionZ" value="3" />
+> +    </field>
+> +    <field name="Indirect Data Start Address" dword="2" bits="31:6" type="offset" />
+> +    <field name="Compute Dispatch All walker Enable" dword="3" bits="0:0" type="uint">
+> +      <value name="Disabled" value="0" />
+> +      <value name="Enabled" value="1" />
+> +    </field>
+> +    <field name="Dispatch Walk Order" dword="3" bits="6:5" type="uint">
+> +      <value name="Linear Walk" value="0" />
+> +      <value name="Y order walk" value="1" />
+> +    </field>
+> +    <field name="Message SIMD" dword="3" bits="18:17" type="uint">
+> +      <value name="SIMT16" value="1" />
+> +      <value name="SIMT32" value="2" />
+> +    </field>
+> +    <field name="Tile Layout" dword="3" bits="21:19" type="uint">
+> +      <value name="Linear" value="0" />
+> +      <value name="TileY 32bpe" value="1" />
+> +      <value name="TileY 64bpe" value="2" />
+> +      <value name="TileY 128bpe" value="3" />
+> +    </field>
+> +    <field name="Walk Order" dword="3" bits="24:22" type="uint">
+> +      <value name="Walk 012" value="0" />
+> +      <value name="Walk 021" value="1" />
+> +      <value name="Walk 102" value="2" />
+> +      <value name="Walk 120" value="3" />
+> +      <value name="Walk 201" value="4" />
+> +      <value name="Walk 210" value="5" />
+> +    </field>
+> +    <field name="Emit Inline Parameter" dword="3" bits="25:25" type="bool" />
+> +    <field name="Emit Local" dword="3" bits="28:26" type="uint">
+> +      <value name="Emit None" value="0" />
+> +      <value name="Emit X" value="1" />
+> +      <value name="Emit XY" value="3" />
+> +      <value name="Emit XYZ" value="7" />
+> +    </field>
+> +    <field name="Generate Local ID" dword="3" bits="29:29" type="bool" />
+> +    <field name="SIMD Size" dword="3" bits="31:30" type="uint">
+> +      <value name="SIMT16" value="1" />
+> +      <value name="SIMT32" value="2" />
+> +    </field>
+> +    <field name="Execution Mask" dword="4" bits="31:0" type="uint" />
+> +    <field name="Local X Maximum" dword="5" bits="9:0" type="uint" />
+> +    <field name="Local Y Maximum" dword="5" bits="19:10" type="uint" />
+> +    <field name="Local Z Maximum" dword="5" bits="29:20" type="uint" />
+> +    <field name="Thread Group ID X Dimension" dword="6" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Y Dimension" dword="7" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Z Dimension" dword="8" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Starting X" dword="9" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Starting Y" dword="10" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Starting Z" dword="11" bits="31:0" type="uint" />
+> +    <field name="Partition ID" dword="12" bits="31:0" type="uint" />
+> +    <field name="Partition Size" dword="13" bits="31:0" type="uint" />
+> +    <field name="Preempt X" dword="14" bits="31:0" type="uint" />
+> +    <field name="Preempt Y" dword="15" bits="31:0" type="uint" />
+> +    <field name="Preempt Z" dword="16" bits="31:0" type="uint" />
+> +    <field name="Walker ID" dword="17" bits="3:0" type="uint" />
+> +    <field name="Over dispatch TG count" dword="17" bits="23:8" type="uint" />
+> +    <field name="Interface Descriptor" dword="18" bits="255:0" type="INTERFACE_DESCRIPTOR_DATA" />
+> +    <field name="Post Sync" dword="26" bits="159:0" type="POSTSYNC_DATA" />
+> +    <group count="8" dword="31" size="32">
+> +      <field name="Inline Data" dword="0" bits="31:0" type="uint" />
+> +    </group>
+> +  </struct>
+> +  <struct name="RENDER_SURFACE_STATE" length="16">
+> +    <field name="Cube Face Enable - Positive Z" dword="0" bits="0:0" type="bool" />
+> +    <field name="Cube Face Enable - Negative Z" dword="0" bits="1:1" type="bool" />
+> +    <field name="Cube Face Enable - Positive Y" dword="0" bits="2:2" type="bool" />
+> +    <field name="Cube Face Enable - Negative Y" dword="0" bits="3:3" type="bool" />
+> +    <field name="Cube Face Enable - Positive X" dword="0" bits="4:4" type="bool" />
+> +    <field name="Cube Face Enable - Negative X" dword="0" bits="5:5" type="bool" />
+> +    <field name="Media Boundary Pixel Mode" dword="0" bits="7:6" type="uint">
+> +      <value name="NORMAL_MODE" value="0" />
+> +      <value name="PROGRESSIVE_FRAME" value="2" />
+> +      <value name="INTERLACED_FRAME" value="3" />
+> +    </field>
+> +    <field name="Render Cache Read Write Mode" dword="0" bits="8:8" type="uint">
+> +      <value name="Write-Only Cache" value="0" />
+> +      <value name="Read-Write Cache" value="1" />
+> +    </field>
+> +    <field name="Enable Sampler Route to LSC" dword="0" bits="9:9" type="bool" />
+> +    <field name="Vertical Line Stride Offset" dword="0" bits="10:10" type="uint" />
+> +    <field name="Vertical Line Stride" dword="0" bits="11:11" type="uint" />
+> +    <field name="Tile Mode" dword="0" bits="13:12" type="uint">
+> +      <value name="LINEAR" value="0" />
+> +      <value name="TILE64" value="1" />
+> +      <value name="XMAJOR" value="2" />
+> +      <value name="TILE4" value="3" />
+> +    </field>
+> +    <field name="Surface Horizontal Alignment" dword="0" bits="15:14" type="uint">
+> +      <value name="HALIGN_16" value="0" />
+> +      <value name="HALIGN_32" value="1" />
+> +      <value name="HALIGN_64" value="2" />
+> +      <value name="HALIGN_128" value="3" />
+> +    </field>
+> +    <field name="Surface Vertical Alignment" dword="0" bits="17:16" type="uint">
+> +      <value name="VALIGN_4" value="1" />
+> +      <value name="VALIGN_8" value="2" />
+> +      <value name="VALIGN_16" value="3" />
+> +    </field>
+> +    <field name="Surface Format" dword="0" bits="26:18" type="uint" />
+> +    <field name="Surface Array" dword="0" bits="28:28" type="bool" />
+> +    <field name="Surface Type" dword="0" bits="31:29" type="STATE_SURFACE_TYPE" />
+> +    <field name="Surface QPitch" dword="1" bits="14:0" type="uint" />
+> +    <field name="Sample Tap Discard Disable" dword="1" bits="15:15" type="bool" />
+> +    <field name="Corner Texel Mode" dword="1" bits="18:18" type="bool" />
+> +    <field name="Base Mip Level" dword="1" bits="23:19" type="uint" />
+> +    <field name="MOCS" dword="1" bits="30:24" type="uint" nonzero="true" />
+> +    <field name="Width" dword="2" bits="13:0" type="uint" />
+> +    <field name="Height" dword="2" bits="29:16" type="uint" />
+> +    <field name="Depth Stencil Resource" dword="2" bits="31:31" type="bool" />
+> +    <field name="Surface Pitch" dword="3" bits="17:0" type="uint" />
+> +    <field name="Depth" dword="3" bits="31:21" type="uint" />
+> +    <field name="Multisample Position Palette Index" dword="4" bits="2:0" type="uint" />
+> +    <field name="Number of Multisamples" dword="4" bits="5:3" type="uint">
+> +      <value name="MULTISAMPLECOUNT_1" value="0" />
+> +      <value name="MULTISAMPLECOUNT_2" value="1" />
+> +      <value name="MULTISAMPLECOUNT_4" value="2" />
+> +      <value name="MULTISAMPLECOUNT_8" value="3" />
+> +      <value name="MULTISAMPLECOUNT_16" value="4" />
+> +    </field>
+> +    <field name="Multisampled Surface Storage Format" dword="4" bits="6:6" type="uint">
+> +      <value name="MSFMT_MSS" value="0" />
+> +      <value name="MSFMT_DEPTH_STENCIL" value="1" />
+> +    </field>
+> +    <field name="Render Target View Extent" dword="4" bits="17:7" type="uint" />
+> +    <field name="Minimum Array Element" dword="4" bits="28:18" type="uint" />
+> +    <field name="Render Target And Sample Unorm Rotation" dword="4" bits="30:29" type="uint">
+> +      <value name="0DEG" value="0" />
+> +      <value name="90DEG" value="1" />
+> +      <value name="180DEG" value="2" />
+> +      <value name="270DEG" value="3" />
+> +    </field>
+> +    <field name="MIP Count / LOD" dword="5" bits="3:0" type="uint" />
+> +    <field name="Surface Min LOD" dword="5" bits="7:4" type="uint" />
+> +    <field name="Mip Tail Start LOD" dword="5" bits="11:8" type="uint" />
+> +    <field name="L1 Cache Control" dword="5" bits="18:16" type="L1_CACHE_CONTROL" />
+> +    <field name="EWA Disable For Cube" dword="5" bits="20:20" type="bool" />
+> +    <field name="Y Offset" dword="5" bits="23:21" type="uint" />
+> +    <field name="X Offset" dword="5" bits="31:25" type="uint" />
+> +    <field name="Auxiliary Surface Mode" dword="6" bits="2:0" type="uint">
+> +      <value name="AUX_NONE" value="0" />
+> +      <value name="AUX_APPEND" value="1" />
+> +      <value name="AUX_MCS" value="2" />
+> +    </field>
+> +    <field name="Y Offset for U or UV Plane" dword="6" bits="13:0" type="uint" />
+> +    <field name="Auxiliary Surface Pitch" dword="6" bits="12:3" type="uint" />
+> +    <field name="YUV Interpolation Enable" dword="6" bits="15:15" type="bool" />
+> +    <field name="X Offset for U or UV Plane" dword="6" bits="29:16" type="uint" />
+> +    <field name="Auxiliary Surface QPitch" dword="6" bits="30:16" type="uint" />
+> +    <field name="Resource Min LOD" dword="7" bits="11:0" type="u4.8" />
+> +    <field name="Shader Channel Select Alpha" dword="7" bits="18:16" type="Shader Channel Select" />
+> +    <field name="Shader Channel Select Blue" dword="7" bits="21:19" type="Shader Channel Select" />
+> +    <field name="Shader Channel Select Green" dword="7" bits="24:22" type="Shader Channel Select" />
+> +    <field name="Shader Channel Select Red" dword="7" bits="27:25" type="Shader Channel Select" />
+> +    <field name="Surface Base Address" dword="8" bits="63:0" type="address" />
+> +    <field name="Mip Region Width In Log2" dword="10" bits="3:0" type="uint" />
+> +    <field name="Append Counter Address" dword="10" bits="63:2" type="address" />
+> +    <field name="Mip Region Height In Log2" dword="10" bits="7:4" type="uint" />
+> +    <field name="Procedural Texture" dword="10" bits="11:11" type="bool" />
+> +    <field name="Auxiliary Surface Base Address" dword="10" bits="63:12" type="address" />
+> +    <field name="Y Offset for V Plane" dword="11" bits="13:0" type="uint" />
+> +    <field name="X Offset for V Plane" dword="11" bits="29:16" type="uint" />
+> +    <field name="Compression Format" dword="12" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
+> +    <field name="Mip Region Depth In Log2" dword="12" bits="7:4" type="uint" />
+> +    <field name="Disallowlowqualityfiltering" dword="13" bits="31:31" type="bool" />
+> +  </struct>
+> +  <struct name="RESOURCE_BARRIER_BODY" length="4">
+> +    <field name="Wait Stage" dword="0" bits="11:0" type="RESOURCE_BARRIER_STAGE" />
+> +    <field name="Signal Stage" dword="0" bits="23:12" type="RESOURCE_BARRIER_STAGE" />
+> +    <field name="Barrier Type" dword="0" bits="31:30" type="RESOURCE_BARRIER_TYPE" />
+> +    <field name="L1 Dataport Cache Invalidate" dword="1" bits="21:21" type="bool" />
+> +    <field name="Depth Cache" dword="1" bits="22:22" type="bool" />
+> +    <field name="Color Cache" dword="1" bits="23:23" type="bool" />
+> +    <field name="L1 Dataport UAV Flush" dword="1" bits="24:24" type="bool" />
+> +    <field name="Texture (RO)" dword="1" bits="25:25" type="bool" />
+> +    <field name="State (RO)" dword="1" bits="26:26" type="bool" />
+> +    <field name="VF (RO)" dword="1" bits="27:27" type="bool" />
+> +    <field name="AMFS" dword="1" bits="28:28" type="bool" />
+> +    <field name="Constant Cache" dword="1" bits="29:29" type="bool" />
+> +    <field name="Barrier ID Address" dword="2" bits="63:3" type="address" />
+> +  </struct>
+> +  <instruction name="3DSTATE_3D_MODE" bias="2" length="5" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="30" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Cross Slice Hashing Mode" dword="1" bits="1:0" type="uint">
+> +      <value name="Normal Mode" value="0" />
+> +      <value name="Disable" value="1" />
+> +      <value name="hashing 32x32" value="3" />
+> +    </field>
+> +    <field name="3D Scoreboard Hashing Mode" dword="1" bits="4:4" type="bool" />
+> +    <field name="Subslice Hashing Table Enable" dword="1" bits="5:5" type="bool" />
+> +    <field name="Slice Hashing Table Enable" dword="1" bits="6:6" type="bool" />
+> +    <field name="DX10 OGL Border Mode for YCRCB" dword="1" bits="10:10" type="bool" />
+> +    <field name="Enable OOO reads in RCPB" dword="1" bits="11:11" type="bool" />
+> +    <field name="Cross Slice Hashing Mode Mask" dword="1" bits="17:16" type="int" />
+> +    <field name="3D Scoreboard Hashing Mode Mask" dword="1" bits="20:20" type="bool" />
+> +    <field name="Subslice Hashing Table Enable Mask" dword="1" bits="21:21" type="bool" />
+> +    <field name="Slice Hashing Table Enable Mask" dword="1" bits="22:22" type="bool" />
+> +    <field name="DX10 OGL Border Mode for YCRCB Mask" dword="1" bits="26:26" type="bool" />
+> +    <field name="Enable OOO reads in RCPB Mask" dword="1" bits="27:27" type="bool" />
+> +    <field name="AMFS MOCS" dword="2" bits="6:0" type="uint" />
+> +    <field name="State Cache redirect to CS section enable" dword="2" bits="9:9" type="bool" />
+> +    <field name="AMFS MOCS Mask" dword="2" bits="22:16" type="uint" />
+> +    <field name="State Cache redirect to CS section enable Mask" dword="2" bits="25:25" type="bool" />
+> +    <field name="RCC RHWO Optimization Disable" dword="3" bits="15:15" type="bool" />
+> +    <field name="RCC RHWO Optimization Disable Mask" dword="3" bits="31:31" type="bool" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_BTD" bias="2" length="6" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="6" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Dispatch Timeout Counter" dword="1" bits="2:0" type="uint">
+> +      <value name="64 clocks" value="0" />
+> +      <value name="128 clocks" value="1" />
+> +      <value name="192 clocks" value="2" />
+> +      <value name="256 clocks" value="3" />
+> +      <value name="512 clocks" value="4" />
+> +      <value name="1024 clocks" value="5" />
+> +      <value name="2048 clocks" value="6" />
+> +      <value name="4096 clocks" value="7" />
+> +    </field>
+> +    <field name="Controls the maximum number of outstanding Ray Queries per SS" dword="1" bits="8:7" type="uint" prefix="RAYS_QUERIES_OUTSTANDING">
+> +      <value name="128" value="0" />
+> +      <value name="256" value="1" />
+> +      <value name="512" value="2" />
+> +      <value name="1024" value="3" />
+> +    </field>
+> +    <field name="BTD Mid thread preemption" dword="1" bits="31:31" type="bool" default="1" />
+> +    <field name="Per DSS Memory Backed Buffer Size" dword="2" bits="2:0" type="uint" default="6">
+> +      <value name="2KB" value="0" />
+> +      <value name="4KB" value="1" />
+> +      <value name="8KB" value="2" />
+> +      <value name="16KB" value="3" />
+> +      <value name="32KB" value="4" />
+> +      <value name="64KB" value="5" />
+> +      <value name="128KB" value="6" />
+> +    </field>
+> +    <field name="Memory Backed Buffer Base Pointer" dword="2" bits="63:10" type="address" />
+> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_CLIP" bias="2" length="4" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="2" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="18" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="1" bits="7:0" type="uint" />
+> +    <field name="Statistics Enable" dword="1" bits="10:10" type="bool" />
+> +    <field name="Force Clip Mode" dword="1" bits="16:16" type="bool" />
+> +    <field name="Force User Clip Distance Clip Test Enable Bitmask" dword="1" bits="17:17" type="bool" />
+> +    <field name="Early Cull Enable" dword="1" bits="18:18" type="bool" />
+> +    <field name="Vertex Sub Pixel Precision Select" dword="1" bits="19:19" type="uint">
+> +      <value name="8 Bit" value="0" />
+> +      <value name="4 Bit" value="1" />
+> +    </field>
+> +    <field name="Force User Clip Distance Cull Test Enable Bitmask" dword="1" bits="20:20" type="bool" />
+> +    <field name="Triangle Fan Provoking Vertex Select" dword="2" bits="1:0" type="uint" />
+> +    <field name="Line Strip/List Provoking Vertex Select" dword="2" bits="3:2" type="uint" />
+> +    <field name="Triangle Strip/List Provoking Vertex Select" dword="2" bits="5:4" type="uint" />
+> +    <field name="Triangle Strip Odd Provoking Vertex Select" dword="2" bits="7:6" type="uint" />
+> +    <field name="Non-Perspective Barycentric Enable" dword="2" bits="8:8" type="bool" />
+> +    <field name="Perspective Divide Disable" dword="2" bits="9:9" type="bool" />
+> +    <field name="Clip Mode" dword="2" bits="15:13" type="uint">
+> +      <value name="CLIPMODE_NORMAL" value="0" />
+> +      <value name="CLIPMODE_REJECT_ALL" value="3" />
+> +      <value name="CLIPMODE_ACCEPT_ALL" value="4" />
+> +    </field>
+> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="2" bits="23:16" type="uint" />
+> +    <field name="Guardband Clip Test Enable" dword="2" bits="26:26" type="bool" />
+> +    <field name="Viewport XY Clip Test Enable" dword="2" bits="28:28" type="bool" />
+> +    <field name="API Mode" dword="2" bits="30:30" type="uint">
+> +      <value name="APIMODE_OGL" value="0" />
+> +      <value name="APIMODE_D3D" value="1" />
+> +    </field>
+> +    <field name="Clip Enable" dword="2" bits="31:31" type="bool" />
+> +    <field name="Maximum VP Index" dword="3" bits="3:0" type="uint" />
+> +    <field name="Force Zero RTA Index Enable" dword="3" bits="5:5" type="bool" />
+> +    <field name="Maximum Point Width" dword="3" bits="16:6" type="u8.3" />
+> +    <field name="Minimum Point Width" dword="3" bits="27:17" type="u8.3" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_CPSIZE_CONTROL_BUFFER" bias="2" length="8" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="131" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Surface Pitch" dword="1" bits="16:0" type="uint" />
+> +    <field name="Surface Type" dword="1" bits="31:29" type="uint" />
+> +    <field name="Surface Base Address" dword="2" bits="63:0" type="address" />
+> +    <field name="Width" dword="4" bits="14:1" type="uint" />
+> +    <field name="Height" dword="4" bits="30:17" type="uint" />
+> +    <field name="MOCS" dword="5" bits="6:0" type="uint" />
+> +    <field name="Minimum Array Element" dword="5" bits="18:8" type="uint" />
+> +    <field name="Depth" dword="5" bits="30:20" type="uint" />
+> +    <field name="Compression Format" dword="6" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
+> +    <field name="Mip Tail Start LOD" dword="6" bits="29:26" type="uint" />
+> +    <field name="Tiled Mode" dword="6" bits="31:30" type="uint">
+> +      <value name="TILE64" value="1" />
+> +      <value name="TILE4" value="3" />
+> +    </field>
+> +    <field name="Surface QPitch" dword="7" bits="14:0" type="uint" />
+> +    <field name="Surf LOD" dword="7" bits="19:16" type="uint" />
+> +    <field name="Render Target View Extent" dword="7" bits="31:21" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_DEPTH_BUFFER" bias="2" length="8" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Surface Pitch" dword="1" bits="17:0" type="uint" />
+> +    <field name="Hierarchical Depth Buffer Enable" dword="1" bits="22:22" type="bool" />
+> +    <field name="Corner Texel Mode" dword="1" bits="23:23" type="bool" />
+> +    <field name="Surface Format" dword="1" bits="26:24" type="uint">
+> +      <value name="D32_FLOAT" value="1" />
+> +      <value name="D24_UNORM_X8_UINT" value="3" />
+> +      <value name="D16_UNORM" value="5" />
+> +    </field>
+> +    <field name="Null Page Coherency Enable" dword="1" bits="27:27" type="bool" />
+> +    <field name="Depth Write Enable" dword="1" bits="28:28" type="bool" />
+> +    <field name="Surface Type" dword="1" bits="31:29" type="uint">
+> +      <value name="SURFTYPE_2D" value="1" />
+> +      <value name="SURFTYPE_CUBE" value="3" />
+> +      <value name="SURFTYPE_NULL" value="7" />
+> +    </field>
+> +    <field name="Surface Base Address" dword="2" bits="63:0" type="address" />
+> +    <field name="Width" dword="4" bits="14:1" type="uint" />
+> +    <field name="Height" dword="4" bits="30:17" type="uint" />
+> +    <field name="MOCS" dword="5" bits="6:0" type="uint" nonzero="true" />
+> +    <field name="Minimum Array Element" dword="5" bits="18:8" type="uint" />
+> +    <field name="Depth" dword="5" bits="30:20" type="uint" />
+> +    <field name="Render Compression Format" dword="6" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
+> +    <field name="Mip Tail Start LOD" dword="6" bits="29:26" type="uint" />
+> +    <field name="Tiled Mode" dword="6" bits="31:30" type="uint">
+> +      <value name="TILE64" value="1" />
+> +      <value name="TILE4" value="3" />
+> +    </field>
+> +    <field name="Surface QPitch" dword="7" bits="14:0" type="uint" />
+> +    <field name="LOD" dword="7" bits="19:16" type="uint" />
+> +    <field name="Render Target View Extent" dword="7" bits="31:21" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_DRAWING_RECTANGLE_FAST" bias="2" length="4" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="2" />
+> +    <field name="Core Mode Select" dword="0" bits="15:14" type="uint">
+> +      <value name="Legacy" value="0" />
+> +      <value name="Core 0 Enabled" value="1" />
+> +      <value name="Core 1 Enabled" value="2" />
+> +    </field>
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="0" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Clipped Drawing Rectangle X Min" dword="1" bits="15:0" type="uint" />
+> +    <field name="Clipped Drawing Rectangle Y Min" dword="1" bits="31:16" type="uint" />
+> +    <field name="Clipped Drawing Rectangle X Max" dword="2" bits="15:0" type="uint" />
+> +    <field name="Clipped Drawing Rectangle Y Max" dword="2" bits="31:16" type="uint" />
+> +    <field name="Drawing Rectangle Origin X" dword="3" bits="15:0" type="int" />
+> +    <field name="Drawing Rectangle Origin Y" dword="3" bits="31:16" type="int" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_GS" bias="2" length="10" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="8" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="17" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
+> +    <field name="Expected Vertex Count" dword="3" bits="5:0" type="uint" />
+> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
+> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
+> +    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
+> +      <value name="Normal" value="0" />
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
+> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
+> +      <value name="No Samplers" value="0" />
+> +      <value name="1-4 Samplers" value="1" />
+> +      <value name="5-8 Samplers" value="2" />
+> +      <value name="9-12 Samplers" value="3" />
+> +      <value name="13-16 Samplers" value="4" />
+> +    </field>
+> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
+> +      <value name="Dmask" value="0" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="3" bits="31:31" type="bool" />
+> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
+> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="3:0" type="uint" />
+> +    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
+> +    <field name="Include Vertex Handles" dword="6" bits="10:10" type="bool" />
+> +    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
+> +    <field name="Output Topology" dword="6" bits="22:17" type="3D_Prim_Topo_Type" />
+> +    <field name="Output Vertex Size" dword="6" bits="28:23" type="uint" />
+> +    <field name="Dispatch GRF Start Register For URB Data [5:4]" dword="6" bits="30:29" type="uint" />
+> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
+> +    <field name="Discard Adjacency" dword="7" bits="1:1" type="bool" />
+> +    <field name="Reorder Mode" dword="7" bits="2:2" type="uint">
+> +      <value name="LEADING" value="0" />
+> +      <value name="TRAILING" value="1" />
+> +    </field>
+> +    <field name="Hint" dword="7" bits="3:3" type="bool" />
+> +    <field name="Include Primitive ID" dword="7" bits="4:4" type="bool" />
+> +    <field name="Invocations Increment Value" dword="7" bits="9:5" type="uint" />
+> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
+> +    <field name="Default Stream Id" dword="7" bits="14:13" type="uint" />
+> +    <field name="Instance Control" dword="7" bits="19:15" type="uint" />
+> +    <field name="Control Data Header Size" dword="7" bits="23:20" type="uint" />
+> +    <field name="Maximum Number of Threads" dword="8" bits="8:0" type="uint" />
+> +    <field name="Static Output Vertex Count" dword="8" bits="26:16" type="uint" />
+> +    <field name="Static Output" dword="8" bits="30:30" type="bool" />
+> +    <field name="Control Data Format" dword="8" bits="31:31" type="uint">
+> +      <value name="CUT" value="0" />
+> +      <value name="SID" value="1" />
+> +    </field>
+> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="9" bits="7:0" type="uint" />
+> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="9" bits="15:8" type="uint" />
+> +    <field name="Vertex URB Entry Output Length" dword="9" bits="20:16" type="uint" />
+> +    <field name="Vertex URB Entry Output Read Offset" dword="9" bits="26:21" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_HS" bias="2" length="8" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="27" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Patch Count Threshold" dword="1" bits="3:0" type="uint" />
+> +    <field name="Software Exception Enable" dword="1" bits="12:12" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="1" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="1" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="alternate" value="1" />
+> +    </field>
+> +    <field name="Thread Dispatch Priority" dword="1" bits="17:17" type="uint">
+> +      <value name="Normal" value="0" />
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Binding Table Entry Count" dword="1" bits="25:18" type="uint" />
+> +    <field name="Sampler Count" dword="1" bits="29:27" type="uint">
+> +      <value name="No Samplers" value="0" />
+> +      <value name="1-4 Samplers" value="1" />
+> +      <value name="5-8 Samplers" value="2" />
+> +      <value name="9-12 Samplers" value="3" />
+> +      <value name="13-16 Samplers" value="4" />
+> +    </field>
+> +    <field name="Instance Count" dword="2" bits="4:0" type="uint" />
+> +    <field name="Maximum Number of Threads" dword="2" bits="16:8" type="uint" />
+> +    <field name="Statistics Enable" dword="2" bits="29:29" type="bool" />
+> +    <field name="Enable" dword="2" bits="31:31" type="bool" />
+> +    <field name="Kernel Start Pointer" dword="3" bits="63:6" type="offset" />
+> +    <field name="Scratch Space Buffer" dword="5" bits="31:10" type="uint" />
+> +    <field name="Include Primitive ID" dword="7" bits="0:0" type="bool" />
+> +    <field name="Vertex URB Entry Read Offset" dword="7" bits="9:4" type="uint" />
+> +    <field name="Vertex URB Entry Read Length" dword="7" bits="16:11" type="uint" />
+> +    <field name="Dispatch GRF Start Register For URB Data" dword="7" bits="23:19" type="uint" />
+> +    <field name="Include Vertex Handles" dword="7" bits="24:24" type="bool" />
+> +    <field name="Accesses UAV" dword="7" bits="25:25" type="bool" />
+> +    <field name="Vector Mask Enable" dword="7" bits="26:26" type="uint">
+> +      <value name="Dmask" value="0" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="7" bits="27:27" type="bool" />
+> +    <field name="Dispatch GRF Start Register For URB Data [5]" dword="7" bits="28:28" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_MESH_CONTROL" bias="2" length="3" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="119" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Maximum Number of ThreadGroups" dword="1" bits="8:0" type="uint" />
+> +    <field name="VP and RTA Index Autostrip Enable" dword="1" bits="27:27" type="bool" />
+> +    <field name="Thread Dispatch Priority" dword="1" bits="28:28" type="uint">
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Fused EU Dispatch" dword="1" bits="29:29" type="bool" />
+> +    <field name="Statistics Enable" dword="1" bits="30:30" type="bool" />
+> +    <field name="MeshShader Enable" dword="1" bits="31:31" type="uint" />
+> +    <field name="Scratch Space Buffer" dword="2" bits="31:10" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_PS" bias="2" length="12" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="10" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="32" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Kernel 0 Enable" dword="1" bits="0:0" type="bool" />
+> +    <field name="Kernel[0] : SIMD Width" dword="1" bits="1:1" type="uint" prefix="PS">
+> +      <value name="SIMD16" value="0" />
+> +      <value name="SIMD32" value="1" />
+> +    </field>
+> +    <field name="Kernel Start Pointer 0" dword="1" bits="63:6" type="offset" />
+> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
+> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="Rounding Mode" dword="3" bits="15:14" type="uint">
+> +      <value name="RTNE" value="0" />
+> +      <value name="RU" value="1" />
+> +      <value name="RD" value="2" />
+> +      <value name="RTZ" value="3" />
+> +    </field>
+> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
+> +      <value name="Normal" value="0" />
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
+> +    <field name="Single Precision Denormal Mode" dword="3" bits="26:26" type="uint">
+> +      <value name="Flushed to Zero" value="0" />
+> +      <value name="Retained" value="1" />
+> +    </field>
+> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
+> +      <value name="No Samplers" value="0" />
+> +      <value name="1-4 Samplers" value="1" />
+> +      <value name="5-8 Samplers" value="2" />
+> +      <value name="9-12 Samplers" value="3" />
+> +      <value name="13-16 Samplers" value="4" />
+> +    </field>
+> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
+> +      <value name="Dmask" value="0" />
+> +      <value name="Vmask" value="1" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="3" bits="31:31" type="uint">
+> +      <value name="Multiple" value="0" />
+> +      <value name="Single" value="1" />
+> +    </field>
+> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
+> +    <field name="Position XY Offset Select" dword="6" bits="4:3" type="uint">
+> +      <value name="POSOFFSET_NONE" value="0" />
+> +      <value name="POSOFFSET_CENTROID" value="2" />
+> +      <value name="POSOFFSET_SAMPLE" value="3" />
+> +    </field>
+> +    <field name="Render Target Resolve Type" dword="6" bits="7:6" type="uint">
+> +      <value name="RESOLVE_DISABLED" value="0" />
+> +    </field>
+> +    <field name="Render Target Fast Clear Enable" dword="6" bits="8:8" type="bool" />
+> +    <field name="Overlapping Subspans Enable" dword="6" bits="9:9" type="bool" />
+> +    <field name="3D Scoreboard Address Size select" dword="6" bits="10:10" type="uint">
+> +      <value name="2x2" value="0" />
+> +      <value name="4x2" value="1" />
+> +    </field>
+> +    <field name="Clear/Resolve BTI for Render Target" dword="6" bits="19:12" type="uint" />
+> +    <field name="Pixel Scoreboard Disable" dword="6" bits="21:21" type="bool" />
+> +    <field name="Maximum Number of Threads Per PSD" dword="6" bits="31:23" type="uint" />
+> +    <field name="Dispatch GRF Start Register For Constant/Setup Data 1" dword="7" bits="15:8" type="uint" />
+> +    <field name="Dispatch GRF Start Register For Constant/Setup Data 0" dword="7" bits="23:16" type="uint" />
+> +    <field name="Kernel[0] : Poly Packing Policy" dword="7" bits="26:24" type="uint">
+> +      <value name="POLY_PACK4_DYNAMIC" value="0" />
+> +      <value name="POLY_PACK8_DYNAMIC" value="1" />
+> +      <value name="POLY_PACK16_DYNAMIC" value="2" />
+> +      <value name="POLY_PACK16_FIXED" value="3" />
+> +      <value name="POLY_PACK8_FIXED" value="4" />
+> +    </field>
+> +    <field name="Kernel[0] : Maximum Polys per Thread" dword="7" bits="29:27" type="uint" />
+> +    <field name="Kernel 1 Selection Priority" dword="7" bits="31:31" type="uint">
+> +      <value name="PRI_SIMD" value="0" />
+> +      <value name="PRI_POLY" value="1" />
+> +    </field>
+> +    <field name="Kernel 1 Enable" dword="8" bits="0:0" type="bool" />
+> +    <field name="Kernel[1] : SIMD Width" dword="8" bits="1:1" type="uint" prefix="PS">
+> +      <value name="SIMD16" value="0" />
+> +      <value name="SIMD32" value="1" />
+> +    </field>
+> +    <field name="Kernel Start Pointer 1" dword="8" bits="63:6" type="offset" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_PS_EXTRA" bias="2" length="2" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="0" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="79" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Input Coverage Mask State" dword="1" bits="1:0" type="uint" prefix="ICMS">
+> +      <value name="NONE" value="0" />
+> +      <value name="NORMAL" value="1" />
+> +      <value name="INNER_CONSERVATIVE" value="2" />
+> +      <value name="DEPTH_COVERAGE" value="3" />
+> +    </field>
+> +    <field name="Pixel Shader Has UAV" dword="1" bits="2:2" type="bool" />
+> +    <field name="Pixel Shader Is Per Coarse Pixel" dword="1" bits="4:4" type="bool" />
+> +    <field name="Pixel Shader Computes Stencil" dword="1" bits="5:5" type="bool" />
+> +    <field name="Pixel Shader Is Per Sample" dword="1" bits="6:6" type="bool" />
+> +    <field name="Pixel Shader Disables Alpha To Coverage" dword="1" bits="7:7" type="bool" />
+> +    <field name="Simple PS Hint" dword="1" bits="9:9" type="bool" />
+> +    <field name="Pixel Shader Requires Centroid Offsets" dword="1" bits="16:16" type="bool" />
+> +    <field name="Enable PS Dependency On CPsize Change" dword="1" bits="17:17" type="bool" />
+> +    <field name="Pixel Shader Requires Subpixel Sample Offsets" dword="1" bits="18:18" type="bool" />
+> +    <field name="Pixel Shader Requires Non-Perspective Bary Plane Coefficients" dword="1" bits="19:19" type="bool" />
+> +    <field name="Pixel Shader Requires Perspective Bary Plane Coefficients" dword="1" bits="20:20" type="bool" />
+> +    <field name="Pixel Shader Requires Source Depth and/or W Plane Coefficients" dword="1" bits="21:21" type="bool" />
+> +    <field name="Pixel Shader Requires Requested Coarse Pixel Shading Size" dword="1" bits="22:22" type="bool" />
+> +    <field name="Pixel Shader Uses Source W" dword="1" bits="23:23" type="bool" />
+> +    <field name="Pixel Shader Uses Source Depth" dword="1" bits="24:24" type="bool" />
+> +    <field name="Force Computed Depth" dword="1" bits="25:25" type="bool" />
+> +    <field name="Pixel Shader Computed Depth Mode" dword="1" bits="27:26" type="uint">
+> +      <value name="PSCDEPTH_OFF" value="0" />
+> +      <value name="PSCDEPTH_ON" value="1" />
+> +      <value name="PSCDEPTH_ON_GE" value="2" />
+> +      <value name="PSCDEPTH_ON_LE" value="3" />
+> +    </field>
+> +    <field name="Pixel Shader Kills Pixel" dword="1" bits="28:28" type="bool" />
+> +    <field name="oMask Present to Render Target" dword="1" bits="29:29" type="bool" />
+> +    <field name="Pixel Shader Does not write to RT" dword="1" bits="30:30" type="mbz" />
+> +    <field name="Pixel Shader Valid" dword="1" bits="31:31" type="bool" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_RASTER" bias="2" length="5" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="80" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Viewport Z Near Clip Test Enable" dword="1" bits="0:0" type="bool" />
+> +    <field name="Scissor Rectangle Enable" dword="1" bits="1:1" type="bool" />
+> +    <field name="Antialiasing Enable" dword="1" bits="2:2" type="bool" />
+> +    <field name="Back Face Fill Mode" dword="1" bits="4:3" type="uint" prefix="FILL_MODE">
+> +      <value name="SOLID" value="0" />
+> +      <value name="WIREFRAME" value="1" />
+> +      <value name="POINT" value="2" />
+> +    </field>
+> +    <field name="Front Face Fill Mode" dword="1" bits="6:5" type="uint" prefix="FILL_MODE">
+> +      <value name="SOLID" value="0" />
+> +      <value name="WIREFRAME" value="1" />
+> +      <value name="POINT" value="2" />
+> +    </field>
+> +    <field name="Global Depth Offset Enable Point" dword="1" bits="7:7" type="bool" />
+> +    <field name="Global Depth Offset Enable Wireframe" dword="1" bits="8:8" type="bool" />
+> +    <field name="Global Depth Offset Enable Solid" dword="1" bits="9:9" type="bool" />
+> +    <field name="DX Multisample Rasterization Mode" dword="1" bits="11:10" type="uint">
+> +      <value name="MSRASTMODE_ OFF_PIXEL" value="0" />
+> +      <value name="MSRASTMODE_ OFF_PATTERN" value="1" />
+> +      <value name="MSRASTMODE_ ON_PIXEL" value="2" />
+> +      <value name="MSRASTMODE_ ON_PATTERN" value="3" />
+> +    </field>
+> +    <field name="DX Multisample Rasterization Enable" dword="1" bits="12:12" type="bool" />
+> +    <field name="Smooth Point Enable" dword="1" bits="13:13" type="bool" />
+> +    <field name="Force Multisampling" dword="1" bits="14:14" type="uint" />
+> +    <field name="Cull Mode" dword="1" bits="17:16" type="uint" prefix="CULLMODE">
+> +      <value name="BOTH" value="0" />
+> +      <value name="NONE" value="1" />
+> +      <value name="FRONT" value="2" />
+> +      <value name="BACK" value="3" />
+> +    </field>
+> +    <field name="Forced Sample Count" dword="1" bits="20:18" type="uint" prefix="FSC">
+> +      <value name="NUMRASTSAMPLES_0" value="0" />
+> +      <value name="NUMRASTSAMPLES_1" value="1" />
+> +      <value name="NUMRASTSAMPLES_2" value="2" />
+> +      <value name="NUMRASTSAMPLES_4" value="3" />
+> +      <value name="NUMRASTSAMPLES_8" value="4" />
+> +      <value name="NUMRASTSAMPLES_16" value="5" />
+> +    </field>
+> +    <field name="Front Winding" dword="1" bits="21:21" type="uint">
+> +      <value name="Clockwise" value="0" />
+> +      <value name="Counter Clockwise" value="1" />
+> +    </field>
+> +    <field name="API Mode" dword="1" bits="23:22" type="uint">
+> +      <value name="DX9/OGL" value="0" />
+> +      <value name="DX10.0" value="1" />
+> +      <value name="DX10.1+" value="2" />
+> +    </field>
+> +    <field name="Conservative Rasterization Enable" dword="1" bits="24:24" type="bool" />
+> +    <field name="Viewport Z Far Clip Test Enable" dword="1" bits="26:26" type="bool" />
+> +    <field name="Legacy Bary Assignment Disable=" dword="1" bits="27:27" type="bool" />
+> +    <field name="Global Depth Offset Constant" dword="2" bits="31:0" type="float" />
+> +    <field name="Global Depth Offset Scale" dword="3" bits="31:0" type="float" />
+> +    <field name="Global Depth Offset Clamp" dword="4" bits="31:0" type="float" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_SBE" bias="2" length="6" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="31" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Primitive ID Override Attribute Select" dword="1" bits="4:0" type="uint" />
+> +    <field name="Vertex URB Entry Read Offset" dword="1" bits="10:5" type="uint" />
+> +    <field name="Vertex URB Entry Read Length" dword="1" bits="15:11" type="uint" />
+> +    <field name="Primitive ID Override Component X" dword="1" bits="16:16" type="bool" />
+> +    <field name="Primitive ID Override Component Y" dword="1" bits="17:17" type="bool" />
+> +    <field name="Primitive ID Override Component Z" dword="1" bits="18:18" type="bool" />
+> +    <field name="Primitive ID Override Component W" dword="1" bits="19:19" type="bool" />
+> +    <field name="Point Sprite Texture Coordinate Origin" dword="1" bits="20:20" type="uint">
+> +      <value name="UPPERLEFT" value="0" />
+> +      <value name="LOWERLEFT" value="1" />
+> +    </field>
+> +    <field name="Attribute Swizzle Enable" dword="1" bits="21:21" type="bool" />
+> +    <field name="Number of SF Output Attributes" dword="1" bits="27:22" type="uint" />
+> +    <field name="Force Vertex URB Entry Read Offset" dword="1" bits="28:28" type="bool" />
+> +    <field name="Force Vertex URB Entry Read Length" dword="1" bits="29:29" type="bool" />
+> +    <field name="Vertex Attributes Bypass" dword="1" bits="31:31" type="bool" />
+> +    <field name="Point Sprite Texture Coordinate Enable" dword="2" bits="31:0" type="uint" />
+> +    <field name="Constant Interpolation Enable" dword="3" bits="31:0" type="uint" />
+> +    <group count="32" dword="4" size="2">
+> +      <field name="Attribute Active Component Format" dword="0" bits="1:0" type="uint" prefix="ACTIVE_COMPONENT">
+> +        <value name="DISABLED" value="0" />
+> +        <value name="XY" value="1" />
+> +        <value name="XYZ" value="2" />
+> +        <value name="XYZW" value="3" />
+> +      </field>
+> +    </group>
+> +  </instruction>
+> +  <instruction name="3DSTATE_SF" bias="2" length="4" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="2" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="19" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Viewport Transform Enable" dword="1" bits="1:1" type="bool" />
+> +    <field name="Statistics Enable" dword="1" bits="10:10" type="bool" />
+> +    <field name="Legacy Global Depth Bias Enable" dword="1" bits="11:11" type="bool" />
+> +    <field name="Line Width" dword="1" bits="29:12" type="u11.7" />
+> +    <field name="Line End Cap Antialiasing Region Width" dword="2" bits="17:16" type="uint">
+> +      <value name="0.5 pixels" value="0" />
+> +      <value name="1.0 pixels" value="1" />
+> +      <value name="2.0 pixels" value="2" />
+> +      <value name="4.0 pixels" value="3" />
+> +    </field>
+> +    <field name="Deref Block Size" dword="2" bits="30:29" type="uint">
+> +      <value name="Block Deref Size 32" value="0" />
+> +      <value name="Per Poly Deref Mode" value="1" />
+> +      <value name="Block Deref Size 8" value="2" />
+> +      <value name="Mesh Shader EODB" value="3" />
+> +    </field>
+> +    <field name="Point Width" dword="3" bits="10:0" type="u8.3" />
+> +    <field name="Point Width Source" dword="3" bits="11:11" type="uint">
+> +      <value name="Vertex" value="0" />
+> +      <value name="State" value="1" />
+> +    </field>
+> +    <field name="Vertex Sub Pixel Precision Select" dword="3" bits="12:12" type="uint">
+> +      <value name="8 Bit" value="0" />
+> +      <value name="4 Bit" value="1" />
+> +    </field>
+> +    <field name="Smooth Point Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="AA Line Distance Mode" dword="3" bits="14:14" type="uint">
+> +      <value name="AALINEDISTANCE_TRUE" value="1" />
+> +    </field>
+> +    <field name="Triangle Strip Odd Provoking Vertex Select" dword="3" bits="24:23" type="uint" />
+> +    <field name="Triangle Fan Provoking Vertex Select" dword="3" bits="26:25" type="uint" />
+> +    <field name="Line Strip/List Provoking Vertex Select" dword="3" bits="28:27" type="uint" />
+> +    <field name="Triangle Strip/List Provoking Vertex Select" dword="3" bits="30:29" type="uint" />
+> +    <field name="Last Pixel Enable" dword="3" bits="31:31" type="bool" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_STENCIL_BUFFER" bias="2" length="8" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="6" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Surface Pitch" dword="1" bits="16:0" type="uint" />
+> +    <field name="Corner Texel Mode" dword="1" bits="23:23" type="bool" />
+> +    <field name="Null Page Coherency Enable" dword="1" bits="27:27" type="bool" />
+> +    <field name="Stencil Write Enable" dword="1" bits="28:28" type="bool" />
+> +    <field name="Surface Type" dword="1" bits="31:29" type="uint">
+> +      <value name="SURFTYPE_2D" value="1" />
+> +      <value name="SURFTYPE_CUBE" value="3" />
+> +      <value name="SURFTYPE_NULL" value="7" />
+> +    </field>
+> +    <field name="Surface Base Address" dword="2" bits="63:0" type="address" />
+> +    <field name="Width" dword="4" bits="14:1" type="uint" />
+> +    <field name="Height" dword="4" bits="30:17" type="uint" />
+> +    <field name="MOCS" dword="5" bits="6:0" type="uint" nonzero="true" />
+> +    <field name="Minimum Array Element" dword="5" bits="18:8" type="uint" />
+> +    <field name="Depth" dword="5" bits="30:20" type="uint" />
+> +    <field name="Compression Format" dword="6" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
+> +    <field name="Mip Tail Start LOD" dword="6" bits="29:26" type="uint" />
+> +    <field name="Tiled Mode" dword="6" bits="31:30" type="uint">
+> +      <value name="TILE64" value="1" />
+> +      <value name="TILE4" value="3" />
+> +    </field>
+> +    <field name="Surface QPitch" dword="7" bits="14:0" type="uint" />
+> +    <field name="Surf LOD" dword="7" bits="19:16" type="uint" />
+> +    <field name="Render Target View Extent" dword="7" bits="31:21" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_TE" bias="2" length="5" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="28" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="TE Enable" dword="1" bits="0:0" type="bool" />
+> +    <field name="TE Mode" dword="1" bits="2:1" type="uint">
+> +      <value name="HW_TESS" value="0" />
+> +      <value name="FORCE_MIN" value="3" />
+> +    </field>
+> +    <field name="TE Domain" dword="1" bits="5:4" type="uint">
+> +      <value name="QUAD" value="0" />
+> +      <value name="TRI" value="1" />
+> +      <value name="ISOLINE" value="2" />
+> +    </field>
+> +    <field name="Output Topology" dword="1" bits="9:8" type="uint" prefix="OUTPUT">
+> +      <value name="POINT" value="0" />
+> +      <value name="LINE" value="1" />
+> +      <value name="TRI_CW" value="2" />
+> +      <value name="TRI_CCW" value="3" />
+> +    </field>
+> +    <field name="Number Of Regions Per Patch" dword="1" bits="11:10" type="uint" />
+> +    <field name="Partitioning" dword="1" bits="13:12" type="uint">
+> +      <value name="INTEGER" value="0" />
+> +      <value name="ODD_FRACTIONAL" value="1" />
+> +      <value name="EVEN_FRACTIONAL" value="2" />
+> +      <value name="POW2" value="3" />
+> +    </field>
+> +    <field name="Tessellation Distribution Mode" dword="1" bits="15:14" type="uint">
+> +      <value name="TEDMODE_OFF" value="0" />
+> +      <value name="TEDMODE_RR_STRICT" value="1" />
+> +      <value name="TEDMODE_RR_FREE" value="2" />
+> +    </field>
+> +    <field name="Tessellation Distribution Level" dword="1" bits="18:17" type="uint">
+> +      <value name="TEDLEVEL_PATCH" value="0" />
+> +      <value name="TEDLEVEL_REGION" value="1" />
+> +    </field>
+> +    <field name="Tessellation Scale Factor Enable" dword="1" bits="19:19" type="bool" />
+> +    <field name="Tessellation Factor Format" dword="1" bits="20:20" type="uint">
+> +      <value name="FLOAT32" value="0" />
+> +      <value name="FLOAT16" value="1" />
+> +    </field>
+> +    <field name="Patch Header Layout" dword="1" bits="23:22" type="uint">
+> +      <value name="LEGACY" value="0" />
+> +      <value name="REVERSED" value="2" />
+> +      <value name="REVERSED_TRI_INSIDE_SEPARATE" value="3" />
+> +    </field>
+> +    <field name="Small Patch Threshold" dword="1" bits="25:24" type="uint" prefix="SPT">
+> +      <value name="8_TRIANGLES" value="0" />
+> +      <value name="16_TRIANGLES" value="1" />
+> +      <value name="32_TRIANGLES" value="2" />
+> +      <value name="64_TRIANGLES" value="3" />
+> +    </field>
+> +    <field name="Target Block Size" dword="1" bits="29:26" type="uint">
+> +      <value name="64_TRIANGLES" value="0" />
+> +      <value name="96_TRIANGLES" value="1" />
+> +      <value name="128_TRIANGLES" value="2" />
+> +      <value name="192_TRIANGLES" value="3" />
+> +      <value name="256_TRIANGLES" value="4" />
+> +      <value name="384_TRIANGLES" value="5" />
+> +      <value name="512_TRIANGLES" value="6" />
+> +      <value name="768_TRIANGLES" value="7" />
+> +      <value name="1K_TRIANGLES" value="8" />
+> +      <value name="1.5K_TRIANGLES" value="9" />
+> +      <value name="2K_TRIANGLES" value="10" />
+> +      <value name="3K_TRIANGLES" value="11" />
+> +      <value name="4K_TRIANGLES" value="12" />
+> +      <value name="6K_TRIANGLES" value="13" />
+> +      <value name="8K_TRIANGLES" value="14" />
+> +      <value name="12K_TRIANGLES" value="15" />
+> +    </field>
+> +    <field name="Local BOP Accumulator Threshold" dword="1" bits="31:30" type="uint">
+> +      <value name="MULTIPLIER_0" value="0" />
+> +      <value name="MULTIPLIER_1" value="1" />
+> +      <value name="MULTIPLIER_2" value="2" />
+> +      <value name="MULTIPLIER_4" value="3" />
+> +    </field>
+> +    <field name="Maximum Tessellation Factor Odd" dword="2" bits="31:0" type="float" />
+> +    <field name="Maximum Tessellation Factor Not Odd" dword="3" bits="31:0" type="float" />
+> +    <field name="Tessellation Scale Factor" dword="4" bits="31:0" type="float" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_VS" bias="2" length="9" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="7" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="16" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
+> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
+> +    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
+> +      <value name="Normal" value="0" />
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
+> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
+> +      <value name="No Samplers" value="0" />
+> +      <value name="1-4 Samplers" value="1" />
+> +      <value name="5-8 Samplers" value="2" />
+> +      <value name="9-12 Samplers" value="3" />
+> +      <value name="13-16 Samplers" value="4" />
+> +    </field>
+> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
+> +      <value name="Dmask" value="0" />
+> +    </field>
+> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
+> +    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
+> +    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
+> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="24:20" type="uint" />
+> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
+> +    <field name="Vertex Cache Disable" dword="7" bits="1:1" type="bool" />
+> +    <field name="SIMD8 Single Instance Dispatch Enable" dword="7" bits="9:9" type="bool" />
+> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
+> +    <field name="Maximum Number of Threads" dword="7" bits="31:22" type="uint" />
+> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="8" bits="7:0" type="uint" />
+> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="8" bits="15:8" type="uint" />
+> +    <field name="Vertex URB Entry Output Length" dword="8" bits="20:16" type="uint" />
+> +    <field name="Vertex URB Entry Output Read Offset" dword="8" bits="26:21" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_WM_HZ_OP" bias="2" length="6" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
+> +    <field name="Predicate Enable" dword="0" bits="8:8" type="bool" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="82" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Depth Buffer Partial Resolve Enable" dword="1" bits="9:9" type="bool" />
+> +    <field name="Number of Multisamples" dword="1" bits="15:13" type="uint" prefix="SAMPLES">
+> +      <value name="1" value="0" />
+> +      <value name="2" value="1" />
+> +      <value name="4" value="2" />
+> +      <value name="8" value="3" />
+> +      <value name="16" value="4" />
+> +    </field>
+> +    <field name="Stencil Clear Value" dword="1" bits="23:16" type="uint" />
+> +    <field name="Stencil Buffer Resolve Enable" dword="1" bits="24:24" type="bool" />
+> +    <field name="Full Surface Depth and Stencil Clear" dword="1" bits="25:25" type="bool" />
+> +    <field name="Pixel Position Offset Enable" dword="1" bits="26:26" type="bool" />
+> +    <field name="Hierarchical Depth Buffer Resolve Enable" dword="1" bits="27:27" type="bool" />
+> +    <field name="Depth Buffer Resolve Enable" dword="1" bits="28:28" type="bool" />
+> +    <field name="Scissor Rectangle Enable" dword="1" bits="29:29" type="bool" />
+> +    <field name="Depth Buffer Clear Enable" dword="1" bits="30:30" type="bool" />
+> +    <field name="Stencil Buffer Clear Enable" dword="1" bits="31:31" type="bool" />
+> +    <field name="Clear Rectangle X Min" dword="2" bits="15:0" type="uint" />
+> +    <field name="Clear Rectangle Y Min" dword="2" bits="31:16" type="uint" />
+> +    <field name="Clear Rectangle X Max" dword="3" bits="15:0" type="uint" />
+> +    <field name="Clear Rectangle Y Max" dword="3" bits="31:16" type="uint" />
+> +    <field name="Sample Mask" dword="4" bits="15:0" type="uint" />
+> +    <field name="Depth Clear Value" dword="5" bits="31:0" type="float" />
+> +  </instruction>
+> +  <instruction name="AVP_FILM_GRAIN_STATE" bias="2" length="45" engine="video">
+> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="43" />
+> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="52" />
+> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
+> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Grain Random Seed" dword="1" bits="15:0" type="uint" />
+> +    <field name="MC Identity Flag" dword="1" bits="16:16" type="bool" />
+> +    <field name="Clip To Restricted Range Flag" dword="1" bits="17:17" type="bool" />
+> +    <field name="Number of Luma Points" dword="1" bits="23:20" type="uint" />
+> +    <field name="Number of Chroma Cb Points" dword="1" bits="27:24" type="uint" />
+> +    <field name="Number of Chroma Cr Points" dword="1" bits="31:28" type="uint" />
+> +    <field name="Grain Scaling Minus8" dword="2" bits="1:0" type="uint" />
+> +    <field name="AR Coeff Lag" dword="2" bits="3:2" type="uint" />
+> +    <field name="AR Coeff Shift Minus6" dword="2" bits="5:4" type="uint" />
+> +    <field name="Grain Scale Shift" dword="2" bits="7:6" type="uint" />
+> +    <field name="Grain Noise Overlap Flag" dword="2" bits="8:8" type="bool" />
+> +    <field name="Chroma Scaling From Luma Flag" dword="2" bits="31:31" type="bool" />
+> +    <group count="14" dword="3" size="8">
+> +      <field name="Point Luma Value" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <group count="14" dword="7" size="8">
+> +      <field name="Point Luma Scaling" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <group count="10" dword="11" size="8">
+> +      <field name="Point CB Value" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <group count="10" dword="14" size="8">
+> +      <field name="Point CB Scaling" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <group count="10" dword="17" size="8">
+> +      <field name="Point CR Value" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <group count="10" dword="20" size="8">
+> +      <field name="Point CR Scaling" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <group count="24" dword="23" size="8">
+> +      <field name="AR Coeff Luma Plus128" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <group count="25" dword="29" size="8">
+> +      <field name="AR Coeff Chroma CB Plus128" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <group count="25" dword="36" size="8">
+> +      <field name="AR Coeff Chroma CR Plus128" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <field name="CB Mult" dword="43" bits="7:0" type="uint" />
+> +    <field name="CB Luma Mult" dword="43" bits="15:8" type="uint" />
+> +    <field name="CB Offset" dword="43" bits="24:16" type="uint" />
+> +    <field name="CR Mult" dword="44" bits="7:0" type="uint" />
+> +    <field name="CR Luma Mult" dword="44" bits="15:8" type="uint" />
+> +    <field name="CR Offset" dword="44" bits="24:16" type="uint" />
+> +  </instruction>
+> +  <instruction name="AVP_PIC_STATE" bias="2" length="76" engine="video">
+> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="74" />
+> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="48" />
+> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
+> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Frame Width" dword="1" bits="13:0" type="uint" />
+> +    <field name="Frame Height" dword="1" bits="29:16" type="uint" />
+> +    <field name="Sequence Chroma SubSampling Format" dword="2" bits="1:0" type="uint" prefix="SS">
+> +      <value name="Monochrome" value="0" />
+> +      <value name="420" value="1" />
+> +      <value name="422" value="2" />
+> +      <value name="444" value="3" />
+> +    </field>
+> +    <field name="Sequence Pixel Bit-Depth Idc" dword="2" bits="4:3" type="uint" prefix="SeqPix">
+> +      <value name="8-bit" value="0" />
+> +      <value name="10-bit" value="1" />
+> +      <value name="12-bit" value="2" />
+> +    </field>
+> +    <field name="Sequence Superblock Size Used" dword="2" bits="8:7" type="uint">
+> +      <value name="64x64" value="0" />
+> +      <value name="128x128" value="1" />
+> +    </field>
+> +    <field name="Sequence Enable Order Hint Flag" dword="2" bits="9:9" type="bool" />
+> +    <field name="Sequence Order Hint Bits Minus 1" dword="2" bits="12:10" type="uint" />
+> +    <field name="Sequence Enable Filter Intra Flag" dword="2" bits="16:16" type="bool" />
+> +    <field name="Sequence Enable Intra Edge Filter Flag" dword="2" bits="17:17" type="bool" />
+> +    <field name="Sequence Enable Dual Filter Flag" dword="2" bits="18:18" type="bool" />
+> +    <field name="Sequence Enable Inter Intra Compound Flag" dword="2" bits="19:19" type="bool" />
+> +    <field name="Sequence Enable Masked Compound Flag" dword="2" bits="20:20" type="bool" />
+> +    <field name="Sequence Enable Joint Compound Flag" dword="2" bits="21:21" type="bool" />
+> +    <field name="Allow Screen Content Tools Flag" dword="3" bits="0:0" type="bool" />
+> +    <field name="Force Integer MV Flag" dword="3" bits="1:1" type="bool" />
+> +    <field name="Allow Warped Motion Flag" dword="3" bits="2:2" type="bool" />
+> +    <field name="Use CDEF Filter Flag" dword="3" bits="4:4" type="bool" />
+> +    <field name="Use Super-Res Flag" dword="3" bits="5:5" type="bool" />
+> +    <field name="Frame Level Loop Restoration Filter Enable" dword="3" bits="6:6" type="bool" />
+> +    <field name="Apply Film Grain Flag" dword="3" bits="7:7" type="bool" />
+> +    <field name="Large Scale Tile Enable Flag" dword="3" bits="8:8" type="bool" />
+> +    <field name="Post CDEF Filtered Recon Pixels Writeout En" dword="3" bits="14:14" type="bool" />
+> +    <field name="Frame Type" dword="3" bits="17:16" type="uint" />
+> +    <field name="Intra Only Flag" dword="3" bits="19:19" type="bool" />
+> +    <field name="Error Resilient Mode Flag" dword="3" bits="22:22" type="bool" />
+> +    <field name="Allow IntraBC Flag" dword="3" bits="23:23" type="bool" />
+> +    <field name="Primary Reference Frame Idx" dword="3" bits="30:28" type="uint" />
+> +    <field name="Segmentation Enable Flag" dword="4" bits="0:0" type="bool" />
+> +    <field name="Segmentation Update Map Flag" dword="4" bits="1:1" type="bool" />
+> +    <field name="Segmentation Temporal Update Flag" dword="4" bits="2:2" type="bool" />
+> +    <field name="Pre Skip Segment ID Flag" dword="4" bits="3:3" type="bool" />
+> +    <field name="Last Active Segment Segment ID" dword="4" bits="6:4" type="uint" />
+> +    <field name="Delta Q Present Flag" dword="4" bits="7:7" type="bool" />
+> +    <field name="Delta Q Res" dword="4" bits="9:8" type="uint" />
+> +    <field name="Frame Coded Lossless Mode" dword="4" bits="10:10" type="bool" />
+> +    <field name="Segment Map is Zero Flag" dword="4" bits="11:11" type="bool" />
+> +    <field name="Segment ID Buffer Stream In Enable Flag" dword="4" bits="12:12" type="bool" />
+> +    <field name="Segment ID Buffer Stream Out Enable Flag" dword="4" bits="13:13" type="bool" />
+> +    <field name="Base Qindex" dword="4" bits="23:16" type="uint" />
+> +    <field name="Y dc delta Q" dword="4" bits="30:24" type="int" />
+> +    <field name="U dc delta Q" dword="5" bits="6:0" type="int" />
+> +    <field name="U ac delta Q" dword="5" bits="14:8" type="int" />
+> +    <field name="V dc delta Q" dword="5" bits="22:16" type="int" />
+> +    <field name="V ac delta Q" dword="5" bits="30:24" type="int" />
+> +    <field name="Allow High Precision MV" dword="6" bits="0:0" type="bool" />
+> +    <field name="Frame Level Reference Mode Select" dword="6" bits="1:1" type="bool" />
+> +    <field name="Mcomp Filter Type" dword="6" bits="4:2" type="uint">
+> +      <value name="Eight Tap" value="0" />
+> +      <value name="Eight Tap Smooth" value="1" />
+> +      <value name="Eight Tap Sharp" value="2" />
+> +      <value name="Bilinear" value="3" />
+> +      <value name="Switchable" value="4" />
+> +    </field>
+> +    <field name="Motion Mode Switchable Flag" dword="6" bits="6:6" type="bool" />
+> +    <field name="Use Reference Frame MV Set Flag" dword="6" bits="7:7" type="bool" />
+> +    <field name="Reference Frame Sign Bias" dword="6" bits="15:8" type="uint" />
+> +    <field name="Current Frame Order Hint" dword="6" bits="23:16" type="uint" />
+> +    <field name="Reduced Tx Set Used" dword="7" bits="0:0" type="bool" />
+> +    <field name="Frame Transform Mode" dword="7" bits="2:1" type="uint" />
+> +    <field name="Skip Mode Present Flag" dword="7" bits="4:4" type="bool" />
+> +    <field name="Skip Mode Frame 0" dword="7" bits="7:5" type="uint" />
+> +    <field name="Skip Mode Frame 1" dword="7" bits="11:9" type="uint" />
+> +    <field name="Reference Frame Side" dword="7" bits="31:24" type="uint" />
+> +    <field name="Global Motion Type 1" dword="8" bits="4:3" type="uint" />
+> +    <field name="Global Motion Type 2" dword="8" bits="7:6" type="uint" />
+> +    <field name="Global Motion Type 3" dword="8" bits="10:9" type="uint" />
+> +    <field name="Global Motion Type 4" dword="8" bits="13:12" type="uint" />
+> +    <field name="Global Motion Type 5" dword="8" bits="16:15" type="uint" />
+> +    <field name="Global Motion Type 6" dword="8" bits="19:18" type="uint" />
+> +    <field name="Global Motion Type 7" dword="8" bits="22:21" type="uint" />
+> +    <field name="Frame Level Global Motion Invalid Flags" dword="8" bits="31:24" type="uint" />
+> +    <group count="42" dword="9" size="16">
+> +      <field name="Warp Parameters" dword="0" bits="15:0" type="uint" />
+> +    </group>
+> +    <field name="Reference Frame Idx 0" dword="30" bits="2:0" type="uint" />
+> +    <field name="Reference Frame Idx 1" dword="30" bits="6:4" type="uint" />
+> +    <field name="Reference Frame Idx 2" dword="30" bits="10:8" type="uint" />
+> +    <field name="Reference Frame Idx 3" dword="30" bits="14:12" type="uint" />
+> +    <field name="Reference Frame Idx 4" dword="30" bits="18:16" type="uint" />
+> +    <field name="Reference Frame Idx 5" dword="30" bits="22:20" type="uint" />
+> +    <field name="Reference Frame Idx 6" dword="30" bits="26:24" type="uint" />
+> +    <field name="Reference Frame Idx 7" dword="30" bits="30:28" type="uint" />
+> +    <field name="Intra Frame Width in Pixel Minus 1" dword="31" bits="15:0" type="uint" />
+> +    <field name="Intra Frame Height in Pixel Minus 1" dword="31" bits="31:16" type="uint" />
+> +    <field name="Last Frame Width in Pixel Minus 1" dword="32" bits="15:0" type="uint" />
+> +    <field name="Last Frame Height in Pixel Minus 1" dword="32" bits="31:16" type="uint" />
+> +    <field name="Last2 Frame Width in Pixel Minus 1" dword="33" bits="15:0" type="uint" />
+> +    <field name="Last2 Frame Height in Pixel Minus 1" dword="33" bits="31:16" type="uint" />
+> +    <field name="Last3 Frame Width in Pixel Minus 1" dword="34" bits="15:0" type="uint" />
+> +    <field name="Last3 Frame Height in Pixel Minus 1" dword="34" bits="31:16" type="uint" />
+> +    <field name="Golden Frame Width in Pixel Minus 1" dword="35" bits="15:0" type="uint" />
+> +    <field name="Golden Frame Height in Pixel Minus 1" dword="35" bits="31:16" type="uint" />
+> +    <field name="BWDREF Frame Width in Pixel Minus 1" dword="36" bits="15:0" type="uint" />
+> +    <field name="BWDREF Frame Height in Pixel Minus 1" dword="36" bits="31:16" type="uint" />
+> +    <field name="ALTREF2 Frame Width in Pixel Minus 1" dword="37" bits="15:0" type="uint" />
+> +    <field name="ALTREF2 Frame Height in Pixel Minus 1" dword="37" bits="31:16" type="uint" />
+> +    <field name="ALTREF Frame Width in Pixel Minus 1" dword="38" bits="15:0" type="uint" />
+> +    <field name="ALTREF Frame Height in Pixel Minus 1" dword="38" bits="31:16" type="uint" />
+> +    <field name="Vertical Scale Factor For Intra" dword="39" bits="15:0" type="uint" />
+> +    <field name="Horizontal Scale Factor For Intra" dword="39" bits="31:16" type="uint" />
+> +    <field name="Vertical Scale Factor For Last" dword="40" bits="15:0" type="uint" />
+> +    <field name="Horizontal Scale Factor For Last" dword="40" bits="31:16" type="uint" />
+> +    <field name="Vertical Scale Factor For Last2" dword="41" bits="15:0" type="uint" />
+> +    <field name="Horizontal Scale Factor For Last2" dword="41" bits="31:16" type="uint" />
+> +    <field name="Vertical Scale Factor For Last3" dword="42" bits="15:0" type="uint" />
+> +    <field name="Horizontal Scale Factor For Last3" dword="42" bits="31:16" type="uint" />
+> +    <field name="Vertical Scale Factor For Golden" dword="43" bits="15:0" type="uint" />
+> +    <field name="Horizontal Scale Factor For Golden" dword="43" bits="31:16" type="uint" />
+> +    <field name="Vertical Scale Factor For BWDREF" dword="44" bits="15:0" type="uint" />
+> +    <field name="Horizontal Scale Factor For BWDREF" dword="44" bits="31:16" type="uint" />
+> +    <field name="Vertical Scale Factor For ALTREF2" dword="45" bits="15:0" type="uint" />
+> +    <field name="Horizontal Scale Factor For ALTREF2" dword="45" bits="31:16" type="uint" />
+> +    <field name="Vertical Scale Factor For ALTREF" dword="46" bits="15:0" type="uint" />
+> +    <field name="Horizontal Scale Factor For ALTREF" dword="46" bits="31:16" type="uint" />
+> +    <group count="8" dword="47" size="8">
+> +      <field name="Reference Frame Order Hint" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <field name="NonFirstPassFlag" dword="51" bits="16:16" type="bool" />
+> +    <field name="VdencPakOnlyPass" dword="51" bits="17:17" type="bool" />
+> +    <field name="FrameSzOverStatusEn - FrameBitRateMaxReportMask" dword="51" bits="25:25" type="bool" />
+> +    <field name="FrameSzUnderStatusEn - FrameBitRateMinReportMask" dword="51" bits="26:26" type="bool" />
+> +    <field name="FrameBitRateMax" dword="52" bits="13:0" type="uint" />
+> +    <field name="FrameBitrateMaxUnit" dword="52" bits="31:31" type="FRAME_BITRATE_UNITS" />
+> +    <field name="FrameBitRateMin" dword="53" bits="13:0" type="uint" />
+> +    <field name="FrameBitrateMinUnit" dword="53" bits="31:31" type="FRAME_BITRATE_UNITS" />
+> +    <field name="FrameDeltaQindexMax" dword="54" bits="63:0" type="uint" />
+> +    <field name="FrameDeltaQindexMin" dword="56" bits="31:0" type="uint" />
+> +    <field name="FrameDeltaLFMax" dword="57" bits="63:0" type="uint" />
+> +    <field name="FrameDeltaLFMin" dword="59" bits="31:0" type="uint" />
+> +    <field name="FrameDeltaQindexLFMaxRange" dword="60" bits="63:0" type="uint" />
+> +    <field name="FrameDeltaQindexLFMinRange" dword="62" bits="31:0" type="uint" />
+> +    <field name="MinFrameSize" dword="63" bits="15:0" type="uint" />
+> +    <field name="MinFrameSizeUnits" dword="63" bits="31:30" type="uint">
+> +      <value name="4K Byte Units" value="0" />
+> +      <value name="16K Byte Units" value="1" />
+> +      <value name="Compatibility Mode" value="2" />
+> +      <value name="6 Byte Units" value="3" />
+> +    </field>
+> +    <field name="VDAQM enable" dword="64" bits="0:0" type="bool" />
+> +    <field name="Class0 SSE Threshold0" dword="65" bits="15:0" type="uint" />
+> +    <field name="Class0 SSE Threshold1" dword="65" bits="31:16" type="uint" />
+> +    <group count="8" dword="66" size="8">
+> +      <field name="SSE Thresholds For Class" dword="0" bits="7:0" type="uint" />
+> +    </group>
+> +    <field name="rdmult" dword="74" bits="31:0" type="uint" />
+> +  </instruction>
+> +  <instruction name="AVP_PIPE_BUF_ADDR_STATE" bias="2" length="215" engine="video">
+> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="213" />
+> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="2" />
+> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
+> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <group count="8" dword="1" size="64">
+> +      <field name="Reference Picture - Address" dword="0" bits="63:0" type="address" />
+> +    </group>
+> +    <field name="Reference Picture - Attributes" dword="17" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Decoded Output Frame Buffer Address" dword="18" bits="63:0" type="address" />
+> +    <field name="Decoded Output Frame Buffer Address - Attributes" dword="20" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Film Grain Injected Output Frame Buffer Address" dword="21" bits="63:0" type="address" />
+> +    <field name="Film Grain Injected Output Frame Buffer Address - Attributes" dword="23" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="IntraBC Decoded Output Frame Buffer Address" dword="24" bits="63:0" type="address" />
+> +    <field name="IntraBC Decoded Output Frame Buffer Address - Attributes" dword="26" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="CDF Tables Initialization Buffer Address" dword="27" bits="63:0" type="address" />
+> +    <field name="CDF Tables Initialization Buffer Address - Attributes" dword="29" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="CDF Tables Backward Adaptation Buffer Address" dword="30" bits="63:0" type="address" />
+> +    <field name="CDF Tables Backward Adaptation Buffer Address - Attributes" dword="32" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="AV1 Segment ID Read Buffer Address" dword="33" bits="63:0" type="address" />
+> +    <field name="AV1 Segment ID Read Buffer Address - Attributes" dword="35" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="AV1 Segment ID Write Buffer Address" dword="36" bits="63:0" type="address" />
+> +    <field name="AV1 Segment ID Write Buffer Address - Attributes" dword="38" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <group count="8" dword="39" size="64">
+> +      <field name="Collocated MV Temporal Buffer - Address" dword="0" bits="63:0" type="address" />
+> +    </group>
+> +    <field name="Collocated MV Temporal Buffer - Attributes" dword="55" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Current Frame MV Write Buffer Address" dword="56" bits="63:0" type="address" />
+> +    <field name="Current Frame MV Write Buffer Address - Attributes" dword="58" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Film Grain Sample Template Address" dword="59" bits="63:0" type="address" />
+> +    <field name="Film Grain Sample Template Address - Attributes" dword="61" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Bitstream Line Rowstore Buffer Address" dword="62" bits="63:0" type="address" />
+> +    <field name="Bitstream Line Rowstore Buffer Address - Attributes" dword="64" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Bitstream Tile Line Rowstore Buffer Address" dword="65" bits="63:0" type="address" />
+> +    <field name="Bitstream Tile Line Rowstore Buffer Address - Attributes" dword="67" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Intra Prediction Line Rowstore Buffer Address" dword="68" bits="63:0" type="address" />
+> +    <field name="Intra Prediction Line Rowstore Buffer Address - Attributes" dword="70" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Intra Prediction Tile Line Rowstore Buffer Address" dword="71" bits="63:0" type="address" />
+> +    <field name="Intra Prediction Tile Line Rowstore Buffer Address - Attributes" dword="73" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Spatial Motion Vector Line Buffer Address" dword="74" bits="63:0" type="address" />
+> +    <field name="Spatial Motion Vector Line Buffer Address - Attributes" dword="76" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Spatial Motion Vector Tile Line Buffer Address" dword="77" bits="63:0" type="address" />
+> +    <field name="Spatial Motion Vector Tile Line Buffer Address - Attributes" dword="79" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Loop Restoration Meta Tile Column Buffer Address" dword="80" bits="63:0" type="address" />
+> +    <field name="Loop Restoration Meta Tile Column Buffer Address - Attributes" dword="82" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Loop Restoration Filter Tile Line Y Buffer Address" dword="83" bits="63:0" type="address" />
+> +    <field name="Loop Restoration Filter Tile Line Y Buffer Address - Attributes" dword="85" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Loop Restoration Filter Tile Line U Buffer Address" dword="86" bits="63:0" type="address" />
+> +    <field name="Loop Restoration Filter Tile Line U Buffer Address - Attributes" dword="88" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Loop Restoration Filter Tile Line V Buffer Address" dword="89" bits="63:0" type="address" />
+> +    <field name="Loop Restoration Filter Tile Line V Buffer Address - Attributes" dword="91" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Deblocker Filter Line Y Buffer Address" dword="92" bits="63:0" type="address" />
+> +    <field name="Deblocker Filter Line Y Buffer Address - Attributes" dword="94" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Deblocker Filter Line U Buffer Address" dword="95" bits="63:0" type="address" />
+> +    <field name="Deblocker Filter Line U Buffer Address - Attributes" dword="97" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Deblocker Filter Line V Buffer Address" dword="98" bits="63:0" type="address" />
+> +    <field name="Deblocker Filter Line V Buffer Address - Attributes" dword="100" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Deblocker Filter Tile Line Y Buffer Address" dword="101" bits="63:0" type="address" />
+> +    <field name="Deblocker Filter Tile Line Y Buffer Address - Attributes" dword="103" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Deblocker Filter Tile Line U Buffer Address" dword="104" bits="63:0" type="address" />
+> +    <field name="Deblocker Filter Tile Line U Buffer Address - Attributes" dword="106" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Deblocker Filter Tile Line V Buffer Address" dword="107" bits="63:0" type="address" />
+> +    <field name="Deblocker Filter Tile Line V Buffer Address - Attributes" dword="109" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Deblocker Filter Tile Column Y Buffer Address" dword="110" bits="63:0" type="address" />
+> +    <field name="Deblocker Filter Tile Column Y Buffer Address - Attributes" dword="112" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Deblocker Filter Tile Column U Buffer Address" dword="113" bits="63:0" type="address" />
+> +    <field name="Deblocker Filter Tile Column U Buffer Address - Attributes" dword="115" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Deblocker Filter Tile Column V Buffer Address" dword="116" bits="63:0" type="address" />
+> +    <field name="Deblocker Filter Tile Column V Buffer Address - Attributes" dword="118" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="CDEF Filter Line Buffer Address" dword="119" bits="63:0" type="address" />
+> +    <field name="CDEF Filter Line Buffer Address - Attributes" dword="121" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="CDEF Filter Tile Line Buffer Address" dword="128" bits="63:0" type="address" />
+> +    <field name="CDEF Filter Tile Line Buffer Address - Attributes" dword="130" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="CDEF Filter Tile Column Buffer Address" dword="137" bits="63:0" type="address" />
+> +    <field name="CDEF Filter Tile Column Buffer Address - Attributes" dword="139" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="CDEF Filter Meta Tile Line Buffer Address" dword="140" bits="63:0" type="address" />
+> +    <field name="CDEF Filter Meta Tile Line Buffer Address - Attributes" dword="142" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="CDEF Filter Meta Tile Column Buffer Address" dword="143" bits="63:0" type="address" />
+> +    <field name="CDEF Filter Meta Tile Column Buffer Address - Attributes" dword="145" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="CDEF Filter Top Left Corner Buffer Address" dword="146" bits="63:0" type="address" />
+> +    <field name="CDEF Filter Top Left Corner Buffer Address - Attributes" dword="148" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Super Res Tile Column Y Buffer Address" dword="149" bits="63:0" type="address" />
+> +    <field name="Super Res Tile Column Y Buffer Address - Attributes" dword="151" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Super Res Tile Column U Buffer Address" dword="152" bits="63:0" type="address" />
+> +    <field name="Super Res Tile Column U Buffer Address - Attributes" dword="154" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Super Res Tile Column V Buffer Address" dword="155" bits="63:0" type="address" />
+> +    <field name="Super Res Tile Column V Buffer Address - Attributes" dword="157" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Loop Restoration Filter Tile Column Y Buffer Address" dword="158" bits="63:0" type="address" />
+> +    <field name="Loop Restoration Filter Tile Column Y Buffer Address - Attributes" dword="160" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Loop Restoration Filter Tile Column U Buffer Address" dword="161" bits="63:0" type="address" />
+> +    <field name="Loop Restoration Filter Tile Column U Buffer Address - Attributes" dword="163" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Loop Restoration Filter Tile Column V Buffer Address" dword="164" bits="63:0" type="address" />
+> +    <field name="Loop Restoration Filter Tile Column V Buffer Address - Attributes" dword="166" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Loop Restoration Filter Tile Column Alignment Read Write Buffer Address" dword="170" bits="63:0" type="address" />
+> +    <field name="Loop Restoration Filter Tile Column Alignment Read Write Buffer Address - Attributes" dword="172" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Film Grain Tile Column Data Read Write Buffer Address" dword="173" bits="63:0" type="address" />
+> +    <field name="Film Grain Tile Column Data Read Write Buffer Address - Attributes" dword="175" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Decoded Frame Status Error Buffer Address" dword="176" bits="63:0" type="address" />
+> +    <field name="Decoded Frame Status Error Buffer Address - Attributes" dword="178" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Decoded Block Data Streamout Buffer Address" dword="179" bits="63:0" type="address" />
+> +    <field name="Decoded Block Data Streamout Buffer Address - Attributes" dword="181" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Original Uncompressed Picture Source Buffer Address" dword="188" bits="63:0" type="address" />
+> +    <field name="Original Uncompressed Picture Source Buffer Address - Attributes" dword="190" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Downscaled Uncompressed Picture Source Buffer Address" dword="191" bits="63:0" type="address" />
+> +    <field name="Downscaled Uncompressed Picture Source Buffer Address - Attributes" dword="193" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Tile Size Streamout Buffer Address" dword="194" bits="63:0" type="address" />
+> +    <field name="Tile Size Streamout Buffer Address - Attributes" dword="196" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="Tile Statistics Streamout Buffer Address" dword="197" bits="63:0" type="address" />
+> +    <field name="Tile Statistics Streamout Buffer Address - Attributes" dword="199" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="CU Streamout Buffer Address" dword="200" bits="63:0" type="address" />
+> +    <field name="CU Streamout Buffer Address - Attributes" dword="202" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="SSE Line Read/Write Buffer Address" dword="203" bits="63:0" type="address" />
+> +    <field name="SSE Line Read/Write Buffer Address - Attributes" dword="205" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="SSE Tile Line Read/Write Buffer Address" dword="206" bits="63:0" type="address" />
+> +    <field name="SSE Tile Line Read/Write Buffer Address - Attributes" dword="208" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +    <field name="PostCDEF Pixels Buffer Address" dword="209" bits="63:0" type="address" />
+> +    <field name="PostCDEF Pixels Buffer Address - Attributes" dword="211" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
+> +  </instruction>
+> +  <instruction name="AVP_PIPE_MODE_SELECT" bias="2" length="7" engine="video">
+> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="5" />
+> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="0" />
+> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
+> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Codec Select" dword="1" bits="0:0" type="bool">
+> +      <value name="Decode" value="0" />
+> +      <value name="Encode" value="1" />
+> +    </field>
+> +    <field name="Pic Status/Error Report Enable" dword="1" bits="3:3" type="bool" />
+> +    <field name="Frame Reconstruction Disable" dword="1" bits="4:4" type="bool" />
+> +    <field name="Codec Standard Select" dword="1" bits="7:5" type="uint" default="2" />
+> +    <field name="VDENC Mode" dword="1" bits="10:10" type="bool" />
+> +    <field name="Tile Statistics Streamout Enable" dword="1" bits="12:12" type="bool" />
+> +    <field name="Multi Engine Mode" dword="1" bits="14:13" type="uint">
+> +      <value name="Single Engine Mode" value="0" />
+> +      <value name="Left Engine Mode" value="1" />
+> +      <value name="Right Engine Mode" value="2" />
+> +      <value name="Middle Engine Mode" value="3" />
+> +    </field>
+> +    <field name="Pipe Working Mode" dword="1" bits="16:15" type="uint">
+> +      <value name="Legacy Single Pipe" value="0" />
+> +      <value name="Encode Mode" value="2" />
+> +      <value name="Decode Scalable Mode" value="3" />
+> +    </field>
+> +    <field name="Tile Based Engine" dword="1" bits="17:17" type="bool" />
+> +    <field name="Motion Comp Memory Tracker Counter Enable" dword="1" bits="23:23" type="bool" />
+> +    <field name="Pic Status/Error Report ID" dword="3" bits="31:0" type="uint" />
+> +    <field name="AlcChickenbitRestrictSingleTileGroupInAFrame" dword="4" bits="4:4" type="bool" />
+> +    <field name="Phase Indicator" dword="5" bits="1:0" type="uint">
+> +      <value name="First Phase" value="0" />
+> +      <value name="Middle Phase" value="1" />
+> +      <value name="Last Phase" value="2" />
+> +    </field>
+> +    <field name="Downscaled Source Pixel Prefetch Length" dword="6" bits="4:2" type="uint" />
+> +    <field name="Downscaled Source Pixel Prefetch Enable" dword="6" bits="5:5" type="bool" />
+> +    <field name="Original Source Pixel Prefetch Length" dword="6" bits="9:7" type="uint" />
+> +    <field name="Original Source Pixel Prefetch Enable" dword="6" bits="10:10" type="bool" />
+> +  </instruction>
+> +  <instruction name="AVP_TILE_CODING" bias="2" length="7" engine="video">
+> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="5" />
+> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="21" />
+> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
+> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Frame Tile ID" dword="1" bits="11:0" type="uint" />
+> +    <field name="TG Tile Num" dword="1" bits="23:12" type="uint" />
+> +    <field name="Tile Group ID" dword="1" bits="31:24" type="uint" />
+> +    <field name="Tile Column Position in SB Unit" dword="2" bits="9:0" type="uint" />
+> +    <field name="Tile Row Position in SB Unit" dword="2" bits="25:16" type="uint" />
+> +    <field name="Tile Width in SB Minus 1" dword="3" bits="5:0" type="uint" />
+> +    <field name="Tile Height in SB Minus 1" dword="3" bits="25:16" type="uint" />
+> +    <field name="First Phase on Scalability Mode" dword="4" bits="0:0" type="bool" />
+> +    <field name="Last Phase on Scalability Mode" dword="4" bits="1:1" type="bool" />
+> +    <field name="AVP CRC Enable" dword="4" bits="2:2" type="bool" />
+> +    <field name="First Tile in a Frame" dword="4" bits="23:23" type="bool" />
+> +    <field name="Is Last Tile of Column Flag" dword="4" bits="25:25" type="bool" />
+> +    <field name="Is Last Tile of Row Flag" dword="4" bits="26:26" type="bool" />
+> +    <field name="Is Start Tile of Tile Group Flag" dword="4" bits="27:27" type="bool" />
+> +    <field name="Is End Tile of Tile Group Flag" dword="4" bits="28:28" type="bool" />
+> +    <field name="Is Last Tile of Frame Flag" dword="4" bits="29:29" type="bool" />
+> +    <field name="Disable CDF Update Flag" dword="4" bits="30:30" type="bool" />
+> +    <field name="Disable Frame Context Update Flag" dword="4" bits="31:31" type="bool" />
+> +    <field name="Number of Active BE Pipes" dword="5" bits="7:0" type="uint" />
+> +    <field name="Num of Tile Columns in Frame Minus 1" dword="5" bits="21:12" type="uint" />
+> +    <field name="Num of Tile Rows in Frame Minus 1" dword="5" bits="31:22" type="uint" />
+> +    <field name="Output Decoded Tile Column Position in SB Unit" dword="6" bits="9:0" type="uint" />
+> +    <field name="Output Decoded Tile Row Position in SB Unit" dword="6" bits="25:16" type="uint" />
+> +  </instruction>
+> +  <instruction name="CFE_STATE" bias="2" length="6" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
+> +    <field name="CFE SubOpcode Variant" dword="0" bits="17:16" type="uint" default="0" />
+> +    <field name="CFE SubOpcode" dword="0" bits="23:18" type="uint" default="0" />
+> +    <field name="Compute Command Opcode" dword="0" bits="26:24" type="uint" default="2" />
+> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Scratch Space Buffer" dword="1" bits="31:10" type="uint" />
+> +    <field name="Stack ID Control" dword="3" bits="1:0" type="uint">
+> +      <value name="StackIDs 2048" value="0" />
+> +      <value name="StackIDs 1024" value="1" />
+> +      <value name="StackIDs 512" value="2" />
+> +      <value name="StackIDs 256" value="3" />
+> +    </field>
+> +    <field name="Compute Dispatch All walker Enable" dword="3" bits="12:12" type="bool" />
+> +    <field name="Single Slice Dispatch CCS Mode" dword="3" bits="13:13" type="bool" />
+> +    <field name="Over Dispatch Control" dword="3" bits="15:14" type="uint">
+> +      <value name="Over Dispatch None" value="0" />
+> +      <value name="Over Dispatch Low" value="1" />
+> +      <value name="Over Dispatch Normal" value="2" />
+> +      <value name="Over Dispatch High" value="3" />
+> +    </field>
+> +    <field name="Maximum Number of Threads" dword="3" bits="31:16" type="uint" />
+> +  </instruction>
+> +  <instruction name="COMPUTE_WALKER" bias="2" length="40" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="38" />
+> +    <field name="Predicate Enable" dword="0" bits="8:8" type="bool" />
+> +    <field name="Workload Partition Enable" dword="0" bits="9:9" type="bool" />
+> +    <field name="Indirect Parameter Enable" dword="0" bits="10:10" type="bool" />
+> +    <field name="Systolic Mode Enable" dword="0" bits="14:14" type="bool" />
+> +    <field name="CFE SubOpcode Variant" dword="0" bits="17:15" type="uint" default="0" />
+> +    <field name="CFE SubOpcode" dword="0" bits="23:18" type="uint" default="2" />
+> +    <field name="Compute Command Opcode" dword="0" bits="26:24" type="uint" default="2" />
+> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="body" dword="1" bits="1248:0" type="COMPUTE_WALKER_BODY" />
+> +  </instruction>
+> +  <instruction name="EXECUTE_INDIRECT_DISPATCH" bias="2" length="45" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="43" />
+> +    <field name="Predicate Enable" dword="0" bits="8:8" type="bool" />
+> +    <field name="MOCS" dword="0" bits="15:12" type="uint" nonzero="true" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="1" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="4" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Max Count" dword="1" bits="31:0" type="uint" />
+> +    <field name="Count Buffer Indirect Enable" dword="2" bits="0:0" type="bool" />
+> +    <field name="Count Buffer Address" dword="2" bits="63:2" type="address" />
+> +    <field name="Argument Buffer Start Address" dword="4" bits="63:2" type="address" />
+> +    <field name="body" dword="6" bits="1247:0" type="COMPUTE_WALKER_BODY" />
+> +  </instruction>
+> +  <instruction name="MI_MEM_FENCE" bias="1" length="1">
+> +    <field name="Fence Type" dword="0" bits="1:0" type="uint" prefix="FENCE_TYPE">
+> +      <value name="RELEASE" value="0" />
+> +      <value name="ACQUIRE" value="1" />
+> +      <value name="MI_WRITE" value="3" />
+> +    </field>
+> +    <field name="MI Command Sub Opcode" dword="0" bits="22:17" type="uint" default="0" />
+> +    <field name="MI Command Opcode" dword="0" bits="28:23" type="uint" default="9" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="0" />
+> +  </instruction>
+> +  <instruction name="MI_SEMAPHORE_WAIT" bias="2" length="5">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
+> +    <field name="Compare Operation" dword="0" bits="14:12" type="uint" prefix="COMPARE">
+> +      <value name="SAD_GREATER_THAN_SDD" value="0" />
+> +      <value name="SAD_GREATER_THAN_OR_EQUAL_SDD" value="1" />
+> +      <value name="SAD_LESS_THAN_SDD" value="2" />
+> +      <value name="SAD_LESS_THAN_OR_EQUAL_SDD" value="3" />
+> +      <value name="SAD_EQUAL_SDD" value="4" />
+> +      <value name="SAD_NOT_EQUAL_SDD" value="5" />
+> +    </field>
+> +    <field name="Wait Mode" dword="0" bits="15:15" type="uint">
+> +      <value name="Polling Mode" value="1" />
+> +      <value name="Signal Mode" value="0" />
+> +    </field>
+> +    <field name="Register Poll Mode" dword="0" bits="16:16" type="bool" />
+> +    <field name="Indirect Semaphore Data Dword" dword="0" bits="17:17" type="bool" />
+> +    <field name="Workload Partition ID Offset Enable" dword="0" bits="18:18" type="bool" />
+> +    <field name="Memory Type" dword="0" bits="22:22" type="uint">
+> +      <value name="Per Process Graphics Address" value="0" />
+> +      <value name="Global Graphics Address" value="1" />
+> +    </field>
+> +    <field name="MI Command Opcode" dword="0" bits="28:23" type="uint" default="28" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="0" />
+> +    <field name="Semaphore Data Dword" dword="1" bits="31:0" type="uint" />
+> +    <field name="Semaphore Address" dword="2" bits="63:2" type="address" />
+> +    <field name="Wait Token Number" dword="4" bits="9:2" type="uint" />
+> +  </instruction>
+> +  <instruction name="PIPELINE_SELECT" bias="1" length="1" engine="render">
+> +    <field name="Pipeline Selection" dword="0" bits="1:0" type="uint">
+> +      <value name="3D" value="0" />
+> +      <value name="Media" value="1" />
+> +      <value name="GPGPU" value="2" />
+> +    </field>
+> +    <field name="Mask Bits" dword="0" bits="15:8" type="uint" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="4" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="1" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +  </instruction>
+> +  <instruction name="PIPE_CONTROL" bias="2" length="6" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
+> +    <field name="HDC Pipeline Flush Enable" dword="0" bits="9:9" type="bool" />
+> +    <field name="L3 Read Only Cache Invalidation Enable" dword="0" bits="10:10" type="bool" />
+> +    <field name="Untyped Data Port Cache Flush Enable" dword="0" bits="11:11" type="bool" />
+> +    <field name="CCS Flush Enable" dword="0" bits="13:13" type="bool" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="0" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="2" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Depth Cache Flush Enable" dword="1" bits="0:0" type="bool" />
+> +    <field name="Stall At Pixel Scoreboard" dword="1" bits="1:1" type="bool" />
+> +    <field name="State Cache Invalidation Enable" dword="1" bits="2:2" type="bool" />
+> +    <field name="Constant Cache Invalidation Enable" dword="1" bits="3:3" type="bool" />
+> +    <field name="VF Cache Invalidation Enable" dword="1" bits="4:4" type="bool" />
+> +    <field name="Force Device Coherency" dword="1" bits="5:5" type="bool" />
+> +    <field name="Pipe Control Flush Enable" dword="1" bits="7:7" type="bool" />
+> +    <field name="Notify Enable" dword="1" bits="8:8" type="bool" />
+> +    <field name="Indirect State Pointers Disable" dword="1" bits="9:9" type="bool" />
+> +    <field name="Texture Cache Invalidation Enable" dword="1" bits="10:10" type="bool" />
+> +    <field name="Instruction Cache Invalidate Enable" dword="1" bits="11:11" type="bool" />
+> +    <field name="Render Target Cache Flush Enable" dword="1" bits="12:12" type="bool" />
+> +    <field name="Depth Stall Enable" dword="1" bits="13:13" type="bool" />
+> +    <field name="Post Sync Operation" dword="1" bits="15:14" type="uint">
+> +      <value name="No Write" value="0" />
+> +      <value name="Write Immediate Data" value="1" />
+> +      <value name="Write PS Depth Count" value="2" />
+> +      <value name="Write Timestamp" value="3" />
+> +    </field>
+> +    <field name="PSS Stall Sync Enable" dword="1" bits="17:17" type="bool" />
+> +    <field name="TLB Invalidate" dword="1" bits="18:18" type="bool" />
+> +    <field name="Depth Stall Sync Enable" dword="1" bits="19:19" type="bool" />
+> +    <field name="Command Streamer Stall Enable" dword="1" bits="20:20" type="bool" />
+> +    <field name="Store Data Index" dword="1" bits="21:21" type="uint" />
+> +    <field name="Protected Memory Enable" dword="1" bits="22:22" type="bool" />
+> +    <field name="LRI Post Sync Operation" dword="1" bits="23:23" type="uint">
+> +      <value name="No LRI Operation" value="0" />
+> +      <value name="MMIO Write Immediate Data" value="1" />
+> +    </field>
+> +    <field name="Destination Address Type" dword="1" bits="24:24" type="uint" prefix="DAT">
+> +      <value name="PPGTT" value="0" />
+> +      <value name="GGTT" value="1" />
+> +    </field>
+> +    <field name="Flush LLC" dword="1" bits="26:26" type="bool" />
+> +    <field name="Protected Memory Disable" dword="1" bits="27:27" type="bool" />
+> +    <field name="Command Cache Invalidate Enable" dword="1" bits="29:29" type="bool" />
+> +    <field name="Address" dword="2" bits="47:2" type="address" />
+> +    <field name="Immediate Data" dword="4" bits="63:0" type="uint" />
+> +  </instruction>
+> +  <instruction name="RESOURCE_BARRIER" bias="2" length="5" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
+> +    <field name="Predicate Enable" dword="0" bits="24:24" type="bool" />
+> +    <field name="Opcode" dword="0" bits="28:26" type="uint" default="3">
+> +      <value name="RESOURCE_BARRIER" value="3" />
+> +    </field>
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="5" />
+> +    <field name="Resource Barrier Body" dword="1" bits="127:0" type="RESOURCE_BARRIER_BODY" />
+> +  </instruction>
+> +  <instruction name="STATE_BYTE_STRIDE" bias="2" length="2" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="0" />
+> +    <field name="Byte Stride Enable" dword="0" bits="8:8" type="bool" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Byte Stride" dword="1" bits="31:2" type="uint" />
+> +  </instruction>
+> +  <instruction name="STATE_COMPUTE_MODE" bias="2" length="3" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Z Pass Async Compute Thread Limit" dword="1" bits="2:0" type="uint" prefix="ZPACTL">
+> +      <value name="Max 60" value="0" />
+> +      <value name="Max 64" value="1" />
+> +      <value name="Max 56" value="2" />
+> +      <value name="Max 48" value="3" />
+> +      <value name="Max 40" value="4" />
+> +      <value name="Max 32" value="5" />
+> +    </field>
+> +    <field name="Z Async Throttle settings" dword="1" bits="4:3" type="uint" prefix="ZATS">
+> +      <value name="Defer to Async Compute Thread Limit" value="0" />
+> +      <value name="Max 32" value="1" />
+> +      <value name="Max 40" value="2" />
+> +      <value name="Max 48" value="3" />
+> +    </field>
+> +    <field name="Async Compute Thread Limit" dword="1" bits="9:7" type="uint" prefix="ACTL">
+> +      <value name="Disabled" value="0" />
+> +      <value name="Max 2" value="1" />
+> +      <value name="Max 8" value="2" />
+> +      <value name="Max 16" value="3" />
+> +      <value name="Max 24" value="4" />
+> +      <value name="Max 32" value="5" />
+> +      <value name="Max 40" value="6" />
+> +      <value name="Max 48" value="7" />
+> +    </field>
+> +    <field name="EU Thread Scheduling Mode Override" dword="1" bits="14:13" type="uint" />
+> +    <field name="Large GRF Mode" dword="1" bits="15:15" type="bool" />
+> +    <field name="Z Pass Async Compute Thread Limit Mask" dword="1" bits="18:16" type="uint" />
+> +    <field name="Mask1" dword="1" bits="31:16" type="uint" />
+> +    <field name="Z Async Throttle settings Mask" dword="1" bits="20:19" type="uint" />
+> +    <field name="Async Compute Thread Limit Mask" dword="1" bits="25:23" type="uint" />
+> +    <field name="EU Thread Scheduling Mode Override Mask" dword="1" bits="30:29" type="uint" />
+> +    <field name="Large GRF Mode Mask" dword="1" bits="31:31" type="bool" />
+> +    <field name="Midthread Preemption Delay Timer" dword="2" bits="2:0" type="uint">
+> +      <value name="MTP_TIMER_VAL_0" value="0" />
+> +      <value name="MTP_TIMER_VAL_50" value="1" />
+> +      <value name="MTP_TIMER_VAL_100" value="2" />
+> +      <value name="MTP_TIMER_VAL_150" value="3" />
+> +    </field>
+> +    <field name="Midthread Preemption Overdispatch Thread group count" dword="2" bits="4:3" type="uint">
+> +      <value name="OD_TG_M2" value="0" />
+> +      <value name="OD_TG_M4" value="1" />
+> +      <value name="OD_TG_M8" value="2" />
+> +      <value name="OD_TG_M16" value="3" />
+> +    </field>
+> +    <field name="Midthread Preemption Overdispatch Test mode" dword="2" bits="5:5" type="uint">
+> +      <value name="Regular" value="0" />
+> +      <value name="Test mode" value="1" />
+> +    </field>
+> +    <field name="UAV Coherency Mode" dword="2" bits="6:6" type="uint">
+> +      <value name="Drain DataPort Mode" value="0" />
+> +      <value name="Flush Dataport L1" value="1" />
+> +    </field>
+> +    <field name="Memory allocation for Scratch and Midthread Preemption buffers" dword="2" bits="11:11" type="uint">
+> +      <value name="Full" value="0" />
+> +      <value name="Min" value="1" />
+> +    </field>
+> +    <field name="Midthread Preemption Delay Timer Mask" dword="2" bits="18:16" type="uint" />
+> +    <field name="Mask2" dword="2" bits="31:16" type="uint" />
+> +    <field name="Midthread Preemption Overdispatch Thread group count Mask" dword="2" bits="20:19" type="uint" />
+> +    <field name="Midthread Preemption Overdispatch Test mode Mask" dword="2" bits="21:21" type="uint" />
+> +    <field name="UAV Coherency Mode Mask" dword="2" bits="22:22" type="uint" />
+> +    <field name="Memory allocation for Scratch and Midthread Preemption buffers Mask" dword="2" bits="27:27" type="uint" />
+> +  </instruction>
+> +  <instruction name="STATE_SYSTEM_MEM_FENCE_ADDRESS" bias="2" length="3">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
+> +    <field name="Context Restore Invalid" dword="0" bits="15:15" type="bool" default="0" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="9" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="System Memory Fence Address" dword="1" bits="63:12" type="address" />
+> +  </instruction>
+> +  <instruction name="XY_BLOCK_COPY_BLT" bias="2" length="22" engine="blitter">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="20" />
+> +    <field name="Special Mode of Operation" dword="0" bits="13:12" type="uint">
+> +      <value name="NONE" value="0" />
+> +      <value name="FULL_RESOLVE" value="1" />
+> +      <value name="PARTIAL_RESOLVE" value="2" />
+> +    </field>
+> +    <field name="Color Depth" dword="0" bits="21:19" type="uint" prefix="XY_BPP">
+> +      <value name="8_BIT" value="0" />
+> +      <value name="16_BIT" value="1" />
+> +      <value name="32_BIT" value="2" />
+> +      <value name="64_BIT" value="3" />
+> +      <value name="96_BIT" value="4" />
+> +      <value name="128_BIT" value="5" />
+> +    </field>
+> +    <field name="Opcode" dword="0" bits="28:22" type="uint" default="0x41" />
+> +    <field name="Client" dword="0" bits="31:29" type="uint" default="2" />
+> +    <field name="Destination Pitch" dword="1" bits="17:0" type="uint" />
+> +    <field name="Destination Encrypt En" dword="1" bits="21:21" type="uint" />
+> +    <field name="Destination MOCS index" dword="1" bits="27:24" type="uint" nonzero="true" />
+> +    <field name="Destination Tiling" dword="1" bits="31:30" type="uint" prefix="XY_TILE">
+> +      <value name="LINEAR" value="0" />
+> +      <value name="X" value="1" />
+> +      <value name="4" value="2" />
+> +      <value name="64" value="3" />
+> +    </field>
+> +    <field name="Destination X1" dword="2" bits="15:0" type="int" />
+> +    <field name="Destination Y1" dword="2" bits="31:16" type="int" />
+> +    <field name="Destination X2" dword="3" bits="15:0" type="int" />
+> +    <field name="Destination Y2" dword="3" bits="31:16" type="int" />
+> +    <field name="Destination Base Address" dword="4" bits="63:0" type="address" />
+> +    <field name="Destination X Offset" dword="6" bits="13:0" type="uint" />
+> +    <field name="Destination Y Offset" dword="6" bits="29:16" type="uint" />
+> +    <field name="Destination Target Memory" dword="6" bits="31:31" type="uint" prefix="XY_MEM">
+> +      <value name="LOCAL" value="0" />
+> +      <value name="SYSTEM" value="1" />
+> +    </field>
+> +    <field name="Source X1" dword="7" bits="15:0" type="int" />
+> +    <field name="Source Y1" dword="7" bits="31:16" type="int" />
+> +    <field name="Source Pitch" dword="8" bits="17:0" type="uint" />
+> +    <field name="Source Encrypt En" dword="8" bits="21:21" type="bool" />
+> +    <field name="Source MOCS index" dword="8" bits="27:24" type="uint" />
+> +    <field name="Source Tiling" dword="8" bits="31:30" type="uint" prefix="XY_TILE">
+> +      <value name="LINEAR" value="0" />
+> +      <value name="X" value="1" />
+> +      <value name="4" value="2" />
+> +      <value name="64" value="3" />
+> +    </field>
+> +    <field name="Source Base Address" dword="9" bits="63:0" type="address" />
+> +    <field name="Source X Offset" dword="11" bits="13:0" type="uint" />
+> +    <field name="Source Y Offset" dword="11" bits="29:16" type="uint" />
+> +    <field name="Source Target Memory" dword="11" bits="31:31" type="uint" prefix="XY_MEM">
+> +      <value name="LOCAL" value="0" />
+> +      <value name="SYSTEM" value="1" />
+> +    </field>
+> +    <field name="Source Compression Format" dword="12" bits="4:0" type="uint" />
+> +    <field name="Source Clear Value Enable" dword="12" bits="5:5" type="bool" />
+> +    <field name="Source Clear Address" dword="12" bits="47:6" type="address" />
+> +    <field name="Destination Compression Format" dword="14" bits="4:0" type="uint" />
+> +    <field name="Destination Clear Value Enable" dword="14" bits="5:5" type="bool" />
+> +    <field name="Destination Clear Address" dword="14" bits="47:6" type="address" />
+> +    <field name="Destination Surface Height" dword="16" bits="13:0" type="uint" />
+> +    <field name="Destination Surface Width" dword="16" bits="27:14" type="uint" />
+> +    <field name="Destination Surface Type" dword="16" bits="31:29" type="uint" prefix="XY_SURFTYPE">
+> +      <value name="1D" value="0" />
+> +      <value name="2D" value="1" />
+> +      <value name="3D" value="2" />
+> +      <value name="CUBE" value="3" />
+> +    </field>
+> +    <field name="Destination LOD" dword="17" bits="3:0" type="uint" />
+> +    <field name="Destination Surface QPitch" dword="17" bits="18:4" type="uint" />
+> +    <field name="Destination Surface Depth" dword="17" bits="31:21" type="uint" />
+> +    <field name="Destination Horizontal Align" dword="18" bits="1:0" type="uint">
+> +      <value name="HALIGN_16" value="0" />
+> +      <value name="HALIGN_32" value="1" />
+> +      <value name="HALIGN_64" value="2" />
+> +      <value name="HALIGN_128" value="3" />
+> +    </field>
+> +    <field name="Destination Vertical Align" dword="18" bits="4:3" type="uint">
+> +      <value name="VALIGN_4" value="1" />
+> +      <value name="VALIGN_8" value="2" />
+> +      <value name="VALIGN_16" value="3" />
+> +    </field>
+> +    <field name="Destination Mip Tail Start LOD" dword="18" bits="11:8" type="uint" />
+> +    <field name="Destination Array Index" dword="18" bits="31:21" type="uint" />
+> +    <field name="Source Surface Height" dword="19" bits="13:0" type="uint" />
+> +    <field name="Source Surface Width" dword="19" bits="27:14" type="uint" />
+> +    <field name="Source Surface Type" dword="19" bits="31:29" type="uint" prefix="XY_SURFTYPE">
+> +      <value name="1D" value="0" />
+> +      <value name="2D" value="1" />
+> +      <value name="3D" value="2" />
+> +      <value name="CUBE" value="3" />
+> +    </field>
+> +    <field name="Source LOD" dword="20" bits="3:0" type="uint" />
+> +    <field name="Source Surface QPitch" dword="20" bits="18:4" type="uint" />
+> +    <field name="Source Surface Depth" dword="20" bits="31:21" type="uint" />
+> +    <field name="Source Horizontal Align" dword="21" bits="1:0" type="uint">
+> +      <value name="HALIGN_16" value="0" />
+> +      <value name="HALIGN_32" value="1" />
+> +      <value name="HALIGN_64" value="2" />
+> +      <value name="HALIGN_128" value="3" />
+> +    </field>
+> +    <field name="Source Vertical Align" dword="21" bits="4:3" type="uint">
+> +      <value name="VALIGN_4" value="1" />
+> +      <value name="VALIGN_8" value="2" />
+> +      <value name="VALIGN_16" value="3" />
+> +    </field>
+> +    <field name="Source Mip Tail Start LOD" dword="21" bits="11:8" type="uint" />
+> +    <field name="Source Array Index" dword="21" bits="31:21" type="uint" />
+> +  </instruction>
+> +  <instruction name="XY_FAST_COLOR_BLT" bias="2" length="16" engine="blitter">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="14" />
+> +    <field name="Number of Multisamples" dword="0" bits="11:9" type="uint">
+> +      <value name="MULTISAMPLECOUNT_1" value="0" />
+> +      <value name="MULTISAMPLECOUNT_2" value="1" />
+> +      <value name="MULTISAMPLECOUNT_4" value="2" />
+> +      <value name="MULTISAMPLECOUNT_8" value="3" />
+> +      <value name="MULTISAMPLECOUNT_16" value="4" />
+> +    </field>
+> +    <field name="Special Mode of Operation" dword="0" bits="13:12" type="uint">
+> +      <value name="NONE" value="0" />
+> +      <value name="USE_AUX_SPECIAL_OPERATIONS_MODE" value="1" />
+> +    </field>
+> +    <field name="Color Depth" dword="0" bits="21:19" type="uint" prefix="XY_BPP">
+> +      <value name="8_BIT" value="0" />
+> +      <value name="16_BIT" value="1" />
+> +      <value name="32_BIT" value="2" />
+> +      <value name="64_BIT" value="3" />
+> +      <value name="96_BIT" value="4" />
+> +      <value name="128_BIT" value="5" />
+> +    </field>
+> +    <field name="Instruction Target(Opcode)" dword="0" bits="28:22" type="uint" default="68">
+> +      <value name="XY_FAST_COLOR_BLT" value="68" />
+> +    </field>
+> +    <field name="Client" dword="0" bits="31:29" type="uint" default="2">
+> +      <value name="2D Processor" value="2" />
+> +    </field>
+> +    <field name="Destination Pitch" dword="1" bits="17:0" type="uint" />
+> +    <field name="Destination Encrypt En" dword="1" bits="21:21" type="bool" />
+> +    <field name="Destination MOCS index" dword="1" bits="27:24" type="uint" />
+> +    <field name="Destination Tiling" dword="1" bits="31:30" type="uint" prefix="XY_TILE">
+> +      <value name="LINEAR" value="0" />
+> +      <value name="X" value="1" />
+> +      <value name="4" value="2" />
+> +      <value name="64" value="3" />
+> +    </field>
+> +    <field name="Destination X1" dword="2" bits="15:0" type="int" />
+> +    <field name="Destination Y1" dword="2" bits="31:16" type="int" />
+> +    <field name="Destination X2" dword="3" bits="15:0" type="int" />
+> +    <field name="Destination Y2" dword="3" bits="31:16" type="int" />
+> +    <field name="Destination Base Address" dword="4" bits="63:0" type="address" />
+> +    <field name="Destination X Offset" dword="6" bits="13:0" type="uint" />
+> +    <field name="Destination Y Offset" dword="6" bits="29:16" type="uint" />
+> +    <field name="Destination Target Memory" dword="6" bits="31:31" type="uint">
+> +      <value name="LOCAL_MEM" value="0" />
+> +      <value name="SYSTEM_MEM" value="1" />
+> +    </field>
+> +    <group count="4" dword="7" size="32">
+> +      <field name="Fill Color" dword="0" bits="31:0" type="uint" />
+> +    </group>
+> +    <field name="Destination Compression Format" dword="11" bits="3:0" type="uint" />
+> +    <field name="Surface Format" dword="12" bits="8:0" type="uint" />
+> +    <field name="AUX_SPECIAL_OPERATIONS_MODE" dword="12" bits="31:29" type="uint">
+> +      <value name="FAST_CLEAR_HW_FORMAT_CONVERSION" value="0" />
+> +      <value name="FAST_CLEAR_BYPASS_HW_FORMAT_CONVERSION" value="1" />
+> +      <value name="FORCE_UNCOMPRESS" value="2" />
+> +    </field>
+> +    <field name="Destination Surface Height" dword="13" bits="13:0" type="uint" />
+> +    <field name="Destination Surface Width" dword="13" bits="27:14" type="uint" />
+> +    <field name="Destination Surface Type" dword="13" bits="31:29" type="uint" prefix="XY_SURFTYPE">
+> +      <value name="1D" value="0" />
+> +      <value name="2D" value="1" />
+> +      <value name="3D" value="2" />
+> +      <value name="CUBE" value="3" />
+> +    </field>
+> +    <field name="Destination LOD" dword="14" bits="3:0" type="uint" />
+> +    <field name="Destination Surface QPitch" dword="14" bits="18:4" type="uint" />
+> +    <field name="Destination Surface Depth" dword="14" bits="31:21" type="uint" />
+> +    <field name="Destination Horizontal Align" dword="15" bits="1:0" type="uint">
+> +      <value name="HALIGN_16" value="0" />
+> +      <value name="HALIGN_32" value="1" />
+> +      <value name="HALIGN_64" value="2" />
+> +      <value name="HALIGN_128" value="3" />
+> +    </field>
+> +    <field name="Destination Vertical Align" dword="15" bits="4:3" type="uint">
+> +      <value name="VALIGN_4" value="1" />
+> +      <value name="VALIGN_8" value="2" />
+> +      <value name="VALIGN_16" value="3" />
+> +    </field>
+> +    <field name="Destination Mip Tail Start LOD" dword="15" bits="11:8" type="uint" />
+> +    <field name="Destination Depth/Stencil Resource" dword="15" bits="18:18" type="bool" />
+> +    <field name="Destination Array Index" dword="15" bits="31:21" type="uint" />
+> +  </instruction>
+> +  <register name="BLT_TRTT_VA_RANGE" length="1" num="0x4484">
+> +    <field name="TR-VA Base" dword="0" bits="12:0" type="uint" />
+> +  </register>
+> +  <register name="CACHE_MODE_0" length="1" num="0x7000">
+> +    <field name="Hierarchical Z RAW Stall Optimization Disable" dword="0" bits="2:2" type="bool" />
+> +    <field name="Hierarchical Z Disable" dword="0" bits="3:3" type="bool" />
+> +    <field name="Late Z Alloc Disable" dword="0" bits="4:4" type="bool" />
+> +    <field name="Msaa Fast Clear Enabled" dword="0" bits="5:5" type="bool" />
+> +    <field name="Depth Related Cache Pipelined Flush Disable" dword="0" bits="8:8" type="bool" />
+> +    <field name="Sampler L2 TLB Prefetch Enable" dword="0" bits="9:9" type="bool" />
+> +    <field name="RCZ PMA Not-Promoted Allocation stall optimization Disable due to change in depth parameters" dword="0" bits="10:10" type="uint" />
+> +    <field name="Disable Repacking for Compression" dword="0" bits="15:15" type="bool" />
+> +    <field name="Hierarchical Z RAW Stall Optimization Disable Mask" dword="0" bits="18:18" type="bool" />
+> +    <field name="Hierarchical Z Disable Mask" dword="0" bits="19:19" type="bool" />
+> +    <field name="Late Z Alloc Disable Mask" dword="0" bits="20:20" type="bool" />
+> +    <field name="Msaa Fast Clear Enabled Mask" dword="0" bits="21:21" type="bool" />
+> +    <field name="Depth Related Cache Pipelined Flush Disable Mask" dword="0" bits="24:24" type="bool" />
+> +    <field name="Sampler L2 TLB Prefetch Enable Mask" dword="0" bits="25:25" type="bool" />
+> +    <field name="RCZ PMA Not-Promoted Allocation stall optimization Disable due to change in depth parameters Mask" dword="0" bits="26:26" type="bool" />
+> +    <field name="Disable Repacking for Compression Mask" dword="0" bits="31:31" type="bool" />
+> +  </register>
+> +  <register name="COMP_CTX0_TRTT_VA_RANGE" length="1" num="0x4584">
+> +    <field name="TR-VA Base" dword="0" bits="12:0" type="uint" />
+> +  </register>
+> +  <register name="CS_CHICKEN1" length="1" num="0x2580">
+> +    <field name="Media And GPGPU Pre-emption Control" dword="0" bits="2:1" type="uint">
+> +      <value name="Mid-thread Pre-emption" value="0" />
+> +      <value name="Thread Group Pre-emption" value="1" />
+> +      <value name="Command Level Pre-emption" value="2" />
+> +    </field>
+> +    <field name="Disable Preemption and High Priority Pausing due to 3DPRIMITIVE Command" dword="0" bits="10:10" type="bool" />
+> +    <field name="Media And GPGPU Pre-emption Control Mask" dword="0" bits="18:17" type="uint" />
+> +    <field name="Disable Preemption and High Priority Pausing due to 3DPRIMITIVE Command Mask" dword="0" bits="26:26" type="bool" />
+> +  </register>
+> +  <register name="FF_MODE" length="1" num="0x6210">
+> +    <field name="Mesh Shader Autostrip Disable" dword="0" bits="15:15" type="bool" />
+> +    <field name="Mesh Shader Partial Autostrip Disable" dword="0" bits="16:16" type="bool" />
+> +    <field name="TE Autostrip Disable" dword="0" bits="31:31" type="bool" />
+> +  </register>
+> +  <register name="GFX_TRTT_VA_RANGE" length="1" num="0x4404">
+> +    <field name="TR-VA Base" dword="0" bits="12:0" type="uint" />
+> +  </register>
+> +  <register name="VFL_SCRATCH_PAD" length="1" num="0x62a8">
+> +    <field name="Autostrip Disable" dword="0" bits="6:6" type="uint" />
+> +    <field name="Partial Autostrip Disable" dword="0" bits="9:9" type="uint" />
+> +    <field name="Autostrip Disable Mask" dword="0" bits="22:22" type="bool" />
+> +    <field name="Partial Autostrip Disable Mask" dword="0" bits="25:25" type="bool" />
+> +  </register>
+> +</genxml>
+> diff --git a/lib/intel/genxml/xe3.xml b/lib/intel/genxml/xe3.xml
+> new file mode 100644
+> index 000000000..9b2edcbbc
+> --- /dev/null
+> +++ b/lib/intel/genxml/xe3.xml
+> @@ -0,0 +1,816 @@
+> +<?xml version='1.0' encoding='utf-8'?>
+> +<genxml name="XE3" gen="30">
+> +  <import name="xe2.xml">
+> +    <exclude name="CPS_STATE" />
+> +    <exclude name="3DSTATE_CPS_POINTERS" />
+> +  </import>
+> +  <enum name="STATE_CPS_COMBINER_OPCODE" prefix="CPS_COMB_OP">
+> +    <value name="PASSTHROUGH" value="0" />
+> +    <value name="OVERRIDE" value="1" />
+> +    <value name="HIGH_QUALITY" value="2" />
+> +    <value name="LOW_QUALITY" value="3" />
+> +    <value name="RELATIVE" value="4" />
+> +  </enum>
+> +  <enum name="STATE_CPS_SIZE">
+> +    <value name="CPSIZE_1" value="0" />
+> +    <value name="CPSIZE_2" value="1" />
+> +    <value name="CPSIZE_4" value="2" />
+> +  </enum>
+> +  <struct name="BLEND_STATE_ENTRY" length="2">
+> +    <field name="Write Disable Blue" dword="0" bits="0:0" type="bool" />
+> +    <field name="Write Disable Green" dword="0" bits="1:1" type="bool" />
+> +    <field name="Write Disable Red" dword="0" bits="2:2" type="bool" />
+> +    <field name="Write Disable Alpha" dword="0" bits="3:3" type="bool" />
+> +    <field name="Alpha Blend Function" dword="0" bits="7:5" type="3D_Color_Buffer_Blend_Function" />
+> +    <field name="Destination Alpha Blend Factor" dword="0" bits="12:8" type="3D_Color_Buffer_Blend_Factor" />
+> +    <field name="Source Alpha Blend Factor" dword="0" bits="17:13" type="3D_Color_Buffer_Blend_Factor" />
+> +    <field name="Color Blend Function" dword="0" bits="20:18" type="3D_Color_Buffer_Blend_Function" />
+> +    <field name="Destination Blend Factor" dword="0" bits="25:21" type="3D_Color_Buffer_Blend_Factor" />
+> +    <field name="Source Blend Factor" dword="0" bits="30:26" type="3D_Color_Buffer_Blend_Factor" />
+> +    <field name="Color Buffer Blend Enable" dword="0" bits="31:31" type="bool" />
+> +    <field name="Post-Blend Color Clamp Enable" dword="1" bits="0:0" type="bool" />
+> +    <field name="Pre-Blend Color Clamp Enable" dword="1" bits="1:1" type="bool" />
+> +    <field name="Color Clamp Range" dword="1" bits="3:2" type="uint">
+> +      <value name="COLORCLAMP_UNORM" value="0" />
+> +      <value name="COLORCLAMP_SNORM" value="1" />
+> +      <value name="COLORCLAMP_RTFORMAT" value="2" />
+> +    </field>
+> +    <field name="Pre-Blend Source Only Clamp Enable" dword="1" bits="4:4" type="bool" />
+> +    <field name="Simple Float Blend Enable" dword="1" bits="5:5" type="bool" />
+> +    <field name="Logic Op Function" dword="1" bits="30:27" type="3D_Logic_Op_Function" />
+> +    <field name="Logic Op Enable" dword="1" bits="31:31" type="bool" />
+> +  </struct>
+> +  <struct name="INTERFACE_DESCRIPTOR_DATA" length="8">
+> +    <field name="Kernel Start Pointer" dword="0" bits="31:6" type="offset" />
+> +    <field name="Software Exception Enable" dword="2" bits="7:7" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="2" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="2" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="2" bits="18:18" type="bool" />
+> +    <field name="Denorm Mode" dword="2" bits="19:19" type="uint">
+> +      <value name="Ftz" value="0" />
+> +      <value name="SetByKernel" value="1" />
+> +    </field>
+> +    <field name="Thread Preemption" dword="2" bits="20:20" type="bool" default="1" />
+> +    <field name="Registers Per Thread" dword="2" bits="30:26" type="uint" />
+> +    <field name="Sampler Count" dword="3" bits="4:2" type="uint">
+> +      <value name="No samplers used" value="0" />
+> +      <value name="Between 1 and 4 samplers used" value="1" />
+> +      <value name="Between 5 and 8 samplers used" value="2" />
+> +      <value name="Between 9 and 12 samplers used" value="3" />
+> +      <value name="Between 13 and 16 samplers used" value="4" />
+> +    </field>
+> +    <field name="Sampler State Pointer" dword="3" bits="31:5" type="offset" />
+> +    <field name="Binding Table Entry Count" dword="4" bits="4:0" type="uint" />
+> +    <field name="Binding Table Pointer" dword="4" bits="20:5" type="offset" />
+> +    <field name="Number of Threads in GPGPU Thread Group" dword="5" bits="9:0" type="uint" />
+> +    <field name="Thread group forward progress guarantee" dword="5" bits="13:13" type="bool" />
+> +    <field name="Shared Local Memory Size" dword="5" bits="20:16" type="uint">
+> +      <value name="Encodes 0K" value="0" />
+> +      <value name="Encodes 1K" value="1" />
+> +      <value name="Encodes 2K" value="2" />
+> +      <value name="Encodes 4K" value="3" />
+> +      <value name="Encodes 8K" value="4" />
+> +      <value name="Encodes 16K" value="5" />
+> +      <value name="Encodes 32K" value="6" />
+> +      <value name="Encodes 64K" value="7" />
+> +      <value name="Encodes 96K" value="10" />
+> +      <value name="Encodes 128K" value="11" />
+> +      <value name="Encodes 192K" value="12" />
+> +      <value name="Encodes 256K" value="13" />
+> +      <value name="Encodes 384K" value="14" />
+> +    </field>
+> +    <field name="Rounding Mode" dword="5" bits="23:22" type="uint">
+> +      <value name="RTNE" value="0" />
+> +      <value name="RU" value="1" />
+> +      <value name="RD" value="2" />
+> +      <value name="RTZ" value="3" />
+> +    </field>
+> +    <field name="Thread Group Dispatch Size" dword="5" bits="27:26" type="uint">
+> +      <value name="TG size 8" value="0" />
+> +      <value name="TG size 4" value="1" />
+> +      <value name="TG size 2" value="2" />
+> +      <value name="TG size 1" value="3" />
+> +    </field>
+> +    <field name="Number Of Barriers" dword="5" bits="30:28" type="uint" prefix="BARRIER_SIZE">
+> +      <value name="NONE" value="0" />
+> +      <value name="B1" value="1" />
+> +      <value name="B2" value="2" />
+> +      <value name="B4" value="3" />
+> +      <value name="B8" value="4" />
+> +      <value name="B16" value="5" />
+> +      <value name="B24" value="6" />
+> +      <value name="B32" value="7" />
+> +    </field>
+> +    <field name="BTD Mode" dword="5" bits="31:31" type="uint" />
+> +    <field name="Preferred SLM Allocation Size" dword="7" bits="3:0" type="PREF_SLM_ALLOCATION_SIZE" />
+> +  </struct>
+> +  <struct name="COMPUTE_WALKER_BODY" length="39">
+> +    <field name="Indirect Data Length" dword="1" bits="16:0" type="uint" />
+> +    <field name="L3 prefetch disable" dword="1" bits="17:17" type="bool" />
+> +    <field name="Partition Dispatch Parameter" dword="1" bits="29:18" type="uint" />
+> +    <field name="Partition Type" dword="1" bits="31:30" type="uint">
+> +      <value name="PartitionX" value="1" />
+> +      <value name="PartitionY" value="2" />
+> +      <value name="PartitionZ" value="3" />
+> +    </field>
+> +    <field name="Indirect Data Start Address" dword="2" bits="31:6" type="offset" />
+> +    <field name="Compute Dispatch All walker Enable" dword="3" bits="0:0" type="uint">
+> +      <value name="Disabled" value="0" />
+> +      <value name="Enabled" value="1" />
+> +    </field>
+> +    <field name="Thread Group Batch Size" dword="3" bits="4:3" type="uint">
+> +      <value name="TG_BATCH_1" value="0" />
+> +      <value name="TG_BATCH_2" value="1" />
+> +      <value name="TG_BATCH_4" value="2" />
+> +      <value name="TG_BATCH_8" value="3" />
+> +    </field>
+> +    <field name="Dispatch Walk Order" dword="3" bits="6:5" type="uint">
+> +      <value name="Linear Walk" value="0" />
+> +      <value name="Y order walk" value="1" />
+> +      <value name="Morton Walk" value="2" />
+> +    </field>
+> +    <field name="Message SIMD" dword="3" bits="18:17" type="uint">
+> +      <value name="SIMT16" value="1" />
+> +      <value name="SIMT32" value="2" />
+> +    </field>
+> +    <field name="Tile Layout" dword="3" bits="21:19" type="uint">
+> +      <value name="Linear" value="0" />
+> +      <value name="TileY 32bpe" value="1" />
+> +      <value name="TileY 64bpe" value="2" />
+> +      <value name="TileY 128bpe" value="3" />
+> +    </field>
+> +    <field name="Walk Order" dword="3" bits="24:22" type="uint">
+> +      <value name="Walk 012" value="0" />
+> +      <value name="Walk 021" value="1" />
+> +      <value name="Walk 102" value="2" />
+> +      <value name="Walk 120" value="3" />
+> +      <value name="Walk 201" value="4" />
+> +      <value name="Walk 210" value="5" />
+> +    </field>
+> +    <field name="Emit Inline Parameter" dword="3" bits="25:25" type="bool" />
+> +    <field name="Emit Local" dword="3" bits="28:26" type="uint">
+> +      <value name="Emit None" value="0" />
+> +      <value name="Emit X" value="1" />
+> +      <value name="Emit XY" value="3" />
+> +      <value name="Emit XYZ" value="7" />
+> +    </field>
+> +    <field name="Generate Local ID" dword="3" bits="29:29" type="bool" />
+> +    <field name="SIMD Size" dword="3" bits="31:30" type="uint">
+> +      <value name="SIMT16" value="1" />
+> +      <value name="SIMT32" value="2" />
+> +    </field>
+> +    <field name="Execution Mask" dword="4" bits="31:0" type="uint" />
+> +    <field name="Local X Maximum" dword="5" bits="9:0" type="uint" />
+> +    <field name="Local Y Maximum" dword="5" bits="19:10" type="uint" />
+> +    <field name="Local Z Maximum" dword="5" bits="29:20" type="uint" />
+> +    <field name="Thread Group ID X Dimension" dword="6" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Y Dimension" dword="7" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Z Dimension" dword="8" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Starting X" dword="9" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Starting Y" dword="10" bits="31:0" type="uint" />
+> +    <field name="Thread Group ID Starting Z" dword="11" bits="31:0" type="uint" />
+> +    <field name="Partition ID" dword="12" bits="31:0" type="uint" />
+> +    <field name="Partition Size" dword="13" bits="31:0" type="uint" />
+> +    <field name="Preempt X" dword="14" bits="31:0" type="uint" />
+> +    <field name="Preempt Y" dword="15" bits="31:0" type="uint" />
+> +    <field name="Preempt Z" dword="16" bits="31:0" type="uint" />
+> +    <field name="Walker ID" dword="17" bits="3:0" type="uint" />
+> +    <field name="Over dispatch TG count" dword="17" bits="23:8" type="uint" />
+> +    <field name="Interface Descriptor" dword="18" bits="255:0" type="INTERFACE_DESCRIPTOR_DATA" />
+> +    <field name="Post Sync" dword="26" bits="159:0" type="POSTSYNC_DATA" />
+> +    <group count="8" dword="31" size="32">
+> +      <field name="Inline Data" dword="0" bits="31:0" type="uint" />
+> +    </group>
+> +  </struct>
+> +  <struct name="SAMPLER_STATE" length="4">
+> +    <field name="Anisotropic Algorithm" dword="0" bits="0:0" type="uint">
+> +      <value name="LEGACY" value="0" />
+> +      <value name="EWA Approximation" value="1" />
+> +    </field>
+> +    <field name="Texture LOD Bias" dword="0" bits="13:1" type="s4.8" />
+> +    <field name="Min Mode Filter" dword="0" bits="16:14" type="uint" prefix="MAPFILTER">
+> +      <value name="NEAREST" value="0" />
+> +      <value name="LINEAR" value="1" />
+> +      <value name="ANISOTROPIC" value="2" />
+> +      <value name="ANISOTROPIC_FAST" value="3" />
+> +      <value name="MONO" value="6" />
+> +    </field>
+> +    <field name="Mag Mode Filter" dword="0" bits="19:17" type="uint" prefix="MAPFILTER">
+> +      <value name="NEAREST" value="0" />
+> +      <value name="LINEAR" value="1" />
+> +      <value name="ANISOTROPIC" value="2" />
+> +      <value name="ANISOTROPIC_FAST" value="3" />
+> +      <value name="MONO" value="6" />
+> +    </field>
+> +    <field name="Mip Mode Filter" dword="0" bits="21:20" type="uint" prefix="MIPFILTER">
+> +      <value name="NONE" value="0" />
+> +      <value name="NEAREST" value="1" />
+> +      <value name="LINEAR" value="3" />
+> +    </field>
+> +    <field name="Coarse LOD Quality Mode" dword="0" bits="26:22" type="uint" />
+> +    <field name="LOD PreClamp Mode" dword="0" bits="28:27" type="uint" prefix="CLAMP_MODE">
+> +      <value name="NONE" value="0" />
+> +      <value name="OGL" value="2" />
+> +    </field>
+> +    <field name="Texture Border Color Mode" dword="0" bits="29:29" type="uint">
+> +      <value name="DX10/OGL" value="0" />
+> +      <value name="DX9" value="1" />
+> +    </field>
+> +    <field name="CPS LOD Compensation Enable" dword="0" bits="30:30" type="bool" />
+> +    <field name="Sampler Disable" dword="0" bits="31:31" type="bool" />
+> +    <field name="Cube Surface Control Mode" dword="1" bits="0:0" type="uint">
+> +      <value name="PROGRAMMED" value="0" />
+> +      <value name="OVERRIDE" value="1" />
+> +    </field>
+> +    <field name="Shadow Function" dword="1" bits="3:1" type="uint" prefix="PREFILTEROP">
+> +      <value name="ALWAYS" value="0" />
+> +      <value name="NEVER" value="1" />
+> +      <value name="LESS" value="2" />
+> +      <value name="EQUAL" value="3" />
+> +      <value name="LEQUAL" value="4" />
+> +      <value name="GREATER" value="5" />
+> +      <value name="NOTEQUAL" value="6" />
+> +      <value name="GEQUAL" value="7" />
+> +    </field>
+> +    <field name="ChromaKey Mode" dword="1" bits="4:4" type="uint">
+> +      <value name="KEYFILTER_KILL_ON_ANY_MATCH" value="0" />
+> +      <value name="KEYFILTER_REPLACE_BLACK" value="1" />
+> +    </field>
+> +    <field name="ChromaKey Index" dword="1" bits="6:5" type="uint" />
+> +    <field name="ChromaKey Enable" dword="1" bits="7:7" type="bool" />
+> +    <field name="Max LOD" dword="1" bits="19:8" type="u4.8" />
+> +    <field name="Min LOD" dword="1" bits="31:20" type="u4.8" />
+> +    <field name="LOD Clamp Magnification Mode" dword="2" bits="0:0" type="uint">
+> +      <value name="MIPNONE" value="0" />
+> +      <value name="MIPFILTER" value="1" />
+> +    </field>
+> +    <field name="SRGB DECODE" dword="2" bits="1:1" type="uint">
+> +      <value name="DECODE_EXT" value="0" />
+> +      <value name="SKIP_DECODE_EXT" value="1" />
+> +    </field>
+> +    <field name="Return Filter Weight for Null Texels" dword="2" bits="2:2" type="uint" />
+> +    <field name="Return Filter Weight for Border Texels" dword="2" bits="3:3" type="uint" />
+> +    <field name="Force gather4 Behavior" dword="2" bits="5:5" type="bool" />
+> +    <field name="Border Color Pointer" dword="2" bits="31:6" type="offset" />
+> +    <field name="TCZ Address Control Mode" dword="3" bits="2:0" type="Texture Coordinate Mode" />
+> +    <field name="TCY Address Control Mode" dword="3" bits="5:3" type="Texture Coordinate Mode" />
+> +    <field name="TCX Address Control Mode" dword="3" bits="8:6" type="Texture Coordinate Mode" />
+> +    <field name="Reduction Type Enable" dword="3" bits="9:9" type="bool" />
+> +    <field name="Non-normalized Coordinate Enable" dword="3" bits="10:10" type="bool" />
+> +    <field name="Trilinear Filter Quality" dword="3" bits="12:11" type="uint">
+> +      <value name="FULL" value="0" />
+> +      <value name="HIGH" value="1" />
+> +      <value name="MED" value="2" />
+> +      <value name="LOW" value="3" />
+> +    </field>
+> +    <field name="R Address Min Filter Rounding Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="R Address Mag Filter Rounding Enable" dword="3" bits="14:14" type="bool" />
+> +    <field name="V Address Min Filter Rounding Enable" dword="3" bits="15:15" type="bool" />
+> +    <field name="V Address Mag Filter Rounding Enable" dword="3" bits="16:16" type="bool" />
+> +    <field name="U Address Min Filter Rounding Enable" dword="3" bits="17:17" type="bool" />
+> +    <field name="U Address Mag Filter Rounding Enable" dword="3" bits="18:18" type="bool" />
+> +    <field name="Maximum Anisotropy" dword="3" bits="21:19" type="uint">
+> +      <value name="RATIO 2:1" value="0" />
+> +      <value name="RATIO 4:1" value="1" />
+> +      <value name="RATIO 6:1" value="2" />
+> +      <value name="RATIO 8:1" value="3" />
+> +      <value name="RATIO 10:1" value="4" />
+> +      <value name="RATIO 12:1" value="5" />
+> +      <value name="RATIO 14:1" value="6" />
+> +      <value name="RATIO 16:1" value="7" />
+> +    </field>
+> +    <field name="Reduction Type" dword="3" bits="23:22" type="uint">
+> +      <value name="STD_FILTER" value="0" />
+> +      <value name="COMPARISON" value="1" />
+> +      <value name="MINIMUM" value="2" />
+> +      <value name="MAXIMUM" value="3" />
+> +    </field>
+> +    <field name="Allow Low Quality LOD Calculation" dword="3" bits="24:24" type="bool" />
+> +    <field name="Low Quality Filter" dword="3" bits="26:26" type="bool" />
+> +  </struct>
+> +  <instruction name="3DSTATE_BTD" bias="2" length="6" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="6" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Dispatch Timeout Counter" dword="1" bits="2:0" type="uint">
+> +      <value name="64 clocks" value="0" />
+> +      <value name="128 clocks" value="1" />
+> +      <value name="192 clocks" value="2" />
+> +      <value name="256 clocks" value="3" />
+> +      <value name="512 clocks" value="4" />
+> +      <value name="1024 clocks" value="5" />
+> +      <value name="2048 clocks" value="6" />
+> +      <value name="4096 clocks" value="7" />
+> +    </field>
+> +    <field name="Controls the maximum number of outstanding Ray Queries per SS" dword="1" bits="8:7" type="uint" prefix="RAYS_QUERIES_OUTSTANDING">
+> +      <value name="128" value="0" />
+> +      <value name="256" value="1" />
+> +      <value name="512" value="2" />
+> +      <value name="1024" value="3" />
+> +    </field>
+> +    <field name="RT Mem Structures 64b Mode Enable" dword="1" bits="30:30" type="bool" />
+> +    <field name="BTD Mid thread preemption" dword="1" bits="31:31" type="bool" />
+> +    <field name="Per DSS Memory Backed Buffer Size" dword="2" bits="2:0" type="uint" default="6">
+> +      <value name="2KB" value="0" />
+> +      <value name="4KB" value="1" />
+> +      <value name="8KB" value="2" />
+> +      <value name="16KB" value="3" />
+> +      <value name="32KB" value="4" />
+> +      <value name="64KB" value="5" />
+> +      <value name="128KB" value="6" />
+> +    </field>
+> +    <field name="Memory Backed Buffer Base Pointer" dword="2" bits="63:10" type="address" />
+> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_COARSE_PIXEL" bias="2" length="2" engine="render">
+> +    <field name="DWord Length" dword="0" bits="15:0" type="uint" default="0" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="137" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="CPSizeX" dword="1" bits="1:0" type="STATE_CPS_SIZE" />
+> +    <field name="CPSizeY" dword="1" bits="3:2" type="STATE_CPS_SIZE" />
+> +    <field name="CPSizeCombiner1Opcode" dword="1" bits="6:4" type="STATE_CPS_COMBINER_OPCODE" />
+> +    <field name="CPSizeCombiner0Opcode" dword="1" bits="9:7" type="STATE_CPS_COMBINER_OPCODE" />
+> +    <field name="Disable CPS Pointers" dword="1" bits="31:31" type="bool" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_DS" bias="2" length="11" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="9" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="29" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
+> +    <field name="Registers Per Thread" dword="3" bits="5:0" type="uint" />
+> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="Accesses UAV" dword="3" bits="14:14" type="bool" />
+> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
+> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
+> +      <value name="No Samplers" value="0" />
+> +      <value name="1-4 Samplers" value="1" />
+> +      <value name="5-8 Samplers" value="2" />
+> +      <value name="9-12 Samplers" value="3" />
+> +      <value name="13-16 Samplers" value="4" />
+> +    </field>
+> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="bool" />
+> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
+> +    <field name="Patch URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
+> +    <field name="Patch URB Entry Read Length" dword="6" bits="17:11" type="uint" />
+> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="24:20" type="uint" />
+> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
+> +    <field name="Cache Disable" dword="7" bits="1:1" type="bool" />
+> +    <field name="Compute W Coordinate Enable" dword="7" bits="2:2" type="bool" />
+> +    <field name="Dispatch Mode" dword="7" bits="4:3" type="uint" prefix="DISPATCH_MODE">
+> +      <value name="SIMD8_SINGLE_PATCH" value="1" />
+> +      <value name="SIMD8_SINGLE_OR_DUAL_PATCH" value="2" />
+> +    </field>
+> +    <field name="Primitive ID Not Required" dword="7" bits="9:9" type="bool" />
+> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
+> +    <field name="Maximum Number of Threads" dword="7" bits="30:21" type="uint" />
+> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="8" bits="7:0" type="uint" />
+> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="8" bits="15:8" type="uint" />
+> +    <field name="Vertex URB Entry Output Length" dword="8" bits="20:16" type="uint" />
+> +    <field name="Vertex URB Entry Output Read Offset" dword="8" bits="26:21" type="uint" />
+> +    <field name="QUAD_PATCH Kernel Start Pointer" dword="9" bits="63:6" type="offset" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_GS" bias="2" length="10" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="8" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="17" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
+> +    <field name="Expected Vertex Count" dword="3" bits="5:0" type="uint" />
+> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
+> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
+> +    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
+> +      <value name="Normal" value="0" />
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
+> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
+> +      <value name="No Samplers" value="0" />
+> +      <value name="1-4 Samplers" value="1" />
+> +      <value name="5-8 Samplers" value="2" />
+> +      <value name="9-12 Samplers" value="3" />
+> +      <value name="13-16 Samplers" value="4" />
+> +    </field>
+> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
+> +      <value name="Dmask" value="0" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="3" bits="31:31" type="bool" />
+> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
+> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="3:0" type="uint" />
+> +    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
+> +    <field name="Include Vertex Handles" dword="6" bits="10:10" type="bool" />
+> +    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
+> +    <field name="Output Topology" dword="6" bits="22:17" type="3D_Prim_Topo_Type" />
+> +    <field name="Output Vertex Size" dword="6" bits="28:23" type="uint" />
+> +    <field name="Dispatch GRF Start Register For URB Data [5:4]" dword="6" bits="30:29" type="uint" />
+> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
+> +    <field name="Discard Adjacency" dword="7" bits="1:1" type="bool" />
+> +    <field name="Reorder Mode" dword="7" bits="2:2" type="uint">
+> +      <value name="LEADING" value="0" />
+> +      <value name="TRAILING" value="1" />
+> +    </field>
+> +    <field name="Hint" dword="7" bits="3:3" type="bool" />
+> +    <field name="Include Primitive ID" dword="7" bits="4:4" type="bool" />
+> +    <field name="Invocations Increment Value" dword="7" bits="9:5" type="uint" />
+> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
+> +    <field name="Default Stream Id" dword="7" bits="14:13" type="uint" />
+> +    <field name="Instance Control" dword="7" bits="19:15" type="uint" />
+> +    <field name="Control Data Header Size" dword="7" bits="23:20" type="uint" />
+> +    <field name="Registers Per Thread" dword="7" bits="31:26" type="uint" />
+> +    <field name="Maximum Number of Threads" dword="8" bits="8:0" type="uint" />
+> +    <field name="Static Output Vertex Count" dword="8" bits="26:16" type="uint" />
+> +    <field name="Static Output" dword="8" bits="30:30" type="bool" />
+> +    <field name="Control Data Format" dword="8" bits="31:31" type="uint">
+> +      <value name="CUT" value="0" />
+> +      <value name="SID" value="1" />
+> +    </field>
+> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="9" bits="7:0" type="uint" />
+> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="9" bits="15:8" type="uint" />
+> +    <field name="Vertex URB Entry Output Length" dword="9" bits="20:16" type="uint" />
+> +    <field name="Vertex URB Entry Output Read Offset" dword="9" bits="26:21" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_HS" bias="2" length="8" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="27" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Patch Count Threshold" dword="1" bits="3:0" type="uint" />
+> +    <field name="Registers Per Thread" dword="1" bits="9:4" type="uint" />
+> +    <field name="Software Exception Enable" dword="1" bits="12:12" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="1" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="1" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="alternate" value="1" />
+> +    </field>
+> +    <field name="Thread Dispatch Priority" dword="1" bits="17:17" type="uint">
+> +      <value name="Normal" value="0" />
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Binding Table Entry Count" dword="1" bits="25:18" type="uint" />
+> +    <field name="Sampler Count" dword="1" bits="29:27" type="uint">
+> +      <value name="No Samplers" value="0" />
+> +      <value name="1-4 Samplers" value="1" />
+> +      <value name="5-8 Samplers" value="2" />
+> +      <value name="9-12 Samplers" value="3" />
+> +      <value name="13-16 Samplers" value="4" />
+> +    </field>
+> +    <field name="Instance Count" dword="2" bits="4:0" type="uint" />
+> +    <field name="Maximum Number of Threads" dword="2" bits="16:8" type="uint" />
+> +    <field name="Statistics Enable" dword="2" bits="29:29" type="bool" />
+> +    <field name="Enable" dword="2" bits="31:31" type="bool" />
+> +    <field name="Kernel Start Pointer" dword="3" bits="63:6" type="offset" />
+> +    <field name="Scratch Space Buffer" dword="5" bits="31:10" type="uint" />
+> +    <field name="Include Primitive ID" dword="7" bits="0:0" type="bool" />
+> +    <field name="Vertex URB Entry Read Offset" dword="7" bits="9:4" type="uint" />
+> +    <field name="Vertex URB Entry Read Length" dword="7" bits="16:11" type="uint" />
+> +    <field name="Dispatch GRF Start Register For URB Data" dword="7" bits="23:19" type="uint" />
+> +    <field name="Include Vertex Handles" dword="7" bits="24:24" type="bool" />
+> +    <field name="Accesses UAV" dword="7" bits="25:25" type="bool" />
+> +    <field name="Vector Mask Enable" dword="7" bits="26:26" type="uint">
+> +      <value name="Dmask" value="0" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="7" bits="27:27" type="bool" />
+> +    <field name="Dispatch GRF Start Register For URB Data [5]" dword="7" bits="28:28" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_MESH_SHADER" bias="2" length="8" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="122" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
+> +    <field name="Local X Maximum" dword="3" bits="9:0" type="uint" />
+> +    <field name="Software Exception Enable" dword="3" bits="10:10" type="bool" />
+> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="3" bits="18:18" type="uint" />
+> +    <field name="Denorm Mode" dword="3" bits="19:19" type="uint">
+> +      <value name="Ftz" value="0" />
+> +      <value name="SetByKernel" value="1" />
+> +    </field>
+> +    <field name="Registers Per Thread" dword="3" bits="25:20" type="uint" />
+> +    <field name="Number of Threads in GPGPU Thread Group" dword="4" bits="9:0" type="uint" />
+> +    <field name="Shared Local Memory Size" dword="4" bits="20:16" type="uint" />
+> +    <field name="Rounding Mode" dword="4" bits="23:22" type="uint">
+> +      <value name="RTNE" value="0" />
+> +      <value name="RU" value="1" />
+> +      <value name="RD" value="2" />
+> +      <value name="RTZ" value="3" />
+> +    </field>
+> +    <field name="Preferred SLM Allocation Size" dword="4" bits="27:24" type="PREF_SLM_ALLOCATION_SIZE" />
+> +    <field name="Number of Barriers" dword="4" bits="30:28" type="uint" />
+> +    <field name="Indirect Data Length" dword="5" bits="16:0" type="uint" />
+> +    <field name="L3 Prefetch Disable" dword="5" bits="17:17" type="bool" />
+> +    <field name="Emit Local ID X" dword="5" bits="18:18" type="bool" />
+> +    <field name="Emit Inline Parameter" dword="5" bits="19:19" type="bool" />
+> +    <field name="Systolic Mode Enable" dword="5" bits="20:20" type="bool" />
+> +    <field name="Accesses UAV" dword="5" bits="21:21" type="bool" />
+> +    <field name="XP0 Required" dword="5" bits="22:22" type="uint" />
+> +    <field name="Message SIMD" dword="5" bits="29:28" type="uint">
+> +      <value name="SIMD16" value="1" />
+> +      <value name="SIMD32" value="2" />
+> +    </field>
+> +    <field name="SIMD Size" dword="5" bits="31:30" type="uint">
+> +      <value name="SIMD16" value="1" />
+> +      <value name="SIMD32" value="2" />
+> +    </field>
+> +    <field name="Execution Mask" dword="6" bits="31:0" type="uint" />
+> +    <field name="Maximum Primitive Count" dword="7" bits="9:0" type="uint" />
+> +    <field name="Per-Primitive Data Pitch" dword="7" bits="16:12" type="uint" />
+> +    <field name="Per-Vertex Data Pitch" dword="7" bits="24:20" type="uint" />
+> +    <field name="Index Format" dword="7" bits="27:25" type="uint" prefix="INDEX">
+> +      <value name="U888X" value="0" />
+> +      <value name="U101010X" value="1" />
+> +      <value name="U8" value="4" />
+> +      <value name="U16" value="5" />
+> +      <value name="U32" value="3" />
+> +    </field>
+> +    <field name="Output Topology" dword="7" bits="29:28" type="uint" prefix="OUTPUT">
+> +      <value name="POINT" value="0" />
+> +      <value name="LINE" value="1" />
+> +      <value name="TRI" value="2" />
+> +    </field>
+> +    <field name="Per-Primitive Data Present" dword="7" bits="31:31" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_PS" bias="2" length="12" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="10" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="32" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Kernel 0 Enable" dword="1" bits="0:0" type="bool" />
+> +    <field name="Kernel[0] : SIMD Width" dword="1" bits="1:1" type="uint" prefix="PS">
+> +      <value name="SIMD16" value="0" />
+> +      <value name="SIMD32" value="1" />
+> +    </field>
+> +    <field name="Kernel Start Pointer 0" dword="1" bits="63:6" type="offset" />
+> +    <field name="Registers Per Thread" dword="3" bits="5:0" type="uint" />
+> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
+> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="Rounding Mode" dword="3" bits="15:14" type="uint">
+> +      <value name="RTNE" value="0" />
+> +      <value name="RU" value="1" />
+> +      <value name="RD" value="2" />
+> +      <value name="RTZ" value="3" />
+> +    </field>
+> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
+> +      <value name="Normal" value="0" />
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
+> +    <field name="Single Precision Denormal Mode" dword="3" bits="26:26" type="uint">
+> +      <value name="Flushed to Zero" value="0" />
+> +      <value name="Retained" value="1" />
+> +    </field>
+> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
+> +      <value name="No Samplers" value="0" />
+> +      <value name="1-4 Samplers" value="1" />
+> +      <value name="5-8 Samplers" value="2" />
+> +      <value name="9-12 Samplers" value="3" />
+> +      <value name="13-16 Samplers" value="4" />
+> +    </field>
+> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
+> +      <value name="Dmask" value="0" />
+> +      <value name="Vmask" value="1" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="3" bits="31:31" type="uint">
+> +      <value name="Multiple" value="0" />
+> +      <value name="Single" value="1" />
+> +    </field>
+> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
+> +    <field name="Position XY Offset Select" dword="6" bits="4:3" type="uint">
+> +      <value name="POSOFFSET_NONE" value="0" />
+> +      <value name="POSOFFSET_CENTROID" value="2" />
+> +      <value name="POSOFFSET_SAMPLE" value="3" />
+> +    </field>
+> +    <field name="Render Target Resolve Type" dword="6" bits="7:6" type="uint">
+> +      <value name="RESOLVE_DISABLED" value="0" />
+> +    </field>
+> +    <field name="Render Target Fast Clear Enable" dword="6" bits="8:8" type="bool" />
+> +    <field name="Overlapping Subspans Enable" dword="6" bits="9:9" type="bool" />
+> +    <field name="3D Scoreboard Address Size select" dword="6" bits="10:10" type="uint">
+> +      <value name="2x2" value="0" />
+> +      <value name="4x2" value="1" />
+> +    </field>
+> +    <field name="Clear/Resolve BTI for Render Target" dword="6" bits="19:12" type="uint" />
+> +    <field name="Pixel Scoreboard Disable" dword="6" bits="21:21" type="bool" />
+> +    <field name="Maximum Number of Threads Per PSD" dword="6" bits="31:23" type="uint" />
+> +    <field name="Dispatch GRF Start Register For Constant/Setup Data 1" dword="7" bits="15:8" type="uint" />
+> +    <field name="Dispatch GRF Start Register For Constant/Setup Data 0" dword="7" bits="23:16" type="uint" />
+> +    <field name="Kernel[0] : Poly Packing Policy" dword="7" bits="26:24" type="uint">
+> +      <value name="POLY_PACK4_DYNAMIC" value="0" />
+> +      <value name="POLY_PACK8_DYNAMIC" value="1" />
+> +      <value name="POLY_PACK16_DYNAMIC" value="2" />
+> +      <value name="POLY_PACK16_FIXED" value="3" />
+> +      <value name="POLY_PACK8_FIXED" value="4" />
+> +    </field>
+> +    <field name="Kernel[0] : Maximum Polys per Thread" dword="7" bits="29:27" type="uint" />
+> +    <field name="Kernel 1 Selection Priority" dword="7" bits="31:31" type="uint">
+> +      <value name="PRI_SIMD" value="0" />
+> +      <value name="PRI_POLY" value="1" />
+> +    </field>
+> +    <field name="Kernel 1 Enable" dword="8" bits="0:0" type="bool" />
+> +    <field name="Kernel[1] : SIMD Width" dword="8" bits="1:1" type="uint" prefix="PS">
+> +      <value name="SIMD16" value="0" />
+> +      <value name="SIMD32" value="1" />
+> +    </field>
+> +    <field name="Kernel Start Pointer 1" dword="8" bits="63:6" type="offset" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_TASK_SHADER" bias="2" length="7" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="5" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="125" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
+> +    <field name="Local X Maximum" dword="3" bits="9:0" type="uint" />
+> +    <field name="Software Exception Enable" dword="3" bits="10:10" type="bool" />
+> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Single Program Flow" dword="3" bits="18:18" type="uint" />
+> +    <field name="Denorm Mode" dword="3" bits="19:19" type="uint">
+> +      <value name="Ftz" value="0" />
+> +      <value name="SetByKernel" value="1" />
+> +    </field>
+> +    <field name="Registers Per Thread" dword="3" bits="25:20" type="uint" />
+> +    <field name="Number of Threads in GPGPU Thread Group" dword="4" bits="9:0" type="uint" />
+> +    <field name="Shared Local Memory Size" dword="4" bits="20:16" type="uint" />
+> +    <field name="Barrier Enable" dword="4" bits="21:21" type="bool" />
+> +    <field name="Rounding Mode" dword="4" bits="23:22" type="uint">
+> +      <value name="RTNE" value="0" />
+> +      <value name="RU" value="1" />
+> +      <value name="RD" value="2" />
+> +      <value name="RTZ" value="3" />
+> +    </field>
+> +    <field name="Preferred SLM Allocation Size" dword="4" bits="27:24" type="uint" />
+> +    <field name="Number of Barriers" dword="4" bits="30:28" type="uint" />
+> +    <field name="Indirect Data Length" dword="5" bits="16:0" type="uint" />
+> +    <field name="L3 Prefetch Disable" dword="5" bits="17:17" type="bool" />
+> +    <field name="Emit Local ID X" dword="5" bits="18:18" type="bool" />
+> +    <field name="Emit Inline Parameter" dword="5" bits="19:19" type="bool" />
+> +    <field name="Systolic Mode Enable" dword="5" bits="20:20" type="bool" />
+> +    <field name="Accesses UAV" dword="5" bits="21:21" type="bool" />
+> +    <field name="XP0 Required" dword="5" bits="22:22" type="uint" />
+> +    <field name="Message SIMD" dword="5" bits="29:28" type="uint">
+> +      <value name="SIMD16" value="1" />
+> +      <value name="SIMD32" value="2" />
+> +    </field>
+> +    <field name="SIMD Size" dword="5" bits="31:30" type="uint">
+> +      <value name="SIMD16" value="1" />
+> +      <value name="SIMD32" value="2" />
+> +    </field>
+> +    <field name="Execution Mask" dword="6" bits="31:0" type="uint" />
+> +  </instruction>
+> +  <instruction name="3DSTATE_VS" bias="2" length="9" engine="render">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="7" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="16" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
+> +    <field name="Registers Per Thread" dword="3" bits="5:0" type="uint" />
+> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
+> +    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
+> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
+> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
+> +      <value name="IEEE-754" value="0" />
+> +      <value name="Alternate" value="1" />
+> +    </field>
+> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
+> +      <value name="Normal" value="0" />
+> +      <value name="High" value="1" />
+> +    </field>
+> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
+> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
+> +      <value name="No Samplers" value="0" />
+> +      <value name="1-4 Samplers" value="1" />
+> +      <value name="5-8 Samplers" value="2" />
+> +      <value name="9-12 Samplers" value="3" />
+> +      <value name="13-16 Samplers" value="4" />
+> +    </field>
+> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
+> +      <value name="Dmask" value="0" />
+> +    </field>
+> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
+> +    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
+> +    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
+> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="24:20" type="uint" />
+> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
+> +    <field name="Vertex Cache Disable" dword="7" bits="1:1" type="bool" />
+> +    <field name="Single Instance Dispatch Enable" dword="7" bits="9:9" type="bool" />
+> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
+> +    <field name="Maximum Number of Threads" dword="7" bits="31:22" type="uint" />
+> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="8" bits="7:0" type="uint" />
+> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="8" bits="15:8" type="uint" />
+> +    <field name="Vertex URB Entry Output Length" dword="8" bits="20:16" type="uint" />
+> +    <field name="Vertex URB Entry Output Read Offset" dword="8" bits="26:21" type="uint" />
+> +  </instruction>
+> +  <instruction name="STATE_COMPUTE_MODE" bias="2" length="3" engine="render|compute">
+> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
+> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
+> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
+> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
+> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
+> +    <field name="Z Pass Async Compute Thread Limit" dword="1" bits="2:0" type="uint" prefix="ZPACTL">
+> +      <value name="Max 60" value="0" />
+> +      <value name="Max 64" value="1" />
+> +      <value name="Max 56" value="2" />
+> +      <value name="Max 48" value="3" />
+> +      <value name="Max 40" value="4" />
+> +      <value name="Max 32" value="5" />
+> +    </field>
+> +    <field name="Z Async Throttle settings" dword="1" bits="4:3" type="uint" prefix="ZATS">
+> +      <value name="Defer to Async Compute Thread Limit" value="0" />
+> +      <value name="Max 32" value="1" />
+> +      <value name="Max 40" value="2" />
+> +      <value name="Max 48" value="3" />
+> +    </field>
+> +    <field name="Async Compute Thread Limit" dword="1" bits="9:7" type="uint" prefix="ACTL">
+> +      <value name="Disabled" value="0" />
+> +      <value name="Max 2" value="1" />
+> +      <value name="Max 8" value="2" />
+> +      <value name="Max 16" value="3" />
+> +      <value name="Max 24" value="4" />
+> +      <value name="Max 32" value="5" />
+> +      <value name="Max 40" value="6" />
+> +      <value name="Max 48" value="7" />
+> +    </field>
+> +    <field name="Enable Variable Register Size Allocation" dword="1" bits="10:10" type="bool" />
+> +    <field name="EU Thread Scheduling Mode Override" dword="1" bits="14:13" type="uint" />
+> +    <field name="Large GRF Mode" dword="1" bits="15:15" type="bool" />
+> +    <field name="Z Pass Async Compute Thread Limit Mask" dword="1" bits="18:16" type="uint" />
+> +    <field name="Mask1" dword="1" bits="31:16" type="uint" />
+> +    <field name="Z Async Throttle settings Mask" dword="1" bits="20:19" type="uint" />
+> +    <field name="Async Compute Thread Limit Mask" dword="1" bits="25:23" type="uint" />
+> +    <field name="Enable Variable Register Size Allocation Mask" dword="1" bits="26:26" type="uint" />
+> +    <field name="EU Thread Scheduling Mode Override Mask" dword="1" bits="30:29" type="uint" />
+> +    <field name="Large GRF Mode Mask" dword="1" bits="31:31" type="bool" />
+> +    <field name="Midthread Preemption Delay Timer" dword="2" bits="2:0" type="uint">
+> +      <value name="MTP_TIMER_VAL_0" value="0" />
+> +      <value name="MTP_TIMER_VAL_50" value="1" />
+> +      <value name="MTP_TIMER_VAL_100" value="2" />
+> +      <value name="MTP_TIMER_VAL_150" value="3" />
+> +    </field>
+> +    <field name="Midthread Preemption Overdispatch Thread group count" dword="2" bits="4:3" type="uint">
+> +      <value name="OD_TG_M2" value="0" />
+> +      <value name="OD_TG_M4" value="1" />
+> +      <value name="OD_TG_M8" value="2" />
+> +      <value name="OD_TG_M16" value="3" />
+> +    </field>
+> +    <field name="Midthread Preemption Overdispatch Test mode" dword="2" bits="5:5" type="uint">
+> +      <value name="Regular" value="0" />
+> +      <value name="Test mode" value="1" />
+> +    </field>
+> +    <field name="UAV Coherency Mode" dword="2" bits="6:6" type="uint">
+> +      <value name="Drain DataPort Mode" value="0" />
+> +      <value name="Flush Dataport L1" value="1" />
+> +    </field>
+> +    <field name="Midthread Preemption Delay Timer Mask" dword="2" bits="18:16" type="uint" />
+> +    <field name="Mask2" dword="2" bits="31:16" type="uint" />
+> +    <field name="Midthread Preemption Overdispatch Thread group count Mask" dword="2" bits="20:19" type="uint" />
+> +    <field name="Midthread Preemption Overdispatch Test mode Mask" dword="2" bits="21:21" type="uint" />
+> +    <field name="UAV Coherency Mode Mask" dword="2" bits="22:22" type="uint" />
+> +    <field name="Memory allocation for Scratch and Midthread Preemption buffers Mask" dword="2" bits="27:27" type="uint" />
+> +  </instruction>
+> +  <register name="CHICKEN_RASTER_2" length="1" num="0x6208">
+> +    <field name="Disable Any MCTR response fix" dword="0" bits="5:5" type="bool" />
+> +    <field name="Disable Any MCTR response fix Mask" dword="0" bits="21:21" type="bool" />
+> +  </register>
+> +</genxml>
+> diff --git a/lib/intel/genxml/xe3p.xml b/lib/intel/genxml/xe3p.xml
+> new file mode 100644
+> index 000000000..cfd51bb30
+> --- /dev/null
+> +++ b/lib/intel/genxml/xe3p.xml
+> @@ -0,0 +1,4 @@
+> +<?xml version='1.0' encoding='utf-8'?>
+> +<genxml name="XE3P" gen="35">
+> +  <import name="xe3.xml" />
+> +</genxml>
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 95c9d48ae..355517ad3 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -307,6 +307,9 @@ genxml_gen_deps = files(
+>      'intel/genxml/gen110.xml',
+>      'intel/genxml/gen120.xml',
+>      'intel/genxml/gen125.xml',
+> +    'intel/genxml/xe2.xml',
+> +    'intel/genxml/xe3.xml',
+> +    'intel/genxml/xe3p.xml',
+>  )
+>  
+>  # Ordered list of all gens, oldest first.  Each gen's baselines are all
+> @@ -314,7 +317,7 @@ genxml_gen_deps = files(
+>  # omitted from the generated header; the comment points directly to the
+>  # oldest gen that defined that layout so that a developer can find the
+>  # real struct in one grep.
+> -genxml_gens = ['gen90', 'gen110', 'gen120', 'gen125']
+> +genxml_gens = ['gen90', 'gen110', 'gen120', 'gen125', 'xe2', 'xe3', 'xe3p']
+>  
+>  genxml_pack_headers = []
+>  genxml_decode_headers = []
+> -- 
+> 2.34.1
+> 
