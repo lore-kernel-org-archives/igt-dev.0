@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BAAEF9936B
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 10:55:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8552F9936B
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 10:55:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED62C10F093;
-	Thu, 23 Apr 2026 10:55:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 56A4110F093;
+	Thu, 23 Apr 2026 10:55:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EH8xBebU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JdxxbOqg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9EB4C10F093
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 10:55:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFDA410F09A
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 10:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776941731; x=1808477731;
+ t=1776941724; x=1808477724;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=P9vQYyyOT744cW4LOSjYSJh+UP970QAjzlIw2rXabkg=;
- b=EH8xBebU2rzPQ0fIUJrWRqdLMd9MMBWRUWYic5MjS9ldR7mZ8mEU06Pb
- +p3LeP/LZFXbirlELlHXCmmKXHNEuZ4NuVrz5dZCrU5zj/+8unr6lB4Hs
- vvAGjTDqpBTRRyxaK9CaGvgkCOI796dj3LtLvjmH+23z5PIuXbf4n+YHI
- yHn4PlEisJd8wtIRX4sZXsYsB0dgd+SBAysnQf5gCfGM/TVpt7ox/SdXf
- qpk37aQui+3upZLUSlVVx3Q06I+k+hlZoeuTQ2fj24lI+2JG54iPF42v0
- wnj0q4RyBETVKIzOn+tOLBGZAxZj3VVOzZ134fbqSE1dK5fVYGmUNi41M w==;
-X-CSE-ConnectionGUID: 3El8V94KQjWBgTqyDzHYpA==
-X-CSE-MsgGUID: 9akREcAyTpeerYk/LfzVoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77889807"
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="77889807"
+ bh=8lVw1dGDUi6oNUn6Q5SjDjBIaECMwNeA/Tojlg8sfw8=;
+ b=JdxxbOqgIPzaibq4yh5ASb3kiG6PxHOUyCKcKeJZAMfpO3LST4xhw1Hg
+ q7U0BkcpTfw2/grUGTOCqh+ejrdxgRgHbElj+xgbi/YnYI1ADpgqBs//i
+ FOvLYfBPTGjcxfgfrwVFEw6VgnV1KEml/ZiXVL2c4VCcAS86l03bDtUZi
+ 4m9cs4d+T0f3b+nCny4Qj9zQmwNPNZ4lmnOGgn6klXSKbeB5ngGIrHrkz
+ EsZJ+cCMikBy9ZE07y/MAD5QgrGKb7nS23+Aw15UvBNdOSrztvwfvQ6hr
+ 85mI9BGb+dIU5hVs0qGJwwyVQMlIHA3R40iN0pknK6/Sh8kDPAfFJsn8S g==;
+X-CSE-ConnectionGUID: 5lxvHCszTDWXg3wSK//Vtg==
+X-CSE-MsgGUID: WH9W7j73QpKlqdngeOZgMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77889792"
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="77889792"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 03:55:31 -0700
-X-CSE-ConnectionGUID: HCaRb929RGCWsY2fBUpSpQ==
-X-CSE-MsgGUID: uqJ0C9/yRLKTJzCQbCaQ0A==
+ 23 Apr 2026 03:55:23 -0700
+X-CSE-ConnectionGUID: jpytK27+RUitZZPmEOckWQ==
+X-CSE-MsgGUID: nX/IGSs3S9ShGEIJvunwcg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="256106254"
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="256106238"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.133])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 03:55:30 -0700
+ 23 Apr 2026 03:55:22 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>,
  Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: [PATCH i-g-t v2 3/4] intel-ci/hooks: Add hooks-wrapper and aux
- scripts/allowlists
-Date: Thu, 23 Apr 2026 12:55:18 +0200
-Message-ID: <20260423105514.175870-9-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 1/4] runner: Rename dirfd to avoid clash with dirfd()
+Date: Thu, 23 Apr 2026 12:55:16 +0200
+Message-ID: <20260423105514.175870-7-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260423105514.175870-6-zbigniew.kempczynski@intel.com>
 References: <20260423105514.175870-6-zbigniew.kempczynski@intel.com>
@@ -73,217 +72,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-CI currently lacks useful GuC logs when some tests are failing. For some
-failed executions (not all as copying guc-log is time consuming) using
-hook script which will copy it to attachments directory seems to be
-simplest solution.
-
-Add copy_guc_log_on_fail.sh script which copies GuC log when test/subtest
-is failing. It requires an allowlist to specify for which tests hook
-will copy GuC log. It is time consuming process so doing this for all
-failed test would extend CI execution time too much.
-
-Apart of this introduce hooks-wrapper.sh which might be main script for
-executing hooks. Instead of adding --hook for each script separately it
-may be used as a central point of hooks execution. It assumes it will
-be executed after test/subtest completion - called hook scripts depends
-on the IGT_HOOK_RESULT env var.
+Upcoming change within execute_next_entry() will call dirfd() so
+rename local dirfd variable is necessary.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Ryszard Knop <ryszard.knop@intel.com>
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
 ---
- tests/intel-ci/hooks/common.helper.sh         | 53 +++++++++++++++++++
- .../hooks/copy_guc_log_on_fail.allowlist      |  2 +
- tests/intel-ci/hooks/copy_guc_log_on_fail.sh  | 24 +++++++++
- tests/intel-ci/hooks/hook-date.allowlist      |  2 +
- tests/intel-ci/hooks/hook-date.sh             | 18 +++++++
- tests/intel-ci/hooks/hooks-wrapper.sh         | 15 ++++++
- tests/intel-ci/meson.build                    | 11 ++++
- 7 files changed, 125 insertions(+)
- create mode 100755 tests/intel-ci/hooks/common.helper.sh
- create mode 100644 tests/intel-ci/hooks/copy_guc_log_on_fail.allowlist
- create mode 100755 tests/intel-ci/hooks/copy_guc_log_on_fail.sh
- create mode 100644 tests/intel-ci/hooks/hook-date.allowlist
- create mode 100755 tests/intel-ci/hooks/hook-date.sh
- create mode 100755 tests/intel-ci/hooks/hooks-wrapper.sh
+ runner/executor.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/intel-ci/hooks/common.helper.sh b/tests/intel-ci/hooks/common.helper.sh
-new file mode 100755
-index 0000000000..1dbc0cbd2e
---- /dev/null
-+++ b/tests/intel-ci/hooks/common.helper.sh
-@@ -0,0 +1,53 @@
-+# Common helper for hooks executed from igt_runner
-+#
-+# Usually ALLOWLIST=<filename> is set in the hook, then this helper is
-+# sourced allowing arg parsing and being overwritten by --allowlist.
-+
-+for arg in "$@"; do
-+	case $arg in
-+	--help)
-+		echo "Usage: $0 [--help] [--allowlist <name.allowlist>]"
-+		echo
-+		echo "If name.allowlist is not passed default '${ALLOWLIST}' is used."
-+		exit 0
-+		;;
-+
-+	--allowlist)
-+		ALLOWLIST=$2
-+		shift 2
-+		;;
-+
-+		*)
-+		shift
-+		;;
-+	esac
-+done
-+
-+if [ "${ALLOWLIST}" == "" ]; then
-+	echo "No ALLOWLIST was provided. Exiting..."
-+	exit 0
-+fi
-+
-+if [ -z "${IGT_RUNNER_ATTACHMENTS_DIR}" ]; then
-+	echo "Missing IGT_RUNNER_ATTACHMENTS_DIR env"
-+	exit 0
-+fi
-+
-+# Look for allowlist in following places:
-+# 1. Try in IGT_HOOK_ALLOWLIST_DIR if this environment exists
-+# 2. Try in <SCRIPTDIR>
-+
-+if [ ! -z "${IGT_HOOK_ALLOWLIST_DIR}" ]; then
-+	ALLOWLIST_PATH="${IGT_HOOK_ALLOWLIST_DIR}/${ALLOWLIST}"
-+else
-+	ALLOWLIST_PATH="${SCRIPTDIR}/${ALLOWLIST}"
-+fi
-+
-+if [ ! -e "${ALLOWLIST_PATH}" ]; then
-+	echo "Missing ${ALLOWLIST_PATH}"
-+	exit 0
-+fi
-+
-+if ! echo "${IGT_HOOK_TEST_FULLNAME}" | grep -q -f "$ALLOWLIST_PATH"; then
-+	exit 0
-+fi
-diff --git a/tests/intel-ci/hooks/copy_guc_log_on_fail.allowlist b/tests/intel-ci/hooks/copy_guc_log_on_fail.allowlist
-new file mode 100644
-index 0000000000..04cb3f8298
---- /dev/null
-+++ b/tests/intel-ci/hooks/copy_guc_log_on_fail.allowlist
-@@ -0,0 +1,2 @@
-+igt@xe_compute@compute-square
-+igt@xe_exec_basic@once-basic@ccs0
-diff --git a/tests/intel-ci/hooks/copy_guc_log_on_fail.sh b/tests/intel-ci/hooks/copy_guc_log_on_fail.sh
-new file mode 100755
-index 0000000000..2a60d28164
---- /dev/null
-+++ b/tests/intel-ci/hooks/copy_guc_log_on_fail.sh
-@@ -0,0 +1,24 @@
-+#!/bin/bash
-+
-+# Hook script for copying guc.log.
-+# Suggested usage with:
-+# --hook 'post-subtest:tests/intel-ci/hooks/copy_guc_log_on_fail.sh' \
-+# --hook 'post-dyn-subtest:tests/intel-ci/hooks/copy_guc_log_on_fail.sh'
-+# or within hooks-wrapper.sh
-+
-+# Copy only for failed subtests as this is time-consuming
-+if [ "${IGT_HOOK_RESULT:-FAIL}" != "FAIL" ]; then
-+	exit 0
-+fi
-+
-+ALLOWLIST="copy_guc_log_on_fail.allowlist"
-+SCRIPTDIR=$(dirname "$(realpath "$0")")
-+. "${SCRIPTDIR}/common.helper.sh"
-+
-+cd "${IGT_RUNNER_ATTACHMENTS_DIR}"
-+
-+for log in $(find /sys/kernel/debug/dri -iname 'guc_log'); do
-+	attout=$(echo ${log:23} | sed -e 's/\//_/g')
-+	mkdir -p "${IGT_HOOK_TEST_FULLNAME}"
-+	cp "$log" "${IGT_HOOK_TEST_FULLNAME}/${attout}"
-+done
-diff --git a/tests/intel-ci/hooks/hook-date.allowlist b/tests/intel-ci/hooks/hook-date.allowlist
-new file mode 100644
-index 0000000000..54cbc0a1d4
---- /dev/null
-+++ b/tests/intel-ci/hooks/hook-date.allowlist
-@@ -0,0 +1,2 @@
-+igt@xe_exec_basic@once-basic@rcs0
-+igt@xe_exec_basic@once-basic@ccs0
-diff --git a/tests/intel-ci/hooks/hook-date.sh b/tests/intel-ci/hooks/hook-date.sh
-new file mode 100755
-index 0000000000..6b0049cea5
---- /dev/null
-+++ b/tests/intel-ci/hooks/hook-date.sh
-@@ -0,0 +1,18 @@
-+#!/bin/bash
-+
-+# Example hook which stores current date in <testname>/current-date.txt
-+# in attachments dir
-+#
-+# Suggested usage with:
-+# --hook 'post-subtest:tests/intel-ci/hooks/hook-date.sh' \
-+# --hook 'post-dyn-subtest:tests/intel-ci/hooks/hook-date.sh'
-+# or within hooks-wrapper.sh
-+
-+ALLOWLIST="hook-date.allowlist"
-+SCRIPTDIR=$(dirname "$(realpath "$0")")
-+. "${SCRIPTDIR}/common.helper.sh"
-+
-+cd "${IGT_RUNNER_ATTACHMENTS_DIR}"
-+
-+mkdir -p "${IGT_HOOK_TEST_FULLNAME}"
-+date > "${IGT_HOOK_TEST_FULLNAME}/current-date.txt"
-diff --git a/tests/intel-ci/hooks/hooks-wrapper.sh b/tests/intel-ci/hooks/hooks-wrapper.sh
-new file mode 100755
-index 0000000000..64512624ca
---- /dev/null
-+++ b/tests/intel-ci/hooks/hooks-wrapper.sh
-@@ -0,0 +1,15 @@
-+#!/bin/bash
-+
-+# Hooks wrapper
-+# Suggested usage with:
-+# --hook 'post-subtest:tests/intel-ci/hooks/hooks-wrapper.sh' \
-+# --hook 'post-dyn-subtest:tests/intel-ci/hooks/hooks-wrapper.sh'
-+
-+SCRIPTDIR=$(dirname "$(realpath "$0")")
-+cd "${SCRIPTDIR}"
-+
-+# Example hook which stores current date
-+#./hook-date.sh
-+
-+# Copy GuC logs for tests which are failing and are in the allowlist
-+./copy_guc_log_on_fail.sh
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index 2b3266bbd9..0bb58072cd 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -34,8 +34,19 @@ intelci_files = [
-   'xe.wcl.core.blocklist.txt',
- ]
+diff --git a/runner/executor.c b/runner/executor.c
+index 847abe481a..1485b59d1f 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1772,7 +1772,7 @@ static int execute_next_entry(struct execute_state *state,
+ 			      char **abortreason,
+ 			      bool *abort_already_written)
+ {
+-	int dirfd;
++	int idirfd;
+ 	int outputs[_F_LAST];
+ 	int kmsgfd;
+ 	int outpipe[2] = { -1, -1 };
+@@ -1786,19 +1786,19 @@ static int execute_next_entry(struct execute_state *state,
  
-+hooks_files = [
-+  'hooks/common.helper.sh',
-+  'hooks/copy_guc_log_on_fail.sh',
-+  'hooks/copy_guc_log_on_fail.allowlist',
-+  'hooks/hook-date.sh',
-+  'hooks/hook-date.allowlist',
-+  'hooks/hooks-wrapper.sh',
-+]
-+
- if meson.version().version_compare('<1.3.0')
-   install_data(sources : intelci_files, install_dir : datadir)
-+  install_data(sources : hooks_files, install_dir : datadir + '/hooks')
- else
-   install_data(sources : intelci_files, install_dir : datadir, follow_symlinks : false)
-+  install_data(sources : hooks_files, install_dir : datadir + '/hooks', follow_symlinks : false)
- endif
+ 	snprintf(name, sizeof(name), "%zd", idx);
+ 	mkdirat(resdirfd, name, 0777);
+-	if ((dirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
++	if ((idirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
+ 		errf("Error accessing individual test result directory\n");
+ 		return -1;
+ 	}
+ 
+-	if (!open_output_files(dirfd, outputs, true)) {
++	if (!open_output_files(idirfd, outputs, true)) {
+ 		errf("Error opening output files\n");
+ 		result = -1;
+ 		goto out_dirfd;
+ 	}
+ 
+ 	if (settings->sync) {
+-		fsync(dirfd);
++		fsync(idirfd);
+ 		fsync(resdirfd);
+ 	}
+ 
+@@ -1900,8 +1900,8 @@ out_pipe:
+ 	close_outputs(outputs);
+ out_dirfd:
+ 	if (settings->sync)
+-		fsync(dirfd);
+-	close(dirfd);
++		fsync(idirfd);
++	close(idirfd);
+ 	if (settings->sync)
+ 		fsync(resdirfd);
+ 
 -- 
 2.43.0
 
