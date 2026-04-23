@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60EB3F9935C
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 09:35:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D15F99360
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 09:41:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 14ECD10F034;
-	Thu, 23 Apr 2026 09:35:19 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lyXKcKaC";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C967510E345
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 09:35:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776936905; x=1808472905;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=yLrI0C+SJOqvAb/yiPnkCc4qRsumoeJsEpRyOmi4hHM=;
- b=lyXKcKaCIQLLz0HUAkZiQrBLAFHA5U4SdksBY1KlXWAMtG73ySY5kQ6m
- l6Ad+OTLgaJiCt3jQPJPMTTh35Ya/4GmcgdE1BUdIgcBDvB5/EXTZOST4
- 4Zl9expOvypgv4BtxjIxE2TEBDM71ZcSZQ6+7Hrh2XK+2aMqH0UvcGwOG
- e44ujsVTlfNvYOnya9kOwIrK3HszvTtCJzjXf3RtFB1qp7MvP/Nq239JT
- XaopfWIXTgDO8T/6YaSdmf2jawgJSkRYgHNetT3tcoBbBEg26p1uvvubt
- oXnmxiM1+uEMsKdhO+2VI9FqgOkHMKlcZ+KDSb+xrIXrXnuNMaHZjudEi A==;
-X-CSE-ConnectionGUID: 3bon1TU6REqcI6RWUYHlLw==
-X-CSE-MsgGUID: fafL31ECSZeBtBrDZbNpcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="95462818"
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="95462818"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 02:35:05 -0700
-X-CSE-ConnectionGUID: 4/teGSAIQpCdQVkLvR/4Fg==
-X-CSE-MsgGUID: rbu42sQbRpOtDlINcpMnQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="226085002"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.133])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 02:35:02 -0700
-Date: Thu, 23 Apr 2026 11:35:00 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Jan Maslak <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH 04/10] lib/intel/genxml: Import Xe2/Xe3/Xe3p XML hardware
- definitions from Mesa
-Message-ID: <io5745lchrypc45p5cgpmnv44idrlvqzgxbupffypowb73fpru@o5kchospkbev>
-References: <20260415220720.1594414-1-jan.maslak@intel.com>
- <20260415220720.1594414-5-jan.maslak@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A192C10F00F;
+	Thu, 23 Apr 2026 09:41:23 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9D6210F00F;
+ Thu, 23 Apr 2026 09:41:10 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5487075857332644820=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260415220720.1594414-5-jan.maslak@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EFull=3A_success_for_lib/amdgpu=3A_Add_ASIC_f?=
+ =?utf-8?q?iltering_system_with_family_ranges?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 23 Apr 2026 09:41:10 -0000
+Message-ID: <177693727087.1681.14808778444704142960@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260422041725.172582-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20260422041725.172582-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,2865 +37,4011 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 16, 2026 at 12:07:14AM +0200, Jan Maslak wrote:
-> Import xe2.xml, xe3.xml, and xe3p.xml from Mesa (MIT-licensed, Mesa commit
-> 3a62dc0218d3) unchanged.
-> 
-> These files define the hardware command, struct, and register layouts for
-> Xe2 (LNL/BMG), Xe3 (PTL), and Xe3p (WHL) Intel graphics generations.
-> xe3p.xml is a stub that imports xe3.xml; the Xe3p architecture shares its
-> command encoding with Xe3.
-> 
-> Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+--===============5487075857332644820==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+== Series Details ==
 
---
-Zbigniew
+Series: lib/amdgpu: Add ASIC filtering system with family ranges
+URL   : https://patchwork.freedesktop.org/series/165266/
+State : success
 
-> ---
->  lib/intel/genxml/xe2.xml  | 1969 +++++++++++++++++++++++++++++++++++++
->  lib/intel/genxml/xe3.xml  |  816 +++++++++++++++
->  lib/intel/genxml/xe3p.xml |    4 +
->  lib/meson.build           |    5 +-
->  4 files changed, 2793 insertions(+), 1 deletion(-)
->  create mode 100644 lib/intel/genxml/xe2.xml
->  create mode 100644 lib/intel/genxml/xe3.xml
->  create mode 100644 lib/intel/genxml/xe3p.xml
-> 
-> diff --git a/lib/intel/genxml/xe2.xml b/lib/intel/genxml/xe2.xml
-> new file mode 100644
-> index 000000000..6fe36a5b6
-> --- /dev/null
-> +++ b/lib/intel/genxml/xe2.xml
-> @@ -0,0 +1,1969 @@
-> +<?xml version='1.0' encoding='utf-8'?>
-> +<genxml name="XE2" gen="20">
-> +  <import name="gen125.xml">
-> +    <exclude name="3DSTATE_CLEAR_PARAMS" />
-> +    <exclude name="CLEAR_COLOR" />
-> +    <exclude name="L3ALLOC" />
-> +  </import>
-> +  <enum name="PREF_SLM_ALLOCATION_SIZE">
-> +    <value name="SLM_ENCODES_0K" value="0" />
-> +    <value name="SLM_ENCODES_16K" value="1" />
-> +    <value name="SLM_ENCODES_32K" value="2" />
-> +    <value name="SLM_ENCODES_64K" value="3" />
-> +    <value name="SLM_ENCODES_96K" value="4" />
-> +    <value name="SLM_ENCODES_128K" value="5" />
-> +    <value name="SLM_ENCODES_160K" value="6" />
-> +    <value name="SLM_ENCODES_192K" value="7" />
-> +    <value name="SLM_ENCODES_224K" value="8" />
-> +    <value name="SLM_ENCODES_256K" value="9" />
-> +    <value name="SLM_ENCODES_384K" value="10" />
-> +  </enum>
-> +  <enum name="RESOURCE_BARRIER_STAGE" prefix="RESOURCE_BARRIER_STAGE">
-> +    <value name="None" value="0" />
-> +    <value name="TOP" value="1" />
-> +    <value name="Color" value="2" />
-> +    <value name="Gpgpu" value="4" />
-> +    <value name="Color and Compute" value="6" />
-> +    <value name="Geom" value="16" />
-> +    <value name="Geometry and Compute" value="20" />
-> +    <value name="Raster" value="32" />
-> +    <value name="Depth" value="64" />
-> +    <value name="Pixel" value="128" />
-> +  </enum>
-> +  <enum name="RESOURCE_BARRIER_TYPE" prefix="RESOURCE_BARRIER_TYPE">
-> +    <value name="Immediate" value="0" />
-> +    <value name="Signal" value="1" />
-> +    <value name="Wait" value="2" />
-> +    <value name="UAV" value="3" />
-> +  </enum>
-> +  <enum name="UNIFIED_COMPRESSION_FORMAT">
-> +    <value name="CMF_R8" value="0" />
-> +    <value name="CMF_R8_G8" value="1" />
-> +    <value name="CMF_R8_G8_B8_A8" value="2" />
-> +    <value name="CMF_R10_G10_B10_A2" value="3" />
-> +    <value name="CMF_R11_G11_B10" value="4" />
-> +    <value name="CMF_R16" value="5" />
-> +    <value name="CMF_R16_G16" value="6" />
-> +    <value name="CMF_R16_G16_B16_A16" value="7" />
-> +    <value name="CMF_R32" value="8" />
-> +    <value name="CMF_R32_G32" value="9" />
-> +    <value name="CMF_R32_G32_B32_A32" value="10" />
-> +    <value name="CMF_Y16_U16_Y16_V16" value="11" />
-> +    <value name="CMF_ML8" value="15" />
-> +  </enum>
-> +  <struct name="INTERFACE_DESCRIPTOR_DATA" length="8">
-> +    <field name="Kernel Start Pointer" dword="0" bits="31:6" type="offset" />
-> +    <field name="Software Exception Enable" dword="2" bits="7:7" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="2" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="2" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="2" bits="18:18" type="bool" />
-> +    <field name="Denorm Mode" dword="2" bits="19:19" type="uint">
-> +      <value name="Ftz" value="0" />
-> +      <value name="SetByKernel" value="1" />
-> +    </field>
-> +    <field name="Thread Preemption" dword="2" bits="20:20" type="bool" default="1" />
-> +    <field name="Sampler Count" dword="3" bits="4:2" type="uint">
-> +      <value name="No samplers used" value="0" />
-> +      <value name="Between 1 and 4 samplers used" value="1" />
-> +      <value name="Between 5 and 8 samplers used" value="2" />
-> +      <value name="Between 9 and 12 samplers used" value="3" />
-> +      <value name="Between 13 and 16 samplers used" value="4" />
-> +    </field>
-> +    <field name="Sampler State Pointer" dword="3" bits="31:5" type="offset" />
-> +    <field name="Binding Table Entry Count" dword="4" bits="4:0" type="uint" />
-> +    <field name="Binding Table Pointer" dword="4" bits="20:5" type="offset" />
-> +    <field name="Number of Threads in GPGPU Thread Group" dword="5" bits="9:0" type="uint" />
-> +    <field name="Thread group forward progress guarantee" dword="5" bits="13:13" type="bool" />
-> +    <field name="Shared Local Memory Size" dword="5" bits="20:16" type="uint">
-> +      <value name="Encodes 0K" value="0" />
-> +      <value name="Encodes 1K" value="1" />
-> +      <value name="Encodes 2K" value="2" />
-> +      <value name="Encodes 4K" value="3" />
-> +      <value name="Encodes 8K" value="4" />
-> +      <value name="Encodes 16K" value="5" />
-> +      <value name="Encodes 32K" value="6" />
-> +      <value name="Encodes 64K" value="7" />
-> +      <value name="Encodes 96K" value="10" />
-> +      <value name="Encodes 128K" value="11" />
-> +      <value name="Encodes 192K" value="12" />
-> +      <value name="Encodes 256K" value="13" />
-> +      <value name="Encodes 384K" value="14" />
-> +    </field>
-> +    <field name="Rounding Mode" dword="5" bits="23:22" type="uint">
-> +      <value name="RTNE" value="0" />
-> +      <value name="RU" value="1" />
-> +      <value name="RD" value="2" />
-> +      <value name="RTZ" value="3" />
-> +    </field>
-> +    <field name="Thread Group Dispatch Size" dword="5" bits="27:26" type="uint">
-> +      <value name="TG size 8" value="0" />
-> +      <value name="TG size 4" value="1" />
-> +      <value name="TG size 2" value="2" />
-> +      <value name="TG size 1" value="3" />
-> +    </field>
-> +    <field name="Number Of Barriers" dword="5" bits="30:28" type="uint" prefix="BARRIER_SIZE">
-> +      <value name="NONE" value="0" />
-> +      <value name="B1" value="1" />
-> +      <value name="B2" value="2" />
-> +      <value name="B4" value="3" />
-> +      <value name="B8" value="4" />
-> +      <value name="B16" value="5" />
-> +      <value name="B24" value="6" />
-> +      <value name="B32" value="7" />
-> +    </field>
-> +    <field name="BTD Mode" dword="5" bits="31:31" type="uint" />
-> +    <field name="Preferred SLM Allocation Size" dword="7" bits="3:0" type="PREF_SLM_ALLOCATION_SIZE" />
-> +  </struct>
-> +  <struct name="POSTSYNC_DATA" length="5">
-> +    <field name="Operation" dword="0" bits="1:0" type="uint" default="0">
-> +      <value name="No Write" value="0" />
-> +      <value name="Write Immediate Data" value="1" />
-> +      <value name="Write Timestamp" value="3" />
-> +    </field>
-> +    <field name="HDC Pipeline Flush" dword="0" bits="2:2" type="bool" />
-> +    <field name="MOCS" dword="0" bits="10:4" type="uint" nonzero="true" />
-> +    <field name="System Memory Fence Request" dword="0" bits="11:11" type="bool" />
-> +    <field name="Dataport Subslice Cache Flush" dword="0" bits="12:12" type="bool" />
-> +    <field name="Destination Address" dword="1" bits="63:0" type="address" />
-> +    <field name="Immediate Data" dword="3" bits="63:0" type="uint" />
-> +  </struct>
-> +  <struct name="COMPUTE_WALKER_BODY" length="39">
-> +    <field name="Indirect Data Length" dword="1" bits="16:0" type="uint" />
-> +    <field name="L3 prefetch disable" dword="1" bits="17:17" type="bool" />
-> +    <field name="Partition Dispatch Parameter" dword="1" bits="29:18" type="uint" />
-> +    <field name="Partition Type" dword="1" bits="31:30" type="uint">
-> +      <value name="PartitionX" value="1" />
-> +      <value name="PartitionY" value="2" />
-> +      <value name="PartitionZ" value="3" />
-> +    </field>
-> +    <field name="Indirect Data Start Address" dword="2" bits="31:6" type="offset" />
-> +    <field name="Compute Dispatch All walker Enable" dword="3" bits="0:0" type="uint">
-> +      <value name="Disabled" value="0" />
-> +      <value name="Enabled" value="1" />
-> +    </field>
-> +    <field name="Dispatch Walk Order" dword="3" bits="6:5" type="uint">
-> +      <value name="Linear Walk" value="0" />
-> +      <value name="Y order walk" value="1" />
-> +    </field>
-> +    <field name="Message SIMD" dword="3" bits="18:17" type="uint">
-> +      <value name="SIMT16" value="1" />
-> +      <value name="SIMT32" value="2" />
-> +    </field>
-> +    <field name="Tile Layout" dword="3" bits="21:19" type="uint">
-> +      <value name="Linear" value="0" />
-> +      <value name="TileY 32bpe" value="1" />
-> +      <value name="TileY 64bpe" value="2" />
-> +      <value name="TileY 128bpe" value="3" />
-> +    </field>
-> +    <field name="Walk Order" dword="3" bits="24:22" type="uint">
-> +      <value name="Walk 012" value="0" />
-> +      <value name="Walk 021" value="1" />
-> +      <value name="Walk 102" value="2" />
-> +      <value name="Walk 120" value="3" />
-> +      <value name="Walk 201" value="4" />
-> +      <value name="Walk 210" value="5" />
-> +    </field>
-> +    <field name="Emit Inline Parameter" dword="3" bits="25:25" type="bool" />
-> +    <field name="Emit Local" dword="3" bits="28:26" type="uint">
-> +      <value name="Emit None" value="0" />
-> +      <value name="Emit X" value="1" />
-> +      <value name="Emit XY" value="3" />
-> +      <value name="Emit XYZ" value="7" />
-> +    </field>
-> +    <field name="Generate Local ID" dword="3" bits="29:29" type="bool" />
-> +    <field name="SIMD Size" dword="3" bits="31:30" type="uint">
-> +      <value name="SIMT16" value="1" />
-> +      <value name="SIMT32" value="2" />
-> +    </field>
-> +    <field name="Execution Mask" dword="4" bits="31:0" type="uint" />
-> +    <field name="Local X Maximum" dword="5" bits="9:0" type="uint" />
-> +    <field name="Local Y Maximum" dword="5" bits="19:10" type="uint" />
-> +    <field name="Local Z Maximum" dword="5" bits="29:20" type="uint" />
-> +    <field name="Thread Group ID X Dimension" dword="6" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Y Dimension" dword="7" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Z Dimension" dword="8" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Starting X" dword="9" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Starting Y" dword="10" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Starting Z" dword="11" bits="31:0" type="uint" />
-> +    <field name="Partition ID" dword="12" bits="31:0" type="uint" />
-> +    <field name="Partition Size" dword="13" bits="31:0" type="uint" />
-> +    <field name="Preempt X" dword="14" bits="31:0" type="uint" />
-> +    <field name="Preempt Y" dword="15" bits="31:0" type="uint" />
-> +    <field name="Preempt Z" dword="16" bits="31:0" type="uint" />
-> +    <field name="Walker ID" dword="17" bits="3:0" type="uint" />
-> +    <field name="Over dispatch TG count" dword="17" bits="23:8" type="uint" />
-> +    <field name="Interface Descriptor" dword="18" bits="255:0" type="INTERFACE_DESCRIPTOR_DATA" />
-> +    <field name="Post Sync" dword="26" bits="159:0" type="POSTSYNC_DATA" />
-> +    <group count="8" dword="31" size="32">
-> +      <field name="Inline Data" dword="0" bits="31:0" type="uint" />
-> +    </group>
-> +  </struct>
-> +  <struct name="RENDER_SURFACE_STATE" length="16">
-> +    <field name="Cube Face Enable - Positive Z" dword="0" bits="0:0" type="bool" />
-> +    <field name="Cube Face Enable - Negative Z" dword="0" bits="1:1" type="bool" />
-> +    <field name="Cube Face Enable - Positive Y" dword="0" bits="2:2" type="bool" />
-> +    <field name="Cube Face Enable - Negative Y" dword="0" bits="3:3" type="bool" />
-> +    <field name="Cube Face Enable - Positive X" dword="0" bits="4:4" type="bool" />
-> +    <field name="Cube Face Enable - Negative X" dword="0" bits="5:5" type="bool" />
-> +    <field name="Media Boundary Pixel Mode" dword="0" bits="7:6" type="uint">
-> +      <value name="NORMAL_MODE" value="0" />
-> +      <value name="PROGRESSIVE_FRAME" value="2" />
-> +      <value name="INTERLACED_FRAME" value="3" />
-> +    </field>
-> +    <field name="Render Cache Read Write Mode" dword="0" bits="8:8" type="uint">
-> +      <value name="Write-Only Cache" value="0" />
-> +      <value name="Read-Write Cache" value="1" />
-> +    </field>
-> +    <field name="Enable Sampler Route to LSC" dword="0" bits="9:9" type="bool" />
-> +    <field name="Vertical Line Stride Offset" dword="0" bits="10:10" type="uint" />
-> +    <field name="Vertical Line Stride" dword="0" bits="11:11" type="uint" />
-> +    <field name="Tile Mode" dword="0" bits="13:12" type="uint">
-> +      <value name="LINEAR" value="0" />
-> +      <value name="TILE64" value="1" />
-> +      <value name="XMAJOR" value="2" />
-> +      <value name="TILE4" value="3" />
-> +    </field>
-> +    <field name="Surface Horizontal Alignment" dword="0" bits="15:14" type="uint">
-> +      <value name="HALIGN_16" value="0" />
-> +      <value name="HALIGN_32" value="1" />
-> +      <value name="HALIGN_64" value="2" />
-> +      <value name="HALIGN_128" value="3" />
-> +    </field>
-> +    <field name="Surface Vertical Alignment" dword="0" bits="17:16" type="uint">
-> +      <value name="VALIGN_4" value="1" />
-> +      <value name="VALIGN_8" value="2" />
-> +      <value name="VALIGN_16" value="3" />
-> +    </field>
-> +    <field name="Surface Format" dword="0" bits="26:18" type="uint" />
-> +    <field name="Surface Array" dword="0" bits="28:28" type="bool" />
-> +    <field name="Surface Type" dword="0" bits="31:29" type="STATE_SURFACE_TYPE" />
-> +    <field name="Surface QPitch" dword="1" bits="14:0" type="uint" />
-> +    <field name="Sample Tap Discard Disable" dword="1" bits="15:15" type="bool" />
-> +    <field name="Corner Texel Mode" dword="1" bits="18:18" type="bool" />
-> +    <field name="Base Mip Level" dword="1" bits="23:19" type="uint" />
-> +    <field name="MOCS" dword="1" bits="30:24" type="uint" nonzero="true" />
-> +    <field name="Width" dword="2" bits="13:0" type="uint" />
-> +    <field name="Height" dword="2" bits="29:16" type="uint" />
-> +    <field name="Depth Stencil Resource" dword="2" bits="31:31" type="bool" />
-> +    <field name="Surface Pitch" dword="3" bits="17:0" type="uint" />
-> +    <field name="Depth" dword="3" bits="31:21" type="uint" />
-> +    <field name="Multisample Position Palette Index" dword="4" bits="2:0" type="uint" />
-> +    <field name="Number of Multisamples" dword="4" bits="5:3" type="uint">
-> +      <value name="MULTISAMPLECOUNT_1" value="0" />
-> +      <value name="MULTISAMPLECOUNT_2" value="1" />
-> +      <value name="MULTISAMPLECOUNT_4" value="2" />
-> +      <value name="MULTISAMPLECOUNT_8" value="3" />
-> +      <value name="MULTISAMPLECOUNT_16" value="4" />
-> +    </field>
-> +    <field name="Multisampled Surface Storage Format" dword="4" bits="6:6" type="uint">
-> +      <value name="MSFMT_MSS" value="0" />
-> +      <value name="MSFMT_DEPTH_STENCIL" value="1" />
-> +    </field>
-> +    <field name="Render Target View Extent" dword="4" bits="17:7" type="uint" />
-> +    <field name="Minimum Array Element" dword="4" bits="28:18" type="uint" />
-> +    <field name="Render Target And Sample Unorm Rotation" dword="4" bits="30:29" type="uint">
-> +      <value name="0DEG" value="0" />
-> +      <value name="90DEG" value="1" />
-> +      <value name="180DEG" value="2" />
-> +      <value name="270DEG" value="3" />
-> +    </field>
-> +    <field name="MIP Count / LOD" dword="5" bits="3:0" type="uint" />
-> +    <field name="Surface Min LOD" dword="5" bits="7:4" type="uint" />
-> +    <field name="Mip Tail Start LOD" dword="5" bits="11:8" type="uint" />
-> +    <field name="L1 Cache Control" dword="5" bits="18:16" type="L1_CACHE_CONTROL" />
-> +    <field name="EWA Disable For Cube" dword="5" bits="20:20" type="bool" />
-> +    <field name="Y Offset" dword="5" bits="23:21" type="uint" />
-> +    <field name="X Offset" dword="5" bits="31:25" type="uint" />
-> +    <field name="Auxiliary Surface Mode" dword="6" bits="2:0" type="uint">
-> +      <value name="AUX_NONE" value="0" />
-> +      <value name="AUX_APPEND" value="1" />
-> +      <value name="AUX_MCS" value="2" />
-> +    </field>
-> +    <field name="Y Offset for U or UV Plane" dword="6" bits="13:0" type="uint" />
-> +    <field name="Auxiliary Surface Pitch" dword="6" bits="12:3" type="uint" />
-> +    <field name="YUV Interpolation Enable" dword="6" bits="15:15" type="bool" />
-> +    <field name="X Offset for U or UV Plane" dword="6" bits="29:16" type="uint" />
-> +    <field name="Auxiliary Surface QPitch" dword="6" bits="30:16" type="uint" />
-> +    <field name="Resource Min LOD" dword="7" bits="11:0" type="u4.8" />
-> +    <field name="Shader Channel Select Alpha" dword="7" bits="18:16" type="Shader Channel Select" />
-> +    <field name="Shader Channel Select Blue" dword="7" bits="21:19" type="Shader Channel Select" />
-> +    <field name="Shader Channel Select Green" dword="7" bits="24:22" type="Shader Channel Select" />
-> +    <field name="Shader Channel Select Red" dword="7" bits="27:25" type="Shader Channel Select" />
-> +    <field name="Surface Base Address" dword="8" bits="63:0" type="address" />
-> +    <field name="Mip Region Width In Log2" dword="10" bits="3:0" type="uint" />
-> +    <field name="Append Counter Address" dword="10" bits="63:2" type="address" />
-> +    <field name="Mip Region Height In Log2" dword="10" bits="7:4" type="uint" />
-> +    <field name="Procedural Texture" dword="10" bits="11:11" type="bool" />
-> +    <field name="Auxiliary Surface Base Address" dword="10" bits="63:12" type="address" />
-> +    <field name="Y Offset for V Plane" dword="11" bits="13:0" type="uint" />
-> +    <field name="X Offset for V Plane" dword="11" bits="29:16" type="uint" />
-> +    <field name="Compression Format" dword="12" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
-> +    <field name="Mip Region Depth In Log2" dword="12" bits="7:4" type="uint" />
-> +    <field name="Disallowlowqualityfiltering" dword="13" bits="31:31" type="bool" />
-> +  </struct>
-> +  <struct name="RESOURCE_BARRIER_BODY" length="4">
-> +    <field name="Wait Stage" dword="0" bits="11:0" type="RESOURCE_BARRIER_STAGE" />
-> +    <field name="Signal Stage" dword="0" bits="23:12" type="RESOURCE_BARRIER_STAGE" />
-> +    <field name="Barrier Type" dword="0" bits="31:30" type="RESOURCE_BARRIER_TYPE" />
-> +    <field name="L1 Dataport Cache Invalidate" dword="1" bits="21:21" type="bool" />
-> +    <field name="Depth Cache" dword="1" bits="22:22" type="bool" />
-> +    <field name="Color Cache" dword="1" bits="23:23" type="bool" />
-> +    <field name="L1 Dataport UAV Flush" dword="1" bits="24:24" type="bool" />
-> +    <field name="Texture (RO)" dword="1" bits="25:25" type="bool" />
-> +    <field name="State (RO)" dword="1" bits="26:26" type="bool" />
-> +    <field name="VF (RO)" dword="1" bits="27:27" type="bool" />
-> +    <field name="AMFS" dword="1" bits="28:28" type="bool" />
-> +    <field name="Constant Cache" dword="1" bits="29:29" type="bool" />
-> +    <field name="Barrier ID Address" dword="2" bits="63:3" type="address" />
-> +  </struct>
-> +  <instruction name="3DSTATE_3D_MODE" bias="2" length="5" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="30" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Cross Slice Hashing Mode" dword="1" bits="1:0" type="uint">
-> +      <value name="Normal Mode" value="0" />
-> +      <value name="Disable" value="1" />
-> +      <value name="hashing 32x32" value="3" />
-> +    </field>
-> +    <field name="3D Scoreboard Hashing Mode" dword="1" bits="4:4" type="bool" />
-> +    <field name="Subslice Hashing Table Enable" dword="1" bits="5:5" type="bool" />
-> +    <field name="Slice Hashing Table Enable" dword="1" bits="6:6" type="bool" />
-> +    <field name="DX10 OGL Border Mode for YCRCB" dword="1" bits="10:10" type="bool" />
-> +    <field name="Enable OOO reads in RCPB" dword="1" bits="11:11" type="bool" />
-> +    <field name="Cross Slice Hashing Mode Mask" dword="1" bits="17:16" type="int" />
-> +    <field name="3D Scoreboard Hashing Mode Mask" dword="1" bits="20:20" type="bool" />
-> +    <field name="Subslice Hashing Table Enable Mask" dword="1" bits="21:21" type="bool" />
-> +    <field name="Slice Hashing Table Enable Mask" dword="1" bits="22:22" type="bool" />
-> +    <field name="DX10 OGL Border Mode for YCRCB Mask" dword="1" bits="26:26" type="bool" />
-> +    <field name="Enable OOO reads in RCPB Mask" dword="1" bits="27:27" type="bool" />
-> +    <field name="AMFS MOCS" dword="2" bits="6:0" type="uint" />
-> +    <field name="State Cache redirect to CS section enable" dword="2" bits="9:9" type="bool" />
-> +    <field name="AMFS MOCS Mask" dword="2" bits="22:16" type="uint" />
-> +    <field name="State Cache redirect to CS section enable Mask" dword="2" bits="25:25" type="bool" />
-> +    <field name="RCC RHWO Optimization Disable" dword="3" bits="15:15" type="bool" />
-> +    <field name="RCC RHWO Optimization Disable Mask" dword="3" bits="31:31" type="bool" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_BTD" bias="2" length="6" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="6" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Dispatch Timeout Counter" dword="1" bits="2:0" type="uint">
-> +      <value name="64 clocks" value="0" />
-> +      <value name="128 clocks" value="1" />
-> +      <value name="192 clocks" value="2" />
-> +      <value name="256 clocks" value="3" />
-> +      <value name="512 clocks" value="4" />
-> +      <value name="1024 clocks" value="5" />
-> +      <value name="2048 clocks" value="6" />
-> +      <value name="4096 clocks" value="7" />
-> +    </field>
-> +    <field name="Controls the maximum number of outstanding Ray Queries per SS" dword="1" bits="8:7" type="uint" prefix="RAYS_QUERIES_OUTSTANDING">
-> +      <value name="128" value="0" />
-> +      <value name="256" value="1" />
-> +      <value name="512" value="2" />
-> +      <value name="1024" value="3" />
-> +    </field>
-> +    <field name="BTD Mid thread preemption" dword="1" bits="31:31" type="bool" default="1" />
-> +    <field name="Per DSS Memory Backed Buffer Size" dword="2" bits="2:0" type="uint" default="6">
-> +      <value name="2KB" value="0" />
-> +      <value name="4KB" value="1" />
-> +      <value name="8KB" value="2" />
-> +      <value name="16KB" value="3" />
-> +      <value name="32KB" value="4" />
-> +      <value name="64KB" value="5" />
-> +      <value name="128KB" value="6" />
-> +    </field>
-> +    <field name="Memory Backed Buffer Base Pointer" dword="2" bits="63:10" type="address" />
-> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_CLIP" bias="2" length="4" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="2" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="18" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="1" bits="7:0" type="uint" />
-> +    <field name="Statistics Enable" dword="1" bits="10:10" type="bool" />
-> +    <field name="Force Clip Mode" dword="1" bits="16:16" type="bool" />
-> +    <field name="Force User Clip Distance Clip Test Enable Bitmask" dword="1" bits="17:17" type="bool" />
-> +    <field name="Early Cull Enable" dword="1" bits="18:18" type="bool" />
-> +    <field name="Vertex Sub Pixel Precision Select" dword="1" bits="19:19" type="uint">
-> +      <value name="8 Bit" value="0" />
-> +      <value name="4 Bit" value="1" />
-> +    </field>
-> +    <field name="Force User Clip Distance Cull Test Enable Bitmask" dword="1" bits="20:20" type="bool" />
-> +    <field name="Triangle Fan Provoking Vertex Select" dword="2" bits="1:0" type="uint" />
-> +    <field name="Line Strip/List Provoking Vertex Select" dword="2" bits="3:2" type="uint" />
-> +    <field name="Triangle Strip/List Provoking Vertex Select" dword="2" bits="5:4" type="uint" />
-> +    <field name="Triangle Strip Odd Provoking Vertex Select" dword="2" bits="7:6" type="uint" />
-> +    <field name="Non-Perspective Barycentric Enable" dword="2" bits="8:8" type="bool" />
-> +    <field name="Perspective Divide Disable" dword="2" bits="9:9" type="bool" />
-> +    <field name="Clip Mode" dword="2" bits="15:13" type="uint">
-> +      <value name="CLIPMODE_NORMAL" value="0" />
-> +      <value name="CLIPMODE_REJECT_ALL" value="3" />
-> +      <value name="CLIPMODE_ACCEPT_ALL" value="4" />
-> +    </field>
-> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="2" bits="23:16" type="uint" />
-> +    <field name="Guardband Clip Test Enable" dword="2" bits="26:26" type="bool" />
-> +    <field name="Viewport XY Clip Test Enable" dword="2" bits="28:28" type="bool" />
-> +    <field name="API Mode" dword="2" bits="30:30" type="uint">
-> +      <value name="APIMODE_OGL" value="0" />
-> +      <value name="APIMODE_D3D" value="1" />
-> +    </field>
-> +    <field name="Clip Enable" dword="2" bits="31:31" type="bool" />
-> +    <field name="Maximum VP Index" dword="3" bits="3:0" type="uint" />
-> +    <field name="Force Zero RTA Index Enable" dword="3" bits="5:5" type="bool" />
-> +    <field name="Maximum Point Width" dword="3" bits="16:6" type="u8.3" />
-> +    <field name="Minimum Point Width" dword="3" bits="27:17" type="u8.3" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_CPSIZE_CONTROL_BUFFER" bias="2" length="8" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="131" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Surface Pitch" dword="1" bits="16:0" type="uint" />
-> +    <field name="Surface Type" dword="1" bits="31:29" type="uint" />
-> +    <field name="Surface Base Address" dword="2" bits="63:0" type="address" />
-> +    <field name="Width" dword="4" bits="14:1" type="uint" />
-> +    <field name="Height" dword="4" bits="30:17" type="uint" />
-> +    <field name="MOCS" dword="5" bits="6:0" type="uint" />
-> +    <field name="Minimum Array Element" dword="5" bits="18:8" type="uint" />
-> +    <field name="Depth" dword="5" bits="30:20" type="uint" />
-> +    <field name="Compression Format" dword="6" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
-> +    <field name="Mip Tail Start LOD" dword="6" bits="29:26" type="uint" />
-> +    <field name="Tiled Mode" dword="6" bits="31:30" type="uint">
-> +      <value name="TILE64" value="1" />
-> +      <value name="TILE4" value="3" />
-> +    </field>
-> +    <field name="Surface QPitch" dword="7" bits="14:0" type="uint" />
-> +    <field name="Surf LOD" dword="7" bits="19:16" type="uint" />
-> +    <field name="Render Target View Extent" dword="7" bits="31:21" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_DEPTH_BUFFER" bias="2" length="8" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Surface Pitch" dword="1" bits="17:0" type="uint" />
-> +    <field name="Hierarchical Depth Buffer Enable" dword="1" bits="22:22" type="bool" />
-> +    <field name="Corner Texel Mode" dword="1" bits="23:23" type="bool" />
-> +    <field name="Surface Format" dword="1" bits="26:24" type="uint">
-> +      <value name="D32_FLOAT" value="1" />
-> +      <value name="D24_UNORM_X8_UINT" value="3" />
-> +      <value name="D16_UNORM" value="5" />
-> +    </field>
-> +    <field name="Null Page Coherency Enable" dword="1" bits="27:27" type="bool" />
-> +    <field name="Depth Write Enable" dword="1" bits="28:28" type="bool" />
-> +    <field name="Surface Type" dword="1" bits="31:29" type="uint">
-> +      <value name="SURFTYPE_2D" value="1" />
-> +      <value name="SURFTYPE_CUBE" value="3" />
-> +      <value name="SURFTYPE_NULL" value="7" />
-> +    </field>
-> +    <field name="Surface Base Address" dword="2" bits="63:0" type="address" />
-> +    <field name="Width" dword="4" bits="14:1" type="uint" />
-> +    <field name="Height" dword="4" bits="30:17" type="uint" />
-> +    <field name="MOCS" dword="5" bits="6:0" type="uint" nonzero="true" />
-> +    <field name="Minimum Array Element" dword="5" bits="18:8" type="uint" />
-> +    <field name="Depth" dword="5" bits="30:20" type="uint" />
-> +    <field name="Render Compression Format" dword="6" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
-> +    <field name="Mip Tail Start LOD" dword="6" bits="29:26" type="uint" />
-> +    <field name="Tiled Mode" dword="6" bits="31:30" type="uint">
-> +      <value name="TILE64" value="1" />
-> +      <value name="TILE4" value="3" />
-> +    </field>
-> +    <field name="Surface QPitch" dword="7" bits="14:0" type="uint" />
-> +    <field name="LOD" dword="7" bits="19:16" type="uint" />
-> +    <field name="Render Target View Extent" dword="7" bits="31:21" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_DRAWING_RECTANGLE_FAST" bias="2" length="4" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="2" />
-> +    <field name="Core Mode Select" dword="0" bits="15:14" type="uint">
-> +      <value name="Legacy" value="0" />
-> +      <value name="Core 0 Enabled" value="1" />
-> +      <value name="Core 1 Enabled" value="2" />
-> +    </field>
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="0" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Clipped Drawing Rectangle X Min" dword="1" bits="15:0" type="uint" />
-> +    <field name="Clipped Drawing Rectangle Y Min" dword="1" bits="31:16" type="uint" />
-> +    <field name="Clipped Drawing Rectangle X Max" dword="2" bits="15:0" type="uint" />
-> +    <field name="Clipped Drawing Rectangle Y Max" dword="2" bits="31:16" type="uint" />
-> +    <field name="Drawing Rectangle Origin X" dword="3" bits="15:0" type="int" />
-> +    <field name="Drawing Rectangle Origin Y" dword="3" bits="31:16" type="int" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_GS" bias="2" length="10" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="8" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="17" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-> +    <field name="Expected Vertex Count" dword="3" bits="5:0" type="uint" />
-> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-> +    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-> +      <value name="Normal" value="0" />
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-> +      <value name="No Samplers" value="0" />
-> +      <value name="1-4 Samplers" value="1" />
-> +      <value name="5-8 Samplers" value="2" />
-> +      <value name="9-12 Samplers" value="3" />
-> +      <value name="13-16 Samplers" value="4" />
-> +    </field>
-> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-> +      <value name="Dmask" value="0" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="3" bits="31:31" type="bool" />
-> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="3:0" type="uint" />
-> +    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-> +    <field name="Include Vertex Handles" dword="6" bits="10:10" type="bool" />
-> +    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
-> +    <field name="Output Topology" dword="6" bits="22:17" type="3D_Prim_Topo_Type" />
-> +    <field name="Output Vertex Size" dword="6" bits="28:23" type="uint" />
-> +    <field name="Dispatch GRF Start Register For URB Data [5:4]" dword="6" bits="30:29" type="uint" />
-> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
-> +    <field name="Discard Adjacency" dword="7" bits="1:1" type="bool" />
-> +    <field name="Reorder Mode" dword="7" bits="2:2" type="uint">
-> +      <value name="LEADING" value="0" />
-> +      <value name="TRAILING" value="1" />
-> +    </field>
-> +    <field name="Hint" dword="7" bits="3:3" type="bool" />
-> +    <field name="Include Primitive ID" dword="7" bits="4:4" type="bool" />
-> +    <field name="Invocations Increment Value" dword="7" bits="9:5" type="uint" />
-> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-> +    <field name="Default Stream Id" dword="7" bits="14:13" type="uint" />
-> +    <field name="Instance Control" dword="7" bits="19:15" type="uint" />
-> +    <field name="Control Data Header Size" dword="7" bits="23:20" type="uint" />
-> +    <field name="Maximum Number of Threads" dword="8" bits="8:0" type="uint" />
-> +    <field name="Static Output Vertex Count" dword="8" bits="26:16" type="uint" />
-> +    <field name="Static Output" dword="8" bits="30:30" type="bool" />
-> +    <field name="Control Data Format" dword="8" bits="31:31" type="uint">
-> +      <value name="CUT" value="0" />
-> +      <value name="SID" value="1" />
-> +    </field>
-> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="9" bits="7:0" type="uint" />
-> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="9" bits="15:8" type="uint" />
-> +    <field name="Vertex URB Entry Output Length" dword="9" bits="20:16" type="uint" />
-> +    <field name="Vertex URB Entry Output Read Offset" dword="9" bits="26:21" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_HS" bias="2" length="8" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="27" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Patch Count Threshold" dword="1" bits="3:0" type="uint" />
-> +    <field name="Software Exception Enable" dword="1" bits="12:12" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="1" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="1" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="alternate" value="1" />
-> +    </field>
-> +    <field name="Thread Dispatch Priority" dword="1" bits="17:17" type="uint">
-> +      <value name="Normal" value="0" />
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Binding Table Entry Count" dword="1" bits="25:18" type="uint" />
-> +    <field name="Sampler Count" dword="1" bits="29:27" type="uint">
-> +      <value name="No Samplers" value="0" />
-> +      <value name="1-4 Samplers" value="1" />
-> +      <value name="5-8 Samplers" value="2" />
-> +      <value name="9-12 Samplers" value="3" />
-> +      <value name="13-16 Samplers" value="4" />
-> +    </field>
-> +    <field name="Instance Count" dword="2" bits="4:0" type="uint" />
-> +    <field name="Maximum Number of Threads" dword="2" bits="16:8" type="uint" />
-> +    <field name="Statistics Enable" dword="2" bits="29:29" type="bool" />
-> +    <field name="Enable" dword="2" bits="31:31" type="bool" />
-> +    <field name="Kernel Start Pointer" dword="3" bits="63:6" type="offset" />
-> +    <field name="Scratch Space Buffer" dword="5" bits="31:10" type="uint" />
-> +    <field name="Include Primitive ID" dword="7" bits="0:0" type="bool" />
-> +    <field name="Vertex URB Entry Read Offset" dword="7" bits="9:4" type="uint" />
-> +    <field name="Vertex URB Entry Read Length" dword="7" bits="16:11" type="uint" />
-> +    <field name="Dispatch GRF Start Register For URB Data" dword="7" bits="23:19" type="uint" />
-> +    <field name="Include Vertex Handles" dword="7" bits="24:24" type="bool" />
-> +    <field name="Accesses UAV" dword="7" bits="25:25" type="bool" />
-> +    <field name="Vector Mask Enable" dword="7" bits="26:26" type="uint">
-> +      <value name="Dmask" value="0" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="7" bits="27:27" type="bool" />
-> +    <field name="Dispatch GRF Start Register For URB Data [5]" dword="7" bits="28:28" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_MESH_CONTROL" bias="2" length="3" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="119" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Maximum Number of ThreadGroups" dword="1" bits="8:0" type="uint" />
-> +    <field name="VP and RTA Index Autostrip Enable" dword="1" bits="27:27" type="bool" />
-> +    <field name="Thread Dispatch Priority" dword="1" bits="28:28" type="uint">
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Fused EU Dispatch" dword="1" bits="29:29" type="bool" />
-> +    <field name="Statistics Enable" dword="1" bits="30:30" type="bool" />
-> +    <field name="MeshShader Enable" dword="1" bits="31:31" type="uint" />
-> +    <field name="Scratch Space Buffer" dword="2" bits="31:10" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_PS" bias="2" length="12" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="10" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="32" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Kernel 0 Enable" dword="1" bits="0:0" type="bool" />
-> +    <field name="Kernel[0] : SIMD Width" dword="1" bits="1:1" type="uint" prefix="PS">
-> +      <value name="SIMD16" value="0" />
-> +      <value name="SIMD32" value="1" />
-> +    </field>
-> +    <field name="Kernel Start Pointer 0" dword="1" bits="63:6" type="offset" />
-> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="Rounding Mode" dword="3" bits="15:14" type="uint">
-> +      <value name="RTNE" value="0" />
-> +      <value name="RU" value="1" />
-> +      <value name="RD" value="2" />
-> +      <value name="RTZ" value="3" />
-> +    </field>
-> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-> +      <value name="Normal" value="0" />
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-> +    <field name="Single Precision Denormal Mode" dword="3" bits="26:26" type="uint">
-> +      <value name="Flushed to Zero" value="0" />
-> +      <value name="Retained" value="1" />
-> +    </field>
-> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-> +      <value name="No Samplers" value="0" />
-> +      <value name="1-4 Samplers" value="1" />
-> +      <value name="5-8 Samplers" value="2" />
-> +      <value name="9-12 Samplers" value="3" />
-> +      <value name="13-16 Samplers" value="4" />
-> +    </field>
-> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-> +      <value name="Dmask" value="0" />
-> +      <value name="Vmask" value="1" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="3" bits="31:31" type="uint">
-> +      <value name="Multiple" value="0" />
-> +      <value name="Single" value="1" />
-> +    </field>
-> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-> +    <field name="Position XY Offset Select" dword="6" bits="4:3" type="uint">
-> +      <value name="POSOFFSET_NONE" value="0" />
-> +      <value name="POSOFFSET_CENTROID" value="2" />
-> +      <value name="POSOFFSET_SAMPLE" value="3" />
-> +    </field>
-> +    <field name="Render Target Resolve Type" dword="6" bits="7:6" type="uint">
-> +      <value name="RESOLVE_DISABLED" value="0" />
-> +    </field>
-> +    <field name="Render Target Fast Clear Enable" dword="6" bits="8:8" type="bool" />
-> +    <field name="Overlapping Subspans Enable" dword="6" bits="9:9" type="bool" />
-> +    <field name="3D Scoreboard Address Size select" dword="6" bits="10:10" type="uint">
-> +      <value name="2x2" value="0" />
-> +      <value name="4x2" value="1" />
-> +    </field>
-> +    <field name="Clear/Resolve BTI for Render Target" dword="6" bits="19:12" type="uint" />
-> +    <field name="Pixel Scoreboard Disable" dword="6" bits="21:21" type="bool" />
-> +    <field name="Maximum Number of Threads Per PSD" dword="6" bits="31:23" type="uint" />
-> +    <field name="Dispatch GRF Start Register For Constant/Setup Data 1" dword="7" bits="15:8" type="uint" />
-> +    <field name="Dispatch GRF Start Register For Constant/Setup Data 0" dword="7" bits="23:16" type="uint" />
-> +    <field name="Kernel[0] : Poly Packing Policy" dword="7" bits="26:24" type="uint">
-> +      <value name="POLY_PACK4_DYNAMIC" value="0" />
-> +      <value name="POLY_PACK8_DYNAMIC" value="1" />
-> +      <value name="POLY_PACK16_DYNAMIC" value="2" />
-> +      <value name="POLY_PACK16_FIXED" value="3" />
-> +      <value name="POLY_PACK8_FIXED" value="4" />
-> +    </field>
-> +    <field name="Kernel[0] : Maximum Polys per Thread" dword="7" bits="29:27" type="uint" />
-> +    <field name="Kernel 1 Selection Priority" dword="7" bits="31:31" type="uint">
-> +      <value name="PRI_SIMD" value="0" />
-> +      <value name="PRI_POLY" value="1" />
-> +    </field>
-> +    <field name="Kernel 1 Enable" dword="8" bits="0:0" type="bool" />
-> +    <field name="Kernel[1] : SIMD Width" dword="8" bits="1:1" type="uint" prefix="PS">
-> +      <value name="SIMD16" value="0" />
-> +      <value name="SIMD32" value="1" />
-> +    </field>
-> +    <field name="Kernel Start Pointer 1" dword="8" bits="63:6" type="offset" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_PS_EXTRA" bias="2" length="2" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="0" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="79" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Input Coverage Mask State" dword="1" bits="1:0" type="uint" prefix="ICMS">
-> +      <value name="NONE" value="0" />
-> +      <value name="NORMAL" value="1" />
-> +      <value name="INNER_CONSERVATIVE" value="2" />
-> +      <value name="DEPTH_COVERAGE" value="3" />
-> +    </field>
-> +    <field name="Pixel Shader Has UAV" dword="1" bits="2:2" type="bool" />
-> +    <field name="Pixel Shader Is Per Coarse Pixel" dword="1" bits="4:4" type="bool" />
-> +    <field name="Pixel Shader Computes Stencil" dword="1" bits="5:5" type="bool" />
-> +    <field name="Pixel Shader Is Per Sample" dword="1" bits="6:6" type="bool" />
-> +    <field name="Pixel Shader Disables Alpha To Coverage" dword="1" bits="7:7" type="bool" />
-> +    <field name="Simple PS Hint" dword="1" bits="9:9" type="bool" />
-> +    <field name="Pixel Shader Requires Centroid Offsets" dword="1" bits="16:16" type="bool" />
-> +    <field name="Enable PS Dependency On CPsize Change" dword="1" bits="17:17" type="bool" />
-> +    <field name="Pixel Shader Requires Subpixel Sample Offsets" dword="1" bits="18:18" type="bool" />
-> +    <field name="Pixel Shader Requires Non-Perspective Bary Plane Coefficients" dword="1" bits="19:19" type="bool" />
-> +    <field name="Pixel Shader Requires Perspective Bary Plane Coefficients" dword="1" bits="20:20" type="bool" />
-> +    <field name="Pixel Shader Requires Source Depth and/or W Plane Coefficients" dword="1" bits="21:21" type="bool" />
-> +    <field name="Pixel Shader Requires Requested Coarse Pixel Shading Size" dword="1" bits="22:22" type="bool" />
-> +    <field name="Pixel Shader Uses Source W" dword="1" bits="23:23" type="bool" />
-> +    <field name="Pixel Shader Uses Source Depth" dword="1" bits="24:24" type="bool" />
-> +    <field name="Force Computed Depth" dword="1" bits="25:25" type="bool" />
-> +    <field name="Pixel Shader Computed Depth Mode" dword="1" bits="27:26" type="uint">
-> +      <value name="PSCDEPTH_OFF" value="0" />
-> +      <value name="PSCDEPTH_ON" value="1" />
-> +      <value name="PSCDEPTH_ON_GE" value="2" />
-> +      <value name="PSCDEPTH_ON_LE" value="3" />
-> +    </field>
-> +    <field name="Pixel Shader Kills Pixel" dword="1" bits="28:28" type="bool" />
-> +    <field name="oMask Present to Render Target" dword="1" bits="29:29" type="bool" />
-> +    <field name="Pixel Shader Does not write to RT" dword="1" bits="30:30" type="mbz" />
-> +    <field name="Pixel Shader Valid" dword="1" bits="31:31" type="bool" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_RASTER" bias="2" length="5" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="80" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Viewport Z Near Clip Test Enable" dword="1" bits="0:0" type="bool" />
-> +    <field name="Scissor Rectangle Enable" dword="1" bits="1:1" type="bool" />
-> +    <field name="Antialiasing Enable" dword="1" bits="2:2" type="bool" />
-> +    <field name="Back Face Fill Mode" dword="1" bits="4:3" type="uint" prefix="FILL_MODE">
-> +      <value name="SOLID" value="0" />
-> +      <value name="WIREFRAME" value="1" />
-> +      <value name="POINT" value="2" />
-> +    </field>
-> +    <field name="Front Face Fill Mode" dword="1" bits="6:5" type="uint" prefix="FILL_MODE">
-> +      <value name="SOLID" value="0" />
-> +      <value name="WIREFRAME" value="1" />
-> +      <value name="POINT" value="2" />
-> +    </field>
-> +    <field name="Global Depth Offset Enable Point" dword="1" bits="7:7" type="bool" />
-> +    <field name="Global Depth Offset Enable Wireframe" dword="1" bits="8:8" type="bool" />
-> +    <field name="Global Depth Offset Enable Solid" dword="1" bits="9:9" type="bool" />
-> +    <field name="DX Multisample Rasterization Mode" dword="1" bits="11:10" type="uint">
-> +      <value name="MSRASTMODE_ OFF_PIXEL" value="0" />
-> +      <value name="MSRASTMODE_ OFF_PATTERN" value="1" />
-> +      <value name="MSRASTMODE_ ON_PIXEL" value="2" />
-> +      <value name="MSRASTMODE_ ON_PATTERN" value="3" />
-> +    </field>
-> +    <field name="DX Multisample Rasterization Enable" dword="1" bits="12:12" type="bool" />
-> +    <field name="Smooth Point Enable" dword="1" bits="13:13" type="bool" />
-> +    <field name="Force Multisampling" dword="1" bits="14:14" type="uint" />
-> +    <field name="Cull Mode" dword="1" bits="17:16" type="uint" prefix="CULLMODE">
-> +      <value name="BOTH" value="0" />
-> +      <value name="NONE" value="1" />
-> +      <value name="FRONT" value="2" />
-> +      <value name="BACK" value="3" />
-> +    </field>
-> +    <field name="Forced Sample Count" dword="1" bits="20:18" type="uint" prefix="FSC">
-> +      <value name="NUMRASTSAMPLES_0" value="0" />
-> +      <value name="NUMRASTSAMPLES_1" value="1" />
-> +      <value name="NUMRASTSAMPLES_2" value="2" />
-> +      <value name="NUMRASTSAMPLES_4" value="3" />
-> +      <value name="NUMRASTSAMPLES_8" value="4" />
-> +      <value name="NUMRASTSAMPLES_16" value="5" />
-> +    </field>
-> +    <field name="Front Winding" dword="1" bits="21:21" type="uint">
-> +      <value name="Clockwise" value="0" />
-> +      <value name="Counter Clockwise" value="1" />
-> +    </field>
-> +    <field name="API Mode" dword="1" bits="23:22" type="uint">
-> +      <value name="DX9/OGL" value="0" />
-> +      <value name="DX10.0" value="1" />
-> +      <value name="DX10.1+" value="2" />
-> +    </field>
-> +    <field name="Conservative Rasterization Enable" dword="1" bits="24:24" type="bool" />
-> +    <field name="Viewport Z Far Clip Test Enable" dword="1" bits="26:26" type="bool" />
-> +    <field name="Legacy Bary Assignment Disable=" dword="1" bits="27:27" type="bool" />
-> +    <field name="Global Depth Offset Constant" dword="2" bits="31:0" type="float" />
-> +    <field name="Global Depth Offset Scale" dword="3" bits="31:0" type="float" />
-> +    <field name="Global Depth Offset Clamp" dword="4" bits="31:0" type="float" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_SBE" bias="2" length="6" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="31" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Primitive ID Override Attribute Select" dword="1" bits="4:0" type="uint" />
-> +    <field name="Vertex URB Entry Read Offset" dword="1" bits="10:5" type="uint" />
-> +    <field name="Vertex URB Entry Read Length" dword="1" bits="15:11" type="uint" />
-> +    <field name="Primitive ID Override Component X" dword="1" bits="16:16" type="bool" />
-> +    <field name="Primitive ID Override Component Y" dword="1" bits="17:17" type="bool" />
-> +    <field name="Primitive ID Override Component Z" dword="1" bits="18:18" type="bool" />
-> +    <field name="Primitive ID Override Component W" dword="1" bits="19:19" type="bool" />
-> +    <field name="Point Sprite Texture Coordinate Origin" dword="1" bits="20:20" type="uint">
-> +      <value name="UPPERLEFT" value="0" />
-> +      <value name="LOWERLEFT" value="1" />
-> +    </field>
-> +    <field name="Attribute Swizzle Enable" dword="1" bits="21:21" type="bool" />
-> +    <field name="Number of SF Output Attributes" dword="1" bits="27:22" type="uint" />
-> +    <field name="Force Vertex URB Entry Read Offset" dword="1" bits="28:28" type="bool" />
-> +    <field name="Force Vertex URB Entry Read Length" dword="1" bits="29:29" type="bool" />
-> +    <field name="Vertex Attributes Bypass" dword="1" bits="31:31" type="bool" />
-> +    <field name="Point Sprite Texture Coordinate Enable" dword="2" bits="31:0" type="uint" />
-> +    <field name="Constant Interpolation Enable" dword="3" bits="31:0" type="uint" />
-> +    <group count="32" dword="4" size="2">
-> +      <field name="Attribute Active Component Format" dword="0" bits="1:0" type="uint" prefix="ACTIVE_COMPONENT">
-> +        <value name="DISABLED" value="0" />
-> +        <value name="XY" value="1" />
-> +        <value name="XYZ" value="2" />
-> +        <value name="XYZW" value="3" />
-> +      </field>
-> +    </group>
-> +  </instruction>
-> +  <instruction name="3DSTATE_SF" bias="2" length="4" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="2" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="19" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Viewport Transform Enable" dword="1" bits="1:1" type="bool" />
-> +    <field name="Statistics Enable" dword="1" bits="10:10" type="bool" />
-> +    <field name="Legacy Global Depth Bias Enable" dword="1" bits="11:11" type="bool" />
-> +    <field name="Line Width" dword="1" bits="29:12" type="u11.7" />
-> +    <field name="Line End Cap Antialiasing Region Width" dword="2" bits="17:16" type="uint">
-> +      <value name="0.5 pixels" value="0" />
-> +      <value name="1.0 pixels" value="1" />
-> +      <value name="2.0 pixels" value="2" />
-> +      <value name="4.0 pixels" value="3" />
-> +    </field>
-> +    <field name="Deref Block Size" dword="2" bits="30:29" type="uint">
-> +      <value name="Block Deref Size 32" value="0" />
-> +      <value name="Per Poly Deref Mode" value="1" />
-> +      <value name="Block Deref Size 8" value="2" />
-> +      <value name="Mesh Shader EODB" value="3" />
-> +    </field>
-> +    <field name="Point Width" dword="3" bits="10:0" type="u8.3" />
-> +    <field name="Point Width Source" dword="3" bits="11:11" type="uint">
-> +      <value name="Vertex" value="0" />
-> +      <value name="State" value="1" />
-> +    </field>
-> +    <field name="Vertex Sub Pixel Precision Select" dword="3" bits="12:12" type="uint">
-> +      <value name="8 Bit" value="0" />
-> +      <value name="4 Bit" value="1" />
-> +    </field>
-> +    <field name="Smooth Point Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="AA Line Distance Mode" dword="3" bits="14:14" type="uint">
-> +      <value name="AALINEDISTANCE_TRUE" value="1" />
-> +    </field>
-> +    <field name="Triangle Strip Odd Provoking Vertex Select" dword="3" bits="24:23" type="uint" />
-> +    <field name="Triangle Fan Provoking Vertex Select" dword="3" bits="26:25" type="uint" />
-> +    <field name="Line Strip/List Provoking Vertex Select" dword="3" bits="28:27" type="uint" />
-> +    <field name="Triangle Strip/List Provoking Vertex Select" dword="3" bits="30:29" type="uint" />
-> +    <field name="Last Pixel Enable" dword="3" bits="31:31" type="bool" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_STENCIL_BUFFER" bias="2" length="8" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="6" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Surface Pitch" dword="1" bits="16:0" type="uint" />
-> +    <field name="Corner Texel Mode" dword="1" bits="23:23" type="bool" />
-> +    <field name="Null Page Coherency Enable" dword="1" bits="27:27" type="bool" />
-> +    <field name="Stencil Write Enable" dword="1" bits="28:28" type="bool" />
-> +    <field name="Surface Type" dword="1" bits="31:29" type="uint">
-> +      <value name="SURFTYPE_2D" value="1" />
-> +      <value name="SURFTYPE_CUBE" value="3" />
-> +      <value name="SURFTYPE_NULL" value="7" />
-> +    </field>
-> +    <field name="Surface Base Address" dword="2" bits="63:0" type="address" />
-> +    <field name="Width" dword="4" bits="14:1" type="uint" />
-> +    <field name="Height" dword="4" bits="30:17" type="uint" />
-> +    <field name="MOCS" dword="5" bits="6:0" type="uint" nonzero="true" />
-> +    <field name="Minimum Array Element" dword="5" bits="18:8" type="uint" />
-> +    <field name="Depth" dword="5" bits="30:20" type="uint" />
-> +    <field name="Compression Format" dword="6" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
-> +    <field name="Mip Tail Start LOD" dword="6" bits="29:26" type="uint" />
-> +    <field name="Tiled Mode" dword="6" bits="31:30" type="uint">
-> +      <value name="TILE64" value="1" />
-> +      <value name="TILE4" value="3" />
-> +    </field>
-> +    <field name="Surface QPitch" dword="7" bits="14:0" type="uint" />
-> +    <field name="Surf LOD" dword="7" bits="19:16" type="uint" />
-> +    <field name="Render Target View Extent" dword="7" bits="31:21" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_TE" bias="2" length="5" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="28" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="TE Enable" dword="1" bits="0:0" type="bool" />
-> +    <field name="TE Mode" dword="1" bits="2:1" type="uint">
-> +      <value name="HW_TESS" value="0" />
-> +      <value name="FORCE_MIN" value="3" />
-> +    </field>
-> +    <field name="TE Domain" dword="1" bits="5:4" type="uint">
-> +      <value name="QUAD" value="0" />
-> +      <value name="TRI" value="1" />
-> +      <value name="ISOLINE" value="2" />
-> +    </field>
-> +    <field name="Output Topology" dword="1" bits="9:8" type="uint" prefix="OUTPUT">
-> +      <value name="POINT" value="0" />
-> +      <value name="LINE" value="1" />
-> +      <value name="TRI_CW" value="2" />
-> +      <value name="TRI_CCW" value="3" />
-> +    </field>
-> +    <field name="Number Of Regions Per Patch" dword="1" bits="11:10" type="uint" />
-> +    <field name="Partitioning" dword="1" bits="13:12" type="uint">
-> +      <value name="INTEGER" value="0" />
-> +      <value name="ODD_FRACTIONAL" value="1" />
-> +      <value name="EVEN_FRACTIONAL" value="2" />
-> +      <value name="POW2" value="3" />
-> +    </field>
-> +    <field name="Tessellation Distribution Mode" dword="1" bits="15:14" type="uint">
-> +      <value name="TEDMODE_OFF" value="0" />
-> +      <value name="TEDMODE_RR_STRICT" value="1" />
-> +      <value name="TEDMODE_RR_FREE" value="2" />
-> +    </field>
-> +    <field name="Tessellation Distribution Level" dword="1" bits="18:17" type="uint">
-> +      <value name="TEDLEVEL_PATCH" value="0" />
-> +      <value name="TEDLEVEL_REGION" value="1" />
-> +    </field>
-> +    <field name="Tessellation Scale Factor Enable" dword="1" bits="19:19" type="bool" />
-> +    <field name="Tessellation Factor Format" dword="1" bits="20:20" type="uint">
-> +      <value name="FLOAT32" value="0" />
-> +      <value name="FLOAT16" value="1" />
-> +    </field>
-> +    <field name="Patch Header Layout" dword="1" bits="23:22" type="uint">
-> +      <value name="LEGACY" value="0" />
-> +      <value name="REVERSED" value="2" />
-> +      <value name="REVERSED_TRI_INSIDE_SEPARATE" value="3" />
-> +    </field>
-> +    <field name="Small Patch Threshold" dword="1" bits="25:24" type="uint" prefix="SPT">
-> +      <value name="8_TRIANGLES" value="0" />
-> +      <value name="16_TRIANGLES" value="1" />
-> +      <value name="32_TRIANGLES" value="2" />
-> +      <value name="64_TRIANGLES" value="3" />
-> +    </field>
-> +    <field name="Target Block Size" dword="1" bits="29:26" type="uint">
-> +      <value name="64_TRIANGLES" value="0" />
-> +      <value name="96_TRIANGLES" value="1" />
-> +      <value name="128_TRIANGLES" value="2" />
-> +      <value name="192_TRIANGLES" value="3" />
-> +      <value name="256_TRIANGLES" value="4" />
-> +      <value name="384_TRIANGLES" value="5" />
-> +      <value name="512_TRIANGLES" value="6" />
-> +      <value name="768_TRIANGLES" value="7" />
-> +      <value name="1K_TRIANGLES" value="8" />
-> +      <value name="1.5K_TRIANGLES" value="9" />
-> +      <value name="2K_TRIANGLES" value="10" />
-> +      <value name="3K_TRIANGLES" value="11" />
-> +      <value name="4K_TRIANGLES" value="12" />
-> +      <value name="6K_TRIANGLES" value="13" />
-> +      <value name="8K_TRIANGLES" value="14" />
-> +      <value name="12K_TRIANGLES" value="15" />
-> +    </field>
-> +    <field name="Local BOP Accumulator Threshold" dword="1" bits="31:30" type="uint">
-> +      <value name="MULTIPLIER_0" value="0" />
-> +      <value name="MULTIPLIER_1" value="1" />
-> +      <value name="MULTIPLIER_2" value="2" />
-> +      <value name="MULTIPLIER_4" value="3" />
-> +    </field>
-> +    <field name="Maximum Tessellation Factor Odd" dword="2" bits="31:0" type="float" />
-> +    <field name="Maximum Tessellation Factor Not Odd" dword="3" bits="31:0" type="float" />
-> +    <field name="Tessellation Scale Factor" dword="4" bits="31:0" type="float" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_VS" bias="2" length="9" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="7" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="16" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-> +    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-> +      <value name="Normal" value="0" />
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-> +      <value name="No Samplers" value="0" />
-> +      <value name="1-4 Samplers" value="1" />
-> +      <value name="5-8 Samplers" value="2" />
-> +      <value name="9-12 Samplers" value="3" />
-> +      <value name="13-16 Samplers" value="4" />
-> +    </field>
-> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-> +      <value name="Dmask" value="0" />
-> +    </field>
-> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-> +    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-> +    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
-> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="24:20" type="uint" />
-> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
-> +    <field name="Vertex Cache Disable" dword="7" bits="1:1" type="bool" />
-> +    <field name="SIMD8 Single Instance Dispatch Enable" dword="7" bits="9:9" type="bool" />
-> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-> +    <field name="Maximum Number of Threads" dword="7" bits="31:22" type="uint" />
-> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="8" bits="7:0" type="uint" />
-> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="8" bits="15:8" type="uint" />
-> +    <field name="Vertex URB Entry Output Length" dword="8" bits="20:16" type="uint" />
-> +    <field name="Vertex URB Entry Output Read Offset" dword="8" bits="26:21" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_WM_HZ_OP" bias="2" length="6" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-> +    <field name="Predicate Enable" dword="0" bits="8:8" type="bool" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="82" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Depth Buffer Partial Resolve Enable" dword="1" bits="9:9" type="bool" />
-> +    <field name="Number of Multisamples" dword="1" bits="15:13" type="uint" prefix="SAMPLES">
-> +      <value name="1" value="0" />
-> +      <value name="2" value="1" />
-> +      <value name="4" value="2" />
-> +      <value name="8" value="3" />
-> +      <value name="16" value="4" />
-> +    </field>
-> +    <field name="Stencil Clear Value" dword="1" bits="23:16" type="uint" />
-> +    <field name="Stencil Buffer Resolve Enable" dword="1" bits="24:24" type="bool" />
-> +    <field name="Full Surface Depth and Stencil Clear" dword="1" bits="25:25" type="bool" />
-> +    <field name="Pixel Position Offset Enable" dword="1" bits="26:26" type="bool" />
-> +    <field name="Hierarchical Depth Buffer Resolve Enable" dword="1" bits="27:27" type="bool" />
-> +    <field name="Depth Buffer Resolve Enable" dword="1" bits="28:28" type="bool" />
-> +    <field name="Scissor Rectangle Enable" dword="1" bits="29:29" type="bool" />
-> +    <field name="Depth Buffer Clear Enable" dword="1" bits="30:30" type="bool" />
-> +    <field name="Stencil Buffer Clear Enable" dword="1" bits="31:31" type="bool" />
-> +    <field name="Clear Rectangle X Min" dword="2" bits="15:0" type="uint" />
-> +    <field name="Clear Rectangle Y Min" dword="2" bits="31:16" type="uint" />
-> +    <field name="Clear Rectangle X Max" dword="3" bits="15:0" type="uint" />
-> +    <field name="Clear Rectangle Y Max" dword="3" bits="31:16" type="uint" />
-> +    <field name="Sample Mask" dword="4" bits="15:0" type="uint" />
-> +    <field name="Depth Clear Value" dword="5" bits="31:0" type="float" />
-> +  </instruction>
-> +  <instruction name="AVP_FILM_GRAIN_STATE" bias="2" length="45" engine="video">
-> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="43" />
-> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="52" />
-> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Grain Random Seed" dword="1" bits="15:0" type="uint" />
-> +    <field name="MC Identity Flag" dword="1" bits="16:16" type="bool" />
-> +    <field name="Clip To Restricted Range Flag" dword="1" bits="17:17" type="bool" />
-> +    <field name="Number of Luma Points" dword="1" bits="23:20" type="uint" />
-> +    <field name="Number of Chroma Cb Points" dword="1" bits="27:24" type="uint" />
-> +    <field name="Number of Chroma Cr Points" dword="1" bits="31:28" type="uint" />
-> +    <field name="Grain Scaling Minus8" dword="2" bits="1:0" type="uint" />
-> +    <field name="AR Coeff Lag" dword="2" bits="3:2" type="uint" />
-> +    <field name="AR Coeff Shift Minus6" dword="2" bits="5:4" type="uint" />
-> +    <field name="Grain Scale Shift" dword="2" bits="7:6" type="uint" />
-> +    <field name="Grain Noise Overlap Flag" dword="2" bits="8:8" type="bool" />
-> +    <field name="Chroma Scaling From Luma Flag" dword="2" bits="31:31" type="bool" />
-> +    <group count="14" dword="3" size="8">
-> +      <field name="Point Luma Value" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <group count="14" dword="7" size="8">
-> +      <field name="Point Luma Scaling" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <group count="10" dword="11" size="8">
-> +      <field name="Point CB Value" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <group count="10" dword="14" size="8">
-> +      <field name="Point CB Scaling" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <group count="10" dword="17" size="8">
-> +      <field name="Point CR Value" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <group count="10" dword="20" size="8">
-> +      <field name="Point CR Scaling" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <group count="24" dword="23" size="8">
-> +      <field name="AR Coeff Luma Plus128" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <group count="25" dword="29" size="8">
-> +      <field name="AR Coeff Chroma CB Plus128" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <group count="25" dword="36" size="8">
-> +      <field name="AR Coeff Chroma CR Plus128" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <field name="CB Mult" dword="43" bits="7:0" type="uint" />
-> +    <field name="CB Luma Mult" dword="43" bits="15:8" type="uint" />
-> +    <field name="CB Offset" dword="43" bits="24:16" type="uint" />
-> +    <field name="CR Mult" dword="44" bits="7:0" type="uint" />
-> +    <field name="CR Luma Mult" dword="44" bits="15:8" type="uint" />
-> +    <field name="CR Offset" dword="44" bits="24:16" type="uint" />
-> +  </instruction>
-> +  <instruction name="AVP_PIC_STATE" bias="2" length="76" engine="video">
-> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="74" />
-> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="48" />
-> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Frame Width" dword="1" bits="13:0" type="uint" />
-> +    <field name="Frame Height" dword="1" bits="29:16" type="uint" />
-> +    <field name="Sequence Chroma SubSampling Format" dword="2" bits="1:0" type="uint" prefix="SS">
-> +      <value name="Monochrome" value="0" />
-> +      <value name="420" value="1" />
-> +      <value name="422" value="2" />
-> +      <value name="444" value="3" />
-> +    </field>
-> +    <field name="Sequence Pixel Bit-Depth Idc" dword="2" bits="4:3" type="uint" prefix="SeqPix">
-> +      <value name="8-bit" value="0" />
-> +      <value name="10-bit" value="1" />
-> +      <value name="12-bit" value="2" />
-> +    </field>
-> +    <field name="Sequence Superblock Size Used" dword="2" bits="8:7" type="uint">
-> +      <value name="64x64" value="0" />
-> +      <value name="128x128" value="1" />
-> +    </field>
-> +    <field name="Sequence Enable Order Hint Flag" dword="2" bits="9:9" type="bool" />
-> +    <field name="Sequence Order Hint Bits Minus 1" dword="2" bits="12:10" type="uint" />
-> +    <field name="Sequence Enable Filter Intra Flag" dword="2" bits="16:16" type="bool" />
-> +    <field name="Sequence Enable Intra Edge Filter Flag" dword="2" bits="17:17" type="bool" />
-> +    <field name="Sequence Enable Dual Filter Flag" dword="2" bits="18:18" type="bool" />
-> +    <field name="Sequence Enable Inter Intra Compound Flag" dword="2" bits="19:19" type="bool" />
-> +    <field name="Sequence Enable Masked Compound Flag" dword="2" bits="20:20" type="bool" />
-> +    <field name="Sequence Enable Joint Compound Flag" dword="2" bits="21:21" type="bool" />
-> +    <field name="Allow Screen Content Tools Flag" dword="3" bits="0:0" type="bool" />
-> +    <field name="Force Integer MV Flag" dword="3" bits="1:1" type="bool" />
-> +    <field name="Allow Warped Motion Flag" dword="3" bits="2:2" type="bool" />
-> +    <field name="Use CDEF Filter Flag" dword="3" bits="4:4" type="bool" />
-> +    <field name="Use Super-Res Flag" dword="3" bits="5:5" type="bool" />
-> +    <field name="Frame Level Loop Restoration Filter Enable" dword="3" bits="6:6" type="bool" />
-> +    <field name="Apply Film Grain Flag" dword="3" bits="7:7" type="bool" />
-> +    <field name="Large Scale Tile Enable Flag" dword="3" bits="8:8" type="bool" />
-> +    <field name="Post CDEF Filtered Recon Pixels Writeout En" dword="3" bits="14:14" type="bool" />
-> +    <field name="Frame Type" dword="3" bits="17:16" type="uint" />
-> +    <field name="Intra Only Flag" dword="3" bits="19:19" type="bool" />
-> +    <field name="Error Resilient Mode Flag" dword="3" bits="22:22" type="bool" />
-> +    <field name="Allow IntraBC Flag" dword="3" bits="23:23" type="bool" />
-> +    <field name="Primary Reference Frame Idx" dword="3" bits="30:28" type="uint" />
-> +    <field name="Segmentation Enable Flag" dword="4" bits="0:0" type="bool" />
-> +    <field name="Segmentation Update Map Flag" dword="4" bits="1:1" type="bool" />
-> +    <field name="Segmentation Temporal Update Flag" dword="4" bits="2:2" type="bool" />
-> +    <field name="Pre Skip Segment ID Flag" dword="4" bits="3:3" type="bool" />
-> +    <field name="Last Active Segment Segment ID" dword="4" bits="6:4" type="uint" />
-> +    <field name="Delta Q Present Flag" dword="4" bits="7:7" type="bool" />
-> +    <field name="Delta Q Res" dword="4" bits="9:8" type="uint" />
-> +    <field name="Frame Coded Lossless Mode" dword="4" bits="10:10" type="bool" />
-> +    <field name="Segment Map is Zero Flag" dword="4" bits="11:11" type="bool" />
-> +    <field name="Segment ID Buffer Stream In Enable Flag" dword="4" bits="12:12" type="bool" />
-> +    <field name="Segment ID Buffer Stream Out Enable Flag" dword="4" bits="13:13" type="bool" />
-> +    <field name="Base Qindex" dword="4" bits="23:16" type="uint" />
-> +    <field name="Y dc delta Q" dword="4" bits="30:24" type="int" />
-> +    <field name="U dc delta Q" dword="5" bits="6:0" type="int" />
-> +    <field name="U ac delta Q" dword="5" bits="14:8" type="int" />
-> +    <field name="V dc delta Q" dword="5" bits="22:16" type="int" />
-> +    <field name="V ac delta Q" dword="5" bits="30:24" type="int" />
-> +    <field name="Allow High Precision MV" dword="6" bits="0:0" type="bool" />
-> +    <field name="Frame Level Reference Mode Select" dword="6" bits="1:1" type="bool" />
-> +    <field name="Mcomp Filter Type" dword="6" bits="4:2" type="uint">
-> +      <value name="Eight Tap" value="0" />
-> +      <value name="Eight Tap Smooth" value="1" />
-> +      <value name="Eight Tap Sharp" value="2" />
-> +      <value name="Bilinear" value="3" />
-> +      <value name="Switchable" value="4" />
-> +    </field>
-> +    <field name="Motion Mode Switchable Flag" dword="6" bits="6:6" type="bool" />
-> +    <field name="Use Reference Frame MV Set Flag" dword="6" bits="7:7" type="bool" />
-> +    <field name="Reference Frame Sign Bias" dword="6" bits="15:8" type="uint" />
-> +    <field name="Current Frame Order Hint" dword="6" bits="23:16" type="uint" />
-> +    <field name="Reduced Tx Set Used" dword="7" bits="0:0" type="bool" />
-> +    <field name="Frame Transform Mode" dword="7" bits="2:1" type="uint" />
-> +    <field name="Skip Mode Present Flag" dword="7" bits="4:4" type="bool" />
-> +    <field name="Skip Mode Frame 0" dword="7" bits="7:5" type="uint" />
-> +    <field name="Skip Mode Frame 1" dword="7" bits="11:9" type="uint" />
-> +    <field name="Reference Frame Side" dword="7" bits="31:24" type="uint" />
-> +    <field name="Global Motion Type 1" dword="8" bits="4:3" type="uint" />
-> +    <field name="Global Motion Type 2" dword="8" bits="7:6" type="uint" />
-> +    <field name="Global Motion Type 3" dword="8" bits="10:9" type="uint" />
-> +    <field name="Global Motion Type 4" dword="8" bits="13:12" type="uint" />
-> +    <field name="Global Motion Type 5" dword="8" bits="16:15" type="uint" />
-> +    <field name="Global Motion Type 6" dword="8" bits="19:18" type="uint" />
-> +    <field name="Global Motion Type 7" dword="8" bits="22:21" type="uint" />
-> +    <field name="Frame Level Global Motion Invalid Flags" dword="8" bits="31:24" type="uint" />
-> +    <group count="42" dword="9" size="16">
-> +      <field name="Warp Parameters" dword="0" bits="15:0" type="uint" />
-> +    </group>
-> +    <field name="Reference Frame Idx 0" dword="30" bits="2:0" type="uint" />
-> +    <field name="Reference Frame Idx 1" dword="30" bits="6:4" type="uint" />
-> +    <field name="Reference Frame Idx 2" dword="30" bits="10:8" type="uint" />
-> +    <field name="Reference Frame Idx 3" dword="30" bits="14:12" type="uint" />
-> +    <field name="Reference Frame Idx 4" dword="30" bits="18:16" type="uint" />
-> +    <field name="Reference Frame Idx 5" dword="30" bits="22:20" type="uint" />
-> +    <field name="Reference Frame Idx 6" dword="30" bits="26:24" type="uint" />
-> +    <field name="Reference Frame Idx 7" dword="30" bits="30:28" type="uint" />
-> +    <field name="Intra Frame Width in Pixel Minus 1" dword="31" bits="15:0" type="uint" />
-> +    <field name="Intra Frame Height in Pixel Minus 1" dword="31" bits="31:16" type="uint" />
-> +    <field name="Last Frame Width in Pixel Minus 1" dword="32" bits="15:0" type="uint" />
-> +    <field name="Last Frame Height in Pixel Minus 1" dword="32" bits="31:16" type="uint" />
-> +    <field name="Last2 Frame Width in Pixel Minus 1" dword="33" bits="15:0" type="uint" />
-> +    <field name="Last2 Frame Height in Pixel Minus 1" dword="33" bits="31:16" type="uint" />
-> +    <field name="Last3 Frame Width in Pixel Minus 1" dword="34" bits="15:0" type="uint" />
-> +    <field name="Last3 Frame Height in Pixel Minus 1" dword="34" bits="31:16" type="uint" />
-> +    <field name="Golden Frame Width in Pixel Minus 1" dword="35" bits="15:0" type="uint" />
-> +    <field name="Golden Frame Height in Pixel Minus 1" dword="35" bits="31:16" type="uint" />
-> +    <field name="BWDREF Frame Width in Pixel Minus 1" dword="36" bits="15:0" type="uint" />
-> +    <field name="BWDREF Frame Height in Pixel Minus 1" dword="36" bits="31:16" type="uint" />
-> +    <field name="ALTREF2 Frame Width in Pixel Minus 1" dword="37" bits="15:0" type="uint" />
-> +    <field name="ALTREF2 Frame Height in Pixel Minus 1" dword="37" bits="31:16" type="uint" />
-> +    <field name="ALTREF Frame Width in Pixel Minus 1" dword="38" bits="15:0" type="uint" />
-> +    <field name="ALTREF Frame Height in Pixel Minus 1" dword="38" bits="31:16" type="uint" />
-> +    <field name="Vertical Scale Factor For Intra" dword="39" bits="15:0" type="uint" />
-> +    <field name="Horizontal Scale Factor For Intra" dword="39" bits="31:16" type="uint" />
-> +    <field name="Vertical Scale Factor For Last" dword="40" bits="15:0" type="uint" />
-> +    <field name="Horizontal Scale Factor For Last" dword="40" bits="31:16" type="uint" />
-> +    <field name="Vertical Scale Factor For Last2" dword="41" bits="15:0" type="uint" />
-> +    <field name="Horizontal Scale Factor For Last2" dword="41" bits="31:16" type="uint" />
-> +    <field name="Vertical Scale Factor For Last3" dword="42" bits="15:0" type="uint" />
-> +    <field name="Horizontal Scale Factor For Last3" dword="42" bits="31:16" type="uint" />
-> +    <field name="Vertical Scale Factor For Golden" dword="43" bits="15:0" type="uint" />
-> +    <field name="Horizontal Scale Factor For Golden" dword="43" bits="31:16" type="uint" />
-> +    <field name="Vertical Scale Factor For BWDREF" dword="44" bits="15:0" type="uint" />
-> +    <field name="Horizontal Scale Factor For BWDREF" dword="44" bits="31:16" type="uint" />
-> +    <field name="Vertical Scale Factor For ALTREF2" dword="45" bits="15:0" type="uint" />
-> +    <field name="Horizontal Scale Factor For ALTREF2" dword="45" bits="31:16" type="uint" />
-> +    <field name="Vertical Scale Factor For ALTREF" dword="46" bits="15:0" type="uint" />
-> +    <field name="Horizontal Scale Factor For ALTREF" dword="46" bits="31:16" type="uint" />
-> +    <group count="8" dword="47" size="8">
-> +      <field name="Reference Frame Order Hint" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <field name="NonFirstPassFlag" dword="51" bits="16:16" type="bool" />
-> +    <field name="VdencPakOnlyPass" dword="51" bits="17:17" type="bool" />
-> +    <field name="FrameSzOverStatusEn - FrameBitRateMaxReportMask" dword="51" bits="25:25" type="bool" />
-> +    <field name="FrameSzUnderStatusEn - FrameBitRateMinReportMask" dword="51" bits="26:26" type="bool" />
-> +    <field name="FrameBitRateMax" dword="52" bits="13:0" type="uint" />
-> +    <field name="FrameBitrateMaxUnit" dword="52" bits="31:31" type="FRAME_BITRATE_UNITS" />
-> +    <field name="FrameBitRateMin" dword="53" bits="13:0" type="uint" />
-> +    <field name="FrameBitrateMinUnit" dword="53" bits="31:31" type="FRAME_BITRATE_UNITS" />
-> +    <field name="FrameDeltaQindexMax" dword="54" bits="63:0" type="uint" />
-> +    <field name="FrameDeltaQindexMin" dword="56" bits="31:0" type="uint" />
-> +    <field name="FrameDeltaLFMax" dword="57" bits="63:0" type="uint" />
-> +    <field name="FrameDeltaLFMin" dword="59" bits="31:0" type="uint" />
-> +    <field name="FrameDeltaQindexLFMaxRange" dword="60" bits="63:0" type="uint" />
-> +    <field name="FrameDeltaQindexLFMinRange" dword="62" bits="31:0" type="uint" />
-> +    <field name="MinFrameSize" dword="63" bits="15:0" type="uint" />
-> +    <field name="MinFrameSizeUnits" dword="63" bits="31:30" type="uint">
-> +      <value name="4K Byte Units" value="0" />
-> +      <value name="16K Byte Units" value="1" />
-> +      <value name="Compatibility Mode" value="2" />
-> +      <value name="6 Byte Units" value="3" />
-> +    </field>
-> +    <field name="VDAQM enable" dword="64" bits="0:0" type="bool" />
-> +    <field name="Class0 SSE Threshold0" dword="65" bits="15:0" type="uint" />
-> +    <field name="Class0 SSE Threshold1" dword="65" bits="31:16" type="uint" />
-> +    <group count="8" dword="66" size="8">
-> +      <field name="SSE Thresholds For Class" dword="0" bits="7:0" type="uint" />
-> +    </group>
-> +    <field name="rdmult" dword="74" bits="31:0" type="uint" />
-> +  </instruction>
-> +  <instruction name="AVP_PIPE_BUF_ADDR_STATE" bias="2" length="215" engine="video">
-> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="213" />
-> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="2" />
-> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <group count="8" dword="1" size="64">
-> +      <field name="Reference Picture - Address" dword="0" bits="63:0" type="address" />
-> +    </group>
-> +    <field name="Reference Picture - Attributes" dword="17" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Decoded Output Frame Buffer Address" dword="18" bits="63:0" type="address" />
-> +    <field name="Decoded Output Frame Buffer Address - Attributes" dword="20" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Film Grain Injected Output Frame Buffer Address" dword="21" bits="63:0" type="address" />
-> +    <field name="Film Grain Injected Output Frame Buffer Address - Attributes" dword="23" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="IntraBC Decoded Output Frame Buffer Address" dword="24" bits="63:0" type="address" />
-> +    <field name="IntraBC Decoded Output Frame Buffer Address - Attributes" dword="26" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="CDF Tables Initialization Buffer Address" dword="27" bits="63:0" type="address" />
-> +    <field name="CDF Tables Initialization Buffer Address - Attributes" dword="29" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="CDF Tables Backward Adaptation Buffer Address" dword="30" bits="63:0" type="address" />
-> +    <field name="CDF Tables Backward Adaptation Buffer Address - Attributes" dword="32" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="AV1 Segment ID Read Buffer Address" dword="33" bits="63:0" type="address" />
-> +    <field name="AV1 Segment ID Read Buffer Address - Attributes" dword="35" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="AV1 Segment ID Write Buffer Address" dword="36" bits="63:0" type="address" />
-> +    <field name="AV1 Segment ID Write Buffer Address - Attributes" dword="38" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <group count="8" dword="39" size="64">
-> +      <field name="Collocated MV Temporal Buffer - Address" dword="0" bits="63:0" type="address" />
-> +    </group>
-> +    <field name="Collocated MV Temporal Buffer - Attributes" dword="55" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Current Frame MV Write Buffer Address" dword="56" bits="63:0" type="address" />
-> +    <field name="Current Frame MV Write Buffer Address - Attributes" dword="58" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Film Grain Sample Template Address" dword="59" bits="63:0" type="address" />
-> +    <field name="Film Grain Sample Template Address - Attributes" dword="61" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Bitstream Line Rowstore Buffer Address" dword="62" bits="63:0" type="address" />
-> +    <field name="Bitstream Line Rowstore Buffer Address - Attributes" dword="64" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Bitstream Tile Line Rowstore Buffer Address" dword="65" bits="63:0" type="address" />
-> +    <field name="Bitstream Tile Line Rowstore Buffer Address - Attributes" dword="67" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Intra Prediction Line Rowstore Buffer Address" dword="68" bits="63:0" type="address" />
-> +    <field name="Intra Prediction Line Rowstore Buffer Address - Attributes" dword="70" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Intra Prediction Tile Line Rowstore Buffer Address" dword="71" bits="63:0" type="address" />
-> +    <field name="Intra Prediction Tile Line Rowstore Buffer Address - Attributes" dword="73" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Spatial Motion Vector Line Buffer Address" dword="74" bits="63:0" type="address" />
-> +    <field name="Spatial Motion Vector Line Buffer Address - Attributes" dword="76" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Spatial Motion Vector Tile Line Buffer Address" dword="77" bits="63:0" type="address" />
-> +    <field name="Spatial Motion Vector Tile Line Buffer Address - Attributes" dword="79" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Loop Restoration Meta Tile Column Buffer Address" dword="80" bits="63:0" type="address" />
-> +    <field name="Loop Restoration Meta Tile Column Buffer Address - Attributes" dword="82" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Loop Restoration Filter Tile Line Y Buffer Address" dword="83" bits="63:0" type="address" />
-> +    <field name="Loop Restoration Filter Tile Line Y Buffer Address - Attributes" dword="85" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Loop Restoration Filter Tile Line U Buffer Address" dword="86" bits="63:0" type="address" />
-> +    <field name="Loop Restoration Filter Tile Line U Buffer Address - Attributes" dword="88" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Loop Restoration Filter Tile Line V Buffer Address" dword="89" bits="63:0" type="address" />
-> +    <field name="Loop Restoration Filter Tile Line V Buffer Address - Attributes" dword="91" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Deblocker Filter Line Y Buffer Address" dword="92" bits="63:0" type="address" />
-> +    <field name="Deblocker Filter Line Y Buffer Address - Attributes" dword="94" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Deblocker Filter Line U Buffer Address" dword="95" bits="63:0" type="address" />
-> +    <field name="Deblocker Filter Line U Buffer Address - Attributes" dword="97" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Deblocker Filter Line V Buffer Address" dword="98" bits="63:0" type="address" />
-> +    <field name="Deblocker Filter Line V Buffer Address - Attributes" dword="100" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Deblocker Filter Tile Line Y Buffer Address" dword="101" bits="63:0" type="address" />
-> +    <field name="Deblocker Filter Tile Line Y Buffer Address - Attributes" dword="103" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Deblocker Filter Tile Line U Buffer Address" dword="104" bits="63:0" type="address" />
-> +    <field name="Deblocker Filter Tile Line U Buffer Address - Attributes" dword="106" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Deblocker Filter Tile Line V Buffer Address" dword="107" bits="63:0" type="address" />
-> +    <field name="Deblocker Filter Tile Line V Buffer Address - Attributes" dword="109" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Deblocker Filter Tile Column Y Buffer Address" dword="110" bits="63:0" type="address" />
-> +    <field name="Deblocker Filter Tile Column Y Buffer Address - Attributes" dword="112" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Deblocker Filter Tile Column U Buffer Address" dword="113" bits="63:0" type="address" />
-> +    <field name="Deblocker Filter Tile Column U Buffer Address - Attributes" dword="115" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Deblocker Filter Tile Column V Buffer Address" dword="116" bits="63:0" type="address" />
-> +    <field name="Deblocker Filter Tile Column V Buffer Address - Attributes" dword="118" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="CDEF Filter Line Buffer Address" dword="119" bits="63:0" type="address" />
-> +    <field name="CDEF Filter Line Buffer Address - Attributes" dword="121" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="CDEF Filter Tile Line Buffer Address" dword="128" bits="63:0" type="address" />
-> +    <field name="CDEF Filter Tile Line Buffer Address - Attributes" dword="130" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="CDEF Filter Tile Column Buffer Address" dword="137" bits="63:0" type="address" />
-> +    <field name="CDEF Filter Tile Column Buffer Address - Attributes" dword="139" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="CDEF Filter Meta Tile Line Buffer Address" dword="140" bits="63:0" type="address" />
-> +    <field name="CDEF Filter Meta Tile Line Buffer Address - Attributes" dword="142" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="CDEF Filter Meta Tile Column Buffer Address" dword="143" bits="63:0" type="address" />
-> +    <field name="CDEF Filter Meta Tile Column Buffer Address - Attributes" dword="145" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="CDEF Filter Top Left Corner Buffer Address" dword="146" bits="63:0" type="address" />
-> +    <field name="CDEF Filter Top Left Corner Buffer Address - Attributes" dword="148" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Super Res Tile Column Y Buffer Address" dword="149" bits="63:0" type="address" />
-> +    <field name="Super Res Tile Column Y Buffer Address - Attributes" dword="151" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Super Res Tile Column U Buffer Address" dword="152" bits="63:0" type="address" />
-> +    <field name="Super Res Tile Column U Buffer Address - Attributes" dword="154" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Super Res Tile Column V Buffer Address" dword="155" bits="63:0" type="address" />
-> +    <field name="Super Res Tile Column V Buffer Address - Attributes" dword="157" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Loop Restoration Filter Tile Column Y Buffer Address" dword="158" bits="63:0" type="address" />
-> +    <field name="Loop Restoration Filter Tile Column Y Buffer Address - Attributes" dword="160" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Loop Restoration Filter Tile Column U Buffer Address" dword="161" bits="63:0" type="address" />
-> +    <field name="Loop Restoration Filter Tile Column U Buffer Address - Attributes" dword="163" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Loop Restoration Filter Tile Column V Buffer Address" dword="164" bits="63:0" type="address" />
-> +    <field name="Loop Restoration Filter Tile Column V Buffer Address - Attributes" dword="166" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Loop Restoration Filter Tile Column Alignment Read Write Buffer Address" dword="170" bits="63:0" type="address" />
-> +    <field name="Loop Restoration Filter Tile Column Alignment Read Write Buffer Address - Attributes" dword="172" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Film Grain Tile Column Data Read Write Buffer Address" dword="173" bits="63:0" type="address" />
-> +    <field name="Film Grain Tile Column Data Read Write Buffer Address - Attributes" dword="175" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Decoded Frame Status Error Buffer Address" dword="176" bits="63:0" type="address" />
-> +    <field name="Decoded Frame Status Error Buffer Address - Attributes" dword="178" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Decoded Block Data Streamout Buffer Address" dword="179" bits="63:0" type="address" />
-> +    <field name="Decoded Block Data Streamout Buffer Address - Attributes" dword="181" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Original Uncompressed Picture Source Buffer Address" dword="188" bits="63:0" type="address" />
-> +    <field name="Original Uncompressed Picture Source Buffer Address - Attributes" dword="190" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Downscaled Uncompressed Picture Source Buffer Address" dword="191" bits="63:0" type="address" />
-> +    <field name="Downscaled Uncompressed Picture Source Buffer Address - Attributes" dword="193" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Tile Size Streamout Buffer Address" dword="194" bits="63:0" type="address" />
-> +    <field name="Tile Size Streamout Buffer Address - Attributes" dword="196" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="Tile Statistics Streamout Buffer Address" dword="197" bits="63:0" type="address" />
-> +    <field name="Tile Statistics Streamout Buffer Address - Attributes" dword="199" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="CU Streamout Buffer Address" dword="200" bits="63:0" type="address" />
-> +    <field name="CU Streamout Buffer Address - Attributes" dword="202" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="SSE Line Read/Write Buffer Address" dword="203" bits="63:0" type="address" />
-> +    <field name="SSE Line Read/Write Buffer Address - Attributes" dword="205" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="SSE Tile Line Read/Write Buffer Address" dword="206" bits="63:0" type="address" />
-> +    <field name="SSE Tile Line Read/Write Buffer Address - Attributes" dword="208" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +    <field name="PostCDEF Pixels Buffer Address" dword="209" bits="63:0" type="address" />
-> +    <field name="PostCDEF Pixels Buffer Address - Attributes" dword="211" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-> +  </instruction>
-> +  <instruction name="AVP_PIPE_MODE_SELECT" bias="2" length="7" engine="video">
-> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="5" />
-> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="0" />
-> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Codec Select" dword="1" bits="0:0" type="bool">
-> +      <value name="Decode" value="0" />
-> +      <value name="Encode" value="1" />
-> +    </field>
-> +    <field name="Pic Status/Error Report Enable" dword="1" bits="3:3" type="bool" />
-> +    <field name="Frame Reconstruction Disable" dword="1" bits="4:4" type="bool" />
-> +    <field name="Codec Standard Select" dword="1" bits="7:5" type="uint" default="2" />
-> +    <field name="VDENC Mode" dword="1" bits="10:10" type="bool" />
-> +    <field name="Tile Statistics Streamout Enable" dword="1" bits="12:12" type="bool" />
-> +    <field name="Multi Engine Mode" dword="1" bits="14:13" type="uint">
-> +      <value name="Single Engine Mode" value="0" />
-> +      <value name="Left Engine Mode" value="1" />
-> +      <value name="Right Engine Mode" value="2" />
-> +      <value name="Middle Engine Mode" value="3" />
-> +    </field>
-> +    <field name="Pipe Working Mode" dword="1" bits="16:15" type="uint">
-> +      <value name="Legacy Single Pipe" value="0" />
-> +      <value name="Encode Mode" value="2" />
-> +      <value name="Decode Scalable Mode" value="3" />
-> +    </field>
-> +    <field name="Tile Based Engine" dword="1" bits="17:17" type="bool" />
-> +    <field name="Motion Comp Memory Tracker Counter Enable" dword="1" bits="23:23" type="bool" />
-> +    <field name="Pic Status/Error Report ID" dword="3" bits="31:0" type="uint" />
-> +    <field name="AlcChickenbitRestrictSingleTileGroupInAFrame" dword="4" bits="4:4" type="bool" />
-> +    <field name="Phase Indicator" dword="5" bits="1:0" type="uint">
-> +      <value name="First Phase" value="0" />
-> +      <value name="Middle Phase" value="1" />
-> +      <value name="Last Phase" value="2" />
-> +    </field>
-> +    <field name="Downscaled Source Pixel Prefetch Length" dword="6" bits="4:2" type="uint" />
-> +    <field name="Downscaled Source Pixel Prefetch Enable" dword="6" bits="5:5" type="bool" />
-> +    <field name="Original Source Pixel Prefetch Length" dword="6" bits="9:7" type="uint" />
-> +    <field name="Original Source Pixel Prefetch Enable" dword="6" bits="10:10" type="bool" />
-> +  </instruction>
-> +  <instruction name="AVP_TILE_CODING" bias="2" length="7" engine="video">
-> +    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="5" />
-> +    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="21" />
-> +    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Frame Tile ID" dword="1" bits="11:0" type="uint" />
-> +    <field name="TG Tile Num" dword="1" bits="23:12" type="uint" />
-> +    <field name="Tile Group ID" dword="1" bits="31:24" type="uint" />
-> +    <field name="Tile Column Position in SB Unit" dword="2" bits="9:0" type="uint" />
-> +    <field name="Tile Row Position in SB Unit" dword="2" bits="25:16" type="uint" />
-> +    <field name="Tile Width in SB Minus 1" dword="3" bits="5:0" type="uint" />
-> +    <field name="Tile Height in SB Minus 1" dword="3" bits="25:16" type="uint" />
-> +    <field name="First Phase on Scalability Mode" dword="4" bits="0:0" type="bool" />
-> +    <field name="Last Phase on Scalability Mode" dword="4" bits="1:1" type="bool" />
-> +    <field name="AVP CRC Enable" dword="4" bits="2:2" type="bool" />
-> +    <field name="First Tile in a Frame" dword="4" bits="23:23" type="bool" />
-> +    <field name="Is Last Tile of Column Flag" dword="4" bits="25:25" type="bool" />
-> +    <field name="Is Last Tile of Row Flag" dword="4" bits="26:26" type="bool" />
-> +    <field name="Is Start Tile of Tile Group Flag" dword="4" bits="27:27" type="bool" />
-> +    <field name="Is End Tile of Tile Group Flag" dword="4" bits="28:28" type="bool" />
-> +    <field name="Is Last Tile of Frame Flag" dword="4" bits="29:29" type="bool" />
-> +    <field name="Disable CDF Update Flag" dword="4" bits="30:30" type="bool" />
-> +    <field name="Disable Frame Context Update Flag" dword="4" bits="31:31" type="bool" />
-> +    <field name="Number of Active BE Pipes" dword="5" bits="7:0" type="uint" />
-> +    <field name="Num of Tile Columns in Frame Minus 1" dword="5" bits="21:12" type="uint" />
-> +    <field name="Num of Tile Rows in Frame Minus 1" dword="5" bits="31:22" type="uint" />
-> +    <field name="Output Decoded Tile Column Position in SB Unit" dword="6" bits="9:0" type="uint" />
-> +    <field name="Output Decoded Tile Row Position in SB Unit" dword="6" bits="25:16" type="uint" />
-> +  </instruction>
-> +  <instruction name="CFE_STATE" bias="2" length="6" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-> +    <field name="CFE SubOpcode Variant" dword="0" bits="17:16" type="uint" default="0" />
-> +    <field name="CFE SubOpcode" dword="0" bits="23:18" type="uint" default="0" />
-> +    <field name="Compute Command Opcode" dword="0" bits="26:24" type="uint" default="2" />
-> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Scratch Space Buffer" dword="1" bits="31:10" type="uint" />
-> +    <field name="Stack ID Control" dword="3" bits="1:0" type="uint">
-> +      <value name="StackIDs 2048" value="0" />
-> +      <value name="StackIDs 1024" value="1" />
-> +      <value name="StackIDs 512" value="2" />
-> +      <value name="StackIDs 256" value="3" />
-> +    </field>
-> +    <field name="Compute Dispatch All walker Enable" dword="3" bits="12:12" type="bool" />
-> +    <field name="Single Slice Dispatch CCS Mode" dword="3" bits="13:13" type="bool" />
-> +    <field name="Over Dispatch Control" dword="3" bits="15:14" type="uint">
-> +      <value name="Over Dispatch None" value="0" />
-> +      <value name="Over Dispatch Low" value="1" />
-> +      <value name="Over Dispatch Normal" value="2" />
-> +      <value name="Over Dispatch High" value="3" />
-> +    </field>
-> +    <field name="Maximum Number of Threads" dword="3" bits="31:16" type="uint" />
-> +  </instruction>
-> +  <instruction name="COMPUTE_WALKER" bias="2" length="40" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="38" />
-> +    <field name="Predicate Enable" dword="0" bits="8:8" type="bool" />
-> +    <field name="Workload Partition Enable" dword="0" bits="9:9" type="bool" />
-> +    <field name="Indirect Parameter Enable" dword="0" bits="10:10" type="bool" />
-> +    <field name="Systolic Mode Enable" dword="0" bits="14:14" type="bool" />
-> +    <field name="CFE SubOpcode Variant" dword="0" bits="17:15" type="uint" default="0" />
-> +    <field name="CFE SubOpcode" dword="0" bits="23:18" type="uint" default="2" />
-> +    <field name="Compute Command Opcode" dword="0" bits="26:24" type="uint" default="2" />
-> +    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="body" dword="1" bits="1248:0" type="COMPUTE_WALKER_BODY" />
-> +  </instruction>
-> +  <instruction name="EXECUTE_INDIRECT_DISPATCH" bias="2" length="45" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="43" />
-> +    <field name="Predicate Enable" dword="0" bits="8:8" type="bool" />
-> +    <field name="MOCS" dword="0" bits="15:12" type="uint" nonzero="true" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="1" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="4" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Max Count" dword="1" bits="31:0" type="uint" />
-> +    <field name="Count Buffer Indirect Enable" dword="2" bits="0:0" type="bool" />
-> +    <field name="Count Buffer Address" dword="2" bits="63:2" type="address" />
-> +    <field name="Argument Buffer Start Address" dword="4" bits="63:2" type="address" />
-> +    <field name="body" dword="6" bits="1247:0" type="COMPUTE_WALKER_BODY" />
-> +  </instruction>
-> +  <instruction name="MI_MEM_FENCE" bias="1" length="1">
-> +    <field name="Fence Type" dword="0" bits="1:0" type="uint" prefix="FENCE_TYPE">
-> +      <value name="RELEASE" value="0" />
-> +      <value name="ACQUIRE" value="1" />
-> +      <value name="MI_WRITE" value="3" />
-> +    </field>
-> +    <field name="MI Command Sub Opcode" dword="0" bits="22:17" type="uint" default="0" />
-> +    <field name="MI Command Opcode" dword="0" bits="28:23" type="uint" default="9" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="0" />
-> +  </instruction>
-> +  <instruction name="MI_SEMAPHORE_WAIT" bias="2" length="5">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-> +    <field name="Compare Operation" dword="0" bits="14:12" type="uint" prefix="COMPARE">
-> +      <value name="SAD_GREATER_THAN_SDD" value="0" />
-> +      <value name="SAD_GREATER_THAN_OR_EQUAL_SDD" value="1" />
-> +      <value name="SAD_LESS_THAN_SDD" value="2" />
-> +      <value name="SAD_LESS_THAN_OR_EQUAL_SDD" value="3" />
-> +      <value name="SAD_EQUAL_SDD" value="4" />
-> +      <value name="SAD_NOT_EQUAL_SDD" value="5" />
-> +    </field>
-> +    <field name="Wait Mode" dword="0" bits="15:15" type="uint">
-> +      <value name="Polling Mode" value="1" />
-> +      <value name="Signal Mode" value="0" />
-> +    </field>
-> +    <field name="Register Poll Mode" dword="0" bits="16:16" type="bool" />
-> +    <field name="Indirect Semaphore Data Dword" dword="0" bits="17:17" type="bool" />
-> +    <field name="Workload Partition ID Offset Enable" dword="0" bits="18:18" type="bool" />
-> +    <field name="Memory Type" dword="0" bits="22:22" type="uint">
-> +      <value name="Per Process Graphics Address" value="0" />
-> +      <value name="Global Graphics Address" value="1" />
-> +    </field>
-> +    <field name="MI Command Opcode" dword="0" bits="28:23" type="uint" default="28" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="0" />
-> +    <field name="Semaphore Data Dword" dword="1" bits="31:0" type="uint" />
-> +    <field name="Semaphore Address" dword="2" bits="63:2" type="address" />
-> +    <field name="Wait Token Number" dword="4" bits="9:2" type="uint" />
-> +  </instruction>
-> +  <instruction name="PIPELINE_SELECT" bias="1" length="1" engine="render">
-> +    <field name="Pipeline Selection" dword="0" bits="1:0" type="uint">
-> +      <value name="3D" value="0" />
-> +      <value name="Media" value="1" />
-> +      <value name="GPGPU" value="2" />
-> +    </field>
-> +    <field name="Mask Bits" dword="0" bits="15:8" type="uint" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="4" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="1" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +  </instruction>
-> +  <instruction name="PIPE_CONTROL" bias="2" length="6" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-> +    <field name="HDC Pipeline Flush Enable" dword="0" bits="9:9" type="bool" />
-> +    <field name="L3 Read Only Cache Invalidation Enable" dword="0" bits="10:10" type="bool" />
-> +    <field name="Untyped Data Port Cache Flush Enable" dword="0" bits="11:11" type="bool" />
-> +    <field name="CCS Flush Enable" dword="0" bits="13:13" type="bool" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="0" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="2" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Depth Cache Flush Enable" dword="1" bits="0:0" type="bool" />
-> +    <field name="Stall At Pixel Scoreboard" dword="1" bits="1:1" type="bool" />
-> +    <field name="State Cache Invalidation Enable" dword="1" bits="2:2" type="bool" />
-> +    <field name="Constant Cache Invalidation Enable" dword="1" bits="3:3" type="bool" />
-> +    <field name="VF Cache Invalidation Enable" dword="1" bits="4:4" type="bool" />
-> +    <field name="Force Device Coherency" dword="1" bits="5:5" type="bool" />
-> +    <field name="Pipe Control Flush Enable" dword="1" bits="7:7" type="bool" />
-> +    <field name="Notify Enable" dword="1" bits="8:8" type="bool" />
-> +    <field name="Indirect State Pointers Disable" dword="1" bits="9:9" type="bool" />
-> +    <field name="Texture Cache Invalidation Enable" dword="1" bits="10:10" type="bool" />
-> +    <field name="Instruction Cache Invalidate Enable" dword="1" bits="11:11" type="bool" />
-> +    <field name="Render Target Cache Flush Enable" dword="1" bits="12:12" type="bool" />
-> +    <field name="Depth Stall Enable" dword="1" bits="13:13" type="bool" />
-> +    <field name="Post Sync Operation" dword="1" bits="15:14" type="uint">
-> +      <value name="No Write" value="0" />
-> +      <value name="Write Immediate Data" value="1" />
-> +      <value name="Write PS Depth Count" value="2" />
-> +      <value name="Write Timestamp" value="3" />
-> +    </field>
-> +    <field name="PSS Stall Sync Enable" dword="1" bits="17:17" type="bool" />
-> +    <field name="TLB Invalidate" dword="1" bits="18:18" type="bool" />
-> +    <field name="Depth Stall Sync Enable" dword="1" bits="19:19" type="bool" />
-> +    <field name="Command Streamer Stall Enable" dword="1" bits="20:20" type="bool" />
-> +    <field name="Store Data Index" dword="1" bits="21:21" type="uint" />
-> +    <field name="Protected Memory Enable" dword="1" bits="22:22" type="bool" />
-> +    <field name="LRI Post Sync Operation" dword="1" bits="23:23" type="uint">
-> +      <value name="No LRI Operation" value="0" />
-> +      <value name="MMIO Write Immediate Data" value="1" />
-> +    </field>
-> +    <field name="Destination Address Type" dword="1" bits="24:24" type="uint" prefix="DAT">
-> +      <value name="PPGTT" value="0" />
-> +      <value name="GGTT" value="1" />
-> +    </field>
-> +    <field name="Flush LLC" dword="1" bits="26:26" type="bool" />
-> +    <field name="Protected Memory Disable" dword="1" bits="27:27" type="bool" />
-> +    <field name="Command Cache Invalidate Enable" dword="1" bits="29:29" type="bool" />
-> +    <field name="Address" dword="2" bits="47:2" type="address" />
-> +    <field name="Immediate Data" dword="4" bits="63:0" type="uint" />
-> +  </instruction>
-> +  <instruction name="RESOURCE_BARRIER" bias="2" length="5" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-> +    <field name="Predicate Enable" dword="0" bits="24:24" type="bool" />
-> +    <field name="Opcode" dword="0" bits="28:26" type="uint" default="3">
-> +      <value name="RESOURCE_BARRIER" value="3" />
-> +    </field>
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="5" />
-> +    <field name="Resource Barrier Body" dword="1" bits="127:0" type="RESOURCE_BARRIER_BODY" />
-> +  </instruction>
-> +  <instruction name="STATE_BYTE_STRIDE" bias="2" length="2" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="0" />
-> +    <field name="Byte Stride Enable" dword="0" bits="8:8" type="bool" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Byte Stride" dword="1" bits="31:2" type="uint" />
-> +  </instruction>
-> +  <instruction name="STATE_COMPUTE_MODE" bias="2" length="3" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Z Pass Async Compute Thread Limit" dword="1" bits="2:0" type="uint" prefix="ZPACTL">
-> +      <value name="Max 60" value="0" />
-> +      <value name="Max 64" value="1" />
-> +      <value name="Max 56" value="2" />
-> +      <value name="Max 48" value="3" />
-> +      <value name="Max 40" value="4" />
-> +      <value name="Max 32" value="5" />
-> +    </field>
-> +    <field name="Z Async Throttle settings" dword="1" bits="4:3" type="uint" prefix="ZATS">
-> +      <value name="Defer to Async Compute Thread Limit" value="0" />
-> +      <value name="Max 32" value="1" />
-> +      <value name="Max 40" value="2" />
-> +      <value name="Max 48" value="3" />
-> +    </field>
-> +    <field name="Async Compute Thread Limit" dword="1" bits="9:7" type="uint" prefix="ACTL">
-> +      <value name="Disabled" value="0" />
-> +      <value name="Max 2" value="1" />
-> +      <value name="Max 8" value="2" />
-> +      <value name="Max 16" value="3" />
-> +      <value name="Max 24" value="4" />
-> +      <value name="Max 32" value="5" />
-> +      <value name="Max 40" value="6" />
-> +      <value name="Max 48" value="7" />
-> +    </field>
-> +    <field name="EU Thread Scheduling Mode Override" dword="1" bits="14:13" type="uint" />
-> +    <field name="Large GRF Mode" dword="1" bits="15:15" type="bool" />
-> +    <field name="Z Pass Async Compute Thread Limit Mask" dword="1" bits="18:16" type="uint" />
-> +    <field name="Mask1" dword="1" bits="31:16" type="uint" />
-> +    <field name="Z Async Throttle settings Mask" dword="1" bits="20:19" type="uint" />
-> +    <field name="Async Compute Thread Limit Mask" dword="1" bits="25:23" type="uint" />
-> +    <field name="EU Thread Scheduling Mode Override Mask" dword="1" bits="30:29" type="uint" />
-> +    <field name="Large GRF Mode Mask" dword="1" bits="31:31" type="bool" />
-> +    <field name="Midthread Preemption Delay Timer" dword="2" bits="2:0" type="uint">
-> +      <value name="MTP_TIMER_VAL_0" value="0" />
-> +      <value name="MTP_TIMER_VAL_50" value="1" />
-> +      <value name="MTP_TIMER_VAL_100" value="2" />
-> +      <value name="MTP_TIMER_VAL_150" value="3" />
-> +    </field>
-> +    <field name="Midthread Preemption Overdispatch Thread group count" dword="2" bits="4:3" type="uint">
-> +      <value name="OD_TG_M2" value="0" />
-> +      <value name="OD_TG_M4" value="1" />
-> +      <value name="OD_TG_M8" value="2" />
-> +      <value name="OD_TG_M16" value="3" />
-> +    </field>
-> +    <field name="Midthread Preemption Overdispatch Test mode" dword="2" bits="5:5" type="uint">
-> +      <value name="Regular" value="0" />
-> +      <value name="Test mode" value="1" />
-> +    </field>
-> +    <field name="UAV Coherency Mode" dword="2" bits="6:6" type="uint">
-> +      <value name="Drain DataPort Mode" value="0" />
-> +      <value name="Flush Dataport L1" value="1" />
-> +    </field>
-> +    <field name="Memory allocation for Scratch and Midthread Preemption buffers" dword="2" bits="11:11" type="uint">
-> +      <value name="Full" value="0" />
-> +      <value name="Min" value="1" />
-> +    </field>
-> +    <field name="Midthread Preemption Delay Timer Mask" dword="2" bits="18:16" type="uint" />
-> +    <field name="Mask2" dword="2" bits="31:16" type="uint" />
-> +    <field name="Midthread Preemption Overdispatch Thread group count Mask" dword="2" bits="20:19" type="uint" />
-> +    <field name="Midthread Preemption Overdispatch Test mode Mask" dword="2" bits="21:21" type="uint" />
-> +    <field name="UAV Coherency Mode Mask" dword="2" bits="22:22" type="uint" />
-> +    <field name="Memory allocation for Scratch and Midthread Preemption buffers Mask" dword="2" bits="27:27" type="uint" />
-> +  </instruction>
-> +  <instruction name="STATE_SYSTEM_MEM_FENCE_ADDRESS" bias="2" length="3">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
-> +    <field name="Context Restore Invalid" dword="0" bits="15:15" type="bool" default="0" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="9" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="System Memory Fence Address" dword="1" bits="63:12" type="address" />
-> +  </instruction>
-> +  <instruction name="XY_BLOCK_COPY_BLT" bias="2" length="22" engine="blitter">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="20" />
-> +    <field name="Special Mode of Operation" dword="0" bits="13:12" type="uint">
-> +      <value name="NONE" value="0" />
-> +      <value name="FULL_RESOLVE" value="1" />
-> +      <value name="PARTIAL_RESOLVE" value="2" />
-> +    </field>
-> +    <field name="Color Depth" dword="0" bits="21:19" type="uint" prefix="XY_BPP">
-> +      <value name="8_BIT" value="0" />
-> +      <value name="16_BIT" value="1" />
-> +      <value name="32_BIT" value="2" />
-> +      <value name="64_BIT" value="3" />
-> +      <value name="96_BIT" value="4" />
-> +      <value name="128_BIT" value="5" />
-> +    </field>
-> +    <field name="Opcode" dword="0" bits="28:22" type="uint" default="0x41" />
-> +    <field name="Client" dword="0" bits="31:29" type="uint" default="2" />
-> +    <field name="Destination Pitch" dword="1" bits="17:0" type="uint" />
-> +    <field name="Destination Encrypt En" dword="1" bits="21:21" type="uint" />
-> +    <field name="Destination MOCS index" dword="1" bits="27:24" type="uint" nonzero="true" />
-> +    <field name="Destination Tiling" dword="1" bits="31:30" type="uint" prefix="XY_TILE">
-> +      <value name="LINEAR" value="0" />
-> +      <value name="X" value="1" />
-> +      <value name="4" value="2" />
-> +      <value name="64" value="3" />
-> +    </field>
-> +    <field name="Destination X1" dword="2" bits="15:0" type="int" />
-> +    <field name="Destination Y1" dword="2" bits="31:16" type="int" />
-> +    <field name="Destination X2" dword="3" bits="15:0" type="int" />
-> +    <field name="Destination Y2" dword="3" bits="31:16" type="int" />
-> +    <field name="Destination Base Address" dword="4" bits="63:0" type="address" />
-> +    <field name="Destination X Offset" dword="6" bits="13:0" type="uint" />
-> +    <field name="Destination Y Offset" dword="6" bits="29:16" type="uint" />
-> +    <field name="Destination Target Memory" dword="6" bits="31:31" type="uint" prefix="XY_MEM">
-> +      <value name="LOCAL" value="0" />
-> +      <value name="SYSTEM" value="1" />
-> +    </field>
-> +    <field name="Source X1" dword="7" bits="15:0" type="int" />
-> +    <field name="Source Y1" dword="7" bits="31:16" type="int" />
-> +    <field name="Source Pitch" dword="8" bits="17:0" type="uint" />
-> +    <field name="Source Encrypt En" dword="8" bits="21:21" type="bool" />
-> +    <field name="Source MOCS index" dword="8" bits="27:24" type="uint" />
-> +    <field name="Source Tiling" dword="8" bits="31:30" type="uint" prefix="XY_TILE">
-> +      <value name="LINEAR" value="0" />
-> +      <value name="X" value="1" />
-> +      <value name="4" value="2" />
-> +      <value name="64" value="3" />
-> +    </field>
-> +    <field name="Source Base Address" dword="9" bits="63:0" type="address" />
-> +    <field name="Source X Offset" dword="11" bits="13:0" type="uint" />
-> +    <field name="Source Y Offset" dword="11" bits="29:16" type="uint" />
-> +    <field name="Source Target Memory" dword="11" bits="31:31" type="uint" prefix="XY_MEM">
-> +      <value name="LOCAL" value="0" />
-> +      <value name="SYSTEM" value="1" />
-> +    </field>
-> +    <field name="Source Compression Format" dword="12" bits="4:0" type="uint" />
-> +    <field name="Source Clear Value Enable" dword="12" bits="5:5" type="bool" />
-> +    <field name="Source Clear Address" dword="12" bits="47:6" type="address" />
-> +    <field name="Destination Compression Format" dword="14" bits="4:0" type="uint" />
-> +    <field name="Destination Clear Value Enable" dword="14" bits="5:5" type="bool" />
-> +    <field name="Destination Clear Address" dword="14" bits="47:6" type="address" />
-> +    <field name="Destination Surface Height" dword="16" bits="13:0" type="uint" />
-> +    <field name="Destination Surface Width" dword="16" bits="27:14" type="uint" />
-> +    <field name="Destination Surface Type" dword="16" bits="31:29" type="uint" prefix="XY_SURFTYPE">
-> +      <value name="1D" value="0" />
-> +      <value name="2D" value="1" />
-> +      <value name="3D" value="2" />
-> +      <value name="CUBE" value="3" />
-> +    </field>
-> +    <field name="Destination LOD" dword="17" bits="3:0" type="uint" />
-> +    <field name="Destination Surface QPitch" dword="17" bits="18:4" type="uint" />
-> +    <field name="Destination Surface Depth" dword="17" bits="31:21" type="uint" />
-> +    <field name="Destination Horizontal Align" dword="18" bits="1:0" type="uint">
-> +      <value name="HALIGN_16" value="0" />
-> +      <value name="HALIGN_32" value="1" />
-> +      <value name="HALIGN_64" value="2" />
-> +      <value name="HALIGN_128" value="3" />
-> +    </field>
-> +    <field name="Destination Vertical Align" dword="18" bits="4:3" type="uint">
-> +      <value name="VALIGN_4" value="1" />
-> +      <value name="VALIGN_8" value="2" />
-> +      <value name="VALIGN_16" value="3" />
-> +    </field>
-> +    <field name="Destination Mip Tail Start LOD" dword="18" bits="11:8" type="uint" />
-> +    <field name="Destination Array Index" dword="18" bits="31:21" type="uint" />
-> +    <field name="Source Surface Height" dword="19" bits="13:0" type="uint" />
-> +    <field name="Source Surface Width" dword="19" bits="27:14" type="uint" />
-> +    <field name="Source Surface Type" dword="19" bits="31:29" type="uint" prefix="XY_SURFTYPE">
-> +      <value name="1D" value="0" />
-> +      <value name="2D" value="1" />
-> +      <value name="3D" value="2" />
-> +      <value name="CUBE" value="3" />
-> +    </field>
-> +    <field name="Source LOD" dword="20" bits="3:0" type="uint" />
-> +    <field name="Source Surface QPitch" dword="20" bits="18:4" type="uint" />
-> +    <field name="Source Surface Depth" dword="20" bits="31:21" type="uint" />
-> +    <field name="Source Horizontal Align" dword="21" bits="1:0" type="uint">
-> +      <value name="HALIGN_16" value="0" />
-> +      <value name="HALIGN_32" value="1" />
-> +      <value name="HALIGN_64" value="2" />
-> +      <value name="HALIGN_128" value="3" />
-> +    </field>
-> +    <field name="Source Vertical Align" dword="21" bits="4:3" type="uint">
-> +      <value name="VALIGN_4" value="1" />
-> +      <value name="VALIGN_8" value="2" />
-> +      <value name="VALIGN_16" value="3" />
-> +    </field>
-> +    <field name="Source Mip Tail Start LOD" dword="21" bits="11:8" type="uint" />
-> +    <field name="Source Array Index" dword="21" bits="31:21" type="uint" />
-> +  </instruction>
-> +  <instruction name="XY_FAST_COLOR_BLT" bias="2" length="16" engine="blitter">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="14" />
-> +    <field name="Number of Multisamples" dword="0" bits="11:9" type="uint">
-> +      <value name="MULTISAMPLECOUNT_1" value="0" />
-> +      <value name="MULTISAMPLECOUNT_2" value="1" />
-> +      <value name="MULTISAMPLECOUNT_4" value="2" />
-> +      <value name="MULTISAMPLECOUNT_8" value="3" />
-> +      <value name="MULTISAMPLECOUNT_16" value="4" />
-> +    </field>
-> +    <field name="Special Mode of Operation" dword="0" bits="13:12" type="uint">
-> +      <value name="NONE" value="0" />
-> +      <value name="USE_AUX_SPECIAL_OPERATIONS_MODE" value="1" />
-> +    </field>
-> +    <field name="Color Depth" dword="0" bits="21:19" type="uint" prefix="XY_BPP">
-> +      <value name="8_BIT" value="0" />
-> +      <value name="16_BIT" value="1" />
-> +      <value name="32_BIT" value="2" />
-> +      <value name="64_BIT" value="3" />
-> +      <value name="96_BIT" value="4" />
-> +      <value name="128_BIT" value="5" />
-> +    </field>
-> +    <field name="Instruction Target(Opcode)" dword="0" bits="28:22" type="uint" default="68">
-> +      <value name="XY_FAST_COLOR_BLT" value="68" />
-> +    </field>
-> +    <field name="Client" dword="0" bits="31:29" type="uint" default="2">
-> +      <value name="2D Processor" value="2" />
-> +    </field>
-> +    <field name="Destination Pitch" dword="1" bits="17:0" type="uint" />
-> +    <field name="Destination Encrypt En" dword="1" bits="21:21" type="bool" />
-> +    <field name="Destination MOCS index" dword="1" bits="27:24" type="uint" />
-> +    <field name="Destination Tiling" dword="1" bits="31:30" type="uint" prefix="XY_TILE">
-> +      <value name="LINEAR" value="0" />
-> +      <value name="X" value="1" />
-> +      <value name="4" value="2" />
-> +      <value name="64" value="3" />
-> +    </field>
-> +    <field name="Destination X1" dword="2" bits="15:0" type="int" />
-> +    <field name="Destination Y1" dword="2" bits="31:16" type="int" />
-> +    <field name="Destination X2" dword="3" bits="15:0" type="int" />
-> +    <field name="Destination Y2" dword="3" bits="31:16" type="int" />
-> +    <field name="Destination Base Address" dword="4" bits="63:0" type="address" />
-> +    <field name="Destination X Offset" dword="6" bits="13:0" type="uint" />
-> +    <field name="Destination Y Offset" dword="6" bits="29:16" type="uint" />
-> +    <field name="Destination Target Memory" dword="6" bits="31:31" type="uint">
-> +      <value name="LOCAL_MEM" value="0" />
-> +      <value name="SYSTEM_MEM" value="1" />
-> +    </field>
-> +    <group count="4" dword="7" size="32">
-> +      <field name="Fill Color" dword="0" bits="31:0" type="uint" />
-> +    </group>
-> +    <field name="Destination Compression Format" dword="11" bits="3:0" type="uint" />
-> +    <field name="Surface Format" dword="12" bits="8:0" type="uint" />
-> +    <field name="AUX_SPECIAL_OPERATIONS_MODE" dword="12" bits="31:29" type="uint">
-> +      <value name="FAST_CLEAR_HW_FORMAT_CONVERSION" value="0" />
-> +      <value name="FAST_CLEAR_BYPASS_HW_FORMAT_CONVERSION" value="1" />
-> +      <value name="FORCE_UNCOMPRESS" value="2" />
-> +    </field>
-> +    <field name="Destination Surface Height" dword="13" bits="13:0" type="uint" />
-> +    <field name="Destination Surface Width" dword="13" bits="27:14" type="uint" />
-> +    <field name="Destination Surface Type" dword="13" bits="31:29" type="uint" prefix="XY_SURFTYPE">
-> +      <value name="1D" value="0" />
-> +      <value name="2D" value="1" />
-> +      <value name="3D" value="2" />
-> +      <value name="CUBE" value="3" />
-> +    </field>
-> +    <field name="Destination LOD" dword="14" bits="3:0" type="uint" />
-> +    <field name="Destination Surface QPitch" dword="14" bits="18:4" type="uint" />
-> +    <field name="Destination Surface Depth" dword="14" bits="31:21" type="uint" />
-> +    <field name="Destination Horizontal Align" dword="15" bits="1:0" type="uint">
-> +      <value name="HALIGN_16" value="0" />
-> +      <value name="HALIGN_32" value="1" />
-> +      <value name="HALIGN_64" value="2" />
-> +      <value name="HALIGN_128" value="3" />
-> +    </field>
-> +    <field name="Destination Vertical Align" dword="15" bits="4:3" type="uint">
-> +      <value name="VALIGN_4" value="1" />
-> +      <value name="VALIGN_8" value="2" />
-> +      <value name="VALIGN_16" value="3" />
-> +    </field>
-> +    <field name="Destination Mip Tail Start LOD" dword="15" bits="11:8" type="uint" />
-> +    <field name="Destination Depth/Stencil Resource" dword="15" bits="18:18" type="bool" />
-> +    <field name="Destination Array Index" dword="15" bits="31:21" type="uint" />
-> +  </instruction>
-> +  <register name="BLT_TRTT_VA_RANGE" length="1" num="0x4484">
-> +    <field name="TR-VA Base" dword="0" bits="12:0" type="uint" />
-> +  </register>
-> +  <register name="CACHE_MODE_0" length="1" num="0x7000">
-> +    <field name="Hierarchical Z RAW Stall Optimization Disable" dword="0" bits="2:2" type="bool" />
-> +    <field name="Hierarchical Z Disable" dword="0" bits="3:3" type="bool" />
-> +    <field name="Late Z Alloc Disable" dword="0" bits="4:4" type="bool" />
-> +    <field name="Msaa Fast Clear Enabled" dword="0" bits="5:5" type="bool" />
-> +    <field name="Depth Related Cache Pipelined Flush Disable" dword="0" bits="8:8" type="bool" />
-> +    <field name="Sampler L2 TLB Prefetch Enable" dword="0" bits="9:9" type="bool" />
-> +    <field name="RCZ PMA Not-Promoted Allocation stall optimization Disable due to change in depth parameters" dword="0" bits="10:10" type="uint" />
-> +    <field name="Disable Repacking for Compression" dword="0" bits="15:15" type="bool" />
-> +    <field name="Hierarchical Z RAW Stall Optimization Disable Mask" dword="0" bits="18:18" type="bool" />
-> +    <field name="Hierarchical Z Disable Mask" dword="0" bits="19:19" type="bool" />
-> +    <field name="Late Z Alloc Disable Mask" dword="0" bits="20:20" type="bool" />
-> +    <field name="Msaa Fast Clear Enabled Mask" dword="0" bits="21:21" type="bool" />
-> +    <field name="Depth Related Cache Pipelined Flush Disable Mask" dword="0" bits="24:24" type="bool" />
-> +    <field name="Sampler L2 TLB Prefetch Enable Mask" dword="0" bits="25:25" type="bool" />
-> +    <field name="RCZ PMA Not-Promoted Allocation stall optimization Disable due to change in depth parameters Mask" dword="0" bits="26:26" type="bool" />
-> +    <field name="Disable Repacking for Compression Mask" dword="0" bits="31:31" type="bool" />
-> +  </register>
-> +  <register name="COMP_CTX0_TRTT_VA_RANGE" length="1" num="0x4584">
-> +    <field name="TR-VA Base" dword="0" bits="12:0" type="uint" />
-> +  </register>
-> +  <register name="CS_CHICKEN1" length="1" num="0x2580">
-> +    <field name="Media And GPGPU Pre-emption Control" dword="0" bits="2:1" type="uint">
-> +      <value name="Mid-thread Pre-emption" value="0" />
-> +      <value name="Thread Group Pre-emption" value="1" />
-> +      <value name="Command Level Pre-emption" value="2" />
-> +    </field>
-> +    <field name="Disable Preemption and High Priority Pausing due to 3DPRIMITIVE Command" dword="0" bits="10:10" type="bool" />
-> +    <field name="Media And GPGPU Pre-emption Control Mask" dword="0" bits="18:17" type="uint" />
-> +    <field name="Disable Preemption and High Priority Pausing due to 3DPRIMITIVE Command Mask" dword="0" bits="26:26" type="bool" />
-> +  </register>
-> +  <register name="FF_MODE" length="1" num="0x6210">
-> +    <field name="Mesh Shader Autostrip Disable" dword="0" bits="15:15" type="bool" />
-> +    <field name="Mesh Shader Partial Autostrip Disable" dword="0" bits="16:16" type="bool" />
-> +    <field name="TE Autostrip Disable" dword="0" bits="31:31" type="bool" />
-> +  </register>
-> +  <register name="GFX_TRTT_VA_RANGE" length="1" num="0x4404">
-> +    <field name="TR-VA Base" dword="0" bits="12:0" type="uint" />
-> +  </register>
-> +  <register name="VFL_SCRATCH_PAD" length="1" num="0x62a8">
-> +    <field name="Autostrip Disable" dword="0" bits="6:6" type="uint" />
-> +    <field name="Partial Autostrip Disable" dword="0" bits="9:9" type="uint" />
-> +    <field name="Autostrip Disable Mask" dword="0" bits="22:22" type="bool" />
-> +    <field name="Partial Autostrip Disable Mask" dword="0" bits="25:25" type="bool" />
-> +  </register>
-> +</genxml>
-> diff --git a/lib/intel/genxml/xe3.xml b/lib/intel/genxml/xe3.xml
-> new file mode 100644
-> index 000000000..9b2edcbbc
-> --- /dev/null
-> +++ b/lib/intel/genxml/xe3.xml
-> @@ -0,0 +1,816 @@
-> +<?xml version='1.0' encoding='utf-8'?>
-> +<genxml name="XE3" gen="30">
-> +  <import name="xe2.xml">
-> +    <exclude name="CPS_STATE" />
-> +    <exclude name="3DSTATE_CPS_POINTERS" />
-> +  </import>
-> +  <enum name="STATE_CPS_COMBINER_OPCODE" prefix="CPS_COMB_OP">
-> +    <value name="PASSTHROUGH" value="0" />
-> +    <value name="OVERRIDE" value="1" />
-> +    <value name="HIGH_QUALITY" value="2" />
-> +    <value name="LOW_QUALITY" value="3" />
-> +    <value name="RELATIVE" value="4" />
-> +  </enum>
-> +  <enum name="STATE_CPS_SIZE">
-> +    <value name="CPSIZE_1" value="0" />
-> +    <value name="CPSIZE_2" value="1" />
-> +    <value name="CPSIZE_4" value="2" />
-> +  </enum>
-> +  <struct name="BLEND_STATE_ENTRY" length="2">
-> +    <field name="Write Disable Blue" dword="0" bits="0:0" type="bool" />
-> +    <field name="Write Disable Green" dword="0" bits="1:1" type="bool" />
-> +    <field name="Write Disable Red" dword="0" bits="2:2" type="bool" />
-> +    <field name="Write Disable Alpha" dword="0" bits="3:3" type="bool" />
-> +    <field name="Alpha Blend Function" dword="0" bits="7:5" type="3D_Color_Buffer_Blend_Function" />
-> +    <field name="Destination Alpha Blend Factor" dword="0" bits="12:8" type="3D_Color_Buffer_Blend_Factor" />
-> +    <field name="Source Alpha Blend Factor" dword="0" bits="17:13" type="3D_Color_Buffer_Blend_Factor" />
-> +    <field name="Color Blend Function" dword="0" bits="20:18" type="3D_Color_Buffer_Blend_Function" />
-> +    <field name="Destination Blend Factor" dword="0" bits="25:21" type="3D_Color_Buffer_Blend_Factor" />
-> +    <field name="Source Blend Factor" dword="0" bits="30:26" type="3D_Color_Buffer_Blend_Factor" />
-> +    <field name="Color Buffer Blend Enable" dword="0" bits="31:31" type="bool" />
-> +    <field name="Post-Blend Color Clamp Enable" dword="1" bits="0:0" type="bool" />
-> +    <field name="Pre-Blend Color Clamp Enable" dword="1" bits="1:1" type="bool" />
-> +    <field name="Color Clamp Range" dword="1" bits="3:2" type="uint">
-> +      <value name="COLORCLAMP_UNORM" value="0" />
-> +      <value name="COLORCLAMP_SNORM" value="1" />
-> +      <value name="COLORCLAMP_RTFORMAT" value="2" />
-> +    </field>
-> +    <field name="Pre-Blend Source Only Clamp Enable" dword="1" bits="4:4" type="bool" />
-> +    <field name="Simple Float Blend Enable" dword="1" bits="5:5" type="bool" />
-> +    <field name="Logic Op Function" dword="1" bits="30:27" type="3D_Logic_Op_Function" />
-> +    <field name="Logic Op Enable" dword="1" bits="31:31" type="bool" />
-> +  </struct>
-> +  <struct name="INTERFACE_DESCRIPTOR_DATA" length="8">
-> +    <field name="Kernel Start Pointer" dword="0" bits="31:6" type="offset" />
-> +    <field name="Software Exception Enable" dword="2" bits="7:7" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="2" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="2" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="2" bits="18:18" type="bool" />
-> +    <field name="Denorm Mode" dword="2" bits="19:19" type="uint">
-> +      <value name="Ftz" value="0" />
-> +      <value name="SetByKernel" value="1" />
-> +    </field>
-> +    <field name="Thread Preemption" dword="2" bits="20:20" type="bool" default="1" />
-> +    <field name="Registers Per Thread" dword="2" bits="30:26" type="uint" />
-> +    <field name="Sampler Count" dword="3" bits="4:2" type="uint">
-> +      <value name="No samplers used" value="0" />
-> +      <value name="Between 1 and 4 samplers used" value="1" />
-> +      <value name="Between 5 and 8 samplers used" value="2" />
-> +      <value name="Between 9 and 12 samplers used" value="3" />
-> +      <value name="Between 13 and 16 samplers used" value="4" />
-> +    </field>
-> +    <field name="Sampler State Pointer" dword="3" bits="31:5" type="offset" />
-> +    <field name="Binding Table Entry Count" dword="4" bits="4:0" type="uint" />
-> +    <field name="Binding Table Pointer" dword="4" bits="20:5" type="offset" />
-> +    <field name="Number of Threads in GPGPU Thread Group" dword="5" bits="9:0" type="uint" />
-> +    <field name="Thread group forward progress guarantee" dword="5" bits="13:13" type="bool" />
-> +    <field name="Shared Local Memory Size" dword="5" bits="20:16" type="uint">
-> +      <value name="Encodes 0K" value="0" />
-> +      <value name="Encodes 1K" value="1" />
-> +      <value name="Encodes 2K" value="2" />
-> +      <value name="Encodes 4K" value="3" />
-> +      <value name="Encodes 8K" value="4" />
-> +      <value name="Encodes 16K" value="5" />
-> +      <value name="Encodes 32K" value="6" />
-> +      <value name="Encodes 64K" value="7" />
-> +      <value name="Encodes 96K" value="10" />
-> +      <value name="Encodes 128K" value="11" />
-> +      <value name="Encodes 192K" value="12" />
-> +      <value name="Encodes 256K" value="13" />
-> +      <value name="Encodes 384K" value="14" />
-> +    </field>
-> +    <field name="Rounding Mode" dword="5" bits="23:22" type="uint">
-> +      <value name="RTNE" value="0" />
-> +      <value name="RU" value="1" />
-> +      <value name="RD" value="2" />
-> +      <value name="RTZ" value="3" />
-> +    </field>
-> +    <field name="Thread Group Dispatch Size" dword="5" bits="27:26" type="uint">
-> +      <value name="TG size 8" value="0" />
-> +      <value name="TG size 4" value="1" />
-> +      <value name="TG size 2" value="2" />
-> +      <value name="TG size 1" value="3" />
-> +    </field>
-> +    <field name="Number Of Barriers" dword="5" bits="30:28" type="uint" prefix="BARRIER_SIZE">
-> +      <value name="NONE" value="0" />
-> +      <value name="B1" value="1" />
-> +      <value name="B2" value="2" />
-> +      <value name="B4" value="3" />
-> +      <value name="B8" value="4" />
-> +      <value name="B16" value="5" />
-> +      <value name="B24" value="6" />
-> +      <value name="B32" value="7" />
-> +    </field>
-> +    <field name="BTD Mode" dword="5" bits="31:31" type="uint" />
-> +    <field name="Preferred SLM Allocation Size" dword="7" bits="3:0" type="PREF_SLM_ALLOCATION_SIZE" />
-> +  </struct>
-> +  <struct name="COMPUTE_WALKER_BODY" length="39">
-> +    <field name="Indirect Data Length" dword="1" bits="16:0" type="uint" />
-> +    <field name="L3 prefetch disable" dword="1" bits="17:17" type="bool" />
-> +    <field name="Partition Dispatch Parameter" dword="1" bits="29:18" type="uint" />
-> +    <field name="Partition Type" dword="1" bits="31:30" type="uint">
-> +      <value name="PartitionX" value="1" />
-> +      <value name="PartitionY" value="2" />
-> +      <value name="PartitionZ" value="3" />
-> +    </field>
-> +    <field name="Indirect Data Start Address" dword="2" bits="31:6" type="offset" />
-> +    <field name="Compute Dispatch All walker Enable" dword="3" bits="0:0" type="uint">
-> +      <value name="Disabled" value="0" />
-> +      <value name="Enabled" value="1" />
-> +    </field>
-> +    <field name="Thread Group Batch Size" dword="3" bits="4:3" type="uint">
-> +      <value name="TG_BATCH_1" value="0" />
-> +      <value name="TG_BATCH_2" value="1" />
-> +      <value name="TG_BATCH_4" value="2" />
-> +      <value name="TG_BATCH_8" value="3" />
-> +    </field>
-> +    <field name="Dispatch Walk Order" dword="3" bits="6:5" type="uint">
-> +      <value name="Linear Walk" value="0" />
-> +      <value name="Y order walk" value="1" />
-> +      <value name="Morton Walk" value="2" />
-> +    </field>
-> +    <field name="Message SIMD" dword="3" bits="18:17" type="uint">
-> +      <value name="SIMT16" value="1" />
-> +      <value name="SIMT32" value="2" />
-> +    </field>
-> +    <field name="Tile Layout" dword="3" bits="21:19" type="uint">
-> +      <value name="Linear" value="0" />
-> +      <value name="TileY 32bpe" value="1" />
-> +      <value name="TileY 64bpe" value="2" />
-> +      <value name="TileY 128bpe" value="3" />
-> +    </field>
-> +    <field name="Walk Order" dword="3" bits="24:22" type="uint">
-> +      <value name="Walk 012" value="0" />
-> +      <value name="Walk 021" value="1" />
-> +      <value name="Walk 102" value="2" />
-> +      <value name="Walk 120" value="3" />
-> +      <value name="Walk 201" value="4" />
-> +      <value name="Walk 210" value="5" />
-> +    </field>
-> +    <field name="Emit Inline Parameter" dword="3" bits="25:25" type="bool" />
-> +    <field name="Emit Local" dword="3" bits="28:26" type="uint">
-> +      <value name="Emit None" value="0" />
-> +      <value name="Emit X" value="1" />
-> +      <value name="Emit XY" value="3" />
-> +      <value name="Emit XYZ" value="7" />
-> +    </field>
-> +    <field name="Generate Local ID" dword="3" bits="29:29" type="bool" />
-> +    <field name="SIMD Size" dword="3" bits="31:30" type="uint">
-> +      <value name="SIMT16" value="1" />
-> +      <value name="SIMT32" value="2" />
-> +    </field>
-> +    <field name="Execution Mask" dword="4" bits="31:0" type="uint" />
-> +    <field name="Local X Maximum" dword="5" bits="9:0" type="uint" />
-> +    <field name="Local Y Maximum" dword="5" bits="19:10" type="uint" />
-> +    <field name="Local Z Maximum" dword="5" bits="29:20" type="uint" />
-> +    <field name="Thread Group ID X Dimension" dword="6" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Y Dimension" dword="7" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Z Dimension" dword="8" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Starting X" dword="9" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Starting Y" dword="10" bits="31:0" type="uint" />
-> +    <field name="Thread Group ID Starting Z" dword="11" bits="31:0" type="uint" />
-> +    <field name="Partition ID" dword="12" bits="31:0" type="uint" />
-> +    <field name="Partition Size" dword="13" bits="31:0" type="uint" />
-> +    <field name="Preempt X" dword="14" bits="31:0" type="uint" />
-> +    <field name="Preempt Y" dword="15" bits="31:0" type="uint" />
-> +    <field name="Preempt Z" dword="16" bits="31:0" type="uint" />
-> +    <field name="Walker ID" dword="17" bits="3:0" type="uint" />
-> +    <field name="Over dispatch TG count" dword="17" bits="23:8" type="uint" />
-> +    <field name="Interface Descriptor" dword="18" bits="255:0" type="INTERFACE_DESCRIPTOR_DATA" />
-> +    <field name="Post Sync" dword="26" bits="159:0" type="POSTSYNC_DATA" />
-> +    <group count="8" dword="31" size="32">
-> +      <field name="Inline Data" dword="0" bits="31:0" type="uint" />
-> +    </group>
-> +  </struct>
-> +  <struct name="SAMPLER_STATE" length="4">
-> +    <field name="Anisotropic Algorithm" dword="0" bits="0:0" type="uint">
-> +      <value name="LEGACY" value="0" />
-> +      <value name="EWA Approximation" value="1" />
-> +    </field>
-> +    <field name="Texture LOD Bias" dword="0" bits="13:1" type="s4.8" />
-> +    <field name="Min Mode Filter" dword="0" bits="16:14" type="uint" prefix="MAPFILTER">
-> +      <value name="NEAREST" value="0" />
-> +      <value name="LINEAR" value="1" />
-> +      <value name="ANISOTROPIC" value="2" />
-> +      <value name="ANISOTROPIC_FAST" value="3" />
-> +      <value name="MONO" value="6" />
-> +    </field>
-> +    <field name="Mag Mode Filter" dword="0" bits="19:17" type="uint" prefix="MAPFILTER">
-> +      <value name="NEAREST" value="0" />
-> +      <value name="LINEAR" value="1" />
-> +      <value name="ANISOTROPIC" value="2" />
-> +      <value name="ANISOTROPIC_FAST" value="3" />
-> +      <value name="MONO" value="6" />
-> +    </field>
-> +    <field name="Mip Mode Filter" dword="0" bits="21:20" type="uint" prefix="MIPFILTER">
-> +      <value name="NONE" value="0" />
-> +      <value name="NEAREST" value="1" />
-> +      <value name="LINEAR" value="3" />
-> +    </field>
-> +    <field name="Coarse LOD Quality Mode" dword="0" bits="26:22" type="uint" />
-> +    <field name="LOD PreClamp Mode" dword="0" bits="28:27" type="uint" prefix="CLAMP_MODE">
-> +      <value name="NONE" value="0" />
-> +      <value name="OGL" value="2" />
-> +    </field>
-> +    <field name="Texture Border Color Mode" dword="0" bits="29:29" type="uint">
-> +      <value name="DX10/OGL" value="0" />
-> +      <value name="DX9" value="1" />
-> +    </field>
-> +    <field name="CPS LOD Compensation Enable" dword="0" bits="30:30" type="bool" />
-> +    <field name="Sampler Disable" dword="0" bits="31:31" type="bool" />
-> +    <field name="Cube Surface Control Mode" dword="1" bits="0:0" type="uint">
-> +      <value name="PROGRAMMED" value="0" />
-> +      <value name="OVERRIDE" value="1" />
-> +    </field>
-> +    <field name="Shadow Function" dword="1" bits="3:1" type="uint" prefix="PREFILTEROP">
-> +      <value name="ALWAYS" value="0" />
-> +      <value name="NEVER" value="1" />
-> +      <value name="LESS" value="2" />
-> +      <value name="EQUAL" value="3" />
-> +      <value name="LEQUAL" value="4" />
-> +      <value name="GREATER" value="5" />
-> +      <value name="NOTEQUAL" value="6" />
-> +      <value name="GEQUAL" value="7" />
-> +    </field>
-> +    <field name="ChromaKey Mode" dword="1" bits="4:4" type="uint">
-> +      <value name="KEYFILTER_KILL_ON_ANY_MATCH" value="0" />
-> +      <value name="KEYFILTER_REPLACE_BLACK" value="1" />
-> +    </field>
-> +    <field name="ChromaKey Index" dword="1" bits="6:5" type="uint" />
-> +    <field name="ChromaKey Enable" dword="1" bits="7:7" type="bool" />
-> +    <field name="Max LOD" dword="1" bits="19:8" type="u4.8" />
-> +    <field name="Min LOD" dword="1" bits="31:20" type="u4.8" />
-> +    <field name="LOD Clamp Magnification Mode" dword="2" bits="0:0" type="uint">
-> +      <value name="MIPNONE" value="0" />
-> +      <value name="MIPFILTER" value="1" />
-> +    </field>
-> +    <field name="SRGB DECODE" dword="2" bits="1:1" type="uint">
-> +      <value name="DECODE_EXT" value="0" />
-> +      <value name="SKIP_DECODE_EXT" value="1" />
-> +    </field>
-> +    <field name="Return Filter Weight for Null Texels" dword="2" bits="2:2" type="uint" />
-> +    <field name="Return Filter Weight for Border Texels" dword="2" bits="3:3" type="uint" />
-> +    <field name="Force gather4 Behavior" dword="2" bits="5:5" type="bool" />
-> +    <field name="Border Color Pointer" dword="2" bits="31:6" type="offset" />
-> +    <field name="TCZ Address Control Mode" dword="3" bits="2:0" type="Texture Coordinate Mode" />
-> +    <field name="TCY Address Control Mode" dword="3" bits="5:3" type="Texture Coordinate Mode" />
-> +    <field name="TCX Address Control Mode" dword="3" bits="8:6" type="Texture Coordinate Mode" />
-> +    <field name="Reduction Type Enable" dword="3" bits="9:9" type="bool" />
-> +    <field name="Non-normalized Coordinate Enable" dword="3" bits="10:10" type="bool" />
-> +    <field name="Trilinear Filter Quality" dword="3" bits="12:11" type="uint">
-> +      <value name="FULL" value="0" />
-> +      <value name="HIGH" value="1" />
-> +      <value name="MED" value="2" />
-> +      <value name="LOW" value="3" />
-> +    </field>
-> +    <field name="R Address Min Filter Rounding Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="R Address Mag Filter Rounding Enable" dword="3" bits="14:14" type="bool" />
-> +    <field name="V Address Min Filter Rounding Enable" dword="3" bits="15:15" type="bool" />
-> +    <field name="V Address Mag Filter Rounding Enable" dword="3" bits="16:16" type="bool" />
-> +    <field name="U Address Min Filter Rounding Enable" dword="3" bits="17:17" type="bool" />
-> +    <field name="U Address Mag Filter Rounding Enable" dword="3" bits="18:18" type="bool" />
-> +    <field name="Maximum Anisotropy" dword="3" bits="21:19" type="uint">
-> +      <value name="RATIO 2:1" value="0" />
-> +      <value name="RATIO 4:1" value="1" />
-> +      <value name="RATIO 6:1" value="2" />
-> +      <value name="RATIO 8:1" value="3" />
-> +      <value name="RATIO 10:1" value="4" />
-> +      <value name="RATIO 12:1" value="5" />
-> +      <value name="RATIO 14:1" value="6" />
-> +      <value name="RATIO 16:1" value="7" />
-> +    </field>
-> +    <field name="Reduction Type" dword="3" bits="23:22" type="uint">
-> +      <value name="STD_FILTER" value="0" />
-> +      <value name="COMPARISON" value="1" />
-> +      <value name="MINIMUM" value="2" />
-> +      <value name="MAXIMUM" value="3" />
-> +    </field>
-> +    <field name="Allow Low Quality LOD Calculation" dword="3" bits="24:24" type="bool" />
-> +    <field name="Low Quality Filter" dword="3" bits="26:26" type="bool" />
-> +  </struct>
-> +  <instruction name="3DSTATE_BTD" bias="2" length="6" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="6" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Dispatch Timeout Counter" dword="1" bits="2:0" type="uint">
-> +      <value name="64 clocks" value="0" />
-> +      <value name="128 clocks" value="1" />
-> +      <value name="192 clocks" value="2" />
-> +      <value name="256 clocks" value="3" />
-> +      <value name="512 clocks" value="4" />
-> +      <value name="1024 clocks" value="5" />
-> +      <value name="2048 clocks" value="6" />
-> +      <value name="4096 clocks" value="7" />
-> +    </field>
-> +    <field name="Controls the maximum number of outstanding Ray Queries per SS" dword="1" bits="8:7" type="uint" prefix="RAYS_QUERIES_OUTSTANDING">
-> +      <value name="128" value="0" />
-> +      <value name="256" value="1" />
-> +      <value name="512" value="2" />
-> +      <value name="1024" value="3" />
-> +    </field>
-> +    <field name="RT Mem Structures 64b Mode Enable" dword="1" bits="30:30" type="bool" />
-> +    <field name="BTD Mid thread preemption" dword="1" bits="31:31" type="bool" />
-> +    <field name="Per DSS Memory Backed Buffer Size" dword="2" bits="2:0" type="uint" default="6">
-> +      <value name="2KB" value="0" />
-> +      <value name="4KB" value="1" />
-> +      <value name="8KB" value="2" />
-> +      <value name="16KB" value="3" />
-> +      <value name="32KB" value="4" />
-> +      <value name="64KB" value="5" />
-> +      <value name="128KB" value="6" />
-> +    </field>
-> +    <field name="Memory Backed Buffer Base Pointer" dword="2" bits="63:10" type="address" />
-> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_COARSE_PIXEL" bias="2" length="2" engine="render">
-> +    <field name="DWord Length" dword="0" bits="15:0" type="uint" default="0" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="137" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="CPSizeX" dword="1" bits="1:0" type="STATE_CPS_SIZE" />
-> +    <field name="CPSizeY" dword="1" bits="3:2" type="STATE_CPS_SIZE" />
-> +    <field name="CPSizeCombiner1Opcode" dword="1" bits="6:4" type="STATE_CPS_COMBINER_OPCODE" />
-> +    <field name="CPSizeCombiner0Opcode" dword="1" bits="9:7" type="STATE_CPS_COMBINER_OPCODE" />
-> +    <field name="Disable CPS Pointers" dword="1" bits="31:31" type="bool" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_DS" bias="2" length="11" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="9" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="29" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-> +    <field name="Registers Per Thread" dword="3" bits="5:0" type="uint" />
-> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="Accesses UAV" dword="3" bits="14:14" type="bool" />
-> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-> +      <value name="No Samplers" value="0" />
-> +      <value name="1-4 Samplers" value="1" />
-> +      <value name="5-8 Samplers" value="2" />
-> +      <value name="9-12 Samplers" value="3" />
-> +      <value name="13-16 Samplers" value="4" />
-> +    </field>
-> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="bool" />
-> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-> +    <field name="Patch URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-> +    <field name="Patch URB Entry Read Length" dword="6" bits="17:11" type="uint" />
-> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="24:20" type="uint" />
-> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
-> +    <field name="Cache Disable" dword="7" bits="1:1" type="bool" />
-> +    <field name="Compute W Coordinate Enable" dword="7" bits="2:2" type="bool" />
-> +    <field name="Dispatch Mode" dword="7" bits="4:3" type="uint" prefix="DISPATCH_MODE">
-> +      <value name="SIMD8_SINGLE_PATCH" value="1" />
-> +      <value name="SIMD8_SINGLE_OR_DUAL_PATCH" value="2" />
-> +    </field>
-> +    <field name="Primitive ID Not Required" dword="7" bits="9:9" type="bool" />
-> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-> +    <field name="Maximum Number of Threads" dword="7" bits="30:21" type="uint" />
-> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="8" bits="7:0" type="uint" />
-> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="8" bits="15:8" type="uint" />
-> +    <field name="Vertex URB Entry Output Length" dword="8" bits="20:16" type="uint" />
-> +    <field name="Vertex URB Entry Output Read Offset" dword="8" bits="26:21" type="uint" />
-> +    <field name="QUAD_PATCH Kernel Start Pointer" dword="9" bits="63:6" type="offset" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_GS" bias="2" length="10" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="8" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="17" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-> +    <field name="Expected Vertex Count" dword="3" bits="5:0" type="uint" />
-> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-> +    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-> +      <value name="Normal" value="0" />
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-> +      <value name="No Samplers" value="0" />
-> +      <value name="1-4 Samplers" value="1" />
-> +      <value name="5-8 Samplers" value="2" />
-> +      <value name="9-12 Samplers" value="3" />
-> +      <value name="13-16 Samplers" value="4" />
-> +    </field>
-> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-> +      <value name="Dmask" value="0" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="3" bits="31:31" type="bool" />
-> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="3:0" type="uint" />
-> +    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-> +    <field name="Include Vertex Handles" dword="6" bits="10:10" type="bool" />
-> +    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
-> +    <field name="Output Topology" dword="6" bits="22:17" type="3D_Prim_Topo_Type" />
-> +    <field name="Output Vertex Size" dword="6" bits="28:23" type="uint" />
-> +    <field name="Dispatch GRF Start Register For URB Data [5:4]" dword="6" bits="30:29" type="uint" />
-> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
-> +    <field name="Discard Adjacency" dword="7" bits="1:1" type="bool" />
-> +    <field name="Reorder Mode" dword="7" bits="2:2" type="uint">
-> +      <value name="LEADING" value="0" />
-> +      <value name="TRAILING" value="1" />
-> +    </field>
-> +    <field name="Hint" dword="7" bits="3:3" type="bool" />
-> +    <field name="Include Primitive ID" dword="7" bits="4:4" type="bool" />
-> +    <field name="Invocations Increment Value" dword="7" bits="9:5" type="uint" />
-> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-> +    <field name="Default Stream Id" dword="7" bits="14:13" type="uint" />
-> +    <field name="Instance Control" dword="7" bits="19:15" type="uint" />
-> +    <field name="Control Data Header Size" dword="7" bits="23:20" type="uint" />
-> +    <field name="Registers Per Thread" dword="7" bits="31:26" type="uint" />
-> +    <field name="Maximum Number of Threads" dword="8" bits="8:0" type="uint" />
-> +    <field name="Static Output Vertex Count" dword="8" bits="26:16" type="uint" />
-> +    <field name="Static Output" dword="8" bits="30:30" type="bool" />
-> +    <field name="Control Data Format" dword="8" bits="31:31" type="uint">
-> +      <value name="CUT" value="0" />
-> +      <value name="SID" value="1" />
-> +    </field>
-> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="9" bits="7:0" type="uint" />
-> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="9" bits="15:8" type="uint" />
-> +    <field name="Vertex URB Entry Output Length" dword="9" bits="20:16" type="uint" />
-> +    <field name="Vertex URB Entry Output Read Offset" dword="9" bits="26:21" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_HS" bias="2" length="8" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="27" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Patch Count Threshold" dword="1" bits="3:0" type="uint" />
-> +    <field name="Registers Per Thread" dword="1" bits="9:4" type="uint" />
-> +    <field name="Software Exception Enable" dword="1" bits="12:12" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="1" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="1" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="alternate" value="1" />
-> +    </field>
-> +    <field name="Thread Dispatch Priority" dword="1" bits="17:17" type="uint">
-> +      <value name="Normal" value="0" />
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Binding Table Entry Count" dword="1" bits="25:18" type="uint" />
-> +    <field name="Sampler Count" dword="1" bits="29:27" type="uint">
-> +      <value name="No Samplers" value="0" />
-> +      <value name="1-4 Samplers" value="1" />
-> +      <value name="5-8 Samplers" value="2" />
-> +      <value name="9-12 Samplers" value="3" />
-> +      <value name="13-16 Samplers" value="4" />
-> +    </field>
-> +    <field name="Instance Count" dword="2" bits="4:0" type="uint" />
-> +    <field name="Maximum Number of Threads" dword="2" bits="16:8" type="uint" />
-> +    <field name="Statistics Enable" dword="2" bits="29:29" type="bool" />
-> +    <field name="Enable" dword="2" bits="31:31" type="bool" />
-> +    <field name="Kernel Start Pointer" dword="3" bits="63:6" type="offset" />
-> +    <field name="Scratch Space Buffer" dword="5" bits="31:10" type="uint" />
-> +    <field name="Include Primitive ID" dword="7" bits="0:0" type="bool" />
-> +    <field name="Vertex URB Entry Read Offset" dword="7" bits="9:4" type="uint" />
-> +    <field name="Vertex URB Entry Read Length" dword="7" bits="16:11" type="uint" />
-> +    <field name="Dispatch GRF Start Register For URB Data" dword="7" bits="23:19" type="uint" />
-> +    <field name="Include Vertex Handles" dword="7" bits="24:24" type="bool" />
-> +    <field name="Accesses UAV" dword="7" bits="25:25" type="bool" />
-> +    <field name="Vector Mask Enable" dword="7" bits="26:26" type="uint">
-> +      <value name="Dmask" value="0" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="7" bits="27:27" type="bool" />
-> +    <field name="Dispatch GRF Start Register For URB Data [5]" dword="7" bits="28:28" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_MESH_SHADER" bias="2" length="8" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="122" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-> +    <field name="Local X Maximum" dword="3" bits="9:0" type="uint" />
-> +    <field name="Software Exception Enable" dword="3" bits="10:10" type="bool" />
-> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="3" bits="18:18" type="uint" />
-> +    <field name="Denorm Mode" dword="3" bits="19:19" type="uint">
-> +      <value name="Ftz" value="0" />
-> +      <value name="SetByKernel" value="1" />
-> +    </field>
-> +    <field name="Registers Per Thread" dword="3" bits="25:20" type="uint" />
-> +    <field name="Number of Threads in GPGPU Thread Group" dword="4" bits="9:0" type="uint" />
-> +    <field name="Shared Local Memory Size" dword="4" bits="20:16" type="uint" />
-> +    <field name="Rounding Mode" dword="4" bits="23:22" type="uint">
-> +      <value name="RTNE" value="0" />
-> +      <value name="RU" value="1" />
-> +      <value name="RD" value="2" />
-> +      <value name="RTZ" value="3" />
-> +    </field>
-> +    <field name="Preferred SLM Allocation Size" dword="4" bits="27:24" type="PREF_SLM_ALLOCATION_SIZE" />
-> +    <field name="Number of Barriers" dword="4" bits="30:28" type="uint" />
-> +    <field name="Indirect Data Length" dword="5" bits="16:0" type="uint" />
-> +    <field name="L3 Prefetch Disable" dword="5" bits="17:17" type="bool" />
-> +    <field name="Emit Local ID X" dword="5" bits="18:18" type="bool" />
-> +    <field name="Emit Inline Parameter" dword="5" bits="19:19" type="bool" />
-> +    <field name="Systolic Mode Enable" dword="5" bits="20:20" type="bool" />
-> +    <field name="Accesses UAV" dword="5" bits="21:21" type="bool" />
-> +    <field name="XP0 Required" dword="5" bits="22:22" type="uint" />
-> +    <field name="Message SIMD" dword="5" bits="29:28" type="uint">
-> +      <value name="SIMD16" value="1" />
-> +      <value name="SIMD32" value="2" />
-> +    </field>
-> +    <field name="SIMD Size" dword="5" bits="31:30" type="uint">
-> +      <value name="SIMD16" value="1" />
-> +      <value name="SIMD32" value="2" />
-> +    </field>
-> +    <field name="Execution Mask" dword="6" bits="31:0" type="uint" />
-> +    <field name="Maximum Primitive Count" dword="7" bits="9:0" type="uint" />
-> +    <field name="Per-Primitive Data Pitch" dword="7" bits="16:12" type="uint" />
-> +    <field name="Per-Vertex Data Pitch" dword="7" bits="24:20" type="uint" />
-> +    <field name="Index Format" dword="7" bits="27:25" type="uint" prefix="INDEX">
-> +      <value name="U888X" value="0" />
-> +      <value name="U101010X" value="1" />
-> +      <value name="U8" value="4" />
-> +      <value name="U16" value="5" />
-> +      <value name="U32" value="3" />
-> +    </field>
-> +    <field name="Output Topology" dword="7" bits="29:28" type="uint" prefix="OUTPUT">
-> +      <value name="POINT" value="0" />
-> +      <value name="LINE" value="1" />
-> +      <value name="TRI" value="2" />
-> +    </field>
-> +    <field name="Per-Primitive Data Present" dword="7" bits="31:31" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_PS" bias="2" length="12" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="10" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="32" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Kernel 0 Enable" dword="1" bits="0:0" type="bool" />
-> +    <field name="Kernel[0] : SIMD Width" dword="1" bits="1:1" type="uint" prefix="PS">
-> +      <value name="SIMD16" value="0" />
-> +      <value name="SIMD32" value="1" />
-> +    </field>
-> +    <field name="Kernel Start Pointer 0" dword="1" bits="63:6" type="offset" />
-> +    <field name="Registers Per Thread" dword="3" bits="5:0" type="uint" />
-> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="Rounding Mode" dword="3" bits="15:14" type="uint">
-> +      <value name="RTNE" value="0" />
-> +      <value name="RU" value="1" />
-> +      <value name="RD" value="2" />
-> +      <value name="RTZ" value="3" />
-> +    </field>
-> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-> +      <value name="Normal" value="0" />
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-> +    <field name="Single Precision Denormal Mode" dword="3" bits="26:26" type="uint">
-> +      <value name="Flushed to Zero" value="0" />
-> +      <value name="Retained" value="1" />
-> +    </field>
-> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-> +      <value name="No Samplers" value="0" />
-> +      <value name="1-4 Samplers" value="1" />
-> +      <value name="5-8 Samplers" value="2" />
-> +      <value name="9-12 Samplers" value="3" />
-> +      <value name="13-16 Samplers" value="4" />
-> +    </field>
-> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-> +      <value name="Dmask" value="0" />
-> +      <value name="Vmask" value="1" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="3" bits="31:31" type="uint">
-> +      <value name="Multiple" value="0" />
-> +      <value name="Single" value="1" />
-> +    </field>
-> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-> +    <field name="Position XY Offset Select" dword="6" bits="4:3" type="uint">
-> +      <value name="POSOFFSET_NONE" value="0" />
-> +      <value name="POSOFFSET_CENTROID" value="2" />
-> +      <value name="POSOFFSET_SAMPLE" value="3" />
-> +    </field>
-> +    <field name="Render Target Resolve Type" dword="6" bits="7:6" type="uint">
-> +      <value name="RESOLVE_DISABLED" value="0" />
-> +    </field>
-> +    <field name="Render Target Fast Clear Enable" dword="6" bits="8:8" type="bool" />
-> +    <field name="Overlapping Subspans Enable" dword="6" bits="9:9" type="bool" />
-> +    <field name="3D Scoreboard Address Size select" dword="6" bits="10:10" type="uint">
-> +      <value name="2x2" value="0" />
-> +      <value name="4x2" value="1" />
-> +    </field>
-> +    <field name="Clear/Resolve BTI for Render Target" dword="6" bits="19:12" type="uint" />
-> +    <field name="Pixel Scoreboard Disable" dword="6" bits="21:21" type="bool" />
-> +    <field name="Maximum Number of Threads Per PSD" dword="6" bits="31:23" type="uint" />
-> +    <field name="Dispatch GRF Start Register For Constant/Setup Data 1" dword="7" bits="15:8" type="uint" />
-> +    <field name="Dispatch GRF Start Register For Constant/Setup Data 0" dword="7" bits="23:16" type="uint" />
-> +    <field name="Kernel[0] : Poly Packing Policy" dword="7" bits="26:24" type="uint">
-> +      <value name="POLY_PACK4_DYNAMIC" value="0" />
-> +      <value name="POLY_PACK8_DYNAMIC" value="1" />
-> +      <value name="POLY_PACK16_DYNAMIC" value="2" />
-> +      <value name="POLY_PACK16_FIXED" value="3" />
-> +      <value name="POLY_PACK8_FIXED" value="4" />
-> +    </field>
-> +    <field name="Kernel[0] : Maximum Polys per Thread" dword="7" bits="29:27" type="uint" />
-> +    <field name="Kernel 1 Selection Priority" dword="7" bits="31:31" type="uint">
-> +      <value name="PRI_SIMD" value="0" />
-> +      <value name="PRI_POLY" value="1" />
-> +    </field>
-> +    <field name="Kernel 1 Enable" dword="8" bits="0:0" type="bool" />
-> +    <field name="Kernel[1] : SIMD Width" dword="8" bits="1:1" type="uint" prefix="PS">
-> +      <value name="SIMD16" value="0" />
-> +      <value name="SIMD32" value="1" />
-> +    </field>
-> +    <field name="Kernel Start Pointer 1" dword="8" bits="63:6" type="offset" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_TASK_SHADER" bias="2" length="7" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="5" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="125" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-> +    <field name="Local X Maximum" dword="3" bits="9:0" type="uint" />
-> +    <field name="Software Exception Enable" dword="3" bits="10:10" type="bool" />
-> +    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Single Program Flow" dword="3" bits="18:18" type="uint" />
-> +    <field name="Denorm Mode" dword="3" bits="19:19" type="uint">
-> +      <value name="Ftz" value="0" />
-> +      <value name="SetByKernel" value="1" />
-> +    </field>
-> +    <field name="Registers Per Thread" dword="3" bits="25:20" type="uint" />
-> +    <field name="Number of Threads in GPGPU Thread Group" dword="4" bits="9:0" type="uint" />
-> +    <field name="Shared Local Memory Size" dword="4" bits="20:16" type="uint" />
-> +    <field name="Barrier Enable" dword="4" bits="21:21" type="bool" />
-> +    <field name="Rounding Mode" dword="4" bits="23:22" type="uint">
-> +      <value name="RTNE" value="0" />
-> +      <value name="RU" value="1" />
-> +      <value name="RD" value="2" />
-> +      <value name="RTZ" value="3" />
-> +    </field>
-> +    <field name="Preferred SLM Allocation Size" dword="4" bits="27:24" type="uint" />
-> +    <field name="Number of Barriers" dword="4" bits="30:28" type="uint" />
-> +    <field name="Indirect Data Length" dword="5" bits="16:0" type="uint" />
-> +    <field name="L3 Prefetch Disable" dword="5" bits="17:17" type="bool" />
-> +    <field name="Emit Local ID X" dword="5" bits="18:18" type="bool" />
-> +    <field name="Emit Inline Parameter" dword="5" bits="19:19" type="bool" />
-> +    <field name="Systolic Mode Enable" dword="5" bits="20:20" type="bool" />
-> +    <field name="Accesses UAV" dword="5" bits="21:21" type="bool" />
-> +    <field name="XP0 Required" dword="5" bits="22:22" type="uint" />
-> +    <field name="Message SIMD" dword="5" bits="29:28" type="uint">
-> +      <value name="SIMD16" value="1" />
-> +      <value name="SIMD32" value="2" />
-> +    </field>
-> +    <field name="SIMD Size" dword="5" bits="31:30" type="uint">
-> +      <value name="SIMD16" value="1" />
-> +      <value name="SIMD32" value="2" />
-> +    </field>
-> +    <field name="Execution Mask" dword="6" bits="31:0" type="uint" />
-> +  </instruction>
-> +  <instruction name="3DSTATE_VS" bias="2" length="9" engine="render">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="7" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="16" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-> +    <field name="Registers Per Thread" dword="3" bits="5:0" type="uint" />
-> +    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-> +    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
-> +    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-> +    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-> +      <value name="IEEE-754" value="0" />
-> +      <value name="Alternate" value="1" />
-> +    </field>
-> +    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-> +      <value name="Normal" value="0" />
-> +      <value name="High" value="1" />
-> +    </field>
-> +    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-> +    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-> +      <value name="No Samplers" value="0" />
-> +      <value name="1-4 Samplers" value="1" />
-> +      <value name="5-8 Samplers" value="2" />
-> +      <value name="9-12 Samplers" value="3" />
-> +      <value name="13-16 Samplers" value="4" />
-> +    </field>
-> +    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-> +      <value name="Dmask" value="0" />
-> +    </field>
-> +    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-> +    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-> +    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
-> +    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="24:20" type="uint" />
-> +    <field name="Enable" dword="7" bits="0:0" type="bool" />
-> +    <field name="Vertex Cache Disable" dword="7" bits="1:1" type="bool" />
-> +    <field name="Single Instance Dispatch Enable" dword="7" bits="9:9" type="bool" />
-> +    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-> +    <field name="Maximum Number of Threads" dword="7" bits="31:22" type="uint" />
-> +    <field name="User Clip Distance Cull Test Enable Bitmask" dword="8" bits="7:0" type="uint" />
-> +    <field name="User Clip Distance Clip Test Enable Bitmask" dword="8" bits="15:8" type="uint" />
-> +    <field name="Vertex URB Entry Output Length" dword="8" bits="20:16" type="uint" />
-> +    <field name="Vertex URB Entry Output Read Offset" dword="8" bits="26:21" type="uint" />
-> +  </instruction>
-> +  <instruction name="STATE_COMPUTE_MODE" bias="2" length="3" engine="render|compute">
-> +    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
-> +    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
-> +    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-> +    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-> +    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-> +    <field name="Z Pass Async Compute Thread Limit" dword="1" bits="2:0" type="uint" prefix="ZPACTL">
-> +      <value name="Max 60" value="0" />
-> +      <value name="Max 64" value="1" />
-> +      <value name="Max 56" value="2" />
-> +      <value name="Max 48" value="3" />
-> +      <value name="Max 40" value="4" />
-> +      <value name="Max 32" value="5" />
-> +    </field>
-> +    <field name="Z Async Throttle settings" dword="1" bits="4:3" type="uint" prefix="ZATS">
-> +      <value name="Defer to Async Compute Thread Limit" value="0" />
-> +      <value name="Max 32" value="1" />
-> +      <value name="Max 40" value="2" />
-> +      <value name="Max 48" value="3" />
-> +    </field>
-> +    <field name="Async Compute Thread Limit" dword="1" bits="9:7" type="uint" prefix="ACTL">
-> +      <value name="Disabled" value="0" />
-> +      <value name="Max 2" value="1" />
-> +      <value name="Max 8" value="2" />
-> +      <value name="Max 16" value="3" />
-> +      <value name="Max 24" value="4" />
-> +      <value name="Max 32" value="5" />
-> +      <value name="Max 40" value="6" />
-> +      <value name="Max 48" value="7" />
-> +    </field>
-> +    <field name="Enable Variable Register Size Allocation" dword="1" bits="10:10" type="bool" />
-> +    <field name="EU Thread Scheduling Mode Override" dword="1" bits="14:13" type="uint" />
-> +    <field name="Large GRF Mode" dword="1" bits="15:15" type="bool" />
-> +    <field name="Z Pass Async Compute Thread Limit Mask" dword="1" bits="18:16" type="uint" />
-> +    <field name="Mask1" dword="1" bits="31:16" type="uint" />
-> +    <field name="Z Async Throttle settings Mask" dword="1" bits="20:19" type="uint" />
-> +    <field name="Async Compute Thread Limit Mask" dword="1" bits="25:23" type="uint" />
-> +    <field name="Enable Variable Register Size Allocation Mask" dword="1" bits="26:26" type="uint" />
-> +    <field name="EU Thread Scheduling Mode Override Mask" dword="1" bits="30:29" type="uint" />
-> +    <field name="Large GRF Mode Mask" dword="1" bits="31:31" type="bool" />
-> +    <field name="Midthread Preemption Delay Timer" dword="2" bits="2:0" type="uint">
-> +      <value name="MTP_TIMER_VAL_0" value="0" />
-> +      <value name="MTP_TIMER_VAL_50" value="1" />
-> +      <value name="MTP_TIMER_VAL_100" value="2" />
-> +      <value name="MTP_TIMER_VAL_150" value="3" />
-> +    </field>
-> +    <field name="Midthread Preemption Overdispatch Thread group count" dword="2" bits="4:3" type="uint">
-> +      <value name="OD_TG_M2" value="0" />
-> +      <value name="OD_TG_M4" value="1" />
-> +      <value name="OD_TG_M8" value="2" />
-> +      <value name="OD_TG_M16" value="3" />
-> +    </field>
-> +    <field name="Midthread Preemption Overdispatch Test mode" dword="2" bits="5:5" type="uint">
-> +      <value name="Regular" value="0" />
-> +      <value name="Test mode" value="1" />
-> +    </field>
-> +    <field name="UAV Coherency Mode" dword="2" bits="6:6" type="uint">
-> +      <value name="Drain DataPort Mode" value="0" />
-> +      <value name="Flush Dataport L1" value="1" />
-> +    </field>
-> +    <field name="Midthread Preemption Delay Timer Mask" dword="2" bits="18:16" type="uint" />
-> +    <field name="Mask2" dword="2" bits="31:16" type="uint" />
-> +    <field name="Midthread Preemption Overdispatch Thread group count Mask" dword="2" bits="20:19" type="uint" />
-> +    <field name="Midthread Preemption Overdispatch Test mode Mask" dword="2" bits="21:21" type="uint" />
-> +    <field name="UAV Coherency Mode Mask" dword="2" bits="22:22" type="uint" />
-> +    <field name="Memory allocation for Scratch and Midthread Preemption buffers Mask" dword="2" bits="27:27" type="uint" />
-> +  </instruction>
-> +  <register name="CHICKEN_RASTER_2" length="1" num="0x6208">
-> +    <field name="Disable Any MCTR response fix" dword="0" bits="5:5" type="bool" />
-> +    <field name="Disable Any MCTR response fix Mask" dword="0" bits="21:21" type="bool" />
-> +  </register>
-> +</genxml>
-> diff --git a/lib/intel/genxml/xe3p.xml b/lib/intel/genxml/xe3p.xml
-> new file mode 100644
-> index 000000000..cfd51bb30
-> --- /dev/null
-> +++ b/lib/intel/genxml/xe3p.xml
-> @@ -0,0 +1,4 @@
-> +<?xml version='1.0' encoding='utf-8'?>
-> +<genxml name="XE3P" gen="35">
-> +  <import name="xe3.xml" />
-> +</genxml>
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 95c9d48ae..355517ad3 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -307,6 +307,9 @@ genxml_gen_deps = files(
->      'intel/genxml/gen110.xml',
->      'intel/genxml/gen120.xml',
->      'intel/genxml/gen125.xml',
-> +    'intel/genxml/xe2.xml',
-> +    'intel/genxml/xe3.xml',
-> +    'intel/genxml/xe3p.xml',
->  )
->  
->  # Ordered list of all gens, oldest first.  Each gen's baselines are all
-> @@ -314,7 +317,7 @@ genxml_gen_deps = files(
->  # omitted from the generated header; the comment points directly to the
->  # oldest gen that defined that layout so that a developer can find the
->  # real struct in one grep.
-> -genxml_gens = ['gen90', 'gen110', 'gen120', 'gen125']
-> +genxml_gens = ['gen90', 'gen110', 'gen120', 'gen125', 'xe2', 'xe3', 'xe3p']
->  
->  genxml_pack_headers = []
->  genxml_decode_headers = []
-> -- 
-> 2.34.1
-> 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_18353_full -> IGTPW_15033_full
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/index.html
+
+Participating hosts (10 -> 10)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15033_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@api_intel_bb@crc32:
+    - shard-rkl:          NOTRUN -> [SKIP][1] ([i915#6230])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@api_intel_bb@crc32.html
+    - shard-dg1:          NOTRUN -> [SKIP][2] ([i915#6230])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@api_intel_bb@crc32.html
+    - shard-tglu:         NOTRUN -> [SKIP][3] ([i915#6230])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-10/igt@api_intel_bb@crc32.html
+
+  * igt@api_intel_bb@object-reloc-keep-cache:
+    - shard-rkl:          NOTRUN -> [SKIP][4] ([i915#8411])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@api_intel_bb@object-reloc-keep-cache.html
+
+  * igt@device_reset@cold-reset-bound:
+    - shard-dg1:          NOTRUN -> [SKIP][5] ([i915#11078])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@device_reset@cold-reset-bound.html
+    - shard-tglu:         NOTRUN -> [SKIP][6] ([i915#11078])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@device_reset@cold-reset-bound.html
+    - shard-mtlp:         NOTRUN -> [SKIP][7] ([i915#11078])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@device_reset@cold-reset-bound.html
+    - shard-dg2:          NOTRUN -> [SKIP][8] ([i915#11078])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@device_reset@cold-reset-bound.html
+
+  * igt@device_reset@unbind-cold-reset-rebind:
+    - shard-rkl:          NOTRUN -> [SKIP][9] ([i915#11078]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@device_reset@unbind-cold-reset-rebind.html
+
+  * igt@dmabuf@all-tests:
+    - shard-tglu-1:       NOTRUN -> [SKIP][10] ([i915#15931])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@dmabuf@all-tests.html
+
+  * igt@gem_ccs@block-multicopy-compressed:
+    - shard-rkl:          NOTRUN -> [SKIP][11] ([i915#9323])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@gem_ccs@block-multicopy-compressed.html
+    - shard-dg1:          NOTRUN -> [SKIP][12] ([i915#9323])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@gem_ccs@block-multicopy-compressed.html
+    - shard-mtlp:         NOTRUN -> [SKIP][13] ([i915#9323])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-8/igt@gem_ccs@block-multicopy-compressed.html
+
+  * igt@gem_ccs@large-ctrl-surf-copy:
+    - shard-rkl:          NOTRUN -> [SKIP][14] ([i915#13008] / [i915#14544])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_ccs@large-ctrl-surf-copy.html
+    - shard-dg1:          NOTRUN -> [SKIP][15] ([i915#13008])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@gem_ccs@large-ctrl-surf-copy.html
+    - shard-tglu:         NOTRUN -> [SKIP][16] ([i915#13008])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-10/igt@gem_ccs@large-ctrl-surf-copy.html
+    - shard-mtlp:         NOTRUN -> [SKIP][17] ([i915#13008])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-8/igt@gem_ccs@large-ctrl-surf-copy.html
+
+  * igt@gem_create@create-ext-cpu-access-sanity-check:
+    - shard-tglu-1:       NOTRUN -> [SKIP][18] ([i915#6335])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gem_create@create-ext-cpu-access-sanity-check.html
+
+  * igt@gem_ctx_persistence@legacy-engines-hostile-preempt:
+    - shard-snb:          NOTRUN -> [SKIP][19] ([i915#1099]) +1 other test skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb7/igt@gem_ctx_persistence@legacy-engines-hostile-preempt.html
+
+  * igt@gem_ctx_persistence@saturated-hostile-nopreempt:
+    - shard-dg2:          NOTRUN -> [SKIP][20] ([i915#5882]) +7 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@gem_ctx_persistence@saturated-hostile-nopreempt.html
+
+  * igt@gem_ctx_persistence@saturated-hostile-nopreempt@vcs1:
+    - shard-mtlp:         NOTRUN -> [SKIP][21] ([i915#5882]) +6 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@gem_ctx_persistence@saturated-hostile-nopreempt@vcs1.html
+
+  * igt@gem_ctx_sseu@invalid-sseu:
+    - shard-rkl:          NOTRUN -> [SKIP][22] ([i915#280])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@gem_ctx_sseu@invalid-sseu.html
+
+  * igt@gem_exec_balancer@parallel:
+    - shard-tglu-1:       NOTRUN -> [SKIP][23] ([i915#4525]) +1 other test skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gem_exec_balancer@parallel.html
+
+  * igt@gem_exec_balancer@parallel-keep-in-fence:
+    - shard-rkl:          NOTRUN -> [SKIP][24] ([i915#4525])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@gem_exec_balancer@parallel-keep-in-fence.html
+
+  * igt@gem_exec_capture@capture-recoverable:
+    - shard-rkl:          NOTRUN -> [SKIP][25] ([i915#6344])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_exec_capture@capture-recoverable.html
+
+  * igt@gem_exec_flush@basic-batch-kernel-default-cmd:
+    - shard-rkl:          NOTRUN -> [SKIP][26] ([i915#14544]) +1 other test skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_exec_flush@basic-batch-kernel-default-cmd.html
+
+  * igt@gem_exec_flush@basic-uc-pro-default:
+    - shard-dg1:          NOTRUN -> [SKIP][27] ([i915#3539] / [i915#4852]) +1 other test skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@gem_exec_flush@basic-uc-pro-default.html
+
+  * igt@gem_exec_flush@basic-wb-rw-default:
+    - shard-dg2:          NOTRUN -> [SKIP][28] ([i915#3539] / [i915#4852]) +1 other test skip
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@gem_exec_flush@basic-wb-rw-default.html
+
+  * igt@gem_exec_reloc@basic-cpu-gtt:
+    - shard-dg2:          NOTRUN -> [SKIP][29] ([i915#3281]) +4 other tests skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@gem_exec_reloc@basic-cpu-gtt.html
+    - shard-rkl:          NOTRUN -> [SKIP][30] ([i915#14544] / [i915#3281]) +1 other test skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_exec_reloc@basic-cpu-gtt.html
+    - shard-dg1:          NOTRUN -> [SKIP][31] ([i915#3281]) +2 other tests skip
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@gem_exec_reloc@basic-cpu-gtt.html
+
+  * igt@gem_exec_reloc@basic-cpu-wc-noreloc:
+    - shard-mtlp:         NOTRUN -> [SKIP][32] ([i915#3281]) +2 other tests skip
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@gem_exec_reloc@basic-cpu-wc-noreloc.html
+
+  * igt@gem_exec_reloc@basic-gtt-wc-noreloc:
+    - shard-rkl:          NOTRUN -> [SKIP][33] ([i915#3281]) +6 other tests skip
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gem_exec_reloc@basic-gtt-wc-noreloc.html
+
+  * igt@gem_fence_thrash@bo-copy:
+    - shard-dg2:          NOTRUN -> [SKIP][34] ([i915#4860]) +1 other test skip
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@gem_fence_thrash@bo-copy.html
+
+  * igt@gem_fenced_exec_thrash@no-spare-fences:
+    - shard-dg1:          NOTRUN -> [SKIP][35] ([i915#4860]) +1 other test skip
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@gem_fenced_exec_thrash@no-spare-fences.html
+    - shard-mtlp:         NOTRUN -> [SKIP][36] ([i915#4860]) +1 other test skip
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@gem_fenced_exec_thrash@no-spare-fences.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - shard-rkl:          NOTRUN -> [SKIP][37] ([i915#2190])
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gem_huc_copy@huc-copy.html
+    - shard-tglu:         NOTRUN -> [SKIP][38] ([i915#2190])
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@gem_huc_copy@huc-copy.html
+    - shard-glk:          NOTRUN -> [SKIP][39] ([i915#2190])
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk8/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@heavy-multi:
+    - shard-mtlp:         NOTRUN -> [SKIP][40] ([i915#4613])
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@gem_lmem_swapping@heavy-multi.html
+
+  * igt@gem_lmem_swapping@heavy-random:
+    - shard-glk:          NOTRUN -> [SKIP][41] ([i915#4613])
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk9/igt@gem_lmem_swapping@heavy-random.html
+
+  * igt@gem_lmem_swapping@heavy-verify-random:
+    - shard-rkl:          NOTRUN -> [SKIP][42] ([i915#4613]) +1 other test skip
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@gem_lmem_swapping@heavy-verify-random.html
+
+  * igt@gem_lmem_swapping@random:
+    - shard-tglu-1:       NOTRUN -> [SKIP][43] ([i915#4613]) +1 other test skip
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gem_lmem_swapping@random.html
+
+  * igt@gem_mmap@basic-small-bo:
+    - shard-dg2:          NOTRUN -> [SKIP][44] ([i915#4083])
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@gem_mmap@basic-small-bo.html
+
+  * igt@gem_mmap@short-mmap:
+    - shard-dg1:          NOTRUN -> [SKIP][45] ([i915#4083])
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@gem_mmap@short-mmap.html
+
+  * igt@gem_mmap_gtt@close-race:
+    - shard-dg1:          NOTRUN -> [SKIP][46] ([i915#4077]) +4 other tests skip
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@gem_mmap_gtt@close-race.html
+    - shard-mtlp:         NOTRUN -> [SKIP][47] ([i915#4077]) +5 other tests skip
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@gem_mmap_gtt@close-race.html
+
+  * igt@gem_partial_pwrite_pread@reads:
+    - shard-dg2:          NOTRUN -> [SKIP][48] ([i915#3282])
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@gem_partial_pwrite_pread@reads.html
+    - shard-dg1:          NOTRUN -> [SKIP][49] ([i915#3282])
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@gem_partial_pwrite_pread@reads.html
+    - shard-mtlp:         NOTRUN -> [SKIP][50] ([i915#3282])
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-5/igt@gem_partial_pwrite_pread@reads.html
+
+  * igt@gem_pread@exhaustion:
+    - shard-glk:          NOTRUN -> [WARN][51] ([i915#2658])
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@gem_pread@exhaustion.html
+
+  * igt@gem_pxp@hw-rejects-pxp-buffer:
+    - shard-tglu:         NOTRUN -> [SKIP][52] ([i915#13398]) +1 other test skip
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-4/igt@gem_pxp@hw-rejects-pxp-buffer.html
+
+  * igt@gem_pxp@hw-rejects-pxp-context:
+    - shard-rkl:          NOTRUN -> [SKIP][53] ([i915#13717])
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_pxp@hw-rejects-pxp-context.html
+    - shard-mtlp:         NOTRUN -> [SKIP][54] ([i915#13398])
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-4/igt@gem_pxp@hw-rejects-pxp-context.html
+
+  * igt@gem_pxp@protected-raw-src-copy-not-readible:
+    - shard-dg2:          NOTRUN -> [SKIP][55] ([i915#4270]) +2 other tests skip
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@gem_pxp@protected-raw-src-copy-not-readible.html
+    - shard-dg1:          NOTRUN -> [SKIP][56] ([i915#4270]) +1 other test skip
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@gem_pxp@protected-raw-src-copy-not-readible.html
+
+  * igt@gem_pxp@verify-pxp-stale-ctx-execution:
+    - shard-glk11:        NOTRUN -> [SKIP][57] +162 other tests skip
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@gem_pxp@verify-pxp-stale-ctx-execution.html
+
+  * igt@gem_render_copy@yf-tiled-to-vebox-yf-tiled:
+    - shard-dg2:          NOTRUN -> [SKIP][58] ([i915#5190] / [i915#8428]) +3 other tests skip
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@gem_render_copy@yf-tiled-to-vebox-yf-tiled.html
+    - shard-mtlp:         NOTRUN -> [SKIP][59] ([i915#8428]) +2 other tests skip
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@gem_render_copy@yf-tiled-to-vebox-yf-tiled.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - shard-dg2:          NOTRUN -> [SKIP][60] ([i915#4079]) +1 other test skip
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@gem_render_tiled_blits@basic.html
+
+  * igt@gem_set_tiling_vs_blt@tiled-to-tiled:
+    - shard-rkl:          NOTRUN -> [SKIP][61] ([i915#14544] / [i915#8411])
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_set_tiling_vs_blt@tiled-to-tiled.html
+
+  * igt@gem_set_tiling_vs_gtt:
+    - shard-dg1:          NOTRUN -> [SKIP][62] ([i915#4079])
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@gem_set_tiling_vs_gtt.html
+    - shard-mtlp:         NOTRUN -> [SKIP][63] ([i915#4079]) +1 other test skip
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-4/igt@gem_set_tiling_vs_gtt.html
+
+  * igt@gem_softpin@evict-snoop-interruptible:
+    - shard-dg2:          NOTRUN -> [SKIP][64] ([i915#4885])
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@gem_softpin@evict-snoop-interruptible.html
+    - shard-rkl:          NOTRUN -> [SKIP][65] +18 other tests skip
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gem_softpin@evict-snoop-interruptible.html
+    - shard-dg1:          NOTRUN -> [SKIP][66] ([i915#4885])
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@gem_softpin@evict-snoop-interruptible.html
+    - shard-mtlp:         NOTRUN -> [SKIP][67] ([i915#4885])
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@gem_softpin@evict-snoop-interruptible.html
+
+  * igt@gem_tiled_partial_pwrite_pread@writes-after-reads:
+    - shard-rkl:          NOTRUN -> [SKIP][68] ([i915#3282]) +3 other tests skip
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gem_tiled_partial_pwrite_pread@writes-after-reads.html
+
+  * igt@gem_tiled_swapping@non-threaded:
+    - shard-dg2:          NOTRUN -> [SKIP][69] ([i915#4077]) +9 other tests skip
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@gem_tiled_swapping@non-threaded.html
+
+  * igt@gem_userptr_blits@invalid-mmap-offset-unsync:
+    - shard-rkl:          NOTRUN -> [SKIP][70] ([i915#14544] / [i915#3297])
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_userptr_blits@invalid-mmap-offset-unsync.html
+
+  * igt@gem_userptr_blits@map-fixed-invalidate-overlap:
+    - shard-dg2:          NOTRUN -> [SKIP][71] ([i915#3297] / [i915#4880])
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@gem_userptr_blits@map-fixed-invalidate-overlap.html
+
+  * igt@gem_userptr_blits@readonly-pwrite-unsync:
+    - shard-tglu-1:       NOTRUN -> [SKIP][72] ([i915#3297])
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gem_userptr_blits@readonly-pwrite-unsync.html
+
+  * igt@gem_userptr_blits@readonly-unsync:
+    - shard-dg2:          NOTRUN -> [SKIP][73] ([i915#3297])
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@gem_userptr_blits@readonly-unsync.html
+    - shard-tglu:         NOTRUN -> [SKIP][74] ([i915#3297])
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@gem_userptr_blits@readonly-unsync.html
+
+  * igt@gem_workarounds@suspend-resume:
+    - shard-rkl:          [PASS][75] -> [ABORT][76] ([i915#15152])
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@gem_workarounds@suspend-resume.html
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@gem_workarounds@suspend-resume.html
+
+  * igt@gem_workarounds@suspend-resume-fd:
+    - shard-rkl:          NOTRUN -> [INCOMPLETE][77] ([i915#13356])
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_workarounds@suspend-resume-fd.html
+    - shard-glk:          NOTRUN -> [INCOMPLETE][78] ([i915#13356] / [i915#14586])
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk6/igt@gem_workarounds@suspend-resume-fd.html
+
+  * igt@gen9_exec_parse@bb-secure:
+    - shard-rkl:          NOTRUN -> [SKIP][79] ([i915#2527]) +1 other test skip
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@gen9_exec_parse@bb-secure.html
+
+  * igt@gen9_exec_parse@bb-start-param:
+    - shard-tglu:         NOTRUN -> [SKIP][80] ([i915#2527] / [i915#2856])
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@gen9_exec_parse@bb-start-param.html
+
+  * igt@gen9_exec_parse@shadow-peek:
+    - shard-tglu-1:       NOTRUN -> [SKIP][81] ([i915#2527] / [i915#2856]) +3 other tests skip
+   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gen9_exec_parse@shadow-peek.html
+
+  * igt@i915_drm_fdinfo@busy@rcs0:
+    - shard-mtlp:         NOTRUN -> [SKIP][82] ([i915#14073]) +13 other tests skip
+   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@i915_drm_fdinfo@busy@rcs0.html
+
+  * igt@i915_drm_fdinfo@busy@vecs1:
+    - shard-dg2:          NOTRUN -> [SKIP][83] ([i915#14073]) +15 other tests skip
+   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@i915_drm_fdinfo@busy@vecs1.html
+
+  * igt@i915_drm_fdinfo@isolation@rcs0:
+    - shard-dg1:          NOTRUN -> [SKIP][84] ([i915#14073]) +5 other tests skip
+   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@i915_drm_fdinfo@isolation@rcs0.html
+
+  * igt@i915_drm_fdinfo@virtual-busy-idle-all:
+    - shard-dg2:          NOTRUN -> [SKIP][85] ([i915#14118])
+   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@i915_drm_fdinfo@virtual-busy-idle-all.html
+
+  * igt@i915_module_load@reload-no-display:
+    - shard-dg2:          NOTRUN -> [DMESG-WARN][86] ([i915#13029] / [i915#14545])
+   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@i915_module_load@reload-no-display.html
+    - shard-dg1:          NOTRUN -> [DMESG-WARN][87] ([i915#13029] / [i915#14545])
+   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@i915_module_load@reload-no-display.html
+    - shard-snb:          NOTRUN -> [DMESG-WARN][88] ([i915#14545])
+   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb5/igt@i915_module_load@reload-no-display.html
+
+  * igt@i915_pm_freq_api@freq-suspend:
+    - shard-tglu-1:       NOTRUN -> [SKIP][89] ([i915#8399])
+   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@i915_pm_freq_api@freq-suspend.html
+
+  * igt@i915_pm_rc6_residency@rc6-fence:
+    - shard-tglu:         [PASS][90] -> [WARN][91] ([i915#13790] / [i915#2681]) +1 other test warn
+   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-tglu-6/igt@i915_pm_rc6_residency@rc6-fence.html
+   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@i915_pm_rc6_residency@rc6-fence.html
+
+  * igt@i915_pm_rc6_residency@rc6-idle:
+    - shard-tglu-1:       NOTRUN -> [SKIP][92] ([i915#14498])
+   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@i915_pm_rc6_residency@rc6-idle.html
+
+  * igt@i915_pm_rpm@system-suspend:
+    - shard-glk:          NOTRUN -> [INCOMPLETE][93] ([i915#13356])
+   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk8/igt@i915_pm_rpm@system-suspend.html
+    - shard-rkl:          [PASS][94] -> [ABORT][95] ([i915#15060])
+   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@i915_pm_rpm@system-suspend.html
+   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@i915_pm_rpm@system-suspend.html
+
+  * igt@i915_pm_rps@thresholds:
+    - shard-dg2:          NOTRUN -> [SKIP][96] ([i915#11681])
+   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@i915_pm_rps@thresholds.html
+    - shard-dg1:          NOTRUN -> [SKIP][97] ([i915#11681])
+   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@i915_pm_rps@thresholds.html
+    - shard-mtlp:         NOTRUN -> [SKIP][98] ([i915#11681])
+   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@i915_pm_rps@thresholds.html
+
+  * igt@i915_pm_sseu@full-enable:
+    - shard-rkl:          NOTRUN -> [SKIP][99] ([i915#4387])
+   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@i915_pm_sseu@full-enable.html
+
+  * igt@i915_query@hwconfig_table:
+    - shard-tglu-1:       NOTRUN -> [SKIP][100] ([i915#6245])
+   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@i915_query@hwconfig_table.html
+
+  * igt@i915_query@test-query-geometry-subslices:
+    - shard-rkl:          NOTRUN -> [SKIP][101] ([i915#5723])
+   [101]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@i915_query@test-query-geometry-subslices.html
+
+  * igt@i915_suspend@fence-restore-untiled:
+    - shard-glk11:        NOTRUN -> [INCOMPLETE][102] ([i915#4817])
+   [102]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@i915_suspend@fence-restore-untiled.html
+
+  * igt@i915_suspend@sysfs-reader:
+    - shard-glk:          NOTRUN -> [INCOMPLETE][103] ([i915#4817])
+   [103]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@i915_suspend@sysfs-reader.html
+
+  * igt@intel_hwmon@hwmon-read:
+    - shard-tglu:         NOTRUN -> [SKIP][104] ([i915#7707])
+   [104]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-7/igt@intel_hwmon@hwmon-read.html
+    - shard-mtlp:         NOTRUN -> [SKIP][105] ([i915#7707])
+   [105]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@intel_hwmon@hwmon-read.html
+
+  * igt@kms_addfb_basic@invalid-smem-bo-on-discrete:
+    - shard-tglu:         NOTRUN -> [SKIP][106] ([i915#12454] / [i915#12712])
+   [106]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_addfb_basic@invalid-smem-bo-on-discrete.html
+
+  * igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-2:
+    - shard-glk:          NOTRUN -> [INCOMPLETE][107] ([i915#12761] / [i915#14995])
+   [107]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk1/igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-2.html
+
+  * igt@kms_atomic@plane-primary-overlay-mutable-zpos:
+    - shard-tglu:         NOTRUN -> [SKIP][108] ([i915#9531])
+   [108]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_atomic@plane-primary-overlay-mutable-zpos.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:
+    - shard-glk11:        NOTRUN -> [SKIP][109] ([i915#1769]) +1 other test skip
+   [109]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+    - shard-tglu-1:       NOTRUN -> [SKIP][110] ([i915#1769] / [i915#3555])
+   [110]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
+
+  * igt@kms_big_fb@4-tiled-16bpp-rotate-90:
+    - shard-tglu:         NOTRUN -> [SKIP][111] ([i915#5286]) +5 other tests skip
+   [111]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-7/igt@kms_big_fb@4-tiled-16bpp-rotate-90.html
+
+  * igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip:
+    - shard-tglu-1:       NOTRUN -> [SKIP][112] ([i915#5286]) +3 other tests skip
+   [112]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html
+    - shard-mtlp:         [PASS][113] -> [FAIL][114] ([i915#15733] / [i915#5138])
+   [113]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-mtlp-4/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html
+   [114]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html
+
+  * igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-180:
+    - shard-rkl:          NOTRUN -> [SKIP][115] ([i915#5286]) +1 other test skip
+   [115]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-180.html
+
+  * igt@kms_big_fb@x-tiled-8bpp-rotate-90:
+    - shard-rkl:          NOTRUN -> [SKIP][116] ([i915#3638])
+   [116]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_big_fb@x-tiled-8bpp-rotate-90.html
+    - shard-dg1:          NOTRUN -> [SKIP][117] ([i915#3638])
+   [117]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_big_fb@x-tiled-8bpp-rotate-90.html
+
+  * igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip:
+    - shard-dg2:          NOTRUN -> [SKIP][118] ([i915#4538] / [i915#5190]) +6 other tests skip
+   [118]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip.html
+    - shard-mtlp:         NOTRUN -> [SKIP][119] +10 other tests skip
+   [119]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-8/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip.html
+
+  * igt@kms_big_fb@yf-tiled-32bpp-rotate-90:
+    - shard-dg1:          NOTRUN -> [SKIP][120] ([i915#4538]) +2 other tests skip
+   [120]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_big_fb@yf-tiled-32bpp-rotate-90.html
+
+  * igt@kms_ccs@bad-aux-stride-4-tiled-mtl-mc-ccs@pipe-a-hdmi-a-4:
+    - shard-dg1:          NOTRUN -> [SKIP][121] ([i915#6095]) +175 other tests skip
+   [121]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_ccs@bad-aux-stride-4-tiled-mtl-mc-ccs@pipe-a-hdmi-a-4.html
+
+  * igt@kms_ccs@bad-aux-stride-y-tiled-ccs@pipe-d-hdmi-a-1:
+    - shard-dg2:          NOTRUN -> [SKIP][122] ([i915#10307] / [i915#10434] / [i915#6095]) +1 other test skip
+   [122]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_ccs@bad-aux-stride-y-tiled-ccs@pipe-d-hdmi-a-1.html
+
+  * igt@kms_ccs@bad-aux-stride-y-tiled-gen12-mc-ccs@pipe-c-hdmi-a-1:
+    - shard-glk10:        NOTRUN -> [SKIP][123] +46 other tests skip
+   [123]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk10/igt@kms_ccs@bad-aux-stride-y-tiled-gen12-mc-ccs@pipe-c-hdmi-a-1.html
+
+  * igt@kms_ccs@bad-pixel-format-yf-tiled-ccs@pipe-c-hdmi-a-1:
+    - shard-dg2:          NOTRUN -> [SKIP][124] ([i915#10307] / [i915#6095]) +90 other tests skip
+   [124]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_ccs@bad-pixel-format-yf-tiled-ccs@pipe-c-hdmi-a-1.html
+
+  * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs@pipe-c-hdmi-a-1:
+    - shard-rkl:          NOTRUN -> [SKIP][125] ([i915#14098] / [i915#6095]) +46 other tests skip
+   [125]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs@pipe-c-hdmi-a-1.html
+
+  * igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs@pipe-b-hdmi-a-2:
+    - shard-rkl:          NOTRUN -> [SKIP][126] ([i915#14544] / [i915#6095]) +6 other tests skip
+   [126]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs@pipe-b-hdmi-a-2.html
+
+  * igt@kms_ccs@bad-rotation-90-y-tiled-gen12-mc-ccs:
+    - shard-tglu:         NOTRUN -> [SKIP][127] ([i915#6095]) +39 other tests skip
+   [127]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_ccs@bad-rotation-90-y-tiled-gen12-mc-ccs.html
+
+  * igt@kms_ccs@ccs-on-another-bo-4-tiled-mtl-mc-ccs@pipe-c-hdmi-a-2:
+    - shard-glk:          NOTRUN -> [SKIP][128] +324 other tests skip
+   [128]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@kms_ccs@ccs-on-another-bo-4-tiled-mtl-mc-ccs@pipe-c-hdmi-a-2.html
+
+  * igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs:
+    - shard-dg2:          NOTRUN -> [SKIP][129] ([i915#12313])
+   [129]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs.html
+    - shard-rkl:          NOTRUN -> [SKIP][130] ([i915#12313]) +4 other tests skip
+   [130]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs.html
+    - shard-dg1:          NOTRUN -> [SKIP][131] ([i915#12313])
+   [131]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs.html
+    - shard-mtlp:         NOTRUN -> [SKIP][132] ([i915#12313])
+   [132]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs.html
+
+  * igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs-cc@pipe-c-hdmi-a-3:
+    - shard-dg2:          NOTRUN -> [SKIP][133] ([i915#6095]) +42 other tests skip
+   [133]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs-cc@pipe-c-hdmi-a-3.html
+
+  * igt@kms_ccs@crc-primary-basic-4-tiled-lnl-ccs:
+    - shard-tglu-1:       NOTRUN -> [SKIP][134] ([i915#12313]) +1 other test skip
+   [134]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_ccs@crc-primary-basic-4-tiled-lnl-ccs.html
+
+  * igt@kms_ccs@crc-primary-basic-y-tiled-ccs@pipe-d-edp-1:
+    - shard-mtlp:         NOTRUN -> [SKIP][135] ([i915#6095]) +24 other tests skip
+   [135]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@kms_ccs@crc-primary-basic-y-tiled-ccs@pipe-d-edp-1.html
+
+  * igt@kms_ccs@crc-primary-rotation-180-4-tiled-bmg-ccs:
+    - shard-tglu:         NOTRUN -> [SKIP][136] ([i915#12313]) +1 other test skip
+   [136]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_ccs@crc-primary-rotation-180-4-tiled-bmg-ccs.html
+
+  * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
+    - shard-tglu:         NOTRUN -> [SKIP][137] ([i915#12805])
+   [137]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-5/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html
+
+  * igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs:
+    - shard-tglu-1:       NOTRUN -> [SKIP][138] ([i915#12805])
+   [138]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs.html
+
+  * igt@kms_ccs@crc-primary-suspend-y-tiled-ccs@pipe-a-hdmi-a-1:
+    - shard-glk:          NOTRUN -> [INCOMPLETE][139] ([i915#15582]) +1 other test incomplete
+   [139]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk4/igt@kms_ccs@crc-primary-suspend-y-tiled-ccs@pipe-a-hdmi-a-1.html
+
+  * igt@kms_ccs@crc-primary-suspend-yf-tiled-ccs@pipe-a-hdmi-a-1:
+    - shard-tglu-1:       NOTRUN -> [SKIP][140] ([i915#6095]) +29 other tests skip
+   [140]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_ccs@crc-primary-suspend-yf-tiled-ccs@pipe-a-hdmi-a-1.html
+
+  * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs:
+    - shard-rkl:          NOTRUN -> [SKIP][141] ([i915#14098] / [i915#14544] / [i915#6095]) +4 other tests skip
+   [141]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs.html
+
+  * igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs@pipe-b-hdmi-a-2:
+    - shard-rkl:          NOTRUN -> [SKIP][142] ([i915#6095]) +80 other tests skip
+   [142]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs@pipe-b-hdmi-a-2.html
+
+  * igt@kms_ccs@random-ccs-data-y-tiled-ccs:
+    - shard-snb:          NOTRUN -> [SKIP][143] +130 other tests skip
+   [143]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb5/igt@kms_ccs@random-ccs-data-y-tiled-ccs.html
+
+  * igt@kms_cdclk@mode-transition:
+    - shard-tglu:         NOTRUN -> [SKIP][144] ([i915#3742])
+   [144]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-10/igt@kms_cdclk@mode-transition.html
+
+  * igt@kms_cdclk@plane-scaling:
+    - shard-tglu-1:       NOTRUN -> [SKIP][145] ([i915#3742])
+   [145]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_cdclk@plane-scaling.html
+
+  * igt@kms_chamelium_edid@hdmi-mode-timings:
+    - shard-tglu-1:       NOTRUN -> [SKIP][146] ([i915#11151] / [i915#7828]) +4 other tests skip
+   [146]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_chamelium_edid@hdmi-mode-timings.html
+
+  * igt@kms_chamelium_edid@vga-edid-read:
+    - shard-dg1:          NOTRUN -> [SKIP][147] ([i915#11151] / [i915#7828]) +3 other tests skip
+   [147]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_chamelium_edid@vga-edid-read.html
+
+  * igt@kms_chamelium_frames@dp-crc-fast:
+    - shard-dg2:          NOTRUN -> [SKIP][148] ([i915#11151] / [i915#7828]) +5 other tests skip
+   [148]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_chamelium_frames@dp-crc-fast.html
+    - shard-tglu:         NOTRUN -> [SKIP][149] ([i915#11151] / [i915#7828]) +5 other tests skip
+   [149]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_chamelium_frames@dp-crc-fast.html
+
+  * igt@kms_chamelium_hpd@vga-hpd:
+    - shard-mtlp:         NOTRUN -> [SKIP][150] ([i915#11151] / [i915#7828]) +3 other tests skip
+   [150]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_chamelium_hpd@vga-hpd.html
+
+  * igt@kms_chamelium_hpd@vga-hpd-for-each-pipe:
+    - shard-rkl:          NOTRUN -> [SKIP][151] ([i915#11151] / [i915#7828]) +7 other tests skip
+   [151]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_chamelium_hpd@vga-hpd-for-each-pipe.html
+
+  * igt@kms_content_protection@content-type-change:
+    - shard-rkl:          NOTRUN -> [SKIP][152] ([i915#15865])
+   [152]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_content_protection@content-type-change.html
+
+  * igt@kms_content_protection@dp-mst-lic-type-0-hdcp14:
+    - shard-rkl:          NOTRUN -> [SKIP][153] ([i915#15330]) +1 other test skip
+   [153]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html
+    - shard-dg1:          NOTRUN -> [SKIP][154] ([i915#15330])
+   [154]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html
+    - shard-tglu:         NOTRUN -> [SKIP][155] ([i915#15330])
+   [155]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-5/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html
+    - shard-mtlp:         NOTRUN -> [SKIP][156] ([i915#15330])
+   [156]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html
+
+  * igt@kms_content_protection@dp-mst-lic-type-1:
+    - shard-dg2:          NOTRUN -> [SKIP][157] ([i915#15330] / [i915#3299])
+   [157]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@kms_content_protection@dp-mst-lic-type-1.html
+    - shard-rkl:          NOTRUN -> [SKIP][158] ([i915#15330] / [i915#3116])
+   [158]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_content_protection@dp-mst-lic-type-1.html
+    - shard-dg1:          NOTRUN -> [SKIP][159] ([i915#15330] / [i915#3299])
+   [159]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_content_protection@dp-mst-lic-type-1.html
+    - shard-tglu:         NOTRUN -> [SKIP][160] ([i915#15330] / [i915#3116] / [i915#3299]) +1 other test skip
+   [160]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-5/igt@kms_content_protection@dp-mst-lic-type-1.html
+    - shard-mtlp:         NOTRUN -> [SKIP][161] ([i915#15330] / [i915#3299])
+   [161]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@kms_content_protection@dp-mst-lic-type-1.html
+
+  * igt@kms_content_protection@dp-mst-type-0-suspend-resume:
+    - shard-dg2:          NOTRUN -> [SKIP][162] ([i915#15330]) +1 other test skip
+   [162]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@kms_content_protection@dp-mst-type-0-suspend-resume.html
+
+  * igt@kms_content_protection@dp-mst-type-1:
+    - shard-tglu-1:       NOTRUN -> [SKIP][163] ([i915#15330] / [i915#3116] / [i915#3299])
+   [163]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_content_protection@dp-mst-type-1.html
+
+  * igt@kms_content_protection@mei-interface:
+    - shard-tglu-1:       NOTRUN -> [SKIP][164] ([i915#15865])
+   [164]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_content_protection@mei-interface.html
+
+  * igt@kms_content_protection@type1:
+    - shard-dg2:          NOTRUN -> [SKIP][165] ([i915#15865])
+   [165]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@kms_content_protection@type1.html
+    - shard-rkl:          NOTRUN -> [SKIP][166] ([i915#14544] / [i915#15865])
+   [166]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_content_protection@type1.html
+    - shard-dg1:          NOTRUN -> [SKIP][167] ([i915#15865])
+   [167]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-14/igt@kms_content_protection@type1.html
+    - shard-tglu:         NOTRUN -> [SKIP][168] ([i915#15865])
+   [168]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-4/igt@kms_content_protection@type1.html
+    - shard-mtlp:         NOTRUN -> [SKIP][169] ([i915#15865])
+   [169]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@kms_content_protection@type1.html
+
+  * igt@kms_cursor_crc@cursor-offscreen-512x512:
+    - shard-dg2:          NOTRUN -> [SKIP][170] ([i915#13049]) +1 other test skip
+   [170]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_cursor_crc@cursor-offscreen-512x512.html
+    - shard-dg1:          NOTRUN -> [SKIP][171] ([i915#13049])
+   [171]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_cursor_crc@cursor-offscreen-512x512.html
+    - shard-mtlp:         NOTRUN -> [SKIP][172] ([i915#13049])
+   [172]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@kms_cursor_crc@cursor-offscreen-512x512.html
+
+  * igt@kms_cursor_crc@cursor-onscreen-256x85:
+    - shard-tglu:         [PASS][173] -> [FAIL][174] ([i915#13566]) +1 other test fail
+   [173]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-tglu-5/igt@kms_cursor_crc@cursor-onscreen-256x85.html
+   [174]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-4/igt@kms_cursor_crc@cursor-onscreen-256x85.html
+
+  * igt@kms_cursor_crc@cursor-onscreen-256x85@pipe-a-hdmi-a-2:
+    - shard-rkl:          NOTRUN -> [FAIL][175] ([i915#13566])
+   [175]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_cursor_crc@cursor-onscreen-256x85@pipe-a-hdmi-a-2.html
+
+  * igt@kms_cursor_crc@cursor-random-256x85@pipe-a-hdmi-a-1:
+    - shard-rkl:          [PASS][176] -> [FAIL][177] ([i915#13566]) +1 other test fail
+   [176]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@kms_cursor_crc@cursor-random-256x85@pipe-a-hdmi-a-1.html
+   [177]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_cursor_crc@cursor-random-256x85@pipe-a-hdmi-a-1.html
+    - shard-tglu-1:       NOTRUN -> [FAIL][178] ([i915#13566]) +1 other test fail
+   [178]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_cursor_crc@cursor-random-256x85@pipe-a-hdmi-a-1.html
+
+  * igt@kms_cursor_crc@cursor-rapid-movement-32x32:
+    - shard-tglu-1:       NOTRUN -> [SKIP][179] ([i915#3555]) +1 other test skip
+   [179]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_cursor_crc@cursor-rapid-movement-32x32.html
+
+  * igt@kms_cursor_crc@cursor-rapid-movement-512x512:
+    - shard-tglu:         NOTRUN -> [SKIP][180] ([i915#13049]) +1 other test skip
+   [180]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_cursor_crc@cursor-rapid-movement-512x512.html
+
+  * igt@kms_cursor_crc@cursor-sliding-32x10:
+    - shard-dg2:          NOTRUN -> [SKIP][181] ([i915#3555]) +4 other tests skip
+   [181]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_cursor_crc@cursor-sliding-32x10.html
+    - shard-rkl:          NOTRUN -> [SKIP][182] ([i915#3555]) +4 other tests skip
+   [182]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_cursor_crc@cursor-sliding-32x10.html
+    - shard-dg1:          NOTRUN -> [SKIP][183] ([i915#3555]) +6 other tests skip
+   [183]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@kms_cursor_crc@cursor-sliding-32x10.html
+    - shard-mtlp:         NOTRUN -> [SKIP][184] ([i915#3555] / [i915#8814])
+   [184]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-4/igt@kms_cursor_crc@cursor-sliding-32x10.html
+
+  * igt@kms_cursor_crc@cursor-sliding-512x512:
+    - shard-tglu-1:       NOTRUN -> [SKIP][185] ([i915#13049])
+   [185]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_cursor_crc@cursor-sliding-512x512.html
+
+  * igt@kms_cursor_legacy@cursorb-vs-flipb-atomic-transitions-varying-size:
+    - shard-mtlp:         NOTRUN -> [SKIP][186] ([i915#9809]) +1 other test skip
+   [186]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_cursor_legacy@cursorb-vs-flipb-atomic-transitions-varying-size.html
+
+  * igt@kms_cursor_legacy@cursorb-vs-flipb-toggle:
+    - shard-dg2:          NOTRUN -> [SKIP][187] ([i915#13046] / [i915#5354]) +2 other tests skip
+   [187]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_cursor_legacy@cursorb-vs-flipb-toggle.html
+
+  * igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot:
+    - shard-dg2:          NOTRUN -> [SKIP][188] ([i915#9067])
+   [188]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot.html
+    - shard-tglu:         NOTRUN -> [SKIP][189] ([i915#9067])
+   [189]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-7/igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot.html
+
+  * igt@kms_dp_link_training@uhbr-sst:
+    - shard-rkl:          NOTRUN -> [SKIP][190] ([i915#13748])
+   [190]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@kms_dp_link_training@uhbr-sst.html
+    - shard-dg1:          NOTRUN -> [SKIP][191] ([i915#13748])
+   [191]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_dp_link_training@uhbr-sst.html
+    - shard-tglu:         NOTRUN -> [SKIP][192] ([i915#13748])
+   [192]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_dp_link_training@uhbr-sst.html
+    - shard-mtlp:         NOTRUN -> [SKIP][193] ([i915#13749])
+   [193]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@kms_dp_link_training@uhbr-sst.html
+    - shard-dg2:          NOTRUN -> [SKIP][194] ([i915#13748])
+   [194]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_dp_link_training@uhbr-sst.html
+
+  * igt@kms_fbcon_fbt@fbc-suspend:
+    - shard-rkl:          [PASS][195] -> [INCOMPLETE][196] ([i915#9878])
+   [195]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-7/igt@kms_fbcon_fbt@fbc-suspend.html
+   [196]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_fbcon_fbt@fbc-suspend.html
+
+  * igt@kms_fbcon_fbt@psr-suspend:
+    - shard-tglu:         NOTRUN -> [SKIP][197] ([i915#3469])
+   [197]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-10/igt@kms_fbcon_fbt@psr-suspend.html
+    - shard-dg2:          NOTRUN -> [SKIP][198] ([i915#3469])
+   [198]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_fbcon_fbt@psr-suspend.html
+
+  * igt@kms_feature_discovery@chamelium:
+    - shard-tglu:         NOTRUN -> [SKIP][199] ([i915#2065] / [i915#4854])
+   [199]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_feature_discovery@chamelium.html
+
+  * igt@kms_feature_discovery@display-2x:
+    - shard-dg2:          NOTRUN -> [SKIP][200] ([i915#1839])
+   [200]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_feature_discovery@display-2x.html
+    - shard-tglu:         NOTRUN -> [SKIP][201] ([i915#1839])
+   [201]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_feature_discovery@display-2x.html
+
+  * igt@kms_feature_discovery@dp-mst:
+    - shard-tglu-1:       NOTRUN -> [SKIP][202] ([i915#9337])
+   [202]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_feature_discovery@dp-mst.html
+
+  * igt@kms_feature_discovery@psr1:
+    - shard-tglu:         NOTRUN -> [SKIP][203] ([i915#658])
+   [203]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_feature_discovery@psr1.html
+    - shard-dg2:          NOTRUN -> [SKIP][204] ([i915#658])
+   [204]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_feature_discovery@psr1.html
+    - shard-rkl:          NOTRUN -> [SKIP][205] ([i915#658])
+   [205]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_feature_discovery@psr1.html
+    - shard-dg1:          NOTRUN -> [SKIP][206] ([i915#658])
+   [206]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_feature_discovery@psr1.html
+
+  * igt@kms_feature_discovery@psr2:
+    - shard-tglu-1:       NOTRUN -> [SKIP][207] ([i915#658])
+   [207]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_feature_discovery@psr2.html
+
+  * igt@kms_flip@2x-absolute-wf_vblank:
+    - shard-dg2:          NOTRUN -> [SKIP][208] ([i915#9934]) +5 other tests skip
+   [208]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_flip@2x-absolute-wf_vblank.html
+    - shard-rkl:          NOTRUN -> [SKIP][209] ([i915#9934]) +6 other tests skip
+   [209]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_flip@2x-absolute-wf_vblank.html
+    - shard-dg1:          NOTRUN -> [SKIP][210] ([i915#9934]) +3 other tests skip
+   [210]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@kms_flip@2x-absolute-wf_vblank.html
+    - shard-tglu:         NOTRUN -> [SKIP][211] ([i915#3637] / [i915#9934]) +6 other tests skip
+   [211]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-4/igt@kms_flip@2x-absolute-wf_vblank.html
+
+  * igt@kms_flip@2x-absolute-wf_vblank-interruptible:
+    - shard-rkl:          NOTRUN -> [SKIP][212] ([i915#14544] / [i915#9934])
+   [212]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_flip@2x-absolute-wf_vblank-interruptible.html
+
+  * igt@kms_flip@2x-flip-vs-dpms-on-nop-interruptible:
+    - shard-tglu-1:       NOTRUN -> [SKIP][213] ([i915#9934])
+   [213]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_flip@2x-flip-vs-dpms-on-nop-interruptible.html
+
+  * igt@kms_flip@2x-flip-vs-rmfb-interruptible:
+    - shard-mtlp:         NOTRUN -> [SKIP][214] ([i915#3637] / [i915#9934]) +3 other tests skip
+   [214]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_flip@2x-flip-vs-rmfb-interruptible.html
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible:
+    - shard-tglu-1:       NOTRUN -> [SKIP][215] ([i915#3637] / [i915#9934]) +3 other tests skip
+   [215]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible.html
+
+  * igt@kms_flip@2x-plain-flip-ts-check:
+    - shard-snb:          [PASS][216] -> [FAIL][217] ([i915#10826]) +1 other test fail
+   [216]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-snb4/igt@kms_flip@2x-plain-flip-ts-check.html
+   [217]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb7/igt@kms_flip@2x-plain-flip-ts-check.html
+
+  * igt@kms_flip@flip-vs-fences:
+    - shard-dg2:          NOTRUN -> [SKIP][218] ([i915#8381])
+   [218]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_flip@flip-vs-fences.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling:
+    - shard-rkl:          NOTRUN -> [SKIP][219] ([i915#15643]) +2 other tests skip
+   [219]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling:
+    - shard-dg1:          NOTRUN -> [SKIP][220] ([i915#15643])
+   [220]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling.html
+    - shard-tglu:         NOTRUN -> [SKIP][221] ([i915#15643])
+   [221]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling@pipe-a-default-mode:
+    - shard-mtlp:         NOTRUN -> [SKIP][222] ([i915#8810] / [i915#8813])
+   [222]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling@pipe-a-default-mode.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling:
+    - shard-mtlp:         NOTRUN -> [SKIP][223] ([i915#15643]) +1 other test skip
+   [223]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling.html
+
+  * igt@kms_flip_scaled_crc@flip-64bpp-linear-to-32bpp-linear-downscaling:
+    - shard-mtlp:         NOTRUN -> [SKIP][224] ([i915#3555] / [i915#8810] / [i915#8813]) +2 other tests skip
+   [224]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@kms_flip_scaled_crc@flip-64bpp-linear-to-32bpp-linear-downscaling.html
+
+  * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling:
+    - shard-tglu-1:       NOTRUN -> [SKIP][225] ([i915#15643]) +1 other test skip
+   [225]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling.html
+
+  * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-downscaling:
+    - shard-dg2:          NOTRUN -> [SKIP][226] ([i915#15643] / [i915#5190]) +1 other test skip
+   [226]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-downscaling.html
+
+  * igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-indfb-draw-mmap-gtt:
+    - shard-dg1:          NOTRUN -> [SKIP][227] ([i915#15104]) +2 other tests skip
+   [227]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-indfb-draw-mmap-gtt.html
+    - shard-mtlp:         NOTRUN -> [SKIP][228] ([i915#15104]) +1 other test skip
+   [228]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-indfb-draw-mmap-gtt.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-wc:
+    - shard-rkl:          NOTRUN -> [SKIP][229] ([i915#14544] / [i915#1825]) +4 other tests skip
+   [229]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-wc.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-gtt:
+    - shard-dg2:          NOTRUN -> [SKIP][230] ([i915#8708]) +11 other tests skip
+   [230]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-gtt.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-pgflip-blt:
+    - shard-dg1:          NOTRUN -> [SKIP][231] +29 other tests skip
+   [231]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-pgflip-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-blt:
+    - shard-dg2:          NOTRUN -> [SKIP][232] ([i915#5354]) +22 other tests skip
+   [232]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-cpu:
+    - shard-mtlp:         NOTRUN -> [SKIP][233] ([i915#1825]) +18 other tests skip
+   [233]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-cpu.html
+
+  * igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt:
+    - shard-dg1:          NOTRUN -> [SKIP][234] ([i915#8708]) +8 other tests skip
+   [234]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt.html
+
+  * igt@kms_frontbuffer_tracking@fbc-suspend:
+    - shard-rkl:          [PASS][235] -> [ABORT][236] ([i915#15132])
+   [235]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_frontbuffer_tracking@fbc-suspend.html
+   [236]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@kms_frontbuffer_tracking@fbc-suspend.html
+    - shard-glk:          NOTRUN -> [INCOMPLETE][237] ([i915#10056])
+   [237]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@kms_frontbuffer_tracking@fbc-suspend.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-wc:
+    - shard-dg2:          NOTRUN -> [SKIP][238] ([i915#15104]) +2 other tests skip
+   [238]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-wc.html
+    - shard-rkl:          NOTRUN -> [SKIP][239] ([i915#15102]) +3 other tests skip
+   [239]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-wc.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-shrfb-draw-pwrite:
+    - shard-dg2:          NOTRUN -> [SKIP][240] ([i915#15102])
+   [240]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-shrfb-draw-pwrite.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-shrfb-draw-render:
+    - shard-dg1:          NOTRUN -> [SKIP][241] ([i915#15102]) +1 other test skip
+   [241]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-shrfb-draw-render.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-blt:
+    - shard-tglu:         NOTRUN -> [SKIP][242] ([i915#15102]) +18 other tests skip
+   [242]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite:
+    - shard-dg2:          NOTRUN -> [SKIP][243] ([i915#15102] / [i915#3458]) +5 other tests skip
+   [243]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-move:
+    - shard-rkl:          NOTRUN -> [SKIP][244] ([i915#15102] / [i915#3023]) +16 other tests skip
+   [244]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-move.html
+    - shard-dg1:          NOTRUN -> [SKIP][245] ([i915#15102] / [i915#3458]) +4 other tests skip
+   [245]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-move.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-pwrite:
+    - shard-tglu-1:       NOTRUN -> [SKIP][246] +40 other tests skip
+   [246]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-pwrite.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-fullscreen:
+    - shard-tglu:         NOTRUN -> [SKIP][247] +57 other tests skip
+   [247]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-2/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-fullscreen.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-tiling-y:
+    - shard-dg2:          NOTRUN -> [SKIP][248] ([i915#10055])
+   [248]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_frontbuffer_tracking@fbcpsr-tiling-y.html
+    - shard-mtlp:         NOTRUN -> [SKIP][249] ([i915#10055])
+   [249]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_frontbuffer_tracking@fbcpsr-tiling-y.html
+
+  * igt@kms_frontbuffer_tracking@pipe-fbc-rte:
+    - shard-rkl:          NOTRUN -> [SKIP][250] ([i915#9766])
+   [250]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_frontbuffer_tracking@pipe-fbc-rte.html
+
+  * igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-gtt:
+    - shard-mtlp:         NOTRUN -> [SKIP][251] ([i915#8708]) +5 other tests skip
+   [251]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-gtt.html
+
+  * igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-render:
+    - shard-rkl:          NOTRUN -> [SKIP][252] ([i915#1825]) +32 other tests skip
+   [252]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-render.html
+
+  * igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-wc:
+    - shard-tglu-1:       NOTRUN -> [SKIP][253] ([i915#15102]) +14 other tests skip
+   [253]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-wc.html
+
+  * igt@kms_hdr@bpc-switch:
+    - shard-tglu-1:       NOTRUN -> [SKIP][254] ([i915#3555] / [i915#8228])
+   [254]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_hdr@bpc-switch.html
+
+  * igt@kms_joiner@basic-force-big-joiner:
+    - shard-tglu-1:       NOTRUN -> [SKIP][255] ([i915#15459])
+   [255]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_joiner@basic-force-big-joiner.html
+
+  * igt@kms_joiner@invalid-modeset-force-ultra-joiner:
+    - shard-tglu-1:       NOTRUN -> [SKIP][256] ([i915#15458])
+   [256]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_joiner@invalid-modeset-force-ultra-joiner.html
+
+  * igt@kms_panel_fitting@atomic-fastset:
+    - shard-rkl:          NOTRUN -> [SKIP][257] ([i915#6301])
+   [257]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_panel_fitting@atomic-fastset.html
+
+  * igt@kms_pipe_b_c_ivb@from-pipe-c-to-b-with-3-lanes:
+    - shard-dg2:          NOTRUN -> [SKIP][258] +10 other tests skip
+   [258]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_pipe_b_c_ivb@from-pipe-c-to-b-with-3-lanes.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:
+    - shard-glk:          NOTRUN -> [INCOMPLETE][259] ([i915#12756] / [i915#13409] / [i915#13476]) +1 other test incomplete
+   [259]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html
+
+  * igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier-source-clamping:
+    - shard-rkl:          NOTRUN -> [SKIP][260] ([i915#14544] / [i915#15709])
+   [260]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier-source-clamping.html
+
+  * igt@kms_plane@pixel-format-4-tiled-mtl-mc-ccs-modifier:
+    - shard-tglu-1:       NOTRUN -> [SKIP][261] ([i915#15709]) +3 other tests skip
+   [261]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_plane@pixel-format-4-tiled-mtl-mc-ccs-modifier.html
+
+  * igt@kms_plane@pixel-format-y-tiled-ccs-modifier:
+    - shard-dg2:          NOTRUN -> [SKIP][262] ([i915#15709]) +2 other tests skip
+   [262]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@kms_plane@pixel-format-y-tiled-ccs-modifier.html
+    - shard-rkl:          NOTRUN -> [SKIP][263] ([i915#15709]) +2 other tests skip
+   [263]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_plane@pixel-format-y-tiled-ccs-modifier.html
+    - shard-dg1:          NOTRUN -> [SKIP][264] ([i915#15709]) +1 other test skip
+   [264]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_plane@pixel-format-y-tiled-ccs-modifier.html
+    - shard-mtlp:         NOTRUN -> [SKIP][265] ([i915#15709]) +1 other test skip
+   [265]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_plane@pixel-format-y-tiled-ccs-modifier.html
+
+  * igt@kms_plane@pixel-format-yf-tiled-modifier-source-clamping:
+    - shard-tglu:         NOTRUN -> [SKIP][266] ([i915#15709]) +2 other tests skip
+   [266]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-9/igt@kms_plane@pixel-format-yf-tiled-modifier-source-clamping.html
+
+  * igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b:
+    - shard-glk:          NOTRUN -> [INCOMPLETE][267] ([i915#13026]) +1 other test incomplete
+   [267]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk1/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b.html
+
+  * igt@kms_plane_alpha_blend@constant-alpha-max:
+    - shard-glk11:        NOTRUN -> [FAIL][268] ([i915#10647] / [i915#12169])
+   [268]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_plane_alpha_blend@constant-alpha-max.html
+
+  * igt@kms_plane_alpha_blend@constant-alpha-max@pipe-a-hdmi-a-1:
+    - shard-glk11:        NOTRUN -> [FAIL][269] ([i915#10647]) +1 other test fail
+   [269]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_plane_alpha_blend@constant-alpha-max@pipe-a-hdmi-a-1.html
+
+  * igt@kms_plane_lowres@tiling-yf:
+    - shard-dg2:          NOTRUN -> [SKIP][270] ([i915#3555] / [i915#8821])
+   [270]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_plane_lowres@tiling-yf.html
+    - shard-mtlp:         NOTRUN -> [SKIP][271] ([i915#3555] / [i915#8821])
+   [271]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_plane_lowres@tiling-yf.html
+
+  * igt@kms_plane_multiple@2x-tiling-x:
+    - shard-rkl:          NOTRUN -> [SKIP][272] ([i915#13958])
+   [272]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_plane_multiple@2x-tiling-x.html
+
+  * igt@kms_plane_multiple@2x-tiling-y:
+    - shard-tglu:         NOTRUN -> [SKIP][273] ([i915#13958])
+   [273]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_plane_multiple@2x-tiling-y.html
+
+  * igt@kms_plane_multiple@2x-tiling-yf:
+    - shard-tglu-1:       NOTRUN -> [SKIP][274] ([i915#13958]) +1 other test skip
+   [274]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_plane_multiple@2x-tiling-yf.html
+
+  * igt@kms_plane_multiple@tiling-4:
+    - shard-dg1:          NOTRUN -> [SKIP][275] ([i915#14259])
+   [275]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@kms_plane_multiple@tiling-4.html
+
+  * igt@kms_plane_scaling@intel-max-src-size:
+    - shard-dg2:          NOTRUN -> [SKIP][276] ([i915#6953] / [i915#9423])
+   [276]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_plane_scaling@intel-max-src-size.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-a:
+    - shard-rkl:          NOTRUN -> [SKIP][277] ([i915#15329]) +3 other tests skip
+   [277]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-a.html
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b:
+    - shard-mtlp:         NOTRUN -> [SKIP][278] ([i915#15329]) +1 other test skip
+   [278]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b.html
+
+  * igt@kms_pm_backlight@bad-brightness:
+    - shard-dg1:          NOTRUN -> [SKIP][279] ([i915#5354]) +1 other test skip
+   [279]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_pm_backlight@bad-brightness.html
+
+  * igt@kms_pm_backlight@fade:
+    - shard-tglu:         NOTRUN -> [SKIP][280] ([i915#9812]) +1 other test skip
+   [280]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_pm_backlight@fade.html
+    - shard-rkl:          NOTRUN -> [SKIP][281] ([i915#5354])
+   [281]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_pm_backlight@fade.html
+
+  * igt@kms_pm_dc@dc5-retention-flops:
+    - shard-rkl:          NOTRUN -> [SKIP][282] ([i915#3828])
+   [282]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_pm_dc@dc5-retention-flops.html
+
+  * igt@kms_pm_dc@dc6-dpms:
+    - shard-rkl:          NOTRUN -> [FAIL][283] ([i915#15752])
+   [283]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_pm_dc@dc6-dpms.html
+
+  * igt@kms_pm_dc@dc9-dpms:
+    - shard-rkl:          NOTRUN -> [SKIP][284] ([i915#15739])
+   [284]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_pm_dc@dc9-dpms.html
+    - shard-tglu:         NOTRUN -> [SKIP][285] ([i915#15739])
+   [285]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-2/igt@kms_pm_dc@dc9-dpms.html
+
+  * igt@kms_pm_lpsp@kms-lpsp:
+    - shard-dg2:          [PASS][286] -> [SKIP][287] ([i915#9340])
+   [286]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-4/igt@kms_pm_lpsp@kms-lpsp.html
+   [287]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_pm_lpsp@kms-lpsp.html
+
+  * igt@kms_pm_rpm@modeset-lpsp-stress:
+    - shard-dg1:          [PASS][288] -> [SKIP][289] ([i915#15073]) +3 other tests skip
+   [288]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-15/igt@kms_pm_rpm@modeset-lpsp-stress.html
+   [289]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@kms_pm_rpm@modeset-lpsp-stress.html
+
+  * igt@kms_pm_rpm@modeset-non-lpsp-stress:
+    - shard-tglu-1:       NOTRUN -> [SKIP][290] ([i915#15073]) +1 other test skip
+   [290]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_pm_rpm@modeset-non-lpsp-stress.html
+
+  * igt@kms_prime@basic-modeset-hybrid:
+    - shard-dg2:          NOTRUN -> [SKIP][291] ([i915#6524] / [i915#6805])
+   [291]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_prime@basic-modeset-hybrid.html
+
+  * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area:
+    - shard-glk:          NOTRUN -> [SKIP][292] ([i915#11520]) +9 other tests skip
+   [292]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html
+
+  * igt@kms_psr2_sf@fbc-pr-overlay-primary-update-sf-dmg-area:
+    - shard-rkl:          NOTRUN -> [SKIP][293] ([i915#11520]) +4 other tests skip
+   [293]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_psr2_sf@fbc-pr-overlay-primary-update-sf-dmg-area.html
+
+  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf:
+    - shard-dg2:          NOTRUN -> [SKIP][294] ([i915#11520]) +3 other tests skip
+   [294]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf.html
+    - shard-rkl:          NOTRUN -> [SKIP][295] ([i915#11520] / [i915#14544])
+   [295]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf.html
+    - shard-dg1:          NOTRUN -> [SKIP][296] ([i915#11520])
+   [296]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf.html
+    - shard-snb:          NOTRUN -> [SKIP][297] ([i915#11520])
+   [297]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb6/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf.html
+
+  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-b-edp-1:
+    - shard-mtlp:         NOTRUN -> [SKIP][298] ([i915#9808]) +2 other tests skip
+   [298]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-8/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-b-edp-1.html
+
+  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area:
+    - shard-glk11:        NOTRUN -> [SKIP][299] ([i915#11520]) +6 other tests skip
+   [299]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area.html
+
+  * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:
+    - shard-tglu:         NOTRUN -> [SKIP][300] ([i915#11520]) +2 other tests skip
+   [300]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-9/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
+
+  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf:
+    - shard-tglu-1:       NOTRUN -> [SKIP][301] ([i915#11520]) +3 other tests skip
+   [301]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf.html
+
+  * igt@kms_psr@fbc-psr-no-drrs:
+    - shard-mtlp:         NOTRUN -> [SKIP][302] ([i915#9688]) +13 other tests skip
+   [302]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_psr@fbc-psr-no-drrs.html
+
+  * igt@kms_psr@fbc-psr2-cursor-blt:
+    - shard-tglu-1:       NOTRUN -> [SKIP][303] ([i915#9732]) +12 other tests skip
+   [303]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_psr@fbc-psr2-cursor-blt.html
+
+  * igt@kms_psr@pr-dpms:
+    - shard-tglu:         NOTRUN -> [SKIP][304] ([i915#9732]) +17 other tests skip
+   [304]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_psr@pr-dpms.html
+
+  * igt@kms_psr@psr-cursor-mmap-cpu:
+    - shard-dg2:          NOTRUN -> [SKIP][305] ([i915#1072] / [i915#9732]) +14 other tests skip
+   [305]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_psr@psr-cursor-mmap-cpu.html
+    - shard-rkl:          NOTRUN -> [SKIP][306] ([i915#1072] / [i915#14544] / [i915#9732])
+   [306]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_psr@psr-cursor-mmap-cpu.html
+
+  * igt@kms_psr@psr-primary-mmap-gtt@edp-1:
+    - shard-mtlp:         NOTRUN -> [SKIP][307] ([i915#4077] / [i915#9688]) +1 other test skip
+   [307]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_psr@psr-primary-mmap-gtt@edp-1.html
+
+  * igt@kms_psr@psr2-cursor-mmap-gtt:
+    - shard-rkl:          NOTRUN -> [SKIP][308] ([i915#1072] / [i915#9732]) +22 other tests skip
+   [308]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_psr@psr2-cursor-mmap-gtt.html
+    - shard-dg1:          NOTRUN -> [SKIP][309] ([i915#1072] / [i915#9732]) +13 other tests skip
+   [309]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_psr@psr2-cursor-mmap-gtt.html
+
+  * igt@kms_rotation_crc@multiplane-rotation:
+    - shard-glk11:        NOTRUN -> [INCOMPLETE][310] ([i915#15492])
+   [310]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_rotation_crc@multiplane-rotation.html
+
+  * igt@kms_rotation_crc@primary-4-tiled-reflect-x-180:
+    - shard-tglu:         NOTRUN -> [SKIP][311] ([i915#5289])
+   [311]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_rotation_crc@primary-4-tiled-reflect-x-180.html
+
+  * igt@kms_rotation_crc@primary-yf-tiled-reflect-x-270:
+    - shard-rkl:          NOTRUN -> [SKIP][312] ([i915#14544] / [i915#5289])
+   [312]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_rotation_crc@primary-yf-tiled-reflect-x-270.html
+
+  * igt@kms_scaling_modes@scaling-mode-full-aspect:
+    - shard-tglu:         NOTRUN -> [SKIP][313] ([i915#3555]) +10 other tests skip
+   [313]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-7/igt@kms_scaling_modes@scaling-mode-full-aspect.html
+
+  * igt@kms_selftest@drm_framebuffer:
+    - shard-tglu:         NOTRUN -> [ABORT][314] ([i915#13179]) +1 other test abort
+   [314]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_selftest@drm_framebuffer.html
+    - shard-glk:          NOTRUN -> [ABORT][315] ([i915#13179]) +1 other test abort
+   [315]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@kms_selftest@drm_framebuffer.html
+
+  * igt@kms_setmode@basic:
+    - shard-snb:          NOTRUN -> [FAIL][316] ([i915#15106]) +6 other tests fail
+   [316]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb7/igt@kms_setmode@basic.html
+    - shard-tglu:         NOTRUN -> [FAIL][317] ([i915#15106]) +2 other tests fail
+   [317]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_setmode@basic.html
+
+  * igt@kms_setmode@invalid-clone-exclusive-crtc:
+    - shard-mtlp:         NOTRUN -> [SKIP][318] ([i915#3555] / [i915#8809] / [i915#8823])
+   [318]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_setmode@invalid-clone-exclusive-crtc.html
+
+  * igt@kms_setmode@invalid-clone-single-crtc-stealing:
+    - shard-mtlp:         NOTRUN -> [SKIP][319] ([i915#3555] / [i915#8809])
+   [319]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-5/igt@kms_setmode@invalid-clone-single-crtc-stealing.html
+
+  * igt@kms_tiled_display@basic-test-pattern:
+    - shard-glk11:        NOTRUN -> [FAIL][320] ([i915#10959])
+   [320]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_tiled_display@basic-test-pattern.html
+
+  * igt@kms_vblank@ts-continuation-dpms-suspend:
+    - shard-glk10:        NOTRUN -> [INCOMPLETE][321] ([i915#12276]) +1 other test incomplete
+   [321]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk10/igt@kms_vblank@ts-continuation-dpms-suspend.html
+
+  * igt@kms_vrr@flip-dpms:
+    - shard-dg2:          NOTRUN -> [SKIP][322] ([i915#15243] / [i915#3555])
+   [322]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@kms_vrr@flip-dpms.html
+    - shard-rkl:          NOTRUN -> [SKIP][323] ([i915#15243] / [i915#3555])
+   [323]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_vrr@flip-dpms.html
+    - shard-mtlp:         NOTRUN -> [SKIP][324] ([i915#3555] / [i915#8808])
+   [324]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_vrr@flip-dpms.html
+
+  * igt@kms_vrr@negative-basic:
+    - shard-tglu:         NOTRUN -> [SKIP][325] ([i915#3555] / [i915#9906])
+   [325]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_vrr@negative-basic.html
+
+  * igt@kms_vrr@seamless-rr-switch-virtual:
+    - shard-tglu-1:       NOTRUN -> [SKIP][326] ([i915#9906])
+   [326]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_vrr@seamless-rr-switch-virtual.html
+
+  * igt@kms_vrr@seamless-rr-switch-vrr:
+    - shard-dg2:          NOTRUN -> [SKIP][327] ([i915#9906])
+   [327]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_vrr@seamless-rr-switch-vrr.html
+    - shard-dg1:          NOTRUN -> [SKIP][328] ([i915#9906])
+   [328]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@kms_vrr@seamless-rr-switch-vrr.html
+    - shard-tglu:         NOTRUN -> [SKIP][329] ([i915#9906])
+   [329]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_vrr@seamless-rr-switch-vrr.html
+    - shard-mtlp:         NOTRUN -> [SKIP][330] ([i915#8808] / [i915#9906])
+   [330]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-5/igt@kms_vrr@seamless-rr-switch-vrr.html
+
+  * igt@perf@gen8-unprivileged-single-ctx-counters:
+    - shard-rkl:          NOTRUN -> [SKIP][331] ([i915#2436])
+   [331]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@perf@gen8-unprivileged-single-ctx-counters.html
+
+  * igt@perf_pmu@module-unload:
+    - shard-glk10:        NOTRUN -> [ABORT][332] ([i915#15778])
+   [332]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk10/igt@perf_pmu@module-unload.html
+
+  * igt@perf_pmu@rc6-suspend:
+    - shard-glk:          NOTRUN -> [INCOMPLETE][333] ([i915#13356] / [i915#14242])
+   [333]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk2/igt@perf_pmu@rc6-suspend.html
+
+  * igt@prime_vgem@fence-read-hang:
+    - shard-rkl:          NOTRUN -> [SKIP][334] ([i915#3708])
+   [334]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@prime_vgem@fence-read-hang.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-on:
+    - shard-tglu:         NOTRUN -> [FAIL][335] ([i915#12910]) +9 other tests fail
+   [335]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-2/igt@sriov_basic@enable-vfs-autoprobe-on.html
+    - shard-dg2:          NOTRUN -> [SKIP][336] ([i915#9917])
+   [336]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@sriov_basic@enable-vfs-autoprobe-on.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_create@create-ext-cpu-access-big:
+    - shard-dg2:          [FAIL][337] ([i915#15454]) -> [PASS][338]
+   [337]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-1/igt@gem_create@create-ext-cpu-access-big.html
+   [338]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@gem_create@create-ext-cpu-access-big.html
+
+  * igt@gem_exec_big@single:
+    - shard-rkl:          [FAIL][339] -> [PASS][340]
+   [339]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@gem_exec_big@single.html
+   [340]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@gem_exec_big@single.html
+    - shard-mtlp:         [FAIL][341] ([i915#15871]) -> [PASS][342]
+   [341]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-mtlp-3/igt@gem_exec_big@single.html
+   [342]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@gem_exec_big@single.html
+
+  * igt@gem_exec_suspend@basic-s0:
+    - shard-dg2:          [INCOMPLETE][343] ([i915#13356]) -> [PASS][344] +1 other test pass
+   [343]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-3/igt@gem_exec_suspend@basic-s0.html
+   [344]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@gem_softpin@noreloc-s3:
+    - shard-rkl:          [INCOMPLETE][345] ([i915#13809]) -> [PASS][346]
+   [345]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@gem_softpin@noreloc-s3.html
+   [346]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@gem_softpin@noreloc-s3.html
+
+  * igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-1:
+    - shard-glk:          [INCOMPLETE][347] ([i915#12761]) -> [PASS][348]
+   [347]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-glk8/igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-1.html
+   [348]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk1/igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-1.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing:
+    - shard-dg2:          [FAIL][349] ([i915#5956]) -> [PASS][350]
+   [349]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-7/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+   [350]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+
+  * igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs:
+    - shard-rkl:          [INCOMPLETE][351] ([i915#15582]) -> [PASS][352]
+   [351]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs.html
+   [352]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs.html
+
+  * igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc:
+    - shard-dg1:          [DMESG-WARN][353] ([i915#4423]) -> [PASS][354]
+   [353]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-18/igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc.html
+   [354]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc.html
+
+  * igt@kms_color@deep-color:
+    - shard-rkl:          [SKIP][355] ([i915#12655] / [i915#3555]) -> [PASS][356]
+   [355]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_color@deep-color.html
+   [356]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_color@deep-color.html
+
+  * igt@kms_cursor_crc@cursor-onscreen-128x42:
+    - shard-rkl:          [FAIL][357] ([i915#13566]) -> [PASS][358] +4 other tests pass
+   [357]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_cursor_crc@cursor-onscreen-128x42.html
+   [358]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_cursor_crc@cursor-onscreen-128x42.html
+
+  * igt@kms_cursor_crc@cursor-random-128x42@pipe-a-hdmi-a-1:
+    - shard-tglu:         [FAIL][359] ([i915#13566]) -> [PASS][360] +3 other tests pass
+   [359]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-tglu-4/igt@kms_cursor_crc@cursor-random-128x42@pipe-a-hdmi-a-1.html
+   [360]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-9/igt@kms_cursor_crc@cursor-random-128x42@pipe-a-hdmi-a-1.html
+
+  * igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible:
+    - shard-mtlp:         [FAIL][361] ([i915#14600]) -> [PASS][362] +1 other test pass
+   [361]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-mtlp-7/igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible.html
+   [362]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible.html
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-a:
+    - shard-glk:          [DMESG-WARN][363] ([i915#118]) -> [PASS][364] +1 other test pass
+   [363]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-glk6/igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-a.html
+   [364]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk4/igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-a.html
+
+  * igt@kms_pm_rpm@dpms-non-lpsp:
+    - shard-dg1:          [SKIP][365] ([i915#15073]) -> [PASS][366]
+   [365]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-14/igt@kms_pm_rpm@dpms-non-lpsp.html
+   [366]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_pm_rpm@dpms-non-lpsp.html
+
+  * igt@kms_pm_rpm@modeset-lpsp-stress:
+    - shard-dg2:          [SKIP][367] ([i915#15073]) -> [PASS][368] +2 other tests pass
+   [367]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-6/igt@kms_pm_rpm@modeset-lpsp-stress.html
+   [368]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_pm_rpm@modeset-lpsp-stress.html
+    - shard-rkl:          [SKIP][369] ([i915#15073]) -> [PASS][370] +3 other tests pass
+   [369]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_pm_rpm@modeset-lpsp-stress.html
+   [370]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_pm_rpm@modeset-lpsp-stress.html
+
+  * igt@perf_pmu@busy-double-start@rcs0:
+    - shard-mtlp:         [FAIL][371] ([i915#4349]) -> [PASS][372]
+   [371]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-mtlp-2/igt@perf_pmu@busy-double-start@rcs0.html
+   [372]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@perf_pmu@busy-double-start@rcs0.html
+
+  * igt@perf_pmu@busy-double-start@vecs1:
+    - shard-dg2:          [FAIL][373] ([i915#4349]) -> [PASS][374] +4 other tests pass
+   [373]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-8/igt@perf_pmu@busy-double-start@vecs1.html
+   [374]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@perf_pmu@busy-double-start@vecs1.html
+
+  
+#### Warnings ####
+
+  * igt@gem_basic@multigpu-create-close:
+    - shard-rkl:          [SKIP][375] ([i915#7697]) -> [SKIP][376] ([i915#14544] / [i915#7697])
+   [375]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_basic@multigpu-create-close.html
+   [376]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_basic@multigpu-create-close.html
+
+  * igt@gem_ctx_sseu@invalid-args:
+    - shard-rkl:          [SKIP][377] ([i915#280]) -> [SKIP][378] ([i915#14544] / [i915#280])
+   [377]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_ctx_sseu@invalid-args.html
+   [378]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_ctx_sseu@invalid-args.html
+
+  * igt@gem_exec_balancer@parallel-keep-submit-fence:
+    - shard-rkl:          [SKIP][379] ([i915#14544] / [i915#4525]) -> [SKIP][380] ([i915#4525])
+   [379]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_exec_balancer@parallel-keep-submit-fence.html
+   [380]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_exec_balancer@parallel-keep-submit-fence.html
+
+  * igt@gem_exec_reloc@basic-write-read-noreloc:
+    - shard-rkl:          [SKIP][381] ([i915#14544] / [i915#3281]) -> [SKIP][382] ([i915#3281]) +9 other tests skip
+   [381]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_exec_reloc@basic-write-read-noreloc.html
+   [382]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_exec_reloc@basic-write-read-noreloc.html
+
+  * igt@gem_exec_reloc@basic-write-wc-noreloc:
+    - shard-rkl:          [SKIP][383] ([i915#3281]) -> [SKIP][384] ([i915#14544] / [i915#3281]) +1 other test skip
+   [383]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@gem_exec_reloc@basic-write-wc-noreloc.html
+   [384]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_exec_reloc@basic-write-wc-noreloc.html
+
+  * igt@gem_lmem_swapping@heavy-random:
+    - shard-rkl:          [SKIP][385] ([i915#4613]) -> [SKIP][386] ([i915#14544] / [i915#4613])
+   [385]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_lmem_swapping@heavy-random.html
+   [386]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_lmem_swapping@heavy-random.html
+
+  * igt@gem_lmem_swapping@verify-ccs:
+    - shard-rkl:          [SKIP][387] ([i915#14544] / [i915#4613]) -> [SKIP][388] ([i915#4613]) +1 other test skip
+   [387]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_lmem_swapping@verify-ccs.html
+   [388]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@gem_lmem_swapping@verify-ccs.html
+
+  * igt@gem_partial_pwrite_pread@reads-uncached:
+    - shard-rkl:          [SKIP][389] ([i915#3282]) -> [SKIP][390] ([i915#14544] / [i915#3282]) +1 other test skip
+   [389]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_partial_pwrite_pread@reads-uncached.html
+   [390]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_partial_pwrite_pread@reads-uncached.html
+
+  * igt@gem_partial_pwrite_pread@write-display:
+    - shard-rkl:          [SKIP][391] ([i915#14544] / [i915#3282]) -> [SKIP][392] ([i915#3282]) +2 other tests skip
+   [391]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_partial_pwrite_pread@write-display.html
+   [392]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_partial_pwrite_pread@write-display.html
+
+  * igt@gem_pxp@hw-rejects-pxp-buffer:
+    - shard-rkl:          [SKIP][393] ([i915#13717]) -> [SKIP][394] ([i915#13717] / [i915#14544])
+   [393]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-8/igt@gem_pxp@hw-rejects-pxp-buffer.html
+   [394]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_pxp@hw-rejects-pxp-buffer.html
+
+  * igt@gem_userptr_blits@access-control:
+    - shard-rkl:          [SKIP][395] ([i915#3297]) -> [SKIP][396] ([i915#14544] / [i915#3297])
+   [395]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_userptr_blits@access-control.html
+   [396]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_userptr_blits@access-control.html
+
+  * igt@gem_userptr_blits@create-destroy-unsync:
+    - shard-rkl:          [SKIP][397] ([i915#14544] / [i915#3297]) -> [SKIP][398] ([i915#3297]) +1 other test skip
+   [397]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_userptr_blits@create-destroy-unsync.html
+   [398]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@gem_userptr_blits@create-destroy-unsync.html
+
+  * igt@gen9_exec_parse@bb-chained:
+    - shard-rkl:          [SKIP][399] ([i915#14544] / [i915#2527]) -> [SKIP][400] ([i915#2527]) +1 other test skip
+   [399]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gen9_exec_parse@bb-chained.html
+   [400]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gen9_exec_parse@bb-chained.html
+
+  * igt@i915_pm_freq_api@freq-reset:
+    - shard-rkl:          [SKIP][401] ([i915#8399]) -> [SKIP][402] ([i915#14544] / [i915#8399])
+   [401]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-8/igt@i915_pm_freq_api@freq-reset.html
+   [402]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@i915_pm_freq_api@freq-reset.html
+
+  * igt@i915_pm_freq_api@freq-reset-multiple:
+    - shard-rkl:          [SKIP][403] ([i915#14544] / [i915#8399]) -> [SKIP][404] ([i915#8399])
+   [403]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@i915_pm_freq_api@freq-reset-multiple.html
+   [404]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@i915_pm_freq_api@freq-reset-multiple.html
+
+  * igt@i915_pm_rc6_residency@rc6-idle:
+    - shard-rkl:          [SKIP][405] ([i915#14498] / [i915#14544]) -> [SKIP][406] ([i915#14498])
+   [405]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@i915_pm_rc6_residency@rc6-idle.html
+   [406]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@i915_pm_rc6_residency@rc6-idle.html
+
+  * igt@i915_query@hwconfig_table:
+    - shard-rkl:          [SKIP][407] ([i915#14544] / [i915#6245]) -> [SKIP][408] ([i915#6245])
+   [407]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@i915_query@hwconfig_table.html
+   [408]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@i915_query@hwconfig_table.html
+
+  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels:
+    - shard-rkl:          [SKIP][409] ([i915#14544] / [i915#1769] / [i915#3555]) -> [SKIP][410] ([i915#1769] / [i915#3555])
+   [409]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+   [410]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+
+  * igt@kms_big_fb@4-tiled-32bpp-rotate-180:
+    - shard-rkl:          [SKIP][411] ([i915#14544] / [i915#5286]) -> [SKIP][412] ([i915#5286]) +3 other tests skip
+   [411]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_big_fb@4-tiled-32bpp-rotate-180.html
+   [412]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_big_fb@4-tiled-32bpp-rotate-180.html
+
+  * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip:
+    - shard-rkl:          [SKIP][413] ([i915#5286]) -> [SKIP][414] ([i915#14544] / [i915#5286])
+   [413]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip.html
+   [414]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip.html
+
+  * igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip:
+    - shard-dg1:          [SKIP][415] ([i915#4538] / [i915#5286]) -> [SKIP][416] ([i915#4423] / [i915#4538] / [i915#5286])
+   [415]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-15/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html
+   [416]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html
+
+  * igt@kms_big_fb@linear-8bpp-rotate-270:
+    - shard-rkl:          [SKIP][417] ([i915#3638]) -> [SKIP][418] ([i915#14544] / [i915#3638]) +2 other tests skip
+   [417]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_big_fb@linear-8bpp-rotate-270.html
+   [418]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_big_fb@linear-8bpp-rotate-270.html
+
+  * igt@kms_big_fb@y-tiled-64bpp-rotate-90:
+    - shard-rkl:          [SKIP][419] ([i915#14544] / [i915#3638]) -> [SKIP][420] ([i915#3638]) +2 other tests skip
+   [419]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_big_fb@y-tiled-64bpp-rotate-90.html
+   [420]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_big_fb@y-tiled-64bpp-rotate-90.html
+
+  * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs:
+    - shard-rkl:          [SKIP][421] ([i915#14098] / [i915#14544] / [i915#6095]) -> [SKIP][422] ([i915#14098] / [i915#6095]) +9 other tests skip
+   [421]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs.html
+   [422]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs.html
+
+  * igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc@pipe-a-hdmi-a-2:
+    - shard-rkl:          [SKIP][423] ([i915#6095]) -> [SKIP][424] ([i915#14544] / [i915#6095]) +7 other tests skip
+   [423]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc@pipe-a-hdmi-a-2.html
+   [424]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc@pipe-a-hdmi-a-2.html
+
+  * igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs:
+    - shard-rkl:          [SKIP][425] ([i915#12805] / [i915#14544]) -> [SKIP][426] ([i915#12805])
+   [425]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs.html
+   [426]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs.html
+
+  * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-rc-ccs@pipe-a-hdmi-a-2:
+    - shard-rkl:          [SKIP][427] ([i915#14544] / [i915#6095]) -> [SKIP][428] ([i915#6095]) +7 other tests skip
+   [427]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-rc-ccs@pipe-a-hdmi-a-2.html
+   [428]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-rc-ccs@pipe-a-hdmi-a-2.html
+
+  * igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-mc-ccs:
+    - shard-rkl:          [SKIP][429] ([i915#14098] / [i915#6095]) -> [SKIP][430] ([i915#14098] / [i915#14544] / [i915#6095]) +10 other tests skip
+   [429]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-7/igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-mc-ccs.html
+   [430]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-mc-ccs.html
+
+  * igt@kms_cdclk@mode-transition:
+    - shard-rkl:          [SKIP][431] ([i915#3742]) -> [SKIP][432] ([i915#14544] / [i915#3742])
+   [431]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_cdclk@mode-transition.html
+   [432]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_cdclk@mode-transition.html
+
+  * igt@kms_chamelium_frames@hdmi-crc-multiple:
+    - shard-rkl:          [SKIP][433] ([i915#11151] / [i915#14544] / [i915#7828]) -> [SKIP][434] ([i915#11151] / [i915#7828]) +4 other tests skip
+   [433]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_chamelium_frames@hdmi-crc-multiple.html
+   [434]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_chamelium_frames@hdmi-crc-multiple.html
+
+  * igt@kms_chamelium_hpd@vga-hpd-fast:
+    - shard-rkl:          [SKIP][435] ([i915#11151] / [i915#7828]) -> [SKIP][436] ([i915#11151] / [i915#14544] / [i915#7828]) +2 other tests skip
+   [435]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_chamelium_hpd@vga-hpd-fast.html
+   [436]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_chamelium_hpd@vga-hpd-fast.html
+
+  * igt@kms_content_protection@dp-mst-type-0:
+    - shard-rkl:          [SKIP][437] ([i915#15330] / [i915#3116]) -> [SKIP][438] ([i915#14544] / [i915#15330] / [i915#3116])
+   [437]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_content_protection@dp-mst-type-0.html
+   [438]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_content_protection@dp-mst-type-0.html
+
+  * igt@kms_content_protection@dp-mst-type-1:
+    - shard-rkl:          [SKIP][439] ([i915#14544] / [i915#15330] / [i915#3116]) -> [SKIP][440] ([i915#15330] / [i915#3116])
+   [439]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_content_protection@dp-mst-type-1.html
+   [440]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_content_protection@dp-mst-type-1.html
+
+  * igt@kms_content_protection@mei-interface:
+    - shard-rkl:          [SKIP][441] ([i915#14544] / [i915#15865]) -> [SKIP][442] ([i915#15865]) +1 other test skip
+   [441]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_content_protection@mei-interface.html
+   [442]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_content_protection@mei-interface.html
+
+  * igt@kms_cursor_crc@cursor-rapid-movement-32x32:
+    - shard-rkl:          [SKIP][443] ([i915#14544] / [i915#3555]) -> [SKIP][444] ([i915#3555]) +2 other tests skip
+   [443]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_cursor_crc@cursor-rapid-movement-32x32.html
+   [444]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_cursor_crc@cursor-rapid-movement-32x32.html
+
+  * igt@kms_cursor_crc@cursor-sliding-512x170:
+    - shard-rkl:          [SKIP][445] ([i915#13049] / [i915#14544]) -> [SKIP][446] ([i915#13049]) +1 other test skip
+   [445]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_cursor_crc@cursor-sliding-512x170.html
+   [446]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_cursor_crc@cursor-sliding-512x170.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - shard-rkl:          [SKIP][447] ([i915#4103]) -> [SKIP][448] ([i915#14544] / [i915#4103]) +1 other test skip
+   [447]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [448]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@cursora-vs-flipb-legacy:
+    - shard-rkl:          [SKIP][449] -> [SKIP][450] ([i915#14544]) +8 other tests skip
+   [449]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_cursor_legacy@cursora-vs-flipb-legacy.html
+   [450]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_cursor_legacy@cursora-vs-flipb-legacy.html
+
+  * igt@kms_cursor_legacy@short-busy-flip-before-cursor-toggle:
+    - shard-rkl:          [SKIP][451] ([i915#14544] / [i915#4103]) -> [SKIP][452] ([i915#4103])
+   [451]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_cursor_legacy@short-busy-flip-before-cursor-toggle.html
+   [452]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_cursor_legacy@short-busy-flip-before-cursor-toggle.html
+
+  * igt@kms_dp_aux_dev@basic:
+    - shard-rkl:          [SKIP][453] ([i915#1257]) -> [SKIP][454] ([i915#1257] / [i915#14544])
+   [453]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-1/igt@kms_dp_aux_dev@basic.html
+   [454]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_dp_aux_dev@basic.html
+
+  * igt@kms_dp_link_training@uhbr-mst:
+    - shard-rkl:          [SKIP][455] ([i915#13748] / [i915#14544]) -> [SKIP][456] ([i915#13748])
+   [455]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_dp_link_training@uhbr-mst.html
+   [456]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_dp_link_training@uhbr-mst.html
+
+  * igt@kms_dp_linktrain_fallback@dp-fallback:
+    - shard-rkl:          [SKIP][457] ([i915#13707] / [i915#14544]) -> [SKIP][458] ([i915#13707])
+   [457]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_dp_linktrain_fallback@dp-fallback.html
+   [458]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@kms_dp_linktrain_fallback@dp-fallback.html
+
+  * igt@kms_dsc@dsc-with-output-formats-with-bpc:
+    - shard-rkl:          [SKIP][459] ([i915#14544] / [i915#3840] / [i915#9053]) -> [SKIP][460] ([i915#3840] / [i915#9053])
+   [459]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_dsc@dsc-with-output-formats-with-bpc.html
+   [460]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_dsc@dsc-with-output-formats-with-bpc.html
+
+  * igt@kms_fbcon_fbt@psr-suspend:
+    - shard-rkl:          [SKIP][461] ([i915#3955]) -> [SKIP][462] ([i915#14544] / [i915#3955])
+   [461]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-8/igt@kms_fbcon_fbt@psr-suspend.html
+   [462]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_fbcon_fbt@psr-suspend.html
+
+  * igt@kms_flip@2x-flip-vs-dpms:
+    - shard-rkl:          [SKIP][463] ([i915#14544] / [i915#9934]) -> [SKIP][464] ([i915#9934]) +3 other tests skip
+   [463]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_flip@2x-flip-vs-dpms.html
+   [464]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_flip@2x-flip-vs-dpms.html
+
+  * igt@kms_flip@2x-flip-vs-suspend:
+    - shard-glk:          [INCOMPLETE][465] ([i915#12745] / [i915#4839] / [i915#6113]) -> [INCOMPLETE][466] ([i915#12745] / [i915#4839])
+   [465]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-glk1/igt@kms_flip@2x-flip-vs-suspend.html
+   [466]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk4/igt@kms_flip@2x-flip-vs-suspend.html
+
+  * igt@kms_flip@2x-wf_vblank-ts-check-interruptible:
+    - shard-rkl:          [SKIP][467] ([i915#9934]) -> [SKIP][468] ([i915#14544] / [i915#9934])
+   [467]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_flip@2x-wf_vblank-ts-check-interruptible.html
+   [468]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_flip@2x-wf_vblank-ts-check-interruptible.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling:
+    - shard-rkl:          [SKIP][469] ([i915#15643]) -> [SKIP][470] ([i915#14544] / [i915#15643]) +1 other test skip
+   [469]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling.html
+   [470]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling:
+    - shard-rkl:          [SKIP][471] ([i915#14544] / [i915#15643]) -> [SKIP][472] ([i915#15643])
+   [471]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling.html
+   [472]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling.html
+
+  * igt@kms_frontbuffer_tracking@fbc-tiling-4:
+    - shard-rkl:          [SKIP][473] ([i915#5439]) -> [SKIP][474] ([i915#14544] / [i915#5439])
+   [473]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_frontbuffer_tracking@fbc-tiling-4.html
+   [474]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@fbc-tiling-4.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-gtt:
+    - shard-rkl:          [SKIP][475] ([i915#15102]) -> [SKIP][476] ([i915#14544] / [i915#15102])
+   [475]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-gtt.html
+   [476]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-gtt.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw:
+    - shard-rkl:          [SKIP][477] ([i915#14544] / [i915#15102] / [i915#3023]) -> [SKIP][478] ([i915#15102] / [i915#3023]) +10 other tests skip
+   [477]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw.html
+   [478]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-2p-rte:
+    - shard-rkl:          [SKIP][479] ([i915#1825]) -> [SKIP][480] ([i915#14544] / [i915#1825]) +10 other tests skip
+   [479]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_frontbuffer_tracking@fbcpsr-2p-rte.html
+   [480]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@fbcpsr-2p-rte.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-suspend:
+    - shard-dg2:          [SKIP][481] ([i915#10433] / [i915#15102] / [i915#3458]) -> [SKIP][482] ([i915#15102] / [i915#3458]) +1 other test skip
+   [481]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-4/igt@kms_frontbuffer_tracking@fbcpsr-suspend.html
+   [482]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_frontbuffer_tracking@fbcpsr-suspend.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-tiling-4:
+    - shard-rkl:          [SKIP][483] ([i915#14544] / [i915#5439]) -> [SKIP][484] ([i915#5439])
+   [483]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_frontbuffer_tracking@fbcpsr-tiling-4.html
+   [484]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_frontbuffer_tracking@fbcpsr-tiling-4.html
+
+  * igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-shrfb-draw-mmap-wc:
+    - shard-rkl:          [SKIP][485] ([i915#14544] / [i915#15102]) -> [SKIP][486] ([i915#15102]) +1 other test skip
+   [485]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-shrfb-draw-mmap-wc.html
+   [486]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-shrfb-draw-mmap-wc.html
+
+  * igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt:
+    - shard-rkl:          [SKIP][487] ([i915#15102] / [i915#3023]) -> [SKIP][488] ([i915#14544] / [i915#15102] / [i915#3023]) +2 other tests skip
+   [487]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt.html
+   [488]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt.html
+
+  * igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt:
+    - shard-dg2:          [SKIP][489] ([i915#15102] / [i915#3458]) -> [SKIP][490] ([i915#10433] / [i915#15102] / [i915#3458]) +1 other test skip
+   [489]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-3/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt.html
+   [490]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc:
+    - shard-rkl:          [SKIP][491] ([i915#14544] / [i915#1825]) -> [SKIP][492] ([i915#1825]) +14 other tests skip
+   [491]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc.html
+   [492]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc.html
+
+  * igt@kms_hdr@brightness-with-hdr:
+    - shard-rkl:          [SKIP][493] ([i915#13331] / [i915#14544]) -> [SKIP][494] ([i915#12713])
+   [493]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_hdr@brightness-with-hdr.html
+   [494]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_hdr@brightness-with-hdr.html
+    - shard-dg1:          [SKIP][495] ([i915#12713]) -> [SKIP][496] ([i915#1187] / [i915#12713])
+   [495]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-18/igt@kms_hdr@brightness-with-hdr.html
+   [496]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@kms_hdr@brightness-with-hdr.html
+
+  * igt@kms_joiner@basic-force-ultra-joiner:
+    - shard-rkl:          [SKIP][497] ([i915#14544] / [i915#15458]) -> [SKIP][498] ([i915#15458])
+   [497]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_joiner@basic-force-ultra-joiner.html
+   [498]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_joiner@basic-force-ultra-joiner.html
+
+  * igt@kms_joiner@basic-max-non-joiner:
+    - shard-rkl:          [SKIP][499] ([i915#13688] / [i915#14544]) -> [SKIP][500] ([i915#13688])
+   [499]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_joiner@basic-max-non-joiner.html
+   [500]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_joiner@basic-max-non-joiner.html
+
+  * igt@kms_joiner@invalid-modeset-big-joiner:
+    - shard-rkl:          [SKIP][501] ([i915#15460]) -> [SKIP][502] ([i915#14544] / [i915#15460])
+   [501]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_joiner@invalid-modeset-big-joiner.html
+   [502]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_joiner@invalid-modeset-big-joiner.html
+
+  * igt@kms_joiner@switch-modeset-ultra-joiner-big-joiner:
+    - shard-rkl:          [SKIP][503] ([i915#14544] / [i915#15638] / [i915#15722]) -> [SKIP][504] ([i915#15638] / [i915#15722])
+   [503]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_joiner@switch-modeset-ultra-joiner-big-joiner.html
+   [504]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_joiner@switch-modeset-ultra-joiner-big-joiner.html
+
+  * igt@kms_pipe_stress@stress-xrgb8888-4tiled:
+    - shard-rkl:          [SKIP][505] ([i915#14544] / [i915#14712]) -> [SKIP][506] ([i915#14712])
+   [505]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_pipe_stress@stress-xrgb8888-4tiled.html
+   [506]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_pipe_stress@stress-xrgb8888-4tiled.html
+
+  * igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier:
+    - shard-rkl:          [SKIP][507] ([i915#14544] / [i915#15709]) -> [SKIP][508] ([i915#15709])
+   [507]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier.html
+   [508]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier.html
+
+  * igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier:
+    - shard-rkl:          [SKIP][509] ([i915#15709]) -> [SKIP][510] ([i915#14544] / [i915#15709]) +1 other test skip
+   [509]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier.html
+   [510]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier.html
+
+  * igt@kms_plane_multiple@2x-tiling-4:
+    - shard-rkl:          [SKIP][511] ([i915#13958] / [i915#14544]) -> [SKIP][512] ([i915#13958])
+   [511]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_plane_multiple@2x-tiling-4.html
+   [512]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_plane_multiple@2x-tiling-4.html
+
+  * igt@kms_plane_multiple@tiling-yf:
+    - shard-rkl:          [SKIP][513] ([i915#14259] / [i915#14544]) -> [SKIP][514] ([i915#14259])
+   [513]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_plane_multiple@tiling-yf.html
+   [514]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@kms_plane_multiple@tiling-yf.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - shard-rkl:          [SKIP][515] ([i915#14544] / [i915#5354]) -> [SKIP][516] ([i915#5354])
+   [515]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_pm_backlight@basic-brightness.html
+   [516]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_pm_dc@dc6-psr:
+    - shard-rkl:          [SKIP][517] ([i915#15948]) -> [SKIP][518] ([i915#14544] / [i915#15948])
+   [517]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_pm_dc@dc6-psr.html
+   [518]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_pm_dc@dc6-psr.html
+
+  * igt@kms_pm_lpsp@kms-lpsp:
+    - shard-rkl:          [SKIP][519] ([i915#3828]) -> [SKIP][520] ([i915#9340])
+   [519]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@kms_pm_lpsp@kms-lpsp.html
+   [520]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_pm_lpsp@kms-lpsp.html
+    - shard-dg1:          [SKIP][521] ([i915#9340]) -> [SKIP][522] ([i915#3828])
+   [521]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-16/igt@kms_pm_lpsp@kms-lpsp.html
+   [522]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@kms_pm_lpsp@kms-lpsp.html
+
+  * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf:
+    - shard-rkl:          [SKIP][523] ([i915#11520]) -> [SKIP][524] ([i915#11520] / [i915#14544]) +1 other test skip
+   [523]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf.html
+   [524]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf.html
+
+  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf:
+    - shard-rkl:          [SKIP][525] ([i915#11520] / [i915#14544]) -> [SKIP][526] ([i915#11520]) +3 other tests skip
+   [525]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf.html
+   [526]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - shard-rkl:          [SKIP][527] ([i915#1072] / [i915#9732]) -> [SKIP][528] ([i915#1072] / [i915#14544] / [i915#9732]) +10 other tests skip
+   [527]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_psr@psr-sprite-plane-onoff.html
+   [528]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@kms_psr@psr2-sprite-mmap-cpu:
+    - shard-rkl:          [SKIP][529] ([i915#1072] / [i915#14544] / [i915#9732]) -> [SKIP][530] ([i915#1072] / [i915#9732]) +10 other tests skip
+   [529]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_psr@psr2-sprite-mmap-cpu.html
+   [530]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_psr@psr2-sprite-mmap-cpu.html
+
+  * igt@kms_scaling_modes@scaling-mode-full:
+    - shard-dg1:          [SKIP][531] ([i915#3555]) -> [SKIP][532] ([i915#3555] / [i915#4423])
+   [531]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-18/igt@kms_scaling_modes@scaling-mode-full.html
+   [532]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_scaling_modes@scaling-mode-full.html
+
+  * igt@kms_vrr@flip-basic-fastset:
+    - shard-rkl:          [SKIP][533] ([i915#9906]) -> [SKIP][534] ([i915#14544] / [i915#9906])
+   [533]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_vrr@flip-basic-fastset.html
+   [534]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_vrr@flip-basic-fastset.html
+
+  * igt@kms_vrr@flipline:
+    - shard-rkl:          [SKIP][535] ([i915#14544] / [i915#15243] / [i915#3555]) -> [SKIP][536] ([i915#15243] / [i915#3555])
+   [535]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_vrr@flipline.html
+   [536]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_vrr@flipline.html
+
+  * igt@perf_pmu@event-wait@rcs0:
+    - shard-rkl:          [SKIP][537] ([i915#14544]) -> [SKIP][538] +11 other tests skip
+   [537]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@perf_pmu@event-wait@rcs0.html
+   [538]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@perf_pmu@event-wait@rcs0.html
+
+  * igt@perf_pmu@module-unload:
+    - shard-dg2:          [ABORT][539] ([i915#15778]) -> [ABORT][540] ([i915#13029] / [i915#15778])
+   [539]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-7/igt@perf_pmu@module-unload.html
+   [540]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@perf_pmu@module-unload.html
+    - shard-dg1:          [ABORT][541] ([i915#15778]) -> [ABORT][542] ([i915#13029] / [i915#15778])
+   [541]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-15/igt@perf_pmu@module-unload.html
+   [542]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@perf_pmu@module-unload.html
+
+  
+  [i915#10055]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10055
+  [i915#10056]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10056
+  [i915#10307]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10307
+  [i915#10433]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10433
+  [i915#10434]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10434
+  [i915#10647]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10647
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#10826]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10826
+  [i915#10959]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10959
+  [i915#1099]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1099
+  [i915#11078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11078
+  [i915#11151]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151
+  [i915#11520]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
+  [i915#118]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/118
+  [i915#1187]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1187
+  [i915#12169]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12169
+  [i915#12276]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12276
+  [i915#12313]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12313
+  [i915#12454]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12454
+  [i915#1257]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1257
+  [i915#12655]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12655
+  [i915#12712]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12712
+  [i915#12713]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12713
+  [i915#12745]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12745
+  [i915#12756]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12756
+  [i915#12761]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12761
+  [i915#12805]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12805
+  [i915#12910]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12910
+  [i915#13008]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13008
+  [i915#13026]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13026
+  [i915#13029]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13029
+  [i915#13046]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13046
+  [i915#13049]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13049
+  [i915#13179]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13179
+  [i915#13331]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13331
+  [i915#13356]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13356
+  [i915#13398]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13398
+  [i915#13409]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13409
+  [i915#13476]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13476
+  [i915#13566]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13566
+  [i915#13688]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13688
+  [i915#13707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13707
+  [i915#13717]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13717
+  [i915#13748]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13748
+  [i915#13749]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13749
+  [i915#13790]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13790
+  [i915#13809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13809
+  [i915#13958]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13958
+  [i915#14073]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14073
+  [i915#14098]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14098
+  [i915#14118]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14118
+  [i915#14242]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14242
+  [i915#14259]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14259
+  [i915#14498]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14498
+  [i915#14544]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544
+  [i915#14545]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14545
+  [i915#14586]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14586
+  [i915#14600]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14600
+  [i915#14712]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14712
+  [i915#14995]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14995
+  [i915#15060]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15060
+  [i915#15073]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15073
+  [i915#15102]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102
+  [i915#15104]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15104
+  [i915#15106]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15106
+  [i915#15132]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15132
+  [i915#15152]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15152
+  [i915#15243]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15243
+  [i915#15329]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15329
+  [i915#15330]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330
+  [i915#15454]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15454
+  [i915#15458]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15458
+  [i915#15459]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15459
+  [i915#15460]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15460
+  [i915#15492]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15492
+  [i915#15582]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15582
+  [i915#15638]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15638
+  [i915#15643]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643
+  [i915#15709]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709
+  [i915#15722]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15722
+  [i915#15733]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15733
+  [i915#15739]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15739
+  [i915#15752]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15752
+  [i915#15778]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15778
+  [i915#15865]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865
+  [i915#15871]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15871
+  [i915#15931]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15931
+  [i915#15948]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15948
+  [i915#1769]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769
+  [i915#1825]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1825
+  [i915#1839]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1839
+  [i915#2065]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2065
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#2436]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2436
+  [i915#2527]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2527
+  [i915#2658]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2658
+  [i915#2681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2681
+  [i915#280]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/280
+  [i915#2856]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2856
+  [i915#3023]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3023
+  [i915#3116]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3116
+  [i915#3281]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281
+  [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
+  [i915#3297]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297
+  [i915#3299]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3299
+  [i915#3458]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3458
+  [i915#3469]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3469
+  [i915#3539]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3539
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637
+  [i915#3638]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3638
+  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+  [i915#3742]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3742
+  [i915#3828]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3828
+  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+  [i915#3955]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3955
+  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4270]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4270
+  [i915#4349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4349
+  [i915#4387]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4387
+  [i915#4423]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4423
+  [i915#4525]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4525
+  [i915#4538]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4538
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#4817]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4817
+  [i915#4839]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4839
+  [i915#4852]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4852
+  [i915#4854]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4854
+  [i915#4860]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4860
+  [i915#4880]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4880
+  [i915#4885]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4885
+  [i915#5138]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5138
+  [i915#5190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190
+  [i915#5286]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286
+  [i915#5289]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5289
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#5439]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5439
+  [i915#5723]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5723
+  [i915#5882]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5882
+  [i915#5956]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5956
+  [i915#6095]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095
+  [i915#6113]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6113
+  [i915#6230]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6230
+  [i915#6245]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6245
+  [i915#6301]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6301
+  [i915#6335]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6335
+  [i915#6344]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6344
+  [i915#6524]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6524
+  [i915#658]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/658
+  [i915#6805]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6805
+  [i915#6953]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953
+  [i915#7697]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7697
+  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
+  [i915#7828]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828
+  [i915#8228]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8228
+  [i915#8381]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8381
+  [i915#8399]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8399
+  [i915#8411]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8411
+  [i915#8428]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8428
+  [i915#8708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8708
+  [i915#8808]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808
+  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
+  [i915#8810]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8810
+  [i915#8813]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8813
+  [i915#8814]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8814
+  [i915#8821]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8821
+  [i915#8823]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8823
+  [i915#9053]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9053
+  [i915#9067]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9067
+  [i915#9323]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9323
+  [i915#9337]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9337
+  [i915#9340]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9340
+  [i915#9423]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423
+  [i915#9531]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9531
+  [i915#9688]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9688
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+  [i915#9766]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9766
+  [i915#9808]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9808
+  [i915#9809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9809
+  [i915#9812]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812
+  [i915#9878]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9878
+  [i915#9906]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906
+  [i915#9917]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9917
+  [i915#9934]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8865 -> IGTPW_15033
+  * Piglit: piglit_4509 -> None
+
+  CI-20190529: 20190529
+  CI_DRM_18353: 84de0c4efa971d100d339d4b4aef24676b86c58e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15033: b066d9b051b94ec7dd20f960ded39d074a32bf6e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8865: 1c23bc1bdf01bf0ded2344cb217d7fe88de3b726 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/index.html
+
+--===============5487075857332644820==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/amdgpu: Add ASIC filtering system with family ranges</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165266/">https://patchwork.freedesktop.org/series/165266/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_18353_full -&gt; IGTPW_15033_full</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/index.html</p>
+<h2>Participating hosts (10 -&gt; 10)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15033_full that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@api_intel_bb@crc32:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@api_intel_bb@crc32.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6230">i915#6230</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@api_intel_bb@crc32.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6230">i915#6230</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-10/igt@api_intel_bb@crc32.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6230">i915#6230</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@api_intel_bb@object-reloc-keep-cache:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@api_intel_bb@object-reloc-keep-cache.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8411">i915#8411</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@device_reset@cold-reset-bound:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@device_reset@cold-reset-bound.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11078">i915#11078</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@device_reset@cold-reset-bound.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11078">i915#11078</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@device_reset@cold-reset-bound.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11078">i915#11078</a>)</li>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@device_reset@cold-reset-bound.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11078">i915#11078</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@device_reset@unbind-cold-reset-rebind:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@device_reset@unbind-cold-reset-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11078">i915#11078</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf@all-tests:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@dmabuf@all-tests.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15931">i915#15931</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ccs@block-multicopy-compressed:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@gem_ccs@block-multicopy-compressed.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9323">i915#9323</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@gem_ccs@block-multicopy-compressed.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9323">i915#9323</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-8/igt@gem_ccs@block-multicopy-compressed.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9323">i915#9323</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ccs@large-ctrl-surf-copy:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_ccs@large-ctrl-surf-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13008">i915#13008</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@gem_ccs@large-ctrl-surf-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13008">i915#13008</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-10/igt@gem_ccs@large-ctrl-surf-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13008">i915#13008</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-8/igt@gem_ccs@large-ctrl-surf-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13008">i915#13008</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_create@create-ext-cpu-access-sanity-check:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gem_create@create-ext-cpu-access-sanity-check.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6335">i915#6335</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@legacy-engines-hostile-preempt:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb7/igt@gem_ctx_persistence@legacy-engines-hostile-preempt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1099">i915#1099</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@saturated-hostile-nopreempt:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@gem_ctx_persistence@saturated-hostile-nopreempt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5882">i915#5882</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@saturated-hostile-nopreempt@vcs1:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@gem_ctx_persistence@saturated-hostile-nopreempt@vcs1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5882">i915#5882</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_sseu@invalid-sseu:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@gem_ctx_sseu@invalid-sseu.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/280">i915#280</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_balancer@parallel:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gem_exec_balancer@parallel.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4525">i915#4525</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_balancer@parallel-keep-in-fence:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@gem_exec_balancer@parallel-keep-in-fence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4525">i915#4525</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_capture@capture-recoverable:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_exec_capture@capture-recoverable.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6344">i915#6344</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_flush@basic-batch-kernel-default-cmd:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_exec_flush@basic-batch-kernel-default-cmd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_flush@basic-uc-pro-default:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@gem_exec_flush@basic-uc-pro-default.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3539">i915#3539</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4852">i915#4852</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_flush@basic-wb-rw-default:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@gem_exec_flush@basic-wb-rw-default.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3539">i915#3539</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4852">i915#4852</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-cpu-gtt:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@gem_exec_reloc@basic-cpu-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281">i915#3281</a>) +4 other tests skip</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_exec_reloc@basic-cpu-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281">i915#3281</a>) +1 other test skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@gem_exec_reloc@basic-cpu-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281">i915#3281</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-cpu-wc-noreloc:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@gem_exec_reloc@basic-cpu-wc-noreloc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281">i915#3281</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-gtt-wc-noreloc:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gem_exec_reloc@basic-gtt-wc-noreloc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281">i915#3281</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_fence_thrash@bo-copy:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@gem_fence_thrash@bo-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4860">i915#4860</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_fenced_exec_thrash@no-spare-fences:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@gem_fenced_exec_thrash@no-spare-fences.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4860">i915#4860</a>) +1 other test skip</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@gem_fenced_exec_thrash@no-spare-fences.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4860">i915#4860</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk8/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@heavy-multi:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@gem_lmem_swapping@heavy-multi.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@heavy-random:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk9/igt@gem_lmem_swapping@heavy-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@heavy-verify-random:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@gem_lmem_swapping@heavy-verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gem_lmem_swapping@random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap@basic-small-bo:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@gem_mmap@basic-small-bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083">i915#4083</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap@short-mmap:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@gem_mmap@short-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083">i915#4083</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap_gtt@close-race:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@gem_mmap_gtt@close-race.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +4 other tests skip</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@gem_mmap_gtt@close-race.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_partial_pwrite_pread@reads:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@gem_partial_pwrite_pread@reads.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@gem_partial_pwrite_pread@reads.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-5/igt@gem_partial_pwrite_pread@reads.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_pread@exhaustion:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@gem_pread@exhaustion.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2658">i915#2658</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_pxp@hw-rejects-pxp-buffer:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-4/igt@gem_pxp@hw-rejects-pxp-buffer.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13398">i915#13398</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_pxp@hw-rejects-pxp-context:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_pxp@hw-rejects-pxp-context.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13717">i915#13717</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-4/igt@gem_pxp@hw-rejects-pxp-context.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13398">i915#13398</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_pxp@protected-raw-src-copy-not-readible:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@gem_pxp@protected-raw-src-copy-not-readible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4270">i915#4270</a>) +2 other tests skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@gem_pxp@protected-raw-src-copy-not-readible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4270">i915#4270</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_pxp@verify-pxp-stale-ctx-execution:</p>
+<ul>
+<li>shard-glk11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@gem_pxp@verify-pxp-stale-ctx-execution.html">SKIP</a> +162 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_copy@yf-tiled-to-vebox-yf-tiled:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@gem_render_copy@yf-tiled-to-vebox-yf-tiled.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190">i915#5190</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8428">i915#8428</a>) +3 other tests skip</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@gem_render_copy@yf-tiled-to-vebox-yf-tiled.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8428">i915#8428</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079">i915#4079</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_set_tiling_vs_blt@tiled-to-tiled:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_set_tiling_vs_blt@tiled-to-tiled.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8411">i915#8411</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_set_tiling_vs_gtt:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@gem_set_tiling_vs_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079">i915#4079</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-4/igt@gem_set_tiling_vs_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079">i915#4079</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_softpin@evict-snoop-interruptible:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@gem_softpin@evict-snoop-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4885">i915#4885</a>)</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gem_softpin@evict-snoop-interruptible.html">SKIP</a> +18 other tests skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@gem_softpin@evict-snoop-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4885">i915#4885</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@gem_softpin@evict-snoop-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4885">i915#4885</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_partial_pwrite_pread@writes-after-reads:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gem_tiled_partial_pwrite_pread@writes-after-reads.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_swapping@non-threaded:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@gem_tiled_swapping@non-threaded.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@invalid-mmap-offset-unsync:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_userptr_blits@invalid-mmap-offset-unsync.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297">i915#3297</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@map-fixed-invalidate-overlap:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@gem_userptr_blits@map-fixed-invalidate-overlap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297">i915#3297</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4880">i915#4880</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@readonly-pwrite-unsync:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gem_userptr_blits@readonly-pwrite-unsync.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297">i915#3297</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@readonly-unsync:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@gem_userptr_blits@readonly-unsync.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297">i915#3297</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@gem_userptr_blits@readonly-unsync.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297">i915#3297</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_workarounds@suspend-resume:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@gem_workarounds@suspend-resume.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@gem_workarounds@suspend-resume.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15152">i915#15152</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_workarounds@suspend-resume-fd:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_workarounds@suspend-resume-fd.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13356">i915#13356</a>)</li>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk6/igt@gem_workarounds@suspend-resume-fd.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13356">i915#13356</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14586">i915#14586</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@bb-secure:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@gen9_exec_parse@bb-secure.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2527">i915#2527</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@bb-start-param:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@gen9_exec_parse@bb-start-param.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2527">i915#2527</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2856">i915#2856</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@shadow-peek:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@gen9_exec_parse@shadow-peek.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2527">i915#2527</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2856">i915#2856</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_drm_fdinfo@busy@rcs0:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@i915_drm_fdinfo@busy@rcs0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14073">i915#14073</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_drm_fdinfo@busy@vecs1:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@i915_drm_fdinfo@busy@vecs1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14073">i915#14073</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_drm_fdinfo@isolation@rcs0:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@i915_drm_fdinfo@isolation@rcs0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14073">i915#14073</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_drm_fdinfo@virtual-busy-idle-all:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@i915_drm_fdinfo@virtual-busy-idle-all.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14118">i915#14118</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload-no-display:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@i915_module_load@reload-no-display.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13029">i915#13029</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14545">i915#14545</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@i915_module_load@reload-no-display.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13029">i915#13029</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14545">i915#14545</a>)</li>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb5/igt@i915_module_load@reload-no-display.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14545">i915#14545</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_freq_api@freq-suspend:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@i915_pm_freq_api@freq-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8399">i915#8399</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-fence:</p>
+<ul>
+<li>shard-tglu:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-tglu-6/igt@i915_pm_rc6_residency@rc6-fence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@i915_pm_rc6_residency@rc6-fence.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13790">i915#13790</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2681">i915#2681</a>) +1 other test warn</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-idle:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@i915_pm_rc6_residency@rc6-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14498">i915#14498</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@system-suspend:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk8/igt@i915_pm_rpm@system-suspend.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13356">i915#13356</a>)</li>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@i915_pm_rpm@system-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@i915_pm_rpm@system-suspend.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15060">i915#15060</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@thresholds:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@i915_pm_rps@thresholds.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@i915_pm_rps@thresholds.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@i915_pm_rps@thresholds.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_sseu@full-enable:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@i915_pm_sseu@full-enable.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4387">i915#4387</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_query@hwconfig_table:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@i915_query@hwconfig_table.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6245">i915#6245</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_query@test-query-geometry-subslices:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@i915_query@test-query-geometry-subslices.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5723">i915#5723</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@fence-restore-untiled:</p>
+<ul>
+<li>shard-glk11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@i915_suspend@fence-restore-untiled.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4817">i915#4817</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@sysfs-reader:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@i915_suspend@sysfs-reader.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4817">i915#4817</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@intel_hwmon@hwmon-read:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-7/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@invalid-smem-bo-on-discrete:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_addfb_basic@invalid-smem-bo-on-discrete.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12454">i915#12454</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12712">i915#12712</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk1/igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-2.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12761">i915#12761</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14995">i915#14995</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic@plane-primary-overlay-mutable-zpos:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_atomic@plane-primary-overlay-mutable-zpos.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9531">i915#9531</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:</p>
+<ul>
+<li>shard-glk11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a>) +1 other test skip</li>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@4-tiled-16bpp-rotate-90:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-7/igt@kms_big_fb@4-tiled-16bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286">i915#5286</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286">i915#5286</a>) +3 other tests skip</li>
+<li>shard-mtlp:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-mtlp-4/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15733">i915#15733</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5138">i915#5138</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-180:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-180.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286">i915#5286</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@x-tiled-8bpp-rotate-90:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_big_fb@x-tiled-8bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3638">i915#3638</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_big_fb@x-tiled-8bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3638">i915#3638</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4538">i915#4538</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190">i915#5190</a>) +6 other tests skip</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-8/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip.html">SKIP</a> +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@yf-tiled-32bpp-rotate-90:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_big_fb@yf-tiled-32bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4538">i915#4538</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-aux-stride-4-tiled-mtl-mc-ccs@pipe-a-hdmi-a-4:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_ccs@bad-aux-stride-4-tiled-mtl-mc-ccs@pipe-a-hdmi-a-4.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +175 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-aux-stride-y-tiled-ccs@pipe-d-hdmi-a-1:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_ccs@bad-aux-stride-y-tiled-ccs@pipe-d-hdmi-a-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10307">i915#10307</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10434">i915#10434</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-aux-stride-y-tiled-gen12-mc-ccs@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>shard-glk10:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk10/igt@kms_ccs@bad-aux-stride-y-tiled-gen12-mc-ccs@pipe-c-hdmi-a-1.html">SKIP</a> +46 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-pixel-format-yf-tiled-ccs@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_ccs@bad-pixel-format-yf-tiled-ccs@pipe-c-hdmi-a-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10307">i915#10307</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +90 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs@pipe-c-hdmi-a-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14098">i915#14098</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +46 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs@pipe-b-hdmi-a-2:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs@pipe-b-hdmi-a-2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-rotation-90-y-tiled-gen12-mc-ccs:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_ccs@bad-rotation-90-y-tiled-gen12-mc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +39 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@ccs-on-another-bo-4-tiled-mtl-mc-ccs@pipe-c-hdmi-a-2:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@kms_ccs@ccs-on-another-bo-4-tiled-mtl-mc-ccs@pipe-c-hdmi-a-2.html">SKIP</a> +324 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12313">i915#12313</a>)</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12313">i915#12313</a>) +4 other tests skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12313">i915#12313</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_ccs@crc-primary-basic-4-tiled-bmg-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12313">i915#12313</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs-cc@pipe-c-hdmi-a-3:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs-cc@pipe-c-hdmi-a-3.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +42 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-basic-4-tiled-lnl-ccs:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_ccs@crc-primary-basic-4-tiled-lnl-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12313">i915#12313</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-basic-y-tiled-ccs@pipe-d-edp-1:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@kms_ccs@crc-primary-basic-y-tiled-ccs@pipe-d-edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +24 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-rotation-180-4-tiled-bmg-ccs:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_ccs@crc-primary-rotation-180-4-tiled-bmg-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12313">i915#12313</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-5/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12805">i915#12805</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12805">i915#12805</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-suspend-y-tiled-ccs@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk4/igt@kms_ccs@crc-primary-suspend-y-tiled-ccs@pipe-a-hdmi-a-1.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15582">i915#15582</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-suspend-yf-tiled-ccs@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_ccs@crc-primary-suspend-yf-tiled-ccs@pipe-a-hdmi-a-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +29 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14098">i915#14098</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs@pipe-b-hdmi-a-2:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs@pipe-b-hdmi-a-2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +80 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@random-ccs-data-y-tiled-ccs:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb5/igt@kms_ccs@random-ccs-data-y-tiled-ccs.html">SKIP</a> +130 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cdclk@mode-transition:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-10/igt@kms_cdclk@mode-transition.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3742">i915#3742</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cdclk@plane-scaling:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_cdclk@plane-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3742">i915#3742</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_edid@hdmi-mode-timings:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_chamelium_edid@hdmi-mode-timings.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_edid@vga-edid-read:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_chamelium_edid@vga-edid-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_frames@dp-crc-fast:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_chamelium_frames@dp-crc-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) +5 other tests skip</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_chamelium_frames@dp-crc-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@vga-hpd:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_chamelium_hpd@vga-hpd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@vga-hpd-for-each-pipe:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_chamelium_hpd@vga-hpd-for-each-pipe.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@content-type-change:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_content_protection@content-type-change.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865">i915#15865</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-lic-type-0-hdcp14:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a>) +1 other test skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-5/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-lic-type-1:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@kms_content_protection@dp-mst-lic-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3299">i915#3299</a>)</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_content_protection@dp-mst-lic-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3116">i915#3116</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_content_protection@dp-mst-lic-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3299">i915#3299</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-5/igt@kms_content_protection@dp-mst-lic-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3116">i915#3116</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3299">i915#3299</a>) +1 other test skip</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@kms_content_protection@dp-mst-lic-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3299">i915#3299</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-type-0-suspend-resume:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@kms_content_protection@dp-mst-type-0-suspend-resume.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-type-1:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_content_protection@dp-mst-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3116">i915#3116</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3299">i915#3299</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@mei-interface:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_content_protection@mei-interface.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865">i915#15865</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@type1:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@kms_content_protection@type1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865">i915#15865</a>)</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_content_protection@type1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865">i915#15865</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-14/igt@kms_content_protection@type1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865">i915#15865</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-4/igt@kms_content_protection@type1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865">i915#15865</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@kms_content_protection@type1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865">i915#15865</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-offscreen-512x512:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_cursor_crc@cursor-offscreen-512x512.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13049">i915#13049</a>) +1 other test skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_cursor_crc@cursor-offscreen-512x512.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13049">i915#13049</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@kms_cursor_crc@cursor-offscreen-512x512.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13049">i915#13049</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-onscreen-256x85:</p>
+<ul>
+<li>shard-tglu:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-tglu-5/igt@kms_cursor_crc@cursor-onscreen-256x85.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-4/igt@kms_cursor_crc@cursor-onscreen-256x85.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13566">i915#13566</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-onscreen-256x85@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_cursor_crc@cursor-onscreen-256x85@pipe-a-hdmi-a-2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13566">i915#13566</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-random-256x85@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@kms_cursor_crc@cursor-random-256x85@pipe-a-hdmi-a-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_cursor_crc@cursor-random-256x85@pipe-a-hdmi-a-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13566">i915#13566</a>) +1 other test fail</li>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_cursor_crc@cursor-random-256x85@pipe-a-hdmi-a-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13566">i915#13566</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-rapid-movement-32x32:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_cursor_crc@cursor-rapid-movement-32x32.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-rapid-movement-512x512:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_cursor_crc@cursor-rapid-movement-512x512.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13049">i915#13049</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-sliding-32x10:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_cursor_crc@cursor-sliding-32x10.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +4 other tests skip</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_cursor_crc@cursor-sliding-32x10.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +4 other tests skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@kms_cursor_crc@cursor-sliding-32x10.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +6 other tests skip</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-4/igt@kms_cursor_crc@cursor-sliding-32x10.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8814">i915#8814</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-sliding-512x512:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_cursor_crc@cursor-sliding-512x512.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13049">i915#13049</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@cursorb-vs-flipb-atomic-transitions-varying-size:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_cursor_legacy@cursorb-vs-flipb-atomic-transitions-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9809">i915#9809</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@cursorb-vs-flipb-toggle:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_cursor_legacy@cursorb-vs-flipb-toggle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13046">i915#13046</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9067">i915#9067</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-7/igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9067">i915#9067</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dp_link_training@uhbr-sst:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@kms_dp_link_training@uhbr-sst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13748">i915#13748</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_dp_link_training@uhbr-sst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13748">i915#13748</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_dp_link_training@uhbr-sst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13748">i915#13748</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@kms_dp_link_training@uhbr-sst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13749">i915#13749</a>)</li>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_dp_link_training@uhbr-sst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13748">i915#13748</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_fbcon_fbt@fbc-suspend:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-7/igt@kms_fbcon_fbt@fbc-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_fbcon_fbt@fbc-suspend.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9878">i915#9878</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_fbcon_fbt@psr-suspend:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-10/igt@kms_fbcon_fbt@psr-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3469">i915#3469</a>)</li>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_fbcon_fbt@psr-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3469">i915#3469</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_feature_discovery@chamelium:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_feature_discovery@chamelium.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2065">i915#2065</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4854">i915#4854</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_feature_discovery@display-2x:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_feature_discovery@display-2x.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1839">i915#1839</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_feature_discovery@display-2x.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1839">i915#1839</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_feature_discovery@dp-mst:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_feature_discovery@dp-mst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9337">i915#9337</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_feature_discovery@psr1:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_feature_discovery@psr1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/658">i915#658</a>)</li>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_feature_discovery@psr1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/658">i915#658</a>)</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_feature_discovery@psr1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/658">i915#658</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_feature_discovery@psr1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/658">i915#658</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_feature_discovery@psr2:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_feature_discovery@psr2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/658">i915#658</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-absolute-wf_vblank:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_flip@2x-absolute-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>) +5 other tests skip</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_flip@2x-absolute-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>) +6 other tests skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@kms_flip@2x-absolute-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>) +3 other tests skip</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-4/igt@kms_flip@2x-absolute-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-absolute-wf_vblank-interruptible:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_flip@2x-absolute-wf_vblank-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-dpms-on-nop-interruptible:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_flip@2x-flip-vs-dpms-on-nop-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-rmfb-interruptible:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_flip@2x-flip-vs-rmfb-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-plain-flip-fb-recreate-interruptible:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-plain-flip-ts-check:</p>
+<ul>
+<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-snb4/igt@kms_flip@2x-plain-flip-ts-check.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb7/igt@kms_flip@2x-plain-flip-ts-check.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10826">i915#10826</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-fences:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_flip@flip-vs-fences.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8381">i915#8381</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling@pipe-a-default-mode:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling@pipe-a-default-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8810">i915#8810</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8813">i915#8813</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-64bpp-linear-to-32bpp-linear-downscaling:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@kms_flip_scaled_crc@flip-64bpp-linear-to-32bpp-linear-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8810">i915#8810</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8813">i915#8813</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-downscaling:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190">i915#5190</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-indfb-draw-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15104">i915#15104</a>) +2 other tests skip</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-indfb-draw-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15104">i915#15104</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-wc:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1825">i915#1825</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-gtt:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8708">i915#8708</a>) +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-pgflip-blt:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-shrfb-pgflip-blt.html">SKIP</a> +29 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-blt:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>) +22 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-cpu:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-indfb-draw-mmap-cpu.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1825">i915#1825</a>) +18 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8708">i915#8708</a>) +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-suspend:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_frontbuffer_tracking@fbc-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@kms_frontbuffer_tracking@fbc-suspend.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15132">i915#15132</a>)</li>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@kms_frontbuffer_tracking@fbc-suspend.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10056">i915#10056</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-wc:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15104">i915#15104</a>) +2 other tests skip</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-shrfb-draw-pwrite:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-shrfb-draw-pwrite.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-shrfb-draw-render:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-shrfb-draw-render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-blt:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a>) +18 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3458">i915#3458</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-move:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3023">i915#3023</a>) +16 other tests skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3458">i915#3458</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-pwrite:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-pwrite.html">SKIP</a> +40 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-fullscreen:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-2/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-fullscreen.html">SKIP</a> +57 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-tiling-y:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_frontbuffer_tracking@fbcpsr-tiling-y.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10055">i915#10055</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_frontbuffer_tracking@fbcpsr-tiling-y.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10055">i915#10055</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@pipe-fbc-rte:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_frontbuffer_tracking@pipe-fbc-rte.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9766">i915#9766</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8708">i915#8708</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-render:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_frontbuffer_tracking@psr-2p-primscrn-cur-indfb-draw-render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1825">i915#1825</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-wc:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a>) +14 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@bpc-switch:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_hdr@bpc-switch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8228">i915#8228</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_joiner@basic-force-big-joiner:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_joiner@basic-force-big-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15459">i915#15459</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_joiner@invalid-modeset-force-ultra-joiner:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_joiner@invalid-modeset-force-ultra-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15458">i915#15458</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_panel_fitting@atomic-fastset:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_panel_fitting@atomic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6301">i915#6301</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_b_c_ivb@from-pipe-c-to-b-with-3-lanes:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_pipe_b_c_ivb@from-pipe-c-to-b-with-3-lanes.html">SKIP</a> +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12756">i915#12756</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13409">i915#13409</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13476">i915#13476</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier-source-clamping:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier-source-clamping.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@pixel-format-4-tiled-mtl-mc-ccs-modifier:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_plane@pixel-format-4-tiled-mtl-mc-ccs-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@pixel-format-y-tiled-ccs-modifier:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@kms_plane@pixel-format-y-tiled-ccs-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>) +2 other tests skip</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_plane@pixel-format-y-tiled-ccs-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>) +2 other tests skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-19/igt@kms_plane@pixel-format-y-tiled-ccs-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>) +1 other test skip</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_plane@pixel-format-y-tiled-ccs-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@pixel-format-yf-tiled-modifier-source-clamping:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-9/igt@kms_plane@pixel-format-yf-tiled-modifier-source-clamping.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk1/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13026">i915#13026</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_alpha_blend@constant-alpha-max:</p>
+<ul>
+<li>shard-glk11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_plane_alpha_blend@constant-alpha-max.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10647">i915#10647</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12169">i915#12169</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_alpha_blend@constant-alpha-max@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>shard-glk11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_plane_alpha_blend@constant-alpha-max@pipe-a-hdmi-a-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10647">i915#10647</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_lowres@tiling-yf:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_plane_lowres@tiling-yf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8821">i915#8821</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-7/igt@kms_plane_lowres@tiling-yf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8821">i915#8821</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_multiple@2x-tiling-x:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_plane_multiple@2x-tiling-x.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13958">i915#13958</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_multiple@2x-tiling-y:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_plane_multiple@2x-tiling-y.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13958">i915#13958</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_multiple@2x-tiling-yf:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_plane_multiple@2x-tiling-yf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13958">i915#13958</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_multiple@tiling-4:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@kms_plane_multiple@tiling-4.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14259">i915#14259</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@intel-max-src-size:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_plane_scaling@intel-max-src-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9423">i915#9423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-a:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-a.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15329">i915#15329</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15329">i915#15329</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@bad-brightness:</p>
+<ul>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_pm_backlight@bad-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@fade:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_pm_backlight@fade.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812">i915#9812</a>) +1 other test skip</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_pm_backlight@fade.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc5-retention-flops:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_pm_dc@dc5-retention-flops.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3828">i915#3828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc6-dpms:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_pm_dc@dc6-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15752">i915#15752</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc9-dpms:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_pm_dc@dc9-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15739">i915#15739</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-2/igt@kms_pm_dc@dc9-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15739">i915#15739</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_lpsp@kms-lpsp:</p>
+<ul>
+<li>shard-dg2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-4/igt@kms_pm_lpsp@kms-lpsp.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_pm_lpsp@kms-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9340">i915#9340</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@modeset-lpsp-stress:</p>
+<ul>
+<li>shard-dg1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-15/igt@kms_pm_rpm@modeset-lpsp-stress.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@kms_pm_rpm@modeset-lpsp-stress.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15073">i915#15073</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@modeset-non-lpsp-stress:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_pm_rpm@modeset-non-lpsp-stress.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15073">i915#15073</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_prime@basic-modeset-hybrid:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-7/igt@kms_prime@basic-modeset-hybrid.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6524">i915#6524</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6805">i915#6805</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-pr-overlay-primary-update-sf-dmg-area:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_psr2_sf@fbc-pr-overlay-primary-update-sf-dmg-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-5/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>) +3 other tests skip</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>)</li>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb6/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-b-edp-1:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-8/igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-b-edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9808">i915#9808</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area:</p>
+<ul>
+<li>shard-glk11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-9/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@fbc-psr-no-drrs:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_psr@fbc-psr-no-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9688">i915#9688</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@fbc-psr2-cursor-blt:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_psr@fbc-psr2-cursor-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +12 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@pr-dpms:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_psr@pr-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-mmap-cpu:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_psr@psr-cursor-mmap-cpu.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +14 other tests skip</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_psr@psr-cursor-mmap-cpu.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-mmap-gtt@edp-1:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_psr@psr-primary-mmap-gtt@edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9688">i915#9688</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr2-cursor-mmap-gtt:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_psr@psr2-cursor-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +22 other tests skip</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-18/igt@kms_psr@psr2-cursor-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_rotation_crc@multiplane-rotation:</p>
+<ul>
+<li>shard-glk11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_rotation_crc@multiplane-rotation.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15492">i915#15492</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_rotation_crc@primary-4-tiled-reflect-x-180:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_rotation_crc@primary-4-tiled-reflect-x-180.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5289">i915#5289</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_rotation_crc@primary-yf-tiled-reflect-x-270:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_rotation_crc@primary-yf-tiled-reflect-x-270.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5289">i915#5289</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_scaling_modes@scaling-mode-full-aspect:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-7/igt@kms_scaling_modes@scaling-mode-full-aspect.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_selftest@drm_framebuffer:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_selftest@drm_framebuffer.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13179">i915#13179</a>) +1 other test abort</li>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk3/igt@kms_selftest@drm_framebuffer.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13179">i915#13179</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-snb7/igt@kms_setmode@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15106">i915#15106</a>) +6 other tests fail</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-8/igt@kms_setmode@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15106">i915#15106</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@invalid-clone-exclusive-crtc:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_setmode@invalid-clone-exclusive-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809">i915#8809</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8823">i915#8823</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@invalid-clone-single-crtc-stealing:</p>
+<ul>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-5/igt@kms_setmode@invalid-clone-single-crtc-stealing.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809">i915#8809</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_tiled_display@basic-test-pattern:</p>
+<ul>
+<li>shard-glk11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk11/igt@kms_tiled_display@basic-test-pattern.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10959">i915#10959</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@ts-continuation-dpms-suspend:</p>
+<ul>
+<li>shard-glk10:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk10/igt@kms_vblank@ts-continuation-dpms-suspend.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12276">i915#12276</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-dpms:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@kms_vrr@flip-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15243">i915#15243</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_vrr@flip-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15243">i915#15243</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-2/igt@kms_vrr@flip-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@negative-basic:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-3/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch-virtual:</p>
+<ul>
+<li>shard-tglu-1:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-1/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch-vrr:</p>
+<ul>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>shard-dg1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-17/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-6/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>shard-mtlp:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-5/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@perf@gen8-unprivileged-single-ctx-counters:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@perf@gen8-unprivileged-single-ctx-counters.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2436">i915#2436</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@module-unload:</p>
+<ul>
+<li>shard-glk10:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk10/igt@perf_pmu@module-unload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15778">i915#15778</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@rc6-suspend:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk2/igt@perf_pmu@rc6-suspend.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13356">i915#13356</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14242">i915#14242</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@fence-read-hang:</p>
+<ul>
+<li>shard-rkl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@prime_vgem@fence-read-hang.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-on:</p>
+<ul>
+<li>shard-tglu:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-2/igt@sriov_basic@enable-vfs-autoprobe-on.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12910">i915#12910</a>) +9 other tests fail</li>
+<li>shard-dg2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@sriov_basic@enable-vfs-autoprobe-on.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9917">i915#9917</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_create@create-ext-cpu-access-big:</p>
+<ul>
+<li>shard-dg2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-1/igt@gem_create@create-ext-cpu-access-big.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15454">i915#15454</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@gem_create@create-ext-cpu-access-big.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_big@single:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@gem_exec_big@single.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@gem_exec_big@single.html">PASS</a></li>
+<li>shard-mtlp:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-mtlp-3/igt@gem_exec_big@single.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15871">i915#15871</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-6/igt@gem_exec_big@single.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>shard-dg2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-3/igt@gem_exec_suspend@basic-s0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13356">i915#13356</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-8/igt@gem_exec_suspend@basic-s0.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_softpin@noreloc-s3:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@gem_softpin@noreloc-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13809">i915#13809</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@gem_softpin@noreloc-s3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-glk8/igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-1.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12761">i915#12761</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk1/igt@kms_async_flips@async-flip-suspend-resume@pipe-a-hdmi-a-1.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing:</p>
+<ul>
+<li>shard-dg2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-7/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5956">i915#5956</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15582">i915#15582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc:</p>
+<ul>
+<li>shard-dg1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-18/igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4423">i915#4423</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@deep-color:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_color@deep-color.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12655">i915#12655</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_color@deep-color.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-onscreen-128x42:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_cursor_crc@cursor-onscreen-128x42.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13566">i915#13566</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_cursor_crc@cursor-onscreen-128x42.html">PASS</a> +4 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-random-128x42@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>shard-tglu:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-tglu-4/igt@kms_cursor_crc@cursor-random-128x42@pipe-a-hdmi-a-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13566">i915#13566</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-tglu-9/igt@kms_cursor_crc@cursor-random-128x42@pipe-a-hdmi-a-1.html">PASS</a> +3 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible:</p>
+<ul>
+<li>shard-mtlp:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-mtlp-7/igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14600">i915#14600</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-3/igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-glk6/igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-a.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/118">i915#118</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk4/igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-a.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@dpms-non-lpsp:</p>
+<ul>
+<li>shard-dg1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-14/igt@kms_pm_rpm@dpms-non-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15073">i915#15073</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-12/igt@kms_pm_rpm@dpms-non-lpsp.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@modeset-lpsp-stress:</p>
+<ul>
+<li>shard-dg2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-6/igt@kms_pm_rpm@modeset-lpsp-stress.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15073">i915#15073</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_pm_rpm@modeset-lpsp-stress.html">PASS</a> +2 other tests pass</li>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_pm_rpm@modeset-lpsp-stress.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15073">i915#15073</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_pm_rpm@modeset-lpsp-stress.html">PASS</a> +3 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@busy-double-start@rcs0:</p>
+<ul>
+<li>shard-mtlp:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-mtlp-2/igt@perf_pmu@busy-double-start@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4349">i915#4349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-mtlp-1/igt@perf_pmu@busy-double-start@rcs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@busy-double-start@vecs1:</p>
+<ul>
+<li>shard-dg2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-8/igt@perf_pmu@busy-double-start@vecs1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4349">i915#4349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-6/igt@perf_pmu@busy-double-start@vecs1.html">PASS</a> +4 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@gem_basic@multigpu-create-close:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_basic@multigpu-create-close.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7697">i915#7697</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_basic@multigpu-create-close.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7697">i915#7697</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_sseu@invalid-args:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_ctx_sseu@invalid-args.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/280">i915#280</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_ctx_sseu@invalid-args.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/280">i915#280</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_balancer@parallel-keep-submit-fence:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_exec_balancer@parallel-keep-submit-fence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4525">i915#4525</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_exec_balancer@parallel-keep-submit-fence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4525">i915#4525</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-write-read-noreloc:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_exec_reloc@basic-write-read-noreloc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281">i915#3281</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_exec_reloc@basic-write-read-noreloc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281">i915#3281</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-write-wc-noreloc:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@gem_exec_reloc@basic-write-wc-noreloc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281">i915#3281</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_exec_reloc@basic-write-wc-noreloc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3281">i915#3281</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@heavy-random:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_lmem_swapping@heavy-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_lmem_swapping@heavy-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-ccs:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_lmem_swapping@verify-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@gem_lmem_swapping@verify-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_partial_pwrite_pread@reads-uncached:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_partial_pwrite_pread@reads-uncached.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_partial_pwrite_pread@reads-uncached.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_partial_pwrite_pread@write-display:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_partial_pwrite_pread@write-display.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@gem_partial_pwrite_pread@write-display.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_pxp@hw-rejects-pxp-buffer:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-8/igt@gem_pxp@hw-rejects-pxp-buffer.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13717">i915#13717</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_pxp@hw-rejects-pxp-buffer.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13717">i915#13717</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@access-control:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@gem_userptr_blits@access-control.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297">i915#3297</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@gem_userptr_blits@access-control.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297">i915#3297</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@create-destroy-unsync:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gem_userptr_blits@create-destroy-unsync.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297">i915#3297</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@gem_userptr_blits@create-destroy-unsync.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3297">i915#3297</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@bb-chained:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@gen9_exec_parse@bb-chained.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2527">i915#2527</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@gen9_exec_parse@bb-chained.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2527">i915#2527</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_freq_api@freq-reset:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-8/igt@i915_pm_freq_api@freq-reset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8399">i915#8399</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@i915_pm_freq_api@freq-reset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8399">i915#8399</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_freq_api@freq-reset-multiple:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@i915_pm_freq_api@freq-reset-multiple.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8399">i915#8399</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@i915_pm_freq_api@freq-reset-multiple.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8399">i915#8399</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-idle:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@i915_pm_rc6_residency@rc6-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14498">i915#14498</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@i915_pm_rc6_residency@rc6-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14498">i915#14498</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_query@hwconfig_table:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@i915_query@hwconfig_table.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6245">i915#6245</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@i915_query@hwconfig_table.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6245">i915#6245</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1769">i915#1769</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@4-tiled-32bpp-rotate-180:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_big_fb@4-tiled-32bpp-rotate-180.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286">i915#5286</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_big_fb@4-tiled-32bpp-rotate-180.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286">i915#5286</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286">i915#5286</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286">i915#5286</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip:</p>
+<ul>
+<li>shard-dg1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-15/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4538">i915#4538</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286">i915#5286</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4423">i915#4423</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4538">i915#4538</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5286">i915#5286</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@linear-8bpp-rotate-270:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_big_fb@linear-8bpp-rotate-270.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3638">i915#3638</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_big_fb@linear-8bpp-rotate-270.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3638">i915#3638</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@y-tiled-64bpp-rotate-90:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_big_fb@y-tiled-64bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3638">i915#3638</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_big_fb@y-tiled-64bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3638">i915#3638</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14098">i915#14098</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14098">i915#14098</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc@pipe-a-hdmi-a-2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc@pipe-a-hdmi-a-2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12805">i915#12805</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12805">i915#12805</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-rc-ccs@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-rc-ccs@pipe-a-hdmi-a-2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-rc-ccs@pipe-a-hdmi-a-2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-mc-ccs:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-7/igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-mc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14098">i915#14098</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_ccs@missing-ccs-buffer-4-tiled-mtl-mc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14098">i915#14098</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6095">i915#6095</a>) +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cdclk@mode-transition:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_cdclk@mode-transition.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3742">i915#3742</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_cdclk@mode-transition.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3742">i915#3742</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_frames@hdmi-crc-multiple:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_chamelium_frames@hdmi-crc-multiple.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_chamelium_frames@hdmi-crc-multiple.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@vga-hpd-fast:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_chamelium_hpd@vga-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_chamelium_hpd@vga-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-type-0:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_content_protection@dp-mst-type-0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3116">i915#3116</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_content_protection@dp-mst-type-0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3116">i915#3116</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-type-1:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_content_protection@dp-mst-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3116">i915#3116</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_content_protection@dp-mst-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15330">i915#15330</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3116">i915#3116</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@mei-interface:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_content_protection@mei-interface.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865">i915#15865</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_content_protection@mei-interface.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15865">i915#15865</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-rapid-movement-32x32:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_cursor_crc@cursor-rapid-movement-32x32.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_cursor_crc@cursor-rapid-movement-32x32.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-sliding-512x170:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_cursor_crc@cursor-sliding-512x170.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13049">i915#13049</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_cursor_crc@cursor-sliding-512x170.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13049">i915#13049</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@cursora-vs-flipb-legacy:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_cursor_legacy@cursora-vs-flipb-legacy.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_cursor_legacy@cursora-vs-flipb-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@short-busy-flip-before-cursor-toggle:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_cursor_legacy@short-busy-flip-before-cursor-toggle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_cursor_legacy@short-busy-flip-before-cursor-toggle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dp_aux_dev@basic:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-1/igt@kms_dp_aux_dev@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1257">i915#1257</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_dp_aux_dev@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1257">i915#1257</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dp_link_training@uhbr-mst:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_dp_link_training@uhbr-mst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13748">i915#13748</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_dp_link_training@uhbr-mst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13748">i915#13748</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dp_linktrain_fallback@dp-fallback:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_dp_linktrain_fallback@dp-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13707">i915#13707</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@kms_dp_linktrain_fallback@dp-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13707">i915#13707</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-with-output-formats-with-bpc:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_dsc@dsc-with-output-formats-with-bpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840">i915#3840</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9053">i915#9053</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_dsc@dsc-with-output-formats-with-bpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840">i915#3840</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9053">i915#9053</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_fbcon_fbt@psr-suspend:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-8/igt@kms_fbcon_fbt@psr-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3955">i915#3955</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_fbcon_fbt@psr-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3955">i915#3955</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-dpms:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_flip@2x-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_flip@2x-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-suspend:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-glk1/igt@kms_flip@2x-flip-vs-suspend.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12745">i915#12745</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4839">i915#4839</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6113">i915#6113</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-glk4/igt@kms_flip@2x-flip-vs-suspend.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12745">i915#12745</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4839">i915#4839</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-wf_vblank-ts-check-interruptible:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_flip@2x-wf_vblank-ts-check-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_flip@2x-wf_vblank-ts-check-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9934">i915#9934</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15643">i915#15643</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-tiling-4:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_frontbuffer_tracking@fbc-tiling-4.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5439">i915#5439</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@fbc-tiling-4.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5439">i915#5439</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-gtt:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3023">i915#3023</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3023">i915#3023</a>) +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-2p-rte:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_frontbuffer_tracking@fbcpsr-2p-rte.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1825">i915#1825</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@fbcpsr-2p-rte.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1825">i915#1825</a>) +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-suspend:</p>
+<ul>
+<li>shard-dg2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-4/igt@kms_frontbuffer_tracking@fbcpsr-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10433">i915#10433</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3458">i915#3458</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-3/igt@kms_frontbuffer_tracking@fbcpsr-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3458">i915#3458</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-tiling-4:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_frontbuffer_tracking@fbcpsr-tiling-4.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5439">i915#5439</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_frontbuffer_tracking@fbcpsr-tiling-4.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5439">i915#5439</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-shrfb-draw-mmap-wc:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-shrfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-shrfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3023">i915#3023</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3023">i915#3023</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt:</p>
+<ul>
+<li>shard-dg2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-3/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3458">i915#3458</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-4/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10433">i915#10433</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15102">i915#15102</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3458">i915#3458</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1825">i915#1825</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1825">i915#1825</a>) +14 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@brightness-with-hdr:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_hdr@brightness-with-hdr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13331">i915#13331</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_hdr@brightness-with-hdr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12713">i915#12713</a>)</li>
+<li>shard-dg1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-18/igt@kms_hdr@brightness-with-hdr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12713">i915#12713</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-13/igt@kms_hdr@brightness-with-hdr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1187">i915#1187</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12713">i915#12713</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_joiner@basic-force-ultra-joiner:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_joiner@basic-force-ultra-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15458">i915#15458</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_joiner@basic-force-ultra-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15458">i915#15458</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_joiner@basic-max-non-joiner:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_joiner@basic-max-non-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13688">i915#13688</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-4/igt@kms_joiner@basic-max-non-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13688">i915#13688</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_joiner@invalid-modeset-big-joiner:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_joiner@invalid-modeset-big-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15460">i915#15460</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_joiner@invalid-modeset-big-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15460">i915#15460</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_joiner@switch-modeset-ultra-joiner-big-joiner:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_joiner@switch-modeset-ultra-joiner-big-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15638">i915#15638</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15722">i915#15722</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_joiner@switch-modeset-ultra-joiner-big-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15638">i915#15638</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15722">i915#15722</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_stress@stress-xrgb8888-4tiled:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_pipe_stress@stress-xrgb8888-4tiled.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14712">i915#14712</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_pipe_stress@stress-xrgb8888-4tiled.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14712">i915#14712</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-5/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-4/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15709">i915#15709</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_multiple@2x-tiling-4:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_plane_multiple@2x-tiling-4.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13958">i915#13958</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-8/igt@kms_plane_multiple@2x-tiling-4.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13958">i915#13958</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_multiple@tiling-yf:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_plane_multiple@tiling-yf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14259">i915#14259</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-1/igt@kms_plane_multiple@tiling-yf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14259">i915#14259</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-2/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc6-psr:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_pm_dc@dc6-psr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15948">i915#15948</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_pm_dc@dc6-psr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15948">i915#15948</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_lpsp@kms-lpsp:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-2/igt@kms_pm_lpsp@kms-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3828">i915#3828</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-3/igt@kms_pm_lpsp@kms-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9340">i915#9340</a>)</li>
+<li>shard-dg1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-16/igt@kms_pm_lpsp@kms-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9340">i915#9340</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-15/igt@kms_pm_lpsp@kms-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3828">i915#3828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11520">i915#11520</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-3/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr2-sprite-mmap-cpu:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_psr@psr2-sprite-mmap-cpu.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_psr@psr2-sprite-mmap-cpu.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_scaling_modes@scaling-mode-full:</p>
+<ul>
+<li>shard-dg1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-18/igt@kms_scaling_modes@scaling-mode-full.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@kms_scaling_modes@scaling-mode-full.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4423">i915#4423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-basic-fastset:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-5/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-6/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flipline:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15243">i915#15243</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15243">i915#15243</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@event-wait@rcs0:</p>
+<ul>
+<li>shard-rkl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-rkl-6/igt@perf_pmu@event-wait@rcs0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14544">i915#14544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-rkl-7/igt@perf_pmu@event-wait@rcs0.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@module-unload:</p>
+<ul>
+<li>shard-dg2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg2-7/igt@perf_pmu@module-unload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15778">i915#15778</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg2-1/igt@perf_pmu@module-unload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13029">i915#13029</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15778">i915#15778</a>)</li>
+<li>shard-dg1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18353/shard-dg1-15/igt@perf_pmu@module-unload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15778">i915#15778</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15033/shard-dg1-16/igt@perf_pmu@module-unload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13029">i915#13029</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15778">i915#15778</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8865 -&gt; IGTPW_15033</li>
+<li>Piglit: piglit_4509 -&gt; None</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18353: 84de0c4efa971d100d339d4b4aef24676b86c58e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15033: b066d9b051b94ec7dd20f960ded39d074a32bf6e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8865: 1c23bc1bdf01bf0ded2344cb217d7fe88de3b726 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
+
+</body>
+</html>
+
+--===============5487075857332644820==--
