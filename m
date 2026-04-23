@@ -4,156 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98FD2F99368
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 10:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABB3CF99368
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 10:27:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4972310E312;
-	Thu, 23 Apr 2026 10:26:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5ED6910F084;
+	Thu, 23 Apr 2026 10:27:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hzMC8ncV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G/GUv9PX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D65610F083
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 10:26:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ACA110E312
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 10:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776939977; x=1808475977;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=6DcwmQmU1afcvrHI1JMrUm7P2zWUwb5xmSWClqL2cyA=;
- b=hzMC8ncVXhIttJWPIpS8KtI/weh1ugTRLHLmgwXKhDsqqOuquNkP02s4
- 5HHdWhfmqhESoSEN/Njz/1QRKBfVcv/Xyfx61YCiKtVHxKWaEvyj3I7J/
- p/X0kxoPRxUZbj+EXoQEIuXsv6UdyMIZVZQ5WbWev0eQob8PMm8eFirfB
- 3zTZv3ycJud09XVLiIymBNlqqS1P5Ztb8+ivi8xAU+A8Vz/5aJvymHAVq
- QlvD2VKQFgoIaQ/G1RFTeJcJoflKrb7KZ2jlygZes9SrmqPrw3jDdYZsY
- k3x7WfRz14rDJGt2aOBnU75tpBMYKSy7LwsyRKddnhA4KMO1sibgq/FRD w==;
-X-CSE-ConnectionGUID: ZeWR6aoZSOWQ0c2Bv5J+QQ==
-X-CSE-MsgGUID: N6WIgCWUTDmn6VpKKAe7LQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="78094969"
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="78094969"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 03:26:17 -0700
-X-CSE-ConnectionGUID: TOvP2XrHTqygKNn5QTUoNw==
-X-CSE-MsgGUID: yhTO+3DORpWwGdU82jO4Ww==
+ t=1776940063; x=1808476063;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=fE1vVhEvI59WdlS5SrNW+5exbyt4pfTxGuPKk7eCGU0=;
+ b=G/GUv9PXH2fDCKleBbMQrzrU5hOj8hevQc7rgWKM0ceUOfQTMe/pp8U7
+ LhNG4ITNhGr99ZA0U7CgdG8ouUlVw8JbEycFEMQZ98XkWsluf4tA+hNCL
+ qUp3PVYCgJ5fSwZi0JT6H5D5Wlv7/Ovqq2LqcZ4UvixNfeIsw380E1Kbf
+ QtMwces/epNf3zuekrJqGoLE9eJzksyl1HKqxYPmZ9GTUuNYVDQSsVUph
+ 823tJbnr6kEFJR/BZhiqw6y45pdGynNVEM2ZJoextm2dmBJZZmSO2jY51
+ uC6sIx6y/CqdTMXszxze5LPMjy//uEOWjKBGsmN+P7ic3qQR7g2pTelaI w==;
+X-CSE-ConnectionGUID: as9yLlTRRTmFHSwzbZ3enQ==
+X-CSE-MsgGUID: O0BZjijdSpurZoIuCuT9+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="100557506"
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="100557506"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2026 03:27:43 -0700
+X-CSE-ConnectionGUID: y9CwP6WsT/ST7+M6isLFDg==
+X-CSE-MsgGUID: ShFygwtASB6Jbhsq2jk+fw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="236990304"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 03:26:17 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 23 Apr 2026 03:26:16 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 23 Apr 2026 03:26:16 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.36) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 23 Apr 2026 03:26:13 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BMm1XSjD7PZyAur3ohiWOTr6ZmhXUNBGmn1gTnClh+Z0QoGefrvJHZgzo2vsyzCo/tPhcjoNTxX0N+bBOv15qX02igfYOntiBG8i+SjYMg9ZmAWfpzCr7VBZX+8tbMSrBkLoOrwrRSG91Ttsx7KAf46zWKJvkExs3sY+KwaOQhpat8N2MlvRKNuCaFPWPh/+fS/PDx48SFsJoYnFoT7ARcgc0UGzY5a9ytikH815UfwVMPWlngxya0uOUbEhPOgzfgCQYPgzlCBhzqMFUb7il20zvaOsB36wRnPoxq2fXlvkSbSo7y735tlNq9l63C6VyeugP2kw9scwWMAYdUAbLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LBagKvdSxOFlSjV2ftJJDJj28lpIZ94Jf6CtuUij1Yk=;
- b=ShF+cC5lloZly8xMXFNsRpduEjQqVYWEnIg7gNKxcRVSMigczsf3xNI+epyMWafx3xl/CGL6sTD8i5YPAQphzFD1s5hQ9+85vyvsNL70M6Ua/8d+iRQN+GK7GPfmh8jDFYlgsDqMGXCzv8SyQQae5UNz/PG2isSdPDqXLgQLknlRmn66rFrNqEdMkds9IYFmsLK8NjLJVpfD6CyBfCgN5B0lwTaRHCPSDYRsMn52YsuIUOBOM/8U+heTMgIub4HftmT1mlQSI3ku933KTkMomEgHzpZo93cwWUz/+pEFgNmaZAP5A5aPaznOL/j3eDI981yYbgir9rskSxh/++iB/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
- by MN0PR11MB6158.namprd11.prod.outlook.com (2603:10b6:208:3ca::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Thu, 23 Apr
- 2026 10:26:04 +0000
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a]) by CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a%5]) with mapi id 15.20.9846.021; Thu, 23 Apr 2026
- 10:26:03 +0000
-Message-ID: <c5578fc4-f8ae-4260-a884-2264252d6e8c@intel.com>
-Date: Thu, 23 Apr 2026 15:55:56 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 2/5] tests/prime_udl: Create subtests
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20260422154423.141908-1-kamil.konieczny@linux.intel.com>
- <20260422154423.141908-3-kamil.konieczny@linux.intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20260422154423.141908-3-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0255.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1f1::8) To CH0PR11MB5690.namprd11.prod.outlook.com
- (2603:10b6:610:ed::9)
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="237614193"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 03:27:41 -0700
+Date: Thu, 23 Apr 2026 12:27:24 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jing-Ping Jan <jingpingjan@google.com>
+Cc: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v2] tests/kms: correct index validation logic
+Message-ID: <20260423102724.cn775vsx2ynekmxe@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jing-Ping Jan <jingpingjan@google.com>,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org
+References: <b4757a01-6cff-4c92-b7ba-5a6578c7c06a@intel.com>
+ <20260421064342.2851479-2-jingpingjan@google.com>
+ <eb51511e2445b2cd19dda662bf1f402ed92887e1@intel.com>
+ <20260422170557.434ohgvhvjzqmrws@kamilkon-DESK.igk.intel.com>
+ <aekEACGEcS2QGQgV@intel.com>
+ <CAMYCwo5YH+WBOGbDu4uVPgRkQ_N1T3bTZ2fdUSMa7dr+Jvzjqw@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|MN0PR11MB6158:EE_
-X-MS-Office365-Filtering-Correlation-Id: 93467502-f73c-4b14-a76a-08dea122b85e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|42112799006|366016|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: UL+mKTo3Vv/kV//WUYhQIfGaGKuG1znyaQG+khL37bg776QbeHFCCAu0IpNetw7s5O22by3H2DRN/KdGQDJole60lQVGwQHb2fG12tdwxQ9/uzYy+o/F7fubmmdZIaq4goYhxP+/rx9ScoXUWzJiUcsi27GCquEqm2MSJvNr1DlgNDJyh6uk1sjZPEs4enC8D9kYNXTAracEqRB6yM9Ec0VHmWsoxBPNJlJbNw7amDxVYvU+jjHtOzdeiYVZqF6pMzUGmGfXXKmxtEdWD8VfUydmGkQdDsN/VsqK4TkJoOC2h+Zg2wqUJ1axHfQVDQ9i8GtfzlV+UOR7hgUBrz2Ni5uW7q9tXY5dlxUcvZvhsSPO0qWKrEK9Jh7aqOO2WmqS/NlAJyG8iiqjiFC0niohw9fBSHAWkphO2ZQo/kYoAflNxcz+u+BWa6/XYe7nfLeXTxG8Z9DUaElsZlJaEjO1c63YThmH4KXqm4HylQASPmkH6yCrA6tF6dQCL4a38ZwcnM/ZjRar0smIWMXxSnBWbEySRjrUlMHS6K+pu7OHPsONgu+YhY9Vl1dzzF0BVGk0sGNRyprO59ytkwrcdJnrPqhDAFTe7th/R1ItjZjOuiTj+yPS5+lVu6vTCre9k/JHg4Vq7cGvAVxUpLNcNqiLB2E7PJuE2gh9liIu2FwZMFD+4nn9WKLrpbn4zffzwsecjUKyeSIOs/5JM5aa6H0bziElkkG9yvEzn3v1sYnmnTY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(42112799006)(366016)(56012099003)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bU0zOGxVbUkrS1BkaDVYbXRubDdSYnNEM3loME1oWERwVGRSTmFBSW55YXRn?=
- =?utf-8?B?NXhxV3g0YjFxeG1BNDhESkx6RE03bCtObGJKRzJEbWNtY0RBS3hnOGExL1Rz?=
- =?utf-8?B?TXNMUUtYcXY0dHIzNzlnSTVIUkdNSWVBTVIzYjRidVdyZ0lmRVB3eS9mRkNT?=
- =?utf-8?B?SjQvRlUvNVJMK1Z2bjJPM3h5cFpNbStUZFFzUkZBUGJ0VDNFS3hpNkVWa2p3?=
- =?utf-8?B?TlJVZitIdmdLMFNhSnJvNHAzQW1xcENNVy9MUWJCSmdsR1p2UWpTVUxOOGM5?=
- =?utf-8?B?Yi93bTB0SHBIUUxVaFdTamtpbmtsNmR6T2ZHbTJhZ2hGbHgvSzJYR0gzL0xn?=
- =?utf-8?B?MFJ4UkRBeFQrWnpzdEdnQ2ZOOXNNMjA2MDUwRW9BaGJaOXZ4YlFLZ1JIZi9B?=
- =?utf-8?B?WDBvY29Qelg3cU94UURNYVFsQU9aYnpDY1JaeGR0UitHUHRPMm0vOGFGOURy?=
- =?utf-8?B?Ylk5MkNFY1B5dWNLUEVOUUZCdk8ycUtsR09wdzRHMUNTcnFPbDZ5SUt2QVFV?=
- =?utf-8?B?NnR2Z1Yrb1V6VndKV0Nla3RrUHlTbXRiTHdETXJVQVpDNkQ5U2tOYUJ3TWZ5?=
- =?utf-8?B?Z1JjWktQVVh5cW9wVThvSzFqZmFPZXZqVWNra3VoNHdvV2NKNWdiQkxYT3Y4?=
- =?utf-8?B?akIvSWU5OVoxQzBwUHhjTjdYbllXbWdRRUd2VHNiejZyYVhEelpwQmRQTDhh?=
- =?utf-8?B?NUFWWmg5bE92eloyMVlidk9BSktSWE0rd2x0REI3NWVzd3lBMkhSa1ZEYm5J?=
- =?utf-8?B?R2NWbVNka1Z0NEpOTDNpN3NETTR3dkhkcWFqUzFiaHdSdWlWQ2N4ckJJNHNM?=
- =?utf-8?B?UUU4b0JJNmtLeFdCalRwYVBxWlNLUWt3WnUzZDNVNUdnYnZrUlRMR1JxVGtH?=
- =?utf-8?B?Yk43ZXpRR0VidzZPZDVPZit5TXQ1Qm5od3NmU2grblJtZGkxeUdkeit2ejN0?=
- =?utf-8?B?K3g4SjIyaDcwdkxFVFBoSjRZY2JZV3o2WHFEZzNCOEdGZ0FZWFY3bHNuTEsv?=
- =?utf-8?B?UjVyYzZtdUE0ZEpyTEpndW1CSDVPQXh0a0lJcXNPaVF4QUhKeGVXNXhlam5Y?=
- =?utf-8?B?dHZkU1o4Y0R0MlA4N0c2Z1FVbHUwVWMxSnFrTXdhR0J2amFDQk9PSDlnL3Rh?=
- =?utf-8?B?ZUpQZ2ZtYXpwZGxBZlBQQ01OMmxJOUFNcVFaUHRQSXp0SkJXVFQrd3FodTAv?=
- =?utf-8?B?eFVPeklIMDh5Z3RyVzFWZmVVTzBGeUp0OFo1dmdWWkpWOWFIRmtjRzRtRVN1?=
- =?utf-8?B?L2hJZ1pnYklNVml4MjFobUZya2p1V1JHV2FnaStZS1NBRjdOaWpGUkZ5S1d0?=
- =?utf-8?B?TS9FZjZMcEpPYitwTURYZ1J3R0krTW5jZlMzNFZJZWhjUkxrWkFtY3YxT2h2?=
- =?utf-8?B?bFBCQ3h0M2NTMFY5dmhZS29xSXJUYnJvdEk3c0l5VW94MXovUWV1M0F2SVJw?=
- =?utf-8?B?VExKNW5MTE5ReWZFUlFkUWcwZ2djbkRkNWJnaTNSMU9EMWV6akZrN20yTDQ5?=
- =?utf-8?B?NUJzaDFCbXNwVDhiTTZEZDJXQW4wNWZrUWtWMUFwTTc0NzFSUlFzRDdTa2g1?=
- =?utf-8?B?UENXWmdkQjA3Z0NNc0NVYkUzVkorOTV4bjg2VHlsdyt4Zmd4WDduV29qVWtL?=
- =?utf-8?B?Rys0OG5qVm0xK3VacVZ2WXl3di9Rb2x3OXhCMnBUR1JmYlAvKzBrN05sVjky?=
- =?utf-8?B?M0ZnNDQ3L214ZjJGc1VuajhoSkpXSlBWWWF4QnhSelB4MTQ1L2NWZk1vdDZr?=
- =?utf-8?B?TUVPamxDa0tSeEFyRk1sQnlhbjZleVRDVWVMUm52VXgrR3J5OVB6czJlakNW?=
- =?utf-8?B?RXpGM1VqeURvQ0puMVZ0a0JHWEtESVRFWEkvalU2QzB4aVhCVFhzd3BHd2d4?=
- =?utf-8?B?eSs0emxaYXhGZllWbGd6dzM1VUZjbmRnbkh5eWg3RWt6OGw0aHk3TlFRL2w0?=
- =?utf-8?B?dllFRFpjRW1YS1JCWjkvQndOd2lSY1RBc1c4ZGc3UXZOakFKMW9rWGVIYy9r?=
- =?utf-8?B?Tk5paUFLZGhkT1lHL3orQlk2RzN6THdnVm5aK2FqUzJwVlhZQkhnRndPTU90?=
- =?utf-8?B?aGUyUUNEeEZsZzFYU1BBK2hqNXI3blhTNzBYMmJ3ZU91eXYrT0ptU2RMeTli?=
- =?utf-8?B?amxFS3I5Y3VSTlhVdHBKaGJqSG4vb3JHcmEySkVpSVhUSEgrTWgxb2syUGFv?=
- =?utf-8?B?UUd6QloxTVdNY2lHRnA5U2FZbFFFQklmdzdUUndYU0k1RXFLWkV5bHU0dDJR?=
- =?utf-8?B?Uzc1V3ErdW5rc21nbDRCbnJKMU1NNTNFZjJFUzYvQzFZdG55aDdPQ0ZrMFBH?=
- =?utf-8?B?S2hHM0VWcTFpRldqcXVMbGttLzZidkQ4ZHluMXoxU1dCWDdjRmRXUT09?=
-X-Exchange-RoutingPolicyChecked: QxTrBoepV6klvSXp0rUDe1cSf5oMcOTU/BXrbpD0XfJHCBzwjeQUMe7kgSiXi6Rohvhn/RnW6E2fDnsJGlxAQKpumnYd7vyAWTmz8H3J8vVPMp1SgsDnsIs4gaPoc7qw1DvwWTUHtcVP5BuawLHi1wwLWp+0hSaOVQfj+/nCPZpFoG7VyDWN7R3rViVSmEr63ZAdlargazIWL1C6Dx7gQm6tRlRfHYqUKmECzxhcHI3pXRgqtWCklz9JhCr9bWXKwHH3TvzS0OyKxN+t/4dHoDeclmaZAvJ1pQO1MjPFoVCfnwc7fXK55Crhs7QQGIofYYYL46QYYzhQEAeavwNQxw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93467502-f73c-4b14-a76a-08dea122b85e
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 10:26:03.0830 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y7TqOUJw5zYHIszCF/Vk5vUBIHDGl9L4xthEqEgNLQ9kPTba/gQyQvFK9TXAFchd0mACTYKXWTOaS4+omSnwYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6158
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMYCwo5YH+WBOGbDu4uVPgRkQ_N1T3bTZ2fdUSMa7dr+Jvzjqw@mail.gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -169,53 +78,134 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Jing-Ping,
+On 2026-04-23 at 17:21:02 +0800, Jing-Ping Jan wrote:
+> On Thu, Apr 23, 2026 at 1:23 AM Ville Syrjälä
+> <ville.syrjala@linux.intel.com> wrote:
+> >
+> > On Wed, Apr 22, 2026 at 07:05:57PM +0200, Kamil Konieczny wrote:
+> > > Hi Jani,
+> > > On 2026-04-21 at 15:02:01 +0300, Jani Nikula wrote:
+> > > > On Tue, 21 Apr 2026, Jing-Ping Jan <jingpingjan@google.com> wrote:
+> > > > > Based on the original implementation and the comment above the function,
+> > > > > it appears the expected behavior is for the plane indices to remain
+> > > > > consistent with those in crtc->planes. Therefore, after swapping the old
+> > > > > and new primary planes, we must update the index in igt_plane_t to
+> > > > > ensure it matches the corresponding index in crtc->planes.
+> > > > >
+> > > > > Therefore, we should expect the indices of the old and new primary
+> > > > > planes to remain unchanged after swapping them.
+> > > > >
+> > > > > Fixes: ac37e1174cc4 ("lib/kms: Pimp the primary plane swapping")
+> > > >
+> > > > With Fixes: it's customary to Cc the author and reviewer(s).
+> > > >
+> > > > Cc: Jani Nikula <jani.nikula@intel.com>
+> > > > Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-On 4/22/2026 9:14 PM, Kamil Konieczny wrote:
-> Refactor code and create opening fixture, subtests and cleanup
-> fixture.
->
-> v2: use igt_main() with igt_fixture() (Kamil)
->
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/prime_udl.c | 23 ++++++++++++++---------
->   1 file changed, 14 insertions(+), 9 deletions(-)
->
-> diff --git a/tests/prime_udl.c b/tests/prime_udl.c
-> index c3e92be1e..b1524e6de 100644
-> --- a/tests/prime_udl.c
-> +++ b/tests/prime_udl.c
-> @@ -121,18 +121,23 @@ static void test2(void)
->   	gem_close(intel_fd, intel_handle);
->   }
->   
-> -int igt_simple_main()
-> +int igt_main()
->   {
-> -	igt_assert(find_and_open_devices() >= 0);
-> -
-> -	igt_skip_on(udl_fd == -1);
-> -	igt_skip_on(intel_fd == -1);
-> +	igt_fixture() {
-> +		igt_assert(find_and_open_devices() >= 0);
-> +		igt_skip_on(udl_fd == -1);
-> +		igt_skip_on(intel_fd == -1);
-> +	}
->   
->   	/* create an object on the i915 */
-> -	test1();
-> +	igt_subtest("share-import")
-> +		test1();
->   
-> -	test2();
-> +	igt_subtest("share-import-addfb")
-> +		test2();
->   
-> -	close(intel_fd);
-> -	close(udl_fd);
-> +	igt_fixture() {
-> +		close(intel_fd);
-> +		close(udl_fd);
-> +	}
->   }
+I am sorry, I went ahead and didn't noticed this thread and
+I did a merge of v2. So now, based on discussion below,
+if a fix should be
+
+	igt_swap(old_primary, new_primary);
+
+or rename of vars and(or not?) the swap, first it needs a revert,
+then a proper fix.
+
+Regards,
+Kamil
+
+> > > >
+> > > > > Signed-off-by: Jing-Ping Jan <jingpingjan@google.com>
+> > > > > ---
+> > > > > v2:
+> > > > >   - Add Fixes tag to the commit message.
+> > > > >  lib/igt_kms.c | 4 ++--
+> > > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > > >
+> > > > > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> > > > > index bec96f267..405a04640 100644
+> > > > > --- a/lib/igt_kms.c
+> > > > > +++ b/lib/igt_kms.c
+> > > > > @@ -2982,8 +2982,8 @@ void igt_display_reset_outputs(igt_display_t *display)
+> > > >
+> > >
+> > > Lets have for simplicity simple struct { char name; int index; }
+> > > and old -> { A, 0 }, new -> { F, 7 }
+> > >
+> > > > The whole context here is:
+> > > >
+> > > >                     if (new_primary->index != 0) {
+> > > >                             igt_assert(old_primary != new_primary);
+> > > >
+> > > >                             igt_assert_eq(old_primary->index, 0);
+> > > >                             igt_assert_neq(new_primary->index, 0);
+> > > >
+> > > > >                           igt_swap(*old_primary, *new_primary);
+> > >
+> > > Now old -> { F, 7 }, new -> { A, 0 }
+> > >
+> > > > >                           igt_swap(old_primary->index, new_primary->index);
+> > >
+> > > Now old -> { F, 0 }, new -> { A, 7 }
+> > >
+> > > Or do I miss something?
+> >
+> > The problem is the pointers weren't swapped.
+> >
+> > [0] = { 0, A } <- old
+> > [1] = { 1, B } <- new
+> >
+> > step1: full swap
+> > [0] = { 1, B } <- old
+> > [1] = { 0, A } <- new
+> >
+> > step2: index swap
+> > [0] = { 0, B } <- old
+> > [1] = { 1, A } <- new
+> >
+> > So after this I think the proper fix is to also swap the pointers.
+> > Then the asserts after the swap start to make actual sense.
+> >
+> > step3: pointer swap
+> > [0] = { 0, B } <- new
+> > [1] = { 1, A } <- old
+> >
+> > >
+> > > > >
+> > > > > -                         igt_assert_neq(old_primary->index, 0);
+> > > > > -                         igt_assert_eq(new_primary->index, 0);
+> > > > > +                         igt_assert_eq(old_primary->index, 0);
+> > > > > +                         igt_assert_neq(new_primary->index, 0);
+> > > >
+> > > > Why do you expect these to remain the same as before the swapping?
+> > > > That's why we are swapping.
+> > > >
+> > > > >                   } else {
+> > > > >                           igt_assert(old_primary == new_primary);
+> > > >
+> > > > --
+> > > > Jani Nikula, Intel
+> >
+> > --
+> > Ville Syrjälä
+> > Intel
+> 
+> I don’t believe swapping the pointers is the right approach.
+> Currently, old_primary and new_primary point to the first element and
+> the original primary plane in crtc->planes, respectively. Swapping the
+> pointers merely redirects them without addressing the underlying data
+> structure.
+> 
+> According to the original design(Commit 58a5a2d5), the logic should
+> swap the plane indices first and then swap the entire plane objects
+> between the two pointers. This ensures that the first element in the
+> pipe->planes array remains the primary plane. Therefore, it makes more
+> sense to validate that the index of the first element is 0 while the
+> other index is non-zero.
+> 
+> Alternatively, we could rename old_primary to first_plane and
+> new_primary to primary_plane to make the logic more transparent.
+> 
+> Regards,
+> Jing-Ping Jan
