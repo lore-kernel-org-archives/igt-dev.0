@@ -4,160 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2647F99344
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 09:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C953F9934C
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 09:21:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D86110E2FE;
-	Thu, 23 Apr 2026 09:15:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2BE4910E0C1;
+	Thu, 23 Apr 2026 09:21:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bT7DXoLw";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="M19zy6ak";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E21A310E2FE
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 09:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776935738; x=1808471738;
- h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=9uCq4XvkTIpLuJT851pZO1UQnvAJXPAP3HQ6ctElJXI=;
- b=bT7DXoLw2lxSZkXV1seQMxxB7Dv21RAIe+sNDSFDYnQ9pUXoHk74Ub/X
- ZPkHlG34VCn2oID5YD5UeKLX0HE8NblwwdEfK6HqhuzpzA3HurpIQ7fBv
- O6xNcdURzPlsqkVrd44erd8/A5TVgb2Zwq0i0no2N2s4K2lhfKQHGis1b
- eeyTK4/ZEfPLSPLOj8H3ycXQTQTHH/8KHBL2wLzPk1nS2E4l5DebIQEDs
- 8CwXHV7tb222o4z4Fk/Rrtc21i3XE7Zx7fYPLcI2cnolod5Ss3NdJCr51
- +hf73Do8RHNzsv4QxJFqCDWuPme08jhD1PanmaqJ8Uwfcr+3rJHVqeWOJ w==;
-X-CSE-ConnectionGUID: mbkd3W+WSSODIgFg3dMhEg==
-X-CSE-MsgGUID: 4WoFto5zQ8O9PThxsXnq6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="88981767"
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="88981767"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 02:15:35 -0700
-X-CSE-ConnectionGUID: Nwnm9XqmQ3aWjYp8ArSNRQ==
-X-CSE-MsgGUID: atJC4JplTj+rgtfU06F3RA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="232512633"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 02:15:23 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 23 Apr 2026 02:15:21 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 23 Apr 2026 02:15:21 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.51) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 23 Apr 2026 02:14:48 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lOYm6Tg8TAqbzBbty852xlfZew0rosz7NosBk9x3YOcJmLjj2SMTj73RKRlkVdAL6lWEsywMQhAttFOAB6misjzfVqPdEfMuACjsrvYwxQsywd2bhTKe/+CBeYcY1uPjmxl6mcf+YOsUZ8wssNM+bu6K7rdI1gQfbMqp/y8kuRNgCgZVnF18rA/DoTaS/gzvkhHxJ3jML9DZgy/NN02OzPiVzrptRdLXDQvg8D7QiENTuuQj3sRyoYR6qPmahXx8GNLHxsSFHXccTHm7DEWBEeEizGIhTlncgq04Sof7yUeNsfFduciCKOXIiahK8wQrjASTQFOyra+1wqwCtEO2jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y4+skGa20F/c7TZ/wWad8mVeyz0hd3fQqEVEM+lpRxI=;
- b=Pf/u9ua+Uhq96nmg4ArNfvuAi/MsJZyDxkvCeEgiCAYDJrTVyXWg0QXF8EcRsoIIMQ5rXGP8D0qQAhuIh1zD+181NWqgubJim008zGvI3OgAcdQ3sFH1VZqgN1YMl6Omzi+f9tShdoprDZEleDNLjGNOIn+4tHSS2yem2rCZHsBJFjQJ9Mv/qgIB1XbWrG8WIEbidEhM2X0cOLtQv8F5y+Y0OEb+yikJVuCUMdp9Ll2ns9VdVFFVs60xHqKEKePPFJS4L+IEzAfaiU4QS0bgDvek6K1wPHmNPcljwKCwY1eofuToFhkJhFwurwlkFbGKsTni2ziQaA1qCTEtQhpT1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB5057.namprd11.prod.outlook.com (2603:10b6:303:6c::15)
- by PH7PR11MB6497.namprd11.prod.outlook.com (2603:10b6:510:1f2::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Thu, 23 Apr
- 2026 09:11:36 +0000
-Received: from CO1PR11MB5057.namprd11.prod.outlook.com
- ([fe80::3b75:a8d2:464e:30cc]) by CO1PR11MB5057.namprd11.prod.outlook.com
- ([fe80::3b75:a8d2:464e:30cc%6]) with mapi id 15.20.9846.014; Thu, 23 Apr 2026
- 09:11:36 +0000
-Date: Thu, 23 Apr 2026 09:11:26 +0000
-From: Krzysztof Karas <krzysztof.karas@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Ryszard Knop <ryszard.knop@intel.com>
-Subject: Re: [PATCH i-g-t 4/4] runner/resultgen: Insert attachments list into
- results.json
-Message-ID: <mt2txez6ja3mpu2ysrgvhexwyv74hkuatbuvkoqiy6tbfex3hi@nhthcszzvfwx>
-"Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316"
-References: <20260421111709.3163253-6-zbigniew.kempczynski@intel.com>
- <20260421111709.3163253-10-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260421111709.3163253-10-zbigniew.kempczynski@intel.com>
-X-ClientProxiedBy: VIXP296CA0011.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:2a9::10) To CO1PR11MB5057.namprd11.prod.outlook.com
- (2603:10b6:303:6c::15)
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com
+ [209.85.160.169])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E63F810F00A
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 09:21:41 +0000 (UTC)
+Received: by mail-qt1-f169.google.com with SMTP id
+ d75a77b69052e-50d87c138e1so66362441cf.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 02:21:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776936101; cv=none;
+ d=google.com; s=arc-20240605;
+ b=ZOKAKAkCrwAdSl9RcgOuypzZUn7hN1ozCyMMoI9Pbzj1QMq9bd1agwP1UXsqZD/Aj/
+ FsaEN5kujPk3poOh5+czlYAbCDa9HtspvdBEwe0pXBUGv5NsvetWZpIOuQxvvF1tM18t
+ O3/Lpq/nsvL67JwMM7GyRs1vfXelD3cWxzdiu5N31AjSUI1TTJ2P5aFYfq6+0pDq7uUL
+ bVAeFFTq0kL4DYyEtPJ7bHG94PdbTIcMfmOVFYeTy4dYrXGv2JsDe9WkFvFgzQN0ob2g
+ agejWY2uh8uVplStmE/ELRMk8vz10zeLqsN0bi10wd9Wz/R7RDWzb5GTRVwm8D6b9f87
+ WOpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=DZ38r0I2HLOIY7qtXaEOI4FrdqvuL3W+pFAMGc/dG1g=;
+ fh=e+Gl9dwJBKBVft3hqKqPGVMzFBgUFyH8nO8hlodb/Gs=;
+ b=AZxMBfIdpj8XwjJgLBQgQ2Qzr4NYe5IsLpeNZBfFU3bHG/xJY4f5kZqx3FUGVbgWHg
+ oOybyQhqFaR5+eIKS/5qyO6OCKcmq+o+PQ/G8xtqXVlpVcxxUVsaS7yDRTXkhnOuAALf
+ 8SjhYLTNw3/+FqSDVVDIcDMqcUWNEYhLGTeIhqUqgIsejSey2tmTetP0LiPzm5FKun3t
+ qa+lu04nvrHqvHNUUv46SAPSiy+DhDVJSszXP8wkzhGkYiXyvC0kE8bdu2OG6parupt8
+ Z+pU41esIYMQV3kkhJeGeMuUGwB569DhXWbTWdXmCrI7KYW7tZsVALAElnLVozdvGjuW
+ X8Gw==; darn=lists.freedesktop.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20251104; t=1776936101; x=1777540901;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DZ38r0I2HLOIY7qtXaEOI4FrdqvuL3W+pFAMGc/dG1g=;
+ b=M19zy6ak08p/sH0eHQgOZKeOmUQdCcYj/ZUlbOYzZa21Ku06q4IAPohc6N71Q+Xv+2
+ 8Ti77VXqetDsOBojcO4J2fEhp/Qqa+pQ1fTQh93gaLLcGHRb35oNtCVgZ26TgDMUEvfs
+ f3a9q6SqM4se5Zm/BhmD8D49xWGEFrqZQmKc88cMa/0bcajJR0ucFbr6dwBQ8avn1dLN
+ Tkmw65CNX3qKKuSAXh/NzGMFAO/3K98qPTkAIwk/MBpy+uiXw1iPFs+sZuwhyJl03Ost
+ oE+nW8lyHXWgJFjTW4FtbILUdpqgqfy0MxXmc7Ic45pqp21WG9OR6sKLIUQw9xLjTqTT
+ BIAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1776936101; x=1777540901;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=DZ38r0I2HLOIY7qtXaEOI4FrdqvuL3W+pFAMGc/dG1g=;
+ b=aMe4v5oozys9dGd6ou8Kxs1l/aLZBTDwXZZF4dyyPZ9mWWF6+DWqsuzSru205g2CWF
+ dRItYyFerqdpniu8GwPCXKixyHWKuX53qKrbzVFyuNLM3KN67AxeBbuTjDjoQ6bqx1Lc
+ in/igtposubldE63j96uMK51ROpWcy55fWMucbyX1rxLYR1c1GmPZiOAI7lAcvQwHEzl
+ hSlHodDro2al2QU1pHxsZwyrdtiE1bPs+JXagChFdJvbL5yuutSXAd0GN3s/ZpYKAP9g
+ ipXncxy4WLqm8Rt/xHeUBVmzHBcLW0Xb1HJzftUwEeugANNu3hsXDIY7F57co/fvKQFP
+ v63g==
+X-Forwarded-Encrypted: i=1;
+ AFNElJ+Q7gBUx9n9oYKOWvZxW67tUGUTVdXm2i6vVVlI8wGPI2k5NOdW7OzUoma67GGqyt8WIERfGgUo@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YyzxQxjB6C5DLd5BM0kQIPzuBXxYoKHNyHg96Fl24j8zz2vMQf9
+ 2LXYiSMxH8E/mt2gyaIT+Egg6WhuUcmbiEKrDnux+lcUVrgu3W7iBfPE9YkQvkewDC9O+k2BgVZ
+ qe5Q1uaB+iaDkmOlbJfXgebCm07D7aF+gmMhVBxMn
+X-Gm-Gg: AeBDiev2lLNCmFk/8zzstNLaEFjXA639/NYfLWbsUVpvrfcrNJQU11RiCYnlRHsAHo8
+ bZwRxMnmnQo2Ox5u1vUhYy2PjTJVWIyHhwV7QpLFZ83BZ+CceC75sBgVLRth4zVkSqu24iuEPa3
+ bw9nAyfODTrRDYxlN3NK5EeNiPpmTlvfenVGj+3upahmoVfPozugs1e07QHMCbkTb5aF0ptWoU4
+ J40XSGYVSg+enr9NAdKlXWoFYc3acQT0xfNum+/yM0SknqZOxloR7S1SjAnKuL5a/uyCLhhcuLQ
+ xvohG3iGRn4G1Twc1fl8EoK65Rg=
+X-Received: by 2002:ac8:5851:0:b0:50e:fcbc:6b82 with SMTP id
+ d75a77b69052e-50efcbc6ed3mr210953641cf.15.1776936100294; Thu, 23 Apr 2026
+ 02:21:40 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB5057:EE_|PH7PR11MB6497:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81824480-8e01-410f-1a13-08dea11851f9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|56012099003|22082099003|18002099003|27256017;
-X-Microsoft-Antispam-Message-Info: Q5tNfRyT+rZJyiigE9yVJVf+eEGu7clTUYTA6BvbSRCYXRAGpJmyyxuIxKtlLwaoqdd53CgrdOJ8R6sA+i3JzZOf7eIe9jhSBgl5RgcgEgFO5EoFmZ1If+cFI2WVUC+m1Ch/cgXX2DK+yWKJV/SZrXF78vsIY8insTnhjApgFp9VYK88qWkzNy4IcMkOAPcpNJmRJDK/T6iZRIIM/3eZkTdP1fQS90QO446C2Mdh9Qxot71FAkXtR8jlWcnRlTjfFy9foYOx9QQoeH6R9BjEyK+D5KLZr+wW6q8/lwDd6QcqvQCsSATqTQoV7/yxnQf7rghMBNDBsf5Ow7hxn6ISedxpe/ix8NjinVsLAevXpKzGHU9/nT7/3cT9DWKZKqiZ4vSump2qsaHJ81x2THkgni94F4ZIb6002/uaK5gpacibUmuBCDsrMvgr//BEc5KKpPqC7WkOOtUW5njeQjGjihRlAoKpSCmmfvQ0BRQrcyjsA5Fmsn9wqV8ovd3MpK5LyB4PTk70ollpp3OwNmmw7edNf/Or1vL0yckOOgDRzxS9q1YRFySKLSHcSPCKVGMTLgayKsHUVFg3Nd7aB+H72tqTzsp054bSzG/fqp831x4orb1XsS60EXmEK9lgRMNGSZy51vGiQjUHI2MQoV+7KQdRHvO01OXyt6oAKwYU2VWDiLyp3diXhd14lInnBIxz6UAvDL0nkV4zI1TQcDsT7jMIIcCXDQjGH5mDpV/tAz2YnNyfMgufqCmRcbR9DJum0lLWW+5wJqwMvfbeEaNrCA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CO1PR11MB5057.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(22082099003)(18002099003)(27256017);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N2JkZElqUmRQNVdXQ1FIRDloMnVKdHIwLzN2UVNmL0plUFpmVzQzc3RlYnE0?=
- =?utf-8?B?VU11eElOTXZVR0cwRU5Waks4ZDRRMWJVZW1hdHZxc1VRdkZHVDN6eEVLWXNV?=
- =?utf-8?B?dTg1b2xBRHpXd243Y0RTSVhWOGpTSFJlSzY4Yy8za3kzUHhOZCtFMDJBZy9H?=
- =?utf-8?B?MFdXVUtUbEVlUXB6VURNWGVJWWxIeWZPRDUxNGo1Vm1TZ3lrMmhoWlJDR0Vi?=
- =?utf-8?B?OFowUm1pb3VyWXlRNHNMcGg5MFNoTklpYWgyWVllQmd1a0pOTGNVSWt1a0E1?=
- =?utf-8?B?VlZGNGZNeUpVTDFnRTBaT1VLT1JaZWROY0htdFlxbGNZeEFzcWxpOGVETVds?=
- =?utf-8?B?NmVTS1JBVlMya1BFNUlteVpTak9QY1R6SnhORGtiempHeW5vMjFVcW1hUjlv?=
- =?utf-8?B?akxRQzVoOGphTzZRdzhJd29yUGNkaHhDNC9kY1R3cERxcUY5eFhKdVZvQTZo?=
- =?utf-8?B?NGlTT3ZRYVRjbVBHZThOT1hkNFM4N2gwVTF5SHRpeC8xL1h1L2FsYTNnRDNy?=
- =?utf-8?B?dExPZnNpVjRVVXFvVUVFZytZbTdSSUFTSHBuK25qaDFxTUNDeC8xTjkwUk5j?=
- =?utf-8?B?V3JyL1Nhb0ZlV3I0UFgxTHZxTmR0d2k2cnkvQUJrUGtCcXFQSk1OMlA0L1Z3?=
- =?utf-8?B?QS9XRWhiNmROaytLc1B0QUxRTFJIWUFWUitYajl5azVtMzhPeTREVDBEc1lw?=
- =?utf-8?B?Z1NEKzlLVjFnUXVIcUQxM3Yzb0s2cGZJdWpPSzdNTHVpUDNuU2JHcU5NSFRX?=
- =?utf-8?B?RDZPNitIK2ZlM3dqOFAxTWZMOStzSW1Nd2RpZ0Z4dmVhYTIwVy8vN040T0I3?=
- =?utf-8?B?ZTlobzQ5c294Q1krUXN0Y25xbnRCSERxa1lmU29OS1I2Q1NsOXlmM3NLTlNx?=
- =?utf-8?B?aHpZUm10VjVYbWVpdWFJVXRDcTRxRktYVXhCdGwxTS9QdkwvcUowN2pFZ0hs?=
- =?utf-8?B?STNod2I5WmtPTlpoalBFUXUzMUFjN0xNWDNRWlFxdVExajBYOEhnYzdGS1Ev?=
- =?utf-8?B?TU9yV1ZHMDRqYkxERjBhWFJjWFdvLzlBdUloTGNKWUt2SzRvdTMzckR3WkJ6?=
- =?utf-8?B?aitiTlBINXR4cFJxaVQzK1liQnF1RnlhdjMxTWEzbndtVjI3azV0eHZ3SWlu?=
- =?utf-8?B?Y1d3ODEzOUVEdGpVMGRvRTNUQ2U3L2hRTTRKdnVZUFZxU2YrRllTKzNrRUJW?=
- =?utf-8?B?d3Y5VVRJeDZGZ2dDSnhpc0JJRVJMK2ZCMk96aWduS0dVdzRRbFlPR0hyQ2ha?=
- =?utf-8?B?T0dMai9zNjk5RWUwU1FKS3dGOUUzekIrd1RBSTVrSmU4VjZ5UmVMYkdrZXFF?=
- =?utf-8?B?bkczMm5aRHgxRjgyZjBuUXNTTW5LRHdCRi9uSENDOWxwaFlKcFN3MERaMG16?=
- =?utf-8?B?K0JUQ3k1eDRQVXdjM3dkNC9vRFB2WmhHaDVyVVVHQ1AxeTA4SzZMUFZwZ0xO?=
- =?utf-8?B?NDZtUnpOVEh1YmMrcHhsSklPeDdibEdrUWtnMXdKL2JERmhqVVh5MHhHcVQw?=
- =?utf-8?B?K0k4RXg4b3owRHlhZHN3SHpQV3k0cER4cXUrZ3FKQThiNXZlUERLYTVWa01h?=
- =?utf-8?B?clAvZXByclYvMlVoQ21BK214YitVMEFpZHlSU01zbWVVeC80U2s1S25UaVJx?=
- =?utf-8?B?dDZnSytQd2RlVEdWMWZ0R3Q0dm9BcWFPVWVPL2FldnZYRFBuWFg0QnZZYzBQ?=
- =?utf-8?B?elY0UG93MEdNNERkVzJhaFVmMEdrUDY2bnJqdWZ6Wk9xTlh6MStFWWhZSEFE?=
- =?utf-8?B?YWZWVWNUNk1pMWFBaDBUb0x1ZlZZRjJJMG9hd3MwUXZuVndBYmlLWW56T3Np?=
- =?utf-8?B?UkpQTW9rSXp0THVTNXhXM1hvekxiakdXVEJweDQzYjRXRDZKeS9KYkhtRzdV?=
- =?utf-8?B?R01HYlZpbGJEUVZtZFhvbE5xRGIzaEJjQ1g5YlZFamtUdkoxUVVaUXFTdDRS?=
- =?utf-8?B?bm00cDhlbnFDK2RQY290eDhQR1orOEt2ZGp1TldqdUN2b3pQVzdiME8yUi94?=
- =?utf-8?B?OXY5bW9JcDFOREhZa0JCdnlEV2FpUzJRY2pqWkJ5M01jR0xJT3B1UWk2WmRJ?=
- =?utf-8?B?TWNQemtWNWRjYjdhRENTUXNRNlBDOUd2WTNnQTRweCtnRTFMNWh2Z0U5VXQ5?=
- =?utf-8?B?NFFjelFZejRpNXUrazZmd1ZLM3NOMGFMd2VSQUtWQysvOFQ1YkJYUDlQTEtY?=
- =?utf-8?B?N0w1RWFUVmZTMmQ5UVA4UE90ZmJUZ0U1S3ZOeHoxYkU4T0lCWGdhNUZ2MnMw?=
- =?utf-8?B?dFZnQ3FEWUd4b1BUb2hVTzI0RWNKbDBsV0VZaTNoekdmMW9Namc5WDM2T1Nw?=
- =?utf-8?B?eFBkMTlocTJMUGFrN3FyVmUvc2NETjdLQ0xRNjJqV1QzYmdOcnp1UUcwQ2JZ?=
- =?utf-8?Q?wnDYdnNfOhGduuUk=3D?=
-X-Exchange-RoutingPolicyChecked: qLINo4zKd7rqLFPmFREQr0/ifAu8iPwMzKWHWjle5h2T+oiTtl/t2txssnjF3yzrcu9Qyp1Q7xWty6rI/yqJUhKnTuFzVfY/PDnH1IeA8LYIl2ZV/3Wfj2bBRG4A30V60jYnNIelplHqcXo134bd1Nvl8Am0uG1QXICV8g3pNdh25ioA4BlqUnSC+SSFko/ew3aW/Nh8LCQAdsnY0YbpgP1FXoA5U8fStuZPSVe+ycpnkl172+UQ+fjZ6AVW78pR2FHJ3emVmGTgUdW/fDPY2bLlZkUGcb2dzwjSAdZI+HFJecYexBJ3/qy6PNddBmUdoXEVD+WNWvDACOW5+vUtcg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81824480-8e01-410f-1a13-08dea11851f9
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5057.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 09:11:36.0839 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gTweICSeeUWShKM3xbOUvcqZVZk0Y5la7URxORxrNkSrBS8Gc6xtdbz+k62WuqfJS7G+SFEsPWR56p/UVd+jAZkoSrk04XTfNAAZyQR+1k0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6497
-X-OriginatorOrg: intel.com
+References: <b4757a01-6cff-4c92-b7ba-5a6578c7c06a@intel.com>
+ <20260421064342.2851479-2-jingpingjan@google.com>
+ <eb51511e2445b2cd19dda662bf1f402ed92887e1@intel.com>
+ <20260422170557.434ohgvhvjzqmrws@kamilkon-DESK.igk.intel.com>
+ <aekEACGEcS2QGQgV@intel.com>
+In-Reply-To: <aekEACGEcS2QGQgV@intel.com>
+From: Jing-Ping Jan <jingpingjan@google.com>
+Date: Thu, 23 Apr 2026 17:21:02 +0800
+X-Gm-Features: AQROBzAOYwTWTT86ZqCIxnIiNqWyX6YimA1TLV0CNsqIKZcFNWx4TR3-FjWXEho
+Message-ID: <CAMYCwo5YH+WBOGbDu4uVPgRkQ_N1T3bTZ2fdUSMa7dr+Jvzjqw@mail.gmail.com>
+Subject: Re: [PATCH i-g-t v2] tests/kms: correct index validation logic
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -173,68 +110,124 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
+On Thu, Apr 23, 2026 at 1:23=E2=80=AFAM Ville Syrj=C3=A4l=C3=A4
+<ville.syrjala@linux.intel.com> wrote:
+>
+> On Wed, Apr 22, 2026 at 07:05:57PM +0200, Kamil Konieczny wrote:
+> > Hi Jani,
+> > On 2026-04-21 at 15:02:01 +0300, Jani Nikula wrote:
+> > > On Tue, 21 Apr 2026, Jing-Ping Jan <jingpingjan@google.com> wrote:
+> > > > Based on the original implementation and the comment above the func=
+tion,
+> > > > it appears the expected behavior is for the plane indices to remain
+> > > > consistent with those in crtc->planes. Therefore, after swapping th=
+e old
+> > > > and new primary planes, we must update the index in igt_plane_t to
+> > > > ensure it matches the corresponding index in crtc->planes.
+> > > >
+> > > > Therefore, we should expect the indices of the old and new primary
+> > > > planes to remain unchanged after swapping them.
+> > > >
+> > > > Fixes: ac37e1174cc4 ("lib/kms: Pimp the primary plane swapping")
+> > >
+> > > With Fixes: it's customary to Cc the author and reviewer(s).
+> > >
+> > > Cc: Jani Nikula <jani.nikula@intel.com>
+> > > Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> > >
+> > > > Signed-off-by: Jing-Ping Jan <jingpingjan@google.com>
+> > > > ---
+> > > > v2:
+> > > >   - Add Fixes tag to the commit message.
+> > > >  lib/igt_kms.c | 4 ++--
+> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> > > > index bec96f267..405a04640 100644
+> > > > --- a/lib/igt_kms.c
+> > > > +++ b/lib/igt_kms.c
+> > > > @@ -2982,8 +2982,8 @@ void igt_display_reset_outputs(igt_display_t =
+*display)
+> > >
+> >
+> > Lets have for simplicity simple struct { char name; int index; }
+> > and old -> { A, 0 }, new -> { F, 7 }
+> >
+> > > The whole context here is:
+> > >
+> > >                     if (new_primary->index !=3D 0) {
+> > >                             igt_assert(old_primary !=3D new_primary);
+> > >
+> > >                             igt_assert_eq(old_primary->index, 0);
+> > >                             igt_assert_neq(new_primary->index, 0);
+> > >
+> > > >                           igt_swap(*old_primary, *new_primary);
+> >
+> > Now old -> { F, 7 }, new -> { A, 0 }
+> >
+> > > >                           igt_swap(old_primary->index, new_primary-=
+>index);
+> >
+> > Now old -> { F, 0 }, new -> { A, 7 }
+> >
+> > Or do I miss something?
+>
+> The problem is the pointers weren't swapped.
+>
+> [0] =3D { 0, A } <- old
+> [1] =3D { 1, B } <- new
+>
+> step1: full swap
+> [0] =3D { 1, B } <- old
+> [1] =3D { 0, A } <- new
+>
+> step2: index swap
+> [0] =3D { 0, B } <- old
+> [1] =3D { 1, A } <- new
+>
+> So after this I think the proper fix is to also swap the pointers.
+> Then the asserts after the swap start to make actual sense.
+>
+> step3: pointer swap
+> [0] =3D { 0, B } <- new
+> [1] =3D { 1, A } <- old
+>
+> >
+> > > >
+> > > > -                         igt_assert_neq(old_primary->index, 0);
+> > > > -                         igt_assert_eq(new_primary->index, 0);
+> > > > +                         igt_assert_eq(old_primary->index, 0);
+> > > > +                         igt_assert_neq(new_primary->index, 0);
+> > >
+> > > Why do you expect these to remain the same as before the swapping?
+> > > That's why we are swapping.
+> > >
+> > > >                   } else {
+> > > >                           igt_assert(old_primary =3D=3D new_primary=
+);
+> > >
+> > > --
+> > > Jani Nikula, Intel
+>
+> --
+> Ville Syrj=C3=A4l=C3=A4
+> Intel
 
-I just noticed that you forgot versioning in this batch ;)
+I don=E2=80=99t believe swapping the pointers is the right approach.
+Currently, old_primary and new_primary point to the first element and
+the original primary plane in crtc->planes, respectively. Swapping the
+pointers merely redirects them without addressing the underlying data
+structure.
 
-On 2026-04-21 at 13:17:14 +0200, Zbigniew Kempczyński wrote:
-> ontent-Length: 4165
-> 
-> Add list of filenames which were created by hooks in attachments directory
-> (like GuC log copy) to results.json for allow presenting it in CI.
-> Absolute path to attachment directory was added to results.json
-> as this is necessary to build full path to attachment file related to
-> test/subtest name.
-> 
-> Due to lack of userdata pointer in nftw() implementation main json
-> object is passed via temporary static variable. It shouldn't be the
-> problem because results.json is created in single thread. This change
-> is not too elegant but allows to minimize the code change and is
-> much easier to read comparing to recursive readdir().
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Ryszard Knop <ryszard.knop@intel.com>
-> Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-> ---
->  
+According to the original design(Commit 58a5a2d5), the logic should
+swap the plane indices first and then swap the entire plane objects
+between the two pointers. This ensures that the first element in the
+pipe->planes array remains the primary plane. Therefore, it makes more
+sense to validate that the index of the first element is 0 while the
+other index is non-zero.
 
-[...]
+Alternatively, we could rename old_primary to first_plane and
+new_primary to primary_plane to make the logic more transparent.
 
-> +static struct json_t *tmp_tests;
-> +static int ftw_attachments_list(const char *fpath, const struct stat *sb,
-> +				int typeflag, struct FTW *ftwbuf)
-> +{
-> +	struct json_t *obj = NULL, *attobj = NULL;
-> +
-> +	(void)sb;
-> +	(void)ftwbuf;
-> +
-> +	switch (typeflag) {
-> +	case FTW_F:
-> +		const char *attdirkey = "attachments-dir";
-> +		char *p, *currpath = (char *) fpath + 2;
-> +		char currdir[PATH_MAX];
-> +
-> +		p = strstr(currpath, "/");
-> +		if (!p)
-> +			return -1;
-> +		*p = '\0'; /* temporary for acquiring the piglit name */
-> +		obj = get_or_create_json_object(tmp_tests, currpath);
-> +		attobj = get_or_create_json_array(obj, "attachments");
-> +		*p = '/'; /* bring '/' back */
-> +		json_array_append_new(attobj, escaped_json_stringn(currpath, strlen(currpath)));
-> +		getcwd(currdir, PATH_MAX);
-getcwd() may technically fail, should we be worried about
-possible errors? You'd be trying to run strlen on currdir, whose
-contents may be undefined in that case.
-
-> +		if (!json_object_get(obj, attdirkey))
-> +			json_object_set_new(obj, attdirkey,
-> +					    escaped_json_stringn(currdir, strlen(currdir)));
-
-[...]
-
--- 
-Best Regards,
-Krzysztof
+Regards,
+Jing-Ping Jan
