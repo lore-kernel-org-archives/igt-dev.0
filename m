@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E738F9936C
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 11:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 867E8F9936C
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Apr 2026 11:06:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 730C510F0AC;
-	Thu, 23 Apr 2026 11:05:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D57210F0B1;
+	Thu, 23 Apr 2026 11:06:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jy3N9t/m";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cCrt3Q3/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76BEB10E350
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2026 11:04:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DDA6C10F0B0;
+ Thu, 23 Apr 2026 11:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1776942288; x=1808478288;
+ t=1776942381; x=1808478381;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=udaDpaR7ql97v/LOiZlHQjsqqm4EBGwEzkXh74Li1gY=;
- b=Jy3N9t/mPvbzOgka6xmDvX8MTRmyFOobztz3kFXEBrN9MTpLjxSzy0vH
- Fd3elnjxw1Odap6Di31gsW4y8VyYwGlP6OvwY8bVabKkhy4dR1HUkgXaU
- LgfcheedE4/xGjEMjWy370ksqYPUNS3/9Jjj/5XqZhpMnwGTvTIs3FRBl
- 6JB6IG56Fz92gBA3JgKxId0W7jPqVz+cbkSozRxNb6t1E/d59N/v44WLw
- OVhJlE8KkV32J83mwqyYpeLA/ktSEHVvOEsTdcprZDtIPFwWM+vU1AgCs
- iNqKp8P6ikmigXul4m2ZS04pCd1rm+rksZEQrBP3NICQyKozZDnMEvQTU g==;
-X-CSE-ConnectionGUID: GKr4mQDsRb64BckPY7XKLw==
-X-CSE-MsgGUID: QfwQMMFkRzu6IzvGE3Fnrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77791959"
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="77791959"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2026 04:04:48 -0700
-X-CSE-ConnectionGUID: ErLgHtNyQUCuihywGbgHRw==
-X-CSE-MsgGUID: w3SJTsX4T6OWpWY2XqvzLw==
+ bh=3jbjw7IJ4BdN2EoWOTGduD+sDVgsVLwcyKwcQQWUno8=;
+ b=cCrt3Q3/2Kz34gdwpWmrzPzJyd44lg9OKV3jV7SmibD6ooeLOma46wpc
+ 86K4NG19THcfhCMdfySXOTC0RIfRf4qsqyaqZWx3BtHEb0vCitXm86WvL
+ Gsz47Sk7nEmd13SEy78ohEimtpqoVTwHiU9coZ79zqHjhiU8VpmjQg0Hn
+ wu73ybmjQA4F08OecCu6WkWweeUSUlBhUNdY7PswStsyCzHof+SlWDDTo
+ PNwyVfUQuEskVu+j4TAQBGGleP7LIDF8NiHLt6zDQWCaAJ6t9VY6XVtO0
+ 9WTJ1pZl6lyeB/4ESSyNc/imEKeEdYKUe0KNgOOiWSFg+vQoEp6ZEnNHO g==;
+X-CSE-ConnectionGUID: /6xdB1W0QwmU+WmhLvHnXQ==
+X-CSE-MsgGUID: tt/KXcADQsSWLxoCUTzZtQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="95468424"
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="95468424"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2026 04:06:20 -0700
+X-CSE-ConnectionGUID: BHXJKK2gRNa/LoVuDP8sNw==
+X-CSE-MsgGUID: g3SSBaWGRn6vhM8v8VGNLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="232469833"
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; d="scan'208";a="232938059"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 04:04:47 -0700
-Date: Thu, 23 Apr 2026 13:04:44 +0200
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 04:06:20 -0700
+Date: Thu, 23 Apr 2026 13:06:17 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jan Maslak <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com
-Subject: Re: [PATCH 01/10] lib/intel/genxml: Add genxml generators, headers,
- and build integration
-Message-ID: <20260423110444.ckdkq6rtk5cr4ipm@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFUOiBmYWlsdXI=?= =?utf-8?Q?e?= for
+ tests/meson: Move Xe experimental info to Xe EUdebug
+Message-ID: <20260423110617.x4lz4ungfusaqgll@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jan Maslak <jan.maslak@intel.com>, igt-dev@lists.freedesktop.org,
- zbigniew.kempczynski@intel.com
-References: <20260415220720.1594414-1-jan.maslak@intel.com>
- <20260415220720.1594414-2-jan.maslak@intel.com>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20260422163043.153991-1-kamil.konieczny@linux.intel.com>
+ <177690280205.62.3892884175504952961@5ab824fced77>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260415220720.1594414-2-jan.maslak@intel.com>
+In-Reply-To: <177690280205.62.3892884175504952961@5ab824fced77>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,117 +71,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jan,
-On 2026-04-16 at 00:07:11 +0200, Jan Maslak wrote:
-> Currently IGT uses raw intel_bb_out() calls for setting up the render /
-> compute pipelines. Fields are set by shifting and OR-ing hand-computed
-> constants, with field names and bit positions hardcoded and sometimes
-> explained in comments. A lot of code has branching based on generations,
-> making pipeline setup more complex as the new generations come in.
+Hi igt-dev,
+On 2026-04-23 at 00:06:42 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Meanwhile Mesa uses a system called genxml in which XML files describe GPU
-> commands, state objects, enums, and registers - specifying the field layout
-> down to individual bits. A Python generator then produces C headers with
-> typed structs, pack functions, and named constants for each command/state.
+> Series: tests/meson: Move Xe experimental info to Xe EUdebug
+> URL   : https://patchwork.freedesktop.org/series/165314/
+> State : failure
 > 
-> By bringing genxml to IGT, we can achieve a more maintainable and less
-> error-prone codebase. Instead of manually calculating bit positions and
-> creating complex branching logic, we can fill out the structs generated
-> from XML descriptions, and the packing functions will handle the bit
-> manipulation automatically.
+> == Summary ==
 > 
-> Import gen_pack_header.py and intel_genxml.py from Mesa (MIT-licensed, Mesa
-> commit 3a62dc0218d3). Add gen_decode_header.py written for IGT.
-> Add igt_genxml.h, igt_genxml_defs.h, and igt_genxml_decode.h written for IGT.
-> Wire everything into the Meson build in lib/meson.build.
+> CI Bug Log - changes from IGT_8870 -> IGTPW_15041
+> ====================================================
 > 
-> gen_pack_header.py produces type-safe pack and emit functions for every
-> command, struct, and register defined in the XML.  Callers fill a typed
-> C struct and call the generated pack function; the generator handles all
-> bit-field packing and relocation recording.
+> Summary
+> -------
 > 
-> gen_decode_header.py (new, IGT-only) produces decoders that identify a
-> command from its opcode and print each decoded field's name and value,
-> including structs and registers embedded within commands.
+>   **FAILURE**
 > 
-> IGT-specific changes to gen_pack_header.py over the upstream Mesa version:
+>   Serious unknown changes coming with IGTPW_15041 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_15041, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
 > 
->  - C90 compliance: block-scope each dword's local variable declarations in
->    the generated pack functions.
->  - Baseline deduplication: when a platform's layout exactly matches any older
->    generation the item is omitted entirely - no #define aliases are emitted.
->    A comment names the oldest generation that first defined that layout so
->    the definition can be found in one grep.  Upstream Mesa has no
->    deduplication; this keeps the generated headers free of noise as the
->    number of platform variants grows.
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15041/index.html
 > 
-> The Meson rules build pack and decode headers for gen9 through xe3p covering
-> the render, blitter, and compute engines.  No generated files are committed
-> to the source tree.
+> Participating hosts (42 -> 39)
+> ------------------------------
 > 
-> See individual file headers for per-file copyright notices.
+>   Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
 > 
-> Signed-off-by: Jan Maslak <jan.maslak@intel.com>
-> ---
->  lib/intel/genxml/gen_decode_header.py | 487 ++++++++++++++++
->  lib/intel/genxml/gen_pack_header.py   | 799 ++++++++++++++++++++++++++
->  lib/intel/genxml/igt_genxml.h         | 112 ++++
->  lib/intel/genxml/igt_genxml_decode.h  |  60 ++
->  lib/intel/genxml/igt_genxml_defs.h    | 335 +++++++++++
->  lib/intel/genxml/intel_genxml.py      | 553 ++++++++++++++++++
->  lib/intel/genxml/util.py              |  39 ++
->  lib/meson.build                       |  51 +-
->  8 files changed, 2435 insertions(+), 1 deletion(-)
->  create mode 100644 lib/intel/genxml/gen_decode_header.py
->  create mode 100644 lib/intel/genxml/gen_pack_header.py
->  create mode 100644 lib/intel/genxml/igt_genxml.h
->  create mode 100644 lib/intel/genxml/igt_genxml_decode.h
->  create mode 100644 lib/intel/genxml/igt_genxml_defs.h
->  create mode 100644 lib/intel/genxml/intel_genxml.py
->  create mode 100644 lib/intel/genxml/util.py
+> Possible new issues
+> -------------------
 > 
-> diff --git a/lib/intel/genxml/gen_decode_header.py b/lib/intel/genxml/gen_decode_header.py
-> new file mode 100644
-> index 000000000..170d2f60f
-> --- /dev/null
-> +++ b/lib/intel/genxml/gen_decode_header.py
-> @@ -0,0 +1,487 @@
-> +#encoding=utf-8
-> +#
-> +# Copyright (C) 2025 Intel Corporation
-> +#
-> +# Permission is hereby granted, free of charge, to any person obtaining a
+>   Here are the unknown changes that may have been introduced in IGTPW_15041:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live@workarounds:
+>     - bat-adlp-11:        [PASS][1] -> [ABORT][2] +1 other test abort
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8870/bat-adlp-11/igt@i915_selftest@live@workarounds.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15041/bat-adlp-11/igt@i915_selftest@live@workarounds.html
+> 
 
-Please replace this text with 'SPDX-License-Identifier: MIT' before
-the copyright, unless it is a direct copy from other open-source
-project.
+This is unrelated to Xe change in meson, no need for running
+i915 FULL.
 
-If you created other python programs or C headers, also place SPDX
-there instead of verbatim text.
 
 Regards,
-Kamil
+Kamil 
 
-
-> +# copy of this software and associated documentation files (the "Software"),
-> +# to deal in the Software without restriction, including without limitation
-> +# the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> +# and/or sell copies of the Software, and to permit persons to whom the
-> +# Software is furnished to do so, subject to the following conditions:
-> +#
-> +# The above copyright notice and this permission notice (including the next
-> +# paragraph) shall be included in all copies or substantial portions of the
-> +# Software.
-> +#
-> +# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> +# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> +# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> +# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> +# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> +# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> +# IN THE SOFTWARE.
-> +#
-> +
-> +"""Generate batch-buffer decode/annotate headers from genxml.
-> +
-[cut]
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_15041 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-mtlp-8:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8870/bat-mtlp-8/igt@i915_selftest@live.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15041/bat-mtlp-8/igt@i915_selftest@live.html
+> 
+>   
+>   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_8870 -> IGTPW_15041
+>   * Linux: CI_DRM_18355 -> CI_DRM_18356
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_18355: 489e26ada57ce96a2ee3e5853cfe74981ef85bbd @ git://anongit.freedesktop.org/gfx-ci/linux
+>   CI_DRM_18356: 9917a06970fd6775b7b4259be6cca21cb4e2b165 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_15041: 2db9b6e920c093b43789dbb03d5fe76d8f5a4439 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8870: 1aba4b364b6dbdf7926cc78501e7281d5176b029 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15041/index.html
