@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9CDEFED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:00:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B9DDFED3F0
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:00:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7FF7D10F642;
-	Fri, 24 Apr 2026 17:00:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EBF2A10F642;
+	Fri, 24 Apr 2026 17:00:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ZMe1wvW6";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="iitZcnor";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84C2A8961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:58 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC87B8961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:11 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 3D1ABC5EF2B;
- Fri, 24 Apr 2026 16:55:39 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id B77AC1A3402;
+ Fri, 24 Apr 2026 16:55:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 69966604EB;
- Fri, 24 Apr 2026 16:54:57 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 88B39604EB;
+ Fri, 24 Apr 2026 16:55:10 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 73B3B10720A1E; 
- Fri, 24 Apr 2026 18:54:56 +0200 (CEST)
+ with ESMTPSA id 8BA1110720A38; 
+ Fri, 24 Apr 2026 18:55:09 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049696; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049710; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=fk5zCeSSsnYiJrhkEnk/r9ZK7tfOF0NalrQgUXHL210=;
- b=ZMe1wvW6Ns48zZTLNo0cIycGP9kgofm8VbQ0M8wk60XHpbpx/Am7UkQOsizHIYjBkRaNQV
- WlpVFKbM1QTAN6Un9OK+XCKoFlW6P6L3SEu7nWCuOmcAJVJgJW1b2srAdkbxMYN/f7pJbE
- YWFzxzeTzUW5vxiJeGgJ2/F35P4QHYPLnn4wDIYlM38o/FvUb+Zlh8mviTT3dqx83KIyRB
- dEXl3tFNaFfeLvh4xK3xPXJfJ6XKpOh0siE57HGgRNUrfOnm+bFpZymtp23V9w03FE7D8m
- jNEwHJ3Ul0whzvTyeR7TmwVgl/LnWDgDQ1QfkWHrttCY4nr55HQvUALeN/s1fA==
+ bh=ElbJlADapAj9DgTB0Qvmf4HksWBwp/LIVDtJq0CoPBM=;
+ b=iitZcnorUCLTgxZYLDKROUCs4tD7x1NFL2Y7bMY5gVuFWRFDTG9l3mOMYKSZcZFmtpmcOp
+ wWdYKJ9xYKMVz7tOld/7pkM/74Xv1b7UrJlrpicJAIT87e0+xReiV3DLBC1/H2jNHshNFC
+ AsZF3OqNFx8piMC5qVESGpc+BMz6/RoacAG3ErdmuZpKpT6TO0PMX36A8zvsLR4IeXqM+B
+ cPgebOZCHDEReFWQ4qS/SB3yYZvYpus44d5roM0ubq8jMthxq0D5vRLaZe69kMvtKHdBq7
+ 4nNNDFu2nMSmPGN82MByeTVKbk0gPKONSDM6IDFGPezftL37UK7wfEmGLGCPMA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:04 +0200
-Subject: [PATCH i-g-t v11 29/49] lib/unigraf: Add helpers to read and write
- edid
+Date: Fri, 24 Apr 2026 18:53:16 +0200
+Subject: [PATCH i-g-t v11 41/49] lib/i915/dp: Use igt_output_name instead
+ of private field
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-29-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-41-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,128 +64,168 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Read and writing EDID on unigraf can be useful to emulate different
-screens, add helpers to read and write them.
+output->name is a private field, use the common helper igt_output_name
+instead of the field directly.
 
-There is a limitation on the libTSI.so, it is only possible to read EDID
-using buffers of size multiple of 128 bytes, and there is no way to query
-the actual EDID size. The current implementation can only read EDID up to
-2048 bytes.
-
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/unigraf.c | 59 ++++++++++++++++++++++++++++++++++++++++++++
- lib/vendor/unigraf/unigraf.h |  4 +++
- 2 files changed, 63 insertions(+)
+ lib/i915/i915_dp.c | 43 ++++++++++++++++++++++---------------------
+ 1 file changed, 22 insertions(+), 21 deletions(-)
 
-diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index 930dd129d091..6a4e84484b20 100644
---- a/lib/vendor/unigraf/unigraf.c
-+++ b/lib/vendor/unigraf/unigraf.c
-@@ -14,6 +14,7 @@
- #include "unigraf.h"
- #include "TSI.h"
- #include "TSI_types.h"
-+#include "igt_aux.h"
- #include "igt_rc.h"
+diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
+index c2cddb955d75..e54058580ff2 100644
+--- a/lib/i915/i915_dp.c
++++ b/lib/i915/i915_dp.c
+@@ -35,6 +35,7 @@
  
- #define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device, ##__VA_ARGS__)
-@@ -57,6 +58,11 @@ static char *unigraf_connector_name;
-  */
- #define UNIGRAF_DEFAULT_INPUT_NAME "DP RX"
+ #include "i915_dp.h"
+ #include "igt_core.h"
++#include "igt_kms.h"
  
-+/**
-+ * UNIGRAF_EDID_MAX_SIZE - Max EDID size that can be read from the unigraf. The
-+ */
-+#define UNIGRAF_EDID_MAX_SIZE 2048
-+
- static void unigraf_close_device(void)
- {
- 	if (!unigraf_device)
-@@ -128,6 +134,19 @@ static void unigraf_init(void)
- 		value;												\
- 	})
- 
-+/**
-+ * unigraf_write() - Helper to write a value to unigraf
-+ * @config: config id to write
-+ * @data: data to write
-+ * @data_len: length of the data
-+ */
-+static void unigraf_write(TSI_CONFIG_ID config, const void *data, size_t data_len)
-+{
-+	unigraf_debug("Writing %zu bytes to 0x%x\n", data_len, config);
-+
-+	unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config, data, data_len));
-+}
-+
  /**
-  * unigraf_device_count() - Return the number of scanned devices
-  *
-@@ -333,6 +352,46 @@ void unigraf_reset(void)
- 	unigraf_set_sst();
+  * i915_dp_parse_marked_value:
+@@ -78,13 +79,13 @@ int i915_dp_get_current_link_rate(int drm_fd, igt_output_t *output)
+ 	char buf[512];
+ 	int res, ret;
+ 
+-	res = igt_debugfs_read_connector_file(drm_fd, output->name,
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
+ 					      "i915_dp_force_link_rate",
+ 					      buf, sizeof(buf));
+ 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_rate\n",
+-		     output->name);
++		     igt_output_name(output));
+ 	res = i915_dp_parse_marked_value(buf, '*', &ret);
+-	igt_assert_f(res == 0, "Output %s not enabled\n", output->name);
++	igt_assert_f(res == 0, "Output %s not enabled\n", igt_output_name(output));
+ 	return ret;
  }
  
-+/**
-+ * unigraf_read_edid() - Read the EDID from the specified stream
-+ * @stream: The stream ID to read the EDID from
-+ * @edid_size: Pointer to an integer where the size of the EDID will be stored
-+ *
-+ * Returns: A pointer to the EDID structure, or NULL if the operation failed. The caller
-+ * is responsible to free this pointer.
-+ */
-+struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size)
-+{
-+	void *edid;
-+
-+	unigraf_debug("Read EDID for stream %d...\n", stream);
-+
-+	edid = calloc(UNIGRAF_EDID_MAX_SIZE, sizeof(char));
-+
-+	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
-+	*edid_size = unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device,
-+							  TSI_EDID_TE_INPUT,
-+							  edid, UNIGRAF_EDID_MAX_SIZE));
-+
-+	return edid;
-+}
-+
-+/**
-+ * unigraf_write_edid() - Write EDID data to the specified stream
-+ * @stream: The stream ID to write the EDID to
-+ * @edid: Pointer to the EDID structure to write
-+ * @edid_size: Size of the EDID data in bytes
-+ *
-+ * This function writes the provided EDID data to the specified stream.
-+ */
-+void unigraf_write_edid(uint32_t stream, const struct edid *edid, uint32_t edid_size)
-+{
-+	unigraf_debug("Write EDID for stream %d...\n", stream);
-+
-+	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
-+	unigraf_write(TSI_EDID_TE_INPUT, edid, min(edid_size, (uint32_t)UNIGRAF_EDID_MAX_SIZE));
-+}
-+
+@@ -100,13 +101,13 @@ int i915_dp_get_current_lane_count(int drm_fd, igt_output_t *output)
+ 	char buf[512];
+ 	int res, ret;
+ 
+-	res = igt_debugfs_read_connector_file(drm_fd, output->name,
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
+ 					      "i915_dp_force_lane_count",
+ 					      buf, sizeof(buf));
+ 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_lane_count\n",
+-		     output->name);
++		     igt_output_name(output));
+ 	res = i915_dp_parse_marked_value(buf, '*', &ret);
+-	igt_assert_f(res == 0, "Output %s not enabled\n", output->name);
++	igt_assert_f(res == 0, "Output %s not enabled\n", igt_output_name(output));
+ 	return ret;
+ }
+ 
+@@ -122,11 +123,11 @@ int i915_dp_get_max_link_rate(int drm_fd, igt_output_t *output)
+ 	char buf[512];
+ 	int res, ret;
+ 
+-	res = igt_debugfs_read_connector_file(drm_fd, output->name,
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
+ 					      "i915_dp_max_link_rate",
+ 					      buf, sizeof(buf));
+ 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_max_link_rate\n",
+-		     output->name);
++		     igt_output_name(output));
+ 
+ 	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
+ 		     "Failed to parse max link rate from %s\n", buf);
+@@ -146,11 +147,11 @@ int i915_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
+ 	char buf[512];
+ 	int res, ret;
+ 
+-	res = igt_debugfs_read_connector_file(drm_fd, output->name,
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
+ 					      "i915_dp_max_lane_count",
+ 					      buf, sizeof(buf));
+ 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_max_lane_count\n",
+-		     output->name);
++		     igt_output_name(output));
+ 
+ 	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
+ 		     "Failed to parse max lane count from %s\n", buf);
+@@ -172,11 +173,11 @@ void i915_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_co
+ 	int res;
+ 
+ 	snprintf(value, sizeof(value), "%d", retrain_count);
+-	res = igt_debugfs_write_connector_file(drm_fd, output->name,
++	res = igt_debugfs_write_connector_file(drm_fd, igt_output_name(output),
+ 					       "i915_dp_force_link_retrain",
+ 					       value, strlen(value));
+ 	igt_assert_f(res == 0, "Unable to write to %s/i915_dp_force_link_retrain\n",
+-		     output->name);
++		     igt_output_name(output));
+ }
+ 
  /**
-  * unigraf_hpd_assert() - Assert Hot Plug Detect signal
-  *
-diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
-index c2caa9c2c54c..40f706ebd483 100644
---- a/lib/vendor/unigraf/unigraf.h
-+++ b/lib/vendor/unigraf/unigraf.h
-@@ -42,6 +42,10 @@ void unigraf_require_device(int drm_fd);
+@@ -196,11 +197,11 @@ void i915_dp_force_lt_failure(int drm_fd, igt_output_t *output, int failure_coun
+ 	int res;
  
- void unigraf_reset(void);
+ 	snprintf(value, sizeof(value), "%d", failure_count);
+-	res = igt_debugfs_write_connector_file(drm_fd, output->name,
++	res = igt_debugfs_write_connector_file(drm_fd, igt_output_name(output),
+ 					       "i915_dp_force_link_training_failure",
+ 					       value, strlen(value));
+ 	igt_assert_f(res == 0, "Unable to write to %s/i915_dp_force_link_training_failure\n",
+-		     output->name);
++		     igt_output_name(output));
+ }
  
-+struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size);
-+
-+void unigraf_write_edid(uint32_t stream, const struct edid *edid, uint32_t edid_size);
-+
- void unigraf_hpd_deassert(void);
+ /**
+@@ -215,11 +216,11 @@ bool i915_dp_get_link_retrain_disabled(int drm_fd, igt_output_t *output)
+ 	char buf[512];
+ 	int res;
  
- void unigraf_hpd_pulse(int duration);
+-	res = igt_debugfs_read_connector_file(drm_fd, output->name,
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
+ 					      "i915_dp_link_retrain_disabled",
+ 					      buf, sizeof(buf));
+ 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_link_retrain_disabled\n",
+-		     output->name);
++		     igt_output_name(output));
+ 	return strstr(buf, "yes");
+ }
+ 
+@@ -238,7 +239,7 @@ bool i915_dp_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *ou
+ 	char buf[512];
+ 	int res;
+ 
+-	res = igt_debugfs_read_connector_file(drmfd, output->name,
++	res = igt_debugfs_read_connector_file(drmfd, igt_output_name(output),
+ 					      "i915_dp_link_retrain_disabled",
+ 					      buf, sizeof(buf));
+ 	return res == 0;
+@@ -256,11 +257,11 @@ int i915_dp_get_pending_lt_failures(int drm_fd, igt_output_t *output)
+ 	char buf[512];
+ 	int res, ret;
+ 
+-	res = igt_debugfs_read_connector_file(drm_fd, output->name,
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
+ 					      "i915_dp_force_link_training_failure",
+ 					      buf, sizeof(buf));
+ 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_training_failure\n",
+-		     output->name);
++		     igt_output_name(output));
+ 
+ 	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
+ 		     "Failed to parse pending link training failures from %s\n", buf);
+@@ -280,11 +281,11 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
+ 	char buf[512];
+ 	int res, ret;
+ 
+-	res = igt_debugfs_read_connector_file(drm_fd, output->name,
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
+ 					      "i915_dp_force_link_retrain",
+ 					      buf, sizeof(buf));
+ 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_retrain\n",
+-		     output->name);
++		     igt_output_name(output));
+ 
+ 	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
+ 		     "Failed to parse pending link retrains from %s\n", buf);
 
 -- 
 2.54.0
