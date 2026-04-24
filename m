@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 702DDFED3EF
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:03:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15E27FED3F0
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:04:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 203C010F649;
-	Fri, 24 Apr 2026 17:03:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C0AAE10F648;
+	Fri, 24 Apr 2026 17:04:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="AtI8OEQ8";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="SXFSYiUy";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9950C8961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:14 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D90A110E2E5
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:56 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 52BBAC5EF2F
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:55 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id C7CC11A3402
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:55 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7F3C9604EB;
- Fri, 24 Apr 2026 16:55:13 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id A04C0604EB;
+ Fri, 24 Apr 2026 16:54:55 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 6C83E10720A14; 
- Fri, 24 Apr 2026 18:55:12 +0200 (CEST)
+ with ESMTPSA id A38D010720A1D; 
+ Fri, 24 Apr 2026 18:54:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049712; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049695; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=6ykcEy6AN6AQFWoBgohBQ7qdsLnSR5AYcSA6tOLfa04=;
- b=AtI8OEQ8AQxO7iX0/nTSh447iLtaUPvcVt2JEKkNTlbFHpkqHayuAxtNVSIMC2L3TDFBUu
- h813ZXk2s+MkEPD8xXD5wnFOmUr/00Fn61V2eIZkkwDLZjWWrXplDiVIwgZnhY+PYfoPQ0
- j0SFzRW2cbltKA0vbTHraq3nlHNpBJDDOirt9U33DCpl0cBnUh8pmjQRgXEXGKvJPsdqeb
- lYlDd55fjL8XckYh46OWP/aVOC24CEJPWFskj0TiJZAHLQX04V2At3+Dmmxd59nhSIruno
- 9wXtIakRcTS9TghkPnSa9KoLep7KS35XmHraY5dG7rjGQ1/3qFeVKoJUUOqMUQ==
+ bh=9Cks9arAHxxEtV16h1x0lU5BFfoc1nIggde0HhgVP6g=;
+ b=SXFSYiUykYZgqx+LAQg2FiTm65kj+l4yiaVVh2PqGvoiianeXZmc5bRm8CnY3FBeXa37SW
+ 8BfyuyIqaDKVLFCFMgH7cBEUSYjS1yFE8zsn9rP34BrTffZEYC0lq9FF1G+etCWIcoQQxy
+ h2PZda7YN1zRlN0+SqelfDAkN9VlweTPk/nNARbJbzblaXZv+uvhVZEyfQ02ZeSLz9X/NM
+ uCf+Ugd+Kx+N5IoaCFBAEyhIKp2qWVsLC+51enEx4PLOnos/WeVNUDdrpZUC5bnw8QihBi
+ OYsbK5hnHbkra8vsKX7AhbSwDaqlcyxgNXAtwr7Itm1avinxQul6t1h9so4hRQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:20 +0200
-Subject: [PATCH i-g-t v11 45/49] lib/unigraf: Add lane count configuration
+Date: Fri, 24 Apr 2026 18:53:02 +0200
+Subject: [PATCH i-g-t v11 27/49] lib/unigraf: Add plug/unplug helpers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-45-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-27-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -63,71 +63,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As unigraf can emulate 1, 2 or 4 lanes display port connections, add
-helpers to configure the number of lanes.
+The unigraf can emulate a full cable plug/unplug, so add helper to emulate
+this.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/unigraf.c | 29 +++++++++++++++++++++++++++++
+ lib/vendor/unigraf/unigraf.c | 28 +++++++++++++++++++++++++++-
  lib/vendor/unigraf/unigraf.h |  4 ++++
- 2 files changed, 33 insertions(+)
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
 diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index 8c091219bd40..80b4395eaaff 100644
+index aca26fe06cc5..1552a90e05b6 100644
 --- a/lib/vendor/unigraf/unigraf.c
 +++ b/lib/vendor/unigraf/unigraf.c
-@@ -550,6 +550,7 @@ void unigraf_reset(void)
- 	unigraf_set_sst();
- 	unigraf_load_default_edid();
- 	unigraf_hpd_assert();
-+	unigraf_set_max_lane_count(4);
- }
+@@ -308,7 +308,9 @@ void unigraf_require_device(int drm_fd)
+  * and link parameters to default values.
+  */
+ void unigraf_reset(void)
+-{}
++{
++	unigraf_plug();
++}
  
  /**
-@@ -809,3 +810,31 @@ void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info)
- 	igt_assert_eq(mode_info->vsync_start, unigraf_read_u32(TSI_DPRX_MSA_VSTART_R));
- 	igt_assert_eq(mode_info->hsync_start, unigraf_read_u32(TSI_DPRX_MSA_HSTART_R));
+  * unigraf_hpd_assert() - Assert Hot Plug Detect signal
+@@ -346,3 +348,27 @@ void unigraf_hpd_deassert(void)
+ {
+ 	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 0);
  }
 +
 +/**
-+ * unigraf_set_max_lane_count() - Set the maximum number of lanes advertised to the DUT
-+ * @count: The maximum number of lanes to configure on the device
++ * unigraf_plug() - Emulate a cable unplug
 + *
-+ * This function sets the maximum number of lanes that the device will advertise on the DP link.
-+ * The actual number of lanes used may be less than the requested count if the
-+ * DUT does not support/use it.
++ * This function will emulate a full cable unplug (not a simple HPD line change)
 + */
-+void unigraf_set_max_lane_count(uint32_t count)
++void unigraf_unplug(void)
 +{
-+	unigraf_write_u32(TSI_DPRX_MAX_LANES, count);
++	int d = 2 << 2;
++
++	unigraf_write_u32(TSI_DPRX_HPD_FORCE, d);
 +}
 +
 +/**
-+ * unigraf_get_max_lane_count() - Get the maximum number of lanes supported by the device
++ * unigraf_plug() - Emulate a cable plug
 + *
-+ * Returns: The maximum number of lanes supported by the device.
++ * This function will emulate a full cable plug (not a simple HPD line change)
 + */
-+int unigraf_get_max_lane_count(void)
++void unigraf_plug(void)
 +{
-+	int max_lanes;
++	int d = 3 << 2;
 +
-+	igt_assert(unigraf_device);
-+	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_MAX_LANES,
-+					     &max_lanes, sizeof(max_lanes)));
-+	return max_lanes;
++	unigraf_write_u32(TSI_DPRX_HPD_FORCE, d);
 +}
 diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
-index f3ea499292be..56a9d910dcb1 100644
+index 77fba4e53912..ae1f0d8955ab 100644
 --- a/lib/vendor/unigraf/unigraf.h
 +++ b/lib/vendor/unigraf/unigraf.h
-@@ -81,4 +81,8 @@ int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id);
+@@ -48,4 +48,8 @@ void unigraf_hpd_pulse(int duration);
  
- void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info);
+ void unigraf_hpd_assert(void);
  
-+int unigraf_get_max_lane_count(void);
++void unigraf_plug(void);
 +
-+void unigraf_set_max_lane_count(uint32_t count);
++void unigraf_unplug(void);
 +
  #endif // UNIGRAF_H
 
