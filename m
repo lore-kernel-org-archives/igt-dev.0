@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE36DFED3F1
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:57:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6830FED3F1
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:57:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7D58A8961D;
-	Fri, 24 Apr 2026 16:57:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93EF08961D;
+	Fri, 24 Apr 2026 16:57:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="sglHl2zA";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ynq16xnl";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE19C890BE
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 16134890BE
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:52 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id E38691A3402
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:47 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id EC8731A3403;
+ Fri, 24 Apr 2026 16:54:50 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id BB94E604EB;
- Fri, 24 Apr 2026 16:54:47 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id C4904604EB;
+ Fri, 24 Apr 2026 16:54:50 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id E7D8310720A20; 
- Fri, 24 Apr 2026 18:54:45 +0200 (CEST)
+ with ESMTPSA id 8D71410720A2A; 
+ Fri, 24 Apr 2026 18:54:49 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049686; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049690; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=cgrGztxkG/H70JBpz2YEhuzLim7nt32N8UlVzY1hrJY=;
- b=sglHl2zAtpHAYJFllTP7FXsXSZXTproGELPBv0T3OSHh5A8vswnZvG/fa214nT03McIFxU
- 675fFc+/ql8vf4xH4ZCeQgNkqMbkHzI/UbIuUreKQoGv2kJ9jn4nGa3Bzfp3+hwdjxMuXD
- HW59Zr9U/wNjJrUm8hKnfac0aLeZhW7hCh4ZHRA/2MrGL1Ptllwgn/HtPot6Be498/uAsL
- hkqBFxnGOY/BH3b87oDBKRFMeigKb3SavHiDfN4KqAH6bIPqUE4CXYd2SAELRfwhVRd9C3
- 6q1EXLxFEW+LDdmq9wgiIigMpCsn8X+0QIwEa6+i5D9Hil3YuMaUFhvEu1zk2Q==
+ bh=2kg0ecM00Uld9Jtz4Nax97ShLsggQC/L5eX1kUn+dD0=;
+ b=ynq16xnlLrwF0rc4RgE71xQpmH66H2ySjXEStiliDHUyhn7beNyReTU2fQKrdeK+ZH4PXW
+ iqzKHaAS8t0EWPH9PXiKI8vNvxLm7MmN6V8PldtixjjghjooecAOuFv6/M6FN5/tI9n50n
+ WP1kVgvasItp5SYzhnY0jFDxHq7iK/JGagVg3TevjKkcXpZVCKWzqnNAvjejfAoGBISuDv
+ BZzdwYo3CuVJo9BGkljQx/gnGWQcQpeiCvweDvRwCmrWnSwTDHXp5LoChGV4OnF1t9Z/7y
+ nyejADZKZvibt//GcyNoacK/mF9EfYwx2vBuWQkeBtHhgG76yh+4b+POfm1vvA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:52:55 +0200
-Subject: [PATCH i-g-t v11 20/49] lib/unigraf: Initial Unigraf support
+Date: Fri, 24 Apr 2026 18:52:57 +0200
+Subject: [PATCH i-g-t v11 22/49] lib/unigraf: Introduce device
+ configuration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260424-unigraf-integration-v11-20-0c5f5346ae60@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260424-unigraf-integration-v11-22-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -63,276 +64,119 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This introduce the basic boilerplate to connect to a unigraf device.
+As there could be multiple devices detected by libTSI, add a configuration
+field to ensure that igt will use the proper unigraf device.
 
-This integration currently only supports one device opened to simplify
-its usage and cleanup.
+The unigraf integration will search for a [Unigraf] entry containing a
+Device=
 
-The functions unigraf_open_device and unigraf_require_device will register
-a handler to do proper cleanup on IGT exit.
+For example, it can look like:
+
+[Unigraf]
+Device=UCD-500 [2434C620]
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/meson.build              |  10 ++++
- lib/vendor/unigraf/unigraf.c | 124 +++++++++++++++++++++++++++++++++++++++++++
- lib/vendor/unigraf/unigraf.h |  43 +++++++++++++++
- meson.build                  |  14 +++++
- 4 files changed, 191 insertions(+)
+ lib/vendor/unigraf/unigraf.c | 50 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/lib/meson.build b/lib/meson.build
-index 0e7efadf30ad..e17aece2fdf0 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -155,6 +155,13 @@ lib_deps = [
- 
- inc = [ inc, include_directories('vendor') ]
- 
-+if libtsi.found()
-+	lib_deps += libtsi
-+	lib_sources += [
-+		'vendor/unigraf/unigraf.c'
-+	]
-+endif
-+
- if libdrm_nouveau.found()
- 	lib_deps += libdrm_nouveau
- 	lib_sources += [
-@@ -236,6 +243,9 @@ endif
- if chamelium.found()
- 	lib_deps += chamelium
- 	lib_sources += [ 'igt_chamelium.c', 'igt_chamelium_stream.c' ]
-+endif
-+
-+if chamelium.found() or libtsi.found()
- 	lib_sources += 'monitor_edids/monitor_edids_helper.c'
- endif
- 
 diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-new file mode 100644
-index 000000000000..81ffae7a8ac3
---- /dev/null
+index 81ffae7a8ac3..bf52357e1dc9 100644
+--- a/lib/vendor/unigraf/unigraf.c
 +++ b/lib/vendor/unigraf/unigraf.c
-@@ -0,0 +1,124 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Louis Chauvet <louis.chauvet@bootlin.com>
+@@ -13,6 +13,7 @@
+ #include "unigraf.h"
+ #include "TSI.h"
+ #include "TSI_types.h"
++#include "igt_rc.h"
+ 
+ #define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device, ##__VA_ARGS__)
+ 
+@@ -20,6 +21,21 @@ static TSI_HANDLE unigraf_device;
+ static char *unigraf_default_edid;
+ static char *unigraf_connector_name;
+ 
++/**
++ * UNIGRAF_NAME_MAX - Maximum name length to be used for TSI functions
 + */
-+
-+#include <stdint.h>
-+
-+#include "igt_core.h"
-+
-+#include "unigraf.h"
-+#include "TSI.h"
-+#include "TSI_types.h"
-+
-+#define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device, ##__VA_ARGS__)
-+
-+static TSI_HANDLE unigraf_device;
-+static char *unigraf_default_edid;
-+static char *unigraf_connector_name;
-+
-+static void unigraf_close_device(void)
-+{
-+	if (!unigraf_device)
-+		return;
-+
-+	unigraf_debug("Closing...\n");
-+	unigraf_assert(TSIX_DEV_CloseDevice(unigraf_device));
-+	TSI_Clean();
-+	unigraf_device = NULL;
-+	free(unigraf_default_edid);
-+	free(unigraf_connector_name);
-+}
++#define UNIGRAF_NAME_MAX 1024
 +
 +/**
-+ * unigraf_exit_handler - Handle the exit signal and clean up unigraf resources.
-+ * @sig: The signal number received.
-+ *
-+ * This function is called when the program receives an exit signal. It ensures
-+ * that all unigraf resources are properly cleaned up by calling unigraf_deinit
-+ * for each open instance.
++ * UNIGRAF_CONFIG_GROUP - Name of the unigraf group in the configuration file
 + */
-+static void unigraf_exit_handler(int sig)
-+{
-+	unigraf_close_device();
-+}
-+
-+static void unigraf_init(void)
-+{
-+	int ret;
-+
-+	unigraf_debug("Initialize unigraf...\n");
-+	ret = TSI_Init(TSI_CURRENT_VERSION);
-+	unigraf_assert(ret);
-+	igt_install_exit_handler(unigraf_exit_handler);
-+}
++#define UNIGRAF_CONFIG_GROUP "Unigraf"
 +
 +/**
-+ * unigraf_device_count() - Return the number of scanned devices
-+ *
-+ * Must be called after a unigraf_rescan_devices().
++ * UNIGRAF_CONFIG_DEVICE_NAME - Key of the device name in the configuration file
 + */
-+static unsigned int unigraf_device_count(void)
++#define UNIGRAF_CONFIG_DEVICE_NAME "Device"
++
+ static void unigraf_close_device(void)
+ {
+ 	if (!unigraf_device)
+@@ -66,6 +82,21 @@ static unsigned int unigraf_device_count(void)
+ 	return unigraf_assert(TSIX_DEV_GetDeviceCount());
+ }
+ 
++static int unigraf_find_device(char *request)
 +{
-+	return unigraf_assert(TSIX_DEV_GetDeviceCount());
++	int device_count = unigraf_device_count();
++
++	for (int i = 0; i < device_count; i++) {
++		char dev_name[UNIGRAF_NAME_MAX] = "";
++
++		unigraf_assert(TSIX_DEV_GetDeviceName(i, dev_name, UNIGRAF_NAME_MAX));
++		unigraf_debug("Detected unigraf device %d: %s\n", i, dev_name);
++		if (!strncmp(dev_name, request, UNIGRAF_NAME_MAX))
++			return i;
++	}
++	return -ENODEV;
 +}
 +
-+/**
-+ * unigraf_open_device() - Search and open a device.
-+ * @drm_fd: File descriptor of the currently used drm device
-+ *
-+ * Assert if:
-+ * - called outside tests / fixup
-+ * - TSI library raise errors
-+ * Returns: true if a device was found and initialized, otherwise false.
-+ *
-+ * This function searches for a compatible device and opens it.
-+ */
-+bool unigraf_open_device(int drm_fd)
-+{
-+	TSI_RESULT r;
-+	int device_count;
-+	int chosen_device = 0;
-+	int chosen_role = 0;
-+	int chosen_input = 0;
-+
-+	assert(igt_can_fail());
-+
-+	if (unigraf_device)
-+		return true;
-+
-+	unigraf_init();
-+
-+	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-+
-+	device_count = unigraf_device_count();
-+	if (device_count < 1) {
-+		unigraf_debug("No device found.\n");
-+		return false;
+ /**
+  * unigraf_open_device() - Search and open a device.
+  * @drm_fd: File descriptor of the currently used drm device
+@@ -80,6 +111,8 @@ static unsigned int unigraf_device_count(void)
+ bool unigraf_open_device(int drm_fd)
+ {
+ 	TSI_RESULT r;
++	GError *cfg_error = NULL;
++	char *cfg_device = NULL;
+ 	int device_count;
+ 	int chosen_device = 0;
+ 	int chosen_role = 0;
+@@ -92,6 +125,15 @@ bool unigraf_open_device(int drm_fd)
+ 
+ 	unigraf_init();
+ 
++	if (igt_key_file) {
++		cfg_device = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
++						   UNIGRAF_CONFIG_DEVICE_NAME, &cfg_error);
++		if (cfg_error) {
++			unigraf_debug("No device name configured, uses first device available.\n");
++			cfg_device = NULL;
++		}
 +	}
 +
-+	unigraf_device = TSIX_DEV_OpenDevice(chosen_device, &r);
-+	unigraf_assert(r);
-+	igt_assert(unigraf_device);
-+	unigraf_debug("Successfully opened the unigraf device %d.\n", chosen_device);
-+
-+	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
-+	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
-+	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
-+
-+	return true;
-+}
-+
-+/**
-+ * unigraf_require_device() - Search and open a device.
-+ * @drm_fd: File descriptor of the currently used drm device
-+ *
-+ * This is a shorthand to reduce test boilerplate when a unigraf device must be present.
-+ */
-+void unigraf_require_device(int drm_fd)
-+{
-+	igt_require(unigraf_open_device(drm_fd));
-+}
-diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
-new file mode 100644
-index 000000000000..c08ce62894c5
---- /dev/null
-+++ b/lib/vendor/unigraf/unigraf.h
-@@ -0,0 +1,43 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Louis Chauvet <louis.chauvet@bootlin.com>
-+ */
-+
-+#ifndef UNIGRAF_H
-+#define UNIGRAF_H
-+
-+#include <stdbool.h>
-+#include <stdint.h>
-+
-+/**
-+ * unigraf_assert: Helper macro to assert a TSI return value and retrieve a detailed error message.
-+ * @result: libTSI return value to check
-+ *
-+ * This macro checks the return value of a libTSI function call. If the return value indicates an
-+ * error, it retrieves a detailed error message and asserts with that message.
-+ * If retrieving the error description fails, it asserts with a generic error message.
-+ */
-+#define unigraf_assert(result)									\
-+({												\
-+	char msg[256];										\
-+	TSI_RESULT __r = (result);								\
-+	if (__r < TSI_SUCCESS) {								\
-+		TSI_RESULT __r2 = TSI_MISC_GetErrorDescription(__r, msg, sizeof(msg));		\
-+		if (__r2 < TSI_SUCCESS)								\
-+			igt_assert_f(false,							\
-+				     "unigraf error: %d (get error description failed: %d)\n",	\
-+				     __r, __r2);						\
-+		else										\
-+			igt_assert_f(false, "unigraf error: %d (%s)\n", __r, msg);		\
-+	}											\
-+	(__r);											\
-+})
-+
-+bool unigraf_open_device(int drm_fd);
-+
-+void unigraf_require_device(int drm_fd);
-+
-+#endif // UNIGRAF_H
-diff --git a/meson.build b/meson.build
-index 79051be217ad..e750f7a51476 100644
---- a/meson.build
-+++ b/meson.build
-@@ -166,6 +166,12 @@ libpci = dependency('libpci', required : true)
- libudev = dependency('libudev', required : true)
- glib = dependency('glib-2.0', required : true)
+ 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
  
-+libtsi = cc.find_library('TSI', required : false)
-+
-+if libtsi.found()
-+	config.set('HAVE_UNIGRAF', 1)
-+endif
-+
- xmlrpc = dependency('xmlrpc', required : false)
- xmlrpc_util = dependency('xmlrpc_util', required : false)
- xmlrpc_client = dependency('xmlrpc_client', required : false)
-@@ -293,6 +299,7 @@ amdgpudir = join_paths(libexecdir, 'amdgpu')
- msmdir = join_paths(libexecdir, 'msm')
- panfrostdir = join_paths(libexecdir, 'panfrost')
- panthordir = join_paths(libexecdir, 'panthor')
-+unigrafdir = join_paths(libexecdir, 'unigraf')
- v3ddir = join_paths(libexecdir, 'v3d')
- vc4dir = join_paths(libexecdir, 'vc4')
- vkmsdir = join_paths(libexecdir, 'vkms')
-@@ -370,6 +377,12 @@ if get_option('use_rpath')
- 	endforeach
- 	vkms_rpathdir = join_paths(vkms_rpathdir, libdir)
+ 	device_count = unigraf_device_count();
+@@ -100,6 +142,14 @@ bool unigraf_open_device(int drm_fd)
+ 		return false;
+ 	}
  
-+	unigraf_rpathdir = '$ORIGIN'
-+	foreach p : unigrafdir.split('/')
-+		unigraf_rpathdir = join_paths(unigraf_rpathdir, '..')
-+	endforeach
-+	unigraf_rpathdir = join_paths(unigraf_rpathdir, libdir)
++	if (cfg_device) {
++		chosen_device = unigraf_find_device(cfg_device);
++		if (chosen_device < 0) {
++			igt_warn("The requested unigraf device %s is not found, err: %d.\n", cfg_device, chosen_device);
++			return false;
++		}
++	}
 +
- 	vmwgfx_rpathdir = '$ORIGIN'
- 	foreach p : vmwgfxdir.split('/')
- 		vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
-@@ -385,6 +398,7 @@ else
- 	v3d_rpathdir = ''
- 	vc4_rpathdir = ''
- 	vkms_rpathdir = ''
-+	unigraf_rpathdir = ''
- 	vmwgfx_rpathdir = ''
- endif
- 
+ 	unigraf_device = TSIX_DEV_OpenDevice(chosen_device, &r);
+ 	unigraf_assert(r);
+ 	igt_assert(unigraf_device);
 
 -- 
 2.54.0
