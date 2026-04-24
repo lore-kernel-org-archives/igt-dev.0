@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7088BFED3F1
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:56:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D173FED3F1
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:56:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 25B508961D;
-	Fri, 24 Apr 2026 16:56:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 455ED8961D;
+	Fri, 24 Apr 2026 16:56:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="wepIUkK4";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="OD2LDhig";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 512048961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:02 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C6F58961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:03 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 459C01A3402
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:01 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 510174E42AF0
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:02 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 16AE1604EB;
- Fri, 24 Apr 2026 16:55:01 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 29486604EB;
+ Fri, 24 Apr 2026 16:55:02 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id A878410720A31; 
- Fri, 24 Apr 2026 18:54:59 +0200 (CEST)
+ with ESMTPSA id C6FEB10720A32; 
+ Fri, 24 Apr 2026 18:55:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049700; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049701; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=ny5n9VtElbPy19NxhT28Wjh0N+BODK+nk44/MXIkfEU=;
- b=wepIUkK469EU1FF3d7RmPjvz5wxS+gNDMmNvU4WvHfs87yywYtdjLGCRbAwkY/h5JGnJu6
- Wh53Ux5C9BDRjpkIsUox+yQaIsSsBeUXXEEGtbJttNqeK/V17rDR4WGG5rI9/0NbuPmUmz
- CobZIFeuColR6FyqpZrs/fayygle/M44uWEIHEMkjfXJTf67UcA8mUbWi9WgT3/rJ7AnM5
- JMIIjvc11XZp/gItSTxE4VAUB1YE9MkA2sd5mH5WPMBlLcDj5Mwbs0hB9UiZuZVZ+6ckeI
- LN77jqWqCHKxAsChC4MLlB2Acf0uo+7d3ZYgm22qh2X5HZqDCzp+5wy/FleOLQ==
+ bh=k6WG+pTCFztsll3YTcoYDi7sQEoXG5I3vsFypKbuiMM=;
+ b=OD2LDhigoPZ4j/adapvy+sCYgFlanzPybSOouBPIjrCkdkWeudDZIi9NpTSO/Qo/XRvQPo
+ bv6oMgP1vVKiNCcef44ikywBxbIXTaxawePtkefJH9qWInWuTy1CM9iCRDFMJM/FBAY873
+ DIGP0aXE21GIEUD8dgrA+Uf+TAbfmys+4oS0RM35pXRmH+CDL9CKXEj3Etc8oXPOpSH8HK
+ Stvgu91R0aFKbMYN+DMURta3fPyBziNtaybwNKaiFaTsBZ5aVzbMWI0UEQJ1CyRbm8DPTl
+ cK9QOoRR3gs8rJpNmlwpiQ612Pek24ZiLtaz/MrO2L+sIkOSNxfxHSkDMmYOVQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:08 +0200
-Subject: [PATCH i-g-t v11 33/49] lib/unigraf: Add configuration for CRC usage
+Date: Fri, 24 Apr 2026 18:53:09 +0200
+Subject: [PATCH i-g-t v11 34/49] lib/unigraf: add
+ unigraf_get_connector_by_stream
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-33-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-34-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -63,79 +64,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As Unigraf devices are able to compute a CRC for the input image, add a
-configuration file option to use them.
+As unigraf can emulate MST, we need a way to grab the corresponding DRM
+connector from the stream id.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/unigraf.c | 25 +++++++++++++++++++++++++
+ lib/vendor/unigraf/unigraf.c | 41 +++++++++++++++++++++++++++++++++++++++++
  lib/vendor/unigraf/unigraf.h |  2 ++
- 2 files changed, 27 insertions(+)
+ 2 files changed, 43 insertions(+)
 
 diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index e7e643abbb98..e51495674f10 100644
+index e51495674f10..8779cac0dd26 100644
 --- a/lib/vendor/unigraf/unigraf.c
 +++ b/lib/vendor/unigraf/unigraf.c
-@@ -26,6 +26,7 @@
- static TSI_HANDLE unigraf_device;
- static char *unigraf_default_edid;
- static char *unigraf_connector_name;
-+static bool unigraf_crc;
- 
- /**
-  * UNIGRAF_NAME_MAX - Maximum name length to be used for TSI functions
-@@ -62,6 +63,11 @@ static char *unigraf_connector_name;
-  */
- #define UNIGRAF_CONFIG_EDID_NAME "EDID"
- 
-+/**
-+ * UNIGRAF_CONFIG_USE_CRC_NAME - Key of the CRC selection in the configuration file
-+ */
-+#define UNIGRAF_CONFIG_USE_CRC_NAME "UseCRC"
-+
- /**
-  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
-  */
-@@ -367,6 +373,14 @@ bool unigraf_open_device(int drm_fd)
- 			unigraf_debug("No default EDID set, use IGT default.\n");
- 			cfg_edid_name = NULL;
- 		}
-+
-+		cfg_error = NULL;
-+		unigraf_crc = g_key_file_get_boolean(igt_key_file, UNIGRAF_CONFIG_GROUP,
-+						     UNIGRAF_CONFIG_USE_CRC_NAME, &cfg_error);
-+		if (cfg_error) {
-+			unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
-+			unigraf_crc = true;
-+		}
- 	}
- 
- 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-@@ -686,3 +700,14 @@ void unigraf_read_crc(int stream, igt_crc_t *out)
- 	out->n_words = 3;
- 	out->has_valid_frame = false;
+@@ -302,6 +302,47 @@ drmModeConnectorPtr unigraf_get_connector(int drm_fd)
+ 	return igt_get_connector_from_name(drm_fd, unigraf_connector_name);
  }
-+
+ 
 +/**
-+ * unigraf_use_crc() - Check if Unigraf device should be used for CRC computation
-+ *
-+ * Returns: true if the Unigraf device should be used for CRC computation,
-+ *          false otherwise.
++ * unigraf_get_connector_id_by_stream() - Get a connector id from a stream id
++ * @drm_fd: DRM device where the unigraf is attached
++ * @stream_id: Stream id in the MST streams
 + */
-+bool unigraf_use_crc(void)
++int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id)
 +{
-+	return unigraf_crc;
++	drmModeConnectorPtr main_connector = unigraf_get_connector(drm_fd);
++	drmModeResPtr res = drmModeGetResources(drm_fd);
++
++	char *mst_path;
++	int mst_path_len = asprintf(&mst_path, "mst:%d-", main_connector->connector_id);
++
++	igt_assert(mst_path_len >= 0);
++
++	for (int i = 0; i < res->count_connectors; i++) {
++		drmModePropertyBlobPtr path_blob = kmstest_get_path_blob(drm_fd,
++									 res->connectors[i]);
++
++		if (!path_blob || path_blob->length < mst_path_len)
++			continue;
++
++		if (!memcmp(path_blob->data, mst_path, mst_path_len)) {
++			if (!stream_id) {
++				drmModeFreePropertyBlob(path_blob);
++				drmModeFreeResources(res);
++				drmModeFreeConnector(main_connector);
++				return res->connectors[i];
++			}
++			stream_id--;
++		}
++
++		drmModeFreePropertyBlob(path_blob);
++	}
++
++	drmModeFreeResources(res);
++	drmModeFreeConnector(main_connector);
++
++	return 0;
 +}
++
+ /**
+  * unigraf_open_device() - Search and open a device.
+  * @drm_fd: File descriptor of the currently used drm device
 diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
-index 67fb44db107b..34bdf15ed04b 100644
+index 34bdf15ed04b..e07ca6745292 100644
 --- a/lib/vendor/unigraf/unigraf.h
 +++ b/lib/vendor/unigraf/unigraf.h
-@@ -75,4 +75,6 @@ void unigraf_select_stream(int stream);
+@@ -77,4 +77,6 @@ void unigraf_read_crc(int stream, igt_crc_t *out);
  
- void unigraf_read_crc(int stream, igt_crc_t *out);
+ bool unigraf_use_crc(void);
  
-+bool unigraf_use_crc(void);
++int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id);
 +
  #endif // UNIGRAF_H
 
