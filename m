@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2FE2FB44B4
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 06:34:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AFFBFB44BB
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 06:54:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2894110E0DD;
-	Fri, 24 Apr 2026 06:34:29 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A764E10E0DD;
- Fri, 24 Apr 2026 06:34:13 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7145753880767192724=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_tests/intel/xe=5Fexec=3A_A?=
- =?utf-8?q?dd_VM_rebind_stress_test_with_cpumask_cycling?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "S Sebinraj" <s.sebinraj@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C22EF10E111;
+	Fri, 24 Apr 2026 06:54:18 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fmrsD1uA";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D16110E111
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 06:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1777013645; x=1808549645;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=pKJ7ZopWBJG397z+tI8vmblQmLdQXtDRCKdISQNvZ0I=;
+ b=fmrsD1uAd1z8fmNu7j/6v5lTk+4ifIQXXBNU+HGK6CDmKYkZWG5EtRkh
+ XxD1Mm2wvqhxOF1UuK64hePjQHNE+CnC6Q0d2rgwkNZethqrFojHN4hXm
+ JEBb0rSWtq5DtKcGKE9AI/2W300VPxk4el9Y3riUiREGt71hR/kV+zTkr
+ HtOU0+nEiFU0MiuGzX8r3P74ijfmYyIJNCpOtXtLYHwhvDEOCZmhx4m1c
+ uPInkjDFG1k2E8Hr18ERC7SoAB6MjrR00q0Pz1D4I6TBN0Qn/cc0pCKUn
+ 8ekShZ1fS2fiWM0ssRonKFgDTZcCiXFWjig9llSaKDssu0UgOrI2udDLm Q==;
+X-CSE-ConnectionGUID: Nc8B33EqQByqIQBsl2KE5w==
+X-CSE-MsgGUID: c+OZ+MjBTpajpJRYeB+eEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="103454872"
+X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; d="scan'208";a="103454872"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2026 23:54:05 -0700
+X-CSE-ConnectionGUID: HtErOt3GQDKr6JOs63GDSQ==
+X-CSE-MsgGUID: ghQB+7zvQG6zmifDRXGGqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; d="scan'208";a="256394854"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.28])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2026 23:54:04 -0700
+Date: Fri, 24 Apr 2026 08:54:02 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Jan Maslak <jan.maslak@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 24 Apr 2026 06:34:13 -0000
-Message-ID: <177701245366.6496.15750220660354703447@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260424042457.2178562-1-s.sebinraj@intel.com>
-In-Reply-To: <20260424042457.2178562-1-s.sebinraj@intel.com>
+Subject: Re: [PATCH 01/10] lib/intel/genxml: Add genxml generators, headers,
+ and build integration
+Message-ID: <yrsvsxxc5zy77sfdktznp5bazkmfp3wjqk6ionid5bi7ibnces@vkfd2et24nym>
+References: <20260415220720.1594414-1-jan.maslak@intel.com>
+ <20260415220720.1594414-2-jan.maslak@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260415220720.1594414-2-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,554 +68,399 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7145753880767192724==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Apr 16, 2026 at 12:07:11AM +0200, Jan Maslak wrote:
 
-== Series Details ==
+<cut>
 
-Series: tests/intel/xe_exec: Add VM rebind stress test with cpumask cycling
-URL   : https://patchwork.freedesktop.org/series/165395/
-State : success
+I'm sorry but I'm reviewing your code partially.
 
-== Summary ==
+> diff --git a/lib/intel/genxml/igt_genxml_defs.h b/lib/intel/genxml/igt_genxml_defs.h
+> new file mode 100644
+> index 000000000..3acedf0b1
+> --- /dev/null
+> +++ b/lib/intel/genxml/igt_genxml_defs.h
+> @@ -0,0 +1,335 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2016 Intel Corporation
+> + * Copyright © 2025 Intel Corporation
+> + *
+> + * Self-contained header providing all definitions that genxml-generated
+> + * pack headers need.  Replaces Mesa's util/bitpack_helpers.h and
+> + * genX_helpers.h so that IGT can use genxml without pulling in Mesa's
+> + * build system.
+> + */
+> +
+> +#ifndef IGT_GENXML_DEFS_H
+> +#define IGT_GENXML_DEFS_H
+> +
+> +#include <assert.h>
+> +#include <math.h>
+> +#include <stdbool.h>
+> +#include <stdint.h>
+> +#include <string.h>
+> +
+> +/* -- compiler helpers ----------------------------------------------- */
+> +
+> +#ifndef ALWAYS_INLINE
+> +#define ALWAYS_INLINE inline __attribute__((always_inline))
+> +#endif
+> +
+> +#ifndef ASSERTED
+> +#ifdef NDEBUG
+> +#define ASSERTED __attribute__((unused))
+> +#else
+> +#define ASSERTED
+> +#endif
+> +#endif
+> +
+> +#ifndef UNUSED
+> +#define UNUSED __attribute__((unused))
+> +#endif
+> +
+> +#ifndef CLAMP
+> +#define CLAMP(x, lo, hi) ((x) < (lo) ? (lo) : ((x) > (hi) ? (hi) : (x)))
+> +#endif
+> +
+> +/* -- bit-field helpers ---------------------------------------------- */
+> +
+> +#ifndef BITFIELD64_BIT
+> +#define BITFIELD64_BIT(b)  (1ull << (b))
+> +#endif
+> +
+> +#ifndef BITFIELD64_MASK
+> +#define BITFIELD64_MASK(b) \
+> +	((b) == 64 ? (~0ull) : BITFIELD64_BIT(b) - 1)
+> +#endif
+> +
+> +/* -- int-range helpers (Mesa u_math.h equivalents) ------------------ */
+> +
+> +static inline ALWAYS_INLINE int64_t
+> +u_intN_min(unsigned bits)
+> +{
+> +	return -(INT64_C(1) << (bits - 1));
+> +}
+> +
+> +static inline ALWAYS_INLINE int64_t
+> +u_intN_max(unsigned bits)
+> +{
+> +	return (INT64_C(1) << (bits - 1)) - 1;
+> +}
+> +
+> +static inline ALWAYS_INLINE uint64_t
+> +u_uintN_max(unsigned bits)
+> +{
+> +	return (bits == 64) ? UINT64_MAX : (UINT64_C(1) << bits) - 1;
+> +}
+> +
+> +/* -- validation hook (no-op outside Valgrind) ----------------------- */
+> +
+> +#ifndef util_bitpack_validate_value
+> +#define util_bitpack_validate_value(x)
+> +#endif
+> +
+> +/* -- bitpack functions ---------------------------------------------- */
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_ones(uint32_t start, uint32_t end)
+> +{
+> +	return (UINT64_MAX >> (64 - (end - start + 1))) << start;
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_uint(uint64_t v, uint32_t start, UNUSED uint32_t end)
+> +{
+> +#ifndef NDEBUG
+> +	const int bits = end - start + 1;
+> +	if (bits < 64) {
+> +		const uint64_t max = u_uintN_max(bits);
+> +		assert(v <= max);
+> +	}
+> +#endif
 
-CI Bug Log - changes from XEIGT_8872_FULL -> XEIGTPW_15049_FULL
-====================================================
+In IGT case NDEBUG cannot be defined - see meson.build lines 22-25.
+So I think you can drop ifndef/endif here.
 
-Summary
--------
+> +	util_bitpack_validate_value(v);
+> +	return v << start;
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_uint_nonzero(uint64_t v, uint32_t start, uint32_t end)
+> +{
+> +	assert(v != 0ull);
+> +	return util_bitpack_uint(v, start, end);
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_sint(int64_t v, uint32_t start, uint32_t end)
+> +{
+> +	const int bits = end - start + 1;
+> +	const uint64_t mask = BITFIELD64_MASK(bits);
+> +	util_bitpack_validate_value(v);
+> +#ifndef NDEBUG
+> +	if (bits < 64) {
+> +		const int64_t min = u_intN_min(bits);
+> +		const int64_t max = u_intN_max(bits);
+> +		assert(min <= v && v <= max);
+> +	}
+> +#endif
 
-  **SUCCESS**
+Ditto
 
-  No regressions found.
+> +	return (v & mask) << start;
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_sint_nonzero(int64_t v, uint32_t start, uint32_t end)
+> +{
+> +	assert(v != 0ll);
+> +	return util_bitpack_sint(v, start, end);
+> +}
+> +
+> +ALWAYS_INLINE static uint32_t
+> +util_bitpack_float(float v)
+> +{
+> +	union { float f; uint32_t dw; } x;
+> +	util_bitpack_validate_value(v);
+> +	x.f = v;
+> +	return x.dw;
+> +}
+> +
+> +ALWAYS_INLINE static uint32_t
+> +util_bitpack_float_nonzero(float v)
+> +{
+> +	assert(v != 0.0f);
+> +	return util_bitpack_float(v);
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_sfixed(float v, uint32_t start, uint32_t end,
+> +		    uint32_t fract_bits)
+> +{
+> +	const float factor = (1 << fract_bits);
+> +	const int64_t int_val = llroundf(v * factor);
+> +	const uint64_t mask = UINT64_MAX >> (64 - (end - start + 1));
+> +	util_bitpack_validate_value(v);
+> +#ifndef NDEBUG
+> +	{
+> +		const int total_bits = end - start + 1;
+> +		const float min = u_intN_min(total_bits) / factor;
+> +		const float max = u_intN_max(total_bits) / factor;
+> +		assert(min <= v && v <= max);
+> +	}
+> +#endif
 
-  
+Ditto.
 
-Participating hosts (2 -> 2)
-------------------------------
+> +	return (int_val & mask) << start;
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_sfixed_clamp(float v, uint32_t start, uint32_t end,
+> +			  uint32_t fract_bits)
+> +{
+> +	const float factor = (1 << fract_bits);
+> +	const int total_bits = end - start + 1;
+> +	const float min = u_intN_min(total_bits) / factor;
+> +	const float max = u_intN_max(total_bits) / factor;
+> +	const int64_t int_val = llroundf(CLAMP(v, min, max) * factor);
+> +	const uint64_t mask = UINT64_MAX >> (64 - (end - start + 1));
+> +	util_bitpack_validate_value(v);
+> +	return (int_val & mask) << start;
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_sfixed_nonzero(float v, uint32_t start, uint32_t end,
+> +			    uint32_t fract_bits)
+> +{
+> +	assert(v != 0.0f);
+> +	return util_bitpack_sfixed(v, start, end, fract_bits);
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_ufixed(float v, uint32_t start, ASSERTED uint32_t end,
+> +		    uint32_t fract_bits)
+> +{
+> +	const float factor = (1 << fract_bits);
+> +	const uint64_t uint_val = llroundf(v * factor);
+> +	util_bitpack_validate_value(v);
+> +#ifndef NDEBUG
+> +	{
+> +		const int total_bits = end - start + 1;
+> +		const float min = 0.0f;
+> +		const float max = u_uintN_max(total_bits) / factor;
+> +		assert(min <= v && v <= max);
+> +	}
+> +#endif
 
-  No changes in participating hosts
+Ditto.
 
-Possible new issues
--------------------
+> +	return uint_val << start;
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_ufixed_clamp(float v, uint32_t start, ASSERTED uint32_t end,
+> +			  uint32_t fract_bits)
+> +{
+> +	const float factor = (1 << fract_bits);
+> +	const int total_bits = end - start + 1;
+> +	const float min = 0.0f;
+> +	const float max = u_uintN_max(total_bits) / factor;
+> +	const uint64_t uint_val = llroundf(CLAMP(v, min, max) * factor);
+> +	util_bitpack_validate_value(v);
+> +	return uint_val << start;
+> +}
+> +
+> +ALWAYS_INLINE static uint64_t
+> +util_bitpack_ufixed_nonzero(float v, uint32_t start, uint32_t end,
+> +			    uint32_t fract_bits)
+> +{
+> +	assert(v != 0.0f);
+> +	return util_bitpack_ufixed(v, start, end, fract_bits);
+> +}
+> +
+> +/* -- address type and combine function ------------------------------ */
+> +
+> +struct igt_address {
+> +	uint64_t offset;          /* full GPU address to pack into dwords */
+> +	uint32_t handle;          /* GEM handle; 0 = no reloc needed */
+> +	uint32_t read_domains;
+> +	uint32_t write_domain;
+> +	uint64_t presumed_offset; /* BO base address (for computing bo_delta) */
+> +};
+> +
+> +struct intel_bb;
+> +
+> +/*
+> + * Declared here so __gen_combine_address can call it.
+> + * Also declared in intel_batchbuffer.h; suppress the warning
+> + * when both headers are included.
+> + */
+> +#pragma GCC diagnostic push
+> +#pragma GCC diagnostic ignored "-Wredundant-decls"
+> +uint64_t intel_bb_offset_reloc_with_delta(struct intel_bb *ibb,
+> +					  uint32_t handle,
+> +					  uint32_t read_domains,
+> +					  uint32_t write_domain,
+> +					  uint32_t delta,
+> +					  uint32_t offset,
+> +					  uint64_t presumed_offset);
+> +#pragma GCC diagnostic pop
+> +
+> +#define __gen_address_type  struct igt_address
+> +#define __gen_user_data     struct intel_bb
+> +
+> +/*
+> + * __gen_combine_address - called by genxml pack functions for every
+> + * address field.  If the address carries a GEM handle, automatically
+> + * register a relocation with intel_bb.
+> + *
+> + * @ibb:      batch buffer (passed as __gen_user_data*)
+> + * @location: pointer to the dword(s) being written in the batch
+> + * @addr:     address descriptor (offset + optional reloc metadata)
+> + * @delta:    flag bits that genxml packed below the address field
+> + */
+> +static inline ALWAYS_INLINE uint64_t
+> +__gen_combine_address(struct intel_bb *ibb,
+> +		      void *location,
+> +		      struct igt_address addr, uint32_t delta)
+> +{
+> +	if (addr.handle) {
+> +		uint32_t batch_offset =
+> +			(uint8_t *)location - (uint8_t *)ibb->batch;
+> +		uint32_t bo_delta =
+> +			(uint32_t)(addr.offset - addr.presumed_offset);
+> +
+> +		intel_bb_offset_reloc_with_delta(ibb, addr.handle,
+> +						 addr.read_domains,
+> +						 addr.write_domain,
+> +						 bo_delta + delta,
+> +						 batch_offset,
+> +						 addr.presumed_offset);
+> +	}
+> +
+> +	return addr.offset + delta;
+> +}
+> +
+> +/* -- validation hook (no-op) ---------------------------------------- */
+> +
+> +#ifndef __gen_validate_value
+> +#define __gen_validate_value(x)
+> +#endif
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_15049_FULL:
+Do we need the above? I don't see any usage of this.
 
-### IGT changes ###
+> +
+> +/* -- offset helper -------------------------------------------------- */
+> +
+> +static inline ALWAYS_INLINE uint64_t
+> +__gen_offset(uint64_t v, ASSERTED uint32_t start, ASSERTED uint32_t end)
+> +{
+> +#ifndef NDEBUG
+> +	uint64_t mask = (~0ull >> (64 - (end - start + 1))) << start;
+> +	assert((v & ~mask) == 0);
+> +#endif
 
-#### Possible regressions ####
+Same as above about NDEBUG.
 
-  * {igt@xe_exec_threads@threads-wq-stress-rebind-bindexecqueue} (NEW):
-    - shard-lnl:          NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-lnl-6/igt@xe_exec_threads@threads-wq-stress-rebind-bindexecqueue.html
+> +	__gen_validate_value(v);
+> +	return v;
+> +}
+> +
+> +static inline ALWAYS_INLINE uint64_t
+> +__gen_offset_nonzero(uint64_t v, uint32_t start, uint32_t end)
+> +{
+> +	assert(v != 0ull);
+> +	return __gen_offset(v, start, end);
+> +}
+> +
+> +/* -- address helper ------------------------------------------------- */
+> +
+> +static inline ALWAYS_INLINE uint64_t
+> +__gen_address(__gen_user_data *data, void *location,
+> +	      __gen_address_type address, uint32_t delta,
+> +	      __attribute__((unused)) uint32_t start, uint32_t end)
+> +{
+> +	uint64_t addr_u64 = __gen_combine_address(data, location, address, delta);
+> +	if (end == 31) {
+> +		return addr_u64;
+> +	} else if (end < 63) {
+> +		const unsigned shift = 63 - end;
+> +		return (addr_u64 << shift) >> shift;
+> +	} else {
+> +		return addr_u64;
+> +	}
+> +}
+> +
+> +#endif /* IGT_GENXML_DEFS_H */
 
-  
-New tests
----------
+I started looking into generated code according to __gen_address and
+for an example - xe2_pack.h: GFX20_RENDER_SURFACE_STATE_pack():
 
-  New tests have been introduced between XEIGT_8872_FULL and XEIGTPW_15049_FULL:
+const uint64_t v10 =
+   util_bitpack_uint(values->MipRegionWidthInLog2, 0, 3) |
+   util_bitpack_uint(values->MipRegionHeightInLog2, 4, 7) |
+   util_bitpack_uint(values->ProceduralTexture, 11, 11) |
+   util_bitpack_uint(values->YOffsetforVPlane, 32, 45) |
+   util_bitpack_uint(values->XOffsetforVPlane, 48, 61);
+const uint64_t v10_address =
+   __gen_address(data, &dw[10], values->AuxiliarySurfaceBaseAddress, v10, 12, 63);
+dw[10] = v10_address;
+dw[11] = (v10_address >> 32) | (v10 >> 32);
+}
 
-### New IGT tests (1) ###
+As __gen_address() calls __gen_combine_address() shouldn't it return
 
-  * igt@xe_exec_threads@threads-wq-stress-rebind-bindexecqueue:
-    - Statuses : 1 incomplete(s) 1 pass(s)
-    - Exec time: [0.0, 32.65] s
+return addr.offset | delta;
 
-  
+as currently it returns addr.offset + delta;
 
-Known issues
-------------
+I guess this work because addr.offset has lower 12bits off, but | looks
+safer to me.
 
-  Here are the changes found in XEIGTPW_15049_FULL that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_cursor_edge_walk@256x256-right-edge:
-    - shard-bmg:          [PASS][2] -> [FAIL][3] ([Intel XE#6841]) +1 other test fail
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@kms_cursor_edge_walk@256x256-right-edge.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-2/igt@kms_cursor_edge_walk@256x256-right-edge.html
-
-  * igt@kms_cursor_legacy@cursorb-vs-flipb-varying-size:
-    - shard-bmg:          [PASS][4] -> [SKIP][5] ([Intel XE#2291] / [Intel XE#7343])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-3/igt@kms_cursor_legacy@cursorb-vs-flipb-varying-size.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@kms_cursor_legacy@cursorb-vs-flipb-varying-size.html
-
-  * igt@kms_flip@flip-vs-expired-vblank-interruptible:
-    - shard-lnl:          [PASS][6] -> [FAIL][7] ([Intel XE#301] / [Intel XE#3149]) +1 other test fail
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-lnl-8/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
-
-  * igt@kms_flip@flip-vs-expired-vblank@b-edp1:
-    - shard-lnl:          [PASS][8] -> [FAIL][9] ([Intel XE#301]) +1 other test fail
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-lnl-1/igt@kms_flip@flip-vs-expired-vblank@b-edp1.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-lnl-7/igt@kms_flip@flip-vs-expired-vblank@b-edp1.html
-
-  * igt@kms_flip@wf_vblank-ts-check:
-    - shard-bmg:          [PASS][10] -> [FAIL][11] ([Intel XE#7705]) +1 other test fail
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-5/igt@kms_flip@wf_vblank-ts-check.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@kms_flip@wf_vblank-ts-check.html
-
-  * igt@kms_hdr@invalid-hdr:
-    - shard-bmg:          [PASS][12] -> [SKIP][13] ([Intel XE#1503])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-5/igt@kms_hdr@invalid-hdr.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-10/igt@kms_hdr@invalid-hdr.html
-
-  * igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:
-    - shard-lnl:          [PASS][14] -> [FAIL][15] ([Intel XE#2142]) +1 other test fail
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-lnl-1/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-lnl-3/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html
-
-  * igt@xe_pmu@engine-activity-multi-client@engine-drm_xe_engine_class_video_enhance1:
-    - shard-bmg:          [PASS][16] -> [DMESG-WARN][17] ([Intel XE#7725]) +1 other test dmesg-warn
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@xe_pmu@engine-activity-multi-client@engine-drm_xe_engine_class_video_enhance1.html
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@xe_pmu@engine-activity-multi-client@engine-drm_xe_engine_class_video_enhance1.html
-
-  * igt@xe_sriov_auto_provisioning@resources-released-on-vfs-disabling@numvfs-random:
-    - shard-bmg:          [PASS][18] -> [FAIL][19] ([Intel XE#5937]) +1 other test fail
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@xe_sriov_auto_provisioning@resources-released-on-vfs-disabling@numvfs-random.html
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@xe_sriov_auto_provisioning@resources-released-on-vfs-disabling@numvfs-random.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
-    - shard-bmg:          [FAIL][20] ([Intel XE#7809]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
-   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
-
-  * igt@kms_flip@blocking-wf_vblank@b-dp2:
-    - shard-bmg:          [FAIL][22] ([Intel XE#7705]) -> [PASS][23] +1 other test pass
-   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-3/igt@kms_flip@blocking-wf_vblank@b-dp2.html
-   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@kms_flip@blocking-wf_vblank@b-dp2.html
-
-  * igt@kms_pm_dc@dc6-psr:
-    - shard-lnl:          [FAIL][24] ([Intel XE#7340]) -> [PASS][25]
-   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-lnl-6/igt@kms_pm_dc@dc6-psr.html
-   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-lnl-8/igt@kms_pm_dc@dc6-psr.html
-
-  
-#### Warnings ####
-
-  * igt@xe_module_load@load:
-    - shard-bmg:          ([PASS][26], [PASS][27], [PASS][28], [PASS][29], [PASS][30], [PASS][31], [PASS][32], [PASS][33], [PASS][34], [PASS][35], [PASS][36], [PASS][37], [PASS][38], [PASS][39], [PASS][40], [PASS][41], [PASS][42], [PASS][43], [SKIP][44], [PASS][45], [PASS][46], [PASS][47], [PASS][48], [PASS][49], [PASS][50], [PASS][51]) ([Intel XE#2457] / [Intel XE#7405]) -> ([PASS][52], [DMESG-WARN][53], [PASS][54], [PASS][55], [SKIP][56], [PASS][57], [PASS][58], [PASS][59], [PASS][60], [DMESG-WARN][61], [PASS][62], [PASS][63], [PASS][64], [PASS][65], [PASS][66], [PASS][67], [PASS][68], [PASS][69], [PASS][70], [PASS][71], [PASS][72], [PASS][73], [PASS][74], [PASS][75], [DMESG-WARN][76], [DMESG-WARN][77]) ([Intel XE#2457] / [Intel XE#7405] / [Intel XE#7725])
-   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-1/igt@xe_module_load@load.html
-   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-5/igt@xe_module_load@load.html
-   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-5/igt@xe_module_load@load.html
-   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-3/igt@xe_module_load@load.html
-   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-3/igt@xe_module_load@load.html
-   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-10/igt@xe_module_load@load.html
-   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-1/igt@xe_module_load@load.html
-   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-10/igt@xe_module_load@load.html
-   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-6/igt@xe_module_load@load.html
-   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@xe_module_load@load.html
-   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-8/igt@xe_module_load@load.html
-   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-10/igt@xe_module_load@load.html
-   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-6/igt@xe_module_load@load.html
-   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-8/igt@xe_module_load@load.html
-   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@xe_module_load@load.html
-   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-5/igt@xe_module_load@load.html
-   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-2/igt@xe_module_load@load.html
-   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-2/igt@xe_module_load@load.html
-   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-2/igt@xe_module_load@load.html
-   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-7/igt@xe_module_load@load.html
-   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-1/igt@xe_module_load@load.html
-   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-3/igt@xe_module_load@load.html
-   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-7/igt@xe_module_load@load.html
-   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-7/igt@xe_module_load@load.html
-   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@xe_module_load@load.html
-   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@xe_module_load@load.html
-   [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@xe_module_load@load.html
-   [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-6/igt@xe_module_load@load.html
-   [54]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@xe_module_load@load.html
-   [55]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-2/igt@xe_module_load@load.html
-   [56]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-8/igt@xe_module_load@load.html
-   [57]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-7/igt@xe_module_load@load.html
-   [58]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-7/igt@xe_module_load@load.html
-   [59]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-7/igt@xe_module_load@load.html
-   [60]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-5/igt@xe_module_load@load.html
-   [61]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-6/igt@xe_module_load@load.html
-   [62]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-8/igt@xe_module_load@load.html
-   [63]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-10/igt@xe_module_load@load.html
-   [64]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-10/igt@xe_module_load@load.html
-   [65]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-1/igt@xe_module_load@load.html
-   [66]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-8/igt@xe_module_load@load.html
-   [67]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-1/igt@xe_module_load@load.html
-   [68]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-8/igt@xe_module_load@load.html
-   [69]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-9/igt@xe_module_load@load.html
-   [70]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-9/igt@xe_module_load@load.html
-   [71]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-6/igt@xe_module_load@load.html
-   [72]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-1/igt@xe_module_load@load.html
-   [73]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-5/igt@xe_module_load@load.html
-   [74]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-2/igt@xe_module_load@load.html
-   [75]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-5/igt@xe_module_load@load.html
-   [76]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-6/igt@xe_module_load@load.html
-   [77]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-6/igt@xe_module_load@load.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#1503]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1503
-  [Intel XE#2142]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2142
-  [Intel XE#2291]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2291
-  [Intel XE#2457]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2457
-  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
-  [Intel XE#3149]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3149
-  [Intel XE#5937]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5937
-  [Intel XE#6841]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6841
-  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
-  [Intel XE#7343]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7343
-  [Intel XE#7405]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7405
-  [Intel XE#7705]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7705
-  [Intel XE#7725]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7725
-  [Intel XE#7809]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7809
-
-
-Build changes
--------------
-
-  * IGT: IGT_8872 -> IGTPW_15049
-  * Linux: xe-4929-ecb61ba4a1f619b6944f4d0741b4d8a0910f460c -> xe-4930-021ccd6f29b34f09e4b3aac0d6d52b8adaa1c4b4
-
-  IGTPW_15049: be64d028e3c87b4380f9135f8207ba17a055f531 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8872: e70db143b7bafe09bdea4d33188cb10d2070d0e5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4929-ecb61ba4a1f619b6944f4d0741b4d8a0910f460c: ecb61ba4a1f619b6944f4d0741b4d8a0910f460c
-  xe-4930-021ccd6f29b34f09e4b3aac0d6d52b8adaa1c4b4: 021ccd6f29b34f09e4b3aac0d6d52b8adaa1c4b4
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/index.html
-
---===============7145753880767192724==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-
-
-<!DOCTYPE html>
-<html xmlns=3D"http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id=3D"css-table-select" type=3D"text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec: Add VM rebind stress te=
-st with cpumask cycling</td></tr>
-<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
-ries/165395/">https://patchwork.freedesktop.org/series/165395/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
-tree/intel-xe/IGTPW_15049/index.html">https://intel-gfx-ci.01.org/tree/inte=
-l-xe/IGTPW_15049/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8872_FULL -&gt; XEIGTPW_15049_FULL<=
-/h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (2 -&gt; 2)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_15=
-049_FULL:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>{igt@xe_exec_threads@threads-wq-stress-rebind-bindexecqueue} (NEW):<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/intel-xe/IGTPW_15049/shard-lnl-6/igt@xe_exec_threads@threads-wq-stres=
-s-rebind-bindexecqueue.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_8872_FULL and XEIGTPW_15049=
-_FULL:</p>
-<h3>New IGT tests (1)</h3>
-<ul>
-<li>igt@xe_exec_threads@threads-wq-stress-rebind-bindexecqueue:<ul>
-<li>Statuses : 1 incomplete(s) 1 pass(s)</li>
-<li>Exec time: [0.0, 32.65] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15049_FULL that come from known is=
-sues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_edge_walk@256x256-right-edge:</p>
-<ul>
-<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-bmg-9/igt@kms_cursor_edge_walk@256x256-right-edge.html">PA=
-SS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_150=
-49/shard-bmg-2/igt@kms_cursor_edge_walk@256x256-right-edge.html">FAIL</a> (=
-<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/6841">Intel =
-XE#6841</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@cursorb-vs-flipb-varying-size:</p>
-<ul>
-<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-bmg-3/igt@kms_cursor_legacy@cursorb-vs-flipb-varying-size.=
-html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/I=
-GTPW_15049/shard-bmg-3/igt@kms_cursor_legacy@cursorb-vs-flipb-varying-size.=
-html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/iss=
-ues/2291">Intel XE#2291</a> / <a href=3D"https://gitlab.freedesktop.org/drm=
-/xe/kernel/issues/7343">Intel XE#7343</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-expired-vblank-interruptible:</p>
-<ul>
-<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank-interruptible.ht=
-ml">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT=
-PW_15049/shard-lnl-8/igt@kms_flip@flip-vs-expired-vblank-interruptible.html=
-">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/=
-301">Intel XE#301</a> / <a href=3D"https://gitlab.freedesktop.org/drm/xe/ke=
-rnel/issues/3149">Intel XE#3149</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-expired-vblank@b-edp1:</p>
-<ul>
-<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-lnl-1/igt@kms_flip@flip-vs-expired-vblank@b-edp1.html">PAS=
-S</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_1504=
-9/shard-lnl-7/igt@kms_flip@flip-vs-expired-vblank@b-edp1.html">FAIL</a> (<a=
- href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#=
-301</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@wf_vblank-ts-check:</p>
-<ul>
-<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-bmg-5/igt@kms_flip@wf_vblank-ts-check.html">PASS</a> -&gt;=
- <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg=
--3/igt@kms_flip@wf_vblank-ts-check.html">FAIL</a> (<a href=3D"https://gitla=
-b.freedesktop.org/drm/xe/kernel/issues/7705">Intel XE#7705</a>) +1 other te=
-st fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdr@invalid-hdr:</p>
-<ul>
-<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-bmg-5/igt@kms_hdr@invalid-hdr.html">PASS</a> -&gt; <a href=
-=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-10/igt@=
-kms_hdr@invalid-hdr.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.o=
-rg/drm/xe/kernel/issues/1503">Intel XE#1503</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:</p>
-<ul>
-<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-lnl-1/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.=
-html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/I=
-GTPW_15049/shard-lnl-3/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.=
-html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/iss=
-ues/2142">Intel XE#2142</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pmu@engine-activity-multi-client@engine-drm_xe_engine_class_video=
-_enhance1:</p>
-<ul>
-<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-bmg-9/igt@xe_pmu@engine-activity-multi-client@engine-drm_x=
-e_engine_class_video_enhance1.html">PASS</a> -&gt; <a href=3D"https://intel=
--gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@xe_pmu@engine-acti=
-vity-multi-client@engine-drm_xe_engine_class_video_enhance1.html">DMESG-WAR=
-N</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/7725"=
->Intel XE#7725</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_sriov_auto_provisioning@resources-released-on-vfs-disabling@numvf=
-s-random:</p>
-<ul>
-<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-bmg-9/igt@xe_sriov_auto_provisioning@resources-released-on=
--vfs-disabling@numvfs-random.html">PASS</a> -&gt; <a href=3D"https://intel-=
-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@xe_sriov_auto_provi=
-sioning@resources-released-on-vfs-disabling@numvfs-random.html">FAIL</a> (<=
-a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/5937">Intel X=
-E#5937</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:</p>
-<ul>
-<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-bmg-9/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transiti=
-ons.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel=
-/issues/7809">Intel XE#7809</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.o=
-rg/tree/intel-xe/IGTPW_15049/shard-bmg-1/igt@kms_cursor_legacy@flip-vs-curs=
-or-atomic-transitions.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@blocking-wf_vblank@b-dp2:</p>
-<ul>
-<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-bmg-3/igt@kms_flip@blocking-wf_vblank@b-dp2.html">FAIL</a>=
- (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/7705">Inte=
-l XE#7705</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/I=
-GTPW_15049/shard-bmg-3/igt@kms_flip@blocking-wf_vblank@b-dp2.html">PASS</a>=
- +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_dc@dc6-psr:</p>
-<ul>
-<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGT_8872/shard-lnl-6/igt@kms_pm_dc@dc6-psr.html">FAIL</a> (<a href=3D"htt=
-ps://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a>) -=
-&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard=
--lnl-8/igt@kms_pm_dc@dc6-psr.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_module_load@load:<ul>
-<li>shard-bmg:          (<a href=3D"https://intel-gfx-ci.01.org/tree/intel-=
-xe/IGT_8872/shard-bmg-1/igt@xe_module_load@load.html">PASS</a>, <a href=3D"=
-https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-5/igt@xe_modul=
-e_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/int=
-el-xe/IGT_8872/shard-bmg-5/igt@xe_module_load@load.html">PASS</a>, <a href=
-=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-3/igt@xe_m=
-odule_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
-/intel-xe/IGT_8872/shard-bmg-3/igt@xe_module_load@load.html">PASS</a>, <a h=
-ref=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-10/igt@=
-xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/=
-tree/intel-xe/IGT_8872/shard-bmg-1/igt@xe_module_load@load.html">PASS</a>, =
-<a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-10/=
-igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.=
-org/tree/intel-xe/IGT_8872/shard-bmg-6/igt@xe_module_load@load.html">PASS</=
-a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg=
--9/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.=
-01.org/tree/intel-xe/IGT_8872/shard-bmg-8/igt@xe_module_load@load.html">PAS=
-S</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-=
-bmg-10/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx=
--ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-6/igt@xe_module_load@load.html"=
->PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/sh=
-ard-bmg-8/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-=
-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@xe_module_load@load.ht=
-ml">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872=
-/shard-bmg-5/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://int=
-el-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-2/igt@xe_module_load@load=
-.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8=
-872/shard-bmg-2/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://=
-intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-2/igt@xe_module_load@l=
-oad.html">SKIP</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IG=
-T_8872/shard-bmg-7/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https=
-://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-1/igt@xe_module_loa=
-d@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe=
-/IGT_8872/shard-bmg-3/igt@xe_module_load@load.html">PASS</a>, <a href=3D"ht=
-tps://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-7/igt@xe_module_=
-load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel=
--xe/IGT_8872/shard-bmg-7/igt@xe_module_load@load.html">PASS</a>, <a href=3D=
-"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8872/shard-bmg-9/igt@xe_modu=
-le_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/in=
-tel-xe/IGT_8872/shard-bmg-9/igt@xe_module_load@load.html">PASS</a>) (<a hre=
-f=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/2457">Intel XE#245=
-7</a> / <a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/7405=
-">Intel XE#7405</a>) -&gt; (<a href=3D"https://intel-gfx-ci.01.org/tree/int=
-el-xe/IGTPW_15049/shard-bmg-3/igt@xe_module_load@load.html">PASS</a>, <a hr=
-ef=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-6/igt=
-@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.=
-01.org/tree/intel-xe/IGTPW_15049/shard-bmg-3/igt@xe_module_load@load.html">=
-PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/=
-shard-bmg-2/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://inte=
-l-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-8/igt@xe_module_load@lo=
-ad.html">SKIP</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT=
-PW_15049/shard-bmg-7/igt@xe_module_load@load.html">PASS</a>, <a href=3D"htt=
-ps://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-7/igt@xe_modul=
-e_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/int=
-el-xe/IGTPW_15049/shard-bmg-7/igt@xe_module_load@load.html">PASS</a>, <a hr=
-ef=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-5/igt=
-@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org=
-/tree/intel-xe/IGTPW_15049/shard-bmg-6/igt@xe_module_load@load.html">DMESG-=
-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/=
-shard-bmg-8/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://inte=
-l-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-10/igt@xe_module_load@l=
-oad.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IG=
-TPW_15049/shard-bmg-10/igt@xe_module_load@load.html">PASS</a>, <a href=3D"h=
-ttps://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-1/igt@xe_mod=
-ule_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
-ntel-xe/IGTPW_15049/shard-bmg-8/igt@xe_module_load@load.html">PASS</a>, <a =
-href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-1/i=
-gt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.o=
-rg/tree/intel-xe/IGTPW_15049/shard-bmg-8/igt@xe_module_load@load.html">PASS=
-</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shar=
-d-bmg-9/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gf=
-x-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-9/igt@xe_module_load@load.h=
-tml">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_1=
-5049/shard-bmg-6/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https:/=
-/intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-1/igt@xe_module_lo=
-ad@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
-e/IGTPW_15049/shard-bmg-5/igt@xe_module_load@load.html">PASS</a>, <a href=
-=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-2/igt@x=
-e_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/t=
-ree/intel-xe/IGTPW_15049/shard-bmg-5/igt@xe_module_load@load.html">PASS</a>=
-, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bm=
-g-6/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-=
-gfx-ci.01.org/tree/intel-xe/IGTPW_15049/shard-bmg-6/igt@xe_module_load@load=
-.html">DMESG-WARN</a>) (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ke=
-rnel/issues/2457">Intel XE#2457</a> / <a href=3D"https://gitlab.freedesktop=
-.org/drm/xe/kernel/issues/7405">Intel XE#7405</a> / <a href=3D"https://gitl=
-ab.freedesktop.org/drm/xe/kernel/issues/7725">Intel XE#7725</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when comput=
-ing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8872 -&gt; IGTPW_15049</li>
-<li>Linux: xe-4929-ecb61ba4a1f619b6944f4d0741b4d8a0910f460c -&gt; xe-4930-0=
-21ccd6f29b34f09e4b3aac0d6d52b8adaa1c4b4</li>
-</ul>
-<p>IGTPW_15049: be64d028e3c87b4380f9135f8207ba17a055f531 @ https://gitlab.f=
-reedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8872: e70db143b7bafe09bdea4d33188cb10d2070d0e5 @ https://gitlab.freed=
-esktop.org/drm/igt-gpu-tools.git<br />
-  xe-4929-ecb61ba4a1f619b6944f4d0741b4d8a0910f460c: ecb61ba4a1f619b6944f4d0=
-741b4d8a0910f460c<br />
-  xe-4930-021ccd6f29b34f09e4b3aac0d6d52b8adaa1c4b4: 021ccd6f29b34f09e4b3aac=
-0d6d52b8adaa1c4b4</p>
-
-</body>
-</html>
-
---===============7145753880767192724==--
+--
+Zbigniew
