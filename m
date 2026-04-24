@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7AFEFED3F1
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:59:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5B58FED3F0
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:59:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9055A10E3F0;
-	Fri, 24 Apr 2026 16:59:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 94D7210E3F0;
+	Fri, 24 Apr 2026 16:59:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="l/8enGm1";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="jIiD1pOQ";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53EBD10E2E5
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:10 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E838C8961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:13 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 345AB4E42AF0;
- Fri, 24 Apr 2026 16:55:09 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id DD5301A3402;
+ Fri, 24 Apr 2026 16:55:12 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 052BD604EB;
- Fri, 24 Apr 2026 16:55:09 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id B3E1F604EB;
+ Fri, 24 Apr 2026 16:55:12 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id CDB0810720A36; 
- Fri, 24 Apr 2026 18:55:07 +0200 (CEST)
+ with ESMTPSA id A336610720A11; 
+ Fri, 24 Apr 2026 18:55:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049708; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049712; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=T+H4ZGOQ4oO2Z4aDaoza/M6TEv4DzM1GB7XX1zVMUlI=;
- b=l/8enGm13HhQcTsrFWAkId+s9w7oOdO6abkku+U7B4XMh3dW6EjYDVPbwUPDTAY4Eb4CI8
- RU9oLakTry/slBoUZjK0m8ORi1FzPug0fgzAsA1xKb49V7/zJqQLy1sLHAYrGo9yFBdWpg
- 2rmQFgg/CgyIMs9oQQ+WS4EuxPg7DN06Can5X13T/zcLTRRo9H+ckV8/kuP+MB51vix4Yt
- BpzswNz6JSjPrdP6q/9WFzyHDqf00ZH5U9BvUqRz5GQnvaVbWuMAGEuMYPCXK4rWsiv3pM
- XoHOEnLJrqqaynzQTNBcHLWgnzHucSV8sDFFukf60n7fCACg/FAC9O/ewRDx7w==
+ bh=EhhTeoziEWfIDz5Pg2WEwG8A2aPZ2yGmxICAGB/117c=;
+ b=jIiD1pOQVWzoLehtR8madkXZU8hSEwFrO+Pd5B+WT7tWar1fHPH6pDhzq9Dju13iqn6QY0
+ PUGDGkbEoeO7DCm+I4dFlfwpcS0YcQ7mLxmg0L7vF9BJmSvZe0WBJlRBi76GNrSeg5xJ/+
+ NnfBykfB4WVDGH8klLOdR1/vX7aoV4rVjdcm93qwqzMsK6MAAr6UPTzkSo5ZuiMl5CcpFI
+ 9ZUyqW59m6FMGyYfDvu31kG3CLXeE+LmbC9M3sLdw2NkU92wjxFvnmgQ+VPH5u/DxeTLSq
+ yJQUR0zgF1VfPJ7NU40ZBx5XhZRp5XfOHx82Cdn2Dr6zUJFTrvjBL1u49cQSSw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:14 +0200
-Subject: [PATCH i-g-t v11 39/49] lib/i915/dp: Add helper to get maximum
- supported rate
+Date: Fri, 24 Apr 2026 18:53:19 +0200
+Subject: [PATCH i-g-t v11 44/49] lib/igt_kms: Add helper to get a CRTC from
+ an output
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-39-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-44-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,79 +64,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some GPU can't reach all the DP rates. To avoid false positive during
-testing with unigraf, add an helper to filter tests based on the maximum
-supported rate of the current GPU.
+Grabbing a valid CRTC from a specific output is useful when testing
+the output.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/i915/i915_dp.c | 35 +++++++++++++++++++++++++++++++++++
- lib/i915/i915_dp.h |  1 +
- 2 files changed, 36 insertions(+)
+ lib/igt_kms.c | 20 ++++++++++++++++++++
+ lib/igt_kms.h |  2 ++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
-index 48a69e9ff283..da3dd05c3293 100644
---- a/lib/i915/i915_dp.c
-+++ b/lib/i915/i915_dp.c
-@@ -28,7 +28,9 @@
-  */
- 
- #include <ctype.h>
-+#include <errno.h>
- #include <stdio.h>
-+#include <stdlib.h>
- #include <string.h>
- 
- #include "i915_dp.h"
-@@ -344,3 +346,36 @@ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
- 	temp = drmModeGetConnector(drm_fd, output->config.connector->connector_id);
- 	drmModeFreeConnector(temp);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index f623b741d775..ede8c046cdaa 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -8192,3 +8192,23 @@ int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id)
+ 	}
+ 	return 0;
  }
 +
 +/**
-+ * i915_dp_get_max_supported_rate:
-+ * @drm_fd: A drm file descriptor
-+ * @output: Target output
++ * igt_get_crtc_for_output:
++ * @display: display to fetch the CRTC
++ * @output: output to use
 + *
-+ * Returns: Max supported link rate available for output, else -1
++ * Get a valid CRTC for a specific output. The return value is the first valid CRTC for a
++ * specific output.
 + */
-+int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output)
++igt_crtc_t *igt_get_crtc_for_output(igt_display_t *display,
++				    igt_output_t *output)
 +{
-+	char buf[512];
-+	int res, max_rate = -EINVAL;
-+	char *token;
++	igt_crtc_t *crtc;
 +
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
-+					      "i915_dp_force_link_rate",
-+					      buf, sizeof(buf));
-+	igt_assert_f(!res, "Unable to read %s/i915_dp_force_link_rate\n",
-+		     igt_output_name(output));
++	for_each_crtc(display, crtc)
++		if (igt_crtc_connector_valid(crtc, output))
++			return crtc;
 +
-+	token = strtok(buf, " ");
-+	while (token) {
-+		int rate;
-+
-+		errno = 0;
-+		rate = strtol(token, NULL, 0);
-+		if (!errno && rate > max_rate)
-+			max_rate = rate;
-+		token = strtok(NULL, " ");
-+	}
-+
-+	return max_rate;
++	return NULL;
 +}
-diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
-index e4249d179543..b13629147804 100644
---- a/lib/i915/i915_dp.h
-+++ b/lib/i915/i915_dp.h
-@@ -18,5 +18,6 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
- void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
- void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
- 			     char *link_rate, char *lane_count);
-+int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output);
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index df2bdf52ec90..c070d8d99029 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1299,5 +1299,7 @@ get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b
+ 	       uint32_t **diff);
  
- #endif
+ int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id);
++igt_crtc_t *igt_get_crtc_for_output(igt_display_t *display,
++				    igt_output_t *output);
+ 
+ #endif /* __IGT_KMS_H__ */
 
 -- 
 2.54.0
