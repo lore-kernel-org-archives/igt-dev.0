@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B960DFED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:02:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3F28FED3EF
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:02:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 706FE10F645;
-	Fri, 24 Apr 2026 17:02:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 62DA510F645;
+	Fri, 24 Apr 2026 17:02:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="brJN8Kdv";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="EnfoNwYh";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1B188961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AC828961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:05 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 7CAEAC5EF2B
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:45 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 2F2CEC5EF2E;
+ Fri, 24 Apr 2026 16:55:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id A9114604EB;
- Fri, 24 Apr 2026 16:55:03 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 5C2D6604EB;
+ Fri, 24 Apr 2026 16:55:04 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id E515810720A33; 
- Fri, 24 Apr 2026 18:55:01 +0200 (CEST)
+ with ESMTPSA id 49A8B10720A2E; 
+ Fri, 24 Apr 2026 18:55:03 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049702; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049703; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=tpvZ5v/4V6R6tUDGI7CzOU1BI9Kg67bjEoTg2BzsaXs=;
- b=brJN8KdvFbwjc0/qvSEhJJuny0Z6AcjSNfxFqby0rrzfUjI5BN1Za2pa9wChKLb7SzrB5r
- +XoAJVQGwCrMQl0d2S0jtVkkcx69GNy5cv+rqDraHv4eJy6RKUXF7IizTH+pBfIm6gz4Ff
- 2Jk253kVI7Mh5tE7Jp/wJW8i7y2qZ5p0z6MQjQU1iVdpMKyVhZQ1/zP6cVRNnKWwGVx9ku
- YadMM3nhUKJrkfGGT4Gdi4g9X6MouLz+AD/WExibaq2YZdWwLcMWLFBXzVkB0LaWg4gEJR
- H0IEkLB/5DGcBR8/ETF0E+6IBxVizbKpFM6uShs5P8t7QIsjZxWyUVpYWxs0vg==
+ bh=HoXnykrfYOQEN8p527t5G9XeQ1im2UIRsm0Vgiky6uk=;
+ b=EnfoNwYhNTJILJO8X9FDtuVZojbTx0G3GuldF9uV81fZME6TI6EnuEhOdGTwgoaM0vD9UO
+ D4pGTQobTsn7RLuW9cD+Np9G8vkNh9cto7IEeGjGM8w9i1nXyi7rrBdorWFhXZuGMhXLd3
+ 2VuHtu8Psud0BDASErNbOOhrKAZmY7uBz1eYj2sImVE4FYzzT4h1iytNf71kUCzSr2kKiF
+ fcd5Oe0+gLnda/aET5XU5f18myRB8cyfiTJffXsLcOq9D9ZQ11mNt9fWMWBW2woHUUNteA
+ JQdvL9CQnCTcpWSvTFq4TUN2xlqokePXNP1DnN8PmVQhxHHgUXvtIE4fvZmA2g==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:10 +0200
-Subject: [PATCH i-g-t v11 35/49] lib/unigraf: Add helper to check timings
- received by unigraf
+Date: Fri, 24 Apr 2026 18:53:11 +0200
+Subject: [PATCH i-g-t v11 36/49] lib/igt_pipe_crc: Add unigraf crc calculation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-35-0c5f5346ae60@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260424-unigraf-integration-v11-36-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,71 +63,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Unigraf device can check that some input video parameters.
-Add a function to compare a mode with the actual signal
-received by the unigraf.
+Unigraf can read crc from the physical output, use this CRC instead of
+internal CRC when configured. This allows to also test the hardware signal
+generation.
+
+This small addition allows to use the unigraf device for most of the
+kms_* tests.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/unigraf.c | 35 +++++++++++++++++++++++++++++++++++
- lib/vendor/unigraf/unigraf.h |  2 ++
- 2 files changed, 37 insertions(+)
+ lib/igt_pipe_crc.c           | 35 +++++++++++++++++++++++++++++++++++
+ lib/vendor/unigraf/unigraf.c | 22 ++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
 
+diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
+index 9a79edd51531..ad76e5ca37f7 100644
+--- a/lib/igt_pipe_crc.c
++++ b/lib/igt_pipe_crc.c
+@@ -3,9 +3,12 @@
+  * Copyright © 2013 Intel Corporation
+  */
+ 
++#include "igt_core.h"
++#include "unigraf/unigraf.h"
+ #include <inttypes.h>
+ #include <sys/stat.h>
+ #include <sys/mount.h>
++#include <xf86drmMode.h>
+ #ifdef __linux__
+ #include <sys/sysmacros.h>
+ #endif
+@@ -359,6 +362,38 @@ static void read_one_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
+ 	} while (ret == -EINTR);
+ 
+ 	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags);
++
++#if HAVE_UNIGRAF
++	if (unigraf_open_device(pipe_crc->fd) && unigraf_use_crc()) {
++		int crtc_index;
++		int stream_id;
++		drmModeConnectorPtr connector = unigraf_get_connector(pipe_crc->fd);
++
++		if (!connector)
++			return;
++
++		crtc_index = igt_get_crtc_index_from_connector_id(pipe_crc->fd,
++								  connector->connector_id);
++		drmModeFreeConnector(connector);
++
++		if (crtc_index && crtc_index == pipe_crc->crtc_index) {
++			unigraf_read_crc(0, out);
++			return;
++		}
++
++		for (stream_id = 0; stream_id < unigraf_get_mst_stream_count(); stream_id++) {
++			int connector_id = unigraf_get_connector_id_by_stream(pipe_crc->fd,
++									      stream_id);
++			crtc_index = igt_get_crtc_index_from_connector_id(pipe_crc->fd,
++									  connector_id);
++
++			if (crtc_index && crtc_index == pipe_crc->crtc_index) {
++				unigraf_read_crc(stream_id, out);
++				return;
++			}
++		}
++	}
++#endif
+ }
+ 
+ /**
 diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index 8779cac0dd26..8a12fc624c64 100644
+index 8a12fc624c64..8c091219bd40 100644
 --- a/lib/vendor/unigraf/unigraf.c
 +++ b/lib/vendor/unigraf/unigraf.c
-@@ -752,3 +752,38 @@ bool unigraf_use_crc(void)
- {
- 	return unigraf_crc;
- }
-+
-+static void unigraf_read_msa(void)
-+{
-+	uint32_t data = 1;
-+
-+	unigraf_write_u32(TSI_DPRX_MSA_COMMAND_W, data);
-+}
-+
+@@ -68,6 +68,13 @@ static bool unigraf_crc;
+  */
+ #define UNIGRAF_CONFIG_USE_CRC_NAME "UseCRC"
+ 
 +/**
-+ * unigraf_assert_stream_timings() - Assert that the received stream on unigraf
-+ * matches the mode_info
-+ * @stream: Stream id on the unigraf
-+ * @mode_info: Mode to compare with
++ * UNIGRAF_CONFIG_MST_STREAM_COUNT - Key for the stream count configuration
++ *
++ * Set to 0 to use SST, 1..4 for MST
 + */
-+void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info)
-+{
-+	uint32_t stream_count;
++#define UNIGRAF_CONFIG_MST_STREAM_COUNT "MSTStreams"
 +
-+	igt_assert(mode_info);
-+
-+	unigraf_read_msa();
-+	stream_count = unigraf_read_u32(TSI_DPRX_MSA_STREAM_COUNT_R);
-+	igt_assert_lt(stream, stream_count);
-+	unigraf_write_u32(TSI_DPRX_MSA_STREAM_SELECT, stream);
-+	igt_assert_eq(mode_info->htotal, unigraf_read_u32(TSI_DPRX_MSA_HTOTAL_R));
-+	igt_assert_eq(mode_info->vtotal, unigraf_read_u32(TSI_DPRX_MSA_VTOTAL_R));
-+	igt_assert_eq(mode_info->hdisplay, unigraf_read_u32(TSI_DPRX_MSA_HACTIVE_R));
-+	igt_assert_eq(mode_info->vdisplay, unigraf_read_u32(TSI_DPRX_MSA_VACTIVE_R));
-+	igt_assert_eq(mode_info->hsync_end - mode_info->hsync_start,
-+		      unigraf_read_u32(TSI_DPRX_MSA_HSYNC_WIDTH_R));
-+	igt_assert_eq(mode_info->vsync_end - mode_info->vsync_start,
-+		      unigraf_read_u32(TSI_DPRX_MSA_VSYNC_WIDTH_R));
-+	igt_assert_eq(mode_info->vsync_start, unigraf_read_u32(TSI_DPRX_MSA_VSTART_R));
-+	igt_assert_eq(mode_info->hsync_start, unigraf_read_u32(TSI_DPRX_MSA_HSTART_R));
-+}
-diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
-index e07ca6745292..f3ea499292be 100644
---- a/lib/vendor/unigraf/unigraf.h
-+++ b/lib/vendor/unigraf/unigraf.h
-@@ -79,4 +79,6 @@ bool unigraf_use_crc(void);
+ /**
+  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
+  */
+@@ -366,6 +373,7 @@ bool unigraf_open_device(int drm_fd)
+ 	int chosen_device = 0;
+ 	int chosen_role;
+ 	int chosen_input;
++	int unigraf_stream_count;
  
- int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id);
+ 	assert(igt_can_fail());
  
-+void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info);
+@@ -422,6 +430,15 @@ bool unigraf_open_device(int drm_fd)
+ 			unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
+ 			unigraf_crc = true;
+ 		}
 +
- #endif // UNIGRAF_H
++		cfg_error = NULL;
++		unigraf_stream_count = g_key_file_get_integer(igt_key_file, UNIGRAF_CONFIG_GROUP,
++							      UNIGRAF_CONFIG_MST_STREAM_COUNT,
++							      &cfg_error);
++		if (cfg_error) {
++			unigraf_debug("MST usage not configured, using SST.\n");
++			unigraf_stream_count = 0;
++		}
+ 	}
+ 
+ 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
+@@ -500,6 +517,11 @@ bool unigraf_open_device(int drm_fd)
+ 
+ 	unigraf_reset();
+ 
++	if (!unigraf_stream_count)
++		unigraf_set_sst();
++	else
++		unigraf_set_mst_stream_count(unigraf_stream_count);
++
+ 	return unigraf_connector_name != NULL;
+ }
+ 
 
 -- 
 2.54.0
