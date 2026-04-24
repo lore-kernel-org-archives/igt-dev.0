@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44D65FED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:01:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50AC9FED3F0
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:01:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2C5710F642;
-	Fri, 24 Apr 2026 17:01:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C20A10F642;
+	Fri, 24 Apr 2026 17:01:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ycuowo/M";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="E+iPUJVP";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A15610E2E5
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:20 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7501210E2E5
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:40 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 1E5FE1A3403;
- Fri, 24 Apr 2026 16:55:19 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 18149C5EF31;
+ Fri, 24 Apr 2026 16:55:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id E2AE0604EB;
- Fri, 24 Apr 2026 16:55:18 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 44A4D604EB;
+ Fri, 24 Apr 2026 16:54:39 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 0E35510720A1E; 
- Fri, 24 Apr 2026 18:55:16 +0200 (CEST)
+ with ESMTPSA id 4DC1110720A21; 
+ Fri, 24 Apr 2026 18:54:38 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049717; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049678; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=0lHX4y+/4YT+lRqab6AqLnzExJaOykV29tWCw9+TZPg=;
- b=ycuowo/MuezeRLv5r1J9Tn3RvKC+P6qSBBp89fXs/bNA0lfMMeH/R/NH2nJbN1FeVLyPzU
- hgRCqw75bv75uZIivPo9rZ2d9VU0dqFKhv/SL+Ru8p2yzWN0eZx1pL1F/sJs8wp+E1It5v
- 7xekBaFbuQmiFYBUUHti5JpigNrgVlpwss1MI1QjDHz5qFcQbUwgH95LbdvS+C4nT7GR53
- TNv9yO+WOeHOgWVK/ZhgdQL9IS8SOhMFi67DSzGSxh71u6L5htXacssQHQm4B5WdbBbMg8
- r6lGhhVf1cVsa2QNLfXci/6bCDFfNq8KJ6W8GmXsXELFSbN0mrKybU/yQckVUQ==
+ bh=15erovFRC76BCm8NbXKyKzponZEPP84IiU0EAt4yVm4=;
+ b=E+iPUJVP7D0357J1caFrfRWo4iqG5Lv76jy9nNFNonwwVlXJDLaDOlUZkKYK20hhI7TuG3
+ O+/glw8cwqs3/jpktLzb7omH/6GZ1v0Dh76CcOwSg1AbuD33ZixEKfcXGZmivJADtnrEjR
+ 0vqbeMW6qn74mXxhI4gcjk+CVum7HXfqgPeFr0E9TEcUBheQ4enbW4GLQd4xQD9/OsXjQ7
+ +Z8rrLQqCLFeGVUYmdK0McaWOjU95YF+z6ZJl0v/w8olsheu6T+OtqoMG+BaX1dJ2ZvRf8
+ yHm8sNuwEQnaRMo5jGFAl9TduH+/SL5eWqIaIA8xu4JcjSwH0Y7K1WPbXN8eqA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:24 +0200
-Subject: [PATCH i-g-t v11 49/49] tests/unigraf/unigraf_lt: Add test for
- link training
+Date: Fri, 24 Apr 2026 18:52:48 +0200
+Subject: [PATCH i-g-t v11 13/49] lib/igt_amd: Add const when make sense
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260424-unigraf-integration-v11-49-0c5f5346ae60@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260424-unigraf-integration-v11-13-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,216 +63,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To test link training on various situation, add multiple link
-training scenarios.
+Const qualifier helps to avoid unwanted modification of a pointer.
+To help avoiding those errors, modify the function signature to
+use const.
 
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/unigraf/meson.build  |   1 +
- tests/unigraf/unigraf_lt.c | 183 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 184 insertions(+)
+ lib/igt_amd.c | 2 +-
+ lib/igt_amd.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/unigraf/meson.build b/tests/unigraf/meson.build
-index 4ef8c32151e4..22e64c0f389d 100644
---- a/tests/unigraf/meson.build
-+++ b/tests/unigraf/meson.build
-@@ -1,5 +1,6 @@
- unigraf_progs = [
- 	'unigraf_connectivity',
-+	'unigraf_lt',
- ]
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+index a97adad43998..004bd2fe83e4 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -831,7 +831,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name)
+  * values of "Current", "Verified", "Reported", and "Preferred", respectively.
+  */
+ void igt_amd_read_link_settings(
+-	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread)
++	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread)
+ {
+ 	int fd, ret;
+ 	char buf[101];
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+index a45122b68239..90ec4582850a 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -211,7 +211,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name);
  
- foreach prog : unigraf_progs
-diff --git a/tests/unigraf/unigraf_lt.c b/tests/unigraf/unigraf_lt.c
-new file mode 100644
-index 000000000000..81e6ecd3fae4
---- /dev/null
-+++ b/tests/unigraf/unigraf_lt.c
-@@ -0,0 +1,183 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Louis Chauvet <louis.chauvet@bootlin.com>
-+ */
-+
-+#include <stdint.h>
-+#include <sys/types.h>
-+#include <unistd.h>
-+#include <xf86drm.h>
-+#include <xf86drmMode.h>
-+
-+#include "drm_fourcc.h"
-+#include "drmtest.h"
-+#include "igt_aux.h"
-+#include "igt_core.h"
-+#include "igt_dp.h"
-+#include "igt_edid.h"
-+#include "igt_kms.h"
-+#include "unigraf/unigraf.h"
-+
-+/**
-+ * TEST: unigraf link training
-+ * Category: Core
-+ * Description: Testing DP link training with a unigraf device
-+ *
-+ * SUBTEST: unigraf-dp-lane-count
-+ * Description: Make sure that the link training goes well for different lane count
-+ *
-+ * SUBTEST: unigraf-dp-link-rate
-+ * Description: Make sure that the link training goes well for different link rates
-+ */
-+
-+static void init_output_and_display_pattern(igt_display_t *display, igt_output_t *output)
-+{
-+	igt_crtc_t *crtc;
-+	struct igt_fb fb;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	int fb_id;
-+
-+	igt_modeset_disable_all_outputs(display);
-+	igt_display_reset(display);
-+
-+	igt_output_set_crtc(output, 0);
-+	crtc = igt_get_crtc_for_output(display, output);
-+	igt_output_set_crtc(output, crtc);
-+
-+	/* Get the current mode */
-+	mode = igt_output_get_mode(output);
-+	igt_assert(mode);
-+
-+	/* Create a framebuffer with a solid color pattern */
-+	fb_id = igt_create_color_pattern_fb(display->drm_fd, mode->hdisplay,
-+					    mode->vdisplay, DRM_FORMAT_XRGB8888,
-+					    DRM_FORMAT_MOD_LINEAR, 0, 0, 0, &fb);
-+	igt_assert(fb_id > 0);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_assert(primary);
-+
-+	igt_plane_set_size(primary, mode->hdisplay, mode->vdisplay);
-+	igt_plane_set_fb(primary, &fb);
-+	igt_output_override_mode(output, mode);
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	/* Set the framebuffer to the plane */
-+	igt_plane_set_fb(primary, &fb);
-+
-+	/* Set the plane properties atomically */
-+	igt_plane_set_prop_value(primary, IGT_PLANE_FB_ID, fb.fb_id);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_X, 0);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_Y, 0);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_W, mode->hdisplay);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_H, mode->vdisplay);
-+
-+	/* Commit the changes atomically */
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+}
-+
-+IGT_TEST_DESCRIPTION("Test unigraf device functionality");
-+int igt_main()
-+{
-+	int drm_fd = -1;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	drmModeConnectorPtr connector;
-+	int i;
-+
-+	igt_fixture() {
-+		drm_fd = drm_open_driver(DRIVER_ANY);
-+		igt_assert(drm_fd >= 0);
-+
-+		igt_display_require(&display, drm_fd);
-+		unigraf_require_device(drm_fd);
-+
-+		connector = unigraf_get_connector(drm_fd);
-+	}
-+
-+	igt_subtest_with_dynamic("unigraf-dp-lane-count") {
-+		int lane_counts[3] = {1, 2, 4};
-+		int current_lanes;
-+
-+		for (i = 0; i < ARRAY_SIZE(lane_counts); i++) {
-+			igt_dynamic_f("unigraf-dp-lane-count-%d", lane_counts[i]) {
-+				unigraf_reset();
-+				unigraf_set_max_lane_count(lane_counts[i]);
-+				unigraf_hpd_pulse(500000);
-+
-+				igt_display_require_output(&display);
-+				output = igt_output_from_connector(&display, connector);
-+				igt_assert(output);
-+				igt_dp_force_link_retrain(drm_fd, output, 2);
-+				init_output_and_display_pattern(&display, output);
-+
-+				current_lanes = igt_dp_get_current_lane_count(drm_fd, output);
-+				igt_assert_eq(current_lanes, lane_counts[i]);
-+			}
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("unigraf-dp-link-rate") {
-+		int rates[] = {UNIGRAF_RATE_1_62_GHZ,
-+			       UNIGRAF_RATE_2_7_GHZ,
-+			       UNIGRAF_RATE_5_4_GHZ,
-+			       UNIGRAF_RATE_6_75_GHZ,
-+			       UNIGRAF_RATE_8_10_GHZ};
-+		int current_rate;
-+		int max_supported_rate;
-+
-+		for (i = 0; i < ARRAY_SIZE(rates); i++) {
-+			igt_dynamic_f("unigraf-dp-link-rate-%d", rates[i]) {
-+				unigraf_reset();
-+				unigraf_set_max_link_rate(rates[i]);
-+				unigraf_hpd_pulse(1000000);
-+				igt_display_require_output(&display);
-+				igt_display_reset(&display);
-+				igt_display_require_output(&display);
-+				output = igt_output_from_connector(&display, connector);
-+				igt_assert(output);
-+				igt_dp_force_link_retrain(drm_fd, output, 2);
-+
-+				init_output_and_display_pattern(&display, output);
-+
-+				current_rate = igt_dp_get_max_link_rate(drm_fd, output);
-+				max_supported_rate = igt_dp_get_max_supported_rate(drm_fd, output);
-+				igt_require(max_supported_rate >= unigraf_rate_to_kbs(rates[i]));
-+				igt_assert_eq(current_rate, unigraf_rate_to_kbs(rates[i]));
-+			}
-+		}
-+	}
-+
-+	igt_subtest("unigraf-dp-link-suspend-resume") {
-+		int current_rate, current_lanes;
-+
-+		unigraf_reset();
-+		igt_display_require_output(&display);
-+		igt_display_reset(&display);
-+		igt_display_require_output(&display);
-+		output = igt_output_from_connector(&display, connector);
-+		igt_assert(output);
-+
-+		/* Get initial link parameters */
-+		current_rate = igt_dp_get_current_link_rate(drm_fd, output);
-+		current_lanes = igt_dp_get_current_lane_count(drm_fd, output);
-+
-+		/* Suspend the system */
-+		igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
-+
-+		/* Verify link parameters are maintained */
-+		igt_assert_eq(igt_dp_get_current_link_rate(drm_fd, output), current_rate);
-+		igt_assert_eq(igt_dp_get_current_lane_count(drm_fd, output), current_lanes);
-+	}
-+
-+	igt_fixture() {
-+		igt_display_fini(&display);
-+		close(drm_fd);
-+	}
-+}
+ /* IGT link helper functions */
+ void igt_amd_read_link_settings(
+-	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread);
++	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread);
+ void igt_amd_write_link_settings(
+ 	int drm_fd, char *connector_name, enum dc_lane_count lane_count,
+ 	enum dc_link_rate link_rate, enum dc_link_training_type training_type);
 
 -- 
 2.54.0
