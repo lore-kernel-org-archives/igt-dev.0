@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B9DDFED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:00:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72589FED3EF
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:00:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EBF2A10F642;
-	Fri, 24 Apr 2026 17:00:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1ABFC10F642;
+	Fri, 24 Apr 2026 17:00:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="iitZcnor";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="pKquZcyb";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC87B8961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:11 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FB0C890BE
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:35 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id B77AC1A3402;
- Fri, 24 Apr 2026 16:55:10 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id BC407C5EF2E
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:15 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 88B39604EB;
- Fri, 24 Apr 2026 16:55:10 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id E89D9604EB;
+ Fri, 24 Apr 2026 16:54:33 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 8BA1110720A38; 
- Fri, 24 Apr 2026 18:55:09 +0200 (CEST)
+ with ESMTPSA id D09E610720A14; 
+ Fri, 24 Apr 2026 18:54:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049710; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049673; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=ElbJlADapAj9DgTB0Qvmf4HksWBwp/LIVDtJq0CoPBM=;
- b=iitZcnorUCLTgxZYLDKROUCs4tD7x1NFL2Y7bMY5gVuFWRFDTG9l3mOMYKSZcZFmtpmcOp
- wWdYKJ9xYKMVz7tOld/7pkM/74Xv1b7UrJlrpicJAIT87e0+xReiV3DLBC1/H2jNHshNFC
- AsZF3OqNFx8piMC5qVESGpc+BMz6/RoacAG3ErdmuZpKpT6TO0PMX36A8zvsLR4IeXqM+B
- cPgebOZCHDEReFWQ4qS/SB3yYZvYpus44d5roM0ubq8jMthxq0D5vRLaZe69kMvtKHdBq7
- 4nNNDFu2nMSmPGN82MByeTVKbk0gPKONSDM6IDFGPezftL37UK7wfEmGLGCPMA==
+ bh=bHNcc0dOlqK24aSB1XVQO8Fd0bbxS2obPOePYOdPXGA=;
+ b=pKquZcybgMpdcdjPbMK+++TojULp3ykQw/UDmFCqToN+fa5nsIJMyfxAx4XMYvac0EHE+0
+ +PwA5Y5lfED46yT+g5mhblC+TO8w5Gw9nRh93EbWVdnj/GqpcPucTopwdNZI2pTrFA584t
+ /4qxt+zLCsr/atbRRzEeWF3xKX9JONqv+V8eEt2vzWlmWVRSn0uiAhGJBBrykgmTI77Gdm
+ joRRJEhdYx/fhELZKk8trs81+7b8n00X3+Jkzu6ckDnRbRZf5qkbJxIr+KIfxaqSBR3u/J
+ st6mso0IDZEhpjJZioQXVvUaqMbkkSbqze/PlllQ7V5Sj6i60+SZhTzhJPXGpQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:16 +0200
-Subject: [PATCH i-g-t v11 41/49] lib/i915/dp: Use igt_output_name instead
- of private field
+Date: Fri, 24 Apr 2026 18:52:42 +0200
+Subject: [PATCH i-g-t v11 07/49] lib/igt_kms: Add helper to get a pipe from
+ a connector
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-41-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-7-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,168 +64,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-output->name is a private field, use the common helper igt_output_name
-instead of the field directly.
+Currently there is no way to get a pipe from the connector. Add this tiny
+helper that will try to get the currently used pipe for a specific
+connector.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/i915/i915_dp.c | 43 ++++++++++++++++++++++---------------------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+ lib/igt_kms.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  3 +++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
-index c2cddb955d75..e54058580ff2 100644
---- a/lib/i915/i915_dp.c
-+++ b/lib/i915/i915_dp.c
-@@ -35,6 +35,7 @@
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index e6b9cfc61b18..31098d6bdd4c 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -8518,3 +8518,47 @@ int kms_wait_for_new_connectors(uint32_t **newly_connected,
  
- #include "i915_dp.h"
- #include "igt_core.h"
-+#include "igt_kms.h"
- 
- /**
-  * i915_dp_parse_marked_value:
-@@ -78,13 +79,13 @@ int i915_dp_get_current_link_rate(int drm_fd, igt_output_t *output)
- 	char buf[512];
- 	int res, ret;
- 
--	res = igt_debugfs_read_connector_file(drm_fd, output->name,
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
- 					      "i915_dp_force_link_rate",
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_rate\n",
--		     output->name);
-+		     igt_output_name(output));
- 	res = i915_dp_parse_marked_value(buf, '*', &ret);
--	igt_assert_f(res == 0, "Output %s not enabled\n", output->name);
-+	igt_assert_f(res == 0, "Output %s not enabled\n", igt_output_name(output));
- 	return ret;
+ 	return newly_connected_count;
  }
- 
-@@ -100,13 +101,13 @@ int i915_dp_get_current_lane_count(int drm_fd, igt_output_t *output)
- 	char buf[512];
- 	int res, ret;
- 
--	res = igt_debugfs_read_connector_file(drm_fd, output->name,
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
- 					      "i915_dp_force_lane_count",
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_lane_count\n",
--		     output->name);
-+		     igt_output_name(output));
- 	res = i915_dp_parse_marked_value(buf, '*', &ret);
--	igt_assert_f(res == 0, "Output %s not enabled\n", output->name);
-+	igt_assert_f(res == 0, "Output %s not enabled\n", igt_output_name(output));
- 	return ret;
- }
- 
-@@ -122,11 +123,11 @@ int i915_dp_get_max_link_rate(int drm_fd, igt_output_t *output)
- 	char buf[512];
- 	int res, ret;
- 
--	res = igt_debugfs_read_connector_file(drm_fd, output->name,
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
- 					      "i915_dp_max_link_rate",
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_max_link_rate\n",
--		     output->name);
-+		     igt_output_name(output));
- 
- 	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
- 		     "Failed to parse max link rate from %s\n", buf);
-@@ -146,11 +147,11 @@ int i915_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
- 	char buf[512];
- 	int res, ret;
- 
--	res = igt_debugfs_read_connector_file(drm_fd, output->name,
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
- 					      "i915_dp_max_lane_count",
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_max_lane_count\n",
--		     output->name);
-+		     igt_output_name(output));
- 
- 	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
- 		     "Failed to parse max lane count from %s\n", buf);
-@@ -172,11 +173,11 @@ void i915_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_co
- 	int res;
- 
- 	snprintf(value, sizeof(value), "%d", retrain_count);
--	res = igt_debugfs_write_connector_file(drm_fd, output->name,
-+	res = igt_debugfs_write_connector_file(drm_fd, igt_output_name(output),
- 					       "i915_dp_force_link_retrain",
- 					       value, strlen(value));
- 	igt_assert_f(res == 0, "Unable to write to %s/i915_dp_force_link_retrain\n",
--		     output->name);
-+		     igt_output_name(output));
- }
- 
- /**
-@@ -196,11 +197,11 @@ void i915_dp_force_lt_failure(int drm_fd, igt_output_t *output, int failure_coun
- 	int res;
- 
- 	snprintf(value, sizeof(value), "%d", failure_count);
--	res = igt_debugfs_write_connector_file(drm_fd, output->name,
-+	res = igt_debugfs_write_connector_file(drm_fd, igt_output_name(output),
- 					       "i915_dp_force_link_training_failure",
- 					       value, strlen(value));
- 	igt_assert_f(res == 0, "Unable to write to %s/i915_dp_force_link_training_failure\n",
--		     output->name);
-+		     igt_output_name(output));
- }
- 
- /**
-@@ -215,11 +216,11 @@ bool i915_dp_get_link_retrain_disabled(int drm_fd, igt_output_t *output)
- 	char buf[512];
- 	int res;
- 
--	res = igt_debugfs_read_connector_file(drm_fd, output->name,
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
- 					      "i915_dp_link_retrain_disabled",
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_link_retrain_disabled\n",
--		     output->name);
-+		     igt_output_name(output));
- 	return strstr(buf, "yes");
- }
- 
-@@ -238,7 +239,7 @@ bool i915_dp_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *ou
- 	char buf[512];
- 	int res;
- 
--	res = igt_debugfs_read_connector_file(drmfd, output->name,
-+	res = igt_debugfs_read_connector_file(drmfd, igt_output_name(output),
- 					      "i915_dp_link_retrain_disabled",
- 					      buf, sizeof(buf));
- 	return res == 0;
-@@ -256,11 +257,11 @@ int i915_dp_get_pending_lt_failures(int drm_fd, igt_output_t *output)
- 	char buf[512];
- 	int res, ret;
- 
--	res = igt_debugfs_read_connector_file(drm_fd, output->name,
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
- 					      "i915_dp_force_link_training_failure",
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_training_failure\n",
--		     output->name);
-+		     igt_output_name(output));
- 
- 	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
- 		     "Failed to parse pending link training failures from %s\n", buf);
-@@ -280,11 +281,11 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
- 	char buf[512];
- 	int res, ret;
- 
--	res = igt_debugfs_read_connector_file(drm_fd, output->name,
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
- 					      "i915_dp_force_link_retrain",
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_retrain\n",
--		     output->name);
-+		     igt_output_name(output));
- 
- 	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
- 		     "Failed to parse pending link retrains from %s\n", buf);
++
++/**
++ * igt_get_crtc_index_from_connector_id() - Get a pipe from the connector id
++ * @drm_fd: drm file descriptor to which the connector belongs
++ * @connector_id: connector to inspect
++ *
++ * Assert if:
++ * - CRTC_ID property is not found
++ * - CRTC_ID property don't have the DRM_MODE_PROP_OBJECT flag
++ * Returns: 0 if the connector is not connected to any pipe
++ */
++int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id)
++{
++	drmModeObjectPropertiesPtr proplist;
++	drmModePropertyPtr crtc_id_prop;
++	drmModePropertyPtr prop;
++	int crtc_index;
++	uint32_t crtc_id;
++	int i;
++
++	proplist = drmModeObjectGetProperties(drm_fd, connector_id, DRM_MODE_OBJECT_CONNECTOR);
++	crtc_id_prop = NULL;
++
++	for (i = 0; i < proplist->count_props; i++) {
++		prop = drmModeGetProperty(drm_fd, proplist->props[i]);
++
++		if (strcmp(prop->name, "CRTC_ID") == 0) {
++			crtc_id_prop = prop;
++			break;
++		}
++		drmModeFreeProperty(prop);
++	}
++
++	igt_assert(crtc_id_prop);
++	igt_assert((crtc_id_prop->flags & DRM_MODE_PROP_EXTENDED_TYPE) == DRM_MODE_PROP_OBJECT);
++	crtc_id = proplist->prop_values[i];
++	drmModeFreeProperty(crtc_id_prop);
++	drmModeFreeObjectProperties(proplist);
++	if (crtc_id != 0) {
++		crtc_index = kmstest_get_crtc_index_from_id(drm_fd, crtc_id);
++		return crtc_index;
++	}
++	return 0;
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 929ee04880ed..6fd3d7589e32 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1302,4 +1302,7 @@ int kms_wait_for_new_connectors(uint32_t **newly_connected,
+ int
+ get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b, int array_b_len,
+ 	       uint32_t **diff);
++
++int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id);
++
+ #endif /* __IGT_KMS_H__ */
 
 -- 
 2.54.0
