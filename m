@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF389FED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:59:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7AFEFED3F1
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:59:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7294D8961D;
-	Fri, 24 Apr 2026 16:59:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9055A10E3F0;
+	Fri, 24 Apr 2026 16:59:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="09MBnwVh";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="l/8enGm1";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D1E48961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:00 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53EBD10E2E5
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:10 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 528921A3402
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:59 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 345AB4E42AF0;
+ Fri, 24 Apr 2026 16:55:09 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 294AA604EB;
- Fri, 24 Apr 2026 16:54:59 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 052BD604EB;
+ Fri, 24 Apr 2026 16:55:09 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 123CA10720A22; 
- Fri, 24 Apr 2026 18:54:58 +0200 (CEST)
+ with ESMTPSA id CDB0810720A36; 
+ Fri, 24 Apr 2026 18:55:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049698; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049708; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=cOQJzT7R2s7b/wDb++9QdkY/jv3dRx+4c0vmsyWuF9w=;
- b=09MBnwVhl+NWrIDXxQI19avGpBDmk54FHhqvE2sLBtDzjUFC/1Wim3fCObNvpLuKn5lT0u
- N3StgRORHN+wnbMs3ILNuTuw4i2Ok7oDIbKE2iGic11MdjHlLlJ19JSwLKWGoor3bfX8jd
- +RZ+Kt8+ZdAkiUgNn9HoP5CgzJS02BRZyBnjntcs9DavC+uRA8fXNw41NaFmRxSJmdsVhg
- DYCzfdI1jjjg1DhM1Rcho1jkqdooEPskpoZGY7pTi3t6YGVEF7Lr+liFZ9N2ZgZ3wgihtM
- R1LW8B0lq7Tf0O7b7sUY3swqD36GFaZJ0nLCPiR1q84tKXHMb7gnDvBHpYRPPw==
+ bh=T+H4ZGOQ4oO2Z4aDaoza/M6TEv4DzM1GB7XX1zVMUlI=;
+ b=l/8enGm13HhQcTsrFWAkId+s9w7oOdO6abkku+U7B4XMh3dW6EjYDVPbwUPDTAY4Eb4CI8
+ RU9oLakTry/slBoUZjK0m8ORi1FzPug0fgzAsA1xKb49V7/zJqQLy1sLHAYrGo9yFBdWpg
+ 2rmQFgg/CgyIMs9oQQ+WS4EuxPg7DN06Can5X13T/zcLTRRo9H+ckV8/kuP+MB51vix4Yt
+ BpzswNz6JSjPrdP6q/9WFzyHDqf00ZH5U9BvUqRz5GQnvaVbWuMAGEuMYPCXK4rWsiv3pM
+ XoHOEnLJrqqaynzQTNBcHLWgnzHucSV8sDFFukf60n7fCACg/FAC9O/ewRDx7w==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:06 +0200
-Subject: [PATCH i-g-t v11 31/49] tests/unigraf: Add basic unigraf tests
+Date: Fri, 24 Apr 2026 18:53:14 +0200
+Subject: [PATCH i-g-t v11 39/49] lib/i915/dp: Add helper to get maximum
+ supported rate
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260424-unigraf-integration-v11-31-0c5f5346ae60@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260424-unigraf-integration-v11-39-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -63,199 +64,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Adds two tests to validate unigraf communication.
+Some GPU can't reach all the DP rates. To avoid false positive during
+testing with unigraf, add an helper to filter tests based on the maximum
+supported rate of the current GPU.
 
-unigraf-connect checks if the device is connected and if the EDID is
-properly applied.
-
-ungiraf-reconnect checks if the device can be connected/reconnected
-using SST and MST configurations.
-
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/meson.build                    |   4 +
- tests/unigraf/meson.build            |  12 +++
- tests/unigraf/unigraf_connectivity.c | 138 +++++++++++++++++++++++++++++++++++
- 3 files changed, 154 insertions(+)
+ lib/i915/i915_dp.c | 35 +++++++++++++++++++++++++++++++++++
+ lib/i915/i915_dp.h |  1 +
+ 2 files changed, 36 insertions(+)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 60cea3aa8233..fe08181186c1 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -478,6 +478,10 @@ foreach prog : intel_progs
- 	endif
- endforeach
+diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
+index 48a69e9ff283..da3dd05c3293 100644
+--- a/lib/i915/i915_dp.c
++++ b/lib/i915/i915_dp.c
+@@ -28,7 +28,9 @@
+  */
  
-+if libtsi.found()
-+	subdir('unigraf')
-+endif
-+
- if chamelium.found()
- 	foreach prog : chamelium_progs
- 		testexe = executable(prog,
-diff --git a/tests/unigraf/meson.build b/tests/unigraf/meson.build
-new file mode 100644
-index 000000000000..4ef8c32151e4
---- /dev/null
-+++ b/tests/unigraf/meson.build
-@@ -0,0 +1,12 @@
-+unigraf_progs = [
-+	'unigraf_connectivity',
-+]
-+
-+foreach prog : unigraf_progs
-+	test_executables += executable(prog, prog + '.c',
-+				       dependencies : test_deps,
-+				       install_dir : unigrafdir,
-+				       install_rpath : unigraf_rpathdir,
-+				       install : true)
-+	test_list += join_paths('unigraf', prog)
-+endforeach
-diff --git a/tests/unigraf/unigraf_connectivity.c b/tests/unigraf/unigraf_connectivity.c
-new file mode 100644
-index 000000000000..927ef2d6f476
---- /dev/null
-+++ b/tests/unigraf/unigraf_connectivity.c
-@@ -0,0 +1,138 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Louis Chauvet <louis.chauvet@bootlin.com>
-+ */
-+
-+#include <stdint.h>
+ #include <ctype.h>
++#include <errno.h>
+ #include <stdio.h>
 +#include <stdlib.h>
-+#include <unistd.h>
-+#include <xf86drmMode.h>
-+
-+#include "drmtest.h"
-+#include "igt_aux.h"
-+#include "igt_core.h"
-+#include "igt_kms.h"
-+#include "unigraf/unigraf.h"
+ #include <string.h>
+ 
+ #include "i915_dp.h"
+@@ -344,3 +346,36 @@ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+ 	temp = drmModeGetConnector(drm_fd, output->config.connector->connector_id);
+ 	drmModeFreeConnector(temp);
+ }
 +
 +/**
-+ * TEST: unigraf connectivity
-+ * Category: Core
-+ * Description: Testing connectivity with a unigraf device
++ * i915_dp_get_max_supported_rate:
++ * @drm_fd: A drm file descriptor
++ * @output: Target output
 + *
-+ * SUBTEST: unigraf-connect-edid
-+ * Description: Verify that the unigraf device is properly connected to the DUT
-+ *              and that the correct EDID is detected and read.
-+ *
-+ * SUBTEST: unigraf-connect-mst
-+ * Description: Ensure that the DUT can correctly detect and handle the unigraf device
-+ *              when it is configured to operate in MST mode.
++ * Returns: Max supported link rate available for output, else -1
 + */
-+
-+IGT_TEST_DESCRIPTION("Test basic unigraf connectivity");
-+int igt_main()
++int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output)
 +{
-+	int drm_fd;
++	char buf[512];
++	int res, max_rate = -EINVAL;
++	char *token;
 +
-+	igt_fixture() {
-+		drm_fd = drm_open_driver_master(DRIVER_ANY);
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
++					      "i915_dp_force_link_rate",
++					      buf, sizeof(buf));
++	igt_assert_f(!res, "Unable to read %s/i915_dp_force_link_rate\n",
++		     igt_output_name(output));
++
++	token = strtok(buf, " ");
++	while (token) {
++		int rate;
++
++		errno = 0;
++		rate = strtol(token, NULL, 0);
++		if (!errno && rate > max_rate)
++			max_rate = rate;
++		token = strtok(NULL, " ");
 +	}
 +
-+	igt_describe("Make sure that the unigraf device is connected to the DUT and EDID is properly detected");
-+	igt_subtest("unigraf-connect-edid") {
-+		drmModePropertyBlobPtr edid_blob = NULL;
-+		igt_display_t display;
-+		uint64_t edid_blob_id;
-+		igt_output_t *output;
-+		uint32_t unigraf_edid_len;
-+		void *unigraf_edid;
-+		bool found = false;
-+
-+		/*
-+		 * Sleep are required to allow hardware to configure/detect the current
-+		 * configuration
-+		 */
-+		unigraf_require_device(drm_fd);
-+		unigraf_hpd_deassert();
-+		sleep(igt_default_display_detect_timeout());
-+		unigraf_set_sst();
-+		unigraf_hpd_assert();
-+		sleep(igt_default_display_detect_timeout());
-+		igt_display_require(&display, drm_fd);
-+		sleep(igt_default_display_detect_timeout());
-+
-+		unigraf_edid = unigraf_read_edid(0, &unigraf_edid_len);
-+
-+		for_each_connected_output(&display, output) {
-+			if (output->config.connector->connector_type !=
-+			    DRM_MODE_CONNECTOR_DisplayPort)
-+				continue;
-+			igt_assert(kmstest_get_property(drm_fd,
-+							output->config.connector->connector_id,
-+							DRM_MODE_OBJECT_CONNECTOR, "EDID",
-+							NULL, &edid_blob_id, NULL));
-+			edid_blob = drmModeGetPropertyBlob(drm_fd, edid_blob_id);
-+			if (!edid_blob)
-+				continue;
-+
-+			if (!memcmp(unigraf_edid, edid_blob->data,
-+				    min(edid_blob->length, unigraf_edid_len)))
-+				found = true;
-+
-+			drmModeFreePropertyBlob(edid_blob);
-+
-+			if (found)
-+				break;
-+		}
-+		igt_assert_f(found, "No output with the correct EDID was found\n");
-+
-+		free(unigraf_edid);
-+	}
-+
-+	igt_describe("Make sure that the unigraf device can be used as a MST device");
-+	igt_subtest("unigraf-connect-mst") {
-+		int newly_connected_count, already_connected_count, diff_len;
-+		uint32_t *newly_connected = NULL, *already_connected = NULL, *diff = NULL;
-+		int max_count;
-+
-+		unigraf_require_device(drm_fd);
-+		max_count = unigraf_get_mst_stream_max_count();
-+
-+		unigraf_hpd_deassert();
-+
-+		already_connected_count = igt_get_connected_connectors(drm_fd, &already_connected);
-+
-+		igt_debug("Already connected count: %d\n", already_connected_count);
-+
-+		/* i = 0 is SST so we need to process max_count + 1 streams */
-+		for (int i = 0; i <= max_count; i++) {
-+			unigraf_hpd_deassert();
-+			/* Let the hardware detect the new state  */
-+			sleep(igt_default_display_detect_timeout());
-+
-+			unigraf_set_mst_stream_count(max(i, 1));
-+			if (!i)
-+				unigraf_set_sst();
-+			else
-+				unigraf_set_mst();
-+
-+			unigraf_hpd_assert();
-+			/* Let the hardware detect the new state */
-+			sleep(igt_default_display_detect_timeout());
-+
-+			newly_connected_count = kms_wait_for_new_connectors(&newly_connected,
-+									    already_connected,
-+									    already_connected_count,
-+									    drm_fd);
-+
-+			diff_len = get_array_diff(newly_connected, newly_connected_count,
-+						  already_connected, already_connected_count, &diff);
-+
-+			igt_assert_f(diff_len == max(i, 1),
-+				     "Invalid connected connector count, expected %d found %d\n",
-+				     max(i, 1), diff_len);
-+		}
-+	}
++	return max_rate;
 +}
+diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
+index e4249d179543..b13629147804 100644
+--- a/lib/i915/i915_dp.h
++++ b/lib/i915/i915_dp.h
+@@ -18,5 +18,6 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
+ void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
+ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+ 			     char *link_rate, char *lane_count);
++int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output);
+ 
+ #endif
 
 -- 
 2.54.0
