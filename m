@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28E42FED3F2
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:04:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A438FED3EF
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:04:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6A5310F64D;
-	Fri, 24 Apr 2026 17:04:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F1B9010E2E5;
+	Fri, 24 Apr 2026 17:04:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="pPSa9JlB";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="pjn09dAa";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7A3A8961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:45 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 851B68961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:53 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 90932C5EF2E
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:26 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 707681A3403;
+ Fri, 24 Apr 2026 16:54:52 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id BC8B8604EB;
- Fri, 24 Apr 2026 16:54:44 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 478A6604EB;
+ Fri, 24 Apr 2026 16:54:52 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id C4E2C10720A28; 
- Fri, 24 Apr 2026 18:54:42 +0200 (CEST)
+ with ESMTPSA id 50FC31072089B; 
+ Fri, 24 Apr 2026 18:54:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049683; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049691; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=pAjKE/oi+XzIh/ZJmwuiRxmR9kNMcMQWl8+a1oh/oIE=;
- b=pPSa9JlBcsp8YPYcBgB6qsW2Q9HcOFOr6YJ1zxnrpgH1znN6vwdD9mfQNXJ6ZObtz/k4SY
- HqJdDt0TD8x62n5Sfr8Vd1viygVmXZ90OkdxRaFISE4u/eU9LSZHqyeLgdzPS6Evz0iuly
- DwfZIwA/Uw0Jx7MAUFQBb/bwSXalUQODaTYh2T4dY8ADLItZD/suvmGfzduBGFbRJ/dlpn
- 0r6OvjkYoTqhQt2BJfMJ7w5GY+uAzMJumkU4dzpdq6WF90GRyx8N4ZKqyhsMch5Cw+29aW
- cUfEzD3ijz0IfsUgzvej4rfZ8nD9bS2m9rjEG+WybjPEB4n4Uwt0wB1gdDZyFg==
+ bh=jb4q4C8dCbNyyZAD8kr5K9vfgyM2KpVSUhU3efi2Zn0=;
+ b=pjn09dAakMNZSbJsjjErI/FJd+wZtALD0A9Jo9b0mjbmFXWCoBzoHS40x3uTtnjMujSTU5
+ KDG7u33xtPdzprxDHSnE8ZlqxRjCGDgGqxOnHbttwhhRAOeKMGVKfodUjf3rqwlGHnvWS6
+ 30lcynj8uQKeqZD98E3NcjzLCXODTZQO7BbpXstFOdyWh2kYsZrBb4FgYQQTxrM/BT7Mi9
+ /IAWFlcNjgtrv83bvhsy9eK0dsB0VFbgKXu20LYK27U+ZkWSiB3N9JirkCxj6t0WL99A9j
+ fA5DqNbgBmEOWGR3rH9ByzT5K33fCxYfSAcYrY48Wr/l4F0Id08FdhZ2MWDbaw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:52:53 +0200
-Subject: [PATCH i-g-t v11 18/49] lib/unigraf: Add used defines for
- TSI_Types
+Date: Fri, 24 Apr 2026 18:52:59 +0200
+Subject: [PATCH i-g-t v11 24/49] lib/unigraf: Introduce input configuration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-18-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-24-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,148 +63,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Current unigraf public release are not c-compatible, this file hardcode
-some values. One future release of libTSI may include a c-compatible
-TSI_types.h file with full structure definition, but until then.
+As multiple input can be present on unigraf devices, add a configuration
+field to select the proper input. By default it will take the first
+available.
 
+The configuration can look like:
+
+[Unigraf]
+Device=UCD-500 [2434C620]
+Role=DisplayPort Source and Sink
+Input=DP RX
+
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/TSI_types.h | 126 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 126 insertions(+)
+ lib/vendor/unigraf/unigraf.c | 56 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/lib/vendor/unigraf/TSI_types.h b/lib/vendor/unigraf/TSI_types.h
-new file mode 100644
-index 000000000000..c387ab4e1941
---- /dev/null
-+++ b/lib/vendor/unigraf/TSI_types.h
-@@ -0,0 +1,126 @@
-+/* SPDX-License-Identifier: MIT */
-+
-+// Current unigraf public release are not c-compatible, this file hardcode some values.
-+// The next release of libTSI should include a c-compatible TSI_types.h file, that will
-+// be directly used in place of this file.
-+
-+#ifndef TSI_REG_H
-+
-+#include <stdbool.h>
-+#include <stdint.h>
-+
-+#define TSI_VERSION_TEXT			0x80000001
-+#define TSI_DEVCAP_VIDEO_CAPTURE		0x00000001
-+#define TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE	0x00000001
-+
-+#define TSI_EDID_TE_INPUT			0x1100
-+#define TSI_EDID_SELECT_STREAM			0x1102
-+
-+#define TSI_BASE_LEGACY_GENERIC(offset)		(0x210 + (offset))
-+#define	TSI_FORCE_HOT_PLUG_STATE_W		TSI_BASE_LEGACY_GENERIC(0x2)
-+
-+#define TSI_BASE_LEGACY_DPRX_MSA(offset)		(0x260 + (offset))
-+#define TSI_DPRX_MSA_COMMAND_W				TSI_BASE_LEGACY_DPRX_MSA(0x0)
-+#define TSI_DPRX_MSA_STREAM_COUNT_R			TSI_BASE_LEGACY_DPRX_MSA(0x1)
-+#define TSI_DPRX_MSA_STREAM_SELECT			TSI_BASE_LEGACY_DPRX_MSA(0x3)
-+#define TSI_DPRX_MSA_HTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x6)
-+#define TSI_DPRX_MSA_VTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x7)
-+#define TSI_DPRX_MSA_HACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x8)
-+#define TSI_DPRX_MSA_VACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x9)
-+#define TSI_DPRX_MSA_HSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xa)
-+#define TSI_DPRX_MSA_VSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xb)
-+#define TSI_DPRX_MSA_HSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xc)
-+#define TSI_DPRX_MSA_VSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xd)
-+
-+#define TSI_DPRX_LINK_FLAGS_MST				0x01
-+#define TSI_DPRX_LINK_FLAGS_TPS3			0x02
-+#define TSI_DPRX_LINK_FLAGS_TPS4			0x03
-+#define TSI_DPRX_LINK_FLAGS_EDP				0x04
-+#define TSI_DPRX_NOT_DOCUMENTED_DP_128_132_SUPPORTED	0x10
-+#define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT	0x20
-+
-+#define TSI_BASE_DPRX(offset)			(0x50000000u + 0x21000 + (offset))
-+#define TSI_DPRX_HW_CAPS_R			TSI_BASE_DPRX(0x4)
-+
+diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+index 49d326b80b1f..591e99e938b4 100644
+--- a/lib/vendor/unigraf/unigraf.c
++++ b/lib/vendor/unigraf/unigraf.c
+@@ -42,11 +42,21 @@ static char *unigraf_connector_name;
+  */
+ #define UNIGRAF_CONFIG_DEVICE_ROLE "Role"
+ 
 +/**
-+ * struct TSI_DPRX_HW_CAPS_R_s - Structure representing the hardware capabilities of the DP RX.
-+ *
-+ * This structure defines the bitfields and fields that describe the hardware
-+ * capabilities of the DP RX (DisplayPort Receiver) interface. Each field
-+ * corresponds to a specific capability or feature supported by the hardware.
-+ *
-+ * This structure is used to interpret the value read from the
-+ * TSI_DPRX_HW_CAPS_R register.
-+ *
-+ * @mst: MST support
-+ * @hdcp_1_x: HDCP 1.x support.
-+ * @hdcp_2_x: HDCP 2.x support.
-+ * @fec_8_10_b: FEC for 8/10 link support.
-+ * @dsc_8_10_b: DSC for 8/10 link support.
-+ * @three_lanes: Three lane link configuration support.
-+ * @edp_link_rate: eDP link rates are supported.
-+ * @mst_stream_count: Number of MST streams supported.
-+ * @max_link_rate: Maximum link rate supported. The unit is not specified in documentation,
-+ *                 it is probably like other config rate = 0.27GHz * value
-+ * @force_link_config: Forced link configuration support.
-+ * @power_provision: Power provision support on DP_PWR pin of receptacle connector.
-+ * @aux_swing_voltage_control: AUX output voltage swing control support.
-+ * @custom_dp_rate: Custom DP 2.0 rate support.
-+ * @custom_bit_rate: Custom bit rate support.
-+ * @fec_128_132_b: FEC for 128/132 link support.
-+ * @dsc_128_132_b: DSC for 128/132 link support.
++ * UNIGRAF_CONFIG_INPUT_NAME - Key of the input name in the configuration file
 + */
-+struct TSI_DPRX_HW_CAPS_R_s {
-+	bool mst:1;
-+	bool hdcp_1_x:1;
-+	bool hdcp_2_x:1;
-+	bool fec_8_10_b:1;
-+	bool dsc_8_10_b:1;
-+	bool reserved_1:1;
-+	bool three_lanes:1;
-+	bool edp_link_rates_supported:1;
-+	uint8_t mst_stream_count:3;
-+	uint8_t reserved_2:5;
-+	uint8_t max_link_rate;
-+	bool force_link_config:1;
-+	bool reserved_3:1;
-+	bool power_provision:1;
-+	bool aux_swing_voltage_control:1;
-+	bool custom_dp_rate:1;
-+	bool custom_bit_rate:1;
-+	bool fec_128_132_b:1;
-+	bool dsc_128_132_b:1;
-+};
++#define UNIGRAF_CONFIG_INPUT_NAME "Input"
 +
-+#define TSI_DPRX_LT_LANE_COUNT_R		TSI_BASE_DPRX(0x0B)
-+#define TSI_DPRX_LT_RATE_R			TSI_BASE_DPRX(0x0C)
-+#define TSI_DPRX_HPD_FORCE			TSI_BASE_DPRX(0x12)
-+#define TSI_DPRX_MST_SINK_COUNT			TSI_BASE_DPRX(0x9D)
+ /**
+  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
+  */
+ #define UNIGRAF_DEFAULT_ROLE_NAME "USB-C, DP Alt Mode Source and Sink"
+ 
++/**
++ * UNIGRAF_DEFAULT_INPUT_NAME - Default input name to search on the unigraf device
++ */
++#define UNIGRAF_DEFAULT_INPUT_NAME "DP RX"
 +
-+#define TSI_BASE_DP_RX(offset)                  (0x00010100 + (offset))
-+#define TSI_DP_RX_DUT_MAX_LANE_COUNT		TSI_BASE_DP_RX(0xf)
+ static void unigraf_close_device(void)
+ {
+ 	if (!unigraf_device)
+@@ -125,6 +135,22 @@ static int unigraf_find_role(const char *request)
+ 	return -ENODEV;
+ }
+ 
++static int unigraf_find_input(const char *request)
++{
++	int role_count = unigraf_assert(TSIX_VIN_GetInputCount(unigraf_device));
 +
-+#define TSI_BASE_DP_LTT(offset)                 (0x00010700 + (offset))
-+#define TSI_DP_LTT_MAX_LANE_COUNT		TSI_BASE_DP_LTT(0x01)
++	for (int i = 0; i < role_count; i++) {
++		char input_name[UNIGRAF_NAME_MAX] = "";
 +
-+#define TSI_BASE_LEGACY_DPRX(offset)		(0x2b0 + (offset))
-+#define TSI_DPRX_DPCD_BASE_W			TSI_BASE_LEGACY_DPRX(0x9)
-+#define TSI_DPRX_DPCD_DATA			TSI_BASE_LEGACY_DPRX(0xA)
-+#define TSI_DPRX_MAX_LANES			TSI_BASE_LEGACY_DPRX(0x10)
-+#define TSI_DPRX_MAX_LINK_RATE			TSI_BASE_LEGACY_DPRX(0x11)
-+#define TSI_DPRX_LINK_FLAGS			TSI_BASE_LEGACY_DPRX(0x12)
-+#define TSI_DPRX_STREAM_SELECT			TSI_BASE_LEGACY_DPRX(0x13)
-+#define TSI_DPRX_CRC_R_R			TSI_BASE_LEGACY_DPRX(0x14)
-+#define TSI_DPRX_CRC_G_R			TSI_BASE_LEGACY_DPRX(0x15)
-+#define TSI_DPRX_CRC_B_R			TSI_BASE_LEGACY_DPRX(0x16)
-+#define TSI_DPRX_HPD_PULSE_W			TSI_BASE_LEGACY_DPRX(0x1B)
++		unigraf_assert(TSIX_VIN_GetInputName(unigraf_device, i,
++						     input_name, UNIGRAF_NAME_MAX));
++		unigraf_debug("Input %d: %s\n", i, input_name);
++		if (!strncmp(input_name, request, UNIGRAF_NAME_MAX))
++			return i;
++	}
++	return -ENODEV;
++}
 +
-+#define H2_SINK_LOAD_PROD_KEYS                         0x002
-+#define H2_SINK_UNLOAD_KEYS                            0x003
-+#define H2_SINK_SET_CAPABLE                            0x004
-+#define H2_SINK_CLEAR_CAPABLE                          0x005
+ /**
+  * unigraf_open_device() - Search and open a device.
+  * @drm_fd: File descriptor of the currently used drm device
+@@ -142,10 +168,11 @@ bool unigraf_open_device(int drm_fd)
+ 	GError *cfg_error = NULL;
+ 	char *cfg_device = NULL;
+ 	char *cfg_role = NULL;
++	char *cfg_input = NULL;
+ 	int device_count;
+ 	int chosen_device = 0;
+ 	int chosen_role;
+-	int chosen_input = 0;
++	int chosen_input;
+ 
+ 	assert(igt_can_fail());
+ 
+@@ -169,6 +196,14 @@ bool unigraf_open_device(int drm_fd)
+ 			unigraf_debug("No device role configured.\n");
+ 			cfg_role = NULL;
+ 		}
 +
-+#define TSI_BASE_LEGACY_HDCP2(offset)                  (0x290 + (offset))
-+#define TSI_HDCP_2X_COMMAND_W                          TSI_BASE_LEGACY_HDCP2(0x1)
++		cfg_error = NULL;
++		cfg_input = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
++						  UNIGRAF_CONFIG_INPUT_NAME, &cfg_error);
++		if (cfg_error) {
++			unigraf_debug("No input name configured.\n");
++			cfg_input = NULL;
++		}
+ 	}
+ 
+ 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
+@@ -211,6 +246,25 @@ bool unigraf_open_device(int drm_fd)
+ 	}
+ 
+ 	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
 +
-+#endif /* TSI_REG_H */
++	if (!cfg_input) {
++		unigraf_debug("No input configured, trying " UNIGRAF_DEFAULT_INPUT_NAME "\n");
++		chosen_input = unigraf_find_input(UNIGRAF_DEFAULT_INPUT_NAME);
++		if (chosen_input < 0) {
++			char input_name[UNIGRAF_NAME_MAX];
++
++			chosen_input = 0;
++			unigraf_assert(TSIX_VIN_GetInputName(unigraf_device, chosen_input,
++							     input_name, UNIGRAF_NAME_MAX));
++			unigraf_debug("Input " UNIGRAF_DEFAULT_INPUT_NAME " not found, using input 0 (%s).\n",
++				      input_name);
++		}
++	} else  {
++		chosen_input = unigraf_find_input(cfg_input);
++		igt_assert_f(chosen_input >= 0, "TSI:%p: Input %s not found.",
++			     unigraf_device, cfg_input);
++	}
++
+ 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
+ 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
+ 
 
 -- 
 2.54.0
