@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15EF6FED3F1
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3479BFED3F0
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:57:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B7A708961D;
-	Fri, 24 Apr 2026 16:56:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D5DD48961D;
+	Fri, 24 Apr 2026 16:57:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="AfWGCn2G";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WKU6mf+B";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15D558961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97664890BE
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:33 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 0A9E61A3402;
- Fri, 24 Apr 2026 16:55:15 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 891D91A3404;
+ Fri, 24 Apr 2026 16:54:32 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id D6F9B604EB;
- Fri, 24 Apr 2026 16:55:14 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 56165604EB;
+ Fri, 24 Apr 2026 16:54:32 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 3A4B110720A1D; 
- Fri, 24 Apr 2026 18:55:13 +0200 (CEST)
+ with ESMTPSA id 4E4991072089B; 
+ Fri, 24 Apr 2026 18:54:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049713; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049671; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=5HyJO4y+HrcqOQb72PWlDR0mZq9j2E9nZzXBFoqGM3I=;
- b=AfWGCn2G6wEArYXH4HSmj0GPOcYawT8Yko41aTxNUKMPvhjHh3Vf/6wbKlkLCs9ILzPi4q
- 5KBJS2cFXOIYOrF8+RlxGXfjeIGz+d4973J3Ct6k1r4328pc2iteprUN250uyEEYY3T/qV
- G3LWlKq1bRZMHzhy5DOzea9r0wWxGTUjhQcaXc9xA2lr1jxDFE+C3A4b5BLMT3XmB1jnbQ
- VFquHjBLshuo9SnaDatYR6hdwu3Q2vy8vHSDJoi0XtSBMFyZB5HKqxb9tBInPZmLfDS5Ac
- zPijxA0Q3F4wn7TwdwdHVqlj9a53AwYd9iwDD0BixrmW3qh+2HtMnefkz1HWZA==
+ bh=KtgdguyyMO/fxgWsGQrv+hYXERnJHJu5A39mac+Rh88=;
+ b=WKU6mf+BJ/dOX82vZs1s+6SgJHZNASJMQlFa+ugu+Jt5pKcWJqRRjH7WNc1FUwLTla0LW/
+ 0WST6cFH00ggZhJxKLsmHGBF3xlT0SmGn0M9OV/MWiKLnGUvF+eKxPzMkxoxNM3O0itt70
+ 69aZH9Pp4WogQvmDBngwqZKSwgm5EWU81yBbqsQBnB5Avnpab/qLFanpZ6BA+7taWRIIso
+ 9x1hrGs5w621UDmX9typmKwD67rfNrL7WgN95MEHG9Q5Rgcg28iEl0Vd5EnjuMRptjZ/7U
+ OEduSvgUV9GL5JGVq8K0vbkW5tu6Ri1b2rU6RWX8wys8cFWyJAE0VLv0eA12sQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:21 +0200
-Subject: [PATCH i-g-t v11 46/49] docs/unigraf: Add unigraf documentation
+Date: Fri, 24 Apr 2026 18:52:40 +0200
+Subject: [PATCH i-g-t v11 05/49] lib/igt_kms: Add helper to wait for new
+ connectors
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-46-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-5-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -63,101 +64,140 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add unigraf documentation to explain how to compile and use it with IGT.
+Add list comparison utilities and a new function to wait for new
+connectors to appear on the system.
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- docs/unigraf.txt | 81 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ lib/igt_kms.c | 100 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |   6 ++++
+ 2 files changed, 106 insertions(+)
 
-diff --git a/docs/unigraf.txt b/docs/unigraf.txt
-new file mode 100644
-index 000000000000..37996a2ef98b
---- /dev/null
-+++ b/docs/unigraf.txt
-@@ -0,0 +1,81 @@
-+Unigraf Support in IGT
-+========================
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 0edc419dafc2..e6b9cfc61b18 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -8418,3 +8418,103 @@ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path)
+ 
+ 	return 0;
+ }
 +
-+This document provides information and instructions for Unigraf support in IGT.
++/**
++ * array_contains() - Search an element in the array
++ *
++ * @array: Pointer to the array to search into
++ * @array_len: Length of the array
++ * @value: Value to search in the array
++ *
++ * Returns true if @array contains @value
++ */
++static bool array_contains(const uint32_t *array, int array_len, uint32_t value)
++{
++	igt_assert(array_len == 0 || array);
 +
-+Introduction
-+------------
++	for (int i = 0; i < array_len; i++)
++		if (array[i] == value)
++			return true;
 +
-+Unigraf devices are a set of devices that can be used to test all sort of graphical
-+interface and signals. See Unigraf website for more information about all the
-+capabilities of each devices: https://unigraf.fi
++	return false;
++}
 +
-+Unigraf documentation
-+---------------------
++/**
++ * get_array_diff() - Compute and return the set difference between two arrays
++ *
++ * @array_a: Pointer to the first array to compare
++ * @array_a_len: Length of the first array
++ * @array_b: Pointer to the second array to compare
++ * @array_b_len: Length of the second array
++ * @diff: Out pointer returning a array of items in @array_a but not
++ *        in @array_b. Can be NULL to only count the elements.
++ *
++ * Returns the number of element which are in @array_a but not in @array_b.
++ */
++int
++get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b, int array_b_len,
++	       uint32_t **diff)
++{
++	int diff_len = 0;
 +
-+All the documentation for libTSI, the library used to communicate with the unigraf,
-+can be found on unigraf website: https://www.unigraf.fi/downloads/
++	igt_assert(array_a_len == 0 || array_a);
++	igt_assert(array_b_len == 0 || array_b);
 +
-+Setting up Unigraf
-+------------------
++	if (diff)
++		*diff = NULL;
 +
-+For most of the unigraf devices, this should be as simple as "plugging the
-+unigraf and plug the video cable". If you need to install some license, upgrade
-+the firmware... please take a look at the official unigraf documentation.
++	for (int i = 0; i < array_a_len; i++) {
++		if (!array_contains(array_b, array_b_len, array_a[i])) {
++			if (diff) {
++				*diff = reallocarray(*diff, diff_len + 1, sizeof(**diff));
++				igt_assert(*diff);
++				(*diff)[diff_len] = array_a[i];
++			}
 +
-+Compiling IGT with Unigraf support
-+----------------------------------
++			diff_len++;
++		}
++	}
 +
-+Unfortunately, the communication with the device use a proprietary library and the
-+underlying protocol is not open. To use the unigraf you need to install the unigraf
-+SDK, grab the libTSI.so and make it available on the build machine and the DUT.
++	return diff_len;
++}
 +
-+Deploying the Unigraf with IGT
-+------------------------------
++/**
++ * kms_wait_for_new_connectors() - Wait for new connector to appear
++ *
++ * @newly_connected: Out pointer returning the array of connectors currently
++ *                   found connected. If @newly_connected is not null, the
++ *                   content will be freed and replaced by a new allocation.
++ * @already_connected: Input pointer to array of connectors previously
++ *                     connected
++ * @already_connected_count: Length of @already_connected
++ * @drm_fd: DRM file descriptor
++ *
++ * Assert if:
++ * - @drm_fd is invalid
++ * - igt_get_time fails
++ * Returns: the number of connectors not in @already_connected and currently
++ * found connected.
++ */
++int kms_wait_for_new_connectors(uint32_t **newly_connected,
++				const uint32_t *already_connected,
++				int already_connected_count, int drm_fd)
++{
++	int newly_connected_count;
++	struct timespec start, end;
 +
-+Unigraf may work out of the box: by default if IGT find a unigraf device, it will
-+try to connect and configure it to use USB-C input. This allows running most of
-+the existing tests without an actual screens.
++	igt_assert(newly_connected);
++	igt_assert_fd(drm_fd);
 +
-+Here is a complete example configuration:
++	igt_assert_eq(igt_gettime(&start), 0);
++	do {
++		if (*newly_connected)
++			free(*newly_connected);
++		newly_connected_count = igt_get_connected_connectors(drm_fd, newly_connected);
++		igt_assert_eq(igt_gettime(&end), 0);
++	} while (!get_array_diff(*newly_connected, newly_connected_count,
++			       already_connected, already_connected_count,
++			       NULL) &&
++		 igt_time_elapsed(&start, &end) <= igt_default_display_detect_timeout());
 +
-+        [Unigraf]
-+        # Choose a device using his name, you can find it in UCDConsole (installed with the SDK)
-+        Device=UCD-500 [2434C620]
-+        # Choose a role for the device, you can find it UCDConsole
-+        Role=USB-C, DP Alt Mode Source and Sink
-+        # Choose active input for the device
-+        Input=DP RX
-+        # Set the connector name used by the unigraf device. If not set, IGT will try to
-+        # autodetect which connector is used.
-+        Connector=DP-2
-+        # Set the EDID used by Unigraf
-+        EDID=DEL_16543_DELL_P2314T_DP
-+        # Enable or disable the use of Unigraf's CRCs instead of the CRTC CRCs
-+        UseCRC=1
-+        # Set the number of emulated MST streams (0 = Single Stream Transport, >=1 = MST)
-+        MSTStreams=0
-+
-+Current Support in IGT
-+----------------------
-+
-+Support for the Unigraf devices in IGT is found in the following places:
-+* lib/unigraf/unigraf.[ch] -> IGT API
-+* lib/unigraf/TSI.h -> Header for libTSI.so, not provided by Unigraf
-+* lib/unigraf/TSI_types.h -> Header containing all the relevant values from unigraf SDK. The unigraf SDK can't be used directly because it is only compatible with windows and c++.
-+
-+Current unigraf.c features are:
-+* Plug, unplug, hotplug pulse
-+* EDID management
-+* MST/SST stream management
-+* CRC calculation
-+
-+Current testing are:
-+* All igt tests that require a display and use a CRC (kms_plane, kms_cursor_crc, ...)
-+* Basic EDID and MST tests
-+
-+Planned tests:
-+* Link training scenarios (link rate, lane count, scrambling, ...)
-+* Bandwidth constraint management
-+* HDCP content protection
-+* Display stream compression
++	return newly_connected_count;
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 1346aea5a6d5..929ee04880ed 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1296,4 +1296,10 @@ drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_nam
+ uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name);
+ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
+ 
++int kms_wait_for_new_connectors(uint32_t **newly_connected,
++				const uint32_t *already_connected,
++				int already_connected_count, int drm_fd);
++int
++get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b, int array_b_len,
++	       uint32_t **diff);
+ #endif /* __IGT_KMS_H__ */
 
 -- 
 2.54.0
