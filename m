@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B4CBFED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:58:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A4E9FED3F1
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:58:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1438E8961D;
-	Fri, 24 Apr 2026 16:58:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 220398961D;
+	Fri, 24 Apr 2026 16:58:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="NiykpK+m";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="F3pkBmX3";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9271890BE
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 482958961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:44 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id AE16D1A3403;
- Fri, 24 Apr 2026 16:54:36 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 2A3141A3403
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:43 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 80226604EB;
- Fri, 24 Apr 2026 16:54:36 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 0138A604EB;
+ Fri, 24 Apr 2026 16:54:43 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 6EE2610720A11; 
- Fri, 24 Apr 2026 18:54:35 +0200 (CEST)
+ with ESMTPSA id D628B10720A27; 
+ Fri, 24 Apr 2026 18:54:41 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049676; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049682; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=UF7ovk0idANJGRO3ii1t2IquUOzRzwc5iaGBGibklYo=;
- b=NiykpK+mLKeqeanmxzkCmbQwswdd2m90iVYIw8SucvCPtGpFdoUDIV7h7vmommUpEJszGN
- P39CiNK+HBJv0XD3tWtYFZEdCH6LBFuHd77iIm52sSBHn63zA9zH2fsKgHaI0l8j8ZlV3Y
- 6iy2s5sQgj10/kKG8jhVs8i+IEaU6SXiOSJNxa/1tcySEBJs/4Erige3kkXqGbNchq+Zvo
- AB6wTC5AXHHtCs1Bb5eOCzADhxyJY1LB/rRx09IxP1uOkT6hlIOpcwvGICe6chocLZC1tV
- TZbdQSXmDnTy6wYQ0xQvcezfDuv94xqdoEgtdx5VnwnEOD0gpemE6/PyOoaqug==
+ bh=sLIQUA1Z/M/63fafFA/36Whk3PaqgjRTBgDo/SQvCw4=;
+ b=F3pkBmX31+s8vtVgMMLaaXovG44nOst5x/7V5YfbK9k2ZI6h7wmTOEh97dN2SZfNDJfJzE
+ Y5zWZgvv+3B+AlyyDE/JaY9aImTTa7EXwTu1QbONAU93EKrtYegXLtwKq4qMotCURlA60+
+ 1uQKI/L64oU5ijZGDv2tkLJpYKc3kz8NU30tZGuFbprF+4xmCdsg5Yh8Mgw8sjW+JfIdJ4
+ sDFLghO0fc+XMBgvyed6280BIKkttvpL+RRAJA43u/fOezkXF/rlEDUhTDNexy4oR9LVQ1
+ znN2h6sP6v7pmTcxyvN8uMTnHRlY0xVPbLySKl/A2p9dGcYSAT6CN9/qB87fUw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:52:45 +0200
-Subject: [PATCH i-g-t v11 10/49] lib/igt_kms: Expose connector_attr_set and
- igt_connector_attr_set
+Date: Fri, 24 Apr 2026 18:52:52 +0200
+Subject: [PATCH i-g-t v11 17/49] lib/monitor_edids: Add helper to print all
+ available EDID names
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-10-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-17-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,81 +64,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some debugfs helpers need to use connector attributes. Expose those helpers
-to allow using them in igt_debugfs.
+During the unigraf configuration, it may be required to know the list
+of supported EDID names, so add an helper to print them.
 
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 30 +++++++++++++++++++++++-------
- lib/igt_kms.h |  6 ++++++
- 2 files changed, 29 insertions(+), 7 deletions(-)
+ lib/monitor_edids/monitor_edids_helper.c | 16 ++++++++++++++++
+ lib/monitor_edids/monitor_edids_helper.h |  2 ++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 95e46d49ad85..d0541b09d9c9 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -102,8 +102,6 @@
-  */
- #define IGT_KMS_CONNECTOR_NAME_SIZE 50
+diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+index e2ad7dbd4185..a3434e20f900 100644
+--- a/lib/monitor_edids/monitor_edids_helper.c
++++ b/lib/monitor_edids/monitor_edids_helper.c
+@@ -200,3 +200,19 @@ struct edid *get_edid_by_name(const char *name)
  
--typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
--
- struct igt_connector_attr {
- 	uint32_t connector_type;
- 	uint32_t connector_type_id;
-@@ -1685,11 +1683,29 @@ static void connector_attr_free(struct igt_connector_attr *c)
- 	memset(c, 0, sizeof(*c));
+ 	return NULL;
  }
- 
--static bool connector_attr_set(int idx, drmModeConnector *connector,
--			       int dir, igt_connector_attr_set set,
--			       const char *attr, const char *value,
--			       const char *reset_value,
--			       bool force_reset)
-+/**
-+ * connector_attr_set:
-+ * @idx: card index
-+ * @connector: libdrm connector
-+ * @dir: directory file descriptor
-+ * @set: function to set the attribute
-+ * @attr: attribute name
-+ * @value: attribute value
-+ * @reset_value: value to reset the attribute to
-+ * @force_reset: whether to force reset the attribute
++
++/*
++ * list_edid_names:
++ * @level: Log level to write the names on
 + *
-+ * Configure a new attribute for @connector on card @idx that can be set
-+ * using @set function.
-+ * connector_attr_set register this attribute to reset it to the @reset_value
-+ * during igt_reset_connector.
-+ *
-+ * Returns: True on success, false on failure.
++ * Print all the EDID available in igt.
 + */
-+bool connector_attr_set(int idx, drmModeConnector *connector,
-+			int dir, igt_connector_attr_set set,
-+			const char *attr, const char *value,
-+			const char *reset_value,
-+			bool force_reset)
- {
- 	struct igt_connector_attr *c;
++void list_edid_names(enum igt_log_level level)
++{
++	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
++		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
++			igt_log(IGT_LOG_DOMAIN, level, " - \"%s\"\n",
++				ALL_EDIDS[i].edid_list[j].name);
++		}
++	}
++}
+diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+index e76fed2cb4b9..e0c4bd55ed36 100644
+--- a/lib/monitor_edids/monitor_edids_helper.h
++++ b/lib/monitor_edids/monitor_edids_helper.h
+@@ -15,6 +15,7 @@
+ #include <stdbool.h>
+ #include <stdint.h>
  
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 4e5fe80ad565..1f25bd8fe432 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1218,6 +1218,12 @@ void igt_parse_connector_tile_blob(drmModePropertyBlobPtr blob,
++#include "igt_core.h"
+ #include "igt_chamelium.h"
  
- int igt_connector_sysfs_open(int drm_fd,
- 			     drmModeConnector *connector);
-+typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
-+bool connector_attr_set(int idx, drmModeConnector *connector,
-+			int dir, igt_connector_attr_set set,
-+			const char *attr, const char *value,
-+			const char *reset_value,
-+			bool force_reset);
- uint32_t igt_reduce_format(uint32_t format);
+ /* Max Length can be increased as needed, when new EDIDs are added. */
+@@ -35,5 +36,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
+ struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
+ const struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
+ struct edid *get_edid_by_name(const char *name);
++void list_edid_names(enum igt_log_level level);
  
- 
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
 
 -- 
 2.54.0
