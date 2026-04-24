@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50A72FED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:03:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED0E2FED3F0
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:03:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EFC0210F647;
-	Fri, 24 Apr 2026 17:03:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9D1EA10F648;
+	Fri, 24 Apr 2026 17:03:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ijP+BJNl";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="yCDt7ss2";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CEEF8961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3A318961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:18 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 5D1FA4E42A66
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:12 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 928884E42A66;
+ Fri, 24 Apr 2026 16:55:17 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 2FD40604EB;
- Fri, 24 Apr 2026 16:55:12 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 69F5C604EB;
+ Fri, 24 Apr 2026 16:55:17 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id F239D1072089B; 
- Fri, 24 Apr 2026 18:55:10 +0200 (CEST)
+ with ESMTPSA id 4954110720A1A; 
+ Fri, 24 Apr 2026 18:55:16 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049711; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049716; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=GJ96FfuxO7WBgcc3AWmxeBbvIO95/keOLuPBSNt8XN8=;
- b=ijP+BJNlRXTMF59VUFUk3LafCZGKJZm7B/0QYfOSvqicEDCYIFC+d7C3MTUXVfSTJnBcmG
- 2Yb+9iUxvmKLtxRjY1myycXgLGg7qMpP7ywHJv1npAFYwX7BHmGQAXRbASEkubYNjqh0Lz
- hRURpITFLZ271PACmQ3IAmKhaY9Uij40Wjl53Tg3JkT+7rMy0XD+9aIRwyxuVOoGWdMHHo
- Wx+UfYSaZGJXLeWJqpB8c7ZFB54FUmVRPUgOgoGvGUyV1mhTvmxmz8mvT+RaUZKGvP3VDL
- k4U/gxjGRfW/BAbEwUQCysuaRDcyPVIrTw2+uhrKeA1XntIk/NepRl0Ii52Mcg==
+ bh=OgyJqmOynD3MTwnMlf91eMYv4a7+jLVlmbR4fEPGVPU=;
+ b=yCDt7ss2C1W0nxmRqng03sxjMtCNWCG+WP84cLlxURauLIwVldyGB68WtiCiZ5vpEBGBai
+ 3a/co/ioR39sDTB7MmFXcNE+xFLZKubH4MadUDyJZEPCTh5pDpyA1fHEMuUkUkR1+ohNOB
+ Gxoae2+jjhmFsbTWcWEjU5aTHp7QWEshjYBcMscGdDS3uPOP0tWVYWaa8I4AGndArlHkzS
+ DiSErkULRBW56D/n3PGx7PFyE5E0fWAfVwkFzsuj0vzTK5K9Fb4kGhvOKCVrhHpobwaerx
+ Z+NSDtHqBwGUMBT+CELU96C6F2knLsY7yUn4xojWbbfpsPRJB0tHqpZTBBNLcA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:18 +0200
-Subject: [PATCH i-g-t v11 43/49] lib/igt_kms: Add asserts to avoid null
- pointer dereference
+Date: Fri, 24 Apr 2026 18:53:23 +0200
+Subject: [PATCH i-g-t v11 48/49] lib/unigraf: Add helpers to get the
+ current LT status
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-43-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-48-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,28 +64,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To help debugging and avoid null pointer dereference, add some asserts in
-igt_output_from_connector.
+To ensure that the link training was correct, grab actual link
+training status from unigraf.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/vendor/unigraf/unigraf.c | 20 ++++++++++++++++++++
+ lib/vendor/unigraf/unigraf.h |  4 ++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 495b16792501..f623b741d775 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -3304,6 +3304,8 @@ igt_output_t *igt_output_from_connector(igt_display_t *display,
- {
- 	int i;
- 	igt_output_t *found = NULL;
-+	igt_assert(display);
-+	igt_assert(connector);
+diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+index c193a745d8d2..30ee3c72bc74 100644
+--- a/lib/vendor/unigraf/unigraf.c
++++ b/lib/vendor/unigraf/unigraf.c
+@@ -840,6 +840,26 @@ int unigraf_get_max_lane_count(void)
+ 	return max_lanes;
+ }
  
- 	for (i = 0; i < display->n_outputs; i++) {
- 		igt_output_t *output = &display->outputs[i];
++/**
++ * unigraf_get_lt_rate() - Get the current link training rate
++ *
++ * Returns: The current link training rate in units of 270 MHz.
++ */
++uint32_t unigraf_get_lt_rate(void)
++{
++	return unigraf_read_u32(TSI_DPRX_LT_RATE_R);
++}
++
++/**
++ * unigraf_get_lt_lane_count() - Get the current link training lane count
++ *
++ * Returns: The current number of lanes being used in link training.
++ */
++uint32_t unigraf_get_lt_lane_count(void)
++{
++	return unigraf_read_u32(TSI_DPRX_LT_LANE_COUNT_R);
++}
++
+ /**
+  * unigraf_set_max_link_rate() - Set the maximum link rate advertised to the DUT
+  * @bandwidth: The maximum link rate to configure on the device. Actual value is
+diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
+index cb49b5897b54..1570be3feb96 100644
+--- a/lib/vendor/unigraf/unigraf.h
++++ b/lib/vendor/unigraf/unigraf.h
+@@ -99,4 +99,8 @@ int unigraf_get_max_link_rate(void);
+ 
+ int unigraf_rate_to_kbs(enum unigraf_rate rate);
+ 
++uint32_t unigraf_get_lt_rate(void);
++
++uint32_t unigraf_get_lt_lane_count(void);
++
+ #endif // UNIGRAF_H
 
 -- 
 2.54.0
