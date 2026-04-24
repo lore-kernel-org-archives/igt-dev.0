@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35C4FFED3F1
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:55:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACE41FED3F0
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:55:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE4B98961D;
-	Fri, 24 Apr 2026 16:55:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D5D68961D;
+	Fri, 24 Apr 2026 16:55:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="GLiRXbmb";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="JxtSM7Bl";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B81A38961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56CA6890BE
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:34 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id A6E311A3404
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:30 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 40D961A3406
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:33 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7F441604EB;
- Fri, 24 Apr 2026 16:54:30 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 189CE604EB;
+ Fri, 24 Apr 2026 16:54:33 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 7584D10720A14; 
- Fri, 24 Apr 2026 18:54:29 +0200 (CEST)
+ with ESMTPSA id 1A2EA10720A1D; 
+ Fri, 24 Apr 2026 18:54:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049670; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049672; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=TYU0OlLUKcUzjwkzrFMHNYaIq4VTWmCL9j54F0XpD44=;
- b=GLiRXbmb5c8tk1YuWRiPJ2k8GOjteEmHU8YKGPK0JPvzk73tw6TkG49bF4HEB6oY2rY8p4
- FsnWniNaALWCY5hF0uz9m+7GscaYlaGXNKJFtMYZ4y0eDVF0YznaB41Ma//ZGFm0lKSfuM
- XedF+klQ4xqSKStW0Y6SLK9KCzWZwrvnfnFE9d6jnEU8+s37vyPbDc4kanb12P/T7DHC/P
- Tma8XTxj1c4yjpIWzBDaioqhE3mcdlqE1zUq0p1lHjIV/Nixd6saHnuSpOhljciW8H3UJ+
- 6EZV9XPkta5N+zksQR2m3w6Opx0qEDzlx5yVG35EDAWnBcQK5L8nBCZPKgPszQ==
+ bh=5UJU5Ch9A30KFtkOVbX4xvBmlYmgy1puAxoz9UP0kAg=;
+ b=JxtSM7Blrm3jB0kEl83fE74lf4VE7ruGrXtp4EGAtPJ+KWWrPgpRUAQFz54BnV6GwEYojK
+ 6Tc3lQQirE181ILXXULL/puyc0OJZsUpCziepO6XjXsG8ti8Y8DkIC6LwZN3bG5FmqwSBB
+ smhqC+NBn4AT8M36+y94zh9DG3l+0sX2kuYqht3y2OxCpdBMO8QIkgkkulneIOJPoFZmP9
+ 2/gtyVYXp0UuQe1cSQPGmrOdN4wO316EWS9KWhc6RNRHpTL/Plgd+KjjgHoeEW3gsMEixJ
+ d5NSovrwfuT7tUsMAFRciukY5ait9qpFSu8dcVtX0/S5x6kYepH/oC+fnMJjkA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:52:38 +0200
-Subject: [PATCH i-g-t v11 03/49] lib/igt_kms: Add function to list
- connected connectors
+Date: Fri, 24 Apr 2026 18:52:41 +0200
+Subject: [PATCH i-g-t v11 06/49] lib/tests: Add tests for array manipulations
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-3-0c5f5346ae60@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260424-unigraf-integration-v11-6-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,133 +63,193 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the igt_get_connected_connectors() function, which returns a
-list of connector IDs that are currently connected according to DRM.
-
-This function includes a timeout mechanism because connectors can be
-unplugged at any time. Also, especially with MST, the connector can be
-listed by drmModeGetResources() but not yet accessible with
-drmModeGetConnector().
+As array manipulation functions are not trivial, add few tests to ensure
+they work properly.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 86 insertions(+)
+ lib/tests/igt_kms_array_diff.c | 159 +++++++++++++++++++++++++++++++++++++++++
+ lib/tests/meson.build          |   1 +
+ 2 files changed, 160 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 92a2ce906b6b..dd733c3bdac5 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -8185,6 +8185,31 @@ igt_crtc_t *igt_random_crtc(igt_display_t *display)
- 	return crtcs[rand() % n];
- }
- 
-+static drmModeConnectorPtr igt_wait_for_connector(int drm_fd, unsigned int connector_id,
-+						  double timeout)
-+{
-+	drmModeConnectorPtr connector = NULL;
-+	struct timespec start, end;
+diff --git a/lib/tests/igt_kms_array_diff.c b/lib/tests/igt_kms_array_diff.c
+new file mode 100644
+index 000000000000..ebdc3b62bc31
+--- /dev/null
++++ b/lib/tests/igt_kms_array_diff.c
+@@ -0,0 +1,159 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Google
++ *
++ * Authors:
++ *   Louis Chauvet <louis.chauvet@bootlin.com> (assisted by MistralAI)
++ */
 +
-+	connector = drmModeGetConnector(drm_fd, connector_id);
-+	/*
-+	 * This time is required as sometimes some id in the connector list are not totally
-+	 * ready or can disappear
-+	 */
-+	igt_assert_eq(igt_gettime(&start), 0);
-+	end = start;
++#include <stdint.h>
++#include <stdlib.h>
 +
-+	while (!connector &&
-+	       igt_time_elapsed(&start, &end) <= timeout) {
-+		drmModeFreeConnector(connector);
-+		connector = drmModeGetConnector(drm_fd, connector_id);
-+		usleep(WAIT_FOR_CONNECTOR_LOOP_SLEEP_US);
-+		igt_assert_eq(igt_gettime(&end), 0);
-+	}
-+
-+	return connector;
-+}
-+
- /**
-  * igt_wait_for_connector_status:
-  * @drm_fd: drm file descriptor
-@@ -8225,3 +8250,63 @@ bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double
- 
- 	return false;
- }
++#include "drmtest.h"
++#include "igt_core.h"
++#include "igt_kms.h"
 +
 +/**
-+ * igt_get_connected_connectors:
++ * TEST: get_array_diff
++ * Category: Core
++ * Description: Test the get_array_diff() function
 + *
-+ * @drm_fd: DRM file descriptor
-+ * @connector_ids: Out pointer for the array of connector ids connected. The function
-+ * will allocate and store the pointer in this out pointer. The caller is
-+ * responsible to free the inner pointer using free(*connector_ids).
++ * SUBTEST: get_array_diff-empty-both
++ * Description: Test with both arrays empty
 + *
-+ * This will probe all the connectors and return the list of all
-+ * connected connectors.
++ * SUBTEST: get_array_diff-empty-a
++ * Description: Test with array_a empty
 + *
-+ * Asserts if:
-+ * - drm_fd is invalid
-+ * - drmModeGetResources fails
-+ * - reallocarray fails
-+ * Returns: The number of connectors in @connector_ids
++ * SUBTEST: get_array_diff-empty-b
++ * Description: Test with array_b empty
++ *
++ * SUBTEST: get_array_diff-no-diff
++ * Description: Test with identical arrays (no difference)
++ *
++ * SUBTEST: get_array_diff-full-diff
++ * Description: Test with completely different arrays
++ *
++ * SUBTEST: get_array_diff-partial-diff
++ * Description: Test with partial overlap between arrays
++ *
++ * SUBTEST: get_array_diff-null-diff
++ * Description: Test with diff parameter set to NULL (count only)
 + */
-+int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
++
++static void test_get_array_diff_empty_both(void)
 +{
-+	uint32_t *tmp_alloc;
-+	int connected_count = 0;
-+	double timeout = igt_default_display_detect_timeout();
-+	drmModeResPtr resources;
++	uint32_t *diff = NULL;
++	int diff_len;
 +
-+	igt_assert_fd(drm_fd);
-+	*connector_ids = NULL;
-+
-+	resources = drmModeGetResources(drm_fd);
-+	igt_assert_f(resources, "drmModeGetResources failed");
-+	for (int j = 0; j < resources->count_connectors; j++) {
-+		int status = DRM_MODE_UNKNOWNCONNECTION;
-+
-+		drmModeConnectorPtr connector = igt_wait_for_connector(drm_fd,
-+								       resources->connectors[j],
-+								       timeout);
-+
-+		if (connector)
-+			status = connector->connection;
-+		drmModeFreeConnector(connector);
-+
-+		if (status == DRM_MODE_CONNECTED) {
-+			tmp_alloc = reallocarray(*connector_ids,
-+						 connected_count + 1,
-+						 sizeof(**connector_ids));
-+			if (!tmp_alloc) {
-+				free(*connector_ids);
-+				drmModeFreeResources(resources);
-+				igt_assert_f(false, "Failed to allocate connector_ids list");
-+			}
-+
-+			*connector_ids = tmp_alloc;
-+			(*connector_ids)[connected_count] = resources->connectors[j];
-+			connected_count++;
-+		}
-+	}
-+	drmModeFreeResources(resources);
-+
-+	return connected_count;
++	diff_len = get_array_diff(NULL, 0, NULL, 0, &diff);
++	igt_assert_eq(diff_len, 0);
++	free(diff);
 +}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 951de7de651a..75398a0f6369 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1291,5 +1291,6 @@ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
- 
- bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
- 				   int drm_mode);
-+int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
- 
- #endif /* __IGT_KMS_H__ */
++
++static void test_get_array_diff_empty_a(void)
++{
++	uint32_t array_b[] = {1, 2, 3};
++	uint32_t *diff = NULL;
++	int diff_len;
++
++	diff_len = get_array_diff(NULL, 0, array_b, ARRAY_SIZE(array_b), &diff);
++	igt_assert_eq(diff_len, 0);
++	free(diff);
++}
++
++static void test_get_array_diff_empty_b(void)
++{
++	uint32_t array_a[] = {1, 2, 3};
++	uint32_t *diff = NULL;
++	int diff_len;
++
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), NULL, 0, &diff);
++	igt_assert_eq(diff_len, 3);
++	igt_assert(diff);
++	igt_assert_eq(diff[0], 1);
++	igt_assert_eq(diff[1], 2);
++	igt_assert_eq(diff[2], 3);
++	free(diff);
++}
++
++static void test_get_array_diff_no_diff(void)
++{
++	uint32_t array_a[] = {1, 2, 3};
++	uint32_t array_b[] = {1, 2, 3};
++	uint32_t *diff = NULL;
++	int diff_len;
++
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
++				  &diff);
++	igt_assert_eq(diff_len, 0);
++	free(diff);
++}
++
++static void test_get_array_diff_full_diff(void)
++{
++	uint32_t array_a[] = {1, 2, 3};
++	uint32_t array_b[] = {4, 5, 6};
++	uint32_t *diff = NULL;
++	int diff_len;
++
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
++				  &diff);
++	igt_assert_eq(diff_len, 3);
++	igt_assert(diff);
++	igt_assert_eq(diff[0], 1);
++	igt_assert_eq(diff[1], 2);
++	igt_assert_eq(diff[2], 3);
++	free(diff);
++}
++
++static void test_get_array_diff_partial_diff(void)
++{
++	uint32_t array_a[] = {1, 2, 3, 4, 5};
++	uint32_t array_b[] = {2, 3, 6};
++	uint32_t *diff = NULL;
++	int diff_len;
++
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b),
++				  &diff);
++	igt_assert_eq(diff_len, 3);
++	igt_assert(diff);
++	igt_assert_eq(diff[0], 1);
++	igt_assert_eq(diff[1], 4);
++	igt_assert_eq(diff[2], 5);
++	free(diff);
++}
++
++static void test_get_array_diff_null_diff(void)
++{
++	uint32_t array_a[] = {1, 2, 3};
++	uint32_t array_b[] = {2, 3};
++	int diff_len;
++
++	diff_len = get_array_diff(array_a, ARRAY_SIZE(array_a), array_b, ARRAY_SIZE(array_b), NULL);
++	igt_assert_eq(diff_len, 1);
++}
++
++IGT_TEST_DESCRIPTION("Test get_array_diff() function");
++int igt_main()
++{
++	igt_subtest("get_array_diff-empty-both")
++		test_get_array_diff_empty_both();
++
++	igt_subtest("get_array_diff-empty-a")
++		test_get_array_diff_empty_a();
++
++	igt_subtest("get_array_diff-empty-b")
++		test_get_array_diff_empty_b();
++
++	igt_subtest("get_array_diff-no-diff")
++		test_get_array_diff_no_diff();
++
++	igt_subtest("get_array_diff-full-diff")
++		test_get_array_diff_full_diff();
++
++	igt_subtest("get_array_diff-partial-diff")
++		test_get_array_diff_partial_diff();
++
++	igt_subtest("get_array_diff-null-diff")
++		test_get_array_diff_null_diff();
++}
+diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+index 124a9ecae84d..f1db66d07c28 100644
+--- a/lib/tests/meson.build
++++ b/lib/tests/meson.build
+@@ -13,6 +13,7 @@ lib_tests = [
+ 	'igt_fork_helper',
+ 	'igt_hook',
+ 	'igt_hook_integration',
++	'igt_kms_array_diff',
+         'igt_ktap_parser',
+ 	'igt_list_only',
+ 	'igt_invalid_subtest_name',
 
 -- 
 2.54.0
