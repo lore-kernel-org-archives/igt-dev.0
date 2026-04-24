@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1879AFED3F2
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:04:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28E42FED3F2
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:04:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB79110E2E5;
-	Fri, 24 Apr 2026 17:04:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6A5310F64D;
+	Fri, 24 Apr 2026 17:04:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="YpY7jp7d";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="pPSa9JlB";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88F458961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:12 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7A3A8961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:45 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 550D01A3403
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:11 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 90932C5EF2E
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:26 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 27334604EB;
- Fri, 24 Apr 2026 16:55:11 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id BC8B8604EB;
+ Fri, 24 Apr 2026 16:54:44 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 4C65210720A28; 
- Fri, 24 Apr 2026 18:55:10 +0200 (CEST)
+ with ESMTPSA id C4E2C10720A28; 
+ Fri, 24 Apr 2026 18:54:42 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049710; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049683; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=HapLxBCet6v1Qf2epiO4GQBsFvB91id9DamhxrP1OI0=;
- b=YpY7jp7dTqCYZ+lFZcxkefR5h9bdmIZLzPb8sBS4TxWP0IJsd2LqWDWZwZkJK/5WxAKTmO
- hnLwV2RP7rc2SAEIFY7aDG1BJ8j/GoJbvUipylYpI/JVTQUaEEwX74C71h2jwU8H6oDfuD
- FtubLrA8/WO0ihdh1WsiecdN7IagTje/XoYnkJHxc3zLEnJliPcG8WUaJXo6zoVijii+WP
- Kj/OlmqvElJF6uIKJfntaXumMjr0lUDct6gbJRGZ2uMCziidqCrSUudzPZaZFRpcQul5uU
- +wjlqgXNQwmqYQbYt/POXY+9ck3U1FMRU5Nj2oCxxJPmxgwnCEa6eR5PElWBjw==
+ bh=pAjKE/oi+XzIh/ZJmwuiRxmR9kNMcMQWl8+a1oh/oIE=;
+ b=pPSa9JlBcsp8YPYcBgB6qsW2Q9HcOFOr6YJ1zxnrpgH1znN6vwdD9mfQNXJ6ZObtz/k4SY
+ HqJdDt0TD8x62n5Sfr8Vd1viygVmXZ90OkdxRaFISE4u/eU9LSZHqyeLgdzPS6Evz0iuly
+ DwfZIwA/Uw0Jx7MAUFQBb/bwSXalUQODaTYh2T4dY8ADLItZD/suvmGfzduBGFbRJ/dlpn
+ 0r6OvjkYoTqhQt2BJfMJ7w5GY+uAzMJumkU4dzpdq6WF90GRyx8N4ZKqyhsMch5Cw+29aW
+ cUfEzD3ijz0IfsUgzvej4rfZ8nD9bS2m9rjEG+WybjPEB4n4Uwt0wB1gdDZyFg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:17 +0200
-Subject: [PATCH i-g-t v11 42/49] lib/igt_dp: Create generic helpers for DP
- information
+Date: Fri, 24 Apr 2026 18:52:53 +0200
+Subject: [PATCH i-g-t v11 18/49] lib/unigraf: Add used defines for
+ TSI_Types
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260424-unigraf-integration-v11-42-0c5f5346ae60@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260424-unigraf-integration-v11-18-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,247 +64,148 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With the introduction of unigraf tests, there is no reason to limit the
-implementation to intel. Create easly extendable generic functions to
-help supporting multiple GPU.
+Current unigraf public release are not c-compatible, this file hardcode
+some values. One future release of libTSI may include a c-compatible
+TSI_types.h file with full structure definition, but until then.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_dp.c    | 175 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dp.h    |  30 ++++++++++
- lib/meson.build |   1 +
- 3 files changed, 206 insertions(+)
+ lib/vendor/unigraf/TSI_types.h | 126 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 126 insertions(+)
 
-diff --git a/lib/igt_dp.c b/lib/igt_dp.c
+diff --git a/lib/vendor/unigraf/TSI_types.h b/lib/vendor/unigraf/TSI_types.h
 new file mode 100644
-index 000000000000..9f71c9e72bbc
+index 000000000000..c387ab4e1941
 --- /dev/null
-+++ b/lib/igt_dp.c
-@@ -0,0 +1,175 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Louis Chauvet <louis.chauvet@bootlin.com>
-+ */
++++ b/lib/vendor/unigraf/TSI_types.h
+@@ -0,0 +1,126 @@
++/* SPDX-License-Identifier: MIT */
 +
++// Current unigraf public release are not c-compatible, this file hardcode some values.
++// The next release of libTSI should include a c-compatible TSI_types.h file, that will
++// be directly used in place of this file.
++
++#ifndef TSI_REG_H
++
++#include <stdbool.h>
 +#include <stdint.h>
 +
-+#include "drmtest.h"
-+#include "i915/i915_dp.h"
-+#include "igt_core.h"
-+#include "igt_kms.h"
-+#include "igt_dp.h"
++#define TSI_VERSION_TEXT			0x80000001
++#define TSI_DEVCAP_VIDEO_CAPTURE		0x00000001
++#define TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE	0x00000001
++
++#define TSI_EDID_TE_INPUT			0x1100
++#define TSI_EDID_SELECT_STREAM			0x1102
++
++#define TSI_BASE_LEGACY_GENERIC(offset)		(0x210 + (offset))
++#define	TSI_FORCE_HOT_PLUG_STATE_W		TSI_BASE_LEGACY_GENERIC(0x2)
++
++#define TSI_BASE_LEGACY_DPRX_MSA(offset)		(0x260 + (offset))
++#define TSI_DPRX_MSA_COMMAND_W				TSI_BASE_LEGACY_DPRX_MSA(0x0)
++#define TSI_DPRX_MSA_STREAM_COUNT_R			TSI_BASE_LEGACY_DPRX_MSA(0x1)
++#define TSI_DPRX_MSA_STREAM_SELECT			TSI_BASE_LEGACY_DPRX_MSA(0x3)
++#define TSI_DPRX_MSA_HTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x6)
++#define TSI_DPRX_MSA_VTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x7)
++#define TSI_DPRX_MSA_HACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x8)
++#define TSI_DPRX_MSA_VACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x9)
++#define TSI_DPRX_MSA_HSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xa)
++#define TSI_DPRX_MSA_VSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xb)
++#define TSI_DPRX_MSA_HSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xc)
++#define TSI_DPRX_MSA_VSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xd)
++
++#define TSI_DPRX_LINK_FLAGS_MST				0x01
++#define TSI_DPRX_LINK_FLAGS_TPS3			0x02
++#define TSI_DPRX_LINK_FLAGS_TPS4			0x03
++#define TSI_DPRX_LINK_FLAGS_EDP				0x04
++#define TSI_DPRX_NOT_DOCUMENTED_DP_128_132_SUPPORTED	0x10
++#define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT	0x20
++
++#define TSI_BASE_DPRX(offset)			(0x50000000u + 0x21000 + (offset))
++#define TSI_DPRX_HW_CAPS_R			TSI_BASE_DPRX(0x4)
 +
 +/**
-+ * igt_dp_get_current_link_rate: Get current link rate on a display port
-+ * @drm_fd: DRM file descriptor
-+ * @output: igt_output_t object representing the display port
++ * struct TSI_DPRX_HW_CAPS_R_s - Structure representing the hardware capabilities of the DP RX.
 + *
-+ * Returns:
-+ * The current link rate in kb/s, or a negative error code on failure.
-+ */
-+int igt_dp_get_current_link_rate(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		/*
-+		 * i915_dp_get_current_link_rate returns the value in tens of kb/s because
-+		 * that what the kernel uses. Convert it to kb/s to have a sane unit...
-+		 */
-+		return i915_dp_get_current_link_rate(drm_fd, output) * 10;
-+
-+	igt_assert_f(false, "Current drm device is not able to report used link rate\n");
-+	return -EINVAL;
-+}
-+
-+/**
-+ * igt_dp_get_current_lane_count: Get current lane count on a display port
-+ * @drm_fd: DRM file descriptor
-+ * @output: igt_output_t object representing the display port
++ * This structure defines the bitfields and fields that describe the hardware
++ * capabilities of the DP RX (DisplayPort Receiver) interface. Each field
++ * corresponds to a specific capability or feature supported by the hardware.
 + *
-+ * Returns:
-+ * The number of active lanes, or a negative error code on failure.
-+ */
-+int igt_dp_get_current_lane_count(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		return i915_dp_get_current_lane_count(drm_fd, output);
-+
-+	igt_assert_f(false, "Current drm device is not able to report used lane count\n");
-+	return -EINVAL;
-+}
-+
-+/**
-+ * igt_dp_get_max_link_rate: Get maximum link rate on a display port
-+ * @drm_fd:		DRM file descriptor
-+ * @output:		igt_output_t object representing the display port
++ * This structure is used to interpret the value read from the
++ * TSI_DPRX_HW_CAPS_R register.
 + *
-+ * Returns:
-+ * The maximum link rate in kb/s, or a negative error code on failure.
++ * @mst: MST support
++ * @hdcp_1_x: HDCP 1.x support.
++ * @hdcp_2_x: HDCP 2.x support.
++ * @fec_8_10_b: FEC for 8/10 link support.
++ * @dsc_8_10_b: DSC for 8/10 link support.
++ * @three_lanes: Three lane link configuration support.
++ * @edp_link_rate: eDP link rates are supported.
++ * @mst_stream_count: Number of MST streams supported.
++ * @max_link_rate: Maximum link rate supported. The unit is not specified in documentation,
++ *                 it is probably like other config rate = 0.27GHz * value
++ * @force_link_config: Forced link configuration support.
++ * @power_provision: Power provision support on DP_PWR pin of receptacle connector.
++ * @aux_swing_voltage_control: AUX output voltage swing control support.
++ * @custom_dp_rate: Custom DP 2.0 rate support.
++ * @custom_bit_rate: Custom bit rate support.
++ * @fec_128_132_b: FEC for 128/132 link support.
++ * @dsc_128_132_b: DSC for 128/132 link support.
 + */
-+int igt_dp_get_max_link_rate(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		/*
-+		 * i915_dp_get_max_link_rate returns the value in tens of kb/s because
-+		 * that what the kernel uses. Convert it to kb/s to have a sane unit...
-+		 */
-+		return i915_dp_get_max_link_rate(drm_fd, output) * 10;
++struct TSI_DPRX_HW_CAPS_R_s {
++	bool mst:1;
++	bool hdcp_1_x:1;
++	bool hdcp_2_x:1;
++	bool fec_8_10_b:1;
++	bool dsc_8_10_b:1;
++	bool reserved_1:1;
++	bool three_lanes:1;
++	bool edp_link_rates_supported:1;
++	uint8_t mst_stream_count:3;
++	uint8_t reserved_2:5;
++	uint8_t max_link_rate;
++	bool force_link_config:1;
++	bool reserved_3:1;
++	bool power_provision:1;
++	bool aux_swing_voltage_control:1;
++	bool custom_dp_rate:1;
++	bool custom_bit_rate:1;
++	bool fec_128_132_b:1;
++	bool dsc_128_132_b:1;
++};
 +
-+	igt_assert_f(false, "Current drm device is not able to report max link rate\n");
-+	return -EINVAL;
-+}
++#define TSI_DPRX_LT_LANE_COUNT_R		TSI_BASE_DPRX(0x0B)
++#define TSI_DPRX_LT_RATE_R			TSI_BASE_DPRX(0x0C)
++#define TSI_DPRX_HPD_FORCE			TSI_BASE_DPRX(0x12)
++#define TSI_DPRX_MST_SINK_COUNT			TSI_BASE_DPRX(0x9D)
 +
-+/**
-+ * igt_dp_get_max_supported_rate: Get maximum supported link rate on a display port
-+ * @drm_fd: DRM file descriptor
-+ * @output: igt_output_t object representing the display port
-+ *
-+ * Returns:
-+ * The maximum supported link rate in kb/s, or a negative error code on failure.
-+ */
-+int igt_dp_get_max_supported_rate(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		/*
-+		 * i915_dp_get_max_supported_rate returns the value in tens of kb/s because
-+		 * that what the kernel uses. Convert it to kb/s to have a sane unit...
-+		 */
-+		return i915_dp_get_max_supported_rate(drm_fd, output) * 10;
++#define TSI_BASE_DP_RX(offset)                  (0x00010100 + (offset))
++#define TSI_DP_RX_DUT_MAX_LANE_COUNT		TSI_BASE_DP_RX(0xf)
 +
-+	igt_assert_f(false, "Current drm device is not able to report max link rate\n");
-+	return -EINVAL;
-+}
++#define TSI_BASE_DP_LTT(offset)                 (0x00010700 + (offset))
++#define TSI_DP_LTT_MAX_LANE_COUNT		TSI_BASE_DP_LTT(0x01)
 +
-+/**
-+ * igt_dp_get_max_lane_count: Get maximum lane count on a display port
-+ * @drm_fd: DRM file descriptor
-+ * @output: igt_output_t object representing the display port
-+ *
-+ * Returns:
-+ * The maximum number of lanes, or a negative error code on failure.
-+ */
-+int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		return i915_dp_get_max_lane_count(drm_fd, output);
++#define TSI_BASE_LEGACY_DPRX(offset)		(0x2b0 + (offset))
++#define TSI_DPRX_DPCD_BASE_W			TSI_BASE_LEGACY_DPRX(0x9)
++#define TSI_DPRX_DPCD_DATA			TSI_BASE_LEGACY_DPRX(0xA)
++#define TSI_DPRX_MAX_LANES			TSI_BASE_LEGACY_DPRX(0x10)
++#define TSI_DPRX_MAX_LINK_RATE			TSI_BASE_LEGACY_DPRX(0x11)
++#define TSI_DPRX_LINK_FLAGS			TSI_BASE_LEGACY_DPRX(0x12)
++#define TSI_DPRX_STREAM_SELECT			TSI_BASE_LEGACY_DPRX(0x13)
++#define TSI_DPRX_CRC_R_R			TSI_BASE_LEGACY_DPRX(0x14)
++#define TSI_DPRX_CRC_G_R			TSI_BASE_LEGACY_DPRX(0x15)
++#define TSI_DPRX_CRC_B_R			TSI_BASE_LEGACY_DPRX(0x16)
++#define TSI_DPRX_HPD_PULSE_W			TSI_BASE_LEGACY_DPRX(0x1B)
 +
-+	igt_assert_f(false, "Current drm device is not able to report max lane count\n");
-+	return -EINVAL;
-+}
++#define H2_SINK_LOAD_PROD_KEYS                         0x002
++#define H2_SINK_UNLOAD_KEYS                            0x003
++#define H2_SINK_SET_CAPABLE                            0x004
++#define H2_SINK_CLEAR_CAPABLE                          0x005
 +
-+/**
-+ * igt_dp_force_link_retrain: Force link retraining on a display port
-+ * @drm_fd:		DRM file descriptor
-+ * @output:		igt_output_t object representing the display port
-+ * @retrain_count:	Number of times to retrain the link
-+ */
-+void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
-+{
-+	if (is_intel_device(drm_fd)) {
-+		i915_dp_force_link_retrain(drm_fd, output, retrain_count);
-+		return;
-+	}
++#define TSI_BASE_LEGACY_HDCP2(offset)                  (0x290 + (offset))
++#define TSI_HDCP_2X_COMMAND_W                          TSI_BASE_LEGACY_HDCP2(0x1)
 +
-+	igt_assert_f(false, "Current drm device does not support link retraining\n");
-+}
-+
-+/**
-+ * igt_dp_get_pending_retrain: Get pending link retrain count
-+ * @drm_fd:		DRM file descriptor
-+ * @output:		igt_output_t object representing the display port
-+ *
-+ * Returns:
-+ * The number of pending retrain operations, or a negative error code on failure.
-+ */
-+int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		return i915_dp_get_pending_retrain(drm_fd, output);
-+
-+	igt_assert_f(false, "Current drm device does not support pending retrain count checking\n");
-+	return -EINVAL;
-+}
-+
-+/**
-+ * igt_dp_wait_pending_retrain: Wait for pending link retrain operations to complete
-+ * @drm_fd:		DRM file descriptor
-+ * @output:		igt_output_t object representing the display port
-+ *
-+ * This function waits for any pending link retrain operations to complete on the
-+ * specified display port. It polls the debugfs interface for the pending retrain
-+ * count until it reaches zero, indicating all retrain operations have completed.
-+ */
-+void igt_dp_wait_pending_retrain(int drm_fd, igt_output_t *output)
-+{
-+	double timeout = igt_default_display_detect_timeout();
-+	struct timespec start, now;
-+
-+	igt_assert_eq(igt_gettime(&start), 0);
-+
-+	while (1) {
-+		if (!igt_dp_get_pending_retrain(drm_fd, output))
-+			return;
-+
-+		igt_assert_eq(igt_gettime(&now), 0);
-+
-+		if (igt_time_elapsed(&start, &now) >= timeout)
-+			break;
-+
-+		usleep(10000);
-+	}
-+	igt_assert_f(false, "Timeout waiting for pending retrain to complete\n");
-+}
-diff --git a/lib/igt_dp.h b/lib/igt_dp.h
-new file mode 100644
-index 000000000000..0c56ad2ec8b1
---- /dev/null
-+++ b/lib/igt_dp.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Google
-+ *
-+ * Authors:
-+ *   Louis Chauvet <louis.chauvet@bootlin.com>
-+ */
-+
-+#ifndef _IGT_DP_H_
-+#define _IGT_DP_H_
-+
-+#include "igt_kms.h"
-+
-+int igt_dp_get_current_link_rate(int drm_fd, igt_output_t *output);
-+
-+int igt_dp_get_current_lane_count(int drm_fd, igt_output_t *output);
-+
-+int igt_dp_get_max_link_rate(int drm_fd, igt_output_t *output);
-+
-+int igt_dp_get_max_supported_rate(int drm_fd, igt_output_t *output);
-+
-+int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output);
-+
-+void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
-+
-+int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
-+
-+void igt_dp_wait_pending_retrain(int drm_fd, igt_output_t *output);
-+
-+#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index a7b59aabbe06..d2c4fb7bc41b 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -29,6 +29,7 @@ lib_sources = [
- 	'igt_drm_fdinfo.c',
-         'igt_fs.c',
- 	'igt_aux.c',
-+	'igt_dp.c',
- 	'igt_gt.c',
- 	'igt_halffloat.c',
- 	'igt_hwmon.c',
++#endif /* TSI_REG_H */
 
 -- 
 2.54.0
