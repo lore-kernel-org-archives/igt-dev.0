@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F09CFED3EF
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:02:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E667FED3F2
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:02:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5458510F642;
-	Fri, 24 Apr 2026 17:02:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 36BF810F645;
+	Fri, 24 Apr 2026 17:02:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="x+U1zZpu";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="mmkJ1NwU";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C59478961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:52 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F067210E2E5
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:55 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id B25DC1A3402;
- Fri, 24 Apr 2026 16:54:51 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id A9CE9C5EF2B;
+ Fri, 24 Apr 2026 16:55:36 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 84392604EB;
- Fri, 24 Apr 2026 16:54:51 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id D5F3C604EB;
+ Fri, 24 Apr 2026 16:54:54 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 9718210720A2C; 
- Fri, 24 Apr 2026 18:54:50 +0200 (CEST)
+ with ESMTPSA id E080210720A1A; 
+ Fri, 24 Apr 2026 18:54:53 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049691; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049694; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=mhEmRBzWPeacV83mtdQ66evQofJ/ARBQmaXdQ5dexEo=;
- b=x+U1zZpuDik381pdhNJLQAkBhHZE98DFCS5bZlYHG7wvDlUw/JMBOfTVYKh4WW2p6AThHj
- rdLgXO2xoHJPNnzmn3bFxFEWBRm9YuceucOwPzrWDNIcEjxS0bpU9THMu+fXr+XQQ0i1EC
- /mHfwPoloL/BlMWFCc+CkJTI5l7cqoJD0IjMRUMoYTvvGyVThubK/UN22dQ1Uc86o6m/TG
- YJEmUd1+a1HO/rl5hn+gElgMMDVSmIUg98p+oCqayzHE0Rry7y3h1RBz5j8JkHXO3cPxAx
- JDSbDujZZBuAylg4rf9MihSFUqu3WCcNh1A7bHMsVZ8WDXmUBDcRJnV8/SHUeA==
+ bh=wjmCkZGmnPNxZULlSLSZcTaJPSlJN+tMM7ImXQlx1S4=;
+ b=mmkJ1NwUeqc7QLXs/SzGdRts5/v1JXXGDUiqDc+ugbPZU2WTcg73JMNU02pEK5rJSRs6xf
+ c+WC0o2+Pib0yzLarvQaTOx+cIxdPGG2PQJNsfWKEH04AUN0O/09+AeYkcFdvJ+OD1r04k
+ MnqoqRRtbi9OZIRJEX1t/8/pvAyaKLScU/xtzZ9bRKwX6WN85lh6LbezBIHkNkr/EO4O6F
+ S5hvk+bPswGnxz9tHDRSvaXwU3sLZmpdSiGdAeZQjhyjGLrQsgU/uWXqjPk93MLzW5/zoO
+ PjHshl9RHY4oWfJW5CkVC3JBKlEzVf0mXRmpq0fJWhXrx3XYR6Jeay5osG6c2g==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:52:58 +0200
-Subject: [PATCH i-g-t v11 23/49] lib/unigraf: Introduce role configuration
+Date: Fri, 24 Apr 2026 18:53:01 +0200
+Subject: [PATCH i-g-t v11 26/49] lib/unigraf: Add unigraf assert and
+ deassert helpers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-23-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-26-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -63,126 +64,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some unigraf devices, like the UCD-500 can have multiple hardware
-configurations: displayport input/output, usbc input/output.
+Unigraf is able to manipulate the HPD line of the connector, add few
+helpers to manipulate them.
 
-The device configuration can look like:
-
-[Unigraf]
-Device=UCD-500 [2434C620]
-Role=DisplayPort Source and Sink
-
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/unigraf.c | 57 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 56 insertions(+), 1 deletion(-)
+ lib/vendor/unigraf/unigraf.c | 53 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/vendor/unigraf/unigraf.h |  6 +++++
+ 2 files changed, 59 insertions(+)
 
 diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index bf52357e1dc9..49d326b80b1f 100644
+index e6760ba84386..aca26fe06cc5 100644
 --- a/lib/vendor/unigraf/unigraf.c
 +++ b/lib/vendor/unigraf/unigraf.c
-@@ -6,6 +6,7 @@
-  *   Louis Chauvet <louis.chauvet@bootlin.com>
-  */
- 
-+#include <asm-generic/errno-base.h>
- #include <stdint.h>
- 
- #include "igt_core.h"
-@@ -36,6 +37,16 @@ static char *unigraf_connector_name;
-  */
- #define UNIGRAF_CONFIG_DEVICE_NAME "Device"
- 
-+/**
-+ * UNIGRAF_CONFIG_DEVICE_ROLE - Key of the device role in the configuration file
-+ */
-+#define UNIGRAF_CONFIG_DEVICE_ROLE "Role"
-+
-+/**
-+ * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
-+ */
-+#define UNIGRAF_DEFAULT_ROLE_NAME "USB-C, DP Alt Mode Source and Sink"
-+
- static void unigraf_close_device(void)
- {
- 	if (!unigraf_device)
-@@ -97,6 +108,23 @@ static int unigraf_find_device(char *request)
- 	return -ENODEV;
+@@ -93,6 +93,22 @@ static void unigraf_init(void)
+ 	igt_install_exit_handler(unigraf_exit_handler);
  }
  
-+static int unigraf_find_role(const char *request)
-+{
-+	int role_count = unigraf_assert(TSIX_DEV_GetDeviceRoleCount(unigraf_device));
-+
-+	for (int i = 0; i < role_count; i++) {
-+		char role_name[UNIGRAF_NAME_MAX] = "";
-+
-+		unigraf_assert(TSIX_DEV_GetDeviceRoleName(unigraf_device, i,
-+							  role_name,
-+							  UNIGRAF_NAME_MAX));
-+		unigraf_debug("Role %d: %s\n", i, role_name);
-+		if (!strncmp(role_name, request, UNIGRAF_NAME_MAX))
-+			return i;
-+	}
-+	return -ENODEV;
-+}
++/**
++ * unigraf_write_u32 - Write a 32-bit value to a TSI configuration item
++ * @config_id: The configuration item ID to write to
++ * @value: The 32-bit value to write
++ *
++ * This macro writes a 32-bit value to the specified TSI configuration item.
++ * This is a macro to have the proper line information when using unigraf_debug.
++ */
++#define unigraf_write_u32(config_id, value)									\
++	({													\
++		uint32_t v = (value);										\
++		igt_assert(unigraf_device);									\
++		unigraf_debug("Value write: " #config_id "=%d...\n", v);					\
++		unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config_id, &v, sizeof(value)));		\
++	})
 +
  /**
-  * unigraf_open_device() - Search and open a device.
-  * @drm_fd: File descriptor of the currently used drm device
-@@ -113,9 +141,10 @@ bool unigraf_open_device(int drm_fd)
- 	TSI_RESULT r;
- 	GError *cfg_error = NULL;
- 	char *cfg_device = NULL;
-+	char *cfg_role = NULL;
- 	int device_count;
- 	int chosen_device = 0;
--	int chosen_role = 0;
-+	int chosen_role;
- 	int chosen_input = 0;
- 
- 	assert(igt_can_fail());
-@@ -132,6 +161,14 @@ bool unigraf_open_device(int drm_fd)
- 			unigraf_debug("No device name configured, uses first device available.\n");
- 			cfg_device = NULL;
- 		}
+  * unigraf_device_count() - Return the number of scanned devices
+  *
+@@ -293,3 +309,40 @@ void unigraf_require_device(int drm_fd)
+  */
+ void unigraf_reset(void)
+ {}
 +
-+		cfg_error = NULL;
-+		cfg_role = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-+						 UNIGRAF_CONFIG_DEVICE_ROLE, &cfg_error);
-+		if (cfg_error) {
-+			unigraf_debug("No device role configured.\n");
-+			cfg_role = NULL;
-+		}
- 	}
- 
- 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-@@ -155,6 +192,24 @@ bool unigraf_open_device(int drm_fd)
- 	igt_assert(unigraf_device);
- 	unigraf_debug("Successfully opened the unigraf device %d.\n", chosen_device);
- 
-+	if (!cfg_role) {
-+		unigraf_debug("No role configured, trying " UNIGRAF_DEFAULT_ROLE_NAME "\n");
-+		chosen_role = unigraf_find_role(UNIGRAF_DEFAULT_ROLE_NAME);
-+		if (chosen_role < 0) {
-+			char role_name[UNIGRAF_NAME_MAX];
++/**
++ * unigraf_hpd_assert() - Assert Hot Plug Detect signal
++ *
++ * This function asserts the HPD signal, simulating a device connection.
++ */
++void unigraf_hpd_assert(void)
++{
++	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 1);
++}
 +
-+			chosen_role = 0;
-+			unigraf_assert(TSIX_DEV_GetDeviceRoleName(unigraf_device, chosen_role,
-+								  role_name, UNIGRAF_NAME_MAX));
-+			unigraf_debug("Role " UNIGRAF_DEFAULT_ROLE_NAME " not found, using role 0 (%s)\n",
-+				      role_name);
-+		}
-+	} else {
-+		chosen_role = unigraf_find_role(cfg_role);
-+		igt_assert_f(chosen_role >= 0, "TSI:%p: Role %s not found.",
-+			     unigraf_device, cfg_role);
-+	}
++/**
++ * unigraf_hpd_pulse() - Pulse the Hot Plug Detect signal
++ * @duration: The duration in milliseconds for which the HPD signal should be pulsed
++ *
++ * This function pulses the HPD signal for the specified duration.
++ */
++void unigraf_hpd_pulse(int duration)
++{
++	/* In theory this should work:
++	 * unigraf_write_u32(TSI_DPRX_HPD_PULSE_W, duration);
++	 * But this seems to be broken and this works:
++	 */
++	unigraf_hpd_deassert();
++	usleep(duration);
++	unigraf_hpd_assert();
++}
 +
- 	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
- 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
- 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
++/**
++ * unigraf_hpd_deassert() - Deassert Hot Plug Detect signal
++ *
++ * This function deasserts the HPD signal, simulating a device disconnection.
++ */
++void unigraf_hpd_deassert(void)
++{
++	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 0);
++}
+diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
+index 4c2cbd6b1aa5..77fba4e53912 100644
+--- a/lib/vendor/unigraf/unigraf.h
++++ b/lib/vendor/unigraf/unigraf.h
+@@ -42,4 +42,10 @@ void unigraf_require_device(int drm_fd);
+ 
+ void unigraf_reset(void);
+ 
++void unigraf_hpd_deassert(void);
++
++void unigraf_hpd_pulse(int duration);
++
++void unigraf_hpd_assert(void);
++
+ #endif // UNIGRAF_H
 
 -- 
 2.54.0
