@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D884DFED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:00:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82EE2FED3EF
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:00:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B47910F642;
-	Fri, 24 Apr 2026 17:00:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30FC210F642;
+	Fri, 24 Apr 2026 17:00:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="sU5fD3KJ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="QNkvuXB9";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A59F910F645
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:39 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 226438961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:01 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 57E89C5EF2E;
- Fri, 24 Apr 2026 16:55:20 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 109EE4E42B06
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:00 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 83F19604EB;
- Fri, 24 Apr 2026 16:54:38 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id DBE87604EB;
+ Fri, 24 Apr 2026 16:54:59 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 896BE10720A23; 
- Fri, 24 Apr 2026 18:54:37 +0200 (CEST)
+ with ESMTPSA id E771B10720A30; 
+ Fri, 24 Apr 2026 18:54:58 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049678; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049699; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=5O6GxdQoBP88N/2lOyPZp6q1r91maZRdwnfkRjc9b28=;
- b=sU5fD3KJQtMDRJhgoxui1cfhIdHix/DzuUzJTH+SYeHAYy++GdlqApu/UBN6UhjUiunD3S
- 4FKIIzcXQrys4cAaK+VlkAzrDTGG6jZsNmYWy133an0zttSPoIN2iltEyTfInbqhZCmGV6
- kxABB72UhjJm4qwAOxyCN8DIvn54kFNWvb8mjCA5BZUtEmV8ahCjvEbvEtKiFby3smt/Yf
- 5t/2kN+VBFvFZkTKHApVqV9jADaar8nBZoRrFgcqCRZaPRWAWr9ZnIEWrGwWBmKfLpRE7A
- 9bB1ssfDnX4axGLwCSfrHzSEHqf2Ib/qu7t+IHIeT4a72rVbYFtk8cuPpgEAVg==
+ bh=5xXryxEmKUtgmQm1OC6eVPuTMK1e8qTbkx4LM3R3df8=;
+ b=QNkvuXB9LXiF9heaA/XgstjxexGTWxn9TP2+JB6ieHh+K72Qjqj+vsSxwlrYkqCtrncYl5
+ BIU3T3xeLllwlEv5qTWd52+IP8BKtmlqVsF18c+Y1D9DwWeED/YMUN9Hqev6V6CHyNe7CR
+ Dt3Ry+dLMqqihUe3NV4h28zeoc+5qQl2uOR76Fr4UFNqYlWWiWfzhvYKc3aLos58dK+Lg1
+ HWfTlkD2YfXTOllpak/1JzBsmVd5ZKyh5wyc2jNmvCzSFGooWIZzRa5qJXhGD1uY1dxEQu
+ DrH6Kimxsi4f9MtMccYKN41WC0cqMG1aZHiNCx2G7tVy3TNclMw/UFuh+HHgfw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:52:47 +0200
-Subject: [PATCH i-g-t v11 12/49] lib/igt_debugfs: Add const when make sense
+Date: Fri, 24 Apr 2026 18:53:07 +0200
+Subject: [PATCH i-g-t v11 32/49] lib/unigraf: Add unigraf CRC capture
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-12-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-32-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -63,74 +63,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Const qualifier avoid unwanted modifications. Add const at place where
-it make sense.
+As unigraf devices are able to grab a CRC for the current video stream,
+add an helper to read the CRC.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_debugfs.c | 6 +++---
- lib/igt_debugfs.h | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ lib/vendor/unigraf/unigraf.c | 22 ++++++++++++++++++++++
+ lib/vendor/unigraf/unigraf.h |  4 ++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index 0b74afe3374f..ed0a2077368e 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -270,7 +270,7 @@ int igt_debugfs_tile_dir(int device, uint8_t tile)
-  * Returns:
-  * The directory fd, or -1 on failure.
-  */
--int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
-+int igt_debugfs_connector_dir(int device, const char *conn_name, int mode)
+diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+index f3353b8c3bb6..e7e643abbb98 100644
+--- a/lib/vendor/unigraf/unigraf.c
++++ b/lib/vendor/unigraf/unigraf.c
+@@ -17,6 +17,7 @@
+ #include "igt_aux.h"
+ #include "igt_edid.h"
+ #include "igt_kms.h"
++#include "igt_pipe_crc.h"
+ #include "igt_rc.h"
+ #include "monitor_edids/monitor_edids_helper.h"
+ 
+@@ -664,3 +665,24 @@ void unigraf_select_stream(int stream)
  {
- 	int dir, ret;
+ 	unigraf_write_u32(TSI_DPRX_STREAM_SELECT, stream);
+ }
++
++/**
++ * unigraf_read_crc() - Read the CRC values from the Unigraf device
++ * @stream: Stream to grab the CRC from
++ * @out: Pointer to an igt_crc_t structure where the CRC values will be stored
++ *
++ * This function reads the CRC values from the Unigraf device and stores them in the
++ * provided igt_crc_t structure.
++ */
++void unigraf_read_crc(int stream, igt_crc_t *out)
++{
++	unigraf_select_stream(stream);
++	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_CRC_R_R,
++					     &out->crc[0], sizeof(out->crc[0])));
++	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_CRC_G_R,
++					     &out->crc[1], sizeof(out->crc[1])));
++	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_CRC_B_R,
++					     &out->crc[2], sizeof(out->crc[2])));
++	out->n_words = 3;
++	out->has_valid_frame = false;
++}
+diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
+index fdc4441740fa..67fb44db107b 100644
+--- a/lib/vendor/unigraf/unigraf.h
++++ b/lib/vendor/unigraf/unigraf.h
+@@ -13,6 +13,8 @@
+ #include <stdint.h>
+ #include <xf86drmMode.h>
  
-@@ -789,7 +789,7 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
-  *
-  * Returns: 0 on success, -1 on failure.
-  */
--int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
-+int igt_debugfs_read_connector_file(int drm_fd, const char *conn_name,
- 				    const char *filename, char *buf,
- 				    size_t buf_size)
- {
-@@ -819,7 +819,7 @@ int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
-  *
-  * Returns: 0 on success, -1 on failure.
-  */
--int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
-+int igt_debugfs_write_connector_file(int drm_fd, const char *conn_name,
- 				     const char *filename, const char *data,
- 				     size_t data_size)
- {
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index eb2a0b70c28b..9686cdbd1818 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -34,7 +34,7 @@ const char *igt_debugfs_mount(void);
- char *igt_debugfs_path(int device, char *path, int pathlen);
++#include "igt_fb.h"
++
+ /**
+  * unigraf_assert: Helper macro to assert a TSI return value and retrieve a detailed error message.
+  * @result: libTSI return value to check
+@@ -71,4 +73,6 @@ int unigraf_get_mst_stream_max_count(void);
  
- int igt_debugfs_dir(int device);
--int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
-+int igt_debugfs_connector_dir(int device, const char *conn_name, int mode);
- int igt_debugfs_crtc_dir(int device, int crtc_index);
+ void unigraf_select_stream(int stream);
  
- int igt_debugfs_open(int fd, const char *filename, int mode);
-@@ -177,10 +177,10 @@ int igt_get_stable_obj_count(int driver);
- void __igt_debugfs_dump(int device, const char *filename, int level);
- #define igt_debugfs_dump(d, f) __igt_debugfs_dump(d, f, IGT_LOG_DEBUG)
- 
--int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
-+int igt_debugfs_read_connector_file(int drm_fd, const char *conn_name,
- 				    const char *filename, char *buf,
- 				    size_t buf_size);
--int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
-+int igt_debugfs_write_connector_file(int drm_fd, const char *conn_name,
- 				     const char *filename, const char *data,
- 				     size_t data_size);
- bool connector_attr_set_debugfs(int drm_fd,
++void unigraf_read_crc(int stream, igt_crc_t *out);
++
+ #endif // UNIGRAF_H
 
 -- 
 2.54.0
