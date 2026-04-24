@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15E27FED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:04:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B9EAFED3F3
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:04:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C0AAE10F648;
-	Fri, 24 Apr 2026 17:04:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A3E810F648;
+	Fri, 24 Apr 2026 17:04:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="SXFSYiUy";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fuwT3oXo";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D90A110E2E5
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:56 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A8542890BE
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:31 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id C7CC11A3402
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:55 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 99AB8C5EF2B;
+ Fri, 24 Apr 2026 16:55:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id A04C0604EB;
- Fri, 24 Apr 2026 16:54:55 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id C5775604EB;
+ Fri, 24 Apr 2026 16:54:29 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id A38D010720A1D; 
- Fri, 24 Apr 2026 18:54:54 +0200 (CEST)
+ with ESMTPSA id 784DD10720A11; 
+ Fri, 24 Apr 2026 18:54:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049695; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049669; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=9Cks9arAHxxEtV16h1x0lU5BFfoc1nIggde0HhgVP6g=;
- b=SXFSYiUykYZgqx+LAQg2FiTm65kj+l4yiaVVh2PqGvoiianeXZmc5bRm8CnY3FBeXa37SW
- 8BfyuyIqaDKVLFCFMgH7cBEUSYjS1yFE8zsn9rP34BrTffZEYC0lq9FF1G+etCWIcoQQxy
- h2PZda7YN1zRlN0+SqelfDAkN9VlweTPk/nNARbJbzblaXZv+uvhVZEyfQ02ZeSLz9X/NM
- uCf+Ugd+Kx+N5IoaCFBAEyhIKp2qWVsLC+51enEx4PLOnos/WeVNUDdrpZUC5bnw8QihBi
- OYsbK5hnHbkra8vsKX7AhbSwDaqlcyxgNXAtwr7Itm1avinxQul6t1h9so4hRQ==
+ bh=iiD8IM4u6wIxXwRByhUmesWnFv7aSs6YBQmHPbpX7CE=;
+ b=fuwT3oXoa2B8nDVr++9FcH/R3N79Bo+GT8ega4M7dYiJEyWPkuQj1CAKmI/7PFq9+YZUGZ
+ U8zcQWS2OMAUYuGW8b0ciDEUp+YjtZ+B8170StvS7yUqHtQ28ecybrKGWttjAQSoNv1dMo
+ wvVNAdE7pjtJoCGMdjDI3bP6kbf/vZiAa/3xDZ2tdMbjzPyvf0xNBMoIRd4AkPxbs74NLj
+ RoEqhqO83I1mhbPZ/7bV/iAgoizoIloTXISZdRMTrHUEx8qbW7u/qH8R4r0+k2xVspaFz3
+ dRxev0/Vgabo8limIdqP5drirjZndam2xEv0xgV8OGHjWyOSb2kCnk5263mUeA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:02 +0200
-Subject: [PATCH i-g-t v11 27/49] lib/unigraf: Add plug/unplug helpers
+Date: Fri, 24 Apr 2026 18:52:37 +0200
+Subject: [PATCH i-g-t v11 02/49] lib/igt_kms: Add helper to wait for a
+ specific status on a connector
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-27-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-2-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -63,73 +64,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The unigraf can emulate a full cable plug/unplug, so add helper to emulate
-this.
+During testing with chamelium, it is frequent to wait for a specific
+connector status. This new helper is polling the DRM API to wait for this
+status. This allows detecting it without notifier systems which can fail
+if hot plug detection is not working properly on the device under test.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/vendor/unigraf/unigraf.c | 28 +++++++++++++++++++++++++++-
- lib/vendor/unigraf/unigraf.h |  4 ++++
- 2 files changed, 31 insertions(+), 1 deletion(-)
+ lib/igt_kms.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  3 +++
+ 2 files changed, 46 insertions(+)
 
-diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index aca26fe06cc5..1552a90e05b6 100644
---- a/lib/vendor/unigraf/unigraf.c
-+++ b/lib/vendor/unigraf/unigraf.c
-@@ -308,7 +308,9 @@ void unigraf_require_device(int drm_fd)
-  * and link parameters to default values.
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 4ae18926a454..92a2ce906b6b 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -90,6 +90,8 @@
+  * library as a dependency.
   */
- void unigraf_reset(void)
--{}
-+{
-+	unigraf_plug();
-+}
  
- /**
-  * unigraf_hpd_assert() - Assert Hot Plug Detect signal
-@@ -346,3 +348,27 @@ void unigraf_hpd_deassert(void)
- {
- 	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 0);
++#define WAIT_FOR_CONNECTOR_LOOP_SLEEP_US 10000
++
+ /* list of connectors that need resetting on exit */
+ #define MAX_CONNECTORS 32
+ #define MAX_EDID 2
+@@ -8182,3 +8184,44 @@ igt_crtc_t *igt_random_crtc(igt_display_t *display)
+ 
+ 	return crtcs[rand() % n];
  }
 +
 +/**
-+ * unigraf_plug() - Emulate a cable unplug
++ * igt_wait_for_connector_status:
++ * @drm_fd: drm file descriptor
++ * @connector_id: connector to monitor
++ * @timeout: maximum duration to wait, in second. Use -1.0 to set the timeout
++ *           to igt_default_detect_timeout().
++ * @drm_mode: mode to wait for, see enum drmModeConnection
 + *
-+ * This function will emulate a full cable unplug (not a simple HPD line change)
++ * Wait for at most @timeout that the connector @connector_id  status
++ * become @drm_mode
++ * Returns: true when the status is reached, false if there is a timeout
 + */
-+void unigraf_unplug(void)
++bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
++				   int drm_mode)
 +{
-+	int d = 2 << 2;
++	drmModeConnector *connector;
++	struct timespec start, end;
 +
-+	unigraf_write_u32(TSI_DPRX_HPD_FORCE, d);
++	if (timeout < 0.0)
++		timeout = igt_default_display_detect_timeout();
++
++	igt_assert_eq(igt_gettime(&start), 0);
++	end = start;
++
++	while (igt_time_elapsed(&start, &end) <= timeout) {
++		connector = drmModeGetConnector(drm_fd, connector_id);
++		if (connector && connector->connection == drm_mode) {
++			drmModeFreeConnector(connector);
++			return true;
++		}
++		drmModeFreeConnector(connector);
++		usleep(WAIT_FOR_CONNECTOR_LOOP_SLEEP_US);
++		igt_assert_eq(igt_gettime(&end), 0);
++	}
++
++	igt_debug("Timeout waiting for connection status %d on connector %d\n", drm_mode,
++		  connector_id);
++
++	return false;
 +}
-+
-+/**
-+ * unigraf_plug() - Emulate a cable plug
-+ *
-+ * This function will emulate a full cable plug (not a simple HPD line change)
-+ */
-+void unigraf_plug(void)
-+{
-+	int d = 3 << 2;
-+
-+	unigraf_write_u32(TSI_DPRX_HPD_FORCE, d);
-+}
-diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
-index 77fba4e53912..ae1f0d8955ab 100644
---- a/lib/vendor/unigraf/unigraf.h
-+++ b/lib/vendor/unigraf/unigraf.h
-@@ -48,4 +48,8 @@ void unigraf_hpd_pulse(int duration);
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index fcbb6a5ade3a..951de7de651a 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1289,4 +1289,7 @@ void igt_get_and_wait_out_fence(igt_output_t *output);
  
- void unigraf_hpd_assert(void);
+ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
  
-+void unigraf_plug(void);
++bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
++				   int drm_mode);
 +
-+void unigraf_unplug(void);
-+
- #endif // UNIGRAF_H
+ #endif /* __IGT_KMS_H__ */
 
 -- 
 2.54.0
