@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5B58FED3F0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:59:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8D5FED3F1
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 16:59:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 94D7210E3F0;
-	Fri, 24 Apr 2026 16:59:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CA26F10F642;
+	Fri, 24 Apr 2026 16:59:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="jIiD1pOQ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="sUWfEK3J";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E838C8961D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C10938961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:17 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id DD5301A3402;
- Fri, 24 Apr 2026 16:55:12 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id B62441A3403;
+ Fri, 24 Apr 2026 16:55:16 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id B3E1F604EB;
- Fri, 24 Apr 2026 16:55:12 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 8DC0B604EB;
+ Fri, 24 Apr 2026 16:55:16 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id A336610720A11; 
- Fri, 24 Apr 2026 18:55:11 +0200 (CEST)
+ with ESMTPSA id 9BBB910720A11; 
+ Fri, 24 Apr 2026 18:55:14 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049712; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049715; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=EhhTeoziEWfIDz5Pg2WEwG8A2aPZ2yGmxICAGB/117c=;
- b=jIiD1pOQVWzoLehtR8madkXZU8hSEwFrO+Pd5B+WT7tWar1fHPH6pDhzq9Dju13iqn6QY0
- PUGDGkbEoeO7DCm+I4dFlfwpcS0YcQ7mLxmg0L7vF9BJmSvZe0WBJlRBi76GNrSeg5xJ/+
- NnfBykfB4WVDGH8klLOdR1/vX7aoV4rVjdcm93qwqzMsK6MAAr6UPTzkSo5ZuiMl5CcpFI
- 9ZUyqW59m6FMGyYfDvu31kG3CLXeE+LmbC9M3sLdw2NkU92wjxFvnmgQ+VPH5u/DxeTLSq
- yJQUR0zgF1VfPJ7NU40ZBx5XhZRp5XfOHx82Cdn2Dr6zUJFTrvjBL1u49cQSSw==
+ bh=ENDGZXjcUR32Cn9L8EzVcO44zudWC7/gTlfQnWwb/+M=;
+ b=sUWfEK3JEq0LiymvjexGXXQwHsst/ks+61siUOB9/Zkrz89k2dJaEvs1nG+Z1xLUrjbDuh
+ JdQ3LG6JB6UJdYu2bD72Dzuj5ICNy7LlvLGiWZMSmOB5kdkh9TGBkyT2myj/O5Ol5qh8gI
+ EFAem5aRYPyJGlUyoHIpRZpcFJaq+rqWAm6UCD8h7mP3oCK/em1pBkYw1gTdgTV80ZlCo7
+ XUN9UNmhpgeO1yyosgRRogvDtdtIb6LVAl+lLtWtGHFja36SrOX36bCmockKeA5lMA2Q83
+ iohF6xq8H8x9Tih0/eUDbKMApPO+Kf3mZfPu04QpQq3fk7zioUZZ8QKdFTthHw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:53:19 +0200
-Subject: [PATCH i-g-t v11 44/49] lib/igt_kms: Add helper to get a CRTC from
- an output
+Date: Fri, 24 Apr 2026 18:53:22 +0200
+Subject: [PATCH i-g-t v11 47/49] lib/unigraf: Add helpers to set maximum
+ link rate
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-44-0c5f5346ae60@bootlin.com>
+Message-Id: <20260424-unigraf-integration-v11-47-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,56 +64,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Grabbing a valid CRTC from a specific output is useful when testing
-the output.
+As link rate can vary on a display port link, add a way
+to change advertised link rate from unigraf.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 20 ++++++++++++++++++++
- lib/igt_kms.h |  2 ++
- 2 files changed, 22 insertions(+)
+ lib/vendor/unigraf/unigraf.c | 53 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/vendor/unigraf/unigraf.h | 14 ++++++++++++
+ 2 files changed, 67 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f623b741d775..ede8c046cdaa 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -8192,3 +8192,23 @@ int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id)
- 	}
- 	return 0;
+diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+index 80b4395eaaff..c193a745d8d2 100644
+--- a/lib/vendor/unigraf/unigraf.c
++++ b/lib/vendor/unigraf/unigraf.c
+@@ -551,6 +551,7 @@ void unigraf_reset(void)
+ 	unigraf_load_default_edid();
+ 	unigraf_hpd_assert();
+ 	unigraf_set_max_lane_count(4);
++	unigraf_set_max_link_rate(UNIGRAF_RATE_8_10_GHZ);
+ }
+ 
+ /**
+@@ -838,3 +839,55 @@ int unigraf_get_max_lane_count(void)
+ 					     &max_lanes, sizeof(max_lanes)));
+ 	return max_lanes;
  }
 +
 +/**
-+ * igt_get_crtc_for_output:
-+ * @display: display to fetch the CRTC
-+ * @output: output to use
++ * unigraf_set_max_link_rate() - Set the maximum link rate advertised to the DUT
++ * @bandwidth: The maximum link rate to configure on the device. Actual value is
++ *        @bandwidth * 270000 kHz. Common values can be found in enum unigraf_rate
 + *
-+ * Get a valid CRTC for a specific output. The return value is the first valid CRTC for a
-+ * specific output.
++ * This function sets the maximum link rate that the device will advertise on the DP link.
++ * The actual link rate used may be less than the requested value if the DUT does not
++ * support/use it.
 + */
-+igt_crtc_t *igt_get_crtc_for_output(igt_display_t *display,
-+				    igt_output_t *output)
++void unigraf_set_max_link_rate(int bandwidth)
 +{
-+	igt_crtc_t *crtc;
-+
-+	for_each_crtc(display, crtc)
-+		if (igt_crtc_connector_valid(crtc, output))
-+			return crtc;
-+
-+	return NULL;
++	unigraf_write_u32(TSI_DPRX_MAX_LINK_RATE, bandwidth);
 +}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index df2bdf52ec90..c070d8d99029 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1299,5 +1299,7 @@ get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b
- 	       uint32_t **diff);
++
++/**
++ * unigraf_get_max_link_rate() - Get the maximum link rate supported by the device
++ *
++ * Returns: The maximum link rate supported by the device. The value returned must be multiplied by
++ *          270000 to get the value in kHz.
++ */
++int unigraf_get_max_link_rate(void)
++{
++	return unigraf_read_u32(TSI_DPRX_MAX_LINK_RATE);
++}
++
++/**
++ * unigraf_rate_to_kbs - Convert a rate value to kilobits per second
++ * @rate: The rate value to convert
++ *
++ * This function converts a rate value to kilobits per second (kbps).
++ *
++ * Returns: The converted rate in kilobits per second
++ */
++int unigraf_rate_to_kbs(enum unigraf_rate rate)
++{
++	switch (rate) {
++	case UNIGRAF_RATE_1_62_GHZ:
++		return 1620000;
++	case UNIGRAF_RATE_2_7_GHZ:
++		return 2700000;
++	case UNIGRAF_RATE_5_4_GHZ:
++		return 5400000;
++	case UNIGRAF_RATE_6_75_GHZ:
++		return 6750000;
++	case UNIGRAF_RATE_8_10_GHZ:
++		return 8100000;
++	default:
++		igt_assert_f(0, "Unknown rate %d\n", rate);
++		return 0;
++	}
++}
+diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
+index 56a9d910dcb1..cb49b5897b54 100644
+--- a/lib/vendor/unigraf/unigraf.h
++++ b/lib/vendor/unigraf/unigraf.h
+@@ -85,4 +85,18 @@ int unigraf_get_max_lane_count(void);
  
- int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id);
-+igt_crtc_t *igt_get_crtc_for_output(igt_display_t *display,
-+				    igt_output_t *output);
+ void unigraf_set_max_lane_count(uint32_t count);
  
- #endif /* __IGT_KMS_H__ */
++enum unigraf_rate {
++	UNIGRAF_RATE_1_62_GHZ = 6,
++	UNIGRAF_RATE_2_7_GHZ = 10,
++	UNIGRAF_RATE_5_4_GHZ = 20,
++	UNIGRAF_RATE_6_75_GHZ = 25,
++	UNIGRAF_RATE_8_10_GHZ = 30,
++};
++
++void unigraf_set_max_link_rate(int rate);
++
++int unigraf_get_max_link_rate(void);
++
++int unigraf_rate_to_kbs(enum unigraf_rate rate);
++
+ #endif // UNIGRAF_H
 
 -- 
 2.54.0
