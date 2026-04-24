@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B9EAFED3F3
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1879AFED3F2
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Apr 2026 17:04:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A3E810F648;
-	Fri, 24 Apr 2026 17:04:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BB79110E2E5;
+	Fri, 24 Apr 2026 17:04:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fuwT3oXo";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="YpY7jp7d";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8542890BE
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:54:31 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88F458961D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:12 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 99AB8C5EF2B;
- Fri, 24 Apr 2026 16:55:11 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 550D01A3403
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2026 16:55:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id C5775604EB;
- Fri, 24 Apr 2026 16:54:29 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 27334604EB;
+ Fri, 24 Apr 2026 16:55:11 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 784DD10720A11; 
- Fri, 24 Apr 2026 18:54:28 +0200 (CEST)
+ with ESMTPSA id 4C65210720A28; 
+ Fri, 24 Apr 2026 18:55:10 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1777049669; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1777049710; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=iiD8IM4u6wIxXwRByhUmesWnFv7aSs6YBQmHPbpX7CE=;
- b=fuwT3oXoa2B8nDVr++9FcH/R3N79Bo+GT8ega4M7dYiJEyWPkuQj1CAKmI/7PFq9+YZUGZ
- U8zcQWS2OMAUYuGW8b0ciDEUp+YjtZ+B8170StvS7yUqHtQ28ecybrKGWttjAQSoNv1dMo
- wvVNAdE7pjtJoCGMdjDI3bP6kbf/vZiAa/3xDZ2tdMbjzPyvf0xNBMoIRd4AkPxbs74NLj
- RoEqhqO83I1mhbPZ/7bV/iAgoizoIloTXISZdRMTrHUEx8qbW7u/qH8R4r0+k2xVspaFz3
- dRxev0/Vgabo8limIdqP5drirjZndam2xEv0xgV8OGHjWyOSb2kCnk5263mUeA==
+ bh=HapLxBCet6v1Qf2epiO4GQBsFvB91id9DamhxrP1OI0=;
+ b=YpY7jp7dTqCYZ+lFZcxkefR5h9bdmIZLzPb8sBS4TxWP0IJsd2LqWDWZwZkJK/5WxAKTmO
+ hnLwV2RP7rc2SAEIFY7aDG1BJ8j/GoJbvUipylYpI/JVTQUaEEwX74C71h2jwU8H6oDfuD
+ FtubLrA8/WO0ihdh1WsiecdN7IagTje/XoYnkJHxc3zLEnJliPcG8WUaJXo6zoVijii+WP
+ Kj/OlmqvElJF6uIKJfntaXumMjr0lUDct6gbJRGZ2uMCziidqCrSUudzPZaZFRpcQul5uU
+ +wjlqgXNQwmqYQbYt/POXY+9ck3U1FMRU5Nj2oCxxJPmxgwnCEa6eR5PElWBjw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 24 Apr 2026 18:52:37 +0200
-Subject: [PATCH i-g-t v11 02/49] lib/igt_kms: Add helper to wait for a
- specific status on a connector
+Date: Fri, 24 Apr 2026 18:53:17 +0200
+Subject: [PATCH i-g-t v11 42/49] lib/igt_dp: Create generic helpers for DP
+ information
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-unigraf-integration-v11-2-0c5f5346ae60@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260424-unigraf-integration-v11-42-0c5f5346ae60@bootlin.com>
 References: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 In-Reply-To: <20260424-unigraf-integration-v11-0-0c5f5346ae60@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,89 +64,247 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-During testing with chamelium, it is frequent to wait for a specific
-connector status. This new helper is polling the DRM API to wait for this
-status. This allows detecting it without notifier systems which can fail
-if hot plug detection is not working properly on the device under test.
+With the introduction of unigraf tests, there is no reason to limit the
+implementation to intel. Create easly extendable generic functions to
+help supporting multiple GPU.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  3 +++
- 2 files changed, 46 insertions(+)
+ lib/igt_dp.c    | 175 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_dp.h    |  30 ++++++++++
+ lib/meson.build |   1 +
+ 3 files changed, 206 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 4ae18926a454..92a2ce906b6b 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -90,6 +90,8 @@
-  * library as a dependency.
-  */
- 
-+#define WAIT_FOR_CONNECTOR_LOOP_SLEEP_US 10000
+diff --git a/lib/igt_dp.c b/lib/igt_dp.c
+new file mode 100644
+index 000000000000..9f71c9e72bbc
+--- /dev/null
++++ b/lib/igt_dp.c
+@@ -0,0 +1,175 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Google
++ *
++ * Authors:
++ *   Louis Chauvet <louis.chauvet@bootlin.com>
++ */
 +
- /* list of connectors that need resetting on exit */
- #define MAX_CONNECTORS 32
- #define MAX_EDID 2
-@@ -8182,3 +8184,44 @@ igt_crtc_t *igt_random_crtc(igt_display_t *display)
- 
- 	return crtcs[rand() % n];
- }
++#include <stdint.h>
++
++#include "drmtest.h"
++#include "i915/i915_dp.h"
++#include "igt_core.h"
++#include "igt_kms.h"
++#include "igt_dp.h"
 +
 +/**
-+ * igt_wait_for_connector_status:
-+ * @drm_fd: drm file descriptor
-+ * @connector_id: connector to monitor
-+ * @timeout: maximum duration to wait, in second. Use -1.0 to set the timeout
-+ *           to igt_default_detect_timeout().
-+ * @drm_mode: mode to wait for, see enum drmModeConnection
++ * igt_dp_get_current_link_rate: Get current link rate on a display port
++ * @drm_fd: DRM file descriptor
++ * @output: igt_output_t object representing the display port
 + *
-+ * Wait for at most @timeout that the connector @connector_id  status
-+ * become @drm_mode
-+ * Returns: true when the status is reached, false if there is a timeout
++ * Returns:
++ * The current link rate in kb/s, or a negative error code on failure.
 + */
-+bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
-+				   int drm_mode)
++int igt_dp_get_current_link_rate(int drm_fd, igt_output_t *output)
 +{
-+	drmModeConnector *connector;
-+	struct timespec start, end;
++	if (is_intel_device(drm_fd))
++		/*
++		 * i915_dp_get_current_link_rate returns the value in tens of kb/s because
++		 * that what the kernel uses. Convert it to kb/s to have a sane unit...
++		 */
++		return i915_dp_get_current_link_rate(drm_fd, output) * 10;
 +
-+	if (timeout < 0.0)
-+		timeout = igt_default_display_detect_timeout();
++	igt_assert_f(false, "Current drm device is not able to report used link rate\n");
++	return -EINVAL;
++}
 +
-+	igt_assert_eq(igt_gettime(&start), 0);
-+	end = start;
++/**
++ * igt_dp_get_current_lane_count: Get current lane count on a display port
++ * @drm_fd: DRM file descriptor
++ * @output: igt_output_t object representing the display port
++ *
++ * Returns:
++ * The number of active lanes, or a negative error code on failure.
++ */
++int igt_dp_get_current_lane_count(int drm_fd, igt_output_t *output)
++{
++	if (is_intel_device(drm_fd))
++		return i915_dp_get_current_lane_count(drm_fd, output);
 +
-+	while (igt_time_elapsed(&start, &end) <= timeout) {
-+		connector = drmModeGetConnector(drm_fd, connector_id);
-+		if (connector && connector->connection == drm_mode) {
-+			drmModeFreeConnector(connector);
-+			return true;
-+		}
-+		drmModeFreeConnector(connector);
-+		usleep(WAIT_FOR_CONNECTOR_LOOP_SLEEP_US);
-+		igt_assert_eq(igt_gettime(&end), 0);
++	igt_assert_f(false, "Current drm device is not able to report used lane count\n");
++	return -EINVAL;
++}
++
++/**
++ * igt_dp_get_max_link_rate: Get maximum link rate on a display port
++ * @drm_fd:		DRM file descriptor
++ * @output:		igt_output_t object representing the display port
++ *
++ * Returns:
++ * The maximum link rate in kb/s, or a negative error code on failure.
++ */
++int igt_dp_get_max_link_rate(int drm_fd, igt_output_t *output)
++{
++	if (is_intel_device(drm_fd))
++		/*
++		 * i915_dp_get_max_link_rate returns the value in tens of kb/s because
++		 * that what the kernel uses. Convert it to kb/s to have a sane unit...
++		 */
++		return i915_dp_get_max_link_rate(drm_fd, output) * 10;
++
++	igt_assert_f(false, "Current drm device is not able to report max link rate\n");
++	return -EINVAL;
++}
++
++/**
++ * igt_dp_get_max_supported_rate: Get maximum supported link rate on a display port
++ * @drm_fd: DRM file descriptor
++ * @output: igt_output_t object representing the display port
++ *
++ * Returns:
++ * The maximum supported link rate in kb/s, or a negative error code on failure.
++ */
++int igt_dp_get_max_supported_rate(int drm_fd, igt_output_t *output)
++{
++	if (is_intel_device(drm_fd))
++		/*
++		 * i915_dp_get_max_supported_rate returns the value in tens of kb/s because
++		 * that what the kernel uses. Convert it to kb/s to have a sane unit...
++		 */
++		return i915_dp_get_max_supported_rate(drm_fd, output) * 10;
++
++	igt_assert_f(false, "Current drm device is not able to report max link rate\n");
++	return -EINVAL;
++}
++
++/**
++ * igt_dp_get_max_lane_count: Get maximum lane count on a display port
++ * @drm_fd: DRM file descriptor
++ * @output: igt_output_t object representing the display port
++ *
++ * Returns:
++ * The maximum number of lanes, or a negative error code on failure.
++ */
++int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
++{
++	if (is_intel_device(drm_fd))
++		return i915_dp_get_max_lane_count(drm_fd, output);
++
++	igt_assert_f(false, "Current drm device is not able to report max lane count\n");
++	return -EINVAL;
++}
++
++/**
++ * igt_dp_force_link_retrain: Force link retraining on a display port
++ * @drm_fd:		DRM file descriptor
++ * @output:		igt_output_t object representing the display port
++ * @retrain_count:	Number of times to retrain the link
++ */
++void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
++{
++	if (is_intel_device(drm_fd)) {
++		i915_dp_force_link_retrain(drm_fd, output, retrain_count);
++		return;
 +	}
 +
-+	igt_debug("Timeout waiting for connection status %d on connector %d\n", drm_mode,
-+		  connector_id);
-+
-+	return false;
++	igt_assert_f(false, "Current drm device does not support link retraining\n");
 +}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index fcbb6a5ade3a..951de7de651a 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1289,4 +1289,7 @@ void igt_get_and_wait_out_fence(igt_output_t *output);
- 
- igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
- 
-+bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
-+				   int drm_mode);
 +
- #endif /* __IGT_KMS_H__ */
++/**
++ * igt_dp_get_pending_retrain: Get pending link retrain count
++ * @drm_fd:		DRM file descriptor
++ * @output:		igt_output_t object representing the display port
++ *
++ * Returns:
++ * The number of pending retrain operations, or a negative error code on failure.
++ */
++int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
++{
++	if (is_intel_device(drm_fd))
++		return i915_dp_get_pending_retrain(drm_fd, output);
++
++	igt_assert_f(false, "Current drm device does not support pending retrain count checking\n");
++	return -EINVAL;
++}
++
++/**
++ * igt_dp_wait_pending_retrain: Wait for pending link retrain operations to complete
++ * @drm_fd:		DRM file descriptor
++ * @output:		igt_output_t object representing the display port
++ *
++ * This function waits for any pending link retrain operations to complete on the
++ * specified display port. It polls the debugfs interface for the pending retrain
++ * count until it reaches zero, indicating all retrain operations have completed.
++ */
++void igt_dp_wait_pending_retrain(int drm_fd, igt_output_t *output)
++{
++	double timeout = igt_default_display_detect_timeout();
++	struct timespec start, now;
++
++	igt_assert_eq(igt_gettime(&start), 0);
++
++	while (1) {
++		if (!igt_dp_get_pending_retrain(drm_fd, output))
++			return;
++
++		igt_assert_eq(igt_gettime(&now), 0);
++
++		if (igt_time_elapsed(&start, &now) >= timeout)
++			break;
++
++		usleep(10000);
++	}
++	igt_assert_f(false, "Timeout waiting for pending retrain to complete\n");
++}
+diff --git a/lib/igt_dp.h b/lib/igt_dp.h
+new file mode 100644
+index 000000000000..0c56ad2ec8b1
+--- /dev/null
++++ b/lib/igt_dp.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2026 Google
++ *
++ * Authors:
++ *   Louis Chauvet <louis.chauvet@bootlin.com>
++ */
++
++#ifndef _IGT_DP_H_
++#define _IGT_DP_H_
++
++#include "igt_kms.h"
++
++int igt_dp_get_current_link_rate(int drm_fd, igt_output_t *output);
++
++int igt_dp_get_current_lane_count(int drm_fd, igt_output_t *output);
++
++int igt_dp_get_max_link_rate(int drm_fd, igt_output_t *output);
++
++int igt_dp_get_max_supported_rate(int drm_fd, igt_output_t *output);
++
++int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output);
++
++void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
++
++int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
++
++void igt_dp_wait_pending_retrain(int drm_fd, igt_output_t *output);
++
++#endif
+diff --git a/lib/meson.build b/lib/meson.build
+index a7b59aabbe06..d2c4fb7bc41b 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -29,6 +29,7 @@ lib_sources = [
+ 	'igt_drm_fdinfo.c',
+         'igt_fs.c',
+ 	'igt_aux.c',
++	'igt_dp.c',
+ 	'igt_gt.c',
+ 	'igt_halffloat.c',
+ 	'igt_hwmon.c',
 
 -- 
 2.54.0
