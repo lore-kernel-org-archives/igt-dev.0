@@ -4,63 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65261FF8860
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 15:30:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD85FF8868
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 16:03:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D360410E7C1;
-	Mon, 27 Apr 2026 15:30:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E281410E810;
+	Mon, 27 Apr 2026 16:03:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i7BNJOpf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JsCh4dv2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF0DA10E7C3
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 15:30:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FA8B10E80C
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 16:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777303832; x=1808839832;
+ t=1777305807; x=1808841807;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=WYufej/WOkQFk6/i2rQ8jBG7WR1eb4vgaGXrAr/EB+c=;
- b=i7BNJOpfLDfaAMnMmaynvK7qe+hOTJ/lD7MRTabSkxeHDWB5q1NggEhe
- EO5nP5x1PCtrvXBIXZcVPeRH0zryXBs4y4SqcnTIXaBuyUY4YLK9Z6ima
- iaKuU+mB4e8VZHuGpBXHlAshqc6rbKj+lutE+Qdq76Vy+D4NdsO6XKwOl
- rrrlm7eEKADHapE3tUTRjVTnEdggroh0CeTPZRIWN/1MWnlswlQflBUh2
- yM3io4VMgSvN92yx0TBtbd52BMLgPYImcuitxkWxXlXjekcu6/vhVh1ne
- Np/FrbHLjLIEMmwvWNZ0xyMDbcrwa8kPrwpV+IFxSB67+SfB6LIEGUnb1 A==;
-X-CSE-ConnectionGUID: TqcqM4/bSl+gEoQS1BFfqg==
-X-CSE-MsgGUID: b0eENetBQGS3m/pxV6UHYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78253711"
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="78253711"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 08:30:31 -0700
-X-CSE-ConnectionGUID: ddxN0ta2QzK46FJGmfnfvw==
-X-CSE-MsgGUID: JzO9sYFsSgqdhChhwP1ySg==
+ bh=VZqw3M9DzAlhdsO/LhDRpp+IDyk4QzDL16KGpKayLfE=;
+ b=JsCh4dv2iYxZPMQOOLTSiXT5sRlhsrXUw6r6fmUPuhiuwTw1+pG7kLno
+ STCjZuhvqbtac/RBpsmQZYbUty1bQ6hB5WanO1CbB2te6KEJxut3vR0KN
+ xkyGr7K5ZBj+BrliS11VQv2/AwmtxH9Z29TJTv0nYsLc62L4sHge1EbQw
+ LNAXJGnhSZBDvrsiHU129ZYd6bX9JxNUbmbjPG1J1Yst6x80pGASj6wUq
+ ppYnVZuNtCI4avbMdVcjOJAIiMIPqHIHU2MkgPZOsT7Vmmw5azHG6a2wY
+ doz4vzuTCAmienJFLuQMTTdkGfRlyJLhxeidc834m60c81OHds2jMrtxI A==;
+X-CSE-ConnectionGUID: nDfSdR7rTE+7Ov7MJxv97g==
+X-CSE-MsgGUID: aRzL/TyvS1SVgHjgEn0wVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="89285169"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="89285169"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Apr 2026 09:03:26 -0700
+X-CSE-ConnectionGUID: AOS2QmBfSkibqWh35jcUPA==
+X-CSE-MsgGUID: fY19gEsOTxKa6gtz5jtsXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="231028960"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="238710200"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:30 -0700
-Date: Mon, 27 Apr 2026 17:30:28 +0200
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 09:03:23 -0700
+Date: Mon, 27 Apr 2026 18:03:20 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Jing-Ping Jan <jingpingjan@google.com>
-Subject: Re: [PATCH i-g-t 2/3] lib/igt_kms: Fix assert in
- igt_display_reset_outputs()
-Message-ID: <20260427153028.myw3ocsmsxlfccri@kamilkon-DESK.igk.intel.com>
+To: "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
+Cc: "Poosa, Karthik" <karthik.poosa@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Gupta, Anshuman" <anshuman.gupta@intel.com>,
+ "Nilawar, Badal" <badal.nilawar@intel.com>,
+ "Tauro, Riana" <riana.tauro@intel.com>,
+ "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
+ "Musial, Ewelina" <ewelina.musial@intel.com>,
+ "Zuchowiecki, Grzegorz" <grzegorz.zuchowiecki@intel.com>,
+ "Girotra, Himanshu" <himanshu.girotra@intel.com>,
+ "Grabski, Mateusz" <mateusz.grabski@intel.com>,
+ "Drab, Pawel" <pawel.drab@intel.com>, "Jadav, Raag" <raag.jadav@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
+Subject: Re: [PATCH i-g-t] intel-ci: Add a testlist for D3cold tests
+Message-ID: <20260427160320.tlrrwjbyvs3lar56@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Jing-Ping Jan <jingpingjan@google.com>
-References: <20260424151355.129423-1-kamil.konieczny@linux.intel.com>
- <20260424151355.129423-3-kamil.konieczny@linux.intel.com>
+ "Gandi, Ramadevi" <ramadevi.gandi@intel.com>,
+ "Poosa, Karthik" <karthik.poosa@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Gupta, Anshuman" <anshuman.gupta@intel.com>,
+ "Nilawar, Badal" <badal.nilawar@intel.com>,
+ "Tauro, Riana" <riana.tauro@intel.com>,
+ "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
+ "Musial, Ewelina" <ewelina.musial@intel.com>,
+ "Zuchowiecki, Grzegorz" <grzegorz.zuchowiecki@intel.com>,
+ "Girotra, Himanshu" <himanshu.girotra@intel.com>,
+ "Grabski, Mateusz" <mateusz.grabski@intel.com>,
+ "Drab, Pawel" <pawel.drab@intel.com>,
+ "Jadav, Raag" <raag.jadav@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+References: <20260422152254.858478-1-karthik.poosa@intel.com>
+ <IA3PR11MB90130EA677C4CE6B8FC412C385362@IA3PR11MB9013.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260424151355.129423-3-kamil.konieczny@linux.intel.com>
+In-Reply-To: <IA3PR11MB90130EA677C4CE6B8FC412C385362@IA3PR11MB9013.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,49 +98,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
-On 2026-04-24 at 17:13:54 +0200, Kamil Konieczny wrote:
-> There is an error manifesting by assert, when primary plane was
-> not a first one:
+Hi Gandi,,
+On 2026-04-27 at 07:14:49 +0000, Gandi, Ramadevi wrote:
+> Prefix with "tests/intel-ci"
+> with that 
+> Acked-by: Gandi Ramadevi <ramadevi.gandi@intel.com>
 > 
-> sudo ./kms_getfb
-> INFO: IGT-Version: IGT_VERSION-GIT (arm64) (Linux:
-> 	6.6.118-android15-8-g34da635f9b82-ab14801981-4k aarch64)
-> ...
-> CRITICAL: Test assertion failure function igt_display_reset_outputs,
-> 	file external/igt-gpu-tools/lib/igt_kms.c:2985:
-> CRITICAL: Failed assertion: old_primary->index != 0
-> CRITICAL: error: 0 == 0
-> 
-> It turns out that after swapping data and index, it should also
-> swap pointers itself so asserts will be correct checks.
-> 
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Reported-by: Jing-Ping Jan <jingpingjan@google.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Thank you all, pushed.
+I am fine with shortened intel-ci:
+
++cc Ashutosh, Karthik and Swati
 
 Regards,
 Kamil
 
-> ---
->  lib/igt_kms.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 2d758b63c..33092fc85 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -2980,6 +2980,7 @@ void igt_display_reset_outputs(igt_display_t *display)
->  
->  				igt_swap(*old_primary, *new_primary);
->  				igt_swap(old_primary->index, new_primary->index);
-> +				igt_swap(old_primary, new_primary);
->  
->  				igt_assert_neq(old_primary->index, 0);
->  				igt_assert_eq(new_primary->index, 0);
-> -- 
-> 2.54.0
+> > -----Original Message-----
+> > From: Poosa, Karthik <karthik.poosa@intel.com>
+> > Sent: Wednesday, April 22, 2026 8:53 PM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Gupta, Anshuman <anshuman.gupta@intel.com>; Nilawar, Badal
+> > <badal.nilawar@intel.com>; Tauro, Riana <riana.tauro@intel.com>; Vivi,
+> > Rodrigo <rodrigo.vivi@intel.com>; Gandi, Ramadevi
+> > <ramadevi.gandi@intel.com>; Musial, Ewelina <ewelina.musial@intel.com>;
+> > Zuchowiecki, Grzegorz <grzegorz.zuchowiecki@intel.com>; Girotra,
+> > Himanshu <himanshu.girotra@intel.com>; Grabski, Mateusz
+> > <mateusz.grabski@intel.com>; Drab, Pawel <pawel.drab@intel.com>; Jadav,
+> > Raag <raag.jadav@intel.com>; Poosa, Karthik <karthik.poosa@intel.com>
+> > Subject: [PATCH i-g-t] intel-ci: Add a testlist for D3cold tests
+> > 
+> > Introduce a dedicated testlist for D3cold‑related tests.
+> > This list is intended for use on CI platforms that support D3cold.
+> > 
+> > Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+> > ---
+> >  tests/intel-ci/xe.pm.d3cold.testlist | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
+> >  create mode 100644 tests/intel-ci/xe.pm.d3cold.testlist
+> > 
+> > diff --git a/tests/intel-ci/xe.pm.d3cold.testlist b/tests/intel-
+> > ci/xe.pm.d3cold.testlist
+> > new file mode 100644
+> > index 000000000..783859fc7
+> > --- /dev/null
+> > +++ b/tests/intel-ci/xe.pm.d3cold.testlist
+> > @@ -0,0 +1,11 @@
+> > +igt@xe_pm@s2idle-d3cold-basic-exec
+> > +igt@xe_pm@s3-d3cold-basic-exec
+> > +igt@xe_pm@s4-d3cold-basic-exec
+> > +igt@xe_pm@d3cold-basic
+> > +igt@xe_pm@d3cold-basic-exec
+> > +igt@xe_pm@d3cold-i2c
+> > +igt@xe_pm@d3cold-multiple-execs
+> > +igt@xe_pm@d3cold-mmap-system
+> > +igt@xe_pm@d3cold-mmap-vram
+> > +igt@xe_pm@d3cold-mocs
+> > +igt@xe_pm@vram-d3cold-threshold
+> > --
+> > 2.25.1
 > 
