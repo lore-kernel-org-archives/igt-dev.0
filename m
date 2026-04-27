@@ -4,57 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90B7BFF885E
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 08:55:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A85FF8861
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 09:02:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 448BB10E28C;
-	Mon, 27 Apr 2026 08:55:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EC9DD10E64A;
+	Mon, 27 Apr 2026 09:02:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c0rKBUnK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BiPv50Hy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E72710E28C
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 08:54:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D10E10E294
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 09:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777280096; x=1808816096;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=giuUiokQ0YMzng5KG7ppxRpGaPp85bYbpV/SNG0mzWM=;
- b=c0rKBUnK3prc+81eapFRMhFz2G2Nj7/2PcRyi1vUlJeR8YaVfizK0Tax
- cMIwXepW41Ddp4hG9287rkE073mq/otOJFIP7xCI4LzsPNSgmqyZ1euXr
- cjtHO/eAG0iB/smYHwUTSI8qC/8pUqNT1qwfFxdRukpHCocBMZv6hl7p7
- nR/8EAR+qI37Ur2JIBohcnhZvvD7D0+y4MaKareAoqTzPnRAzhDRX48U4
- G2HP7VsxpVRaqr2o9qt/n02JsFaAnC8/+Pa0IQDf3zNBQ1cnP14CCblUx
- k8E1vysSrJWx9PcdiLnSBQcqfbHPKWsBDzWsCfrpFM6lZS0b5xBhkbrhC g==;
-X-CSE-ConnectionGUID: shoJPNnUQ+Kn3Ar9Slj45Q==
-X-CSE-MsgGUID: kNw3kEFLT7+0OR5Tw62QnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="81771382"
-X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="81771382"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 01:54:55 -0700
-X-CSE-ConnectionGUID: eRU8a8MAQpy9J2gc9xLqEA==
-X-CSE-MsgGUID: N+Yr2oBpTIilGnnCtW38Hw==
+ t=1777280562; x=1808816562;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=BdbalqKxHfsQy6a9oelFL/QeLhQ+8bhvVchDosZbJXo=;
+ b=BiPv50Hya7rzgl4I7+bMdW+vGYI+CbRAoyUHympOLp3jRKQzwb4PAimX
+ t+Fs+UUgLJnH9Zm17x3k6unyHK5UYgDDXi3WVqNlnR+L6r27cj4hw+ay+
+ n+Rat/ITLrPsec3TgWKpxaisJLjTiuvdCscgPLxILMmSrw7xuiQ0rhfzN
+ NJWbvtrmgH+koIIy8m7FTXRMLa7j15Giwcs2p+D7z9rsnMv5aZeg0MgbF
+ Agd1+bhxoI23jKMa3sYks0JmylzZqIPHHshHd3vcp3/Hpye49sKHfezfQ
+ VDHno70WM55r5s8/jnk2Et6xRkMFGZJaW/o5CqUuNDBUYIIeXogj7IIor g==;
+X-CSE-ConnectionGUID: TpJgTjsMS4C4+DLrSi3gRw==
+X-CSE-MsgGUID: echa/EmFRnWrBlIpiJpuRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="89246890"
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="89246890"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Apr 2026 02:02:41 -0700
+X-CSE-ConnectionGUID: Gp3V/zZFTuS3NmvyVFgDMA==
+X-CSE-MsgGUID: sdmLOklHSvaAdGjItQJrrA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="237540952"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.65])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 01:54:53 -0700
-Date: Mon, 27 Apr 2026 10:54:51 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Jan Maslak <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH 06/10] lib/rendercopy: Convert surface state and sampler
- setup to genxml
-Message-ID: <5tgvysx6qq246p7khavcrozosfio4amkoeyc5gidqaui3s5yyq@dc5m3euyobmh>
-References: <20260415220720.1594414-1-jan.maslak@intel.com>
- <20260415220720.1594414-7-jan.maslak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="229018609"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Apr 2026 02:02:40 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 27 Apr 2026 02:02:40 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 27 Apr 2026 02:02:40 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.30) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 27 Apr 2026 02:02:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IX/+9ncawhOiyGgf8bBvHQZaLjv4jpiMlSiEnXEw7+uzlUajFdZBIaNishudbwzgTMpeA9uQ1WQkUszFjBY6hFCw3XadbKTpDHBKwuDbWCv/66Nh3lFOND8VN95NZK7Zs1SqLRs8sNvE/EXJ4EiZoYSInXS+7IXQaquQN+1Yx24amcPybJTbfMoYavnubw+jgwwpNV36XmpSceoNqBHIhhmLAIKI4TQqzBtsUU57fQSPdIRwanK9evvZ5wT+LEC/bdd9OUUFHkMiaTs4WdlfZE1e0mWVuHiwVW9QBkqhQs42eZgN7QzBCrIjwANwOP9c8trxpSyGf4YdDJnh+Z/QRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dhlGFMC5XgHtK/6e+G0u7OZj979NExtzByyAei2b1YI=;
+ b=kEX+4iT/0jwIcl0oFDN4OeNwqpIl7vlpsN/IHioQTfdYyXctMv1F5ov4pR1mWaivqzkzSA3lC4BffKvNMUClFs0zfKwIXzHm8NuQzbII4Be+f69pMeGAwRnBMe0O5Dl5I2xoKPaZ3qUX6lyOCZwaF20U9sljvY1F8L/mPDVodcdCvzPDOWagd/qTLbb3aYfXYG+PH41jDbpZZYgy3JsaqNI7CqlL1+RKnOjA1G4e/qj0UA4JmHbbPUuB9PQVbezOIkB4lRCEkQTsB1sUp6WrIX7+6JfsQBIOMo6lf/7irhb5ZTqKlIp8egWgWJ1A/mAvUO5pt+R4jAiCSJg+NEjeTg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB8252.namprd11.prod.outlook.com (2603:10b6:510:1aa::14)
+ by CO1PR11MB5140.namprd11.prod.outlook.com (2603:10b6:303:9e::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Mon, 27 Apr
+ 2026 09:02:29 +0000
+Received: from PH7PR11MB8252.namprd11.prod.outlook.com
+ ([fe80::9f66:9d6f:3199:78b2]) by PH7PR11MB8252.namprd11.prod.outlook.com
+ ([fe80::9f66:9d6f:3199:78b2%4]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 09:02:29 +0000
+Message-ID: <5e01fc8c-4d39-41b6-b529-a06628f2bc78@intel.com>
+Date: Mon, 27 Apr 2026 14:32:22 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [i-g-t, 1/1] tests/intel/xe_fault_injection: Add fault-injection
+ tests for Freq Throttle Reasons
+To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <badal.nilawar@intel.com>, <karthik.poosa@intel.com>,
+ <raag.jadav@intel.com>, <soham.purkait@intel.com>,
+ <mallesh.koujalagi@intel.com>, Tauro Riana <riana.tauro@intel.com>, "Gupta
+ Anshuman" <anshuman.gupta@intel.com>
+References: <20260326052917.2511216-1-ravi.kishore.koppuravuri@intel.com>
+ <20260326052917.2511216-2-ravi.kishore.koppuravuri@intel.com>
+Content-Language: en-US
+From: "Anirban, Sk" <sk.anirban@intel.com>
+In-Reply-To: <20260326052917.2511216-2-ravi.kishore.koppuravuri@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA1PR01CA0165.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:71::35) To PH7PR11MB8252.namprd11.prod.outlook.com
+ (2603:10b6:510:1aa::14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415220720.1594414-7-jan.maslak@intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB8252:EE_|CO1PR11MB5140:EE_
+X-MS-Office365-Filtering-Correlation-Id: 019fd9fd-0edf-4b62-79e6-08dea43bb5a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|22082099003|56012099003|18002099003; 
+X-Microsoft-Antispam-Message-Info: O9PXlhF+X2V/ZaWu5zXyKdNN1ZxzfNNNwYxNthNSwd5VLhlopOcVSXWaZejI+kK+27CCQi8rjuY6v3AWFyCxxDDWo7WDh1p2nTuU3GZpPc2mw60XCmOz3tS3uJQpC51AvrI1MTWphOJrTyeFJ2cVlJn4bccSl420Ztp/f/1p+ZdAkI/fR3tBfZMSDayGbnfq2eoZDZ+LkaoqdA5Qx+KBp048Q3oDDLvWx6SQeZIIWz26WiK96MLL+4ZGEAa4GgLU7b24G57cj6UTIc1rzTgWhIU5J7zLQpMzN9eN7UG+Y2VDx4h7Dw/WPkSBMRHbBBEi+NXyWR3xWjjLBNp33ffrq1JCD54UO+LhyaV0DeVid6sYsU5/IK7mjyvkZhscvS0FDKEhOVNCK9Yd9Y2sGIoosdvGKwKaiCmM919bYP6dRUKiaNGNw015kqH+MzAxzS55mxFD6mnoGeSqpP/h+YcNSKMx+/llShJAEPOMF4/dJyWZ01tPygwcaCPUo5W5vvLGSkx587IgGE2pZYZBfvEKkdpWS4aNSJJTenuvEAezyYNYlWxyKPk6udpB1U9D2v9TWIvcvR4dLf43qy6flcYjXGt4Oh6aWwxi+iQ+dzwlYGCw1sbNTBxzh2BRp2psfV5IMsUhYeo/A+sfRdlyLWf/r1J9IYEUpQ2U6I/GzqEAz4W/cEJNvOWlsyrSnv/arCop
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB8252.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(56012099003)(18002099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cVB6TjhqZ2F1ZVhCcXI2UE55ajlwenNlQ3JUNmdZbldNR0NIV2UzUUMvZHhl?=
+ =?utf-8?B?b0NDTEtDQjBHM1k5Q1hYQ2tCSG83dHRnUjQ5elFxWXliQTNVOWxvL2pJRkh4?=
+ =?utf-8?B?dnlzQncxWk9qcDNtS3A2SzNuSzFNQ1RIbGRRZ0hWRnd0WnpCcWlFNFBoeUE3?=
+ =?utf-8?B?aWFqbzJ0LzcxZ1dGci9hNDc5VHdsV2l4NSszbUVmcTBHUTVaTGtXbmdCbEl6?=
+ =?utf-8?B?VE55R3M2Mk1Kc2dVUXkyZ3ZiT25id0VrdVhSZm5vcTg0S0FjSFdYVWRnY1Rl?=
+ =?utf-8?B?K3FvcjdpdW01QXpkQS9qNHlFVFpORDVkdWlWWWxraFAxNXZNeEljZ2ZXa0g5?=
+ =?utf-8?B?R1NyRXdLUUYvTjkvMzZRTFViNGcwMFRCQjFrV2dOVkxNcFBNRVM2ZmlDY3Ra?=
+ =?utf-8?B?bjhERENpV0FsL3lsR1orcjZ4VThJd0htMmhFbGxSQ1dSeTA5TDVhQUdrQWhJ?=
+ =?utf-8?B?dFg1a1oxM1NxWDVTNXNna3l6SjAwZkZyR3FtK1hLaHgwL2t5Z0p3U3hYNDVm?=
+ =?utf-8?B?MmZyUEFPQ3ZITUplSTl3UE5pekhyQ0NDNEI0cUFKZnErSlFXeDQrd1FBakIx?=
+ =?utf-8?B?aUNMaEozeGpHS3VCMG5TTDlueW9EZzF6WUVHRVkrOUhsalpIR1E1dHlJMG1P?=
+ =?utf-8?B?Nkg4RWE2ZFFWaU1JMTFXdHIwanVXaXcwYTFuTVdUdGIxUk5ScVhGVGtOaFNz?=
+ =?utf-8?B?UlprbTRPQnQ5SzY5bU40UW16dTlkUkdTaWRIYXpCZ25jT1lDWVNQMEZOZXRu?=
+ =?utf-8?B?L1RNN1Q4YWJmV0J0VTltZUF1ZW5TUmN6clJaWEFCNnpyaW5PbGkzelVVb0xk?=
+ =?utf-8?B?T1hueUFYMlJDTU1RU1NXRmZzNkxVSnRlSFdUQ2JOaTRWSkdWTnZyeTZCWGth?=
+ =?utf-8?B?ZDJoL2NwUVlXSDJ4M0VHdUVBRnM3L0xkTlNvV25ZK21hZEZHMzVqbE9WR0Vs?=
+ =?utf-8?B?eGRpNytIVmVrZndmem4yZ0tFMGEycnVBeGdRVTlkN0V3bFNrRUh2dEYyYnIv?=
+ =?utf-8?B?eDMrRmNHSk5VVCt0RWl5Wk1TSG1IN3ZOQ2lxU2pDeWZlQnlRTHQ4dkx3RWE1?=
+ =?utf-8?B?ZkRKRTNTaTlmZXFsSHVCZ0t5VWNmdCt1dm9FaUR2ZGRndmcwbGNHbTZDM09z?=
+ =?utf-8?B?SE1NYXdmamVJNk5iS05FZ2J5ai9iWm8vc2pyNWhySHpuaHJ3clFnMnBRWkZC?=
+ =?utf-8?B?OWpJMHFXTE1mUS9HV0YxbzV0THlKSHBacXA0N0ZZSXorLzZmV21vaEx2NVZO?=
+ =?utf-8?B?WFZNY3ZyZlV1Q3J0RHFBc1NMeDlFMnFDS0ZZeXNjMFB2MldJYitCdDFaZWZ5?=
+ =?utf-8?B?MkV4VzdLMWdXVDBhdmlQbmpSYkNBaW1rS2VlWHUvZjRBckVoSitIalljR295?=
+ =?utf-8?B?TFBaS0xxekFrWWR1ME9oUWxpZUZ6ZmQ4L0NYdERzUHp5blRJWjhSQXMrYTVo?=
+ =?utf-8?B?a3RjR1Q1S01sencrU0JORFVhL2dYQUQ1eiswUGM3QUo2WWhqZU9TMjRaTko5?=
+ =?utf-8?B?cVRPOUdrMmJDZ2d6VXdVYWJ6TnlTd25kaER3bXhZRVNqVktINjdYLzl3M1pi?=
+ =?utf-8?B?cHdpTjJsLzN1UzdiUDRZbkNwbmY2ZzhPdEp6MlNldy9RQ25BMnZ0WHhweDMv?=
+ =?utf-8?B?ZzhUMVVYMWRQN0x3bm95Nlg3VTQ5MmpGdXJuQnpkREpNTzd5c0xYN2o3UHBH?=
+ =?utf-8?B?QTRLNklwUU9TS0Z2eUROTDhnM2puaTczeTE2R1RrVVRCa1RVVkpDT3FEeDJj?=
+ =?utf-8?B?MG8xaGorVlhCOWsvM3pTK3YwVkN0Ty9yQkNLUldrKzdsY2xQUllRZDdwc1VE?=
+ =?utf-8?B?TWpsYmpESjhtNTlCekVmZHVhQ2NZc2FGRjlVZ3FZMWs3Qm1NYVZqeTk5R01R?=
+ =?utf-8?B?WU02YmpKWWVobGd1ZjRHeHA3ZU9iWXJuK3dubFFsVllFcWljUVBiTjZTckRt?=
+ =?utf-8?B?YndBUmlNbFBNTzcydjdsV2Y5am1VUEFQb2QxV1hOVWhtd015bDlvVkFHQlJj?=
+ =?utf-8?B?a25yTXJCR0Q5Z09KcHhkN204aHEybFhiUm9ESlNtbU53VU5weVI4SG9Gd2FO?=
+ =?utf-8?B?OG4ranhXajRMOTJvY045d1ZtQ21pY3hrbGVXMk1rY3pyYk14NTNGZUh1TmN1?=
+ =?utf-8?B?aDJLaGZUcmFPMnFQYnpIVFJNYzR0akd0YUl0a0psOUFlcm41U0k5cEQzZXFv?=
+ =?utf-8?B?MVYxbWtnWTBlREZVOWs3UUk1bThNakthSlZkUGhWOTRENlVPQTZnNXFUWm5J?=
+ =?utf-8?B?dUVKakZMMkZOWHNWNncxcXFTcXNieDcxV05UL3RWVGhCR3NQNlMvcVU5bFg4?=
+ =?utf-8?B?MlRlWmU5R3JFYUVnSTFYQzFJWHVrOFI2K3NpQmRTN1lwZHZhalNzQT09?=
+X-Exchange-RoutingPolicyChecked: b50EB7UbAnDs5w450XZYpWAyEWzq5CealMKIonKC6bV9AEXHO4ewYlJje2lk+igOuGYfmNZcPaivCn7+WJOxZgQfbGuknGUQjvJpk3qeaCTf+uPHC3PhcJEd30sGX+fK5hYVjdAIVM7ITAl4/4qD7F2MG+lDk2eW87uSfymdmZih/SeCGmPXntTF34M8yoozUhjUiUMm78/VENFQgucpnZ+VksnBKpb5bhb004EIRQP7bKFfPTm5MhctU4rXLMuMG9nKsxPRta1P3Tgno6Gz1vRF6/DMhIHMcg8AVOeBfmGjd4jyYPKUDuyh1eRvXIKSAi/i3EKd/nB7dBDd39w4Vw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 019fd9fd-0edf-4b62-79e6-08dea43bb5a2
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8252.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 09:02:29.4670 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GKPiN++kwSpHQHhBPhZmq7/JU38wDYtvLtYP4J92npymYH7kdh4KvOeG2yQvz3dchq86MLENc1vvDZPuOf5RlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5140
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,372 +174,317 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 16, 2026 at 12:07:16AM +0200, Jan Maslak wrote:
-> Replace intel_bb_out() calls in gen9_bind_buf(), gen8_bind_surfaces(),
-> and gen8_create_sampler() with igt_genxml_pack_state macros backed by
-> the genxml pack headers.
-> 
-> Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+Hi Ravi,
+
+On 26-03-2026 10:59 am, Ravi Kishore Koppuravuri wrote:
+> Add IGT test to verify frequency throttling reason reporting with
+> the help of kernel's fault-injection framework. This test validates the
+> robustness of the throttle reason detection under various failure
+> scenarios by injecting faults into xe_gt_throttle_get_limit_reasons()
+> function. This test covers all the supported throttling reason types.
+>
+> Dependencies:
+> 	- Requires xe patch https://patchwork.freedesktop.org/patch/711954/
+> 	- Kernel fault injection support (CONFIG_FAIL_FUNCTION=y)
+>
+> Cc: Sk Anirban <sk.anirban@intel.com>
+> Cc: Tauro Riana <riana.tauro@intel.com>
+> Cc: Gupta Anshuman <anshuman.gupta@intel.com>
+> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
+>
 > ---
->  lib/rendercopy_gen9.c | 284 +++++++++++++++++++++++-------------------
->  1 file changed, 158 insertions(+), 126 deletions(-)
-> 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index d44988010..9c5833a74 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -21,11 +21,17 @@
->  #include "intel_io.h"
->  #include "intel_mocs.h"
->  #include "rendercopy.h"
-> -#include "gen9_render.h"
-> +#include "surfaceformat.h"
->  #include "xe2_render.h"
->  #include "intel_reg.h"
->  #include "igt_aux.h"
->  #include "intel_chipset.h"
-> +#include "intel/genxml/igt_genxml.h"
-> +#include "gen90_pack.h"
-> +#include "gen110_pack.h"
-> +#include "gen120_pack.h"
-> +#include "gen125_pack.h"
-> +#include "xe2_pack.h"
->  
->  #define VERTEX_SIZE (3*4)
->  
-> @@ -187,13 +193,60 @@ static uint32_t dg2_compression_format(const struct intel_buf *buf)
->  	}
->  }
->  
-> -/* Mostly copy+paste from gen6, except height, width, pitch moved */
-> +/*
-> + * IGT_RSS_COMMON - set RENDER_SURFACE_STATE fields shared across all gens.
-> + * Works via C preprocessor structural typing: all gen-specific structs
-> + * have identical field names for these members.
-> + */
-> +#define IGT_RSS_COMMON(ss, buf, mocs_val, rd, wd)                          \
-> +	do {                                                               \
-> +		ss.SurfaceType = GFX9_SURFTYPE_2D;                        \
-> +		ss.SurfaceFormat = gen4_surface_format((buf)->bpp,         \
-> +					       (buf)->depth);      \
-> +		ss.SurfaceVerticalAlignment = GFX9_VALIGN_4;              \
-> +		ss.MOCS = (mocs_val);                                      \
-> +		ss.Width = intel_buf_width(buf) - 1;                       \
-> +		ss.Height = intel_buf_height(buf) - 1;                     \
-> +		ss.SurfacePitch = (buf)->surface[0].stride - 1;            \
-> +		ss.ShaderChannelSelectRed = (int)GFX9_SCS_RED;                 \
-> +		ss.ShaderChannelSelectGreen = (int)GFX9_SCS_GREEN;             \
-> +		ss.ShaderChannelSelectBlue = (int)GFX9_SCS_BLUE;               \
-> +		ss.ShaderChannelSelectAlpha = (int)GFX9_SCS_ALPHA;             \
-> +		ss.SurfaceBaseAddress =                                    \
-> +			igt_address_of((buf), (buf)->surface[0].offset,    \
-> +				       (rd), (wd));                        \
-> +	} while (0)
+> Test Execution:
+>
+> $ ./build/tests/xe_fault_injection --run-subtest 'throttle*'
+> IGT-Version: 2.3-g06706ff21 (x86_64) (Linux: 7.0.0-rc2-throttle-reason-injection-test x86_64)
+> Using IGT_SRANDOM=1773144939 for randomisation
+> Opened device: /dev/dri/card0
+> Starting subtest: throttle-reason-fail-soc_thermal
+> Injecting error (-1) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : thermal
+> Subtest throttle-reason-fail-soc_thermal: SUCCESS (0.022s)
+> Starting subtest: throttle-reason-fail-mem_thermal
+> Injecting error (-2) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : none
+> Subtest throttle-reason-fail-mem_thermal: SUCCESS (0.023s)
+> Starting subtest: throttle-reason-fail-vr_thermal
+> Injecting error (-3) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : none
+> Subtest throttle-reason-fail-vr_thermal: SUCCESS (0.031s)
+> Starting subtest: throttle-reason-fail-iccmax
+> Injecting error (-4) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : none
+> Subtest throttle-reason-fail-iccmax: SUCCESS (0.034s)
+> Starting subtest: throttle-reason-fail-ratl
+> Injecting error (-5) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : ratl
+> Subtest throttle-reason-fail-ratl: SUCCESS (0.042s)
+> Starting subtest: throttle-reason-fail-soc_avg_thermal
+> Injecting error (-6) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : vr_thermalert
+> Subtest throttle-reason-fail-soc_avg_thermal: SUCCESS (0.042s)
+> Starting subtest: throttle-reason-fail-fastvmode
+> Injecting error (-7) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : vr_tdc
+> Subtest throttle-reason-fail-fastvmode: SUCCESS (0.030s)
+> Starting subtest: throttle-reason-fail-pl4_limit
+> Injecting error (-8) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : pl4
+> Subtest throttle-reason-fail-pl4_limit: SUCCESS (0.030s)
+> Starting subtest: throttle-reason-fail-max_vid
+> Injecting error (-9) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : none
+> Subtest throttle-reason-fail-max_vid: SUCCESS (0.018s)
+> Starting subtest: throttle-reason-fail-pkg_pl1
+> Injecting error (-10) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : pl1
+> Subtest throttle-reason-fail-pkg_pl1: SUCCESS (0.033s)
+> Starting subtest: throttle-reason-fail-pkg_pl2
+> Injecting error (-11) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : pl2
+> Subtest throttle-reason-fail-pkg_pl2: SUCCESS (0.031s)
+> Starting subtest: throttle-reason-fail-psys_pl1
+> Injecting error (-12) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : none
+> Subtest throttle-reason-fail-psys_pl1: SUCCESS (0.022s)
+> Starting subtest: throttle-reason-fail-psys_pl2
+> Injecting error (-13) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : none
+> Subtest throttle-reason-fail-psys_pl2: SUCCESS (0.035s)
+> Starting subtest: throttle-reason-fail-p0_freq
+> Injecting error (-14) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : none
+> Subtest throttle-reason-fail-p0_freq: SUCCESS (0.030s)
+> Starting subtest: throttle-reason-fail-psys_crit
+> Injecting error (-15) in function "xe_gt_throttle_inject_errno"
+> Reason for Throttling is : none
+> Subtest throttle-reason-fail-psys_crit: SUCCESS (0.034s)
+> ---
+> ---
+> ---
+>   tests/intel/xe_fault_injection.c | 172 +++++++++++++++++++++++++++++++
+>   1 file changed, 172 insertions(+)
+>
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index 4f4a7922c..05f5125cf 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -234,6 +234,66 @@ static void ignore_fail_dump_in_dmesg(const char function_name[], bool enable)
+>   	}
+>   }
+>   
+> +static char *prepare_reasons_path(int fd)
+> +{
+> +	char sysfs_path[PATH_MAX];
+> +	char device_link[PATH_MAX];
+> +	char pcie_path[PATH_MAX];
+> +	char reasons_path[PATH_MAX];
+> +	int ret;
 > +
-> +/*
-> + * IGT_RSS_TILING - set TileMode from buf->tiling.  The numeric encoding is
-> + * identical across gen9/gen12/gen12.5/xe2, but the enum names differ per gen.
-> + * We use xe2 (GFX20) names as they best reflect the modern tile semantics;
-> + * (int) casts suppress -Wenum-conversion when used with older-gen structs.
-> + */
-> +#define IGT_RSS_TILING(ss, buf)                                            \
-> +	do {                                                               \
-> +		switch ((buf)->tiling) {                                    \
-> +		case I915_TILING_NONE:                                     \
-> +			ss.TileMode = (int)GFX20_LINEAR;                  \
-> +			break;                                             \
-> +		case I915_TILING_X:                                        \
-> +			ss.TileMode = (int)GFX20_XMAJOR;                  \
-> +			break;                                             \
-> +		case I915_TILING_64:                                       \
-> +			ss.TileMode = (int)GFX20_TILE64;                  \
-> +			ss.MipTailStartLOD = 0xf;                          \
-> +			break;                                             \
-> +		default:                                                   \
-> +			ss.TileMode = (int)GFX20_TILE4;                   \
-> +		}                                                          \
-> +	} while (0)
+> +	igt_assert(igt_sysfs_path(fd, sysfs_path, sizeof(sysfs_path)));
 > +
->  static uint32_t
-> -gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
-> -	      bool fast_clear) {
-> -	struct gen9_surface_state *ss;
-> +gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
-
-I see fast_clear was unused here.
-
-IMO code is correct, but there're a lot of conditionals so I would
-like to see CI result in a case I missed sth.
-
---
-Zbigniew
-
->  	uint32_t write_domain, read_domain;
-> -	uint64_t address;
-> +	unsigned int gen = intel_gen(ibb->devid);
-> +	uint32_t mocs;
-> +	void *ss_ptr;
->  
->  	igt_assert_lte(buf->surface[0].stride, 256*1024);
->  	igt_assert_lte(intel_buf_width(buf), 16384);
-> @@ -206,120 +259,103 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->  		read_domain = I915_GEM_DOMAIN_SAMPLER;
->  	}
->  
-> -	ss = intel_bb_ptr_align(ibb, 64);
-> -
-> -	ss->ss0.surface_type = SURFACE_2D;
-> -	ss->ss0.surface_format = gen4_surface_format(buf->bpp, buf->depth);
-> -	ss->ss0.vertical_alignment = 1; /* align 4 */
-> -	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
-> +	mocs = intel_buf_mocs(buf);
->  
-> -	ss->ss1.mocs_index = buf->mocs_index;
-> -
-> -	if (HAS_4TILE(ibb->devid)) {
-> -		ss->ss5.mip_tail_start_lod = 0;
-> -	} else {
-> -		ss->ss0.render_cache_read_write = 1;
-> -		ss->ss5.mip_tail_start_lod = 1; /* needed with trmode */
-> -	}
-> +	ss_ptr = intel_bb_ptr_align(ibb, 64);
->  
-> -	switch (buf->tiling) {
-> -	case I915_TILING_NONE:
-> -		ss->ss0.tiled_mode = 0;
-> -		break;
-> -	case I915_TILING_X:
-> -		ss->ss0.tiled_mode = 2;
-> -		break;
-> -	case I915_TILING_64:
-> -		ss->ss0.tiled_mode = 1;
-> -		ss->ss5.mip_tail_start_lod = 0xf;
-> -		break;
-> -	default:
-> -		ss->ss0.tiled_mode = 3;
-> -		if (buf->tiling == I915_TILING_Yf)
-> -			ss->ss5.trmode = 1;
-> -		else if (buf->tiling == I915_TILING_Ys)
-> -			ss->ss5.trmode = 2;
-> -		break;
-> -	}
-> +	if (gen >= 20) {
-> +		/* -- Xe2 (LNL+) -- */
-> +		igt_genxml_pack_state(ibb, GFX20_RENDER_SURFACE_STATE, ss_ptr, ss) {
-> +			IGT_RSS_COMMON(ss, buf, mocs, read_domain, write_domain);
-> +			IGT_RSS_TILING(ss, buf);
-> +			ss.SurfaceHorizontalAlignment = GFX20_HALIGN_32;
->  
-> -	if (intel_buf_pxp(buf))
-> -		ss->ss1.pxp = 1;
-> -
-> -	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> -						   read_domain, write_domain,
-> -						   buf->surface[0].offset,
-> -						   intel_bb_offset(ibb) + 4 * 8,
-> -						   buf->addr.offset);
-> -	ss->ss8.base_addr = (address + buf->surface[0].offset);
-> -	ss->ss9.base_addr_hi = (address + buf->surface[0].offset) >> 32;
-> -
-> -	ss->ss2.height = intel_buf_height(buf) - 1;
-> -	ss->ss2.width  = intel_buf_width(buf) - 1;
-> -	ss->ss3.pitch  = buf->surface[0].stride - 1;
-> -
-> -	ss->ss7.skl.shader_chanel_select_r = 4;
-> -	ss->ss7.skl.shader_chanel_select_g = 5;
-> -	ss->ss7.skl.shader_chanel_select_b = 6;
-> -	ss->ss7.skl.shader_chanel_select_a = 7;
-> -
-> -	if (buf->compression == I915_COMPRESSION_MEDIA)
-> -		ss->ss7.tgl.media_compression = 1;
-> -	else if (buf->compression == I915_COMPRESSION_RENDER) {
-> -		if (intel_gen(ibb->devid) >= 20)
-> -			ss->ss6.aux_mode = 0x0; /* AUX_NONE, unified compression */
-> -		else
-> -			ss->ss6.aux_mode = 0x5; /* AUX_CCS_E */
-> -
-> -		if (intel_gen(ibb->devid) < 12 && buf->ccs[0].stride) {
-> -			ss->ss6.aux_pitch = (buf->ccs[0].stride / 128) - 1;
-> -
-> -			address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> -								   read_domain, write_domain,
-> -								   (buf->cc.offset ? (1 << 10) : 0)
-> -								   | buf->ccs[0].offset,
-> -								   intel_bb_offset(ibb) + 4 * 10,
-> -								   buf->addr.offset);
-> -			ss->ss10.aux_base_addr = (address + buf->ccs[0].offset) >> 12;
-> -			ss->ss11.aux_base_addr_hi = (address + buf->ccs[0].offset) >> 32;
-> +			if (buf->compression == I915_COMPRESSION_RENDER) {
-> +				ss.AuxiliarySurfaceMode = GFX20_AUX_NONE;
-> +				ss.CompressionFormat = lnl_compression_format(buf);
-> +			}
->  		}
->  
-> -		if (buf->cc.offset) {
-> -			igt_assert(buf->compression == I915_COMPRESSION_RENDER);
-> -
-> -			ss->ss10.clearvalue_addr_enable = 1;
-> -
-> -			address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> -								   read_domain, write_domain,
-> -								   buf->cc.offset,
-> -								   intel_bb_offset(ibb) + 4 * 12,
-> -								   buf->addr.offset);
-> -
-> -			/*
-> -			 * If this assert doesn't hold below clear address will be
-> -			 * written wrong.
-> -			 */
-> -
-> -			igt_assert(__builtin_ctzl(address + buf->cc.offset) >= 6 &&
-> -				   (__builtin_clzl(address + buf->cc.offset) >= 16));
-> -
-> -			ss->ss12.dg2.clear_address = (address + buf->cc.offset) >> 6;
-> -			ss->ss13.clear_address_hi = (address + buf->cc.offset) >> 32;
-> +	} else if (HAS_4TILE(ibb->devid)) {
-> +		/* -- Gen12.5 / DG2 -- */
-> +		igt_genxml_pack_state(ibb, GFX125_RENDER_SURFACE_STATE, ss_ptr, ss) {
-> +			IGT_RSS_COMMON(ss, buf, mocs, read_domain, write_domain);
-> +			IGT_RSS_TILING(ss, buf);
-> +			ss.SurfaceHorizontalAlignment = GFX125_HALIGN_32;
+> +	ret = snprintf(device_link, sizeof(device_link), "%s/device", sysfs_path);
+> +	igt_assert(ret > 0 && ret < sizeof(device_link));
+> +	igt_assert(realpath(device_link, pcie_path));
 > +
-> +			if (buf->compression == I915_COMPRESSION_MEDIA) {
-> +				ss.MemoryCompressionEnable = true;
-> +				ss.MemoryCompressionMode = GFX125_MEDIACOMPRESSION;
-> +			} else if (buf->compression == I915_COMPRESSION_RENDER) {
-> +				ss.AuxiliarySurfaceMode = GFX125_AUX_CCS_E;
-> +				ss.CompressionFormat = dg2_compression_format(buf);
+> +	ret = snprintf(reasons_path, sizeof(reasons_path),
+> +		       "%s/tile0/gt0/freq0/throttle/reasons", pcie_path);
+> +	igt_assert(ret > 0 && ret < sizeof(reasons_path));
 > +
-> +				if (buf->cc.offset) {
-> +					ss.ClearValueAddressEnable = true;
-> +					ss.ClearValueAddress =
-> +						igt_address_of(buf, buf->cc.offset,
-> +							       read_domain, write_domain);
-> +				}
-> +			}
->  		}
->  
-> -		if (HAS_4TILE(ibb->devid)) {
-> -			ss->ss7.dg2.memory_compression_type = 0;
-> -			ss->ss7.dg2.memory_compression_enable = 0;
-> -			ss->ss7.dg2.disable_support_for_multi_gpu_partial_writes = 1;
-> -			ss->ss7.dg2.disable_support_for_multi_gpu_atomics = 1;
-> +	} else if (gen >= 12) {
-> +		/* -- Gen12 / TGL -- */
-> +		igt_genxml_pack_state(ibb, GFX12_RENDER_SURFACE_STATE, ss_ptr, ss) {
-> +			IGT_RSS_COMMON(ss, buf, mocs, read_domain, write_domain);
-> +			IGT_RSS_TILING(ss, buf);
-> +			ss.SurfaceHorizontalAlignment = GFX12_HALIGN_4;
-> +			ss.RenderCacheReadWriteMode = GFX12_READWRITECACHE;
-> +			ss.MipTailStartLOD = 1;
+> +	return strdup(reasons_path);
+> +}
 > +
-> +			if (buf->compression == I915_COMPRESSION_MEDIA) {
-> +				ss.MemoryCompressionEnable = true;
-> +				ss.MemoryCompressionMode = GFX12_HORIZONTAL;
-> +			} else if (buf->compression == I915_COMPRESSION_RENDER) {
-> +				ss.AuxiliarySurfaceMode = GFX12_AUX_CCS_E;
+> +static char *read_throttle_reasons_from_sysfs(int fd)
+> +{
+> +	char *reasons_path = NULL;
+> +	char *reasons = NULL;
+> +	int ret = -1;
+> +	int reason_fd = -1;
 > +
-> +				if (buf->cc.offset) {
-> +					ss.ClearValueAddressEnable = true;
-> +					ss.ClearValueAddress =
-> +						igt_address_of(buf, buf->cc.offset,
-> +							       read_domain, write_domain);
-> +				}
-> +			}
-> +		}
->  
-> -			if (intel_gen(ibb->devid) >= 20)
-> -				ss->ss12.lnl.compression_format = lnl_compression_format(buf);
-> -			else
-> -				ss->ss12.dg2.compression_format = dg2_compression_format(buf);
-> +	} else {
-> +		/* -- Gen9 / Gen11 -- */
-> +		igt_genxml_pack_state(ibb, GFX9_RENDER_SURFACE_STATE, ss_ptr, ss) {
-> +			IGT_RSS_COMMON(ss, buf, mocs, read_domain, write_domain);
-> +			IGT_RSS_TILING(ss, buf);
-> +			ss.SurfaceHorizontalAlignment = GFX9_HALIGN_4;
-> +			ss.RenderCacheReadWriteMode = GFX9_READWRITECACHE;
-> +			ss.MipTailStartLOD = 1;
+> +	reasons_path = prepare_reasons_path(fd);
+> +	if (!reasons_path)
+> +		return NULL;
 > +
-> +			if (buf->tiling == I915_TILING_Yf)
-> +				ss.TiledResourceMode = GFX9_TILEYF;
-> +			else if (buf->tiling == I915_TILING_Ys)
-> +				ss.TiledResourceMode = GFX9_TILEYS;
-> +
-> +			if (buf->compression == I915_COMPRESSION_MEDIA) {
-> +				ss.MemoryCompressionEnable = true;
-> +				ss.MemoryCompressionMode = GFX9_HORIZONTAL;
-> +			} else if (buf->compression == I915_COMPRESSION_RENDER) {
-> +				ss.AuxiliarySurfaceMode = GFX9_AUX_CCS_E;
-> +
-> +				if (buf->ccs[0].stride) {
-> +					ss.AuxiliarySurfacePitch =
-> +						(buf->ccs[0].stride / 128) - 1;
-> +					ss.AuxiliarySurfaceBaseAddress =
-> +						igt_address_of(buf, buf->ccs[0].offset,
-> +							       read_domain, write_domain);
-> +				}
-> +			}
->  		}
->  	}
->  
-> -	return intel_bb_ptr_add_return_prev_offset(ibb, sizeof(*ss));
-> +	return intel_bb_ptr_add_return_prev_offset(ibb,
-> +		GFX9_RENDER_SURFACE_STATE_length * 4);
->  }
->  
->  static uint32_t
-> @@ -328,15 +364,14 @@ gen8_bind_surfaces(struct intel_bb *ibb,
->  		   const struct intel_buf *dst)
->  {
->  	uint32_t *binding_table, binding_table_offset;
-> -	bool fast_clear = !src;
->  
->  	binding_table = intel_bb_ptr_align(ibb, 32);
->  	binding_table_offset = intel_bb_ptr_add_return_prev_offset(ibb, 32);
->  
-> -	binding_table[0] = gen9_bind_buf(ibb, dst, 1, fast_clear);
-> +	binding_table[0] = gen9_bind_buf(ibb, dst, 1);
->  
->  	if (src != NULL)
-> -		binding_table[1] = gen9_bind_buf(ibb, src, 0, false);
-> +		binding_table[1] = gen9_bind_buf(ibb, src, 0);
->  
->  	return binding_table_offset;
->  }
-> @@ -344,21 +379,18 @@ gen8_bind_surfaces(struct intel_bb *ibb,
->  /* Mostly copy+paste from gen6, except wrap modes moved */
->  static uint32_t
->  gen8_create_sampler(struct intel_bb *ibb) {
-> -	struct gen8_sampler_state *ss;
-> -
-> -	ss = intel_bb_ptr_align(ibb, 64);
-> -
-> -	ss->ss0.min_filter = GEN4_MAPFILTER_NEAREST;
-> -	ss->ss0.mag_filter = GEN4_MAPFILTER_NEAREST;
-> -	ss->ss3.r_wrap_mode = GEN4_TEXCOORDMODE_CLAMP;
-> -	ss->ss3.s_wrap_mode = GEN4_TEXCOORDMODE_CLAMP;
-> -	ss->ss3.t_wrap_mode = GEN4_TEXCOORDMODE_CLAMP;
-> -
-> -	/* I've experimented with non-normalized coordinates and using the LD
-> -	 * sampler fetch, but couldn't make it work. */
-> -	ss->ss3.non_normalized_coord = 0;
-> +	void *ptr = intel_bb_ptr_align(ibb, 64);
-> +
-> +	igt_genxml_pack_state(ibb, GFX9_SAMPLER_STATE, ptr, ss) {
-> +		ss.MinModeFilter = GFX9_MAPFILTER_NEAREST;
-> +		ss.MagModeFilter = GFX9_MAPFILTER_NEAREST;
-> +		ss.TCZAddressControlMode = GFX9_TCM_CLAMP;
-> +		ss.TCYAddressControlMode = GFX9_TCM_CLAMP;
-> +		ss.TCXAddressControlMode = GFX9_TCM_CLAMP;
+> +	reason_fd = open(reasons_path, O_RDONLY);
+> +	if (reason_fd < 0) {
+> +		free(reasons_path);
+> +		return NULL;
 > +	}
->  
-> -	return intel_bb_ptr_add_return_prev_offset(ibb, sizeof(*ss));
-> +	return intel_bb_ptr_add_return_prev_offset(ibb,
-> +						   GFX9_SAMPLER_STATE_length * 4);
->  }
->  
->  static uint32_t
-> -- 
-> 2.34.1
-> 
+> +
+> +	free(reasons_path);
+> +	reasons = calloc(1, 256);
+> +	if (!reasons)
+> +		goto err;
+> +
+> +	ret = read(reason_fd, reasons, 255);
+> +	if (ret < 0)
+> +		goto err;
+> +
+> +	reasons[ret] = '\0';
+> +
+> +	close(reason_fd);
+> +	return reasons;
+> +
+> +err:
+> +	if (reason_fd >= 0)
+> +		close(reason_fd);
+> +	if (reasons)
+> +		free(reasons);
+> +	return NULL;
+> +}
+> +
+Currently, there is no real failure case covered by this test. Even if
+the driver reports an incorrect throttle reason compared to the value
+read from the register, the test still passes because we are not
+asserting the expected reason obtained from sysfs. The only possible
+failure scenario today is when IGT fails to read from sysfs, which is
+already validated by the throttle-basic-api test.
+
+Therefore, it would be better to compare the expected throttle reason on
+a platform-specific basis in this test.
+
+
+Additionally, it would be preferable to merge all the subtests into a
+single test, similar to the approach used in throttle-basic-api. Having
+one subtest per bit adds unnecessary overhead to the CI test list.
+
+
+Thanks,
+
+Anirban
+>   /**
+>    * SUBTEST: inject-fault-probe-function-%s
+>    * Description: inject an error in the injectable function %arg[1] then
+> @@ -529,6 +589,90 @@ oa_add_config_fail(int fd, int sysfs, int devid,
+>   	igt_assert_eq(intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_REMOVE_CONFIG, &config_id), 0);
+>   }
+>   
+> +enum cri_throttle_reason {
+> +	THROTTLE_REASON_SOC_THERMAL = -1,
+> +	THROTTLE_REASON_MEM_THERMAL = -2,
+> +	THROTTLE_REASON_VR_THERMAL = -3,
+> +	THROTTLE_REASON_ICCMAX = -4,
+> +	THROTTLE_REASON_RATL = -5,
+> +	THROTTLE_REASON_SOC_AVG_THERMAL = -6,
+> +	THROTTLE_REASON_FASTVMODE = -7,
+> +	THROTTLE_REASON_PL4_LIMIT = -8,
+> +	THROTTLE_REASON_MAX_VID = -9,
+> +	THROTTLE_REASON_PKG_PL1 = -10,
+> +	THROTTLE_REASON_PKG_PL2 = -11,
+> +	THROTTLE_REASON_PSYS_PL1 = -12,
+> +	THROTTLE_REASON_PSYS_PL2 = -13,
+> +	THROTTLE_REASON_P0_FREQ = -14,
+> +	THROTTLE_REASON_PSYS_CRIT = -15,
+> +};
+> +
+> +static int
+> +inject_fault_throttle_reason(int fd, const char pci_slot[], const char function_name[],
+> +			     enum cri_throttle_reason reason)
+> +{
+> +	int err = 0;
+> +	char *throttle_reasons;
+> +
+> +	igt_info("Injecting error (%d) in function \"%s\"\n",
+> +		 reason, function_name);
+> +
+> +	ignore_dmesg_errors_from_dut(pci_slot);
+> +	igt_audio_driver_unload(NULL);
+> +
+> +	injection_list_add(function_name);
+> +	set_retval(function_name, reason);
+> +
+> +	throttle_reasons = read_throttle_reasons_from_sysfs(fd);
+> +	if (throttle_reasons) {
+> +		igt_info("Reason for Throttling is : %s", throttle_reasons);
+> +		free(throttle_reasons);
+> +	} else {
+> +		igt_warn("Failed to read throttle reasons from sysfs\n");
+> +		err = -errno;
+> +	}
+> +
+> +	injection_list_remove(function_name);
+> +	ignore_fail_dump_in_dmesg(function_name, false);
+> +
+> +	return err;
+> +}
+> +
+> +/**
+> + * SUBTEST: throttle-reason-fail-%s
+> + * Description: inject a throttle reason in the injectable function %arg[1] then
+> + * read the reasons from sysfs
+> + * Functionality: fault
+> + *
+> + * arg[1]:
+> + * @soc_thermal:     Frequency is clipped because of SOC hotspot temperature
+> + * @mem_thermal:     Frequency is clipped because of memory hotspot temperature
+> + * @vr_thermal:      Frequency is clipped because of VR hotspot temperature
+> + * @iccmax:          Frequency is clipped because of ICCMAX limit
+> + * @ratl:       Frequency is clipped because of RATL thermal algorithm
+> + * @soc_avg_thermal: Frequency is clipped because of SOC average thermal limit
+> + * @fastvmode:       Frequency is clipped because of Fast VMode limit
+> + * @pl4_limit:       Frequency is clipped because of PL4 limit
+> + * @max_vid:       Frequency is clipped because of MAX VID limit
+> + * @pkg_pl1:       Frequency is clipped because of PKG PL1 limit
+> + * @pkg_pl2:       Frequency is clipped because of PKG PL2 limit
+> + * @psys_pl1:       Frequency is clipped because of PSYS PL1 limit
+> + * @psys_pl2:       Frequency is clipped because of PSYS PL2 limit
+> + * @p0_freq:       Frequency is clipped because of P0 frequency limit
+> + * @psys_crit:       Frequency is clipped because of PSYS critical limit
+> + */
+> +static void throttle_reason_fail(int fd, const char pci_slot[], const char function_name[],
+> +				 struct fault_injection_params *fault_params,
+> +				 enum cri_throttle_reason reason)
+> +{
+> +	int retval = 0;
+> +
+> +	igt_assert(fault_params);
+> +	setup_injection_fault(fault_params);
+> +	retval = inject_fault_throttle_reason(fd, pci_slot, function_name, reason);
+> +	igt_assert_eq(retval, 0);
+> +}
+> +
+>   static int opt_handler(int opt, int opt_index, void *data)
+>   {
+>   	int in_param;
+> @@ -625,6 +769,26 @@ int igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+>   		{ }
+>   	};
+>   
+> +	const struct section throttle_reason_fail_functions[] = {
+> +		{ "soc_thermal", THROTTLE_REASON_SOC_THERMAL },
+> +		{ "mem_thermal", THROTTLE_REASON_MEM_THERMAL },
+> +		{ "vr_thermal", THROTTLE_REASON_VR_THERMAL },
+> +		{ "iccmax", THROTTLE_REASON_ICCMAX },
+> +		{ "ratl", THROTTLE_REASON_RATL },
+> +		{ "soc_avg_thermal", THROTTLE_REASON_SOC_AVG_THERMAL },
+> +		{ "fastvmode", THROTTLE_REASON_FASTVMODE },
+> +		{ "pl4_limit", THROTTLE_REASON_PL4_LIMIT },
+> +		{ "max_vid", THROTTLE_REASON_MAX_VID },
+> +		{ "pkg_pl1", THROTTLE_REASON_PKG_PL1 },
+> +		{ "pkg_pl2", THROTTLE_REASON_PKG_PL2 },
+> +		{ "psys_pl1", THROTTLE_REASON_PSYS_PL1 },
+> +		{ "psys_pl2", THROTTLE_REASON_PSYS_PL2 },
+> +		{ "p0_freq", THROTTLE_REASON_P0_FREQ },
+> +		{ "psys_crit", THROTTLE_REASON_PSYS_CRIT },
+> +		{ }
+> +	};
+> +	const char *throttle_reason_function_name = "xe_gt_throttle_inject_errno";
+> +
+>   	igt_fixture() {
+>   		igt_require(fail_function_injection_enabled());
+>   		fd = drm_open_driver(DRIVER_XE);
+> @@ -640,6 +804,14 @@ int igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+>   		igt_subtest_f("vm-create-fail-%s", s->name)
+>   			vm_create_fail(fd, pci_slot, s->name, s->flags);
+>   
+> +	for (const struct section *s = throttle_reason_fail_functions; s->name; s++)
+> +		igt_subtest_f("throttle-reason-fail-%s", s->name) {
+> +			memcpy(&fault_params, &default_fault_params,
+> +			       sizeof(struct fault_injection_params));
+> +			throttle_reason_fail(fd, pci_slot, throttle_reason_function_name,
+> +					     &fault_params, s->flags);
+> +		}
+> +
+>   	for (const struct section *s = vm_bind_fail_functions; s->name; s++)
+>   		igt_subtest_f("vm-bind-fail-%s", s->name)
+>   			vm_bind_fail(fd, pci_slot, s->name);
