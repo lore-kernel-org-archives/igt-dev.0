@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2753AFF885E
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 13:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB546FF8860
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 13:02:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7D2010E746;
-	Mon, 27 Apr 2026 13:02:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9A0A510E744;
+	Mon, 27 Apr 2026 13:02:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gEpOqtiG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GHttG8h3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D555810E743
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 13:01:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 836BC10E743
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 13:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777294862; x=1808830862;
+ t=1777294856; x=1808830856;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=laq7mQ1Zh4n8wPjc7IPuFdFkZnCa//iHkpUBjb8XFA8=;
- b=gEpOqtiGumhB8C9Ombi8xWnbPrbvY0gRQTtxUqBQ8++WbeEPRANm7+uP
- tp2tCLQIzaC58Ol8MQiFxsz1tyeI4z/LD/upR6pl7AkUlqOK140U0R+O3
- X3+A2j4/LqJb5sQmo+OS9/bKE+EZ4byCzNVJ9khbgykyzt8zu7fzq2HQV
- mGYOhv5CfOeg+dOJ8KMAtxNNAZcsTuwdItbGpX7cNMzi75T/w4uX3Xin4
- 5Uyq+yT782alGsqjV4L2R2MhBHlVj74vCu1Zk2NXf8ee+mF5LmW/D4NDH
- zzZH0E5NXlaFs/fyi37SEHRQVW0ru7JeBM04RIn93brWcba8LLg61/VYW w==;
-X-CSE-ConnectionGUID: 336a/7nOQ1mr7Un70Al+GQ==
-X-CSE-MsgGUID: PWSyVxNeT+iIyEBCmzLNdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="77339267"
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="77339267"
+ bh=Aw8IPLQQqkVxB8ozeSHdQpTz70xR3wzdKrW0r0dX2QI=;
+ b=GHttG8h3QiNGscAS8sSg6lSNtQsz3x4gdiSJXZaVXE9kyu0V6KV/3ayT
+ XyNUWtUlc3kjtBqKVBUyM7HHw0dnjqJpW0avf+vfAlVqazkDEhJHKMRx5
+ XJoH35Tw9njIIqhJNYnQ05d0IHtDER0V8s0jOWY4Wd1+83KSSHov86d5i
+ D7T/juT3w9DF33wzq4mp0Ay6ndETO3ZZOF0G2i6tMYKg9ol2M26TALf40
+ ynVBlLXWLnYIdimbG200vc8ZRO8EWPa/0ZYDfd4G9AKJrW0XAHyqHyxO8
+ 09UuGICewaD3oSwftBPNumOw5bdISjaxI7N2wQOc1U1MoXKE4WKdFJk3w A==;
+X-CSE-ConnectionGUID: HEY4AO1KRmGKsJSt4WboDQ==
+X-CSE-MsgGUID: fynns0eKTOeY3TTzNhlbew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="77339212"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="77339212"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 06:01:01 -0700
-X-CSE-ConnectionGUID: GORyG1jTSayacfx2kNZZQA==
-X-CSE-MsgGUID: mDiCMr6gSF+ecGAtMmLJeQ==
+ 27 Apr 2026 06:00:55 -0700
+X-CSE-ConnectionGUID: pgUOzcCJSwm/NlmuFNBwoA==
+X-CSE-MsgGUID: TJyjUk1aRGCdLzmbWFwf1Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="237597742"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="237597731"
 Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 06:00:55 -0700
+ 27 Apr 2026 06:00:53 -0700
 From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com, karthik.b.s@intel.com,
  ville.syrjala@linux.intel.com, jani.nikula@linux.intel.com,
  Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH i-g-t 4/8] tools/intel_vbt_defs: sync intel_vbt_defs.h with
- kernel commit 203c7904f2d8
-Date: Mon, 27 Apr 2026 18:16:03 +0530
-Message-ID: <20260427124607.3115567-5-ankit.k.nautiyal@intel.com>
+Subject: [PATCH i-g-t 3/8] tools/intel_vbt_defs: sync intel_vbt_defs.h with
+ kernel commit 4d33c77cf2c3
+Date: Mon, 27 Apr 2026 18:16:02 +0530
+Message-ID: <20260427124607.3115567-4-ankit.k.nautiyal@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260427124607.3115567-1-ankit.k.nautiyal@intel.com>
 References: <20260427124607.3115567-1-ankit.k.nautiyal@intel.com>
@@ -72,28 +72,50 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Synchronize intel_vbt_defs.h with kernel commit:
 
-203c7904f2d8 ("drm/i915/vbt: Add fields dedicated_external and dyn_port_over_tc")
+4d33c77cf2c3 ("drm/i915/vbt: Add eDP Data rate overrride field in VBT")
 
 Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tools/intel_vbt_defs.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/intel_vbt_defs.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
-index 70e31520c560..57fda5824c9c 100644
+index 6612d3a4ec49..70e31520c560 100644
 --- a/tools/intel_vbt_defs.h
 +++ b/tools/intel_vbt_defs.h
-@@ -554,7 +554,8 @@ struct child_device_config {
- 	u8 dvo_function;
- 	u8 dp_usb_type_c:1;					/* 195+ */
- 	u8 tbt:1;						/* 209+ */
--	u8 flags2_reserved:2;					/* 195+ */
-+	u8 dedicated_external:1;				/* 264+ */
-+	u8 dyn_port_over_tc:1;					/* 264+ */
- 	u8 dp_port_trace_length:4;				/* 209+ */
- 	u8 dp_gpio_index;					/* 195+ */
- 	u16 dp_gpio_pin_num;					/* 195+ */
+@@ -437,6 +437,22 @@ enum vbt_gmbus_ddi {
+ #define BDB_230_VBT_DP_MAX_LINK_RATE_UHBR13P5	6
+ #define BDB_230_VBT_DP_MAX_LINK_RATE_UHBR20	7
+ 
++/* EDP link rate 263+ */
++#define BDB_263_VBT_EDP_LINK_RATE_1_62		BIT_U32(0)
++#define BDB_263_VBT_EDP_LINK_RATE_2_16		BIT_U32(1)
++#define BDB_263_VBT_EDP_LINK_RATE_2_43		BIT_U32(2)
++#define BDB_263_VBT_EDP_LINK_RATE_2_7		BIT_U32(3)
++#define BDB_263_VBT_EDP_LINK_RATE_3_24		BIT_U32(4)
++#define BDB_263_VBT_EDP_LINK_RATE_4_32		BIT_U32(5)
++#define BDB_263_VBT_EDP_LINK_RATE_5_4		BIT_U32(6)
++#define BDB_263_VBT_EDP_LINK_RATE_6_75		BIT_U32(7)
++#define BDB_263_VBT_EDP_LINK_RATE_8_1		BIT_U32(8)
++#define BDB_263_VBT_EDP_LINK_RATE_10		BIT_U32(9)
++#define BDB_263_VBT_EDP_LINK_RATE_13_5		BIT_U32(10)
++#define BDB_263_VBT_EDP_LINK_RATE_20		BIT_U32(11)
++#define BDB_263_VBT_EDP_NUM_RATES		12
++#define BDB_263_VBT_EDP_RATES_MASK		GENMASK(BDB_263_VBT_EDP_NUM_RATES - 1, 0)
++
+ /*
+  * The child device config, aka the display device data structure, provides a
+  * description of a port and its configuration on the platform.
+@@ -547,6 +563,8 @@ struct child_device_config {
+ 	u8 dp_max_link_rate:3;					/* 216+ */
+ 	u8 dp_max_link_rate_reserved:5;				/* 216+ */
+ 	u8 efp_index;						/* 256+ */
++	u32 edp_data_rate_override:12;				/* 263+ */
++	u32 edp_data_rate_override_reserved:20;			/* 263+ */
+ } __packed;
+ 
+ struct bdb_general_definitions {
 -- 
 2.45.2
 
