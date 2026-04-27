@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85FAEFF8861
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 10:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2EE1FF885E
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 10:46:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 25D3010E09F;
-	Mon, 27 Apr 2026 10:46:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A5B510E69E;
+	Mon, 27 Apr 2026 10:46:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hnby4v+c";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KYYpBfeZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E942C10E69D
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 10:46:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EAE010E69D
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 10:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777286793; x=1808822793;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=LZ5K3ySbDb2oR3cFzllQBLnWEfSOj1T+VBAoqkon3PY=;
- b=Hnby4v+cliVNTR/dc2A5nGwWDs/xOwWsvX7qgfBlKouNlp4aRPGSneFo
- zIAKqRfMsvAkBYf62NMq4d4vAp0VOzaQVnjmHscL+QCxicAyU0TEGEr9R
- hhW7MyJ08r8Y1xfIPmDwtoGSYK7yKz8PNSsCDfpQ1CSUzxhUYkkpSYxvR
- xQUvRtp2xpv2mYbQ0KznmntRlskkT4cf9v9gYDz+3Cu56sR2egvZx8ULV
- q1KBTk4KZa7mIa6L33fqJxBbqsRau09Q8zJzukEcdBS0DGH7/0ZFCCcgT
- vwZ328P+I/l3buyCO/hmfhFFh48XQbwVHwPxc6Ci/uKsrMuCySIgUA7RO Q==;
-X-CSE-ConnectionGUID: rvVVJ9bwRg28UHjggE8LjQ==
-X-CSE-MsgGUID: V0s+k6OGSp22XUpF8710mQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="78154914"
-X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="78154914"
+ t=1777286796; x=1808822796;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=qAfdBDAQU1FImz13zYhFPmPgBccbdmw3iL/RgFt0Er4=;
+ b=KYYpBfeZVd7hCjXM/TtkFDIgfM9axzHbVcbL1JthZlQ04/Y053Py9p8e
+ oGIKO6WSPph7SvFGqqIuxe/E/h2AzHYhEjuuVjiueK01VVkRPrmRTyXwa
+ JlovRFNYrSmeDYnoIBnqeikAdD9fyj2h8N2f649tuGww9tWfayQ1RjAUy
+ ED8NmYEQSYF7LbVAwCbnYn5/H9JSO1dqzIsmcmic43M4OOTZnhqxVyxe5
+ 6sZmTbznx6afTli6Pmjg0VeXRL+kYJG0Ewo9MD7wz9kIUx/O7IYehgCsA
+ UCED7DyAC+X3/Ct21DZP6rudUX9yLtWAYZh0yvW9iYXDTno2LtRLeKZ6+ A==;
+X-CSE-ConnectionGUID: aImoUWBfQ6ytKPqkPTFDOg==
+X-CSE-MsgGUID: j+v6VL8ETXWiMvIxpqTD5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="78154915"
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="78154915"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 03:46:33 -0700
-X-CSE-ConnectionGUID: 57zvDfLtRTKuRDG+MyOrPg==
-X-CSE-MsgGUID: BzRs6Y+8RI60+ik0+4M+pA==
+ 27 Apr 2026 03:46:36 -0700
+X-CSE-ConnectionGUID: G4+bEyKAThOP8YOVyW9SsQ==
+X-CSE-MsgGUID: yS6iDmuUSpKBBZHLocNSbQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="227073028"
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="227073034"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 03:46:31 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 03:46:34 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 0/2] tests/kms_colorspace: Add Colorspace connector
- property test
-Date: Mon, 27 Apr 2026 16:25:12 +0530
-Message-Id: <20260427105514.2239876-1-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 1/2] lib/igt_kms: Add Colorspace connector property
+ support
+Date: Mon, 27 Apr 2026 16:25:13 +0530
+Message-Id: <20260427105514.2239876-2-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260427105514.2239876-1-swati2.sharma@intel.com>
+References: <20260427105514.2239876-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,35 +68,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new IGT test (kms_colorspace) for the DRM Colorspace connector
-property. This is a basic sanity validation suite — it does NOT perform
-pixel-level comparison or color-accuracy verification. Instead it
-exercises the kernel interface to confirm that:
+Add IGT_CONNECTOR_COLORSPACE enum and its property name mapping, so
+that tests can get/set the Colorspace connector property via the
+standard IGT property helpers.
 
-  - The Colorspace enum property is exposed with expected values.
-  - Each colorspace value can be set and read back via atomic commit
-    (16 parameterized subtests per connector type).
-  - CRC sanity checks confirm the display output is not corrupted
-    when each colorspace value is active (no pixel comparison, just
-    ensuring the output remains valid).
-  - Colorspace survives DPMS off/on and suspend/resume cycles.
-  - Invalid enum values are correctly rejected with -EINVAL.
-  - HDMI-only enums are absent on DP connectors and vice-versa.
+Also reset Colorspace to "Default" in igt_output_reset(), preventing
+state leaks between subtests when a test changes the colorspace.  The
+reset is placed after HDR_OUTPUT_METADATA, consistent with the existing
+property ordering.
 
-Patch 1 adds the Colorspace property plumbing in lib/igt_kms.
-Patch 2 adds the kms_colorspace test with all subtests above.
+Update the igt_display_reset() doc comment to list the new property.
 
-Swati Sharma (2):
-  lib/igt_kms: Add Colorspace connector property support
-  tests/kms_colorspace: Add Colorspace connector property test
+Co-developed-by: Claude Opus 4.6 (Anthropic AI)
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ lib/igt_kms.c | 6 ++++++
+ lib/igt_kms.h | 1 +
+ 2 files changed, 7 insertions(+)
 
- lib/igt_kms.c          |   6 +
- lib/igt_kms.h          |   1 +
- tests/kms_colorspace.c | 925 +++++++++++++++++++++++++++++++++++++++++
- tests/meson.build      |   3 +-
- 4 files changed, 934 insertions(+), 1 deletion(-)
- create mode 100644 tests/kms_colorspace.c
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 913116cd8..d92a10586 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -749,6 +749,7 @@ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+ 	[IGT_CONNECTOR_WRITEBACK_FB_ID] = "WRITEBACK_FB_ID",
+ 	[IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR] = "WRITEBACK_OUT_FENCE_PTR",
+ 	[IGT_CONNECTOR_DITHERING_MODE] = "dithering mode",
++	[IGT_CONNECTOR_COLORSPACE] = "Colorspace",
+ };
+ 
+ const char * const igt_rotation_names[] = {
+@@ -2761,6 +2762,10 @@ static void igt_output_reset(igt_output_t *output)
+ 		igt_output_set_prop_value(output,
+ 					  IGT_CONNECTOR_HDR_OUTPUT_METADATA, 0);
+ 
++	if (igt_output_has_prop(output, IGT_CONNECTOR_COLORSPACE))
++		igt_output_set_prop_enum(output, IGT_CONNECTOR_COLORSPACE,
++					 "Default");
++
+ 	if (igt_output_has_prop(output, IGT_CONNECTOR_WRITEBACK_FB_ID))
+ 		igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_FB_ID, 0);
+ 	if (igt_output_has_prop(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR)) {
+@@ -2784,6 +2789,7 @@ static void igt_output_reset(igt_output_t *output)
+  * - %IGT_CONNECTOR_BROADCAST_RGB (if applicable)
+  *   %IGT_CONNECTOR_CONTENT_PROTECTION (if applicable)
+  *   %IGT_CONNECTOR_HDR_OUTPUT_METADATA (if applicable)
++ * - %IGT_CONNECTOR_COLORSPACE (if applicable)
+  * - %IGT_CONNECTOR_DITHERING_MODE (if applicable)
+  * - igt_output_override_mode() to default.
+  *
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 5f9bdda45..3eda6fdc4 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -191,6 +191,7 @@ enum igt_atomic_connector_properties {
+        IGT_CONNECTOR_WRITEBACK_FB_ID,
+        IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR,
+        IGT_CONNECTOR_DITHERING_MODE,
++       IGT_CONNECTOR_COLORSPACE,
+        IGT_NUM_CONNECTOR_PROPS
+ };
+ 
 -- 
 2.25.1
 
