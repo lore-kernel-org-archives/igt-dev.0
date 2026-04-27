@@ -4,58 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 359ABFF8860
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 14:45:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCD18FF8868
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 15:22:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6AA510E786;
-	Mon, 27 Apr 2026 14:45:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6ABC910E7AF;
+	Mon, 27 Apr 2026 15:22:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S/wGRGlY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZJ6bPE8N";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D8D910E786;
- Mon, 27 Apr 2026 14:45:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C66010E7AF
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 15:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777301111; x=1808837111;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=S6zRy5F02EcvhccHPlHebsLM6fgo71+fyD8ai9X03nU=;
- b=S/wGRGlYfKOG/j6uuyfeHWm/h3bUhAT3LfJ0KJxE61j8QX10rmQPii16
- i0oF/MV8ojHKVzUMBTbjONAbG9lho2EDu+HdprwM5opPvlQBs86GKiKz0
- 1G0KDVy6ahXrDEDxxY7PG8Ywm9IBjhAIEpFBLRhpZMUTyFscpfxRWll8U
- 8+P2Nk1GOklRg6KGeSriKGw7AyM+nVYSn0kqRxXgL7z13UZLew5gNTysg
- QMgpAsNz3Plot9SckeLyWmSLSh2Z821cJnu4SOlfPsNGGp+uzNN50bpfa
- vUryPCCUhONn+SWYyLI157aw+8v6uK7DWD/7YjoRIRkPI8wXx/SEs4nRz Q==;
-X-CSE-ConnectionGUID: j1tyXAFYS4++C4Cz7ApJVg==
-X-CSE-MsgGUID: Io4iw7DSQ+uW8ltHXfD1Cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="95602737"
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="95602737"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 07:45:10 -0700
-X-CSE-ConnectionGUID: VjrVkLjMSNm6mDgsFg8vKg==
-X-CSE-MsgGUID: lwUyy+/bR7G1wuzlWhBSqA==
+ t=1777303334; x=1808839334;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=fdw8jSKFfNIdi6bNcVGrwwIQDXOirftouMREuYbNhJM=;
+ b=ZJ6bPE8NekPZwg9RacUla9vKm9PklHSmPvc8bnCm6uKgQxVuuy4VqNMN
+ mYiD4ij+i0M9YM04GgRhnxxckicD3eDLq+NK+csqh8ImX7gC1qtT8xIkk
+ hVdHgIOIkwSRfdR4RD3L0iXXLvEEXxx5g9hFANcsRGtezo9OWodELwLyo
+ 7daNcbFFUWN5IUKl4VDDqVt9fAtCkAOYX1nBc3Tr73x9wKTY67LeUEoO6
+ l/sP2h/yI58ZQw0NZak15cNJkL1glcCqar2QBmRtQL7SQWhGx6t6Q7Srg
+ +wGt/wrIsroerjdRq6iwJbht0FIgyKyVoFItCUT5JpaV/C2XEJJRZMFdk g==;
+X-CSE-ConnectionGUID: 7Wvhy+N6T3uvCL3bzHr+3Q==
+X-CSE-MsgGUID: VmwH5qE/QLqV3InJvz15Uw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="88890892"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="88890892"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Apr 2026 08:22:13 -0700
+X-CSE-ConnectionGUID: XrhxhrigQu2dtjD2yAyWjw==
+X-CSE-MsgGUID: l0vptRn4QvOPIyZ4022hGw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="233537450"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:45:09 -0700
-Date: Mon, 27 Apr 2026 16:45:06 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="237995885"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:22:12 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbDogZmFpbHVy?= =?utf-8?Q?e?= for
- Few fixes for igt_display_reset_outputs() in lib/igt_kms
-Message-ID: <20260427144506.jmb5o7pevuvkkeb3@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20260424151355.129423-1-kamil.konieczny@linux.intel.com>
- <177706790443.9783.10744440356900654019@5ab824fced77>
+Cc: Swati Sharma <swati2.sharma@intel.com>,
+ "Claude Opus 4 . 6" <claude@anthropic.com>
+Subject: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Remove plane-scaler
+ subtests
+Date: Mon, 27 Apr 2026 21:00:59 +0530
+Message-Id: <20260427153059.2252606-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <177706790443.9783.10744440356900654019@5ab824fced77>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,69 +67,319 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-04-24 at 21:58:24 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: Few fixes for igt_display_reset_outputs() in lib/igt_kms
-> URL   : https://patchwork.freedesktop.org/series/165439/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_18362_full -> IGTPW_15053_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_15053_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_15053_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15053/index.html
-> 
-> Participating hosts (10 -> 10)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_15053_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live:
->     - shard-dg1:          NOTRUN -> [ABORT][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15053/shard-dg1-19/igt@i915_selftest@live.html
-> 
+Remove filter-modifiers, filter-rotations, and filter-formats
+subtests since the sharpness filter operates on the pipe scaler,
+not the plane scaler, making these tests irrelevant.
 
-Not related.
+Remove filter-tap since we don't know from igt whether the correct
+tap is selected or not.
 
-Regards,
-Kamil
+Co-developed-by: Claude Opus 4.6 <claude@anthropic.com>
+---
+ tests/intel/kms_sharpness_filter.c | 175 -----------------------------
+ 1 file changed, 175 deletions(-)
 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_15053_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@device_reset@unbind-cold-reset-rebind:
->     - shard-tglu-1:       NOTRUN -> [SKIP][2] ([i915#11078])
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15053/shard-tglu-1/igt@device_reset@unbind-cold-reset-rebind.html
-> 
-...cut..
+diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
+index ff2efb154..24747cc75 100644
+--- a/tests/intel/kms_sharpness_filter.c
++++ b/tests/intel/kms_sharpness_filter.c
+@@ -21,22 +21,9 @@
+  * SUBTEST: filter-strength
+  * Description: Verify that varying strength (0-255), affects the degree of sharpness applied.
+  *
+- * SUBTEST: filter-modifiers
+- * Description: Verify content adaptive sharpness filter with varying modifiers.
+- *
+- * SUBTEST: filter-rotations
+- * Description: Verify content adaptive sharpness filter with varying rotations.
+- *
+- * SUBTEST: filter-formats
+- * Description: Verify content adaptive sharpness filter with varying formats.
+- *
+  * SUBTEST: filter-toggle
+  * Description: Verify toggling between enabling and disabling content adaptive sharpness filter.
+  *
+- * SUBTEST: filter-tap
+- * Description: Verify content adaptive sharpness filter with resolution change, resolution change
+- * 		will lead to selection of distinct taps.
+- *
+  * SUBTEST: filter-dpms
+  * Description: Verify content adaptive sharpness filter with DPMS.
+  *
+@@ -78,26 +65,17 @@ IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
+  * is seen without corruption for each subtest.
+  */
+ 
+-#define TAP_3				3
+-#define TAP_5				5
+-#define TAP_7				7
+ #define DISABLE_FILTER			0
+ #define MIN_FILTER_STRENGTH		1
+ #define MID_FILTER_STRENGTH		128
+ #define MAX_FILTER_STRENGTH		255
+-#define MAX_PIXELS_FOR_3_TAP_FILTER	(1920 * 1080)
+-#define MAX_PIXELS_FOR_5_TAP_FILTER	(3840 * 2160)
+ #define NROUNDS				10
+ #define DEFAULT_FILTER_STRENGTH		-1
+ 
+ enum test_type {
+ 	TEST_FILTER_BASIC,
+-	TEST_FILTER_MODIFIERS,
+-	TEST_FILTER_ROTATION,
+-	TEST_FILTER_FORMATS,
+ 	TEST_FILTER_STRENGTH,
+ 	TEST_FILTER_TOGGLE,
+-	TEST_FILTER_TAP,
+ 	TEST_FILTER_DPMS,
+ 	TEST_FILTER_SUSPEND,
+ 	TEST_FILTER_UPSCALE,
+@@ -115,29 +93,6 @@ const int filter_strength_list[] = {
+ 	(MID_FILTER_STRENGTH + MAX_FILTER_STRENGTH) / 2,
+ 	MAX_FILTER_STRENGTH,
+ };
+-const int filter_tap_list[] = {
+-	TAP_3,
+-	TAP_5,
+-	TAP_7,
+-};
+-static const struct {
+-	uint64_t modifier;
+-	const char *name;
+-} modifiers[] = {
+-	{ DRM_FORMAT_MOD_LINEAR, "linear", },
+-	{ I915_FORMAT_MOD_X_TILED, "x-tiled", },
+-	{ I915_FORMAT_MOD_4_TILED, "4-tiled", },
+-};
+-static const int formats[] = {
+-	DRM_FORMAT_NV12,
+-	DRM_FORMAT_RGB565,
+-	DRM_FORMAT_XRGB8888,
+-	DRM_FORMAT_XBGR16161616F,
+-};
+-static const igt_rotation_t rotations[] = {
+-	IGT_ROTATION_0,
+-	IGT_ROTATION_180,
+-};
+ static const uint32_t scaling_modes[] = {
+ 	DRM_MODE_SCALE_FULLSCREEN,
+ 	DRM_MODE_SCALE_ASPECT,
+@@ -146,9 +101,6 @@ static const uint32_t scaling_modes[] = {
+ enum subtest_iter {
+ 	ITER_NONE,
+ 	ITER_STRENGTH,
+-	ITER_MODIFIER,
+-	ITER_ROTATION,
+-	ITER_FORMAT,
+ 	ITER_SCALING_MODE,
+ };
+ 
+@@ -173,40 +125,12 @@ static const struct subtest_entry {
+ 		.filter_strength = DEFAULT_FILTER_STRENGTH,
+ 		.iter     = ITER_STRENGTH,
+ 	},
+-	{
+-		.name     = "filter-modifiers",
+-		.describe = "Verify content adaptive sharpness filter with varying modifiers.",
+-		.type     = TEST_FILTER_MODIFIERS,
+-		.filter_strength = DEFAULT_FILTER_STRENGTH,
+-		.iter     = ITER_MODIFIER,
+-	},
+-	{
+-		.name     = "filter-rotations",
+-		.describe = "Verify content adaptive sharpness filter with varying rotations.",
+-		.type     = TEST_FILTER_ROTATION,
+-		.filter_strength = DEFAULT_FILTER_STRENGTH,
+-		.iter     = ITER_ROTATION,
+-	},
+-	{
+-		.name     = "filter-formats",
+-		.describe = "Verify content adaptive sharpness filter with varying formats.",
+-		.type     = TEST_FILTER_FORMATS,
+-		.filter_strength = DEFAULT_FILTER_STRENGTH,
+-		.iter     = ITER_FORMAT,
+-	},
+ 	{
+ 		.name     = "filter-toggle",
+ 		.describe = "Verify toggling between enabling and disabling content adaptive sharpness filter.",
+ 		.type     = TEST_FILTER_TOGGLE,
+ 		.filter_strength = MAX_FILTER_STRENGTH,
+ 	},
+-	{
+-		.name     = "filter-tap",
+-		.describe = "Verify content adaptive sharpness filter with resolution change; "
+-			    "resolution change will lead to selection of distinct taps.",
+-		.type     = TEST_FILTER_TAP,
+-		.filter_strength = DEFAULT_FILTER_STRENGTH,
+-	},
+ 	{
+ 		.name     = "filter-dpms",
+ 		.describe = "Verify content adaptive sharpness filter with DPMS.",
+@@ -278,11 +202,8 @@ typedef struct {
+ 	igt_plane_t *plane[4];
+ 	drmModeModeInfo *mode;
+ 	int filter_strength;
+-	int filter_tap;
+ 	uint64_t modifier;
+-	const char *modifier_name;
+ 	uint32_t format;
+-	igt_rotation_t rotation;
+ 	uint32_t scaling_mode;
+ } data_t;
+ 
+@@ -400,32 +321,6 @@ static void cleanup(data_t *data)
+ 	cleanup_fbs(data);
+ }
+ 
+-static void get_modes_for_filter_taps(igt_output_t *output, drmModeModeInfo *mode[3])
+-{
+-	drmModeConnector *connector = output->config.connector;
+-	int total_pixels = 0;
+-
+-	/*
+-	 * TAP 3: mode->hdisplay <= 1920 && mode->vdisplay <= 1080
+-	 * TAP 5: (mode->hdisplay > 1920 && mode->hdisplay < 3840) &&
+-	 * 	  (mode->vdisplay > 1080 && mode->vdisplay < 2160)
+-	 * TAP 7: mode->hdisplay >= 3840 && mode->vdisplay >= 2160
+-	 */
+-	for (int i = 0; i < connector->count_modes; i++) {
+-		total_pixels = connector->modes[i].hdisplay * connector->modes[i].vdisplay;
+-
+-		if (total_pixels <= MAX_PIXELS_FOR_3_TAP_FILTER)
+-			mode[0] = &connector->modes[i];
+-
+-		if (total_pixels > MAX_PIXELS_FOR_3_TAP_FILTER &&
+-		    total_pixels <= MAX_PIXELS_FOR_5_TAP_FILTER)
+-			mode[1] = &connector->modes[i];
+-
+-		if (total_pixels > MAX_PIXELS_FOR_5_TAP_FILTER)
+-			mode[2] = &connector->modes[i];
+-	}
+-}
+-
+ static int test_filter_toggle(data_t *data)
+ {
+ 	int ret = 0;
+@@ -488,14 +383,6 @@ static void test_sharpness_filter(data_t *data, enum test_type type)
+ 		 data->format, data->modifier, &data->fb[0]);
+ 	igt_plane_set_fb(data->plane[0], &data->fb[0]);
+ 
+-	if (type == TEST_FILTER_ROTATION) {
+-		igt_skip_on_f(!igt_plane_has_rotation(data->plane[0],
+-						      data->rotation),
+-			      "No requested rotation on pipe %s\n",
+-			      igt_crtc_name(data->crtc));
+-		igt_plane_set_rotation(data->plane[0], data->rotation);
+-	}
+-
+ 	if (type == TEST_INVALID_FILTER_WITH_SCALING_MODE)
+ 		igt_require_f(has_scaling_mode(output), "No connecter scaling mode found on %s\n", output->name);
+ 
+@@ -561,12 +448,8 @@ static bool has_sharpness_filter(igt_crtc_t *crtc)
+ 
+ static const char * const test_type_names[] = {
+ 	[TEST_FILTER_BASIC]                     = "basic",
+-	[TEST_FILTER_MODIFIERS]                 = NULL,
+-	[TEST_FILTER_ROTATION]                  = NULL,
+-	[TEST_FILTER_FORMATS]                   = NULL,
+ 	[TEST_FILTER_STRENGTH]                  = NULL,
+ 	[TEST_FILTER_TOGGLE]                    = "toggle",
+-	[TEST_FILTER_TAP]                       = NULL,
+ 	[TEST_FILTER_DPMS]                      = "dpms",
+ 	[TEST_FILTER_SUSPEND]                   = "suspend",
+ 	[TEST_FILTER_UPSCALE]                   = "upscale",
+@@ -587,16 +470,6 @@ static void build_test_suffix(data_t *data, enum test_type type,
+ 
+ 	/* suffix depends on the current test parameters */
+ 	switch (type) {
+-	case TEST_FILTER_MODIFIERS:
+-		snprintf(name, len, "-%s", data->modifier_name);
+-		break;
+-	case TEST_FILTER_ROTATION:
+-		snprintf(name, len, "-%srot",
+-			 igt_plane_rotation_name(data->rotation));
+-		break;
+-	case TEST_FILTER_FORMATS:
+-		snprintf(name, len, "-%s", igt_format_str(data->format));
+-		break;
+ 	case TEST_FILTER_STRENGTH:
+ 		snprintf(name, len, "-strength-%d", data->filter_strength);
+ 		break;
+@@ -692,36 +565,6 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+ 				continue;
+ 			}
+ 
+-			if (type == TEST_FILTER_TAP) {
+-				drmModeModeInfo *modes[3] = { NULL, NULL, NULL };
+-
+-				get_modes_for_filter_taps(output, modes);
+-				for (int i = 0; i < 3; i++) {
+-					data->filter_tap = filter_tap_list[i];
+-					if (!modes[i])
+-						continue;
+-					data->mode = modes[i];
+-					igt_info("Mode %dx%d@%d on output %s\n",
+-						 data->mode->hdisplay,
+-						 data->mode->vdisplay,
+-						 data->mode->vrefresh,
+-						 igt_output_name(data->output));
+-					igt_output_override_mode(data->output,
+-								 data->mode);
+-
+-					snprintf(name, sizeof(name), "-tap-%d",
+-						 data->filter_tap);
+-					igt_dynamic_f("pipe-%s-%s%s",
+-						       igt_crtc_name(data->crtc),
+-						       data->output->name, name)
+-						test_sharpness_filter(data, type);
+-				}
+-
+-				if (data->limited)
+-					break;
+-				continue;
+-			}
+-
+ 			build_test_suffix(data, type, name, sizeof(name));
+ 
+ 			igt_dynamic_f("pipe-%s-%s%s",
+@@ -738,8 +581,6 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+ static void set_data_defaults(data_t *data)
+ {
+ 	data->modifier        = DRM_FORMAT_MOD_LINEAR;
+-	data->modifier_name   = modifiers[0].name;
+-	data->rotation        = IGT_ROTATION_0;
+ 	data->format          = DRM_FORMAT_XRGB8888;
+ 	data->filter_strength = MID_FILTER_STRENGTH;
+ }
+@@ -749,12 +590,6 @@ static int iter_count(enum subtest_iter iter)
+ 	switch (iter) {
+ 	case ITER_STRENGTH:
+ 		return ARRAY_SIZE(filter_strength_list);
+-	case ITER_MODIFIER:
+-		return ARRAY_SIZE(modifiers);
+-	case ITER_ROTATION:
+-		return ARRAY_SIZE(rotations);
+-	case ITER_FORMAT:
+-		return ARRAY_SIZE(formats);
+ 	case ITER_SCALING_MODE:
+ 		return ARRAY_SIZE(scaling_modes);
+ 	default:
+@@ -768,16 +603,6 @@ static void apply_iter_param(data_t *data, const struct subtest_entry *st, int i
+ 	case ITER_STRENGTH:
+ 		data->filter_strength = filter_strength_list[idx];
+ 		break;
+-	case ITER_MODIFIER:
+-		data->modifier = modifiers[idx].modifier;
+-		data->modifier_name = modifiers[idx].name;
+-		break;
+-	case ITER_ROTATION:
+-		data->rotation = rotations[idx];
+-		break;
+-	case ITER_FORMAT:
+-		data->format = formats[idx];
+-		break;
+ 	case ITER_SCALING_MODE:
+ 		data->scaling_mode = scaling_modes[idx];
+ 		break;
+-- 
+2.25.1
+
