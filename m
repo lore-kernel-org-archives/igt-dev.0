@@ -4,53 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71968FF8860
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 14:40:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10BCCFF8868
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 14:42:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1861A10E0B7;
-	Mon, 27 Apr 2026 14:40:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B612810E786;
+	Mon, 27 Apr 2026 14:42:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TyKZAhyy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aeZJ81vB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB4C710E0B7
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 14:40:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C6DF10E786
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 14:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777300844; x=1808836844;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=kCi3wAzbsYZNhji0cx6uhybJACJLIfePTqMGdazPdjY=;
- b=TyKZAhyymIt5BkAexfe+HtFeFAuVSb0aUUANCBtObUWDYl7Y7QXbyOHG
- NP4sf9mP3MyCiV+zzENRaZhgvoamRyukTNA3LvBRNitN6x6urVVWdfB4X
- 3TYM8c8MeAtA8482Kv1te5WnL5YT3S5MXkePpzj2y7tD4v/5cG2HOOZrA
- vrQMLany+ewWBq6kWc8NlWboHDObAh5ktznlshFwadCSclDzerBzSWkFU
- YQYShAY/txhRZdwwqkBwsaa56HVNmAGtxTQ5lTx5d3OwnlLQ1HXI2Wbr3
- MOBNDZYTsL+1iv69wlNJU/aT97urfkpOsn7PXeWYaE9y8egZbAFeQX4Np w==;
-X-CSE-ConnectionGUID: 6izxAlSiTbCHDaKemnrhAg==
-X-CSE-MsgGUID: RZuktUpwQ7GW9QfLhpZieQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77350622"
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="77350622"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 07:38:16 -0700
-X-CSE-ConnectionGUID: kYI719WNQ3yeSb1q5o4FBQ==
-X-CSE-MsgGUID: NaekQHxiQ9q1wV0jCoN8WQ==
+ t=1777300909; x=1808836909;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=pQ7/eeoM9E9/3id84jxlZV2vQ+EeIn4dz+CLrnSkZ5E=;
+ b=aeZJ81vBcChhc4RM80Ys78zmgUovKVS3ebubi5p1i9omlO8hYn76gLJI
+ q9qEzfdcox7evuhJ8b6qROk4ykc4W31OxkpOzcEXcqkgFjDVq0h6eseyq
+ nnUPm02wI0bV2ej56glF4ELs+yNBDQbGWCt1/qdMCnKvP5vsh5LYwKpLQ
+ MVzgV2uQdoyQeDVGfZ4m9OMqj8mWP/8wac7XZ734cLmCqhS45O5wgeraU
+ 5I/vbXiF4TvIMbVfKUY3ETMwD2df7b1j1WmyemV7j32gwZurlnbsXTr9Z
+ oDr1XRLpcbMRf0Y+QiuyE6wDqXaqAUpB8vIz6EpPnuFZu4JPng/v9GoEi Q==;
+X-CSE-ConnectionGUID: kF9rRxfrQCq9mpzNqPSIWw==
+X-CSE-MsgGUID: OQPFOQlnQra89Ru2v0FfnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78068079"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="78068079"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Apr 2026 07:41:49 -0700
+X-CSE-ConnectionGUID: OMqHcuIDQdmdEHGrJS1KzA==
+X-CSE-MsgGUID: zSgbLJK+TSe+BnqGScjs8A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="233929097"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by orviesa007.jf.intel.com with ESMTP; 27 Apr 2026 07:38:15 -0700
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com
-Subject: [PATCH i-g-t] tests/kms_hdr: Move capability checks inside dynamic
- subtests
-Date: Mon, 27 Apr 2026 20:19:04 +0530
-Message-Id: <20260427144904.3695397-1-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="232660568"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:41:48 -0700
+Date: Mon, 27 Apr 2026 16:41:30 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
+ ville.syrjala@linux.intel.com, jani.nikula@linux.intel.com
+Subject: Re: [PATCH i-g-t 5/8] tools/intel_vbt_defs: sync intel_vbt_defs.h
+ with kernel commit 1b85a9b04681
+Message-ID: <20260427144130.uiqrfekvsovvzknm@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+ igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
+ ville.syrjala@linux.intel.com, jani.nikula@linux.intel.com
+References: <20260427124607.3115567-1-ankit.k.nautiyal@intel.com>
+ <20260427124607.3115567-6-ankit.k.nautiyal@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260427124607.3115567-6-ankit.k.nautiyal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,261 +74,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Earlier, output capability checks were done in the outer loops
-using continue/break. This caused a problem where if an earlier
-output (e.g., eDP) passed but a later output (e.g., DP) failed
-a check (such as reading bpc), the entire subtest would be skipped,
-discarding the earlier valid result and reporting a false skip/failure.
+Hi Ankit,
+On 2026-04-27 at 18:16:04 +0530, Ankit Nautiyal wrote:
+> Synchronize intel_vbt_defs.h with kernel commit:
+> 
+> 1b85a9b04681 ("drm/i915/vbt: Add edp pipe joiner enable/disable bits")
+> 
+> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 
-Fix this by moving all output capability checks inside dynamic
-block. Each pipe-output-format combination is now an independent
-dynamic subtest that passes or skips on its own merit, without
-affecting other combinations.
+Please squash changes into one commit, with desccription like:
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4879
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/kms_hdr.c | 211 ++++++++++++++++++++++--------------------------
- 1 file changed, 96 insertions(+), 115 deletions(-)
+Synchronize intel_vbt_defs.h with kernel up to commit 1b85a9b04681,
+this will bring up following changes:
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index b215b0e6c..20838469b 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -325,48 +325,41 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 	for_each_connected_output(display, output) {
- 		igt_crtc_t *crtc;
- 
--		if (!has_max_bpc(output)) {
--			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC.\n",
--				 igt_output_name(output));
--			continue;
--		}
--
--		if (igt_get_output_max_bpc(output) < 10) {
--			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
--			continue;
--		}
--
- 		for_each_crtc(display, crtc) {
--			igt_output_set_crtc(output,
--					    crtc);
--			if (!intel_pipe_output_combo_valid(display)) {
--				igt_output_set_crtc(output, NULL);
--				continue;
--			}
--
- 			for (int i = 0; i < ARRAY_SIZE(hdr_test_formats); i++) {
--				prepare_test(data, output,
--					     crtc);
--
--				if (is_intel_device(data->fd) &&
--				    !igt_max_bpc_constraint(display, crtc, output, 10)) {
--					igt_info("%s: No suitable mode found to use 10 bpc.\n",
--						  igt_output_name(output));
--
--					test_fini(data);
--					break;
--				}
--
--				data->mode = igt_output_get_mode(output);
--				data->w = data->mode->hdisplay;
--				data->h = data->mode->vdisplay;
--
- 				igt_dynamic_f("pipe-%s-%s-%s",
- 					      igt_crtc_name(crtc), output->name,
--					      igt_format_str(hdr_test_formats[i]))
--					      test_bpc_switch_on_output(data,
--								       crtc,
--								       output, hdr_test_formats[i], flags);
-+					      igt_format_str(hdr_test_formats[i])) {
-+					igt_require_f(has_max_bpc(output),
-+						      "%s: Doesn't support IGT_CONNECTOR_MAX_BPC.\n",
-+						      igt_output_name(output));
-+
-+					igt_require_f(igt_get_output_max_bpc(output) >= 10,
-+						      "%s: Doesn't support 10 bpc.\n",
-+						      igt_output_name(output));
-+
-+					prepare_test(data, output, crtc);
-+
-+					igt_require_f(intel_pipe_output_combo_valid(display),
-+						      "pipe-%s-%s: combo invalid.\n",
-+						      igt_crtc_name(crtc), output->name);
-+
-+					if (is_intel_device(data->fd))
-+						igt_require_f(igt_max_bpc_constraint(display,
-+										     crtc,
-+										     output,
-+										     10),
-+							      "%s: No suitable mode found to "
-+							      "use 10 bpc.\n",
-+							      igt_output_name(output));
-+
-+					data->mode = igt_output_get_mode(output);
-+					data->w = data->mode->hdisplay;
-+					data->h = data->mode->vdisplay;
-+
-+					test_bpc_switch_on_output(data, crtc, output,
-+								  hdr_test_formats[i], flags);
-+				}
- 			}
- 
- 			/* One pipe is enough */
-@@ -725,88 +718,76 @@ static void test_hdr(data_t *data, uint32_t flags)
- 	for_each_connected_output(display, output) {
- 		igt_crtc_t *crtc;
- 
--		/* To test HDR, 10 bpc is required, so we need to
--		 * set MAX_BPC property to 10bpc prior to setting
--		 * HDR metadata property. Therefore, checking.
--		 */
--		if (!has_max_bpc(output) || !has_hdr(output)) {
--			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC or IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
--				 igt_output_name(output));
--			continue;
--		}
--
--		/* For negative test, panel should be non-hdr. */
--		if ((flags & TEST_INVALID_HDR) && is_panel_hdr(data, output)) {
--			igt_info("%s: Can't run negative test on HDR panel.\n",
--				 igt_output_name(output));
--			continue;
--		}
--
--		if ((flags & ~TEST_INVALID_HDR) && !is_panel_hdr(data, output)) {
--			igt_info("%s: Can't run HDR tests on non-HDR panel.\n",
--				 igt_output_name(output));
--			continue;
--		}
--
--		if (igt_get_output_max_bpc(output) < 10) {
--			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
--			continue;
--		}
--
--		if ((flags & TEST_BRIGHTNESS) && !output_is_internal_panel(output)) {
--			igt_info("%s: Can't run brightness test on non-internal panel.\n",
--				 igt_output_name(output));
--			continue;
--		}
--
- 		for_each_crtc(display, crtc) {
--			igt_output_set_crtc(output,
--					    crtc);
--			if (!intel_pipe_output_combo_valid(display)) {
--				igt_output_set_crtc(output, NULL);
--				continue;
--			}
--
- 			for (int i = 0; i < ARRAY_SIZE(hdr_test_formats); i++) {
--				prepare_test(data, output,
--					     crtc);
--
--				/* Signal HDR requirement via metadata */
--				fill_hdr_output_metadata_st2084(&hdr);
--				set_hdr_output_metadata(data, &hdr);
--				if (igt_display_try_commit2(display, display->is_atomic ?
--							    COMMIT_ATOMIC : COMMIT_LEGACY)) {
--					igt_info("%s: Couldn't set HDR metadata\n",
--						  igt_output_name(output));
--					test_fini(data);
--					break;
--				}
--
--				if (is_intel_device(data->fd) &&
--				    !igt_max_bpc_constraint(display, crtc, output, 10)) {
--					igt_info("%s: No suitable mode found to use 10 bpc.\n",
--						  igt_output_name(output));
--
--					test_fini(data);
--					break;
--				}
--
--				if (igt_is_dsc_enabled(data->fd, output->name))
--					flags |= TEST_NEEDS_DSC;
--				else
--					flags &= ~TEST_NEEDS_DSC;
--
--				set_hdr_output_metadata(data, NULL);
--				igt_display_commit2(display, display->is_atomic ?
--						    COMMIT_ATOMIC : COMMIT_LEGACY);
--
--				data->mode = igt_output_get_mode(output);
--				data->w = data->mode->hdisplay;
--				data->h = data->mode->vdisplay;
--
- 				igt_dynamic_f("pipe-%s-%s-%s",
- 					       igt_crtc_name(crtc), output->name,
- 					       igt_format_str(hdr_test_formats[i])) {
-+					igt_require_f(has_max_bpc(output) && has_hdr(output),
-+						      "%s: Doesn't support IGT_CONNECTOR_MAX_BPC "
-+						      "or IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
-+						      igt_output_name(output));
-+
-+					if (flags & TEST_INVALID_HDR)
-+						igt_require_f(!is_panel_hdr(data, output),
-+							      "%s: Can't run negative test on "
-+							      "HDR panel.\n",
-+							      igt_output_name(output));
-+
-+					if (!(flags & TEST_INVALID_HDR))
-+						igt_require_f(is_panel_hdr(data, output),
-+							      "%s: Can't run HDR tests on "
-+							      "non-HDR panel.\n",
-+							      igt_output_name(output));
-+
-+					igt_require_f(igt_get_output_max_bpc(output) >= 10,
-+						      "%s: Doesn't support 10 bpc.\n",
-+						      igt_output_name(output));
-+
-+					if (flags & TEST_BRIGHTNESS)
-+						igt_require_f(output_is_internal_panel(output),
-+							      "%s: Can't run brightness test on "
-+							      "non-internal panel.\n",
-+							      igt_output_name(output));
-+
-+					prepare_test(data, output, crtc);
-+
-+					igt_require_f(intel_pipe_output_combo_valid(display),
-+						      "pipe-%s-%s: combo invalid.\n",
-+						      igt_crtc_name(crtc), output->name);
-+
-+					/* Signal HDR requirement via metadata */
-+					fill_hdr_output_metadata_st2084(&hdr);
-+					set_hdr_output_metadata(data, &hdr);
-+					igt_require_f(!igt_display_try_commit2(display,
-+									       display->is_atomic ?
-+									       COMMIT_ATOMIC :
-+									       COMMIT_LEGACY),
-+						      "%s: Couldn't set HDR metadata\n",
-+						      igt_output_name(output));
-+
-+					if (is_intel_device(data->fd))
-+						igt_require_f(igt_max_bpc_constraint(display,
-+										     crtc,
-+										     output,
-+										     10),
-+							      "%s: No suitable mode found to "
-+							      "use 10 bpc.\n",
-+							      igt_output_name(output));
-+
-+					if (igt_is_dsc_enabled(data->fd, output->name))
-+						flags |= TEST_NEEDS_DSC;
-+					else
-+						flags &= ~TEST_NEEDS_DSC;
-+
-+					set_hdr_output_metadata(data, NULL);
-+					igt_display_commit2(display, display->is_atomic ?
-+							    COMMIT_ATOMIC : COMMIT_LEGACY);
-+
-+					data->mode = igt_output_get_mode(output);
-+					data->w = data->mode->hdisplay;
-+					data->h = data->mode->vdisplay;
-+
- 					if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND |
- 						     TEST_INVALID_HDR | TEST_BRIGHTNESS))
- 						test_static_toggle(data,
--- 
-2.34.1
+1b85a9b04681 ("drm/i915/vbt: Add edp pipe joiner enable/disable bits")
+203c7904f2d8 ("drm/i915/vbt: Add fields dedicated_external and dyn_port_over_tc")
+4d33c77cf2c3 ("drm/i915/vbt: Add eDP Data rate overrride field in VBT")
 
+imho you coud keep r-b from Karthik.
+
+Regards,
+Kamil
+
+> ---
+>  tools/intel_vbt_defs.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
+> index 57fda5824c9c..0dc13d080e8a 100644
+> --- a/tools/intel_vbt_defs.h
+> +++ b/tools/intel_vbt_defs.h
+> @@ -1109,6 +1109,7 @@ struct bdb_edp {
+>  	u16 edp_dsc_disable;					/* 251+ */
+>  	u16 t6_delay_support;					/* 260+ */
+>  	u16 link_idle_time[16];					/* 260+ */
+> +	u16 pipe_joiner_enable;					/* 261+ */
+>  } __packed;
+>  
+>  /*
+> -- 
+> 2.45.2
+> 
