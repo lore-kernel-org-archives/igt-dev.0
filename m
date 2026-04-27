@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10BCCFF8868
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 14:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC2C5FF8868
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 14:44:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B612810E786;
-	Mon, 27 Apr 2026 14:42:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 75E9310E786;
+	Mon, 27 Apr 2026 14:44:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aeZJ81vB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QAjKFAtw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C6DF10E786
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 14:41:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6ECC210E786;
+ Mon, 27 Apr 2026 14:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777300909; x=1808836909;
+ t=1777301072; x=1808837072;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=pQ7/eeoM9E9/3id84jxlZV2vQ+EeIn4dz+CLrnSkZ5E=;
- b=aeZJ81vBcChhc4RM80Ys78zmgUovKVS3ebubi5p1i9omlO8hYn76gLJI
- q9qEzfdcox7evuhJ8b6qROk4ykc4W31OxkpOzcEXcqkgFjDVq0h6eseyq
- nnUPm02wI0bV2ej56glF4ELs+yNBDQbGWCt1/qdMCnKvP5vsh5LYwKpLQ
- MVzgV2uQdoyQeDVGfZ4m9OMqj8mWP/8wac7XZ734cLmCqhS45O5wgeraU
- 5I/vbXiF4TvIMbVfKUY3ETMwD2df7b1j1WmyemV7j32gwZurlnbsXTr9Z
- oDr1XRLpcbMRf0Y+QiuyE6wDqXaqAUpB8vIz6EpPnuFZu4JPng/v9GoEi Q==;
-X-CSE-ConnectionGUID: kF9rRxfrQCq9mpzNqPSIWw==
-X-CSE-MsgGUID: OQPFOQlnQra89Ru2v0FfnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78068079"
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="78068079"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 07:41:49 -0700
-X-CSE-ConnectionGUID: OMqHcuIDQdmdEHGrJS1KzA==
-X-CSE-MsgGUID: zSgbLJK+TSe+BnqGScjs8A==
+ bh=veoewf41VdwnaB1jqtLK1obsPpoK1ipcLmtDDjnAwGo=;
+ b=QAjKFAtwTf2UlUZAvYw9+SNrqFwLtlP/MNMaZ7pvi7hbOhP5ACmU707E
+ 6YSHqut19X/pYLsfg6/dXHmju31m/PFKws2c20c3/BHGxxZ9RG67ek8D8
+ HFZpPzNiQ1kt+NfzoblOG2HYgeO58mMEhU1DNGjIR7sKdhAFZkvvGc49B
+ mP+E/lAKSGbWlNvEB+9aZ+R5ScKLCQWqgpJEmyJl2MBjiGo9fVunBR7wq
+ cPUVtWJvvbjrNJsXXmBBMufeRlFda0v/E5ZWbJCqgJofuAlp/YQsgBls2
+ rfS2qvrqEGSONXVNAU4UjUFbw0yxbu7nL5W1BtcK6bE0YedOxhhbGShQp Q==;
+X-CSE-ConnectionGUID: l2OkZPEhRnGV87QgUAdvuA==
+X-CSE-MsgGUID: Fcbvcu+LTbSuvN0moK8G3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="100848284"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="100848284"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Apr 2026 07:44:31 -0700
+X-CSE-ConnectionGUID: c00Rf2YOSoKijFU39ez7FA==
+X-CSE-MsgGUID: yzw63EI1TPqd5k50ymtmXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="232660568"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="237985339"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:41:48 -0700
-Date: Mon, 27 Apr 2026 16:41:30 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:44:31 -0700
+Date: Mon, 27 Apr 2026 16:44:27 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
- ville.syrjala@linux.intel.com, jani.nikula@linux.intel.com
-Subject: Re: [PATCH i-g-t 5/8] tools/intel_vbt_defs: sync intel_vbt_defs.h
- with kernel commit 1b85a9b04681
-Message-ID: <20260427144130.uiqrfekvsovvzknm@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZVTEw6IGZhaWx1cg==?= =?utf-8?Q?e?= for
+ Few fixes for igt_display_reset_outputs() in lib/igt_kms
+Message-ID: <20260427144427.tdb6cu2wllsmpv6t@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
- igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
- ville.syrjala@linux.intel.com, jani.nikula@linux.intel.com
-References: <20260427124607.3115567-1-ankit.k.nautiyal@intel.com>
- <20260427124607.3115567-6-ankit.k.nautiyal@intel.com>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20260424151355.129423-1-kamil.konieczny@linux.intel.com>
+ <177705347341.7958.4179894556185423615@5ab824fced77>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260427124607.3115567-6-ankit.k.nautiyal@intel.com>
+In-Reply-To: <177705347341.7958.4179894556185423615@5ab824fced77>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,45 +71,108 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ankit,
-On 2026-04-27 at 18:16:04 +0530, Ankit Nautiyal wrote:
-> Synchronize intel_vbt_defs.h with kernel commit:
+Hi igt-dev,
+On 2026-04-24 at 17:57:53 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> 1b85a9b04681 ("drm/i915/vbt: Add edp pipe joiner enable/disable bits")
+> Series: Few fixes for igt_display_reset_outputs() in lib/igt_kms
+> URL   : https://patchwork.freedesktop.org/series/165439/
+> State : failure
 > 
-> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8873_FULL -> XEIGTPW_15053_FULL
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_15053_FULL absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_15053_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (2 -> 2)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_15053_FULL:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@xe_ccs@block-multicopy-compressed:
+>     - shard-bmg:          NOTRUN -> [SKIP][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15053/shard-bmg-9/igt@xe_ccs@block-multicopy-compressed.html
+> 
+>   * igt@xe_exec_balancer@once-virtual-userptr-invalidate-race:
+>     - shard-bmg:          [PASS][2] -> [SKIP][3] +36 other tests skip
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8873/shard-bmg-6/igt@xe_exec_balancer@once-virtual-userptr-invalidate-race.html
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15053/shard-bmg-9/igt@xe_exec_balancer@once-virtual-userptr-invalidate-race.html
+> 
+>   * igt@xe_exec_basic@no-exec-rebind@vcs1:
+>     - shard-bmg:          NOTRUN -> [FAIL][4] +2 other tests fail
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15053/shard-bmg-2/igt@xe_exec_basic@no-exec-rebind@vcs1.html
+> 
+>   * igt@xe_exec_basic@no-exec-rebind@vecs0:
+>     - shard-bmg:          [PASS][5] -> [FAIL][6] +3 other tests fail
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8873/shard-bmg-9/igt@xe_exec_basic@no-exec-rebind@vecs0.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15053/shard-bmg-2/igt@xe_exec_basic@no-exec-rebind@vecs0.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@kms_joiner@invalid-modeset-force-ultra-joiner:
+>     - shard-bmg:          [SKIP][7] ([Intel XE#6911] / [Intel XE#7466]) -> [SKIP][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8873/shard-bmg-10/igt@kms_joiner@invalid-modeset-force-ultra-joiner.html
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15053/shard-bmg-9/igt@kms_joiner@invalid-modeset-force-ultra-joiner.html
+> 
 
-Please squash changes into one commit, with desccription like:
-
-Synchronize intel_vbt_defs.h with kernel up to commit 1b85a9b04681,
-this will bring up following changes:
-
-1b85a9b04681 ("drm/i915/vbt: Add edp pipe joiner enable/disable bits")
-203c7904f2d8 ("drm/i915/vbt: Add fields dedicated_external and dyn_port_over_tc")
-4d33c77cf2c3 ("drm/i915/vbt: Add eDP Data rate overrride field in VBT")
-
-imho you coud keep r-b from Karthik.
+Not related to change.
 
 Regards,
 Kamil
 
-> ---
->  tools/intel_vbt_defs.h | 1 +
->  1 file changed, 1 insertion(+)
+>   
+> New tests
+> ---------
 > 
-> diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
-> index 57fda5824c9c..0dc13d080e8a 100644
-> --- a/tools/intel_vbt_defs.h
-> +++ b/tools/intel_vbt_defs.h
-> @@ -1109,6 +1109,7 @@ struct bdb_edp {
->  	u16 edp_dsc_disable;					/* 251+ */
->  	u16 t6_delay_support;					/* 260+ */
->  	u16 link_idle_time[16];					/* 260+ */
-> +	u16 pipe_joiner_enable;					/* 261+ */
->  } __packed;
->  
->  /*
-> -- 
-> 2.45.2
+>   New tests have been introduced between XEIGT_8873_FULL and XEIGTPW_15053_FULL:
 > 
+> ### New IGT tests (3) ###
+> 
+>   * igt@kms_plane@pixel-format-x-tiled-modifier@pipe-c-plane-0:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [6.86] s
+> 
+>   * igt@kms_plane@pixel-format-x-tiled-modifier@pipe-c-plane-3:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [3.07] s
+> 
+>   * igt@kms_plane@pixel-format-x-tiled-modifier@pipe-c-plane-5:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   
+> 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_15053_FULL that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+...cut...
