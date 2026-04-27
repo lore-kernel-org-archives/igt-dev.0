@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE7DFF8864
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 21:20:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45D72FF8867
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 21:21:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7A52310E027;
-	Mon, 27 Apr 2026 21:20:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C326E10E96C;
+	Mon, 27 Apr 2026 21:21:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cR6DCjyj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fiiGfQ/p";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA20710E027
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 21:20:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1234910E07E
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 21:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777324835; x=1808860835;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=jdzyyWDAVZ2suPVrLshFFoK9YdlqaNXYA2pb+x/eayE=;
- b=cR6DCjyjiZ5PlfuZrPRAGGDcjsUnaN8JJktfDoMkXWxhTFCLa/Nj3xlI
- yicSiCguiy5LRES5uQKsN6ZzWJYKAiBxHuHAjDrifFbqvvKEViFF/N4Ux
- doi7V5dMiyyoxKSrxBlnOlHMHuGYGT3wdMqlanpOj15Ij5w2zMXKzVQkm
- /OqrJGV+pD8nghJngHsPlEZy53mrMnnhLOtePnJ/SfXNP+YwbloCoHNhl
- EXaA/WUT4/pn4d2RnffNxqn3dlBEuElA7Yc7nrEJ4gw4jr8iUdYaFqJAc
- 6z22XK6bK5RWkQUSZpNTGIUMBBVBRFU12Stsw0mD5lQ6SP2wBXKN4wcsk g==;
-X-CSE-ConnectionGUID: uwVHOHb9TPqTEChvyFMrYQ==
-X-CSE-MsgGUID: eLplS5HdRN2IVcW+gbp5iQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78104253"
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="78104253"
+ t=1777324836; x=1808860836;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=2Q0XxVS+2qrSMeWMwOn0PIV3TO4AIrHCFdrO9Nb7b/I=;
+ b=fiiGfQ/pnHBAswfmIS2daBCSVTU1QWWyGegvxWaAt4ePi/2ugDPcoqHp
+ ne9ootCghe7cr338CNOTcduMRJZnnYNA2ZHZM7SYyF5b0XzENKNPbNbHy
+ +6isFR//khuMAFfUFv7SjbYGDW3+zCvrdNnADXmBE9qB52d3g5ngBQtXP
+ jY7tyNmzAGTzWcvVe/4mwU7+eeZYrgbw9v9AE3fJE+VhNaZRU9B2ScfAG
+ gEQAdTuPnAjIoyC78LQzs2Vk7g/1hqH+6dlijOAIxd/K6hYrr3OEsNkwr
+ Yl480dupYYzWpUT4LbJP/kTrfuOJaEWEgLfZO2q3TyU6NQtcR181j19r2 Q==;
+X-CSE-ConnectionGUID: lIO1A8Y9Rj2knFmdWb0rHg==
+X-CSE-MsgGUID: sqw1hrMCSaqXX9DL1te2Xg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78104255"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="78104255"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  27 Apr 2026 14:20:35 -0700
-X-CSE-ConnectionGUID: 4dpq4b6TSWyVt0xHkgy9Rg==
-X-CSE-MsgGUID: pZJdSUiSQBWA9518RXXBsw==
+X-CSE-ConnectionGUID: iaVEd8xESYOz/LDPe1q/3Q==
+X-CSE-MsgGUID: 0VnHWuoOTMyndGXqTJWewA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="234034913"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="234034919"
 Received: from dut4344arlh.fm.intel.com ([10.105.10.102])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  27 Apr 2026 14:20:36 -0700
@@ -45,10 +45,13 @@ From: Stuart Summers <stuart.summers@intel.com>
 To: 
 Cc: igt-dev@lists.freedesktop.org, niranjana.vishwanathapura@intel.com,
  Stuart Summers <stuart.summers@intel.com>
-Subject: [PATCH i-g-t 0/4] Add test coverage for multi queue reset
-Date: Mon, 27 Apr 2026 21:20:29 +0000
-Message-ID: <20260427212034.18486-1-stuart.summers@intel.com>
+Subject: [PATCH i-g-t 2/4] tests/intel/xe_exec_reset: Add a comment about
+ return for syncobj wait
+Date: Mon, 27 Apr 2026 21:20:31 +0000
+Message-ID: <20260427212034.18486-3-stuart.summers@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260427212034.18486-1-stuart.summers@intel.com>
+References: <20260427212034.18486-1-stuart.summers@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,34 +69,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Combine series [1] and [2] for final CI testing before
-merge.
+Add a comment to the syncobj wait after a hanging submission
+to indicate that even for the hang case, we expect the syncobj
+wait to return successfully as opposed to the wait ufence case
+where we only return successful if hardware did in fact execute
+the batch through the MI_USER_INTERRUPT to satisfy the wait ufence.
 
-For [2], also adjust the author to me given the original
-author is no longer available here as well as the fact that
-the original patch is now quite different in this latest
-iteration.
+Signed-off-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+---
+ lib/xe/xe_legacy.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-[1] also has a review already. Including that here since it
-also relates to the multi queue reset - removing the unused
-CANCEL parameter from the CM cases. This just more clearly
-indicates why those flags aren't implemented for multi-queue
-as well given they aren't used for non-multi-queue either.
-
-[1]: https://patchwork.freedesktop.org/patch/716611/
-[2]: https://patchwork.freedesktop.org/series/164653/
-
-Stuart Summers (4):
-  tests/intel/xe_exec_reset: Remove CANCEL logic for CM variants
-  tests/intel/xe_exec_reset: Add a comment about return for syncobj wait
-  tests/intel/xe_exec_reset: Add checks for hanging queue wait_ufence
-    return
-  tests/intel/xe_exec_reset: Add multi queue subtests
-
- lib/xe/xe_legacy.c          |  86 +++++++++++---
- tests/intel/xe_exec_reset.c | 223 ++++++++++++++++++++++++++++++++++--
- 2 files changed, 284 insertions(+), 25 deletions(-)
-
+diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
+index 084445305..6aeddc578 100644
+--- a/lib/xe/xe_legacy.c
++++ b/lib/xe/xe_legacy.c
+@@ -181,8 +181,13 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		return;
+ 	}
+ 
+-	for (i = 0; i < n_exec_queues && n_execs; i++)
++	for (i = 0; i < n_exec_queues && n_execs; i++) {
++		/*
++		 * Expectation here is that on reset, submissions will
++		 * still satisfy the syncobj_wait.
++		 */
+ 		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
++	}
+ 
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+ 
 -- 
 2.43.0
 
