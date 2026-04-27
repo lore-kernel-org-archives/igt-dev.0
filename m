@@ -4,42 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F39FF8868
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 14:20:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71968FF8860
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 14:40:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2BFEE10E2B3;
-	Mon, 27 Apr 2026 14:20:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1861A10E0B7;
+	Mon, 27 Apr 2026 14:40:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="SifDVvb3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TyKZAhyy";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A2FC10E2B3
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 14:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=mJ3CXS4FmD9QSwVMT8EVCdWnJKs+t1skbRUTUFTZk0Y=; b=SifDVvb3L/HzOImRJw3OWvuLWb
- 5Ur/mCZNlwhE7NvnqMil7wAoOC2BteZT+q/Llw1kC9ZA7ZovVeFUjfD7WSucRVg/7QgIyCQYNc4Cn
- PBdUA0NvP7b51UktCtyEQG3tEqSoItR9Zmxy58eOPd0KD98V+c/cGWr7IFgQc6sgtnTNzjwv0/Yeq
- 93yvKOPwI78iaAgz9pY7J9sw6Mhabr3vxgBrQi1pjdF9h4JmoftRO7ONdZrmF0zz67LddgeWgzE7k
- m02PJMOgtY9+m09AsRTPZE2DzdAwILS8ESNNOZceEBSgTk1JDiRmR2eNbAujWonyjxY2MztxYttkw
- Uw6CuaDA==;
-Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
- helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wHMoR-002xLZ-IS
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 16:19:51 +0200
-From: John Harrison <John.Harrison@Igalia.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB4C710E0B7
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 14:40:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1777300844; x=1808836844;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=kCi3wAzbsYZNhji0cx6uhybJACJLIfePTqMGdazPdjY=;
+ b=TyKZAhyymIt5BkAexfe+HtFeFAuVSb0aUUANCBtObUWDYl7Y7QXbyOHG
+ NP4sf9mP3MyCiV+zzENRaZhgvoamRyukTNA3LvBRNitN6x6urVVWdfB4X
+ 3TYM8c8MeAtA8482Kv1te5WnL5YT3S5MXkePpzj2y7tD4v/5cG2HOOZrA
+ vrQMLany+ewWBq6kWc8NlWboHDObAh5ktznlshFwadCSclDzerBzSWkFU
+ YQYShAY/txhRZdwwqkBwsaa56HVNmAGtxTQ5lTx5d3OwnlLQ1HXI2Wbr3
+ MOBNDZYTsL+1iv69wlNJU/aT97urfkpOsn7PXeWYaE9y8egZbAFeQX4Np w==;
+X-CSE-ConnectionGUID: 6izxAlSiTbCHDaKemnrhAg==
+X-CSE-MsgGUID: RZuktUpwQ7GW9QfLhpZieQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77350622"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="77350622"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Apr 2026 07:38:16 -0700
+X-CSE-ConnectionGUID: kYI719WNQ3yeSb1q5o4FBQ==
+X-CSE-MsgGUID: NaekQHxiQ9q1wV0jCoN8WQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="233929097"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
+ by orviesa007.jf.intel.com with ESMTP; 27 Apr 2026 07:38:15 -0700
+From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] lib/kms: Set display->has_plane_color_pipeline
- automatically
-Date: Mon, 27 Apr 2026 07:19:05 -0700
-Message-ID: <20260427141905.2535060-1-John.Harrison@Igalia.com>
-X-Mailer: git-send-email 2.43.0
+Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
+ pranay.samala@intel.com
+Subject: [PATCH i-g-t] tests/kms_hdr: Move capability checks inside dynamic
+ subtests
+Date: Mon, 27 Apr 2026 20:19:04 +0530
+Message-Id: <20260427144904.3695397-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -57,80 +66,261 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The pipeline presence flag was stored in the display object and used
-by multiple tests. However, each test would explicitly set the flag
-itself immediately after requiring the display. Except for
-the kms_properties test which used it but never actually set it (and
-therefore was not correctly testing color pipelines).
+Earlier, output capability checks were done in the outer loops
+using continue/break. This caused a problem where if an earlier
+output (e.g., eDP) passed but a later output (e.g., DP) failed
+a check (such as reading bpc), the entire subtest would be skipped,
+discarding the earlier valid result and reporting a false skip/failure.
 
-So instead, set it in the display require function next to other
-property flag detections.
+Fix this by moving all output capability checks inside dynamic
+block. Each pipe-output-format combination is now an independent
+dynamic subtest that passes or skips on its own merit, without
+affecting other combinations.
 
-Signed-off-by: John Harrison <John.Harrison@Igalia.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4879
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- lib/igt_kms.c              | 2 ++
- tests/kms_color_pipeline.c | 5 -----
- tests/kms_colorop.c        | 4 ----
- 3 files changed, 2 insertions(+), 9 deletions(-)
+ tests/kms_hdr.c | 211 ++++++++++++++++++++++--------------------------
+ 1 file changed, 96 insertions(+), 115 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 38c28f45f..d2e96d1ef 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -3194,6 +3194,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index b215b0e6c..20838469b 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -325,48 +325,41 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
+ 	for_each_connected_output(display, output) {
+ 		igt_crtc_t *crtc;
  
- 	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
- 		display->has_virt_cursor_plane = 1;
-+	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
-+		display->has_plane_color_pipeline = 1;
- 
- 	plane_resources = drmModeGetPlaneResources(display->drm_fd);
- 	igt_assert(plane_resources);
-diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index 78860a845..6119a830f 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/kms_color_pipeline.c
-@@ -349,7 +349,6 @@ run_tests_for_plane(data_t *data)
- 
- int igt_main()
- {
--	int has_plane_color_pipeline = 0;
- 	data_t data = {};
- 
- 	igt_fixture() {
-@@ -364,13 +363,9 @@ int igt_main()
- 		if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
- 			data.display.is_atomic = 1;
- 
--		if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
--			has_plane_color_pipeline = 1;
+-		if (!has_max_bpc(output)) {
+-			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
 -
- 		kmstest_set_vt_graphics_mode();
+-		if (igt_get_output_max_bpc(output) < 10) {
+-			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
+-			continue;
+-		}
+-
+ 		for_each_crtc(display, crtc) {
+-			igt_output_set_crtc(output,
+-					    crtc);
+-			if (!intel_pipe_output_combo_valid(display)) {
+-				igt_output_set_crtc(output, NULL);
+-				continue;
+-			}
+-
+ 			for (int i = 0; i < ARRAY_SIZE(hdr_test_formats); i++) {
+-				prepare_test(data, output,
+-					     crtc);
+-
+-				if (is_intel_device(data->fd) &&
+-				    !igt_max_bpc_constraint(display, crtc, output, 10)) {
+-					igt_info("%s: No suitable mode found to use 10 bpc.\n",
+-						  igt_output_name(output));
+-
+-					test_fini(data);
+-					break;
+-				}
+-
+-				data->mode = igt_output_get_mode(output);
+-				data->w = data->mode->hdisplay;
+-				data->h = data->mode->vdisplay;
+-
+ 				igt_dynamic_f("pipe-%s-%s-%s",
+ 					      igt_crtc_name(crtc), output->name,
+-					      igt_format_str(hdr_test_formats[i]))
+-					      test_bpc_switch_on_output(data,
+-								       crtc,
+-								       output, hdr_test_formats[i], flags);
++					      igt_format_str(hdr_test_formats[i])) {
++					igt_require_f(has_max_bpc(output),
++						      "%s: Doesn't support IGT_CONNECTOR_MAX_BPC.\n",
++						      igt_output_name(output));
++
++					igt_require_f(igt_get_output_max_bpc(output) >= 10,
++						      "%s: Doesn't support 10 bpc.\n",
++						      igt_output_name(output));
++
++					prepare_test(data, output, crtc);
++
++					igt_require_f(intel_pipe_output_combo_valid(display),
++						      "pipe-%s-%s: combo invalid.\n",
++						      igt_crtc_name(crtc), output->name);
++
++					if (is_intel_device(data->fd))
++						igt_require_f(igt_max_bpc_constraint(display,
++										     crtc,
++										     output,
++										     10),
++							      "%s: No suitable mode found to "
++							      "use 10 bpc.\n",
++							      igt_output_name(output));
++
++					data->mode = igt_output_get_mode(output);
++					data->w = data->mode->hdisplay;
++					data->h = data->mode->vdisplay;
++
++					test_bpc_switch_on_output(data, crtc, output,
++								  hdr_test_formats[i], flags);
++				}
+ 			}
  
- 		igt_display_require(&data.display, data.drm_fd);
--		data.display.has_plane_color_pipeline = has_plane_color_pipeline;
- 		igt_require(data.display.is_atomic);
- 	}
+ 			/* One pipe is enough */
+@@ -725,88 +718,76 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 	for_each_connected_output(display, output) {
+ 		igt_crtc_t *crtc;
  
-diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index 16db0b8ad..4db83470d 100644
---- a/tests/kms_colorop.c
-+++ b/tests/kms_colorop.c
-@@ -418,14 +418,10 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
- 		igt_require_f(!ret, "error setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
- 
- 		igt_display_require(&display, display.drm_fd);
--		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
--			display.has_plane_color_pipeline = 1;
- 
- 		kmstest_set_vt_graphics_mode();
- 
- 		igt_display_require(&display, display.drm_fd);
--		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
--			display.has_plane_color_pipeline = 1;
- 
- 		igt_require(display.is_atomic);
- 	}
+-		/* To test HDR, 10 bpc is required, so we need to
+-		 * set MAX_BPC property to 10bpc prior to setting
+-		 * HDR metadata property. Therefore, checking.
+-		 */
+-		if (!has_max_bpc(output) || !has_hdr(output)) {
+-			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC or IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
+-
+-		/* For negative test, panel should be non-hdr. */
+-		if ((flags & TEST_INVALID_HDR) && is_panel_hdr(data, output)) {
+-			igt_info("%s: Can't run negative test on HDR panel.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
+-
+-		if ((flags & ~TEST_INVALID_HDR) && !is_panel_hdr(data, output)) {
+-			igt_info("%s: Can't run HDR tests on non-HDR panel.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
+-
+-		if (igt_get_output_max_bpc(output) < 10) {
+-			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
+-			continue;
+-		}
+-
+-		if ((flags & TEST_BRIGHTNESS) && !output_is_internal_panel(output)) {
+-			igt_info("%s: Can't run brightness test on non-internal panel.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
+-
+ 		for_each_crtc(display, crtc) {
+-			igt_output_set_crtc(output,
+-					    crtc);
+-			if (!intel_pipe_output_combo_valid(display)) {
+-				igt_output_set_crtc(output, NULL);
+-				continue;
+-			}
+-
+ 			for (int i = 0; i < ARRAY_SIZE(hdr_test_formats); i++) {
+-				prepare_test(data, output,
+-					     crtc);
+-
+-				/* Signal HDR requirement via metadata */
+-				fill_hdr_output_metadata_st2084(&hdr);
+-				set_hdr_output_metadata(data, &hdr);
+-				if (igt_display_try_commit2(display, display->is_atomic ?
+-							    COMMIT_ATOMIC : COMMIT_LEGACY)) {
+-					igt_info("%s: Couldn't set HDR metadata\n",
+-						  igt_output_name(output));
+-					test_fini(data);
+-					break;
+-				}
+-
+-				if (is_intel_device(data->fd) &&
+-				    !igt_max_bpc_constraint(display, crtc, output, 10)) {
+-					igt_info("%s: No suitable mode found to use 10 bpc.\n",
+-						  igt_output_name(output));
+-
+-					test_fini(data);
+-					break;
+-				}
+-
+-				if (igt_is_dsc_enabled(data->fd, output->name))
+-					flags |= TEST_NEEDS_DSC;
+-				else
+-					flags &= ~TEST_NEEDS_DSC;
+-
+-				set_hdr_output_metadata(data, NULL);
+-				igt_display_commit2(display, display->is_atomic ?
+-						    COMMIT_ATOMIC : COMMIT_LEGACY);
+-
+-				data->mode = igt_output_get_mode(output);
+-				data->w = data->mode->hdisplay;
+-				data->h = data->mode->vdisplay;
+-
+ 				igt_dynamic_f("pipe-%s-%s-%s",
+ 					       igt_crtc_name(crtc), output->name,
+ 					       igt_format_str(hdr_test_formats[i])) {
++					igt_require_f(has_max_bpc(output) && has_hdr(output),
++						      "%s: Doesn't support IGT_CONNECTOR_MAX_BPC "
++						      "or IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
++						      igt_output_name(output));
++
++					if (flags & TEST_INVALID_HDR)
++						igt_require_f(!is_panel_hdr(data, output),
++							      "%s: Can't run negative test on "
++							      "HDR panel.\n",
++							      igt_output_name(output));
++
++					if (!(flags & TEST_INVALID_HDR))
++						igt_require_f(is_panel_hdr(data, output),
++							      "%s: Can't run HDR tests on "
++							      "non-HDR panel.\n",
++							      igt_output_name(output));
++
++					igt_require_f(igt_get_output_max_bpc(output) >= 10,
++						      "%s: Doesn't support 10 bpc.\n",
++						      igt_output_name(output));
++
++					if (flags & TEST_BRIGHTNESS)
++						igt_require_f(output_is_internal_panel(output),
++							      "%s: Can't run brightness test on "
++							      "non-internal panel.\n",
++							      igt_output_name(output));
++
++					prepare_test(data, output, crtc);
++
++					igt_require_f(intel_pipe_output_combo_valid(display),
++						      "pipe-%s-%s: combo invalid.\n",
++						      igt_crtc_name(crtc), output->name);
++
++					/* Signal HDR requirement via metadata */
++					fill_hdr_output_metadata_st2084(&hdr);
++					set_hdr_output_metadata(data, &hdr);
++					igt_require_f(!igt_display_try_commit2(display,
++									       display->is_atomic ?
++									       COMMIT_ATOMIC :
++									       COMMIT_LEGACY),
++						      "%s: Couldn't set HDR metadata\n",
++						      igt_output_name(output));
++
++					if (is_intel_device(data->fd))
++						igt_require_f(igt_max_bpc_constraint(display,
++										     crtc,
++										     output,
++										     10),
++							      "%s: No suitable mode found to "
++							      "use 10 bpc.\n",
++							      igt_output_name(output));
++
++					if (igt_is_dsc_enabled(data->fd, output->name))
++						flags |= TEST_NEEDS_DSC;
++					else
++						flags &= ~TEST_NEEDS_DSC;
++
++					set_hdr_output_metadata(data, NULL);
++					igt_display_commit2(display, display->is_atomic ?
++							    COMMIT_ATOMIC : COMMIT_LEGACY);
++
++					data->mode = igt_output_get_mode(output);
++					data->w = data->mode->hdisplay;
++					data->h = data->mode->vdisplay;
++
+ 					if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND |
+ 						     TEST_INVALID_HDR | TEST_BRIGHTNESS))
+ 						test_static_toggle(data,
 -- 
-2.43.0
+2.34.1
 
