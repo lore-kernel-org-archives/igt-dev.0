@@ -4,54 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DF61FF885E
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 13:02:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F39FF8868
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 14:20:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B834F10E744;
-	Mon, 27 Apr 2026 13:02:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2BFEE10E2B3;
+	Mon, 27 Apr 2026 14:20:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FYEUSe0d";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="SifDVvb3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CAC110E744
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 13:01:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777294866; x=1808830866;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=yepbg4bHyGCzblQtk6YA1Fi6m4UqXfsx7OcGi+0jPOM=;
- b=FYEUSe0d088uaAnvq3darul0ev0djlNg92JkC7ovaakmJcqCo7NQpkSn
- 94Ky2mf//W+pmle2wchC1xrXJv3avx51zG79AC4ulVFrWGqUL2kedCEQz
- xseBKPTWKuadON8gZmPHe60WeLoQ46OG0LAC3yFfCOeMpelrQvA5tzoY2
- 8vuCC6GwEvlhUbOdI7Cc329zxZSOsQXUt5JJ3Q0XYRmllUGU6JTLxUhgW
- Weqjj8bRI+CA1BWC/2uFe37v3hEzqS9anl29TWiW+BwF0clhWsWeKPuYk
- LDzZ+YIwfg5JftqvSXOJPsjosf2WHMw+jH8pH/9aD6Ib7vYF+7E6Ho+AU A==;
-X-CSE-ConnectionGUID: VNWdP9htQWWke169/rK4jw==
-X-CSE-MsgGUID: Iw2mxpAoRCqaxZISESMwlA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="77339318"
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="77339318"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 06:01:05 -0700
-X-CSE-ConnectionGUID: gUD9PJxcSXOafuwTFEQ7fw==
-X-CSE-MsgGUID: m07h9S2SSJqJEyRSX0s9bA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; d="scan'208";a="237597793"
-Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 06:01:03 -0700
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A2FC10E2B3
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 14:19:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=mJ3CXS4FmD9QSwVMT8EVCdWnJKs+t1skbRUTUFTZk0Y=; b=SifDVvb3L/HzOImRJw3OWvuLWb
+ 5Ur/mCZNlwhE7NvnqMil7wAoOC2BteZT+q/Llw1kC9ZA7ZovVeFUjfD7WSucRVg/7QgIyCQYNc4Cn
+ PBdUA0NvP7b51UktCtyEQG3tEqSoItR9Zmxy58eOPd0KD98V+c/cGWr7IFgQc6sgtnTNzjwv0/Yeq
+ 93yvKOPwI78iaAgz9pY7J9sw6Mhabr3vxgBrQi1pjdF9h4JmoftRO7ONdZrmF0zz67LddgeWgzE7k
+ m02PJMOgtY9+m09AsRTPZE2DzdAwILS8ESNNOZceEBSgTk1JDiRmR2eNbAujWonyjxY2MztxYttkw
+ Uw6CuaDA==;
+Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
+ helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1wHMoR-002xLZ-IS
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 16:19:51 +0200
+From: John Harrison <John.Harrison@Igalia.com>
 To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, karthik.b.s@intel.com,
- ville.syrjala@linux.intel.com, jani.nikula@linux.intel.com,
- Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH i-g-t 7/8] tools/intel_vbt_decode: dump eDP joiner enable field
-Date: Mon, 27 Apr 2026 18:16:06 +0530
-Message-ID: <20260427124607.3115567-8-ankit.k.nautiyal@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260427124607.3115567-1-ankit.k.nautiyal@intel.com>
-References: <20260427124607.3115567-1-ankit.k.nautiyal@intel.com>
+Subject: [PATCH i-g-t] lib/kms: Set display->has_plane_color_pipeline
+ automatically
+Date: Mon, 27 Apr 2026 07:19:05 -0700
+Message-ID: <20260427141905.2535060-1-John.Harrison@Igalia.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,32 +57,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add decoding support for the eDP joiner enable field introduced
-in VBT version 261+.
+The pipeline presence flag was stored in the display object and used
+by multiple tests. However, each test would explicitly set the flag
+itself immediately after requiring the display. Except for
+the kms_properties test which used it but never actually set it (and
+therefore was not correctly testing color pipelines).
 
-v2: Use pipe_joiner_enable to match with kernel variable name. (Karthik)
+So instead, set it in the display require function next to other
+property flag detections.
 
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Signed-off-by: John Harrison <John.Harrison@Igalia.com>
 ---
- tools/intel_vbt_decode.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ lib/igt_kms.c              | 2 ++
+ tests/kms_color_pipeline.c | 5 -----
+ tests/kms_colorop.c        | 4 ----
+ 3 files changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 24f626ebb152..78bc355b961d 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -2515,6 +2515,10 @@ static void dump_edp(struct context *context,
- 		if (context->bdb->version >= 251)
- 			printf("\t\teDP DSC disable: %s\n",
- 			       YESNO(panel_bool(edp->edp_dsc_disable, i)));
-+
-+		if (context->bdb->version >= 261)
-+			printf("\t\teDP Joiner Enable: %s\n",
-+			       YESNO(panel_bool(edp->pipe_joiner_enable, i)));
- 	}
- }
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 38c28f45f..d2e96d1ef 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -3194,6 +3194,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
  
+ 	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
+ 		display->has_virt_cursor_plane = 1;
++	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
++		display->has_plane_color_pipeline = 1;
+ 
+ 	plane_resources = drmModeGetPlaneResources(display->drm_fd);
+ 	igt_assert(plane_resources);
+diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
+index 78860a845..6119a830f 100644
+--- a/tests/kms_color_pipeline.c
++++ b/tests/kms_color_pipeline.c
+@@ -349,7 +349,6 @@ run_tests_for_plane(data_t *data)
+ 
+ int igt_main()
+ {
+-	int has_plane_color_pipeline = 0;
+ 	data_t data = {};
+ 
+ 	igt_fixture() {
+@@ -364,13 +363,9 @@ int igt_main()
+ 		if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
+ 			data.display.is_atomic = 1;
+ 
+-		if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+-			has_plane_color_pipeline = 1;
+-
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
+-		data.display.has_plane_color_pipeline = has_plane_color_pipeline;
+ 		igt_require(data.display.is_atomic);
+ 	}
+ 
+diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+index 16db0b8ad..4db83470d 100644
+--- a/tests/kms_colorop.c
++++ b/tests/kms_colorop.c
+@@ -418,14 +418,10 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
+ 		igt_require_f(!ret, "error setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
+ 
+ 		igt_display_require(&display, display.drm_fd);
+-		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+-			display.has_plane_color_pipeline = 1;
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&display, display.drm_fd);
+-		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+-			display.has_plane_color_pipeline = 1;
+ 
+ 		igt_require(display.is_atomic);
+ 	}
 -- 
-2.45.2
+2.43.0
 
