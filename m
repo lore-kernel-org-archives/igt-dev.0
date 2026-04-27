@@ -4,55 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E54A0FF885D
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 02:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A472EFF885D
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Apr 2026 02:44:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E2D510E03D;
-	Mon, 27 Apr 2026 02:40:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0CC9810E03D;
+	Mon, 27 Apr 2026 02:44:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BGyIBchU";
+	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="sdjvNGQQ";
+	dkim=pass (1024-bit key; unprotected) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="EvjEx414";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 862DA10E03D
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 02:40:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777257612; x=1808793612;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=oAAbisCTAl/rZNmxCHN5OAAHOsr9+vfGBm2jjdXjOPs=;
- b=BGyIBchUw/dLVDKuyKYDN0ZD/g2k4FTM7urSXWNrBle7YL2XYCDwaZ6Q
- enwCpfXg1dLCrrP0hZOlEtdzCgeV3VCsoLMY8CPCfVbgnUj6A7lhAZ06s
- QJZQp/n/pUwTMlnPSU3UQc9FyVKzaJGGB7t1tIoX7vgltbyCqY7nsiwoM
- CbxdtNqr7vqTb/exTtFKY5+O9Ly2HG69xmn0X/+8C00gDEJvpXNlcdC5d
- 8Q//3+Z82XLGkoCqxo77g+qSsniYE7S0bgcivF3ejzTr9L5ehzWJYeF2x
- PjWS3AsiBue0hmSrYe4NWYrMWhhgC7UbL2/9l/kzgeqBqNAMubQpqhA2/ A==;
-X-CSE-ConnectionGUID: xKK6/QdST0C2Wzwx5NUPBQ==
-X-CSE-MsgGUID: jgnUlH+KTMa5JTdqZO8S+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="78125877"
-X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="78125877"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2026 19:40:11 -0700
-X-CSE-ConnectionGUID: RUrxTGn8TyCnCmrI6pypcQ==
-X-CSE-MsgGUID: 5wPg0thmRDeycyw3MkER6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; d="scan'208";a="257027927"
-Received: from dut6245dg2frd.fm.intel.com ([10.80.54.109])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2026 19:40:10 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	thomas.hellstrom@intel.com
-Cc: nishit.sharma@intel.com,
-	Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v5] test/intel/xe_vm:Add oversubscribe concurrent bind
- stress subtest
-Date: Mon, 27 Apr 2026 02:40:04 +0000
-Message-ID: <20260427024004.662789-1-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.52.0
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDA5210E03D
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2026 02:44:16 +0000 (UTC)
+X-UUID: fa1ecd1641e211f19781c1a04af40193-20260427
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
+ s=dk; 
+ h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From;
+ bh=jmsJprtCMgSF0GsbU6qQF1r3rU3RoJXzBXyi9l+/NFM=; 
+ b=sdjvNGQQj6zorIl+76HRggTvGJbV/NmEf7ilgXdY0kzZG2LUj07OxEF97Y6qo/A6Ye8hd2l0llZZsdtskyv5O+BgP7Bv8dw63pGPb+yRpaXvej9+OhYguDe4AGAhHyJ9W3e38vrmxhczjQMVdQQZwfm6ROo1RTqDh+BeFxPz3oU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12, REQID:9838a2d9-0a7c-4bf2-89eb-f98e70fefb95, IP:0,
+ U
+ RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+ release,TS:0
+X-CID-META: VersionHash:e7bac3a, CLOUDID:e44af18f-6df4-4a3d-a7a4-fbdc42d669ce,
+ B
+ ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+ 898,TC:-5,Content:0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:ni
+ l,BEC:-1,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: fa1ecd1641e211f19781c1a04af40193-20260427
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by
+ mailgw01.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+ with ESMTP id 1590058954; Mon, 27 Apr 2026 10:44:13 +0800
+Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Mon, 27 Apr 2026 10:44:12 +0800
+Received: from SI4PR04CU001.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Mon, 27 Apr 2026 10:44:12 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SMsiDJkwblLlFMKywLDqgReJA32K5y/9FCFIoCM1jkn1dZwpB/1Teq6mh17fGTnOrz95svBQeaA463i9769cAE3O3BRDaOyQGx26eqhQ7t7sKFmFDm7CSFZLyC3yDf35Mm2zNUlwqqnlJO/wlvrNp2Kp62T3qkhscC0nLcw31XjTwMvHnxoITMW2iga1eYIkl6p3661Qny4Grdllb5UU+KT0p74yad+qRRfYVl/39Nmd9Zq/ViB5X8AFyAW3h+7+9oEdGL5B087XHorLvD8JKfIGOFt+/7FdrRt4gU4sSsC9bDfHATwG00/FoFYW+7LV/HRe9p5Fpb4FAg5/bqQKrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jmsJprtCMgSF0GsbU6qQF1r3rU3RoJXzBXyi9l+/NFM=;
+ b=W4jJsRWeOFdTy9sKKLJNL+FdJMiZdyZvKSwY9ZSNEpvNVB9daoar+MMCyQCI5pw++y2gaiSFlqafjQYq7VD1LQhqev7eiisC2nuTrc2kTA4gmtPAfHxppiKQIaFoJcX82m6UVVHWbpnEaA/g2afPOEeTMN2rwyOfLq0zY/oCUSGcrikeBNiiemiKhG+nOVhrqK1AVT97ZczTRteIOP+007KlWct/dAhFuW5b2Lh2X4P4D1e5zm0Bsm+nvEM5yqywOal6/nY0MrsNvhp8aYwC/pW5jRWvPVnEcCaoAREMa8z7pocx0k5JXcP4UkIFh2jUEhCw9GG+X2KaB9XrfhXVrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jmsJprtCMgSF0GsbU6qQF1r3rU3RoJXzBXyi9l+/NFM=;
+ b=EvjEx414/NDcdIg8l5+A6jGK5yVfSbVoDcoBjsrd56202XSjqKw0t753io/41GHMVNCFxyQUaJlKxhwBtnwU3XCopBT0sqabTJ5A/rvCRk/leqw+JN3A5UffGlJ5K6ZoJP2940KOEc8BXHjPtZ6LgwIkrxd2f76Wf5CRM1D6Ybw=
+Received: from SEYPR03MB7682.apcprd03.prod.outlook.com (2603:1096:101:149::11)
+ by TY0PR03MB6680.apcprd03.prod.outlook.com (2603:1096:400:215::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 27 Apr
+ 2026 02:44:10 +0000
+Received: from SEYPR03MB7682.apcprd03.prod.outlook.com
+ ([fe80::1fe4:fb59:1b1:1646]) by SEYPR03MB7682.apcprd03.prod.outlook.com
+ ([fe80::1fe4:fb59:1b1:1646%6]) with mapi id 15.20.9846.025; Mon, 27 Apr 2026
+ 02:44:10 +0000
+From: =?utf-8?B?SmFzb24tSkggTGluICjmnpfnnb/npaUp?= <Jason-JH.Lin@mediatek.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ =?utf-8?B?WGlhbmRvbmcgV2FuZyAo546L5YWI5YasKQ==?= <Xiandong.Wang@mediatek.com>
+CC: Project_Global_Chrome_Upstream_Group
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>,
+ "markyacoub@chromium.org" <markyacoub@chromium.org>,
+ =?utf-8?B?TmFuY3kgTGluICjmnpfmrKPonqIp?= <Nancy.Lin@mediatek.com>,
+ =?utf-8?B?U2luZ28gQ2hhbmcgKOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
+ "gildekel@google.com" <gildekel@google.com>
+Subject: Re: [PATCH i-g-t v2 1/1] tests/kms_cursor_legacy: relax checks on MTK
+Thread-Topic: [PATCH i-g-t v2 1/1] tests/kms_cursor_legacy: relax checks on MTK
+Thread-Index: AQHctem6Cv4ylclas0ePIFIhmG4pN7Xyc50A
+Date: Mon, 27 Apr 2026 02:44:09 +0000
+Message-ID: <1e6ccd32af5254fd75eeb8c8eb3e0006ad970ee1.camel@mediatek.com>
+References: <20260317084024.9036-1-xiandong.wang@mediatek.com>
+ <20260317084024.9036-2-xiandong.wang@mediatek.com>
+In-Reply-To: <20260317084024.9036-2-xiandong.wang@mediatek.com>
+Accept-Language: zh-TW, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SEYPR03MB7682:EE_|TY0PR03MB6680:EE_
+x-ms-office365-filtering-correlation-id: a0ccc2a2-1f66-4a62-009f-08dea406dbf6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|38070700021|22082099003|18002099003|56012099003;
+x-microsoft-antispam-message-info: dn0LB0vxtXJydXZAEER/gwhB/7b7qWCuv1eY0cSkn5l6O6I2oJpw9RDNPYfcAVJ9ljX2k8GoY9LWRElg0IIK9U6t5h1AY3YFQlwpXWlRABEU/ArWZt8Dpekjfrj7nadKlRGhqdKkbxKHUFhAGd4YmNrI3iLKyMzntqVNEjHmh6ItGDACCeh7MWt/p6NDn26JzNXCsMKPqhXWGRkyT3I/M/12WbBOgb4NpBXSsQhJkrM6kRJp2oLg1j8Dloab72R33FjQxoJSQeSMNS3MkhKutT6ew/qd2o3YJPGIbhFin6pqBiyTEjgP7/Ryk6j/3sGZIJ7iqWiBzQXi8C0YLNlqnDStZOOtaej7RP37mUiEGi3ZmyJ5nlQTgWp4n4b5LA+r5WggiOb5TTxcSO7ajxoed17hzRWP+fVe4YIV6vRFp9eDtM28oXM2IsqkOsS+GAXM0QgO43dvN2bgG3jDt6ZVYqDkz36TjWVhMa4XpzpazKFmrYQFEAogyuSU1M6e/RhTQ4+11puWtC5Hjql9qT15DbjFXjxsbnUJSApeLlEMv/MjtlWdrp/2xcl4F5vo0rKXBSXG63qOU8qJMAp2BMl+Iw7Kl0Z60JalH7TO92dtiBPj61dUXI45ZLRJTN4vwCWTfnrjvHGrG4LRMB7e0xfaw/eh985h1lrse7aEhi6VQU/IGw1eeQdxQzQDIeZcR/clttpi/FeF44E1qVwW0eiELSJpX09dmtnQCmp3iu4yo6iNivyp9DU+KiBTk3o1nEynjx9AJNbmv+pHIUvI6ZMxFFE76iVxl6rMfxhjjYBqepM=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SEYPR03MB7682.apcprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(22082099003)(18002099003)(56012099003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NU5mWVhPTlUwMHlmWVZneEJ5VTFJbHFKLzVkQU40cGpxa3h0d24yWDBUNWJD?=
+ =?utf-8?B?MCtYMHZFNVliZXVWNzNZcXpsRU9tb0J3REMvWHprUXlzeUpBZ2Z0dnJUdzh1?=
+ =?utf-8?B?aC9pRDIxNXpNRDBXRUZzNXdXQUc3bFExdmIzZXZoM2JEQ0oyQkVvS2RDdnpH?=
+ =?utf-8?B?bHMrL3FlTHg2cU12L0NDRFYrTDg5MDlVMlRIQjBGelliSnFTcDhxTkJhc0lR?=
+ =?utf-8?B?RFViV0R4Z2Y4ZjJtQ0ZaWWZaTWo0bUN3QjhibHFRdUoyby8vbXU1WUlsczlY?=
+ =?utf-8?B?QXFWUlFFOXdKSDVYU2ladzAvS1lialkzYlRUZURDUDREbFVIa0htSGxuYmdk?=
+ =?utf-8?B?L0dPdzFhdlBLTEk2TDcxYzIzczZXZmExUWxtTmZkNkZIUXdHa0U0MWJBOHhQ?=
+ =?utf-8?B?L0ljclNVVUlUN0EyQVpPcThhcGwyQUQ5NE9SK3hHWTd5YzliK1NCUG1KYmlw?=
+ =?utf-8?B?Y0hnQU4rOERianRrUDJhUVRBS2dHSGFxK09hbnpOY2RyaDZHbHpZK0c2UDUr?=
+ =?utf-8?B?dmNoVk41UzdJaXY1M3QyVnN2ck5kUERja1pvdGthWEticDhTN2ZuRkd3aTZT?=
+ =?utf-8?B?YWkwQnlOSmVtM1d2SUIzWEczbUpxR2d4Njl1MTBtWHB3cWdpZmtBOUxQVFBl?=
+ =?utf-8?B?WkRWcGVmaThrU0ZKMlBoUDlxTDBMVVpmejdMV2tXelZwakVVQ3dFbmxwT0NM?=
+ =?utf-8?B?b2lRdVQ5cEdNN0o4QllNcllPcVV4Yk5tT2ZrZEFOSUw5WE80ekZWVXVhU1RU?=
+ =?utf-8?B?eEsxS0ZyOHNvd3BpN3QrRGs5Skt0dk9qcm9RSUFTWjJhbVdJNEp2c0xRU2J0?=
+ =?utf-8?B?Z2RUcVZoa2pPVzU3ZlRna1c1STZmY1JuSW1nOXlQTGlNd0JjSkc3SE1aZkw5?=
+ =?utf-8?B?UlhpVFp0UDNCNDB3MjNvR2lsTHZERGJxa25RbnhEaXM1aGFVbEdNc1g1VEp2?=
+ =?utf-8?B?YjJuMkRvT05mN2FJOEFHQ2piR3BHS1I3dEdadEVsUi9MelhWSTlNSExTaXNL?=
+ =?utf-8?B?MHFWbHhQUnljZ2dta2VPNk44T3JEZWt4VDB0Vm5PazJDVzRDSitsTW1nUVNR?=
+ =?utf-8?B?YUZ0OXBoM25jMWkrRVBFTXU0YzdXdmV6RG9HMG4wcEdFQ1k5d290d2VyY2kz?=
+ =?utf-8?B?QW1DbHZpZVBMZGdHQVg5dnlWb1NZZGlDRzUwNEF3OGNDMGV1UHBWbzNIdXV3?=
+ =?utf-8?B?bVM3Z1FWelZjUTlEb2VoWi91ZlVPU1huSXpacnRXZ2E0TmwzcjJtOWNrRjY2?=
+ =?utf-8?B?SFdCSlA4N0VzWVFENVNuazNvYVNrcW5vZFk4UmpKdzM4WThoVVlnbHZ0VGlH?=
+ =?utf-8?B?OU1lWW1nZmU5S2M4ZmZzWHBqQWMxcTk5THR4YW5FUVJJeVQ0UDlITUhGVXRo?=
+ =?utf-8?B?Rmx0b1FuZzBTZSt5SXphcXMzQVdRbjRCbWViNHE0b0VzK015YXgxT0d1dG9u?=
+ =?utf-8?B?cEdnTFhESXo1V3VITlVHRlNFNGt6WnQrK0Y4YUZ1QlVtS2NnazdjVGNnN2pG?=
+ =?utf-8?B?d2FML2I0VnNlajlzdkkrb0N5aXNwOVloT2Z6cGZMVnl2Ujlaait2d1E4bFJl?=
+ =?utf-8?B?OWZSUzdrWVgvNnB4VitNbnFyU2VGNmcwQ0VCOHpTNjRUUzNkb2ZBNzFVV285?=
+ =?utf-8?B?ZndMdzNDRWZnNXVLanFXRTVSWkJQTUUyeXQwSXp3RTBXRnJXOEplTzd3c1hv?=
+ =?utf-8?B?bGtsYmJ3M0wzNlNNRjJvWE9vb0h2aTlYMEZFNEk5NDh5N0dTbGRxU0RDTkRr?=
+ =?utf-8?B?V3FnUktzTFZhZVB0QTZsWWFobHZ1bTVHSTJTdUN0RXEvemxRc1phNEYzTXph?=
+ =?utf-8?B?NE5zUWo2VWVydkorSmg3RkkrdDJLOFdLSWp6MHErYkNFaVVoQWZEVXBmL0JL?=
+ =?utf-8?B?Q2RUN29yY3AwdlloZlhXZkZXV1gzempydmd5eHN3N1c2L3ZFWjFSRlhTRVB2?=
+ =?utf-8?B?OWQ0YnNLZWtZMFg3M1NxbHdYTFdJM3pNSVZCQ29rbUZ6Y0UxYUJIV3pIQ1Vj?=
+ =?utf-8?B?V3N0WUc3NUVrNC9rZ3kzeFlrSGlwbmxqQVFmOEdxcnhxY21oazFtMnQzVDFP?=
+ =?utf-8?B?eFVHcXVXMXJtNXpjQi9xT2VsT2VCNGpRcmF0cFB1dlJnU3FpRzVnbXJTbFRl?=
+ =?utf-8?B?N1pGQ3VCeExScHhTMXlKS2I0d0Z1Y2tWelU4ZVNudEM4cytFK1R1ZDFNV3Ny?=
+ =?utf-8?B?VTJWTStPeHBOZHIrNHlNeS94ZXhCcTdNQit2UXZ2NFUyUEpFdG9QcUZDUnQw?=
+ =?utf-8?B?WmtSZDlTWG9pbjd6WXdlWVNNSG9RL1czcnRmUGdFRDhkeHRyYjNQREhWN09U?=
+ =?utf-8?B?cmJ5M2hjdytmck9XT3EzWVVhbG0xa2c3ZUhBVzRYbG9FSWozVjBEUy8zbHdl?=
+ =?utf-8?Q?mfuE8xaOfF2Ajxcw=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <69A552F838FA4E449EEB97881033496A@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: kMe4vFXDxFHdOYuMgJGVwH+0TCbX7WvRy0/nKkAPsPNuWtIVNfDIQhM04mSavzSV39O/S6SP2BNDpgVt6uMiKO0IfbWxUDPF3C/I4SsV6swoC6cj5pvVlsidPg8kLfOCE/wvyDpka75XZT2la3uQot3xviB/0mYvQa8qjI9kfZoA+OEHP6Z2eDDNMeYwNKfhCQ7wADyjgetPtd6tG1lD4de4Rr+HWkSkKMynmkbGX9bGpvI0rlW65mXQmAyQKEZrGEYsm1uo5q3ctl8GxhfeKUfMHDnzzISkQfqGHWqr/kKKzZ8s4QQLXUe7AsI1Cht6Rr8kHZlXNNTSy4egfeu0Wg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SEYPR03MB7682.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0ccc2a2-1f66-4a62-009f-08dea406dbf6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Apr 2026 02:44:10.0016 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: FQ008uMP6TtMdJDLUyswVmgvDbZkqLM6bCMPMTud1/7ulZAhdhEFIG4Psz9piLVNeX97BjM19uGZtgMOgZm+HOgBKOQSvTl5wmzYxCMtyVA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR03MB6680
+X-MTK: N
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,458 +178,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test for oversubscribing VRAM in multi process environment that
-creates VM, bind large BOs and submit workloads nearly simultaneously.
-
-Previous coverage lacked a scenario combining multi-process bind
-with VRAM oversubscription. This generates memory pressure with
-multi-process VM Bind activity and concurrent submission, exercising
-the bind pipeline under eviction pressure.
-
-v2: Removed helper APIs usage clock_nanosleep and commented
-code.(Nishit)
-
-v3: Refactored code to smaller functions.
-    Added check for available SRAM usage and keep the max process to 20.
-
-v4: Remove explicit macros definition
-    Replace Bind ioctl with library calls.(Thomas)
-v5: Remove unused query_mem_info
-    Fix xe_exec_with_retry (Thomas)
-    Rename align_to_page_size with ALIGN macro (kamil/Thomas)
-
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- tests/intel/xe_vm.c | 402 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 402 insertions(+)
-
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index d75b0730d..5246a854a 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -21,6 +21,71 @@
- #include "xe/xe_spin.h"
- #include <string.h>
- 
-+#define GB(x) (1024ULL * 1024ULL * 1024ULL * (x))
-+struct gem_bo {
-+	uint32_t handle;
-+	uint64_t size;
-+	int *ptr;
-+	uint64_t addr;
-+};
-+
-+struct xe_test_ctx {
-+	uint32_t vm_id;
-+	uint32_t exec_queue_id;
-+};
-+
-+struct mem_bind_sync {
-+	struct gem_bo *bufs;
-+	int n_bufs;
-+	uint64_t *binds_ufence;
-+};
-+
-+static void create_exec_queue(int fd, struct xe_test_ctx *ctx)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	struct drm_xe_engine_class_instance eci = { 0 };
-+
-+	/* Use first available engine */
-+	xe_for_each_engine(fd, hwe) {
-+		eci = *hwe;
-+		break;
-+	}
-+	ctx->exec_queue_id = xe_exec_queue_create(fd, ctx->vm_id, &eci, 0);
-+}
-+
-+static uint64_t *
-+vm_bind_bo_batch(int fd, struct xe_test_ctx *ctx, struct gem_bo *bos, int size)
-+{
-+	uint64_t *ufence;
-+	struct drm_xe_sync bind_sync;
-+	struct drm_xe_vm_bind_op binds[size];
-+	int i;
-+
-+	ufence = calloc(1, sizeof(uint64_t));
-+	*ufence = 0;
-+	igt_assert(ufence != MAP_FAILED);
-+	*ufence = 0;
-+	bind_sync = (struct drm_xe_sync) {
-+		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.addr = to_user_pointer(ufence),
-+		.timeline_value = 1,
-+	};
-+
-+	for (i = 0; i < size; i++) {
-+		binds[i] = (struct drm_xe_vm_bind_op) {
-+			.obj = bos[i].handle,
-+		.obj_offset = 0,
-+			.range = bos[i].size,
-+			.addr = bos[i].addr,
-+			.op = DRM_XE_VM_BIND_OP_MAP,
-+			.flags = 0,
-+		};
-+	}
-+	xe_vm_bind_array(fd, ctx->vm_id, 0, binds, size, &bind_sync, 1);
-+	return ufence;
-+}
-+
- static uint32_t
- addr_low(uint64_t addr)
- {
-@@ -2696,6 +2761,338 @@ static void test_get_property(int fd, void (*func)(int fd, uint32_t vm))
- 	xe_vm_destroy(fd, vm);
- }
- 
-+static int build_add_batch(struct gem_bo *batch_bo, struct gem_bo *integers_bo,
-+			   struct gem_bo *result_bo, int ints_to_add)
-+{
-+	int pos = 0;
-+	uint64_t tmp_addr;
-+	#define GPR_RX_ADDR(x)		(0x600 + (x) * 8)
-+
-+	batch_bo->ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
-+	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
-+	tmp_addr = integers_bo->addr + 0 * sizeof(uint32_t);
-+	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+	for (int i = 1; i < ints_to_add; i++) {
-+		/* r1 = integers_bo[i] */
-+		batch_bo->ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
-+		batch_bo->ptr[pos++] = GPR_RX_ADDR(1);
-+		tmp_addr = integers_bo->addr + i * sizeof(uint32_t);
-+		batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+		batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+		/* r0 = r0 + r1 */
-+		batch_bo->ptr[pos++] = MI_MATH(4);
-+		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
-+		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
-+		batch_bo->ptr[pos++] = MI_MATH_ADD;
-+		batch_bo->ptr[pos++] = MI_MATH_STORE(MI_MATH_REG(0), MI_MATH_REG_ACCU);
-+	}
-+	/* result_bo[0] = r0 */
-+	batch_bo->ptr[pos++] = MI_STORE_REGISTER_MEM_GEN8 | MI_LRI_LRM_CS_MMIO;
-+	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
-+	tmp_addr = result_bo->addr + 0 * sizeof(uint32_t);
-+	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+
-+	batch_bo->ptr[pos++] = MI_BATCH_BUFFER_END;
-+	while (pos % 4 != 0)
-+		batch_bo->ptr[pos++] = MI_NOOP;
-+	return pos;
-+}
-+
-+static void create_test_bos(int fd, struct xe_test_ctx *ctx, struct mem_bind_sync *bind,
-+			    uint32_t  placement, uint64_t *addr)
-+{
-+	const char *mem_type = (placement & vram_memory(fd, 0)) ? "VRAM" : "SRAM";
-+
-+	for (int i = 0; i < bind->n_bufs; i++) {
-+		struct gem_bo *bo = &bind->bufs[i];
-+		int ret;
-+
-+		bo->size = GB(1);
-+		ret = __xe_bo_create_caching(fd, ctx->vm_id, bo->size,
-+					     placement, 0,
-+					     DRM_XE_GEM_CPU_CACHING_WC,
-+					     &bo->handle);
-+		if (ret == -ENOMEM || ret == -ENOSPC) {
-+			bind->n_bufs = i;/* stop creating more */
-+			igt_debug("%s allocation failed at buffer %d\n", mem_type, i);
-+			break;
-+		}
-+		bo->ptr = NULL;
-+		bo->addr = *addr;
-+		*addr += bo->size;
-+		igt_debug("%s buffer %d created at 0x%016lx\n", mem_type, i, bo->addr);
-+	}
-+}
-+
-+static int fill_random_integers(struct gem_bo *int_bo, int ints_to_add)
-+{
-+	uint32_t expected_result = 0;
-+
-+	for (int i = 0; i < ints_to_add; i++) {
-+		int random_int = rand() % 8;
-+
-+		int_bo->ptr[i] = random_int;
-+		expected_result += random_int;
-+
-+		igt_debug("%d", random_int);
-+		if (i + 1 != ints_to_add)
-+			igt_debug(" + ");
-+		else
-+			igt_debug(" = ");
-+	}
-+	igt_debug("%d\n", expected_result);
-+	return expected_result;
-+}
-+
-+/*
-+ * In concurrent VM bind stress tests, multiple threads simultaneously bind
-+ * buffers to GPU virtual address space and submit batch operations. This
-+ * creates significant GPU memory pressure where the kernel may transiently
-+ * fail batch submission when:
-+ *   - GPU page tables are being updated across multiple bindings
-+ *   - GPU memory is fragmented across many concurrent buffer mappings
-+ *   - Multiple processes compete for finite GPU resources
-+ *
-+ * Without retries, transient ENOMEM/ENOSPC failures cause false test failures.
-+ * Retrying lets us distinguish temporary resource exhaustion from actual
-+ * driver bugs. Non ENOMEM/ENOSPC errors still fail immediately and are properly
-+ * reported with full errno context for debugging.
-+ */
-+static int xe_exec_with_retry(int fd, struct drm_xe_exec *exec, int max_retries)
-+{
-+	int rc = 0, retries = 0;
-+
-+	for (retries = 0; retries < max_retries; retries++) {
-+		rc = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, exec);
-+
-+		if (!(rc && (errno == ENOMEM || errno == ENOSPC)))
-+			break;
-+
-+		usleep(100 * retries);
-+		if (retries == 0)
-+			igt_warn("got %s, retrying\n", strerror(errno));
-+	}
-+
-+	if (retries == max_retries)
-+		igt_warn("gave up after %d retries\n", retries);
-+
-+	if (rc)
-+		igt_warn("errno: %d (%s)\n", errno, strerror(errno));
-+
-+	return rc;
-+}
-+
-+static void cleanup_bo_resources(int fd, struct gem_bo *bo)
-+{
-+	if (bo->ptr) {
-+		igt_assert_eq(munmap(bo->ptr, bo->size), 0);
-+		bo->ptr = NULL;
-+	}
-+	if (bo->handle)
-+		gem_close(fd, bo->handle);
-+}
-+
-+static void cleanup_sram_vram_objs(int fd, struct mem_bind_sync *vram_bind,
-+				   struct mem_bind_sync *sram_bind)
-+{
-+	for (int i = 0; i < vram_bind->n_bufs; i++)
-+		gem_close(fd, vram_bind->bufs[i].handle);
-+	for (int i = 0; i < sram_bind->n_bufs; i++)
-+		gem_close(fd, sram_bind->bufs[i].handle);
-+	free(vram_bind->bufs);
-+	free(sram_bind->bufs);
-+	if (vram_bind->n_bufs)
-+		free(vram_bind->binds_ufence);
-+	if (sram_bind->n_bufs)
-+		free(sram_bind->binds_ufence);
-+}
-+
-+/**
-+ * SUBTEST: oversubscribe-concurrent-bind
-+ * Description: Test for oversubscribing the VM with multiple processes
-+ * doing binds at the same time, and ensure they all complete successfully.
-+ * Functionality: This check is for a specific bug where if multiple processes
-+ * oversubscribe the VM, some of the binds may fail with  ENOMEM due to
-+ * deadlock in the bind code.
-+ * Test category: stress test
-+ */
-+static void test_vm_oversubscribe_concurrent_bind(int fd)
-+{
-+	#define MIN_BUFS_PER_PROC 2
-+	#define MAX_THREADS 20
-+	int n_proc = 0, n_vram_bufs = 0, n_sram_bufs = 0;
-+	uint32_t max_by_mem;
-+	uint64_t total_vram_demand = 0;
-+	uint64_t vram_size = xe_visible_available_vram_size(fd, 0);
-+	uint64_t sram_avail = (uint64_t)igt_get_avail_ram_mb() << 20;
-+	uint64_t target_vram = vram_size * 2;      /* 2 of VRAM */
-+	uint64_t target_sram = sram_avail * 50 / 100;  /* 50% system RAM */
-+
-+	int total_vram_bufs = target_vram / GB(1);
-+	int total_sram_bufs = target_sram / GB(1);
-+
-+	/* determine concurrency from memory pressure */
-+
-+	pthread_barrier_t *barrier;
-+	pthread_barrierattr_t attr;
-+
-+	max_by_mem = min(total_vram_bufs / MIN_BUFS_PER_PROC,
-+			 total_sram_bufs / MIN_BUFS_PER_PROC);
-+	igt_info("\n max_by_mem = %d", max_by_mem);
-+	n_proc = min_t(uint32_t, max_by_mem, 20);
-+	igt_require_f(n_proc > 0, "Not enough VRAM/RAM for oversubscription test\n");
-+
-+	n_vram_bufs = max(2, total_vram_bufs / n_proc);
-+	n_sram_bufs = max(2, total_sram_bufs / n_proc);
-+	total_vram_demand = (uint64_t)n_proc * n_vram_bufs * GB(1);
-+
-+	igt_debug("VRAM size: %" PRIu64 "MB, System RAM available: %" PRIu64 "MB\n",
-+		  vram_size >> 20, sram_avail >> 20);
-+
-+	igt_debug(" n_proc = %d\n", n_proc);
-+	igt_debug("VRAM: %" PRIu64 "GB\n", vram_size >> 30);
-+	igt_debug("VRAM demand: %" PRIu64 "MB (%.2fx oversubscription)\n",
-+		  total_vram_demand >> 20, (double)total_vram_demand / vram_size);
-+	igt_debug("Processes=%d VRAM_bufs=%d SRAM_bufs=%d\n", n_proc,
-+		  n_vram_bufs, n_sram_bufs);
-+
-+	barrier = mmap(NULL, sizeof(pthread_barrier_t),
-+		       PROT_READ | PROT_WRITE,
-+		       MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(barrier != MAP_FAILED);
-+	pthread_barrierattr_init(&attr);
-+	pthread_barrierattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
-+	pthread_barrier_init(barrier, &attr, n_proc);
-+
-+	igt_fork(child, n_proc) {
-+		struct xe_test_ctx ctx = {0};
-+		int rc;
-+		uint64_t addr = 0x40000000;
-+		int expected_result = 0, ints_to_add = 4;
-+		int max_retries = 1024;
-+		struct gem_bo integers_bo, result_bo, batch_bo, *vram_bufs, *sram_bufs;
-+		int pos = 0;
-+		struct mem_bind_sync vram_bind = {0};
-+		struct mem_bind_sync sram_bind = {0};
-+		struct drm_xe_sync batch_syncs[1];
-+		struct drm_xe_exec exec;
-+		struct gem_bo ufence_bo = {0};
-+
-+		vram_bufs = (struct gem_bo *)calloc(n_vram_bufs, sizeof(struct gem_bo));
-+		sram_bufs = (struct gem_bo *)calloc(n_sram_bufs, sizeof(struct gem_bo));
-+		srand(child);
-+
-+		igt_assert(vram_bufs && sram_bufs);
-+
-+		ctx.vm_id = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
-+		create_exec_queue(fd, &ctx);
-+		vram_bind.bufs = vram_bufs;
-+		vram_bind.n_bufs = n_vram_bufs;
-+		sram_bind.bufs = sram_bufs;
-+		sram_bind.n_bufs = n_sram_bufs;
-+
-+		create_test_bos(fd, &ctx, &vram_bind, vram_memory(fd, 0), &addr);
-+		create_test_bos(fd, &ctx, &sram_bind, system_memory(fd), &addr);
-+
-+		pthread_barrier_wait(barrier);
-+
-+		if (n_vram_bufs)
-+			vram_bind.binds_ufence = vm_bind_bo_batch(fd, &ctx, vram_bufs,
-+								  n_vram_bufs);
-+
-+		if (n_sram_bufs)
-+			sram_bind.binds_ufence = vm_bind_bo_batch(fd, &ctx, sram_bufs,
-+								  n_sram_bufs);
-+
-+		integers_bo.size = ALIGN(sizeof(int) * ints_to_add, 4096);
-+		integers_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, integers_bo.size,
-+							  system_memory(fd), 0,
-+							  DRM_XE_GEM_CPU_CACHING_WC);
-+		integers_bo.ptr = (int *)xe_bo_map(fd, integers_bo.handle, integers_bo.size);
-+		integers_bo.addr = 0x100000;
-+
-+		expected_result = fill_random_integers(&integers_bo, ints_to_add);
-+		igt_debug("%d\n", expected_result);
-+
-+		result_bo.size = ALIGN(sizeof(int), 4096);
-+		result_bo.handle  = xe_bo_create_caching(fd, ctx.vm_id, result_bo.size,
-+							 system_memory(fd), 0,
-+							 DRM_XE_GEM_CPU_CACHING_WC);
-+		result_bo.ptr = NULL;
-+		result_bo.addr = 0x200000;
-+
-+		batch_bo.size = 4096;
-+		batch_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, batch_bo.size,
-+						       system_memory(fd), 0,
-+						       DRM_XE_GEM_CPU_CACHING_WC);
-+
-+		batch_bo.ptr = (int *)xe_bo_map(fd, batch_bo.handle, batch_bo.size);
-+		batch_bo.addr = 0x300000;
-+
-+		pos = build_add_batch(&batch_bo, &integers_bo, &result_bo, ints_to_add);
-+
-+		igt_assert(pos * sizeof(int) <= batch_bo.size);
-+
-+		/* Wait for large bind operations to complete before binding small BOs */
-+		if (vram_bind.n_bufs)
-+			xe_wait_ufence(fd, vram_bind.binds_ufence, 1, 0, INT64_MAX);
-+		if (sram_bind.n_bufs)
-+			xe_wait_ufence(fd, sram_bind.binds_ufence, 1, 0, INT64_MAX);
-+
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, integers_bo.handle, 0, integers_bo.addr,
-+				   integers_bo.size, 0);
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, result_bo.handle, 0, result_bo.addr,
-+				   result_bo.size, 0);
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, batch_bo.handle, 0, batch_bo.addr,
-+				   batch_bo.size, 0);
-+
-+		ufence_bo.size = 4096;
-+		ufence_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, ufence_bo.size,
-+							system_memory(fd), 0,
-+							DRM_XE_GEM_CPU_CACHING_WB);
-+		ufence_bo.ptr = (int *)xe_bo_map(fd, ufence_bo.handle, ufence_bo.size);
-+		ufence_bo.addr = 0x400000;
-+		memset(ufence_bo.ptr, 0, ufence_bo.size);
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, ufence_bo.handle, 0, ufence_bo.addr,
-+				   ufence_bo.size, 0);
-+
-+		batch_syncs[0] = (struct drm_xe_sync){
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.addr = ufence_bo.addr,
-+			.timeline_value = 1,
-+		};
-+
-+		exec = (struct drm_xe_exec) {
-+			.exec_queue_id = ctx.exec_queue_id,
-+			.num_syncs = 1,
-+			.syncs = (uintptr_t)batch_syncs,
-+			.address = batch_bo.addr,
-+			.num_batch_buffer = 1,
-+		};
-+
-+		rc = xe_exec_with_retry(fd, &exec, max_retries);
-+		igt_assert_eq(rc, 0);
-+		xe_wait_ufence(fd, (uint64_t *)ufence_bo.ptr, 1, ctx.exec_queue_id, INT64_MAX);
-+		result_bo.ptr = (int *)xe_bo_map(fd, result_bo.handle, result_bo.size);
-+		igt_assert_eq(result_bo.ptr[0], expected_result);
-+		cleanup_bo_resources(fd, &ufence_bo);
-+		cleanup_bo_resources(fd, &result_bo);
-+		cleanup_bo_resources(fd, &batch_bo);
-+		cleanup_bo_resources(fd, &integers_bo);
-+		cleanup_sram_vram_objs(fd, &vram_bind, &sram_bind);
-+		xe_exec_queue_destroy(fd, ctx.exec_queue_id);
-+		xe_vm_destroy(fd, ctx.vm_id);
-+		close(fd);
-+	}
-+	igt_waitchildren();
-+	pthread_barrier_destroy(barrier);
-+	pthread_barrierattr_destroy(&attr);
-+	igt_assert_eq(munmap(barrier, sizeof(pthread_barrier_t)), 0);
-+}
-+
- int igt_main()
- {
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
-@@ -3088,6 +3485,11 @@ int igt_main()
- 		igt_subtest_f("invalid-flag-%s", s->name)
- 			invalid_flag(fd, s->flags);
- 	}
-+	igt_subtest("oversubscribe-concurrent-bind")
-+	{
-+		igt_require(xe_has_vram(fd));
-+		test_vm_oversubscribe_concurrent_bind(fd);
-+	}
- 
- 	igt_subtest("invalid-extensions")
- 		invalid_extensions(fd);
--- 
-2.52.0
-
+SGkgWGlhbmRvbmcsDQoNCk9uIFR1ZSwgMjAyNi0wMy0xNyBhdCAxNjo0MCArMDgwMCwgWGlhbmRv
+bmcgV2FuZyB3cm90ZToNCj4gRnJvbTogWGlhbmRvbmcgV2FuZyA8WGlhbmRvbmcuV2FuZ0BtZWRp
+YXRlay5jb20+DQo+IA0KPiBrbXNfY3Vyc29yX2xlZ2FjeSB1c2VzIHRpZ2h0IHZibGFuayB0aW1p
+bmcgYXNzZXJ0aW9ucyB0aGF0IGNhbiBiZQ0KPiB1bnN0YWJsZQ0KPiBvbiBNVEsgdW5kZXIgaGln
+aGVyIHN5c3RlbSBsb2FkLCBsZWFkaW5nIHRvIGludGVybWl0dGVudCBmYWlsdXJlcy4NCj4gDQo+
+IFVzZSByZWxheGVkIHVwcGVyLWJvdW5kIGNoZWNrcyBmb3IgdGhlIE1USy1zcGVjaWZpYyBwYXRo
+IGluIHRoZQ0KPiBhZmZlY3RlZA0KPiBzdWJ0ZXN0cywgd2hpbGUgcHJlc2VydmluZyB0aGUgZXhp
+c3RpbmcgYXNzZXJ0aW9ucyBmb3Igb3RoZXIgZHJpdmVycy4NCj4gDQo+IFRoaXMgaW1wcm92ZXMg
+dGVzdCByb2J1c3RuZXNzIG9uIE1USyB3aXRob3V0IGNoYW5naW5nIGV4cGVjdGF0aW9ucyBvbg0K
+PiBub24tTVRLIHBsYXRmb3Jtcy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFhpYW5kb25nIFdhbmcg
+PFhpYW5kb25nLldhbmdAbWVkaWF0ZWsuY29tPg0KPiAtLS0NCj4gwqB0ZXN0cy9rbXNfY3Vyc29y
+X2xlZ2FjeS5jIHwgMjEgKysrKysrKysrKysrKysrLS0tLS0tDQo+IMKgMSBmaWxlIGNoYW5nZWQs
+IDE1IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVz
+dHMva21zX2N1cnNvcl9sZWdhY3kuYyBiL3Rlc3RzL2ttc19jdXJzb3JfbGVnYWN5LmMNCj4gaW5k
+ZXggNTM5OWVmNDgxLi5lNmFiMzNlY2EgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2ttc19jdXJzb3Jf
+bGVnYWN5LmMNCj4gKysrIGIvdGVzdHMva21zX2N1cnNvcl9sZWdhY3kuYw0KPiBAQCAtMTAzOCwx
+MiArMTAzOCwxNyBAQCBzdGF0aWMgdm9pZCBmbGlwX3ZzX2N1cnNvcihpZ3RfZGlzcGxheV90DQo+
+ICpkaXNwbGF5LCBlbnVtIGZsaXBfdGVzdCBtb2RlLCBpbnQgbmxvbw0KPiDCoAkJaWd0X3NldF90
+aW1lb3V0KDEsICJTdHVjayBwYWdlIGZsaXAiKTsNCj4gwqAJCWlndF9pZ25vcmVfd2FybihyZWFk
+KGRpc3BsYXktPmRybV9mZCwgJnZibCwNCj4gc2l6ZW9mKHZibCkpKTsNCj4gwqANCj4gLQkJaWYg
+KCFtb2RlX3JlcXVpcmVzX2V4dHJhX3ZibGFuayhtb2RlKSkNCj4gLQkJCWlndF9hc3NlcnRfZXEo
+aWd0X2NydGNfZ2V0X3ZibGFuayhjcnRjLCAwKSwNCj4gLQkJCQnCoMKgwqDCoMKgIHZibGFua19z
+dGFydCArIDEpOw0KPiAtCQllbHNlDQo+ICsJCWlmICghbW9kZV9yZXF1aXJlc19leHRyYV92Ymxh
+bmsobW9kZSkpIHsNCj4gKwkJCWlmIChpc19tdGtfZGV2aWNlKGRpc3BsYXktPmRybV9mZCkpDQo+
+ICsJCQkJaWd0X2Fzc2VydF9sdGUoaWd0X2NydGNfZ2V0X3ZibGFuayhjDQo+IHJ0YywgMCksDQo+
+ICsJCQkJCXZibGFua19zdGFydCArIDEpOw0KDQpJdCBzZWVtcyB5b3UgZ290IGEgaWd0X2NydGNf
+Z2V0X3ZibGFuayhjcnRjLCAwKSA9PSB2Ymxhbmtfc3RhcnQgaGVyZS4NCg0KU2luY2UgY2hhbmdp
+bmcgZnJvbSBpZ3RfYXNzZXJ0X2VxIHRvIGlndF9hc3NlcnRfbHRlIGlzIGEgcmVsYXhhdGlvbiBv
+Zg0KdGhlIGFzc2VydGlvbiBjb25kaXRpb24gYW5kIGlndF9jcnRjX2dldF92YmxhbmsoY3J0Yywg
+MCkgd29uJ3QgbGVzcw0KdGhhbiB2Ymxhbmtfc3RhcnQuIEl0IHdvdWxkIG5vdCBjYXVzZSBhbnkg
+cmVncmVzc2lvbnMgb24gb3RoZXINCnBsYXRmb3JtLiBUaGVyZWZvcmUsIHRoZXJlIGlzIG5vIG5l
+ZWQgdG8gZ3VhcmQgdGhpcyByZWxheGF0aW9uDQpzcGVjaWZpY2FsbHkgZm9yIE1USyBkZXZpY2Vz
+Lg0KDQo+ICsJCQllbHNlDQo+ICsJCQkJaWd0X2Fzc2VydF9lcShpZ3RfY3J0Y19nZXRfdmJsYW5r
+KGNyDQo+IHRjLCAwKSwNCj4gKwkJCQkJdmJsYW5rX3N0YXJ0ICsgMSk7DQo+ICsJCX0gZWxzZSB7
+DQo+IMKgCQkJaWd0X2Fzc2VydF9sdGUoaWd0X2NydGNfZ2V0X3ZibGFuayhjcnRjLCAwKSwNCj4g
+wqAJCQkJwqDCoMKgwqDCoMKgIHZibGFua19zdGFydCArIDIpOw0KPiArCQl9DQoNCkkgdGhpbmsg
+aXQgY291bGQgYmUgc2ltcGx5IHJlcGxhY2VkIHRvOg0KDQppZiAoIW1vZGVfcmVxdWlyZXNfZXh0
+cmFfdmJsYW5rKG1vZGUpKQ0KCWlndF9hc3NlcnRfbHRlKGlndF9jcnRjX2dldF92YmxhbmsoY3J0
+YywgMCksDQoJCQkJCSAgIHZibGFua19zdGFydCArIDEpOw0KZWxzZQ0KCWlndF9hc3NlcnRfbHRl
+KGlndF9jcnRjX2dldF92YmxhbmsoY3J0YywgMCksDQogCQkJCQkgICB2Ymxhbmtfc3RhcnQgKyAy
+KTsNCg0KPiDCoA0KPiDCoAkJaWd0X3Jlc2V0X3RpbWVvdXQoKTsNCj4gwqAJfSB3aGlsZSAobmxv
+b3BzLS0pOw0KPiBAQCAtMTQ0Miw4ICsxNDQ3LDEyIEBAIHN0YXRpYyB2b2lkIGN1cnNvcl92c19m
+bGlwKGlndF9kaXNwbGF5X3QNCj4gKmRpc3BsYXksIGVudW0gZmxpcF90ZXN0IG1vZGUsIGludCBu
+bG9vDQo+IMKgCQkJdmJsYW5rX2xhc3QgPSB2Ymwuc2VxdWVuY2U7DQo+IMKgCQl9DQo+IMKgDQo+
+IC0JCWlmICghY3Vyc29yX3Nsb3dwYXRoKGRpc3BsYXksIG1vZGUpKQ0KPiAtCQkJaWd0X2Fzc2Vy
+dF9sdGUodmJsLnNlcXVlbmNlLCB2Ymxhbmtfc3RhcnQgKw0KPiA1ICogdnJlZnJlc2ggLyA4KTsN
+Cj4gKwkJaWYgKCFjdXJzb3Jfc2xvd3BhdGgoZGlzcGxheSwgbW9kZSkpIHsNCj4gKwkJCWlmIChp
+c19tdGtfZGV2aWNlKGRpc3BsYXktPmRybV9mZCkpDQo+ICsJCQkJaWd0X2Fzc2VydF9sdGUodmJs
+LnNlcXVlbmNlLA0KPiB2Ymxhbmtfc3RhcnQgKyAoKDUgKiB2cmVmcmVzaCAvIDgpICogNCkpOw0K
+PiArCQkJZWxzZQ0KPiArCQkJCWlndF9hc3NlcnRfbHRlKHZibC5zZXF1ZW5jZSwNCj4gdmJsYW5r
+X3N0YXJ0ICsgNSAqIHZyZWZyZXNoIC8gOCk7DQo+ICsJCX0NCg0KSXQncyBhYm91dCB0aGUgdGhy
+ZXNob2xkLiBNYXliZSB5b3UgY2FuIGRvIHNvbWV0aGluZyBsaWtlIHRoaXM6DQoNCnRocmVzaG9s
+ZCA9IDUgKiB2cmVmcmVzaCAvIDg7DQoNCi8qIEFkZCBzb21lIGNvbW1lbnQgZm9yIHdoeSB3ZSBu
+ZWVkIHRoaXMuLi4gKi8NCmlmIChpc19tdGtfZGV2aWNlKGRpc3BsYXktPmRybV9mZCkpDQoJdGhy
+ZXNob2xkID0gNCAqIHRocmVzaG9sZDsNCg0KaWYgKCFjdXJzb3Jfc2xvd3BhdGgoZGlzcGxheSwg
+bW9kZSkpDQoJaWd0X2Fzc2VydF9sdGUodmJsLnNlcXVlbmNlLCB2Ymxhbmtfc3RhcnQgKyB0aHJl
+c2hvbGQpOw0KDQpSZWdhcmRzLA0KSmFzb24tSkggTGluDQo=
