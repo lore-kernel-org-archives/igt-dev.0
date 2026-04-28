@@ -4,64 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18A4AFF886C
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 08:33:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99267FF886C
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 08:42:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AC72C10E30E;
-	Tue, 28 Apr 2026 08:33:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 477DA10E30E;
+	Tue, 28 Apr 2026 08:42:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hP2Zm0D7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Csr2JPfP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5446010E30E
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 08:33:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10D7B10E30E
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 08:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777365199; x=1808901199;
+ t=1777365755; x=1808901755;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=KYjY6gp1mkUlra37GqnWjT452Zl6qJB8NH7OKZtLn9Y=;
- b=hP2Zm0D7FMxQtSKU+uhcHQtxccAN7qpug93EElj0l520ORn5lH8LdxOw
- HoNZy95cNRlgguJ4EJGpo0R8G9bBoXmpGgXIItlDumCLlz8MR9MA8DPeI
- MuDuRShbGEX9jPESNXV+q/8dsl4s/P4YQ/7mOwXQ9MVpi29p6nYDCiX/h
- tlL12lCCq4MwK0Nar/NzMP/NX9KdorNNM0x0E744gEq62FBji0+ZTqwoY
- JeiySzfNoIKJ7Zux6GUUaYmPe5YQ5l2Mbkl7L0HlTA2rxnoxIBfGg4Umx
- undZ1MxgrW9vspW3AA6XM29rkjTKb9U3fRHnWtPD+XrNUpaGK8QgBhkpW Q==;
-X-CSE-ConnectionGUID: QkgpBi6mSrqx8wdW1ZBFQA==
-X-CSE-MsgGUID: ONLjyDx6RiWLjd+CA60E5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="89727433"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="89727433"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2026 01:33:19 -0700
-X-CSE-ConnectionGUID: O8udjXngRvuDICp+WZ3/bw==
-X-CSE-MsgGUID: oVbcbIeWQ+mnIwuUo3KhhQ==
+ mime-version:in-reply-to;
+ bh=6bpL5GkZxm4JFvRdB7WLVkZM9YVcUvv3+l+RAt7UMH0=;
+ b=Csr2JPfPxuQRpPxLOz2gjhab251r4OQFeliwtrCWsZTk12iT5xkKp21p
+ iTQntia34/an/Egc+XyprTPNbN6J1RNZ2PRuwnm2DfBla3/g1pbl0StJS
+ rl3K/U0iewxxzBCl3Nj2n/seVQ4Xo7fMdY2Q0gJ++15S6sC6QhXfRzMHH
+ 5BhEw4H/5nalZsMm1KxpocA8Qp9uCTdEsa3IyWOJQzUMW3Mqaqye36Pgg
+ SIa6F/351p9druOs16dfHO985xoHaOAs40HYBoJ9AkntE8NoN6nxA4srs
+ Uk8bqRUhnvahJXA6/tqh8nDHpxEnC8s9oAA3BUqVtYww/65vwEA3q0AJ0 A==;
+X-CSE-ConnectionGUID: +miMM0M4QgK/12CDVafw3w==
+X-CSE-MsgGUID: hQdPFh3eTeywQNjmlG4cmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="95682324"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="95682324"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2026 01:42:35 -0700
+X-CSE-ConnectionGUID: jkovUJNQRS+IiGrGVgLXFQ==
+X-CSE-MsgGUID: puYTROX6TZC+249W7Doucw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="238226897"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="234170860"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 01:33:18 -0700
-Date: Tue, 28 Apr 2026 10:32:58 +0200
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 01:42:34 -0700
+Date: Tue, 28 Apr 2026 10:42:31 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
- ville.syrjala@linux.intel.com, jani.nikula@linux.intel.com
-Subject: Re: [PATCH i-g-t 5/8] tools/intel_vbt_defs: sync intel_vbt_defs.h
- with kernel commit 1b85a9b04681
-Message-ID: <20260428083258.6nunbdfmavzo42iw@kamilkon-DESK.igk.intel.com>
+To: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH] tests/intel/xe_configfs: Add malformed multi-line BB to
+ verify ctx rejection and rollback
+Message-ID: <20260428084231.ybvkauqjkvsoos5v@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
- igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
- ville.syrjala@linux.intel.com, jani.nikula@linux.intel.com
-References: <20260427124607.3115567-1-ankit.k.nautiyal@intel.com>
- <20260427124607.3115567-6-ankit.k.nautiyal@intel.com>
- <20260427144130.uiqrfekvsovvzknm@kamilkon-DESK.igk.intel.com>
- <e9388540-8fa6-497f-a0ce-941c321bea8c@intel.com>
+ Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260427122824.1132566-1-smitha.balasubramanyam@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e9388540-8fa6-497f-a0ce-941c321bea8c@intel.com>
+In-Reply-To: <20260427122824.1132566-1-smitha.balasubramanyam@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,70 +71,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nautiyal,,
-On 2026-04-28 at 09:27:34 +0530, Nautiyal, Ankit K wrote:
-> 
-> On 4/27/2026 8:11 PM, Kamil Konieczny wrote:
-> > Hi Ankit,
-> > On 2026-04-27 at 18:16:04 +0530, Ankit Nautiyal wrote:
-> > > Synchronize intel_vbt_defs.h with kernel commit:
-> > > 
-> > > 1b85a9b04681 ("drm/i915/vbt: Add edp pipe joiner enable/disable bits")
-> > > 
-> > > Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> > > Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> > Please squash changes into one commit, with desccription like:
-> > 
-> > Synchronize intel_vbt_defs.h with kernel up to commit 1b85a9b04681,
-> > this will bring up following changes:
-> > 
-> > 1b85a9b04681 ("drm/i915/vbt: Add edp pipe joiner enable/disable bits")
-> > 203c7904f2d8 ("drm/i915/vbt: Add fields dedicated_external and dyn_port_over_tc")
-> > 4d33c77cf2c3 ("drm/i915/vbt: Add eDP Data rate overrride field in VBT")
-> 
-> Thanks Kamil.
-> 
-> These commits were generated using Jani’s sync script, which intentionally
-> produces one IGT commit per kernel commit touching intel_vbt_defs.h.
-> 
-> If the preferred style here is a single squashed commit instead, I can
-> squash these and resend.
-> 
+Hi Smitha,
+On 2026-04-27 at 17:58:24 +0530, Smitha Balasubramanyam wrote:
 
-For a few it do not matter but for more than, say, five, I would
-prefer a single squashed one. Btw no need for resend, it could be
-squashed at merge time.
+imho subject could be shorter:
+
+[PATCH] tests/intel/xe_configfs: Add malformed multi-line BB
+
+This could be fixed at merge so no need for resend but where
+is a fix? Imho fixes should be merged first.
+
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
+> Add a test vector with a partially invalid second command in the
+> ctx_restore_*_bb invalid-case suite to ensure a malformed multi-line
+> BB is rejected and the stored BB remains empty (rollback).
 > 
-> Regards,
+> Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+> ---
+>  tests/intel/xe_configfs.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> Ankit
+> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+> index 755524e7c..f024235f2 100644
+> --- a/tests/intel/xe_configfs.c
+> +++ b/tests/intel/xe_configfs.c
+> @@ -225,6 +225,10 @@ static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
+>  		{ .test = "invalid-engine-instance",
+>  		  .in = "rcs0 reg 4F100 DEADBEEF",
+>  		},
+> +		{ .test = "invalid-second-command",
+> +		  .in = "rcs cmd 11000001 4F100 DEADBEEF\n"
+> +			"rcs cmd 11000001 4F10G DEADBEEF",
+> +		},
+>  	};
+>  	char buf[4096] = { };
+>  	char file[64] = { };
+> -- 
+> 2.43.0
 > 
-> 
-> > 
-> > imho you coud keep r-b from Karthik.
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > > ---
-> > >   tools/intel_vbt_defs.h | 1 +
-> > >   1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
-> > > index 57fda5824c9c..0dc13d080e8a 100644
-> > > --- a/tools/intel_vbt_defs.h
-> > > +++ b/tools/intel_vbt_defs.h
-> > > @@ -1109,6 +1109,7 @@ struct bdb_edp {
-> > >   	u16 edp_dsc_disable;					/* 251+ */
-> > >   	u16 t6_delay_support;					/* 260+ */
-> > >   	u16 link_idle_time[16];					/* 260+ */
-> > > +	u16 pipe_joiner_enable;					/* 261+ */
-> > >   } __packed;
-> > >   /*
-> > > -- 
-> > > 2.45.2
-> > > 
