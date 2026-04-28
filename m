@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4152FF886F
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 05:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5281FF885A
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 05:52:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8E04410E2EE;
-	Tue, 28 Apr 2026 05:28:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9804710E2F1;
+	Tue, 28 Apr 2026 05:52:36 +0000 (UTC)
 Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8231310E2EE;
- Tue, 28 Apr 2026 05:28:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 451B910E2F1;
+ Tue, 28 Apr 2026 05:52:23 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4095997646028381504=="
+ boundary="===============6725608707475984517=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Foa=3A_Wa?=
- =?utf-8?q?=5F14026633728_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Chamelium_v3_Integration_an?=
+ =?utf-8?q?d_Test_Execution?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Shekhar Chauhan" <shekhar.chauhan@intel.com>
+To: "Mohammed Bilal" <mohammed.bilal@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Apr 2026 05:28:32 -0000
-Message-ID: <177735411252.17062.14508629925006460306@5ab824fced77>
+Date: Tue, 28 Apr 2026 05:52:23 -0000
+Message-ID: <177735554327.17344.13960629814573755161@5ab824fced77>
 X-Patchwork-Hint: ignore
-References: <20260427050002.3391994-1-shekhar.chauhan@intel.com>
-In-Reply-To: <20260427050002.3391994-1-shekhar.chauhan@intel.com>
+References: <20260428044644.257001-1-mohammed.bilal@intel.com>
+In-Reply-To: <20260428044644.257001-1-mohammed.bilal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4095997646028381504==
+--===============6725608707475984517==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_oa: Wa_14026633728 (rev2)
-URL   : https://patchwork.freedesktop.org/series/165483/
+Series: Chamelium v3 Integration and Test Execution
+URL   : https://patchwork.freedesktop.org/series/165589/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8874_BAT -> XEIGTPW_15068_BAT
+CI Bug Log - changes from XEIGT_8874_BAT -> XEIGTPW_15069_BAT
 ====================================================
 
 Summary
@@ -81,19 +81,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8874 -> IGTPW_15068
+  * IGT: IGT_8874 -> IGTPW_15069
   * Linux: xe-4940-b6f6b69b2dffa9ad1c43b2149786b4630d41acbf -> xe-4944-aea2c496abcf55b647c14fe720bfc4ea555aac6a
 
-  IGTPW_15068: 41037a3170baee91696f83208e09bf416aaa1d4d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15069: 86ce060bb02fc7065ec1bcf1e3cb2878b72ff614 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8874: 4568b2c141ab630c34f8eb2b9afab8cbf8f3ce9e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-4940-b6f6b69b2dffa9ad1c43b2149786b4630d41acbf: b6f6b69b2dffa9ad1c43b2149786b4630d41acbf
   xe-4944-aea2c496abcf55b647c14fe720bfc4ea555aac6a: aea2c496abcf55b647c14fe720bfc4ea555aac6a
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15068/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15069/index.html
 
---===============4095997646028381504==
+--===============6725608707475984517==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,16 +113,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_oa: Wa_14026633728 (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165483/">https://patchwork.freedesktop.org/series/165483/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Chamelium v3 Integration and Test Execution</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165589/">https://patchwork.freedesktop.org/series/165589/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15068/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15068/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15069/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15069/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8874_BAT -&gt; XEIGTPW_15068_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8874_BAT -&gt; XEIGTPW_15069_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -132,10 +132,10 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8874 -&gt; IGTPW_15068</li>
+<li>IGT: IGT_8874 -&gt; IGTPW_15069</li>
 <li>Linux: xe-4940-b6f6b69b2dffa9ad1c43b2149786b4630d41acbf -&gt; xe-4944-aea2c496abcf55b647c14fe720bfc4ea555aac6a</li>
 </ul>
-<p>IGTPW_15068: 41037a3170baee91696f83208e09bf416aaa1d4d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_15069: 86ce060bb02fc7065ec1bcf1e3cb2878b72ff614 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8874: 4568b2c141ab630c34f8eb2b9afab8cbf8f3ce9e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-4940-b6f6b69b2dffa9ad1c43b2149786b4630d41acbf: b6f6b69b2dffa9ad1c43b2149786b4630d41acbf<br />
   xe-4944-aea2c496abcf55b647c14fe720bfc4ea555aac6a: aea2c496abcf55b647c14fe720bfc4ea555aac6a</p>
@@ -143,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============4095997646028381504==--
+--===============6725608707475984517==--
