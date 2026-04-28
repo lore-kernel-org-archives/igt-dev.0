@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 988CAFF885A
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:50:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47201FF886F
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:50:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4E1DD10E2ED;
-	Tue, 28 Apr 2026 04:50:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B6F3510E2C4;
+	Tue, 28 Apr 2026 04:50:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KB1PqjG7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kDxDVJp9";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CBAF10E29C
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A553510E29C
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777351652; x=1808887652;
+ t=1777351632; x=1808887632;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WVaq8r+GQiovx8IrsjYEgElNgcbFzgGlnlxUOFO5nog=;
- b=KB1PqjG7M4928d9liQF9m6G68hYcGdgLjHOBwRFTWNe6ay4s0gvR9VIx
- vbGpXd8YEv8SqMIulVegwnykRTzgHUjX80Mdmp6ogfOuWlKpHWzlRDlFg
- lL5T/e1hIh+LbHg4affFDSCLhvrIFG70dPjpd9NcF0A3rbLN1T4QazWqx
- RPVZSKYqbIoPrMGHYSKfjxYwaJpyzHAcAokG4OCBzeOs63A0ig4oR+Cq2
- tH1dzgAG8bidYFxGfy+5IBhStxDp9i7F7me3eJNDFn+YKaYhfQOWWC680
- Uz9DbYkEU+UW702X/+GsUY5C36dNTnBzYYAFxt5FSo9wH/hy9SZe8JTvO Q==;
-X-CSE-ConnectionGUID: lQrAxREkQa69bfQ1M3ekBw==
-X-CSE-MsgGUID: I7A8FzTZQq6P5SS4RNhUoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167854"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167854"
+ bh=IubHtUmeSMSkUz0fD0MikpZ5j8HsYdola+PFMa3HgCk=;
+ b=kDxDVJp9/cQYfWsvY9TwzOejQH4Smf0+/ONv25UmiojQ4VXBlNVQQ6ms
+ cNPH2ikBrcfOlcn3+yf5qmvaM+MvhuG5/FIn1smiJiTfBv3tL8GqYPql5
+ YKvhyaXAQvHkemkM9UhU4xk4A5kJusGghRkQA4YP/1wxiO0cOr0Gp+lyR
+ XCyroQYHn+JKfCt9ufQ9UK91RN2Kplz5adScKFnIUoolbiUuKi8RjkkMV
+ 6vK3fSHVSz9s/D9lg3OtxAFqaPQYDXXHMzidcFwVjhkw47+88P1vPEgUV
+ 8jHdtpTD7lrhkHB5oBbZsjxiAnibzWY+l2Rx1tzAJHWPq+2E7fR/NLs0B g==;
+X-CSE-ConnectionGUID: HCpCR3METlOET5s/jASX4g==
+X-CSE-MsgGUID: 5/YVxYIcTQmdiGKKBMcbLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167799"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167799"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:32 -0700
-X-CSE-ConnectionGUID: o+nCH0WaRKyvyIGbhVt8yQ==
-X-CSE-MsgGUID: uFfLbtMdS0CTNSsalPpFSA==
+ 27 Apr 2026 21:47:12 -0700
+X-CSE-ConnectionGUID: kuisrVhtTyOTFxD8xWs+OQ==
+X-CSE-MsgGUID: pkTkfo+NTeCtbffu6d1Gkg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706750"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706603"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:31 -0700
+ 27 Apr 2026 21:47:11 -0700
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com,
-	Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: [PATCH i-g-t v1 19/25] tests/chamelium/v3: Implement a basic
- Chamelium v3 accessibility test
-Date: Tue, 28 Apr 2026 10:16:28 +0530
-Message-ID: <20260428044644.257001-20-mohammed.bilal@intel.com>
+Cc: kunal1.joshi@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH i-g-t v1 07/25] lib/monitor_edids: Add helper to get an EDID
+ by its name
+Date: Tue, 28 Apr 2026 10:16:16 +0530
+Message-ID: <20260428044644.257001-8-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260428044644.257001-1-mohammed.bilal@intel.com>
 References: <20260428044644.257001-1-mohammed.bilal@intel.com>
@@ -71,64 +72,73 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-Utilizing the RPC calls introduced earlier, this commit adds a simple test
-to verify if the Chamelium v3 device is accessible.
+For testing specific EDID, it is useful to be able to retrieve an EDID by
+a verbose name.
 
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/chamelium/v3/kms_chamelium_v3_basic.c | 30 +++++++++++++++++++++
- tests/meson.build                           |  1 +
+ lib/monitor_edids/monitor_edids_helper.c | 30 ++++++++++++++++++++++++
+ lib/monitor_edids/monitor_edids_helper.h |  1 +
  2 files changed, 31 insertions(+)
- create mode 100644 tests/chamelium/v3/kms_chamelium_v3_basic.c
 
-diff --git a/tests/chamelium/v3/kms_chamelium_v3_basic.c b/tests/chamelium/v3/kms_chamelium_v3_basic.c
-new file mode 100644
-index 000000000..1b806458b
---- /dev/null
-+++ b/tests/chamelium/v3/kms_chamelium_v3_basic.c
-@@ -0,0 +1,30 @@
-+// SPDX-License-Identifier: MIT
+diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+index 6043e7a08..01feb34a5 100644
+--- a/lib/monitor_edids/monitor_edids_helper.c
++++ b/lib/monitor_edids/monitor_edids_helper.c
+@@ -20,6 +20,16 @@
+ #include "drmtest.h"
+ #include "hdmi_edids.h"
+ 
++struct {
++	struct monitor_edid *edid_list;
++	int list_size;
++} ALL_EDIDS[] = {
++	{DP_EDIDS_NON_4K,	DP_EDIDS_NON_4K_COUNT},
++	{DP_EDIDS_4K,		DP_EDIDS_4K_COUNT},
++	{HDMI_EDIDS_NON_4K,	HDMI_EDIDS_NON_4K_COUNT},
++	{HDMI_EDIDS_4K,		HDMI_EDIDS_4K_COUNT},
++};
 +
-+#include "igt.h"
-+#include "chamelium/v3/igt_chamelium.h"
+ static uint8_t convert_hex_char_to_byte(char c)
+ {
+ 	if (c >= '0' && c <= '9')
+@@ -170,3 +180,23 @@ struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count,
+ 		}
+ 	}
+ }
 +
-+int igt_main()
++/**
++ * get_edid_by_name:
++ * @name: Name to search in available EDIDs
++ *
++ * Return the struct edid associated with a specific name. As with edid_from_monitor_edid, the
++ * caller must ensure to free the EDID after use. If no EDID with the exact name is found, returns
++ * NULL.
++ */
++struct edid *get_edid_by_name(const char *name)
 +{
-+	struct igt_chamelium_v3 *chamelium;
-+
-+	igt_describe("Test if the chamelium can list all the ports.");
-+	igt_subtest("chamelium-list-ports") {
-+		chamelium_v3_port_id *ports;
-+		int port_count;
-+
-+		chamelium = chamelium_v3_init_from_config();
-+
-+		port_count = chamelium_v3_get_supported_ports(chamelium, &ports);
-+
-+		for (int i = 0; i < port_count; i++) {
-+			char *name = chamelium_v3_get_port_name(chamelium, ports[i]);
-+
-+			igt_info("Port %d: name: %s\n", ports[i], name);
-+			free(name);
++	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
++		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
++			if (strcmp(ALL_EDIDS[i].edid_list[j].name, name) == 0)
++				return edid_from_monitor_edid(&ALL_EDIDS[i].edid_list[j]);
 +		}
-+
-+		free(ports);
-+
-+		chamelium_v3_uninit(chamelium);
 +	}
++
++	return NULL;
 +}
-diff --git a/tests/meson.build b/tests/meson.build
-index 17677e4e4..80e88954a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -373,6 +373,7 @@ chamelium_v2_progs = [
- ]
+diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+index e50698686..6d9e3fc89 100644
+--- a/lib/monitor_edids/monitor_edids_helper.h
++++ b/lib/monitor_edids/monitor_edids_helper.h
+@@ -34,5 +34,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
  
- chamelium_v3_progs = [
-+	'kms_chamelium_v3_basic',
- ]
+ struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
+ struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
++struct edid *get_edid_by_name(const char *name);
  
- test_deps = [ igt_deps ]
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
 -- 
 2.48.1
 
