@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9343EFF886F
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:50:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 988CAFF885A
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:50:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34BD110E2C4;
-	Tue, 28 Apr 2026 04:50:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E1DD10E2ED;
+	Tue, 28 Apr 2026 04:50:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XZqR0eDD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KB1PqjG7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FB0110E2C4
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CBAF10E29C
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777351649; x=1808887649;
+ t=1777351652; x=1808887652;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cZahrtcVDAYdxF5uE/sAJ32E53uqJ8/IJypPLQ3SPs0=;
- b=XZqR0eDD8kKiFWLDtXWI9IB27N+x9EcZISQ3MZ7+TCxdH7/adL6lmSM1
- prz6qS6dOXn41pCv6ySFZjDseMmEN8mK2Pi/IRm56YQ+WQRljV2lejceQ
- 90ArUj+yC4O9XEdcSOLHJjoSID3uNQCOLS7Hdgns/+Q+KxoD4XjHvwkWS
- bpxOoMwNy1DfJsYBaAA2cAEQXsdLjQvOFj4EIGyTzoif3N4Ym5JCME3qq
- k2EKA41jatqjKagowb9vxUnEP0yYi1E0FW9frMBhAxS9dpI9v4F4FmQ0V
- 32KisPoFwmmv0NNZwdtr+qUpoYcZwLK8V8ABj+Du0y1JmdqIHvCOC8TDW Q==;
-X-CSE-ConnectionGUID: e/mTnt0fQaSiwiSaRSBDUw==
-X-CSE-MsgGUID: Y53joq6XT+6fQsF3PoBKug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167846"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167846"
+ bh=WVaq8r+GQiovx8IrsjYEgElNgcbFzgGlnlxUOFO5nog=;
+ b=KB1PqjG7M4928d9liQF9m6G68hYcGdgLjHOBwRFTWNe6ay4s0gvR9VIx
+ vbGpXd8YEv8SqMIulVegwnykRTzgHUjX80Mdmp6ogfOuWlKpHWzlRDlFg
+ lL5T/e1hIh+LbHg4affFDSCLhvrIFG70dPjpd9NcF0A3rbLN1T4QazWqx
+ RPVZSKYqbIoPrMGHYSKfjxYwaJpyzHAcAokG4OCBzeOs63A0ig4oR+Cq2
+ tH1dzgAG8bidYFxGfy+5IBhStxDp9i7F7me3eJNDFn+YKaYhfQOWWC680
+ Uz9DbYkEU+UW702X/+GsUY5C36dNTnBzYYAFxt5FSo9wH/hy9SZe8JTvO Q==;
+X-CSE-ConnectionGUID: lQrAxREkQa69bfQ1M3ekBw==
+X-CSE-MsgGUID: I7A8FzTZQq6P5SS4RNhUoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167854"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167854"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:29 -0700
-X-CSE-ConnectionGUID: eOppvrQyT/S0ntjFctPBmA==
-X-CSE-MsgGUID: qHsnqOaDTP2dwfm2caPMAA==
+ 27 Apr 2026 21:47:32 -0700
+X-CSE-ConnectionGUID: o+nCH0WaRKyvyIGbhVt8yQ==
+X-CSE-MsgGUID: uFfLbtMdS0CTNSsalPpFSA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706727"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706750"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:28 -0700
+ 27 Apr 2026 21:47:31 -0700
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com,
 	Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: [PATCH i-g-t v1 17/25] lib/chamelium/v3: Add method to discover
- Chamelium ports
-Date: Tue, 28 Apr 2026 10:16:26 +0530
-Message-ID: <20260428044644.257001-18-mohammed.bilal@intel.com>
+Subject: [PATCH i-g-t v1 19/25] tests/chamelium/v3: Implement a basic
+ Chamelium v3 accessibility test
+Date: Tue, 28 Apr 2026 10:16:28 +0530
+Message-ID: <20260428044644.257001-20-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260428044644.257001-1-mohammed.bilal@intel.com>
 References: <20260428044644.257001-1-mohammed.bilal@intel.com>
@@ -71,175 +71,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-Since Chamelium v3 ports can change (recently added MST ports, for
-example), they need to be discovered to prevent using an incorrect port.
-
-This commit introduces the RPC calls GetSupportedPorts, IsMst, and
-GetChildren to list all ports, check if a port is MST-capable, and fetch
-the child ports of MST ports, respectively.
+Utilizing the RPC calls introduced earlier, this commit adds a simple test
+to verify if the Chamelium v3 device is accessible.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/chamelium/v3/igt_chamelium.c | 133 +++++++++++++++++++++++++++++++
- lib/chamelium/v3/igt_chamelium.h |   6 ++
- 2 files changed, 139 insertions(+)
+ tests/chamelium/v3/kms_chamelium_v3_basic.c | 30 +++++++++++++++++++++
+ tests/meson.build                           |  1 +
+ 2 files changed, 31 insertions(+)
+ create mode 100644 tests/chamelium/v3/kms_chamelium_v3_basic.c
 
-diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
-index 663f51aaa..1122ce102 100644
---- a/lib/chamelium/v3/igt_chamelium.c
-+++ b/lib/chamelium/v3/igt_chamelium.c
-@@ -149,3 +149,136 @@ void chamelium_v3_uninit(struct igt_chamelium_v3 *chamelium)
- 	free(chamelium);
- }
- 
-+/**
-+ * __chamelium_rpc - Call a remote function on the chamelium
-+ *
-+ * @chamelium: Chamelium to call the function on
-+ * @method_name: RPC endpoint name
-+ * @format_str: RPC parameters description
-+ * @...: RPC parameters
-+ *
-+ * Returns a xmlrpc_value that contains the call result.
-+ */
-+static xmlrpc_value *__chamelium_rpc(struct igt_chamelium_v3 *chamelium,
-+				     const char *method_name,
-+				     const char *format_str,
-+				     ...)
-+{
-+	xmlrpc_value *res;
-+	va_list va_args;
+diff --git a/tests/chamelium/v3/kms_chamelium_v3_basic.c b/tests/chamelium/v3/kms_chamelium_v3_basic.c
+new file mode 100644
+index 000000000..1b806458b
+--- /dev/null
++++ b/tests/chamelium/v3/kms_chamelium_v3_basic.c
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: MIT
 +
-+	if (chamelium->env.fault_occurred) {
-+		xmlrpc_env_clean(&chamelium->env);
-+		xmlrpc_env_init(&chamelium->env);
++#include "igt.h"
++#include "chamelium/v3/igt_chamelium.h"
++
++int igt_main()
++{
++	struct igt_chamelium_v3 *chamelium;
++
++	igt_describe("Test if the chamelium can list all the ports.");
++	igt_subtest("chamelium-list-ports") {
++		chamelium_v3_port_id *ports;
++		int port_count;
++
++		chamelium = chamelium_v3_init_from_config();
++
++		port_count = chamelium_v3_get_supported_ports(chamelium, &ports);
++
++		for (int i = 0; i < port_count; i++) {
++			char *name = chamelium_v3_get_port_name(chamelium, ports[i]);
++
++			igt_info("Port %d: name: %s\n", ports[i], name);
++			free(name);
++		}
++
++		free(ports);
++
++		chamelium_v3_uninit(chamelium);
 +	}
-+	va_start(va_args, format_str);
-+	xmlrpc_client_call2f_va(&chamelium->env, chamelium->client,
-+				chamelium->url, method_name, format_str, &res,
-+				va_args);
-+	va_end(va_args);
-+	igt_assert_f(!chamelium->env.fault_occurred,
-+		     "Chamelium RPC call[%s] failed: %s\n", method_name,
-+		     chamelium->env.fault_string);
-+	return res;
 +}
-+
-+/*
-+ * For the RPC calls, please refer to the python code [1] for documentation.
-+ *
-+ * [1]: https://chromium.googlesource.com/chromiumos/platform/chameleon/+/refs/heads/main/v3/chameleond/v3.py
-+ */
-+
-+/**
-+ * chamelium_v3_get_supported_ports - Get the list of ports on the chamelium
-+ *
-+ * @chamelium: Chamelium to get the ports from
-+ * @port_ids: Out pointer for the list of port ids
-+ *
-+ * Returns the number of element stored in @port_ids. The caller must free this pointer when not
-+ * used anymore.
-+ */
-+int chamelium_v3_get_supported_ports(struct igt_chamelium_v3 *chamelium,
-+				     chamelium_v3_port_id **port_ids)
-+{
-+	xmlrpc_value *res, *res_port;
-+	int port_count, i;
-+
-+	igt_assert(port_ids);
-+
-+	igt_debug("RPC GetSupportedPorts()\n");
-+	res = __chamelium_rpc(chamelium, "GetSupportedPorts", "()");
-+
-+	port_count = xmlrpc_array_size(&chamelium->env, res);
-+	*port_ids = calloc(port_count, sizeof(**port_ids));
-+
-+	for (i = 0; i < port_count; i++) {
-+		xmlrpc_array_read_item(&chamelium->env, res, i, &res_port);
-+		xmlrpc_read_int(&chamelium->env, res_port, (int *)&(*port_ids)[i]);
-+		xmlrpc_DECREF(res_port);
-+	}
-+	xmlrpc_DECREF(res);
-+
-+	return port_count;
-+}
-+
-+/**
-+ * chamelium_v3_get_supported_ports - Get the list of children port for a specific port on the
-+ *	chamelium
-+ *
-+ * @chamelium: Chamelium to get the ports from
-+ * @port_id: Parent port id to get the children port from
-+ * @port_ids: Out pointer for the list of port ids
-+ *
-+ * MST ports on the chamelium have children ports that can be plugged independently, but are always
-+ * connected with a parent connector.
-+ *
-+ * Returns the number of element stored in @port_ids. The caller must free this pointer when not
-+ * used anymore.
-+ */
-+int chamelium_v3_get_children(struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id,
-+			      chamelium_v3_port_id **port_ids)
-+{
-+	xmlrpc_value *res, *res_port;
-+	int port_count, i;
-+
-+	igt_debug("RPC GetChildren(%d)\n", port_id);
-+	res = __chamelium_rpc(chamelium, "GetChildren", "(i)", port_id);
-+
-+	port_count = xmlrpc_array_size(&chamelium->env, res);
-+	*port_ids = calloc(port_count, sizeof(**port_ids));
-+
-+	for (i = 0; i < port_count; i++) {
-+		xmlrpc_array_read_item(&chamelium->env, res, i, &res_port);
-+		xmlrpc_read_int(&chamelium->env, res_port, (int *)&(*port_ids)[i]);
-+		xmlrpc_DECREF(res_port);
-+	}
-+	xmlrpc_DECREF(res);
-+
-+	return port_count;
-+}
-+
-+/**
-+ * chamelium_v3_is_mst - Get the MST support for a specific port
-+ *
-+ * @chamelium: Chamelium to get the ports from
-+ * @port_id: Port to get the support from
-+ *
-+ * Not all ports on the chamelium support MST. This functions allows checking if a specific port
-+ * supports MST.
-+ *
-+ * Returns true if the @port_id supports MST.
-+ */
-+bool chamelium_v3_is_mst(struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id)
-+{
-+	xmlrpc_value *res;
-+	xmlrpc_bool is_mst;
-+
-+	igt_debug("RPC IsMst(%d)\n", port_id);
-+	res = __chamelium_rpc(chamelium, "IsMst", "(i)", port_id);
-+
-+	xmlrpc_read_bool(&chamelium->env, res, &is_mst);
-+
-+	xmlrpc_DECREF(res);
-+
-+	return is_mst;
-+}
-diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
-index 929d7d4b0..af5258068 100644
---- a/lib/chamelium/v3/igt_chamelium.h
-+++ b/lib/chamelium/v3/igt_chamelium.h
-@@ -42,4 +42,10 @@ struct igt_chamelium_v3 *chamelium_v3_init_from_config(void);
+diff --git a/tests/meson.build b/tests/meson.build
+index 17677e4e4..80e88954a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -373,6 +373,7 @@ chamelium_v2_progs = [
+ ]
  
- void chamelium_v3_uninit(struct igt_chamelium_v3 *chamelium);
+ chamelium_v3_progs = [
++	'kms_chamelium_v3_basic',
+ ]
  
-+int chamelium_v3_get_supported_ports(struct igt_chamelium_v3 *chamelium,
-+				     chamelium_v3_port_id **port_ids);
-+int chamelium_v3_get_children(struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id,
-+			      chamelium_v3_port_id **port_ids);
-+bool chamelium_v3_is_mst(struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id);
-+
- #endif //V3_IGT_CHAMELIUM_H
+ test_deps = [ igt_deps ]
 -- 
 2.48.1
 
