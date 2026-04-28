@@ -4,51 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A27C6FF885A
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 21:22:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3469FF885A
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 21:22:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2FF5E10E031;
-	Tue, 28 Apr 2026 21:22:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5022610E031;
+	Tue, 28 Apr 2026 21:22:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mdhS1Ul7";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EK2eyx64";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA42210E031
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 21:21:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 06F4710E031
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 21:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777411316; x=1808947316;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=KIOVwAIwM6drcfxtTrplcHAoRMPaskoBBlmakwlup+8=;
- b=mdhS1Ul7l1CSm9LCFNjT3lSyNJQIPZ7afFzKwVQnf/fPt1vOf58LVVlQ
- fZsBlScoiqNjEcZ0Ywn0ytCqYHZmLby1wZCq2KWXHV7BDTF2EkeQEbSRY
- 9eQ47kTLxU33eNUodpo53UcJvMNReHmWwFJylHJKUudb9jo+TlWf3u5qh
- z+6WAtCZMW8Q6Eokp4/lrH0fbcNJQDHmxAs7zZG+PDEvq162GO3pT7+7C
- XYHqMnjk6TskeD+xmQs5OJKJ1+TagD5sVyPFvBmiiUliUqjrGu9hYz4zK
- qiU/V62Sh7Ykq4Xpdia9ilwazsJuUTJ4bsak8vHVSXk3I+8RVySap2g9A g==;
-X-CSE-ConnectionGUID: hFoJ69GeQAOz0IS55MHnOA==
-X-CSE-MsgGUID: ncA1yktCS/u6LBz7QvBBBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="78526162"
-X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; d="scan'208";a="78526162"
+ t=1777411325; x=1808947325;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Ny1YqpJbSA5SGDx13wqId+N8RahlBfjG0XI1W1RRUmY=;
+ b=EK2eyx64KTwiie18aF8si4COgPw8xsHW1OEqvRC13UuzSULxAFEqGagR
+ I2pZGTYeVYOhRmt5ZMooKpgXHK01aic9n6l5DHIFCQBNrl2FwrIShXlo8
+ tR36yC4rIZ/FK9JbyQrPor4Ggo/JY5Mu+GAt+z1PkQ+POLqc5GEv0nJ7W
+ qfzhSDT8HAOQ3mJAO9+D5OC+QAHt/0fjSL8SRBMn/gkJ71xFrZ/V6C3O8
+ W+is5HpDtlnRmsR43RXq8iYFQZ9ZaOsU1mmBDO3azTSwNkNoeui4dxq5Q
+ 95NHT0JkOAUgV4WQftLcYl3LMNRNECXKe71xk/Z0eRadH7wM2+Uj9r956 A==;
+X-CSE-ConnectionGUID: u0I7WoRwTDmLZpSqXTQRAw==
+X-CSE-MsgGUID: U4zycshLQpu5e29aVZsBgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="78526182"
+X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; d="scan'208";a="78526182"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2026 14:21:56 -0700
-X-CSE-ConnectionGUID: cdi2xcElRBiyfhvAP89tVA==
-X-CSE-MsgGUID: p0MY77eIRLOeqAXcbORh3g==
+ 28 Apr 2026 14:22:05 -0700
+X-CSE-ConnectionGUID: alpz8ZAQQNWjfPVtnqo6Sg==
+X-CSE-MsgGUID: Z/NR177hQdu5Iru3/AQKtg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; d="scan'208";a="238400768"
+X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; d="scan'208";a="238400799"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 14:21:55 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 14:22:04 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t,v4 0/5] Enable HDR in IGT Frontbuffer Feature Tests
-Date: Wed, 29 Apr 2026 03:00:35 +0530
-Message-Id: <20260428213040.2293921-1-swati2.sharma@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>,
+ Suraj Kandpal <suraj.kandpal@intel.com>
+Subject: [PATCH i-g-t,
+ v4 5/5] tests/intel/kms_frontbuffer_tracking: Enable HDR in feature
+ tests
+Date: Wed, 29 Apr 2026 03:00:40 +0530
+Message-Id: <20260428213040.2293921-6-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260428213040.2293921-1-swati2.sharma@intel.com>
+References: <20260428213040.2293921-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,29 +71,349 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Patches add HDR support to the kms_frontbuffer_tracking tests.
-This update integrates HDR into the feature test matrix, ensuring HDR
-scenarios are exercised in RTE, suspend, and other feature-based
-subtests.
+Enable HDR mode on the primary output when the test's feature mask
+includes FEATURE_HDR. This lets the existing feature-test matrix
+(draw methods × buffer modes × pipes) exercise FBC, PSR and DRRS
+while an HDR infoframe is active.
 
-Alex Hung (1):
-  lib/igt_hdr: Fix EOTF bit flag checking
+The disable path tears down HDR metadata so subsequent tests start
+from a clean SDR baseline.
 
-Swati Sharma (4):
-  lib/igt_hdr: Move HDR helpers from kms_hdr into shared library
-  lib/igt_hdr: Add helpers to enable and disable HDR on an output
-  tests/intel/kms_frontbuffer_tracking: Add HDR feature support
-  tests/intel/kms_frontbuffer_tracking: Enable HDR in feature tests
+v2: -place igt headers in alphabetical order (Kamil)
+v3: -rebase
 
- lib/igt_hdr.c                          | 240 ++++++++
- lib/igt_hdr.h                          |  31 ++
- lib/meson.build                        |   1 +
- tests/intel/kms_frontbuffer_tracking.c | 740 ++++++++++++++++++++++++-
- tests/kms_hdr.c                        | 268 ++-------
- 5 files changed, 1043 insertions(+), 237 deletions(-)
- create mode 100644 lib/igt_hdr.c
- create mode 100644 lib/igt_hdr.h
+Co-developed-by: Claude Opus 4.6
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+---
+ tests/intel/kms_frontbuffer_tracking.c | 155 +++++++++++++++++++++++--
+ 1 file changed, 147 insertions(+), 8 deletions(-)
 
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 273f1f584..1711d6770 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -38,6 +38,7 @@
+ #include <poll.h>
+ #include <pthread.h>
+ #include <limits.h>
++#include <inttypes.h>
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+@@ -45,6 +46,7 @@
+ #include "i915/intel_fbc.h"
+ #include "igt.h"
+ #include "igt_sysfs.h"
++#include "igt_hdr.h"
+ #include "igt_psr.h"
+ 
+ /**
+@@ -1504,6 +1506,12 @@ struct {
+ 	.can_test = false,
+ };
+ 
++struct {
++	bool can_test;
++} hdr = {
++	.can_test = false,
++};
++
+ igt_pipe_crc_t *pipe_crc;
+ igt_crc_t *wanted_crc;
+ struct {
+@@ -2448,6 +2456,11 @@ static void unset_all_crtcs(void)
+ 	igt_display_commit(&drm.display);
+ }
+ 
++static void intel_hdr_disable(igt_output_t *output)
++{
++	igt_hdr_disable(output);
++}
++
+ static bool disable_features(const struct test_mode *t)
+ {
+ 	if (t->feature == FEATURE_DEFAULT)
+@@ -2455,6 +2468,7 @@ static bool disable_features(const struct test_mode *t)
+ 
+ 	intel_fbc_disable(&drm.display);
+ 	intel_drrs_disable(prim_mode_params.crtc);
++	intel_hdr_disable(prim_mode_params.output);
+ 
+ 	return psr.can_test ? psr_disable(drm.fd, drm.debugfs, NULL) : false;
+ }
+@@ -2715,6 +2729,17 @@ static void teardown_fbc(void)
+ {
+ }
+ 
++static void teardown_hdr(void)
++{
++	if (!hdr.can_test)
++		return;
++
++	/* Disable HDR and restore connector state */
++	intel_hdr_disable(prim_mode_params.output);
++
++	hdr.can_test = false;
++}
++
+ static void setup_psr(void)
+ {
+ 	if (prim_mode_params.output->config.connector->connector_type !=
+@@ -2749,6 +2774,29 @@ static void setup_drrs(void)
+ 	drrs.can_test = true;
+ }
+ 
++static void setup_hdr(void)
++{
++	if (!igt_output_has_prop(prim_mode_params.output, IGT_CONNECTOR_MAX_BPC) ||
++	    !igt_output_get_prop(prim_mode_params.output, IGT_CONNECTOR_MAX_BPC) ||
++	    !igt_output_supports_hdr(prim_mode_params.output)) {
++		igt_info("Can't test HDR: %s doesn't support IGT_CONNECTOR_MAX_BPC or IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
++			  igt_output_name(prim_mode_params.output));
++		return;
++	}
++
++	if (!igt_is_panel_hdr(drm.fd, prim_mode_params.output)) {
++		igt_info("Can't test HDR: %s not HDR capable.\n", igt_output_name(prim_mode_params.output));
++		return;
++	}
++
++	if (igt_get_output_max_bpc(prim_mode_params.output) < 10) {
++		igt_info("Can't test HDR: %s doesn't support 10 bpc.\n", igt_output_name(prim_mode_params.output));
++		return;
++	}
++
++	hdr.can_test = true;
++}
++
+ static void setup_environment(void)
+ {
+ 	setup_modeset();
+@@ -2756,6 +2804,7 @@ static void setup_environment(void)
+ 	setup_fbc();
+ 	setup_psr();
+ 	setup_drrs();
++	setup_hdr();
+ 
+ 	setup_crcs();
+ }
+@@ -2767,6 +2816,7 @@ static void teardown_environment(void)
+ 	teardown_crcs();
+ 	teardown_psr();
+ 	teardown_fbc();
++	teardown_hdr();
+ 	teardown_modeset();
+ 	teardown_drm();
+ }
+@@ -2843,6 +2893,10 @@ static void do_flush(const struct test_mode *t)
+ 
+ #define ASSERT_NO_IDLE_GPU		(1 << 11)
+ 
++#define HDR_ASSERT_FLAGS               (3 << 12)
++#define ASSERT_HDR_ENABLED             (1 << 12)
++#define ASSERT_HDR_DISABLED            (1 << 13)
++
+ static int adjust_assertion_flags(const struct test_mode *t, int flags)
+ {
+ 	if (!(flags & DONT_ASSERT_FEATURE_STATUS)) {
+@@ -2853,6 +2907,8 @@ static int adjust_assertion_flags(const struct test_mode *t, int flags)
+ 		if (!((flags & ASSERT_DRRS_LOW) ||
+ 		    (flags & ASSERT_DRRS_INACTIVE)))
+ 			flags |= ASSERT_DRRS_HIGH;
++		if (!(flags & ASSERT_HDR_DISABLED))
++			flags |= ASSERT_HDR_ENABLED;
+ 	}
+ 
+ 	if ((t->feature & FEATURE_FBC) == 0 || (flags & DONT_ASSERT_FBC_STATUS))
+@@ -2861,6 +2917,8 @@ static int adjust_assertion_flags(const struct test_mode *t, int flags)
+ 		flags &= ~PSR_ASSERT_FLAGS;
+ 	if ((t->feature & FEATURE_DRRS) == 0)
+ 		flags &= ~DRRS_ASSERT_FLAGS;
++	if ((t->feature & FEATURE_HDR) == 0)
++		flags &= ~HDR_ASSERT_FLAGS;
+ 
+ 	return flags;
+ }
+@@ -2879,6 +2937,27 @@ static void do_crc_assertions(int flags)
+ 	igt_assert_crc_equal(&crc, wanted_crc);
+ }
+ 
++static bool intel_hdr_is_enabled(igt_output_t *output)
++{
++	uint64_t blob_id =
++		igt_output_get_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
++	uint64_t max_bpc =
++		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
++
++	return blob_id != 0 && max_bpc >= 10;
++}
++
++static void hdr_print_status(igt_output_t *output)
++{
++	uint64_t blob_id =
++		igt_output_get_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
++	uint64_t max_bpc =
++		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
++
++	igt_info("HDR metadata blob id: %" PRIu64 "\n", blob_id);
++	igt_info("MAX_BPC: %" PRIu64 "\n", max_bpc);
++}
++
+ static void do_status_assertions(int flags)
+ {
+ 	if (!opt.check_status) {
+@@ -2927,6 +3006,18 @@ static void do_status_assertions(int flags)
+ 	} else if (flags & ASSERT_PSR_DISABLED)
+ 		igt_assert_f(psr_wait_update(drm.debugfs, PSR_MODE_1, NULL),
+ 			     "PSR still enabled\n");
++
++	if (flags & ASSERT_HDR_ENABLED) {
++		if (!intel_hdr_is_enabled(prim_mode_params.output)) {
++			hdr_print_status(prim_mode_params.output);
++			igt_assert_f(false, "HDR not enabled\n");
++		}
++	} else if (flags & ASSERT_HDR_DISABLED) {
++		if (intel_hdr_is_enabled(prim_mode_params.output)) {
++			hdr_print_status(prim_mode_params.output);
++			igt_assert_f(false, "HDR still enabled\n");
++		}
++	}
+ }
+ 
+ static void __do_assertions(const struct test_mode *t, int flags,
+@@ -2944,7 +3035,8 @@ static void __do_assertions(const struct test_mode *t, int flags,
+ 
+ 	/* Check the CRC to make sure the drawing operations work
+ 	 * immediately, independently of the features being enabled. */
+-	do_crc_assertions(flags);
++	if (!(t->feature & FEATURE_HDR))
++		do_crc_assertions(flags);
+ 
+ 	/* Now we can flush things to make the test faster. */
+ 	do_flush(t);
+@@ -2956,7 +3048,7 @@ static void __do_assertions(const struct test_mode *t, int flags,
+ 	 * case, the first check should be enough and a new CRC check
+ 	 * would only delay the test suite while adding no value to the
+ 	 * test suite. */
+-	if (t->screen == SCREEN_PRIM)
++	if (!(t->feature & FEATURE_HDR) && t->screen == SCREEN_PRIM)
+ 		do_crc_assertions(flags);
+ 
+ 	if (fbc.supports_last_action && opt.fbc_check_last_action) {
+@@ -3078,6 +3170,11 @@ static void set_plane_for_test_fbc(const struct test_mode *t, igt_plane_t *plane
+ 	igt_display_commit2(&drm.display, COMMIT_ATOMIC);
+ }
+ 
++static void intel_hdr_enable(igt_output_t *output)
++{
++	igt_hdr_enable(output);
++}
++
+ static bool enable_features_for_test(const struct test_mode *t)
+ {
+ 	bool ret = false;
+@@ -3088,9 +3185,13 @@ static bool enable_features_for_test(const struct test_mode *t)
+ 	if (t->feature & FEATURE_FBC)
+ 		intel_fbc_enable(&drm.display);
+ 	if (t->feature & FEATURE_PSR)
+-		ret = psr_enable(drm.fd, drm.debugfs, PSR_MODE_1, NULL);
++		ret |= psr_enable(drm.fd, drm.debugfs, PSR_MODE_1, NULL);
+ 	if (t->feature & FEATURE_DRRS)
+ 		intel_drrs_enable(prim_mode_params.crtc);
++	if (t->feature & FEATURE_HDR) {
++		intel_hdr_enable(prim_mode_params.output);
++		ret |= true;   /* HDR metadata must force a commit */
++	}
+ 
+ 	return ret;
+ }
+@@ -3114,6 +3215,11 @@ static void check_test_requirements(const struct test_mode *t)
+ 		igt_require_f(drrs.can_test,
+ 			      "Can't test DRRS with the current outputs\n");
+ 
++	if (t->feature & FEATURE_HDR) {
++		igt_require_f(hdr.can_test,
++			      "Can't test HDR with the current outputs\n");
++	}
++
+ 	/*
+ 	 * In kernel, When PSR is enabled, DRRS will be disabled. So If a test
+ 	 * case needs DRRS + PSR enabled, that will be skipped.
+@@ -3190,9 +3296,13 @@ static void prepare_subtest_data(const struct test_mode *t,
+ 	if (need_modeset)
+ 		igt_display_commit(&drm.display);
+ 
+-	init_blue_crc(t->format, t->tiling);
+-	if (pattern)
+-		init_crcs(t->format, t->tiling, pattern);
++	/* HDR alters the output (EOTF, tone-mapping, bpc), so CRCs won’t match
++	 * the SDR reference CRCs. Skip CRC checks for HDR tests. */
++	if (!(t->feature & FEATURE_HDR)) {
++		init_blue_crc(t->format, t->tiling);
++		if (pattern)
++			init_crcs(t->format, t->tiling, pattern);
++	}
+ 
+ 	need_modeset = enable_features_for_test(t);
+ 	if (need_modeset)
+@@ -3253,9 +3363,23 @@ static void rte_subtest(const struct test_mode *t)
+ 
+ 	prepare_subtest_data(t, NULL);
+ 
++	/*
++	 * unset_all_crtcs() clears HDR metadata (blob_id becomes 0).
++	 * After verifying the disabled state, re-arm HDR props on the
++	 * output so the next modeset picks them up.
++	 */
+ 	unset_all_crtcs();
+ 	do_assertions(ASSERT_FBC_DISABLED | ASSERT_PSR_DISABLED |
+-		      DONT_ASSERT_CRC | ASSERT_DRRS_INACTIVE);
++		      DONT_ASSERT_CRC | ASSERT_DRRS_INACTIVE |
++		      ASSERT_HDR_DISABLED);
++
++	/*
++	 * Re-arm HDR props on the in-memory output object.
++	 * This only stages the state; the actual commit happens
++	 * inside enable_prim_screen_and_wait().
++	 */
++	if (t->feature & FEATURE_HDR)
++		intel_hdr_enable(prim_mode_params.output);
+ 
+ 	if (t->pipes == PIPE_SINGLE)
+ 		enable_prim_screen_and_wait(t);
+@@ -4143,6 +4267,13 @@ static void modesetfrombusy_subtest(const struct test_mode *t)
+ 	usleep(10000);
+ 
+ 	unset_all_crtcs();
++	/*
++	 * Re-arm HDR props on the in-memory output object.
++	 * This only stages the state; the actual commit happens
++	 * inside set_mode_for_params().
++	 */
++	if (t->feature & FEATURE_HDR)
++		intel_hdr_enable(prim_mode_params.output);
+ 	params->primary.fb = &fb2;
+ 	set_mode_for_params(params);
+ 
+@@ -4179,8 +4310,16 @@ static void suspend_subtest(const struct test_mode *t)
+ 	unset_all_crtcs();
+ 	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
+ 	do_assertions(ASSERT_FBC_DISABLED | ASSERT_PSR_DISABLED |
+-		      DONT_ASSERT_CRC | ASSERT_DRRS_INACTIVE);
++		      DONT_ASSERT_CRC | ASSERT_DRRS_INACTIVE |
++		      ASSERT_HDR_DISABLED);
+ 
++	/*
++	 * Re-arm HDR props on the in-memory output object.
++	 * This only stages the state; the actual commit happens
++	 * inside set_mode_for_params().
++	 */
++	if (t->feature & FEATURE_HDR)
++		intel_hdr_enable(prim_mode_params.output);
+ 	set_mode_for_params(params);
+ 	do_assertions(0);
+ }
 -- 
 2.25.1
 
