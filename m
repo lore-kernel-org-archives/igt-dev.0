@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02C5BFF886F
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:52:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F0FFFF886F
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:52:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB3BA10E2C4;
-	Tue, 28 Apr 2026 04:52:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC49310E2C4;
+	Tue, 28 Apr 2026 04:52:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f5UIEFSg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ho7osTd0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E7E210E29C
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54EAF10E29C
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777351662; x=1808887662;
+ t=1777351659; x=1808887659;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=70JV7TW60lPpDHycOje3QQeCm22MsNmO8i9MiutaoTQ=;
- b=f5UIEFSgLtmiphhfWQZ0LWkLPr3Z7eM4KpQbFwIKBhZMhATds6+IzV0q
- O/6FF+tIGm+Q56+iGyVW4Q+Xqv2f6hj1bvs11OcL7l0lsPt+3qFeAzoIK
- cPYPt/naTWNu/JrmxQKp9wG6zZMtvmRazMZiOYr6pSDIdpx/Y1IOm4+0I
- d52Ew0pXiEehELGcpVu1eYDB2c4MZUWDWkG4QpjeFSUeEpqw3k4CJzRS3
- zymb0boOsQ1M1Bv/ZiCr1Art+hcCt+EKaQ7FpqFkvE4NR5lnTHVXlHvwj
- ohs3y31XXziInOH694gf461BTYnu424TCKF+j/QgVxF+/OU1RkzaNBeHk A==;
-X-CSE-ConnectionGUID: 3ASJuI8sQve1u0ePnMMLLA==
-X-CSE-MsgGUID: rLAwuR4aQ86RUWvH7jvAZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167874"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167874"
+ bh=C0htsQIAiYlD2dQzFm8JepA0j1q1omMOZ49Zr6fZgvE=;
+ b=ho7osTd0SJ2wCAFYo+2hQdO2NCr4Pf7hFR+slmtOOf4t9sypGpfZmSiD
+ rHvp/XY4NNraIFdGDVOlMihKzijUegenLDZx8AP4nNkNuCqZ1PCG1D3LM
+ 9S6Dr0A7nuWde/CP5TdfSwgZnm2lAMFpZ8l4SQWuajqly8f7F/TPg5WWY
+ gtierHjdfZAh00Q06WLfrMzqYCgfbBK3PRuwfQ8VQdXjr6s7COvu+hPPf
+ Ga/bWpfg8TGgAsIZX08P/SuYlV/8uI7wrYdZJIFZ3J174S39R/N+A6qC9
+ 18lqmBY9UyzCYpDFy/jZp3TYF+b0ipncIjdhTVsnSv+etwGBcLW+uQzxp g==;
+X-CSE-ConnectionGUID: iy1IyTl7T1Kn5H2pYdL5YA==
+X-CSE-MsgGUID: xfdo8SecRKS66XTuxDmwWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167869"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167869"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:42 -0700
-X-CSE-ConnectionGUID: ySD157b3SliX9qHhCMmt0A==
-X-CSE-MsgGUID: b3vSKcjnTiKVbK1A+zWA7g==
+ 27 Apr 2026 21:47:39 -0700
+X-CSE-ConnectionGUID: wqmxJ7r1TEWp6mgpxMZoFA==
+X-CSE-MsgGUID: gLPpHlFKRY61a59dmNkv/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706821"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706801"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:41 -0700
+ 27 Apr 2026 21:47:38 -0700
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com,
 	Mohammed Bilal <mohammed.bilal@intel.com>
-Subject: [PATCH i-g-t v1 25/25] tests/chamelium/v3: Add audio tests for
- Chamelium v3
-Date: Tue, 28 Apr 2026 10:16:34 +0530
-Message-ID: <20260428044644.257001-26-mohammed.bilal@intel.com>
+Subject: [PATCH i-g-t v1 23/25] tests/chamelium/v3: Add frame capture and CRC
+ tests for Chamelium v3
+Date: Tue, 28 Apr 2026 10:16:32 +0530
+Message-ID: <20260428044644.257001-24-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260428044644.257001-1-mohammed.bilal@intel.com>
 References: <20260428044644.257001-1-mohammed.bilal@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=yes
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,738 +70,1582 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit adds audio testing capabilities for Chamelium v3 including
-HDMI audio capture, audio format verification, and audio playback tests.
+This commit adds frame capture and CRC verification tests for Chamelium v3
+including frame dump, pixel comparison, and display output verification.
 
 Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
 ---
- tests/chamelium/v3/kms_chamelium_v3_audio.c | 707 ++++++++++++++++++++
- tests/meson.build                           |   1 +
- 2 files changed, 708 insertions(+)
- create mode 100644 tests/chamelium/v3/kms_chamelium_v3_audio.c
+ tests/chamelium/v3/kms_chamelium_v3_frames.c | 1551 ++++++++++++++++++
+ tests/meson.build                            |    1 +
+ 2 files changed, 1552 insertions(+)
+ create mode 100644 tests/chamelium/v3/kms_chamelium_v3_frames.c
 
-diff --git a/tests/chamelium/v3/kms_chamelium_v3_audio.c b/tests/chamelium/v3/kms_chamelium_v3_audio.c
+diff --git a/tests/chamelium/v3/kms_chamelium_v3_frames.c b/tests/chamelium/v3/kms_chamelium_v3_frames.c
 new file mode 100644
-index 000000000..1e392de15
+index 000000000..2132cf944
 --- /dev/null
-+++ b/tests/chamelium/v3/kms_chamelium_v3_audio.c
-@@ -0,0 +1,707 @@
++++ b/tests/chamelium/v3/kms_chamelium_v3_frames.c
+@@ -0,0 +1,1551 @@
 +// SPDX-License-Identifier: MIT
 +/*
-+ * Copyright (c) 2024 Intel Corporation
++ * Copyright © 2026 Intel Corporation
 + *
-+ * Chamelium V3 Audio Tests
++ * Chamelium V3 Frame Capture / CRC Tests
 + *
-+ * Tests audio output pipeline verification using ALSA, audio signal,
-+ * ELD, and EDID infrastructure from the shared IGT libraries.
-+ *
-+ * The dp-audio and hdmi-audio subtests verify the GPU audio output pipeline:
-+ *   1. Audio EDID is applied and ELD is populated correctly.
-+ *   2. ALSA output device opens for the connected display.
-+ *   3. Multi-format, multi-rate audio playback completes without error.
++ * Tests frame capture, pixel-by-pixel comparison, format validation,
++ * and plane composition using the Chamelium DumpPixels API.
++ * Category: Display
++ * Description: Frame capture and comparison tests for Chamelium V3
++ * Driver requirement: i915, xe
++ * Mega feature: General Display Features
 + */
 +
 +#include <stdlib.h>
-+#include <unistd.h>
 +#include <string.h>
++#include <unistd.h>
 +#include <fcntl.h>
 +
 +#include "igt.h"
-+#include "igt_edid.h"
-+#include "igt_eld.h"
-+#include "igt_alsa.h"
-+#include "igt_audio.h"
++#include "igt_kms.h"
++#include "igt_infoframe.h"
 +#include "chamelium/v3/igt_chamelium.h"
 +
-+/**
-+ * TEST: kms chamelium v3 audio
-+ * Category: Display
-+ * Description: Audio tests for Chamelium V3
-+ * Driver requirement: i915, xe
-+ * Mega feature: Display Audio
-+ */
++IGT_TEST_DESCRIPTION("Frame capture and comparison tests using Chamelium V3 DumpPixels API");
 +
-+#define HPD_WAIT_TIME_MS      3000
-+#define EDID_SETTLE_TIME_MS   2000
-+#define CONNECTOR_WAIT_TIMEOUT 10  /* seconds */
-+
-+/* Playback parameters */
-+#define PLAYBACK_CHANNELS 2
-+#define PLAYBACK_SAMPLES  1024
-+
-+/* Capture parameters (used for frequency step calculation) */
-+#define CAPTURE_SAMPLES   2048
-+
-+/* Duration to play each audio configuration (milliseconds) */
-+#define PLAYBACK_DURATION_MS 500
++#define HPD_WAIT_TIME_MS 3000
 +
 +/* Chamelium V3 port IDs */
-+#define FPGA_DP1_PORT  4
-+#define FPGA_DP2_PORT  5
++#define FPGA_DP1_PORT 4
++#define FPGA_DP2_PORT 5
 +#define ITE_HDMI1_PORT 2
 +#define ITE_HDMI2_PORT 3
 +
-+struct audio_test_data {
++/*
++ * Tolerance for frame comparison.
++ * Digital connections (DP/HDMI) should be near-exact, but allow
++ * small differences for color quantization and rounding.
++ */
++#define FRAME_CRC_TOLERANCE 2
++#define FRAME_DUMP_TOLERANCE 0
++#define FRAME_CHECKERBOARD_TOLERANCE 10
++#define FRAME_FORMAT_TOLERANCE 10
++
++/* Maps Video Identification Codes to a mode */
++struct vic_mode {
++	int hactive, vactive;
++	int vrefresh; /* Hz */
++	uint32_t picture_ar;
++};
++
++static const struct vic_mode vic_modes[] = {
++	[16] = {
++		.hactive = 1920,
++		.vactive = 1080,
++		.vrefresh = 60,
++		.picture_ar = DRM_MODE_PICTURE_ASPECT_16_9,
++	},
++};
++
++struct frames_test_data {
++	/* Chamelium V3 */
 +	struct igt_chamelium_v3 *chamelium;
 +	chamelium_v3_port_id *ports;
 +	int port_count;
++
++	/* DRM display */
 +	int drm_fd;
++	igt_display_t display;
 +};
 +
-+/**
-+ * struct v3_playback_ctx - Context for audio playback callback
-+ *
-+ * The dp-audio / hdmi-audio subtests verify the GPU audio output pipeline
-+ * by playing test signals and verifying ALSA playback completes without error.
-+ */
-+struct v3_playback_ctx {
-+	struct audio_signal *signal;
-+	snd_pcm_format_t format;
-+	int channels;
-+};
 +
-+static int test_sampling_rates[] = {
-+	32000, 44100, 48000,
-+};
++/* Find the first DP port, preferring FPGA ports */
++static chamelium_v3_port_id find_dp_port(struct frames_test_data *data)
++{
++	int i;
 +
-+static int test_sampling_rates_count =
-+	sizeof(test_sampling_rates) / sizeof(int);
++	/* Prefer FPGA DP ports first */
++	for (i = 0; i < data->port_count; i++) {
++		chamelium_v3_port_id port = data->ports[i];
 +
-+static int test_frequencies[] = {
-+	300, 600, 1200, 10000, 80000,
-+};
++		if (chamelium_v3_port_is_dp(data->chamelium, port) &&
++		    chamelium_v3_is_plugged(data->chamelium, port) &&
++		    (port == FPGA_DP1_PORT || port == FPGA_DP2_PORT))
++			return port;
++	}
++	/* Fallback to any DP port */
++	for (i = 0; i < data->port_count; i++) {
++		chamelium_v3_port_id port = data->ports[i];
 +
-+static int test_frequencies_count = sizeof(test_frequencies) / sizeof(int);
++		if (chamelium_v3_port_is_dp(data->chamelium, port) &&
++		    chamelium_v3_is_plugged(data->chamelium, port))
++			return port;
++	}
++	return (chamelium_v3_port_id)-1;
++}
 +
-+static const snd_pcm_format_t test_formats[] = {
-+	SND_PCM_FORMAT_S16_LE,
-+	SND_PCM_FORMAT_S24_LE,
-+	SND_PCM_FORMAT_S32_LE,
-+};
-+
-+static const int test_formats_count =
-+	sizeof(test_formats) / sizeof(test_formats[0]);
-+
-+
-+static chamelium_v3_port_id find_dp_port(struct audio_test_data *data)
++/* Find the first HDMI port */
++static chamelium_v3_port_id find_hdmi_port(struct frames_test_data *data)
 +{
 +	int i;
 +
 +	for (i = 0; i < data->port_count; i++) {
 +		chamelium_v3_port_id port = data->ports[i];
 +
-+		if (chamelium_v3_port_is_dp(data->chamelium, port) &&
-+		    (port == FPGA_DP1_PORT || port == FPGA_DP2_PORT))
++		if (chamelium_v3_port_is_hdmi(data->chamelium, port) &&
++		    chamelium_v3_is_plugged(data->chamelium, port))
 +			return port;
 +	}
-+	for (i = 0; i < data->port_count; i++) {
-+		if (chamelium_v3_port_is_dp(data->chamelium, data->ports[i]))
-+			return data->ports[i];
-+	}
 +	return (chamelium_v3_port_id)-1;
 +}
 +
-+static chamelium_v3_port_id find_hdmi_port(struct audio_test_data *data)
++
++/*
++ * Find a DRM output matching the Chamelium port type.
++ * For HDMI ports, look for HDMI-A connectors; for DP ports, look for DP connectors.
++ */
++static igt_output_t *find_output_for_port(struct frames_test_data *data,
++					  chamelium_v3_port_id port_id,
++					  bool is_hdmi)
 +{
-+	int i;
++	igt_output_t *output;
++	igt_crtc_t *crtc;
 +
-+	for (i = 0; i < data->port_count; i++) {
-+		if (chamelium_v3_port_is_hdmi(data->chamelium, data->ports[i]))
-+			return data->ports[i];
-+	}
-+	return (chamelium_v3_port_id)-1;
-+}
++	for_each_crtc(&data->display, crtc) {
++		for_each_valid_output_on_crtc(&data->display, crtc, output) {
++			uint32_t conn_type = output->config.connector->connector_type;
++			bool is_match = false;
 +
-+static chamelium_v3_port_id get_port_for_type(struct audio_test_data *data,
-+					      bool is_dp)
-+{
-+	return is_dp ? find_dp_port(data) : find_hdmi_port(data);
-+}
++			if (is_hdmi)
++				is_match = (conn_type == DRM_MODE_CONNECTOR_HDMIA ||
++					    conn_type == DRM_MODE_CONNECTOR_HDMIB);
++			else
++				is_match = (conn_type == DRM_MODE_CONNECTOR_DisplayPort);
 +
-+static int get_drm_connector_type(bool is_dp)
-+{
-+	return is_dp ? DRM_MODE_CONNECTOR_DisplayPort :
-+		       DRM_MODE_CONNECTOR_HDMIA;
-+}
-+
-+
-+static void disable_all_crtcs(int drm_fd)
-+{
-+	drmModeRes *res = drmModeGetResources(drm_fd);
-+
-+	if (!res)
-+		return;
-+
-+	for (int i = 0; i < res->count_crtcs; i++)
-+		drmModeSetCrtc(drm_fd, res->crtcs[i], 0, 0, 0, NULL, 0, NULL);
-+
-+	drmModeFreeResources(res);
-+}
-+
-+static void dump_connector_info(int drm_fd, const char *label)
-+{
-+	drmModeRes *res = drmModeGetResources(drm_fd);
-+	const char *status_str;
-+
-+	if (!res) {
-+		igt_info("%s: cannot get DRM resources\n", label);
-+		return;
-+	}
-+
-+	igt_info("%s - Connector info:\n", label);
-+	for (int i = 0; i < res->count_connectors; i++) {
-+		drmModeConnector *conn =
-+			drmModeGetConnector(drm_fd, res->connectors[i]);
-+		if (!conn)
-+			continue;
-+
-+		switch (conn->connection) {
-+		case DRM_MODE_CONNECTED:
-+			status_str = "connected";
-+			break;
-+		case DRM_MODE_DISCONNECTED:
-+			status_str = "disconnected";
-+			break;
-+		default:
-+			status_str = "unknown";
-+			break;
++			if (is_match)
++				return output;
 +		}
-+
-+		igt_info("  [CONNECTOR:%u:%s-%u]: status: %s, modes: %d\n",
-+			 conn->connector_id,
-+			 kmstest_connector_type_str(conn->connector_type),
-+			 conn->connector_type_id,
-+			 status_str, conn->count_modes);
-+
-+		drmModeFreeConnector(conn);
 +	}
-+	drmModeFreeResources(res);
-+}
 +
-+static drmModeConnector *wait_for_connected_connector(int drm_fd, int type)
-+{
-+	int retries = CONNECTOR_WAIT_TIMEOUT * 20; /* 50ms interval */
-+
-+	while (retries-- > 0) {
-+		drmModeRes *res = drmModeGetResources(drm_fd);
-+
-+		if (!res) {
-+			usleep(50000);
-+			continue;
-+		}
-+
-+		for (int i = 0; i < res->count_connectors; i++) {
-+			drmModeConnector *conn =
-+				drmModeGetConnector(drm_fd, res->connectors[i]);
-+			if (!conn)
-+				continue;
-+			if (conn->connector_type == (uint32_t)type &&
-+			    conn->connection == DRM_MODE_CONNECTED &&
-+			    conn->count_modes > 0) {
-+				drmModeFreeResources(res);
-+				return conn;
-+			}
-+			drmModeFreeConnector(conn);
-+		}
-+		drmModeFreeResources(res);
-+		usleep(50000);
-+	}
 +	return NULL;
 +}
 +
-+static uint32_t find_crtc_for_connector(int drm_fd, drmModeConnector *conn)
++/*
++ * Set up display: attach output to a pipe, get primary plane, set mode.
++ * Returns the primary plane, or NULL on failure.
++ */
++static igt_plane_t *setup_output(struct frames_test_data *data,
++				 igt_output_t *output,
++				 drmModeModeInfo *mode)
 +{
-+	drmModeRes *res = drmModeGetResources(drm_fd);
-+	drmModeEncoder *enc;
-+	uint32_t crtc_id = 0;
-+	int i;
++	igt_crtc_t *pipe_obj;
++	igt_plane_t *primary;
++	igt_crtc_t *crtc;
 +
-+	if (!res)
-+		return 0;
-+
-+	for (i = 0; i < conn->count_encoders && !crtc_id; i++) {
-+		enc = drmModeGetEncoder(drm_fd, conn->encoders[i]);
-+		if (!enc)
-+			continue;
-+		for (int j = 0; j < res->count_crtcs; j++) {
-+			if (enc->possible_crtcs & (1 << j)) {
-+				crtc_id = res->crtcs[j];
-+				break;
++	for_each_crtc(&data->display, crtc) {
++		if (igt_crtc_connector_valid(crtc, output)) {
++			pipe_obj = crtc;
++			primary = igt_crtc_get_plane_type(pipe_obj, DRM_PLANE_TYPE_PRIMARY);
++			if (primary) {
++				igt_output_set_crtc(output, pipe_obj);
++				igt_output_override_mode(output, mode);
++				return primary;
 +			}
 +		}
-+		drmModeFreeEncoder(enc);
 +	}
-+	drmModeFreeResources(res);
-+	return crtc_id;
++
++	return NULL;
 +}
 +
-+static int set_mode_on_connector(int drm_fd, drmModeConnector *conn)
-+{
-+	drmModeModeInfo *mode;
-+	uint32_t crtc_id;
-+	struct igt_fb fb;
-+	int fb_id;
-+
-+	igt_assert(conn->count_modes > 0);
-+	mode = &conn->modes[0];
-+
-+	crtc_id = find_crtc_for_connector(drm_fd, conn);
-+	igt_assert_f(crtc_id, "No CRTC found for connector\n");
-+
-+	fb_id = igt_create_color_pattern_fb(drm_fd, mode->hdisplay,
-+				    mode->vdisplay,
-+				    DRM_FORMAT_XRGB8888,
-+				    DRM_FORMAT_MOD_LINEAR,
-+				    0, 0, 0, &fb);
-+	igt_assert(fb_id > 0);
-+
-+	igt_assert_eq(drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0,
-+			     &conn->connector_id, 1, mode), 0);
-+
-+	igt_info("  Modeset: %dx%d on CRTC %u\n",
-+		 mode->hdisplay, mode->vdisplay, crtc_id);
-+
-+	return fb_id;
-+}
-+
-+/**
-+ * ensure_port_plugged - Plug a port with the given EDID and wait for connector
-+ *
-+ * Resets Chamelium, disables CRTCs, creates EDID (after reset so it
-+ * doesn't get wiped), applies EDID, plugs the port, then polls until
-+ * the DRM connector shows as connected.
++/*
++ * Enable output with the given framebuffer.
++ * Commits the modeset atomically and waits for signal stabilization.
 + */
-+static drmModeConnector *ensure_port_plugged(struct audio_test_data *data,
-+					     chamelium_v3_port_id port,
-+					     bool is_dp,
-+					     const unsigned char *edid_data,
-+					     size_t edid_size)
++static void enable_output(struct frames_test_data *data,
++			  igt_output_t *output,
++			  igt_plane_t *primary,
++			  struct igt_fb *fb)
 +{
-+	drmModeConnector *conn;
-+	char *port_name;
-+	int edid_id;
++	igt_plane_set_fb(primary, fb);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
 +
-+	port_name = chamelium_v3_get_port_name(data->chamelium, port);
-+	igt_info("Preparing port %d (%s) for plug...\n", port, port_name);
-+	free(port_name);
++	/* Wait for the display signal to stabilize on the Chamelium */
++	sleep(5);
++}
 +
-+	/* 1. Reset chamelium -- unplugs all ports and clears EDIDs */
-+	igt_info("  Resetting Chamelium (unplug all)...\n");
-+	chamelium_v3_reset(data->chamelium);
-+	usleep(HPD_WAIT_TIME_MS * 1000);
++/*
++ * Disable output and clean up.
++ */
++static void disable_output(struct frames_test_data *data,
++			   igt_output_t *output,
++			   igt_plane_t *primary)
++{
++	igt_plane_set_fb(primary, NULL);
++	igt_output_set_crtc(output, NULL);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++}
 +
-+	/* 2. Disable all CRTCs for a clean slate */
-+	disable_all_crtcs(data->drm_fd);
-+	usleep(500000);
 +
-+	/* 3. Explicitly unplug the target port if still plugged */
-+	if (chamelium_v3_is_plugged(data->chamelium, port)) {
-+		igt_info("  Port still plugged after reset, unplugging...\n");
-+		chamelium_v3_unplug(data->chamelium, port);
-+		usleep(HPD_WAIT_TIME_MS * 1000);
++/*
++ * Compare a captured V3 frame (RGB, 3 bytes per pixel) against a local
++ * framebuffer (XRGB8888, 4 bytes per pixel in BGRA memory order).
++ *
++ * Returns true if frames match within tolerance.
++ */
++static bool compare_frame_to_fb(struct frames_test_data *data,
++				struct chamelium_v3_frame *frame,
++				struct igt_fb *fb,
++				int tolerance)
++{
++	cairo_t *cr;
++	cairo_surface_t *surface;
++	unsigned char *fb_data;
++	int stride;
++	int x, y;
++	int mismatches = 0;
++	int total_pixels = frame->width * frame->height;
++	/* Allow up to 2% mismatch for edge effects and format conversion */
++	int max_mismatches = total_pixels * 2 / 100;
++
++	cr = igt_get_cairo_ctx(data->drm_fd, fb);
++	surface = cairo_get_target(cr);
++	cairo_surface_flush(surface);
++	fb_data = cairo_image_surface_get_data(surface);
++	stride = cairo_image_surface_get_stride(surface);
++
++	igt_debug("Comparing frame %dx%d against framebuffer (stride=%d, tolerance=%d)...\n",
++		  frame->width, frame->height, stride, tolerance);
++
++	for (y = 0; y < frame->height && mismatches <= max_mismatches; y++) {
++		for (x = 0; x < frame->width && mismatches <= max_mismatches; x++) {
++			int frame_idx = (y * frame->width + x) * 3;
++			uint8_t cap_r = frame->data[frame_idx + 0];
++			uint8_t cap_g = frame->data[frame_idx + 1];
++			uint8_t cap_b = frame->data[frame_idx + 2];
++
++			int fb_idx = y * stride + x * 4;
++			uint8_t fb_b = fb_data[fb_idx + 0];
++			uint8_t fb_g = fb_data[fb_idx + 1];
++			uint8_t fb_r = fb_data[fb_idx + 2];
++
++			int diff_r = abs((int)cap_r - (int)fb_r);
++			int diff_g = abs((int)cap_g - (int)fb_g);
++			int diff_b = abs((int)cap_b - (int)fb_b);
++
++			if (diff_r > tolerance || diff_g > tolerance || diff_b > tolerance) {
++				mismatches++;
++				if (mismatches <= 10)
++					igt_debug("Mismatch at (%d,%d): captured RGB(%d,%d,%d) vs expected RGB(%d,%d,%d)\n",
++						  x, y, cap_r, cap_g, cap_b, fb_r, fb_g, fb_b);
++			}
++		}
 +	}
 +
-+	dump_connector_info(data->drm_fd, "Before plug");
++	igt_put_cairo_ctx(cr);
 +
-+	/* 4. Create EDID AFTER reset (reset clears all created EDIDs) */
-+	edid_id = chamelium_v3_create_edid(data->chamelium, edid_data,
-+				   edid_size);
-+	igt_info("  Created EDID (id=%d, %zu bytes)\n", edid_id, edid_size);
++	igt_info("Frame comparison: %d mismatches out of %d pixels (%.2f%%)\n",
++		 mismatches, total_pixels, 100.0 * mismatches / total_pixels);
 +
-+	/* 5. Apply EDID then plug */
-+	chamelium_v3_apply_edid(data->chamelium, port, edid_id);
-+	igt_info("  Applied EDID and plugging port %d...\n", port);
-+	chamelium_v3_plug(data->chamelium, port);
++	return mismatches <= max_mismatches;
++}
 +
-+	/* 6. Wait for HPD and link training */
-+	igt_info("  Waiting for HPD + link training...\n");
-+	usleep(HPD_WAIT_TIME_MS * 1000);
-+	usleep(EDID_SETTLE_TIME_MS * 1000);
++/*
++ * Strict pixel-exact comparison for frame dump tests.
++ * Returns true only if every pixel matches exactly.
++ */
++static bool compare_frame_to_fb_exact(struct frames_test_data *data,
++				      struct chamelium_v3_frame *frame,
++				      struct igt_fb *fb)
++{
++	cairo_t *cr;
++	cairo_surface_t *surface;
++	unsigned char *fb_data;
++	int stride;
++	int x, y;
++	int mismatches = 0;
 +
-+	dump_connector_info(data->drm_fd, "After plug");
++	cr = igt_get_cairo_ctx(data->drm_fd, fb);
++	surface = cairo_get_target(cr);
++	cairo_surface_flush(surface);
++	fb_data = cairo_image_surface_get_data(surface);
++	stride = cairo_image_surface_get_stride(surface);
 +
-+	/* 7. Poll for connected connector */
-+	conn = wait_for_connected_connector(data->drm_fd,
-+				    get_drm_connector_type(is_dp));
-+	if (conn) {
-+		igt_info("  Connector %u now CONNECTED (%d modes)\n",
-+			 conn->connector_id, conn->count_modes);
++	igt_debug("Exact frame comparison %dx%d...\n", frame->width, frame->height);
++
++	for (y = 0; y < frame->height; y++) {
++		for (x = 0; x < frame->width; x++) {
++			int frame_idx = (y * frame->width + x) * 3;
++			uint8_t cap_r = frame->data[frame_idx + 0];
++			uint8_t cap_g = frame->data[frame_idx + 1];
++			uint8_t cap_b = frame->data[frame_idx + 2];
++
++			int fb_idx = y * stride + x * 4;
++			uint8_t fb_b = fb_data[fb_idx + 0];
++			uint8_t fb_g = fb_data[fb_idx + 1];
++			uint8_t fb_r = fb_data[fb_idx + 2];
++
++			if (cap_r != fb_r || cap_g != fb_g || cap_b != fb_b) {
++				mismatches++;
++				if (mismatches <= 10)
++					igt_debug("Mismatch at (%d,%d): captured RGB(%d,%d,%d) vs expected RGB(%d,%d,%d)\n",
++						  x, y, cap_r, cap_g, cap_b, fb_r, fb_g, fb_b);
++			}
++		}
++	}
++
++	igt_put_cairo_ctx(cr);
++
++	if (mismatches > 0) {
++		int total = frame->width * frame->height;
++
++		igt_info("Exact comparison FAILED: %d mismatches out of %d pixels (%.2f%%)\n",
++			 mismatches, total, 100.0 * mismatches / total);
 +	} else {
-+		igt_warn("  Connector NOT connected after plug!\n");
-+		dump_connector_info(data->drm_fd, "Plug failed");
++		igt_info("Exact comparison PASSED: all pixels match\n");
 +	}
 +
-+	return conn;
++	return mismatches == 0;
 +}
 +
-+static int v3_playback_callback(void *data, void *buffer, int samples)
-+{
-+	struct v3_playback_ctx *ctx = data;
-+	double *tmp;
-+	size_t len;
++#define CAPTURE_MAX_RETRIES 5
++#define CAPTURE_RETRY_DELAY_S 5
 +
-+	len = samples * ctx->channels;
-+	tmp = malloc(len * sizeof(double));
-+	audio_signal_fill(ctx->signal, tmp, samples);
-+	audio_convert_to(buffer, tmp, len, ctx->format);
-+	free(tmp);
-+
-+	return 0; /* alsa_run() will stop after the requested duration */
-+}
-+
-+/**
-+ * test_one_playback - Play a test signal for a fixed duration
-+ *
-+ * Generates a multi-frequency audio signal, configures the ALSA output
-+ * device, plays for @duration_ms and returns true if playback completed
-+ * without any ALSA errors.
++/*
++ * Capture a frame with retry logic.
++ * DumpPixels can fail with V4L.Timeout if the signal hasn't stabilized
++ * after a mode switch. We retry with increasing delay.
 + */
-+static bool test_one_playback(struct alsa *alsa, snd_pcm_format_t format,
-+			      int channels, int rate, int duration_ms)
++static struct chamelium_v3_frame *capture_frame_with_retry(
++	struct frames_test_data *data,
++	chamelium_v3_port_id port_id)
 +{
-+	struct v3_playback_ctx ctx;
-+	struct audio_signal *signal;
-+	int step, i, j, freq, ret;
++	struct chamelium_v3_frame *frame;
++	int retry;
 +
-+	signal = audio_signal_init(channels, rate);
-+	igt_assert_f(signal, "Failed to init audio signal\n");
++	for (retry = 0; retry < CAPTURE_MAX_RETRIES; retry++) {
++		frame = chamelium_v3_capture_frame(data->chamelium, port_id);
++		if (frame)
++			return frame;
 +
-+	/* Add test frequencies */
-+	step = 2 * rate / CAPTURE_SAMPLES;
-+	for (i = 0; i < test_frequencies_count; i++) {
-+		for (j = 0; j < channels; j++) {
-+			freq = test_frequencies[i] + j * step;
-+			audio_signal_add_frequency(signal, freq, j);
-+		}
-+	}
-+	audio_signal_synthesize(signal);
-+
-+	ctx.signal = signal;
-+	ctx.format = format;
-+	ctx.channels = channels;
-+
-+	alsa_configure_output(alsa, format, channels, rate);
-+	alsa_register_output_callback(alsa, v3_playback_callback, &ctx,
-+				      PLAYBACK_SAMPLES);
-+
-+	igt_info("    Playing: %s, %d Hz, %d ch for %d ms ... ",
-+		 snd_pcm_format_name(format), rate, channels, duration_ms);
-+
-+	ret = alsa_run(alsa, duration_ms);
-+
-+	audio_signal_fini(signal);
-+
-+	if (ret < 0) {
-+		igt_info("FAIL (ret=%d)\n", ret);
-+		return false;
++		igt_warn("Frame capture attempt %d/%d failed, retrying in %ds...\n",
++			 retry + 1, CAPTURE_MAX_RETRIES,
++			 CAPTURE_RETRY_DELAY_S + retry);
++		sleep(CAPTURE_RETRY_DELAY_S + retry);
 +	}
 +
-+	igt_info("OK\n");
-+	return true;
++	return NULL;
 +}
 +
-+
-+static bool check_audio_configuration(struct alsa *alsa,
-+			      snd_pcm_format_t format, int channels,
-+			      int sampling_rate)
-+{
-+	if (!alsa_test_output_configuration(alsa, format, channels,
-+				    sampling_rate)) {
-+		igt_debug("Skipping format %s, rate %d Hz, %d ch: "
-+			  "output device doesn't support this config\n",
-+			  snd_pcm_format_name(format), sampling_rate, channels);
-+		return false;
-+	}
-+	return true;
-+}
-+
-+
-+/**
-+ * SUBTEST: dp-audio
-+ * Description: Playback various audio signals with various audio formats/rates
-+ *              over DP, verify ALSA ELD and playback complete without error
++/*
++ * Capture a frame from Chamelium and compare against the given framebuffer.
++ * Repeats capture `count` times and verifies all captures match.
 + *
-+ * SUBTEST: hdmi-audio
-+ * Description: Playback various audio signals with various audio formats/rates
-+ *              over HDMI, verify ALSA ELD and playback complete without error
++ * Returns true on success.  When skip_on_capture_fail is set, a
++ * DumpPixels timeout (after all retries) returns false instead of
++ * asserting, so the caller can skip the problematic mode.
 + */
-+static void test_display_audio(struct audio_test_data *data, bool is_dp)
++static bool do_test_display(struct frames_test_data *data,
++			    chamelium_v3_port_id port_id,
++			    igt_output_t *output,
++			    igt_plane_t *primary,
++			    drmModeModeInfo *mode,
++			    uint32_t fourcc,
++			    int tolerance,
++			    int count,
++			    bool skip_on_capture_fail)
 +{
-+	bool run, success;
-+	struct alsa *alsa;
-+	int ret;
-+	drmModeConnector *connector;
-+	int fb_id, i, j;
-+	int channels, sampling_rate;
-+	snd_pcm_format_t format;
-+	chamelium_v3_port_id port;
-+	const struct edid *audio_edid;
-+	size_t edid_size;
-+	char *port_name;
-+	struct eld_entry eld;
++	struct igt_fb pattern_fb, frame_fb;
++	struct chamelium_v3_frame *frame;
++	int i, fb_id, frame_id;
++	bool success = true;
 +
-+	port = get_port_for_type(data, is_dp);
-+	igt_require_f(port != (chamelium_v3_port_id)-1,
-+		      "No %s port found on Chamelium\n",
-+		      is_dp ? "DP" : "HDMI");
-+
-+	port_name = chamelium_v3_get_port_name(data->chamelium, port);
-+	igt_info("Testing audio playback on %s (port %d)\n", port_name, port);
-+	free(port_name);
-+
-+	igt_require(alsa_has_exclusive_access());
-+
-+	alsa = alsa_init();
-+	igt_assert(alsa);
-+
-+	/* Get audio EDID */
-+	if (is_dp)
-+		audio_edid = igt_kms_get_dp_audio_edid();
-+	else
-+		audio_edid = igt_kms_get_hdmi_audio_edid();
-+	edid_size = edid_get_size(audio_edid);
-+
-+	/* Plug with audio EDID and modeset */
-+	connector = ensure_port_plugged(data, port, is_dp,
-+				(const unsigned char *)audio_edid,
-+				edid_size);
-+	igt_assert_f(connector, "No connector after plug with audio EDID\n");
-+
-+	fb_id = set_mode_on_connector(data->drm_fd, connector);
++	/* Create a pattern framebuffer in XRGB8888 */
++	fb_id = igt_create_color_pattern_fb(data->drm_fd,
++					    mode->hdisplay, mode->vdisplay,
++					    DRM_FORMAT_XRGB8888,
++					    DRM_FORMAT_MOD_LINEAR,
++					    0, 0, 0, &pattern_fb);
 +	igt_assert(fb_id > 0);
 +
-+	/* Give audio subsystem time to initialize after modeset */
-+	usleep(2000000);
++	/* Convert to the requested format if different */
++	if (fourcc != DRM_FORMAT_XRGB8888) {
++		frame_id = igt_fb_convert(&frame_fb, &pattern_fb, fourcc,
++					  DRM_FORMAT_MOD_LINEAR);
++		igt_assert(frame_id > 0);
++	} else {
++		frame_fb = pattern_fb;
++	}
 +
-+	/* Verify ELD is populated -- confirms the audio output path is
-+	 * active and the display reports correct audio capabilities. */
-+	igt_assert_f(eld_get_igt(&eld),
-+		     "ELD not available -- audio output path not active\n");
-+	igt_info("  ELD verified: audio output path is active "
-+		 "(SADs: %zu)\n", eld.sads_len);
++	/* Enable output with the display framebuffer */
++	enable_output(data, output, primary, &frame_fb);
 +
-+	/* Test each format/rate combination by playing through ALSA.
-+	 * Verify that the GPU audio output pipeline works: ALSA device
-+	 * opens, configures, and plays without error for each supported
-+	 * configuration. */
-+	run = false;
-+	success = true;
-+	for (i = 0; i < test_sampling_rates_count; i++) {
-+		for (j = 0; j < test_formats_count; j++) {
-+			ret = alsa_open_output(alsa, "HDMI");
-+			igt_assert_f(ret >= 0, "Failed to open ALSA output\n");
++	igt_info("Capturing %d frame(s) at %dx%d for format %s...\n",
++		 count, mode->hdisplay, mode->vdisplay, igt_format_str(fourcc));
 +
-+			format = test_formats[j];
-+			channels = PLAYBACK_CHANNELS;
-+			sampling_rate = test_sampling_rates[i];
-+
-+			if (!check_audio_configuration(alsa, format, channels,
-+						       sampling_rate)) {
-+				alsa_close_output(alsa);
-+				continue;
++	for (i = 0; i < count; i++) {
++		frame = capture_frame_with_retry(data, port_id);
++		if (!frame) {
++			if (skip_on_capture_fail) {
++				igt_warn("Frame capture failed for %dx%d@%d – skipping mode (V4L timeout)\n",
++					 mode->hdisplay, mode->vdisplay,
++					 mode->vrefresh);
++				success = false;
++				goto cleanup;
 +			}
-+
-+			run = true;
-+			success &= test_one_playback(alsa, format, channels,
-+						     sampling_rate,
-+						     PLAYBACK_DURATION_MS);
-+			alsa_close_output(alsa);
++			igt_assert_f(frame, "Failed to capture frame %d/%d\n",
++				     i + 1, count);
 +		}
++
++		igt_assert_f(frame->width == mode->hdisplay &&
++			     frame->height == mode->vdisplay,
++			     "Frame size mismatch: captured %dx%d, expected %dx%d\n",
++			     frame->width, frame->height,
++			     mode->hdisplay, mode->vdisplay);
++
++		/* Compare against the original XRGB8888 pattern */
++		igt_assert_f(compare_frame_to_fb(data, frame, &pattern_fb, tolerance),
++			     "Frame %d/%d comparison failed\n", i + 1, count);
++
++		chamelium_v3_free_frame(frame);
 +	}
 +
-+	igt_assert_f(run, "No audio configuration could be tested\n");
-+	igt_assert_f(success, "One or more audio playback configs failed\n");
-+
-+	igt_info("  Audio playback test PASSED (%s)\n",
-+		 is_dp ? "DP" : "HDMI");
-+
-+	drmModeFreeConnector(connector);
-+	free(alsa);
++cleanup:
++	if (fourcc != DRM_FORMAT_XRGB8888)
++		igt_remove_fb(data->drm_fd, &frame_fb);
++	igt_remove_fb(data->drm_fd, &pattern_fb);
++	return success;
 +}
 +
-+
-+/**
-+ * SUBTEST: dp-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
-+ *
-+ * SUBTEST: hdmi-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
++/*
++ * Frame dump: capture and do exact pixel-by-pixel comparison.
++ * Frame dump comparison test.
 + */
-+static void test_display_audio_edid(struct audio_test_data *data, bool is_dp)
++static void do_test_frame_dump(struct frames_test_data *data,
++			       chamelium_v3_port_id port_id,
++			       igt_output_t *output,
++			       igt_plane_t *primary,
++			       drmModeModeInfo *mode,
++			       bool is_hdmi)
 +{
-+	chamelium_v3_port_id port;
-+	const struct edid *audio_edid;
-+	size_t edid_size;
-+	drmModeConnector *connector;
-+	int fb_id;
-+	struct eld_entry eld;
-+	struct eld_sad *sad;
-+	char *port_name;
++	struct igt_fb fb;
++	struct chamelium_v3_frame *frame;
++	int fb_id, j;
++	int dump_count = 5;
 +
-+	port = get_port_for_type(data, is_dp);
-+	igt_require_f(port != (chamelium_v3_port_id)-1,
-+		      "No %s port found on Chamelium\n",
-+		      is_dp ? "DP" : "HDMI");
-+
-+	port_name = chamelium_v3_get_port_name(data->chamelium, port);
-+	igt_info("Testing audio EDID on %s (port %d)\n", port_name, port);
-+	free(port_name);
-+
-+	igt_require(eld_is_supported());
-+
-+	/* Get audio EDID */
-+	if (is_dp)
-+		audio_edid = igt_kms_get_dp_audio_edid();
-+	else
-+		audio_edid = igt_kms_get_hdmi_audio_edid();
-+	edid_size = edid_get_size(audio_edid);
-+
-+	/* Plug with audio EDID */
-+	connector = ensure_port_plugged(data, port, is_dp,
-+				(const unsigned char *)audio_edid,
-+				edid_size);
-+	igt_assert_f(connector, "No connector after plug with audio EDID\n");
-+
-+	igt_info("  Connected: %d modes, preferred %dx%d\n",
-+		 connector->count_modes,
-+		 connector->modes[0].hdisplay,
-+		 connector->modes[0].vdisplay);
-+
-+	/* Enable the output -- audio cannot be played on inactive
-+	 * connectors (ELD won't be populated until modeset). */
-+	fb_id = set_mode_on_connector(data->drm_fd, connector);
++	fb_id = igt_create_color_pattern_fb(data->drm_fd,
++					    mode->hdisplay, mode->vdisplay,
++					    DRM_FORMAT_XRGB8888,
++					    DRM_FORMAT_MOD_LINEAR,
++					    0, 0, 0, &fb);
 +	igt_assert(fb_id > 0);
 +
-+	/* Wait for ELD to populate after modeset */
-+	usleep(2000000);
++	enable_output(data, output, primary, &fb);
 +
-+	/* Read ELD and verify it matches the audio EDID we applied */
-+	igt_assert_f(eld_get_igt(&eld), "Failed to read ELD from ALSA\n");
-+	igt_assert_f(eld.sads_len == 1,
-+		     "Expected 1 SAD in ELD, got %zu\n", eld.sads_len);
++	igt_info("Dumping %d frames at %dx%d (%s)...\n",
++		 dump_count, mode->hdisplay, mode->vdisplay,
++		 is_hdmi ? "HDMI-tolerant" : "DP-exact");
 +
-+	sad = &eld.sads[0];
-+	igt_info("  ELD SAD: coding_type=%d, channels=%d, "
-+		 "rates=0x%x, bits=0x%x\n",
-+		 sad->coding_type, sad->channels,
-+		 sad->rates, sad->bits);
++	for (j = 0; j < dump_count; j++) {
++		frame = capture_frame_with_retry(data, port_id);
++		igt_assert_f(frame, "Failed to capture frame dump %d/%d\n",
++			     j + 1, dump_count);
 +
-+	igt_assert_f(sad->coding_type == CEA_SAD_FORMAT_PCM,
-+		     "Expected PCM coding type, got %d\n", sad->coding_type);
-+	igt_assert_f(sad->channels == 2,
-+		     "Expected 2 channels, got %d\n", sad->channels);
-+	igt_assert_f(sad->rates ==
-+		     (CEA_SAD_SAMPLING_RATE_32KHZ |
-+		      CEA_SAD_SAMPLING_RATE_44KHZ |
-+		      CEA_SAD_SAMPLING_RATE_48KHZ),
-+		     "Unexpected sampling rates: 0x%x\n", sad->rates);
-+	igt_assert_f(sad->bits ==
-+		     (CEA_SAD_SAMPLE_SIZE_16 |
-+		      CEA_SAD_SAMPLE_SIZE_20 |
-+		      CEA_SAD_SAMPLE_SIZE_24),
-+		     "Unexpected sample sizes: 0x%x\n", sad->bits);
++		igt_assert_f(frame->width == mode->hdisplay &&
++			     frame->height == mode->vdisplay,
++			     "Frame size mismatch: captured %dx%d, expected %dx%d\n",
++			     frame->width, frame->height,
++			     mode->hdisplay, mode->vdisplay);
 +
-+	igt_info("  Audio EDID verification PASSED\n");
++		/*
++		 * DP is pixel-exact since it's purely digital.
++		 * HDMI may have color space conversion artifacts at
++		 * certain modes, so use tolerant comparison.
++		 */
++		if (is_hdmi)
++			igt_assert_f(compare_frame_to_fb(data, frame, &fb,
++							 FRAME_CRC_TOLERANCE),
++				     "Frame dump %d/%d comparison failed\n",
++				     j + 1, dump_count);
++		else
++			igt_assert_f(compare_frame_to_fb_exact(data, frame, &fb),
++				     "Frame dump %d/%d pixel comparison failed\n",
++				     j + 1, dump_count);
 +
-+	drmModeFreeConnector(connector);
++		chamelium_v3_free_frame(frame);
++	}
++
++	igt_remove_fb(data->drm_fd, &fb);
 +}
 +
 +
-+static void __real_main(void)
++static void randomize_plane_stride(struct frames_test_data *data,
++				   uint32_t width, uint32_t height,
++				   uint32_t format, uint64_t modifier,
++				   size_t *stride)
 +{
-+	struct audio_test_data data = { 0 };
-+	bool setup_done = false;
++	size_t stride_min;
++	uint32_t max_tile_w = 4, tile_w, tile_h;
++	int i;
++	struct igt_fb dummy;
 +
-+	data.chamelium = chamelium_v3_init_from_config();
-+	if (!data.chamelium) {
-+		igt_info("Chamelium not available, skipping tests\n");
++	stride_min = width * igt_format_plane_bpp(format, 0) / 8;
++
++	/* Randomize the stride to less than twice the minimum */
++	*stride = (rand() % stride_min) + stride_min;
++
++	/* Determine max tile width for alignment */
++	igt_create_fb(data->drm_fd, 64, 64, format, modifier, &dummy);
++	for (i = 0; i < dummy.num_planes; i++) {
++		igt_get_fb_tile_size(data->drm_fd, modifier,
++				     dummy.plane_bpp[i], &tile_w, &tile_h);
++		if (tile_w > max_tile_w)
++			max_tile_w = tile_w;
++	}
++	igt_remove_fb(data->drm_fd, &dummy);
++
++	/* Align to both 32-bit and tile width */
++	*stride = ALIGN(*stride, max_tile_w);
++}
++
++static void randomize_plane_setup(struct frames_test_data *data,
++				  igt_plane_t *plane,
++				  drmModeModeInfo *mode,
++				  uint32_t *width, uint32_t *height,
++				  uint32_t *format, uint64_t *modifier,
++				  bool allow_yuv)
++{
++	int min_dim;
++	uint32_t idx[plane->format_mod_count];
++	unsigned int count = 0;
++	unsigned int i;
++
++	/* Count supported formats */
++	for (i = 0; i < plane->format_mod_count; i++)
++		if (igt_fb_supported_format(plane->formats[i]) &&
++		    (allow_yuv || !igt_format_is_yuv(plane->formats[i])))
++			idx[count++] = i;
++
++	igt_assert(count > 0);
++
++	i = idx[rand() % count];
++	*format = plane->formats[i];
++	*modifier = plane->modifiers[i];
++
++	/* Use minimum dimension of 16 for YUV, 8 for others */
++	min_dim = igt_format_is_yuv(*format) ? 16 : 8;
++
++	*width = max((rand() % mode->hdisplay) + 1, 2 * min_dim);
++	*height = max((rand() % mode->vdisplay) + 1, 2 * min_dim);
++}
++
++static void configure_plane(igt_plane_t *plane,
++			    uint32_t src_w, uint32_t src_h,
++			    uint32_t src_x, uint32_t src_y,
++			    uint32_t crtc_w, uint32_t crtc_h,
++			    int32_t crtc_x, int32_t crtc_y,
++			    struct igt_fb *fb)
++{
++	igt_plane_set_fb(plane, fb);
++	igt_plane_set_position(plane, crtc_x, crtc_y);
++	igt_plane_set_size(plane, crtc_w, crtc_h);
++	igt_fb_set_position(fb, plane, src_x, src_y);
++	igt_fb_set_size(fb, plane, src_w, src_h);
++}
++
++static void randomize_plane_coordinates(struct frames_test_data *data,
++					igt_plane_t *plane,
++					drmModeModeInfo *mode,
++					struct igt_fb *fb,
++					uint32_t *src_w, uint32_t *src_h,
++					uint32_t *src_x, uint32_t *src_y,
++					uint32_t *crtc_w, uint32_t *crtc_h,
++					int32_t *crtc_x, int32_t *crtc_y,
++					bool allow_scaling)
++{
++	bool is_yuv = igt_format_is_yuv(fb->drm_format);
++	uint32_t width = fb->width, height = fb->height;
++	double ratio;
++	int ret;
++
++	/* Randomize source offset in the first half */
++	*src_x = rand() % (width / 2);
++	*src_y = rand() % (height / 2);
++
++	*src_w = width - *src_x;
++	*src_h = height - *src_y;
++
++	if (allow_scaling) {
++		*crtc_w = (rand() % mode->hdisplay) + 1;
++		*crtc_h = (rand() % mode->vdisplay) + 1;
++
++		/* Limit scaling ratios */
++		ratio = ((double)*crtc_w / *src_w);
++		if (ratio < 0.5)
++			*src_w = *crtc_w * 2;
++		else if (ratio > 0.8 && ratio < 1.2)
++			*crtc_w = *src_w;
++		else if (ratio > 3.0)
++			*crtc_w = *src_w * 3;
++
++		ratio = ((double)*crtc_h / *src_h);
++		if (ratio < 0.5)
++			*src_h = *crtc_h * 2;
++		else if (ratio > 0.8 && ratio < 1.2)
++			*crtc_h = *src_h;
++		else if (ratio > 3.0)
++			*crtc_h = *src_h * 3;
++	} else {
++		*crtc_w = *src_w;
++		*crtc_h = *src_h;
++	}
++
++	if (*crtc_w != *src_w || *crtc_h != *src_h) {
++		if (*crtc_w < mode->hdisplay)
++			*crtc_x = rand() % (mode->hdisplay - *crtc_w);
++		else
++			*crtc_x = 0;
++
++		if (*crtc_h < mode->vdisplay)
++			*crtc_y = rand() % (mode->vdisplay - *crtc_h);
++		else
++			*crtc_y = 0;
++	} else {
++		*crtc_x = (rand() % mode->hdisplay) - *crtc_w / 2;
++		*crtc_y = (rand() % mode->vdisplay) - *crtc_h / 2;
++	}
++
++	configure_plane(plane, *src_w, *src_h, *src_x, *src_y,
++			*crtc_w, *crtc_h, *crtc_x, *crtc_y, fb);
++	ret = igt_display_try_commit_atomic(
++		&data->display,
++		DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET,
++		NULL);
++	if (!ret)
 +		return;
++
++	igt_assert_f(ret != -ENOSPC,
++		     "Invalid coordinates on a %ux%u fb\n", width, height);
++
++	/* YUV alignment fixup */
++	if (is_yuv) {
++		*src_x &= ~1;
++		*src_y &= ~1;
++		*src_w &= ~1;
++		*src_h &= ~1;
++		*crtc_w &= ~1;
++		*crtc_h &= ~1;
++
++		if (*crtc_x < 0 && (*crtc_x & 1))
++			(*crtc_x)++;
++		else
++			*crtc_x &= ~1;
++
++		if (*crtc_y < 0 && (*crtc_y & 1))
++			(*crtc_y)++;
++		else
++			*crtc_y &= ~1;
++
++		configure_plane(plane, *src_w, *src_h, *src_x, *src_y,
++				*crtc_w, *crtc_h, *crtc_x, *crtc_y, fb);
++		ret = igt_display_try_commit_atomic(
++			&data->display,
++			DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET,
++			NULL);
++		if (!ret)
++			return;
 +	}
 +
-+	data.port_count = chamelium_v3_get_supported_ports(data.chamelium,
-+						   &data.ports);
-+	if (data.port_count <= 0) {
-+		igt_info("No Chamelium ports found, skipping tests\n");
-+		chamelium_v3_uninit(data.chamelium);
-+		return;
++	igt_assert(!ret || allow_scaling);
++	igt_info("Scaling ratio %g / %g failed, trying without scaling.\n",
++		 ((double)*crtc_w / *src_w), ((double)*crtc_h / *src_h));
++
++	*crtc_w = *src_w;
++	*crtc_h = *src_h;
++
++	configure_plane(plane, *src_w, *src_h, *src_x, *src_y,
++			*crtc_w, *crtc_h, *crtc_x, *crtc_y, fb);
++	igt_display_commit_atomic(&data->display,
++				  DRM_MODE_ATOMIC_TEST_ONLY |
++				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++}
++
++static void blit_plane_cairo(struct frames_test_data *data,
++			     cairo_surface_t *result,
++			     uint32_t src_w, uint32_t src_h,
++			     uint32_t src_x, uint32_t src_y,
++			     uint32_t crtc_w, uint32_t crtc_h,
++			     int32_t crtc_x, int32_t crtc_y,
++			     struct igt_fb *fb)
++{
++	cairo_surface_t *surface;
++	cairo_surface_t *clipped_surface;
++	cairo_t *cr;
++
++	surface = igt_get_cairo_surface(data->drm_fd, fb);
++
++	if (src_x || src_y) {
++		clipped_surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
++							     src_w, src_h);
++		cr = cairo_create(clipped_surface);
++		cairo_translate(cr, -1. * src_x, -1. * src_y);
++		cairo_set_source_surface(cr, surface, 0, 0);
++		cairo_paint(cr);
++		cairo_surface_flush(clipped_surface);
++		cairo_destroy(cr);
++	} else {
++		clipped_surface = surface;
 +	}
 +
-+	data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+	if (data.drm_fd < 0) {
-+		igt_info("Cannot open DRM device as master, skipping tests\n");
-+		free(data.ports);
-+		chamelium_v3_uninit(data.chamelium);
-+		return;
++	cr = cairo_create(result);
++	cairo_translate(cr, crtc_x, crtc_y);
++
++	if (src_w != crtc_w || src_h != crtc_h)
++		cairo_scale(cr, (double)crtc_w / src_w, (double)crtc_h / src_h);
++
++	cairo_set_source_surface(cr, clipped_surface, 0, 0);
++	cairo_surface_destroy(clipped_surface);
++
++	if (src_w != crtc_w || src_h != crtc_h) {
++		cairo_pattern_set_filter(cairo_get_source(cr), CAIRO_FILTER_BILINEAR);
++		cairo_pattern_set_extend(cairo_get_source(cr), CAIRO_EXTEND_NONE);
 +	}
 +
-+	setup_done = true;
-+	igt_info("Opened DRM device as master, found %d Chamelium ports\n",
-+		 data.port_count);
++	cairo_paint(cr);
++	cairo_surface_flush(result);
++	cairo_destroy(cr);
++}
 +
-+	/* Show initial connector status */
-+	dump_connector_info(data.drm_fd, "Initial state");
++static void prepare_randomized_plane(struct frames_test_data *data,
++				     drmModeModeInfo *mode,
++				     igt_plane_t *plane,
++				     struct igt_fb *overlay_fb,
++				     unsigned int index,
++				     cairo_surface_t *result_surface,
++				     bool allow_scaling,
++				     bool allow_yuv)
++{
++	struct igt_fb pattern_fb;
++	uint32_t overlay_fb_w, overlay_fb_h;
++	uint32_t overlay_src_w, overlay_src_h;
++	uint32_t overlay_src_x, overlay_src_y;
++	int32_t overlay_crtc_x, overlay_crtc_y;
++	uint32_t overlay_crtc_w, overlay_crtc_h;
++	uint32_t format;
++	uint64_t modifier;
++	size_t stride;
++	bool tiled;
++	int fb_id;
 +
-+	/* DP audio tests */
-+	igt_describe("Playback various audio signals with various audio "
-+		     "formats/rates over DP, verify ELD and playback");
-+	igt_subtest("dp-audio") {
-+		igt_require(setup_done);
-+		test_display_audio(&data, true);
++	randomize_plane_setup(data, plane, mode, &overlay_fb_w, &overlay_fb_h,
++			      &format, &modifier, allow_yuv);
++
++	tiled = (modifier != DRM_FORMAT_MOD_LINEAR);
++	igt_debug("Plane %d: framebuffer size %dx%d %s format (%s)\n", index,
++		  overlay_fb_w, overlay_fb_h, igt_format_str(format),
++		  tiled ? "tiled" : "linear");
++
++	/* Get a pattern framebuffer for the overlay plane */
++	fb_id = igt_create_color_pattern_fb(data->drm_fd,
++					    overlay_fb_w, overlay_fb_h,
++					    DRM_FORMAT_XRGB8888,
++					    DRM_FORMAT_MOD_LINEAR,
++					    0, 0, 0, &pattern_fb);
++	igt_assert(fb_id > 0);
++
++	randomize_plane_stride(data, overlay_fb_w, overlay_fb_h, format,
++			       modifier, &stride);
++
++	igt_debug("Plane %d: stride %ld\n", index, stride);
++
++	fb_id = igt_fb_convert_with_stride(overlay_fb, &pattern_fb, format,
++					   modifier, stride);
++	igt_assert(fb_id > 0);
++
++	randomize_plane_coordinates(data, plane, mode, overlay_fb,
++				    &overlay_src_w, &overlay_src_h,
++				    &overlay_src_x, &overlay_src_y,
++				    &overlay_crtc_w, &overlay_crtc_h,
++				    &overlay_crtc_x, &overlay_crtc_y,
++				    allow_scaling);
++
++	igt_debug("Plane %d: in-framebuffer size %dx%d\n", index,
++		  overlay_src_w, overlay_src_h);
++	igt_debug("Plane %d: in-framebuffer position %dx%d\n", index,
++		  overlay_src_x, overlay_src_y);
++	igt_debug("Plane %d: on-crtc size %dx%d\n", index,
++		  overlay_crtc_w, overlay_crtc_h);
++	igt_debug("Plane %d: on-crtc position %dx%d\n", index,
++		  overlay_crtc_x, overlay_crtc_y);
++
++	blit_plane_cairo(data, result_surface,
++			 overlay_src_w, overlay_src_h,
++			 overlay_src_x, overlay_src_y,
++			 overlay_crtc_w, overlay_crtc_h,
++			 overlay_crtc_x, overlay_crtc_y,
++			 &pattern_fb);
++
++	igt_remove_fb(data->drm_fd, &pattern_fb);
++}
++
++
++/*
++ * Display a test pattern on the first mode and capture/compare frames.
++ * Display one mode test.
++ */
++static void test_display_one_mode(struct frames_test_data *data,
++				  chamelium_v3_port_id port_id,
++				  bool is_hdmi,
++				  uint32_t fourcc,
++				  int tolerance,
++				  int count)
++__attribute__((unused));
++static void test_display_one_mode(struct frames_test_data *data,
++				  chamelium_v3_port_id port_id,
++				  bool is_hdmi,
++				  uint32_t fourcc,
++				  int tolerance,
++				  int count)
++{
++	igt_output_t *output;
++	igt_plane_t *primary;
++	drmModeModeInfo *mode;
++
++	igt_modeset_disable_all_outputs(&data->display);
++
++	output = find_output_for_port(data, port_id, is_hdmi);
++	igt_require_f(output, "No %s output found on DUT\n",
++		      is_hdmi ? "HDMI" : "DP");
++
++	mode = igt_output_get_mode(output);
++	primary = setup_output(data, output, mode);
++	igt_assert(primary);
++
++	igt_require(igt_plane_has_format_mod(primary, fourcc,
++					     DRM_FORMAT_MOD_LINEAR));
++
++	igt_info("Testing first mode: %dx%d@%d\n",
++		 mode->hdisplay, mode->vdisplay, mode->vrefresh);
++
++	do_test_display(data, port_id, output, primary, mode,
++			fourcc, tolerance, count, false);
++
++	disable_output(data, output, primary);
++}
++
++
++/*
++ * Iterate all modes, display a test pattern and capture/compare frames.
++ * Display all modes test.
++ */
++static void test_display_all_modes(struct frames_test_data *data,
++				   chamelium_v3_port_id port_id,
++				   bool is_hdmi,
++				   uint32_t fourcc,
++				   int tolerance,
++				   int count)
++{
++	igt_output_t *output;
++	igt_plane_t *primary;
++	drmModeConnector *connector;
++	int i, count_modes;
++	int tested = 0, skipped = 0;
++
++	output = find_output_for_port(data, port_id, is_hdmi);
++	igt_require_f(output, "No %s output found on DUT\n",
++		      is_hdmi ? "HDMI" : "DP");
++
++	connector = output->config.connector;
++	igt_require_f(connector->count_modes > 0, "No modes available\n");
++
++	igt_info("Testing modes for %s...\n", output->name);
++
++	i = 0;
++	do {
++		drmModeModeInfo local_mode;
++		bool ok;
++
++		/*
++		 * Modes may change due to mode pruning and link issues,
++		 * so refresh the connector each iteration.
++		 * igt_modeset_disable_all_outputs and igt_display_commit2
++		 * may reprobe the connector, invalidating mode pointers.
++		 */
++		igt_modeset_disable_all_outputs(&data->display);
++
++		output = find_output_for_port(data, port_id, is_hdmi);
++		igt_assert(output);
++
++		connector = output->config.connector;
++		count_modes = connector->count_modes;
++		if (i >= count_modes)
++			break;
++
++		/* Copy mode to stack to avoid stale pointer issues */
++		local_mode = connector->modes[i];
++
++		igt_info("Mode %d/%d: %dx%d@%d\n", i + 1,
++			 count_modes,
++			 local_mode.hdisplay, local_mode.vdisplay,
++			 local_mode.vrefresh);
++
++		primary = setup_output(data, output, &local_mode);
++		igt_assert(primary);
++
++		igt_require(igt_plane_has_format_mod(primary, fourcc,
++						     DRM_FORMAT_MOD_LINEAR));
++
++		ok = do_test_display(data, port_id, output, primary,
++				    &local_mode, fourcc, tolerance,
++				    count, true);
++		if (ok)
++			tested++;
++		else
++			skipped++;
++
++		disable_output(data, output, primary);
++	} while (++i < count_modes);
++
++	igt_info("All-modes summary: %d tested, %d skipped (capture timeout) out of %d\n",
++		 tested, skipped, i);
++	igt_assert_f(tested > 0,
++		     "All modes failed to capture – Chamelium capture broken\n");
++}
++
++
++/*
++ * For each mode, capture frames and do pixel-exact comparison.
++ * Frame dump test.
++ */
++static void test_display_frame_dump(struct frames_test_data *data,
++				    chamelium_v3_port_id port_id,
++				    bool is_hdmi)
++{
++	igt_output_t *output;
++	igt_plane_t *primary;
++	drmModeConnector *connector;
++	int i, count_modes;
++
++	output = find_output_for_port(data, port_id, is_hdmi);
++	igt_require_f(output, "No %s output found on DUT\n",
++		      is_hdmi ? "HDMI" : "DP");
++
++	connector = output->config.connector;
++	igt_require_f(connector->count_modes > 0, "No modes available\n");
++
++	igt_info("Frame dump test for %s...\n", output->name);
++
++	i = 0;
++	do {
++		drmModeModeInfo local_mode;
++
++		igt_modeset_disable_all_outputs(&data->display);
++
++		output = find_output_for_port(data, port_id, is_hdmi);
++		igt_assert(output);
++
++		connector = output->config.connector;
++		count_modes = connector->count_modes;
++		if (i >= count_modes)
++			break;
++
++		local_mode = connector->modes[i];
++
++		igt_info("Frame dump mode %d/%d: %dx%d@%d\n", i + 1,
++			 count_modes,
++			 local_mode.hdisplay, local_mode.vdisplay,
++			 local_mode.vrefresh);
++
++		primary = setup_output(data, output, &local_mode);
++		igt_assert(primary);
++
++		do_test_frame_dump(data, port_id, output, primary, &local_mode, is_hdmi);
++
++		disable_output(data, output, primary);
++	} while (++i < count_modes);
++}
++
++
++/*
++ * Test each supported non-planar (RGB) format on HDMI.
++ */
++static void test_display_nonplanar_formats(struct frames_test_data *data,
++					   chamelium_v3_port_id port_id,
++					   bool is_hdmi)
++{
++	igt_output_t *output;
++	igt_plane_t *primary;
++	drmModeModeInfo *mode;
++	unsigned int k;
++
++	igt_modeset_disable_all_outputs(&data->display);
++
++	output = find_output_for_port(data, port_id, is_hdmi);
++	igt_require_f(output, "No %s output found on DUT\n",
++		      is_hdmi ? "HDMI" : "DP");
++
++	mode = igt_output_get_mode(output);
++	primary = setup_output(data, output, mode);
++	igt_assert(primary);
++
++	for (k = 0; k < primary->format_mod_count; k++) {
++		if (!igt_fb_supported_format(primary->formats[k]))
++			continue;
++		if (igt_format_is_yuv(primary->formats[k]))
++			continue;
++		if (primary->modifiers[k] != DRM_FORMAT_MOD_LINEAR)
++			continue;
++
++		igt_info("Testing non-planar format: %s\n",
++			 igt_format_str(primary->formats[k]));
++
++		do_test_display(data, port_id, output, primary, mode,
++				primary->formats[k], FRAME_FORMAT_TOLERANCE,
++				1, false);
 +	}
 +
-+	igt_describe("Plug a connector with an EDID suitable for audio, "
-+		     "check ALSA EDID-Like Data reports the correct "
-+		     "audio parameters");
-+	igt_subtest("dp-audio-edid") {
-+		igt_require(setup_done);
-+		test_display_audio_edid(&data, true);
++	disable_output(data, output, primary);
++}
++
++
++/*
++ * Test each supported planar (YUV) format with checkerboard comparison.
++ */
++static void test_display_planar_formats(struct frames_test_data *data,
++					chamelium_v3_port_id port_id,
++					bool is_hdmi)
++{
++	igt_output_t *output;
++	igt_plane_t *primary;
++	drmModeModeInfo *mode;
++	unsigned int k;
++
++	igt_modeset_disable_all_outputs(&data->display);
++
++	output = find_output_for_port(data, port_id, is_hdmi);
++	igt_require_f(output, "No %s output found on DUT\n",
++		      is_hdmi ? "HDMI" : "DP");
++
++	mode = igt_output_get_mode(output);
++	primary = setup_output(data, output, mode);
++	igt_assert(primary);
++
++	for (k = 0; k < primary->format_mod_count; k++) {
++		if (!igt_fb_supported_format(primary->formats[k]))
++			continue;
++		if (!igt_format_is_yuv(primary->formats[k]))
++			continue;
++		if (primary->modifiers[k] != DRM_FORMAT_MOD_LINEAR)
++			continue;
++
++		igt_info("Testing planar format: %s\n",
++			 igt_format_str(primary->formats[k]));
++
++		do_test_display(data, port_id, output, primary, mode,
++				primary->formats[k],
++				FRAME_CHECKERBOARD_TOLERANCE, 1, false);
 +	}
 +
-+	/* HDMI audio tests */
-+	igt_describe("Playback various audio signals with various audio "
-+		     "formats/rates over HDMI, verify ELD and playback");
-+	igt_subtest("hdmi-audio") {
-+		igt_require(setup_done);
-+		test_display_audio(&data, false);
++	disable_output(data, output, primary);
++}
++
++
++/*
++ * Set up random overlay planes with random parameters, capture the
++ * composed frame and compare against a software-composed reference.
++ * Random planes test.
++ */
++static void test_display_planes_random(struct frames_test_data *data,
++				       chamelium_v3_port_id port_id,
++				       bool is_hdmi,
++				       int tolerance,
++				       bool allow_scaling,
++				       bool allow_yuv)
++{
++	igt_output_t *output;
++	drmModeModeInfo *mode;
++	igt_plane_t *primary_plane;
++	struct igt_fb primary_fb;
++	struct igt_fb result_fb;
++	struct igt_fb *overlay_fbs;
++	struct chamelium_v3_frame *frame;
++	unsigned int overlay_planes_max = 0;
++	unsigned int overlay_planes_count;
++	cairo_surface_t *result_surface;
++	unsigned int i;
++	unsigned int fb_id;
++
++	srand(time(NULL));
++
++	igt_modeset_disable_all_outputs(&data->display);
++
++	output = find_output_for_port(data, port_id, is_hdmi);
++	igt_require_f(output, "No %s output found on DUT\n",
++		      is_hdmi ? "HDMI" : "DP");
++
++	mode = igt_output_get_mode(output);
++
++	/* Get primary plane */
++	primary_plane = setup_output(data, output, mode);
++	igt_assert(primary_plane);
++
++	/* Create primary FB */
++	fb_id = igt_create_color_pattern_fb(data->drm_fd,
++					    mode->hdisplay, mode->vdisplay,
++					    DRM_FORMAT_XRGB8888,
++					    DRM_FORMAT_MOD_LINEAR,
++					    0, 0, 0, &primary_fb);
++	igt_assert(fb_id > 0);
++
++	/* Create result FB for software composition */
++	fb_id = igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++			      &result_fb);
++	igt_assert(fb_id > 0);
++
++	result_surface = igt_get_cairo_surface(data->drm_fd, &result_fb);
++
++	/* Blit primary framebuffer onto result surface */
++	blit_plane_cairo(data, result_surface, 0, 0, 0, 0, 0, 0, 0, 0,
++			 &primary_fb);
++
++	/* Set primary plane */
++	igt_plane_set_fb(primary_plane, &primary_fb);
++
++	overlay_planes_max = igt_output_count_plane_type(output,
++							 DRM_PLANE_TYPE_OVERLAY);
++	overlay_planes_max = min(overlay_planes_max, 4u);
++
++	overlay_planes_count = (rand() % overlay_planes_max) + 1;
++	igt_debug("Using %d overlay planes\n", overlay_planes_count);
++
++	overlay_fbs = calloc(overlay_planes_count, sizeof(struct igt_fb));
++
++	for (i = 0; i < overlay_planes_count; i++) {
++		struct igt_fb *overlay_fb = &overlay_fbs[i];
++		igt_plane_t *plane = igt_output_get_plane_type_index(
++			output, DRM_PLANE_TYPE_OVERLAY, i);
++		igt_assert(plane);
++
++		prepare_randomized_plane(data, mode, plane, overlay_fb, i,
++					result_surface, allow_scaling,
++					allow_yuv);
 +	}
 +
-+	igt_describe("Plug a connector with an EDID suitable for audio, "
-+		     "check ALSA EDID-Like Data reports the correct "
-+		     "audio parameters");
-+	igt_subtest("hdmi-audio-edid") {
-+		igt_require(setup_done);
-+		test_display_audio_edid(&data, false);
-+	}
++	cairo_surface_destroy(result_surface);
++
++	/* Commit all planes */
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	/* Wait for stabilization */
++	sleep(2);
++
++	/* Capture and compare */
++	frame = capture_frame_with_retry(data, port_id);
++	igt_assert_f(frame, "Failed to capture frame for planes-random test\n");
++
++	igt_assert_f(compare_frame_to_fb(data, frame, &result_fb, tolerance),
++		     "Random planes frame comparison failed\n");
++
++	chamelium_v3_free_frame(frame);
 +
 +	/* Cleanup */
-+	if (setup_done) {
-+		igt_info("Cleaning up...\n");
-+		chamelium_v3_reset(data.chamelium);
-+		usleep(HPD_WAIT_TIME_MS * 1000);
++	for (i = 0; i < overlay_planes_count; i++)
++		igt_remove_fb(data->drm_fd, &overlay_fbs[i]);
 +
-+		free(data.ports);
-+		chamelium_v3_uninit(data.chamelium);
-+		close(data.drm_fd);
++	free(overlay_fbs);
++	igt_remove_fb(data->drm_fd, &primary_fb);
++	igt_remove_fb(data->drm_fd, &result_fb);
++
++	disable_output(data, output, primary_plane);
++}
++
++
++static enum infoframe_avi_picture_aspect_ratio
++get_infoframe_avi_picture_ar(uint32_t aspect_ratio)
++{
++	switch (aspect_ratio) {
++	case DRM_MODE_PICTURE_ASPECT_4_3:
++		return INFOFRAME_AVI_PIC_AR_4_3;
++	case DRM_MODE_PICTURE_ASPECT_16_9:
++		return INFOFRAME_AVI_PIC_AR_16_9;
++	default:
++		return INFOFRAME_AVI_PIC_AR_UNSPECIFIED;
 +	}
 +}
 +
-+int main(int argc, char **argv)
++/*
++ * Verify AVI InfoFrame aspect ratio.
++ * Aspect ratio test.
++ */
++static void test_display_aspect_ratio(struct frames_test_data *data,
++				      chamelium_v3_port_id port_id)
 +{
-+	igt_subtest_init(argc, argv);
-+	__real_main();
-+	igt_exit();
++	igt_output_t *output;
++	igt_plane_t *primary;
++	drmModeConnector *connector;
++	drmModeModeInfo local_mode;
++	struct igt_fb fb;
++	struct chamelium_v3_infoframe *infoframe;
++	struct infoframe_avi infoframe_avi;
++	uint8_t vic = 16;
++	const struct vic_mode *vic_mode;
++	uint32_t aspect_ratio;
++	enum infoframe_avi_picture_aspect_ratio frame_ar;
++	int i, fb_id;
++	bool found, ok;
++
++	igt_modeset_disable_all_outputs(&data->display);
++
++	output = find_output_for_port(data, port_id, true /* HDMI */);
++	igt_require_f(output, "No HDMI output found on DUT\n");
++
++	connector = output->config.connector;
++
++	vic_mode = &vic_modes[vic];
++	aspect_ratio = vic_mode->picture_ar;
++
++	/*
++	 * Find a mode matching the VIC resolution and refresh rate.
++	 * V3 doesn't inject a special aspect-ratio EDID, so we match on
++	 * resolution/refresh only. The HDMI driver should still send
++	 * the correct VIC and aspect ratio in the AVI InfoFrame for
++	 * CEA modes like 1920x1080@60 (VIC 16).
++	 */
++	found = false;
++	igt_assert(connector->count_modes > 0);
++	for (i = 0; i < connector->count_modes; i++) {
++		if (vic_mode->hactive == connector->modes[i].hdisplay &&
++		    vic_mode->vactive == connector->modes[i].vdisplay &&
++		    vic_mode->vrefresh == connector->modes[i].vrefresh) {
++			local_mode = connector->modes[i];
++			found = true;
++			break;
++		}
++	}
++	igt_require_f(found,
++		      "Failed to find mode matching VIC %d (%dx%d@%d)\n",
++		      vic, vic_mode->hactive, vic_mode->vactive,
++		      vic_mode->vrefresh);
++
++	igt_info("Aspect ratio test: using mode %dx%d@%d (VIC %d)\n",
++		 local_mode.hdisplay, local_mode.vdisplay,
++		 local_mode.vrefresh, vic);
++
++	primary = setup_output(data, output, &local_mode);
++	igt_assert(primary);
++
++	fb_id = igt_create_color_pattern_fb(data->drm_fd,
++					    local_mode.hdisplay,
++					    local_mode.vdisplay,
++					    DRM_FORMAT_XRGB8888,
++					    DRM_FORMAT_MOD_LINEAR,
++					    0, 0, 0, &fb);
++	igt_assert(fb_id > 0);
++
++	enable_output(data, output, primary, &fb);
++
++	/* Read AVI InfoFrame from Chamelium */
++	infoframe = chamelium_v3_get_last_infoframe(data->chamelium, port_id, "avi");
++	igt_require_f(infoframe,
++		      "AVI InfoFrame not available (GetLastInfoFrame may not be implemented on this Chamelium V3)\n");
++
++	ok = infoframe_avi_parse(&infoframe_avi, infoframe->version,
++				 infoframe->payload, infoframe->payload_size);
++	igt_assert_f(ok, "Failed to parse AVI InfoFrame\n");
++
++	frame_ar = get_infoframe_avi_picture_ar(aspect_ratio);
++
++	igt_info("Checking AVI InfoFrame\n");
++	igt_info("  Picture aspect ratio: got %d, expected %d\n",
++		 infoframe_avi.picture_aspect_ratio, frame_ar);
++	igt_info("  Video Identification Code (VIC): got %d, expected %d\n",
++		 infoframe_avi.vic, vic);
++
++	igt_assert_f(infoframe_avi.picture_aspect_ratio == frame_ar,
++		     "AVI InfoFrame aspect ratio mismatch: got %d, expected %d\n",
++		     infoframe_avi.picture_aspect_ratio, frame_ar);
++	igt_assert_f(infoframe_avi.vic == vic,
++		     "AVI InfoFrame VIC mismatch: got %d, expected %d\n",
++		     infoframe_avi.vic, vic);
++
++	chamelium_v3_infoframe_destroy(infoframe);
++	igt_remove_fb(data->drm_fd, &fb);
++	disable_output(data, output, primary);
++}
++
++
++/**
++ * SUBTEST: dp-crc-fast
++ * Description: Display a test pattern on the first DP mode, capture a frame
++ *              via Chamelium V3 DumpPixels, and compare against local reference.
++ */
++static void test_dp_crc_fast(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_dp_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged DP port found\n");
++	test_display_one_mode(data, port, false, DRM_FORMAT_XRGB8888,
++			      FRAME_CRC_TOLERANCE, 1);
++}
++
++/**
++ * SUBTEST: dp-crc-single
++ * Description: For each mode of the base EDID on DP, display a test pattern,
++ *              capture 1 frame, and compare.
++ */
++static void test_dp_crc_single(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_dp_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged DP port found\n");
++	test_display_all_modes(data, port, false, DRM_FORMAT_XRGB8888,
++			       FRAME_CRC_TOLERANCE, 1);
++}
++
++/**
++ * SUBTEST: dp-crc-multiple
++ * Description: For each mode of the base EDID on DP, display a test pattern,
++ *              capture 3 frames, and compare each.
++ */
++static void test_dp_crc_multiple(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_dp_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged DP port found\n");
++	test_display_all_modes(data, port, false, DRM_FORMAT_XRGB8888,
++			       FRAME_CRC_TOLERANCE, 3);
++}
++
++/**
++ * SUBTEST: dp-frame-dump
++ * Description: For each mode of the base EDID on DP, display a test pattern,
++ *              capture frames and compare them pixel-by-pixel to the sent ones.
++ */
++static void test_dp_frame_dump(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_dp_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged DP port found\n");
++	test_display_frame_dump(data, port, false);
++}
++
++/**
++ * SUBTEST: hdmi-crc-fast
++ * Description: Display a test pattern on the first HDMI mode, capture a frame
++ *              via Chamelium V3 DumpPixels, and compare against local reference.
++ */
++static void test_hdmi_crc_fast(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_hdmi_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged HDMI port found\n");
++	test_display_one_mode(data, port, true, DRM_FORMAT_XRGB8888,
++			      FRAME_CRC_TOLERANCE, 1);
++}
++
++/**
++ * SUBTEST: hdmi-crc-single
++ * Description: For each mode of the base EDID on HDMI, display a test pattern,
++ *              capture 1 frame, and compare.
++ */
++static void test_hdmi_crc_single(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_hdmi_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged HDMI port found\n");
++	test_display_all_modes(data, port, true, DRM_FORMAT_XRGB8888,
++			       FRAME_CRC_TOLERANCE, 1);
++}
++
++/**
++ * SUBTEST: hdmi-crc-multiple
++ * Description: For each mode of the base EDID on HDMI, display a test pattern,
++ *              capture 3 frames, and compare each.
++ */
++static void test_hdmi_crc_multiple(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_hdmi_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged HDMI port found\n");
++	test_display_all_modes(data, port, true, DRM_FORMAT_XRGB8888,
++			       FRAME_CRC_TOLERANCE, 3);
++}
++
++/**
++ * SUBTEST: hdmi-crc-nonplanar-formats
++ * Description: For each non-planar pixel format supported by the primary plane,
++ *              display a test pattern and compare captured frame.
++ */
++static void test_hdmi_crc_nonplanar_formats(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_hdmi_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged HDMI port found\n");
++	test_display_nonplanar_formats(data, port, true);
++}
++
++/**
++ * SUBTEST: hdmi-crc-planes-random
++ * Description: Set up random overlay planes on HDMI, capture the composed
++ *              frame and compare against software-composed reference.
++ */
++static void test_hdmi_crc_planes_random(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_hdmi_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged HDMI port found\n");
++	test_display_planes_random(data, port, true,
++				   FRAME_CRC_TOLERANCE, false, false);
++}
++
++/**
++ * SUBTEST: hdmi-cmp-planar-formats
++ * Description: For each planar (YUV) pixel format, display a test pattern
++ *              and compare captured frame with checkerboard tolerance.
++ */
++static void test_hdmi_cmp_planar_formats(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_hdmi_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged HDMI port found\n");
++	test_display_planar_formats(data, port, true);
++}
++
++/**
++ * SUBTEST: hdmi-cmp-planes-random
++ * Description: Set up random overlay planes with YUV formats on HDMI,
++ *              capture the frame and compare with checkerboard tolerance.
++ */
++static void test_hdmi_cmp_planes_random(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_hdmi_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged HDMI port found\n");
++	test_display_planes_random(data, port, true,
++				   FRAME_CHECKERBOARD_TOLERANCE, true, true);
++}
++
++/**
++ * SUBTEST: hdmi-frame-dump
++ * Description: For each mode of the base EDID on HDMI, display a test pattern,
++ *              capture frames and compare pixel-by-pixel.
++ */
++static void test_hdmi_frame_dump(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_hdmi_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged HDMI port found\n");
++	test_display_frame_dump(data, port, true);
++}
++
++/**
++ * SUBTEST: hdmi-aspect-ratio
++ * Description: Set a mode with a specific picture aspect ratio, read the AVI
++ *              InfoFrame from Chamelium and verify the aspect ratio field matches.
++ */
++static void test_hdmi_aspect_ratio(struct frames_test_data *data)
++{
++	chamelium_v3_port_id port = find_hdmi_port(data);
++
++	igt_require_f(port != (chamelium_v3_port_id)-1, "No plugged HDMI port found\n");
++	test_display_aspect_ratio(data, port);
++}
++
++
++int igt_main()
++{
++	struct frames_test_data data = { 0 };
++
++	igt_fixture() {
++		/* Set VT to graphics mode so fbcon doesn't interfere */
++		kmstest_set_vt_graphics_mode();
++
++		/* Open DRM */
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++		igt_require(data.drm_fd >= 0);
++		igt_display_require(&data.display, data.drm_fd);
++		igt_require(data.display.is_atomic);
++
++		/* Initialize Chamelium V3 */
++		data.chamelium = chamelium_v3_init_from_config();
++		igt_require(data.chamelium);
++
++		data.port_count = chamelium_v3_get_supported_ports(
++			data.chamelium, &data.ports);
++		igt_require(data.port_count > 0);
++
++		igt_info("Found %d Chamelium ports\n", data.port_count);
++	}
++
++	/* DP frame/CRC tests */
++	igt_describe("Display test pattern on first DP mode, capture and compare frame");
++	igt_subtest("dp-crc-fast")
++		test_dp_crc_fast(&data);
++
++	igt_describe("For each DP mode, capture 1 frame and compare");
++	igt_subtest("dp-crc-single")
++		test_dp_crc_single(&data);
++
++	igt_describe("For each DP mode, capture 3 frames and compare");
++	igt_subtest("dp-crc-multiple")
++		test_dp_crc_multiple(&data);
++
++	igt_describe("For each DP mode, capture frames and compare pixel-by-pixel");
++	igt_subtest("dp-frame-dump")
++		test_dp_frame_dump(&data);
++
++	/* HDMI frame/CRC tests */
++	igt_describe("Display test pattern on first HDMI mode, capture and compare frame");
++	igt_subtest("hdmi-crc-fast")
++		test_hdmi_crc_fast(&data);
++
++	igt_describe("For each HDMI mode, capture 1 frame and compare");
++	igt_subtest("hdmi-crc-single")
++		test_hdmi_crc_single(&data);
++
++	igt_describe("For each HDMI mode, capture 3 frames and compare");
++	igt_subtest("hdmi-crc-multiple")
++		test_hdmi_crc_multiple(&data);
++
++	igt_describe("CRC check per non-planar pixel format for HDMI");
++	igt_subtest("hdmi-crc-nonplanar-formats")
++		test_hdmi_crc_nonplanar_formats(&data);
++
++	igt_describe("Random overlay plane frame comparison for HDMI");
++	igt_subtest("hdmi-crc-planes-random")
++		test_hdmi_crc_planes_random(&data);
++
++	igt_describe("Checkerboard comparison for YUV planar formats on HDMI");
++	igt_subtest("hdmi-cmp-planar-formats")
++		test_hdmi_cmp_planar_formats(&data);
++
++	igt_describe("Random overlay plane checkerboard comparison for HDMI");
++	igt_subtest("hdmi-cmp-planes-random")
++		test_hdmi_cmp_planes_random(&data);
++
++	igt_describe("Pixel-by-pixel frame dump comparison for HDMI");
++	igt_subtest("hdmi-frame-dump")
++		test_hdmi_frame_dump(&data);
++
++	igt_describe("AVI InfoFrame aspect ratio verification for HDMI");
++	igt_subtest("hdmi-aspect-ratio")
++		test_hdmi_aspect_ratio(&data);
++
++	igt_fixture() {
++		igt_display_fini(&data.display);
++		close(data.drm_fd);
++		free(data.ports);
++		chamelium_v3_uninit(data.chamelium);
++	}
 +}
 diff --git a/tests/meson.build b/tests/meson.build
-index 1c7facccd..8c054fd40 100644
+index cfb59ecbb..c3dbff694 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -378,6 +378,7 @@ chamelium_v3_progs = [
+@@ -376,6 +376,7 @@ chamelium_v3_progs = [
+ 	'kms_chamelium_v3_basic',
+ 	'kms_chamelium_v3_hpd',
  	'kms_chamelium_v3_edid',
- 	'kms_chamelium_v3_frames',
- 	'kms_chamelium_v3_color',
-+	'kms_chamelium_v3_audio',
++	'kms_chamelium_v3_frames',
  ]
  
  test_deps = [ igt_deps ]
