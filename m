@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53A77FF886F
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:48:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 730C1FF885A
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:48:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F323810E29C;
-	Tue, 28 Apr 2026 04:48:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1F9CE10E29C;
+	Tue, 28 Apr 2026 04:48:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PWhjdGAv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U/J5ysX+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 209DA10E29C
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1984610E0EB
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777351643; x=1808887643;
+ t=1777351625; x=1808887625;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2znGv+3MGaEh7XslhkG2npw4Dkx+8b1N8YU1XtyN1CE=;
- b=PWhjdGAvCfnP9kI1KMqcS2MsU8pK3XJS6lUyusKcvQzfzWUs8Kib4i/H
- r1+dXYy7D62OpNWvrRJhdJ04A3ckGqYVyjlCJx5rKvErunbAetM0gmxy7
- gK/Ab3cqckryZWSBcI9qxHWqEWrcYiSx/8HIbjlFAbFxZMYnJmoT42qnD
- g/NH9/8g1AE3mjLNpV4ar6GPj3485HkWIIzj2+6E2vBBtxSTzrDKUY1Ru
- IysEku5TBkw6DGjOyRmvBlUSGnkQ1TusiKucsscUr2Wak/YUj8ZHTxHMa
- uUoINmwOAaIv8COZn/w+kEzo1xaRrAygw+j3jPG1eVWybB2UIH24zMBe0 w==;
-X-CSE-ConnectionGUID: /fTkOAhKT/ejjjkyKdU7PQ==
-X-CSE-MsgGUID: XXOXbj5UQXya4WU3qBmjCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167828"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167828"
+ bh=O+Yu4CTmCLRVYbzQlRdpGoQt0cYBFvdVFB/TM8va/RA=;
+ b=U/J5ysX+gh+3UJz2X8yKetyLj81M9khuCoNvHX0YZ6nJcDPcf0F0y+UF
+ g7tfE8lT72v6e43YdifDTtJrmkbmSEE14jTsxAAsO4SNkaQd6OjGfbJcr
+ MGWchfJb5TKzpB1M3sIYonc+kuQqAp+EWYQiLVIP0snzydx2JIce+iO0q
+ S42hdRvf/Q6y6WT/8s5/1Ke9AWeIxSD+SoN7jt3XFhzVQbP/HGMV0jxih
+ DVXucjipyDrta11JRvUfrT5tAQ789bLt81khY16IaejO0lYoxKZHOvQ0z
+ hGKF4SUU3uI8Wx166aSJbF6LtucFXDRh+N4CZjfP6BwlILDvUeeAP/i3M A==;
+X-CSE-ConnectionGUID: o4XBwq1fQOi0l5VN7tJU9Q==
+X-CSE-MsgGUID: u807rrLzRW6x+83IbTr07Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167791"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167791"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:23 -0700
-X-CSE-ConnectionGUID: idtCIoHmSW+Ki6dqdQ+MpQ==
-X-CSE-MsgGUID: 15i5xxFrSn2heN/tsouDGw==
+ 27 Apr 2026 21:47:05 -0700
+X-CSE-ConnectionGUID: Mto+rZRXSy+4cfs1KYcaQA==
+X-CSE-MsgGUID: z1l2cWzRQy++y+VmL7PYDQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706690"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706558"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:22 -0700
+ 27 Apr 2026 21:47:03 -0700
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com,
-	Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: [PATCH i-g-t v1 13/25] lib/chamelium/v2: Rename chamelium to
- chamelium_v2
-Date: Tue, 28 Apr 2026 10:16:22 +0530
-Message-ID: <20260428044644.257001-14-mohammed.bilal@intel.com>
+Cc: kunal1.joshi@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH i-g-t v1 03/25] lib/igt_kms: Add function to list connected
+ connectors
+Date: Tue, 28 Apr 2026 10:16:12 +0530
+Message-ID: <20260428044644.257001-4-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260428044644.257001-1-mohammed.bilal@intel.com>
 References: <20260428044644.257001-1-mohammed.bilal@intel.com>
@@ -71,176 +72,113 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-To avoid confusion in meson build file, rename the variable chamlium to
-chamlium_v2.
+Introduce the igt_get_connected_connectors() function, which returns a
+list of connector IDs that are currently connected according to DRM.
 
+This function includes a timeout mechanism because connectors can be
+unplugged at any time. Also, especially with MST, the connector can be
+listed by drmModeGetResources() but not yet accessible with
+drmModeGetConnector().
+
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- .gitlab-ci.yml            |  2 +-
- docs/testplan/meson.build |  4 ++--
- lib/meson.build           |  4 ++--
- lib/tests/meson.build     |  4 ++--
- meson.build               | 16 ++++++++--------
- meson_options.txt         |  4 ++--
- tests/meson.build         |  8 ++++----
- 7 files changed, 21 insertions(+), 21 deletions(-)
+ lib/igt_kms.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  1 +
+ 2 files changed, 66 insertions(+)
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index 34daba4d5..25f4337d8 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -6,7 +6,7 @@ variables:
-   MESON_OPTIONS: >
-     -Dlibdrm_drivers=intel,nouveau,amdgpu
-     -Doverlay=enabled
--    -Dchamelium=enabled
-+    -Dchamelium_v2=enabled
-     -Dvalgrind=enabled
-     -Dman=enabled
-     -Dtests=enabled
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index 5560347f1..f60c82ad1 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -21,8 +21,8 @@ if build_tests
- 		build_info += 'Will Check if documentation is in sync with testlist'
- 		check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 25184531b..2ae283e93 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -8215,6 +8215,29 @@ double igt_default_display_detect_timeout(void)
+         return timeout;
+ }
  
--		if not chamelium.found()
--			warning('WARNING: Will not check if documentation is in sync for KMS as chamelium is disabled')
-+		if not chamelium_v2.found()
-+			warning('WARNING: Will not check if documentation is in sync for KMS as chamelium v2 is disabled')
- 		else
- 			kms_check_testlist = check_testlist
- 		endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 0d94db9cd..460b596de 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -233,8 +233,8 @@ if alsa.found()
- 	lib_sources += 'igt_alsa.c'
- endif
++static drmModeConnectorPtr igt_wait_for_connector(int drm_fd, unsigned int connector_id,
++						  double timeout)
++{
++	drmModeConnectorPtr connector = NULL;
++	struct timespec start, end;
++
++	connector = drmModeGetConnector(drm_fd, connector_id);
++	/*
++	 * This time is required as sometimes some id in the connector list are not totally
++	 * ready or can disappear
++	 */
++	clock_gettime(CLOCK_MONOTONIC, &start);
++	end = start;
++
++	while (!connector &&
++	       igt_time_elapsed(&start, &end) <= timeout) {
++		connector = drmModeGetConnector(drm_fd, connector_id);
++		clock_gettime(CLOCK_MONOTONIC, &end);
++	}
++
++	return connector;
++}
++
+ /**
+  * igt_wait_for_connector_status:
+  * @drm_fd: drm file descriptor
+@@ -8253,3 +8276,45 @@ bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double
+ 		  connector_id);
+ 	return false;
+ }
++
++/**
++ * igt_get_connected_connectors:
++ *
++ * @drm_fd: DRM file description
++ * @connector_ids: Out pointer for the list of connector ids connected. It must be freed by the
++ * caller.
++ *
++ * This will probe all the connectors and return the list of all
++ * connected connectors.
++ * Returns: The number of connectors in @connector_ids
++ */
++int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
++{
++	int connected_count = 0;
++	double timeout = igt_default_display_detect_timeout();
++	drmModeResPtr resources;
++
++	*connector_ids = NULL;
++
++	resources = drmModeGetResources(drm_fd);
++	for (int j = 0; j < resources->count_connectors; j++) {
++		drmModeConnectorPtr connector = igt_wait_for_connector(drm_fd,
++								       resources->connectors[j],
++								       timeout);
++
++		if (connector) {
++			if (connector->connection == DRM_MODE_CONNECTED) {
++				*connector_ids = reallocarray(*connector_ids,
++							      connected_count
++							      + 1, sizeof(**connector_ids));
++				igt_assert(*connector_ids);
++				(*connector_ids)[connected_count] = resources->connectors[j];
++				connected_count++;
++			}
++			drmModeFreeConnector(connector);
++		}
++	}
++	drmModeFreeResources(resources);
++
++	return connected_count;
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 60cfc1763..71d77a3c2 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1301,5 +1301,6 @@ double igt_default_display_detect_timeout(void);
  
--if chamelium.found()
--	lib_deps += chamelium
-+if chamelium_v2.found()
-+	lib_deps += chamelium_v2
- 	lib_sources += [
- 		'chamelium/v2/igt_chamelium.c',
- 		'chamelium/v2/igt_chamelium_stream.c'
-diff --git a/lib/tests/meson.build b/lib/tests/meson.build
-index 124a9ecae..483b7fa3f 100644
---- a/lib/tests/meson.build
-+++ b/lib/tests/meson.build
-@@ -38,8 +38,8 @@ lib_fail_tests = [
+ bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
+ 				   int drm_mode);
++int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
  
- lib_tests_deps = igt_deps
- 
--if chamelium.found()
--	lib_deps += chamelium
-+if chamelium_v2.found()
-+	lib_deps += chamelium_v2
- 	lib_tests += 'igt_audio'
- endif
- 
-diff --git a/meson.build b/meson.build
-index 79051be21..6816c2ee1 100644
---- a/meson.build
-+++ b/meson.build
-@@ -86,7 +86,7 @@ foreach cc_arg : cc_args
-   endif
- endforeach
- 
--build_chamelium = get_option('chamelium')
-+build_chamelium_v2 = get_option('chamelium_v2')
- build_docs = get_option('docs')
- build_tests = not get_option('tests').disabled()
- build_xe = not get_option('xe_driver').disabled()
-@@ -183,17 +183,17 @@ if not xmlrpc.found() and xmlrpc_cmd.found()
- 	endif
- endif
- 
--if build_chamelium.enabled() and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
-+if build_chamelium_v2.enabled() and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
- 	error('Chamelium build forced and required dependency xmlrpc not found')
- endif
- 
--gsl = dependency('gsl', required : build_chamelium)
--alsa = dependency('alsa', required : build_chamelium)
--libcurl = dependency('libcurl', required : build_chamelium)
-+gsl = dependency('gsl', required : build_chamelium_v2)
-+alsa = dependency('alsa', required : build_chamelium_v2)
-+libcurl = dependency('libcurl', required : build_chamelium_v2)
- 
- if xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found() and gsl.found() and alsa.found() and libcurl.found()
- 	config.set('HAVE_CHAMELIUM', 1)
--	chamelium = declare_dependency(dependencies : [
-+	chamelium_v2 = declare_dependency(dependencies : [
- 		xmlrpc,
- 		xmlrpc_util,
- 		xmlrpc_client,
-@@ -201,10 +201,10 @@ if xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found() and gsl.foun
- 		alsa,
- 	])
- else
--	chamelium = disabler()
-+	chamelium_v2 = disabler()
- endif
- 
--build_info += 'Build Chamelium test: @0@'.format(chamelium.found())
-+build_info += 'Build Chamelium v2 test: @0@'.format(chamelium_v2.found())
- 
- pthreads = dependency('threads')
- math = cc.find_library('m')
-diff --git a/meson_options.txt b/meson_options.txt
-index e23402b36..42a1b1294 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -8,9 +8,9 @@ option('overlay_backends',
-        choices : [ 'auto', 'x', 'xv' ],
-        description : 'Overlay backends to enable')
- 
--option('chamelium',
-+option('chamelium_v2',
-        type : 'feature',
--       description : 'Build Chamelium test')
-+       description : 'Build Chamelium v2 test')
- 
- option('valgrind',
-        type : 'feature',
-diff --git a/tests/meson.build b/tests/meson.build
-index 4455b55c0..7f7224b38 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -363,7 +363,7 @@ if build_xe_eudebug
- 	intel_xe_progs += intel_xe_eudebug_progs
- endif
- 
--chamelium_progs = [
-+chamelium_v2_progs = [
- 	'kms_chamelium_audio',
- 	'kms_chamelium_color',
- 	'kms_chamelium_edid',
-@@ -478,8 +478,8 @@ foreach prog : intel_progs
- 	endif
- endforeach
- 
--if chamelium.found()
--	foreach prog : chamelium_progs
-+if chamelium_v2.found()
-+	foreach prog : chamelium_v2_progs
- 		testexe = executable(prog,
- 				 [join_paths('chamelium', 'v2', prog + '.c')] + extra_sources.get(prog, []),
- 				 dependencies : test_deps + extra_dependencies.get(prog, []),
-@@ -497,7 +497,7 @@ if chamelium.found()
- 				    output : name + '.testlist')
- 		endif
- 	endforeach
--	test_deps += chamelium
-+	test_deps += chamelium_v2
- endif
- 
- subdir('amdgpu')
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.48.1
 
