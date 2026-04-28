@@ -4,56 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60F51FF886F
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 07:21:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B72CFF8873
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 07:23:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDCED10E303;
-	Tue, 28 Apr 2026 07:21:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 02D4E10E303;
+	Tue, 28 Apr 2026 07:23:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jJJbPWrn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LnLMOZD2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18B3010E303
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 07:21:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB61F10E303
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 07:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777360865; x=1808896865;
+ t=1777360985; x=1808896985;
  h=from:to:cc:subject:in-reply-to:references:date:
  message-id:mime-version;
- bh=U6mhNf5W1F4PS51B76UqNoXIvk9tSb3yeXa+IEtxSpE=;
- b=jJJbPWrn6NI4qzhN8S0S2gGL7sFHCGMXb2tsd4X7KblzZ13odUPFFuis
- MtN1B7cPlxWdQYYu06E3lGUdw5Ws6Ln0SUJYnrchI8SN4Fo9KVCyGk6vo
- ww67sM+zuMohE8qdQXnBlci4Nh8iRAXqw55TQ6UkZQWxNFO8hE5nG7bpr
- FvXbCA6YBsFY9/1xy+kVTLRqQYgT06k4znAR3H3scythzdtVB7i5OQ0Vo
- a7CbUCc8nSMv3PKQYL04CBICzosmSyJocCC2hJBhZTDyPIpYm+Q2WgI49
- fnRGNL0otj/NYymiXHtQTZkZ8y1ifaa5Me/UCPQ1TnzF93AibLjqWhLRo A==;
-X-CSE-ConnectionGUID: ZkZRZ4zWT6ShemrW+jePGA==
-X-CSE-MsgGUID: MQOzgxrHTwql7ZDhHfvMjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78281457"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78281457"
+ bh=QpfX30ryDUD9lN2AmPC30aSbw3cRIDqs/Kz2LwGKjRg=;
+ b=LnLMOZD2KW0MuQWYhhL/OARNLjV48ytAcDsbpcrNOehm//Nsat+IlCHK
+ EP0uQS4jFGSVTsspsIwR3AKvgJikmZf/mtf5dDp28tP0bDcdLSAx7td85
+ 6bj+9eLkws+MAsRNpqPUGEiRe4VbEg8t6CfbxsGjQiEY3KC3wcJriLsWJ
+ b5geKoo8DzmpfKBpKx/hTjlYXWv5QcJWJtTxr08VPkjT3UAf/sx4jADwY
+ 6AD7Y87JPKxmoloWU1Y5xp0f7wlEAdmXS4fs4la5UqJbFHxnhzZnaUoYd
+ rnypSm7j1PN4GOusdOpsHD0Al5lGuNZNRxFT4PRB3r4CTWGI2fBNaFqGA Q==;
+X-CSE-ConnectionGUID: Bgi+3uZaT3GbbLF6USDVIg==
+X-CSE-MsgGUID: 7+LRC1i4QbOsqyJZNXcXKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78281617"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78281617"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2026 00:21:04 -0700
-X-CSE-ConnectionGUID: hPtshxF1QQGJYvO4i/JDWg==
-X-CSE-MsgGUID: AKGKbXbcQ/+9b+vgWY7pXg==
+ 28 Apr 2026 00:23:05 -0700
+X-CSE-ConnectionGUID: k16IuSJ2RnCunOyayHc3nw==
+X-CSE-MsgGUID: 76grh7k7TnWLdfrq1R1+Jw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="237828065"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="237828722"
 Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.244.208])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2026 00:21:03 -0700
+ 28 Apr 2026 00:23:03 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: Mohammed Bilal <mohammed.bilal@intel.com>, igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t v1 05/25] lib/igt_kms: Add function to get valid
- pipe for specific output
-In-Reply-To: <20260428044644.257001-6-mohammed.bilal@intel.com>
+Cc: kunal1.joshi@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>, Kory
+ Maincent <kory.maincent@bootlin.com>, Luca Ceresoli
+ <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH i-g-t v1 07/25] lib/monitor_edids: Add helper to get an
+ EDID by its name
+In-Reply-To: <20260428044644.257001-8-mohammed.bilal@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20260428044644.257001-1-mohammed.bilal@intel.com>
- <20260428044644.257001-6-mohammed.bilal@intel.com>
-Date: Tue, 28 Apr 2026 10:21:00 +0300
-Message-ID: <6b45259b78590383ea288a7ea43ee0c762e2d10c@intel.com>
+ <20260428044644.257001-8-mohammed.bilal@intel.com>
+Date: Tue, 28 Apr 2026 10:23:00 +0300
+Message-ID: <ff00392f7c3994d5e1483193dddfa28d84837292@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -74,61 +76,79 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Tue, 28 Apr 2026, Mohammed Bilal <mohammed.bilal@intel.com> wrote:
 > From: Louis Chauvet <louis.chauvet@bootlin.com>
 >
-> Introduces a new function igt_get_pipe_for_output in igt_kms. The function
-> is designed to retrieve a valid pipe for a specific output in a display.
-
-Please avoid using pipes. Why would you need the pipe here?
-
-The function isn't even used in the entire series.
-
+> For testing specific EDID, it is useful to be able to retrieve an EDID by
+> a verbose name.
 >
+> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > ---
->  lib/igt_kms.c | 22 ++++++++++++++++++++++
->  lib/igt_kms.h |  1 +
->  2 files changed, 23 insertions(+)
+>  lib/monitor_edids/monitor_edids_helper.c | 30 ++++++++++++++++++++++++
+>  lib/monitor_edids/monitor_edids_helper.h |  1 +
+>  2 files changed, 31 insertions(+)
 >
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index aa086e96c..73d65f70a 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -8426,3 +8426,25 @@ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path)
+> diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+> index 6043e7a08..01feb34a5 100644
+> --- a/lib/monitor_edids/monitor_edids_helper.c
+> +++ b/lib/monitor_edids/monitor_edids_helper.c
+> @@ -20,6 +20,16 @@
+>  #include "drmtest.h"
+>  #include "hdmi_edids.h"
 >  
->  	return 0;
+> +struct {
+> +	struct monitor_edid *edid_list;
+> +	int list_size;
+> +} ALL_EDIDS[] = {
+> +	{DP_EDIDS_NON_4K,	DP_EDIDS_NON_4K_COUNT},
+> +	{DP_EDIDS_4K,		DP_EDIDS_4K_COUNT},
+> +	{HDMI_EDIDS_NON_4K,	HDMI_EDIDS_NON_4K_COUNT},
+> +	{HDMI_EDIDS_4K,		HDMI_EDIDS_4K_COUNT},
+> +};
+
+static const?
+
+> +
+>  static uint8_t convert_hex_char_to_byte(char c)
+>  {
+>  	if (c >= '0' && c <= '9')
+> @@ -170,3 +180,23 @@ struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count,
+>  		}
+>  	}
 >  }
 > +
 > +/**
-> + * igt_get_pipe_for_output:
-> + * @display: display to fetch the pipes
-> + * @output: output to use
+> + * get_edid_by_name:
+> + * @name: Name to search in available EDIDs
 > + *
-> + * Get a valid pipe for a specific output. The return value is the pipe first valid pipe for a
-> + * specific output.
+> + * Return the struct edid associated with a specific name. As with edid_from_monitor_edid, the
+> + * caller must ensure to free the EDID after use. If no EDID with the exact name is found, returns
+> + * NULL.
 > + */
-> +enum pipe igt_get_pipe_for_output(igt_display_t *display,
-> +				  igt_output_t *output)
+> +struct edid *get_edid_by_name(const char *name)
+
+const?
+
 > +{
-> +        igt_crtc_t *crtc;
+> +	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
+> +		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
+> +			if (strcmp(ALL_EDIDS[i].edid_list[j].name, name) == 0)
+> +				return edid_from_monitor_edid(&ALL_EDIDS[i].edid_list[j]);
+> +		}
+> +	}
 > +
-> +        for_each_crtc(display, crtc) {
-> +                if (igt_output_is_connected(output) &&
-> +                     (output->config.valid_crtc_index_mask & (1 << crtc->crtc_index)))
-> +                        return crtc->pipe;
-> +        }
-> +
-> +        return PIPE_NONE;
+> +	return NULL;
 > +}
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index bc921f4ff..70b7d1a58 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1305,5 +1305,6 @@ int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
->  drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name);
->  uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name);
->  uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
-> +enum pipe igt_get_pipe_for_output(igt_display_t *display, igt_output_t *output);
+> diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+> index e50698686..6d9e3fc89 100644
+> --- a/lib/monitor_edids/monitor_edids_helper.h
+> +++ b/lib/monitor_edids/monitor_edids_helper.h
+> @@ -34,5 +34,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
 >  
->  #endif /* __IGT_KMS_H__ */
+>  struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
+>  struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
+> +struct edid *get_edid_by_name(const char *name);
+>  
+>  #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
 
 -- 
 Jani Nikula, Intel
