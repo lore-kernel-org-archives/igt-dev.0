@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76182FF885A
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:49:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9343EFF886F
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:50:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2197E10E2C4;
-	Tue, 28 Apr 2026 04:49:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 34BD110E2C4;
+	Tue, 28 Apr 2026 04:50:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U90ZimiR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XZqR0eDD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B29D610E0EB
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FB0110E2C4
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777351630; x=1808887630;
+ t=1777351649; x=1808887649;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PMKA9c6Bm9JEqGbU6oAEnwxORkHwvZaGfw2WwwS5Tu4=;
- b=U90ZimiRBMh9WxYm3k281lhFCS//4FkCn4y1wnlImW3zw2JVZha8Wh9R
- GCgZXtj2GxM52grfowPUWqwDiGn493W+/75BSSkuXOqtqVpjSzC2uF2bN
- yV3OyLf7/qjCxPP5LpUDd1IkoidD4eyZGnx9LPKZTba2IsXASIugf5rkC
- LT+R3k2TJDyqmxQEA3hq3kvtmMXd7VTRc3511Uc6oCFgir4jLBQcBs7lb
- lkxImpZxtpW1RLrD6qyuCqY1GfshOnKbfY6kg1L6K3JEsEn5ptAwvOi6M
- BOH5Rdr80ZZESxYkSmBtT0iJASHFPj5Pgv7gbsvQpgf49LAMwEvUQwD4f A==;
-X-CSE-ConnectionGUID: DaTvvfErSuKMwNEI6FOqfw==
-X-CSE-MsgGUID: ChbVEQhVQ6mxIRua86ihKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167797"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167797"
+ bh=cZahrtcVDAYdxF5uE/sAJ32E53uqJ8/IJypPLQ3SPs0=;
+ b=XZqR0eDD8kKiFWLDtXWI9IB27N+x9EcZISQ3MZ7+TCxdH7/adL6lmSM1
+ prz6qS6dOXn41pCv6ySFZjDseMmEN8mK2Pi/IRm56YQ+WQRljV2lejceQ
+ 90ArUj+yC4O9XEdcSOLHJjoSID3uNQCOLS7Hdgns/+Q+KxoD4XjHvwkWS
+ bpxOoMwNy1DfJsYBaAA2cAEQXsdLjQvOFj4EIGyTzoif3N4Ym5JCME3qq
+ k2EKA41jatqjKagowb9vxUnEP0yYi1E0FW9frMBhAxS9dpI9v4F4FmQ0V
+ 32KisPoFwmmv0NNZwdtr+qUpoYcZwLK8V8ABj+Du0y1JmdqIHvCOC8TDW Q==;
+X-CSE-ConnectionGUID: e/mTnt0fQaSiwiSaRSBDUw==
+X-CSE-MsgGUID: Y53joq6XT+6fQsF3PoBKug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167846"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167846"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:10 -0700
-X-CSE-ConnectionGUID: c+vKMsY0TZurywFow28ULA==
-X-CSE-MsgGUID: np4Wn5goSoGtgldGNer1tw==
+ 27 Apr 2026 21:47:29 -0700
+X-CSE-ConnectionGUID: eOppvrQyT/S0ntjFctPBmA==
+X-CSE-MsgGUID: qHsnqOaDTP2dwfm2caPMAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706593"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706727"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:09 -0700
+ 27 Apr 2026 21:47:28 -0700
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Kory Maincent <kory.maincent@bootlin.com>
-Subject: [PATCH i-g-t v1 06/25] lib/monitor_edids: Add helper functions for
- using monitor_edid objects
-Date: Tue, 28 Apr 2026 10:16:15 +0530
-Message-ID: <20260428044644.257001-7-mohammed.bilal@intel.com>
+Cc: kunal1.joshi@intel.com,
+	Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: [PATCH i-g-t v1 17/25] lib/chamelium/v3: Add method to discover
+ Chamelium ports
+Date: Tue, 28 Apr 2026 10:16:26 +0530
+Message-ID: <20260428044644.257001-18-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260428044644.257001-1-mohammed.bilal@intel.com>
 References: <20260428044644.257001-1-mohammed.bilal@intel.com>
@@ -72,164 +71,175 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-Introduce the functions edid_from_monitor_edid() and
-get_edids_for_connector_type(). The former converts a monitor_edid object
-to a struct edid, which can then be utilized by igt_kms helpers. The
-latter returns a list of monitor_edid objects for a specific connector
-with certain characteristics
+Since Chamelium v3 ports can change (recently added MST ports, for
+example), they need to be discovered to prevent using an incorrect port.
+
+This commit introduces the RPC calls GetSupportedPorts, IsMst, and
+GetChildren to list all ports, check if a port is MST-capable, and fetch
+the child ports of MST ports, respectively.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- lib/monitor_edids/dp_edids.h             |  3 +
- lib/monitor_edids/hdmi_edids.h           |  3 +
- lib/monitor_edids/monitor_edids_helper.c | 80 ++++++++++++++++++++++++
- lib/monitor_edids/monitor_edids_helper.h |  7 ++-
- 4 files changed, 92 insertions(+), 1 deletion(-)
+ lib/chamelium/v3/igt_chamelium.c | 133 +++++++++++++++++++++++++++++++
+ lib/chamelium/v3/igt_chamelium.h |   6 ++
+ 2 files changed, 139 insertions(+)
 
-diff --git a/lib/monitor_edids/dp_edids.h b/lib/monitor_edids/dp_edids.h
-index 144907558..077933812 100644
---- a/lib/monitor_edids/dp_edids.h
-+++ b/lib/monitor_edids/dp_edids.h
-@@ -194,4 +194,7 @@ monitor_edid DP_EDIDS_NON_4K[] = {
- 
-  };
- 
-+#define DP_EDIDS_4K_COUNT ARRAY_SIZE(DP_EDIDS_4K)
-+#define DP_EDIDS_NON_4K_COUNT ARRAY_SIZE(DP_EDIDS_NON_4K)
-+
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_ */
-diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-index f6cfe82ff..398424177 100644
---- a/lib/monitor_edids/hdmi_edids.h
-+++ b/lib/monitor_edids/hdmi_edids.h
-@@ -604,4 +604,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "1620582c2500baac4200009e0000006b" },
- };
- 
-+#define HDMI_EDIDS_4K_COUNT ARRAY_SIZE(HDMI_EDIDS_4K)
-+#define HDMI_EDIDS_NON_4K_COUNT ARRAY_SIZE(HDMI_EDIDS_NON_4K)
-+
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_ */
-diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
-index 1cbf1c22f..6043e7a08 100644
---- a/lib/monitor_edids/monitor_edids_helper.c
-+++ b/lib/monitor_edids/monitor_edids_helper.c
-@@ -15,6 +15,10 @@
- #include <assert.h>
- 
- #include "igt_core.h"
-+#include "igt_edid.h"
-+#include "dp_edids.h"
-+#include "drmtest.h"
-+#include "hdmi_edids.h"
- 
- static uint8_t convert_hex_char_to_byte(char c)
- {
-@@ -90,3 +94,79 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid)
- 	free(edid);
- 	edid = NULL;
+diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
+index 663f51aaa..1122ce102 100644
+--- a/lib/chamelium/v3/igt_chamelium.c
++++ b/lib/chamelium/v3/igt_chamelium.c
+@@ -149,3 +149,136 @@ void chamelium_v3_uninit(struct igt_chamelium_v3 *chamelium)
+ 	free(chamelium);
  }
+ 
++/**
++ * __chamelium_rpc - Call a remote function on the chamelium
++ *
++ * @chamelium: Chamelium to call the function on
++ * @method_name: RPC endpoint name
++ * @format_str: RPC parameters description
++ * @...: RPC parameters
++ *
++ * Returns a xmlrpc_value that contains the call result.
++ */
++static xmlrpc_value *__chamelium_rpc(struct igt_chamelium_v3 *chamelium,
++				     const char *method_name,
++				     const char *format_str,
++				     ...)
++{
++	xmlrpc_value *res;
++	va_list va_args;
++
++	if (chamelium->env.fault_occurred) {
++		xmlrpc_env_clean(&chamelium->env);
++		xmlrpc_env_init(&chamelium->env);
++	}
++	va_start(va_args, format_str);
++	xmlrpc_client_call2f_va(&chamelium->env, chamelium->client,
++				chamelium->url, method_name, format_str, &res,
++				va_args);
++	va_end(va_args);
++	igt_assert_f(!chamelium->env.fault_occurred,
++		     "Chamelium RPC call[%s] failed: %s\n", method_name,
++		     chamelium->env.fault_string);
++	return res;
++}
++
++/*
++ * For the RPC calls, please refer to the python code [1] for documentation.
++ *
++ * [1]: https://chromium.googlesource.com/chromiumos/platform/chameleon/+/refs/heads/main/v3/chameleond/v3.py
++ */
 +
 +/**
-+ * edid_from_monitor_edid:
-+ * @mon_edid: Monitor EDID to convert
++ * chamelium_v3_get_supported_ports - Get the list of ports on the chamelium
 + *
-+ * Get a struct edid from a monitor_edid. This returns a pointer to a newly allocated struct edid.
-+ * The caller is in charge to free this pointer when required.
++ * @chamelium: Chamelium to get the ports from
++ * @port_ids: Out pointer for the list of port ids
++ *
++ * Returns the number of element stored in @port_ids. The caller must free this pointer when not
++ * used anymore.
 + */
-+struct edid *edid_from_monitor_edid(const monitor_edid *mon_edid)
++int chamelium_v3_get_supported_ports(struct igt_chamelium_v3 *chamelium,
++				     chamelium_v3_port_id **port_ids)
 +{
-+	uint8_t *raw_edid;
-+	size_t edid_size;
-+	int i;
++	xmlrpc_value *res, *res_port;
++	int port_count, i;
 +
-+	edid_size = strlen(mon_edid->edid) / 2; /* each ascii is a nibble. */
-+	raw_edid = malloc(edid_size);
-+	igt_assert(raw_edid);
++	igt_assert(port_ids);
 +
-+	for (i = 0; i < edid_size; i++) {
-+		raw_edid[i] = convert_hex_char_to_byte(mon_edid->edid[i * 2]) << 4 |
-+			      convert_hex_char_to_byte(mon_edid->edid[i * 2 + 1]);
++	igt_debug("RPC GetSupportedPorts()\n");
++	res = __chamelium_rpc(chamelium, "GetSupportedPorts", "()");
++
++	port_count = xmlrpc_array_size(&chamelium->env, res);
++	*port_ids = calloc(port_count, sizeof(**port_ids));
++
++	for (i = 0; i < port_count; i++) {
++		xmlrpc_array_read_item(&chamelium->env, res, i, &res_port);
++		xmlrpc_read_int(&chamelium->env, res_port, (int *)&(*port_ids)[i]);
++		xmlrpc_DECREF(res_port);
 +	}
++	xmlrpc_DECREF(res);
 +
-+	if (edid_get_size((struct edid *)raw_edid) > edid_size) {
-+		uint8_t *new_edid;
-+
-+		igt_debug("The edid size stored in the raw edid is longer than the edid stored in the table.");
-+		new_edid = realloc(raw_edid, edid_get_size((struct edid *)raw_edid));
-+		igt_assert(new_edid);
-+		raw_edid = new_edid;
-+	}
-+
-+	return (struct edid *)raw_edid;
++	return port_count;
 +}
 +
 +/**
-+ * get_edids_for_connector_type:
-+ * @type: The connector type to get the EDIDs from
-+ * @count: Used to store the number of EDIDs in the returned list
-+ * @four_k: Use true to fetch 4k EDIDs, false to fetch non-4k EDIDs
++ * chamelium_v3_get_supported_ports - Get the list of children port for a specific port on the
++ *	chamelium
 + *
-+ * Get the list of EDIDS for a specific connector type. This returns a pointer to a static list,
-+ * so no need to free the pointer.
++ * @chamelium: Chamelium to get the ports from
++ * @port_id: Parent port id to get the children port from
++ * @port_ids: Out pointer for the list of port ids
++ *
++ * MST ports on the chamelium have children ports that can be plugged independently, but are always
++ * connected with a parent connector.
++ *
++ * Returns the number of element stored in @port_ids. The caller must free this pointer when not
++ * used anymore.
 + */
-+struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k)
++int chamelium_v3_get_children(struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id,
++			      chamelium_v3_port_id **port_ids)
 +{
-+	if (four_k) {
-+		switch (type) {
-+		case DRM_MODE_CONNECTOR_DisplayPort:
-+			*count = DP_EDIDS_4K_COUNT;
-+			return DP_EDIDS_4K;
-+		case DRM_MODE_CONNECTOR_HDMIA:
-+			*count = HDMI_EDIDS_4K_COUNT;
-+			return HDMI_EDIDS_4K;
-+		default:
-+			*count = 0;
-+			igt_debug("No 4k EDID for the connector %s\n",
-+				  kmstest_connector_type_str(type));
-+			return NULL;
-+		}
-+	} else {
-+		switch (type) {
-+		case DRM_MODE_CONNECTOR_DisplayPort:
-+			*count = DP_EDIDS_NON_4K_COUNT;
-+			return DP_EDIDS_NON_4K;
-+		case DRM_MODE_CONNECTOR_HDMIA:
-+			*count = HDMI_EDIDS_NON_4K_COUNT;
-+			return HDMI_EDIDS_NON_4K;
-+		default:
-+			*count = 0;
-+			igt_debug("No EDID for the connector %s\n",
-+				  kmstest_connector_type_str(type));
-+			return NULL;
-+		}
-+	}
-+}
-diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
-index 05679f089..e50698686 100644
---- a/lib/monitor_edids/monitor_edids_helper.h
-+++ b/lib/monitor_edids/monitor_edids_helper.h
-@@ -12,6 +12,8 @@
- #define TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_
- 
- #include <stdint.h>
-+#include <stddef.h>
-+#include <stdbool.h>
- 
- #include "igt_chamelium.h"
- 
-@@ -30,4 +32,7 @@ get_chameleon_edid_from_monitor_edid(struct chamelium *chamelium,
- 				     const monitor_edid *edid);
- void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
- 
--#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
-\ No newline at end of file
-+struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
-+struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
++	xmlrpc_value *res, *res_port;
++	int port_count, i;
 +
-+#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
++	igt_debug("RPC GetChildren(%d)\n", port_id);
++	res = __chamelium_rpc(chamelium, "GetChildren", "(i)", port_id);
++
++	port_count = xmlrpc_array_size(&chamelium->env, res);
++	*port_ids = calloc(port_count, sizeof(**port_ids));
++
++	for (i = 0; i < port_count; i++) {
++		xmlrpc_array_read_item(&chamelium->env, res, i, &res_port);
++		xmlrpc_read_int(&chamelium->env, res_port, (int *)&(*port_ids)[i]);
++		xmlrpc_DECREF(res_port);
++	}
++	xmlrpc_DECREF(res);
++
++	return port_count;
++}
++
++/**
++ * chamelium_v3_is_mst - Get the MST support for a specific port
++ *
++ * @chamelium: Chamelium to get the ports from
++ * @port_id: Port to get the support from
++ *
++ * Not all ports on the chamelium support MST. This functions allows checking if a specific port
++ * supports MST.
++ *
++ * Returns true if the @port_id supports MST.
++ */
++bool chamelium_v3_is_mst(struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id)
++{
++	xmlrpc_value *res;
++	xmlrpc_bool is_mst;
++
++	igt_debug("RPC IsMst(%d)\n", port_id);
++	res = __chamelium_rpc(chamelium, "IsMst", "(i)", port_id);
++
++	xmlrpc_read_bool(&chamelium->env, res, &is_mst);
++
++	xmlrpc_DECREF(res);
++
++	return is_mst;
++}
+diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
+index 929d7d4b0..af5258068 100644
+--- a/lib/chamelium/v3/igt_chamelium.h
++++ b/lib/chamelium/v3/igt_chamelium.h
+@@ -42,4 +42,10 @@ struct igt_chamelium_v3 *chamelium_v3_init_from_config(void);
+ 
+ void chamelium_v3_uninit(struct igt_chamelium_v3 *chamelium);
+ 
++int chamelium_v3_get_supported_ports(struct igt_chamelium_v3 *chamelium,
++				     chamelium_v3_port_id **port_ids);
++int chamelium_v3_get_children(struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id,
++			      chamelium_v3_port_id **port_ids);
++bool chamelium_v3_is_mst(struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id);
++
+ #endif //V3_IGT_CHAMELIUM_H
 -- 
 2.48.1
 
