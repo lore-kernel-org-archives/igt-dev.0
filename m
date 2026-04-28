@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6FF0FF885A
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005ACFF885A
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:47:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B51410E29C;
-	Tue, 28 Apr 2026 04:47:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A04C810E2C4;
+	Tue, 28 Apr 2026 04:47:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OlolbS+/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n/AWy8vY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F09A10E0EB
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1907110E0EB
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777351621; x=1808887621;
+ t=1777351627; x=1808887627;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8CGBOVb13TJA38iuhkQ3wGV7JgvzaG+fFNlwaukgkRU=;
- b=OlolbS+/by0k2O2ZKkLnj+HEBYmey/DJtAOzz7vXIy+5705f1nSgg0IS
- Uy7WLTJUm51VxZOsFy5EnZKMtwc2i7emGjVCjN8XkjsjmXxHI7DtJB48V
- AakQoqjxVrW+NRqB7y+A18S7WVG6M2zH3I5xDj2GLmVornaqX3uyiv3X6
- UZC+DIfs0QCg1uqvjaIruueBf/Ht9YbbkJtDO02/QJ4fkb9Looq27Qn0G
- Xmmm+maCIdSth/ylHJqDDnrr9gGIc127TZtUeZ15R9H531bR7/RAeuTH5
- NSPzsUpFOLjSM9bTwEzQ6ryZZ5XEV17uikYzEVZwieAM4YubF5Vg2ti0X A==;
-X-CSE-ConnectionGUID: RX8U9WozSx2HjGJGAEpS4w==
-X-CSE-MsgGUID: hCQeI2hiTUWnr1Wvkmz+SQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167787"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167787"
+ bh=IkAS9WHxDx4eQXOZ6SDJ/RI3XbdEQM9eJyHIK0Eir+Q=;
+ b=n/AWy8vYtevuh1unX32H1PRr+TrTceLziWh0R1fEjoaSFCO6me7w1Yc1
+ 54HY+2rTcFssCrm0PA+kuvyhEbcrhSdEJA0zcQd8BBcvZo3429QY71i2b
+ mAd7q2BS9983stIpKjwMgqrXKc/dRUgU6N5rtIS1Gv9l3pgFfwBJY7xUV
+ 9q6UVO2k/o1kb90Hp7/F1O7DcdwVGr1GroMlhqQ6yqXy4LuDtTMTAMp/N
+ YTRTO827jzIdE6bHqhBByH0gbND6UsM12bWWXcvuNsU0Wvrpfm3SbeBsB
+ AOI7ZZegKd3tpuU6E76JT0iMIT9aOFYrdG1eeau1f+plIwjiFP0/OkE9t w==;
+X-CSE-ConnectionGUID: +yEyFrvaRU6W6ybHmQ/abQ==
+X-CSE-MsgGUID: ObV4r862QOycN6SADw/cUQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167793"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167793"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:01 -0700
-X-CSE-ConnectionGUID: FhDtw0hVSqyb5PPNhiMR1g==
-X-CSE-MsgGUID: +709lQQ9S6+2vY73VLSWSw==
+ 27 Apr 2026 21:47:07 -0700
+X-CSE-ConnectionGUID: gJVly6bxRAulfCkKRzcuEA==
+X-CSE-MsgGUID: kJ3+SUoERLqvJZO5d+D9kg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706298"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706570"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:46:59 -0700
+ 27 Apr 2026 21:47:05 -0700
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>,
- Kory Maincent <kory.maincent@bootlin.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH i-g-t v1 01/25] lib/igt_kms: Add a detect timeout value
-Date: Tue, 28 Apr 2026 10:16:10 +0530
-Message-ID: <20260428044644.257001-2-mohammed.bilal@intel.com>
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Kory Maincent <kory.maincent@bootlin.com>
+Subject: [PATCH i-g-t v1 04/25] lib/igt_kms: Add helper to obtain a connector
+ by its name or MST path
+Date: Tue, 28 Apr 2026 10:16:13 +0530
+Message-ID: <20260428044644.257001-5-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260428044644.257001-1-mohammed.bilal@intel.com>
 References: <20260428044644.257001-1-mohammed.bilal@intel.com>
@@ -71,252 +72,162 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-Some tests need to wait for a specific connector status. In order to make
-the timeout customisable for each target, add an option in the
-configuration file.
+Introduce the functions igt_get_connector_from_name() and
+igt_get_connector_id_from_mst_path(). These functions serve to retrieve
+the connector object using a connector name and a connector ID from its
+MST path, respectively.
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Given that the connector id may not be consistent, especially with MST
+connectors, these functions are essential to recognize each connector even
+after system reboots and plug/unplug events.
+
+The function igt_get_connector_id_from_name() is a convenient wrapper for
+igt_get_connector_from_name() to streamline its usage when the caller only
+requires the connector id.
+
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- lib/igt_core.c |   4 ++
- lib/igt_kms.c  | 123 +++++++++++++++++++++++++++++++------------------
- lib/igt_kms.h  |  10 ++++
- 3 files changed, 92 insertions(+), 45 deletions(-)
+ lib/igt_kms.c | 108 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |   3 ++
+ 2 files changed, 111 insertions(+)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 4f79c0294..cc835ea4c 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -271,6 +271,10 @@
-  *	&num; It is not mandatory and allows overriding default values.
-  *	[DUT]
-  *	SuspendResumeDelay=10
-+ *
-+ *	&num; The following option define the timeout for detection feature
-+ *	&num; (waiting for a connector status)
-+ *	DisplayDetectTimeout=10.0
-  * ]|
-  *
-  * Some specific configuration options may be used by specific parts of IGT,
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 38c28f45f..ece888d1a 100644
+index 2ae283e93..aa086e96c 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -60,6 +60,7 @@
- #include "igt_debugfs.h"
- #include "igt_device.h"
- #include "igt_pipe_crc.h"
-+#include "igt_rc.h"
- #include "igt_sysfs.h"
- #include "sw_sync.h"
- #ifdef HAVE_CHAMELIUM
-@@ -8066,38 +8067,38 @@ bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output)
+@@ -95,6 +95,10 @@
+ #define MAX_EDID 2
+ #define DISPLAY_TILE_BLOCK 0x12
+ #define MAX_NUM_COLOROPS 256
++/**
++ * define IGT_KMS_CONNECTOR_NAME_SIZE - Size used when a connector name is needed
++ */
++#define IGT_KMS_CONNECTOR_NAME_SIZE 50
  
- igt_crtc_t *igt_crtc_for_crtc_id(igt_display_t *display, uint32_t crtc_id)
- {
--	igt_crtc_t *crtc;
-+        igt_crtc_t *crtc;
+ typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
  
--	for_each_crtc(display, crtc) {
--		if (crtc->crtc_id == crtc_id)
--			return crtc;
--	}
-+        for_each_crtc(display, crtc) {
-+                if (crtc->crtc_id == crtc_id)
-+                        return crtc;
-+        }
+@@ -8318,3 +8322,107 @@ int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
  
--	return NULL;
-+        return NULL;
+ 	return connected_count;
  }
- 
- igt_crtc_t *igt_crtc_for_crtc_index(igt_display_t *display, int crtc_index)
- {
--	igt_crtc_t *crtc;
-+        igt_crtc_t *crtc;
- 
--	for_each_crtc(display, crtc) {
--		if (crtc->crtc_index == crtc_index)
--			return crtc;
--	}
-+        for_each_crtc(display, crtc) {
-+                if (crtc->crtc_index == crtc_index)
-+                        return crtc;
-+        }
- 
--	return NULL;
-+        return NULL;
- }
- 
- igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
- {
--	igt_crtc_t *crtc;
-+        igt_crtc_t *crtc;
- 
--	for_each_crtc(display, crtc) {
--		if (crtc->pipe == pipe)
--			return crtc;
--	}
-+        for_each_crtc(display, crtc) {
-+                if (crtc->pipe == pipe)
-+                        return crtc;
-+        }
- 
--	return NULL;
-+        return NULL;
- }
- 
- /*
-@@ -8108,14 +8109,14 @@ igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
-  */
- igt_crtc_t *igt_first_crtc(igt_display_t *display)
- {
--	igt_crtc_t *crtc;
-+        igt_crtc_t *crtc;
- 
--	for_each_crtc(display, crtc)
--		return crtc;
-+        for_each_crtc(display, crtc)
-+                return crtc;
- 
--	igt_skip("No CRTCs on device\n");
-+        igt_skip("No CRTCs on device\n");
- 
--	return NULL;
-+        return NULL;
- }
- 
- /**
-@@ -8128,19 +8129,19 @@ igt_crtc_t *igt_first_crtc(igt_display_t *display)
-  */
- igt_crtc_t *igt_first_crtc_with_single_output(igt_display_t *display, igt_output_t **ret_output)
- {
--	igt_output_t *output;
--	igt_crtc_t *crtc;
-+        igt_output_t *output;
-+        igt_crtc_t *crtc;
- 
--	for_each_crtc_with_single_output(display, crtc, output) {
--		*ret_output = output;
--		return crtc;
--	}
-+        for_each_crtc_with_single_output(display, crtc, output) {
-+                *ret_output = output;
-+                return crtc;
-+        }
- 
--	igt_skip("No valid CRTC/output combinations\n");
-+        igt_skip("No valid CRTC/output combinations\n");
- 
--	*ret_output = NULL;
-+        *ret_output = NULL;
- 
--	return NULL;
-+        return NULL;
- }
- 
- /*
-@@ -8152,14 +8153,14 @@ igt_crtc_t *igt_first_crtc_with_single_output(igt_display_t *display, igt_output
-  */
- igt_crtc_t *igt_next_crtc(igt_display_t *display, igt_crtc_t *crtc)
- {
--	igt_crtc_t *next;
-+        igt_crtc_t *next;
- 
--	for_each_crtc(display, next) {
--		if (!crtc || next->pipe > crtc->pipe)
--			return next;
--	}
-+        for_each_crtc(display, next) {
-+                if (!crtc || next->pipe > crtc->pipe)
-+                        return next;
-+        }
- 
--	return NULL;
-+        return NULL;
- }
- 
- /*
-@@ -8170,14 +8171,46 @@ igt_crtc_t *igt_next_crtc(igt_display_t *display, igt_crtc_t *crtc)
-  */
- igt_crtc_t *igt_random_crtc(igt_display_t *display)
- {
--	igt_crtc_t *crtcs[IGT_MAX_PIPES];
--	igt_crtc_t *crtc;
--	int n = 0;
-+        igt_crtc_t *crtcs[IGT_MAX_PIPES];
-+        igt_crtc_t *crtc;
-+        int n = 0;
- 
--	for_each_crtc(display, crtc)
--		crtcs[n++] = crtc;
-+        for_each_crtc(display, crtc)
-+                crtcs[n++] = crtc;
 +
-+        igt_skip_on_f(!n, "No CRTCs on device\n");
 +
-+        return crtcs[rand() % n];
++/**
++ * igt_get_connector_from_name:
++ * @drm_fd: DRM file descriptor
++ * @port_name: Port name to search
++ *
++ * Returns: The connector if found, NULL otherwise. The pointer must
++ * be freed with drmModeFreeConnector()
++ */
++drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name)
++{
++	drmModeResPtr res = drmModeGetResources(drm_fd);
++	double timeout = igt_default_display_detect_timeout();
++	int i, len;
++
++	if (!res)
++		return NULL;
++
++	for (i = 0; i < res->count_connectors; i++) {
++		char name[IGT_KMS_CONNECTOR_NAME_SIZE];
++
++		drmModeConnectorPtr connector = igt_wait_for_connector(drm_fd, res->connectors[i],timeout);
++
++		if (connector) {
++			/* We have to generate the connector name on our own */
++			len = snprintf(name, ARRAY_SIZE(name), "%s-%u",
++				 kmstest_connector_type_str(connector->connector_type),
++				 connector->connector_type_id);
++			name[len] = 0;
++
++
++			if (strcmp(port_name, name) == 0) {
++				drmModeFreeResources(res);
++
++				return connector;
++			}
++
++			drmModeFreeConnector(connector);
++		}
++	}
++
++	drmModeFreeResources(res);
++
++	return NULL;
 +}
 +
 +/**
-+ * igt_default_display_detect_timeout:
++ * igt_get_connector_id_from_name:
++ * @drm_fd: DRM file descriptor
++ * @port_name: Port name to find in the connector
 + *
-+ * Get the default timeout value for detection feature
-+ *
-+ * Some tests requires to wait for a specific connector status. This value will determine the
-+ * timeout value for this waiting.
++ * Returns: The connector id if the port is found, 0 if the port is not found
 + */
-+double igt_default_display_detect_timeout(void)
++uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name)
 +{
-+        static double timeout = 0.0;
-+        static bool first_call = true;
-+        GError *error = NULL;
++	drmModeConnectorPtr connector = igt_get_connector_from_name(drm_fd, port_name);
 +
-+        if (first_call) {
-+                if (igt_key_file) {
-+                        timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",&error);
-+                        if (error) {
-+                                igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",DEFAULT_DETECT_TIMEOUT);
-+                                g_clear_error(&error);
-+                                timeout = DEFAULT_DETECT_TIMEOUT;
-+                        }
-+                } else {
-+                        timeout = DEFAULT_DETECT_TIMEOUT;
-+                }
- 
--	igt_skip_on_f(!n, "No CRTCs on device\n");
-+                first_call = false;
-+        }
- 
--	return crtcs[rand() % n];
-+        return timeout;
- }
++	if (connector) {
++		uint32_t connector_id = connector->connector_id;
++
++		drmModeFreeConnector(connector);
++
++		return connector_id;
++	}
++
++	return 0;
++}
++
++/**
++ * igt_get_connector_id_from_mst_path:
++ * @drm_fd: DRM file descriptor
++ * @mst_path: MST path to find in the connector
++ *
++ * Returns: 0 when no connector is found with the correct mst path
++ */
++uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path)
++{
++	drmModeResPtr res = drmModeGetResources(drm_fd);
++	int i;
++
++	if (!res)
++		return 0;
++
++	for (i = 0; i < res->count_connectors; i++) {
++		uint32_t connector_id = res->connectors[i];
++
++		drmModePropertyBlobPtr path_blob = kmstest_get_path_blob(drm_fd, connector_id);
++
++		if (path_blob) {
++			if (memcmp(path_blob->data, mst_path, path_blob->length) == 0) {
++				drmModeFreePropertyBlob(path_blob);
++				drmModeFreeResources(res);
++				return connector_id;
++			}
++
++			drmModeFreePropertyBlob(path_blob);
++		}
++	}
++
++	drmModeFreeResources(res);
++
++	return 0;
++}
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index fcbb6a5ad..b10df1d8d 100644
+index 71d77a3c2..bc921f4ff 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -40,6 +40,14 @@
- #include "igt_fb.h"
- #include "ioctl_wrappers.h"
+@@ -1302,5 +1302,8 @@ double igt_default_display_detect_timeout(void);
+ bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
+ 				   int drm_mode);
+ int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
++drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name);
++uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name);
++uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
  
-+/**
-+ * define DEFAULT_DETECT_TIMEOUT - Default timeout in second used for some screen detection
-+ * functions
-+ *
-+ * It can be overiden by option DetectTimeout in the .igtrc file.
-+ */
-+#define DEFAULT_DETECT_TIMEOUT 10.0
-+
- /* Low-level helpers with kmstest_ prefix */
- 
- /**
-@@ -1289,4 +1297,6 @@ void igt_get_and_wait_out_fence(igt_output_t *output);
- 
- igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
- 
-+double igt_default_display_detect_timeout(void);
-+
  #endif /* __IGT_KMS_H__ */
 -- 
 2.48.1
