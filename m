@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F3EDFF885A
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:49:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EDBEFF885A
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:49:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C31B110E2C4;
-	Tue, 28 Apr 2026 04:49:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 251A410E2C4;
+	Tue, 28 Apr 2026 04:49:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="COalzAGa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WzGLqZwN";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97AC110E29C
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BF3710E2C4
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777351644; x=1808887644;
+ t=1777351646; x=1808887646;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=YbmoNPkBUSk1rEyMCwWQxXuyUSSW8XImmb56W6xmSHI=;
- b=COalzAGa6+gQJM/nVl1/PhZUBNhUJYdZ8HqJ3cvrf2qoCp3HfK2HRL46
- 8d5fN1Dn33n8QamfHWqws5sIUCcSTE75ERr/+W8EqW3eb/vQhA6PumbkK
- 6UEPSN6AdjUJ1tmsPcMrsQjEGmlFTIENEHnfJkfGR+h9PjcEesJl0ssuF
- ZPArJtPFwsBfPAHgjZw6GBpWnop2J47nTFp/lX309zvRkUm5hmYwvWhLm
- 5+uXtWMFsEkcIYaMljrfgBPD19/TPFa0z5AtGvV0xCpDWUiiXFTRHE1QC
- aQi2Cm6s3HGOi7NjyrLlRKdIhnCZLYq3tBWKxMPRD6kfpL96bIdd0O4eE w==;
-X-CSE-ConnectionGUID: Je7mnKwFS0GWriMZzYEBvg==
-X-CSE-MsgGUID: G9J/TSSjRiKAcrHneSJr3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167830"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167830"
+ bh=OORqEIASsyqQN4v2gU2ISw+WRaIy+njLkrqgdO+fZEI=;
+ b=WzGLqZwNJ6faXjobK8/bqrmNyS2cY4b3UAA5ZZ9fq6xkzib9yM8usoCC
+ emflAJz+mJNDVGgsygZzJhNcDrV1qtGzPbDaTpVGZawGQxCjukWGE9Lyh
+ F2R7o7tXSCgcaknjJNTneid7TePfNVSgaiTG8G7VGZ+TlNrtyETwZZHBC
+ VLYO+dc9xdSB+7r9ihA/V/6sphDMtzZvNUoonSfHSShU2EkVf29zCvJg0
+ xL0vzNGqxcEsHAtgxuShc29pp0EnK/tvRIQe6qsw3FOKvQZBcLLVlCkHt
+ JeuwKKB+4SaYhTKoUGuWhvwNS3acU1L5CtAVWdZ6skabtXa36V6ROFrc/ A==;
+X-CSE-ConnectionGUID: bt+MZwZ6Tg+nWk2Kv6gxIw==
+X-CSE-MsgGUID: Qfg/tLuzRuCDI/YBToiGyw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167834"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167834"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:24 -0700
-X-CSE-ConnectionGUID: u1cFZe9OQTe1AxuBFhG1aQ==
-X-CSE-MsgGUID: T5VzV7fYSn+kq3zGOuzgew==
+ 27 Apr 2026 21:47:26 -0700
+X-CSE-ConnectionGUID: 0Pmkj7JCR42xn9jKKaI6rA==
+X-CSE-MsgGUID: bWi3hesMSAqlMqVa8SvdQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706699"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706710"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:47:23 -0700
+ 27 Apr 2026 21:47:25 -0700
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com,
 	Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: [PATCH i-g-t v1 14/25] lib/chamelium/v2: Rename HAVE_CHAMELIUM to
- HAVE_CHAMELIUM_V2
-Date: Tue, 28 Apr 2026 10:16:23 +0530
-Message-ID: <20260428044644.257001-15-mohammed.bilal@intel.com>
+Subject: [PATCH i-g-t v1 15/25] lib/chamelium/v3: Introduce the foundation for
+ the Chamelium v3 wrapper
+Date: Tue, 28 Apr 2026 10:16:24 +0530
+Message-ID: <20260428044644.257001-16-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260428044644.257001-1-mohammed.bilal@intel.com>
 References: <20260428044644.257001-1-mohammed.bilal@intel.com>
@@ -71,133 +71,221 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-To avoid confusion in source file between the two chamelium version,
-rename the HAVE_CHAMELIUM define to HAVE_CHAMELIUM_V2.
+Adds a build option to enable building the Chamelium v3 wrapper.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt.h                     | 2 +-
- lib/igt_kms.c                 | 4 ++--
- meson.build                   | 2 +-
- tests/kms_color_helper.h      | 2 +-
- tests/kms_feature_discovery.c | 4 ++--
- tests/kms_tiled_display.c     | 6 +++---
- 6 files changed, 10 insertions(+), 10 deletions(-)
+ lib/chamelium/v3/igt_chamelium.c |  9 +++++++++
+ lib/chamelium/v3/igt_chamelium.h |  8 ++++++++
+ lib/igt_kms.c                    |  8 ++++++++
+ lib/meson.build                  | 12 +++++++++++-
+ lib/tests/meson.build            |  4 ++++
+ meson.build                      | 15 ++++++++++++++-
+ meson_options.txt                |  4 ++++
+ tests/meson.build                | 25 +++++++++++++++++++++++++
+ 8 files changed, 83 insertions(+), 2 deletions(-)
+ create mode 100644 lib/chamelium/v3/igt_chamelium.c
+ create mode 100644 lib/chamelium/v3/igt_chamelium.h
 
-diff --git a/lib/igt.h b/lib/igt.h
-index 9802f44cb..b0758b610 100644
---- a/lib/igt.h
-+++ b/lib/igt.h
-@@ -42,7 +42,7 @@
- #include "igt_sizes.h"
- #include "igt_stats.h"
- #include "igt_dsc.h"
--#ifdef HAVE_CHAMELIUM
-+#ifdef HAVE_CHAMELIUM_V2
- #include "igt_alsa.h"
- #include "igt_audio.h"
- #include "chamelium/v2/igt_chamelium.h"
+diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
+new file mode 100644
+index 000000000..152242998
+--- /dev/null
++++ b/lib/chamelium/v3/igt_chamelium.c
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: MIT
++
++#include <igt_core.h>
++#include "igt_chamelium.h"
++
++void chamelium_v3_init(void)
++{
++	igt_info("Using chamelium v3\n");
++}
+diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
+new file mode 100644
+index 000000000..3195be2bc
+--- /dev/null
++++ b/lib/chamelium/v3/igt_chamelium.h
+@@ -0,0 +1,8 @@
++/* SPDX-License-Identifier: MIT */
++
++#ifndef V3_IGT_CHAMELIUM_H
++#define V3_IGT_CHAMELIUM_H
++
++void chamelium_v3_init(void);
++
++#endif //V3_IGT_CHAMELIUM_H
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 2d7c40622..928de2a10 100644
+index 928de2a10..267978f3d 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -63,7 +63,7 @@
- #include "igt_rc.h"
- #include "igt_sysfs.h"
- #include "sw_sync.h"
--#ifdef HAVE_CHAMELIUM
-+#ifdef HAVE_CHAMELIUM_V2
- #include "chamelium/v2/igt_chamelium.h"
- #endif
- 
-@@ -3155,7 +3155,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+@@ -3155,7 +3155,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
  	if (!resources)
  		goto out;
  
--#ifdef HAVE_CHAMELIUM
-+#ifdef HAVE_CHAMELIUM_V2
++/*
++ * FIXME: Dirty hack to avoid those lines when chamelium v3 is used
++ *
++ * Must be replaced with a configuration file information, so the end user can choose if the
++ * chamelium must be connected or not.
++ */
+ #ifdef HAVE_CHAMELIUM_V2
++#ifndef HAVE_CHAMELIUM_V3
  	{
  		struct chamelium *chamelium;
  
+@@ -3170,6 +3177,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 			chamelium_deinit_rpc_only(chamelium);
+ 		}
+ 	}
++#endif
+ #endif
+ 
+ 	igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
+diff --git a/lib/meson.build b/lib/meson.build
+index 460b596de..589b2bfdd 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -239,7 +239,6 @@ if chamelium_v2.found()
+ 		'chamelium/v2/igt_chamelium.c',
+ 		'chamelium/v2/igt_chamelium_stream.c'
+ 	]
+-	lib_sources += 'monitor_edids/monitor_edids_helper.c'
+ endif
+ 
+ if build_xe_eudebug
+@@ -247,6 +246,17 @@ if build_xe_eudebug
+ 	lib_sources += 'xe/xe_eudebug.c'
+ endif
+ 
++if chamelium_v3.found()
++	lib_deps += chamelium_v3
++	lib_sources += [
++		'chamelium/v3/igt_chamelium.c',
++	]
++endif
++
++if chamelium_v2.found() or chamelium_v3.found()
++	lib_sources += 'monitor_edids/monitor_edids_helper.c'
++endif
++
+ if libprocps.found()
+ 	lib_deps += libprocps
+ else
+diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+index 483b7fa3f..9b9f29003 100644
+--- a/lib/tests/meson.build
++++ b/lib/tests/meson.build
+@@ -43,6 +43,10 @@ if chamelium_v2.found()
+ 	lib_tests += 'igt_audio'
+ endif
+ 
++if chamelium_v3.found()
++	lib_deps += chamelium_v3
++endif
++
+ foreach lib_test : lib_tests
+ 	exec = executable(lib_test, lib_test + '.c', install : false,
+ 			dependencies : igt_deps)
 diff --git a/meson.build b/meson.build
-index 6816c2ee1..1bb5595f8 100644
+index 1bb5595f8..6e6a66b5e 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -192,7 +192,7 @@ alsa = dependency('alsa', required : build_chamelium_v2)
- libcurl = dependency('libcurl', required : build_chamelium_v2)
+@@ -87,6 +87,7 @@ foreach cc_arg : cc_args
+ endforeach
  
- if xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found() and gsl.found() and alsa.found() and libcurl.found()
--	config.set('HAVE_CHAMELIUM', 1)
-+	config.set('HAVE_CHAMELIUM_V2', 1)
- 	chamelium_v2 = declare_dependency(dependencies : [
- 		xmlrpc,
- 		xmlrpc_util,
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index e2b3da61e..ec2431ee9 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -56,7 +56,7 @@ typedef struct {
- 	uint32_t color_depth;
- 	uint64_t degamma_lut_size;
- 	uint64_t gamma_lut_size;
--	#ifdef HAVE_CHAMELIUM
-+	#ifdef HAVE_CHAMELIUM_V2
- 	struct chamelium *chamelium;
- 	struct chamelium_port **ports;
- 	int port_count;
-diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
-index ba934abbf..0efa6c7b2d 100644
---- a/tests/kms_feature_discovery.c
-+++ b/tests/kms_feature_discovery.c
-@@ -33,7 +33,7 @@
-  */
+ build_chamelium_v2 = get_option('chamelium_v2')
++build_chamelium_v3 = get_option('chamelium_v3')
+ build_docs = get_option('docs')
+ build_tests = not get_option('tests').disabled()
+ build_xe = not get_option('xe_driver').disabled()
+@@ -183,7 +184,7 @@ if not xmlrpc.found() and xmlrpc_cmd.found()
+ 	endif
+ endif
  
- #include "igt.h"
--#ifdef HAVE_CHAMELIUM
-+#ifdef HAVE_CHAMELIUM_V2
- #include "chamelium/v2/igt_chamelium.h"
- #endif
- #include "igt_kms.h"
-@@ -137,7 +137,7 @@ int igt_main() {
- 			}
- 		}
+-if build_chamelium_v2.enabled() and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
++if (build_chamelium_v2.enabled() or build_chamelium_v3.enabled()) and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
+ 	error('Chamelium build forced and required dependency xmlrpc not found')
+ endif
  
--#ifdef HAVE_CHAMELIUM
-+#ifdef HAVE_CHAMELIUM_V2
- 		igt_describe("Make sure that Chamelium is configured and reachable.");
- 		igt_subtest("chamelium") {
- 			struct chamelium *chamelium =
-diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
-index 7c1074709..1c7ae83d1 100644
---- a/tests/kms_tiled_display.c
-+++ b/tests/kms_tiled_display.c
-@@ -79,7 +79,7 @@ typedef struct {
- 	struct timeval first_ts;
- 	int linetime_us;
+@@ -206,6 +207,18 @@ endif
  
--#ifdef HAVE_CHAMELIUM
-+#ifdef HAVE_CHAMELIUM_V2
- 	struct chamelium *chamelium;
- 	struct chamelium_port **ports;
- 	int port_count;
-@@ -390,7 +390,7 @@ static bool got_all_page_flips(data_t *data)
- 	return true;
- }
+ build_info += 'Build Chamelium v2 test: @0@'.format(chamelium_v2.found())
  
--#ifdef HAVE_CHAMELIUM
-+#ifdef HAVE_CHAMELIUM_V2
- static void test_with_chamelium(data_t *data)
- {
- 	int i, count = 0;
-@@ -603,7 +603,7 @@ int igt_main()
- 		test_cleanup(&data);
- 	}
++
++if xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found() and libcurl.found()
++	config.set('HAVE_CHAMELIUM_V3', 1)
++	chamelium_v3 = declare_dependency(dependencies : [
++										  xmlrpc,
++										  xmlrpc_util,
++										  xmlrpc_client,
++									  ])
++else
++	chamelium_v3 = disabler()
++endif
++
+ pthreads = dependency('threads')
+ math = cc.find_library('m')
+ realtime = cc.find_library('rt')
+diff --git a/meson_options.txt b/meson_options.txt
+index 42a1b1294..9107c49d2 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -12,6 +12,10 @@ option('chamelium_v2',
+        type : 'feature',
+        description : 'Build Chamelium v2 test')
  
--#ifdef HAVE_CHAMELIUM
-+#ifdef HAVE_CHAMELIUM_V2
- 	igt_describe("Make sure the Tiled CRTCs are synchronized and we get "
- 		     "page flips for all tiled CRTCs in one vblank (executes on chamelium).");
- 	igt_subtest_f("basic-test-pattern-with-chamelium") {
++option('chamelium_v3',
++       type : 'feature',
++       description : 'Build Chamelium v3 tests')
++
+ option('valgrind',
+        type : 'feature',
+        description : 'Build with support for valgrind annotations')
+diff --git a/tests/meson.build b/tests/meson.build
+index 7f7224b38..17677e4e4 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -372,6 +372,9 @@ chamelium_v2_progs = [
+ 	'kms_chamelium_sharpness_filter',
+ ]
+ 
++chamelium_v3_progs = [
++]
++
+ test_deps = [ igt_deps ]
+ 
+ if libdrm_nouveau.found()
+@@ -500,6 +503,28 @@ if chamelium_v2.found()
+ 	test_deps += chamelium_v2
+ endif
+ 
++if chamelium_v3.found()
++	foreach prog : chamelium_v3_progs
++		testexe = executable(prog,
++				 [join_paths('chamelium', 'v3', prog + '.c')],
++				 dependencies : test_deps,
++				 install_dir : libexecdir,
++				 install_rpath : libexecdir_rpathdir,
++				 install : true)
++		test_list += prog
++		test_executables += testexe
++		name = prog.split('/').get(-1)
++		if not meson.is_cross_build()
++			testlist_files += custom_target(name + '.testlist',
++				    build_by_default : true,
++				    command : [testexe, '--show-testlist'],
++				    capture : true,
++				    output : name + '.testlist')
++		endif
++	endforeach
++	test_deps += chamelium_v3
++endif
++
+ subdir('amdgpu')
+ 
+ subdir('msm')
 -- 
 2.48.1
 
