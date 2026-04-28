@@ -4,60 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D09AFF886C
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 08:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C2A0FF886C
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 08:59:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C07910E31F;
-	Tue, 28 Apr 2026 08:55:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8B7C10E320;
+	Tue, 28 Apr 2026 08:59:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eGYoAIxb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DNnw7ZZW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E885E10E31F
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 08:55:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6B8C10E320
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 08:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777366545; x=1808902545;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=2lyyAQc5B7811j2CIazS7GbUMb+qLc9YEGQMPSoSZwE=;
- b=eGYoAIxbl6owJBCo14s03SOGk1vv11UrNrHvj9CPY/IP9WSgVJdDODVV
- JC3fwBLIwsm+rFZ/KB048iBbZ3IYNUwIpwaOwDqF3y0yV1WFJVCs94FQ8
- OzmYSke6cQ/gE0S3P1sfLJmaQH7ZT4sTvpBg4lZxejC+LL76IBqs3oo9J
- kqvnxUUsqYedmJcvIINtJc8VwuOOI2iLRJPVWqv1Af0r8htDx88iFVWSO
- QII0KoR8qttrE4xH4NwaR6j8/2ZvsyPHTICNSNwZRYqC7irZIvPDlRWd8
- eGyH7JWv8pZs9GjJLt/O0cDL+Sa/zB1WbLGgng0S+holYumWM93FBMPjz w==;
-X-CSE-ConnectionGUID: TX82UyyeSxuwmC8UOW+izw==
-X-CSE-MsgGUID: 8xnJ7E4BQSqBjkooscZmag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="100926714"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="100926714"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2026 01:55:45 -0700
-X-CSE-ConnectionGUID: Hd6DfY4NRLyTW0Q8wQ5mew==
-X-CSE-MsgGUID: zbVrM7lpTAa8ZdPOipCG+A==
+ t=1777366751; x=1808902751;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=I/f252IqyL404EWf8fo1+S//9LLAvDc7xUUhvxL3Gxk=;
+ b=DNnw7ZZWtmVkgEhBVRv39uLpd+tnVzvOfRr3pEdzceU5zxvJgtuepD+K
+ hlteMlmg5AVHMp7EO+nIHobGCFEqW1RRduEkYRdQFMqB8JoYLU418m5bG
+ LFMqawxQzm0bhNzLoc26+mR3StpU5l0KIQ3WPedSGHdVM7YCNaT0RZf5U
+ +sZMYziSD31WtIovQYWn5ohFyg5vF1JvPC0yD7aOLiBHeKtkmfdZQVf+a
+ AgJa3HXtUxfy4zsc2yPRMlPY237b2yA35wS+mHB1MNtifD2Fib9fn+pBn
+ HShev1837H4PciiKv1x3kidGSX1vlcEJ+BMj7moGyGrbcw13eagEFiNL4 g==;
+X-CSE-ConnectionGUID: ALG5BEmuT7+Zt7pLFh8Abw==
+X-CSE-MsgGUID: PwZLEzi1QcCwQTI/dQe+5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78461007"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78461007"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2026 01:59:11 -0700
+X-CSE-ConnectionGUID: nMcVU8W0R0G8U3s/ZiSMtw==
+X-CSE-MsgGUID: 8Xn9J2VyTHi9Bbhk5QFRPA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="230745556"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 01:55:43 -0700
-Date: Tue, 28 Apr 2026 10:55:41 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sobin Thomas <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, thomas.hellstrom@intel.com,
- nishit.sharma@intel.com
-Subject: Re: [PATCH i-g-t v5] test/intel/xe_vm:Add oversubscribe concurrent
- bind stress subtest
-Message-ID: <20260428085541.acux6rtdysr7nj3n@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sobin Thomas <sobin.thomas@intel.com>,
- igt-dev@lists.freedesktop.org, thomas.hellstrom@intel.com,
- nishit.sharma@intel.com
-References: <20260427024004.662789-1-sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="237854286"
+Received: from amiszcza-desk-dev.igk.intel.com (HELO localhost)
+ ([10.91.214.39])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2026 01:59:09 -0700
+From: Adam Miszczak <adam.miszczak@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: marcin.bernatowicz@linux.intel.com,
+	kamil.konieczny@linux.intel.com
+Subject: [PATCH i-g-t] tools/vmtb: Add VMTB fast-feedback testlist
+Date: Tue, 28 Apr 2026 10:22:43 +0200
+Message-Id: <20260428082243.299243-1-adam.miszczak@linux.intel.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260427024004.662789-1-sobin.thomas@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,68 +67,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sobin,
-On 2026-04-27 at 02:40:04 +0000, Sobin Thomas wrote:
+Enable basic VM tests as BATs:
+- create and provision VFs, assign to VMs and probe guest driver
+- execute simple IGT workloads on booted VMs
 
-small nit about subject, instead of
-[PATCH i-g-t v5] test/intel/xe_vm:Add oversubscribe concurrent bind stress subtest
+Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
+---
+ .../vmtb/vmm_flows/intel-ci/fast-feedback.testlist | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+ create mode 100644 tools/vmtb/vmm_flows/intel-ci/fast-feedback.testlist
 
-imho better s/:Add/: Add/ and s/concurrent//, so it will read
-[PATCH i-g-t v5] test/intel/xe_vm: Add oversubscribe bind stress subtest
+diff --git a/tools/vmtb/vmm_flows/intel-ci/fast-feedback.testlist b/tools/vmtb/vmm_flows/intel-ci/fast-feedback.testlist
+new file mode 100644
+index 000000000..37c4dea3a
+--- /dev/null
++++ b/tools/vmtb/vmm_flows/intel-ci/fast-feedback.testlist
+@@ -0,0 +1,14 @@
++#####################################################
++#
++# VMM Flows fast-feedback test list:
++# defines tests to be executed pre-/post-merge BATs.
++#
++# This is allow list, needs to be extended if new
++# tests need to be added to scope.
++#
++#####################################################
++######################
++# Basic VF/VM create
++######################
++test_basic.py::TestVmSetup
++test_basic.py::TestVmWorkload
+-- 
+2.39.1
 
-Regards,
-Kamil
-
-> Add test for oversubscribing VRAM in multi process environment that
-> creates VM, bind large BOs and submit workloads nearly simultaneously.
-> 
-> Previous coverage lacked a scenario combining multi-process bind
-> with VRAM oversubscription. This generates memory pressure with
-> multi-process VM Bind activity and concurrent submission, exercising
-> the bind pipeline under eviction pressure.
-> 
-> v2: Removed helper APIs usage clock_nanosleep and commented
-> code.(Nishit)
-> 
-> v3: Refactored code to smaller functions.
->     Added check for available SRAM usage and keep the max process to 20.
-> 
-> v4: Remove explicit macros definition
->     Replace Bind ioctl with library calls.(Thomas)
-> v5: Remove unused query_mem_info
->     Fix xe_exec_with_retry (Thomas)
->     Rename align_to_page_size with ALIGN macro (kamil/Thomas)
-> 
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-> ---
->  tests/intel/xe_vm.c | 402 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 402 insertions(+)
-> 
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index d75b0730d..5246a854a 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -21,6 +21,71 @@
->  #include "xe/xe_spin.h"
->  #include <string.h>
->  
-> +#define GB(x) (1024ULL * 1024ULL * 1024ULL * (x))
-> +struct gem_bo {
-> +	uint32_t handle;
-> +	uint64_t size;
-> +	int *ptr;
-> +	uint64_t addr;
-> +};
-> +
-> +struct xe_test_ctx {
-> +	uint32_t vm_id;
-> +	uint32_t exec_queue_id;
-> +};
-> +
-> +struct mem_bind_sync {
-> +	struct gem_bo *bufs;
-> +	int n_bufs;
-> +	uint64_t *binds_ufence;
-> +};
-> +
-[cut]
