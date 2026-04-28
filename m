@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0B2EFF886F
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 06:55:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3E84FF885A
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 06:55:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A7BE610EA21;
-	Tue, 28 Apr 2026 06:55:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D34310E06A;
+	Tue, 28 Apr 2026 06:55:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DpYBdxaB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fjjHuvCD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E882010E06A
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 06:54:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48FD810E06A
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 06:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777359276; x=1808895276;
+ t=1777359278; x=1808895278;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5IPf4mLLcmFh0xyzIY52R+ib43uGQ0phiR+QuMupoTs=;
- b=DpYBdxaBe4ITRbfG93XpSRPjYyohxPb2TmhzRHjJuxMW5oVIfYSMtnLg
- pG0Ab9HBk1bqcsvYIKAA4wGU4GYoo6GqVtFk6h36yK2hT6oJ30NFMrGNR
- NfDpAyLT434NvtMLmpkj0Cua+Drpm13zwEmZ81b0nsNWEVJDYoH3XeW+I
- GlVCSAUc33MYmuma9Q9c89khgRURYU7r61wT/JwJwpJWpbTy5MUcKLpOH
- 0q6Q0LKqyv+pPz2eKk7GE07g3RFehMHViBbWBgXZgcBUHOgT48hCrKNQu
- k5YwLDBX7QYUrxZpIihKr1j1Ky1qhwWJddqY3AlIViu1gxVakDe2Zb4g5 A==;
-X-CSE-ConnectionGUID: hqHrW7UFTJmcgQw1yDh69Q==
-X-CSE-MsgGUID: XwaH8lc0RkCF1X448/VyRw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78137875"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78137875"
+ bh=luMmaXxdS2YNiSyfOo2OvYs4UhaFfMza36CzZKiLnks=;
+ b=fjjHuvCDHLayr7KzWN36LgnILWzjAQ+Mh9jK2bq6KPJiYQAPWz/gggKi
+ IHsdca4rVNimSJJCes9m0Gu/JCTmTN1dlExoLfpAZeLLDutg4TRDM56qG
+ pFeqfXeUmveor4StdHSInCMR0PGwtt+conwN7HxIdyfkbkFhEe0+NVKoQ
+ 3ID7uLEaiXdJj/OcHLnw5RrMj+DKrKyT9A74vuaisTOi+IfP+U6LI8CGz
+ OJ/8448HrdWbggqtr8UyD7oLqb8w+CGDM0EDT52vNVLjEOEXXn40tP5qn
+ B5y7RRxvfHdiWSxQxpbZraxfvRJKLg7wiM/RQeTYtJb9iyn5lLDRzrAs9 g==;
+X-CSE-ConnectionGUID: BvMWao32QhSV54o3141gGg==
+X-CSE-MsgGUID: StMx1A7QTfaFAabpf0C7YQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78137879"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78137879"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 23:54:36 -0700
-X-CSE-ConnectionGUID: g9P4VxZjRPyQZjcjnpJ6qQ==
-X-CSE-MsgGUID: CcLRmDROTkeLs4ZPiSYb4Q==
+ 27 Apr 2026 23:54:38 -0700
+X-CSE-ConnectionGUID: ai9N09C9Q8iC/pepzfxgGA==
+X-CSE-MsgGUID: hQw5r8e+QF+OTAoq8LjerA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="232863012"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="232863014"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO fedora)
  ([10.245.244.161])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 23:54:35 -0700
+ 27 Apr 2026 23:54:38 -0700
 From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: maarten.lankhorst@linux.intel.com, Sobin Thomas <sobin.thomas@intel.com>,
+Cc: maarten.lankhorst@linux.intel.com,
  =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH i-g-t 4/6] lib/xe: Add failable variant of xe_vm_bind_lr_sync()
-Date: Tue, 28 Apr 2026 08:54:09 +0200
-Message-ID: <20260428065411.4222-5-thomas.hellstrom@linux.intel.com>
+Subject: [PATCH i-g-t 6/6] tests/xe_cgroups: add write_eviction_nonblock
+ subtest
+Date: Tue, 28 Apr 2026 08:54:11 +0200
+Message-ID: <20260428065411.4222-7-thomas.hellstrom@linux.intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260428065411.4222-1-thomas.hellstrom@linux.intel.com>
 References: <20260428065411.4222-1-thomas.hellstrom@linux.intel.com>
@@ -70,92 +71,110 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Sobin Thomas <sobin.thomas@intel.com>
+Add write_eviction_nonblock to exercise the O_NONBLOCK path of the dmem
+cgroup max interface.  After filling VRAM to the cgroup limit, each
+limit-lowering step writes dmem.max with O_NONBLOCK so that synchronous
+eviction is skipped.  The test then verifies that usage has not yet
+dropped below the new limit, allocates a small BO to trigger eviction
+explicitly, and finally confirms that usage falls within bounds.
 
-Add __xe_vm_bind_lr_sync helper function which returns standard error
-codes instead of asserting on failure. This allows calling function
-to handle VM bind failures explicitly while preserving the existing
-xe_vm_bind_lr_sync() wrapper for tests. This enables callers that
-expect bind / overcommit failures.
-
-v7: Introduced xe_vm_bind_lr_sync_failable (Thomas)
-v8: Modified xe_vm_bind_lr_sync_failable and xe_vm_bind_lr_sync to call
-    __xe_vm_bind_lr_sync
-v9: Removed redundant typecast and removed xe_vm_bind_lr_sync_failable
-
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Assisted-by: GitHub Copilot:claude-sonnet-4.6
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- lib/xe/xe_ioctl.c | 35 +++++++++++++++++++++++++----------
- lib/xe/xe_ioctl.h |  2 ++
- 2 files changed, 27 insertions(+), 10 deletions(-)
+ tests/intel/xe_cgroups.c | 43 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 37 insertions(+), 6 deletions(-)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 1dae56444..e13195e16 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -860,23 +860,38 @@ uint32_t xe_vm_madvise_purgeable(int fd, uint32_t vm_id, uint64_t start,
- }
+diff --git a/tests/intel/xe_cgroups.c b/tests/intel/xe_cgroups.c
+index 8b0f4381f..aa7a8c3b2 100644
+--- a/tests/intel/xe_cgroups.c
++++ b/tests/intel/xe_cgroups.c
+@@ -35,6 +35,7 @@
+ #define BIND_BASE		0x100000000ULL	/* 4 GiB VA base */
  
- #define	BIND_SYNC_VAL	0x686868
--void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
--			uint64_t addr, uint64_t size, uint32_t flags)
-+int __xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-+			 uint64_t addr, uint64_t size, uint32_t flags)
- {
--	volatile uint64_t *sync_addr = malloc(sizeof(*sync_addr));
-+	uint64_t *sync_addr = malloc(sizeof(*sync_addr));
- 	struct drm_xe_sync sync = {
- 		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
- 		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
--		.addr = to_user_pointer((uint64_t *)sync_addr),
-+		.addr = to_user_pointer(sync_addr),
- 		.timeline_value = BIND_SYNC_VAL,
- 	};
--
--	igt_assert(!!sync_addr);
--	xe_vm_bind_async_flags(fd, vm, 0, bo, 0, addr, size, &sync, 1, flags);
--	if (*sync_addr != BIND_SYNC_VAL)
--		xe_wait_ufence(fd, (uint64_t *)sync_addr, BIND_SYNC_VAL, 0, NSEC_PER_SEC * 10);
-+	int ret = 0;
-+
-+	if (!sync_addr)
-+		return -ENOMEM;
-+	WRITE_ONCE(*sync_addr, 0);
-+	ret = __xe_vm_bind(fd, vm, 0, bo, offset, addr, size, DRM_XE_VM_BIND_OP_MAP, flags,
-+			   &sync, 1, 0,  DEFAULT_PAT_INDEX, 0);
-+	if (ret)
-+		goto out;
-+
-+	if (READ_ONCE(*sync_addr) != BIND_SYNC_VAL)
-+		xe_wait_ufence(fd, sync_addr, BIND_SYNC_VAL, 0, NSEC_PER_SEC * 10);
- 	/* Only free if the wait succeeds */
--	free((void *)sync_addr);
-+out:
-+	free(sync_addr);
-+	return ret;
-+}
-+
-+void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-+			uint64_t addr, uint64_t size, uint32_t flags)
-+{
-+	igt_assert_eq(__xe_vm_bind_lr_sync(fd, vm, bo, offset, addr, size, flags), 0);
- }
+ #define TEST_INTERRUPTIBLE	(1 << 0)
++#define TEST_NONBLOCK		(1 << 1)
  
- void xe_vm_unbind_lr_sync(int fd, uint32_t vm, uint64_t offset,
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index ceb380685..768f77246 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -120,6 +120,8 @@ struct drm_xe_mem_range_attr
- void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo,
- 			uint64_t offset, uint64_t addr,
- 			uint64_t size, uint32_t flags);
-+int __xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-+			 uint64_t addr, uint64_t size, uint32_t flags);
- void xe_vm_unbind_lr_sync(int fd, uint32_t vm, uint64_t offset,
- 			  uint64_t addr, uint64_t size);
- #endif /* XE_IOCTL_H */
+ /**
+  * SUBTEST: write_eviction
+@@ -62,6 +63,18 @@
+  * REQUIREMENTS: must run as root; xe device with at least one VRAM region
+  */
+ 
++/**
++ * SUBTEST: write_eviction_nonblock
++ * DESCRIPTION:
++ *   Same fill phase as write_eviction.  In the limit-lowering phase dmem.max
++ *   is written with O_NONBLOCK, which causes the kernel to skip synchronous
++ *   eviction.  After each nonblock write the test verifies that usage has not
++ *   yet dropped below the new limit, then triggers eviction explicitly by
++ *   allocating a small BO.  Finally verifies that usage falls within bounds
++ *   after the forced eviction.
++ * REQUIREMENTS: must run as root; xe device with at least one VRAM region
++ */
++
+ static atomic_int signal_count;
+ static struct sigaction sigcont_oldact;
+ 
+@@ -146,7 +159,7 @@ static void test_write_eviction(int fd, unsigned int flags)
+ 	uint64_t region;
+ 	uint32_t *handles = NULL;
+ 	int n_bo = 0, max_bo;
+-	uint64_t current, capacity, cg_max, limit, after;
++	uint64_t current, capacity, cg_max, limit, after, before;
+ 
+ 	/* Check dmem cgroup controller is available before doing anything else */
+ 	igt_require_f(igt_cgroup_dmem_available(),
+@@ -207,18 +220,35 @@ static void test_write_eviction(int fd, unsigned int flags)
+ 	while (limit >= EVICT_STEP) {
+ 
+ 		limit -= EVICT_STEP;
+-		igt_cgroup_dmem_set_max(cg, cg_region, limit, false);
++
++		if (flags & TEST_NONBLOCK)
++			igt_cgroup_dmem_get_current(cg, cg_region, &before);
++
++		igt_cgroup_dmem_set_max(cg, cg_region, limit,
++					!!(flags & TEST_NONBLOCK));
+ 
+ 		igt_cgroup_dmem_get_current(cg, cg_region, &after);
+ 		igt_debug("Lowered max to %"PRIu64" MiB: usage = %"PRIu64" MiB\n",
+ 			  limit / SZ_1M, after / SZ_1M);
+ 
++		if (flags & TEST_NONBLOCK) {
++			/*
++			 * O_NONBLOCK skips eviction: verify usage has not
++			 * dropped below the new limit yet.
++			 */
++			igt_assert_f(after == before,
++				     "Expected no eviction with O_NONBLOCK, but "
++				     "usage dropped from %"PRIu64" MiB to %"PRIu64" MiB "
++				     "(limit %"PRIu64" MiB)\n",
++				     before / SZ_1M, after / SZ_1M, limit / SZ_1M);
++		}
++
+ 		if (limit > EVICT_STEP) {
+-			if ((flags & TEST_INTERRUPTIBLE) && after > limit) {
++			if ((flags & (TEST_INTERRUPTIBLE | TEST_NONBLOCK)) && after > limit) {
+ 				uint32_t handle;
+ 
+-				/* Let a new bo creation trigger eviction. */
+-				handle = xe_bo_create(fd, 0, BO_SIZE / 8, vram_region, 0);
++				handle = xe_bo_create(fd, 0, BO_SIZE / 8,
++						      vram_region, 0);
+ 				gem_close(fd, handle);
+ 
+ 				igt_cgroup_dmem_get_current(cg, cg_region, &after);
+@@ -252,8 +282,9 @@ static const struct {
+ 	const char *name;
+ 	unsigned int flags;
+ } subtests[] = {
+-	{ "write_eviction",		0 },
++	{ "write_eviction",			0 },
+ 	{ "write_eviction_interruptible",	TEST_INTERRUPTIBLE },
++	{ "write_eviction_nonblock",		TEST_NONBLOCK },
+ 	{ }
+ };
+ 
 -- 
 2.53.0
 
