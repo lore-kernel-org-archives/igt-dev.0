@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF4A6FF885A
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:47:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6FF0FF885A
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 04:47:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7208910E0EB;
-	Tue, 28 Apr 2026 04:47:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B51410E29C;
+	Tue, 28 Apr 2026 04:47:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jQiiIuK5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OlolbS+/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E39B10E0EB
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:46:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F09A10E0EB
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 04:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777351619; x=1808887619;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=o1hK/kXUM8LjtopB0qTLFDwicClHff+CKx/wAgh8YBo=;
- b=jQiiIuK5GXjFteJJaKSGYp8Xzmt13ZB/mKpkt6K2Z3u0pwVxPwWxYZtN
- mozT7ozFGjIkSNzDSun9TyuqzPP5+dck9zobnscmsx6c3yuQ+oUMz+Aqv
- 0hCckCfLObeoEgPzHmQmKplPk9yz5ZxlaTLa+NyNtGVqzc8eq61ApiTg0
- k0PrYLjG+l1tLVUTKYwGDnonuEuknvOuGJEhnxhnzYCnDkr3i5TKixObT
- Zy04OihHMSV1Vw+xIq1nSwP0c/cxOWExLBMsuRcA3TvfGHm+p+Guc80rW
- zNUYOGNQyrQz8y/4JOBFK3SGE7lq7TCxPXqW5HFM9hgIQsuE+btTzgaCD A==;
-X-CSE-ConnectionGUID: D5F1ZXT4TTKGefT+MHDlug==
-X-CSE-MsgGUID: eUhvjByKTNax2oRR7Admvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167786"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167786"
+ t=1777351621; x=1808887621;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=8CGBOVb13TJA38iuhkQ3wGV7JgvzaG+fFNlwaukgkRU=;
+ b=OlolbS+/by0k2O2ZKkLnj+HEBYmey/DJtAOzz7vXIy+5705f1nSgg0IS
+ Uy7WLTJUm51VxZOsFy5EnZKMtwc2i7emGjVCjN8XkjsjmXxHI7DtJB48V
+ AakQoqjxVrW+NRqB7y+A18S7WVG6M2zH3I5xDj2GLmVornaqX3uyiv3X6
+ UZC+DIfs0QCg1uqvjaIruueBf/Ht9YbbkJtDO02/QJ4fkb9Looq27Qn0G
+ Xmmm+maCIdSth/ylHJqDDnrr9gGIc127TZtUeZ15R9H531bR7/RAeuTH5
+ NSPzsUpFOLjSM9bTwEzQ6ryZZ5XEV17uikYzEVZwieAM4YubF5Vg2ti0X A==;
+X-CSE-ConnectionGUID: RX8U9WozSx2HjGJGAEpS4w==
+X-CSE-MsgGUID: hCQeI2hiTUWnr1Wvkmz+SQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78167787"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78167787"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:46:59 -0700
-X-CSE-ConnectionGUID: /C035ipuTKWdJ6uChFq+Nw==
-X-CSE-MsgGUID: 1Xmsw5JTT0Otb0IJauPm/A==
+ 27 Apr 2026 21:47:01 -0700
+X-CSE-ConnectionGUID: FhDtw0hVSqyb5PPNhiMR1g==
+X-CSE-MsgGUID: +709lQQ9S6+2vY73VLSWSw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706230"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="233706298"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 21:46:57 -0700
+ 27 Apr 2026 21:46:59 -0700
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com,
-	Mohammed Bilal <mohammed.bilal@intel.com>
-Subject: [PATCH i-g-t v1 00/25] Chamelium v3 Integration and Test Execution
-Date: Tue, 28 Apr 2026 10:16:09 +0530
-Message-ID: <20260428044644.257001-1-mohammed.bilal@intel.com>
+Cc: kunal1.joshi@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH i-g-t v1 01/25] lib/igt_kms: Add a detect timeout value
+Date: Tue, 28 Apr 2026 10:16:10 +0530
+Message-ID: <20260428044644.257001-2-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20260428044644.257001-1-mohammed.bilal@intel.com>
+References: <20260428044644.257001-1-mohammed.bilal@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,125 +69,255 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Integrate Chamelium v3 hardware support for display testing. This includes
-the Chamelium v3 library implementation, building with v3 support enabled,
-and comprehensive display tests for HPD, EDID, frames, color, and audio.
+From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-Changes included:
+Some tests need to wait for a specific connector status. In order to make
+the timeout customisable for each target, add an option in the
+configuration file.
 
-1. Library helpers (patches 1-10):
-   - Add connector detection and management helpers
-   - Add monitor EDID management helpers
-   - Add HDMI 4K EDID support
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+---
+ lib/igt_core.c |   4 ++
+ lib/igt_kms.c  | 123 +++++++++++++++++++++++++++++++------------------
+ lib/igt_kms.h  |  10 ++++
+ 3 files changed, 92 insertions(+), 45 deletions(-)
 
-2. V2 reorganization (patches 11-14):
-   - Move existing V2 code to lib/chamelium/v2/ and tests/chamelium/v2/
-   - Rename V2 symbols to allow V2 and V3 to coexist
-
-3. V3 library (patches 15-20):
-   - Add Chamelium V3 library implementation
-   - Support for HPD, EDID, frame capture, color and audio
-
-4. V3 tests (patches 21-25):
-   - kms_chamelium_v3_basic: Basic connectivity test
-   - kms_chamelium_v3_hpd: Hot plug detect tests
-   - kms_chamelium_v3_edid: EDID verification tests
-   - kms_chamelium_v3_frames: Frame capture and CRC tests
-   - kms_chamelium_v3_color: Color verification tests
-   - kms_chamelium_v3_audio: Audio tests
-
-Louis Chauvet (19):
-  lib/igt_kms: Add a detect timeout value
-  lib/igt_kms: Add helper to wait for a specific status on a connector
-  lib/igt_kms: Add function to list connected connectors
-  lib/igt_kms: Add helper to obtain a connector by its name or MST path
-  lib/igt_kms: Add function to get valid pipe for specific output
-  lib/monitor_edids: Add helper functions for using monitor_edid objects
-  lib/monitor_edids: Add helper to get an EDID by its name
-  lib/monitor_edids: Add helper to print all available EDID names
-  lib/monitor_edids: Fix missing names in some monitor EDID
-  lib/monitor_edids: Add new EDID for HDMI 4k
-  tests/chamelium: Extract Chamelium v2 tests into a separate directory
-  lib/chamelium/v2: Extract chamelium v2 wrapper into its own directory
-  lib/chamelium/v2: Rename chamelium to chamelium_v2
-  lib/chamelium/v2: Rename HAVE_CHAMELIUM to HAVE_CHAMELIUM_V2
-  lib/chamelium/v3: Introduce the foundation for the Chamelium v3
-    wrapper
-  lib/chamelium/v3: Introduce initialization and cleanup of
-    Chamelium-related structures
-  lib/chamelium/v3: Add method to discover Chamelium ports
-  lib/chamelium/v3: Implement method to retrieve Chamelium port names
-  tests/chamelium/v3: Implement a basic Chamelium v3 accessibility test
-
-Mohammed Bilal (6):
-  lib/chamelium/v3: Add extended API for Chamelium v3 HPD, EDID, Frames,
-    Color & Audio
-  tests/chamelium/v3: Add HPD (Hot Plug Detect) tests for Chamelium v3
-  tests/chamelium/v3: Add EDID tests for Chamelium v3
-  tests/chamelium/v3: Add frame capture and CRC tests for Chamelium v3
-  tests/chamelium/v3: Add color verification tests for Chamelium v3
-  tests/chamelium/v3: Add audio tests for Chamelium v3
-
- .gitlab-ci.yml                                |    2 +-
- docs/testplan/meson.build                     |    4 +-
- lib/{ => chamelium/v2}/igt_chamelium.c        |    2 +-
- lib/{ => chamelium/v2}/igt_chamelium.h        |    0
- lib/{ => chamelium/v2}/igt_chamelium_stream.c |    2 +-
- lib/{ => chamelium/v2}/igt_chamelium_stream.h |    0
- lib/chamelium/v3/igt_chamelium.c              | 1267 ++++++++++++++
- lib/chamelium/v3/igt_chamelium.h              |  247 +++
- lib/igt.h                                     |    6 +-
- lib/igt_core.c                                |    4 +
- lib/igt_kms.c                                 |  371 +++-
- lib/igt_kms.h                                 |   18 +
- lib/meson.build                               |   21 +-
- lib/monitor_edids/dp_edids.h                  |    3 +
- lib/monitor_edids/hdmi_edids.h                |   27 +-
- lib/monitor_edids/monitor_edids_helper.c      |  127 ++
- lib/monitor_edids/monitor_edids_helper.h      |   12 +-
- lib/tests/meson.build                         |    8 +-
- meson.build                                   |   31 +-
- meson_options.txt                             |    8 +-
- .../chamelium/{ => v2}/kms_chamelium_audio.c  |    0
- .../chamelium/{ => v2}/kms_chamelium_color.c  |    0
- tests/chamelium/{ => v2}/kms_chamelium_edid.c |    2 +-
- .../chamelium/{ => v2}/kms_chamelium_frames.c |    0
- .../chamelium/{ => v2}/kms_chamelium_helper.c |    0
- .../chamelium/{ => v2}/kms_chamelium_helper.h |    0
- tests/chamelium/{ => v2}/kms_chamelium_hpd.c  |    0
- .../{ => v2}/kms_chamelium_sharpness_filter.c |    0
- tests/chamelium/v3/kms_chamelium_v3_audio.c   |  707 ++++++++
- tests/chamelium/v3/kms_chamelium_v3_basic.c   |   30 +
- tests/chamelium/v3/kms_chamelium_v3_color.c   | 1058 +++++++++++
- tests/chamelium/v3/kms_chamelium_v3_edid.c    | 1357 ++++++++++++++
- tests/chamelium/v3/kms_chamelium_v3_frames.c  | 1551 +++++++++++++++++
- tests/chamelium/v3/kms_chamelium_v3_hpd.c     |  928 ++++++++++
- tests/kms_color_helper.h                      |    2 +-
- tests/kms_feature_discovery.c                 |    6 +-
- tests/kms_tiled_display.c                     |    6 +-
- tests/meson.build                             |   53 +-
- 38 files changed, 7762 insertions(+), 98 deletions(-)
- rename lib/{ => chamelium/v2}/igt_chamelium.c (99%)
- rename lib/{ => chamelium/v2}/igt_chamelium.h (100%)
- rename lib/{ => chamelium/v2}/igt_chamelium_stream.c (99%)
- rename lib/{ => chamelium/v2}/igt_chamelium_stream.h (100%)
- create mode 100644 lib/chamelium/v3/igt_chamelium.c
- create mode 100644 lib/chamelium/v3/igt_chamelium.h
- rename tests/chamelium/{ => v2}/kms_chamelium_audio.c (100%)
- rename tests/chamelium/{ => v2}/kms_chamelium_color.c (100%)
- rename tests/chamelium/{ => v2}/kms_chamelium_edid.c (99%)
- rename tests/chamelium/{ => v2}/kms_chamelium_frames.c (100%)
- rename tests/chamelium/{ => v2}/kms_chamelium_helper.c (100%)
- rename tests/chamelium/{ => v2}/kms_chamelium_helper.h (100%)
- rename tests/chamelium/{ => v2}/kms_chamelium_hpd.c (100%)
- rename tests/chamelium/{ => v2}/kms_chamelium_sharpness_filter.c (100%)
- create mode 100644 tests/chamelium/v3/kms_chamelium_v3_audio.c
- create mode 100644 tests/chamelium/v3/kms_chamelium_v3_basic.c
- create mode 100644 tests/chamelium/v3/kms_chamelium_v3_color.c
- create mode 100644 tests/chamelium/v3/kms_chamelium_v3_edid.c
- create mode 100644 tests/chamelium/v3/kms_chamelium_v3_frames.c
- create mode 100644 tests/chamelium/v3/kms_chamelium_v3_hpd.c
-
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 4f79c0294..cc835ea4c 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -271,6 +271,10 @@
+  *	&num; It is not mandatory and allows overriding default values.
+  *	[DUT]
+  *	SuspendResumeDelay=10
++ *
++ *	&num; The following option define the timeout for detection feature
++ *	&num; (waiting for a connector status)
++ *	DisplayDetectTimeout=10.0
+  * ]|
+  *
+  * Some specific configuration options may be used by specific parts of IGT,
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 38c28f45f..ece888d1a 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -60,6 +60,7 @@
+ #include "igt_debugfs.h"
+ #include "igt_device.h"
+ #include "igt_pipe_crc.h"
++#include "igt_rc.h"
+ #include "igt_sysfs.h"
+ #include "sw_sync.h"
+ #ifdef HAVE_CHAMELIUM
+@@ -8066,38 +8067,38 @@ bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output)
+ 
+ igt_crtc_t *igt_crtc_for_crtc_id(igt_display_t *display, uint32_t crtc_id)
+ {
+-	igt_crtc_t *crtc;
++        igt_crtc_t *crtc;
+ 
+-	for_each_crtc(display, crtc) {
+-		if (crtc->crtc_id == crtc_id)
+-			return crtc;
+-	}
++        for_each_crtc(display, crtc) {
++                if (crtc->crtc_id == crtc_id)
++                        return crtc;
++        }
+ 
+-	return NULL;
++        return NULL;
+ }
+ 
+ igt_crtc_t *igt_crtc_for_crtc_index(igt_display_t *display, int crtc_index)
+ {
+-	igt_crtc_t *crtc;
++        igt_crtc_t *crtc;
+ 
+-	for_each_crtc(display, crtc) {
+-		if (crtc->crtc_index == crtc_index)
+-			return crtc;
+-	}
++        for_each_crtc(display, crtc) {
++                if (crtc->crtc_index == crtc_index)
++                        return crtc;
++        }
+ 
+-	return NULL;
++        return NULL;
+ }
+ 
+ igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
+ {
+-	igt_crtc_t *crtc;
++        igt_crtc_t *crtc;
+ 
+-	for_each_crtc(display, crtc) {
+-		if (crtc->pipe == pipe)
+-			return crtc;
+-	}
++        for_each_crtc(display, crtc) {
++                if (crtc->pipe == pipe)
++                        return crtc;
++        }
+ 
+-	return NULL;
++        return NULL;
+ }
+ 
+ /*
+@@ -8108,14 +8109,14 @@ igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
+  */
+ igt_crtc_t *igt_first_crtc(igt_display_t *display)
+ {
+-	igt_crtc_t *crtc;
++        igt_crtc_t *crtc;
+ 
+-	for_each_crtc(display, crtc)
+-		return crtc;
++        for_each_crtc(display, crtc)
++                return crtc;
+ 
+-	igt_skip("No CRTCs on device\n");
++        igt_skip("No CRTCs on device\n");
+ 
+-	return NULL;
++        return NULL;
+ }
+ 
+ /**
+@@ -8128,19 +8129,19 @@ igt_crtc_t *igt_first_crtc(igt_display_t *display)
+  */
+ igt_crtc_t *igt_first_crtc_with_single_output(igt_display_t *display, igt_output_t **ret_output)
+ {
+-	igt_output_t *output;
+-	igt_crtc_t *crtc;
++        igt_output_t *output;
++        igt_crtc_t *crtc;
+ 
+-	for_each_crtc_with_single_output(display, crtc, output) {
+-		*ret_output = output;
+-		return crtc;
+-	}
++        for_each_crtc_with_single_output(display, crtc, output) {
++                *ret_output = output;
++                return crtc;
++        }
+ 
+-	igt_skip("No valid CRTC/output combinations\n");
++        igt_skip("No valid CRTC/output combinations\n");
+ 
+-	*ret_output = NULL;
++        *ret_output = NULL;
+ 
+-	return NULL;
++        return NULL;
+ }
+ 
+ /*
+@@ -8152,14 +8153,14 @@ igt_crtc_t *igt_first_crtc_with_single_output(igt_display_t *display, igt_output
+  */
+ igt_crtc_t *igt_next_crtc(igt_display_t *display, igt_crtc_t *crtc)
+ {
+-	igt_crtc_t *next;
++        igt_crtc_t *next;
+ 
+-	for_each_crtc(display, next) {
+-		if (!crtc || next->pipe > crtc->pipe)
+-			return next;
+-	}
++        for_each_crtc(display, next) {
++                if (!crtc || next->pipe > crtc->pipe)
++                        return next;
++        }
+ 
+-	return NULL;
++        return NULL;
+ }
+ 
+ /*
+@@ -8170,14 +8171,46 @@ igt_crtc_t *igt_next_crtc(igt_display_t *display, igt_crtc_t *crtc)
+  */
+ igt_crtc_t *igt_random_crtc(igt_display_t *display)
+ {
+-	igt_crtc_t *crtcs[IGT_MAX_PIPES];
+-	igt_crtc_t *crtc;
+-	int n = 0;
++        igt_crtc_t *crtcs[IGT_MAX_PIPES];
++        igt_crtc_t *crtc;
++        int n = 0;
+ 
+-	for_each_crtc(display, crtc)
+-		crtcs[n++] = crtc;
++        for_each_crtc(display, crtc)
++                crtcs[n++] = crtc;
++
++        igt_skip_on_f(!n, "No CRTCs on device\n");
++
++        return crtcs[rand() % n];
++}
++
++/**
++ * igt_default_display_detect_timeout:
++ *
++ * Get the default timeout value for detection feature
++ *
++ * Some tests requires to wait for a specific connector status. This value will determine the
++ * timeout value for this waiting.
++ */
++double igt_default_display_detect_timeout(void)
++{
++        static double timeout = 0.0;
++        static bool first_call = true;
++        GError *error = NULL;
++
++        if (first_call) {
++                if (igt_key_file) {
++                        timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",&error);
++                        if (error) {
++                                igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",DEFAULT_DETECT_TIMEOUT);
++                                g_clear_error(&error);
++                                timeout = DEFAULT_DETECT_TIMEOUT;
++                        }
++                } else {
++                        timeout = DEFAULT_DETECT_TIMEOUT;
++                }
+ 
+-	igt_skip_on_f(!n, "No CRTCs on device\n");
++                first_call = false;
++        }
+ 
+-	return crtcs[rand() % n];
++        return timeout;
+ }
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index fcbb6a5ad..b10df1d8d 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -40,6 +40,14 @@
+ #include "igt_fb.h"
+ #include "ioctl_wrappers.h"
+ 
++/**
++ * define DEFAULT_DETECT_TIMEOUT - Default timeout in second used for some screen detection
++ * functions
++ *
++ * It can be overiden by option DetectTimeout in the .igtrc file.
++ */
++#define DEFAULT_DETECT_TIMEOUT 10.0
++
+ /* Low-level helpers with kmstest_ prefix */
+ 
+ /**
+@@ -1289,4 +1297,6 @@ void igt_get_and_wait_out_fence(igt_output_t *output);
+ 
+ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
+ 
++double igt_default_display_detect_timeout(void);
++
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.48.1
 
