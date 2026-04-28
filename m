@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D96AEFF886F
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 06:20:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10175FF886F
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 06:24:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E3DE10E2F4;
-	Tue, 28 Apr 2026 06:20:40 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DWKGhfc6";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBC9210E2F4
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 06:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777357227; x=1808893227;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=kZFPt7rXEmprwcRvQgzCH5OeX4cq7ygZYyrul5Sl2Xg=;
- b=DWKGhfc6Z9oDbdYIyWGdS73obc/VkuvS5svMoV3tGk3CQAXaZwXf4PnY
- wSLVrHhLhskOBKIfScaEYSnmTM+Cx7ZRAlgV+g7XAKXUxPEG0PsbxhHAH
- SxL35m53/wByV15uXLqlBMyIMmhMRLbu0u/6JUO5ohtu5DHptO7vK90wJ
- Xqkj5ceA6rwInG9jSUunGr85GXyLrUenRHdiAbQrwYPBGioAzupc7ivG+
- mQt2oQBnP1djrdvTmF6QrZgQAl3yMBhJ7C6Ip/gh7zekv4EfJWPfFjydy
- 7mi+q/dh4zUzSCQCyA+/VRtNf3ld1wZd2xZyIKqWMClT9YoyJZ5WLGDwG w==;
-X-CSE-ConnectionGUID: au55BIN/Qt6FUisMw8XUDg==
-X-CSE-MsgGUID: eUwLyrGbThiLq4OH5FIydA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78174453"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="78174453"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2026 23:20:27 -0700
-X-CSE-ConnectionGUID: 6Gco0+piRd+M6a04AE7Mpw==
-X-CSE-MsgGUID: lSJA22qzQIKZisSocGxYYg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="271984202"
-Received: from shawnle1-i9-build-machine.itwn.intel.com ([10.225.64.200])
- by orviesa001.jf.intel.com with ESMTP; 27 Apr 2026 23:20:26 -0700
-From: Lee Shawn C <shawn.c.lee@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Lee Shawn C <shawn.c.lee@intel.com>
-Subject: [v2] tests/kms_vrr: add support for full range refresh rate testing
-Date: Tue, 28 Apr 2026 06:12:02 +0000
-Message-Id: <20260428061202.3557766-1-shawn.c.lee@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260427120955.3537070-1-shawn.c.lee@intel.com>
-References: <20260427120955.3537070-1-shawn.c.lee@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9146B10E2F4;
+	Tue, 28 Apr 2026 06:24:12 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBE7810E2F4;
+ Tue, 28 Apr 2026 06:23:58 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0866658306206277818=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fsharpness?=
+ =?utf-8?q?=5Ffilter=3A_Remove_plane-scaler_subtests_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Apr 2026 06:23:58 -0000
+Message-ID: <177735743884.17344.13014548284845811839@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260428051844.2255253-1-swati2.sharma@intel.com>
+In-Reply-To: <20260428051844.2255253-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,99 +37,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently, kms_vrr tests fixed step increments within the VRR range.
-To better validate hardware stability and potential issues across the
-entire spectrum, this patch adds a 'full-range' testing mode.
+--===============0866658306206277818==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-When the full-range flag is enabled, the test will:
-1. Iterate from the maximum to the minimum refresh rate (stepping by 1).
-2. For standard testing, maintain the existing behavior of incrementing
-   from minimum to maximum using the defined step size.
+== Series Details ==
 
-v2: Fix build failure by adding documentation for the new subtest.
+Series: tests/intel/kms_sharpness_filter: Remove plane-scaler subtests (rev2)
+URL   : https://patchwork.freedesktop.org/series/165542/
+State : success
 
-Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
----
- tests/kms_vrr.c | 32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 6043d40f1d74..b8a8c6aa79ed 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -66,6 +66,9 @@
-  * Description: Test to create a Virtual Mode in VRR range and switch to it
-  * 		without a full modeset.
-  *
-+ * SUBTEST: seamless-rr-switch-virtual-full
-+ * Description: Vrr seamless refresh rate switch for virtual modes using full range
-+ *
-  * SUBTEST: lobf
-  * Description: Test to validate link-off between active frames in non-psr
-  *              operation
-@@ -93,9 +96,10 @@ enum {
- 	TEST_FLIPLINE = 1 << 3,
- 	TEST_SEAMLESS_VRR = 1 << 4,
- 	TEST_SEAMLESS_DRRS = 1 << 5,
--	TEST_SEAMLESS_VIRTUAL_RR = 1 << 6,
--	TEST_FASTSET = 1 << 7,
--	TEST_MAXMIN = 1 << 8,
-+	TEST_SEAMLESS_VIRTUAL_RR_FAST = 1 << 6,
-+	TEST_SEAMLESS_VIRTUAL_RR_FULL = 1 << 7,
-+	TEST_FASTSET = 1 << 8,
-+	TEST_MAXMIN = 1 << 9,
- 	TEST_LINK_OFF = 1 << 10,
- 	TEST_NEGATIVE = 1 << 11,
- 	TEST_FORCE_RR = 1 << 12,
-@@ -754,10 +758,12 @@ test_seamless_virtual_rr_basic(data_t *data, igt_crtc_t *crtc,
- 			       igt_output_t *output, uint32_t flags)
- {
- 	uint32_t result;
--	unsigned int vrefresh;
-+	int vrefresh;
- 	uint64_t rate[] = {0};
- 	uint32_t step_size;
-+	int start, end, step;
- 	drmModeModeInfo virtual_mode;
-+	bool full_vrr_range = !!(flags & TEST_SEAMLESS_VIRTUAL_RR_FULL);
- 
- 	igt_info("Use HIGH_RR Mode as default\n");
- 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-@@ -795,7 +801,17 @@ test_seamless_virtual_rr_basic(data_t *data, igt_crtc_t *crtc,
- 		   (((data->range.max + data->range.min) / 2) + step_size) :
- 		   data->range.min + step_size;
- 
--	for ( ; vrefresh < data->range.max; vrefresh += step_size) {
-+	if (full_vrr_range) {
-+		start = data->range.max;
-+		end = data->range.min;
-+		step = -1;
-+	} else {
-+		start = data->range.min;
-+		end = data->range.max;
-+		step = step_size;
-+	}
-+
-+	for (vrefresh = start; (step > 0) ? (vrefresh <= end) : (vrefresh >= end); vrefresh += step) {
- 		virtual_rr_vrr_range_mode(&virtual_mode, vrefresh);
- 
- 		igt_info("Requesting Virtual Mode with Refresh Rate (%u Hz): \n", vrefresh);
-@@ -1103,7 +1119,11 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
- 
- 		igt_describe("Test to switch to any custom virtual mode in VRR range without modeset.");
- 		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
--			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
-+			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR_FAST);
-+
-+		igt_describe("Test to switch to all virtual modes in VRR range without modeset.");
-+		igt_subtest_with_dynamic("seamless-rr-switch-virtual-full")
-+			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR_FULL);
- 
- 		igt_describe("Test to validate the link-off between active frames in "
- 			     "non-PSR operation.");
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_8874_BAT -> XEIGTPW_15070_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15070_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8874/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15070/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#7483]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8874/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15070/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8874 -> IGTPW_15070
+  * Linux: xe-4940-b6f6b69b2dffa9ad1c43b2149786b4630d41acbf -> xe-4944-aea2c496abcf55b647c14fe720bfc4ea555aac6a
+
+  IGTPW_15070: 4a027a60d7fbd737cee3ee6875e934992df0dad7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8874: 4568b2c141ab630c34f8eb2b9afab8cbf8f3ce9e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4940-b6f6b69b2dffa9ad1c43b2149786b4630d41acbf: b6f6b69b2dffa9ad1c43b2149786b4630d41acbf
+  xe-4944-aea2c496abcf55b647c14fe720bfc4ea555aac6a: aea2c496abcf55b647c14fe720bfc4ea555aac6a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15070/index.html
+
+--===============0866658306206277818==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_sharpness_filter: Remove plane-scaler subtests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165542/">https://patchwork.freedesktop.org/series/165542/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15070/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15070/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8874_BAT -&gt; XEIGTPW_15070_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15070_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8874/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15070/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8874/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15070/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8874 -&gt; IGTPW_15070</li>
+<li>Linux: xe-4940-b6f6b69b2dffa9ad1c43b2149786b4630d41acbf -&gt; xe-4944-aea2c496abcf55b647c14fe720bfc4ea555aac6a</li>
+</ul>
+<p>IGTPW_15070: 4a027a60d7fbd737cee3ee6875e934992df0dad7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8874: 4568b2c141ab630c34f8eb2b9afab8cbf8f3ce9e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4940-b6f6b69b2dffa9ad1c43b2149786b4630d41acbf: b6f6b69b2dffa9ad1c43b2149786b4630d41acbf<br />
+  xe-4944-aea2c496abcf55b647c14fe720bfc4ea555aac6a: aea2c496abcf55b647c14fe720bfc4ea555aac6a</p>
+
+</body>
+</html>
+
+--===============0866658306206277818==--
