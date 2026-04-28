@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CB45FF885A
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 07:10:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7754FF886F
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Apr 2026 07:12:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1727710E081;
-	Tue, 28 Apr 2026 07:10:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4981610E081;
+	Tue, 28 Apr 2026 07:12:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ndet9KKV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ibUTSZap";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A63F410E142
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 07:10:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 767B510E081
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2026 07:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777360206; x=1808896206;
+ t=1777360323; x=1808896323;
  h=from:to:cc:subject:in-reply-to:references:date:
  message-id:mime-version;
- bh=agUCu+HTOeWfnM7hkPy/WuXnGx7wxDu+Pgabw4MsnaA=;
- b=Ndet9KKV22NlCTsCCUYHf/fOlQjCTK7mvBs3efCbmP6h9vVk+SAwdFZT
- cHhvXxeK+BfK1IM1Zj94GzbSVXu/6IVwAC6lJ1OcjkBlGuamFPQwiVFrq
- hXYe1Q37xMC4cZmX0tkEdf7tNw8hB7012URRhAQVrk0vu0WK82PGWtoHN
- ytSG3toXeu2ufO8orLfMjt3dukPPv7QnSD0xUCZZV/HBL6K4RQLsqHrOH
- LwROngGhURzTTslIThh6D/pNgSE/wJhoBjZbKfiIw6BGW47gCDtvJ2Evz
- ImSsyztLP82U/ooaeXw0If9X26PBUmlnBgC3CmL2tq7KFOVwmcr+pWs9y A==;
-X-CSE-ConnectionGUID: 3NoZhS1wSye9CDwnvj2mlg==
-X-CSE-MsgGUID: +qIKphZORbOs9PncHeuXag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="95674635"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="95674635"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2026 00:10:06 -0700
-X-CSE-ConnectionGUID: 2S66lok8T2GdMKZkz6dSXQ==
-X-CSE-MsgGUID: clx17TIWSA+/aehfjYqvjg==
+ bh=l9XvphHgE1VI4lJr1Q8tMTgan/adcebEwKfRQFD1pkY=;
+ b=ibUTSZapDkkIQID3YLlj40w5knzsQmVu2GCPeSTJ9XilJOSkhm6sngJR
+ O3lJuvDz1gwCRIesfAzCg77LhZ5tjha/4ipWL5aMum7yz/bJFyNcWe6QF
+ P1advDuMwal401wA7UZ4pZZWtzy6vIrBfKAWjw7i6vJ95x1GHIDthruIE
+ EkSMB7Ys0sSwemkrpZiPOKiRsaSbGkqWjIYfWJKznwV0gEUkOXvYH65OA
+ HNBcHtDr2JsL8e1rkuUGIAi2Jh8Q0dmHA5dPlKfV+eJ6Q35hH7N1sCAAe
+ TXV3XNfe0wAl62H2qpewohb+R8fTaaczYDiml9O3pA+770f9YhmDIa1bM Q==;
+X-CSE-ConnectionGUID: juKhDGMiTtGX0BjsXTpjtw==
+X-CSE-MsgGUID: 6AyCGRoTRaCSN1oHqKdemA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="88572266"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="88572266"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2026 00:12:03 -0700
+X-CSE-ConnectionGUID: gYcwH7AsQ6OtWvvACRXFzw==
+X-CSE-MsgGUID: A3O8z3VYQPK4FIPbr6ob4A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="234150386"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; d="scan'208";a="227352384"
 Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.244.208])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2026 00:10:05 -0700
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2026 00:12:01 -0700
 From: Jani Nikula <jani.nikula@intel.com>
-To: Lee Shawn C <shawn.c.lee@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Lee Shawn C <shawn.c.lee@intel.com>
-Subject: Re: [v2] tests/kms_vrr: add support for full range refresh rate
- testing
-In-Reply-To: <20260428061202.3557766-1-shawn.c.lee@intel.com>
+To: Mohammed Bilal <mohammed.bilal@intel.com>, igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>, Kory
+ Maincent <kory.maincent@bootlin.com>, Luca Ceresoli
+ <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH i-g-t v1 01/25] lib/igt_kms: Add a detect timeout value
+In-Reply-To: <20260428044644.257001-2-mohammed.bilal@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260427120955.3537070-1-shawn.c.lee@intel.com>
- <20260428061202.3557766-1-shawn.c.lee@intel.com>
-Date: Tue, 28 Apr 2026 10:10:01 +0300
-Message-ID: <42aedef3087af5f28e192e26248ed841568d8159@intel.com>
+References: <20260428044644.257001-1-mohammed.bilal@intel.com>
+ <20260428044644.257001-2-mohammed.bilal@intel.com>
+Date: Tue, 28 Apr 2026 10:11:58 +0300
+Message-ID: <0eac068737083fa01b3ff2c90b3bf13fd4eae029@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,104 +72,263 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 28 Apr 2026, Lee Shawn C <shawn.c.lee@intel.com> wrote:
-> Currently, kms_vrr tests fixed step increments within the VRR range.
-> To better validate hardware stability and potential issues across the
-> entire spectrum, this patch adds a 'full-range' testing mode.
+On Tue, 28 Apr 2026, Mohammed Bilal <mohammed.bilal@intel.com> wrote:
+> From: Louis Chauvet <louis.chauvet@bootlin.com>
 >
-> When the full-range flag is enabled, the test will:
-> 1. Iterate from the maximum to the minimum refresh rate (stepping by 1).
-> 2. For standard testing, maintain the existing behavior of incrementing
->    from minimum to maximum using the defined step size.
+> Some tests need to wait for a specific connector status. In order to make
+> the timeout customisable for each target, add an option in the
+> configuration file.
 >
-> v2: Fix build failure by adding documentation for the new subtest.
->
-> Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
+> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > ---
->  tests/kms_vrr.c | 32 ++++++++++++++++++++++++++------
->  1 file changed, 26 insertions(+), 6 deletions(-)
+>  lib/igt_core.c |   4 ++
+>  lib/igt_kms.c  | 123 +++++++++++++++++++++++++++++++------------------
+>  lib/igt_kms.h  |  10 ++++
+>  3 files changed, 92 insertions(+), 45 deletions(-)
 >
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 6043d40f1d74..b8a8c6aa79ed 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -66,6 +66,9 @@
->   * Description: Test to create a Virtual Mode in VRR range and switch to it
->   * 		without a full modeset.
->   *
-> + * SUBTEST: seamless-rr-switch-virtual-full
-> + * Description: Vrr seamless refresh rate switch for virtual modes using full range
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index 4f79c0294..cc835ea4c 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -271,6 +271,10 @@
+>   *	&num; It is not mandatory and allows overriding default values.
+>   *	[DUT]
+>   *	SuspendResumeDelay=10
 > + *
->   * SUBTEST: lobf
->   * Description: Test to validate link-off between active frames in non-psr
->   *              operation
-> @@ -93,9 +96,10 @@ enum {
->  	TEST_FLIPLINE = 1 << 3,
->  	TEST_SEAMLESS_VRR = 1 << 4,
->  	TEST_SEAMLESS_DRRS = 1 << 5,
-> -	TEST_SEAMLESS_VIRTUAL_RR = 1 << 6,
-> -	TEST_FASTSET = 1 << 7,
-> -	TEST_MAXMIN = 1 << 8,
-> +	TEST_SEAMLESS_VIRTUAL_RR_FAST = 1 << 6,
-> +	TEST_SEAMLESS_VIRTUAL_RR_FULL = 1 << 7,
-> +	TEST_FASTSET = 1 << 8,
-> +	TEST_MAXMIN = 1 << 9,
->  	TEST_LINK_OFF = 1 << 10,
->  	TEST_NEGATIVE = 1 << 11,
->  	TEST_FORCE_RR = 1 << 12,
-> @@ -754,10 +758,12 @@ test_seamless_virtual_rr_basic(data_t *data, igt_crtc_t *crtc,
->  			       igt_output_t *output, uint32_t flags)
+> + *	&num; The following option define the timeout for detection feature
+> + *	&num; (waiting for a connector status)
+> + *	DisplayDetectTimeout=10.0
+>   * ]|
+>   *
+>   * Some specific configuration options may be used by specific parts of IGT,
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 38c28f45f..ece888d1a 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -60,6 +60,7 @@
+>  #include "igt_debugfs.h"
+>  #include "igt_device.h"
+>  #include "igt_pipe_crc.h"
+> +#include "igt_rc.h"
+>  #include "igt_sysfs.h"
+>  #include "sw_sync.h"
+>  #ifdef HAVE_CHAMELIUM
+> @@ -8066,38 +8067,38 @@ bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output)
+>  
+>  igt_crtc_t *igt_crtc_for_crtc_id(igt_display_t *display, uint32_t crtc_id)
 >  {
->  	uint32_t result;
-> -	unsigned int vrefresh;
-> +	int vrefresh;
->  	uint64_t rate[] = {0};
->  	uint32_t step_size;
-> +	int start, end, step;
->  	drmModeModeInfo virtual_mode;
-> +	bool full_vrr_range = !!(flags & TEST_SEAMLESS_VIRTUAL_RR_FULL);
+> -	igt_crtc_t *crtc;
+> +        igt_crtc_t *crtc;
+>  
+> -	for_each_crtc(display, crtc) {
+> -		if (crtc->crtc_id == crtc_id)
+> -			return crtc;
+> -	}
+> +        for_each_crtc(display, crtc) {
+> +                if (crtc->crtc_id == crtc_id)
+> +                        return crtc;
+> +        }
+>  
+> -	return NULL;
+> +        return NULL;
 
-Nitpick, that !! is a thing of the past, and completely unnecessary with
-stdbool.
+Please check your patches before sending. There's a bunch of tabs to
+spaces changes all over the place.
 
 BR,
 Jani.
 
+>  }
 >  
->  	igt_info("Use HIGH_RR Mode as default\n");
->  	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-> @@ -795,7 +801,17 @@ test_seamless_virtual_rr_basic(data_t *data, igt_crtc_t *crtc,
->  		   (((data->range.max + data->range.min) / 2) + step_size) :
->  		   data->range.min + step_size;
+>  igt_crtc_t *igt_crtc_for_crtc_index(igt_display_t *display, int crtc_index)
+>  {
+> -	igt_crtc_t *crtc;
+> +        igt_crtc_t *crtc;
 >  
-> -	for ( ; vrefresh < data->range.max; vrefresh += step_size) {
-> +	if (full_vrr_range) {
-> +		start = data->range.max;
-> +		end = data->range.min;
-> +		step = -1;
-> +	} else {
-> +		start = data->range.min;
-> +		end = data->range.max;
-> +		step = step_size;
-> +	}
+> -	for_each_crtc(display, crtc) {
+> -		if (crtc->crtc_index == crtc_index)
+> -			return crtc;
+> -	}
+> +        for_each_crtc(display, crtc) {
+> +                if (crtc->crtc_index == crtc_index)
+> +                        return crtc;
+> +        }
+>  
+> -	return NULL;
+> +        return NULL;
+>  }
+>  
+>  igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
+>  {
+> -	igt_crtc_t *crtc;
+> +        igt_crtc_t *crtc;
+>  
+> -	for_each_crtc(display, crtc) {
+> -		if (crtc->pipe == pipe)
+> -			return crtc;
+> -	}
+> +        for_each_crtc(display, crtc) {
+> +                if (crtc->pipe == pipe)
+> +                        return crtc;
+> +        }
+>  
+> -	return NULL;
+> +        return NULL;
+>  }
+>  
+>  /*
+> @@ -8108,14 +8109,14 @@ igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
+>   */
+>  igt_crtc_t *igt_first_crtc(igt_display_t *display)
+>  {
+> -	igt_crtc_t *crtc;
+> +        igt_crtc_t *crtc;
+>  
+> -	for_each_crtc(display, crtc)
+> -		return crtc;
+> +        for_each_crtc(display, crtc)
+> +                return crtc;
+>  
+> -	igt_skip("No CRTCs on device\n");
+> +        igt_skip("No CRTCs on device\n");
+>  
+> -	return NULL;
+> +        return NULL;
+>  }
+>  
+>  /**
+> @@ -8128,19 +8129,19 @@ igt_crtc_t *igt_first_crtc(igt_display_t *display)
+>   */
+>  igt_crtc_t *igt_first_crtc_with_single_output(igt_display_t *display, igt_output_t **ret_output)
+>  {
+> -	igt_output_t *output;
+> -	igt_crtc_t *crtc;
+> +        igt_output_t *output;
+> +        igt_crtc_t *crtc;
+>  
+> -	for_each_crtc_with_single_output(display, crtc, output) {
+> -		*ret_output = output;
+> -		return crtc;
+> -	}
+> +        for_each_crtc_with_single_output(display, crtc, output) {
+> +                *ret_output = output;
+> +                return crtc;
+> +        }
+>  
+> -	igt_skip("No valid CRTC/output combinations\n");
+> +        igt_skip("No valid CRTC/output combinations\n");
+>  
+> -	*ret_output = NULL;
+> +        *ret_output = NULL;
+>  
+> -	return NULL;
+> +        return NULL;
+>  }
+>  
+>  /*
+> @@ -8152,14 +8153,14 @@ igt_crtc_t *igt_first_crtc_with_single_output(igt_display_t *display, igt_output
+>   */
+>  igt_crtc_t *igt_next_crtc(igt_display_t *display, igt_crtc_t *crtc)
+>  {
+> -	igt_crtc_t *next;
+> +        igt_crtc_t *next;
+>  
+> -	for_each_crtc(display, next) {
+> -		if (!crtc || next->pipe > crtc->pipe)
+> -			return next;
+> -	}
+> +        for_each_crtc(display, next) {
+> +                if (!crtc || next->pipe > crtc->pipe)
+> +                        return next;
+> +        }
+>  
+> -	return NULL;
+> +        return NULL;
+>  }
+>  
+>  /*
+> @@ -8170,14 +8171,46 @@ igt_crtc_t *igt_next_crtc(igt_display_t *display, igt_crtc_t *crtc)
+>   */
+>  igt_crtc_t *igt_random_crtc(igt_display_t *display)
+>  {
+> -	igt_crtc_t *crtcs[IGT_MAX_PIPES];
+> -	igt_crtc_t *crtc;
+> -	int n = 0;
+> +        igt_crtc_t *crtcs[IGT_MAX_PIPES];
+> +        igt_crtc_t *crtc;
+> +        int n = 0;
+>  
+> -	for_each_crtc(display, crtc)
+> -		crtcs[n++] = crtc;
+> +        for_each_crtc(display, crtc)
+> +                crtcs[n++] = crtc;
 > +
-> +	for (vrefresh = start; (step > 0) ? (vrefresh <= end) : (vrefresh >= end); vrefresh += step) {
->  		virtual_rr_vrr_range_mode(&virtual_mode, vrefresh);
->  
->  		igt_info("Requesting Virtual Mode with Refresh Rate (%u Hz): \n", vrefresh);
-> @@ -1103,7 +1119,11 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
->  
->  		igt_describe("Test to switch to any custom virtual mode in VRR range without modeset.");
->  		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
-> -			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
-> +			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR_FAST);
+> +        igt_skip_on_f(!n, "No CRTCs on device\n");
 > +
-> +		igt_describe("Test to switch to all virtual modes in VRR range without modeset.");
-> +		igt_subtest_with_dynamic("seamless-rr-switch-virtual-full")
-> +			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR_FULL);
+> +        return crtcs[rand() % n];
+> +}
+> +
+> +/**
+> + * igt_default_display_detect_timeout:
+> + *
+> + * Get the default timeout value for detection feature
+> + *
+> + * Some tests requires to wait for a specific connector status. This value will determine the
+> + * timeout value for this waiting.
+> + */
+> +double igt_default_display_detect_timeout(void)
+> +{
+> +        static double timeout = 0.0;
+> +        static bool first_call = true;
+> +        GError *error = NULL;
+> +
+> +        if (first_call) {
+> +                if (igt_key_file) {
+> +                        timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",&error);
+> +                        if (error) {
+> +                                igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",DEFAULT_DETECT_TIMEOUT);
+> +                                g_clear_error(&error);
+> +                                timeout = DEFAULT_DETECT_TIMEOUT;
+> +                        }
+> +                } else {
+> +                        timeout = DEFAULT_DETECT_TIMEOUT;
+> +                }
 >  
->  		igt_describe("Test to validate the link-off between active frames in "
->  			     "non-PSR operation.");
+> -	igt_skip_on_f(!n, "No CRTCs on device\n");
+> +                first_call = false;
+> +        }
+>  
+> -	return crtcs[rand() % n];
+> +        return timeout;
+>  }
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index fcbb6a5ad..b10df1d8d 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -40,6 +40,14 @@
+>  #include "igt_fb.h"
+>  #include "ioctl_wrappers.h"
+>  
+> +/**
+> + * define DEFAULT_DETECT_TIMEOUT - Default timeout in second used for some screen detection
+> + * functions
+> + *
+> + * It can be overiden by option DetectTimeout in the .igtrc file.
+> + */
+> +#define DEFAULT_DETECT_TIMEOUT 10.0
+> +
+>  /* Low-level helpers with kmstest_ prefix */
+>  
+>  /**
+> @@ -1289,4 +1297,6 @@ void igt_get_and_wait_out_fence(igt_output_t *output);
+>  
+>  igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
+>  
+> +double igt_default_display_detect_timeout(void);
+> +
+>  #endif /* __IGT_KMS_H__ */
 
 -- 
 Jani Nikula, Intel
