@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD96AFF886F
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Apr 2026 02:09:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55819FF886F
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Apr 2026 03:16:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 695A510EE2A;
-	Wed, 29 Apr 2026 02:09:48 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ODA8W6Sn";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4237D10EE2A
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Apr 2026 02:09:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777428543; x=1808964543;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=xYoMl209ZXXNf4StGuQQ7TlzC4IlEEta83NKPgY9Vww=;
- b=ODA8W6SnRSEuu1TkU52LshP2ve2/CFC7ahsh1xDkZKSwOYYgC/HaugFD
- J5Pg1bzJIWx9wnjMUjyi/ivvGUWQ+KoaQHw8t04VBSBAUgdy60wJaWgg+
- K4sk9orPLXtiTlsI8iKzb7YsQnIdY4ZDYJmPRn1veGDE38eFuOUKnbLE1
- iMtqNkJAdpUqNFOX1FrlrlPFCy/s0ddO9dVzywp02/rrjarqhjvFvZ6eI
- 5Ki2efejD0N8WBtMSKtNNsPqqQp9vkhAPbmXG6aIhhns3XJF+Ev/msN/p
- 2wRxvpOVK+rf1NBDR9vLmRKtJ6gLaAiyJGsDrc+i9azUpxj4oOgx2vzIa Q==;
-X-CSE-ConnectionGUID: ndrdiUEKSF21HVEgKoeddQ==
-X-CSE-MsgGUID: VAPXsZJBRhGaGReAHLHh3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="78335581"
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; d="scan'208";a="78335581"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2026 19:09:02 -0700
-X-CSE-ConnectionGUID: MSMz2QpCRnCN8RP7GMrCcg==
-X-CSE-MsgGUID: BsGwVPstQR+jDB+GxdQNsA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; d="scan'208";a="235902013"
-Received: from nvishwa1-desk.sc.intel.com ([172.25.29.139])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2026 19:09:02 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 0/2] tests/intel/xe_exec_multi_queue: Replace sleep with
- deterministic wait
-Date: Tue, 28 Apr 2026 19:08:55 -0700
-Message-ID: <20260429020856.1857656-4-niranjana.vishwanathapura@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0636C10E0C8;
+	Wed, 29 Apr 2026 03:16:42 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC4A510E0C8;
+ Wed, 29 Apr 2026 03:16:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3554514424995562881=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fmul?=
+ =?utf-8?q?ti=5Fqueue=3A_Replace_sleep_with_deterministic_wait?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Niranjana Vishwanathapura" <niranjana.vishwanathapura@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 29 Apr 2026 03:16:27 -0000
+Message-ID: <177743258795.23496.2775902818488815118@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260429020856.1857656-4-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20260429020856.1857656-4-niranjana.vishwanathapura@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,23 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In 'priority' subtest, sleep() is used to ensure some submissions have
-reached the hardware before we proceed in the test. But sleep duration
-is indeterminate. Instead use a more deterministic method to ensure
-those submissions have reached the hardware.
+--===============3554514424995562881==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+== Series Details ==
 
-Niranjana Vishwanathapura (2):
-  tests/intel/xe_exec_multi_queue: use timestamp to check job start
-  tests/intel/xe_exec_multi_queue: replace sleep with barrier queue
+Series: tests/intel/xe_exec_multi_queue: Replace sleep with deterministic wait
+URL   : https://patchwork.freedesktop.org/series/165673/
+State : success
 
- tests/intel/xe_exec_multi_queue.c | 88 +++++++++++++++++++++++--------
- 1 file changed, 67 insertions(+), 21 deletions(-)
+== Summary ==
 
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_8877_BAT -> XEIGTPW_15078_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8877 -> IGTPW_15078
+  * Linux: xe-4947-41542c1ef015c1907cd9a9785c8c2453f4fa2877 -> xe-4948-a53aafc879e9c52b2776089762591d2766a27f0a
+
+  IGTPW_15078: dc51a2f859cf0dae0498243600cc4bc75c957376 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8877: 1749e432cd72ef2c99f1b4e9d6f24411f1161901 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4947-41542c1ef015c1907cd9a9785c8c2453f4fa2877: 41542c1ef015c1907cd9a9785c8c2453f4fa2877
+  xe-4948-a53aafc879e9c52b2776089762591d2766a27f0a: a53aafc879e9c52b2776089762591d2766a27f0a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15078/index.html
+
+--===============3554514424995562881==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_multi_queue: Replace sleep with deterministic wait</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165673/">https://patchwork.freedesktop.org/series/165673/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15078/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15078/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8877_BAT -&gt; XEIGTPW_15078_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8877 -&gt; IGTPW_15078</li>
+<li>Linux: xe-4947-41542c1ef015c1907cd9a9785c8c2453f4fa2877 -&gt; xe-4948-a53aafc879e9c52b2776089762591d2766a27f0a</li>
+</ul>
+<p>IGTPW_15078: dc51a2f859cf0dae0498243600cc4bc75c957376 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8877: 1749e432cd72ef2c99f1b4e9d6f24411f1161901 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4947-41542c1ef015c1907cd9a9785c8c2453f4fa2877: 41542c1ef015c1907cd9a9785c8c2453f4fa2877<br />
+  xe-4948-a53aafc879e9c52b2776089762591d2766a27f0a: a53aafc879e9c52b2776089762591d2766a27f0a</p>
+
+</body>
+</html>
+
+--===============3554514424995562881==--
