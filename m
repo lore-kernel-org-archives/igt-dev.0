@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CC04FF8875
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Apr 2026 19:43:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 482A2FF8875
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Apr 2026 19:43:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D78A710E12B;
-	Wed, 29 Apr 2026 19:43:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F378110E12B;
+	Wed, 29 Apr 2026 19:43:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PTl3hiCv";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CAEYqO64";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DAB710E12B
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Apr 2026 19:42:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12D2C10E12B
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Apr 2026 19:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777491756; x=1809027756;
+ t=1777491760; x=1809027760;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=g9VI5XXOx9bPnI3cQGIxUCHeztSHMunqP1rLDdW/yn0=;
- b=PTl3hiCvsqI5ToM36aCGft0AYTb50cEq4zaghNkO2IFUfQWk6JSp4JUz
- /zkHNwFbmACDRq5ywWPMp9e+WOemJIkIdoew+64ST9HJL44y09NZviMFp
- mYYxE5MFs/neoc1in8XGFs8MZc8lfz4KAra81zpb0LzgNkclAlF3EDVO9
- 36gNCYxhd66p8cjwu7MI0gkFf4qohcKJbjjnefGzBFH0PBYSf1ftsyAIN
- jnlnE5Nfs2QO3yNVPvATzcdVryuvLqGrS3S9waIwnLJJ2JpRDP1YSTmPp
- Itn70PmLzlNVvoxCx36Xk+UVqsa2gtureS0tzYKKnV7EP9xjvZwSMk8Ze Q==;
-X-CSE-ConnectionGUID: oLxsx+VTSd+oIGN1rDgT4Q==
-X-CSE-MsgGUID: WVT7qAJlShSS8uMC9lrgKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="82295702"
-X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; d="scan'208";a="82295702"
+ bh=jqPFbGYhCzIrZnbZRAKauE5UwQMyUVdIwIfhbPUVlb4=;
+ b=CAEYqO64ZOJFNTa2vwkFvSNXsAkwQtOSStEPqG37ScLZzdq+p+WzEtAe
+ C8U422j2XjogW8Qk0StveB11/Q44foMmfr8pBRUDs9AebrGakE27MkxIe
+ sM5ONgYa97ZmuETnyGJ5vOMXzVybc9reonGHUzYlzNzXGIO2NGibzrIPa
+ oCF9dIXDjWx13jR1mxEkeI9Dh5XoqsiyWY2v+D2tkrO18x5qK1c1YHeKa
+ lP5TGf7Cs6O1Qp1W1zNLlOFplo3ioQad1AbuCcfTUjGxXOIOXF7YV8wxi
+ Aur4/TcSA4pSPOSouq0QeFIObuf7FEuByrLuO9qrzr+PMrQ8KLd2+tnZ6 Q==;
+X-CSE-ConnectionGUID: 7Ol4+4XtTAGQQqyFJSurHA==
+X-CSE-MsgGUID: ahXUeFXSQi28Feld5lENaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="82295716"
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; d="scan'208";a="82295716"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2026 12:42:36 -0700
-X-CSE-ConnectionGUID: 3PBTvJSLRaKR8ibzUxWo/Q==
-X-CSE-MsgGUID: czaElnGXSdujfec+07kfTQ==
+ 29 Apr 2026 12:42:40 -0700
+X-CSE-ConnectionGUID: u4K3bvGQSsap3U/X5YGkSw==
+X-CSE-MsgGUID: 5ZWePLbfQrq3Wna9XvvcKg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; d="scan'208";a="229762002"
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; d="scan'208";a="229762019"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 12:42:34 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 12:42:38 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>,
- Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH i-g-t,v5 1/4] lib/igt_kms: Add igt_get_joined_pipes_name()
-Date: Thu, 30 Apr 2026 01:21:12 +0530
-Message-Id: <20260429195115.2332923-2-swati2.sharma@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t,
+ v5 4/4] tests/intel/kms_dsc: Add force dsc and joiner test cases
+Date: Thu, 30 Apr 2026 01:21:15 +0530
+Message-Id: <20260429195115.2332923-5-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260429195115.2332923-1-swati2.sharma@intel.com>
 References: <20260429195115.2332923-1-swati2.sharma@intel.com>
@@ -68,63 +68,313 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add function to transform the enum into a string.
+Add test cases where we are validating force dsc and force
+joiner.
 
-v2: -Improved func() doc (Jeevan)
-v3: -Return names without '-' dash prefix (Santhosh)
+v2: -fix if() for ultra/big joiner (Ankit)
+v3: -Add '-' separator in subtest names when using
+     igt_get_joined_pipes_name (Santhosh)
+v4: -Use 'enum joined_pipes force_joined_pipes' in data_t (Ankit)
+    -Use dsc-basic-%s format for subtest names (Ankit)
+    -Use igt_crtc_for_pipe() to check consecutive HW pipes,
+     handling fused pipe holes properly (Ankit)
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- lib/igt_kms.c | 22 ++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 23 insertions(+)
+ tests/intel/kms_dsc.c | 206 +++++++++++++++++++++++++++---------------
+ 1 file changed, 134 insertions(+), 72 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 2efdfb85f..bece27ff6 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1906,6 +1906,28 @@ bool kmstest_force_connector_joiner(int drm_fd, drmModeConnector *connector, int
- 	return true;
- }
- 
-+/**
-+ * igt_get_joined_pipes_name:
-+ * @val: forced value
+diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+index 69f335da3..bfd84e59a 100644
+--- a/tests/intel/kms_dsc.c
++++ b/tests/intel/kms_dsc.c
+@@ -55,7 +55,27 @@
+  * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
+  * @fractional-bpp:               DSC with fractional bpp with default parameters
+  * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
+- */
 + *
-+ * Returns: A joined_pipes enum value into a readable string.
-+ */
-+const char *igt_get_joined_pipes_name(enum joined_pipes val)
-+{
-+	switch (val) {
-+	case JOINED_PIPES_DEFAULT:
-+		return "";
-+	case JOINED_PIPES_NONE:
-+		return "none";
-+	case JOINED_PIPES_BIG_JOINER:
-+		return "bigjoiner";
-+	case JOINED_PIPES_ULTRA_JOINER:
-+		return "ultrajoiner";
-+	default:
-+		igt_assert(false);
++ * SUBTEST: dsc-%s-%s
++ * Description: Tests Display Stream Compression functionality if supported by a
++ *              connector by forcing %arg[1] and %arg[2] on all connectors that support it
++ *
++ * arg[1]:
++ *
++ * @basic:                        DSC with default parameters
++ * @with-bpc:                     DSC with certain input BPC for the connector
++ * @with-bpc-formats:             DSC with certain input BPC for the connector and diff formats
++ * @with-formats:                 DSC with default parameters and creating fb with diff formats
++ * @with-output-formats:          DSC with output formats
++ * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
++ * @fractional-bpp:               DSC with fractional bpp with default parameters
++ * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
++ *
++ * arg[2]:
++ *
++ * @bigjoiner:			  big joiner
++ * @ultrajoiner:		  ultra joiner
++*/
+ 
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+@@ -81,11 +101,13 @@ typedef struct {
+ 	int disp_ver;
+ 	igt_crtc_t *crtc;
+ 	bool limited;
++	enum joined_pipes force_joined_pipes;
+ } data_t;
+ 
+ static int output_format_list[] = {DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
+ static int format_list[] = {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
+ static uint32_t bpc_list[] = {8, 10, 12};
++static enum joined_pipes joiner_tests[] = {JOINED_PIPES_DEFAULT, JOINED_PIPES_BIG_JOINER, JOINED_PIPES_ULTRA_JOINER};
+ 
+ static inline void manual(const char *expected)
+ {
+@@ -135,6 +157,7 @@ static void update_display(data_t *data, uint32_t test_type)
+ 	int current_bpc = 0;
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
++	bool status;
+ 	igt_output_t *output = data->output;
+ 	igt_display_t *display = &data->display;
+ 	drmModeConnector *connector = output->config.connector;
+@@ -147,6 +170,11 @@ static void update_display(data_t *data, uint32_t test_type)
+ 	save_force_dsc_en(data->drm_fd, data->output);
+ 	force_dsc_enable(data->drm_fd, data->output);
+ 
++	if (data->force_joined_pipes == JOINED_PIPES_BIG_JOINER || data->force_joined_pipes == JOINED_PIPES_ULTRA_JOINER) {
++		status = kmstest_force_connector_joiner(data->drm_fd, connector, data->force_joined_pipes);
++		igt_assert_f(status, "Failed to toggle force joiner\n");
 +	}
-+}
 +
- /**
-  * kmstest_force_edid:
-  * @drm_fd: drm file descriptor
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index fcbb6a5ad..6898cd981 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1280,6 +1280,7 @@ void igt_set_link_params(int drm_fd, igt_output_t *output,
- int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
- int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
- uint32_t igt_get_connected_output_count(igt_display_t *display);
-+const char *igt_get_joined_pipes_name(enum joined_pipes val);
+ 	if (test_type & TEST_DSC_BPC) {
+ 		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
+ 		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
+@@ -246,25 +274,35 @@ reset:
  
- drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output);
+ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 		     unsigned int plane_format,
+-		     enum dsc_output_format output_format)
++		     enum dsc_output_format output_format,
++		     enum joined_pipes joined_pipes)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+ 	igt_crtc_t *crtc;
++	int n_pipes = 0;
+ 	char name[3][LEN] = {
+ 				{0},
+ 				{0},
+ 				{0},
+ 			    };
  
++	for_each_crtc(display, crtc)
++		n_pipes++;
++
+ 	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
+ 
++	if (joined_pipes != JOINED_PIPES_DEFAULT &&
++	    !igt_is_joiner_supported_by_source(data->drm_fd, joined_pipes))
++		return;
++
+ 	for_each_crtc_with_valid_output(display, crtc, output) {
+ 		data->output_format = output_format;
+ 		data->plane_format = plane_format;
+ 		data->input_bpc = bpc;
+ 		data->output = output;
+ 		data->crtc = crtc;
++		data->force_joined_pipes = joined_pipes;
+ 
+ 		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
+ 		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->crtc))
+@@ -285,6 +323,26 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 						      data->drm_fd, data->output)))
+ 			continue;
+ 
++		/*
++		 * Check joiner constraints and verify that we have
++		 * enough consecutive HW pipes starting from this crtc.
++		 * Use igt_crtc_for_pipe() to handle fused pipe holes.
++		 */
++		if (joined_pipes != JOINED_PIPES_DEFAULT &&
++		    !check_dsc_joiner_constraints(data->drm_fd, data->output,
++						  n_pipes, joined_pipes))
++			continue;
++
++		if (joined_pipes == JOINED_PIPES_BIG_JOINER &&
++		    !igt_crtc_for_pipe(display, crtc->pipe + 1))
++			continue;
++
++		if (joined_pipes == JOINED_PIPES_ULTRA_JOINER &&
++		    (!igt_crtc_for_pipe(display, crtc->pipe + 1) ||
++		     !igt_crtc_for_pipe(display, crtc->pipe + 2) ||
++		     !igt_crtc_for_pipe(display, crtc->pipe + 3)))
++			continue;
++
+ 		if (test_type & TEST_DSC_OUTPUT_FORMAT)
+ 			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
+ 		if (test_type & TEST_DSC_FORMAT)
+@@ -334,85 +392,89 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		igt_require(is_dsc_supported_by_source(data.drm_fd));
+ 	}
+ 
+-	igt_describe("Tests basic display stream compression functionality if supported "
+-		     "by a connector by forcing DSC on all connectors that support it "
+-		     "with default parameters");
+-	igt_subtest_with_dynamic("dsc-basic")
+-			test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
+-				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+-
+-	igt_describe("Tests basic display stream compression functionality if supported "
+-		     "by a connector by forcing DSC on all connectors that support it "
+-		     "with default parameters and creating fb with diff formats");
+-	igt_subtest_with_dynamic("dsc-with-formats") {
+-		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
+-				 format_list[k], DSC_FORMAT_RGB);
+-	}
+ 
+-	igt_describe("Tests basic display stream compression functionality if supported "
+-		     "by a connector by forcing DSC on all connectors that support it "
+-		     "with certain input BPC for the connector");
+-	igt_subtest_with_dynamic("dsc-with-bpc") {
+-		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+-			test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
+-				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+-	}
++	for (int i = 0; i < ARRAY_SIZE(joiner_tests) ; i++) {
++		igt_describe("Tests basic display stream compression functionality if supported "
++			     "by a connector by forcing DSC on all connectors that support it "
++			     "with default parameters");
++		igt_subtest_with_dynamic_f("dsc-basic%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
++				test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
++					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
++		}
+ 
+-	igt_describe("Tests basic display stream compression functionality if supported "
+-		     "by a connector by forcing DSC on all connectors that support it "
+-		     "with certain input BPC for the connector with diff formats");
+-	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+-		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+-			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+-				test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
+-				bpc_list[j], format_list[k],
+-				DSC_FORMAT_RGB);
+-			}
++		igt_describe("Tests basic display stream compression functionality if supported "
++			     "by a connector by forcing DSC on all connectors that support it "
++			     "with default parameters and creating fb with diff formats");
++		igt_subtest_with_dynamic_f("dsc-with-formats%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int k = 0; k < ARRAY_SIZE(format_list); k++)
++				test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
++					 format_list[k], DSC_FORMAT_RGB, joiner_tests[i]);
+ 		}
+-	}
+ 
+-	igt_describe("Tests basic display stream compression functionality if supported "
+-		     "by a connector by forcing DSC and output format on all connectors "
+-		     "that support it");
+-	igt_subtest_with_dynamic("dsc-with-output-formats") {
+-		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
+-			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
+-				 DRM_FORMAT_XRGB8888,
+-				 output_format_list[k]);
+-	}
++		igt_describe("Tests basic display stream compression functionality if supported "
++			     "by a connector by forcing DSC on all connectors that support it "
++			     "with certain input BPC for the connector");
++		igt_subtest_with_dynamic_f("dsc-with-bpc%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
++				test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
++					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
++		}
+ 
+-	igt_describe("Tests basic display stream compression functionality if supported "
+-		     "by a connector by forcing DSC and output format on all connectors "
+-		     "that support it with certain input BPC for the connector");
+-	igt_subtest_with_dynamic("dsc-with-output-formats-with-bpc") {
+-		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++) {
++		igt_describe("Tests basic display stream compression functionality if supported "
++			     "by a connector by forcing DSC on all connectors that support it "
++			     "with certain input BPC for the connector with diff formats");
++		igt_subtest_with_dynamic_f("dsc-with-bpc-formats%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
+ 			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+-				test_dsc(&data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
+-					 bpc_list[j], DRM_FORMAT_XRGB8888,
+-					 output_format_list[k]);
++				for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
++					test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
++					bpc_list[j], format_list[k],
++					DSC_FORMAT_RGB, joiner_tests[i]);
++				}
+ 			}
+ 		}
+-	}
+ 
+-	igt_describe("Tests fractional compressed bpp functionality if supported "
+-		     "by a connector by forcing fractional_bpp on all connectors that support it "
+-		     "with default parameter. While finding the optimum compressed bpp, driver will "
+-		     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
+-		     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
+-	igt_subtest_with_dynamic("dsc-fractional-bpp")
+-			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
+-				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
+-				 DSC_FORMAT_RGB);
+-
+-	igt_describe("Tests fractional compressed bpp functionality if supported "
+-		     "by a connector by forcing fractional_bpp on all connectors that support it "
+-		     "with certain input BPC for the connector.");
+-	igt_subtest_with_dynamic("dsc-fractional-bpp-with-bpc") {
+-		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+-			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
+-				 bpc_list[j], DRM_FORMAT_XRGB8888,
+-				 DSC_FORMAT_RGB);
++		igt_describe("Tests basic display stream compression functionality if supported "
++			     "by a connector by forcing DSC and output format on all connectors "
++			     "that support it");
++		igt_subtest_with_dynamic_f("dsc-with-output-formats%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
++				test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
++					 DRM_FORMAT_XRGB8888,
++					 output_format_list[k], joiner_tests[i]);
++		}
++
++		igt_describe("Tests basic display stream compression functionality if supported "
++			     "by a connector by forcing DSC and output format on all connectors "
++			     "that support it with certain input BPC for the connector");
++		igt_subtest_with_dynamic_f("dsc-with-output-formats-with-bpc%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int k = 0; k < ARRAY_SIZE(output_format_list); k++) {
++				for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
++					test_dsc(&data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
++						 bpc_list[j], DRM_FORMAT_XRGB8888,
++						 output_format_list[k], joiner_tests[i]);
++				}
++			}
++		}
++
++		igt_describe("Tests fractional compressed bpp functionality if supported "
++			     "by a connector by forcing fractional_bpp on all connectors that support it "
++			     "with default parameter. While finding the optimum compressed bpp, driver will "
++			     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
++			     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
++		igt_subtest_with_dynamic_f("dsc-fractional-bpp%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i]))
++				test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
++					 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
++					 DSC_FORMAT_RGB, joiner_tests[i]);
++
++		igt_describe("Tests fractional compressed bpp functionality if supported "
++			     "by a connector by forcing fractional_bpp on all connectors that support it "
++			     "with certain input BPC for the connector.");
++		igt_subtest_with_dynamic_f("dsc-fractional-bpp-with-bpc%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
++				test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
++					 bpc_list[j], DRM_FORMAT_XRGB8888,
++					 DSC_FORMAT_RGB, joiner_tests[i]);
++			}
+ 	}
+ 
+ 	igt_fixture() {
 -- 
 2.25.1
 
