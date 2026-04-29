@@ -4,57 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39E01FF887E
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Apr 2026 17:45:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7BC9FF887E
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Apr 2026 18:27:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E40BD10E0B6;
-	Wed, 29 Apr 2026 17:45:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6D7E010E00D;
+	Wed, 29 Apr 2026 18:27:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nx2FgdYW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JSTslCsg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93EDD10E2E5
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Apr 2026 17:44:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22CA210E00D
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Apr 2026 18:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777484651; x=1809020651;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=jnjTKVTXvbkhbJOSYLog5DhY+LEk/sL2vNbQd5nSB08=;
- b=Nx2FgdYW+FroDP30mAI31EXtFm73mrcPGv6QVZCJzboiKmF4wwnmjof2
- 84wbmsaNM/yPBCeAfxHx6OGB3c2FQGk6EXZqQ9LJiOZ2JPP1E8aJh22WO
- 6HUEDFnO08OVwpcyz8npZB/t+mvhOZUY9/c0lsaqXFDnu9lB1wIIXV5xn
- hJpNPU6q9/32sHmm2Py9rak/LH+Sfo+aDbWZ7eN7lX+K/Iz3ske/zd94I
- M3aPDNKlJpNpsoVl1D1BQ4mtLl950cFiWjMUnsrD6z1b+iLfNxblvEXgV
- 9I1UcTBIwSjAHyqexQuuKB0Pasd0axPokCGJx3NC0DYFoeDhTPEB8PL9o g==;
-X-CSE-ConnectionGUID: XB71VB7QTU68HE0WYOggaw==
-X-CSE-MsgGUID: i2nWkIzuTEyvr3LEb4Ezaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="65950868"
-X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; d="scan'208";a="65950868"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2026 10:44:10 -0700
-X-CSE-ConnectionGUID: EELFlQRsTFuGuWVF7ck9WQ==
-X-CSE-MsgGUID: l+42w7cnTj+4DByqJBBf7g==
+ t=1777487228; x=1809023228;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-id:content-transfer-encoding:mime-version;
+ bh=5/xVyQcEQOwTTWTXSsEA8IR9b8Ji29Gw/MLPnZQ/5ME=;
+ b=JSTslCsgzL1OhYlqpqrR7R8TQAUCYR+RWQ0SxEk4pKQduxWxH+3Yqp0C
+ ALYX2P1iHsV6ZEvK4fZVhYfid8PP4uBcY7mtkDnsiHGeIBp7KIiGqTJtP
+ BEG/m+o06tV5495ml3WEqI6KvyicT7IeZqxAK+OXNmeowb8Fr8g1Y9wTh
+ ejcKeTQwGWNbC+7IqrF7LxXZh9cxyy3KxKIkMGLejIEHZOLhpZW0vKKrX
+ Ex1FCd6aacFMQcPHz3MIzOXbLUfkMTRL6cFE1H+DNVmNFDM/AfVanoeyZ
+ yluK+DcgeF3ahTFFFy6kWU1o0dEp8okpfR80UGL/DQKdLh+lkvMR0lqAN g==;
+X-CSE-ConnectionGUID: akDPxw3rQxyvveGzbDS/Vw==
+X-CSE-MsgGUID: VuerEj2JT7yKYRkUOJBw4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="89888430"
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; d="scan'208";a="89888430"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2026 11:27:07 -0700
+X-CSE-ConnectionGUID: V/sRnyEhQnGSLLydhnRHkQ==
+X-CSE-MsgGUID: zTk5Cmo1RAuLYhfuR7wh1A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; d="scan'208";a="233309042"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 10:44:09 -0700
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>, Alex Hung <alex.hung@amd.com>,
- Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH i-g-t,
- v5 1/4] lib/igt_hdr: Move HDR helpers from kms_hdr into shared library
-Date: Wed, 29 Apr 2026 23:22:02 +0530
-Message-Id: <20260429175205.2327206-2-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260429175205.2327206-1-swati2.sharma@intel.com>
-References: <20260429175205.2327206-1-swati2.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; d="scan'208";a="236114497"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2026 11:27:07 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 29 Apr 2026 11:27:07 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 29 Apr 2026 11:27:07 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.30) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 29 Apr 2026 11:27:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hzMsAM2HuzTSLIlvAN0Wsj5YbZyvEMlbx8xPlXYjWGc45IZIj6yaRDtltZ6eUN3Mx42dJBA/ZUz2LRMYAHEtM0xJrAn8wdtiQQIejmPhVAMcFcu2NkdWfmX9tOkvVEcKJsXoIiA+SZXHMIhJ+SRLD74SYtgZu+X+jsY/BlElmaimfTFcLzS1WpF6HSlituCuOAPo5jU+z1p8drwA9w5C5+PLlbyjAIz0ycEAAUB7w7+YZoHxlyUR0S2zRAvqfo404Vc3Z3uJKSK96xbvZC+ph7moz8OSNpCUagwxgCegSRZ7zWNp1CCc4axYJb2D+mShZ7p0G5EBFjmKhiyaqxC+3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5/xVyQcEQOwTTWTXSsEA8IR9b8Ji29Gw/MLPnZQ/5ME=;
+ b=VHvj3uE6rxrmJC4IniDPvSLLgZot8jdP5apgNhEc89GQefZtSphNw+5km5jK5VgUrtJJgPn1mjqfrWj8TlBTbvptxPYbX9rMN7j9Z2yuEcUfkbZAJEMJQUgrl1CsdlvdIVoJRwWx/c06JiHUB1xohJouPcXkPAB1PILaJThuUQCuP3MnV8YVbjeg2HEPzDpaON/mQXxQ3HoW+p3tsxdkEjMsoxl0IjOfDwNVRc1E4hBpf6FmA7tD2lVu7fPsFaqVhC/uL5FejmkQRo7HoZEsUZ3LQyoLxUO6v4NYcW+ubR+cU8dIyr5WNJ0a5NvOOgDuE2teXNP98brIiTw5GDdHwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM8PR11MB5573.namprd11.prod.outlook.com (2603:10b6:8:3b::7) by
+ CH0PR11MB5252.namprd11.prod.outlook.com (2603:10b6:610:e3::15) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.16; Wed, 29 Apr 2026 18:27:04 +0000
+Received: from DM8PR11MB5573.namprd11.prod.outlook.com
+ ([fe80::6a14:6aa3:4339:4415]) by DM8PR11MB5573.namprd11.prod.outlook.com
+ ([fe80::6a14:6aa3:4339:4415%5]) with mapi id 15.20.9870.020; Wed, 29 Apr 2026
+ 18:27:04 +0000
+From: "Summers, Stuart" <stuart.summers@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Vishwanathapura, Niranjana" <niranjana.vishwanathapura@intel.com>
+Subject: Re: [PATCH 2/2] tests/intel/xe_exec_multi_queue: replace sleep with
+ barrier queue
+Thread-Topic: [PATCH 2/2] tests/intel/xe_exec_multi_queue: replace sleep with
+ barrier queue
+Thread-Index: AQHc131DaOWDzolM9kWR2PNdaffaIrX2XC6A
+Date: Wed, 29 Apr 2026 18:27:04 +0000
+Message-ID: <ab23ef9a6e8b9c8efb500cde38824b9aaf21ef5c.camel@intel.com>
+References: <20260429020856.1857656-4-niranjana.vishwanathapura@intel.com>
+ <20260429020856.1857656-6-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20260429020856.1857656-6-niranjana.vishwanathapura@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.44.4-0ubuntu2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR11MB5573:EE_|CH0PR11MB5252:EE_
+x-ms-office365-filtering-correlation-id: d866228e-baab-44bd-1d11-08dea61ce9e8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|376014|1800799024|38070700021|56012099003|22082099003|18002099003;
+x-microsoft-antispam-message-info: MytHKv9ZjI2F4G4C8FAGlR6B5/sHq3ylKRgD4AyN79bR0eb/xby5YfMJXnp4ZDyZGWRRFs86zZrVP3RUEHTty81kyH+5r8u2dB1ce12b/+YU1A4dxIBfIDmoldxWKz02IFa6WVZCL3o6pR6oZZkT6aEmTVi32qWi+dGM+iDbIgZgJffVLhQ4SLLXH93I1UxHtadb7VcLW1rS2zchLEAD7nPPdzhL7X1ZzYM5tvXm+YezdzFyK2QDMyi7ydFtb9Y62gqD74FLf5P8+52jASTjIWn2l6vB9DQpRtK1f7RZVHtMKsZJ1RAd4sTNdpbfeZKzXHKmm6UQpvw2MUJPheoUQzeeCo9whQfJYrpZ6p8TVbl2u0Ha/aWvO3oXAbrF0l69fRPVCvCMGLf6SVrPAQjLNIiZqbK+wfbD2/ZjURcXUDkFw/SoNSuBLI7mTMvCle//4cpD4I85mqfxKHVm5bDQ/6PSp/UzileIRztaUdPVXZ5hNrPfm69INtbp5gjXTBc2KLJqYNcMwTpltsLO0zWGFMYfEwghbnlnwKYiED8Osw1t3NJLeTicTzUKs7bAKe/3b5xYbY0VdkXpv3dBot7MQao7ltG6ApF83fuarthenJus2X8IHQBE9QqQEQyXMrgx3dqJLyx1ixg64oiLcVm/Na5BQuB47TqWXvVKxSus+ICnwfV9OaAHhbk6yfn3nV9rJk+AC58hQ2TA7FXvsiHs7cvb0LnUUpsYFtKh+QKo3JOO1J7bqZ2Xf0iyt9wDISYlx6TEfnhpjNuDjnOXe61+R8c3zCpcpSwVnRfmBFBo4mU=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM8PR11MB5573.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(38070700021)(56012099003)(22082099003)(18002099003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RkU5UTU2NGVkSFJLMDRpZ0xYYWdyTzV3QTNPellwTVAwNGtXVHdQVm9kd3pF?=
+ =?utf-8?B?cldNc3k4RWNwTzUvb1I0SnhYbktNTkM2cHdxWFpJQ0F2RVJiZ1NEZ0FrNUcv?=
+ =?utf-8?B?VFBVSTNEbEQrbWZ2TW5ueTNSUmtYWlF2QjhnMlpGaGZxVXRGSVdDNWVadDM5?=
+ =?utf-8?B?Z1BUZ1NQd0NpM0RCQUdrNEQvenQyQkUzNi9yMkFZSlpKSkpjSTRQWjk4ZnNr?=
+ =?utf-8?B?ak1jaC9vanl2djIza1ZEQjBJWm1mUko5UjNnK2RqQWsrZjRGaVJUZ3pPS3Qr?=
+ =?utf-8?B?blBqNlkrSjNqK1ZLUFJDM21JWk9mL1pkbGZidFBseVZCVlE4VFRNOUxxeHFM?=
+ =?utf-8?B?Z2NuZkc2MmpjZ25NTytwTlRFUU90OS9US0UzeGd3S09JVXNSY3BHeTBLS0F3?=
+ =?utf-8?B?ZjV2ZWhkcDlJRVJWeGJ0V24wbkxWSytuaHZGY1hIejBiZUhrVlJPak9uUWdr?=
+ =?utf-8?B?SXNnV2tRQ21ncHZZRi8rTW5NZzBwVHNsdG1CSnBOYTlMOHlXaG1rT2RsMG5N?=
+ =?utf-8?B?WjhjbzJKSmt4eUg5NnA3QXVIbFYyRXpiUnpkV0xubkJEdzVWeC9qQmRUdkox?=
+ =?utf-8?B?Q1VLaklCK1hlK2diSzF5SS9jRjdPTkhYaFN4bEhTMUdQZUhzMENIYWV3MDFM?=
+ =?utf-8?B?WVRrc3lKTE9OaTRKUmU3N3BXTytmWUxVbFVyUUJwTDFxOFlWaGhRY0Uzc3Ft?=
+ =?utf-8?B?M1gycVFJZnVTQ1B1b1FZQVkrelpWamtoaWpkTWpJZUx6aDJsclVVeDF6aFJ2?=
+ =?utf-8?B?dk9PbTh6V0dMdHJSZlc2aytPY2JHaFdyVm5xTVczc3RRWjhCOExWOHlINnFy?=
+ =?utf-8?B?d25FbXE0ZmIwT2t4ZWRTeVpod3I5MTBTWHN0QUxKc0VpZXRxUHVwS3lvNzNI?=
+ =?utf-8?B?T0pTYndmeHFsOHlpdjF4RWRMWHd2cnB6aGo1MkFZK0NLajEyUkJMQVcxWGRK?=
+ =?utf-8?B?djYvOTF0djhsNTFHQ0J0c3laQUlLSFd5ZkNSVEhvRmprVzMrVWVydktqNlZV?=
+ =?utf-8?B?Nk4xOXNzb0VaWlNmNXlyZitVc2pBbzg4RVJzV0MzblhPczNIUWVWUDNkelZT?=
+ =?utf-8?B?M0tpcFpIUVFqVHAvQ1JxYm9VbU9MbEljaERlTzdGZHphVnMxY29wR1UybitC?=
+ =?utf-8?B?SnM0Vjd6ajRoU3V6TEpQN2FPeTlpWEhqZHdBY2xvU3ZQYlQ3S01MM3h2dUNy?=
+ =?utf-8?B?WFNSaU51djFJUWRNODBzTjFGVGcwc05oRE5iUlYzL2NJMDNwNU9wMU14aGdD?=
+ =?utf-8?B?U3Yxd0Z1Vy96VWM0ZEJJSUV5QkU0S1AvNjRaR0JvWTJYc1hrOGlIY0xLVllr?=
+ =?utf-8?B?NTZhS2ZEaUtkOWUwbkJqMzE5WVNQa0pzc0VuYS9SOStpUmhXaVJ0RTBxaFU5?=
+ =?utf-8?B?Sy9DWVBKN0tMdE1KN2lxbFB6bHJXQ1lNbW9FVit1WmNWdStGTTExcE9GZDc2?=
+ =?utf-8?B?ZzY2Z0FRT1RPakpqZ2tzemdsQ3F6aWZFQVZiSW1JU29JR3RqM2Q4RlFRdzBt?=
+ =?utf-8?B?blM2SVpadG9Bbm1ENU5qS2dBNnArNG9hc0NKc0FQWVJZNzd0MEcvRituOEFC?=
+ =?utf-8?B?RWpscHdhTWlOMXFiVmRMaGNWdGpvb1VYMDhtQVJGQ2Q3UXhBcWdLTm8zWXlv?=
+ =?utf-8?B?MGE1WGRJaHZqYWI5WVREMmZEVnQ5NHUxNFZHRTVlUkljeWxsT0c1cXN3REJF?=
+ =?utf-8?B?cCtTZlBKYW5ENWVvTFRVcTJYMGgrbERpRUYvTGNSdDBtSU93OVgxVHFxRGtn?=
+ =?utf-8?B?ZEJwbXVNcVV2Z2RLTCttUERGMVQvWTk1RlNuNXYzYVNEYTNwRU0xaUFaMlJ2?=
+ =?utf-8?B?WXQwK01Xc1RyZmQvUDBzOWpaRTFaUmpsODF6T3gwQXRTbkQ4RGpvZjRvYlJF?=
+ =?utf-8?B?NXBCL3VlSStVNmtvWi9IUXJzeDg4MmJNSStaRVF3Y08xSHlBWGJGWjFJVFI1?=
+ =?utf-8?B?Q0Y0S1lWaUdyQktqOUFGUzZBMHZpalZQRFJPaGRWYTZCTk01UEh1MHFHckdH?=
+ =?utf-8?B?aDZRazk5ako5c0Z1RFhqYlFTV1BxanI2TUkxKzZlWm42Q28yczZCWG55T3Ux?=
+ =?utf-8?B?ckJZVHRjRS9BZzRaZ2Rkc2R3WXgySFk3OVNrKzV3Tjk4OWFMTVZoT2UyMUZ4?=
+ =?utf-8?B?Y2Myd21UQ1d0R3ZqN3c0TXhDWU1JdUlOYVVXc1FHR2RJUlhCT0YwbDNDUXhk?=
+ =?utf-8?B?MVU0b05rSFRyTnBmNGYvSEIrazdIaDFESjFCcVZyNVlMV2I0VGduOUFSYW1s?=
+ =?utf-8?B?Q0Rkb2ZhQS9MYVNucDY1cFVUVzZMaWRvQ2xsdEtpejl4SFZRVTQrWWZFd05N?=
+ =?utf-8?B?UVMxQWozS2NrcTEwSHJrMmZJVjR5d0U5TEwxZ2N4ZUJzeTVkR2h2ZWMra0JR?=
+ =?utf-8?Q?ao6oMtT/f/W8TA8k=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4171838E6368CE4BA72E52B640F1D6C6@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: lGUi2DRvZ4vrYP6IZfW/rR+0HjpCYGxl1ocNqUO4skPqAUZsBm4yjC0lyLPHGdlvYRO9r5lVRBCPMYhNhbQ45m1DgPamS5iCl1rFcg14oGp1OCPtwShefodv37JTW1V2S8JPjwsYOmbJaNDLNDODC9BjY74h10GIxmzY2y8nV2grpAtYONIDtbQy3Gdw2w3zJnPwlUUIGTAfUbgogj/gBOR05isusBRloBY4CzYga9w60MwhYtbt46MHGxtkD5UfxNcdx23ktAVt6iLgm21W2aI4WX0AnnXE5X+Je5YC/I3IWlWfIrFZkqCl27EoTh8G/yJ8f0R7A579i9BkuBUhkg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5573.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d866228e-baab-44bd-1d11-08dea61ce9e8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Apr 2026 18:27:04.6544 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: h322d6aM0x7q56XF2DQqj/x0XBIZkSqIkcytXoXH6iWZP8Rymz/0cGdMdlWKMvYFnoln1Uz5EoGWkAc/yZy/BVneO/aIy/VYv5RPWEe5z2o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5252
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,786 +175,125 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce lib/igt_hdr.{c,h} containing metadata fill helpers, EOTF enums,
-ST2084 construction, and blob programming utilities. This allows
-kms_hdr and upcoming tests (e.g., HDR support in kms_frontbuffer_tracking)
-to share common HDR code.
-
-v2: -place igt headers in alphabetical order (Kamil)
-v3: -add doc comments to public functions (Kamil)
-    -keep has_max_bpc, set_invalid_metadata in kms_hdr (Kamil)
-    -make igt_hdr_calc_float static (Kamil)
-    -remove igt_hdr_disable/enable, deferred to patch 3 (Kamil)
-    -fix igt_hdr.c placement in meson.build (Kamil)
-    -update copyright year to 2026 (Kamil)
-v4: -squash EOTF bit flag fix
-    -combine EOTF bitmask into single expression (Suraj)
-
-Co-developed-by: Alex Hung <alex.hung@amd.com>
-Co-developed-by: Claude Opus 4.6
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
----
- lib/igt_hdr.c   | 224 ++++++++++++++++++++++++++++++++++++++++
- lib/igt_hdr.h   |  28 +++++
- lib/meson.build |   1 +
- tests/kms_hdr.c | 268 ++++++++----------------------------------------
- 4 files changed, 297 insertions(+), 224 deletions(-)
- create mode 100644 lib/igt_hdr.c
- create mode 100644 lib/igt_hdr.h
-
-diff --git a/lib/igt_hdr.c b/lib/igt_hdr.c
-new file mode 100644
-index 000000000..25658ab9e
---- /dev/null
-+++ b/lib/igt_hdr.c
-@@ -0,0 +1,224 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+#include "igt.h"
-+#include "igt_edid.h"
-+#include "igt_hdr.h"
-+
-+#include <fcntl.h>
-+#include <termios.h>
-+#include <unistd.h>
-+
-+/**
-+ * SECTION:igt_hdr
-+ * @short_description: HDR metadata helpers
-+ * @title: HDR
-+ * @include: igt_hdr.h
-+ *
-+ * This library provides helpers for HDR (High Dynamic Range) metadata
-+ * handling, including EDID parsing for HDR capability detection, HDR
-+ * output metadata construction, and blob programming utilities.
-+ */
-+
-+/* HDR EDID parsing. */
-+#define CTA_EXTENSION_VERSION		0x03
-+#define HDR_STATIC_METADATA_BLOCK	0x06
-+#define USE_EXTENDED_TAG		0x07
-+
-+static bool cta_block(const char *edid_ext)
-+{
-+	/*
-+	 * Byte 1: 0x07 indicates Extended Tag
-+	 * Byte 2: 0x06 indicates HDMI Static Metadata Block
-+	 * Byte 3: bits 0 to 5 identify EOTF functions supported by sink
-+	 *	       where ET_0: Traditional Gamma - SDR Luminance Range
-+	 *	             ET_1: Traditional Gamma - HDR Luminance Range
-+	 *	             ET_2: SMPTE ST 2084
-+	 *	             ET_3: Hybrid Log-Gamma (HLG)
-+	 *	             ET_4 to ET_5: Reserved for future use
-+	 */
-+
-+	if ((((edid_ext[0] & 0xe0) >> 5 == USE_EXTENDED_TAG) &&
-+	      (edid_ext[1] == HDR_STATIC_METADATA_BLOCK)) &&
-+	     (edid_ext[2] & ((1 << HDMI_EOTF_TRADITIONAL_GAMMA_HDR) |
-+			     (1 << HDMI_EOTF_SMPTE_ST2084))))
-+			return true;
-+
-+	return false;
-+}
-+
-+/**
-+ * igt_is_panel_hdr:
-+ * @fd: DRM file descriptor
-+ * @output: output to check
-+ *
-+ * Parses the EDID of the given output looking for an HDR Static Metadata
-+ * Block in the CTA extension. A panel is considered HDR-capable when it
-+ * advertises support for Traditional Gamma HDR or SMPTE ST 2084 EOTFs.
-+ *
-+ * Returns: true if the panel supports HDR, false otherwise.
-+ */
-+bool igt_is_panel_hdr(int fd, igt_output_t *output)
-+{
-+	bool ok;
-+	int i, j, offset;
-+	uint64_t edid_blob_id;
-+	drmModePropertyBlobRes *edid_blob;
-+	const struct edid_ext *edid_ext;
-+	const struct edid *edid;
-+	const struct edid_cea *edid_cea;
-+	const char *cea_data;
-+	bool ret = false;
-+
-+	ok = kmstest_get_property(fd, output->id,
-+			DRM_MODE_OBJECT_CONNECTOR, "EDID",
-+			NULL, &edid_blob_id, NULL);
-+
-+	if (!ok || !edid_blob_id)
-+		return ret;
-+
-+	edid_blob = drmModeGetPropertyBlob(fd, edid_blob_id);
-+	igt_assert(edid_blob);
-+
-+	edid = (const struct edid *) edid_blob->data;
-+	igt_assert(edid);
-+
-+	for (i = 0; i < edid->extensions_len; i++) {
-+		edid_ext = &edid->extensions[i];
-+		edid_cea = &edid_ext->data.cea;
-+
-+		/* HDR not defined in CTA Extension Version < 3. */
-+		if ((edid_ext->tag != EDID_EXT_CEA) ||
-+		    (edid_cea->revision != CTA_EXTENSION_VERSION))
-+				continue;
-+		else {
-+			offset = edid_cea->dtd_start;
-+			cea_data = edid_cea->data;
-+
-+			for (j = 0; j < offset; j += (cea_data[j] & 0x1f) + 1) {
-+				ret = cta_block(cea_data + j);
-+
-+				if (ret)
-+					break;
-+			}
-+		}
-+	}
-+
-+	drmModeFreePropertyBlob(edid_blob);
-+
-+	return ret;
-+}
-+
-+/* Converts a double to 861-G spec FP format. */
-+static uint16_t igt_hdr_calc_float(double val)
-+{
-+	return (uint16_t)(val * 50000.0);
-+}
-+
-+/**
-+ * igt_hdr_fill_st2084:
-+ * @meta: HDR output metadata structure to fill
-+ *
-+ * Fills the given metadata structure with test values for SMPTE ST 2084
-+ * (PQ) HDR output using Rec. 2020 primaries.
-+ *
-+ * Note: there isn't really a standard for what the metadata is supposed
-+ * to do on the display side of things. The display is free to ignore it
-+ * and clip the output, use it to help tonemap to the content range,
-+ * or do anything they want, really.
-+ */
-+void igt_hdr_fill_st2084(struct hdr_output_metadata *meta)
-+{
-+	memset(meta, 0, sizeof(*meta));
-+
-+	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
-+	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
-+
-+	/* Rec. 2020 */
-+	meta->hdmi_metadata_type1.display_primaries[0].x =
-+		igt_hdr_calc_float(0.708); /* Red */
-+	meta->hdmi_metadata_type1.display_primaries[0].y =
-+		igt_hdr_calc_float(0.292);
-+	meta->hdmi_metadata_type1.display_primaries[1].x =
-+		igt_hdr_calc_float(0.170); /* Green */
-+	meta->hdmi_metadata_type1.display_primaries[1].y =
-+		igt_hdr_calc_float(0.797);
-+	meta->hdmi_metadata_type1.display_primaries[2].x =
-+		igt_hdr_calc_float(0.131); /* Blue */
-+	meta->hdmi_metadata_type1.display_primaries[2].y =
-+		igt_hdr_calc_float(0.046);
-+	meta->hdmi_metadata_type1.white_point.x = igt_hdr_calc_float(0.3127);
-+	meta->hdmi_metadata_type1.white_point.y = igt_hdr_calc_float(0.3290);
-+
-+	meta->hdmi_metadata_type1.max_display_mastering_luminance =
-+		1000; /* 1000 nits */
-+	meta->hdmi_metadata_type1.min_display_mastering_luminance =
-+		500;				   /* 0.05 nits */
-+	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
-+	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
-+}
-+
-+/**
-+ * igt_hdr_fill_sdr:
-+ * @meta: HDR output metadata structure to fill
-+ *
-+ * Fills the given metadata structure with test values for SDR output
-+ * using Rec. 709 primaries and traditional gamma EOTF.
-+ */
-+void igt_hdr_fill_sdr(struct hdr_output_metadata *meta)
-+{
-+	memset(meta, 0, sizeof(*meta));
-+
-+	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
-+	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_TRADITIONAL_GAMMA_SDR;
-+
-+	/* Rec. 709 */
-+	meta->hdmi_metadata_type1.display_primaries[0].x =
-+		igt_hdr_calc_float(0.640); /* Red */
-+	meta->hdmi_metadata_type1.display_primaries[0].y =
-+		igt_hdr_calc_float(0.330);
-+	meta->hdmi_metadata_type1.display_primaries[1].x =
-+		igt_hdr_calc_float(0.300); /* Green */
-+	meta->hdmi_metadata_type1.display_primaries[1].y =
-+		igt_hdr_calc_float(0.600);
-+	meta->hdmi_metadata_type1.display_primaries[2].x =
-+		igt_hdr_calc_float(0.150); /* Blue */
-+	meta->hdmi_metadata_type1.display_primaries[2].y =
-+		igt_hdr_calc_float(0.006);
-+	meta->hdmi_metadata_type1.white_point.x = igt_hdr_calc_float(0.3127);
-+	meta->hdmi_metadata_type1.white_point.y = igt_hdr_calc_float(0.3290);
-+
-+	meta->hdmi_metadata_type1.max_display_mastering_luminance = 0;
-+	meta->hdmi_metadata_type1.min_display_mastering_luminance = 0;
-+	meta->hdmi_metadata_type1.max_fall = 0;
-+	meta->hdmi_metadata_type1.max_cll = 0;
-+}
-+
-+/**
-+ * igt_hdr_set_metadata:
-+ * @output: output to set the metadata on
-+ * @meta: HDR output metadata to program, or NULL to disable
-+ *
-+ * Programs the HDR_OUTPUT_METADATA connector property blob on the
-+ * given output. Pass NULL to clear the metadata.
-+ */
-+void igt_hdr_set_metadata(igt_output_t *output,
-+                          const struct hdr_output_metadata *meta)
-+{
-+	igt_output_replace_prop_blob(output,
-+				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
-+				     meta ? sizeof(*meta) : 0);
-+}
-+
-+/**
-+ * igt_output_supports_hdr:
-+ * @output: output to check
-+ *
-+ * Returns: true if the output supports the HDR output metadata property.
-+ */
-+bool igt_output_supports_hdr(igt_output_t *output)
-+{
-+	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
-+}
-diff --git a/lib/igt_hdr.h b/lib/igt_hdr.h
-new file mode 100644
-index 000000000..09243f915
---- /dev/null
-+++ b/lib/igt_hdr.h
-@@ -0,0 +1,28 @@
-+#ifndef IGT_HDR_H
-+#define IGT_HDR_H
-+
-+#include "igt_edid.h"
-+#include "igt_kms.h"
-+
-+enum hdmi_eotf {
-+	HDMI_EOTF_TRADITIONAL_GAMMA_SDR,
-+	HDMI_EOTF_TRADITIONAL_GAMMA_HDR,
-+	HDMI_EOTF_SMPTE_ST2084,
-+};
-+
-+/* DRM HDR definitions. Not in the UAPI header, unfortunately. */
-+enum hdmi_metadata_type {
-+	HDMI_STATIC_METADATA_TYPE1 = 0,
-+};
-+
-+bool igt_is_panel_hdr(int fd, igt_output_t *output);
-+
-+void igt_hdr_fill_st2084(struct hdr_output_metadata *meta);
-+void igt_hdr_fill_sdr(struct hdr_output_metadata *meta);
-+
-+void igt_hdr_set_metadata(igt_output_t *output,
-+                          const struct hdr_output_metadata *meta);
-+
-+bool igt_output_supports_hdr(igt_output_t *output);
-+
-+#endif /* IGT_HDR_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index 0e7efadf3..a82aa27dc 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -114,6 +114,7 @@ lib_sources = [
- 	'igt_amd.c',
- 	'igt_edid.c',
- 	'igt_eld.c',
-+	'igt_hdr.c',
- 	'igt_infoframe.c',
- 	'igt_color.c',
- 	'igt_color_lut.c',
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index b215b0e6c..876c1c03a 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -33,6 +33,7 @@
- #include <termios.h>
- #include <unistd.h>
- #include "igt_edid.h"
-+#include "igt_hdr.h"
- 
- /**
-  * SUBTEST: bpc-switch
-@@ -70,24 +71,8 @@
- 
- IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
- 
--/* HDR EDID parsing. */
--#define CTA_EXTENSION_VERSION		0x03
--#define HDR_STATIC_METADATA_BLOCK       0x06
--#define USE_EXTENDED_TAG		0x07
--
- #define BACKLIGHT_PATH "/sys/class/backlight"
- 
--/* DRM HDR definitions. Not in the UAPI header, unfortunately. */
--enum hdmi_metadata_type {
--	HDMI_STATIC_METADATA_TYPE1 = 0,
--};
--
--enum hdmi_eotf {
--	HDMI_EOTF_TRADITIONAL_GAMMA_SDR,
--	HDMI_EOTF_TRADITIONAL_GAMMA_HDR,
--	HDMI_EOTF_SMPTE_ST2084,
--};
--
- /* HDR test formats: 10bpc + FP16 */
- static const uint32_t hdr_test_formats[] = {
- 	DRM_FORMAT_XRGB2101010,
-@@ -154,59 +139,6 @@ static void draw_hdr_pattern(igt_fb_t *fb)
- 	igt_paint_test_pattern_color_fb(fb->fd, fb, 1.0, 1.0, 1.0);
- }
- 
--/* Converts a double to 861-G spec FP format. */
--static uint16_t calc_hdr_float(double val)
--{
--	return (uint16_t)(val * 50000.0);
--}
--
--/* Fills some test values for ST2084 HDR output metadata.
-- *
-- * Note: there isn't really a standard for what the metadata is supposed
-- * to do on the display side of things. The display is free to ignore it
-- * and clip the output, use it to help tonemap to the content range,
-- * or do anything they want, really.
-- */
--static void fill_hdr_output_metadata_st2084(struct hdr_output_metadata *meta)
--{
--	memset(meta, 0, sizeof(*meta));
--
--	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
--	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
--
--	/* Rec. 2020 */
--	meta->hdmi_metadata_type1.display_primaries[0].x =
--		calc_hdr_float(0.708); /* Red */
--	meta->hdmi_metadata_type1.display_primaries[0].y =
--		calc_hdr_float(0.292);
--	meta->hdmi_metadata_type1.display_primaries[1].x =
--		calc_hdr_float(0.170); /* Green */
--	meta->hdmi_metadata_type1.display_primaries[1].y =
--		calc_hdr_float(0.797);
--	meta->hdmi_metadata_type1.display_primaries[2].x =
--		calc_hdr_float(0.131); /* Blue */
--	meta->hdmi_metadata_type1.display_primaries[2].y =
--		calc_hdr_float(0.046);
--	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
--	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
--
--	meta->hdmi_metadata_type1.max_display_mastering_luminance =
--		1000; /* 1000 nits */
--	meta->hdmi_metadata_type1.min_display_mastering_luminance =
--		500;				   /* 0.05 nits */
--	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
--	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
--}
--
--/* Sets the HDR output metadata prop. */
--static void set_hdr_output_metadata(data_t *data,
--				    struct hdr_output_metadata const *meta)
--{
--	igt_output_replace_prop_blob(data->output,
--				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
--				     meta ? sizeof(*meta) : 0);
--}
--
- /* Prepare test data. */
- static void prepare_test(data_t *data, igt_output_t *output, igt_crtc_t *crtc)
- {
-@@ -375,80 +307,6 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 	}
- }
- 
--static bool cta_block(const char *edid_ext)
--{
--	/*
--	 * Byte 1: 0x07 indicates Extended Tag
--	 * Byte 2: 0x06 indicates HDMI Static Metadata Block
--	 * Byte 3: bits 0 to 5 identify EOTF functions supported by sink
--	 *	       where ET_0: Traditional Gamma - SDR Luminance Range
--	 *	             ET_1: Traditional Gamma - HDR Luminance Range
--	 *	             ET_2: SMPTE ST 2084
--	 *	             ET_3: Hybrid Log-Gamma (HLG)
--	 *	             ET_4 to ET_5: Reserved for future use
--	 */
--
--	if ((((edid_ext[0] & 0xe0) >> 5 == USE_EXTENDED_TAG) &&
--	      (edid_ext[1] == HDR_STATIC_METADATA_BLOCK)) &&
--	     ((edid_ext[2] & HDMI_EOTF_TRADITIONAL_GAMMA_HDR) ||
--	      (edid_ext[2] & HDMI_EOTF_SMPTE_ST2084)))
--			return true;
--
--	return false;
--}
--
--/* Returns true if panel supports HDR. */
--static bool is_panel_hdr(data_t *data, igt_output_t *output)
--{
--	bool ok;
--	int i, j, offset;
--	uint64_t edid_blob_id;
--	drmModePropertyBlobRes *edid_blob;
--	const struct edid_ext *edid_ext;
--	const struct edid *edid;
--	const struct edid_cea *edid_cea;
--	const char *cea_data;
--	bool ret = false;
--
--	ok = kmstest_get_property(data->fd, output->id,
--			DRM_MODE_OBJECT_CONNECTOR, "EDID",
--			NULL, &edid_blob_id, NULL);
--
--	if (!ok || !edid_blob_id)
--		return ret;
--
--	edid_blob = drmModeGetPropertyBlob(data->fd, edid_blob_id);
--	igt_assert(edid_blob);
--
--	edid = (const struct edid *) edid_blob->data;
--	igt_assert(edid);
--
--	drmModeFreePropertyBlob(edid_blob);
--
--	for (i = 0; i < edid->extensions_len; i++) {
--		edid_ext = &edid->extensions[i];
--		edid_cea = &edid_ext->data.cea;
--
--		/* HDR not defined in CTA Extension Version < 3. */
--		if ((edid_ext->tag != EDID_EXT_CEA) ||
--		    (edid_cea->revision != CTA_EXTENSION_VERSION))
--				continue;
--		else {
--			offset = edid_cea->dtd_start;
--			cea_data = edid_cea->data;
--
--			for (j = 0; j < offset; j += (cea_data[j] & 0x1f) + 1) {
--				ret = cta_block(cea_data + j);
--
--				if (ret)
--					break;
--			}
--		}
--	}
--
--	return ret;
--}
--
- /* Sets the HDR output metadata prop with invalid size. */
- static int set_invalid_hdr_output_metadata(data_t *data,
- 					   struct hdr_output_metadata const *meta,
-@@ -484,7 +342,6 @@ static void adjust_brightness(data_t *data, uint32_t flags)
- }
- 
- static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
--			       igt_output_t *output,
- 			       uint32_t format, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
-@@ -500,30 +357,30 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
- 
- 	draw_hdr_pattern(&afb);
- 
--	fill_hdr_output_metadata_st2084(&hdr);
-+	igt_hdr_fill_st2084(&hdr);
- 
- 	/* Start with no metadata. */
- 	igt_plane_set_fb(data->primary, &afb);
- 	igt_plane_set_size(data->primary, data->w, data->h);
--	set_hdr_output_metadata(data, NULL);
-+	igt_hdr_set_metadata(data->output, NULL);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
- 
- 	if (flags & TEST_NEEDS_DSC) {
--		igt_force_dsc_enable(data->fd, output->name);
--		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
-+		igt_force_dsc_enable(data->fd, data->output->name);
-+		igt_assert(igt_is_force_dsc_enabled(data->fd, data->output->name));
- 	}
- 
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_output_bpc_equal(crtc,
--				    output, 8);
-+				    data->output, 8);
- 
- 	if (flags & TEST_NEEDS_DSC) {
--		igt_force_dsc_disable(data->fd, output->name);
--		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
-+		igt_force_dsc_disable(data->fd, data->output->name);
-+		igt_assert(igt_is_force_dsc_disabled(data->fd, data->output->name));
- 	}
- 
- 	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
--	set_hdr_output_metadata(data, &hdr);
-+	igt_hdr_set_metadata(data->output, &hdr);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	if (flags & TEST_INVALID_HDR) {
-@@ -537,7 +394,7 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
- 	}
- 
- 	igt_assert_output_bpc_equal(crtc,
--				    output, 10);
-+				    data->output, 10);
- 
- 	/* Verify that the CRC are equal after DPMS or suspend. */
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
-@@ -545,23 +402,23 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
- 
- 	/* Disable HDR metadata and drop back to 8bpc. We expect a modeset for exiting. */
--	set_hdr_output_metadata(data, NULL);
-+	igt_hdr_set_metadata(data->output, NULL);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
- 
- 	if (flags & TEST_NEEDS_DSC) {
--		igt_force_dsc_enable(data->fd, output->name);
--		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
-+		igt_force_dsc_enable(data->fd, data->output->name);
-+		igt_assert(igt_is_force_dsc_enabled(data->fd, data->output->name));
- 	}
- 
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_output_bpc_equal(crtc,
--				    output, 8);
-+				    data->output, 8);
- 
- 	igt_assert_crc_equal(&ref_crc, &new_crc);
- 
- 	if (flags & TEST_NEEDS_DSC) {
--		igt_force_dsc_disable(data->fd, output->name);
--		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
-+		igt_force_dsc_disable(data->fd, data->output->name);
-+		igt_assert(igt_is_force_dsc_disabled(data->fd, data->output->name));
- 	}
- 
- cleanup:
-@@ -569,38 +426,7 @@ cleanup:
- 	igt_remove_fb(data->fd, &afb);
- }
- 
--/* Fills some test values for HDR metadata targeting SDR. */
--static void fill_hdr_output_metadata_sdr(struct hdr_output_metadata *meta)
--{
--	memset(meta, 0, sizeof(*meta));
--
--	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
--	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_TRADITIONAL_GAMMA_SDR;
--
--	/* Rec. 709 */
--	meta->hdmi_metadata_type1.display_primaries[0].x =
--		calc_hdr_float(0.640); /* Red */
--	meta->hdmi_metadata_type1.display_primaries[0].y =
--		calc_hdr_float(0.330);
--	meta->hdmi_metadata_type1.display_primaries[1].x =
--		calc_hdr_float(0.300); /* Green */
--	meta->hdmi_metadata_type1.display_primaries[1].y =
--		calc_hdr_float(0.600);
--	meta->hdmi_metadata_type1.display_primaries[2].x =
--		calc_hdr_float(0.150); /* Blue */
--	meta->hdmi_metadata_type1.display_primaries[2].y =
--		calc_hdr_float(0.006);
--	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
--	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
--
--	meta->hdmi_metadata_type1.max_display_mastering_luminance = 0;
--	meta->hdmi_metadata_type1.min_display_mastering_luminance = 0;
--	meta->hdmi_metadata_type1.max_fall = 0;
--	meta->hdmi_metadata_type1.max_cll = 0;
--}
--
- static void test_static_swap(data_t *data, igt_crtc_t *crtc,
--			     igt_output_t *output,
- 			     uint32_t format, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
-@@ -622,26 +448,26 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
- 
- 	if (flags & TEST_NEEDS_DSC) {
--		igt_force_dsc_enable(data->fd, output->name);
--		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
-+		igt_force_dsc_enable(data->fd, data->output->name);
-+		igt_assert(igt_is_force_dsc_enabled(data->fd, data->output->name));
- 	}
- 
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_output_bpc_equal(crtc,
--				    output, 8);
-+				    data->output, 8);
- 
- 	if (flags & TEST_NEEDS_DSC) {
--		igt_force_dsc_disable(data->fd, output->name);
--		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
-+		igt_force_dsc_disable(data->fd, data->output->name);
-+		igt_assert(igt_is_force_dsc_disabled(data->fd, data->output->name));
- 	}
- 
- 	/* Enter HDR, a modeset is allowed here. */
--	fill_hdr_output_metadata_st2084(&hdr);
--	set_hdr_output_metadata(data, &hdr);
-+	igt_hdr_fill_st2084(&hdr);
-+	igt_hdr_set_metadata(data->output, &hdr);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_output_bpc_equal(crtc,
--				    output, 10);
-+				    data->output, 10);
- 
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
- 
-@@ -652,21 +478,21 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 	hdr.hdmi_metadata_type1.max_fall = 200;
- 	hdr.hdmi_metadata_type1.max_cll = 100;
- 
--	set_hdr_output_metadata(data, &hdr);
-+	igt_hdr_set_metadata(data->output, &hdr);
- 	if (is_amdgpu_device(data->fd))
- 		igt_display_commit_atomic(display, 0, NULL);
- 	else
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 
- 	if (flags & TEST_NEEDS_DSC) {
--		igt_force_dsc_enable(data->fd, output->name);
--		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
-+		igt_force_dsc_enable(data->fd, data->output->name);
-+		igt_assert(igt_is_force_dsc_enabled(data->fd, data->output->name));
- 	}
- 	/* Enter SDR via metadata, no modeset allowed for
- 	 * amd driver, whereas a modeset is required for
- 	 * intel driver. */
--	fill_hdr_output_metadata_sdr(&hdr);
--	set_hdr_output_metadata(data, &hdr);
-+	igt_hdr_fill_sdr(&hdr);
-+	igt_hdr_set_metadata(data->output, &hdr);
- 	if (is_amdgpu_device(data->fd))
- 		igt_display_commit_atomic(display, 0, NULL);
- 	else
-@@ -675,30 +501,30 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
- 
- 	/* Exit SDR and enter 8bpc, cleanup. */
--	set_hdr_output_metadata(data, NULL);
-+	igt_hdr_set_metadata(data->output, NULL);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_output_bpc_equal(crtc,
--				    output, 8);
-+				    data->output, 8);
- 
- 	/* Verify that the CRC didn't change while cycling metadata. */
- 	igt_assert_crc_equal(&ref_crc, &new_crc);
- 
- 	if (flags & TEST_NEEDS_DSC) {
--		igt_force_dsc_disable(data->fd, output->name);
--		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
-+		igt_force_dsc_disable(data->fd, data->output->name);
-+		igt_assert(igt_is_force_dsc_disabled(data->fd, data->output->name));
- 	}
- 
- 	test_fini(data);
- 	igt_remove_fb(data->fd, &afb);
- }
- 
--static void test_invalid_metadata_sizes(data_t *data, igt_output_t *output)
-+static void test_invalid_metadata_sizes(data_t *data)
- {
- 	struct hdr_output_metadata hdr;
- 	size_t metadata_size = sizeof(hdr);
- 
--	fill_hdr_output_metadata_st2084(&hdr);
-+	igt_hdr_fill_st2084(&hdr);
- 
- 	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, 1), -EINVAL);
- 	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size + 1), -EINVAL);
-@@ -708,12 +534,6 @@ static void test_invalid_metadata_sizes(data_t *data, igt_output_t *output)
- 	test_fini(data);
- }
- 
--/* Returns true if an output supports HDR metadata property. */
--static bool has_hdr(igt_output_t *output)
--{
--	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
--}
--
- static void test_hdr(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
-@@ -729,20 +549,20 @@ static void test_hdr(data_t *data, uint32_t flags)
- 		 * set MAX_BPC property to 10bpc prior to setting
- 		 * HDR metadata property. Therefore, checking.
- 		 */
--		if (!has_max_bpc(output) || !has_hdr(output)) {
-+		if (!has_max_bpc(output) || !igt_output_supports_hdr(output)) {
- 			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC or IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
- 				 igt_output_name(output));
- 			continue;
- 		}
- 
- 		/* For negative test, panel should be non-hdr. */
--		if ((flags & TEST_INVALID_HDR) && is_panel_hdr(data, output)) {
-+		if ((flags & TEST_INVALID_HDR) && igt_is_panel_hdr(data->fd, output)) {
- 			igt_info("%s: Can't run negative test on HDR panel.\n",
- 				 igt_output_name(output));
- 			continue;
- 		}
- 
--		if ((flags & ~TEST_INVALID_HDR) && !is_panel_hdr(data, output)) {
-+		if ((flags & ~TEST_INVALID_HDR) && !igt_is_panel_hdr(data->fd, output)) {
- 			igt_info("%s: Can't run HDR tests on non-HDR panel.\n",
- 				 igt_output_name(output));
- 			continue;
-@@ -772,8 +592,8 @@ static void test_hdr(data_t *data, uint32_t flags)
- 					     crtc);
- 
- 				/* Signal HDR requirement via metadata */
--				fill_hdr_output_metadata_st2084(&hdr);
--				set_hdr_output_metadata(data, &hdr);
-+				igt_hdr_fill_st2084(&hdr);
-+				igt_hdr_set_metadata(data->output, &hdr);
- 				if (igt_display_try_commit2(display, display->is_atomic ?
- 							    COMMIT_ATOMIC : COMMIT_LEGACY)) {
- 					igt_info("%s: Couldn't set HDR metadata\n",
-@@ -796,7 +616,7 @@ static void test_hdr(data_t *data, uint32_t flags)
- 				else
- 					flags &= ~TEST_NEEDS_DSC;
- 
--				set_hdr_output_metadata(data, NULL);
-+				igt_hdr_set_metadata(data->output, NULL);
- 				igt_display_commit2(display, display->is_atomic ?
- 						    COMMIT_ATOMIC : COMMIT_LEGACY);
- 
-@@ -811,13 +631,13 @@ static void test_hdr(data_t *data, uint32_t flags)
- 						     TEST_INVALID_HDR | TEST_BRIGHTNESS))
- 						test_static_toggle(data,
- 								   crtc,
--								   output, hdr_test_formats[i], flags);
-+								   hdr_test_formats[i], flags);
- 					if (flags & TEST_SWAP)
- 						test_static_swap(data,
- 								 crtc,
--								 output, hdr_test_formats[i], flags);
-+								 hdr_test_formats[i], flags);
- 					if (flags & TEST_INVALID_METADATA_SIZES)
--						test_invalid_metadata_sizes(data, output);
-+						test_invalid_metadata_sizes(data);
- 				}
- 			}
- 
--- 
-2.25.1
-
+T24gVHVlLCAyMDI2LTA0LTI4IGF0IDE5OjA4IC0wNzAwLCBOaXJhbmphbmEgVmlzaHdhbmF0aGFw
+dXJhIHdyb3RlOgo+IEluIF9fdGVzdF9wcmlvcml0eSgpIERZTl9QUklPUklUWSBjYXNlLCByZXBs
+YWNlIHNsZWVwKCkgd2l0aCBhCj4gZGV0ZXJtaW5pc3RpYyBiYXJyaWVyIHVzaW5nIGFuIGV4dHJh
+IHF1ZXVlIGluIHRoZSBzYW1lIG11bHRpLXF1ZXVlCj4gZ3JvdXAuIEFmdGVyIGFzc2lnbmluZyBw
+cmlvcml0aWVzLCBzdWJtaXQgYSBzcGlubmVyIHRvIHRoZSBleHRyYQo+IHF1ZXVlLCBlbmQgaXQg
+aW1tZWRpYXRlbHkgYW5kIHdhaXQgZm9yIGl0cyB1c2VyIGZlbmNlIHRvIHNpZ25hbC4KPiBUaGlz
+IGd1YXJhbnRlZXMgYSBmdWxsIHNjaGVkdWxlciByb3VuZC10cmlwIGNvbmZpcm1pbmcgdGhlIHBy
+aW9yaXR5Cj4gdXBkYXRlcyBoYXZlIHRha2VuIGVmZmVjdCBiZWZvcmUgcmVsZWFzaW5nIHRoZSBv
+dGhlciBxdWV1ZXMuCj4gCj4gSW5jcmVhc2UgZXhlY19xdWV1ZXNbXSBhbmQgc3BpbltdIGFycmF5
+IHNpemVzIGJ5IDEgdG8gYWNjb21tb2RhdGUKPiB0aGUgZXh0cmEgYmFycmllciBxdWV1ZSBzbG90
+IGF0IGluZGV4IG51bV9xdWV1ZXMuCj4gCj4gQXNzaXN0ZWQtYnk6IEdpdEh1YiBDb3BpbG90OmNs
+YXVkZS1zb25uZXQtNC42Cj4gU2lnbmVkLW9mZi1ieTogTmlyYW5qYW5hIFZpc2h3YW5hdGhhcHVy
+YQo+IDxuaXJhbmphbmEudmlzaHdhbmF0aGFwdXJhQGludGVsLmNvbT4KPiAtLS0KPiDCoHRlc3Rz
+L2ludGVsL3hlX2V4ZWNfbXVsdGlfcXVldWUuYyB8IDM3ICsrKysrKysrKysrKysrKysrKysrKysr
+KystLS0tCj4gLS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAzMCBpbnNlcnRpb25zKCspLCA3IGRlbGV0
+aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pbnRlbC94ZV9leGVjX211bHRpX3F1ZXVl
+LmMKPiBiL3Rlc3RzL2ludGVsL3hlX2V4ZWNfbXVsdGlfcXVldWUuYwo+IGluZGV4IDM4MjcwNWQw
+NjUuLjhjNmZiYjJkMTggMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvaW50ZWwveGVfZXhlY19tdWx0aV9x
+dWV1ZS5jCj4gKysrIGIvdGVzdHMvaW50ZWwveGVfZXhlY19tdWx0aV9xdWV1ZS5jCj4gQEAgLTM4
+MSw4ICszODEsOCBAQCBfX3Rlc3RfcHJpb3JpdHkoaW50IGZkLCBzdHJ1Y3QKPiBkcm1feGVfZW5n
+aW5lX2NsYXNzX2luc3RhbmNlICplY2ksCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAuc3luY3MgPSB0b191c2VyX3BvaW50ZXIoJnN5bmMpLAo+IMKgwqDCoMKgwqDCoMKgwqB9Owo+
+IMKgwqDCoMKgwqDCoMKgwqB1aW50NjRfdCB2bV9zeW5jID0gMCwgYWRkciA9IEJBU0VfQUREUkVT
+UzsKPiAtwqDCoMKgwqDCoMKgwqB1aW50MzJfdCBleGVjX3F1ZXVlc1tYRV9FWEVDX1FVRVVFX1BS
+SU9SSVRZX05dOwo+IC3CoMKgwqDCoMKgwqDCoHN0cnVjdCB4ZV9zcGluICpzcGluW1hFX0VYRUNf
+UVVFVUVfUFJJT1JJVFlfTl07Cj4gK8KgwqDCoMKgwqDCoMKgdWludDMyX3QgZXhlY19xdWV1ZXNb
+WEVfRVhFQ19RVUVVRV9QUklPUklUWV9OICsgMV07Cj4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IHhl
+X3NwaW4gKnNwaW5bWEVfRVhFQ19RVUVVRV9QUklPUklUWV9OICsgMV07CgpTaW5jZSB3ZSdyZSBv
+bmx5IHJlYWxseSBtYWtpbmcgdXNlIG9mIHRoaXMgaW4gdGhlIGR5bmFtaWMgY2FzZSwgc2hvdWxk
+CndlIGhhdmUgIisgISFEWU5BTUlDIiBpbnN0ZWFkIG9mICIrIDEiIGhlcmU/IEkuZS4gd2Ugb25s
+eSBjYXJlIGFib3V0CnRoZSBleHRyYSBiYXJyaWVyIG9uZSBpbiB0aGUgZHluYW1pYyBjYXNlPwoK
+VGhhbmtzLApTdHVhcnQKCj4gwqDCoMKgwqDCoMKgwqDCoHVpbnQzMl90IHZtLCBudW1fcXVldWVz
+LCBudW1fcXVldWVfcHJpb3JpdGllcywgYm8gPSAwOwo+IMKgwqDCoMKgwqDCoMKgwqB1aW50MzJf
+dCBzdGFydF9vcmRlcltYRV9FWEVDX1FVRVVFX1BSSU9SSVRZX05dID0geyAwIH07Cj4gwqDCoMKg
+wqDCoMKgwqDCoGludDY0X3QgZmVuY2VfdGltZW91dCA9IE5TRUNfUEVSX1NFQzsKPiBAQCAtNDAz
+LDcgKzQwMyw3IEBAIF9fdGVzdF9wcmlvcml0eShpbnQgZmQsIHN0cnVjdAo+IGRybV94ZV9lbmdp
+bmVfY2xhc3NfaW5zdGFuY2UgKmVjaSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oC52YWx1ZSA9IERSTV9YRV9NVUxUSV9HUk9VUF9DUkVBVEUsCj4gwqDCoMKgwqDCoMKgwqDCoH07
+Cj4gwqDCoMKgwqDCoMKgwqDCoHVpbnQ2NF90IGV4dCA9IHRvX3VzZXJfcG9pbnRlcigmbXVsdGlf
+cXVldWUpOwo+IC3CoMKgwqDCoMKgwqDCoGludCBpLCBqLCBzbGVlcF9kdXJhdGlvbiA9IDE7Cj4g
+K8KgwqDCoMKgwqDCoMKgaW50IGksIGo7Cj4gwqDCoMKgwqDCoMKgwqDCoHZvaWQgKmJvX21hcDsK
+PiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBudW1fcXVldWVfcHJpb3JpdGllcyA9IFhFX0VYRUNfUVVF
+VUVfTlVNX1BSSU9SSVRJRVM7Cj4gQEAgLTQxNSwxMiArNDE1LDEyIEBAIF9fdGVzdF9wcmlvcml0
+eShpbnQgZmQsIHN0cnVjdAo+IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmVjaSwKPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBlY2lbMF0uZW5naW5lX2NsYXNzLCBlY2lb
+MF0uZW5naW5lX2luc3RhbmNlKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqB2bSA9IHhlX3ZtX2Ny
+ZWF0ZShmZCwgRFJNX1hFX1ZNX0NSRUFURV9GTEFHX0xSX01PREUsIDApOwo+IC3CoMKgwqDCoMKg
+wqDCoGJvX3NpemUgPSB4ZV9iYl9zaXplKGZkLCBzaXplb2YoKnNwaW5bMF0pICogbnVtX3F1ZXVl
+cyk7Cj4gK8KgwqDCoMKgwqDCoMKgYm9fc2l6ZSA9IHhlX2JiX3NpemUoZmQsIHNpemVvZigqc3Bp
+blswXSkgKiAobnVtX3F1ZXVlcyArCj4gMSkpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGJvID0g
+eGVfYm9fY3JlYXRlKGZkLCB2bSwgYm9fc2l6ZSwgdnJhbV9pZl9wb3NzaWJsZShmZCwKPiBlY2lb
+MF0uZ3RfaWQpLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIERSTV9YRV9HRU1fQ1JFQVRFX0ZMQUdfTkVFRFNfVklTSUJMRV9WUkFNKTsKPiDCoMKg
+wqDCoMKgwqDCoMKgYm9fbWFwID0geGVfYm9fbWFwKGZkLCBibywgYm9fc2l6ZSk7Cj4gLcKgwqDC
+oMKgwqDCoMKgZm9yIChpID0gMDsgaSA8IG51bV9xdWV1ZXM7IGkrKykKPiArwqDCoMKgwqDCoMKg
+wqBmb3IgKGkgPSAwOyBpIDwgbnVtX3F1ZXVlcyArIDE7IGkrKykKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoHNwaW5baV0gPSBib19tYXAgKyBpICogc2l6ZW9mKCpzcGluWzBdKTsK
+PiDCoAo+IMKgwqDCoMKgwqDCoMKgwqAvKiBVc2UgdGhlIGRlZmF1bHQgcHJpb3JpdHkgZm9yIFEw
+IGJlY2F1c2Ugd2UgYXJlIGV4cGxpY2l0bHkKPiB3YWl0aW5nIGZvciBpdCBiZWxvdyAqLwo+IEBA
+IC00MzAsNiArNDMwLDExIEBAIF9fdGVzdF9wcmlvcml0eShpbnQgZmQsIHN0cnVjdAo+IGRybV94
+ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmVjaSwKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKGZsYWdz
+ICYgRFlOX1BSSU9SSVRZKSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3Ig
+KGkgPSAxOyBpIDwgbnVtX3F1ZXVlczsgaSsrKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGV4ZWNfcXVldWVzW2ldID0geGVfZXhlY19xdWV1ZV9jcmVh
+dGUoZmQsIHZtLAo+IGVjaSwgZXh0KTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+LyoKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogQ3JlYXRlIGFuIGV4dHJhIHF1
+ZXVlIGluIHRoZSBzYW1lIG11bHRpLXF1ZXVlCj4gZ3JvdXAsIHVzZWQgYXMKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgICogYSBiYXJyaWVyIHRvIGNvbmZpcm0gcHJpb3JpdHkgdXBk
+YXRlcyBoYXZlIHRha2VuCj4gZWZmZWN0Lgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgKi8KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZXhlY19xdWV1ZXNbbnVtX3F1
+ZXVlc10gPSB4ZV9leGVjX3F1ZXVlX2NyZWF0ZShmZCwKPiB2bSwgZWNpLCBleHQpOwo+IMKgwqDC
+oMKgwqDCoMKgwqB9IGVsc2Ugewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3Ry
+dWN0IGRybV94ZV9leHRfc2V0X3Byb3BlcnR5IG1xX3ByaW9yaXR5ID0gewo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5iYXNlLm5hbWUgPQo+IERSTV9Y
+RV9FWEVDX1FVRVVFX0VYVEVOU0lPTl9TRVRfUFJPUEVSVFksCj4gQEAgLTQ3NCwxNCArNDc5LDI4
+IEBAIF9fdGVzdF9wcmlvcml0eShpbnQgZmQsIHN0cnVjdAo+IGRybV94ZV9lbmdpbmVfY2xhc3Nf
+aW5zdGFuY2UgKmVjaSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHhlX3NwaW5f
+d2FpdF9zdGFydGVkKHNwaW5baV0pOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGlmIChmbGFncyAm
+IERZTl9QUklPUklUWSkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1aW50NjRf
+dCBiYXJyaWVyX3NwaW5fYWRkciA9IGFkZHIgKyBudW1fcXVldWVzICoKPiBzaXplb2Yoc3RydWN0
+IHhlX3NwaW4pOwo+ICsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIEFzc2ln
+biBpbmNyZWFzaW5nIG9yZGVyIG9mIHByaW9yaXR5IGZvciBzZWNvbmRhcnkKPiBxdWV1ZXMgKi8K
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDE7IGkgPCBudW1fcXVl
+dWVzOyBpKyspCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgeGVfZXhlY19xdWV1ZV9zZXRfcHJvcGVydHkoZmQsCj4gZXhlY19xdWV1ZXNbaV0sCj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IERSTV9YRV9FWEVDX1FV
+RVVFX1NFVF9QUk9QRVJUWV9NVUxUSV9RVUVVRV9QUklPUklUWSwKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGkgJQo+IG51bV9xdWV1ZV9wcmlvcml0aWVzKTsK
+PiDCoAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBXYWl0IGZvciBwcmlvcml0
+aWVzIHRvIHRha2UgZWZmZWN0ICovCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNs
+ZWVwKHNsZWVwX2R1cmF0aW9uKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyoK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogU3VibWl0IGEgYmFycmllciBqb2Ig
+b24gdGhlIGV4dHJhIHF1ZXVlIHRvIGVuc3VyZQo+IHByaW9yaXR5Cj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCAqIHVwZGF0ZXMgaGF2ZSB0YWtlbiBlZmZlY3QgYmVmb3JlIHJlbGVh
+c2luZyB0aGUKPiBvdGhlciBxdWV1ZXMuCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCAqLwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB4ZV9zcGluX2luaXRfb3B0cyhz
+cGluW251bV9xdWV1ZXNdLCAuYWRkciA9Cj4gYmFycmllcl9zcGluX2FkZHIsCj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+LnByZWVtcHQgPSB0cnVlKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3luYy5h
+ZGRyID0gYmFycmllcl9zcGluX2FkZHIgKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgKChjaGFyICopJnNwaW5bbnVtX3F1ZXVlc10tPmV4ZWNfc3luYyAt
+IChjaGFyCj4gKilzcGluW251bV9xdWV1ZXNdKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgZXhlYy5leGVjX3F1ZXVlX2lkID0gZXhlY19xdWV1ZXNbbnVtX3F1ZXVlc107Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGV4ZWMuYWRkcmVzcyA9IGJhcnJpZXJfc3Bpbl9h
+ZGRyOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB4ZV9leGVjKGZkLCAmZXhlYyk7
+Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHhlX3NwaW5fZW5kKHNwaW5bbnVtX3F1
+ZXVlc10pOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB4ZV93YWl0X3VmZW5jZShm
+ZCwgJnNwaW5bbnVtX3F1ZXVlc10tPmV4ZWNfc3luYywKPiBVU0VSX0ZFTkNFX1ZBTFVFLAo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IGV4ZWNfcXVldWVzW251bV9xdWV1ZXNdLAo+IGZlbmNlX3RpbWVvdXQpOwo+IMKgwqDCoMKgwqDC
+oMKgwqB9Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgLyoKPiBAQCAtNTY2LDYgKzU4NSwxMCBAQCBf
+X3Rlc3RfcHJpb3JpdHkoaW50IGZkLCBzdHJ1Y3QKPiBkcm1feGVfZW5naW5lX2NsYXNzX2luc3Rh
+bmNlICplY2ksCj4gwqDCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7IGkgPCBudW1fcXVldWVzOyBp
+KyspCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB4ZV9leGVjX3F1ZXVlX2Rlc3Ry
+b3koZmQsIGV4ZWNfcXVldWVzW2ldKTsKPiDCoAo+ICvCoMKgwqDCoMKgwqDCoC8qIERlc3Ryb3kg
+dGhlIGV4dHJhIHF1ZXVlICovCj4gK8KgwqDCoMKgwqDCoMKgaWYgKGZsYWdzICYgRFlOX1BSSU9S
+SVRZKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB4ZV9leGVjX3F1ZXVlX2Rlc3Ry
+b3koZmQsIGV4ZWNfcXVldWVzW251bV9xdWV1ZXNdKTsKPiArCj4gwqDCoMKgwqDCoMKgwqDCoG11
+bm1hcChib19tYXAsIGJvX3NpemUpOwo+IMKgwqDCoMKgwqDCoMKgwqBnZW1fY2xvc2UoZmQsIGJv
+KTsKPiDCoAoK
