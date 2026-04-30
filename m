@@ -4,102 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1D12CD13DE
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Apr 2026 23:01:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03AE0FF886F
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Apr 2026 23:32:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 67A9E10E4AB;
-	Thu, 30 Apr 2026 23:01:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 88E4510E044;
+	Thu, 30 Apr 2026 23:32:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="UNaRzRUw";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="iPditriQ";
 	dkim-atps=neutral
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
- [209.85.218.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0A8A10E4AB
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Apr 2026 23:01:32 +0000 (UTC)
-Received: by mail-ej1-f51.google.com with SMTP id
- a640c23a62f3a-b9358bc9c50so216299266b.1
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Apr 2026 16:01:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777590091; cv=none;
- d=google.com; s=arc-20240605;
- b=SE89SmtUS9xcwEHiLwsIFWcLGtMi71x29WOSye5EzDUei56XaAMD48k+1AdyERUVwc
- 91dwURR64Zcu6NjCxIUhENymOwEoms1O0MwVVXwBr4raG3MRxsapusdYTPWAvbgGqduz
- UM/OKnePSeM/0k2WeI6jsGz8dHzqQGLDrQa+MXoFykcLDrWGoZSXzZPqMOwtHhpP46E0
- 5P+OeoGcNhHkg2uG49INYudwk0zB1c3rBdZkX6bn8zGyqmWOYzZ/yPegoBKKegvCjNBq
- 1xa9SD3gDz8B9KZSuqKu6DWN9kS4hQKuDWJVr1la1BkNhY6LAClCv5DoCGa6b1jCHtRt
- z6Tw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:dkim-signature;
- bh=urF7K1BZql+olBmW9j7CLQ5cQwfgjq5lMWrmfRSzRT8=;
- fh=KpsZjmwnWQb33Nryq3vcNAqjbJ4qiEd9MM230HYqgbA=;
- b=TDfdR32tElRed25XVmc83p91ThgAwAs/JVV70HlH9mSEEtYPsw0NguYDB9pffz5fsP
- LwPDM/a3ldpul/SrnUSnSfBJSPOdZqOCebVh1mfheP81HxunnxOugJVhsRNu1JXvmo3R
- wav/eMLjYfyAiV/nt+yLsb6sTA5U0kIw50QGcq1xqo+Xe5gKRlEqbygyNz9o6rQsjwgF
- CWZ6rj3HSdCDwVYiL3yf76BdktjIpicg8NPWPbTQxbTvTRxtMEgxiQXRzi6MZ4E22e26
- 4wL+ou+QJd4TfKUuXDCTQUapiZ8DRrDa/Ll67Ctwdfhr5NMlLR/JUrv9C+a0YnLFuGR7
- 41uw==; darn=lists.freedesktop.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20251104; t=1777590091; x=1778194891;
- darn=lists.freedesktop.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=urF7K1BZql+olBmW9j7CLQ5cQwfgjq5lMWrmfRSzRT8=;
- b=UNaRzRUwuHo2w3HOSaarmdvkGN3MOkEAxd2hdNfmImJYP1J+reGigkjXDiY7nSg+sC
- h0CqlvOuUIrUKcTG+TrT4ECyhTBidiMNQIOOGzSvEte7MmpOXsOZH9dfOcoD3hkjm4s/
- yPn0TBzOVDeMwM/rifGAAZskvtYWWoKQrwsKcgB4m2E3LAlYblrptA+feQfxwn363Tlq
- 1gjJpjdI3x8OnvSJ80Z7xYn0WCpt1sd706nsA4KavZaT9vW+tF73op2Ct3B2wj8wyDxF
- UdoY9avFF8Y8WdFD7AhEzZK3/m2WQgrIdc9Lnmvxj4YFm0CLktWlePGjhm7XpNy5OnDs
- 4wGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1777590091; x=1778194891;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=urF7K1BZql+olBmW9j7CLQ5cQwfgjq5lMWrmfRSzRT8=;
- b=OKP4wYOClDlTFsPSsACCTNM92qgB1uiOh5OfdFZ4wB5Km8y771IZ56KrNSwUoBWIPo
- cZLfTxJVBJfRmNfIXQIbYlycrwqt/vshCIJT/1xPacCFYf7hSW/PN4IVzfQk7jWWiWzP
- XXJdn6sLeB1xd8XC2kVPhn3DDP/6P1j/7dVa3B3r+yJ4NK0FbGl4oKjtL9m1JS2gZIUT
- 3EjhWKDG4TuqlLBq/vup9HgoNrNQMoD5RuozAPTgA87lM5uGdfYJGm+QtL5IRIxBSTQH
- /qP+8JttWonUjliickXruh2/+ji0m9swAiEZlooBWoAEGlht0q+TTSN9YvrBe/mryhcb
- weXw==
-X-Forwarded-Encrypted: i=1;
- AFNElJ+EHe8eQeUcZNZcgIeu1grzikNhRTqwcz/jCQ1mS+QnG99Vtl9WjFzpBc8JYNU59SAjvzuyiLsb@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YzpO9fFb9DLWX59NOFDjTMOrN1D2MksStYbsmYZOG1OLbZaWlxU
- vYudYEi6rZjaHZIz+0CtRE500k+MvbxJfWivsIqx6kKAF+L11iNHNv+r87eAtGcLrpKxrxLnC82
- xIhSNRb5zcum96X0fxqENiZcdHXXLx6JuMV2Fi/Tc
-X-Gm-Gg: AeBDietrdfGs+GcFqWYbkJSd1ySSsqByhAq6KvnFyClLjVqSofRpafwrXKikSu9b+Vr
- /N/dIBZCk/j0S4RxtFohXmDIypeRJydkdWr/HZh20PdCwUGtcZM/D3TV3KU2HRZc7LlkoqOmK2a
- BYWwxACGNptu1aNo+BK9sKb/oNyW6McKh5BboedilBE+5YkofiG1bQJcsKZO8iV5yOnZh8g20ox
- ot8w1MVqKhyOgCsEGd5AjVUCExMzvz6xjQTWj5kpNHzKHDwO7LycMCqEvSX7TDZaJYw0CWa3EyI
- NxMjOsXfKYMzz/hLzCXgVsGhc17UMk/SOGfDxXwHyOGITYMedoo+vZ2KiSajzGvca1umH5TL5R3
- VPgw8nGnXx2pFINzZlz9uloQN3ikiqQ8e2toPXQ==
-X-Received: by 2002:a17:907:a184:b0:b97:1d24:c004 with SMTP id
- a640c23a62f3a-bbac789852amr219889766b.21.1777590090643; Thu, 30 Apr 2026
- 16:01:30 -0700 (PDT)
+Received: from BYAPR05CU005.outbound.protection.outlook.com
+ (mail-westusazon11010051.outbound.protection.outlook.com [52.101.85.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9173C10E044
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Apr 2026 23:31:55 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WUJVbpelwC6ILxQ6BuoKfVc4PgsOuYQVtlOiZu53+D8/fFh07jfwBd+MUIDwmfIKWHhd/HmCosxlLi7hCoUnS2NL3zQc41mJylYl2h6F4BZtoFjr/JoFsceGIjeWS/8819lnarhwbtoV9QBeBj/3rbnJ72zP44xfDWui8PxOHuA7D7nc1ukLuWscn+PgSYDdF4tWaMiLs5N717OzR8n/UhYoH8a7gZ/TQc9Hqn7pC7AB2fhCVB/qGr4IS02W4WJl6BuGL9xSa/iH4j69YQJPRJVcWiBFOta+4nyhJ0lsnDF5XNah0lhipaMgQqE12XUPLh1RHXu9lbrNalaXf826yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Vy/gB1WymeDJPzB/7wDXcpKnIIazSvfilIY6IOlTF4k=;
+ b=AUe0qxnBt3w/tJTyVxoVib7yGonsg5X0U5LIR9HeJjoPWoyU2ZeFSKz3MVmADbsCGZ/em6Q5RCejrMfPJ3exu+iNs6e96v+6Ik5rjEeb+xeWoZQDIvT8rL4Dsb3tXN+m+eCq48+552D0bC+d2s42emb+O5iSc/vavhCLKzUD6arTsq70sEmyOuZqZyNvxA6T51OtmObmcANrGCBzigX4jRkVbWfDvNVU12a16R4jXQWfmNFluSnaXsk5+NqSRBrTWYjladLOlsj0gweZ+8+PUxyj+m6/iGFpuGwi0vQibybKQ0lhaxxm2+O+MNmjp+oDQqqvYbtNI+9+bFaQ3EMp8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Vy/gB1WymeDJPzB/7wDXcpKnIIazSvfilIY6IOlTF4k=;
+ b=iPditriQnzfqkmGaHPYAEW8+UsJP2lZayiqORaajdIjaeAsxLaN5DhJlYgbvkKbZt5k6tUDWLUgm0ln5TipG1osITjnCqwLd7cTpLMu/Qa/I+IZ/wewPX03bhp9rxonJvMemv2otb7/gLKa1+QWaGt01vfrn17zcdMVaHpt6nNw=
+Received: from DM4PR12MB5152.namprd12.prod.outlook.com (2603:10b6:5:393::16)
+ by DM6PR12MB4417.namprd12.prod.outlook.com (2603:10b6:5:2a4::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Thu, 30 Apr
+ 2026 23:31:50 +0000
+Received: from DM4PR12MB5152.namprd12.prod.outlook.com
+ ([fe80::8874:ea43:ba4a:e73d]) by DM4PR12MB5152.namprd12.prod.outlook.com
+ ([fe80::8874:ea43:ba4a:e73d%3]) with mapi id 15.20.9870.020; Thu, 30 Apr 2026
+ 23:31:50 +0000
+From: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
+To: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>, "Koenig, Christian"
+ <Christian.Koenig@amd.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>
+Subject: RE: [PATCH 3/3] tests/amdgpu: Add DebugFS fuzzing test
+Thread-Topic: [PATCH 3/3] tests/amdgpu: Add DebugFS fuzzing test
+Thread-Index: AQHc2OAOO6I7Y4f7xUWeaFaljSmSB7X4QLmw
+Date: Thu, 30 Apr 2026 23:31:50 +0000
+Message-ID: <DM4PR12MB51526E72A561A5C7C986118CE3352@DM4PR12MB5152.namprd12.prod.outlook.com>
+References: <20260430202923.91444-1-vitaly.prosyak@amd.com>
+ <20260430202923.91444-3-vitaly.prosyak@amd.com>
+In-Reply-To: <20260430202923.91444-3-vitaly.prosyak@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Enabled=True;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SetDate=2026-04-30T23:29:49.0000000Z;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Name=AMD General
+ v26; MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_ContentBits=3;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Method=Standard
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR12MB5152:EE_|DM6PR12MB4417:EE_
+x-ms-office365-filtering-correlation-id: 7811ff81-a738-4893-b202-08dea710a785
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|18002099003|22082099003|56012099003|38070700021;
+x-microsoft-antispam-message-info: MNNfxhvRkMkg43vDDzfkQqf+dOVGZ7yhPETwoMqJ1Zjwkl56o8hppHshlCs8gtbhJhytEyFk9N5V0VWMDisB5bIwrnyQaXXPRj6xnyuu71rv6AydxXxbLwBIAMYv89ZcPMCmSTxHfJ+g11pNij6wItBwZ2gunPs2d2zPfsmdSXYR/ogu4MgRxgKdNwPRDRv2ZpXlZZINaB1l88BGnIc0DI2ihq/+cKy3YeCR2ILTCh/LPvqdP2Y1TgWw8EWENJJyFoFiZxu3uHds/oCUWKDIIeR24FvCMuBQ5C5jTUhZV4utD4NkIK0KcbddlScslRhTd+3pTzhgDd7G9EbK22qWHiPVf0G8rAUylJc8XpDKIIW8RMfFV3R080yrv/Zy04oEZS2Wstdlty9Ws1faBqGVRzzS7zpTgH5oT61kzsnslyNi/kkayyg7+GKbMqaL5uYH62c6YCXDHAXglJDbgPqHeXPUJhAVjjrv7kPw0ssgvlURFNZ4dFC3f5SfBZuDds9JfT+pZQF4ppuIAqwT1O8lhQWkJUfz2Zz7/arLdDeUunC2qXvqIbgoJ7K3Uz02Bq4cN3eFg93AF8Ceq+t/K2QQZwdA2J9ymcqMQ29cjmmX4FWyBPsOULInQ+dmg2IGh7HaNuciC2VTNfp9kPu3G9ZnTq4yRihBRp17Q7IrZU9lzbdxb6lC/U8yEKXW1jQ8EJnIZxBwqc4GYngNcux1prhBlPJz5EyRLoDiXFj3wfJqD2fV1KW0HYvo/SREkzAxYebF
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB5152.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(22082099003)(56012099003)(38070700021);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?RDNk9KmwSCM7zrPaOUt4DSbJ9FjJNyOc/Lz//5YWgT0IEwjcvXX2YVofoZ?=
+ =?iso-8859-1?Q?fTBTAfwRWYmNxRHX27LnCVhgc7GGwxKCkJtsr3mTnwzF1+NdIo9pnIgX33?=
+ =?iso-8859-1?Q?FA74a7p4hh0PceEpAAyFuXjEYmdbTuKN+2zwDjdlunkeHezpcrF12VVfFg?=
+ =?iso-8859-1?Q?60+1O3uFTbSCbMUCNQomF88DZaDM5o6zZu8tUvyoSgqI8JWJL75keWWzQP?=
+ =?iso-8859-1?Q?gHORy12m9etIDx/QsH6l0bt5pnnRE0lFI0Y0+pWHz67hDDJSVUsKxgZ9Co?=
+ =?iso-8859-1?Q?tGOWkW5Fz4Z+rsA3qqWqoC3a5KjSEyP1qUatk0M3hxAd/R/DqI2Ag1Edc7?=
+ =?iso-8859-1?Q?nmTZs2zb9boSYeiRxr3h19Kc923Im8P7mdVTnFJU9V4rzX05dCgeZYldLI?=
+ =?iso-8859-1?Q?rkqVVU6IOHOsrON4nX0002EZBILeqGZwzgv/5WZ8W6ginlU9iWWOH3z5ot?=
+ =?iso-8859-1?Q?GR2VaJEp2PG4sC2hRQGjYFJMZfRZtuzsxx6yGHI56SaAwGamL55P6le6F0?=
+ =?iso-8859-1?Q?NSgE55ijX6hlEDvamKWGcEf3Oh+ZuqML6zUigjWXEgLnmRNQXcVleTk9ri?=
+ =?iso-8859-1?Q?ijRUwBo5zRVO1ccOzftizsC2fcgDdo4otlm/b1dxq8AlGmdMQdnunR8MYD?=
+ =?iso-8859-1?Q?jTErOuAm9o8bH4cIqzqIseHV1LstLn+X3PXN6UC6ZSV1ZG7DPAgfY41UJh?=
+ =?iso-8859-1?Q?dvAgg5/t0NRvNcNQnh9Jjr40LJnqHJHmAb5hUY51uKRi52Dp05yeXF/BGJ?=
+ =?iso-8859-1?Q?u7pwktJ1IG1yrUZlD7KS9XDKRhBl8KsSGUd181U03YsW/B+KbWZ9t116UZ?=
+ =?iso-8859-1?Q?G/9A+d5W7VyXuE9XZKHERd+6g/vwiOYjGmwKXGletAgIEmUKkNVUjzYSyp?=
+ =?iso-8859-1?Q?HlsN5lNhC9WZjQQZyH+4pct2nvYfUyhsBjflX/8JouY4CcM4c6P9SkmeQW?=
+ =?iso-8859-1?Q?1yHbkeYbHcX+e1Uiwueg1oeBlYZbbsHxOwJd6xfqAGdcNxrlvCx6uMWxmD?=
+ =?iso-8859-1?Q?fwBOpObJ2FABCFAUuvoYvCaFMLii4pJgZZlqc2tbpb+IQqlBeyzsEQ0b1k?=
+ =?iso-8859-1?Q?dV1fwIV9tCjzBW0Ht2gULf4hUswAMHsF3VL8PMhQt06cIanT+3s6E/zRZ1?=
+ =?iso-8859-1?Q?rhvupfZLkU5dsXuxN/ipw3RxNmGL9AXebweS8MBYW/OeW9lwgEMOoNZ8h1?=
+ =?iso-8859-1?Q?Snv8Nvs6Txq13bR47D98xqfWnd8FgCBGD3hU/t2nFSl3Lch6x1ip7GTQUY?=
+ =?iso-8859-1?Q?SltfDMfySwFmQmPbnHryFUGQ4GmccPyvZ8RkYneAtYKlFZSH9Oy0kcCGLq?=
+ =?iso-8859-1?Q?bsq16VmTF/sRi30x9zxa68MqmmCALfp4UbKTLExCYaLjWZhLoW05omr2Tz?=
+ =?iso-8859-1?Q?tnwYrrgYsdsmEtaoNHLiSvfa6zan6GEYFJsz7ZqwpAMfVlJtbmoqJ3XdxG?=
+ =?iso-8859-1?Q?QZsuhR3tzxj9vfEuHJrqi3UNYpjczj14amNe4E659fUXyHwFVnyBg/5pYq?=
+ =?iso-8859-1?Q?uKkGYbEMyAZKVCpQuO9/z0E8+H3VjcHLlRuEY9X0CB5tZtUO9UXY17bVxS?=
+ =?iso-8859-1?Q?e2W5znuCXE66cYC8XNnaisir6Xd/d3bkPuWiGkPWwHqXCbiTDBSn8GJIM5?=
+ =?iso-8859-1?Q?rqLMFJn3upiOhYeenjgAy/OdVWiiI+5x/N71Oai5mvPF8pa1bibDaaK8A0?=
+ =?iso-8859-1?Q?vnssEvjzIhS3GMpmbk7C4Ye0SNfZthbxJyMNm2e7OC520blsIDtj/BU33q?=
+ =?iso-8859-1?Q?UNG4Q+Y7nNKo9rRCLvUfNeXvgXzbFcQruJg3qOWsHr+HO5?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20260415015132.2297990-1-jason-jh.lin@mediatek.com>
- <CAC=S1nhr7DFMN-e794MGXp7Nv+LDTQcO4QqG-79XiotFVC7stQ@mail.gmail.com>
- <CAMNLLoQJ3w80Art1VkvYoh4duM5HY2skEH8gztG4TQBWJaUHrg@mail.gmail.com>
-In-Reply-To: <CAMNLLoQJ3w80Art1VkvYoh4duM5HY2skEH8gztG4TQBWJaUHrg@mail.gmail.com>
-From: Manasi Navare <navaremanasi@google.com>
-Date: Thu, 30 Apr 2026 16:01:18 -0700
-X-Gm-Features: AVHnY4K3z2XM2d-3LFFyCqklEFpf_0SajCKg02ldxXcevt8IbveK1syKv0YxvTE
-Message-ID: <CAMNLLoQSwnMz_-u2PqTDRM2qVXp=hxwXak5HFnCUqvpbMRVTDg@mail.gmail.com>
-Subject: Re: [PATCH v2] tests/kms_invalid_mode: Allow clock-too-high test on
- non-Intel platforms
-To: Fei Shao <fshao@chromium.org>
-Cc: Jason-JH Lin <jason-jh.lin@mediatek.com>, igt-dev@lists.freedesktop.org, 
- Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>, Jani <jani.nikula@intel.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>, Nancy Lin <nancy.lin@mediatek.com>, 
- Singo Chang <singo.chang@mediatek.com>, Gil Dekel <gildekel@google.com>, 
- Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com
-Content-Type: multipart/alternative; boundary="000000000000e986920650b571f0"
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5152.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7811ff81-a738-4893-b202-08dea710a785
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Apr 2026 23:31:50.4947 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: AoTXPMYxu0si80i7QXLbrnCofjAA47bpKDlEX4ajlqP7O8P1qKddk5ok3MMr2eAl5ORoMrNV8+Km6ViU5TuhQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4417
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,205 +135,327 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---000000000000e986920650b571f0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+AMD General
 
-Hi @Karthik B S <karthik.b.s@intel.com>  @Jani Nikula
-<jani.nikula@intel.com> :
+Series is Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
 
-Signal boosting this, we have reviewed this patch and verified for the MTK
-driver,
-Could you please take a look and  help on getting this upstreamed?
+> -----Original Message-----
+> From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
+> Sent: Friday, May 1, 2026 4:28 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Koenig, Christian
+> <Christian.Koenig@amd.com>; Deucher, Alexander
+> <Alexander.Deucher@amd.com>; Zhang, Jesse(Jie) <Jesse.Zhang@amd.com>
+> Subject: [PATCH 3/3] tests/amdgpu: Add DebugFS fuzzing test
+>
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>
+> Discovery: Fuzzing for Microsoft secure supply chain requirements
+> Tool: amd_fuzzing_debugfs (IGT test)
+>
+> Add systematic fuzzing for AMDGPU debugfs interfaces that accept writes f=
+rom
+> userspace (root-only access).
+>
+> Coverage:
+> - 10 writable debugfs files tested
+> - Display Manager debug controls (7 files)
+> - Scheduler masks (2 files)
+> - SMU debug interface (1 file)
+>
+> Test approach:
+> - 11 fuzz test cases per file (110 total iterations)
+> - Tests integer overflow, invalid formats, special characters
+> - Saves and restores original values
+> - Configurable failure threshold
+>
+> Key findings:
+> - All files properly validate input
+> - DebugFS rejects empty strings (unlike SysFS VFS behavior)
+> - No security vulnerabilities found (robust validation)
+>
+> Files tested:
+> - amdgpu_dm_dcc_en, amdgpu_dm_disable_hpd
+> - amdgpu_dm_dmcub_trace_event_en, amdgpu_dm_dmub_trace_mask
+> - amdgpu_dm_dp_ignore_cable_id, amdgpu_dm_force_timing_sync
+> - amdgpu_dm_visual_confirm
+> - amdgpu_compute_sched_mask, amdgpu_sdma_sched_mask
+> - amdgpu_smu_debug
+>
+> Test results: All subtests pass (10/10)
+>
+> Cc: Christian K=F6nig <christian.koenig@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Jesse Zhang <jesse.zhang@amd.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Change-Id: Id6582d81780cf79db348a19931b62c059c158e8e
+> ---
+>  tests/amdgpu/amd_fuzzing_debugfs.c | 233
+> +++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build           |   1 +
+>  2 files changed, 234 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_fuzzing_debugfs.c
+>
+> diff --git a/tests/amdgpu/amd_fuzzing_debugfs.c
+> b/tests/amdgpu/amd_fuzzing_debugfs.c
+> new file mode 100644
+> index 000000000..6106836c4
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_fuzzing_debugfs.c
+> @@ -0,0 +1,233 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2026 Advanced Micro Devices, Inc.
+> + *
+> + * AMDGPU DebugFS Fuzzing Test
+> + *
+> + * Fuzz tests for AMDGPU debugfs interfaces (userspace -> kernel via
+> +debugfs)  */
+> +
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <unistd.h>
+> +#include <sys/stat.h>
+> +#include <dirent.h>
+> +#include <limits.h>
+> +
+> +#include "igt.h"
+> +
+> +#define DEBUGFS_BASE "/sys/kernel/debug/dri"
+> +#define MAX_PATH 512
+> +#define MAX_VALUE 4096
+> +
+> +/* Test case for fuzzing */
+> +struct fuzz_case {
+> +     const char *desc;
+> +     const char *value;
+> +     int expected_errno;  /* 0 =3D success expected, -1 =3D any error OK=
+ */ };
+> +
+> +/* Generic test cases for writable debugfs files */ static const struct
+> +fuzz_case generic_fuzz_cases[] =3D {
+> +     { "valid_0", "0", 0 },
+> +     { "valid_1", "1", 0 },
+> +     { "negative", "-1", -1 },
+> +     { "large_int", "999999", -1 },
+> +     { "overflow", "99999999999999999999", -1 },
+> +     { "invalid_chars", "abc", -1 },
+> +     { "special", "!@#$", -1 },
+> +     { "empty", "", 0 },  /* VFS behavior */
+> +     { "hex_valid", "0xFF", 0 },
+> +     { "hex_large", "0xFFFFFFFF", 0 },
+> +     { NULL, NULL, 0 }
+> +};
+> +
+> +/* Find AMDGPU card path */
+> +static int find_amdgpu_card(char *card_path, size_t size) {
+> +     struct dirent *entry;
+> +     DIR *dir;
+> +
+> +     dir =3D opendir(DEBUGFS_BASE);
+> +     if (!dir)
+> +             return -errno;
+> +
+> +     while ((entry =3D readdir(dir)) !=3D NULL) {
+> +             if (strstr(entry->d_name, "0000:") !=3D NULL) {
+> +                     snprintf(card_path, size, "%s/%s",
+> +                              DEBUGFS_BASE, entry->d_name);
+> +                     closedir(dir);
+> +                     return 0;
+> +             }
+> +     }
+> +
+> +     closedir(dir);
+> +     return -ENOENT;
+> +}
+> +
+> +/* Check file access */
+> +static int check_file_writable(const char *path) {
+> +     struct stat st;
+> +
+> +     if (stat(path, &st) !=3D 0)
+> +             return 0;
+> +
+> +     return (st.st_mode & S_IWUSR) || (st.st_mode & S_IWGRP); }
+> +
+> +/* Read file value */
+> +static int read_debugfs(const char *path, char *buffer, size_t bufsize)
+> +{
+> +     int fd, ret;
+> +
+> +     fd =3D open(path, O_RDONLY);
+> +     if (fd < 0)
+> +             return -errno;
+> +
+> +     ret =3D read(fd, buffer, bufsize - 1);
+> +     close(fd);
+> +
+> +     if (ret < 0)
+> +             return -errno;
+> +
+> +     buffer[ret] =3D '\0';
+> +     if (ret > 0 && buffer[ret-1] =3D=3D '\n')
+> +             buffer[ret-1] =3D '\0';
+> +
+> +     return ret;
+> +}
+> +
+> +/* Write file value */
+> +static int write_debugfs(const char *path, const char *value, size_t
+> +len) {
+> +     int fd, ret;
+> +
+> +     fd =3D open(path, O_WRONLY);
+> +     if (fd < 0)
+> +             return -errno;
+> +
+> +     ret =3D write(fd, value, len);
+> +     close(fd);
+> +
+> +     if (ret < 0)
+> +             return -errno;
+> +
+> +     return ret;
+> +}
+> +
+> +/* Test a single debugfs file */
+> +static void test_debugfs_file(const char *filepath, const char
+> +*filename) {
+> +     char original[MAX_VALUE] =3D "";
+> +     const struct fuzz_case *test_case;
+> +     int ret;
+> +     int pass_count =3D 0, fail_count =3D 0;
+> +     struct stat st;
+> +
+> +     igt_info("=3D=3D=3D Testing: %s =3D=3D=3D\n", filename);
+> +
+> +     /* Check if file is writable */
+> +     if (!check_file_writable(filepath)) {
+> +             igt_skip("File not writable: %s\n", filename);
+> +             return;
+> +     }
+> +
+> +     /* Try to read original value */
+> +     if (stat(filepath, &st) =3D=3D 0 && (st.st_mode & S_IRUSR)) {
+> +             ret =3D read_debugfs(filepath, original, sizeof(original));
+> +             if (ret >=3D 0)
+> +                     igt_info("  Original value: '%s'\n", original);
+> +     }
+> +
+> +     /* Run fuzz test cases */
+> +     for (test_case =3D generic_fuzz_cases; test_case->desc !=3D NULL;
+> test_case++) {
+> +             ret =3D write_debugfs(filepath, test_case->value,
+> +                                strlen(test_case->value));
+> +
+> +             if (ret < 0) {
+> +                     if (test_case->expected_errno =3D=3D 0) {
+> +                             igt_warn("  [%s] Write failed: %s - UNEXPEC=
+TED\n",
+> +                                     test_case->desc, strerror(-ret));
+> +                             fail_count++;
+> +                     } else {
+> +                             igt_debug("  [%s] Write failed: %s - EXPECT=
+ED\n",
+> +                                      test_case->desc, strerror(-ret));
+> +                             pass_count++;
+> +                     }
+> +             } else {
+> +                     if (test_case->expected_errno =3D=3D 0) {
+> +                             igt_debug("  [%s] Write succeeded - EXPECTE=
+D\n",
+> +                                      test_case->desc);
+> +                             pass_count++;
+> +                     } else {
+> +                             igt_warn("  [%s] Write succeeded -
+> UNEXPECTED\n",
+> +                                     test_case->desc);
+> +                             fail_count++;
+> +                     }
+> +             }
+> +     }
+> +
+> +     /* Restore original value if we read one */
+> +     if (strlen(original) > 0) {
+> +             ret =3D write_debugfs(filepath, original, strlen(original))=
+;
+> +             if (ret < 0)
+> +                     igt_warn("Failed to restore %s: %s\n",
+> +                             filename, strerror(-ret));
+> +     }
+> +
+> +     igt_info("  Results: %d passed, %d failed\n", pass_count, fail_coun=
+t);
+> +
+> +     /* Allow some failures for exploratory fuzzing */
+> +     igt_assert_f(fail_count < 6,
+> +                  "Too many issues for %s (%d failures)",
+> +                  filename, fail_count);
+> +}
+> +
+> +/* Main test */
+> +int main(int argc, char **argv)
+> +{
+> +     char card_path[MAX_PATH];
+> +     char filepath[MAX_PATH];
+> +     int card_found =3D 0;
+> +
+> +     /* Writable debugfs files to test */
+> +     const char *test_files[] =3D {
+> +             /* Display Manager debug knobs */
+> +             "amdgpu_dm_dcc_en",
+> +             "amdgpu_dm_disable_hpd",
+> +             "amdgpu_dm_dmcub_trace_event_en",
+> +             "amdgpu_dm_dmub_trace_mask",
+> +             "amdgpu_dm_dp_ignore_cable_id",
+> +             "amdgpu_dm_force_timing_sync",
+> +             "amdgpu_dm_visual_confirm",
+> +             /* Scheduler masks */
+> +             "amdgpu_compute_sched_mask",
+> +             "amdgpu_sdma_sched_mask",
+> +             /* SMU debug */
+> +             "amdgpu_smu_debug",
+> +             NULL
+> +     };
+> +
+> +     igt_subtest_init(argc, argv);
+> +
+> +     igt_fixture() {
+> +             card_found =3D (find_amdgpu_card(card_path, sizeof(card_pat=
+h)) =3D=3D
+> 0);
+> +             igt_require_f(card_found, "No AMDGPU card found in debugfs\=
+n");
+> +             igt_require(getuid() =3D=3D 0);  /* Need root for debugfs a=
+ccess */
+> +             igt_info("Found AMDGPU card: %s\n", card_path);
+> +     }
+> +
+> +     for (int i =3D 0; test_files[i] !=3D NULL; i++) {
+> +             igt_subtest_f("debugfs-%s", test_files[i]) {
+> +                     snprintf(filepath, sizeof(filepath), "%s/%s",
+> +                              card_path, test_files[i]);
+> +                     test_debugfs_file(filepath, test_files[i]);
+> +             }
+> +     }
+> +
+> +     igt_exit();
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build index
+> effb6130a..d5a4820e3 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -20,6 +20,7 @@ if libdrm_amdgpu.found()
+>                         'amd_freesync_video_mode',
+>                         'amd_fuzzing',
+>                         'amd_fuzzing_sysfs',
+> +                       'amd_fuzzing_debugfs',
+>                         'amd_hotplug',
+>                         'amd_gang_cs' ,
+>                         'amd_ilr',
+> --
+> 2.43.0
 
-Regards
-Manasi
-
-On Wed, Apr 29, 2026 at 1:37=E2=80=AFPM Manasi Navare <navaremanasi@google.=
-com>
-wrote:
-
-> Thanks for the patch and for addressing Jani's comments.
-> This looks good to me.
->
-> Reviewed-by: Manasi Navare <navaremanasi@google.com>
->
-> @Jani Nikula <jani.nikula@intel.com> @Karthik B S <karthik.b.s@intel.com>
-> Would you be able to help land this upstream, its required
-> to run this test on non intel platforms and review comments from Jani hav=
-e
-> been addressed.
->
-> Thanks a lot for your help on landing this.
->
-> Regards
-> Manasi
->
-> On Thu, Apr 16, 2026 at 9:04=E2=80=AFPM Fei Shao <fshao@chromium.org> wro=
-te:
->
->> On Wed, Apr 15, 2026 at 9:51=E2=80=AFAM Jason-JH Lin <jason-jh.lin@media=
-tek.com>
->> wrote:
->> >
->> > The clock-too-high subtest was being skipped on non-Intel platforms
->> > because igt_get_max_dotclock() returns 0 when reading from
->> > Intel-specific debugfs fails.
->> >
->> > This change allows the test to run on all platforms by using -1 as an
->> > invalid clock value when max_dotclock is unavailable. The -1 converts
->> > to UINT_MAX for unsigned int, which clearly exceeds any reasonable
->> > hardware limit and should be rejected by all drivers.
->> >
->> > This prevents the test from being marked as IGNORED/SKIP on non-Intel
->> > platforms while maintaining the original test intent of verifying that
->> > drivers properly reject modes with excessively high clock rates.
->> >
->> > Tested on MTK platforms where the test now properly executes
->> > and verifies clock validation.
->> >
->> > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
->> > Suggested-by: Jani Nikula<jani.nikula@intel.com>
->>
->> Reviewed-by: Fei Shao <fshao@chromium.org>
->>
->>
->> > ---
->> >  tests/kms_invalid_mode.c | 10 +++++++++-
->> >  1 file changed, 9 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
->> > index 5edffb649ef4..78ab965ede91 100644
->> > --- a/tests/kms_invalid_mode.c
->> > +++ b/tests/kms_invalid_mode.c
->> > @@ -126,7 +126,15 @@ adjust_mode_clock_too_high(data_t *data,
->> drmModeModeInfoPtr mode)
->> >  {
->> >         int max_dotclock =3D data->max_dotclock;
->> >
->> > -       igt_require(max_dotclock !=3D 0);
->> > +       /*
->> > +        * If max_dotclock is unavailable (e.g., non-Intel platforms),
->> > +        * use -1 as an invalid clock value. This will be converted to
->> > +        * UINT_MAX, which clearly exceeds any reasonable hardware
->> limit.
->> > +        */
->> > +       if (max_dotclock =3D=3D 0) {
->> > +               mode->clock =3D -1;
->> > +               return true;
->> > +       }
->> >
->> >         /*
->> >          * FIXME When we have a fixed mode, the kernel will ignore
->> > --
->> > 2.43.0
->> >
->>
->
-
---000000000000e986920650b571f0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi=C2=A0<a class=3D"gmail_plusreply" id=3D"plusReplyC=
-hip-1" href=3D"mailto:karthik.b.s@intel.com" tabindex=3D"-1">@Karthik B S</=
-a>=C2=A0=C2=A0<a class=3D"gmail_plusreply" id=3D"plusReplyChip-2" href=3D"m=
-ailto:jani.nikula@intel.com" tabindex=3D"-1">@Jani Nikula</a>=C2=A0:</div><=
-div><br></div><div>Signal boosting this, we have reviewed this patch and ve=
-rified for the MTK driver,</div><div>Could you please take a look and=C2=A0=
- help on getting this upstreamed?</div><div><br></div><div>Regards</div><di=
-v>Manasi</div><br><div class=3D"gmail_quote gmail_quote_container"><div dir=
-=3D"ltr" class=3D"gmail_attr">On Wed, Apr 29, 2026 at 1:37=E2=80=AFPM Manas=
-i Navare &lt;<a href=3D"mailto:navaremanasi@google.com">navaremanasi@google=
-.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex"><div dir=3D"ltr"><div dir=3D"ltr">Thanks for the patch and for addressi=
-ng Jani&#39;s comments.</div><div>This looks good to me.</div><div><br></di=
-v><div>Reviewed-by: Manasi Navare &lt;<a href=3D"mailto:navaremanasi@google=
-.com" target=3D"_blank">navaremanasi@google.com</a>&gt;</div><div><br></div=
-><div><a class=3D"gmail_plusreply" id=3D"m_-9025511830230408148plusReplyChi=
-p-5" href=3D"mailto:jani.nikula@intel.com" target=3D"_blank">@Jani Nikula</=
-a>=C2=A0<a class=3D"gmail_plusreply" id=3D"m_-9025511830230408148plusReplyC=
-hip-6" href=3D"mailto:karthik.b.s@intel.com" target=3D"_blank">@Karthik B S=
-</a>=C2=A0 Would you be able to help land this upstream, its required<br></=
-div><div>to run this test on non intel platforms and review comments from J=
-ani have been addressed.</div><div><br></div><div>Thanks a lot for your hel=
-p on landing this.</div><div><br></div><div>Regards</div><div>Manasi</div><=
-br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu,=
- Apr 16, 2026 at 9:04=E2=80=AFPM Fei Shao &lt;<a href=3D"mailto:fshao@chrom=
-ium.org" target=3D"_blank">fshao@chromium.org</a>&gt; wrote:<br></div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">On Wed, Apr 15, 2026 at 9:51=
-=E2=80=AFAM Jason-JH Lin &lt;<a href=3D"mailto:jason-jh.lin@mediatek.com" t=
-arget=3D"_blank">jason-jh.lin@mediatek.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; The clock-too-high subtest was being skipped on non-Intel platforms<br=
->
-&gt; because igt_get_max_dotclock() returns 0 when reading from<br>
-&gt; Intel-specific debugfs fails.<br>
-&gt;<br>
-&gt; This change allows the test to run on all platforms by using -1 as an<=
-br>
-&gt; invalid clock value when max_dotclock is unavailable. The -1 converts<=
-br>
-&gt; to UINT_MAX for unsigned int, which clearly exceeds any reasonable<br>
-&gt; hardware limit and should be rejected by all drivers.<br>
-&gt;<br>
-&gt; This prevents the test from being marked as IGNORED/SKIP on non-Intel<=
-br>
-&gt; platforms while maintaining the original test intent of verifying that=
-<br>
-&gt; drivers properly reject modes with excessively high clock rates.<br>
-&gt;<br>
-&gt; Tested on MTK platforms where the test now properly executes<br>
-&gt; and verifies clock validation.<br>
-&gt;<br>
-&gt; Signed-off-by: Jason-JH Lin &lt;<a href=3D"mailto:jason-jh.lin@mediate=
-k.com" target=3D"_blank">jason-jh.lin@mediatek.com</a>&gt;<br>
-&gt; Suggested-by: Jani Nikula&lt;<a href=3D"mailto:jani.nikula@intel.com" =
-target=3D"_blank">jani.nikula@intel.com</a>&gt;<br>
-<br>
-Reviewed-by: Fei Shao &lt;<a href=3D"mailto:fshao@chromium.org" target=3D"_=
-blank">fshao@chromium.org</a>&gt;<br>
-<br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 tests/kms_invalid_mode.c | 10 +++++++++-<br>
-&gt;=C2=A0 1 file changed, 9 insertions(+), 1 deletion(-)<br>
-&gt;<br>
-&gt; diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c<br>
-&gt; index 5edffb649ef4..78ab965ede91 100644<br>
-&gt; --- a/tests/kms_invalid_mode.c<br>
-&gt; +++ b/tests/kms_invalid_mode.c<br>
-&gt; @@ -126,7 +126,15 @@ adjust_mode_clock_too_high(data_t *data, drmModeM=
-odeInfoPtr mode)<br>
-&gt;=C2=A0 {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int max_dotclock =3D data-&gt;max_dot=
-clock;<br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_require(max_dotclock !=3D 0);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 * If max_dotclock is unavailable (e.g., n=
-on-Intel platforms),<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 * use -1 as an invalid clock value. This =
-will be converted to<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 * UINT_MAX, which clearly exceeds any rea=
-sonable hardware limit.<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0if (max_dotclock =3D=3D 0) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0mode-&gt;clock=
- =3D -1;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return true;<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * FIXME When we have a fixed mode, t=
-he kernel will ignore<br>
-&gt; --<br>
-&gt; 2.43.0<br>
-&gt;<br>
-</blockquote></div></div>
-</blockquote></div></div>
-
---000000000000e986920650b571f0--
