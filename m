@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2156DFF8875
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Apr 2026 04:07:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0196CFF8875
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Apr 2026 04:10:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C54CA10E08B;
-	Thu, 30 Apr 2026 04:07:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A2A6C10E08B;
+	Thu, 30 Apr 2026 04:10:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MnoJWXUF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j9I6X7Lf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FA0410E08B
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Apr 2026 04:07:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76FA510E08B
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Apr 2026 04:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777522025; x=1809058025;
+ t=1777522206; x=1809058206;
  h=date:from:to:cc:subject:message-id:references:
  content-transfer-encoding:in-reply-to:mime-version;
- bh=rZcvc4qKNGfmp7x6P9FyWoc0xvauNYgznYb8j5HZbWU=;
- b=MnoJWXUF3i5pDaWDZwnbSDNi5xcXgPuNjsveVXWv/yQPjYfetaxX4/Lr
- /JKH1VyB6AP6bOuNSzk7478zL92nCnQDspsPTAkXVjD2H2C8qxsdeeRYb
- qni2DpMi4k4wNzAjjNopzjRcOibJ6hQlb8G0GTOgG067eMM/bDBTDRnnM
- cwW/6HNkpnXbYeWnHhl9CD17rj9FEeJqqjri5F3RX4dThQwTtfZYYmyN+
- ei46Y0XPD+4oc/ib9cBh/P04swB7WcCHRdn6upTV5BMrPCo+J7CezHpao
- ozLl1m2gIj2q+jXM/o6fEul7op1o80QxEZ2y6WGfREat9VeVMagbI0/Ld Q==;
-X-CSE-ConnectionGUID: +N7Ru7cWTCCSZACuKgCzAw==
-X-CSE-MsgGUID: 55DdZj7wTw+iGfCRY2NiJg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="89154235"
-X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; d="scan'208";a="89154235"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2026 21:07:05 -0700
-X-CSE-ConnectionGUID: /n6TxZHdRD+2qLvNp70XLg==
-X-CSE-MsgGUID: d6UZJbxfQZyP4yLAyG68pw==
+ bh=eDiqQ6v9POPmP6QKRU9Aq2uvnTpGhklDG4UulWPQRI8=;
+ b=j9I6X7LfS19QpdvCH8o3QliDysHiDTU2owdWiXGODh/RHJDnRKeILzVx
+ eqVeD1YTfGtt1X5t7xfndWhrPbv1mRIuJN03QuVxddPKTRcTapKCckGCG
+ rgaO61Er+XQLOt3LGydJkHI6C4dDFnGt/XZd2BgQuWuhIbvuRaDcFDUWI
+ oCedBr5Jg21sh9gW481QT6XLtglfPcQJRNLywfFw8U1/YH7Zd+0Ih/utu
+ k1Iduhb6yu49dzC11Gcp4OlNkQT88ep6MQcqgzSP62RULfkFc4WxWOabm
+ PU29FbhDPvJBry1D2EloDEuat3GevefEgZgGc3XM9mVTDHIpFCd+ioJ7V w==;
+X-CSE-ConnectionGUID: kNRD2DPbRWG2cKvK0xW6Hw==
+X-CSE-MsgGUID: CruwqJ63QOCdvT2fnjn0ZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="81037116"
+X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; d="scan'208";a="81037116"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2026 21:10:01 -0700
+X-CSE-ConnectionGUID: sW6kW4FSRCqNaDHWDQK3Tg==
+X-CSE-MsgGUID: clP1gWqUSmObEFiGnopxkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; d="scan'208";a="230110220"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2026 21:07:05 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; d="scan'208";a="231323216"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2026 21:09:59 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 29 Apr 2026 21:07:04 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.37; Wed, 29 Apr 2026 21:09:59 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 29 Apr 2026 21:07:04 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.53) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Wed, 29 Apr 2026 21:09:59 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.67) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 29 Apr 2026 21:07:04 -0700
+ 15.2.2562.37; Wed, 29 Apr 2026 21:09:58 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UvuFXU74cNUot0A0Zuad8uF9n5Ox6NxIusz5P1tvMSp5wBX5iqOO61iU8mZ62M+mqNlZCoAUFoORcYDvUYDIjofwb7MKyCdhfFwLapnrOi94xrVVelEB8gHeYkfRnMYCzpVCIKuugCv0FhDfqU1JMCbXe62Ine6jd2MXF+QZjtz6diNjrXc4SHt3DZPhGXV0pV4mowWB+WJ9fMcgfZiWSndARuTSwe1PCA+I1NmbBvAIm5tfLlJFxOsb343GDufuU+MQZp1Zu9TNOGWoqYt3MuRyqG97GP+BpkLx3JeL7pEtyGaRPOj8325kchMWtWWPpv3FTQys8Jxx1CXK/clwIQ==
+ b=XbgWvQozlb42m/aICWp/ARvPGcD2JF6HY5Zxncr9ZaFbvK9UJpNiruJ/tyQQytgvbksitTHuIyV8yitL4jTTB3BH3vWMlm96e9s2f/pcAYv0VE4BA5imuIcc0UVg/oTBBnDNF/rQgR6+mEO6sUsFrKG/MnpDKvJljdbjU3K4KU3f4W/k4K32uAo0zsiTJ7fEZZR9C3DgIQUHNLms0CuLXFncLJSqDniUb2cJlb7e/ydhfqksEnQPtx+aaVBhWUdefUF8En66bw1R8DFyrKthNl0dloZn7M2LsGGR6mcqq2WTN6tvHJqCeKyN9Gv3a/FBdxqBk0/gxmRB4InokgEXRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rZcvc4qKNGfmp7x6P9FyWoc0xvauNYgznYb8j5HZbWU=;
- b=W3EdnbaS59LuZ4Vdu0dUQmVWJR0yUmF9d2Ae7lhwq48xnc8a4Ru1kbOZz7weR7w3Ml1oa3sjeut/kpsA7W+lOv3FKWZrQFzW8ritEKufcKyKMI2uE/QKxzpg8waXONMVghmiD3TlugVRmaIXkxGzUSekrUrraoawUyNOLdgUIOk1uL9w6yQZ9mMnb9R6pW54FHScUKjy1N7qTDkS9jAzQF3F1KIVmTBSbQZ6f0m0B7L1dkAsMxHBlX01VQQ/2pufMz1/BX9XJiS9WZe9XH5uG/mrlXRUUYeLSjGl1eJOMGNELWJkbiJ+ShsfFbT0+8WCZzj2p+c/irxiWNUoqfKKMg==
+ bh=zpABSSmqRyBl9BNjOLP8E+XzBi7nZAykQrfQEUQv5eQ=;
+ b=O0HJK/idY+IVwN3Hvw91J6MR2xm5J00JhVovpHHR+9nOfXO2neouJRWv/45V5cGzrLZhDSRNYcoQNoH7OXvLM/bWgYFM9IIU1N7enNyQ9dDWVe5vD9/hqwSf6VOM7mrEQN8oBfL4eNl2JGsIOKJuIHZIOsgNVofO0ft/aKMXCzQpX72pP0iHY38C/ZJ6ssPfJVRvxr+cBHYlLrPNNQ8OpdHgJcgtUhBnpNz0PK33+1GalAPpNY5nmhFoHA7Wl5Rm6LT4PyjmLi9SVQMNgJPinfDNNp//hsshXe4aKXey/QEl9WwbeNb4Dk4TnDdloun1RmzmHin9JjxT9oJ6qauV4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,93 +69,82 @@ Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
  by PH7PR11MB6722.namprd11.prod.outlook.com (2603:10b6:510:1ae::15)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Thu, 30 Apr
- 2026 04:07:01 +0000
+ 2026 04:09:51 +0000
 Received: from BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc%6]) with mapi id 15.20.9870.016; Thu, 30 Apr 2026
- 04:07:00 +0000
-Date: Wed, 29 Apr 2026 21:06:57 -0700
+ 04:09:51 +0000
+Date: Wed, 29 Apr 2026 21:09:48 -0700
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: "Wang, X" <x.wang@intel.com>
-CC: "Summers, Stuart" <stuart.summers@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Summers, Stuart" <stuart.summers@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Subject: Re: [PATCH 2/2] tests/intel/xe_exec_multi_queue: replace sleep with
  barrier queue
-Message-ID: <afLVYeTiGaeiLCD0@nvishwa1-desk>
+Message-ID: <afLWDMb8S-4XJGTo@nvishwa1-desk>
 References: <20260429020856.1857656-4-niranjana.vishwanathapura@intel.com>
  <20260429020856.1857656-6-niranjana.vishwanathapura@intel.com>
- <ab23ef9a6e8b9c8efb500cde38824b9aaf21ef5c.camel@intel.com>
- <34b7c49d-18d2-4f8a-8afd-0487b1c72c4c@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+ <f0bc0c401df059314353ab61d6139416933c9600.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <34b7c49d-18d2-4f8a-8afd-0487b1c72c4c@intel.com>
-X-ClientProxiedBy: BY5PR04CA0008.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::18) To BL3PR11MB6410.namprd11.prod.outlook.com
+In-Reply-To: <f0bc0c401df059314353ab61d6139416933c9600.camel@intel.com>
+X-ClientProxiedBy: SJ0PR05CA0096.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::11) To BL3PR11MB6410.namprd11.prod.outlook.com
  (2603:10b6:208:3b9::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|PH7PR11MB6722:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12db5cdf-2740-42e1-89fe-08dea66dedfb
+X-MS-Office365-Filtering-Correlation-Id: e7ad73b9-39a4-41a6-30e4-08dea66e5319
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|366016|1800799024|376014|56012099003|18002099003|22082099003; 
-X-Microsoft-Antispam-Message-Info: wQq1S0tnibSMbgR9ALKCidnwlIV2mk+w/ox9cbPR+e1ldcEW8E/xmJed32NWcNzAhgGBepwGeKIhQ8AcV8tAr0hzcrbXz8Yptnq7IbjW01Z9nkGHcC05neC7RvbLUEzYp8LOZ2CIovSzMXkhHvpifQaINvUtAF4FwIdxXvgPOwB2PGJIrsyZKsU5Vfably/RgmtWu98mq6xEWmo6OXKB7nuShcKPU72SSFkNaClC9B5HbTE6t3t1Qot0QSMz6cxafoXSQ785EcMmQKsnJ3oCZIq7a/iuC2AqRYwpFwHdVl5Rd8Vf7HTW/97FCYi0ucEOQvoX8R+8iPhVTXyX0y69vrTg8K1WwiAxdpf86Z/ofqrL5TgBOb+M7oiC8g2kTlZ8I3ENB3wRuJ8xZpTz2jFncYr9qNXbBou7MzaJn/aW/JxBh56R04hbuWMhc+hRXuOhsevubcUl9151xAGYKbU3Z8K3X82GR+E6ix013Q9r3MppQhI8XCmCAyMR8m8BV5FoJ6QbfJ7qRBd5crqQtd2use0xbbRdbmjdnlHKUNyE8Dck/aZX2ompXsC6PvSznT7IXlw9IawzKSJKakSfuW9rA2uF9jQVhUcU5++ohYWBnh0cLB9AqVnIOQPoxP6KI05cwLPEI4hkd+tWB66gUSdqRjpiuUqKVLxNhvQqP8Lnt/ipjvZkqdVEsduV4sgDtlLFsZof78wdCO1vb+dyJNYOU01VHV2AepQqhClmR9rmitI=
+X-Microsoft-Antispam-Message-Info: Lfu7ozNYmdO3Up6qB9NsJcCn+VRYKMzBmH3IGu27EeFMw02GFMtpH4CScDfHOacMkMYVUF/09y6L2ex97ebJeVpFzJcntJAyFaJC0nyJsUzP+Kj2Js0jtUEI34g5APs4cMqlW3UukZTVxswCJY/OKritwEAX7NCmeZdqjvrOOou5DgRmmWSmNbONN5jrIldaw3wWJBL687PycELwHYglnBEZSLKsuHSj1B4kaBOBdzVUOWtr/H9LMyxzi+PA2yY+cDXN/kN2pcPp3MZ3HkhUSoKIvyA8S1h973knMQoL9JIAx5yAEkmz6Pg8rJU3K7sxJL5aPFcWBPpyqrF0DyxrsDyj044veBi1vi19uxbdz9rPnXSRUWB8kcFagtGaOGR3e69M7JxLF67nExPmXLMiF0YdVP4lFKlXKx4pl7Q7vqmXtc5ZmFizrIVCb3HeC2H0unkX2KYmBWt2+BIUnlYJNswSx9qpuyumkKwJgKsyIV4KgEulubDQwR4WZoxsuMHGR4MUNr2j/oNSKN0UpOp3vDfLLXr5TbsUeHFgSu2uHKXV7k9MIVg2l828mq+a278cT5czLN8n93qdwk526MggGpiRydqj3hbAoLG4V+5dGMLU1Vf7l6U6STQQUZEx4i5S5e/2DwrcZNjHRjtK03Og8QdjcpLDbftg0YSYrg4zFw4fbxQlruS1svTUnVagFlg5f8uMqhiP1heAzYKInpDPdl1NVZjTbxTcOkIALTXqkfk=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZHVQOFc1SWVoU1A0dnpkWWx1OGpVdVh6alNrdW41d3ZDZVNzay82aHJPV0tN?=
- =?utf-8?B?djYzaDJHT1hFTGwwSzMreXBadVBQVUZ2N3Z4a1I4Ny8yRUlJak0zVHRSVGY3?=
- =?utf-8?B?RllZaTlRcEtHYmF3NUM5Nkg5RTN3Qjg3eHRmWFk2dkdYbytuNlBWVm1CbWlO?=
- =?utf-8?B?RXorYVBwSCs0Q0JhTWRvbWRzZUI4bTMydnpPOGlWTE5pZ2tXeHlobHNZQUZR?=
- =?utf-8?B?ZUNQbE81UVU4TVBtQVltYlU2bDdkZXh0NUVHZGVSTHBlZTY5UGF5K0RDZmEz?=
- =?utf-8?B?bnlmSWN2WFNHMFErRlJESmQvSnpIaTRCcjV3VDQrM01pYkgrNEZXRGV6aEZs?=
- =?utf-8?B?RDF1ckJhZ0d3ZmcwSDk5TVdwM1hFaGZMSG82cnJna1F1YXQ0bGtzNk9ZMkdK?=
- =?utf-8?B?WGZNYlR6T3lDSkZSNThRYTFqK0NOdnNlaGVadmVXaE1LY0tvUnBNbTBsMVJG?=
- =?utf-8?B?d3R3SzZ4eUJmaDN6QlBoWTc2dlRjTFJFRjRYbStJWmZNbzZNZmVrTkhLcXpa?=
- =?utf-8?B?dnhsZjhZOUV4bUR3R2xiMWtVMXhiSERSY2M3ZkJyMFVpOTZyMDJINWpka3V2?=
- =?utf-8?B?MDNkd1NpOHlFZWU0TTlmV1M0YlJUTGZVMTlsVGtINWFzZTlqaXN0VHhORGZP?=
- =?utf-8?B?UGNWWFc3RkdQTEgwU2NYSmdIMnpjT2h6QWJJUnpsbEhqUWFhbGQrdHY1L2RY?=
- =?utf-8?B?MSt2bFRBN3czVkUwY0M0akRxVmp0cVY0VEFPVE56ZXlUQWpCTHc0N2h6blVW?=
- =?utf-8?B?QUFVYkZ2VC9MaTdKMnBpWXR3Z2RzQlVIVzUwbFRKODlNTUhKRUwvSWhOcnhO?=
- =?utf-8?B?aWF5R21VRHkyM29aYWZLYUxLM0s4bDJqNk43MHUwdFlhVG5wWkhzU1BBdTFU?=
- =?utf-8?B?UTFiMmFaekZiYXBscUFMV1VVb3hoNHVsTmNOaHdDc2lvYnhRR0dkMmlNUlhj?=
- =?utf-8?B?WHNCaWk0Um5ScThqdXJtSVh5ZFI4amMwc3cwMWN0Mmd2a0kxWHJzZVc1VEsr?=
- =?utf-8?B?RzJjWEE1V3kwcVgrOHdWSkFtRXBTMXRuMUg3ZDJTYlN3enNGYmZpWGNjWXB6?=
- =?utf-8?B?Y205cHhnVjlQOFBCVkJsSitmQTJ2UVFYV2xrTmtQelRkdGdMcW91cUZNQmQ2?=
- =?utf-8?B?Z1BnUWh3YmIydStuUmZhSHFremFKNXRuQkpMb3QzSlliaTNOd3hEUU5yV01r?=
- =?utf-8?B?OG5SelZyVFhDdWhSZS85VUhNZDZGb2xOcGxUV0RwOW5YNmREeWdXdzRSRzEv?=
- =?utf-8?B?TllsMjFqUzFGZEdrZ0lqeXhxYzAwQ3NNWkdoMmZ1Slg2bXNGeGNUZGpKRUxF?=
- =?utf-8?B?RitvTjZtK1RiVW5hOGswS0Y1WGgwbUNDb0p2aXI3d3dTaS9JcktDRERMcGZZ?=
- =?utf-8?B?MkNnK0I2cUJzRzBESy9oZzIwR2VwWTFlMjc1VXpEOGwzbGZ5cDcxNzJLMmZN?=
- =?utf-8?B?WG9lbVhleEdFL3lyS3A5UTQxUDJYQjJQK2o3Q21Xem94MHlBcVJPTFplWjhh?=
- =?utf-8?B?RlVMT2lDME9scCt6eFlRbWptMHUrYmlDY09DdkRGR2ZCdFRGMk5oSys2MDJ0?=
- =?utf-8?B?T2pMZU8zVTdvZC9qQUZ3Tk9XRXlDQSsxYVh2KzBheDZSTFdsdzNkNG9rbEZt?=
- =?utf-8?B?T3J4NTZGTXBPQ2hLdlVhSnliRkNxaUVlS1oyaTNQNjlxK3JzNE5xcTR1dVRa?=
- =?utf-8?B?R3RnRXU4aFp1elJ3ZGQ0bVpENGR2dU14YnZZZzYvU0l1T3d6QzNKT0VITmVl?=
- =?utf-8?B?NkZPL1FndUpUTFpxQXh4clRFZFZITWRjMXdIdkJXeHdYNnZ2algxbjdPdjVS?=
- =?utf-8?B?VGpFbytoYjNBMTl6WTduM3BMbGUxYk9hZWEzZjJzNHlieEVZU3ZRUXNjOU9H?=
- =?utf-8?B?V3RHWGkxd2tmVmsxRDFkZEp4WitaOXJVMCtNWWoycEpJbUNSbWQ1TXh0c2t0?=
- =?utf-8?B?TkxoYUhVNDR1Ly9zNkJiRFhHN1VXTGg2alM4SDBxMDM4MXhhSVlwR01zTmtY?=
- =?utf-8?B?VkRmbmpjeExRcWhPUWlvQUZXbFRqQjhrSHNPeW5qTjJXVzdQKy9IZ1B6UkpO?=
- =?utf-8?B?NlRveWVVK3FBUG42aTBhLzRBTTFkTEgza3QvMHhaOENUS3FvL3dQTTVVa0hp?=
- =?utf-8?B?NVFuVGp1aFhuREd0MVFocGNQOHZxcFJrRnpYZEE5cmtXSzR2NE5UQ2E5K2lk?=
- =?utf-8?B?ZzFzVzdFODhjc0pyZk5ySFNYQ04xT2lkajBUaEY2TDhxMDU3SzV4a0RVRzlD?=
- =?utf-8?B?YmZ1d3hOZjI3RUhSMWoxaXdWakFVYjNGZlViOWM1UUNEa01xMmpoNVhNWTRP?=
- =?utf-8?B?RG9PWEVUUWxKOXFxcUNkR2dKcG9UWnR6SXIyMkN1eXFES05WT0ZXN0hNQ0pH?=
- =?utf-8?Q?STcjsSkYmDmW3FGIsXLDdOgGbAuJ+6fwMzmZY?=
-X-Exchange-RoutingPolicyChecked: gO+/7G0tdO1U5njHVmvWGpk7lZ2IrLtxz5QVlhWx9Qw51+s3ErRfIp6QQLKxhMY2TWx0WMKEKns3XX9A00PpCqexwO7L1giWP/kfQyqkW+3/cdOJCzJoYbA/hT++m9Kxx1ychdt90gRfpqdSIhcw+dNFlxCwJufaBMAQoayzgSLYBmsVP/eMlDjR2Fwt8X28c+A2uIFU4Zu4k5HrOpT9uKU21udgo5tOZTBHS6YfKaSkVK1wQ83K+3KRSTeu/1u0DcXnveU4AwYGwaK3ba1PJKoY/2DpkLmWV+N5R0u2chx1jqqjKEbTxJ4IauJFZvrwW1dzJKmT0TKNPs6IHTJ9rg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12db5cdf-2740-42e1-89fe-08dea66dedfb
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?dClmU19vq6h7X0MlUX68TYOWG4itGNZDuGSL7ZKVOu8q2LneF3fJvTaPqK?=
+ =?iso-8859-1?Q?Z2vCYy6SQ4dKDmTb8vZUZmJ3FOHQHLC18azI0S5hD5b3YzpRTx4IZcHZOR?=
+ =?iso-8859-1?Q?Xo8bOg8pdztneHPCnHTmmLqPXWxwqANa4IzWlLVUv5HV6VSW3njojVdkNA?=
+ =?iso-8859-1?Q?SHg0g4f3nuQAUWJw1lyg7cMc3vOWr32y4Pbw43kUUEEPi/DIngFKVVc427?=
+ =?iso-8859-1?Q?RQuXYPzAMWcDcngQ2iXYOTO7Rh59F+EZFtle+DPLZ63bfwqaASRE7ICVb1?=
+ =?iso-8859-1?Q?U8kd4Q4Bco1Lr5bRnu9OM2V1TGpJU9kNMkGvQK3Aglyf6F0NPIuRuOmyx2?=
+ =?iso-8859-1?Q?xyaU51eLTunxiwEWAetQ7qPp6P0t2VdGp1duZjfJ0XIBL0Z8bnq5Y5YPR0?=
+ =?iso-8859-1?Q?Z5sPw3gTRfLy6cSoBFD0kxiaKI9xLvLsWqLiItL4WmcJmqBCeWtW2Rx45C?=
+ =?iso-8859-1?Q?nLlR4auJW7G56d8+jWxNELwu2mh8RK0S4renjuW44fGq7lyuWIjznF3x5Q?=
+ =?iso-8859-1?Q?t329+pVAS3y4jvtF0UHxspoGi5c+LGicUMISIoAmecKNPFUc1NvIchLudo?=
+ =?iso-8859-1?Q?t3X9oENxj3We1YHL1M0hH9nK1EB0PlwDczQbkDaYUEcMIjUwC7APuJKOyo?=
+ =?iso-8859-1?Q?UzOgCNui7CiADDgQ+Wts8LyLydBBf+i7z9FGphBEgYgaEqiINel3giF5O/?=
+ =?iso-8859-1?Q?RENIbRg2vcZNVsNy7C+4q71zq16Wd3MhyDL4T4xASysDIZicxB9poV/IMv?=
+ =?iso-8859-1?Q?n3yDRPO39JM3A2DUNwsY7BCvvMngHyJoECvW1d1z47zS1f+6c9vj6jQIjn?=
+ =?iso-8859-1?Q?FIC+Mutt+II0h/BhHG8pOrHm9yX11bHGJZ4AzDFravFugmzEtqkQRMifgm?=
+ =?iso-8859-1?Q?HN2LzkgR57djWpRYSIp/i5DnCKUSCtVy16CXgz3/5LUVzJvvE2ollRA+Kw?=
+ =?iso-8859-1?Q?hztCqcFkvBkiK/EvqrfPurArUJCdnJzYOSa4NV4hrgyDWYNftD2dPXbP4+?=
+ =?iso-8859-1?Q?H204Xx0jR1o9HhucoHm3/1Jgm01fm+FBrDUqXFkLwiWBTQTsPEzglE3BhI?=
+ =?iso-8859-1?Q?PAYDM8GDrDISWMgXxZGMZ8ZIbwFUOK2RIb+kueWtaoguelm8wMinNE1MjY?=
+ =?iso-8859-1?Q?5lahkspNnJgPjVk1fnr6GDfm0e+C1wabWs4Z9GetW8EjlP6UpGnSDsKhry?=
+ =?iso-8859-1?Q?8dC4r7btMuWqDkdF5USxAW4rLTZlLAYErBzFJHUi/ISCKeeGFJIBsp7Zg6?=
+ =?iso-8859-1?Q?5JhAflP5Ceb2jzL3yUN/wthl/u/d8KmvgDmT0m9QMAjyCCgVbNjd0kDA3N?=
+ =?iso-8859-1?Q?fXHaSG8bjPFyUFl1vGlY9JfVSEftXRXw/LoYPD0wVsyk/SqDXunNEgOBpI?=
+ =?iso-8859-1?Q?p44thhRDETQ/yZmVIVmFLVMIkrzN6M5piXW0+52TjKultsWXnVAwYl358o?=
+ =?iso-8859-1?Q?UEj9EGxqklIKp577Ok+yKJfPGkOHS3VnvWEUz6zT+gOaEMulrl/ET6FfdI?=
+ =?iso-8859-1?Q?eAxkcoh27OWJ6Ls89vtu/UaIkVi1eChBmt8hfZ1ZXUq2xZwIKrplz5vTcB?=
+ =?iso-8859-1?Q?M2jYCnzdrgOYS6Yla5T82IvQvGe8MSc29scFyouXGbhHLG5jr/d7R/WGyi?=
+ =?iso-8859-1?Q?9FVwPfgXxCVGQKtyzfiZhveihn0Z9Js6F2JsZx+AGR+qhkgTglRKYkSOnh?=
+ =?iso-8859-1?Q?4K7opEp4btRtBg8cvwEqK0+90iSd5Piv/rSGuMMG3Cf5SURJQrIMWw46NU?=
+ =?iso-8859-1?Q?Fvt1f7+VqUc/HS/YaLrVrlqItd5CA8BH9PvzVpxpEBsL3sj3rwJPbBHAhx?=
+ =?iso-8859-1?Q?B+EeUzaxxy7Tp/NUDcLXDveAeMIgSnU/Pb7R5ay/UFCpdVrN0Ms/?=
+X-Exchange-RoutingPolicyChecked: TxE6m82iR/YVU/j8nq+TnLqHsT6ENw4PXCrb9/UJ7jpjjO09Bpz3wLMiJzy7RWnN8y4PYb0eQGbgou/AyPwQQ2kOOrcGmz9CWNqrMUzXBBxOSujVBaq1KzLNy0/nDyytfTX+zO8+napzXPUJbIEdNzE2ZSHDTHnUYvP1Kp+Ppq+IRJGCsshemz1zkmpLAXEiUC6Br5TLOe+5AtyUlLAJ5vW+aiE6JrHCauJKt7Wm7mNZCExWdYqErqwXrOS9B1IXo6GE+Px4vmaT5tcdLfd5ZC5C46csMcvaHzfIZEP4wRAXOnNIASjZBZqy0uB/9/k59mbKZTCcPPWL+O4Qog1QUw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7ad73b9-39a4-41a6-30e4-08dea66e5319
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 04:07:00.8786 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 04:09:50.5461 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pGpUEPvBzjmev6KTp57eE0y9AaxwSgCM7cfMsUIEPrukrxLeoCd7KUmS7zqdU2UKAZtSkmGOfX7lHK4kbHINQRBG9fmNQReUgk4nCn0TLcGG8/mT2eqe2OtHwqXVKJHU
+X-MS-Exchange-CrossTenant-UserPrincipalName: JmaW5XrM0VwJ/qICpfsMl32KN30qXKgORFXDpvyNTq/Ge5jRqjzIk6WN9neOC/l++TetsMATpdpT2ywokfqw5LbEZKCoIcjtCNydnyzrorrOfBHJC4yTUj5G3psduXOc
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6722
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -173,157 +162,170 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Apr 29, 2026 at 01:52:05PM -0700, Wang, X wrote:
->
->
->On 4/29/2026 11:27, Summers, Stuart wrote:
->>On Tue, 2026-04-28 at 19:08 -0700, Niranjana Vishwanathapura wrote:
->>>In __test_priority() DYN_PRIORITY case, replace sleep() with a
->>>deterministic barrier using an extra queue in the same multi-queue
->>>group. After assigning priorities, submit a spinner to the extra
->>>queue, end it immediately and wait for its user fence to signal.
->>>This guarantees a full scheduler round-trip confirming the priority
->>>updates have taken effect before releasing the other queues.
->>>
->>>Increase exec_queues[] and spin[] array sizes by 1 to accommodate
->>>the extra barrier queue slot at index num_queues.
->>>
->>>Assisted-by: GitHub Copilot:claude-sonnet-4.6
->>>Signed-off-by: Niranjana Vishwanathapura
->>><niranjana.vishwanathapura@intel.com>
->>>---
->>> Â tests/intel/xe_exec_multi_queue.c | 37 +++++++++++++++++++++++++----
->>>--
->>> Â 1 file changed, 30 insertions(+), 7 deletions(-)
->>>
->>>diff --git a/tests/intel/xe_exec_multi_queue.c
->>>b/tests/intel/xe_exec_multi_queue.c
->>>index 382705d065..8c6fbb2d18 100644
->>>--- a/tests/intel/xe_exec_multi_queue.c
->>>+++ b/tests/intel/xe_exec_multi_queue.c
->>>@@ -381,8 +381,8 @@ __test_priority(int fd, struct
->>>drm_xe_engine_class_instance *eci,
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â .syncs = to_user_pointer(&sync),
->>> Â Â Â Â Â Â Â Â };
->>> Â Â Â Â Â Â Â Â uint64_t vm_sync = 0, addr = BASE_ADDRESS;
->>>-Â Â Â Â Â Â Â uint32_t exec_queues[XE_EXEC_QUEUE_PRIORITY_N];
->>>-Â Â Â Â Â Â Â struct xe_spin *spin[XE_EXEC_QUEUE_PRIORITY_N];
->>>+Â Â Â Â Â Â Â uint32_t exec_queues[XE_EXEC_QUEUE_PRIORITY_N + 1];
->>>+Â Â Â Â Â Â Â struct xe_spin *spin[XE_EXEC_QUEUE_PRIORITY_N + 1];
->>Since we're only really making use of this in the dynamic case, should
->>we have "+ !!DYNAMIC" instead of "+ 1" here? I.e. we only care about
->>the extra barrier one in the dynamic case?
+On Wed, Apr 29, 2026 at 12:28:09PM -0700, Summers, Stuart wrote:
+>On Tue, 2026-04-28 at 19:08 -0700, Niranjana Vishwanathapura wrote:
+>> In __test_priority() DYN_PRIORITY case, replace sleep() with a
+>> deterministic barrier using an extra queue in the same multi-queue
+>> group. After assigning priorities, submit a spinner to the extra
+>> queue, end it immediately and wait for its user fence to signal.
+>> This guarantees a full scheduler round-trip confirming the priority
+>> updates have taken effect before releasing the other queues.
 >>
->>Thanks,
->>Stuart
->flags is a runtime parameter, so + !!(flags & DYN_PRIORITY)
->would make the array size runtime-determined â€” effectively a VLA.
->Even in userspace, VLAs are generally discouraged due to
->unpredictable stack usage. The cost of one extra slot is negligible,
->so always using + 1 is simpler and avoids introducing a VLA.
+>> Increase exec_queues[] and spin[] array sizes by 1 to accommodate
+>> the extra barrier queue slot at index num_queues.
+>>
+>> Assisted-by: GitHub Copilot:claude-sonnet-4.6
+>> Signed-off-by: Niranjana Vishwanathapura
+>> <niranjana.vishwanathapura@intel.com>
+>> ---
+>>  tests/intel/xe_exec_multi_queue.c | 37 +++++++++++++++++++++++++----
+>> --
+>>  1 file changed, 30 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/tests/intel/xe_exec_multi_queue.c
+>> b/tests/intel/xe_exec_multi_queue.c
+>> index 382705d065..8c6fbb2d18 100644
+>> --- a/tests/intel/xe_exec_multi_queue.c
+>> +++ b/tests/intel/xe_exec_multi_queue.c
+>> @@ -381,8 +381,8 @@ __test_priority(int fd, struct
+>> drm_xe_engine_class_instance *eci,
+>>                 .syncs = to_user_pointer(&sync),
+>>         };
+>>         uint64_t vm_sync = 0, addr = BASE_ADDRESS;
+>> -       uint32_t exec_queues[XE_EXEC_QUEUE_PRIORITY_N];
+>> -       struct xe_spin *spin[XE_EXEC_QUEUE_PRIORITY_N];
+>> +       uint32_t exec_queues[XE_EXEC_QUEUE_PRIORITY_N + 1];
+>> +       struct xe_spin *spin[XE_EXEC_QUEUE_PRIORITY_N + 1];
+>>         uint32_t vm, num_queues, num_queue_priorities, bo = 0;
+>>         uint32_t start_order[XE_EXEC_QUEUE_PRIORITY_N] = { 0 };
+>>         int64_t fence_timeout = NSEC_PER_SEC;
+>> @@ -403,7 +403,7 @@ __test_priority(int fd, struct
+>> drm_xe_engine_class_instance *eci,
+>>                 .value = DRM_XE_MULTI_GROUP_CREATE,
+>>         };
+>>         uint64_t ext = to_user_pointer(&multi_queue);
+>> -       int i, j, sleep_duration = 1;
+>> +       int i, j;
+>>         void *bo_map;
+>>  
+>>         num_queue_priorities = XE_EXEC_QUEUE_NUM_PRIORITIES;
+>> @@ -415,12 +415,12 @@ __test_priority(int fd, struct
+>> drm_xe_engine_class_instance *eci,
+>>                  eci[0].engine_class, eci[0].engine_instance);
+>>  
+>>         vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+>> -       bo_size = xe_bb_size(fd, sizeof(*spin[0]) * num_queues);
+>> +       bo_size = xe_bb_size(fd, sizeof(*spin[0]) * (num_queues +
+>> 1));
+>>  
+>>         bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd,
+>> eci[0].gt_id),
+>>                           DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>>         bo_map = xe_bo_map(fd, bo, bo_size);
+>> -       for (i = 0; i < num_queues; i++)
+>> +       for (i = 0; i < num_queues + 1; i++)
+>>                 spin[i] = bo_map + i * sizeof(*spin[0]);
+>>  
+>>         /* Use the default priority for Q0 because we are explicitly
+>> waiting for it below */
+>> @@ -430,6 +430,11 @@ __test_priority(int fd, struct
+>> drm_xe_engine_class_instance *eci,
+>>         if (flags & DYN_PRIORITY) {
+>>                 for (i = 1; i < num_queues; i++)
+>>                         exec_queues[i] = xe_exec_queue_create(fd, vm,
+>> eci, ext);
+>> +               /*
+>> +                * Create an extra queue in the same multi-queue
+>> group, used as
+>> +                * a barrier to confirm priority updates have taken
+>> effect.
+>> +                */
+>> +               exec_queues[num_queues] = xe_exec_queue_create(fd,
+>> vm, eci, ext);
+>
+>Sorry for the multiple responses here...
+>
+>I realize you're doing this separate line explicitly so it's clear what
+>and why, etc, but we're really just duplicating code here when we could
+>have a num_queues + 1 in the for loop here. The comment here is the
+>interesting part that will let us know in the future why we have that
+>extra one (in addition to the commit message of course).
+>
+>Not a blocker, but I'd prefer to not change the inner portion of the
+>for loop and just add the + 1 plus the comment above the loop...
+
+Claude genreated this way and I kind of like it as it has required
+comment above and a matching xe_exec_queue_destroy() below.
+
+>
+>>         } else {
+>>                 struct drm_xe_ext_set_property mq_priority = {
+>>                         .base.name =
+>> DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>> @@ -474,14 +479,28 @@ __test_priority(int fd, struct
+>> drm_xe_engine_class_instance *eci,
+>>                 xe_spin_wait_started(spin[i]);
+>>  
+>>         if (flags & DYN_PRIORITY) {
+>> +               uint64_t barrier_spin_addr = addr + num_queues *
+>> sizeof(struct xe_spin);
+>> +
+>>                 /* Assign increasing order of priority for secondary
+>> queues */
+>>                 for (i = 1; i < num_queues; i++)
+>>                         xe_exec_queue_set_property(fd,
+>> exec_queues[i],
+>>                                                   
+>> DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
+>>                                                    i %
+>> num_queue_priorities);
+>>  
+>> -               /* Wait for priorities to take effect */
+>> -               sleep(sleep_duration);
+>> +               /*
+>> +                * Submit a barrier job on the extra queue to ensure
+>> priority
+>> +                * updates have taken effect before releasing the
+>> other queues.
+>> +                */
+>> +               xe_spin_init_opts(spin[num_queues], .addr =
+>> barrier_spin_addr,
+>> +                                 .preempt = true);
+>
+>Why are you setting preempt mode here?
 >
 
-Yes, we allocate enough space required to handle any scenario.
-That is much better than making the code complex to save an array
-element.
+Claude added it and I thought I removed it, but obviously I did not.
+Let me remove it.
 
 Niranjana
 
->Thanks,
->Xin
->>> Â Â Â Â Â Â Â Â uint32_t vm, num_queues, num_queue_priorities, bo = 0;
->>> Â Â Â Â Â Â Â Â uint32_t start_order[XE_EXEC_QUEUE_PRIORITY_N] = { 0 };
->>> Â Â Â Â Â Â Â Â int64_t fence_timeout = NSEC_PER_SEC;
->>>@@ -403,7 +403,7 @@ __test_priority(int fd, struct
->>>drm_xe_engine_class_instance *eci,
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â .value = DRM_XE_MULTI_GROUP_CREATE,
->>> Â Â Â Â Â Â Â Â };
->>> Â Â Â Â Â Â Â Â uint64_t ext = to_user_pointer(&multi_queue);
->>>-Â Â Â Â Â Â Â int i, j, sleep_duration = 1;
->>>+Â Â Â Â Â Â Â int i, j;
->>> Â Â Â Â Â Â Â Â void *bo_map;
->>> Â Â Â Â Â Â Â Â num_queue_priorities = XE_EXEC_QUEUE_NUM_PRIORITIES;
->>>@@ -415,12 +415,12 @@ __test_priority(int fd, struct
->>>drm_xe_engine_class_instance *eci,
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  eci[0].engine_class, eci[0].engine_instance);
->>> Â Â Â Â Â Â Â Â vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
->>>-Â Â Â Â Â Â Â bo_size = xe_bb_size(fd, sizeof(*spin[0]) * num_queues);
->>>+Â Â Â Â Â Â Â bo_size = xe_bb_size(fd, sizeof(*spin[0]) * (num_queues +
->>>1));
->>> Â Â Â Â Â Â Â Â bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd,
->>>eci[0].gt_id),
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->>> Â Â Â Â Â Â Â Â bo_map = xe_bo_map(fd, bo, bo_size);
->>>-Â Â Â Â Â Â Â for (i = 0; i < num_queues; i++)
->>>+Â Â Â Â Â Â Â for (i = 0; i < num_queues + 1; i++)
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â spin[i] = bo_map + i * sizeof(*spin[0]);
->>> Â Â Â Â Â Â Â Â /* Use the default priority for Q0 because we are explicitly
->>>waiting for it below */
->>>@@ -430,6 +430,11 @@ __test_priority(int fd, struct
->>>drm_xe_engine_class_instance *eci,
->>> Â Â Â Â Â Â Â Â if (flags & DYN_PRIORITY) {
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â for (i = 1; i < num_queues; i++)
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â exec_queues[i] = xe_exec_queue_create(fd, vm,
->>>eci, ext);
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â /*
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  * Create an extra queue in the same multi-queue
->>>group, used as
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  * a barrier to confirm priority updates have taken
->>>effect.
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  */
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â exec_queues[num_queues] = xe_exec_queue_create(fd,
->>>vm, eci, ext);
->>> Â Â Â Â Â Â Â Â } else {
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â struct drm_xe_ext_set_property mq_priority = {
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â .base.name =
->>>DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
->>>@@ -474,14 +479,28 @@ __test_priority(int fd, struct
->>>drm_xe_engine_class_instance *eci,
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â xe_spin_wait_started(spin[i]);
->>> Â Â Â Â Â Â Â Â if (flags & DYN_PRIORITY) {
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â uint64_t barrier_spin_addr = addr + num_queues *
->>>sizeof(struct xe_spin);
->>>+
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â /* Assign increasing order of priority for secondary
->>>queues */
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â for (i = 1; i < num_queues; i++)
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â xe_exec_queue_set_property(fd,
->>>exec_queues[i],
->>>DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  i %
->>>num_queue_priorities);
->>>-Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â /* Wait for priorities to take effect */
->>>-Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â sleep(sleep_duration);
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â /*
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  * Submit a barrier job on the extra queue to ensure
->>>priority
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  * updates have taken effect before releasing the
->>>other queues.
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  */
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â xe_spin_init_opts(spin[num_queues], .addr =
->>>barrier_spin_addr,
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  .preempt = true);
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â sync.addr = barrier_spin_addr +
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â ((char *)&spin[num_queues]->exec_sync - (char
->>>*)spin[num_queues]);
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â exec.exec_queue_id = exec_queues[num_queues];
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â exec.address = barrier_spin_addr;
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â xe_exec(fd, &exec);
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â xe_spin_end(spin[num_queues]);
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â xe_wait_ufence(fd, &spin[num_queues]->exec_sync,
->>>USER_FENCE_VALUE,
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  exec_queues[num_queues],
->>>fence_timeout);
->>> Â Â Â Â Â Â Â Â }
->>> Â Â Â Â Â Â Â Â /*
->>>@@ -566,6 +585,10 @@ __test_priority(int fd, struct
->>>drm_xe_engine_class_instance *eci,
->>> Â Â Â Â Â Â Â Â for (i = 0; i < num_queues; i++)
->>> Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â xe_exec_queue_destroy(fd, exec_queues[i]);
->>>+Â Â Â Â Â Â Â /* Destroy the extra queue */
->>>+Â Â Â Â Â Â Â if (flags & DYN_PRIORITY)
->>>+Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â xe_exec_queue_destroy(fd, exec_queues[num_queues]);
->>>+
->>> Â Â Â Â Â Â Â Â munmap(bo_map, bo_size);
->>> Â Â Â Â Â Â Â Â gem_close(fd, bo);
+>-Stuart
+>
+>> +               sync.addr = barrier_spin_addr +
+>> +                       ((char *)&spin[num_queues]->exec_sync - (char
+>> *)spin[num_queues]);
+>> +               exec.exec_queue_id = exec_queues[num_queues];
+>> +               exec.address = barrier_spin_addr;
+>> +               xe_exec(fd, &exec);
+>> +               xe_spin_end(spin[num_queues]);
+>> +               xe_wait_ufence(fd, &spin[num_queues]->exec_sync,
+>> USER_FENCE_VALUE,
+>> +                              exec_queues[num_queues],
+>> fence_timeout);
+>>         }
+>>  
+>>         /*
+>> @@ -566,6 +585,10 @@ __test_priority(int fd, struct
+>> drm_xe_engine_class_instance *eci,
+>>         for (i = 0; i < num_queues; i++)
+>>                 xe_exec_queue_destroy(fd, exec_queues[i]);
+>>  
+>> +       /* Destroy the extra queue */
+>> +       if (flags & DYN_PRIORITY)
+>> +               xe_exec_queue_destroy(fd, exec_queues[num_queues]);
+>> +
+>>         munmap(bo_map, bo_size);
+>>         gem_close(fd, bo);
+>>  
 >
