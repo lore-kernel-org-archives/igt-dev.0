@@ -4,105 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C854CD3427
-	for <igt-dev@archiver.kernel.org>; Mon,  4 May 2026 20:32:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EA7AFF885A
+	for <igt-dev@archiver.kernel.org>; Mon,  4 May 2026 20:37:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C530B10E86B;
-	Mon,  4 May 2026 20:32:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E320210E86B;
+	Mon,  4 May 2026 20:37:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="G15Luj1I";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="LxHe/D8o";
 	dkim-atps=neutral
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com
- [209.85.218.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CDB9110E86B
- for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2026 20:32:30 +0000 (UTC)
-Received: by mail-ej1-f44.google.com with SMTP id
- a640c23a62f3a-ba6838e76f2so524739966b.2
- for <igt-dev@lists.freedesktop.org>; Mon, 04 May 2026 13:32:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777926749; cv=none;
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
+ [209.85.218.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B282310E86B
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2026 20:37:33 +0000 (UTC)
+Received: by mail-ej1-f49.google.com with SMTP id
+ a640c23a62f3a-ba92146cc86so757610666b.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 04 May 2026 13:37:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777927052; cv=none;
  d=google.com; s=arc-20240605;
- b=D3RpKAZTsOI6cGvD9XOr6NeKmh6oAD0MUmdq7AbPr6qxqyBOAbDgr3LBqRDoSBeiXV
- b5KQFH8X4VlAb6qUrOHY4cBpY03BnpPhKExnF6jizkFc5PO9yaNmE12MLNTdpklzfKfP
- XRQSc9WjGnqavQXrJSIaKx7qiT/Fm4ZRAUur5Z1jopy+uYnc0377RN9Jtm6nW2fm9g6G
- uASkJPsFiXG9PSTKk/ypNO72IhQOFLCReI1eLt6WtjqH68tQOwF2cZQgIVWhd9XtnibV
- m2wqfjOGDeA+hhaWCTEraG+Ly7CqihlTydZGRu8enct0ClWWYXfktvylzTQlfiN5lJ1Y
- EmMQ==
+ b=dSwTkJzW52H9kUkjSFGdF8qCtFaHDnRL8Rq5DS13ReGTPlKVzZEc7mgIpZ+M06Vira
+ gcAgPhmkTiCo+HIBuBw+TiblXsZ0bAKZOYFVfx4sAFLYuBxfYa4cF50THS0iH1KYadq8
+ KKVuRS7VrUaHgfFZVTcOEMVcB/vkkhnA1FgxR9emGLj+fmK3ijcjAMbTL+UBahq6God6
+ k30e+4yk8F/IuJUX83fuaWmiMdBP0h6XqwBp9peT9bqZNcnLrDI3v7RwCmW4HZsK0wKv
+ NM138fDDwAlshBpUoO2AyCLcgoLCWst1KSddXuFG6UYx17jl5VAZX3s6UkUUfB+w2QiA
+ OGug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
  s=arc-20240605; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:dkim-signature;
- bh=hpjzpKU6p+o10VKc6+Hz7WyTIIfFTuvj8bX1PAco+mQ=;
- fh=4MiY8lZKuzZUWr7CQlPLx2c2emmgbYf/dM33a5XUADk=;
- b=a+0BDEwdQleMVuBYvBw0hHzYaRV7YvBrsh+dUlOLJa+TsLASiuiEg5OXJ9JfcrLdm+
- 5hed601w+XVZtzbn9mpOvbDdl26XVaxj3nW14dHPL8nOEwb3g/KC4eeQ7m/SXgeZ9TpJ
- lVpdANZWEVbANLFfAjjMf5Te0mul/dgJvErELugISMkwDe5jQoVOYq0XdBhwOrSL4N1C
- a4rAY9Vfa+3otRz7mojTq7GKjP96BqiyqGLsGYWv+/0NuaFEMSbvji9/2LRcJOw8u8+W
- +/fH2tUy3V9Q2zR1wUakvQaLPde2gR5OOpajyw/glmcqVkUbri81yJXBzN8yBI7JBO7N
- iG/w==; darn=lists.freedesktop.org
+ bh=iPi5ThC5Fz+4bBW217CMpMOHXw60idXl+ZwtpvZ3CVU=;
+ fh=ZPlM6nzOAre26/y6pjSX5ZZv4t7HRrvPG34uPbZBOPI=;
+ b=OQMsriFy07dDQ2EjebYDbvkv06D01ASDN+mRz3JfL0YFXZkmdAol+3W7SWK9omMLyY
+ F3D9R4iJKEgJUOjHROhAIy1Wk7H5ZRQAuQdIsJC4Wzev6FUba/7bXCvuUVBad1E2pGIb
+ Al51Yg/DI8gvPCWtig+OjIPm9G4eJAN4wNPCa+Sh7JreGOm4G9UDwGTuXwuOApYM/g6O
+ 9eSuzjjzIak3QNFFul0SUnt7v7MqEPb58cqqn1wRhVVivWosoxMSqlqrOgod2u2M5nHQ
+ 5fBvvsXzy8XY8oQYpzhPySr9bMyxhQ7xOY9dcbgWReQ2Qz/hzL0QuGE7By6dsriu9kz/
+ ESzg==; darn=lists.freedesktop.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20251104; t=1777926749; x=1778531549;
+ d=google.com; s=20251104; t=1777927052; x=1778531852;
  darn=lists.freedesktop.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=hpjzpKU6p+o10VKc6+Hz7WyTIIfFTuvj8bX1PAco+mQ=;
- b=G15Luj1I7HmWwzVvsFyeSKjpmiRE9gkdH82RST1k9+pnXCtuTogFhlYxshhNjqXf/4
- ccN1ATCYnq5gEPaczUL7E1+rWIFa7t4RjHkUdU8ROWvPC/Eb4s+sRwfzquTZwe46oWSb
- PkbwKGb3uJKU3Srq3HB3eLepjtVMSBzj6BZQu6WhmToowzZJ3VjYpx2l9mtkGkYenck9
- /FW8+WqD6kppY5DPJgBsK1xbcxiAnGZLDb6SAp3ELhKf6v7CwFfCJTr5Gk6rR7XTcH57
- IyJAr9ckB8CkunouH5BzF7YFqUVv+u7esijSVW6SrUdUBEhtDb1eN7ZW9ojcnPcmL+iU
- iRnw==
+ bh=iPi5ThC5Fz+4bBW217CMpMOHXw60idXl+ZwtpvZ3CVU=;
+ b=LxHe/D8olRykVJoHT8OP39GR6WSIoG0bduFfEa+WbVSd+jq0Wv1J4ACzxSp+LTGwM7
+ mNNoPwg68D0OEX/imnMet+ooU56/6jKtcThSEeLW+OD1ZV9yk3UDt3gDYKE4HC2+a2pG
+ cZf0k1W2jguJxVgkY941S8K4F22Bcp4whwD+g9i9nV/6K4QA9mzdYTFxMTsiCrEkDuwJ
+ gpUVfJXs+Uqir6SfD251jrzvbanYOjwg4RAsZ/NiDKFI6XKgm8jads+lZ8rBJkRiBg+2
+ b5okkcbfRllpBPi3PJxQpWs55RKxqoYbyPlZBYuIMivfM3GJWIj/PoBoupV5/ew/kxe1
+ PUvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1777926749; x=1778531549;
+ d=1e100.net; s=20251104; t=1777927052; x=1778531852;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hpjzpKU6p+o10VKc6+Hz7WyTIIfFTuvj8bX1PAco+mQ=;
- b=jrVcKbiXqYcFgZYrN8JAe5TO0sCruhRTLI5aWdswlMDkS6aCXJhwwQFTR257qXiJz1
- /Z735FyXIXdqlRvbMr9m0XUR3I7ZWX0wk9h122Au5ZQmxRwxhRIV0kkePlgoydvqZXyA
- jGUvrVH8sXtBFmkuxvl7Z8seDeZgqbO4WC6e/NL7MLSXlvTg6GrszEgkrApuBxVYaGDN
- w7DrXUokgEn9bNXmi5gXRFnldOTGCMRwzjhPUgjploZc0wM1d8k1iHXSPzl2ZQJMJ0X/
- wZYVNflGSsMOabqn1fx/0pue+DGSw6M5z4FzWJyGrlv1bb5W/bmEdieYvh+F+axLOd3d
- B+NQ==
+ bh=iPi5ThC5Fz+4bBW217CMpMOHXw60idXl+ZwtpvZ3CVU=;
+ b=OTYMmq4R8dbX02pamvDirjpWuSkd2ppxs6cbxOz/38L+oMHK/Cmk2OA/03YibEDaoK
+ D5mELTMkWKZ9NCYdKqcbfyGAh/ZlcTQ7cCt9+QMbbTFicJPtDkFqfOsIhag7r/xhnKZN
+ AKpXSThh5RKU4Xz52burOvD1a0YJIGWx4lEE13uLYskAxPLBTh+VuH3IT1FpqC9Q94A7
+ LUWziTb1ukntUe0v2pSDotgYurLwDlc0Ja7C05LNRjntP1YNYUzSbl/wkrl2HSDOa0vr
+ vsRKQDOmLpoOEwPeOs7No/RoRIZv0lN0wzp3pn4ZtCGOhIybu8kh4Yd0OrZwyDXQ5fnZ
+ 9/pw==
 X-Forwarded-Encrypted: i=1;
- AFNElJ9MFYnhhpAPvmZTCUBI+xbpI3JYWOd/at8FrW9piM62N0GXlyUaiIvcdDcisKf6EjqLhr1g6vPW@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YwkSASvL4NZ8kfSn8D9j9iwsCA2kn/Rq4FeYVIuTtrn+n3VB8Hl
- h+dDqhNky3lGzGdok0DY73lKHTGFKvfFSVMp+em+7UFQ9V1Z6+GNFM9AIU6aw90UbTGcUnFz70S
- unwpRMig5RkKI+GuBA+eqOZzCcXpmM0qsdR5quMWP
-X-Gm-Gg: AeBDiesuib+ziAyUG9gXzYj/ph0Tn+agEnvfSdJ/vm28Bnhpmv1pED2tJbIDNTjXTX3
- rtIQ+/9EzFVAuY4kABFORAdo77YPnt1uD7/qIPFf9tbV2sw6C1VR6bbKQdgr5ssifEW7QSlD9js
- LFKekPGuOSZ0DPeKpr+1VqW/vGI00/rRTJfn11WSfub/W+EDrDRftPLWtCzjntKJdvi4RZczI63
- /1KtmQJ18tv9M2m6S4DYq9dCRVFbwSPP+zpK0byPbQHodG9ohu8jQZw4dqewBMGmM/x/mEd0wRV
- 6E4v1mJBZTYLTIPgjjRf4Bd1HnY7ulVFjtKlr39s3pP82cHh7XLKPJcx/SIUtWZN6GYejzPCT2B
- AIrFxBHStWEfkjEkAwxkpZ1AiuSEphmwxVRYiQBxk21GRCTkm3WwuC9YDsQ==
-X-Received: by 2002:a17:907:d10:b0:bac:14e:3b60 with SMTP id
- a640c23a62f3a-bbffaf3d920mr632712866b.22.1777926748661; Mon, 04 May 2026
- 13:32:28 -0700 (PDT)
+ AFNElJ9pQZJTWn2Jb0STIumz9yqbPrH/CuB/vWheLA91XvP6CJiPtGYnSUj50+eyWch4eMcxRa/EshE6@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YzMSRvbsu1kYdoQUj7ZFB3MR7gxHOwSNYUB1fxxqr6EooXjKiNY
+ U9OMITBquW0wkr33UJHHkZuOFqaj6XgHD1WDqoXYDPsa8uQVi8VBhwQivaO8lIguqYLyz44n4A5
+ FZq5etnb6GkkIGV8VwaakIQ0QaSnfWe9YolfeeB6P
+X-Gm-Gg: AeBDiesDRIKNLJuzXJUrUkjfVCniQGfOn7g59v8SrqlsUx5yLEwlz0amoLQYs0JcxQo
+ u0TTDG0GwreiHomkzkwG77s1k3ItkXhKRQ5gbAogq7qQsBHNuojM4VY64isxcpyh/1mOQDGtzcO
+ X/GuKSRfcA/5FyoPN2RwAmILf7fwNQ4lwK3PhGtJhGQCLETFekL18IOCnaEVIhKkGxy5mmBDfzG
+ Ei+Jr1v1NG0MJxmg/632L5nc3Z12TE7GxBpChIyONNGkZN4Ahh+EvM8Lbji32Y8Fpwj/Ohjb5QY
+ Itt30GD9HT1N0JPdZK4JNb9FT8s8Fz/+vTdKebR0PtKgzuilZP6C+zbjO8l8LJ7rLT0Q3Q+h4Wx
+ OOzODWzx0Xh7sYgyIU1FBjyvjhaxZ+CIjo9vsT0GTywfksV3m9dFwPr7zpQ==
+X-Received: by 2002:a17:907:a591:b0:ba0:d58b:6045 with SMTP id
+ a640c23a62f3a-bc411213bf2mr5832966b.27.1777927051717; Mon, 04 May 2026
+ 13:37:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260330032205.467130-1-jason-jh.lin@mediatek.com>
- <20260330032205.467130-2-jason-jh.lin@mediatek.com>
- <CAMNLLoSPncgBBOGc--Mi=Kb8-Uok5ZOxS3Fj+oFQTRJtrkEKYg@mail.gmail.com>
- <CAMNLLoRrGA34vVZg6HAGwqrsVbZWEOtD9F4yKWmboiAwp+2paA@mail.gmail.com>
- <2a95efab-841c-47c5-bafe-f80f59e45a32@intel.com>
-In-Reply-To: <2a95efab-841c-47c5-bafe-f80f59e45a32@intel.com>
+References: <20260415015132.2297990-1-jason-jh.lin@mediatek.com>
+ <CAC=S1nhr7DFMN-e794MGXp7Nv+LDTQcO4QqG-79XiotFVC7stQ@mail.gmail.com>
+ <CAMNLLoQJ3w80Art1VkvYoh4duM5HY2skEH8gztG4TQBWJaUHrg@mail.gmail.com>
+ <CAMNLLoQSwnMz_-u2PqTDRM2qVXp=hxwXak5HFnCUqvpbMRVTDg@mail.gmail.com>
+ <2b0203e2-30de-4954-92ca-051b04c0fe4a@intel.com>
+In-Reply-To: <2b0203e2-30de-4954-92ca-051b04c0fe4a@intel.com>
 From: Manasi Navare <navaremanasi@google.com>
-Date: Mon, 4 May 2026 13:32:15 -0700
-X-Gm-Features: AVHnY4KBOkPdrPKi-6l82YlSu7NluJoffiOEhpauIzYkZMmSzuRLLmHDhNELvhA
-Message-ID: <CAMNLLoRO_-bF0-SaUVgMq0R0T8mc6yk4GmPY=_FCJwhLWohigA@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v5 1/3] tests/kms_content_protection: Add per-CRTC
- framebuffer infrastructure
+Date: Mon, 4 May 2026 13:37:18 -0700
+X-Gm-Features: AVHnY4Ir_2JwJV-XgX0krkVoiVQtpaOuCQbXRfQxMXFxJt0O81tBZestKnZjKy4
+Message-ID: <CAMNLLoSTN1m_H252_NRNUTQ5_6=bcTRnN+P8JPF5i6RPM3KsVg@mail.gmail.com>
+Subject: Re: [PATCH v2] tests/kms_invalid_mode: Allow clock-too-high test on
+ non-Intel platforms
 To: Karthik B S <karthik.b.s@intel.com>
-Cc: Jason-JH Lin <jason-jh.lin@mediatek.com>, igt-dev@lists.freedesktop.org, 
- Swati Sharma <swati2.sharma@intel.com>,
+Cc: Fei Shao <fshao@chromium.org>, Jason-JH Lin <jason-jh.lin@mediatek.com>, 
+ igt-dev@lists.freedesktop.org, Swati Sharma <swati2.sharma@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Fei Shao <fshao@chromium.org>, 
- Jani <jani.nikula@intel.com>, Paul-PL Chen <paul-pl.chen@mediatek.com>, 
- Nancy Lin <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>, 
- Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>, 
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>, Jani <jani.nikula@intel.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>, Nancy Lin <nancy.lin@mediatek.com>, 
+ Singo Chang <singo.chang@mediatek.com>, Gil Dekel <gildekel@google.com>, 
+ Yacoub <markyacoub@chromium.org>,
  Project_Global_Chrome_Upstream_Group@mediatek.com
-Content-Type: multipart/alternative; boundary="0000000000004bf87a065103d468"
+Content-Type: multipart/alternative; boundary="0000000000005bd2cf065103e6ed"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,33 +117,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---0000000000004bf87a065103d468
+--0000000000005bd2cf065103e6ed
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Thanks a lot @Karthik B S <karthik.b.s@intel.com>  for your response,
-And appreciate you trying this on your end and for your help on getting
-this landed.
+Thanks a lot @Karthik B S <karthik.b.s@intel.com> for confirming and
+helping land this.
+Thanks @Jason-JH Lin <jason-jh.lin@mediatek.com>  for the patch to make
+this test scalable to MTK platform.
 
 Regards
 Manasi
 
-On Mon, May 4, 2026 at 1:31=E2=80=AFAM Karthik B S <karthik.b.s@intel.com> =
+On Mon, May 4, 2026 at 1:32=E2=80=AFAM Karthik B S <karthik.b.s@intel.com> =
 wrote:
 
 > Hi Manasi,
-> On 5/1/2026 4:29 AM, Manasi Navare wrote:
+> On 5/1/2026 4:31 AM, Manasi Navare wrote:
 >
-> This change looks good to me,
+> Hi @Karthik B S <karthik.b.s@intel.com>  @Jani Nikula
+> <jani.nikula@intel.com> :
 >
-> Reviewed-by: Manasi Navare <navaremanasi@google.com>
+> Signal boosting this, we have reviewed this patch and verified for the MT=
+K
+> driver,
+> Could you please take a look and  help on getting this upstreamed?
 >
-> @Karthik B S <karthik.b.s@intel.com>  and others from Intel signal
-> boosting this, could we get some traction on this, its reviewed by the
-> team, could we please land this?
->
-> Sure, the idea LGTM in general. Will try this out at our end once before
-> merging as this test doesn't have coverage on CI currently.
+> Sure, this LGTM and CI is also fine. Will merge this.
 > Regards,
 > Karthik.B.S
 >
@@ -152,194 +151,131 @@ wrote:
 > Regards
 > Manasi
 >
-> On Wed, Apr 29, 2026 at 1:31=E2=80=AFPM Manasi Navare <navaremanasi@googl=
+> On Wed, Apr 29, 2026 at 1:37=E2=80=AFPM Manasi Navare <navaremanasi@googl=
 e.com>
 > wrote:
 >
->> Thanks Jason-JH for this improvement in the kms_content_protection IGT
->> test.
->> It makes sense to create a fb per CRTC given that each CRTC can have
->> different mode timings/resolutions.
+>> Thanks for the patch and for addressing Jani's comments.
+>> This looks good to me.
 >>
->> @karthik.b.s@intel.com <karthik.b.s@intel.com> , @
->> bhanuprakash.modem@gmail.com, @swati2.sharma@intel.com
->> Could you please take a look at this patch and help provide feedback?
->> We would like to get this landed as it helps improve our testing.
+>> Reviewed-by: Manasi Navare <navaremanasi@google.com>
+>>
+>> @Jani Nikula <jani.nikula@intel.com> @Karthik B S <karthik.b.s@intel.com=
+>
+>> Would you be able to help land this upstream, its required
+>> to run this test on non intel platforms and review comments from Jani
+>> have been addressed.
+>>
+>> Thanks a lot for your help on landing this.
 >>
 >> Regards
 >> Manasi
 >>
+>> On Thu, Apr 16, 2026 at 9:04=E2=80=AFPM Fei Shao <fshao@chromium.org> wr=
+ote:
 >>
->>
->> On Sun, Mar 29, 2026 at 8:22=E2=80=AFPM Jason-JH Lin <jason-jh.lin@media=
-tek.com>
->> wrote:
->>
->>> Replace global framebuffers (data.red/green) with per-CRTC array
->>> (data.fbs[IGT_MAX_PIPES]) to support multiple outputs with different
->>> resolutions.
+>>> On Wed, Apr 15, 2026 at 9:51=E2=80=AFAM Jason-JH Lin <jason-jh.lin@medi=
+atek.com>
+>>> wrote:
+>>> >
+>>> > The clock-too-high subtest was being skipped on non-Intel platforms
+>>> > because igt_get_max_dotclock() returns 0 when reading from
+>>> > Intel-specific debugfs fails.
+>>> >
+>>> > This change allows the test to run on all platforms by using -1 as an
+>>> > invalid clock value when max_dotclock is unavailable. The -1 converts
+>>> > to UINT_MAX for unsigned int, which clearly exceeds any reasonable
+>>> > hardware limit and should be rejected by all drivers.
+>>> >
+>>> > This prevents the test from being marked as IGNORED/SKIP on non-Intel
+>>> > platforms while maintaining the original test intent of verifying tha=
+t
+>>> > drivers properly reject modes with excessively high clock rates.
+>>> >
+>>> > Tested on MTK platforms where the test now properly executes
+>>> > and verifies clock validation.
+>>> >
+>>> > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+>>> > Suggested-by: Jani Nikula<jani.nikula@intel.com>
 >>>
->>> Add create_fbs()/remove_fbs() to manage framebuffer lifecycle at
->>> test initialization/cleanup, creating each FB with the resolution of
->>> the first output that can connect to that CRTC.
->>>
->>> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
 >>> Reviewed-by: Fei Shao <fshao@chromium.org>
->>> ---
->>>  tests/kms_content_protection.c | 50 +++++++++++++++++++++++++---------
->>>  1 file changed, 37 insertions(+), 13 deletions(-)
 >>>
->>> diff --git a/tests/kms_content_protection.c
->>> b/tests/kms_content_protection.c
->>> index caf3d7a56ae4..df9ff5efcaa2 100644
->>> --- a/tests/kms_content_protection.c
->>> +++ b/tests/kms_content_protection.c
->>> @@ -107,10 +107,15 @@
 >>>
->>>  IGT_TEST_DESCRIPTION("Test content protection (HDCP)");
->>>
->>> +struct hdcp_test_fbs {
->>> +       struct igt_fb red;
->>> +       struct igt_fb green;
->>> +};
->>> +
->>>  struct data {
->>>         int drm_fd;
->>>         igt_display_t display;
->>> -       struct igt_fb red, green;
->>> +       struct hdcp_test_fbs fbs[IGT_MAX_PIPES];
->>>         unsigned int cp_tests;
->>>         struct udev_monitor *uevent_monitor;
->>>         bool is_force_hdcp14;
->>> @@ -991,31 +996,49 @@ static void test_content_protection_cleanup(void)
->>>                 igt_info("CP Prop being UNDESIRED on %s\n",
->>> output->name);
->>>                 test_cp_disable(output, display->is_atomic ?
->>> COMMIT_ATOMIC : COMMIT_LEGACY);
->>>         }
->>> -
->>> -       igt_remove_fb(data.drm_fd, &data.red);
->>> -       igt_remove_fb(data.drm_fd, &data.green);
->>>  }
->>>
->>>  static void create_fbs(void)
->>>  {
->>> -       uint16_t width =3D 0, height =3D 0;
->>>         drmModeModeInfo *mode;
->>>         igt_output_t *output;
->>> +       igt_crtc_t *crtc;
->>>
->>> +       /* Create framebuffers for each connected output's pipe */
->>>         for_each_connected_output(&data.display, output) {
->>>                 mode =3D igt_output_get_mode(output);
->>>                 igt_assert(mode);
->>>
->>> -               width =3D max(width, mode->hdisplay);
->>> -               height =3D max(height, mode->vdisplay);
->>> +               /* Find a valid crtc for this output */
->>> +               for_each_crtc(&data.display, crtc) {
->>> +                       if (!igt_crtc_connector_valid(crtc, output))
->>> +                               continue;
->>> +
->>> +                       /* Skip if already created for this crtc */
->>> +                       if (data.fbs[crtc->crtc_index].red.fb_id)
->>> +                               continue;
->>> +
->>> +                       igt_create_color_fb(data.drm_fd, mode->hdisplay=
+>>> > ---
+>>> >  tests/kms_invalid_mode.c | 10 +++++++++-
+>>> >  1 file changed, 9 insertions(+), 1 deletion(-)
+>>> >
+>>> > diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+>>> > index 5edffb649ef4..78ab965ede91 100644
+>>> > --- a/tests/kms_invalid_mode.c
+>>> > +++ b/tests/kms_invalid_mode.c
+>>> > @@ -126,7 +126,15 @@ adjust_mode_clock_too_high(data_t *data,
+>>> drmModeModeInfoPtr mode)
+>>> >  {
+>>> >         int max_dotclock =3D data->max_dotclock;
+>>> >
+>>> > -       igt_require(max_dotclock !=3D 0);
+>>> > +       /*
+>>> > +        * If max_dotclock is unavailable (e.g., non-Intel platforms)=
 ,
->>> mode->vdisplay,
->>> +                                           DRM_FORMAT_XRGB8888,
->>> DRM_FORMAT_MOD_LINEAR,
->>> +                                           1.f, 0.f, 0.f,
->>> &data.fbs[crtc->crtc_index].red);
->>> +                       igt_create_color_fb(data.drm_fd, mode->hdisplay=
-,
->>> mode->vdisplay,
->>> +                                           DRM_FORMAT_XRGB8888,
->>> DRM_FORMAT_MOD_LINEAR,
->>> +                                           0.f, 1.f, 0.f,
->>> &data.fbs[crtc->crtc_index].green);
->>> +                       break;
->>> +               }
->>>         }
->>> +}
+>>> > +        * use -1 as an invalid clock value. This will be converted t=
+o
+>>> > +        * UINT_MAX, which clearly exceeds any reasonable hardware
+>>> limit.
+>>> > +        */
+>>> > +       if (max_dotclock =3D=3D 0) {
+>>> > +               mode->clock =3D -1;
+>>> > +               return true;
+>>> > +       }
+>>> >
+>>> >         /*
+>>> >          * FIXME When we have a fixed mode, the kernel will ignore
+>>> > --
+>>> > 2.43.0
+>>> >
 >>>
->>> -       igt_create_color_fb(data.drm_fd, width, height,
->>> -                           DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->>> -                           1.f, 0.f, 0.f, &data.red);
->>> -       igt_create_color_fb(data.drm_fd, width, height,
->>> -                           DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->>> -                           0.f, 1.f, 0.f, &data.green);
->>> +static void remove_fbs(void)
->>> +{
->>> +       igt_crtc_t *crtc;
->>> +
->>> +       for_each_crtc(&data.display, crtc) {
->>> +               if (data.fbs[crtc->crtc_index].red.fb_id)
->>> +                       igt_remove_fb(data.drm_fd,
->>> &data.fbs[crtc->crtc_index].red);
->>> +               if (data.fbs[crtc->crtc_index].green.fb_id)
->>> +                       igt_remove_fb(data.drm_fd,
->>> &data.fbs[crtc->crtc_index].green);
->>> +       }
->>>  }
->>>
->>>  static const struct {
->>> @@ -1241,6 +1264,7 @@ int igt_main()
->>>
->>>         igt_fixture() {
->>>                 test_content_protection_cleanup();
->>> +               remove_fbs();
->>>                 igt_display_fini(&data.display);
->>>                 drm_close_driver(data.drm_fd);
->>>         }
->>> --
->>> 2.43.0
->>>
->>>
+>>
 
---0000000000004bf87a065103d468
+--0000000000005bd2cf065103e6ed
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Thanks a lot=C2=A0<a class=3D"gmail_plusreply" id=3D"=
-plusReplyChip-1" href=3D"mailto:karthik.b.s@intel.com" tabindex=3D"-1">@Kar=
-thik B S</a>=C2=A0 for your response,</div><div>And appreciate you trying t=
-his on your end and for your help on getting this landed.</div><div><br></d=
-iv><div>Regards</div><div>Manasi</div><br><div class=3D"gmail_quote gmail_q=
-uote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, May 4, 2026 a=
-t 1:31=E2=80=AFAM Karthik B S &lt;<a href=3D"mailto:karthik.b.s@intel.com">=
-karthik.b.s@intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
-ote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,20=
-4);padding-left:1ex"><u></u>
+<div dir=3D"ltr">Thanks a lot=C2=A0<a class=3D"gmail_plusreply" id=3D"plusR=
+eplyChip-2" href=3D"mailto:karthik.b.s@intel.com" tabindex=3D"-1">@Karthik =
+B S</a>=C2=A0for confirming and helping=C2=A0land this.<div>Thanks=C2=A0<a =
+class=3D"gmail_plusreply" id=3D"plusReplyChip-3" href=3D"mailto:jason-jh.li=
+n@mediatek.com" tabindex=3D"-1">@Jason-JH Lin</a>=C2=A0 for the patch to ma=
+ke this test scalable to MTK platform.</div><div><br></div><div>Regards</di=
+v><div>Manasi</div></div><br><div class=3D"gmail_quote gmail_quote_containe=
+r"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, May 4, 2026 at 1:32=E2=80=
+=AFAM Karthik B S &lt;<a href=3D"mailto:karthik.b.s@intel.com">karthik.b.s@=
+intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex"><u></u>
 
  =20
   <div>
     <p>Hi Manasi,</p>
-    <div>On 5/1/2026 4:29 AM, Manasi Navare
+    <div>On 5/1/2026 4:31 AM, Manasi Navare
       wrote:<br>
     </div>
     <blockquote type=3D"cite">
      =20
       <div dir=3D"ltr">
-        <div>This change looks good to me,</div>
+        <div>Hi=C2=A0<a class=3D"gmail_plusreply" id=3D"m_49275762467715063=
+75plusReplyChip-1" href=3D"mailto:karthik.b.s@intel.com" target=3D"_blank">=
+@Karthik B S</a>=C2=A0=C2=A0<a class=3D"gmail_plusreply" id=3D"m_4927576246=
+771506375plusReplyChip-2" href=3D"mailto:jani.nikula@intel.com" target=3D"_=
+blank">@Jani Nikula</a>=C2=A0:</div>
         <div><br>
         </div>
-        <div>Reviewed-by: Manasi Navare &lt;<a href=3D"mailto:navaremanasi@=
-google.com" target=3D"_blank">navaremanasi@google.com</a>&gt;</div>
-        <div><br>
-        </div>
-        <div><a class=3D"gmail_plusreply" id=3D"m_-2777679078897058853plusR=
-eplyChip-0" href=3D"mailto:karthik.b.s@intel.com" target=3D"_blank">@Karthi=
-k B S</a>=C2=A0 and others from
-          Intel signal boosting this, could we get some traction on
-          this, its reviewed by the team, could we please land this?<br>
-        </div>
+        <div>Signal boosting this, we have reviewed this patch and
+          verified for the MTK driver,</div>
+        <div>Could you please take a look and=C2=A0 help on getting this
+          upstreamed?</div>
       </div>
     </blockquote>
-    <p>Sure, the idea LGTM in general. Will try this out at our end once
-      before merging as this test doesn&#39;t have coverage on CI currently=
-.</p>
+    <p>Sure, this LGTM and CI is also fine. Will merge this.</p>
     Regards,<br>
     Karthik.B.S
     <blockquote type=3D"cite">
@@ -351,243 +287,134 @@ k B S</a>=C2=A0 and others from
         <br>
         <div class=3D"gmail_quote">
           <div dir=3D"ltr" class=3D"gmail_attr">On Wed, Apr 29, 2026 at
-            1:31=E2=80=AFPM Manasi Navare &lt;<a href=3D"mailto:navaremanas=
+            1:37=E2=80=AFPM Manasi Navare &lt;<a href=3D"mailto:navaremanas=
 i@google.com" target=3D"_blank">navaremanasi@google.com</a>&gt;
             wrote:<br>
           </div>
           <blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
 ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
             <div dir=3D"ltr">
-              <div>Thanks=C2=A0Jason-JH for this improvement=C2=A0in the
-                kms_content_protection IGT test.</div>
-              <div>It makes sense to create a fb per CRTC given that
-                each CRTC can have different mode timings/resolutions.</div=
->
+              <div dir=3D"ltr">Thanks for the patch and for addressing
+                Jani&#39;s comments.</div>
+              <div>This looks good to me.</div>
               <div><br>
               </div>
-              <div><a class=3D"gmail_plusreply" id=3D"m_-277767907889705885=
-3m_1039234134813026890plusReplyChip-1" href=3D"mailto:karthik.b.s@intel.com=
-" target=3D"_blank">@karthik.b.s@intel.com</a>=C2=A0, @<a href=3D"mailto:bh=
-anuprakash.modem@gmail.com" target=3D"_blank">bhanuprakash.modem@gmail.com<=
-/a>,=C2=A0@<a href=3D"mailto:swati2.sharma@intel.com" target=3D"_blank">swa=
-ti2.sharma@intel.com</a><br>
+              <div>Reviewed-by: Manasi Navare &lt;<a href=3D"mailto:navarem=
+anasi@google.com" target=3D"_blank">navaremanasi@google.com</a>&gt;</div>
+              <div><br>
               </div>
-              <div>Could you please take a look at this patch and help
-                provide feedback?</div>
-              <div>We would like to get this landed as it helps improve
-                our testing.</div>
+              <div><a class=3D"gmail_plusreply" id=3D"m_4927576246771506375=
+m_-9025511830230408148plusReplyChip-5" href=3D"mailto:jani.nikula@intel.com=
+" target=3D"_blank">@Jani Nikula</a>=C2=A0<a class=3D"gmail_plusreply" id=
+=3D"m_4927576246771506375m_-9025511830230408148plusReplyChip-6" href=3D"mai=
+lto:karthik.b.s@intel.com" target=3D"_blank">@Karthik B S</a>=C2=A0 Would y=
+ou be
+                able to help land this upstream, its required<br>
+              </div>
+              <div>to run this test on non intel platforms and review
+                comments from Jani have been addressed.</div>
+              <div><br>
+              </div>
+              <div>Thanks a lot for your help on landing this.</div>
               <div><br>
               </div>
               <div>Regards</div>
               <div>Manasi</div>
-              <div><br>
-              </div>
-              <div><br>
-              </div>
               <br>
               <div class=3D"gmail_quote">
-                <div dir=3D"ltr" class=3D"gmail_attr">On Sun, Mar 29, 2026
-                  at 8:22=E2=80=AFPM Jason-JH Lin &lt;<a href=3D"mailto:jas=
-on-jh.lin@mediatek.com" target=3D"_blank">jason-jh.lin@mediatek.com</a>&gt;
+                <div dir=3D"ltr" class=3D"gmail_attr">On Thu, Apr 16, 2026
+                  at 9:04=E2=80=AFPM Fei Shao &lt;<a href=3D"mailto:fshao@c=
+hromium.org" target=3D"_blank">fshao@chromium.org</a>&gt;
                   wrote:<br>
                 </div>
                 <blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
-px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Replace
-                  global framebuffers (data.red/green) with per-CRTC
-                  array<br>
-                  (data.fbs[IGT_MAX_PIPES]) to support multiple outputs
-                  with different<br>
-                  resolutions.<br>
+px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On
+                  Wed, Apr 15, 2026 at 9:51=E2=80=AFAM Jason-JH Lin &lt;<a =
+href=3D"mailto:jason-jh.lin@mediatek.com" target=3D"_blank">jason-jh.lin@me=
+diatek.com</a>&gt;
+                  wrote:<br>
+                  &gt;<br>
+                  &gt; The clock-too-high subtest was being skipped on
+                  non-Intel platforms<br>
+                  &gt; because igt_get_max_dotclock() returns 0 when
+                  reading from<br>
+                  &gt; Intel-specific debugfs fails.<br>
+                  &gt;<br>
+                  &gt; This change allows the test to run on all
+                  platforms by using -1 as an<br>
+                  &gt; invalid clock value when max_dotclock is
+                  unavailable. The -1 converts<br>
+                  &gt; to UINT_MAX for unsigned int, which clearly
+                  exceeds any reasonable<br>
+                  &gt; hardware limit and should be rejected by all
+                  drivers.<br>
+                  &gt;<br>
+                  &gt; This prevents the test from being marked as
+                  IGNORED/SKIP on non-Intel<br>
+                  &gt; platforms while maintaining the original test
+                  intent of verifying that<br>
+                  &gt; drivers properly reject modes with excessively
+                  high clock rates.<br>
+                  &gt;<br>
+                  &gt; Tested on MTK platforms where the test now
+                  properly executes<br>
+                  &gt; and verifies clock validation.<br>
+                  &gt;<br>
+                  &gt; Signed-off-by: Jason-JH Lin &lt;<a href=3D"mailto:ja=
+son-jh.lin@mediatek.com" target=3D"_blank">jason-jh.lin@mediatek.com</a>&gt=
+;<br>
+                  &gt; Suggested-by: Jani Nikula&lt;<a href=3D"mailto:jani.=
+nikula@intel.com" target=3D"_blank">jani.nikula@intel.com</a>&gt;<br>
                   <br>
-                  Add create_fbs()/remove_fbs() to manage framebuffer
-                  lifecycle at<br>
-                  test initialization/cleanup, creating each FB with the
-                  resolution of<br>
-                  the first output that can connect to that CRTC.<br>
-                  <br>
-                  Signed-off-by: Jason-JH Lin &lt;<a href=3D"mailto:jason-j=
-h.lin@mediatek.com" target=3D"_blank">jason-jh.lin@mediatek.com</a>&gt;<br>
                   Reviewed-by: Fei Shao &lt;<a href=3D"mailto:fshao@chromiu=
 m.org" target=3D"_blank">fshao@chromium.org</a>&gt;<br>
-                  ---<br>
-                  =C2=A0tests/kms_content_protection.c | 50
-                  +++++++++++++++++++++++++---------<br>
-                  =C2=A01 file changed, 37 insertions(+), 13 deletions(-)<b=
-r>
                   <br>
-                  diff --git a/tests/kms_content_protection.c
-                  b/tests/kms_content_protection.c<br>
-                  index caf3d7a56ae4..df9ff5efcaa2 100644<br>
-                  --- a/tests/kms_content_protection.c<br>
-                  +++ b/tests/kms_content_protection.c<br>
-                  @@ -107,10 +107,15 @@<br>
                   <br>
-                  =C2=A0IGT_TEST_DESCRIPTION(&quot;Test content protection
-                  (HDCP)&quot;);<br>
-                  <br>
-                  +struct hdcp_test_fbs {<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0struct igt_fb red;<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0struct igt_fb green;<br>
-                  +};<br>
-                  +<br>
-                  =C2=A0struct data {<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 int drm_fd;<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_display_t display;<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0struct igt_fb red, green;<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0struct hdcp_test_fbs fbs[IGT_=
-MAX_PIPES];<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 unsigned int cp_tests;<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct udev_monitor *uevent_m=
-onitor;<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 bool is_force_hdcp14;<br>
-                  @@ -991,31 +996,49 @@ static void
-                  test_content_protection_cleanup(void)<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 i=
-gt_info(&quot;CP Prop being UNDESIRED on
-                  %s\n&quot;, output-&gt;name);<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 t=
-est_cp_disable(output,
-                  display-&gt;is_atomic ? COMMIT_ATOMIC :
-                  COMMIT_LEGACY);<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-                  -<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_remove_fb(data.drm_fd, &a=
-mp;data.red);<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_remove_fb(data.drm_fd, &a=
-mp;data.green);<br>
-                  =C2=A0}<br>
-                  <br>
-                  =C2=A0static void create_fbs(void)<br>
-                  =C2=A0{<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0uint16_t width =3D 0, height =
-=3D 0;<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 drmModeModeInfo *mode;<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_output_t *output;<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_crtc_t *crtc;<br>
-                  <br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0/* Create framebuffers for ea=
-ch connected
-                  output&#39;s pipe */<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 for_each_connected_output(&am=
-p;data.display,
-                  output) {<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 m=
-ode =3D igt_output_get_mode(output);<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 i=
-gt_assert(mode);<br>
-                  <br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0w=
-idth =3D max(width, mode-&gt;hdisplay);<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0h=
-eight =3D max(height,
-                  mode-&gt;vdisplay);<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/=
-* Find a valid crtc for this output
-                  */<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0f=
-or_each_crtc(&amp;data.display, crtc)
-                  {<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0if
-                  (!igt_crtc_connector_valid(crtc, output))<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0continue;<br>
-                  +<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0/* Skip if already created for
-                  this crtc */<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0if
-                  (data.fbs[crtc-&gt;crtc_index].red.fb_id)<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0continue;<br>
-                  +<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0
-                  =C2=A0igt_create_color_fb(data.drm_fd, mode-&gt;hdisplay,
-                  mode-&gt;vdisplay,<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0
-                  =C2=A0DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A01.f, 0.f,
-                  0.f, &amp;data.fbs[crtc-&gt;crtc_index].red);<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0
-                  =C2=A0igt_create_color_fb(data.drm_fd, mode-&gt;hdisplay,
-                  mode-&gt;vdisplay,<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0
-                  =C2=A0DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A00.f, 1.f,
-                  0.f, &amp;data.fbs[crtc-&gt;crtc_index].green);<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}=
+                  &gt; ---<br>
+                  &gt;=C2=A0 tests/kms_invalid_mode.c | 10 +++++++++-<br>
+                  &gt;=C2=A0 1 file changed, 9 insertions(+), 1 deletion(-)=
 <br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-                  +}<br>
-                  <br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_create_color_fb(data.drm_=
-fd, width,
-                  height,<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0DRM_FORMAT_XRGB8888,
-                  DRM_FORMAT_MOD_LINEAR,<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A01.f, 0.f, 0.f,
-                  &amp;data.red);<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_create_color_fb(data.drm_=
-fd, width,
-                  height,<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0DRM_FORMAT_XRGB8888,
-                  DRM_FORMAT_MOD_LINEAR,<br>
-                  -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A00.f, 1.f, 0.f,
-                  &amp;data.green);<br>
-                  +static void remove_fbs(void)<br>
-                  +{<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_crtc_t *crtc;<br>
-                  +<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0for_each_crtc(&amp;data.displ=
-ay, crtc) {<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0i=
-f
-                  (data.fbs[crtc-&gt;crtc_index].red.fb_id)<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_remove_fb(data.drm_fd,
-                  &amp;data.fbs[crtc-&gt;crtc_index].red);<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0i=
-f
-                  (data.fbs[crtc-&gt;crtc_index].green.fb_id)<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_remove_fb(data.drm_fd,
-                  &amp;data.fbs[crtc-&gt;crtc_index].green);<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-                  =C2=A0}<br>
-                  <br>
-                  =C2=A0static const struct {<br>
-                  @@ -1241,6 +1264,7 @@ int igt_main()<br>
-                  <br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_fixture() {<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 t=
-est_content_protection_cleanup();<br>
-                  +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0r=
-emove_fbs();<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 i=
-gt_display_fini(&amp;data.display);<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 d=
-rm_close_driver(data.drm_fd);<br>
-                  =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-                  -- <br>
-                  2.43.0<br>
-                  <br>
+                  &gt;<br>
+                  &gt; diff --git a/tests/kms_invalid_mode.c
+                  b/tests/kms_invalid_mode.c<br>
+                  &gt; index 5edffb649ef4..78ab965ede91 100644<br>
+                  &gt; --- a/tests/kms_invalid_mode.c<br>
+                  &gt; +++ b/tests/kms_invalid_mode.c<br>
+                  &gt; @@ -126,7 +126,15 @@
+                  adjust_mode_clock_too_high(data_t *data,
+                  drmModeModeInfoPtr mode)<br>
+                  &gt;=C2=A0 {<br>
+                  &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int max_dotclock =
+=3D data-&gt;max_dotclock;<br>
+                  &gt;<br>
+                  &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_require(max_dotclock=
+ !=3D 0);<br>
+                  &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
+                  &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 * If max_dotclock is un=
+available (e.g.,
+                  non-Intel platforms),<br>
+                  &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 * use -1 as an invalid =
+clock value. This
+                  will be converted to<br>
+                  &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 * UINT_MAX, which clear=
+ly exceeds any
+                  reasonable hardware limit.<br>
+                  &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
+                  &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0if (max_dotclock =3D=3D =
+0) {<br>
+                  &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0mode-&gt;clock =3D -1;<br>
+                  &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0return true;<br>
+                  &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+                  &gt;<br>
+                  &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
+                  &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * FIXME When we ha=
+ve a fixed mode, the
+                  kernel will ignore<br>
+                  &gt; --<br>
+                  &gt; 2.43.0<br>
+                  &gt;<br>
                 </blockquote>
               </div>
             </div>
@@ -597,6 +424,6 @@ rm_close_driver(data.drm_fd);<br>
     </blockquote>
   </div>
 
-</blockquote></div></div>
+</blockquote></div>
 
---0000000000004bf87a065103d468--
+--0000000000005bd2cf065103e6ed--
