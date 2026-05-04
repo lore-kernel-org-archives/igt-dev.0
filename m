@@ -4,166 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B6D8FF885A
-	for <igt-dev@archiver.kernel.org>; Mon,  4 May 2026 08:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EF3EFF885A
+	for <igt-dev@archiver.kernel.org>; Mon,  4 May 2026 08:39:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BFB4C10E0B0;
-	Mon,  4 May 2026 08:33:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA37F89361;
+	Mon,  4 May 2026 08:39:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RQCwy2kw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W9PplOkT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A91710E0B0
- for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2026 08:32:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 189C910E5EA
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2026 08:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777883571; x=1809419571;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=j1RtN5Oc9RUZjudVayRfO/2e+AZ3el3ZrcroYr7ue6s=;
- b=RQCwy2kwmTaEAjhYbSzv8Rm6tvNJVhb6GceSkKdIdj8I2fwBfKHNPWkJ
- 2PJ0MC5GqEtiMdI/W7c3pIoALsHlSvbdohRNDEN5/YIK63xaxvPL+DpsN
- 1olOnwJjzvVz/wWAprBEOAAP3av1OChlzJjnQ9E7oMskShotC5LU/G2EK
- KYqHYc3RBzwI+KcgKVkfQoWurq4NyPWAKnwIOMZxgD8hBCm2ShiNFcpTM
- FPfGJnORyYW8PeeJJc9YnX3+ZT4yMeZor9+PnHxGDAkqMlCnxdqQZefBv
- 5LBlcyNNY/I3bzzeOVN6F62P85tFbg6n8+bo+XImCygKBKz8IkYLYrqyx w==;
-X-CSE-ConnectionGUID: rWPCaZa3QbOMRXRirzFS1g==
-X-CSE-MsgGUID: sH3B1Z4WTiSRbPVososE5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="81305067"
-X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; d="scan'208,217";a="81305067"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2026 01:32:51 -0700
-X-CSE-ConnectionGUID: 6pv2ToTcR2mCJQOd9C8mdQ==
-X-CSE-MsgGUID: mUNIwY+YTrmVFv06vB/7XQ==
+ t=1777883965; x=1809419965;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=hrmvymMeOuNZQe6xVmIh98JAzpgghfA+CAtpFLO5dwI=;
+ b=W9PplOkT5KqQG1epselq8Y/I1/UqRvLylDRmJJa+2aTqXhX1iziZfMW5
+ HRap6e+9VGod1sOm2Wr5hEPDunxU6oYAAsn9wbIFqRU4mSaH8lUY3BDJq
+ p27LPU3rkSpAirIYhIZDlj9M/gVH+1GtbUiNslofGv6nqj57pl+majdWc
+ Yfc2QCF+QlJuYhMcTXRt7CS3xXZc6m4UjD/MhI0pvJg3BUan/Ynyf4b+i
+ k5KrxBd+2m3dBpSggGnMbXtc0GkonrzBAiGy28SkEUjzzD5O2Kx+Zzlb5
+ 4oa9b4VBFEi86RecL0scJNtnRWADv0Uw32k4k1ZSbgkH/iXE6+TYT0iwg Q==;
+X-CSE-ConnectionGUID: E+9e7c5QRmmvgLW4bc3IJw==
+X-CSE-MsgGUID: U7IsVGJFSQWnTVubE2VI+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="101404912"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; d="scan'208";a="101404912"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2026 01:39:25 -0700
+X-CSE-ConnectionGUID: oZruCqsDRHevqKH2xt8GRA==
+X-CSE-MsgGUID: 4NqKcPInTGiBNJYsz80zKg==
 X-ExtLoop1: 1
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2026 01:32:50 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; d="scan'208";a="234596448"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2026 01:39:24 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 4 May 2026 01:32:50 -0700
+ 15.2.2562.37; Mon, 4 May 2026 01:39:24 -0700
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 4 May 2026 01:32:49 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.50) by
+ 15.2.2562.37 via Frontend Transport; Mon, 4 May 2026 01:39:24 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.54) by
  edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 4 May 2026 01:32:49 -0700
+ 15.2.2562.37; Mon, 4 May 2026 01:39:24 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CrYzRPSp+M+AozLYOkaCVJFR8VoQUvepnjjZ/QGMi/Fgzvx1rO4S5O0Jvf02d1Zl5i9NvFbmw372Hf2dYesyqRMu/rgOAVWGPZASDd+09bXd3JJS361ZzEf8LYFli/VW0JRJV7693e7paWfzJfj3btewKpn+86E1oEg+kVG1HqffqaB8QyqOaXqyvolzlDbA+BpsSsOo0hUrvMC0lz05o3djdZ9Y4gt9XcpNRUWCq2iuFs5vJIzNwrfN30PsQiHbGjNhgLEVWSlGG0m7Fm++KsC/fyshYyMbCeUROzpPEDfDvtaiWFGDQ4OcC6YWddkmjX68o9G98Yrgum0GI3F4Iw==
+ b=JALX1b5oVKE9Nzkx4TiM8TphvovYRpljbt9nvjZ515i6dEmZj2b7/ZyzNECBDEKTcPkMlqxOuQ9X5MedlKW++rj0pZ1a6Vg0h3llsJcLVmM9ykmpiRLV5q5M7SfLEjXHmYYmdJ0phyjjB3nTsBRXF6Wy4nO52pAWywK44poKY8pUyQ+peJ+QCyt/wSD39muXL5yykVj9UJvOP5IwuIOzx07arkwQ+xUaZN9Dl59IPPbaoybBzvCo176E0C82iwXhjg6849QcNbxJtaQ5slBWQdE3BqKlHhXAgXPqLTERWY5Gen6gUr8Zu/a+ZCde2D/sMooWdLcW0auKS7CACNws+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1ulI+T5gKbmzGoES5NP7IKllELkxTXXmmrvQTZu8LTI=;
- b=T0T+OGezsh/agO5x09VvqDgfOFaDCvA2591yFLtAc6H2hGW6dLYtZaBnHEy35mM+gEAC69qcK6BlzkYjXDuaZ4aGgtnswBOQqYHegb5VuVWNL9QTHuSIRlN+c0cj58HeXCvlmzhcZnNVb6GBmB/Dmpp24O6SU/0IkDdFwNaL/8qJE7Ocguik+L9x41gPQRZIpQSBfVbaYPY+7cdFSSFHEgSKXByVp4Eg1xW1Yb5peln5IsOuPvyip2L0lg+miNOvhegkx3h0Nx4lSnOmxLiOmy/Gsiyl+x4Bqs7I96trn7sAgXSY+/4VB32RHw9RiNhFgDtGkB2CL0Km7xnJJEQGLw==
+ bh=du1fe7otEXNykMMUO3hMVsc9QYyPf+W8V6R4o68bUjU=;
+ b=g9zTHtyGVT+4giXDAgxtiSpBOB75i/nKsO/mKUNk59wcOVy3R8sFwTtJRc/6H7+lQk2HOfhXiED+pdVT6OuMCL9GoRz74NVnBoAltaMIE0c3gkbO1yvzee4rstqoBUn8Hh9o/lyopv5V1FMvNZlS5EUCq54jpmemXXiapkzDUWR7LFwRdsu1Te9rsyIMjHfz/h9+qwACYGvvPx2a+BgLZ20kCFCl5/C4YQsaGM58whFpg+Vtxu2qQwT5LfC+0Myk5ZttgyaCJlo5mUrKfdftZcYXwxpi51nAjYy3l+hSdO2Pe06lomf5P4taYbxYNnGtgM5RszY/z5YXnsYUVHheFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
- by SABPR11MB9963.namprd11.prod.outlook.com (2603:10b6:806:509::20) with
- Microsoft SMTP Server (version=TLS1_2,
+Received: from IA1PR11MB6467.namprd11.prod.outlook.com (2603:10b6:208:3a5::18)
+ by SJ0PR11MB5917.namprd11.prod.outlook.com (2603:10b6:a03:42b::11)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Mon, 4 May
- 2026 08:32:46 +0000
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a]) by CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a%5]) with mapi id 15.20.9870.023; Mon, 4 May 2026
- 08:32:46 +0000
-Content-Type: multipart/alternative;
- boundary="------------nKtHhg40JQZT31IPt04xGflo"
-Message-ID: <2b0203e2-30de-4954-92ca-051b04c0fe4a@intel.com>
-Date: Mon, 4 May 2026 14:02:35 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tests/kms_invalid_mode: Allow clock-too-high test on
- non-Intel platforms
-To: Manasi Navare <navaremanasi@google.com>, Fei Shao <fshao@chromium.org>
-CC: Jason-JH Lin <jason-jh.lin@mediatek.com>, <igt-dev@lists.freedesktop.org>, 
- Swati Sharma <swati2.sharma@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@gmail.com>, Jani <jani.nikula@intel.com>, Paul-PL Chen
- <paul-pl.chen@mediatek.com>, Nancy Lin <nancy.lin@mediatek.com>, Singo Chang
- <singo.chang@mediatek.com>, Gil Dekel <gildekel@google.com>, Yacoub
- <markyacoub@chromium.org>,
- <Project_Global_Chrome_Upstream_Group@mediatek.com>
-References: <20260415015132.2297990-1-jason-jh.lin@mediatek.com>
- <CAC=S1nhr7DFMN-e794MGXp7Nv+LDTQcO4QqG-79XiotFVC7stQ@mail.gmail.com>
- <CAMNLLoQJ3w80Art1VkvYoh4duM5HY2skEH8gztG4TQBWJaUHrg@mail.gmail.com>
- <CAMNLLoQSwnMz_-u2PqTDRM2qVXp=hxwXak5HFnCUqvpbMRVTDg@mail.gmail.com>
+ 2026 08:39:20 +0000
+Received: from IA1PR11MB6467.namprd11.prod.outlook.com
+ ([fe80::7aa6:c6db:3d15:8973]) by IA1PR11MB6467.namprd11.prod.outlook.com
+ ([fe80::7aa6:c6db:3d15:8973%4]) with mapi id 15.20.9870.023; Mon, 4 May 2026
+ 08:39:20 +0000
+From: "Garg, Nemesa" <nemesa.garg@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
+ "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "Sharma,
+ Swati2" <swati2.sharma@intel.com>
+Subject: RE: [PATCH i-g-t 1/3] tests/intel/kms_sharpness_filter: Remove
+ plane-scaler subtests
+Thread-Topic: [PATCH i-g-t 1/3] tests/intel/kms_sharpness_filter: Remove
+ plane-scaler subtests
+Thread-Index: AQHc2WYzU7he96qRqEyIdvjAc2MdirX9j/mg
+Date: Mon, 4 May 2026 08:39:20 +0000
+Message-ID: <IA1PR11MB646737C83CD92CE9FE666BCCE3312@IA1PR11MB6467.namprd11.prod.outlook.com>
+References: <20260501123738.2360414-1-swati2.sharma@intel.com>
+ <20260501123738.2360414-2-swati2.sharma@intel.com>
+In-Reply-To: <20260501123738.2360414-2-swati2.sharma@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <CAMNLLoQSwnMz_-u2PqTDRM2qVXp=hxwXak5HFnCUqvpbMRVTDg@mail.gmail.com>
-X-ClientProxiedBy: MA1PR01CA0179.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:d::22) To CH0PR11MB5690.namprd11.prod.outlook.com
- (2603:10b6:610:ed::9)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|SABPR11MB9963:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e7bdad4-7fe9-4977-f3d0-08dea9b7b6fb
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|42112799006|376014|7416014|8096899003|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: esvSuSQBilNWqCtKZBmT0bLSzy8esi3e/yaG1vRBnj9NPAP+86QqU1acxvHmFmCkHPMC4xITN7/U5MBf9BhoQprxW8si2z+Zm7rFhH+33ZmTLCDXw4i3EcQnysOA/0GmrnHEvk+r7+qtVvsuMNJGFyZmAYRFViXyCWqCpCob9zcE0JWhN9amDMJWL7959SzW6xFcBI5Ndrs1RrjrK+JgwHllbEsRp4JCA+IW5sKQwSFQUE1dk73XoByKHdKTiAnuBOJXVEcZlqC4NrlWCHQyBSwh0H6DDsKH7w7NI3IitHndrvl2m6APfWYBcQYB7As0acCJl/byF5NxOTlDPxdEtv1A4sfI9TzSaoaLcCvyVgVNwcbrR5VEWQ2Lan4jNJ3G3J/rqM1y8fCBp/Ur2t+L/SmFj/xj4CkUcBDZZvDOK5+uFxKPPtUs6+nlMxuc9/5HAt/yB2tjDaWeJ8Qkw8uuWYxuM/lmIkFZTCny31OLjphs44au5oEzixhauBd2uU3k8t4V3PngpKMlekOIbdAHi0BxJoG5THT82UVx5x0iyn9t9bxE90x21W+LSflkAhdaPDlQcIkySctC6ADExuKIBUzaOJoFWh9aPNwvZmffVyIXMPtXm1n95AsRZ1gtduwiMaFJ5IvScRwQjkHv3o2QnF4m6ur+WdQhyciCMtGGyr6to9Kva0RNLeYY7twM/cVD
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(42112799006)(376014)(7416014)(8096899003)(56012099003)(18002099003)(22082099003);
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6467:EE_|SJ0PR11MB5917:EE_
+x-ms-office365-filtering-correlation-id: 885349f0-6fd6-4e15-7b96-08dea9b8a2ec
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|1800799024|376014|22082099003|18002099003|56012099003|38070700021;
+x-microsoft-antispam-message-info: wvXKfvl9gvKDSGgv7YccagZc8ZOLvvTlj+HF0+yEbG+ELT75rXnU4hTgL++6Q/4ImFwbE/E4nwgNK80WkysZl3blOKSlsX3bwx1DPyuFMcJu0x3GZT2QprJUZ1qyFQYY2rzPoHgIsp3rnHyn9w26JZZLyw6TPz0vTFVJb0RPjxIkgKXB/cHuix9vGH2jD7yj65Jt/5UMoKNX5qwEVEIOFvz1mjvARvz+EXWvmCLm4mLu+mzX+ZOy17DLe0o3O9NVeX6JVitunF6RDe/LGEIWUnSNu8Gur2AuCn+vXWH6dCUqrpt8YXAUAZQC8jo/Gb3R9vDmf2l79saOsowAlP8HfJXdL9DAd54dDHS+LEUOkolSXkd+3O+7LPZpY+Dn+j3d8lPfTgKEVwzjc3KkzT+WdPHdgLmVkZTAfboi+ny8lyXmBbBnrJ2ka4OlC4dADUGBP16QpfSO2aPGQyhJOBHvopkgE5DkNuFi2C/dMhh4R5cXKBsmhCf8lQMvHD7jDGNp7niAShBEptmDaDNBJK05yoYdp1wqueScOJBG425Ktbuu6IeEAfAJ8HUeBqnSSGQSPfciwF1/QfxSzGxbkY1xHGLNn4zcp31TZZMb/jbJ4aFO6vKOUPjUQJhZ4oINUYOeVKi14Tyhvvr+ppQM8h5P+Sa/3v7ESf6UfduPNHbpTE1Jx63cDRePNXfI2HBxJk7t5fyZx5AHMzkGC42SOHFrhZRl+ARBv2hrT+Js3NQ/JmXzAQjetRqoVpxoYr50vluf
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR11MB6467.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003)(38070700021);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?V3NoazlDV0lnUmp2TG1VVGJJVWtkbkFzdWJscjkyMWVQNCtGZy9TL1B1QmU3?=
- =?utf-8?B?ZEc3UFZIaVE1SnFRamVVb29HMmNGdko1NXZIMFg2SFJua2VwM3JwbjZncmow?=
- =?utf-8?B?elF3SDhOZS83T1Q1aHdZZmZpL245eGdWRUhhOUU0UVIwVXNPdURlM1NrbEhH?=
- =?utf-8?B?M1pGV2VTNzJNZ3g4bE1sQis2VklCMDZVdytZY1BkUnVaam9RelAyVkFaZ1Nr?=
- =?utf-8?B?dXg5bDBSVS8zTFpJUVV6c1RSZG9HNCsvb2NMSkRuM2JCbXYvdENkUHk0cnhI?=
- =?utf-8?B?Tkd1aWIwNHNNWmtGMldGS1Z6SWFmeWxSQjF0cFptZXQxeUVWM1FGczFBOG8v?=
- =?utf-8?B?aDc4QmlKeHFyY1JCdGNHaTNJZnhtTXU5aVBmNHBvamgyOW84WTNoT0F0V2Fh?=
- =?utf-8?B?YU5qWm9pTk1iMjZZUnVnTXBmandPdVNxMkM4Qmh2V0N5a2FMUDB1ZTZBQ3Br?=
- =?utf-8?B?Y1Z6clViYzUwWlcvcWh4RXIrTnl4OCtmQU5QenRERUFBTUZsT0FPRUtmcFI1?=
- =?utf-8?B?U0NnNlUybVBtY0tVdTF1VHRSNEFmYVJqNURiWTFaMDI0MGY3cTJEdGQ5TStZ?=
- =?utf-8?B?bmRncGIyK0VYWjB1aXdkdmova3pEMFJUZlVrc3lDN2xLZ3d5RU1BUHg0OHRD?=
- =?utf-8?B?QUd0YTI5N3ZoeEFZa1NoWFNCSkhkOTV4eTcxS2VIUjl2cU0vSnAvckptUDNq?=
- =?utf-8?B?T3RSZXltNjRMajB1VTZyYjlnUFlScmRqbG9Sc3N4VHFVTHlBcmhETXY2dE5N?=
- =?utf-8?B?VEVaYWxKYkVLQmxDUUZxcmZCdkZoT1dZaVlxRlA4clBjTXZnUzZ4VU1UYStS?=
- =?utf-8?B?Qk54alEyZUI2QjRrT3JwOGltYTJwb0pOT0hMMnlOcFJzcTQxb2lJbERxaU51?=
- =?utf-8?B?OTlhSENHbGhDZmVLdC9SZ0ErN3ZVQzN6ODlTaXcyK1RsVmlqMUZCZ05wWHlX?=
- =?utf-8?B?VWR5cVhHdS9yaC9pTUhVa0wrRzhFWUQvOUdvK0h3bURyaGs3NFEybHQ2YkdS?=
- =?utf-8?B?UkZweU91eFJLQVA4dGxhZjlMZDg4TDIrUUtYcnJBTUpxQ2tsb21lSGRjVmd6?=
- =?utf-8?B?QlpsNE9ja09ZUE9Eb28waFZpbDdGM3IxNEFOdjJldjlKcDlBTGlsRlZhK3Q0?=
- =?utf-8?B?RWZQc280MURWVjU4TnM4SHJaWmtMN3NBbldBNzYybFFqV2pZYUJpQ1FSTnVz?=
- =?utf-8?B?Wk9iTWRLeU9oOUk4MHNnQjFhR2wwalR2U0poZE1wK0U2MlRjdW1KMnhEcWpU?=
- =?utf-8?B?enFUWi9XY2J3OHBIVjdSVFFtMDY1YndRRFR1SkNoNVlpYUhJbkowM3dBU2VO?=
- =?utf-8?B?dVpkRlNyMGc3dC9FMzRvaExIWHR2MkF0SHJ3RDZnWHg5cDlmbEpObUNCVXZP?=
- =?utf-8?B?UXgvS0tOOVNZNEpaNUZ5MFVEQlVXZ3U2bnBXTklHNFdxcmVINkpsYWRxc3ha?=
- =?utf-8?B?WXNxMDcxSUVPNmpOOVNWU2t1Wi8rZzBqcHRtQ3lmTXVzUTJ5SGhVanpTY3E2?=
- =?utf-8?B?UXdvNTJlajhEUHh4ME5QQVdQeWhRdEM4K2pvR1l1RDFIbURBRk9xV2xhc1Bp?=
- =?utf-8?B?Zk42NU9qZlhqdDVlQVRhY1VlanFyeTdoY3lWOXZzNVhHbTJTaVI4U3d5RnBW?=
- =?utf-8?B?Y2xjdzhleVlVMkl1TWpLRnhqT1U2YXJuZzN2K1VacFhpVlBUM3lReUNXQ29a?=
- =?utf-8?B?cWp0TWtiY1JJNnZDZkJhMXIzb09jSkMySEpnbWxnUXpubi9sdC9xd01md0ow?=
- =?utf-8?B?WnFLN3Nrb2FTR0I4SDIyYk9BeStlbXkrcjBnQzRpRjVKR0pPOVlrTlc2eDRZ?=
- =?utf-8?B?VkNoZkl1ZmtkNE1zQ2ZzNmdhLzdxRUJsdzZsOStjK29XazI0UDV3d1hqODd5?=
- =?utf-8?B?ZmdadW82dklBSkk2SXZXaEh1bUd2VWNLTjdseWVKdEVJRFVPdVJHa2VsZ3BB?=
- =?utf-8?B?SUZKckdha1NmMkllVXZOZFVGVlRva28xT2l5SUNjTUtlQXU2S1lxZDlLcDR5?=
- =?utf-8?B?dUxQWFNwYjRnZHdMS1VlbWZpZjQ2R0ZZeE5vTUk0cmo3QVpIVHdwQk5nKzVS?=
- =?utf-8?B?eW9ZT1JxWDg5VTJtdFZaTFhnMUcwVjFPNE56R3hXN2JUTzg4UWtmRzRHNFRE?=
- =?utf-8?B?cE5XRVAzVlpkUi84OElBTzl2NzZxQ1hRa3RsZURSenczL1V4enM2V0dlKytx?=
- =?utf-8?B?bWFPRTNqMjBYWW8ya0ZmNmhHWE5rU051T0Juby9aR0JvaXhuVWtkTWxDcVJa?=
- =?utf-8?B?bW1PbUM4K3o4M1lKMEVtenkyZ2x6UXNQdWVkVzZMOHBYVXdtL053U1h4V2xE?=
- =?utf-8?B?aFg2YVdoNHJGQjlPZEw4Zk83MGhKb3k2cUNYbDVPaTJDTmQ4Q0prUT09?=
-X-Exchange-RoutingPolicyChecked: ax4fDJXyc3Y7wupPdnxYfuyAFQ84LNk+nkJCJfCQ3Qo5u8sPEmsVtcbARvsJUjzi475UhPuX9xjln3UAMSyHiTdlzrx11JAq0WdvP7FhfzLONb+HfLSDdFxA1fGx7/APxNdHNoXQe8/9TtM4xRlYRhOkaEpz8WSVNjh3jlxt6IpJkG4i+wdqks/8bNOKHXdd2ajxJqBuBm6efhkYLdFIAgGRnb/e4xJAY3ouPFs5mRmBDMbdQ6izONZwlSriqnwMrMG/hUnsBO7oUVycctb7gISz6hUHoLJAs5u3AflJgojLTFwLal9Ju3bfTswgY/xQA47isgdyy+v7sMHZFiujHQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e7bdad4-7fe9-4977-f3d0-08dea9b7b6fb
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?erDkK7XSfonO4OEiMwHoVvUGRz09IZiw2HNIGwru7Lifj13SS0yENxPaBs7q?=
+ =?us-ascii?Q?3sM8+6CMz8VuWnyPlJvN6a79D+nLCFAStUTdjWi9eW2mZdsONtRQwSEWQShh?=
+ =?us-ascii?Q?oOEv3qFerb84Sj02igrPhUMxMfQVF9Gso2bUX+Xsb/uGluungIEeVXfQjuXa?=
+ =?us-ascii?Q?dCiXVq44sgaaipHOqmCXXS5p8xYzAG/WCppmXIRoUoei23mf9WIGjfHKUnJU?=
+ =?us-ascii?Q?Thlj65MslGn2Ic+iwup8bNZrD5WjR3JtHVcqxO93J5rQRV9Jbsz3Cz5wA1xW?=
+ =?us-ascii?Q?rqiEwfrrcRDKySF/LrW+wjvVHVXi8R6t9ddGxW4UGILB6wVayvVlwKdF5CGI?=
+ =?us-ascii?Q?4ibS/C8CCwblYUUvTh86108oIcrEW7A/JMsKLS+sAHozxU3LfiYNoLSr65cw?=
+ =?us-ascii?Q?ezNC1cr8XpABto0M3jcAqn094bmyw0nLqG1Jxjk2QTAk/n1oIXQwxyFLRJp4?=
+ =?us-ascii?Q?jiX78IezjVstncJ4x1y7CK24VbFbdy09S6LY2b8OtVjt6QlybUqVZbUqPZ51?=
+ =?us-ascii?Q?7aLgOJ6zAwfkGjYPhhCLbCVGMQwKIyiVOJgXWl460UfdD7i0cUZaGFLYs5F5?=
+ =?us-ascii?Q?8L3p10svsjq6EOen1FUoOPJp/LfSNK20kARkHdvcAt++km7OralATRLg6Uan?=
+ =?us-ascii?Q?euuP8T2KBwWkGy4ygdb59xC5SqAihOx62dNWFS7B9tSEeCCKgTwFIap/b6WX?=
+ =?us-ascii?Q?WxmyITDVtmnT/YDJ3csuuEpqGp5fMXB7MnJxIsvcyJgA+NAFctXf0SjThN4O?=
+ =?us-ascii?Q?IJlHxT6QDwpuWS6qNn40jl5KFEcl0Qg1wxd39e/+MqkID6kuQTntMuwNcIAf?=
+ =?us-ascii?Q?JVdUES2xqdBAz8sOEqJpmdscHUehFITCSk7ESO044ASl47w6wrM+1yLzBMn8?=
+ =?us-ascii?Q?PSCINwk/sWp3kgqdaLmUK+D44GG+tLAsESKMHiH5IDO0p4kuTuD+jC0gw17m?=
+ =?us-ascii?Q?0q46GEGDXg7M9xT3doJQhTFvL48FTzLgBXP2txcciohxtgLEJjOGYris3ZMb?=
+ =?us-ascii?Q?yb6/9d+eyGBTEM6GdDvsjpeP3kkYm9akodp2DfyH1+597Ezsn4tFyB6mk0cZ?=
+ =?us-ascii?Q?ovYZx9giFxRfsZeVyuOSg4Efq8qcanxH8IzJF01XxQu3w1bgyGaQiBYY8boX?=
+ =?us-ascii?Q?GHaPeBQM7Jh85AVlRcKzwu8XmoaP2cLcKoAO0kLq3LZVp3OD3QCqBap9rxOl?=
+ =?us-ascii?Q?FECtqM4aFfC8HVBEstRS48XltGgXCpi8y5hUCFa3vP9VUba56W8+L8hu52gk?=
+ =?us-ascii?Q?OQKQH08k4G0dKbQek4X7M06pChRVw6NlhV0fN1iORrUEqVNl4OMTIKY34Fae?=
+ =?us-ascii?Q?pnufSRv2RwZ9tgeTUXug3bGikgKoURn8CRmJDEeAabwFn2gm0pfoF74QtrVd?=
+ =?us-ascii?Q?l3eRdsz3MIHVfUSxHrgS5XjBLMOjE4UOLMKZB9HSn6HdwdOLa9fMQkQoNeQM?=
+ =?us-ascii?Q?SZGiZdLG/ORPj1LRiFUCXztEW33MiSoMhXKp9BJEWN7fXULUgjA6JH+EUL6R?=
+ =?us-ascii?Q?nvr4XpBODfniJ468ZrfVzVhqWmkCbqxJbXaFe+WKdETSS3x2d3oVdVEFnPXw?=
+ =?us-ascii?Q?dhrEacCs2JAWtgIUZTM5H9jJp2YYmAwoFXma7C/59I44X+f5kACfIHO072Lp?=
+ =?us-ascii?Q?XsKtxVUesh/YrGMKTqcGV+CdsRaXiA/+pSglWIgeC+a5oaAdTMebImB4bmmP?=
+ =?us-ascii?Q?iFQ1OXzup4q9YFLLWBTHr+HuQkxBC8DV2cP220xdlphFs/w4SFWxzN2nYhKO?=
+ =?us-ascii?Q?K2QmeW/BNA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: errrnZyhxYBPHCh2K7eQjaWxJopGK/p/NBw4sQWOe/WtapZze/EjSTdUQZpW4gjwfF2uTYRZSiFIWdIfklQZDme4vit8D6ct4Hy749XoIXvhf9JzTDFseRjF4yLowl2Gihde9AUQQ84AG/U2k3dMe3MVk3x5V9YD0IJNeGYH4fLqqtYQlJhkbV2o4C9GUfs+yXVG6drrhMjlAjEFoqJndI+e7u3CILk0b5CAfrI89kwFwmcNVJXzx458ungpSoLYJWspHZ5eJmVwaSzXlpw39KuyrpNq3QHTDfpbwgcBe4bic1fI7qe9IfZsXUSxUq4t8KTsZq1wGwYaeaL3KoBzfg==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2026 08:32:45.9988 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4ykb56rDZjP3rDPc2xkEdH2qpl7TREwF2yHQXqlpaJdfmNPnGVOx6P67etmVDYfwNzv1OiQAj6fQNRmGwHrtlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SABPR11MB9963
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6467.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 885349f0-6fd6-4e15-7b96-08dea9b8a2ec
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 May 2026 08:39:20.5270 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +M/ec7A0RdMtvHE+HoozXY+zMMVW/AOOK+9RTjNKKIU84mD86GNyrKWoixJDO95KGmx4D2uwG4F6ZvuS3YWA4Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5917
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -180,260 +166,234 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------nKtHhg40JQZT31IPt04xGflo
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Hi Manasi,
 
-On 5/1/2026 4:31 AM, Manasi Navare wrote:
-> Hi @Karthik B S <mailto:karthik.b.s@intel.com> @Jani Nikula 
-> <mailto:jani.nikula@intel.com> :
->
-> Signal boosting this, we have reviewed this patch and verified for the 
-> MTK driver,
-> Could you please take a look and  help on getting this upstreamed?
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
+> Sharma
+> Sent: Friday, May 1, 2026 6:08 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: ville.syrjala@linux.intel.com; juhapekka.heikkila@gmail.com; Sharma,
+> Swati2 <swati2.sharma@intel.com>
+> Subject: [PATCH i-g-t 1/3] tests/intel/kms_sharpness_filter: Remove plane=
+-
+> scaler subtests
+>=20
+> Remove filter-modifiers, filter-rotations, and filter-formats subtests si=
+nce the
+> sharpness filter operates on the pipe scaler, not the plane scaler, makin=
+g
+> these tests irrelevant.
+>=20
+> v2: -Keep filter-tap test, as it verifies that the correct mode is
+>      selected based on the tap value (Nemesa)
+>=20
+> Co-developed-by: Claude Opus 4.6
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>  tests/intel/kms_sharpness_filter.c | 95 ------------------------------
+>  1 file changed, 95 deletions(-)
+>=20
+> diff --git a/tests/intel/kms_sharpness_filter.c
+> b/tests/intel/kms_sharpness_filter.c
+> index ff2efb154..96eec8919 100644
+> --- a/tests/intel/kms_sharpness_filter.c
+> +++ b/tests/intel/kms_sharpness_filter.c
+> @@ -21,15 +21,6 @@
+>   * SUBTEST: filter-strength
+>   * Description: Verify that varying strength (0-255), affects the degree=
+ of
+> sharpness applied.
+>   *
+> - * SUBTEST: filter-modifiers
+> - * Description: Verify content adaptive sharpness filter with varying
+> modifiers.
+> - *
+> - * SUBTEST: filter-rotations
+> - * Description: Verify content adaptive sharpness filter with varying ro=
+tations.
+> - *
+> - * SUBTEST: filter-formats
+> - * Description: Verify content adaptive sharpness filter with varying fo=
+rmats.
+> - *
+>   * SUBTEST: filter-toggle
+>   * Description: Verify toggling between enabling and disabling content
+> adaptive sharpness filter.
+>   *
+> @@ -92,9 +83,6 @@ IGT_TEST_DESCRIPTION("Test to validate content
+> adaptive sharpness filter");
+>=20
+>  enum test_type {
+>  	TEST_FILTER_BASIC,
+> -	TEST_FILTER_MODIFIERS,
+> -	TEST_FILTER_ROTATION,
+> -	TEST_FILTER_FORMATS,
+>  	TEST_FILTER_STRENGTH,
+>  	TEST_FILTER_TOGGLE,
+>  	TEST_FILTER_TAP,
+> @@ -120,24 +108,6 @@ const int filter_tap_list[] =3D {
+>  	TAP_5,
+>  	TAP_7,
+>  };
+> -static const struct {
+> -	uint64_t modifier;
+> -	const char *name;
+> -} modifiers[] =3D {
+> -	{ DRM_FORMAT_MOD_LINEAR, "linear", },
+> -	{ I915_FORMAT_MOD_X_TILED, "x-tiled", },
+> -	{ I915_FORMAT_MOD_4_TILED, "4-tiled", },
+> -};
+> -static const int formats[] =3D {
+> -	DRM_FORMAT_NV12,
+> -	DRM_FORMAT_RGB565,
+> -	DRM_FORMAT_XRGB8888,
+> -	DRM_FORMAT_XBGR16161616F,
+> -};
+> -static const igt_rotation_t rotations[] =3D {
+> -	IGT_ROTATION_0,
+> -	IGT_ROTATION_180,
+> -};
+>  static const uint32_t scaling_modes[] =3D {
+>  	DRM_MODE_SCALE_FULLSCREEN,
+>  	DRM_MODE_SCALE_ASPECT,
+> @@ -146,9 +116,6 @@ static const uint32_t scaling_modes[] =3D {  enum
+> subtest_iter {
+>  	ITER_NONE,
+>  	ITER_STRENGTH,
+> -	ITER_MODIFIER,
+> -	ITER_ROTATION,
+> -	ITER_FORMAT,
+>  	ITER_SCALING_MODE,
+>  };
+>=20
+> @@ -173,27 +140,6 @@ static const struct subtest_entry {
+>  		.filter_strength =3D DEFAULT_FILTER_STRENGTH,
+>  		.iter     =3D ITER_STRENGTH,
+>  	},
+> -	{
+> -		.name     =3D "filter-modifiers",
+> -		.describe =3D "Verify content adaptive sharpness filter with
+> varying modifiers.",
+> -		.type     =3D TEST_FILTER_MODIFIERS,
+> -		.filter_strength =3D DEFAULT_FILTER_STRENGTH,
+> -		.iter     =3D ITER_MODIFIER,
+> -	},
+> -	{
+> -		.name     =3D "filter-rotations",
+> -		.describe =3D "Verify content adaptive sharpness filter with
+> varying rotations.",
+> -		.type     =3D TEST_FILTER_ROTATION,
+> -		.filter_strength =3D DEFAULT_FILTER_STRENGTH,
+> -		.iter     =3D ITER_ROTATION,
+> -	},
+> -	{
+> -		.name     =3D "filter-formats",
+> -		.describe =3D "Verify content adaptive sharpness filter with
+> varying formats.",
+> -		.type     =3D TEST_FILTER_FORMATS,
+> -		.filter_strength =3D DEFAULT_FILTER_STRENGTH,
+> -		.iter     =3D ITER_FORMAT,
+> -	},
+>  	{
+>  		.name     =3D "filter-toggle",
+>  		.describe =3D "Verify toggling between enabling and disabling
+> content adaptive sharpness filter.", @@ -280,9 +226,7 @@ typedef struct {
+>  	int filter_strength;
+>  	int filter_tap;
+>  	uint64_t modifier;
+> -	const char *modifier_name;
+>  	uint32_t format;
+> -	igt_rotation_t rotation;
+>  	uint32_t scaling_mode;
+>  } data_t;
+>=20
+> @@ -488,14 +432,6 @@ static void test_sharpness_filter(data_t *data, enum
+> test_type type)
+>  		 data->format, data->modifier, &data->fb[0]);
+>  	igt_plane_set_fb(data->plane[0], &data->fb[0]);
+>=20
+> -	if (type =3D=3D TEST_FILTER_ROTATION) {
+> -		igt_skip_on_f(!igt_plane_has_rotation(data->plane[0],
+> -						      data->rotation),
+> -			      "No requested rotation on pipe %s\n",
+> -			      igt_crtc_name(data->crtc));
+> -		igt_plane_set_rotation(data->plane[0], data->rotation);
+> -	}
+> -
+>  	if (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE)
+>  		igt_require_f(has_scaling_mode(output), "No connecter
+> scaling mode found on %s\n", output->name);
+>=20
+> @@ -561,9 +497,6 @@ static bool has_sharpness_filter(igt_crtc_t *crtc)
+>=20
+>  static const char * const test_type_names[] =3D {
+>  	[TEST_FILTER_BASIC]                     =3D "basic",
+> -	[TEST_FILTER_MODIFIERS]                 =3D NULL,
+> -	[TEST_FILTER_ROTATION]                  =3D NULL,
+> -	[TEST_FILTER_FORMATS]                   =3D NULL,
+>  	[TEST_FILTER_STRENGTH]                  =3D NULL,
+>  	[TEST_FILTER_TOGGLE]                    =3D "toggle",
+>  	[TEST_FILTER_TAP]                       =3D NULL,
+> @@ -587,16 +520,6 @@ static void build_test_suffix(data_t *data, enum
+> test_type type,
+>=20
+>  	/* suffix depends on the current test parameters */
+>  	switch (type) {
+> -	case TEST_FILTER_MODIFIERS:
+> -		snprintf(name, len, "-%s", data->modifier_name);
+> -		break;
+> -	case TEST_FILTER_ROTATION:
+> -		snprintf(name, len, "-%srot",
+> -			 igt_plane_rotation_name(data->rotation));
+> -		break;
+> -	case TEST_FILTER_FORMATS:
+> -		snprintf(name, len, "-%s", igt_format_str(data->format));
+> -		break;
+>  	case TEST_FILTER_STRENGTH:
+>  		snprintf(name, len, "-strength-%d", data->filter_strength);
+>  		break;
+> @@ -738,8 +661,6 @@ run_sharpness_filter_test(data_t *data, enum
+> test_type type)  static void set_data_defaults(data_t *data)  {
+>  	data->modifier        =3D DRM_FORMAT_MOD_LINEAR;
+> -	data->modifier_name   =3D modifiers[0].name;
+> -	data->rotation        =3D IGT_ROTATION_0;
+>  	data->format          =3D DRM_FORMAT_XRGB8888;
+>  	data->filter_strength =3D MID_FILTER_STRENGTH;  } @@ -749,12 +670,6
+> @@ static int iter_count(enum subtest_iter iter)
+>  	switch (iter) {
+>  	case ITER_STRENGTH:
+>  		return ARRAY_SIZE(filter_strength_list);
+> -	case ITER_MODIFIER:
+> -		return ARRAY_SIZE(modifiers);
+> -	case ITER_ROTATION:
+> -		return ARRAY_SIZE(rotations);
+> -	case ITER_FORMAT:
+> -		return ARRAY_SIZE(formats);
+>  	case ITER_SCALING_MODE:
+>  		return ARRAY_SIZE(scaling_modes);
+>  	default:
+> @@ -768,16 +683,6 @@ static void apply_iter_param(data_t *data, const
+> struct subtest_entry *st, int i
+>  	case ITER_STRENGTH:
+>  		data->filter_strength =3D filter_strength_list[idx];
+>  		break;
+> -	case ITER_MODIFIER:
+> -		data->modifier =3D modifiers[idx].modifier;
+> -		data->modifier_name =3D modifiers[idx].name;
+> -		break;
+> -	case ITER_ROTATION:
+> -		data->rotation =3D rotations[idx];
+> -		break;
+> -	case ITER_FORMAT:
+> -		data->format =3D formats[idx];
+> -		break;
+>  	case ITER_SCALING_MODE:
+>  		data->scaling_mode =3D scaling_modes[idx];
+>  		break;
+> --
 
-Sure, this LGTM and CI is also fine. Will merge this.
+LGTM,
+Reviewed-by: Nemesa Garg <nemesa.garg@intel.com>
+> 2.25.1
 
-Regards,
-Karthik.B.S
->
-> Regards
-> Manasi
->
-> On Wed, Apr 29, 2026 at 1:37 PM Manasi Navare 
-> <navaremanasi@google.com> wrote:
->
->     Thanks for the patch and for addressing Jani's comments.
->     This looks good to me.
->
->     Reviewed-by: Manasi Navare <navaremanasi@google.com>
->
->     @Jani Nikula <mailto:jani.nikula@intel.com> @Karthik B S
->     <mailto:karthik.b.s@intel.com>  Would you be able to help land
->     this upstream, its required
->     to run this test on non intel platforms and review comments from
->     Jani have been addressed.
->
->     Thanks a lot for your help on landing this.
->
->     Regards
->     Manasi
->
->     On Thu, Apr 16, 2026 at 9:04 PM Fei Shao <fshao@chromium.org> wrote:
->
->         On Wed, Apr 15, 2026 at 9:51 AM Jason-JH Lin
->         <jason-jh.lin@mediatek.com> wrote:
->         >
->         > The clock-too-high subtest was being skipped on non-Intel
->         platforms
->         > because igt_get_max_dotclock() returns 0 when reading from
->         > Intel-specific debugfs fails.
->         >
->         > This change allows the test to run on all platforms by using
->         -1 as an
->         > invalid clock value when max_dotclock is unavailable. The -1
->         converts
->         > to UINT_MAX for unsigned int, which clearly exceeds any
->         reasonable
->         > hardware limit and should be rejected by all drivers.
->         >
->         > This prevents the test from being marked as IGNORED/SKIP on
->         non-Intel
->         > platforms while maintaining the original test intent of
->         verifying that
->         > drivers properly reject modes with excessively high clock rates.
->         >
->         > Tested on MTK platforms where the test now properly executes
->         > and verifies clock validation.
->         >
->         > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
->         > Suggested-by: Jani Nikula<jani.nikula@intel.com>
->
->         Reviewed-by: Fei Shao <fshao@chromium.org>
->
->
->         > ---
->         >  tests/kms_invalid_mode.c | 10 +++++++++-
->         >  1 file changed, 9 insertions(+), 1 deletion(-)
->         >
->         > diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
->         > index 5edffb649ef4..78ab965ede91 100644
->         > --- a/tests/kms_invalid_mode.c
->         > +++ b/tests/kms_invalid_mode.c
->         > @@ -126,7 +126,15 @@ adjust_mode_clock_too_high(data_t
->         *data, drmModeModeInfoPtr mode)
->         >  {
->         >         int max_dotclock = data->max_dotclock;
->         >
->         > -       igt_require(max_dotclock != 0);
->         > +       /*
->         > +        * If max_dotclock is unavailable (e.g., non-Intel
->         platforms),
->         > +        * use -1 as an invalid clock value. This will be
->         converted to
->         > +        * UINT_MAX, which clearly exceeds any reasonable
->         hardware limit.
->         > +        */
->         > +       if (max_dotclock == 0) {
->         > +               mode->clock = -1;
->         > +               return true;
->         > +       }
->         >
->         >         /*
->         >          * FIXME When we have a fixed mode, the kernel will
->         ignore
->         > --
->         > 2.43.0
->         >
->
---------------nKtHhg40JQZT31IPt04xGflo
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Hi Manasi,</p>
-    <div class="moz-cite-prefix">On 5/1/2026 4:31 AM, Manasi Navare
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:CAMNLLoQSwnMz_-u2PqTDRM2qVXp=hxwXak5HFnCUqvpbMRVTDg@mail.gmail.com">
-      
-      <div dir="ltr">
-        <div>Hi&nbsp;<a class="gmail_plusreply" id="plusReplyChip-1" href="mailto:karthik.b.s@intel.com" tabindex="-1" moz-do-not-send="true">@Karthik B S</a>&nbsp;&nbsp;<a class="gmail_plusreply" id="plusReplyChip-2" href="mailto:jani.nikula@intel.com" tabindex="-1" moz-do-not-send="true">@Jani Nikula</a>&nbsp;:</div>
-        <div><br>
-        </div>
-        <div>Signal boosting this, we have reviewed this patch and
-          verified for the MTK driver,</div>
-        <div>Could you please take a look and&nbsp; help on getting this
-          upstreamed?</div>
-      </div>
-    </blockquote>
-    <p>Sure, this LGTM and CI is also fine. Will merge this.</p>
-    Regards,<br>
-    Karthik.B.S
-    <blockquote type="cite" cite="mid:CAMNLLoQSwnMz_-u2PqTDRM2qVXp=hxwXak5HFnCUqvpbMRVTDg@mail.gmail.com">
-      <div dir="ltr">
-        <div><br>
-        </div>
-        <div>Regards</div>
-        <div>Manasi</div>
-        <br>
-        <div class="gmail_quote gmail_quote_container">
-          <div dir="ltr" class="gmail_attr">On Wed, Apr 29, 2026 at
-            1:37 PM Manasi Navare &lt;<a href="mailto:navaremanasi@google.com" moz-do-not-send="true" class="moz-txt-link-freetext">navaremanasi@google.com</a>&gt;
-            wrote:<br>
-          </div>
-          <blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-            <div dir="ltr">
-              <div dir="ltr">Thanks for the patch and for addressing
-                Jani's comments.</div>
-              <div>This looks good to me.</div>
-              <div><br>
-              </div>
-              <div>Reviewed-by: Manasi Navare &lt;<a href="mailto:navaremanasi@google.com" target="_blank" moz-do-not-send="true" class="moz-txt-link-freetext">navaremanasi@google.com</a>&gt;</div>
-              <div><br>
-              </div>
-              <div><a class="gmail_plusreply" id="m_-9025511830230408148plusReplyChip-5" href="mailto:jani.nikula@intel.com" target="_blank" moz-do-not-send="true">@Jani Nikula</a>&nbsp;<a class="gmail_plusreply" id="m_-9025511830230408148plusReplyChip-6" href="mailto:karthik.b.s@intel.com" target="_blank" moz-do-not-send="true">@Karthik B S</a>&nbsp; Would you be
-                able to help land this upstream, its required<br>
-              </div>
-              <div>to run this test on non intel platforms and review
-                comments from Jani have been addressed.</div>
-              <div><br>
-              </div>
-              <div>Thanks a lot for your help on landing this.</div>
-              <div><br>
-              </div>
-              <div>Regards</div>
-              <div>Manasi</div>
-              <br>
-              <div class="gmail_quote">
-                <div dir="ltr" class="gmail_attr">On Thu, Apr 16, 2026
-                  at 9:04 PM Fei Shao &lt;<a href="mailto:fshao@chromium.org" target="_blank" moz-do-not-send="true" class="moz-txt-link-freetext">fshao@chromium.org</a>&gt;
-                  wrote:<br>
-                </div>
-                <blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On
-                  Wed, Apr 15, 2026 at 9:51 AM Jason-JH Lin &lt;<a href="mailto:jason-jh.lin@mediatek.com" target="_blank" moz-do-not-send="true" class="moz-txt-link-freetext">jason-jh.lin@mediatek.com</a>&gt;
-                  wrote:<br>
-                  &gt;<br>
-                  &gt; The clock-too-high subtest was being skipped on
-                  non-Intel platforms<br>
-                  &gt; because igt_get_max_dotclock() returns 0 when
-                  reading from<br>
-                  &gt; Intel-specific debugfs fails.<br>
-                  &gt;<br>
-                  &gt; This change allows the test to run on all
-                  platforms by using -1 as an<br>
-                  &gt; invalid clock value when max_dotclock is
-                  unavailable. The -1 converts<br>
-                  &gt; to UINT_MAX for unsigned int, which clearly
-                  exceeds any reasonable<br>
-                  &gt; hardware limit and should be rejected by all
-                  drivers.<br>
-                  &gt;<br>
-                  &gt; This prevents the test from being marked as
-                  IGNORED/SKIP on non-Intel<br>
-                  &gt; platforms while maintaining the original test
-                  intent of verifying that<br>
-                  &gt; drivers properly reject modes with excessively
-                  high clock rates.<br>
-                  &gt;<br>
-                  &gt; Tested on MTK platforms where the test now
-                  properly executes<br>
-                  &gt; and verifies clock validation.<br>
-                  &gt;<br>
-                  &gt; Signed-off-by: Jason-JH Lin &lt;<a href="mailto:jason-jh.lin@mediatek.com" target="_blank" moz-do-not-send="true" class="moz-txt-link-freetext">jason-jh.lin@mediatek.com</a>&gt;<br>
-                  &gt; Suggested-by: Jani Nikula&lt;<a href="mailto:jani.nikula@intel.com" target="_blank" moz-do-not-send="true" class="moz-txt-link-freetext">jani.nikula@intel.com</a>&gt;<br>
-                  <br>
-                  Reviewed-by: Fei Shao &lt;<a href="mailto:fshao@chromium.org" target="_blank" moz-do-not-send="true" class="moz-txt-link-freetext">fshao@chromium.org</a>&gt;<br>
-                  <br>
-                  <br>
-                  &gt; ---<br>
-                  &gt;&nbsp; tests/kms_invalid_mode.c | 10 +++++++++-<br>
-                  &gt;&nbsp; 1 file changed, 9 insertions(+), 1 deletion(-)<br>
-                  &gt;<br>
-                  &gt; diff --git a/tests/kms_invalid_mode.c
-                  b/tests/kms_invalid_mode.c<br>
-                  &gt; index 5edffb649ef4..78ab965ede91 100644<br>
-                  &gt; --- a/tests/kms_invalid_mode.c<br>
-                  &gt; +++ b/tests/kms_invalid_mode.c<br>
-                  &gt; @@ -126,7 +126,15 @@
-                  adjust_mode_clock_too_high(data_t *data,
-                  drmModeModeInfoPtr mode)<br>
-                  &gt;&nbsp; {<br>
-                  &gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int max_dotclock = data-&gt;max_dotclock;<br>
-                  &gt;<br>
-                  &gt; -&nbsp; &nbsp; &nbsp; &nbsp;igt_require(max_dotclock != 0);<br>
-                  &gt; +&nbsp; &nbsp; &nbsp; &nbsp;/*<br>
-                  &gt; +&nbsp; &nbsp; &nbsp; &nbsp; * If max_dotclock is unavailable (e.g.,
-                  non-Intel platforms),<br>
-                  &gt; +&nbsp; &nbsp; &nbsp; &nbsp; * use -1 as an invalid clock value. This
-                  will be converted to<br>
-                  &gt; +&nbsp; &nbsp; &nbsp; &nbsp; * UINT_MAX, which clearly exceeds any
-                  reasonable hardware limit.<br>
-                  &gt; +&nbsp; &nbsp; &nbsp; &nbsp; */<br>
-                  &gt; +&nbsp; &nbsp; &nbsp; &nbsp;if (max_dotclock == 0) {<br>
-                  &gt; +&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;mode-&gt;clock = -1;<br>
-                  &gt; +&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return true;<br>
-                  &gt; +&nbsp; &nbsp; &nbsp; &nbsp;}<br>
-                  &gt;<br>
-                  &gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;/*<br>
-                  &gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; * FIXME When we have a fixed mode, the
-                  kernel will ignore<br>
-                  &gt; --<br>
-                  &gt; 2.43.0<br>
-                  &gt;<br>
-                </blockquote>
-              </div>
-            </div>
-          </blockquote>
-        </div>
-      </div>
-    </blockquote>
-  </body>
-</html>
-
---------------nKtHhg40JQZT31IPt04xGflo--
