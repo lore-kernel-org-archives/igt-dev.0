@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AACA5CD3427
-	for <igt-dev@archiver.kernel.org>; Mon,  4 May 2026 19:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D275FF885A
+	for <igt-dev@archiver.kernel.org>; Mon,  4 May 2026 20:31:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A05D10E82C;
-	Mon,  4 May 2026 19:29:59 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5511E10E82C;
- Mon,  4 May 2026 19:29:43 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6664983163649647844=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 26DEF10E86B;
+	Mon,  4 May 2026 20:31:50 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kCBqGk3x";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDF8E10E86B
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2026 20:31:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1777926695; x=1809462695;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Dbc7lad/kLRAJi+BOaZBOh9iTyvH8M63xmNHh6gz8tY=;
+ b=kCBqGk3xBLSV5Z2WH9NZthj1claV86Xngmw8lP4zSaZRj2iTZVRsLVFA
+ 0GiwjzVVs+nKPZG/kELff1yiBQ1Jf0VaT7MT9BJ5pRxck083VwfcXfthA
+ aZ3ZuRuteVY3U8bGWPFIlYtyJ4/ExsOtEbEADwZopYVs6nm3VUuEjYfHk
+ 1Y0IxZPFm4tbW1yuySpV4b9a7ytUzdLrN2FHPPNtNYT/sv9xGMq8rwnFQ
+ HGJk4ZpTsdjYBXqDgdHFLvLZLobwiMs1idYf0jaqCDIc7wMP6WphnNTD6
+ MpK+0vsS1dhxA4MBWK9NgQ+zGojVZDtcmDOX/3y2aNXsuzPnNes7H+OMU w==;
+X-CSE-ConnectionGUID: v5nUlOBFSpyOUT1nkT/xZg==
+X-CSE-MsgGUID: pOkBR9X6QzCKWxs8Yr8Gqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="66322991"
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; d="scan'208";a="66322991"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2026 13:31:34 -0700
+X-CSE-ConnectionGUID: M+J7HKPrQWu16hcyKRfyqw==
+X-CSE-MsgGUID: dN9rKM1YRaa0BaeA3G5QVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; d="scan'208";a="259280964"
+Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2026 13:31:31 -0700
+From: Sk Anirban <sk.anirban@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
+Subject: [PATCH] tests/intel/xe_pm_residency: skip cpg-gt-toggle if GT not in
+ C6
+Date: Tue,  5 May 2026 01:58:41 +0530
+Message-ID: <20260504202840.2572025-2-sk.anirban@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/xe=5Fexec=5Fsystem=5F?=
- =?utf-8?q?allocator=3A_Don=27t_use_NaN_in_an_input_buffer?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 04 May 2026 19:29:43 -0000
-Message-ID: <177792298334.36052.15866813679799808946@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260504152820.3825451-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20260504152820.3825451-2-zbigniew.kempczynski@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +65,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6664983163649647844==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The test assumes GTs are idle before forcewake is acquired and power-gate
+status is validated. If a prior subtest leaves a GT in C0 (GT stays active
+for any reason), the final power-gate checks can fail for the wrong reason.
+Add an skip so that inability to enter C6 is treated as a missing
+prerequisite.
 
-== Series Details ==
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+---
+ tests/intel/xe_pm_residency.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Series: tests/xe_exec_system_allocator: Don't use NaN in an input buffer
-URL   : https://patchwork.freedesktop.org/series/165920/
-State : success
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index 1eeabd509..bfae1f844 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -392,8 +392,8 @@ static void cpg_gt_toggle(int fd)
+ 	int gt;
+ 
+ 	xe_for_each_gt(fd, gt)
+-		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10),
+-			     "GT %d should be in C6\n", gt);
++		igt_skip_on_f(!igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10),
++			      "GT %d is not in C6\n", gt);
+ 
+ 	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+ 	igt_assert_lte(0, fw_handle);
+-- 
+2.43.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8883_BAT -> XEIGTPW_15095_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8883 -> IGTPW_15095
-
-  IGTPW_15095: e18a0ee125f3fc6ecb8e2b1e7c001fda5e8b1405 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8883: 8214859d2c4ecf8f81a08a3d2cd26f0a50d2b513 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4978-bbd6f35a43ab45240a445b713c5a18638ad5a0d5: bbd6f35a43ab45240a445b713c5a18638ad5a0d5
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15095/index.html
-
---===============6664983163649647844==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe_exec_system_allocator: Don&#x27;t use NaN in an input buffer</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165920/">https://patchwork.freedesktop.org/series/165920/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15095/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15095/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8883_BAT -&gt; XEIGTPW_15095_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8883 -&gt; IGTPW_15095</li>
-</ul>
-<p>IGTPW_15095: e18a0ee125f3fc6ecb8e2b1e7c001fda5e8b1405 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8883: 8214859d2c4ecf8f81a08a3d2cd26f0a50d2b513 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4978-bbd6f35a43ab45240a445b713c5a18638ad5a0d5: bbd6f35a43ab45240a445b713c5a18638ad5a0d5</p>
-
-</body>
-</html>
-
---===============6664983163649647844==--
