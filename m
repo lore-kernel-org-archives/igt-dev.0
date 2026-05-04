@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EF3EFF885A
-	for <igt-dev@archiver.kernel.org>; Mon,  4 May 2026 08:39:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 982BDFF885A
+	for <igt-dev@archiver.kernel.org>; Mon,  4 May 2026 09:24:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA37F89361;
-	Mon,  4 May 2026 08:39:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48E9E10E3C9;
+	Mon,  4 May 2026 09:24:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W9PplOkT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V1i06lpw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 189C910E5EA
- for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2026 08:39:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F73910E3C9
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2026 09:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777883965; x=1809419965;
+ t=1777886669; x=1809422669;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=hrmvymMeOuNZQe6xVmIh98JAzpgghfA+CAtpFLO5dwI=;
- b=W9PplOkT5KqQG1epselq8Y/I1/UqRvLylDRmJJa+2aTqXhX1iziZfMW5
- HRap6e+9VGod1sOm2Wr5hEPDunxU6oYAAsn9wbIFqRU4mSaH8lUY3BDJq
- p27LPU3rkSpAirIYhIZDlj9M/gVH+1GtbUiNslofGv6nqj57pl+majdWc
- Yfc2QCF+QlJuYhMcTXRt7CS3xXZc6m4UjD/MhI0pvJg3BUan/Ynyf4b+i
- k5KrxBd+2m3dBpSggGnMbXtc0GkonrzBAiGy28SkEUjzzD5O2Kx+Zzlb5
- 4oa9b4VBFEi86RecL0scJNtnRWADv0Uw32k4k1ZSbgkH/iXE6+TYT0iwg Q==;
-X-CSE-ConnectionGUID: E+9e7c5QRmmvgLW4bc3IJw==
-X-CSE-MsgGUID: U7IsVGJFSQWnTVubE2VI+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="101404912"
-X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; d="scan'208";a="101404912"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2026 01:39:25 -0700
-X-CSE-ConnectionGUID: oZruCqsDRHevqKH2xt8GRA==
-X-CSE-MsgGUID: 4NqKcPInTGiBNJYsz80zKg==
+ bh=HibRS/6W4slwzIc8f5wQIxU84dDdMx9sgBaln4jFYmM=;
+ b=V1i06lpw4JN7sgmaWOO5lyuzTRcVW/OGEbsBfdTlqSGg7GNFlUxxeR0m
+ FWpsXWep3Xx0FDN8+cLaNpWV0Ak6ClVfnkhwYfN1RAf4yaJUwTdwkkRvl
+ unNfYESAISgtIm14Y96+oGIUq9qgJHQDkSMzomwTglA6kJx25SStIZzdq
+ EVIsAWRQ7t1i6THOBxMSILK0yl7TXcblvETFWuprl3UaZttOmS6Y8IkFt
+ RmKxAvPwjJ+j6yN11MW4SrGA630vVxfTGcpPB/8GBtV67kzTSmI60/UsE
+ GSG5R12lNoJ9ZP7PTc+Vt3o2udA3IHPCFwO6/yAvZ9TQL36uzsLkqipka w==;
+X-CSE-ConnectionGUID: luVRmwOpTMyoCiIvGslCDA==
+X-CSE-MsgGUID: RjVeKOWXR7+Yb1rgKet1DQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="96167214"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; d="scan'208";a="96167214"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2026 02:24:29 -0700
+X-CSE-ConnectionGUID: 9RjwZY9nRBG/8caZFD+vyg==
+X-CSE-MsgGUID: ubPHD44STN+OIc7nmgekjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; d="scan'208";a="234596448"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; d="scan'208";a="228971533"
 Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2026 01:39:24 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2026 02:24:29 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 4 May 2026 01:39:24 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.2.2562.37; Mon, 4 May 2026 02:24:28 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 4 May 2026 01:39:24 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.54) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Mon, 4 May 2026 02:24:28 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.26) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 4 May 2026 01:39:24 -0700
+ 15.2.2562.37; Mon, 4 May 2026 02:24:27 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JALX1b5oVKE9Nzkx4TiM8TphvovYRpljbt9nvjZ515i6dEmZj2b7/ZyzNECBDEKTcPkMlqxOuQ9X5MedlKW++rj0pZ1a6Vg0h3llsJcLVmM9ykmpiRLV5q5M7SfLEjXHmYYmdJ0phyjjB3nTsBRXF6Wy4nO52pAWywK44poKY8pUyQ+peJ+QCyt/wSD39muXL5yykVj9UJvOP5IwuIOzx07arkwQ+xUaZN9Dl59IPPbaoybBzvCo176E0C82iwXhjg6849QcNbxJtaQ5slBWQdE3BqKlHhXAgXPqLTERWY5Gen6gUr8Zu/a+ZCde2D/sMooWdLcW0auKS7CACNws+w==
+ b=OagTsmMQZUOtp7/O1egnN4SBT76gG1O7WZVVJM3hiXQwDQE8TM9pnFZ9Cs6J2ymUyLYJoOkxceBAljghStpTXn6WapxAueN7VI3eRFtNVkoNIzs/Wsoo2fx+hf0tV/Q5QPFl870YiBEa8mUWwbNonUfOqXYm/hE2Z9dju6ycHbLkzCTf0A8X68ssVgcix8vmUON+wwEUrWiZt5nY00T9CRxdtnMzsnhS8NPLsSodDO/ScvQ6JlajANkcP9htNorCkDHFlL4qvt8KODvR3RP8bwOb4gTpSz1S0SLFj/uSknBNAjvOyzYMHVYU7IAFUGO6VBw7iurefqNQxrF3uBj9ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=du1fe7otEXNykMMUO3hMVsc9QYyPf+W8V6R4o68bUjU=;
- b=g9zTHtyGVT+4giXDAgxtiSpBOB75i/nKsO/mKUNk59wcOVy3R8sFwTtJRc/6H7+lQk2HOfhXiED+pdVT6OuMCL9GoRz74NVnBoAltaMIE0c3gkbO1yvzee4rstqoBUn8Hh9o/lyopv5V1FMvNZlS5EUCq54jpmemXXiapkzDUWR7LFwRdsu1Te9rsyIMjHfz/h9+qwACYGvvPx2a+BgLZ20kCFCl5/C4YQsaGM58whFpg+Vtxu2qQwT5LfC+0Myk5ZttgyaCJlo5mUrKfdftZcYXwxpi51nAjYy3l+hSdO2Pe06lomf5P4taYbxYNnGtgM5RszY/z5YXnsYUVHheFw==
+ bh=P1TBmpyZm1zcgF4rABAWrO8yf0fCXXXhBC2fh334BU0=;
+ b=OkSxzXNqNkQ9hjxcYfhZlsrRl6m7LjARWUHxYGCBYZ3kT4mYzfKEVZV2RwNWYxGwAqEU0Ormm3gdp/lVymenSU2grwcYbJP47uxUqoZIX1yoitB9vdAZvcVD3/xHLCKduArjnCmf9xDlZEyVyNUkJ9um47zjeWESdNzLBYbAdchj1Ll11dEsF+jK6PDafpM6vWFzM5ciuhQm6FRdrGI2KgIpfpqWU+8gMC0KNpmYG9B4pYD1xegz3AMhPVrpWCTajuNla0Iw1uiRaSEqv6n8PIV2ahUxxsgZ2HBx1PKMYkCM2Lw81BAPjD1y0y0WsHZwtgnng66B3u0w8eZGh17dyw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from IA1PR11MB6467.namprd11.prod.outlook.com (2603:10b6:208:3a5::18)
- by SJ0PR11MB5917.namprd11.prod.outlook.com (2603:10b6:a03:42b::11)
+ by SA2PR11MB4905.namprd11.prod.outlook.com (2603:10b6:806:117::7)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Mon, 4 May
- 2026 08:39:20 +0000
+ 2026 09:24:24 +0000
 Received: from IA1PR11MB6467.namprd11.prod.outlook.com
  ([fe80::7aa6:c6db:3d15:8973]) by IA1PR11MB6467.namprd11.prod.outlook.com
  ([fe80::7aa6:c6db:3d15:8973%4]) with mapi id 15.20.9870.023; Mon, 4 May 2026
- 08:39:20 +0000
+ 09:24:24 +0000
 From: "Garg, Nemesa" <nemesa.garg@intel.com>
 To: "Sharma, Swati2" <swati2.sharma@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
  "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "Sharma,
  Swati2" <swati2.sharma@intel.com>
-Subject: RE: [PATCH i-g-t 1/3] tests/intel/kms_sharpness_filter: Remove
- plane-scaler subtests
-Thread-Topic: [PATCH i-g-t 1/3] tests/intel/kms_sharpness_filter: Remove
- plane-scaler subtests
-Thread-Index: AQHc2WYzU7he96qRqEyIdvjAc2MdirX9j/mg
-Date: Mon, 4 May 2026 08:39:20 +0000
-Message-ID: <IA1PR11MB646737C83CD92CE9FE666BCCE3312@IA1PR11MB6467.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t 2/3] tests/intel/kms_sharpness_filter: Add CRC
+ comparison for positive tests
+Thread-Topic: [PATCH i-g-t 2/3] tests/intel/kms_sharpness_filter: Add CRC
+ comparison for positive tests
+Thread-Index: AQHc2WZEe1pKP5L4akSotdHEaePRtrX9nGZg
+Date: Mon, 4 May 2026 09:24:24 +0000
+Message-ID: <IA1PR11MB646708CAD863E464C10E2D15E3312@IA1PR11MB6467.namprd11.prod.outlook.com>
 References: <20260501123738.2360414-1-swati2.sharma@intel.com>
- <20260501123738.2360414-2-swati2.sharma@intel.com>
-In-Reply-To: <20260501123738.2360414-2-swati2.sharma@intel.com>
+ <20260501123738.2360414-3-swati2.sharma@intel.com>
+In-Reply-To: <20260501123738.2360414-3-swati2.sharma@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -95,61 +95,61 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6467:EE_|SJ0PR11MB5917:EE_
-x-ms-office365-filtering-correlation-id: 885349f0-6fd6-4e15-7b96-08dea9b8a2ec
+x-ms-traffictypediagnostic: IA1PR11MB6467:EE_|SA2PR11MB4905:EE_
+x-ms-office365-filtering-correlation-id: 531b86a2-d62e-4078-249a-08dea9beeea6
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|22082099003|18002099003|56012099003|38070700021;
-x-microsoft-antispam-message-info: wvXKfvl9gvKDSGgv7YccagZc8ZOLvvTlj+HF0+yEbG+ELT75rXnU4hTgL++6Q/4ImFwbE/E4nwgNK80WkysZl3blOKSlsX3bwx1DPyuFMcJu0x3GZT2QprJUZ1qyFQYY2rzPoHgIsp3rnHyn9w26JZZLyw6TPz0vTFVJb0RPjxIkgKXB/cHuix9vGH2jD7yj65Jt/5UMoKNX5qwEVEIOFvz1mjvARvz+EXWvmCLm4mLu+mzX+ZOy17DLe0o3O9NVeX6JVitunF6RDe/LGEIWUnSNu8Gur2AuCn+vXWH6dCUqrpt8YXAUAZQC8jo/Gb3R9vDmf2l79saOsowAlP8HfJXdL9DAd54dDHS+LEUOkolSXkd+3O+7LPZpY+Dn+j3d8lPfTgKEVwzjc3KkzT+WdPHdgLmVkZTAfboi+ny8lyXmBbBnrJ2ka4OlC4dADUGBP16QpfSO2aPGQyhJOBHvopkgE5DkNuFi2C/dMhh4R5cXKBsmhCf8lQMvHD7jDGNp7niAShBEptmDaDNBJK05yoYdp1wqueScOJBG425Ktbuu6IeEAfAJ8HUeBqnSSGQSPfciwF1/QfxSzGxbkY1xHGLNn4zcp31TZZMb/jbJ4aFO6vKOUPjUQJhZ4oINUYOeVKi14Tyhvvr+ppQM8h5P+Sa/3v7ESf6UfduPNHbpTE1Jx63cDRePNXfI2HBxJk7t5fyZx5AHMzkGC42SOHFrhZRl+ARBv2hrT+Js3NQ/JmXzAQjetRqoVpxoYr50vluf
+ ARA:13230040|366016|376014|1800799024|22082099003|18002099003|56012099003|38070700021;
+x-microsoft-antispam-message-info: ef9ypV+UdX6SDX+46jTBt2xU9VsM64TPKLXh9qw4qKKydFa0jSXOJKci8edxxr9HvwnLSpPYV4qvheAoqg1TJ21jmVfEMyZ/3wEndkUgFQISbHM4YYAf3uTBhsb48drOkXUSyRohDuVW/ZrCAjYqrQRW2CRA/FZY5uo4vFFqo2RgDdux5yPMbMP97I8b4Fyu4acFzcXQtK/+qEd5b27nEKcM07HZMfQHDh7Dz5ZdKz0vL6r1H1aLr7foi05adTexFTs9UtDeCLAdtmIEx7E6ZBq4wxt5ZUX2RWviPXD2PN2gzu4kgYJV1sDReSXD3WTLupMOtLbVRrDf8IEfmfA9wen172woTemLcCL0f0qQinxf8zPe6KXYO7ny+PVidsEaTG9l+a0K+x1+V6A8P59bUgLa2mRD9s8ie9oXvH5wE5rETdEaQaheTXB4RA4eLxFRsTbLp2lW6nWDwT6EoE4am2AfcI5Og5aHsP4nQWGhQSAzhqhv+DDsKPSHZnKZlBWh6qH/KPn1jQsVPEpbCg63XGVDF7fIvnR7lbf9/rEPtz1x/teTUN7VVC/mabFdepwAgPBUO3jl8h2f9Wb+/Hm1pg52QROn3WVWV79+HQRCmKGgmaxdmVjFrUBLA7diQE2S8LsnNNKjkOTJ4BcaL9oqXjheTWTSqWs5TSftpJgwB1z6GMA745i5Zv/sp9JuD8A2WgD2dDBsFnVvd9TDD+lb234pe8tU6ADSlX8N1dd6qRURttmDLBl36gP9wmTI16Tp
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA1PR11MB6467.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003)(38070700021);
+ SFS:(13230040)(366016)(376014)(1800799024)(22082099003)(18002099003)(56012099003)(38070700021);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?erDkK7XSfonO4OEiMwHoVvUGRz09IZiw2HNIGwru7Lifj13SS0yENxPaBs7q?=
- =?us-ascii?Q?3sM8+6CMz8VuWnyPlJvN6a79D+nLCFAStUTdjWi9eW2mZdsONtRQwSEWQShh?=
- =?us-ascii?Q?oOEv3qFerb84Sj02igrPhUMxMfQVF9Gso2bUX+Xsb/uGluungIEeVXfQjuXa?=
- =?us-ascii?Q?dCiXVq44sgaaipHOqmCXXS5p8xYzAG/WCppmXIRoUoei23mf9WIGjfHKUnJU?=
- =?us-ascii?Q?Thlj65MslGn2Ic+iwup8bNZrD5WjR3JtHVcqxO93J5rQRV9Jbsz3Cz5wA1xW?=
- =?us-ascii?Q?rqiEwfrrcRDKySF/LrW+wjvVHVXi8R6t9ddGxW4UGILB6wVayvVlwKdF5CGI?=
- =?us-ascii?Q?4ibS/C8CCwblYUUvTh86108oIcrEW7A/JMsKLS+sAHozxU3LfiYNoLSr65cw?=
- =?us-ascii?Q?ezNC1cr8XpABto0M3jcAqn094bmyw0nLqG1Jxjk2QTAk/n1oIXQwxyFLRJp4?=
- =?us-ascii?Q?jiX78IezjVstncJ4x1y7CK24VbFbdy09S6LY2b8OtVjt6QlybUqVZbUqPZ51?=
- =?us-ascii?Q?7aLgOJ6zAwfkGjYPhhCLbCVGMQwKIyiVOJgXWl460UfdD7i0cUZaGFLYs5F5?=
- =?us-ascii?Q?8L3p10svsjq6EOen1FUoOPJp/LfSNK20kARkHdvcAt++km7OralATRLg6Uan?=
- =?us-ascii?Q?euuP8T2KBwWkGy4ygdb59xC5SqAihOx62dNWFS7B9tSEeCCKgTwFIap/b6WX?=
- =?us-ascii?Q?WxmyITDVtmnT/YDJ3csuuEpqGp5fMXB7MnJxIsvcyJgA+NAFctXf0SjThN4O?=
- =?us-ascii?Q?IJlHxT6QDwpuWS6qNn40jl5KFEcl0Qg1wxd39e/+MqkID6kuQTntMuwNcIAf?=
- =?us-ascii?Q?JVdUES2xqdBAz8sOEqJpmdscHUehFITCSk7ESO044ASl47w6wrM+1yLzBMn8?=
- =?us-ascii?Q?PSCINwk/sWp3kgqdaLmUK+D44GG+tLAsESKMHiH5IDO0p4kuTuD+jC0gw17m?=
- =?us-ascii?Q?0q46GEGDXg7M9xT3doJQhTFvL48FTzLgBXP2txcciohxtgLEJjOGYris3ZMb?=
- =?us-ascii?Q?yb6/9d+eyGBTEM6GdDvsjpeP3kkYm9akodp2DfyH1+597Ezsn4tFyB6mk0cZ?=
- =?us-ascii?Q?ovYZx9giFxRfsZeVyuOSg4Efq8qcanxH8IzJF01XxQu3w1bgyGaQiBYY8boX?=
- =?us-ascii?Q?GHaPeBQM7Jh85AVlRcKzwu8XmoaP2cLcKoAO0kLq3LZVp3OD3QCqBap9rxOl?=
- =?us-ascii?Q?FECtqM4aFfC8HVBEstRS48XltGgXCpi8y5hUCFa3vP9VUba56W8+L8hu52gk?=
- =?us-ascii?Q?OQKQH08k4G0dKbQek4X7M06pChRVw6NlhV0fN1iORrUEqVNl4OMTIKY34Fae?=
- =?us-ascii?Q?pnufSRv2RwZ9tgeTUXug3bGikgKoURn8CRmJDEeAabwFn2gm0pfoF74QtrVd?=
- =?us-ascii?Q?l3eRdsz3MIHVfUSxHrgS5XjBLMOjE4UOLMKZB9HSn6HdwdOLa9fMQkQoNeQM?=
- =?us-ascii?Q?SZGiZdLG/ORPj1LRiFUCXztEW33MiSoMhXKp9BJEWN7fXULUgjA6JH+EUL6R?=
- =?us-ascii?Q?nvr4XpBODfniJ468ZrfVzVhqWmkCbqxJbXaFe+WKdETSS3x2d3oVdVEFnPXw?=
- =?us-ascii?Q?dhrEacCs2JAWtgIUZTM5H9jJp2YYmAwoFXma7C/59I44X+f5kACfIHO072Lp?=
- =?us-ascii?Q?XsKtxVUesh/YrGMKTqcGV+CdsRaXiA/+pSglWIgeC+a5oaAdTMebImB4bmmP?=
- =?us-ascii?Q?iFQ1OXzup4q9YFLLWBTHr+HuQkxBC8DV2cP220xdlphFs/w4SFWxzN2nYhKO?=
- =?us-ascii?Q?K2QmeW/BNA=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?mOTojsoJrS2hsowX0pJeGUkA32S9apMt7x0lbulRaUUELUaaH0Fxk6fQfw8I?=
+ =?us-ascii?Q?UvJXlxXDpdRethmIK8u3NZWELTR1KvsCsoU9lRtvA1fIpFQKvEG+18j7X7Ya?=
+ =?us-ascii?Q?tcHTGvmbII91WOxF6/TEorvyCWTBV2oAto2PQ5hZiM1+n/cBkQchRjkO+ZvU?=
+ =?us-ascii?Q?Biv2/CI1T/JrdwsFI2Knt9RgL3WdWdSKlQCQkzK3d07/e0t69+AK72jyOlmQ?=
+ =?us-ascii?Q?/Q2adbsjizQapapQx5YkF7xJErNIxpmW7JSPAz5GSGB1iDaASjadIO/HsC9G?=
+ =?us-ascii?Q?ld9p2esDvWgLCiFIrakRN96JcZUt4rvX9ls3iVhJ73lga8XTan43h55xICkV?=
+ =?us-ascii?Q?OQfndP61OfPZfLp/jGWqzePiEdba2fBXEOnlgL1m4/gCPGRGrJOfBmkLWXfP?=
+ =?us-ascii?Q?Eit4J/2Ju1EdN5o3Rfkl5Z/RARIUrkw8xCJ0cWyRXMEamfdnVla20PeGmkGk?=
+ =?us-ascii?Q?QHn01clj2vK8pqj7WMzQ3334l4UEGWqasz9xaCLPQdTLLukWWScIJ7mk+rYo?=
+ =?us-ascii?Q?j9HbkBTfym9tpbG4t0K/hgeTHQHQc+40IBct8IPvaXi+m/8tvVjugNizcdTu?=
+ =?us-ascii?Q?PN5N8KMq1GcbR3atQ4lTwpo4XWGUtr3KGwpPj8gJcEw3AoJUq+iFlTZOfqOy?=
+ =?us-ascii?Q?PNuS/B95fAhzLS7PEbm2HAyi6S6MYN1FUa70UHBQqiYLqvXilJwdRQb0qqDT?=
+ =?us-ascii?Q?yanBLYdZf1AtauWww6HyMXs8qasoq3u6PGxjbN0wZnni+hczd0jsw9XBvK5Q?=
+ =?us-ascii?Q?njY4U1T+LxSod3wbP3+JrO4pGZJLmG2t25TPfCaZaahOXPfr/8c0bfxmPmzw?=
+ =?us-ascii?Q?y+obHAUOaQS5gnI/VbBTwfbrsUsuRIsMQMzJqh8KWvnsMuA/YNLWlFVVdt8U?=
+ =?us-ascii?Q?8uIecihNecYXsofjM+jEBGA1lCDPCngNSZnpLkW8vnIiHdGDrbEXBAzLkg92?=
+ =?us-ascii?Q?hHltk3g3pzay2Hk+QgPBYm8Mox9Pft3HCGPouZoSlnggg/J8JYC5JsX9vLzO?=
+ =?us-ascii?Q?fLPYCjpADBMPjp5ZRzA0phFLhLF+hbsX6iG+J0iaW6aFAkB+ss8QUDUSUtUN?=
+ =?us-ascii?Q?NKIk3KOrUobmFfqee2mkrwQljiUg4MKD0tpv8cd4HxoVeyDzxplmBhc2RFLx?=
+ =?us-ascii?Q?G07xrP9BXvEmWtYklFTuy05quoyeAAeCNDiSrtmaYPagRQ67xsD9y+kF0d1+?=
+ =?us-ascii?Q?qO4+FMhrzloVUuxP943bxEHRlrXmkMTpTTPa39KSG5v/CJ0taeuRqDl9nm+i?=
+ =?us-ascii?Q?6fNZWMtx1YKbqRd52ZK4I3BnxbDOpkh0U8Ac0LQlD3Yxrf0ehkgKiiTm9VJW?=
+ =?us-ascii?Q?CLpq91WN0zXN9g0lyuETIt8tqFTbH6ybT1QAi39SAXGhPCG3rJCI59mry3KB?=
+ =?us-ascii?Q?VwZBZ+zR8ZcANQPf4TvmXo1BZqqD07km8jvzFZldsLIYJTx1Qbim/99I9LXQ?=
+ =?us-ascii?Q?sA8y8akk7oKrw4v1/mU92bDOy4e/73Re3birZvJ5xE1sd1q+2I545X2NgCmX?=
+ =?us-ascii?Q?5mrCTKIWbrsg3TOqr0UPRFyWl/OqdwxpSJA9bXGk8D0/+5j7LCW5Lit5onQ8?=
+ =?us-ascii?Q?1WGTNNeq+dZmlOmw7e1nmciMi6vk1NLaqCkooAUNEezCsSuHsgooO9UngZIK?=
+ =?us-ascii?Q?X0rUeUzTrX8MbQLmaKio0po3zMvF4Bp3Ro61B8L+rWz+TZx0+JiBWAqsGd6z?=
+ =?us-ascii?Q?JoxqMK8z9hcAbwUv2bigmWrsoU0oHMqMBOzCmoU7jqdPyhIP6IBeS/tdrcI2?=
+ =?us-ascii?Q?V0EPI1QNIQ=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: errrnZyhxYBPHCh2K7eQjaWxJopGK/p/NBw4sQWOe/WtapZze/EjSTdUQZpW4gjwfF2uTYRZSiFIWdIfklQZDme4vit8D6ct4Hy749XoIXvhf9JzTDFseRjF4yLowl2Gihde9AUQQ84AG/U2k3dMe3MVk3x5V9YD0IJNeGYH4fLqqtYQlJhkbV2o4C9GUfs+yXVG6drrhMjlAjEFoqJndI+e7u3CILk0b5CAfrI89kwFwmcNVJXzx458ungpSoLYJWspHZ5eJmVwaSzXlpw39KuyrpNq3QHTDfpbwgcBe4bic1fI7qe9IfZsXUSxUq4t8KTsZq1wGwYaeaL3KoBzfg==
+X-Exchange-RoutingPolicyChecked: lh0Nf3Oik2s3fAkkM5jfZNIWw93hD6eak2c3YBxxtq/leYQlIYtzJELS3jGx40s0yfWsPJSkqngm9OG5af0bDrOMIE6n1oAjDD5n1yeDZO+NVbh60zDlLNym5Mb6SD28IpRYdNfGbcad2AGURwZdaYl9unswV8tD4ouSW2lrVIzxYdVLVq5/XfFLwQQ0Vuq6YLVfsZjs3la/CV1e+EJtZK7mzaUCYeWkLPavB1uk7B8FUTQuvvXy5E6wTbUthh5sVwywL3edSDdgmgLnHDAkUTSvhiwc+e3USvAxVhzfpK7DpqasEwt/oGLSfU5tVPjjjiNsdSFhef3ky1FfR2JNGA==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6467.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 885349f0-6fd6-4e15-7b96-08dea9b8a2ec
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 May 2026 08:39:20.5270 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 531b86a2-d62e-4078-249a-08dea9beeea6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 May 2026 09:24:24.5405 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +M/ec7A0RdMtvHE+HoozXY+zMMVW/AOOK+9RTjNKKIU84mD86GNyrKWoixJDO95KGmx4D2uwG4F6ZvuS3YWA4Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5917
+X-MS-Exchange-CrossTenant-userprincipalname: jv8H1wI95AiqgxxV6Tk8sZCX5L2cPIYiAJxKucBeqWuPyVaElXgq2DQ+UAqXxrBR+RuxBbIJ21V+HLf5stuu5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4905
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -175,225 +175,100 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 > To: igt-dev@lists.freedesktop.org
 > Cc: ville.syrjala@linux.intel.com; juhapekka.heikkila@gmail.com; Sharma,
 > Swati2 <swati2.sharma@intel.com>
-> Subject: [PATCH i-g-t 1/3] tests/intel/kms_sharpness_filter: Remove plane=
--
-> scaler subtests
+> Subject: [PATCH i-g-t 2/3] tests/intel/kms_sharpness_filter: Add CRC
+> comparison for positive tests
 >=20
-> Remove filter-modifiers, filter-rotations, and filter-formats subtests si=
-nce the
-> sharpness filter operates on the pipe scaler, not the plane scaler, makin=
-g
-> these tests irrelevant.
+> Add a CRC comparison that verifies the sharpness filter produces a differ=
+ent
+> CRC from a reference CRC captured with the filter disabled.
 >=20
-> v2: -Keep filter-tap test, as it verifies that the correct mode is
->      selected based on the tap value (Nemesa)
+> Skip the comparison for negative (invalid-*) tests since the commit was
+> expected to fail.
 >=20
 > Co-developed-by: Claude Opus 4.6
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/intel/kms_sharpness_filter.c | 95 ------------------------------
->  1 file changed, 95 deletions(-)
+>  tests/intel/kms_sharpness_filter.c | 27 +++++++++++++++++++++++----
+>  1 file changed, 23 insertions(+), 4 deletions(-)
 >=20
 > diff --git a/tests/intel/kms_sharpness_filter.c
 > b/tests/intel/kms_sharpness_filter.c
-> index ff2efb154..96eec8919 100644
+> index 96eec8919..062a9691c 100644
 > --- a/tests/intel/kms_sharpness_filter.c
 > +++ b/tests/intel/kms_sharpness_filter.c
-> @@ -21,15 +21,6 @@
->   * SUBTEST: filter-strength
->   * Description: Verify that varying strength (0-255), affects the degree=
- of
-> sharpness applied.
->   *
-> - * SUBTEST: filter-modifiers
-> - * Description: Verify content adaptive sharpness filter with varying
-> modifiers.
-> - *
-> - * SUBTEST: filter-rotations
-> - * Description: Verify content adaptive sharpness filter with varying ro=
-tations.
-> - *
-> - * SUBTEST: filter-formats
-> - * Description: Verify content adaptive sharpness filter with varying fo=
-rmats.
-> - *
->   * SUBTEST: filter-toggle
->   * Description: Verify toggling between enabling and disabling content
-> adaptive sharpness filter.
->   *
-> @@ -92,9 +83,6 @@ IGT_TEST_DESCRIPTION("Test to validate content
-> adaptive sharpness filter");
+> @@ -418,7 +418,7 @@ static void test_sharpness_filter(data_t *data, enum
+> test_type type)  {
+>  	igt_output_t *output =3D data->output;
+>  	drmModeModeInfo *mode =3D data->mode;
+> -	igt_crc_t ref_crc, crc;
+> +	igt_crc_t ref_crc, crc, no_sharp_crc, sharp_crc;
+>  	igt_pipe_crc_t *pipe_crc =3D NULL;
+>  	int ret;
 >=20
->  enum test_type {
->  	TEST_FILTER_BASIC,
-> -	TEST_FILTER_MODIFIERS,
-> -	TEST_FILTER_ROTATION,
-> -	TEST_FILTER_FORMATS,
->  	TEST_FILTER_STRENGTH,
->  	TEST_FILTER_TOGGLE,
->  	TEST_FILTER_TAP,
-> @@ -120,24 +108,6 @@ const int filter_tap_list[] =3D {
->  	TAP_5,
->  	TAP_7,
->  };
-> -static const struct {
-> -	uint64_t modifier;
-> -	const char *name;
-> -} modifiers[] =3D {
-> -	{ DRM_FORMAT_MOD_LINEAR, "linear", },
-> -	{ I915_FORMAT_MOD_X_TILED, "x-tiled", },
-> -	{ I915_FORMAT_MOD_4_TILED, "4-tiled", },
-> -};
-> -static const int formats[] =3D {
-> -	DRM_FORMAT_NV12,
-> -	DRM_FORMAT_RGB565,
-> -	DRM_FORMAT_XRGB8888,
-> -	DRM_FORMAT_XBGR16161616F,
-> -};
-> -static const igt_rotation_t rotations[] =3D {
-> -	IGT_ROTATION_0,
-> -	IGT_ROTATION_180,
-> -};
->  static const uint32_t scaling_modes[] =3D {
->  	DRM_MODE_SCALE_FULLSCREEN,
->  	DRM_MODE_SCALE_ASPECT,
-> @@ -146,9 +116,6 @@ static const uint32_t scaling_modes[] =3D {  enum
-> subtest_iter {
->  	ITER_NONE,
->  	ITER_STRENGTH,
-> -	ITER_MODIFIER,
-> -	ITER_ROTATION,
-> -	ITER_FORMAT,
->  	ITER_SCALING_MODE,
->  };
->=20
-> @@ -173,27 +140,6 @@ static const struct subtest_entry {
->  		.filter_strength =3D DEFAULT_FILTER_STRENGTH,
->  		.iter     =3D ITER_STRENGTH,
->  	},
-> -	{
-> -		.name     =3D "filter-modifiers",
-> -		.describe =3D "Verify content adaptive sharpness filter with
-> varying modifiers.",
-> -		.type     =3D TEST_FILTER_MODIFIERS,
-> -		.filter_strength =3D DEFAULT_FILTER_STRENGTH,
-> -		.iter     =3D ITER_MODIFIER,
-> -	},
-> -	{
-> -		.name     =3D "filter-rotations",
-> -		.describe =3D "Verify content adaptive sharpness filter with
-> varying rotations.",
-> -		.type     =3D TEST_FILTER_ROTATION,
-> -		.filter_strength =3D DEFAULT_FILTER_STRENGTH,
-> -		.iter     =3D ITER_ROTATION,
-> -	},
-> -	{
-> -		.name     =3D "filter-formats",
-> -		.describe =3D "Verify content adaptive sharpness filter with
-> varying formats.",
-> -		.type     =3D TEST_FILTER_FORMATS,
-> -		.filter_strength =3D DEFAULT_FILTER_STRENGTH,
-> -		.iter     =3D ITER_FORMAT,
-> -	},
->  	{
->  		.name     =3D "filter-toggle",
->  		.describe =3D "Verify toggling between enabling and disabling
-> content adaptive sharpness filter.", @@ -280,9 +226,7 @@ typedef struct {
->  	int filter_strength;
->  	int filter_tap;
->  	uint64_t modifier;
-> -	const char *modifier_name;
->  	uint32_t format;
-> -	igt_rotation_t rotation;
->  	uint32_t scaling_mode;
->  } data_t;
->=20
-> @@ -488,14 +432,6 @@ static void test_sharpness_filter(data_t *data, enum
+> @@ -438,6 +438,18 @@ static void test_sharpness_filter(data_t *data, enum
 > test_type type)
->  		 data->format, data->modifier, &data->fb[0]);
->  	igt_plane_set_fb(data->plane[0], &data->fb[0]);
+>  	if (needs_extra_planes(type))
+>  		set_planes(data, type);
 >=20
-> -	if (type =3D=3D TEST_FILTER_ROTATION) {
-> -		igt_skip_on_f(!igt_plane_has_rotation(data->plane[0],
-> -						      data->rotation),
-> -			      "No requested rotation on pipe %s\n",
-> -			      igt_crtc_name(data->crtc));
-> -		igt_plane_set_rotation(data->plane[0], data->rotation);
-> -	}
-> -
+> +	/*
+> +	 * For positive tests, capture a reference CRC with the sharpness
+> +	 * filter still disabled before applying the filter. After the filter
+> +	 * is enabled and committed, the resulting CRC must differ.
+> +	 */
+> +	if (!is_invalid_test(type)) {
+> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +		pipe_crc =3D igt_crtc_crc_new(data->crtc,
+> +					    IGT_PIPE_CRC_SOURCE_AUTO);
+> +		igt_pipe_crc_collect_crc(pipe_crc, &no_sharp_crc);
+> +	}
+> +
+>  	set_filter_strength_on_pipe(data);
+>=20
 >  	if (type =3D=3D TEST_INVALID_FILTER_WITH_SCALING_MODE)
->  		igt_require_f(has_scaling_mode(output), "No connecter
-> scaling mode found on %s\n", output->name);
+> @@ -460,9 +472,14 @@ static void test_sharpness_filter(data_t *data, enum
+> test_type type)
+>  		ret =3D igt_display_try_commit2(&data->display,
+> COMMIT_ATOMIC);
+>  	}
 >=20
-> @@ -561,9 +497,6 @@ static bool has_sharpness_filter(igt_crtc_t *crtc)
->=20
->  static const char * const test_type_names[] =3D {
->  	[TEST_FILTER_BASIC]                     =3D "basic",
-> -	[TEST_FILTER_MODIFIERS]                 =3D NULL,
-> -	[TEST_FILTER_ROTATION]                  =3D NULL,
-> -	[TEST_FILTER_FORMATS]                   =3D NULL,
->  	[TEST_FILTER_STRENGTH]                  =3D NULL,
->  	[TEST_FILTER_TOGGLE]                    =3D "toggle",
->  	[TEST_FILTER_TAP]                       =3D NULL,
-> @@ -587,16 +520,6 @@ static void build_test_suffix(data_t *data, enum
-> test_type type,
->=20
->  	/* suffix depends on the current test parameters */
->  	switch (type) {
-> -	case TEST_FILTER_MODIFIERS:
-> -		snprintf(name, len, "-%s", data->modifier_name);
-> -		break;
-> -	case TEST_FILTER_ROTATION:
-> -		snprintf(name, len, "-%srot",
-> -			 igt_plane_rotation_name(data->rotation));
-> -		break;
-> -	case TEST_FILTER_FORMATS:
-> -		snprintf(name, len, "-%s", igt_format_str(data->format));
-> -		break;
->  	case TEST_FILTER_STRENGTH:
->  		snprintf(name, len, "-strength-%d", data->filter_strength);
->  		break;
-> @@ -738,8 +661,6 @@ run_sharpness_filter_test(data_t *data, enum
-> test_type type)  static void set_data_defaults(data_t *data)  {
->  	data->modifier        =3D DRM_FORMAT_MOD_LINEAR;
-> -	data->modifier_name   =3D modifiers[0].name;
-> -	data->rotation        =3D IGT_ROTATION_0;
->  	data->format          =3D DRM_FORMAT_XRGB8888;
->  	data->filter_strength =3D MID_FILTER_STRENGTH;  } @@ -749,12 +670,6
-> @@ static int iter_count(enum subtest_iter iter)
->  	switch (iter) {
->  	case ITER_STRENGTH:
->  		return ARRAY_SIZE(filter_strength_list);
-> -	case ITER_MODIFIER:
-> -		return ARRAY_SIZE(modifiers);
-> -	case ITER_ROTATION:
-> -		return ARRAY_SIZE(rotations);
-> -	case ITER_FORMAT:
-> -		return ARRAY_SIZE(formats);
->  	case ITER_SCALING_MODE:
->  		return ARRAY_SIZE(scaling_modes);
->  	default:
-> @@ -768,16 +683,6 @@ static void apply_iter_param(data_t *data, const
-> struct subtest_entry *st, int i
->  	case ITER_STRENGTH:
->  		data->filter_strength =3D filter_strength_list[idx];
->  		break;
-> -	case ITER_MODIFIER:
-> -		data->modifier =3D modifiers[idx].modifier;
-> -		data->modifier_name =3D modifiers[idx].name;
-> -		break;
-> -	case ITER_ROTATION:
-> -		data->rotation =3D rotations[idx];
-> -		break;
-> -	case ITER_FORMAT:
-> -		data->format =3D formats[idx];
-> -		break;
->  	case ITER_SCALING_MODE:
->  		data->scaling_mode =3D scaling_modes[idx];
->  		break;
-> --
+> +	if (!is_invalid_test(type)) {
+> +		igt_pipe_crc_collect_crc(pipe_crc, &sharp_crc);
+> +		igt_assert_f(!igt_check_crc_equal(&sharp_crc,
+> &no_sharp_crc),
+> +			     "Sharpness CRC matches reference CRC; filter had
+> no effect on pipe %s\n",
+> +			     igt_crtc_name(data->crtc));
+> +	}
+> +
 
-LGTM,
-Reviewed-by: Nemesa Garg <nemesa.garg@intel.com>
+
+Hi Swati,
+Can we move this check after suspend test and remove crc part from suspend =
+test so as to have common crc function.
+
+Thanks and Regards,
+Nemesa
+
+>  	if (type =3D=3D TEST_FILTER_DPMS || type =3D=3D TEST_FILTER_SUSPEND) {
+> -		pipe_crc =3D igt_crtc_crc_new(data->crtc,
+> -					    IGT_PIPE_CRC_SOURCE_AUTO);
+>  		igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
+>=20
+>  		if (type =3D=3D TEST_FILTER_DPMS) {
+> @@ -479,9 +496,11 @@ static void test_sharpness_filter(data_t *data, enum
+> test_type type)
+>=20
+>  		igt_pipe_crc_collect_crc(pipe_crc, &crc);
+>  		igt_assert_crc_equal(&crc, &ref_crc);
+> -		igt_pipe_crc_free(pipe_crc);
+>  	}
+>=20
+> +	if (pipe_crc)
+> +		igt_pipe_crc_free(pipe_crc);
+> +
+>  	if (is_invalid_test(type))
+>  		igt_assert_eq(ret, -EINVAL);
+>  	else
+> --
 > 2.25.1
 
