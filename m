@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAA87CD3427
-	for <igt-dev@archiver.kernel.org>; Tue,  5 May 2026 18:05:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18464FF8855
+	for <igt-dev@archiver.kernel.org>; Tue,  5 May 2026 18:24:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 775BC10E13C;
-	Tue,  5 May 2026 18:05:31 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CdIbcVBf";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5D4A10E45B
- for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2026 18:05:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778004316; x=1809540316;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=jIVGOl+Y9S/S8mhec+H98Q5e2Oguetn7p6E/muBxqsE=;
- b=CdIbcVBf7WdjwPvLxI/wKvQnix2n7AWjsPzh6pmV/mGVehx8B9wLy24W
- e6CLibrOnONxeF/yI1eUgv6SriaCQvO6MRU607Wu9F+D2ebwx7oaac2Jm
- gQTSr8ieKVCcp6Nl5ziHb1tHtAVaedORJkkKPRXv06L/dqBkovvw9D2GB
- /wC5tbQPAC3bFWonD4AuVBwJ5lpVpZ6vpyqKve2IuPJ5RNCI4z942eADn
- ZmAckx3+pPn08h3sQKXt4FGP95VoP9TfZVTVUFKsRfm8nB03VM4C9Jisb
- cxEmur8RcfeFQXACBKNBooa26golsJ4yzVFwejt3m9bmuu/5ga4BAECaZ Q==;
-X-CSE-ConnectionGUID: IwFcLy1KSk+dvLrhQeB1iA==
-X-CSE-MsgGUID: OKx7Le5FS1WtBvIgzVHOfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="90344408"
-X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; d="scan'208";a="90344408"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2026 11:05:16 -0700
-X-CSE-ConnectionGUID: RraNlXxxQ0mZuO2xYrPwWw==
-X-CSE-MsgGUID: woNEaOvSTsakijOqwU6l/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; d="scan'208";a="239869178"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 11:05:13 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, swati2.sharma@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/chamelium/kms_chamelium_audio: Add suspend/resume
- audio tests
-Date: Tue,  5 May 2026 23:33:27 +0530
-Message-ID: <20260505180327.172380-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id B96EB10E462;
+	Tue,  5 May 2026 18:23:59 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A2BB10E462;
+ Tue,  5 May 2026 18:23:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1978429753130217451=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_core=3A_add_timestamps_to_l?=
+ =?utf-8?q?ogs?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Andrzej Hajda" <andrzej.hajda@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 05 May 2026 18:23:45 -0000
+Message-ID: <177800542503.38316.3022679299998689497@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260505-add_timestamps_to_logs-v1-1-2d95f499fdfb@intel.com>
+In-Reply-To: <20260505-add_timestamps_to_logs-v1-1-2d95f499fdfb@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,177 +37,234 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test to validate audio works before and after suspend/resume on
-HDMI/DP connector.
+--===============1978429753130217451==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/chamelium/kms_chamelium_audio.c | 121 ++++++++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+== Series Details ==
 
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index df8d27c0c..ed8c9de7b 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -52,6 +52,12 @@
-  * SUBTEST: hdmi-audio-edid
-  * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-  *              EDID-Like Data reports the correct audio parameters
-+ *
-+ * SUBTEST: dp-audio-after-suspend
-+ * Description: Verify audio works before and after system suspend/resume
-+ *
-+ * SUBTEST: hdmi-audio-after-suspend
-+ * Description: Verify audio works before and after system suspend/resume
-  */
- 
- /* Playback parameters control the audio signal we synthesize and send */
-@@ -695,6 +701,23 @@ static bool check_audio_configuration(struct alsa *alsa,
- 	return true;
- }
- 
-+static bool run_audio_test_once(chamelium_data_t *data, struct alsa *alsa,
-+				struct chamelium_port *port,
-+				snd_pcm_format_t format,
-+				int channels, int sampling_rate)
-+{
-+	struct audio_state state;
-+	bool success;
-+
-+	audio_state_init(&state, data, alsa, port, format, channels,
-+			 sampling_rate);
-+	success = test_audio_frequencies(&state);
-+	success &= test_audio_flatline(&state);
-+	audio_state_fini(&state);
-+
-+	return success;
-+}
-+
- static const char test_display_audio_desc[] =
- 	"Playback various audio signals with various audio formats/rates, "
- 	"capture them and check they are correct";
-@@ -789,6 +812,94 @@ static void test_display_audio(chamelium_data_t *data,
- 	free(alsa);
- }
- 
-+static const char test_display_audio_suspend_resume_desc[] =
-+	"Verify audio works before and after system suspend/resume";
-+static void test_display_audio_suspend_resume(chamelium_data_t *data,
-+					      struct chamelium_port *port,
-+					      const char *audio_device,
-+					      enum igt_custom_edid_type edid)
-+{
-+	bool run, success;
-+	struct alsa *alsa;
-+	int ret;
-+	igt_output_t *output;
-+	igt_plane_t *primary;
-+	struct igt_fb fb;
-+	drmModeModeInfo *mode;
-+	drmModeConnector *connector;
-+	int fb_id, i, j;
-+	int channels, sampling_rate;
-+	snd_pcm_format_t format;
-+
-+	igt_require(alsa_has_exclusive_access());
-+
-+	igt_require(chamelium_has_audio_support(data->chamelium, port));
-+
-+	alsa = alsa_init();
-+	igt_assert(alsa);
-+
-+	igt_modeset_disable_all_outputs(&data->display);
-+	chamelium_reset_state(&data->display, data->chamelium, port,
-+			      data->ports, data->port_count);
-+
-+	output = chamelium_prepare_output(data, port, edid);
-+	connector = chamelium_port_get_connector(data->chamelium, port, false);
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_assert(primary);
-+
-+	igt_assert(connector->count_modes > 0);
-+	mode = &connector->modes[0];
-+
-+	fb_id = igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay,
-+					    mode->vdisplay, DRM_FORMAT_XRGB8888,
-+					    DRM_FORMAT_MOD_LINEAR, 0, 0, 0,
-+					    &fb);
-+	igt_assert(fb_id > 0);
-+
-+	chamelium_enable_output(data, port, output, mode, &fb);
-+
-+	run = false;
-+	success = true;
-+	for (i = 0; i < test_sampling_rates_count; i++) {
-+		for (j = 0; j < test_formats_count; j++) {
-+			ret = alsa_open_output(alsa, audio_device);
-+			igt_assert_f(ret >= 0, "Failed to open ALSA output\n");
-+
-+			format = test_formats[j];
-+			channels = PLAYBACK_CHANNELS;
-+			sampling_rate = test_sampling_rates[i];
-+
-+			if (!check_audio_configuration(alsa, format, channels,
-+						       sampling_rate)) {
-+				alsa_close_output(alsa);
-+				continue;
-+			}
-+
-+			run = true;
-+
-+			success &= run_audio_test_once(data, alsa, port, format,
-+						       channels, sampling_rate);
-+
-+			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+						      SUSPEND_TEST_NONE);
-+
-+			success &= run_audio_test_once(data, alsa, port, format,
-+						       channels, sampling_rate);
-+
-+			alsa_close_output(alsa);
-+		}
-+	}
-+
-+	igt_assert(run);
-+	igt_assert(success);
-+
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	drmModeFreeConnector(connector);
-+
-+	free(alsa);
-+}
-+
- static const char test_display_audio_edid_desc[] =
- 	"Plug a connector with an EDID suitable for audio, check ALSA's "
- 	"EDID-Like Data reports the correct audio parameters";
-@@ -866,6 +977,11 @@ int igt_main()
- 	connector_subtest("dp-audio-edid", DisplayPort, &data, test_display_audio_edid,
- 			  IGT_CUSTOM_EDID_DP_AUDIO);
- 
-+	igt_describe(test_display_audio_suspend_resume_desc);
-+	connector_subtest("dp-audio-after-suspend", DisplayPort, &data,
-+			  test_display_audio_suspend_resume,
-+			  "HDMI", IGT_CUSTOM_EDID_DP_AUDIO);
-+
- 	igt_describe("HDMI tests");
- 
- 	igt_describe(test_display_audio_desc);
-@@ -876,6 +992,11 @@ int igt_main()
- 	connector_subtest("hdmi-audio-edid", HDMIA, &data, test_display_audio_edid,
- 			  IGT_CUSTOM_EDID_HDMI_AUDIO);
- 
-+	igt_describe(test_display_audio_suspend_resume_desc);
-+	connector_subtest("hdmi-audio-after-suspend", HDMIA, &data,
-+			  test_display_audio_suspend_resume,
-+			  "HDMI", IGT_CUSTOM_EDID_HDMI_AUDIO);
-+
- 	igt_fixture() {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.43.0
+Series: core: add timestamps to logs
+URL   : https://patchwork.freedesktop.org/series/166006/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8888_BAT -> XEIGTPW_15100_BAT
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with XEIGTPW_15100_BAT need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15100_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_15100_BAT:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-ptl-1:          [SKIP][1] ([Intel XE#5775]) -> [SKIP][2] +2 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-ptl-1/igt@xe_live_ktest@xe_bo.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-ptl-1/igt@xe_live_ktest@xe_bo.html
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:
+    - bat-wcl-2:          [SKIP][3] ([Intel XE#7239]) -> [SKIP][4] +2 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-wcl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-wcl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
+    - bat-ptl-2:          [SKIP][5] ([Intel XE#5775]) -> [SKIP][6] +2 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-ptl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-ptl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-wcl-1:          [SKIP][7] ([Intel XE#7239]) -> [SKIP][8] +2 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-wcl-1/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-wcl-1/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-lnl-2:          [SKIP][9] ([Intel XE#3342]) -> [SKIP][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html
+    - bat-lnl-1:          [SKIP][11] ([Intel XE#3342]) -> [SKIP][12]
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15100_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@xe_evict@evict-beng-small:
+    - bat-lnl-2:          [SKIP][13] ([Intel XE#6540] / [Intel XE#688]) -> [SKIP][14] ([Intel XE#6540]) +9 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-lnl-2/igt@xe_evict@evict-beng-small.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-lnl-2/igt@xe_evict@evict-beng-small.html
+
+  * igt@xe_evict@evict-beng-small-cm:
+    - bat-lnl-1:          [SKIP][15] ([Intel XE#6540] / [Intel XE#688]) -> [SKIP][16] ([Intel XE#6540]) +11 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-lnl-1/igt@xe_evict@evict-beng-small-cm.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-lnl-1/igt@xe_evict@evict-beng-small-cm.html
+
+  * igt@xe_peer2peer@read:
+    - bat-bmg-3:          [SKIP][17] ([Intel XE#2427] / [Intel XE#6953] / [Intel XE#7326] / [Intel XE#7353]) -> [SKIP][18] ([Intel XE#6953] / [Intel XE#7326] / [Intel XE#7353]) +1 other test skip
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-bmg-3/igt@xe_peer2peer@read.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-bmg-3/igt@xe_peer2peer@read.html
+
+  
+  [Intel XE#2427]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2427
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#5775]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775
+  [Intel XE#6540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6540
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#6953]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6953
+  [Intel XE#7239]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7239
+  [Intel XE#7326]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7326
+  [Intel XE#7353]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7353
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8888 -> IGTPW_15100
+
+  IGTPW_15100: fe485b0bf1f720044393aafd1abb142cf5eacd2a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8888: 77f31f709ee65bb20ad7d64d8aa012ba7688b112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4990-835de80ce9b34b618442ba91483170201b50b553: 835de80ce9b34b618442ba91483170201b50b553
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/index.html
+
+--===============1978429753130217451==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>core: add timestamps to logs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166006/">https://patchwork.freedesktop.org/series/166006/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8888_BAT -&gt; XEIGTPW_15100_BAT</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with XEIGTPW_15100_BAT need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15100_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15100_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@xe_bo:</p>
+<ul>
+<li>bat-ptl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-ptl-1/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775">Intel XE#5775</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-ptl-1/igt@xe_live_ktest@xe_bo.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:</p>
+<ul>
+<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-wcl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7239">Intel XE#7239</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-wcl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> +2 other tests skip</li>
+<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-ptl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775">Intel XE#5775</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-ptl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-wcl-1/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7239">Intel XE#7239</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-wcl-1/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a></li>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-lnl-1/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15100_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-small:</p>
+<ul>
+<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-lnl-2/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6540">Intel XE#6540</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-lnl-2/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6540">Intel XE#6540</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small-cm:</p>
+<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-lnl-1/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6540">Intel XE#6540</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-lnl-1/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6540">Intel XE#6540</a>) +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_peer2peer@read:</p>
+<ul>
+<li>bat-bmg-3:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8888/bat-bmg-3/igt@xe_peer2peer@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2427">Intel XE#2427</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6953">Intel XE#6953</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7326">Intel XE#7326</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7353">Intel XE#7353</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15100/bat-bmg-3/igt@xe_peer2peer@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6953">Intel XE#6953</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7326">Intel XE#7326</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7353">Intel XE#7353</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8888 -&gt; IGTPW_15100</li>
+</ul>
+<p>IGTPW_15100: fe485b0bf1f720044393aafd1abb142cf5eacd2a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8888: 77f31f709ee65bb20ad7d64d8aa012ba7688b112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4990-835de80ce9b34b618442ba91483170201b50b553: 835de80ce9b34b618442ba91483170201b50b553</p>
+
+</body>
+</html>
+
+--===============1978429753130217451==--
