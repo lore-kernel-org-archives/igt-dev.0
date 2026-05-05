@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C91A3FF885A
-	for <igt-dev@archiver.kernel.org>; Tue,  5 May 2026 03:51:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA1B7FF885A
+	for <igt-dev@archiver.kernel.org>; Tue,  5 May 2026 03:51:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 771E910E0A8;
-	Tue,  5 May 2026 03:51:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9986310E021;
+	Tue,  5 May 2026 03:51:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bNYAgQeU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ORMmhIRj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F19410E021
- for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2026 03:50:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D26E410E021
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2026 03:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777953058; x=1809489058;
+ t=1777953064; x=1809489064;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BN0YS6rXvdbyUutETz2qzkktO4272KFjHBhJPvUdfTE=;
- b=bNYAgQeU01K3hbH4HBhD/+souvbZ3qo0rTikgZ+ARXIRh7OIygz3VRgu
- 8wvvQRW1DfYLlLDgMAyKt6I23aZSCu4ywZx+pEDdvMS54zzJa2w36u7ed
- zksSW2hd1i+oUOc8oiVyg5VJ4bSoJWBZuWtH0hWfOzH1BqcIEG+1TYuKu
- a+dch0dda2554gEAFE6j9ttS0bdEPFsaJFlRpwXZF9Y8+crPl3ME4Rvag
- 7t7llZ/iCBT/SCHlvZ6QcwIl1Abf61T6CuHPz2KqbA6LkfV2jZx+j8rrI
- vhT+hbm8JLUAWznD1HElZImUds73oh15ktLNDhHGllmKUVvDGZFfJAgvp A==;
-X-CSE-ConnectionGUID: v8W7Ln3ARRGnns6Ob60+1A==
-X-CSE-MsgGUID: bhjZFpKRSBmhAgq+ODZ4MA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="104265458"
-X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; d="scan'208";a="104265458"
+ bh=H9iv9u2Up1n4v+fiACr17ZPxQazHBzHRdSJ2BUPCbgc=;
+ b=ORMmhIRjQQQ1cAUc2yw6o+V3wpucUKZRfaJwpmrDab80SMQMoH8dgd2F
+ x4AP+9MSpDT+uhvWSvGRuVQDMM41MOPLSeHF5/SCfEdMy924j2U8E3cQb
+ cxONai9ImhnoSpJaF6diSSEcpgbjNqzwj3v60oLe5oKeVLVJ/MJpN/jdk
+ fic2dKgQpeLTLQGNr9FuPVZPoRfPdftNE0qgvw6moybvkNFDO/8aqATMh
+ JCO0/aCHaNc79eOjXKAFuadIFbKiGGmkMPT3XJ4HHWVUEV5YiWG/TG4tG
+ IxoeBzSLNUqS8yZMIPBQwm30TIbK3wlZhEW2j3ZiAN1NOzZUEfA0VjQ4+ g==;
+X-CSE-ConnectionGUID: e0BZY8ANReWXcEvU9C5Z0w==
+X-CSE-MsgGUID: mIYu4wS0SViHjqLLonAOxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="104265463"
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; d="scan'208";a="104265463"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2026 20:50:58 -0700
-X-CSE-ConnectionGUID: UvXgBHZsSFS9eXK+yXA9OQ==
-X-CSE-MsgGUID: t6df68V2R0mMhdsAomKJNQ==
+ 04 May 2026 20:51:03 -0700
+X-CSE-ConnectionGUID: g66+j4gPSQmh0yBoB5HrFQ==
+X-CSE-MsgGUID: xILBUelYRu2S5uJaoeojqg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; d="scan'208";a="259048895"
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; d="scan'208";a="259048907"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by fmviesa002.fm.intel.com with ESMTP; 04 May 2026 20:50:56 -0700
+ by fmviesa002.fm.intel.com with ESMTP; 04 May 2026 20:51:02 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [PATCH i-g-t v2 1/3] tests/kms_hdr: Move framebuffer into data_t for
- centralized cleanup
-Date: Tue,  5 May 2026 09:31:42 +0530
-Message-Id: <20260505040144.28354-2-pranay.samala@intel.com>
+Subject: [PATCH i-g-t v2 3/3] tests/kms_hdr: Move capability checks inside
+ dynamic subtests
+Date: Tue,  5 May 2026 09:31:44 +0530
+Message-Id: <20260505040144.28354-4-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260505040144.28354-1-pranay.samala@intel.com>
 References: <20260505040144.28354-1-pranay.samala@intel.com>
@@ -68,145 +68,242 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Move igt_fb_t afb from local variable in test functions into the
-shared data_t struct, and add igt_remove_fb() to test_fini() so the
-framebuffer is always freed during cleanup, even when a test exits
-early.
+Earlier, output capability checks were done outside the dynamic
+subtest scope using continue/break. This caused a problem where
+if an earlier output (e.g., eDP) passed but a later output
+(e.g., DP) failed a check (such as reading bpc), the entire
+subtest would be skipped, discarding the earlier valid result
+and reporting a false skip/failure.
+
+Fix this by moving all output capability checks inside dynamic
+block. Each pipe-output-format combination is now an independent
+dynamic subtest that passes or skips on its own merit, without
+affecting other combinations.
 
 v2:
-- Update commit message (Karthik)
+- Consider other pipe if pipe combo fails (Karthik)
+- Handle test_fini wherever required (Karthik)
 
+v3:
+- Update the commit message (Karthik)
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4879
 Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_hdr.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ tests/kms_hdr.c | 166 +++++++++++++++++++++---------------------------
+ 1 file changed, 72 insertions(+), 94 deletions(-)
 
 diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index b215b0e6c..c4680298a 100644
+index 56d0d2cd2..a170a5b90 100644
 --- a/tests/kms_hdr.c
 +++ b/tests/kms_hdr.c
-@@ -123,12 +123,14 @@ typedef struct data {
- 	int fd;
- 	int w;
- 	int h;
-+	igt_fb_t afb;
- } data_t;
+@@ -323,17 +323,6 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
+ 	for_each_connected_output(display, output) {
+ 		igt_crtc_t *crtc;
  
- /* Common test cleanup. */
- static void test_fini(data_t *data)
- {
- 	igt_pipe_crc_free(data->pipe_crc);
-+	igt_remove_fb(data->fd, &data->afb);
- 	igt_display_reset(&data->display);
- }
+-		if (!has_max_bpc(output)) {
+-			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
+-
+-		if (igt_get_output_max_bpc(output) < 10) {
+-			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
+-			continue;
+-		}
+-
+ 		for_each_crtc(display, crtc) {
+ 			igt_output_set_crtc(output,
+ 					    crtc);
+@@ -343,17 +332,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
+ 			}
  
-@@ -244,20 +246,19 @@ static void test_bpc_switch_on_output(data_t *data, igt_crtc_t *crtc,
- {
- 	igt_display_t *display = &data->display;
- 	igt_crc_t ref_crc, new_crc;
--	igt_fb_t afb;
- 	int afb_id, ret;
+ 			for (int i = 0; i < ARRAY_SIZE(hdr_test_formats); i++) {
+-				prepare_test(data, output,
+-					     crtc);
+-
+-				if (is_intel_device(data->fd) &&
+-				    !igt_max_bpc_constraint(display, crtc, output, 10)) {
+-					igt_info("%s: No suitable mode found to use 10 bpc.\n",
+-						  igt_output_name(output));
+-
+-					test_fini(data);
+-					break;
+-				}
++				prepare_test(data, output, crtc);
  
- 	/* 10-bit formats are slow, so limit the size. */
- 	afb_id = igt_create_fb(data->fd, 512, 512,
--			       format, DRM_FORMAT_MOD_LINEAR, &afb);
-+			       format, DRM_FORMAT_MOD_LINEAR, &data->afb);
- 	igt_assert(afb_id);
+ 				data->mode = igt_output_get_mode(output);
+ 				data->w = data->mode->hdisplay;
+@@ -361,10 +340,23 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
  
--	draw_hdr_pattern(&afb);
-+	draw_hdr_pattern(&data->afb);
+ 				igt_dynamic_f("pipe-%s-%s-%s",
+ 					      igt_crtc_name(crtc), output->name,
+-					      igt_format_str(hdr_test_formats[i]))
+-					      test_bpc_switch_on_output(data,
+-								       crtc,
+-								       output, hdr_test_formats[i], flags);
++					      igt_format_str(hdr_test_formats[i])) {
++					igt_require_f(has_max_bpc(output),
++						      "%s: Doesn't support IGT_CONNECTOR_MAX_BPC.\n",
++						      igt_output_name(output));
++
++					igt_require_f(igt_get_output_max_bpc(output) >= 10,
++						      "%s: Doesn't support 10 bpc.\n",
++						      igt_output_name(output));
++
++					igt_require_f(!is_intel_device(data->fd) ||
++						      igt_max_bpc_constraint(display, crtc, output, 10),
++						      "%s: No suitable mode found to use 10 bpc.\n",
++						      igt_output_name(output));
++
++					test_bpc_switch_on_output(data, crtc, output,
++								  hdr_test_formats[i], flags);
++				}
  
- 	/* Plane may be required to fit fullscreen. Check it here and allow
- 	 * smaller plane size in following tests.
- 	 */
--	igt_plane_set_fb(data->primary, &afb);
-+	igt_plane_set_fb(data->primary, &data->afb);
- 	if (igt_crtc_num_scalers(crtc) >= 1)
- 		igt_plane_set_size(data->primary, data->w, data->h);
- 	else
-@@ -265,8 +266,8 @@ static void test_bpc_switch_on_output(data_t *data, igt_crtc_t *crtc,
+ 				test_fini(data);
+ 			}
+@@ -715,43 +707,8 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 	for_each_connected_output(display, output) {
+ 		igt_crtc_t *crtc;
  
- 	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY, NULL);
- 	if (!ret) {
--		data->w = afb.width;
--		data->h = afb.height;
-+		data->w = data->afb.width;
-+		data->h = data->afb.height;
- 	}
+-		/* To test HDR, 10 bpc is required, so we need to
+-		 * set MAX_BPC property to 10bpc prior to setting
+-		 * HDR metadata property. Therefore, checking.
+-		 */
+-		if (!has_max_bpc(output) || !has_hdr(output)) {
+-			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC or IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
+-
+-		/* For negative test, panel should be non-hdr. */
+-		if ((flags & TEST_INVALID_HDR) && is_panel_hdr(data, output)) {
+-			igt_info("%s: Can't run negative test on HDR panel.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
+-
+-		if ((flags & ~TEST_INVALID_HDR) && !is_panel_hdr(data, output)) {
+-			igt_info("%s: Can't run HDR tests on non-HDR panel.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
+-
+-		if (igt_get_output_max_bpc(output) < 10) {
+-			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
+-			continue;
+-		}
+-
+-		if ((flags & TEST_BRIGHTNESS) && !output_is_internal_panel(output)) {
+-			igt_info("%s: Can't run brightness test on non-internal panel.\n",
+-				 igt_output_name(output));
+-			continue;
+-		}
+-
+ 		for_each_crtc(display, crtc) {
+-			igt_output_set_crtc(output,
+-					    crtc);
++			igt_output_set_crtc(output, crtc);
+ 			if (!intel_pipe_output_combo_valid(display)) {
+ 				igt_output_set_crtc(output, NULL);
+ 				continue;
+@@ -761,42 +718,63 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 				prepare_test(data, output,
+ 					     crtc);
  
- 	/* Start in 8bpc. */
-@@ -305,7 +306,6 @@ static void test_bpc_switch_on_output(data_t *data, igt_crtc_t *crtc,
- 	igt_assert_crc_equal(&ref_crc, &new_crc);
+-				/* Signal HDR requirement via metadata */
+-				fill_hdr_output_metadata_st2084(&hdr);
+-				set_hdr_output_metadata(data, &hdr);
+-				if (igt_display_try_commit2(display, display->is_atomic ?
+-							    COMMIT_ATOMIC : COMMIT_LEGACY)) {
+-					igt_info("%s: Couldn't set HDR metadata\n",
+-						  igt_output_name(output));
+-					test_fini(data);
+-					break;
+-				}
+-
+-				if (is_intel_device(data->fd) &&
+-				    !igt_max_bpc_constraint(display, crtc, output, 10)) {
+-					igt_info("%s: No suitable mode found to use 10 bpc.\n",
+-						  igt_output_name(output));
+-
+-					test_fini(data);
+-					break;
+-				}
+-
+-				if (igt_is_dsc_enabled(data->fd, output->name))
+-					flags |= TEST_NEEDS_DSC;
+-				else
+-					flags &= ~TEST_NEEDS_DSC;
+-
+-				set_hdr_output_metadata(data, NULL);
+-				igt_display_commit2(display, display->is_atomic ?
+-						    COMMIT_ATOMIC : COMMIT_LEGACY);
+-
+ 				data->mode = igt_output_get_mode(output);
+ 				data->w = data->mode->hdisplay;
+ 				data->h = data->mode->vdisplay;
  
- 	test_fini(data);
--	igt_remove_fb(data->fd, &afb);
- }
- 
- /* Returns true if an output supports max bpc property. */
-@@ -490,20 +490,19 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
- 	igt_display_t *display = &data->display;
- 	struct hdr_output_metadata hdr;
- 	igt_crc_t ref_crc, new_crc;
--	igt_fb_t afb;
- 	int afb_id;
- 
- 	/* 10-bit formats are slow, so limit the size. */
- 	afb_id = igt_create_fb(data->fd, 512, 512,
--			       format, DRM_FORMAT_MOD_LINEAR, &afb);
-+			       format, DRM_FORMAT_MOD_LINEAR, &data->afb);
- 	igt_assert(afb_id);
- 
--	draw_hdr_pattern(&afb);
-+	draw_hdr_pattern(&data->afb);
- 
- 	fill_hdr_output_metadata_st2084(&hdr);
- 
- 	/* Start with no metadata. */
--	igt_plane_set_fb(data->primary, &afb);
-+	igt_plane_set_fb(data->primary, &data->afb);
- 	igt_plane_set_size(data->primary, data->w, data->h);
- 	set_hdr_output_metadata(data, NULL);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
-@@ -566,7 +565,6 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
- 
- cleanup:
- 	test_fini(data);
--	igt_remove_fb(data->fd, &afb);
- }
- 
- /* Fills some test values for HDR metadata targeting SDR. */
-@@ -605,19 +603,18 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- {
- 	igt_display_t *display = &data->display;
- 	igt_crc_t ref_crc, new_crc;
--	igt_fb_t afb;
- 	int afb_id;
- 	struct hdr_output_metadata hdr;
- 
- 	/* 10-bit formats are slow, so limit the size. */
- 	afb_id = igt_create_fb(data->fd, 512, 512,
--			       format, DRM_FORMAT_MOD_LINEAR, &afb);
-+			       format, DRM_FORMAT_MOD_LINEAR, &data->afb);
- 	igt_assert(afb_id);
- 
--	draw_hdr_pattern(&afb);
-+	draw_hdr_pattern(&data->afb);
- 
- 	/* Start in SDR. */
--	igt_plane_set_fb(data->primary, &afb);
-+	igt_plane_set_fb(data->primary, &data->afb);
- 	igt_plane_set_size(data->primary, data->w, data->h);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
- 
-@@ -690,7 +687,6 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 	}
- 
- 	test_fini(data);
--	igt_remove_fb(data->fd, &afb);
- }
- 
- static void test_invalid_metadata_sizes(data_t *data, igt_output_t *output)
+-				igt_dynamic_f("pipe-%s-%s-%s",
+-					       igt_crtc_name(crtc), output->name,
+-					       igt_format_str(hdr_test_formats[i])) {
++				igt_dynamic_f("pipe-%s-%s-%s", igt_crtc_name(crtc), output->name,
++					      igt_format_str(hdr_test_formats[i])) {
++					igt_require_f(has_max_bpc(output) && has_hdr(output),
++						      "%s: Doesn't support IGT_CONNECTOR_MAX_BPC "
++						      "or IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
++						      igt_output_name(output));
++
++					if (flags & TEST_INVALID_HDR)
++						igt_require_f(!is_panel_hdr(data, output),
++							      "%s: Can't run negative test on "
++							      "HDR panel.\n",
++							      igt_output_name(output));
++
++					if (!(flags & TEST_INVALID_HDR))
++						igt_require_f(is_panel_hdr(data, output),
++							      "%s: Can't run HDR tests on "
++							      "non-HDR panel.\n",
++							      igt_output_name(output));
++
++					igt_require_f(igt_get_output_max_bpc(output) >= 10,
++						      "%s: Doesn't support 10 bpc.\n",
++						      igt_output_name(output));
++
++					if (flags & TEST_BRIGHTNESS)
++						igt_require_f(output_is_internal_panel(output),
++							      "%s: Can't run brightness test on "
++							      "non-internal panel.\n",
++							      igt_output_name(output));
++
++					/* Signal HDR requirement via metadata */
++					fill_hdr_output_metadata_st2084(&hdr);
++					set_hdr_output_metadata(data, &hdr);
++					igt_require_f(!igt_display_try_commit2(display,
++									       display->is_atomic ?
++									       COMMIT_ATOMIC :
++									       COMMIT_LEGACY),
++						      "%s: Couldn't set HDR metadata\n",
++						      igt_output_name(output));
++
++					igt_require_f(!is_intel_device(data->fd) ||
++						      igt_max_bpc_constraint(display, crtc, output, 10),
++						      "%s: No suitable mode found to use 10 bpc.\n",
++						      igt_output_name(output));
++
++					if (igt_is_dsc_enabled(data->fd, output->name))
++						flags |= TEST_NEEDS_DSC;
++					else
++						flags &= ~TEST_NEEDS_DSC;
++
++					set_hdr_output_metadata(data, NULL);
++					igt_display_commit2(display, display->is_atomic ?
++							    COMMIT_ATOMIC : COMMIT_LEGACY);
++
+ 					if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND |
+ 						     TEST_INVALID_HDR | TEST_BRIGHTNESS))
+ 						test_static_toggle(data,
 -- 
 2.34.1
 
