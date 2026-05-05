@@ -4,59 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EA3DCD3436
-	for <igt-dev@archiver.kernel.org>; Tue,  5 May 2026 10:05:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 131C0CD342F
+	for <igt-dev@archiver.kernel.org>; Tue,  5 May 2026 10:50:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C07BA10EA46;
-	Tue,  5 May 2026 10:05:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C29810E10E;
+	Tue,  5 May 2026 10:50:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dQq+tQK+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KZGV3lyk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E78F10EA3D
- for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2026 10:05:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 87F3D10E9AB
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2026 07:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1777975529; x=1809511529;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Z8B9Pe973HPV+pHI9bsIBbzUAg55K6LgeqUhsXvIqGw=;
- b=dQq+tQK+nRxQT37BCC/tfp6hgBwOhKk/6DYaOBKaiKF7fp0zmSt7JMjd
- JtfMk2ulCkXzrLIO0HQ1SVWGFUx0BIjCI2DtCuFjQggWsQ8QVX/YYvIK3
- diZcgeM0Dnas+JSYO8w4OgowirP6cXRECTPgUD0zaU0vXrMDV5AUbvDno
- QXTnhV3+e15d7hIlRZNk1kKhM1DL2Q6xRR67XYZFlhq2mo1Z+DktWG6zv
- dwNG8I1pbr5PM7dWFrQzsSCiG4aq5GmYCaJzVm6y6aBtQ+DlEJjhRtOEv
- IWCRygWnMxw0Zp2+jaVbJHyBMnCxlcNlTqHAQkjQEKdrhS89rPhoMmu2b g==;
-X-CSE-ConnectionGUID: 0WqqxmfwSousRIGNcI4Sug==
-X-CSE-MsgGUID: dEIDgj0LR0SmkAvYTEesSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="90214810"
-X-IronPort-AV: E=Sophos;i="6.23,217,1770624000"; d="scan'208";a="90214810"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2026 03:05:29 -0700
-X-CSE-ConnectionGUID: vS1qcN61SIu3SaEnroiBnw==
-X-CSE-MsgGUID: m0lIo6ZtQsCpU8alaoFdxw==
+ t=1777966672; x=1809502672;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ mime-version:content-transfer-encoding;
+ bh=OntQNa4Q789i1yRW9qjm8720/QXw0gWP4U0GjwQvfbs=;
+ b=KZGV3lykJLwOu1LvGO41T/byvEHfC3yhJZ91lyblK/QBUEc4Xz9gA3B+
+ SYeU3meqwc2P8ia8ffyh7uDPUlhaNG5ewKTZrQ704myF1N8feGaFUfO1b
+ 1hd4huMYtz72sCWi8fLSCbs+yhwP7Rc+dtv5C4Vm8l10N4rymTNhE9v7L
+ TE5v2s4eztz0US+7XJVcVAxZZ8/uxUFD8qgHqtJxtpM3bTNDZcXwZ+muc
+ 8QG/KsZAj9ZmqELeCZIWxHVTQkF2ljMroeDalKyOjbSj4aji4azsHBRoK
+ ssiyv4mJYhE54u0nbpVCu5/uxpHhMuMRhObK6aXzwVuNatnu2u0eZVKiA Q==;
+X-CSE-ConnectionGUID: +Sbd7Kt6TJSEBg4Edl9WYg==
+X-CSE-MsgGUID: ZQSfifSzRGSYfj9v3Vd1Rw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="82444061"
+X-IronPort-AV: E=Sophos;i="6.23,217,1770624000"; d="scan'208";a="82444061"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 May 2026 00:37:51 -0700
+X-CSE-ConnectionGUID: u4bUWaCYSHKWdzsh9vzOZA==
+X-CSE-MsgGUID: TWucwx0YQkCjdsclc1xMXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,217,1770624000"; d="scan'208";a="259123571"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.4])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2026 03:05:28 -0700
-Date: Tue, 5 May 2026 12:05:26 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: "Hajda, Andrzej" <andrzej.hajda@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Subject: Re: [PATCH i-g-t 1/2] lib/gpgpu_fill: Add support for xe3p gpgpu fill
-Message-ID: <qilf4swypr6vtk5t6rlpeqfon3cybkebbroigac36hheuqv5rs@xcddvk4v27zp>
-References: <20260422191922.274036-4-zbigniew.kempczynski@intel.com>
- <20260422191922.274036-5-zbigniew.kempczynski@intel.com>
- <030d1aef-01f7-4169-9613-9bfbddfc4f05@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,217,1770624000"; d="scan'208";a="240716647"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 May 2026 00:37:51 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 5 May 2026 00:37:50 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 5 May 2026 00:37:50 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.41) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 5 May 2026 00:37:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fn+U+0kVN5iHiJNnfN/ptOvOeBE+HAtuqm4PANgIryDFg3rEAwOFAFYp+CPKlVVsAeeDOtJvgmewawGTR6YHF+msCfyow7k9zYhi+P2FJ552slpkHD5mfh8B5IhGOE8gs5hkygQLJZVGn5IB4Rkfba6WLnMEs/9cjEmt5Ra1S4Tnino/H53V70GMEcVHg47/NgOtfye8CCaqZ2wAqVEjIX0Ar4RMzzl45RAW0EhftbXAaeH661JJh2O8Wles/721Vry+x9HH5sjViBOQ4yvNlEQRODz4NHbY4tr3e+T4RTiOYeAmVv0M/lMjz5FDTzI1DVQ7MKgqNbjtmd75/ZMK0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/SlFykIltDC5mq0mBDcDD3ItlGu8PbXFVkTB+6NdXbg=;
+ b=GBnfidTNQehXj/jIreGnpC529Ikt+3ROWVLBbp0mtNwmrl8UUH7ZB8YS9cGGPcLKUbMDVKB2Z8qy8u/aRkDuVpuDprT/eKc2OV59h8cFvirhpV5ndT7NjeK+OnFp6P78hnAWsXg3HdSHCZ2Pl845hmtR7YJpJ0iTxA6gsOYPNSKIMXhOLL7Lgs0fVkcz2s/UOozcOz1E3swCVQCFQZSbaKZI9m7o8U10XHRd9HKuuF71ZvF2dkpNtyJlsPHVvtyOFDOkE++XJmqed0y2/aKfS01THNj6CeiM3z4QT1JwXEwwtu4NjdG67uRBNfUFLT11WWgldNxyp2KXwoW3CLYlVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SN7PR11MB7589.namprd11.prod.outlook.com (2603:10b6:806:34a::14)
+ by IA1PR11MB6194.namprd11.prod.outlook.com (2603:10b6:208:3ea::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
+ 2026 07:37:43 +0000
+Received: from SN7PR11MB7589.namprd11.prod.outlook.com
+ ([fe80::6ad6:b410:3f21:cccc]) by SN7PR11MB7589.namprd11.prod.outlook.com
+ ([fe80::6ad6:b410:3f21:cccc%6]) with mapi id 15.20.9870.022; Tue, 5 May 2026
+ 07:37:43 +0000
+From: "Grabski, Mateusz" <mateusz.grabski@intel.com>
+To: Adam Miszczak <adam.miszczak@linux.intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>, "marcin.bernatowicz@linux.intel.com"
+ <marcin.bernatowicz@linux.intel.com>, "Knop, Ryszard"
+ <ryszard.knop@intel.com>
+Subject: RE: [PATCH i-g-t] tools/vmtb: Add VMTB fast-feedback testlist
+Thread-Topic: [PATCH i-g-t] tools/vmtb: Add VMTB fast-feedback testlist
+Thread-Index: AQHc15qG7AVR/7WuOUSSuwdqFgn8rLX/E4SA
+Date: Tue, 5 May 2026 07:37:42 +0000
+Message-ID: <SN7PR11MB7589F612B18364FFD37048C3E73E2@SN7PR11MB7589.namprd11.prod.outlook.com>
+References: <20260428082243.299243-1-adam.miszczak@linux.intel.com>
+ <20260428150934.5cifxdcou2jvhafv@kamilkon-DESK.igk.intel.com>
+ <7ef59b71-4a9f-4a63-b1be-5675c857b59a@linux.intel.com>
+In-Reply-To: <7ef59b71-4a9f-4a63-b1be-5675c857b59a@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN7PR11MB7589:EE_|IA1PR11MB6194:EE_
+x-ms-office365-filtering-correlation-id: 7bba105d-b54d-4681-8c65-08deaa793166
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|38070700021|18002099003|22082099003|56012099003;
+x-microsoft-antispam-message-info: Trb7Z6BhapWop/6FdjVOQ9SYOJ85a5jRuORtWbafv/HFhAUVV15F+4ltuCX2tugzeb2kkoeh/7dUhY4+Ous8bQGkEauUxKk7yQLldn0f2qHmjelBjTjKKqDjsbXwCioszuc34SEwRdwurXpCODn1jzIWxDlOe5dhNLRntL40LpwKhHyTR04HAO6fOnXKVmPYZQ188Yr+pXnlEUsh3CAAltCM9rQAoJ0v+6Xf2rfSJwIyaB47dP9X/WVua0S4uIgJoUXVx/XvXxpzWKo+xYiMlWaBZQlZFhre2/YOu8nqdhK2avTFThbNNPehCb5vzo2GyZ3gDo4tsRHyGmbFqrRNqivYqJzAly+l4HlYWREzKYZQNdVvYyWLSyMix2h/Z8e4NlQtcTRwdk9aam5WGNDK+1Urqvm17VzFnTRYwe9Teqh4Fc7UCwNquwV/k7Mtpu74Lncd78eMr9vmm/WdxIOLfYFCi40x6ZLXBj1qa1KLy6hC6EYDsxOS1acUBt3Q9bj4V9/QT3hU/rWGjWE6Mm0cJCHa5fb6HlHsu7/oKChgUhnLUcCYpgn8XFXmSdxcAhmn+OsvA9icg/0OIi+CrmXL67KGbUEvlgVsX9mFbBuezgJPP/8BSOjQT4GRWHzUFQayNYagfpMMDc12XSZW5KjpWX6HMPN8UGDCuYUk+nWd1ZbLJrwBoRGPQVySuhbsvI5n2cypmdOVbwQ9hffR7W4bvwhGIR/2ceif9vFpTXf/6FDb+xsp5U5/Y+jD1sX4w39A
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SN7PR11MB7589.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(18002099003)(22082099003)(56012099003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NU1GOVVMalEzTXY1YnFhekdWTmsrK1M1L2VjcU5MdTl2enZlTlJhQzlyaUFS?=
+ =?utf-8?B?b3VadzdOVjlOWnFid3ZHZnhJMTYwdGJ1aDltYUJ6SS84Vy82M2RJSFVodTJM?=
+ =?utf-8?B?VVZoVXZCOFphZ2pDamNjZy9FVUIxZkcxaU9yaUhoalF1SHlXV3FpY1hDVzJj?=
+ =?utf-8?B?RGF4ZW1VNjY5NHlib1VTUUJvb25SdTRFdFd5aEdYTWlWNXVvbE5UZkZCZHFI?=
+ =?utf-8?B?dU5uRVowWGgyUXdNUFpKM1BFVWhyQVpYTzkyS3dXcXA0ZGJMS1FyWHRBR09Z?=
+ =?utf-8?B?RnFTRWRMamNmcCtIQTBCV1RzVGtCbVpsdnBOYlQzdGdFM3RWQ0FxUm5lck0v?=
+ =?utf-8?B?WWpRVUQ2TEEwaEZPbm9DekZvTGZpT2E2SFhwdnQ3KzZHRGhmL2lVdjFmUEI1?=
+ =?utf-8?B?dTgzaGl6LzhtTkdUSnlZRDlHUi8rZ0tDOHpPdnpybEZuN0MvWGFYd0dDZVNF?=
+ =?utf-8?B?cCtCRERCSnBIRCtsQTFhVU9PMFcyOWUyZHhjbTZVY0VsUERlck8vWlNBeEFu?=
+ =?utf-8?B?Y3ZLaXFTc215Si9oTGlyaEt4NjgwemdUaVdja3ovNXFUdFBEMW91alYrSlNv?=
+ =?utf-8?B?RFZQNzRTbWx0aFVXTUtMNm5lK25uczBCMGFVZ3MvTGw0QjM0VVQ5NkRzVDRq?=
+ =?utf-8?B?VktsVEFKVHM2c3NtUVhGaGZCelNibUh1a0gvdlpNWTQ2OXRZdlBINVZMTnhj?=
+ =?utf-8?B?aWYzV1FRWjZKRkpHNi9EdjJLOC9BcUtDcDZwdzFLamlLNUUzdW1sZWhyZGJ3?=
+ =?utf-8?B?dW05QkhudXMrbGZOQ2lXNEM2dmNnVXBVKzJ0bUJXWHllZ0xkZWpOTTg0SU5J?=
+ =?utf-8?B?UUcwUTkvK09HQURiK25TRU15dTFNZlNzdG96Q2tUeGI1OXVNWnpBZFJSRmpT?=
+ =?utf-8?B?NG5yMVhmanFCeE1RWEJIR1Q3QWw0RkloU1Rja2hQbnlHamtkWFYwMDdzdDM0?=
+ =?utf-8?B?QXRsWGM2S29BSkVHa0Q0TnFKYmhYcDF3UzcrU1padmJ5U0tHRDBUUkswazR5?=
+ =?utf-8?B?UHpIdE0vMjF6MFlYd0xCZko1WUpiaHV5REVJS1RlV0Z5c0JzdndReGxiTHZi?=
+ =?utf-8?B?UXB3VTdvdUJ5dmNoVHpaNG9aaXpoeWVoTzI4b3UyNmx4S0ZWanpNVnBUenVZ?=
+ =?utf-8?B?elh5dmhBV2pjVXNZWUxZT0Y3QU1aNmd6a1VpcTU2Y3E2YisxNFR4YnVmSFRk?=
+ =?utf-8?B?ZjN4K0l3dDJsUmdHSUxZVHM4Z3F4cXVUTmUxaHhXbzdjVUdEaENMb1RsWGwx?=
+ =?utf-8?B?THBpaE10c1hLS1Foa2ZzU0xKWmpnSDZVMEZITVdSN210ZUx5azY2Y1ZWSlJh?=
+ =?utf-8?B?c1owQmNQZFh0QVdiUC85ZFRCUTZxRDZ5aXl1VTRiaUVDUDhIQmJzODFUN2Zp?=
+ =?utf-8?B?SXBNaVVadDNsNFZOcmNZWGEreEljYnp1SGZiN1ZOblRtUGZEUHVZT0ZpSXZJ?=
+ =?utf-8?B?V3h3bGltNFRpbEsvRXFJVWZJTHNTUzVLYmR6anBPbFg0dS9KdzltWDE0US9r?=
+ =?utf-8?B?eWxSYzBWYVd4RlVoeFBZN0UyZEFKRXlJNldHV2UzNjB3SUVsRU9ZVXZSR1lL?=
+ =?utf-8?B?akY3N2VDZHZFenJKSXd1eStGWFZOWU1aalUxZUx1WWVsYm9PQ2F2Q0RkaHEx?=
+ =?utf-8?B?Z0VDaGhBNGo4ajFjc3pYT1lZNHRNblJiUm93b2dKQzk0cDcwcXRjT1B0aUk1?=
+ =?utf-8?B?c3g0YVFycDBkSnVCRGovbW91d2p6VFZvSzk1VytjclZSajBBTitqaHhJWnlQ?=
+ =?utf-8?B?TktGM3lxMmt3SGdLa2NndklUQjVSQk4yVm5DcGYxVlUycERTTjAreHV4Y3Bl?=
+ =?utf-8?B?YjdwV2Z2cDZwZHpYbG9wZ0R1Y090VmFtT093RDU5Z3gwc1IvenFTazN4dlRr?=
+ =?utf-8?B?WThwSzV6VjJocS9GRmpIbUNBQ1o4VmpTSmtud2oyZXNFL2krbjBaTWxPZVhO?=
+ =?utf-8?B?VzBaREE3RzAyZVk3djFzZWlOby90azdMazlVV3hoVjMyZUxXdmlnU3RJUGQv?=
+ =?utf-8?B?N2RSZkliRHFNQVhrdnRFcjEzV0Z0c0JFOVJHUzlxL0ZlWFUvb0h2VlJsYmZu?=
+ =?utf-8?B?WHZmTUFTV0Zic0VPK1JabDRyWlJLSFVKWERHMmhUWWd4Q09rYlVKZ0l2ZHBL?=
+ =?utf-8?B?TlF0ZmpTdGRzN1hQWk5QVjIrMHVKcFlDU1ozcWJua2FnYXZ1ODU4RHdTMnF1?=
+ =?utf-8?B?dnNoRGF5c3crRDJRS2RQZTBiSnZqcHpqWVJqcTNEc2x6NkJXMmhBNkZGUjBO?=
+ =?utf-8?B?WURFMjFrWGpUeGgzWGdtT054eVRWL3gwQnFMZStmQ253Vmt2ZzlwZXdoYlRw?=
+ =?utf-8?B?NmVFLzVlbWpuZVZUU3ptd094NTRldTVRT2kwQ2JTSS9GYXdvZ2F1dz09?=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <030d1aef-01f7-4169-9613-9bfbddfc4f05@intel.com>
+X-Exchange-RoutingPolicyChecked: XZF+kMh5ZfAwGhWKAHGskeidwULDWmQD0u6rEttqu6KVFbKpX8fmn48srlNI8cI8XJdnUdVhNjFDbj8RyLvVQXYrJNmuuxl9ofIq395+hmbWS1IlR/C9C/WNjqja6cFfvMjYd1l8kpm0Qu3gYlJVVL6V/O1Hah+KL9QGbilmHLf3pejN1MrHaOuFUjzpsiBti1lfEK+qVJjYb8F2kSbOzf3QTIV2hy/prXM9HCR7lGWv6PpP4yLh1iHUl7cUYGQI74d7KnQd/zRWmY9ZrwJl0JShXtgB/+t8k6KBbBv2a+0kn35NJMZuQC3dQivvILezqJwIzdLpNSHo0OV1x5yO5g==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7589.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bba105d-b54d-4681-8c65-08deaa793166
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 May 2026 07:37:42.9124 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kNONoD/X7S7TU+bab9UyyX1Sivw9cx/wttg6dgpF6FGs2/K3KD3VtLbINJfQnXgCHMMA5HtwT+i/S46RaEnL4uilPpo/CTz7PfX+myjqP1s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6194
+X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: base64
+X-Mailman-Approved-At: Tue, 05 May 2026 10:50:35 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,557 +175,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, May 05, 2026 at 10:33:08AM +0200, Hajda, Andrzej wrote:
-> W dniu 22.04.2026 o 21:19, Zbigniew KempczyÅski pisze:
-> > XE3P uses in non-legacy mode COMPUTE_WALKER_2 so adopt pipeline and
-> > shader in gpgpu library to properly handle gpgpu fill.
-> > 
-> > Difference between previous platforms shaders is no surface state
-> > is used so all geometry must be handled by the pipeline / shader
-> > (accesses to memory are via untyped global [ugm]). Threads spawned
-> > here are still SIMD16, but due to conditional writing to ugm memory
-> > with 4B vector using 4x1 sizes and positions become possible.
-> > 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> > ---
-> >   lib/gpgpu_fill.c                     | 117 +++++++++++++++++++++++++++
-> >   lib/gpgpu_fill.c.gen.iga64_codes.c   |  47 ++++++++++-
-> >   lib/gpgpu_fill.h                     |   8 ++
-> >   lib/gpgpu_shader.c                   |   6 +-
-> >   lib/gpgpu_shader.c.gen.iga64_codes.c |   6 +-
-> >   lib/gpu_cmds.c                       |  93 +++++++++++++++++----
-> >   lib/gpu_cmds.h                       |  14 ++++
-> >   lib/intel_batchbuffer.c              |   4 +-
-> >   8 files changed, 274 insertions(+), 21 deletions(-)
-> > 
-> > diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
-> > index f83eee5f21..4d5689be59 100644
-> > --- a/lib/gpgpu_fill.c
-> > +++ b/lib/gpgpu_fill.c
-> > @@ -28,11 +28,13 @@
-> >   #include <i915_drm.h>
-> >   #include "intel_reg.h"
-> > +#include <ioctl_wrappers.h>
-> 
-> I think better would be to no mix system and user-defined includes, ie lift
-> this up 2 lines.
+DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBBZGFtIE1pc3pjemFrIDxhZGFt
+Lm1pc3pjemFrQGxpbnV4LmludGVsLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIEFwcmlsIDI5LCAy
+MDI2IDc6MzkNClRvOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRl
+bC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgbWFyY2luLmJlcm5hdG93aWN6
+QGxpbnV4LmludGVsLmNvbTsgS25vcCwgUnlzemFyZCA8cnlzemFyZC5rbm9wQGludGVsLmNvbT47
+IEdyYWJza2ksIE1hdGV1c3ogPG1hdGV1c3ouZ3JhYnNraUBpbnRlbC5jb20+DQpTdWJqZWN0OiBS
+ZTogW1BBVENIIGktZy10XSB0b29scy92bXRiOiBBZGQgVk1UQiBmYXN0LWZlZWRiYWNrIHRlc3Rs
+aXN0DQoNCg0KT24gNC8yOC8yMDI2IDU6MDkgUE0sIEthbWlsIEtvbmllY3pueSB3cm90ZToNCj4g
+SGkgQWRhbSwNCj4gT24gMjAyNi0wNC0yOCBhdCAxMDoyMjo0MyArMDIwMCwgQWRhbSBNaXN6Y3ph
+ayB3cm90ZToNCj4+IEVuYWJsZSBiYXNpYyBWTSB0ZXN0cyBhcyBCQVRzOg0KPj4gLSBjcmVhdGUg
+YW5kIHByb3Zpc2lvbiBWRnMsIGFzc2lnbiB0byBWTXMgYW5kIHByb2JlIGd1ZXN0IGRyaXZlcg0K
+Pj4gLSBleGVjdXRlIHNpbXBsZSBJR1Qgd29ya2xvYWRzIG9uIGJvb3RlZCBWTXMNCj4+DQo+PiBT
+aWduZWQtb2ZmLWJ5OiBBZGFtIE1pc3pjemFrIDxhZGFtLm1pc3pjemFrQGxpbnV4LmludGVsLmNv
+bT4NCj4+IC0tLQ0KPj4gICAuLi4vdm10Yi92bW1fZmxvd3MvaW50ZWwtY2kvZmFzdC1mZWVkYmFj
+ay50ZXN0bGlzdCB8IDE0ICsrKysrKysrKysrKysrDQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxNCBp
+bnNlcnRpb25zKCspDQo+PiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCANCj4+IHRvb2xzL3ZtdGIvdm1t
+X2Zsb3dzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QNCj4+DQo+PiBkaWZmIC0tZ2l0
+IGEvdG9vbHMvdm10Yi92bW1fZmxvd3MvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdCAN
+Cj4+IGIvdG9vbHMvdm10Yi92bW1fZmxvd3MvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlz
+dA0KPj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4+IGluZGV4IDAwMDAwMDAwMC4uMzdjNGRlYTNh
+DQo+PiAtLS0gL2Rldi9udWxsDQo+PiArKysgYi90b29scy92bXRiL3ZtbV9mbG93cy9pbnRlbC1j
+aS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0DQo+IGltaG8gaXQgd291bGQgYmUgYmV0dGVyIHRvIGtl
+ZXAgQ0ktcmVsYXRlZCBsaXN0cyBpbiB0ZXN0cy9pbnRlbC1jaS8NCj4NCj4gK2NjIFJ5c3phcmQN
+Cj4gQ2M6IFJ5c3phcmQgS25vcCA8cnlzemFyZC5rbm9wQGludGVsLmNvbT4NCj4NCj4gUmVnYXJk
+cywNCj4gS2FtaWwNCg0KPlRoaXMgaXMgVk1UQiBzcGVjaWZpYyB0ZXN0bGlzdCwgc28gSSBzdXBw
+b3NlIGl0IHdpbGwgYmUgbWlzbGVhZGluZyB0byBsb29rIGZvciBpdCBpbiB0ZXN0cy8gKGRlZGlj
+YXRlZCBmb3IgJ3JlZ3VsYXInIElHVCB0ZXN0cykuDQo+QWxzbywgdGhpcyBpcyBqdXN0IHRoZSBm
+aXJzdCBWTVRCIHRlc3RsaXN0IGZpbGUsIHdlIGNhbiBleHBlY3QgbW9yZSBmaWxlcyBmb3IgZGlm
+ZmVyZW50IENJIGNvbmZpZ3MuDQoNCj4rK2NjOiBNYXRldXN6IEdyYWJza2kgPG1hdGV1c3ouZ3Jh
+YnNraUBpbnRlbC5jb20+DQoNCj5UaGFua3MsDQo+QWRhbQ0KDQpJbiBteSBvcGluaW9uIGxvb2tz
+IGdvb2QsIGl0IGZpdHMgaW50byBob3cgSSBhbSBlbmFibGluZyB2bXRiIGluIHB1YmxpYyBDSSBh
+bHNvIHRlc3QgYXJlIHRha2luZyBlbm91Z2ggdGltZSBmb3IgZmFzdC1mZWVkYmFjaywgc28gdGhl
+eSBhcmUgZ29vZCB0byBzdGFydCB3aXRoLiANCg0KUmVnYXJkcywNCk1hdGV1c3oNCg0KDQoNCj4+
+IEBAIC0wLDAgKzEsMTQgQEANCj4+ICsjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIw0KPj4gKyMNCj4+ICsjIFZNTSBGbG93cyBmYXN0LWZlZWRiYWNr
+IHRlc3QgbGlzdDoNCj4+ICsjIGRlZmluZXMgdGVzdHMgdG8gYmUgZXhlY3V0ZWQgcHJlLS9wb3N0
+LW1lcmdlIEJBVHMuDQo+PiArIw0KPj4gKyMgVGhpcyBpcyBhbGxvdyBsaXN0LCBuZWVkcyB0byBi
+ZSBleHRlbmRlZCBpZiBuZXcgIyB0ZXN0cyBuZWVkIHRvIGJlIA0KPj4gK2FkZGVkIHRvIHNjb3Bl
+Lg0KPj4gKyMNCj4+ICsjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIw0KPj4gKyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMNCj4+ICsjIEJhc2ljIFZGL1ZN
+IGNyZWF0ZQ0KPj4gKyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMNCj4+ICt0ZXN0X2Jhc2ljLnB5OjpU
+ZXN0Vm1TZXR1cA0KPj4gK3Rlc3RfYmFzaWMucHk6OlRlc3RWbVdvcmtsb2FkDQo+PiAtLQ0KPj4g
+Mi4zOS4xDQo+Pg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkludGVsIFRlY2hub2xvZ3kgUG9sYW5kIHNwLiB6IG8u
+by4KdWwuIFNsb3dhY2tpZWdvIDE3MyB8IDgwLTI5OCBHZGFuc2sgfCBTYWQgUmVqb25vd3kgR2Rh
+bnNrIFBvbG5vYyB8IFZJSSBXeWR6aWFsIEdvc3BvZGFyY3p5IEtyYWpvd2VnbyBSZWplc3RydSBT
+YWRvd2VnbyAtIEtSUyAxMDE4ODIgfCBOSVAgOTU3LTA3LTUyLTMxNiB8IEthcGl0YWwgemFrbGFk
+b3d5IDIwMC4wMDAgUExOLgpTcG9sa2Egb3N3aWFkY3phLCB6ZSBwb3NpYWRhIHN0YXR1cyBkdXpl
+Z28gcHJ6ZWRzaWViaW9yY3kgdyByb3p1bWllbml1IHVzdGF3eSB6IGRuaWEgOCBtYXJjYSAyMDEz
+IHIuIG8gcHJ6ZWNpd2R6aWFsYW5pdSBuYWRtaWVybnltIG9wb3puaWVuaW9tIHcgdHJhbnNha2Nq
+YWNoIGhhbmRsb3d5Y2guCgpUYSB3aWFkb21vc2Mgd3JheiB6IHphbGFjem5pa2FtaSBqZXN0IHBy
+emV6bmFjem9uYSBkbGEgb2tyZXNsb25lZ28gYWRyZXNhdGEgaSBtb3plIHphd2llcmFjIGluZm9y
+bWFjamUgcG91Zm5lLiBXIHJhemllIHByenlwYWRrb3dlZ28gb3RyenltYW5pYSB0ZWogd2lhZG9t
+b3NjaSwgcHJvc2lteSBvIHBvd2lhZG9taWVuaWUgbmFkYXdjeSBvcmF6IHRyd2FsZSBqZWogdXN1
+bmllY2llOyBqYWtpZWtvbHdpZWsgcHJ6ZWdsYWRhbmllIGx1YiByb3pwb3dzemVjaG5pYW5pZSBq
+ZXN0IHphYnJvbmlvbmUuClRoaXMgZS1tYWlsIGFuZCBhbnkgYXR0YWNobWVudHMgbWF5IGNvbnRh
+aW4gY29uZmlkZW50aWFsIG1hdGVyaWFsIGZvciB0aGUgc29sZSB1c2Ugb2YgdGhlIGludGVuZGVk
+IHJlY2lwaWVudChzKS4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkIHJlY2lwaWVudCwgcGxl
+YXNlIGNvbnRhY3QgdGhlIHNlbmRlciBhbmQgZGVsZXRlIGFsbCBjb3BpZXM7IGFueSByZXZpZXcg
+b3IgZGlzdHJpYnV0aW9uIGJ5IG90aGVycyBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLgo=
 
-Ack.
-
-> 
-> >   #include "drmtest.h"
-> >   #include "gpgpu_fill.h"
-> >   #include "gpgpu_shader.h"
-> >   #include "gpu_cmds.h"
-> > +#include "xe/xe_util.h"
-> >   /* lib/i915/shaders/gpgpu/gpgpu_fill.gxa */
-> >   static const uint32_t gen7_gpgpu_kernel[][4] = {
-> > @@ -328,6 +330,81 @@ mov (1|M0)		 r4.14<1>:w	0xF:w					\n\
-> >   send.tgm (16|M0)	null	r4	null	0x0	0x64000007		\n\
-> >   #endif										\n\
-> >   	");
-> > +	gpgpu_shader__eot(kernel);
-> > +	return kernel;
-> > +}
-> > +
-> > +static struct gpgpu_shader *__xe3p_gpgpu_kernel(int xe, struct intel_buf *buf)
-> > +{
-> > +	struct gpgpu_shader *kernel = gpgpu_shader_create(xe);
-> > +	uint64_t offset = xe_canonical_va(xe, buf->addr.offset);
-> > +
-> > +	emit_iga64_code(kernel, xe3p_gpgpu_fill, "				\n\
-> > +#define IGA64_FLAGS \"\"							\n\
-> 
-> For new shaders please use raw strings, see for example [1]. In such case
-> you can also avoid backslashes in IGA64_FLAGS.
-> 
-> [1]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/intel/xe_eudebug_online.c?ref_type=heads#L262
-
-Ok, I'll change and resubmit.
-
-> 
-> > +#define RX		r0.1							\n\
-> > +#define RY		r0.6							\n\
-> > +#define COLOR		r1.0							\n\
-> > +#define SURFWIDTH	r1.1							\n\
-> > +#define SURFHEIGHT	r1.2							\n\
-> > +#define WIDTH		r1.3							\n\
-> > +#define HEIGHT		r1.4							\n\
-> > +#define XPOS		r1.5							\n\
-> > +#define YPOS		r1.6							\n\
-> > +#define OFFSET		r2.0							\n\
-> > +#define XOFFSET		r2.1							\n\
-> > +#define YOFFSET		r2.2							\n\
-> > +#define XEND		r2.3							\n\
-> > +#define XCURRENT	r2.4							\n\
-> > +#define TMP		r2.7							\n\
-> > +#define ADDR_LO		r3.0							\n\
-> > +#define ADDR_HI		r3.1							\n\
-> > +#if GEN_VER >= 3500								\n\
-> > +(W)	add (1)		XEND<1>:ud	XPOS:ud		WIDTH:ud		\n\
-> > +(W)	mov (1)		OFFSET<1>:ud	0x0:ud					\n\
-> > +										\n\
-> > +(W)	shl (1)		XOFFSET<1>:ud	RX:ud		0x4:ud			\n\
-> > +(W)	add (1)		XOFFSET<1>:ud	XOFFSET:ud	XPOS:ud			\n\
-> > +(W)	mov (1)		XCURRENT<1>:ud	XOFFSET:ud				\n\
-> > +										\n\
-> > +(W)	add (1)		TMP<1>:ud	RY:ud		YPOS:ud			\n\
-> > +(W)	mul (1)		YOFFSET<1>:ud	TMP:ud		SURFWIDTH:ud		\n\
-> > +(W)	add (1)		OFFSET<1>:ud	XOFFSET:ud	YOFFSET:ud		\n\
-> > +										\n\
-> > +// Set base address with scalar register					\n\
-> > +(W)	add (1)		ADDR_LO<1>:ud	OFFSET:ud	ARG(0):ud		\n\
-> > +(W)	mov (1)		ADDR_HI<1>:ud	ARG(1):ud				\n\
-> > +(W)	mov (1)		s0.0<1>:ud	ADDR_LO:ud				\n\
-> > +(W)	mov (1)		s0.1<1>:ud	ADDR_HI:ud				\n\
-> > +										\n\
-> > +// color									\n\
-> > +(W)	mov (4)		r20.0<1>:ub		COLOR:ub			\n\
-> > +										\n\
-> > +// A64 offset									\n\
-> > +(W)	mov (8)		r30.0<1>:uq		0x0:uq				\n\
-> > +										\n\
-> > +//dword: 0									\n\
-> > +(W)	cmp (1)		(lt)f0.0 null:ud        XCURRENT:ud	XEND:ud		\n\
-> > +(W&f0.0)sendg.ugm (1)	null	r30:1	r20:1	s0.0	0x29404			\n\
-> > +//dword: 1									\n\
-> > +(W)	add (1)		XCURRENT<1>:ud		XCURRENT:ud	4:ud		\n\
-> > +(W)	add (1)		ADDR_LO<1>:ud		ADDR_LO:ud	0x4:ud		\n\
-> > +(W)	mov (1)		s0.0<1>:ud		ADDR_LO:ud			\n\
-> > +(W)	cmp (1)		(lt)f0.0 null:ud        XCURRENT:ud	XEND:ud		\n\
-> > +(W&f0.0)sendg.ugm (1)	null	r30:1	r20:1	s0.0	0x29404			\n\
-> > +//dword: 2									\n\
-> > +(W)	add (1)		XCURRENT<1>:ud		XCURRENT:ud	4:ud		\n\
-> > +(W)	add (1)		ADDR_LO<1>:ud		ADDR_LO:ud	0x4:ud		\n\
-> > +(W)	mov (1)		s0.0<1>:ud		ADDR_LO:ud			\n\
-> > +(W)	cmp (1)		(lt)f0.0 null:ud        XCURRENT:ud	XEND:ud		\n\
-> > +(W&f0.0)sendg.ugm (1)	null	r30:1	r20:1	s0.0	0x29404			\n\
-> > +//dword: 3									\n\
-> > +(W)	add (1)		XCURRENT<1>:ud		XCURRENT:ud	4:ud		\n\
-> > +(W)	add (1)		ADDR_LO<1>:ud		ADDR_LO:ud	0x4:ud		\n\
-> > +(W)	mov (1)		s0.0<1>:ud		ADDR_LO:ud			\n\
-> > +(W)	cmp (1)		(lt)f0.0 null:ud        XCURRENT:ud	XEND:ud		\n\
-> > +(W&f0.0)sendg.ugm (1)	null	r30:1	r20:1	s0.0	0x29404			\n\
-> > +#endif										\n\
-> > +", lower_32_bits(offset), upper_32_bits(offset));
-> 
-> Not sure if wouldn't be better to pass offset via inline data, IMO explicit
-> parameters should be for things which can vary between users, but no strong
-> feelings. Just this way it is passed in gpgpu_shader.
-
-I'm almost sure I tried to pass address via inline data and I
-encountered some problem (maybe pebkac). So I've chosen patching
-within shader infra.
-
-I'll alter the shader if you want, however it also verifies patching
-works correctly in the shader lib.
-
-> 
-> >   	gpgpu_shader__eot(kernel);
-> >   	return kernel;
-> > @@ -373,6 +450,46 @@ void xehp_gpgpu_fillfunc(int i915,
-> >   	intel_bb_destroy(ibb);
-> >   }
-> > +void xe3p_gpgpu_fillfunc(int i915,
-> 
-> Hmm, xe3p and i915 :) Please use fd instead.
-
-Right, I'll fix and resubmit.
-
-> 
-> > +			 struct intel_buf *buf,
-> > +			 unsigned int x, unsigned int y,
-> > +			 unsigned int width, unsigned int height,
-> > +			 uint8_t color)
-> > +{
-> > +	struct intel_bb *ibb;
-> > +	struct gpgpu_shader *kernel;
-> > +	struct xe3p_interface_descriptor_data idd;
-> > +
-> > +	ibb = intel_bb_create(i915, PAGE_SIZE);
-> > +	intel_bb_add_intel_buf(ibb, buf, true);
-> > +
-> > +	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
-> > +
-> > +	kernel = __xe3p_gpgpu_kernel(i915, buf);
-> > +	xe3p_fill_interface_descriptor(ibb, buf, kernel->instr,
-> > +				       kernel->size * 4, &idd);
-> > +	gpgpu_shader_destroy(kernel);
-> > +
-> > +	intel_bb_ptr_set(ibb, 0);
-> > +
-> > +	/* GPGPU pipeline */
-> > +	intel_bb_out(ibb, GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
-> > +		  PIPELINE_SELECT_GPGPU);
-> > +	xe3p_emit_state_base_address(ibb);
-> > +	xehp_emit_state_compute_mode(ibb, false);
-> > +	xe3p_emit_fill_compute_walk2(ibb, buf->width * buf->bpp / 8, buf->height,
-> > +				     x, y, width, height, &idd, color);
-> > +
-> > +	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
-> > +	intel_bb_ptr_align(ibb, 32);
-> > +
-> > +	intel_bb_exec(ibb, intel_bb_offset(ibb),
-> > +		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
-> > +
-> > +	intel_bb_destroy(ibb);
-> > +}
-> > +
-> > +
-> >   void gen9_gpgpu_fillfunc(int i915,
-> >   			 struct intel_buf *buf,
-> >   			 unsigned x, unsigned y,
-> > diff --git a/lib/gpgpu_fill.c.gen.iga64_codes.c b/lib/gpgpu_fill.c.gen.iga64_codes.c
-> > index 400ff7b18a..ac2ec0caea 100644
-> > --- a/lib/gpgpu_fill.c.gen.iga64_codes.c
-> > +++ b/lib/gpgpu_fill.c.gen.iga64_codes.c
-> > @@ -3,7 +3,52 @@
-> >   #include "gpgpu_shader.h"
-> > -#define MD5_SUM_IGA64_ASMS ebaa9e23021939d874c576c7cea482bf
-> > +#define MD5_SUM_IGA64_ASMS c0fcff5c21cc4826b2f8f2e6624d4c5c
-> > +
-> > +struct iga64_template const iga64_code_xe3p_gpgpu_fill[] = {
-> > +	{ .gen_ver = 3500, .size = 148, .code = (const uint32_t []) {
-> > +		0x80000040, 0x02350220, 0x02000154, 0x00100134,
-> > +		0x80000061, 0x02054220, 0x00000000, 0x00000000,
-> > +		0x80000069, 0x02158220, 0x02000014, 0x00000004,
-> > +		0x80001940, 0x02150220, 0x02000214, 0x00100154,
-> > +		0x80001961, 0x02450220, 0x00000214, 0x00000000,
-> > +		0x80000040, 0x02750220, 0x02000064, 0x00100164,
-> > +		0x80001941, 0x02250220, 0x02000274, 0x00100114,
-> > +		0x80001940, 0x02050220, 0x02000214, 0x00100224,
-> > +		0x80001940, 0x03058220, 0x02000204, 0xc0ded000,
-> > +		0x80000061, 0x03154220, 0x00000000, 0xc0ded001,
-> > +		0x80001a61, 0x60010220, 0x00000304, 0x00000000,
-> > +		0x80001a61, 0x60110220, 0x00000314, 0x00000000,
-> > +		0x80080061, 0x14050000, 0x00000104, 0x00000000,
-> > +		0x800c0061, 0x1e054330, 0x00000000, 0x00000000,
-> > +		0x80001f70, 0x00010220, 0x52000244, 0x00100234,
-> > +		0x84032033, 0x00000004, 0xf0021e0c, 0x9404140c,
-> > +		0x80000040, 0x02458220, 0x02000244, 0x00000004,
-> > +		0x80000040, 0x03058220, 0x02000304, 0x00000004,
-> > +		0x8000a001, 0x00010000, 0x00000000, 0x00000000,
-> > +		0x80001961, 0x60010220, 0x00000304, 0x00000000,
-> > +		0x80001b70, 0x00010220, 0x52000244, 0x00100234,
-> > +		0x84032133, 0x00000004, 0xf0021e0c, 0x9404140c,
-> > +		0x80000040, 0x02458220, 0x02000244, 0x00000004,
-> > +		0x80000040, 0x03058220, 0x02000304, 0x00000004,
-> > +		0x8000a101, 0x00010000, 0x00000000, 0x00000000,
-> > +		0x80001961, 0x60010220, 0x00000304, 0x00000000,
-> > +		0x80001b70, 0x00010220, 0x52000244, 0x00100234,
-> > +		0x84032233, 0x00000004, 0xf0021e0c, 0x9404140c,
-> > +		0x80000040, 0x02458220, 0x02000244, 0x00000004,
-> > +		0x80000040, 0x03058220, 0x02000304, 0x00000004,
-> > +		0x8000a201, 0x00010000, 0x00000000, 0x00000000,
-> > +		0x80001961, 0x60010220, 0x00000304, 0x00000000,
-> > +		0x80001b70, 0x00010220, 0x52000244, 0x00100234,
-> > +		0x84032333, 0x00000004, 0xf0021e0c, 0x9404140c,
-> > +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> > +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> > +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> > +	}},
-> > +	{ .gen_ver = 0, .size = 0, .code = (const uint32_t []) {
-> > +
-> > +	}}
-> > +};
-> >   struct iga64_template const iga64_code_gpgpu_fill[] = {
-> >   	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-> > diff --git a/lib/gpgpu_fill.h b/lib/gpgpu_fill.h
-> > index a483859e5e..417c920672 100644
-> > --- a/lib/gpgpu_fill.h
-> > +++ b/lib/gpgpu_fill.h
-> > @@ -68,4 +68,12 @@ xehp_gpgpu_fillfunc(int i915,
-> >   		    unsigned int width, unsigned int height,
-> >   		    uint8_t color);
-> > +void
-> > +xe3p_gpgpu_fillfunc(int i915,
-> > +		    struct intel_buf *dst,
-> > +		    unsigned int x, unsigned int y,
-> > +		    unsigned int width, unsigned int height,
-> > +		    uint8_t color);
-> > +
-> > +
-> >   #endif /* GPGPU_FILL_H */
-> > diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-> > index ffa357eeb1..ccab4d4b0f 100644
-> > --- a/lib/gpgpu_shader.c
-> > +++ b/lib/gpgpu_shader.c
-> > @@ -599,8 +599,12 @@ void gpgpu_shader__eot(struct gpgpu_shader *shdr)
-> >   (W)	mov (8|M0)               r112.0<1>:ud  r0.0<8;8,1>:ud			\n\
-> >   #if GEN_VER < 1250								\n\
-> >   (W)	send.ts (16|M0)          null r112 null 0x10000000 0x02000010 {EOT,@1}	\n\
-> > -#else										\n\
-> > +										\n\
-> > +#elif GEN_VER <= 3000								\n\
-> >   (W)	send.gtwy (8|M0)         null r112 src1_null     0 0x02000000 {EOT}	\n\
-> > +										\n\
-> > +#else										\n\
-> > +(W)	sendg.gtwy (1|M0)        null     r0:1  null:0  0x0 {EOT}		\n\
-> >   #endif										\n\
-> >   		");
-> >   }
-> > diff --git a/lib/gpgpu_shader.c.gen.iga64_codes.c b/lib/gpgpu_shader.c.gen.iga64_codes.c
-> > index 59172cdfd1..064564cfb2 100644
-> > --- a/lib/gpgpu_shader.c.gen.iga64_codes.c
-> > +++ b/lib/gpgpu_shader.c.gen.iga64_codes.c
-> > @@ -3,7 +3,7 @@
-> >   #include "gpgpu_shader.h"
-> > -#define MD5_SUM_IGA64_ASMS 4311fff3bece03802f3220b7d239c33b
-> > +#define MD5_SUM_IGA64_ASMS bd1d8e873d1021863cf0b0cde7c332ea
-> >   struct iga64_template const iga64_code_read_a64_d32[] = {
-> >   	{ .gen_ver = 2000, .size = 40, .code = (const uint32_t []) {
-> > @@ -843,6 +843,10 @@ struct iga64_template const iga64_code_jump[] = {
-> >   };
-> >   struct iga64_template const iga64_code_eot[] = {
-> > +	{ .gen_ver = 3500, .size = 8, .code = (const uint32_t []) {
-> > +		0x800c0061, 0x70050220, 0x00460005, 0x00000000,
-> > +		0x8000c033, 0x00000001, 0x3000000c, 0x00000000,
-> > +	}},
-> >   	{ .gen_ver = 2000, .size = 8, .code = (const uint32_t []) {
-> >   		0x800c0061, 0x70050220, 0x00460005, 0x00000000,
-> >   		0x800f2031, 0x00000004, 0x3000700c, 0x00000000,
-> > diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-> > index 10c8bfb8dd..c61f5fe5fc 100644
-> > --- a/lib/gpu_cmds.c
-> > +++ b/lib/gpu_cmds.c
-> > @@ -1267,13 +1267,14 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
-> >   	}
-> >   }
-> > -void
-> > -xe3p_emit_compute_walk2(struct intel_bb *ibb,
-> > -			unsigned int x, unsigned int y,
-> > -			unsigned int width, unsigned int height,
-> > -			struct xe3p_interface_descriptor_data *pidd,
-> > -			uint32_t max_threads,
-> > -			struct xe3p_cw2_interrupt_data *intdata)
-> > +static void
-> > +__xe3p_emit_compute_walk2(struct intel_bb *ibb,
-> > +			  unsigned int x, unsigned int y,
-> > +			  unsigned int width, unsigned int height,
-> > +			  struct xe3p_interface_descriptor_data *pidd,
-> > +			  uint32_t max_threads,
-> > +			  struct xe3p_cw2_interrupt_data *intdata,
-> > +			  struct xe3p_cw2_gpgpu_fill_data *filldata)
-> 
-> Hmm, 9th parameter. This is asking for refactoring, maybe it can be done
-> later.
-
-Original code I got has additional function which varies with
-these calculations but I don't want to duplicate the code.
-
-> 
-> >   {
-> >   	/*
-> >   	 * Max Threads represent range: [1, 2^16-1],
-> > @@ -1282,6 +1283,14 @@ xe3p_emit_compute_walk2(struct intel_bb *ibb,
-> >   	const uint32_t MAX_THREADS = (1 << 16) - 1;
-> >   	uint32_t x_dim, y_dim, mask, max;
-> > +	if (filldata) {
-> > +		if (width + x > filldata->buf_width)
-> > +			width = filldata->buf_width - x;
-> > +
-> > +		if (height + y > filldata->buf_height)
-> > +			height = filldata->buf_height - y;
-> > +	}
-> > +
-> 
-> This is quite ugly, why do we need these ifs, here and below.
-> Just asking if we can avoid conditionals somehow.
-> And what is width/height and what is their relation with
-> filldata->buf_(width|height_) ?
-
-To not exceed buffer boundary. Original code were limited to fill
-in 16x16 granularity but here I wanted to break this limitation
-and work at least in 4x4 (shader and workload dimension allows
-to work it with 4x1).
-
-> 
-> 
-> >   	/*
-> >   	 * Simply do SIMD16 based dispatch, so every thread uses
-> >   	 * SIMD16 channels.
-> > @@ -1294,7 +1303,7 @@ xe3p_emit_compute_walk2(struct intel_bb *ibb,
-> >   	 * thread group Y = height;
-> >   	 */
-> >   	x_dim = (x + width + 15) / 16;
-> > -	y_dim = y + height;
-> > +	y_dim = height + y * (filldata ? 0 : 1);
-> 
-> Again strange conditional.
-
-Position x and y where to fill are calculated within shader. So y_dim
-is raw height.
-
-> 
-> >   	mask = (x + width) & 15;
-> >   	if (mask == 0)
-> > @@ -1332,9 +1341,15 @@ xe3p_emit_compute_walk2(struct intel_bb *ibb,
-> >   	intel_bb_out(ibb, 1);						//dw8
-> >   	/* Thread Group ID Starting X, Y, Z */
-> > -	intel_bb_out(ibb, x / 16);					//dw9
-> > -	intel_bb_out(ibb, y);						//dw10
-> > -	intel_bb_out(ibb, 0);						//dw11
-> > +	if (filldata) {
-> > +		intel_bb_out(ibb, 0);					//dw9
-> > +		intel_bb_out(ibb, 0);					//dw10
-> > +		intel_bb_out(ibb, 0);					//dw11
-> > +	} else {
-> > +		intel_bb_out(ibb, x / 16);				//dw9
-> > +		intel_bb_out(ibb, y);					//dw10
-> > +		intel_bb_out(ibb, 0);					//dw11
-> > +	}
-> 
-> This is another problem with x, y - it seems they are unused (almost) in
-> case filldata is present.
-
-I'm not sure we're on same page. For filldata x/y == 0 because shader
-does the job. When filldata == NULL workload is automatically positioned
-to some start x/y position (original compute walk code was designed this
-way and I left this intact). Currently there's no use case - xe_non_msix.c
-also uses x/y == 0.
-
-> 
-> >   	/* partition type / id / size */
-> >   	intel_bb_out(ibb, 0);						//dw12-13
-> > @@ -1366,12 +1381,26 @@ xe3p_emit_compute_walk2(struct intel_bb *ibb,
-> >   		}
-> >   	}
-> > -	/* Inline data */
-> > -	/* DW31 and DW32 of Inline data will be copied into R0.14 and R0.15. */
-> > -	/* The rest of DW33 through DW46 will be copied to the following GRFs. */
-> > -	intel_bb_out(ibb, x_dim);					//dw31
-> > -	for (int i = 0; i < 15; i++) {					//dw32-46
-> > -		intel_bb_out(ibb, 0);
-> > +	if (filldata) {
-> > +		/* Inline data */
-> > +		intel_bb_out(ibb, (uint32_t) filldata->color);		//dw31
-> > +		intel_bb_out(ibb, (uint32_t) filldata->buf_width);	//dw32
-> > +		intel_bb_out(ibb, (uint32_t) filldata->buf_height);	//dw33
-> > +		intel_bb_out(ibb, (uint32_t) width);			//dw34
-> > +		intel_bb_out(ibb, (uint32_t) height);			//dw35
-> > +		intel_bb_out(ibb, (uint32_t) x);			//dw36
-> > +		intel_bb_out(ibb, (uint32_t) y);			//dw37
-> 
-> No need to perform explicit conversion.
-
-Ack.
-
-> 
-> > +		for (int i = 0; i < 9; i++) {				//dw38-46
-> > +			intel_bb_out(ibb, 0x0);
-> > +		}
-> 
-> No need for parenthesis.
-
-Ack.
-
-> 
-> > +	} else {
-> > +		/* Inline data */
-> > +		/* DW31 and DW32 of Inline data will be copied into R0.14 and R0.15. */
-> > +		/* The rest of DW33 through DW46 will be copied to the following GRFs. */
-> > +		intel_bb_out(ibb, x_dim);				//dw31
-> > +		for (int i = 0; i < 15; i++) {				//dw32-46
-> > +			intel_bb_out(ibb, 0);
-> > +		}
-> 
-> No need for parenthesis.
-
-Ack.
-
-> 
-> 
-> >   	}
-> >   	/* Post Sync command payload 1 */
-> > @@ -1392,3 +1421,33 @@ xe3p_emit_compute_walk2(struct intel_bb *ibb,
-> >   	/* Preempt CS Interrupt Vector: Saved by HW on a TG preemption */
-> >   	intel_bb_out(ibb, 0);						//dw62
-> >   }
-> > +
-> > +void
-> > +xe3p_emit_compute_walk2(struct intel_bb *ibb,
-> > +			unsigned int x, unsigned int y,
-> > +			unsigned int width, unsigned int height,
-> > +			struct xe3p_interface_descriptor_data *pidd,
-> > +			uint32_t max_threads,
-> > +			struct xe3p_cw2_interrupt_data *intdata)
-> > +{
-> > +	__xe3p_emit_compute_walk2(ibb, x, y, width, height,
-> > +				  pidd, max_threads, intdata, NULL);
-> > +}
-> > +
-> > +void
-> > +xe3p_emit_fill_compute_walk2(struct intel_bb *ibb,
-> > +			     unsigned int buf_width, unsigned int buf_height,
-> > +			     unsigned int x, unsigned int y,
-> > +			     unsigned int width, unsigned int height,
-> > +			     struct xe3p_interface_descriptor_data *pidd,
-> > +			     uint8_t color)
-> > +{
-> > +	struct xe3p_cw2_gpgpu_fill_data filldata = {
-> > +		.buf_width = buf_width,
-> > +		.buf_height = buf_height,
-> > +		.color = color,
-> > +	};
-> > +
-> > +	__xe3p_emit_compute_walk2(ibb, x, y, width, height,
-> > +				  pidd, 64, NULL, &filldata);
-> > +}
-> 
-> 
-> As I commented before - abstraction looks problematic (parameter inflation,
-> null checks in shared code, parameter duplication).
-
-What null checks and parameter duplication you mean?
-
-Thanks for the review
---
-Zbigniew
-
-> 
-> Regards
-> Andrzej
-> 
-> > diff --git a/lib/gpu_cmds.h b/lib/gpu_cmds.h
-> > index b3bfb137b0..a8a92d0f29 100644
-> > --- a/lib/gpu_cmds.h
-> > +++ b/lib/gpu_cmds.h
-> > @@ -45,6 +45,12 @@ struct xe3p_cw2_interrupt_data {
-> >   	uint64_t post_sync_val;
-> >   };
-> > +struct xe3p_cw2_gpgpu_fill_data {
-> > +	uint32_t buf_width;
-> > +	uint32_t buf_height;
-> > +	uint8_t color;
-> > +};
-> > +
-> >   uint32_t
-> >   gen7_fill_curbe_buffer_data(struct intel_bb *ibb, uint8_t color);
-> > @@ -168,4 +174,12 @@ xe3p_emit_compute_walk2(struct intel_bb *ibb,
-> >   			uint32_t max_threads,
-> >   			struct xe3p_cw2_interrupt_data *intdata);
-> > +void
-> > +xe3p_emit_fill_compute_walk2(struct intel_bb *ibb,
-> > +			     unsigned int buf_width, unsigned int buf_height,
-> > +			     unsigned int x, unsigned int y,
-> > +			     unsigned int width, unsigned int height,
-> > +			     struct xe3p_interface_descriptor_data *pidd,
-> > +			     uint8_t color);
-> > +
-> >   #endif /* GPU_CMDS_H */
-> > diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> > index b095065746..189a411968 100644
-> > --- a/lib/intel_batchbuffer.c
-> > +++ b/lib/intel_batchbuffer.c
-> > @@ -769,7 +769,9 @@ igt_fillfunc_t igt_get_gpgpu_fillfunc(int devid)
-> >   {
-> >   	igt_fillfunc_t fill = NULL;
-> > -	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
-> > +	if (intel_graphics_ver(devid) >= IP_VER(35, 0))
-> > +		fill = xe3p_gpgpu_fillfunc;
-> > +	else if (intel_graphics_ver(devid) >= IP_VER(12, 50))
-> >   		fill = xehp_gpgpu_fillfunc;
-> >   	else if (IS_GEN12(devid))
-> >   		fill = gen12_gpgpu_fillfunc;
-> 
