@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB51BCD342C
-	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 08:47:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16112CD3424
+	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 08:47:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F79410E522;
-	Wed,  6 May 2026 08:47:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A6D7A10E522;
+	Wed,  6 May 2026 08:47:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BHbaxSHx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OQJNPgkl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF64210E522
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 08:47:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D29C610E522
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 08:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778057237; x=1809593237;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=4hgJ5NJ6+m/8trO7GCKVtYZ0eI5nQY0I0i24pWUjxqg=;
- b=BHbaxSHxVG3879Het4WTY6iQuWQobKoHvNRMmh/aIILzUk+XMqGDAq4K
- l10as8E+Ou+MhUOvP0ISD7USBmv6vdwLECjgQTH8nZIUGXso7w8OoWo9J
- 5V+3qtJjY8ZR+zcF+iRdwgN4nISLxXjGiKaATxpon59cP0Fvfh8oFRury
- L1pEwMq3p2WR/DBm36XBIBtCPRRh5CCmMr+y7CYOFI9KDgVt04nCM1Aei
- MB0RLNIkJX96VRIFPUZgB2mIKW2uzGvmU5XkSUx5Qcyogr/y+w3+bjR3K
- AN9h6BkGNEXV91aLLKZz96rok8Wny8z3FvP+OKrsLHEY15esHWFMgjcZ0 A==;
-X-CSE-ConnectionGUID: +nH79XtnScamgmYl/B+p1Q==
-X-CSE-MsgGUID: fy1yTdPVTouxo2yI+7hkBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="82585314"
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="82585314"
+ t=1778057239; x=1809593239;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=I/P8zmmcf2fM4UbGKYOOMHWkUxykzv68AhunynfKG4A=;
+ b=OQJNPgkliW05cC6nUj/+QPrQ4/0wZkqKSRBCzV2p+Z275NeiK17Wo3cu
+ 3QF6BerMR53H1g00zKICqjPzcZeiIOxws0PbRnoa1+MmdTqCUwhUL5/qK
+ dKvFn4ecQZp6KVYuvW/m8MnuPh08v3sML/m4QDE2uTa5yf/c4iJNfr1Aw
+ PXDusnBCx7EKr9pAx45FoFFtI7CrkRyNFQxHrbWZxrQkcHiEodnnfHWO7
+ hOVY+Edh+MPvvdjlhNuzvlOz4RowPQeAIMsYrSxD76/QHCeuE7PyUE9yK
+ 2NBzCDL7Q+SWbPYc7HWguElmNBFzG/8xEzokdwR/bAo/sltni+U+n5s/z A==;
+X-CSE-ConnectionGUID: 9MIvMOtbRxKAWpY7tPiS7Q==
+X-CSE-MsgGUID: QI+ESysgSjmp/VCaaV+PBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="82585319"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="82585319"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 01:47:17 -0700
-X-CSE-ConnectionGUID: gDHfW41VSiaSn+rSP52Pkg==
-X-CSE-MsgGUID: QD4ONMSvRMOpKMSHzHVR8A==
+ 06 May 2026 01:47:19 -0700
+X-CSE-ConnectionGUID: b3xv3rIPRYSc+BXkjmMEEA==
+X-CSE-MsgGUID: f7/S8gXrQXSXu+olRGf7Jw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="266434273"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="266434280"
 Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by orviesa002.jf.intel.com with ESMTP; 06 May 2026 01:47:14 -0700
+ by orviesa002.jf.intel.com with ESMTP; 06 May 2026 01:47:16 -0700
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
@@ -47,11 +47,13 @@ Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
  Thomas Zimmermann <tzimmermann@suse.de>,
  Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
  Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t 0/1] tests/fbdev: skip non-zero pans on mixed-size
- multi-display topologies
-Date: Wed,  6 May 2026 13:52:41 +0530
-Message-Id: <20260506082242.2605199-1-chaitanya.kumar.borah@intel.com>
+Subject: [PATCH i-g-t 1/1] tests/fbdev: skip non-zero pan on mixed-size
+ multi-display
+Date: Wed,  6 May 2026 13:52:42 +0530
+Message-Id: <20260506082242.2605199-2-chaitanya.kumar.borah@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260506082242.2605199-1-chaitanya.kumar.borah@intel.com>
+References: <20260506082242.2605199-1-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -70,88 +72,180 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series updates the fbdev pan test so it aligns with how DRM fbdev
-emulation computes framebuffer sizing and applies panning across active
-outputs.
+fbdev virtual dimensions are derived from the largest active display
+layout, while the visible fbdev resolution reflects the smallest
+active display. Since fbdev pan offsets are applied globally to all CRTCs,
+non-zero pan requests on mixed-size multi-display setups can still fail
+source bounds validation even when var info appears to indicate available
+pan space.
 
-Background:
+Example:
 
-1. fbdev virtual dimensions are derived from the backing surface,
-   not directly from a single visible mode.
-	- In the DRM helper path, __drm_fb_helper_find_sizes() computes:
-		- surface_width/surface_height as the maximum active scanout
-		  footprint across modesets (mode size plus CRTC position)
-		- fb_width/fb_height as the minimum visible fbdev size across
-		  active outputs
+In a dual display setup with 1920x1200 and 3840x2160 displays,
+IGT receives the following values:
 
-2. The fbdev backing object is allocated from surface_width/surface_height
-   in the fbdev_probe path, then:
-	- __fill_var() sets xres_virtual/yres_virtual from
-	 fb->width/fb->height (the backing surface)
-	- drm_fb_helper_fill_var() sets xres/yres from fb_width/fb_height
-	  (visible fbdev size)
+xres=1920 yres=1200 xres_virtual=3840 yres_virtual=2160
 
-3. Therefore, xres_virtual/yres_virtual reflect the largest active display layout
-   (plus vertical overalloc if specified through CONFIG_DRM_FBDEV_OVERALLOC),
-   while xres/yres reflects a smaller visible geometry.
-
-4. Panning semantics remain global:
-	pan_set() -> pan_display_atomic() -> drm_fb_helper_pan_display()
-   applies one offset to all active CRTCs.
-
-5. On mixed-size multi-display topologies, this can make non-zero pan requests
-   fail even when fbdev var info appears to show pan room, because one CRTC(larger)
-   may violate source bounds while another does not.
-
-Let's take the example of a dual display setup of 1920x1200 and 3840x2160.
-
-Based on what we know we end up with the following values in the IGT.
-
-	xres=1920 yres=1200 xres_virtual=3840 yres_virtual=2160
-
-For the "Jump to opposite end of virtual screen" case, we end up with the following
-panning values (though it does not matter)
-	
-	xoffset=1920 yoffset=960
-	
-Since the frame buffer is also of dimension of 3840x2160, there is no real room for
-panning (even a single step) and therefore the following
-check in drm_atomic_plane_check() fails
-
-if (new_plane_state->src_w > fb_width ||
-            new_plane_state->src_x > fb_width - new_plane_state->src_w ||
-            new_plane_state->src_h > fb_height ||
-            new_plane_state->src_y > fb_height - new_plane_state->src_h) 
-			
-Leading to -ENOSPC.
+The framebuffer allocated by kernel is based on the largest display
+(3840x2160), This leaves no room for panning. The computed non-zero
+offsets therefore exceed the framebuffer bounds, causing
+drm_atomic_plane_check() to fail with -ENOSPC.
 
 [drm:drm_atomic_check_only] [PLANE:203:plane 1B] invalid source coordinates 3840.000000x2160.000000+1920.000000+960.000000 (fb 3840x2160)
 
-Motivation for the change
-
-1. Avoid false failures in IGT where non-zero pan is marked as expected success
-   but cannot be satisfied for all active outputs. [1]
-2. Keep useful pan coverage where non-zero panning is actually valid
-   (e.g. single display with CONFIG_DRM_FBDEV_OVERALLOC = 300).
-   Therefore, a fbdev-only hueristics attempted by [2] is too coarse.
-3. Use DRM APIs to find out if the test setup have mixed size multiple displays.
-   (I don't like the fact that I have to use drm APIs to achieve this but I
-    could not find anything in the fbdev ABI that could give me the same information.)
-   
-[1] https://intel-gfx-ci.01.org/tree/intel-xe/xe-4983-5521e3e7a175fef7d7a35a4b8fd17ca473be8e7e/re-lnl-8/igt@fbdev@pan.html
-[2] https://patchwork.freedesktop.org/series/152733/
+Therefore, detect mixed-size active displays using DRM mode APIs and,
+in that case, skip the two non-zero expected-success cases:
+  - Jump to opposite end of virtual screen
+  - Jump to maximum extend
 
 Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Cc: Thomas Zimmermann <tzimmermann@suse.de>
 Cc: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 Cc: Karthik B S <karthik.b.s@intel.com>
-
-Chaitanya Kumar Borah (1):
-  tests/fbdev: skip non-zero pan on mixed-size multi-display
-
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2488
+Assisted-by: GitHub Copilot:Claude Haiku 4.5
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+---
  tests/fbdev.c | 100 ++++++++++++++++++++++++++++++++++++++++++++++----
  1 file changed, 92 insertions(+), 8 deletions(-)
 
+diff --git a/tests/fbdev.c b/tests/fbdev.c
+index a1f855ea4..edef9b5a6 100644
+--- a/tests/fbdev.c
++++ b/tests/fbdev.c
+@@ -43,6 +43,7 @@
+ #include <unistd.h>
+ 
+ #include <linux/fb.h>
++#include <xf86drmMode.h>
+ 
+ #include "igt.h"
+ 
+@@ -111,6 +112,77 @@ static void pan_test(int fd, const struct fb_var_screeninfo *var, int expected_r
+ 		     pan_var.xoffset, pan_var.yoffset, new_var.xoffset, new_var.yoffset);
+ }
+ 
++static bool mixed_size_multihead_active(void)
++{
++	int drm_fd;
++	drmModeRes *res;
++	unsigned int active_w = 0, active_h = 0;
++	bool first_active = true;
++	bool mixed = false;
++
++	drm_fd = drm_open_driver(DRIVER_ANY);
++	if (drm_fd < 0)
++		return false;
++
++	res = drmModeGetResources(drm_fd);
++	if (!res) {
++		close(drm_fd);
++		return false;
++	}
++
++	for (int i = 0; i < res->count_connectors; i++) {
++		drmModeConnector *conn;
++		drmModeEncoder *enc;
++		drmModeCrtc *crtc;
++
++		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
++		if (!conn)
++			continue;
++
++		if (conn->connection != DRM_MODE_CONNECTED || !conn->encoder_id) {
++			drmModeFreeConnector(conn);
++			continue;
++		}
++
++		enc = drmModeGetEncoder(drm_fd, conn->encoder_id);
++		if (!enc || !enc->crtc_id) {
++			if (enc)
++				drmModeFreeEncoder(enc);
++			drmModeFreeConnector(conn);
++			continue;
++		}
++
++		crtc = drmModeGetCrtc(drm_fd, enc->crtc_id);
++		drmModeFreeEncoder(enc);
++		drmModeFreeConnector(conn);
++		if (!crtc)
++			continue;
++
++		if (!crtc->mode_valid) {
++			drmModeFreeCrtc(crtc);
++			continue;
++		}
++
++		if (first_active) {
++			active_w = crtc->mode.hdisplay;
++			active_h = crtc->mode.vdisplay;
++			first_active = false;
++		} else if (crtc->mode.hdisplay != active_w ||
++			   crtc->mode.vdisplay != active_h) {
++			mixed = true;
++			drmModeFreeCrtc(crtc);
++			break;
++		}
++
++		drmModeFreeCrtc(crtc);
++	}
++
++	drmModeFreeResources(res);
++	close(drm_fd);
++
++	return mixed;
++}
++
+ static void mode_tests(int fd)
+ {
+ 	struct fb_var_screeninfo var_info;
+@@ -168,26 +240,38 @@ static void mode_tests(int fd)
+ 	igt_describe("Check panning / page flipping");
+ 	igt_subtest("pan") {
+ 		struct fb_var_screeninfo pan_var;
++		bool has_mixed_size_displays;
+ 		int expected_ret;
+ 
+ 		memset(&pan_var, 0, sizeof(pan_var));
++		has_mixed_size_displays = mixed_size_multihead_active();
+ 
+ 		/*
+ 		 * Tests that are expected to succeed.
+ 		 */
+ 
+-		igt_debug("Jump to opposite end of virtual screen\n");
+-		pan_var.xoffset = XOFFSET(var_info.xres_virtual - var_info.xres - var_info.xoffset);
+-		pan_var.yoffset = YOFFSET(var_info.yres_virtual - var_info.yres - var_info.yoffset);
+-		pan_test(fd, &pan_var, 0);
++		if (!has_mixed_size_displays) {
++			igt_debug("Jump to opposite end of virtual screen\n");
++			pan_var.xoffset =
++				XOFFSET(var_info.xres_virtual - var_info.xres - var_info.xoffset);
++			pan_var.yoffset =
++				YOFFSET(var_info.yres_virtual - var_info.yres - var_info.yoffset);
++			pan_test(fd, &pan_var, 0);
++		} else {
++			igt_debug("Skipping non-zero pans on mixed-size multi-display topology\n");
++		}
+ 		igt_debug("Jump to (0, 0)\n");
+ 		pan_var.xoffset = XOFFSET(0);
+ 		pan_var.yoffset = YOFFSET(0);
+ 		pan_test(fd, &pan_var, 0);
+-		igt_debug("Jump to maximum extend\n");
+-		pan_var.xoffset = XOFFSET(var_info.xres_virtual - var_info.xres);
+-		pan_var.yoffset = YOFFSET(var_info.yres_virtual - var_info.yres);
+-		pan_test(fd, &pan_var, 0);
++		if (!has_mixed_size_displays) {
++			igt_debug("Jump to maximum extend\n");
++			pan_var.xoffset = XOFFSET(var_info.xres_virtual - var_info.xres);
++			pan_var.yoffset = YOFFSET(var_info.yres_virtual - var_info.yres);
++			pan_test(fd, &pan_var, 0);
++		} else {
++			igt_debug("Skipping non-zero pan on mixed-size multi-display topology\n");
++		}
+ 
+ 		/*
+ 		 * Tests that are expected to fail.
 -- 
 2.25.1
 
