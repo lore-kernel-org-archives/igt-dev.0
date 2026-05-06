@@ -4,64 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC96CD342C
-	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 10:26:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40F9ACD3436
+	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 10:39:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1697310E1AC;
-	Wed,  6 May 2026 10:26:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D61B610ED3C;
+	Wed,  6 May 2026 10:39:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Eq2hGrs2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DL4rEj2Y";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5726910ED58
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 10:26:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 997A910ED3C
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 10:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778063186; x=1809599186;
+ t=1778063942; x=1809599942;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=o3sHKmQuiX057zzLoTXpaWAwcA/5jhOMp8ykJWJoDCE=;
- b=Eq2hGrs264YfRENrcuar4eVdeiSAq048TpOS0adHZx0agrFR401HN4WK
- zgmBWgHh3HmqU5h6ytwX/9D/I3D/u7DqAMhhnW6KWGAySia3NgnaspcLj
- /nk/9hYufHbP975oygNWHRl8WWXbvfp1/8PfhZOSghB/HbC8DmxOOsrKS
- NzfQDQ1sxkLTOVQOtO4yeTKplc8Xo6A13xFcyRusuW4ovks3TkPKsIzda
- 25aj82n+KwOSbx6Zt3CSYZx7QuO3PRrLXKIm8aZDaoT2JCFWQ9Q/UkCJc
- LDE+A433WPIVHQY9oy2K/CQOQXLGJBjJalpGJ9BmExJHRezXKwSMomrpy g==;
-X-CSE-ConnectionGUID: bxPcnvTVTxqrdeWlM/v5lg==
-X-CSE-MsgGUID: 5Esxr+JYTk6cURje1GpM0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="96558755"
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="96558755"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 03:26:26 -0700
-X-CSE-ConnectionGUID: Ok9rX0iJT8SNtfqRDusU/w==
-X-CSE-MsgGUID: tR1wCPtATrGjqib26fKh5A==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=Hgh5e5MiSTbqHLIKgFE/2k3hDTF+R3wRpn0EtaXZFJ4=;
+ b=DL4rEj2YK9iOurnhhth6xmrm4JFJTrq4QuxNSgjybxNCvQBUgki86gMm
+ YuDMLB6ydOVDm0lV4wsBo4YXbW3OxpfSbuGLIB4/qQVWwmqs6nzz/M4wi
+ Yopu2USuBokYWNdfKr3JHfgUkzEr8hbPUbDiwfUDZrB+SLeA69ngbWQ2C
+ nG1NwOo/8GpOAcjEMkuC39njrkKs6s+DGr+JOMJnmKp0cNSlshPCPHJka
+ /I1vZxGmm+4L2DT5CusgcEV/w3+0NQOjOZbFw0z6HEwh13qpKqGHGFleS
+ ksi9qZHhR39Nsg3MBYVQscNbHvRLVyUvlhrlAtLZIH+8dxgNet/frsWEB w==;
+X-CSE-ConnectionGUID: T12lACE0Qge4jse8/gi0Iw==
+X-CSE-MsgGUID: cbNdm8jjQ8am+VAEmGYZxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="81556332"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="81556332"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2026 03:39:01 -0700
+X-CSE-ConnectionGUID: AueDFtnlS6idttXcg3exSQ==
+X-CSE-MsgGUID: NLPpbNvNSjyFkFBKzoVD7Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="235095037"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 03:26:24 -0700
-Date: Wed, 6 May 2026 12:26:21 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: S Sebinraj <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org, carlos.santa@intel.com,
- matthew.brost@intel.com, jeevaka.badrappan@intel.com,
- karthik.b.s@intel.com, krzysztof.karas@intel.com,
- kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com
-Subject: Re: [PATCH i-g-t v3] tests/intel/xe_exec: Add VM rebind stress test
- with cpumask cycling
-Message-ID: <20260506102621.3rntdkl7w3fmvy62@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
- carlos.santa@intel.com, matthew.brost@intel.com,
- jeevaka.badrappan@intel.com, karthik.b.s@intel.com,
- krzysztof.karas@intel.com, kamil.konieczny@intel.com,
- zbigniew.kempczynski@intel.com
-References: <20260424042457.2178562-1-s.sebinraj@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="231724601"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.175])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2026 03:38:46 -0700
+Date: Wed, 6 May 2026 12:38:43 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] tests/xe_exec_system_allocator: Don't use NaN in
+ an input buffer
+Message-ID: <g2qgr3ml5glsmdwzxd75qcquiv4ea4igmgz6gc5hvcliqi7ask@667uhbsqymnc>
+References: <20260504152820.3825451-2-zbigniew.kempczynski@intel.com>
+ <afi8khq4u8hbAXrl@gsse-cloud1.jf.intel.com>
+ <wst2lagw6o7nhkqbdgz736ehz5dwbfvhzld23aelxarvli6p63@lidk4ey5ocqf>
+ <afsMTGPrWpqAEqKm@fdugast-desk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260424042457.2178562-1-s.sebinraj@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <afsMTGPrWpqAEqKm@fdugast-desk>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,71 +73,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi S,
-On 2026-04-24 at 09:54:57 +0530, S Sebinraj wrote:
+On Wed, May 06, 2026 at 11:39:35AM +0200, Francois Dugast wrote:
+> On Mon, May 04, 2026 at 07:03:27PM +0200, Zbigniew Kempczyński wrote:
+> > On Mon, May 04, 2026 at 08:34:42AM -0700, Matthew Brost wrote:
+> > > On Mon, May 04, 2026 at 05:28:21PM +0200, Zbigniew Kempczyński wrote:
+> > > > Setting input buffer memory to random byte (in this particular case
+> > > > 0xff) and then use it as a float causes doing compute square on NaN
+> > > > numbers. It's nothing wrong about this but comparing NaN in between
+> > > > returns false according to IEEE-754 rules. Buffer compare function
+> > > > does assertion if output is not equal to expected output so we hit
+> > > > this randomly in 'eu-fault*' tests.
+> > > > 
+> > > > Replace memset to loop which sets all input floats to real numbers
+> > > > thus avoiding NaN arithmetic and comparison.
+> > > > 
+> > > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > > > Cc: Francois Dugast <francois.dugast@intel.com>
+> > > > ---
+> > > >  tests/intel/xe_exec_system_allocator.c | 3 ++-
+> > > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+> > > > index 5580099f78..0f1d6ee9c7 100644
+> > > > --- a/tests/intel/xe_exec_system_allocator.c
+> > > > +++ b/tests/intel/xe_exec_system_allocator.c
+> > > > @@ -2339,7 +2339,8 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
+> > > >  		igt_assert(compute_input);
+> > > >  		env.input_addr = to_user_pointer(compute_input);
+> > > >  
+> > > > -		memset(compute_input, rand() % 255 + 1, size);
+> > > > +		for (int j = 0; j < env.array_size; j++)
+> > > > +			compute_input[j] = rand() / (float)RAND_MAX;
+> > > 
+> > > This logic can still get 0xff or 0x0...
+> > 
+> > And this logic is fine as 0xff and 0x0 are valid floats, but were
+> > thinking in 32-bit granularity, not 8-bit.
+> 
+> For consistency we could do the same in test_compute_square_userenv().
 
-I forgot one more nit, see below.
+There floats are valid (casted from integers) so I left them intact.
 
-> Add a new subtest threads-wq-stress-rebind-bindexecqueue that stresses
-> the VM rebind path under workqueue CPU pool migration pressure.
-> 
-> The test spawns per-engine threads that continuously perform VM unbind/
-> rebind cycles using per-slot bind exec queues, while a helper child
-> process rapidly cycles the global unbound workqueue cpumask through
-> progressively wider CPU sets (f -> ff -> fff -> ffff) at 100ms intervals.
-> 
-> A new WQ_STRESS flag enables timed fence waits in test_legacy_mode at
-> three syncobj_wait() checkpoints (per-exec-queue, bind-chain, and unbind/
-> TLB-invalidation fences) using a 5-second deadline. If any fence misses
-> the deadline, a shared atomic is set and all threads bail out immediately
-> rather than running for the full 30-second window.
-> 
-> All GPU work runs in a forked child that writes its result via a pipe,
-> the parent polls with a 60-second timeout and restores the original
-> cpumask regardless of outcome.
-> 
-> When a hang is detected the child drops the kernel page cache
-> and issues xe_force_gt_reset_all() to unblock any DMA fences still
-> pending from the stress run, then writes the hang result and calls
-> _exit() immediately without closing the DRM fd. Closing the fd while GPU
-> work is stuck would block indefinitely in dma_resv_wait_timeout(intr=false,
-> TASK_UNINTERRUPTIBLE). For the same reason, GPU resource teardown
-> (exec queues, BOs, VMs) is skipped in test_legacy_mode when a hang
-> is detected.
-> 
-> On the failure path the test is aborted, as the process (child) gets into
-> a D+ state (hung) and may affect other tests if marked as fail alone. So
-> aborting would mean forcing a reboot in testing environment.
-> 
-> A bug of same signature regressed in Xe driver, where the whole system
-> hung due to a fencing signal not completing, which was finaly
-> traced to an issue in the kernel workqueue scheduling.
-> Hard reboot was the only way to bring the system back to work.
-> https://patchwork.freedesktop.org/patch/715805/
-> 
-> v2:
-> - Abort the hung test instead of marking as fail alone
-> - Code Comment corrections
-> - Fix type casting
-> - Write check for cpumask
-> 
-> v3:
-> - Rename title of commit
-> - Correct commenting style
-> 
-> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-> Cc: Santa Carlos <carlos.santa@intel.com>
+--
+Zbigniew
 
-This should be:
-
-Cc: Carlos Santa <carlos.santa@intel.com>
-
-Regards,
-Kamil
-
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> ---
->  tests/intel/xe_exec_threads.c | 334 +++++++++++++++++++++++++++++++++-
->  1 file changed, 327 insertions(+), 7 deletions(-)
-
-[cut]
+> 
+> Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+> 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > 
+> > > If you want to avoid 0xff or 0x0 I think this logic would work:
+> > > 
+> > > memset(compute_input, rand() % 254 + 1, size);
+> > 
+> > > 
+> > > >  
+> > > >  		xe_run_intel_compute_kernel_on_engine(fd, eci, &env, EXECENV_PREF_SYSTEM);
+> > > >  
+> > > > -- 
+> > > > 2.43.0
+> > > > 
