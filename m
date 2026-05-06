@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03B59CD342C
-	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 15:54:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED7FACD342C
+	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 16:10:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AC27F10EDED;
-	Wed,  6 May 2026 15:54:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 92E0B10E1B1;
+	Wed,  6 May 2026 16:10:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="In+Zl+I+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W/IvqCRp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4139710EDED
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 15:54:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FF8510E1DE
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 16:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778082846; x=1809618846;
+ t=1778083803; x=1809619803;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=+JRYyg8gbXyL1VgtjN+DYYVBKvkUM84ReO2JpSebxn8=;
- b=In+Zl+I+j3gzjT0toYJtU0Xv/nEgNOU+/JVTBd12E0n1urFc3/1nNwry
- XdpHj8llnZFrbvReyulDEqOAiKCZyCSGDqwtw5O2i8QL9lk62mkzwOt5Z
- VCj8LL3g0lGa5ck6VdYZAL6VXBQ6NIWB/Hkn/6WLhITB2Kgf9tUJHaQeh
- 7v9QSQssTf5d6zghb5y5tRd4PBLhAGuYE+gxFmHKbg8tJOU45lkvIlw3H
- 26uynLqmJMegzjrktqeKA73caWl62+gXZTD0pInNZ62GMjkWZBz63SckM
- beFInl+XK6z6V+Q8gdITBzl0PFCjTLstmUQH60czCWX4mVhB5EgEijDP1 Q==;
-X-CSE-ConnectionGUID: 1sOaoXZWS0Wg9hXmz9t7lw==
-X-CSE-MsgGUID: upfTtrAuRbCwB9kA5GOvtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="96447409"
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="96447409"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 08:54:05 -0700
-X-CSE-ConnectionGUID: wnlyPiDfROaVX6aQ4LmNIQ==
-X-CSE-MsgGUID: cy2utA7IQXenx/Cuzp9N9w==
+ bh=0dB+hZ8u7SSyvtQlFzTYcnpgaGhH+WOUrlGZKLir44A=;
+ b=W/IvqCRpGctjFvDaOt5jQkZuo9pOhxi6uBVKViMjdOJZZiDFeYfob2vM
+ c2mfdkN6bW+HnKjUBzj+Nt58jTeVh7CAD1ESEnj5fGG6d3PkdVs4y/JEC
+ sxWEX+3Ufeaoj+izqClDcZv5T34ptTyl2nMoTTkAC88tCFDX02WI1UKCP
+ Z++9NLRbyTalMkFRgsqp4f/Vz2ABxtlcQI4B4WN7UgCxSjs2vRSX026mc
+ pEMGb/fHc2m5wCowaYQnIshVSgIp7PXcks8XxvND/oY64Fit7rxy4kTaM
+ dveosntDSMxakOjbsc3WghF7k69QCIibbmDe8aeJvCJeMprGJwPyEmPJv g==;
+X-CSE-ConnectionGUID: q+5CmeosQe2FObvOqiApHg==
+X-CSE-MsgGUID: W296M1fET+qi+8TQZgtpnQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="82892084"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="82892084"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2026 09:10:03 -0700
+X-CSE-ConnectionGUID: aXC2wq8bQW+wb8iLEPDeaw==
+X-CSE-MsgGUID: E6rI6awqTT+v70SClK3ZwQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="240167085"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="233084522"
 Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.244.208])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 08:54:03 -0700
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2026 09:10:01 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -49,10 +49,10 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Karthik B S <karthik.b.s@intel.com>,
  =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH i-g-t] lib/drmtest: Create proper error report when open
+Subject: [PATCH i-g-t v5] lib/drmtest: Create proper error report when open
  driver fails
-Date: Wed,  6 May 2026 17:53:58 +0200
-Message-ID: <20260506155358.183560-1-kamil.konieczny@linux.intel.com>
+Date: Wed,  6 May 2026 18:09:52 +0200
+Message-ID: <20260506160952.202178-1-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -95,8 +95,8 @@ error report which will print:
 Last errno: 13, Permission denied
 
 v3: break only when errno actually happens in open() (Kamil)
-v4: removed 'else', removed errno printing as there is already
- %m which prints error (Zbigniew)
+v4: removed 'else', removed errno printing (Zbigniew)
+v5: use explicit strerror() (Kamil)
 
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Karthik B S <karthik.b.s@intel.com>
@@ -110,7 +110,7 @@ Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
  3 files changed, 23 insertions(+), 7 deletions(-)
 
 diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 4a788ea7a..8801c7197 100644
+index 4a788ea7a..084737edf 100644
 --- a/lib/drmtest.c
 +++ b/lib/drmtest.c
 @@ -323,6 +323,7 @@ static void log_opened_device_path(const char *device_path)
@@ -168,7 +168,7 @@ index 4a788ea7a..8801c7197 100644
  			return fd;
 +
 +		if (err) {
-+			igt_debug("Error at open %s %m\n", name);
++			igt_debug("Error at open %s %s\n", name, strerror(err));
 +			break;
 +		}
  	}
