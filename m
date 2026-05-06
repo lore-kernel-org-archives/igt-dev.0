@@ -4,161 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6407CD3436
-	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 10:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF89BCD342C
+	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 11:04:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7934610E52B;
-	Wed,  6 May 2026 10:57:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9E56F10ED20;
+	Wed,  6 May 2026 11:04:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cERmh69k";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gMYNzT/C";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A0E510ED53
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 10:57:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 084F810ED20
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 11:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778065043; x=1809601043;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=tuzDffva2sSQrNghpa7Zhby8MsWCprJeelaNBC5hzGg=;
- b=cERmh69kTKP2f4+Sq3Ad5X7oNrosVYm7PNA5kZJzPFc5hr8BIaGEJPmF
- gZTsIxYM63KHiUxK0+2ntI1rzV8ZD2yS70ShMtNdYUvr8z4Y9AZJzd70T
- CKFyxjRYch8WW/a49J9QloXCPQe/kiyT5j74HwHCvzlvyBFD2hwKPTNMF
- XVw2ISlur9+eoH1Ix6o6vHiN3p+/+G/q9R25QGSN78vKHnhSM+JMcEvcj
- +gbBtY9Ozmv7Qnlxr9SJGiHjsXeSlVlNIMq9Z+0n3oVkohEK7kGZuESxl
- a5Y9MwndSYIubVArjjBPrWyXwTz8hu02lxQUn2TbIfhE5z4hoKJXz3IOE w==;
-X-CSE-ConnectionGUID: PQImlKCQTHa+qrl266AoRQ==
-X-CSE-MsgGUID: Q7bG7zGTR3aalMdcy6+2qw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="89690139"
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="89690139"
+ t=1778065451; x=1809601451;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=0OxgZaM+/sIDA03jFT1XUUQ4AACmIf/WXy/Xymk8NXA=;
+ b=gMYNzT/CIqtjvLfnfxRTbwMwpszUc2VDfSbiicYVbDHHFHk+EBXa/quH
+ vOKypNZEWJR8ZEzrVinM1H5edE9J9BXl3IUCtcf7IrQZJlQKY6pb7E7yi
+ H5JbmKVlylCiXWq3MLWQngDayEov331tr6XGPg7tCn0uK8OwArE5t/M4U
+ BcnTT5CEBTDyYrMgZx89XUhu8tx704ys0tw2q7To3yp3Rw9C9kEQiDQhk
+ 9lKsmXKiTiSiL+MntaLEk2ljFI1Ixw9lWmeBfZj6qi5oXi+eW4JnwXiJw
+ 2t907oqItTD2OA8bt2P9bbNA8k4/RZQssKLAcOcLbUd3B0QloBRNKKcVO Q==;
+X-CSE-ConnectionGUID: nP0MP8K5RBOEMycbAnZ5mQ==
+X-CSE-MsgGUID: ViZ0EagBR4e9gOXE1xfMXA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="89690647"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="89690647"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 03:57:22 -0700
-X-CSE-ConnectionGUID: isvenikRROeoMPDA7Wkt9w==
-X-CSE-MsgGUID: AH+CQQ3kQ+m8jra04x9LVA==
+ 06 May 2026 04:04:10 -0700
+X-CSE-ConnectionGUID: 97p+avcpQe+nuz8Se9Zqgw==
+X-CSE-MsgGUID: ykV7d9wbRLeOQB54Ra18kw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="235102736"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 03:57:23 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 6 May 2026 03:57:22 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 6 May 2026 03:57:22 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.6) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 6 May 2026 03:57:21 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RSYQeDsCjec8s8w8EQL9HKoFHpL24oaO8B5gYKG3EvMyPrD1Ot4c79IjjUO7luVOlh+XTxgP9zIwkIc5eMLOmFp3oCBev+eEyo/TWlsEchg/loeVdH2vnbKGDQfkAWBkmDOY5yFstRuPQ9fV/izmXuUC5S1VbHqncqUkHOuztvWUj/aXPmb6JLuXivLLLlVtnrCsZO1YofACyBzx8Pjaljypuo01QoAqe036/7bzBB9TuMRLiwT6obzRK4iQwdcci5Tixh1qkiiW8R7TkEP9vpm+FtjftMecKc9Bi6Mk2L8bv7+JG3dfimJnaU4rSzJi/WMBooDePS3CXziab2fG8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yDZsyV6NA7IoHbkM3ILavQuewJF2W4vZ6PpchrXlHvA=;
- b=If9u4cJ4Okov3+C6qPKh0VZ27Dzg/GsmEc1Mob/ckWGvn1I9N6gsgqxaeRM8MxYq9dMCddNYVSlL6N5NVOb3aTHRHEap8oUlFFvaNI5EOsRTAIXnqjZMZgTAS5EenHcw0zBPdYdOpCYTjSvbvcAVb2LUSs2ZiswW10PQNWFn8uF5f8Oig5NYA9N4srdYGJAHvWV4wr9+m0rQSEJZxbU6zM2X5x9XzLkK4swjv0l37Ik0WiyYaEv0dijyjTG7HOHfXF6XvKod3XsdvEu05JCjps6dzFbzQ9OyZV3SL22OaABQXZ9HAUONTAxqVWHZiR7d5cC2mlklPXsq7sQxMCwDfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5309.namprd11.prod.outlook.com (2603:10b6:5:390::5) by
- SA1PR11MB8489.namprd11.prod.outlook.com (2603:10b6:806:3a9::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Wed, 6 May
- 2026 10:57:19 +0000
-Received: from DM4PR11MB5309.namprd11.prod.outlook.com
- ([fe80::89e3:7ceb:6511:dd36]) by DM4PR11MB5309.namprd11.prod.outlook.com
- ([fe80::89e3:7ceb:6511:dd36%4]) with mapi id 15.20.9891.008; Wed, 6 May 2026
- 10:57:19 +0000
-Message-ID: <01e1a5cd-eac9-49c8-bd20-05de2f554c59@intel.com>
-Date: Wed, 6 May 2026 16:27:11 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v5 1/3] tests/kms_content_protection: Add per-CRTC
- framebuffer infrastructure
-To: <igt-dev@lists.freedesktop.org>
-References: <20260330032205.467130-1-jason-jh.lin@mediatek.com>
- <20260330032205.467130-2-jason-jh.lin@mediatek.com>
- <CAMNLLoSPncgBBOGc--Mi=Kb8-Uok5ZOxS3Fj+oFQTRJtrkEKYg@mail.gmail.com>
- <CAMNLLoRrGA34vVZg6HAGwqrsVbZWEOtD9F4yKWmboiAwp+2paA@mail.gmail.com>
- <2a95efab-841c-47c5-bafe-f80f59e45a32@intel.com>
- <CAMNLLoRO_-bF0-SaUVgMq0R0T8mc6yk4GmPY=_FCJwhLWohigA@mail.gmail.com>
-Content-Language: en-US
-From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-In-Reply-To: <CAMNLLoRO_-bF0-SaUVgMq0R0T8mc6yk4GmPY=_FCJwhLWohigA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0067.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b7::6) To DM4PR11MB5309.namprd11.prod.outlook.com
- (2603:10b6:5:390::5)
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="235104093"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 04:04:10 -0700
+Date: Wed, 6 May 2026 13:04:06 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org,
+ Suraj Kandpal <suraj.kandpal@intel.com>, pawel.sikora@intel.com
+Subject: Re: [PATCH i-g-t, v5 3/4] tests/intel/kms_frontbuffer_tracking: Add
+ HDR feature support
+Message-ID: <20260506110406.u5rvpoxb4z4bfas4@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Suraj Kandpal <suraj.kandpal@intel.com>, pawel.sikora@intel.com
+References: <20260429175205.2327206-1-swati2.sharma@intel.com>
+ <20260429175205.2327206-4-swati2.sharma@intel.com>
+ <4c71ddd4d33464fef5729e991e7818ffe3c90ba8@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5309:EE_|SA1PR11MB8489:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ed6f26c-5f02-480b-59ce-08deab5e3e2b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|22082099003|18002099003|56012099003; 
-X-Microsoft-Antispam-Message-Info: beSJ9dh2oyc7PacCq5JrDgPR+6oBDbHz/B+LFIeCQk4qYOvkjaH9wBODqX2vMO0FAiXuA47CbEj9d3Bvaqcs5Wt5bRRs/q/04tNaikZFQbwwDjiwsFFRFPYObYRrIr2RkN27eO3fYl3XsJxvifHxbo3L3tO7+WNa3MYzr9VQ2mYkc10mGF7Z8uef4eBlDtFOQsG4aIfheRViHu0OIpmt5nu+iwNbgk6eSm4ng/3b6v2ZrvYKiFK42IomEEuLpXaKaBCYux1LSsp7jALdmUL7eDEzb6XaT4equQHY555yhVhJjmW9rGeFCfvkXieiK2w7ffbrOmHwtV0GaC/2J1hYs8UUqvBchMZGlYQumLrP3D07c4nW0hpJrbpoKxPVxWH5bkI1VLzkaURGaEDNXj1HMxg6iMcWgekLc55mODdLpwaROo4dkfWiIlM0HD6QJOo+AnsPLfJn8Z/8YqyPBdwi+nM9M1vS0uRS7TBECPS7Bs+JlNx4VCDYvypPxNFGAW8Z3kLQixAy419FMSd9IB1JO3UznRitEUD1vzUecCs0f7hRi1ad2FghM2eYdxP2gpT42wUDWpGrFp9CT3g50Nos42zz2JeFAmN7F9FYbYkXQdWYKF+STbz8Q7sTjiS3p0TT7jFTIdPD2jmlEHKqI10vag==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5309.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZWNNNFRrSHBHSTdXOU12amhRUHp3WTB3Tkw3YXl2cWtnRnRJWXI5ZEJZNk50?=
- =?utf-8?B?V1cvK2pKaGM2b1VQMFo5YTMzbTRXdU1nTjh3YmdpWVNQOHE5UHIyZ0dxMEVn?=
- =?utf-8?B?ekIxbmZYUHBnV2FXd1hUNlZTcWgxOFVIUHZIOE43UldwMFdIeDBZSm9SU3lx?=
- =?utf-8?B?c2J5azRSL0pwVFZmSndOM0NObmhJZWpDSlVUbFZQQkNlMHhnSUhTdkxLbjBs?=
- =?utf-8?B?MXpUSUYwTHFvVzY4ekRQOXU1cWhGOFdTUUNsZEZlZjBvMVB1RUh6RmhBYzBN?=
- =?utf-8?B?bXRCQ2FLV21GeWwreGx3L3dIWENNNVJua2tnZXo0V1BGVFBsL09lSE5rQmlS?=
- =?utf-8?B?OXhYNVpuVmd1ZkMzaExSaXJ3SWhyc1d0ZVg4Zzh4SERuRit5TDhNVjl6WnZ5?=
- =?utf-8?B?Vk9HRlp2N09QL3NSZU9KYUtNVVNWRlZkQy85OENlKzV5TDU1a3pTQ0dnN2RH?=
- =?utf-8?B?OGYvbXZEYkJqQXhvVHVvUzVHQ0FIUEtndTNoa1RtWkZSNEthTDJFdVdyOG1t?=
- =?utf-8?B?QnNWVXBha05ZQUJSaTRTMEgzQUFZOGRMYzFweXRvOG41ejJVTUJPa0pvZTkx?=
- =?utf-8?B?c3lkWEUrWWlNNElBVmYyUnVyQVQrem8wd0wwaWNCUEUycEF5T3lacHlpaHlj?=
- =?utf-8?B?eXlPSDNEOG9xdFZPL1ZKL1dlckoyRmdhUTRzaHpVeUZKQWQ4dU5Cay9NL0ZT?=
- =?utf-8?B?WFRrSWtoS3JWb3I0bUVnTzRDdnJzbzJ5NlkreW5MSndBdG9iNTMxUjlSNEl2?=
- =?utf-8?B?TGx4a05nekZ4T28vdUV0V0hWaFVIb1NoTXgxemg3bXFWM1ZiNzVpeXovVGc3?=
- =?utf-8?B?bWRYbVY1bUpXV2ViSnNiclhRQkF0ditxaVNCL0VPT0xXMUNhdVRCK0J4ZCtp?=
- =?utf-8?B?L3dPTytoZjNuOHorcTRLdnU0N2FEZXRvUGg3cjlRZXVZZ3NDM1JTNE1qSnlw?=
- =?utf-8?B?Umd5M2h1RmZqSGRLZ2lzSWFEZWNWRVhCVkNPOW5mMkNOa1hJTmZRVlM4TzV0?=
- =?utf-8?B?cUJETDRoUitaSDJxY283QVhLUmdhSld6djhsdWh1d3pLTUIzbVByLzJ6cE55?=
- =?utf-8?B?WUZtc2VxaDZwSzE3YjBhaEtwdGgxSkRiUHk4eWxYSWdGT0lqSFJhRTQ5QWY4?=
- =?utf-8?B?TThwcXlOWnpnRVNiTHFyajBEdDhrYXhLMlBMdytBNGp0ZlJLWWt3akhqcW1u?=
- =?utf-8?B?bTdFbGMxelhRcHNnODJ0NnNEVk1CZTYybXJPM3kyM3hFR3lwdldPYnY0WG9x?=
- =?utf-8?B?SzErUVF1RFI0dWs4Mm4yZ0xSTklvdTUzbjdZNG5SSnBSZUJHYk01VU53UUwz?=
- =?utf-8?B?S3J0bENWcGNiNFBWZ1hya1lZZGV2M05mRmpxc0FlNDNRVG1JZWd4Tmgzd3Ew?=
- =?utf-8?B?dEVhSG1GRnkwaWNYMTRBSmwvb041TGFIVzVJemQvdkRRczlySVhFcVlJUExF?=
- =?utf-8?B?djZNYWE4UG8vVjhyUzE2UlBBY2d2RTEyOEg2YTFtZ1dNUlRBL2FpbCtIV2RW?=
- =?utf-8?B?akFiZWFUcHFrcEZFbXZvNDlQWUNEWkxUTnlXc0hBKzBZUUFneWY2dnN6azN3?=
- =?utf-8?B?UG9PRUpoWGZraFBVVmhzNldpT2UvQ3o3WGdVRkZlSDBhODRVT244Z1ErM002?=
- =?utf-8?B?MlBOUXVZSkVOclNQQlNRUnM2V0pzcWN2NjllZC81R1U0cjZpUGJwWjNtREJy?=
- =?utf-8?B?M3VUcHZTNDlROE9yVHZRd1l0MzRCWWdmTE1lWTZSNEVMdlFYbTN1a0ZwcHo3?=
- =?utf-8?B?SlNqcFVIT1Ftby84RXVrcGJsZ3JYdTRSRlJObmtkZld0WnZiN1M0YmNYWUVv?=
- =?utf-8?B?NmE2V2pPbHMybVFDUFhHZ0hGU04xLzZiTkMvczBQQS9uZnFhd010cVJiVGJa?=
- =?utf-8?B?K2VoRUtzaUIxaHAvTDVYUWMrSFZkYlVHOUhMTTdTVzVTeXRSRno1NW0yQ0tB?=
- =?utf-8?B?M09uKzhrYmFnUW1mS2s3ZEp2K1RrakdTbzg5bGtxWjR2enZJSGt4VHMvUlhn?=
- =?utf-8?B?ZFlVK1NzbEpHKzVJTHRXdVM4YXR3OTJpR3hVTUtqWmtEZC9pVUozT1M4dzJK?=
- =?utf-8?B?MmNnK0w1TmxobVZQbWdUR0JGcTNHdVlmR1JWQzhTR2dqYklYb0xwL3dyQ0ox?=
- =?utf-8?B?RUttQ2lxbkVzTFZRU2NKZ09TTUxjUkViR2R4NldUSkd2aW41U1lkaERESFds?=
- =?utf-8?B?aHpEVmsvN0JFbEd0b3lwbVJRTUZOK2I0WGV6RytzR0lrL0JScVIwTGhlY2Zq?=
- =?utf-8?B?dDhZRCtJcmNMaFp6b2t4TWtETGtCS0ZjTnB0OFdnV1NsMjdTZzJYREZvT0tC?=
- =?utf-8?B?MXB4Q0laRElXanRmR1N2UzhaS3dmQnRnNWNtd2JiMkVnYXhmZzFTTmgrR0hu?=
- =?utf-8?Q?KTNNrIp2nlnBktCTWU8yHxwiliYunUO0JeHx2?=
-X-Exchange-RoutingPolicyChecked: gdy4PwrHtv8axsGx56dOu+iHkYQ1KiRwGA990ohEtrWW4V4FQ7pBOUxha0kf/pYaMbf8wAgzU0H0KHIT+0tnFR8Q0DCUszEXq7vOmRr+CXialm+4wjWdSKHDqN5aeDAfP0auDPD9ZmeXG9Jogb+nFE52josxl6IRQIT7BqqhqTrTHi0GRlWykl8XyEosqdLlNQiD9WQGT1hGksSblp3yczA3lR4HIlTxv9fshj5osxq+O5wi5BKjtocrDzX2V5ojQCYBVtapIuLKPiO1f4hmsVh5L3GViYqnoFsGkvAiZo3GXdQdtGCfBh92aYvuhVUI9tYZHyx3j2fhIOyAoBHaiA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ed6f26c-5f02-480b-59ce-08deab5e3e2b
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5309.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 10:57:19.4816 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: INHKez9aQ/5yMjtPtzyX7Lv0tw+fLk4fwPsso0mZ0jsC3QYzs2XrILvo4SlUdK4A2vIW5f1x+xhMGFPfJlSaahuh6qOGWjWr6I1UzJOeJw06O9HbBSSBa/Jn/xZ29aHK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8489
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4c71ddd4d33464fef5729e991e7818ffe3c90ba8@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -174,205 +76,1042 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Jani,
+On 2026-04-30 at 10:43:05 +0300, Jani Nikula wrote:
+> On Wed, 29 Apr 2026, Swati Sharma <swati2.sharma@intel.com> wrote:
+> > Add FEATURE_HDR and extend feature_str() to cover all feature mask
+> > combinations.
+> >
+> > v2: -add documentation
+> >
+> > Co-developed-by: Claude Opus 4.6
+> > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> > Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+> > ---
+> >  tests/intel/kms_frontbuffer_tracking.c | 585 ++++++++++++++++++++++++-
+> >  1 file changed, 580 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> > index c16f63199..273f1f584 100644
+> > --- a/tests/intel/kms_frontbuffer_tracking.c
+> > +++ b/tests/intel/kms_frontbuffer_tracking.c
+> > @@ -66,12 +66,30 @@
+> >   * SUBTEST: psr-%dp-rte
+> >   * Description: Sanity test to enable PSR with %arg[1] panels.
+> >   *
+> > + * SUBTEST: hdr-%dp-rte
+> > + * Description: Sanity test to enable PSR with %arg[1] panels.
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-rte
+> >   * Description: Sanity test to enable FBC & DRRS with %arg[1] panels.
+> >   *
+> >   * SUBTEST: fbcpsr-%dp-rte
+> >   * Description: Sanity test to enable FBC & PSR with %arg[1] panels.
+> >   *
+> > + * SUBTEST: fbchdr-%dp-rte
+> > + * Description: Sanity test to enable FBC & HDR with %arg[1] panels.
+> > + *
+> > + * SUBTEST: drrshdr-%dp-rte
+> > + * Description: Sanity test to enable HDR & DRRS with %arg[1] panels.
+> > + *
+> > + * SUBTEST: psrhdr-%dp-rte
+> > + * Description: Sanity test to enable HDR & PSR with %arg[1] panels.
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-rte
+> > + * Description: Sanity test to enable HDR, FBC & DRRS with %arg[1] panels.
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-rte
+> > + * Description: Sanity test to enable HDR, FBC & PSR with %arg[1] panels.
+> > + *
+> >   * arg[1].values:   1, 2
+> >   */
+> >  
+> > @@ -85,12 +103,30 @@
+> >   * SUBTEST: psr-1p-offscreen-pri-%s-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> >   * SUBTEST: fbcpsr-1p-offscreen-pri-%s-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @indfb:          Individual fb
+> > @@ -116,6 +152,10 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> >   * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> > @@ -124,6 +164,21 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @indfb:          Individual fb
+> > @@ -149,6 +204,10 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: hdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> > @@ -157,6 +216,26 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> >   * arg[1].values:   1, 2
+> >   *
+> >   * arg[2]:
+> > @@ -182,12 +261,30 @@
+> >   * SUBTEST: psr-%dp-primscrn-%s-indfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: hdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> >   * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * arg[1].values:   1, 2
+> >   *
+> >   * arg[2]:
+> > @@ -213,12 +310,30 @@
+> >   * SUBTEST: psr-%dp-primscrn-pri-shrfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: hdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-primscrn-pri-shrfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> >   * SUBTEST: fbcpsr-%dp-primscrn-pri-shrfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: fbchdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: drrshdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: psrhdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * arg[1].values:   1, 2
+> >   *
+> >   * arg[2]:
+> > @@ -241,6 +356,10 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: hdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-primscrn-pri-shrfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> > @@ -249,6 +368,26 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: fbchdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: drrshdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: psrhdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-primscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> >   * arg[1].values:   1, 2
+> >   *
+> >   * arg[2]:
+> > @@ -268,12 +407,30 @@
+> >   * SUBTEST: psr-2p-scndscrn-%s-indfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: hdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> >   * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @cur:            Cursor plane
+> > @@ -300,6 +457,10 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: hdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> >   * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> > @@ -308,6 +469,26 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @cur:            Cursor plane
+> > @@ -331,12 +512,30 @@
+> >   * SUBTEST: psr-2p-scndscrn-pri-shrfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: hdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * SUBTEST: fbcdrrs-2p-scndscrn-pri-shrfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> >   * SUBTEST: fbcpsr-2p-scndscrn-pri-shrfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   *
+> > + * SUBTEST: fbchdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: drrshdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: psrhdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcdrrshdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> > + * SUBTEST: fbcpsrhdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @blt:            Blitter
+> > @@ -357,6 +556,10 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: hdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> >   * SUBTEST: fbcdrrs-2p-scndscrn-pri-shrfb-draw-%s
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> > @@ -365,6 +568,26 @@
+> >   * Description: Draw a set of rectangles on the screen using the provided method
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: fbchdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: drrshdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: psrhdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcdrrshdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcpsrhdr-2p-scndscrn-pri-shrfb-draw-%s
+> > + * Description: Draw a set of rectangles on the screen using the provided method
+> > + * Driver requirement: i915
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @mmap-cpu:       MMAP-CPU
+> > @@ -382,12 +605,30 @@
+> >   * SUBTEST: psr-%dp-pri-indfb-multidraw
+> >   * Description: Draw a set of rectangles on the screen using alternated drawing methods
+> >   *
+> > + * SUBTEST: hdr-%dp-pri-indfb-multidraw
+> > + * Description: Draw a set of rectangles on the screen using alternated drawing methods
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-pri-indfb-multidraw
+> >   * Description: Draw a set of rectangles on the screen using alternated drawing methods
+> >   *
+> >   * SUBTEST: fbcpsr-%dp-pri-indfb-multidraw
+> >   * Description: Draw a set of rectangles on the screen using alternated drawing methods
+> >   *
+> > + * SUBTEST: fbchdr-%dp-pri-indfb-multidraw
+> > + * Description: Draw a set of rectangles on the screen using alternated drawing methods
+> > + *
+> > + * SUBTEST: drrshdr-%dp-pri-indfb-multidraw
+> > + * Description: Draw a set of rectangles on the screen using alternated drawing methods
+> > + *
+> > + * SUBTEST: psrhdr-%dp-pri-indfb-multidraw
+> > + * Description: Draw a set of rectangles on the screen using alternated drawing methods
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-pri-indfb-multidraw
+> > + * Description: Draw a set of rectangles on the screen using alternated drawing methods
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-pri-indfb-multidraw
+> > + * Description: Draw a set of rectangles on the screen using alternated drawing methods
+> > + *
+> >   * arg[1].values:   1, 2
+> >   */
+> >  
+> > @@ -401,12 +642,30 @@
+> >   * SUBTEST: psr-%s-draw-%s
+> >   * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> >   *
+> > + * SUBTEST: hdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + *
+> >   * SUBTEST: fbcdrrs-%s-draw-%s
+> >   * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> >   *
+> >   * SUBTEST: fbcpsr-%s-draw-%s
+> >   * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> >   *
+> > + * SUBTEST: fbchdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + *
+> > + * SUBTEST: drrshdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + *
+> > + * SUBTEST: psrhdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @rgb101010:      FORMAT_RGB101010
+> > @@ -434,6 +693,10 @@
+> >   * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: hdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + * Driver requirement: i915
+> > + *
+> >   * SUBTEST: fbcdrrs-%s-draw-%s
+> >   * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> >   * Driver requirement: i915
+> > @@ -442,6 +705,26 @@
+> >   * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: fbchdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: drrshdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: psrhdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%s-draw-%s
+> > + * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
+> > + * Driver requirement: i915
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @rgb101010:      FORMAT_RGB101010
+> > @@ -468,6 +751,18 @@
+> >   *
+> >   * SUBTEST: fbcpsr-slowdraw
+> >   * Description: Sleep a little bit between drawing operations with FBC & PSR
+> > + *
+> > + * SUBTEST: drrshdr-slowdraw
+> > + * Description: Sleep a little bit between drawing operations with DRRS & HDR
+> > + *
+> > + * SUBTEST: psrhdr-slowdraw
+> > + * Description: Sleep a little bit between drawing operations with PSR & HDR
+> > + *
+> > + * SUBTEST: fbcdrrshdr-slowdraw
+> > + * Description: Sleep a little bit between drawing operations with DRRS, HDR & FBC
+> > + *
+> > + * SUBTEST: fbcpsrhdr-slowdraw
+> > + * Description: Sleep a little bit between drawing operations with PSR, HDR & FBC
+> >   */
+> >  
+> >  /**
+> > @@ -480,12 +775,30 @@
+> >   * SUBTEST: psr-%dp-primscrn-%s-%sflip-blt
+> >   * Description: Just exercise page flips with the patterns we have
+> >   *
+> > + * SUBTEST: hdr-%dp-primscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-primscrn-%s-%sflip-blt
+> >   * Description: Just exercise page flips with the patterns we have
+> >   *
+> >   * SUBTEST: fbcpsr-%dp-primscrn-%s-%sflip-blt
+> >   * Description: Just exercise page flips with the patterns we have
+> >   *
+> > + * SUBTEST: fbchdr-%dp-primscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> > + * SUBTEST: drrshdr-%dp-primscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> > + * SUBTEST: psrhdr-%dp-primscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> >   * arg[1].values:   1, 2
+> >   *
+> >   * arg[2]:
+> > @@ -510,12 +823,30 @@
+> >   * SUBTEST: psr-2p-scndscrn-%s-%sflip-blt
+> >   * Description: Just exercise page flips with the patterns we have
+> >   *
+> > + * SUBTEST: hdr-2p-scndscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> >   * SUBTEST: fbcdrrs-2p-scndscrn-%s-%sflip-blt
+> >   * Description: Just exercise page flips with the patterns we have
+> >   *
+> >   * SUBTEST: fbcpsr-2p-scndscrn-%s-%sflip-blt
+> >   * Description: Just exercise page flips with the patterns we have
+> >   *
+> > + * SUBTEST: fbchdr-2p-scndscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> > + * SUBTEST: drrshdr-2p-scndscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> > + * SUBTEST: psrhdr-2p-scndscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> > + * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> > + * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-%sflip-blt
+> > + * Description: Just exercise page flips with the patterns we have
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @indfb:          Individual fb
+> > @@ -541,6 +872,18 @@
+> >   * Description: Check if the hardware tracking works after page flips
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: fbchdr-%dp-%s-fliptrack-mmap-gtt
+> > + * Description: Check if the hardware tracking works after page flips
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-%s-fliptrack-mmap-gtt
+> > + * Description: Check if the hardware tracking works after page flips
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-%s-fliptrack-mmap-gtt
+> > + * Description: Check if the hardware tracking works after page flips
+> > + * Driver requirement: i915
+> > + *
+> >   * arg[1].values:   1, 2
+> >   *
+> >   * arg[2]:
+> > @@ -559,12 +902,30 @@
+> >   * SUBTEST: psr-%dp-primscrn-%s-indfb-move
+> >   * Description: Just move the %arg[2] around
+> >   *
+> > + * SUBTEST: hdr-%dp-primscrn-%s-indfb-move
+> > + * Description: Just move the %arg[2] around
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-move
+> >   * Description: Just move the %arg[2] around
+> >   *
+> >   * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-move
+> >   * Description: Just move the %arg[2] around
+> >   *
+> > + * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-move
+> > + * Description: Just move the %arg[2] around
+> > + *
+> > + * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-move
+> > + * Description: Just move the %arg[2] around
+> > + *
+> > + * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-move
+> > + * Description: Just move the %arg[2] around
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-move
+> > + * Description: Just move the %arg[2] around
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-move
+> > + * Description: Just move the %arg[2] around
+> > + *
+> >   * arg[1].values:   1, 2
+> >   *
+> >   * arg[2]:
+> > @@ -583,12 +944,30 @@
+> >   * SUBTEST: psr-2p-scndscrn-%s-indfb-move
+> >   * Description: Just move the %arg[1] around
+> >   *
+> > + * SUBTEST: hdr-2p-scndscrn-%s-indfb-move
+> > + * Description: Just move the %arg[1] around
+> > + *
+> >   * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-move
+> >   * Description: Just move the %arg[1] around
+> >   *
+> >   * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-move
+> >   * Description: Just move the %arg[1] around
+> >   *
+> > + * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-move
+> > + * Description: Just move the %arg[1] around
+> > + *
+> > + * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-move
+> > + * Description: Just move the %arg[1] around
+> > + *
+> > + * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-move
+> > + * Description: Just move the %arg[1] around
+> > + *
+> > + * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-move
+> > + * Description: Just move the %arg[1] around
+> > + *
+> > + * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-move
+> > + * Description: Just move the %arg[1] around
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @spr:            Sprite plane
+> > @@ -605,12 +984,30 @@
+> >   * SUBTEST: psr-%dp-primscrn-%s-indfb-onoff
+> >   * Description: Just enable and disable the %arg[2] a few times
+> >   *
+> > + * SUBTEST: hdr-%dp-primscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[2] a few times
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-onoff
+> >   * Description: Just enable and disable the %arg[2] a few times
+> >   *
+> >   * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-onoff
+> >   * Description: Just enable and disable the %arg[2] a few times
+> >   *
+> > + * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[2] a few times
+> > + *
+> > + * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[2] a few times
+> > + *
+> > + * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[2] a few times
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[2] a few times
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[2] a few times
+> > + *
+> >   * arg[1].values:   1, 2
+> >   *
+> >   * arg[2]:
+> > @@ -629,12 +1026,30 @@
+> >   * SUBTEST: psr-2p-scndscrn-%s-indfb-onoff
+> >   * Description: Just enable and disable the %arg[1] a few times
+> >   *
+> > + * SUBTEST: hdr-2p-scndscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[1] a few times
+> > + *
+> >   * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-onoff
+> >   * Description: Just enable and disable the %arg[1] a few times
+> >   *
+> >   * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-onoff
+> >   * Description: Just enable and disable the %arg[1] a few times
+> >   *
+> > + * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[1] a few times
+> > + *
+> > + * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[1] a few times
+> > + *
+> > + * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[1] a few times
+> > + *
+> > + * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[1] a few times
+> > + *
+> > + * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-onoff
+> > + * Description: Just enable and disable the %arg[1] a few times
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @spr:            Sprite plane
+> > @@ -651,12 +1066,30 @@
+> >   * SUBTEST: psr-%dp-primscrn-spr-indfb-fullscreen
+> >   * Description: Put a fullscreen plane covering the whole screen
+> >   *
+> > + * SUBTEST: hdr-%dp-primscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> >   * SUBTEST: fbcdrrs-%dp-primscrn-spr-indfb-fullscreen
+> >   * Description: Put a fullscreen plane covering the whole screen
+> >   *
+> >   * SUBTEST: fbcpsr-%dp-primscrn-spr-indfb-fullscreen
+> >   * Description: Put a fullscreen plane covering the whole screen
+> >   *
+> > + * SUBTEST: fbchdr-%dp-primscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> > + * SUBTEST: drrshdr-%dp-primscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> > + * SUBTEST: psrhdr-%dp-primscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%dp-primscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%dp-primscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> >   * SUBTEST: drrs-2p-scndscrn-spr-indfb-fullscreen
+> >   * Description: Put a fullscreen plane covering the whole screen
+> >   *
+> > @@ -666,12 +1099,30 @@
+> >   * SUBTEST: psr-2p-scndscrn-spr-indfb-fullscreen
+> >   * Description: Put a fullscreen plane covering the whole screen
+> >   *
+> > + * SUBTEST: hdr-2p-scndscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> >   * SUBTEST: fbcdrrs-2p-scndscrn-spr-indfb-fullscreen
+> >   * Description: Put a fullscreen plane covering the whole screen
+> >   *
+> >   * SUBTEST: fbcpsr-2p-scndscrn-spr-indfb-fullscreen
+> >   * Description: Put a fullscreen plane covering the whole screen
+> >   *
+> > + * SUBTEST: fbchdr-2p-scndscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> > + * SUBTEST: drrshdr-2p-scndscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> > + * SUBTEST: psrhdr-2p-scndscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> > + * SUBTEST: fbcdrrshdr-2p-scndscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> > + * SUBTEST: fbcpsrhdr-2p-scndscrn-spr-indfb-fullscreen
+> > + * Description: Put a fullscreen plane covering the whole screen
+> > + *
+> >   * arg[1].values:   1, 2
+> >   */
+> >  
+> > @@ -685,12 +1136,30 @@
+> >   * SUBTEST: psr-%s-scaledprimary
+> >   * Description: Try different primary plane scaling strategies
+> >   *
+> > + * SUBTEST: hdr-%s-scaledprimary
+> > + * Description: Try different primary plane scaling strategies
+> > + *
+> >   * SUBTEST: fbcdrrs-%s-scaledprimary
+> >   * Description: Try different primary plane scaling strategies
+> >   *
+> >   * SUBTEST: fbcpsr-%s-scaledprimary
+> >   * Description: Try different primary plane scaling strategies
+> >   *
+> > + * SUBTEST: fbchdr-%s-scaledprimary
+> > + * Description: Try different primary plane scaling strategies
+> > + *
+> > + * SUBTEST: drrshdr-%s-scaledprimary
+> > + * Description: Try different primary plane scaling strategies
+> > + *
+> > + * SUBTEST: psrhdr-%s-scaledprimary
+> > + * Description: Try different primary plane scaling strategies
+> > + *
+> > + * SUBTEST: fbcdrrshdr-%s-scaledprimary
+> > + * Description: Try different primary plane scaling strategies
+> > + *
+> > + * SUBTEST: fbcpsrhdr-%s-scaledprimary
+> > + * Description: Try different primary plane scaling strategies
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @indfb:          Individual fb
+> > @@ -707,11 +1176,29 @@
+> >   * SUBTEST: psr-modesetfrombusy
+> >   * Description: Modeset from a busy buffer to a non-busy buffer with PSR
+> >   *
+> > + * SUBTEST: hdr-modesetfrombusy
+> > + * Description: Modeset from a busy buffer to a non-busy buffer with HDR
+> > + *
+> >   * SUBTEST: fbcdrrs-modesetfrombusy
+> >   * Description: Modeset from a busy buffer to a non-busy buffer with FBC & DRRS
+> >   *
+> >   * SUBTEST: fbcpsr-modesetfrombusy
+> >   * Description: Modeset from a busy buffer to a non-busy buffer with FBC & PSR
+> > + *
+> > + * SUBTEST: fbchdr-modesetfrombusy
+> > + * Description: Modeset from a busy buffer to a non-busy buffer with FBC & HDR
+> > + *
+> > + * SUBTEST: drrshdr-modesetfrombusy
+> > + * Description: Modeset from a busy buffer to a non-busy buffer with DRRS & HDR
+> > + *
+> > + * SUBTEST: psrhdr-modesetfrombusy
+> > + * Description: Modeset from a busy buffer to a non-busy buffer with HDR & PSR
+> > + *
+> > + * SUBTEST: fbcdrrshdr-modesetfrombusy
+> > + * Description: Modeset from a busy buffer to a non-busy buffer with DRRS, HDR & FBC
+> > + *
+> > + * SUBTEST: fbcpsrhdr-modesetfrombusy
+> > + * Description: Modeset from a busy buffer to a non-busy buffer with HDR, PSR & FBC
+> >   */
+> >  
+> >  /**
+> > @@ -724,11 +1211,29 @@
+> >   * SUBTEST: psr-suspend
+> >   * Description: Make sure suspend/resume keeps us on the same state of PSR
+> >   *
+> > + * SUBTEST: hdr-suspend
+> > + * Description: Make sure suspend/resume keeps us on the same state of HDR
+> > + *
+> >   * SUBTEST: fbcdrrs-suspend
+> >   * Description: Make sure suspend/resume keeps us on the same state of FBC & DRRS
+> >   *
+> >   * SUBTEST: fbcpsr-suspend
+> >   * Description: Make sure suspend/resume keeps us on the same state of FBC & PSR
+> > + *
+> > + * SUBTEST: fbchdr-suspend
+> > + * Description: Make sure suspend/resume keeps us on the same state of FBC & HDR
+> > + *
+> > + * SUBTEST: drrshdr-suspend
+> > + * Description: Make sure suspend/resume keeps us on the same state of HDR & DRRS
+> > + *
+> > + * SUBTEST: psrhdr-suspend
+> > + * Description: Make sure suspend/resume keeps us on the same state of HDR & PSR
+> > + *
+> > + * SUBTEST: fbcdrrshdr-suspend
+> > + * Description: Make sure suspend/resume keeps us on the same state of HDR, DRRS & FBC
+> > + *
+> > + * SUBTEST: fbcpsrhdr-suspend
+> > + * Description: Make sure suspend/resume keeps us on the same state of HDR, PSR & FBC
+> >   */
+> >  
+> >  /**
+> > @@ -744,6 +1249,10 @@
+> >   * Description: Test drawing as far from the fence start as possible
+> >   * Driver requirement: i915
+> >   *
+> > + * SUBTEST: hdr-farfromfence-mmap-gtt
+> > + * Description: Test drawing as far from the fence start as possible
+> > + * Driver requirement: i915
+> > + *
+> >   * SUBTEST: fbcdrrs-farfromfence-mmap-gtt
+> >   * Description: Test drawing as far from the fence start as possible
+> >   * Driver requirement: i915
+> > @@ -751,6 +1260,26 @@
+> >   * SUBTEST: fbcpsr-farfromfence-mmap-gtt
+> >   * Description: Test drawing as far from the fence start as possible
+> >   * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbchdr-farfromfence-mmap-gtt
+> > + * Description: Test drawing as far from the fence start as possible
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: drrshdr-farfromfence-mmap-gtt
+> > + * Description: Test drawing as far from the fence start as possible
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: psrhdr-farfromfence-mmap-gtt
+> > + * Description: Test drawing as far from the fence start as possible
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcdrrshdr-farfromfence-mmap-gtt
+> > + * Description: Test drawing as far from the fence start as possible
+> > + * Driver requirement: i915
+> > + *
+> > + * SUBTEST: fbcpsrhdr-farfromfence-mmap-gtt
+> > + * Description: Test drawing as far from the fence start as possible
+> > + * Driver requirement: i915
+> >   */
+> >  
+> >  /**
+> > @@ -762,6 +1291,15 @@
+> >   *
+> >   * SUBTEST: fbcpsr-stridechange
+> >   * Description: Change the frontbuffer stride by doing a modeset
+> > + *
+> > + * SUBTEST: fbchdr-stridechange
+> > + * Description: Change the frontbuffer stride by doing a modeset
+> > + *
+> > + * SUBTEST: fbcdrrshdr-stridechange
+> > + * Description: Change the frontbuffer stride by doing a modeset
+> > + *
+> > + * SUBTEST: fbcpsrhdr-stridechange
+> > + * Description: Change the frontbuffer stride by doing a modeset
+> >   */
+> >  
+> >  /**
+> > @@ -777,6 +1315,18 @@
+> >   * Description: Test %arg[1] formats, if the tiling format supports FBC do the
+> >   *              basic drawing test, else set the mode & test if FBC is disabled
+> >   *
+> > + * SUBTEST: fbchdr-tiling-%s
+> > + * Description: Test %arg[1] formats, if the tiling format supports FBC do the
+> > + *              basic drawing test, else set the mode & test if FBC is disabled
+> > + *
+> > + * SUBTEST: fbcdrrshdr-tiling-%s
+> > + * Description: Test %arg[1] formats, if the tiling format supports FBC do the
+> > + *              basic drawing test, else set the mode & test if FBC is disabled
+> > + *
+> > + * SUBTEST: fbcpsrhdr-tiling-%s
+> > + * Description: Test %arg[1] formats, if the tiling format supports FBC do the
+> > + *              basic drawing test, else set the mode & test if FBC is disabled
+> 
+> This is not criticism of your patch per se.
+> 
+> But the test documentation requirements nowadays are just *insane*.
+> 
+> What kind of value do these copy-pasted descriptions add for anyone? Who
+> will ever read them either in the source code or in the generated
+> output?
+> 
+> I'm all for documentation, but it has to be meaningful communication of
+> information.
+> 
+> This is just something we have to do to check a box and make some silly
+> tool happy. This is a papercut we've chosen to inflict on ourselves over
+> and over again.
+> 
+> 
+> BR,
+> Jani.
+> 
 
+There is already a way to parametrize this, so maybe adding new
+parameter to it will be enough? This should reduce numbers quite
+a lot here and in other places in this test.
 
-On 05-05-2026 02:02, Manasi Navare wrote:
-> Thanks a lot @Karthik B S <mailto:karthik.b.s@intel.com>  for your response,
-> And appreciate you trying this on your end and for your help on getting 
-> this landed.
-> 
-> Regards
-> Manasi
-> 
-> On Mon, May 4, 2026 at 1:31 AM Karthik B S <karthik.b.s@intel.com 
-> <mailto:karthik.b.s@intel.com>> wrote:
-> 
->     __
-> 
->     Hi Manasi,
-> 
->     On 5/1/2026 4:29 AM, Manasi Navare wrote:
->>     This change looks good to me,
->>
->>     Reviewed-by: Manasi Navare <navaremanasi@google.com
->>     <mailto:navaremanasi@google.com>>
->>
->>     @Karthik B S <mailto:karthik.b.s@intel.com>  and others from Intel
->>     signal boosting this, could we get some traction on this, its
->>     reviewed by the team, could we please land this?
-> 
->     Sure, the idea LGTM in general. Will try this out at our end once
->     before merging as this test doesn't have coverage on CI currently.
-> 
->     Regards,
->     Karthik.B.S
+ * SUBTEST: fbc%s-tiling-%s
+ * Description: Test %arg[2] formats, if the tiling format supports FBC do the
+ *              basic drawing test, else set the mode & test if FBC is disabled
 
-I have tested these patches on a mst and non mst setup locally. The 
-changes and the results LGTM.
+ * arg[1]: hdr, psrhdr, drrshdr
+ * arg[2]: ....
+
+Btw thats why I would prefer to see formats splitted by '-':
+
+ * SUBTEST: fbc-%s-tiling-%s
+ * arg[1]: hdr, psr-hdr, drrs-hdr
+
+There could be other ways to solve this problem so adding Pawel to cc.
+Cc: pawel.sikora@intel.com
 
 Regards,
-Santhosh
+Kamil
 
-Tested-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-
-
->>
->>     Regards
->>     Manasi
->>
->>     On Wed, Apr 29, 2026 at 1:31 PM Manasi Navare
->>     <navaremanasi@google.com <mailto:navaremanasi@google.com>> wrote:
->>
->>         Thanks Jason-JH for this improvement in the
->>         kms_content_protection IGT test.
->>         It makes sense to create a fb per CRTC given that each CRTC
->>         can have different mode timings/resolutions.
->>
->>         @karthik.b.s@intel.com <mailto:karthik.b.s@intel.com> ,
->>         @bhanuprakash.modem@gmail.com
->>         <mailto:bhanuprakash.modem@gmail.com>, @swati2.sharma@intel.com <mailto:swati2.sharma@intel.com>
->>         Could you please take a look at this patch and help provide
->>         feedback?
->>         We would like to get this landed as it helps improve our testing.
->>
->>         Regards
->>         Manasi
->>
->>
->>
->>         On Sun, Mar 29, 2026 at 8:22 PM Jason-JH Lin <jason-
->>         jh.lin@mediatek.com <mailto:jason-jh.lin@mediatek.com>> wrote:
->>
->>             Replace global framebuffers (data.red/green) with per-CRTC
->>             array
->>             (data.fbs[IGT_MAX_PIPES]) to support multiple outputs with
->>             different
->>             resolutions.
->>
->>             Add create_fbs()/remove_fbs() to manage framebuffer
->>             lifecycle at
->>             test initialization/cleanup, creating each FB with the
->>             resolution of
->>             the first output that can connect to that CRTC.
->>
->>             Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com
->>             <mailto:jason-jh.lin@mediatek.com>>
->>             Reviewed-by: Fei Shao <fshao@chromium.org
->>             <mailto:fshao@chromium.org>>
->>             ---
->>              tests/kms_content_protection.c | 50 +++++++++++++++++++++
->>             ++++---------
->>              1 file changed, 37 insertions(+), 13 deletions(-)
->>
->>             diff --git a/tests/kms_content_protection.c b/tests/
->>             kms_content_protection.c
->>             index caf3d7a56ae4..df9ff5efcaa2 100644
->>             --- a/tests/kms_content_protection.c
->>             +++ b/tests/kms_content_protection.c
->>             @@ -107,10 +107,15 @@
->>
->>              IGT_TEST_DESCRIPTION("Test content protection (HDCP)");
->>
->>             +struct hdcp_test_fbs {
->>             +       struct igt_fb red;
->>             +       struct igt_fb green;
->>             +};
->>             +
->>              struct data {
->>                     int drm_fd;
->>                     igt_display_t display;
->>             -       struct igt_fb red, green;
->>             +       struct hdcp_test_fbs fbs[IGT_MAX_PIPES];
->>                     unsigned int cp_tests;
->>                     struct udev_monitor *uevent_monitor;
->>                     bool is_force_hdcp14;
->>             @@ -991,31 +996,49 @@ static void
->>             test_content_protection_cleanup(void)
->>                             igt_info("CP Prop being UNDESIRED on
->>             %s\n", output->name);
->>                             test_cp_disable(output, display-
->>             >is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->>                     }
->>             -
->>             -       igt_remove_fb(data.drm_fd, &data.red);
->>             -       igt_remove_fb(data.drm_fd, &data.green);
->>              }
->>
->>              static void create_fbs(void)
->>              {
->>             -       uint16_t width = 0, height = 0;
->>                     drmModeModeInfo *mode;
->>                     igt_output_t *output;
->>             +       igt_crtc_t *crtc;
->>
->>             +       /* Create framebuffers for each connected output's
->>             pipe */
->>                     for_each_connected_output(&data.display, output) {
->>                             mode = igt_output_get_mode(output);
->>                             igt_assert(mode);
->>
->>             -               width = max(width, mode->hdisplay);
->>             -               height = max(height, mode->vdisplay);
->>             +               /* Find a valid crtc for this output */
->>             +               for_each_crtc(&data.display, crtc) {
->>             +                       if (!
->>             igt_crtc_connector_valid(crtc, output))
->>             +                               continue;
->>             +
->>             +                       /* Skip if already created for
->>             this crtc */
->>             +                       if (data.fbs[crtc-
->>             >crtc_index].red.fb_id)
->>             +                               continue;
->>             +
->>             +  igt_create_color_fb(data.drm_fd, mode->hdisplay, mode-
->>             >vdisplay,
->>             +  DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->>             +                                           1.f, 0.f, 0.f,
->>             &data.fbs[crtc->crtc_index].red);
->>             +  igt_create_color_fb(data.drm_fd, mode->hdisplay, mode-
->>             >vdisplay,
->>             +  DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->>             +                                           0.f, 1.f, 0.f,
->>             &data.fbs[crtc->crtc_index].green);
->>             +                       break;
->>             +               }
->>                     }
->>             +}
->>
->>             -       igt_create_color_fb(data.drm_fd, width, height,
->>             -                           DRM_FORMAT_XRGB8888,
->>             DRM_FORMAT_MOD_LINEAR,
->>             -                           1.f, 0.f, 0.f, &data.red);
->>             -       igt_create_color_fb(data.drm_fd, width, height,
->>             -                           DRM_FORMAT_XRGB8888,
->>             DRM_FORMAT_MOD_LINEAR,
->>             -                           0.f, 1.f, 0.f, &data.green);
->>             +static void remove_fbs(void)
->>             +{
->>             +       igt_crtc_t *crtc;
->>             +
->>             +       for_each_crtc(&data.display, crtc) {
->>             +               if (data.fbs[crtc->crtc_index].red.fb_id)
->>             +                       igt_remove_fb(data.drm_fd,
->>             &data.fbs[crtc->crtc_index].red);
->>             +               if (data.fbs[crtc->crtc_index].green.fb_id)
->>             +                       igt_remove_fb(data.drm_fd,
->>             &data.fbs[crtc->crtc_index].green);
->>             +       }
->>              }
->>
->>              static const struct {
->>             @@ -1241,6 +1264,7 @@ int igt_main()
->>
->>                     igt_fixture() {
->>                             test_content_protection_cleanup();
->>             +               remove_fbs();
->>                             igt_display_fini(&data.display);
->>                             drm_close_driver(data.drm_fd);
->>                     }
->>             -- 
->>             2.43.0
->>
-
+> 
+> > + *
+> >   * arg[1]:
+> >   *
+> >   * @4:              4 tiling
+> > @@ -859,8 +1409,9 @@ struct test_mode {
+> >  		FEATURE_FBC   = 1,
+> >  		FEATURE_PSR   = 2,
+> >  		FEATURE_DRRS  = 4,
+> > -		FEATURE_COUNT = 8,
+> > -		FEATURE_DEFAULT = 8,
+> > +		FEATURE_HDR   = 8,
+> > +		FEATURE_COUNT = 16,
+> > +		FEATURE_DEFAULT = 16,
+> >  	} feature;
+> >  
+> >  	/* Possible pixel formats. We just use FORMAT_DEFAULT for most tests and
+> > @@ -4031,12 +4582,36 @@ static const char *feature_str(int feature)
+> >  		return "fbc";
+> >  	case FEATURE_PSR:
+> >  		return "psr";
+> > -	case FEATURE_FBC | FEATURE_PSR:
+> > -		return "fbcpsr";
+> >  	case FEATURE_DRRS:
+> >  		return "drrs";
+> > +	case FEATURE_HDR:
+> > +		return "hdr";
+> > +	case FEATURE_FBC | FEATURE_PSR:
+> > +		return "fbcpsr";
+> >  	case FEATURE_FBC | FEATURE_DRRS:
+> > -		return "fbcdrrs";
+> > +	        return "fbcdrrs";
+> > +	case FEATURE_FBC | FEATURE_HDR:
+> > +	        return "fbchdr";
+> > +
+> > +	case FEATURE_PSR | FEATURE_DRRS:
+> > +		return "psrdrrs";
+> > +	case FEATURE_PSR | FEATURE_HDR:
+> > +	        return "psrhdr";
+> > +	case FEATURE_DRRS | FEATURE_HDR:
+> > +	        return "drrshdr";
+> > +
+> > +	case FEATURE_FBC | FEATURE_PSR | FEATURE_DRRS:
+> > +		return "fbcpsrdrrs";
+> > +	case FEATURE_FBC | FEATURE_PSR | FEATURE_HDR:
+> > +		return "fbcpsrhdr";
+> > +	case FEATURE_FBC | FEATURE_DRRS | FEATURE_HDR:
+> > +		return "fbcdrrshdr";
+> > +	case FEATURE_PSR | FEATURE_DRRS | FEATURE_HDR:
+> > +		return "psrdrrshdr";
+> > +
+> > +	case FEATURE_FBC | FEATURE_PSR | FEATURE_DRRS | FEATURE_HDR:
+> > +		return "fbcpsrdrrshdr";
+> > +
+> >  	default:
+> >  		igt_assert(false);
+> >  	}
+> 
+> -- 
+> Jani Nikula, Intel
