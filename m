@@ -4,53 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A22FF8855
-	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 13:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71CB9FF8855
+	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 13:25:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A970F10ED89;
-	Wed,  6 May 2026 13:22:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2083410ED89;
+	Wed,  6 May 2026 13:25:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IaNXifRl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KJ91q9We";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6D5510ED89
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 13:22:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9508F10ED89
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 13:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778073747; x=1809609747;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=rBDqMHtUG4Q/R8MxHWIubVec+u4qDtanT7ChlABJhp0=;
- b=IaNXifRldTSRwr2ysWjGv380rNJTQEw18CIKO1tNMfQhID+wStyq/QMI
- yzYOG8Tr8Q5/SyuhNNBeKgew7sY8wg4c4l3QE5zU6m/kDoLxVHghnH/FJ
- cjlW6Tz7WAc0VN0FjdXwZHl+/Y/wTqTfkTl7hO7AnZ0cRDQC96NVHlvaT
- flmuKOGiuQNsyLIrL0HOgcC6P/SR81CtSi6Q0HtUmGc+gQQo1lzaGfnHr
- drjJipmvGLnthG7A35jk9AKEU8X9VS5U53gBQBcV45CojojwjLu0bWb9Z
- FtmIxf4JHI5pIvcBC2CHQS/DNgOVLZGHXY6pCu4evF9fW79mnEUkxMoDo A==;
-X-CSE-ConnectionGUID: VUVs5PolQ0u62rJ+VnssAg==
-X-CSE-MsgGUID: yuCr5lu2RDq/UH0++K2Wdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="90101201"
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="90101201"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 06:22:26 -0700
-X-CSE-ConnectionGUID: MOK0agI7S3CGlxohktpzug==
-X-CSE-MsgGUID: /tPCqh5GSVaN+q9Qi9YAgw==
+ t=1778073943; x=1809609943;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=BoP7xq/ls5G//AIQi/UkXEnQsspQbg3/sHYphJbM1M0=;
+ b=KJ91q9WentGiLEhAGjz42dFfB9z7fRY6m2YbPidBZ0rrNnouN00gLP9n
+ 3PdSdj1eyd9lxL74yAFcpox9YIe8lJPfZoSskGY2iGZNF0ZJjZ1w3XwBt
+ dzgXQ+mqDdpdNMbPtvg+m7JMyDAcJJA9PhRlBp9SpyDJvNruK+JJGVvNq
+ Fr+jSBpuxArHF1XgYE2I8tTOUO1daIS9mJvYS3vHOr9j7gdi9tQNibfo8
+ LlIc9pw9n2eqRBaT7qdmwq67WpHqE3jtbBt5shyNJFyqWkt6oILKfPmkL
+ clB8righA3P2MfI3rjpph4HcBhf9WndatOM3IKTT0uBLfKDemVBhpu+wW g==;
+X-CSE-ConnectionGUID: TZS7rkx7ThS2pUo5BATgew==
+X-CSE-MsgGUID: w0nxgLpuTsOQmNFEa/wi8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="78988597"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="78988597"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2026 06:25:42 -0700
+X-CSE-ConnectionGUID: vB8Pd0GiRlGFnOPHrxrfIA==
+X-CSE-MsgGUID: UwZG9Wt3Rd6WLyjwLnUXqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="229733766"
-Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
- by fmviesa009.fm.intel.com with ESMTP; 06 May 2026 06:22:25 -0700
-From: Nitin Gote <nitin.r.gote@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.auld@intel.com,
-	nitin.r.gote@intel.com
-Subject: [PATCH] tests/core_hotunplug: exercise fd-holding subtests with Xe
- workload
-Date: Wed,  6 May 2026 19:27:15 +0530
-Message-ID: <20260506135714.1819588-2-nitin.r.gote@intel.com>
-X-Mailer: git-send-email 2.50.1
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="259834827"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.11])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2026 06:25:40 -0700
+Date: Wed, 6 May 2026 15:25:37 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, 
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, Karthik B S <karthik.b.s@intel.com>,
+ Jani Nikula <jani.nikula@intel.com>
+Subject: Re: [PATCH i-g-t v3] lib/drmtest: Create proper error report when
+ open driver fails
+Message-ID: <sqdaj6w2xxmp2fx47mlnvj5jdgyhwqfjpypuimatzuxa4hwl3u@u4uyo7uznb6f>
+References: <20260428142629.78347-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260428142629.78347-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,195 +72,158 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The six fd-holding subtests (hotunbind-rebind, hotunplug-rescan,
-hotrebind, hotreplug, hotrebind-lateclose, hotreplug-lateclose) keep
-a DRM fd open across unbind/unplug but leave the GPU idle, so on Xe
-the unbind/unplug path is never exercised against an active VM,
-exec queue and BOs.
+On Tue, Apr 28, 2026 at 04:26:29PM +0200, Kamil Konieczny wrote:
+> When first try for opening driver fails then opening function is
+> searching for next available device. When that also fails
+> reporting is printing last errno which could mislead developer:
+> 
+> $ build/tests/kms_dp_aux_dev
+> IGT-Version: 2.3-NO-GIT (x86_64) (Linux: 6.17.0-19-generic x86_64)
+> Test requirement not met in function drm_open_driver, file ../lib/drmtest.c:754:
+> Test requirement: !(fd<0)
+> No known gpu found for chipset flags 0x4294965755 (any)
+> Last errno: 2, No such file or directory
+> SKIP (0.006s)
+> 
+> ls /dev/dri
+> by-path  card1  renderD128
+> 
+> The real problem here is lack of permissions as there was a card
+> but program could not open it. Break looking for a card as soon
+> as an error is different from ENOENT. It will create a proper
+> error report which will print:
+> 
+> Last errno: 13, Permission denied
+> 
+> v3: break only when errno actually happens in open() (Kamil)
+> 
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/drmtest.c          | 26 +++++++++++++++++++++-----
+>  lib/drmtest.h          |  2 +-
+>  lib/igt_sriov_device.c |  2 +-
+>  3 files changed, 23 insertions(+), 7 deletions(-)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 4a788ea7a..af3da4b99 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -323,6 +323,7 @@ static void log_opened_device_path(const char *device_path)
+>   * __drm_open_device:
+>   * @name: DRM node name
+>   * @chipset: OR'd flags for chipset to be opened
+> + * @error: pointer for errno when open() fails
+>   *
+>   * Open a drm legacy device node with given @name and compatible with given
+>   * @chipset flag.
+> @@ -334,8 +335,10 @@ static void log_opened_device_path(const char *device_path)
+>   * name, even when driver was excluded by ANY or is not listed in known drivers.
+>   *
+>   * Returns: DRM file descriptor or -1 on error
+> + *
+> + * When open() succeeds, sets @error to zero otherwise to errno
+>   */
+> -int __drm_open_device(const char *name, unsigned int chipset)
+> +int __drm_open_device(const char *name, unsigned int chipset, int *error)
+>  {
+>  	const char *forced;
+>  	char dev_name[16] = "";
+> @@ -343,8 +346,15 @@ int __drm_open_device(const char *name, unsigned int chipset)
+>  	int fd;
+>  
+>  	fd = open(name, O_RDWR);
+> -	if (fd == -1)
+> +	if (fd == -1) {
+> +		if (error)
+> +			*error = errno;
+> +
+>  		return -1;
+> +	} else {
 
-Add xe_workload_start()/xe_workload_stop() helpers, gated on
-is_xe_device(), that run a spinner on the GPU across the
-unbind/unplug sequence, so the device is removed while a workload
-is using it. i915 already has equivalent coverage via
-local_i915_healthcheck().
+This else is unnecessary.
 
-Validated on BMG with a KASAN-enabled kernel: all subtests pass with
-no KASAN reports.
+> +		if (error)
+> +			*error = 0;
+> +	}
+>  
+>  	if (__get_drm_device_name(fd, dev_name, sizeof(dev_name) - 1) == -1)
+>  		goto err;
+> @@ -426,6 +436,7 @@ static bool _is_already_opened(const char *path, int as_idx)
+>  static int __search_and_open(const char *base, int offset, unsigned int chipset, int as_idx)
+>  {
+>  	const char *forced;
+> +	int err;
+>  
+>  	forced = forced_driver();
+>  	if (forced)
+> @@ -440,9 +451,14 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
+>  		if (_is_already_opened(name, as_idx))
+>  			continue;
+>  
+> -		fd = __drm_open_device(name, chipset);
+> +		fd = __drm_open_device(name, chipset, &err);
+>  		if (fd != -1)
+>  			return fd;
+> +
+> +		if (err) {
+> +			igt_debug("Error at open %s errno: %d %m\n", name, err);
 
-Cc: Matthew Auld <matthew.auld@intel.com>
-Assisted-by: Copilot:claude-opus-4.7
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
----
- tests/core_hotunplug.c | 74 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+What for is err if you're implicitely use strerror(errno)?
 
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 7c9dae1bf..88a2133af 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -565,6 +565,44 @@ static void set_filter_from_device(int fd)
- 	igt_assert_eq(igt_device_filter_add(filter), 1);
- }
- 
-+/* Xe GPU workload helpers */
-+
-+struct xe_workload {
-+	igt_spin_t *xe_spin;
-+	uint64_t xe_ahnd;
-+};
-+
-+static void xe_workload_start(struct hotunplug *priv, int fd,
-+			      struct xe_workload *w)
-+{
-+	if (!is_xe_device(fd))
-+		return;
-+
-+	local_debug("%s\n", "starting Xe GPU spinner");
-+	priv->failure = "Xe workload start failure!";
-+	w->xe_ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+	w->xe_spin = igt_spin_new(fd, .ahnd = w->xe_ahnd);
-+	priv->failure = NULL;
-+}
-+
-+static void xe_workload_stop(struct xe_workload *w)
-+{
-+	if (!w->xe_spin)
-+		return;
-+
-+	/*
-+	 * The device may be gone (unbind/unplug), so avoid igt_spin_free():
-+	 * on Xe it asserts in xe_spin_sync_wait() because the syncobj will
-+	 * never signal. Stop the spinner via a userspace mmap write and let
-+	 * the DRM fd close reclaim the kernel-side resources.
-+	 */
-+	local_debug("%s\n", "stopping Xe GPU spinner");
-+	igt_spin_end(w->xe_spin);
-+	put_ahnd(w->xe_ahnd);
-+	w->xe_spin = NULL;
-+	w->xe_ahnd = 0;
-+}
-+
- /* Subtests */
- 
- static void unbind_rebind(struct hotunplug *priv)
-@@ -591,12 +629,18 @@ static void unplug_rescan(struct hotunplug *priv)
- 
- static void hotunbind_rebind(struct hotunplug *priv)
- {
-+	struct xe_workload w = { 0 };
-+
- 	pre_check(priv);
- 
- 	priv->fd.drm = local_drm_open_driver(false, "", " for hot unbind");
- 
-+	xe_workload_start(priv, priv->fd.drm, &w);
-+
- 	driver_unbind(priv, "hot ", 0);
- 
-+	xe_workload_stop(&w);
-+
- 	priv->fd.drm = close_device(priv->fd.drm, "late ", "unbound ");
- 	igt_assert_eq(priv->fd.drm, -1);
- 
-@@ -607,12 +651,18 @@ static void hotunbind_rebind(struct hotunplug *priv)
- 
- static void hotunplug_rescan(struct hotunplug *priv)
- {
-+	struct xe_workload w = { 0 };
-+
- 	pre_check(priv);
- 
- 	priv->fd.drm = local_drm_open_driver(false, "", " for hot unplug");
- 
-+	xe_workload_start(priv, priv->fd.drm, &w);
-+
- 	device_unplug(priv, "hot ", 0);
- 
-+	xe_workload_stop(&w);
-+
- 	priv->fd.drm = close_device(priv->fd.drm, "late ", "removed ");
- 	igt_assert_eq(priv->fd.drm, -1);
- 
-@@ -623,40 +673,58 @@ static void hotunplug_rescan(struct hotunplug *priv)
- 
- static void hotrebind(struct hotunplug *priv)
- {
-+	struct xe_workload w = { 0 };
-+
- 	pre_check(priv);
- 
- 	priv->fd.drm = local_drm_open_driver(false, "", " for hot rebind");
- 
-+	xe_workload_start(priv, priv->fd.drm, &w);
-+
- 	driver_unbind(priv, "hot ", 60);
- 
- 	driver_bind(priv, 0);
- 
-+	xe_workload_stop(&w);
-+
- 	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
- }
- 
- static void hotreplug(struct hotunplug *priv)
- {
-+	struct xe_workload w = { 0 };
-+
- 	pre_check(priv);
- 
- 	priv->fd.drm = local_drm_open_driver(false, "", " for hot replug");
- 
-+	xe_workload_start(priv, priv->fd.drm, &w);
-+
- 	device_unplug(priv, "hot ", 60);
- 
- 	bus_rescan(priv, 0);
- 
-+	xe_workload_stop(&w);
-+
- 	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
- }
- 
- static void hotrebind_lateclose(struct hotunplug *priv)
- {
-+	struct xe_workload w = { 0 };
-+
- 	pre_check(priv);
- 
- 	priv->fd.drm = local_drm_open_driver(false, "", " for hot rebind");
- 
-+	xe_workload_start(priv, priv->fd.drm, &w);
-+
- 	driver_unbind(priv, "hot ", 60);
- 
- 	driver_bind(priv, 0);
- 
-+	xe_workload_stop(&w);
-+
- 	priv->fd.drm = close_device(priv->fd.drm, "late ", "unbound ");
- 	igt_assert_eq(priv->fd.drm, -1);
- 
-@@ -665,14 +733,20 @@ static void hotrebind_lateclose(struct hotunplug *priv)
- 
- static void hotreplug_lateclose(struct hotunplug *priv)
- {
-+	struct xe_workload w = { 0 };
-+
- 	pre_check(priv);
- 
- 	priv->fd.drm = local_drm_open_driver(false, "", " for hot replug");
- 
-+	xe_workload_start(priv, priv->fd.drm, &w);
-+
- 	device_unplug(priv, "hot ", 60);
- 
- 	bus_rescan(priv, 0);
- 
-+	xe_workload_stop(&w);
-+
- 	priv->fd.drm = close_device(priv->fd.drm, "late ", "removed ");
- 	igt_assert_eq(priv->fd.drm, -1);
- 
--- 
-2.50.1
+--
+Zbigniew
 
+> +			break;
+> +		}
+>  	}
+>  
+>  	return -1;
+> @@ -500,13 +516,13 @@ static int __open_driver_exact(const char *name, unsigned int chipset)
+>  {
+>  	int fd;
+>  
+> -	fd = __drm_open_device(name, chipset);
+> +	fd = __drm_open_device(name, chipset, NULL);
+>  	if (fd != -1)
+>  		return fd;
+>  
+>  	drm_load_module(chipset);
+>  
+> -	return __drm_open_device(name, chipset);
+> +	return __drm_open_device(name, chipset, NULL);
+>  }
+>  
+>  /*
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index 37874d729..126feffda 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -117,7 +117,7 @@ unsigned int drm_get_chipset(int fd);
+>   */
+>  #define IS_ALIGNED(v, a)	(((v) & ((typeof(v))(a) - 1)) == 0)
+>  
+> -int __drm_open_device(const char *name, unsigned int chipset);
+> +int __drm_open_device(const char *name, unsigned int chipset, int *error);
+>  void drm_load_module(unsigned int chipset);
+>  int drm_open_driver_another(int idx, int chipset);
+>  int drm_open_driver(int chipset);
+> diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
+> index 1f4c3ac04..21d23298b 100644
+> --- a/lib/igt_sriov_device.c
+> +++ b/lib/igt_sriov_device.c
+> @@ -284,7 +284,7 @@ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num)
+>  	if (!found)
+>  		return -1;
+>  
+> -	fd = __drm_open_device(dev_name, DRIVER_ANY);
+> +	fd = __drm_open_device(dev_name, DRIVER_ANY, NULL);
+>  	if (fd >= 0 && is_xe_device(fd))
+>  		xe_device_get(fd);
+>  
+> -- 
+> 2.54.0
+> 
