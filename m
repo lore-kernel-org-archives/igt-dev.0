@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23479CD3439
-	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 16:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81226CD342C
+	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 17:09:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CC7C410EE1C;
-	Wed,  6 May 2026 16:47:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JxpcpWm8";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6BB5B10EE1C
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 16:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778086054; x=1809622054;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=p/ZKvxYKs6zQUUSiO7fmozI92uJxi+5u0KQ/L8LEJ0g=;
- b=JxpcpWm8JLg0sYPGAinAtAYs+xaXaA+GMV174ZBov/7qBuBOhcNctBTO
- 3yRN5OAF/njoIpDw4A8zds4cy2CppSF8qnq7xc0ojuj2rRzRCf0HCEJpf
- TZA0YI0N8zU5MYmYDbmUR3Ox+y7pgGKRukML4QdeGS9Pah/kh4Pga6Xwk
- vr7uW9GwZS3cj4059poqCQ89iAdpugDxYdkUteQSve9jcneYhMcGhM3Sv
- xNAriK+zSJOCnxhabTIAW7E7CNF4sb2G0nQ82a+8vF/ZedjjKrH7Z6G4x
- 9oOIO3pB1FmENIQlY+mdgcrDUQVDJdyZAIYwh/1IQmCF6EaPIQ8VYeZJ2 A==;
-X-CSE-ConnectionGUID: IrBVzyI5T1uMN8g7oJNAYQ==
-X-CSE-MsgGUID: r+WV1VlHRSWBW+WS5yGjMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="96595519"
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="96595519"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 09:47:34 -0700
-X-CSE-ConnectionGUID: UNrryiYEQzO3ksvpFnqHaA==
-X-CSE-MsgGUID: SQcTN9HDQGm7wxPPRvPYnA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="238017460"
-Received: from tmistat.igk.intel.com ([10.91.34.58])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 09:47:32 -0700
-From: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Subject: [PATCH i-g-t v2] lib/igt_sriov_device: Update igt_sriov_enable_vfs
- helper
-Date: Wed,  6 May 2026 17:38:11 +0000
-Message-ID: <20260506173811.157330-1-jakub1.kolakowski@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1F64810E220;
+	Wed,  6 May 2026 17:09:04 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC3F110EE57;
+ Wed,  6 May 2026 17:08:47 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5858372077033278131=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/core=5Fhotunplug=3A_e?=
+ =?utf-8?q?xercise_fd-holding_subtests_with_Xe_workload?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Gote, Nitin R" <nitin.r.gote@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 06 May 2026 17:08:47 -0000
+Message-ID: <177808732796.44030.4438220717396676388@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260506135714.1819588-2-nitin.r.gote@intel.com>
+In-Reply-To: <20260506135714.1819588-2-nitin.r.gote@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,60 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some platforms may expose sriov capability and sriov_totalvfs will be
-greater than 0 while the driver actually doesn't support the platform.
-In such case igt_sriov_is_pf() helper that checks for sriov_totalvfs
-will pass.
-Add additional check within igt_sriov_enable_vfs() function to check if
-writing to sriov_numvfs was successfull and what errno was returned
-during this operation. ENOENT will mean that SR-IOV isn't supported for
-given configuration. In such case test will skip instead of failing.
+--===============5858372077033278131==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-V2:
- - replace __pf_attr_set_u32() with igt_sysfs_printf to reduce layers of
-   helper functions and increase reliability of checking for errno
+== Series Details ==
 
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
----
- lib/igt_sriov_device.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+Series: tests/core_hotunplug: exercise fd-holding subtests with Xe workload
+URL   : https://patchwork.freedesktop.org/series/166056/
+State : success
 
-diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-index 1f4c3ac04..4be57deea 100644
---- a/lib/igt_sriov_device.c
-+++ b/lib/igt_sriov_device.c
-@@ -174,10 +174,22 @@ unsigned int igt_sriov_get_enabled_vfs(int pf)
-  */
- void igt_sriov_enable_vfs(int pf, unsigned int num_vfs)
- {
-+	int sysfs;
-+	int ret;
-+
-+	igt_assert(igt_sriov_is_pf(pf));
- 	igt_assert(num_vfs > 0);
- 
-+	sysfs = igt_sysfs_open(pf);
-+	igt_assert_fd(sysfs);
-+
- 	igt_debug("Enabling %u VFs\n", num_vfs);
--	pf_attr_set_u32(pf, "device/sriov_numvfs", num_vfs);
-+	ret = igt_sysfs_printf(sysfs, "device/sriov_numvfs", "%u", num_vfs);
-+	close(sysfs);
-+
-+	igt_require_f(ret != -ENOENT, "SR-IOV not supported\n");
-+	igt_assert_f(ret > 0, "Failed to write %u to device/sriov_numvfs (%s)\n",
-+		     num_vfs, strerror(abs(ret)));
- }
- 
- /**
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8894_BAT -> XEIGTPW_15112_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8894 -> IGTPW_15112
+
+  IGTPW_15112: f7345978a2e5ac1a857321872e9b35331b4bc692 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8894: 044f2c8744a52317c4651b4ca9d3b12f5be51575 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4990-835de80ce9b34b618442ba91483170201b50b553: 835de80ce9b34b618442ba91483170201b50b553
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15112/index.html
+
+--===============5858372077033278131==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/core_hotunplug: exercise fd-holding subtests with Xe workload</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166056/">https://patchwork.freedesktop.org/series/166056/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15112/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15112/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8894_BAT -&gt; XEIGTPW_15112_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8894 -&gt; IGTPW_15112</li>
+</ul>
+<p>IGTPW_15112: f7345978a2e5ac1a857321872e9b35331b4bc692 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8894: 044f2c8744a52317c4651b4ca9d3b12f5be51575 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4990-835de80ce9b34b618442ba91483170201b50b553: 835de80ce9b34b618442ba91483170201b50b553</p>
+
+</body>
+</html>
+
+--===============5858372077033278131==--
