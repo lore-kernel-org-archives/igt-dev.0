@@ -4,55 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 356EDCD343B
-	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 14:10:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 212C5CD343B
+	for <igt-dev@archiver.kernel.org>; Wed,  6 May 2026 14:18:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C5E2810EDD6;
-	Wed,  6 May 2026 14:10:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C961710EDBC;
+	Wed,  6 May 2026 14:18:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jyiUpgZA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ih9jVXRv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4A6910EDB9
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 14:10:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D4AD10EDBC
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2026 14:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778076617; x=1809612617;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=lDLvtYgYKPO7+3BIQqTTaA0YFFZX/mkNKR2UXwItHXY=;
- b=jyiUpgZADl8G7Vuq4tClJSVzjXUE5+BctqHUQ2CNI1u9h14G7YLHcipF
- SCSGvovnb79Ph+S4pzU88pSuKY2A7jYPZ05OH7w61AVDIIG8xPTEXRiGo
- u8uIwxl6wclb7iWRjNoMyXXIizI5rMfwxlzlkTfjFJvc0UZ4zbw9K6yO8
- ScnGuxhCCGbsMIWhybH9eNQott5I2ArTJKjWIWAe+OfWET5rdV9plDVgg
- gUw3Kx4aZJx+1/UfDN4Yksyp7dX0KviILtKyiLHKdgNFZ4dSyXAI/Gwrn
- WWuXfIAiInaI5lMGDiYwLnCt20rFiu/6pxp3PSgZSp0VeEzMu45NWbA1F Q==;
-X-CSE-ConnectionGUID: NcS6G8tgTJu3O8msn81H7A==
-X-CSE-MsgGUID: tLhx4Ta7TY6OHFa6C4miaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="78856774"
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="78856774"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 07:10:16 -0700
-X-CSE-ConnectionGUID: jur21NOqQkG2p+ujTaFyoQ==
-X-CSE-MsgGUID: j/adNDnUTzKYOzmrUOSPzQ==
+ t=1778077116; x=1809613116;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=+tBMDUndmq+u/T0oUSlLMcba8SFZzOkkBAnk1yOqXr0=;
+ b=Ih9jVXRvALsrRlPQMU74TQhbCPNsMkkuOT1Jm9jyJE6v75WCbt0fn8CW
+ 5eZ1NJJGDzUDFS3s9i58nL2uo4RTRxfCVK7wIlbzaMOIMMo7x4H61ZpmB
+ eBu7WGNqY37bLNE/iN5qkuEeB1B4DIGVDZTcKrojxuhVRKRBpxUZu9fL1
+ DimeWE4tFXBItSKOgiUonSSinKhvMYsdPlesPIxOPH1Sj4HD13UMsj+Rl
+ HclwqoKbQWtMxR88GMgWcv1XF3+TdX4EMJ+2e5dqfQo5wKUJs84Iyep6U
+ B2uJCvry/a+7Dba12WtlHWBFYcM8BnzN0Ya/Sj3ff4CRyagu9ktLQQkm4 g==;
+X-CSE-ConnectionGUID: 9aWtTHdZR9S9aMG6bxp9pg==
+X-CSE-MsgGUID: bOhHPY2FSpq1hY3OUlq7Tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="89594497"
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="89594497"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2026 07:18:36 -0700
+X-CSE-ConnectionGUID: E/A7LFPEQrOJWKtTa6cVGA==
+X-CSE-MsgGUID: lGEt4PxAQLeTw6iCm7yO6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="229750403"
-Received: from dut6245dg2frd.fm.intel.com ([10.80.54.109])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 07:10:16 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	thomas.hellstrom@intel.com
-Cc: nishit.sharma@intel.com, kamil.konieczny@intel.com,
- Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v6] test/intel/xe_vm:Add oversubscribe concurrent bind
- stress subtest
-Date: Wed,  6 May 2026 14:10:09 +0000
-Message-ID: <20260506141009.77375-1-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.52.0
+X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; d="scan'208";a="241143929"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 07:18:35 -0700
+Date: Wed, 6 May 2026 16:18:14 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Nitin Gote <nitin.r.gote@intel.com>
+Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: Re: [PATCH] tests/core_hotunplug: exercise fd-holding subtests with
+ Xe workload
+Message-ID: <20260506141814.nseva2m4zhywwqxy@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Nitin Gote <nitin.r.gote@intel.com>, igt-dev@lists.freedesktop.org,
+ matthew.auld@intel.com,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+References: <20260506135714.1819588-2-nitin.r.gote@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260506135714.1819588-2-nitin.r.gote@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,467 +73,204 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test for oversubscribing VRAM in multi process environment that
-creates VM, bind large BOs and submit workloads nearly simultaneously.
+Hi Nitin,
+On 2026-05-06 at 19:27:15 +0530, Nitin Gote wrote:
+> The six fd-holding subtests (hotunbind-rebind, hotunplug-rescan,
+> hotrebind, hotreplug, hotrebind-lateclose, hotreplug-lateclose) keep
+> a DRM fd open across unbind/unplug but leave the GPU idle, so on Xe
+> the unbind/unplug path is never exercised against an active VM,
+> exec queue and BOs.
+> 
+> Add xe_workload_start()/xe_workload_stop() helpers, gated on
+> is_xe_device(), that run a spinner on the GPU across the
+> unbind/unplug sequence, so the device is removed while a workload
+> is using it. i915 already has equivalent coverage via
+> local_i915_healthcheck().
+> 
+> Validated on BMG with a KASAN-enabled kernel: all subtests pass with
+> no KASAN reports.
+> 
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Assisted-by: Copilot:claude-opus-4.7
+> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+> ---
+>  tests/core_hotunplug.c | 74 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 74 insertions(+)
+> 
+> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+> index 7c9dae1bf..88a2133af 100644
+> --- a/tests/core_hotunplug.c
+> +++ b/tests/core_hotunplug.c
+> @@ -565,6 +565,44 @@ static void set_filter_from_device(int fd)
+>  	igt_assert_eq(igt_device_filter_add(filter), 1);
+>  }
+>  
+> +/* Xe GPU workload helpers */
+> +
+> +struct xe_workload {
+> +	igt_spin_t *xe_spin;
+> +	uint64_t xe_ahnd;
+> +};
+> +
+> +static void xe_workload_start(struct hotunplug *priv, int fd,
+> +			      struct xe_workload *w)
+> +{
+> +	if (!is_xe_device(fd))
+> +		return;
+> +
+> +	local_debug("%s\n", "starting Xe GPU spinner");
+> +	priv->failure = "Xe workload start failure!";
+> +	w->xe_ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+> +	w->xe_spin = igt_spin_new(fd, .ahnd = w->xe_ahnd);
+> +	priv->failure = NULL;
+> +}
+> +
+> +static void xe_workload_stop(struct xe_workload *w)
+> +{
+> +	if (!w->xe_spin)
+> +		return;
+> +
+> +	/*
+> +	 * The device may be gone (unbind/unplug), so avoid igt_spin_free():
+> +	 * on Xe it asserts in xe_spin_sync_wait() because the syncobj will
+> +	 * never signal. Stop the spinner via a userspace mmap write and let
+> +	 * the DRM fd close reclaim the kernel-side resources.
+> +	 */
+> +	local_debug("%s\n", "stopping Xe GPU spinner");
+> +	igt_spin_end(w->xe_spin);
+> +	put_ahnd(w->xe_ahnd);
+> +	w->xe_spin = NULL;
+> +	w->xe_ahnd = 0;
+> +}
+> +
+>  /* Subtests */
+>  
+>  static void unbind_rebind(struct hotunplug *priv)
+> @@ -591,12 +629,18 @@ static void unplug_rescan(struct hotunplug *priv)
+>  
+>  static void hotunbind_rebind(struct hotunplug *priv)
+>  {
+> +	struct xe_workload w = { 0 };
+> +
+>  	pre_check(priv);
+>  
+>  	priv->fd.drm = local_drm_open_driver(false, "", " for hot unbind");
+>  
+> +	xe_workload_start(priv, priv->fd.drm, &w);
+> +
+>  	driver_unbind(priv, "hot ", 0);
+>  
+> +	xe_workload_stop(&w);
+> +
 
-Previous coverage lacked a scenario combining multi-process bind
-with VRAM oversubscription. This generates memory pressure with
-multi-process VM Bind activity and concurrent submission, exercising
-the bind pipeline under eviction pressure.
+This makes these hot* tests Xe driver only which is not a way to go.
++Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-v2: Removed helper APIs usage clock_nanosleep and commented
-code.(Nishit)
+Regards,
+Kamil
 
-v3: Refactored code to smaller functions.
-    Added check for available SRAM usage and keep the max process to 20.
-
-v4: Remove explicit macros definition
-    Replace Bind ioctl with library calls.(Thomas)
-v5: Remove unused query_mem_info
-    Fix xe_exec_with_retry (Thomas)
-    Rename align_to_page_size with ALIGN macro (kamil/Thomas)
-v6: Fix vm_bind_bo_batch: move igt_assert(ufence) before first dereference
-    Fix create_test_bos: check errno instead of ret for ENOMEM/ENOSPC
-    detection, since igt_ioctl returns -1 on failure. (Thomas)
-
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- tests/intel/xe_vm.c | 401 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 401 insertions(+)
-
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 408bfdb71..fe4174458 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -21,6 +21,7 @@
- #include "xe/xe_spin.h"
- #include <string.h>
- #define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
-+#define GB(x) (1024ULL * 1024ULL * 1024ULL * (x))
- 
- enum overcommit_stage {
- 	EXPECT_NONE,
-@@ -29,6 +30,69 @@ enum overcommit_stage {
- 	EXPECT_EXEC,
- };
- 
-+struct gem_bo {
-+	uint32_t handle;
-+	uint64_t size;
-+	int *ptr;
-+	uint64_t addr;
-+};
-+
-+struct xe_test_ctx {
-+	uint32_t vm_id;
-+	uint32_t exec_queue_id;
-+};
-+
-+struct mem_bind_sync {
-+	struct gem_bo *bufs;
-+	int n_bufs;
-+	uint64_t *binds_ufence;
-+};
-+
-+static void create_exec_queue(int fd, struct xe_test_ctx *ctx)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	struct drm_xe_engine_class_instance eci = { 0 };
-+
-+	/* Use first available engine */
-+	xe_for_each_engine(fd, hwe) {
-+		eci = *hwe;
-+		break;
-+	}
-+	ctx->exec_queue_id = xe_exec_queue_create(fd, ctx->vm_id, &eci, 0);
-+}
-+
-+static uint64_t *
-+vm_bind_bo_batch(int fd, struct xe_test_ctx *ctx, struct gem_bo *bos, int size)
-+{
-+	uint64_t *ufence;
-+	struct drm_xe_sync bind_sync;
-+	struct drm_xe_vm_bind_op binds[size];
-+	int i;
-+
-+	ufence = calloc(1, sizeof(uint64_t));
-+	igt_assert(ufence);
-+	*ufence = 0;
-+	bind_sync = (struct drm_xe_sync) {
-+		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.addr = to_user_pointer(ufence),
-+		.timeline_value = 1,
-+	};
-+
-+	for (i = 0; i < size; i++) {
-+		binds[i] = (struct drm_xe_vm_bind_op) {
-+			.obj = bos[i].handle,
-+		.obj_offset = 0,
-+			.range = bos[i].size,
-+			.addr = bos[i].addr,
-+			.op = DRM_XE_VM_BIND_OP_MAP,
-+			.flags = 0,
-+		};
-+	}
-+	xe_vm_bind_array(fd, ctx->vm_id, 0, binds, size, &bind_sync, 1);
-+	return ufence;
-+}
-+
- static uint32_t
- addr_low(uint64_t addr)
- {
-@@ -3073,6 +3137,338 @@ static void test_get_property(int fd, void (*func)(int fd, uint32_t vm))
- 	xe_vm_destroy(fd, vm);
- }
- 
-+static int build_add_batch(struct gem_bo *batch_bo, struct gem_bo *integers_bo,
-+			   struct gem_bo *result_bo, int ints_to_add)
-+{
-+	int pos = 0;
-+	uint64_t tmp_addr;
-+	#define GPR_RX_ADDR(x)		(0x600 + (x) * 8)
-+
-+	batch_bo->ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
-+	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
-+	tmp_addr = integers_bo->addr + 0 * sizeof(uint32_t);
-+	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+	for (int i = 1; i < ints_to_add; i++) {
-+		/* r1 = integers_bo[i] */
-+		batch_bo->ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
-+		batch_bo->ptr[pos++] = GPR_RX_ADDR(1);
-+		tmp_addr = integers_bo->addr + i * sizeof(uint32_t);
-+		batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+		batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+		/* r0 = r0 + r1 */
-+		batch_bo->ptr[pos++] = MI_MATH(4);
-+		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
-+		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
-+		batch_bo->ptr[pos++] = MI_MATH_ADD;
-+		batch_bo->ptr[pos++] = MI_MATH_STORE(MI_MATH_REG(0), MI_MATH_REG_ACCU);
-+	}
-+	/* result_bo[0] = r0 */
-+	batch_bo->ptr[pos++] = MI_STORE_REGISTER_MEM_GEN8 | MI_LRI_LRM_CS_MMIO;
-+	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
-+	tmp_addr = result_bo->addr + 0 * sizeof(uint32_t);
-+	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+
-+	batch_bo->ptr[pos++] = MI_BATCH_BUFFER_END;
-+	while (pos % 4 != 0)
-+		batch_bo->ptr[pos++] = MI_NOOP;
-+	return pos;
-+}
-+
-+static void create_test_bos(int fd, struct xe_test_ctx *ctx, struct mem_bind_sync *bind,
-+			    uint32_t  placement, uint64_t *addr)
-+{
-+	const char *mem_type = (placement & vram_memory(fd, 0)) ? "VRAM" : "SRAM";
-+
-+	for (int i = 0; i < bind->n_bufs; i++) {
-+		struct gem_bo *bo = &bind->bufs[i];
-+
-+		bo->size = GB(1);
-+		ret = __xe_bo_create_caching(fd, ctx->vm_id, bo->size, placement, 0,
-+					     DRM_XE_GEM_CPU_CACHING_WC, &bo->handle);
-+		if (ret) {
-+			if (errno == ENOMEM || errno == ENOSPC) {
-+				bind->n_bufs = i;
-+				igt_debug("%s allocation failed at buffer %d\n", mem_type, i);
-+				break;
-+			}
-+			igt_assert_eq(ret, 0);
-+		}
-+		bo->ptr = NULL;
-+		bo->addr = *addr;
-+		*addr += bo->size;
-+		igt_debug("%s buffer %d created at 0x%016lx\n", mem_type, i, bo->addr);
-+	}
-+}
-+
-+static int fill_random_integers(struct gem_bo *int_bo, int ints_to_add)
-+{
-+	uint32_t expected_result = 0;
-+
-+	for (int i = 0; i < ints_to_add; i++) {
-+		int random_int = rand() % 8;
-+
-+		int_bo->ptr[i] = random_int;
-+		expected_result += random_int;
-+
-+		igt_debug("%d", random_int);
-+		if (i + 1 != ints_to_add)
-+			igt_debug(" + ");
-+		else
-+			igt_debug(" = ");
-+	}
-+	igt_debug("%d\n", expected_result);
-+	return expected_result;
-+}
-+
-+/*
-+ * In concurrent VM bind stress tests, multiple threads simultaneously bind
-+ * buffers to GPU virtual address space and submit batch operations. This
-+ * creates significant GPU memory pressure where the kernel may transiently
-+ * fail batch submission when:
-+ *   - GPU page tables are being updated across multiple bindings
-+ *   - GPU memory is fragmented across many concurrent buffer mappings
-+ *   - Multiple processes compete for finite GPU resources
-+ *
-+ * Without retries, transient ENOMEM/ENOSPC failures cause false test failures.
-+ * Retrying lets us distinguish temporary resource exhaustion from actual
-+ * driver bugs. Non ENOMEM/ENOSPC errors still fail immediately and are properly
-+ * reported with full errno context for debugging.
-+ */
-+static int xe_exec_with_retry(int fd, struct drm_xe_exec *exec, int max_retries)
-+{
-+	int rc = 0, retries = 0;
-+
-+	for (retries = 0; retries < max_retries; retries++) {
-+		rc = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, exec);
-+
-+		if (!(rc && (errno == ENOMEM || errno == ENOSPC)))
-+			break;
-+
-+		usleep(100 * retries);
-+		if (retries == 0)
-+			igt_warn("got %s, retrying\n", strerror(errno));
-+	}
-+
-+	if (retries == max_retries)
-+		igt_warn("gave up after %d retries\n", retries);
-+
-+	if (rc)
-+		igt_warn("errno: %d (%s)\n", errno, strerror(errno));
-+
-+	return rc;
-+}
-+
-+static void cleanup_bo_resources(int fd, struct gem_bo *bo)
-+{
-+	if (bo->ptr) {
-+		igt_assert_eq(munmap(bo->ptr, bo->size), 0);
-+		bo->ptr = NULL;
-+	}
-+	if (bo->handle)
-+		gem_close(fd, bo->handle);
-+}
-+
-+static void cleanup_sram_vram_objs(int fd, struct mem_bind_sync *vram_bind,
-+				   struct mem_bind_sync *sram_bind)
-+{
-+	for (int i = 0; i < vram_bind->n_bufs; i++)
-+		gem_close(fd, vram_bind->bufs[i].handle);
-+	for (int i = 0; i < sram_bind->n_bufs; i++)
-+		gem_close(fd, sram_bind->bufs[i].handle);
-+	free(vram_bind->bufs);
-+	free(sram_bind->bufs);
-+	if (vram_bind->n_bufs)
-+		free(vram_bind->binds_ufence);
-+	if (sram_bind->n_bufs)
-+		free(sram_bind->binds_ufence);
-+}
-+
-+/**
-+ * SUBTEST: oversubscribe-concurrent-bind
-+ * Description: Test for oversubscribing the VM with multiple processes
-+ * doing binds at the same time, and ensure they all complete successfully.
-+ * Functionality: This check is for a specific bug where if multiple processes
-+ * oversubscribe the VM, some of the binds may fail with  ENOMEM due to
-+ * deadlock in the bind code.
-+ * Test category: stress test
-+ */
-+static void test_vm_oversubscribe_concurrent_bind(int fd)
-+{
-+	#define MIN_BUFS_PER_PROC 2
-+	#define MAX_THREADS 20
-+	int n_proc = 0, n_vram_bufs = 0, n_sram_bufs = 0;
-+	uint32_t max_by_mem;
-+	uint64_t total_vram_demand = 0;
-+	uint64_t vram_size = xe_visible_available_vram_size(fd, 0);
-+	uint64_t sram_avail = (uint64_t)igt_get_avail_ram_mb() << 20;
-+	uint64_t target_vram = vram_size * 2;      /* 2 of VRAM */
-+	uint64_t target_sram = sram_avail * 50 / 100;  /* 50% system RAM */
-+
-+	int total_vram_bufs = target_vram / GB(1);
-+	int total_sram_bufs = target_sram / GB(1);
-+
-+	/* determine concurrency from memory pressure */
-+
-+	pthread_barrier_t *barrier;
-+	pthread_barrierattr_t attr;
-+
-+	max_by_mem = min(total_vram_bufs / MIN_BUFS_PER_PROC,
-+			 total_sram_bufs / MIN_BUFS_PER_PROC);
-+	igt_info("\n max_by_mem = %d", max_by_mem);
-+	n_proc = min_t(uint32_t, max_by_mem, MAX_THREADS);
-+	igt_require_f(n_proc > 0, "Not enough VRAM/RAM for oversubscription test\n");
-+
-+	n_vram_bufs = max(2, total_vram_bufs / n_proc);
-+	n_sram_bufs = max(2, total_sram_bufs / n_proc);
-+	total_vram_demand = (uint64_t)n_proc * n_vram_bufs * GB(1);
-+
-+	igt_debug("VRAM size: %" PRIu64 "MB, System RAM available: %" PRIu64 "MB\n",
-+		  vram_size >> 20, sram_avail >> 20);
-+
-+	igt_debug(" n_proc = %d\n", n_proc);
-+	igt_debug("VRAM: %" PRIu64 "GB\n", vram_size >> 30);
-+	igt_debug("VRAM demand: %" PRIu64 "MB (%.2fx oversubscription)\n",
-+		  total_vram_demand >> 20, (double)total_vram_demand / vram_size);
-+	igt_debug("Processes=%d VRAM_bufs=%d SRAM_bufs=%d\n", n_proc,
-+		  n_vram_bufs, n_sram_bufs);
-+
-+	barrier = mmap(NULL, sizeof(pthread_barrier_t),
-+		       PROT_READ | PROT_WRITE,
-+		       MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(barrier != MAP_FAILED);
-+	pthread_barrierattr_init(&attr);
-+	pthread_barrierattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
-+	pthread_barrier_init(barrier, &attr, n_proc);
-+
-+	igt_fork(child, n_proc) {
-+		struct xe_test_ctx ctx = {0};
-+		int rc;
-+		uint64_t addr = 0x40000000;
-+		int expected_result = 0, ints_to_add = 4;
-+		int max_retries = 1024;
-+		struct gem_bo integers_bo, result_bo, batch_bo, *vram_bufs, *sram_bufs;
-+		int pos = 0;
-+		struct mem_bind_sync vram_bind = {0};
-+		struct mem_bind_sync sram_bind = {0};
-+		struct drm_xe_sync batch_syncs[1];
-+		struct drm_xe_exec exec;
-+		struct gem_bo ufence_bo = {0};
-+
-+		vram_bufs = (struct gem_bo *)calloc(n_vram_bufs, sizeof(struct gem_bo));
-+		sram_bufs = (struct gem_bo *)calloc(n_sram_bufs, sizeof(struct gem_bo));
-+		srand(child);
-+
-+		igt_assert(vram_bufs && sram_bufs);
-+
-+		ctx.vm_id = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
-+		create_exec_queue(fd, &ctx);
-+		vram_bind.bufs = vram_bufs;
-+		vram_bind.n_bufs = n_vram_bufs;
-+		sram_bind.bufs = sram_bufs;
-+		sram_bind.n_bufs = n_sram_bufs;
-+
-+		create_test_bos(fd, &ctx, &vram_bind, vram_memory(fd, 0), &addr);
-+		create_test_bos(fd, &ctx, &sram_bind, system_memory(fd), &addr);
-+
-+		pthread_barrier_wait(barrier);
-+
-+		if (vram_bind.n_bufs)
-+			vram_bind.binds_ufence = vm_bind_bo_batch(fd, &ctx, vram_bufs,
-+								  vram_bind.n_bufs);
-+
-+		if (sram_bind.n_bufs)
-+			sram_bind.binds_ufence = vm_bind_bo_batch(fd, &ctx, sram_bufs,
-+								  sram_bind.n_bufs);
-+
-+		integers_bo.size = ALIGN(sizeof(int) * ints_to_add, 4096);
-+		integers_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, integers_bo.size,
-+							  system_memory(fd), 0,
-+							  DRM_XE_GEM_CPU_CACHING_WC);
-+		integers_bo.ptr = (int *)xe_bo_map(fd, integers_bo.handle, integers_bo.size);
-+		integers_bo.addr = 0x100000;
-+
-+		expected_result = fill_random_integers(&integers_bo, ints_to_add);
-+		igt_debug("%d\n", expected_result);
-+
-+		result_bo.size = ALIGN(sizeof(int), 4096);
-+		result_bo.handle  = xe_bo_create_caching(fd, ctx.vm_id, result_bo.size,
-+							 system_memory(fd), 0,
-+							 DRM_XE_GEM_CPU_CACHING_WC);
-+		result_bo.ptr = NULL;
-+		result_bo.addr = 0x200000;
-+
-+		batch_bo.size = 4096;
-+		batch_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, batch_bo.size,
-+						       system_memory(fd), 0,
-+						       DRM_XE_GEM_CPU_CACHING_WC);
-+
-+		batch_bo.ptr = (int *)xe_bo_map(fd, batch_bo.handle, batch_bo.size);
-+		batch_bo.addr = 0x300000;
-+
-+		pos = build_add_batch(&batch_bo, &integers_bo, &result_bo, ints_to_add);
-+
-+		igt_assert(pos * sizeof(int) <= batch_bo.size);
-+
-+		/* Wait for large bind operations to complete before binding small BOs */
-+		if (vram_bind.n_bufs)
-+			xe_wait_ufence(fd, vram_bind.binds_ufence, 1, 0, INT64_MAX);
-+		if (sram_bind.n_bufs)
-+			xe_wait_ufence(fd, sram_bind.binds_ufence, 1, 0, INT64_MAX);
-+
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, integers_bo.handle, 0, integers_bo.addr,
-+				   integers_bo.size, 0);
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, result_bo.handle, 0, result_bo.addr,
-+				   result_bo.size, 0);
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, batch_bo.handle, 0, batch_bo.addr,
-+				   batch_bo.size, 0);
-+
-+		ufence_bo.size = 4096;
-+		ufence_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, ufence_bo.size,
-+							system_memory(fd), 0,
-+							DRM_XE_GEM_CPU_CACHING_WB);
-+		ufence_bo.ptr = (int *)xe_bo_map(fd, ufence_bo.handle, ufence_bo.size);
-+		ufence_bo.addr = 0x400000;
-+		memset(ufence_bo.ptr, 0, ufence_bo.size);
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, ufence_bo.handle, 0, ufence_bo.addr,
-+				   ufence_bo.size, 0);
-+
-+		batch_syncs[0] = (struct drm_xe_sync){
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.addr = ufence_bo.addr,
-+			.timeline_value = 1,
-+		};
-+
-+		exec = (struct drm_xe_exec) {
-+			.exec_queue_id = ctx.exec_queue_id,
-+			.num_syncs = 1,
-+			.syncs = (uintptr_t)batch_syncs,
-+			.address = batch_bo.addr,
-+			.num_batch_buffer = 1,
-+		};
-+
-+		rc = xe_exec_with_retry(fd, &exec, max_retries);
-+		igt_assert_eq(rc, 0);
-+		xe_wait_ufence(fd, (uint64_t *)ufence_bo.ptr, 1, ctx.exec_queue_id, INT64_MAX);
-+		result_bo.ptr = (int *)xe_bo_map(fd, result_bo.handle, result_bo.size);
-+		igt_assert_eq(result_bo.ptr[0], expected_result);
-+		cleanup_bo_resources(fd, &ufence_bo);
-+		cleanup_bo_resources(fd, &result_bo);
-+		cleanup_bo_resources(fd, &batch_bo);
-+		cleanup_bo_resources(fd, &integers_bo);
-+		cleanup_sram_vram_objs(fd, &vram_bind, &sram_bind);
-+		xe_exec_queue_destroy(fd, ctx.exec_queue_id);
-+		xe_vm_destroy(fd, ctx.vm_id);
-+		close(fd);
-+	}
-+	igt_waitchildren();
-+	pthread_barrier_destroy(barrier);
-+	pthread_barrierattr_destroy(&attr);
-+	igt_assert_eq(munmap(barrier, sizeof(pthread_barrier_t)), 0);
-+}
-+
- int igt_main()
- {
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
-@@ -3486,6 +3882,11 @@ int igt_main()
- 		igt_assert(xe_visible_vram_size(fd, 0));
- 		test_oom(fd);
- 	}
-+	igt_subtest("oversubscribe-concurrent-bind")
-+	{
-+		igt_require(xe_has_vram(fd));
-+		test_vm_oversubscribe_concurrent_bind(fd);
-+	}
- 
- 	for (const struct vm_get_property *f = xe_vm_get_property_tests; f->name; f++) {
- 		igt_subtest_f("vm-get-property-%s", f->name)
--- 
-2.52.0
-
+>  	priv->fd.drm = close_device(priv->fd.drm, "late ", "unbound ");
+>  	igt_assert_eq(priv->fd.drm, -1);
+>  
+> @@ -607,12 +651,18 @@ static void hotunbind_rebind(struct hotunplug *priv)
+>  
+>  static void hotunplug_rescan(struct hotunplug *priv)
+>  {
+> +	struct xe_workload w = { 0 };
+> +
+>  	pre_check(priv);
+>  
+>  	priv->fd.drm = local_drm_open_driver(false, "", " for hot unplug");
+>  
+> +	xe_workload_start(priv, priv->fd.drm, &w);
+> +
+>  	device_unplug(priv, "hot ", 0);
+>  
+> +	xe_workload_stop(&w);
+> +
+>  	priv->fd.drm = close_device(priv->fd.drm, "late ", "removed ");
+>  	igt_assert_eq(priv->fd.drm, -1);
+>  
+> @@ -623,40 +673,58 @@ static void hotunplug_rescan(struct hotunplug *priv)
+>  
+>  static void hotrebind(struct hotunplug *priv)
+>  {
+> +	struct xe_workload w = { 0 };
+> +
+>  	pre_check(priv);
+>  
+>  	priv->fd.drm = local_drm_open_driver(false, "", " for hot rebind");
+>  
+> +	xe_workload_start(priv, priv->fd.drm, &w);
+> +
+>  	driver_unbind(priv, "hot ", 60);
+>  
+>  	driver_bind(priv, 0);
+>  
+> +	xe_workload_stop(&w);
+> +
+>  	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+>  }
+>  
+>  static void hotreplug(struct hotunplug *priv)
+>  {
+> +	struct xe_workload w = { 0 };
+> +
+>  	pre_check(priv);
+>  
+>  	priv->fd.drm = local_drm_open_driver(false, "", " for hot replug");
+>  
+> +	xe_workload_start(priv, priv->fd.drm, &w);
+> +
+>  	device_unplug(priv, "hot ", 60);
+>  
+>  	bus_rescan(priv, 0);
+>  
+> +	xe_workload_stop(&w);
+> +
+>  	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+>  }
+>  
+>  static void hotrebind_lateclose(struct hotunplug *priv)
+>  {
+> +	struct xe_workload w = { 0 };
+> +
+>  	pre_check(priv);
+>  
+>  	priv->fd.drm = local_drm_open_driver(false, "", " for hot rebind");
+>  
+> +	xe_workload_start(priv, priv->fd.drm, &w);
+> +
+>  	driver_unbind(priv, "hot ", 60);
+>  
+>  	driver_bind(priv, 0);
+>  
+> +	xe_workload_stop(&w);
+> +
+>  	priv->fd.drm = close_device(priv->fd.drm, "late ", "unbound ");
+>  	igt_assert_eq(priv->fd.drm, -1);
+>  
+> @@ -665,14 +733,20 @@ static void hotrebind_lateclose(struct hotunplug *priv)
+>  
+>  static void hotreplug_lateclose(struct hotunplug *priv)
+>  {
+> +	struct xe_workload w = { 0 };
+> +
+>  	pre_check(priv);
+>  
+>  	priv->fd.drm = local_drm_open_driver(false, "", " for hot replug");
+>  
+> +	xe_workload_start(priv, priv->fd.drm, &w);
+> +
+>  	device_unplug(priv, "hot ", 60);
+>  
+>  	bus_rescan(priv, 0);
+>  
+> +	xe_workload_stop(&w);
+> +
+>  	priv->fd.drm = close_device(priv->fd.drm, "late ", "removed ");
+>  	igt_assert_eq(priv->fd.drm, -1);
+>  
+> -- 
+> 2.50.1
+> 
