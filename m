@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE411CD343B
-	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 05:51:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00EF0CD343B
+	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 05:53:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5E15F10E198;
-	Thu,  7 May 2026 05:51:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A2FF110E18B;
+	Thu,  7 May 2026 05:53:14 +0000 (UTC)
 Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FC0510E18B;
- Thu,  7 May 2026 05:51:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3D3410E18B;
+ Thu,  7 May 2026 05:52:58 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2873213721816594127=="
+ boundary="===============2926955574207652423=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/amdgpu=3A_Restrict_KF?=
- =?utf-8?q?D_tests_to_x86/x86=5F64_architectures_only?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/amdgpu=3A_Fix_amd=5Ff?=
+ =?utf-8?q?uzzing=5Fkfd_runtime_skip_when_KFD_device_unavailable?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: vitaly.prosyak@amd.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 07 May 2026 05:51:23 -0000
-Message-ID: <177813308331.46478.12660466616324067271@5ab824fced77>
+Date: Thu, 07 May 2026 05:52:58 -0000
+Message-ID: <177813317866.46488.337145554367588866@5ab824fced77>
 X-Patchwork-Hint: ignore
-References: <20260507031547.168170-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20260507031547.168170-1-vitaly.prosyak@amd.com>
+References: <20260507035339.175401-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20260507035339.175401-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,24 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2873213721816594127==
+--===============2926955574207652423==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/amdgpu: Restrict KFD tests to x86/x86_64 architectures only
-URL   : https://patchwork.freedesktop.org/series/166096/
+Series: tests/amdgpu: Fix amd_fuzzing_kfd runtime skip when KFD device unavailable
+URL   : https://patchwork.freedesktop.org/series/166098/
 State : failure
 
 == Summary ==
 
-Series 166096 revision 1 was fully merged or fully failed: no git log
+Series 166098 revision 1 was fully merged or fully failed: no git log
 
 
 
---===============2873213721816594127==
+--===============2926955574207652423==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,16 +78,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: Restrict KFD tests to x86/x86_64 architectures only</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166096/">https://patchwork.freedesktop.org/series/166096/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: Fix amd_fuzzing_kfd runtime skip when KFD device unavailable</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166098/">https://patchwork.freedesktop.org/series/166098/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
 </table>
 
 
-    <p>Series 166096 revision 1 was fully merged or fully failed: no git log</p>
+    <p>Series 166098 revision 1 was fully merged or fully failed: no git log</p>
 
 </body>
 </html>
 
---===============2873213721816594127==--
+--===============2926955574207652423==--
