@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9AE2CD343F
-	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 12:36:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88F81CD343F
+	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 12:36:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6BBD910F03A;
-	Thu,  7 May 2026 12:36:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E19210F03A;
+	Thu,  7 May 2026 12:36:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="icbYdpGs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CLW+pOcE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8A6810F03A
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 12:35:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 03D2D10F03A
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 12:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778157344; x=1809693344;
- h=from:subject:date:message-id:mime-version:
- content-transfer-encoding:to:cc;
- bh=tDMjRorBFhDxpCoUj6t9r3XiT9EhpArJlTIJ8hgCYkk=;
- b=icbYdpGs/Dj0SDexH8X0RMxU61nYA6qoc1PL7tZ36PXmBqJLXfy4wj4Z
- qTVoHsCbzQMhZYf3Kqr6HgymrAMyUWX5mz2RWU2QRdRcCy89cDi8lDb5V
- klAfkUksd9coubzJ6OXTQEeX2C0VsxUVdrZ41pWiK8vpnpAsjC8F49ee7
- C73sL8YoMYngrZNTWw5ssPNRBhFHRCocWOcR8KUFNORjVzo5ReBzazxlb
- DMDRhlU7UBhNnUVNRAdZKkyATblkcWeEZIYI3cb/Fd240C9KyasEesjMg
- 514eqaUNhRUDIkjgyPgzCdSiCOGZ2N+B6lJinDW8C3Tet69AFXTq8zp6y w==;
-X-CSE-ConnectionGUID: sHsxTp7BRg6EH1TWp4L7xQ==
-X-CSE-MsgGUID: 66WMjqqfRjq4vpeTGcxOaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="81674966"
-X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; d="scan'208";a="81674966"
+ t=1778157345; x=1809693345;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:references:in-reply-to:to:cc;
+ bh=to2XEFMQb39kENNK06WF4ugu1QpNO8qwckH83Onml54=;
+ b=CLW+pOcEPBW2JB7EHzeTw0q+alWGgymdA9O7S0NRXtRXGN3xuuiuiquG
+ 4x270kWXni/KW3BDjMauXo8BN7XDRy3A+W+YVw9KXXieLBxVq4dHpQCsu
+ W49ZHDujjjHMPpOinbWhhoX650fQtAOLbhuc4WILiUsUf13aS3rzKVGnR
+ 37V4qIYU+4UZRYl2CcHy0CDv5ebXhLt3C96YRYJOMmqoGfeRw39Qbalz7
+ mLH5qigut/jZn1bTih/JQuWJvWmORpnz0pX2qey9gXDxmsoHMFPMGOMSw
+ eL3gZJ6gD3leXJqjpWl6kno6SspYcVWR9Nd7dBJlobc1nTfDkOglf+JF0 g==;
+X-CSE-ConnectionGUID: akTilEx9Rp2DGc/BpvmGJQ==
+X-CSE-MsgGUID: weEqc3QhSRORdcfTt4tC9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="81674968"
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; d="scan'208";a="81674968"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2026 05:35:43 -0700
-X-CSE-ConnectionGUID: cv935/cGTD2IcKWVzBd37g==
-X-CSE-MsgGUID: atC5LykJQHCH6osAGJxs/w==
+ 07 May 2026 05:35:45 -0700
+X-CSE-ConnectionGUID: MJ0XJPPgT0q9C/yYq6PTyA==
+X-CSE-MsgGUID: sdVBjDFGS6mlQmIN7KFUDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; d="scan'208";a="236716811"
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; d="scan'208";a="236716826"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2026 05:35:41 -0700
+ 07 May 2026 05:35:43 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH v2 0/3] lib/igt_core: add timestamps to error logs
-Date: Thu, 07 May 2026 14:34:16 +0200
-Message-Id: <20260507-add_timestamps_to_logs-v2-0-9591e90e0a6a@intel.com>
+Date: Thu, 07 May 2026 14:34:17 +0200
+Subject: [PATCH v2 1/3] tests/core_auth: do not call any function before
+ errno check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMiG/GkC/3WOQQ6CMBBFr2K6tgpYVFx5D0NIaadQQ1vSKURDu
- LstrF2+yZ+XtxAErwHJ47AQD7NG7WyE4nggoue2A6plZFJkxTVjl4xyKZugDWDgZsQmuGZwHVJ
- 5Z0oqeQPFBInPowelP5v4Ve+MU/sGEZItLVqOQFvPrejTaRoxeODmbDgG8GnRawzOf7e2OU+mP
- aPMyn8Zc05zWsiqVKyqYlD71DbAcBLOkHpd1x+A/ZEK8AAAAA==
-X-Change-ID: 20260430-add_timestamps_to_logs-d84fdfd7ef4c
+Message-Id: <20260507-add_timestamps_to_logs-v2-1-9591e90e0a6a@intel.com>
+References: <20260507-add_timestamps_to_logs-v2-0-9591e90e0a6a@intel.com>
+In-Reply-To: <20260507-add_timestamps_to_logs-v2-0-9591e90e0a6a@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
  Ryszard Knop <ryszard.knop@intel.com>, 
@@ -61,18 +59,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mateusz Grabski <mateusz.grabski@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1178;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=808;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=tDMjRorBFhDxpCoUj6t9r3XiT9EhpArJlTIJ8hgCYkk=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBp/IbTah3pfioN3REB1GIlbjORf8ULvDK6wIA79
- GbHgFJugiaJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCafyG0wAKCRAjYrKT3hD9
- 19jEDAC4SZPjofkujv0o5DrfQVziWvD/yikWDA8f+pKwJXNsRGF2D/dfYA2OWJSTDAnLhr1UBVM
- Lf8fxEaum01Wn/sSIBJLbuAiC0pZRwtaGKYb3mYSlsy7Aky9c5NnzEQ//IIApLGNvtRjFYFSM6l
- xwEhI9xj5lc3LOOpONq7kLR8xBvs4qBqfGqfQRgFV0vVtpKGrbggryuLHPARDXlZ/DB/caQLCUQ
- rnZvAqJYlHOTIDsE+IUcGeS+jjFodbcmfMcNI3lgksj2cjeLahLCa/6BQMOEIQuK+ZaLfgikWZQ
- 8A6YfpNEBmgryLu02hCs8bphj4+SM7fShGuu5H00AFomYK6i1ODe8YcAg2RbMhuJxfOAgfuhixP
- D7SSA99YXHXHmnuMX7UItyvAIMF4+BzmZjGGn11P9SjlZieQRNGFVAX6lKz66wuKNEDKf/C6Jj/
- GjzxistF3Dv3VMmIVOV48Y+RwohyZn6Txx7t/jRwQSGoy/0vtEMtScX28bvPlh8/wmXMs=
+ bh=to2XEFMQb39kENNK06WF4ugu1QpNO8qwckH83Onml54=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBp/IbU5yIcToUI4Q1IhfLXleyackdPohFlvXVCZ
+ BzIFYOL61iJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCafyG1AAKCRAjYrKT3hD9
+ 16wSC/4p+f0WllQekfyH4fGSGkmeJ3ieShSBcTEi0ebPe368K7VHXi0LmA5G7RuuUGxRh4Ph2cX
+ zFJQ5SKRDryz9VHC+8+yNb9Riaj2ritceWAfk1zcJCW+Ly68hAS3eMIUj95LLLOXk2r05dpKNdD
+ 9UXEaFttVApRgCTqW0RQ4Cl4MhPmELOrO5n/IPDyBvsNYfngFrnAZeFVw0QkBRzztcxdmJ315Sg
+ 00apZQJ6sNu8vh9QQc0x82a8T1rSgwF5aEIxmYz69Q0PH8atHH4dBuAG/xR2zXY/CF1cZovPo/u
+ CgN6MgjZLSH0lAK8u/uV5IAuI0/89qJ9jsTTiLGXK0WpQPlOZdHCIbOSd4og77qfyqT2TGWc1RX
+ 2cNs+etZGk8ND3sNAeNkOzneBtqFkThaVKZCqgjnPiY2Qx4XXoxCZClnwnJqd9Aa/ELPCirN2yb
+ dGjDuwZpTOoxVr2SN3U63skmh4A9gePjvqqeh7TMBzScX0fzjzUSzfAIAPxiBtUayRcso=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -90,35 +88,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patchset add timestamps to error logs in IGT.
-One of side effects of adding timestamps is detection by CI of previously
-hidden errors in errno handling.
-According to manual errno should be read immediately AFTER library function
-returns an error, otherwise errno can be overwriten by subsequent calls.
-First patches fixes these errors.
+If open returns error errno should be checked immediately, otherwise it
+can be overwritten by subsequent call.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
-Changes in v2:
-- added fixes to errno handling
-- adjusted format string to be the same as in dmesg
-- Link to v1: https://patch.msgid.link/20260505-add_timestamps_to_logs-v1-1-2d95f499fdfb@intel.com
+ tests/core_auth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
-Andrzej Hajda (3):
-      tests/core_auth: do not call any function before errno check
-      lib/igt_sysfs: protect errno from being overwritten in igt_debug_on
-      lib/igt_core: add timestamps to error logs
+diff --git a/tests/core_auth.c b/tests/core_auth.c
+index 31ba2cfb2d24..19e69b543620 100644
+--- a/tests/core_auth.c
++++ b/tests/core_auth.c
+@@ -128,8 +128,8 @@ static void test_many_magics(int master)
+ 		/* open slave and make sure it's NOT a master */
+ 		slave = open(path, O_RDWR | O_CLOEXEC);
+ 		if (slave < 0) {
+-			igt_info("Reopening device failed after %d opens\n", i);
+ 			igt_assert(errno == EMFILE);
++			igt_info("Reopening device failed after %d opens\n", i);
+ 			break;
+ 		}
+ 		igt_assert(drmSetMaster(slave) < 0);
 
- lib/igt_core.c    | 13 +++++++++----
- lib/igt_sysfs.c   | 17 +++++++++++------
- tests/core_auth.c |  2 +-
- 3 files changed, 21 insertions(+), 11 deletions(-)
----
-base-commit: 3e5747e536f148bf232049e49a00e2b683f91a83
-change-id: 20260430-add_timestamps_to_logs-d84fdfd7ef4c
-
-Best regards,
---  
-Andrzej Hajda <andrzej.hajda@intel.com>
+-- 
+2.54.0
 
