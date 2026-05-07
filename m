@@ -4,149 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 241F2CD3442
-	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 20:07:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B8F1CD3442
+	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 20:11:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ADFFA10F209;
-	Thu,  7 May 2026 20:07:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA4DB10F209;
+	Thu,  7 May 2026 20:11:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GOQ21TPP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mCjxDkSU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2AFB010F209
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 20:07:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 642AF10F209
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 20:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778184438; x=1809720438;
+ t=1778184682; x=1809720682;
  h=date:from:to:cc:subject:message-id:references:
  content-transfer-encoding:in-reply-to:mime-version;
- bh=fFInaIA8CPu2LYQYyd10t/JBvF6NqZLE6xs2u9SlEvE=;
- b=GOQ21TPPk/H8kjLrKXyKHgO5hcDrldSNTysbRxdzKPrHgGzDoI9ySKfP
- H8q7Ib+uHnR/r81wj6lyMHE8Y2SJJPPXHztTnE7aWbHxfuhiuhQATBRNa
- k2Bq5EUYxLUjnZCBmRBMoRaKbUCcSTipmbb4eLAVA1QiKD8QdcDKbNEiP
- FwPNMIlADJX0VFQGcxYupzk+5AFU15W7ZIN31M5pwwqiN1AQbo5XqFA/o
- jBga74ksMXWmQZWwqPmmUmldNfotndXBcgdrrqJpBpPtTadhOKDMRrQN3
- wu0wsi/peorcCwb+GzIsOqtmsq9zuJQVOeWafYyE0iouOP/2nxw1CeWJf Q==;
-X-CSE-ConnectionGUID: e/jI8Fa5RaiUSkLJXrcelw==
-X-CSE-MsgGUID: fJswxFDbRCCpV/O2IQJQKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="78998686"
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="78998686"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2026 13:07:18 -0700
-X-CSE-ConnectionGUID: kmmhfxYCSRmrIbXlirsAyA==
-X-CSE-MsgGUID: Ee3mf1lNS1eMRyP5+iMMqg==
+ bh=reXQhF4vO3C+aOmhK1MmkYgbt3riTXHe3/xJZ9g6ac0=;
+ b=mCjxDkSU05szfRmN3hkooHGKV15Ed2qijePG6K+wG+KF5oDkVUiUIieu
+ px9WAzsg13wU81mjvD423u3E6zj2V8M1eo+Tjjpw0Z1I2V4sjACqj3b5X
+ HZ6jGrtE3TUsnFXAV0LWY05nN2EnjeG4vXsTwrdN2U7s2nPxj1khspiqY
+ qCCmuNFwfq+jAL+HyujkaVZsUMq2hbrK/R9eHVAslSGFxmbXfNydn7G2E
+ hfF4Rp9UIooVfZSvBLEmA4CQXZco33dP8ZcznzV2qpum+TruncrHKxFJJ
+ qnzbUddQDr275Vvm5bdOJbsbNke4tntqea4gNcdDqD26qUnkdM6Yo+FQa A==;
+X-CSE-ConnectionGUID: YDO1HIoPQY6oNIc6W2Nd1w==
+X-CSE-MsgGUID: u0O+iWviShW4f+mQ9GpdDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="78171631"
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="78171631"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2026 13:11:21 -0700
+X-CSE-ConnectionGUID: FNC8WQqVQIWpKfEpin7XQg==
+X-CSE-MsgGUID: pRfLsaJnThC/15Owb8rdTQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="238353048"
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="260275532"
 Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2026 13:07:17 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2026 13:11:21 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 7 May 2026 13:07:17 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.37; Thu, 7 May 2026 13:11:20 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 7 May 2026 13:07:17 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.63) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Thu, 7 May 2026 13:11:20 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.29) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 7 May 2026 13:07:16 -0700
+ 15.2.2562.37; Thu, 7 May 2026 13:11:19 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wfv1fXm2MzmLVzAxnnLeuFnSQCieB8Mwx/TGcKQs+zlCt6liwuvk0WB8YHSqI9wq2hkNLjyor3GyMFvhmBPid6vYvgBOAbD4pX8O0UuuaZvekTzZwOwPOiFAmSoKuBvFeoR9OR6wbXeqbOwoWDYn99SHjtW7xHel1+9nDMFNegD42QjUaXQiWys0HDTVBA3vBur1i9GtXXH0uWD9lCtuSeZfH170SVQqNXUdox33R6KdzDP4E9LXouFlZSd9U7L7dBPHNHRXN9rbN58XbQKBwZZLvH5UoGm919VKvdZM9t6znKrv3wl0vVzqD4zIjRV62qk3Ixclr+q/N9rRRXRpog==
+ b=KJe2kKaviWRPz8IFXcNPRwxVi/4jkyAC/1yTDPeP/QhxLl4ziucwWMYK/5tEQnlQcud+ygPhISIpB9AgCPEtmawRRq/uPsn0hLhhhIip63C7ew9e6x5Bp8HQUWcxacDRp33K1cj/0FoQolhsuZZdnjdVdmL75nZ/abPy+gJe+SFXqjKQcQDBG2mCFlVY/bpw/xCzUfh7TB0pyvaidCyit1QK+pLn8fYaE4mqY8BL3ADJIR5Jjw35r4RbyG1HvSVvaDEnghmyWBdJNnehTevVijYQYvxm1dg0skwfNs7A1sA4o0dl5WIP1KvpoXlDQhb7Fxf1wcYa4W3hXxfqe8ejxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lc8vO+7oVlz4moQnSbLAj1a2LwyS7MuEn+y0MWfZNk8=;
- b=cN5HWvXE1T5gM/14/HnlRfADC8ilZefw4jyZMxVB5uvXjVWgCcd64iET99eVddi8Gup7g6XuOK9eqS+8DwWBUQF1Bfj62MG3tCZQi3EcEFW/W8UQQ30IAUF9oJEWjg2WQ9PzqCOk9GYI3/szZP2W2Gj28gLD6eMQiXdltzAdPo75z7jNHqhFehCLWFGxVgIXu8wQChWGEb88QE2T0hoQoXztSapHbPDyIn9Z0J3mOWniSMI47Jat1a/1RvhRAOo8gGY+nwiBSBVANOTVT/RlUwtc2pwCzsn1LqDmopiQjyEE3WzOyZcDF2T09QXPrk2nEJjOZZCJx2E+lCSKtc349g==
+ bh=Dwr+OC5w1IJyoHLEKwlnESW/XlVqRiGIXKSA3pR84zo=;
+ b=VNoQDHOa5zuYymraFMs+WOP5BWOkJfmo7qDPLI7EPc/yAa/DD7EfzJAKEXNDGvEdlh+fp54SVE9QpbIa2lhmeJ9N9i3ToY0OoRtQ59FnHHttXE+eEiEhRK2PL8XJCfKZhIDypggwgo1+TAsvfOb+AXRZM9jCg23s+3VmV9zAKXHxp783in6EFsiUPesA0yjNSxR4RC77tuJJyfYTQlZqJJbgQ7MWzuwuxoyy0Pbvl8pSprRDE6eeugHR/jYKKuk8vISdjkfe6AT0ua7hH4qrFHeWRkVM9ePyP0uhPtwQaNLnxsOIWJZILzmYdz59GSCo1PClx3OnGtICMAVgWKfpDw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
- by MW4PR11MB6667.namprd11.prod.outlook.com (2603:10b6:303:1ea::22)
+ by PH7PR11MB7717.namprd11.prod.outlook.com (2603:10b6:510:2b8::8)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
- 2026 20:07:07 +0000
+ 2026 20:11:17 +0000
 Received: from BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc%4]) with mapi id 15.20.9891.008; Thu, 7 May 2026
- 20:07:07 +0000
-Date: Thu, 7 May 2026 13:07:04 -0700
+ 20:11:16 +0000
+Date: Thu, 7 May 2026 13:11:13 -0700
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-CC: "Summers, Stuart" <stuart.summers@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH 2/3] lib/xe/xe_spin: Add option for QUEUE_TIMESTAMP
-Message-ID: <afzw6OL1u22dfsAl@nvishwa1-desk>
+To: "Summers, Stuart" <stuart.summers@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH 1/3] lib/xe/xe_spin: Enhance multi-queue switch option
+Message-ID: <afzx4crzetVT4YnA@nvishwa1-desk>
 References: <20260506183137.51479-5-niranjana.vishwanathapura@intel.com>
- <20260506183137.51479-7-niranjana.vishwanathapura@intel.com>
- <81b70498fab2a302ad8c131ef9d589dd7e39c230.camel@intel.com>
- <afzq8QUcfKLm7jiT@soc-5CG1426VCC.clients.intel.com>
+ <20260506183137.51479-6-niranjana.vishwanathapura@intel.com>
+ <9575266a54ec7fbce26b586c4c70f70750ea9d83.camel@intel.com>
 Content-Type: text/plain; charset="iso-8859-1"; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <afzq8QUcfKLm7jiT@soc-5CG1426VCC.clients.intel.com>
-X-ClientProxiedBy: SJ0PR03CA0359.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::34) To BL3PR11MB6410.namprd11.prod.outlook.com
+In-Reply-To: <9575266a54ec7fbce26b586c4c70f70750ea9d83.camel@intel.com>
+X-ClientProxiedBy: BYAPR21CA0001.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::11) To BL3PR11MB6410.namprd11.prod.outlook.com
  (2603:10b6:208:3b9::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|MW4PR11MB6667:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3509c4da-5d78-467a-d93e-08deac743729
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|PH7PR11MB7717:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7fc9eafa-df62-44df-9373-08deac74cb81
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|22082099003|18002099003|56012099003; 
-X-Microsoft-Antispam-Message-Info: uH96kplOBtbmwOYrxSPOmLzgulImrmP0SMscSQ1A8NUswvXAJwS18Bd2xYLdIHL1dO3Rdw8feL5vvMvr3aLO++3FYuigtypZGZmA1JfgpxT4IQEfUJjUeDkDr2zpifhLI5pnPUl9GSxynV7skbKtrpgmnRgcAQ87BIEGSu409WJVtVvg6VRaAKSBkIaCMeYLBXqJt6jdXYl+pkoe8fM5XNv1wohH+j5IWx6cFcsdSLJFlxEaOUP3RmfvhIsgtnBdRwBiMyG8a2rIzbcPSrXDibpbw40KwLnb5Xt0i0K0tqWboEqsTDd5BRcC8SqupqXaSD1nMDgabPzDXD8tErFkEhrIL79nQ/M2sm3GsgNTAf8+J/RdL+8eK6mH1O+NaLtgelNNM+VH+NWYust6VWvCCcf/BQHuFq9ULjPmi9ppNosVTsxVtgdmIixlXRHXhaBFhI9o2RJCjX4ZL+wlrXWnCJhYATslLQ6Gj68V3rw042KSUMXqli4Z4mN1lo9/ZldOsifOQsZBLbl18l4jGsz9mb2XcugsAW8TrWqbxGUW1Le9ypww/TF8W/0pxCIMe6GRs0KjKgZZLSwxahppYFMTCapv/UJf2RJtO6PIrRt+jnVa5c5PKpLBGNBr8Y9k2jRSfSgoHI68yosgZVO2Tm878g==
+ ARA:13230040|366016|376014|1800799024|3023799003|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: cPyxHKEMp9mEyPivAXq499Ej/qZ12uButL8PF7DYpwIQHvoOhd6kDl8FmideTMqFeubz8bTARru34oWlcXlvMCANFeYpcpUV1UXwOnHzgibkVeWqt3kod5U92ruTrw3z00RU7Cv8DMywH6ps/csfZA6kyzN0e98rUe7YlefCLus/96FwFkqDWKqC0YmDtutMhRyIih5iRd0ICoq91Nasj1Ax5lQj3R2ZSiSy6jnkNuYgEj0ryrvSTphymDdfuwZ3jD0IJTnIIvk2iKGQSBpO101t1EWq69cie2K5PfPexHgfxCbtIH523Sj3N2ITCy9/sWeacFsCBGPsYOs1gjBXSlhw1TJbYxYMEhlx4iyMO9NZG2MVqGxuPdYfWGE3PFwE6QQGwdDU+5+MW+ksQrHaHM8xTiRZVrZf6YJIDJ1SU0lTum3Nhydu3wt3NnfwavB2zEIibp/V8hs52tHHk4yIDzi0avfmTaZqCdqrqM1bmE7DV1S4N8qACNB4yZCvknlbWRu123qmbPPDw+rzMuAPZWe1fTRLMSsPaf4Lg8oty5trsWVdeFsti442foVaxw/jQ07ZtvNqSkvmAa7BHY5JJz4J4tX3IQbmIB/Ae3UBNHvGhsPXpie6c4CwVVHnKut7qKy/fZreWwDNX3vteDjirRj2X8ixDJZThCAUcQh8okBSFatxaNIvRr/PHtv+aKuu
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003);
+ SFS:(13230040)(366016)(376014)(1800799024)(3023799003)(56012099003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?/jvLbM8wI+Nf3D9svNNUXColtsjkYf/Uqa6w/v8Sdx+OqJMkWcDDrMRHxQ?=
- =?iso-8859-1?Q?wzVAdMlp1vMDkC6S4UjNcWRe1OTfdayajFmzKdU6LupGs2PfUiu3d7IviF?=
- =?iso-8859-1?Q?fkdKIaVlhI2kcXhkZt1MEnG+9imh6ZcFqOdTl9NPF49zgi7VUceyj3K5wx?=
- =?iso-8859-1?Q?aGtM48/LGTrTmrDcu3MYNfsj8FeCaWzhTu8+2pM+lue0trrU3XxDx0G7XP?=
- =?iso-8859-1?Q?bWd2gTXIev1WtdaVIRCE4zMpttB9eVaXQYj6/rxw45Ifct/CGqF6KomFJr?=
- =?iso-8859-1?Q?jBPynkjn7waBwDYhfQbrH9idsxBHeyu7T4jN5Pifz5yL1mtRJ2+04MGzHH?=
- =?iso-8859-1?Q?/czTEm7LwDxD3zbkVmZOu1DU3/+afDO4s6QoUKiSYkOf+ticw0no2tMY/C?=
- =?iso-8859-1?Q?K1TglYuNYKYc3gdOBEZcKijE0grjKbhGuxiDxXb3m1IoBfVZ7sQ6G9CYzs?=
- =?iso-8859-1?Q?5P4La3vvU3WAYSsLSQ64IpYv3LoMRuBn2MYkQ5ZPeC2+nYuk1BII+7bmjm?=
- =?iso-8859-1?Q?s0B5wIyzi752BLxdpQhjbo1CPS5rLRVYh3QA94Y3n44rEY11QZRklIlHv/?=
- =?iso-8859-1?Q?JhxfS79Vj4vT5OTgQ2n640qwp7i1uqLMnYXopPBUKjwBRsNSzFZtFBEW97?=
- =?iso-8859-1?Q?rZEDgXFZw5Znsknu529bgw1m+/U7eQSAYa4s018lfu4qy94XMxqGHdrE1F?=
- =?iso-8859-1?Q?B1ZHTfuFiWQGWvJjtGFuly8MeD8iXwbpctZpKVkSACSU+eNuHvOZ2wzzoW?=
- =?iso-8859-1?Q?y9i5yM2yYNvnXHztx8qGfxh7lp1KfNLZuuVfLbpqSV1AnJgvOl4HTnRq2P?=
- =?iso-8859-1?Q?VtEBJ3RJqZGA7wWRsyjMroSZ1ah3TsMlJB0v4HzkL2vTNzDtPcWuyEqYta?=
- =?iso-8859-1?Q?fHGegs4GCDk8tOAxKnT1F1vUWdP8LrShNhqCMEe1OjpPtvPxLuj8rMxH/+?=
- =?iso-8859-1?Q?kX+n1kBesxL5+hzN8eQk82NiBqkEGtSY3zb9awvS/HDuDgKNnicNYUsNR5?=
- =?iso-8859-1?Q?47Q5NOchsAh3SU7M4KYmNlB6qg7/7D1JVFM4lQ2SWDdH1sLgSVu2/lD87x?=
- =?iso-8859-1?Q?oLqIJZhNxCtCfuEpmf7Joh3wd0qIpk5Aam50qtFDhO++uyMFHi+dIQD2Dw?=
- =?iso-8859-1?Q?JPes5vvUYJdOwGqKf91KlHvfOZPfJ7eVRtL/PauVxKveLGNq5MxB9nVfwv?=
- =?iso-8859-1?Q?MnWjVH1Cs565AfODM8uAjrisYsjLu8hZk1n8ZW6kPO/RmZy6mSmWevx9PQ?=
- =?iso-8859-1?Q?bMmZXt9Aw7YV/VBSnoWi5Qnv8/eFjFirJ7Z30AkjI8oT7rQLNOIHWrbjfS?=
- =?iso-8859-1?Q?zkTAccbr5GI0EX8pm2uUcQzwmF0GpTgjoAlktfYsn0UVwpEz62dOIc/VZY?=
- =?iso-8859-1?Q?aAKtl6VmKns1OcSTPc5Mqz2W0sMg8EcG4WuKpsErRCfg0uG6uNwHzwPTuL?=
- =?iso-8859-1?Q?A+LURcNa4EuO71QdmIZbiNbcBEupcKcdhLjXbWHdMhH+dfG8tSc8EyC93d?=
- =?iso-8859-1?Q?0VBjHdU86GxnIb6UxxoEF2RKk4KdHa9qHnr8t95iE+jFcYAHBFvWdox1Vl?=
- =?iso-8859-1?Q?uWSm+CWkN1EF3Y6YqPVOhwB8UX/SjGCi+B1fGRKcw3xAUoI5r1Giug/bw4?=
- =?iso-8859-1?Q?TmCugWZ2EnfT9qhVksceSySPs5dG8Gt/WmjZJgaxs6oCEvCpAfKJB5YVfO?=
- =?iso-8859-1?Q?DQ5BCel74kZUIYmcUxmhhr7fxfGhQyzpRJVxesG6t5YMhmsaCFVAWWbfpq?=
- =?iso-8859-1?Q?i1RjKbDo1SDN+QRcgTZI+CcAiHwFKVGjsvFgCOZFOJ52ogACxMCYhh4onn?=
- =?iso-8859-1?Q?1mdAGLldQr1G9IWhfbpkVgivEtY+dI9WddIXKrJmGC2CLtOe8X85?=
-X-Exchange-RoutingPolicyChecked: CDb6fiWIGD/v8IFWUdwkwlQHQiPtAPgyFcOsUCFMSKoJz+dEfYBUMbhQ/Me9eNsxyPUXlI1yCayhiFrE9ZFM8zrraT4PWALJh0OI3yGlwoachmfnjGa+uaIU8yaSiEUdEIrSFCeFe0HcacFb0cq732xE3b6hdK6fESku7znJwh1MQLYpC+Ch1QLrDxISOa4sGJtA084JuM3Z/fisS+8mzCt4og3FqLlKnmHkVuY0bomC3YahC1J583xXRPRu9cK6FKAMqPuPjyvZofJzrySyH48UHNifX5mihjUptiftvxH1aljbJY1pzn3MC/r0dAu+a+c9IYVc+SEDqCG891tRmQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3509c4da-5d78-467a-d93e-08deac743729
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?pUmOVVLs6005rt0yIpLcuVqQ4aDFC9gQ0L/vvXSiTMB6yBA0ibYdvPYo/c?=
+ =?iso-8859-1?Q?lATWxtr2YwC8jE4GPGKN2nLFi/xwXCR9roag/UN3OF4QcjoHDXABy8zD/F?=
+ =?iso-8859-1?Q?8wW0E6QjfAxhpWI5JNAabDIvySOldupzBTKhodBtlvZWjzY69aGtcJdJFs?=
+ =?iso-8859-1?Q?RDbLfbp+n12GdBgKQkik6SJLIs9iV494QoqR++lptmGOkCqtzoj19V1Nlx?=
+ =?iso-8859-1?Q?56cm3aYKuPQfKrN0DCut+1Hrj4qmmTkXPLgkQpbNFD0SbcM1b6ZISEaw4v?=
+ =?iso-8859-1?Q?TWx3km0TfHIdz4PJ5NuvMxHcuCkXx3nEcNCGU2xZnFJDKBjAxijVZPXha+?=
+ =?iso-8859-1?Q?C+rkXIW7OrhJWhJi5fYuYI5Sebq1uuRVgEH3m4muLMtxbOExVyC2E1r0/u?=
+ =?iso-8859-1?Q?Axca6PwPFYJuyvhTXf3cmTVSm0+wn2j/aEHwQB7WVS42gcKuJ6lEXvxBKV?=
+ =?iso-8859-1?Q?YL6GFYTnKsDxtc6BZMynV/lYa39KTRWwihQcaxUA4HcDP/KMaTUoM0mpl7?=
+ =?iso-8859-1?Q?wX7Vf8K0gej8YlH/Sc7fTklzg23Rfu5VvnhnTp0zUQva/OFPgPnOfiSaqP?=
+ =?iso-8859-1?Q?LcN5Q9GMr8hktsMEBt7NGUwv4t+uIDEG9QlJmwjD2kpa/vaymAq/Md514E?=
+ =?iso-8859-1?Q?nVelbg41fZkSZ8iOj6COYKNLhoXzxkazZkJT66257ITLESr5dAqv2B6Foi?=
+ =?iso-8859-1?Q?A/FU2OcKklD7rCQOkGuflL02yJfXs2z0B+G/Zh60boWxExZDZv0+aPreP8?=
+ =?iso-8859-1?Q?kX4O6DXX4DtU5FVc3LBED9HJRcXYYKnYO9i30/iIdHsFmqI5hEH3ImjEls?=
+ =?iso-8859-1?Q?GnaQRxSy04RBLWVgX0nFc20daQKBl/AFol+n32gId+pn3jlCOeW3lBqIi6?=
+ =?iso-8859-1?Q?MojZ9bweE7ig+ZWI5YCwoIjhGzOVHc+N1ZvsJTX6WsB+ND2/sxVnh44CoP?=
+ =?iso-8859-1?Q?KsOg+BYo+V3SiVQB/qx0Gtq8SRcar+V7X+vCOEooaJc/ErRhnyKMgS3PX2?=
+ =?iso-8859-1?Q?HayeKW36OidOEScvm8FAt+7Qky4le4saPBLNge1asiFgLwyuUeDdxjkjTq?=
+ =?iso-8859-1?Q?HleSnD+Ofu8QcIQohpyOCJL3tGy7rAADI9Ike/3kbmep2K7DYxtSmwC3nW?=
+ =?iso-8859-1?Q?xEprKeCbb6CjU4cArVUDXELsIu5VmSsgOz/PvFLh8kEihaK9zt3ktg+UHa?=
+ =?iso-8859-1?Q?NCnR5EPdJwZaTtM5btlY13EO+6dtaLuLjcEjE2aHeMnJj1aTQ3dGO3EMJv?=
+ =?iso-8859-1?Q?4I2vWhPHqefuJqOZ7b+d+Icho6DHrH/WUiLXa0J1q1D3k7GQi8LNUx0EMV?=
+ =?iso-8859-1?Q?Jgv6iNfFRbKKcZ/Nmmlr6bfeZ+ZjRO2GM+9yp4ug8k6baPLtdU5NGjAkDz?=
+ =?iso-8859-1?Q?pghkZD9Lt0CapEMyjRcd7TmK6LUJ654uwcFCaurVuONSRGn9GCcnvPt2HX?=
+ =?iso-8859-1?Q?zMcvhvzE2zPoudBpMT091xRz3uhfZFDqnjkij7vIhhxyhz73JtOvO+7Y9H?=
+ =?iso-8859-1?Q?tZWm8MhbxJPmoU2/BxHjp+QPfsqFDDjhar/s9/AEVrZKJoO6/MuNI1iSU9?=
+ =?iso-8859-1?Q?hQhG0y5JM0DMghFBraxHqvVE4qsp/R49vdgMidmthH2XVa1apSNS1eV6e8?=
+ =?iso-8859-1?Q?FGD5yshkil3455x7m6jTk5gpMDzHxZU/jTVRWvnGN+UyMpdZ+0hNDOW0PF?=
+ =?iso-8859-1?Q?b+dnsKxJAEt9s6267a+PfXf2g9xtMJgrEhgKXlL5p+54ccy1rpjhq9j522?=
+ =?iso-8859-1?Q?gRyU/YMCjjema9Vs+7UDQzACjECoLoWRD4Pjt6EF4eZlUWtpOB8ghHORzc?=
+ =?iso-8859-1?Q?cnRoKY4slIO/wJLIk/PyJmRjh9xOltLzWSoNN05eqG8t9fekj0n3?=
+X-Exchange-RoutingPolicyChecked: WhtvxIgdS14LPcn5NfkRK48iXk9HD1mrYm3Kn5Ma3gBuVGGL+LHpELJK6Drg7bBL/xUVzRcxRkXVXv4GxvLhNraWRSpWQtz23Kh3fFIBhSU8dZj0NLgYutm+d7hkPw6vx9gcbI+jHccyOoB/drv7VtF8aA/cG5h8Zwj5z8WvfUFcP6zX8lsYyDzno46xA8z0soW8S3VIIFH/2KKF2WZGOW/x2ttZ9/hNAYuznAYrJ16LuDqjMozuRk+EvYhMNIN2LZYV6TCnlpE6CMSm+5i0YSdABhBKtv9Iy88irMC4Cv0BnocTL0UfXGThhDQmDJIqr888rpSBgk1wXky3suy7tw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7fc9eafa-df62-44df-9373-08deac74cb81
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 20:07:07.6707 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 20:11:16.4654 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /fwpeuVRcPr7zdJL1dvpeCg2hWj9NKCGMTjBS053v9xQ4YDLCLUiLvANFUKrRwBiQtP8iTUoxFuZ04x9Mh1YCNVTRlA1VtE1Ohx7LeQLYPIgBd12o3mI8FFDslClWK1t
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6667
+X-MS-Exchange-CrossTenant-UserPrincipalName: LYOG1PZbQDQUwaPYGYogY/ltiJ2tP4qhk2XAUgWyjsLm7gEd54w2XdpQYkyHQkf/nqnTw4fVhQp+uccwRDG4NlKAkOWhUgoM/QGkf+SArVdkeADPdlYMUBdwG+t0RDxE
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7717
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -163,123 +161,128 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, May 07, 2026 at 12:41:37PM -0700, Umesh Nerlige Ramappa wrote:
->On Thu, May 07, 2026 at 07:23:50PM +0000, Summers, Stuart wrote:
->>On Wed, 2026-05-06 at 11:31 -0700, Niranjana Vishwanathapura wrote:
->>>From: gta <gta@DUT4637NVLP.fm.intel.com>
->>>
->>>In multi-queue case, CTX_TIMESTAMP register does not
->>>provide the running time of individual queues of a group.
->>>Provide the option for spinner to read timestamp from the
->>>QUEUE_TIMESTAMP registers instead which is useful in the
->>>multi-queue scenarios.
->>>
->>>Signed-off-by: Niranjana Vishwanathapura
->>><niranjana.vishwanathapura@intel.com>
->>>---
->>> lib/xe/xe_spin.c | 9 +++++----
->>> lib/xe/xe_spin.h | 2 ++
->>> 2 files changed, 7 insertions(+), 4 deletions(-)
->>>
->>>diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
->>>index 14952ca90e..8743107898 100644
->>>--- a/lib/xe/xe_spin.c
->>>+++ b/lib/xe/xe_spin.c
->>>@@ -25,7 +25,8 @@
->>> #define MI_LRI_CS_MMIO                         (1 << 19)
->>> #define MI_LRR_DST_CS_MMIO                     (1 << 19)
->>> #define MI_LRR_SRC_CS_MMIO                     (1 << 18)
->>>-#define CTX_TIMESTAMP 0x3a8
->>>+#define CTX_TIMESTAMP          0x3a8
->>>+#define QUEUE_TIMESTAMP                0x4c0
->>> #define CS_GPR(x) (0x600 + 8 * (x))
->>> 
->>> enum { START_TS, NOW_TS };
->>>@@ -67,7 +68,7 @@ void xe_spin_init(struct xe_spin *spin, struct
->>>xe_spin_opts *opts)
->>>                spin->batch[b++] = CS_GPR(START_TS) + 4;
->>>                spin->batch[b++] = 0;
->>>                spin->batch[b++] = MI_LOAD_REGISTER_REG |
->>>MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
->>>-               spin->batch[b++] = CTX_TIMESTAMP;
->>>+               spin->batch[b++] = opts->use_queue_timestamp ?
->>>QUEUE_TIMESTAMP : CTX_TIMESTAMP;
+On Thu, May 07, 2026 at 12:15:10PM -0700, Summers, Stuart wrote:
+>On Wed, 2026-05-06 at 11:31 -0700, Niranjana Vishwanathapura wrote:
+>> From: gta <gta@DUT4637NVLP.fm.intel.com>
 >>
->>I see in [1] we are programming this register in the ring also. Will
->>this cause issues if we overwrite this here? I see we do the same thing
->>for the context timestamp, so probably no issue here. But it would be
->>nice to document somehow the expected interaction between the kernel
->>ring programming and the user batch programming if any.
+>> Allow user to control whether the multi-queue switch should
+>> happen after parsing the MI_SEMAPHORE_WAIT instruction or
+>> only if the instruction is unsuccessful in getting the
+>> semaphore, thus having to wait.
 >>
->>[1]:
->>https://patchwork.freedesktop.org/patch/723502/?series=164654&rev=5
+>> Ensure that in xe_exec_multi_queue@priority test, the multi-queue
+>> switch happens only when the spinner has to wait for the semaphore.
+>>
+>> Signed-off-by: Niranjana Vishwanathapura
+>> <niranjana.vishwanathapura@intel.com>
+>> ---
+>>  lib/xe/xe_spin.c                  | 13 +++++++------
+>>  lib/xe/xe_spin.h                  |  6 +++++-
+>>  tests/intel/xe_exec_multi_queue.c |  2 +-
+>>  3 files changed, 13 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+>> index 4dc110c222..14952ca90e 100644
+>> --- a/lib/xe/xe_spin.c
+>> +++ b/lib/xe/xe_spin.c
+>> @@ -179,14 +179,15 @@ void xe_spin_init(struct xe_spin *spin, struct
+>> xe_spin_opts *opts)
+>>          * Insert a MI_SEMAPHORE_WAIT_CMD instruction with condition
+>> controlled
+>>          * by the user which acts as a queue switch point in multi
+>> queue mode.
+>>          */
+>> -       if (opts->multi_queue_switch) {
+>> +       if (opts->multi_queue_switch || opts-
+>> >multi_queue_switch_on_wait) {
 >
->The MI_LOAD_REGISTER_REG source is TIMESTAMP register and destination 
->is the GPR reg, so we should be fine. If we were writing to the 
->TIMESTAMP registers, then that's going to mess up counts.
+>I don't have any problem with the way you're doing this. I can see we
+>might want to use this without multi queue though at some point, so it
+>might be nice to have the switch_on_wait as an option on top of
+>multi_queue_switch - basically rename multi_queue_switch to
+>semaphore_wait or something and then add the multi_queue_switch_on_wait
+>as an additional option. But that also means we have to keep track of a
+>separate parameter in xe_spin_init_opts() and since multi queue is the
+>only user right now, it might be overkill.
 >
 
-Yes. Note that we program the batch buffer to only to read from this
-register here. KMD whitelists these registers with only read permission. 
-We are not changing any of that. Only using different timestamp resgister.
+Note that we use the bit MI_SEMAPHORE_QUEUE_SWITCH_MODE to indicate
+whether multi-queue switch should happen on wait or after parsing
+the command. It is a multi-queue specific bit. I don't see if that
+option is available for non-multi-queue case. Yah, we can always
+revisit if we get that option for non-multi-queue case also.
 
+>Otherwise LGTM. Please apply the author related changes Xin had
+>requested before merging:
+>Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+
+Sure, Thanks,
 Niranjana
 
->Regards,
->Umesh
 >
+>>                 uint64_t wait_addr = opts->addr + offsetof(struct
+>> xe_spin, wait_cond);
+>> +               uint32_t sema_cmd = MI_SEMAPHORE_WAIT_CMD |
+>> MI_SEMAPHORE_POLL |
+>> +                                   MI_SEMAPHORE_SAD_EQ_SDD | 3;
+>>  
+>> -               spin->batch[b++] = MI_SEMAPHORE_WAIT_CMD |
+>> -                               MI_SEMAPHORE_POLL |
+>> -                               MI_SEMAPHORE_QUEUE_SWITCH_MODE |
+>> -                               MI_SEMAPHORE_SAD_EQ_SDD |
+>> -                               3;
+>> +               if (opts->multi_queue_switch_on_wait)
+>> +                       sema_cmd |= MI_SEMAPHORE_QUEUE_SWITCH_MODE;
+>> +
+>> +               spin->batch[b++] = sema_cmd;
+>>                 spin->batch[b++] = 0;
+>>                 spin->batch[b++] = wait_addr;
+>>                 spin->batch[b++] = wait_addr >> 32;
+>> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+>> index 31154997b9..db0febd8ab 100644
+>> --- a/lib/xe/xe_spin.h
+>> +++ b/lib/xe/xe_spin.h
+>> @@ -46,7 +46,10 @@ struct xe_spin_mem_copy {
+>>   * struct xe_spin_opts
+>>   * @addr: offset of spinner within vm
+>>   * @preempt: allow spinner to be preempted or not
+>> - * @multi_queue_switch: Add a multi-queue switch point
+>> + * @multi_queue_switch: Add a SEMAPHORE_WAIT multi-queue switch
+>> point
+>> + * and have the queue switch happen after command is parsed.
+>> + * @multi_queue_switch_on_wait: Add a SEMAPHORE_WAIT multi-queue
+>> switch point
+>> + * and have the queue switch only happen if waiting on the
+>> semaphore.
+>>   * @ctx_ticks: number of ticks after which spinner is stopped,
+>> applied if > 0
+>>   * @mem_copy: container of objects used for memory copy (optional)
+>>   *
+>> @@ -56,6 +59,7 @@ struct xe_spin_opts {
+>>         uint64_t addr;
+>>         bool preempt;
+>>         bool multi_queue_switch;
+>> +       bool multi_queue_switch_on_wait;
+>>         uint32_t ctx_ticks;
+>>         bool write_timestamp;
+>>         struct xe_spin_mem_copy *mem_copy;
+>> diff --git a/tests/intel/xe_exec_multi_queue.c
+>> b/tests/intel/xe_exec_multi_queue.c
+>> index 0479554bb6..6f90c3e4e8 100644
+>> --- a/tests/intel/xe_exec_multi_queue.c
+>> +++ b/tests/intel/xe_exec_multi_queue.c
+>> @@ -459,7 +459,7 @@ __test_priority(int fd, struct
+>> drm_xe_engine_class_instance *eci,
+>>         for (i = 0; i < num_queues; i++) {
+>>                 uint64_t spin_addr = addr + i * sizeof(struct
+>> xe_spin);
+>>  
+>> -               xe_spin_init_opts(spin[i], .addr = spin_addr,
+>> .multi_queue_switch = true,
+>> +               xe_spin_init_opts(spin[i], .addr = spin_addr,
+>> .multi_queue_switch_on_wait = true,
+>>                                   .write_timestamp = true);
+>>                 /*
+>>                  * Pre-set all spinners to preempt-wait so each
+>> queue, once
 >
->>
->>>                spin->batch[b++] = CS_GPR(START_TS);
->>>        }
->>> 
->>>@@ -83,7 +84,7 @@ void xe_spin_init(struct xe_spin *spin, struct
->>>xe_spin_opts *opts)
->>> 
->>>        if (opts->write_timestamp) {
->>>                spin->batch[b++] = MI_LOAD_REGISTER_REG |
->>>MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
->>>-               spin->batch[b++] = CTX_TIMESTAMP;
->>>+               spin->batch[b++] = opts->use_queue_timestamp ?
->>>QUEUE_TIMESTAMP : CTX_TIMESTAMP;
->>>                spin->batch[b++] = CS_GPR(NOW_TS);
->>> 
->>>                spin->batch[b++] = MI_STORE_REGISTER_MEM_GEN8 |
->>>MI_SRM_CS_MMIO;
->>>@@ -97,7 +98,7 @@ void xe_spin_init(struct xe_spin *spin, struct
->>>xe_spin_opts *opts)
->>>                spin->batch[b++] = CS_GPR(NOW_TS) + 4;
->>>                spin->batch[b++] = 0;
->>>                spin->batch[b++] = MI_LOAD_REGISTER_REG |
->>>MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
->>>-               spin->batch[b++] = CTX_TIMESTAMP;
->>>+               spin->batch[b++] = opts->use_queue_timestamp ?
->>>QUEUE_TIMESTAMP : CTX_TIMESTAMP;
->>>                spin->batch[b++] = CS_GPR(NOW_TS);
->>> 
->>>                /* delta = now - start; inverted to match COND_BBE */
->>>diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
->>>index db0febd8ab..75a6ada420 100644
->>>--- a/lib/xe/xe_spin.h
->>>+++ b/lib/xe/xe_spin.h
->>>@@ -51,6 +51,7 @@ struct xe_spin_mem_copy {
->>>  * @multi_queue_switch_on_wait: Add a SEMAPHORE_WAIT multi-queue
->>>switch point
->>>  * and have the queue switch only happen if waiting on the
->>>semaphore.
->>>  * @ctx_ticks: number of ticks after which spinner is stopped,
->>>applied if > 0
->>>+ * @use_queue_timestamp: Use QUEUE_TIMESTAMP register instead of
->>>CTX_TIMESTAMP
->>>  * @mem_copy: container of objects used for memory copy (optional)
->>>  *
->>>  * Used to initialize struct xe_spin spinner behavior.
->>>@@ -62,6 +63,7 @@ struct xe_spin_opts {
->>>        bool multi_queue_switch_on_wait;
->>>        uint32_t ctx_ticks;
->>>        bool write_timestamp;
->>>+       bool use_queue_timestamp;
->>>        struct xe_spin_mem_copy *mem_copy;
->>> };
->>> 
->>
