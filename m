@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B8F1CD3442
-	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 20:11:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B44ECD3442
+	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 20:12:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BA4DB10F209;
-	Thu,  7 May 2026 20:11:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 148A510F222;
+	Thu,  7 May 2026 20:12:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mCjxDkSU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fIMsHaPL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 642AF10F209
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 20:11:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4ABF10F209
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 20:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778184682; x=1809720682;
+ t=1778184717; x=1809720717;
  h=date:from:to:cc:subject:message-id:references:
  content-transfer-encoding:in-reply-to:mime-version;
- bh=reXQhF4vO3C+aOmhK1MmkYgbt3riTXHe3/xJZ9g6ac0=;
- b=mCjxDkSU05szfRmN3hkooHGKV15Ed2qijePG6K+wG+KF5oDkVUiUIieu
- px9WAzsg13wU81mjvD423u3E6zj2V8M1eo+Tjjpw0Z1I2V4sjACqj3b5X
- HZ6jGrtE3TUsnFXAV0LWY05nN2EnjeG4vXsTwrdN2U7s2nPxj1khspiqY
- qCCmuNFwfq+jAL+HyujkaVZsUMq2hbrK/R9eHVAslSGFxmbXfNydn7G2E
- hfF4Rp9UIooVfZSvBLEmA4CQXZco33dP8ZcznzV2qpum+TruncrHKxFJJ
- qnzbUddQDr275Vvm5bdOJbsbNke4tntqea4gNcdDqD26qUnkdM6Yo+FQa A==;
-X-CSE-ConnectionGUID: YDO1HIoPQY6oNIc6W2Nd1w==
-X-CSE-MsgGUID: u0O+iWviShW4f+mQ9GpdDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="78171631"
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="78171631"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2026 13:11:21 -0700
-X-CSE-ConnectionGUID: FNC8WQqVQIWpKfEpin7XQg==
-X-CSE-MsgGUID: pRfLsaJnThC/15Owb8rdTQ==
+ bh=Mk1XooRCgCNOAduBgdbzaM7vyK17Azsi/WSPR1kTmww=;
+ b=fIMsHaPL+UJ+H2H8b+ujty6ctXhBjYUVuhghdYDe+GufhN8PJPDsphhT
+ 2Cy/Ck7Cu6j4WSPFGXd/7iw0XZsPw0f2muoNoZc1Lnr22Fq3kcTNP8Rkp
+ EvD9Y9bec8+peq8Uo9Xobj6L4ISMrOzYUxidFi+fFoh9tzjaR1gT5kVMk
+ 1YGmWynrhbgaiQ/R+5d87T39L4ou0E34ZpvmKpb+PdCPzZxQlfC0oCAbY
+ CMoME9FcO+dtZiwY6dITge3b1Ope+y7NEQ6VRdqB0jJhEuBkbKwSExNYl
+ xVbg9WHyhIUI07Sk21f9uC1aRTVBT8E02IcBI99HhQ2BS+aZSLJqbX8PT w==;
+X-CSE-ConnectionGUID: +GawtJ3YREKlx/NKEl5cmg==
+X-CSE-MsgGUID: jO7nmP+CS3+AlvGw/z3Wiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="79257445"
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="79257445"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2026 13:11:57 -0700
+X-CSE-ConnectionGUID: beY7J1auSOC6vpWXbu5u0A==
+X-CSE-MsgGUID: w5I+W3RpSPurIJGMR7DBAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="260275532"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2026 13:11:21 -0700
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="260006304"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2026 13:11:57 -0700
 Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 7 May 2026 13:11:56 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 7 May 2026 13:11:20 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Thu, 7 May 2026 13:11:56 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.65) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 7 May 2026 13:11:20 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.29) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 7 May 2026 13:11:19 -0700
+ 15.2.2562.37; Thu, 7 May 2026 13:11:56 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KJe2kKaviWRPz8IFXcNPRwxVi/4jkyAC/1yTDPeP/QhxLl4ziucwWMYK/5tEQnlQcud+ygPhISIpB9AgCPEtmawRRq/uPsn0hLhhhIip63C7ew9e6x5Bp8HQUWcxacDRp33K1cj/0FoQolhsuZZdnjdVdmL75nZ/abPy+gJe+SFXqjKQcQDBG2mCFlVY/bpw/xCzUfh7TB0pyvaidCyit1QK+pLn8fYaE4mqY8BL3ADJIR5Jjw35r4RbyG1HvSVvaDEnghmyWBdJNnehTevVijYQYvxm1dg0skwfNs7A1sA4o0dl5WIP1KvpoXlDQhb7Fxf1wcYa4W3hXxfqe8ejxg==
+ b=N3qTKqDiFpSyj7lgziZgsRUmEgBkq5l+GOYAnqFMXH6oDNBwDV0qRx8tENy3ByMuZIm+c1SWhOeCHyh9y/OiQjd2L5w3umhDgIZwknnTdF8wSOlgYdjVjZZZgeoRnJP+f3PoX/DiOi40HJ1TrC660HZdC0r8SONaJIBqyrdZbjV7lhEkHH+8Okir+uG8r/wOyq1NyUuOD1Rr77Z12R90SKJ4bWB14kaTyJHPIOLrdnD6ffurJxwCn/IN4FNYjReFa/tA7IqsUSGlDOmaIljqdGhuOTo4Ch/aYELHPD1nTmrbg+tFnYqBv1oRdM7LaMfvZ5az0+vNMLSLMBsARkPBPg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Dwr+OC5w1IJyoHLEKwlnESW/XlVqRiGIXKSA3pR84zo=;
- b=VNoQDHOa5zuYymraFMs+WOP5BWOkJfmo7qDPLI7EPc/yAa/DD7EfzJAKEXNDGvEdlh+fp54SVE9QpbIa2lhmeJ9N9i3ToY0OoRtQ59FnHHttXE+eEiEhRK2PL8XJCfKZhIDypggwgo1+TAsvfOb+AXRZM9jCg23s+3VmV9zAKXHxp783in6EFsiUPesA0yjNSxR4RC77tuJJyfYTQlZqJJbgQ7MWzuwuxoyy0Pbvl8pSprRDE6eeugHR/jYKKuk8vISdjkfe6AT0ua7hH4qrFHeWRkVM9ePyP0uhPtwQaNLnxsOIWJZILzmYdz59GSCo1PClx3OnGtICMAVgWKfpDw==
+ bh=e6xGD+hPoEZ/DFPtrLAZ9dm2GCk5YPiZl93dJDIozHQ=;
+ b=dnvQf73fO52+fY0Vyp3DKvHASaNAik+vxj5kHpAoKnSJvd20/poYoHiHGgGcKXj9hONxE/z/8BxwG2PKUQ6F1K0VWn+lfB8ZoLEvJWhQPLtTZoHEtqfT9943HmigZnD7W5Pf1pAv4hdnkeM5ibslUaDkQKsOWfe+rRCXFMGmZyZcjAhxaX+ruwK/7oVzPtmKBZxh7FH7OzrmWkrGhvw9dJhbvy1Zb8LQTr4GF8e0+l5V2RPMfe3Y0bvEdWgp8qtzWROjyo4FkFQ+LzAcB7UaAfPzL+flQ44kC6py0HFptPrZUvdkYG1W6Ahq8omLyQY8Yyu4jNMSELwcibYRuM6o0Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,81 +69,82 @@ Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
  by PH7PR11MB7717.namprd11.prod.outlook.com (2603:10b6:510:2b8::8)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
- 2026 20:11:17 +0000
+ 2026 20:11:54 +0000
 Received: from BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc%4]) with mapi id 15.20.9891.008; Thu, 7 May 2026
- 20:11:16 +0000
-Date: Thu, 7 May 2026 13:11:13 -0700
+ 20:11:54 +0000
+Date: Thu, 7 May 2026 13:11:51 -0700
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: "Summers, Stuart" <stuart.summers@intel.com>
 CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH 1/3] lib/xe/xe_spin: Enhance multi-queue switch option
-Message-ID: <afzx4crzetVT4YnA@nvishwa1-desk>
+Subject: Re: [PATCH 3/3] tests/intel/xe_exec_reset: Add multi-queue long spin
+ tests
+Message-ID: <afzyB8qbkY8_1yNi@nvishwa1-desk>
 References: <20260506183137.51479-5-niranjana.vishwanathapura@intel.com>
- <20260506183137.51479-6-niranjana.vishwanathapura@intel.com>
- <9575266a54ec7fbce26b586c4c70f70750ea9d83.camel@intel.com>
+ <20260506183137.51479-8-niranjana.vishwanathapura@intel.com>
+ <130b948c986be91a0bf7be181d213fcd74245a51.camel@intel.com>
 Content-Type: text/plain; charset="iso-8859-1"; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9575266a54ec7fbce26b586c4c70f70750ea9d83.camel@intel.com>
-X-ClientProxiedBy: BYAPR21CA0001.namprd21.prod.outlook.com
- (2603:10b6:a03:114::11) To BL3PR11MB6410.namprd11.prod.outlook.com
+In-Reply-To: <130b948c986be91a0bf7be181d213fcd74245a51.camel@intel.com>
+X-ClientProxiedBy: SJ0PR03CA0126.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::11) To BL3PR11MB6410.namprd11.prod.outlook.com
  (2603:10b6:208:3b9::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|PH7PR11MB7717:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7fc9eafa-df62-44df-9373-08deac74cb81
+X-MS-Office365-Filtering-Correlation-Id: 6df6c813-02d0-47a2-6d72-08deac74e213
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|3023799003|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: cPyxHKEMp9mEyPivAXq499Ej/qZ12uButL8PF7DYpwIQHvoOhd6kDl8FmideTMqFeubz8bTARru34oWlcXlvMCANFeYpcpUV1UXwOnHzgibkVeWqt3kod5U92ruTrw3z00RU7Cv8DMywH6ps/csfZA6kyzN0e98rUe7YlefCLus/96FwFkqDWKqC0YmDtutMhRyIih5iRd0ICoq91Nasj1Ax5lQj3R2ZSiSy6jnkNuYgEj0ryrvSTphymDdfuwZ3jD0IJTnIIvk2iKGQSBpO101t1EWq69cie2K5PfPexHgfxCbtIH523Sj3N2ITCy9/sWeacFsCBGPsYOs1gjBXSlhw1TJbYxYMEhlx4iyMO9NZG2MVqGxuPdYfWGE3PFwE6QQGwdDU+5+MW+ksQrHaHM8xTiRZVrZf6YJIDJ1SU0lTum3Nhydu3wt3NnfwavB2zEIibp/V8hs52tHHk4yIDzi0avfmTaZqCdqrqM1bmE7DV1S4N8qACNB4yZCvknlbWRu123qmbPPDw+rzMuAPZWe1fTRLMSsPaf4Lg8oty5trsWVdeFsti442foVaxw/jQ07ZtvNqSkvmAa7BHY5JJz4J4tX3IQbmIB/Ae3UBNHvGhsPXpie6c4CwVVHnKut7qKy/fZreWwDNX3vteDjirRj2X8ixDJZThCAUcQh8okBSFatxaNIvRr/PHtv+aKuu
+ ARA:13230040|366016|376014|1800799024|56012099003|18002099003|22082099003; 
+X-Microsoft-Antispam-Message-Info: dC9Y8GTPPAl2yOjh0BNVizA7RrgyEIYEPVvKHukYZRp483slh8oO+Xyd+L+zFiDG5WgHvUCz6635TIP2oiWnf3DEx1zCuU1EIO6KOvjjaGo4Am4825UZvj77czxzYKoDYfcx5FcsJwVoFSfNqRfKMgzmT05X1625qxoY1Xdc3dN9579lgWyqXzH2ViA0VBu9EwK/LuXlTl92/auJ1TcOd8cmuVMcw9EJEc7JmQFWrugooE4jl4uPAAQycIV33XWs696vQjqTuc6wH++QgdU0tLngQBHT8qIk5U2syIrTV3JCehqb8pQBlsKlAtyWfcsN9QAoKvdHYTb38/PqGIyqBbZBZeGSw7EFU1gddw8wpGss2cjkec8wCeCB9V3StI5QmvdPlN4rc4EntZS3fI1N1bVUkZweX/0a/lfdusZpTlwZPVb3SuJ8hmLIJjBm/1a0Q/wJQAiYvT7MRHwnFGbhfleVD3mioP0MuEiaoGrjkCEb/4kb/t4H6nuiw6ecV5PpaMUSk5li8QUCRuixG7q/2olAcrun/y0ljDtry+PJ9aGj3yVenkncz1JFTkbBgyUymWG9285is5p2+xu+XbhwhaZvAWNI+EDSoTDX+12AMNQ2kklOFqO5q6sKYvtYX/7Qi/5bOv8lJM1OJhoAEOqcxR9DSwJJazampAISWLdkTqDK7gfR5N/5xpIT0nl9n4Xo
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(3023799003)(56012099003)(18002099003)(22082099003);
+ SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?pUmOVVLs6005rt0yIpLcuVqQ4aDFC9gQ0L/vvXSiTMB6yBA0ibYdvPYo/c?=
- =?iso-8859-1?Q?lATWxtr2YwC8jE4GPGKN2nLFi/xwXCR9roag/UN3OF4QcjoHDXABy8zD/F?=
- =?iso-8859-1?Q?8wW0E6QjfAxhpWI5JNAabDIvySOldupzBTKhodBtlvZWjzY69aGtcJdJFs?=
- =?iso-8859-1?Q?RDbLfbp+n12GdBgKQkik6SJLIs9iV494QoqR++lptmGOkCqtzoj19V1Nlx?=
- =?iso-8859-1?Q?56cm3aYKuPQfKrN0DCut+1Hrj4qmmTkXPLgkQpbNFD0SbcM1b6ZISEaw4v?=
- =?iso-8859-1?Q?TWx3km0TfHIdz4PJ5NuvMxHcuCkXx3nEcNCGU2xZnFJDKBjAxijVZPXha+?=
- =?iso-8859-1?Q?C+rkXIW7OrhJWhJi5fYuYI5Sebq1uuRVgEH3m4muLMtxbOExVyC2E1r0/u?=
- =?iso-8859-1?Q?Axca6PwPFYJuyvhTXf3cmTVSm0+wn2j/aEHwQB7WVS42gcKuJ6lEXvxBKV?=
- =?iso-8859-1?Q?YL6GFYTnKsDxtc6BZMynV/lYa39KTRWwihQcaxUA4HcDP/KMaTUoM0mpl7?=
- =?iso-8859-1?Q?wX7Vf8K0gej8YlH/Sc7fTklzg23Rfu5VvnhnTp0zUQva/OFPgPnOfiSaqP?=
- =?iso-8859-1?Q?LcN5Q9GMr8hktsMEBt7NGUwv4t+uIDEG9QlJmwjD2kpa/vaymAq/Md514E?=
- =?iso-8859-1?Q?nVelbg41fZkSZ8iOj6COYKNLhoXzxkazZkJT66257ITLESr5dAqv2B6Foi?=
- =?iso-8859-1?Q?A/FU2OcKklD7rCQOkGuflL02yJfXs2z0B+G/Zh60boWxExZDZv0+aPreP8?=
- =?iso-8859-1?Q?kX4O6DXX4DtU5FVc3LBED9HJRcXYYKnYO9i30/iIdHsFmqI5hEH3ImjEls?=
- =?iso-8859-1?Q?GnaQRxSy04RBLWVgX0nFc20daQKBl/AFol+n32gId+pn3jlCOeW3lBqIi6?=
- =?iso-8859-1?Q?MojZ9bweE7ig+ZWI5YCwoIjhGzOVHc+N1ZvsJTX6WsB+ND2/sxVnh44CoP?=
- =?iso-8859-1?Q?KsOg+BYo+V3SiVQB/qx0Gtq8SRcar+V7X+vCOEooaJc/ErRhnyKMgS3PX2?=
- =?iso-8859-1?Q?HayeKW36OidOEScvm8FAt+7Qky4le4saPBLNge1asiFgLwyuUeDdxjkjTq?=
- =?iso-8859-1?Q?HleSnD+Ofu8QcIQohpyOCJL3tGy7rAADI9Ike/3kbmep2K7DYxtSmwC3nW?=
- =?iso-8859-1?Q?xEprKeCbb6CjU4cArVUDXELsIu5VmSsgOz/PvFLh8kEihaK9zt3ktg+UHa?=
- =?iso-8859-1?Q?NCnR5EPdJwZaTtM5btlY13EO+6dtaLuLjcEjE2aHeMnJj1aTQ3dGO3EMJv?=
- =?iso-8859-1?Q?4I2vWhPHqefuJqOZ7b+d+Icho6DHrH/WUiLXa0J1q1D3k7GQi8LNUx0EMV?=
- =?iso-8859-1?Q?Jgv6iNfFRbKKcZ/Nmmlr6bfeZ+ZjRO2GM+9yp4ug8k6baPLtdU5NGjAkDz?=
- =?iso-8859-1?Q?pghkZD9Lt0CapEMyjRcd7TmK6LUJ654uwcFCaurVuONSRGn9GCcnvPt2HX?=
- =?iso-8859-1?Q?zMcvhvzE2zPoudBpMT091xRz3uhfZFDqnjkij7vIhhxyhz73JtOvO+7Y9H?=
- =?iso-8859-1?Q?tZWm8MhbxJPmoU2/BxHjp+QPfsqFDDjhar/s9/AEVrZKJoO6/MuNI1iSU9?=
- =?iso-8859-1?Q?hQhG0y5JM0DMghFBraxHqvVE4qsp/R49vdgMidmthH2XVa1apSNS1eV6e8?=
- =?iso-8859-1?Q?FGD5yshkil3455x7m6jTk5gpMDzHxZU/jTVRWvnGN+UyMpdZ+0hNDOW0PF?=
- =?iso-8859-1?Q?b+dnsKxJAEt9s6267a+PfXf2g9xtMJgrEhgKXlL5p+54ccy1rpjhq9j522?=
- =?iso-8859-1?Q?gRyU/YMCjjema9Vs+7UDQzACjECoLoWRD4Pjt6EF4eZlUWtpOB8ghHORzc?=
- =?iso-8859-1?Q?cnRoKY4slIO/wJLIk/PyJmRjh9xOltLzWSoNN05eqG8t9fekj0n3?=
-X-Exchange-RoutingPolicyChecked: WhtvxIgdS14LPcn5NfkRK48iXk9HD1mrYm3Kn5Ma3gBuVGGL+LHpELJK6Drg7bBL/xUVzRcxRkXVXv4GxvLhNraWRSpWQtz23Kh3fFIBhSU8dZj0NLgYutm+d7hkPw6vx9gcbI+jHccyOoB/drv7VtF8aA/cG5h8Zwj5z8WvfUFcP6zX8lsYyDzno46xA8z0soW8S3VIIFH/2KKF2WZGOW/x2ttZ9/hNAYuznAYrJ16LuDqjMozuRk+EvYhMNIN2LZYV6TCnlpE6CMSm+5i0YSdABhBKtv9Iy88irMC4Cv0BnocTL0UfXGThhDQmDJIqr888rpSBgk1wXky3suy7tw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7fc9eafa-df62-44df-9373-08deac74cb81
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?hYcFRIVYxz37goR1IK3bVvBGhRb0WVx56FxuBj3Y1MIkTwUVYT5Hsv1tji?=
+ =?iso-8859-1?Q?HADhhiRB9CzkII61ey7SzG5PNzYI9gE8qxHwJIWPoUPalkRnRgFlTslHGI?=
+ =?iso-8859-1?Q?DphQbO54aoFPcnjuAi0ZdsG3H9oN9kI83wWH8VYVvE87fyW4zZ617s/CY1?=
+ =?iso-8859-1?Q?YXoVdvYsGT1ODoqD9mXy+k0GlpxdpA6a9WzLosaTHdqwqaG8+pU6dvAw2L?=
+ =?iso-8859-1?Q?6qJFkYveZaLqp/Tqg/tADM4u09h9Liaz+KnQ8dv0qjt7RU9vwxx43ywQph?=
+ =?iso-8859-1?Q?2sqcv2zTwrgncPt7uHJpXSkFNuXRCvx+QQEit41SMgXhoqDE18miAOFrdT?=
+ =?iso-8859-1?Q?/ZiznaIKHebeECvPU5Ai/C265MpGj61t98l+WMqDGyhgvIaGwGFUe2cOV2?=
+ =?iso-8859-1?Q?HNBcfK0/EecvtjRiArlqTfy8stc3zpbLQxOc1rCwZfCY57RD6liG4spcuU?=
+ =?iso-8859-1?Q?/ISQm1JIsukGPB7DitRKxkgOJYbcZrCRP/6owWVz178DtfooDz1O2BWf6u?=
+ =?iso-8859-1?Q?ukzDzx3XSGAP5NOvLhk9rihbnxJjMNvBh1y/xC/vm2ZPRsQhVh2HzJZ7Vz?=
+ =?iso-8859-1?Q?YgVkf9AEGgZAda7Js70jXhYRQzPcK0r1hfRO+swoSbHnL5Ocx7Tj02dMbD?=
+ =?iso-8859-1?Q?HlFDHZG66b4R/pMikBVQtGHZVxuKjT90J175s6kkUJF1ftFaYQAM+8zRI7?=
+ =?iso-8859-1?Q?N1tUcMjDQTIF6qTK8xFSBV0APSc1ZQY81rmK4qnPeahNge/8VJFMYu44Oa?=
+ =?iso-8859-1?Q?kz+iEechlkv0yiJHipECDeXI6OVDwTpGS4PeSh9jKkj0R7UtunwASueeTv?=
+ =?iso-8859-1?Q?UMAGLCCnbq+ppOIWWeCWOVRBxBIRgj5rNNk7v/FfR4ABgMHMsKhGvOJOsO?=
+ =?iso-8859-1?Q?H4h10a8l+NO9seR/OpMyOZY9C/QQhDhoUrek13S639iH2E0Z3niVOIkyyi?=
+ =?iso-8859-1?Q?LoYRoKae5/Oh4BKGExEUfdJgPMA8iHbPeFlhzIRywkvsXpQwX/+Gdyf4aa?=
+ =?iso-8859-1?Q?nbloWGtk7irLxjI5HSQckR3yAXL9j1ujuvi5jGFlu1UB4H+K/DbdsJ8FiJ?=
+ =?iso-8859-1?Q?VFkyoAmGktfnVfLlDaQbH+fZhDLcgCX5XFx+wXp23gcnaHAYm5qUrGsXu8?=
+ =?iso-8859-1?Q?/9h5oAxxk7cBTGC6nKQ/Q9E/npa8An4ooLwYvhHkGRd8vpksmzVsTVJi3y?=
+ =?iso-8859-1?Q?98kc2zjQk+uBaoUDpcst9jhrXX6Mc7aPFeJhZ+GqKaiD4CHjJNyvKc9/Bv?=
+ =?iso-8859-1?Q?StVhVuOdoEOBlnQNISziv32QfoJsD8lcx7Rv6WW9vqoE6r2MFA9Es9kaZy?=
+ =?iso-8859-1?Q?1EpEaTj6+UFIl9fulBE1U3oPJzyE99AY+bSXimnJdIurfMIf+cyf8Xnw+7?=
+ =?iso-8859-1?Q?0LsAQg1VSSqQVdw5rebqag5o9W/xdeAy5itni18KEXt0sUeScSEsv937FW?=
+ =?iso-8859-1?Q?CP7kih+hhvnz6IVHplx1PXxFIiJwoKn1aWOUfxpyejXnIsPh98mbcamqI7?=
+ =?iso-8859-1?Q?rBHBR4gj59Dr3/YO+NbJmxRyDnRBLmXCahaySqEVNDuWhgfse6LvsGL22/?=
+ =?iso-8859-1?Q?wZBRq2RubEzzA65zPZqMOPPYO9S2Rjjpv90/Ya1wZo+zGo/3m2RBG2Nt53?=
+ =?iso-8859-1?Q?P6bR5WRMF4sGebfVvbB+v4jyA0WodVdTAQVcz0IjrM28p5+y0v35O+g/+4?=
+ =?iso-8859-1?Q?dl9uZj8LgrpSB7TSype0eWsp1MFoMeECK0HIlbvcErAVdWDZ8CqdpW6xqH?=
+ =?iso-8859-1?Q?+cxj3a9hmzwuioQKCqPrHPA21jSxSdX621jgHmuw1g3sShAoqGqK573sLN?=
+ =?iso-8859-1?Q?GzhbMG2VDpwXu2Uge+xRktOm+dp2ICxcXYbQD/9ECtkD6BIDcJSY?=
+X-Exchange-RoutingPolicyChecked: Y6QUHS3sjQ4tENCtkg4EUZ+MQYyeOWSO103QVr56dlRLx9YzZSEbY+BNU1e2LB5yjbx4N+leHOFulJT3eL9E89Pm6m1a0b51JMIMPFH4SwQVlhmvNqguzf4J1qVH3+l3G83XjtdMfdAXiEfk7IaECDPWUo/ARlmZuJOAxaU089v7qKZO1LjOE7tGjWNnxQmqOvX6y/HoEMKGzUUx/RtXpuKsVhaYGM1K79y/k3jPPL3izdgY7qMVtnJZXXQ56Su5gJbaUZvHUdiTels7g98+98ADc3JsfZZcUGi14/ZdtmBwEA3nFsDn3yITut/rG3AAROWaz1J7HXsBqrwJXWrzLA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6df6c813-02d0-47a2-6d72-08deac74e213
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 20:11:16.4654 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 20:11:54.3413 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LYOG1PZbQDQUwaPYGYogY/ltiJ2tP4qhk2XAUgWyjsLm7gEd54w2XdpQYkyHQkf/nqnTw4fVhQp+uccwRDG4NlKAkOWhUgoM/QGkf+SArVdkeADPdlYMUBdwG+t0RDxE
+X-MS-Exchange-CrossTenant-UserPrincipalName: GT4Fbtb+m3uXrQPmCbKYi4lfApUlenrtPJeVDGftSs/cz4J7vwOxH0EBY1T8lK5Cx58k00vrrOB1LvhI/jhmNuj3LCLYpQa3RrLH2V4WyqUgUBbtvyxO0pQ2VISBEe1m
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7717
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -161,128 +162,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, May 07, 2026 at 12:15:10PM -0700, Summers, Stuart wrote:
+On Thu, May 07, 2026 at 12:37:23PM -0700, Summers, Stuart wrote:
 >On Wed, 2026-05-06 at 11:31 -0700, Niranjana Vishwanathapura wrote:
 >> From: gta <gta@DUT4637NVLP.fm.intel.com>
 >>
->> Allow user to control whether the multi-queue switch should
->> happen after parsing the MI_SEMAPHORE_WAIT instruction or
->> only if the instruction is unsuccessful in getting the
->> semaphore, thus having to wait.
+>> Add the following multi-queue tests and update xe_legacy_test_mode()
+>> function to use queue_timestamp and multi_queue_switch spinner
+>> options
+>> for the multi-queue scenarios.
 >>
->> Ensure that in xe_exec_multi_queue@priority test, the multi-queue
->> switch happens only when the spinner has to wait for the semaphore.
+>> multi-queue-long-spin-many-preempt
+>> multi-queue-long-spin-reuse-many-preempt
 >>
 >> Signed-off-by: Niranjana Vishwanathapura
 >> <niranjana.vishwanathapura@intel.com>
 >> ---
->>  lib/xe/xe_spin.c                  | 13 +++++++------
->>  lib/xe/xe_spin.h                  |  6 +++++-
->>  tests/intel/xe_exec_multi_queue.c |  2 +-
->>  3 files changed, 13 insertions(+), 8 deletions(-)
+>>  lib/xe/xe_legacy.c          |  2 ++
+>>  tests/intel/xe_exec_reset.c | 17 +++++++++++++++++
+>>  2 files changed, 19 insertions(+)
 >>
->> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
->> index 4dc110c222..14952ca90e 100644
->> --- a/lib/xe/xe_spin.c
->> +++ b/lib/xe/xe_spin.c
->> @@ -179,14 +179,15 @@ void xe_spin_init(struct xe_spin *spin, struct
->> xe_spin_opts *opts)
->>          * Insert a MI_SEMAPHORE_WAIT_CMD instruction with condition
->> controlled
->>          * by the user which acts as a queue switch point in multi
->> queue mode.
->>          */
->> -       if (opts->multi_queue_switch) {
->> +       if (opts->multi_queue_switch || opts-
->> >multi_queue_switch_on_wait) {
+>> diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
+>> index f9bd5bcb61..b7054756cd 100644
+>> --- a/lib/xe/xe_legacy.c
+>> +++ b/lib/xe/xe_legacy.c
+>> @@ -67,6 +67,8 @@ xe_legacy_test_mode(int fd, struct
+>> drm_xe_engine_class_instance *eci,
+>>         } *data;
+>>         struct xe_spin_opts spin_opts = {
+>>                 .preempt = flags & PREEMPT,
+>> +               .multi_queue_switch = flags & MULTI_QUEUE,
+>> +               .use_queue_timestamp = flags & MULTI_QUEUE,
+>>  #define THREE_SEC      (3 * 1000000000ull)
+>>                 .ctx_ticks = flags & LONG_SPIN ?
+>>                         xe_spin_nsec_to_ticks(fd, 0, THREE_SEC) : 0,
+>> diff --git a/tests/intel/xe_exec_reset.c
+>> b/tests/intel/xe_exec_reset.c
+>> index a3cf290abf..f7ae94a424 100644
+>> --- a/tests/intel/xe_exec_reset.c
+>> +++ b/tests/intel/xe_exec_reset.c
+>> @@ -1179,6 +1179,23 @@ int igt_main()
+>>                                           MULTI_QUEUE);
+>>         }
+>>  
+>> +       igt_subtest("multi-queue-long-spin-many-preempt")
 >
->I don't have any problem with the way you're doing this. I can see we
->might want to use this without multi queue though at some point, so it
->might be nice to have the switch_on_wait as an option on top of
->multi_queue_switch - basically rename multi_queue_switch to
->semaphore_wait or something and then add the multi_queue_switch_on_wait
->as an additional option. But that also means we have to keep track of a
->separate parameter in xe_spin_init_opts() and since multi queue is the
->only user right now, it might be overkill.
+>These need to be documented now. The existing non-multi queue tests
+>talk about preemption being the deciding factor in ensuring we aren't
+>getting engine resets. So here would be nice to call out lite restore
+>explicitly.
+>
+>Other than documentation the changes look good.
 >
 
-Note that we use the bit MI_SEMAPHORE_QUEUE_SWITCH_MODE to indicate
-whether multi-queue switch should happen on wait or after parsing
-the command. It is a multi-queue specific bit. I don't see if that
-option is available for non-multi-queue case. Yah, we can always
-revisit if we get that option for non-multi-queue case also.
+Sure, will add.
 
->Otherwise LGTM. Please apply the author related changes Xin had
->requested before merging:
->Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-
-Sure, Thanks,
 Niranjana
 
+>Thanks,
+>Stuart
 >
->>                 uint64_t wait_addr = opts->addr + offsetof(struct
->> xe_spin, wait_cond);
->> +               uint32_t sema_cmd = MI_SEMAPHORE_WAIT_CMD |
->> MI_SEMAPHORE_POLL |
->> +                                   MI_SEMAPHORE_SAD_EQ_SDD | 3;
->>  
->> -               spin->batch[b++] = MI_SEMAPHORE_WAIT_CMD |
->> -                               MI_SEMAPHORE_POLL |
->> -                               MI_SEMAPHORE_QUEUE_SWITCH_MODE |
->> -                               MI_SEMAPHORE_SAD_EQ_SDD |
->> -                               3;
->> +               if (opts->multi_queue_switch_on_wait)
->> +                       sema_cmd |= MI_SEMAPHORE_QUEUE_SWITCH_MODE;
+>> +               xe_for_each_multi_queue_engine(fd, hwe) {
+>> +                       xe_legacy_test_mode(fd, hwe, 4, 8,
+>> +                                           LONG_SPIN | MULTI_QUEUE,
+>> +                                           LEGACY_MODE_ADDR, false);
+>> +                       break;
+>> +               }
 >> +
->> +               spin->batch[b++] = sema_cmd;
->>                 spin->batch[b++] = 0;
->>                 spin->batch[b++] = wait_addr;
->>                 spin->batch[b++] = wait_addr >> 32;
->> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
->> index 31154997b9..db0febd8ab 100644
->> --- a/lib/xe/xe_spin.h
->> +++ b/lib/xe/xe_spin.h
->> @@ -46,7 +46,10 @@ struct xe_spin_mem_copy {
->>   * struct xe_spin_opts
->>   * @addr: offset of spinner within vm
->>   * @preempt: allow spinner to be preempted or not
->> - * @multi_queue_switch: Add a multi-queue switch point
->> + * @multi_queue_switch: Add a SEMAPHORE_WAIT multi-queue switch
->> point
->> + * and have the queue switch happen after command is parsed.
->> + * @multi_queue_switch_on_wait: Add a SEMAPHORE_WAIT multi-queue
->> switch point
->> + * and have the queue switch only happen if waiting on the
->> semaphore.
->>   * @ctx_ticks: number of ticks after which spinner is stopped,
->> applied if > 0
->>   * @mem_copy: container of objects used for memory copy (optional)
->>   *
->> @@ -56,6 +59,7 @@ struct xe_spin_opts {
->>         uint64_t addr;
->>         bool preempt;
->>         bool multi_queue_switch;
->> +       bool multi_queue_switch_on_wait;
->>         uint32_t ctx_ticks;
->>         bool write_timestamp;
->>         struct xe_spin_mem_copy *mem_copy;
->> diff --git a/tests/intel/xe_exec_multi_queue.c
->> b/tests/intel/xe_exec_multi_queue.c
->> index 0479554bb6..6f90c3e4e8 100644
->> --- a/tests/intel/xe_exec_multi_queue.c
->> +++ b/tests/intel/xe_exec_multi_queue.c
->> @@ -459,7 +459,7 @@ __test_priority(int fd, struct
->> drm_xe_engine_class_instance *eci,
->>         for (i = 0; i < num_queues; i++) {
->>                 uint64_t spin_addr = addr + i * sizeof(struct
->> xe_spin);
->>  
->> -               xe_spin_init_opts(spin[i], .addr = spin_addr,
->> .multi_queue_switch = true,
->> +               xe_spin_init_opts(spin[i], .addr = spin_addr,
->> .multi_queue_switch_on_wait = true,
->>                                   .write_timestamp = true);
->>                 /*
->>                  * Pre-set all spinners to preempt-wait so each
->> queue, once
+>> +       igt_subtest("multi-queue-long-spin-reuse-many-preempt")
+>> +               xe_for_each_multi_queue_engine(fd, hwe) {
+>> +                       xe_legacy_test_mode(fd, hwe, 4, 8,
+>> +                                           LONG_SPIN | MULTI_QUEUE |
+>> +                                           LONG_SPIN_REUSE_QUEUE,
+>> +                                           LEGACY_MODE_ADDR, false);
+>> +                       break;
+>> +               }
+>> +
+>>         igt_fixture()
+>>                 drm_close_driver(fd);
+>>  }
 >
