@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75F26CD343F
-	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 22:50:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6D20CD343F
+	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 22:51:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F1F1210E120;
-	Thu,  7 May 2026 22:50:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54B8C10E120;
+	Thu,  7 May 2026 22:51:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P33db9zn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mF4teVRG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B94F10E120
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 22:50:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F049810E2D2
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 22:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1778194230; x=1809730230;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7nlhzmWJk2tpuUDwfVEVW2f1HhbZvl9TmVDDvieTyU8=;
- b=P33db9zno/s0oA/51txMoHvf9CtGuP/+6cq8h/p0PSlWQyo0p564TGzb
- HMjd+6DHEGKIjschHZpLuE3jtgGXMZNCcCR2ojvE4iL2CgqwP+4Y2MarJ
- 826gsM4lyXovJCfObZv1jU+/i00qW1JCay/JUu/DpUUBfYCPZOrBhuYPC
- bzNJHm4Nq9XmonljWrJU91YWHaV0WVvISlKsljAQQDW9RDO/PEemcVPnC
- BhIB+Kh8X01oZ+p3x5VDsGFIvwiXyGbO2TY7+10MXLdo9kGXf+jvF2b/O
- PrJZcVAjuW75RlJv1bXIhEMqM4AIUG+THvBtksEZq1BaznMODK2zWLxZJ Q==;
-X-CSE-ConnectionGUID: NAP9L7ZoQBaeEcVllj2INg==
-X-CSE-MsgGUID: QsA+ymclSkS9aSX0BHnCHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="79098813"
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="79098813"
+ bh=wvzBdg8Yq/2m3pYUCWHEcUDGWTq7Mr4evJZjRu0VwNc=;
+ b=mF4teVRGiMk9WiJwJPF2waM6bBASrw/xuw0V7CaZwqkVWF34qLbSYh6e
+ bQaSQBoM8JfJa+X2F69QobG9/6RItvzFQEIMU2b4aN5tBsSV8x4rheAMv
+ r3NywcJDGodnm6Y4VczRerP/EclHx1U3gDQFmBOK9og79WkBQysQg0y3x
+ gnBibpb/Tuf3bMFYjJr6HqiDxau2fpK4EfkBTZyCou9cUa5+RwzKkiwJf
+ mu5lx3uGI9QZQhps9aGDMy5Y//SnssT2CAmSMe1I9uj1GnSjK34AdQDDA
+ uqYhgCSvE8ctaK8tqjA+ud11Wcs+gH6PFPe0TjU1wsxscwKnVWZFXXJve Q==;
+X-CSE-ConnectionGUID: WcfeNXq5RHKNqZ08meqYYQ==
+X-CSE-MsgGUID: LOD40mktQHS2axzQU0SbxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="79098812"
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="79098812"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 May 2026 15:50:29 -0700
-X-CSE-ConnectionGUID: kytIJfoiQDm1GEnY2Zxtyg==
-X-CSE-MsgGUID: 7ocs+X2qQQ2eIq5WEOctgg==
+X-CSE-ConnectionGUID: LSzxhJokRFaotFKpbnpo6g==
+X-CSE-MsgGUID: OV0MbSIMQtempJHmwc7NdA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="233542650"
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="233542647"
 Received: from nvishwa1-desk.sc.intel.com ([172.25.29.126])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 May 2026 15:50:29 -0700
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: stuart.summers@intel.com, x.wang@intel.com, umesh.nerlige.ramappa@intel.com
-Subject: [PATCH v2 2/3] lib/xe/xe_spin: Add option for QUEUE_TIMESTAMP
-Date: Thu,  7 May 2026 15:50:25 -0700
-Message-ID: <20260507225024.4544-7-niranjana.vishwanathapura@intel.com>
+Subject: [PATCH v2 1/3] lib/xe/xe_spin: Enhance multi-queue switch option
+Date: Thu,  7 May 2026 15:50:24 -0700
+Message-ID: <20260507225024.4544-6-niranjana.vishwanathapura@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260507225024.4544-5-niranjana.vishwanathapura@intel.com>
 References: <20260507225024.4544-5-niranjana.vishwanathapura@intel.com>
@@ -67,80 +67,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In multi-queue case, CTX_TIMESTAMP register does not
-provide the running time of individual queues of a group.
-Provide the option for spinner to read timestamp from the
-QUEUE_TIMESTAMP registers instead which is useful in the
-multi-queue scenarios.
+Allow user to control whether the multi-queue switch should
+happen after parsing the MI_SEMAPHORE_WAIT instruction or
+only if the instruction is unsuccessful in getting the
+semaphore, thus having to wait.
+
+Ensure that in xe_exec_multi_queue@priority test, the multi-queue
+switch happens only when the spinner has to wait for the semaphore.
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 Reviewed-by: Stuart Summers <stuart.summers@intel.com>
 ---
- lib/xe/xe_spin.c | 9 +++++----
- lib/xe/xe_spin.h | 2 ++
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ lib/xe/xe_spin.c                  | 13 +++++++------
+ lib/xe/xe_spin.h                  |  6 +++++-
+ tests/intel/xe_exec_multi_queue.c |  2 +-
+ 3 files changed, 13 insertions(+), 8 deletions(-)
 
 diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 14952ca90e..8743107898 100644
+index 4dc110c222..14952ca90e 100644
 --- a/lib/xe/xe_spin.c
 +++ b/lib/xe/xe_spin.c
-@@ -25,7 +25,8 @@
- #define MI_LRI_CS_MMIO				(1 << 19)
- #define MI_LRR_DST_CS_MMIO			(1 << 19)
- #define MI_LRR_SRC_CS_MMIO			(1 << 18)
--#define CTX_TIMESTAMP 0x3a8
-+#define CTX_TIMESTAMP		0x3a8
-+#define QUEUE_TIMESTAMP		0x4c0
- #define CS_GPR(x) (0x600 + 8 * (x))
+@@ -179,14 +179,15 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 	 * Insert a MI_SEMAPHORE_WAIT_CMD instruction with condition controlled
+ 	 * by the user which acts as a queue switch point in multi queue mode.
+ 	 */
+-	if (opts->multi_queue_switch) {
++	if (opts->multi_queue_switch || opts->multi_queue_switch_on_wait) {
+ 		uint64_t wait_addr = opts->addr + offsetof(struct xe_spin, wait_cond);
++		uint32_t sema_cmd = MI_SEMAPHORE_WAIT_CMD | MI_SEMAPHORE_POLL |
++				    MI_SEMAPHORE_SAD_EQ_SDD | 3;
  
- enum { START_TS, NOW_TS };
-@@ -67,7 +68,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 		spin->batch[b++] = CS_GPR(START_TS) + 4;
+-		spin->batch[b++] = MI_SEMAPHORE_WAIT_CMD |
+-				MI_SEMAPHORE_POLL |
+-				MI_SEMAPHORE_QUEUE_SWITCH_MODE |
+-				MI_SEMAPHORE_SAD_EQ_SDD |
+-				3;
++		if (opts->multi_queue_switch_on_wait)
++			sema_cmd |= MI_SEMAPHORE_QUEUE_SWITCH_MODE;
++
++		spin->batch[b++] = sema_cmd;
  		spin->batch[b++] = 0;
- 		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
--		spin->batch[b++] = CTX_TIMESTAMP;
-+		spin->batch[b++] = opts->use_queue_timestamp ? QUEUE_TIMESTAMP : CTX_TIMESTAMP;
- 		spin->batch[b++] = CS_GPR(START_TS);
- 	}
- 
-@@ -83,7 +84,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 
- 	if (opts->write_timestamp) {
- 		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
--		spin->batch[b++] = CTX_TIMESTAMP;
-+		spin->batch[b++] = opts->use_queue_timestamp ? QUEUE_TIMESTAMP : CTX_TIMESTAMP;
- 		spin->batch[b++] = CS_GPR(NOW_TS);
- 
- 		spin->batch[b++] = MI_STORE_REGISTER_MEM_GEN8 | MI_SRM_CS_MMIO;
-@@ -97,7 +98,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 		spin->batch[b++] = CS_GPR(NOW_TS) + 4;
- 		spin->batch[b++] = 0;
- 		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
--		spin->batch[b++] = CTX_TIMESTAMP;
-+		spin->batch[b++] = opts->use_queue_timestamp ? QUEUE_TIMESTAMP : CTX_TIMESTAMP;
- 		spin->batch[b++] = CS_GPR(NOW_TS);
- 
- 		/* delta = now - start; inverted to match COND_BBE */
+ 		spin->batch[b++] = wait_addr;
+ 		spin->batch[b++] = wait_addr >> 32;
 diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-index db0febd8ab..75a6ada420 100644
+index 31154997b9..db0febd8ab 100644
 --- a/lib/xe/xe_spin.h
 +++ b/lib/xe/xe_spin.h
-@@ -51,6 +51,7 @@ struct xe_spin_mem_copy {
-  * @multi_queue_switch_on_wait: Add a SEMAPHORE_WAIT multi-queue switch point
-  * and have the queue switch only happen if waiting on the semaphore.
+@@ -46,7 +46,10 @@ struct xe_spin_mem_copy {
+  * struct xe_spin_opts
+  * @addr: offset of spinner within vm
+  * @preempt: allow spinner to be preempted or not
+- * @multi_queue_switch: Add a multi-queue switch point
++ * @multi_queue_switch: Add a SEMAPHORE_WAIT multi-queue switch point
++ * and have the queue switch happen after command is parsed.
++ * @multi_queue_switch_on_wait: Add a SEMAPHORE_WAIT multi-queue switch point
++ * and have the queue switch only happen if waiting on the semaphore.
   * @ctx_ticks: number of ticks after which spinner is stopped, applied if > 0
-+ * @use_queue_timestamp: Use QUEUE_TIMESTAMP register instead of CTX_TIMESTAMP
   * @mem_copy: container of objects used for memory copy (optional)
   *
-  * Used to initialize struct xe_spin spinner behavior.
-@@ -62,6 +63,7 @@ struct xe_spin_opts {
- 	bool multi_queue_switch_on_wait;
+@@ -56,6 +59,7 @@ struct xe_spin_opts {
+ 	uint64_t addr;
+ 	bool preempt;
+ 	bool multi_queue_switch;
++	bool multi_queue_switch_on_wait;
  	uint32_t ctx_ticks;
  	bool write_timestamp;
-+	bool use_queue_timestamp;
  	struct xe_spin_mem_copy *mem_copy;
- };
+diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
+index 0479554bb6..6f90c3e4e8 100644
+--- a/tests/intel/xe_exec_multi_queue.c
++++ b/tests/intel/xe_exec_multi_queue.c
+@@ -459,7 +459,7 @@ __test_priority(int fd, struct drm_xe_engine_class_instance *eci,
+ 	for (i = 0; i < num_queues; i++) {
+ 		uint64_t spin_addr = addr + i * sizeof(struct xe_spin);
  
+-		xe_spin_init_opts(spin[i], .addr = spin_addr, .multi_queue_switch = true,
++		xe_spin_init_opts(spin[i], .addr = spin_addr, .multi_queue_switch_on_wait = true,
+ 				  .write_timestamp = true);
+ 		/*
+ 		 * Pre-set all spinners to preempt-wait so each queue, once
 -- 
 2.43.0
 
