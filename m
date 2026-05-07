@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20D4BCD343B
-	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 05:35:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5116CD343B
+	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 05:35:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC65F10E16D;
-	Thu,  7 May 2026 05:35:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 51E0610E21C;
+	Thu,  7 May 2026 05:35:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gAWrvJSj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N1F0e5jG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38D9210E167
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 05:35:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B670D10E167
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 05:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778132112; x=1809668112;
+ t=1778132114; x=1809668114;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=xhJS0OLsSZ0uHyVy3jXdwMpeByO4LCzWMzh7rwq756A=;
- b=gAWrvJSjiwGBJJYdMafZzdhPkPrY2spY3THZhK5/ieF5G4K70qPilHEJ
- G9Ig9RLQqsS6KioAThnW7ntHF/k/gSZg/1YCmtxc1L//eJkzMuZI0qxqW
- FeWAEHm4zttZXvQZRW54dvPyJqqFzOzEm+rslWrsGkCviQ55lTUL1oxHL
- wmY/dDyUWdmUlzCytMkfTw5KMjHnGPngiiEFe0hfN7A3MgY1GiaR1GwR4
- U3Jsho6LK1gYxi+VuaRIXbzif0ZFQBA5q7GUuXN5Qzf4FgXDDFX7qcPAr
- T1slcL/5KIh6na87afmISWfMV8fPIqP3YVGWcX0YSp6iXLjfYCfRDqRCA w==;
-X-CSE-ConnectionGUID: 1AJWYgVvT7SKm48U6tMRaw==
-X-CSE-MsgGUID: AYXZO7zVRkCnT5GGsflQmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="82916165"
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; d="scan'208";a="82916165"
+ bh=Awar4RCvmWBdrB23OW0hbpmZlSbSyKSv8TsiCRBvM9I=;
+ b=N1F0e5jGbrAbtJLhTeySvG+G1nek2IbC01jdixnD0cfaHG5mwUiRViGd
+ Hk8FkvarAyXoO5xf7Bs07gXAy+AELj7ehaeXz29rgqhEsfs3Xch9xehw5
+ gvx+nw2WEZ0D4g83WZ75i/w6dszqm0Dh65baWVFkHBCUNYGq3UYqpwjnP
+ bxcP+uKJDwnG8O3C32IUKvMuZWo2KqQmnD6+m8cDmIqMz6sv4fhQVx187
+ U4dqHm7WbffSLczAr8oAUtFVr3b5J4fUz1CxkOlJZRmredeAAx3PY59xV
+ brxw5QNpdkPmL3a3BEUD9XkMBNgn56J3kZMbzL/PBDrkbhNa+2IO0rFM5 g==;
+X-CSE-ConnectionGUID: t5ABng5FQPawlYPl9a90BQ==
+X-CSE-MsgGUID: wX02qA/pSiKjViTdAdivQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="82916167"
+X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; d="scan'208";a="82916167"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 22:35:12 -0700
-X-CSE-ConnectionGUID: dj2/EA3hTXKu4ct128Gpgw==
-X-CSE-MsgGUID: LlbtPqwrQt2ZRRiiRUmyHQ==
+ 06 May 2026 22:35:14 -0700
+X-CSE-ConnectionGUID: 0PsKnmO5S76j5fgyDUdVQg==
+X-CSE-MsgGUID: dbEYPkcOQNeHBOctHfhVrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; d="scan'208";a="236621251"
+X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; d="scan'208";a="236621257"
 Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2026 22:35:10 -0700
+ 06 May 2026 22:35:12 -0700
 From: Shekhar Chauhan <shekhar.chauhan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: shekhar.chauhan@intel.com,
 	ashutosh.dixit@intel.com
-Subject: [PATCH v6 1/2] lib/intel_wa: Check for device workarounds
-Date: Thu,  7 May 2026 11:04:58 +0530
-Message-ID: <20260507053459.766300-2-shekhar.chauhan@intel.com>
+Subject: [PATCH v6 2/2] tests/intel/xe_oa: Wa_14026633728
+Date: Thu,  7 May 2026 11:04:59 +0530
+Message-ID: <20260507053459.766300-3-shekhar.chauhan@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260507053459.766300-1-shekhar.chauhan@intel.com>
 References: <20260507053459.766300-1-shekhar.chauhan@intel.com>
@@ -68,87 +68,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently, igt_has_intel_wa() only checks for GT workarounds, extending
-it to ensure that it also checks for device workarounds to avoid having
-device workaround checks in the code.
-While at it, ensure that we do not duplicate the logic for reading from
-the debugfs file by extracting it into a separate function called
-debugfs_file_has_wa().
+For MERTOA in CRI, oa buffer can be in device memory. Because of slower
+device mem access, OA exponent values lower than 8 can result in buffer
+overflows. Bump the OA exponent value.
 
 Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
 ---
- lib/intel_wa.c | 40 ++++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+ tests/intel/xe_oa.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/lib/intel_wa.c b/lib/intel_wa.c
-index 685df106f..727dd6c98 100644
---- a/lib/intel_wa.c
-+++ b/lib/intel_wa.c
-@@ -12,6 +12,27 @@
- #include "intel_wa.h"
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index 988c46df6..c464d5a0d 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -24,6 +24,7 @@
+ #include "igt_device.h"
+ #include "igt_syncobj.h"
+ #include "igt_sysfs.h"
++#include "intel_wa.h"
+ #include "xe/xe_ioctl.h"
  #include "xe/xe_query.h"
+ #include "xe/xe_oa.h"
+@@ -2648,6 +2649,11 @@ test_non_zero_reason(const struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
+ 	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
+ 	uint64_t fmt = test_set->perf_oa_format;
+ 	size_t report_size = get_oa_format(fmt).size;
++	/*
++	 * If modifying the indices or order of items inside properties[],
++	 * ensure that a corresponding change is made for oa_exponent index
++	 * in the workaround Wa_14026633728 below as well.
++	 */
+ 	uint64_t properties[] = {
+ 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
  
-+static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
-+			       const char *debugfs_name, const char *wa)
-+{
-+	char *debugfs_dump;
-+
-+	if (!igt_debugfs_exists(drm_fd, debugfs_name, O_RDONLY))
-+		return -1;
-+
-+	debugfs_dump = igt_sysfs_get(debugfs_fd, debugfs_name);
-+	if (debugfs_dump) {
-+		char *has_wa = strstr(debugfs_dump, wa);
-+
-+		free(debugfs_dump);
-+
-+		if (has_wa)
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * igt_has_intel_wa:
-  * @drm_fd:	A drm file descriptor
-@@ -25,7 +46,6 @@ int igt_has_intel_wa(int drm_fd, const char *check_wa)
- 	int debugfs_fd;
- 	unsigned int xe;
- 	char name[256];
--	char *debugfs_dump, *has_wa;
+@@ -2671,6 +2677,18 @@ test_non_zero_reason(const struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
+ 	int len, check_idx;
+ 	u32 oa_status;
  
- 	debugfs_fd = igt_debugfs_dir(drm_fd);
- 	if (debugfs_fd == -1)
-@@ -33,22 +53,14 @@ int igt_has_intel_wa(int drm_fd, const char *check_wa)
- 
- 	xe_for_each_gt(drm_fd, xe) {
- 		sprintf(name, "gt%d/workarounds", xe);
--		if (!igt_debugfs_exists(drm_fd, name, O_RDONLY)) {
--			ret = -1;
-+		ret = debugfs_file_has_wa(drm_fd, debugfs_fd, name, check_wa);
-+		if (ret)
- 			break;
--		}
--
--		debugfs_dump = igt_sysfs_get(debugfs_fd, name);
--		if (debugfs_dump) {
--			has_wa = strstr(debugfs_dump, check_wa);
--			free(debugfs_dump);
--			if (has_wa) {
--				ret = 1;
--				break;
--			}
--		}
- 	}
- 
-+	if (!ret)
-+		ret = debugfs_file_has_wa(drm_fd, debugfs_fd, "workarounds", check_wa);
++	/*
++	 * Wa_14026633728: For MERTOA in CRI, oa buffer can be in device memory.
++	 * Because of slower device mem access, OA exponent values lower than 8
++	 * can result in buffer overflows. Also, update the value of oa_exponent
++	 * in properties[].
++	 */
++	if (oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_MERT &&
++        igt_has_intel_wa(drm_fd, "14026633728")) {
++        oa_exponent = max(oa_exponent, 8);
++        properties[9] = oa_exponent;
++    }
 +
- 	close(debugfs_fd);
- 	return ret;
- }
+ 	igt_assert(buf);
+ 
+ 	igt_debug("Ready to read about %u bytes\n", buf_size);
 -- 
 2.53.0
 
