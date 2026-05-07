@@ -4,103 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47CFDCD3427
-	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 03:54:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECFBACD3427
+	for <igt-dev@archiver.kernel.org>; Thu,  7 May 2026 04:08:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDC9210E07A;
-	Thu,  7 May 2026 03:54:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8173710E24D;
+	Thu,  7 May 2026 04:08:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="xA8pQSfj";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="i8xCHdjZ";
 	dkim-atps=neutral
-Received: from SN4PR0501CU005.outbound.protection.outlook.com
- (mail-southcentralusazon11011015.outbound.protection.outlook.com
- [40.93.194.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD50510E07A
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 03:53:46 +0000 (UTC)
+Received: from DM5PR21CU001.outbound.protection.outlook.com
+ (mail-centralusazon11011053.outbound.protection.outlook.com [52.101.62.53])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F47810E24D
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2026 04:08:25 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LZerxDlnIkLr9Hs2nzYr0twxqYR1d1X2viw9wVi8bO31EsULXecn3/mirvQqdzhUM/fynusO5L6yfaBDw4bikoPDN6b3tt3+tIM9PG3oowsI1kX7VZNKkf2Qc8XNmewGZJvzCjBvLVzZIri4tRVNTLmzHzczKCnJFXOq2tFoj0uwj3bhEbRNsKlnovJ7hBjl+S5pE95RZvdICN+1lFEFlYavBAY1wJ3TFQUCh67rr1W/5nYCbTft8AlX1dHe9UxC4D+UhsKEFODebMfFjfzkEDnwpD+u8jUjfpU9vSlYPeDSIQBpYzCEz75vaG3jLbBTDtnKS1f5RHv091S30kooqQ==
+ b=q/Oo7YSMZbaTBDpSwUW/oIFi3j3SuAzlodkGK8VEAUElUNE9V8ZEm1snT4yscy+Rz9J18dt/Sgn2CTaMHWWqhXD30e2EIzDJ4xV+1axRGXVZtTcAtbQc6/jZ1XYrndrPn61Mc8XCPDWXza4Zf8ogB9EXi6Q6pQUw4JbsVKBllL1ZEg1NOOfAKpEecr77SAuSWjM0q/yZZts/0fAZR/uuEAAyQRjgvnRwqXJ4pHhKV6Bzp3RmhktwGDDEpzHnFqzh3PXkCbQ0BNMN8mZdSAmIril8a03XaLDhxpZRLOSHKlU0NgrLiQMBxWl8XI1idjVeyOfaOKKphibXIGLOtvLqKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jm1l7rbHfLpC8Aq+C8BPVpcxZ8iAZlTgZJheKjpJUDQ=;
- b=eP4jIESO/n23JckPmbZ1xnkEOnz9LqJayMRmrejTtY8+lOH+hhdgBoHKc1CXrMEy8XyQbCqQR3rAg8R51clGPiY4H5OwEAwJ9diePmhh2tl59cLVx/W5Xf//FOPzHTA7CjCkLPKCsP4urPDQ4D5E68PMHfyYYO3fpbQeKNVaZrE28UJyjUNK+EhyW5FOsvW1yVCmgeGUGKj3H/YyXwOAlgjt8zetonptompZB6K1VBZ8Q138n+x7fNcacF5cKZQfAWlf8Uewzg/1TLQfy0du7EKCn3V2B0EEYh+NEnrNaWPOlvlTeKusTIzCXk9PA6HcqGgCb3qRvHtvryfaegvx9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
+ bh=x3hOiRONqibSrLruos8DtszYwse9v3C5FrrBgrCSSSM=;
+ b=LzBbgW0Z+i34mzGeERFi77SoyeZ9qfWNej9rS59hr1Zmp9b/e+Zj/0sTpb7N6B1UYoAf/4+pKeioIEd6Bk2a9KKLzxNt666P2Nws4W5QgMtSCm6/1ELYAJf8ftQuEYHUmDb0JAaqWpBroJYmgRAUzu5Rt2s/MJ9JT9J/2vKBs5OuBXdRLjv8vajBzkQTxs39Jcj7b22skqtLKLyUgqH/DvjoHMhUBQPBOn5OXRiQnBjxY1hBA49oYPBPLCzPh6BRr+egLQ+a7I09zlu6fA//8dTPuwg6fZYH+E1ZQ6LBZfUldzU7o1oT1BJG+p39/uV4j5BSs8XBXL2/BTnZGlY+eg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jm1l7rbHfLpC8Aq+C8BPVpcxZ8iAZlTgZJheKjpJUDQ=;
- b=xA8pQSfj3OOItMHfOJhuVjSFuUK0C89ZVRkpYDli5UYxChWR8u0+dDePOdSDijM9pefNt5RMwJZEmfMCn7RMh/4LFZ+xMtLYhcedQdd8hW/eh0pjP/dPxDUEBeZI/MBNrbpYiSR4wnBbZ10vFxssBmuPKrp+Ut6clMohbSXmtjQ=
-Received: from SJ0PR05CA0177.namprd05.prod.outlook.com (2603:10b6:a03:339::32)
- by SA3PR12MB7805.namprd12.prod.outlook.com (2603:10b6:806:319::20)
+ bh=x3hOiRONqibSrLruos8DtszYwse9v3C5FrrBgrCSSSM=;
+ b=i8xCHdjZk98yMMztwB/5E7etXAjbIalOy0bwrieo0LLV4iR3ixyGsHByZmSHiDK5qdhSBlRdInoBoJJvOqSF90LPywQPNlRJrRpmZ20zeIOtUY5DcsIXA33dEiwdFM991+6ONkc3qWY2Kt+nf37bVpt6Pqc9LGu7RaxpvLoCaoY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW4PR12MB5667.namprd12.prod.outlook.com (2603:10b6:303:18a::10)
+ by MN6PR12MB8591.namprd12.prod.outlook.com (2603:10b6:208:471::15)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Thu, 7 May
- 2026 03:53:43 +0000
-Received: from SJ5PEPF00000207.namprd05.prod.outlook.com
- (2603:10b6:a03:339:cafe::b6) by SJ0PR05CA0177.outlook.office365.com
- (2603:10b6:a03:339::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9913.5 via Frontend Transport; Thu, 7
- May 2026 03:53:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF00000207.mail.protection.outlook.com (10.167.244.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.9 via Frontend Transport; Thu, 7 May 2026 03:53:42 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 6 May
- 2026 22:53:41 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 6 May
- 2026 22:53:41 -0500
-Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 6 May 2026 22:53:41 -0500
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH] tests/amdgpu: Fix amd_fuzzing_kfd runtime skip when KFD
- device unavailable
-Date: Wed, 6 May 2026 23:53:27 -0400
-Message-ID: <20260507035339.175401-1-vitaly.prosyak@amd.com>
-X-Mailer: git-send-email 2.54.0
-MIME-Version: 1.0
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 04:08:21 +0000
+Received: from MW4PR12MB5667.namprd12.prod.outlook.com
+ ([fe80::715:65fb:c3fa:9c26]) by MW4PR12MB5667.namprd12.prod.outlook.com
+ ([fe80::715:65fb:c3fa:9c26%5]) with mapi id 15.20.9870.023; Thu, 7 May 2026
+ 04:08:21 +0000
+Message-ID: <a243c8c9-7681-4633-a25a-2b01fa33a53a@amd.com>
+Date: Thu, 7 May 2026 00:08:18 -0400
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+From: vitaly prosyak <vprosyak@amd.com>
+Subject: RE: [igt-dev] [PATCH] tests/amdgpu: Add KFD IOCTL fuzzing test -
+ Apologies for build failures
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: vitaly.prosyak@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
+X-ClientProxiedBy: YT1PR01CA0149.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2f::28) To MW4PR12MB5667.namprd12.prod.outlook.com
+ (2603:10b6:303:18a::10)
+MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000207:EE_|SA3PR12MB7805:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c5bccb2-e89f-4fcf-9de6-08deabec3b35
+X-MS-TrafficTypeDiagnostic: MW4PR12MB5667:EE_|MN6PR12MB8591:EE_
+X-MS-Office365-Filtering-Correlation-Id: 831dcd3a-f436-425a-9a86-08deabee46d6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|36860700016|82310400026|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info: d2ahj9wvqm5UwFLtFpniPhCxcrNiQ8E1rVuwjTibE6pJJfZKdI7vKPqvTZRvu+v3jmTlCLnWf/xhT/ufrcDZ3GDJ1Sj6+9mt/bTUyWr1S2DSxEa8ureDAc+/qeToF/ZnGU+NLW99Hn9lPlgFdXeuOj659oL64Dt2hfDWlFFYevkNlVUg/KfDPWw0IzuQd/wVWFLHy/+R+gBYDOUV2ml3ywOlldEdCPEoJJUxFkrhDaMsMYk0WStB4GZO1MVXKSne/R9zXy9gB28RKSphJD9MkxJcdzoxdsC4KLRIN/uwOmnyy9QEbv1KCK0fV8b7G4DjgjhWh19qWhtsei3EaYmSJJ5LR6jiqAsF0Fc2CHmaLNGqYgkatzhQSWjfA/E13EtdlF/O97+Zc88XoneZUGcgoCsfuytuC/bfwEzp3+i+raKYTjV45ApC7lQO9dnOPYzu1OwzpylpsWz4qcZ5jzVg9Y0BmGwUiu95lFPKs/kznC8K5xq0gYZWNI6m+oy9+siv7rlpsy0Cr2O0IEIT7kK4DPkuMxwC33HjBASj6UylVTZQjxLNUiSr0PaUfIdxyr6vOxkDAbPyEmYmb8yVQnX/Ng//KZVw/SqnlButqIQmYePTrKfyhzNTm9HQ5bRtbQiSSqqhq1NWNSA45F18MRO4Nj7gYAsmHfs4QKhyTzjaMMZCVCT7BSYSOQCgyiunf8svG8991aSbAICk5BgltAc7ETdLkeMG/WqoTLtE0MmslZU=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(36860700016)(82310400026)(56012099003)(18002099003);
- DIR:OUT; SFP:1101; 
+ ARA:13230040|366016|376014|1800799024|18002099003|56012099003; 
+X-Microsoft-Antispam-Message-Info: 8PMVIRsmRrqNouiRcoMUonwjh91xKcIxUXxejEkqCbMecaDT/DS1zodkNpX9hyiLMUxcZ1plHKk9BWeYCDd+U2mSKDT7qmKXxXOIdUeZg51k0eLi5o4f8vXTc8XkKS6Ue53G6jQwqSQvETM73yyXJtKM+gks/gbdLSdZRx4AahdNH0/4guhBOEw1ALpiZ2v4MbRAlO0rciliVk3JPYTR+zQ6WIZzMqNCT9pPtZZ7u2yierLKsVLCDSYxLHA3cCBW8aKK/z4OwN7pa6cYhJueN2yQ8VgcIP+qBZ/AQCS4iBQ5z4oVdsc7Syty2MeLFdSEI4VNmZENPMixLvJAo6Mm7PdylpDZ6nUqcNr0uqbZceiWVgAL6IbjthU0Z9+CHfP459uMQr/elLbSPiAVLl71unfQC0FmjMRzUM+5ZLRgFSuUWDBhpna7HRjCic2dCFzswPMHWJfMrPkdEN0DjKizbhcn1HWm7pI675ZrXQ7xu1MvbEIFDetOTTC9iHaBCdwLW4N9MnjO0adHgp2+9tleOSH5xR5AdGDvWOZua4O9Vj/yDiIXqzbbV73qsoq5bcWq6ttHA3KzHwN6xxL2riRLm36LciOi++BK6SOjMJ09xy2VMv0x8Xw+UBS0RxP0+BLZvkl/ioF7IiAz4eMJEVLOio2DBkIvGA9iBc8zN0B41wZ0EpJoJ2Lxd8j2pGSwWO0g
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW4PR12MB5667.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(56012099003); DIR:OUT;
+ SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: YBrIGbODSdeLv5xV5mu+GHep2EVO3ahDVMFV2fKADjPAHXyn0BLROUPRBvVYdc/6h4+YSGlF61TYh9v5BPSZjSnJEoS0njkocg5htOAv91+GTUmsNPnTU1lehQmfkG+QjD50+FhUIB6UCzn5dTXaXBGFS16MEZADDgui8xTy4kCgvIdGFhxIIzTsux4VSmumYB1kMBsKiqk5leXEP7h1RKdPyYxQo3y7kiO5XqQBS5ff8YeBIGmi2bsN5jwamgdBoGDRkVEAaPF/vW9CxB/4mFLr6Hr1GYrbHP1b/JVGD5kgsl525DToMmdFhn0cTW5v65nZuVE29wVnojHmyoq3JWGmDnSsggGLWwaUaY6hx6QYgFytEIBCz37zwsB4KNLHHCKABbDnnqEnxnTRS96xMAwQlXe1+fEknqBN2zDR+jEssR4+QsBB6Ca6PYPVgMjh
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c1lCZGwrWTdpd3M5MEI4WDk4S3NjS2UwNkFDMXNHckV1Snd3MUVXRmlTK1No?=
+ =?utf-8?B?Ky9ubDZxWGNXSEdtVmxDZmVvRDg2RUZVZ1pwdUJkZGtSVUpORUMxbklHLzJW?=
+ =?utf-8?B?Y3JZMm5IQS9UVHBzeUtQTnA5eERJd1lma1lBWlpEYUhaZm9KU2lCZDg3SFNj?=
+ =?utf-8?B?c01FWTJNMGlwK0FIZEFpbW85ZDVCY3o2T0wvMFZzQ2E5eERyQ1Qrd1dKRWJt?=
+ =?utf-8?B?M2x6eTJSY3JqY3pHNUl4YU9NR2t1SThhaXF5MFJDQmZUV09HSW44Zy80MG5N?=
+ =?utf-8?B?RjNNL2V0Tm5VK2E1NWJOSm9lbVNSNjMycHc2YnU1c2RJQ1Z5VUcyTTFIM1ND?=
+ =?utf-8?B?cmVRUlREb3VTYkJaTDRHMEEzYnNUMGpxWllEMERoZzkvdmptKzhxWnVtY3d1?=
+ =?utf-8?B?M0MxVjllOTYrYlZSOVo4N1IyaW1OSnRsamUwNXBuelNnMW1HeWIrM012Ti96?=
+ =?utf-8?B?ZjlKWVZ3eENWaVE3RUpUY2RTd2x3eXBIVzlnR1ZJTXpqcE8xVFUyUlUrY2lG?=
+ =?utf-8?B?dU9LUmZDMlg2dW9YZG5raDYvZEN5TmRrK0dwWlJBbC91YXdiOTFncS9FN2U1?=
+ =?utf-8?B?a050b2xmSkd4SG4zZTdXd0hIR1l4RUd5cVhndnJ0cjc3cGxvcm5HSGc2Mmd5?=
+ =?utf-8?B?bjVTTWx3SkVYMU1JYzJVUkhTUWs4ZkRmWVpodUJGc0puSHViWjNzSXZMcitK?=
+ =?utf-8?B?T2swR0s2ZW5mM1M1SnU5T1Y0aG4vNzFjMVB0WjNpdHkrRUlFc1JSUlNYUHZP?=
+ =?utf-8?B?QW83bGcveWxCUytzUjl5bVM4MkNkU2oxMTQ4UWVUbE1Ib0FSaWF0ampmNFRv?=
+ =?utf-8?B?czc0eDVHc0FEaEhUME9JUCsveFNOM2lpaDI4MjFGa0ZkZUc3SHJ3U284KzRk?=
+ =?utf-8?B?ZWtYNm85bUozQ2VUMlZnQ0F6TkRhTjVGcEJ6Nng2TmppUStSM3ZuN0FJWDY4?=
+ =?utf-8?B?TzRHOCtNTCtOK0pTMXphbm56SE9URWlXNDVvQW1XT2tCdWVJbzBhYndzTzY0?=
+ =?utf-8?B?TjVhaEtEODhBZm1NWnp2TXVHY3AxT3R1OHhjQUVrMmx3UDVSUVhwc3lUSElG?=
+ =?utf-8?B?NVRuUTJ6VnIvWnEwZXVISGJRN3N3YmttbDFJTG8wWlNGWmlDRlVPYnRXU3Ur?=
+ =?utf-8?B?N0hkdXR2allDTWIwKzJJNktua2lQanN1N0FsZko0QnJWVXdNV0JyYmVld3ox?=
+ =?utf-8?B?bDFNR2NIODUydkZvTzl5L1BlMUJOdjRxajlFSDM5RURCRSs5Nm03ejg1RE9p?=
+ =?utf-8?B?UkF2L1lMUTZUb1hlRmdNaUE3UjhjeUMxcEg3ZTNRVytTKzVYajE2b0FXTFpH?=
+ =?utf-8?B?YWtIQnFVVlJubENPUjRpMm5wVXRVZnlISGtEWHlBTGYrem5RbXpVR1Q2U1BW?=
+ =?utf-8?B?Mkd6dkw4Z3dYV09BWFdqOGlXNFlnSjZqNVdZMmNzNS9kTUFtZklEdlI3NXNj?=
+ =?utf-8?B?M0pSWkdCRktaNVgrZ2p2VWNCa0thNzk3SzFXQ3pESURMT2VHeVhNeWVRYmp3?=
+ =?utf-8?B?aXZpTVhDODQrL3lhQk9KS1p6Uk55WkhuMG9zMFVwTW9RWG9MZFA1QnpNRTFV?=
+ =?utf-8?B?ZU1iWjkrL1Zwbmp5b3F1VmdSOE0yN0NOcnpJdHlsZmdzS3AweUhOdWxaSWFz?=
+ =?utf-8?B?VDhJRWRKY1NlVlQxbTVVaDlOb0hremlWS0ljRHdjeTdjNlhQZU45RzJzcmt6?=
+ =?utf-8?B?bkx3aDdMbmFTd2phK0ZYWithOHZIWUltTURMUGY3Nyt1QkVrcmdGK25ZUDZQ?=
+ =?utf-8?B?ZEV1YW0xQWt3YzJWRFlNRVlDNjh3WHByd3c3Y29BaXpnams2c0hsQVUwL0Fo?=
+ =?utf-8?B?UlQ2MGhHU0lGL3hQcFV1eTFZRmh1bXl5SitBaDBlTWR1dEtHUVZYSk9UWDBG?=
+ =?utf-8?B?T0FxRVJCd043RXF2K0hKcjR2ZCtWdFZLeGMvUy9rVzBKbFpMM3c4dDRaZUxv?=
+ =?utf-8?B?ZDFNU2ZMTis4cTJJcGV6TnhZblpQSTFzR2lYTGpmdGdxdzR0ZGxKQzlEejMr?=
+ =?utf-8?B?VFNOU1pGdjM0R01TZ2d0UHBqZ1o3WnoxWUtPeExad3JESzlZMlFMZC9ZaDNn?=
+ =?utf-8?B?b3JnQ2dJeWZFRlhxak9ibFMwYU5XVVp5dS8xK0JIZHpmcENCVlNzNFZSa29R?=
+ =?utf-8?B?eGZybXFPSldvOFRqSytNQmk3YjYvbHBrQVpqbkg1TElLOFk3d3JKOWtZcUkz?=
+ =?utf-8?B?Z0JDSEVOcUFWNlV5VWQ4TzVnbEtETTdZVVdkQnFwMXIwbk4wb0JETnpjM3Vs?=
+ =?utf-8?B?QXZuNjhBdGJ3UTNWZ0MydUY2d05uVVNpNjVYd0FaTmNEd2lZQmFrM3AzK3Qx?=
+ =?utf-8?B?UXQ1bHgvSUloS2VRN3BSclU0MXJ6R3hsNXBFNWo0YmVDSk05Y1FyQT09?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 03:53:42.5839 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c5bccb2-e89f-4fcf-9de6-08deabec3b35
+X-MS-Exchange-CrossTenant-Network-Message-Id: 831dcd3a-f436-425a-9a86-08deabee46d6
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB5667.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 04:08:21.4985 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF00000207.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7805
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hSIVwZjhDQz3r7qNwsJF0S51cSWtkrHty/s6sOi2jF8u2k3oOQ6S0j+AyVyNSjOv8LT29/2wfCZU8Sq4kqL5Lw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8591
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,87 +133,24 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Hi Kamil,
 
-PROBLEM:
-Test crashes when KFD device is not available (no /dev/kfd or insufficient permissions):
+I apologize for the build failures in my recent amd_fuzzing_kfd patch series and the need for 3 additional fixup patches to address ARM cross-compilation issues.
 
-  amd_fuzzing_kfd: ../lib/igt_core.c:2389: igt_exit:
-    Assertion `!test_with_subtests || skipped_one || succeeded_one || failed_one' failed.
-  Received signal SIGABRT.
+The failures were due to:
+1. Missing drm/drm.h include dependency on some systems
+2. Incomplete KFD IOCTL struct definitions on ARM (forward declarations only)
+3. KFD being x86/x86_64 specific (AMD GPUs not supported on ARM)
 
-This happens in CI environments and on systems without AMD GPUs.
+I've now submitted fixes that:
+- Add proper header dependencies and guards
+- Restrict KFD tests to x86/x86_64 architectures only in meson.build
+- Follow the same pattern as amd_kfd_dmabuf_unload.c
 
-ROOT CAUSE:
-When KFD device is unavailable, the test used early return instead of
-proper IGT skip mechanism:
+I'm curious - is there a way to see build failure results from patchwork.freedesktop.org before patches are merged? I couldn't find build status information on the patchwork interface, but I'd like to catch these issues earlier in the future. If you could point me to where CI build results are posted, I would greatly appreciate it.
 
-  if (!kfd_available) {
-      igt_info("KFD device not available...\n");
-      return;  /* WRONG: no subtests run, IGT framework assertion fails */
-  }
+Sorry again for the extra churn, and thank you for maintaining IGT!
 
-IGT framework requires at least one subtest to run/skip. Early return
-bypasses all subtests, triggering the assertion failure in igt_exit().
-
-SOLUTION:
-Use igt_require_f() inside the igt_fixture() to skip all subtests when
-KFD is not available:
-
-  igt_fixture() {
-      /* open /dev/kfd */
-      ...
-      igt_require_f(kfd_available, "KFD device not available\n");
-  }
-
-This is the proper IGT pattern:
-- All subtests are properly marked as SKIP
-- Framework sees skipped subtests (skipped_one = true)
-- No assertion failure
-- Clean exit with appropriate skip messages
-
-VERIFICATION:
-Before fix:
-  $ build/tests/amdgpu/amd_fuzzing_kfd
-  Assertion `!test_with_subtests || skipped_one || succeeded_one || failed_one' failed.
-  SIGABRT
-
-After fix:
-  $ build/tests/amdgpu/amd_fuzzing_kfd
-  Test requirement not met: kfd_available
-  KFD device not available
-  Subtest kfd-ioctl-GET_VERSION: SKIP (0.000s)
-  Subtest kfd-ioctl-CREATE_QUEUE: SKIP (0.000s)
-  ... (all 38 subtests properly skipped)
-
-Cc: Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- tests/amdgpu/amd_fuzzing_kfd.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/tests/amdgpu/amd_fuzzing_kfd.c b/tests/amdgpu/amd_fuzzing_kfd.c
-index 146702be6..9d5735f12 100644
---- a/tests/amdgpu/amd_fuzzing_kfd.c
-+++ b/tests/amdgpu/amd_fuzzing_kfd.c
-@@ -263,13 +263,13 @@ int igt_main()
- 			igt_warn("Cannot open /dev/kfd: %s\n", strerror(errno));
- 			igt_warn("KFD compute driver may not be loaded or hardware not supported\n");
- 		}
--	}
- 
--	if (!kfd_available) {
--		igt_info("KFD device not available - skipping all KFD IOCTL fuzzing tests\n");
--		return;
-+		/* Require KFD device for all tests */
-+		igt_require_f(kfd_available, "KFD device not available\n");
- 	}
- 
-+
-+
- 	/* Test each KFD IOCTL */
- 	for (test = kfd_ioctls; test->name != NULL; test++) {
- 		char subtest_name[128];
--- 
-2.54.0
+Best regards,
+Vitaly 
 
