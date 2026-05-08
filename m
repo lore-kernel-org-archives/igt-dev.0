@@ -4,54 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E35CD3436
-	for <igt-dev@archiver.kernel.org>; Fri,  8 May 2026 04:05:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAAF6CD3436
+	for <igt-dev@archiver.kernel.org>; Fri,  8 May 2026 04:10:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A45A10F328;
-	Fri,  8 May 2026 04:05:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 87A5410F332;
+	Fri,  8 May 2026 04:10:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eEKMvu7x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WjJEwt2m";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A03810F328
- for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2026 04:05:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 73A0710F32C
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2026 04:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778213127; x=1809749127;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=a5yFzT+bsJyFWWrQnUAtfSYXzqSfumDlCOAwDnOLciw=;
- b=eEKMvu7x24VpF7J2RKkWU8FENg38vTvVY1R0ogA02lnVXALAH8Y2AjyX
- 7apX688Jw7AaeSm1+32Rn/lS+STQ58n92rRNL3UWnJn3/i283UUQUfotn
- 2Uj0A3R1p0tllOH8fsgKYEwSd0yoF9rC1TE3q2GRuM6xoV05CORRepUXp
- GX8xCUJsP+FAijRQvDzsDB4cYqYvPgp1wiU8J7wYdD+lVEhbtZizYJDYl
- CPDrRIQdG1X09sP8OP8IrVPAvq0kqmEJw79O8h6cc2Kyjtkj9q4F10dEy
- gMML6EJHY8OwFlWPMIbpZWB9SGO1kdu0jpGFD4CLwWFxRbaAtIxDUupXs g==;
-X-CSE-ConnectionGUID: 9SSWg3XcQ/CO7WLQglgeGQ==
-X-CSE-MsgGUID: LmkD90fkSkGHG7EVT3bfKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="104636917"
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="104636917"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2026 21:05:27 -0700
-X-CSE-ConnectionGUID: tUP5FUb0R3O/fgWrzUgKEQ==
-X-CSE-MsgGUID: CA6mILc0TBWEkAq1yHzo/g==
+ t=1778213431; x=1809749431;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=CMgj59PA4NQE6CahXb1jBKTWg032TAeJwBuzFWEgkWg=;
+ b=WjJEwt2mEBGfaQqS6dxDFbiSBV2iabvh939Cw7xm54U8wQIBKt4URC/C
+ S4bA5GYMMv3eLcSKVrV11MaSBwsKXoO1WDF1wOyjndIYqoGYaTwa7Yuju
+ smQ5iGItZTuZpu5A4BcFKIY/zCeUUuuj+BW5LkFB1vj86OpiNWC85JjQY
+ hNZ3Fz9oYuol4BZHFN9TAiiho0xhUZQXDzUdM+zDQSHgJemk3oQw7YhFS
+ i85nbSOFb3VWr4tTki2f1aVK69HQLV7wvFfnBnfPuuXJ/0F98/FWGvfDg
+ DuCeaeGiZGV4lG/Q1vFWMaTHd7m9H5+hxGG1MgnBDGL51aKmvu/bpFjtY g==;
+X-CSE-ConnectionGUID: 8UWjWY7lQgGhh7F2Y5DsMQ==
+X-CSE-MsgGUID: 6e7QLF1KQs2C5i3waJu1fQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="96744835"
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="96744835"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2026 21:10:31 -0700
+X-CSE-ConnectionGUID: 4k2a3P6OQs2oLAIn3TJ1jA==
+X-CSE-MsgGUID: E4X5vMKpS9O0nWUwMN5FsQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; d="scan'208";a="260366273"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2026 21:05:25 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, ankit.k.nautiyal@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1] tests/intel/kms_joiner: Fix mixed_output subtest
- skips
-Date: Fri,  8 May 2026 09:29:40 +0530
-Message-Id: <20260508035940.645143-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: from mrrichar-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.10.218])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2026 21:10:30 -0700
+Date: Thu, 07 May 2026 21:10:29 -0700
+Message-ID: <87o6iq7d8q.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH v7 2/2] tests/intel/xe_oa: Wa_14026633728
+In-Reply-To: <20260508021329.876072-3-shekhar.chauhan@intel.com>
+References: <20260508021329.876072-1-shekhar.chauhan@intel.com>
+ <20260508021329.876072-3-shekhar.chauhan@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,31 +70,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In the mixed output case, mixed_output[1] is a non-big-joiner output,
-but bigjoiner_mode_found() was unconditionally called for both outputs,
-causing the subtest to skip. Only require a big joiner mode for the
-first output (j=0); the second uses its default mode.
+On Thu, 07 May 2026 19:13:29 -0700, Shekhar Chauhan wrote:
+>
+> For MERTOA in CRI, oa buffer can be in device memory. Because of slower
+> device mem access, OA exponent values lower than 8 can result in buffer
+> overflows. Bump the OA exponent value.
 
-cc: Karthik B.S <karthik.b.s@intel.com>
-cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/intel/kms_joiner.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
-index 86226a3ba..20f39ceef 100644
---- a/tests/intel/kms_joiner.c
-+++ b/tests/intel/kms_joiner.c
-@@ -386,7 +386,7 @@ static void test_invalid_modeset_two_joiner(data_t *data,
- 
- 			output = outputs[j];
- 
--			if (!force_joiner) {
-+			if (!force_joiner && (!mixed || j == 0)) {
- 				igt_require_f(bigjoiner_mode_found(data->drm_fd, output->config.connector, max_dotclock, &mode),
- 							  "No big joiner mode found on output %s\n", output->name);
- 				igt_output_override_mode(output, &mode);
--- 
-2.34.1
-
+>
+> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+> ---
+>  tests/intel/xe_oa.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> index 988c46df6..2f73b5210 100644
+> --- a/tests/intel/xe_oa.c
+> +++ b/tests/intel/xe_oa.c
+> @@ -24,6 +24,7 @@
+>  #include "igt_device.h"
+>  #include "igt_syncobj.h"
+>  #include "igt_sysfs.h"
+> +#include "intel_wa.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_oa.h"
+> @@ -2671,6 +2672,18 @@ test_non_zero_reason(const struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
+>	int len, check_idx;
+>	u32 oa_status;
+>
+> +	/*
+> +	 * Wa_14026633728: For MERTOA in CRI, oa buffer can be in device memory.
+> +	 * Because of slower device mem access, OA exponent values lower than 8
+> +	 * can result in buffer overflows. Also, update the value of oa_exponent
+> +	 * in properties[].
+> +	 */
+> +	if (oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_MERT &&
+> +		igt_has_intel_wa(drm_fd, "14026633728")) {
+> +		oa_exponent = max(oa_exponent, 8);
+> +		properties[9] = oa_exponent;
+> +	}
+> +
+>	igt_assert(buf);
+>
+>	igt_debug("Ready to read about %u bytes\n", buf_size);
+> --
+> 2.53.0
+>
