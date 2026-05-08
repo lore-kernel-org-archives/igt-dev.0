@@ -4,103 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5F1ECD3445
-	for <igt-dev@archiver.kernel.org>; Fri,  8 May 2026 20:16:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 977AECD3445
+	for <igt-dev@archiver.kernel.org>; Fri,  8 May 2026 20:24:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8CC6710E34D;
-	Fri,  8 May 2026 20:16:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2575210F5D8;
+	Fri,  8 May 2026 20:24:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="JQqcK6Un";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="t1Iiot0p";
 	dkim-atps=neutral
-Received: from BN1PR04CU002.outbound.protection.outlook.com
- (mail-eastus2azon11010069.outbound.protection.outlook.com [52.101.56.69])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA2EB10E355
- for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2026 20:15:49 +0000 (UTC)
+Received: from CH5PR02CU005.outbound.protection.outlook.com
+ (mail-northcentralusazon11012061.outbound.protection.outlook.com
+ [40.107.200.61])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E485610E33C
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2026 20:24:03 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iZtou27Cm4o63nQeJMmyuIW3BIRHbmtVKreVGBkpV5GMxo2CKBxVPChzWhiWoy6Gu8TgO6j18gCoUXC3SFWjM0rGqDl2cEwBkWy6ZcVvqrsuJlnmvzt+liv8ZZraZU0a4Lz5ojBHXd7GKIfBV4qyGmFeBHHzG0iua6UvE+Rsn0ikMWLqoYou6Ak/TTnKwCv2vTecsMsrfoRMUAPP1XIt/WyarnSZczgUSuAM419jSYI5NOUVQkiCVSvKaqqc1gU0sxhAD7LSdmvHZ0y8sUqk+ytIbP+Xodts1RLbqBk+X8Px34/XK2RzK6iC1WPnEoJbCFCVMzHEmH2bCKGKbenewA==
+ b=NwZCmsW/fT2wIe9SBzi2i0Jh3vapZIh0g8Ky1rAgwpYvF1uFVOIku1Lx942g7/pJ3LKChMW7xJqMRdWSBnCpkv8Of2M+IqSgpI/N5bDh1bfLPH/8e7ySYKhP0CaS8CvJmsGISmBKeUTuPjJ5NFk0KdI4afsHd6ufNKv6Qo5O4z5JNE3HDvO88cJsyKSB8x6y8Ea4K8pr6/STwvP5kCRV+QSIxNpLnWcn/tHbw4STgoWwtLybst8OxxFMQgBVYpqNyiw6SE2OTZVP/iQwp+kT3KKm9T/PbRU0g2mdAfaBBSUJs02jzfVK7vnJjOEkaTfD7Myn2349S8biuhNDBeGp7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WDejKbm9a4Y9EtaMvDyQmsFQ0/koubcZ7d+qZiAKXcE=;
- b=bebFg6/JkYc7lI/8GGcjxJRcer+3RwQ9+HhzTbCdlog8hkdR28zLharwlYX82mEPQN+SQrUgKzmRnU/FNqDUK5FpfJ9w+aDjxota3cXOizEBEIrLvdCWYxsOZWHEwUNNwJjSgbNdzmLvwu//mrdu/9eLrv+N6hrpk7Hi6XNuZ1LGH03fsTuQcnWReNe5riCWU8e1J2bss07Q0TbbkiqbTHYZ0AGiklNQY0HD1WrZyCZc1SKPX9MKMVZXrb/QKwhV/HQh+VRtLkGZru+LLX6KUcvYxllmja9Htl6BuFL/2xxk9kEuF4aZAWUeizXM/FPkozyXVkHv0DafCx8z5Avu3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
+ bh=nYOyFYlSGhyTvRhBVFnXlvFsCBm8kDr62N2nLiQkWpE=;
+ b=aeDPZNZ9/4Q5YKZ4K4AgYUpJJqKBzSe/mA+1icFskTzBP0Yo6UmbEk8CFy2nZqahQ9UshmQCh5NIrwTlTe7Sle6xRlz8ejJoVpGYA/1v6ACoPlEgJPTwzp9FRDGplMqp7YDWE/IkuXEaWEAXWqDCoRAGSzt31kHolUWw4Wi0RfmOIxR+4pHRt3i9Ii5JJZ/DxqNNhmwU2raW5GUB4cxc2dM6S4Vay9qqPTiFMGckTcjG3C9I63hkBunNx4it1LQ57Jpo2Yg/ZlQ1BU0JciMtdtkZerJYF/rs0ReoS29LO2YlF7WHV44kGjFwZB9tjbd8Voawocy5ptGvbU7zG77pMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WDejKbm9a4Y9EtaMvDyQmsFQ0/koubcZ7d+qZiAKXcE=;
- b=JQqcK6UnZ/8Ic4N0w+4cOPPCmudwijB3qFVs4d93vZPEigXs35ANIqWjED9hwYu91whM1ff0LMpO9mXWRRl2tbSw+NNN+ZPFweAIEhUd52gROdVPhm6QAzoVx/9VtzTydfiLTxSaU0lbM/sRqhGpoSwEH8F3XkCosftJYpXBB7U=
-Received: from SJ0PR03CA0363.namprd03.prod.outlook.com (2603:10b6:a03:3a1::8)
- by SJ2PR12MB9006.namprd12.prod.outlook.com (2603:10b6:a03:540::17)
+ bh=nYOyFYlSGhyTvRhBVFnXlvFsCBm8kDr62N2nLiQkWpE=;
+ b=t1Iiot0p6uOFBDjmXBzUisfNXFFNA9g1TvG1CZUsTSSSrQrIVwSjXNFDml40PEydnkYFIsbypqJE03ZvNLTWt4NsYkggzNY3tuetsNE6FVHf7dqW9GGtiIhnbQm0YPPNkr0NeRyANmoRBLLU3GT0wAeYbLcUrmMJd2MaUYCTvdU=
+Received: from SJ0PR12MB6855.namprd12.prod.outlook.com (2603:10b6:a03:47e::6)
+ by MN2PR12MB4158.namprd12.prod.outlook.com (2603:10b6:208:15f::11)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Fri, 8 May
- 2026 20:15:43 +0000
-Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1:cafe::ee) by SJ0PR03CA0363.outlook.office365.com
- (2603:10b6:a03:3a1::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.20 via Frontend Transport; Fri,
- 8 May 2026 20:15:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9913.8 via Frontend Transport; Fri, 8 May 2026 20:15:43 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 8 May
- 2026 15:15:42 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 8 May
- 2026 15:15:42 -0500
-Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Fri, 8 May 2026 15:15:42 -0500
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Michael Strawbridge
- <michael.strawbridge@amd.com>
-Subject: [PATCH] tests/amdgpu/amd_fuzzing_sysfs: use local include for
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.19; Fri, 8 May
+ 2026 20:23:59 +0000
+Received: from SJ0PR12MB6855.namprd12.prod.outlook.com
+ ([fe80::2025:d896:f168:1675]) by SJ0PR12MB6855.namprd12.prod.outlook.com
+ ([fe80::2025:d896:f168:1675%6]) with mapi id 15.20.9891.015; Fri, 8 May 2026
+ 20:23:59 +0000
+From: "Strawbridge, Michael" <Michael.Strawbridge@amd.com>
+To: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH] tests/amdgpu/amd_fuzzing_sysfs: use local include for
  amdgpu_drm.h
-Date: Fri, 8 May 2026 16:15:32 -0400
-Message-ID: <20260508201540.54172-1-vitaly.prosyak@amd.com>
-X-Mailer: git-send-email 2.54.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: vitaly.prosyak@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|SJ2PR12MB9006:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25d8f25e-f433-4035-e111-08dead3e9530
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|376014|36860700016|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info: 4kT+ULaPwYW/08uKu/U/LKJMg24gmG2Vd8+fD5fRcnGOuxO1tOisPNr7Bz4PAlM7hlFPAAZSYikPZfFIrgjGvx+cd0MDCs4lg4GqWr7RhRbl1GbG9Der7agNslLNVDeS6ayZ7UFOsiA//n6K74mk9JBgCdZbuh+rjhglELkE8UPep8qj3vqUx8l22aODcfI8bcnR2BCmmPTiQvNiOpBnhOxvdGnhURAfDpI2lGuwnw4sh1MqrRarCR40pQpjvYKpC5BmYc92ZnqJFAlFBXcumB2DAlf2KNV/hTUAFloF8i7A1UEZDiJalIw2jvjdBu00jVjZKL/BxxI0/CzgpNqP+RWYXdRosDwsup2KdDm71l1zoMDAt0/CreZKs7IcQJzfta+weSFK0vvRQmH/xsPwOookAe0E5iULajZ38imDDqB/m6iPcLFFgPXbVSoeoKY9IAnKfvTMih3iQecw+W3jewYsGflaLES055kBSWKcF3wQICKu6BVfbpz0q8ypE+yc9Ojdevd2Y5ssXQqxY4zXkWldZ8Mc1zd8bwaV3mpoTfefbCeu1w/VFN8RS0qlORJk2n3ENLWs/vpHtKUtkoroAOOa1uc8hhpOsWaP+RVxp5FrTCikfetarKcXJ/ru4XxbSp+FBhebcxEN70Nfg7qi5NwxjniYEz7AqCoO9WyR+fmeqU8UQ2jeCBD8/iT5Z7xKBFfrvLjGRfcoKEpZMNponZDvGbAKJNKN1qnngf/5U0w=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(376014)(36860700016)(18002099003)(56012099003);
+Thread-Topic: [PATCH] tests/amdgpu/amd_fuzzing_sysfs: use local include for
+ amdgpu_drm.h
+Thread-Index: AQHc3yd4N1jR4NqYZ0ynswCdSmnwY7YEkrVz
+Date: Fri, 8 May 2026 20:23:59 +0000
+Message-ID: <SJ0PR12MB6855F905CD89BC275D662A1FE83D2@SJ0PR12MB6855.namprd12.prod.outlook.com>
+References: <20260508201540.54172-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20260508201540.54172-1-vitaly.prosyak@amd.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Enabled=True;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SetDate=2026-05-08T20:23:58.729Z;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Name=AMD
+ General; MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_ContentBits=1;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Method=Standard; 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR12MB6855:EE_|MN2PR12MB4158:EE_
+x-ms-office365-filtering-correlation-id: 15fb6b54-f013-45a8-bcce-08dead3fbcab
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|366016|1800799024|56012099003|22082099003|38070700021|18002099003|8096899003;
+x-microsoft-antispam-message-info: 8VmDdrogCtSzkg87QsO0UkOPGn3neXpiszdh3iaDgAvxmDaUWVCOsd5CEbdd0Q6IpPDnOPCU53DxwS4geWTFStnDUGNp/uwFWa8ANIj7bKfnHm4NEmm6P/R8EQ0yPXKexrhIxd876bhHGyLsFJqraUN88iEevJsuK7hYvbIExd2YM5twCCpF9TtC7hmKplfz5sixXyLLW9EqAaq3feTT9xVozXM2wxtRsCNNpI522OgmaWkJTOr2+peyFFtrMdeQzK7GIgnTdrx3oC42FqOmKSDfrTa5E03qlX7JbkfpvxXoU5o68ZmcIocyNKdMPAU3oAO+wEyKjbutrzVLxYJAOWA2on9dhlth/mD4ANRw+jPFN8httjfNqHL2D4WuWaBLrmETZ7dz03JU5qGDYAA2YbOpxLmvfJvmcwUNVD6OWjx9kbEAxljuNqD1Bh9gJqOsUgyGxntyDEA+9UIlUdKkkyx/0V7fbGUSN2Wp6wgZoKqprDy9weLgNm538kuLhusdxTu1p7uzyikd2yVw6aIeBR2t4g6Nzr+NK4Hv43BjLwzJrgjyyT8N3AtV/mSSzkbPVNew0hGUwqekJLaYgHKVkstX+XEvqmSg/CSWVt08hHRDyGedKEcizA61UfNfT/zUABJNkOlFlW4OPtfCO4NFYOJpy5KhXzZ6r8ukOusNKz1T1WC8EcAdWJmIyElUJw9Z6EVL87aYvpuB+9te9CeEmI9B80g77TLyFbN/IFowoXvB63xBxJQlANqtnqt8fX2M
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR12MB6855.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(22082099003)(38070700021)(18002099003)(8096899003);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: bHL9UudxUcn6/otbBnlyFOsavZYuFIfFTqWBUe8yEWsq3DTW4/5rL+0EY6DsdRlPSMU7mP9fzf/VyT/3x8LUoOIyiKedPu41Rwrl85WOX21eDJL1mztwq8Ux94rBK9s3ErwQwJ4HhzUoLudTOgbCXxMK58tXUZ1wV0BwTi8Y9Zp6Adfo2msnUGQDtSlqnRaauTqlMG5J63Yb8hkaOWCyaVVb8Nc8KBuLjwmZIeH8fUcJRddR2jsIuAQAT/orYmhCKqO6zYp76bu34pvheZgz5BMgX2KvuAFa8mrLo8SMk6+eqfdiCHviUcJOvD+GJ7XfGCbkFjlmntTXXnRZ7jTl0bkRRbT1GIV+jD8PA2dTUmG9OmOrhP+8GGcYe9SHQkVJfmx9CW5KDcXkOSAC7//Y0Tpjst0pMbfU1yTJvXKPputbzvzIVVHFQXjU5o8RMpLf
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?tjNbr8k0dPu51z38t3hWt5R5CdhxxuSddC89ES1eVlNHtrV9MNW+ERhLWu6k?=
+ =?us-ascii?Q?vME8KACkx+/jvTjQ9UIEyDE/MTYSJoZFWhzZhyBJDpXriN4cd4m+m1NXwd6J?=
+ =?us-ascii?Q?MaCmW5XCTOJZb1fynO9g9cwNlEN0GFOs4a4EYPrK7MCiOnd1BF9K4o2FLW17?=
+ =?us-ascii?Q?jo2jEP6GfHLWadMNl4oNuQd9G1lR9yLoD1jJjAOsEWoYGcHPiACe0tZgiI5R?=
+ =?us-ascii?Q?hRiMSdNL77/luJrePn1+lgOE3tYDQjvmc/lGUPW2dqxArFHrYM0d9NWHUbE8?=
+ =?us-ascii?Q?J1kaRxw/5vPu9c9rRKMEBOGNymjRCzDd3UXzzlGz/vhZtwhnGqdDmC5dQzCQ?=
+ =?us-ascii?Q?huvez5OKjG3Z2NCfFgmHFXs0UCgTBfO7bGprf0gW5RqheGYhGFf5veA5pHmE?=
+ =?us-ascii?Q?qrrdPemnl3NXgDeifYbX72TNKXNRfe7VSrVeC2VgcYHwjC2oFseCX9MlrqRE?=
+ =?us-ascii?Q?bqJ6bEW+ikfdB4MTTZ4t7yZskwVIHZjqApCLxEKpIw319zdsiTIwLjVoJ/Q9?=
+ =?us-ascii?Q?4ldx1q3YRydDXTd5mpHTNUtA8rCLQ34S5orizYM9HM6KZilbn0EcZWQw101U?=
+ =?us-ascii?Q?6z8KP0ChpDRSZ1R+gScsPiB+TWH/c+EwxdSF42DAQ1+MYJPRVkxtuYbKKu4c?=
+ =?us-ascii?Q?AEOCVjeZ/9G9HwsRcZuHuU1ari3+UJLWcl5sE+zdqZwu19fTVp8Qx+5OFBga?=
+ =?us-ascii?Q?wmgg95eHO8SqElDAJnvndOmPV0s3j2SBMHCtDwDernYsF79IFV/w8WS3LyzT?=
+ =?us-ascii?Q?Y+SKIE06zYP7BL3bFMIWf4AeUIFr+mdYdpnNSVmXAn49iO7IjdzkMdbf8yaG?=
+ =?us-ascii?Q?UAW3XLGfwYYrMuZYO7LlpFUyRfiooY99w2c7E+syVK+usS184IXjp9ZoACL4?=
+ =?us-ascii?Q?LG3F4/WTunZY9j2W/n6zsprmsI/9sRZVbwoe7cXXxCj06x/GiKiYWvn7gxBI?=
+ =?us-ascii?Q?17F2XK+0J+kRPlsHJht8bW7PhqhlH534xgWNfz9z9cq/1TvlsBJU4ETK61/l?=
+ =?us-ascii?Q?o+LKECW20gw5N5BrqEE/49OKTST3mbBJx9d36f9Sd4eB3O5Hp1/8mgwND9+N?=
+ =?us-ascii?Q?kkqI9tG5yK6YVZ4BJKcGLLYyfw23hldWqpT48wIzhLUrL0Vn+vyUIN9oEgoP?=
+ =?us-ascii?Q?w8GDMmkJBc3l0RV/axju947OvrV6FjQ+6wX5Lf2T5GvrfCk+2SwE9Mhw/+fv?=
+ =?us-ascii?Q?pIpiHHWwbqGf9iF9lwKCNcrafT3HYU7VIslW+wH8uHNW7/qLm8OxfsYR6ycc?=
+ =?us-ascii?Q?E6SVEIa7CwGG1LeICC12lQ9PUQ+XxiogR4NoQ8InVFkAXD4ZL1tbgcfnVl49?=
+ =?us-ascii?Q?Dctou2f9HMFyFBc7KIivdm6InYWI6YJflWZwT/2Y9cA1+BkgQbVbLf9I4jjB?=
+ =?us-ascii?Q?9odnVywo2xYNR9BQskAJihkbQpWUBJ3pUXVjmFE/HeY0eL4aA/YeZLFPk81p?=
+ =?us-ascii?Q?E/DBL97SH8TcUXEqQIfwzWU8eJSasd2uArea7Hulxk96appMEMOKxVVkC7ri?=
+ =?us-ascii?Q?0YxQrzAWdTPwaYP3IIWQkW8XOoNjQ8lAbQDJWN/8cNzkMus8Y+TSVZoW1ZwE?=
+ =?us-ascii?Q?bf/odpd1zEA/+zbYDnfrQS42+p2oO9NkVCdP90p6mFSG0Y5S1My2/1HPiOK8?=
+ =?us-ascii?Q?xpRfYilP+ipgLarfDO739sXzM6nlhlLadJmq4wz629MAwGissQsLECq7GN9O?=
+ =?us-ascii?Q?d7YbAMshajkr4Eg+M7yNvxax59NqjrzA/+ulDbCdGgDcm+1/?=
+Content-Type: multipart/alternative;
+ boundary="_000_SJ0PR12MB6855F905CD89BC275D662A1FE83D2SJ0PR12MB6855namp_"
+MIME-Version: 1.0
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2026 20:15:43.4435 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25d8f25e-f433-4035-e111-08dead3e9530
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002312.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9006
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR12MB6855.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15fb6b54-f013-45a8-bcce-08dead3fbcab
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 May 2026 20:23:59.2526 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BM0Ut0xfvbd5Tjjb6A4+Qd1lV1pVnrorO6G8QOFLHIovBpHNgWFM7NWonNMmZipauoT/vri5c8FfG3xngChq1g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4158
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,6 +133,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+
+--_000_SJ0PR12MB6855F905CD89BC275D662A1FE83D2SJ0PR12MB6855namp_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+AMD General
+
+This looks good.
+Reviewed-by: Michael Strawbridge <michael.strawbridge@amd.com>
+
+Michael
+
+________________________________
+From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
+Sent: 08 May 2026 4:15 PM
+To: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
+Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Strawbridge, Michael <Michael=
+.Strawbridge@amd.com>
+Subject: [PATCH] tests/amdgpu/amd_fuzzing_sysfs: use local include for amdg=
+pu_drm.h
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
@@ -136,7 +174,8 @@ Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
  tests/amdgpu/amd_fuzzing_sysfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/amdgpu/amd_fuzzing_sysfs.c b/tests/amdgpu/amd_fuzzing_sysfs.c
+diff --git a/tests/amdgpu/amd_fuzzing_sysfs.c b/tests/amdgpu/amd_fuzzing_sy=
+sfs.c
 index b02f3b7ce..381e5388a 100644
 --- a/tests/amdgpu/amd_fuzzing_sysfs.c
 +++ b/tests/amdgpu/amd_fuzzing_sysfs.c
@@ -147,8 +186,114 @@ index b02f3b7ce..381e5388a 100644
 -#include <drm/amdgpu_drm.h>
 +#include "amdgpu_drm.h"
  #include "amd_sysfs_spec.h"
- 
+
  #define AMDGPU_SYSFS_BASE "/sys/class/drm"
--- 
+--
 2.54.0
 
+
+--_000_SJ0PR12MB6855F905CD89BC275D662A1FE83D2SJ0PR12MB6855namp_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div>
+<div style=3D"font-family: Calibri; text-align: left; color: rgb(0, 0, 255)=
+; margin-left: 5pt; font-size: 10pt;">
+AMD General</div>
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"text-align: left; text-indent: 0px; =
+background-color: rgb(255, 255, 255); margin: 0px; font-family: Aptos, Apto=
+s_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-s=
+ize: 12pt; color: black;">
+This looks good.</div>
+<div class=3D"elementToProof" style=3D"text-align: left; text-indent: 0px; =
+background-color: rgb(255, 255, 255); margin: 0px; font-family: Aptos, Apto=
+s_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-s=
+ize: 12pt; color: black;">
+Reviewed-by: Michael Strawbridge &lt;michael.strawbridge@amd.com&gt;</div>
+<div class=3D"elementToProof" style=3D"text-align: left; text-indent: 0px; =
+background-color: rgb(255, 255, 255); margin: 0px; font-family: Aptos, Apto=
+s_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-s=
+ize: 12pt; color: black;">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"text-align: left; text-indent: 0px; =
+background-color: rgb(255, 255, 255); margin: 0px; font-family: Aptos, Apto=
+s_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-s=
+ize: 12pt; color: black;">
+Michael</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div id=3D"appendonsend"></div>
+<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
+yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> vitaly.prosyak@amd.co=
+m &lt;vitaly.prosyak@amd.com&gt;<br>
+<b>Sent:</b> 08 May 2026 4:15 PM<br>
+<b>To:</b> igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&=
+gt;<br>
+<b>Cc:</b> Prosyak, Vitaly &lt;Vitaly.Prosyak@amd.com&gt;; Strawbridge, Mic=
+hael &lt;Michael.Strawbridge@amd.com&gt;<br>
+<b>Subject:</b> [PATCH] tests/amdgpu/amd_fuzzing_sysfs: use local include f=
+or amdgpu_drm.h</font>
+<div>&nbsp;</div>
+</div>
+<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt;=
+">
+<div class=3D"PlainText">From: Vitaly Prosyak &lt;vitaly.prosyak@amd.com&gt=
+;<br>
+<br>
+The file amd_fuzzing_sysfs.c uses #include &lt;drm/amdgpu_drm.h&gt; which<b=
+r>
+requires the system package libdrm-amdgpu-dev to be installed. This<br>
+breaks the build on machines (e.g., Intel-only CI) that lack that<br>
+package.<br>
+<br>
+All other amdgpu test files already use #include amdgpu_drm.h which<br>
+resolves via the project-local include/drm-uapi/ directory that is<br>
+already in the build include paths (-I../include/drm-uapi).<br>
+<br>
+Switch to the quoted include to be consistent with the rest of the<br>
+amdgpu tests and remove the external dependency.<br>
+<br>
+Cc: Michael Strawbridge &lt;michael.strawbridge@amd.com&gt;<br>
+Signed-off-by: Vitaly Prosyak &lt;vitaly.prosyak@amd.com&gt;<br>
+---<br>
+&nbsp;tests/amdgpu/amd_fuzzing_sysfs.c | 2 +-<br>
+&nbsp;1 file changed, 1 insertion(+), 1 deletion(-)<br>
+<br>
+diff --git a/tests/amdgpu/amd_fuzzing_sysfs.c b/tests/amdgpu/amd_fuzzing_sy=
+sfs.c<br>
+index b02f3b7ce..381e5388a 100644<br>
+--- a/tests/amdgpu/amd_fuzzing_sysfs.c<br>
++++ b/tests/amdgpu/amd_fuzzing_sysfs.c<br>
+@@ -29,7 +29,7 @@<br>
+&nbsp;#include &quot;igt.h&quot;<br>
+&nbsp;#include &quot;igt_sysfs.h&quot;<br>
+&nbsp;#include &lt;amdgpu.h&gt;<br>
+-#include &lt;drm/amdgpu_drm.h&gt;<br>
++#include &quot;amdgpu_drm.h&quot;<br>
+&nbsp;#include &quot;amd_sysfs_spec.h&quot;<br>
+&nbsp;<br>
+&nbsp;#define AMDGPU_SYSFS_BASE &quot;/sys/class/drm&quot;<br>
+-- <br>
+2.54.0<br>
+<br>
+</div>
+</span></font></div>
+</body>
+</html>
+
+--_000_SJ0PR12MB6855F905CD89BC275D662A1FE83D2SJ0PR12MB6855namp_--
