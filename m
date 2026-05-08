@@ -4,160 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCE31CD3436
-	for <igt-dev@archiver.kernel.org>; Fri,  8 May 2026 07:55:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F2DFCD3436
+	for <igt-dev@archiver.kernel.org>; Fri,  8 May 2026 08:04:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 78FCE10F3D7;
-	Fri,  8 May 2026 07:55:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4429010E5BF;
+	Fri,  8 May 2026 08:04:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D4FAqKr7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kHXhTR3+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D08410E5D4
- for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2026 07:55:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 393E410F3D1
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2026 08:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778226928; x=1809762928;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=eyzVBNNRPrcAzDDbYNR4lp6bW8zVLsCAqd50rluLozg=;
- b=D4FAqKr7vHPRi+bRlJ0J7mxTr2AFs4rXAVkj8ksAqMaj0WkluqvEI3rE
- PREXFfo+u4GbRzdPxg4pKzrUuDI9r0N2ETU39jEmr15xK7iDTwD3NVXVw
- mOmIb47SyRKYI9U3zj/2A86j59FflWI45PiMso9Fdw5qCabuaF21al2Gq
- NBznbarPJGi7htopHymAHoyQxuPrA/gCJWUubBbEbqsORZXnE5bhifUe0
- T+iuCqJzw5wXzO6kEb7JQxvBzG4us4VK9DNU4gHsnthJQNm5KxUwsCkhY
- 83c/eXQd8+g2J2ESW41+Ab5f8Gvet/WwywLLTILr8HbWzEhom1OkZtImS g==;
-X-CSE-ConnectionGUID: xTQHtIg+R8KSiJC8g0ytGg==
-X-CSE-MsgGUID: sryDHtmdT1eXW12X8DpK8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="78336692"
-X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; d="scan'208";a="78336692"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2026 00:55:27 -0700
-X-CSE-ConnectionGUID: OgRIvU3aS2Su2lmUofWZpA==
-X-CSE-MsgGUID: eRExlLqrQtGfJTda75tfnA==
+ t=1778227455; x=1809763455;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=15Gw9n5xJDWQOo+Ggu7rGwq0YA4483jPIGNr/b0EvxI=;
+ b=kHXhTR3+2D17CAZFQ8dkMcu/QH9aZUx41eHNWbYD8hDPzR3pxROa2OdK
+ W/AoNA1HKPlHGLUPoRqqEn6SVFJ17G2T+CE8TDB94VP9rfopvsJ5B87mk
+ QyBEssf2OQWO+5HYqyCWdtCq9RtfWmHWS3gYowRSLlkUdox1pV/fzMony
+ k1BDpzQYBEFaXtuU60Tuhg+1cLA5aQMV8p6Re1PRY4tBaoxXmSTYiRGwJ
+ yFqLic2tLz5jl1AuY2ruEbjc0hOukCueCsCvxA4+LREoHaqc721lEWqHh
+ QcjV3f1T7NBq3luPudj1ewBpiJHDjIniiDbOi9kSRilJh8iLzqzM805mR g==;
+X-CSE-ConnectionGUID: gR0sVPOzS5yGug8pntawHA==
+X-CSE-MsgGUID: rCEEEMGzSSK1Pz5wL38DkA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="66718781"
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; d="scan'208";a="66718781"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2026 01:04:14 -0700
+X-CSE-ConnectionGUID: GNL/wKVVRFidWqkVzzSkJg==
+X-CSE-MsgGUID: BNjIO/CSSrOj6wNW8vyStg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; d="scan'208";a="235715280"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2026 00:55:27 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 8 May 2026 00:55:26 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 8 May 2026 00:55:26 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.42)
- by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 8 May 2026 00:55:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WPaW2e17eDKu1zpH9MEXt8sML+sWsvqYY21BOSZdntSjpPS4YDWroRFj0bAiq/RM3Lu9BCGO2y9tsC5sJf2Yjvx9pc32uY+vt+Qb+F69kpxz/pxU6LB2wa/yQLIc0jUhyklZlSit7bSfPWGBE1s3oFwTKLMBA1iWdk+sP+JfmOxDArC+1oLiTggdGTl+CWJqJP9Efj6w9tOy3kXJdLxSk/IH+Q2cdxJdrIJQHu8sXt4lkG/QXndeCrMRGQvun3mz6OS8YFyQ+D1LamM41mTIwEUYGlkzp+d6GuDc0Wxw+zs5kePYRg0BPnYRIPdFcFFkYPuKSisH6mOEBjVuyq9R8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4mJs5ILjZu/m0NuqInfclCmR+5PIMYhrl96gL5ko5Cw=;
- b=lwTSvYrYZKJKB5FJ8QM4BA5cXk2ATbbMIIuAQmGUI4qsW7Dc92a//0eqs8oJZe7Wpkzg6XU0hNBK1I0MwOEof1iKVpfbOkNNwnK6uKLel0nbnjsdOWwKTN5X2l9wYSI3w9lsayKJAXQ3Xgde62wyLnGAt6mDbw7r4p0HEITRIGeYIddeC5iVDZwcyrFrw0wbTiuC5s3zVQ2+HkLPU08OeyPkTZjctcKFF0gIeTKM/2mbW6/U1MidLIt54M+5IGbBWFGdk1paWbA7lyz4zkcm03/sqLw0dqSRSMK8aQY06HkNw8mz/3IcqyYbxA6uKAyMrg8hKsxSUwn2pXEHnL2ezw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::839) by CY8PR11MB7922.namprd11.prod.outlook.com
- (2603:10b6:930:7b::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Fri, 8 May
- 2026 07:55:18 +0000
-Received: from SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- ([fe80::7339:f2b8:cb90:3a38]) by SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- ([fe80::7339:f2b8:cb90:3a38%5]) with mapi id 15.20.9891.015; Fri, 8 May 2026
- 07:55:18 +0000
-Message-ID: <815c4a69-9d15-4ac3-a150-ce42b019a1c5@intel.com>
-Date: Fri, 8 May 2026 09:55:14 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] tests/xe_eudebug_online: fix thread ID math in
- pagefault-one-of-many shader
-To: Maciej Patelczyk <maciej.patelczyk@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20260128113934.707513-1-jan.maslak@intel.com>
- <20260128113934.707513-2-jan.maslak@intel.com>
- <b82cf976-a87d-45ce-94c6-6c32ab8a4618@intel.com>
-From: "Hajda, Andrzej" <andrzej.hajda@intel.com>
-Content-Language: en-GB
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <b82cf976-a87d-45ce-94c6-6c32ab8a4618@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VE1PR03CA0023.eurprd03.prod.outlook.com
- (2603:10a6:802:a0::35) To SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::839)
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; d="scan'208";a="238488252"
+Received: from intel-s2600wft.iind.intel.com ([10.223.26.143])
+ by fmviesa004.fm.intel.com with ESMTP; 08 May 2026 01:04:11 -0700
+From: S Sebinraj <s.sebinraj@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: carlos.santa@intel.com, matthew.brost@intel.com,
+ jeevaka.badrappan@intel.com, karthik.b.s@intel.com,
+ krzysztof.karas@intel.com, kamil.konieczny@intel.com,
+ zbigniew.kempczynski@intel.com, S Sebinraj <s.sebinraj@intel.com>
+Subject: [PATCH i-g-t v4] tests/intel/xe_exec: Add VM rebind stress test with
+ cpumask cycling
+Date: Fri,  8 May 2026 13:11:14 +0530
+Message-Id: <20260508074114.3684599-1-s.sebinraj@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PPF7DCFBC32A:EE_|CY8PR11MB7922:EE_
-X-MS-Office365-Filtering-Correlation-Id: e6aa9044-f899-4cb7-05e0-08deacd7256a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|56012099003|18002099003|22082099003; 
-X-Microsoft-Antispam-Message-Info: +Soh93oNL/Rdsi4Kh8MhYOYv8vAxIbu2HKhcktxEDIoPyyi/LCVT+TMLq1wz49V4z+t7Fp+P30ei3PKblCdlYTbx5d+5zPzVJq54T++HAji5ec8a3Ok+VcVrHFfWKcDlUYNGYhXN8PBn9BCUplxeWpLMnFnRAS1ilm6OJbOZ2tqJS7nrJxctgDx0mXC8N07/TwM9t+gqVi5jp2RFqF39kHeV+hI5W9sNIAa6cB9Sor7DIhB+j0y1SrCv5FtcMMIqjMfAWvEbu4BObCYuGn0PBJxn6Xm/U6I1BRevEPwvAAWkBvTSXBeFP4GpDfoCfCACr6pEGSrAIv6kWxUPaitiljwpz1isdVULvOLMxS8zUXfnhBjRA8+Plte+csCD9SmRfLb5UdeX+AGIceLdIpHDAIALZMb1RBn6bFufAEK0Uue4xPPKKsUIPAavRYu+8MvVXdT74CN8Ly3KXoZw7tIQKUzs8CGfNcO6BLkX7JpiYis5WqZFiZLdcSzt0VR7jwid5a7QL+Y0dg1aTUCkQjqjM9MAj4Y1kITcluY2Onq/Sqquau43b4y7bTJK0Zs/gvrFkOc3oXvFMtVcaNVGkN74TymOkWHUoEWOZngfMojyHHMOTDrT6X1+ESze4+tXzrOfdMaxGg00Vz4p+Y4qt+HPBpkzplkA5joPqvzJfTMbCbmg0GGtoqYrh3B3KRrb+nXl
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ5PPF7DCFBC32A.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(18002099003)(22082099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b09ZajIwTWdsNUQ3VUVMNk9ybEFsU3dzcDdhd01yNHIwcCtVaWxORnNIZm9Y?=
- =?utf-8?B?YVFGWkpIOUVZQUp3UzlYdDlNaWFXcUczRDBQYmRwMVNxbnB5UmxvQmdncWVL?=
- =?utf-8?B?WWgvbDFVTnhzVXh0RXlrMUdmcnJjeTJUS0RKOHRHb2paMVIxcTZBbTdyL2I4?=
- =?utf-8?B?aktpTm9HamVtMTJuY0ZWZ2duQURNbmI0QzVUTjJ4SHJYbGgwNU1vWVd3ekhl?=
- =?utf-8?B?MFJSeXFQbzhyY294MGl3VXFZV2JycTB4VS82NjNMWERjVG5pWGZqRVB4YXBJ?=
- =?utf-8?B?dVA4ak1QVG8weU1oNlVoSnVuRzNIbjdVVHh2L3dIOUEwSElvcmVRQlc2cG5t?=
- =?utf-8?B?S2FuL292YTdxa21PbVJxMTBLa1dnbWY2M2FGeFRJN29OeTFCQjFVYW1LTjM2?=
- =?utf-8?B?N0RiTldxMzdRSnRNSDJ5eWlyT2VTdGtpeWxMNldDcnVoSm9RdjlyQjVTWGJz?=
- =?utf-8?B?cFp6aVdBaWkwL242N1VSN0FRSU8ybnY5NURkam1rY3MxUklXbzJyNG1KZG9x?=
- =?utf-8?B?YkxKNHBCWDQ5ZVNQZitWRmh5NGl4aEdmWlErd3Y1aWFvSm5VMytnejdKdnAy?=
- =?utf-8?B?L3VRVUdjMWNDdGNOaE5iTnRKV1lJM2ZndEkvV1E1WnNlM3VRSTdXNkdLT2Ry?=
- =?utf-8?B?SndSOGdRRHR6YUpFbWtmNzZCeXhiUG9Ydy9KM3A2ODNCV1I2TkFCWEZDOWVx?=
- =?utf-8?B?ZHk1d3RoQkREaGkxV1VjeGh1V3ZCbDZhSXdsd0tadHFKaVRqSE5QUkk4MDhn?=
- =?utf-8?B?Mll5dmJGNDNKKzl3bXRlQ0ZXeXZSWXdxTHE5TncwSFBqNXowSmx4MXpicVBZ?=
- =?utf-8?B?cndjVlI4OXFYR2trRTJHOHhlWDNOQklnUnVFNXlZeTgrM1Y1TDN1Sys3Vm9s?=
- =?utf-8?B?eVdYaHJva3dUT2cxeGtTVWp1NjJScUYySGZHUXJoeXYxRHRzeE0rQXQ5MHBk?=
- =?utf-8?B?emlFcGdLYU93VW1tOVNMRkI4THN2Uk4vZlQ3YWlMbGs4ZzVsSGZXTkF0eXM0?=
- =?utf-8?B?VVFpcTU1MHZFeWJxcnVYTHJmZktvWVQ2eTlWNHpSMkN4MU9JbWhqenJlWXA0?=
- =?utf-8?B?cUtTNVIweERxZ0NLUUhTNWxsN2kvUk16WUtxSnhiZDNOa1l6bjdvWlhNQTll?=
- =?utf-8?B?T2R1NmI4THpkWW9zZC9oNEJ5aVRYOXNBYW1jckNlWWszd1JCeVBKbkdOWlhw?=
- =?utf-8?B?L2tZYmRURklWRklpZno3VUxwSWVIWGc2MlJWdUltenJpR09KK0hLTXkyc1Fu?=
- =?utf-8?B?UjZMcjVRVjg4L0RWemRwQ3F5ay9KcXVyNnlxKzIxNDdNWUVXMjJtNXU1MWx0?=
- =?utf-8?B?eW1lUmF5REF4V2ZNV2VsL29vRUFnWU5yMVNzN3h1K0ZxdndWK2lUc2lSbTlk?=
- =?utf-8?B?ZVpTRVA4cGVIWjFsUlZFN0Z1TStNSTF1c1ZCN1Rrd0lLaXVWUytnd3BVOUxk?=
- =?utf-8?B?NEhPdG8vazFpWTdKNjRhV2RTWTBQWUtVRnU5QnRJQmpkTkxoV2JZVnh5RC9Y?=
- =?utf-8?B?bUFkZzZsa1p2eDZCcXUyUnNaN2dSZUUybzNTTjU4YllJTEx5RURnRWhHYVVn?=
- =?utf-8?B?Q0xkZTQvalAzcHVLeWpjT2hhSDVDam5RM1V3aklLdGJaNjNHdWozWnk3cERU?=
- =?utf-8?B?b09kamNSYmV0aXcyZGZuRDFabENXbWZWTHZLbzBBMXpwSytUTnpHK051R25J?=
- =?utf-8?B?US9RdTQ5SC81a1dldW5iekVFY1IreXVUNENBcTlBTCtDZk11NGNJNnJ4MFhy?=
- =?utf-8?B?cGdod1EremNQaWhZR2NodVFqS3IzbTQ2bjcyRFI2NUFzUTU2amVneGpITnE5?=
- =?utf-8?B?ZjRwK055Qy9jMHlvNWVUc0tORldnL1FGUVVFKzBIUHpPV2hudURVaU9zK0VV?=
- =?utf-8?B?YmpRZDdyQkFGRVZneWh4UGJlaHBTR0Jkb3hXZ1JjVFRDSjlPREJSbTI5MXl1?=
- =?utf-8?B?TldrTzJFUFhMMy9VQTJMSXZtVWZSMnB4Mk83dmo1Tnd0K0JhT1BEaTFWeGJp?=
- =?utf-8?B?U1AyZkdiN3QvVUlMeDRKbUg3dnlNclVVQzJxalNIVERZaGFEcVFER2E5Vm9B?=
- =?utf-8?B?YXpraGJkNHJ0WXZneW14NGNhTEVaL1krMGkzWDAwbU5hZGFnOU8ydDM1aFdU?=
- =?utf-8?B?ZDhXd1Q1b0lBaHlZYzc5SlgzV09BdXRMSnpCaFlheTIzWEdNU2dIZ0VkaU11?=
- =?utf-8?B?RFg3SnFtNmliSHpxQWNSbGkrdmhubCtZWTl1eHVVdzFvOGNkVWpUOXdTNzl6?=
- =?utf-8?B?V29DOVF0SnpJR05JTnU1OFFlNm9iSmVJR0JRd2FZQWtMbG5SbUtMT2E1c0ZF?=
- =?utf-8?B?SlN3V00xd0Y1RGJ0SHdmTjhkakkveG9KcEFTbnRYSTJleUdoQWExUT09?=
-X-Exchange-RoutingPolicyChecked: JzXoVQKzoWeDD5HuF3tQKcfH6PGdsaKfsHXN1VIJuVHf66FMcdmdr6lKBgA/W5Ian2wG9931iMmdysLd+i7SP+QlKs5VDzjXBCCe4/Cp1jBuqHXOfndt6Vz68LZEKut7qr1nSF793Qs5eGKMXkHJ8B3Cr3krBKw0cW4v2bE94ElB3A37NlecOvLn16H0BEi71CAzmYMx7kQWyeJA2h1vGcbzhFeeENiD7EMfmoXESc0cAccMaiYgpHUl3ptS8yHhxbF9Q+5bsrjVaqt4NM2CpDuJE0LzO9UrBsAozhMBRw7+1Crej2XvC5+w2i4DH8ma4uaOp9zTKOfED1dZFNOIBQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6aa9044-f899-4cb7-05e0-08deacd7256a
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2026 07:55:18.1827 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E9U2TI4ykEAvxzPhchL4ksU+uMz2g24nvSiGrUtQ3HoCsuGtb75sw5AKQgTIBxhV8nCb4poQqG83HkY9BSPvUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7922
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -173,107 +69,476 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Add a new subtest threads-wq-stress-rebind-bindexecqueue that stresses
+the VM rebind path under workqueue CPU pool migration pressure.
 
-W dniu 7.05.2026 o 11:09, Maciej Patelczyk pisze:
-> On 28/01/2026 12:39, Jan Maslak wrote:
->
+The test spawns per-engine threads that continuously perform VM unbind/
+rebind cycles using per-slot bind exec queues, while a helper child
+process rapidly cycles the global unbound workqueue cpumask through
+progressively wider CPU sets (f -> ff -> fff -> ffff) at 100ms intervals.
 
-Not sure why the subject jest revived after 3 months. Anyway please 
-restrain before merging this patch, see below.
+A new WQ_STRESS flag enables timed fence waits in test_legacy_mode at
+three syncobj_wait() checkpoints (per-exec-queue, bind-chain, and unbind/
+TLB-invalidation fences) using a 5-second deadline. If any fence misses
+the deadline, a shared atomic is set and all threads bail out immediately
+rather than running for the full 30-second window.
 
+All GPU work runs in a forked child that writes its result via a pipe,
+the parent polls with a 60-second timeout and restores the original
+cpumask regardless of outcome.
 
->> Replace the incorrect use of r1.4 (wrong inline field) with explicit 
->> dim.x
->> passed as an argument, then computing tgid.y * dim.x + tgid.x via mul 
->> + add.
->>
->> Signed-off-by: Jan Maslak <jan.maslak@intel.com>
->> ---
->>   tests/intel/xe_eudebug_online.c                   | 5 +++--
->>   tests/intel/xe_eudebug_online.c.gen.iga64_codes.c | 7 ++++---
->>   2 files changed, 7 insertions(+), 5 deletions(-)
->>
->> diff --git a/tests/intel/xe_eudebug_online.c 
->> b/tests/intel/xe_eudebug_online.c
->> index 084bdeb77..9f736af58 100644
->> --- a/tests/intel/xe_eudebug_online.c
->> +++ b/tests/intel/xe_eudebug_online.c
->> @@ -267,12 +267,13 @@ static struct gpgpu_shader *get_shader(struct 
->> online_debug_data *data)
->>       mov (1) r30.4<1>:ud 0x3f:ud
->>       mov (1) r30.7<1>:ud 0x3:ud // 4 bytes
->>       // calculate thread id: r20.0 = dim.x * tgid.y + tgid.x
->> -    mad (1) r20.0<1>:ud r0.1<0;0>:ud r0.6<0;0>:ud r1.4<0>:ud
->> +    mul (1) r20.0<1>:ud r0.6<0;1,0>:ud ARG(1):ud
->> +    add (1) r20.0<1>:ud r20.0<0;1,0>:ud r0.1<0;1,0>:ud
->
-> Hm,
->
-> mad src0 src1 src2
->
-> does the src0 * src1 + src3, right?
+When a hang is detected the child drops the kernel page cache
+and issues xe_force_gt_reset_all() to unblock any DMA fences still
+pending from the stress run, then writes the hang result and calls
+_exit() immediately without closing the DRM fd. Closing the fd while GPU
+work is stuck would block indefinitely in dma_resv_wait_timeout(intr=false,
+TASK_UNINTERRUPTIBLE). For the same reason, GPU resource teardown
+(exec queues, BOs, VMs) is skipped in test_legacy_mode when a hang
+is detected.
 
-No, it does: dst= src0 + src1*src2, see bspec.
+On the failure path the test is aborted, as the process (child) gets into
+a D+ state (hung) and may affect other tests if marked as fail alone. So
+aborting would mean forcing a reboot in testing environment.
 
->
-> dim.x is r1.4, tgid.y r0.6 and tgid.x is r0.1
->
-> so it should be mad r1.4 r0.6 r0.1
->
-> Macros for those fields should preferably be used.
+A bug of same signature regressed in Xe driver, where the whole system
+hung due to a fencing signal not completing, which was finaly
+traced to an issue in the kernel workqueue scheduling.
+Hard reboot was the only way to bring the system back to work.
 
-  IIRC the shader is correct, the only missing thing was passing DIM_X 
-via inline fields, and it was fixed already.
+For reference see https://patchwork.freedesktop.org/patch/715805/
+("workqueue: Add pool_workqueue to pending_pwqs list when unplugging
+             multiple inactive works")
 
-Macros are hard to use due to baroque syntax of asm.
+v4:
+- Reduce the wq_stress running time and child-timeout to keep the
+  test duration less than 10sec
+- Fix whitespaces
+- Using macros for numericals.
 
+v3:
+- Rename title of commit
+- Correct commenting style
 
-Regards
+v2:
+- Abort the hung test instead of marking as fail alone
+- Code Comment corrections
+- Fix type casting
+- Write check for cpumask
 
-Andrzej
+Cc: Carlos Santa <carlos.santa@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+---
+ tests/intel/xe_exec_threads.c | 337 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 330 insertions(+), 7 deletions(-)
 
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index f082a0eda..3bb941ad5 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -13,9 +13,15 @@
+  */
+ 
+ #include <fcntl.h>
++#include <inttypes.h>
++#include <poll.h>
++#include <signal.h>
++#include <stdatomic.h>
++#include <sys/wait.h>
+ 
+ #include "igt.h"
+ #include "lib/igt_syncobj.h"
++#include "lib/igt_thread.h"
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
+ 
+@@ -42,9 +48,92 @@
+ #define BIND_EXEC_QUEUE	(0x1 << 13)
+ #define MANY_QUEUES	(0x1 << 14)
+ #define MULTI_QUEUE		(0x1 << 15)
++#define WQ_STRESS		(0x1 << 16)
++
++/*
++ * Maximum fence wait time when WQ_STRESS is active. If any bind/unbind
++ * fence takes longer than this to signal, the workqueue is considered stuck
++ * and the test fails — this is the direct symptom of the
++ * Xe hang caused by the kernel workqueue pool_workqueue pending_pwqs bug.
++ */
++#define WQ_FENCE_TIMEOUT_NS	(1LL * NSEC_PER_SEC)
++
++/* Duration of the child's VM bind/unbind stress loop in seconds. */
++#define WQ_STRESS_DURATION_SEC	5
++
++/*
++ * Maximum time the parent waits for the child to write its result byte.
++ * The child's stress loop runs for up to WQ_STRESS_DURATION_SEC seconds,
++ * plus cleanup overhead (GT reset, drop_caches, cpumask restore, sleep(1)).
++ * 8s gives ample headroom on a healthy kernel.
++ */
++#define WQ_CHILD_TIMEOUT_MS	(8 * 1000)
++
++/* Sysfs node that controls the unbound workqueue CPU affinity mask. */
++#define WQ_CPUMASK_PATH		"/sys/devices/virtual/workqueue/cpumask"
++
++/* Procfs node for dropping the kernel's page, dentry, and inode caches. */
++#define DROP_CACHES_PATH	"/proc/sys/vm/drop_caches"
+ 
+ pthread_barrier_t barrier;
+ 
++/*
++ * Set to true by the first thread that detects a fence stall under WQ_STRESS.
++ * All other threads and the igt_until_timeout loop check this to bail out
++ * immediately rather than hammering a hung kernel for the full timeout.
++ */
++static _Atomic bool wq_stress_hang_detected;
++
++/*
++ * stress_fence_deadline - compute an absolute CLOCK_MONOTONIC deadline
++ * 5 seconds from now, used as the syncobj_wait timeout under WQ_STRESS.
++ */
++static int64_t stress_fence_deadline(void)
++{
++	struct timespec ts;
++
++	clock_gettime(CLOCK_MONOTONIC, &ts);
++	return (int64_t)ts.tv_sec * NSEC_PER_SEC + (int64_t)ts.tv_nsec +
++		WQ_FENCE_TIMEOUT_NS;
++}
++
++/*
++ * cpumask_stressor_loop
++ *
++ * Rapidly cycles the kernel unbound workqueue cpumask through progressively
++ * wider CPU sets (mirroring the original shell reproduction script). This
++ * forces workqueue work items to be migrated between CPU pools, exercising
++ * the wq_node_nr_active / pool_workqueue plug-unplug path that hides the
++ * pending_pwqs scheduling bug.
++ *
++ * The original reproduction commands were:
++ *   for i in {1..1000}; do
++ *       echo f  > /sys/devices/virtual/workqueue/cpumask
++ *       echo ff > /sys/devices/virtual/workqueue/cpumask
++ *       ...
++ *       sleep .1
++ *   done
++ */
++static void cpumask_stressor_loop(void)
++{
++	static const char * const masks[] = { "f", "ff", "fff", "ffff" };
++	int wq_fd;
++
++	wq_fd = open(WQ_CPUMASK_PATH, O_WRONLY);
++	if (wq_fd < 0)
++		exit(IGT_EXIT_FAILURE);
++
++	for (;;) {
++		for (int i = 0; i < ARRAY_SIZE(masks); i++) {
++			if (write(wq_fd, masks[i], strlen(masks[i])) < 0 &&
++			    errno != EINVAL)
++				exit(IGT_EXIT_FAILURE); /* unexpected error - fail the test */
++			usleep(100000); /* 100ms */
++		}
++	}
++	close(wq_fd);
++}
++
+ static void
+ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 	      int class, int n_exec_queues, int n_execs, unsigned int flags)
+@@ -600,6 +689,10 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		uint64_t exec_addr;
+ 		int e = i % n_exec_queues;
+ 
++		/* Bail early if another thread already detected a hang */
++		if ((flags & WQ_STRESS) && atomic_load(&wq_stress_hang_detected))
++			goto wq_stress_cleanup;
++
+ 		if (flags & MANY_QUEUES) {
+ 			if (exec_queues[e]) {
+ 				igt_assert(syncobj_wait(fd, &syncobjs[e], 1,
+@@ -693,15 +786,64 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		}
+ 	}
+ 
+-	for (i = 0; i < n_exec_queues; i++)
+-		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
+-					NULL));
+-	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++	for (i = 0; i < n_exec_queues; i++) {
++		if (flags & WQ_STRESS) {
++			/* Drain all exec-queue fences under a 5 sec deadline */
++			/* A timeout means the workqueue is hung so bail immediately */
++			if (atomic_load(&wq_stress_hang_detected) ||
++			    !syncobj_wait(fd, &syncobjs[i], 1,
++					  stress_fence_deadline(), 0, NULL)) {
++				igt_critical("exec-queue[%d] fence stalled "
++					 "under WQ_STRESS, workqueue "
++					 "scheduling hang suspected\n", i);
++				atomic_store(&wq_stress_hang_detected, true);
++				igt_thread_fail();
++				goto wq_stress_cleanup;
++			}
++		} else {
++			igt_assert(syncobj_wait(fd, &syncobjs[i], 1,
++						INT64_MAX, 0, NULL));
++		}
++	}
++
++	if (flags & WQ_STRESS) {
++		if (atomic_load(&wq_stress_hang_detected) ||
++		    !syncobj_wait(fd, &sync[0].handle, 1,
++				  stress_fence_deadline(), 0, NULL)) {
++			igt_critical("bind-chain fence stalled under WQ_STRESS\n");
++			atomic_store(&wq_stress_hang_detected, true);
++			igt_thread_fail();
++			goto wq_stress_cleanup;
++		}
++	} else {
++		igt_assert(syncobj_wait(fd, &sync[0].handle, 1,
++					INT64_MAX, 0, NULL));
++	}
+ 
+ 	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+ 	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr,
+ 			   bo_size, sync, 1);
+-	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++	if (flags & WQ_STRESS) {
++		/*
++		 * This is the most critical fence under WQ_STRESS: it covers the
++		 * TLB-invalidation completion triggered by xe_vm_unbind_async().
++		 * If ttm_bo_delayed_delete() workers are stuck in the workqueue
++		 * the TLB flush fence will never signal and we will timeout here.
++		 */
++		if (atomic_load(&wq_stress_hang_detected) ||
++		    !syncobj_wait(fd, &sync[0].handle, 1,
++				  stress_fence_deadline(), 0, NULL)) {
++			igt_critical("unbind/TLB-invalidation fence stalled "
++				 "under WQ_STRESS, "
++				 "ttm_bo_delayed_delete work item likely stuck\n");
++			atomic_store(&wq_stress_hang_detected, true);
++			igt_thread_fail();
++			goto wq_stress_cleanup;
++		}
++	} else {
++		igt_assert(syncobj_wait(fd, &sync[0].handle, 1,
++					INT64_MAX, 0, NULL));
++	}
+ 
+ 	for (i = flags & INVALIDATE ? n_execs - 1 : 0;
+ 	     i < n_execs; i++) {
+@@ -713,9 +855,21 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 			igt_assert_eq(data[i].data, 0xc0ffee);
+ 	}
+ 
++wq_stress_cleanup:
+ 	syncobj_destroy(fd, sync[0].handle);
+ 	for (i = 0; i < n_exec_queues; i++) {
+ 		syncobj_destroy(fd, syncobjs[i]);
++		if (flags & WQ_STRESS && atomic_load(&wq_stress_hang_detected)) {
++			/*
++			 * Under WQ_STRESS, if a hang was detected skip all GPU resource
++			 * teardown calls (xe_exec_queue_destroy, xe_vm_destroy, gem_close).
++			 * Those ioctls wait for pending GPU work to drain and will hang
++			 * indefinitely if the workqueue is stuck. The kernel reclaims all
++			 * GPU resources automatically on process exit.
++			 */
++			continue;
++		}
++
+ 		xe_exec_queue_destroy(fd, exec_queues[i]);
+ 		if (bind_exec_queues[i])
+ 			xe_exec_queue_destroy(fd, bind_exec_queues[i]);
+@@ -723,11 +877,14 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 
+ 	if (bo) {
+ 		munmap(data, bo_size);
+-		gem_close(fd, bo);
++		if (!(flags & WQ_STRESS) || !atomic_load(&wq_stress_hang_detected))
++			gem_close(fd, bo);
+ 	} else if (!(flags & INVALIDATE)) {
+ 		free(data);
+ 	}
+-	if (owns_vm)
++
++	if (owns_vm &&
++	    (!(flags & WQ_STRESS) || !atomic_load(&wq_stress_hang_detected)))
+ 		xe_vm_destroy(fd, vm);
+ 	if (owns_fd)
+ 		drm_close_driver(fd);
+@@ -1529,6 +1686,172 @@ int igt_main()
+ 		}
+ 	}
+ 
++	/**
++	 * SUBTEST: threads-wq-stress-rebind-bindexecqueue
++	 * Description: Concurrently hammers VM bind/unbind cycles using per-slot
++	 *              bind exec queues across all engines while a background
++	 *              process rapidly cycles the unbound workqueue cpumask,
++	 *              forcing work items to migrate between CPU pools.
++	 *
++	 *              Each bind and unbind fence is waited on with a 5-second
++	 *              deadline. The test passes if all fences signal within that
++	 *              window across repeated iterations for up to 30 seconds.
++	 *              It fails if any fence stalls beyond the deadline, indicating
++	 *              that GPU work items are no longer being scheduled.
++	 */
++	igt_subtest("threads-wq-stress-rebind-bindexecqueue") {
++		char orig_cpumask[64] = {};
++		int cfd, result_pipe[2];
++		pid_t child;
++		uint8_t result_byte;
++
++		struct igt_helper_process cpumask_proc = {};
++		int child_fd;
++		bool hang;
++		uint8_t r;
++
++		/* Needs write access to workqueue cpumask sysfs node (root) */
++		igt_require(access(WQ_CPUMASK_PATH, W_OK) == 0);
++
++		/* Save current cpumask so we can restore it after the test */
++		cfd = open(WQ_CPUMASK_PATH, O_RDONLY);
++		igt_assert_neq(cfd, -1);
++		read(cfd, orig_cpumask, sizeof(orig_cpumask) - 1);
++		close(cfd);
++		orig_cpumask[strcspn(orig_cpumask, "\n")] = '\0';
++
++		/*
++		 * Start the cpumask stressor in the parent so that any unexpected
++		 * write failure propagates through igt_stop_helper() and fails
++		 * the test - running GPU stress without active cpumask cycling
++		 * would make this test meaningless.
++		 */
++		cpumask_proc.use_SIGKILL = true;
++		igt_fork_helper(&cpumask_proc)
++			cpumask_stressor_loop();
++
++		/* IPC channel: child writes a 1-byte result; parent reads via poll() */
++		igt_assert_eq(pipe(result_pipe), 0);
++
++		/*
++		 * All GPU work is submitted through child_fd (opened inside the
++		 * child). The fixture fd held by the parent has no pending GPU
++		 * work, so drm_close_driver(fd) in the end fixture will never
++		 * block — even if the child's _exit() gets stuck in
++		 * dma_resv_wait_timeout() (intr=false, TASK_UNINTERRUPTIBLE).
++		 */
++		child = fork();
++		igt_assert_neq(child, -1);
++
++		if (child == 0) {
++			/* ---- child: owns all GPU resources ---- */
++			close(result_pipe[0]);
++
++			child_fd = drm_open_driver(DRIVER_XE);
++
++			atomic_store(&wq_stress_hang_detected, false);
++			igt_until_timeout(WQ_STRESS_DURATION_SEC) {
++				threads(child_fd,
++					REBIND | BIND_EXEC_QUEUE | WQ_STRESS);
++				if (atomic_load(&wq_stress_hang_detected))
++					break;
++			}
++
++			/* Restore cpumask from child */
++			cfd = open(WQ_CPUMASK_PATH, O_WRONLY);
++			if (cfd >= 0) {
++				write(cfd, orig_cpumask, strlen(orig_cpumask));
++				close(cfd);
++			}
++
++			hang = atomic_load(&wq_stress_hang_detected);
++			if (hang) {
++				int dc_fd;
++
++				igt_critical("WorkQueue hang detected; dropping "
++					     "VM page cache and forcing GT "
++					     "reset\n");
++
++				dc_fd = open(DROP_CACHES_PATH,
++					     O_WRONLY);
++				if (dc_fd >= 0) {
++					write(dc_fd, "3", 1);
++					close(dc_fd);
++				}
++
++				xe_force_gt_reset_all(child_fd);
++				sleep(1);
++			}
++
++			/*
++			 * Write result BEFORE _exit().  When hang == true the
++			 * subsequent _exit() triggers do_exit() -> exit_files()
++			 * -> fput(child_fd) -> dma_resv_wait_timeout(intr=false)
++			 * and blocks in TASK_UNINTERRUPTIBLE.  The parent already
++			 * has the answer at this point and does not need to wait
++			 * for the child to actually exit.
++			 */
++			r = hang ? 1 : 0;
++			write(result_pipe[1], &r, 1);
++			close(result_pipe[1]);
++
++			if (!hang)
++				drm_close_driver(child_fd);
++			_exit(hang ? IGT_EXIT_FAILURE : IGT_EXIT_SUCCESS);
++		}
++
++		/* ---- parent ---- */
++		close(result_pipe[1]);
++
++		/*
++		 * Wait up to 8s for the child to write its result byte.
++		 * The child's stress loop runs for up to 5s, plus cleanup
++		 * (GT reset, drop_caches, cpumask restore) — 8s total gives
++		 * enough headroom on a healthy kernel while still catching a
++		 * child that has silently deadlocked before ever writing.
++		 *
++		 * poll() timeout -> treat as hang (result_byte = 0xFF).
++		 * read() returning 0 (EOF, no byte written) -> same.
++		 */
++		{
++			struct pollfd pfd = {
++				.fd     = result_pipe[0],
++				.events = POLLIN,
++			};
++			int poll_ret = poll(&pfd, 1, WQ_CHILD_TIMEOUT_MS);
++
++			if (poll_ret <= 0) {
++				/* timeout (0) or poll error (-1) */
++				igt_warn("Timed out waiting for child result "
++					 "after %dms - treating as hang\n",
++					 WQ_CHILD_TIMEOUT_MS);
++				result_byte = 0xFF;
++			} else if (read(result_pipe[0], &result_byte, 1) != 1) {
++				result_byte = 0xFF; /* EOF: child crashed before writing */
++			}
++		}
++		close(result_pipe[0]);
++
++		/* Restore cpumask from parent too. */
++		igt_stop_helper(&cpumask_proc);
++		cfd = open(WQ_CPUMASK_PATH, O_WRONLY);
++		if (cfd >= 0) {
++			write(cfd, orig_cpumask, strlen(orig_cpumask));
++			close(cfd);
++		}
++
++		/* Abort if hang detected, as moving forward without doing
++		 * so could lead to undefined behavior and further issues in
++		 * other tests
++		 */
++		igt_assert_f(result_byte == 0,
++			     "WQ stress worker detected fence stall "
++			     "- workqueue scheduling hang confirmed\n");
++
++		/* Clean path: no hang, reap child normally and continue */
++		waitpid(child, NULL, 0);
++	}
++
+ 	igt_fixture()
+ 		drm_close_driver(fd);
+ }
+-- 
+2.43.0
 
->
->
-> Thanks for the catch!
->
-> Maciej
->
->
->>       // page-fault only for arbitrary thread
->>       cmp (1) (eq)f0.0 null<1>:ud r20.0<0;1,0>:ud ARG(0):ud
->>   (f0.0)    send.ugm (1) r31 r30 null 0x0 0x2128403 // 
->> load_block2d.ugm.d32t.a64.uc.uc
->>   #endif
->> -            )", data->pf_thread_number);
->> +            )", data->pf_thread_number, data->w_dim.x);
->>             gpgpu_shader__label(shader, 0);
->>           gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
->> diff --git a/tests/intel/xe_eudebug_online.c.gen.iga64_codes.c 
->> b/tests/intel/xe_eudebug_online.c.gen.iga64_codes.c
->> index 3bd5b0c5f..2fe6bb7d8 100644
->> --- a/tests/intel/xe_eudebug_online.c.gen.iga64_codes.c
->> +++ b/tests/intel/xe_eudebug_online.c.gen.iga64_codes.c
->> @@ -3,7 +3,7 @@
->>     #include "gpgpu_shader.h"
->>   -#define MD5_SUM_IGA64_ASMS f0897ea23eff7ea77569eca6ddd16161
->> +#define MD5_SUM_IGA64_ASMS 7ab1b0da138a90599e4086c2c40269c9
->>     struct iga64_template const iga64_code_store_sr0_0[] = {
->>       { .gen_ver = 2000, .size = 40, .code = (const uint32_t []) {
->> @@ -24,13 +24,14 @@ struct iga64_template const 
->> iga64_code_store_sr0_0[] = {
->>   };
->>     struct iga64_template const iga64_code_pagefault_one_of_many[] = {
->> -    { .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
->> +    { .gen_ver = 2000, .size = 48, .code = (const uint32_t []) {
->>           0x000c0061, 0x1e054330, 0x00000000, 0x00000000,
->>           0x00000061, 0x1e054330, 0x00000123, 0x45678000,
->>           0x00000061, 0x1e254220, 0x00000000, 0x0000003f,
->>           0x00000061, 0x1e454220, 0x00000000, 0x0000003f,
->>           0x00000061, 0x1e754220, 0x00000000, 0x00000003,
->> -        0x0000005b, 0x14040220, 0x02020014, 0x01440064,
->> +        0x00000041, 0x14058220, 0x02000064, 0xc0ded001,
->> +        0x00001940, 0x14050220, 0x02001404, 0x00000014,
->>           0x00001970, 0x00018220, 0x12001404, 0xc0ded000,
->>           0x04032031, 0x1f0c0000, 0xf8061e0c, 0x00a00000,
->>           0x80000001, 0x00010000, 0x20000000, 0x00000000,
