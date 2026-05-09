@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E95BCD3445
-	for <igt-dev@archiver.kernel.org>; Sat,  9 May 2026 00:44:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 884A9CD37AC
+	for <igt-dev@archiver.kernel.org>; Sat,  9 May 2026 00:46:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 45BD810E04C;
-	Sat,  9 May 2026 00:44:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1369610E04C;
+	Sat,  9 May 2026 00:46:18 +0000 (UTC)
 Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14D0310E04C;
- Sat,  9 May 2026 00:44:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B38E010E04C;
+ Sat,  9 May 2026 00:46:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1762465439192353504=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/amdgpu=3A_temporari?=
- =?utf-8?q?ly_skip_amd=5Ffuzzing=5Fsysfs_on_Polaris_and_Vega20?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/amdgpu/amd=5Ffuzzing?=
+ =?utf-8?q?=5Fsysfs=3A_use_local_include_for_amdgpu=5Fdrm=2Eh?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: vitaly.prosyak@amd.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Sat, 09 May 2026 00:44:11 -0000
-Message-ID: <177828745105.54032.10461876163773331474@5ab824fced77>
+Date: Sat, 09 May 2026 00:46:00 -0000
+Message-ID: <177828756072.54034.17811802089705418682@5ab824fced77>
 X-Patchwork-Hint: ignore
-References: <20260508181459.36546-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20260508181459.36546-1-vitaly.prosyak@amd.com>
+References: <20260508201540.54172-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20260508201540.54172-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,23 +41,53 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1762465439192353504==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/amdgpu: temporarily skip amd_fuzzing_sysfs on Polaris and Vega20
-URL   : https://patchwork.freedesktop.org/series/166238/
+Series: tests/amdgpu/amd_fuzzing_sysfs: use local include for amdgpu_drm.h
+URL   : https://patchwork.freedesktop.org/series/166241/
 State : failure
 
 == Summary ==
 
-Applying: tests/amdgpu: temporarily skip amd_fuzzing_sysfs on Polaris and Vega20
-Using index info to reconstruct a base tree...
-M	tests/amdgpu/amd_fuzzing_sysfs.c
-Falling back to patching base and 3-way merge...
-Auto-merging tests/amdgpu/amd_fuzzing_sysfs.c
-CONFLICT (content): Merge conflict in tests/amdgpu/amd_fuzzing_sysfs.c
-Patch failed at 0001 tests/amdgpu: temporarily skip amd_fuzzing_sysfs on Polaris and Vega20
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+Series 166241 revision 1 was fully merged or fully failed: no git log
 
 
+
+--===============1762465439192353504==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_fuzzing_sysfs: use local include for amdgpu_drm.h</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166241/">https://patchwork.freedesktop.org/series/166241/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 166241 revision 1 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============1762465439192353504==--
