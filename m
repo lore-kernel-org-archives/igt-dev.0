@@ -4,62 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 305C8CD37AC
-	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 07:47:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12993CD37B5
+	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 08:15:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB4F110E13F;
-	Mon, 11 May 2026 07:47:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AEAA610E37C;
+	Mon, 11 May 2026 08:15:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P9CYNGBg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G8ojlUxA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 585EC10E13F
- for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 07:47:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9C5610E410
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 08:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778485662; x=1810021662;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=JljN6cs0KUezeLDGMOi469hoaoG2NGFRqzF6R/r0hCs=;
- b=P9CYNGBg/vimfXREzn8DkjUvU6vlyAhrWfyMqSXv4CxCGT06ObCttOi8
- xRLVeNGMav+nXwFgvC9NHACF2TnLFrqMIH6MUZPcISxiKPVVVaLFDVeqB
- 6UD10gL6IX3OjHEkTro+nvI7wy961kHvWieNLO2hp4WMSn5+rOwkD0CP0
- 0ENzeQNRosgJyuRLuNTymZ39BCES9GNb3/VleaL+3k0Jvo931WXtX3Azu
- yW72+6qnQZBOeK3rvxD+gjqgB6RvsTxh7RqeHPw4PvN5lBaU4SDv+noBU
- f9ERIjOLZGZaI5uhHjwZjG+ZdFFNFlNISE0HTiEc29VDf6M5E7/nybv4m A==;
-X-CSE-ConnectionGUID: 9Z249D7yR0uMJY3EjCCUaA==
-X-CSE-MsgGUID: BqtF+Rg8QFCfAIDtx70r/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="104825000"
-X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; d="scan'208";a="104825000"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 00:47:40 -0700
-X-CSE-ConnectionGUID: a046eKeqSXm83493tqAc0Q==
-X-CSE-MsgGUID: BLyNb31NQF2FMXedr33jRw==
+ t=1778487308; x=1810023308;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=fKN77iI3ET4nZF9Ibh665Nj4+0rUsKaTCoWDkgq+ZMQ=;
+ b=G8ojlUxAaSUeYxD8xyZyaHOMqVi7RsalIOAuBq5h66scnmLiTDiMV9jx
+ tISDJ/kGoFPY+axtgG5f6pqwjrDwtsMZmO31ZQc0FePV4G5zW6tKrfUUd
+ be9WUetYdG88YarfQ8FDxl6+tNTCK5LIhOY46h8Zw8qN3wWiXJcgqufo0
+ Hx4Dn6JybeybPnVi0idq1NCU3/rn9w1CnyBzqXTU+BCGraCbXeMrJrbwz
+ PVOKEvnxhFjpTzi91psmgXuCLo4ghxK6zAlCMuUfLqFhiMZbZI1vDFvYM
+ y8jhO9bTLXPYlbh4MrCPJhAdgFpX33fjodLIkjX2G0GxBLfmyiNxP7q4n Q==;
+X-CSE-ConnectionGUID: QaqpoBmIQfaGBCdjceoU4w==
+X-CSE-MsgGUID: OlMbGbVVTG6jDcy4svereA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="79351762"
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; d="scan'208";a="79351762"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 01:15:07 -0700
+X-CSE-ConnectionGUID: ZCBRhFG9Q3+UIZ/vE4Zi/Q==
+X-CSE-MsgGUID: TTSuAEm3TmelbVTQCZP3uw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; d="scan'208";a="242348243"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.189])
- ([172.28.182.189])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 00:47:38 -0700
-Message-ID: <34763254-1e38-4a07-9cb0-19c60b4f6399@linux.intel.com>
-Date: Mon, 11 May 2026 09:47:26 +0200
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; d="scan'208";a="239211192"
+Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 01:15:05 -0700
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: pranay.samala@intel.com, Karthik B S <karthik.b.s@intel.com>,
+ S Sebinraj <s.sebinraj@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+Subject: [PATCH i-g-t] tests/kms_explicit_fence: Replace fixed sleep with
+ vblank wait
+Date: Mon, 11 May 2026 13:41:17 +0530
+Message-ID: <20260511081117.2315474-1-karthik.b.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] lib/igt_sriov_device: Update
- igt_sriov_enable_vfs helper
-To: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-References: <20260506173811.157330-1-jakub1.kolakowski@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260506173811.157330-1-jakub1.kolakowski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,66 +68,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+The premature-update detection window between the NONBLOCK atomic
+commit and the CRC sample used a fixed 100ms sleep. On
+high-refresh-rate panels this 100ms wait covers many vblank
+intervals (~24 at 240 Hz vs ~6 at 60 Hz) and is long enough to let
+the display engine enter PSR/DC5. A subsequent CRC read then comes
+back as 0xffffffff (read from a powered-down well), causing the
+test to fail spuriously on these panels.
 
-On 5/6/2026 7:38 PM, Jakub Kolakowski wrote:
-> Some platforms may expose sriov capability and sriov_totalvfs will be
-> greater than 0 while the driver actually doesn't support the platform.
-> In such case igt_sriov_is_pf() helper that checks for sriov_totalvfs
-> will pass.
-> Add additional check within igt_sriov_enable_vfs() function to check if
-> writing to sriov_numvfs was successfull and what errno was returned
-> during this operation. ENOENT will mean that SR-IOV isn't supported for
-> given configuration. In such case test will skip instead of failing.
->
-> V2:
->   - replace __pf_attr_set_u32() with igt_sysfs_printf to reduce layers of
->     helper functions and increase reliability of checking for errno
->
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> ---
->   lib/igt_sriov_device.c | 14 +++++++++++++-
->   1 file changed, 13 insertions(+), 1 deletion(-)
->
-> diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-> index 1f4c3ac04..4be57deea 100644
-> --- a/lib/igt_sriov_device.c
-> +++ b/lib/igt_sriov_device.c
-> @@ -174,10 +174,22 @@ unsigned int igt_sriov_get_enabled_vfs(int pf)
->    */
->   void igt_sriov_enable_vfs(int pf, unsigned int num_vfs)
->   {
-> +	int sysfs;
-> +	int ret;
-> +
-> +	igt_assert(igt_sriov_is_pf(pf));
->   	igt_assert(num_vfs > 0);
->   
-> +	sysfs = igt_sysfs_open(pf);
-> +	igt_assert_fd(sysfs);
-> +
->   	igt_debug("Enabling %u VFs\n", num_vfs);
-> -	pf_attr_set_u32(pf, "device/sriov_numvfs", num_vfs);
-> +	ret = igt_sysfs_printf(sysfs, "device/sriov_numvfs", "%u", num_vfs);
-> +	close(sysfs);
-> +
-> +	igt_require_f(ret != -ENOENT, "SR-IOV not supported\n");
-> +	igt_assert_f(ret > 0, "Failed to write %u to device/sriov_numvfs (%s)\n",
-> +		     num_vfs, strerror(abs(ret)));
+Replace the fixed sleep with 2-vblank wait:
 
-strerror(-ret),
+ - It is the minimum wait that guarantees one full vblank boundary
+   has elapsed past the commit, so a same-vblank-latch bug in the
+   driver still has a deterministic window to manifest before the
+   CRC is sampled.
+ - It scales with the panel refresh rate, keeping the wait short
+   on high-refresh panels (~8 ms at 240 Hz, ~33 ms at 60 Hz).
 
-Missing Closes: 
-https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12910 tag ?
+Cc: S Sebinraj <s.sebinraj@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/kms_explicit_fence.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-with that,
+diff --git a/tests/kms_explicit_fence.c b/tests/kms_explicit_fence.c
+index 2ec9bf39d..d50a5af63 100644
+--- a/tests/kms_explicit_fence.c
++++ b/tests/kms_explicit_fence.c
+@@ -283,10 +283,10 @@ static void multiplane_atomic_fence_wait(data_t *data)
+ 		     "driver did not wait for all IN_FENCEs!");
+ 
+ 	/*
+-	 * Wait briefly and verify display hasn't updated via CRC check.
+-	 * In a buggy implementation, the display might update prematurely.
++	 * Wait 2 vblanks to catch premature latch bugs while
++	 * avoiding long idle windows that trigger PSR/DC power states.
+ 	 */
+-	usleep(100000); /* 100ms */
++	igt_wait_for_vblank_count(data->crtc, 2);
+ 
+ 	/* Check if out fence signaled prematurely */
+ 	ret = sync_fence_status(out_fence);
+-- 
+2.43.0
 
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-
->   }
->   
->   /**
