@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04347CD37BE
-	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 17:22:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7BFACD484E
+	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 21:23:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ABCD110E819;
-	Mon, 11 May 2026 17:22:09 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YL+bnM6P";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCA0F10E873
- for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 17:20:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778520006; x=1810056006;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=3ZqHgcqMOh7IUZoZck7+j040FLQ8ydfIh1HDMbNtB7c=;
- b=YL+bnM6P+TbZ6XvPxCNfpS8Msy7Tjc0KOvqBBxThKq5lA3m8jbkRrMvC
- FNc+TcSsOefEqazUALrUNkmtBiwUSpKYR/viLHCwnZ4SMbZ3JBrsMN+eC
- HjfNx6JV9/qZPrcmZFC6fM32Fgygor7q5PHeUFsxIAUREcOIHSKtFjegL
- kRSbxeeX9O1Vlfb9jUdlIOvPXT3X+Hg7rg+Ijay9x9oVrogdUPASzaADw
- VlYasaBBZvlDPhz1LkaRx/osFvMaAU1P3WUdqUyMFmi1OceTyELGf7MFd
- h+iqb/7ZozIBEPkSTWwrXjdhfDRWijo6xujEH8JD0zwe3u0FEmkLlVR1j A==;
-X-CSE-ConnectionGUID: vcMGfgHQSMSHJsNWjira7A==
-X-CSE-MsgGUID: nMNTAJ2lTMiDtDpXDwgDYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="81979821"
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="81979821"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 10:20:06 -0700
-X-CSE-ConnectionGUID: UQp6wVPPRcaNw4Si1ccmUQ==
-X-CSE-MsgGUID: RmCTiWRQTy6Lv9AzPtrJqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="233192537"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:20:04 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
- mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v4 1/7] tests: s/check_dc_counter/assert_dc_counter
-Date: Mon, 11 May 2026 22:48:14 +0530
-Message-ID: <20260511171820.461666-2-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260511171820.461666-1-jeevan.b@intel.com>
-References: <20260511171820.461666-1-jeevan.b@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C22E10E20D;
+	Mon, 11 May 2026 21:23:22 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5711D10E56A;
+ Mon, 11 May 2026 21:23:04 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7082181250303388303=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Group_all_force=5Fhdcp14_?=
+ =?utf-8?q?tests_together?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 11 May 2026 21:23:04 -0000
+Message-ID: <177853458434.58691.14655346701210618984@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260511034137.93127-1-suraj.kandpal@intel.com>
+In-Reply-To: <20260511034137.93127-1-suraj.kandpal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,84 +37,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rename function name.
+--===============7082181250303388303==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel/kms_pm_dc.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 423a5c4a4..c8cfa300c 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -110,7 +110,7 @@ typedef struct {
- 	bool runtime_suspend_disabled;
- } data_t;
- 
--static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count);
-+static void assert_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count);
- 
- static void set_output_on_pipe_b(data_t *data)
- {
-@@ -257,7 +257,7 @@ static void create_color_fb(data_t *data, igt_fb_t *fb, color_t *fb_color)
- 	paint_rectangles(data, data->mode, fb_color, fb);
- }
- 
--static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
-+static void assert_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
- {
- 	igt_assert_f(igt_dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
- 		     "%s state is not achieved\n%s:\n%s\n", igt_dc_state_name(dc_flag),
-@@ -265,7 +265,7 @@ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
- 		     PWR_DOMAIN_INFO));
- }
- 
--static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
-+static void assert_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
- {
- 	igt_assert_f(!igt_dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
- 		     "%s state is achieved\n%s:\n%s\n", igt_dc_state_name(dc_flag),
-@@ -346,7 +346,7 @@ static void test_dc5_retention_flops(data_t *data, int dc_flag)
- 	set_output_on_pipe_b(data);
- 	setup_primary(data);
- 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output));
--	check_dc_counter(data, dc_flag, dc_counter_before_psr);
-+	assert_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	cleanup_dc_psr(data);
- }
- 
-@@ -360,7 +360,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
- 	setup_primary(data);
- 	igt_require(!psr_disabled_check(data->debugfs_fd));
- 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output));
--	check_dc_counter(data, dc_flag, dc_counter_before_psr);
-+	assert_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data->output);
- 	cleanup_dc_psr(data);
- }
-@@ -439,7 +439,7 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
- 	setup_dc_dpms(data);
- 	dc_counter = igt_read_dc_counter(data->debugfs_fd, dc_flag);
- 	dpms_off(data);
--	check_dc_counter(data, dc_flag, dc_counter);
-+	assert_dc_counter(data, dc_flag, dc_counter);
- 	dpms_on(data);
- 	cleanup_dc_dpms(data);
- }
-@@ -452,7 +452,7 @@ static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
- 	setup_dc_dpms(data);
- 	dc_counter = igt_read_dc_counter(data->debugfs_fd, dc_flag);
- 	dpms_on(data);
--	check_dc_counter_negative(data, dc_flag, dc_counter);
-+	assert_dc_counter_negative(data, dc_flag, dc_counter);
- 	cleanup_dc_dpms(data);
- }
- 
--- 
-2.43.0
+Series: Group all force_hdcp14 tests together
+URL   : https://patchwork.freedesktop.org/series/166284/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8903 -> IGTPW_15142
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15142/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8903 -> IGTPW_15142
+
+  CI-20190529: 20190529
+  CI_DRM_18467: f8ee23694aa6be213355905a78f79bb1b0861565 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15142: d3c95c0919e06ba6e8f86e27ca5a6eb453b89fcf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8903: 6f88532e2fe22529195cc2f8cabff93d994688f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15142/index.html
+
+--===============7082181250303388303==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Group all force_hdcp14 tests together</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166284/">https://patchwork.freedesktop.org/series/166284/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15142/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15142/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8903 -&gt; IGTPW_15142</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15142/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8903 -&gt; IGTPW_15142</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18467: f8ee23694aa6be213355905a78f79bb1b0861565 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15142: d3c95c0919e06ba6e8f86e27ca5a6eb453b89fcf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8903: 6f88532e2fe22529195cc2f8cabff93d994688f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7082181250303388303==--
