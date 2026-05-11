@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05626CD37BE
-	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 17:20:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39AB8CD37BE
+	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 17:21:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A3AF10E1DF;
-	Mon, 11 May 2026 17:20:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E473210E1DF;
+	Mon, 11 May 2026 17:21:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="byslKGVJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FKAKt+VT";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 823D110E837
- for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 17:20:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9BB310E85D
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 17:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778520021; x=1810056021;
+ t=1778520009; x=1810056009;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3OLuTkAdPILxp1hoEZkJqAkXVXolxqWETeOj07cM95g=;
- b=byslKGVJY7eTxFjDVunG1h374mG3BZfZTHSbLk/yijuB8gV9KTbCHBJY
- vxYVbevCMqUJcMdngZD7M6D2jfEY8O/PEJfbUKA4iysGJO73WOergevK+
- cjUPCiO0wZ6xWPHONxOxgU5M+0DtP9xCF2+mVRiuv/O41n9dZaQAtWJUo
- IvUVB6JpmfoxvRvdChugQ4VIXy8oX/WW69tXdDMss6UbxYo+6/CyJ/VOz
- 942QLUwZX/y7if+tkc+vjOv0xZ/eW6HExhf13qFIH2MAD4aa691falHQx
- rucDhheeR17+7/hoSGEYSDxgonVFTIg0jf16LJvU6DwInDPdZPjgu3+Bj A==;
-X-CSE-ConnectionGUID: SiCq5dHLQ7OxE3zpJI2eRQ==
-X-CSE-MsgGUID: jWiqPLmrTMibMbo41a0+XQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="81979865"
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="81979865"
+ bh=ajZ9PVPFN4ROhwOaNFQQhEF9UrpYAM5zUIzdkLPUL/k=;
+ b=FKAKt+VTWld5ztWq18Fy5BteN8T4mglAy6KrBwGfemxln00ZZPfbNr3R
+ NPLf9ABXU9V0kLoUQ4ljaeJD/g4WppJbCvsSgAILVV83JJrSRShjDObf2
+ mwQTHhwmJeE0EczTj950FaZWNhUr7YV8Qd66JMLVh5f7npu5ZDgEUhTnH
+ Io8OA9iGE/53XDSIupb3zjOIOp+qxx3DV2fqNV/T1X2PU6dJB/3lFPX7s
+ rk3KmykebSuAJw7WTiFZKg5w0/MBMRcN4Mt2celNGI069mBHd07aMvZ1/
+ 3aK5+L/iOFLOrqA/7aVuaeQwXCydn3Y9oD7O1sPvkh4ce8YaIh30u0Ckf A==;
+X-CSE-ConnectionGUID: CdSeIG8QRtOXUP/8Wp3hgw==
+X-CSE-MsgGUID: NfgmnmSpR1KY++nZ9d/hbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="81979829"
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="81979829"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 10:20:21 -0700
-X-CSE-ConnectionGUID: zM2mTU8JQ4+BXmumkaUqzA==
-X-CSE-MsgGUID: 43XiwOb7ThCS+MWhS1PLvg==
+ 11 May 2026 10:20:09 -0700
+X-CSE-ConnectionGUID: 3qHS6JT6TUuTzQ3jgUK4nA==
+X-CSE-MsgGUID: ySB+ySUaTo+6zw+jGjaMOA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="233192583"
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="233192547"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:20:19 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:20:07 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
  mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v4 6/7] tests/intel/kms_pm_dc: Add new test for DC3CO
- recovery after DC6
-Date: Mon, 11 May 2026 22:48:19 +0530
-Message-ID: <20260511171820.461666-7-jeevan.b@intel.com>
+Subject: [PATCH i-g-t v4 2/7] tests/intel/kms_pm_dc: Replace require with
+ proper assertion
+Date: Mon, 11 May 2026 22:48:15 +0530
+Message-ID: <20260511171820.461666-3-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260511171820.461666-1-jeevan.b@intel.com>
 References: <20260511171820.461666-1-jeevan.b@intel.com>
@@ -70,104 +70,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Adds a test to verify DC3CO continues to function properly
-after a DC6 power cycle.
+The DC3CO video playback simulation test was incorrectly using require at
+the end to check if DC3CO state was entered. This causes the test to be
+marked as SKIP instead of FAIL when DC3CO doesn't work properly, hiding
+real issues. So changing the call from require to assert.
 
+Fixes: b89efa8048e58 ("tests/i915/i915_pm_dc: Check dc3co count to skip the test")
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_pm_dc.c | 65 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+ tests/intel/kms_pm_dc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 22ae51b51..6d2bd0ee1 100644
+index c8cfa300c..27fa5dc39 100644
 --- a/tests/intel/kms_pm_dc.c
 +++ b/tests/intel/kms_pm_dc.c
-@@ -55,6 +55,11 @@
-  * Description: Verify that DC3CO entry does not cause frame drops and successfully
-  * 		enters the power state
-  *
-+ * SUBTEST: dc3co-after-dc6
-+ * Description: Verify DC3CO entry is still functional after a DC6 entry and
-+ *              exit cycle, ensuring DC3CO is not broken by deeper power state
-+ *              transitions.
-+ *
-  * SUBTEST: dc5-dpms
-  * Description: Validate display engine entry to DC5 state while all connectors's
-  *              DPMS property set to OFF
-@@ -629,6 +634,42 @@ static int has_panels_without_dc_support(igt_display_t *display)
- 	return external_panel;
- }
- 
-+static void test_dc3co_after_dc6(data_t *data, enum psr_mode mode)
-+{
-+	uint32_t dc6_prev_cnt;
-+
-+	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC6);
-+
-+	setup_output(data);
-+
-+	/* Enable PSR2/PR */
-+	data->op_psr_mode = mode;
-+	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode, NULL);
-+	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL),
-+		      "%s is not enabled\n",
-+		      mode == PSR_MODE_2 ? "PSR2" : "Panel Replay");
-+
-+	/* Trigger a DC6 cycle */
-+	dc6_prev_cnt = igt_read_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC6);
-+	setup_dc_dpms(data);
-+	dpms_off(data);
-+	assert_dc_counter(data, IGT_INTEL_CHECK_DC6, dc6_prev_cnt);
-+	dpms_on(data);
-+	cleanup_dc_dpms(data);
-+
-+	/* Re-enable PSR2/PR after DC6 exit */
-+	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode, NULL);
-+	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL),
-+		      "%s not re-enabled after DC6 exit\n",
-+		      mode == PSR_MODE_2 ? "PSR2" : "Panel Replay");
-+
-+	/* Verify DC3CO still works after DC6 */
-+	setup_videoplayback(data);
-+	check_dc3co_with_videoplayback_like_load(data);
-+	cleanup_dc3co_fbs(data);
-+}
-+
- static void test_deep_pkgc_state(data_t *data)
- {
- 	unsigned int pre_val = 0, cur_val = 0;
-@@ -799,6 +840,30 @@ int igt_main()
- 		}
+@@ -316,8 +316,7 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
+ 		usleep(delay);
  	}
  
-+	igt_describe("Verify DC3CO entry is still functional after a DC6 entry "
-+		     "and exit cycle");
-+	igt_subtest_with_dynamic("dc3co-after-dc6") {
-+		igt_dynamic("psr2") {
-+			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-+						     PSR_MODE_2, NULL));
-+			igt_require_f(IS_TIGERLAKE(data.devid) ||
-+				      intel_display_ver(data.devid) >= 35,
-+				      "Platform does not support DC3CO with PSR2\n");
-+			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
-+				      "PC8+ residencies not supported\n");
-+			test_dc3co_after_dc6(&data, PSR_MODE_2);
-+		}
-+		igt_dynamic("pr") {
-+			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-+						     PR_MODE, NULL));
-+			igt_require_f(intel_display_ver(data.devid) >= 35,
-+				      "Platform does not support DC3CO with Panel Replay\n");
-+			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
-+				      "PC8+ residencies not supported\n");
-+			test_dc3co_after_dc6(&data, PR_MODE);
-+		}
-+	}
-+
- 	igt_describe("This test validates display engine entry to DC5 state "
- 		     "while PSR is active");
- 	igt_subtest("dc5-psr") {
+-	igt_require_f(igt_dc_state_wait_entry(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO,
+-					      dc3co_prev_cnt), "dc3co-vpb-simulation not enabled\n");
++	assert_dc_counter(data, IGT_INTEL_CHECK_DC3CO, dc3co_prev_cnt);
+ }
+ 
+ static void setup_dc3co(data_t *data)
 -- 
 2.43.0
 
