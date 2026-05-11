@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C064CD37AC
-	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 13:52:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEF99CD37BE
+	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 13:58:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E3B7310E726;
-	Mon, 11 May 2026 13:52:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7E1C110E776;
+	Mon, 11 May 2026 13:58:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XDafMRSr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g6qUhORJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3120410E726
- for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 13:51:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D866F10E782
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 13:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778507505; x=1810043505;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=0eNjnXRDZjBBnJ/0oFZnzDnWuzdWHZra8zOgwDDJAwE=;
- b=XDafMRSr66R+mgeEqMkXPScF8sJi9bz8sYfqjzqJz4VPPPkwqAqNAVt6
- E7kfi3OXQmdkTyI7Rbh3OLwV8ryYQY6AdWlSjxj2CBVe2wCMmCYEcbQdI
- 9sApd0evvkuXnSBOFQoqQlOvsdioyfGscS++IX4GiNq3WizCX/xEWq/go
- nFgvHyoHOiTbiDoq+7lWG5s6XMyppRKOdebQSdRINLkyZjlKNsIJfDlb9
- l08zMN2r9pGAYXhOQVkM2fTrZPAG3u32ui8RQK/3V806XymHFMjCkoKV0
- +Z9P5FrEQlGYk/OtTUa7UxLg4BZroX3+4Q+dHtITy51SAU8/kVVBJYkBH w==;
-X-CSE-ConnectionGUID: u4+ohTLZSeCD3dfTp5Scbg==
-X-CSE-MsgGUID: AVkvgmHBQm6wVrc/Q2zb2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83007292"
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="83007292"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 06:51:44 -0700
-X-CSE-ConnectionGUID: xW7QgM6DRpaZYXE0ImpEKQ==
-X-CSE-MsgGUID: MokbxRHUQYeeQJgjjPDYRg==
+ t=1778507891; x=1810043891;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=aDWQncDRC7xcLfEeu+A5uVFmxui9IoNGq2eA7Dz6rBM=;
+ b=g6qUhORJMDR8IbGFPXlagg1L+dfnBPXyi1XiEW69rW2Y6xWqKEcuht3l
+ z+5UvfHHLPWjdXI9gMHC2NrkFF+sXT2AFSt/LBZxifj/8jVx2qm5qKPF7
+ pxb0QvWphshzWRf715Z7NED94QlJ7YJLx6LYtnyxVKHzQRLyprRgxE5eI
+ nFyd9rw0kiwtuIQQI8ZVTc7TzlMnw+xyQwJSKJIuuxat79WBQSTFvJsPD
+ /vKz7rn2YOAUQPOiFdqPyXDrzqXll5LYadUhzMsBFDbVjGdHU69/zhrcs
+ TFPGyv0/VBA0unpL77yqULouSYXVi13rT5FvEQ0+5HUvB3q2sIwUWEoko A==;
+X-CSE-ConnectionGUID: BXU24x3yR/eWDBhXWMiuuQ==
+X-CSE-MsgGUID: EfIraGG2RgGbthA/s40/dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="81957738"
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="81957738"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 06:58:11 -0700
+X-CSE-ConnectionGUID: 0C81nTtBSlCW83aX/gwljA==
+X-CSE-MsgGUID: IoVx8JP4TVKOdIaplRhWQg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="231067574"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.218])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 06:51:42 -0700
-Date: Mon, 11 May 2026 15:51:40 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Jakub Legowski <jakub.legowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, peter.senna@linux.intel.com, 
- piotr.rudnicki@intel.com, mika.kuoppala@intel.com
-Subject: Re: [PATCH v1 1/1] tests/intel/xe_exec_basic: skip test when no GTs
-Message-ID: <ktf5cqus7c3yvxconxg32ubshn6zcj5fkgqq7uwbwaouwwy5zx@5kwu33whtf47>
-References: <20260511133359.198762-1-jakub.legowski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="241817542"
+Received: from varungup-desk.iind.intel.com ([10.190.238.71])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 06:58:09 -0700
+From: Varun Gupta <varun.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: arvind.yadav@intel.com, himal.prasad.ghimiray@intel.com,
+ nishit.sharma@intel.com
+Subject: [PATCH i-g-t v3 1/4] tests/intel/xe_madvise: Generalize metadata and
+ group purgeable subtests
+Date: Mon, 11 May 2026 19:27:34 +0530
+Message-ID: <20260511135752.119868-2-varun.gupta@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260511135752.119868-1-varun.gupta@intel.com>
+References: <20260511135752.119868-1-varun.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511133359.198762-1-jakub.legowski@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,42 +69,136 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, May 11, 2026 at 03:33:59PM +0200, Jakub Legowski wrote:
-> Add igt_require_f() in the fixture to check that GT count
-> is non-zero, ensuring the test is properly skipped when
-> the device has no usable GTs.
->
+Generalize the test file description and functionality tags from
+purgeable-only to cover upcoming atomic madvise subtests.
 
-May you point out what's the failure you're trying to address?
-TBH it would be extremely weird if we wouldn't have any GT.
+Wrap existing purgeable subtests in igt_subtest_group with a dedicated
+fixture so the purgeable capability check does not gate future
+non-purgeable subtests.
 
---
-Zbigniew
+Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
+Signed-off-by: Varun Gupta <varun.gupta@intel.com>
+---
+ tests/intel/xe_madvise.c | 94 +++++++++++++++++++++-------------------
+ 1 file changed, 49 insertions(+), 45 deletions(-)
 
+diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
+index e9bf55ff5..e79cafbff 100644
+--- a/tests/intel/xe_madvise.c
++++ b/tests/intel/xe_madvise.c
+@@ -4,11 +4,11 @@
+  */
+ 
+ /**
+- * TEST: Validate purgeable BO madvise functionality
++ * TEST: Validate madvise functionality
+  * Category: Core
+  * Mega feature: General Core features
+  * Sub-category: Memory management tests
+- * Functionality: madvise, purgeable
++ * Functionality: madvise, purgeable, atomic
+  */
+ 
+ #include "igt.h"
+@@ -776,51 +776,55 @@ int igt_main()
+ 	igt_fixture() {
+ 		fd = drm_open_driver(DRIVER_XE);
+ 		xe_device_get(fd);
+-		igt_require_f(xe_has_purgeable_support(fd),
+-			      "Kernel does not support purgeable buffer objects\n");
+ 	}
+ 
+-	igt_subtest("dontneed-before-mmap")
+-		xe_for_each_engine(fd, hwe) {
+-			test_dontneed_before_mmap(fd);
+-			break;
+-		}
+-
+-	igt_subtest("purged-mmap-blocked")
+-		xe_for_each_engine(fd, hwe) {
+-			test_purged_mmap_blocked(fd);
+-			break;
+-		}
+-
+-	igt_subtest("dontneed-after-mmap")
+-		xe_for_each_engine(fd, hwe) {
+-			test_dontneed_after_mmap(fd);
+-			break;
+-		}
+-
+-	igt_subtest("dontneed-before-exec")
+-		xe_for_each_engine(fd, hwe) {
+-			test_dontneed_before_exec(fd, hwe);
+-			break;
+-		}
+-
+-	igt_subtest("dontneed-after-exec")
+-		xe_for_each_engine(fd, hwe) {
+-			test_dontneed_after_exec(fd, hwe);
+-			break;
+-		}
+-
+-	igt_subtest("per-vma-tracking")
+-		xe_for_each_engine(fd, hwe) {
+-			test_per_vma_tracking(fd);
+-			break;
+-		}
+-
+-	igt_subtest("per-vma-protection")
+-		xe_for_each_engine(fd, hwe) {
+-			test_per_vma_protection(fd, hwe);
+-			break;
+-		}
++	igt_subtest_group() {
++		igt_fixture()
++			igt_require_f(xe_has_purgeable_support(fd),
++				      "Kernel does not support purgeable buffer objects\n");
++
++		igt_subtest("dontneed-before-mmap")
++			xe_for_each_engine(fd, hwe) {
++				test_dontneed_before_mmap(fd);
++				break;
++			}
++
++		igt_subtest("purged-mmap-blocked")
++			xe_for_each_engine(fd, hwe) {
++				test_purged_mmap_blocked(fd);
++				break;
++			}
++
++		igt_subtest("dontneed-after-mmap")
++			xe_for_each_engine(fd, hwe) {
++				test_dontneed_after_mmap(fd);
++				break;
++			}
++
++		igt_subtest("dontneed-before-exec")
++			xe_for_each_engine(fd, hwe) {
++				test_dontneed_before_exec(fd, hwe);
++				break;
++			}
++
++		igt_subtest("dontneed-after-exec")
++			xe_for_each_engine(fd, hwe) {
++				test_dontneed_after_exec(fd, hwe);
++				break;
++			}
++
++		igt_subtest("per-vma-tracking")
++			xe_for_each_engine(fd, hwe) {
++				test_per_vma_tracking(fd);
++				break;
++			}
++
++		igt_subtest("per-vma-protection")
++			xe_for_each_engine(fd, hwe) {
++				test_per_vma_protection(fd, hwe);
++				break;
++			}
++	}
+ 
+ 	igt_fixture() {
+ 		xe_device_put(fd);
+-- 
+2.43.0
 
-> Signed-off-by: Jakub Legowski <jakub.legowski@intel.com>
-> ---
->  tests/intel/xe_exec_basic.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-> index 5335bffc4..70a0d999f 100644
-> --- a/tests/intel/xe_exec_basic.c
-> +++ b/tests/intel/xe_exec_basic.c
-> @@ -345,9 +345,12 @@ int igt_main()
->  	};
->  	int fd;
->  
-> -	igt_fixture()
-> +	igt_fixture() {
->  		fd = drm_open_driver(DRIVER_XE);
->  
-> +		igt_require_f(xe_number_gt(fd) > 0, "No GTs available on device\n");
-> +	}
-> +
->  	for (const struct section *s = sections; s->name; s++) {
->  		igt_subtest_with_dynamic_f("once-%s", s->name)
->  			xe_for_each_engine(fd, hwe)
-> -- 
-> 2.48.1
-> 
