@@ -4,156 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5DBECD37AC
-	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 14:22:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D3CCCD37AC
+	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 14:32:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 69D9810E78B;
-	Mon, 11 May 2026 14:22:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AB93310E78C;
+	Mon, 11 May 2026 14:32:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NK83U9wo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ROYVgwoa";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 276FF10E77F
- for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 14:22:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FC2910E78C
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 14:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778509330; x=1810045330;
- h=message-id:date:subject:to:references:from:in-reply-to:
- mime-version; bh=1XlB4yy/Xgwwq7DDxe0tQF0zekIf7z30BMnboVLHXEg=;
- b=NK83U9woIXRNk01+Vtu6/hEyyW4HPhWavve1XM+k8/s789yH43LNBHRa
- F/bLHdm2DqpGSX/4Tcu8nEBzYud4JpRci5k/DRPNIGd0P0lcnEWePDMmc
- G16A6zvw1/yZJJXbk6WEasvb4sPvRWWsvPe6rlNaWe2N1GHTlBUkjQ6dF
- q5y9ZSN4udb5Xa8O1f++A3++TIvUO0NgIzSxzrROT0Uf2oiXRc8jfZRb2
- KkrCVVTKp8mgNU0YiEbXTCZkNtkTf/vnxcRmqHV/xYkzkXR3uadZOEINP
- pNBRGudzuV0bO+Yhc4zS1J2MKlhgP0+JaW0ZwZzgSpG9bftmGFHuW8vfv g==;
-X-CSE-ConnectionGUID: TfSdaZUMQ3OvdAAbH7bA4Q==
-X-CSE-MsgGUID: DFQppDNtShu6IeO4TVebxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="89981024"
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208,217";a="89981024"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 07:22:10 -0700
-X-CSE-ConnectionGUID: LHaOolSRSuabTxtKPAvwnA==
-X-CSE-MsgGUID: tywxSZzXTk64QvVV7ArEQg==
+ t=1778509953; x=1810045953;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=O4XOHypu6TKov28HNUNLLjrifGU10aPzJ8s+f7HdZ/w=;
+ b=ROYVgwoaE0mV02pP8dtoBU2lJbR+8drs1Hp3kP2XUcs+xRpjJdklQmiV
+ qt9LEAjZM0s9xD+BZ6+8+T60dbxQLydzxEd6g6ZBMNJJYbBoKHh+ahGPl
+ yBUSHKU1AY/L+4bHbSpQsAU8Pi9J+5sHeHQEsONRyjGTYEb5PGAHY9Ahf
+ l89QmxO5XImanmxnlAvcB/SnWHO6E0wzYW5BSzF80Pb1AioKROK6KnxAF
+ 4C2Va/kZ/mJx/BCmgwCMKyOsDdXP2Gozol6rHbCzqBccQ4xdbv1cCAa7w
+ kTx+kUoIXSZ2NQHUXkn6yEneqQgjgB55605S8inFWawqibTcgZnLgYU5V w==;
+X-CSE-ConnectionGUID: cAZhiYwFSFiuyRbJ0rschA==
+X-CSE-MsgGUID: 1jRhdgHfTcOgRgs5ybdTjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79501718"
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="79501718"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 07:31:47 -0700
+X-CSE-ConnectionGUID: MV+i5tZ8TEWaO2VM6igr9Q==
+X-CSE-MsgGUID: vu2i2JRQR3GyLppchJDc8g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
- d="scan'208,217";a="237417710"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 07:22:10 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; d="scan'208";a="261207772"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 07:31:46 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 11 May 2026 07:22:09 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.37; Mon, 11 May 2026 07:31:46 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 11 May 2026 07:22:09 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.0) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Mon, 11 May 2026 07:31:46 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.65) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 11 May 2026 07:22:08 -0700
+ 15.2.2562.37; Mon, 11 May 2026 07:31:46 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jVd0QgMggPlGsfFQLQVIqT+OhHomyTU0v5juNCezOeE+utub6pkqM85BLf0G95x5rvlTnXzRH332tE9Pi1IkpUkuynVFjwNMeWw/uPHUGTDP7an4Z6J1eC0aOUecbe/pCXoxgi4JqfBgy0kWXPpmpHCZFXO8jY69du6eb/ZtVn9dCHdgkzYMWaVK8TXZyL0iEoxsg+QB8wY+jGu+m9nK9rd4Qb2PuwMAZeC75Hx+vzJBOzLrtSYqOgDd6CLsKP2qaWJP3g8Sz5f57mbiR4QZwP+E4MmgzvdhCOTgbEEmuHl7xWTWRxWDJYnDh88+alRheb63qq/QdJ9Wo1+qRLxEKQ==
+ b=PqXGpHv289pXcsFE8AbRft2ZjF6Axk8X5ZzkpDTD6XSDcopuZv2XErXdI8CnnL+qclGD7HI+6hmWGBQ4U0SgyCg8PjqFhHWwPW/530yLP02qcBiqOz9CTlTm8lrGaP0oyPsawnl5dVjQ1pd0gzCJmEWgFhbnO5awGB0PeMmDEJTKFKscQL5XGsxxdUb/xx4XF5OEJkUJRXtAulPJMhyTMcSAjl1lpLa5fQPjNv3AtRVdAG+b02zNeiLWB33zHWsdV8vL09HSpFZ6o2jkiVA68KSP87QolAKcbTLoCf5tXZZo9p/qx/0BLv8vjDk1aFDNtId3nacd9Ziu+3gutasygg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pT7z/sHo5p8WD9wLwEiXrol662zpPuQL3ENZ2TgalHQ=;
- b=lRC+1S4ekUR1r7sHmZBU0hU0xQ0xkExGHeTcxOEuWza1Vl1ab1irTZJ5Ew2LiOJYo4a97a2rk5Zv35ledbyDrsKLP9yJe/6SHAqRqbl6x8NE4p6fxJBn+CyziyfGWOGK3K650Af0zFQuN6LgFkj4EnQjT+eVlFGY+e6jBQqYWp4oJkAM4+0v1cX2eeMrQxGO3omKzxbegsvvhg8SElN0bWsYdq4wH8/0KkVjIfqdprE6ItusQv+Snn3w0I+PACDHH9P+ulDhmX77qaB6LLiJ2s37w2YckZdO2GHuDobCh92tjw5Rabo6uAx8Z7OlL3b8utsOY5bTCnKBlttKbOOwPg==
+ bh=O4XOHypu6TKov28HNUNLLjrifGU10aPzJ8s+f7HdZ/w=;
+ b=OtnBrkdrwqFLGdTEiUVqH9Uzyb01FGhqZ+0sb8l3/wLzvAzDh2Mx+oWiqnMlGucQV542TXxSzbkGPkMCgECX5v1ECycXtbPTlyEXmz52bTcc0qx0fXqKxXX6xtfKLUlhOYY8WyYBo8F49tVgotxZrnB92s9GM+i+7M2lrl9RXDyoVIvf2TpMrnD/pIAyBVfe0+3N5tFXUuf21fhywaoev3xWRDLQfOQom8GsOigr/L186Xr9K9eYEbIEAqiCgVZFLWuNRahQgQF5q4cUOx7sjlqQUhIhajX59He4AsIb7XYPESSIKo2UeV6yn7Mq2AbY0xbVd0rPKAx8v0LK+R4/qg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MW4PR11MB7149.namprd11.prod.outlook.com (2603:10b6:303:221::14)
- by IA3PR11MB9352.namprd11.prod.outlook.com (2603:10b6:208:575::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.20; Mon, 11 May
- 2026 14:22:07 +0000
-Received: from MW4PR11MB7149.namprd11.prod.outlook.com
- ([fe80::75d3:519d:fced:5a6c]) by MW4PR11MB7149.namprd11.prod.outlook.com
- ([fe80::75d3:519d:fced:5a6c%6]) with mapi id 15.20.9891.021; Mon, 11 May 2026
- 14:22:06 +0000
-Content-Type: multipart/alternative;
- boundary="------------r33hE0rhdtdEes0RxZr9tbpE"
-Message-ID: <5ac97f4c-67a5-4859-9869-e049dba60f71@intel.com>
-Date: Mon, 11 May 2026 19:51:59 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 1/2] tests/kms_plane: Restructure
- planar-pixel-format-settings test and make it Intel only
-To: <igt-dev@lists.freedesktop.org>
-References: <20260506184936.76492-1-juhapekka.heikkila@gmail.com>
- <20260506184936.76492-2-juhapekka.heikkila@gmail.com>
+Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
+ (2603:10b6:f:fc00::f13) by MN0PR11MB6302.namprd11.prod.outlook.com
+ (2603:10b6:208:3c2::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Mon, 11 May
+ 2026 14:31:43 +0000
+Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
+ ([fe80::308:3508:f7cd:9717]) by DM3PPF208195D8D.namprd11.prod.outlook.com
+ ([fe80::308:3508:f7cd:9717%3]) with mapi id 15.20.9891.021; Mon, 11 May 2026
+ 14:31:43 +0000
+From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Subject: RE: [PATCH i-g-t 7/7] tests/intel/kms_mst: Add MST suspend-resume test
+Thread-Topic: [PATCH i-g-t 7/7] tests/intel/kms_mst: Add MST suspend-resume
+ test
+Thread-Index: AQHcwe6lJ+8qEPTwYEqUTtIQVMIta7YJIcCQ
+Date: Mon, 11 May 2026 14:31:43 +0000
+Message-ID: <DM3PPF208195D8DD7D8E531A086B4A279A5E3382@DM3PPF208195D8D.namprd11.prod.outlook.com>
+References: <20260401160627.1338526-1-kunal1.joshi@intel.com>
+ <20260401160627.1338526-8-kunal1.joshi@intel.com>
+In-Reply-To: <20260401160627.1338526-8-kunal1.joshi@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: "Naladala, Ramanaidu" <Ramanaidu.naladala@intel.com>
-In-Reply-To: <20260506184936.76492-2-juhapekka.heikkila@gmail.com>
-X-ClientProxiedBy: MA5P287CA0225.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b4::14) To MW4PR11MB7149.namprd11.prod.outlook.com
- (2603:10b6:303:221::14)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB7149:EE_|IA3PR11MB9352:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b7c2f9a-046d-4bcc-8227-08deaf68ae14
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|366016|1800799024|11063799003|22082099003|56012099003|8096899003|18002099003|3023799003;
-X-Microsoft-Antispam-Message-Info: 7z9lbVwKeDlm128nky5ptOcJ1wQ16+dmPDqBzWs5WpnyPks/NZ+rDVMXf22kALv2wWbhkDgzl5Ki7LUsj63IhLA5SGDwTPP2R+rBH2AV0XpX1iedUYJki0Ah0KY1TX3hy2L2s3IlYrC1N3RRZpYEegpAi24T2uEI6dcqf/JQ990X/U7SRXgSR+lZA3F2fv2FdyY8Z1lk9L+6fcwNVCYYlvFwErlu6cTNEsX0/JRUn6wVtc1WZzGKZ2kUg3F6gd5pbz0UeXerZrwngW79JClTojFqE4TtRXDaQ00wpwnIB+ZjODXeMtKSJYZ0rQrJTlm0EaoETmfds/oXNgzNgTXtmOnFqMr2NWhA4hzLuuLGIoJanleKBSa5w5Y+fmWrodNAj1ARcs9wml/fVYNnMnCSI2tDuDjs6QkBUgGFMekdVhQUC5E9zsJqVVLrHZM63WmRqg0qoatwmUdXhtHLKgI6dLxFNN3iwqTSUjZjL3wg2G18XmAQQP+c0jrswLBnxv8XWeA77dBv09t4MjZ4CzR0zKb1WzNW3ltPFpahTHPMb/rc2Cxcf/BULH1aeONQ70dRMdEAoXWVfl6D9N7jruhWKvJqU/LPvCxqtygukUIviJh0NdXGA7emzB1kM/4Ish59Aw+diYu8ZNillEGgQNuzJcbEvZnWlDsR8wqrG6QvZwwzgmcSeDMB10Tfqc7CH3AE
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW4PR11MB7149.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(11063799003)(22082099003)(56012099003)(8096899003)(18002099003)(3023799003);
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM3PPF208195D8D:EE_|MN0PR11MB6302:EE_
+x-ms-office365-filtering-correlation-id: b13512c5-fb04-4f41-af3f-08deaf6a0608
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|38070700021|11063799003|18002099003|22082099003|3023799003|56012099003;
+x-microsoft-antispam-message-info: bSRjbpdfVu7v1iUX4sp55pW+ppnyepsVtudeoYU0jwIKYVFatiq5B9BAU35XQy0MQdLmb3u7gi2R3J29h2Iht0RqDFIpNat+H+WS2QoVqn8QvcqWrzAzAwIziY6d87Pzm+B7Sb2i7LOc/KPfBihBKp6nQgQfJlL2aWJMqc7zU2ocI4uj08Jy39s7izC0slfUrwBASVeS+uf47wDBm/TW1CNY37fQ8FwnlU+3vh6XGfy4y55+QZSDtVd9QykoDy+8SAN8Uw4elZCGeK2j2fGVmqCduGsUn1ZTl6gyMQLTBlWT0HIXCPWJu2TqBCYF8DLeOfWS5aINE/yDfoaBtaPR+rSEbY0nNI1fQZMy5LR3mjZV9RpwqbUEHsTlZ86TXqLlP32TAeIg5l8o+Ep2rh4VaSBV+NcpVrx19xKvzW3nYIHPu8U6VyLVpqwgfFkVKyNQSgcFJbRsbK8do/j/qSx2+ZdzuNBnu4FG2eNh85m4hi9HTe2Q0W8iTaUJmLtwOvQE6wCBMjMWo93xmcvylryiKonC5sBAyVhHmxHSeH+5fPVKbr/ZTPOK3FP/6gmRnlcF5CTSHtN3U/C+bT0qPk3YXgi8pVB2rRgDp3/1yDxbVJ8OuXJHEbehmuGP2XEmFtcT6niLhipvr0sRvFuba7n7scWopnYjw3PvsvbrvRepq9jNnq5kd8h/PCHspQ+7dslXRji5S7nmGvhS027hJlw0/jrBi3FCCG94qpEdMZ9A0voc3QyDY2IZPMmG/d7qnz+F
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM3PPF208195D8D.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(11063799003)(18002099003)(22082099003)(3023799003)(56012099003);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UFd1R0RBZEhVRC9WZ204QUhvK0ZnQnJZMzlFU0xxZ2tYazdmSWIrczhuSVJX?=
- =?utf-8?B?TEQrVnVHMytzK2toYWRrKzJLRDRoVWtMVVNaZkxiNElCUjlpUC9SWUZQdDdU?=
- =?utf-8?B?amlDUW5MOW1OenZhaXF1SlVWMDFUYmRybXl1eS9CbHhqTkJrR1J5ditEUCtr?=
- =?utf-8?B?ZVYwWmU4TnorNHdTV1Z5Sm1mdjE0ci9RdFNhMjNSbEhPSUVtenNpSU4vUkJw?=
- =?utf-8?B?ejFud2t4WW5mVWlleGh3ZGwwYnltOVVoMi9VOGcxeGZOcE5VT2NBY0J2eWN4?=
- =?utf-8?B?Sm1VM2ZGSVlsQ1gwQWllSFFXOXRkb1ltd3VSSXhWbjlJdzFZM0tGbiszRThp?=
- =?utf-8?B?akM1eU5rUURwY282VXF6ME5IOCt5K3U1Z2F2dWlTSHA4ZlJqZkxuUTV4UHEr?=
- =?utf-8?B?YjhuYW9EbFA5b0JmTHRmSE9ld2RabVdKSmlaSFF3cU9tSlM3ZnRHd2NrWEoz?=
- =?utf-8?B?KzJIRDBzKy94YUFrbzliU0labStLUzRzdzdPVlhwMlZZUmxsY0ZiL0NmajAr?=
- =?utf-8?B?QlRic3hkMXNMK0t2VzYrSUJIZm5oak5QQkxRc3A4LzFwQlJ0QVZVUjVRT1B0?=
- =?utf-8?B?U3Mvbnd1KzNFeUhMQms4aU80V1dMYWwxM2pkQVdFYis0SmFKc3R5R1JITE1Q?=
- =?utf-8?B?RUVKZlp4czc5ZDJZYkdGN2VJbFBKUjdUcmZDM1FOdGV1V0tuR2UwbUVuU0J4?=
- =?utf-8?B?OHlMU0V3MFFJWHFyQlJKbkFDUjBNL0hweUpBRFJaWHdINDRXanFETDd5dnVU?=
- =?utf-8?B?YVdkbTdsNlZJNk9ncjlQTm1UcGJyR29yM0NvRU92eWFyR0FoS0JackZTM2hY?=
- =?utf-8?B?MlVjK2x3VUU0R0RDSFVBTm5hQzBCWDV2YXM3RGVDMEFlMGd2VkxlN2JVUE5t?=
- =?utf-8?B?aGR2N2tvK0pSZ0tzMHpQbWhqRnlBcGNKdC8rU2lhKzVHamI4OWxPendiOWlG?=
- =?utf-8?B?TVAyUUlvd3BYM2JWalloa1poQlVDQWlQckhkZGhSZ3J6dzdmNll1YXN0YWgv?=
- =?utf-8?B?bmpLM1g5SGY4WmU3Q3hxMkRQRlZGS0xaempzcW4vMTF0MDA1TXNKYlJBSmNJ?=
- =?utf-8?B?WEd0NWJTQmlhNWFWZ1JFb1pydklnNDRRd1cwTFhkUXZDbGF5ejlabXRjUE1W?=
- =?utf-8?B?dTJ6eWFTbTFTU2xUbzJrZ3ZjSlZoZlRQL1hFTWpEcGxJVW5lZU9pakxFdThG?=
- =?utf-8?B?WGtndzlqaytYTSswSWcvRzJ1VzE0N0I2ZnRzalFmalY5NUdXMktsWFF1MSsz?=
- =?utf-8?B?bWdhdlIrcGhOZGdRdEU4blRDSnNKS21vUFdvY0JiZVloQUNzejNiUTk2SEMx?=
- =?utf-8?B?dnJkSFFxcGhFRDlIQllTcEUxVlIrKzNtRDJMOWduVlE0WlBzU1JZM2xITW1F?=
- =?utf-8?B?N2JPdUhNR045MU5nbjFnZjFnTGV4aGpCbUZvN2g5SFV5TngyZVFhaWQwREtz?=
- =?utf-8?B?dDVoNlRPRHpXMXRZc1gxL1RpWWZxM2IxZmJONmswOVNmSkgyR0xkcnpoRW95?=
- =?utf-8?B?a3pzUzBZZWxTZ3NiWFVhbWZ4LzJyb3hVNmJKQldHeGFCWEVSNTcwZW4zS1F1?=
- =?utf-8?B?QzJPeW0vSHVESHd5Sm14VmpPM1lpK3c3WmhFWVdybytlRkhWN2IzU0NUMkNj?=
- =?utf-8?B?UlNjcHlpM1RtWFQ3YVEzVS9HQk5lV04yOHZyRDlFd2xEQ0R5OUNCYWtGWWpk?=
- =?utf-8?B?d0Z6OWlZWFFCYlVpczFVRHFiVlNaenlBV1VSWGRVUDFFclc0eHJNektkemQv?=
- =?utf-8?B?SC9ZM2preFk0dFJ4YUxrZGpGRDdtUFUyZXlmRE1UQlFXY2tqcSsxVk1ObzJz?=
- =?utf-8?B?cU1HUGVuSDB6Y3V4ZFpla1UxcCs1RDM4ZTBEVjZXSnNYTU5pOGtHa28zcVdn?=
- =?utf-8?B?WFFaMFN3eE5UUGJtSzVTdFI0enZUYjU4eW4zVXlRZTJGcFZNcDdHNEQ1Y2pp?=
- =?utf-8?B?YVp5L0ZVaDY4U3QyU3lWYzdkYUV4bEZGNDlmZS9nTXpicEFyM1BVQzkwMlhG?=
- =?utf-8?B?ODNhR2VhY2dZMTNROFdseW9KZGE5SzRBa2M4d00yUk5hNGJLd3FSTTB3MWQv?=
- =?utf-8?B?dFVzWUQ3OExScEp5d3BCUjZBNVZOS0RDZGN0WE9FV00rVGdKQ0ZNY0o3Y2JB?=
- =?utf-8?B?c1k3S2xtNU5HUytjSUJ0eThQR2x5N1o2Z2dNd2pFQUNVWjRnaG9BYUhJclZK?=
- =?utf-8?B?QTE2dmhFT055ejYxNUJhRGpGeHlCTDJUSTFMVHF6SGJEMVJrUm5LOG9lWWND?=
- =?utf-8?B?bXZqMklqdC83M3RtelYzNkJWV3hkMjlQRVdUNjkrNjlqOEgweWxkckVGaTFy?=
- =?utf-8?B?eU9QUkxjRng3eC9wK1RtY0RkWGRFcmRBSXRsRFFvck94djVwNmpQL1NPVFpa?=
- =?utf-8?Q?3vFEwkdkILnWEu08=3D?=
-X-Exchange-RoutingPolicyChecked: Nn85bihJC/FdzJoLCQAPBSaJmJ/rxQBM5NsdILVMrP5/m5l1cI34x2QyroT4z7qeosoE5Uzz+qasq/T0zC43v1FjK4i//f6KwUbYMzCxpjwqOpl2Yy8wo/ZsxrL7V3ibRhhYRoeuK3GkwLJXFkfH8QcN3IyF6Xw3t8gMbJz0yZkLOxDyoaNj1M/iaMJNcB5xb1OK2VQk+ZPW9vYimfckgyLfeLEdoRehg+phBFHdaekoMtv6zGgGZuFZ7a0k1MeQbBHOXwSGpnVgzD56Ri4RArRe3DpjpHEnzXbgk69gxfqk+odhBcpcPvHRgRu53cEWISvwfip59qBpyZzFdTcdZQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b7c2f9a-046d-4bcc-8227-08deaf68ae14
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB7149.namprd11.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?b3JvYzl6cTE1Ynd3eUZmVXpXam1lNWs5cllSM21xZHVuVDRaWlZ3clFJWkFW?=
+ =?utf-8?B?RzJmcmtQRVAwcUVqS2NKbm1KeVVlbXd4dzkza1BjVnRqRm9XVUg4YUkyRm9V?=
+ =?utf-8?B?ajJwRjRzOTYyNHk2UDFMUmJBanI0M3pkelNVZjRhVjY4NjV6Y20yM2RES1Vn?=
+ =?utf-8?B?aVhmSzZVRTkyTjMvbHBpNGhQejM1SEpGVVV5WHR1cmdmaDI0V21tcmpGeWlN?=
+ =?utf-8?B?Z0twUUxMSndiZG1mMTdjSlVGclkyNDRrYUUzbHRsVmt4RTZRMkJYMnhMMmtM?=
+ =?utf-8?B?MUlkZWZGb2J0TkhWQWZFWVJQN012cFdJUktSczd1eEhpR3p5SERSVDVjSXp2?=
+ =?utf-8?B?NDlkbnQ0dndQS0RTeTJCcGVtbXdBSFpJUGVpV2tqYy9IS3N2bXpmWnhpVmp4?=
+ =?utf-8?B?RkJnL3VpRVhYa1B6SUxNait2cFlHRUUrakJMeFhCYWpYbWVvMFhxRmZTTjVH?=
+ =?utf-8?B?RzJ1NHl5V1R4bmhqWE1hajZVSXAySm1YNkl1OEErcUZBYWVzNi9YR1U0dmFJ?=
+ =?utf-8?B?Vk8ycjMrdHoxd2ZOSXhZenlTaytFWi9Rc3pWS0Mzd21CYU9JZk9IK20yOXRy?=
+ =?utf-8?B?UmR6RHpjVGRrZ0F4cW10SE5hTVdqVlFpRVh6WEF6ai9oOFFZOXE0V3lxU1Z0?=
+ =?utf-8?B?aVdiK2YwTEYwWnZMMUdBaFJLelZicmozQThSRi8zUXJOTFdlcXRnSjNCMk92?=
+ =?utf-8?B?VHNVV0RWaUhEQkVJV0NFa09JN0J6RG5lbEdXYTc4ZFJ1VFNBb0xMcmJxRk8z?=
+ =?utf-8?B?TDFkRjBoSFJWMmZjcXlpMGhMMHg1Zk9UaHZSSnE2bXlaczJZcEdkTUcvaUZM?=
+ =?utf-8?B?aXhCT0gzcUM4Rm04bmlrWWJBL05VbHM0UlROY1JRQlBFZHBoZE9LMStyVDNN?=
+ =?utf-8?B?STdoVWIvbTlsTE9EUXVqQW1zQk5iVHplVTJRdnVyN2hjQ01uMnFqU2JNaFQ0?=
+ =?utf-8?B?U3l2K2liV2ViaEtLTkF5NmhpZ1FrMHFBUXlBblp6UHhWdUNVZUVXUkxhRVRo?=
+ =?utf-8?B?UmtQM1lEWWpGS2Mya01nUXd1djdldDV2VGlPTzdBd0tlZWc5QitKM1dUanZv?=
+ =?utf-8?B?MmJ0NXVHMGFRRlRFYjltM2tmaTlVZUxwTU5tcXFKRk1UN3lKSTNvTjhBTUwv?=
+ =?utf-8?B?WlpoRGxGZ0pLdE9xY3BiUnJFMjhLOVRCM3JYQmt6YkdvM1hNSW9jbG80N0pk?=
+ =?utf-8?B?a3NtWkZtTlFrQ2JEVjBxcHhyeGRpRWkvNS9scE9TcEU5MThqcUc0aFRrNDVJ?=
+ =?utf-8?B?ek9TS1ZFYWRkTE1ZcXlBcmM3ZWFPb2xiZWNzbE00ZE9iQkdtMzI0SC9IcFZp?=
+ =?utf-8?B?OHIyM2lUUUlVYkNYVFpIbENDRXJWZ29BWTNWRklnd0hOTmR5YVlKTVZNL0Nl?=
+ =?utf-8?B?cGNjdXB3Wm1UeEZzWm9oNnR2NWZNYXgxdzlaOFgwdHJtWWhDamIyTWxLeEhq?=
+ =?utf-8?B?amVDMy9ZakZ4cTd5YXdiejQ2dDRSUkJ6Rm44TlpoMXVVR0VzVWRVclUvbEN0?=
+ =?utf-8?B?UlNzbmk0bEY2KzRsSDM5VDJ6czNrdmovbDMrcG1TTUpMd0VmVEpUK3JPSEo4?=
+ =?utf-8?B?T1BuaGVSREpoUnFPb3RnYUxjellncFlxcnZvUHF1ckRCdytCRUp5dEZ6Z3dp?=
+ =?utf-8?B?dStQNFpGRWlCRW5vWDVEOG9lVzQraStrUGF5Vm5iUjJiUkh4S3pGbXhVcmU3?=
+ =?utf-8?B?SmVHMnpjcGx6TmFBTjV2MGg0QTUxVXBQYUl0QXYvak8yMzhYMG9CYU5YZW1I?=
+ =?utf-8?B?NEJpcHBqcnl0QitrNGxrWldUaFpIVFlYL1FiWkZtelhHNjBrK0ZhbkliQkJS?=
+ =?utf-8?B?eWkwVnQwaXVGTi83Wk4wMTl6c1c1bmxmY1p2ZjNiZGRzeDluM1U1aXY3aXhI?=
+ =?utf-8?B?SWRBTlJBUUF1RkVDczF6angvcERlRnFTRjBWSFRnRjZPL05qZ1FGVlFBMmJG?=
+ =?utf-8?B?WitOSmd2dUF3eGhORHJrcjg1ZnorMnRNcTlUNTJvU09aZlhiaFdLQ2tDTUI1?=
+ =?utf-8?B?aWxKV2x6cG9UakVGWUNjOVo0MHh4QnA1aGdoMkZ3MExoUlV4YlYwYWIzeG90?=
+ =?utf-8?B?WXcxYWgwckZZNDRtUDd1MU9kMXQvTzl3b1B1SThaUUZuL012TWFFMjlBM1pU?=
+ =?utf-8?B?QmJxZU5IaHVtSCtvODJZM2pWbzU5TmdXUTRWV05LNmZNQldOU3hJWDJYOERW?=
+ =?utf-8?B?bVBaOGttQXZqZHQ2LzB4WUtqRnMzRzZJN0dVRWhSZERoRit6MENHN3RzOUsr?=
+ =?utf-8?B?UjFpOEVueHFKUXJqQWo3REVFbWQ0K3lnQ1hhd2pKMGhYY0kvTWpKTnRxODQ4?=
+ =?utf-8?B?Q2NJZDZLdmVJUkNFV1hSNjBFdHg5YjFMNTcyL1k5cXhJOUQ3NTdBdz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: jO1iHj//7Lf38ciUa8KL4drU2UDA+AwPe6l/+2RIx+BfTqhMGXTXZvTjTq4WpJAPH9oMImedLY4bthI3SQ/i8b+t7f3ZyX44e24rnSTUGrZOYG+uGpTvxnAFxj/cofnrhKdapxzWUMjo5lX2KvGIy+4hq+NA5Mc+O/U4XmTaf6SMTdotP4+yw31i6eZFoFaZs20njFH3m1TYkKXYcP4XqmWPQaywFdvJak3iDIawZX/8kKZq3JFMYLmHZYYknB+IIP5rjP7vBctvjY+vf/IsMHx1eB74Kx+g8ED97mqEZ6DQs/SUxb/KsTXmZds0SRZOUFcd4ysnGFo0i15fmbNtHg==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 14:22:06.9090 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uYUU7oKYJpaAPPtkHm1yS2OpruFh6j7fwht3hPy3Jx+CFBQRGIlif4hePFrTtDjYDdnNmC2wCND2qvAp5srr1xzjHHp3G4DFhxOgkjXQk2Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9352
+X-MS-Exchange-CrossTenant-AuthSource: DM3PPF208195D8D.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b13512c5-fb04-4f41-af3f-08deaf6a0608
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2026 14:31:43.5574 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KuDKdXOMJxACbEbcOpvR06alTZeIoWMMkdmpTa+VOx2bDZvBhzAhnsMTiTstcgKJeCh6qq+rDRmuNinXDZUWAg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6302
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -170,811 +172,230 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------r33hE0rhdtdEes0RxZr9tbpE
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-
-Hi JP,
-
-The review comments were mistakenly replied to in revision 1. The same 
-comments apply to revision 2.
-
-On 5/7/2026 12:19 AM, Juha-Pekka Heikkila wrote:
-> Separate different planar pixel format tests onto their own dynamic subtests
-> to make it easier for debugging. All tests here are only testing Intel
-> hw related restrictions hence it make zero sense to run this on vkms or
-> other drivers. I added back the original limitation to make these Intel only.
->
-> Signed-off-by: Juha-Pekka Heikkila<juhapekka.heikkila@gmail.com>
-> Tested-by: Vidya Srinivas<vidya.srinivas@intel.com>
-> ---
->   tests/kms_plane.c | 322 ++++++++++++++++++++++++++--------------------
->   1 file changed, 186 insertions(+), 136 deletions(-)
->
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 7962c733a..6c08f1de8 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -41,8 +41,25 @@
->   #include "xe/xe_query.h"
->   
->   /**
-> - * SUBTEST: planar-pixel-format-settings
-> - * Description: verify planar settings for pixel format are handled correctly
-> + * SUBTEST: planar-pixel-format-settings@nv12-odd-width
-> + * Description: Verify odd-width (257px) NV12 framebuffer is rejected by the
-> + *              kernel on Intel hardware (display ver < 20 expects -EINVAL).
-> + * Driver requirement: i915, xe
-> + *
-> + * SUBTEST: planar-pixel-format-settings@nv12-odd-height
-> + * Description: Verify odd-height (257px) NV12 framebuffer is rejected by the
-> + *              kernel on Intel hardware (display ver < 20 or >= 35 expects -EINVAL).
-> + * Driver requirement: i915, xe
-> + *
-> + * SUBTEST: planar-pixel-format-settings@nv12-odd-horizontal-pan
-> + * Description: Verify odd horizontal pan on NV12 framebuffer is rejected by
-> + *              the kernel on Intel hardware (display ver< 35 expects -EINVAL). + * Driver requirement: i915, xe + * + * 
-> SUBTEST: planar-pixel-format-settings@p016-odd-vertical-pan + * 
-> Description: Verify odd vertical pan on P016 framebuffer and check CRC 
-> + * matches a reference XRGB8888 blue fill on Intel hardware. + * 
-> Driver requirement: i915, xe * * SUBTEST: plane-position-%s * 
-> Description: Verify plane position using two planes to create a 
-> %arg[1] @@ -1354,165 +1371,197 @@ test_pixel_formats(data_t *data, 
-> igt_crtc_t *crtc) igt_remove_fb(data->drm_fd, &primary_fb);
->   }
->   
-> -static void test_planar_settings(data_t *data)
-> +static igt_plane_t *
-> +planar_test_setup(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
->   {
-> -	igt_display_t *display = &data->display;
-> -	igt_crtc_t *crtc;
-> -	igt_output_t *output;
-> -	igt_fb_t fb, fb_ref;
-> -	igt_plane_t *primary;
-> -	igt_crc_t crc, crc_ref;
-> -	int devid;
-> -	int display_ver = -1;
-> +	igt_display_reset(&data->display);
-> +	igt_output_set_crtc(output, crtc);
-> +	igt_display_commit_atomic(&data->display,
-> +				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	return igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +}
-> +
-> +static void
-> +test_nv12_odd_width(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-> +		    int display_ver)
-> +{
-> +	igt_plane_t *primary = planar_test_setup(data, crtc, output);
-> +	igt_fb_t fb;
-> +	int expected_rval = display_ver >= 20 ? 0 : -EINVAL;
->   	int rval;
-> -	bool is_vkms = false;
->   
-> -	/*
-> -	 * If here is added non-intel tests below require will need to be
-> -	 * changed to if(..)
-> -	 */
-> -	igt_require_f(data->display.is_atomic, "Atomic mode-set not supported\n");
-> -	if (is_intel_device(data->drm_fd)) {
-> -		igt_require_intel(data->drm_fd);
-> -		devid = intel_get_drm_devid(data->drm_fd);
-> -		igt_require(intel_display_ver(devid) >= 9);
-> -		display_ver = intel_display_ver(devid);
-> -		igt_require(display_ver >= 9);
-> -	} else if (is_vkms_device(data->drm_fd)) {
-> -		is_vkms = true;
-> +	if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-> +				      DRM_FORMAT_MOD_LINEAR)) {
-> +		igt_debug("Odd width NV12 test skipped - format/mod not supported\n");
-> +		return;
->   	}
->   
-> -	crtc = igt_first_crtc_with_single_output(display, &output);
-> +	igt_create_fb(data->drm_fd, 257, 256,
-> +		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-> +	igt_plane_set_fb(primary, &fb);
-> +	rval = igt_display_try_commit_atomic(&data->display,
-> +					     DRM_MODE_ATOMIC_ALLOW_MODESET |
-> +					     DRM_MODE_ATOMIC_TEST_ONLY,
-> +					     NULL);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_remove_fb(data->drm_fd, &fb);
-> +	igt_assert_f(rval == expected_rval,
-> +		     "Odd width NV12 framebuffer: got %d, expected %d\n",
-> +		     rval, expected_rval);
-> +}
->   
-> -	igt_output_set_crtc(output, crtc);
-> -	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +static void
-> +test_nv12_odd_height(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-> +		     int display_ver)
-> +{
-> +	igt_plane_t *primary = planar_test_setup(data, crtc, output);
-> +	igt_fb_t fb;
-> +	int expected_rval = (display_ver >= 20 && display_ver < 35) ? 0 : -EINVAL;
-> +	int rval;
->   
-> -	igt_display_commit_atomic(&data->display,
-> -				  DRM_MODE_ATOMIC_ALLOW_MODESET,
-> -				  NULL);
-> -	/* test against intel_plane_check_src_coordinates() in i915 */
-> -	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-> -				     DRM_FORMAT_MOD_LINEAR)) {
-> -		int expected_rval = -EINVAL;
-> -
-> -		if (display_ver >= 20 || is_vkms)
-> -			expected_rval = 0;
-> -
-> -		igt_create_fb(data->drm_fd, 257, 256,
-> -			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-> -		igt_plane_set_fb(primary, &fb);
-> -		rval = igt_display_try_commit_atomic(&data->display,
-> -						     DRM_MODE_ATOMIC_ALLOW_MODESET |
-> -						     DRM_MODE_ATOMIC_TEST_ONLY,
-> -						     NULL);
-> -		igt_remove_fb(data->drm_fd, &fb);
-> -		igt_assert_f(rval == expected_rval, "Odd width NV12 framebuffer\n");
-> -	} else {
-> -		igt_debug("Odd width NV12 framebuffer test skipped\n");
-> +	if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-> +				      DRM_FORMAT_MOD_LINEAR)) {
-> +		igt_debug("Odd height NV12 test skipped - format/mod not supported\n");
-> +		return;
-> +	}
-> +
-> +	igt_create_fb(data->drm_fd, 256, 257,
-> +		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-> +	igt_plane_set_fb(primary, &fb);
-> +	rval = igt_display_try_commit_atomic(&data->display,
-> +					     DRM_MODE_ATOMIC_ALLOW_MODESET |
-> +					     DRM_MODE_ATOMIC_TEST_ONLY,
-> +					     NULL);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_remove_fb(data->drm_fd, &fb);
-> +	igt_assert_f(rval == expected_rval,
-> +		     "Odd height NV12 framebuffer: got %d, expected %d\n",
-> +		     rval, expected_rval);
-> +}
-> +
-> +static void
-> +test_nv12_odd_horizontal_pan(data_t *data, igt_crtc_t *crtc,
-> +			     igt_output_t *output, int display_ver)
-> +{
-> +	igt_plane_t *primary = planar_test_setup(data, crtc, output);
-> +	igt_fb_t fb;
-> +	int expected_rval = display_ver >= 35 ? 0 : -EINVAL;
-> +	int rval;
-> +
-> +	if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-> +				      DRM_FORMAT_MOD_LINEAR)) {
-> +		igt_debug("Odd h-pan NV12 test skipped - format/mod not supported\n");
-> +		return;
->   	}
->   
-> -	/* test against intel_plane_check_src_coordinates() in i915 */
-> -	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-> -				     DRM_FORMAT_MOD_LINEAR)) {
-> -		int expected_rval = -EINVAL;
-> +	igt_create_fb(data->drm_fd, 810, 590,
-> +		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-> +	igt_plane_set_fb(primary, &fb);
-> +	igt_plane_set_size(primary, 810, 590);
-> +	igt_plane_set_position(primary, -501, 200);
-> +	rval = igt_display_try_commit_atomic(&data->display,
-> +					     DRM_MODE_ATOMIC_ALLOW_MODESET |
-> +					     DRM_MODE_ATOMIC_TEST_ONLY,
-> +					     NULL);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_remove_fb(data->drm_fd, &fb);
-> +	igt_assert_f(rval == expected_rval,
-> +		     "Odd horizontal pan NV12 framebuffer: got %d, expected %d\n",
-> +		     rval, expected_rval);
-> +}
->   
-> -		if ((display_ver >= 20 && display_ver < 35) || is_vkms)
-> -			expected_rval = 0;
-> +static void
-> +test_p016_odd_vertical_pan(data_t *data, igt_crtc_t *crtc,
-> +			   igt_output_t *output, int display_ver)
-> +{
-> +	igt_plane_t *primary = planar_test_setup(data, crtc, output);
-> +	igt_fb_t fb, fb_ref;
-> +	igt_crc_t crc, crc_ref;
-> +	int expected_rval = (display_ver >= 20 && display_ver < 35) ? 0 : -EINVAL;
-> +	int rval;
->   
-> -		igt_create_fb(data->drm_fd, 256, 257,
-> -			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-> -		igt_plane_set_fb(primary, &fb);
-> -		rval = igt_display_try_commit_atomic(&data->display,
-> -						     DRM_MODE_ATOMIC_ALLOW_MODESET |
-> -						     DRM_MODE_ATOMIC_TEST_ONLY,
-> -						     NULL);
-> -		igt_remove_fb(data->drm_fd, &fb);
-> -		igt_assert_f(rval == expected_rval, "Odd height NV12 framebuffer\n");
-> -	} else {
-> -		igt_debug("Odd height NV12 framebuffer test skipped\n");
-> +	if (!igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
-> +				      DRM_FORMAT_MOD_LINEAR)) {
-> +		igt_debug("Odd v-pan P016 test skipped - format/mod not supported\n");
-> +		return;
->   	}
->   
-> -	/* test against intel_plane_check_src_coordinates() in i915 */
-> -	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-> -				     DRM_FORMAT_MOD_LINEAR)) {
-> -		int expected_rval = -EINVAL;
-> +	igt_create_color_fb(data->drm_fd, 256, 260,
-> +			    DRM_FORMAT_P016, DRM_FORMAT_MOD_LINEAR,
-> +			    0.0, 0.0, 1.0, &fb);
->   
-> -		if (display_ver >= 35 || is_vkms)
-> -			expected_rval = 0;
-> +	igt_plane_set_fb(primary, &fb);
-> +	igt_plane_set_position(primary, 1, 1);
-> +	igt_plane_set_size(primary, 256, 256);
-> +	igt_fb_set_position(&fb, primary, 0, 3);
-> +	igt_fb_set_size(&fb, primary, 256, 256);
-> +
-> +	rval = igt_display_try_commit_atomic(&data->display,
-> +					     DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +					     NULL);
-> +	if (rval == 0) {
-> +		set_legacy_lut(data, crtc, LUT_MASK);
-> +		igt_wait_for_vblank_count(crtc, 1);
-> +
-> +		data->pipe_crc = igt_crtc_crc_new(crtc,
-> +						  IGT_PIPE_CRC_SOURCE_AUTO);
-> +		igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
-> +
-> +		/* reference: plain blue XRGB8888 of the same visible size */
-> +		igt_create_color_fb(data->drm_fd, 256, 256,
-> +				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +				    0.0, 0.0, 1.0, &fb_ref);
-> +		igt_plane_set_fb(primary, &fb_ref);
-> +		rval = igt_display_try_commit_atomic(&data->display,
-> +						     DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +						     NULL);
->   
-> -		igt_create_fb(data->drm_fd, 810, 590,
-> -			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-> -		igt_plane_set_fb(primary, &fb);
-> -		igt_plane_set_size(primary, 810, 590);
-> -		igt_plane_set_position(primary, -501, 200);
-> -		rval = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET |
-> -						     DRM_MODE_ATOMIC_TEST_ONLY, NULL);
-> +		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_ref);
-> +		set_legacy_lut(data, crtc, 0xffff);
-> +		igt_pipe_crc_free(data->pipe_crc);
-> +		data->pipe_crc = NULL;
->   
-> -		igt_remove_fb(data->drm_fd, &fb);
-> -		igt_assert_f(rval == expected_rval, "Odd horizontal pan NV12 framebuffer\n");
-> +		igt_plane_set_fb(primary, NULL);
-> +		igt_remove_fb(data->drm_fd, &fb_ref);
-> +		igt_assert_crc_equal(&crc_ref, &crc);
->   	} else {
-> -		igt_debug("Odd horizontal pan NV12 framebuffer test skipped\n");
-> +		igt_plane_set_fb(primary, NULL);
->   	}
->   
-> -	if (igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
-> -					    DRM_FORMAT_MOD_LINEAR)) {
-> -		int expected_rval = -EINVAL;
-> +	igt_remove_fb(data->drm_fd, &fb);
-> +	igt_assert_f(rval == expected_rval,
-> +		     "Odd vertical pan P016 framebuffer: got %d, expected %d\n",
-> +		     rval, expected_rval);
-> +}
->   
-> -		if ((display_ver >= 20 && display_ver < 35) || is_vkms)
-> -			expected_rval = 0;
-> +static void test_planar_settings(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	igt_crtc_t *crtc;
-> +	igt_output_t *output;
-> +	int display_ver;
->   
-> -		igt_create_color_fb(data->drm_fd, 256, 260,
-> -			      DRM_FORMAT_P016, DRM_FORMAT_MOD_LINEAR,
-> -			      0.0, 0.0, 1.0,
-> -			      &fb);
-> +	igt_require(display->is_atomic);
->   
-> -		igt_plane_set_fb(primary, &fb);
-> -		igt_plane_set_position(primary, 1, 1);
-> -		igt_plane_set_size(primary, 256, 256);
-> +	/* All sub-tests below are Intel-specific. */
-> +	igt_require_intel(data->drm_fd);
-> +	display_ver = intel_display_ver(intel_get_drm_devid(data->drm_fd));
-> +	igt_require(display_ver >= 9);
->   
-> -		/* set odd v pan and check with crc fb didn't break */
-> -		igt_fb_set_position(&fb, primary, 0, 3);
-> -		igt_fb_set_size(&fb, primary, 256, 256);
-> -		rval = igt_display_try_commit_atomic(&data->display,
-> -						     DRM_MODE_ATOMIC_ALLOW_MODESET,
-> -						     NULL);
-> -		if (rval == 0) {
-> -			set_legacy_lut(data,
-> -				       crtc,
-> -				       LUT_MASK);
-> -			igt_wait_for_vblank_count(crtc,
-> -						  1);
-> -			data->pipe_crc = igt_crtc_crc_new(crtc,
-> -							  IGT_PIPE_CRC_SOURCE_AUTO);
-> -			igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
-> -
-> -			igt_create_color_fb(data->drm_fd, 256, 256,
-> -				DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> -				0.0, 0.0, 1.0,
-> -				&fb_ref);
-> -
-> -			igt_plane_set_fb(primary, &fb_ref);
-> -			rval = igt_display_try_commit_atomic(&data->display,
-> -						     DRM_MODE_ATOMIC_ALLOW_MODESET,
-> -						     NULL);
-> +	crtc = igt_first_crtc_with_single_output(display, &output);
-> +	igt_require_f(crtc, "No suitable output/crtc pair found\n");
->   
-> -			igt_pipe_crc_collect_crc(data->pipe_crc, &crc_ref);
-> -			set_legacy_lut(data,
-> -				       crtc,
-> -				       0xffff);
-> +	igt_dynamic("nv12-odd-width")
-> +		test_nv12_odd_width(data, crtc, output, display_ver);
->   
-> -			igt_pipe_crc_free(data->pipe_crc);
-> -			data->pipe_crc = NULL;
-> +	igt_dynamic("nv12-odd-height")
-> +		test_nv12_odd_height(data, crtc, output, display_ver);
->   
-> -			igt_remove_fb(data->drm_fd, &fb_ref);
-> -			igt_assert_crc_equal(&crc_ref, &crc);
-> -		}
-> +	igt_dynamic("nv12-odd-horizontal-pan")
-> +		test_nv12_odd_horizontal_pan(data, crtc, output, display_ver);
->   
-> -		igt_remove_fb(data->drm_fd, &fb);
-> -		igt_assert_f(rval == expected_rval, "Odd vertical pan P016 framebuffer\n");
-> -	} else {
-> -		igt_debug("Odd vertical pan P016 framebuffer test skipped\n");
-> -	}
-> +	igt_dynamic("p016-odd-vertical-pan")
-> +		test_p016_odd_vertical_pan(data, crtc, output, display_ver);
->   }
->   
->   static bool is_pipe_limit_reached(int count)
-> @@ -1621,8 +1670,9 @@ run_tests_for_pipe_plane(data_t *data)
->   		run_test(data, dynamic_test_handler);
->   	}
->   
-> -	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
-> -	igt_subtest_f("planar-pixel-format-settings")
-> +	igt_describe("verify planar pixel format settings are accepted or rejected correctly"
-> +		     " on Intel hardware");
-> +	igt_subtest_with_dynamic_f("planar-pixel-format-settings")
->   		test_planar_settings(data);
->   }
->   
---------------r33hE0rhdtdEes0RxZr9tbpE
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Hi JP,<br>
-      <br>
-      <style>a {
-    text-decoration: none;
-    color: #464feb;
-}tr th, tr td {
-    border: 1px solid #e6e6e6;
-}tr th {
-    background-color: #f5f5f5;
-}</style>
-      <div style="font-family:'Segoe UI';font-size:14px;font-style:normal;font-weight:400;line-height:20px">The
-        review comments were mistakenly replied to in revision 1. The
-        same comments apply to revision 2.</div>
-    </p>
-    <div class="moz-cite-prefix">On 5/7/2026 12:19 AM, Juha-Pekka
-      Heikkila wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20260506184936.76492-2-juhapekka.heikkila@gmail.com">
-      <pre wrap="" class="moz-quote-pre">Separate different planar pixel format tests onto their own dynamic subtests
-to make it easier for debugging. All tests here are only testing Intel
-hw related restrictions hence it make zero sense to run this on vkms or
-other drivers. I added back the original limitation to make these Intel only.
-
-Signed-off-by: Juha-Pekka Heikkila <a class="moz-txt-link-rfc2396E" href="mailto:juhapekka.heikkila@gmail.com">&lt;juhapekka.heikkila@gmail.com&gt;</a>
-Tested-by: Vidya Srinivas <a class="moz-txt-link-rfc2396E" href="mailto:vidya.srinivas@intel.com">&lt;vidya.srinivas@intel.com&gt;</a>
----
- tests/kms_plane.c | 322 ++++++++++++++++++++++++++--------------------
- 1 file changed, 186 insertions(+), 136 deletions(-)
-
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 7962c733a..6c08f1de8 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -41,8 +41,25 @@
- #include &quot;xe/xe_query.h&quot;
- 
- /**
-- * SUBTEST: planar-pixel-format-settings
-- * Description: verify planar settings for pixel format are handled correctly
-+ * SUBTEST: planar-pixel-format-settings@nv12-odd-width
-+ * Description: Verify odd-width (257px) NV12 framebuffer is rejected by the
-+ *              kernel on Intel hardware (display ver &lt; 20 expects -EINVAL).
-+ * Driver requirement: i915, xe
-+ *
-+ * SUBTEST: planar-pixel-format-settings@nv12-odd-height
-+ * Description: Verify odd-height (257px) NV12 framebuffer is rejected by the
-+ *              kernel on Intel hardware (display ver &lt; 20 or &gt;= 35 expects -EINVAL).
-+ * Driver requirement: i915, xe
-+ *
-+ * SUBTEST: planar-pixel-format-settings@nv12-odd-horizontal-pan
-+ * Description: Verify odd horizontal pan on NV12 framebuffer is rejected by
-+ *              the kernel on Intel hardware (display ver <a class="moz-txt-link-rfc2396E" href="mailto:35expects-EINVAL).+*Driverrequirement:i915,xe+*+*SUBTEST:planar-pixel-format-settings@p016-odd-vertical-pan+*Description:VerifyoddverticalpanonP016framebufferandcheckCRC+*matchesareferenceXRGB8888bluefillonIntelhardware.+*Driverrequirement:i915,xe**SUBTEST:plane-position-%s*Description:Verifyplanepositionusingtwoplanestocreatea%arg[1]@@-1354,165+1371,197@@test_pixel_formats(data_t*data,igt_crtc_t*crtc)igt_remove_fb(data-">&lt; 35 expects -EINVAL).
-+ * Driver requirement: i915, xe
-+ *
-+ * SUBTEST: planar-pixel-format-settings@p016-odd-vertical-pan
-+ * Description: Verify odd vertical pan on P016 framebuffer and check CRC
-+ *              matches a reference XRGB8888 blue fill on Intel hardware.
-+ * Driver requirement: i915, xe
-  *
-  * SUBTEST: plane-position-%s
-  * Description: Verify plane position using two planes to create a %arg[1]
-@@ -1354,165 +1371,197 @@ test_pixel_formats(data_t *data, igt_crtc_t *crtc)
- 	igt_remove_fb(data-&gt;</a>drm_fd, &amp;primary_fb);
- }
- 
--static void test_planar_settings(data_t *data)
-+static igt_plane_t *
-+planar_test_setup(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
- {
--	igt_display_t *display = &amp;data-&gt;display;
--	igt_crtc_t *crtc;
--	igt_output_t *output;
--	igt_fb_t fb, fb_ref;
--	igt_plane_t *primary;
--	igt_crc_t crc, crc_ref;
--	int devid;
--	int display_ver = -1;
-+	igt_display_reset(&amp;data-&gt;display);
-+	igt_output_set_crtc(output, crtc);
-+	igt_display_commit_atomic(&amp;data-&gt;display,
-+				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	return igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+}
-+
-+static void
-+test_nv12_odd_width(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-+		    int display_ver)
-+{
-+	igt_plane_t *primary = planar_test_setup(data, crtc, output);
-+	igt_fb_t fb;
-+	int expected_rval = display_ver &gt;= 20 ? 0 : -EINVAL;
- 	int rval;
--	bool is_vkms = false;
- 
--	/*
--	 * If here is added non-intel tests below require will need to be
--	 * changed to if(..)
--	 */
--	igt_require_f(data-&gt;display.is_atomic, &quot;Atomic mode-set not supported\n&quot;);
--	if (is_intel_device(data-&gt;drm_fd)) {
--		igt_require_intel(data-&gt;drm_fd);
--		devid = intel_get_drm_devid(data-&gt;drm_fd);
--		igt_require(intel_display_ver(devid) &gt;= 9);
--		display_ver = intel_display_ver(devid);
--		igt_require(display_ver &gt;= 9);
--	} else if (is_vkms_device(data-&gt;drm_fd)) {
--		is_vkms = true;
-+	if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-+				      DRM_FORMAT_MOD_LINEAR)) {
-+		igt_debug(&quot;Odd width NV12 test skipped - format/mod not supported\n&quot;);
-+		return;
- 	}
- 
--	crtc = igt_first_crtc_with_single_output(display, &amp;output);
-+	igt_create_fb(data-&gt;drm_fd, 257, 256,
-+		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &amp;fb);
-+	igt_plane_set_fb(primary, &amp;fb);
-+	rval = igt_display_try_commit_atomic(&amp;data-&gt;display,
-+					     DRM_MODE_ATOMIC_ALLOW_MODESET |
-+					     DRM_MODE_ATOMIC_TEST_ONLY,
-+					     NULL);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_remove_fb(data-&gt;drm_fd, &amp;fb);
-+	igt_assert_f(rval == expected_rval,
-+		     &quot;Odd width NV12 framebuffer: got %d, expected %d\n&quot;,
-+		     rval, expected_rval);
-+}
- 
--	igt_output_set_crtc(output, crtc);
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+static void
-+test_nv12_odd_height(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-+		     int display_ver)
-+{
-+	igt_plane_t *primary = planar_test_setup(data, crtc, output);
-+	igt_fb_t fb;
-+	int expected_rval = (display_ver &gt;= 20 &amp;&amp; display_ver &lt; 35) ? 0 : -EINVAL;
-+	int rval;
- 
--	igt_display_commit_atomic(&amp;data-&gt;display,
--				  DRM_MODE_ATOMIC_ALLOW_MODESET,
--				  NULL);
--	/* test against intel_plane_check_src_coordinates() in i915 */
--	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
--				     DRM_FORMAT_MOD_LINEAR)) {
--		int expected_rval = -EINVAL;
--
--		if (display_ver &gt;= 20 || is_vkms)
--			expected_rval = 0;
--
--		igt_create_fb(data-&gt;drm_fd, 257, 256,
--			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &amp;fb);
--		igt_plane_set_fb(primary, &amp;fb);
--		rval = igt_display_try_commit_atomic(&amp;data-&gt;display,
--						     DRM_MODE_ATOMIC_ALLOW_MODESET |
--						     DRM_MODE_ATOMIC_TEST_ONLY,
--						     NULL);
--		igt_remove_fb(data-&gt;drm_fd, &amp;fb);
--		igt_assert_f(rval == expected_rval, &quot;Odd width NV12 framebuffer\n&quot;);
--	} else {
--		igt_debug(&quot;Odd width NV12 framebuffer test skipped\n&quot;);
-+	if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-+				      DRM_FORMAT_MOD_LINEAR)) {
-+		igt_debug(&quot;Odd height NV12 test skipped - format/mod not supported\n&quot;);
-+		return;
-+	}
-+
-+	igt_create_fb(data-&gt;drm_fd, 256, 257,
-+		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &amp;fb);
-+	igt_plane_set_fb(primary, &amp;fb);
-+	rval = igt_display_try_commit_atomic(&amp;data-&gt;display,
-+					     DRM_MODE_ATOMIC_ALLOW_MODESET |
-+					     DRM_MODE_ATOMIC_TEST_ONLY,
-+					     NULL);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_remove_fb(data-&gt;drm_fd, &amp;fb);
-+	igt_assert_f(rval == expected_rval,
-+		     &quot;Odd height NV12 framebuffer: got %d, expected %d\n&quot;,
-+		     rval, expected_rval);
-+}
-+
-+static void
-+test_nv12_odd_horizontal_pan(data_t *data, igt_crtc_t *crtc,
-+			     igt_output_t *output, int display_ver)
-+{
-+	igt_plane_t *primary = planar_test_setup(data, crtc, output);
-+	igt_fb_t fb;
-+	int expected_rval = display_ver &gt;= 35 ? 0 : -EINVAL;
-+	int rval;
-+
-+	if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-+				      DRM_FORMAT_MOD_LINEAR)) {
-+		igt_debug(&quot;Odd h-pan NV12 test skipped - format/mod not supported\n&quot;);
-+		return;
- 	}
- 
--	/* test against intel_plane_check_src_coordinates() in i915 */
--	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
--				     DRM_FORMAT_MOD_LINEAR)) {
--		int expected_rval = -EINVAL;
-+	igt_create_fb(data-&gt;drm_fd, 810, 590,
-+		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &amp;fb);
-+	igt_plane_set_fb(primary, &amp;fb);
-+	igt_plane_set_size(primary, 810, 590);
-+	igt_plane_set_position(primary, -501, 200);
-+	rval = igt_display_try_commit_atomic(&amp;data-&gt;display,
-+					     DRM_MODE_ATOMIC_ALLOW_MODESET |
-+					     DRM_MODE_ATOMIC_TEST_ONLY,
-+					     NULL);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_remove_fb(data-&gt;drm_fd, &amp;fb);
-+	igt_assert_f(rval == expected_rval,
-+		     &quot;Odd horizontal pan NV12 framebuffer: got %d, expected %d\n&quot;,
-+		     rval, expected_rval);
-+}
- 
--		if ((display_ver &gt;= 20 &amp;&amp; display_ver &lt; 35) || is_vkms)
--			expected_rval = 0;
-+static void
-+test_p016_odd_vertical_pan(data_t *data, igt_crtc_t *crtc,
-+			   igt_output_t *output, int display_ver)
-+{
-+	igt_plane_t *primary = planar_test_setup(data, crtc, output);
-+	igt_fb_t fb, fb_ref;
-+	igt_crc_t crc, crc_ref;
-+	int expected_rval = (display_ver &gt;= 20 &amp;&amp; display_ver &lt; 35) ? 0 : -EINVAL;
-+	int rval;
- 
--		igt_create_fb(data-&gt;drm_fd, 256, 257,
--			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &amp;fb);
--		igt_plane_set_fb(primary, &amp;fb);
--		rval = igt_display_try_commit_atomic(&amp;data-&gt;display,
--						     DRM_MODE_ATOMIC_ALLOW_MODESET |
--						     DRM_MODE_ATOMIC_TEST_ONLY,
--						     NULL);
--		igt_remove_fb(data-&gt;drm_fd, &amp;fb);
--		igt_assert_f(rval == expected_rval, &quot;Odd height NV12 framebuffer\n&quot;);
--	} else {
--		igt_debug(&quot;Odd height NV12 framebuffer test skipped\n&quot;);
-+	if (!igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
-+				      DRM_FORMAT_MOD_LINEAR)) {
-+		igt_debug(&quot;Odd v-pan P016 test skipped - format/mod not supported\n&quot;);
-+		return;
- 	}
- 
--	/* test against intel_plane_check_src_coordinates() in i915 */
--	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
--				     DRM_FORMAT_MOD_LINEAR)) {
--		int expected_rval = -EINVAL;
-+	igt_create_color_fb(data-&gt;drm_fd, 256, 260,
-+			    DRM_FORMAT_P016, DRM_FORMAT_MOD_LINEAR,
-+			    0.0, 0.0, 1.0, &amp;fb);
- 
--		if (display_ver &gt;= 35 || is_vkms)
--			expected_rval = 0;
-+	igt_plane_set_fb(primary, &amp;fb);
-+	igt_plane_set_position(primary, 1, 1);
-+	igt_plane_set_size(primary, 256, 256);
-+	igt_fb_set_position(&amp;fb, primary, 0, 3);
-+	igt_fb_set_size(&amp;fb, primary, 256, 256);
-+
-+	rval = igt_display_try_commit_atomic(&amp;data-&gt;display,
-+					     DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					     NULL);
-+	if (rval == 0) {
-+		set_legacy_lut(data, crtc, LUT_MASK);
-+		igt_wait_for_vblank_count(crtc, 1);
-+
-+		data-&gt;pipe_crc = igt_crtc_crc_new(crtc,
-+						  IGT_PIPE_CRC_SOURCE_AUTO);
-+		igt_pipe_crc_collect_crc(data-&gt;pipe_crc, &amp;crc);
-+
-+		/* reference: plain blue XRGB8888 of the same visible size */
-+		igt_create_color_fb(data-&gt;drm_fd, 256, 256,
-+				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+				    0.0, 0.0, 1.0, &amp;fb_ref);
-+		igt_plane_set_fb(primary, &amp;fb_ref);
-+		rval = igt_display_try_commit_atomic(&amp;data-&gt;display,
-+						     DRM_MODE_ATOMIC_ALLOW_MODESET,
-+						     NULL);
- 
--		igt_create_fb(data-&gt;drm_fd, 810, 590,
--			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &amp;fb);
--		igt_plane_set_fb(primary, &amp;fb);
--		igt_plane_set_size(primary, 810, 590);
--		igt_plane_set_position(primary, -501, 200);
--		rval = igt_display_try_commit_atomic(&amp;data-&gt;display, DRM_MODE_ATOMIC_ALLOW_MODESET |
--						     DRM_MODE_ATOMIC_TEST_ONLY, NULL);
-+		igt_pipe_crc_collect_crc(data-&gt;pipe_crc, &amp;crc_ref);
-+		set_legacy_lut(data, crtc, 0xffff);
-+		igt_pipe_crc_free(data-&gt;pipe_crc);
-+		data-&gt;pipe_crc = NULL;
- 
--		igt_remove_fb(data-&gt;drm_fd, &amp;fb);
--		igt_assert_f(rval == expected_rval, &quot;Odd horizontal pan NV12 framebuffer\n&quot;);
-+		igt_plane_set_fb(primary, NULL);
-+		igt_remove_fb(data-&gt;drm_fd, &amp;fb_ref);
-+		igt_assert_crc_equal(&amp;crc_ref, &amp;crc);
- 	} else {
--		igt_debug(&quot;Odd horizontal pan NV12 framebuffer test skipped\n&quot;);
-+		igt_plane_set_fb(primary, NULL);
- 	}
- 
--	if (igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
--					    DRM_FORMAT_MOD_LINEAR)) {
--		int expected_rval = -EINVAL;
-+	igt_remove_fb(data-&gt;drm_fd, &amp;fb);
-+	igt_assert_f(rval == expected_rval,
-+		     &quot;Odd vertical pan P016 framebuffer: got %d, expected %d\n&quot;,
-+		     rval, expected_rval);
-+}
- 
--		if ((display_ver &gt;= 20 &amp;&amp; display_ver &lt; 35) || is_vkms)
--			expected_rval = 0;
-+static void test_planar_settings(data_t *data)
-+{
-+	igt_display_t *display = &amp;data-&gt;display;
-+	igt_crtc_t *crtc;
-+	igt_output_t *output;
-+	int display_ver;
- 
--		igt_create_color_fb(data-&gt;drm_fd, 256, 260,
--			      DRM_FORMAT_P016, DRM_FORMAT_MOD_LINEAR,
--			      0.0, 0.0, 1.0,
--			      &amp;fb);
-+	igt_require(display-&gt;is_atomic);
- 
--		igt_plane_set_fb(primary, &amp;fb);
--		igt_plane_set_position(primary, 1, 1);
--		igt_plane_set_size(primary, 256, 256);
-+	/* All sub-tests below are Intel-specific. */
-+	igt_require_intel(data-&gt;drm_fd);
-+	display_ver = intel_display_ver(intel_get_drm_devid(data-&gt;drm_fd));
-+	igt_require(display_ver &gt;= 9);
- 
--		/* set odd v pan and check with crc fb didn't break */
--		igt_fb_set_position(&amp;fb, primary, 0, 3);
--		igt_fb_set_size(&amp;fb, primary, 256, 256);
--		rval = igt_display_try_commit_atomic(&amp;data-&gt;display,
--						     DRM_MODE_ATOMIC_ALLOW_MODESET,
--						     NULL);
--		if (rval == 0) {
--			set_legacy_lut(data,
--				       crtc,
--				       LUT_MASK);
--			igt_wait_for_vblank_count(crtc,
--						  1);
--			data-&gt;pipe_crc = igt_crtc_crc_new(crtc,
--							  IGT_PIPE_CRC_SOURCE_AUTO);
--			igt_pipe_crc_collect_crc(data-&gt;pipe_crc, &amp;crc);
--
--			igt_create_color_fb(data-&gt;drm_fd, 256, 256,
--				DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
--				0.0, 0.0, 1.0,
--				&amp;fb_ref);
--
--			igt_plane_set_fb(primary, &amp;fb_ref);
--			rval = igt_display_try_commit_atomic(&amp;data-&gt;display,
--						     DRM_MODE_ATOMIC_ALLOW_MODESET,
--						     NULL);
-+	crtc = igt_first_crtc_with_single_output(display, &amp;output);
-+	igt_require_f(crtc, &quot;No suitable output/crtc pair found\n&quot;);
- 
--			igt_pipe_crc_collect_crc(data-&gt;pipe_crc, &amp;crc_ref);
--			set_legacy_lut(data,
--				       crtc,
--				       0xffff);
-+	igt_dynamic(&quot;nv12-odd-width&quot;)
-+		test_nv12_odd_width(data, crtc, output, display_ver);
- 
--			igt_pipe_crc_free(data-&gt;pipe_crc);
--			data-&gt;pipe_crc = NULL;
-+	igt_dynamic(&quot;nv12-odd-height&quot;)
-+		test_nv12_odd_height(data, crtc, output, display_ver);
- 
--			igt_remove_fb(data-&gt;drm_fd, &amp;fb_ref);
--			igt_assert_crc_equal(&amp;crc_ref, &amp;crc);
--		}
-+	igt_dynamic(&quot;nv12-odd-horizontal-pan&quot;)
-+		test_nv12_odd_horizontal_pan(data, crtc, output, display_ver);
- 
--		igt_remove_fb(data-&gt;drm_fd, &amp;fb);
--		igt_assert_f(rval == expected_rval, &quot;Odd vertical pan P016 framebuffer\n&quot;);
--	} else {
--		igt_debug(&quot;Odd vertical pan P016 framebuffer test skipped\n&quot;);
--	}
-+	igt_dynamic(&quot;p016-odd-vertical-pan&quot;)
-+		test_p016_odd_vertical_pan(data, crtc, output, display_ver);
- }
- 
- static bool is_pipe_limit_reached(int count)
-@@ -1621,8 +1670,9 @@ run_tests_for_pipe_plane(data_t *data)
- 		run_test(data, dynamic_test_handler);
- 	}
- 
--	igt_describe(&quot;verify planar settings for pixel format are accepted or rejected correctly&quot;);
--	igt_subtest_f(&quot;planar-pixel-format-settings&quot;)
-+	igt_describe(&quot;verify planar pixel format settings are accepted or rejected correctly&quot;
-+		     &quot; on Intel hardware&quot;);
-+	igt_subtest_with_dynamic_f(&quot;planar-pixel-format-settings&quot;)
- 		test_planar_settings(data);
- }
- 
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------r33hE0rhdtdEes0RxZr9tbpE--
+PiBTdWJqZWN0OiBbUEFUQ0ggaS1nLXQgNy83XSB0ZXN0cy9pbnRlbC9rbXNfbXN0OiBBZGQgTVNU
+IHN1c3BlbmQtcmVzdW1lIHRlc3QNCj4gDQo+IEFkZCBhIG5ldyBzdWJ0ZXN0IG1zdC1zdXNwZW5k
+LXJlYWQtY3JjIHRoYXQgdmVyaWZpZXMgTVNUIG91dHB1dHMgcHJlc2VydmUNCj4gZGlzcGxheSBj
+b250ZW50ICh2aWEgQ1JDIGNvbXBhcmlzb24pIGFjcm9zcyBTMyBzdXNwZW5kL3Jlc3VtZS4NCj4g
+DQo+IFRoZSB0ZXN0IGVudW1lcmF0ZXMgYWxsIGNvbm5lY3RlZCBEUCBNU1QgdG9wb2xvZ2llcywg
+YW5kIGZvciBlYWNoIHJvb3QNCj4gY29ubmVjdG9yIGV4ZXJjaXNlcyBhbGwgbm9uLWVtcHR5IHN1
+YnNldHMgb2YgdGhlIGRpc2NvdmVyZWQgTVNUIG91dHB1dHMuDQo+IEZvciBlYWNoIHN1YnNldCBp
+dDoNCj4gIC0gQXNzaWducyBwaXBlcyBhbmQgc2VsZWN0cyBub24tam9pbmVyIG1vZGVzDQo+ICAt
+IEZpdHMgbW9kZXMgd2l0aGluIGJhbmR3aWR0aCBjb25zdHJhaW50cw0KPiAgLSBDcmVhdGVzIGdy
+ZWVuIEZCcywgY29tbWl0cywgYW5kIGNvbGxlY3RzIHByZS1zdXNwZW5kIENSQ3MNCj4gIC0gU3Vz
+cGVuZHMgdG8gbWVtb3J5IGFuZCByZXN1bWVzDQo+ICAtIENvbGxlY3RzIHBvc3Qtc3VzcGVuZCBD
+UkNzIGFuZCBhc3NlcnRzIHRoZXkgbWF0Y2gNCj4gDQo+IHYyOg0KPiAtIEFkZCBlcnJvciBoYW5k
+bGluZyBmb3IgaWd0X3BpcGVfY3JjX25ldyAoVGhhc2xlZW0pDQo+IC0gSW1wcm92ZSBsb2cgZm9y
+bWF0IHdpdGggaW5kZXggZm9yIGNsYXJpdHkgKFRoYXNsZWVtKQ0KPiAtIE9yZGVyIGRlY2xhcmF0
+aW9ucyBpbiBkZWNyZWFzaW5nIGxpbmUgbGVuZ3RoIChUaGFzbGVlbSkNCj4gLSBBZGQgcHJpbnQg
+bWVzc2FnZSB3aGVuIG5vIE1TVCBmb3VuZCAoVGhhc2xlZW0pDQo+IC0gQWRkIGJvdW5kcyBjaGVj
+ayBmb3IgaWR4IGluIHN1YnNldCBsb29wIChUaGFzbGVlbSkNCj4gLSBVc2UgaWd0X2NydGNfY3Jj
+X25ldygpIGluc3RlYWQgb2YgaWd0X3BpcGVfY3JjX25ldygpIChWaWxsZSkNCj4gDQo+IHYzOg0K
+PiAtIGZyYW1lYnVmZmVycyBtaXNzaW5nIGluIGNvbW1pdCAoQmlsYWwpDQo+IA0KPiB2NDoNCj4g
+LSBEcm9wIGNsZWFudXAgZnJhbWV3b3JrDQo+IA0KPiB2NToNCj4gLSBVc2UgaWd0X2RlYnVnIGlu
+c3RlYWQgb2YgaWd0X2luZm8gZm9yIENSQyBsb2dnaW5nIChUaGFzbGVlbSkNCj4gLSBSZW1vdmUg
+IGNvbW1lbnRzIChTdXJhaikNCj4gLSBSZW1vdmUgZG91YmxlIHZibGFuayB3YWl0cyBiZWZvcmUv
+YWZ0ZXIgc3VzcGVuZCAoU3VyYWopDQo+IC0gUmVuYW1lIHZhcmlhYmxlIChUaGFzbGVlbSkNCj4g
+LSBUd28tcGFzcyBhcHByb2FjaCAoU3VyYWopDQo+IA0KPiB2NjoNCj4gLSBDcmVhdGUgc2VwZXJh
+dGUgdGVzdCAoVmlsbGUpDQo+IC0gTW92ZSB0byB0ZXN0cy9pbnRlbC8gKEphbmkpDQo+IA0KPiBT
+aWduZWQtb2ZmLWJ5OiBLdW5hbCBKb3NoaSA8a3VuYWwxLmpvc2hpQGludGVsLmNvbT4NCg0KTEdU
+TSwNClJldmlld2VkLWJ5OiBTdXJhaiBLYW5kcGFsIDxzdXJhai5rYW5kcGFsQGludGVsLmNvbT4N
+Cg0KPiAtLS0NCj4gIHRlc3RzL2ludGVsL2ttc19tc3QuYyB8IDM0OQ0KPiArKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gIHRlc3RzL21lc29uLmJ1aWxkICAgICB8
+ICAgNCArDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDM1MyBpbnNlcnRpb25zKCspDQo+ICBjcmVhdGUg
+bW9kZSAxMDA2NDQgdGVzdHMvaW50ZWwva21zX21zdC5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVz
+dHMvaW50ZWwva21zX21zdC5jIGIvdGVzdHMvaW50ZWwva21zX21zdC5jIG5ldyBmaWxlIG1vZGUg
+MTAwNjQ0DQo+IGluZGV4IDAwMDAwMDAwMC4uNmUwZGRjZTA5DQo+IC0tLSAvZGV2L251bGwNCj4g
+KysrIGIvdGVzdHMvaW50ZWwva21zX21zdC5jDQo+IEBAIC0wLDAgKzEsMzQ5IEBADQo+ICsvLyBT
+UERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUDQo+ICsvKg0KPiArICogQ29weXJpZ2h0IMKpIDIw
+MjYgSW50ZWwgQ29ycG9yYXRpb24NCj4gKyAqLw0KPiArDQo+ICsvKioNCj4gKyAqIFRFU1Q6IGtt
+cyBtc3QNCj4gKyAqIENhdGVnb3J5OiBEaXNwbGF5DQo+ICsgKiBEZXNjcmlwdGlvbjogVGVzdHMg
+Zm9yIERQIE1TVCAoTXVsdGktU3RyZWFtIFRyYW5zcG9ydCkNCj4gKyAqIERyaXZlciByZXF1aXJl
+bWVudDogaTkxNSwgeGUNCj4gKyAqIE1lZ2EgZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1
+cmVzICAqLw0KPiArDQo+ICsjaW5jbHVkZSAiaWd0LmgiDQo+ICsjaW5jbHVkZSAiaWd0X3N5c2Zz
+LmgiDQo+ICsjaW5jbHVkZSAia21zX21zdF9oZWxwZXIuaCINCj4gKyNpbmNsdWRlICJrbXNfam9p
+bmVyX2hlbHBlci5oIg0KPiArI2luY2x1ZGUgPGxpbWl0cy5oPg0KPiArDQo+ICsvKioNCj4gKyAq
+IFNVQlRFU1Q6IG1zdC1zdXNwZW5kLXJlYWQtY3JjDQo+ICsgKiBEZXNjcmlwdGlvbjogTVNUIHN1
+c3BlbmQgdGVzdCB0aGF0IHZlcmlmaWVzIGRpc3BsYXkgY29udGVudCBpcyBwcmVzZXJ2ZWQNCj4g
+KyAqICAgICAgICAgICAgICBhY3Jvc3MgUzMgc3VzcGVuZC9yZXN1bWUgdXNpbmcgcGlwZSBDUkMg
+Y29tcGFyaXNvbi4NCj4gKyAqLw0KPiArDQo+ICsjZGVmaW5lIE1BWF9NU1RfT1VUUFVUCTMNCj4g
+Kw0KPiArc3RydWN0IG1zdF9yb290X2luZm8gew0KPiArCWludCByb290X2lkOw0KPiArCWlndF9v
+dXRwdXRfdCAqbXN0X291dHB1dHNbSUdUX01BWF9QSVBFU107DQo+ICsJaW50IG51bV9tc3Q7DQo+
+ICt9Ow0KPiArDQo+ICtzdGF0aWMgdm9pZCBjb2xsZWN0X3NpbmdsZV9jcmMoaWd0X2NydGNfdCAq
+Y3J0YywgaWd0X2NyY190ICpjcmMpIHsNCj4gKwlpZ3RfcGlwZV9jcmNfdCAqcGlwZV9jcmM7DQo+
+ICsNCj4gKwlwaXBlX2NyYyA9IGlndF9jcnRjX2NyY19uZXcoY3J0YywgSUdUX1BJUEVfQ1JDX1NP
+VVJDRV9BVVRPKTsNCj4gKwlpZ3RfYXNzZXJ0KHBpcGVfY3JjKTsNCj4gKwlpZ3RfcGlwZV9jcmNf
+Y29sbGVjdF9jcmMocGlwZV9jcmMsIGNyYyk7DQo+ICsJaWd0X3BpcGVfY3JjX2ZyZWUocGlwZV9j
+cmMpOw0KPiArfQ0KPiArDQo+ICtzdGF0aWMgdm9pZCBjb2xsZWN0X2NyY19mb3JfYWN0aXZlX291
+dHB1dHMoaWd0X291dHB1dF90ICoqb3V0cHV0cywNCj4gKwkJCQkJICAgaW50IG51bV9vdXRwdXRz
+LA0KPiArCQkJCQkgICBpZ3RfY3JjX3QgKmNyY3MsDQo+ICsJCQkJCSAgIGJvb2wgcG9zdF9zdXNw
+ZW5kKQ0KPiArew0KPiArCWludCBpOw0KPiArDQo+ICsJZm9yIChpID0gMDsgaSA8IG51bV9vdXRw
+dXRzOyBpKyspIHsNCj4gKwkJaWd0X291dHB1dF90ICpvdXRwdXQgPSBvdXRwdXRzW2ldOw0KPiAr
+CQlpZ3RfY3J0Y190ICpjcnRjID0gaWd0X291dHB1dF9nZXRfZHJpdmluZ19jcnRjKG91dHB1dCk7
+DQo+ICsNCj4gKwkJaWYgKHBvc3Rfc3VzcGVuZCkNCj4gKwkJCWlndF9yZXF1aXJlX2YoY3J0YywN
+Cj4gKwkJCQkgICAgICAiUE9TVC1TVVNQRU5EOiBubyBkcml2aW5nIENSVEMgZm9yICVzDQo+ICh0
+b3BvbG9neSBjaGFuZ2VkPylcbiIsDQo+ICsJCQkJICAgICAgb3V0cHV0LT5uYW1lKTsNCj4gKwkJ
+ZWxzZQ0KPiArCQkJaWd0X2Fzc2VydF9mKGNydGMsDQo+ICsJCQkJICAgICAiUFJFLVNVU1BFTkQ6
+IG5vIGRyaXZpbmcgQ1JUQyBmb3IgJXMgKGJhZA0KPiBwaXBlIGFzc2lnbm1lbnQ/KVxuIiwNCj4g
+KwkJCQkgICAgIG91dHB1dC0+bmFtZSk7DQo+ICsNCj4gKwkJY29sbGVjdF9zaW5nbGVfY3JjKGNy
+dGMsICZjcmNzW2ldKTsNCj4gKwl9DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB2b2lkIHdhaXRfZm9y
+X3ZibGFua3MoaWd0X291dHB1dF90ICoqb3V0cHV0cywgaW50IG51bV9vdXRwdXRzLA0KPiArCQkJ
+ICAgICBib29sIHBvc3Rfc3VzcGVuZCkNCj4gK3sNCj4gKwlpbnQgaTsNCj4gKw0KPiArCWZvciAo
+aSA9IDA7IGkgPCBudW1fb3V0cHV0czsgaSsrKSB7DQo+ICsJCWlndF9jcnRjX3QgKmNydGMgPSBp
+Z3Rfb3V0cHV0X2dldF9kcml2aW5nX2NydGMob3V0cHV0c1tpXSk7DQo+ICsNCj4gKwkJaWYgKHBv
+c3Rfc3VzcGVuZCkNCj4gKwkJCWlndF9yZXF1aXJlX2YoY3J0YywNCj4gKwkJCQkgICAgICAiUE9T
+VC1TVVNQRU5EOiBubyBkcml2aW5nIENSVEMgZm9yICVzDQo+IGR1cmluZyB2Ymxhbmsgd2FpdCAo
+dG9wb2xvZ3kgY2hhbmdlZD8pXG4iLA0KPiArCQkJCSAgICAgIG91dHB1dHNbaV0tPm5hbWUpOw0K
+PiArCQllbHNlDQo+ICsJCQlpZ3RfYXNzZXJ0X2YoY3J0YywNCj4gKwkJCQkgICAgICJQUkUtU1VT
+UEVORDogbm8gZHJpdmluZyBDUlRDIGZvciAlcw0KPiBkdXJpbmcgdmJsYW5rIHdhaXQgKGJhZCBw
+aXBlIGFzc2lnbm1lbnQ/KVxuIiwNCj4gKwkJCQkgICAgIG91dHB1dHNbaV0tPm5hbWUpOw0KPiAr
+DQo+ICsJCWlndF93YWl0X2Zvcl92YmxhbmsoY3J0Yyk7DQo+ICsJfQ0KPiArfQ0KPiArDQo+ICtz
+dGF0aWMgdm9pZCBsb2dfY3JjX2Zvcl9vdXRwdXRzKGlndF9vdXRwdXRfdCAqKm91dHB1dHMsIGlu
+dCBudW1fb3V0cHV0cywNCj4gKwkJCQlpZ3RfY3JjX3QgKmNyY3MsIGNvbnN0IGNoYXIgKnN0YWdl
+KSB7DQo+ICsJaW50IGk7DQo+ICsNCj4gKwlmb3IgKGkgPSAwOyBpIDwgbnVtX291dHB1dHM7IGkr
+Kykgew0KPiArCQlpZ3Rfb3V0cHV0X3QgKm8gPSBvdXRwdXRzW2ldOw0KPiArCQlkcm1Nb2RlTW9k
+ZUluZm8gKm0gPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKG8pOw0KPiArCQljaGFyICpzID0gaWd0X2Ny
+Y190b19zdHJpbmcoJmNyY3NbaV0pOw0KPiArCQlpZ3RfY3J0Y190ICpjcnRjID0gaWd0X291dHB1
+dF9nZXRfZHJpdmluZ19jcnRjKG8pOw0KPiArDQo+ICsJCWlndF9kZWJ1ZygiWyVkXSAlczogb3V0
+cHV0ICVzIC0+IGNydGMgJXMsIENSQyAlcywgbW9kZQ0KPiAlZHglZEAlZFxuIiwNCj4gKwkJCSAg
+aSwgc3RhZ2UsIG8tPm5hbWUsDQo+ICsJCQkgIGlndF9jcnRjX25hbWUoY3J0YyksDQo+ICsJCQkg
+IHMsDQo+ICsJCQkgIG0gPyBtLT5oZGlzcGxheSA6IC0xLA0KPiArCQkJICBtID8gbS0+dmRpc3Bs
+YXkgOiAtMSwNCj4gKwkJCSAgbSA/IG0tPnZyZWZyZXNoIDogMCk7DQo+ICsJCWZyZWUocyk7DQo+
+ICsJfQ0KPiArfQ0KPiArDQo+ICtzdGF0aWMgdm9pZCBzZWxlY3Rfbm9uX2pvaW5lcl9tb2Rlcyhp
+bnQgZHJtX2ZkLCBpZ3Rfb3V0cHV0X3QgKipvdXRwdXRzLA0KPiArCQkJCSAgICBpbnQgbnVtX291
+dHB1dHMpDQo+ICt7DQo+ICsJaW50IG1heF9kb3RjbG9jayA9IGlndF9nZXRfbWF4X2RvdGNsb2Nr
+KGRybV9mZCk7DQo+ICsJaW50IGk7DQo+ICsNCj4gKwlpZiAobWF4X2RvdGNsb2NrIDw9IDApDQo+
+ICsJCW1heF9kb3RjbG9jayA9IElOVF9NQVg7DQo+ICsNCj4gKwlmb3IgKGkgPSAwOyBpIDwgbnVt
+X291dHB1dHM7IGkrKykgew0KPiArCQlpZ3Rfb3V0cHV0X3QgKm91dHB1dCA9IG91dHB1dHNbaV07
+DQo+ICsJCWRybU1vZGVNb2RlSW5mbyBub25fam9pbmVyX21vZGU7DQo+ICsNCj4gKwkJaWd0X3Jl
+cXVpcmVfZihtYXhfbm9uX2pvaW5lcl9tb2RlX2ZvdW5kKGRybV9mZCwNCj4gKwkJCQkJCQlvdXRw
+dXQtDQo+ID5jb25maWcuY29ubmVjdG9yLA0KPiArCQkJCQkJCW1heF9kb3RjbG9jaywNCj4gKwkJ
+CQkJCQkmbm9uX2pvaW5lcl9tb2RlKSwNCj4gKwkJCSAgICAgICJObyBub24tam9pbmVyIG1vZGUg
+Zm91bmQgZm9yICVzXG4iLA0KPiArCQkJICAgICAgb3V0cHV0LT5uYW1lKTsNCj4gKwkJaWd0X291
+dHB1dF9vdmVycmlkZV9tb2RlKG91dHB1dCwgJm5vbl9qb2luZXJfbW9kZSk7DQo+ICsJfQ0KPiAr
+fQ0KPiArDQo+ICtzdGF0aWMgdm9pZCBjcmVhdGVfZmJzX2Zvcl9vdXRwdXRzKGludCBkcm1fZmQs
+IGlndF9vdXRwdXRfdCAqKm91dHB1dHMsDQo+ICsJCQkJICAgaW50IG51bV9vdXRwdXRzLCBzdHJ1
+Y3QgaWd0X2ZiICpmYnMpIHsNCj4gKwlpbnQgaTsNCj4gKw0KPiArCWZvciAoaSA9IDA7IGkgPCBu
+dW1fb3V0cHV0czsgaSsrKSB7DQo+ICsJCWlndF9vdXRwdXRfdCAqb3V0cHV0ID0gb3V0cHV0c1tp
+XTsNCj4gKwkJZHJtTW9kZU1vZGVJbmZvICptb2RlID0gaWd0X291dHB1dF9nZXRfbW9kZShvdXRw
+dXQpOw0KPiArCQlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsNCj4gKw0KPiArCQlpZ3RfcmVxdWlyZV9m
+KG1vZGUsICJObyBtb2RlIGF2YWlsYWJsZSBmb3Igb3V0cHV0ICVzXG4iLA0KPiArb3V0cHV0LT5u
+YW1lKTsNCj4gKw0KPiArCQlwcmltYXJ5ID0gaWd0X291dHB1dF9nZXRfcGxhbmVfdHlwZShvdXRw
+dXQsDQo+IERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOw0KPiArDQo+ICsJCWlndF9jcmVhdGVfY29s
+b3JfZmIoZHJtX2ZkLA0KPiArCQkJCSAgICBtb2RlLT5oZGlzcGxheSwgbW9kZS0+dmRpc3BsYXks
+DQo+ICsJCQkJICAgIERSTV9GT1JNQVRfWFJHQjg4ODgsDQo+ICsJCQkJICAgIERSTV9GT1JNQVRf
+TU9EX0xJTkVBUiwNCj4gKwkJCQkgICAgMC4wLCAxLjAsIDAuMCwNCj4gKwkJCQkgICAgJmZic1tp
+XSk7DQo+ICsJCWlndF9wbGFuZV9zZXRfZmIocHJpbWFyeSwgJmZic1tpXSk7DQo+ICsJfQ0KPiAr
+fQ0KPiArDQo+ICtzdGF0aWMgdm9pZCBydW5fbXN0X3N1YnNldF9hbmRfdmVyaWZ5KGlndF9kaXNw
+bGF5X3QgKmRpc3BsYXksDQo+ICsJCQkJICAgICAgaWd0X291dHB1dF90ICoqYWN0aXZlX291dHB1
+dHMsDQo+ICsJCQkJICAgICAgaW50IG51bV9hY3RpdmUsDQo+ICsJCQkJICAgICAgaW50IG5fY3J0
+Y3MsDQo+ICsJCQkJICAgICAgdWludDMyX3QgbWFzdGVyX3BpcGVzX21hc2ssDQo+ICsJCQkJICAg
+ICAgdWludDMyX3QgdmFsaWRfcGlwZXNfbWFzaykNCj4gK3sNCj4gKwlpZ3RfY3JjX3QgcHJlX2Ny
+Y3NbTUFYX01TVF9PVVRQVVRdOw0KPiArCWlndF9jcmNfdCBwb3N0X2NyY3NbTUFYX01TVF9PVVRQ
+VVRdOw0KPiArCXN0cnVjdCBpZ3RfZmIgZmJzW01BWF9NU1RfT1VUUFVUXTsNCj4gKwl1aW50MzJf
+dCB1c2VkX3BpcGVzX21hc2sgPSAwOw0KPiArCWVudW0gaWd0X3N1c3BlbmRfdGVzdCBzdGVzdCA9
+IFNVU1BFTkRfVEVTVF9OT05FOw0KPiArCWludCBkcm1fZmQgPSBkaXNwbGF5LT5kcm1fZmQ7DQo+
+ICsJaW50IGk7DQo+ICsNCj4gKwlpZ3RfcmVxdWlyZV9mKG51bV9hY3RpdmUgPD0gbl9jcnRjcywN
+Cj4gKwkJICAgICAgIk5vdCBlbm91Z2ggY3J0Y3MgZm9yIE1TVCBzdWJzZXRcbiIpOw0KPiArDQo+
+ICsJaWd0X3JlcXVpcmUoaWd0X2Fzc2lnbl9waXBlc19mb3Jfb3V0cHV0cyhkcm1fZmQsDQo+ICsJ
+CQkJCQkgYWN0aXZlX291dHB1dHMsDQo+ICsJCQkJCQkgbnVtX2FjdGl2ZSwNCj4gKwkJCQkJCSBu
+X2NydGNzLA0KPiArCQkJCQkJICZ1c2VkX3BpcGVzX21hc2ssDQo+ICsJCQkJCQkgbWFzdGVyX3Bp
+cGVzX21hc2ssDQo+ICsJCQkJCQkgdmFsaWRfcGlwZXNfbWFzaykpOw0KPiArDQo+ICsJc2VsZWN0
+X25vbl9qb2luZXJfbW9kZXMoZHJtX2ZkLCBhY3RpdmVfb3V0cHV0cywgbnVtX2FjdGl2ZSk7DQo+
+ICsNCj4gKwlpZ3RfcmVxdWlyZV9mKGlndF9maXRfbW9kZXNfaW5fYncoZGlzcGxheSksDQo+ICsJ
+CSAgICAgICJVbmFibGUgdG8gZml0IG1vZGVzIGluIGJ3XG4iKTsNCj4gKw0KPiArCWNyZWF0ZV9m
+YnNfZm9yX291dHB1dHMoZHJtX2ZkLCBhY3RpdmVfb3V0cHV0cywgbnVtX2FjdGl2ZSwgZmJzKTsN
+Cj4gKw0KPiArCWlndF9kaXNwbGF5X2NvbW1pdDIoZGlzcGxheSwgQ09NTUlUX0FUT01JQyk7DQo+
+ICsNCj4gKwkvKiBydGN3YWtlIGNtZCBpcyBub3Qgc3VwcG9ydGVkIG9uIE1USyBkZXZpY2VzICov
+DQo+ICsJaWYgKGlzX210a19kZXZpY2UoZHJtX2ZkKSkNCj4gKwkJc3Rlc3QgPSBTVVNQRU5EX1RF
+U1RfREVWSUNFUzsNCj4gKw0KPiArCWlndF9pbmZvKCJNU1Qgc3Vic2V0OiAlZCBvdXRwdXRzLCBu
+X2NydGNzPSVkXG4iLA0KPiArCQkgbnVtX2FjdGl2ZSwgbl9jcnRjcyk7DQo+ICsNCj4gKwl3YWl0
+X2Zvcl92YmxhbmtzKGFjdGl2ZV9vdXRwdXRzLCBudW1fYWN0aXZlLCBmYWxzZSk7DQo+ICsJY29s
+bGVjdF9jcmNfZm9yX2FjdGl2ZV9vdXRwdXRzKGFjdGl2ZV9vdXRwdXRzLA0KPiArCQkJCSAgICAg
+ICBudW1fYWN0aXZlLA0KPiArCQkJCSAgICAgICBwcmVfY3JjcywgZmFsc2UpOw0KPiArCWxvZ19j
+cmNfZm9yX291dHB1dHMoYWN0aXZlX291dHB1dHMsIG51bV9hY3RpdmUsIHByZV9jcmNzLA0KPiAr
+IlBSRS1TVVNQRU5EIik7DQo+ICsNCj4gKwlpZ3Rfc3lzdGVtX3N1c3BlbmRfYXV0b3Jlc3VtZShT
+VVNQRU5EX1NUQVRFX01FTSwgc3Rlc3QpOw0KPiArCXdhaXRfZm9yX3ZibGFua3MoYWN0aXZlX291
+dHB1dHMsIG51bV9hY3RpdmUsIHRydWUpOw0KPiArCWNvbGxlY3RfY3JjX2Zvcl9hY3RpdmVfb3V0
+cHV0cyhhY3RpdmVfb3V0cHV0cywNCj4gKwkJCQkgICAgICAgbnVtX2FjdGl2ZSwNCj4gKwkJCQkg
+ICAgICAgcG9zdF9jcmNzLCB0cnVlKTsNCj4gKwlsb2dfY3JjX2Zvcl9vdXRwdXRzKGFjdGl2ZV9v
+dXRwdXRzLCBudW1fYWN0aXZlLCBwb3N0X2NyY3MsDQo+ICsiUE9TVC1TVVNQRU5EIik7DQo+ICsN
+Cj4gKwlmb3IgKGkgPSAwOyBpIDwgbnVtX2FjdGl2ZTsgaSsrKQ0KPiArCQlpZ3RfYXNzZXJ0X2Ny
+Y19lcXVhbCgmcHJlX2NyY3NbaV0sICZwb3N0X2NyY3NbaV0pOw0KPiArDQo+ICsJLyogRGV0YWNo
+IEZCcyBmcm9tIHBsYW5lcyBhbmQgcmVtb3ZlIHRoZW0gdG8gbGVhdmUgYSBjbGVhbiBzdGF0ZSAq
+Lw0KPiArCWZvciAoaSA9IDA7IGkgPCBudW1fYWN0aXZlOyBpKyspIHsNCj4gKwkJaWd0X3BsYW5l
+X3QgKnByaW1hcnkgPQ0KPiArCQkJaWd0X291dHB1dF9nZXRfcGxhbmVfdHlwZShhY3RpdmVfb3V0
+cHV0c1tpXSwNCj4gKw0KPiBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsNCj4gKwkJaWd0X3BsYW5l
+X3NldF9mYihwcmltYXJ5LCBOVUxMKTsNCj4gKwkJaWd0X3JlbW92ZV9mYihkcm1fZmQsICZmYnNb
+aV0pOw0KPiArCX0NCj4gK30NCj4gKw0KPiArc3RhdGljIGludCBkaXNjb3Zlcl9tc3Rfcm9vdHMo
+aWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwNCj4gKwkJCSAgICAgIHN0cnVjdCBtc3Rfcm9vdF9pbmZv
+ICpyb290cykNCj4gK3sNCj4gKwlpZ3Rfb3V0cHV0X3QgKm91dHB1dDsNCj4gKwlpbnQgZHJtX2Zk
+ID0gZGlzcGxheS0+ZHJtX2ZkOw0KPiArCWludCBudW1fcm9vdHMgPSAwOw0KPiArCWludCByZXQs
+IGk7DQo+ICsNCj4gKwlmb3JfZWFjaF9jb25uZWN0ZWRfb3V0cHV0KGRpc3BsYXksIG91dHB1dCkg
+ew0KPiArCQlib29sIHJvb3Rfc2VlbiA9IGZhbHNlOw0KPiArCQlpbnQgcm9vdF9pZDsNCj4gKw0K
+PiArCQlyb290X2lkID0gaWd0X2dldF9kcF9tc3RfY29ubmVjdG9yX2lkKG91dHB1dCk7DQo+ICsJ
+CWlmIChyb290X2lkIDwgMCkNCj4gKwkJCWNvbnRpbnVlOw0KPiArDQo+ICsJCWZvciAoaSA9IDA7
+IGkgPCBudW1fcm9vdHM7IGkrKykNCj4gKwkJCWlmIChyb290c1tpXS5yb290X2lkID09IHJvb3Rf
+aWQpDQo+ICsJCQkJcm9vdF9zZWVuID0gdHJ1ZTsNCj4gKw0KPiArCQlpZiAocm9vdF9zZWVuKQ0K
+PiArCQkJY29udGludWU7DQo+ICsNCj4gKwkJaWYgKG51bV9yb290cyA+PSBJR1RfTUFYX1BJUEVT
+KQ0KPiArCQkJYnJlYWs7DQo+ICsNCj4gKwkJcm9vdHNbbnVtX3Jvb3RzXS5yb290X2lkID0gcm9v
+dF9pZDsNCj4gKwkJcm9vdHNbbnVtX3Jvb3RzXS5udW1fbXN0ID0gMDsNCj4gKwkJcmV0ID0gaWd0
+X2ZpbmRfYWxsX21zdF9vdXRwdXRfaW5fdG9wb2xvZ3koZHJtX2ZkLA0KPiArCQkJCQkJCSAgZGlz
+cGxheSwgb3V0cHV0LA0KPiArDQo+IHJvb3RzW251bV9yb290c10ubXN0X291dHB1dHMsDQo+ICsN
+Cj4gJnJvb3RzW251bV9yb290c10ubnVtX21zdCk7DQo+ICsJCWlndF9yZXF1aXJlKHJldCA9PSAw
+KTsNCj4gKw0KPiArCQlpZiAocm9vdHNbbnVtX3Jvb3RzXS5udW1fbXN0ID09IDApDQo+ICsJCQlj
+b250aW51ZTsNCj4gKw0KPiArCQlpZiAocm9vdHNbbnVtX3Jvb3RzXS5udW1fbXN0ID4gTUFYX01T
+VF9PVVRQVVQpDQo+ICsJCQlyb290c1tudW1fcm9vdHNdLm51bV9tc3QgPSBNQVhfTVNUX09VVFBV
+VDsNCj4gKw0KPiArCQludW1fcm9vdHMrKzsNCj4gKwl9DQo+ICsNCj4gKwlyZXR1cm4gbnVtX3Jv
+b3RzOw0KPiArfQ0KPiArDQo+ICtzdGF0aWMgdm9pZCBtc3Rfc3VzcGVuZF9yZWFkX2NyYyhpZ3Rf
+ZGlzcGxheV90ICpkaXNwbGF5KSB7DQo+ICsJc3RydWN0IG1zdF9yb290X2luZm8gcm9vdHNbSUdU
+X01BWF9QSVBFU107DQo+ICsJaWd0X291dHB1dF90ICphY3RpdmVfb3V0cHV0c1tNQVhfTVNUX09V
+VFBVVF07DQo+ICsJdWludDMyX3QgdmFsaWRfcGlwZXNfbWFzayA9IDA7DQo+ICsJdWludDMyX3Qg
+bWFzdGVyX3BpcGVzX21hc2s7DQo+ICsJaW50IG5fY3J0Y3MgPSBpZ3RfZGlzcGxheV9uX2NydGNz
+KGRpc3BsYXkpOw0KPiArCWludCBudW1fcm9vdHMsIG51bV9hY3RpdmUsIGk7DQo+ICsJaWd0X2Ny
+dGNfdCAqY3J0YzsNCj4gKw0KPiArCWZvcl9lYWNoX2NydGMoZGlzcGxheSwgY3J0YykNCj4gKwkJ
+dmFsaWRfcGlwZXNfbWFzayB8PSBCSVQoY3J0Yy0+cGlwZSk7DQo+ICsNCj4gKwlpZ3Rfc2V0X2Fs
+bF9tYXN0ZXJfcGlwZXNfZm9yX3BsYXRmb3JtKGRpc3BsYXksICZtYXN0ZXJfcGlwZXNfbWFzayk7
+DQo+ICsNCj4gKwludW1fcm9vdHMgPSBkaXNjb3Zlcl9tc3Rfcm9vdHMoZGlzcGxheSwgcm9vdHMp
+Ow0KPiArCWlndF9yZXF1aXJlX2YobnVtX3Jvb3RzID4gMCwgIk5vIE1TVCByb290cyBmb3VuZFxu
+Iik7DQo+ICsNCj4gKwlmb3IgKGkgPSAwOyBpIDwgbnVtX3Jvb3RzOyBpKyspIHsNCj4gKwkJaWd0
+X2R5bmFtaWNfZigibXN0LXJvb3QtJWQiLCByb290c1tpXS5yb290X2lkKSB7DQo+ICsJCQlpbnQg
+bWFzazsNCj4gKw0KPiArCQkJZm9yIChtYXNrID0gMTsgbWFzayA8ICgxIDw8IHJvb3RzW2ldLm51
+bV9tc3QpOyBtYXNrKyspDQo+IHsNCj4gKwkJCQlpbnQgYml0LCBpZHggPSAwOw0KPiArDQo+ICsJ
+CQkJZm9yIChiaXQgPSAwOyBiaXQgPCByb290c1tpXS5udW1fbXN0OyBiaXQrKykgew0KPiArCQkJ
+CQlpZiAoIShtYXNrICYgKDEgPDwgYml0KSkpDQo+ICsJCQkJCQljb250aW51ZTsNCj4gKw0KPiAr
+CQkJCQlpZiAoaWR4ID49IE1BWF9NU1RfT1VUUFVUKQ0KPiArCQkJCQkJYnJlYWs7DQo+ICsNCj4g
+KwkJCQkJYWN0aXZlX291dHB1dHNbaWR4KytdID0NCj4gKwkJCQkJCXJvb3RzW2ldLm1zdF9vdXRw
+dXRzW2JpdF07DQo+ICsJCQkJfQ0KPiArDQo+ICsJCQkJbnVtX2FjdGl2ZSA9IGlkeDsNCj4gKwkJ
+CQlpZiAoIW51bV9hY3RpdmUpDQo+ICsJCQkJCWNvbnRpbnVlOw0KPiArDQo+ICsJCQkJaWd0X2Rp
+c3BsYXlfcmVzZXQoZGlzcGxheSk7DQo+ICsNCj4gKwkJCQlydW5fbXN0X3N1YnNldF9hbmRfdmVy
+aWZ5KGRpc3BsYXksDQo+ICsJCQkJCQkJICBhY3RpdmVfb3V0cHV0cywNCj4gKwkJCQkJCQkgIG51
+bV9hY3RpdmUsDQo+ICsJCQkJCQkJICBuX2NydGNzLA0KPiArCQkJCQkJCSAgbWFzdGVyX3BpcGVz
+X21hc2ssDQo+ICsJCQkJCQkJICB2YWxpZF9waXBlc19tYXNrKTsNCj4gKwkJCX0NCj4gKwkJfQ0K
+PiArCX0NCj4gK30NCj4gKw0KPiAraW50IGlndF9tYWluKCkNCj4gK3sNCj4gKwlpZ3RfZGlzcGxh
+eV90IGRpc3BsYXk7DQo+ICsJaW50IGRybV9mZDsNCj4gKw0KPiArCWlndF9maXh0dXJlKCkgew0K
+PiArCQlkcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZFUl9JTlRFTCk7DQo+ICsJ
+CWttc3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKTsNCj4gKwkJaWd0X3JlcXVpcmVfcGlwZV9j
+cmMoZHJtX2ZkKTsNCj4gKwkJaWd0X2Rpc3BsYXlfcmVxdWlyZSgmZGlzcGxheSwgZHJtX2ZkKTsN
+Cj4gKwkJaWd0X2Rpc3BsYXlfcmVxdWlyZV9vdXRwdXQoJmRpc3BsYXkpOw0KPiArCX0NCj4gKw0K
+PiArCWlndF9kZXNjcmliZSgiTVNUIHN1c3BlbmQgdGVzdCB0aGF0IHZlcmlmaWVzIGRpc3BsYXkg
+Y29udGVudCBpcw0KPiBwcmVzZXJ2ZWQgIg0KPiArCQkgICAgICJhY3Jvc3MgUzMgc3VzcGVuZC9y
+ZXN1bWUgdXNpbmcgcGlwZSBDUkMgY29tcGFyaXNvbi4iKTsNCj4gKwlpZ3Rfc3VidGVzdF93aXRo
+X2R5bmFtaWMoIm1zdC1zdXNwZW5kLXJlYWQtY3JjIikgew0KPiArCQlpZ3RfcmVxdWlyZShpZ3Rf
+ZGlzcGxheV9oYXNfbXN0X291dHB1dCgmZGlzcGxheSkpOw0KPiArCQltc3Rfc3VzcGVuZF9yZWFk
+X2NyYygmZGlzcGxheSk7DQo+ICsJfQ0KPiArDQo+ICsJaWd0X2ZpeHR1cmUoKSB7DQo+ICsJCWln
+dF9kaXNwbGF5X2ZpbmkoJmRpc3BsYXkpOw0KPiArCQlkcm1fY2xvc2VfZHJpdmVyKGRybV9mZCk7
+DQo+ICsJfQ0KPiArfQ0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0cy9t
+ZXNvbi5idWlsZCBpbmRleCAyNmQ5MzQ1ZWMuLjcyNzJkNjhjNg0KPiAxMDA2NDQNCj4gLS0tIGEv
+dGVzdHMvbWVzb24uYnVpbGQNCj4gKysrIGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gQEAgLTI2NSw2
+ICsyNjUsNyBAQCBpbnRlbF9rbXNfcHJvZ3MgPSBbDQo+ICAJJ2ttc19qb2luZXInLA0KPiAgCSdr
+bXNfbGVnYWN5X2NvbG9ya2V5JywNCj4gIAkna21zX21tYXBfd3JpdGVfY3JjJywNCj4gKwkna21z
+X21zdCcsDQo+ICAJJ2ttc19waXBlX2JfY19pdmInLA0KPiAgCSdrbXNfcGlwZV9zdHJlc3MnLA0K
+PiAgCSdrbXNfcG1fYmFja2xpZ2h0JywNCj4gQEAgLTQwMyw2ICs0MDQsOSBAQCBleHRyYV9zb3Vy
+Y2VzID0gew0KPiAgICAgICAgICAgICBqb2luX3BhdGhzICgnaW50ZWwnLCAna21zX2pvaW5lcl9o
+ZWxwZXIuYycpIF0sDQo+ICAJJ2ttc19kc2MnOiBbIGpvaW5fcGF0aHMgKCdpbnRlbCcsICdrbXNf
+ZHNjX2hlbHBlci5jJykgXSwNCj4gIAkna21zX2pvaW5lcic6IFsgam9pbl9wYXRocyAoJ2ludGVs
+JywgJ2ttc19qb2luZXJfaGVscGVyLmMnKSBdLA0KPiArCSdrbXNfbXN0JzogWw0KPiArICAgICAg
+ICAgICBqb2luX3BhdGhzICgnaW50ZWwnLCAna21zX21zdF9oZWxwZXIuYycpLA0KPiArICAgICAg
+ICAgICBqb2luX3BhdGhzICgnaW50ZWwnLCAna21zX2pvaW5lcl9oZWxwZXIuYycpIF0sDQo+ICAJ
+J2ttc19wc3IyX3NmJzogIFsgam9pbl9wYXRocyAoJ2ludGVsJywgJ2ttc19kc2NfaGVscGVyLmMn
+KSBdLCAgfQ0KPiANCj4gLS0NCj4gMi4yNS4xDQoNCg==
