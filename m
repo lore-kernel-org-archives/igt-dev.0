@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA9ECCD3427
-	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 03:54:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB4F6CD37AC
+	for <igt-dev@archiver.kernel.org>; Mon, 11 May 2026 04:20:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 68F8B10E144;
-	Mon, 11 May 2026 03:54:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6554610E466;
+	Mon, 11 May 2026 04:20:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="exlNKbNP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kng7bnne";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF5DC10E461
- for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 03:53:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B20D410E466
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2026 04:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778471613; x=1810007613;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=1G9IU3lOu4qHtlwONldvJVi6nk/q5O2Qxg6w/nSbVlU=;
- b=exlNKbNPpbt6+S6/Bm4Ugp2qh9QAVdDovTG8c0apKMnjJcFd0UCRBj3H
- okSkkg3zCH3uRstkjVZ5N9WLFHVWd1g/lmUGmTDMEAD4pCeRZkrv5jSKd
- tgcxu0AKRaJe5yEbxvLpp9gteTFDtxqflF6z7ECdp3hke9tge3QfzTL1D
- YxzNFpkZow7zqrvg4Pe6hsXBJnLfhcSXGo2FuD8w5EbmBoQKARGZIVdi4
- mIvqq2MtYc2gFG/OYnZ0ZW5DxjQVTvTDMoUGwTzEz10ELcmaXFTKxCdwi
- oU6eiXx465YUWiqMapDkDmBVRAoYU4ONo0YyGoPUabev5AbOa47QI5uCu w==;
-X-CSE-ConnectionGUID: nZfkvuT4Qq299Tqll2256A==
-X-CSE-MsgGUID: 3HZ3rVBTS2atHiSbU00NMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="90053004"
-X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; d="scan'208";a="90053004"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 May 2026 20:53:33 -0700
-X-CSE-ConnectionGUID: Km+ad/SCTFGKlsb5k4DogQ==
-X-CSE-MsgGUID: EdzddBmNTICmPKXFwXsIAg==
+ t=1778473227; x=1810009227;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=H+b1h6S0sYfIVs61pKHdqBuTDmgy/34x2YGhCdFD+is=;
+ b=kng7bnne6T/wI4CJMcRmS5wvl0hdP3SpOsn/lCjCid0oVdX5mP80Cgah
+ zQNFH1yu49hwGgPRs1R5S0u0mOld37iwT5nYiWnYQzIH4NEC1G79Grhv7
+ oATbhTTzLgKGi8qzltTzWpbf4lC4fUV3tyE6Os3+9lGy0IqDdUQFO5891
+ IpKL1fSAXg3cTRIZKP0wKWUOBzCERHPGwYk1nDbi5RWQ/1MEpF8yXQ2Gc
+ 9ZHbkfkvi2sZi7eiYG+5e1zAv/8hLjB4Qt0aMJiBmdbEwHHrFfxYd2e/O
+ p7+rh8/P7D8ApLz6Jx/5163ODcevKtoVKpAAQZNC315uDODlY+E8BAeNp w==;
+X-CSE-ConnectionGUID: f5pe3pKVSOqvbRGgjtNEBQ==
+X-CSE-MsgGUID: s0n9mdX9SbCn+ImPKPvZ3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="83225859"
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; d="scan'208";a="83225859"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 May 2026 21:20:26 -0700
+X-CSE-ConnectionGUID: STARsxHYQHiOkXCjSKo8dw==
+X-CSE-MsgGUID: ehxdHpCAQs+86M56pSbcnA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; d="scan'208";a="232857188"
-Received: from varungup-desk.iind.intel.com ([10.190.238.71])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 May 2026 20:53:32 -0700
-From: Varun Gupta <varun.gupta@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; d="scan'208";a="236365900"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2026 21:20:24 -0700
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: arvind.yadav@intel.com, himal.prasad.ghimiray@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t v2 3/4] tests/intel/xe_madvise: Add atomic-global subtest
-Date: Mon, 11 May 2026 09:22:58 +0530
-Message-ID: <20260511035310.32323-4-varun.gupta@intel.com>
+Cc: chaitanya.kumar.borah@intel.com, mohammed.bilal@intel.com,
+ Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t] tests/chamelium/kms_chamelium_audio: Add suspend/resume
+ audio tests
+Date: Mon, 11 May 2026 09:48:44 +0530
+Message-ID: <20260511041844.445925-1-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260511035310.32323-1-varun.gupta@intel.com>
-References: <20260511035310.32323-1-varun.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,125 +67,190 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Validate that madvise ATOMIC_GLOBAL permits both CPU and GPU atomic
-access on SVM memory.  The test sets ATOMIC_GLOBAL on heap-allocated
-memory, performs 100 CPU atomic increments while data resides in SMEM,
-then executes GPU MI_ATOMIC_INC which triggers the page-fault handler
-to migrate data to VRAM.  The final counter value must equal 101
-(CPU + GPU increments).
+Add test to validate audio works before and after suspend/resume on
+HDMI/DP connector.
 
-Signed-off-by: Varun Gupta <varun.gupta@intel.com>
+v2: Perform a single suspend/resume for all audio combinations.
+    Re-enable chamelium after suspend and separate pre-suspend
+    and post-resume validation paths for clearer failure diagnostics.
 
-v2: Add UNMAP of CPU_ADDR_MIRROR binding before xe_vm_destroy.
-    Add pagefault count print before/after exec (Nishit).
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/xe_madvise.c | 86 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 86 insertions(+)
+ tests/chamelium/kms_chamelium_audio.c | 133 ++++++++++++++++++++++++++
+ 1 file changed, 133 insertions(+)
 
-diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
-index f343f3c8c..baf50774d 100644
---- a/tests/intel/xe_madvise.c
-+++ b/tests/intel/xe_madvise.c
-@@ -877,6 +877,88 @@ static void test_atomic_device(int fd, struct drm_xe_engine_class_instance *eci)
- 	xe_vm_destroy(fd, vm);
+diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
+index df8d27c0c..2fd8322e0 100644
+--- a/tests/chamelium/kms_chamelium_audio.c
++++ b/tests/chamelium/kms_chamelium_audio.c
+@@ -52,6 +52,12 @@
+  * SUBTEST: hdmi-audio-edid
+  * Description: Plug a connector with an EDID suitable for audio, check ALSA's
+  *              EDID-Like Data reports the correct audio parameters
++ *
++ * SUBTEST: dp-audio-after-suspend
++ * Description: Verify audio works before and after system suspend/resume
++ *
++ * SUBTEST: hdmi-audio-after-suspend
++ * Description: Verify audio works before and after system suspend/resume
+  */
+ 
+ /* Playback parameters control the audio signal we synthesize and send */
+@@ -695,6 +701,46 @@ static bool check_audio_configuration(struct alsa *alsa,
+ 	return true;
  }
  
-+/**
-+ * SUBTEST: atomic-global
-+ * Description: madvise atomic global supports both CPU and GPU atomic operations,
-+ *		test does CPU atomic increments on SMEM then GPU MI_ATOMIC_INC
-+ *		which triggers fault-driven migration to VRAM
-+ * Test category: functionality test
-+ */
-+static void test_atomic_global(int fd, struct drm_xe_engine_class_instance *eci)
++static bool run_audio_tests(chamelium_data_t *data,
++			    struct alsa *alsa,
++			    struct chamelium_port *port,
++			    const char *audio_device)
 +{
-+	struct drm_xe_sync sync[1] = {
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		  .timeline_value = USER_FENCE_VALUE },
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(sync),
-+	};
-+	struct atomic_data *data;
-+	uint32_t vm, exec_queue;
-+	uint64_t addr;
-+	size_t bo_size;
-+	int va_bits, i;
-+	int n_cpu_ops = 100;
-+	int pf_count_before, pf_count_after;
++	bool run = false;
++	int ret, i, j;
++	int channels, sampling_rate;
++	snd_pcm_format_t format;
 +
-+	va_bits = xe_va_bits(fd);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++	for (i = 0; i < test_sampling_rates_count; i++) {
++		for (j = 0; j < test_formats_count; j++) {
++			ret = alsa_open_output(alsa, audio_device);
++			igt_assert_f(ret >= 0,
++				     "Failed to open ALSA output\n");
 +
-+	bo_size = xe_bb_size(fd, sizeof(*data));
-+	data = aligned_alloc(bo_size, bo_size);
-+	igt_assert(data);
-+	memset(data, 0, bo_size);
++			format = test_formats[j];
++			channels = PLAYBACK_CHANNELS;
++			sampling_rate = test_sampling_rates[i];
 +
-+	addr = to_user_pointer(data);
++			if (!check_audio_configuration(alsa, format,
++						       channels,
++						       sampling_rate)) {
++				alsa_close_output(alsa);
++				continue;
++			}
 +
-+	sync[0].addr = to_user_pointer(&data->vm_sync);
-+	__xe_vm_bind_assert(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,
-+			    DRM_XE_VM_BIND_OP_MAP,
-+			    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,
-+			    sync, 1, 0, 0);
-+	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-+	data->vm_sync = 0;
++			run = true;
 +
-+	xe_vm_madvise(fd, vm, addr, bo_size, 0,
-+		      DRM_XE_MEM_RANGE_ATTR_ATOMIC, DRM_XE_ATOMIC_GLOBAL, 0, 0);
++			igt_assert(run_audio_test_once(data, alsa, port,
++						       format, channels,
++						       sampling_rate));
 +
-+	for (i = 0; i < n_cpu_ops; i++)
-+		__atomic_fetch_add(&data->data, 1, __ATOMIC_SEQ_CST);
++			alsa_close_output(alsa);
++		}
++	}
 +
-+	igt_assert_eq(data->data, n_cpu_ops);
-+
-+	atomic_build_batch(data, addr);
-+
-+	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-+	exec.exec_queue_id = exec_queue;
-+	exec.address = addr + ((char *)&data->batch - (char *)data);
-+
-+	pf_count_before = xe_gt_stats_get_count(fd, eci->gt_id,
-+					"svm_pagefault_count");
-+
-+	sync[0].addr = to_user_pointer(&data->exec_sync);
-+	xe_exec(fd, &exec);
-+	xe_wait_ufence(fd, &data->exec_sync, USER_FENCE_VALUE,
-+		       exec_queue, FIVE_SEC);
-+
-+	pf_count_after = xe_gt_stats_get_count(fd, eci->gt_id,
-+					       "svm_pagefault_count");
-+	igt_info("Pagefault count: before=%d, after=%d\n",
-+		 pf_count_before, pf_count_after);
-+
-+	igt_assert_eq(data->data, n_cpu_ops + 1);
-+
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	__xe_vm_bind_assert(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,
-+			    DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0);
-+	free(data);
-+	xe_vm_destroy(fd, vm);
++	return run;
 +}
 +
- int igt_main()
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -944,6 +1026,10 @@ int igt_main()
- 		igt_subtest("atomic-device")
- 			xe_for_each_engine(fd, hwe)
- 				test_atomic_device(fd, hwe);
-+
-+		igt_subtest("atomic-global")
-+			xe_for_each_engine(fd, hwe)
-+				test_atomic_global(fd, hwe);
- 	}
+ static const char test_display_audio_desc[] =
+ 	"Playback various audio signals with various audio formats/rates, "
+ 	"capture them and check they are correct";
+@@ -789,6 +835,83 @@ static void test_display_audio(chamelium_data_t *data,
+ 	free(alsa);
+ }
  
++static const char test_display_audio_suspend_resume_desc[] =
++	"Verify audio works before and after system suspend/resume";
++static void test_display_audio_suspend_resume(
++				chamelium_data_t *data,
++				struct chamelium_port *port,
++				const char *audio_device,
++				enum igt_custom_edid_type edid)
++{
++	struct alsa *alsa;
++	igt_output_t *output;
++	igt_plane_t *primary;
++	struct igt_fb fb;
++	drmModeModeInfo *mode;
++	drmModeConnector *connector;
++	int fb_id;
++
++	igt_require(alsa_has_exclusive_access());
++
++	igt_require(chamelium_has_audio_support(data->chamelium,
++						port));
++
++	alsa = alsa_init();
++	igt_assert(alsa);
++
++	igt_modeset_disable_all_outputs(&data->display);
++
++	chamelium_reset_state(&data->display, data->chamelium,
++			      port, data->ports,
++			      data->port_count);
++
++	output = chamelium_prepare_output(data, port, edid);
++
++	connector = chamelium_port_get_connector(data->chamelium,
++						 port, false);
++
++	primary = igt_output_get_plane_type(output,
++					    DRM_PLANE_TYPE_PRIMARY);
++	igt_assert(primary);
++
++	igt_assert(connector->count_modes > 0);
++
++	mode = &connector->modes[0];
++
++	fb_id = igt_create_color_pattern_fb(data->drm_fd,
++					    mode->hdisplay,
++					    mode->vdisplay,
++					    DRM_FORMAT_XRGB8888,
++					    DRM_FORMAT_MOD_LINEAR,
++					    0, 0, 0, &fb);
++
++	igt_assert(fb_id > 0);
++
++	chamelium_enable_output(data, port, output,
++				mode, &fb);
++
++	igt_assert(run_audio_tests(data, alsa, port,
++				   audio_device));
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++				      SUSPEND_TEST_NONE);
++
++	chamelium_enable_output(data, port, output,
++				mode, &fb);
++
++	igt_display_commit2(&data->display,
++			    COMMIT_ATOMIC);
++
++	igt_assert(run_audio_tests(data, alsa, port,
++				   audio_device));
++
++	igt_remove_fb(data->drm_fd, &fb);
++
++	drmModeFreeConnector(connector);
++
++	free(alsa);
++}
++
+ static const char test_display_audio_edid_desc[] =
+ 	"Plug a connector with an EDID suitable for audio, check ALSA's "
+ 	"EDID-Like Data reports the correct audio parameters";
+@@ -866,6 +989,11 @@ int igt_main()
+ 	connector_subtest("dp-audio-edid", DisplayPort, &data, test_display_audio_edid,
+ 			  IGT_CUSTOM_EDID_DP_AUDIO);
+ 
++	igt_describe(test_display_audio_suspend_resume_desc);
++	connector_subtest("dp-audio-after-suspend", DisplayPort, &data,
++			  test_display_audio_suspend_resume,
++			  "HDMI", IGT_CUSTOM_EDID_DP_AUDIO);
++
+ 	igt_describe("HDMI tests");
+ 
+ 	igt_describe(test_display_audio_desc);
+@@ -876,6 +1004,11 @@ int igt_main()
+ 	connector_subtest("hdmi-audio-edid", HDMIA, &data, test_display_audio_edid,
+ 			  IGT_CUSTOM_EDID_HDMI_AUDIO);
+ 
++	igt_describe(test_display_audio_suspend_resume_desc);
++	connector_subtest("hdmi-audio-after-suspend", HDMIA, &data,
++			  test_display_audio_suspend_resume,
++			  "HDMI", IGT_CUSTOM_EDID_HDMI_AUDIO);
++
  	igt_fixture() {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
 -- 
 2.43.0
 
