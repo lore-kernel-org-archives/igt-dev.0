@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A75F9CD4851
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 13:28:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3827ACD4851
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 13:31:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5573110EAA7;
-	Tue, 12 May 2026 13:28:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DAAF510EB07;
+	Tue, 12 May 2026 13:31:50 +0000 (UTC)
 Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7856110EAA7;
- Tue, 12 May 2026 13:28:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF24210EB0E;
+ Tue, 12 May 2026 13:31:34 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8800520647846447456=="
+ boundary="===============0145224924467244765=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_RFC=3A_Add_preferred_FB_mod?=
- =?utf-8?q?ifier_helper_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Freplay?=
+ =?utf-8?q?=3A_Add_Replay_Rate_Control_test?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
+To: "Ray Wu" <ray.wu@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 12 May 2026 13:28:11 -0000
-Message-ID: <177859249148.61708.2005889182896802065@5ab824fced77>
+Date: Tue, 12 May 2026 13:31:34 -0000
+Message-ID: <177859269490.61707.10757926204033528567@5ab824fced77>
 X-Patchwork-Hint: ignore
-References: <20260512062020.546220-1-jeevan.b@intel.com>
-In-Reply-To: <20260512062020.546220-1-jeevan.b@intel.com>
+References: <20260512080213.3457271-1-ray.wu@amd.com>
+In-Reply-To: <20260512080213.3457271-1-ray.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,88 +41,73 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8800520647846447456==
+--===============0145224924467244765==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: RFC: Add preferred FB modifier helper (rev2)
-URL   : https://patchwork.freedesktop.org/series/164817/
-State : failure
+Series: tests/amdgpu/amd_replay: Add Replay Rate Control test
+URL   : https://patchwork.freedesktop.org/series/166390/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8904_BAT -> XEIGTPW_15160_BAT
+CI Bug Log - changes from IGT_8904 -> IGTPW_15161
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_15160_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_15160_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15161/index.html
 
-Participating hosts (13 -> 13)
+Participating hosts (42 -> 40)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
 
-Possible new issues
--------------------
+Known issues
+------------
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_15160_BAT:
+  Here are the changes found in IGTPW_15161 that come from known issues:
 
 ### IGT changes ###
 
-#### Possible regressions ####
+#### Issues hit ####
 
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
-    - bat-ptl-2:          [PASS][1] -> [FAIL][2] +5 other tests fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-ptl-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-ptl-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-    - bat-wcl-1:          [PASS][3] -> [FAIL][4] +5 other tests fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-wcl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-wcl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
-    - bat-adlp-7:         [PASS][5] -> [FAIL][6] +5 other tests fail
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-    - bat-bmg-1:          [PASS][7] -> [FAIL][8] +5 other tests fail
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-bmg-1/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-bmg-1/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
-    - bat-lnl-1:          [PASS][9] -> [FAIL][10] +5 other tests fail
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15161/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15161/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
 
   
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8904 -> IGTPW_15160
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8904 -> IGTPW_15161
 
-  IGTPW_15160: 4f8d846588a3793f6023b534778ff6d300a90c85 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  CI-20190529: 20190529
+  CI_DRM_18473: b83102e9c06357b09f2cfbe944269786cb6985c4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15161: bd1066dd392872782e4652faf036a50254a8851b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5047-b83102e9c06357b09f2cfbe944269786cb6985c4: b83102e9c06357b09f2cfbe944269786cb6985c4
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15161/index.html
 
---===============8800520647846447456==
+--===============0145224924467244765==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -142,60 +127,44 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>RFC: Add preferred FB modifier helper (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164817/">https://patchwork.freedesktop.org/series/164817/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_replay: Add Replay Rate Control test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166390/">https://patchwork.freedesktop.org/series/166390/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15161/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15161/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8904_BAT -&gt; XEIGTPW_15160_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8904 -&gt; IGTPW_15161</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_15160_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_15160_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_15160_BAT:</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15161/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15161 that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Possible regressions</h4>
+<h4>Issues hit</h4>
 <ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
-<ul>
-<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-ptl-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-ptl-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
-<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-wcl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-wcl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">FAIL</a> +5 other tests fail</li>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-bmg-1/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-bmg-1/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">FAIL</a> +5 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:</p>
-<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8904/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15160/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> +5 other tests fail</li>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15161/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15161/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8904 -&gt; IGTPW_15160</li>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8904 -&gt; IGTPW_15161</li>
 </ul>
-<p>IGTPW_15160: 4f8d846588a3793f6023b534778ff6d300a90c85 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5047-b83102e9c06357b09f2cfbe944269786cb6985c4: b83102e9c06357b09f2cfbe944269786cb6985c4</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18473: b83102e9c06357b09f2cfbe944269786cb6985c4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15161: bd1066dd392872782e4652faf036a50254a8851b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============8800520647846447456==--
+--===============0145224924467244765==--
