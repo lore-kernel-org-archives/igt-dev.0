@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D20DCD343F
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 03:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F34ECD343F
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 03:35:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D35C110E258;
-	Tue, 12 May 2026 03:26:04 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C66B810E258;
- Tue, 12 May 2026 03:25:47 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6382381673360898457=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id BBB4A10E258;
+	Tue, 12 May 2026 03:35:23 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aGXE06sz";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 511E410E258
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 03:35:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1778556907; x=1810092907;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zx16PnMChTc10IOIuKdwZIqHz9HBkf5yGG76bNaxHmY=;
+ b=aGXE06szFx/afmDjguUf2Hf8bLoHAWiKWH9vQeW9Eq06v/IaKz4oaWWe
+ G2y4QTVOLFiSVQjntUf71iugbs/UFbmuuCsGp+U94wpE3wN8Hhs2CK7J+
+ gTjQDw3RJLEpwGx+zmlwIgETo4yVjcliLinBUegOlm8ZClwsQfGYykTv5
+ GnuLhxEf7pIEbskG4mEw46xpys0VmM/rVnsAylirJUSJnatg2JD3L9WJn
+ yVohXPKPuIeAeZgyDFBwMCn6CdgDq7WCUldo1vkO6ygeyH2JXj9cXvJy5
+ YJMoBHp7PhAKPIQz+/6RX6/Tj6ANong76gtjt63EDudO/5K0yBg5LYdAK Q==;
+X-CSE-ConnectionGUID: tv02WnCnRX63YW0wGxLYnQ==
+X-CSE-MsgGUID: oK/xIpdnRYCChonoBpUJeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="82021485"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="82021485"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 20:35:06 -0700
+X-CSE-ConnectionGUID: FLB8EhzySbuHvnPTvDQ4qQ==
+X-CSE-MsgGUID: NcT1C7BeTqKGIbvIy4Sjfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="233168084"
+Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.21])
+ by fmviesa006.fm.intel.com with ESMTP; 11 May 2026 20:35:05 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org,
+	stuart.summers@intel.com
+Subject: [PATCH i-g-t] lib/intel_pat: skip UC compression when FlatCCS
+ unavailable
+Date: Tue, 12 May 2026 03:35:04 +0000
+Message-ID: <20260512033504.3665416-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Fsriov=5Fdevice=3A?=
- =?utf-8?q?_Update_igt=5Fsriov=5Fenable=5Fvfs_helper_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jakub Kolakowski" <jakub1.kolakowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 12 May 2026 03:25:47 -0000
-Message-ID: <177855634780.60085.4774274296860876242@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260511101930.180154-1-jakub1.kolakowski@intel.com>
-In-Reply-To: <20260511101930.180154-1-jakub1.kolakowski@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +62,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6382381673360898457==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-== Series Details ==
+Use igt_require in place of igt_assert to avoid treating unsupported
+platform conditions as test errors in CI. Since UC compression is
+supported only on FlatCCS platforms, skip the test on platforms without
+FlatCCS.
 
-Series: lib/igt_sriov_device: Update igt_sriov_enable_vfs helper (rev3)
-URL   : https://patchwork.freedesktop.org/series/165137/
-State : success
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+---
+ lib/intel_pat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-== Summary ==
+diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+index 2f35bb772..bcf31b4b2 100644
+--- a/lib/intel_pat.c
++++ b/lib/intel_pat.c
+@@ -276,7 +276,7 @@ uint8_t intel_get_pat_idx_uc_comp(int fd)
+ 	uint16_t dev_id = intel_get_drm_devid(fd);
+ 
+ 	igt_assert(intel_gen(dev_id) >= 20);
+-	igt_assert(HAS_FLATCCS(dev_id));
++	igt_require_f(HAS_FLATCCS(dev_id), "FlatCCS not available on platform, skipping");
+ 
+ 	intel_get_pat_idx(fd, &pat);
+ 	igt_assert_f(pat.uc_comp != XE_PAT_IDX_INVALID,
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8903_BAT -> XEIGTPW_15150_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8903 -> IGTPW_15150
-  * Linux: xe-5041-f8ee23694aa6be213355905a78f79bb1b0861565 -> xe-5043-0ce1c813197dfbe15ff14143da97ec11161e1795
-
-  IGTPW_15150: b688a9dafade7c7b7f00d302cdeaac75900a5859 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8903: 6f88532e2fe22529195cc2f8cabff93d994688f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5041-f8ee23694aa6be213355905a78f79bb1b0861565: f8ee23694aa6be213355905a78f79bb1b0861565
-  xe-5043-0ce1c813197dfbe15ff14143da97ec11161e1795: 0ce1c813197dfbe15ff14143da97ec11161e1795
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15150/index.html
-
---===============6382381673360898457==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_sriov_device: Update igt_sriov_enable_vfs helper (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165137/">https://patchwork.freedesktop.org/series/165137/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15150/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15150/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8903_BAT -&gt; XEIGTPW_15150_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8903 -&gt; IGTPW_15150</li>
-<li>Linux: xe-5041-f8ee23694aa6be213355905a78f79bb1b0861565 -&gt; xe-5043-0ce1c813197dfbe15ff14143da97ec11161e1795</li>
-</ul>
-<p>IGTPW_15150: b688a9dafade7c7b7f00d302cdeaac75900a5859 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8903: 6f88532e2fe22529195cc2f8cabff93d994688f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5041-f8ee23694aa6be213355905a78f79bb1b0861565: f8ee23694aa6be213355905a78f79bb1b0861565<br />
-  xe-5043-0ce1c813197dfbe15ff14143da97ec11161e1795: 0ce1c813197dfbe15ff14143da97ec11161e1795</p>
-
-</body>
-</html>
-
---===============6382381673360898457==--
