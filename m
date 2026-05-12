@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42187CD4F24
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 09:23:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75075CD4F24
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 09:23:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD8A610E11A;
-	Wed, 13 May 2026 09:23:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A79F10ED8F;
+	Wed, 13 May 2026 09:23:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="aAB8UQUC";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="nvaGZi5B";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 291D010EC43;
- Tue, 12 May 2026 21:52:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C068610E08A;
+ Tue, 12 May 2026 22:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=JHPZXGV6WgCNJ/fIPS2bp7NNXMeSFNOJi8f9ZKXQCeQ=; b=aAB8UQUC2Q1A2pQ0W7pI904RM3
- D6c6m/c8qqon8A0aDxWFV3bbgwSu9gpC8RPCXo8y2vpvouEMcADMaBsn/gV+SQqEgU5F1lKGB/4Tg
- fwGmt8GbPNP+jWifpH8QldrtLIQsDUb3Y1xd+OFuO4ikrsaPtj50ft1Lqw7vZdBI/UjfiUvTfXiG+
- AKbO4zgicW+26KUQ/kKZsU5OiWsfso2PpomXZj4vZjggjvMAzmsk4mU5TfDdftrUp5bPOhtq3U2lW
- mt7Df26HObRJI2bvfy2kXIuDJu0ksZYbJ7xD5JWTCmh0mNZBloiAy1FAFxTbsWuZS798HthmV+Cc+
- f0NP35BA==;
+ bh=cdQIDMPWyYOXbUwZjwtTDMyKpwgb3v0toGsPGRZyGVA=; b=nvaGZi5ByxxCUz0Qsv8In87fYs
+ RJIaDvvai3GqYJSIr+0r3Lx9GZjsjU3Cs9NqIBGwmoN0LAIvDlIhnZvedu4iQJ8bcryNwnOTqnOIM
+ /cg5Fo8tgfVIUUgKAiQTHuqLYkkXVEhboN3ke5jUb1wmyrdlyX+genZ2sxREgIdvfVERoGVhfUPGO
+ 1FU40PhJBKq5O5cOHK7QQDPsTmTw4y1B6pNkHA70vvdApShRaaHausaqePvTwjR6xtfgXBTag/GD0
+ 82J0CCZsgf6i7oUV9/+DxM7fl6IdF9+xuz+Ab/YswdPWXCQk9oioU7mt+KnoN2Z6VJgIE3Kt1ES6A
+ hW5kgOqQ==;
 Received: from 179-242-241-236.3g.claro.net.br ([179.242.241.236]
  helo=quatroqueijos.cascardo.eti.br)
  by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wMv22-009frh-JN; Tue, 12 May 2026 23:52:50 +0200
+ (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1wMvZl-009gYl-8w; Wed, 13 May 2026 00:27:41 +0200
+Date: Tue, 12 May 2026 19:27:29 -0300
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: igt-dev@lists.freedesktop.org
 Cc: dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
  intel-xe@lists.freedesktop.org,
  Christian Koenig <christian.koenig@amd.com>,
  maarten.lankhorst@linux.intel.com,
- =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
  Natalie Vock <natalie.vock@gmx.de>, kernel-dev@igalia.com,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH i-g-t 7/8] dmem: only check for dmem availability once
-Date: Tue, 12 May 2026 18:51:54 -0300
-Message-ID: <20260512215156.4083082-8-cascardo@igalia.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260512215156.4083082-1-cascardo@igalia.com>
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Subject: Re: [PATCH i-g-t 0/8] dmem: add amdgpu support and one more test
+Message-ID: <agOpUY4atNNzSs1i@quatroqueijos.cascardo.eti.br>
 References: <20260512215156.4083082-1-cascardo@igalia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260512215156.4083082-1-cascardo@igalia.com>
 X-Mailman-Approved-At: Wed, 13 May 2026 09:22:33 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,51 +67,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-While running multiple tests, we only need to check dmem is available at
-the beginning.
+On Tue, May 12, 2026 at 06:51:47PM -0300, Thadeu Lima de Souza Cascardo wrote:
+> This work builds on top of Thomas Hellström's patches at [1].
+> 
+> Besides the case of eviction when setting dmem.max, which still needs
+> support from [2], there are other cases for testing dmem behavior and
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
- tests/drv_dmem_cgroups.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+It was pointed out that I missed the link here. And here it is.
 
-diff --git a/tests/drv_dmem_cgroups.c b/tests/drv_dmem_cgroups.c
-index 43331117854c..0791bb62d3a2 100644
---- a/tests/drv_dmem_cgroups.c
-+++ b/tests/drv_dmem_cgroups.c
-@@ -133,10 +133,6 @@ static void test_write_eviction(int fd, unsigned int flags, const struct igt_dme
- 	uint64_t current, capacity, cg_max, limit, after;
- 	int set_err, err;
- 
--	/* Check dmem cgroup controller is available before doing anything else */
--	igt_require_f(igt_cgroup_dmem_available(),
--		      "dmem cgroup controller not available (no cgroup v2 or no registered regions)\n");
--
- 	cg_region = drv->get_region_name(fd);
- 	igt_require_f(cg_region, "Region not tracked by dmem cgroup controller\n");
- 
-@@ -246,10 +242,6 @@ static void test_current(int fd, unsigned int flags, const struct igt_dmem_drive
- 	cg_region = drv->get_region_name(fd);
- 	igt_require_f(cg_region, "Region not tracked by dmem cgroup controller\n");
- 
--	/* Check dmem cgroup controller is available before doing anything else */
--	igt_require_f(igt_cgroup_dmem_available(),
--		      "dmem cgroup controller not available (no cgroup v2 or no registered regions)\n");
--
- 	igt_cgroup_dmem_get_capacity(cg_region, &capacity);
- 	igt_require_f(capacity >= 4 * BO_SIZE,
- 		      "VRAM capacity (%"PRIu64" MiB) too small to test\n",
-@@ -375,6 +367,10 @@ int igt_main()
- {
- 	igt_fixture() {
- 		igt_require_f(getuid() == 0, "Test requires root\n");
-+		/* Check dmem cgroup controller is available before doing anything else */
-+		igt_require_f(igt_cgroup_dmem_available(),
-+			      "dmem cgroup controller not available (no cgroup v2 or no registered regions)\n");
-+
- 	}
- 
- 	for (int d = 0; drivers[d].driver; d++) {
--- 
-2.47.3
+[2] https://lore.kernel.org/dri-devel/20260512082406.44470-1-thomas.hellstrom@linux.intel.com/
 
+> potential regressions. Thomas' patches lay over the groundwork for this,
+> while this patchset addes one basic test of checking current usage and that
+> drivers respect max setting when no eviction is taking place yet.
+> 
+> This patchset also introduces a driver layer such that the same tests can
+> work with different drivers. amdgpu support is here added too.
+> 
+> [1] https://patchwork.freedesktop.org/series/163935/
+> 
+> Thadeu Lima de Souza Cascardo (8):
+>   Introduce dmem driver and implement Xe support
+>   Adjust xe_cgroups test to use igt_dmem_driver
+>   Make xe_cgroup test a generic test
+>   amdgpu: add amdgpu_cgroup_region_name
+>   igt_dmem_driver: add amdgpu support
+>   dmem: add test for current/max
+>   dmem: only check for dmem availability once
+>   dmem: get region once per driver
+> 
+>  lib/amdgpu/amd_dmem.c    |  94 ++++++++++
+>  lib/amdgpu/amd_memory.c  |  25 +++
+>  lib/amdgpu/amd_memory.h  |   2 +
+>  lib/igt_dmem_driver.h    |  25 +++
+>  lib/meson.build          |   2 +
+>  lib/xe/xe_dmem.c         | 145 +++++++++++++++
+>  tests/drv_dmem_cgroups.c | 390 +++++++++++++++++++++++++++++++++++++++
+>  tests/intel/xe_cgroups.c | 296 -----------------------------
+>  tests/meson.build        |   2 +-
+>  9 files changed, 684 insertions(+), 297 deletions(-)
+>  create mode 100644 lib/amdgpu/amd_dmem.c
+>  create mode 100644 lib/igt_dmem_driver.h
+>  create mode 100644 lib/xe/xe_dmem.c
+>  create mode 100644 tests/drv_dmem_cgroups.c
+>  delete mode 100644 tests/intel/xe_cgroups.c
+> 
+> -- 
+> 2.47.3
+> 
