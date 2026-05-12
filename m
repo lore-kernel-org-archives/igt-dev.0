@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BAFFCD4851
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:23:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 801C6CD4851
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:23:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E374610E0E5;
-	Tue, 12 May 2026 12:23:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30FD410E0E5;
+	Tue, 12 May 2026 12:23:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QE2+jur3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gLtB9u0h";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EA7A10E0E5
- for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 12:22:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAD7910E0E5
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 12:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778588523; x=1810124523;
+ t=1778588579; x=1810124579;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=gJiZLtzPC0kZpqYtz4WRq6R5MdOKnbDBCqeBpDT6Oyg=;
- b=QE2+jur3lEn6ioC1Cxvti8PQXf0TczDbqfVj0hbCV+ocytEAezQRfoVf
- go4xH8511akR/TM554V8mFRTbVOB6M7thSCV3xlPSoma9ODo8U4NcHFYN
- 2BT8x7osXrMgNzBlKRZEAmRAUfM5zDTP9KchG5lwrUIUa9QBrns8XhI3h
- Mj2s12c2QT6ZgqmlB6cBqBxpfzmiqBi6qOIRhUc79+NRDzR++DEqnnssf
- 1bN9ycKnm/UZNq0BAukQYBIu1kUjQFKfqxvFyafRFq9Z7flvIE1bz5hhL
- +ZYXzoRNgPMNHNaHUkQCjUciakClSFmtpnwPEPnHrgcQxTn2VKP+dQhKu A==;
-X-CSE-ConnectionGUID: J6EBLH0TT7CZ7NMrdJv1Wg==
-X-CSE-MsgGUID: 77dTdYmvT5i2YI2n399LRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79525677"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="79525677"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 05:22:03 -0700
-X-CSE-ConnectionGUID: 6G57+FEjS26jsuQobo1ksQ==
-X-CSE-MsgGUID: Y19fGYLQRMydMFi/EZoOsw==
+ bh=WHmioWxj7SlIEHvgGY0yV1ym/ShGCB1m79JEk2wqIeE=;
+ b=gLtB9u0hew+Icy9i25/N83tPSi+yZ7GFS+6BGs1xgcY7gmcA7HNojEuI
+ fIjvmw4Cj3ah3wyZWpOde2Z5pshH3tM8BcWGE/MQTzqAFv8fg/9GkQyoZ
+ LHPKiMZQMD9WwlvcpOnogqesE5En/0Ks3Nl2hwG+OYI5J5//YoHKq2sFf
+ x878Ldw2ju/FOLdKBgQo+mfivP2uw6N+0pCqVhvsY0Lgb7BluyaHyLKq2
+ ViqfGyflh5IJmuFNHqfX562feBc12P0izVcQZfrh0aXs4g0xPZ9pk4xvt
+ 8zUJGxd3tN/bnFmN++Uzi/x9qbyoip+/U9JJxRwGiQEjrcFSTHxmjEi21 Q==;
+X-CSE-ConnectionGUID: OSgxHXKISZCNH+Idqsex3Q==
+X-CSE-MsgGUID: 86kyWdrsTFKtM5Bja0l61A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="104950039"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="104950039"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 05:22:59 -0700
+X-CSE-ConnectionGUID: 5MxdHy7cSrOW/ElYG9fXEw==
+X-CSE-MsgGUID: eeSp/n/iS3+YmVBaoiHuEQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="235091379"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="234691083"
 Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.245.104])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 05:22:02 -0700
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 05:22:57 -0700
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 04/25] lib/kms: Pass struct igt_format_mods to
- igt_parse_format_mod_blob()
-Date: Tue, 12 May 2026 15:21:22 +0300
-Message-ID: <20260512122143.11013-5-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 18/25] tests/chamelium/kms_chamelium_frames: Use
+ for_each_format_and_modifier()
+Date: Tue, 12 May 2026 15:21:36 +0300
+Message-ID: <20260512122143.11013-19-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
 References: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
@@ -73,85 +73,43 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Pass the entire format_mods struct to igt_parse_format_mod_blob()
-instead of of the individual pieces. Not as messy and fragile as
-the current approach.
+Replace the open coded for_each_format_and_modifier() with the real
+thing.
+
+igt_plane_for_each_format() would be a better fit here since we
+don't need the modifier in the loop, but the test keeps track of
+the index and stores that in a yet another array in order to
+then pick a format+modifier combination in random. There's probably
+a less convoluted way to implement this, but meh for now.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ tests/chamelium/kms_chamelium_frames.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index b60bfa033bcd..6b42c50e9273 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6183,34 +6183,36 @@ static int igt_count_plane_format_mod(const struct drm_format_modifier_blob *blo
- }
+diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
+index 3a59c2b51a9b..d1d76f26d6a0 100644
+--- a/tests/chamelium/kms_chamelium_frames.c
++++ b/tests/chamelium/kms_chamelium_frames.c
+@@ -305,14 +305,15 @@ static void randomize_plane_setup(chamelium_data_t *data, igt_plane_t *plane,
+ 	uint32_t idx[plane->format_mods.count];
+ 	unsigned int count = 0;
+ 	unsigned int i;
++	uint32_t f;
++	uint64_t m;
  
- static void igt_parse_format_mod_blob(const struct drm_format_modifier_blob *blob_data,
--				      uint32_t **formats, uint64_t **modifiers, int *count)
-+				      struct igt_format_mods *format_mods)
- {
- 	const struct drm_format_modifier *m = modifiers_ptr(blob_data);
- 	const uint32_t *f = formats_ptr(blob_data);
- 	int idx = 0;
- 
--	*count = igt_count_plane_format_mod(blob_data);
--	if (*count == 0)
-+	format_mods->count = igt_count_plane_format_mod(blob_data);
-+	if (format_mods->count == 0)
- 		return;
- 
--	*formats = calloc(*count, sizeof((*formats)[0]));
--	igt_assert(*formats);
--	*modifiers = calloc(*count, sizeof((*modifiers)[0]));
--	igt_assert(*modifiers);
-+	format_mods->formats = calloc(format_mods->count,
-+				       sizeof((format_mods->formats)[0]));
-+	igt_assert(format_mods->formats);
-+	format_mods->modifiers = calloc(format_mods->count,
-+					 sizeof((format_mods->modifiers)[0]));
-+	igt_assert(format_mods->modifiers);
- 
- 	for (int i = 0; i < blob_data->count_modifiers; i++) {
- 		for (int j = 0; j < 64; j++) {
- 			if (!(m[i].formats & (1ULL << j)))
- 				continue;
- 
--			(*formats)[idx] = f[m[i].offset + j];
--			(*modifiers)[idx] = m[i].modifier;
-+			format_mods->formats[idx] = f[m[i].offset + j];
-+			format_mods->modifiers[idx] = m[i].modifier;
- 			idx++;
--			igt_assert_lte(idx, *count);
-+			igt_assert_lte(idx, format_mods->count);
- 		}
+ 	/* First pass to count the supported formats. */
+-	for (i = 0; i < plane->format_mods.count; i++) {
+-		uint32_t f = plane->format_mods.formats[i];
+-
++	for_each_format_and_modifier(&plane->format_mods, f, m) {
+ 		if (igt_fb_supported_format(f) &&
+ 		    (allow_yuv || !igt_format_is_yuv(f)))
+ 			idx[count++] = i;
++		(void)m;
  	}
  
--	igt_assert_eq(idx, *count);
-+	igt_assert_eq(idx, format_mods->count);
- }
- 
- static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane)
-@@ -6249,7 +6251,7 @@ static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane
- 		return;
- 
- 	blob_data = (const struct drm_format_modifier_blob *)blob->data;
--	igt_parse_format_mod_blob(blob_data, &plane->format_mods.formats, &plane->format_mods.modifiers, &plane->format_mods.count);
-+	igt_parse_format_mod_blob(blob_data, &plane->format_mods);
- 	drmModeFreePropertyBlob(blob);
- 
- 	if (igt_plane_has_prop(plane, IGT_PLANE_IN_FORMATS_ASYNC)) {
-@@ -6259,7 +6261,7 @@ static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane
- 			return;
- 
- 		blob_data = (const struct drm_format_modifier_blob *)blob->data;
--		igt_parse_format_mod_blob(blob_data, &plane->format_mods_async.formats, &plane->format_mods_async.modifiers, &plane->format_mods_async.count);
-+		igt_parse_format_mod_blob(blob_data, &plane->format_mods_async);
- 		drmModeFreePropertyBlob(blob);
- 	}
- }
+ 	igt_assert(count > 0);
 -- 
 2.52.0
 
