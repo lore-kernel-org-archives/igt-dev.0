@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 855BFCD4851
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:28:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1124CD4F21
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:29:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2C80010EA89;
-	Tue, 12 May 2026 12:28:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LVFZ+jvY";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B182410E0E5
- for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 12:23:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778588587; x=1810124587;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=atmYJ9GKqX4IRAE9ZZ7lf/4fTTNt4hRRQ4IG3J4mh/0=;
- b=LVFZ+jvYzX5E0qjz5glKkZMucqBJekY6A3MW3fZb37t/E2hMTbTsT9nN
- 1pPimR+pIdU86MkJubYBh79gil5m9Fsjk8f8tKvjMJ/CLSbIpPsseff+5
- qjdo9YHE1I0/SsnvApw300kIoWa77dg9/rqGaPTlQ3BKPz2jfP1CPYJLO
- Xi8p2feje3b/IXzuGztBJXKnDLVK55hJhKJWW1AeJ22pP1Q3V7zdalFEi
- 3/lqujOqDpTuOrmcPDbXESMPws7O989Fy282LDDQs1INdOc0k+PvwJ4ic
- AuyJael/tQesZEHTBuEAqCsAcSTeQAi+ShTjN3xC+4J4Pebwq+hWLbsgU A==;
-X-CSE-ConnectionGUID: wRGfedzJTfiVUBA9e3fBSQ==
-X-CSE-MsgGUID: Loa2SRd4Rtiz8SBDGIt0lQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="104950049"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="104950049"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 05:23:07 -0700
-X-CSE-ConnectionGUID: Sh/XmyjKRL2RzhZftaqExQ==
-X-CSE-MsgGUID: 7fPis87HT92VesKpB6nPqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="234691140"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.245.104])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 05:23:05 -0700
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 20/25] tests/kms_plane: Use
- for_each_format_and_modifier()
-Date: Tue, 12 May 2026 15:21:38 +0300
-Message-ID: <20260512122143.11013-21-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
-References: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9093D10EA89;
+	Tue, 12 May 2026 12:29:03 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 35BCB10EA8B;
+ Tue, 12 May 2026 12:28:48 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7155505226686917987=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fmadvise?=
+ =?utf-8?q?=3A_Drop_assert_on_cleanup_unbind_in_atomic_subtests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Varun Gupta" <varun.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 12 May 2026 12:28:48 -0000
+Message-ID: <177858892821.61708.3401688933348739631@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260512061035.190653-1-varun.gupta@intel.com>
+In-Reply-To: <20260512061035.190653-1-varun.gupta@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,78 +37,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+--===============7155505226686917987==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Replace the open coded copies of for_each_format_and_modifier()
-with the real thing.
+== Series Details ==
 
-The AMD thing here could more properly use a for_each_modifier(),
-if we had one. But implementing one on top of igt_format_mods
-would still iterate each modifier multiple times (assuming the
-same modifier is supported with multiple formats). So we'd
-rather want a modifier counterpart to for_each_plane_format().
-drmModePlane gave us a nice shortcut to for_each_plane_format()
-but sadly it doesn't extend that service to modifiers. So we'd
-have to build the pure modifier list by hand...
+Series: tests/intel/xe_madvise: Drop assert on cleanup unbind in atomic subtests
+URL   : https://patchwork.freedesktop.org/series/166379/
+State : failure
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/kms_plane.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 5923b5917579..b82346464049 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1122,6 +1122,7 @@ static void test_format_plane(data_t *data, igt_crtc_t *crtc,
- 	igt_crc_t ref_crc[MAX_CRC_SET][ARRAY_SIZE(colors_extended)];
- 	struct igt_vec tested_formats;
- 	struct format_mod ref = {};
-+	struct format_mod f = {};
- 	igt_crc_t* crcset;
- 	bool result = true;
- 
-@@ -1182,14 +1183,7 @@ static void test_format_plane(data_t *data, igt_crtc_t *crtc,
- 	 */
- 	igt_require(num_unique_crcs(ref_crc[MULTIPLE_CRC_SET], data->num_colors) > 1);
- 
--	for (int i = 0; i < plane->format_mods.count; i++) {
--		uint32_t format = plane->format_mods.formats[i];
--		uint64_t modifier = plane->format_mods.modifiers[i];
--		struct format_mod f = {
--			.format = format,
--			.modifier = modifier,
--		};
--
-+	for_each_format_and_modifier(&plane->format_mods, f.format, f.modifier) {
- 		if (data->mod != f.modifier)
- 			continue;
- 
-@@ -1252,17 +1246,17 @@ static void test_format_plane(data_t *data, igt_crtc_t *crtc,
- static bool skip_plane(data_t *data, igt_plane_t *plane)
- {
- 	int index = plane->index;
--	int i;
--
--	for (i = 0; i < plane->format_mods.count; i++) {
--		uint64_t modifier = plane->format_mods.modifiers[i];
-+	uint64_t modifier;
-+	uint32_t format;
- 
-+	for_each_format_and_modifier(&plane->format_mods, format, modifier) {
- 		if (IS_AMD_FMT_MOD(modifier) &&
- 		    (AMD_FMT_MOD_GET(DCC, modifier) ||
- 		     AMD_FMT_MOD_GET(DCC_RETILE, modifier))) {
- 			igt_debug("Skipping planes with DCC or DCC_RETILE\n");
- 			return true;
- 		}
-+		(void)format;
- 	}
- 
- 	if (data->extended)
--- 
-2.52.0
+CI Bug Log - changes from IGT_8904 -> IGTPW_15159
+====================================================
 
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_15159 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_15159, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15159/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_15159:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-arlh-3:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arlh-3/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15159/bat-arlh-3/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - fi-bsw-n3050:       [PASS][3] -> [ABORT][4] +1 other test abort
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-bsw-n3050/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15159/fi-bsw-n3050/igt@i915_selftest@live.html
+
+  
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8904 -> IGTPW_15159
+
+  CI-20190529: 20190529
+  CI_DRM_18473: b83102e9c06357b09f2cfbe944269786cb6985c4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15159: 0b17665dc26b9f010dddebcb917e9590ee299270 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15159/index.html
+
+--===============7155505226686917987==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_madvise: Drop assert on cleanup unbind in atomic subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166379/">https://patchwork.freedesktop.org/series/166379/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15159/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15159/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8904 -&gt; IGTPW_15159</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_15159 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_15159, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15159/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_15159:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arlh-3/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15159/bat-arlh-3/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-bsw-n3050/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15159/fi-bsw-n3050/igt@i915_selftest@live.html">ABORT</a> +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8904 -&gt; IGTPW_15159</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18473: b83102e9c06357b09f2cfbe944269786cb6985c4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15159: 0b17665dc26b9f010dddebcb917e9590ee299270 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7155505226686917987==--
