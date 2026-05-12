@@ -4,159 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00C28CD343F
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 19:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24B29CD343F
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 19:37:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97A7810E5BB;
-	Tue, 12 May 2026 19:19:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BBEB210E2BA;
+	Tue, 12 May 2026 19:37:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lNOgdV6w";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="GtFzvItD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B463510E5BB
- for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 19:18:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778613527; x=1810149527;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=PeaT4Al/FMUy/MTwPFnVcm2BZTLU5LA6aX7LywZxciM=;
- b=lNOgdV6wuP/akVdBbaUGBJqX/8dYct7eLZOaYUmUZpXY8CGcfaQS2gfN
- z1jPT62THTzHeflHQMXBLJeQPXo0CHWPwf8G3q0XvJaoSdMATImcG46q9
- 1uq3/2w8aRxah7qAZ+ikXVjgVKl+SwiY5QBJBQIShKNofmQzLFpwTE2Pz
- 8e4Drer8qbRfzRSQDFrlgu13rAGIzNkXEZ/odPWd9hovZyWKCuBT1G0wo
- NBQcrvjN7zLKA6Z39GA8aiFom9sXdkxK/XnxDRKdhcMsIITgY1eLbQhFg
- 5n6AuCaxLpswPQArponO33j5sHtV0LlwC18LoXW3HHppHGdLCCLi1GoNg Q==;
-X-CSE-ConnectionGUID: PIB4hjOsRXCxH2gH6XAsVA==
-X-CSE-MsgGUID: uAWNtiUITVqCByDXd+VYlw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="89835468"
-X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; d="scan'208";a="89835468"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 12:18:46 -0700
-X-CSE-ConnectionGUID: dkbslzYERFWADtuHwA489Q==
-X-CSE-MsgGUID: SSGO15ARREm9EuSuoHAx5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; d="scan'208";a="241870799"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 12:18:46 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 12 May 2026 12:18:45 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 12 May 2026 12:18:45 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.2) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 12 May 2026 12:18:44 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com
+ (mail-westus3azon11010032.outbound.protection.outlook.com [52.101.201.32])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2175C10E2BA
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 19:37:10 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AN8KQU0+/oeza/F/abYh3/ZDiKyW/tiSZGtEOP5v/KXUOnTN0feWtxR1vWsPM2WrtGc8DofBh2QfIvc8KT6BsuZCP8a7WAo7SablS7ei1wqt8Znp6EjUoa7j4zBnPlyLTodiNQrUjqZoACr0uefVpG7xyFhp1Fxf6hWuyZtm5OjUG4cFpkcMg57VUr+cnNKwn3prqveMwoxTAyx639/IMINcd62XBrPkFsiYKt0EbIgpmK60px005rBj+EEHMggkYT0JsS7Zbelis4by8966tFxsXLYVVPD4AwQV6zcoBECJyrq9nXrbTxdnuEJv2WEZ+/yzFwFRmllQSEIzLE1ILg==
+ b=ScTi4A+E2bJCsNQh7IEKxAy1cAJtd0yLC9lzZp8acpd1vOTQmL+xbsmjY4O2xa3Gd3JSxrQCHvUJHbUJ6iHqbmh+P9L1UMMtAZSceOC16uGlGt4czGexyenQwQBNG2FRRuJFQlLCn8LAYg9SovjzDpr3gOLxQoLe/IWfp0n2NLgPkvDhp8/ufL9xPhLO02XEEIdDqgtkelBYZs6DsY4BpdOBOGDMxMeKI729YbzRjSpSwN2Hg1XcGWKAIdKdtUgnVFL7qO949riqlDhjyjcUWjj/YsJGgIEIsOra/H7jLEFuFCsNsE8Yx3yGTDKyQe62IMtl57uCaI/emYvRGeposA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C/GC+NP+xfV19vw1TkzFsdUexN+nR/vik9Ya94gh6eA=;
- b=lCuWkN9ygMZf0mhLSW0i6X5dhD/Kmsk8TSUPGAcbsXxRMepn8jfk7H9VWll5QgBCI0VnwkoEwE+QQ7L/vTPmn8tKezwFSiB7CK3Tcd+MryJa+1/5l7APKHD6eVMSApEb2TG/2WRdENWfkEvvfuhcVlaDEkFgDD50gCwpkZ3zbhaMJX5qLawL1n9QAyR1qwGFHMFz8//8Rf2kgK8AvqvoPIl8JEBm9JXL+5nLjbPyByAqbQNi07pGpsT5sMMvM8jgkGDyCFQj6/zl5Ud1KMOnw8gqQ7zFxXMBmDmYbqfe0BSjLX7g6S+PLk2p8sAbmQx9h2AQIC9ynK4lNb/HRscjKw==
+ bh=j6Pg/+2NRhhQMmvUE/AVJz1ilIWLYU4lbn+bYzMzxXk=;
+ b=dWHHX05Jz73dnHERuGUjnP8Y5nCUdiaLoZ9l13Q3DhtsNFVQi10YgsXhvnrG/vhSzqtKIdxcTOa7pu9SNAZ2lD1aaAw24n30fvQxz5fy55z/JPtgNmqrR8OM3pIlNaNS1Wy5QF6mp5TaGh/PPJQ87OIegUrnVqwihspOK8eXrOJ8YSQkkqtI+Gg982h2y4eWPsO9CohlbI4r6Xlje8QW+v8e2comaCDXG0RI42jE4SED2TszEqSKu6RsfL33f9c5teWG2Go2HgSrOAyOk/8BNfaedXyrwilEhwsuq60o2gOtoLB4/8lmWxoGQHTbbb1sYxKQmb3L6sGuTWgrF0kQkQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j6Pg/+2NRhhQMmvUE/AVJz1ilIWLYU4lbn+bYzMzxXk=;
+ b=GtFzvItDzU68tXXC5/UWX1rai/tIuJLaJQiLl3gCmxJ980Bj3FmVMz0KcaN9B2lQPUDGNpv4GDxpT18sO0ag1ywzd968mV7mb6iZOIZ8rZ3d+Ym684QJjEWaXssN10x71KqvLl7g889ORJjwHHrLJlhOKCxy9IS18QoLSPwKiwQ=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB5880.namprd11.prod.outlook.com (2603:10b6:510:143::14)
- by DSWPR11MB9715.namprd11.prod.outlook.com (2603:10b6:8:355::17) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
+ by CH3PR12MB8074.namprd12.prod.outlook.com (2603:10b6:610:12b::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
- 2026 19:18:43 +0000
-Received: from PH0PR11MB5880.namprd11.prod.outlook.com
- ([fe80::b706:268e:9753:cdfd]) by PH0PR11MB5880.namprd11.prod.outlook.com
- ([fe80::b706:268e:9753:cdfd%5]) with mapi id 15.20.9891.020; Tue, 12 May 2026
- 19:18:42 +0000
-Message-ID: <7225a744-f1e0-4060-a7ed-d11a38adeab9@intel.com>
-Date: Wed, 13 May 2026 00:48:34 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
+ 2026 19:37:04 +0000
+Received: from DM4PR12MB8476.namprd12.prod.outlook.com
+ ([fe80::2d79:122f:c62b:1cd8]) by DM4PR12MB8476.namprd12.prod.outlook.com
+ ([fe80::2d79:122f:c62b:1cd8%7]) with mapi id 15.20.9913.009; Tue, 12 May 2026
+ 19:37:01 +0000
+Message-ID: <44692a5a-4f27-4e78-adaf-03dcece28604@amd.com>
+Date: Tue, 12 May 2026 13:36:59 -0600
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH i-g-t][V3] tests/kms_hdr: Add visual HDR verification
  subtests
-To: Alex Hung <alex.hung@amd.com>, <igt-dev@lists.freedesktop.org>
-CC: <Mark.Broadworth@amd.com>, <vitaly.prosyak@amd.com>,
- <kamil.konieczny@linux.intel.com>, <jani.nikula@intel.com>, Wayne Lin
- <wayne.lin@amd.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Mark.Broadworth@amd.com, vitaly.prosyak@amd.com,
+ kamil.konieczny@linux.intel.com, jani.nikula@intel.com,
+ Wayne Lin <wayne.lin@amd.com>
 References: <20260507211330.2640022-1-alex.hung@amd.com>
  <a6ed9e4f-96f5-4aaa-8a46-659677ab0deb@amd.com>
+ <7225a744-f1e0-4060-a7ed-d11a38adeab9@intel.com>
 Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <a6ed9e4f-96f5-4aaa-8a46-659677ab0deb@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <7225a744-f1e0-4060-a7ed-d11a38adeab9@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0264.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1f1::15) To PH0PR11MB5880.namprd11.prod.outlook.com
- (2603:10b6:510:143::14)
+X-ClientProxiedBy: MW4PR04CA0305.namprd04.prod.outlook.com
+ (2603:10b6:303:82::10) To DM4PR12MB8476.namprd12.prod.outlook.com
+ (2603:10b6:8:17e::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5880:EE_|DSWPR11MB9715:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4fffaa38-9428-4c84-6f2b-08deb05b4782
+X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|CH3PR12MB8074:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7843ef0e-06e9-4d74-7b46-08deb05dd6d6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|56012099003|22082099003|18002099003|3023799003|11063799003;
-X-Microsoft-Antispam-Message-Info: cT3XG1Eykm+3gC2NSYr6m01WWCywlCtxQ/5D/+bWmwQxeEmM4pZXJnkGlpyK/+cpu2G5CEYDCBlOZs1zX0dP+NDvFHexZWrY0NI0cA18e4h1KX/HY/v6tbNWNnPTvLMO/gxqJ09rzhKiXULRGcdMQgMSKQDy9+R31BmCOVi/4/slaayrxKZ3KMRG00KZJ4ucI7o+3N02uSQX8cVqv4+MrrfcUMUkXt0caay0PPEok3hlEqa0j4MC9nn+aKivZ74igJbZfFc+N7Osj8/yDa7oRoM/MvizWdcYLDXWxWGJPUf68zjjwniVn7GKD7+3qxHKgUYH5PxLfAV8IQGcELmgbiDviyg/ltyqAS1Gw/AtyaUQhA/OQMJMnSUUIjvY7MyXh0s8rlraNx+7AWK59WD64182AYmG9yxdJHVIqm/xPIEjUZ0mTeiL01nlZnRRlrmH8ZxdHPw+iUrqro4VEYAxPzo0lfSjyaOxHTIWGV/f/n79uBLIZfSb9uHVBS3kNs50qwIGWtMIX0RJxo2qp4x3BDc/kvOl7YWx+liiOgUn6wmaL/q52t/OwoP3tecNkIVoijGSdjDnwMYYGn8JsDXrOTG5K+wKScXGUqlUz6jKu4Yy+xeEEo+7cVAxkJAOkN2l9F9ExZCcn97MNt2Dk/TnWwrosRcHtRnQsHYSPshMpbDJJCCwKFnsvWO7CeJ8K4BT
+ ARA:13230040|1800799024|376014|366016|11063799003|3023799003|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: f3I+E215Byu/vtdtDlqfUIGtI8FQx4fHAV24/al72T3wV8Vl0SBkvaRF3XjWG6coGEFTK/HWTD+KgyZP4Wivn9pYUK2rXob0+pIQQJENAfqWVOoWZyLFqM+jTArQT4WAGEeK7HPhGgpdXkR8RAFxAKQg6OtpSaH0W9K+ZERckVBuGJpmjX5VaGnPudvk2wbx+2RSh4mc18EWogW6T6DX6MQbbHy6g99PUWoWiosZ0eXHoHqYSex8UnWnvlmRxdmG1RXMYAjDzq7c3wOo5zlXmbR36lEQ5K0oEonwOz4dFGUtUxCAH1CdnUrJCZh47cYMdpJCA00ghBb25mlX9oG/HSIiiyjdptNArB8eejdW8wpI/2zyGLVy9K6llKmvI6IYhcyoAe//GCKClEwPaBYWzzX6qkO6ewYleyZS9KXN0Vd6tTiph6Ukj7NP/n79Bd8G1hVLQ9VJugz7V0ewWeBNsNPj7VnF5narBB3tfPBeNwnA8XOObHKbGTOYwPs0qTrTGougyutQ7DiLzb/CMJzGn3l/HiKA++9IbtxNbkDhdE60jEd9uIBLzHWILe+BAMFFr0iPR7/tdEimxydGNOcdC74Ee87o0G5wiX1/hWGvbKLlREjiJNkgHDnZKEbfDVdKwYi8r7UAVNjr+MnA45ael7Zamv9AUkzDoqR1PL+K2neE/46kJa8Nb5JwANEyRT5M
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR11MB5880.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(22082099003)(18002099003)(3023799003)(11063799003);
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB8476.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(11063799003)(3023799003)(56012099003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aTdiY040R0E0VW9PN1ZuM3JKT1RIV1g4MXJnUVN4ZW11SmFJVU5UK25TMjI0?=
- =?utf-8?B?SitNaE96WVdrZGJ2RjhNYSt6eU91aHFNSi9HNlZhWktRdWR0ZmxWQWo5S1JQ?=
- =?utf-8?B?Unh5bUtzYUJBTStLWW5ycE1MVHlnNEdsSVVnSDBuMkw5SVhhVHo2MVEreXVw?=
- =?utf-8?B?NmNTaEw2Q0VVMVRpSE1YWVc3WTlmaVlXeTRoMFpjSGUzRW5jbXp4bUxOWWd6?=
- =?utf-8?B?ejVjaU9WRlJEWDdVQlU5Nm0vVTY1MmxrTm4vUExMNXk2dHFRV0RYdTAyQmZ3?=
- =?utf-8?B?TWF5VG9zQnhIcXFPRXR2V1dUWUdmL1gyNyt4YVFkcngyTWxyc3UwaW15blNL?=
- =?utf-8?B?OEduaGN2eXo2aGNvWWFNcEs2NkdyVGJhYXZ5NkFkeWNGTkM0VWNlWHg3SUUv?=
- =?utf-8?B?Unc1RXVOd28yaG5hcDdVQnQ3bXRaaERFUkQ4T1FsTURYakVNM0tuWHFTQ1FM?=
- =?utf-8?B?Y2tPVkp3Q0JneFZoR0Z4Zi96R0Y4UFZUUzVndGVNcCtoWk9FTlcvbXZqM2la?=
- =?utf-8?B?R1h4M3YvQUt0K3FhTVREZ0pzbzc3TUcrbVY0VmtzZDc5SlNEbTB2VEZaWEpv?=
- =?utf-8?B?Mk1wL1IzRTk2VEplUkljeXVLNW1ySlhaY1JZdFc1SmNhWjM4R0xlclpsaHFF?=
- =?utf-8?B?RklQT0NmQXJxUlRWZGR4N05QaTg0SHJqRXFHMG9hMjB2bWh2MDlsNFp2TTZ3?=
- =?utf-8?B?L0hMK3NIMUQrSGJsQW9NaDEyNXMvYzZKK0pIK0Rva0RsR1k3S3crUllnWXFR?=
- =?utf-8?B?UEdySTNiZ0JPRVF3Z1V1VFdoQksvcjRzbEFaUktldUxIODd2S0Rxci9zNHY2?=
- =?utf-8?B?ZFJnc1pRMGFxekhWditwd24zRTVqSENLOXdKclJOSER6bkdxc2hWVnBad0V1?=
- =?utf-8?B?NzJoK1M5bXpneWhRQXlJYUd6U0lWeDRiMURsK0VyalNjdFRha01rMVEvR3lK?=
- =?utf-8?B?TDRFQTRmc1RQRTRaWFJrYXZJeThzU1hxSFhLazFIR1JtdkVhbGN5U1RScFNY?=
- =?utf-8?B?VVUwZjU4WWwzMlJPMlUyczQ4d1FKeHlQSlNvbEI1aDVjallxQlRzVEFwcDRn?=
- =?utf-8?B?MUxRdXNySm9Wek9XQ3dWN09FaU1TTkQ5QU42RmxHTGVQN3VySjBZSTNFaU9z?=
- =?utf-8?B?RDRiSUNOSGZ4YmpWTFlSWGFocGxENjN3WEduZTJOUXlyQ0l4a2V0U015QlFv?=
- =?utf-8?B?dHRqaWRWbFB0eUFoQlRTQkQwdUlxb2lraHBpaWRYck96NEF6ZlJOVCs1eXBq?=
- =?utf-8?B?ajl0cGJQcHpKdHM3RTBMK1lHNmFvWkdPc1NFSzRDd1FoZzlTYW1vTXpaYVVv?=
- =?utf-8?B?K2djT213VGN3U1lkdEJSRUc5ZkZRcm9lN00xV0JsMFlGWlVIMlZhbElhY21E?=
- =?utf-8?B?bldyUHlnWnhrbkRuTDZnSWQzT0xFSy9qcmRNUXZzRExqNXJlSi9jM2xJb0dm?=
- =?utf-8?B?M0l4ZjRvK3VORjkySS9oblBKTHdrRFJack4vL1Y2USs4UE04TEJrRVVFTkN2?=
- =?utf-8?B?NlF0Rlk4akYvdWdkMVZlb3lXakxydXpiNDVPUVZlWGVKQVNPNzZqQlVjWFFy?=
- =?utf-8?B?MkdEZmlhcU56UUNYcVpKalhQZVc5Z0J3S2grbUNPWVltdjJ2bTRvdzVjOFFn?=
- =?utf-8?B?Sit0NUcwZXFyRkZPb0VONFcxU3F4RUl4dTc4WnpSL3lvY2dLditwYzQ0UXAr?=
- =?utf-8?B?R1dIS1pvVWIxc21JTG9kajRjT0dTKzdBaW5XTGx6bU9obk5qZ1JWcVRmZGNR?=
- =?utf-8?B?aEc0Q2FIVmFkM1V2dkVWN3EzbUk4S0s4V2ZhZ0p0RXdVUk9sbStEbXU1UkNS?=
- =?utf-8?B?VmZNWjBNV0pjRm5WaHdaY3ZYYU1IdUlPVzBJb0xFRkZERW1OVm9WaGp2bjNE?=
- =?utf-8?B?UVZBOEZRdmVyS2xGSU1TdGVOWlBBdVdwM2dvclhFZEtrY3ljM0ppai9hTkps?=
- =?utf-8?B?RHpSSWVycjJGaTBqemxYWDJ5QXNOK25JR3lweFhLS3FuUVVjTUpDUVFxbk93?=
- =?utf-8?B?bStLRTdGVnVvRVNtQ1p1bnNHMHNINGJTQ1dHZ2NPU1FXOFhyZHdXZG1xeUc0?=
- =?utf-8?B?YnhtZDNzZlB1L1N6bTdySnh2ZzdNR1cvVFZNSHI1WDE2d1MyRCtLYWxYWHEw?=
- =?utf-8?B?ZkZnWXg1eVM5MHBnMmpCMW12WUEwL1hEV3lKd3NCRkVWK25hbmpIS1kxeFhN?=
- =?utf-8?B?YW01UHhNZ2JlVnIzbGhqVFV3UE1XbjZNc3JzUlhrQmh2RHM5UHkweU1nY0du?=
- =?utf-8?B?TE5HU3pLdUphUVZSZCtvd3JCb0hPOFdBQmh4UkV0bis5QjFEOUI3UlAydk9v?=
- =?utf-8?B?OXF1UU5sb3dwVmxkOXpRZDYwL0ovdDNINjJjWVkyRkZrSHJGb28vdz09?=
-X-Exchange-RoutingPolicyChecked: WEbGnxrBEgjf4bT1PHufZa/TooL8NrqqUaFtU60SYfbZTcbv/2cBqQyeWnqM9ZmYuY8VsoFposXuCF11XLnO8KO1OIociNTcgLwxaHsyldAXMEda9M0A5yDf+qI3S7xslkFBkbUd68nHgV2hosXxV14y87kvy6doLxF9pGNy+K840s3N0nq8SHLvzBMnDX0PbHkfk631wNKwYLwP2cRIOzmtiwhcGCD2VkdQ7zgbD7BNh/tBEQgzdVnbj9fZW82gVjhGJb5UJc6CoAAzyrNJQaPPGtGFP04GoqiQs1j4BPaClvGT0g86PnlW+i0EsmY6shVr2KDsQ8PFY4fg1ADtCQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fffaa38-9428-4c84-6f2b-08deb05b4782
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5880.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WEZCYVgyOFdUeVpPSy9NYkdRZVZzOG81TVlvRVMwNityd3FFNVkxMW9DSXQw?=
+ =?utf-8?B?anE3Z2xieUhhWFdOTFJMcGYrTGFINGNhTUkvK3E3aXhFWGJkRTZwcVdpKy9K?=
+ =?utf-8?B?WFR5c2E5OXZKTXpLNmFuQmQyRlpnbkdQbjlBeUJYak9YYUM4aDhrWjU0OXdu?=
+ =?utf-8?B?LzBneElVVVl3bWtGdHpoa3dibm5ySXErMWFmSWtYcWgwNTBiQUZzdTVXMWhH?=
+ =?utf-8?B?SngrMDNRTmxZVldibGIzeHA2RjZHRUJkbHF2OElCaHJUL3hjNHNIVDJwUlFx?=
+ =?utf-8?B?bmYzaW9qT0Z5Ni9PUXNtTGFtemtlRi9PMFRKd2F5S1ppaXYzMXJ1SVNqeTlX?=
+ =?utf-8?B?SEFJQmNQTjVnT3ErU25mRC80dldoVFZwRDZkdEhxMEhWTEVnYVltLy9VVEpo?=
+ =?utf-8?B?N0o0aUxnZjF3Qk1xTTNCTlQ3SmRzZlMvMTVLOEdTaEtvUmk3d1lUd0tsdUIw?=
+ =?utf-8?B?NkY5MzRvUFJBNXpoRGhCdlQ5L0lDNWZDZXJFSTJPaDBtMFRHODk2UVFFTzZq?=
+ =?utf-8?B?dUU4K3pnam5ldTF0WFF5UjRRZ1hOaDRsQlJ5Sm5lbnl4cXIwbFpTSVlLZUxh?=
+ =?utf-8?B?cXdrYWo5eXpzekorWHZLOGhsSlM0MmlzSklZdTZuZ2w4cEozeGxvdUcxT2xu?=
+ =?utf-8?B?eHBPUGgvK2Eramx2S0VzbzAxRDIyM2t1ZE1KNUJ3anc5anFqNnAyeDc5SjRP?=
+ =?utf-8?B?TG4yY2NhTDJwcTc0VFZHQm1lZHM0UG0vcTkwNjE2VEdZRUQxdktwNnc2Nmd2?=
+ =?utf-8?B?SVhzbmRwd2JONHBId0RkdXFLUldQWHk4RHJGMm13dzRwRmxiaUt4SXVUYjBl?=
+ =?utf-8?B?NEcxNnkxRlZNaEJQcU9rV29Qc2R0RjE4MWNDc2lseDJBUXRnS3dCdEI0cnNv?=
+ =?utf-8?B?c21tenFTS29tMDF4aGpsZUovWlNlMHNEMlJMaVJBNVliQ3ErUGZOVWNtbVVz?=
+ =?utf-8?B?TERjbUxoNlJHcklpSkpzV3FnV29zZjRGNGZxeXRWeFZsS0FPNExwanNvTmdW?=
+ =?utf-8?B?RGtoOWppNzlsOFhsQkhmK2FVYk5acGREZnZTbklVdXV1VnJsdzgxZGxlV284?=
+ =?utf-8?B?ZTFReEFTdmx1WTJXZkRZQ1FGV0RISFpwcXVzdGpPWXhCVjJqMWFxMmVFU1E3?=
+ =?utf-8?B?dkxiclBSR1FoQUFMSXg1SjBMUjRGTlBaMlg4SWYybXg5RW1yTGZYTXJiQTY4?=
+ =?utf-8?B?Vk1PNDUxZk9ZNjJrSElDaG9hRUFMZXV1YjVFUVk4S0JVNEF2QWROd1AwU2gw?=
+ =?utf-8?B?WjR2bWZIR3RYcjRhREU3RmJEMnIrem1tR2NsVTlCMHpLb3h1dFZoRStoMENV?=
+ =?utf-8?B?N3JwMytadHo3VllSNEZiUUJaUFR6anQ2Q2FyS1Y2VTluUk42OGhKVWh6bHZ2?=
+ =?utf-8?B?bmZ5RzBJWGxXdUNQUTdNZGZrNlFhTThXaFhQTTR1NVBFODJtTGkvMzByU0hl?=
+ =?utf-8?B?SDg5bVlKU3FmM2lYdy9PWmZ5Wmw5OS9VVGxEUHZrMWxReXFBdFBNY3pKNmh0?=
+ =?utf-8?B?ZFRYSG91ZG9lVXRNM1pUSi9rSlJUbzFDWUtaSUMyeW1wY0tLZkR6eXMrWlNk?=
+ =?utf-8?B?SXkyUnZ1MW4weTF4QW9raStsbzV1dFpGNFBUMWpJY0ljRVZlMW1kRDhkVWwr?=
+ =?utf-8?B?NjNTKysxOXZDOUxOR0N3T3RLQzdlczg1VGl6WEJpc0tMN2pLNlQ2d2VrSlF2?=
+ =?utf-8?B?Z2U1bkVUTEd5Vks1dlVGT2VCSTZCSWZZTVV6c1Ezb2lqWjVZOUdkWHpVU0JW?=
+ =?utf-8?B?YVlXMmk1ekg4VTVqVUY2S2ZZV0NSN3QyQU1WVGtpa1M4RzBhdWFIOHUxbVpn?=
+ =?utf-8?B?SG9Wanh5cWpXOHlqbTUvYTVsYzN5MGY0dTJpbHh6V0did2JoSDFkZ0xJb3hR?=
+ =?utf-8?B?b3V1SmpBaUlLWnZzRFFMbEJINzl2eU03dTd3VStlZzduQzVlNkVxcTJUb3l5?=
+ =?utf-8?B?VGV0M3lqOHF1NjdXRmk4QmZpTE1TSEtqSzA4U2F4TElZTkxrMmtnaWxLTENi?=
+ =?utf-8?B?MVViN1ZpdU5DRWtURTRMVkxQbmxzck5uUCtYU1BlUzd0NzN4Zkd1MXkvM1Rn?=
+ =?utf-8?B?RGExZ2RmK1VGQ2k3cU1Na1ZXSW0yemRwNUtsOFd3dWh2amtKamdpeDhrVnds?=
+ =?utf-8?B?NlRwZENaR0tLSUtFOGc3bVdIZUVJVnB5clNhVTI0K2hSNWRHSmlSalB4WmdU?=
+ =?utf-8?B?VkluSDN2YkIvbWtWVHQxV2pMU0xmajZDZWJHaTN1QWc1cTFEd0gyYWNVMzcy?=
+ =?utf-8?B?bFpkZUE5bWdBdUNISGl4MkJUTXk4bXAxWS9EemZaeUtIdm9vcjd3ODlHNFUw?=
+ =?utf-8?Q?O+A/Z5imOoHqz/icEB?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7843ef0e-06e9-4d74-7b46-08deb05dd6d6
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 19:18:42.3264 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 19:37:01.8432 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8TlMuCyBVwYp/156YuQIiZ2bmFdGpL+saWg7G0KKEAUBkAYJ++tl/TmbftZOGcx3eorrRLrzlhasbU224TWHKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSWPR11MB9715
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: KniSjJf4w/5NkntEYC2nS1c+b3j0z5ynnym7wp9iHSx2Y0+kjFNerBo6VhKIyPbXa7VO72XTO0J15MEgmaTHqg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8074
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -172,168 +139,177 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Alex,
 
-On 12-05-2026 06:06 am, Alex Hung wrote:
-> Hi,
->
-> Does anyone have any concerns if I merge this patch?
->
-> On 5/7/26 15:13, Alex Hung wrote:
->> From: Wayne Lin <wayne.lin@amd.com>
+
+On 5/12/26 13:18, Sharma, Swati2 wrote:
+> Hi Alex,
+> 
+> On 12-05-2026 06:06 am, Alex Hung wrote:
+>> Hi,
 >>
->> The new subtests display an HDR test pattern under a given metadata
->> mode and pause for user confirmation, enabling manual inspection of
->> HDR output quality on a connected HDR panel.
+>> Does anyone have any concerns if I merge this patch?
 >>
->> New subtests:
->> kms_hdr --run-subtest static-swap-smpte2084 
->> --interactive-debug=smpte2084
->> kms_hdr --run-subtest static-swap-traditional-sdr 
->> --interactive-debug=traditional-sdr
+>> On 5/7/26 15:13, Alex Hung wrote:
+>>> From: Wayne Lin <wayne.lin@amd.com>
+>>>
+>>> The new subtests display an HDR test pattern under a given metadata
+>>> mode and pause for user confirmation, enabling manual inspection of
+>>> HDR output quality on a connected HDR panel.
+>>>
+>>> New subtests:
+>>> kms_hdr --run-subtest static-swap-smpte2084 --interactive- 
+>>> debug=smpte2084
+>>> kms_hdr --run-subtest static-swap-traditional-sdr --interactive- 
+>>> debug=traditional-sdr
+>>>
+>>> Co-developed-by: Alex Hung <alex.hung@amd.com>
+>>> Signed-off-by: Alex Hung <alex.hung@amd.com>
+> Is Co-developed redundant?
+
+Thanks for catching this.
+
+>>> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+>>> Assisted-by: Copilot:Claude-Sonnet-4.6
+>>> ---
+>>>   tests/kms_hdr.c | 89 +++++++++++++++++++++++++++++++++++++++++++++++++
+>>>   1 file changed, 89 insertions(+)
+>>>
+>>> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+>>> index 876c1c03a..c13e985e1 100644
+>>> --- a/tests/kms_hdr.c
+>>> +++ b/tests/kms_hdr.c
+>>> @@ -67,6 +67,14 @@
+>>>    *
+>>>    * @swap:                    swapping static HDR metadata
+>>>    * @toggle:                  entering and exiting HDR mode
+>>> + *
+>>> + * SUBTEST: static-swap-smpte2084
+>>> + * Description: Show a visual HDR pattern with SMPTE ST 2084 
+>>> metadata and
+>>> + * require user confirmation.
+>>> + *
+>>> + * SUBTEST: static-swap-traditional-sdr
+>>> + * Description: Show a visual HDR pattern with traditional SDR gamma 
+>>> metadata
+>>> + * and require user confirmation.
+>>>    */
+>>>
+>>>   IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
+>>> @@ -647,6 +655,79 @@ static void test_hdr(data_t *data, uint32_t flags)
+>>>       }
+>>>   }
+>>>
+>>> +static void test_hdr_visual(data_t *data,
+>>> +                 void (*fill_metadata)(struct hdr_output_metadata *),
+>>> +                 const char *mode_name) +{
+>>> +    igt_display_t *display = &data->display;
+>>> +    igt_output_t *output;
+>>> +    igt_fb_t afb;
+>>> +    int afb_id;
+>>> +    bool found = false;
+>>> +    struct hdr_output_metadata hdr;
+>>> +
+>>> +    igt_display_reset(display);
+>>> +
+>>> +    for_each_connected_output(display, output) {
+>>> +        igt_crtc_t *crtc;
+>>> +
+>>> +        if (!has_max_bpc(output) || !igt_output_supports_hdr(output)) {
+>>> +            igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC or 
+>>> IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
+>>> +                 igt_output_name(output));
+>>> +            continue;
+>>> +        }
+>>> +
+>>> +        if (!igt_is_panel_hdr(data->fd, output)) {
+>>> +            igt_info("Panel attached via %s connector is non-HDR\n", 
+>>> igt_output_name(output));
+>>> +            continue;
+>>> +        }
+>>> +
+>>> +        if (igt_get_output_max_bpc(output) < 10) {
+>>> +            igt_info("%s: Doesn't support 10 bpc.\n", 
+>>> igt_output_name(output));
+>>> +            continue;
+>>> +        }
+>>> +
+>>> +        for_each_crtc(display, crtc) {
+>>> +            igt_output_set_crtc(output, crtc);
+>>> +            if (!igt_crtc_connector_valid(crtc, output))
+>>> +                continue;
+>>> +
+>>> +            prepare_test(data, output, crtc);
+>>> +
+>>> +            afb_id = igt_create_fb(data->fd, 512, 512,
+>>> +                           DRM_FORMAT_XRGB2101010,
+>>> +                           DRM_FORMAT_MOD_LINEAR, &afb);
+>>> +            igt_assert(afb_id);
+>>> +
+>>> +            draw_hdr_pattern(&afb);
+>>> +
+>>> +            igt_plane_set_fb(data->primary, &afb);
+>>> +            igt_plane_set_size(data->primary, data->w, data->h);
+>>> +            fill_metadata(&hdr);
+>>> +            igt_hdr_set_metadata(data->output, &hdr);
+>>> +            igt_output_set_prop_value(data->output, 
+>>> IGT_CONNECTOR_MAX_BPC, 10);
+>>> +            igt_display_commit_atomic(display,
+>>> +                          DRM_MODE_ATOMIC_ALLOW_MODESET,
+>>> +                          NULL);
+>>> +
+>>> +            igt_info("Displaying %s HDR pattern. Press a key to 
+>>> continue.\n", mode_name);
+>>> +            igt_debug_wait_for_keypress(mode_name);
+>>> +
+>>> +            igt_hdr_set_metadata(data->output, NULL);
+>>> +            igt_output_set_prop_value(data->output, 
+>>> IGT_CONNECTOR_MAX_BPC, 8);
+>>> +            igt_display_commit_atomic(display, 
+>>> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>>> +
+>>> +            test_fini(data);
+>>> +            igt_remove_fb(data->fd, &afb);
+>>> +
+>>> +            found = true;
+>>> +            break;
+>>> +        }
+>>> +    }
+>>> +
+>>> +    igt_require_f(found, "No HDR-capable connector found.\n");
+>>> +}
+>>> +
+>>>   int igt_main()
+>>>   {
+>>>       data_t data = {};
+>>> @@ -698,6 +779,14 @@ int igt_main()
+>>>       igt_subtest_with_dynamic("invalid-hdr")
+>>>           test_hdr(&data, TEST_INVALID_HDR);
+>>>
+>>> +    igt_describe("Show HDR pattern with SMPTE ST 2084 metadata and 
+>>> require user confirmation");
+>>> +    igt_subtest("static-swap-smpte2084")
+>>> +        test_hdr_visual(&data, igt_hdr_fill_st2084, "smpte2084");
+>>> +
+>>> +    igt_describe("Show HDR pattern with traditional SDR gamma 
+>>> metadata and require user confirmation");
+>>> +    igt_subtest("static-swap-traditional-sdr")
+>>> +        test_hdr_visual(&data, igt_hdr_fill_sdr, "traditional-sdr");
+> igt_debug_wait_for_keypress() is a no-op in CI — these subtests just 
+> duplicate static-swap with no added validation.
+> Instead, add igt_debug_interactive_mode_check() calls inside the 
+> existing test_static_swap() after each metadata commit. This is CI-safe 
+> (no-op without terminal) and provides Y/n visual verdict when run with 
+> --interactive-debug=all. See tests/intel/kms_dsc.c:90-92,216 for 
+> reference. No new subtests or functions needed.
+
+Thanks. Let me change it and then send V4.
+
+>>> +
+>>>       igt_fixture() {
+>>>           igt_display_fini(&data.display);
+>>>           drm_close_driver(data.fd);
+>>> -- 
+>>> 2.43.0
+>>>
 >>
->> Co-developed-by: Alex Hung <alex.hung@amd.com>
->> Signed-off-by: Alex Hung <alex.hung@amd.com>
-Is Co-developed redundant?
->> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
->> Assisted-by: Copilot:Claude-Sonnet-4.6
->> ---
->>   tests/kms_hdr.c | 89 +++++++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 89 insertions(+)
->>
->> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
->> index 876c1c03a..c13e985e1 100644
->> --- a/tests/kms_hdr.c
->> +++ b/tests/kms_hdr.c
->> @@ -67,6 +67,14 @@
->>    *
->>    * @swap:                    swapping static HDR metadata
->>    * @toggle:                  entering and exiting HDR mode
->> + *
->> + * SUBTEST: static-swap-smpte2084
->> + * Description: Show a visual HDR pattern with SMPTE ST 2084 
->> metadata and
->> + * require user confirmation.
->> + *
->> + * SUBTEST: static-swap-traditional-sdr
->> + * Description: Show a visual HDR pattern with traditional SDR gamma 
->> metadata
->> + * and require user confirmation.
->>    */
->>
->>   IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
->> @@ -647,6 +655,79 @@ static void test_hdr(data_t *data, uint32_t flags)
->>       }
->>   }
->>
->> +static void test_hdr_visual(data_t *data,
->> +                 void (*fill_metadata)(struct hdr_output_metadata *),
->> +                 const char *mode_name) 
->> +{
->> +    igt_display_t *display = &data->display;
->> +    igt_output_t *output;
->> +    igt_fb_t afb;
->> +    int afb_id;
->> +    bool found = false;
->> +    struct hdr_output_metadata hdr;
->> +
->> +    igt_display_reset(display);
->> +
->> +    for_each_connected_output(display, output) {
->> +        igt_crtc_t *crtc;
->> +
->> +        if (!has_max_bpc(output) || !igt_output_supports_hdr(output)) {
->> +            igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC or 
->> IGT_CONNECTOR_HDR_OUTPUT_METADATA.\n",
->> +                 igt_output_name(output));
->> +            continue;
->> +        }
->> +
->> +        if (!igt_is_panel_hdr(data->fd, output)) {
->> +            igt_info("Panel attached via %s connector is non-HDR\n", 
->> igt_output_name(output));
->> +            continue;
->> +        }
->> +
->> +        if (igt_get_output_max_bpc(output) < 10) {
->> +            igt_info("%s: Doesn't support 10 bpc.\n", 
->> igt_output_name(output));
->> +            continue;
->> +        }
->> +
->> +        for_each_crtc(display, crtc) {
->> +            igt_output_set_crtc(output, crtc);
->> +            if (!igt_crtc_connector_valid(crtc, output))
->> +                continue;
->> +
->> +            prepare_test(data, output, crtc);
->> +
->> +            afb_id = igt_create_fb(data->fd, 512, 512,
->> +                           DRM_FORMAT_XRGB2101010,
->> +                           DRM_FORMAT_MOD_LINEAR, &afb);
->> +            igt_assert(afb_id);
->> +
->> +            draw_hdr_pattern(&afb);
->> +
->> +            igt_plane_set_fb(data->primary, &afb);
->> +            igt_plane_set_size(data->primary, data->w, data->h);
->> +            fill_metadata(&hdr);
->> +            igt_hdr_set_metadata(data->output, &hdr);
->> +            igt_output_set_prop_value(data->output, 
->> IGT_CONNECTOR_MAX_BPC, 10);
->> +            igt_display_commit_atomic(display,
->> +                          DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +                          NULL);
->> +
->> +            igt_info("Displaying %s HDR pattern. Press a key to 
->> continue.\n", mode_name);
->> +            igt_debug_wait_for_keypress(mode_name);
->> +
->> +            igt_hdr_set_metadata(data->output, NULL);
->> +            igt_output_set_prop_value(data->output, 
->> IGT_CONNECTOR_MAX_BPC, 8);
->> +            igt_display_commit_atomic(display, 
->> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->> +
->> +            test_fini(data);
->> +            igt_remove_fb(data->fd, &afb);
->> +
->> +            found = true;
->> +            break;
->> +        }
->> +    }
->> +
->> +    igt_require_f(found, "No HDR-capable connector found.\n");
->> +}
->> +
->>   int igt_main()
->>   {
->>       data_t data = {};
->> @@ -698,6 +779,14 @@ int igt_main()
->>       igt_subtest_with_dynamic("invalid-hdr")
->>           test_hdr(&data, TEST_INVALID_HDR);
->>
->> +    igt_describe("Show HDR pattern with SMPTE ST 2084 metadata and 
->> require user confirmation");
->> +    igt_subtest("static-swap-smpte2084")
->> +        test_hdr_visual(&data, igt_hdr_fill_st2084, "smpte2084");
->> +
->> +    igt_describe("Show HDR pattern with traditional SDR gamma 
->> metadata and require user confirmation");
->> +    igt_subtest("static-swap-traditional-sdr")
->> +        test_hdr_visual(&data, igt_hdr_fill_sdr, "traditional-sdr");
-igt_debug_wait_for_keypress() is a no-op in CI — these subtests just 
-duplicate static-swap with no added validation.
-Instead, add igt_debug_interactive_mode_check() calls inside the 
-existing test_static_swap() after each metadata commit. This is CI-safe 
-(no-op without terminal) and provides Y/n visual verdict when run with 
---interactive-debug=all. See tests/intel/kms_dsc.c:90-92,216 for 
-reference. No new subtests or functions needed.
->> +
->>       igt_fixture() {
->>           igt_display_fini(&data.display);
->>           drm_close_driver(data.fd);
->> -- 
->> 2.43.0
->>
->
+
