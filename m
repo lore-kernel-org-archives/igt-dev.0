@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C949CCD484E
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 06:02:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05DF7CD4851
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 06:11:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 783B410E56C;
-	Tue, 12 May 2026 06:02:05 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF36210E56C;
- Tue, 12 May 2026 06:01:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============9093833714021923603=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A660A10E56C;
+	Tue, 12 May 2026 06:11:03 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="htNAgpXZ";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A589910E02C
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 06:10:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1778566246; x=1810102246;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=hVZVPT++lxGXm4+CGUqxcFnAqhFpRlThzjqh954Nh7Y=;
+ b=htNAgpXZ2+eQtjLUgOtyX20l+s9kR48lYOXjCdCla1BcGWioa3zotCg1
+ Y5eYe2SwZ60KW7K0us4bcEMrhHJjba49ZwF36f38oMH6dyV985PcZ/6AV
+ w+QtxYwOAY7C1QR3clFMFFVc/a20sUA4dr1JwRZlI/L/hoAeIrqgJLncD
+ uiHLqZ5ziklmxk0ZT1b90/jioB2FvSD9L+rem+/7Ckg1jWqOo0+uN1ki+
+ 9QXdD5k4bC1dr/KKqTV6XQlQ+5k7OPkNuOm+sb8HLzRWGex9gWPJcL/ED
+ acFhiq1wB/aKv9wkhu3xRLejK5tFxx1lXMdwoZCqgsuNhO6jx0hdkpJ5D g==;
+X-CSE-ConnectionGUID: Fb5vKBgtRqqOhbCRltimfg==
+X-CSE-MsgGUID: LC0BCpdCQAWoTrXJmZQpgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83318516"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="83318516"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 23:10:46 -0700
+X-CSE-ConnectionGUID: rb9Ny80ZSE6rtV8ZS0L8OA==
+X-CSE-MsgGUID: g83p0IkWS1qk4VZv6U0Zsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="237903333"
+Received: from varungup-desk.iind.intel.com ([10.190.238.71])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 23:10:45 -0700
+From: Varun Gupta <varun.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: nishit.sharma@intel.com
+Subject: [PATCH i-g-t] tests/intel/xe_madvise: Drop assert on cleanup unbind
+ in atomic subtests
+Date: Tue, 12 May 2026 11:40:35 +0530
+Message-ID: <20260512061035.190653-1-varun.gupta@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_test/intel/xe=5Fvm=3AAdd_?=
- =?utf-8?q?oversubscribe_concurrent_bind_stress_subtest_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 12 May 2026 06:01:48 -0000
-Message-ID: <177856570870.60085.9589788158398173391@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260512024712.176696-1-sobin.thomas@intel.com>
-In-Reply-To: <20260512024712.176696-1-sobin.thomas@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,149 +63,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9093833714021923603==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The __xe_vm_bind_assert() for UNMAP can sporadically fail with EBUSY
+because GPU migration to VRAM may still hold pages when the cleanup
+unbind is issued after exec completion.  The unbind before
+xe_vm_destroy is best-effort cleanup, use __xe_vm_bind() (non-assert)
+instead.
 
-== Series Details ==
+Fixes: 44dea557914c ("tests/intel/xe_madvise: Add atomic-device subtest")
+Fixes: 2642f23c1dbe ("tests/intel/xe_madvise: Add atomic-global subtest")
+Fixes: 6f88532e2fe2 ("tests/intel/xe_madvise: Add atomic-cpu subtest")
 
-Series: test/intel/xe_vm:Add oversubscribe concurrent bind stress subtest (rev3)
-URL   : https://patchwork.freedesktop.org/series/165481/
-State : success
+Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
+Signed-off-by: Varun Gupta <varun.gupta@intel.com>
+---
+ tests/intel/xe_madvise.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
+index cdb115d7e..8f88de0de 100644
+--- a/tests/intel/xe_madvise.c
++++ b/tests/intel/xe_madvise.c
+@@ -872,8 +872,8 @@ static void test_atomic_device(int fd, struct drm_xe_engine_class_instance *eci)
+ 	igt_assert_eq(data->data, 1);
+ 
+ 	xe_exec_queue_destroy(fd, exec_queue);
+-	__xe_vm_bind_assert(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,
+-			    DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0);
++	__xe_vm_bind(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,
++		     DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0, 0);
+ 	free(data);
+ 	xe_vm_destroy(fd, vm);
+ }
+@@ -955,8 +955,8 @@ static void test_atomic_global(int fd, struct drm_xe_engine_class_instance *eci)
+ 	igt_assert_eq(data->data, n_cpu_ops + 1);
+ 
+ 	xe_exec_queue_destroy(fd, exec_queue);
+-	__xe_vm_bind_assert(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,
+-			    DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0);
++	__xe_vm_bind(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,
++		     DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0, 0);
+ 	free(data);
+ 	xe_vm_destroy(fd, vm);
+ }
+@@ -1028,8 +1028,8 @@ static void test_atomic_cpu(int fd, struct drm_xe_engine_class_instance *eci)
+ 	igt_assert_eq(data->data, 0);
+ 
+ 	xe_exec_queue_destroy(fd, exec_queue);
+-	__xe_vm_bind_assert(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,
+-			    DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0);
++	__xe_vm_bind(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,
++		     DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0, 0);
+ 	free(data);
+ 	xe_vm_destroy(fd, vm);
+ }
+-- 
+2.43.0
 
-CI Bug Log - changes from IGT_8903 -> IGTPW_15156
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15156/index.html
-
-Participating hosts (42 -> 39)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15156 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8903/bat-dg2-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15156/bat-dg2-8/igt@i915_selftest@live.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8903/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15156/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8903 -> IGTPW_15156
-  * Linux: CI_DRM_18467 -> CI_DRM_18470
-
-  CI-20190529: 20190529
-  CI_DRM_18467: f8ee23694aa6be213355905a78f79bb1b0861565 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18470: 767b83aa80c6d7eaa1204a866b287b56a1a33122 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15156: 7ac7b914cfbb7c418c46e69e1756ee18ad6e99b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8903: 6f88532e2fe22529195cc2f8cabff93d994688f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15156/index.html
-
---===============9093833714021923603==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>test/intel/xe_vm:Add oversubscribe concurrent bind stress subtest (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165481/">https://patchwork.freedesktop.org/series/165481/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15156/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15156/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8903 -&gt; IGTPW_15156</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15156/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15156 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8903/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15156/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8903/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15156/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8903 -&gt; IGTPW_15156</li>
-<li>Linux: CI_DRM_18467 -&gt; CI_DRM_18470</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18467: f8ee23694aa6be213355905a78f79bb1b0861565 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18470: 767b83aa80c6d7eaa1204a866b287b56a1a33122 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15156: 7ac7b914cfbb7c418c46e69e1756ee18ad6e99b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8903: 6f88532e2fe22529195cc2f8cabff93d994688f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============9093833714021923603==--
