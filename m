@@ -4,61 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C84D7CD37AC
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 04:43:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B12CD37AC
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 04:46:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5785E10E23E;
-	Tue, 12 May 2026 04:43:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2A4010E23E;
+	Tue, 12 May 2026 04:46:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YCv+fVuE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ct9ydVla";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFB9B10E23E
- for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 04:43:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43BBA10E23E
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 04:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778561012; x=1810097012;
+ t=1778561163; x=1810097163;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=UCQAxv5ewi+MvvyZzIulhFNQD2AqKmAvluy5ULA1+54=;
- b=YCv+fVuEzEhugoHRd698wRzAVv7V4Zf2DD1v2+DluXlduDLgKbDP+TOT
- bYCJzePQHoZ8mJla5+SjMKNlV7kSjcaOlmRAXlor8Ble9mti5vxwujSXL
- wljoa1S2DvzWHUcubTK8JhfcNmxTbvuyAY5+IRHzoaEVJXimESp/4J71M
- cpu3KZFFmVtjiWakIEiDkkczaHh1Sz4BxKIcGGALPuvtRgBGxmTyJMKfM
- Afeb+FHMRft02Sudwd8QjYl1Iz9vVPj7Zw3M6XgbnXO85tJ/lTNWaf38U
- CkaAXLmrhcqR4n+gYh/7gbR3T63QBT8lBHWyk+dYBQO99oZRsRWZyXiZ3 A==;
-X-CSE-ConnectionGUID: Wh7Q5oE3T1WfY8s2hoJUVQ==
-X-CSE-MsgGUID: O0A4ttlvRdi5LIJPoZdTWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="89763861"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="89763861"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 21:43:31 -0700
-X-CSE-ConnectionGUID: 7KlAQfQUQgqw0R7D+C4AbQ==
-X-CSE-MsgGUID: kxAz5b+mQl2/4fuVIQe1fg==
+ bh=UbJHJlAAXk4YsxcGvgGjSrTdcmSTX8ObCMEL3vpjjgo=;
+ b=Ct9ydVlaqHx34S4k3dzwbCCZdtjptKdqns0POxwHUb05vtOxt0Vc1wwB
+ CnLxezjGgdMLWeO7TXDOSoU+rmtekGZQTWXhzMlaOfBm03ncKJrgp6xHJ
+ nctMSz7xe+0zRxjOVeat8I50KToME+6ZuxTk7pmBBE4iB5gdSvZY80GVB
+ ne/1ByyYYrJDSP+EqYX0XH/l+Vx61PJ1exgNZFd2UhVSbD4Ojnsfwwg35
+ 73OYJT8itPDobiqcjTXcr3mPF8CbhdP3bJCG+ZjK+uixUf8PHv7mnb80E
+ 5QINH0KyShR425OcS3w6gB1Xl0UL0nqpETDW20HUtZT/xwuDdOhCDHc53 Q==;
+X-CSE-ConnectionGUID: gXmobfthS2asGX2zrKobQA==
+X-CSE-MsgGUID: PbmTluhYQKmrwoLf6NDwsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79409170"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="79409170"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 21:46:02 -0700
+X-CSE-ConnectionGUID: CIarAK9/RaemBQdUJFchZw==
+X-CSE-MsgGUID: dMnrUUa5TVi8YWna+m7lPw==
 X-ExtLoop1: 1
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2026 21:43:31 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="275777097"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2026 21:46:02 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 11 May 2026 21:43:30 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.37; Mon, 11 May 2026 21:46:02 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 11 May 2026 21:43:30 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.57) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Mon, 11 May 2026 21:46:02 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.4) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 11 May 2026 21:43:29 -0700
+ 15.2.2562.37; Mon, 11 May 2026 21:46:02 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BorLqtAL3QkyQm5ThnVs9vPNJBX+AtL7RZ4+2ZROuSNf/MLnMN3C38MmmCyf5yzq5HLURQBzw7qDFdYbeD9U7PH2dZjDjBeIK9XOD66/wDxSQX5lC3zhVTTMVbJL3GADvpThP1KXJSqtmIx7wdoH/D3M+RXWZuWXuJ228Xw+kK8iKL4WpazkOE3VBL4GJElUqC+i5WFwkcykMQxJmxh6cnwVXsRYbPNhfoA+R5lBLSzN6VO3egobjQj9YJ6pzp1YAJ53Qr0PpDUXkWNhYEAUN/TQJFnb+oS/6SppX1ikEU3R/FJ8gXS2qRPCd/zWNEpYFQ4kMTfakDZjSo7Cj9XeiA==
+ b=nedXv6XeYDyYZ6JOl80AJb482t2xbXwZ7uT/5BQpn0bypFG0q6PSfBm3+xHASxCqnxjqKgiG9TdgGZaD9xSCp/MkXSbjwpfUOmz74F8xdCo863EfPuqNje6Ii9DMxcnGN830gnL5KcvpQsp04iG/i7HKom4qZU5eZR59RySw0F3sBRqw1YW/3dGyCOwAEZwTapfj/tO99vRUsXYTXufy8hYjN3DA1H//5WgxXr28Kfmc1Pihox4S2jYF7+k+d+i800GoU3DZ/8DOaE69WRRY45QFapW3gyYsY3/nPdBXY+TC8+GnvUiWYVQw6P1HcCIDFg10kWza+MeD2lb99K7KZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cSNYbIsUcgjFKUz4+YZGs3/w7xCh7UrNFSYVsWbE9mQ=;
- b=If2fiCSgzU/r5HiVJbSpNpvlc5/zJfoTDhilRUd7YBPE7lEZy0+uhN/IaOSSk7wgW2HWbTwgU7eMUjpiRwCIZC6fnh5pwco2yuBUCaSmRMOTncBXRq/CxIFsos4HcZjvuDdEtTDT6TxqTwE9xkylCPEWuDI7dhb/oGItMyqh9+flp7jedgKBlNrPOVSquV1FgpsyvTna5D6OMhFKosjsQXtrclTe4cLtHN7UdeA1CIallfvPu1IOmauubrAvgvVGTyHlS4wxolBtl2MrSWkpxO+bzyivnM1L+Mc94bZg7Yi8g0phV/dZR5pre6nBOLwbp5y6J2Eo1Yu2AC7LwyT40g==
+ bh=e1T4Ip30tTFLVg6Utp7EEFh8NOk79aibj817fwdzKro=;
+ b=jM25R23RcxHcCUkuJRoyRcvGG5Yyiq0qRLX0ZgzAC+ihd36CqcSLKtZ8kfhdNCSS9ke/EuQrGemmfD9eLbbYvpzhvwTtJ4bAz87XGqqZAFlLkQ0cEiOPSMjHgMs/xHmqoUqDr/9cnAK9DV8G/rOpYMSkwPyi0Z7uyehCbbcSmhdh2Z0/bE7KGd3ufKhGxBVzjDIDCAXvv7kf9MbhuRAb2fSXgkRpu+gODPX9G9eKEMw/Wsa/iE5Ys8XCU1VbfKpTeZuRjB1HvmkzBwz3LU9KlL0wr4pi0bwBDGupLVcFLR4eTqno1MEXdhxPCxGg52M2rAonytsijzuy5p2q5RY0ZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -68,91 +69,91 @@ Received: from DM4PR11MB5309.namprd11.prod.outlook.com (2603:10b6:5:390::5) by
  DS7PR11MB7740.namprd11.prod.outlook.com (2603:10b6:8:e0::11) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.23; Tue, 12 May 2026 04:43:21 +0000
+ 15.20.9891.23; Tue, 12 May 2026 04:46:00 +0000
 Received: from DM4PR11MB5309.namprd11.prod.outlook.com
  ([fe80::89e3:7ceb:6511:dd36]) by DM4PR11MB5309.namprd11.prod.outlook.com
  ([fe80::89e3:7ceb:6511:dd36%4]) with mapi id 15.20.9891.021; Tue, 12 May 2026
- 04:43:21 +0000
-Message-ID: <ba0564fc-1fcd-45cf-99a2-f4cb997ad09f@intel.com>
-Date: Tue, 12 May 2026 10:13:13 +0530
+ 04:46:00 +0000
+Message-ID: <2deace3e-c9a0-464d-bd95-7a669f49f9cb@intel.com>
+Date: Tue, 12 May 2026 10:15:52 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] tests/kms_content_protection: Group all
+Subject: Re: [PATCH i-g-t 2/2] tests/kms_content_protection: Group all MST
  force_hdcp14 tests together
 To: Suraj Kandpal <suraj.kandpal@intel.com>, <igt-dev@lists.freedesktop.org>
 CC: <swati2.sharma@intel.com>
 References: <20260511034137.93127-1-suraj.kandpal@intel.com>
- <20260511034137.93127-2-suraj.kandpal@intel.com>
+ <20260511034137.93127-3-suraj.kandpal@intel.com>
 Content-Language: en-US
 From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20260511034137.93127-2-suraj.kandpal@intel.com>
+In-Reply-To: <20260511034137.93127-3-suraj.kandpal@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0270.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1f2::8) To DM4PR11MB5309.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0118.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:11d::10) To DM4PR11MB5309.namprd11.prod.outlook.com
  (2603:10b6:5:390::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR11MB5309:EE_|DS7PR11MB7740:EE_
-X-MS-Office365-Filtering-Correlation-Id: d10dea68-1562-497c-1e2a-08deafe0fe7f
+X-MS-Office365-Filtering-Correlation-Id: 56d210d6-8ce9-43f7-7b74-08deafe15d28
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|1800799024|376014|366016|56012099003|11063799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: xRbbd4XW4E4GIcSbiluFO2c8XeSUE2aKv7FKL90CF9pZcwctK0XpFmfqGYHtsJdv/xpZOP4bAuULSOGznxC4VUxv3ZV/c7CQpy9IRSW8MwI/SzC/THE58oOE2U55P9MsX1AoxFCx/1ySb+vBUqllMAW418QCvQz/M7215TLttRuMMNpUtXjDl7JexwYgnf4G6AXXOUVhYvHX+hWuoPV8QX3aAUcmBu+VdXKnKMYbaXVNuLA75SwJB+BorV2muaI2EaW3AOiKbeToN+LDexvKF89V84C2o6096+OCwQ+xrIkjGerkcRJ9quSL5MJK3lq+YUiRacRVZbNl3x1jWhLM3J45nO/kecU91Q3mP+sVH/LR8xNmg9M6yUEXsfLoxrh/9HiV+NmUdqGaPQ+CiNxnZwYEqxo5/gr+GoFGMDmDgJzp824d2I6bWI/XYLud1hi1wXNiHJG/XxAy7cLkU5+xCzTRrA1fSwUH3BCL4JyoVU7UozKVMnjGdz6tiI9ubODwabogR9RL2SBkLOEE4fnRqNW9dB/wFDunyZ3I+uNCWqcPjb98W86fYEEoGCLmUg2YtHk+4wNJI2nKvh9IJ64iZQpRNdV5rMhdq+dXKTrKMLGQZYr/d+JbGCaIXq2v/+cFHs4wUc291+LtlW+0aTMagJXsR3z4KcjK1NEqLYD0mrKlUoOdRQtxBPQGewXoVBR/
+X-Microsoft-Antispam-Message-Info: Z168Xo1Ak4dpLr0a+W1h6OCwa/QgA9PLTldOnUMU5gYiJKnqi5G/nUdzgsz8NHxgyVORTctUemXRKOinyxoI7twFAddlw3Re3EbHDFIBgYPxcC7priDZtUHVRh6RRoClYQuljjgoVdiAgQOxcclT+GUh3ZvU7SkGgdoBqfb9LxwxQYzQ4GImsMIe0IjTjJNjalLIe9V5dIpFZK2JHA9HvPtwwjn6US/2Vusk7zyEPvYLa2FHCN5tleIvI186yBjJ5yOg6mToBtfFsCqiwG850JBiJ1KzkznQQdxjv7o5WFWJmyzJof/Xq/wD2jhFL5itJtfha5iM2cEzRjdN8K92gU43MKq7K4Ip6TDwRxSuLBwNXw++6SdkIqNCmOEj+IWa9GF5cMcDmOdkLiDrM5dVBgQFAY/kaprjfpcFW/71IjHPN7RU5AFw00DQew71zVUIsGRv3Dzq2uuCJ/vZmZI3DR4SpY9jzu6vlVeFhvRPHqxZwm4PoXthGrCXsfCrGJVRisyk7P7eYLp6XGmehpEHEzy9qE+Z+z/iM27XrJq4QRwj9DhCYxJ5BCmVoFE4MkwfdDCteYFyYU3VDNKZNAIruq0lS6G3YQuMejrVxlYKvfCkCrjMrOKLLaT2b4RR4lkYbCCXcxIuG9O9J9+BTX0FnKAl+kmyS3TgpO/iIu3GBEQSvdZvyu439b/yBIDZkxvZ
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM4PR11MB5309.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(11063799003)(22082099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VVRlUUlJUWVsUUE3QXlOU0hQK1RKRnVTamdKNSsxQUFBd1UxYzVSTmJSb1lw?=
- =?utf-8?B?REh3UmdXTVlOTDJCU3d1OWRWL2RWUDJHeTVjS2FGeUJBNXdFMUhqazZGdkg0?=
- =?utf-8?B?ZkVLYmNORkJwTUJveTBRSVVOMlVsQlpTUi9aSW9YMXVhdlBTOHBHUTRFMGd6?=
- =?utf-8?B?YmZnaTZLR25VSG4yYWhwNklGTmVQRGFOOE1KSUgrVnUxNVhBWnAxWTBwRUw5?=
- =?utf-8?B?dWRCWEpMWWl2V09ZWnAzVGRYZ3A2RTYxck4rS0R4TUx3RE9ndTQ3azJpMlNw?=
- =?utf-8?B?U0IwNEhZMGNHUEtVTmk3aDM0ekNFVy9RTTZ6Ti9oTmU0YkM1c2tVaGpBTmpY?=
- =?utf-8?B?c2hoM01oRC9yUXdhRnJzbytuTCtlMEhSS2U4TDFHU1k4MUU0Y1UwMVhhU3Bm?=
- =?utf-8?B?aGhQc1ZORUZjYTYvREdtWGw1Tlh1c1EzK21jNW9uWnU1aWF0aitXY0hoSVo0?=
- =?utf-8?B?RkMzdFBIUHZsV29qMExmT1hiVEdUNm1xdm0rSFp4ekZkNVJMZWFydktsMXJB?=
- =?utf-8?B?WFIzOTNRd1A4d0lEZG1vLzZKTldKMXdRd01vMUZGY2szVmlaaVk1MHFFcXAv?=
- =?utf-8?B?dW9uYkhzV20vVXZPOGpTZVVkelpqMStKeE82MVFSSDVHMjlMMVBZZitIQ0Nl?=
- =?utf-8?B?QXNoWC9ab2NkUERITmlPTEcyMUtCL0tURXJIZXhBRDdjaWkvbElWVjJMQklo?=
- =?utf-8?B?OEpBcFhKbE9Xa0drODNtYkgxZUZtWUE1WFNCRTF5V0ZJa0FhZHFUU0R4QnBk?=
- =?utf-8?B?Z3F2cEVvOU1pbDN1NmgrWlRzWnA0b00rMnJmNTF6OHQyY2lrU3U2RjNNd2Q0?=
- =?utf-8?B?TE8wSkxRSmx4ZWk1NnpWWWU5OEd1RUFrcC9qVmlWT1VlS2VEV2xseHpEbVAr?=
- =?utf-8?B?U25qU0VRT0VVNXMvN3MrV2xDdno2eThsVEZXbWtuR3ZybU51bDlyZjk4R05j?=
- =?utf-8?B?TC9nUDl2dnp4UlA3eE5kK1FIN0hrQk1BK3RSR0dIQkFYQnFQTlJWd2trWXBy?=
- =?utf-8?B?aCt6R1pGSzhYTXJ6UGdkeWpCSDhlcmprVDhweXMrMy9IK1RBUDVPK2EvT0tK?=
- =?utf-8?B?QzBSb1RGYWhFenU1dHkwa1o5V1NkQnhYWm5RUG1tVHkxaG1icHlHbFFxV3dW?=
- =?utf-8?B?dmxyYVdlODV6RnY4TmhmSW41T3VUb1I0UjFRRUw4T2tKWlkvL3lLNERXN2tE?=
- =?utf-8?B?RG5uVFNKRmI3TFY0MklwbTJZaUttMEQyT2RLU09wYWhSUkVTdllzZm43NHJK?=
- =?utf-8?B?Mm96TFZJdzhxc3c1MWExVk1COUNqNTRJbTdXMktRZmpGMG51MVZWRXI4Rkpm?=
- =?utf-8?B?Y0xPU3lBUFVjaWdLcHkwWm5GR05ydUdnemdKSUg4ZW5CM29yVUd1YXRXNDhk?=
- =?utf-8?B?OExiNFQ0MkdYQnNuWVFTV0wrZlNjRk5semhXVEppcTF6a2lUVUx6ZUdMbE1U?=
- =?utf-8?B?dzFoeGtaUEZvK0I1VVNCaUd5a0VxZkx3elNVSjJHVXE4K1VuV0JYdTZ2M0VR?=
- =?utf-8?B?RDJMa3JiOGJ3czNVRHVNZFJlcWxYSHRPeGZwSlRhRnB5RFZEYWNvWWYrdUE4?=
- =?utf-8?B?R3ZWMmhRb0JsOUlENE5HWHowZVNPSGhYMFk0d2VybXgxbGVPM0hDR0dGN3h4?=
- =?utf-8?B?OU96bkhJbmdoZFF4MnJkUURZUVM4N2VJMVUrUmlCcVJyR3UzUjVJZ3F3UXoy?=
- =?utf-8?B?Q0dUd1EyRFZlb2MzTlRvN081V1hWR0dDdGpRNmpLUXNWb1RhbndMQTIzM28w?=
- =?utf-8?B?c2NGY0VUZVpYdnlTdFMxSG9uR0tqemtGMGs3ZWNCOC9JUkVNdDd2MXF3VXd0?=
- =?utf-8?B?UnRtVmZ5U1lCMFpzWkRQNFdrLzY0Y05MZ1VidHk4WExscFFrTTFpQk1jd1pk?=
- =?utf-8?B?T0VwWWJRQWZHNVJ5Z2RTUU5hbWpUcVVhYWc4Y0V0azdWMHVyOHlnZ213WFBs?=
- =?utf-8?B?U3V2ZDUwSlYzOHBHcHRXVWJpSFMrK2t1UUdWOVptSjZTYjBZU1dKREtHWWZH?=
- =?utf-8?B?SW1DMnZSUDBkVnRON1RySEpNd3kya3AvM0x4ZU5LdmltcmxDeUx1VnRoQ1NO?=
- =?utf-8?B?SnF6TWNkUmtwS3QxR0NCQzNsWGRUZGIwc09jMlVvK1AzblpBNzNwcitxTmhS?=
- =?utf-8?B?Z3d0R3p5UzBoWVpFWWxYVzdyTGZRaXlpMGJ6MFZKekV3Yk94c1hvbkszRXlM?=
- =?utf-8?B?ZUorRklpU254MWp3amdSRE83dzh3czNGQmZGYWVRUlpQVFBWbFpyNDBEY2Jz?=
- =?utf-8?B?bTJjYWVLMURpbWJGS3NWL2FPVDlkWXhlQ3lyNGpEOENiYzRTWHhTdmJpQ2do?=
- =?utf-8?B?L1ExQmNhazdhSzhyamRUdEtOVFB5OFhGVkNDRDRNT2lCVEdYcklmV2Z3cTRI?=
- =?utf-8?Q?GkBrBGO3gy556R7BaemkBGt8INWYCN4fCGVsn?=
-X-Exchange-RoutingPolicyChecked: HQAB5E0wY5kt53lBM1BjbAIl8twuNoxmX7zvtfEkwuZbluyFauIgi4JSXuNBM1oGoqG6lJ5D6EiE0O5VMtiukxaqXoIgamxILtJ8F2SdcZbqsm/ZloINc3HZfRhEJbHuGHRjg71/i/NgD4o1qmKKFs2bouKopHKSCZIFvK+AtoD3quOySvcMjZSgMqrrCf3TB8aeL/jQbNTzwfs/pY+RcO5pbgYq7PpA6YN9tGaghcjblq2bVGyJ2uYgbJvYmitq82dJzdR/9sdJ/sqL8vLDFvh0VdewEUmz4iFL/HYH9B7aqHo7WCr9yYhCq/bn4dz7NzZJVBMma8FuO2BDohbsAA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d10dea68-1562-497c-1e2a-08deafe0fe7f
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TG1NbjV4U2tBTDZJMkc3akRtNHVGYUd4SUdiMU1PNkhzQVNEWVFkVmNlYTlD?=
+ =?utf-8?B?ajBTVSsyKzY3ZGxPNTQ1a3VsZFgxTmpPMTRtSk11alBNQkl2d084bjFOdVFM?=
+ =?utf-8?B?cjg4aXpDK1RGRzN1WkhGbjJVNE9DdzU3VVR4TVowY1gyclM0VUNkM0FHK0Fk?=
+ =?utf-8?B?MkJ2WVNYNmEvMTRDb2I3OVBnSHRRUWlHSUtLNEVnTmMvWlAvcy9mbHpSNU4z?=
+ =?utf-8?B?RURFSlNuTXQ4VHZidGxsYUV5SXhxUGZpZTQxM3c2VyttUG1YTTlLeWlFSzQz?=
+ =?utf-8?B?U29UNlVLYkFjbjc1THFvbm1kZW80UTJ1QlV3UE5WY1BQRTBUYnJuYVlvQmo4?=
+ =?utf-8?B?K284V20vT3RlbTdaUGlINExWTmYzL1pZNUthVDl2UXRpa1lZd012N3ZCZENC?=
+ =?utf-8?B?VVhjcm9NL05xdUVRdy8zYWMrOWhqSVhTcW5uQ3ZaQzVGanlKV05SbGRGRjVq?=
+ =?utf-8?B?WU1aNHp0ZUNaR2tiYTE5TkhhMFNYRC8vdGZCQ2R0ZWg1NTc0YmVXZTIrQVFP?=
+ =?utf-8?B?WEtVNG9COWxVUjVBWTdOemhVaHhGejNoT1JRZGVBVFE3ODBkR1JRUGJMdmRO?=
+ =?utf-8?B?OVluWnRzazlUczVSZTFOekg3UzBuam9LdE5ucUpMNms1NlVRUUFoLzg3ckZh?=
+ =?utf-8?B?RDl3ZDFpbThEQ0NiMmgyNERGOTkxNHJzK0hBdjgzc002MUpCZzZGSmNSWVA1?=
+ =?utf-8?B?aE92TnVqM3JYMVlMZExRV1FFY1lWYnJQV0k5c3NCaVF4LzV4TUhrelI0R2dB?=
+ =?utf-8?B?SDdodmYzMGlna0pEc0I4UzZDOVFoNzFWQnZiMTRUS052clF2eENzYitUQW5v?=
+ =?utf-8?B?VUxxOFZaM2tneWNJZkxub2M3eVBMWnk5T21Hb3JWTVkwWXZ0K09JM3hra3R1?=
+ =?utf-8?B?K0s2QlhNd1YvbXZDQ2ZBNmpmemVRRkNCTXhJRGp1ZXFtMExyc1hhRlFFQXIr?=
+ =?utf-8?B?MitmUzQ3dk4vS0JIc0lUZ25VVm5DcDlnYkVEZnNSSlgwYzA3Rmp4ZXV0ZzZP?=
+ =?utf-8?B?YkkzUFY4Y1pvZXo3YlcwRFRVUUhjQis3M3NaN0xGTU1SbmQxK2lsUjFNdTNI?=
+ =?utf-8?B?K0pSZmFQMUdLMjlZQ252N3JVUHk4a0JJV3BaaTVJVks2Ynl1MTg3QzJDVXY5?=
+ =?utf-8?B?d1loZlJqZE51Z0gyelNFSU1hSE9KZEtTeUtFMmlKdmlMN1V0eGlrV2ZQNm81?=
+ =?utf-8?B?N1Z0UHhxSVJJaWNjOTVUSnc3bjFsM2oyQkNvRUhROHlES2pRazhqelQ2bENS?=
+ =?utf-8?B?dFZQQUp0cGQ3cXEzVUI1Nk1JbXJEK1A5dVhtcmxaS2ptWFp5T1JISS9uYk1O?=
+ =?utf-8?B?OVFVdDVpUjMxZVRSQnZvbWU1OTZDWU43ejhaQXRkeGZjU2dIN1U4Um9XRnA4?=
+ =?utf-8?B?UGFqMjdqSFRDWnJnWTl5aXdYcFY1Qnl3bm1rUW44L3lqbkVld25MSGEzbWRI?=
+ =?utf-8?B?TG1oUHBNTDh6Mm9NVFo0cTdJNkJRZDg3RGlaVDh5QzRxWlVBUkFSMUt6MzVv?=
+ =?utf-8?B?K1h5MG1hdVJ2b3JEa1N0SnRCSHYrRlZWdmxuM3hVajBmMWwwakd2ZkRyTGEr?=
+ =?utf-8?B?alVLWE9tbTdFQlY3RlUwOXRqSFhWcWVZdGg1MldMb092aDA0NVlxeGxQZWg4?=
+ =?utf-8?B?RWxpMTc2eUkwSGsycjUzdXhUZm96Z3BXRXZKWjJLalN6OWVHblgzVmswTXJM?=
+ =?utf-8?B?TWNkUXhsWk56NThxY0JGeGRHSmhSRnV4SUdzSDdOSHBWWVpaME50cE1HTzF3?=
+ =?utf-8?B?MTJ2NzRicEtja09ackVIUnFlNjdFS3NMK1loaW1KUXlZb0NFUW1iMUEzQVc1?=
+ =?utf-8?B?WHQ2VEhTZUsxOCt6bTh5c1BueVdBOHhrclJpTi9SWnZNOExlRWtVVnY5cm5H?=
+ =?utf-8?B?K0VIRWJtODQyR24wUWZ0VVdSbC85TmJiVEFPc2NCdlZiY242UDFKMWQ1bmp3?=
+ =?utf-8?B?N1ZUK1hlTnJDOGliaFhqY1ZzTmlKRVlxZjkxZDZRTGxFdU1uZ2swbHFYNG81?=
+ =?utf-8?B?d05SSnJYMTdhQUJaekNDL0hxRVhMbzhlcExNNWVJSS9mWXBwVzVYL2I3alRx?=
+ =?utf-8?B?bVY5L2EyL0d4MnlDM1hLNzA2YlJZZXZQcjJkMG5NTU13YndoRGRaNWxFQjcz?=
+ =?utf-8?B?RDk0TmI5dVhSd1UrRVpFNFVTdklYSVpKM0dRbkxtdTM2TERJRGRvQnIzVmdp?=
+ =?utf-8?B?UUNsb1FyUDk0UHZkbC84YlVaVWJ0cEdhb0NzZVBjTklZOUlZWXAzaSsvbVZ2?=
+ =?utf-8?B?ME9sWklYdGRTUWNNN0lhMVNnaFJjUGNOUjdYZlplQmNOckpXQ2s2NzhQbFhz?=
+ =?utf-8?B?Q2M4b2V6UEpjNGdGL3NWYUdLVmxsT3dYT2Q5a3BZVW1OdlhwY2lTSjk2OU1W?=
+ =?utf-8?Q?7UpvFMiV/B4f09dLRrccMcHLpoB/RnXoDc+Z1?=
+X-Exchange-RoutingPolicyChecked: Vh+DEZcFKuQsaushAC9IgBeak4Hd+8lPHe43dCIb56OYTMozbiIKKgn6GwfHsyiuBNytVmoR282xbLnFPI7c8qDqmv2OCQK9xQ2npAewAe/D7QiwH1Z8Z57kg5YtUiIjoIpBzaLHm8DczO23ncNjxUmleqTN8EOgfFEjup4Ex3muwR8XEPp6tlJvFiuPZDYHW97CFxvxEZ2Wny63gLU/94i+Hj0hMxptbYKnkK/4uvoYB9t3hTquWLnpQ1BVk9R7Fe1EdJ37gDPbMAL+hxgS48JZkYYZMlXws/On84iJ/YBnTlz5cb4bU0kBxIG+yOpBeUgjINNOOL+OVTgRRC1ZoA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56d210d6-8ce9-43f7-7b74-08deafe15d28
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5309.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 04:43:21.2401 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 04:45:59.9659 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NCSb21y09iNu9wR3WLXxWifpKI9ISl+A9TJxFDI7DkCk2MHIDssrfFzybQCcYNDvKH1ujRyyY/Da5yHgCkx3qAEXdvkKWOCvX5P/ejQgduonSA2upd/YJ1HtbpF+N4Md
+X-MS-Exchange-CrossTenant-UserPrincipalName: u/MOo0WyfZTW/rUUTJP81nwyi0cMQ7V4aoWD/hNjXXClwn3NnLw9PPuBWWwG1V2yZJTVeIJ2W/dlSmgGMzW9RcnFFQZ3LcX3MBQRW/znAah8pVsxMkY99/Blob3dZJZG
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7740
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -177,119 +178,72 @@ On 11-05-2026 09:11, Suraj Kandpal wrote:
 > that too after all the regular tests have been run.
 > Currently we are seeing these tests are putting MST DOCK in a bad state from
 > time to time where it can only report HDCP 1.4 after running these
-> tests.
+> tests or not reporting any HDCP capability causing test skips.
 > The only exception here is the DPMS and suspend resume test which are
 > run last since the help MST DOCK to return back to good state.
-
-nit >> the help >> they help
-
-LGTM
-Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-
 > 
 > Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+
+LGTM,
+Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 > ---
->   tests/kms_content_protection.c | 64 +++++++++++++++++-----------------
->   1 file changed, 32 insertions(+), 32 deletions(-)
+>   tests/kms_content_protection.c | 32 ++++++++++++++++----------------
+>   1 file changed, 16 insertions(+), 16 deletions(-)
 > 
 > diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> index a42f699e9..3baf225cd 100644
+> index 3baf225cd..c59441f11 100644
 > --- a/tests/kms_content_protection.c
 > +++ b/tests/kms_content_protection.c
-> @@ -1025,42 +1025,17 @@ static const struct {
->   	bool content_type;
->   	bool is_force_hdcp14;
->   } subtests[] = {
-> -	{ .desc = "Test content protection with atomic modesetting with HDCP1.4.",
-> -	  .name = "atomic-hdcp14",
-> -	  .cp_tests = 0,
-> -	  .content_type = HDCP_CONTENT_TYPE_0,
-> -	  .is_force_hdcp14 = true,
-> -	},
->   	{ .desc = "Test content protection with atomic modesetting",
->   	  .name = "atomic",
->   	  .cp_tests = 0,
+> @@ -1135,28 +1135,16 @@ static const struct {
 >   	  .content_type = HDCP_CONTENT_TYPE_0,
 >   	  .is_force_hdcp14 = false,
 >   	},
-> -	{ .desc = "Test content protection with DPMS ON/OFF during "
-> -		  "atomic modesetting with HDCP1.4.",
-> -	  .name = "atomic-dpms-hdcp14",
-> -	  .cp_tests = CP_DPMS,
+> -	{ .desc = "Test Content protection(Type 0) over DP MST with HDCP1.4.",
+> -	  .name = "dp-mst-type-0-hdcp14",
+> +	{ .desc = "Test Content protection(Type 1) over DP MST.",
+> +	  .name = "dp-mst-type-1",
+>   	  .cp_tests = 0,
 > -	  .content_type = HDCP_CONTENT_TYPE_0,
 > -	  .is_force_hdcp14 = true,
 > -	},
-> -	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting.",
-> -	  .name = "atomic-dpms",
-> -	  .cp_tests = CP_DPMS,
-> -	  .content_type = HDCP_CONTENT_TYPE_0,
-> -	  .is_force_hdcp14 = false,
-> -	},
->   	{ .desc = "Test for the integrity of link with type 0 content.",
->   	  .name = "lic-type-0",
->   	  .cp_tests = CP_LIC,
->   	  .content_type = HDCP_CONTENT_TYPE_0,
->   	},
-> -	{ .desc = "Test for the integrity of link with type 0 content.",
-> -	  .name = "lic-type-0-hdcp14",
+> -	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
+> -	  .name = "dp-mst-lic-type-0",
 > -	  .cp_tests = CP_LIC,
 > -	  .content_type = HDCP_CONTENT_TYPE_0,
-> -	  .is_force_hdcp14 = true,
-> -	},
->   	{ .desc = "Test for the integrity of link with type 1 content",
->   	  .name = "lic-type-1",
+> +	  .content_type = HDCP_CONTENT_TYPE_1,
+>   	  .is_force_hdcp14 = false,
+>   	},
+>   	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
+> -	  .name = "dp-mst-lic-type-0-hdcp14",
+> +	  .name = "dp-mst-lic-type-0",
 >   	  .cp_tests = CP_LIC,
-> @@ -1093,13 +1068,6 @@ static const struct {
 >   	  .content_type = HDCP_CONTENT_TYPE_0,
->   	  .is_force_hdcp14 = false,
->   	},
-> -	{ .desc = "Test to detect the HDCP status change when we are reading the uevent "
-> -		  "sent with the corresponding connector id and property id.",
-> -	  .name = "uevent-hdcp14",
-> -	  .cp_tests = CP_UEVENT,
-> -	  .content_type = HDCP_CONTENT_TYPE_0,
 > -	  .is_force_hdcp14 = true,
 > -	},
->   	/*
->   	 *  Testing the revocation check through SRM needs a HDCP sink with
->   	 *  programmable Ksvs or we need a uAPI from kernel to read the
-> @@ -1115,6 +1083,38 @@ static const struct {
->   	  .content_type = HDCP_CONTENT_TYPE_0,
+> -	{ .desc = "Test Content protection(Type 1) over DP MST.",
+> -	  .name = "dp-mst-type-1",
+> -	  .cp_tests = 0,
+> -	  .content_type = HDCP_CONTENT_TYPE_1,
 >   	  .is_force_hdcp14 = false,
 >   	},
-> +	{ .desc = "Test content protection with atomic modesetting with HDCP1.4.",
-> +	  .name = "atomic-hdcp14",
+>   	{ .desc = "Test Content protection(Type 1) over DP MST with LIC.",
+> @@ -1165,6 +1153,18 @@ static const struct {
+>   	  .content_type = HDCP_CONTENT_TYPE_1,
+>   	  .is_force_hdcp14 = false,
+>   	},
+> +	{ .desc = "Test Content protection(Type 0) over DP MST with HDCP1.4.",
+> +	  .name = "dp-mst-type-0-hdcp14",
 > +	  .cp_tests = 0,
 > +	  .content_type = HDCP_CONTENT_TYPE_0,
 > +	  .is_force_hdcp14 = true,
 > +	},
-> +	{ .desc = "Test for the integrity of link with type 0 content.",
-> +	  .name = "lic-type-0-hdcp14",
+> +	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
+> +	  .name = "dp-mst-lic-type-0-hdcp14",
 > +	  .cp_tests = CP_LIC,
 > +	  .content_type = HDCP_CONTENT_TYPE_0,
 > +	  .is_force_hdcp14 = true,
 > +	},
-> +	{ .desc = "Test to detect the HDCP status change when we are reading the uevent "
-> +		  "sent with the corresponding connector id and property id.",
-> +	  .name = "uevent-hdcp14",
-> +	  .cp_tests = CP_UEVENT,
-> +	  .content_type = HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 = true,
-> +	},
-> +	{ .desc = "Test content protection with DPMS ON/OFF during "
-> +		  "atomic modesetting with HDCP1.4.",
-> +	  .name = "atomic-dpms-hdcp14",
-> +	  .cp_tests = CP_DPMS,
-> +	  .content_type = HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 = true,
-> +	},
-> +	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting.",
-> +	  .name = "atomic-dpms",
-> +	  .cp_tests = CP_DPMS,
-> +	  .content_type = HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 = false,
-> +	},
->   	{.desc = "Test to verify the behaviour of HDCP after suspend resume cycles.",
->   	 .name = "suspend-resume",
->   	 .cp_tests = SUSPEND_RESUME,
+>   	{ .desc = "Test Content protection(Type 0) over DP MST with suspend resume.",
+>   	  .name = "dp-mst-type-0-suspend-resume",
+>   	  .cp_tests = SUSPEND_RESUME,
 
