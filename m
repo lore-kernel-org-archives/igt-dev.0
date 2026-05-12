@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCCB4CD4851
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 11:26:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 225CCCD4851
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 11:57:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F5AE10EA42;
-	Tue, 12 May 2026 11:26:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mSD/DH6X";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 406CE10EA40
- for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 11:26:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778585173; x=1810121173;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=AfX/x8hUF+caEJuO21BiReyORumXFX4x8xP3Ouz7btE=;
- b=mSD/DH6XGKO2kbKDggOD4BXMPJ44M3dCAxgGTpHjeSgWlNHL/PAcaMGO
- +gIb0ZOFe4gAFA4S9yGorkCHNXVhmIATAxLZFjXOhI0GoOFud9pecYZ6v
- cLcipURpbEqqd2MSIZ3j29EQRUPxL/IOlHg5WoQLapYVohZtv04hCSSFF
- qlcfiIsJumy4QPAXFMX0LpzjkSprqawk2orKJ6DLBiDJEbkIU2u+/Gdmg
- MMf/bRQcwnUr8CQM1PJg7+A01srAGaKXn+OncM2+XpWqaf73aUnQ6SwKJ
- C9fmqr3Qpw12QwKEtoK1HzCsT/AEyfG2F3/cQYdjpG/Q8t9fR7I/TA7pl Q==;
-X-CSE-ConnectionGUID: aOecI9OGSXeRJpYSHMT/9A==
-X-CSE-MsgGUID: hEHLiLnqTjCrWoQwemEsXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="97057263"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="97057263"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 04:26:13 -0700
-X-CSE-ConnectionGUID: gJsqDgtYSSap2a8DWmhIiw==
-X-CSE-MsgGUID: U9CkDEX/Tbqx0Xsrr2xZWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="239570818"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:26:11 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: suraj.kandpal@intel.com, swati2.sharma@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1] tests/intel/kms_pm_backlight: Add
- brightness-with-suspend subtest
-Date: Tue, 12 May 2026 16:50:19 +0530
-Message-Id: <20260512112019.676242-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF09810E07D;
+	Tue, 12 May 2026 11:57:36 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41CB110E07D;
+ Tue, 12 May 2026 11:57:20 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7016602252825485250=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fmadvise?=
+ =?utf-8?q?=3A_Add_partial-unbind-dontneed_subtest_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Arvind Yadav" <arvind.yadav@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 12 May 2026 11:57:20 -0000
+Message-ID: <177858704026.61707.18264788838112087202@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260512035816.158130-1-arvind.yadav@intel.com>
+In-Reply-To: <20260512035816.158130-1-arvind.yadav@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,83 +37,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify backlight brightness is preserved after suspend resume cycle,
-The test sets backlight to  a value , suspend the system and checks the
-brightness value is preserved after resume.
+--===============7016602252825485250==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/intel/kms_pm_backlight.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
-index 58c0b4427..c2228986e 100644
---- a/tests/intel/kms_pm_backlight.c
-+++ b/tests/intel/kms_pm_backlight.c
-@@ -65,6 +65,9 @@
-  *
-  * SUBTEST: brightness-with-dpms
-  * Description: test brightness with dpms on and off cycle.
-+ *
-+ * SUBTEST: brightness-with-suspend
-+ * Description: Test that brightness set before suspend is preserved after resume.
-  */
- 
- enum {
-@@ -72,6 +75,7 @@ enum {
- 	TEST_DPMS,
- 	TEST_DPMS_CYCLE,
- 	TEST_SUSPEND,
-+	TEST_SUSPEND_CYCLE,
- };
- 
- #define TOLERANCE 5 /* percent */
-@@ -188,6 +192,8 @@ static void check_dpms_cycle(igt_backlight_context_t *context)
- {
- 	int max, val_1, val_2;
- 
-+	printf("Toggling DPMS...\n");
-+
- 	igt_backlight_read(&max, "max_brightness", context);
- 	igt_assert(max);
- 
-@@ -206,6 +212,24 @@ check_suspend(igt_output_t *output)
- 	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
- }
- 
-+static void check_suspend_cycle(igt_backlight_context_t *context)
-+{
-+	int max, val1, val2;
-+
-+	igt_backlight_read(&max, "max_brightness", context);
-+	igt_assert(max);
-+
-+	igt_backlight_write(max / 2, "brightness", context);
-+	igt_backlight_read(&val1, "actual_brightness", context);
-+
-+	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
-+
-+	igt_backlight_read(&val2, "actual_brightness", context);
-+	igt_assert_f(val2 == val1,
-+		     "actual_brightness after resume [%d] does not match value before suspend [%d]\n",
-+		     val2, val1);
-+}
-+
- static void test_cleanup(igt_display_t *display, igt_backlight_context_t *context)
- {
- 	igt_output_t *output = context->output;
-@@ -273,6 +297,8 @@ int igt_main()
- 		{ "brightness-with-dpms", "test brightness with dpms on and off cycle.",
- 		   check_dpms_cycle, TEST_DPMS_CYCLE},
- 		{ "fade-with-suspend", "test the fade with suspend.", test_fade, TEST_SUSPEND },
-+		{ "brightness-with-suspend", "test brightness is preserved after suspend/resume.",
-+		   check_suspend_cycle, TEST_SUSPEND_CYCLE },
- 	};
- 
- 	igt_fixture() {
--- 
-2.34.1
+Series: tests/intel/xe_madvise: Add partial-unbind-dontneed subtest (rev2)
+URL   : https://patchwork.freedesktop.org/series/166102/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8904 -> IGTPW_15158
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15158/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15158 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15158/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15158/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8904 -> IGTPW_15158
+
+  CI-20190529: 20190529
+  CI_DRM_18473: b83102e9c06357b09f2cfbe944269786cb6985c4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15158: f6b81c54544782c86179f1cebb4e653be58163cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15158/index.html
+
+--===============7016602252825485250==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_madvise: Add partial-unbind-dontneed subtest (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166102/">https://patchwork.freedesktop.org/series/166102/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15158/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15158/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8904 -&gt; IGTPW_15158</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15158/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15158 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15158/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15158/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8904 -&gt; IGTPW_15158</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18473: b83102e9c06357b09f2cfbe944269786cb6985c4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15158: f6b81c54544782c86179f1cebb4e653be58163cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7016602252825485250==--
