@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E2BECD4851
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:13:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A92BBCD4851
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:22:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2671010EA7F;
-	Tue, 12 May 2026 12:13:43 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E4B010E27B;
- Tue, 12 May 2026 12:13:26 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3925666894606868625=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2ED6A10E0E5;
+	Tue, 12 May 2026 12:22:07 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fzeEbumv";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9645E10E0E5
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 12:21:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1778588508; x=1810124508;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Qe5FJSMBN23QhFbsWkm6fP4amg1+VWipWGh/4V3MCh4=;
+ b=fzeEbumv7GuE1hia+QpQFAX1Pe2yfBYpU7lIsB+OS8KQInmvbSPvORpE
+ zXtoYkBiDFlqeWJa6Bo/W6LEygFMXlx3zuEgprYqDZqPJbcNq9OGFo+N7
+ hjYWHcsYSWoTH0htY8TmYAyEkSEpLXHGjzZgenFOJyyPsO7UXNpZpSiwu
+ B8Q/IN/EQvTFor5dgjEIUt/5TYRgPxxN0ziU8xIuAvem/r25sEOZQ10Iu
+ Ib4ggZ/EEtA+Ey9CbdtH6WEy9DXZCv2pCDmDB0y0swC1N+CPrr2PkCnn1
+ f6HG2+Lmf9pim1NPnJvSRyGPqiMSaMszUdIJjIc2xGa48fXO/RE3vp3uO w==;
+X-CSE-ConnectionGUID: K6EYLGVuTYyaWryY/o30gQ==
+X-CSE-MsgGUID: dX658AYpSvCyqRQZG+s01Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="96919201"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="96919201"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 05:21:48 -0700
+X-CSE-ConnectionGUID: 9IYRPGy1RTyAA8btnseErw==
+X-CSE-MsgGUID: ck79os1uTO2MuifNruybHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="233286203"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.104])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 05:21:47 -0700
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 00/25] lib/kms: Clean up format+mod stuff
+Date: Tue, 12 May 2026 15:21:18 +0300
+Message-ID: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fmadvise=3A?=
- =?utf-8?q?_Add_partial-unbind-dontneed_subtest_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Arvind Yadav" <arvind.yadav@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 12 May 2026 12:13:26 -0000
-Message-ID: <177858800618.61708.18124650864864755719@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260512035816.158130-1-arvind.yadav@intel.com>
-In-Reply-To: <20260512035816.158130-1-arvind.yadav@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +65,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3925666894606868625==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-== Series Details ==
+Abstract the format+modifier lists a bit to make things less
+mess and fragile.
 
-Series: tests/intel/xe_madvise: Add partial-unbind-dontneed subtest (rev2)
-URL   : https://patchwork.freedesktop.org/series/166102/
-State : success
+Also try to get rid of more special cases in tests by always
+populating the async flip format+mod lists, even if the driver
+doesn't expose the actual IN_FORMATS_ASYNC blob.
 
-== Summary ==
+Ville Syrjälä (25):
+  tests/kms_async_flips: Use correct format_mod list
+  test/kms: Introduce a few extra format/modifier variables
+  lib/kms: Introduce struct igt_format_mods
+  lib/kms: Pass struct igt_format_mods to igt_parse_format_mod_blob()
+  lib/kms: Extract format_mods_alloc()
+  lib/kms: Extract fill_plane_default_format_mods()
+  lib/kms: Extract igt_format_mods_has_format_with_modifier()
+  lib/kms: Pass target format_mods to igt_add_display_format_mod()
+  lib/kms: Extract format_mods_union()
+  lib/kms: Extract display_format_mods_union()
+  lib/kms: Move and rename igt_count_display_format_mod()
+  lib/kms: Make igt_fill_display_format_mod() more flexible
+  lib/kms: Add display->format_mods_async
+  lib/kms: Fill plane->format_mods_async for planes without IN_FORMATS
+  lib/kms: Encourage drivers to expose IN_FORMATS_ASYNC
+  lib/kms: Introduce igt_format_mods iterators
+  lib/kms: Add helpers to query igt_format_mods
+  tests/chamelium/kms_chamelium_frames: Use
+    for_each_format_and_modifier()
+  tests/kms_plane: Use igt_format_mods_has_modifier()
+  tests/kms_plane: Use for_each_format_and_modifier()
+  tests/kms_async_flips: Remove the IN_FORMAT_ASYNC check
+  tests/kms_async_flips: Use igt_format_mods_has_modifier()
+  tests/kms_async_flips: Use for_each_format_and_modifier() and 
+    for_each_modifier_with_format()
+  tests/intel/kms_flip_tiling: Use for_each_modifier_with_format()
+  tests/chamelium/kms_chamelium_frames: Use
+    for_each_format_with_modifier()
 
-CI Bug Log - changes from XEIGT_8904_BAT -> XEIGTPW_15158_BAT
-====================================================
+ lib/igt_kms.c                          | 248 ++++++++++++++++---------
+ lib/igt_kms.h                          |  68 ++++++-
+ tests/chamelium/kms_chamelium_frames.c |  54 +++---
+ tests/intel/kms_flip_tiling.c          |  22 +--
+ tests/kms_async_flips.c                |  52 ++----
+ tests/kms_plane.c                      |  30 +--
+ 6 files changed, 280 insertions(+), 194 deletions(-)
 
-Summary
--------
+-- 
+2.52.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8904 -> IGTPW_15158
-
-  IGTPW_15158: f6b81c54544782c86179f1cebb4e653be58163cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5047-b83102e9c06357b09f2cfbe944269786cb6985c4: b83102e9c06357b09f2cfbe944269786cb6985c4
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15158/index.html
-
---===============3925666894606868625==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_madvise: Add partial-unbind-dontneed subtest (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166102/">https://patchwork.freedesktop.org/series/166102/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15158/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15158/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8904_BAT -&gt; XEIGTPW_15158_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8904 -&gt; IGTPW_15158</li>
-</ul>
-<p>IGTPW_15158: f6b81c54544782c86179f1cebb4e653be58163cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5047-b83102e9c06357b09f2cfbe944269786cb6985c4: b83102e9c06357b09f2cfbe944269786cb6985c4</p>
-
-</body>
-</html>
-
---===============3925666894606868625==--
