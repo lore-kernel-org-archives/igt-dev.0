@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68568CD4851
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:36:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71F25CD4F24
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:59:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1979410EA90;
-	Tue, 12 May 2026 12:36:26 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="mePm8t59";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8FD5310E058
- for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 12:35:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
- In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=CVuez96yXQPEEsbVPg8NKJPytqSTq6VSGzGdjjjeJ78=; b=mePm8t59/khievY3E2sK4kdaq9
- pK5fbFu6XijcBvtLwfPTgSlmm7W1RsOZ2mzCCznuSTQsVY23Pz4kiE8kLOQDnT8zNYvwUAQwKdaiW
- 2f3uAicfyg3dWKVMPqyrpBMMga0QD5gioStd1NA6nxi97FXW0Sm1ingf5HSIS/LNZTwW2PR+lqAia
- W8QmzFnjr8nvprIgKjLoeGOGSTbBbv6umYiIfKDsI/ULKJ7CV8gw/X7W8wMMmvMkine3yY8mqT0b1
- AMkIX3ZsoILKwG55YF2H6Rq0Leb6dj1oPbAIr0VUSvD49fSQ90kD+EcwNTKIltG/Zi39UGMbbKXjA
- n8DHLVAg==;
-Received: from [189.7.87.67] (helo=prince) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wMmKM-009Sqa-Tm; Tue, 12 May 2026 14:35:10 +0200
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Iago Toral <itoral@igalia.com>, Melissa Wen <mwen@igalia.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com,
- =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH i-g-t v2 5/5] tests/v3d_perfmon: Add global perfmon and
- counter isolation tests
-Date: Tue, 12 May 2026 09:29:50 -0300
-Message-ID: <20260512123408.1115589-7-mcanal@igalia.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512123408.1115589-2-mcanal@igalia.com>
-References: <20260512123408.1115589-2-mcanal@igalia.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1E56610EA82;
+	Tue, 12 May 2026 12:59:31 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5146910EA94;
+ Tue, 12 May 2026 12:59:15 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1522659617026747028=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_RFC=3A_Add_preferred_FB_m?=
+ =?utf-8?q?odifier_helper_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 12 May 2026 12:59:15 -0000
+Message-ID: <177859075532.61708.11963001481234182901@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260512062020.546220-1-jeevan.b@intel.com>
+In-Reply-To: <20260512062020.546220-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,641 +37,328 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Exercise the DRM_IOCTL_V3D_PERFMON_SET_GLOBAL ioctl with a set of
-subtests covering:
+--===============1522659617026747028==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
- - Input validation: invalid flags, invalid perfmon id, and clearing a
-   perfmon that was never set as global all return errors.
- - Single-perfmon semantics: setting a second global perfmon while one is
-   already active returns EBUSY.
- - Implicit clear on destroy: destroying a global perfmon releases the
-   slot, allowing a new one to be set without EBUSY.
- - Precedence over per-job perfmon: submitting a CL job with a per-job
-   perfmon_id while a global perfmon is active is rejected with EAGAIN.
- - Cross-fd tracking: a global perfmon set on one file descriptor
-   accumulates cycles from CL jobs submitted on a second file descriptor,
-   and that second fd cannot install its own global perfmon while the
-   first is active.
- - fd close: closing a file descriptor that owns an active global
-   perfmon clears it cleanly without crashing the driver.
+== Series Details ==
 
-Add two counter isolation subtests:
+Series: RFC: Add preferred FB modifier helper (rev2)
+URL   : https://patchwork.freedesktop.org/series/164817/
+State : failure
 
- - perfmon-counter-isolation: blocks 100 CSD jobs behind a sw_sync fence,
-   then submits a CL job with a perfmon. The driver's queue serialization
-   must drain all pending CSD work before opening the perfmon window, so
-   compute-active-cycles must read zero after the CL job completes.
- - perfmon-counter-isolation-subsequent-cl: a non-perfmon CL job submitted
-   after a perfmon CL job must be serialized behind it and must not
-   contribute to its counter values.
+== Summary ==
 
-Also add get-values-check-monotonically, which submits ten CL jobs in a
-loop and asserts that each get-values call returns strictly larger values
-than the previous one.
+CI Bug Log - changes from IGT_8904 -> IGTPW_15160
+====================================================
 
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- tests/v3d/v3d_perfmon.c | 558 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 557 insertions(+), 1 deletion(-)
+Summary
+-------
 
-diff --git a/tests/v3d/v3d_perfmon.c b/tests/v3d/v3d_perfmon.c
-index f6f2a2774..5652d876c 100644
---- a/tests/v3d/v3d_perfmon.c
-+++ b/tests/v3d/v3d_perfmon.c
-@@ -1,19 +1,28 @@
- // SPDX-License-Identifier: MIT
- /*
-  * Copyright © 2022 Igalia S.L.
-+ * Copyright © 2026 Raspberry Pi Ltd
-  */
- 
-+#include <sys/ioctl.h>
-+
- #include "igt.h"
-+#include "igt_syncobj.h"
- #include "igt_v3d.h"
-+#include "sw_sync.h"
-+
-+#define V3D_PERFMON_NUM_CL_JOBS 10
-+#define V3D_PERFMON_NUM_CSD_JOBS 100
- 
- IGT_TEST_DESCRIPTION("Tests for the V3D's performance monitors");
- 
- int igt_main()
- {
--	int fd;
-+	int fd, ver;
- 
- 	igt_fixture() {
- 		fd = drm_open_driver(DRIVER_V3D);
-+		ver = igt_v3d_get_version(fd);
- 		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_PERFMON));
- 	}
- 
-@@ -124,6 +133,65 @@ int igt_main()
- 		igt_v3d_perfmon_destroy(fd, id);
- 	}
- 
-+	igt_describe("Make sure the values returned by the perfmon are increasing monotonically.");
-+	igt_subtest("get-values-check-monotonically") {
-+		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
-+		uint32_t id, out_sync;
-+		uint64_t *prev, *curr;
-+		uint8_t counters[4];
-+
-+		/*
-+		 * Different V3D versions have different performance counters
-+		 * IDs for the same counters.
-+		 */
-+		if (ver >= 71) {
-+			counters[0] = 3;  /* CLE-bin-thread-active-cycles */
-+			counters[1] = 64; /* PTB-memory-writes */
-+			counters[2] = 66; /* core-memory-reads */
-+			counters[3] = 71; /* PTB-memory-words-writes */
-+		} else if (ver >= 42) {
-+			counters[0] = V3D_PERFCNT_CLE_ACTIVE;
-+			counters[1] = V3D_PERFCNT_PTB_MEM_WRITES;
-+			counters[2] = V3D_PERFCNT_CORE_MEM_READS;
-+			counters[3] = V3D_PERFCNT_PTB_W_MEM_WORDS;
-+		} else
-+			igt_abort_on_f(true, "This V3D version is not supported.");
-+
-+		id = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
-+
-+		prev = calloc(ARRAY_SIZE(counters), sizeof(*prev));
-+		curr = calloc(ARRAY_SIZE(counters), sizeof(*curr));
-+
-+		igt_v3d_perfmon_get_values(fd, id, prev);
-+
-+		for (int i = 0; i < ARRAY_SIZE(counters); i++)
-+			igt_assert_eq(prev[i], 0);
-+
-+		out_sync = syncobj_create(fd, 0);
-+		job->submit->out_sync = out_sync;
-+		job->submit->perfmon_id = id;
-+
-+		/* Check if the counters are increasing monotonically. */
-+		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
-+			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
-+			igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
-+
-+			igt_v3d_perfmon_get_values(fd, id, curr);
-+
-+			for (int j = 0; j < ARRAY_SIZE(counters); j++)
-+				igt_assert_lt(prev[j], curr[j]);
-+
-+			igt_swap(prev, curr);
-+		}
-+
-+		syncobj_destroy(fd, out_sync);
-+		igt_v3d_free_cl_job(fd, job);
-+		igt_v3d_perfmon_destroy(fd, id);
-+
-+		free(prev);
-+		free(curr);
-+	}
-+
- 	igt_describe("Make sure that destroying a non-existent perfmon fails.");
- 	igt_subtest("destroy-invalid-perfmon") {
- 		struct drm_v3d_perfmon_destroy destroy = {
-@@ -151,6 +219,494 @@ int igt_main()
- 		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_GET_VALUES, &get, EINVAL);
- 	}
- 
-+	igt_describe("Make sure that setting a global perfmon fails for an invalid flag.");
-+	igt_subtest("global-perfmon-invalid-flag") {
-+		struct drm_v3d_perfmon_set_global set_global = {
-+			.flags = 0xdeadbeef,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global, EINVAL);
-+	}
-+
-+	igt_describe("Make sure that setting a global perfmon fails for an invalid identifier.");
-+	igt_subtest("global-perfmon-invalid-perfmon") {
-+		struct drm_v3d_perfmon_set_global set_global = {
-+			.id = 0xdeadbeef,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global, EINVAL);
-+	}
-+
-+	igt_describe("Make sure that clearing a valid identifier that it's not a global perfmon fails.");
-+	igt_subtest("global-perfmon-clear-unset-perfmon") {
-+		uint8_t counters[] = { V3D_PERFCNT_AXI_WRITE_STALLS_WATCH_1,
-+				       V3D_PERFCNT_TMU_CONFIG_ACCESSES,
-+				       V3D_PERFCNT_TLB_PARTIAL_QUADS,
-+				       V3D_PERFCNT_L2T_SLC0_READS };
-+		uint32_t id = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
-+		struct drm_v3d_perfmon_set_global set_global = {
-+			.id = id,
-+			.flags = DRM_V3D_PERFMON_CLEAR_GLOBAL,
-+		};
-+
-+		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global, EINVAL);
-+
-+		igt_v3d_perfmon_destroy(fd, id);
-+	}
-+
-+	igt_describe("Make sure that the IOCTL fails when one sets a global perfmon, but one is already set.");
-+	igt_subtest("global-perfmon-set-valid-perfmon-twice") {
-+		uint8_t counters[] = { V3D_PERFCNT_L2T_HITS,  V3D_PERFCNT_L2T_MISSES };
-+		uint32_t id1 = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
-+		uint32_t id2 = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
-+
-+		struct drm_v3d_perfmon_set_global set_global = {
-+			.id = id1,
-+		};
-+		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		set_global.id = id2;
-+		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global, EBUSY);
-+
-+		igt_v3d_perfmon_destroy(fd, id1);
-+		igt_v3d_perfmon_destroy(fd, id2);
-+	}
-+
-+	igt_describe("Make sure that destroying a global perfmon clears it even without "
-+		     "DRM_V3D_PERFMON_CLEAR_GLOBAL.");
-+	igt_subtest("global-perfmon-destroy") {
-+		uint8_t counters[] = { V3D_PERFCNT_AXI_WRITE_STALLS_WATCH_1,
-+				       V3D_PERFCNT_L2T_SLC0_READS };
-+		uint32_t id1 = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
-+		uint32_t id2 = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
-+		struct drm_v3d_perfmon_set_global set_global = { .id = id1 };
-+
-+		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		igt_v3d_perfmon_destroy(fd, id1);
-+
-+		/* Returns success as global perfmon was cleared during destroy. */
-+		set_global.id = id2;
-+		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		igt_v3d_perfmon_destroy(fd, id2);
-+	}
-+
-+	igt_describe("Make sure that submitting a per-job perfmon is rejected when a "
-+		     "global perfmon is active, and that the global perfmon keeps tracking.");
-+	igt_subtest("global-perfmon-precedes-per-job") {
-+		struct drm_v3d_perfmon_set_global set_global = { 0 };
-+		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
-+		uint32_t id_global, id_job, out_sync;
-+		uint64_t values;
-+		uint8_t counter;
-+		int ret;
-+
-+		/*
-+		 * Different V3D versions have different performance counters
-+		 * IDs for the same counters.
-+		 */
-+		if (ver >= 71)
-+			counter = 0; /* cycle-count */
-+		else if (ver >= 42)
-+			counter = V3D_PERFCNT_CYCLE_COUNT;
-+		else
-+			igt_abort_on_f(true, "This V3D version is not supported.");
-+
-+		id_global = igt_v3d_perfmon_create(fd, 1, &counter);
-+		id_job = igt_v3d_perfmon_create(fd, 1, &counter);
-+
-+		set_global.id = id_global;
-+		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		/* Submitting a per-job perfmon while a global one is active must
-+		 * be rejected: the global perfmon takes precedence.
-+		 */
-+		job->submit->perfmon_id = id_job;
-+
-+		/* Don't use drmIoctl(), as it restarts the ioctl if errno is EAGAIN. */
-+		ret = ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
-+		igt_assert_eq(ret, -1);
-+		igt_assert_eq(errno, EAGAIN);
-+
-+		/* Submit a plain job (no per-job perfmon). */
-+		out_sync = syncobj_create(fd, 0);
-+		job->submit->perfmon_id = 0;
-+		job->submit->out_sync = out_sync;
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
-+		igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
-+
-+		/* The global perfmon kept tracking. */
-+		igt_v3d_perfmon_get_values(fd, id_global, &values);
-+		igt_assert_lt(0, values);
-+
-+		igt_v3d_perfmon_destroy(fd, id_global);
-+		igt_v3d_perfmon_destroy(fd, id_job);
-+
-+		syncobj_destroy(fd, out_sync);
-+		igt_v3d_free_cl_job(fd, job);
-+	}
-+
-+	igt_describe("Make sure that the global perfmon is tracking all jobs consistently.");
-+	igt_subtest("global-perfmon-valid-perfmon") {
-+		struct drm_v3d_perfmon_set_global set_global = { 0 };
-+		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
-+		uint64_t *values1, *values2;
-+		uint32_t id, out_sync;
-+		uint8_t counters[2];
-+
-+		/*
-+		 * Different V3D versions have different performance counters
-+		 * IDs for the same counters.
-+		 */
-+		if (ver >= 71) {
-+			counters[0] = 0; /* cycle-count */
-+			counters[1] = 1; /* core-active */
-+		} else if (ver >= 42) {
-+			counters[0] = V3D_PERFCNT_CYCLE_COUNT;
-+			counters[1] = V3D_PERFCNT_CLE_ACTIVE;
-+		} else
-+			igt_abort_on_f(true, "This V3D version is not supported.");
-+
-+		id = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
-+
-+		values1 = calloc(ARRAY_SIZE(counters), sizeof(*values1));
-+		values2 = calloc(ARRAY_SIZE(counters), sizeof(*values2));
-+
-+		set_global.id = id;
-+		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		igt_v3d_perfmon_get_values(fd, id, values1);
-+
-+		out_sync = syncobj_create(fd, 0);
-+
-+		/* Submit an arbitrary number of CL jobs to stress the perfcnts. */
-+		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
-+			/* Attach the out sync to the last job */
-+			if (i == V3D_PERFMON_NUM_CL_JOBS - 1)
-+				job->submit->out_sync = out_sync;
-+
-+			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
-+		}
-+
-+		/* Wait for the last job to complete so counters are captured. */
-+		igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
-+		syncobj_destroy(fd, out_sync);
-+
-+		igt_v3d_perfmon_get_values(fd, id, values2);
-+
-+		/* As the global perfmon is active, the cycle-count must have
-+		 * increased with time.
-+		 */
-+		for (int i = 0; i < ARRAY_SIZE(counters); i++)
-+			igt_assert_lt(values1[i], values2[i]);
-+
-+		set_global.flags = DRM_V3D_PERFMON_CLEAR_GLOBAL;
-+		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		igt_v3d_perfmon_get_values(fd, id, values1);
-+
-+		out_sync = syncobj_create(fd, 0);
-+
-+		/* Submit an arbitrary number of CL jobs to stress the perfcnts. */
-+		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
-+			/* Attach the out sync to the last job */
-+			if (i == V3D_PERFMON_NUM_CL_JOBS - 1)
-+				job->submit->out_sync = out_sync;
-+
-+			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
-+		}
-+
-+		/* Wait for the last job to complete so counters are captured. */
-+		igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
-+		igt_v3d_perfmon_get_values(fd, id, values2);
-+
-+		/* As the global perfmon was cleared, the perfmon is inactive
-+		 * and it must preserve its values.
-+		 */
-+		for (int i = 0; i < ARRAY_SIZE(counters); i++)
-+			igt_assert_eq(values1[i], values2[i]);
-+
-+		igt_v3d_perfmon_destroy(fd, id);
-+
-+		syncobj_destroy(fd, out_sync);
-+		igt_v3d_free_cl_job(fd, job);
-+
-+		free(values1);
-+		free(values2);
-+	}
-+
-+	igt_describe("Make sure that a global perfmon tracks jobs from other file descriptors.");
-+	igt_subtest("global-perfmon-multifd") {
-+		struct drm_v3d_perfmon_set_global set_global = { 0 },
-+						  set_global2 = { 0 };
-+		int fd2 = drm_open_driver_render(DRIVER_V3D);
-+		struct v3d_cl_job *job = igt_v3d_noop_job(fd2);
-+		uint32_t id1, id2, out_sync;
-+		uint64_t values1, values2;
-+		uint8_t counter;
-+
-+		/*
-+		 * Different V3D versions have different performance counters
-+		 * IDs for the same counters.
-+		 */
-+		if (ver >= 71)
-+			counter = 0; /* cycle-count */
-+		else if (ver >= 42)
-+			counter = V3D_PERFCNT_CYCLE_COUNT;
-+		else
-+			igt_abort_on_f(true, "This V3D version is not supported.");
-+
-+		/* Create and set global perfmon from fd. */
-+		id1 = igt_v3d_perfmon_create(fd, 1, &counter);
-+		set_global.id = id1;
-+		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		igt_v3d_perfmon_get_values(fd, id1, &values1);
-+
-+		/* Submit jobs from the second fd; the global perfmon should track them. */
-+		out_sync = syncobj_create(fd2, 0);
-+
-+		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
-+			/* Attach the out sync to the last job */
-+			if (i == V3D_PERFMON_NUM_CL_JOBS - 1)
-+				job->submit->out_sync = out_sync;
-+
-+			do_ioctl(fd2, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
-+		}
-+
-+		igt_assert(syncobj_wait(fd2, &out_sync, 1, INT64_MAX, 0, NULL));
-+
-+		igt_v3d_perfmon_get_values(fd, id1, &values2);
-+		igt_assert_lt(values1, values2);
-+
-+		/* fd2 cannot set its own global perfmon while fd's is active. */
-+		id2 = igt_v3d_perfmon_create(fd2, 1, &counter);
-+		set_global2.id = id2;
-+		do_ioctl_err(fd2, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global2, EBUSY);
-+
-+		igt_v3d_perfmon_destroy(fd2, id2);
-+		igt_v3d_perfmon_destroy(fd, id1);
-+
-+		syncobj_destroy(fd2, out_sync);
-+		igt_v3d_free_cl_job(fd2, job);
-+
-+		drm_close_driver(fd2);
-+	}
-+
-+	igt_describe("Make sure closing a file descriptor with an active global "
-+		     "perfmon does not crash the driver.");
-+	igt_subtest("global-perfmon-destroy-multifd") {
-+		struct drm_v3d_perfmon_set_global set_global = { 0 };
-+		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
-+		int fd2 = drm_open_driver(DRIVER_V3D);
-+		uint32_t id, new_id, out_sync;
-+		uint8_t counter = 0;
-+
-+		/* Create and set global perfmon from fd2. */
-+		id = igt_v3d_perfmon_create(fd2, 1, &counter);
-+		set_global.id = id;
-+		do_ioctl(fd2, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		/* Keep HW busy from fd while fd2 is closed. */
-+		out_sync = syncobj_create(fd, 0);
-+
-+		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
-+			/* Attach the out sync to the last job */
-+			if (i == V3D_PERFMON_NUM_CL_JOBS - 1)
-+				job->submit->out_sync = out_sync;
-+
-+			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
-+		}
-+
-+		/* Closing fd2 must cleanly stop the active global perfmon and
-+		 * clear the global perfmon without crashing.
-+		 */
-+		drm_close_driver(fd2);
-+
-+		igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
-+
-+		/* fd can now set a new global perfmon without EBUSY. */
-+		new_id = igt_v3d_perfmon_create(fd, 1, &counter);
-+
-+		set_global.id = new_id;
-+		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		set_global.flags = DRM_V3D_PERFMON_CLEAR_GLOBAL;
-+		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
-+
-+		igt_v3d_perfmon_destroy(fd, new_id);
-+
-+		syncobj_destroy(fd, out_sync);
-+		igt_v3d_free_cl_job(fd, job);
-+	}
-+
-+	igt_describe("Make sure a perfmon CL job is not contaminated by concurrent CSD "
-+		     "work on a different queue.");
-+	igt_subtest("perfmon-counter-isolation") {
-+		struct v3d_csd_job *csd_job = igt_v3d_empty_shader(fd);
-+		struct v3d_cl_job *cl_job = igt_v3d_noop_job(fd);
-+		uint32_t id, blocker, cl_out;
-+		int timeline, fence_fd;
-+		uint8_t counter;
-+		uint64_t values;
-+
-+		igt_require_sw_sync();
-+
-+		/*
-+		 * compute-active-cycles is zero during pure CL work and non-zero
-+		 * while a CSD job is executing. Submitting CSD jobs alongside a
-+		 * perfmon CL job lets us distinguish "CSD ran while the perfmon
-+		 * window was open" (isolation broken) from "CSD finished before
-+		 * the perfmon window opened" (isolation correct).
-+		 */
-+		if (ver >= 71)
-+			counter = 4; /* compute-active-cycles */
-+		else if (ver >= 42)
-+			counter = V3D_PERFCNT_COMPUTE_ACTIVE;
-+		else
-+			igt_abort_on_f(true, "This V3D version is not supported.");
-+
-+		id = igt_v3d_perfmon_create(fd, 1, &counter);
-+
-+		/*
-+		 * Create an unsignaled fence via sw_sync. All CSD jobs will
-+		 * wait on this fence and stay queued until we increment the
-+		 * sw_sync timeline.
-+		 */
-+		timeline = sw_sync_timeline_create();
-+		fence_fd = sw_sync_timeline_create_fence(timeline, 1);
-+
-+		blocker = syncobj_create(fd, 0);
-+		syncobj_import_sync_file(fd, blocker, fence_fd);
-+		close(fence_fd);
-+
-+		cl_out = syncobj_create(fd, 0);
-+
-+		/*
-+		 * Block all CSD jobs with the unsignaled SW fence so they are
-+		 * still queued when the CL perfmon job is submitted.
-+		 */
-+		csd_job->submit->in_sync = blocker;
-+		for (int i = 0; i < V3D_PERFMON_NUM_CSD_JOBS; i++)
-+			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_job->submit);
-+
-+		/*
-+		 * Submit the CL job with the perfmon. v3d perfmon serialization
-+		 * must add a fence dependency on the CSD done fences so the CL
-+		 * job is forced to wait for all previous jobs to complete before
-+		 * its perfmon window opens.
-+		 */
-+		cl_job->submit->out_sync = cl_out;
-+		cl_job->submit->perfmon_id = id;
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_job->submit);
-+
-+		/*
-+		 * With serialization, the CL job waits for all CSD work to finish
-+		 * first, so the perfmon sees only pure CL activity. Without it,
-+		 * the two queues would race and CSD cycles would pollute the counter.
-+		 */
-+		sw_sync_timeline_inc(timeline, 1);
-+		igt_assert(syncobj_wait(fd, &cl_out, 1, INT64_MAX, 0, NULL));
-+
-+		igt_v3d_perfmon_get_values(fd, id, &values);
-+
-+		/* All CSD activity finished before the perfmon window opened,
-+		 * so no compute cycles must have been counted during the CL job.
-+		 */
-+		igt_assert_eq(values, 0);
-+
-+		close(timeline);
-+		igt_v3d_perfmon_destroy(fd, id);
-+
-+		syncobj_destroy(fd, blocker);
-+		syncobj_destroy(fd, cl_out);
-+		igt_v3d_free_cl_job(fd, cl_job);
-+		igt_v3d_free_csd_job(fd, csd_job);
-+	}
-+
-+	igt_describe("Make sure a non-perfmon CL job submitted after a perfmon CL job "
-+		     "is serialized behind it and does not contaminate its counter values.");
-+	igt_subtest("perfmon-counter-isolation-subsequent-cl") {
-+		struct v3d_cl_job *job1 = igt_v3d_noop_job(fd);
-+		struct v3d_cl_job *job2 = igt_v3d_noop_job(fd);
-+		uint64_t id, values, values_after_j2;
-+		uint32_t blocker, out1, out2;
-+		int timeline, fence_fd;
-+		uint8_t counter;
-+
-+		igt_require_sw_sync();
-+
-+		/*
-+		 * Different V3D versions have different performance counters IDs
-+		 * for the same counters.
-+		 */
-+		if (ver >= 71)
-+			counter = 0; /* cycle-count */
-+		else if (ver >= 42)
-+			counter = V3D_PERFCNT_CYCLE_COUNT;
-+		else
-+			igt_abort_on_f(true, "This V3D version is not supported.");
-+
-+		id = igt_v3d_perfmon_create(fd, 1, &counter);
-+
-+		/*
-+		 * Create an unsignaled fence via sw_sync. job1 will wait on
-+		 * this fence and stay blocked until we increment the timeline.
-+		 */
-+		timeline = sw_sync_timeline_create();
-+		fence_fd = sw_sync_timeline_create_fence(timeline, 1);
-+
-+		blocker = syncobj_create(fd, 0);
-+		syncobj_import_sync_file(fd, blocker, fence_fd);
-+		close(fence_fd);
-+
-+		out1 = syncobj_create(fd, 0);
-+		out2 = syncobj_create(fd, 0);
-+
-+		/* job1: BIN job is blocked until we signal the blocker. */
-+		job1->submit->in_sync_bcl = blocker;
-+		job1->submit->perfmon_id = id;
-+		job1->submit->out_sync = out1;
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job1->submit);
-+
-+		/* job2: no perfmon, must wait for job1 due to job serialization. */
-+		job2->submit->out_sync = out2;
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job2->submit);
-+
-+		/* job2 is serialized behind job1, so it cannot have completed yet. */
-+		igt_assert_eq(syncobj_wait_err(fd, &out2, 1, 0, 0), -ETIME);
-+
-+		/* While job1 has not started, the perfmon must still read zero. */
-+		igt_v3d_perfmon_get_values(fd, id, &values);
-+		igt_assert_eq(values, 0);
-+
-+		/* Release the blocker. */
-+		sw_sync_timeline_inc(timeline, 1);
-+
-+		igt_assert(syncobj_wait(fd, &out1, 1, INT64_MAX, 0, NULL));
-+
-+		/* job1 must have contributed cycles to the perfmon. */
-+		igt_v3d_perfmon_get_values(fd, id, &values);
-+		igt_assert_lt(0, values);
-+
-+		igt_assert(syncobj_wait(fd, &out2, 1, INT64_MAX, 0, NULL));
-+
-+		/* job2 doesn't have a perfmon attached, so a second read must
-+		 * return the same value.
-+		 */
-+		igt_v3d_perfmon_get_values(fd, id, &values_after_j2);
-+		igt_assert_eq(values, values_after_j2);
-+
-+		close(timeline);
-+		syncobj_destroy(fd, blocker);
-+		syncobj_destroy(fd, out1);
-+		syncobj_destroy(fd, out2);
-+
-+		igt_v3d_perfmon_destroy(fd, id);
-+
-+		igt_v3d_free_cl_job(fd, job1);
-+		igt_v3d_free_cl_job(fd, job2);
-+	}
-+
- 	igt_fixture()
- 		drm_close_driver(fd);
- }
--- 
-2.54.0
+  **FAILURE**
 
+  Serious unknown changes coming with IGTPW_15160 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_15160, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_15160:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-mtlp-9:         [PASS][1] -> [FAIL][2] +5 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-mtlp-8:         [PASS][3] -> [FAIL][4] +5 other tests fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-mtlp-8/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-mtlp-8/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-adls-6:         [PASS][5] -> [FAIL][6] +5 other tests fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-adls-6/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-adls-6/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-arlh-3:         [PASS][7] -> [FAIL][8] +5 other tests fail
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arlh-3/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-arlh-3/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-dg1-7:          [PASS][9] -> [FAIL][10] +5 other tests fail
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg1-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg1-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - fi-glk-j4005:       [PASS][11] -> [FAIL][12] +5 other tests fail
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-glk-j4005/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-glk-j4005/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-adlp-9:         [PASS][13] -> [FAIL][14] +5 other tests fail
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-adlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-adlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-rpls-4:         [PASS][15] -> [FAIL][16] +5 other tests fail
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-rpls-4/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-rpls-4/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-twl-1:          [PASS][17] -> [FAIL][18] +5 other tests fail
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-twl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-twl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-jsl-5:          [PASS][19] -> [FAIL][20] +5 other tests fail
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-jsl-5/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-jsl-5/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-apl-1:          [PASS][21] -> [FAIL][22] +5 other tests fail
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-apl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-apl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-rplp-1:         [PASS][23] -> [FAIL][24] +5 other tests fail
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-rplp-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-rplp-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+    - bat-dg2-9:          [PASS][25] -> [FAIL][26] +5 other tests fail
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-adlp-6:         [PASS][27] -> [FAIL][28] +5 other tests fail
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-adlp-6/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-adlp-6/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+    - fi-skl-6600u:       [PASS][29] -> [FAIL][30] +5 other tests fail
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-skl-6600u/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-skl-6600u/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
+    - bat-arls-6:         [PASS][31] -> [FAIL][32] +5 other tests fail
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arls-6/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-arls-6/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+    - fi-kbl-7567u:       [PASS][33] -> [FAIL][34] +5 other tests fail
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-kbl-7567u/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-kbl-7567u/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+    - fi-cfl-guc:         [PASS][35] -> [FAIL][36] +5 other tests fail
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-cfl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-cfl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
+    - fi-cfl-8700k:       [PASS][37] -> [FAIL][38] +5 other tests fail
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-cfl-8700k/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-cfl-8700k/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - bat-twl-2:          [PASS][39] -> [FAIL][40] +5 other tests fail
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-twl-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-twl-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+    - bat-dg2-14:         [PASS][41] -> [FAIL][42] +5 other tests fail
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-14/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-14/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+    - bat-dg2-8:          [PASS][43] -> [FAIL][44] +5 other tests fail
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-8/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-8/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+    - fi-bsw-n3050:       [PASS][45] -> [FAIL][46] +7 other tests fail
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-bsw-n3050/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-bsw-n3050/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+    - bat-arls-5:         [PASS][47] -> [FAIL][48] +5 other tests fail
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arls-5/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-arls-5/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+    - fi-tgl-1115g4:      [PASS][49] -> [FAIL][50] +5 other tests fail
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+
+  
+#### Warnings ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - fi-cfl-8109u:       [DMESG-WARN][51] ([i915#15673]) -> [FAIL][52] +5 other tests fail
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-cfl-8109u/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-cfl-8109u/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15160 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][53] -> [DMESG-FAIL][54] ([i915#12061]) +1 other test dmesg-fail
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [DMESG-FAIL][55] ([i915#12061]) -> [PASS][56] +1 other test pass
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-8/igt@i915_selftest@live.html
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-8/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8904 -> IGTPW_15160
+
+  CI-20190529: 20190529
+  CI_DRM_18473: b83102e9c06357b09f2cfbe944269786cb6985c4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15160: 4f8d846588a3793f6023b534778ff6d300a90c85 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/index.html
+
+--===============1522659617026747028==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>RFC: Add preferred FB modifier helper (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164817/">https://patchwork.freedesktop.org/series/164817/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8904 -&gt; IGTPW_15160</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_15160 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_15160, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_15160:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-mtlp-8/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-mtlp-8/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-adls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-adls-6/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-adls-6/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arlh-3/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-arlh-3/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg1-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg1-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-glk-j4005/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-glk-j4005/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-adlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-adlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-rpls-4/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-rpls-4/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-twl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-twl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-jsl-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-jsl-5/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-jsl-5/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-apl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-apl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-rplp-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-rplp-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-adlp-6/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-adlp-6/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">FAIL</a> +5 other tests fail</li>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-skl-6600u/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-skl-6600u/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">FAIL</a> +5 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:</p>
+<ul>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arls-6/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-arls-6/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> +5 other tests fail</li>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-kbl-7567u/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-kbl-7567u/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> +5 other tests fail</li>
+<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-cfl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-cfl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> +5 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-cfl-8700k/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-cfl-8700k/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> +5 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-twl-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-twl-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> +5 other tests fail</li>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-14/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-14/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> +5 other tests fail</li>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-8/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-8/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> +5 other tests fail</li>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-bsw-n3050/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-bsw-n3050/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> +7 other tests fail</li>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-arls-5/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-arls-5/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> +5 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> +5 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/fi-cfl-8109u/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/fi-cfl-8109u/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> +5 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15160 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8904/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15160/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8904 -&gt; IGTPW_15160</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18473: b83102e9c06357b09f2cfbe944269786cb6985c4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15160: 4f8d846588a3793f6023b534778ff6d300a90c85 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8904: 07cadbb0bf25b18ac37467c4505f87eb50d4e435 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1522659617026747028==--
