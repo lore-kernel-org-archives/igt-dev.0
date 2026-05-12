@@ -4,17 +4,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7508FCD37B6
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 09:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA3ACD4F24
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 09:24:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C7EF10E11A;
-	Wed, 13 May 2026 09:24:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 53A9D10ED9C;
+	Wed, 13 May 2026 09:24:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="XDBZQvvQ";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="pi1M75fy";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E76A10EC3F;
- Tue, 12 May 2026 21:52:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A20F10EC30;
+ Tue, 12 May 2026 21:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,17 +22,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=TjblcfHm/Z46TgcNkCFh3FNOFhzy3el+viI7R4fWfic=; b=XDBZQvvQZws3SRE1omJM096P51
- RRLAQvpZO2SxY65qynXSXj/hDlsZcUkKUbfPU0d6+hpT+42VmHXMCu9Eo2NV07vgvHCMCot4PpEB7
- 5yscMFecKaEUZ1HAlkP98z8/dBGz3NN1G6A9Kwz1u7lFTYVe8eL0wXAnA2SsjbfjMhTdANKRcrTJT
- P6xXKhrZg6om2WprwSukWQN/UNG/w4BVwKp+wFu0bkRmarR3uFLpu8GusPJF4eokZDi3JzJJsFJ2q
- w9OPpKT4VXJglHXXs9bYxtkuUXckOszOzFSy2m3ilj2pUV2aQJaSBQVSbo8aYtVTvCPqD0K64iIbC
- ldGl9MYQ==;
+ bh=ADRJdd6DbFjFBNsAOqsXMBnIGMV6n0RQ4NYaDHYxWvU=; b=pi1M75fy1SwJNusXRj+XM2itCt
+ lYdFM9IV1gc37m9J7YenWyRW9HHMdbYPXbKZSfizOwlq0g7l6AjwsxUT/CWPCx4lPD3fOhYLjVaWE
+ BLA4sYmNaodIdDaglDKBV0IANAvdh11Av7ssFcoNZVoXZxiBqzP2NbPuFe+Uzkg6KMryhwGAC6E5j
+ Fr7GrLhZLN26aZEkJDEo75LvEKT7H+7a3pjBJ7nN5NA1WYXQhMbQg5UY7exAeWJ+9yCLbR5gJr80Y
+ qmsupKVaDretG9OgOC1nntLnbFbB5wnpKdYDFqozs7GOt7V/suc0Z+VWYTNihohT6vIxXDMZ0vyoy
+ Hsuocxgw==;
 Received: from 179-242-241-236.3g.claro.net.br ([179.242.241.236]
  helo=quatroqueijos.cascardo.eti.br)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wMv1r-009frh-Ha; Tue, 12 May 2026 23:52:39 +0200
+ id 1wMv27-009frh-Qw; Tue, 12 May 2026 23:52:55 +0200
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: igt-dev@lists.freedesktop.org
 Cc: dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
@@ -43,9 +43,9 @@ Cc: dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
  Natalie Vock <natalie.vock@gmx.de>, kernel-dev@igalia.com,
  Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH i-g-t 5/8] igt_dmem_driver: add amdgpu support
-Date: Tue, 12 May 2026 18:51:52 -0300
-Message-ID: <20260512215156.4083082-6-cascardo@igalia.com>
+Subject: [PATCH i-g-t 8/8] dmem: get region once per driver
+Date: Tue, 12 May 2026 18:51:55 -0300
+Message-ID: <20260512215156.4083082-9-cascardo@igalia.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260512215156.4083082-1-cascardo@igalia.com>
 References: <20260512215156.4083082-1-cascardo@igalia.com>
@@ -67,165 +67,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Allocate a BO from VRAM domain. That will try to place BOs on VRAM, but may
-fallback to GTT. That can still be tracked with dmem.current.
+It is expected that only the same region is going to be tested for, so
+there is no use getting the region name for every test for a given driver.
 
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- lib/amdgpu/amd_dmem.c    | 94 ++++++++++++++++++++++++++++++++++++++++
- lib/igt_dmem_driver.h    |  1 +
- lib/meson.build          |  1 +
- tests/drv_dmem_cgroups.c |  6 ++-
- 4 files changed, 100 insertions(+), 2 deletions(-)
- create mode 100644 lib/amdgpu/amd_dmem.c
+ tests/drv_dmem_cgroups.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
-diff --git a/lib/amdgpu/amd_dmem.c b/lib/amdgpu/amd_dmem.c
-new file mode 100644
-index 000000000000..1c0825af43b6
---- /dev/null
-+++ b/lib/amdgpu/amd_dmem.c
-@@ -0,0 +1,94 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright 2026 Valve Corporation
-+ * Authors:
-+ *  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-+ */
-+
-+#include "igt_dmem_driver.h"
-+
-+#include <errno.h>
-+
-+#include "igt.h"
-+#include "igt_cgroup.h"
-+#include "lib/amdgpu/amd_memory.h"
-+
-+struct amdgpu_dmem_ctx {
-+	int fd;
-+	amdgpu_device_handle device;
-+	amdgpu_bo_handle *handles;
-+};
-+
-+static int amdgpu_dmem_init(void **ctx, int fd, int max_bo)
-+{
-+	struct amdgpu_dmem_ctx *actx;
-+	uint32_t major, minor;
-+	int err = -ENOMEM;
-+
-+	actx = malloc(sizeof(*actx));
-+	if (!actx)
-+		return -ENOMEM;
-+
-+	actx->handles = calloc(max_bo, sizeof(actx->handles[0]));
-+	if (!actx->handles)
-+		goto out;
-+
-+	err = amdgpu_device_initialize(fd, &major, &minor, &actx->device);
-+	if (err)
-+		goto out;
-+
-+	*ctx = actx;
-+
-+	return 0;
-+
-+out:
-+	if (actx->handles)
-+		free(actx->handles);
-+	free(actx);
-+
-+	return err;
-+}
-+
-+static void amdgpu_dmem_deinit(void *ctx)
-+{
-+	struct amdgpu_dmem_ctx *actx = ctx;
-+
-+	amdgpu_device_deinitialize(actx->device);
-+	free(actx->handles);
-+	free(actx);
-+}
-+
-+static int amdgpu_dmem_allocate_vram(void *ctx, int n_bo, size_t len)
-+{
-+	struct amdgpu_dmem_ctx *actx = ctx;
-+	amdgpu_bo_handle handle;
-+	int err;
-+
-+	err = amdgpu_bo_alloc_wrap(actx->device, len, 4096,
-+				   AMDGPU_GEM_DOMAIN_VRAM, 0, &handle);
-+	if (err)
-+		return err;
-+
-+	actx->handles[n_bo] = handle;
-+
-+	return 0;
-+}
-+
-+static void amdgpu_dmem_free_vram(void *ctx, int n_bo, size_t len)
-+{
-+	struct amdgpu_dmem_ctx *actx = ctx;
-+	int i;
-+	for (i = 0; i < n_bo; i++) {
-+		if (actx->handles[i])
-+			amdgpu_bo_free(actx->handles[i]);
-+	}
-+}
-+
-+const struct igt_dmem_driver amdgpu_dmem_driver = {
-+	.name = "amdgpu",
-+	.get_region_name = amdgpu_cgroup_region_name,
-+	.init = amdgpu_dmem_init,
-+	.deinit = amdgpu_dmem_deinit,
-+	.allocate_vram = amdgpu_dmem_allocate_vram,
-+	.free_vram = amdgpu_dmem_free_vram,
-+};
-diff --git a/lib/igt_dmem_driver.h b/lib/igt_dmem_driver.h
-index 869356fbf2c2..d43e5140d4f6 100644
---- a/lib/igt_dmem_driver.h
-+++ b/lib/igt_dmem_driver.h
-@@ -20,5 +20,6 @@ struct igt_dmem_driver {
- };
- 
- extern const struct igt_dmem_driver xe_dmem_driver;
-+extern const struct igt_dmem_driver amdgpu_dmem_driver;
- 
- #endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 269f3b9f0af8..dd02d087875b 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -188,6 +188,7 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_mmd_shared.c',
- 		'amdgpu/amd_jpeg_shared.c',
- 		'amdgpu/amd_utils.c',
-+		'amdgpu/amd_dmem.c',
- 		'amdgpu/amd_vcn_shared.c'
- 	]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
 diff --git a/tests/drv_dmem_cgroups.c b/tests/drv_dmem_cgroups.c
-index 6f4f779f3c2c..0e26b7e2bb9a 100644
+index 0791bb62d3a2..30f9caf3630c 100644
 --- a/tests/drv_dmem_cgroups.c
 +++ b/tests/drv_dmem_cgroups.c
-@@ -116,8 +116,9 @@ static int fill_vram(const struct igt_dmem_driver *drv, void *ctx, int fd, int m
- 			break;
- 	}
- 
--	igt_assert_f(err == -ENOMEM || err == -ENOSPC,
--		     "Expected -ENOMEM or -ENOSPC, got %d (%s)\n",
-+	/* amdgpu will fallback to GTT if it cannot allocate on VRAM */
-+	igt_assert_f(err == -ENOMEM || err == -ENOSPC || err == 0,
-+		     "Expected -ENOMEM,-ENOSPC or success, got %d (%s)\n",
- 		     err, strerror(-err));
- 
+@@ -124,18 +124,14 @@ static int fill_vram(const struct igt_dmem_driver *drv, void *ctx, int fd, int m
  	return n_bo;
-@@ -236,6 +237,7 @@ static const struct {
- 	const struct igt_dmem_driver *driver;
- } drivers[] = {
- 	{ DRIVER_XE, &xe_dmem_driver },
-+	{ DRIVER_AMDGPU, &amdgpu_dmem_driver },
- 	{ },
- };
+ }
  
+-static void test_write_eviction(int fd, unsigned int flags, const struct igt_dmem_driver *drv)
++static void test_write_eviction(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv)
+ {
+ 	void *ctx;
+ 	struct igt_cgroup *cg;
+-	char *cg_region;
+ 	int n_bo = 0, max_bo;
+ 	uint64_t current, capacity, cg_max, limit, after;
+ 	int set_err, err;
+ 
+-	cg_region = drv->get_region_name(fd);
+-	igt_require_f(cg_region, "Region not tracked by dmem cgroup controller\n");
+-
+ 	igt_cgroup_dmem_get_capacity(cg_region, &capacity);
+ 	igt_require_f(capacity >= 4 * BO_SIZE,
+ 		      "VRAM capacity (%"PRIu64" MiB) too small to test\n",
+@@ -215,7 +211,6 @@ static void test_write_eviction(int fd, unsigned int flags, const struct igt_dme
+ 	igt_cgroup_dmem_set_max(cg, cg_region, IGT_CGROUP_DMEM_MAX);
+ 	drv->free_vram(ctx, n_bo, BO_SIZE);
+ 	drv->deinit(ctx);
+-	free(cg_region);
+ 	igt_cgroup_free(cg);
+ }
+ 
+@@ -230,18 +225,14 @@ static int allocate_vram(const struct igt_dmem_driver *drv, void *ctx, int fd, i
+ 	return err ?: n_bo;
+ }
+ 
+-static void test_current(int fd, unsigned int flags, const struct igt_dmem_driver *drv)
++static void test_current(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv)
+ {
+ 	struct igt_cgroup *cg;
+-	char *cg_region;
+ 	void *ctx;
+ 	uint64_t current, capacity, cg_max;
+ 	int n_bo = 0, max_bo;
+ 	int err;
+ 
+-	cg_region = drv->get_region_name(fd);
+-	igt_require_f(cg_region, "Region not tracked by dmem cgroup controller\n");
+-
+ 	igt_cgroup_dmem_get_capacity(cg_region, &capacity);
+ 	igt_require_f(capacity >= 4 * BO_SIZE,
+ 		      "VRAM capacity (%"PRIu64" MiB) too small to test\n",
+@@ -339,13 +330,12 @@ static void test_current(int fd, unsigned int flags, const struct igt_dmem_drive
+ 		     current / SZ_1M, USAGE_SLACK / SZ_1M);
+ 
+ 	drv->deinit(ctx);
+-	free(cg_region);
+ 	igt_cgroup_free(cg);
+ }
+ 
+ static const struct {
+ 	const char *name;
+-	void (*test_fn)(int fd, unsigned int flags, const struct igt_dmem_driver *drv);
++	void (*test_fn)(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv);
+ 	unsigned int flags;
+ } subtests[] = {
+ 	{ "current", test_current, 0 },
+@@ -376,20 +366,24 @@ int igt_main()
+ 	for (int d = 0; drivers[d].driver; d++) {
+ 		igt_subtest_group() {
+ 			int fd = -1;
++			char *cg_region;
+ 			igt_fixture() {
+ 				fd = drm_open_driver(drivers[d].driver_flag);
+ 				igt_require_f(fd >= 0,
+ 					"No %s device found, skipping\n",
+ 					drivers[d].driver->name);
++				cg_region = drivers[d].driver->get_region_name(fd);
++				igt_require_f(cg_region, "Region not tracked by dmem cgroup controller\n");
+ 			}
+ 
+ 			for (int i = 0; subtests[i].name; i++)
+ 				igt_subtest_f("%s-%s", drivers[d].driver->name, subtests[i].name)
+-					subtests[i].test_fn(fd, subtests[i].flags, drivers[d].driver);
++					subtests[i].test_fn(fd, cg_region, subtests[i].flags, drivers[d].driver);
+ 
+ 			igt_fixture() {
+ 				if (fd >= 0)
+ 					drm_close_driver(fd);
++				free(cg_region);
+ 			}
+ 		}
+ 	}
 -- 
 2.47.3
 
