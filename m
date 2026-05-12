@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 638DFCD4851
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:25:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D0FECD4851
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 12:25:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1813610EA7F;
-	Tue, 12 May 2026 12:25:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2ABE710EA99;
+	Tue, 12 May 2026 12:25:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YqRJ9Hdp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PNzAISwo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91AF810E1D3
- for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 12:22:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 844EC10E0E5
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 12:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778588562; x=1810124562;
+ t=1778588603; x=1810124603;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=dGLZi1XptXNnx7JW4PEmNUuXrlb0YgNlN16ON58d/3M=;
- b=YqRJ9Hdp84Fv8KL52nwjQcXCqp24a5QT1lDstwRMIea5QFI3arwQRH1z
- tUIoRS+Uw7635WlMN+WOOrYjMd5AeB1fdr8CZcu/wXmMsdZxaDQWwAAQd
- gopzB/R4QWCEJWk2y0oD75dzkazT+dBxFLrQ/VBl14uPgDmyIwIuryQpe
- qudz1qCcmNjYVCNq9W502j0GY5DPMGL8MLaM2p4eHjS8KY63EtGd8aV7N
- IZ/78oXx+ReAKnrtTyGUB2+4NpzdP76Qm8GSTEbBYSSZJC9Gs2DycsPSU
- xsmyKvDT7nWkjZ+s9Hkq5/s3wRQxkHsNkqBqh/5bCX4fkvhTzwQu7tCwG A==;
-X-CSE-ConnectionGUID: Q6K7Kp7wTGi04NYWn6Bf2Q==
-X-CSE-MsgGUID: goWO5XtoRCSqwF53WezH0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="78641395"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="78641395"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 05:22:42 -0700
-X-CSE-ConnectionGUID: 21RP1/3SS8aBBIkG/BYWFw==
-X-CSE-MsgGUID: Usjd/H4HTJGZzhWc6zEnlg==
+ bh=VRHWIuNOcS5WJyVg0pP/Gy6Sa3FzqsrIvIr2RROF/p8=;
+ b=PNzAISwoySNRRvNblSXdCom9Y3xlk/2gMOUDY9xOohCCewD+rahPGFx9
+ sTFKsGtsgQ/tfkBNoHkYiW6oMc5LYmulAV4XpuBjzQDSjxTWOEtTvtCVY
+ oxb0qZqLu0QYD7JUcZ8RmWKAJIpWvpc3x/obWmPNXs+815GlLgyzM9WGi
+ 7TN0F9HCmdskoHTCOsGRGZrvrah9b/SO6LNRCVG6g3BSrrDXyvbVz+jjB
+ KUzRZQUZI4LFJtGlvbvjMt8ptOWEA80uRm+5DDHIj1Cokktsct13ovo1r
+ qHwIUAlBErVvoOHMoOYvD7JjQ+XOc9bA34FdJZINsT21ia+UdYu/0SAnZ g==;
+X-CSE-ConnectionGUID: qb2sAjcZRlmWvai4fWKBAA==
+X-CSE-MsgGUID: 6wVyGYygRvKzUQC/XxyjKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="104950073"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="104950073"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 05:23:22 -0700
+X-CSE-ConnectionGUID: puL7hI1dRYeAEGJft0Yb3Q==
+X-CSE-MsgGUID: eBSJgPAbTjuzLc0Idyc6Ag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="261502790"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; d="scan'208";a="234691262"
 Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.245.104])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 05:22:41 -0700
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 05:23:21 -0700
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 14/25] lib/kms: Fill plane->format_mods_async for planes
- without IN_FORMATS
-Date: Tue, 12 May 2026 15:21:32 +0300
-Message-ID: <20260512122143.11013-15-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 24/25] tests/intel/kms_flip_tiling: Use
+ for_each_modifier_with_format()
+Date: Tue, 12 May 2026 15:21:42 +0300
+Message-ID: <20260512122143.11013-25-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
 References: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
@@ -73,36 +73,51 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Fill plane->format_mods_async for drivers that don't provide
-the IN_FORMATS blob. Since we don't know any better we simply
-make the assumption that all formats are async flip capable.
-
-This should make it possible for tests to rely on
-plane->format_mods_async without having to do additonal async
-flip capability checks.
-
-And if some driver can't deal with this then the proper solution
-is to have it expose IN_FORMATS and IN_FORMATS_ASYNC.
+Replace the nested open coded copies of for_each_modifier_with_format()
+with the real thing.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/intel/kms_flip_tiling.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index ebc13063dfb0..b81be73978a1 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6246,6 +6246,9 @@ static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane
- 	if (!igt_plane_has_prop(plane, IGT_PLANE_IN_FORMATS)) {
- 		fill_plane_default_format_mods(plane, &plane->format_mods);
+diff --git a/tests/intel/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
+index bccacfa7b229..ff79e1458ef2 100644
+--- a/tests/intel/kms_flip_tiling.c
++++ b/tests/intel/kms_flip_tiling.c
+@@ -230,7 +230,6 @@ int igt_main()
+ 		bool run_in_simulation = igt_run_in_simulation();
  
-+		if (igt_has_drm_cap(display->drm_fd, DRM_CAP_ASYNC_PAGE_FLIP))
-+			fill_plane_default_format_mods(plane, &plane->format_mods_async);
-+
- 		return;
- 	}
+ 		for_each_crtc_with_valid_output(&data.display, crtc, output) {
+-			uint32_t format[2];
+ 			uint64_t modifier[2];
+ 			igt_plane_t *plane;
  
+@@ -244,20 +243,10 @@ int igt_main()
+ 
+ 			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+-			for (int i = 0; i < plane->format_mods.count; i++) {
+-				format[0] = plane->format_mods.formats[i];
+-				modifier[0] = plane->format_mods.modifiers[i];
+-
+-				if (format[0] != data.testformat)
+-					continue;
+-
+-				for (int j = 0; j < plane->format_mods.count; j++) {
+-					format[1] = plane->format_mods.formats[j];
+-					modifier[1] = plane->format_mods.modifiers[j];
+-
+-					if (format[1] != data.testformat)
+-						continue;
+-
++			for_each_modifier_with_format(&plane->format_mods,
++						      data.testformat, modifier[0]) {
++				for_each_modifier_with_format(&plane->format_mods,
++							      data.testformat, modifier[1]) {
+ 					if (run_in_simulation &&
+ 					    (!is_basic_tiling_modifier(modifier[0]) ||
+ 					     !is_basic_tiling_modifier(modifier[1])))
 -- 
 2.52.0
 
