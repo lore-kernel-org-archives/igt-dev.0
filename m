@@ -4,27 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45A13CD343F
-	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 22:01:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9C36CD4F21
+	for <igt-dev@archiver.kernel.org>; Tue, 12 May 2026 22:23:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D8FCB10E2CC;
-	Tue, 12 May 2026 22:00:59 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0660D10E2CC;
- Tue, 12 May 2026 22:00:43 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============9057692058568415359=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FF1910E08A;
+	Tue, 12 May 2026 22:23:45 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="F3QXzdXz";
+	dkim-atps=neutral
+Received: from SN4PR2101CU001.outbound.protection.outlook.com
+ (mail-southcentralusazon11012030.outbound.protection.outlook.com
+ [40.93.195.30])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DC8710E08A
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2026 22:23:27 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WWCX2f6XwiNxwm/gLRvgdoj5guzhCX1D9ZQabDE2/FEQGILDzIbNeWfx7+WvlZBC305ETqDxg65jErsmQo2eko3AiJ43VZSXwm5QdBel8nBdPXtfyBBEbdEBBbg+utf2hK6r791Etwv+wUIehVL1z00vaSnknuPuGVc91vo3pYd9/CAAK5KXUBUxNx0iezN/M7tzwPh3W3KGPhcyfd62//i/MC32YJiZlb6QVpvDW5+y5reK6Ufi2tUJyIzOqvX1x+gqNEXbxXpO1slxq3aISS2+8ln0ps8h7zE4P6g/KWtguC9WW+Bgd2hLiQ6hfzkdYXvqsoaAglsm9xCLZ+2vPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NoNKta9tDhi6/wtWdtsf4JvWgL6lkLXMO9WFFCO8ooI=;
+ b=nLSwQUbeNZhnk0jvyU8fqNsYBtWQyg1SUuZc+2n0ODAMN9Qz0f9mB3URijrQ+75MSEtePQXQHQPmIeQJpeIXMTi2gBlRoD7Y9jnUmpUfl6avpKOqTtS3yBk1LYZYh6AOsX/LYhCjGf90nY3tl/AWdTEBPMDAPkMvtFJ50Tg1gjnSpVQX4MixTAn7WB9o1jvIp4iyl9cl+zOlUVTBSUYkBY1Iex+Yqlk9zxQZqMMVR/0lpOAOaxLaEIb8z8rr8DYRwkSemxjtm7goiIH6nnwElO4lYcFvQ8Nq0kaKJnfn3TlAtdCADSjmRlAVV9FT5E1WtHg27js7Wc+ofspifkCPhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NoNKta9tDhi6/wtWdtsf4JvWgL6lkLXMO9WFFCO8ooI=;
+ b=F3QXzdXzng3pfygG0sKanqNNXEK6ZPZPPbBLfpXN2oS4TbHG94WEwFW2uIV4B1xOxZ5iat5TkdIUnUuneI+t3Q48DrX73BqDovmuUgHZq6fTGVOGZpaj4Ryq3OdYIz6dR6hwI+ABp2kYHn6sxFiZJ9trSviOdnDcQpmLi6XJiNQ=
+Received: from CH2PR04CA0029.namprd04.prod.outlook.com (2603:10b6:610:52::39)
+ by BL3PR12MB6401.namprd12.prod.outlook.com (2603:10b6:208:3b1::8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
+ 2026 22:23:18 +0000
+Received: from CH3PEPF00000011.namprd21.prod.outlook.com
+ (2603:10b6:610:52:cafe::bc) by CH2PR04CA0029.outlook.office365.com
+ (2603:10b6:610:52::39) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9913.11 via Frontend Transport; Tue,
+ 12 May 2026 22:23:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH3PEPF00000011.mail.protection.outlook.com (10.167.244.116) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.48.3 via Frontend Transport; Tue, 12 May 2026 22:23:17 +0000
+Received: from kylin.lan (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 12 May
+ 2026 17:23:15 -0500
+From: Alex Hung <alex.hung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: <alex.hung@amd.com>, <Mark.Broadworth@amd.com>, <vitaly.prosyak@amd.com>, 
+ <swati2.sharma@intel.com>, <kamil.konieczny@linux.intel.com>,
+ <jani.nikula@intel.com>, Wayne Lin <wayne.lin@amd.com>
+Subject: [PATCH][V4] tests/kms_hdr: Add interactive HDR verification to
+ static-swap
+Date: Tue, 12 May 2026 16:22:44 -0600
+Message-ID: <20260512222245.1767752-1-alex.hung@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/kms=3A_Clean_up_forma?=
- =?utf-8?q?t+mod_stuff?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 12 May 2026 22:00:43 -0000
-Message-ID: <177862324301.64651.7000888895040944770@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000011:EE_|BL3PR12MB6401:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2b73726-44af-47fc-2ab4-08deb075110d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|82310400026|376014|36860700016|3023799003|56012099003|18002099003|11063799003;
+X-Microsoft-Antispam-Message-Info: nb1QL4gebaKLljQIHoTjkTCxuTn4pO2UF3X88OhvvkL8Ego2FvbjbGn1UQftgrL1eJ/kGd40ItmH9zDLNfAqiWkwYU6iAf5K3LAGQyo2vQ6oJ0VxaJb2LPAkdyrixpCYvmSASWoYmPtJjvaYxKAVOORZVc2V9qgjN2p1/y6PyZ4mC5+rrtE7M+WqrtplRqU0kf3wrpFZJI1GLue4Q5qCG+JB80nSU4xDwlJMY9QiepPOKfDYiJ/x4Pmz1Zo6A2H1XdkhgRnYP44tjwQ98pYd8s9IbDi5/fLKA5rOrXNizsZ8vvxBiGGoY1IZ8yVhwZ1uUVWaQd/KIviHqPLJhRgxnqnO/IowfnQWCeZp5a+0cdza9okZB0/HO7hXHtTcvZt5l5IztYwQsycyeX2eg0+WCvC2xzcepajP6bfIY8OnMKUE8NZEgmjOkrgTypfI0VIuUrKt2eSQZ3ccOKmqBEguxUJ3WyYPC/RM92s2gb9mKVlGRd50up2ct2azWaBUBECAMimMWbg59F5cruB/YlST7EaMExPjy2XQF82phEm3HkW74bNeeh0+CeFKRoqdAjDtoVbDJq6ph0ZvKMspolDITYCSKj91k+UQLguggtQXxULU5SPowpRRMNTc2oyxemtSN2uB6+UGGKTFRrS7e3pJFxXA7xmj8scCFGW7gzDzFi+B8fY67rLuRaLOlfBkiC8YC4/QyBejpNY6Pyq2WgIyWhyG994wt7KbobcJfh+U40E=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(376014)(36860700016)(3023799003)(56012099003)(18002099003)(11063799003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: NYtYj8IxF/D50jOVRZ+yWa04jEvadgYea18WDAufFn/s7JWcbSia6aflGugP/l5Vu8c8w2HpiIdn+0D6YhAMuWJs1rMEd04NmD1misY1ceIGVOFpBhB8zX+4FeafOqqBLuGJC6PTJsPIBGn67tA5KlTdeoaPJdSSjG56q2OATo3Y/ul4z7xYy0ReiWy/2ia9hs+++CwOyMqxXCeaQmLJ5Q6ZIMgAIhoKTab8FfAjcFDIQ0dd1JswEVc0Lhmps9ZwXzxQTJmIgFbe+q30/kRjclCdtYo04BJ4BpIHL5BqFOzYctkpPoE7u1/chKLuzvo+8zxtAm0Dp0+lRvNM55PyhYtyNIGF5BhyrY7dj4utDEXaWq0SlqSQQEu0Fz9Qd8Zz5mwdlwxMY7HIerrOdUU0WPaGz8LtCbPcb0ty/+dyOfZ6eWu01ZVzL/Z2wtIMOTP4
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 22:23:17.6376 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2b73726-44af-47fc-2ab4-08deb075110d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF00000011.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6401
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,529 +109,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9057692058568415359==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Wayne Lin <wayne.lin@amd.com>
 
-== Series Details ==
+Add smpte2084 and traditional-sdr with igt_debug_interactive_mode_check()
+checks in test_static_swap(). These checks are CI-safe (no-op without
+--interactive-debug) and provide a Y/n prompt when run interactively:
 
-Series: lib/kms: Clean up format+mod stuff
-URL   : https://patchwork.freedesktop.org/series/166415/
-State : failure
+  kms_hdr --run-subtest static-swap --interactive-debug=smpte2084
+  kms_hdr --run-subtest static-swap --interactive-debug=traditional-sdr
 
-== Summary ==
+The HDR metadata probe in test_hdr() failed with EINVAL because it attempted
+to commit metadata without a scanout buffer present. Fix the probe to create
+a minimal framebuffer and use DRM_MODE_ATOMIC_TEST_ONLY to validate the
+commit without modifying hardware state. The framebuffer is freed immediately
+after and the display state is reset, so the actual subtest starts from the
+same clean slate as before.
 
-CI Bug Log - changes from IGT_8907 -> IGTPW_15165
-====================================================
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Assisted-by: Copilot:Claude-Sonnet-4.6
+---
+ tests/kms_hdr.c | 35 ++++++++++++++++++++++++++---------
+ 1 file changed, 26 insertions(+), 9 deletions(-)
 
-Summary
--------
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index d50f87787..affd38887 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -454,6 +454,8 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 	igt_assert_output_bpc_equal(crtc,
+ 				    data->output, 10);
++	igt_debug_interactive_mode_check("smpte2084",
++					 "HDR pattern displayed with SMPTE ST 2084 metadata");
 
-  **FAILURE**
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
 
-  Serious unknown changes coming with IGTPW_15165 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_15165, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+@@ -483,6 +485,8 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
+ 		igt_display_commit_atomic(display, 0, NULL);
+ 	else
+ 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_debug_interactive_mode_check("traditional-sdr",
++					 "SDR pattern displayed with traditional SDR metadata");
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/index.html
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
 
-Participating hosts (42 -> 39)
-------------------------------
+@@ -571,16 +575,33 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 							      "non-internal panel.\n",
+ 							      igt_output_name(output));
 
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
+-					/* Signal HDR requirement via metadata */
++					/* Signal HDR requirement via metadata.
++					 * A framebuffer must be present for the driver to accept
++					 * a metadata commit. Use TEST_ONLY so hardware state is
++					 * unchanged.
++					 */
++					igt_create_fb(data->fd,
++						      data->w, data->h,
++						      hdr_test_formats[i],
++						      DRM_FORMAT_MOD_LINEAR,
++						      &data->afb);
++					igt_plane_set_fb(data->primary, &data->afb);
++					igt_plane_set_size(data->primary, data->w, data->h);
++					igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+ 					igt_hdr_fill_st2084(&hdr);
+ 					igt_hdr_set_metadata(data->output, &hdr);
+-					igt_require_f(!igt_display_try_commit2(display,
+-									       display->is_atomic ?
+-									       COMMIT_ATOMIC :
+-									       COMMIT_LEGACY),
++					igt_require_f(!igt_display_try_commit_atomic(display,
++										     DRM_MODE_ATOMIC_TEST_ONLY |
++										     DRM_MODE_ATOMIC_ALLOW_MODESET,
++										     NULL),
+ 						      "%s: Couldn't set HDR metadata\n",
+ 						      igt_output_name(output));
 
-Possible new issues
--------------------
++					/* Reset IGT display state; hardware was not changed. */
++					igt_hdr_set_metadata(data->output, NULL);
++					igt_plane_set_fb(data->primary, NULL);
++					igt_remove_fb(data->fd, &data->afb);
++
+ 					igt_require_f(!is_intel_device(data->fd) ||
+ 						      igt_max_bpc_constraint(display, crtc, output, 10),
+ 						      "%s: No suitable mode found to use 10 bpc.\n",
+@@ -591,10 +612,6 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 					else
+ 						flags &= ~TEST_NEEDS_DSC;
 
-  Here are the unknown changes that may have been introduced in IGTPW_15165:
+-					igt_hdr_set_metadata(data->output, NULL);
+-					igt_display_commit2(display, display->is_atomic ?
+-							    COMMIT_ATOMIC : COMMIT_LEGACY);
+-
+ 					if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND |
+ 						     TEST_INVALID_HDR | TEST_BRIGHTNESS))
+ 						test_static_toggle(data,
+--
+2.43.0
 
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_addfb_basic@addfb25-4-tiled:
-    - bat-dg2-14:         [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-14/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-14/igt@kms_addfb_basic@addfb25-4-tiled.html
-    - bat-dg2-8:          [PASS][3] -> [FAIL][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-8/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-8/igt@kms_addfb_basic@addfb25-4-tiled.html
-    - bat-mtlp-9:         [PASS][5] -> [FAIL][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-mtlp-9/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-mtlp-9/igt@kms_addfb_basic@addfb25-4-tiled.html
-    - bat-arls-6:         [PASS][7] -> [FAIL][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arls-6/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arls-6/igt@kms_addfb_basic@addfb25-4-tiled.html
-    - bat-mtlp-8:         [PASS][9] -> [FAIL][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-mtlp-8/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-mtlp-8/igt@kms_addfb_basic@addfb25-4-tiled.html
-    - bat-arls-5:         [PASS][11] -> [FAIL][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arls-5/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arls-5/igt@kms_addfb_basic@addfb25-4-tiled.html
-    - bat-arlh-2:         [PASS][13] -> [FAIL][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arlh-2/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arlh-2/igt@kms_addfb_basic@addfb25-4-tiled.html
-    - bat-arlh-3:         [PASS][15] -> [FAIL][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arlh-3/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arlh-3/igt@kms_addfb_basic@addfb25-4-tiled.html
-    - bat-dg2-9:          [PASS][17] -> [FAIL][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-9/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-9/igt@kms_addfb_basic@addfb25-4-tiled.html
-
-  * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
-    - fi-ilk-650:         [PASS][19] -> [FAIL][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-ilk-650/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-ilk-650/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - fi-tgl-1115g4:      [PASS][21] -> [FAIL][22] +1 other test fail
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-tgl-1115g4/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-tgl-1115g4/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - bat-adlp-6:         [PASS][23] -> [FAIL][24] +1 other test fail
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-6/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-6/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - fi-skl-6600u:       [PASS][25] -> [FAIL][26] +2 other tests fail
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-skl-6600u/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-skl-6600u/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - bat-twl-2:          [PASS][27] -> [FAIL][28] +1 other test fail
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-twl-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-twl-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - fi-cfl-8700k:       [PASS][29] -> [FAIL][30] +2 other tests fail
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-8700k/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-8700k/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - fi-bsw-nick:        [PASS][31] -> [FAIL][32]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-bsw-nick/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-bsw-nick/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - bat-kbl-2:          [PASS][33] -> [FAIL][34] +2 other tests fail
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-kbl-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-kbl-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - fi-hsw-4770:        [PASS][35] -> [FAIL][36]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-hsw-4770/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-hsw-4770/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - fi-ivb-3770:        [PASS][37] -> [FAIL][38]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-ivb-3770/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-ivb-3770/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - fi-elk-e7500:       [PASS][39] -> [FAIL][40]
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-elk-e7500/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-elk-e7500/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - fi-bsw-n3050:       [PASS][41] -> [FAIL][42]
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-bsw-n3050/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-bsw-n3050/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-    - fi-pnv-d510:        [PASS][43] -> [FAIL][44]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-pnv-d510/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-pnv-d510/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-legacy:
-    - bat-adlp-9:         [PASS][45] -> [FAIL][46] +1 other test fail
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-9/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-9/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-    - bat-twl-1:          [PASS][47] -> [FAIL][48] +1 other test fail
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-twl-1/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-twl-1/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-    - bat-rplp-1:         [PASS][49] -> [FAIL][50] +1 other test fail
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-rplp-1/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-rplp-1/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-    - fi-rkl-11600:       [PASS][51] -> [FAIL][52] +1 other test fail
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-rkl-11600/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-rkl-11600/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-    - bat-dg1-7:          [PASS][53] -> [FAIL][54]
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg1-7/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg1-7/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-    - bat-adlp-11:        [PASS][55] -> [FAIL][56] +1 other test fail
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-11/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-11/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-    - bat-rpls-4:         [PASS][57] -> [FAIL][58] +1 other test fail
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-rpls-4/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-rpls-4/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-    - bat-dg1-6:          [PASS][59] -> [FAIL][60]
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg1-6/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg1-6/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-adlp-11:        [PASS][61] -> [SKIP][62]
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-11/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-11/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - fi-tgl-1115g4:      [PASS][63] -> [SKIP][64]
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-tgl-1115g4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-tgl-1115g4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-adlp-6:         [PASS][65] -> [SKIP][66]
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-twl-2:          [PASS][67] -> [SKIP][68]
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-twl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-twl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-dg1-7:          [PASS][69] -> [SKIP][70]
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg1-7/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg1-7/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-adlp-9:         [PASS][71] -> [SKIP][72]
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-rpls-4:         [PASS][73] -> [SKIP][74]
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-rpls-4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-rpls-4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-twl-1:          [PASS][75] -> [SKIP][76]
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-twl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-twl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-jsl-5:          [PASS][77] -> [SKIP][78]
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-jsl-5/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-jsl-5/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-rplp-1:         [PASS][79] -> [SKIP][80]
-   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-rplp-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-rplp-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - fi-rkl-11600:       [PASS][81] -> [SKIP][82]
-   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-rkl-11600/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-rkl-11600/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@addfb25-yf-tiled-legacy:
-    - fi-glk-j4005:       [PASS][83] -> [FAIL][84] +2 other tests fail
-   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-glk-j4005/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-glk-j4005/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-    - bat-apl-1:          [PASS][85] -> [DMESG-FAIL][86] +2 other tests dmesg-fail
-   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-apl-1/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-apl-1/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-    - fi-kbl-x1275:       [PASS][87] -> [FAIL][88] +2 other tests fail
-   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-x1275/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-x1275/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-    - fi-cfl-8109u:       [PASS][89] -> [FAIL][90] +2 other tests fail
-   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-8109u/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-8109u/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-    - fi-kbl-7567u:       [PASS][91] -> [FAIL][92] +2 other tests fail
-   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-7567u/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-7567u/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-    - fi-kbl-8809g:       [PASS][93] -> [FAIL][94] +2 other tests fail
-   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-8809g/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-8809g/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-    - bat-jsl-5:          [PASS][95] -> [FAIL][96] +2 other tests fail
-   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-jsl-5/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-jsl-5/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-    - fi-cfl-guc:         [PASS][97] -> [FAIL][98] +2 other tests fail
-   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-guc/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-guc/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15165 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][99]
-   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-skl-6600u/igt@dmabuf@all-tests.html
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][100] -> [DMESG-FAIL][101] ([i915#12061]) +1 other test dmesg-fail
-   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-8/igt@i915_selftest@live.html
-   [101]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-6:         [PASS][102] -> [DMESG-FAIL][103] ([i915#12061]) +1 other test dmesg-fail
-   [102]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [103]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - fi-kbl-x1275:       [PASS][104] -> [SKIP][105]
-   [104]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-x1275/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [105]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-x1275/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - fi-cfl-8109u:       [PASS][106] -> [SKIP][107]
-   [106]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-8109u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [107]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-8109u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - fi-kbl-8809g:       [PASS][108] -> [SKIP][109]
-   [108]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-8809g/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [109]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-8809g/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-dg1-6:          [PASS][110] -> [SKIP][111] ([i915#12311])
-   [110]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg1-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [111]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg1-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - fi-skl-6600u:       [PASS][112] -> [SKIP][113]
-   [112]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-skl-6600u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [113]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-skl-6600u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - fi-cfl-8700k:       [PASS][114] -> [SKIP][115]
-   [114]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-8700k/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [115]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-8700k/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-kbl-2:          [PASS][116] -> [SKIP][117]
-   [116]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-kbl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [117]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-kbl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - fi-glk-j4005:       [PASS][118] -> [SKIP][119]
-   [118]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-glk-j4005/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [119]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-glk-j4005/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - fi-kbl-7567u:       [PASS][120] -> [SKIP][121]
-   [120]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-7567u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [121]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-7567u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - bat-apl-1:          [PASS][122] -> [SKIP][123]
-   [122]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-apl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [123]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-apl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-    - fi-cfl-guc:         [PASS][124] -> [SKIP][125]
-   [124]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-guc/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [125]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-guc/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@too-high:
-    - bat-apl-1:          [PASS][126] -> [DMESG-WARN][127] ([i915#13735]) +34 other tests dmesg-warn
-   [126]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-apl-1/igt@kms_addfb_basic@too-high.html
-   [127]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-apl-1/igt@kms_addfb_basic@too-high.html
-
-  * igt@kms_flip@basic-plain-flip@a-dp1:
-    - bat-apl-1:          [PASS][128] -> [DMESG-WARN][129] ([i915#13735] / [i915#180]) +30 other tests dmesg-warn
-   [128]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-apl-1/igt@kms_flip@basic-plain-flip@a-dp1.html
-   [129]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-apl-1/igt@kms_flip@basic-plain-flip@a-dp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@coherency:
-    - fi-skl-6600u:       [INCOMPLETE][130] -> [PASS][131] +1 other test pass
-   [130]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-skl-6600u/igt@i915_selftest@live@coherency.html
-   [131]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-skl-6600u/igt@i915_selftest@live@coherency.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [DMESG-FAIL][132] ([i915#12061]) -> [PASS][133] +1 other test pass
-   [132]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [133]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-9:         [DMESG-FAIL][134] ([i915#12061]) -> [PASS][135] +1 other test pass
-   [134]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [135]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [SKIP][136] ([i915#13030]) -> [PASS][137]
-   [136]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [137]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
-  [i915#13030]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13030
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8907 -> IGTPW_15165
-
-  CI-20190529: 20190529
-  CI_DRM_18478: 161329a551bb5ebd34524b781cd7fb3d84b994be @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15165: 8a5f70a8bb58bc0f7c83d44fdc65890ad56d03b8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8907: 6b305d78c65768c09cc7c0e902273bf409bbd218 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/index.html
-
---===============9057692058568415359==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/kms: Clean up format+mod stuff</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166415/">https://patchwork.freedesktop.org/series/166415/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8907 -&gt; IGTPW_15165</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_15165 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_15165, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_15165:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-4-tiled:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-14/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-14/igt@kms_addfb_basic@addfb25-4-tiled.html">FAIL</a></li>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-8/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-8/igt@kms_addfb_basic@addfb25-4-tiled.html">FAIL</a></li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-mtlp-9/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-mtlp-9/igt@kms_addfb_basic@addfb25-4-tiled.html">FAIL</a></li>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arls-6/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arls-6/igt@kms_addfb_basic@addfb25-4-tiled.html">FAIL</a></li>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-mtlp-8/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-mtlp-8/igt@kms_addfb_basic@addfb25-4-tiled.html">FAIL</a></li>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arls-5/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arls-5/igt@kms_addfb_basic@addfb25-4-tiled.html">FAIL</a></li>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arlh-2/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arlh-2/igt@kms_addfb_basic@addfb25-4-tiled.html">FAIL</a></li>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arlh-3/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arlh-3/igt@kms_addfb_basic@addfb25-4-tiled.html">FAIL</a></li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-9/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-9/igt@kms_addfb_basic@addfb25-4-tiled.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-x-tiled-legacy:</p>
-<ul>
-<li>fi-ilk-650:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-ilk-650/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-ilk-650/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a></li>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-tgl-1115g4/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-tgl-1115g4/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-6/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-6/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-skl-6600u/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-skl-6600u/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-twl-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-twl-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-<li>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-8700k/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-8700k/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-bsw-nick/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-bsw-nick/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a></li>
-<li>bat-kbl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-kbl-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-kbl-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-hsw-4770/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-hsw-4770/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a></li>
-<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-ivb-3770/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-ivb-3770/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a></li>
-<li>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-elk-e7500/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-elk-e7500/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a></li>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-bsw-n3050/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-bsw-n3050/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a></li>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-pnv-d510/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-pnv-d510/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-legacy:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-9/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-9/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-twl-1/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-twl-1/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-rplp-1/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-rplp-1/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-rkl-11600/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-rkl-11600/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-<li>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg1-7/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg1-7/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">FAIL</a></li>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-11/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-11/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-rpls-4/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-rpls-4/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg1-6/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg1-6/igt@kms_addfb_basic@addfb25-y-tiled-legacy.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-11/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-11/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-tgl-1115g4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-tgl-1115g4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-twl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-twl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg1-7/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg1-7/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-adlp-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-adlp-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-rpls-4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-rpls-4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-twl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-twl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-jsl-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-jsl-5/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-jsl-5/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-rplp-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-rplp-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-rkl-11600/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-rkl-11600/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-yf-tiled-legacy:</p>
-<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-glk-j4005/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-glk-j4005/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-apl-1/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-apl-1/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">DMESG-FAIL</a> +2 other tests dmesg-fail</li>
-<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-x1275/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-x1275/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-8109u/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-8109u/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-7567u/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-7567u/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-8809g/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-8809g/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-<li>bat-jsl-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-jsl-5/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-jsl-5/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-guc/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-guc/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">FAIL</a> +2 other tests fail</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15165 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-skl-6600u/igt@dmabuf@all-tests.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-x1275/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-x1275/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-8109u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-8109u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-8809g/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-8809g/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg1-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg1-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>)</li>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-skl-6600u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-skl-6600u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-8700k/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-8700k/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-kbl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-kbl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-kbl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-glk-j4005/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-glk-j4005/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-kbl-7567u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-kbl-7567u/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-apl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-apl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-cfl-guc/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-cfl-guc/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@too-high:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-apl-1/igt@kms_addfb_basic@too-high.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-apl-1/igt@kms_addfb_basic@too-high.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +34 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@a-dp1:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-apl-1/igt@kms_flip@basic-plain-flip@a-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-apl-1/igt@kms_flip@basic-plain-flip@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +30 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@coherency:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-skl-6600u/igt@i915_selftest@live@coherency.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-skl-6600u/igt@i915_selftest@live@coherency.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8907/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13030">i915#13030</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15165/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8907 -&gt; IGTPW_15165</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18478: 161329a551bb5ebd34524b781cd7fb3d84b994be @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15165: 8a5f70a8bb58bc0f7c83d44fdc65890ad56d03b8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8907: 6b305d78c65768c09cc7c0e902273bf409bbd218 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============9057692058568415359==--
