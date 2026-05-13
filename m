@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF68DCD37B6
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:17:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46EACCD4851
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:17:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9EE8610ECAA;
-	Wed, 13 May 2026 06:17:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8E5D10ECA8;
+	Wed, 13 May 2026 06:17:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QqgI+0Jo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f0u5ArHi";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EF6410EC91
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:16:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E393710ECA4
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778653007; x=1810189007;
+ t=1778653010; x=1810189010;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oAuizqUMEBRdIBJJuOXdbeZ0csxcLTHurzEzGGc8k74=;
- b=QqgI+0JoxOiKAcDp+PBqlzkayxGgHBWCvr9S6tlOdms2alOA6BR+XJN7
- kHFZKNIhYKWHFMEpVIE4c1SvjQBlE45zwDzhpIZk5up1fQaQTvg7kESjO
- +W8s+YfsNle7Z0m3LzJJlekWlC0kCfdQaSMEFbgEhp34uZW8OYDQJdI/Q
- 4oOZkJ+0LQTz7jEkhiW2PtiG+zi/KzmigJrqKg4X7gcKffBW7YSnw7EP4
- Pe7uJffuq6XLRnvVQDWHUS9x2rCIltjY0yw/0gY8CaQy52caEB+iAU0Da
- ZMscD90+5pv7sMOjysUqXc05Lr1/9BLa4a8E+qGkXOr3Su+MX/sNCAAMB A==;
-X-CSE-ConnectionGUID: lUGEN0UESzKry050uIbajQ==
-X-CSE-MsgGUID: cnieD1Z0TqSV3Grmea9VcA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79524879"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79524879"
+ bh=gl36RBlqAU4CYADalOtViI6BJEPM6krmaHgkBA/mwJA=;
+ b=f0u5ArHifdOMS6Wedmvs0EmxwQOB+dDF9MFLNjI9WTjGZLpKVcKhRt1+
+ E4Wm+Z7Uoc3oaccYUGxb6cmS6AiBcuNL6COC56StF1z2gbiQ59h4FIm63
+ A0MRokVdY++Sdu+MC+4lh1ZJitLctvv+yrCy8uo4UgkAvnUvvbKgPLQtT
+ mzUP41otyYwG11p9OwUDm/1u5PC6leOjVf8ryXILeJDGrJTrmvMnu66kN
+ 2Am0OyPafcjnnzEA9CA20OKyaj9IxH2z2tdhSIQAYktuKQOiK74YoZLMw
+ moBtzyC4fWvgLRsFJ+4uLqGzMuA/5aOdYEYYwWTXcEdkHOyjV3etpCkCZ w==;
+X-CSE-ConnectionGUID: 44F/bmTdRia2bGFFvcVdcw==
+X-CSE-MsgGUID: REqFWdptR2KhNbb097rH4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79524883"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79524883"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 23:16:47 -0700
-X-CSE-ConnectionGUID: gHKDqKStTGmyarR53hEKog==
-X-CSE-MsgGUID: JhxSVs5ERtmdDZam5BXMFA==
+ 12 May 2026 23:16:50 -0700
+X-CSE-ConnectionGUID: nQ07zdQMQIq0qDjJzr4akQ==
+X-CSE-MsgGUID: Znxi8vL6SlG6DakEQ7dmmw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="242341803"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="242341809"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:16:45 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:16:48 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
  mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v2 1/2] lib/igt_fb: Add IGT_FORMAT_MOD_PREFERRED helper
- modifier
-Date: Wed, 13 May 2026 11:45:01 +0530
-Message-ID: <20260513061503.645278-2-jeevan.b@intel.com>
+Subject: [PATCH i-g-t v2 2/2] HAX: kms_cursor_legacy: Use
+ IGT_FORMAT_MOD_PREFERRED for cursor FBs
+Date: Wed, 13 May 2026 11:45:02 +0530
+Message-ID: <20260513061503.645278-3-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260513061503.645278-1-jeevan.b@intel.com>
 References: <20260513061503.645278-1-jeevan.b@intel.com>
@@ -70,151 +70,145 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-lib/igt_fb: Add IGT_FORMAT_MOD_PREFERRED helper modifier
-
-Add IGT_FORMAT_MOD_PREFERRED as an internal FB modifier sentinel so tests
-can request preferred tiling without hardcoding driver rules.
-
-Resolve it in igt_fb_resolve_modifier() (never pass it to kernel) by
-checking support for the requested format in this order:
-X_TILED -> 4_TILED -> LINEAR.
-
-v2:
-- Switch from gen/driver policy to capability-based selection
-- Drop Y_TILED preference
+Switch all cursor-related framebuffer creations in
+kms_cursor_legacy to use IGT_FORMAT_MOD_PREFERRED instead of
+DRM_FORMAT_MOD_LINEAR.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- lib/igt_fb.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++-
- lib/igt_fb.h | 19 ++++++++++++++
- 2 files changed, 89 insertions(+), 1 deletion(-)
+ tests/kms_cursor_legacy.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index fa9220953..454a59859 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -790,6 +790,67 @@ static int fb_num_planes(const struct igt_fb *fb)
- 	return num_planes;
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 5399ef481..e32d2ac7e 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -373,7 +373,7 @@ static void set_fb_on_crtc(igt_display_t *display, igt_crtc_t *crtc,
+ 
+ 	igt_create_pattern_fb(display->drm_fd,
+ 		      mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb_info);
++		      DRM_FORMAT_XRGB8888, IGT_FORMAT_MOD_PREFERRED, fb_info);
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, fb_info);
+@@ -579,7 +579,7 @@ static void prepare_flip_test(igt_display_t *display,
+ 
+ 		igt_skip_on(width <= 64 && height <= 64);
+ 		igt_create_color_fb(display->drm_fd, width, height,
+-				    DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, 1., 0., .7, cursor_fb2);
++				    DRM_FORMAT_ARGB8888, IGT_FORMAT_MOD_PREFERRED, 1., 0., .7, cursor_fb2);
+ 
+ 		arg[0].flags = arg[1].flags = DRM_MODE_CURSOR_BO;
+ 		arg[1].handle = cursor_fb2->gem_handle;
+@@ -605,7 +605,7 @@ static void prepare_flip_test(igt_display_t *display,
+ 		            crtc->planes[1].type != DRM_PLANE_TYPE_CURSOR);
+ 
+ 		igt_create_color_pattern_fb(display->drm_fd, prim_fb->width, prim_fb->height,
+-					    DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, .1, .1, .1, argb_fb);
++					    DRM_FORMAT_ARGB8888, IGT_FORMAT_MOD_PREFERRED, .1, .1, .1, argb_fb);
+ 	}
  }
  
-+/**
-+ * igt_fb_resolve_modifier:
-+ * @fd: DRM device fd
-+ * @modifier: Requested modifier, may be IGT_FORMAT_MOD_PREFERRED
-+ *
-+ * Resolve the IGT_FORMAT_MOD_PREFERRED sentinel to an actual framebuffer
-+ * modifier by checking device capabilities. Tries modifiers in order of
-+ * preference: X-tile (compatibility), 4-tile (modern), then LINEAR (fallback).
-+ * Returns the first supported modifier.
-+ *
-+ * This approach avoids hardcoded driver/generation checks and instead
-+ * validates actual device capabilities.
-+ *
-+ * Returns: The resolved DRM format modifier that is supported by the device.
-+ */
-+static bool igt_fb_modifier_is_supported(int fd, uint32_t format,
-+					 uint64_t modifier)
-+{
-+	igt_display_t display;
-+	bool supported = false;
-+
-+	if (modifier == DRM_FORMAT_MOD_LINEAR)
-+		return true; /* LINEAR is always supported */
-+
-+	igt_display_require(&display, fd);
-+	supported = igt_display_has_format_mod(&display, format, modifier);
-+	igt_display_fini(&display);
-+
-+	return supported;
-+}
-+
-+static uint64_t igt_fb_resolve_modifier(int fd, uint32_t format,
-+					 uint64_t modifier)
-+{
-+	uint64_t preferred_modifiers[] = {
-+		I915_FORMAT_MOD_X_TILED,   /* X-tile: good compatibility */
-+		I915_FORMAT_MOD_4_TILED,   /* 4-tile: modern, potentially better */
-+		DRM_FORMAT_MOD_LINEAR      /* Linear: always fallback */
-+	};
-+	uint64_t resolved = DRM_FORMAT_MOD_LINEAR;
-+
-+	if (modifier != IGT_FORMAT_MOD_PREFERRED)
-+		return modifier;
-+
-+	/* Try preferred modifiers in order, independent of driver checks. */
-+	for (int i = 0; i < ARRAY_SIZE(preferred_modifiers); i++) {
-+		if (igt_fb_modifier_is_supported(fd, format,
-+						preferred_modifiers[i])) {
-+			resolved = preferred_modifiers[i];
-+			igt_debug("Found supported modifier: %s(0x%" PRIx64 ")\n",
-+				  igt_fb_modifier_name(resolved), resolved);
-+			break;
-+		}
-+	}
-+
-+	igt_debug("Resolved IGT_FORMAT_MOD_PREFERRED to %s(0x%" PRIx64 ")\n",
-+		  igt_fb_modifier_name(resolved), resolved);
-+
-+	return resolved;
-+}
-+
- void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
- 		 uint32_t drm_format, uint64_t modifier,
- 		 enum igt_color_encoding color_encoding,
-@@ -803,7 +864,13 @@ void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
+@@ -652,10 +652,10 @@ static void flip(igt_display_t *display,
+ 	}
  
- 	fb->width = width;
- 	fb->height = height;
--	fb->modifier = modifier;
-+	fb->modifier = igt_fb_resolve_modifier(fd, drm_format, modifier);
-+	/* Log the chosen modifier for debugging. */
-+	if (modifier == IGT_FORMAT_MOD_PREFERRED) {
-+		igt_debug("Created framebuffer: %dx%d, format=%s, modifier=%s(0x%" PRIx64 ")\n",
-+			  width, height, igt_format_str(drm_format),
-+			  igt_fb_modifier_name(fb->modifier), fb->modifier);
-+	}
- 	fb->drm_format = drm_format;
- 	fb->fd = fd;
- 	fb->num_planes = fb_num_planes(fb);
-@@ -5266,6 +5333,8 @@ void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
- const char *igt_fb_modifier_name(uint64_t modifier)
- {
- 	switch (modifier) {
-+	case IGT_FORMAT_MOD_PREFERRED:
-+		return "preferred";
- 	case DRM_FORMAT_MOD_LINEAR:
- 		return "linear";
- 	case I915_FORMAT_MOD_X_TILED:
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index 8e5907dab..27aa9e161 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -50,6 +50,25 @@ typedef struct _igt_crc igt_crc_t;
-  */
- #define IGT_FORMAT_FLOAT fourcc_code('I', 'G', 'F', 'x')
+ 	igt_create_color_fb(display->drm_fd, fb_info.width, fb_info.height,
+-			    DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, .5, .5, .5, &cursor_fb);
++			    DRM_FORMAT_ARGB8888, IGT_FORMAT_MOD_PREFERRED, .5, .5, .5, &cursor_fb);
  
-+/**
-+ * IGT_FORMAT_MOD_PREFERRED:
-+ *
-+ * Modifier used by tests to request the best tiling format for the
-+ * current device. The actual modifier is selected inside igt_init_fb()
-+ * based on device capabilities, so tests don't need to handle driver or
-+ * generation-specific details.
-+ *
-+ * Default selection rules (capability-based):
-+ *  - If X_TILED is supported for the requested format, use X_TILED
-+ *  - Else if 4_TILED is supported for the requested format, use 4_TILED
-+ *  - Else use LINEAR
-+ *
-+ * Note: This is a special placeholder value and must never be sent to
-+ * the kernel. Modifier selection is logged in IGT debug output.
-+ */
-+#define IGT_FORMAT_MOD_PREFERRED  UINT64_C(0xfffffffffffffffe)
-+
-+
- #define IGT_FORMAT_FMT "%c%c%c%c(0x%08x)"
- #define IGT_FORMAT_ARGS(f) ((f) >> 0) & 0xff, ((f) >> 8) & 0xff, \
- 		((f) >> 16) & 0xff, ((f) >> 24) & 0xff, (f)
+ 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 	cursor = set_cursor_on_crtc(display, cursor_crtc, &cursor_fb);
+ 	populate_cursor_args(display, cursor_crtc, arg, &cursor_fb);
+ 
+@@ -769,7 +769,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 	set_fb_on_crtc(display, crtc, output, &fb_info);
+ 
+ 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
+ 	populate_cursor_args(display, crtc, arg, &cursor_fb);
+ 
+@@ -948,7 +948,7 @@ static void flip_vs_cursor(igt_display_t *display, enum flip_test mode, int nloo
+ 	set_fb_on_crtc(display, crtc, output, &fb_info);
+ 
+ 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
+ 	populate_cursor_args(display, crtc, arg, &cursor_fb);
+ 
+@@ -1089,7 +1089,7 @@ static void nonblocking_modeset_vs_cursor(igt_display_t *display, int loops)
+ 	set_fb_on_crtc(display, crtc, output, &fb_info);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
+ 	populate_cursor_args(display, crtc, arg, &cursor_fb);
+ 	arg[0].flags |= DRM_MODE_CURSOR_BO;
+@@ -1216,7 +1216,7 @@ static void two_screens_flip_vs_cursor(igt_display_t *display, int nloops, bool
+ 	}
+ 
+ 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
+ 	populate_cursor_args(display, crtc, arg1, &cursor_fb);
+ 
+@@ -1395,7 +1395,7 @@ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloo
+ 	vrefresh = igt_output_get_mode(output)->vrefresh;
+ 
+ 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
+ 	populate_cursor_args(display, crtc, arg, &cursor_fb);
+ 
+@@ -1513,7 +1513,7 @@ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool
+ 	}
+ 
+ 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 
+ 	cursors[0] = set_cursor_on_crtc(display, crtc[0], &cursor_fb);
+ 	populate_cursor_args(display, crtc[0], arg[0], &cursor_fb);
+@@ -1628,7 +1628,7 @@ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+ 	set_fb_on_crtc(display, crtc, output, &fb_info);
+ 
+ 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 	populate_cursor_args(display, crtc, arg, &cursor_fb);
+ 
+ 	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+@@ -1709,10 +1709,11 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	set_fb_on_crtc(display, crtc, output, &fb_info[0]);
+ 	plane_primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_create_color_pattern_fb(display->drm_fd, fb_info[0].width, fb_info[0].height,
+-				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, .1, .1, .1, &fb_info[1]);
++				    DRM_FORMAT_XRGB8888, IGT_FORMAT_MOD_PREFERRED, .1, .1, .1,
++				    &fb_info[1]);
+ 
+ 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 	populate_cursor_args(display, crtc, arg, &cursor_fb);
+ 
+ 	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+@@ -1816,7 +1817,7 @@ static void modeset_atomic_cursor_hotspot(igt_display_t *display)
+ 
+ 	cursor_width = cursor_height = 64;
+ 	igt_create_color_fb(display->drm_fd, cursor_width, cursor_height, DRM_FORMAT_ARGB8888,
+-			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
++			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
+ 
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
 -- 
 2.43.0
 
