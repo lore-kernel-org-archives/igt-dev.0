@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F3E4CD484C
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 04:34:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 832B4CD37B6
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 04:36:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C5BDE10E2EA;
-	Wed, 13 May 2026 04:34:38 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 128A310E2EA;
- Wed, 13 May 2026 04:34:23 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0556468301034285218=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 28A2710E2EA;
+	Wed, 13 May 2026 04:36:57 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HR8fqbxW";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D382B10E5A9
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 04:36:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1778647000; x=1810183000;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Abj5D9a9Fzf4ekUd+MGOsGn6Gaua5ELHWXyUVdyOTUE=;
+ b=HR8fqbxWhjp9bUztI4XK5oVLqLO64qnSa+eOXW1oc49ZikrelwEGQZG5
+ lhLW8bHrL9a9KC5KMk1RZ64cRKx6DG8Pz8LTEE3KJ79JwK2dZtCtwDN+2
+ H5WDlothjNhQR0bbIB0F4Sn+yb/Eab+GYKwHLyOBNctTQlDjGxdoVSmWc
+ mmEwMRojJ/gx2uw/9m9mKzhcXo1cdfZykWOn41EVVRmTyrlZOPQ2zTGEC
+ TeX6AdruUhl4/9JaIBTTHd56mdR6jP8NuS2iI3NXh1SzrHHAPJRLVKDSI
+ Sgq5MR1knjdkVj7Sb6zDDrEuEkr3VhG7LsEnhe/FBSJLxIV6tpsk6UonY Q==;
+X-CSE-ConnectionGUID: cLpKrR+0Qo2RXBSA+qSoog==
+X-CSE-MsgGUID: zxvbtyE6RI23cson0jgPzw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="83180144"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="83180144"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 21:36:39 -0700
+X-CSE-ConnectionGUID: 733xqi9YQM6P3nkbFsua/w==
+X-CSE-MsgGUID: y2YOZjlVQrOIsD5mAoJjhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="235301076"
+Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 21:36:38 -0700
+From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: shekhar.chauhan@intel.com,
+	ashutosh.dixit@intel.com
+Subject: [PATCH v1 0/1] Fix assert vs error in lib/intel_wa
+Date: Wed, 13 May 2026 10:06:26 +0530
+Message-ID: <20260513043629.1533907-1-shekhar.chauhan@intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/kms=3A_Clean_up_format+?=
- =?utf-8?q?mod_stuff_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 13 May 2026 04:34:23 -0000
-Message-ID: <177864686307.64915.5603891386817287561@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +64,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0556468301034285218==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+igt_has_intel_wa() currently returns -1 on error, 0 if the workaround
+is not present, and 1 if it is. There is no point in distinguishing
+between the error and no-workaround cases for callers. If the debugfs
+directory cannot be opened, that is an unexpected test environment
+failure and should be caught immediately with an assert.
 
-== Series Details ==
+Simplify debugfs_file_has_wa() by removing the igt_debugfs_exists()
+check — igt_sysfs_get() returns NULL for missing files, so the helper
+naturally returns 0 without it. Guard the device-level workarounds
+check in igt_has_intel_wa() with igt_debugfs_exists() since that file
+may not exist on kernels without device OOB workaround support.
 
-Series: lib/kms: Clean up format+mod stuff (rev3)
-URL   : https://patchwork.freedesktop.org/series/166415/
-State : success
+v1: Initial set of changes.
 
-== Summary ==
+Shekhar Chauhan (1):
+  lib/intel_wa: Assert on error instead of returning -1
 
-CI Bug Log - changes from XEIGT_8907_BAT -> XEIGTPW_15170_BAT
-====================================================
+ lib/intel_wa.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-Summary
--------
+-- 
+2.53.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8907 -> IGTPW_15170
-  * Linux: xe-5050-9cb559e83f7f3c02c8c6566d3446cd37ecc56e86 -> xe-5053-8fbb3d48e61c7e68cefdba85c3fa3ba59e7a93b4
-
-  IGTPW_15170: 7b6938222d8b00ba425ce1995a7824074b99ec37 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8907: 6b305d78c65768c09cc7c0e902273bf409bbd218 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5050-9cb559e83f7f3c02c8c6566d3446cd37ecc56e86: 9cb559e83f7f3c02c8c6566d3446cd37ecc56e86
-  xe-5053-8fbb3d48e61c7e68cefdba85c3fa3ba59e7a93b4: 8fbb3d48e61c7e68cefdba85c3fa3ba59e7a93b4
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15170/index.html
-
---===============0556468301034285218==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/kms: Clean up format+mod stuff (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166415/">https://patchwork.freedesktop.org/series/166415/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15170/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15170/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8907_BAT -&gt; XEIGTPW_15170_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8907 -&gt; IGTPW_15170</li>
-<li>Linux: xe-5050-9cb559e83f7f3c02c8c6566d3446cd37ecc56e86 -&gt; xe-5053-8fbb3d48e61c7e68cefdba85c3fa3ba59e7a93b4</li>
-</ul>
-<p>IGTPW_15170: 7b6938222d8b00ba425ce1995a7824074b99ec37 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8907: 6b305d78c65768c09cc7c0e902273bf409bbd218 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5050-9cb559e83f7f3c02c8c6566d3446cd37ecc56e86: 9cb559e83f7f3c02c8c6566d3446cd37ecc56e86<br />
-  xe-5053-8fbb3d48e61c7e68cefdba85c3fa3ba59e7a93b4: 8fbb3d48e61c7e68cefdba85c3fa3ba59e7a93b4</p>
-
-</body>
-</html>
-
---===============0556468301034285218==--
