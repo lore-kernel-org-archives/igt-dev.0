@@ -4,58 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8078CCD37B6
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 08:36:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81B04CD37B6
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 08:39:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 16AEE10E2D7;
-	Wed, 13 May 2026 08:36:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2477B10E2D7;
+	Wed, 13 May 2026 08:39:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j6D/mSmn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mp6xedTj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A7FF10E2D7
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 08:35:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93DB310E2D7
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 08:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778661358; x=1810197358;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=jK+6x2Lku31PFjd+RZhGIlCFsCrfuhihpog68b/atxk=;
- b=j6D/mSmnU45aOvHqfG9K8syD0bIZUA8i2tIecbx/e5YrBF3XE0hFkOEO
- PmgvADHFy5CH4Mqkgy/0EQ9Hk0Bd26+Esr5Jx6bdqU6DiAC38bWMsDi8/
- x0+KkhFVwjCiDMH+ZgfCsRfb7jLFYIz6xV6IipUQMs08kj6y4BaRVdJ/O
- 2E8EO9RxCVtYYDrp4nRqnX9zNyt1ZE6ZnCEc5dVT7DUX3h6Gz1lSHA6Wn
- vl7xKTfPI7351pW79WBIzDUmCIcNVsIjMlDT+kUez+uI9p4p/bUNA7ONq
- IPFkTEIETmwxKs20/loH1SImizWJt/OixbWzPSxQs3VndfMca/4Kbh1Wi w==;
-X-CSE-ConnectionGUID: XUvDrAQnTda66OWKnsJfkg==
-X-CSE-MsgGUID: t5BnuHPzQwKJ5o7quGL7XQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79564338"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79564338"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2026 01:35:58 -0700
-X-CSE-ConnectionGUID: Ad8k+1/oT7qDChazpEooPQ==
-X-CSE-MsgGUID: ysMl2QjvSoeKaams7D262w==
+ t=1778661529; x=1810197529;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ mime-version; bh=t29uuWhdeV2bc5F2WbpRSFhzGE1yk3BPXc7ptFTJb4M=;
+ b=Mp6xedTjHrRdP6yjntDdpDxZqbBR+SOKN0at9kQxOvA2ySc0QlvPxUHW
+ nG7NI1xGzDhaoCQiXgYiB/Sa1Zq/R2UO5ufy+06m+67tnHUNX92F/SaTL
+ fPh22pBWJeHKDRBvcc3ZJDzE+j2G8nrD2xPawEqWY/sANxK8LQd3THAdq
+ IbuvzUIY2HEHpJ07fBBIcK165NEGUj0zppARz54ZzzH9Dgyeg/wFqVpeG
+ VjxzdAgZ4oox9GXZKcqJwvLV0PnH34PXyJoXQw4YIwP4B0ZhSisy5IWuT
+ /pQUyUqscYQqi89jGF/EzSuaVL6CkV9itXT0YuGsB1tfMOz3N5GgJq9wQ w==;
+X-CSE-ConnectionGUID: c4Czj0DARpq9IKLOBXNWiQ==
+X-CSE-MsgGUID: sLTLOj4bSqmRT5r+QXvTqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79761119"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79761119"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2026 01:38:48 -0700
+X-CSE-ConnectionGUID: A2Jy4TfmSgKPwh/tvg8zjg==
+X-CSE-MsgGUID: la2pnGMeROiv6yvwiqwvsQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="242978469"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="242034223"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.61])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2026 01:35:56 -0700
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2026 01:38:47 -0700
 From: Jani Nikula <jani.nikula@intel.com>
-To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
-Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
- mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com, Jeevan B
- <jeevan.b@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/2] HAX: kms_cursor_legacy: Use
- IGT_FORMAT_MOD_PREFERRED for cursor FBs
-In-Reply-To: <20260513061503.645278-3-jeevan.b@intel.com>
+To: nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
+ stuart.summers@intel.com
+Subject: Re: [PATCH i-g-t] lib/xe: Retry xe_vm_bind on transient -EBUSY
+In-Reply-To: <20260512153919.3676059-1-nishit.sharma@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260513061503.645278-1-jeevan.b@intel.com>
- <20260513061503.645278-3-jeevan.b@intel.com>
-Date: Wed, 13 May 2026 11:35:53 +0300
-Message-ID: <1fe9ac6853b6bebc3fbdda98786c6944f66d7f82@intel.com>
+References: <20260512153919.3676059-1-nishit.sharma@intel.com>
+Date: Wed, 13 May 2026 11:38:43 +0300
+Message-ID: <73e598c5cbaf13248e4b9d6a334ac3934d4dc002@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,147 +68,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 13 May 2026, Jeevan B <jeevan.b@intel.com> wrote:
-> Switch all cursor-related framebuffer creations in
-> kms_cursor_legacy to use IGT_FORMAT_MOD_PREFERRED instead of
-> DRM_FORMAT_MOD_LINEAR.
-
-Why?
-
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  tests/kms_cursor_legacy.c | 31 ++++++++++++++++---------------
->  1 file changed, 16 insertions(+), 15 deletions(-)
+On Tue, 12 May 2026, nishit.sharma@intel.com wrote:
+> From: Nishit Sharma <nishit.sharma@intel.com>
 >
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 5399ef481..e32d2ac7e 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -373,7 +373,7 @@ static void set_fb_on_crtc(igt_display_t *display, igt_crtc_t *crtc,
->  
->  	igt_create_pattern_fb(display->drm_fd,
->  		      mode->hdisplay, mode->vdisplay,
-> -		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb_info);
-> +		      DRM_FORMAT_XRGB8888, IGT_FORMAT_MOD_PREFERRED, fb_info);
->  
->  	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->  	igt_plane_set_fb(primary, fb_info);
-> @@ -579,7 +579,7 @@ static void prepare_flip_test(igt_display_t *display,
->  
->  		igt_skip_on(width <= 64 && height <= 64);
->  		igt_create_color_fb(display->drm_fd, width, height,
-> -				    DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, 1., 0., .7, cursor_fb2);
-> +				    DRM_FORMAT_ARGB8888, IGT_FORMAT_MOD_PREFERRED, 1., 0., .7, cursor_fb2);
->  
->  		arg[0].flags = arg[1].flags = DRM_MODE_CURSOR_BO;
->  		arg[1].handle = cursor_fb2->gem_handle;
-> @@ -605,7 +605,7 @@ static void prepare_flip_test(igt_display_t *display,
->  		            crtc->planes[1].type != DRM_PLANE_TYPE_CURSOR);
->  
->  		igt_create_color_pattern_fb(display->drm_fd, prim_fb->width, prim_fb->height,
-> -					    DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, .1, .1, .1, argb_fb);
-> +					    DRM_FORMAT_ARGB8888, IGT_FORMAT_MOD_PREFERRED, .1, .1, .1, argb_fb);
->  	}
+> __xe_vm_bind_assert() can intermittently fail with -EBUSY when the
+> kernel rejects the bind because it detects in-flight work that has
+> not yet completed. This is transient condition the call is expected
+> to succeed once the competing work settles.
+>
+> Add a retry loop (up to 5 attempts) that re-issues __xe_vm_bind()
+> whenever -EBUSY is returned, before asserting success. All other
+> error codes are treated as fatal and propagate immediately to
+> igt_assert_eq() as before.
+>
+> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> ---
+>  lib/xe/xe_ioctl.c | 21 ++++++++++++++++++---
+>  1 file changed, 18 insertions(+), 3 deletions(-)
+>
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index e13195e16..3a307f95f 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -242,9 +242,24 @@ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+>  			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
+>  			  uint32_t num_syncs, uint32_t prefetch_region, uint64_t ext)
+>  {
+> -	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
+> -				   op, flags, sync, num_syncs, prefetch_region,
+> -				   DEFAULT_PAT_INDEX, ext), 0);
+> +	int ret, retries = 0;
+> +
+> +retry:
+> +	ret = __xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
+> +			   op, flags, sync, num_syncs, prefetch_region,
+> +			   DEFAULT_PAT_INDEX, ext);
+> +
+> +	if (ret && retries < 5) {
+> +		/*
+> +		 * Retry on transient -EBUSY, which can occur when the
+> +		 * kernel is contended by in-flight background work
+> +		 */
+> +		retries++;
+> +		goto retry;
+> +	}
+
+Please use a loop for looping.
+
+BR,
+Jani.
+
+
+
+> +
+> +	igt_assert_eq(ret, 0);
+> +	return;
 >  }
 >  
-> @@ -652,10 +652,10 @@ static void flip(igt_display_t *display,
->  	}
->  
->  	igt_create_color_fb(display->drm_fd, fb_info.width, fb_info.height,
-> -			    DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, .5, .5, .5, &cursor_fb);
-> +			    DRM_FORMAT_ARGB8888, IGT_FORMAT_MOD_PREFERRED, .5, .5, .5, &cursor_fb);
->  
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  	cursor = set_cursor_on_crtc(display, cursor_crtc, &cursor_fb);
->  	populate_cursor_args(display, cursor_crtc, arg, &cursor_fb);
->  
-> @@ -769,7 +769,7 @@ static void basic_flip_cursor(igt_display_t *display,
->  	set_fb_on_crtc(display, crtc, output, &fb_info);
->  
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
->  	populate_cursor_args(display, crtc, arg, &cursor_fb);
->  
-> @@ -948,7 +948,7 @@ static void flip_vs_cursor(igt_display_t *display, enum flip_test mode, int nloo
->  	set_fb_on_crtc(display, crtc, output, &fb_info);
->  
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
->  	populate_cursor_args(display, crtc, arg, &cursor_fb);
->  
-> @@ -1089,7 +1089,7 @@ static void nonblocking_modeset_vs_cursor(igt_display_t *display, int loops)
->  	set_fb_on_crtc(display, crtc, output, &fb_info);
->  	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
->  	populate_cursor_args(display, crtc, arg, &cursor_fb);
->  	arg[0].flags |= DRM_MODE_CURSOR_BO;
-> @@ -1216,7 +1216,7 @@ static void two_screens_flip_vs_cursor(igt_display_t *display, int nloops, bool
->  	}
->  
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
->  	populate_cursor_args(display, crtc, arg1, &cursor_fb);
->  
-> @@ -1395,7 +1395,7 @@ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloo
->  	vrefresh = igt_output_get_mode(output)->vrefresh;
->  
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  	cursor = set_cursor_on_crtc(display, crtc, &cursor_fb);
->  	populate_cursor_args(display, crtc, arg, &cursor_fb);
->  
-> @@ -1513,7 +1513,7 @@ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool
->  	}
->  
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  
->  	cursors[0] = set_cursor_on_crtc(display, crtc[0], &cursor_fb);
->  	populate_cursor_args(display, crtc[0], arg[0], &cursor_fb);
-> @@ -1628,7 +1628,7 @@ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
->  	set_fb_on_crtc(display, crtc, output, &fb_info);
->  
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  	populate_cursor_args(display, crtc, arg, &cursor_fb);
->  
->  	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> @@ -1709,10 +1709,11 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
->  	set_fb_on_crtc(display, crtc, output, &fb_info[0]);
->  	plane_primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->  	igt_create_color_pattern_fb(display->drm_fd, fb_info[0].width, fb_info[0].height,
-> -				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, .1, .1, .1, &fb_info[1]);
-> +				    DRM_FORMAT_XRGB8888, IGT_FORMAT_MOD_PREFERRED, .1, .1, .1,
-> +				    &fb_info[1]);
->  
->  	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  	populate_cursor_args(display, crtc, arg, &cursor_fb);
->  
->  	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> @@ -1816,7 +1817,7 @@ static void modeset_atomic_cursor_hotspot(igt_display_t *display)
->  
->  	cursor_width = cursor_height = 64;
->  	igt_create_color_fb(display->drm_fd, cursor_width, cursor_height, DRM_FORMAT_ARGB8888,
-> -			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
-> +			    IGT_FORMAT_MOD_PREFERRED, 1., 1., 1., &cursor_fb);
->  
->  	igt_display_commit2(display, COMMIT_ATOMIC);
+>  void xe_vm_prefetch_async(int fd, uint32_t vm, uint32_t exec_queue, uint64_t offset,
 
 -- 
 Jani Nikula, Intel
