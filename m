@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F328CD4F21
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 21:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6708CCD37AC
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 21:38:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E81A10E086;
-	Wed, 13 May 2026 21:30:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA71510E086;
+	Wed, 13 May 2026 21:38:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gywn45qX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CYcJbCAg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0F6D10E086
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 21:30:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D94010E086
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 21:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778707843; x=1810243843;
+ t=1778708319; x=1810244319;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=ZhhHCjS3H2ahLvd+EtYRlun0OUTCTIHoWzknCa60wXQ=;
- b=gywn45qXIlViHHWXfCoI5zHQi1Rf4J0HPcGEdlq19/qy7NzKtT5tzLBI
- gJiN6zXISVSK9Fbmf0um00anDfC5ZEVmw+O500RJPR3C2skRgZT8hK2JJ
- qDc2megUAooSnPJBOoKGa/EAK0oUpJQ0igFMwQzRxgca+tFyLeEnGV37B
- 6ZFACEAAT6nqs7/NyfpQ9nB6r/APAsjpqXtNWO7izszsn4cTs//Dveb5K
- tqX3kGF/4jM5FLlv4nh+V0ayiAIo7PoqfpvCN4gJS0sFgPe6hoN1aOFHt
- w/lZVoGLAX0hcW6JvSU9HvRBomzu0xNPsJsL0Z9TjiKUcBBZ5IigBF0xs A==;
-X-CSE-ConnectionGUID: sN4N2ROnRRy2iaSruXYP6g==
-X-CSE-MsgGUID: 9f5t1BwhT4SEFnOiZvKRcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="67176359"
-X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; d="scan'208";a="67176359"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2026 14:30:42 -0700
-X-CSE-ConnectionGUID: l1JTOYOxRFe80D5wuvYVfw==
-X-CSE-MsgGUID: 6+Zqu4UdSgqtQVgX1VxVrA==
+ bh=L9F5Obbowrbpz31av/v+X7wqnv0cxPtQgIkL6WZfF8c=;
+ b=CYcJbCAgvyLz/GxkMa4O9SkdUJrQn++TixBq9OqDoF6/fNBC1fHbtpkz
+ FN2+DEdhZxJOXPxkBSoXYbkGFSNtHRlhcFynJIuP1hiQCfgzWBzGph1Os
+ kO1qLd9eROmwR4dXgw22D5JH68qXcY3eLDzwjDyQkMtB/r2LRu0w/CCiU
+ 9gI08v7xqvAl+iVnBhR+yEBtouT3fw7u2OIqLbAm6eRpeE5d8xD/zX1zu
+ TJ9ipx7RZDCkaSigJPU7CARDdU/kL3tBzcesQhIvpFS5cX/ESyurR11hA
+ CdExKRLrEnJXiOSJqhk8eKvMp32XktB4GEvMFIyUFhRWSU7WOxZoHD+kk Q==;
+X-CSE-ConnectionGUID: ca0t11XORJ+8Qok1sEY51A==
+X-CSE-MsgGUID: 5BVn1inqRj2khHfnIiI3Ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="78790359"
+X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; d="scan'208";a="78790359"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2026 14:38:39 -0700
+X-CSE-ConnectionGUID: gR2Lv5eMSf6hDvLEM6XpoQ==
+X-CSE-MsgGUID: nzO0C92URjWxWriOEf4tgQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; d="scan'208";a="233930030"
+X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; d="scan'208";a="243185163"
 Received: from chussx-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.35.95])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2026 14:30:25 -0700
-Date: Wed, 13 May 2026 14:30:24 -0700
-Message-ID: <87v7cr80b3.wl-ashutosh.dixit@intel.com>
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2026 14:38:39 -0700
+Date: Wed, 13 May 2026 14:38:38 -0700
+Message-ID: <87pl2zt2g1.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Shekhar Chauhan <shekhar.chauhan@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH v1 1/1] lib/intel_wa: Assert on error instead of returning
- -1
-In-Reply-To: <87y0hn95gp.wl-ashutosh.dixit@intel.com>
-References: <20260513043629.1533907-1-shekhar.chauhan@intel.com>	<20260513043629.1533907-2-shekhar.chauhan@intel.com>	<87y0hn95gp.wl-ashutosh.dixit@intel.com>
+Subject: Re: [PATCH v7 2/2] tests/intel/xe_oa: Wa_14026633728
+In-Reply-To: <87o6iq7d8q.wl-ashutosh.dixit@intel.com>
+References: <20260508021329.876072-1-shekhar.chauhan@intel.com>
+ <20260508021329.876072-3-shekhar.chauhan@intel.com>
+ <87o6iq7d8q.wl-ashutosh.dixit@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,96 +72,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 12 May 2026 23:41:26 -0700, Dixit, Ashutosh wrote:
+On Thu, 07 May 2026 21:10:29 -0700, Dixit, Ashutosh wrote:
 >
-> On Tue, 12 May 2026 21:36:27 -0700, Shekhar Chauhan wrote:
+> On Thu, 07 May 2026 19:13:29 -0700, Shekhar Chauhan wrote:
 > >
-> > igt_has_intel_wa() returns 0, 1, or -1, but there is no point
-> > distinguishing the error and no-workaround cases for callers. Replace
-> > the error return with igt_assert() and simplify debugfs_file_has_wa() by
-> > dropping the igt_debugfs_exists() check, since igt_sysfs_get() returns
-> > NULL for missing files anyway.
+> > For MERTOA in CRI, oa buffer can be in device memory. Because of slower
+> > device mem access, OA exponent values lower than 8 can result in buffer
+> > overflows. Bump the OA exponent value.
+>
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>
 > >
 > > Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
 > > ---
-> >  lib/intel_wa.c | 11 ++++-------
-> >  1 file changed, 4 insertions(+), 7 deletions(-)
+> >  tests/intel/xe_oa.c | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
 > >
-> > diff --git a/lib/intel_wa.c b/lib/intel_wa.c
-> > index 727dd6c98..5d50dcc28 100644
-> > --- a/lib/intel_wa.c
-> > +++ b/lib/intel_wa.c
-> > @@ -7,6 +7,7 @@
-> >  #include <stdint.h>
-> >  #include <stdio.h>
-> >
-> > +#include "igt_core.h"
-> >  #include "igt_debugfs.h"
+> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> > index 988c46df6..2f73b5210 100644
+> > --- a/tests/intel/xe_oa.c
+> > +++ b/tests/intel/xe_oa.c
+> > @@ -24,6 +24,7 @@
+> >  #include "igt_device.h"
+> >  #include "igt_syncobj.h"
 > >  #include "igt_sysfs.h"
-> >  #include "intel_wa.h"
-> > @@ -17,9 +18,6 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
-> >  {
-> >	char *debugfs_dump;
+> > +#include "intel_wa.h"
+> >  #include "xe/xe_ioctl.h"
+> >  #include "xe/xe_query.h"
+> >  #include "xe/xe_oa.h"
+> > @@ -2671,6 +2672,18 @@ test_non_zero_reason(const struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
+> >	int len, check_idx;
+> >	u32 oa_status;
 > >
-> > -	if (!igt_debugfs_exists(drm_fd, debugfs_name, O_RDONLY))
-> > -		return -1;
-> > -
+> > +	/*
+> > +	 * Wa_14026633728: For MERTOA in CRI, oa buffer can be in device memory.
+> > +	 * Because of slower device mem access, OA exponent values lower than 8
+> > +	 * can result in buffer overflows. Also, update the value of oa_exponent
+> > +	 * in properties[].
+> > +	 */
+> > +	if (oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_MERT &&
+> > +		igt_has_intel_wa(drm_fd, "14026633728")) {
 
-This should also be an assert, since kernel is expected to create the
-device level workarounds directory. So add assert here and remove the
-condition added below.
+Incidentally, there's a bug here: the way the code is in the lib, there
+should be a > 0 check here. Hopefully we'll fix the lib.
 
-Also for a single patch a cover letter is generally not needed.
-
-Further, from what I am seeing, debugfs is always mounted when running
-IGT's, so it is ok to change these to assert's. But maybe double check that
-too. That is probably the reason the assert was not added here
-originally. But from what I am seeing, assert's should be ok here.
-
-> >	debugfs_dump = igt_sysfs_get(debugfs_fd, debugfs_name);
-> >	if (debugfs_dump) {
-> >		char *has_wa = strstr(debugfs_dump, wa);
-> > @@ -38,7 +36,7 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
-> >   * @drm_fd:	A drm file descriptor
-> >   * @check_wa:	Workaround to be checked
-> >   *
-> > - * Returns:	0 if no WA, 1 if WA present, -1 on error
-> > + * Returns:	1 if WA present, 0 otherwise
-> >   */
-> >  int igt_has_intel_wa(int drm_fd, const char *check_wa)
->
-> I'll take a look tomorrow, but one thing I would like to change in these
-> functions is:
->
-> * If we want to return 1 if WA present, change return type to bool and
->   return true/false, instead of 1/0
->
-> * If we want to retain the int return type, return 0 if WA present and
->   something else (maybe 1 is ok) if WA is not present
->
-> Because either of these is a more standard convention to follow. So these
-> are in addition to changes here, which I will review tomorrow. Thanks.
->
-> >  {
-> > @@ -48,8 +46,7 @@ int igt_has_intel_wa(int drm_fd, const char *check_wa)
-> >	char name[256];
+> > +		oa_exponent = max(oa_exponent, 8);
+> > +		properties[9] = oa_exponent;
+> > +	}
+> > +
+> >	igt_assert(buf);
 > >
-> >	debugfs_fd = igt_debugfs_dir(drm_fd);
-> > -	if (debugfs_fd == -1)
-> > -		return -1;
-> > +	igt_assert(debugfs_fd >= 0);
-> >
-> >	xe_for_each_gt(drm_fd, xe) {
-> >		sprintf(name, "gt%d/workarounds", xe);
-> > @@ -58,7 +55,7 @@ int igt_has_intel_wa(int drm_fd, const char *check_wa)
-> >			break;
-> >	}
-> >
-> > -	if (!ret)
-> > +	if (!ret && igt_debugfs_exists(drm_fd, "workarounds", O_RDONLY))
-> >		ret = debugfs_file_has_wa(drm_fd, debugfs_fd, "workarounds", check_wa);
-> >
-> >	close(debugfs_fd);
+> >	igt_debug("Ready to read about %u bytes\n", buf_size);
 > > --
 > > 2.53.0
 > >
