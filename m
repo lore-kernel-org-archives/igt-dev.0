@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCEFBCD4F21
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 14:22:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F094ACD4851
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 14:28:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 73A5F10E32F;
-	Wed, 13 May 2026 14:22:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A4C2F10EED8;
+	Wed, 13 May 2026 14:28:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a0Wx0R4D";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XftqHlir";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E9CD10E32F
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 14:22:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C05010EEB3
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 14:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778682162; x=1810218162;
+ t=1778682522; x=1810218522;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=cE9PldjB1o1eICkzQhoNTt27bRa2ZFahkWBBclQx2eA=;
- b=a0Wx0R4DGuy596/q35KyxiExsieDZVmlvsrLSiYLKX5rPOX/D2ngcL7r
- Pj4OUkL+HR2sxQ2HEIGFKrpYU3R7M4UpeeYFhRbxnBp3eRZO4s3bKzVCd
- ZctML9UI+MOc+hYgtg6Icjix6rjw03sgaN7VlP8GYIqq/qW+WWKgBId/i
- 7MmLF4VkAgKY5q9HYndDRT3QR32/EQm8tGmgb4sgWDh8bXXbbRb8JnWal
- OIYopQTCGCss3zlLYwcTYwjxqNf1cChKZmRo91WYifdTTsGfdLWcwQHn/
- w+29T+k3zCTX1iL0FCP+anPbPp/z9q3rF8pL/dX8rvZDXbvkBkOXsqBLM w==;
-X-CSE-ConnectionGUID: z54GtI9+SmGk/BAnMR7dhQ==
-X-CSE-MsgGUID: hmjxZKnJRe2aWSe08eXG7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="82177418"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="82177418"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2026 07:22:42 -0700
-X-CSE-ConnectionGUID: jRnZsDKxTvWvzyJFSRRZCg==
-X-CSE-MsgGUID: YFJA+5KzTmyIzRgeyLUt2w==
+ bh=g0sfBLUVVk7la6iEHIXCpXlbR74sN16i19yRbU4bjhM=;
+ b=XftqHliru8N35B5dKWxyliMShN5u6qRr3JwjFOmTB3NdMuH5e0+SwSHX
+ N1IOpN5OnUvLYZz1dy9HoZisBaXkhYJtteoiRqGBkPcRu5SY5CmnCf8R2
+ JLgFbrpUpqBz4hoejrQR1JUt6M+PGaa3AeX7M/D9RN5oigaImVLxogRAA
+ S55p1JMHu135PDyVlDayC7L3NBwFEAyApINmckeQe4KU/MwLJhdrXsHW1
+ tnYaflFS/ZsLWRESsgATEB+bZfIUK1vPTYnKRP6z12aef1BZ7jZZshbPk
+ X8JiKP/TwaXxp77Eq0OkrTl2NYQ2d+5BDlLP1BYcDZElvqDkacJzIB/ir w==;
+X-CSE-ConnectionGUID: WpkYyNDjSeqvdC04n6CI+g==
+X-CSE-MsgGUID: LOcaI93gT4+HRtgNUTdLcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="83463631"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="83463631"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2026 07:28:40 -0700
+X-CSE-ConnectionGUID: Fi3sdTk/Rai8Ju5AIZokrQ==
+X-CSE-MsgGUID: tcL/FrTxR+qc37ItkXnk7w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="242110275"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="235036895"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:22:40 -0700
-Date: Wed, 13 May 2026 16:22:37 +0200
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:28:38 -0700
+Date: Wed, 13 May 2026 16:28:36 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
 Cc: Iago Toral <itoral@igalia.com>, Melissa Wen <mwen@igalia.com>,
@@ -50,8 +50,9 @@ Cc: Iago Toral <itoral@igalia.com>, Melissa Wen <mwen@igalia.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>,
  Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org,
  kernel-dev@igalia.com
-Subject: Re: [PATCH i-g-t v2 2/5] drm-uapi/v3d: Sync v3d UAPI
-Message-ID: <20260513142237.d353oz5ccy542wnc@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t v2 5/5] tests/v3d_perfmon: Add global perfmon and
+ counter isolation tests
+Message-ID: <20260513142836.5njpqa6ufyq7bt7f@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
  Iago Toral <itoral@igalia.com>, Melissa Wen <mwen@igalia.com>,
@@ -61,12 +62,12 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org,
  kernel-dev@igalia.com
 References: <20260512123408.1115589-2-mcanal@igalia.com>
- <20260512123408.1115589-4-mcanal@igalia.com>
+ <20260512123408.1115589-7-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260512123408.1115589-4-mcanal@igalia.com>
+In-Reply-To: <20260512123408.1115589-7-mcanal@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,101 +84,670 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Maíra,
-On 2026-05-12 at 09:29:47 -0300, Maíra Canal wrote:
-> Update the UAPI header to expose support to a new ioctl:
-> DRM_IOCTL_V3D_PERFMON_SET_GLOBAL. Sync the v3d UAPI with Linux 7.0.
+On 2026-05-12 at 09:29:50 -0300, Maíra Canal wrote:
+> Exercise the DRM_IOCTL_V3D_PERFMON_SET_GLOBAL ioctl with a set of
+> subtests covering:
 > 
-> Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+>  - Input validation: invalid flags, invalid perfmon id, and clearing a
+>    perfmon that was never set as global all return errors.
+>  - Single-perfmon semantics: setting a second global perfmon while one is
+>    already active returns EBUSY.
+>  - Implicit clear on destroy: destroying a global perfmon releases the
+>    slot, allowing a new one to be set without EBUSY.
+>  - Precedence over per-job perfmon: submitting a CL job with a per-job
+>    perfmon_id while a global perfmon is active is rejected with EAGAIN.
+>  - Cross-fd tracking: a global perfmon set on one file descriptor
+>    accumulates cycles from CL jobs submitted on a second file descriptor,
+>    and that second fd cannot install its own global perfmon while the
+>    first is active.
+>  - fd close: closing a file descriptor that owns an active global
+>    perfmon clears it cleanly without crashing the driver.
+> 
+> Add two counter isolation subtests:
+> 
+>  - perfmon-counter-isolation: blocks 100 CSD jobs behind a sw_sync fence,
+>    then submits a CL job with a perfmon. The driver's queue serialization
+>    must drain all pending CSD work before opening the perfmon window, so
+>    compute-active-cycles must read zero after the CL job completes.
+>  - perfmon-counter-isolation-subsequent-cl: a non-perfmon CL job submitted
+>    after a perfmon CL job must be serialized behind it and must not
+>    contribute to its counter values.
+> 
+> Also add get-values-check-monotonically, which submits ten CL jobs in a
+> loop and asserts that each get-values call returns strictly larger values
+> than the previous one.
+
+Few style nits, see below.
+
+> 
 > Signed-off-by: Maíra Canal <mcanal@igalia.com>
+> ---
+>  tests/v3d/v3d_perfmon.c | 558 +++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 557 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/v3d/v3d_perfmon.c b/tests/v3d/v3d_perfmon.c
+> index f6f2a2774..5652d876c 100644
+> --- a/tests/v3d/v3d_perfmon.c
+> +++ b/tests/v3d/v3d_perfmon.c
+> @@ -1,19 +1,28 @@
+>  // SPDX-License-Identifier: MIT
+>  /*
+>   * Copyright © 2022 Igalia S.L.
+> + * Copyright © 2026 Raspberry Pi Ltd
+>   */
+>  
+> +#include <sys/ioctl.h>
+> +
+>  #include "igt.h"
+> +#include "igt_syncobj.h"
+>  #include "igt_v3d.h"
+> +#include "sw_sync.h"
+> +
+> +#define V3D_PERFMON_NUM_CL_JOBS 10
+> +#define V3D_PERFMON_NUM_CSD_JOBS 100
+>  
+>  IGT_TEST_DESCRIPTION("Tests for the V3D's performance monitors");
+>  
+>  int igt_main()
+>  {
+> -	int fd;
+> +	int fd, ver;
+>  
+>  	igt_fixture() {
+>  		fd = drm_open_driver(DRIVER_V3D);
+> +		ver = igt_v3d_get_version(fd);
+>  		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_PERFMON));
+>  	}
+>  
+> @@ -124,6 +133,65 @@ int igt_main()
+>  		igt_v3d_perfmon_destroy(fd, id);
+>  	}
+>  
+> +	igt_describe("Make sure the values returned by the perfmon are increasing monotonically.");
+> +	igt_subtest("get-values-check-monotonically") {
+> +		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
+> +		uint32_t id, out_sync;
+> +		uint64_t *prev, *curr;
+> +		uint8_t counters[4];
+> +
+> +		/*
+> +		 * Different V3D versions have different performance counters
+> +		 * IDs for the same counters.
+> +		 */
+> +		if (ver >= 71) {
+> +			counters[0] = 3;  /* CLE-bin-thread-active-cycles */
+> +			counters[1] = 64; /* PTB-memory-writes */
+> +			counters[2] = 66; /* core-memory-reads */
+> +			counters[3] = 71; /* PTB-memory-words-writes */
+> +		} else if (ver >= 42) {
+> +			counters[0] = V3D_PERFCNT_CLE_ACTIVE;
+> +			counters[1] = V3D_PERFCNT_PTB_MEM_WRITES;
+> +			counters[2] = V3D_PERFCNT_CORE_MEM_READS;
+> +			counters[3] = V3D_PERFCNT_PTB_W_MEM_WORDS;
+> +		} else
 
-Can you write in commit description in what kernel commit
-from drm-next you synced? Something like seen in panthor
-https://patchwork.freedesktop.org/patch/723725/?series=166234&rev=1
-drm-uapi/panthor: sync with kernel 5731bca6a656
+Use braces here:
+		} else {
 
-Sync Panthor drm uapi with drm-next up to commit 5731bca6a656, this
-will bring following changes:
+> +			igt_abort_on_f(true, "This V3D version is not supported.");
 
-commit 5731bca6a656 ("drm/panthor: Support sparse mappings")
-commit a07a79ff4b51 ("drm/panthor: Delete spurious whitespace from uAPI header")
-...
-last commit with which it was synced.
+and close it here.
 
+> +
+> +		id = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
+> +
+> +		prev = calloc(ARRAY_SIZE(counters), sizeof(*prev));
+> +		curr = calloc(ARRAY_SIZE(counters), sizeof(*curr));
+> +
+> +		igt_v3d_perfmon_get_values(fd, id, prev);
+> +
+> +		for (int i = 0; i < ARRAY_SIZE(counters); i++)
+> +			igt_assert_eq(prev[i], 0);
+> +
+> +		out_sync = syncobj_create(fd, 0);
+> +		job->submit->out_sync = out_sync;
+> +		job->submit->perfmon_id = id;
+> +
+> +		/* Check if the counters are increasing monotonically. */
+> +		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
+> +			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
+> +			igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
+> +
+> +			igt_v3d_perfmon_get_values(fd, id, curr);
+> +
+> +			for (int j = 0; j < ARRAY_SIZE(counters); j++)
+> +				igt_assert_lt(prev[j], curr[j]);
+> +
+> +			igt_swap(prev, curr);
+> +		}
+> +
+> +		syncobj_destroy(fd, out_sync);
+> +		igt_v3d_free_cl_job(fd, job);
+> +		igt_v3d_perfmon_destroy(fd, id);
+> +
+> +		free(prev);
+> +		free(curr);
+> +	}
+> +
+>  	igt_describe("Make sure that destroying a non-existent perfmon fails.");
+>  	igt_subtest("destroy-invalid-perfmon") {
+>  		struct drm_v3d_perfmon_destroy destroy = {
+> @@ -151,6 +219,494 @@ int igt_main()
+>  		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_GET_VALUES, &get, EINVAL);
+>  	}
+>  
+> +	igt_describe("Make sure that setting a global perfmon fails for an invalid flag.");
+> +	igt_subtest("global-perfmon-invalid-flag") {
+> +		struct drm_v3d_perfmon_set_global set_global = {
+> +			.flags = 0xdeadbeef,
+> +		};
 
-So here:
+Add newline.
 
-Sync v3d upai with drm-next up to commit 769c153cfc3c, this
-will bring following changes:
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global, EINVAL);
+> +	}
+> +
+> +	igt_describe("Make sure that setting a global perfmon fails for an invalid identifier.");
+> +	igt_subtest("global-perfmon-invalid-perfmon") {
+> +		struct drm_v3d_perfmon_set_global set_global = {
+> +			.id = 0xdeadbeef,
+> +		};
 
-769c153cfc3c ("drm/v3d: Add parameter to retrieve the number of GPU resets per-fd")
-5774b3cfdedb ("drm/v3d: Add parameter to retrieve the global number of GPU resets")
-c6eabbab359c ("drm/v3d: Add DRM_IOCTL_V3D_PERFMON_SET_GLOBAL")
-...
-the only challange here is which is a last one to cite.
+Add newline.
 
-With this LGTM
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global, EINVAL);
+> +	}
+> +
+> +	igt_describe("Make sure that clearing a valid identifier that it's not a global perfmon fails.");
+> +	igt_subtest("global-perfmon-clear-unset-perfmon") {
+> +		uint8_t counters[] = { V3D_PERFCNT_AXI_WRITE_STALLS_WATCH_1,
+> +				       V3D_PERFCNT_TMU_CONFIG_ACCESSES,
+> +				       V3D_PERFCNT_TLB_PARTIAL_QUADS,
+> +				       V3D_PERFCNT_L2T_SLC0_READS };
+> +		uint32_t id = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
+> +		struct drm_v3d_perfmon_set_global set_global = {
+> +			.id = id,
+> +			.flags = DRM_V3D_PERFMON_CLEAR_GLOBAL,
+> +		};
+> +
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global, EINVAL);
+> +
+> +		igt_v3d_perfmon_destroy(fd, id);
+> +	}
+> +
+> +	igt_describe("Make sure that the IOCTL fails when one sets a global perfmon, but one is already set.");
+> +	igt_subtest("global-perfmon-set-valid-perfmon-twice") {
+> +		uint8_t counters[] = { V3D_PERFCNT_L2T_HITS,  V3D_PERFCNT_L2T_MISSES };
+> +		uint32_t id1 = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
+> +		uint32_t id2 = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
+> +
+> +		struct drm_v3d_perfmon_set_global set_global = {
+> +			.id = id1,
+> +		};
+
+Add newline.
+
+> +		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		set_global.id = id2;
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global, EBUSY);
+> +
+> +		igt_v3d_perfmon_destroy(fd, id1);
+> +		igt_v3d_perfmon_destroy(fd, id2);
+> +	}
+> +
+> +	igt_describe("Make sure that destroying a global perfmon clears it even without "
+> +		     "DRM_V3D_PERFMON_CLEAR_GLOBAL.");
+> +	igt_subtest("global-perfmon-destroy") {
+> +		uint8_t counters[] = { V3D_PERFCNT_AXI_WRITE_STALLS_WATCH_1,
+> +				       V3D_PERFCNT_L2T_SLC0_READS };
+> +		uint32_t id1 = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
+> +		uint32_t id2 = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
+> +		struct drm_v3d_perfmon_set_global set_global = { .id = id1 };
+> +
+> +		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		igt_v3d_perfmon_destroy(fd, id1);
+> +
+> +		/* Returns success as global perfmon was cleared during destroy. */
+> +		set_global.id = id2;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		igt_v3d_perfmon_destroy(fd, id2);
+> +	}
+> +
+> +	igt_describe("Make sure that submitting a per-job perfmon is rejected when a "
+> +		     "global perfmon is active, and that the global perfmon keeps tracking.");
+> +	igt_subtest("global-perfmon-precedes-per-job") {
+> +		struct drm_v3d_perfmon_set_global set_global = { 0 };
+> +		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
+> +		uint32_t id_global, id_job, out_sync;
+> +		uint64_t values;
+> +		uint8_t counter;
+> +		int ret;
+> +
+> +		/*
+> +		 * Different V3D versions have different performance counters
+> +		 * IDs for the same counters.
+> +		 */
+> +		if (ver >= 71)
+> +			counter = 0; /* cycle-count */
+> +		else if (ver >= 42)
+> +			counter = V3D_PERFCNT_CYCLE_COUNT;
+> +		else
+> +			igt_abort_on_f(true, "This V3D version is not supported.");
+> +
+> +		id_global = igt_v3d_perfmon_create(fd, 1, &counter);
+> +		id_job = igt_v3d_perfmon_create(fd, 1, &counter);
+> +
+> +		set_global.id = id_global;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		/* Submitting a per-job perfmon while a global one is active must
+> +		 * be rejected: the global perfmon takes precedence.
+> +		 */
+> +		job->submit->perfmon_id = id_job;
+> +
+> +		/* Don't use drmIoctl(), as it restarts the ioctl if errno is EAGAIN. */
+> +		ret = ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
+> +		igt_assert_eq(ret, -1);
+> +		igt_assert_eq(errno, EAGAIN);
+> +
+> +		/* Submit a plain job (no per-job perfmon). */
+> +		out_sync = syncobj_create(fd, 0);
+> +		job->submit->perfmon_id = 0;
+> +		job->submit->out_sync = out_sync;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
+> +		igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
+> +
+> +		/* The global perfmon kept tracking. */
+> +		igt_v3d_perfmon_get_values(fd, id_global, &values);
+> +		igt_assert_lt(0, values);
+> +
+> +		igt_v3d_perfmon_destroy(fd, id_global);
+> +		igt_v3d_perfmon_destroy(fd, id_job);
+> +
+> +		syncobj_destroy(fd, out_sync);
+> +		igt_v3d_free_cl_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Make sure that the global perfmon is tracking all jobs consistently.");
+> +	igt_subtest("global-perfmon-valid-perfmon") {
+> +		struct drm_v3d_perfmon_set_global set_global = { 0 };
+> +		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
+> +		uint64_t *values1, *values2;
+> +		uint32_t id, out_sync;
+> +		uint8_t counters[2];
+> +
+> +		/*
+> +		 * Different V3D versions have different performance counters
+> +		 * IDs for the same counters.
+> +		 */
+> +		if (ver >= 71) {
+> +			counters[0] = 0; /* cycle-count */
+> +			counters[1] = 1; /* core-active */
+> +		} else if (ver >= 42) {
+> +			counters[0] = V3D_PERFCNT_CYCLE_COUNT;
+> +			counters[1] = V3D_PERFCNT_CLE_ACTIVE;
+> +		} else
+
+Same here, use braces '} else {'
+
+> +			igt_abort_on_f(true, "This V3D version is not supported.");
+
+and close it here.
+
+With this fixed
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-> ---
->  include/drm-uapi/v3d_drm.h | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/include/drm-uapi/v3d_drm.h b/include/drm-uapi/v3d_drm.h
-> index 87fc5bb0a..d9b01f4c3 100644
-> --- a/include/drm-uapi/v3d_drm.h
-> +++ b/include/drm-uapi/v3d_drm.h
-> @@ -43,6 +43,7 @@ extern "C" {
->  #define DRM_V3D_PERFMON_GET_VALUES                0x0a
->  #define DRM_V3D_SUBMIT_CPU                        0x0b
->  #define DRM_V3D_PERFMON_GET_COUNTER               0x0c
-> +#define DRM_V3D_PERFMON_SET_GLOBAL                0x0d
->  
->  #define DRM_IOCTL_V3D_SUBMIT_CL           DRM_IOWR(DRM_COMMAND_BASE + DRM_V3D_SUBMIT_CL, struct drm_v3d_submit_cl)
->  #define DRM_IOCTL_V3D_WAIT_BO             DRM_IOWR(DRM_COMMAND_BASE + DRM_V3D_WAIT_BO, struct drm_v3d_wait_bo)
-> @@ -61,6 +62,8 @@ extern "C" {
->  #define DRM_IOCTL_V3D_SUBMIT_CPU          DRM_IOW(DRM_COMMAND_BASE + DRM_V3D_SUBMIT_CPU, struct drm_v3d_submit_cpu)
->  #define DRM_IOCTL_V3D_PERFMON_GET_COUNTER DRM_IOWR(DRM_COMMAND_BASE + DRM_V3D_PERFMON_GET_COUNTER, \
->  						   struct drm_v3d_perfmon_get_counter)
-> +#define DRM_IOCTL_V3D_PERFMON_SET_GLOBAL  DRM_IOW(DRM_COMMAND_BASE + DRM_V3D_PERFMON_SET_GLOBAL, \
-> +						   struct drm_v3d_perfmon_set_global)
->  
->  #define DRM_V3D_SUBMIT_CL_FLUSH_CACHE             0x01
->  #define DRM_V3D_SUBMIT_EXTENSION		  0x02
-> @@ -290,6 +293,9 @@ enum drm_v3d_param {
->  	DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT,
->  	DRM_V3D_PARAM_SUPPORTS_CPU_QUEUE,
->  	DRM_V3D_PARAM_MAX_PERF_COUNTERS,
-> +	DRM_V3D_PARAM_SUPPORTS_SUPER_PAGES,
-> +	DRM_V3D_PARAM_GLOBAL_RESET_COUNTER,
-> +	DRM_V3D_PARAM_CONTEXT_RESET_COUNTER,
->  };
->  
->  struct drm_v3d_get_param {
-> @@ -765,6 +771,21 @@ struct drm_v3d_perfmon_get_counter {
->  	__u8 reserved[7];
->  };
->  
-> +#define DRM_V3D_PERFMON_CLEAR_GLOBAL    0x0001
 > +
-> +/**
-> + * struct drm_v3d_perfmon_set_global - ioctl to define a global performance
-> + * monitor
-> + *
-> + * The global performance monitor will be used for all jobs. If a global
-> + * performance monitor is defined, jobs with a self-defined performance
-> + * monitor won't be allowed.
-> + */
-> +struct drm_v3d_perfmon_set_global {
-> +	__u32 flags;
-> +	__u32 id;
-> +};
+> +		id = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
 > +
->  #if defined(__cplusplus)
+> +		values1 = calloc(ARRAY_SIZE(counters), sizeof(*values1));
+> +		values2 = calloc(ARRAY_SIZE(counters), sizeof(*values2));
+> +
+> +		set_global.id = id;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		igt_v3d_perfmon_get_values(fd, id, values1);
+> +
+> +		out_sync = syncobj_create(fd, 0);
+> +
+> +		/* Submit an arbitrary number of CL jobs to stress the perfcnts. */
+> +		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
+> +			/* Attach the out sync to the last job */
+> +			if (i == V3D_PERFMON_NUM_CL_JOBS - 1)
+> +				job->submit->out_sync = out_sync;
+> +
+> +			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
+> +		}
+> +
+> +		/* Wait for the last job to complete so counters are captured. */
+> +		igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
+> +		syncobj_destroy(fd, out_sync);
+> +
+> +		igt_v3d_perfmon_get_values(fd, id, values2);
+> +
+> +		/* As the global perfmon is active, the cycle-count must have
+> +		 * increased with time.
+> +		 */
+> +		for (int i = 0; i < ARRAY_SIZE(counters); i++)
+> +			igt_assert_lt(values1[i], values2[i]);
+> +
+> +		set_global.flags = DRM_V3D_PERFMON_CLEAR_GLOBAL;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		igt_v3d_perfmon_get_values(fd, id, values1);
+> +
+> +		out_sync = syncobj_create(fd, 0);
+> +
+> +		/* Submit an arbitrary number of CL jobs to stress the perfcnts. */
+> +		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
+> +			/* Attach the out sync to the last job */
+> +			if (i == V3D_PERFMON_NUM_CL_JOBS - 1)
+> +				job->submit->out_sync = out_sync;
+> +
+> +			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
+> +		}
+> +
+> +		/* Wait for the last job to complete so counters are captured. */
+> +		igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
+> +		igt_v3d_perfmon_get_values(fd, id, values2);
+> +
+> +		/* As the global perfmon was cleared, the perfmon is inactive
+> +		 * and it must preserve its values.
+> +		 */
+> +		for (int i = 0; i < ARRAY_SIZE(counters); i++)
+> +			igt_assert_eq(values1[i], values2[i]);
+> +
+> +		igt_v3d_perfmon_destroy(fd, id);
+> +
+> +		syncobj_destroy(fd, out_sync);
+> +		igt_v3d_free_cl_job(fd, job);
+> +
+> +		free(values1);
+> +		free(values2);
+> +	}
+> +
+> +	igt_describe("Make sure that a global perfmon tracks jobs from other file descriptors.");
+> +	igt_subtest("global-perfmon-multifd") {
+> +		struct drm_v3d_perfmon_set_global set_global = { 0 },
+> +						  set_global2 = { 0 };
+> +		int fd2 = drm_open_driver_render(DRIVER_V3D);
+> +		struct v3d_cl_job *job = igt_v3d_noop_job(fd2);
+> +		uint32_t id1, id2, out_sync;
+> +		uint64_t values1, values2;
+> +		uint8_t counter;
+> +
+> +		/*
+> +		 * Different V3D versions have different performance counters
+> +		 * IDs for the same counters.
+> +		 */
+> +		if (ver >= 71)
+> +			counter = 0; /* cycle-count */
+> +		else if (ver >= 42)
+> +			counter = V3D_PERFCNT_CYCLE_COUNT;
+> +		else
+> +			igt_abort_on_f(true, "This V3D version is not supported.");
+> +
+> +		/* Create and set global perfmon from fd. */
+> +		id1 = igt_v3d_perfmon_create(fd, 1, &counter);
+> +		set_global.id = id1;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		igt_v3d_perfmon_get_values(fd, id1, &values1);
+> +
+> +		/* Submit jobs from the second fd; the global perfmon should track them. */
+> +		out_sync = syncobj_create(fd2, 0);
+> +
+> +		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
+> +			/* Attach the out sync to the last job */
+> +			if (i == V3D_PERFMON_NUM_CL_JOBS - 1)
+> +				job->submit->out_sync = out_sync;
+> +
+> +			do_ioctl(fd2, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
+> +		}
+> +
+> +		igt_assert(syncobj_wait(fd2, &out_sync, 1, INT64_MAX, 0, NULL));
+> +
+> +		igt_v3d_perfmon_get_values(fd, id1, &values2);
+> +		igt_assert_lt(values1, values2);
+> +
+> +		/* fd2 cannot set its own global perfmon while fd's is active. */
+> +		id2 = igt_v3d_perfmon_create(fd2, 1, &counter);
+> +		set_global2.id = id2;
+> +		do_ioctl_err(fd2, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global2, EBUSY);
+> +
+> +		igt_v3d_perfmon_destroy(fd2, id2);
+> +		igt_v3d_perfmon_destroy(fd, id1);
+> +
+> +		syncobj_destroy(fd2, out_sync);
+> +		igt_v3d_free_cl_job(fd2, job);
+> +
+> +		drm_close_driver(fd2);
+> +	}
+> +
+> +	igt_describe("Make sure closing a file descriptor with an active global "
+> +		     "perfmon does not crash the driver.");
+> +	igt_subtest("global-perfmon-destroy-multifd") {
+> +		struct drm_v3d_perfmon_set_global set_global = { 0 };
+> +		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
+> +		int fd2 = drm_open_driver(DRIVER_V3D);
+> +		uint32_t id, new_id, out_sync;
+> +		uint8_t counter = 0;
+> +
+> +		/* Create and set global perfmon from fd2. */
+> +		id = igt_v3d_perfmon_create(fd2, 1, &counter);
+> +		set_global.id = id;
+> +		do_ioctl(fd2, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		/* Keep HW busy from fd while fd2 is closed. */
+> +		out_sync = syncobj_create(fd, 0);
+> +
+> +		for (int i = 0; i < V3D_PERFMON_NUM_CL_JOBS; i++) {
+> +			/* Attach the out sync to the last job */
+> +			if (i == V3D_PERFMON_NUM_CL_JOBS - 1)
+> +				job->submit->out_sync = out_sync;
+> +
+> +			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
+> +		}
+> +
+> +		/* Closing fd2 must cleanly stop the active global perfmon and
+> +		 * clear the global perfmon without crashing.
+> +		 */
+> +		drm_close_driver(fd2);
+> +
+> +		igt_assert(syncobj_wait(fd, &out_sync, 1, INT64_MAX, 0, NULL));
+> +
+> +		/* fd can now set a new global perfmon without EBUSY. */
+> +		new_id = igt_v3d_perfmon_create(fd, 1, &counter);
+> +
+> +		set_global.id = new_id;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		set_global.flags = DRM_V3D_PERFMON_CLEAR_GLOBAL;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_SET_GLOBAL, &set_global);
+> +
+> +		igt_v3d_perfmon_destroy(fd, new_id);
+> +
+> +		syncobj_destroy(fd, out_sync);
+> +		igt_v3d_free_cl_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Make sure a perfmon CL job is not contaminated by concurrent CSD "
+> +		     "work on a different queue.");
+> +	igt_subtest("perfmon-counter-isolation") {
+> +		struct v3d_csd_job *csd_job = igt_v3d_empty_shader(fd);
+> +		struct v3d_cl_job *cl_job = igt_v3d_noop_job(fd);
+> +		uint32_t id, blocker, cl_out;
+> +		int timeline, fence_fd;
+> +		uint8_t counter;
+> +		uint64_t values;
+> +
+> +		igt_require_sw_sync();
+> +
+> +		/*
+> +		 * compute-active-cycles is zero during pure CL work and non-zero
+> +		 * while a CSD job is executing. Submitting CSD jobs alongside a
+> +		 * perfmon CL job lets us distinguish "CSD ran while the perfmon
+> +		 * window was open" (isolation broken) from "CSD finished before
+> +		 * the perfmon window opened" (isolation correct).
+> +		 */
+> +		if (ver >= 71)
+> +			counter = 4; /* compute-active-cycles */
+> +		else if (ver >= 42)
+> +			counter = V3D_PERFCNT_COMPUTE_ACTIVE;
+> +		else
+> +			igt_abort_on_f(true, "This V3D version is not supported.");
+> +
+> +		id = igt_v3d_perfmon_create(fd, 1, &counter);
+> +
+> +		/*
+> +		 * Create an unsignaled fence via sw_sync. All CSD jobs will
+> +		 * wait on this fence and stay queued until we increment the
+> +		 * sw_sync timeline.
+> +		 */
+> +		timeline = sw_sync_timeline_create();
+> +		fence_fd = sw_sync_timeline_create_fence(timeline, 1);
+> +
+> +		blocker = syncobj_create(fd, 0);
+> +		syncobj_import_sync_file(fd, blocker, fence_fd);
+> +		close(fence_fd);
+> +
+> +		cl_out = syncobj_create(fd, 0);
+> +
+> +		/*
+> +		 * Block all CSD jobs with the unsignaled SW fence so they are
+> +		 * still queued when the CL perfmon job is submitted.
+> +		 */
+> +		csd_job->submit->in_sync = blocker;
+> +		for (int i = 0; i < V3D_PERFMON_NUM_CSD_JOBS; i++)
+> +			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_job->submit);
+> +
+> +		/*
+> +		 * Submit the CL job with the perfmon. v3d perfmon serialization
+> +		 * must add a fence dependency on the CSD done fences so the CL
+> +		 * job is forced to wait for all previous jobs to complete before
+> +		 * its perfmon window opens.
+> +		 */
+> +		cl_job->submit->out_sync = cl_out;
+> +		cl_job->submit->perfmon_id = id;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_job->submit);
+> +
+> +		/*
+> +		 * With serialization, the CL job waits for all CSD work to finish
+> +		 * first, so the perfmon sees only pure CL activity. Without it,
+> +		 * the two queues would race and CSD cycles would pollute the counter.
+> +		 */
+> +		sw_sync_timeline_inc(timeline, 1);
+> +		igt_assert(syncobj_wait(fd, &cl_out, 1, INT64_MAX, 0, NULL));
+> +
+> +		igt_v3d_perfmon_get_values(fd, id, &values);
+> +
+> +		/* All CSD activity finished before the perfmon window opened,
+> +		 * so no compute cycles must have been counted during the CL job.
+> +		 */
+> +		igt_assert_eq(values, 0);
+> +
+> +		close(timeline);
+> +		igt_v3d_perfmon_destroy(fd, id);
+> +
+> +		syncobj_destroy(fd, blocker);
+> +		syncobj_destroy(fd, cl_out);
+> +		igt_v3d_free_cl_job(fd, cl_job);
+> +		igt_v3d_free_csd_job(fd, csd_job);
+> +	}
+> +
+> +	igt_describe("Make sure a non-perfmon CL job submitted after a perfmon CL job "
+> +		     "is serialized behind it and does not contaminate its counter values.");
+> +	igt_subtest("perfmon-counter-isolation-subsequent-cl") {
+> +		struct v3d_cl_job *job1 = igt_v3d_noop_job(fd);
+> +		struct v3d_cl_job *job2 = igt_v3d_noop_job(fd);
+> +		uint64_t id, values, values_after_j2;
+> +		uint32_t blocker, out1, out2;
+> +		int timeline, fence_fd;
+> +		uint8_t counter;
+> +
+> +		igt_require_sw_sync();
+> +
+> +		/*
+> +		 * Different V3D versions have different performance counters IDs
+> +		 * for the same counters.
+> +		 */
+> +		if (ver >= 71)
+> +			counter = 0; /* cycle-count */
+> +		else if (ver >= 42)
+> +			counter = V3D_PERFCNT_CYCLE_COUNT;
+> +		else
+> +			igt_abort_on_f(true, "This V3D version is not supported.");
+> +
+> +		id = igt_v3d_perfmon_create(fd, 1, &counter);
+> +
+> +		/*
+> +		 * Create an unsignaled fence via sw_sync. job1 will wait on
+> +		 * this fence and stay blocked until we increment the timeline.
+> +		 */
+> +		timeline = sw_sync_timeline_create();
+> +		fence_fd = sw_sync_timeline_create_fence(timeline, 1);
+> +
+> +		blocker = syncobj_create(fd, 0);
+> +		syncobj_import_sync_file(fd, blocker, fence_fd);
+> +		close(fence_fd);
+> +
+> +		out1 = syncobj_create(fd, 0);
+> +		out2 = syncobj_create(fd, 0);
+> +
+> +		/* job1: BIN job is blocked until we signal the blocker. */
+> +		job1->submit->in_sync_bcl = blocker;
+> +		job1->submit->perfmon_id = id;
+> +		job1->submit->out_sync = out1;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job1->submit);
+> +
+> +		/* job2: no perfmon, must wait for job1 due to job serialization. */
+> +		job2->submit->out_sync = out2;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job2->submit);
+> +
+> +		/* job2 is serialized behind job1, so it cannot have completed yet. */
+> +		igt_assert_eq(syncobj_wait_err(fd, &out2, 1, 0, 0), -ETIME);
+> +
+> +		/* While job1 has not started, the perfmon must still read zero. */
+> +		igt_v3d_perfmon_get_values(fd, id, &values);
+> +		igt_assert_eq(values, 0);
+> +
+> +		/* Release the blocker. */
+> +		sw_sync_timeline_inc(timeline, 1);
+> +
+> +		igt_assert(syncobj_wait(fd, &out1, 1, INT64_MAX, 0, NULL));
+> +
+> +		/* job1 must have contributed cycles to the perfmon. */
+> +		igt_v3d_perfmon_get_values(fd, id, &values);
+> +		igt_assert_lt(0, values);
+> +
+> +		igt_assert(syncobj_wait(fd, &out2, 1, INT64_MAX, 0, NULL));
+> +
+> +		/* job2 doesn't have a perfmon attached, so a second read must
+> +		 * return the same value.
+> +		 */
+> +		igt_v3d_perfmon_get_values(fd, id, &values_after_j2);
+> +		igt_assert_eq(values, values_after_j2);
+> +
+> +		close(timeline);
+> +		syncobj_destroy(fd, blocker);
+> +		syncobj_destroy(fd, out1);
+> +		syncobj_destroy(fd, out2);
+> +
+> +		igt_v3d_perfmon_destroy(fd, id);
+> +
+> +		igt_v3d_free_cl_job(fd, job1);
+> +		igt_v3d_free_cl_job(fd, job2);
+> +	}
+> +
+>  	igt_fixture()
+>  		drm_close_driver(fd);
 >  }
->  #endif
 > -- 
 > 2.54.0
 > 
