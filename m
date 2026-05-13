@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38427CD37B6
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:20:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D99ACD37B6
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:25:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE24810ECA8;
-	Wed, 13 May 2026 06:20:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6C75E8953E;
+	Wed, 13 May 2026 06:25:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hto1zlxv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UdHRQiwq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D7DA10EC91
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:17:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BA428953E
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778653079; x=1810189079;
+ t=1778653531; x=1810189531;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Aer/3sT5iHp3CP+3sE2QOIl84g2LnerYxsIO7U4vpcY=;
- b=hto1zlxvu0Ag5cIjrgd47kxhmcIxsxgkMbCS+ih8APdOPDErdIXzPNR4
- 4Rya11O19VTet8Vm6gP9lDpNq0ZGBBfS98mauorflY6MoF86hJYL/vzGx
- JR2WGld9BMBqeDu20GqKwwvc4HvaqF/g+8263/uCyP8V3+rYovlE52UAk
- uUjnG6ytXU1PxKop9QWzUbzeN143Mxfwie6NSpHQGcjDEkbj0XudATWYv
- SUWzr6Q869UaLtVc798mSguRtDi7MTlIPl1ecw3byKP4vUl42+ifrqJb9
- yGJOB/2Jf3KhpcECWfDF5PzEc8xcEYzE353iJr2eFODm1h/cUIZWb/zmZ g==;
-X-CSE-ConnectionGUID: 6LMsjnLTSmeSxZaXsv4q7Q==
-X-CSE-MsgGUID: gmzrjEyAQcWQo7z6JVtyHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79685164"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79685164"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 23:17:59 -0700
-X-CSE-ConnectionGUID: JxiSQ73VREGG6w3axwk0FQ==
-X-CSE-MsgGUID: YqEqKcPQSeOumdorJpK8cg==
+ bh=AJ9/Tk8J1w0d++f7LNNRtoImPB4ZEwRiRoVs5BgVKuk=;
+ b=UdHRQiwqQfjsZHSXwBA6PjKNVbWZg4lWFNDHnAVi+aNFi9Dg1NDgxK2W
+ 4eI/8MTMXdvF1vc6ezKvJ5fupQm2o3XFxaeGxc0IZ71YtpOFYytNERgUg
+ 2uzv3L9VAFNAQtLMuDqUydMgrze3Xpl01saaBnH5N8440I8UKKTd61DIC
+ d7T3aL+sxh97ODuDjKcuk7asgRQI5DM5FFvAP3Ge+wznmDCONBF9/Iu6r
+ mCMui4d7OSyYwn1//Z8ukPYJWzOmA3qtJ6rh6YA0MJm7ppPfCnP6Lgm+F
+ u9I8FWSl2I3UuYSExYSQP5H7DIMyeh8TbvscRjDADETFYFYnUAedAQXKw Q==;
+X-CSE-ConnectionGUID: J43NQqnMRNago/ApifZHFQ==
+X-CSE-MsgGUID: hx6KHEuxQQW332JS6YPMGA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="97139390"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="97139390"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 23:25:31 -0700
+X-CSE-ConnectionGUID: BXzpWW6ZR3mQIZbdyl3rfA==
+X-CSE-MsgGUID: ykGzC0sISAGamZJdwVE8AQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="235320987"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:17:57 -0700
-From: Jeevan B <jeevan.b@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="238087020"
+Received: from shawnle1-i9-build-machine.itwn.intel.com ([10.225.64.200])
+ by orviesa009.jf.intel.com with ESMTP; 12 May 2026 23:25:30 -0700
+From: Lee Shawn C <shawn.c.lee@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
- mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v5 5/7] tests/intel/kms_pm_dc: Add new test for dc3co
- framedrop validation
-Date: Wed, 13 May 2026 11:46:03 +0530
-Message-ID: <20260513061605.645695-6-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260513061605.645695-1-jeevan.b@intel.com>
-References: <20260513061605.645695-1-jeevan.b@intel.com>
+Cc: Lee Shawn C <shawn.c.lee@intel.com>,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [v5] tests/kms_vrr: add support for full range refresh rate testing
+Date: Wed, 13 May 2026 06:16:57 +0000
+Message-Id: <20260513061657.980046-1-shawn.c.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260427120955.3537070-1-shawn.c.lee@intel.com>
+References: <20260427120955.3537070-1-shawn.c.lee@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,153 +67,213 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new subtest to validate that no frame drops occur during
-DC3CO entry, ensuring that no frame drops are detected and DC3CO
-is successfully triggered during the test.
+Currently, kms_vrr tests fixed step increments within the VRR range.
+To better validate hardware stability and potential issues across the
+entire spectrum, this patch adds a 'full-range' testing mode.
 
-v2: update check_dc3co_framedrop for detecting frame drops via
-    drmWaitVBlank vblank sequence numbers, checks DC3CO counter
-    to confirm entry and cast variable 'delay'.
-v3: Rename function name from check_dc3co* to detect_dc3co*.
+When the full-range flag is enabled, the test will:
+1. Iterate from the maximum to the minimum refresh rate (stepping by 1).
+2. For standard testing, maintain the existing behavior of incrementing
+   from minimum to maximum using the defined step size.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
+v2: Fix build failure by adding documentation for the new subtest.
+v3: Remove unnecessary '!!' operator when assigning to bool.
+v4: Add full-range (top-down/bottom-up) subtests to verify all supported
+    RR within VRR range.
+v5: Fix build failure for the new subtest.
+
+Cc: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
 ---
- tests/intel/kms_pm_dc.c | 108 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 108 insertions(+)
+ tests/kms_vrr.c | 118 ++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 100 insertions(+), 18 deletions(-)
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 96c96e2db..4497cffb7 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -51,6 +51,10 @@
-  * Description: Make sure that system enters DC3CO when PSR2 or PR is active and
-  *              system is in SLEEP state
-  *
-+ * SUBTEST: dc3co-framedrop-check
-+ * Description: Verify that DC3CO entry does not cause frame drops and successfully
-+ *              enters the power state
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 6043d40f1d74..bf2fab9ce23f 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -65,6 +65,11 @@
+  * SUBTEST: seamless-rr-switch-virtual
+  * Description: Test to create a Virtual Mode in VRR range and switch to it
+  * 		without a full modeset.
++ * SUBTEST: seamless-rr-switch-virtual-top-down
++ * Description: Vrr seamless refresh rate switch for virtual modes using full range
 + *
-  * SUBTEST: dc5-dpms
-  * Description: Validate display engine entry to DC5 state while all connectors's
-  *              DPMS property set to OFF
-@@ -342,6 +346,87 @@ static void test_dc3co_vpb_simulation(data_t *data)
- 	cleanup_dc3co_fbs(data);
++ * SUBTEST: seamless-rr-switch-virtual-bottom-up
++ * Description: Vrr seamless refresh rate switch for virtual modes using full range
+  *
+  * SUBTEST: lobf
+  * Description: Test to validate link-off between active frames in non-psr
+@@ -94,11 +99,13 @@ enum {
+ 	TEST_SEAMLESS_VRR = 1 << 4,
+ 	TEST_SEAMLESS_DRRS = 1 << 5,
+ 	TEST_SEAMLESS_VIRTUAL_RR = 1 << 6,
+-	TEST_FASTSET = 1 << 7,
+-	TEST_MAXMIN = 1 << 8,
+-	TEST_LINK_OFF = 1 << 10,
+-	TEST_NEGATIVE = 1 << 11,
+-	TEST_FORCE_RR = 1 << 12,
++	TEST_SEAMLESS_VIRTUAL_RR_TOP_DOWN = 1 << 7,
++	TEST_SEAMLESS_VIRTUAL_RR_BOTTOM_UP = 1 << 8,
++	TEST_FASTSET = 1 << 9,
++	TEST_MAXMIN = 1 << 10,
++	TEST_LINK_OFF = 1 << 11,
++	TEST_NEGATIVE = 1 << 12,
++	TEST_FORCE_RR = 1 << 13,
+ };
+ 
+ enum {
+@@ -235,13 +242,58 @@ low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
+ 	return mode;
  }
  
-+static void detect_dc3co_framedrop(data_t *data)
-+{
-+	igt_plane_t *primary;
-+	uint32_t dc3co_prev_cnt;
-+	int delay;
-+	int frame_count = 0, frame_drops = 0;
-+	int max_count = 60;
-+	bool dc3co_flag = false;
-+	bool front = false;
-+	struct drm_event_vblank ev;
-+	uint64_t last_flip_ns = 0, cur_flip_ns;
-+	uint64_t frame_time_ns;
-+
-+	igt_require_f(data->mode->vrefresh != 0, "Invalid vrefresh rate of 0\n");
-+
-+	frame_time_ns = UINT64_C(1000000000) / data->mode->vrefresh;
-+
-+	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit(&data->display);
-+
-+	dc3co_prev_cnt = igt_read_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+
-+	delay = (int)(1.5 * (1000000 / data->mode->vrefresh));
-+
-+	igt_plane_set_fb(primary, &data->fb_rgb);
-+	igt_assert_eq(igt_display_try_commit_atomic(&data->display,
-+						    DRM_MODE_ATOMIC_NONBLOCK |
-+						    DRM_MODE_PAGE_FLIP_EVENT,
-+						    data), 0);
-+	igt_assert_eq(read(data->drm_fd, &ev, sizeof(ev)), sizeof(ev));
-+	last_flip_ns = (uint64_t)ev.tv_sec * UINT64_C(1000000000) +
-+		       (uint64_t)ev.tv_usec * 1000;
-+
-+	while (frame_count < max_count) {
-+		front = !front;
-+		igt_plane_set_fb(primary, front ? &data->fb_rgr : &data->fb_rgb);
-+		usleep(delay);
-+
-+		igt_assert_eq(igt_display_try_commit_atomic(&data->display,
-+						    DRM_MODE_ATOMIC_NONBLOCK |
-+						    DRM_MODE_PAGE_FLIP_EVENT,
-+						    data), 0);
-+
-+		igt_set_timeout(2, "Waiting for flip event\n");
-+		igt_assert_eq(read(data->drm_fd, &ev, sizeof(ev)), sizeof(ev));
-+		igt_reset_timeout();
-+
-+		cur_flip_ns = (uint64_t)ev.tv_sec * UINT64_C(1000000000) +
-+			      (uint64_t)ev.tv_usec * 1000;
-+
-+		if (last_flip_ns != 0 &&
-+		    (cur_flip_ns - last_flip_ns) > 2 * frame_time_ns)
-+			frame_drops++;
-+
-+		last_flip_ns = cur_flip_ns;
-+
-+		if (!dc3co_flag &&
-+		    igt_read_dc_counter(data->debugfs_fd,
-+					IGT_INTEL_CHECK_DC3CO) > dc3co_prev_cnt)
-+			dc3co_flag = true;
-+
-+		frame_count++;
-+	}
-+
-+	igt_assert_f(dc3co_flag, "DC3CO was not entered during the test\n");
-+	igt_assert_f(frame_drops == 0,
-+		     "Frame drops detected: %d drops out of %d frames\n",
-+		     frame_drops, frame_count);
-+}
-+
-+static void test_dc3co_framedrop(data_t *data)
-+{
-+	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+	setup_output(data);
-+	setup_dc3co(data);
-+	setup_videoplayback(data);
-+	detect_dc3co_framedrop(data);
-+	cleanup_dc3co_fbs(data);
-+}
-+
- static void test_dc5_retention_flops(data_t *data, int dc_flag)
+-static void
+-virtual_rr_vrr_range_mode(drmModeModeInfo *mode, float virtual_refresh_rate)
++static bool
++virtual_rr_vrr_range_mode(data_t *data, drmModeModeInfo *mode, float virtual_refresh_rate)
  {
- 	uint32_t dc_counter_before_psr;
-@@ -693,6 +778,29 @@ int igt_main()
- 		}
- 	}
- 
-+	igt_describe("Validate that no frame drops occur during DC3CO entry "
-+			     "while alternating framebuffers with PSR2 or Panel Replay active");
-+	igt_subtest_with_dynamic("dc3co-framedrop-check") {
-+		igt_dynamic("psr2") {
-+			data.op_psr_mode = PSR_MODE_2;
-+			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-+					     data.op_psr_mode, NULL));
-+			igt_require_f(IS_TIGERLAKE(data.devid) ||
-+				      intel_display_ver(data.devid) >= 35,
-+				      "Platform does not support DC3CO with PSR2\n");
-+			test_dc3co_framedrop(&data);
-+		}
+ 	uint64_t clock_hz = mode->clock * 1000;
++	uint16_t virtual_vtotal;
 +
-+		igt_dynamic("pr") {
-+			data.op_psr_mode = PR_MODE;
-+			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-+					     data.op_psr_mode, NULL));
-+			igt_require_f(intel_display_ver(data.devid) >= 35,
-+				      "Platform does not support DC3CO with Panel Replay\n");
-+			test_dc3co_framedrop(&data);
++	virtual_vtotal = clock_hz / (mode->htotal * virtual_refresh_rate);
++	if (is_intel_device(data->drm_fd) && virtual_vtotal > 8192) {
++		igt_info("VTotal (%d) already exceed 8192 at %fHz\n", virtual_vtotal, virtual_refresh_rate);
++		return false;
++	}
+ 
+-	mode->vtotal = clock_hz / (mode->htotal * virtual_refresh_rate);
++	mode->vsync_start = virtual_vtotal - (mode->vtotal - mode->vsync_start);
++	mode->vsync_end   = virtual_vtotal - (mode->vtotal - mode->vsync_end);
++	mode->vtotal = virtual_vtotal;
+ 	mode->vrefresh = virtual_refresh_rate;
++
++	return true;
++}
++
++static drmModeModeInfo*
++get_selected_fixed_mode(igt_output_t *output, bool lowest)
++{
++	drmModeConnectorPtr connector = output->config.connector;
++	drmModeModeInfo *selected_mode = NULL;
++
++	for (int i = 0; i < connector->count_modes; i++) {
++		drmModeModeInfo *m = &connector->modes[i];
++
++		if (m->type & (DRM_MODE_TYPE_PREFERRED | DRM_MODE_TYPE_DRIVER)) {
++			if (!selected_mode) {
++				selected_mode = m;
++				continue;
++			}
++
++			if (lowest) {
++				if (m->vrefresh < selected_mode->vrefresh)
++					selected_mode = m;
++			} else {
++				if (m->vrefresh > selected_mode->vrefresh)
++					selected_mode = m;
++			}
 +		}
 +	}
 +
- 	igt_describe("This test validates display engine entry to DC5 state "
- 		     "while PSR is active");
- 	igt_subtest("dc5-psr") {
++	if (selected_mode) {
++		igt_info("Found Target Fixed Mode: \"%s\" %dHz (vtotal: %d)\n",
++			 selected_mode->name, selected_mode->vrefresh, selected_mode->vtotal);
++		return selected_mode;
++	}
++
++	return NULL;
+ }
+ 
+ /* Read min and max vrr range from the connector debugfs. */
+@@ -757,19 +809,25 @@ test_seamless_virtual_rr_basic(data_t *data, igt_crtc_t *crtc,
+ 	unsigned int vrefresh;
+ 	uint64_t rate[] = {0};
+ 	uint32_t step_size;
+-	drmModeModeInfo virtual_mode;
++	drmModeModeInfo *virtual_mode = NULL;
++	int start, end, step;
++	bool need_low_rr = flags & TEST_SEAMLESS_VIRTUAL_RR_BOTTOM_UP;
+ 
+-	igt_info("Use HIGH_RR Mode as default\n");
+-	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
++	virtual_mode = get_selected_fixed_mode(output, need_low_rr);
++	if (!virtual_mode)
++		return;
++
++	igt_info("Use %s_RR Mode as default\n", need_low_rr ? "LOW" : "HIGH");
++	kmstest_dump_mode(virtual_mode);
+ 
+ 	prepare_test(data, output, crtc);
+-	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
++	rate[0] = igt_kms_frame_time_from_vrefresh(virtual_mode->vrefresh);
+ 
+ 	/*
+ 	 * Sink with DRR and VRR can be in downclock mode so
+ 	 * switch to highest refresh rate mode.
+ 	 */
+-	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
++	igt_output_override_mode(output, virtual_mode);
+ 	igt_assert(igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL) == 0);
+ 
+ 	result = flip_and_measure(data, output, rate, 1, TEST_DURATION_NS);
+@@ -784,7 +842,7 @@ test_seamless_virtual_rr_basic(data_t *data, igt_crtc_t *crtc,
+ 	step_size = (data->range.max - data->range.min) / 5;
+ 
+ 	/* Switch to Virtual RR */
+-	virtual_mode = *igt_output_get_mode(output);
++	virtual_mode = igt_output_get_mode(output);
+ 
+ 	/*
+ 	 * Start virtual RR testing from above the midpoint of the VRR range when multiple
+@@ -795,13 +853,29 @@ test_seamless_virtual_rr_basic(data_t *data, igt_crtc_t *crtc,
+ 		   (((data->range.max + data->range.min) / 2) + step_size) :
+ 		   data->range.min + step_size;
+ 
+-	for ( ; vrefresh < data->range.max; vrefresh += step_size) {
+-		virtual_rr_vrr_range_mode(&virtual_mode, vrefresh);
++	if (flags & TEST_SEAMLESS_VIRTUAL_RR_TOP_DOWN) {
++		start = data->range.max;
++		end = data->range.min;
++		step = -1;
++	} else if (flags & TEST_SEAMLESS_VIRTUAL_RR_BOTTOM_UP) {
++		start = data->range.min;
++		end = data->range.max;
++		step = 1;
++	} else {
++		start = data->range.min;
++		end = data->range.max;
++		step = step_size;
++	}
++
++	for (vrefresh = start; (step > 0) ? (vrefresh <= end) : (vrefresh >= end); vrefresh += step) {
++		if (!virtual_rr_vrr_range_mode(data, virtual_mode, vrefresh))
++			continue;
+ 
+ 		igt_info("Requesting Virtual Mode with Refresh Rate (%u Hz): \n", vrefresh);
+-		kmstest_dump_mode(&virtual_mode);
++		kmstest_dump_mode(virtual_mode);
+ 
+-		igt_output_override_mode(output, &virtual_mode);
++		igt_output_override_mode(output, virtual_mode);
++		igt_assert(igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_TEST_ONLY, NULL) == 0);
+ 		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
+ 
+ 		rate[0] = igt_kms_frame_time_from_vrefresh(vrefresh);
+@@ -1105,6 +1179,14 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
+ 		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
+ 			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
+ 
++		igt_describe("Test to switch to all virtual modes in VRR range without modeset.");
++		igt_subtest_with_dynamic("seamless-rr-switch-virtual-top-down")
++			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR_TOP_DOWN);
++
++		igt_describe("Test to switch to all virtual modes in VRR range without modeset.");
++		igt_subtest_with_dynamic("seamless-rr-switch-virtual-bottom-up")
++			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR_BOTTOM_UP);
++
+ 		igt_describe("Test to validate the link-off between active frames in "
+ 			     "non-PSR operation.");
+ 		igt_subtest_with_dynamic("lobf") {
 -- 
-2.43.0
+2.34.1
 
