@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97DDECD37B6
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:19:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1242DCD37B6
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:19:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4784610E2E8;
-	Wed, 13 May 2026 06:19:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 92E1210E2E8;
+	Wed, 13 May 2026 06:19:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fRWpxzT4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K0m5nUy0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CE2E10EC91
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:17:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A4E210EC91
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778653071; x=1810189071;
+ t=1778653085; x=1810189085;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ajZ9PVPFN4ROhwOaNFQQhEF9UrpYAM5zUIzdkLPUL/k=;
- b=fRWpxzT4d7ZoHBfXpfj+zgLn6eZE2ygR/qm5pnwok1oZKp45vRacH6gC
- T+7UdSb4OKY4yVdVVaZJJSlSsnnaIYhmvuN9SfsvySw7/ZaxOwB5lSZX3
- 2Sy1mBJRmmvi4Runq1FoX62Fq3Ob7dAHLA/hi5+1EYpRA5lmEUyWmrWXS
- xjB642CVQqeGgVj157pij4xMdg+h70RjXiVhmszQg+5WQAi+JMGHiR1W2
- g1G59vAbz84GySTPMAT4WWHtkgoIp9gD+DpblH8aYJOTT3ErLMEYkrEA/
- DrM83s2LSJN3ue2HyIZmjxFgHzcBwLpvr9WBffWz/qFw3+GEX7x9sp6Tx A==;
-X-CSE-ConnectionGUID: UkgZtOx0QZWta64r3U9J0A==
-X-CSE-MsgGUID: BLOH5g7fTIKgfn7QHd09KA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79685130"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79685130"
+ bh=BNZBpIABNoDFJaGMrRlXwGsv9wzlGCu/KyyZCA7yH4o=;
+ b=K0m5nUy0L4TzmM7TeJNrcRruyvWXQkN2ZpO3KpZDG0Z6qDPrfOyrSyp3
+ dYkabQhxoUbx7SLYZpwsd/6mBaWxtrxCVMTOfQJTaGZES0Psq811GTbZY
+ aGH8wirTF2eAzYPv/oZOZPxK///tC0JocjzlOHQuE2wREcwnYNqtLcCX4
+ /DlnEbBxiduf7JcMHt/XoJifGzMiztfj2v66tvR1UcZmcOlCSnZ0LC9My
+ hp9bs8f6SBTlbFOkXEuZih+Xmd0SNU9TIqc30mJjnduzhLcqBXo6mGPa5
+ fdIzpSdxD4VYh90LAQ8u0X/MX0Qi5Lw1BYaga3hWS/zqMjfURAqAw1KDt w==;
+X-CSE-ConnectionGUID: 9eK0+3METz6nltSEmd6I7g==
+X-CSE-MsgGUID: jI0sAVtsTjSc0p0lC/3Cyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79685181"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79685181"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 23:17:51 -0700
-X-CSE-ConnectionGUID: H9M7vdKTQWuJvHos486YhQ==
-X-CSE-MsgGUID: bEVAr2eRRzuREru3+eB/Iw==
+ 12 May 2026 23:18:05 -0700
+X-CSE-ConnectionGUID: 7Zrq+nrJSjiAzkwXFJ+j0g==
+X-CSE-MsgGUID: Tk/5l7bjRgGt32vYNEx+YQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="235320956"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="235320997"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:17:49 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:18:03 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
  mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v5 2/7] tests/intel/kms_pm_dc: Replace require with
- proper assertion
-Date: Wed, 13 May 2026 11:46:00 +0530
-Message-ID: <20260513061605.645695-3-jeevan.b@intel.com>
+Subject: [PATCH i-g-t v5 7/7] tests/intel/kms_pm_dc: Add dc3co-vpb-framegap
+ subtest
+Date: Wed, 13 May 2026 11:46:05 +0530
+Message-ID: <20260513061605.645695-8-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260513061605.645695-1-jeevan.b@intel.com>
 References: <20260513061605.645695-1-jeevan.b@intel.com>
@@ -70,32 +70,113 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The DC3CO video playback simulation test was incorrectly using require at
-the end to check if DC3CO state was entered. This causes the test to be
-marked as SKIP instead of FAIL when DC3CO doesn't work properly, hiding
-real issues. So changing the call from require to assert.
+Add a new subtest to validate DC3CO counter increments across
+frame gaps exceeding the threshold during a video-like workload
+with PSR2 enabled.
 
-Fixes: b89efa8048e58 ("tests/i915/i915_pm_dc: Check dc3co count to skip the test")
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_pm_dc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/intel/kms_pm_dc.c | 73 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
 diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index c8cfa300c..27fa5dc39 100644
+index 397f13d02..cc48ebf3f 100644
 --- a/tests/intel/kms_pm_dc.c
 +++ b/tests/intel/kms_pm_dc.c
-@@ -316,8 +316,7 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
- 		usleep(delay);
- 	}
- 
--	igt_require_f(igt_dc_state_wait_entry(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO,
--					      dc3co_prev_cnt), "dc3co-vpb-simulation not enabled\n");
-+	assert_dc_counter(data, IGT_INTEL_CHECK_DC3CO, dc3co_prev_cnt);
+@@ -60,6 +60,10 @@
+  *              exit cycle, ensuring DC3CO is not broken by deeper power state
+  *              transitions.
+  *
++ * SUBTEST: dc3co-vpb-framegap
++ * Description: Validate DC3CO counter increments before and after a delay greater
++ *              than 6 frame gaps during video-like load with PSR2 active.
++ *
+  * SUBTEST: dc5-dpms
+  * Description: Validate display engine entry to DC5 state while all connectors's
+  *              DPMS property set to OFF
+@@ -432,6 +436,64 @@ static void test_dc3co_framedrop(data_t *data)
+ 	cleanup_dc3co_fbs(data);
  }
  
- static void setup_dc3co(data_t *data)
++static void check_dc3co_with_framegap_load(data_t *data)
++{
++	igt_plane_t *primary;
++	uint32_t dc3co_cnt_before, dc3co_cnt_after_gap;
++	int delay, long_gap_us;
++	time_t secs = 3;
++	time_t start_time;
++
++	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(primary, NULL);
++
++	delay = 1.5 * ((1000 * 1000) / data->mode->vrefresh);
++
++	dc3co_cnt_before = igt_read_dc_counter(data->debugfs_fd,
++			   IGT_INTEL_CHECK_DC3CO);
++	start_time = time(NULL);
++	while (time(NULL) - start_time < secs) {
++		igt_plane_set_fb(primary, &data->fb_rgb);
++		igt_display_commit(&data->display);
++		usleep(delay);
++
++		igt_plane_set_fb(primary, &data->fb_rgr);
++		igt_display_commit(&data->display);
++		usleep(delay);
++	}
++
++	assert_dc_counter(data, IGT_INTEL_CHECK_DC3CO, dc3co_cnt_before);
++
++	long_gap_us = 7 * ((1000 * 1000) / data->mode->vrefresh);
++	usleep(long_gap_us);
++
++	dc3co_cnt_after_gap = igt_read_dc_counter(data->debugfs_fd,
++						  IGT_INTEL_CHECK_DC3CO);
++	start_time = time(NULL);
++	while (time(NULL) - start_time < secs) {
++		igt_plane_set_fb(primary, &data->fb_rgb);
++		igt_display_commit(&data->display);
++		usleep(delay);
++
++		igt_plane_set_fb(primary, &data->fb_rgr);
++		igt_display_commit(&data->display);
++		usleep(delay);
++	}
++
++	assert_dc_counter(data, IGT_INTEL_CHECK_DC3CO, dc3co_cnt_after_gap);
++}
++
++static void test_dc3co_vpb_framegap(data_t *data)
++{
++	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
++	data->op_psr_mode = PSR_MODE_2;
++	setup_output(data);
++	setup_dc3co(data);
++	setup_videoplayback(data);
++	check_dc3co_with_framegap_load(data);
++	cleanup_dc3co_fbs(data);
++}
++
+ static void test_dc5_retention_flops(data_t *data, int dc_flag)
+ {
+ 	uint32_t dc_counter_before_psr;
+@@ -862,6 +924,17 @@ int igt_main()
+ 		}
+ 	}
+ 
++	igt_describe("Validate DC3CO counter increments before and after a delay "
++		     "greater than 6 frame gaps during video-like load with PSR2 active");
++	igt_subtest("dc3co-vpb-framegap") {
++		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
++					     PSR_MODE_2, NULL));
++		igt_require_f(IS_TIGERLAKE(data.devid) ||
++			      intel_display_ver(data.devid) >= 35,
++			      "Platform does not support DC3CO with PSR2\n");
++		test_dc3co_vpb_framegap(&data);
++	}
++
+ 	igt_describe("This test validates display engine entry to DC5 state "
+ 		     "while PSR is active");
+ 	igt_subtest("dc5-psr") {
 -- 
 2.43.0
 
