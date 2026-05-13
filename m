@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A66DCD37B6
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:28:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D14CD4851
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:37:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E15E8953E;
-	Wed, 13 May 2026 06:28:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0988810E1B8;
+	Wed, 13 May 2026 06:37:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D5IV5Ob5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ybk7xsqL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 46AFC8953E
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:28:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A29BD10E1B8
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778653685; x=1810189685;
+ t=1778654237; x=1810190237;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=wbshGo7kt8JGOV3KYsXNgQUc64E3PRjuxqDBWL7YEwU=;
- b=D5IV5Ob5beUJtTxbBJUHRIAvIJmBBgiR2Cp09f5rH2AiOgGpjo1VY98U
- FmZ/8xJjXzBDVsSqJsYXBzheS45RKoK2A+sU3651PQhICRT7+1VJ1NLx/
- 2qHwhQvhLaNHv5ufH7L0d14M70CZb3x+wPyqFuE01W8qRqPkZBI9Ped0o
- TK/ILdZbw6bqfB6W5c3Dz4rVeoEM68WnfbgCidwZpzQrR1HK1wysyXgOx
- bwEZ4hrGnn5lSK3o4dmMms5tk9q/xG7OZr5jzJQlF000LrlfwnCN8hvtt
- kfW+SwVvGO4n8wG46ZZmaqfoRAxPd+lybL4Gspov94oGqYe1a33lA2zXl A==;
-X-CSE-ConnectionGUID: 6J3kYo4YRB6symKnCs0NVQ==
-X-CSE-MsgGUID: QPPUydVJQA+B54Kh7XJVuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="105031349"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="105031349"
+ bh=kbVoChKQAtYtFnw8qUUBrQm4pQdvLPHrL7p1dS1RTWo=;
+ b=Ybk7xsqLbv/88qyerU2U7LVeP+XEvXzJTJd7+hL9aIq6FCCbkEIvOlSD
+ 7mq07I9N4GISrGDd95XETzSuJYNPDjAZpEDT2ZuOUqteJf8K7EFQlmZOT
+ CyASbZ1dO45DRUCeJsi54p8jijeFE0pJ+K81mq2BWXr+zz/ZSi692EACv
+ 03xGq/wfWLgRn+h0lArHBtLRade028QoZyhOrLWNXENDJW4TigzcWDECM
+ U3qD6Fo0eSzYxKwEZ9saa9d3kk/kK6tKFInE/CLH0ojmTxPapnOqIC3v0
+ 889KPVIRibj6u4Snx/7+wPQm5kF01oEWn4rigets8JDa68Cb2eWyPSIiY A==;
+X-CSE-ConnectionGUID: cX7tqfL/TcqZFKhNikY0ig==
+X-CSE-MsgGUID: K7/DZP1lQvS3bcCw3KKTvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="105032078"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="105032078"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 23:28:05 -0700
-X-CSE-ConnectionGUID: HnzoG2V8R1KkSh4StFikWA==
-X-CSE-MsgGUID: ga7jamAkTGO8DM99zDX7Qg==
+ 12 May 2026 23:37:17 -0700
+X-CSE-ConnectionGUID: hcFKT/MbTKOyr22lSsBvaA==
+X-CSE-MsgGUID: Vq/2+XMkQOW7zCcDjn48sA==
 X-ExtLoop1: 1
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:28:03 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:37:15 -0700
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: suraj.kandpal@intel.com, swati2.sharma@intel.com, karthik.b.s@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2] tests/intel/kms_pm_backlight: Add
- brightness-with-suspend subtest
-Date: Wed, 13 May 2026 11:52:08 +0530
-Message-Id: <20260513062208.683004-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: chaitanya.kumar.borah@intel.com, mohammed.bilal@intel.com,
+ Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t] tests/chamelium/kms_chamelium_audio: Add suspend/resume
+ audio tests
+Date: Wed, 13 May 2026 12:05:35 +0530
+Message-ID: <20260513063535.650794-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,66 +66,209 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify backlight brightness is preserved after suspend resume cycle,
-The test sets backlight to  a value , suspend the system and checks the
-brightness value is preserved after resume.
+Add test to validate audio works before and after suspend/resume on
+HDMI/DP connector.
 
-v2: Remove unused enum and use TEST_NONE, remove locally added prints
-for debug (Karthik)
+v2: Perform a single suspend/resume for all audio combinations.
+    Re-enable chamelium after suspend and separate pre-suspend
+    and post-resume validation paths for clearer failure diagnostics.
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/kms_pm_backlight.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ tests/chamelium/kms_chamelium_audio.c | 152 ++++++++++++++++++++++++++
+ 1 file changed, 152 insertions(+)
 
-diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
-index 58c0b4427..0e35aeed0 100644
---- a/tests/intel/kms_pm_backlight.c
-+++ b/tests/intel/kms_pm_backlight.c
-@@ -65,6 +65,9 @@
-  *
-  * SUBTEST: brightness-with-dpms
-  * Description: test brightness with dpms on and off cycle.
+diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
+index df8d27c0c..067e306c3 100644
+--- a/tests/chamelium/kms_chamelium_audio.c
++++ b/tests/chamelium/kms_chamelium_audio.c
+@@ -52,6 +52,12 @@
+  * SUBTEST: hdmi-audio-edid
+  * Description: Plug a connector with an EDID suitable for audio, check ALSA's
+  *              EDID-Like Data reports the correct audio parameters
 + *
-+ * SUBTEST: brightness-with-suspend
-+ * Description: Test that brightness set before suspend is preserved after resume.
++ * SUBTEST: dp-audio-after-suspend
++ * Description: Verify audio works before and after system suspend/resume
++ *
++ * SUBTEST: hdmi-audio-after-suspend
++ * Description: Verify audio works before and after system suspend/resume
   */
  
- enum {
-@@ -206,6 +209,24 @@ check_suspend(igt_output_t *output)
- 	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
+ /* Playback parameters control the audio signal we synthesize and send */
+@@ -695,6 +701,65 @@ static bool check_audio_configuration(struct alsa *alsa,
+ 	return true;
  }
  
-+static void check_suspend_cycle(igt_backlight_context_t *context)
++static bool run_audio_test_once(chamelium_data_t *data,
++				struct alsa *alsa,
++				struct chamelium_port *port,
++				snd_pcm_format_t format,
++				int channels,
++				int sampling_rate)
 +{
-+	int max, val1, val2;
++	struct audio_state state;
++	bool success;
 +
-+	igt_backlight_read(&max, "max_brightness", context);
-+	igt_assert(max);
++	audio_state_init(&state, data, alsa, port, format, channels,
++			 sampling_rate);
++	success = test_audio_frequencies(&state);
++	success &= test_audio_flatline(&state);
++	audio_state_fini(&state);
 +
-+	igt_backlight_write(max / 2, "brightness", context);
-+	igt_backlight_read(&val1, "actual_brightness", context);
-+
-+	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
-+
-+	igt_backlight_read(&val2, "actual_brightness", context);
-+	igt_assert_f(val2 == val1,
-+		     "actual_brightness after resume [%d] does not match value before suspend [%d]\n",
-+		     val2, val1);
++	return success;
 +}
 +
- static void test_cleanup(igt_display_t *display, igt_backlight_context_t *context)
- {
- 	igt_output_t *output = context->output;
-@@ -273,6 +294,8 @@ int igt_main()
- 		{ "brightness-with-dpms", "test brightness with dpms on and off cycle.",
- 		   check_dpms_cycle, TEST_DPMS_CYCLE},
- 		{ "fade-with-suspend", "test the fade with suspend.", test_fade, TEST_SUSPEND },
-+		{ "brightness-with-suspend", "test brightness is preserved after suspend/resume.",
-+		   check_suspend_cycle, TEST_NONE },
- 	};
++static bool run_audio_tests(chamelium_data_t *data,
++			    struct alsa *alsa,
++			    struct chamelium_port *port,
++			    const char *audio_device)
++{
++	bool run = false;
++	int ret, i, j;
++	int channels, sampling_rate;
++	snd_pcm_format_t format;
++
++	for (i = 0; i < test_sampling_rates_count; i++) {
++		for (j = 0; j < test_formats_count; j++) {
++			ret = alsa_open_output(alsa, audio_device);
++			igt_assert_f(ret >= 0,
++				     "Failed to open ALSA output\n");
++
++			format = test_formats[j];
++			channels = PLAYBACK_CHANNELS;
++			sampling_rate = test_sampling_rates[i];
++
++			if (!check_audio_configuration(alsa, format,
++						       channels,
++						       sampling_rate)) {
++				alsa_close_output(alsa);
++				continue;
++			}
++
++			run = true;
++
++			igt_assert(run_audio_test_once(data, alsa, port,
++						       format, channels,
++						       sampling_rate));
++
++			alsa_close_output(alsa);
++		}
++	}
++
++	return run;
++}
++
+ static const char test_display_audio_desc[] =
+ 	"Playback various audio signals with various audio formats/rates, "
+ 	"capture them and check they are correct";
+@@ -789,6 +854,83 @@ static void test_display_audio(chamelium_data_t *data,
+ 	free(alsa);
+ }
  
++static const char test_display_audio_suspend_resume_desc[] =
++	"Verify audio works before and after system suspend/resume";
++static void test_display_audio_suspend_resume(
++				chamelium_data_t *data,
++				struct chamelium_port *port,
++				const char *audio_device,
++				enum igt_custom_edid_type edid)
++{
++	struct alsa *alsa;
++	igt_output_t *output;
++	igt_plane_t *primary;
++	struct igt_fb fb;
++	drmModeModeInfo *mode;
++	drmModeConnector *connector;
++	int fb_id;
++
++	igt_require(alsa_has_exclusive_access());
++
++	igt_require(chamelium_has_audio_support(data->chamelium,
++						port));
++
++	alsa = alsa_init();
++	igt_assert(alsa);
++
++	igt_modeset_disable_all_outputs(&data->display);
++
++	chamelium_reset_state(&data->display, data->chamelium,
++			      port, data->ports,
++			      data->port_count);
++
++	output = chamelium_prepare_output(data, port, edid);
++
++	connector = chamelium_port_get_connector(data->chamelium,
++						 port, false);
++
++	primary = igt_output_get_plane_type(output,
++					    DRM_PLANE_TYPE_PRIMARY);
++	igt_assert(primary);
++
++	igt_assert(connector->count_modes > 0);
++
++	mode = &connector->modes[0];
++
++	fb_id = igt_create_color_pattern_fb(data->drm_fd,
++					    mode->hdisplay,
++					    mode->vdisplay,
++					    DRM_FORMAT_XRGB8888,
++					    DRM_FORMAT_MOD_LINEAR,
++					    0, 0, 0, &fb);
++
++	igt_assert(fb_id > 0);
++
++	chamelium_enable_output(data, port, output,
++				mode, &fb);
++
++	igt_assert(run_audio_tests(data, alsa, port,
++				   audio_device));
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++				      SUSPEND_TEST_NONE);
++
++	chamelium_enable_output(data, port, output,
++				mode, &fb);
++
++	igt_display_commit2(&data->display,
++			    COMMIT_ATOMIC);
++
++	igt_assert(run_audio_tests(data, alsa, port,
++				   audio_device));
++
++	igt_remove_fb(data->drm_fd, &fb);
++
++	drmModeFreeConnector(connector);
++
++	free(alsa);
++}
++
+ static const char test_display_audio_edid_desc[] =
+ 	"Plug a connector with an EDID suitable for audio, check ALSA's "
+ 	"EDID-Like Data reports the correct audio parameters";
+@@ -866,6 +1008,11 @@ int igt_main()
+ 	connector_subtest("dp-audio-edid", DisplayPort, &data, test_display_audio_edid,
+ 			  IGT_CUSTOM_EDID_DP_AUDIO);
+ 
++	igt_describe(test_display_audio_suspend_resume_desc);
++	connector_subtest("dp-audio-after-suspend", DisplayPort, &data,
++			  test_display_audio_suspend_resume,
++			  "HDMI", IGT_CUSTOM_EDID_DP_AUDIO);
++
+ 	igt_describe("HDMI tests");
+ 
+ 	igt_describe(test_display_audio_desc);
+@@ -876,6 +1023,11 @@ int igt_main()
+ 	connector_subtest("hdmi-audio-edid", HDMIA, &data, test_display_audio_edid,
+ 			  IGT_CUSTOM_EDID_HDMI_AUDIO);
+ 
++	igt_describe(test_display_audio_suspend_resume_desc);
++	connector_subtest("hdmi-audio-after-suspend", HDMIA, &data,
++			  test_display_audio_suspend_resume,
++			  "HDMI", IGT_CUSTOM_EDID_HDMI_AUDIO);
++
  	igt_fixture() {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
 -- 
-2.34.1
+2.43.0
 
