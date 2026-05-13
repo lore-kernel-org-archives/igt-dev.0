@@ -4,53 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D14CD4851
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:37:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7CB3CD4851
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:41:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0988810E1B8;
-	Wed, 13 May 2026 06:37:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 230AD10ECA8;
+	Wed, 13 May 2026 06:41:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ybk7xsqL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cjzYOJeO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A29BD10E1B8
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:37:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B63D10ECC8
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778654237; x=1810190237;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=kbVoChKQAtYtFnw8qUUBrQm4pQdvLPHrL7p1dS1RTWo=;
- b=Ybk7xsqLbv/88qyerU2U7LVeP+XEvXzJTJd7+hL9aIq6FCCbkEIvOlSD
- 7mq07I9N4GISrGDd95XETzSuJYNPDjAZpEDT2ZuOUqteJf8K7EFQlmZOT
- CyASbZ1dO45DRUCeJsi54p8jijeFE0pJ+K81mq2BWXr+zz/ZSi692EACv
- 03xGq/wfWLgRn+h0lArHBtLRade028QoZyhOrLWNXENDJW4TigzcWDECM
- U3qD6Fo0eSzYxKwEZ9saa9d3kk/kK6tKFInE/CLH0ojmTxPapnOqIC3v0
- 889KPVIRibj6u4Snx/7+wPQm5kF01oEWn4rigets8JDa68Cb2eWyPSIiY A==;
-X-CSE-ConnectionGUID: cX7tqfL/TcqZFKhNikY0ig==
-X-CSE-MsgGUID: K7/DZP1lQvS3bcCw3KKTvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="105032078"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="105032078"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 23:37:17 -0700
-X-CSE-ConnectionGUID: hcFKT/MbTKOyr22lSsBvaA==
-X-CSE-MsgGUID: Vq/2+XMkQOW7zCcDjn48sA==
+ t=1778654488; x=1810190488;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=XKlNSh8iN72DGFCvp9vlbG9eJiBhbdJujkH9xAqMGY4=;
+ b=cjzYOJeOE9hV/1tIC02VGMQ0rUPj4TTFbvm9JWvVewdYnlkgpixX7j7V
+ mSV4NOHiAX4RIERLeb0kHn/VTOQ7H2RkN3T4pM+pSjgjIgtuU1gbws/77
+ rof8kPaLZVkyktYBWWCt+OU2XnxVa1c9ziSomIx/2K31o9RhYBDsGjAvI
+ s80R1lzHIY4UTfhnc2KwhMN/BojSbb/qiZc45LPj1cdXfIlQGRB/NMd6o
+ mXKZ3sGBCEMI9s4o6yQpV/QLAQjCu7x2ONJo1ailSZN3TVVX0WpPW91c8
+ 1TMCKex9CiyXrI7v7kigtzshoJnRSCJwsHCf4Cl6v5j7dJ1li1Fx/439M w==;
+X-CSE-ConnectionGUID: qxVAgZATR1qZMxOA7oYwoA==
+X-CSE-MsgGUID: nwtMkaZzQomwTvl8dOTxzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="82142095"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="82142095"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 23:41:27 -0700
+X-CSE-ConnectionGUID: W7Ni5E06RwaQpMf1SH3KKw==
+X-CSE-MsgGUID: H06TtFaPSfm7ezGxJCBqXw==
 X-ExtLoop1: 1
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:37:15 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: chaitanya.kumar.borah@intel.com, mohammed.bilal@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/chamelium/kms_chamelium_audio: Add suspend/resume
- audio tests
-Date: Wed, 13 May 2026 12:05:35 +0530
-Message-ID: <20260513063535.650794-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="237145262"
+Received: from chussx-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.35.95])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 23:41:26 -0700
+Date: Tue, 12 May 2026 23:41:26 -0700
+Message-ID: <87y0hn95gp.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH v1 1/1] lib/intel_wa: Assert on error instead of returning
+ -1
+In-Reply-To: <20260513043629.1533907-2-shekhar.chauhan@intel.com>
+References: <20260513043629.1533907-1-shekhar.chauhan@intel.com>
+ <20260513043629.1533907-2-shekhar.chauhan@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,209 +72,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test to validate audio works before and after suspend/resume on
-HDMI/DP connector.
+On Tue, 12 May 2026 21:36:27 -0700, Shekhar Chauhan wrote:
+>
+> igt_has_intel_wa() returns 0, 1, or -1, but there is no point
+> distinguishing the error and no-workaround cases for callers. Replace
+> the error return with igt_assert() and simplify debugfs_file_has_wa() by
+> dropping the igt_debugfs_exists() check, since igt_sysfs_get() returns
+> NULL for missing files anyway.
+>
+> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+> ---
+>  lib/intel_wa.c | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
+>
+> diff --git a/lib/intel_wa.c b/lib/intel_wa.c
+> index 727dd6c98..5d50dcc28 100644
+> --- a/lib/intel_wa.c
+> +++ b/lib/intel_wa.c
+> @@ -7,6 +7,7 @@
+>  #include <stdint.h>
+>  #include <stdio.h>
+>
+> +#include "igt_core.h"
+>  #include "igt_debugfs.h"
+>  #include "igt_sysfs.h"
+>  #include "intel_wa.h"
+> @@ -17,9 +18,6 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+>  {
+>	char *debugfs_dump;
+>
+> -	if (!igt_debugfs_exists(drm_fd, debugfs_name, O_RDONLY))
+> -		return -1;
+> -
+>	debugfs_dump = igt_sysfs_get(debugfs_fd, debugfs_name);
+>	if (debugfs_dump) {
+>		char *has_wa = strstr(debugfs_dump, wa);
+> @@ -38,7 +36,7 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+>   * @drm_fd:	A drm file descriptor
+>   * @check_wa:	Workaround to be checked
+>   *
+> - * Returns:	0 if no WA, 1 if WA present, -1 on error
+> + * Returns:	1 if WA present, 0 otherwise
+>   */
+>  int igt_has_intel_wa(int drm_fd, const char *check_wa)
 
-v2: Perform a single suspend/resume for all audio combinations.
-    Re-enable chamelium after suspend and separate pre-suspend
-    and post-resume validation paths for clearer failure diagnostics.
+I'll take a look tomorrow, but one thing I would like to change in these
+functions is:
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/chamelium/kms_chamelium_audio.c | 152 ++++++++++++++++++++++++++
- 1 file changed, 152 insertions(+)
+* If we want to return 1 if WA present, change return type to bool and
+  return true/false, instead of 1/0
 
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index df8d27c0c..067e306c3 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -52,6 +52,12 @@
-  * SUBTEST: hdmi-audio-edid
-  * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-  *              EDID-Like Data reports the correct audio parameters
-+ *
-+ * SUBTEST: dp-audio-after-suspend
-+ * Description: Verify audio works before and after system suspend/resume
-+ *
-+ * SUBTEST: hdmi-audio-after-suspend
-+ * Description: Verify audio works before and after system suspend/resume
-  */
- 
- /* Playback parameters control the audio signal we synthesize and send */
-@@ -695,6 +701,65 @@ static bool check_audio_configuration(struct alsa *alsa,
- 	return true;
- }
- 
-+static bool run_audio_test_once(chamelium_data_t *data,
-+				struct alsa *alsa,
-+				struct chamelium_port *port,
-+				snd_pcm_format_t format,
-+				int channels,
-+				int sampling_rate)
-+{
-+	struct audio_state state;
-+	bool success;
-+
-+	audio_state_init(&state, data, alsa, port, format, channels,
-+			 sampling_rate);
-+	success = test_audio_frequencies(&state);
-+	success &= test_audio_flatline(&state);
-+	audio_state_fini(&state);
-+
-+	return success;
-+}
-+
-+static bool run_audio_tests(chamelium_data_t *data,
-+			    struct alsa *alsa,
-+			    struct chamelium_port *port,
-+			    const char *audio_device)
-+{
-+	bool run = false;
-+	int ret, i, j;
-+	int channels, sampling_rate;
-+	snd_pcm_format_t format;
-+
-+	for (i = 0; i < test_sampling_rates_count; i++) {
-+		for (j = 0; j < test_formats_count; j++) {
-+			ret = alsa_open_output(alsa, audio_device);
-+			igt_assert_f(ret >= 0,
-+				     "Failed to open ALSA output\n");
-+
-+			format = test_formats[j];
-+			channels = PLAYBACK_CHANNELS;
-+			sampling_rate = test_sampling_rates[i];
-+
-+			if (!check_audio_configuration(alsa, format,
-+						       channels,
-+						       sampling_rate)) {
-+				alsa_close_output(alsa);
-+				continue;
-+			}
-+
-+			run = true;
-+
-+			igt_assert(run_audio_test_once(data, alsa, port,
-+						       format, channels,
-+						       sampling_rate));
-+
-+			alsa_close_output(alsa);
-+		}
-+	}
-+
-+	return run;
-+}
-+
- static const char test_display_audio_desc[] =
- 	"Playback various audio signals with various audio formats/rates, "
- 	"capture them and check they are correct";
-@@ -789,6 +854,83 @@ static void test_display_audio(chamelium_data_t *data,
- 	free(alsa);
- }
- 
-+static const char test_display_audio_suspend_resume_desc[] =
-+	"Verify audio works before and after system suspend/resume";
-+static void test_display_audio_suspend_resume(
-+				chamelium_data_t *data,
-+				struct chamelium_port *port,
-+				const char *audio_device,
-+				enum igt_custom_edid_type edid)
-+{
-+	struct alsa *alsa;
-+	igt_output_t *output;
-+	igt_plane_t *primary;
-+	struct igt_fb fb;
-+	drmModeModeInfo *mode;
-+	drmModeConnector *connector;
-+	int fb_id;
-+
-+	igt_require(alsa_has_exclusive_access());
-+
-+	igt_require(chamelium_has_audio_support(data->chamelium,
-+						port));
-+
-+	alsa = alsa_init();
-+	igt_assert(alsa);
-+
-+	igt_modeset_disable_all_outputs(&data->display);
-+
-+	chamelium_reset_state(&data->display, data->chamelium,
-+			      port, data->ports,
-+			      data->port_count);
-+
-+	output = chamelium_prepare_output(data, port, edid);
-+
-+	connector = chamelium_port_get_connector(data->chamelium,
-+						 port, false);
-+
-+	primary = igt_output_get_plane_type(output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+	igt_assert(primary);
-+
-+	igt_assert(connector->count_modes > 0);
-+
-+	mode = &connector->modes[0];
-+
-+	fb_id = igt_create_color_pattern_fb(data->drm_fd,
-+					    mode->hdisplay,
-+					    mode->vdisplay,
-+					    DRM_FORMAT_XRGB8888,
-+					    DRM_FORMAT_MOD_LINEAR,
-+					    0, 0, 0, &fb);
-+
-+	igt_assert(fb_id > 0);
-+
-+	chamelium_enable_output(data, port, output,
-+				mode, &fb);
-+
-+	igt_assert(run_audio_tests(data, alsa, port,
-+				   audio_device));
-+
-+	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+				      SUSPEND_TEST_NONE);
-+
-+	chamelium_enable_output(data, port, output,
-+				mode, &fb);
-+
-+	igt_display_commit2(&data->display,
-+			    COMMIT_ATOMIC);
-+
-+	igt_assert(run_audio_tests(data, alsa, port,
-+				   audio_device));
-+
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	drmModeFreeConnector(connector);
-+
-+	free(alsa);
-+}
-+
- static const char test_display_audio_edid_desc[] =
- 	"Plug a connector with an EDID suitable for audio, check ALSA's "
- 	"EDID-Like Data reports the correct audio parameters";
-@@ -866,6 +1008,11 @@ int igt_main()
- 	connector_subtest("dp-audio-edid", DisplayPort, &data, test_display_audio_edid,
- 			  IGT_CUSTOM_EDID_DP_AUDIO);
- 
-+	igt_describe(test_display_audio_suspend_resume_desc);
-+	connector_subtest("dp-audio-after-suspend", DisplayPort, &data,
-+			  test_display_audio_suspend_resume,
-+			  "HDMI", IGT_CUSTOM_EDID_DP_AUDIO);
-+
- 	igt_describe("HDMI tests");
- 
- 	igt_describe(test_display_audio_desc);
-@@ -876,6 +1023,11 @@ int igt_main()
- 	connector_subtest("hdmi-audio-edid", HDMIA, &data, test_display_audio_edid,
- 			  IGT_CUSTOM_EDID_HDMI_AUDIO);
- 
-+	igt_describe(test_display_audio_suspend_resume_desc);
-+	connector_subtest("hdmi-audio-after-suspend", HDMIA, &data,
-+			  test_display_audio_suspend_resume,
-+			  "HDMI", IGT_CUSTOM_EDID_HDMI_AUDIO);
-+
- 	igt_fixture() {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.43.0
+* If we want to retain the int return type, return 0 if WA present and
+  something else (maybe 1 is ok) if WA is not present
 
+Because either of these is a more standard convention to follow. So these
+are in addition to changes here, which I will review tomorrow. Thanks.
+
+>  {
+> @@ -48,8 +46,7 @@ int igt_has_intel_wa(int drm_fd, const char *check_wa)
+>	char name[256];
+>
+>	debugfs_fd = igt_debugfs_dir(drm_fd);
+> -	if (debugfs_fd == -1)
+> -		return -1;
+> +	igt_assert(debugfs_fd >= 0);
+>
+>	xe_for_each_gt(drm_fd, xe) {
+>		sprintf(name, "gt%d/workarounds", xe);
+> @@ -58,7 +55,7 @@ int igt_has_intel_wa(int drm_fd, const char *check_wa)
+>			break;
+>	}
+>
+> -	if (!ret)
+> +	if (!ret && igt_debugfs_exists(drm_fd, "workarounds", O_RDONLY))
+>		ret = debugfs_file_has_wa(drm_fd, debugfs_fd, "workarounds", check_wa);
+>
+>	close(debugfs_fd);
+> --
+> 2.53.0
+>
