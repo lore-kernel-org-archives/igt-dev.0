@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD69ECD4851
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:17:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF68DCD37B6
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:17:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6694210ECA4;
-	Wed, 13 May 2026 06:17:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9EE8610ECAA;
+	Wed, 13 May 2026 06:17:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L7Snwc/B";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QqgI+0Jo";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D41A10EC91
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:16:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EF6410EC91
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778653005; x=1810189005;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=TFl5iaAcZyEMAN0CM1/Rlm2VRTrKcOwlMSVjV8WMzys=;
- b=L7Snwc/B4cqAONtrDnqrC4VtaneeJcYEgT14x5P1LIoIR4HTbIChkjj8
- 0IvZxZgjUysXOtUyYqdVkrEOIhPlYKWDx7lDXCnVnki6OyruOa6gEIm6z
- ByhBYj7hBf1+bTV31sDZlPiSXOevrRB3bz534DPniytzMcnBCscyJRKui
- aDdP3xo4beZLrLMgsMoH63DCFuscROSGiIcuWNrLIhsABn7WeZwuYI1u2
- djhTSfO50sYTZv5OdtgsMH4bS6IwGVIXiClfSwI72J4LxBnpaitiHawUf
- E7aKg4F8d2daL0xp2n+ZSZpyeq6rcOGLA3i389urfeyYg3WdEvxk41pOh A==;
-X-CSE-ConnectionGUID: grW6xofRRJWqAMKjEqTSng==
-X-CSE-MsgGUID: nfx0YzqARtW5xTsuKLIN3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79524875"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79524875"
+ t=1778653007; x=1810189007;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=oAuizqUMEBRdIBJJuOXdbeZ0csxcLTHurzEzGGc8k74=;
+ b=QqgI+0JoxOiKAcDp+PBqlzkayxGgHBWCvr9S6tlOdms2alOA6BR+XJN7
+ kHFZKNIhYKWHFMEpVIE4c1SvjQBlE45zwDzhpIZk5up1fQaQTvg7kESjO
+ +W8s+YfsNle7Z0m3LzJJlekWlC0kCfdQaSMEFbgEhp34uZW8OYDQJdI/Q
+ 4oOZkJ+0LQTz7jEkhiW2PtiG+zi/KzmigJrqKg4X7gcKffBW7YSnw7EP4
+ Pe7uJffuq6XLRnvVQDWHUS9x2rCIltjY0yw/0gY8CaQy52caEB+iAU0Da
+ ZMscD90+5pv7sMOjysUqXc05Lr1/9BLa4a8E+qGkXOr3Su+MX/sNCAAMB A==;
+X-CSE-ConnectionGUID: lUGEN0UESzKry050uIbajQ==
+X-CSE-MsgGUID: cnieD1Z0TqSV3Grmea9VcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79524879"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79524879"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 23:16:44 -0700
-X-CSE-ConnectionGUID: 23yWGR0RQB6viq1fhNyFNw==
-X-CSE-MsgGUID: uIMgMH9CRW6B8FN7HcXB3A==
+ 12 May 2026 23:16:47 -0700
+X-CSE-ConnectionGUID: gHKDqKStTGmyarR53hEKog==
+X-CSE-MsgGUID: JhxSVs5ERtmdDZam5BXMFA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="242341796"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="242341803"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:16:42 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:16:45 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
  mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v2 0/2] RFC: Add preferred FB modifier helper
-Date: Wed, 13 May 2026 11:45:00 +0530
-Message-ID: <20260513061503.645278-1-jeevan.b@intel.com>
+Subject: [PATCH i-g-t v2 1/2] lib/igt_fb: Add IGT_FORMAT_MOD_PREFERRED helper
+ modifier
+Date: Wed, 13 May 2026 11:45:01 +0530
+Message-ID: <20260513061503.645278-2-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260513061503.645278-1-jeevan.b@intel.com>
+References: <20260513061503.645278-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,22 +70,151 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add an IGT‑internal modifier, IGT_FORMAT_MOD_PREFERRED, allowing
-tests to request the preferred tiling format without hardcoding
-driver‑specific modifiers.
+lib/igt_fb: Add IGT_FORMAT_MOD_PREFERRED helper modifier
 
-A follow‑up HAX patch updates kms_cursor_legacy to use this modifier
-for cursor framebuffer creation to exercise the new code paths.
+Add IGT_FORMAT_MOD_PREFERRED as an internal FB modifier sentinel so tests
+can request preferred tiling without hardcoding driver rules.
 
-Jeevan B (2):
-  lib/igt_fb: Add IGT_FORMAT_MOD_PREFERRED helper modifier
-  HAX: kms_cursor_legacy: Use IGT_FORMAT_MOD_PREFERRED for cursor FBs
+Resolve it in igt_fb_resolve_modifier() (never pass it to kernel) by
+checking support for the requested format in this order:
+X_TILED -> 4_TILED -> LINEAR.
 
- lib/igt_fb.c              | 71 ++++++++++++++++++++++++++++++++++++++-
- lib/igt_fb.h              | 19 +++++++++++
- tests/kms_cursor_legacy.c | 31 ++++++++---------
- 3 files changed, 105 insertions(+), 16 deletions(-)
+v2:
+- Switch from gen/driver policy to capability-based selection
+- Drop Y_TILED preference
 
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ lib/igt_fb.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ lib/igt_fb.h | 19 ++++++++++++++
+ 2 files changed, 89 insertions(+), 1 deletion(-)
+
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index fa9220953..454a59859 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -790,6 +790,67 @@ static int fb_num_planes(const struct igt_fb *fb)
+ 	return num_planes;
+ }
+ 
++/**
++ * igt_fb_resolve_modifier:
++ * @fd: DRM device fd
++ * @modifier: Requested modifier, may be IGT_FORMAT_MOD_PREFERRED
++ *
++ * Resolve the IGT_FORMAT_MOD_PREFERRED sentinel to an actual framebuffer
++ * modifier by checking device capabilities. Tries modifiers in order of
++ * preference: X-tile (compatibility), 4-tile (modern), then LINEAR (fallback).
++ * Returns the first supported modifier.
++ *
++ * This approach avoids hardcoded driver/generation checks and instead
++ * validates actual device capabilities.
++ *
++ * Returns: The resolved DRM format modifier that is supported by the device.
++ */
++static bool igt_fb_modifier_is_supported(int fd, uint32_t format,
++					 uint64_t modifier)
++{
++	igt_display_t display;
++	bool supported = false;
++
++	if (modifier == DRM_FORMAT_MOD_LINEAR)
++		return true; /* LINEAR is always supported */
++
++	igt_display_require(&display, fd);
++	supported = igt_display_has_format_mod(&display, format, modifier);
++	igt_display_fini(&display);
++
++	return supported;
++}
++
++static uint64_t igt_fb_resolve_modifier(int fd, uint32_t format,
++					 uint64_t modifier)
++{
++	uint64_t preferred_modifiers[] = {
++		I915_FORMAT_MOD_X_TILED,   /* X-tile: good compatibility */
++		I915_FORMAT_MOD_4_TILED,   /* 4-tile: modern, potentially better */
++		DRM_FORMAT_MOD_LINEAR      /* Linear: always fallback */
++	};
++	uint64_t resolved = DRM_FORMAT_MOD_LINEAR;
++
++	if (modifier != IGT_FORMAT_MOD_PREFERRED)
++		return modifier;
++
++	/* Try preferred modifiers in order, independent of driver checks. */
++	for (int i = 0; i < ARRAY_SIZE(preferred_modifiers); i++) {
++		if (igt_fb_modifier_is_supported(fd, format,
++						preferred_modifiers[i])) {
++			resolved = preferred_modifiers[i];
++			igt_debug("Found supported modifier: %s(0x%" PRIx64 ")\n",
++				  igt_fb_modifier_name(resolved), resolved);
++			break;
++		}
++	}
++
++	igt_debug("Resolved IGT_FORMAT_MOD_PREFERRED to %s(0x%" PRIx64 ")\n",
++		  igt_fb_modifier_name(resolved), resolved);
++
++	return resolved;
++}
++
+ void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
+ 		 uint32_t drm_format, uint64_t modifier,
+ 		 enum igt_color_encoding color_encoding,
+@@ -803,7 +864,13 @@ void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
+ 
+ 	fb->width = width;
+ 	fb->height = height;
+-	fb->modifier = modifier;
++	fb->modifier = igt_fb_resolve_modifier(fd, drm_format, modifier);
++	/* Log the chosen modifier for debugging. */
++	if (modifier == IGT_FORMAT_MOD_PREFERRED) {
++		igt_debug("Created framebuffer: %dx%d, format=%s, modifier=%s(0x%" PRIx64 ")\n",
++			  width, height, igt_format_str(drm_format),
++			  igt_fb_modifier_name(fb->modifier), fb->modifier);
++	}
+ 	fb->drm_format = drm_format;
+ 	fb->fd = fd;
+ 	fb->num_planes = fb_num_planes(fb);
+@@ -5266,6 +5333,8 @@ void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
+ const char *igt_fb_modifier_name(uint64_t modifier)
+ {
+ 	switch (modifier) {
++	case IGT_FORMAT_MOD_PREFERRED:
++		return "preferred";
+ 	case DRM_FORMAT_MOD_LINEAR:
+ 		return "linear";
+ 	case I915_FORMAT_MOD_X_TILED:
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 8e5907dab..27aa9e161 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -50,6 +50,25 @@ typedef struct _igt_crc igt_crc_t;
+  */
+ #define IGT_FORMAT_FLOAT fourcc_code('I', 'G', 'F', 'x')
+ 
++/**
++ * IGT_FORMAT_MOD_PREFERRED:
++ *
++ * Modifier used by tests to request the best tiling format for the
++ * current device. The actual modifier is selected inside igt_init_fb()
++ * based on device capabilities, so tests don't need to handle driver or
++ * generation-specific details.
++ *
++ * Default selection rules (capability-based):
++ *  - If X_TILED is supported for the requested format, use X_TILED
++ *  - Else if 4_TILED is supported for the requested format, use 4_TILED
++ *  - Else use LINEAR
++ *
++ * Note: This is a special placeholder value and must never be sent to
++ * the kernel. Modifier selection is logged in IGT debug output.
++ */
++#define IGT_FORMAT_MOD_PREFERRED  UINT64_C(0xfffffffffffffffe)
++
++
+ #define IGT_FORMAT_FMT "%c%c%c%c(0x%08x)"
+ #define IGT_FORMAT_ARGS(f) ((f) >> 0) & 0xff, ((f) >> 8) & 0xff, \
+ 		((f) >> 16) & 0xff, ((f) >> 24) & 0xff, (f)
 -- 
 2.43.0
 
