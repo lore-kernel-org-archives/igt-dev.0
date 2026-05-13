@@ -4,159 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89B4ACD37B6
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 08:27:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC8DFCD37B6
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 08:35:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 18E6510E0A1;
-	Wed, 13 May 2026 08:27:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5E90210E039;
+	Wed, 13 May 2026 08:35:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IIySd0Kv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="COwApw2S";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D47E10E0A1
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 08:27:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA85710E039
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 08:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778660833; x=1810196833;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=HnyLOtiI1oTO5IiCdb1Alc4R7qwmEfVosWDIKhj6qIY=;
- b=IIySd0KvFcz0hGqw4tjnDdASFQRvdc7N4MdbQLzLINwemUsdmbbsv5SO
- hTdYs+D2vx7+5KCbTcQUm/ew9wB9mawzSD7UYi+K41NBrlTVljZWMGYBI
- KQmRXNTxQ6TDsUYch2SwucuaQMzk+B0d62BFuhGjnDUPQ/+ojh2feQr4y
- UgpjPeUhK6ywzZc+Cuv69HSMNNWU3JMBusnXda/ACsKOtRqz+kChgpoO9
- vYppLdZYNhvP9VIZFmu6mSi2ycbC9G2Rnjp+pmIcgl0BmlTNYs4tJhRyh
- umsmcBniR5g7Aw62C3xd8GPRfO7DYOTlEhZ/X6FrjicebVKjvSqhl3qc9 Q==;
-X-CSE-ConnectionGUID: lInDK2A3TMCgzOTaPHbM4A==
-X-CSE-MsgGUID: q2oVJ7uwSqyW/3gZXnMb+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79438730"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208,217";a="79438730"
+ t=1778661311; x=1810197311;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=/tt/w0vph1dzg0Z+c+mAiePhr7fL7slnBx6jxup73GA=;
+ b=COwApw2SOdbwdcZNQnQB20tivbmfVlx5eIwJTrq2kKQHgC12t+RRU8bd
+ BlYOePV+XrqLUGi9gOeeNfNwfj0yEMWgVEqWLmM4ROA14qp7OU4cCccoR
+ F65vY6cv5RkOY4pIf86cDHVP6RWFCSHWJSUdoBAL/s38gg8CZjeKN/tvC
+ agcWIWqX/yuM+W3wUfjlAhfHS7psndK3sb4GikrGlmn+bAzZf7EpGjVNs
+ XHbILXn/dbNg6MxfNZJtSr3CM4+uciGB4qjWUtkZK6+yM+87cIce/HGvh
+ HA3bTULy4y9XIHpbPtT4ZEbpoWOKNYpUgXG+Y/wWLn/crYZv609sGHpQC g==;
+X-CSE-ConnectionGUID: PtffpppDTpq2DqD/CJ36hQ==
+X-CSE-MsgGUID: SgRzZANSTYmbJt5VSAHiNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79439501"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79439501"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2026 01:27:13 -0700
-X-CSE-ConnectionGUID: /kNHgFVPQqqqKthpWcy/LA==
-X-CSE-MsgGUID: G5rP5YHJTDOsU7ujRQATvA==
+ 13 May 2026 01:35:04 -0700
+X-CSE-ConnectionGUID: CvwhUL+QT8iwxfYw1qbR4g==
+X-CSE-MsgGUID: Oc/HoBwDRJuskb3clJQCjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
- d="scan'208,217";a="234953512"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="234955342"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2026 01:27:13 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 13 May 2026 01:35:03 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 13 May 2026 01:27:12 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.37; Wed, 13 May 2026 01:35:02 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 13 May 2026 01:27:12 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.34) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Wed, 13 May 2026 01:35:02 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.62) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 13 May 2026 01:27:12 -0700
+ 15.2.2562.37; Wed, 13 May 2026 01:35:02 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oMAkxiVY5Lym8WBuhTykKz8HnpYh5nlQOdX6rC3HDVbUkUol/MJwnduLO9CsL8e47rLv0ZgtyzpBH0pmT/xBcJq9HLTgfek+oHjzvVlNZA5pTkovTXBNQ6ZFhmZ7fP0ktEIBx/MsqyZKKb0KALuxlZpNvlHMgVhm7TP6GaBBRd3pealJxEcrRFx7hkNaWWq5tsU9RDnWtoQEGS5F+oEiSyx9HEewqxXmYgPaM/s/ghKwBtBzH7h0lVsIICu5ZvtCxp/CRimF7garVkvQ2N9m5NLBQW2R7TO9WaRfiNmr1SSotQpgAtDkDV/5mbFb2uCNuxjBIW2cQOoYRiNaq1qb+g==
+ b=bJVa4bo4OyiEUOnxkXyF1OTHyrYA8Fg+LBOjgk1/NCUwbFx/ULeJm5hoI+efLa94xLRqEiQsWijuegqiB7v26U3A5mTOV4/h8Px48hz3qHAxmAySh0HpAE3gobhIXS6qYQft3I0CwAI8JntSd1kYuKrPlBsC5lw5kWD7Y7+8nOQ+XgssLZzTj2Zi8QGSWbVfa7WilBwx0QlR1vpfFdBBC6dukCE9J5ZqUD9DpS1qMDBdD2ZUNmjaLJh3btGjgIF9657FPLG1k3UirL07BAbUdO1RvTkG1g6EPQ1EnVpi4PaNOwNMz2lNhq2TI/RfSwqnGcInBtNANcnr/RUDe6Vprw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FcvsxWyfBHjJzJ6or0lcySa81B6V9auZM1gdsKDkpc8=;
- b=SVtx4rBdxCnYAPPtqXs7q/f08aREGGMMO2fawsF7QJBW8oxtWKTf5ulWZm+EyoygBkDJbLWVHFSBtZVZz/muyPWMtiqxrhyAu2rL9suxaLYH2aiOnhdDISsP446ZtniOvVrV/e3/aNootwgM0pstqLK/8jZkJJTAzTx2hB62vmEJiWQsrNVIOZhzHEgAgyVZR/1Nys000q+DBlYlpGs6EKKD0gZUSja+k1BTG+2K6BTe1zKXA/zGaE1AAJw15FMM6vE4WuyJCtZP3WyMsReY7pVUMDrhH8V1PJ3zkwKfmznEYlL2TqFwL/5CuYPV53Xbem/ZJ8mHl7aRPKuAAGXOrA==
+ bh=MniBYOm5oJqnvZPCUP2UM6TTiDBcb2twqcMBcksX7Oc=;
+ b=lqkLgRGnuTMzoycK9gsYVBagffezbbtf7Gk/hwBECfWGZzUislobfsDmL/YKBgrwKkx50s1a5E2VldcMiasvyHlyz3H98FpgZt24DZ7728EQWPxzpo182CEOzHMpc5/CD+E0eQ8bl1pftkl5sJLcTa3ocD2efxe6dPL9byikD/k0aPYULI+IswGDN//rFEy09joDu848arK9PdPZkCQjN28mYr96vs4kMTVhX1Xa4HK8/1tTFbxZdy+hoEPNm7NccL5k4hlxvEmOyBTc5GmvsGfKpjaIyqUmhHYf1nHD2ipTwBIjEB91lskXU0T0qngVeXSRR7ngJd40G3aLywV4tw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MW4PR11MB7149.namprd11.prod.outlook.com (2603:10b6:303:221::14)
- by CH3PR11MB7391.namprd11.prod.outlook.com (2603:10b6:610:151::9)
+Received: from MN0PR11MB6034.namprd11.prod.outlook.com (2603:10b6:208:375::17)
+ by SA1PR11MB7112.namprd11.prod.outlook.com (2603:10b6:806:2b7::14)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Wed, 13 May
- 2026 08:27:09 +0000
-Received: from MW4PR11MB7149.namprd11.prod.outlook.com
- ([fe80::75d3:519d:fced:5a6c]) by MW4PR11MB7149.namprd11.prod.outlook.com
- ([fe80::75d3:519d:fced:5a6c%6]) with mapi id 15.20.9913.009; Wed, 13 May 2026
- 08:27:09 +0000
-Content-Type: multipart/alternative;
- boundary="------------xKevOX4Mkf2U0HpUHIyDOc05"
-Message-ID: <53c51d4f-7a8a-421f-80a4-45cb7a3efcd3@intel.com>
-Date: Wed, 13 May 2026 13:57:02 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 6/7] tests/intel/kms_pm_dc: Add new test for
- DC3CO recovery after DC6
-To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <animesh.manna@intel.com>, <dibin.moolakadan.subrahmanian@intel.com>,
- <mohammed.thasleem@intel.com>
-References: <20260511171820.461666-1-jeevan.b@intel.com>
- <20260511171820.461666-7-jeevan.b@intel.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Wed, 13 May
+ 2026 08:34:54 +0000
+Received: from MN0PR11MB6034.namprd11.prod.outlook.com
+ ([fe80::eec5:c441:1afe:cb73]) by MN0PR11MB6034.namprd11.prod.outlook.com
+ ([fe80::eec5:c441:1afe:cb73%4]) with mapi id 15.20.9891.021; Wed, 13 May 2026
+ 08:34:54 +0000
+From: "Bilal, Mohammed" <mohammed.bilal@intel.com>
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Sharma, Swati2" <swati2.sharma@intel.com>
+Subject: RE: [PATCH i-g-t] tests/kms_chamelium_color: Free captured frame
+ dumps after use
+Thread-Topic: [PATCH i-g-t] tests/kms_chamelium_color: Free captured frame
+ dumps after use
+Thread-Index: AQHc4qFWS3bBjwAEM0i68d22QRO9MbYLnplg
+Date: Wed, 13 May 2026 08:34:54 +0000
+Message-ID: <MN0PR11MB603472451F724E13B73D88D181062@MN0PR11MB6034.namprd11.prod.outlook.com>
+References: <20260513060104.3235845-1-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20260513060104.3235845-1-chaitanya.kumar.borah@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: "Naladala, Ramanaidu" <Ramanaidu.naladala@intel.com>
-In-Reply-To: <20260511171820.461666-7-jeevan.b@intel.com>
-X-ClientProxiedBy: MA5P287CA0033.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:17a::16) To MW4PR11MB7149.namprd11.prod.outlook.com
- (2603:10b6:303:221::14)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB7149:EE_|CH3PR11MB7391:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0518821f-5bfa-4533-e6cf-08deb0c96c94
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|8096899003|18002099003|22082099003|3023799003|11063799003|56012099003;
-X-Microsoft-Antispam-Message-Info: 3SkSub+On8/3aTqiQC08ass+2KDMhBVSujg/7iW0jpVy+IzpsqA627D4YVxBWCqkneb5jMJovQhG4SGCaUMJqzQ/h10V6HjQOEuGqaTRbmS3MSaAQDWJIfLG6sm1rnSkkzCsk3A0CFlCIlOYez/EefJTBDLzwT9p8eJKyx5VP+rsQ95so2+OM3D+C2NjIBph5Ls8kdNUe+O8lCzDtQUwqs6asT0Sfo3T8sStPHXPuKaZVl+YT3zVDnH1OuqEhRp20fp398+/h3AMw82xh5IpxcbYc4VLBYjHuP0/x61fzcQU2f1F3ccZ5gNdTUJQch8uR9EUIIt9UZLmaq4SgnTemCk8pYQJ7lh1R24y1z8ANlUqY2593Kw5r41ZpU/vQ4qSl2LOaco3cNYedK0uLEQ8+d+ESjEZksZMXx6MwBpWw3BpFDYlEeErsWwOc+7vnyQh7RnocWWNaXSPZv6ofrCh/a8CQyRTh87R7TIe6ecDWJN4krE3K1/pmjkbpSNCsiyYhWSHrYi5281oRVq7UjR3tBCgdo4EV5373IHqpUSwh22vaWpPK165fKAzKi75Dp6ZxV8jvju8mH9Jy0I+aXflK9aZ8UY1eEv3nxyMSJcfn6/k/uShzAhbbOchExlI8f8LhoWnoAziCnJ6l2M4JFqDJ2+4MxjFbaU29ZWRJ5xmsuBF1zjZic2k2AWIqfpmYgoH
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW4PR11MB7149.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(8096899003)(18002099003)(22082099003)(3023799003)(11063799003)(56012099003);
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB6034:EE_|SA1PR11MB7112:EE_
+x-ms-office365-filtering-correlation-id: c3ee374c-1567-4327-add3-08deb0ca81d4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|38070700021|56012099003|22082099003|18002099003|11063799003;
+x-microsoft-antispam-message-info: bPGbrZeCEyFIz0it2C37OWK0CbARxgsOtRWgrGDe1V+UQIPay6vjxjU7y39LZrOqdqaEIRCcKcJorAXkBHKxZZQyUO97AxZYt5CbzSOs/CUkGzDnHkcBOl7F5gxwwsuLSvdW4xy1abmaGUNt1btmeufFTrj4gqH3qY3Ttr+YBYFZ6qICZ9Z5Jh3fn/X68RNI+roXXI9zJY6kc2HT7ZY8S/Jy5U+4mSMh96VeOC/faobMMfM/Hto4nnaxvwnp9nd3jVFdcyTwx436jOCixL6EIjFHfc5zcnGEEq++AFjc6VWm4BN/mnez2LfgVz9iO3002RHLV4pjloxT+h2sm2Lqnxh3y/6WjgwmlytkAhAeFv2U9SNzuOrUXKLTgZqCQvzropSo7mYSQODwvcWUN+lFdzBB7MRLGshPfHAFpgGk9PUJlYqp0bPIh2VUszqEtviafjTU5gYSi2h/GwaAHr09Xhj5jrUIOXiRnmOcwz3i7UVj26N86lH4OZbjxKnUfxoK2MopVT+cueUOSuiXdvDZC5RjyrpK1qsYcZ+1F9Cxyl5LyrLBq6G9KedR+AZzeYfHsFjgejnDwTv/LTr7t/Vb1t5aP1njdZ49Ra6Z+naeE9UbkdScCDZyBXKEj+hzAJ67qMx6gB5tiZABO2AnVijGuYcbiwoxWRZMZKll8Pmj3urzWO54LfKiP12eYMm1NrXTVvRb1JzNnpsrpqJd9HVLaDihTtEgs08UnBpmM+QB8hNJ1Qku1AYuYtsKlCAJyDeN
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MN0PR11MB6034.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(56012099003)(22082099003)(18002099003)(11063799003);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L1pEYm8zMkZkaXB6bXJjbG45R1VtNHdCZVg1TnZwOWVlMUNGWXlxYzZkb2hM?=
- =?utf-8?B?THBHM1dOejllNnRhN09ZeFl6Ni93cnBRUWNXME9DQ1FGSHF4bnVtZ2lDd0FH?=
- =?utf-8?B?QzlweUJTV0xUTXNodTd1dTl0K3AzaFZkcUlzOVA1c0swblFFdHIzdEMwcjI0?=
- =?utf-8?B?WnVRVGEwYjZMZnQ3eUtMbFFaRmZqdmJ1WkZ1TTlrdkpTWnhoYmdzNjk5TmtL?=
- =?utf-8?B?YldOU0VCbXIwNWNuUjJoUlNLdVZNNGhJd1JzWUNhenZQMi9qWFpPc0JsUm56?=
- =?utf-8?B?SkdWOWh3V3pvOXBlUDVvTElZb0lUMzMvVUtmZ1ZwbFR1cGdSZTZsSFRybXNO?=
- =?utf-8?B?QUZZenduVmdhdHFjTkhMOU80S0hxMjVldDIxWEE4TUNJUm5zOFcxNllZREx0?=
- =?utf-8?B?RHM4N2dMWGVmWlBxVWpIUXZuN3dPTTMzR2NhaFB3VElkVTNRMU16ZHNVNDho?=
- =?utf-8?B?TDlRWElGR1liRUpxYU5acXdad3J1RCt3ekRacExYNE1pNEtPMVBlZ3Y2SEsv?=
- =?utf-8?B?bEZicGw3QVorYm1ub1hONG1adkpYNmJjMkpZenhQamF4Wmk4K1BqT0k2SUto?=
- =?utf-8?B?R0dUVSsvdnJMMDc2WENTRTJweWI0Qk1SM2lmNlk5TjA0Y2Y4aGR6RE41eUlZ?=
- =?utf-8?B?VDZWSWh0QmVNQWV5VEF1WE9GMXlHcThwSVpBR1lkNDZ6YXd2L1hZZ0VCTmgw?=
- =?utf-8?B?Q2F0aTBsQkYvbVpjeTJwOE0zL1B5RHdMZWhFWDhRWk9CYU1wZXArUEswdUdz?=
- =?utf-8?B?NS9NbUcxMXVJek1PVG1hRkw0L1dtaE1lejc0THhUOGZHZmNpU1BneDkvM05k?=
- =?utf-8?B?MWcvZnlQOFh2d0QwWFBydEFiT05YWXZGeUZyZXNVWDFNOURUMnEyZWJ3Zlpn?=
- =?utf-8?B?Q1J1OWdGbEtIUmJlZFdXaTZKeCtCVXo5emgwUVN5QVAvU3BMeVBIaUg1RHVY?=
- =?utf-8?B?ZjRLY2dUQk1jVmV3V0lkK0R4SUMwUVpKS0RFYUxGYVVKUVdlS0NIUG9WaWM4?=
- =?utf-8?B?VTkxcDBFMDM0aFB5ekhRN3hZUTlkQ1R1U0FBQnZYaFNIMzhBbXg3MGpYRHNr?=
- =?utf-8?B?Q1lxbnRWditrbEczb3lNeUx1SWl2RndXMkVEd005OGM5Wk1zTmc1VmxyclV1?=
- =?utf-8?B?NHBWejU3dVFrRGVhcjFlYk1pVGNiMjEwVUJjMjFuN1Z1Zm94emNCejNaWXVu?=
- =?utf-8?B?akJuYmd6ZFF6NkIzWUM5b21ENGlXdWVKOG15aHRPdkFtbnBPUWlpejNHak16?=
- =?utf-8?B?UGlRRDlUd2V6cW9qNGwxei9hNVgweHJIbXozRzBCa1oySjZTWlJFenVDUVA0?=
- =?utf-8?B?QWRQeVp3T1NtOVZHeG96R29XY3hCU1dGNkNXeDZ6ZTJDZ1gyNGZqRnRQdG4z?=
- =?utf-8?B?bU5mTmFMWFVBT29SWmxrbzh5aDhVSDgvVlAveHlMQ3BjMUlzWnJlT3lDdXVr?=
- =?utf-8?B?S1dFN1llWGpMRnU1YmhwcXlZRzhQNWFoNitwN2d5eWI0aThaNkpZRVU4UGhK?=
- =?utf-8?B?UjVZbHZOVlg2M2R3MUhDNytnTm9VazZzSFB6c0hMaVdmVG15ZWYxa3pQTjl4?=
- =?utf-8?B?RnFIWjZkZXdFYS9yeHcwSituTHAza0RobjU1RVNZU1lZWE5aKzFLdCs0L1Br?=
- =?utf-8?B?V0w3UFprcTZhU203eG8yVHhpUEtHcWhXSU5QTHVVZzVSbGJ5NFZyaW04SlUr?=
- =?utf-8?B?R2VtR2hKcXBHNTNYbkFPNkRhYXlVOGVuVjBnL2xGdE91aTNKM2pXcmN1ZnlD?=
- =?utf-8?B?NXYzc3kxejNkaWxSY1JXZm9Fd3RTUHozWGNzYklHWTVRNnNkczM0ZjdsRnF6?=
- =?utf-8?B?dmI4eWo4VXZkOEtIUGtWSTJjRWlFRlVoUGFRbE5WQ0h3TUZack55RklRdkFi?=
- =?utf-8?B?MXE4TlRFLzM4bExsMFhOMmdXMklpMDVOWVg5SU45ZjZIQzZEeVJWSGJMUGh1?=
- =?utf-8?B?VlZCdDJVdUFSNE5UOVNsZ1JodDdyZU1zeW11SmRuNzlEeHpzdm1jYUhzWW5Q?=
- =?utf-8?B?eVBDbTA5bzNSUWVMMk8yS2dNbFh6NmVWN0Y3blpwRjExR2FNd3ljU0d6dURj?=
- =?utf-8?B?eVdoN2diSXJETTRJRzFoZWh4MDRiQ0FjOHowTklGQ1FMTzg3SGI1YTROK0Fs?=
- =?utf-8?B?ZTYxbm5WK0IwRFlYSTBUSzFRL2F5NENheUxkOG9UNEJWL3l6TC9JV3NxVWZm?=
- =?utf-8?B?U3hrVllHbFEyVG9URTJEcnhKZUpWWGJmSzEzMzVZNmw2U1A5WklFSENqdmVJ?=
- =?utf-8?B?OENIUWc1MGFyc25hSVZZMzdScVdBMjBuMFZqTUZFQ1dxb2ZtYzNqRjFacjhl?=
- =?utf-8?B?Zk9PbTA3blFDNFpXd3p0SGZ4bk5sM1MvaHAxN1FaVmp1Z2JWOXNkSUpxcVox?=
- =?utf-8?Q?4tv2pHJlMy4w29Hk=3D?=
-X-Exchange-RoutingPolicyChecked: OaMPKrBvUKRzKYs2cUtNOopPM2yyrz3qBv7ycZpXbSFhl9/x/D16Xs/mraLHRoHWec3xO/DxBs4oJJ9k+1wbKu39n8X28XnMlz/cRmacq0pSh1K65dImWndFdzxOBrtUxGHl4r8NzzTex7RcTEocJHpu9uILT+0nmWbjJP5BppuxAbodr7sMzP0/rpPk8Q9ZYx9GJhQmgvAqyRZPfJ/EAVvSkxMgnlWfSezMJ6XGfD0bQBDDo4OXB74+he2tZVQM2aZ2PEOJcmGgdp9VgGGTVhaRudwvxl99tYekxeC5qdZFI8DHE68Akom5LUcd/uBWY8osQV/DzlLuv4nw2q0Xcg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0518821f-5bfa-4533-e6cf-08deb0c96c94
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB7149.namprd11.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?jzXSfB4/MIBfEJLWIWYIrogfmDf7jiZKj9cCt9fGJ9aVhGMkcbTx5n++KTZ1?=
+ =?us-ascii?Q?4RJoOqBLth20Sy8fG7a61Y3bsZb2G3FaDmL7C4ZU1IPQj2X7Ae4wQGnrVxF6?=
+ =?us-ascii?Q?BEkvVBasUFib+A7at1qdvZB7UuNuVEH0yYoi8Qn0JH0wygSv1neUnFHNosM0?=
+ =?us-ascii?Q?21oIQUYJt/CvrdYadhphuOiWHWjEkmB09wzsx/5GsLuXv2/uXHxODzfRrnP8?=
+ =?us-ascii?Q?1tFHYj48br9OkPT9GPj18yzd2HRRz2rh74sESYC5YJujWhuXkCWOmJLuT1QB?=
+ =?us-ascii?Q?yCZIgScPwxBoEu271Oug07WQOvjZQVG68wbucQjIHkCfG9BsR6mWuY+/lGT3?=
+ =?us-ascii?Q?+JU4lWXJwENifVuvt3sLCD5qirI3gDKncnPnVftIXCtiQYuy1SyaiNb5mrO7?=
+ =?us-ascii?Q?EkduEyC7U1jx7Ih5vNd3rRU2c4muqmN4BqJYh+/kwpX+J8V6pEA4spDYSzZd?=
+ =?us-ascii?Q?5uhxNGnkEy+dTDNlHhUe39p00EwxqXX+zxZ3CNt9ROp2zA3eB7Pshby+QRLx?=
+ =?us-ascii?Q?93Flw++ELZMAftruCiG0sI01GAA/hCpwcS0WH49MifexufAVgT5zWJi038Yl?=
+ =?us-ascii?Q?bi2zBG1l6DDpv9co3HFtAPEbBSXmm+fW+YIAcJ6ByiE9FhTgoR2lb8IAZPMb?=
+ =?us-ascii?Q?ws5cehm4tK2HntutHEORbx8USkZnqtkEKx+B4lceO2z6krgVR/KZKcJYvtBd?=
+ =?us-ascii?Q?cu7vKz+yu/kM/dK86K7Myv4aV+0xkbCcGzDoCi/NzgGKtfN2hUpxSFZLg6q7?=
+ =?us-ascii?Q?cB0JDrWaF26uqV7A4+RE4VaVAhLEti+fD9aktk+t4J+2uaxB7eA5ALIJ/jFw?=
+ =?us-ascii?Q?BqAzQAuFyytAab+woH7Fm7c6BTryQObel7RieFxqDFstESTJSGWSuiGnP2of?=
+ =?us-ascii?Q?qhIEotXTs5H76e/EuwAvUWsMADcHydLbv0a0oQdfyhJRfXAq6i8FucTK5vO5?=
+ =?us-ascii?Q?GWzcncozTHbaqkYMXm+AOuiakOLQ0d+7STHfYglD7FM8bYJkbkzyiSDz7EBl?=
+ =?us-ascii?Q?GgmjJL05wUg0Ch6DA0AQntsusXfuGdRM5B54WVXni82iN8FhLwiBJjUBM+mt?=
+ =?us-ascii?Q?AFthLPOeT146caHjcOe7Qsi2oJxfsjWnZLWbjWVjlNuMDtM21zBKxbTRKj1m?=
+ =?us-ascii?Q?hSCiKKTYlBNSPx56wmswBSmJ0xJlkLOw7BPVC/FKCC8uHqBz728937WHs59n?=
+ =?us-ascii?Q?D/zACuDJnDlnAu3qplJRkQBGhWNf/sVazUx5Q9VBEuD1j9qCPF1grLOhqzMT?=
+ =?us-ascii?Q?UfwUz5lsgJNkRr8Wx6aCyAZEfaIutWiz8UhoLWx0iqEqiFy+0UZkQU3qY4Vg?=
+ =?us-ascii?Q?/+39ShBH5G/Urj+9BlUY3Bvv1QqG9yp89ACxNBS3LJVm7ceJUb7dzSllyZ8n?=
+ =?us-ascii?Q?X3fTLD0vDFSj8oQzrWQRgjo0opmlv51RWSEevDGAPRQ3CNJZKwx6kzeRiHhf?=
+ =?us-ascii?Q?dLLttUqwOvFxSEpb2marEKoFyzl+xG/aYVipnRuqTcVFU1u6n7w9MJmZ5Ooa?=
+ =?us-ascii?Q?71xVPoGSgD+Q/pjhKNAADPaufHw2Y2JO19h/mxxcQCRlTEA287RJ0vSMZKec?=
+ =?us-ascii?Q?ggvpGp7LjqQFpuRssXJScdYtTtctOTjq9P7h8O1+7go49OmzQK8aZVNTM7Dw?=
+ =?us-ascii?Q?MNv0bDM/667p7lPEiokTJo8cSnclBWfSEiAmRFixvoeOUV3mVSiXmcIvIK4D?=
+ =?us-ascii?Q?ts5V5vwG/vS0D42ssptp9ZmZsNm7VcmdlmxC+BcfJU4EO+J77FGcZbE48vjl?=
+ =?us-ascii?Q?3fAAPftR6w=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: FbOwK3vPuxIXA9cu7s4FjNLmDXPNibBgGh7yYbNcOADyDdwgghThXagdPXp12jwK56SpVDbonvv0kgpDOzegirGrVzgl4fCoseK+VcyP/bqyYK0B6SRnmkfuj/tARcRQNybc0ro43iW0I28havvlhrXlpNySJ64eGjGggwPHedkLOKOkOd8wYaKjOEyabmpRnAfCpbo3rODoXuv7jYLze8/kKflnEh/tBJKRJKBDwO8BZx4/1cgUZDKUklLu8XEfqeSzDGpMu6zPd54PvPqwd3nkxaQMDWmsqBFQ4BbCyRSBlBDL/M+6FJ4XWYQtVD9bhFJUv5JNTb6qsq9PFBUEKw==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 08:27:09.1243 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hhi9FvGQCn3+xapjZ21pSnOaisMhtLIx1+FefgspAsMXAOah5sZh2+ms7F3FhGaxqoGEKscEhrOm+2+0wdf3X4pNQImc5Ajl7OiizN8tF6k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7391
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6034.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3ee374c-1567-4327-add3-08deb0ca81d4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2026 08:34:54.1107 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uRC+by/PJ/ELj1yHnq15XpU/c2rIM+oO7Khr5Pq2Y5Wvmk6Yo1PQeX4VblV8TrJt7qyZeMAznMaokUnHqRQXS1gY7alHkgGAZHuQtmixyio=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB7112
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -173,244 +163,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------xKevOX4Mkf2U0HpUHIyDOc05
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi Chaitanya ,
 
-Hi Jeevan,
+> -----Original Message-----
+> From: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>
+> Sent: 13 May 2026 11:31
+> To: igt-dev@lists.freedesktop.org
+> Cc: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>; Bilal,
+> Mohammed <mohammed.bilal@intel.com>; Sharma, Swati2
+> <swati2.sharma@intel.com>
+> Subject: [PATCH i-g-t] tests/kms_chamelium_color: Free captured frame dum=
+ps
+> after use
+>=20
+> chamelium_read_captured_frame() allocates a chamelium_frame_dump that
+> must be freed by the caller using chamelium_destroy_frame_dump().
+>=20
+> Add the missing chamelium_destroy_frame_dump() calls.
+>=20
+> Cc: Mohammed Bilal <mohammed.bilal@intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-On 5/11/2026 10:48 PM, Jeevan B wrote:
-> Adds a test to verify DC3CO continues to function properly
-> after a DC6 power cycle.
->
-> Signed-off-by: Jeevan B<jeevan.b@intel.com>
+Reviewed-by: Mohammed Bilal <mohammed.bilal@intel.com>
 > ---
->   tests/intel/kms_pm_dc.c | 65 +++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 65 insertions(+)
->
-> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-> index 22ae51b51..6d2bd0ee1 100644
-> --- a/tests/intel/kms_pm_dc.c
-> +++ b/tests/intel/kms_pm_dc.c
-> @@ -55,6 +55,11 @@
->    * Description: Verify that DC3CO entry does not cause frame drops and successfully
->    * 		enters the power state
->    *
-> + * SUBTEST: dc3co-after-dc6
-> + * Description: Verify DC3CO entry is still functional after a DC6 entry and
-> + *              exit cycle, ensuring DC3CO is not broken by deeper power state
-> + *              transitions.
-> + *
->    * SUBTEST: dc5-dpms
->    * Description: Validate display engine entry to DC5 state while all connectors's
->    *              DPMS property set to OFF
-> @@ -629,6 +634,42 @@ static int has_panels_without_dc_support(igt_display_t *display)
->   	return external_panel;
->   }
->   
-> +static void test_dc3co_after_dc6(data_t *data, enum psr_mode mode)
-> +{
-> +	uint32_t dc6_prev_cnt;
-> +
-> +	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-> +	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC6);
-> +
-> +	setup_output(data);
-> +
-> +	/* Enable PSR2/PR */
-> +	data->op_psr_mode = mode;
-This needs to be above setup_output(data);
-> +	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode, NULL);
-> +	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL),
-> +		      "%s is not enabled\n",
-> +		      mode == PSR_MODE_2 ? "PSR2" : "Panel Replay");
-> +
-> +	/* Trigger a DC6 cycle */
-> +	dc6_prev_cnt = igt_read_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC6);
-> +	setup_dc_dpms(data);
-> +	dpms_off(data);
-> +	assert_dc_counter(data, IGT_INTEL_CHECK_DC6, dc6_prev_cnt);
-> +	dpms_on(data);
-> +	cleanup_dc_dpms(data);
-This dpms and DC6 cycle you can use existing function test_dc_state_dpms().
-> +
-> +	/* Re-enable PSR2/PR after DC6 exit */
-> +	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode, NULL);
-Is psr not restored after dpms. If it restore automatically this is not 
-required.
-> +	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL),
-> +		      "%s not re-enabled after DC6 exit\n",
-> +		      mode == PSR_MODE_2 ? "PSR2" : "Panel Replay");
-> +
-> +	/* Verify DC3CO still works after DC6 */
-> +	setup_videoplayback(data);
-> +	check_dc3co_with_videoplayback_like_load(data);
-> +	cleanup_dc3co_fbs(data);
-> +}
-> +
->   static void test_deep_pkgc_state(data_t *data)
->   {
->   	unsigned int pre_val = 0, cur_val = 0;
-> @@ -799,6 +840,30 @@ int igt_main()
->   		}
->   	}
->   
-> +	igt_describe("Verify DC3CO entry is still functional after a DC6 entry "
-> +		     "and exit cycle");
-> +	igt_subtest_with_dynamic("dc3co-after-dc6") {
-> +		igt_dynamic("psr2") {
-> +			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-> +						     PSR_MODE_2, NULL));
-> +			igt_require_f(IS_TIGERLAKE(data.devid) ||
-> +				      intel_display_ver(data.devid) >= 35,
-> +				      "Platform does not support DC3CO with PSR2\n");
-> +			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
-> +				      "PC8+ residencies not supported\n");
-> +			test_dc3co_after_dc6(&data, PSR_MODE_2);
-> +		}
-> +		igt_dynamic("pr") {
-> +			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-> +						     PR_MODE, NULL));
-> +			igt_require_f(intel_display_ver(data.devid) >= 35,
-> +				      "Platform does not support DC3CO with Panel Replay\n");
-> +			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
-> +				      "PC8+ residencies not supported\n");
-> +			test_dc3co_after_dc6(&data, PR_MODE);
-> +		}
-> +	}
-> +
->   	igt_describe("This test validates display engine entry to DC5 state "
->   		     "while PSR is active");
->   	igt_subtest("dc5-psr") {
---------------xKevOX4Mkf2U0HpUHIyDOc05
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+>  tests/chamelium/kms_chamelium_color.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/tests/chamelium/kms_chamelium_color.c
+> b/tests/chamelium/kms_chamelium_color.c
+> index d43c3be77..31629ec58 100644
+> --- a/tests/chamelium/kms_chamelium_color.c
+> +++ b/tests/chamelium/kms_chamelium_color.c
+> @@ -137,6 +137,7 @@ static bool test_pipe_degamma(data_t *data,
+>  	ret =3D chamelium_frame_match_or_dump(data->chamelium, port,
+>  					    frame_fullcolors, &fbref,
+>  					    CHAMELIUM_CHECK_ANALOG);
+> +	chamelium_destroy_frame_dump(frame_fullcolors);
+>=20
+>  	disable_degamma(primary->crtc);
+>  	igt_plane_set_fb(primary, NULL);
+> @@ -226,6 +227,7 @@ static bool test_pipe_gamma(data_t *data,
+>  	ret =3D chamelium_frame_match_or_dump(data->chamelium, port,
+>  					    frame_fullcolors, &fbref,
+>  					    CHAMELIUM_CHECK_ANALOG);
+> +	chamelium_destroy_frame_dump(frame_fullcolors);
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Hi Jeevan,<br>
-      <br>
-    </p>
-    <div class="moz-cite-prefix">On 5/11/2026 10:48 PM, Jeevan B wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20260511171820.461666-7-jeevan.b@intel.com">
-      <pre wrap="" class="moz-quote-pre">Adds a test to verify DC3CO continues to function properly
-after a DC6 power cycle.
+LGTM.
 
-Signed-off-by: Jeevan B <a class="moz-txt-link-rfc2396E" href="mailto:jeevan.b@intel.com">&lt;jeevan.b@intel.com&gt;</a>
----
- tests/intel/kms_pm_dc.c | 65 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+Regards,
+Mohammed Bilal
+>=20
+>  	disable_gamma(primary->crtc);
+>  	igt_plane_set_fb(primary, NULL);
+> @@ -320,6 +322,7 @@ static bool test_pipe_ctm(data_t *data,
+>  					     frame_hardware,
+>  					     &fbref,
+>  					     CHAMELIUM_CHECK_ANALOG);
+> +	chamelium_destroy_frame_dump(frame_hardware);
+>=20
+>  	igt_plane_set_fb(primary, NULL);
+>  	disable_degamma(primary->crtc);
+> @@ -421,6 +424,8 @@ static bool test_pipe_limited_range_ctm(data_t *data,
+>  	ret =3D chamelium_frame_match_or_dump_frame_pair(data->chamelium,
+> port,
+>  						       frame_full, frame_limited,
+>=20
+> CHAMELIUM_CHECK_ANALOG);
+> +	chamelium_destroy_frame_dump(frame_full);
+> +	chamelium_destroy_frame_dump(frame_limited);
+>=20
+>  	free_lut(gamma_linear);
+>  	free_lut(degamma_linear);
+> --
+> 2.25.1
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 22ae51b51..6d2bd0ee1 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -55,6 +55,11 @@
-  * Description: Verify that DC3CO entry does not cause frame drops and successfully
-  * 		enters the power state
-  *
-+ * SUBTEST: dc3co-after-dc6
-+ * Description: Verify DC3CO entry is still functional after a DC6 entry and
-+ *              exit cycle, ensuring DC3CO is not broken by deeper power state
-+ *              transitions.
-+ *
-  * SUBTEST: dc5-dpms
-  * Description: Validate display engine entry to DC5 state while all connectors's
-  *              DPMS property set to OFF
-@@ -629,6 +634,42 @@ static int has_panels_without_dc_support(igt_display_t *display)
- 	return external_panel;
- }
- 
-+static void test_dc3co_after_dc6(data_t *data, enum psr_mode mode)
-+{
-+	uint32_t dc6_prev_cnt;
-+
-+	igt_require_dc_counter(data-&gt;debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+	igt_require_dc_counter(data-&gt;debugfs_fd, IGT_INTEL_CHECK_DC6);
-+
-+	setup_output(data);
-+
-+	/* Enable PSR2/PR */
-+	data-&gt;op_psr_mode = mode;</pre>
-    </blockquote>
-    This needs to be above&nbsp;<span style="white-space: pre-wrap">setup_output(data);</span>
-    <blockquote type="cite" cite="mid:20260511171820.461666-7-jeevan.b@intel.com">
-      <pre wrap="" class="moz-quote-pre">
-+	psr_enable(data-&gt;drm_fd, data-&gt;debugfs_fd, data-&gt;op_psr_mode, NULL);
-+	igt_require_f(psr_wait_entry(data-&gt;debugfs_fd, data-&gt;op_psr_mode, NULL),
-+		      &quot;%s is not enabled\n&quot;,
-+		      mode == PSR_MODE_2 ? &quot;PSR2&quot; : &quot;Panel Replay&quot;);
-+
-+	/* Trigger a DC6 cycle */
-+	dc6_prev_cnt = igt_read_dc_counter(data-&gt;debugfs_fd, IGT_INTEL_CHECK_DC6);
-+	setup_dc_dpms(data);
-+	dpms_off(data);
-+	assert_dc_counter(data, IGT_INTEL_CHECK_DC6, dc6_prev_cnt);
-+	dpms_on(data);
-+	cleanup_dc_dpms(data);</pre>
-    </blockquote>
-    This dpms and DC6 cycle you can use existing function
-    test_dc_state_dpms().&nbsp;
-    <blockquote type="cite" cite="mid:20260511171820.461666-7-jeevan.b@intel.com">
-      <pre wrap="" class="moz-quote-pre">
-+
-+	/* Re-enable PSR2/PR after DC6 exit */
-+	psr_enable(data-&gt;drm_fd, data-&gt;debugfs_fd, data-&gt;op_psr_mode, NULL);</pre>
-    </blockquote>
-    Is psr not restored after dpms. If it restore automatically this is
-    not required.&nbsp;
-    <blockquote type="cite" cite="mid:20260511171820.461666-7-jeevan.b@intel.com">
-      <pre wrap="" class="moz-quote-pre">
-+	igt_require_f(psr_wait_entry(data-&gt;debugfs_fd, data-&gt;op_psr_mode, NULL),
-+		      &quot;%s not re-enabled after DC6 exit\n&quot;,
-+		      mode == PSR_MODE_2 ? &quot;PSR2&quot; : &quot;Panel Replay&quot;);
-+
-+	/* Verify DC3CO still works after DC6 */
-+	setup_videoplayback(data);
-+	check_dc3co_with_videoplayback_like_load(data);
-+	cleanup_dc3co_fbs(data);
-+}
-+
- static void test_deep_pkgc_state(data_t *data)
- {
- 	unsigned int pre_val = 0, cur_val = 0;
-@@ -799,6 +840,30 @@ int igt_main()
- 		}
- 	}
- 
-+	igt_describe(&quot;Verify DC3CO entry is still functional after a DC6 entry &quot;
-+		     &quot;and exit cycle&quot;);
-+	igt_subtest_with_dynamic(&quot;dc3co-after-dc6&quot;) {
-+		igt_dynamic(&quot;psr2&quot;) {
-+			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-+						     PSR_MODE_2, NULL));
-+			igt_require_f(IS_TIGERLAKE(data.devid) ||
-+				      intel_display_ver(data.devid) &gt;= 35,
-+				      &quot;Platform does not support DC3CO with PSR2\n&quot;);
-+			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
-+				      &quot;PC8+ residencies not supported\n&quot;);
-+			test_dc3co_after_dc6(&amp;data, PSR_MODE_2);
-+		}
-+		igt_dynamic(&quot;pr&quot;) {
-+			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-+						     PR_MODE, NULL));
-+			igt_require_f(intel_display_ver(data.devid) &gt;= 35,
-+				      &quot;Platform does not support DC3CO with Panel Replay\n&quot;);
-+			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
-+				      &quot;PC8+ residencies not supported\n&quot;);
-+			test_dc3co_after_dc6(&amp;data, PR_MODE);
-+		}
-+	}
-+
- 	igt_describe(&quot;This test validates display engine entry to DC5 state &quot;
- 		     &quot;while PSR is active&quot;);
- 	igt_subtest(&quot;dc5-psr&quot;) {
-</pre>
-    </blockquote>
-  </body>
-</html>
 
---------------xKevOX4Mkf2U0HpUHIyDOc05--
