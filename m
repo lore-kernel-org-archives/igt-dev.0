@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3034ACD4851
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A66DCD37B6
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 06:28:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9EBA210E0EB;
-	Wed, 13 May 2026 06:26:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0E15E8953E;
+	Wed, 13 May 2026 06:28:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IA43wNyv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D5IV5Ob5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51CFE8953E
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:25:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46AFC8953E
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 06:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778653534; x=1810189534;
+ t=1778653685; x=1810189685;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=ghU5JK5Ti2X4FefacgVGGJapvYGJhjGEATPzBmqdgjU=;
- b=IA43wNyvxYb8qQwDt7nPNhH2JkywwnXTkTzsts53xvza/oqBxGwS88MN
- VETsb+nYMhpj9punSaScnIT5uuL46m/jZzbU8E5eSDlYTry3PgcXGY04Z
- EpRO+hj/y/5RYkZDqBg1ePGJs+NVl/L5GR8O9KpkK8PFJHkYljWPtXtyD
- JxUNYTTdOWTfA4oukCKWCgVBcgPb69vo1/Djr+yg0uqFJy426qEj/JgIP
- v7jGooswGxcvjQb6leuOnvVMiyvkQp3fKGM3w0vO7YrydnQQ/cVtOkrTT
- LTCEUel9xJyy7LyimnysBoYHTXTvyx6LQGXQN9qgWlAkZ/TCyUPOXW7e3 Q==;
-X-CSE-ConnectionGUID: 0E9/BcvNTy6U+GCKzPhACw==
-X-CSE-MsgGUID: 6OXn1q03TsuVg+ILWSlPSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="96999752"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="96999752"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2026 23:25:34 -0700
-X-CSE-ConnectionGUID: PekrdwYIRje4F506Lk9R0Q==
-X-CSE-MsgGUID: Q2rSFNx8QSKWjyr6EBaJsg==
+ bh=wbshGo7kt8JGOV3KYsXNgQUc64E3PRjuxqDBWL7YEwU=;
+ b=D5IV5Ob5beUJtTxbBJUHRIAvIJmBBgiR2Cp09f5rH2AiOgGpjo1VY98U
+ FmZ/8xJjXzBDVsSqJsYXBzheS45RKoK2A+sU3651PQhICRT7+1VJ1NLx/
+ 2qHwhQvhLaNHv5ufH7L0d14M70CZb3x+wPyqFuE01W8qRqPkZBI9Ped0o
+ TK/ILdZbw6bqfB6W5c3Dz4rVeoEM68WnfbgCidwZpzQrR1HK1wysyXgOx
+ bwEZ4hrGnn5lSK3o4dmMms5tk9q/xG7OZr5jzJQlF000LrlfwnCN8hvtt
+ kfW+SwVvGO4n8wG46ZZmaqfoRAxPd+lybL4Gspov94oGqYe1a33lA2zXl A==;
+X-CSE-ConnectionGUID: 6J3kYo4YRB6symKnCs0NVQ==
+X-CSE-MsgGUID: QPPUydVJQA+B54Kh7XJVuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="105031349"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="105031349"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 May 2026 23:28:05 -0700
+X-CSE-ConnectionGUID: HnzoG2V8R1KkSh4StFikWA==
+X-CSE-MsgGUID: ga7jamAkTGO8DM99zDX7Qg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="268333848"
-Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by orviesa002.jf.intel.com with ESMTP; 12 May 2026 23:25:33 -0700
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:28:03 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- Mohammed Bilal <mohammed.bilal@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] tests/kms_chamelium_color: Free captured frame dumps
- after use
-Date: Wed, 13 May 2026 11:31:04 +0530
-Message-Id: <20260513060104.3235845-1-chaitanya.kumar.borah@intel.com>
-X-Mailer: git-send-email 2.25.1
+Cc: suraj.kandpal@intel.com, swati2.sharma@intel.com, karthik.b.s@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2] tests/intel/kms_pm_backlight: Add
+ brightness-with-suspend subtest
+Date: Wed, 13 May 2026 11:52:08 +0530
+Message-Id: <20260513062208.683004-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,55 +66,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-chamelium_read_captured_frame() allocates a chamelium_frame_dump that
-must be freed by the caller using chamelium_destroy_frame_dump().
+Verify backlight brightness is preserved after suspend resume cycle,
+The test sets backlight to  a value , suspend the system and checks the
+brightness value is preserved after resume.
 
-Add the missing chamelium_destroy_frame_dump() calls.
+v2: Remove unused enum and use TEST_NONE, remove locally added prints
+for debug (Karthik)
 
-Cc: Mohammed Bilal <mohammed.bilal@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tests/chamelium/kms_chamelium_color.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/intel/kms_pm_backlight.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index d43c3be77..31629ec58 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -137,6 +137,7 @@ static bool test_pipe_degamma(data_t *data,
- 	ret = chamelium_frame_match_or_dump(data->chamelium, port,
- 					    frame_fullcolors, &fbref,
- 					    CHAMELIUM_CHECK_ANALOG);
-+	chamelium_destroy_frame_dump(frame_fullcolors);
+diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+index 58c0b4427..0e35aeed0 100644
+--- a/tests/intel/kms_pm_backlight.c
++++ b/tests/intel/kms_pm_backlight.c
+@@ -65,6 +65,9 @@
+  *
+  * SUBTEST: brightness-with-dpms
+  * Description: test brightness with dpms on and off cycle.
++ *
++ * SUBTEST: brightness-with-suspend
++ * Description: Test that brightness set before suspend is preserved after resume.
+  */
  
- 	disable_degamma(primary->crtc);
- 	igt_plane_set_fb(primary, NULL);
-@@ -226,6 +227,7 @@ static bool test_pipe_gamma(data_t *data,
- 	ret = chamelium_frame_match_or_dump(data->chamelium, port,
- 					    frame_fullcolors, &fbref,
- 					    CHAMELIUM_CHECK_ANALOG);
-+	chamelium_destroy_frame_dump(frame_fullcolors);
+ enum {
+@@ -206,6 +209,24 @@ check_suspend(igt_output_t *output)
+ 	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
+ }
  
- 	disable_gamma(primary->crtc);
- 	igt_plane_set_fb(primary, NULL);
-@@ -320,6 +322,7 @@ static bool test_pipe_ctm(data_t *data,
- 					     frame_hardware,
- 					     &fbref,
- 					     CHAMELIUM_CHECK_ANALOG);
-+	chamelium_destroy_frame_dump(frame_hardware);
++static void check_suspend_cycle(igt_backlight_context_t *context)
++{
++	int max, val1, val2;
++
++	igt_backlight_read(&max, "max_brightness", context);
++	igt_assert(max);
++
++	igt_backlight_write(max / 2, "brightness", context);
++	igt_backlight_read(&val1, "actual_brightness", context);
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
++
++	igt_backlight_read(&val2, "actual_brightness", context);
++	igt_assert_f(val2 == val1,
++		     "actual_brightness after resume [%d] does not match value before suspend [%d]\n",
++		     val2, val1);
++}
++
+ static void test_cleanup(igt_display_t *display, igt_backlight_context_t *context)
+ {
+ 	igt_output_t *output = context->output;
+@@ -273,6 +294,8 @@ int igt_main()
+ 		{ "brightness-with-dpms", "test brightness with dpms on and off cycle.",
+ 		   check_dpms_cycle, TEST_DPMS_CYCLE},
+ 		{ "fade-with-suspend", "test the fade with suspend.", test_fade, TEST_SUSPEND },
++		{ "brightness-with-suspend", "test brightness is preserved after suspend/resume.",
++		   check_suspend_cycle, TEST_NONE },
+ 	};
  
- 	igt_plane_set_fb(primary, NULL);
- 	disable_degamma(primary->crtc);
-@@ -421,6 +424,8 @@ static bool test_pipe_limited_range_ctm(data_t *data,
- 	ret = chamelium_frame_match_or_dump_frame_pair(data->chamelium, port,
- 						       frame_full, frame_limited,
- 						       CHAMELIUM_CHECK_ANALOG);
-+	chamelium_destroy_frame_dump(frame_full);
-+	chamelium_destroy_frame_dump(frame_limited);
- 
- 	free_lut(gamma_linear);
- 	free_lut(degamma_linear);
+ 	igt_fixture() {
 -- 
-2.25.1
+2.34.1
 
