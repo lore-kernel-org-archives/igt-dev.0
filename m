@@ -4,54 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40ECDCD37B6
-	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 09:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 248B6CD37B6
+	for <igt-dev@archiver.kernel.org>; Wed, 13 May 2026 10:12:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CFB4B10E11A;
-	Wed, 13 May 2026 09:25:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB2BF10EDEA;
+	Wed, 13 May 2026 10:12:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="LWkCUd29";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e9vjGYR4";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C86F10E2CC;
- Tue, 12 May 2026 21:52:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=mhS31D9+R+kULKl5d1oX5g+tQ/vEU6hXi+4NtAn+lUg=; b=LWkCUd298rRKbvYdceFJddoHHp
- DNj+WrMhF2kXLg1HyndUoGhZ8J5CvMJ5RFu4pZHNgFeoQwQU2DT2sLG5XrvqQpeTq8iqWVq2hC7jy
- KMHLS5wW+YFz4aBGEqekOLToLvgP9/Fvtk52bYyfF7x8UvytQcKbzx+iJFpQWGtrGw4i3YiukcN5j
- JT9rdo9rUzGVzw56TMQDQ7DdpCRjr4mBJkolxsG2whXIWGlmUDUHM7hzM3/RneA8BBeefgAyJ6cUD
- YwyRhX7tYgofQbfjnvJqaU8CnMnOJtzXPGPAbRrbRPENrBcs8xT0jIGJw1UkueQhPRmpa3Lwb+hbM
- PnMu67LA==;
-Received: from 179-242-241-236.3g.claro.net.br ([179.242.241.236]
- helo=quatroqueijos.cascardo.eti.br)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wMv1h-009frh-QA; Tue, 12 May 2026 23:52:29 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: igt-dev@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Christian Koenig <christian.koenig@amd.com>,
- maarten.lankhorst@linux.intel.com,
- =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Natalie Vock <natalie.vock@gmx.de>, kernel-dev@igalia.com,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH i-g-t 3/8] Make xe_cgroup test a generic test
-Date: Tue, 12 May 2026 18:51:50 -0300
-Message-ID: <20260512215156.4083082-4-cascardo@igalia.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260512215156.4083082-1-cascardo@igalia.com>
-References: <20260512215156.4083082-1-cascardo@igalia.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C020D10EDC1
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2026 10:12:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1778667129; x=1810203129;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=2lPxN9LCbxoN/GSo+z087Ed1FHbWhmqJ1B9OJgguj4c=;
+ b=e9vjGYR4UzrUAOvN8qbodmJp+fITIzXJNxnl5pjDZEPMOHmYlfQpjbTI
+ NyZHvAGlFlIjJK1DHKHZP/8JYBl7Ud8Mn7Dtajmke1eNYkdV+AHMT4P7W
+ ivoyrux0urB5pbYri/LY0utg5UCIgdveojmg88GzHOxrkwjJ/KJ81r8Pa
+ zXJLzkncOU0kp3QrrK8FGGNYhpcVMsqi/T2we7eCpxU4sRCxMKrDHGZzY
+ WM4+40ypVrOwq0iqn+qjpANm52bB1fIhCDppijFJkmtlTqVNraIvC1Qnj
+ YGyTn/ly7dUnhTEsGk77+jei/lWUadf12MBYWnjV4vjxCENNribUX4Z1k w==;
+X-CSE-ConnectionGUID: 3kV420HOQ0S8ccl5ff1cOA==
+X-CSE-MsgGUID: JFcCj7muTp+1jCvdGnt1LQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79304427"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="79304427"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2026 03:12:08 -0700
+X-CSE-ConnectionGUID: LEi0fN28RuarG5ZHIBL7cQ==
+X-CSE-MsgGUID: jFbHLEPdRqqhxNWeI527Ig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; d="scan'208";a="234981499"
+Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.102])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 03:12:06 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Cc: "Manna, Animesh" <animesh.manna@intel.com>, Dibin Moolakadan
+ Subrahmanian <dibin.moolakadan.subrahmanian@intel.com>, "Thasleem,
+ Mohammed" <mohammed.thasleem@intel.com>, "Naladala, Ramanaidu"
+ <ramanaidu.naladala@intel.com>
+Subject: RE: [PATCH i-g-t v2 2/2] HAX: kms_cursor_legacy: Use
+ IGT_FORMAT_MOD_PREFERRED for cursor FBs
+In-Reply-To: <DM4PR11MB631279797CC6D993EA04720E90062@DM4PR11MB6312.namprd11.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260513061503.645278-1-jeevan.b@intel.com>
+ <20260513061503.645278-3-jeevan.b@intel.com>
+ <1fe9ac6853b6bebc3fbdda98786c6944f66d7f82@intel.com>
+ <DM4PR11MB631279797CC6D993EA04720E90062@DM4PR11MB6312.namprd11.prod.outlook.com>
+Date: Wed, 13 May 2026 13:12:03 +0300
+Message-ID: <f683159ff57a7ebf6cfc0333cbdbc62eef68381d@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 13 May 2026 09:22:33 +0000
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,171 +76,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-It should not be driver specific anymore. Make it run for multiple drivers,
-though there is still only Xe now.
+On Wed, 13 May 2026, "B, Jeevan" <jeevan.b@intel.com> wrote:
+>> -----Original Message-----
+>> From: Nikula, Jani <jani.nikula@intel.com>
+>> Sent: Wednesday, May 13, 2026 2:06 PM
+>> To: B, Jeevan <jeevan.b@intel.com>; igt-dev@lists.freedesktop.org
+>> Cc: Manna, Animesh <animesh.manna@intel.com>; Dibin Moolakadan
+>> Subrahmanian <dibin.moolakadan.subrahmanian@intel.com>; Thasleem,
+>> Mohammed <mohammed.thasleem@intel.com>; Naladala, Ramanaidu
+>> <ramanaidu.naladala@intel.com>; B, Jeevan <jeevan.b@intel.com>
+>> Subject: Re: [PATCH i-g-t v2 2/2] HAX: kms_cursor_legacy: Use
+>> IGT_FORMAT_MOD_PREFERRED for cursor FBs
+>> 
+>> On Wed, 13 May 2026, Jeevan B <jeevan.b@intel.com> wrote:
+>> > Switch all cursor-related framebuffer creations in kms_cursor_legacy
+>> > to use IGT_FORMAT_MOD_PREFERRED instead of
+>> DRM_FORMAT_MOD_LINEAR.
+>>
+>> Why?
+>
+> Well, the plan is to remove this hardcoded modifier usage. Since these modifiers keep changing from platform to platform,
+> we currently have to update them manually or ensure that only supported tile formats are used.
+> Therefore, we are considering introducing something like IGT_FORMAT_MOD_PREFERRED, 
+> which would automatically select the best possible modifier for the given platform.
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
- .../xe_cgroups.c => drv_dmem_cgroups.c}       | 61 +++++++++++--------
- tests/meson.build                             |  2 +-
- 2 files changed, 38 insertions(+), 25 deletions(-)
- rename tests/{intel/xe_cgroups.c => drv_dmem_cgroups.c} (83%)
+My point is, that information belongs in the commit message.
 
-diff --git a/tests/intel/xe_cgroups.c b/tests/drv_dmem_cgroups.c
-similarity index 83%
-rename from tests/intel/xe_cgroups.c
-rename to tests/drv_dmem_cgroups.c
-index 9ff8d46570ab..6f4f779f3c2c 100644
---- a/tests/intel/xe_cgroups.c
-+++ b/tests/drv_dmem_cgroups.c
-@@ -4,13 +4,12 @@
-  */
- 
- /**
-- * TEST: xe_cgroups
-- * DESCRIPTION: Tests exercising the dmem cgroup controller on xe devices.
-+ * TEST: drv_dmem_cgroups
-+ * DESCRIPTION: Tests exercising the dmem cgroup controller on devices.
-  * Category: Core
-  * Mega feature: General Core features
-  * Sub-category: cgroup
-  * FUNCTIONALITY: cgroup dmem controller
-- * SUBSETS: xe
-  */
- 
- #include <errno.h>
-@@ -26,9 +25,6 @@
- #include "igt_aux.h"
- #include "igt_cgroup.h"
- #include "igt_dmem_driver.h"
--#include "xe_drm.h"
--#include "xe/xe_ioctl.h"
--#include "xe/xe_query.h"
- 
- #define BO_SIZE			SZ_128M
- #define MAX_LIMIT		((uint64_t)4 * SZ_1G)
-@@ -45,13 +41,12 @@
-  * DESCRIPTION:
-  *   Create a dmem cgroup, move the current process into it and set the max
-  *   device memory limit for the first VRAM region to 4 GiB.  Then fill VRAM
-- *   by creating BOs with %DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING (so that the
-- *   physical allocation is deferred until VM_BIND) and binding them into an
-- *   LR VM until the cgroup limit is hit.  Verify that the reported cgroup
-- *   current usage is within the expected range when the error occurs.
-+ *   by creating BOs.
-+ *   Verify that the reported cgroup current usage is within the expected
-+ *   range when the error occurs.
-  *   Finally lower the max limit in 256 MiB steps and verify that the cgroup
-  *   usage follows.
-- * REQUIREMENTS: must run as root; xe device with at least one VRAM region
-+ * REQUIREMENTS: must run as root; device with at least one VRAM region
-  */
- 
- /**
-@@ -61,7 +56,7 @@
-  *   igt_fork_signal_helper() to verify that the dmem.max write path handles
-  *   signal interruption correctly.  A signal handler counts received signals
-  *   and the count is reported as debug output at the end of the test.
-- * REQUIREMENTS: must run as root; xe device with at least one VRAM region
-+ * REQUIREMENTS: must run as root; device with at least one VRAM region
-  */
- 
- static atomic_int signal_count;
-@@ -111,7 +106,7 @@ static uint64_t wait_for_usage_drop(struct igt_cgroup *cg, const char *region,
- 	return current;
- }
- 
--static int fill_vram(struct igt_dmem_driver *drv, void *ctx, int fd, int max_bo)
-+static int fill_vram(const struct igt_dmem_driver *drv, void *ctx, int fd, int max_bo)
- {
- 	int n_bo, err = 0;
- 
-@@ -128,7 +123,7 @@ static int fill_vram(struct igt_dmem_driver *drv, void *ctx, int fd, int max_bo)
- 	return n_bo;
- }
- 
--static void test_write_eviction(int fd, unsigned int flags, struct igt_dmem_driver *drv)
-+static void test_write_eviction(int fd, unsigned int flags, const struct igt_dmem_driver *drv)
- {
- 	void *ctx;
- 	struct igt_cgroup *cg;
-@@ -161,7 +156,7 @@ static void test_write_eviction(int fd, unsigned int flags, struct igt_dmem_driv
- 		install_sigcont_counter();
- 
- 	/* Create cgroup and move into it */
--	cg = igt_cgroup_new("xe_cgroups_test");
-+	cg = igt_cgroup_new("igt_cgroups_test");
- 	igt_cgroup_move_current(cg);
- 	igt_cgroup_dmem_set_max(cg, cg_region, cg_max);
- 
-@@ -236,20 +231,38 @@ static const struct {
- 	{ }
- };
- 
-+static const struct {
-+	int driver_flag;
-+	const struct igt_dmem_driver *driver;
-+} drivers[] = {
-+	{ DRIVER_XE, &xe_dmem_driver },
-+	{ },
-+};
-+
- int igt_main()
- {
--	int fd = -1;
--
- 	igt_fixture() {
--		fd = drm_open_driver(DRIVER_XE);
- 		igt_require_f(getuid() == 0, "Test requires root\n");
- 	}
- 
--	for (int i = 0; subtests[i].name; i++)
--		igt_subtest(subtests[i].name)
--			test_write_eviction(fd, subtests[i].flags, &xe_dmem_driver);
--
--	igt_fixture() {
--		drm_close_driver(fd);
-+	for (int d = 0; drivers[d].driver; d++) {
-+		igt_subtest_group() {
-+			int fd = -1;
-+			igt_fixture() {
-+				fd = drm_open_driver(drivers[d].driver_flag);
-+				igt_require_f(fd >= 0,
-+					"No %s device found, skipping\n",
-+					drivers[d].driver->name);
-+			}
-+
-+			for (int i = 0; subtests[i].name; i++)
-+				igt_subtest_f("%s-%s", drivers[d].driver->name, subtests[i].name)
-+					test_write_eviction(fd, subtests[i].flags, drivers[d].driver);
-+
-+			igt_fixture() {
-+				if (fd >= 0)
-+					drm_close_driver(fd);
-+			}
-+		}
- 	}
- }
-diff --git a/tests/meson.build b/tests/meson.build
-index b4463a722361..deb049875b46 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -17,6 +17,7 @@ test_progs = [
- 	'drm_mm',
- 	'drm_read',
- 	'drm_virtgpu',
-+	'drv_dmem_cgroups',
- 	'fbdev',
- 	'kms_3d',
- 	'kms_addfb_basic',
-@@ -292,7 +293,6 @@ intel_xe_progs = [
- 	'xe_dma_buf_sync',
- 	'xe_drm_fdinfo',
- 	'xe_eu_stall',
--	'xe_cgroups',
- 	'xe_evict',
- 	'xe_evict_ccs',
- 	'xe_exec_atomic',
+If the commit message only explains the "what", the reviewer can only
+cross check that the commit message matches the code changes, but still
+has no idea why the changes are being made.
+
+BR,
+Jani.
+
+
 -- 
-2.47.3
-
+Jani Nikula, Intel
