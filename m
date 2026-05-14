@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84435CD37AC
-	for <igt-dev@archiver.kernel.org>; Thu, 14 May 2026 20:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56E4CCD37AC
+	for <igt-dev@archiver.kernel.org>; Thu, 14 May 2026 21:14:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3627710E3EB;
-	Thu, 14 May 2026 20:18:42 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="TRN6tBjS";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77A4F10E3EB
- for <igt-dev@lists.freedesktop.org>; Thu, 14 May 2026 20:17:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
- In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=bZ6UuZe7sydHtgcJ8EopImeBNmKF05nCF9XuIOeMugM=; b=TRN6tBjSDxvcrejNbZmKG3ayA8
- u1/7BFfvwDwgFkzB3v+NZm5kUQxNzrRsI4VwqUSXDMEaxlJqBWwfsagEQ8gNtU+7oTtix14DeZohv
- Z4KeI89tbj9r9XAoA+b7Kicg+TFGV71MvUnO0tSVr00U1NoP0f66SDwyUkMBzKqsicUaN4WWJHm++
- T8hK/xD/U1DAdvA0iE2/dhMQ/P1u4wgS8m09XjHlnAfFJJ4o2tOibEYOIdjJw16RLKrFEsmMULRJS
- zEE3BNqGnTtdIF+rdWE6xbyGf06QGKhB5VUOpIJEhYTAFX5jzcoXul42iPJuCdiZ3oNGGSvn9lGkE
- 6kNojajA==;
-Received: from [189.7.87.67] (helo=prince) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wNcUK-000Dwf-65; Thu, 14 May 2026 22:16:56 +0200
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Iago Toral <itoral@igalia.com>, Melissa Wen <mwen@igalia.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com,
- =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH i-g-t v3 3/5] lib/v3d: Allow callers to retrieve perfmon
- counter values
-Date: Thu, 14 May 2026 17:14:55 -0300
-Message-ID: <20260514201637.1811428-4-mcanal@igalia.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260514201637.1811428-1-mcanal@igalia.com>
-References: <20260514201637.1811428-1-mcanal@igalia.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id EDE9410E009;
+	Thu, 14 May 2026 21:14:32 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6430E10E009;
+ Thu, 14 May 2026 21:14:14 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5019674767928853864=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/v3d=5Fperfmon=3A_Fi?=
+ =?utf-8?q?x_V3D_7=2E1_regression_and_extend_perfmon_testing_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 14 May 2026 21:14:14 -0000
+Message-ID: <177879325440.72886.10141558197111912284@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260514201637.1811428-1-mcanal@igalia.com>
+In-Reply-To: <20260514201637.1811428-1-mcanal@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,140 +37,166 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt_v3d_perfmon_get_values() previously allocated an internal buffer,
-issued the ioctl, and immediately freed the buffer, which made it only
-useful for exercising the ioctl path, but not for inspecting the
-results.
+--===============5019674767928853864==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add a `values` parameter so callers can supply their own allocated
-buffer and read back the counter values. When NULL is passed, the
-function allocates and frees a temporary buffer as before, preserving
-the existing behavior.
+== Series Details ==
 
-Update all callers in v3d tests to pass NULL, keeping their behavior
-unchanged.
+Series: tests/v3d_perfmon: Fix V3D 7.1 regression and extend perfmon testing (rev3)
+URL   : https://patchwork.freedesktop.org/series/166215/
+State : success
 
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- lib/igt_v3d.c              | 10 ++++++----
- lib/igt_v3d.h              |  2 +-
- tests/v3d/v3d_perfmon.c    |  6 +++---
- tests/v3d/v3d_submit_cl.c  |  4 ++--
- tests/v3d/v3d_submit_csd.c |  4 ++--
- 5 files changed, 14 insertions(+), 12 deletions(-)
+== Summary ==
 
-diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
-index 90274829b..eb1adaaa4 100644
---- a/lib/igt_v3d.c
-+++ b/lib/igt_v3d.c
-@@ -163,17 +163,19 @@ uint32_t igt_v3d_perfmon_create(int fd, uint32_t ncounters, uint8_t *counters)
- 	return create.id;
- }
- 
--void igt_v3d_perfmon_get_values(int fd, uint32_t id)
-+void igt_v3d_perfmon_get_values(int fd, uint32_t id, uint64_t *values)
- {
--	uint64_t *values = calloc(DRM_V3D_MAX_PERF_COUNTERS, sizeof(*values));
-+	uint64_t *allocated_values = values ?:
-+				     calloc(DRM_V3D_MAX_PERF_COUNTERS, sizeof(*allocated_values));
- 	struct drm_v3d_perfmon_get_values get = {
- 		.id = id,
--		.values_ptr = to_user_pointer(values)
-+		.values_ptr = to_user_pointer(allocated_values),
- 	};
- 
- 	do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_GET_VALUES, &get);
- 
--	free(values);
-+	if (!values)
-+		free(allocated_values);
- }
- 
- void igt_v3d_perfmon_destroy(int fd, uint32_t id)
-diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
-index 3e08b1aa3..70dd6f011 100644
---- a/lib/igt_v3d.h
-+++ b/lib/igt_v3d.h
-@@ -79,7 +79,7 @@ void igt_v3d_bo_mmap(int fd, struct v3d_bo *bo);
- void igt_v3d_wait_bo(int fd, struct v3d_bo *bo, uint64_t timeout_ns);
- 
- uint32_t igt_v3d_perfmon_create(int fd, uint32_t ncounters, uint8_t *counters);
--void igt_v3d_perfmon_get_values(int fd, uint32_t id);
-+void igt_v3d_perfmon_get_values(int fd, uint32_t id, uint64_t *values);
- void igt_v3d_perfmon_destroy(int fd, uint32_t id);
- 
- void igt_v3d_set_multisync(struct drm_v3d_multi_sync *ms, enum v3d_queue wait_stage);
-diff --git a/tests/v3d/v3d_perfmon.c b/tests/v3d/v3d_perfmon.c
-index 5045e8c81..f6f2a2774 100644
---- a/tests/v3d/v3d_perfmon.c
-+++ b/tests/v3d/v3d_perfmon.c
-@@ -75,7 +75,7 @@ int igt_main()
- 		igt_v3d_perfmon_destroy(fd, id1);
- 
- 		/* Make sure that the second perfmon it is still acessible */
--		igt_v3d_perfmon_get_values(fd, id2);
-+		igt_v3d_perfmon_get_values(fd, id2, NULL);
- 
- 		igt_v3d_perfmon_destroy(fd, id2);
- 	}
-@@ -120,7 +120,7 @@ int igt_main()
- 				       V3D_PERFCNT_CLE_ACTIVE };
- 		uint32_t id = igt_v3d_perfmon_create(fd, 3, counters);
- 
--		igt_v3d_perfmon_get_values(fd, id);
-+		igt_v3d_perfmon_get_values(fd, id, NULL);
- 		igt_v3d_perfmon_destroy(fd, id);
- 	}
- 
-@@ -143,7 +143,7 @@ int igt_main()
- 			.id = id,
- 		};
- 
--		igt_v3d_perfmon_get_values(fd, id);
-+		igt_v3d_perfmon_get_values(fd, id, NULL);
- 
- 		igt_v3d_perfmon_destroy(fd, id);
- 
-diff --git a/tests/v3d/v3d_submit_cl.c b/tests/v3d/v3d_submit_cl.c
-index 570838e23..319fd7593 100644
---- a/tests/v3d/v3d_submit_cl.c
-+++ b/tests/v3d/v3d_submit_cl.c
-@@ -367,11 +367,11 @@ int igt_main()
- 		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
- 		igt_assert(syncobj_wait(fd, &job->submit->out_sync, 1,
- 					INT64_MAX, 0, NULL));
--		igt_v3d_perfmon_get_values(fd, job->submit->perfmon_id);
-+		igt_v3d_perfmon_get_values(fd, job->submit->perfmon_id, NULL);
- 
- 		igt_v3d_free_cl_job(fd, job);
- 
--		igt_v3d_perfmon_get_values(fd, id);
-+		igt_v3d_perfmon_get_values(fd, id, NULL);
- 		igt_v3d_perfmon_destroy(fd, id);
- 	}
- 
-diff --git a/tests/v3d/v3d_submit_csd.c b/tests/v3d/v3d_submit_csd.c
-index e7841f7c8..35da19350 100644
---- a/tests/v3d/v3d_submit_csd.c
-+++ b/tests/v3d/v3d_submit_csd.c
-@@ -351,11 +351,11 @@ int igt_main()
- 		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit);
- 		igt_assert(syncobj_wait(fd, &job->submit->out_sync, 1,
- 					INT64_MAX, 0, NULL));
--		igt_v3d_perfmon_get_values(fd, job->submit->perfmon_id);
-+		igt_v3d_perfmon_get_values(fd, job->submit->perfmon_id, NULL);
- 
- 		igt_v3d_free_csd_job(fd, job);
- 
--		igt_v3d_perfmon_get_values(fd, id);
-+		igt_v3d_perfmon_get_values(fd, id, NULL);
- 		igt_v3d_perfmon_destroy(fd, id);
- 	}
- 
--- 
-2.54.0
+CI Bug Log - changes from IGT_8912 -> IGTPW_15186
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15186 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8912/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8912/bat-dg2-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/bat-dg2-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8912/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8912/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8912 -> IGTPW_15186
+  * Linux: CI_DRM_18489 -> CI_DRM_18491
+
+  CI-20190529: 20190529
+  CI_DRM_18489: 121c16f9d8c56ea07263df84ab971cc10870fe88 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18491: 66af2225d31aa8315b0b9f3c735dba4a53e8d3bf @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15186: 8f9a1e45fb65c64d597f0d5363f31c25d8498391 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8912: 22222b7d987067331459c2a866e6387a669b7f70 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/index.html
+
+--===============5019674767928853864==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/v3d_perfmon: Fix V3D 7.1 regression and extend perfmon testing (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166215/">https://patchwork.freedesktop.org/series/166215/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8912 -&gt; IGTPW_15186</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15186 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8912/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8912/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8912/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8912/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15186/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8912 -&gt; IGTPW_15186</li>
+<li>Linux: CI_DRM_18489 -&gt; CI_DRM_18491</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18489: 121c16f9d8c56ea07263df84ab971cc10870fe88 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18491: 66af2225d31aa8315b0b9f3c735dba4a53e8d3bf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15186: 8f9a1e45fb65c64d597f0d5363f31c25d8498391 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8912: 22222b7d987067331459c2a866e6387a669b7f70 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5019674767928853864==--
