@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEDA4CD4F25
-	for <igt-dev@archiver.kernel.org>; Thu, 14 May 2026 11:24:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 865CBCD4F25
+	for <igt-dev@archiver.kernel.org>; Thu, 14 May 2026 11:26:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 27A4310E3A2;
-	Thu, 14 May 2026 11:24:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 375F510E3E5;
+	Thu, 14 May 2026 11:26:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jOolyzIU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k6Rbm41L";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F0D710E3A2
- for <igt-dev@lists.freedesktop.org>; Thu, 14 May 2026 11:24:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CC9B10E3A2;
+ Thu, 14 May 2026 11:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778757845; x=1810293845;
+ t=1778757951; x=1810293951;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=iszgHBzcps6/PgON9h6VhneSjTqnkTpqBKuT0tV7icg=;
- b=jOolyzIUBksjAqOgJ+VpWRMBAdXRaa8+fZszcD+JrssHipTd0BibIp87
- Ek2G24DSR+4Qq7OE6ZED055M2UhzK1qa/npPxbmW8MdHBwr9WHDaY4Cq4
- 02H4qaNNC8lrU9SHbwAl/LXrU2xB/wQ3e9gkBWuAdqiKgX+JOLd/dNmUj
- DwR/E3cs+RPs6G8RzNpF2xB333rCyeI8/XjQDG1fxPY9E8sx1xz49+Dj5
- vPleyA/YdAJZI7VAHmtAaWUfI9nT8TO+lnGcGw60UHOmdxLx4ALqpZywT
- omKHIQeQsSV9pulw/xt1aEHlO8x7O8vKISfGbdtByVBIRMHNuZkS2coko w==;
-X-CSE-ConnectionGUID: 7eDQavxMTbilVd6RZ4ugBQ==
-X-CSE-MsgGUID: uy/20wr3RSOa08+DPamalw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="97269197"
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="97269197"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2026 04:24:05 -0700
-X-CSE-ConnectionGUID: PKnz3IS4Tm+mWlwyE/RrqQ==
-X-CSE-MsgGUID: 80/D1G7ZQZWVlU1NYYx3MQ==
+ mime-version:in-reply-to;
+ bh=JEqE32kh9R6Yxggt89KSnR6EYi0g+pALY85ELnNWj18=;
+ b=k6Rbm41LnrG1et7ywen5eS8a91LI60PR4oZ5cXkn/NAK4yFEzYiZiMlE
+ ZsrsfaKcxFpl2xuARDoO3lINu8bsQdpLKdPrID3Yhs/NiV5Hg7n6jkG5u
+ ZIriowHMZ391xKGnWHEVtN9PaLFvdLVuBkzB+hm0TpOJmGr5UX3t0IXWV
+ GWmxfSjuzNSzEYFX2Myp24msmYqOgTYYihapEy94kEACd0qpr2glucAvc
+ 4cuJaeEeKauDlYCWByIB8GOicOrhNwRvbFzdBvSnqXBUSMBoBU4kdX/NT
+ j8EcoHUkhxivOWW82DTa/TbkSGUKMKQ7vxGvG7bejnS7R4OKkr1k8RQre Q==;
+X-CSE-ConnectionGUID: QGWfQN4+R+qi3p6ImNf10g==
+X-CSE-MsgGUID: DZ3uJTRyR3eiluzlc04RQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="90801383"
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="90801383"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2026 04:25:51 -0700
+X-CSE-ConnectionGUID: cFNViX4JQ82jHjuCoFZZSw==
+X-CSE-MsgGUID: 9YRaoizjRrC8OiHEgyGNlQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="235304786"
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="238257388"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 04:24:04 -0700
-Date: Thu, 14 May 2026 13:23:51 +0200
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 04:25:49 -0700
+Date: Thu, 14 May 2026 13:25:47 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Swati Sharma <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/2] tests/kms_colorspace: Add Colorspace connector
- property test
-Message-ID: <20260514112351.lebyqp7ha4m5comw@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Xiandong Wang <xiandong.wang@mediatek.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFU?= =?utf-8?Q?=3A?= failure for
+ Improve kms_cursor_legacy robustness on MTK
+Message-ID: <20260514112547.qv44hkojtuj3vsid@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20260427105514.2239876-1-swati2.sharma@intel.com>
- <20260427105514.2239876-3-swati2.sharma@intel.com>
+ igt-dev@lists.freedesktop.org,
+ Xiandong Wang <xiandong.wang@mediatek.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20260506100126.9827-1-xiandong.wang@mediatek.com>
+ <177808146803.43382.3078731876658236040@5ab824fced77>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260427105514.2239876-3-swati2.sharma@intel.com>
+In-Reply-To: <177808146803.43382.3078731876658236040@5ab824fced77>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,117 +74,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Swati,
-On 2026-04-27 at 16:25:14 +0530, Swati Sharma wrote:
-> Add a dedicated IGT test for the DRM Colorspace connector property,
-> exercising both basic functionality and edge cases:
+Hi igt-dev,
+On 2026-05-06 at 15:31:08 -0000, Patchwork wrote:
+> == Series Details ==
 > 
->   - colorspace-enum-list: verify the property exists as an enum with
->     at least the Default value.
->   - colorspace-set-%s: set each supported colorspace value and verify
->     readback via atomic commit (16 parameterized subtests).
->   - colorspace-crc-%s: CRC sanity check confirming output is not
->     corrupted when each colorspace value is active (16 subtests).
->   - colorspace-dpms: verify colorspace survives DPMS off/on cycles.
->   - colorspace-suspend: verify colorspace survives suspend/resume.
->   - colorspace-invalid: reject out-of-range enum values (-EINVAL).
->   - colorspace-connector-type: validate HDMI-only enums are absent
->     on DP connectors and vice-versa.
->   - colorspace-unsupported-value: force a valid but unsupported enum
->     value via the numeric path and verify kernel rejection.
+> Series: Improve kms_cursor_legacy robustness on MTK
+> URL   : https://patchwork.freedesktop.org/series/166047/
+> State : failure
 > 
-> The test covers the full kernel drm_colorspace enum (16 values) and
-> uses a static name-to-value mapping table for the unsupported-value
-> subtest, eliminating the need for multiple connected outputs.
+> == Summary ==
 > 
-> Co-developed-by: Claude Opus 4.6 (Anthropic AI)
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/kms_colorspace.c | 925 +++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build      |   3 +-
->  2 files changed, 927 insertions(+), 1 deletion(-)
->  create mode 100644 tests/kms_colorspace.c
+> CI Bug Log - changes from IGT_8894 -> IGTPW_15111
+> ====================================================
 > 
-> diff --git a/tests/kms_colorspace.c b/tests/kms_colorspace.c
-> new file mode 100644
-> index 000000000..8becab72f
-> --- /dev/null
-> +++ b/tests/kms_colorspace.c
-> @@ -0,0 +1,925 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: kms colorspace
-> + * Category: Display
-> + * Description: Test the Colorspace connector property
-> + * Driver requirement: any
-> + * Mega feature: Color Management
-> + */
-> +
-> +#include "igt.h"
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_15111 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_15111, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15111/index.html
+> 
+> Participating hosts (42 -> 40)
+> ------------------------------
+> 
+>   Missing    (2): bat-dg2-13 fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_15111:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live:
+>     - fi-glk-j4005:       [PASS][1] -> [ABORT][2] +1 other test abort
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8894/fi-glk-j4005/igt@i915_selftest@live.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15111/fi-glk-j4005/igt@i915_selftest@live.html
+>     - bat-arls-5:         [PASS][3] -> [DMESG-FAIL][4] +1 other test dmesg-fail
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8894/bat-arls-5/igt@i915_selftest@live.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15111/bat-arls-5/igt@i915_selftest@live.html
+> 
 
-Move this after system headers.
-
-> +#include <fcntl.h>
-> +#include <inttypes.h>
-> +#include <xf86drmMode.h>
-> +
-> +/**
-> + * SUBTEST: colorspace-enum-list
-> + * Description: Verify that the Colorspace property is an enum and lists
-> + *              at least the Default value.
-> + *
-> + * SUBTEST: colorspace-set-%s
-> + * Description: Set the Colorspace connector property to %arg[1] and
-> + *              verify atomic commit succeeds.
-> + *
-> + * arg[1]:
-> + *
-> + * @Default:				Default colorspace
-> + * @RGB_Wide_Gamut_Fixed_Point:		RGB Wide Gamut Fixed Point
-> + * @RGB_Wide_Gamut_Floating_Point:	RGB Wide Gamut Floating Point
-> + * @opRGB:				opRGB colorspace
-> + * @DCI-P3_RGB_D65:			DCI-P3 RGB D65 colorspace
-> + * @DCI-P3_RGB_Theater:		DCI-P3 RGB Theater colorspace
-> + * @BT2020_RGB:			BT.2020 RGB colorspace
-> + * @BT709_YCC:				BT.709 YCC colorspace
-> + * @XVYCC_601:				xvYCC 601 colorspace
-> + * @XVYCC_709:				xvYCC 709 colorspace
-> + * @SYCC_601:				sYCC 601 colorspace
-> + * @opYCC_601:				opYCC 601 colorspace
-> + * @BT2020_YCC:			BT.2020 YCC colorspace
-> + * @BT2020_CYCC:			BT.2020 constant-luminance YCC
-> + * @BT601_YCC:				BT.601 YCC colorspace (DP)
-> + * @SMPTE_170M_YCC:			SMPTE 170M YCC colorspace
-> + *
-> + * SUBTEST: colorspace-crc-%s
-> + * Description: Verify that setting Colorspace to %arg[1] does not corrupt
-> + *              the display output (CRC sanity check).
-> + *
-> + * arg[1]:
-> + *
-> + * @Default:				Default colorspace
-> + * @RGB_Wide_Gamut_Fixed_Point:		RGB Wide Gamut Fixed Point
-> + * @RGB_Wide_Gamut_Floating_Point:	RGB Wide Gamut Floating Point
-> + * @opRGB:				opRGB colorspace
-> + * @DCI-P3_RGB_D65:			DCI-P3 RGB D65 colorspace
-> + * @DCI-P3_RGB_Theater:		DCI-P3 RGB Theater colorspace
-> + * @BT2020_RGB:			BT.2020 RGB colorspace
-> + * @BT709_YCC:				BT.709 YCC colorspace
-> + * @XVYCC_601:				xvYCC 601 colorspace
-> + * @XVYCC_709:				xvYCC 709 colorspace
-> + * @SYCC_601:				sYCC 601 colorspace
-> + * @opYCC_601:				opYCC 601 colorspace
-> + * @BT2020_YCC:			BT.2020 YCC colorspace
-> + * @BT2020_CYCC:			BT.2020 constant-luminance YCC
-> + * @BT601_YCC:				BT.601 YCC colorspace (DP)
-> + * @SMPTE_170M_YCC:			SMPTE 170M YCC colorspace
-
-Looks like a repeated content?
+These are unrelated, please file bugs and run a full testing.
 
 Regards,
 Kamil
-[cut]
+
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_15111 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@i915_selftest@live@workarounds:
+>     - bat-dg2-14:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8894/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15111/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_selftest@live@workarounds:
+>     - bat-arls-6:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8894/bat-arls-6/igt@i915_selftest@live@workarounds.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15111/bat-arls-6/igt@i915_selftest@live@workarounds.html
+> 
+>   
+>   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_8894 -> IGTPW_15111
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_18417: 835de80ce9b34b618442ba91483170201b50b553 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_15111: e20904c8028abe19ded2a5ce307a86335a74cce5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8894: 044f2c8744a52317c4651b4ca9d3b12f5be51575 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15111/index.html
