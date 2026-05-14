@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63B57CD4F39
-	for <igt-dev@archiver.kernel.org>; Thu, 14 May 2026 13:18:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89DADCD4F39
+	for <igt-dev@archiver.kernel.org>; Thu, 14 May 2026 13:20:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C78110E558;
-	Thu, 14 May 2026 13:18:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3EFB510E06D;
+	Thu, 14 May 2026 13:20:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nKcWzeAu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bhgvZrJj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D72010E558
- for <igt-dev@lists.freedesktop.org>; Thu, 14 May 2026 13:18:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A3BC10E558
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 May 2026 13:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778764713; x=1810300713;
+ t=1778764833; x=1810300833;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=6Mzn1Qo64UriokUlFB6F1WQizFLRyJNurkIG7I/onhE=;
- b=nKcWzeAuzmT87PdtHALcPRFE834R8LRg3k8Ds6TQQTu7VlaEgLTcE115
- SZqoTFFSlUIuWRAvR2FAGEhwDlvnYJqb0jT2g3RDV9hwFHNDNuuGcrh6U
- JNLIPCqah10S0d+IQmYj6zDRFoYBgCEiz3Y8WVCe051klwE98wR+5dbM0
- NCTx0IsUYqAvuIkCHtiUxH29CgxmKfhRecAWzoADWnAhRItGZZTuN+LOq
- WOqDixRLwiqMHGNMkJKFWAAKFjKpwnaCl2eDVsggXKRRT7b18+Igq9lg9
- LRJcfZMae4+EXUqYQL1475oLEuFKICRts9usVRmbbFKRFBa/igo85B6RW g==;
-X-CSE-ConnectionGUID: Ed/76Kh3S6O4RwolgfLhUg==
-X-CSE-MsgGUID: NGTQS/WOTXeg72aXMUq0mg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="105165281"
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="105165281"
+ bh=II2+J6RVUjOaWlICqX+IjbX/Dq/xSp8F2WDNXYzXUzo=;
+ b=bhgvZrJjjcSY8TYeVLnw+DhvESJ8SkKyADsSHt+wkgfIzKqLztCrplYK
+ B6sjARtxYo3TR6Cc60/Jh/rapg2g0Pw3kywRC2NB87PUVVcr8nWGiS/FP
+ m3FtRULIrju6AM5RaXY1pEEIwGtUIzouvGAREj3pFrk8JLZx2xL0Z88KO
+ AtUHPaueEgTuFPi0RI61ng6c83rh/M24r0mU8VOEbJc2E8kigszoNwziJ
+ 4WgvHBwax7+towW0eBzn9C2BT6FtLS2HQr91TeTUZkrJLcPB42DlOOUwO
+ Ev3NWlQ8ujIpMwKwcQZpu/dNAm4GPB1fN5m0yNK5DOIXzLE1C97V/SL86 w==;
+X-CSE-ConnectionGUID: VSAmQvd5TYmQ3rUNT1cI0g==
+X-CSE-MsgGUID: /YYItb0jQ8GFNH+HJyU9Ag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="105165678"
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="105165678"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2026 06:18:32 -0700
-X-CSE-ConnectionGUID: 2dWGclclRri3Sg1PgZcJww==
-X-CSE-MsgGUID: zc8XnSwhQIabdvbZ36p8sw==
+ 14 May 2026 06:20:33 -0700
+X-CSE-ConnectionGUID: tnNdnljRRKS+uVtK+DrTKQ==
+X-CSE-MsgGUID: xebIyFuDR7anbp6BaqsE6Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="237517394"
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="237517605"
 Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.189])
  ([172.28.182.189])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2026 06:18:31 -0700
-Message-ID: <ed0bce1d-ea8e-4d1f-9b49-d80a99916a37@linux.intel.com>
-Date: Thu, 14 May 2026 15:18:20 +0200
+ 14 May 2026 06:20:32 -0700
+Message-ID: <acdedbb3-0317-4f07-9247-5b7335801fff@linux.intel.com>
+Date: Thu, 14 May 2026 15:20:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/3] tools/vmtb: Define IGT tests used as VF
- migration workloads
+Subject: Re: [PATCH i-g-t 2/3] tools/vmtb: Provide VF busy migration
+ IGT/gem_wsim workloads
 To: Adam Miszczak <adam.miszczak@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com
 References: <20260416083544.2441874-1-adam.miszczak@linux.intel.com>
- <20260416083544.2441874-2-adam.miszczak@linux.intel.com>
+ <20260416083544.2441874-3-adam.miszczak@linux.intel.com>
 Content-Language: en-US
 From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260416083544.2441874-2-adam.miszczak@linux.intel.com>
+In-Reply-To: <20260416083544.2441874-3-adam.miszczak@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -75,129 +75,286 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 4/16/2026 10:35 AM, Adam Miszczak wrote:
-> New VF busy migration scenarios are expected to utilize IGT tests as workloads,
-> specifically several subtests from 'xe_exec_reset', 'xe_exec_threads', 'xe_ccs'
-> and 'xe_compute_preempt'.
-> Extend IgtExecutor support for relevant IGTs (IgtType definitions and mappings).
+> Define gem_wsim workload descriptor files for BMG and PTL
+> consumed by the xe busy migration test scenarios (test_migration.py):
+> - short_preempt.wsim: short preemptable batches (5ms)
+> - short_nonpreempt.wsim: short non-preemptable batches (5ms)
+> - long_preempt.wsim: long preemptable batches (100ms)
+> - long_nonpreempt.wsim: long non-preemptable batches (100ms)
+> - idle_ctxs.wsim: idle migration with contexts created
 >
 > Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 > ---
->   tools/vmtb/bench/executors/igt.py | 96 +++++++++++++++++++++++++++++--
->   1 file changed, 90 insertions(+), 6 deletions(-)
+>   tools/vmtb/MANIFEST.in                        |  1 +
+>   .../resources/wsim/bmg/idle_ctxs.wsim         | 22 +++++++++++++++++++
+>   .../resources/wsim/bmg/long_nonpreempt.wsim   | 18 +++++++++++++++
+>   .../resources/wsim/bmg/long_preempt.wsim      | 17 ++++++++++++++
+>   .../resources/wsim/bmg/short_nonpreempt.wsim  | 18 +++++++++++++++
+>   .../resources/wsim/bmg/short_preempt.wsim     | 17 ++++++++++++++
+>   .../resources/wsim/ptl/idle_ctxs.wsim         | 21 ++++++++++++++++++
+>   .../resources/wsim/ptl/long_nonpreempt.wsim   | 17 ++++++++++++++
+>   .../resources/wsim/ptl/long_preempt.wsim      | 16 ++++++++++++++
+>   .../resources/wsim/ptl/short_nonpreempt.wsim  | 17 ++++++++++++++
+>   .../resources/wsim/ptl/short_preempt.wsim     | 16 ++++++++++++++
+>   11 files changed, 180 insertions(+)
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/bmg/idle_ctxs.wsim
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/bmg/long_nonpreempt.wsim
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/bmg/long_preempt.wsim
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/bmg/short_nonpreempt.wsim
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/bmg/short_preempt.wsim
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/ptl/idle_ctxs.wsim
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/ptl/long_nonpreempt.wsim
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/ptl/long_preempt.wsim
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/ptl/short_nonpreempt.wsim
+>   create mode 100644 tools/vmtb/vmm_flows/resources/wsim/ptl/short_preempt.wsim
 >
-> diff --git a/tools/vmtb/bench/executors/igt.py b/tools/vmtb/bench/executors/igt.py
-> index a08f71d54..f443fb99e 100644
-> --- a/tools/vmtb/bench/executors/igt.py
-> +++ b/tools/vmtb/bench/executors/igt.py
-> @@ -17,17 +17,101 @@ logger = logging.getLogger('IgtExecutor')
->   
->   
->   class IgtType(enum.Enum):
-> -    EXEC_BASIC = 1
-> -    EXEC_STORE = 2
-> -    SPIN_BATCH = 3
-> +    # Basic/generic IGT tests:
-> +    EXEC_BASIC = enum.auto()
-> +    EXEC_STORE = enum.auto()
-> +    SPIN_BATCH = enum.auto()
-> +    # VF migration workloads - xe_exec_reset/long_spin subtests:
-> +    EXEC_RESET_LONG_SPIN_MANY_PREEMPT = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_MANY_PREEMPT_MEDIA = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_MANY_PREEMPT_THREADS = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_MANY_PREEMPT_GT0_THREADS = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_MANY_PREEMPT_GT1_THREADS = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT_MEDIA = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT_THREADS = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT_GT0_THREADS = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT_GT1_THREADS = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_SYS_REUSE_MANY_PREEMPT_THREADS = enum.auto()
-> +    EXEC_RESET_LONG_SPIN_COMP_REUSE_MANY_PREEMPT_THREADS = enum.auto()
-> +    # VF migration workloads - xe_exec_reset/cancel subtests:
-> +    EXEC_RESET_CANCEL = enum.auto()
-> +    EXEC_RESET_CANCEL_PREEMPT = enum.auto()
-> +    EXEC_RESET_CANCEL_TIMESLICE_PREEMPT = enum.auto()
-> +    EXEC_RESET_CANCEL_TIMESLICE_MANY_PREEMPT = enum.auto()
-> +    # VF migration workloads - xe_exec_threads subtests:
-> +    EXEC_THREADS_BASIC = enum.auto()
-> +    EXEC_THREADS_BAL_BASIC = enum.auto()
-> +    EXEC_THREADS_CM_USERPTR_INVALIDATE = enum.auto()
-> +    EXEC_THREADS_BAL_MIXED_USERPTR_INVALIDATE = enum.auto()
-> +    EXEC_THREADS_MANY_QUEUES = enum.auto()
-> +    # VF migration workloads - xe_ccs subtest:
-> +    CCS_BLOCK_COPY_COMPRESSED = enum.auto()
-> +    # VF migration workloads - xe_compute_preempt subtest:
-> +    COMPUTE_PREEMPT_MANY = enum.auto()
->   
->   
->   # Mappings of driver specific (i915/xe) IGT instances:
->   # {IGT type: (i915 IGT name, xe IGT name)}
->   igt_tests: typing.Dict[IgtType, typing.Tuple[str, str]] = {
-> -    IgtType.EXEC_BASIC: ('igt@gem_exec_basic@basic', 'igt@xe_exec_basic@once-basic'),
-> -    IgtType.EXEC_STORE: ('igt@gem_exec_store@dword', 'igt@xe_exec_store@basic-store'),
-> -    IgtType.SPIN_BATCH: ('igt@gem_spin_batch@legacy', 'igt@xe_spin_batch@spin-basic')
-> +    # Basic/generic IGT tests:
-> +    IgtType.EXEC_BASIC:
-> +      ('igt@gem_exec_basic@basic', 'igt@xe_exec_basic@once-basic'),
-> +    IgtType.EXEC_STORE:
-> +      ('igt@gem_exec_store@dword', 'igt@xe_exec_store@basic-store'),
-> +    IgtType.SPIN_BATCH:
-> +      ('igt@gem_spin_batch@legacy', 'igt@xe_spin_batch@spin-basic'),
-> +    # VF migration workloads - xe_exec_reset/long_spin subtests:
-> +    IgtType.EXEC_RESET_LONG_SPIN_MANY_PREEMPT:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-many-preempt'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_MANY_PREEMPT_MEDIA:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-many-preempt-media'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_MANY_PREEMPT_THREADS:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-many-preempt-threads'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_MANY_PREEMPT_GT0_THREADS:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-many-preempt-gt0-threads'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_MANY_PREEMPT_GT1_THREADS:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-many-preempt-gt1-threads'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-reuse-many-preempt'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT_MEDIA:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-reuse-many-preempt-media'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT_THREADS:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-reuse-many-preempt-threads'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT_GT0_THREADS:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-reuse-many-preempt-gt0-threads'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_REUSE_MANY_PREEMPT_GT1_THREADS:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-reuse-many-preempt-gt1-threads'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_SYS_REUSE_MANY_PREEMPT_THREADS:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-sys-reuse-many-preempt-threads'),
-> +    IgtType.EXEC_RESET_LONG_SPIN_COMP_REUSE_MANY_PREEMPT_THREADS:
-> +      ('n/a', 'igt@xe_exec_reset@long-spin-comp-reuse-many-preempt-threads'),
-> +    # VF migration workloads - xe_exec_reset/cancel subtests:
-> +    IgtType.EXEC_RESET_CANCEL:
-> +      ('n/a', 'igt@xe_exec_reset@cancel'),
-> +    IgtType.EXEC_RESET_CANCEL_PREEMPT:
-> +      ('n/a', 'igt@xe_exec_reset@cancel-preempt'),
-> +    IgtType.EXEC_RESET_CANCEL_TIMESLICE_PREEMPT:
-> +      ('n/a', 'igt@xe_exec_reset@cancel-timeslice-preempt'),
-> +    IgtType.EXEC_RESET_CANCEL_TIMESLICE_MANY_PREEMPT:
-> +      ('n/a', 'igt@xe_exec_reset@cancel-timeslice-many-preempt'),
-> +    # VF migration workloads - xe_exec_threads subtests:
-> +    IgtType.EXEC_THREADS_BASIC:
-> +      ('n/a', 'igt@xe_exec_threads@threads-basic'),
-> +    IgtType.EXEC_THREADS_BAL_BASIC:
-> +      ('n/a', 'igt@xe_exec_threads@threads-bal-basic'),
-> +    IgtType.EXEC_THREADS_CM_USERPTR_INVALIDATE:
-> +      ('n/a', 'igt@xe_exec_threads@threads-cm-userptr-invalidate'),
-> +    IgtType.EXEC_THREADS_BAL_MIXED_USERPTR_INVALIDATE:
-> +      ('n/a', 'igt@xe_exec_threads@threads-bal-mixed-userptr-invalidate'),
-> +    IgtType.EXEC_THREADS_MANY_QUEUES:
-> +      ('n/a', 'igt@xe_exec_threads@threads-many-queues'),
-> +    # VF migration workloads - xe_ccs subtest:
-> +    IgtType.CCS_BLOCK_COPY_COMPRESSED:
-> +      ('n/a', 'igt@xe_ccs@block-copy-compressed'),
-> +    # VF migration workloads - xe_compute_preempt subtest:
-> +    IgtType.COMPUTE_PREEMPT_MANY:
-> +      ('n/a', 'igt@xe_compute_preempt@compute-preempt-many')
->       }
->   
-
+> diff --git a/tools/vmtb/MANIFEST.in b/tools/vmtb/MANIFEST.in
+> index 7674c199d..954990a63 100644
+> --- a/tools/vmtb/MANIFEST.in
+> +++ b/tools/vmtb/MANIFEST.in
+> @@ -1,3 +1,4 @@
+>   include pytest.ini
+>   include vmtb_config.json
+>   include vmm_flows/resources/vgpu_profiles/*
+> +recursive-include vmm_flows/resources/wsim *
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/bmg/idle_ctxs.wsim b/tools/vmtb/vmm_flows/resources/wsim/bmg/idle_ctxs.wsim
+> new file mode 100644
+> index 000000000..1d8c9a2d7
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/bmg/idle_ctxs.wsim
+> @@ -0,0 +1,22 @@
+> +###############################################################
+> +# VF S/R scenario: idle migration with contexts created
+> +#
+> +# 1. Run 3ms pre-migration WL on each engine
+> +# 2. Wait 20s for migration to happen
+> +# 3. Run the WLs again in post-migration phase to check fixups
+> +#
+> +# BMG variant - engines:
+> +# Root tile: RCS, BCS, CCS
+> +# Media tile: VCS, VECS
+> +###############################################################
+> +1.RCS.3000.0.0
+> +1.BCS.3000.0.0
+> +1.CCS.3000.0.1
+> +1.VCS.3000.0.0
+> +1.VECS.3000.0.0
+> +d.20000000
+> +1.RCS.3000.0.0
+> +1.BCS.3000.0.0
+> +1.CCS.3000.0.1
+> +1.VCS.3000.0.0
+> +1.VECS.3000.0.0
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/bmg/long_nonpreempt.wsim b/tools/vmtb/vmm_flows/resources/wsim/bmg/long_nonpreempt.wsim
+> new file mode 100644
+> index 000000000..45add4217
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/bmg/long_nonpreempt.wsim
+> @@ -0,0 +1,18 @@
+> +###############################################################
+> +# VF S/R scenario: long non-preemptable batches
+> +#
+> +# 1. Run 100ms non-preempable batches on each engine
+> +# 2. Emit the workload for 20s (rerun in a loop) - keep executing during the migration.
+> +#    Use 'gem_wsim -r 200' that gives: 0.1s * 10 = 1s * 20 = 20s
+> +# 3. Finish execution in post-migration phase
+> +#
+> +# BMG variant - engines:
+> +# Root tile: RCS, BCS, CCS
+> +# Media tile: VCS, VECS
+> +###############################################################
+> +X.1.0
+> +1.RCS.100000.0.0
+> +1.BCS.100000.0.0
+> +1.CCS.100000.0.1
+> +1.VCS.100000.0.0
+> +1.VECS.100000.0.0
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/bmg/long_preempt.wsim b/tools/vmtb/vmm_flows/resources/wsim/bmg/long_preempt.wsim
+> new file mode 100644
+> index 000000000..2c3d22d40
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/bmg/long_preempt.wsim
+> @@ -0,0 +1,17 @@
+> +###############################################################
+> +# VF S/R scenario: long preemptable batches
+> +#
+> +# 1. Run 100ms preempable batches on each engine
+> +# 2. Emit the workload for 20s (rerun in a loop) - keep executing during the migration.
+> +#    Use 'gem_wsim -r 200' that gives: 0.1s * 10 = 1s * 20 = 20s
+> +# 3. Finish execution in post-migration phase
+> +#
+> +# BMG variant - engines:
+> +# Root tile: RCS, BCS, CCS
+> +# Media tile: VCS, VECS
+> +###############################################################
+> +1.RCS.100000.0.0
+> +1.BCS.100000.0.0
+> +1.CCS.100000.0.1
+> +1.VCS.100000.0.0
+> +1.VECS.100000.0.0
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/bmg/short_nonpreempt.wsim b/tools/vmtb/vmm_flows/resources/wsim/bmg/short_nonpreempt.wsim
+> new file mode 100644
+> index 000000000..5ff9cc74a
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/bmg/short_nonpreempt.wsim
+> @@ -0,0 +1,18 @@
+> +###############################################################
+> +# VF S/R scenario: short non-preemptable batches
+> +#
+> +# 1. Run 5ms non-preempable batches on each engine
+> +# 2. Emit the workload for 20s (rerun in a loop) - keep executing during the migration.
+> +#    Use 'gem_wsim -r 4000' that gives: 0.005s * 200 = 1s * 20 = 20s
+> +# 3. Finish execution in post-migration phase
+> +#
+> +# BMG variant - engines:
+> +# Root tile: RCS, BCS, CCS
+> +# Media tile: VCS, VECS
+> +###############################################################
+> +X.1.0
+> +1.RCS.5000.0.0
+> +1.BCS.5000.0.0
+> +1.CCS.5000.0.1
+> +1.VCS.5000.0.0
+> +1.VECS.5000.0.0
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/bmg/short_preempt.wsim b/tools/vmtb/vmm_flows/resources/wsim/bmg/short_preempt.wsim
+> new file mode 100644
+> index 000000000..c09b82cce
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/bmg/short_preempt.wsim
+> @@ -0,0 +1,17 @@
+> +###############################################################
+> +# VF S/R scenario: short preemptable batches
+> +#
+> +# 1. Run 5ms preempable batches on each engine
+> +# 2. Emit the workload for 20s (rerun in a loop) - keep executing during the migration.
+> +#    Use 'gem_wsim -r 4000' that gives: 0.005s * 200 = 1s * 20 = 20s
+> +# 3. Finish execution in post-migration phase
+> +#
+> +# BMG variant - engines:
+> +# Root tile: RCS, BCS, CCS
+> +# Media tile: VCS, VECS
+> +###############################################################
+> +1.RCS.5000.0.0
+> +1.BCS.5000.0.0
+> +1.CCS.5000.0.1
+> +1.VCS.5000.0.0
+> +1.VECS.5000.0.0
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/ptl/idle_ctxs.wsim b/tools/vmtb/vmm_flows/resources/wsim/ptl/idle_ctxs.wsim
+> new file mode 100644
+> index 000000000..1e17b7a53
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/ptl/idle_ctxs.wsim
+> @@ -0,0 +1,21 @@
+> +###############################################################
+> +# VF S/R scenario: idle migration with contexts created
+> +#
+> +# 1. Run 3ms pre-migration WL on each engine
+> +# 2. Wait 20s for migration to happen
+> +# 3. Run the WLs again in post-migration phase to check fixups
+> +#
+> +# PTL variant - engines:
+> +# RCS, BCS, VCS-1, VECS-1, CCS
+> +###############################################################
+> +1.RCS.3000.0.0
+> +1.BCS.3000.0.0
+> +1.VCS-1.3000.0.0
+> +1.VECS-1.3000.0.0
+> +1.CCS.3000.0.1
+> +d.20000000
+> +1.RCS.3000.0.0
+> +1.BCS.3000.0.0
+> +1.VCS-1.3000.0.0
+> +1.VECS-1.3000.0.0
+> +1.CCS.3000.0.1
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/ptl/long_nonpreempt.wsim b/tools/vmtb/vmm_flows/resources/wsim/ptl/long_nonpreempt.wsim
+> new file mode 100644
+> index 000000000..2b49426ca
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/ptl/long_nonpreempt.wsim
+> @@ -0,0 +1,17 @@
+> +###############################################################
+> +# VF S/R scenario: long non-preemptable batches
+> +#
+> +# 1. Run 100ms non-preempable batches on each engine
+> +# 2. Emit the workload for 20s (rerun in a loop) - keep executing during the migration.
+> +#    Use 'gem_wsim -r 200' that gives: 0.1s * 10 = 1s * 20 = 20s
+> +# 3. Finish execution in post-migration phase
+> +#
+> +# PTL variant - engines:
+> +# RCS, BCS, VCS-1, VECS-1, CCS
+> +###############################################################
+> +X.1.0
+> +1.RCS.100000.0.0
+> +1.BCS.100000.0.0
+> +1.VCS-1.100000.0.0
+> +1.VECS-1.100000.0.0
+> +1.CCS.100000.0.1
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/ptl/long_preempt.wsim b/tools/vmtb/vmm_flows/resources/wsim/ptl/long_preempt.wsim
+> new file mode 100644
+> index 000000000..e06c2f290
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/ptl/long_preempt.wsim
+> @@ -0,0 +1,16 @@
+> +###############################################################
+> +# VF S/R scenario: long preemptable batches
+> +#
+> +# 1. Run 100ms preempable batches on each engine
+> +# 2. Emit the workload for 20s (rerun in a loop) - keep executing during the migration.
+> +#    Use 'gem_wsim -r 200' that gives: 0.1s * 10 = 1s * 20 = 20s
+> +# 3. Finish execution in post-migration phase
+> +#
+> +# PTL variant - engines:
+> +# RCS, BCS, VCS-1, VECS-1, CCS
+> +###############################################################
+> +1.RCS.100000.0.0
+> +1.BCS.100000.0.0
+> +1.VCS-1.100000.0.0
+> +1.VECS-1.100000.0.0
+> +1.CCS.100000.0.1
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/ptl/short_nonpreempt.wsim b/tools/vmtb/vmm_flows/resources/wsim/ptl/short_nonpreempt.wsim
+> new file mode 100644
+> index 000000000..5e8ff1c26
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/ptl/short_nonpreempt.wsim
+> @@ -0,0 +1,17 @@
+> +###############################################################
+> +# VF S/R scenario: short non-preemptable batches
+> +#
+> +# 1. Run 5ms non-preempable batches on each engine
+> +# 2. Emit the workload for 20s (rerun in a loop) - keep executing during the migration.
+> +#    Use 'gem_wsim -r 4000' that gives: 0.005s * 200 = 1s * 20 = 20s
+> +# 3. Finish execution in post-migration phase
+> +#
+> +# PTL variant - engines:
+> +# RCS, BCS, VCS-1, VECS-1, CCS
+> +###############################################################
+> +X.1.0
+> +1.RCS.5000.0.0
+> +1.BCS.5000.0.0
+> +1.VCS-1.5000.0.0
+> +1.VECS-1.5000.0.0
+> +1.CCS.5000.0.1
+> diff --git a/tools/vmtb/vmm_flows/resources/wsim/ptl/short_preempt.wsim b/tools/vmtb/vmm_flows/resources/wsim/ptl/short_preempt.wsim
+> new file mode 100644
+> index 000000000..b2316f957
+> --- /dev/null
+> +++ b/tools/vmtb/vmm_flows/resources/wsim/ptl/short_preempt.wsim
+> @@ -0,0 +1,16 @@
+> +###############################################################
+> +# VF S/R scenario: short preemptable batches
+> +#
+> +# 1. Run 5ms preempable batches on each engine
+> +# 2. Emit the workload for 20s (rerun in a loop) - keep executing during the migration.
+> +#    Use 'gem_wsim -r 4000' that gives: 0.005s * 200 = 1s * 20 = 20s
+> +# 3. Finish execution in post-migration phase
+> +#
+> +# PTL variant - engines:
+> +# RCS, BCS, VCS-1, VECS-1, CCS
+> +###############################################################
+> +1.RCS.5000.0.0
+> +1.BCS.5000.0.0
+> +1.VCS-1.5000.0.0
+> +1.VECS-1.5000.0.0
+> +1.CCS.5000.0.1
 LGTM,
-
 Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-
