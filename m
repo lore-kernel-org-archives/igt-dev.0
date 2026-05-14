@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD975CD4F25
-	for <igt-dev@archiver.kernel.org>; Thu, 14 May 2026 14:56:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AE88CD4851
+	for <igt-dev@archiver.kernel.org>; Thu, 14 May 2026 15:06:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D30510E166;
-	Thu, 14 May 2026 14:56:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2CAE210E166;
+	Thu, 14 May 2026 15:06:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L77M6esk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hOFdRcC1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4189810E166
- for <igt-dev@lists.freedesktop.org>; Thu, 14 May 2026 14:56:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B099510E166
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 May 2026 15:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778770578; x=1810306578;
+ t=1778771181; x=1810307181;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=CjP2x4rtP5INOGPgZXqobURI7/Zt7o90NlxVk/ypinE=;
- b=L77M6esk7LYR+JbiPR3jIx2NfJCor0sWcSHshf8jBZvhXdmvbP39e5IL
- 2AYheGvRXrj48n/lQqu2hEgvCH25OsAXTu826yHezF5epil+1wySYRn03
- jBq6GinRlskF7twiBIF/bUMRPsp9FcjMswidZRNe0QTuZG9p3yP1oK7a1
- niHZEBaX/mQY72p1jRla1HJD3byqWeoCCO4WXAM36ZEP1YnsXkCX5ycS2
- a8ftawcZYtYaPSySoXOhchVftdLXK/mss9PPnSSpZd59rMgKl9PXf/+yc
- zIp47Pm8oSi/p7faWZfKS9X+3Ir97WVWIAaJ7bYzRy2lVxA/1iVL7ZfSh w==;
-X-CSE-ConnectionGUID: 10PEFXoVR7m3oAg08x5byA==
-X-CSE-MsgGUID: KEKM0hmxQRO2SqekveZO7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="79669742"
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="79669742"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2026 07:56:18 -0700
-X-CSE-ConnectionGUID: 4G50a+OrTwOzSGQ/UI5+zQ==
-X-CSE-MsgGUID: A1NBC8BUSMOaoblKJJaLlg==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=3StbHqOBtMyF5jygC4E61cQ4FL1pPA4bkCPjmwuf2Z4=;
+ b=hOFdRcC1TTCQoQipGhTBhbLRzyvkmnYIfy1Xzq86DDACihZGqQ+h5AE0
+ q5ovRutt9cwQtX6oBclBWbe/55JCEsX68eQDFQfjX+gmVALLAX3/nUMaN
+ JZ8dLGsJWD7u+5jpVIdMEwsAY8bT4VmiUxLPgLBBBShkKvOPDGS+uhtEk
+ Pr3CeAU7Td98SE61cdpTwwntAHIT1IvAT3pkL2Lji6SKSllmHhLXWFdkN
+ VeMClQahayU7wrnKIRPMJK3lUy/dSbd1N6RndIBEc6QlYOI5bebhH5jr9
+ JVC1LRBW68IDFQ6T8F+PFVzrMImXsLwuvWakUKFJZc9eVJHO1XIDqZQDr A==;
+X-CSE-ConnectionGUID: bxEssXChSoWSAufJH5rpGA==
+X-CSE-MsgGUID: dZ6mklRCSuyaG2iLKd2ShA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="91100309"
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="91100309"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2026 08:06:21 -0700
+X-CSE-ConnectionGUID: BOyspMCrS86VZ3IV8FISbg==
+X-CSE-MsgGUID: QCQlQY/3QhiI/0j/Fgg9eQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="238294848"
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; d="scan'208";a="242751309"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 07:56:17 -0700
-Date: Thu, 14 May 2026 16:56:14 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 08:06:20 -0700
+Date: Thu, 14 May 2026 17:06:17 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Vidya Srinivas <vidya.srinivas@intel.com>
-Cc: "Purkait, Soham" <soham.purkait@intel.com>, igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH] tools/gputop: Fix zero output when stdout is not a
- terminal
-Message-ID: <20260514145614.t3nrjqyyi2t2oxcz@kamilkon-DESK.igk.intel.com>
+To: vitaly prosyak <vprosyak@amd.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: [igt-dev] [PATCH] tests/amdgpu: Add KFD IOCTL fuzzing test -
+ Apologies for build failures
+Message-ID: <20260514150617.d3jezd4ceun7lg46@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Vidya Srinivas <vidya.srinivas@intel.com>,
- "Purkait, Soham" <soham.purkait@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20260402134522.108322-1-vidya.srinivas@intel.com>
- <20260407133940.134931-1-vidya.srinivas@intel.com>
+ vitaly prosyak <vprosyak@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <a243c8c9-7681-4633-a25a-2b01fa33a53a@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260407133940.134931-1-vidya.srinivas@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a243c8c9-7681-4633-a25a-2b01fa33a53a@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,55 +72,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vidya,
-On 2026-04-07 at 19:09:40 +0530, Vidya Srinivas wrote:
-> When gputop output is redirected to a file or run via adb shell
-> (e.g., on Android), update_console_size() calls ioctl(0, TIOCGWINSZ)
-> on stdin which may not be a terminal. If stdin is a pipe or
-> redirected, the ioctl returns -1 and con_w/con_h remain at their
-> initial value of -1.
+Hi vitaly,
+On 2026-05-07 at 00:08:18 -0400, vitaly prosyak wrote:
+> Hi Kamil,
 > 
-> This causes the main display loop to immediately break since
-> lines >= con_h evaluates to true (0 >= -1), resulting in zero
-> output being produced.
+> I apologize for the build failures in my recent amd_fuzzing_kfd patch series and the need for 3 additional fixup patches to address ARM cross-compilation issues.
 > 
-> Fix this by initializing con_w and con_h to default values of
-> 80 and 50 respectively, so that when ioctl fails the display
-> loop still produces output with sensible dimensions.
+> The failures were due to:
+> 1. Missing drm/drm.h include dependency on some systems
+> 2. Incomplete KFD IOCTL struct definitions on ARM (forward declarations only)
+> 3. KFD being x86/x86_64 specific (AMD GPUs not supported on ARM)
 > 
-> v2: Try stdout, stdin, and stderr for terminal size before falling
->     back to defaults (Soham Purkait)
+> I've now submitted fixes that:
+> - Add proper header dependencies and guards
+> - Restrict KFD tests to x86/x86_64 architectures only in meson.build
+> - Follow the same pattern as amd_kfd_dmabuf_unload.c
 > 
-> v3: Initialize defaults in main() instead of adding fallback logic
->     in update_console_size() (Soham Purkait)
+> I'm curious - is there a way to see build failure results from patchwork.freedesktop.org before patches are merged? I couldn't find build status information on the patchwork interface, but I'd like to catch these issues earlier in the future. If you could point me to where CI build results are posted, I would greatly appreciate it.
+> 
+> Sorry again for the extra churn, and thank you for maintaining IGT!
+> 
+> Best regards,
+> Vitaly 
+> 
 
-Thank you all on working on this, I merged this with reworded
-description.
+I will talk with our CI, I hope they could reintroduce compilation
+step for different arch like armhf or arm64. We had pipeline
+with builds but that was disabled during recent GitLab upgrade,
+when no GitLab repos were available.
 
 Regards,
 Kamil
 
-> 
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  tools/gputop.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/gputop.c b/tools/gputop.c
-> index 9b2e8cb6f..0ed5af456 100644
-> --- a/tools/gputop.c
-> +++ b/tools/gputop.c
-> @@ -609,7 +609,7 @@ int main(int argc, char **argv)
->  	unsigned int period_us;
->  	struct igt_profiled_device *profiled_devices = NULL;
->  	struct igt_drm_clients *clients = NULL;
-> -	int con_w = -1, con_h = -1;
-> +	int con_w = 80, con_h = 50;
->  	int ret;
->  	long n;
->  
-> -- 
-> 2.45.2
-> 
+PS. for reference how it was before:
+https://patchwork.freedesktop.org/series/138642/
+with status line from GitLab.Pipeline
+
