@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91DACCD343F
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 10:11:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72F77CD4851
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 10:22:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 24C3710E0F3;
-	Fri, 15 May 2026 10:11:21 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A93D10E0F3;
- Fri, 15 May 2026 10:11:04 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0518971324953883891=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 28BA910F4E8;
+	Fri, 15 May 2026 10:22:34 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YgAQ+iS6";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7769F10E0EF
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 10:22:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1778840535; x=1810376535;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Zn7P4rPprGqq3H4MFWyl3zIUGlockszMYntLj+Ql/+M=;
+ b=YgAQ+iS6v3qT17bat8McE3DH0K2WXVj+kg++1yugh/+WXhcTIJ+M7vxJ
+ mRdbLmnaRMOLpwqCgLaskoU9KoyWWGwA9BWwPOQnEHLmvrWKhjJwZMRQZ
+ hjoTYswTwDVBGYm2XnFWYzlotujpKy6pm4A3XBHda4v6290kYogeqp5LQ
+ oDUdEiW7N2hFExdLMfBMkzEnfHMyzxo9Do9UCsBcKnPZ5Wy6cXgdQRuLs
+ gKpsJoIdjI0GoNOAGElCigT2A4EYZykE6mLKXt8zipDgkdgnoWVZCZ8Lg
+ 1+fJkmTu86avi8PevLR0V5XwawuvJGra5UcC8lPR6a3D7PT8QvtpED2uP Q==;
+X-CSE-ConnectionGUID: FHQyew1QTtOEsFlxl8Thow==
+X-CSE-MsgGUID: MXNsi4MxRrW1Nf7F+9h7AQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="82361533"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="82361533"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2026 03:22:15 -0700
+X-CSE-ConnectionGUID: 2dDbhMWtQb6R71ema4gDGA==
+X-CSE-MsgGUID: UuGeUONGTq2uBVXfmzaGjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="234406511"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.102])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2026 03:22:13 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@intel.com>,
+ Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v3] scripts: Add new script for verbatim sync with kernel
+Date: Fri, 15 May 2026 12:22:08 +0200
+Message-ID: <20260515102209.11275-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/chamelium/kms=5Fchame?=
- =?utf-8?q?lium=5Faudio=3A_Add_suspend/resume_audio_tests_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 15 May 2026 10:11:04 -0000
-Message-ID: <177883986409.74821.4016824861016266477@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260515062733.732263-1-jeevan.b@intel.com>
-In-Reply-To: <20260515062733.732263-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +68,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0518971324953883891==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Jani Nikula <jani.nikula@intel.com>
 
-== Series Details ==
+This is a helper script used in cases when a verbatim kernel
+file should be copied into igt-dev.
 
-Series: tests/chamelium/kms_chamelium_audio: Add suspend/resume audio tests (rev4)
-URL   : https://patchwork.freedesktop.org/series/166012/
-State : success
+v3: removed 'Author:' as this is in git history (Jani)
+  updated commit hash to match last pciids.h sync (Kamil)
 
-== Summary ==
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ scripts/sync_with_kernel.sh | 55 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+ create mode 100755 scripts/sync_with_kernel.sh
 
-CI Bug Log - changes from XEIGT_8914_BAT -> XEIGTPW_15188_BAT
-====================================================
+diff --git a/scripts/sync_with_kernel.sh b/scripts/sync_with_kernel.sh
+new file mode 100755
+index 000000000..469e3edd8
+--- /dev/null
++++ b/scripts/sync_with_kernel.sh
+@@ -0,0 +1,55 @@
++#!/bin/sh
++# SPDX-License-Identifier: MIT
++#
++# Copyright © 2026 Intel Corporation
++#
++# Use this for verbatim copies from kernel into igt-dev-tools
++# Change paths to yours, update the repos, cd to IGT, and run.
++
++SINCE=e68a60f9e6a6
++KERNEL=$HOME/src/linux
++IGT=$HOME/src/intel-gpu-tools
++
++declare -g -A map
++map["drivers/gpu/drm/i915/display/intel_vbt_defs.h"]="tools/intel_vbt_defs.h"
++map["drivers/gpu/drm/i915/display/intel_dsi_vbt_defs.h"]="tools/intel_dsi_vbt_defs.h"
++map["include/drm/intel/pciids.h"]="lib/pciids.h"
++
++cd $KERNEL
++
++for infile in "${!map[@]}"; do
++	outfile=${map[$infile]}
++
++	echo "processing $infile -> $outfile"
++
++	last=
++	for commit in $(git log --reverse --pretty=%h $SINCE..HEAD -- $infile); do
++		if ! git cat-file -e $commit:$infile 2>/dev/null; then
++			continue
++		fi
++		if git show $commit:$infile | diff -q $IGT/$outfile - >/dev/null; then
++			last=$commit
++			break
++		fi
++	done
++
++	if [[ -z "$last" ]]; then
++		echo "last update to $infile not found"
++		continue
++	fi
++
++	for commit in $(git log --reverse --pretty=%h $last..HEAD -- $infile); do
++		prefix="${outfile%.*}"
++		base="$(basename $outfile)"
++		# ref=$(git cite $commit)
++		# alias: cite = log -1 --abbrev=12 '--format=%h (\"%s\")'
++		ref=$(git log -1 --abbrev=12 '--format=%h (\"%s\")' $commit)
++		git show $commit:$infile > $IGT/$outfile
++		cd $IGT
++		git commit -as \
++		    -m "${prefix}: sync ${base} with kernel commit $commit" \
++		    -m "Synchronize ${base} with kernel commit:" \
++		    -m "$ref"
++		cd -
++	done
++done
+-- 
+2.54.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8914 -> IGTPW_15188
-  * Linux: xe-5066-2edbd77a2045d12d30c95dbb5842b831e3da0035 -> xe-5067-b9819223b7e92173091b674c2212252b99ea6c4b
-
-  IGTPW_15188: 15188
-  IGT_8914: 8914
-  xe-5066-2edbd77a2045d12d30c95dbb5842b831e3da0035: 2edbd77a2045d12d30c95dbb5842b831e3da0035
-  xe-5067-b9819223b7e92173091b674c2212252b99ea6c4b: b9819223b7e92173091b674c2212252b99ea6c4b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15188/index.html
-
---===============0518971324953883891==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/chamelium/kms_chamelium_audio: Add suspend/resume audio tests (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166012/">https://patchwork.freedesktop.org/series/166012/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15188/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15188/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8914_BAT -&gt; XEIGTPW_15188_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8914 -&gt; IGTPW_15188</li>
-<li>Linux: xe-5066-2edbd77a2045d12d30c95dbb5842b831e3da0035 -&gt; xe-5067-b9819223b7e92173091b674c2212252b99ea6c4b</li>
-</ul>
-<p>IGTPW_15188: 15188<br />
-  IGT_8914: 8914<br />
-  xe-5066-2edbd77a2045d12d30c95dbb5842b831e3da0035: 2edbd77a2045d12d30c95dbb5842b831e3da0035<br />
-  xe-5067-b9819223b7e92173091b674c2212252b99ea6c4b: b9819223b7e92173091b674c2212252b99ea6c4b</p>
-
-</body>
-</html>
-
---===============0518971324953883891==--
