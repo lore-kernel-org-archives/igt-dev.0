@@ -4,27 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D35BCD4F25
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 10:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12941CD4F25
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 10:49:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 37A8E10E0DC;
-	Fri, 15 May 2026 10:42:11 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1863C10E0DC;
- Fri, 15 May 2026 10:41:53 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0732751841618651068=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B534910E0DC;
+	Fri, 15 May 2026 10:49:16 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bs8ySczU";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EC7010E0DC
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 10:48:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1778842140; x=1810378140;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=rXkh4ghHqw3kanX85Gt9ahnAC0tMPQ8k0GOK33QFP1M=;
+ b=bs8ySczUUmRaXcjUCyf/jNhkPXLbUI1GnYhbfStXSLWQwc8ph9a4679K
+ MmnJhFUJap+7TCXDzo36j0x8Es7KB7GueR79rumyO7+YgQH8/HrTJGo5x
+ 3M4K670Pxm8vVJHOTQGs4C+a04819VutHYmuhnF0OoKa642gFjmL/JpsB
+ rcTKaDJULV3DwuxARAX0/vCo1Ovc05+CNTbQOC8gvWVz0RDoPEbp92q0w
+ b68YHQsfnZV0xGMDhdwTwMSwyGxbVwouEC795h8+wFBeX2zV+ZLe7fqnM
+ YzonBOqPJRoCJF4ri31buSveFxfpIDlYECdKLopj26agOAYBntq/v7Ogx w==;
+X-CSE-ConnectionGUID: /B7Qj7mHTGOuXFShZ/j8Lg==
+X-CSE-MsgGUID: JNVdfH/PQhu99AO/uImN6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="91179876"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="91179876"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2026 03:48:59 -0700
+X-CSE-ConnectionGUID: iRLmYEulSh2qeiJ1FTGf7Q==
+X-CSE-MsgGUID: 5bO+vTuTTGigxKWcAMbCPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="236024116"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 03:48:56 -0700
+Date: Fri, 15 May 2026 12:48:54 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Fei Shao <fshao@chromium.org>, Jani <jani.nikula@intel.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>,
+ Manasi Navare <navaremanasi@google.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH i-g-t 1/2] tests/kms_cursor_crc: Add extra vblank to
+ support MediaTek platform
+Message-ID: <20260515104854.4cmbvbj5myt6syci@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Fei Shao <fshao@chromium.org>, Jani <jani.nikula@intel.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>,
+ Singo Chang <singo.chang@mediatek.com>,
+ Manasi Navare <navaremanasi@google.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+References: <20260515072934.495031-1-jason-jh.lin@mediatek.com>
+ <20260515072934.495031-2-jason-jh.lin@mediatek.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/chamelium/kms=5Fcha?=
- =?utf-8?q?melium=5Faudio=3A_Add_suspend/resume_audio_tests_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 15 May 2026 10:41:53 -0000
-Message-ID: <177884171309.75062.13713260106513155792@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260515062733.732263-1-jeevan.b@intel.com>
-In-Reply-To: <20260515062733.732263-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260515072934.495031-2-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,197 +88,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0732751841618651068==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Jason-JH,
+On 2026-05-15 at 15:28:39 +0800, Jason-JH Lin wrote:
+> Add MediaTek to vblank_wait_count=2 devices (like AMD/MSM) to ensure
+> cursor updates are fully synchronized before CRC capture.
+> 
+> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-== Series Details ==
+LGTM
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: tests/chamelium/kms_chamelium_audio: Add suspend/resume audio tests (rev4)
-URL   : https://patchwork.freedesktop.org/series/166012/
-State : failure
+Regards,
+Kamil
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8914 -> IGTPW_15188
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_15188 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_15188, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/index.html
-
-Participating hosts (42 -> 39)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_15188:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15188 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-jsl-5:          [DMESG-FAIL][5] ([i915#14808]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/bat-jsl-5/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/bat-jsl-5/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-arls-6:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#14808]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8914 -> IGTPW_15188
-
-  CI-20190529: 20190529
-  CI_DRM_18493: b9819223b7e92173091b674c2212252b99ea6c4b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15188: 15188
-  IGT_8914: 8914
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/index.html
-
---===============0732751841618651068==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/chamelium/kms_chamelium_audio: Add suspend/resume audio tests (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166012/">https://patchwork.freedesktop.org/series/166012/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8914 -&gt; IGTPW_15188</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_15188 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_15188, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_15188:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_hdmi_inject@inject-audio:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15188 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-jsl-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/bat-jsl-5/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808">i915#14808</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/bat-jsl-5/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8914/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15188/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8914 -&gt; IGTPW_15188</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18493: b9819223b7e92173091b674c2212252b99ea6c4b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15188: 15188<br />
-  IGT_8914: 8914</p>
-
-</body>
-</html>
-
---===============0732751841618651068==--
+> ---
+>  tests/kms_cursor_crc.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index 1e062c38b668..1249171dec56 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -345,9 +345,9 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>  		igt_display_commit(display);
+>  
+>  		/* Wait for two more vblanks since cursor updates may not
+> -		 * synchronized to the same frame on AMD HW
+> +		 * be synchronized to the same frame on AMD and MediaTek HW
+>  		 */
+> -		if (is_amdgpu_device(data->drm_fd))
+> +		if (is_amdgpu_device(data->drm_fd) || is_mtk_device(data->drm_fd))
+>  			igt_wait_for_vblank_count(data->crtc,
+>  						  data->vblank_wait_count);
+>  
+> @@ -1300,10 +1300,12 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>  		igt_require_pipe_crc(data.drm_fd);
+>  
+>  		/* Wait for two more vblanks since cursor updates may not
+> -		 * synchronized to the same frame on AMD HW
+> +		 * be synchronized to the same frame on AMD and MediaTek HW
+>  		 */
+>  		data.vblank_wait_count =
+> -			(is_msm_device(data.drm_fd) || is_amdgpu_device(data.drm_fd)) ? 2 : 1;
+> +			(is_msm_device(data.drm_fd) ||
+> +			 is_amdgpu_device(data.drm_fd) ||
+> +			 is_mtk_device(data.drm_fd)) ? 2 : 1;
+>  	}
+>  
+>  	data.cursor_max_w = cursor_width;
+> -- 
+> 2.43.0
+> 
