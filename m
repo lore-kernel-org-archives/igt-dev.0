@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7693FCD4F25
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 15:40:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D773BCD4F25
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 15:41:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 25EA310F56A;
-	Fri, 15 May 2026 15:40:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 83BFF10F56A;
+	Fri, 15 May 2026 15:41:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SFM7e3WB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N29WzaEx";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27A0510F56A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 15:40:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9885710F56A
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 15:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778859626; x=1810395626;
+ t=1778859631; x=1810395631;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7KR356VUHv7B1YEvcMsqTOKP0Acf6NDw8c7I4WrDmsM=;
- b=SFM7e3WBLgrDX4XgNJP9c2CSUM06IgAWIsmRegnk8djgnRO2FqYNEcAM
- 0tJkyyaniNjMwIUuDqE39Uz9YuF8BqU2bTwQJVlW7RrXotCz/Bx3Hm+jo
- Y/BWkRoK/0e0JG6a06+GHkxs2ffzSFiDM/bJGNzX0tcSn889uSfFTSQvh
- uUbZCIDHPB0T75g0AIv5pJjzj4HVazbgvXCuJvDBG4qkuNLd8O1dGeGGe
- mYyUnz8+wcyscCfHzwsDY7g58V4OAVSnXlQYBkX2aW/0ErGKS1u6bsAgu
- gh+ZYIHkdeDEKdHa5GiKbfdRNE+SSnD3c8aDUGVDZAIJbMzNgTFo4sbNj g==;
-X-CSE-ConnectionGUID: TPEpaDljQ2ij5MRIwBjAeQ==
-X-CSE-MsgGUID: Xay2nlk4QG2f8Si75hOguA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79936310"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="79936310"
+ bh=5BJ30U0B47Zj1PCxa64+TTv+UHeB8vHEENbz8UUYZfY=;
+ b=N29WzaExpt2kwt9iGW0Vug6luSS+rG1G0hNq37faruKJKuiIqyNV42uX
+ gEjsWk3FiwQH1IkmU8MMTjZyy7Ha8NQHlGCNnCNzbDEgxyhz69fptmwT5
+ s8BttRbANkhGQEIbvhfn5ToCh+IEg8t1Y8Dxdjalq4bnTFNxTsOB+I3k7
+ sOLKHvIxddSploF5+pQUo+7+5f5dKbNYw+wHXbdHTNZyJeagEFUCol3Pa
+ X3ftVOshIZ61oACBN4tAfBVq33Ko1yawRUKY7P21tbifCsKN6BV/QqIlF
+ wUjJR7tTkjr7juULZ+v32pOtx7g4MrfO8AA05FZzHQmrTrjOe0I99N+zw A==;
+X-CSE-ConnectionGUID: MAOFUv7GSuKAjBg4ob/gWw==
+X-CSE-MsgGUID: 8G6EhRJgRdmQgjE/a1fYhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79936317"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="79936317"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 08:40:26 -0700
-X-CSE-ConnectionGUID: YzG8NHNURSWenKEBhrqTjw==
-X-CSE-MsgGUID: TZznVYMXRX2GeL9OJTOABg==
+ 15 May 2026 08:40:30 -0700
+X-CSE-ConnectionGUID: ZCmofal5QHyl2D5tBJtBIA==
+X-CSE-MsgGUID: 9wqmY0PfS8e3ic4ozXgxrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="242720008"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="242720024"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 08:40:24 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 08:40:29 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
  mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v6 4/7] tests/kms_vrr: Add new test for DC3CO validation
- with LOBF
-Date: Fri, 15 May 2026 21:08:34 +0530
-Message-ID: <20260515153838.841048-5-jeevan.b@intel.com>
+Subject: [PATCH i-g-t v6 6/7] tests/intel/kms_pm_dc: Add new test for DC3CO
+ recovery after DC6
+Date: Fri, 15 May 2026 21:08:36 +0530
+Message-ID: <20260515153838.841048-7-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260515153838.841048-1-jeevan.b@intel.com>
 References: <20260515153838.841048-1-jeevan.b@intel.com>
@@ -70,83 +70,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add lobf-dc3co subtest to validate DC3CO entry during link-off
-between frames.
+Adds a test to verify DC3CO continues to function properly
+after a DC6 power cycle.
 
-v2: Fix the flow logic.
+v2: Use test_dc_state_dpms for the DPMS/DC6 cycle.
+    Drop redundant PSR re-enable after DPMS/DC6.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_vrr.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ tests/intel/kms_pm_dc.c | 51 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 6043d40f1..82eb8554a 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -29,6 +29,7 @@
-  */
- 
- #include "igt.h"
-+#include "igt_pm.h"
- #include "igt_psr.h"
- #include "i915/intel_drrs.h"
- #include "sw_sync.h"
-@@ -76,6 +77,9 @@
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 4497cffb7..0f216d9eb 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -55,6 +55,11 @@
+  * Description: Verify that DC3CO entry does not cause frame drops and successfully
+  *              enters the power state
   *
-  * SUBTEST: negative-basic
-  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
++ * SUBTEST: dc3co-after-dc6
++ * Description: Verify DC3CO entry is still functional after a DC6 entry and
++ *              exit cycle, ensuring DC3CO is not broken by deeper power state
++ *              transitions.
 + *
-+ * SUBTEST: lobf-dc3co
-+ * Description: Test DC3CO entry during LOBF.
-  */
- 
- #define NSECS_PER_SEC (1000000000ull)
-@@ -873,6 +877,25 @@ test_lobf(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
- 	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
+  * SUBTEST: dc5-dpms
+  * Description: Validate display engine entry to DC5 state while all connectors's
+  *              DPMS property set to OFF
+@@ -628,6 +633,25 @@ static int has_panels_without_dc_support(igt_display_t *display)
+ 	return external_panel;
  }
  
-+static void test_lobf_dc3co(data_t *data, igt_crtc_t *crtc,
-+			    igt_output_t *output, uint32_t flags)
++static void test_dc3co_after_dc6(data_t *data)
 +{
-+	unsigned long dc3co_count_before, dc3co_count_after;
++	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
++	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC6);
 +
-+	dc3co_count_before = igt_read_dc_counter(data->debugfs_fd,
-+						 IGT_INTEL_CHECK_DC3CO);
++	setup_output(data);
 +
-+	test_lobf(data, crtc, output, flags);
++	/* Enable PSR2/PR */
++	setup_dc3co(data);
 +
-+	dc3co_count_after = igt_read_dc_counter(data->debugfs_fd,
-+						IGT_INTEL_CHECK_DC3CO);
++	/* Trigger a DC6 cycle through DPMS */
++	test_dc_state_dpms(data, IGT_INTEL_CHECK_DC6);
 +
-+	igt_assert_f(dc3co_count_after > dc3co_count_before,
-+		     "DC3CO should be entered during link-off periods. "
-+		     "Before: %lu, After: %lu\n",
-+		     dc3co_count_before, dc3co_count_after);
++	/* Verify DC3CO still works after DC6 */
++	setup_videoplayback(data);
++	check_dc3co_with_videoplayback_like_load(data);
++	cleanup_dc3co_fbs(data);
 +}
 +
- static void test_cleanup(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
+ static void test_deep_pkgc_state(data_t *data)
  {
- 	igt_crtc_set_prop_value(crtc,
-@@ -1112,6 +1135,17 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
- 
- 			run_vrr_test(&data, test_lobf, TEST_LINK_OFF);
+ 	unsigned int pre_val = 0, cur_val = 0;
+@@ -801,6 +825,33 @@ int igt_main()
  		}
-+
-+		igt_describe("This test validates DC3CO entry during LOBF (Link-Off Between "
-+			     "Frames) periods while VRR is active and PSR is disabled.");
-+
-+		igt_subtest_with_dynamic("lobf-dc3co") {
-+			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 35);
-+
-+			igt_require_dc_counter(data.debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+
-+			run_vrr_test(&data, test_lobf_dc3co, TEST_LINK_OFF);
-+		}
  	}
  
- 	igt_fixture() {
++	igt_describe("Verify DC3CO entry is still functional after a DC6 entry "
++		     "and exit cycle");
++	igt_subtest_with_dynamic("dc3co-after-dc6") {
++		igt_dynamic("psr2") {
++			data.op_psr_mode = PSR_MODE_2;
++			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
++					     data.op_psr_mode, NULL));
++			igt_require_f(IS_TIGERLAKE(data.devid) ||
++				      intel_display_ver(data.devid) >= 35,
++				      "Platform does not support DC3CO with PSR2\n");
++			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
++				      "PC8+ residencies not supported\n");
++			test_dc3co_after_dc6(&data);
++		}
++
++		igt_dynamic("pr") {
++			data.op_psr_mode = PR_MODE;
++			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
++					     data.op_psr_mode, NULL));
++			igt_require_f(intel_display_ver(data.devid) >= 35,
++				      "Platform does not support DC3CO with Panel Replay\n");
++			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
++				      "PC8+ residencies not supported\n");
++			test_dc3co_after_dc6(&data);
++		}
++	}
++
+ 	igt_describe("This test validates display engine entry to DC5 state "
+ 		     "while PSR is active");
+ 	igt_subtest("dc5-psr") {
 -- 
 2.43.0
 
