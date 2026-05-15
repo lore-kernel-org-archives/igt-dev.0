@@ -4,77 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E069CD343F
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 12:50:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3BDDCD343F
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 13:17:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BF62510E105;
-	Fri, 15 May 2026 12:50:53 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="GSQzpOFT";
-	dkim-atps=neutral
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD57D10E128
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 12:50:36 +0000 (UTC)
-Received: by mail-dl1-f47.google.com with SMTP id
- a92af1059eb24-12c1a170a50so12818014c88.0
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 05:50:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1778849436; x=1779454236; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RncuURuf1rooxz4pDnJV5FNpnW3h2yPCravzIJKKZRY=;
- b=GSQzpOFTVglnJjrG5Li8dqgnKE1XbvwmDbVsfVQEyeCNtx5Dm+lP0M9KXjQIwasltt
- y0OR9GYPLuPU2risBuyf7aAow64sQdyMZQ8Dgf3f+dDX2ma2fEgU75hLMtWI1xJPoyuJ
- z15R+tinjeKMMXxZoBZUW00vTisA3/Jr0/3MLzwtwv6m5Dl6YgIp8jigG9ZmrFY0fOAI
- SRcfzkrI/0V5cBgzbzXFNjSyknLTTpHTCpAwdBlTE1IEle0FedrSCTU54ZRzrC01Bn3b
- PSxfOIlbAGkIZt3z0+C2uHzJmLH8cZjbpl5QPHiX/ixWpf0BOgvthCQdC8a3V/zNxArI
- YCxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1778849436; x=1779454236;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RncuURuf1rooxz4pDnJV5FNpnW3h2yPCravzIJKKZRY=;
- b=HW0iDJs1bjDAicn2gLYUoxT0JyTvUzViVgWEU4h2aKWlQE8epujCRTSXazCj6bnpTY
- ezPYob5kT94SL4Z34PJQNoJ9FhGmk0KkXXyagk5vHSDnCwmIm7hGbttV9lWRLfgnYbLp
- 6kLbybfllyMSE36w8sJAcDMGT74snHtFjlQcHb9nt/UlSgkT5HeYRuIggnhqweAciKUJ
- suhUHlL0iy6tXUrf8CHWCt7LtoVn1/kOKQpd4BM3+1H8YJs6nnttvwwne6kDCBfrlj+E
- QRGpbibeN5CqV+B00GRW8S9iLW3c3hf3fs+X1pSvl1HJPe+tSyim9AdC+bZmf+BkCHf7
- QTow==
-X-Gm-Message-State: AOJu0Yz404IkiRvYySdgRdq2VYJEfiTiwCVbofMo6REOrCwkQtXe7pBd
- DMgSKe10KuqWOxBsr2mr4fG0tkUBGqgwMbjiIXgDKxiQscXyPRBdZAu4
-X-Gm-Gg: Acq92OFaRGH5/9oMhFK9r+mKtZF3V0t+YF9PNqiVWupD4bC5rYNftUhnEHt9SD0x/8o
- O8vlSoBShI1D8Kh66DT7clejYz1dG/H8nAGYENLMubkCclrMC6LzI111ccEznDCnh4NLl7cDnEU
- 9d7FeZY0ZCfR70RZ2yvP6W8aPpbePatSd6241F3WeS8M0I5VyXcp3ixZNaLbB3/Mr5g/ESI3U/y
- 6Hvdj3BAXpa4g/uWJTLiC8BMDCkPE4LciveGbZIFaQrb80UecT5szRvKbqT0CVoDCxJxxdJY78V
- BIA+FqlCENRFuGcb+lsaDqWdJB/FQdEjgKGn/HcUXfwyiPJoqKjdoEfWROZqC3VS7aj5PJ5gPzH
- E87ZuHUmoWfsOubTi8gJiYvCwUu7HCqrNejTCIt1nXTZdYazzGHAUZXBtOtNPh0Ap4J5bUbwGth
- PXp/KSZdxJao7s7kqiYBuJ4jGhBvjaRNsqGvqrHh3kWBqfW663t7RKs368644tUwNcsA==
-X-Received: by 2002:a05:7022:251f:b0:133:1d3d:f93e with SMTP id
- a92af1059eb24-13504a4f6bfmr1565054c88.42.1778849435579; 
- Fri, 15 May 2026 05:50:35 -0700 (PDT)
-Received: from [192.55.54.45] ([192.55.54.45])
- by smtp.gmail.com with ESMTPSA id
- a92af1059eb24-134cbdcf140sm9701929c88.5.2026.05.15.05.50.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 May 2026 05:50:35 -0700 (PDT)
-Message-ID: <b2009494-39ab-4769-b310-504be9d957d6@gmail.com>
-Date: Fri, 15 May 2026 15:50:27 +0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id 94C8B10E158;
+	Fri, 15 May 2026 13:17:06 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D71D10E158;
+ Fri, 15 May 2026 13:16:48 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2759468055272044390=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,v2,1/2] tests/kms_plane: Restructure
- planar-pixel-format-settings test and make it Intel only
-To: =?UTF-8?Q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Vidya Srinivas <vidya.srinivas@intel.com>
-References: <20260506184936.76492-2-juhapekka.heikkila@gmail.com>
- <68b6e875-2806-8bf7-7a7e-29b61cf2a316@intel.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-In-Reply-To: <68b6e875-2806-8bf7-7a7e-29b61cf2a316@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2Cv6=2C1/2=5D_Revert_=22tests/kms=5Fvrr=3A_Start_virtual_RR_te?=
+ =?utf-8?q?st_above_midpoint_to_avoid_mode_fallback=22?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lee Shawn C" <shawn.c.lee@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 15 May 2026 13:16:48 -0000
+Message-ID: <177885100863.75062.14792022510722478151@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <shawn.c.lee@intel.com>
+In-Reply-To: <shawn.c.lee@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,454 +38,486 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============2759468055272044390==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: series starting with [i-g-t,v6,1/2] Revert "tests/kms_vrr: Start virtual RR test above midpoint to avoid mode fallback"
+URL   : https://patchwork.freedesktop.org/series/166620/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8916_BAT -> XEIGTPW_15189_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 13)
+------------------------------
+
+  Additional (2): bat-adlp-7 bat-bmg-3 
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8916_BAT and XEIGTPW_15189_BAT:
+
+### New IGT tests (20) ###
+
+  * igt@xe_exec_basic@mgpu-atomic-op-conflict:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-atomic-op-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-coherency-basic:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-coherency-conflict:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-coherency-fail-basic:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-coherency-fail-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-coherency-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-concurrent-access-basic:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-concurrent-access-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-latency-basic:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-latency-copy-basic:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-latency-copy-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-latency-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-migration-basic:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-migration-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-pagefault-basic:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-pagefault-conflict:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-pagefault-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-xgpu-access-basic:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_basic@mgpu-xgpu-access-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15189_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#2244] / [Intel XE#455])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+
+  * igt@xe_evict@evict-beng-small:
+    - bat-adlp-7:         NOTRUN -> [SKIP][2] ([Intel XE#261] / [Intel XE#5564] / [Intel XE#688]) +9 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_evict@evict-beng-small.html
+
+  * igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#5563] / [Intel XE#688]) +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html
+
+  * igt@xe_exec_balancer@twice-virtual-userptr-invalidate:
+    - bat-adlp-7:         NOTRUN -> [SKIP][4] ([Intel XE#7482]) +17 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_exec_balancer@twice-virtual-userptr-invalidate.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
+    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#288] / [Intel XE#5561]) +32 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:
+    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#2229] / [Intel XE#455]) +2 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#2229] / [Intel XE#5488])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  * igt@xe_mmap@vram:
+    - bat-adlp-7:         NOTRUN -> [SKIP][8] ([Intel XE#1008] / [Intel XE#5591])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-adlp-7:         NOTRUN -> [SKIP][9] ([Intel XE#977])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-adlp-7:         NOTRUN -> [SKIP][10] ([Intel XE#2838] / [Intel XE#979])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-adlp-7:         NOTRUN -> [SKIP][11] ([Intel XE#979])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:
+    - bat-bmg-3:          NOTRUN -> [SKIP][12] ([Intel XE#6566]) +3 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html
+
+  
+  [Intel XE#1008]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#5488]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5488
+  [Intel XE#5561]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5561
+  [Intel XE#5563]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5563
+  [Intel XE#5564]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5564
+  [Intel XE#5591]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5591
+  [Intel XE#6566]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#7482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
 
 
-On 12/05/2026 00.59, Michał Grzelak wrote:
-> Hi JP,
-> 
-> On Wed, 6 May 2026, Juha-Pekka Heikkila wrote:
->> Separate different planar pixel format tests onto their own dynamic 
->> subtests
->> to make it easier for debugging. All tests here are only testing Intel
->> hw related restrictions hence it make zero sense to run this on vkms or
-> 
-> s/make/makes/
-> 
->> other drivers. I added back the original limitation to make these 
->> Intel only.
->>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
->> ---
->> tests/kms_plane.c | 322 ++++++++++++++++++++++++++--------------------
->> 1 file changed, 186 insertions(+), 136 deletions(-)
->>
->> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
->> index 7962c733a..6c08f1de8 100644
->> --- a/tests/kms_plane.c
->> +++ b/tests/kms_plane.c
->> @@ -41,8 +41,25 @@
->> #include "xe/xe_query.h"
->>
->> /**
->> - * SUBTEST: planar-pixel-format-settings
->> - * Description: verify planar settings for pixel format are handled 
->> correctly
->> + * SUBTEST: planar-pixel-format-settings@nv12-odd-width
->> + * Description: Verify odd-width (257px) NV12 framebuffer is rejected 
->> by the
->> + *              kernel on Intel hardware (display ver < 20 expects - 
->> EINVAL).
->> + * Driver requirement: i915, xe
->> + *
->> + * SUBTEST: planar-pixel-format-settings@nv12-odd-height
->> + * Description: Verify odd-height (257px) NV12 framebuffer is 
->> rejected by the
->> + *              kernel on Intel hardware (display ver < 20 or >= 35 
->> expects -EINVAL).
->> + * Driver requirement: i915, xe
->> + *
->> + * SUBTEST: planar-pixel-format-settings@nv12-odd-horizontal-pan
->> + * Description: Verify odd horizontal pan on NV12 framebuffer is 
->> rejected by
->> + *              the kernel on Intel hardware (display ver < 35 
->> expects -EINVAL).
->> + * Driver requirement: i915, xe
->> + *
->> + * SUBTEST: planar-pixel-format-settings@p016-odd-vertical-pan
->> + * Description: Verify odd vertical pan on P016 framebuffer and check 
->> CRC
->> + *              matches a reference XRGB8888 blue fill on Intel 
->> hardware.
->> + * Driver requirement: i915, xe
->>  *
->>  * SUBTEST: plane-position-%s
->>  * Description: Verify plane position using two planes to create a 
->> %arg[1]
->> @@ -1354,165 +1371,197 @@ test_pixel_formats(data_t *data, igt_crtc_t 
->> *crtc)
->>     igt_remove_fb(data->drm_fd, &primary_fb);
->> }
->>
->> -static void test_planar_settings(data_t *data)
->> +static igt_plane_t *
->> +planar_test_setup(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
->> {
->> -    igt_display_t *display = &data->display;
->> -    igt_crtc_t *crtc;
->> -    igt_output_t *output;
->> -    igt_fb_t fb, fb_ref;
->> -    igt_plane_t *primary;
->> -    igt_crc_t crc, crc_ref;
->> -    int devid;
->> -    int display_ver = -1;
->> +    igt_display_reset(&data->display);
->> +    igt_output_set_crtc(output, crtc);
->> +    igt_display_commit_atomic(&data->display,
->> +                  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->> +    return igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->> +}
->> +
->> +static void
->> +test_nv12_odd_width(data_t *data, igt_crtc_t *crtc, igt_output_t 
->> *output,
->> +            int display_ver)
->> +{
->> +    igt_plane_t *primary = planar_test_setup(data, crtc, output);
->> +    igt_fb_t fb;
->> +    int expected_rval = display_ver >= 20 ? 0 : -EINVAL;
->>     int rval;
->> -    bool is_vkms = false;
->>
->> -    /*
->> -     * If here is added non-intel tests below require will need to be
->> -     * changed to if(..)
->> -     */
->> -    igt_require_f(data->display.is_atomic, "Atomic mode-set not 
->> supported\n");
->> -    if (is_intel_device(data->drm_fd)) {
->> -        igt_require_intel(data->drm_fd);
->> -        devid = intel_get_drm_devid(data->drm_fd);
->> -        igt_require(intel_display_ver(devid) >= 9);
->> -        display_ver = intel_display_ver(devid);
->> -        igt_require(display_ver >= 9);
->> -    } else if (is_vkms_device(data->drm_fd)) {
->> -        is_vkms = true;
->> +    if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
->> +                      DRM_FORMAT_MOD_LINEAR)) {
->> +        igt_debug("Odd width NV12 test skipped - format/mod not 
->> supported\n");
->> +        return;
->>     }
->>
->> -    crtc = igt_first_crtc_with_single_output(display, &output);
->> +    igt_create_fb(data->drm_fd, 257, 256,
->> +              DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
->> +    igt_plane_set_fb(primary, &fb);
->> +    rval = igt_display_try_commit_atomic(&data->display,
->> +                         DRM_MODE_ATOMIC_ALLOW_MODESET |
->> +                         DRM_MODE_ATOMIC_TEST_ONLY,
->> +                         NULL);
->> +    igt_plane_set_fb(primary, NULL);
->> +    igt_remove_fb(data->drm_fd, &fb);
->> +    igt_assert_f(rval == expected_rval,
->> +             "Odd width NV12 framebuffer: got %d, expected %d\n",
->> +             rval, expected_rval);
->> +}
->>
->> -    igt_output_set_crtc(output, crtc);
->> -    primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->> +static void
->> +test_nv12_odd_height(data_t *data, igt_crtc_t *crtc, igt_output_t 
->> *output,
->> +             int display_ver)
->> +{
->> +    igt_plane_t *primary = planar_test_setup(data, crtc, output);
->> +    igt_fb_t fb;
->> +    int expected_rval = (display_ver >= 20 && display_ver < 35) ? 0 : 
->> -EINVAL;
->> +    int rval;
->>
->> -    igt_display_commit_atomic(&data->display,
->> -                  DRM_MODE_ATOMIC_ALLOW_MODESET,
->> -                  NULL);
->> -    /* test against intel_plane_check_src_coordinates() in i915 */
->> -    if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
->> -                     DRM_FORMAT_MOD_LINEAR)) {
->> -        int expected_rval = -EINVAL;
->> -
->> -        if (display_ver >= 20 || is_vkms)
->> -            expected_rval = 0;
->> -
->> -        igt_create_fb(data->drm_fd, 257, 256,
->> -                  DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
->> -        igt_plane_set_fb(primary, &fb);
->> -        rval = igt_display_try_commit_atomic(&data->display,
->> -                             DRM_MODE_ATOMIC_ALLOW_MODESET |
->> -                             DRM_MODE_ATOMIC_TEST_ONLY,
->> -                             NULL);
->> -        igt_remove_fb(data->drm_fd, &fb);
->> -        igt_assert_f(rval == expected_rval, "Odd width NV12 
->> framebuffer\n");
->> -    } else {
->> -        igt_debug("Odd width NV12 framebuffer test skipped\n");
->> +    if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
->> +                      DRM_FORMAT_MOD_LINEAR)) {
->> +        igt_debug("Odd height NV12 test skipped - format/mod not 
->> supported\n");
->> +        return;
->> +    }
->> +
->> +    igt_create_fb(data->drm_fd, 256, 257,
->> +              DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
->> +    igt_plane_set_fb(primary, &fb);
->> +    rval = igt_display_try_commit_atomic(&data->display,
->> +                         DRM_MODE_ATOMIC_ALLOW_MODESET |
->> +                         DRM_MODE_ATOMIC_TEST_ONLY,
->> +                         NULL);
->> +    igt_plane_set_fb(primary, NULL);
->> +    igt_remove_fb(data->drm_fd, &fb);
->> +    igt_assert_f(rval == expected_rval,
->> +             "Odd height NV12 framebuffer: got %d, expected %d\n",
->> +             rval, expected_rval);
->> +}
->> +
->> +static void
->> +test_nv12_odd_horizontal_pan(data_t *data, igt_crtc_t *crtc,
->> +                 igt_output_t *output, int display_ver)
->> +{
->> +    igt_plane_t *primary = planar_test_setup(data, crtc, output);
->> +    igt_fb_t fb;
->> +    int expected_rval = display_ver >= 35 ? 0 : -EINVAL;
->> +    int rval;
->> +
->> +    if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
->> +                      DRM_FORMAT_MOD_LINEAR)) {
->> +        igt_debug("Odd h-pan NV12 test skipped - format/mod not 
->> supported\n");
->> +        return;
->>     }
->>
->> -    /* test against intel_plane_check_src_coordinates() in i915 */
->> -    if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
->> -                     DRM_FORMAT_MOD_LINEAR)) {
->> -        int expected_rval = -EINVAL;
->> +    igt_create_fb(data->drm_fd, 810, 590,
->> +              DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
->> +    igt_plane_set_fb(primary, &fb);
->> +    igt_plane_set_size(primary, 810, 590);
->> +    igt_plane_set_position(primary, -501, 200);
->> +    rval = igt_display_try_commit_atomic(&data->display,
->> +                         DRM_MODE_ATOMIC_ALLOW_MODESET |
->> +                         DRM_MODE_ATOMIC_TEST_ONLY,
->> +                         NULL);
->> +    igt_plane_set_fb(primary, NULL);
->> +    igt_remove_fb(data->drm_fd, &fb);
->> +    igt_assert_f(rval == expected_rval,
->> +             "Odd horizontal pan NV12 framebuffer: got %d, expected 
->> %d\n",
->> +             rval, expected_rval);
->> +}
->>
->> -        if ((display_ver >= 20 && display_ver < 35) || is_vkms)
->> -            expected_rval = 0;
->> +static void
->> +test_p016_odd_vertical_pan(data_t *data, igt_crtc_t *crtc,
->> +               igt_output_t *output, int display_ver)
->> +{
->> +    igt_plane_t *primary = planar_test_setup(data, crtc, output);
->> +    igt_fb_t fb, fb_ref;
->> +    igt_crc_t crc, crc_ref;
->> +    int expected_rval = (display_ver >= 20 && display_ver < 35) ? 0 : 
->> -EINVAL;
->> +    int rval;
->>
->> -        igt_create_fb(data->drm_fd, 256, 257,
->> -                  DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
->> -        igt_plane_set_fb(primary, &fb);
->> -        rval = igt_display_try_commit_atomic(&data->display,
->> -                             DRM_MODE_ATOMIC_ALLOW_MODESET |
->> -                             DRM_MODE_ATOMIC_TEST_ONLY,
->> -                             NULL);
->> -        igt_remove_fb(data->drm_fd, &fb);
->> -        igt_assert_f(rval == expected_rval, "Odd height NV12 
->> framebuffer\n");
->> -    } else {
->> -        igt_debug("Odd height NV12 framebuffer test skipped\n");
->> +    if (!igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
->> +                      DRM_FORMAT_MOD_LINEAR)) {
->> +        igt_debug("Odd v-pan P016 test skipped - format/mod not 
->> supported\n");
->> +        return;
->>     }
->>
->> -    /* test against intel_plane_check_src_coordinates() in i915 */
->> -    if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
->> -                     DRM_FORMAT_MOD_LINEAR)) {
->> -        int expected_rval = -EINVAL;
->> +    igt_create_color_fb(data->drm_fd, 256, 260,
-> 
-> [...]
-> 
->> +                DRM_FORMAT_P016, DRM_FORMAT_MOD_LINEAR,
->> +                0.0, 0.0, 1.0, &fb);
->>
->> -        if (display_ver >= 35 || is_vkms)
->> -            expected_rval = 0;
->> +    igt_plane_set_fb(primary, &fb);
->> +    igt_plane_set_position(primary, 1, 1);
->> +    igt_plane_set_size(primary, 256, 256);
->> +    igt_fb_set_position(&fb, primary, 0, 3);
->> +    igt_fb_set_size(&fb, primary, 256, 256);
-> 
-> I get it's a restructure, but is it okay that we created 256x260
-> framebuffer and here we are setting it's size to 256x256?
+Build changes
+-------------
 
-That just set the src size. All these current tests for planar settings 
-are playing with src/dst sizes trying to hit specific special cases, and 
-on the same timee not hit some undelated issue.
+  * IGT: IGT_8916 -> IGTPW_15189
 
-> 
-> If I am missing something and the comment doesn't really apply:
-> 
-> Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
-> 
->> +
->> +    rval = igt_display_try_commit_atomic(&data->display,
->> +                         DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +                         NULL);
->> +    if (rval == 0) {
->> +        set_legacy_lut(data, crtc, LUT_MASK);
->> +        igt_wait_for_vblank_count(crtc, 1);
->> +
->> +        data->pipe_crc = igt_crtc_crc_new(crtc,
->> +                          IGT_PIPE_CRC_SOURCE_AUTO);
->> +        igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
->> +
->> +        /* reference: plain blue XRGB8888 of the same visible size */
->> +        igt_create_color_fb(data->drm_fd, 256, 256,
->> +                    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->> +                    0.0, 0.0, 1.0, &fb_ref);
->> +        igt_plane_set_fb(primary, &fb_ref);
->> +        rval = igt_display_try_commit_atomic(&data->display,
->> +                             DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +                             NULL);
->>
->> -        igt_create_fb(data->drm_fd, 810, 590,
->> -                  DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
->> -        igt_plane_set_fb(primary, &fb);
->> -        igt_plane_set_size(primary, 810, 590);
->> -        igt_plane_set_position(primary, -501, 200);
->> -        rval = igt_display_try_commit_atomic(&data->display, 
->> DRM_MODE_ATOMIC_ALLOW_MODESET |
->> -                             DRM_MODE_ATOMIC_TEST_ONLY, NULL);
->> +        igt_pipe_crc_collect_crc(data->pipe_crc, &crc_ref);
->> +        set_legacy_lut(data, crtc, 0xffff);
->> +        igt_pipe_crc_free(data->pipe_crc);
->> +        data->pipe_crc = NULL;
->>
->> -        igt_remove_fb(data->drm_fd, &fb);
->> -        igt_assert_f(rval == expected_rval, "Odd horizontal pan NV12 
->> framebuffer\n");
->> +        igt_plane_set_fb(primary, NULL);
->> +        igt_remove_fb(data->drm_fd, &fb_ref);
->> +        igt_assert_crc_equal(&crc_ref, &crc);
->>     } else {
->> -        igt_debug("Odd horizontal pan NV12 framebuffer test skipped\n");
->> +        igt_plane_set_fb(primary, NULL);
->>     }
->>
->> -    if (igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
->> -                        DRM_FORMAT_MOD_LINEAR)) {
->> -        int expected_rval = -EINVAL;
->> +    igt_remove_fb(data->drm_fd, &fb);
->> +    igt_assert_f(rval == expected_rval,
->> +             "Odd vertical pan P016 framebuffer: got %d, expected %d\n",
->> +             rval, expected_rval);
->> +}
->>
->> -        if ((display_ver >= 20 && display_ver < 35) || is_vkms)
->> -            expected_rval = 0;
->> +static void test_planar_settings(data_t *data)
->> +{
->> +    igt_display_t *display = &data->display;
->> +    igt_crtc_t *crtc;
->> +    igt_output_t *output;
->> +    int display_ver;
->>
->> -        igt_create_color_fb(data->drm_fd, 256, 260,
->> -                  DRM_FORMAT_P016, DRM_FORMAT_MOD_LINEAR,
->> -                  0.0, 0.0, 1.0,
->> -                  &fb);
->> +    igt_require(display->is_atomic);
->>
->> -        igt_plane_set_fb(primary, &fb);
->> -        igt_plane_set_position(primary, 1, 1);
->> -        igt_plane_set_size(primary, 256, 256);
->> +    /* All sub-tests below are Intel-specific. */
->> +    igt_require_intel(data->drm_fd);
->> +    display_ver = intel_display_ver(intel_get_drm_devid(data->drm_fd));
->> +    igt_require(display_ver >= 9);
-> 
-> BTW, now this check looks much easier to read. :)
-> 
-> BR,
-> Michał
-> 
->>
->> -        /* set odd v pan and check with crc fb didn't break */
->> -        igt_fb_set_position(&fb, primary, 0, 3);
->> -        igt_fb_set_size(&fb, primary, 256, 256);
->> -        rval = igt_display_try_commit_atomic(&data->display,
->> -                             DRM_MODE_ATOMIC_ALLOW_MODESET,
->> -                             NULL);
->> -        if (rval == 0) {
->> -            set_legacy_lut(data,
->> -                       crtc,
->> -                       LUT_MASK);
->> -            igt_wait_for_vblank_count(crtc,
->> -                          1);
->> -            data->pipe_crc = igt_crtc_crc_new(crtc,
->> -                              IGT_PIPE_CRC_SOURCE_AUTO);
->> -            igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
->> -
->> -            igt_create_color_fb(data->drm_fd, 256, 256,
->> -                DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->> -                0.0, 0.0, 1.0,
->> -                &fb_ref);
->> -
->> -            igt_plane_set_fb(primary, &fb_ref);
->> -            rval = igt_display_try_commit_atomic(&data->display,
->> -                             DRM_MODE_ATOMIC_ALLOW_MODESET,
->> -                             NULL);
->> +    crtc = igt_first_crtc_with_single_output(display, &output);
->> +    igt_require_f(crtc, "No suitable output/crtc pair found\n");
->>
->> -            igt_pipe_crc_collect_crc(data->pipe_crc, &crc_ref);
->> -            set_legacy_lut(data,
->> -                       crtc,
->> -                       0xffff);
->> +    igt_dynamic("nv12-odd-width")
->> +        test_nv12_odd_width(data, crtc, output, display_ver);
->>
->> -            igt_pipe_crc_free(data->pipe_crc);
->> -            data->pipe_crc = NULL;
->> +    igt_dynamic("nv12-odd-height")
->> +        test_nv12_odd_height(data, crtc, output, display_ver);
->>
->> -            igt_remove_fb(data->drm_fd, &fb_ref);
->> -            igt_assert_crc_equal(&crc_ref, &crc);
->> -        }
->> +    igt_dynamic("nv12-odd-horizontal-pan")
->> +        test_nv12_odd_horizontal_pan(data, crtc, output, display_ver);
->>
->> -        igt_remove_fb(data->drm_fd, &fb);
->> -        igt_assert_f(rval == expected_rval, "Odd vertical pan P016 
->> framebuffer\n");
->> -    } else {
->> -        igt_debug("Odd vertical pan P016 framebuffer test skipped\n");
->> -    }
->> +    igt_dynamic("p016-odd-vertical-pan")
->> +        test_p016_odd_vertical_pan(data, crtc, output, display_ver);
->> }
->>
->> static bool is_pipe_limit_reached(int count)
->> @@ -1621,8 +1670,9 @@ run_tests_for_pipe_plane(data_t *data)
->>         run_test(data, dynamic_test_handler);
->>     }
->>
->> -    igt_describe("verify planar settings for pixel format are 
->> accepted or rejected correctly");
->> -    igt_subtest_f("planar-pixel-format-settings")
->> +    igt_describe("verify planar pixel format settings are accepted or 
->> rejected correctly"
->> +             " on Intel hardware");
->> +    igt_subtest_with_dynamic_f("planar-pixel-format-settings")
->>         test_planar_settings(data);
->> }
->>
->>
+  IGTPW_15189: 75d6bfd1deeb5044a798ac07c1cd51f142c98156 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8916: cd3b0cdd9e11ee80d89f40ffd5e5ac916d041ffb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5067-b9819223b7e92173091b674c2212252b99ea6c4b: b9819223b7e92173091b674c2212252b99ea6c4b
 
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/index.html
+
+--===============2759468055272044390==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v6,1/2] Revert &quot;tests/kms_vrr: Start virtual RR test above midpoint to avoid mode fallback&quot;</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166620/">https://patchwork.freedesktop.org/series/166620/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8916_BAT -&gt; XEIGTPW_15189_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 13)</h2>
+<p>Additional (2): bat-adlp-7 bat-bmg-3 </p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8916_BAT and XEIGTPW_15189_BAT:</p>
+<h3>New IGT tests (20)</h3>
+<ul>
+<li>
+<p>igt@xe_exec_basic@mgpu-atomic-op-conflict:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-atomic-op-prefetch:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-coherency-basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-coherency-conflict:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-coherency-fail-basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-coherency-fail-prefetch:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-coherency-prefetch:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-concurrent-access-basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-concurrent-access-prefetch:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-latency-basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-latency-copy-basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-latency-copy-prefetch:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-latency-prefetch:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-migration-basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-migration-prefetch:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-pagefault-basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-pagefault-conflict:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-pagefault-prefetch:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-xgpu-access-basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@mgpu-xgpu-access-prefetch:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15189_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5564">Intel XE#5564</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5563">Intel XE#5563</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_balancer@twice-virtual-userptr-invalidate:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_exec_balancer@twice-virtual-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482">Intel XE#7482</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5561">Intel XE#5561</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5488">Intel XE#5488</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008">Intel XE#1008</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5591">Intel XE#5591</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-adlp-7/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15189/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566">Intel XE#6566</a>) +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8916 -&gt; IGTPW_15189</li>
+</ul>
+<p>IGTPW_15189: 75d6bfd1deeb5044a798ac07c1cd51f142c98156 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8916: cd3b0cdd9e11ee80d89f40ffd5e5ac916d041ffb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5067-b9819223b7e92173091b674c2212252b99ea6c4b: b9819223b7e92173091b674c2212252b99ea6c4b</p>
+
+</body>
+</html>
+
+--===============2759468055272044390==--
