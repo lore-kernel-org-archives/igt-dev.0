@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F40CD4F25
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 15:35:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53723CD343F
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 15:35:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D2A1310F56A;
-	Fri, 15 May 2026 15:35:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0025110F56A;
+	Fri, 15 May 2026 15:35:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LIrX7c90";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HYmc6lcd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF5B510F56A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 15:33:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB98410F56C
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 15:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778859227; x=1810395227;
+ t=1778859232; x=1810395232;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=s72v6XciSc3j6hE3QM7uL6dzkV+IwNO+yHCtWWWLa3o=;
- b=LIrX7c90gCRfVdj9FQkEjTG74396YFDRmPwc3QBXdPkzLsX8E3pktXOR
- 9djhhn5qanyHlYvVtx75Sn5k3cMYh1zD6wtLjcb1MwsPjjv4fD5a/HPi1
- S2RWeQsZS7zJMaR0UJtUTq/nlLriVL9tTG3k7EurzlwLxZR8WO1AkH72I
- bw6uh3awztMuMSJL6o+aFgf+qtz0ceLo7QnTuLfwd0fE4gd3hNhuuLjdV
- NJW+6spbzL/BePirlETwTr/FJ0vOdWV56aicghqIUDqzy87o6or1u2Ofu
- zW5qzhqvX9w7IVDcJD6MtQ9EqHe1SBCUO8OaIzeIG6czaklFpxgprEp7I Q==;
-X-CSE-ConnectionGUID: Hug7OwR6S5CbVPs3T/lZTQ==
-X-CSE-MsgGUID: +LTZ7iSDTieekOwqe4abjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79671727"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="79671727"
+ bh=7KR356VUHv7B1YEvcMsqTOKP0Acf6NDw8c7I4WrDmsM=;
+ b=HYmc6lcdQOu9vFjHPk7WUP6PCqFLzLzHIDHtXd1ejDg95r8Vrt+LMOpF
+ WK/JD0HJD9UoO0INS2lPPfzsGBcuZtqQOLN82Hm/7/iVXr6jV4sUAIXMI
+ 1H0X8gSfewuuNwrg07lj+GkMMj+sAZgDAYo2KUyIwPdulAvbwuEP5Iaa+
+ Y7Fcs1Evx0DPhrGb8rqZ+VE8i50tno2/bCyPgekNIfStv//6e+XsDf+GD
+ 1fzAwXiSmK1FilC3/PnW25xWGyFR29jVr78QBZSgHZKwCgk3mckGUGXij
+ ZF6UIw9x9QOIYVaHYFWh4B+MQUg455n8mkUzGqLZTbprrqjpwT8lgQ0AT g==;
+X-CSE-ConnectionGUID: waoGh5G9QdeIYHlJcV5G3w==
+X-CSE-MsgGUID: tdDAkINzTa2cy6cQHL004w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79671730"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="79671730"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 08:33:47 -0700
-X-CSE-ConnectionGUID: Tf1N9hy6R1SU5LPHlltoxg==
-X-CSE-MsgGUID: Xp5IAcQBTry3QYqldIVgmw==
+ 15 May 2026 08:33:51 -0700
+X-CSE-ConnectionGUID: rb5elJWLSue3pw0DosKz/g==
+X-CSE-MsgGUID: KQrE6yxWT3yoteQ+L6ukMw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="235678019"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="235678024"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 08:33:45 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 08:33:48 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
  mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v6 3/7] tests/intel/kms_pm_dc: Enable DC3CO test for
- PSR2/PR modes
-Date: Fri, 15 May 2026 21:01:55 +0530
-Message-ID: <20260515153159.838667-4-jeevan.b@intel.com>
+Subject: [PATCH i-g-t v6 4/7] tests/kms_vrr: Add new test for DC3CO validation
+ with LOBF
+Date: Fri, 15 May 2026 21:01:56 +0530
+Message-ID: <20260515153159.838667-5-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260515153159.838667-1-jeevan.b@intel.com>
 References: <20260515153159.838667-1-jeevan.b@intel.com>
@@ -70,98 +70,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Enable DC3CO with PSR2/PR mode on TGL and for platforms with
-display version greater than 35.
+Add lobf-dc3co subtest to validate DC3CO entry during link-off
+between frames.
 
-v2: Fix debug, remove trailing dash and merge mode and char to
-    single strcut array.
-v3: Minor cosmetic changes.
-v4: Update commit message, use data->op_psr_mode directly, keep
-    psr_wait_entry, and refresh dc3co description to cover PSR2/PR.
+v2: Fix the flow logic.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_pm_dc.c | 45 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 36 insertions(+), 9 deletions(-)
+ tests/kms_vrr.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 27fa5dc39..96c96e2db 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -48,8 +48,8 @@
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 6043d40f1..82eb8554a 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -29,6 +29,7 @@
+  */
  
- /**
-  * SUBTEST: dc3co-vpb-simulation
-- * Description: Make sure that system enters DC3CO when PSR2 is active and system
-- *              is in SLEEP state
-+ * Description: Make sure that system enters DC3CO when PSR2 or PR is active and
-+ *              system is in SLEEP state
+ #include "igt.h"
++#include "igt_pm.h"
+ #include "igt_psr.h"
+ #include "i915/intel_drrs.h"
+ #include "sw_sync.h"
+@@ -76,6 +77,9 @@
   *
-  * SUBTEST: dc5-dpms
-  * Description: Validate display engine entry to DC5 state while all connectors's
-@@ -110,6 +110,11 @@ typedef struct {
- 	bool runtime_suspend_disabled;
- } data_t;
+  * SUBTEST: negative-basic
+  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
++ *
++ * SUBTEST: lobf-dc3co
++ * Description: Test DC3CO entry during LOBF.
+  */
  
-+struct dc3co_test_mode {
-+	enum psr_mode mode;
-+	const char *name;
-+};
-+
- static void assert_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count);
- 
- static void set_output_on_pipe_b(data_t *data)
-@@ -323,7 +328,8 @@ static void setup_dc3co(data_t *data)
- {
- 	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode, data->output);
- 	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output),
--		      "PSR2 is not enabled\n");
-+		      "%s is not enabled\n",
-+		      data->op_psr_mode == PSR_MODE_2 ? "PSR2" : "Panel Replay");
+ #define NSECS_PER_SEC (1000000000ull)
+@@ -873,6 +877,25 @@ test_lobf(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
+ 	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
  }
  
- static void test_dc3co_vpb_simulation(data_t *data)
-@@ -658,12 +664,33 @@ int igt_main()
- 	}
++static void test_lobf_dc3co(data_t *data, igt_crtc_t *crtc,
++			    igt_output_t *output, uint32_t flags)
++{
++	unsigned long dc3co_count_before, dc3co_count_after;
++
++	dc3co_count_before = igt_read_dc_counter(data->debugfs_fd,
++						 IGT_INTEL_CHECK_DC3CO);
++
++	test_lobf(data, crtc, output, flags);
++
++	dc3co_count_after = igt_read_dc_counter(data->debugfs_fd,
++						IGT_INTEL_CHECK_DC3CO);
++
++	igt_assert_f(dc3co_count_after > dc3co_count_before,
++		     "DC3CO should be entered during link-off periods. "
++		     "Before: %lu, After: %lu\n",
++		     dc3co_count_before, dc3co_count_after);
++}
++
+ static void test_cleanup(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
+ {
+ 	igt_crtc_set_prop_value(crtc,
+@@ -1112,6 +1135,17 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
  
- 	igt_describe("In this test we make sure that system enters DC3CO "
--		     "when PSR2 is active and system is in SLEEP state");
--	igt_subtest("dc3co-vpb-simulation") {
--		data.op_psr_mode = PSR_MODE_2;
--		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
--					     data.op_psr_mode, NULL));
--		test_dc3co_vpb_simulation(&data);
-+			"when PSR2 or PR is active and system is in SLEEP state");
-+	igt_subtest_with_dynamic("dc3co-vpb-simulation") {
-+		static const struct dc3co_test_mode dc3co_modes[] = {
-+			{ PSR_MODE_2, "psr2" },
-+			{ PR_MODE,    "pr"   },
-+		};
+ 			run_vrr_test(&data, test_lobf, TEST_LINK_OFF);
+ 		}
 +
-+		for (int i = 0; i < ARRAY_SIZE(dc3co_modes); i++) {
-+			const char *name = dc3co_modes[i].name;
-+			data.op_psr_mode = dc3co_modes[i].mode;
++		igt_describe("This test validates DC3CO entry during LOBF (Link-Off Between "
++			     "Frames) periods while VRR is active and PSR is disabled.");
 +
-+			igt_dynamic_f("%s", name) {
-+				igt_require(psr_sink_support(data.drm_fd,
-+							     data.debugfs_fd,
-+							     data.op_psr_mode, NULL));
++		igt_subtest_with_dynamic("lobf-dc3co") {
++			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 35);
 +
-+				if (data.op_psr_mode == PSR_MODE_2)
-+					igt_require_f(IS_TIGERLAKE(data.devid) ||
-+						      intel_display_ver(data.devid) >= 35,
-+						      "Platform does not support DC3CO with PSR2\n");
-+				else
-+					igt_require_f(intel_display_ver(data.devid) >= 35,
-+						      "Platform does not support DC3CO with Panel Replay\n");
++			igt_require_dc_counter(data.debugfs_fd, IGT_INTEL_CHECK_DC3CO);
 +
-+				test_dc3co_vpb_simulation(&data);
-+			}
++			run_vrr_test(&data, test_lobf_dc3co, TEST_LINK_OFF);
 +		}
  	}
  
- 	igt_describe("This test validates display engine entry to DC5 state "
+ 	igt_fixture() {
 -- 
 2.43.0
 
