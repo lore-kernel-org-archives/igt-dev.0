@@ -4,57 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 642E2CD4851
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 12:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97BF9CD343F
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 12:36:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0519510E12A;
-	Fri, 15 May 2026 12:24:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l2fpRtS6";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C29410E12A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 12:24:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778847866; x=1810383866;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=grCrzGTS/RHBzs+1sop91CePn3zJZUpr51/rRyOh6DY=;
- b=l2fpRtS60bI24Wc7VtQNIkY6e8UgH1GtkySZRP7v5WQzBAmlbcmLPoua
- GZYFOK/oClhPQ/a6TKMrsC1kSTb/Gqs+4ZPlieEdbJ0FjfqaGlmACc7Oe
- SdL0NsPuFw+tRwi6nihL9zhbC/ylAqH4oRHSGatkqZWIVAKeNTyKQk+rM
- U7qhGIQEG0WIgLicKSyIk3ktrjeUYvIaJl4TC2Xd9v/4WBvYRwj7qYq7x
- XYWi/lLzCO+AkBxOYmgnsbY1Ms7dgmDpK+ZezG2vPjZXh6802F9uQHfZB
- VZqiXB/7e3OgB4FtcZLjmvTtdWvoOKCGZ2sAfgu+yEHWiJ5HZgPjFXEuF w==;
-X-CSE-ConnectionGUID: cadskzBPQSmMqq4tXIhUnw==
-X-CSE-MsgGUID: udr7S4BrTcuUbz3Thi7log==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="79658357"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="79658357"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 05:24:26 -0700
-X-CSE-ConnectionGUID: Aqkj14UVTBWyYhRZklypgg==
-X-CSE-MsgGUID: 4FrOT8+yTeuFCVE7w8ujfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="262202154"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 05:24:25 -0700
-Date: Fri, 15 May 2026 14:24:08 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Cc: igt-dev@lists.freedesktop.org, ashutosh.dixit@intel.com
-Subject: Re: [PATCH v2] lib/intel_wa: Assert on error instead of returning -1
-Message-ID: <20260515122408.zd564l5tnhaprha3@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Shekhar Chauhan <shekhar.chauhan@intel.com>,
- igt-dev@lists.freedesktop.org, ashutosh.dixit@intel.com
-References: <20260514063655.1683322-1-shekhar.chauhan@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40AD110E636;
+	Fri, 15 May 2026 12:36:26 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A09410E636;
+ Fri, 15 May 2026 12:36:09 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6773410130500895425=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260514063655.1683322-1-shekhar.chauhan@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2Cv6=2C1/2=5D_Revert_=22tests/kms=5Fvrr=3A_Start_virtual_RR_?=
+ =?utf-8?q?test_above_midpoint_to_avoid_mode_fallback=22?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lee Shawn C" <shawn.c.lee@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 15 May 2026 12:36:09 -0000
+Message-ID: <177884856942.74821.14528798913596929115@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <shawn.c.lee@intel.com>
+In-Reply-To: <shawn.c.lee@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,110 +38,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Shekhar,
-On 2026-05-14 at 12:06:55 +0530, Shekhar Chauhan wrote:
-> igt_has_intel_wa() returns 0, 1, or -1, but there is no point
-> distinguishing the error and no-workaround cases for callers. Replace
-> the error return with igt_assert() and simplify debugfs_file_has_wa() by
-> dropping the igt_debugfs_exists() check, since igt_sysfs_get() returns
-> NULL for missing files anyway.
-> 
-> v2: Make the func as bool instead of int.
-> 
-> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-> ---
->  lib/intel_wa.c | 19 +++++++++----------
->  lib/intel_wa.h |  2 +-
->  2 files changed, 10 insertions(+), 11 deletions(-)
-> 
-> diff --git a/lib/intel_wa.c b/lib/intel_wa.c
-> index 727dd6c98..e4fe7b0ee 100644
-> --- a/lib/intel_wa.c
-> +++ b/lib/intel_wa.c
-> @@ -7,18 +7,18 @@
->  #include <stdint.h>
->  #include <stdio.h>
->  
-> +#include "igt_core.h"
->  #include "igt_debugfs.h"
->  #include "igt_sysfs.h"
->  #include "intel_wa.h"
->  #include "xe/xe_query.h"
->  
-> -static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
-> +static bool debugfs_file_has_wa(int drm_fd, int debugfs_fd,
->  			       const char *debugfs_name, const char *wa)
->  {
->  	char *debugfs_dump;
->  
-> -	if (!igt_debugfs_exists(drm_fd, debugfs_name, O_RDONLY))
-> -		return -1;
-> +	igt_assert(igt_debugfs_exists(drm_fd, debugfs_name, O_RDONLY));
->  
->  	debugfs_dump = igt_sysfs_get(debugfs_fd, debugfs_name);
->  	if (debugfs_dump) {
-> @@ -27,10 +27,10 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
->  		free(debugfs_dump);
->  
->  		if (has_wa)
-> -			return 1;
-> +			return true;
->  	}
->  
-> -	return 0;
-> +	return false;
->  }
->  
->  /**
-> @@ -38,18 +38,17 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
->   * @drm_fd:	A drm file descriptor
->   * @check_wa:	Workaround to be checked
->   *
-> - * Returns:	0 if no WA, 1 if WA present, -1 on error
-> + * Returns:	true if WA present, false otherwise
->   */
-> -int igt_has_intel_wa(int drm_fd, const char *check_wa)
-> +bool igt_has_intel_wa(int drm_fd, const char *check_wa)
->  {
-> -	int ret = 0;
-> +	bool ret = 0;
->  	int debugfs_fd;
->  	unsigned int xe;
->  	char name[256];
->  
->  	debugfs_fd = igt_debugfs_dir(drm_fd);
-> -	if (debugfs_fd == -1)
-> -		return -1;
-> +	igt_assert(debugfs_fd >= 0);
+--===============6773410130500895425==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This will mean that all other users needs to be updated.
-The way of adding any igt_assert/igt_require into lib/
-make it impossible to reuse them in tools/ and require
-to write same functionality twice, one in lib/ and one
-for any tools which will want to use them. Or to write
-__function() without igt_assert/igt_require.
+== Series Details ==
 
-Regards,
-Kamil
+Series: series starting with [i-g-t,v6,1/2] Revert "tests/kms_vrr: Start virtual RR test above midpoint to avoid mode fallback"
+URL   : https://patchwork.freedesktop.org/series/166620/
+State : success
 
->  
->  	xe_for_each_gt(drm_fd, xe) {
->  		sprintf(name, "gt%d/workarounds", xe);
-> diff --git a/lib/intel_wa.h b/lib/intel_wa.h
-> index 765a5948e..34cafecc4 100644
-> --- a/lib/intel_wa.h
-> +++ b/lib/intel_wa.h
-> @@ -6,6 +6,6 @@
->  #ifndef __INTEL_WA_H__
->  #define __INTEL_WA_H__
->  
-> -int igt_has_intel_wa(int drm_fd, const char *check_wa);
-> +bool igt_has_intel_wa(int drm_fd, const char *check_wa);
->  
->  #endif /* __INTEL_WA_H__ */
-> -- 
-> 2.53.0
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_8916 -> IGTPW_15189
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15189/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15189 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8916/bat-mtlp-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15189/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8916/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15189/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8916 -> IGTPW_15189
+
+  CI-20190529: 20190529
+  CI_DRM_18493: b9819223b7e92173091b674c2212252b99ea6c4b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15189: 75d6bfd1deeb5044a798ac07c1cd51f142c98156 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8916: cd3b0cdd9e11ee80d89f40ffd5e5ac916d041ffb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15189/index.html
+
+--===============6773410130500895425==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v6,1/2] Revert &quot;tests/kms_vrr: Start virtual RR test above midpoint to avoid mode fallback&quot;</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166620/">https://patchwork.freedesktop.org/series/166620/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15189/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15189/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8916 -&gt; IGTPW_15189</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15189/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15189 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8916/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15189/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8916/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15189/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8916 -&gt; IGTPW_15189</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18493: b9819223b7e92173091b674c2212252b99ea6c4b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15189: 75d6bfd1deeb5044a798ac07c1cd51f142c98156 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8916: cd3b0cdd9e11ee80d89f40ffd5e5ac916d041ffb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6773410130500895425==--
