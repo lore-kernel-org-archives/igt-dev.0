@@ -4,54 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A4ECD4F3D
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 07:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF307CD343F
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 08:03:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0241F10F46D;
-	Fri, 15 May 2026 07:59:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 956DC10F46A;
+	Fri, 15 May 2026 08:03:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GN+fJw7g";
+	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="EUlbHOW+";
+	dkim=pass (1024-bit key; unprotected) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="eFAUBCrh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01C8910F467
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 07:58:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778831922; x=1810367922;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/+gPuD5DEtrG1XPqAnjTPuc8q5PaGrfmJFY8yvFcQek=;
- b=GN+fJw7gBqmb8PXwTgCWzmJxs/+Z85BCuA/BBm0JDOP9zTiMGwjMrUyW
- qgoymVyFtXtbVvFd7+tMxcykv1nry9bbCpD1MCDOzHt4rpEsw6rqwzu7Y
- heo2efXTC2E89rmWiI+t+rLfkDJuER9MQckK/trfR9kxnBjoU3mFIj/pt
- +dKWMoWfRj9FhwQjqddAy1TeNbuNIuNQt5qiAS2rlUKs5tO6XGdCATeQK
- 6cJL/Rh5aYevOPLjjmYOzdfdfHntseFwydyo76LXfIc6vVlmw/F2T96Yf
- 2rRyPe5eIcb9cI/Zvk+zC1ryKfXdvCc93R4uj9RkNzws8unx/+D+mqSYf A==;
-X-CSE-ConnectionGUID: hh4N8NIeSs6oCyx5AtdLUQ==
-X-CSE-MsgGUID: ILgJ8PbPTYikJZqJHVuMAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="97214096"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="97214096"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 00:58:41 -0700
-X-CSE-ConnectionGUID: pfmguTO0SBS3xvQbcINLEA==
-X-CSE-MsgGUID: vThUj5tsQtqo/C17fadltA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="268969717"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 00:58:38 -0700
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, pawel.sikora@intel.com,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking: Fix duplicate
- documentation descriptions
-Date: Fri, 15 May 2026 13:37:28 +0530
-Message-Id: <20260515080728.2433990-1-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C52CF10F46A;
+ Fri, 15 May 2026 08:03:03 +0000 (UTC)
+X-UUID: 7cce78ba503411f1a3561939bc42ff46-20260515
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
+ s=dk; 
+ h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From;
+ bh=ZOl8VvpBf/GoxaXnF7e4h9dW071rKnqFfDlUtMmWKYw=; 
+ b=EUlbHOW+uNBkhEYgOKg76vkl1g3SMWhgU/thNVIJksF1hk6rmHjuWUv5uOLeqXRLw9+FoWvnOH3KQ7Yc18AcQBPyg1JtEcFkAJLLhrXIBjDjO6bYNwwOCRlMmXKGpvy7eGBpJ8VjTazuinFU5hfZ1o5SWsELy7i6E/i0DHtK8CE=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.14, REQID:460734a2-4e94-4ccf-b85b-2ca3c69d94e1, IP:0,
+ U
+ RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+ release,TS:0
+X-CID-META: VersionHash:9091e75, CLOUDID:39f8767b-1fd6-4ee4-b486-88dbea9db487,
+ B
+ ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+ 898,TC:-5,Content:0|15|50,EDM:-3,IP:nil,URL:1,File:130,RT:0,Bulk:nil,QS:ni
+ l,BEC:-1,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 7cce78ba503411f1a3561939bc42ff46-20260515
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by
+ mailgw02.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+ with ESMTP id 655585518; Fri, 15 May 2026 16:02:58 +0800
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 15 May 2026 16:02:57 +0800
+Received: from SI4PR04CU002.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Fri, 15 May 2026 16:02:57 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gvipag2vENDwrt72DsjKLU7gU0wfHNW1uv6XI5cNCrRY4Z3MhZ5LqRDqq3BLb6uTvHuyXZplXvH0onqethj/jXQ3fCbarjwz3UodVNPzHOplMWAQP81ipGfh6pPQEVetXVlisCYVLJp40D0aE+Scwm31q2Vt3eZkpGbB9v1kzK9XupDtNTvdKjbFKLaUbUKGrSNPi/RqQ4SxlngZJf1XMZ6YRcTykCQFZCTwSVoTYXO7mlTcd5j5YKpVWONTOhFh9EV7iidfYuXhR+eS/0C/p98KWvjkeN9v1eIq/di1vCPg8ILel8gs13Tns2kFuEgTFUkSQLws7mfCyE8mZiF8xQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZOl8VvpBf/GoxaXnF7e4h9dW071rKnqFfDlUtMmWKYw=;
+ b=JuhIcnSp/EOd8MssVrWB3/fO623OZHMzGVjcrxhPRWy5WK44I31oApEXIzkH3nOl7WmHOFN/PPyVxSxFWOKaCtUhDe7IRUcHTyQmZQakX/QBqUANyWW5+DQeiRNIXyE5hid+Ow3fhh5tGYLWVncjeMiJS4wUzILIbB5uESJFsS6eaQKbOpc6m8Y36bHLKzBR30B35ERI6iVEuu6X5r7aH2XqH4HlIpArOJ+wAhfQiJ70jJPlHfsynocCTI+I5k3CGOxxbnQ0W7SpNqaDiyh/IxoJ7BbPuEFslvFGUjseapbAWDJ+kIhUPzWKpm7MGTbFwjXknuXcCHsrA2mEFdRpCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZOl8VvpBf/GoxaXnF7e4h9dW071rKnqFfDlUtMmWKYw=;
+ b=eFAUBCrh6dY6KRuMxJr/aClWwuLIH4xpsyYSIDo1UUGnH5y7voS3Wz9UwnFVFxJREHQPvwT30MaKzABQWULgkYgdlPKWnZiXm214L8RrIfHirOeGHYnfq4A4alcbg45I2J2ezW09iEfnWiFgFmSQok7171ipZs0ItdaeH7ku1dQ=
+Received: from SEYPR03MB7682.apcprd03.prod.outlook.com (2603:1096:101:149::11)
+ by OSNPR03MB10328.apcprd03.prod.outlook.com (2603:1096:604:49c::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.18; Fri, 15 May
+ 2026 08:02:55 +0000
+Received: from SEYPR03MB7682.apcprd03.prod.outlook.com
+ ([fe80::1fe4:fb59:1b1:1646]) by SEYPR03MB7682.apcprd03.prod.outlook.com
+ ([fe80::1fe4:fb59:1b1:1646%4]) with mapi id 15.21.0025.016; Fri, 15 May 2026
+ 08:02:55 +0000
+From: =?utf-8?B?SmFzb24tSkggTGluICjmnpfnnb/npaUp?= <Jason-JH.Lin@mediatek.com>
+To: "suraj.kandpal@intel.com" <suraj.kandpal@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "intel-gfx-trybot@lists.freedesktop.org"
+ <intel-gfx-trybot@lists.freedesktop.org>
+CC: "navaremanasi@google.com" <navaremanasi@google.com>,
+ =?utf-8?B?U2luZ28gQ2hhbmcgKOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
+ "markyacoub@chromium.org" <markyacoub@chromium.org>,
+ "santhosh.reddy.guddati@intel.com" <santhosh.reddy.guddati@intel.com>,
+ Project_Global_Chrome_Upstream_Group
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>,
+ =?utf-8?B?TmFuY3kgTGluICjmnpfmrKPonqIp?= <Nancy.Lin@mediatek.com>,
+ "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
+ =?utf-8?B?UGF1bC1wbCBDaGVuICjpmbPmn4/pnJYp?= <Paul-pl.Chen@mediatek.com>
+Subject: Re: tests/kms_content_protection: clamp plane src/dst to output mode
+Thread-Topic: tests/kms_content_protection: clamp plane src/dst to output mode
+Thread-Index: AQHc5ECOzz5/MUEAGkO4ofb+H55yXLYOufYA
+Date: Fri, 15 May 2026 08:02:54 +0000
+Message-ID: <3f66cca0183086ab8ff8436e5baa81ffc763ffed.camel@mediatek.com>
+References: <20260515052433.903588-1-suraj.kandpal@intel.com>
+In-Reply-To: <20260515052433.903588-1-suraj.kandpal@intel.com>
+Accept-Language: zh-TW, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SEYPR03MB7682:EE_|OSNPR03MB10328:EE_
+x-ms-office365-filtering-correlation-id: 4155bdf3-ca98-4a8d-279c-08deb2585eba
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|376014|1800799024|3023799003|56012099003|18002099003|22082099003|38070700021|11063799003;
+x-microsoft-antispam-message-info: pwN2P88uzbbWngVhWT/w7L3NLidcpPOwEx1VCXKOxi4vQZoRrEmhU25g+yM3guvD+ZHSQ7aUJqFLhLoQawTnaY6t+ma7BcmAtT9bJNzVo/fJHemtof1zDIWyBXZW9zA9XXr/BO1V60TSVu1vvxG38G2GMcmhkm2e6alF8cVCgDdXMr6xaTg+uN0Vlj0hNMUizufnzosCKPCmMm+M2LWlcJUXw6Jfki4w3kycYEHq8iL9vmXsJS/bEPlBc0709WmyBBXjbapIv9c7m7b7dM0FEFk1IJWwKDoNcrMBH66fK5GP9YtN4/QWd9NtULyDAIEKaXKyXz/rY4biplJQF+JiYTtEqstG0Q8F3lueAzahsKS94fIpDBSyz+aeNsS6zcmNd3chCizRjNcE9SaKSnkyrlKQboIMka3FM/Fn9E31In+lYxmYUu0ZOOTXkiq3TqNQDPMWRW9fB/3sz6Vyx1DQrtTVIu9rMTLTsqV6XeKAXU052997B4orgf6ITOy/FDW8Mfhlj4q+PQJBuJqhkq7eIMDz8bPWKm2Cao0RhSuN9y2B1/BvBIg14iv6TKWkgiszM08mO9hzWelt4GzODIVcDEkyF2TJjnU2w5MEqyuL0vLSnNAcVMUJ24BEXg/smZtVf62TQLnPpofh2Wk6jraoUAC3q6pyynqpSHX7waIGtYwR+NIzfvc9aOWGTmAoV2hw
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SEYPR03MB7682.apcprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(3023799003)(56012099003)(18002099003)(22082099003)(38070700021)(11063799003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dkt3cWhrVnlMS3k3VjRKUTU4L2tWMi85SVZHUkxqakNEdlcxdWVoSDB2MUx6?=
+ =?utf-8?B?NGllVmp1eXlVSGNIelJNM0FkUS9FNUVmNnpBTERmUXl5YTlqcXU4QTI1RGVX?=
+ =?utf-8?B?SzNVT3NRTmdiVDRqQ3B0bVljRTVqb0d4dGdRaUpYUk1Pdm42OUIreEkxN1ZM?=
+ =?utf-8?B?c3o3MVUrQzNNbStDR0dkM3Z3WldKSGNOK21rUUlWcll4NnZrVjI2dVI5MWhP?=
+ =?utf-8?B?QWNzZkhBc3hOL05ocktScTdwcjZaZ0pCaGVxZHJuRG80L1hHRVI0dkl6Q0h1?=
+ =?utf-8?B?aUtuNzVhSkMyeDFsL2hXSFdnWTJ5OXQ1cG1CNkdIeXlTMjdTUEVSVHAxSjEv?=
+ =?utf-8?B?bmU4S2NCQVBpRmJPYUc5ZmhvZUQzSFM4MnRpdHpBN3NCRTNvL0JpNVdwb0xG?=
+ =?utf-8?B?RzU4cHltQkxocjVXbnVvWktsYVVUYW8yck5xeDhCUlpkcGpBbXhyS05mQUhL?=
+ =?utf-8?B?cm93Q1QzM2s0Tm90cFRaQm1VSzdkV0lRZ0tJV3J2eTV5Yk1FcjhmZE9nUXps?=
+ =?utf-8?B?eVdjam53WE5paHpNSjFYSEh4WGZKYzYxaVllSDV6bFNiVXhQT3RsU2ZZMGRX?=
+ =?utf-8?B?SmVFeTFZWjJQcit6R1h5RWdBcFJ6eFhNZzIxWnRSQ3hqcDJvTDNJNyt3b1A3?=
+ =?utf-8?B?WmpkUllsckJUTC9yeUVibllUbHZQbnhRa21BVjFtMlNvMVhNWktqWUl4eFBE?=
+ =?utf-8?B?WG05eGtDWGt4eUZoSW82UFJ3TXRlamlTbm1YdUxtcURSK1VRa2ZKeUtWME1H?=
+ =?utf-8?B?UG5mdTBWWnBtcmxydjMyK1hmUldRcmdRaTdiQ2ZabGhYTVhORHR5dWk2NDFM?=
+ =?utf-8?B?MTVIWHJESUdlbGlNTnQvVXBvaXdKUnVocjRyK1hrZXlVSXczTHJpOU16WDJT?=
+ =?utf-8?B?RDM0Ykh6UDNEVDRJUEpPT3NOd2dhZWw5ZE90M3NKbndNVHN0NlNaOGxIaitF?=
+ =?utf-8?B?dHFYSlpVRDJrOVRNanlwTGlJT1l5NFBwMGR3cFlXVnhURVpPRmgxM0F6OU4w?=
+ =?utf-8?B?WWJNdlExRktkclNGcGNhc0FCVFhZbm9ndmZXbWRiTE1Ra0loMUluSU9MQjR2?=
+ =?utf-8?B?QmIvOTdiM3hhcTNWdCtyWW9aY2lnWlIyR3NxRm5QcTYxdFhJQTlNaDBPaS9i?=
+ =?utf-8?B?cFVvTW9FSWovQ3JuZXRUQlVSbVBweDdzR0EvVXUzSEZEQVRzRkVIMTZUVU5s?=
+ =?utf-8?B?ZVRXVGppTUwydithN3BtcWlqdzRMUkZXelZPUThoeEtBMW9vbmZGWW5hYkRB?=
+ =?utf-8?B?QlBVYVhJZTNUZ2JmemdmY3RZeEtNY1JWcXRtamVSNzBUb0hWNVQwaFZrWHRv?=
+ =?utf-8?B?d1JoQ3Axc0ZPYWo1Z1NvYzRZSWZNKzROamJ4TVExSUFXRHVZdUdCZ1lkaVR0?=
+ =?utf-8?B?N2JGbWZYbFQrYVY2QjVtU0FhSnpKVU1taFFYMy9NeHYrTTRUWTVISVBJVTNV?=
+ =?utf-8?B?OEtxcXNaTXA1UXRBUXdzMEN3L0d5SkNyQlJwMVZsbkhHdjA2QVErb1lXdC9i?=
+ =?utf-8?B?akdHRFlxOExtM1R3dDF1V0RKNkY1b2NabWxyNGhwdG5wOXkrdE9rakx6V2tm?=
+ =?utf-8?B?MGdEQ3ZQR2V0ZGpIeHEzSTAwYlBSM1REc1pBdW5Zc0dwempPcndOVHpmN2Yv?=
+ =?utf-8?B?UnJnQmswdkhHeHlRdHRyTy9HMVpQU1NPcHNicXRUTFVvS3pjOTRYMWdTYVFV?=
+ =?utf-8?B?VldobHBQTEN4ZUsxcFE5K0MyUEhaanRqQ0hCUW1JQjBBSGw1bzBGMndDc3gx?=
+ =?utf-8?B?bElvb25vc05DLzRHNGhsYTBOUVdDZDJhOXVCRm5BRHhOZER2NzB2SVNFL2hC?=
+ =?utf-8?B?TnNCVUJCdHozZlYzM1RaZTg0eEZMSHJJU0p3bkFSUmgwVENzYVZRUy81RUpO?=
+ =?utf-8?B?ZEIrMzhnazk3eWNsU2hRbFN1S1cyR01yRmcwNmhScUJOdW5aVUtjTjJ4ek5U?=
+ =?utf-8?B?VXU0M2tRREhqOXZqMVdsYy84Ukl2UTVEbk1aUXZGSURoUVYrd1FHVzJWNG9p?=
+ =?utf-8?B?b1I0WThQczBpNzhYbVFSai9YVFJWRGFZQXNHMzc0bk15ZmJEbFhxZjVudSs1?=
+ =?utf-8?B?Q0V2MlNhOWhnQ3EvbjlXU3JTeTkvUmV5YlplODZnVUoxRi9NUjVqbVdLMTZY?=
+ =?utf-8?B?Q1pkWlRBU1BzUXk0ZE1uZ2JPM1VMMUNQSWNYL2w2cWEwclZxejVGTUNza3h0?=
+ =?utf-8?B?M2UzMjk1MXBoZmxEQUVhWUlERGEyQUVzMjVVNXZ5YXV4RmJPL2pJa1FZdFRu?=
+ =?utf-8?B?SXhyem9ZT1R1UHBJbU5WQzN1RjdVY2tHQS9kVWJ0T29hVUFjamdMaW1qdnF3?=
+ =?utf-8?B?Uy9rUTYwaWc0YmJ3c2p3b29LVnhrcXQ4QnBNazVMSzJ3VHBrbGhiTVo5dW42?=
+ =?utf-8?Q?H3sEkU2oCcUX6Mzw=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D740488FEDCA3E48AEB4019C52D62D25@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: QpVX8daNioVk/SiJ6UCTyRHR+bmhNJ9n403PibiQcRUTrxh2ZmUQIllMWhB4z4TL8G1FMk8YwlRXHkMcZRMoRHAqmnI/qjlz8PPBAcw0qzzU6SVUIV9McFJRqDIkpqNnEReu5nOs6qm7o6AnouV/AP2QxnvuuVs5Xa9x199e0UNICQOFWLFMroWfl2UA7CUXD3ZhlLHhtZ64TRsuEmyoBQ8otJiUn42QRQ1AsHi7hfQDcqTyMKZ50Sa+VRhH4n3cKUtGNtDhqGtaUOLBpcoxIoYbKbBK8YUGTmwHKeFssfL5eCSZykAWripsH4sXR5tmPfoU+8KsTQ3kGJhuuZfhIw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SEYPR03MB7682.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4155bdf3-ca98-4a8d-279c-08deb2585eba
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 May 2026 08:02:54.8506 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: B/ZdF3qnpl84Z8Vd3XneoMwFNERWuFxv2DUGyztBGc9CStTHZ4Xl0pyJM9Wh5M5kiqq9eseVBB80+9AEs1RaYssXxbH3/XFU8t7Qv9bxA6g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSNPR03MB10328
+X-MTK: N
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,1399 +182,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Multiple SUBTEST entries shared identical descriptions across different
-test scenarios (offscreen, primary screen, secondary screen). This
-caused ambiguous documentation output.
-
-Fix by:
-- Adding features in description.
-- Appending scenario context (targeting offscreen buffer, on primary/
-  secondary screen, with individual/shared fb) to differentiate test
-  variants operating on different screens or framebuffers.
-- Adding missing Driver requirement: i915 to HDR combo subtests in
-  i915-only draw method blocks.
-
-Co-developed-by: Claude Opus 4.6
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel/kms_frontbuffer_tracking.c | 583 +++++++++++++------------
- 1 file changed, 294 insertions(+), 289 deletions(-)
-
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index e7bb3fa18..034222aa2 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -27,7 +27,7 @@
- /**
-  * TEST: kms frontbuffer tracking
-  * Category: Display
-- * Description: Test the Kernel's frontbuffer tracking mechanism and its related features: FBC, PSR and DRRS
-+ * Description: Test the Kernel's frontbuffer tracking mechanism and its related features: FBC, PSR, DRRS and HDR
-  * Driver requirement: i915, xe
-  * Mega feature: General Display Features
-  */
-@@ -69,7 +69,7 @@
-  * Description: Sanity test to enable PSR with %arg[1] panels.
-  *
-  * SUBTEST: hdr-%dp-rte
-- * Description: Sanity test to enable PSR with %arg[1] panels.
-+ * Description: Sanity test to enable HDR with %arg[1] panels.
-  *
-  * SUBTEST: fbcdrrs-%dp-rte
-  * Description: Sanity test to enable FBC & DRRS with %arg[1] panels.
-@@ -97,37 +97,37 @@
- 
- /**
-  * SUBTEST: drrs-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, targeting offscreen buffer
-  *
-  * SUBTEST: fbc-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, targeting offscreen buffer
-  *
-  * SUBTEST: psr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, targeting offscreen buffer
-  *
-  * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, targeting offscreen buffer
-  *
-  * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, targeting offscreen buffer
-  *
-  * SUBTEST: fbcpsr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, targeting offscreen buffer
-  *
-  * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, targeting offscreen buffer
-  *
-  * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, targeting offscreen buffer
-  *
-  * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, targeting offscreen buffer
-  *
-  * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, targeting offscreen buffer
-  *
-  * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, targeting offscreen buffer
-  *
-  * arg[1]:
-  *
-@@ -143,43 +143,48 @@
- 
- /**
-  * SUBTEST: drrs-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, targeting offscreen buffer
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbc-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, targeting offscreen buffer
-  * Driver requirement: i915
-  *
-  * SUBTEST: psr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, targeting offscreen buffer
-  * Driver requirement: i915
-  *
-  * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, targeting offscreen buffer
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, targeting offscreen buffer
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, targeting offscreen buffer
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, targeting offscreen buffer
-+ * Driver requirement: i915
-  *
-  * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, targeting offscreen buffer
-+ * Driver requirement: i915
-  *
-  * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, targeting offscreen buffer
-+ * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, targeting offscreen buffer
-+ * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, targeting offscreen buffer
-+ * Driver requirement: i915
-  *
-  * arg[1]:
-  *
-@@ -195,47 +200,47 @@
- 
- /**
-  * SUBTEST: drrs-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbc-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: psr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: hdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on primary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * arg[1].values:   1, 2
-@@ -255,37 +260,37 @@
- 
- /**
-  * SUBTEST: drrs-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on primary screen, with individual fb
-  *
-  * SUBTEST: fbc-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on primary screen, with individual fb
-  *
-  * SUBTEST: psr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on primary screen, with individual fb
-  *
-  * SUBTEST: hdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on primary screen, with individual fb
-  *
-  * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on primary screen, with individual fb
-  *
-  * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on primary screen, with individual fb
-  *
-  * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on primary screen, with individual fb
-  *
-  * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on primary screen, with individual fb
-  *
-  * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on primary screen, with individual fb
-  *
-  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on primary screen, with individual fb
-  *
-  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on primary screen, with individual fb
-  *
-  * arg[1].values:   1, 2
-  *
-@@ -304,37 +309,37 @@
- 
- /**
-  * SUBTEST: drrs-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on primary screen, with shared fb
-  *
-  * SUBTEST: fbc-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on primary screen, with shared fb
-  *
-  * SUBTEST: psr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on primary screen, with shared fb
-  *
-  * SUBTEST: hdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on primary screen, with shared fb
-  *
-  * SUBTEST: fbcdrrs-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on primary screen, with shared fb
-  *
-  * SUBTEST: fbcpsr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on primary screen, with shared fb
-  *
-  * SUBTEST: fbchdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on primary screen, with shared fb
-  *
-  * SUBTEST: drrshdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on primary screen, with shared fb
-  *
-  * SUBTEST: psrhdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on primary screen, with shared fb
-  *
-  * SUBTEST: fbcdrrshdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on primary screen, with shared fb
-  *
-  * SUBTEST: fbcpsrhdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on primary screen, with shared fb
-  *
-  * arg[1].values:   1, 2
-  *
-@@ -347,47 +352,47 @@
- 
- /**
-  * SUBTEST: drrs-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbc-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: psr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: hdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrs-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbchdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: drrshdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: psrhdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrshdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsrhdr-%dp-primscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on primary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * arg[1].values:   1, 2
-@@ -401,37 +406,37 @@
- 
- /**
-  * SUBTEST: drrs-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on secondary screen, with individual fb
-  *
-  * SUBTEST: fbc-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on secondary screen, with individual fb
-  *
-  * SUBTEST: psr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on secondary screen, with individual fb
-  *
-  * SUBTEST: hdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on secondary screen, with individual fb
-  *
-  * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on secondary screen, with individual fb
-  *
-  * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on secondary screen, with individual fb
-  *
-  * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on secondary screen, with individual fb
-  *
-  * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on secondary screen, with individual fb
-  *
-  * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on secondary screen, with individual fb
-  *
-  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on secondary screen, with individual fb
-  *
-  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on secondary screen, with individual fb
-  *
-  * arg[1]:
-  *
-@@ -448,47 +453,47 @@
- 
- /**
-  * SUBTEST: drrs-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbc-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: psr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: hdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on secondary screen, with individual fb
-  * Driver requirement: i915
-  *
-  * arg[1]:
-@@ -506,37 +511,37 @@
- 
- /**
-  * SUBTEST: drrs-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on secondary screen, with shared fb
-  *
-  * SUBTEST: fbc-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on secondary screen, with shared fb
-  *
-  * SUBTEST: psr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on secondary screen, with shared fb
-  *
-  * SUBTEST: hdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on secondary screen, with shared fb
-  *
-  * SUBTEST: fbcdrrs-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on secondary screen, with shared fb
-  *
-  * SUBTEST: fbcpsr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on secondary screen, with shared fb
-  *
-  * SUBTEST: fbchdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on secondary screen, with shared fb
-  *
-  * SUBTEST: drrshdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on secondary screen, with shared fb
-  *
-  * SUBTEST: psrhdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on secondary screen, with shared fb
-  *
-  * SUBTEST: fbcdrrshdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on secondary screen, with shared fb
-  *
-  * SUBTEST: fbcpsrhdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on secondary screen, with shared fb
-  *
-  * arg[1]:
-  *
-@@ -547,47 +552,47 @@
- 
- /**
-  * SUBTEST: drrs-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbc-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: psr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: hdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrs-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbchdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: drrshdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: psrhdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrshdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsrhdr-2p-scndscrn-pri-shrfb-draw-%s
-- * Description: Draw a set of rectangles on the screen using the provided method
-+ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on secondary screen, with shared fb
-  * Driver requirement: i915
-  *
-  * arg[1]:
-@@ -599,74 +604,74 @@
- 
- /**
-  * SUBTEST: drrs-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with DRRS
-  *
-  * SUBTEST: fbc-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC
-  *
-  * SUBTEST: psr-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with PSR
-  *
-  * SUBTEST: hdr-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with HDR
-  *
-  * SUBTEST: fbcdrrs-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC & DRRS
-  *
-  * SUBTEST: fbcpsr-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC & PSR
-  *
-  * SUBTEST: fbchdr-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC & HDR
-  *
-  * SUBTEST: drrshdr-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with DRRS & HDR
-  *
-  * SUBTEST: psrhdr-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-%dp-pri-indfb-multidraw
-- * Description: Draw a set of rectangles on the screen using alternated drawing methods
-+ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC, PSR & HDR
-  *
-  * arg[1].values:   1, 2
-  */
- 
- /**
-  * SUBTEST: drrs-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with DRRS
-  *
-  * SUBTEST: fbc-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC
-  *
-  * SUBTEST: psr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with PSR
-  *
-  * SUBTEST: hdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with HDR
-  *
-  * SUBTEST: fbcdrrs-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & DRRS
-  *
-  * SUBTEST: fbcpsr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & PSR
-  *
-  * SUBTEST: fbchdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & HDR
-  *
-  * SUBTEST: drrshdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with DRRS & HDR
-  *
-  * SUBTEST: psrhdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC, PSR & HDR
-  *
-  * arg[1]:
-  *
-@@ -684,47 +689,47 @@
- 
- /**
-  * SUBTEST: drrs-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with DRRS
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbc-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC
-  * Driver requirement: i915
-  *
-  * SUBTEST: psr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with PSR
-  * Driver requirement: i915
-  *
-  * SUBTEST: hdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrs-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & DRRS
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & PSR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbchdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: drrshdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with DRRS & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: psrhdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with PSR & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrshdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC, DRRS & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsrhdr-%s-draw-%s
-- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
-+ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC, PSR & HDR
-  * Driver requirement: i915
-  *
-  * arg[1]:
-@@ -761,45 +766,45 @@
-  * Description: Sleep a little bit between drawing operations with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-slowdraw
-- * Description: Sleep a little bit between drawing operations with DRRS, HDR & FBC
-+ * Description: Sleep a little bit between drawing operations with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-slowdraw
-- * Description: Sleep a little bit between drawing operations with PSR, HDR & FBC
-+ * Description: Sleep a little bit between drawing operations with FBC, PSR & HDR
-  */
- 
- /**
-  * SUBTEST: drrs-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with DRRS, on primary screen
-  *
-  * SUBTEST: fbc-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC, on primary screen
-  *
-  * SUBTEST: psr-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with PSR, on primary screen
-  *
-  * SUBTEST: hdr-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with HDR, on primary screen
-  *
-  * SUBTEST: fbcdrrs-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC & DRRS, on primary screen
-  *
-  * SUBTEST: fbcpsr-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC & PSR, on primary screen
-  *
-  * SUBTEST: fbchdr-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC & HDR, on primary screen
-  *
-  * SUBTEST: drrshdr-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with DRRS & HDR, on primary screen
-  *
-  * SUBTEST: psrhdr-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with PSR & HDR, on primary screen
-  *
-  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC, DRRS & HDR, on primary screen
-  *
-  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC, PSR & HDR, on primary screen
-  *
-  * arg[1].values:   1, 2
-  *
-@@ -817,37 +822,37 @@
- 
- /**
-  * SUBTEST: drrs-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with DRRS, on secondary screen
-  *
-  * SUBTEST: fbc-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC, on secondary screen
-  *
-  * SUBTEST: psr-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with PSR, on secondary screen
-  *
-  * SUBTEST: hdr-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with HDR, on secondary screen
-  *
-  * SUBTEST: fbcdrrs-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC & DRRS, on secondary screen
-  *
-  * SUBTEST: fbcpsr-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC & PSR, on secondary screen
-  *
-  * SUBTEST: fbchdr-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC & HDR, on secondary screen
-  *
-  * SUBTEST: drrshdr-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with DRRS & HDR, on secondary screen
-  *
-  * SUBTEST: psrhdr-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with PSR & HDR, on secondary screen
-  *
-  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC, DRRS & HDR, on secondary screen
-  *
-  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-%sflip-blt
-- * Description: Just exercise page flips with the patterns we have
-+ * Description: Just exercise page flips with the patterns we have with FBC, PSR & HDR, on secondary screen
-  *
-  * arg[1]:
-  *
-@@ -863,27 +868,27 @@
- 
- /**
-  * SUBTEST: fbc-%dp-%s-fliptrack-mmap-gtt
-- * Description: Check if the hardware tracking works after page flips
-+ * Description: Check if the hardware tracking works after page flips with FBC
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrs-%dp-%s-fliptrack-mmap-gtt
-- * Description: Check if the hardware tracking works after page flips
-+ * Description: Check if the hardware tracking works after page flips with FBC & DRRS
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsr-%dp-%s-fliptrack-mmap-gtt
-- * Description: Check if the hardware tracking works after page flips
-+ * Description: Check if the hardware tracking works after page flips with FBC & PSR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbchdr-%dp-%s-fliptrack-mmap-gtt
-- * Description: Check if the hardware tracking works after page flips
-+ * Description: Check if the hardware tracking works after page flips with FBC & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrshdr-%dp-%s-fliptrack-mmap-gtt
-- * Description: Check if the hardware tracking works after page flips
-+ * Description: Check if the hardware tracking works after page flips with FBC, DRRS & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsrhdr-%dp-%s-fliptrack-mmap-gtt
-- * Description: Check if the hardware tracking works after page flips
-+ * Description: Check if the hardware tracking works after page flips with FBC, PSR & HDR
-  * Driver requirement: i915
-  *
-  * arg[1].values:   1, 2
-@@ -896,37 +901,37 @@
- 
- /**
-  * SUBTEST: drrs-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with DRRS
-  *
-  * SUBTEST: fbc-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with FBC
-  *
-  * SUBTEST: psr-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with PSR
-  *
-  * SUBTEST: hdr-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with HDR
-  *
-  * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with FBC & DRRS
-  *
-  * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with FBC & PSR
-  *
-  * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with FBC & HDR
-  *
-  * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with DRRS & HDR
-  *
-  * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-move
-- * Description: Just move the %arg[2] around
-+ * Description: Just move the %arg[2] around with FBC, PSR & HDR
-  *
-  * arg[1].values:   1, 2
-  *
-@@ -938,37 +943,37 @@
- 
- /**
-  * SUBTEST: drrs-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with DRRS
-  *
-  * SUBTEST: fbc-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with FBC
-  *
-  * SUBTEST: psr-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with PSR
-  *
-  * SUBTEST: hdr-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with HDR
-  *
-  * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with FBC & DRRS
-  *
-  * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with FBC & PSR
-  *
-  * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with FBC & HDR
-  *
-  * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with DRRS & HDR
-  *
-  * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-move
-- * Description: Just move the %arg[1] around
-+ * Description: Just move the %arg[1] around with FBC, PSR & HDR
-  *
-  * arg[1]:
-  *
-@@ -978,37 +983,37 @@
- 
- /**
-  * SUBTEST: drrs-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with DRRS
-  *
-  * SUBTEST: fbc-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with FBC
-  *
-  * SUBTEST: psr-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with PSR
-  *
-  * SUBTEST: hdr-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with HDR
-  *
-  * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with FBC & DRRS
-  *
-  * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with FBC & PSR
-  *
-  * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with FBC & HDR
-  *
-  * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with DRRS & HDR
-  *
-  * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[2] a few times
-+ * Description: Just enable and disable the %arg[2] a few times with FBC, PSR & HDR
-  *
-  * arg[1].values:   1, 2
-  *
-@@ -1020,37 +1025,37 @@
- 
- /**
-  * SUBTEST: drrs-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with DRRS
-  *
-  * SUBTEST: fbc-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with FBC
-  *
-  * SUBTEST: psr-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with PSR
-  *
-  * SUBTEST: hdr-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with HDR
-  *
-  * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with FBC & DRRS
-  *
-  * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with FBC & PSR
-  *
-  * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with FBC & HDR
-  *
-  * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with DRRS & HDR
-  *
-  * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-onoff
-- * Description: Just enable and disable the %arg[1] a few times
-+ * Description: Just enable and disable the %arg[1] a few times with FBC, PSR & HDR
-  *
-  * arg[1]:
-  *
-@@ -1060,107 +1065,107 @@
- 
- /**
-  * SUBTEST: drrs-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with DRRS, on primary screen
-  *
-  * SUBTEST: fbc-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC, on primary screen
-  *
-  * SUBTEST: psr-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with PSR, on primary screen
-  *
-  * SUBTEST: hdr-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with HDR, on primary screen
-  *
-  * SUBTEST: fbcdrrs-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC & DRRS, on primary screen
-  *
-  * SUBTEST: fbcpsr-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC & PSR, on primary screen
-  *
-  * SUBTEST: fbchdr-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC & HDR, on primary screen
-  *
-  * SUBTEST: drrshdr-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with DRRS & HDR, on primary screen
-  *
-  * SUBTEST: psrhdr-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with PSR & HDR, on primary screen
-  *
-  * SUBTEST: fbcdrrshdr-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC, DRRS & HDR, on primary screen
-  *
-  * SUBTEST: fbcpsrhdr-%dp-primscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC, PSR & HDR, on primary screen
-  *
-  * SUBTEST: drrs-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with DRRS, on secondary screen
-  *
-  * SUBTEST: fbc-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC, on secondary screen
-  *
-  * SUBTEST: psr-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with PSR, on secondary screen
-  *
-  * SUBTEST: hdr-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with HDR, on secondary screen
-  *
-  * SUBTEST: fbcdrrs-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC & DRRS, on secondary screen
-  *
-  * SUBTEST: fbcpsr-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC & PSR, on secondary screen
-  *
-  * SUBTEST: fbchdr-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC & HDR, on secondary screen
-  *
-  * SUBTEST: drrshdr-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with DRRS & HDR, on secondary screen
-  *
-  * SUBTEST: psrhdr-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with PSR & HDR, on secondary screen
-  *
-  * SUBTEST: fbcdrrshdr-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC, DRRS & HDR, on secondary screen
-  *
-  * SUBTEST: fbcpsrhdr-2p-scndscrn-spr-indfb-fullscreen
-- * Description: Put a fullscreen plane covering the whole screen
-+ * Description: Put a fullscreen plane covering the whole screen with FBC, PSR & HDR, on secondary screen
-  *
-  * arg[1].values:   1, 2
-  */
- 
- /**
-  * SUBTEST: drrs-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with DRRS
-  *
-  * SUBTEST: fbc-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with FBC
-  *
-  * SUBTEST: psr-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with PSR
-  *
-  * SUBTEST: hdr-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with HDR
-  *
-  * SUBTEST: fbcdrrs-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with FBC & DRRS
-  *
-  * SUBTEST: fbcpsr-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with FBC & PSR
-  *
-  * SUBTEST: fbchdr-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with FBC & HDR
-  *
-  * SUBTEST: drrshdr-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with DRRS & HDR
-  *
-  * SUBTEST: psrhdr-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-%s-scaledprimary
-- * Description: Try different primary plane scaling strategies
-+ * Description: Try different primary plane scaling strategies with FBC, PSR & HDR
-  *
-  * arg[1]:
-  *
-@@ -1194,139 +1199,139 @@
-  * Description: Modeset from a busy buffer to a non-busy buffer with DRRS & HDR
-  *
-  * SUBTEST: psrhdr-modesetfrombusy
-- * Description: Modeset from a busy buffer to a non-busy buffer with HDR & PSR
-+ * Description: Modeset from a busy buffer to a non-busy buffer with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-modesetfrombusy
-- * Description: Modeset from a busy buffer to a non-busy buffer with DRRS, HDR & FBC
-+ * Description: Modeset from a busy buffer to a non-busy buffer with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-modesetfrombusy
-- * Description: Modeset from a busy buffer to a non-busy buffer with HDR, PSR & FBC
-+ * Description: Modeset from a busy buffer to a non-busy buffer with FBC, PSR & HDR
-  */
- 
- /**
-  * SUBTEST: drrs-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of DRRS
-+ * Description: Make sure suspend/resume keeps us on the same state of DRRS with DRRS
-  *
-  * SUBTEST: fbc-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of FBC
-+ * Description: Make sure suspend/resume keeps us on the same state of FBC with FBC
-  *
-  * SUBTEST: psr-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of PSR
-+ * Description: Make sure suspend/resume keeps us on the same state of PSR with PSR
-  *
-  * SUBTEST: hdr-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of HDR
-+ * Description: Make sure suspend/resume keeps us on the same state of HDR with HDR
-  *
-  * SUBTEST: fbcdrrs-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of FBC & DRRS
-+ * Description: Make sure suspend/resume keeps us on the same state of FBC & DRRS with FBC & DRRS
-  *
-  * SUBTEST: fbcpsr-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of FBC & PSR
-+ * Description: Make sure suspend/resume keeps us on the same state of FBC & PSR with FBC & PSR
-  *
-  * SUBTEST: fbchdr-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of FBC & HDR
-+ * Description: Make sure suspend/resume keeps us on the same state of FBC & HDR with FBC & HDR
-  *
-  * SUBTEST: drrshdr-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of HDR & DRRS
-+ * Description: Make sure suspend/resume keeps us on the same state of HDR & DRRS with DRRS & HDR
-  *
-  * SUBTEST: psrhdr-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of HDR & PSR
-+ * Description: Make sure suspend/resume keeps us on the same state of HDR & PSR with PSR & HDR
-  *
-  * SUBTEST: fbcdrrshdr-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of HDR, DRRS & FBC
-+ * Description: Make sure suspend/resume keeps us on the same state of HDR, DRRS & FBC with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-suspend
-- * Description: Make sure suspend/resume keeps us on the same state of HDR, PSR & FBC
-+ * Description: Make sure suspend/resume keeps us on the same state of HDR, PSR & FBC with FBC, PSR & HDR
-  */
- 
- /**
-  * SUBTEST: drrs-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with DRRS
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbc-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with FBC
-  * Driver requirement: i915
-  *
-  * SUBTEST: psr-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with PSR
-  * Driver requirement: i915
-  *
-  * SUBTEST: hdr-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrs-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with FBC & DRRS
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsr-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with FBC & PSR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbchdr-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with FBC & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: drrshdr-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with DRRS & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: psrhdr-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with PSR & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcdrrshdr-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with FBC, DRRS & HDR
-  * Driver requirement: i915
-  *
-  * SUBTEST: fbcpsrhdr-farfromfence-mmap-gtt
-- * Description: Test drawing as far from the fence start as possible
-+ * Description: Test drawing as far from the fence start as possible with FBC, PSR & HDR
-  * Driver requirement: i915
-  */
- 
- /**
-  * SUBTEST: fbc-stridechange
-- * Description: Change the frontbuffer stride by doing a modeset
-+ * Description: Change the frontbuffer stride by doing a modeset with FBC
-  *
-  * SUBTEST: fbcdrrs-stridechange
-- * Description: Change the frontbuffer stride by doing a modeset
-+ * Description: Change the frontbuffer stride by doing a modeset with FBC & DRRS
-  *
-  * SUBTEST: fbcpsr-stridechange
-- * Description: Change the frontbuffer stride by doing a modeset
-+ * Description: Change the frontbuffer stride by doing a modeset with FBC & PSR
-  *
-  * SUBTEST: fbchdr-stridechange
-- * Description: Change the frontbuffer stride by doing a modeset
-+ * Description: Change the frontbuffer stride by doing a modeset with FBC & HDR
-  *
-  * SUBTEST: fbcdrrshdr-stridechange
-- * Description: Change the frontbuffer stride by doing a modeset
-+ * Description: Change the frontbuffer stride by doing a modeset with FBC, DRRS & HDR
-  *
-  * SUBTEST: fbcpsrhdr-stridechange
-- * Description: Change the frontbuffer stride by doing a modeset
-+ * Description: Change the frontbuffer stride by doing a modeset with FBC, PSR & HDR
-  */
- 
- /**
-  * SUBTEST: fbc-tiling-%s
-- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
-+ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC
-  *              basic drawing test, else set the mode & test if FBC is disabled
-  *
-  * SUBTEST: fbcdrrs-tiling-%s
-- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
-+ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC & DRRS
-  *              basic drawing test, else set the mode & test if FBC is disabled
-  *
-  * SUBTEST: fbcpsr-tiling-%s
-- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
-+ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC & PSR
-  *              basic drawing test, else set the mode & test if FBC is disabled
-  *
-  * SUBTEST: fbchdr-tiling-%s
-- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
-+ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC & HDR
-  *              basic drawing test, else set the mode & test if FBC is disabled
-  *
-  * SUBTEST: fbcdrrshdr-tiling-%s
-- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
-+ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC, DRRS & HDR
-  *              basic drawing test, else set the mode & test if FBC is disabled
-  *
-  * SUBTEST: fbcpsrhdr-tiling-%s
-- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
-+ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC, PSR & HDR
-  *              basic drawing test, else set the mode & test if FBC is disabled
-  *
-  * arg[1]:
--- 
-2.25.1
-
+T24gRnJpLCAyMDI2LTA1LTE1IGF0IDEwOjU0ICswNTMwLCBTdXJhaiBLYW5kcGFsIHdyb3RlOg0K
+PiBjcmVhdGVfZmJzKCkgc2l6ZXMgdGhlIHNoYXJlZCByZWQvZ3JlZW4gRkJzIHRvIHRoZSBtYXgg
+d2lkdGggYW5kDQo+IGhlaWdodCBhY3Jvc3MgYWxsIGNvbm5lY3RlZCBvdXRwdXRzLiBXaXRoIHBh
+bmVscyBvZiBkaWZmZXJpbmcgbmF0aXZlDQo+IHJlc29sdXRpb25zIChlLmcuIDM1MDR4MjE5MCBh
+bmQgMzg0MHgyMTYwKSwgdGhlIEZCIGVuZHMgdXAgbGFyZ2VyDQo+IHRoYW4NCj4gYXQgbGVhc3Qg
+b25lIHBhbmVsIGluIHNvbWUgZGltZW5zaW9uLiBpZ3RfcGxhbmVfc2V0X2ZiKCkgcmVzZXRzIHRo
+ZQ0KPiBwbGFuZSBzcmMgYW5kIGRzdCByZWN0YW5nbGVzIHRvIHRoZSBmdWxsIEZCIHNpemUsIHNv
+IHN1YnNlcXVlbnQNCj4gY29tbWl0cyBzdWJtaXQgYSBzb3VyY2UgcmVjdCB0aGF0IGV4Y2VlZHMg
+dGhlIENSVEMgYWN0aXZlIGFyZWEgYW5kDQo+IGF0b21pYyBjaGVjayByZWplY3RzIHRoZW0gd2l0
+aCAtRUlOVkFMIGJlZm9yZSBIRENQIGF1dGhlbnRpY2F0aW9uIGNhbg0KPiBzdGFydC4NCj4gDQo+
+IENsYW1wIHRoZSBwbGFuZSBzb3VyY2UgKGlndF9mYl9zZXRfc2l6ZSkgYW5kIGRlc3RpbmF0aW9u
+DQo+IChpZ3RfcGxhbmVfc2V0X3NpemUpIHRvIHRoZSBvdXRwdXQncyBjdXJyZW50IG1vZGUgYWZ0
+ZXIgZXZlcnkNCj4gaWd0X3BsYW5lX3NldF9mYigpIGluIG1vZGVzZXRfd2l0aF9mYigpLCB0ZXN0
+X2NwX2VuYWJsZSgpLA0KPiB0ZXN0X2NwX2Rpc2FibGUoKSBhbmQgdGVzdF9tc3RfY3BfZGlzYWJs
+ZSgpLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogU3VyYWogS2FuZHBhbCA8c3VyYWoua2FuZHBhbEBp
+bnRlbC5jb20+DQoNCkhpIFN1cmFqLA0KDQpBZnRlciByZXZlcnRpbmcgbXkgc2VyaWVzOg0KLSBo
+dHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzE2NDA1Mi8NCg0KVGhpcyBw
+YXRjaCBjYW4gcmVzb2x2ZSBteSBwcmV2aW91cyBpc3N1ZS4NClRoYW5rIHlvdSBmb3IgeW91ciBw
+YXRjaC4NCg0KVGVzdGVkLWJ5OiBKYXNvbi1KSCBMaW4gPGphc29uLWpoLmxpbkBtZWRpYXRlay5j
+b20+DQoNCj4gLS0tDQo+IMKgdGVzdHMva21zX2NvbnRlbnRfcHJvdGVjdGlvbi5jIHwgMjkgKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKy0NCj4gwqAxIGZpbGUgY2hhbmdlZCwgMjggaW5zZXJ0
+aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19jb250
+ZW50X3Byb3RlY3Rpb24uYw0KPiBiL3Rlc3RzL2ttc19jb250ZW50X3Byb3RlY3Rpb24uYw0KPiBp
+bmRleCBjNTk0NDFmMTEuLmQxYjdjNTg2MyAxMDA2NDQNCj4gLS0tIGEvdGVzdHMva21zX2NvbnRl
+bnRfcHJvdGVjdGlvbi5jDQo+ICsrKyBiL3Rlc3RzL2ttc19jb250ZW50X3Byb3RlY3Rpb24uYw0K
+PiBAQCAtMjY0LDE2ICsyNjQsMjIgQEAgc3RhdGljIHZvaWQgbW9kZXNldF93aXRoX2ZiKGlndF9v
+dXRwdXRfdA0KPiAqb3V0cHV0LA0KPiDCoAlpZ3RfZGlzcGxheV90ICpkaXNwbGF5ID0gJmRhdGEu
+ZGlzcGxheTsNCj4gwqAJZHJtTW9kZU1vZGVJbmZvICptb2RlOw0KPiDCoAlpZ3RfcGxhbmVfdCAq
+cHJpbWFyeTsNCj4gKwlpbnQgd2lkdGgsIGhlaWdodDsNCj4gwqANCj4gwqAJbW9kZSA9IGlndF9v
+dXRwdXRfZ2V0X21vZGUob3V0cHV0KTsNCj4gKwl3aWR0aCA9IG1vZGUtPmhkaXNwbGF5Ow0KPiAr
+CWhlaWdodCA9IG1vZGUtPnZkaXNwbGF5Ow0KPiDCoA0KPiDCoAlwcmltYXJ5ID0gaWd0X291dHB1
+dF9nZXRfcGxhbmVfdHlwZShvdXRwdXQsDQo+IERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOw0KPiDC
+oAlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksICZkYXRhLnJlZCk7DQo+IC0JaWd0X2ZiX3NldF9z
+aXplKCZkYXRhLnJlZCwgcHJpbWFyeSwgbW9kZS0+aGRpc3BsYXksIG1vZGUtDQo+ID52ZGlzcGxh
+eSk7DQo+ICsJaWd0X2ZiX3NldF9zaXplKCZkYXRhLnJlZCwgcHJpbWFyeSwgd2lkdGgsIGhlaWdo
+dCk7DQo+ICsJaWd0X3BsYW5lX3NldF9zaXplKHByaW1hcnksIHdpZHRoLCBoZWlnaHQpOw0KPiDC
+oA0KPiDCoAlpZ3RfZGlzcGxheV9jb21taXQyKGRpc3BsYXksIGNvbW1pdF9zdHlsZSk7DQo+IMKg
+DQo+IMKgCWlndF9wbGFuZV9zZXRfZmIocHJpbWFyeSwgJmRhdGEuZ3JlZW4pOw0KPiArCWlndF9m
+Yl9zZXRfc2l6ZSgmZGF0YS5ncmVlbiwgcHJpbWFyeSwgd2lkdGgsIGhlaWdodCk7DQo+ICsJaWd0
+X3BsYW5lX3NldF9zaXplKHByaW1hcnksIHdpZHRoLCBoZWlnaHQpOw0KPiDCoA0KPiDCoAkvKiBX
+YWl0IGZvciBGbGlwIGNvbXBsZXRpb24gYmVmb3JlIHN0YXJ0aW5nIHRoZSBIRENQDQo+IGF1dGhl
+bnRpY2F0aW9uICovDQo+IMKgCWNvbW1pdF9kaXNwbGF5X2FuZF93YWl0X2Zvcl9mbGlwKGNvbW1p
+dF9zdHlsZSk7DQo+IEBAIC0yODQsNiArMjkwLDggQEAgc3RhdGljIGJvb2wgdGVzdF9jcF9lbmFi
+bGUoaWd0X291dHB1dF90ICpvdXRwdXQsDQo+IGVudW0gaWd0X2NvbW1pdF9zdHlsZSBjb21taXRf
+c3QNCj4gwqB7DQo+IMKgCWlndF9kaXNwbGF5X3QgKmRpc3BsYXkgPSAmZGF0YS5kaXNwbGF5Ow0K
+PiDCoAlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsNCj4gKwlkcm1Nb2RlTW9kZUluZm8gKm1vZGU7DQo+
+ICsJaW50IHdpZHRoLCBoZWlnaHQ7DQo+IMKgCWJvb2wgcmV0Ow0KPiDCoA0KPiDCoAlwcmltYXJ5
+ID0gaWd0X291dHB1dF9nZXRfcGxhbmVfdHlwZShvdXRwdXQsDQo+IERSTV9QTEFORV9UWVBFX1BS
+SU1BUlkpOw0KPiBAQCAtMzAyLDcgKzMxMCwxMiBAQCBzdGF0aWMgYm9vbCB0ZXN0X2NwX2VuYWJs
+ZShpZ3Rfb3V0cHV0X3QgKm91dHB1dCwNCj4gZW51bSBpZ3RfY29tbWl0X3N0eWxlIGNvbW1pdF9z
+dA0KPiDCoAlyZXQgPSB3YWl0X2Zvcl9wcm9wX3ZhbHVlKG91dHB1dCwgQ1BfRU5BQkxFRCwNCj4g
+wqAJCQkJwqAgS0VSTkVMX0FVVEhfVElNRV9BTExPV0VEX01TRUMpOw0KPiDCoAlpZiAocmV0KSB7
+DQo+ICsJCW1vZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKG91dHB1dCk7DQo+ICsJCXdpZHRoID0g
+bW9kZS0+aGRpc3BsYXk7DQo+ICsJCWhlaWdodCA9IG1vZGUtPnZkaXNwbGF5Ow0KPiDCoAkJaWd0
+X3BsYW5lX3NldF9mYihwcmltYXJ5LCAmZGF0YS5ncmVlbik7DQo+ICsJCWlndF9wbGFuZV9zZXRf
+c2l6ZShwcmltYXJ5LCB3aWR0aCwgaGVpZ2h0KTsNCj4gKwkJaWd0X2ZiX3NldF9zaXplKCZkYXRh
+LmdyZWVuLCBwcmltYXJ5LCB3aWR0aCwNCj4gaGVpZ2h0KTsNCj4gwqAJCWlndF9kaXNwbGF5X2Nv
+bW1pdDIoZGlzcGxheSwgY29tbWl0X3N0eWxlKTsNCj4gwqAJfQ0KPiDCoA0KPiBAQCAtMzE1LDEz
+ICszMjgsMjAgQEAgc3RhdGljIHZvaWQgdGVzdF9tc3RfY3BfZGlzYWJsZShpZ3Rfb3V0cHV0X3QN
+Cj4gKmhkY3BfbXN0X291dHB1dFtdLA0KPiDCoHsNCj4gwqAJaWd0X2Rpc3BsYXlfdCAqZGlzcGxh
+eSA9ICZkYXRhLmRpc3BsYXk7DQo+IMKgCWlndF9wbGFuZV90ICpwcmltYXJ5Ow0KPiArCWRybU1v
+ZGVNb2RlSW5mbyAqbW9kZTsNCj4gKwlpbnQgd2lkdGgsIGhlaWdodDsNCj4gwqAJYm9vbCByZXQ7
+DQo+IMKgCWludCBjb3VudDsNCj4gwqAJdTY0IHZhbDsNCj4gwqANCj4gwqAJZm9yIChjb3VudCA9
+IDA7IGNvdW50IDwgdmFsaWRfb3V0cHV0czsgY291bnQrKykgew0KPiDCoAkJcHJpbWFyeSA9DQo+
+IGlndF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUoaGRjcF9tc3Rfb3V0cHV0W2NvdW50XSwNCj4gRFJN
+X1BMQU5FX1RZUEVfUFJJTUFSWSk7DQo+ICsJCW1vZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKGhk
+Y3BfbXN0X291dHB1dFtjb3VudF0pOw0KPiArCQl3aWR0aCA9IG1vZGUtPmhkaXNwbGF5Ow0KPiAr
+CQloZWlnaHQgPSBtb2RlLT52ZGlzcGxheTsNCj4gwqAJCWlndF9wbGFuZV9zZXRfZmIocHJpbWFy
+eSwgJmRhdGEucmVkKTsNCj4gKwkJaWd0X2ZiX3NldF9zaXplKCZkYXRhLnJlZCwgcHJpbWFyeSwg
+d2lkdGgsIGhlaWdodCk7DQo+ICsJCWlndF9wbGFuZV9zZXRfc2l6ZShwcmltYXJ5LCB3aWR0aCwg
+aGVpZ2h0KTsNCj4gwqAJCWlndF9vdXRwdXRfc2V0X3Byb3BfdmFsdWUoaGRjcF9tc3Rfb3V0cHV0
+W2NvdW50XSwNCj4gSUdUX0NPTk5FQ1RPUl9DT05URU5UX1BST1RFQ1RJT04sDQo+IMKgCQkJCQnC
+oCBDUF9VTkRFU0lSRUQpOw0KPiDCoAl9DQo+IEBAIC0zNDMsMTAgKzM2MywxNSBAQCBzdGF0aWMg
+dm9pZCB0ZXN0X2NwX2Rpc2FibGUoaWd0X291dHB1dF90DQo+ICpvdXRwdXQsIGVudW0gaWd0X2Nv
+bW1pdF9zdHlsZSBjb21taXRfcw0KPiDCoHsNCj4gwqAJaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSA9
+ICZkYXRhLmRpc3BsYXk7DQo+IMKgCWlndF9wbGFuZV90ICpwcmltYXJ5Ow0KPiArCWRybU1vZGVN
+b2RlSW5mbyAqbW9kZTsNCj4gKwlpbnQgd2lkdGgsIGhlaWdodDsNCj4gwqAJYm9vbCByZXQ7DQo+
+IMKgDQo+IMKgCXByaW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBlKG91dHB1dCwNCj4g
+RFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7DQo+IMKgDQo+ICsJbW9kZSA9IGlndF9vdXRwdXRfZ2V0
+X21vZGUob3V0cHV0KTsNCj4gKwl3aWR0aCA9IG1vZGUtPmhkaXNwbGF5Ow0KPiArCWhlaWdodCA9
+IG1vZGUtPnZkaXNwbGF5Ow0KPiDCoAkvKg0KPiDCoAkgKiBFdmVuIG9uIEhEQ1AgZW5hYmxlIGZh
+aWxlZCBzY2VuYXJpbywgSUdUIHNob3VsZCBleGl0DQo+IGxlYXZpbmcgdGhlDQo+IMKgCSAqICJj
+b250ZW50IHByb3RlY3Rpb24iIGF0ICJVTkRFU0lSRUQiLg0KPiBAQCAtMzU0LDYgKzM3OSw4IEBA
+IHN0YXRpYyB2b2lkIHRlc3RfY3BfZGlzYWJsZShpZ3Rfb3V0cHV0X3QgKm91dHB1dCwNCj4gZW51
+bSBpZ3RfY29tbWl0X3N0eWxlIGNvbW1pdF9zDQo+IMKgCWlndF9vdXRwdXRfc2V0X3Byb3BfdmFs
+dWUob3V0cHV0LA0KPiBJR1RfQ09OTkVDVE9SX0NPTlRFTlRfUFJPVEVDVElPTiwNCj4gwqAJCQkJ
+wqAgQ1BfVU5ERVNJUkVEKTsNCj4gwqAJaWd0X3BsYW5lX3NldF9mYihwcmltYXJ5LCAmZGF0YS5y
+ZWQpOw0KPiArCWlndF9wbGFuZV9zZXRfc2l6ZShwcmltYXJ5LCB3aWR0aCwgaGVpZ2h0KTsNCj4g
+KwlpZ3RfZmJfc2V0X3NpemUoJmRhdGEucmVkLCBwcmltYXJ5LCB3aWR0aCwgaGVpZ2h0KTsNCj4g
+wqAJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNwbGF5LCBjb21taXRfc3R5bGUpOw0KPiDCoA0KPiDC
+oAkvKiBXYWl0IGZvciBIRENQIHRvIGJlIGRpc2FibGVkLCBiZWZvcmUgY3J0YyBvZmYgKi8NCg0K
