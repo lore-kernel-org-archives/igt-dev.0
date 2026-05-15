@@ -4,60 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03C63CD343F
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 08:11:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 414AFCD343F
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 08:14:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AAE3C10F49A;
-	Fri, 15 May 2026 08:11:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EBB3210E0E4;
+	Fri, 15 May 2026 08:14:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CEP01bwt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kHrhMhnr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0D5A10F473
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 08:10:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFF4F10E0E4
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 08:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778832650; x=1810368650;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version:content-transfer-encoding;
- bh=KUAsLIx/tQUSTAeJmDFRTIBcO4ou/5rb4h0MgxZ2Iyg=;
- b=CEP01bwtHTJeBiPIbcgCvVKZdYZ4+NQItJBre+CUHUoNfhUrVVP35sHs
- AHTCPgs99cyQ2rYfSA9LJ9KcJWLbJEXlYNzB0gNGFQU2s5lwxGpCcOwJU
- Gh8RXketNOmYljh37nHIA7nJtDX6DGI21Jd/w90jC5d/rsiNVvHlIRgsS
- osDQ504+FHlPQXqYwJmP9tfWTUzSIIzSzl6ozllA+znAGBkrN3mz8ZKxh
- LvtDm2p9fVA8kT2FHywR3QpvT5o3EMJOJw55nfiWnD8lW9FW3k1hRC7gZ
- dNDkrq+t1YTN9fgTFPp/k5z68VJBEHz/nX78Tw3wMZPLrNmaovJfMmdfm A==;
-X-CSE-ConnectionGUID: Dn6JzBB0RCOuRXwaCNMcxg==
-X-CSE-MsgGUID: mIJgLOSeRVGI0+QtDTw8Dg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="79815232"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="79815232"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 01:10:49 -0700
-X-CSE-ConnectionGUID: j76rqJP2T9SwRg/un9XEYQ==
-X-CSE-MsgGUID: J0BEBMX8TAqeK2690AHqog==
+ t=1778832872; x=1810368872;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4rEUUia0avaPczBX8SVpnkq91hGWLUDEiXtf5kL0Ya4=;
+ b=kHrhMhnrWUO03daZ+zObRI8tXT3s5vCPRlozauCDv6Jmdq+mHrVPDGSK
+ P28+NTrsGUAHrv5yuk6oGqb/kP9BIdh3Az4a+51UGRag4eeY/xbdpO9N0
+ SoYPKGf6+A09J5lvhmdWLvn70qwsKaWGBvQmHQj1wTdq3m38FLxNV2Nmn
+ IZkSBBA6ObEkJEDTkAu7w/B4ak/kjPIB+LOhwYhtB/F6F1xtY+FVSAyTo
+ Qp2+ayWmF46o7TOdzwliS0HBsMoacNoHQHY+C74BdSgAiGimd0Xl5IeSh
+ vAz/CGr6LFCZzferyztQoT4s6IabZOFa64C3xUbcOXjFydd2EZ19/KPRE Q==;
+X-CSE-ConnectionGUID: MzbWkoypR2e8CYDWFuRtZA==
+X-CSE-MsgGUID: OtQr/iC0TfmFKpgweCYaBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="67315076"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="67315076"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2026 01:14:32 -0700
+X-CSE-ConnectionGUID: CuOJw9waSpms8lyjSo/BlQ==
+X-CSE-MsgGUID: Q8qJzuOzQr6cQ1FXwgxkDA==
 X-ExtLoop1: 1
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.71])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 01:10:47 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>, Ashutosh Dixit
- <ashutosh.dixit@intel.com>, Karthik B S <karthik.b.s@intel.com>, Kamil
- Konieczny <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2] scripts: Add new script for verbatim sync with
- kernel
-In-Reply-To: <20260514132713.35818-1-kamil.konieczny@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260514132713.35818-1-kamil.konieczny@linux.intel.com>
-Date: Fri, 15 May 2026 11:10:44 +0300
-Message-ID: <8a9eb3b8ed8250faaeda2507f146ede1e2691328@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="242973227"
+Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.10])
+ by orviesa004.jf.intel.com with ESMTP; 15 May 2026 01:14:30 -0700
+From: Suraj Kandpal <suraj.kandpal@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com, santhosh.reddy.guddati@intel.com,
+ Suraj Kandpal <suraj.kandpal@intel.com>,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>
+Subject: [PATCH i-g-t] tests/kms_content_protection: clamp plane src/dst to
+ output mode
+Date: Fri, 15 May 2026 13:44:27 +0530
+Message-Id: <20260515081427.973496-1-suraj.kandpal@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,133 +67,122 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 14 May 2026, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrot=
-e:
-> From: Jani Nikula <jani.nikula@intel.com>
->
-> This is a helper script used in cases when a verbatim kernel
-> file should be copied into igt-dev.
+create_fbs() sizes the shared red/green FBs to the max width and
+height across all connected outputs. With panels of differing native
+resolutions (e.g. 3504x2190 and 3840x2160), the FB ends up larger than
+at least one panel in some dimension. igt_plane_set_fb() resets the
+plane src and dst rectangles to the full FB size, so subsequent
+commits submit a source rect that exceeds the CRTC active area and
+atomic check rejects them with -EINVAL before HDCP authentication can
+start.
 
-First of all, thanks for picking this up.
+Clamp the plane source (igt_fb_set_size) and destination
+(igt_plane_set_size) to the output's current mode after every
+igt_plane_set_fb() in modeset_with_fb(), test_cp_enable(),
+test_cp_disable() and test_mst_cp_disable().
 
-Then some process nitpicks. ;)
+Tested-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+---
+ tests/kms_content_protection.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index c59441f11..d1b7c5863 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -264,16 +264,22 @@ static void modeset_with_fb(igt_output_t *output,
+ 	igt_display_t *display = &data.display;
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
++	int width, height;
+ 
+ 	mode = igt_output_get_mode(output);
++	width = mode->hdisplay;
++	height = mode->vdisplay;
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, &data.red);
+-	igt_fb_set_size(&data.red, primary, mode->hdisplay, mode->vdisplay);
++	igt_fb_set_size(&data.red, primary, width, height);
++	igt_plane_set_size(primary, width, height);
+ 
+ 	igt_display_commit2(display, commit_style);
+ 
+ 	igt_plane_set_fb(primary, &data.green);
++	igt_fb_set_size(&data.green, primary, width, height);
++	igt_plane_set_size(primary, width, height);
+ 
+ 	/* Wait for Flip completion before starting the HDCP authentication */
+ 	commit_display_and_wait_for_flip(commit_style);
+@@ -284,6 +290,8 @@ static bool test_cp_enable(igt_output_t *output, enum igt_commit_style commit_st
+ {
+ 	igt_display_t *display = &data.display;
+ 	igt_plane_t *primary;
++	drmModeModeInfo *mode;
++	int width, height;
+ 	bool ret;
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+@@ -302,7 +310,12 @@ static bool test_cp_enable(igt_output_t *output, enum igt_commit_style commit_st
+ 	ret = wait_for_prop_value(output, CP_ENABLED,
+ 				  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+ 	if (ret) {
++		mode = igt_output_get_mode(output);
++		width = mode->hdisplay;
++		height = mode->vdisplay;
+ 		igt_plane_set_fb(primary, &data.green);
++		igt_plane_set_size(primary, width, height);
++		igt_fb_set_size(&data.green, primary, width, height);
+ 		igt_display_commit2(display, commit_style);
+ 	}
+ 
+@@ -315,13 +328,20 @@ static void test_mst_cp_disable(igt_output_t *hdcp_mst_output[],
+ {
+ 	igt_display_t *display = &data.display;
+ 	igt_plane_t *primary;
++	drmModeModeInfo *mode;
++	int width, height;
+ 	bool ret;
+ 	int count;
+ 	u64 val;
+ 
+ 	for (count = 0; count < valid_outputs; count++) {
+ 		primary = igt_output_get_plane_type(hdcp_mst_output[count], DRM_PLANE_TYPE_PRIMARY);
++		mode = igt_output_get_mode(hdcp_mst_output[count]);
++		width = mode->hdisplay;
++		height = mode->vdisplay;
+ 		igt_plane_set_fb(primary, &data.red);
++		igt_fb_set_size(&data.red, primary, width, height);
++		igt_plane_set_size(primary, width, height);
+ 		igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION,
+ 					  CP_UNDESIRED);
+ 	}
+@@ -343,10 +363,15 @@ static void test_cp_disable(igt_output_t *output, enum igt_commit_style commit_s
+ {
+ 	igt_display_t *display = &data.display;
+ 	igt_plane_t *primary;
++	drmModeModeInfo *mode;
++	int width, height;
+ 	bool ret;
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
++	mode = igt_output_get_mode(output);
++	width = mode->hdisplay;
++	height = mode->vdisplay;
+ 	/*
+ 	 * Even on HDCP enable failed scenario, IGT should exit leaving the
+ 	 * "content protection" at "UNDESIRED".
+@@ -354,6 +379,8 @@ static void test_cp_disable(igt_output_t *output, enum igt_commit_style commit_s
+ 	igt_output_set_prop_value(output, IGT_CONNECTOR_CONTENT_PROTECTION,
+ 				  CP_UNDESIRED);
+ 	igt_plane_set_fb(primary, &data.red);
++	igt_plane_set_size(primary, width, height);
++	igt_fb_set_size(&data.red, primary, width, height);
+ 	igt_display_commit2(display, commit_style);
+ 
+ 	/* Wait for HDCP to be disabled, before crtc off */
+-- 
+2.34.1
 
-I'm pretty sure I haven't sent this with my Signed-off-by. I admit I
-should have, but Signed-off-by is a legal thing, and you can't add it on
-my behalf.
-
-Anyway,
-
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-
-
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  scripts/sync_with_kernel.sh | 57 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 57 insertions(+)
->  create mode 100755 scripts/sync_with_kernel.sh
->
-> diff --git a/scripts/sync_with_kernel.sh b/scripts/sync_with_kernel.sh
-> new file mode 100755
-> index 000000000..65753677c
-> --- /dev/null
-> +++ b/scripts/sync_with_kernel.sh
-> @@ -0,0 +1,57 @@
-> +#!/bin/sh
-> +# SPDX-License-Identifier: MIT
-> +#
-> +# Copyright =C2=A9 2026 Intel Corporation
-> +#
-> +# Author: Jani Nikula <jani.nikula@intel.com>
-> +#
-
-I'm generally against adding *any* Author: lines in comments in any
-collaborative projects. They give a false sense of ownership, and they
-create a perpetual problem of "when do you add another author". The
-author lines are also (socially) difficult to remove afterwards.
-
-In the kernel, we have Author: lines in files by folks that created the
-file 10-15 years ago, but have been basically completely rewritten since
-then by a dozen people. But nobody added another Author: line since
-then. I think that's just misattribution and misleading.
-
-I could basically add my name in almost every file in the i915 display
-parts, and much more, but what would be the point of that?
-
-The truth is really in the git history.
-
-I want to reply with the above rant when anyone is adding a file with
-Author:, and I sometimes do in the kernel. But I kind of shy away in igt
-since there are already so many files with Author:.
-
-But for sure I can say: Please remove the Author: line with my name
-here.
-
-
-Thanks,
-Jani.
-
-
-
-> +# Use this for verbatim copies from kernel into igt-dev-tools
-> +# Change paths to yours, update the repos, cd to IGT, and run.
-> +
-> +SINCE=3D962601ac4c78
-> +KERNEL=3D$HOME/src/linux
-> +IGT=3D$HOME/src/intel-gpu-tools
-> +
-> +declare -g -A map
-> +map["drivers/gpu/drm/i915/display/intel_vbt_defs.h"]=3D"tools/intel_vbt_=
-defs.h"
-> +map["drivers/gpu/drm/i915/display/intel_dsi_vbt_defs.h"]=3D"tools/intel_=
-dsi_vbt_defs.h"
-> +map["include/drm/intel/pciids.h"]=3D"lib/pciids.h"
-> +
-> +cd $KERNEL
-> +
-> +for infile in "${!map[@]}"; do
-> +	outfile=3D${map[$infile]}
-> +
-> +	echo "processing $infile -> $outfile"
-> +
-> +	last=3D
-> +	for commit in $(git log --reverse --pretty=3D%h $SINCE..HEAD -- $infile=
-); do
-> +		if ! git cat-file -e $commit:$infile 2>/dev/null; then
-> +			continue
-> +		fi
-> +		if git show $commit:$infile | diff -q $IGT/$outfile - >/dev/null; then
-> +			last=3D$commit
-> +			break
-> +		fi
-> +	done
-> +
-> +	if [[ -z "$last" ]]; then
-> +		echo "last update to $infile not found"
-> +		continue
-> +	fi
-> +
-> +	for commit in $(git log --reverse --pretty=3D%h $last..HEAD -- $infile)=
-; do
-> +		prefix=3D"${outfile%.*}"
-> +		base=3D"$(basename $outfile)"
-> +		# ref=3D$(git cite $commit)
-> +		# alias: cite =3D log -1 --abbrev=3D12 '--format=3D%h (\"%s\")'
-> +		ref=3D$(git log -1 --abbrev=3D12 '--format=3D%h (\"%s\")' $commit)
-> +		git show $commit:$infile > $IGT/$outfile
-> +		cd $IGT
-> +		git commit -as \
-> +		    -m "${prefix}: sync ${base} with kernel commit $commit" \
-> +		    -m "Synchronize ${base} with kernel commit:" \
-> +		    -m "$ref"
-> +		cd -
-> +	done
-> +done
-
---=20
-Jani Nikula, Intel
