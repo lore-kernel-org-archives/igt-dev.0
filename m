@@ -4,154 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E9B7CD4851
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 08:37:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEEBACD4851
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 08:43:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C212010F48A;
-	Fri, 15 May 2026 08:37:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B50910F48F;
+	Fri, 15 May 2026 08:43:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fQ8GN21B";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AcJzLGv4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE64F10F46A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 08:36:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0910410F48F
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 08:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778834205; x=1810370205;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=2+exlH9ajWSleljs+Nejj1KKAo2/1z7aBdR7JdOZ4Go=;
- b=fQ8GN21B51s6uEtG+aByp57L+LkHx0ZzsLTQttb0dvi4Ic+KvR3o60UN
- 3R+8b0zz0mbyrAZqfg6MCvWYYNTCD9UWYUEKxmsrgWEG4g+ugJrGvy/yh
- a7QYlAFjn4SFSIsq92J6UWLWhOQiroOW4dIp6XTHgZoD/kjJlX3o6uK0J
- E5ixoS6hqBXobpIlyevqQ4SmkX/fgnzZzUXYNNPH6XtTPdk0DiBDQaABD
- MDEk3218hDNW8BlyjcVq82CIdTDCrxVaEVVONV9sLvtc2fRHgk4dvP37q
- +xRRny2KYaYqlL1g6I6Sd5YFXXUUxAjDBjle8YyuyJPn9Fpvb0CjzITWA Q==;
-X-CSE-ConnectionGUID: PajCFq6BQiCjLgqxJla/3Q==
-X-CSE-MsgGUID: BD/p8Jv1TsavKRMtfcyUIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="90890738"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="90890738"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 01:36:45 -0700
-X-CSE-ConnectionGUID: E6Vi2xWLSa+9W+CjBpMZlQ==
-X-CSE-MsgGUID: ptmvWMGXSmeetZqkVWKB3w==
+ t=1778834590; x=1810370590;
+ h=message-id:date:subject:to:references:cc:from:
+ in-reply-to:mime-version;
+ bh=4to1HK5OHrO206J9wXcBICbBREw+ewWi3ArQd/rt5WQ=;
+ b=AcJzLGv4TgZ5yFMthiE6bQQguPBxrMbsmmrHytBh+xv5Vhs5NpEHn3Cc
+ nALliyrJlorVn2s0+bn+XymJsaLErgVcG3YSGq58OLgeH4b50xjddcBHX
+ 0S3uhQjysFGUZRHJ17eodwkWpvx8P6bQ5vmP7YgUoEOarXw60NdmRb2OC
+ ugi36QDMguM8mXydZNDiv/PGJyRQzXb2TnbI1BZDMaHwhm3fNGzHYuW/v
+ YD0/rSPchypDUy1HCPi/bViGxXdrTN3LNu2PdyN2Ol1QwvX3iQbRxwvwn
+ q1oEUOfQZZZSot4pbZRk2bX7k1sR83AdT0Le3bhJNawlIrPQrPCtCCfUt Q==;
+X-CSE-ConnectionGUID: XKYZfMeVSCWFpV7oqmQhTg==
+X-CSE-MsgGUID: TS8uaOvoQfiQqYF6AWsuZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="91249443"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208,217";a="91249443"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2026 01:43:02 -0700
+X-CSE-ConnectionGUID: wCn/yUEyQWiRHMGGu+xLiA==
+X-CSE-MsgGUID: A2HAqrwsTDiW0BsGvfwXiQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="238515796"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+ d="scan'208,217";a="232241666"
 Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 01:36:44 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2026 01:42:58 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 15 May 2026 01:36:44 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.2.2562.37; Fri, 15 May 2026 01:42:57 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 15 May 2026 01:36:44 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.5) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Fri, 15 May 2026 01:42:57 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.11) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 15 May 2026 01:36:43 -0700
+ 15.2.2562.37; Fri, 15 May 2026 01:42:56 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gC+OVzDGpO51KsdnNKhTEzFyItKJRjVPB+uinqmidfcSkYfmmF/DtfDV/bBeYqqe3J44yIuAShnU5Dom6aLVsuBRL5WivJPvPUZTlGksZvwpCaagCe3tDz0JQrayrg7hNzIGPeRi/7+LihKYN5IyWYhLwOt5jqHooO7bfw5fGY+6yimAeG8uCghd1IIUWly8EuO0n21MHcoK9iSyD2AehHLTAxxDO+t2BkADvjUtdqofigbf8kz+G2RCxqQgH4hfkRz+yl8xRtdp8M7fjlKSbEFBSNJyjG1OSIMyLAA1Zt0ntk+0Fc3QdCQNTWZxPeBuafz3vxOYL2nF2PwHgYGXLQ==
+ b=KOyarWbYuToqF5LB+EyuFd7l/JXjWMddXWBwowwQcduSJilLeuuJQzw6+lCzNKRWClBoAfSEPwICefzNLSW/kqgSZ7IUT6/p33dC1lP92kBzDBkHOJMNyEpsApFjE2N+3jbR59mNy8WaHNAfqVtB5mp96LkDUfNmWELyak66VG1j6bsJdlgcTSwHr4JmyECty8OUtqor+1d81wfcbMSdb2qRNoonfh3kfWqKPNm2fdD3EpMNmuF6pu3kOvVju6oj3mEdsWRZxtaN5yYQPSNeaAV4R9rF1dcFv+X+mlFTKn00f33ItIdCq0tN+MZUzmO3oJzCbtzm9riNIRPZAgAS/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7WKUuRArRoPjg2jIRyOymr1yItcmls9fUxNVBR/sjU4=;
- b=Tb2yAal3Y7Tv6QArhixpi0faT24SVO0fSJjoiZsOPMBG545qaIb6Suy8TLbEZ58Ld3ffrKksdP1s7NmU5FS7FiHvJ/BuOXs6jsbCtO6wHnZ+N9/WSiKLjiK51LitXVl0wFepl7czC4tzv2n93KDFZaL47cEVhEs3eYF3GpjSfNOU56n5sC6AZ9x06p3xisqrhOptjG1EE0lzk+2pnPNR38ulqDKtLRfDcHv0zTtg/edRn0qkbjXEmdi+MIHyWw4Y/cUaUXzBQyhcn7tZgKOy9JLIxsacUxrwbgI1i/U6TpLZN06dmnLZoEQJTHYWql0fgLm+GxI6rHo3I+YIQZV7kg==
+ bh=wDsYgvER0YAxn1J01HaapN9GLkx0IOPsJIyM/6KZMkk=;
+ b=mTejA7DUe510FMj40TYkD1D9vH9Ak9aZtitW6G50u9d7yf1euW7K4ujqgXdEX0unZ9B/Oo8vTnkM051Him/knSm/QFVXmmXMWsGHVqDWIaZIgFpSX+rwIqqKzF3faSN8hQGF3ylMEbZTiOsHEKzFzHvYKdxRpf1G4UIE57vL0eXvf/FUQ56kCgoTm2T9z6EZsP38LS7Z0TXbL79nYKAXEzTzbNSfl8Hd/zn5RF30dgiAHMxMOO4hQqi/I3okmP28nmB3RRuaUcEyWq7v5jetMi3DexRAO81DAN6ksx/deDmviqEoQVUrduwHY8Blcpt/lsRzT/bN6pP+HXb6MaVnQw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
- by IA1PR11MB6371.namprd11.prod.outlook.com (2603:10b6:208:3ad::7) with
+ by SA1PR11MB8351.namprd11.prod.outlook.com (2603:10b6:806:384::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Fri, 15 May
- 2026 08:36:40 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Fri, 15 May
+ 2026 08:42:53 +0000
 Received: from CH0PR11MB5690.namprd11.prod.outlook.com
  ([fe80::d0b2:7271:ad7e:cb1a]) by CH0PR11MB5690.namprd11.prod.outlook.com
  ([fe80::d0b2:7271:ad7e:cb1a%7]) with mapi id 15.20.9913.009; Fri, 15 May 2026
- 08:36:40 +0000
-Message-ID: <6a4d2a00-358c-4ca5-a41f-d6044dbb5e0c@intel.com>
-Date: Fri, 15 May 2026 14:06:33 +0530
+ 08:42:53 +0000
+Content-Type: multipart/alternative;
+ boundary="------------HNgmF69zotwaUCj5sJprHCPi"
+Message-ID: <cd2a331a-f3bc-4de2-9008-e2a97bdc4612@intel.com>
+Date: Fri, 15 May 2026 14:12:44 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t,v6 3/4] tests/intel/kms_dsc_helper: Add helper func()
+Subject: Re: [PATCH i-g-t, v6 4/4] tests/intel/kms_dsc: Add force dsc and
+ joiner test cases
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20260430190947.2347314-1-swati2.sharma@intel.com>
- <20260430190947.2347314-4-swati2.sharma@intel.com>
+ <20260430190947.2347314-5-swati2.sharma@intel.com>
 Content-Language: en-US
+CC: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20260430190947.2347314-4-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0270.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1f2::8) To CH0PR11MB5690.namprd11.prod.outlook.com
+In-Reply-To: <20260430190947.2347314-5-swati2.sharma@intel.com>
+X-ClientProxiedBy: MA5P287CA0276.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1f2::19) To CH0PR11MB5690.namprd11.prod.outlook.com
  (2603:10b6:610:ed::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|IA1PR11MB6371:EE_
-X-MS-Office365-Filtering-Correlation-Id: 55b5cdd1-724a-4594-2aba-08deb25d15f7
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|SA1PR11MB8351:EE_
+X-MS-Office365-Filtering-Correlation-Id: 385b8e42-8f1b-4c2a-d477-08deb25df465
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|366016|42112799006|376014|56012099003|11063799003|18002099003|22082099003|3023799003|4143699003;
-X-Microsoft-Antispam-Message-Info: pSUQKDNiOJ/EfXoh2bDR+PS2z2LRsFJf+wrc2bv4mMsw5P4OXwHObwuiiCJODF3SKHUN4jTgZopS2GV6llnQ6JgiWY6UlQx88qFXUyCky57ET/XoMTW426Of9iTfcUHwH3To8khwUTtvlUYFyNsk3xkG8wTMUA7eKiLz2uxr/UsfKxxIynvjxIHmDONhCWLUNsSa4O1I3pW7CWFDj4pXGJ2JxsNRO+RyTaYHzXeQu+J7hXQRPUdz2PZz6EKEXuybrbMeX6qEYl67HSLFf2DMM1Cp8MjXZ8PnnWHJ5mtOk8/vTpOowv8qsO7uoFOj9bMZ7mx78mexd2xqMOrAOBKwsrUphWv/QJsIqHMHs7kdiF+Wf2ag61l27dXRxboaltHVbU1Hck9s5LDbvjvmiWqyrUPBtjG3XGsIAMKYUAiz95quGYySqWYvv3ZE7yCNS3Z4UKAEuq0A+9VM7mUuGj2rpicoxDOcNZTnaSPgOHUed+Fpc+hun+7JmEzziQr7rPq6+CfwMBfkChDm+OWUNF95C7veC89/JHMzCIdWXkxV2nOuer0Vg0JrsM6Wbn0NasK1bOSeNPBdixZEmQj0Kv6ocMBrxhcvojg7SHRcjgyeOeMhgc9wqlEayPBQkm65zuGnB/4DA6trqx+Ydf/GrR8BV3OWiVLloK8tl2ivEtIzgniTNSnKBst42ty5JfaCgs5G
+ ARA:13230040|376014|42112799006|366016|1800799024|3023799003|11063799003|22082099003|4143699003|56012099003|18002099003|8096899003;
+X-Microsoft-Antispam-Message-Info: dJDDDmlOxaytzubuRkddckxU8/g1bOu/4b9xMmm39G/Ns0VvEyw+r/htJO7HnyR+UCo4sXBfKSE+Ze0FI2XE9FjBa0/hjMUS7oolcHMc7+n67Uy7CewGgIUElcKiSbt/PIZ6IxxCUyw9WLZNBzQDry01e8XS5d3y4IL1wlKgyBfvyTyqrFqLZc7LWXh45JR9iUmI2Bgf0ukg9/ugbg17MXWRXMvtNEmQ3dSiJCMZnnmQHqpJ/jfSDWz+8jg/HiH/Y3P0IW8N9FV+hTOKdfKtAOoM5w1+hUfYd1ofLn56l087hxWkuNqLhURAdwjRWVoZDARULaEUg0Z2j6J65k5o4QsnjarXTOytSBUrEwqNE+Pb1A1g6cnupD678C1UIsg1sHSzhINh8mWnMkXAymnkuF2DoLfZgVitFXI1poFLAiCGdIuefALC4LnYaV1C+eCHaUTDlD1bmIjq9hdiOChMm9BqwOJEskQ6MOqNxLt9RPZNQ/WZDbSdJnfQsXdKFcSbZIFwuIcP0ac7BFD6Jz7UUneWTjpDfmv0eBfxSHSR1EGPwZkcmYsos9WqtPqMUGfmDmFciV6I0pWgDSdJ/Scy+9owS9wS6PBrIN9zUg8b8KSfAtrmqXhjIf/meN2Ymrhr3i7sSRF92EYE1ObWHzICA4tmoVFmJtP6IjmQCug+78CSxy1rXLrC3kzJRkv5aHLY
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(42112799006)(376014)(56012099003)(11063799003)(18002099003)(22082099003)(3023799003)(4143699003);
+ SFS:(13230040)(376014)(42112799006)(366016)(1800799024)(3023799003)(11063799003)(22082099003)(4143699003)(56012099003)(18002099003)(8096899003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N25oN3FnYXFVcWt3N0pjeGlmdGRycklHN3BVWWlpNVdPUkNMRXgvY25iUDJ6?=
- =?utf-8?B?OERBOEtMUWQ2b2U2c3B2SUNWNm80a2xUb3JYUU9lRmFEWXRUbW5OTktNSHhB?=
- =?utf-8?B?VGp5UWVLQmJpcm1vNFJwUnhKbTVRYWVlUDU4UGEyQkFvTC9lU2lCZFovUjdN?=
- =?utf-8?B?ZXhGck44WWo5TFczQWlPekxxSi9qcEZKdXY3MmdBamdsNUw1Z1JvNm5QRVJP?=
- =?utf-8?B?QW1rdjY5RWMvZVo0Y2V4NUNJQ3lvZm0vVkM2L010VVNPUmZYTzZyd3VjZlM5?=
- =?utf-8?B?WUZLY3BlelUrblB3emtjQitHa1dpSUNSTmFlNlBPZkVoSTB5N2FtNWZYSmQ2?=
- =?utf-8?B?d2l4TkxVZmFVZjdsNElUZkZNeEVaZThxc3VaK1hkcXpKaVF2N1puRkZDTmpw?=
- =?utf-8?B?bWdrZzM1dzlYUnloWVlMWnJjWXpnNEFWTlRpVEJVQnRVSnBxZDFyNFFjR29a?=
- =?utf-8?B?dW9kVCt3cjZrRkMzVUE1NkIxMFZrbmUwQTNYNE9KakdWV2pzeFhwTWhBcytS?=
- =?utf-8?B?RUJMaW1HTjdhQXBwamY0ZndvT240UGIzeDh1d0pnUGNWTHJ5Wk9wTmdyVTVq?=
- =?utf-8?B?MGc3dVVOQUFBV3M0RzNMOFBpdFU2bjZCTXZwVnk0WmtGa3NabDcwaTlqWnhq?=
- =?utf-8?B?bjF3VG11dHpzMG8rdUJWdjlCSTJxSHUvSGlOOHRKc2pIWTQxMTd5YjB2dkR6?=
- =?utf-8?B?OXRZb3dnUDl5UTE0eHVhYk9FbVRIaHI0VllHcEk5ZUZTNWhBYjQ2YjVuYWhQ?=
- =?utf-8?B?R2R4UzJ6SFBCOWtaays2S3IwcW5rekpvQklQbnRKaEk2SzYvNFZTcUh4NFZT?=
- =?utf-8?B?amhtYlozNVp6QzNYdVY2MmNHL3BScVVJSWYwbGtzekh4Q3hlVkw2cjBPLytG?=
- =?utf-8?B?YURHWmNZK2FOQ05YQUxLMmFpMWloT05yTThvNlArL0F6UjBuTHZtMGJiOXhB?=
- =?utf-8?B?ZERqaVEvUVoxZ0VRMkRUVFZPdDJYSXBRenNjU2NqRFgzR2Racko5OC9iOHRT?=
- =?utf-8?B?YVlyWTRVQzl6RVlDMjFYTTZrTVVET0RCOHpLVHd6bjJIVHZScWQzbUFMSkhm?=
- =?utf-8?B?alNKNzlXUnFZZGZ5V1JldHVhOE5WNlk3N2gvcWovQVRCY0oybXhDelJQWWdK?=
- =?utf-8?B?SmptOHduc1o5aERhRy9sVDFUaVpWaUd5Ylh5bFhnYlZJRnlXMTdJeHpHLzZa?=
- =?utf-8?B?T1JhTWcrdU9Hbk9YdUhsRyt0LzlGemliWWQwOFljNDR2QUNiSDJLZGJhNjZ6?=
- =?utf-8?B?UzAxbldvUk9WMU5Cc3Rnc2xEcVlhQkRhSXdic1REWHA5NTFVdGFwQzA2L2Rm?=
- =?utf-8?B?TVNncVd5V2w1ajE4dUZ1QXJiWXU3bTVlczQyOXZPclp0QnIzS2ZkRUZVZkJi?=
- =?utf-8?B?RHJCZVlUcU9GR2Yza0J6aE16V2NjODNyNmJnZkJBNURobHhIWnhVbEFVdnpX?=
- =?utf-8?B?ZGtmVkUzTlBmTjAzcGRCb3dOWW5ZeEJjUlFIU3pUeTJpRG92NDA3ZjdaS3M1?=
- =?utf-8?B?aUtoQ0wwSEQ0ZVA0VVVWNVdsZnRaUmhML3AzMndDdGNpUEpXTHNMclRCTEpM?=
- =?utf-8?B?NEg4SDI2MDdGVGM3OWJxK0huRU0ydUE4ckxmUWE5N1hKRTZJQ1hOSU11RUlN?=
- =?utf-8?B?b2RmRVRWaHA5VUtsM3FFM0lMZnBkeFNFLytJQzlBVXI5S1hQYTlyWmhZUTRI?=
- =?utf-8?B?T2szTnlUZUJBNWV3aDNjZnNWTHp3Wm1YK0p3NmR4ZWxXQXdiOE5ucU9ieVQ1?=
- =?utf-8?B?SVpEZVdOdVpOQk94VXhBejU0cndaa2hodVVURi9CZkV2OHpGVVhadm9OcnF0?=
- =?utf-8?B?emlqQm10Q1lNRHpVcHZZVEFlK2hrYXcyaTBGY1NwT1kyTFpJN011aExuUHVv?=
- =?utf-8?B?TlIwQnF5UWZPL1YzWlJkajRUejVET3dIYXEyM2Z2VVo5TTJadTAvS2FXN0VZ?=
- =?utf-8?B?RUMrRk45T3NZZVFtdWc1Nncwcnp2MmZjVjlPSjI1OEc2Rm41U2ZhTjRWOWE2?=
- =?utf-8?B?aWFuYlM1RGhsUWpUNzlXRys2Z25FNTVQYU1oYmdhNU85aCtQSXlBeUpZK2Iw?=
- =?utf-8?B?UmdOalRaOUFwSTU4Zm9kWlZ0NXNacFBCVzU5REttMWRGd0xiQUhpaU9lTlZJ?=
- =?utf-8?B?cE42OFBkNy9xMS9yK0FLMDV1b2kyMGtLNVJucU9qQW9KSm0zUm5nTU9uZGtu?=
- =?utf-8?B?NEVsZFpqOWxkYU5wdlpWcXNKR0NvNmxoWTBNQ3lzaTdTanJKUk9yMWhqZXFP?=
- =?utf-8?B?ckVuRzdTYkpzc0xuRm9abjUwRW90ME1jQ045dmpIT3kxejNNbTg2MFNNRkRj?=
- =?utf-8?B?S2kraE5nNHRzT0toRzljUTA1MXdPQ3BnVjg0N3k5dHppekExVkxYZz09?=
-X-Exchange-RoutingPolicyChecked: G7oAOcA5dH7VFp27BxnaOREYQmb8m5AY24kkueijcNXqohm95lh25EkP+QhltLgdk/K6UPqpq6gXIKdCbH3kQ+zIoLvqUb79yvs4T+GrlEckWom7fTHwc6iwGtzA7EOfc6PKfZmVGXHzHdqg4p7277odAdJSvwR1RSxP6rU2rFDeD4rJZ2YjWn0Y631yAXIjp+dHScW/gB/6jUtg9JcCTGOqenO97tvnvaG/B0uBnk92tsOPUJQQaUzN5Mo7poEMKRdBXNsecK/khitSv5emLmRJ0+HwgImE8gWgcKbWaFxEkd5mqaDx2UqrGIyxujK0c5qcQNvjBNH4tQgwYvDs9g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55b5cdd1-724a-4594-2aba-08deb25d15f7
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VXVvOUY4OVZNb1N3WTZYaUwxaC82OUoyL0R6V1IrYmN6WmVLaHhZZzJJQkxq?=
+ =?utf-8?B?UGVObDVtSndMaTQxMENJcHpHTTQ0NWVpRjA0aThITDFNRy9KWkpsaDhNbUhh?=
+ =?utf-8?B?N1hpUE1hRG9QOG83TVF1TmxRWDZnRy93THFmOG5PN3loRWY4bEhmMFl5bEtX?=
+ =?utf-8?B?Y2REajJBYUtRdEZaY2VUOG5ucFg4Nk1kZ2xoenZiMG1iUmNZcVdDd0FKNVk4?=
+ =?utf-8?B?R0VEWm5NMS9XZVZYcWdrVlVST0MvejF0aDFEeEpsU3F1UklrR0RHam80TktK?=
+ =?utf-8?B?a2I1TU9pSDJ6M0tucTNpYy8xeGhLdm85bzFxaU5IYzFLNnFxYlBvRFBOck41?=
+ =?utf-8?B?SWVxV0FxZFJOTDZISjdOc3BmS0RxcmZyaUJmY1h6RTVyQ1NQQzJTZnJnSHVx?=
+ =?utf-8?B?UU9hc1RIM1JlaE1MckFVUmlxNG8zdHQ4dEhzc2FoaDlVa0wwcG5tenlOcnZQ?=
+ =?utf-8?B?ZjA5OHYwemJVN3RldFM3NHJDcHR2TVZOWTR0K3JlRlZIVXY5N2g1WUtTaFZF?=
+ =?utf-8?B?T2o0YWdwRVRldExPOFFMcXpwd05VVFh3RExTMklvUDVPbis4OEtLNHpqM0gw?=
+ =?utf-8?B?MTh1WjgxL0Y5cmtPT0VXR2JmWTZaaTA3YnRHRzY2ZVJaR2dTY0ZMRjZ1Vk5z?=
+ =?utf-8?B?dXJSWC9aYTEvU1JLblhBY3RxSHYzTW16dW5iMDRNWUJ4ODk0T1BjQ25WNmN0?=
+ =?utf-8?B?Q3NlZEpPeXk0SkYwbHIzdzVHTHJKYjRkeE5sQVRLbHc3eTBJVWNXYURIQ1Jw?=
+ =?utf-8?B?bWNXdVlzWC9WdUlJMFY1dWVIajVYOVJCQkFZdlEwUDhic0RIb1hYeTJYcmJQ?=
+ =?utf-8?B?OWQyOG9WeGNCL3FYSW43VnZLcDdLT1pVZ1cxbzdFUzh0ZFBDaWtaQW1mcno1?=
+ =?utf-8?B?cWh0TE9PZFV5a1ZRTTB1RjNsSlU1b3Ziak5CVDl1VGxUNkZxbWxGRDcycmVi?=
+ =?utf-8?B?KzF5MEFQaVk4cHlldVBQeW1JUEJqS1laM1czWERYMEVyMDFWMk81U2UyZmFL?=
+ =?utf-8?B?cGNxd3JrckZsVnJVZThwamxnaHoyLytLUjhpdHNGcWxvT1d5MUhjWm52bmRu?=
+ =?utf-8?B?SHZwLysxVlNEZEVkelhnQmpqQUIyNjRzYndSc2ZYRnN0Y1dILzNTSXdiQW9S?=
+ =?utf-8?B?YzlkbDlZMmxaVk03eURoZXF1c0tNR094TUVlUjF6dDc2Z296aDlxYm1GQjZz?=
+ =?utf-8?B?Q1hvcFhsYnVnc043amRqY3BjQjJHWnhLbmp2ZmJvdEIxSHUrcVE5eVp6Q1hD?=
+ =?utf-8?B?bjg3ckRXNXU0Qk1GOERIZzhtaENtczl0STYyTGhYQ0JUczA5a2ZNME45UVhD?=
+ =?utf-8?B?d2IvVFZRc09SdzYrMWlJVnJGU21FVGVjdGQ1b1lvak4wa3U3WjF1dG1tSUhN?=
+ =?utf-8?B?dGJydEFXV3hFZEJ0dks0TDZCYnhkVjNmSkFIMHJvMVpNVTVRUXVlN1BIUXE1?=
+ =?utf-8?B?eGthalRIRmxCbXhMTHNSbWpBbzJWVUxpVHM1RDNmZHR5VVhMTm5PLzNKZlFk?=
+ =?utf-8?B?cjA2dDVjUVJrbXZkMlZ0UWk2dkp0YjFrb09CMEVLRWlGdXpYVVY5Y2ZHQ0N1?=
+ =?utf-8?B?NlJPOE83Nkk4NGFKdmEvVWtEL0g3V0pPb0tyRlBuM0NVSlRiamNZNkVrY3JJ?=
+ =?utf-8?B?SWszZlduZ3FrcXR0eWFveWxCYXhnSUNGSTlscWFBWm96WGQyV01sZ3owd29R?=
+ =?utf-8?B?QkdyOVFaYlRoc2pGcDdhVUJ4ai91VzRmSVlRN21jYUd2Sk1xQUw1dWFiR2dl?=
+ =?utf-8?B?MnZKZGRaaEU5QitmNENQSHJhbHUvcE1XeFhkb1lPZjhCVkRscmdFVUpkbEZh?=
+ =?utf-8?B?WVNtZWVOT3poM2pyMGFqeGFtK3hRM2R6czdTWW1JOUk0a3hOeXlESlVGenRi?=
+ =?utf-8?B?WldabktWcml5MktkYXJ5Zm1sQ3UvRTc0YmpMcUFLSFozdXc0SHlzTGZyd0RU?=
+ =?utf-8?B?bGp1UnlnU2laOUlIQVFHQ0F6L3JFWUMxdGFxY2o1VWVQWlZtUmFORmhhZnBw?=
+ =?utf-8?B?TXZaYjhqN05VdU5KR3YxeUVEZ3pkUm9VUmtUbW81b292RG9XWmhpY1V2RlRL?=
+ =?utf-8?B?em9rRmQzYk13V1BqZmI2SitNTldhUGd5L3FvR0NOdzZUaEluZW4vdzNMcG5O?=
+ =?utf-8?B?ZWNzQ1U3Rjd0dDgzSUs1Z2dqVHRsWStTbDE2SjNMYXNCeEczaWZuNVpBSGll?=
+ =?utf-8?B?Q1l1S0lEWkE3TTRsaEVZOGtwbG56M2RQZFA3RVlnRVBPVEh3akd6Nmt3K3Zy?=
+ =?utf-8?B?OURvVHdJTFQrUlVBQjVxREdiSytXMmdqZFVtbDROcEpDbFdaOFJqa3M3Tzdx?=
+ =?utf-8?B?MlJKK1A4WWk2Q0xiOGhiVDNjamd3UmxJNjVsYzhDTFhnbVhNZFVSdz09?=
+X-Exchange-RoutingPolicyChecked: Pekmt8sUIaziBT2dL/TJdDoaZneIdNIvuy3WX+t1I2FIPjUEm+A4f/p8XIcTR8mjmBxJgFvLUfO+fjaTJbCkwZdA9wAylEPf4PhK9qhFNz4tR7cz66ZOxWK8rFptgifxsPUPB0Ov+eAhFu9E/Gh4YbO95eVqCkY+3qg9KEb0v+xcVNGblwN8GT+vuywnJwbieQEXH4zkJ+8AbTc7Fp24VbSvexC1YpoHGB542KgAVr1v9cYFUu3kx+ZykiPh5YAcDGb/FE3TRjKpaxsxosW+Xt5xbv5oCY6ZKg1hPkUzP7ZNopPuMz9yBEFGvhxh30NcwJjslv3HQWawjSse++XJLA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 385b8e42-8f1b-4c2a-d477-08deb25df465
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 08:36:40.5666 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 08:42:53.8468 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ElWyvJD4AkDirdiZNpBUSKwtcSas1AbAVf8a4U/3XyWTOYkBHc37vzmLHzbWmYWO+yd0n+f8yQjaNBIB9Ekk5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6371
+X-MS-Exchange-CrossTenant-UserPrincipalName: FNGh9urat/SeRGReSa0sc3Byw33g7RRClAkvajpX0Qxvr5HoGIcNNVtM/50tBT23W7wLhUNXBxaFOPcmrmmHwQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8351
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -168,143 +171,689 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--------------HNgmF69zotwaUCj5sJprHCPi
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+
 Hi Swati,
 
 On 5/1/2026 12:39 AM, Swati Sharma wrote:
-
-> Introduce check_dsc_joiner_constraints() to validate minimum pipe
-> count, DSC slice requirements, and joiner support for DSC joiner
-> scenarios.
+> Add test cases where we are validating force dsc and force
+> joiner.
 >
-> Update meson.build to link kms_joiner_helper.c into DSC-related
-> tests so the new helper can call igt_is_joiner_supported_by_source().
+> v2: -fix if() for ultra/big joiner (Ankit)
+> v3: -Add '-' separator in subtest names when using
+>       igt_get_joined_pipes_name (Santhosh)
+> v4: -Use 'enum joined_pipes force_joined_pipes' in data_t (Ankit)
+>      -Use dsc-basic-%s format for subtest names (Ankit)
+>      -Use igt_crtc_for_pipe() to check consecutive HW pipes,
+>       handling fused pipe holes properly (Ankit)
+> v5: -Use igt_display_n_crtcs() instead of open-coded
+>       for_each_crtc counting loop (Jani)
 >
-> v2: -Avoid hardcoding min_pipes/min_slices, use enum values (Santhosh)
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Swati Sharma<swati2.sharma@intel.com>
 > ---
->   tests/intel/kms_dsc_helper.c | 54 ++++++++++++++++++++++++++++++++++++
->   tests/intel/kms_dsc_helper.h |  3 ++
->   tests/meson.build            | 17 ++++++++----
->   3 files changed, 68 insertions(+), 6 deletions(-)
+>   tests/intel/kms_dsc.c | 203 +++++++++++++++++++++++++++---------------
+>   1 file changed, 131 insertions(+), 72 deletions(-)
 >
-> diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
-> index 29b998c2f..63170af1e 100644
-> --- a/tests/intel/kms_dsc_helper.c
-> +++ b/tests/intel/kms_dsc_helper.c
-> @@ -203,3 +203,57 @@ bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *outp
->   
->   	return true;
->   }
-> +
-> +bool check_dsc_joiner_constraints(int drm_fd,
-> +                                  igt_output_t *output,
-> +                                  int num_pipes,
-> +                                  enum joined_pipes type)
-> +{
-> +	int min_pipes = 0, min_slices = 0;
-> +
-> +	if (!igt_is_joiner_supported_by_source(drm_fd, type))
-> +		return false;
-> +
-> +	/*
-> +	 * For joiner, 2 slices per pipe is used
-> +	 * i.e. min_slices = 2 * min_pipes
-> +	 */
-> +	switch (type) {
-> +	case JOINED_PIPES_BIG_JOINER:
-> +		min_pipes = JOINED_PIPES_BIG_JOINER;
-> +		min_slices = min_pipes * 2;
-> +		break;
-> +	case JOINED_PIPES_ULTRA_JOINER:
-> +		min_pipes = JOINED_PIPES_ULTRA_JOINER;
-> +		min_slices = min_pipes * 2;
-> +		break;
-> +	case JOINED_PIPES_NONE:
-> +	case JOINED_PIPES_DEFAULT:
-IMHO, since this helper can be potentially called other tests in the 
-future, we should not call these as unsupported with DSC.
-> +	default:
-> +		igt_info("Unsupported joiner type: %s\n",
-> +                          igt_get_joined_pipes_name(type));
+> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+> index 69f335da3..9a19de1c4 100644
+> --- a/tests/intel/kms_dsc.c
+> +++ b/tests/intel/kms_dsc.c
+> @@ -55,7 +55,27 @@
+>    * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
+>    * @fractional-bpp:               DSC with fractional bpp with default parameters
+>    * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
+> - */
+> + *
+> + * SUBTEST: dsc-%s-%s
+> + * Description: Tests Display Stream Compression functionality if supported by a
+> + *              connector by forcing %arg[1] and %arg[2] on all connectors that support it
+> + *
 
-There seem to be a bunch of indentation and styling issues checkpatch is 
-throwing, please fix them.
+IMHO, better to call out the default/existing tests as non-joiner to 
+avoid any confusion.
+
+May be we could have something like this:
+
+ 1. non-joiner: If display is non-joiner go ahead as is, if not force
+    non-joiner.
+ 2. big-joiner: if display is big-joiner go ahead as is, if not force
+    big-joiner.
+ 3. ultra-joiner: if display is ultra-joiner go ahead as is, if not
+    force ultra-joiner.
+
+> + * arg[1]:
+> + *
+> + * @basic:                        DSC with default parameters
+> + * @with-bpc:                     DSC with certain input BPC for the connector
+> + * @with-bpc-formats:             DSC with certain input BPC for the connector and diff formats
+> + * @with-formats:                 DSC with default parameters and creating fb with diff formats
+> + * @with-output-formats:          DSC with output formats
+> + * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
+> + * @fractional-bpp:               DSC with fractional bpp with default parameters
+> + * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
+> + *
+> + * arg[2]:
+> + *
+> + * @bigjoiner:			  big joiner
+> + * @ultrajoiner:		  ultra joiner
+> +*/
+>   
+>   IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+>   
+> @@ -81,11 +101,13 @@ typedef struct {
+>   	int disp_ver;
+>   	igt_crtc_t *crtc;
+>   	bool limited;
+> +	enum joined_pipes force_joined_pipes;
+>   } data_t;
+>   
+>   static int output_format_list[] = {DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
+>   static int format_list[] = {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
+>   static uint32_t bpc_list[] = {8, 10, 12};
+> +static enum joined_pipes joiner_tests[] = {JOINED_PIPES_DEFAULT, JOINED_PIPES_BIG_JOINER, JOINED_PIPES_ULTRA_JOINER};
+>   
+>   static inline void manual(const char *expected)
+>   {
+> @@ -135,6 +157,7 @@ static void update_display(data_t *data, uint32_t test_type)
+>   	int current_bpc = 0;
+>   	igt_plane_t *primary;
+>   	drmModeModeInfo *mode;
+> +	bool status;
+>   	igt_output_t *output = data->output;
+>   	igt_display_t *display = &data->display;
+>   	drmModeConnector *connector = output->config.connector;
+> @@ -147,6 +170,11 @@ static void update_display(data_t *data, uint32_t test_type)
+>   	save_force_dsc_en(data->drm_fd, data->output);
+>   	force_dsc_enable(data->drm_fd, data->output);
+>   
+> +	if (data->force_joined_pipes == JOINED_PIPES_BIG_JOINER || data->force_joined_pipes == JOINED_PIPES_ULTRA_JOINER) {
+> +		status = kmstest_force_connector_joiner(data->drm_fd, connector, data->force_joined_pipes);
+> +		igt_assert_f(status, "Failed to toggle force joiner\n");
+> +	}
+> +
+There seem to be few more issues with checkpatch here, mostly the 
+LONG_LINE which is okay if unavoidable but I feel in most places it 
+could be handled here. So please check.
+>   	if (test_type & TEST_DSC_BPC) {
+>   		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
+>   		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
+> @@ -246,11 +274,13 @@ reset:
+>   
+>   static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+>   		     unsigned int plane_format,
+> -		     enum dsc_output_format output_format)
+> +		     enum dsc_output_format output_format,
+> +		     enum joined_pipes joined_pipes)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_output_t *output;
+>   	igt_crtc_t *crtc;
+> +	int n_pipes = igt_display_n_crtcs(display);
+>   	char name[3][LEN] = {
+>   				{0},
+>   				{0},
+> @@ -259,12 +289,17 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+>   
+>   	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
+>   
+> +	if (joined_pipes != JOINED_PIPES_DEFAULT &&
+> +	    !igt_is_joiner_supported_by_source(data->drm_fd, joined_pipes))
+> +		return;
+> +
+>   	for_each_crtc_with_valid_output(display, crtc, output) {
+>   		data->output_format = output_format;
+>   		data->plane_format = plane_format;
+>   		data->input_bpc = bpc;
+>   		data->output = output;
+>   		data->crtc = crtc;
+> +		data->force_joined_pipes = joined_pipes;
+>   
+>   		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
+>   		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->crtc))
+> @@ -285,6 +320,26 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+>   						      data->drm_fd, data->output)))
+>   			continue;
+>   
+> +		/*
+> +		 * Check joiner constraints and verify that we have
+> +		 * enough consecutive HW pipes starting from this crtc.
+> +		 * Use igt_crtc_for_pipe() to handle fused pipe holes.
+> +		 */
+> +		if (joined_pipes != JOINED_PIPES_DEFAULT &&
+> +		    !check_dsc_joiner_constraints(data->drm_fd, data->output,
+> +						  n_pipes, joined_pipes))
+> +			continue;
+> +
+> +		if (joined_pipes == JOINED_PIPES_BIG_JOINER &&
+> +		    !igt_crtc_for_pipe(display, crtc->pipe + 1))
+> +			continue;
+> +
+> +		if (joined_pipes == JOINED_PIPES_ULTRA_JOINER &&
+> +		    (!igt_crtc_for_pipe(display, crtc->pipe + 1) ||
+> +		     !igt_crtc_for_pipe(display, crtc->pipe + 2) ||
+> +		     !igt_crtc_for_pipe(display, crtc->pipe + 3)))
+> +			continue;
+
+Could this be added in the joiner helper rather than having it specific 
+to test?
 
 Thanks and Regards,
 Karthik.B.S
-> +		return false;
-> +	}
 > +
-> +	if (num_pipes < min_pipes) {
-> +		igt_info("%s requires minimum %d pipes\n",
-> +			  igt_get_joined_pipes_name(type), min_pipes);
-> +		return false;
-> +	}
-> +
-> +	if (igt_get_dsc_sink_max_slice_count(drm_fd, output->name) < min_slices) {
-> +		igt_info("Output %s doesn't support minimum %d slice count for %s\n",
-> +			  igt_output_name(output), min_slices,
-> +			  igt_get_joined_pipes_name(type));
-> +		return false;
-> +	}
-> +
-> +	if (!igt_has_force_joiner_debugfs(drm_fd, output->name)) {
-> +	    igt_info("Output %s doesn't support force_joiner debugfs for %s\n",
-> +		      igt_output_name(output),
-> +		      igt_get_joined_pipes_name(type));
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-> diff --git a/tests/intel/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
-> index ee419c849..e4c970447 100644
-> --- a/tests/intel/kms_dsc_helper.h
-> +++ b/tests/intel/kms_dsc_helper.h
-> @@ -8,6 +8,7 @@
+>   		if (test_type & TEST_DSC_OUTPUT_FORMAT)
+>   			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
+>   		if (test_type & TEST_DSC_FORMAT)
+> @@ -334,85 +389,89 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   		igt_require(is_dsc_supported_by_source(data.drm_fd));
+>   	}
 >   
->   #include "igt.h"
->   #include "igt_sysfs.h"
-> +#include "kms_joiner_helper.h"
->   #include <errno.h>
->   #include <getopt.h>
->   #include <math.h>
-> @@ -39,5 +40,7 @@ void force_dsc_fractional_bpp_enable(int drmfd, igt_output_t *output);
->   void save_force_dsc_fractional_bpp_en(int drmfd, igt_output_t *output);
->   void restore_force_dsc_fractional_bpp_en(void);
->   bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *output);
-> +bool check_dsc_joiner_constraints(int drm_fd, igt_output_t *output, int num_pipes,
-> +                                  enum joined_pipes type);
+> -	igt_describe("Tests basic display stream compression functionality if supported "
+> -		     "by a connector by forcing DSC on all connectors that support it "
+> -		     "with default parameters");
+> -	igt_subtest_with_dynamic("dsc-basic")
+> -			test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
+> -				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+> -
+> -	igt_describe("Tests basic display stream compression functionality if supported "
+> -		     "by a connector by forcing DSC on all connectors that support it "
+> -		     "with default parameters and creating fb with diff formats");
+> -	igt_subtest_with_dynamic("dsc-with-formats") {
+> -		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+> -			test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
+> -				 format_list[k], DSC_FORMAT_RGB);
+> -	}
 >   
->   #endif
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 60cea3aa8..38a42bda6 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -399,14 +399,19 @@ extra_sources = {
->   	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
->   	'kms_chamelium_sharpness_filter': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
->   	'kms_dp_linktrain_fallback': [
-> -           join_paths ('intel', 'kms_mst_helper.c'),
-> -           join_paths ('intel', 'kms_dsc_helper.c') ],
-> +          join_paths ('intel', 'kms_mst_helper.c'),
-> +          join_paths ('intel', 'kms_dsc_helper.c'),
-> +          join_paths ('intel', 'kms_joiner_helper.c') ],
->   	'kms_dp_link_training': [
-> -           join_paths ('intel', 'kms_mst_helper.c'),
-> -           join_paths ('intel', 'kms_joiner_helper.c') ],
-> -	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
-> +          join_paths ('intel', 'kms_mst_helper.c'),
-> +          join_paths ('intel', 'kms_joiner_helper.c') ],
-> +	'kms_dsc': [
-> +          join_paths ('intel', 'kms_dsc_helper.c'),
-> +          join_paths ('intel', 'kms_joiner_helper.c') ],
->   	'kms_joiner': [ join_paths ('intel', 'kms_joiner_helper.c') ],
-> -	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
-> +	'kms_psr2_sf': [
-> +          join_paths ('intel', 'kms_dsc_helper.c'),
-> +          join_paths ('intel', 'kms_joiner_helper.c') ],
->   }
+> -	igt_describe("Tests basic display stream compression functionality if supported "
+> -		     "by a connector by forcing DSC on all connectors that support it "
+> -		     "with certain input BPC for the connector");
+> -	igt_subtest_with_dynamic("dsc-with-bpc") {
+> -		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+> -			test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
+> -				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+> -	}
+> +	for (int i = 0; i < ARRAY_SIZE(joiner_tests) ; i++) {
+> +		igt_describe("Tests basic display stream compression functionality if supported "
+> +			     "by a connector by forcing DSC on all connectors that support it "
+> +			     "with default parameters");
+> +		igt_subtest_with_dynamic_f("dsc-basic%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
+> +				test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
+> +					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
+> +		}
 >   
->   # Extra dependencies used on core and Intel drivers
+> -	igt_describe("Tests basic display stream compression functionality if supported "
+> -		     "by a connector by forcing DSC on all connectors that support it "
+> -		     "with certain input BPC for the connector with diff formats");
+> -	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+> -		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+> -			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+> -				test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
+> -				bpc_list[j], format_list[k],
+> -				DSC_FORMAT_RGB);
+> -			}
+> +		igt_describe("Tests basic display stream compression functionality if supported "
+> +			     "by a connector by forcing DSC on all connectors that support it "
+> +			     "with default parameters and creating fb with diff formats");
+> +		igt_subtest_with_dynamic_f("dsc-with-formats%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
+> +			for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+> +				test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
+> +					 format_list[k], DSC_FORMAT_RGB, joiner_tests[i]);
+>   		}
+> -	}
+>   
+> -	igt_describe("Tests basic display stream compression functionality if supported "
+> -		     "by a connector by forcing DSC and output format on all connectors "
+> -		     "that support it");
+> -	igt_subtest_with_dynamic("dsc-with-output-formats") {
+> -		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
+> -			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
+> -				 DRM_FORMAT_XRGB8888,
+> -				 output_format_list[k]);
+> -	}
+> +		igt_describe("Tests basic display stream compression functionality if supported "
+> +			     "by a connector by forcing DSC on all connectors that support it "
+> +			     "with certain input BPC for the connector");
+> +		igt_subtest_with_dynamic_f("dsc-with-bpc%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
+> +			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+> +				test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
+> +					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
+> +		}
+>   
+> -	igt_describe("Tests basic display stream compression functionality if supported "
+> -		     "by a connector by forcing DSC and output format on all connectors "
+> -		     "that support it with certain input BPC for the connector");
+> -	igt_subtest_with_dynamic("dsc-with-output-formats-with-bpc") {
+> -		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++) {
+> +		igt_describe("Tests basic display stream compression functionality if supported "
+> +			     "by a connector by forcing DSC on all connectors that support it "
+> +			     "with certain input BPC for the connector with diff formats");
+> +		igt_subtest_with_dynamic_f("dsc-with-bpc-formats%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
+>   			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+> -				test_dsc(&data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
+> -					 bpc_list[j], DRM_FORMAT_XRGB8888,
+> -					 output_format_list[k]);
+> +				for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+> +					test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
+> +					bpc_list[j], format_list[k],
+> +					DSC_FORMAT_RGB, joiner_tests[i]);
+> +				}
+>   			}
+>   		}
+> -	}
+>   
+> -	igt_describe("Tests fractional compressed bpp functionality if supported "
+> -		     "by a connector by forcing fractional_bpp on all connectors that support it "
+> -		     "with default parameter. While finding the optimum compressed bpp, driver will "
+> -		     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
+> -		     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
+> -	igt_subtest_with_dynamic("dsc-fractional-bpp")
+> -			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
+> -				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
+> -				 DSC_FORMAT_RGB);
+> -
+> -	igt_describe("Tests fractional compressed bpp functionality if supported "
+> -		     "by a connector by forcing fractional_bpp on all connectors that support it "
+> -		     "with certain input BPC for the connector.");
+> -	igt_subtest_with_dynamic("dsc-fractional-bpp-with-bpc") {
+> -		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+> -			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
+> -				 bpc_list[j], DRM_FORMAT_XRGB8888,
+> -				 DSC_FORMAT_RGB);
+> +		igt_describe("Tests basic display stream compression functionality if supported "
+> +			     "by a connector by forcing DSC and output format on all connectors "
+> +			     "that support it");
+> +		igt_subtest_with_dynamic_f("dsc-with-output-formats%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
+> +			for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
+> +				test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
+> +					 DRM_FORMAT_XRGB8888,
+> +					 output_format_list[k], joiner_tests[i]);
+> +		}
+> +
+> +		igt_describe("Tests basic display stream compression functionality if supported "
+> +			     "by a connector by forcing DSC and output format on all connectors "
+> +			     "that support it with certain input BPC for the connector");
+> +		igt_subtest_with_dynamic_f("dsc-with-output-formats-with-bpc%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
+> +			for (int k = 0; k < ARRAY_SIZE(output_format_list); k++) {
+> +				for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+> +					test_dsc(&data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
+> +						 bpc_list[j], DRM_FORMAT_XRGB8888,
+> +						 output_format_list[k], joiner_tests[i]);
+> +				}
+> +			}
+> +		}
+> +
+> +		igt_describe("Tests fractional compressed bpp functionality if supported "
+> +			     "by a connector by forcing fractional_bpp on all connectors that support it "
+> +			     "with default parameter. While finding the optimum compressed bpp, driver will "
+> +			     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
+> +			     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
+> +		igt_subtest_with_dynamic_f("dsc-fractional-bpp%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i]))
+> +				test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
+> +					 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
+> +					 DSC_FORMAT_RGB, joiner_tests[i]);
+> +
+> +		igt_describe("Tests fractional compressed bpp functionality if supported "
+> +			     "by a connector by forcing fractional_bpp on all connectors that support it "
+> +			     "with certain input BPC for the connector.");
+> +		igt_subtest_with_dynamic_f("dsc-fractional-bpp-with-bpc%s%s", joiner_tests[i] ? "-" : "", igt_get_joined_pipes_name(joiner_tests[i])) {
+> +			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+> +				test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
+> +					 bpc_list[j], DRM_FORMAT_XRGB8888,
+> +					 DSC_FORMAT_RGB, joiner_tests[i]);
+> +			}
+>   	}
+>   
+>   	igt_fixture() {
+--------------HNgmF69zotwaUCj5sJprHCPi
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p>Hi Swati,</p>
+    <div class="moz-cite-prefix">On 5/1/2026 12:39 AM, Swati Sharma
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20260430190947.2347314-5-swati2.sharma@intel.com">
+      <pre wrap="" class="moz-quote-pre">Add test cases where we are validating force dsc and force
+joiner.
+
+v2: -fix if() for ultra/big joiner (Ankit)
+v3: -Add '-' separator in subtest names when using
+     igt_get_joined_pipes_name (Santhosh)
+v4: -Use 'enum joined_pipes force_joined_pipes' in data_t (Ankit)
+    -Use dsc-basic-%s format for subtest names (Ankit)
+    -Use igt_crtc_for_pipe() to check consecutive HW pipes,
+     handling fused pipe holes properly (Ankit)
+v5: -Use igt_display_n_crtcs() instead of open-coded
+     for_each_crtc counting loop (Jani)
+
+Signed-off-by: Swati Sharma <a class="moz-txt-link-rfc2396E" href="mailto:swati2.sharma@intel.com">&lt;swati2.sharma@intel.com&gt;</a>
+---
+ tests/intel/kms_dsc.c | 203 +++++++++++++++++++++++++++---------------
+ 1 file changed, 131 insertions(+), 72 deletions(-)
+
+diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+index 69f335da3..9a19de1c4 100644
+--- a/tests/intel/kms_dsc.c
++++ b/tests/intel/kms_dsc.c
+@@ -55,7 +55,27 @@
+  * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
+  * @fractional-bpp:               DSC with fractional bpp with default parameters
+  * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
+- */
++ *
++ * SUBTEST: dsc-%s-%s
++ * Description: Tests Display Stream Compression functionality if supported by a
++ *              connector by forcing %arg[1] and %arg[2] on all connectors that support it
++ *</pre>
+    </blockquote>
+    <p>IMHO, better to call out the default/existing tests as non-joiner
+      to avoid any confusion.</p>
+    <p>May be we could have something like this:<span data-teams="true"><br>
+        <ol>
+          <li>non-joiner: If display is non-joiner go ahead as is, if
+            not force non-joiner.</li>
+          <li>big-joiner: if display is big-joiner go ahead as is, if
+            not force big-joiner.</li>
+          <li>ultra-joiner: if display is ultra-joiner go ahead as is,
+            if not force ultra-joiner.</li>
+        </ol>
+      </span></p>
+    <blockquote type="cite" cite="mid:20260430190947.2347314-5-swati2.sharma@intel.com">
+      <pre wrap="" class="moz-quote-pre">
++ * arg[1]:
++ *
++ * @basic:                        DSC with default parameters
++ * @with-bpc:                     DSC with certain input BPC for the connector
++ * @with-bpc-formats:             DSC with certain input BPC for the connector and diff formats
++ * @with-formats:                 DSC with default parameters and creating fb with diff formats
++ * @with-output-formats:          DSC with output formats
++ * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
++ * @fractional-bpp:               DSC with fractional bpp with default parameters
++ * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
++ *
++ * arg[2]:
++ *
++ * @bigjoiner:			  big joiner
++ * @ultrajoiner:		  ultra joiner
++*/
+ 
+ IGT_TEST_DESCRIPTION(&quot;Test to validate display stream compression&quot;);
+ 
+@@ -81,11 +101,13 @@ typedef struct {
+ 	int disp_ver;
+ 	igt_crtc_t *crtc;
+ 	bool limited;
++	enum joined_pipes force_joined_pipes;
+ } data_t;
+ 
+ static int output_format_list[] = {DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
+ static int format_list[] = {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
+ static uint32_t bpc_list[] = {8, 10, 12};
++static enum joined_pipes joiner_tests[] = {JOINED_PIPES_DEFAULT, JOINED_PIPES_BIG_JOINER, JOINED_PIPES_ULTRA_JOINER};
+ 
+ static inline void manual(const char *expected)
+ {
+@@ -135,6 +157,7 @@ static void update_display(data_t *data, uint32_t test_type)
+ 	int current_bpc = 0;
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
++	bool status;
+ 	igt_output_t *output = data-&gt;output;
+ 	igt_display_t *display = &amp;data-&gt;display;
+ 	drmModeConnector *connector = output-&gt;config.connector;
+@@ -147,6 +170,11 @@ static void update_display(data_t *data, uint32_t test_type)
+ 	save_force_dsc_en(data-&gt;drm_fd, data-&gt;output);
+ 	force_dsc_enable(data-&gt;drm_fd, data-&gt;output);
+ 
++	if (data-&gt;force_joined_pipes == JOINED_PIPES_BIG_JOINER || data-&gt;force_joined_pipes == JOINED_PIPES_ULTRA_JOINER) {
++		status = kmstest_force_connector_joiner(data-&gt;drm_fd, connector, data-&gt;force_joined_pipes);
++		igt_assert_f(status, &quot;Failed to toggle force joiner\n&quot;);
++	}
++</pre>
+    </blockquote>
+    There seem to be few more issues with checkpatch here, mostly the
+    LONG_LINE which is okay if unavoidable but I feel in most places it
+    could be handled here. So please check.
+    <blockquote type="cite" cite="mid:20260430190947.2347314-5-swati2.sharma@intel.com">
+      <pre wrap="" class="moz-quote-pre">
+ 	if (test_type &amp; TEST_DSC_BPC) {
+ 		igt_debug(&quot;Trying to set input BPC to %d\n&quot;, data-&gt;input_bpc);
+ 		force_dsc_enable_bpc(data-&gt;drm_fd, data-&gt;output, data-&gt;input_bpc);
+@@ -246,11 +274,13 @@ reset:
+ 
+ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 		     unsigned int plane_format,
+-		     enum dsc_output_format output_format)
++		     enum dsc_output_format output_format,
++		     enum joined_pipes joined_pipes)
+ {
+ 	igt_display_t *display = &amp;data-&gt;display;
+ 	igt_output_t *output;
+ 	igt_crtc_t *crtc;
++	int n_pipes = igt_display_n_crtcs(display);
+ 	char name[3][LEN] = {
+ 				{0},
+ 				{0},
+@@ -259,12 +289,17 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 
+ 	igt_require(check_gen11_bpc_constraint(data-&gt;drm_fd, data-&gt;input_bpc));
+ 
++	if (joined_pipes != JOINED_PIPES_DEFAULT &amp;&amp;
++	    !igt_is_joiner_supported_by_source(data-&gt;drm_fd, joined_pipes))
++		return;
++
+ 	for_each_crtc_with_valid_output(display, crtc, output) {
+ 		data-&gt;output_format = output_format;
+ 		data-&gt;plane_format = plane_format;
+ 		data-&gt;input_bpc = bpc;
+ 		data-&gt;output = output;
+ 		data-&gt;crtc = crtc;
++		data-&gt;force_joined_pipes = joined_pipes;
+ 
+ 		if (!is_dsc_supported_by_sink(data-&gt;drm_fd, data-&gt;output) ||
+ 		    !check_gen11_dp_constraint(data-&gt;drm_fd, data-&gt;output, data-&gt;crtc))
+@@ -285,6 +320,26 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 						      data-&gt;drm_fd, data-&gt;output)))
+ 			continue;
+ 
++		/*
++		 * Check joiner constraints and verify that we have
++		 * enough consecutive HW pipes starting from this crtc.
++		 * Use igt_crtc_for_pipe() to handle fused pipe holes.
++		 */
++		if (joined_pipes != JOINED_PIPES_DEFAULT &amp;&amp;
++		    !check_dsc_joiner_constraints(data-&gt;drm_fd, data-&gt;output,
++						  n_pipes, joined_pipes))
++			continue;
++
++		if (joined_pipes == JOINED_PIPES_BIG_JOINER &amp;&amp;
++		    !igt_crtc_for_pipe(display, crtc-&gt;pipe + 1))
++			continue;
++
++		if (joined_pipes == JOINED_PIPES_ULTRA_JOINER &amp;&amp;
++		    (!igt_crtc_for_pipe(display, crtc-&gt;pipe + 1) ||
++		     !igt_crtc_for_pipe(display, crtc-&gt;pipe + 2) ||
++		     !igt_crtc_for_pipe(display, crtc-&gt;pipe + 3)))
++			continue;</pre>
+    </blockquote>
+    <p>Could this be added in the joiner helper rather than having it
+      specific to test?</p>
+    Thanks and Regards,<br>
+    Karthik.B.S
+    <blockquote type="cite" cite="mid:20260430190947.2347314-5-swati2.sharma@intel.com">
+      <pre wrap="" class="moz-quote-pre">
++
+ 		if (test_type &amp; TEST_DSC_OUTPUT_FORMAT)
+ 			snprintf(&amp;name[0][0], LEN, &quot;-%s&quot;, kmstest_dsc_output_format_str(data-&gt;output_format));
+ 		if (test_type &amp; TEST_DSC_FORMAT)
+@@ -334,85 +389,89 @@ int igt_main_args(&quot;l&quot;, NULL, help_str, opt_handler, &amp;data)
+ 		igt_require(is_dsc_supported_by_source(data.drm_fd));
+ 	}
+ 
+-	igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
+-		     &quot;by a connector by forcing DSC on all connectors that support it &quot;
+-		     &quot;with default parameters&quot;);
+-	igt_subtest_with_dynamic(&quot;dsc-basic&quot;)
+-			test_dsc(&amp;data, TEST_DSC_BASIC, DEFAULT_BPC,
+-				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+-
+-	igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
+-		     &quot;by a connector by forcing DSC on all connectors that support it &quot;
+-		     &quot;with default parameters and creating fb with diff formats&quot;);
+-	igt_subtest_with_dynamic(&quot;dsc-with-formats&quot;) {
+-		for (int k = 0; k &lt; ARRAY_SIZE(format_list); k++)
+-			test_dsc(&amp;data, TEST_DSC_FORMAT, DEFAULT_BPC,
+-				 format_list[k], DSC_FORMAT_RGB);
+-	}
+ 
+-	igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
+-		     &quot;by a connector by forcing DSC on all connectors that support it &quot;
+-		     &quot;with certain input BPC for the connector&quot;);
+-	igt_subtest_with_dynamic(&quot;dsc-with-bpc&quot;) {
+-		for (int j = 0; j &lt; ARRAY_SIZE(bpc_list); j++)
+-			test_dsc(&amp;data, TEST_DSC_BPC, bpc_list[j],
+-				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+-	}
++	for (int i = 0; i &lt; ARRAY_SIZE(joiner_tests) ; i++) {
++		igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
++			     &quot;by a connector by forcing DSC on all connectors that support it &quot;
++			     &quot;with default parameters&quot;);
++		igt_subtest_with_dynamic_f(&quot;dsc-basic%s%s&quot;, joiner_tests[i] ? &quot;-&quot; : &quot;&quot;, igt_get_joined_pipes_name(joiner_tests[i])) {
++				test_dsc(&amp;data, TEST_DSC_BASIC, DEFAULT_BPC,
++					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
++		}
+ 
+-	igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
+-		     &quot;by a connector by forcing DSC on all connectors that support it &quot;
+-		     &quot;with certain input BPC for the connector with diff formats&quot;);
+-	igt_subtest_with_dynamic(&quot;dsc-with-bpc-formats&quot;) {
+-		for (int j = 0; j &lt; ARRAY_SIZE(bpc_list); j++) {
+-			for (int k = 0; k &lt; ARRAY_SIZE(format_list); k++) {
+-				test_dsc(&amp;data, TEST_DSC_BPC | TEST_DSC_FORMAT,
+-				bpc_list[j], format_list[k],
+-				DSC_FORMAT_RGB);
+-			}
++		igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
++			     &quot;by a connector by forcing DSC on all connectors that support it &quot;
++			     &quot;with default parameters and creating fb with diff formats&quot;);
++		igt_subtest_with_dynamic_f(&quot;dsc-with-formats%s%s&quot;, joiner_tests[i] ? &quot;-&quot; : &quot;&quot;, igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int k = 0; k &lt; ARRAY_SIZE(format_list); k++)
++				test_dsc(&amp;data, TEST_DSC_FORMAT, DEFAULT_BPC,
++					 format_list[k], DSC_FORMAT_RGB, joiner_tests[i]);
+ 		}
+-	}
+ 
+-	igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
+-		     &quot;by a connector by forcing DSC and output format on all connectors &quot;
+-		     &quot;that support it&quot;);
+-	igt_subtest_with_dynamic(&quot;dsc-with-output-formats&quot;) {
+-		for (int k = 0; k &lt; ARRAY_SIZE(output_format_list); k++)
+-			test_dsc(&amp;data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
+-				 DRM_FORMAT_XRGB8888,
+-				 output_format_list[k]);
+-	}
++		igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
++			     &quot;by a connector by forcing DSC on all connectors that support it &quot;
++			     &quot;with certain input BPC for the connector&quot;);
++		igt_subtest_with_dynamic_f(&quot;dsc-with-bpc%s%s&quot;, joiner_tests[i] ? &quot;-&quot; : &quot;&quot;, igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int j = 0; j &lt; ARRAY_SIZE(bpc_list); j++)
++				test_dsc(&amp;data, TEST_DSC_BPC, bpc_list[j],
++					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
++		}
+ 
+-	igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
+-		     &quot;by a connector by forcing DSC and output format on all connectors &quot;
+-		     &quot;that support it with certain input BPC for the connector&quot;);
+-	igt_subtest_with_dynamic(&quot;dsc-with-output-formats-with-bpc&quot;) {
+-		for (int k = 0; k &lt; ARRAY_SIZE(output_format_list); k++) {
++		igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
++			     &quot;by a connector by forcing DSC on all connectors that support it &quot;
++			     &quot;with certain input BPC for the connector with diff formats&quot;);
++		igt_subtest_with_dynamic_f(&quot;dsc-with-bpc-formats%s%s&quot;, joiner_tests[i] ? &quot;-&quot; : &quot;&quot;, igt_get_joined_pipes_name(joiner_tests[i])) {
+ 			for (int j = 0; j &lt; ARRAY_SIZE(bpc_list); j++) {
+-				test_dsc(&amp;data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
+-					 bpc_list[j], DRM_FORMAT_XRGB8888,
+-					 output_format_list[k]);
++				for (int k = 0; k &lt; ARRAY_SIZE(format_list); k++) {
++					test_dsc(&amp;data, TEST_DSC_BPC | TEST_DSC_FORMAT,
++					bpc_list[j], format_list[k],
++					DSC_FORMAT_RGB, joiner_tests[i]);
++				}
+ 			}
+ 		}
+-	}
+ 
+-	igt_describe(&quot;Tests fractional compressed bpp functionality if supported &quot;
+-		     &quot;by a connector by forcing fractional_bpp on all connectors that support it &quot;
+-		     &quot;with default parameter. While finding the optimum compressed bpp, driver will &quot;
+-		     &quot;skip over the compressed bpps with integer values. It will go ahead with DSC, &quot;
+-		     &quot;iff compressed bpp is fractional, failing in which, it will fail the commit.&quot;);
+-	igt_subtest_with_dynamic(&quot;dsc-fractional-bpp&quot;)
+-			test_dsc(&amp;data, TEST_DSC_FRACTIONAL_BPP,
+-				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
+-				 DSC_FORMAT_RGB);
+-
+-	igt_describe(&quot;Tests fractional compressed bpp functionality if supported &quot;
+-		     &quot;by a connector by forcing fractional_bpp on all connectors that support it &quot;
+-		     &quot;with certain input BPC for the connector.&quot;);
+-	igt_subtest_with_dynamic(&quot;dsc-fractional-bpp-with-bpc&quot;) {
+-		for (int j = 0; j &lt; ARRAY_SIZE(bpc_list); j++)
+-			test_dsc(&amp;data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
+-				 bpc_list[j], DRM_FORMAT_XRGB8888,
+-				 DSC_FORMAT_RGB);
++		igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
++			     &quot;by a connector by forcing DSC and output format on all connectors &quot;
++			     &quot;that support it&quot;);
++		igt_subtest_with_dynamic_f(&quot;dsc-with-output-formats%s%s&quot;, joiner_tests[i] ? &quot;-&quot; : &quot;&quot;, igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int k = 0; k &lt; ARRAY_SIZE(output_format_list); k++)
++				test_dsc(&amp;data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
++					 DRM_FORMAT_XRGB8888,
++					 output_format_list[k], joiner_tests[i]);
++		}
++
++		igt_describe(&quot;Tests basic display stream compression functionality if supported &quot;
++			     &quot;by a connector by forcing DSC and output format on all connectors &quot;
++			     &quot;that support it with certain input BPC for the connector&quot;);
++		igt_subtest_with_dynamic_f(&quot;dsc-with-output-formats-with-bpc%s%s&quot;, joiner_tests[i] ? &quot;-&quot; : &quot;&quot;, igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int k = 0; k &lt; ARRAY_SIZE(output_format_list); k++) {
++				for (int j = 0; j &lt; ARRAY_SIZE(bpc_list); j++) {
++					test_dsc(&amp;data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
++						 bpc_list[j], DRM_FORMAT_XRGB8888,
++						 output_format_list[k], joiner_tests[i]);
++				}
++			}
++		}
++
++		igt_describe(&quot;Tests fractional compressed bpp functionality if supported &quot;
++			     &quot;by a connector by forcing fractional_bpp on all connectors that support it &quot;
++			     &quot;with default parameter. While finding the optimum compressed bpp, driver will &quot;
++			     &quot;skip over the compressed bpps with integer values. It will go ahead with DSC, &quot;
++			     &quot;iff compressed bpp is fractional, failing in which, it will fail the commit.&quot;);
++		igt_subtest_with_dynamic_f(&quot;dsc-fractional-bpp%s%s&quot;, joiner_tests[i] ? &quot;-&quot; : &quot;&quot;, igt_get_joined_pipes_name(joiner_tests[i]))
++				test_dsc(&amp;data, TEST_DSC_FRACTIONAL_BPP,
++					 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
++					 DSC_FORMAT_RGB, joiner_tests[i]);
++
++		igt_describe(&quot;Tests fractional compressed bpp functionality if supported &quot;
++			     &quot;by a connector by forcing fractional_bpp on all connectors that support it &quot;
++			     &quot;with certain input BPC for the connector.&quot;);
++		igt_subtest_with_dynamic_f(&quot;dsc-fractional-bpp-with-bpc%s%s&quot;, joiner_tests[i] ? &quot;-&quot; : &quot;&quot;, igt_get_joined_pipes_name(joiner_tests[i])) {
++			for (int j = 0; j &lt; ARRAY_SIZE(bpc_list); j++)
++				test_dsc(&amp;data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
++					 bpc_list[j], DRM_FORMAT_XRGB8888,
++					 DSC_FORMAT_RGB, joiner_tests[i]);
++			}
+ 	}
+ 
+ 	igt_fixture() {
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------HNgmF69zotwaUCj5sJprHCPi--
