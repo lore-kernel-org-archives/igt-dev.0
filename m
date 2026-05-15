@@ -4,59 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 957CBCD343F
-	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 07:53:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A4ECD4F3D
+	for <igt-dev@archiver.kernel.org>; Fri, 15 May 2026 07:59:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 43CCD10E03B;
-	Fri, 15 May 2026 07:53:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0241F10F46D;
+	Fri, 15 May 2026 07:59:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OgN4qvRl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GN+fJw7g";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63F8010F44C
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 07:53:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01C8910F467
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2026 07:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1778831593; x=1810367593;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=ZLUck2VLUyeJGKfxnDP6Kdf3s4x2K8WFsNP2TO0OHSM=;
- b=OgN4qvRl8L3kIqrR+D5UscTHvjnoKZ738GbhWcLCxWPLiZKpqkYvWTvm
- pPQttcV2w6pArsnGQy2KXizbheXiK9iIq33aC+Z4INllt1u45NE1fy7IK
- 5S6sK0Vic9XpVhwWMP6Utl1nM3MXENkZpjv+ysJ9uWbUCRvyW5ZIZejIh
- bhBuWLgRJAZpNmCxS3BkOAeHop2a7sBk5gxzq9E0auvigxje+5chiAqUw
- a3E50dSJG+Df5xpJvguOdGkXL96DfH6qc217H5PL1DJ6ugBaOySrHTbJJ
- Qqg49DhCa93GzbCFJstFb6GH8YrZqQUFbCT2D6Xpi87QLJM7IyXLBc67Y g==;
-X-CSE-ConnectionGUID: bD19fYv7QFyXdAN+LJ4XZg==
-X-CSE-MsgGUID: zIcCbqe3S2uWfC2JIkeAIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="97213631"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="97213631"
+ t=1778831922; x=1810367922;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/+gPuD5DEtrG1XPqAnjTPuc8q5PaGrfmJFY8yvFcQek=;
+ b=GN+fJw7gBqmb8PXwTgCWzmJxs/+Z85BCuA/BBm0JDOP9zTiMGwjMrUyW
+ qgoymVyFtXtbVvFd7+tMxcykv1nry9bbCpD1MCDOzHt4rpEsw6rqwzu7Y
+ heo2efXTC2E89rmWiI+t+rLfkDJuER9MQckK/trfR9kxnBjoU3mFIj/pt
+ +dKWMoWfRj9FhwQjqddAy1TeNbuNIuNQt5qiAS2rlUKs5tO6XGdCATeQK
+ 6cJL/Rh5aYevOPLjjmYOzdfdfHntseFwydyo76LXfIc6vVlmw/F2T96Yf
+ 2rRyPe5eIcb9cI/Zvk+zC1ryKfXdvCc93R4uj9RkNzws8unx/+D+mqSYf A==;
+X-CSE-ConnectionGUID: hh4N8NIeSs6oCyx5AtdLUQ==
+X-CSE-MsgGUID: ILgJ8PbPTYikJZqJHVuMAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="97214096"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="97214096"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 00:53:13 -0700
-X-CSE-ConnectionGUID: Vk8yPVhHQpyElDam2w+rqA==
-X-CSE-MsgGUID: eiPnA4MDRqCKme9AK0d/kg==
+ 15 May 2026 00:58:41 -0700
+X-CSE-ConnectionGUID: pfmguTO0SBS3xvQbcINLEA==
+X-CSE-MsgGUID: vThUj5tsQtqo/C17fadltA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="268968461"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.71])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2026 00:53:09 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: suraj.kandpal@intel.com, jason-jh.lin@mediatek.com,
- karthik.b.s@intel.com, fshao@chromium.org, navaremanasi@google.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: Re: [PATCH i-g-t v1 0/3] Revert HDCP per crtc infrastructure
-In-Reply-To: <20260514093510.688396-1-santhosh.reddy.guddati@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260514093510.688396-1-santhosh.reddy.guddati@intel.com>
-Date: Fri, 15 May 2026 10:53:06 +0300
-Message-ID: <f8de8e9810d620359f2d5375d83f2a6d1a30ce97@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; d="scan'208";a="268969717"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 00:58:38 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, pawel.sikora@intel.com,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking: Fix duplicate
+ documentation descriptions
+Date: Fri, 15 May 2026 13:37:28 +0530
+Message-Id: <20260515080728.2433990-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,49 +67,1399 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 14 May 2026, Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com> wrote:
-> Reverts below commits
->
-> b4036b1a0 tests/kms_content_protection: Add FB cleanup for MST tests
-> 8d7c2453d tests/kms_content_protection: Pass crtc parameter and use per-CRTC FBs
-> 925b14d43 tests/kms_content_protection: Add per-CRTC framebuffer infrastructure
->
-> The per-CRTC fb introduced in the commits caused regression especially
-> when the eDP panel is connected with 2 4k Panels connected through a
-> DP-MST hub with "-ENOSPC" and all the content protection tests are
-> failing.
->
-> The MST subtests are skipping when subtests are executed with "--r
-> dp-mst*" , as the MST changes introduced did not clean up properly
-> across subtests.
->
-> The create_fbs() now iterated through all crtcs and eDP (2k) claims the first
-> crtc before the larger output and fb is created with smaller size. Later when DP-4 maps to
-> the smae CRTC (it has differnt fb dimensions now 2k fb than the mode
-> required) , the kernel rejects the commits  with ENOSPC because of
-> invalid coordinates.
+Multiple SUBTEST entries shared identical descriptions across different
+test scenarios (offscreen, primary screen, secondary screen). This
+caused ambiguous documentation output.
 
-The cover letter won't be committed to git.
+Fix by:
+- Adding features in description.
+- Appending scenario context (targeting offscreen buffer, on primary/
+  secondary screen, with individual/shared fb) to differentiate test
+  variants operating on different screens or framebuffers.
+- Adding missing Driver requirement: i915 to HDR combo subtests in
+  i915-only draw method blocks.
 
-The commit messages for the reverts themselves need the explanation for
-posterity.
+Co-developed-by: Claude Opus 4.6
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/intel/kms_frontbuffer_tracking.c | 583 +++++++++++++------------
+ 1 file changed, 294 insertions(+), 289 deletions(-)
 
-You can't have empty commit messages that just have the "This reverts
-commit ..."
-
-BR,
-Jani.
-
->
-> Santhosh Reddy Guddati (3):
->   Revert "tests/kms_content_protection: Add per-CRTC framebuffer
->     infrastructure"
->   Revert "tests/kms_content_protection: Pass crtc parameter and use
->     per-CRTC FBs"
->   Revert "tests/kms_content_protection: Add FB cleanup for MST tests"
->
->  tests/kms_content_protection.c | 168 +++++++++------------------------
->  1 file changed, 47 insertions(+), 121 deletions(-)
-
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index e7bb3fa18..034222aa2 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -27,7 +27,7 @@
+ /**
+  * TEST: kms frontbuffer tracking
+  * Category: Display
+- * Description: Test the Kernel's frontbuffer tracking mechanism and its related features: FBC, PSR and DRRS
++ * Description: Test the Kernel's frontbuffer tracking mechanism and its related features: FBC, PSR, DRRS and HDR
+  * Driver requirement: i915, xe
+  * Mega feature: General Display Features
+  */
+@@ -69,7 +69,7 @@
+  * Description: Sanity test to enable PSR with %arg[1] panels.
+  *
+  * SUBTEST: hdr-%dp-rte
+- * Description: Sanity test to enable PSR with %arg[1] panels.
++ * Description: Sanity test to enable HDR with %arg[1] panels.
+  *
+  * SUBTEST: fbcdrrs-%dp-rte
+  * Description: Sanity test to enable FBC & DRRS with %arg[1] panels.
+@@ -97,37 +97,37 @@
+ 
+ /**
+  * SUBTEST: drrs-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, targeting offscreen buffer
+  *
+  * SUBTEST: fbc-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, targeting offscreen buffer
+  *
+  * SUBTEST: psr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, targeting offscreen buffer
+  *
+  * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, targeting offscreen buffer
+  *
+  * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, targeting offscreen buffer
+  *
+  * SUBTEST: fbcpsr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, targeting offscreen buffer
+  *
+  * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, targeting offscreen buffer
+  *
+  * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, targeting offscreen buffer
+  *
+  * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, targeting offscreen buffer
+  *
+  * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, targeting offscreen buffer
+  *
+  * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, targeting offscreen buffer
+  *
+  * arg[1]:
+  *
+@@ -143,43 +143,48 @@
+ 
+ /**
+  * SUBTEST: drrs-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, targeting offscreen buffer
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbc-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, targeting offscreen buffer
+  * Driver requirement: i915
+  *
+  * SUBTEST: psr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, targeting offscreen buffer
+  * Driver requirement: i915
+  *
+  * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, targeting offscreen buffer
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, targeting offscreen buffer
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, targeting offscreen buffer
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, targeting offscreen buffer
++ * Driver requirement: i915
+  *
+  * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, targeting offscreen buffer
++ * Driver requirement: i915
+  *
+  * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, targeting offscreen buffer
++ * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, targeting offscreen buffer
++ * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, targeting offscreen buffer
++ * Driver requirement: i915
+  *
+  * arg[1]:
+  *
+@@ -195,47 +200,47 @@
+ 
+ /**
+  * SUBTEST: drrs-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbc-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: psr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: hdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on primary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * arg[1].values:   1, 2
+@@ -255,37 +260,37 @@
+ 
+ /**
+  * SUBTEST: drrs-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on primary screen, with individual fb
+  *
+  * SUBTEST: fbc-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on primary screen, with individual fb
+  *
+  * SUBTEST: psr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on primary screen, with individual fb
+  *
+  * SUBTEST: hdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on primary screen, with individual fb
+  *
+  * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on primary screen, with individual fb
+  *
+  * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on primary screen, with individual fb
+  *
+  * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on primary screen, with individual fb
+  *
+  * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on primary screen, with individual fb
+  *
+  * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on primary screen, with individual fb
+  *
+  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on primary screen, with individual fb
+  *
+  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on primary screen, with individual fb
+  *
+  * arg[1].values:   1, 2
+  *
+@@ -304,37 +309,37 @@
+ 
+ /**
+  * SUBTEST: drrs-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on primary screen, with shared fb
+  *
+  * SUBTEST: fbc-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on primary screen, with shared fb
+  *
+  * SUBTEST: psr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on primary screen, with shared fb
+  *
+  * SUBTEST: hdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on primary screen, with shared fb
+  *
+  * SUBTEST: fbcdrrs-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on primary screen, with shared fb
+  *
+  * SUBTEST: fbcpsr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on primary screen, with shared fb
+  *
+  * SUBTEST: fbchdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on primary screen, with shared fb
+  *
+  * SUBTEST: drrshdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on primary screen, with shared fb
+  *
+  * SUBTEST: psrhdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on primary screen, with shared fb
+  *
+  * SUBTEST: fbcdrrshdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on primary screen, with shared fb
+  *
+  * SUBTEST: fbcpsrhdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on primary screen, with shared fb
+  *
+  * arg[1].values:   1, 2
+  *
+@@ -347,47 +352,47 @@
+ 
+ /**
+  * SUBTEST: drrs-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbc-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: psr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: hdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrs-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbchdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: drrshdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: psrhdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrshdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsrhdr-%dp-primscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on primary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * arg[1].values:   1, 2
+@@ -401,37 +406,37 @@
+ 
+ /**
+  * SUBTEST: drrs-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on secondary screen, with individual fb
+  *
+  * SUBTEST: fbc-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on secondary screen, with individual fb
+  *
+  * SUBTEST: psr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on secondary screen, with individual fb
+  *
+  * SUBTEST: hdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on secondary screen, with individual fb
+  *
+  * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on secondary screen, with individual fb
+  *
+  * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on secondary screen, with individual fb
+  *
+  * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on secondary screen, with individual fb
+  *
+  * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on secondary screen, with individual fb
+  *
+  * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on secondary screen, with individual fb
+  *
+  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on secondary screen, with individual fb
+  *
+  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on secondary screen, with individual fb
+  *
+  * arg[1]:
+  *
+@@ -448,47 +453,47 @@
+ 
+ /**
+  * SUBTEST: drrs-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbc-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: psr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: hdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on secondary screen, with individual fb
+  * Driver requirement: i915
+  *
+  * arg[1]:
+@@ -506,37 +511,37 @@
+ 
+ /**
+  * SUBTEST: drrs-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on secondary screen, with shared fb
+  *
+  * SUBTEST: fbc-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on secondary screen, with shared fb
+  *
+  * SUBTEST: psr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on secondary screen, with shared fb
+  *
+  * SUBTEST: hdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on secondary screen, with shared fb
+  *
+  * SUBTEST: fbcdrrs-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on secondary screen, with shared fb
+  *
+  * SUBTEST: fbcpsr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on secondary screen, with shared fb
+  *
+  * SUBTEST: fbchdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on secondary screen, with shared fb
+  *
+  * SUBTEST: drrshdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on secondary screen, with shared fb
+  *
+  * SUBTEST: psrhdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on secondary screen, with shared fb
+  *
+  * SUBTEST: fbcdrrshdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on secondary screen, with shared fb
+  *
+  * SUBTEST: fbcpsrhdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on secondary screen, with shared fb
+  *
+  * arg[1]:
+  *
+@@ -547,47 +552,47 @@
+ 
+ /**
+  * SUBTEST: drrs-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbc-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: psr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: hdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with HDR, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrs-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & DRRS, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & PSR, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbchdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC & HDR, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: drrshdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with DRRS & HDR, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: psrhdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with PSR & HDR, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrshdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, DRRS & HDR, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsrhdr-2p-scndscrn-pri-shrfb-draw-%s
+- * Description: Draw a set of rectangles on the screen using the provided method
++ * Description: Draw a set of rectangles on the screen using the provided method with FBC, PSR & HDR, on secondary screen, with shared fb
+  * Driver requirement: i915
+  *
+  * arg[1]:
+@@ -599,74 +604,74 @@
+ 
+ /**
+  * SUBTEST: drrs-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with DRRS
+  *
+  * SUBTEST: fbc-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC
+  *
+  * SUBTEST: psr-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with PSR
+  *
+  * SUBTEST: hdr-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with HDR
+  *
+  * SUBTEST: fbcdrrs-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC & DRRS
+  *
+  * SUBTEST: fbcpsr-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC & PSR
+  *
+  * SUBTEST: fbchdr-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC & HDR
+  *
+  * SUBTEST: drrshdr-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with DRRS & HDR
+  *
+  * SUBTEST: psrhdr-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-%dp-pri-indfb-multidraw
+- * Description: Draw a set of rectangles on the screen using alternated drawing methods
++ * Description: Draw a set of rectangles on the screen using alternated drawing methods with FBC, PSR & HDR
+  *
+  * arg[1].values:   1, 2
+  */
+ 
+ /**
+  * SUBTEST: drrs-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with DRRS
+  *
+  * SUBTEST: fbc-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC
+  *
+  * SUBTEST: psr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with PSR
+  *
+  * SUBTEST: hdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with HDR
+  *
+  * SUBTEST: fbcdrrs-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & DRRS
+  *
+  * SUBTEST: fbcpsr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & PSR
+  *
+  * SUBTEST: fbchdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & HDR
+  *
+  * SUBTEST: drrshdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with DRRS & HDR
+  *
+  * SUBTEST: psrhdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC, PSR & HDR
+  *
+  * arg[1]:
+  *
+@@ -684,47 +689,47 @@
+ 
+ /**
+  * SUBTEST: drrs-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with DRRS
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbc-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC
+  * Driver requirement: i915
+  *
+  * SUBTEST: psr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with PSR
+  * Driver requirement: i915
+  *
+  * SUBTEST: hdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrs-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & DRRS
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & PSR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbchdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: drrshdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with DRRS & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: psrhdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with PSR & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrshdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC, DRRS & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsrhdr-%s-draw-%s
+- * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT
++ * Description: Test pixel formats (%arg[1]) that are not FORMAT_DEFAULT with FBC, PSR & HDR
+  * Driver requirement: i915
+  *
+  * arg[1]:
+@@ -761,45 +766,45 @@
+  * Description: Sleep a little bit between drawing operations with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-slowdraw
+- * Description: Sleep a little bit between drawing operations with DRRS, HDR & FBC
++ * Description: Sleep a little bit between drawing operations with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-slowdraw
+- * Description: Sleep a little bit between drawing operations with PSR, HDR & FBC
++ * Description: Sleep a little bit between drawing operations with FBC, PSR & HDR
+  */
+ 
+ /**
+  * SUBTEST: drrs-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with DRRS, on primary screen
+  *
+  * SUBTEST: fbc-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC, on primary screen
+  *
+  * SUBTEST: psr-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with PSR, on primary screen
+  *
+  * SUBTEST: hdr-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with HDR, on primary screen
+  *
+  * SUBTEST: fbcdrrs-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC & DRRS, on primary screen
+  *
+  * SUBTEST: fbcpsr-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC & PSR, on primary screen
+  *
+  * SUBTEST: fbchdr-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC & HDR, on primary screen
+  *
+  * SUBTEST: drrshdr-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with DRRS & HDR, on primary screen
+  *
+  * SUBTEST: psrhdr-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with PSR & HDR, on primary screen
+  *
+  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC, DRRS & HDR, on primary screen
+  *
+  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC, PSR & HDR, on primary screen
+  *
+  * arg[1].values:   1, 2
+  *
+@@ -817,37 +822,37 @@
+ 
+ /**
+  * SUBTEST: drrs-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with DRRS, on secondary screen
+  *
+  * SUBTEST: fbc-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC, on secondary screen
+  *
+  * SUBTEST: psr-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with PSR, on secondary screen
+  *
+  * SUBTEST: hdr-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with HDR, on secondary screen
+  *
+  * SUBTEST: fbcdrrs-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC & DRRS, on secondary screen
+  *
+  * SUBTEST: fbcpsr-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC & PSR, on secondary screen
+  *
+  * SUBTEST: fbchdr-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC & HDR, on secondary screen
+  *
+  * SUBTEST: drrshdr-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with DRRS & HDR, on secondary screen
+  *
+  * SUBTEST: psrhdr-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with PSR & HDR, on secondary screen
+  *
+  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC, DRRS & HDR, on secondary screen
+  *
+  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-%sflip-blt
+- * Description: Just exercise page flips with the patterns we have
++ * Description: Just exercise page flips with the patterns we have with FBC, PSR & HDR, on secondary screen
+  *
+  * arg[1]:
+  *
+@@ -863,27 +868,27 @@
+ 
+ /**
+  * SUBTEST: fbc-%dp-%s-fliptrack-mmap-gtt
+- * Description: Check if the hardware tracking works after page flips
++ * Description: Check if the hardware tracking works after page flips with FBC
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrs-%dp-%s-fliptrack-mmap-gtt
+- * Description: Check if the hardware tracking works after page flips
++ * Description: Check if the hardware tracking works after page flips with FBC & DRRS
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsr-%dp-%s-fliptrack-mmap-gtt
+- * Description: Check if the hardware tracking works after page flips
++ * Description: Check if the hardware tracking works after page flips with FBC & PSR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbchdr-%dp-%s-fliptrack-mmap-gtt
+- * Description: Check if the hardware tracking works after page flips
++ * Description: Check if the hardware tracking works after page flips with FBC & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrshdr-%dp-%s-fliptrack-mmap-gtt
+- * Description: Check if the hardware tracking works after page flips
++ * Description: Check if the hardware tracking works after page flips with FBC, DRRS & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsrhdr-%dp-%s-fliptrack-mmap-gtt
+- * Description: Check if the hardware tracking works after page flips
++ * Description: Check if the hardware tracking works after page flips with FBC, PSR & HDR
+  * Driver requirement: i915
+  *
+  * arg[1].values:   1, 2
+@@ -896,37 +901,37 @@
+ 
+ /**
+  * SUBTEST: drrs-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with DRRS
+  *
+  * SUBTEST: fbc-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with FBC
+  *
+  * SUBTEST: psr-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with PSR
+  *
+  * SUBTEST: hdr-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with HDR
+  *
+  * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with FBC & DRRS
+  *
+  * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with FBC & PSR
+  *
+  * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with FBC & HDR
+  *
+  * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with DRRS & HDR
+  *
+  * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-move
+- * Description: Just move the %arg[2] around
++ * Description: Just move the %arg[2] around with FBC, PSR & HDR
+  *
+  * arg[1].values:   1, 2
+  *
+@@ -938,37 +943,37 @@
+ 
+ /**
+  * SUBTEST: drrs-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with DRRS
+  *
+  * SUBTEST: fbc-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with FBC
+  *
+  * SUBTEST: psr-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with PSR
+  *
+  * SUBTEST: hdr-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with HDR
+  *
+  * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with FBC & DRRS
+  *
+  * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with FBC & PSR
+  *
+  * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with FBC & HDR
+  *
+  * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with DRRS & HDR
+  *
+  * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-move
+- * Description: Just move the %arg[1] around
++ * Description: Just move the %arg[1] around with FBC, PSR & HDR
+  *
+  * arg[1]:
+  *
+@@ -978,37 +983,37 @@
+ 
+ /**
+  * SUBTEST: drrs-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with DRRS
+  *
+  * SUBTEST: fbc-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with FBC
+  *
+  * SUBTEST: psr-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with PSR
+  *
+  * SUBTEST: hdr-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with HDR
+  *
+  * SUBTEST: fbcdrrs-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with FBC & DRRS
+  *
+  * SUBTEST: fbcpsr-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with FBC & PSR
+  *
+  * SUBTEST: fbchdr-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with FBC & HDR
+  *
+  * SUBTEST: drrshdr-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with DRRS & HDR
+  *
+  * SUBTEST: psrhdr-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-%dp-primscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[2] a few times
++ * Description: Just enable and disable the %arg[2] a few times with FBC, PSR & HDR
+  *
+  * arg[1].values:   1, 2
+  *
+@@ -1020,37 +1025,37 @@
+ 
+ /**
+  * SUBTEST: drrs-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with DRRS
+  *
+  * SUBTEST: fbc-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with FBC
+  *
+  * SUBTEST: psr-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with PSR
+  *
+  * SUBTEST: hdr-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with HDR
+  *
+  * SUBTEST: fbcdrrs-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with FBC & DRRS
+  *
+  * SUBTEST: fbcpsr-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with FBC & PSR
+  *
+  * SUBTEST: fbchdr-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with FBC & HDR
+  *
+  * SUBTEST: drrshdr-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with DRRS & HDR
+  *
+  * SUBTEST: psrhdr-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-2p-scndscrn-%s-indfb-onoff
+- * Description: Just enable and disable the %arg[1] a few times
++ * Description: Just enable and disable the %arg[1] a few times with FBC, PSR & HDR
+  *
+  * arg[1]:
+  *
+@@ -1060,107 +1065,107 @@
+ 
+ /**
+  * SUBTEST: drrs-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with DRRS, on primary screen
+  *
+  * SUBTEST: fbc-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC, on primary screen
+  *
+  * SUBTEST: psr-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with PSR, on primary screen
+  *
+  * SUBTEST: hdr-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with HDR, on primary screen
+  *
+  * SUBTEST: fbcdrrs-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC & DRRS, on primary screen
+  *
+  * SUBTEST: fbcpsr-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC & PSR, on primary screen
+  *
+  * SUBTEST: fbchdr-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC & HDR, on primary screen
+  *
+  * SUBTEST: drrshdr-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with DRRS & HDR, on primary screen
+  *
+  * SUBTEST: psrhdr-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with PSR & HDR, on primary screen
+  *
+  * SUBTEST: fbcdrrshdr-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC, DRRS & HDR, on primary screen
+  *
+  * SUBTEST: fbcpsrhdr-%dp-primscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC, PSR & HDR, on primary screen
+  *
+  * SUBTEST: drrs-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with DRRS, on secondary screen
+  *
+  * SUBTEST: fbc-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC, on secondary screen
+  *
+  * SUBTEST: psr-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with PSR, on secondary screen
+  *
+  * SUBTEST: hdr-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with HDR, on secondary screen
+  *
+  * SUBTEST: fbcdrrs-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC & DRRS, on secondary screen
+  *
+  * SUBTEST: fbcpsr-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC & PSR, on secondary screen
+  *
+  * SUBTEST: fbchdr-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC & HDR, on secondary screen
+  *
+  * SUBTEST: drrshdr-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with DRRS & HDR, on secondary screen
+  *
+  * SUBTEST: psrhdr-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with PSR & HDR, on secondary screen
+  *
+  * SUBTEST: fbcdrrshdr-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC, DRRS & HDR, on secondary screen
+  *
+  * SUBTEST: fbcpsrhdr-2p-scndscrn-spr-indfb-fullscreen
+- * Description: Put a fullscreen plane covering the whole screen
++ * Description: Put a fullscreen plane covering the whole screen with FBC, PSR & HDR, on secondary screen
+  *
+  * arg[1].values:   1, 2
+  */
+ 
+ /**
+  * SUBTEST: drrs-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with DRRS
+  *
+  * SUBTEST: fbc-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with FBC
+  *
+  * SUBTEST: psr-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with PSR
+  *
+  * SUBTEST: hdr-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with HDR
+  *
+  * SUBTEST: fbcdrrs-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with FBC & DRRS
+  *
+  * SUBTEST: fbcpsr-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with FBC & PSR
+  *
+  * SUBTEST: fbchdr-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with FBC & HDR
+  *
+  * SUBTEST: drrshdr-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with DRRS & HDR
+  *
+  * SUBTEST: psrhdr-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-%s-scaledprimary
+- * Description: Try different primary plane scaling strategies
++ * Description: Try different primary plane scaling strategies with FBC, PSR & HDR
+  *
+  * arg[1]:
+  *
+@@ -1194,139 +1199,139 @@
+  * Description: Modeset from a busy buffer to a non-busy buffer with DRRS & HDR
+  *
+  * SUBTEST: psrhdr-modesetfrombusy
+- * Description: Modeset from a busy buffer to a non-busy buffer with HDR & PSR
++ * Description: Modeset from a busy buffer to a non-busy buffer with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-modesetfrombusy
+- * Description: Modeset from a busy buffer to a non-busy buffer with DRRS, HDR & FBC
++ * Description: Modeset from a busy buffer to a non-busy buffer with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-modesetfrombusy
+- * Description: Modeset from a busy buffer to a non-busy buffer with HDR, PSR & FBC
++ * Description: Modeset from a busy buffer to a non-busy buffer with FBC, PSR & HDR
+  */
+ 
+ /**
+  * SUBTEST: drrs-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of DRRS
++ * Description: Make sure suspend/resume keeps us on the same state of DRRS with DRRS
+  *
+  * SUBTEST: fbc-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of FBC
++ * Description: Make sure suspend/resume keeps us on the same state of FBC with FBC
+  *
+  * SUBTEST: psr-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of PSR
++ * Description: Make sure suspend/resume keeps us on the same state of PSR with PSR
+  *
+  * SUBTEST: hdr-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of HDR
++ * Description: Make sure suspend/resume keeps us on the same state of HDR with HDR
+  *
+  * SUBTEST: fbcdrrs-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of FBC & DRRS
++ * Description: Make sure suspend/resume keeps us on the same state of FBC & DRRS with FBC & DRRS
+  *
+  * SUBTEST: fbcpsr-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of FBC & PSR
++ * Description: Make sure suspend/resume keeps us on the same state of FBC & PSR with FBC & PSR
+  *
+  * SUBTEST: fbchdr-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of FBC & HDR
++ * Description: Make sure suspend/resume keeps us on the same state of FBC & HDR with FBC & HDR
+  *
+  * SUBTEST: drrshdr-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of HDR & DRRS
++ * Description: Make sure suspend/resume keeps us on the same state of HDR & DRRS with DRRS & HDR
+  *
+  * SUBTEST: psrhdr-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of HDR & PSR
++ * Description: Make sure suspend/resume keeps us on the same state of HDR & PSR with PSR & HDR
+  *
+  * SUBTEST: fbcdrrshdr-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of HDR, DRRS & FBC
++ * Description: Make sure suspend/resume keeps us on the same state of HDR, DRRS & FBC with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-suspend
+- * Description: Make sure suspend/resume keeps us on the same state of HDR, PSR & FBC
++ * Description: Make sure suspend/resume keeps us on the same state of HDR, PSR & FBC with FBC, PSR & HDR
+  */
+ 
+ /**
+  * SUBTEST: drrs-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with DRRS
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbc-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with FBC
+  * Driver requirement: i915
+  *
+  * SUBTEST: psr-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with PSR
+  * Driver requirement: i915
+  *
+  * SUBTEST: hdr-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrs-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with FBC & DRRS
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsr-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with FBC & PSR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbchdr-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with FBC & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: drrshdr-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with DRRS & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: psrhdr-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with PSR & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcdrrshdr-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with FBC, DRRS & HDR
+  * Driver requirement: i915
+  *
+  * SUBTEST: fbcpsrhdr-farfromfence-mmap-gtt
+- * Description: Test drawing as far from the fence start as possible
++ * Description: Test drawing as far from the fence start as possible with FBC, PSR & HDR
+  * Driver requirement: i915
+  */
+ 
+ /**
+  * SUBTEST: fbc-stridechange
+- * Description: Change the frontbuffer stride by doing a modeset
++ * Description: Change the frontbuffer stride by doing a modeset with FBC
+  *
+  * SUBTEST: fbcdrrs-stridechange
+- * Description: Change the frontbuffer stride by doing a modeset
++ * Description: Change the frontbuffer stride by doing a modeset with FBC & DRRS
+  *
+  * SUBTEST: fbcpsr-stridechange
+- * Description: Change the frontbuffer stride by doing a modeset
++ * Description: Change the frontbuffer stride by doing a modeset with FBC & PSR
+  *
+  * SUBTEST: fbchdr-stridechange
+- * Description: Change the frontbuffer stride by doing a modeset
++ * Description: Change the frontbuffer stride by doing a modeset with FBC & HDR
+  *
+  * SUBTEST: fbcdrrshdr-stridechange
+- * Description: Change the frontbuffer stride by doing a modeset
++ * Description: Change the frontbuffer stride by doing a modeset with FBC, DRRS & HDR
+  *
+  * SUBTEST: fbcpsrhdr-stridechange
+- * Description: Change the frontbuffer stride by doing a modeset
++ * Description: Change the frontbuffer stride by doing a modeset with FBC, PSR & HDR
+  */
+ 
+ /**
+  * SUBTEST: fbc-tiling-%s
+- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
++ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC
+  *              basic drawing test, else set the mode & test if FBC is disabled
+  *
+  * SUBTEST: fbcdrrs-tiling-%s
+- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
++ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC & DRRS
+  *              basic drawing test, else set the mode & test if FBC is disabled
+  *
+  * SUBTEST: fbcpsr-tiling-%s
+- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
++ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC & PSR
+  *              basic drawing test, else set the mode & test if FBC is disabled
+  *
+  * SUBTEST: fbchdr-tiling-%s
+- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
++ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC & HDR
+  *              basic drawing test, else set the mode & test if FBC is disabled
+  *
+  * SUBTEST: fbcdrrshdr-tiling-%s
+- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
++ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC, DRRS & HDR
+  *              basic drawing test, else set the mode & test if FBC is disabled
+  *
+  * SUBTEST: fbcpsrhdr-tiling-%s
+- * Description: Test %arg[1] formats, if the tiling format supports FBC do the
++ * Description: Test %arg[1] formats, if the tiling format supports FBC do the with FBC, PSR & HDR
+  *              basic drawing test, else set the mode & test if FBC is disabled
+  *
+  * arg[1]:
 -- 
-Jani Nikula, Intel
+2.25.1
+
