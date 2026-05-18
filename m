@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED809CD343F
-	for <igt-dev@archiver.kernel.org>; Mon, 18 May 2026 03:53:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50D87CD343F
+	for <igt-dev@archiver.kernel.org>; Mon, 18 May 2026 03:54:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F44110E2CC;
-	Mon, 18 May 2026 03:53:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F169710E2CC;
+	Mon, 18 May 2026 03:54:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A9mFMEOr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HZ01SibC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C996A10E2CC
- for <igt-dev@lists.freedesktop.org>; Mon, 18 May 2026 03:53:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1087710E2CC
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 May 2026 03:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779076391; x=1810612391;
+ t=1779076388; x=1810612388;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=bO6k4PkRoyNSeNPDee4jXe4+IZl8sOFyTJITPEkPb2E=;
- b=A9mFMEOrVO6hQqORWJP0IA+lelB4/j6/Pjbb2fJrH2ie42IKYifyVdgs
- jock0KeSA++0aIT92VT6ibmwEE63/PscIq5lrsvMOpfn/ZdUTP6sOXmXi
- Bo8NXSq84frCkR6jAn/ZvYx9dpx8xsF6EjGbHnsC9iA2AlBgfugfjYFsQ
- QC7HRWuu4NWcWL2YzVvkiZ+39GYH5V1A2f2h/7y6C+7n7+rlgjW4qLXg8
- rIOBhXJSZjSpUVhmWu8XXDr1q00TylahEc74pvw2sL/jia6pB6two3o12
- XjGbjlCVfGFRQSvY5PWwqjOi9cky/eb9PloZAX0xPmqXpEutziQJYXVgq Q==;
-X-CSE-ConnectionGUID: hhdDyCctSCm5W/ZS5xGPpg==
-X-CSE-MsgGUID: 9AmUSgCLQWyfJT3A2vGB0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="79970575"
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; d="scan'208";a="79970575"
+ bh=d1ATHPDxyVVSJUn/S7rfh0huQimd9e/VRyqI8SEaThE=;
+ b=HZ01SibCnHiA+gpJZKRY9VeOvH6Mgn/whvAmvRBRnfpGWVljQ0zNQ472
+ 0oYBcYJUkiZuTbSn/XMuZVNgY4vRRpOr+N9NXwbicaKOVFWVtrHU0ECh1
+ mFJ0ar5b5S7wVhb9BfIAy/592k/v2AFU1GvCI/wLtcyCJfOLmk3uHkp3l
+ 0XujMi2tHG4Kla0+yrJj8FH78DnvGnL9ZNm8QiC9z2xUeqYrBGcV3eGMH
+ LWzOWif57hMtJlHXtz9yQwIGa0wp43A3yMWynV9xvtp2B0GbvuviJRVsX
+ jjeRjqgesPrO7EgsbgGf/i2lqZVeIAhlsFYu3uF3QUxG9FuvLonVZeVsh g==;
+X-CSE-ConnectionGUID: 5Hn29nyYRqKbRm4o6FH5RQ==
+X-CSE-MsgGUID: /LJmOgmySG6/oTKLU5UTZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="79970573"
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; d="scan'208";a="79970573"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 May 2026 20:53:11 -0700
-X-CSE-ConnectionGUID: YkOH6wVaR/iBY29mWcs1Bg==
-X-CSE-MsgGUID: SDsz35PLR8GHNXOaoSpdwQ==
+ 17 May 2026 20:53:08 -0700
+X-CSE-ConnectionGUID: GI5kayBURwSYOMJccKc4Tg==
+X-CSE-MsgGUID: u1rGiXrUQHGAN7KR+jz9jg==
 X-ExtLoop1: 1
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by fmviesa003.fm.intel.com with ESMTP; 17 May 2026 20:53:09 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 17 May 2026 20:53:06 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [PATCH i-g-t 3/3] tests/: Handle max bpc read failures explicitly
-Date: Mon, 18 May 2026 09:33:53 +0530
-Message-Id: <20260518040353.212734-4-pranay.samala@intel.com>
+Subject: [PATCH i-g-t 2/3] lib/igt_kms: make max bpc query return status
+Date: Mon, 18 May 2026 09:33:52 +0530
+Message-Id: <20260518040353.212734-3-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260518040353.212734-1-pranay.samala@intel.com>
 References: <20260518040353.212734-1-pranay.samala@intel.com>
@@ -66,223 +66,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Update test call sites of igt_get_output_max_bpc() to use the boolean
-return API so each test can decide how to handle max-bpc read failures.
-This separates read/parsing failures from capability checks and allows
-the test to make an explicit skip/continue decision with clearer logging,
-while keeping normal capability validation unchanged when max bpc is
-read successfully.
+Change igt_get_output_max_bpc() to return bool and fill an
+output parameter instead of asserting/requiring internally.
+This allows callers to handle debugfs read/parse failures
+gracefully.
 
 Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- tests/amdgpu/amd_bypass.c              |  6 +++++-
- tests/amdgpu/amd_dp_dsc.c              | 10 +++++++++-
- tests/intel/kms_dsc.c                  | 13 +++++++++++--
- tests/intel/kms_frontbuffer_tracking.c | 10 +++++++++-
- tests/kms_color_helper.c               |  5 ++++-
- tests/kms_dither.c                     |  9 ++++++++-
- tests/kms_hdr.c                        | 16 ++++++++++++++--
- 7 files changed, 60 insertions(+), 9 deletions(-)
+ lib/igt_kms.c | 38 ++++++++++++++++++++++++++------------
+ lib/igt_kms.h |  2 +-
+ 2 files changed, 27 insertions(+), 13 deletions(-)
 
-diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
-index 3c537ea9e..e59691f16 100644
---- a/tests/amdgpu/amd_bypass.c
-+++ b/tests/amdgpu/amd_bypass.c
-@@ -323,6 +323,7 @@ static void bypass_8bpc_test(data_t *data)
- 	igt_display_t *display = &data->display;
- 	igt_fb_t fb;
- 	enum pattern ptn;
-+	unsigned int maximum;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 99fc9fa05..e1dd56aad 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6657,32 +6657,43 @@ bool igt_is_aux_less_alpm_enabled(int drmfd, char *connector_name)
  
- 	test_init(data);
- 
-@@ -345,7 +346,10 @@ static void bypass_8bpc_test(data_t *data)
- 	 * Rx supports only up to 6bpc, Rx-crc will different from crtc-crc
- 	 * with 8bpc.
- 	 */
--	igt_skip_on_f(igt_get_output_max_bpc(data->output) <= 6,
-+	igt_skip_on_f(!igt_get_output_max_bpc(data->output, &maximum),
-+		      "Failed to read max bpc for %s\n", igt_output_name(data->output));
-+
-+	igt_skip_on_f(maximum <= 6,
- 		      "check /sys/kernel/debug/dri/0/eDP-1 (connector)/output_bpc\n");
- 
- 	igt_create_fb(data->drm_fd, data->width, data->height,
-diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
-index 1742c7df4..dc71e903e 100644
---- a/tests/amdgpu/amd_dp_dsc.c
-+++ b/tests/amdgpu/amd_dp_dsc.c
-@@ -480,11 +480,19 @@ static void test_dsc_bpc(data_t *data)
- 
- 	/* Find max supported bpc */
- 	for_each_crtc(&data->display, crtc) {
-+		unsigned int maximum;
-+
- 		output = data->output[crtc->crtc_index];
- 		if (!output || !igt_output_is_connected(output))
- 			continue;
- 		igt_info("Checking bpc support of conn %s\n", output->name);
--		max_supported_bpc[crtc->crtc_index] = igt_get_output_max_bpc(output);
-+		if (!igt_get_output_max_bpc(output, &maximum)) {
-+			igt_info("Failed to read max bpc for conn %s\n", output->name);
-+			max_supported_bpc[crtc->crtc_index] = 0;
-+			continue;
-+		}
-+
-+		max_supported_bpc[crtc->crtc_index] = maximum;
- 	}
- 
- 	/* Setup all outputs */
-diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-index 605ad2d5c..8008fc045 100644
---- a/tests/intel/kms_dsc.c
-+++ b/tests/intel/kms_dsc.c
-@@ -265,6 +265,8 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
- 
- 	for_each_crtc_with_valid_output(display, crtc, output) {
-+		unsigned int maximum;
-+
- 		data->output_format = output_format;
- 		data->plane_format = plane_format;
- 		data->input_bpc = bpc;
-@@ -275,8 +277,15 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->crtc))
- 			continue;
- 
--		if (igt_get_output_max_bpc(output) < MIN_DSC_BPC) {
--			igt_info("Output %s doesn't support min %d-bpc\n", igt_output_name(data->output), MIN_DSC_BPC);
-+		if (!igt_get_output_max_bpc(output, &maximum)) {
-+			igt_info("Output %s: Failed to read max bpc\n",
-+				 igt_output_name(data->output));
-+			continue;
-+		}
-+
-+		if (maximum < MIN_DSC_BPC) {
-+			igt_info("Output %s doesn't support min %d-bpc\n",
-+				 igt_output_name(data->output), MIN_DSC_BPC);
- 			continue;
- 		}
- 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index e7bb3fa18..996a67ee6 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -2777,6 +2777,8 @@ static void setup_drrs(void)
- 
- static void setup_hdr(void)
+ /**
+  * igt_get_output_max_bpc:
+- * @drmfd: A drm file descriptor
+- * @connector_name: Name of the libdrm connector we're going to use
++ * @output: Output to query.
++ * @maximum: Returned maximum bpc value.
+  *
+- * Returns: The maximum bpc from the connector debugfs.
++ * Returns: true on success, false on failure.
+  */
+-unsigned int igt_get_output_max_bpc(igt_output_t *output)
++bool igt_get_output_max_bpc(igt_output_t *output, unsigned int *maximum)
  {
-+	unsigned int maximum;
+ 	igt_display_t *display = output->display;
+ 	int drmfd = display->drm_fd;
+ 	char buf[24];
+ 	char *start_loc;
+ 	int fd, res;
+-	unsigned int maximum;
 +
- 	if (!igt_output_has_prop(prim_mode_params.output, IGT_CONNECTOR_MAX_BPC) ||
- 	    !igt_output_get_prop(prim_mode_params.output, IGT_CONNECTOR_MAX_BPC) ||
- 	    !igt_output_supports_hdr(prim_mode_params.output)) {
-@@ -2790,7 +2792,13 @@ static void setup_hdr(void)
- 		return;
- 	}
++	if (!maximum)
++		return false;
++
++	*maximum = 0;
  
--	if (igt_get_output_max_bpc(prim_mode_params.output) < 10) {
-+	if (!igt_get_output_max_bpc(prim_mode_params.output, &maximum)) {
-+		igt_info("Can't test HDR: Failed to read max bpc for %s.\n",
-+			 igt_output_name(prim_mode_params.output));
-+		return;
-+	}
+ 	fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
+-	igt_assert(fd >= 0);
++	if (fd < 0)
++		return false;
+ 
+ 	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
+-	igt_require(res > 0);
+-
+ 	close(fd);
++	if (res <= 0)
++		return false;
 +
-+	if (maximum < 10) {
- 		igt_info("Can't test HDR: %s doesn't support 10 bpc.\n", igt_output_name(prim_mode_params.output));
- 		return;
- 	}
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 24663444a..a50ac3a37 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -40,7 +40,10 @@ bool crtc_output_combo_valid(data_t *data, igt_crtc_t *crtc)
- bool
- panel_supports_deep_color(igt_output_t *output)
++	buf[res < sizeof(buf) ? res : sizeof(buf) - 1] = '\0';
++
++	start_loc = strstr(buf, "Maximum: ");
++	if (!start_loc)
++		return false;
+ 
+-	igt_assert(start_loc = strstr(buf, "Maximum: "));
+-	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &maximum), 1);
++	if (sscanf(start_loc, "Maximum: %u", maximum) != 1)
++		return false;
+ 
+-	return maximum;
++	return true;
+ }
+ 
+ /**
+@@ -6726,9 +6737,12 @@ unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc)
+ static unsigned int get_current_bpc(igt_crtc_t *crtc, igt_output_t *output,
+ 				    unsigned int bpc)
  {
 -	unsigned int maximum = igt_get_output_max_bpc(output);
 +	unsigned int maximum;
+ 	unsigned int current = igt_get_crtc_current_bpc(crtc);
+ 
++	igt_require_f(igt_get_output_max_bpc(output, &maximum),
++		      "Failed to read max bpc for %s\n", igt_output_name(output));
 +
-+	if (!igt_get_output_max_bpc(output, &maximum))
-+		return false;
- 
- 	igt_info("Max supported bit depth: %d\n", maximum);
- 
-diff --git a/tests/kms_dither.c b/tests/kms_dither.c
-index ca367db61..236e5c7c0 100644
---- a/tests/kms_dither.c
-+++ b/tests/kms_dither.c
-@@ -206,6 +206,7 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
- 
- 	for_each_connected_output(display, output) {
- 		igt_crtc_t *crtc;
-+		unsigned int maximum;
- 
- 		if (!is_supported(output)) {
- 			igt_info("Output %s: Doesn't support \"max bpc\" property.\n",
-@@ -213,7 +214,13 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
- 			continue;
- 		}
- 
--		if (igt_get_output_max_bpc(output) < output_bpc) {
-+		if (!igt_get_output_max_bpc(output, &maximum)) {
-+			igt_info("Output %s: Failed to read max bpc.\n",
-+				 igt_output_name(output));
-+			continue;
-+		}
-+
-+		if (maximum < output_bpc) {
- 			igt_info("Output %s: Doesn't support %d-bpc.\n",
- 				 igt_output_name(output), output_bpc);
- 			continue;
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index bcc912d15..2f19b3237 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -254,6 +254,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 
- 	for_each_connected_output(display, output) {
- 		igt_crtc_t *crtc;
-+		unsigned int maximum;
- 
- 		if (!has_max_bpc(output)) {
- 			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC.\n",
-@@ -261,7 +262,12 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 			continue;
- 		}
- 
--		if (igt_get_output_max_bpc(output) < 10) {
-+		if (!igt_get_output_max_bpc(output, &maximum)) {
-+			igt_info("%s: Failed to read max bpc.\n", igt_output_name(output));
-+			continue;
-+		}
-+
-+		if (maximum < 10) {
- 			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
- 			continue;
- 		}
-@@ -532,6 +538,7 @@ static void test_hdr(data_t *data, uint32_t flags)
- 
- 	for_each_connected_output(display, output) {
- 		igt_crtc_t *crtc;
-+		unsigned int maximum;
- 
- 		/* To test HDR, 10 bpc is required, so we need to
- 		 * set MAX_BPC property to 10bpc prior to setting
-@@ -556,7 +563,12 @@ static void test_hdr(data_t *data, uint32_t flags)
- 			continue;
- 		}
- 
--		if (igt_get_output_max_bpc(output) < 10) {
-+		if (!igt_get_output_max_bpc(output, &maximum)) {
-+			igt_info("%s: Failed to read max bpc.\n", igt_output_name(output));
-+			continue;
-+		}
-+
-+		if (maximum < 10) {
- 			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
- 			continue;
- 		}
+ 	igt_require_f(maximum >= bpc,
+ 		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
+ 		      maximum);
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index a58cb5cd3..cb3640976 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1238,7 +1238,7 @@ bool igt_fit_modes_in_bw(igt_display_t *display);
+ bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output);
+ bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
+ bool igt_is_aux_less_alpm_enabled(int drmfd, char *connector_name);
+-unsigned int igt_get_output_max_bpc(igt_output_t *output);
++bool igt_get_output_max_bpc(igt_output_t *output, unsigned int *maximum);
+ unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc);
+ void igt_assert_output_bpc_equal(igt_crtc_t *crtc, igt_output_t *output,
+ 				 unsigned int bpc);
 -- 
 2.34.1
 
