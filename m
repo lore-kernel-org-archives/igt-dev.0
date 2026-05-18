@@ -4,145 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1747ACD4F52
-	for <igt-dev@archiver.kernel.org>; Mon, 18 May 2026 12:32:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A180BCD4F52
+	for <igt-dev@archiver.kernel.org>; Mon, 18 May 2026 12:53:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 845B510E7C7;
-	Mon, 18 May 2026 12:32:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5830110E258;
+	Mon, 18 May 2026 12:53:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ikGz6GBe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aNcd7FWu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58B3D10E7D3
- for <igt-dev@lists.freedesktop.org>; Mon, 18 May 2026 12:32:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6CC110E258
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 May 2026 12:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779107557; x=1810643557;
- h=from:to:cc:subject:date:message-id:
- content-transfer-encoding:mime-version;
- bh=+njAJAjl4fQZVIbWvykTO/4/45WLhi3SUWrA/df2Q1o=;
- b=ikGz6GBeuuZW7d0xNAFFtGv6rmzs2FDdti1gQdhVbyVFu3rdqA/+ajNN
- wmNa71OVRD44mAx5n2z5HSrMcqjcjVPPf50yEXc5U1ECjRsG3mFm6f7sV
- C8kV14K1ILbNlSdcYSLznKG2qJn2LT4GfQqm2uN6R55OADzvmNTf4wht0
- gVr6E/7DH4HiSSKWeNdH0etR+yWdW1C1/IZsRfq3fqR9t0/qVHdmGNitt
- o0/N3cUC7Ait7qWRbjI1WD4Y++/Y0mQLA/qyQGPWrHEAbIz2d3wuY0Hps
- 9pNBT2uG0/2dBc0DvQgJfx1Nl0zteCIgmpfSdF7vDJxvtcXcFjf2xMQlp g==;
-X-CSE-ConnectionGUID: I4YfFWE6RE6Cr2qnDGkYQw==
-X-CSE-MsgGUID: g/Rg5UiDR2W7o7fZU/cUwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="105418485"
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; d="scan'208";a="105418485"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 May 2026 05:32:36 -0700
-X-CSE-ConnectionGUID: f7CLlr8UQua+IERdO44Lqw==
-X-CSE-MsgGUID: QQlDQayMTxqT4/loTl+P1w==
+ t=1779108804; x=1810644804;
+ h=message-id:subject:from:to:cc:date:in-reply-to:
+ references:content-transfer-encoding:mime-version;
+ bh=8DAqbMCXq2Z2bZgG3mYcXyPF9zosNuAI5DVSmubYQtU=;
+ b=aNcd7FWu3IYGJLcG00ubzy1kFJO03FALhnh4g9yD5x0+Cb913sSYY5hG
+ 9dNkJsWfy9AhB1G4qgTYtVzcGKCYRmkLRW9cecl8NlrbxTG5uOYuAGw+h
+ bXQjEQThsO7hdA4BHhoZAJQJRhTHrnghdtpLwKsGk4X/GCBs0CSfNB5db
+ KCagzZNtUrFBMiEJZVzwZ9+yzY3CFJoU2VwMgHcm0b0gN3/fLWDbXmycz
+ L0zcQ/Srz6zOmFz52b5VQmNlfShHhhCIjx6L+39GqiHHGJ5T2sa3e3QSY
+ VdnhnHM5yuGNLdMD17dOFhsk8G5j+saYKOtA1WWt3CrHn0c9xMP+sHwFJ g==;
+X-CSE-ConnectionGUID: VG8Qev1CTO+B1SsyV0CVTw==
+X-CSE-MsgGUID: CHJns2d3RG6RyAqoW7jRcQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="102632217"
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; d="scan'208";a="102632217"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 May 2026 05:53:24 -0700
+X-CSE-ConnectionGUID: eILspctBQ7O+sEX61J8v6A==
+X-CSE-MsgGUID: Rm/1j7ylRO23qFh2/3XhmQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; d="scan'208";a="236408710"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 May 2026 05:32:35 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 18 May 2026 05:32:35 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 18 May 2026 05:32:35 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.12) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 18 May 2026 05:32:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U8DBn83Ns0sfz08hQ2Q6wiT3jrGNzsbNpwzFsEFhDxpdN3g/jdn5ajmvK6f0gVEHzLGKIbsuR6Pzlb4Vpo7A+7TPWeWq6Mxuk+WfbGO6QlSqJu0raQsiLqf6SDCT+eF3vLoGE4tOobGCJyP6B70jMy0Snjb1xqUgwRFvcFv2tPT33xlr5fNfusvs8L22+n5hFxVswCFWJck/Awz8ry5e0O6zGOmX6mXVf0XTcuijZb/m0SNHKsK5mzHN8b6T5HGEQrTKjzx2/kKZs50Y0iO19Z9EOlC8RSWphpziknfMulem5uYw6fsOVjRp904gRc6oth9cscv2BtsYkcMoQV5Agw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4o2Wc0CqIKEkXtcOLeXXbU0CmdwXxIoLz1bnp5UDKGY=;
- b=nefaDoC/8eUiiI8kX3C/hJeuI2rteqZOztqEwW1dMorxflYq+j92+JWOSSkB00ugplziqX5kY58GGymOCXe7hJ+sTvGOMoCte/pbOEF9bqDRKBsweT+ploiflgaB1sU70j/dHsZ+Lijv1UD0VnnSsJd1zY7NqhZGrJeDSoshcX3eMRc4/Pu+b7JJ5WGiFRPVnIxqUqzeeGpMHvXrHR9+DQJT/MHxmUIZdidVsweGCpVPuuCgdYbPzZJhxEulAoxW6BA0k/FWfcgeIa9WMlNpBkFyfm77X6vQN0O2buyjIjs3yf9tQEX5d6KCigwMZZOcdtMJ0r19tkqTtIwKb+yKOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MW4PR11MB6909.namprd11.prod.outlook.com (2603:10b6:303:224::12)
- by PH7PR11MB6556.namprd11.prod.outlook.com (2603:10b6:510:1aa::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Mon, 18 May
- 2026 12:32:30 +0000
-Received: from MW4PR11MB6909.namprd11.prod.outlook.com
- ([fe80::9eab:962:806:3794]) by MW4PR11MB6909.namprd11.prod.outlook.com
- ([fe80::9eab:962:806:3794%4]) with mapi id 15.20.9846.025; Mon, 18 May 2026
- 12:32:30 +0000
-From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- <kamil.konieczny@linux.intel.com>, <ashutosh.dixit@intel.com>
-Subject: [PATCH] tools/igt_power: Fix crash on Xe devices by initializing
- xe_device cache
-Date: Mon, 18 May 2026 14:32:24 +0200
-Message-ID: <20260518123224.7398-1-sebastian.brzezinka@intel.com>
-X-Mailer: git-send-email 2.53.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: DU2PR04CA0337.eurprd04.prod.outlook.com
- (2603:10a6:10:2b4::35) To MW4PR11MB6909.namprd11.prod.outlook.com
- (2603:10b6:303:224::12)
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; d="scan'208";a="236788589"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.244.48])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 May 2026 05:53:21 -0700
+Message-ID: <4838d8f82d9efb732c357977480388f92619798a.camel@linux.intel.com>
+Subject: Re: [PATCH] tests/core_hotunplug: add *-with-load subtests
+ exercising GPU workload during hotplug
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Nitin Gote <nitin.r.gote@intel.com>, igt-dev@lists.freedesktop.org, 
+ kamil.konieczny@linux.intel.com
+Cc: matthew.auld@intel.com
+Date: Mon, 18 May 2026 14:53:19 +0200
+In-Reply-To: <20260518120133.5651-2-nitin.r.gote@intel.com>
+References: <20260518120133.5651-2-nitin.r.gote@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB6909:EE_|PH7PR11MB6556:EE_
-X-MS-Office365-Filtering-Correlation-Id: 55d2bcca-af75-478e-d587-08deb4d9876e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|56012099003|18002099003|11063799003; 
-X-Microsoft-Antispam-Message-Info: txM72nKhUDvs8B2j5Mtm48F8yGWciH0XrkMWiw5tPzOeVy1T3gtDyQfCaUut3xGdX2fsApzie0gZvLcPtXHegbwpGrBurDaru6ddbarxVh0y5ztj8p8grDPzDWeQQRU1hZ9ViyPAXRJqeNz5zhOVBZnTqFBIB5fZYFYxnNx9gUdJlk/SuMlTDb2HQRN8BugXFOLcxoVDNszKlmsQQQjTxr1n58Tl/Ne+IPMxFEzHa3zqcW13R7ClC1Lo3vI5MSL09K6i/NAuzsKBpmjQPo9kPFLJ91JdlGK1s8dIU6b+V5K6dUmhVO8OCjofQlPOAAWFVD5qMCzu4CdNs5aFf5yByePxA8G8oquuYrOltFy0xEljFvm2baWLTdh746fFx+qTdAabmyD8AAhjD+4DMqiRT6iBaHC52wVloL1+tzyc5aVW+9l+j/RQWkB9P5KDmA6uGe+cbRi/A7ctxMTRvwQ+/JqW1IRPKUFejbUwhB9q14TZqnitxj+BCuAzji8+HRVUJ0kHAJiJUyVrS9mnxkcfj3joyD0U4MP9rrOkAoSS8QOeiuTJ94cFNcDK0f5z8qyFfIbXiOiL4vUHNSoFCoandKdFxRHWjGzM+Wt1zAZp2i2oV6DfEsQaOx1IiK0yomXXP6YWs0EcLfloz23CQUBEO+mMly0zQ2gvNeI8NQB6Ag5O2Qf0kPFVu5xgg/v5GXEC
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW4PR11MB6909.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(18002099003)(11063799003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?2akztuTlS8tsymUCUl0p5zu70kpW6N5I5NEoQIZIHYRAGODh3yXVVoqgjNHp?=
- =?us-ascii?Q?ENBNiwrPpNqgehxNBNYVfLFLmQKP7Yk4wGFZJsvBxK+iJdsmvJg7krJWJmJb?=
- =?us-ascii?Q?Hva73W8IiniNE7resJpK/CW6jjBCyXXDSKOXSqEbLIV6eEqljHSW8MxMDM3o?=
- =?us-ascii?Q?z8Ilt6uObcxGoDdioxVEnm1U5doC6vu1Y/rdcaRQmfD2iIPb+Jr7QVJxeHQB?=
- =?us-ascii?Q?PebRZOskOh3xx2n0hfsLXHLEmkc50JPbEv7IVBrxXCq8HqIEMBh7GtpdSM/a?=
- =?us-ascii?Q?YUCCirfEhEVQYbnr+r+jm//9Wm0RllKeR7JbQsWHKZ9ggqpCuP77888v3f6E?=
- =?us-ascii?Q?spHHC1QWhUPqkTqOpu/+PIv0mz4DuIXAMlHexEW2hWJJ4mQFxf7/mrB2oG9m?=
- =?us-ascii?Q?5LUtZp9rHPkj8rBBYmqfnAuLIRaUpY/B72t7GkJdMldyclxclYiOCyaVSGRa?=
- =?us-ascii?Q?Ex6frAxJJuvUiVAX5Y/z+2zI3tgwcdKQFQYgtUjqtlZklRTfx4ARoFYu+JaC?=
- =?us-ascii?Q?EQOeO3bWddpmR7NYWaFfkGtZUkELN7F3AZr9yYaXv+ZSeGyH75tS9BPcdWZA?=
- =?us-ascii?Q?Kl25Di38fww+f8s1ePg63h9JafcVCRkaAzHJO6wCZJC3y6fptGqw6LGkDmPK?=
- =?us-ascii?Q?e3g7YRxwe2/Mue202CCXA7VNZWRYz8lx6zrV5zdGp4lALphbkQLYZPWu5qmn?=
- =?us-ascii?Q?k6q6PsN++Cs9tdz0pv31nFv/pBrYPrQro2rcSx/CzTHIi/iDNo2ALTP4G78I?=
- =?us-ascii?Q?rBUdE35QmxCjj5zwz7e+sVhTibagX18Ku3GDi0ryYCv6YAxqmrW0yBmNOiTH?=
- =?us-ascii?Q?pvtqg2S/r/pbXIBm+1+whoTX68adxktWjlO/ZvBD1+6syYTzU2e/V1k0+amu?=
- =?us-ascii?Q?xRurQc3xed3CWGfMRH+P0IikbqAXb4uBHNBZXlZno6eOrh+kSbKkHb0eYU0t?=
- =?us-ascii?Q?psdRC6qICyZPm4bPvZJelviZzq42Qws1R/7m9xrPSRk1jGN1V7neNHGztQPm?=
- =?us-ascii?Q?njUzJnojFwbmQ/dKp24LrAfbMc3h3qCXZQUhOl1S+T8Gm3nA6l0pZdUTND2/?=
- =?us-ascii?Q?o0VD55BGZtBFeiWKvcq5VVZgyNDe5sRMAMA657548vL7kIrHd+ap+Z12JyWT?=
- =?us-ascii?Q?GACHsMUVtW/+Gi+xEA0e+XfgAdT1vF4CW/qF3xy8w2QZORErcNM03ZsbMK6F?=
- =?us-ascii?Q?ql4VRadBjUytc9X8MDMwSOp/Wjewb/z4iSob0sRv7oHWlV19UE+RcLleYEOq?=
- =?us-ascii?Q?JxdKjXf7CoSeOp+KZh5lvr5IsQf7rCu7HfJC6IHbTbPRQJ7mE26mv+9J9NH5?=
- =?us-ascii?Q?cbnHwvs/UosVBmfXXXAkzybnnY3RWOwTo2hNva+Bi43Ko7ahW+54IT7CAK4v?=
- =?us-ascii?Q?9H5Z6ib69AC1LeKJfwbvCgw0kIzQ/eeobkd9C4bNLU1yJrLQfQaEXXhReRS4?=
- =?us-ascii?Q?YK+L3qLNfkdTDsUUlJ/IdOgGwScZqqXo9kVZT7NEvN1r9RL/Z1KSYz7RpHOC?=
- =?us-ascii?Q?rND1lMDO7emCyQ2tB2hSvcqW8OtyvWqbszlB5XEqY84KZZ22k0aVwqM7Jdbi?=
- =?us-ascii?Q?8YdtUWWpjdYm54xKov43PIvc0VWL7GTRoPhMkvwzUJincjiTnoCBL7rXskHk?=
- =?us-ascii?Q?TOdQRvAu5kZQr29GRj9k+XiWxPfX2a+W6RFq35JyYMVeOi4z5bJ1/kyJazUZ?=
- =?us-ascii?Q?f2C3q76p8RdHVC/DonGR0BzLfHgLziy7rxMBb1lVZHMR58BW4r0EgCNw8APK?=
- =?us-ascii?Q?3bGySdzB9MIOsztCpwfMB37va3nXUYY=3D?=
-X-Exchange-RoutingPolicyChecked: Ls0VuB8GT8RKPotIh8KmGl+7NjYMfrPJJcNMGvzhU/Vcn+0TD8j/A/So9+pY+ENNXNs6MwlE62MovIcyqc9sjmKiPlDTP0NIRV910WzddrMyoTdei5OqLt0YYP0r+RDk4uYPAr2pGpsFGmLlLEqETvpnkzjKbBMq5zMPQ8padW5SgVWY/la33X1u7QfZVeEik04gkt/UdwzJl9aWKwYTlE4OiKE6rEdYG/vkQ2RFgHEZn92sJLvfJl35H41NjITdEfP42nbvavLUON+BHaM6YK4qXJ0t+Qao4qZIPCkqjME9L7VU3ZZnBkF3/2Kfe/H6hCpjqNuli+bJlkvaqKpFog==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55d2bcca-af75-478e-d587-08deb4d9876e
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6909.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 12:32:30.8118 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tf2pu3OrHzI2adQEEk6m85aDQ0lHnXFXtZXJjhR4kPfu3Fmfo+XyWf83q3ag7X6BIc52le85z8B515xvFySXxS2z2CI/myu2uufNYcEWbmo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6556
-X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -158,73 +72,395 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Opening a DRM device with plain open() does not initialize the Xe device
-cache. When igt_power_open() calls is_intel_dgfx() -> xe_has_vram(), it
-uses find_in_cache() which asserts the cache entry exists, causing a crash
-on Xe devices with: xe_query-CRITICAL: Failed assertion: xe_dev
+Hi Nitin,
 
-Fix this by opening the device with O_RDWR (required for DRM ioctls),
-calling xe_device_get() for Xe devices to populate the cache before
-calling igt_power_open(), and calling xe_device_put() on cleanup for
-proper cache management.
+On Mon, 2026-05-18 at 17:31 +0530, Nitin Gote wrote:
+> The six fd-holding hot* subtests keep a DRM fd open across unbind/unplug
+> but leave the GPU idle, so the kernel hotplug path is never exercised
+> against an active VM, exec queue and BOs.
+>=20
+> Add six new dedicated *-with-load subtests that run a GPU spinner across
+> the unbind/unplug sequence so the device is removed while a workload is
+> actively using it.
+>=20
+> The workload helpers use an explicit chipset dispatch block in
+> workload_start()/stop() so that other vendors can contribute
+> support by adding an else-if branch. New subtests are gated on
+> workload_available(), which currently covers DRIVER_XE and DRIVER_INTEL,
+> and returns false (SKIP) on any other driver.
+>=20
+> igt_spin_free() is avoided in workload_stop() since the device may be
+> gone by then =E2=80=94 igt_spin_end() writes the stop condition via a use=
+rspace
+> mmap and lets the DRM fd close reclaim kernel-side resources.
+>=20
+> Validated on BMG and DG2 with a KASAN-enabled kernel:
+> all six new subtests pass with no KASAN reports.
+>=20
+> v2: Pass the hotunplug priv struct to workload_start()/stop()
+>     and dispatch via an explicit if/else-if chipset block to invite
+>     other vendors to contribute. (Janusz)
+>=20
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Assisted-by: Copilot:claude-opus-4.7
+> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+> ---
+>  tests/core_hotunplug.c | 290 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 290 insertions(+)
+>=20
+> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+> index 7c9dae1bf..38dcbb97d 100644
+> --- a/tests/core_hotunplug.c
+> +++ b/tests/core_hotunplug.c
+> @@ -80,6 +80,34 @@
+>   * SUBTEST: unplug-rescan
+>   * Description: Check if a device believed to be closed can be cleanly
+>   *		unplugged, then restored
+> + *
+> + * SUBTEST: hotunbind-rebind-with-load
+> + * Description: Check if the driver can be cleanly unbound from an open =
+device
+> + *		with a background GPU workload in flight, then released and
+> + *		rebound
+> + *
+> + * SUBTEST: hotunplug-rescan-with-load
+> + * Description: Check if an open device with a background GPU workload i=
+n
+> + *		flight can be cleanly unplugged, then released and restored
+> + *
+> + * SUBTEST: hotrebind-with-load
+> + * Description: Check if the driver can be cleanly rebound to a device w=
+ith a
+> + *		still open hot unbound driver instance while a background GPU
+> + *		workload is in flight
+> + *
+> + * SUBTEST: hotreplug-with-load
+> + * Description: Check if a hot unplugged and still open device can be cl=
+eanly
+> + *		restored while a background GPU workload is in flight
+> + *
+> + * SUBTEST: hotrebind-lateclose-with-load
+> + * Description: Check if a hot unbound driver instance still open after =
+hot
+> + *		rebind with a background GPU workload in flight can be cleanly
+> + *		released
+> + *
+> + * SUBTEST: hotreplug-lateclose-with-load
+> + * Description: Check if an instance of a still open while hot replugged
+> + *		device with a background GPU workload in flight can be cleanly
+> + *		released
+>   */
+> =20
+>  IGT_TEST_DESCRIPTION("Examine behavior of a driver on device hot unplug"=
+);
+> @@ -565,6 +593,52 @@ static void set_filter_from_device(int fd)
+>  	igt_assert_eq(igt_device_filter_add(filter), 1);
+>  }
+> =20
+> +/* GPU workload helpers */
+> +
+> +struct gpu_workload {
+> +	igt_spin_t *spin;
+> +	uint64_t ahnd;
+> +};
 
-Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
----
- tools/igt_power.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+Sorry for not touching this before when asking you to make room for other=
+=C2=A0
+vendors in functions, but now as we have that in place, I think it would=C2=
+=A0
+be=C2=A0good to=C2=A0have the same also for data.  A union maybe, with its =
+members=C2=A0
+named after=C2=A0vendors?
 
-diff --git a/tools/igt_power.c b/tools/igt_power.c
-index 6dd180d34..11da0430b 100644
---- a/tools/igt_power.c
-+++ b/tools/igt_power.c
-@@ -11,6 +11,7 @@
- 
- #include "drmtest.h"
- #include "igt_power.h"
-+#include "xe/xe_query.h"
- 
- struct measurement {
- 	int battery_index;
-@@ -38,12 +39,15 @@ static bool prepare(struct measurement *m)
- 		int ret, fd = -1;
- 
- 		if (m->drm_device) {
--			fd = open(m->drm_device, O_RDONLY);
-+			fd = open(m->drm_device, O_RDWR);
- 			if (fd < 0) {
- 				fprintf(stderr, "Unable to open drm device %s (%d)\n",
- 					m->drm_device, -errno);
- 				return false;
- 			}
-+
-+			if (is_xe_device(fd))
-+				xe_device_get(fd);
- 		}
- 
- 		ret = igt_power_open(fd, &m->power, m->rapl_domain);
-@@ -54,12 +58,20 @@ static bool prepare(struct measurement *m)
- 			else
- 				fprintf(stderr, "Unable to open rapl domain %s (%d)\n",
- 					m->rapl_domain, ret);
--			close(fd);
-+			if (fd >= 0) {
-+				if (is_xe_device(fd))
-+					xe_device_put(fd);
-+				close(fd);
-+			}
- 
- 			return false;
- 		}
- 
--		close(fd);
-+		if (fd >= 0) {
-+			if (is_xe_device(fd))
-+				xe_device_put(fd);
-+			close(fd);
-+		}
- 	}
- 
- 	return true;
--- 
-2.53.0
+Thanks,
+Janusz
 
+
+> +
+> +static bool workload_available(int chipset)
+> +{
+> +	return chipset =3D=3D DRIVER_XE || chipset =3D=3D DRIVER_INTEL;
+> +}
+> +
+> +static void workload_start(struct hotunplug *priv, int fd,
+> +			   struct gpu_workload *w)
+> +{
+> +	if (priv->chipset =3D=3D DRIVER_XE || priv->chipset =3D=3D DRIVER_INTEL=
+) {
+> +		local_debug("%s\n", "starting GPU spinner");
+> +		priv->failure =3D "GPU workload start failure!";
+> +		w->ahnd =3D intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+> +		w->spin =3D igt_spin_new(fd, .ahnd =3D w->ahnd);
+> +		priv->failure =3D NULL;
+> +	}
+> +}
+> +
+> +static void workload_stop(struct hotunplug *priv, struct gpu_workload *w=
+)
+> +{
+> +	if (priv->chipset =3D=3D DRIVER_XE || priv->chipset =3D=3D DRIVER_INTEL=
+) {
+> +		if (!w->spin)
+> +			return;
+> +
+> +		/*
+> +		 * The device may be gone (unbind/unplug), so avoid
+> +		 * igt_spin_free(): on Xe it would wait forever on a syncobj
+> +		 * that never signals; on i915 it would touch the dead fd via
+> +		 * gem_munmap()/gem_close(). Instead, end the spinner via a
+> +		 * userspace mmap write and let the DRM fd close reclaim the
+> +		 * kernel-side resources.
+> +		 */
+> +		local_debug("%s\n", "stopping GPU spinner");
+> +		igt_spin_end(w->spin);
+> +		put_ahnd(w->ahnd);
+> +		w->spin =3D NULL;
+> +		w->ahnd =3D 0;
+> +	}
+> +}
+> +
+>  /* Subtests */
+> =20
+>  static void unbind_rebind(struct hotunplug *priv)
+> @@ -679,6 +753,150 @@ static void hotreplug_lateclose(struct hotunplug *p=
+riv)
+>  	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+>  }
+> =20
+> +static void hotunbind_rebind_with_load(struct hotunplug *priv)
+> +{
+> +	struct gpu_workload w =3D { 0 };
+> +
+> +	pre_check(priv);
+> +
+> +	igt_require_f(workload_available(priv->chipset),
+> +		      "No GPU workload support for this driver\n");
+> +
+> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot unbind");
+> +
+> +	workload_start(priv, priv->fd.drm, &w);
+> +
+> +	driver_unbind(priv, "hot ", 0);
+> +
+> +	workload_stop(priv, &w);
+> +
+> +	priv->fd.drm =3D close_device(priv->fd.drm, "late ", "unbound ");
+> +	igt_assert_eq(priv->fd.drm, -1);
+> +
+> +	driver_bind(priv, 0);
+> +
+> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+> +}
+> +
+> +static void hotunplug_rescan_with_load(struct hotunplug *priv)
+> +{
+> +	struct gpu_workload w =3D { 0 };
+> +
+> +	pre_check(priv);
+> +
+> +	igt_require_f(workload_available(priv->chipset),
+> +		      "No GPU workload support for this driver\n");
+> +
+> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot unplug");
+> +
+> +	workload_start(priv, priv->fd.drm, &w);
+> +
+> +	device_unplug(priv, "hot ", 0);
+> +
+> +	workload_stop(priv, &w);
+> +
+> +	priv->fd.drm =3D close_device(priv->fd.drm, "late ", "removed ");
+> +	igt_assert_eq(priv->fd.drm, -1);
+> +
+> +	bus_rescan(priv, 0);
+> +
+> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+> +}
+> +
+> +static void hotrebind_with_load(struct hotunplug *priv)
+> +{
+> +	struct gpu_workload w =3D { 0 };
+> +
+> +	pre_check(priv);
+> +
+> +	igt_require_f(workload_available(priv->chipset),
+> +		      "No GPU workload support for this driver\n");
+> +
+> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot rebind");
+> +
+> +	workload_start(priv, priv->fd.drm, &w);
+> +
+> +	driver_unbind(priv, "hot ", 60);
+> +
+> +	driver_bind(priv, 0);
+> +
+> +	workload_stop(priv, &w);
+> +
+> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+> +}
+> +
+> +static void hotreplug_with_load(struct hotunplug *priv)
+> +{
+> +	struct gpu_workload w =3D { 0 };
+> +
+> +	pre_check(priv);
+> +
+> +	igt_require_f(workload_available(priv->chipset),
+> +		      "No GPU workload support for this driver\n");
+> +
+> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot replug");
+> +
+> +	workload_start(priv, priv->fd.drm, &w);
+> +
+> +	device_unplug(priv, "hot ", 60);
+> +
+> +	bus_rescan(priv, 0);
+> +
+> +	workload_stop(priv, &w);
+> +
+> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+> +}
+> +
+> +static void hotrebind_lateclose_with_load(struct hotunplug *priv)
+> +{
+> +	struct gpu_workload w =3D { 0 };
+> +
+> +	pre_check(priv);
+> +
+> +	igt_require_f(workload_available(priv->chipset),
+> +		      "No GPU workload support for this driver\n");
+> +
+> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot rebind");
+> +
+> +	workload_start(priv, priv->fd.drm, &w);
+> +
+> +	driver_unbind(priv, "hot ", 60);
+> +
+> +	driver_bind(priv, 0);
+> +
+> +	workload_stop(priv, &w);
+> +
+> +	priv->fd.drm =3D close_device(priv->fd.drm, "late ", "unbound ");
+> +	igt_assert_eq(priv->fd.drm, -1);
+> +
+> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+> +}
+> +
+> +static void hotreplug_lateclose_with_load(struct hotunplug *priv)
+> +{
+> +	struct gpu_workload w =3D { 0 };
+> +
+> +	pre_check(priv);
+> +
+> +	igt_require_f(workload_available(priv->chipset),
+> +		      "No GPU workload support for this driver\n");
+> +
+> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot replug");
+> +
+> +	workload_start(priv, priv->fd.drm, &w);
+> +
+> +	device_unplug(priv, "hot ", 60);
+> +
+> +	bus_rescan(priv, 0);
+> +
+> +	workload_stop(priv, &w);
+> +
+> +	priv->fd.drm =3D close_device(priv->fd.drm, "late ", "removed ");
+> +	igt_assert_eq(priv->fd.drm, -1);
+> +
+> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+> +}
+> +
+>  /* Main */
+> =20
+>  int igt_main()
+> @@ -817,6 +1035,78 @@ int igt_main()
+>  			recover(&priv);
+>  	}
+> =20
+> +	igt_fixture()
+> +		post_healthcheck(&priv);
+> +
+> +	igt_subtest_group() {
+> +		igt_describe("Check if the driver can be cleanly unbound from an open =
+device with a background GPU workload in flight, then released and rebound"=
+);
+> +		igt_subtest("hotunbind-rebind-with-load")
+> +			hotunbind_rebind_with_load(&priv);
+> +
+> +		igt_fixture()
+> +			recover(&priv);
+> +	}
+> +
+> +	igt_fixture()
+> +		post_healthcheck(&priv);
+> +
+> +	igt_subtest_group() {
+> +		igt_describe("Check if an open device with a background GPU workload i=
+n flight can be cleanly unplugged, then released and restored");
+> +		igt_subtest("hotunplug-rescan-with-load")
+> +			hotunplug_rescan_with_load(&priv);
+> +
+> +		igt_fixture()
+> +			recover(&priv);
+> +	}
+> +
+> +	igt_fixture()
+> +		post_healthcheck(&priv);
+> +
+> +	igt_subtest_group() {
+> +		igt_describe("Check if the driver can be cleanly rebound to a device w=
+ith a still open hot unbound driver instance while a background GPU workloa=
+d is in flight");
+> +		igt_subtest("hotrebind-with-load")
+> +			hotrebind_with_load(&priv);
+> +
+> +		igt_fixture()
+> +			recover(&priv);
+> +	}
+> +
+> +	igt_fixture()
+> +		post_healthcheck(&priv);
+> +
+> +	igt_subtest_group() {
+> +		igt_describe("Check if a hot unplugged and still open device can be cl=
+eanly restored while a background GPU workload is in flight");
+> +		igt_subtest("hotreplug-with-load")
+> +			hotreplug_with_load(&priv);
+> +
+> +		igt_fixture()
+> +			recover(&priv);
+> +	}
+> +
+> +	igt_fixture()
+> +		post_healthcheck(&priv);
+> +
+> +	igt_subtest_group() {
+> +		igt_describe("Check if a hot unbound driver instance still open after =
+hot rebind with a background GPU workload in flight can be cleanly released=
+");
+> +		igt_subtest("hotrebind-lateclose-with-load")
+> +			hotrebind_lateclose_with_load(&priv);
+> +
+> +		igt_fixture()
+> +			recover(&priv);
+> +	}
+> +
+> +	igt_fixture()
+> +		post_healthcheck(&priv);
+> +
+> +	igt_subtest_group() {
+> +		igt_describe("Check if an instance of a still open while hot replugged=
+ device with a background GPU workload in flight can be cleanly released");
+> +		igt_subtest("hotreplug-lateclose-with-load")
+> +			hotreplug_lateclose_with_load(&priv);
+> +
+> +		igt_fixture()
+> +			recover(&priv);
+> +	}
+> +
+>  	igt_fixture() {
+>  		post_healthcheck(&priv);
+> =20
