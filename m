@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D138ACD4851
-	for <igt-dev@archiver.kernel.org>; Tue, 19 May 2026 05:10:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95A84CD4851
+	for <igt-dev@archiver.kernel.org>; Tue, 19 May 2026 05:14:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 71B2C10E121;
-	Tue, 19 May 2026 05:10:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 45FEE10EA47;
+	Tue, 19 May 2026 05:14:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M+mwbBTP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nRlGdHId";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5820810E121
- for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2026 05:09:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A850710EA47
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2026 05:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779167387; x=1810703387;
- h=message-id:date:subject:to:references:from:in-reply-to:
+ t=1779167677; x=1810703677;
+ h=message-id:date:subject:from:to:references:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=mFPU0cqUtUzv1F+CxVnKvnqooCXvtBrSxvxhwVZDzz0=;
- b=M+mwbBTPA/tZmEL2ojPzqs6Z8loGT/FpEeO+HthHfnjDScFJa0tMLyaq
- TmoHLPLSADXgPWmsxlFuihnQuKGRZr9QDX71zRvYOLjQyadlrde8CpBM0
- oLDCSHFVaoHY78F7TFafczcvveDVd+3ChPU8HSmXY23Rw1hnFwb4iw9Bb
- 6DIBc9gkVAH4aIPuE0hdOXUJmr3Dix3pRFvjc5juKzj9oZRGZb5stG0yC
- EEf8RuKj+AtDvbZdmuVHOU33Bf7Q2W6MeBejfobcZvhfRHdcwz2055aKD
- IROKkvN+J/p+RizmTQBygbmQhplglkD2iHMJ1Dkn0mi0knEfPtZOTxr28 g==;
-X-CSE-ConnectionGUID: u58QcqSqR8e2lB06WTujUA==
-X-CSE-MsgGUID: KyaxAZ8tRneI3Zy8yyO8vA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="97603258"
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="97603258"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 May 2026 22:09:47 -0700
-X-CSE-ConnectionGUID: RSubTnmyTgeO0ml1trx6kQ==
-X-CSE-MsgGUID: 4loScNXySAKYcNcT5LvD3Q==
+ bh=kimEKSqLpN3+MYxpm7Vw3B5hJ6sFj2faIlC5QWCx7rA=;
+ b=nRlGdHId3XI8KB9MfbAR1dcdJW2gskMb5Z928QGurlrNjOKdZyu1kD3j
+ Ggtc/6ShQ5KXK+1ldRWmKJK0peQebw0S5OJ/v7UEJz4w+PZhI6AydyGMb
+ rOJS6wu2KRRlc5sOsYbqN3Ba2VhmzZ3WVFLQz+bk5fJkkIG3OwcO0H4e5
+ yx3urEVcSqVs3FRLtM7USRU/fWgy1DOe+SMFm6owKbluPkMOqWVa38Bz4
+ tc11+779LxG9T/3AkbuZXxK+C8zVMQVGfV+qe9SgVqQIKHvrSczY9oJ1+
+ Qa8YGHOVNaociyIh5mjVxs51s3VZYH7QtpNS63EhVtPd1SqLj6LSasiHm A==;
+X-CSE-ConnectionGUID: 8bnne05CQhuUNgHmvk2+tg==
+X-CSE-MsgGUID: UGc2Ida5RW2KhmrkJYZoRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="79935111"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="79935111"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 May 2026 22:14:36 -0700
+X-CSE-ConnectionGUID: 1r0ATzFgQXSAFS1aMJVkeg==
+X-CSE-MsgGUID: PEKw6XMdTQeHQkcZU3DnxQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="243635127"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="233267753"
 Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 May 2026 22:09:47 -0700
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 May 2026 22:14:35 -0700
 Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 18 May 2026 22:09:46 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ 15.2.2562.37; Mon, 18 May 2026 22:14:35 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 18 May 2026 22:09:46 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.10) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Mon, 18 May 2026 22:14:35 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.53) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 18 May 2026 22:09:44 -0700
+ 15.2.2562.37; Mon, 18 May 2026 22:14:33 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gMg3cmy6PUzM4MoWwgUfJb4DqOwANIxxMCN0npavKfGe6W2C76phZnl4cHBBX835sDgVduFCTfjjELH8DMgRSJ1Qf/arKpiwT5jgX4Bwc5E6QeOnG9y4hU3k10ibo8Rr3UzKhCD9dFP1vgwMofGOtUqHarW7yMM/XfivRxIXjRQrLSHHZ3KPwcFYEkpxdi/2tYKV6+XDv1Sn2t8S7yCJVoDbToD95d+fo1h7q0VsXxUilRun2RdK+mOMTBMj7SJhasTsULSeRvFLeY0sv2U5oscF6gqmiEg4jx3t7Qym70G6XQJq3ORingltQIQX7Zjya7WoMk46S2FBgVL58jXoKw==
+ b=jLFjalMkp0jGq9IGWJCmAIrNf/tGcHEq6Xj/p55Fc0xzhbIJ0+WApvkYCsK9QFbLAQcfLc2aDDJ2POojAvrMGLkmNNUfhVJPjxkmoBh04DD2FzPbcCrHoyQNimgHMvZ5vviTf/u7mRC5FJfh4R+MpOVzrn3klYylynwUKZXGq0k8D0zpLwD381CITkR4jQ3OImzFc2478ns00UB9/qPPMZ/nG1KDzHlU2q2SGXXjBb/Q4ApiO7XaRA0HI7dC4/srzjv45sMwnuhWctGlUJ7/IOU7gxTIcAd9czqQkS64rjOpMPGZCAGS6oH4Ha05+P/wDo4L+oEHgnuBnqBq6T3/zg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RRn5AI4Tylgw1meTc7tklrzJec9cB6hh1RVvOWXpIwU=;
- b=gGxgwsaff5eK4MJpgi7jEg7hkiMYOPO3q3KvP43dTyMCeJydhyq+9oZSh2jQ0/w1luJDi4nTex/fFCdSACyniZvFzHCYqmLKsdZdNvrvV4mACSgemmQDhCxcAlmHRZUqEniw1e/U1Et2VcFYtqmGJ+GyvBu1Bp1S0cmuGg6obsBgHWg9yOMbNnYoD0rc6qno15tWxDkFg2xMLvZo2IHSNep3suErX3+UVhMveXqu+KE7C1Yt4CBwwl5r+qLTZUD1j5oQv7LY++tSufioNp1ux9ixpE95qbSiwh+vs/7f8XzwHNs782CW1nuZXVMBD+wE7h9eLjAIQeAxNTxL6FL/9A==
+ bh=O4lcizaLFPi4mSryvTCAeU+XnSAR/UdnRjOEVQFxtBg=;
+ b=nrGZABDvA11t3oGAqTNb+ei6/hXXGVXnaBAGNGyDpYLF5F9p89khdo80XJR+YYTwyLY2RUJqyNk1KgG8XHKB+9bWRuNblQ6XtpRVGnbHZqEFHEcL/O9Gq6QMnlQFxpEFKPtbvcSkJw4GhnZud0CUAX1d4U8L7sXcmjSk9MIB2i+cUSjblCixyGRrF1+tXUyoUH0BYnZ89gQ00zADAvH38yujSVLG2MZ7EqLuD7cTlQvgUuooQOkstSEFpBhdC4AMRXwMgfxdYNSYBsIbtJEV3FpZjvoxk4jSz+zsnyoVs1vmNho/G54C/IMsujEa26lSeqYVjC5hubJdk23+VgAnFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,89 +69,90 @@ Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
  by CO1PR11MB4995.namprd11.prod.outlook.com (2603:10b6:303:9f::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Tue, 19 May
- 2026 05:09:41 +0000
+ 2026 05:14:26 +0000
 Received: from DM4PR11MB5341.namprd11.prod.outlook.com
  ([fe80::68b9:ea3c:8166:3cc4]) by DM4PR11MB5341.namprd11.prod.outlook.com
  ([fe80::68b9:ea3c:8166:3cc4%4]) with mapi id 15.21.0025.020; Tue, 19 May 2026
- 05:09:41 +0000
-Message-ID: <f29a093d-4ded-4310-8c13-6d59afb4da4f@intel.com>
-Date: Tue, 19 May 2026 10:39:35 +0530
+ 05:14:26 +0000
+Message-ID: <76548c1b-9205-47c0-bcdd-9e197bf37371@intel.com>
+Date: Tue, 19 May 2026 10:44:20 +0530
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH i-g-t v3] tests/kms_setmode: Add HDMI 2.0 clock limit for
  mode selection
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
 To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20260519041750.1199802-1-jeevan.b@intel.com>
+ <f29a093d-4ded-4310-8c13-6d59afb4da4f@intel.com>
 Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20260519041750.1199802-1-jeevan.b@intel.com>
+In-Reply-To: <f29a093d-4ded-4310-8c13-6d59afb4da4f@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0022.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:177::6) To DM4PR11MB5341.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5PR01CA0019.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:177::16) To DM4PR11MB5341.namprd11.prod.outlook.com
  (2603:10b6:5:390::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|CO1PR11MB4995:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5246d3dd-4a9f-42cc-acf7-08deb564d51e
+X-MS-Office365-Filtering-Correlation-Id: ce9af4e3-43d0-4acd-43a9-08deb5657f0c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|11063799003|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info: +QNwi4Be7DgBvNr02743IQ7Kfb6NqvoIllW2DIyJEY75KVKWKrEpj6S3uQ814PpOOuQErxoAmwti5r7S7m2VAQlXgd6xwP2l9v6z7lesVOduXYtNMk4W1FhWz4+dIDczRSh+oYDTOFtXKARy/jBP66nfUBPT8NyYb08oYSq3J7voML7H/x3sTRnn2Bn5BE/d/aAr/WW53mHuTakHXDwci73Bc/zJj2xHijwhK57ZouG34n9lszH+YjXtyxPMdE6kDkAxPnM+5cmJkq/mMzvYqEfzfnTv2ZMi+61mBfMHnAdqvpw8e1F1q6vn0A7tc6lyVBW1YV6+R6g5we7becLuqIGZZIaly9H7QscF3Q5rmbBR9qSy11Zz8wjpGc+wDr04JIROCW1KiF/D93yQ0QhlYAX00Vfr2kbjOV2PUbYc0cN89YDXKjfkpD82YsOJ3nA77l0UMrsORzJSU/QodT0USU782zw8vMApY9sBWmiSB6Q39KmhK5mVWlLSQ1226H6Gi6TzVJKmEggbOopvbrvqks75/TatA9vx/aoMC/1lG35yzrPxBbq5LZ9TUBnJTmmgNsUq9GazB6K29E8lmILtn7J71o/4Rh6C292lfejAxbSYB4q/0kFioc6XZKH9qoMHcLOGVi3lpSpo84Gz9cFsc2XbXChTpZRGjyYLmweh4855rDLBLjWoh3GcZltA3dW2
+ ARA:13230040|1800799024|376014|366016|3023799003|11063799003|4143699003|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info: cxHWh1j44lK/sv70db7JMwvCmr4J3Jo8yNZ5HNHx5WOIVOVpnwNBSgdffHPM2vzxoDwmE7BkWLjB/fpQtP17Gmam0U6OttolPmapbTmiS5oZEN5Ani2QgzttmjQyO1GCdsoixNqinUJBMgfPOz6Qlod6zazKhzkh1FJEBTx8TXLFuORpB7+Uy69yuTCTbgt4bf2zqF1zVJ41Xi/Ibuo3T/dDIxCa1EkbvFOgpyWVdjg/uRFg8+5DEt1KXcq2tQZ8G9wYebb1i0I1pmu6iCPxHK0alCzB+IZ7di8NYBDF4V57u0X3MhRRi+CJNWptuTsUKyY+EDRHTgtIApwVY0g+QDXmsVEdGLTbqBLl6IUmXl61R0bdPPBCiqOw0JZfxupMbdK3bZiPMxDHXBb2vkvJnD1AOy5J/Fjv/IV6twDRnYB754GpRKbFd2uxahDvhPu1VCjX+uZAG2NZrbmwTTQQC8ZS6bWsjn3NwEi7sgcVLf+/WUHfrIj4DDsT5Dg7/pgDWqj94OrAy/ctfNYHtcWfpRmMerG7GaJeoXGG36fRojaZXdbNQc61Y9I1mshbBRLSpZ8DdTVkdEg8Me/YyJkuyUR7f4H2VXx/2b46MtzG7GOYCDxaWc1dO/TGoQRX6b/0o6deKeVGHtFRm2Rp8kcDSvn8IenTsFAu6UBgKUuApG0HxbiSu8AVYW1Mc57iaIK6
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(11063799003)(18002099003)(56012099003)(22082099003);
+ SFS:(13230040)(1800799024)(376014)(366016)(3023799003)(11063799003)(4143699003)(18002099003)(56012099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a1p0YlNuczFNTTZDYmNjdGlDQSt5R2Q4QXQyclFETk1IYjhhYWh4cWhTR0dN?=
- =?utf-8?B?QmJ0VnVpTUNPeC9TMEhkMWpoaGxFbldSSWZzdXIvQkloNVF5Q3oxdWp5cWp5?=
- =?utf-8?B?MEdPQi9OV0twZG8rb1pEZUkxalkzRHhjZVAxRUVudFMyRzZYdm5GSU5lWDBq?=
- =?utf-8?B?b0Vhdk0xY1YyQmkxUEdDOE5VQjhkVVM0WFBlM0VpVlFkMzZTUkhoZHEvemtT?=
- =?utf-8?B?Uy9pSEg1dW9OdUFqUHFKTFpPbW9SY0FRbEs0VmhkV3N5LzF3S0tXNkV0emJ4?=
- =?utf-8?B?UFNxZWpQaHUyVnBsYUhrd2xnREZRUFdhTXgrclB4Y3BzSTY3MlYxd1lyNGhO?=
- =?utf-8?B?TFdsa3Yyc0pGNzZGVFNUOTljQ3BDdWp5dit0ODJTRzllV0J4djZyT2lmMWNK?=
- =?utf-8?B?N1BIa1Qyc3YwQkt5Rlc2Y3hXVnhaNXZCcVd1dWR1U2ljM05GL3pOa3B6UHZu?=
- =?utf-8?B?VytMbFp5TUZOdmJpeE5ZV2tYeXcxRk1BaUJDSWFuTmRyQ0JDaWNBbkQ0K3RZ?=
- =?utf-8?B?WExvYUREa2NoNlQycTkwL3hIQVNFSVFpcXJXNDQyQVpPYlkxNGlJWW9mREJh?=
- =?utf-8?B?aVhvRWtEVFVQWHJndForZ2dzUXgzMFV1aS9BZ2dJSmo2N0xYdm1ISGVmaDdl?=
- =?utf-8?B?MUhLaTVEdTlZcUxaNXlycE1NcVpZSzBuTmpqdUJZZlpGbHhHZmdLTUZjTDlm?=
- =?utf-8?B?QkJ5RE81Qm5tcEt2amFkMGxBb0pjbkhuMUJTVFpFY1h5OGRTSVgzamgyWjRh?=
- =?utf-8?B?VUhGeXNicFVwa3dmaWppMmdqQXgySk15UWhHTzh4Y2xYT1JkM2M5QnJLWU84?=
- =?utf-8?B?anhhU1cvZWNrT0R2YTRqWkhnMDRwNlpESGV0VEYreGJRWVVjdjlOU3lyWjA0?=
- =?utf-8?B?a043UWtnMTZ3bjhvMnptYWYrUUVZalhDeitXUjFqZkJpZlBvWlBsUUNCTGdn?=
- =?utf-8?B?cytuQ2orTlVybk5haWRaVnlLMVBDZUNOSG9LMHdZNzgycGtQYndTc29oSDlB?=
- =?utf-8?B?alZ3dzJteXpTVGhsT2krSFlWSjhjTk1SaDVvMlNLandvS3hmTnZQYXcxeTBl?=
- =?utf-8?B?RHgxcWxiNml1VjdlcUFoajM0WklMMEFweDE3MWlXdVVvVW05Z2hpVDhaVTRU?=
- =?utf-8?B?czdySDhmeCt4MTRwSDBiOFR0U0pwSm9YdGJCNnN2WXNYUkd5SDhrYTBDQlpV?=
- =?utf-8?B?TC9LNnJHNy9sdDlIOGpvZ0FWVThjaUd5ajhicWtpNU51YVltNVI3QkJMUmFr?=
- =?utf-8?B?b3NLRnhjWEl2SERkRlNXWkpEL0Y5UFlwTERpYjdWUUMxcnhka0djVmlLNmtS?=
- =?utf-8?B?cXJscnprTy9lZkh5S04rUTg3OVVJamh3U3VqaDYxSWdKYyttNFdQV25HNVRO?=
- =?utf-8?B?OEhYeUdPSHQ1NFlOSUFhT3FIRXpzOEhkbEdTcXBkcjRZVGh3dGVxUk15VzFB?=
- =?utf-8?B?N0tkVlBoYWRWK2cwUC93aW92TTM4OHdod2NQSjc1R1V1MklUeG9FK21uRW52?=
- =?utf-8?B?THVDbEQ3eUtYT2Zxb2VVRUNpVVVkUG9nOU8zMTBOTEJIemN6VFVvODdKWG5w?=
- =?utf-8?B?eEhsZmpiUzlWcmZSM1NCM2prV0U0cG9HSm5DWktyTlVrcCtNQW9EWmdqSEVh?=
- =?utf-8?B?bEN5ZWZXNlRrZDFBTXI3SzJtYnFOYStNTFVOWHoxMWxFNmpJRmVwbWU4NW9Z?=
- =?utf-8?B?M0d5bm1NR3J5TzNhZEQwNkM1eTNqMHNvMGFMa1BvRkg2SmxXVG5FUjg5U2to?=
- =?utf-8?B?NUczWVk5dHZZaUtBQlZvRncrcHNrdXNUR21lTTNJcGlYWjdrak5QclV2Qmxa?=
- =?utf-8?B?eVgvVm5BdmRyU2dvaGhyVzRoNzd2blcrZUdtWVVleGdSU2g4ZWM0ZHV2Rnc1?=
- =?utf-8?B?bmREWHIwVHBJRFlrWXhpNUhYSCttTk9LNTAwY21tbUl0UU9FUVh3bFFJTUF2?=
- =?utf-8?B?aW82TFRSV1lHOTBvMXBGdU9HWnk0MUhxcXRxU054Z3lrWUN0ZlJTZEwzYkRQ?=
- =?utf-8?B?ODFiNzFaTkN1SGdwbXgyVGpMcEZrRWNhanFncVNZNGg4ekV6dDdHdzY3Z2Vv?=
- =?utf-8?B?VVloeFdYZVp6U21PZUFnWEFoZFlXYVliOEtNWHhmTmFuWi8vc25ZZG9QV2xU?=
- =?utf-8?B?UTVwT2dDMU01ZCs5bWwyVW9nZjM4N0R6MUk4US9GRXgzbUtnNnlBbENndzR6?=
- =?utf-8?B?bnQxcTVXa1dSL1htT3lQc1NLbVFtZDdwcDFpbThkYXQxcmdJWjFUaENaZDBK?=
- =?utf-8?B?ODNUNFlOMWt6S3BOWHN0ajZtR2RZakhEbnNRTHBWOWRrWTVKM3dyVGRuODZT?=
- =?utf-8?B?Ui9vMWEwd0duNjc0QWt1OHdPUlpMVkRRRjlYc05UaGE3UngxY0VFZDdCcmZR?=
- =?utf-8?Q?aXX7GRqz+PIxleKM=3D?=
-X-Exchange-RoutingPolicyChecked: p/XUbZXQh+2XNptuqjPf1u6NQwlk2VXDWDtHauuyrwnMbVOQSTC/Z8vv/EuRkL0745wZ68kCkStsUfK2J3l81KOo4ekjz4MzAXiaMOvWVkoPt3sDobZ+6MeI+Mz66St8qHcvgoQH5BbWvvg9Li+vaGNyfF7aFr7N/TaIx1FYItR2s2KhQNbYt4adTuvyPX4D3XbPOMgGvnU1XomR778jUemvsUiGjUuxOC+2ADa8sw0GsYEqJZqKZmsqpBaLmP2hu5HoIAQDR5PqiDWqUuxd2Qh9s0CAoxW7viAh12OqrR9mk/GU4GRVHpRwV3AvRi8WWuvPBIBWKXH0sdk+pukcwg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5246d3dd-4a9f-42cc-acf7-08deb564d51e
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bXFLdU0rTlFlY2FPVzJneEd3dkswMGNndy94TFROK3p1VjdrNUhMN0wyNW55?=
+ =?utf-8?B?Nk52ekpWRWZXS1RBNDZISWRYNUtJWXZJdTBKOG9FeUxobVJ6Z0V5alAwVGFi?=
+ =?utf-8?B?VFFhcWFUSTlNc1FvK01obDlFZkZPWDg3Y01UTW53MU94WU5pcndpcm8yVERE?=
+ =?utf-8?B?SXpyRzZscDJjWmlIZ0QzclBLaStuNUVWdFVNVkRxRU1xQmhwVk1hSHo1dVRX?=
+ =?utf-8?B?Y0pqRThKM2tZYytrSnAvdW14ZlZ4aEY4UEExbm1leUV2SVBLV0lqRmE4ZXYr?=
+ =?utf-8?B?dy9SdHd6TDZDUzljdDBIeFJJWnRrMVQvMUVJQUg0QVlPQ0xmaU0vS2ZaTCtS?=
+ =?utf-8?B?aEF5ZGRzNDhnbjFNZnVaWk16MDdLRFBKU0JsQkd5dGRCaHdudVVWbm9WVU1Z?=
+ =?utf-8?B?d0x4cjFhaXpsY1lyaVJpb0Q2VHpKTktpa0dYQ0tGSVcwbkw3VXllUS9NLzlX?=
+ =?utf-8?B?TmF6WUNSblo5TmNQQXArZFJNM2lYUExEWi8xLzNlVEdjRVdpeVNYQlVnZ0ZW?=
+ =?utf-8?B?cmtESEwyWmJIMzEwc1FBVFFJZmtDMlZkT0tsK01ITThOSExOS3RaUzJNNkVh?=
+ =?utf-8?B?ZmxiYjJ3a1B0Q1ZzZXFVVlBQcGV0ckRQcHlTaWpvSW5peXQvNVFyWTRhT1o1?=
+ =?utf-8?B?b3FEVDVhYTRxYTNOVUFUdDVHdFhwQjFXTDM0N0Znc29ZQjJRYTluY2J0aTlC?=
+ =?utf-8?B?bHN4SDdtMi92WUhzQ29Wekw5QlQyRzExeXpyamR3RXJ5cFJXZ1UyTlZ2WlF0?=
+ =?utf-8?B?NWpTanF0SnZrR0ZJSGx0RUdUYWF1WXlWNFhVcjE1eDc2NXhlUXJLTkJMOTdH?=
+ =?utf-8?B?Y2d3Zlk4MWdma210c0I1ZWJlZElVQ3kvUTRqTUJZQURVcHN2ZFBXZEZQLyt3?=
+ =?utf-8?B?K2FLOTRCQ0JuRjRqWG00djgxbGxYcE5HdGljaE1RV0pwQ3dqa2lhSTkyazFh?=
+ =?utf-8?B?UTlCRk5oR3FhTlJNVmpCUUN1S0NWUzVDSUFFYzhiUitvdE5OYnViZERtcGJV?=
+ =?utf-8?B?UDVaelR5QkdKa2EyNzN5ZXMrRjlmclZkQVIvamFnU1pUZ3VMTm9wQmJURlcr?=
+ =?utf-8?B?UGt1WnIva2tFUkNNZkp3Q2xRRW52L0xrc014M3M0Q0p3ZGViQUFPVlNRMGdw?=
+ =?utf-8?B?UlJqZGQxeWRocXFsVEdUTjR0b0VyYllxcDBVdXF1RmY2d3JaME90cHpEMEdF?=
+ =?utf-8?B?RVhsTUIvZGdtRXVyZlcwVGJXbkFmUU5Sam9mS2J3NFJOT1JmZ25TRHpJa0J0?=
+ =?utf-8?B?YlpKTFBxWm5USkw4dFBMc0t6akVpamFNQXpuLy92ZFdja2Y0cm5mNXJsZHlF?=
+ =?utf-8?B?dm1OWjh2VkN2UXU3QXNOOThzMXNOWXcxSjBNNmFtS1Uyb2kyek1pODZLQlFQ?=
+ =?utf-8?B?L2JybmJIajFwTW1MaTVJa1pyd2ZiWmJ3OVlha1RJcEtFN2s0QXNSdFZMUFJ0?=
+ =?utf-8?B?N2JnSnFtNnphOXlJVmFmczRVWjk2VnZ6ZTZiNERRZWNyZE9jVVd4MWdCekhL?=
+ =?utf-8?B?dzUyOEYvaU9yNUJ6ZGhERk40UzIweEVxSnk4T1VOTEp5d3ZBVU1kS2Evbkkw?=
+ =?utf-8?B?YnBMaUI0QzduTStSaXZhZXRtRUVYcGg0NW5JRXhBV3VIK2FQN25HV3JoZWw3?=
+ =?utf-8?B?eVA3QS9ydkVmZ04xNnVPRnIwT1F4Y3JCeVRqYVlwMDRJTGtwOHNDWWt5VWlW?=
+ =?utf-8?B?em1SMkJpY0dNaTdGRVM2NytmcVl3T3hGUTJjWHBiVWVPYWQxS3JaZDhjbFlv?=
+ =?utf-8?B?d0UvQkZHOFZld016clFQZzN4Q2NNeDRsbWlkbU5ma3lPdEdGSFFiZnFPYkF5?=
+ =?utf-8?B?Vy9mbUhOYUtmRnp6UnZ1SFg1UmhhSG9pNjQ0VnRwYWxDVEoxejlWd0xMR0dh?=
+ =?utf-8?B?c2FuQjN6dHNZcGZOVGVPUEJlZzdFYm1ydklZQW5WbzdtSXhjbzN6WVVWTnl6?=
+ =?utf-8?B?V0FtN28yS016NWRWSWFiNjlGUGptamQzWTJiNWtTbHZRK3ZIM0crUnNnS2Vm?=
+ =?utf-8?B?VzRFRGZRWHduQzQrZDZURGtmcmxuVzkwU0E3QWJOQ2ZmaHZvL25vOGMvNWZT?=
+ =?utf-8?B?cjJ5UThsOGRsVlVJU3Bwb2NWUUtEYkRnZHdZTGxkaC81bzVUYzZPSEFUci9K?=
+ =?utf-8?B?Q24zd3Z5clRYM0hMYmxscTU4V2NLbWs4NDVYTjkrTWtDUng2TElTYXdTbWF0?=
+ =?utf-8?B?c3F4dU5PWlVxQnk4NlhMVlgxQ21wZVVjVHlib1NpcnhJSGtxQW9TTWJtQ2pa?=
+ =?utf-8?B?cFlpZ3RQY1o5L1dZUnlwRjJKelRsSFlOSDNyenBqcmxuRERTdXlVQ1ZtaHBz?=
+ =?utf-8?B?aFBCeVFQQkVjRW03WTF6TjZMNmo3ZVdmNSt2aW1ZSnVVeFFSWnQzSnFNSHU4?=
+ =?utf-8?Q?Ea3QKNKGdK8pEuUw=3D?=
+X-Exchange-RoutingPolicyChecked: Tlq/MecNCzkL/emYQFfs47epY1ttSlDviMImpvkpiZXkpjHw1W3cbyaQRROPkOoZsPIVjX1Pt0J75SgpO+b8VM/8VIETd/9FSymwX2YylHarYRVdHWxNx6IeTo9zLfy6TX01QQz7bGp1+GxdeAb111gPnik8NSylqfge41LpxQqWSBfnPK6kKWCof8FxDjTPHrUiUlydM+czv6L2mCSDDBEFhbqKrt21IXJM2dmv3MrNTsazThZuFvKXqnweIxWl1eLirdEsWfGVxR3R5M10x4ZZhqVW0+WfKVc1XVQ9bcVYD/QtHnCwbKc5FinDi+6atQ0KqW47O+1axk+8CZ7Cuw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce9af4e3-43d0-4acd-43a9-08deb5657f0c
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 05:09:41.8100 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 05:14:26.4144 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AfdkdlUx+h6eQAgTCj1c4ZaMbQUDf0i61dfivWzIcEyaetsvrXj+xp5KebmW916kI6Dq5+506zePjSJ7panXvLSBGygTNTz8Gxx0qDERlCM=
+X-MS-Exchange-CrossTenant-UserPrincipalName: c9WOcAu2AArtL7F1aXE3YBSwN5F5BqI/Haome7bFZZNNBdYaXiJjkXkdag9Of4hAyPexQ9Giflo5n/kQLOLOhUtW8lnm/Fc1jgal7tI+DcU=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4995
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -170,96 +171,115 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 5/19/2026 9:47 AM, Jeevan B wrote:
-> eDP modes with high clock rates were being forced on HDMI 2.0 displays,
-> causing kernel to reject with EINVAL. Add clock validation to skip
-> incompatible eDP modes and fall back to supported modes.
+On 5/19/2026 10:39 AM, Nautiyal, Ankit K wrote:
 >
-> v2: Add HDMI 2.0 clock limit helper, drop crtc_supports_mode(),
->      and ensure per-connector compatibility to avoid invalid modes.
-> v3: Refactor connector compatibility checks into helper for clarity.
+> On 5/19/2026 9:47 AM, Jeevan B wrote:
+>> eDP modes with high clock rates were being forced on HDMI 2.0 displays,
+>> causing kernel to reject with EINVAL. Add clock validation to skip
+>> incompatible eDP modes and fall back to supported modes.
+>>
+>> v2: Add HDMI 2.0 clock limit helper, drop crtc_supports_mode(),
+>>      and ensure per-connector compatibility to avoid invalid modes.
+>> v3: Refactor connector compatibility checks into helper for clarity.
+>>
+>> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+>> ---
+>>   tests/kms_setmode.c | 39 +++++++++++++++++++++++++++++++++++++--
+>>   1 file changed, 37 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+>> index 1f2849bc2..4d4f980f6 100644
+>> --- a/tests/kms_setmode.c
+>> +++ b/tests/kms_setmode.c
+>> @@ -79,6 +79,9 @@
+>>   /* restricted pipe count */
+>>   #define CRTC_RESTRICT_CNT 2
+>>   +/* Clock limit for HDMI 2.0 */
+>> +#define HDMI_2_0_MAX_CLOCK_KHZ 600000
+>> +
+>>   static int drm_fd;
+>>   static drmModeRes *drm_resources;
+>>   static int filter_test_id;
+>> @@ -165,6 +168,35 @@ static bool 
+>> connector_supports_mode(drmModeConnector *connector,
+>>       return false;
+>>   }
+>>   +static bool 
+>> hdmi_connector_mode_exceeds_hdmi20_limit(drmModeConnector *connector,
+>> +                             drmModeModeInfo *mode)
+>> +{
+>> +    if (connector->connector_type != DRM_MODE_CONNECTOR_HDMIA &&
+>> +        connector->connector_type != DRM_MODE_CONNECTOR_HDMIB)
+>> +        return false;
+>> +
+>> +    return mode->clock > HDMI_2_0_MAX_CLOCK_KHZ;
+>> +}
+>> +
+>> +static bool mode_compatible_with_connectors(struct crtc_config *crtc,
+>> +                        drmModeModeInfo *mode)
+>> +{
+>> +    int k;
 >
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->   tests/kms_setmode.c | 39 +++++++++++++++++++++++++++++++++++++--
->   1 file changed, 37 insertions(+), 2 deletions(-)
+> `i` can be used as iterator here.
 >
-> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-> index 1f2849bc2..4d4f980f6 100644
-> --- a/tests/kms_setmode.c
-> +++ b/tests/kms_setmode.c
-> @@ -79,6 +79,9 @@
->   /* restricted pipe count */
->   #define CRTC_RESTRICT_CNT 2
->   
-> +/* Clock limit for HDMI 2.0 */
-> +#define HDMI_2_0_MAX_CLOCK_KHZ 600000
-> +
->   static int drm_fd;
->   static drmModeRes *drm_resources;
->   static int filter_test_id;
-> @@ -165,6 +168,35 @@ static bool connector_supports_mode(drmModeConnector *connector,
->   	return false;
->   }
->   
-> +static bool hdmi_connector_mode_exceeds_hdmi20_limit(drmModeConnector *connector,
-> +						     drmModeModeInfo *mode)
-> +{
-> +	if (connector->connector_type != DRM_MODE_CONNECTOR_HDMIA &&
-> +	    connector->connector_type != DRM_MODE_CONNECTOR_HDMIB)
-> +		return false;
-> +
-> +	return mode->clock > HDMI_2_0_MAX_CLOCK_KHZ;
-> +}
-> +
-> +static bool mode_compatible_with_connectors(struct crtc_config *crtc,
-> +					    drmModeModeInfo *mode)
-> +{
-> +	int k;
-
-`i` can be used as iterator here.
+>
+>> +
+>> +    for (k = 0; k < crtc->connector_count; k++) {
+>> +        drmModeConnector *conn = crtc->cconfs[k].connector;
+>> +
+>> +        /* Check HDMI 2.0 clock + per-connector compatibility */
+>> +        if (hdmi_connector_mode_exceeds_hdmi20_limit(conn, mode))
+>> +            return false;
+>> +
+>> +        if (!connector_supports_mode(conn, mode))
+>> +            return false;
+>> +    }
 
 
-> +
-> +	for (k = 0; k < crtc->connector_count; k++) {
-> +		drmModeConnector *conn = crtc->cconfs[k].connector;
-> +
-> +		/* Check HDMI 2.0 clock + per-connector compatibility */
-> +		if (hdmi_connector_mode_exceeds_hdmi20_limit(conn, mode))
-> +			return false;
-> +
-> +		if (!connector_supports_mode(conn, mode))
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->   static bool crtc_supports_mode(struct crtc_config *crtc, drmModeModeInfo *mode)
->   {
->   	int i;
-> @@ -270,8 +302,11 @@ static void get_mode_for_crtc(struct crtc_config *crtc,
->   				if (conn->modes[j].clock < mode->clock)
->   					mode = &conn->modes[j];
->   			}
-> -			*mode_ret = *mode;
-> -			return;
-> +
-> +			if (mode_compatible_with_connectors(crtc, mode)) {
-> +				*mode_ret = *mode;
-> +				return;
+I think I had mentioned this in earlier comment, but got missed.
+
+We need to drop crtc_supports_mode(crtc, mode) here, otherwise it will 
+try to match this mode.
+
+This will prevent the test to use eDP modes that might not be 
+enumerated in external panels but can still be supported.
 
 
-As mentioned by Ville and Jani, this test need to be modified to handle 
-the external vs internal mode better in long term.
+Regards,
 
-However to avoid noise due to test trying higher mode on HDMI, I guess 
-this should be okay for now.
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Ankit
 
 
-> +			}
->   		}
->   	}
->   
+>> +
+>> +    return true;
+>> +}
+>> +
+>>   static bool crtc_supports_mode(struct crtc_config *crtc, 
+>> drmModeModeInfo *mode)
+>>   {
+>>       int i;
+>> @@ -270,8 +302,11 @@ static void get_mode_for_crtc(struct crtc_config 
+>> *crtc,
+>>                   if (conn->modes[j].clock < mode->clock)
+>>                       mode = &conn->modes[j];
+>>               }
+>> -            *mode_ret = *mode;
+>> -            return;
+>> +
+>> +            if (mode_compatible_with_connectors(crtc, mode)) {
+>> +                *mode_ret = *mode;
+>> +                return;
+>
+>
+> As mentioned by Ville and Jani, this test need to be modified to 
+> handle the external vs internal mode better in long term.
+>
+> However to avoid noise due to test trying higher mode on HDMI, I guess 
+> this should be okay for now.
+>
+> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>
+>
+>> +            }
+>>           }
+>>       }
