@@ -4,66 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAA71CD4F3C
-	for <igt-dev@archiver.kernel.org>; Tue, 19 May 2026 15:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6EF3CD4F5E
+	for <igt-dev@archiver.kernel.org>; Tue, 19 May 2026 16:01:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 36A8E10ED78;
-	Tue, 19 May 2026 15:28:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 620E910EDBD;
+	Tue, 19 May 2026 16:01:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iNEWGqcr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UdFew26j";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5763E10ED6B
- for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2026 15:27:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E78210E3D6
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2026 16:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779204476; x=1810740476;
+ t=1779206473; x=1810742473;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=SEswoi8kJGDtaltnxpf/Wi1AYxBi5WNgMRHArDjYnuQ=;
- b=iNEWGqcrLkLng/1UzYRbhtIZlQSQGi5OnwDTSHr779BNa4d+FqPP61sa
- osZmrW2GlLTpE2X7/S8xCtWO2rHTWooXBJpNDYoIfZ7DRtvpZSGr9q94t
- BZFkLPZJ5uybDsdK+SkWKwl/G0FQLG/+8FkF/kq2nsL3tQ8EPhclVgUgQ
- MERzpgw+XeJmxtNIERbPqTEZaWyIEwOosIJ5s1ayr2cDm+w3L85pOZ4SH
- ExizrQ2h14m3rnFqhSuXwkG/0o7jjn/y1sYSCTB72ss14fH4TJ/eG+Q2p
- ZlBrkAJKYVyD9vRfDs8Sduu/6Cy/wB2G2cJj74yWDKle/szQuOEsQXQHN g==;
-X-CSE-ConnectionGUID: EZkgUXbJTwWpNYJ6oxpmQw==
-X-CSE-MsgGUID: zEMZxoi4QteIHjAM/bxSNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="90781423"
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="90781423"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2026 08:27:56 -0700
-X-CSE-ConnectionGUID: T1wzhs6zQEyvQSsXMNwdsQ==
-X-CSE-MsgGUID: 0lg0LMqaTP6uRx+aAbGyTQ==
+ bh=ziUOA4rdbseLpYknt2DpSLC3EOkJufaQc15Rxmr9Oao=;
+ b=UdFew26jdabd3UvjzDkZbYF2mkiDiw3o9iFU1POTiM9aVkOT28or2o5S
+ fa0uWNTUi1a3azgNXQCKPj8YlBBtNqPcEyFxeuq3GYcG2nGhwuPh5MwSY
+ CK+J6+XbBBocFRO2ZVHNAkf5ufakf/DVCjaeZRu2RXMvpT4WKwu8mFmWh
+ vHDA0UW4ct0U2RiOkeMBc+YF70MtpH0b9I6h5jXDFA3Tpty0RtaOzhrWf
+ VtYCbHppmTMA/jnTNw+UTRioprO9htH+Qw5X76Ta3Sf+NDAyE0jkQPWA7
+ i7ikDc3OWr/uoWBoIQzlDxmzvterpQ1ZBjj0b789Weg8zLj2KRFkX61sP Q==;
+X-CSE-ConnectionGUID: yv3IgAeHSdSwPoYjOmrRdw==
+X-CSE-MsgGUID: o2g25Td4RBqmSZR1byB6YQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="83968214"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="83968214"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 May 2026 09:00:49 -0700
+X-CSE-ConnectionGUID: eZlgWW7LRemswOfWKdwERQ==
+X-CSE-MsgGUID: bAAjY6+SQN6JmVafgpx0EA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="239851617"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 08:27:54 -0700
-Date: Tue, 19 May 2026 17:27:38 +0200
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 09:00:47 -0700
+Date: Tue, 19 May 2026 18:00:45 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Xiandong Wang <xiandong.wang@mediatek.com>
-Cc: igt-dev@lists.freedesktop.org, Jason-JH Lin <jason-jh.lin@mediatek.com>,
- Nancy Lin <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>,
- Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com
-Subject: Re: [PATCH i-g-t v3 1/1] tests/kms_cursor_legacy: relax checks on MTK
-Message-ID: <20260519152738.svyg244qlzzjmupf@kamilkon-DESK.igk.intel.com>
+To: "Samala, Pranay" <pranay.samala@intel.com>
+Cc: Maarten Lankhorst <dev@lankhorst.se>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 1/4] lib/igt_kms: Add support for the
+ BACKGROUND_COLOR property.
+Message-ID: <20260519160045.t5d35zsxm3qoaugj@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Xiandong Wang <xiandong.wang@mediatek.com>,
- igt-dev@lists.freedesktop.org,
- Jason-JH Lin <jason-jh.lin@mediatek.com>,
- Nancy Lin <nancy.lin@mediatek.com>,
- Singo Chang <singo.chang@mediatek.com>,
- Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com
-References: <20260506100126.9827-1-xiandong.wang@mediatek.com>
- <20260506100126.9827-2-xiandong.wang@mediatek.com>
+ "Samala, Pranay" <pranay.samala@intel.com>,
+ Maarten Lankhorst <dev@lankhorst.se>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20260505194419.500600-5-dev@lankhorst.se>
+ <PH7PR11MB60537336D612475147EEC667E7002@PH7PR11MB6053.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260506100126.9827-2-xiandong.wang@mediatek.com>
+In-Reply-To: <PH7PR11MB60537336D612475147EEC667E7002@PH7PR11MB6053.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,101 +73,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Xiandong,
-On 2026-05-06 at 18:01:11 +0800, Xiandong Wang wrote:
-> From: Xiandong Wang <Xiandong.Wang@mediatek.com>
+Hi Samala,,
+On 2026-05-19 at 12:07:02 +0000, Samala, Pranay wrote:
+> Hi Maarten,
 > 
-> kms_cursor_legacy uses tight vblank timing assertions that can be unstable
-> on MTK under higher system load, leading to intermittent failures.
+> > -----Original Message-----
+> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> > Maarten Lankhorst
+> > Sent: Wednesday, May 6, 2026 1:14 AM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Maarten Lankhorst <dev@lankhorst.se>
+> > Subject: [PATCH i-g-t 1/4] lib/igt_kms: Add support for the
+> > BACKGROUND_COLOR property.
+> > 
+> > The background color is a 64-bits property that contains the ARGB values of
+> > the background with 16 bits for each component.
+> > 
+> > Add support for the BACKGROUND_COLOR property, and set to pitch black as
+> > the default.
+> > 
+> > Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+> > ---
+> >  lib/igt_kms.c | 4 ++++
+> >  lib/igt_kms.h | 1 +
+> >  2 files changed, 5 insertions(+)
+> > 
+> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c index 99fc9fa05c..b70aefe697 100644
+> > --- a/lib/igt_kms.c
+> > +++ b/lib/igt_kms.c
+> > @@ -731,6 +731,7 @@ const char * const
+> > igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+> >  	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
+> >  	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
+> >  	[IGT_CRTC_SHARPNESS_STRENGTH] = "SHARPNESS_STRENGTH",
+> > +	[IGT_CRTC_BACKGROUND_COLOR] = "BACKGROUND_COLOR",
+> >  };
+> > 
+> >  const char * const
+> > igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = { @@ -2737,6
+> > +2738,9 @@ static void igt_crtc_reset(igt_crtc_t *crtc)
+> >  	if (igt_crtc_has_prop(crtc, IGT_CRTC_SHARPNESS_STRENGTH))
+> >  		igt_crtc_set_prop_value(crtc,
+> > IGT_CRTC_SHARPNESS_STRENGTH, 0);
+> > 
+> > +	if (igt_crtc_has_prop(crtc, IGT_CRTC_BACKGROUND_COLOR))
+> > +		igt_crtc_set_prop_value(crtc,
+> > IGT_CRTC_BACKGROUND_COLOR,
+> > +0xffff000000000000ULL);
 > 
-> This patch makes two key improvements based on review feedback:
+> Imho, add a short inline comment to clarify the channel packing.
+> /* BACKGROUND_COLOR is ARGB16161616; set opaque black (A=0xffff, RGB=0) */
 > 
-> 1. In flip_vs_cursor(): Change from igt_assert_eq() to igt_assert_lte()
->    for the non-extra-vblank case. Since igt_crtc_get_vblank() will never
->    return a value less than vblank_start, this relaxation won't cause
->    regressions on any platform while improving test stability.
+> > +
+> >  	crtc->out_fence_fd = -1;
+> >  }
+> > 
+> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h index a58cb5cd34..71f908d4f5
+> > 100644
+> > --- a/lib/igt_kms.h
+> > +++ b/lib/igt_kms.h
+> > @@ -165,6 +165,7 @@ enum igt_atomic_crtc_properties {
+> >         IGT_CRTC_VRR_ENABLED,
+> >         IGT_CRTC_SCALING_FILTER,
+> >         IGT_CRTC_SHARPNESS_STRENGTH,
+> > +       IGT_CRTC_BACKGROUND_COLOR,
 > 
-> 2. In cursor_vs_flip(): Introduce a threshold variable approach instead
->    of hardcoding the timing assertion. For MTK platform, multiply the
->    threshold by 4x to accommodate longer cursor update times under heavy
->    load.
-> 
->    MTK display hardware uses a frame-based processing model where cursor
->    plane updates are scheduled alongside other display operations in the
->    same frame queue. Under high system load (e.g., concurrent page flips,
->    CPU pressure), the cursor update path may take additional time due to:
->    - Display hardware command buffer arbitration
->    - Memory bus contention with other display operations
->    - Multi-stage pipeline latency in the display controller
-> 
->    The 4x threshold multiplier (from 5*vrefresh/8 to 20*vrefresh/8) provides
->    sufficient margin for these platform-specific scheduling behaviors while
->    still validating that cursor updates complete within a reasonable timeframe.
->    This avoids false test failures on MTK platforms without compromising the
->    test's ability to catch real timing regressions.
-> 
-> This improves test robustness on MTK without changing expectations on
-> non-MTK platforms.
-> 
-> v2: Refactor based on review comments from Jason-JH Lin:
->     - Remove MTK-specific guard for flip_vs_cursor() since igt_assert_lte
->       is a safe relaxation for all platforms
->     - Use threshold variable approach in cursor_vs_flip() for better
->       code clarity and maintainability
-> 
-> v3: Add detailed explanation of MTK hardware characteristics and timing
->     requirements
-> 
-> Suggested-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-> Signed-off-by: Xiandong Wang <Xiandong.Wang@mediatek.com>
+> Please use tab for indentation.
 
-Thank you all, I merged this.
+This enum needs a cleanup, it already uses spaces...
+We could go with spaces for now and a cleanup in a future?
 
 Regards,
 Kamil
 
-> ---
->  tests/kms_cursor_legacy.c | 20 ++++++++++++++++----
->  1 file changed, 16 insertions(+), 4 deletions(-)
+> Along with Kamil's suggestion, changes LGTM.
 > 
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 5399ef481..4d597af79 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -1039,8 +1039,8 @@ static void flip_vs_cursor(igt_display_t *display, enum flip_test mode, int nloo
->  		igt_ignore_warn(read(display->drm_fd, &vbl, sizeof(vbl)));
->  
->  		if (!mode_requires_extra_vblank(mode))
-> -			igt_assert_eq(igt_crtc_get_vblank(crtc, 0),
-> -				      vblank_start + 1);
-> +			igt_assert_lte(igt_crtc_get_vblank(crtc, 0),
-> +				       vblank_start + 1);
->  		else
->  			igt_assert_lte(igt_crtc_get_vblank(crtc, 0),
->  				       vblank_start + 2);
-> @@ -1442,8 +1442,20 @@ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloo
->  			vblank_last = vbl.sequence;
->  		}
->  
-> -		if (!cursor_slowpath(display, mode))
-> -			igt_assert_lte(vbl.sequence, vblank_start + 5 * vrefresh / 8);
-> +		if (!cursor_slowpath(display, mode)) {
-> +			unsigned long threshold = 5 * vrefresh / 8;
-> +
-> +			/*
-> +			 * On MTK platform, cursor updates may take longer under heavy
-> +			 * load due to hardware scheduling characteristics. Relax the
-> +			 * timing threshold to avoid false positives while still
-> +			 * validating correctness.
-> +			 */
-> +			if (is_mtk_device(display->drm_fd))
-> +				threshold = 4 * threshold;
-> +
-> +			igt_assert_lte(vbl.sequence, vblank_start + threshold);
-> +		}
->  
->  		shared[0] = 1;
->  		igt_waitchildren();
-> -- 
-> 2.45.2
+> Reviewed-by: Pranay Samala <pranay.samala@intel.com>
+> 
+> >         IGT_NUM_CRTC_PROPS
+> >  };
+> > 
+> > --
+> > 2.53.0
 > 
