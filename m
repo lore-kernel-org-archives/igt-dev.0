@@ -4,100 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F547CD4F3C
-	for <igt-dev@archiver.kernel.org>; Tue, 19 May 2026 15:04:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAA71CD4F3C
+	for <igt-dev@archiver.kernel.org>; Tue, 19 May 2026 15:28:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4344710ED61;
-	Tue, 19 May 2026 15:04:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 36A8E10ED78;
+	Tue, 19 May 2026 15:28:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="rzPtE7ya";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iNEWGqcr";
 	dkim-atps=neutral
-Received: from PH0PR06CU001.outbound.protection.outlook.com
- (mail-westus3azon11011064.outbound.protection.outlook.com [40.107.208.64])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 429D710ED5F
- for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2026 15:04:06 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RsvQhXmXrO1xkpdCUUCXkKB9utxd19A8gjlKTZn+UTOgZrhaUf1I0wD9BzvTphm7QMlsP2PD58gC1oNP6vFBySBr2MlVtGBxEg0UfZZCbOyau+YlaTs1f6bLYe7oVSeiVNeaD5U6WbDjvc9TtQAA8lMgv6u7D8t60P5NpeXCXvQ/2Vq110u6QdcN1b8clFtWFfZNTQrI2Bh8v8Ncj9rg+pkq2CrnlZEIYHzY7x0mLj7v+/0r/RyYd56L3djL1RIhYHFoOiWmizW/xZOn9O5sGWpb8mnS2dbY0v+9U43fto7llJv9I9sNqHIPS4yF7FUOxIO5XdQVQriFBP7MnTRrag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4SgNyNmq5hhcG36n7Yr0Rmv8JCmiYcQQGtwBLlO4Mn8=;
- b=OYJaeUwbUurRm96kmP8hxi52yH5ydKD467iLpoeQRrCtOqYXV8iZhqTfgqKSDJlPhLoc4EEV/5c9cGW4HEZZL+zd+XveRFA1pwOTw7Io01sQ8W+nRIy/5eZDs7QN34C9ARvRWFlA5S3BDXOt+oxqaUw+SU+iuk3v9Qyh7rDMENrAp9G0elGzKapIrlbNeOKSW/Z9bka9csR92TX0guJepDGcTxevoJPAuZGfxPH7fUsCKZMzXF5+UEyVgJ9StpA/cMDSjLEohotv44mZRMXQwJ968VVX7ENGtLn/5v224J2ZZwbBcIkXluwgRMGm/kTmvCXqBYoqvZeJvZwbOsm87A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4SgNyNmq5hhcG36n7Yr0Rmv8JCmiYcQQGtwBLlO4Mn8=;
- b=rzPtE7yaxe5O1B2hf2E4rb85MtsrugzvY6gmTKUvOrTAwZdt/vJXeKB1wNY1eycCYslho5rfcLgWE61QXMi5VnMU+xLuPqYaTQ+ZPISNU+bC1Bbo/ZlnKpwo/EDBN7MAXuuGi7KtZCKdl3mMjQPSNpbnHgzgbW7/z3ELH2ZkV7U=
-Received: from BN9PR03CA0530.namprd03.prod.outlook.com (2603:10b6:408:131::25)
- by MW6PR12MB9000.namprd12.prod.outlook.com (2603:10b6:303:24b::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.18; Tue, 19 May
- 2026 15:03:52 +0000
-Received: from MN1PEPF0000ECD9.namprd02.prod.outlook.com
- (2603:10b6:408:131:cafe::44) by BN9PR03CA0530.outlook.office365.com
- (2603:10b6:408:131::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.14 via Frontend Transport; Tue, 19
- May 2026 15:03:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- MN1PEPF0000ECD9.mail.protection.outlook.com (10.167.242.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.48.11 via Frontend Transport; Tue, 19 May 2026 15:03:51 +0000
-Received: from kylin.lan (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 19 May
- 2026 10:03:50 -0500
-From: Alex Hung <alex.hung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: <alex.hung@amd.com>, <Mark.Broadworth@amd.com>, <vitaly.prosyak@amd.com>, 
- <swati2.sharma@intel.com>, <kamil.konieczny@linux.intel.com>,
- <jani.nikula@intel.com>
-Subject: [PATCH 2/2][V5] tests/kms_hdr: Add interactive HDR verification to
- static-swap
-Date: Tue, 19 May 2026 09:00:22 -0600
-Message-ID: <20260519150022.3964921-2-alex.hung@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260519150022.3964921-1-alex.hung@amd.com>
-References: <20260519150022.3964921-1-alex.hung@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5763E10ED6B
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2026 15:27:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1779204476; x=1810740476;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=SEswoi8kJGDtaltnxpf/Wi1AYxBi5WNgMRHArDjYnuQ=;
+ b=iNEWGqcrLkLng/1UzYRbhtIZlQSQGi5OnwDTSHr779BNa4d+FqPP61sa
+ osZmrW2GlLTpE2X7/S8xCtWO2rHTWooXBJpNDYoIfZ7DRtvpZSGr9q94t
+ BZFkLPZJ5uybDsdK+SkWKwl/G0FQLG/+8FkF/kq2nsL3tQ8EPhclVgUgQ
+ MERzpgw+XeJmxtNIERbPqTEZaWyIEwOosIJ5s1ayr2cDm+w3L85pOZ4SH
+ ExizrQ2h14m3rnFqhSuXwkG/0o7jjn/y1sYSCTB72ss14fH4TJ/eG+Q2p
+ ZlBrkAJKYVyD9vRfDs8Sduu/6Cy/wB2G2cJj74yWDKle/szQuOEsQXQHN g==;
+X-CSE-ConnectionGUID: EZkgUXbJTwWpNYJ6oxpmQw==
+X-CSE-MsgGUID: zEMZxoi4QteIHjAM/bxSNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="90781423"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="90781423"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 May 2026 08:27:56 -0700
+X-CSE-ConnectionGUID: T1wzhs6zQEyvQSsXMNwdsQ==
+X-CSE-MsgGUID: 0lg0LMqaTP6uRx+aAbGyTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="239851617"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 08:27:54 -0700
+Date: Tue, 19 May 2026 17:27:38 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Xiandong Wang <xiandong.wang@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org, Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH i-g-t v3 1/1] tests/kms_cursor_legacy: relax checks on MTK
+Message-ID: <20260519152738.svyg244qlzzjmupf@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Xiandong Wang <xiandong.wang@mediatek.com>,
+ igt-dev@lists.freedesktop.org,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>,
+ Singo Chang <singo.chang@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+References: <20260506100126.9827-1-xiandong.wang@mediatek.com>
+ <20260506100126.9827-2-xiandong.wang@mediatek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD9:EE_|MW6PR12MB9000:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ff9b9a6-0e7b-4635-fb7e-08deb5b7d664
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|36860700016|376014|82310400026|3023799003|11063799006|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info: gtE+mhNPH/nWODDkYY3fpytRWKV89DqFADS7oWzOxVL/l2T/3+ucLLwvfl/UAiM5DtKf6Uh6Vk9bl65107viuZU4sHllyDxgxq8UCpfQ33rzQ4X9mFbL88HHW2W8lqAHms2aYqGgGQ9hCI8M3e2s+oSIgfW0XogoFXzae+ksWvHvX/81IM/xm9tiWKUYuqps5leCCQp7iXZtbRztk4v3LiOLN/IXzno5USyJ0DvaUz6KmyZdalK3XHaImaoWpsCQ1Q6ntUUrTQXdOz7SV0B3PMQfpQy06u447B/CnCDLcxrVgJe9aCLE+ViJx9TaUwNJ731mM/A78+xT7k5T0gFZvI6IMft5GWdpyPGEqUxSLjilDLQR1eZiPWe1UxT3PoLYzpy8xgrNkO1jNT8bumy0zs0lAs7OAenlMw7wHrWo2CSVuia0wmHMA9Xdp44y/m7fjJ11nctMCzDMmBT/8DUWLfBPYyr3h7L9PzpcGLk3Fn0i3SsDzkQLKiHN3tNWrgN71YN+zSAbJ9YHu+U+e1vgVihAK31STnV/8wogfkqnKwI6cekpriAX2gEd7VI1wgTcZY8JWxzY3gUyN/L3WXwYcUgsHRub0njPNILn4N9cONjgnZJNEpFvJq/yXaspf057JPlGDHK3eWYLGt8JDQLLgWMmiSy3diTq+hwflD7hXXDF1n4UFrFS9hzntrIR+1ZvR2YpSMmATljd9sbkxa/u1QVjBE3iqMxyhB89qXMD1Gg=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(36860700016)(376014)(82310400026)(3023799003)(11063799006)(18002099003)(22082099003)(56012099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: mkn7eM0ZrcoUndn28PMRLzW7v2A88EE7WS0RK11tRbZ4roww8cXl9oQDuiuqKvcNmen7z9TpPDCC7+MaIXQbZMVFbLtRKx0kXvWAZnkfA+6bt2l+CnND8JpXpMMS+VLgiUzmyxbGn5vVgcslX/beEuCEj8zWs/np8dCsxML0uzZhSCPyB+mAnsVUguu8er74AYRo2Rlax+X3ojb7GDyhUQvbzZvmnDQQ9dV+CnqXOtLXVjUQu2YKh5wVamUu8WBZ596+iZECAW63G9TGiXFNhJt/J2yUL5BkckLwl2NLRPvFT5JOB6dR8KHj68tpVuyLs/bgvW5sK9ZYAC//MCh2m0laCEOboHKRlY57nDvEIoFQNh+384NcOxvoQ79CBR79gGZAJPnHXOjLP1rkWcL2gVf41/R8VTgkRnTrZYpvOUAdWtD5sA17QN2vhxSJbtHr
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 15:03:51.3313 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ff9b9a6-0e7b-4635-fb7e-08deb5b7d664
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: MN1PEPF0000ECD9.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB9000
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260506100126.9827-2-xiandong.wang@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,42 +79,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add igt_debug_interactive_mode_check() for smpte2084 and
-traditional-sdr in test_static_swap(). These checks are CI-safe
-(no-op without --interactive-debug) and provide a Y/n prompt when
-run interactively:
+Hi Xiandong,
+On 2026-05-06 at 18:01:11 +0800, Xiandong Wang wrote:
+> From: Xiandong Wang <Xiandong.Wang@mediatek.com>
+> 
+> kms_cursor_legacy uses tight vblank timing assertions that can be unstable
+> on MTK under higher system load, leading to intermittent failures.
+> 
+> This patch makes two key improvements based on review feedback:
+> 
+> 1. In flip_vs_cursor(): Change from igt_assert_eq() to igt_assert_lte()
+>    for the non-extra-vblank case. Since igt_crtc_get_vblank() will never
+>    return a value less than vblank_start, this relaxation won't cause
+>    regressions on any platform while improving test stability.
+> 
+> 2. In cursor_vs_flip(): Introduce a threshold variable approach instead
+>    of hardcoding the timing assertion. For MTK platform, multiply the
+>    threshold by 4x to accommodate longer cursor update times under heavy
+>    load.
+> 
+>    MTK display hardware uses a frame-based processing model where cursor
+>    plane updates are scheduled alongside other display operations in the
+>    same frame queue. Under high system load (e.g., concurrent page flips,
+>    CPU pressure), the cursor update path may take additional time due to:
+>    - Display hardware command buffer arbitration
+>    - Memory bus contention with other display operations
+>    - Multi-stage pipeline latency in the display controller
+> 
+>    The 4x threshold multiplier (from 5*vrefresh/8 to 20*vrefresh/8) provides
+>    sufficient margin for these platform-specific scheduling behaviors while
+>    still validating that cursor updates complete within a reasonable timeframe.
+>    This avoids false test failures on MTK platforms without compromising the
+>    test's ability to catch real timing regressions.
+> 
+> This improves test robustness on MTK without changing expectations on
+> non-MTK platforms.
+> 
+> v2: Refactor based on review comments from Jason-JH Lin:
+>     - Remove MTK-specific guard for flip_vs_cursor() since igt_assert_lte
+>       is a safe relaxation for all platforms
+>     - Use threshold variable approach in cursor_vs_flip() for better
+>       code clarity and maintainability
+> 
+> v3: Add detailed explanation of MTK hardware characteristics and timing
+>     requirements
+> 
+> Suggested-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+> Signed-off-by: Xiandong Wang <Xiandong.Wang@mediatek.com>
 
-  kms_hdr --run-subtest static-swap --interactive-debug=smpte2084
-  kms_hdr --run-subtest static-swap --interactive-debug=traditional-sdr
+Thank you all, I merged this.
 
-Assisted-by: Copilot:Claude-Opus-4.6
-Signed-off-by: Alex Hung <alex.hung@amd.com>
----
- tests/kms_hdr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Regards,
+Kamil
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index d21f1b3f8..affd38887 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -454,6 +454,8 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_output_bpc_equal(crtc,
- 				    data->output, 10);
-+	igt_debug_interactive_mode_check("smpte2084",
-+					 "HDR pattern displayed with SMPTE ST 2084 metadata");
-
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
-
-@@ -483,6 +485,8 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 		igt_display_commit_atomic(display, 0, NULL);
- 	else
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_debug_interactive_mode_check("traditional-sdr",
-+					 "SDR pattern displayed with traditional SDR metadata");
-
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
-
---
-2.43.0
-
+> ---
+>  tests/kms_cursor_legacy.c | 20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+> index 5399ef481..4d597af79 100644
+> --- a/tests/kms_cursor_legacy.c
+> +++ b/tests/kms_cursor_legacy.c
+> @@ -1039,8 +1039,8 @@ static void flip_vs_cursor(igt_display_t *display, enum flip_test mode, int nloo
+>  		igt_ignore_warn(read(display->drm_fd, &vbl, sizeof(vbl)));
+>  
+>  		if (!mode_requires_extra_vblank(mode))
+> -			igt_assert_eq(igt_crtc_get_vblank(crtc, 0),
+> -				      vblank_start + 1);
+> +			igt_assert_lte(igt_crtc_get_vblank(crtc, 0),
+> +				       vblank_start + 1);
+>  		else
+>  			igt_assert_lte(igt_crtc_get_vblank(crtc, 0),
+>  				       vblank_start + 2);
+> @@ -1442,8 +1442,20 @@ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloo
+>  			vblank_last = vbl.sequence;
+>  		}
+>  
+> -		if (!cursor_slowpath(display, mode))
+> -			igt_assert_lte(vbl.sequence, vblank_start + 5 * vrefresh / 8);
+> +		if (!cursor_slowpath(display, mode)) {
+> +			unsigned long threshold = 5 * vrefresh / 8;
+> +
+> +			/*
+> +			 * On MTK platform, cursor updates may take longer under heavy
+> +			 * load due to hardware scheduling characteristics. Relax the
+> +			 * timing threshold to avoid false positives while still
+> +			 * validating correctness.
+> +			 */
+> +			if (is_mtk_device(display->drm_fd))
+> +				threshold = 4 * threshold;
+> +
+> +			igt_assert_lte(vbl.sequence, vblank_start + threshold);
+> +		}
+>  
+>  		shared[0] = 1;
+>  		igt_waitchildren();
+> -- 
+> 2.45.2
+> 
