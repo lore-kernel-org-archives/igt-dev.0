@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F3CBCD4F5B
-	for <igt-dev@archiver.kernel.org>; Tue, 19 May 2026 07:56:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03DBACD4851
+	for <igt-dev@archiver.kernel.org>; Tue, 19 May 2026 07:59:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C410110EAF2;
-	Tue, 19 May 2026 07:56:38 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 464FB10EAF0;
- Tue, 19 May 2026 07:56:11 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7306536849207715669=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A948510EAF4;
+	Tue, 19 May 2026 07:59:51 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TsVMWjTP";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D627E10EAF4
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2026 07:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1779177574; x=1810713574;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=pi9y0Sm0sRfOa4l9oEFJuPZDoupT1aiwyl1s9PaWw3g=;
+ b=TsVMWjTPLhoa6/YjwnvPHrluNyPLvYVRbSDJ7+qK+wnbRMZp5dUTrsb1
+ wDVXuDDf8KWrCKMGFuIwitN9hYjLh0PfP0TBIZGUAE/tDFOoaLA3/U2E2
+ WNCzX1ggQNuerrjkJ41VOd0FRdBq3hetINkVF5CixlT3ORLFFLQcF3Erd
+ w3tAsJ3OLp7vxt7cMUfHHHH1nzGzgLLiZ8B4igadYzvtQBGcZWi4kgijH
+ 1BxGR0lxG/hHYztqWO7E0dIrCi/nJG+daUQJ51rC/WNxCaF4+oSGAURVF
+ AlNBRllcaKBPTkrIAUQfEH1KK9suJ3suX5ldqS39hdFzdSepHyuRW3d1D g==;
+X-CSE-ConnectionGUID: apzVJsUDTlCUtEPvAgWkig==
+X-CSE-MsgGUID: 6srlGusMRAS9Awu4DyGoJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="79191050"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="79191050"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 May 2026 00:59:33 -0700
+X-CSE-ConnectionGUID: NZBFYoj9SamwtRX7jwBuKw==
+X-CSE-MsgGUID: zgJU8AfVSXyuJUDIVdozOQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; d="scan'208";a="263483423"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 May 2026 00:59:32 -0700
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_dp_linktrain_fallback: Clear stale
+ forced LT failure counter on timeout
+Date: Tue, 19 May 2026 13:50:54 +0530
+Message-Id: <20260519082054.1971395-1-kunal1.joshi@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fdsc=3A_Fi?=
- =?utf-8?q?x_retry_loop_for_non-RGB_case?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karthik B S" <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 19 May 2026 07:56:11 -0000
-Message-ID: <177917737128.84520.16142732714857212425@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260519041409.2479630-1-karthik.b.s@intel.com>
-In-Reply-To: <20260519041409.2479630-1-karthik.b.s@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +64,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7306536849207715669==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+When force_failure_and_wait() sets force_train_failure=2 (LT_FAILURE_REDUCED_CAPS)
+and triggers a retrain, the kernel consumes the counter once per
+intel_dp_link_train() call. With MAX_SEQ_TRAIN_FAILURES=2, the first call
+happens inside the modeset triggered by force_retrain. The second consumption
+depends on a queued link_check_work (delay=0) firing and completing a second
+modeset promptly.
 
-== Series Details ==
+However, on external DP connectors (where this test runs), the second
+intel_dp_link_train() call can fail to execute if:
 
-Series: tests/intel/kms_dsc: Fix retry loop for non-RGB case
-URL   : https://patchwork.freedesktop.org/series/166814/
-State : success
+ - A long HPD fires between the two retrains (common on marginal links,
+   USB-C docks, TBT connections). The long HPD handler sets
+   reset_link_params=true, which triggers intel_dp_reset_link_params()
+   during detect -- resetting seq_train_failures to 0. When the queued
+   link_check_work then calls intel_dp_needs_link_retrain(), it sees
+   seq_train_failures==0, link status OK, and returns false. No second
+   retrain occurs.
 
-== Summary ==
+ - The second retrain's intel_modeset_commit_pipes() fails due to lock
+   contention with a concurrent modeset triggered by the same HPD event.
 
-CI Bug Log - changes from XEIGT_8920_BAT -> XEIGTPW_15201_BAT
-====================================================
+In both cases, intel_dp_reset_link_params() does NOT clear
+force_train_failure, leaving the debugfs counter stale at a non-zero value.
+The test then times out polling for it to reach zero.
 
-Summary
--------
+Previously this caused an assertion failure, aborting the entire test.
+Instead, clear the stale counter by writing 0 to the debugfs and continue.
+The test's subsequent assertions (wait_for_hotplug_and_check_bad, link param
+verification) will still catch if the fallback genuinely did not occur.
 
-  **SUCCESS**
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/intel/kms_dp_linktrain_fallback.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-  No regressions found.
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+index 661af7d16..dc9faa216 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -255,8 +255,27 @@ static bool force_failure_and_wait(data_t *data,
+ 	if (check_condition_with_timeout(data->drm_fd, output,
+ 					 igt_get_dp_pending_lt_failures,
+ 					 interval, timeout)) {
+-		igt_info("Timed out waiting for pending LT failures\n");
+-		return false;
++		/*
++		 * The initial retrain was processed but not all forced LT
++		 * failures were consumed within the timeout. This happens
++		 * when a long HPD fires between the two kernel retrains:
++		 * the long HPD handler sets reset_link_params which resets
++		 * seq_train_failures to 0 during detect, causing the queued
++		 * link_check_work to see needs_link_retrain() == false and
++		 * skip the second retrain. The force_train_failure counter
++		 * is not cleared by intel_dp_reset_link_params(), leaving
++		 * it stale.
++		 *
++		 * This can also occur if the second retrain's modeset fails
++		 * due to lock contention with a concurrent modeset (e.g.
++		 * one triggered by the same HPD event).
++		 *
++		 * Clear the stale counter so it doesn't corrupt subsequent
++		 * iterations of the test loop.
++		 */
++		igt_info("Forced LT failures not fully consumed within timeout "
++			 "— clearing stale counter\n");
++		igt_force_lt_failure(data->drm_fd, output, 0);
+ 	}
+ 
+ 	return true;
+-- 
+2.25.1
 
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_15201_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_live_ktest@xe_dma_buf:
-    - bat-bmg-vm:         [ABORT][1] ([Intel XE#8023]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8920/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15201/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html
-
-  
-  [Intel XE#8023]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8023
-
-
-Build changes
--------------
-
-  * IGT: IGT_8920 -> IGTPW_15201
-
-  IGTPW_15201: 6a24de6d5acc1090c030a9c4634f135217e52045 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8920: f850fd46bb65d821ca7e3a8895e685eff2128ef5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5090-ac60a9dd73e01e3f22825241c2f0498968cb2356: ac60a9dd73e01e3f22825241c2f0498968cb2356
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15201/index.html
-
---===============7306536849207715669==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_dsc: Fix retry loop for non-RGB case</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166814/">https://patchwork.freedesktop.org/series/166814/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15201/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15201/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8920_BAT -&gt; XEIGTPW_15201_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15201_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_dma_buf:<ul>
-<li>bat-bmg-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8920/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8023">Intel XE#8023</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15201/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8920 -&gt; IGTPW_15201</li>
-</ul>
-<p>IGTPW_15201: 6a24de6d5acc1090c030a9c4634f135217e52045 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8920: f850fd46bb65d821ca7e3a8895e685eff2128ef5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5090-ac60a9dd73e01e3f22825241c2f0498968cb2356: ac60a9dd73e01e3f22825241c2f0498968cb2356</p>
-
-</body>
-</html>
-
---===============7306536849207715669==--
