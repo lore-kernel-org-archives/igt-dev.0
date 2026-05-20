@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61232CD4F3D
-	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 13:39:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08786CD4F3C
+	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 13:49:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1094B10F056;
-	Wed, 20 May 2026 13:39:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF11E10E1B0;
+	Wed, 20 May 2026 13:49:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UJk+ngCM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LdacpR4v";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEED610F056
- for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 13:38:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D92310E44C
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 13:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779284321; x=1810820321;
- h=message-id:subject:from:to:cc:date:in-reply-to:
- references:content-transfer-encoding:mime-version;
- bh=f4BzdLWopClf/U0WPm/6b+ZkZyNBhQGOFDNtHmrRAyI=;
- b=UJk+ngCMvYhBLaxKS4v0JC3JmA9MEJ72hJ/yAUnjLG1+mSWBg/cJq9Ln
- 1i4IcFm7BtbRL+QoV/UkrC2ECzJPjIfvlIawgx7OP4ypenEDPFfCZWvtR
- SCI2bxsjfTpy8SKcqIpPkmqTitAgILsLl7WArELfonon7eK1Pt/IlezgC
- tk5uP5DE2h+6QD2OyHNYbXyBn+S0M2mDEEVHTAdty9LR+WOwm9vzY6csV
- CPhCrg82oGMffNMqwCvPvZKdCx3o54M45Yz+6tZlaeL1pDtGohdWdB5GN
- /75TtwAoLfVm4hdgHlq7t1qTKTQ8uNjG5/pCgFQnm/CLimHhLuviYX5Fp g==;
-X-CSE-ConnectionGUID: WEW8AsBmRRObatJ2IpwIOA==
-X-CSE-MsgGUID: jKrB+qHkRfO9MWuTRGsVnw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="83798910"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="83798910"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 06:38:41 -0700
-X-CSE-ConnectionGUID: 6Qoa/IpJRBOIon7y06i4jg==
-X-CSE-MsgGUID: eOPhI+iDRs+Fb1Vz5+kj+A==
+ t=1779284962; x=1810820962;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=Qd+7/EOCv3LxLv3a6cqg2gXXUiucbIRlXnz5DwAQlGc=;
+ b=LdacpR4vyL6i83YwafMr2e2JS5lmDbWomNGuicyzYy0vJxqCXCvw1zaZ
+ WJwphkKY30+qoF/Ni0OyhHF3cpkAYoh5XMBXAb9bUp26aMuguDriB5e80
+ Ko6ht3TYBuzFie8Kd1iAVLmm3ftyYC/sSTUvibkCz2ILzgFp5dylLwxwH
+ YvdoP0/KrUP5UOWWuvArRQROFuHg3VXf8VorLBL+FPSQNngyU7FwOClHh
+ W2p6W/3jjnPk9FD7RLddu1FpZ+olYwbDPVyxAadechdC5YEIlMSeHiw+O
+ C9Kw6jzUwzZREWPeyVOicpeRLML7AodPr/Lo/0Coz1K1U0zuu4qGG4pI7 A==;
+X-CSE-ConnectionGUID: VyYjRkUeSO62QTVy8OmUFA==
+X-CSE-MsgGUID: Njwz2xn1TqqvjNb2vadPDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80085323"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="80085323"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 06:49:20 -0700
+X-CSE-ConnectionGUID: XtjD87RyS0K7HgYSDYuOvw==
+X-CSE-MsgGUID: VCyQ5oRhQKSM32BU7fr3CQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="235752131"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.245.171])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 06:38:39 -0700
-Message-ID: <112595c7a991cd172d6dec4d80c913e3505c41b6.camel@linux.intel.com>
-Subject: Re: [PATCH] tests/core_hotunplug: add *-with-load subtests
- exercising GPU workload during hotplug
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Nitin Gote <nitin.r.gote@intel.com>, igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, matthew.auld@intel.com
-Date: Wed, 20 May 2026 15:38:36 +0200
-In-Reply-To: <20260518154808.118134-2-nitin.r.gote@intel.com>
-References: <20260518154808.118134-2-nitin.r.gote@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="245171589"
+Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.189])
+ ([172.28.182.189])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 06:49:20 -0700
+Message-ID: <2523ec2f-eb8b-4a15-b4a3-3f7a15cdd2e0@linux.intel.com>
+Date: Wed, 20 May 2026 15:49:17 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] tests/intel/xe_sriov_vfio: Query only BAR regions in
+ region-info
+To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
+Cc: marcin.bernatowicz@intel.com, jakub1.kolakowski@intel.com
+References: <20260519120055.201038-1-lukasz.laguna@intel.com>
+ <20260519120055.201038-2-lukasz.laguna@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260519120055.201038-2-lukasz.laguna@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,401 +72,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nitin,
 
-On Mon, 2026-05-18 at 21:18 +0530, Nitin Gote wrote:
-> The six fd-holding hot* subtests keep a DRM fd open across unbind/unplug
-> but leave the GPU idle, so the kernel hotplug path is never exercised
-> against an active workload.
->=20
-> Add six new dedicated *-with-load subtests that run a GPU spinner across
-> the unbind/unplug sequence so the device is removed while a workload is
-> actively using it.
->=20
-> The workload helpers use an explicit chipset dispatch block in
-> workload_start()/stop() so that other vendors can contribute
-> support by adding an else-if branch. New subtests are gated on
-> workload_available(), which currently covers DRIVER_XE and DRIVER_INTEL,
-> and returns false (SKIP) on any other driver.
->=20
-> igt_spin_free() is avoided in workload_stop() since the device may be
-> gone by then -- igt_spin_end() writes the stop condition via a userspace
-> mmap and lets the DRM fd close reclaim kernel-side resources.
->=20
-> Validated on BMG and DG2 with a KASAN-enabled kernel:
-> all six new subtests pass with no KASAN reports.
->=20
-> v3: Extend struct gpu_workload with a union of vendor-named members
->     to match the chipset dispatch in workload_start()/stop(). (Janusz)
->=20
-> v2: Pass the hotunplug priv struct to workload_start()/stop()
->     and dispatch via an explicit if/else-if chipset block to invite
->     other vendors to contribute. (Janusz)
->=20
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-
-Now it LGTM.
-
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-
-
+On 5/19/2026 2:00 PM, Lukasz Laguna wrote:
+> The region-info subtest iterates over all regions reported by
+> VFIO_DEVICE_GET_INFO. Not all regions are queryable on every device,
+> which can lead to false failures. To avoid this, query only BAR regions,
+> but check if number of regions returned by VFIO is correct.
+>
+> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 > ---
-> Hi Janusz,
->=20
-> Extended the struct gpu_workload with a union of vendor-named members
-> to make a room for other vendors data.
->=20
-> Thanks,
-> Nitin
->=20
->  tests/core_hotunplug.c | 294 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 294 insertions(+)
->=20
-> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> index 7c9dae1bf..2c54af628 100644
-> --- a/tests/core_hotunplug.c
-> +++ b/tests/core_hotunplug.c
-> @@ -80,6 +80,34 @@
->   * SUBTEST: unplug-rescan
->   * Description: Check if a device believed to be closed can be cleanly
->   *		unplugged, then restored
-> + *
-> + * SUBTEST: hotunbind-rebind-with-load
-> + * Description: Check if the driver can be cleanly unbound from an open =
-device
-> + *		with a background GPU workload in flight, then released and
-> + *		rebound
-> + *
-> + * SUBTEST: hotunplug-rescan-with-load
-> + * Description: Check if an open device with a background GPU workload i=
-n
-> + *		flight can be cleanly unplugged, then released and restored
-> + *
-> + * SUBTEST: hotrebind-with-load
-> + * Description: Check if the driver can be cleanly rebound to a device w=
-ith a
-> + *		still open hot unbound driver instance while a background GPU
-> + *		workload is in flight
-> + *
-> + * SUBTEST: hotreplug-with-load
-> + * Description: Check if a hot unplugged and still open device can be cl=
-eanly
-> + *		restored while a background GPU workload is in flight
-> + *
-> + * SUBTEST: hotrebind-lateclose-with-load
-> + * Description: Check if a hot unbound driver instance still open after =
-hot
-> + *		rebind with a background GPU workload in flight can be cleanly
-> + *		released
-> + *
-> + * SUBTEST: hotreplug-lateclose-with-load
-> + * Description: Check if an instance of a still open while hot replugged
-> + *		device with a background GPU workload in flight can be cleanly
-> + *		released
->   */
-> =20
->  IGT_TEST_DESCRIPTION("Examine behavior of a driver on device hot unplug"=
-);
-> @@ -565,6 +593,56 @@ static void set_filter_from_device(int fd)
->  	igt_assert_eq(igt_device_filter_add(filter), 1);
->  }
-> =20
-> +/* GPU workload helpers */
-> +
-> +struct gpu_workload {
-> +	union {
-> +		struct {
-> +			igt_spin_t *spin;
-> +			uint64_t ahnd;
-> +		} intel; /* Xe and i915 */
-> +	};
-> +};
-> +
-> +static bool workload_available(int chipset)
-> +{
-> +	return chipset =3D=3D DRIVER_XE || chipset =3D=3D DRIVER_INTEL;
-> +}
-> +
-> +static void workload_start(struct hotunplug *priv, int fd,
-> +			   struct gpu_workload *w)
-> +{
-> +	if (priv->chipset =3D=3D DRIVER_XE || priv->chipset =3D=3D DRIVER_INTEL=
-) {
-> +		local_debug("%s\n", "starting GPU spinner");
-> +		priv->failure =3D "GPU workload start failure!";
-> +		w->intel.ahnd =3D intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-> +		w->intel.spin =3D igt_spin_new(fd, .ahnd =3D w->intel.ahnd);
-> +		priv->failure =3D NULL;
-> +	}
-> +}
-> +
-> +static void workload_stop(struct hotunplug *priv, struct gpu_workload *w=
-)
-> +{
-> +	if (priv->chipset =3D=3D DRIVER_XE || priv->chipset =3D=3D DRIVER_INTEL=
-) {
-> +		if (!w->intel.spin)
-> +			return;
-> +
-> +		/*
-> +		 * The device may be gone (unbind/unplug), so avoid
-> +		 * igt_spin_free(): on Xe it would wait forever on a syncobj
-> +		 * that never signals; on i915 it would touch the dead fd via
-> +		 * gem_munmap()/gem_close(). Instead, end the spinner via a
-> +		 * userspace mmap write and let the DRM fd close reclaim the
-> +		 * kernel-side resources.
-> +		 */
-> +		local_debug("%s\n", "stopping GPU spinner");
-> +		igt_spin_end(w->intel.spin);
-> +		put_ahnd(w->intel.ahnd);
-> +		w->intel.spin =3D NULL;
-> +		w->intel.ahnd =3D 0;
-> +	}
-> +}
-> +
->  /* Subtests */
-> =20
->  static void unbind_rebind(struct hotunplug *priv)
-> @@ -679,6 +757,150 @@ static void hotreplug_lateclose(struct hotunplug *p=
-riv)
->  	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
->  }
-> =20
-> +static void hotunbind_rebind_with_load(struct hotunplug *priv)
-> +{
-> +	struct gpu_workload w =3D { 0 };
-> +
-> +	pre_check(priv);
-> +
-> +	igt_require_f(workload_available(priv->chipset),
-> +		      "No GPU workload support for this driver\n");
-> +
-> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot unbind");
-> +
-> +	workload_start(priv, priv->fd.drm, &w);
-> +
-> +	driver_unbind(priv, "hot ", 0);
-> +
-> +	workload_stop(priv, &w);
-> +
-> +	priv->fd.drm =3D close_device(priv->fd.drm, "late ", "unbound ");
-> +	igt_assert_eq(priv->fd.drm, -1);
-> +
-> +	driver_bind(priv, 0);
-> +
-> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
-> +}
-> +
-> +static void hotunplug_rescan_with_load(struct hotunplug *priv)
-> +{
-> +	struct gpu_workload w =3D { 0 };
-> +
-> +	pre_check(priv);
-> +
-> +	igt_require_f(workload_available(priv->chipset),
-> +		      "No GPU workload support for this driver\n");
-> +
-> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot unplug");
-> +
-> +	workload_start(priv, priv->fd.drm, &w);
-> +
-> +	device_unplug(priv, "hot ", 0);
-> +
-> +	workload_stop(priv, &w);
-> +
-> +	priv->fd.drm =3D close_device(priv->fd.drm, "late ", "removed ");
-> +	igt_assert_eq(priv->fd.drm, -1);
-> +
-> +	bus_rescan(priv, 0);
-> +
-> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
-> +}
-> +
-> +static void hotrebind_with_load(struct hotunplug *priv)
-> +{
-> +	struct gpu_workload w =3D { 0 };
-> +
-> +	pre_check(priv);
-> +
-> +	igt_require_f(workload_available(priv->chipset),
-> +		      "No GPU workload support for this driver\n");
-> +
-> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot rebind");
-> +
-> +	workload_start(priv, priv->fd.drm, &w);
-> +
-> +	driver_unbind(priv, "hot ", 60);
-> +
-> +	driver_bind(priv, 0);
-> +
-> +	workload_stop(priv, &w);
-> +
-> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
-> +}
-> +
-> +static void hotreplug_with_load(struct hotunplug *priv)
-> +{
-> +	struct gpu_workload w =3D { 0 };
-> +
-> +	pre_check(priv);
-> +
-> +	igt_require_f(workload_available(priv->chipset),
-> +		      "No GPU workload support for this driver\n");
-> +
-> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot replug");
-> +
-> +	workload_start(priv, priv->fd.drm, &w);
-> +
-> +	device_unplug(priv, "hot ", 60);
-> +
-> +	bus_rescan(priv, 0);
-> +
-> +	workload_stop(priv, &w);
-> +
-> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
-> +}
-> +
-> +static void hotrebind_lateclose_with_load(struct hotunplug *priv)
-> +{
-> +	struct gpu_workload w =3D { 0 };
-> +
-> +	pre_check(priv);
-> +
-> +	igt_require_f(workload_available(priv->chipset),
-> +		      "No GPU workload support for this driver\n");
-> +
-> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot rebind");
-> +
-> +	workload_start(priv, priv->fd.drm, &w);
-> +
-> +	driver_unbind(priv, "hot ", 60);
-> +
-> +	driver_bind(priv, 0);
-> +
-> +	workload_stop(priv, &w);
-> +
-> +	priv->fd.drm =3D close_device(priv->fd.drm, "late ", "unbound ");
-> +	igt_assert_eq(priv->fd.drm, -1);
-> +
-> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
-> +}
-> +
-> +static void hotreplug_lateclose_with_load(struct hotunplug *priv)
-> +{
-> +	struct gpu_workload w =3D { 0 };
-> +
-> +	pre_check(priv);
-> +
-> +	igt_require_f(workload_available(priv->chipset),
-> +		      "No GPU workload support for this driver\n");
-> +
-> +	priv->fd.drm =3D local_drm_open_driver(false, "", " for hot replug");
-> +
-> +	workload_start(priv, priv->fd.drm, &w);
-> +
-> +	device_unplug(priv, "hot ", 60);
-> +
-> +	bus_rescan(priv, 0);
-> +
-> +	workload_stop(priv, &w);
-> +
-> +	priv->fd.drm =3D close_device(priv->fd.drm, "late ", "removed ");
-> +	igt_assert_eq(priv->fd.drm, -1);
-> +
-> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
-> +}
-> +
->  /* Main */
-> =20
->  int igt_main()
-> @@ -817,6 +1039,78 @@ int igt_main()
->  			recover(&priv);
->  	}
-> =20
-> +	igt_fixture()
-> +		post_healthcheck(&priv);
-> +
-> +	igt_subtest_group() {
-> +		igt_describe("Check if the driver can be cleanly unbound from an open =
-device with a background GPU workload in flight, then released and rebound"=
-);
-> +		igt_subtest("hotunbind-rebind-with-load")
-> +			hotunbind_rebind_with_load(&priv);
-> +
-> +		igt_fixture()
-> +			recover(&priv);
-> +	}
-> +
-> +	igt_fixture()
-> +		post_healthcheck(&priv);
-> +
-> +	igt_subtest_group() {
-> +		igt_describe("Check if an open device with a background GPU workload i=
-n flight can be cleanly unplugged, then released and restored");
-> +		igt_subtest("hotunplug-rescan-with-load")
-> +			hotunplug_rescan_with_load(&priv);
-> +
-> +		igt_fixture()
-> +			recover(&priv);
-> +	}
-> +
-> +	igt_fixture()
-> +		post_healthcheck(&priv);
-> +
-> +	igt_subtest_group() {
-> +		igt_describe("Check if the driver can be cleanly rebound to a device w=
-ith a still open hot unbound driver instance while a background GPU workloa=
-d is in flight");
-> +		igt_subtest("hotrebind-with-load")
-> +			hotrebind_with_load(&priv);
-> +
-> +		igt_fixture()
-> +			recover(&priv);
-> +	}
-> +
-> +	igt_fixture()
-> +		post_healthcheck(&priv);
-> +
-> +	igt_subtest_group() {
-> +		igt_describe("Check if a hot unplugged and still open device can be cl=
-eanly restored while a background GPU workload is in flight");
-> +		igt_subtest("hotreplug-with-load")
-> +			hotreplug_with_load(&priv);
-> +
-> +		igt_fixture()
-> +			recover(&priv);
-> +	}
-> +
-> +	igt_fixture()
-> +		post_healthcheck(&priv);
-> +
-> +	igt_subtest_group() {
-> +		igt_describe("Check if a hot unbound driver instance still open after =
-hot rebind with a background GPU workload in flight can be cleanly released=
-");
-> +		igt_subtest("hotrebind-lateclose-with-load")
-> +			hotrebind_lateclose_with_load(&priv);
-> +
-> +		igt_fixture()
-> +			recover(&priv);
-> +	}
-> +
-> +	igt_fixture()
-> +		post_healthcheck(&priv);
-> +
-> +	igt_subtest_group() {
-> +		igt_describe("Check if an instance of a still open while hot replugged=
- device with a background GPU workload in flight can be cleanly released");
-> +		igt_subtest("hotreplug-lateclose-with-load")
-> +			hotreplug_lateclose_with_load(&priv);
-> +
-> +		igt_fixture()
-> +			recover(&priv);
-> +	}
-> +
->  	igt_fixture() {
->  		post_healthcheck(&priv);
-> =20
+>   tests/intel/xe_sriov_vfio.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/intel/xe_sriov_vfio.c b/tests/intel/xe_sriov_vfio.c
+> index f42deaea6..bb1c02696 100644
+> --- a/tests/intel/xe_sriov_vfio.c
+> +++ b/tests/intel/xe_sriov_vfio.c
+> @@ -30,7 +30,7 @@
+>    * Description: Bind VF to xe-vfio-pci and perform minimal VFIO group open and status ioctl.
+>    *
+>    * SUBTEST: region-info
+> - * Description: Bind VF to xe-vfio-pci, open VFIO device and query VFIO region info (BAR sizes).
+> + * Description: Bind VF to xe-vfio-pci, open VFIO device and query BAR regions info.
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Xe SR-IOV VFIO tests (xe-vfio-pci)");
+> @@ -254,7 +254,10 @@ static void vfio_dump_region_info(int device_fd)
+>   	igt_info("VFIO device: flags=0x%x num_regions=%u num_irqs=%u\n",
+>   		 dinfo.flags, dinfo.num_regions, dinfo.num_irqs);
+>   
+> -	for (uint32_t i = 0; i < dinfo.num_regions; i++) {
+> +	igt_assert(dinfo.num_regions >= VFIO_PCI_NUM_REGIONS);
+> +
+> +	/* Query BAR regions only */
+> +	for (uint32_t i = 0; i <= VFIO_PCI_BAR5_REGION_INDEX; i++) {
+>   		struct vfio_region_info rinfo = {
+>   			.argsz = sizeof(rinfo),
+>   			.index = i,
+LGTM,
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+
