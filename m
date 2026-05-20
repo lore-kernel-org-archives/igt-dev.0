@@ -4,61 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FED9CD4F54
-	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 09:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D753ACD4F54
+	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 09:58:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 30C2710E0E1;
-	Wed, 20 May 2026 09:54:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C03D10EFAF;
+	Wed, 20 May 2026 09:58:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BUso4aHH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="guN208nI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCCB510EFAF
- for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 09:54:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D9E010EFAF
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 09:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779270875; x=1810806875;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version:content-transfer-encoding;
- bh=BOJLCaSSTmvX4pYHv8eK2VZR4v0mYVQCGphqE7UFgOs=;
- b=BUso4aHHTIIq3zGq6J0DOcNoIaX9MAoa86dgDJE7zgIWUdovxwCXlffY
- 6bb+5G7umY1R7foTOZCoQiW52g90MTcVAbomFJp11hnHzTxpyCi1/06Ss
- OnepNJa/BLyotjmyPOiZ6RYZGeOTPjIiwuCcfUGZuvcYJilDjRFns/3Nr
- 4VrgSTMDQQprXeql8eli2wsHqdG4PFcd23XwRBpskbgDozF6o5UrWhLrc
- qOR9zr/SF96QPIWfFvY9WBMAM4pObscUlBZ2ENpt79GtmAh90jLdKmtGM
- N5kW9582Dw/2zNkPb9C+eC8LDYWDG9CFyriK3gyYIwEWf1oWhsQffTo7P A==;
-X-CSE-ConnectionGUID: bAVnfbiERBmEtUhJlxCLrw==
-X-CSE-MsgGUID: i5824AtOStGHadj9wGlwAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="80015902"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="80015902"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 02:54:34 -0700
-X-CSE-ConnectionGUID: j8u3lWJxQNa8hMRL8ulXlw==
-X-CSE-MsgGUID: aTYOUxMWQZWzszI1iPoO6Q==
+ t=1779271081; x=1810807081;
+ h=from:subject:date:message-id:mime-version:
+ content-transfer-encoding:to:cc;
+ bh=3F/U57RDI4Cr1+YTYoxL8MqYV5uMiJbU1CuijRUVyXI=;
+ b=guN208nICFsX1g2NS+KxFzqJJ+S8GasfFNmS9UYuhsH3T21aqSOEkx0M
+ Pw0ZsjezfLu+UpbweJsFZmC0Nh7ySx8Ia8KvrtLGRRdX/rJVfSQIMjPkL
+ bAZtP5SjYFHpOMefiFSHl06qtH+6fJHVRc134DIwoScWVHSb+ZnphiKpy
+ L0XiLB3S6EnOI7qKQANX3fBOn1YLWd9npL2vMlTeO7RN6UmEolu/CfHqL
+ cwoFqYAi9pKn5VN2hUbnZjWM76wuvysp2tyLDVxBwN4JmIUXWJvRH0sI9
+ ZlLRxVZHy4ygeT/bJFqGbki0KRfXNKMolM7nprqvdZQlNSHu2WO5epWzY w==;
+X-CSE-ConnectionGUID: O9rSPmjuRE21ze6CjCdSQw==
+X-CSE-MsgGUID: dUws8JWNSvGF1bhhpSk9CA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="79188872"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="79188872"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 02:58:01 -0700
+X-CSE-ConnectionGUID: +DgbVBRzRzOj2mswUTBQVg==
+X-CSE-MsgGUID: Aafxfz5aQRq9NDVdgcKPlw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="245097116"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.148])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 02:54:33 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: =?utf-8?Q?Micha=C5=82?= Grzelak <michal.grzelak@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: suraj.kandpal@intel.com, =?utf-8?Q?Micha=C5=82?= Grzelak
- <michal.grzelak@intel.com>
-Subject: Re: [PATCH i-g-t v1 5/7] tools/vbt_decode: parse & dump VS/PE-O
- tables for LT
-In-Reply-To: <20260507012821.527453-6-michal.grzelak@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260507012821.527453-1-michal.grzelak@intel.com>
- <20260507012821.527453-6-michal.grzelak@intel.com>
-Date: Wed, 20 May 2026 12:54:29 +0300
-Message-ID: <3beb3bc84b4a3aa7cd7903906900ec093e3f44ab@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="239971509"
+Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 02:58:00 -0700
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: [PATCH 0/3] lib/intel_batchbuffer: intel bb copy data improvements
+Date: Wed, 20 May 2026 11:56:20 +0200
+Message-Id: <20260520-ibb_fixes-v1-0-d0c8ab2d07d3@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAESFDWoC/yWMQQqDMBBFryKzNhBDa7VXkVIy41jHRSoZUwri3
+ ZvU5Xv/8XdQjsIK92qHyB9ReYcMTV0BzT682MiYGZx1rb06awTxOcmX1XR9M16wI5zoBrlfI/+
+ HnA+PkzXhwrSVg1KgVzYYfaC5qLQqHMcPgmsgd4MAAAA=
+X-Change-ID: 20260520-ibb_fixes-891d4b8cbfc7
+To: igt-dev@lists.freedesktop.org
+Cc: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Jonathan Cavitt <jonathan.cavitt@intel.com>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=751;
+ i=andrzej.hajda@intel.com; h=from:subject:message-id;
+ bh=3F/U57RDI4Cr1+YTYoxL8MqYV5uMiJbU1CuijRUVyXI=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBqDYVdrBH3yRBCDn9XnsG5qsi1hV/1MNuVcNKin
+ ZG3LJOLgaiJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCag2FXQAKCRAjYrKT3hD9
+ 10CoDACG4KoSPlh4ruvn4m8xXhxYF1qm63avk4/P6WhcasYN1Ay5NuKnkGSjNj5cp8zZtb0x18p
+ AYO63I8GX1d2IZRcI/8iNAHkVK3YUS0N9jxuOgAbBBEoTytiIXEQE8CROGfd5jAlDSQQHi7Snx8
+ cWlsXZUMcxkEr1PmxAAjg44icGi3LmIWX4bpRRw1Ple6VoSejlNMn214hBeNEqFtsNd3CbXY9Cw
+ bey1PIH+SibvkewIE9oTYmQ4f8sMZp8y5sn7oLwWJVGhFg9yRuxyH+tz0qIbyfuW7KmzN8/zPXS
+ qm+HcvtIbv250BmNJhavtpTpJATacvft2cjhn1IOz5sJtPJQ/pYdkHSWxDo3x7nrQBP/jAhomOD
+ fS83YQgOFgT9zL5f89OtSHaUEmKTREoXQ6OoKRohlNcsXFXZakxp73E44uuWdYX9KV08oisXiQM
+ Hz+I5SSvTNheepAU1ZpfllRKb2VPG1w3aVmV+f/g+g/QFhXObCpxn5hCqmqX+GnAqzP8Y=
+X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
+ fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,124 +87,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 07 May 2026, Micha=C5=82 Grzelak <michal.grzelak@intel.com> wrote:
-> Dump VBT #57 tables for LT. Add a table of strings to store each table
-> purpose. Show the affected modes on dumping.
->
-> Signed-off-by: Micha=C5=82 Grzelak <michal.grzelak@intel.com>
-> ---
->  tools/intel_vbt_decode.c | 44 ++++++++++++++++++++++++++++++++--------
->  1 file changed, 36 insertions(+), 8 deletions(-)
->
-> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-> index f7ba4bc3d5..6e5fd73473 100644
-> --- a/tools/intel_vbt_decode.c
-> +++ b/tools/intel_vbt_decode.c
-> @@ -3469,27 +3469,55 @@ static const char * const vspeo_levels[16] =3D {
->  	"N/A  ",
->  };
->=20=20
-> -static void dump_vswing_preemphasis(struct context *context,
-> -				    const struct bdb_block *block)
-> +static const char * const vspeo_lt_tables[6] =3D {
-> +	"UNUSED",
-> +	"UNUSED",
-> +	"UNUSED",
-> +	"UNUSED",
-> +	"DP 1.4",
-> +	"DP 2.1",
-> +};
-> +
-> +static void dump_vspeo_lt(const struct bdb_vswing_preemph *vspeo)
->  {
-> -	const struct bdb_vswing_preemph *vspeo =3D block_data(block);
-> +	const unsigned int *tables =3D vspeo->tables;
-> +	const unsigned int *vals;
-> +	int num_rows =3D 16;
-> +	size_t offset =3D 0;
->=20=20
->  	printf("\tNumber of vswing tables: %d\n", vspeo->num_tables);
->  	printf("\tNumber of columns: %d\n", vspeo->num_columns);
-> +	printf("\tNumber of rows: %d\n", num-rows);
-> +	printf("\tPhy type: LT\n");
->=20=20
->  	for (int idx =3D 0; idx < vspeo->num_tables; idx++) {
-> -		printf("\tVswing Table #%d:\n", idx+1);
-> +		printf("\tVswing Table #%d (%s):\n", idx+1, vspeo_lt_tables[idx]);
-> +		for (int row =3D 0; row < num_rows; row++) {
-> +			vals =3D &tables[offset];
->=20=20
-> -		for (int row =3D 0; row < 10; row++) {
->  			printf("\t\t%s: ", vspeo_levels[row]);
-> +			printf("main-cursor: 0x%08x, ", vals[0]);
-> +			printf("pre-cursor: 0x%08x, ", vals[1]);
-> +			printf("post-cursor: 0x%08x\n", vals[2]);
->=20=20
-> -			for (int col =3D 0; col < vspeo->num_columns; col++)
-> -				printf(" 0x%08x", vspeo->tables[idx * 10 * vspeo->num_columns + row =
-* col]);
-> -			printf("\n");
-> +			offset +=3D vspeo->num_columns;
->  		}
->  	}
->  }
->=20=20
-> +static void dump_vswing_preemphasis(struct context *context,
-> +				    const struct bdb_block *block)
-> +{
-> +	const struct bdb_vswing_preemph *vspeo =3D block_data(block);
-> +	const char *sgt =3D (char *) context->vbt->signature;
-> +
-> +	if (strstr(sgt, "NOVALAKE")) {
+GPU code misses batchbuffer overflow checks in some cases.
+We can fix it just by using proper helpers.
 
-This is a no go.
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+Andrzej Hajda (3):
+      lib/gpu_cmds: replace open coded ibb data copy with helper
+      lib/gpgpu_shader: replace open coded ibb data copy with helper
+      lib/intel_batchbuffer: log overflow size in case there is no place in ibb
 
-I think all the parsing needs to be based on the device id. I don't
-think this signature information is reliable. I also think we must
-respect the --devid command-line option throughout the decoding, and not
-make ad hoc decisions like this.
+ lib/gpgpu_shader.c      | 13 +------------
+ lib/gpu_cmds.c          | 13 +------------
+ lib/intel_batchbuffer.c |  2 +-
+ 3 files changed, 3 insertions(+), 25 deletions(-)
+---
+base-commit: 6b305d78c65768c09cc7c0e902273bf409bbd218
+change-id: 20260520-ibb_fixes-891d4b8cbfc7
 
-However, I think we could add a new command-line parameter to guess a
-suitable device id from the VBT signature. Again, I don't think it's
-reliable, but you could specify it on the command-line to do it anyway,
-and it could be generally helpful, and completely independent of the
-vswing preemph stuff.
+Best regards,
+--  
+Andrzej Hajda <andrzej.hajda@intel.com>
 
-Something like --devid-from-signature or --vbt-devid or
---signature-devid.
-
-Then you could do:
-
- 	context.bdb =3D (const struct bdb_header *)(VBIOS + bdb_off);
- 	context.size =3D size;
-=20
-+	if (!context.devid && context.devid_from_signature)
-+		context.devid =3D devid_from_signature(vbt->signature, sizeof(vbt->signa=
-ture)):
- 	if (!context.devid) {
- 		const char *devid_string =3D getenv("DEVICE");
- 		if (devid_string)
-
-And the devid_from_signature() doesn't have to handle all possible
-signatures in one go. Just add the infrastructure, preferrably with an
-array and not a sequence of if ladders, add a few signatures and map
-them to PCI IDs. If found, yay, but if not, print a warning and return
-0.
-
-
-BR,
-Jani.
-
-
-> +		dump_vspeo_lt(vspeo);
-> +	} else {
-> +		printf("platform not supported\n");
-> +	}
-> +}
-> +
->  static void dump_generic_dtd_entry(const struct generic_dtd_entry *dtd,
->  				   const char *prefix)
->  {
-
---=20
-Jani Nikula, Intel
