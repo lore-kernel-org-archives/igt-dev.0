@@ -4,58 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6C49CD4F3D
-	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 21:26:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08766CD4F54
+	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 22:18:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DEE1110E04F;
-	Wed, 20 May 2026 21:26:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 72DEB10E180;
+	Wed, 20 May 2026 22:18:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xyfuj96K";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nfSySO4x";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 977AF10E04F
- for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 21:26:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3EA610E180
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 22:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779312389; x=1810848389;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=WnTavRZfAfomXfLGHlz6EYhigiq6+gSHsaeKzP5LV4U=;
- b=Xyfuj96KtG1xYuNyZIU8gvw6bP3bqt+xO+2IyWvifPxMUTuXDFRz2s3a
- g1jXk+ETW4CI4uHHUl0QFhLGrjNXMNJmZzwZF/5YeFrPtc7MFIc/zBZY2
- kdpEXhRnjjHJCm1/1engEOE2V5KNPak3ZEoK/qorOemWLXrnEt98TiEsZ
- tiS6/GRW8d3UKBl/UY/BSkCSUv/zKhUkhaKs1sx84Qvkt3OfyygVtYu37
- eNiGHaFTq/7aXLJ4zes6geVYSCDa5/vAEAUvD0jsG+VN57R69enikvjov
- dGt0Uap0YqiOboksq3k6VsB1pmNcObn0aJocTLYxLpn9ea2M9VR5CEruS A==;
-X-CSE-ConnectionGUID: SH76D3BoTM6m5XUaxOFqlQ==
-X-CSE-MsgGUID: 7GOH8hOdSRCqdBcZfDDGNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80344032"
-X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; d="scan'208";a="80344032"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 14:26:29 -0700
-X-CSE-ConnectionGUID: dmdSBj4oQteLwa5g0E0juQ==
-X-CSE-MsgGUID: L6A4dW3lRZ2eGRLnn1AfZg==
+ t=1779315514; x=1810851514;
+ h=date:message-id:from:to:subject:in-reply-to:references:
+ mime-version; bh=k1CqVE6utK65WUGxCfs7aOe3xfsveRRSFtFkoWs7754=;
+ b=nfSySO4xqURGilKk22f6P8t0vPuTrc2t2GEW5HE2ka76Kske/JZqPK7Y
+ GxzwZtpRCEabUfqZMRSN/8pPh8DSsjTPZz8FwTbcn92aMxlF2XWbuCNVw
+ bbRdNiSbYXKKcqyKc9BN2/2MDVZkvxNPwp85Yl3ow3DSgk1jHc/iMl2Fs
+ X+zXwIxbNEjsB/N2FuqP/RrWYAZ5y0uqja7PQSmvLeFf4GvurZ7stspai
+ 5uMRCzkQfXzTPEYPjIEfuko1dSJB6X0jfkoOBydNlT0iaBh3eBYlhYxaQ
+ McAp9xJnDodJMjiWIBT54TUuZl3u31UvZvWrOU5LFAIkPoQutFQu1KWjA w==;
+X-CSE-ConnectionGUID: daqEPHnMQH2ZHFthqSxrLA==
+X-CSE-MsgGUID: bBSZfC+zRFqOuYZtGS0LGA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="97658575"
+X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; d="scan'208";a="97658575"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 15:18:33 -0700
+X-CSE-ConnectionGUID: 3qiioCn8Tfatx813+d3/kw==
+X-CSE-MsgGUID: rc6hWWg4RWKvHwq2wIt0ew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; d="scan'208";a="278438971"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.99])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 14:26:28 -0700
-Date: Wed, 20 May 2026 23:26:24 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>, 
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_system_allocator: Test
- madvise(MADV_DONTNEED)
-Message-ID: <dqfxsowf2ktqicwrhhky5dkmdpn6fkrj3l2qjcy4vcvpti44qq@dwapp4yb7ewn>
-References: <20260512081709.217905-1-francois.dugast@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260512081709.217905-1-francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; d="scan'208";a="240377880"
+Received: from unknown (HELO adixit-MOBL3.intel.com) ([10.241.243.108])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 15:18:34 -0700
+Date: Wed, 20 May 2026 15:18:33 -0700
+Message-ID: <87jysxohc6.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
+ Shekhar Chauhan <shekhar.chauhan@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH v2] lib/intel_wa: Assert on error instead of returning -1
+In-Reply-To: <20260519095226.r2e7k3ntd552rqgn@kamilkon-DESK.igk.intel.com>
+References: <20260514063655.1683322-1-shekhar.chauhan@intel.com>
+ <20260515122408.zd564l5tnhaprha3@kamilkon-DESK.igk.intel.com>
+ <87ecjbgofi.wl-ashutosh.dixit@intel.com>
+ <87cxysgtr3.wl-ashutosh.dixit@intel.com>
+ <20260519095226.r2e7k3ntd552rqgn@kamilkon-DESK.igk.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,141 +73,166 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, May 12, 2026 at 10:17:09AM +0200, Francois Dugast wrote:
-> Extend the compute test to make use of madvise(MADV_DONTNEED) on the
-> input array before reading from it on host, after running the compute
-> kernel. The GT stats are used to verify that no page migration happened
-> from device to host.
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> ---
->  tests/intel/xe_exec_system_allocator.c | 53 +++++++++++++++++++++++++-
->  1 file changed, 52 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-> index 0f1d6ee9c..d7c46f5b9 100644
-> --- a/tests/intel/xe_exec_system_allocator.c
-> +++ b/tests/intel/xe_exec_system_allocator.c
-> @@ -2250,6 +2250,9 @@ struct xe_gt_stats_snapshot {
->  	int svm_4K_pagefault_us;
->  	int svm_64K_pagefault_us;
->  	int svm_2M_pagefault_us;
-> +	int svm_4K_cpu_copy_kb;
-> +	int svm_64K_cpu_copy_kb;
-> +	int svm_2M_cpu_copy_kb;
->  };
->  
->  static void read_gt_stats_snapshot(int fd,
-> @@ -2262,11 +2265,18 @@ static void read_gt_stats_snapshot(int fd,
->  		xe_gt_stats_get_count(fd, eci->gt_id, "svm_64K_pagefault_us");
->  	snapshot->svm_2M_pagefault_us =
->  		xe_gt_stats_get_count(fd, eci->gt_id, "svm_2M_pagefault_us");
-> +	snapshot->svm_4K_cpu_copy_kb =
-> +		xe_gt_stats_get_count(fd, eci->gt_id, "svm_4K_cpu_copy_kb");
-> +	snapshot->svm_64K_cpu_copy_kb =
-> +		xe_gt_stats_get_count(fd, eci->gt_id, "svm_64K_cpu_copy_kb");
-> +	snapshot->svm_2M_cpu_copy_kb =
-> +		xe_gt_stats_get_count(fd, eci->gt_id, "svm_2M_cpu_copy_kb");
->  }
->  
->  /* compute flags */
->  #define TOUCH_ONCE		(0x1 << 0)
->  #define ACCESS_DEVICE_HOST	(0x1 << 1)
-> +#define USE_MADV_DONTNEED	(0x1 << 2)
->  
->  /**
->   * SUBTEST: compute
-> @@ -2285,6 +2295,18 @@ static void read_gt_stats_snapshot(int fd,
->   * Description: Run a simple compute kernel %arg[1] on a 2MB malloc'ed buffer
->   * Test category: performance test
->   *
-> + * SUBTEST: eu-fault-4k-range-device-host-madvise-dontneed
-> + * Description: Run a simple compute kernel %arg[1] on a 4KB malloc'ed buffer for which madvise(MADV_DONTNEED) is used
-> + * Test category: performance test
-> + *
-> + * SUBTEST: eu-fault-64k-range-device-host-madvise-dontneed
-> + * Description: Run a simple compute kernel %arg[1] on a 64KB malloc'ed buffer for which madvise(MADV_DONTNEED) is used
-> + * Test category: performance test
-> + *
-> + * SUBTEST: eu-fault-2m-range-device-host-madvise-dontneed
-> + * Description: Run a simple compute kernel %arg[1] on a 2MB malloc'ed buffer for which madvise(MADV_DONTNEED) is used
-> + * Test category: performance test
-> + *
->   * arg[1]:
->   *
->   * @once-device:				touch the buffer only once, from the device
-> @@ -2321,7 +2343,7 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
->  	xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
->  
->  	env.loop_count = (flags & TOUCH_ONCE) ? 1 : env.array_size;
-> -	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST);
-> +	env.skip_results_check = true;
+On Tue, 19 May 2026 02:52:26 -0700, Kamil Konieczny wrote:
+>
+> Hi all,
+> On 2026-05-18 at 16:53:04 -0700, Dixit, Ashutosh wrote:
+> > On Sat, 16 May 2026 12:11:13 -0700, Dixit, Ashutosh wrote:
+> > >
+> > > On Fri, 15 May 2026 05:24:08 -0700, Kamil Konieczny wrote:
+> > > >
+> > >
+> > > Hi Kamil,
+> > >
+> > > > Hi Shekhar,
+> > > > On 2026-05-14 at 12:06:55 +0530, Shekhar Chauhan wrote:
+> > > > > igt_has_intel_wa() returns 0, 1, or -1, but there is no point
+> > > > > distinguishing the error and no-workaround cases for callers. Replace
+> > > > > the error return with igt_assert() and simplify debugfs_file_has_wa() by
+> > > > > dropping the igt_debugfs_exists() check, since igt_sysfs_get() returns
+> > > > > NULL for missing files anyway.
+> > > > >
+> > > > > v2: Make the func as bool instead of int.
+> > > > >
+> > > > > Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+> > > > > ---
+> > > > >  lib/intel_wa.c | 19 +++++++++----------
+> > > > >  lib/intel_wa.h |  2 +-
+> > > > >  2 files changed, 10 insertions(+), 11 deletions(-)
+> > > > >
+> > > > > diff --git a/lib/intel_wa.c b/lib/intel_wa.c
+> > > > > index 727dd6c98..e4fe7b0ee 100644
+> > > > > --- a/lib/intel_wa.c
+> > > > > +++ b/lib/intel_wa.c
+> > > > > @@ -7,18 +7,18 @@
+> > > > >  #include <stdint.h>
+> > > > >  #include <stdio.h>
+> > > > >
+> > > > > +#include "igt_core.h"
+> > > > >  #include "igt_debugfs.h"
+> > > > >  #include "igt_sysfs.h"
+> > > > >  #include "intel_wa.h"
+> > > > >  #include "xe/xe_query.h"
+> > > > >
+> > > > > -static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+> > > > > +static bool debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+> > > > >			       const char *debugfs_name, const char *wa)
+> > > > >  {
+> > > > >	char *debugfs_dump;
+> > > > >
+> > > > > -	if (!igt_debugfs_exists(drm_fd, debugfs_name, O_RDONLY))
+> > > > > -		return -1;
+> > > > > +	igt_assert(igt_debugfs_exists(drm_fd, debugfs_name, O_RDONLY));
+> > > > >
+> > > > >	debugfs_dump = igt_sysfs_get(debugfs_fd, debugfs_name);
+> > > > >	if (debugfs_dump) {
+> > > > > @@ -27,10 +27,10 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+> > > > >		free(debugfs_dump);
+> > > > >
+> > > > >		if (has_wa)
+> > > > > -			return 1;
+> > > > > +			return true;
+> > > > >	}
+> > > > >
+> > > > > -	return 0;
+> > > > > +	return false;
+> > > > >  }
+> > > > >
+> > > > >  /**
+> > > > > @@ -38,18 +38,17 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+> > > > >   * @drm_fd:	A drm file descriptor
+> > > > >   * @check_wa:	Workaround to be checked
+> > > > >   *
+> > > > > - * Returns:	0 if no WA, 1 if WA present, -1 on error
+> > > > > + * Returns:	true if WA present, false otherwise
+> > > > >   */
+> > > > > -int igt_has_intel_wa(int drm_fd, const char *check_wa)
+> > > > > +bool igt_has_intel_wa(int drm_fd, const char *check_wa)
+> > > > >  {
+> > > > > -	int ret = 0;
+> > > > > +	bool ret = 0;
+> > > > >	int debugfs_fd;
+> > > > >	unsigned int xe;
+> > > > >	char name[256];
+> > > > >
+> > > > >	debugfs_fd = igt_debugfs_dir(drm_fd);
+> > > > > -	if (debugfs_fd == -1)
+> > > > > -		return -1;
+> > > > > +	igt_assert(debugfs_fd >= 0);
+> > > >
+> > > > This will mean that all other users needs to be updated.
+> > >
+> > > To date there are no other users of this function, except one in OA.
+> > >
+> > > > The way of adding any igt_assert/igt_require into lib/
+> > > > make it impossible to reuse them in tools/ and require
+> > > > to write same functionality twice, one in lib/ and one
+> > > > for any tools which will want to use them. Or to write
+> > > > __function() without igt_assert/igt_require.
+> > >
+> > > Well it was I who suggested doing this. Can you explain your point a bit?
+> > > Any tools which use a lib function which uses e.g. igt_assert/igt_require
+> > > can also link with lib_igt (which provides igt_assert/igt_require). See
+> > > e.g. tools/xe-perf/meson.build. It is not unreasonable for IGT tools to
+> > > link with lib_igt. I thought not linking with igt_lib was an unreasonabe
+> > > requirement and I removed it for tools/xe-perf.
+>
+> Main reason was a tools asserting in middle of operation, where
+> it should just report an error, lack of permission or some
+> other reason why it cannot proceed. Another example would be
+> implemetation of malloc() where lib will assert instead of
+> returning a NULL pointer.
+>
+> > >
+> > > If you are saying tools should be able to run without debugfs mounted,
+> > > maybe you have a point. In that case we can drop this patch. But even here
+> > > maybe IGT tools should run only with debugfs mounted?
+>
+> Definitly not, there are systems without debugfs for security
+> reasons, and there is sysfs so for example intel_gpu_freq should
+> work perfectly fine.
+>
+> >
+> > Also the tool should realize it is calling a function which requires
+> > debugfs, and separately check whether or not debugfs is mounted and skip
+> > calling the function if it isn't. So I am not sure why we should do
+> > anything different, since wa list is exposed through debugfs.
+> >
+>
+> Well, as it is only used in intel perf tests/tools, it is ok
+> so I will not block it, you can merge it.
 
-Shouldn't this be?
+Well intel_wa functions are meant to be used generally to check if any
+workarounds in the kernel, so they are not just for intel perf
+tests/tools. However, as I mentioned, because this workaround information
+is exposed through debugfs, IMO it is ok to assert if debugfs is not
+mounted.
 
-env.skip_results_check = !(flags & ACCESS_DEVICE_HOST) || (flags & MADV_DONTNEED);
+Therefore I have gone ahead and merged this. We can of course revisit if
+needed in the future, but for now this patch seems correct to me.
 
-Rest looks correct.
-
+Thanks.
 --
-Zbigniew
+Ashutosh
 
->  	env.vm = vm;
->  
->  	read_gt_stats_snapshot(fd, eci, &stats_before);
-> @@ -2344,6 +2366,22 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
->  
->  		xe_run_intel_compute_kernel_on_engine(fd, eci, &env, EXECENV_PREF_SYSTEM);
->  
-> +		if (flags & ACCESS_DEVICE_HOST) {
-> +			float total = 0;
-> +
-> +			if (flags & USE_MADV_DONTNEED)
-> +				igt_assert_eq(madvise(compute_input, size, MADV_DONTNEED), 0);
-> +
-> +			/*
-> +			 * No functional purpose, just force a read on host
-> +			 */
-> +			for (int j = 0; j < env.array_size; j++)
-> +				total += compute_input[j];
-> +
-> +			if (!total)
-> +				igt_debug("compute_input is zeros\n");
-> +		}
-> +
->  		free(compute_input);
->  	}
->  
-> @@ -2365,6 +2403,18 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
->  		}
->  	}
->  
-> +	if ((flags & ACCESS_DEVICE_HOST) && (flags & USE_MADV_DONTNEED)) {
-> +		if (size == SZ_4K)
-> +			igt_assert_eq(stats_before.svm_4K_cpu_copy_kb,
-> +				      stats_after.svm_4K_cpu_copy_kb);
-> +		else if (size == SZ_64K)
-> +			igt_assert_eq(stats_before.svm_64K_cpu_copy_kb,
-> +				      stats_after.svm_64K_cpu_copy_kb);
-> +		else if (size == SZ_2M)
-> +			igt_assert_eq(stats_before.svm_2M_cpu_copy_kb,
-> +				      stats_after.svm_2M_cpu_copy_kb);
-> +	}
-> +
->  	unbind_system_allocator();
->  	xe_vm_destroy(fd, vm);
->  }
-> @@ -2525,6 +2575,7 @@ int igt_main()
->  		{ "once-device-host", TOUCH_ONCE | ACCESS_DEVICE_HOST },
->  		{ "range-device", 0 },
->  		{ "range-device-host", ACCESS_DEVICE_HOST },
-> +		{ "range-device-host-madvise-dontneed", ACCESS_DEVICE_HOST | USE_MADV_DONTNEED },
->  		{ NULL },
->  	};
->  
-> -- 
-> 2.43.0
-> 
+
+>
+> > >
+> > >
+> > > > >	xe_for_each_gt(drm_fd, xe) {
+> > > > >		sprintf(name, "gt%d/workarounds", xe);
+> > > > > diff --git a/lib/intel_wa.h b/lib/intel_wa.h
+> > > > > index 765a5948e..34cafecc4 100644
+> > > > > --- a/lib/intel_wa.h
+> > > > > +++ b/lib/intel_wa.h
+> > > > > @@ -6,6 +6,6 @@
+> > > > >  #ifndef __INTEL_WA_H__
+> > > > >  #define __INTEL_WA_H__
+> > > > >
+> > > > > -int igt_has_intel_wa(int drm_fd, const char *check_wa);
+> > > > > +bool igt_has_intel_wa(int drm_fd, const char *check_wa);
+> > > > >
+> > > > >  #endif /* __INTEL_WA_H__ */
+> > > > > --
+> > > > > 2.53.0
+> > > > >
