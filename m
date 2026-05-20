@@ -4,157 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A858CD4F3C
-	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 09:39:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F5BCCD4F3C
+	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 09:39:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B956E10EFD6;
-	Wed, 20 May 2026 09:39:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C108310E0A0;
+	Wed, 20 May 2026 09:39:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VRE2dpXq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BfjwY11F";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4D6110EFD1;
- Wed, 20 May 2026 09:38:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B22910EFDC
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 09:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779269923; x=1810805923;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=LZ01X/83GEhT7j9R4AcW4YSsWTAoj0qE9cl/VbButaE=;
- b=VRE2dpXqyNtwChTCiy/o21bOHM2noMCUgWYE7dyJ67iSXUAD2jvlsXp6
- Bg8zbRZYjUfIoP6YRhSe8otrN8SYmavHpxepmjots4ph+xyBowlpw2CA5
- xxxQYxITTysd+PvpzR46SVrLLCv5mZOhLeATUJlU/FRynsOVeilXSYl9D
- yWQwxDsTs/h7PvJFXrxnW0am2c0hiiQUzgZ2nUbNcqraiDUKlfub6h+rd
- y5eMIC2PKvQlxcPxVv1/8fyVecSjPUKFZByXTXEOBmiurFp86nR8xZVFp
- 0kvGZxAIK07ocV+gtLR15cAauSdZRX5GgtZQnBhz6oB1wX7zJnPlmGmNV w==;
-X-CSE-ConnectionGUID: 9twCzzU3T+el1PdymtgayQ==
-X-CSE-MsgGUID: nBBTZo3JQMeevJGYfM1Aqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="80014564"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="80014564"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 02:38:43 -0700
-X-CSE-ConnectionGUID: o+dbWSf7TE6UTR0XatI31Q==
-X-CSE-MsgGUID: CCxDui5TSkWS1KY0LgohvA==
+ t=1779269978; x=1810805978;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=HvcsKPiLrO+zttB6VFsH8ikDUPdSkjqHDj1+zzWPaYI=;
+ b=BfjwY11F1bctHAsc+WyyXaSivoUUjg6cQbS4xasPpnbi1ohLSSTZI3JJ
+ a/Y1KVxHngUhG0Hufh/QoFMg7twHEhpdKGN9H9H5Ag/R/nAzqCiupy/xE
+ hz0uO6W5cfGot3VtwhmBTVyfVxijUF9/u1HOu87BHp+hRH7TG8g0H8gnJ
+ AC29t4UrDsoFeQin6gBUHk5H4lDu9GIZVckvb6TPHiAGdZKpdW9DNbhf9
+ /joBIHeG9X7+2QzEqQAxlblURlzhXaqHYs3D1ePqX+AzOLe9e4OA2ARQC
+ 6YqsK4CZwaexHSzbB+4UU0+kZCMzjwn9MjheI41KptSPHWthJdxtXDjjt A==;
+X-CSE-ConnectionGUID: ZQJhbZY4SH6Sv197U6Pf5g==
+X-CSE-MsgGUID: znNqMWBlQGq3i6dZ49nyNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="82741296"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="82741296"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 02:39:37 -0700
+X-CSE-ConnectionGUID: 2Sw6rBqtRmeOSnjYAl2Yog==
+X-CSE-MsgGUID: 9qLmL/fORRiyTJUiMkL7UQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="245091019"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 02:38:43 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 20 May 2026 02:38:42 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 20 May 2026 02:38:42 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.38) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 20 May 2026 02:38:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nsvoquPEWB1Et0RMemfXsJp5CQh0QAV79ahrUMKTIFziy8KLI8z2X7vmE4I/MWMR7KAV3db1H12MtKlea9UqidgFnOhqKWaGJ0i3tujgj+gNHOCivls4UCLqYiYqCeA4TldmQnpIf/ng+9B4DhrZC9T4O6fQsQcelaCMyyLjisLas0Gc4LlxHQjUHBH3uDev57ECQzY1Sib7OZlXu5RfbzeyDmonJz+pC8IGeb9y3MGa3ktDe3owtrC+xUVvOJrR3x4UxNE8M8eS/lRAnsgJ3SPS4XNGTt4ObuI2gl/q6Pua5jo1pI2W1J9MsZ2YDGAL9WoPAWgeBLVq71cAZZnB8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VkiJk8cqZbHNGsKHfKL3+6V7XaLYcu5f3u5v0j6e5dk=;
- b=VtT6aYjJnIXnJ6xkRHVSkpbF61luvax/AI9PfeOkOfIYqCdRzBgGpLxLEBw7/7aJTA/VFYW3a4MFWRJbUOHRACdMlVN1xKhDDDBinVSB11nekGtiTltCiXerb2VEoVSuBVTG8Ow4+TOPGz5FyUleuumyoOZtMJVpYLD2GwJbz2H0Sceu3doVvpGRAqp/3tnU1+3kSgnp/mUQlkj5a1ljDTC4TyJBZnLmeE9eO9nvyliXVwNcouJXaz+xjUsp9jDi12Wg5JIF3MOubivG/wDpaA/wUIuprjRXcRG1LL0e/rRvoIpQLS7LskEWqCFdzTLcjW81lIB7f0PlgOZIQjrvAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB6266.namprd11.prod.outlook.com (2603:10b6:208:3e6::12)
- by CH3PR11MB7345.namprd11.prod.outlook.com (2603:10b6:610:14a::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Wed, 20 May
- 2026 09:38:34 +0000
-Received: from IA1PR11MB6266.namprd11.prod.outlook.com
- ([fe80::eda2:e570:4314:8720]) by IA1PR11MB6266.namprd11.prod.outlook.com
- ([fe80::eda2:e570:4314:8720%5]) with mapi id 15.21.0048.013; Wed, 20 May 2026
- 09:38:34 +0000
-Message-ID: <a85980e0-2307-4126-b47b-c76317e82d31@intel.com>
-Date: Wed, 20 May 2026 15:08:28 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] lib/intel_blt: Replace CANONICAL() with
- xe_canonical_va() for Xe driver
-To: <igt-dev@lists.freedesktop.org>, <I915-ci-infra@lists.freedesktop.org>
-References: <20260518082113.1275002-1-dnyaneshwar.bhadane@intel.com>
- <177917172976.84041.10392873251829200017@5ab824fced77>
-Content-Language: en-US
-From: "Bhadane, Dnyaneshwar" <dnyaneshwar.bhadane@intel.com>
-In-Reply-To: <177917172976.84041.10392873251829200017@5ab824fced77>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0100.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1d1::8) To IA1PR11MB6266.namprd11.prod.outlook.com
- (2603:10b6:208:3e6::12)
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="244103537"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.148])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 02:39:36 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: =?utf-8?Q?Micha=C5=82?= Grzelak <michal.grzelak@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: suraj.kandpal@intel.com, =?utf-8?Q?Micha=C5=82?= Grzelak
+ <michal.grzelak@intel.com>
+Subject: Re: [PATCH i-g-t v1 4/7] tools/vbt_decode: nuke get_device_id()
+In-Reply-To: <20260507012821.527453-5-michal.grzelak@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260507012821.527453-1-michal.grzelak@intel.com>
+ <20260507012821.527453-5-michal.grzelak@intel.com>
+Date: Wed, 20 May 2026 12:39:32 +0300
+Message-ID: <ebc334e4b8d670d9a3191ea321db05c9947135d7@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB6266:EE_|CH3PR11MB7345:EE_
-X-MS-Office365-Filtering-Correlation-Id: 287abc0c-0c65-4818-c871-08deb6538fa0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|13003099007|22082099003|56012099003|4143699003|18002099003|5023799004|11063799006;
-X-Microsoft-Antispam-Message-Info: OFjpMv/Y1nz7XteAIbVYLAzTa0zL3Tv/0NfqTPmPUzopjBBbv6cruWe5SemfB9MM1BN3zNiOEuFFltd+QqkPlmlr7kPNa0Dvy6DEvZPj6MOQ7vo+cqIc71+530VbY4UHZjBB1JMukmO6g7N+6ITKgpYhcyL/l6MjnLBKKEjNVQemSTcRHqaEZoYg1I4Eje1QOx6SHXs0hbjqrae1ePBdbTyZkucga0gfxBySaw5RbbgFmbWXbni/nImzAmVlh7U/kfRsIf345SI3IgDnOdt5Ekx5Sv/gaBvinFKvd8mLpwjPDNVVUR6ZKBY6wC9KfObLIdpRX8vmoZK1kqNc5py3srC62vovrmyTN0cGcC6DnQgbJb8LEGlSUrQ/c7G1Zdnr1RfT20BXlm1UTGUbnj1mv841aAUev6ojgyL9Z5JEZZzAkAMKlKdx+Gk9l1sECz6vegEFZGFVISfPRQMoR7siiIxkOeJXtlk2qFirg0OGokZS32KhkqOLm9ro98XH6Ki6i8PndSU1qc7pSQ6iOkomRP1TNbxY+K8r1Eti+WZQ7SBfWt/A+fu21ri26lyWt4VxuvhGZ7HYMJxM208QtTYf2fYGtLcq2zHg1YlzZrxlC8+Xj03zpYteNLKwJ8DLCKYr
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR11MB6266.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(13003099007)(22082099003)(56012099003)(4143699003)(18002099003)(5023799004)(11063799006);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Wklod1d0MGNhcUVTeklUZnBCbVF1RnlCRFJ1RU1WS3lnMEJ2aVlOaW9BTnpE?=
- =?utf-8?B?SDEySm9iZUdNMkRZQUxzdUhuQWtXRE1WVU02dERjYjhRV25lRkd4RHRsVlRN?=
- =?utf-8?B?WmhuZzJTN2trYlZtSmJjNVpGNlN1S0VlWWhFMlNGVzR6dk1laG8xcDNjZFMy?=
- =?utf-8?B?aHNmNjdaN3RVeHhveGhVbjdndy9hcCtmcWhlNldIQmo1RUluUGFHOUUvSmxF?=
- =?utf-8?B?OCtGc2tLS0d3Ykh1dUFNRExkWG8xeHd4Y1NETGw4cHUrakVtcnZPTWUxMG9J?=
- =?utf-8?B?aDVoUDl6TjN5d0xadXkwcEVWRkRmSUxNVGQwZHpuSFE0TjhuUGZxQitRQWd3?=
- =?utf-8?B?eWgzOUs3aU1tZ2psdUYwK3dJenpDR2krelQxbkxNWWc0c1RIZDBCb0lTV2hx?=
- =?utf-8?B?d2pmVkZQWHRHbGwvbWVYUTBzZUZJdi93UXpRNTlOTlcxeWRwZTkzSVhJY0lw?=
- =?utf-8?B?RUdJTUJzaFNaU3dWV1l2ZTFPY0cxMkJHazFubkUzWVdyNGUrNHBEQmFVT1Fi?=
- =?utf-8?B?YTN4c2JSQkk4MUhVcVFyUWRsSkRMcmMrMnBYd2oxYWlpZCtmcTR3REU0MWRD?=
- =?utf-8?B?RTVMeEdjQTE3aUp6OGlVYWE4eWt4SUZyU29saFlmdU5vM1kwa1RkZERrekl3?=
- =?utf-8?B?MFhCd0I1MnNHZnBScXJ1WWdIeVZQWU5UcTFndWFuRjdmVzVpUGR2dmk3UGEr?=
- =?utf-8?B?eUc2T3NYT1d4aTR4aENvUitMd2xvbEREK3FBTndvRU1FdmdGTjllMDkyQXdi?=
- =?utf-8?B?Ny9TUW00b3hnTSsrVXhNdXo1UUxZaXUzT1pPNGZ3SlZLUmxnekxMTmxSclpE?=
- =?utf-8?B?ZlR1OUNkb1NHN3JlMjFuTHdHTmwvZmtYZnFFN0N5NUR4Z1d3dThNUFhXSyty?=
- =?utf-8?B?NDY0Qmh5d0JrbG04VFdyVkU0ZUU2aWx0bHkrOTR4eFRpekUrelpiVkY3SXF2?=
- =?utf-8?B?NG4wVHJreml5dVBUQ01BVWZVcitLeVExb3hrb0JVOFBmQUYvTFErTEppOENB?=
- =?utf-8?B?NVZ1YmVBQUZXenJ6MmxuSTEyU0RnekNPbHh2cVNaMThQV3dJOFZnQk9QNUs0?=
- =?utf-8?B?SVh1OHRWYVRBQWhteER4SnJQSU1Qd3V5Sk9HdjR0cmRXczg2dXVwUStIL0lD?=
- =?utf-8?B?eVAyaVV6YjlzeDRaWEdjRmhUUEZHcDRPQzFMblpqQkh4T2pMTkk3Zm10TkVj?=
- =?utf-8?B?WHprYmIrOE1PbzBzTG9CNHplY3RpMmZEa05JQUdGYVdSNW5FUTdKTDIvN0lz?=
- =?utf-8?B?WTdQWVZldUJDYlFnUGtEN2xMc1F0ZUx5RmtjNFFkVWlzdmpFZGJVVXJvOWVV?=
- =?utf-8?B?UklBVmxaZGRYOVZQell4VUtnMC9rdFpyWWNGVVFia3lMVFBNaUtGYXdrR1Ez?=
- =?utf-8?B?ZnlTUm1kbjFSYlFQVUFFWUVaaGdGSzJoeGV4aWFEMzFnWXloNHlqc1lWTUhD?=
- =?utf-8?B?STFBZmRoM3AxMnN4QjdBS1RqVk8xVWpQM2JneXhjYmkweDBvU29kdVkvRnBh?=
- =?utf-8?B?a3V6SWlnMFdyanRVWGVTSWNTbUFFYXVsenhJL0RmS20raVEzQ205ZlVDMlJT?=
- =?utf-8?B?SlBaZldaeTBDaGsyaGpMdC9sOW1ZRGRNcmdLZWVUUHFhOEhrdCtHR2l6NVlj?=
- =?utf-8?B?OTNpcnhacVBEYkFmbzk2eE45U01VV3JWR002VVJoVlRtYjVmZjhJaUdRZW9v?=
- =?utf-8?B?NXdzWEtHS0Rrc3ZSMVJPZkRzNmtLZ3IySm1jbGhZS0xpNlJnOHJSSGN6cWgy?=
- =?utf-8?B?OGVETmpFRHhTRHVsRVJoZzNWT0FWQ3hsUHdiVTd4K2JUSkZkV1RlbUpMNzVP?=
- =?utf-8?B?L2krZXhKZlc0N3paU1lUdjFUWU4yNUlyREZWWlVBOTVjOW9udlZUcU1CY0Rp?=
- =?utf-8?B?eFpId2h4bGpwNXZnMnIxMmJ4S0lGRitDVEdrcGU2VnlkVGJUZVV0TDBDV0hY?=
- =?utf-8?B?TnVGWW1BdVRRbTNmV2hVcUZva2VDSnUvOFNJNGx0TXVxTFZzZUpYSEF4ZEhT?=
- =?utf-8?B?cGVVaGYvb0JOSWFCK2llOUdVeEsxNERmbGRDZngwVngrdVBXaWs4R1NIM3ky?=
- =?utf-8?B?Z0dkSjRpUUZaV0pVNVJoN3ovWDVPdmgvNjZINUxoaUViLzFpb3NOS1ltQWxX?=
- =?utf-8?B?RjJFdEt3endKMzVGdnVLUWNsMGxIZjV4eTRvUWxHMnBCd2JTS3ZOY2dDZGRa?=
- =?utf-8?B?aEZSRVdiUDcybEtzcytsNVBGU0prY2ZEbjliY1RBeDZOb2tMMmowVlQraHVF?=
- =?utf-8?B?VlQrbHl5UDFRU1A0WkpudHFTMVNGbWZKVnB4TWNHZlQxN0x6aWdRQmx3NHhT?=
- =?utf-8?B?ekd2TTI5UEtlNjFpbWlsU1RWMC9BRDhxWXZMK3dPcmliWGNOTTNXWldsaVhX?=
- =?utf-8?Q?hYJ+uNyvznsBUk1k=3D?=
-X-Exchange-RoutingPolicyChecked: mj6GlHKNHKMc+J36ButEqzvUo73sF26OcTg0wXJ00bTON6WTjr4PtVfrFTJJRwfk7wOa3Hz6rRy56W5YW0+OVtLel4R/ykYiqWwkw6wE9xQvebGrHeWwVKQ4YzOicDfsYU/0rAq0DmBcTeutmm4tQWtLQf3XEH7SKYandPjczgFxfB0AGtr3zi9ihQZhT9qWvDRiOnP0/k243cSN518VdmJSNlq4s2VFlh6OyLvx8vlxtROGL5yazYk2RZGyfCh8S3US27Li5RXa78gKq8t3xT6QofNAEfbM7flQAdoKqVGWLcB25WkvBi56YWwAfaW5Rmqcq5NUB40GQyuJMKX2ew==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 287abc0c-0c65-4818-c871-08deb6538fa0
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6266.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 09:38:34.6969 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4V4ODLyYQeUXbjHZOFaE8tyAvqcocGUPEA8UlrVYtTZW8ArEAuCpUtzY0FFXpj+gxmmTSG8GkQioK2WAspjG98OEHBAooilOtM5rWfWqkh4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7345
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -170,89 +73,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hello igt-dev,
+On Thu, 07 May 2026, Micha=C5=82 Grzelak <michal.grzelak@intel.com> wrote:
+> VBT dump file does not contain device id. Stop calling the function and
+> remove it.
 
-On 19-May-26 11:52 AM, Patchwork wrote:
-> *Patch Details*
-> *Series:*	lib/intel_blt: Replace CANONICAL() with xe_canonical_va() for 
-> Xe driver (rev2)
-> *URL:*	https://patchwork.freedesktop.org/series/166213/ <https:// 
-> patchwork.freedesktop.org/series/166213/>
-> *State:*	failure
-> *Details:*	https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15196/ 
-> index.html <https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15196/ 
-> index.html>
-> 
-> 
->   CI Bug Log - changes from XEIGT_8918_FULL -> XEIGTPW_15196_FULL
-> 
-> 
->     Summary
-> 
-> *FAILURE*
-> 
-> Serious unknown changes coming with XEIGTPW_15196_FULL absolutely need to be
-> verified manually.
-> 
-> If you think the reported changes have nothing to do with the changes
-> introduced in XEIGTPW_15196_FULL, please notify your bug team (I915-ci- 
-> infra@lists.freedesktop.org) to allow them
-> to document this new failure mode, which will reduce false positives in CI.
-> 
-> 
->     Participating hosts (2 -> 2)
-> 
-> No changes in participating hosts
-> 
-> 
->     Possible new issues
-> 
-> Here are the unknown changes that may have been introduced in 
-> XEIGTPW_15196_FULL:
-> 
-> 
->       IGT changes
-> 
-> 
->         Possible regressions
-> 
->   *
-> 
->     igt@xe_exec_threads@threads-wq-stress-rebind-bindexecqueue:
-> 
->       o shard-bmg: PASS <https://intel-gfx-ci.01.org/tree/intel-xe/
->         IGT_8918/shard-bmg-10/igt@xe_exec_threads@threads-wq-stress-
->         rebind-bindexecqueue.html> -> INCOMPLETE <https://intel-gfx-
->         ci.01.org/tree/intel-xe/IGTPW_15196/shard-bmg-3/
->         igt@xe_exec_threads@threads-wq-stress-rebind-bindexecqueue.html>
->   *
-> 
->     igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv:
-> 
->       o shard-bmg: PASS <https://intel-gfx-ci.01.org/tree/intel-xe/
->         IGT_8918/shard-bmg-2/igt@xe_fault_injection@probe-fail-guc-
->         xe_guc_ct_send_recv.html> -> ABORT <https://intel-gfx-ci.01.org/
->         tree/intel-xe/IGTPW_15196/shard-bmg-1/
->         igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv.html>
-> 
-> 
-The above failures are unrelated to these changes.
->         Warnings
-> 
->   * igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate:
->       o shard-lnl: SKIP <https://intel-gfx-ci.01.org/tree/intel-xe/
->         IGT_8918/shard-lnl-4/igt@xe_exec_balancer@once-cm-parallel-
->         userptr-invalidate.html> (Intel XE#7482 <https://
->         gitlab.freedesktop.org/drm/xe/kernel/issues/7482>) -> ABORT
->         <https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15196/shard-
->         lnl-3/igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate.html>
-> 
-> 
-The above warning is unrelated to these changes.
-Dnyaneshwar,
+Ah. I think I told you the VBT does not contain the device id. Which is
+true, but there's more to the story.
 
->     Known issues
-> 
-> 
+On the older platforms the VBT was contained in the PCI ROM, and you'd
+just ask for the whole PCI ROM dump. Which did contain the device id. So
+the tool would scan that for both the PCI ID and the VBT.
 
+With the VBT being moved to opregion, we introduced the i915_vbt debugfs
+file which would abstract where the VBT originated, and only contain the
+VBT.
 
+The VBT does not contain the PCI ID, the VBIOS does, and the below works
+if you pass the tool the entire VBIOS, which is very unlikely nowadays.
+
+> Signed-off-by: Micha=C5=82 Grzelak <michal.grzelak@intel.com>
+> ---
+>  tools/intel_vbt_decode.c | 22 ----------------------
+>  1 file changed, 22 deletions(-)
+>
+> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+> index 6879bd7a7e..f7ba4bc3d5 100644
+> --- a/tools/intel_vbt_decode.c
+> +++ b/tools/intel_vbt_decode.c
+> @@ -3699,26 +3699,6 @@ static int get_sdvo_panel_type(struct context *con=
+text)
+>  	return panel_type;
+>  }
+>=20=20
+> -static int
+> -get_device_id(unsigned char *bios, int size)
+> -{
+> -    int device;
+> -    int offset =3D (bios[0x19] << 8) + bios[0x18];
+> -
+> -    if (offset + 7 >=3D size)
+> -	return -1;
+> -
+> -    if (bios[offset] !=3D 'P' ||
+> -	bios[offset+1] !=3D 'C' ||
+> -	bios[offset+2] !=3D 'I' ||
+> -	bios[offset+3] !=3D 'R')
+> -	return -1;
+
+It's a problem however that this function returns -1 on errors and the
+caller checks for 0, leading to -1 being used as the device id.
+
+BR,
+Jani.
+
+> -
+> -    device =3D (bios[offset+7] << 8) + bios[offset+6];
+> -
+> -    return device;
+> -}
+> -
+>  struct dumper {
+>  	uint8_t id;
+>  	uint16_t min_bdb_version;
+> @@ -4324,8 +4304,6 @@ int main(int argc, char **argv)
+>  		if (devid_string)
+>  			context.devid =3D strtoul(devid_string, NULL, 16);
+>  	}
+> -	if (!context.devid)
+> -		context.devid =3D get_device_id(VBIOS, size);
+>  	if (!context.devid)
+>  		fprintf(stderr, "Warning: could not find PCI device ID!\n");
+
+--=20
+Jani Nikula, Intel
