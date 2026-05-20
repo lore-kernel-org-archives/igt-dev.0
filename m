@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77AF5CD4F3C
-	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 15:26:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E655DCD4F3D
+	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 15:50:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 137CD10E14C;
-	Wed, 20 May 2026 15:26:37 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E397210E14C;
- Wed, 20 May 2026 15:26:16 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8865481433716884009=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 943DC10E40B;
+	Wed, 20 May 2026 15:50:12 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f7NHCDyX";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B25F10F0E1
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 15:49:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1779292193; x=1810828193;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=MfFkpR4kXozyXALvhqMcFgz+vRBcSo3M0eYS6rPPiq0=;
+ b=f7NHCDyXFvrmy+fXI2bU3tn/v3C5TJIr9R3w5Hoyp2MmH53Jn41D4g1d
+ iYnyKeaG4bOgt7e5ahYPNJXj3mjsTSD/iDpxjLl7vgcJJ3qF5AKLAClrj
+ 2tc5LbZ5df/d4DbpTFo308L1IVuydOoue9qziUCUmIyJ2oN0dd4Bhs6e2
+ kYPWdQtYa0z/aaOJwqW0354oCCgrf8LAd0tBnIzg5xgGlH0qfehcRInLX
+ z8WrlNapYqRZ+kmeMY0iCvlxHdsfTdSAsipTWxgNv/KPBqbKDfhBTYx23
+ q3EC2wjmvg+vWJaEt/emhChegZdxQ7UDd5C8s/xBGjb0PRGJa5C/arBx3 w==;
+X-CSE-ConnectionGUID: WWRhQxiLSjCtKcJ1iP70SQ==
+X-CSE-MsgGUID: KH4h5GbuTTaOzbBrDQvlCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80162350"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="80162350"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 08:49:52 -0700
+X-CSE-ConnectionGUID: Bx5EHuj1RfO4g0zlWQz/Pw==
+X-CSE-MsgGUID: /DD6AaNGSgqPIEK6+bzAPg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="245232653"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.126])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2026 08:49:51 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Sobin Thomas <sobin.thomas@intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v1 0/4] RFC: Create smaller dmesg reports for a test
+Date: Wed, 20 May 2026 17:49:42 +0200
+Message-ID: <20260520154947.116726-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Update_pre-Xe_large-buffe?=
- =?utf-8?q?r_compute_support?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 20 May 2026 15:26:16 -0000
-Message-ID: <177929077692.92319.9039262315138820520@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260520090034.463367-4-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20260520090034.463367-4-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,156 +67,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8865481433716884009==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+  Inform igt_runner about some lines in dmesg which could be
+safely skipped during creating a results.json.
 
-== Series Details ==
+  With this, runner will also lift dmesg size limit for current
+test and will postpone size fitting to last phase of a run when
+it will generate json report.
 
-Series: Update pre-Xe large-buffer compute support
-URL   : https://patchwork.freedesktop.org/series/166926/
-State : success
+TODO: This is draft which implements only lines skipping, without
+any reporting what was done. Also, implementation for a fail path
+when applied regex will not lower resulting demsg is left for
+future.
 
-== Summary ==
+Cc: Sobin Thomas <sobin.thomas@intel.com>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-CI Bug Log - changes from IGT_8925 -> IGTPW_15211
-====================================================
+Kamil Konieczny (4):
+  runner/executor: Create temporary unlimited dmesg save
+  lib/igt_core: Create message for runner with unlimiting dmesg size
+  tests/intel/xe_exec_system_allocator: Lower dmesg size collected
+  runner/resultgen: Create smaller dmesg report by dropping lines
+    matched with skip regex
 
-Summary
--------
+ lib/igt_core.c                         | 31 +++++++++++++++++++
+ lib/igt_core.h                         |  1 +
+ runner/executor.c                      | 43 ++++++++++++++++----------
+ runner/output_strings.h                |  8 +++++
+ runner/resultgen.c                     | 17 ++++++++--
+ tests/intel/xe_exec_system_allocator.c |  1 +
+ 6 files changed, 83 insertions(+), 18 deletions(-)
 
-  **SUCCESS**
+-- 
+2.54.0
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15211 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-hsw-4770/igt@dmabuf@all-tests.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - fi-hsw-4770:        [INCOMPLETE][2] -> [PASS][3] +1 other test pass
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8925/fi-hsw-4770/igt@i915_selftest@live.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-hsw-4770/igt@i915_selftest@live.html
-
-  * igt@kms_flip@basic-flip-vs-modeset:
-    - fi-bsw-n3050:       [DMESG-WARN][4] -> [PASS][5] +5 other tests pass
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8925/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-modeset.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-modeset.html
-
-  
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8925 -> IGTPW_15211
-
-  CI-20190529: 20190529
-  CI_DRM_18526: 7d39df83e93eba14a23b1fb6ffff076eb191f27b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15211: 15211
-  IGT_8925: cae7174cb10736765bb930ad65b82788951f6ee4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html
-
---===============8865481433716884009==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Update pre-Xe large-buffer compute support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166926/">https://patchwork.freedesktop.org/series/166926/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8925 -&gt; IGTPW_15211</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15211 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@dmabuf@all-tests:<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-hsw-4770/igt@dmabuf@all-tests.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8925/fi-hsw-4770/igt@i915_selftest@live.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-hsw-4770/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8925/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-modeset.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-modeset.html">PASS</a> +5 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8925 -&gt; IGTPW_15211</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18526: 7d39df83e93eba14a23b1fb6ffff076eb191f27b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15211: 15211<br />
-  IGT_8925: cae7174cb10736765bb930ad65b82788951f6ee4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8865481433716884009==--
