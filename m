@@ -4,88 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10C92CD5BA4
-	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 16:55:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 632A5CD4F3D
+	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 17:03:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B2E0A10E190;
-	Wed, 20 May 2026 16:55:33 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NQUA7afu";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54E0310E190
- for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 16:55:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779296113; x=1810832113;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=X5GrbYEEIy8oAamfAO78nb9iWGut3h8BkGmmZYfdp7g=;
- b=NQUA7afulqqLcmCNUUxkLoK5SuREfgnx/aupi+adbcf75X8p9q7ZPH94
- jMni1GVL7+7Pn1Aee4CyvgpLfiXooFuVvhkgQiMSAIO3jvCOO3PNpVDOj
- 8ztUzLgfuQZLNEeJizqTYd9mLMOY03VNdCgK+PTpj/Jp4OcK2tQbuiNp2
- W+ignCNr5y6z+lOT2iZXH3FM1Z8F16w91SAb3yBX0gbgMKGz+Xz5o90cf
- xCc9w2PqyE6JhDce06msRh2L2u5698CTudnc62Dx2elPsNSre24AL/oWx
- oIZg+s8hesxf4sh0HEbMH918qdJOiGRaV4iO2AJzg4dHW+hk0YMTazJBS g==;
-X-CSE-ConnectionGUID: zoAyHgUFRNKSHBkgNin8/Q==
-X-CSE-MsgGUID: rAR83HAARkyMAczqltcx+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="79350675"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="79350675"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 09:55:13 -0700
-X-CSE-ConnectionGUID: Mnv3LV7QSjazr0vvppTCcA==
-X-CSE-MsgGUID: 0inN14FOScSspQB8MYIF9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="242051768"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 09:55:09 -0700
-Date: Wed, 20 May 2026 18:55:07 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>
-Cc: "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
- "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
- "jani.nikula@intel.com" <jani.nikula@intel.com>,
- "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
- Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
- "gildekel@google.com" <gildekel@google.com>,
- Nancy Lin =?utf-8?B?KOael+aso+ieoik=?= <Nancy.Lin@mediatek.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Paul-pl Chen =?utf-8?B?KOmZs+afj+mclik=?= <Paul-pl.Chen@mediatek.com>,
- "navaremanasi@google.com" <navaremanasi@google.com>,
- Project_Global_Chrome_Upstream_Group
- <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
- "fshao@chromium.org" <fshao@chromium.org>,
- "markyacoub@chromium.org" <markyacoub@chromium.org>
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_kms: Add igt_disable_cpu_deep_sleep()
- to control CPU C-states
-Message-ID: <20260520165507.loxmzhej3rvrg7p7@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>,
- "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
- "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
- "jani.nikula@intel.com" <jani.nikula@intel.com>,
- "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
- Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
- "gildekel@google.com" <gildekel@google.com>,
- Nancy Lin =?utf-8?B?KOael+aso+ieoik=?= <Nancy.Lin@mediatek.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Paul-pl Chen =?utf-8?B?KOmZs+afj+mclik=?= <Paul-pl.Chen@mediatek.com>,
- "navaremanasi@google.com" <navaremanasi@google.com>,
- Project_Global_Chrome_Upstream_Group
- <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
- "fshao@chromium.org" <fshao@chromium.org>,
- "markyacoub@chromium.org" <markyacoub@chromium.org>
-References: <20260520064651.3266598-1-jason-jh.lin@mediatek.com>
- <20260520064651.3266598-2-jason-jh.lin@mediatek.com>
- <20260520094837.g3d333dbkd5wntqc@kamilkon-DESK.igk.intel.com>
- <4e16a5e72e2201d71586851a9496a90ff8dbcd39.camel@mediatek.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0F76610F101;
+	Wed, 20 May 2026 17:03:25 +0000 (UTC)
+Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CB9D10F101;
+ Wed, 20 May 2026 17:03:06 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6611244499757470541=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4e16a5e72e2201d71586851a9496a90ff8dbcd39.camel@mediatek.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/intel=5Fbatchbuffer=3A_?=
+ =?utf-8?q?intel_bb_copy_data_improvements?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Andrzej Hajda" <andrzej.hajda@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 20 May 2026 17:03:06 -0000
+Message-ID: <177929658624.92320.15222508170850186615@5ab824fced77>
+X-Patchwork-Hint: ignore
+References: <20260520-ibb_fixes-v1-0-d0c8ab2d07d3@intel.com>
+In-Reply-To: <20260520-ibb_fixes-v1-0-d0c8ab2d07d3@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,81 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jason-JH,
-On 2026-05-20 at 10:17:13 +0000, Jason-JH Lin (林睿祥) wrote:
-> [snip]
-> 
-> > > --- a/lib/igt_kms.c
-> > > +++ b/lib/igt_kms.c
-> > > @@ -6776,6 +6776,72 @@ bool igt_check_output_bpc_equal(igt_crtc_t
-> > > *crtc, igt_output_t *output,
-> > >  	return (current == bpc);
-> > >  }
-> > >  
-> > > +/**
-> > > + * igt_disable_cpu_deep_sleep:
-> > > + * @fd: DRM device file descriptor
-> > > + * @disable: true to disable deep sleep states, false to restore
-> > > them
-> > > + *
-> > > + * Controls deep CPU idle states (C-states) to prevent IRQ latency
-> > > spikes
-> > > + * during vblank events. This is a system-wide operation that
-> > > affects all CPUs.
-> > > + *
-> > > + * This is a general API that vendors can extend. Currently:
-> > > + * - MediaTek: Disables/enables state1 and deeper states on all
-> > > CPUs
-> > > + *
-> > > + * When @disable is true, disables deep sleep to ensure stable
-> > > vblank timing.
-> > > + * When @disable is false, restores power-saving idle states.
-> > > + *
-> > > + * Returns: true on success, false on failure
-> > > + */
-> > > +bool igt_disable_cpu_deep_sleep(int fd, bool disable)
-> > > +{
-> > > +	char cpu_path[256];
-> > > +	char state_path[512];
-> > > +	int cpu, state;
-> > > +	int count = 0;
-> > > +	FILE *fp;
-> > > +	const char *value = disable ? "1" : "0";
-> > > +	const char *action = disable ? "Disabled" : "Restored";
-> > > +
-> > > +	/* Only MediaTek needs this currently - other vendors can
-> > > extend here */
-> > > +	if (!is_mtk_device(fd))
-> > > +		return false;
-> > 
-> > Do not do this, make it a general function for every user.
-> > Also, imho this should be in another lib, not in igt_kms.
-> > 
-> 
-> Hi Kamil,
-> 
-> Thanks for the feedback.
-> 
-> For the lib placement, would it be appropriate to move this into
-> lib/igt_pm.c?
+--===============6611244499757470541==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Looks better.
+== Series Details ==
 
-Regards,
-Kamil
+Series: lib/intel_batchbuffer: intel bb copy data improvements
+URL   : https://patchwork.freedesktop.org/series/166929/
+State : success
 
-> 
-> I noticed that the existing APIs in igt_pm don't take fd as a
-> parameter for device identification. For consistency, if we agree on
-> moving to igt_pm, I'll also move the is_mtk_device() check to the call
-> site and remove fd check from the function.
-> 
-> Best regards,
-> Jason-JH Lin
-> 
-> > Regards,
-> > Kamil
-> 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8925_BAT -> XEIGTPW_15212_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8925 -> IGTPW_15212
+  * Linux: xe-5101-7d39df83e93eba14a23b1fb6ffff076eb191f27b -> xe-5102-87b63df619049a5f9d9710e591a58b64dbcaab95
+
+  IGTPW_15212: 15212
+  IGT_8925: cae7174cb10736765bb930ad65b82788951f6ee4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5101-7d39df83e93eba14a23b1fb6ffff076eb191f27b: 7d39df83e93eba14a23b1fb6ffff076eb191f27b
+  xe-5102-87b63df619049a5f9d9710e591a58b64dbcaab95: 87b63df619049a5f9d9710e591a58b64dbcaab95
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15212/index.html
+
+--===============6611244499757470541==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/intel_batchbuffer: intel bb copy data improvements</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166929/">https://patchwork.freedesktop.org/series/166929/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15212/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15212/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8925_BAT -&gt; XEIGTPW_15212_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8925 -&gt; IGTPW_15212</li>
+<li>Linux: xe-5101-7d39df83e93eba14a23b1fb6ffff076eb191f27b -&gt; xe-5102-87b63df619049a5f9d9710e591a58b64dbcaab95</li>
+</ul>
+<p>IGTPW_15212: 15212<br />
+  IGT_8925: cae7174cb10736765bb930ad65b82788951f6ee4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5101-7d39df83e93eba14a23b1fb6ffff076eb191f27b: 7d39df83e93eba14a23b1fb6ffff076eb191f27b<br />
+  xe-5102-87b63df619049a5f9d9710e591a58b64dbcaab95: 87b63df619049a5f9d9710e591a58b64dbcaab95</p>
+
+</body>
+</html>
+
+--===============6611244499757470541==--
