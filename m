@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60451CD4F3C
-	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 15:50:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B7E0CD4F3C
+	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 15:51:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 005AF10E40B;
-	Wed, 20 May 2026 15:50:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4930E10E40B;
+	Wed, 20 May 2026 15:51:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aNrW8vKi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hzD8XuTV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D3C4210E40B
- for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 15:50:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13EB110E40B
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2026 15:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779292203; x=1810828203;
+ t=1779292200; x=1810828200;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6I9zyfZXWO8KJwF00fImRmSiUIx4VXfWqgrHzJv/uyw=;
- b=aNrW8vKijSuZekOKsznAPrwgqcg5AtJg7zhr268ohBbOQfkd+ytl9VC1
- gJcJmFO+ZPUxfkmp04kWNfOoyT+FJPhIqd4DMlWALKC/AlkccqqqIuzp7
- o0VehO20BclKzwY1NwAwQtXi6EFKmkVAVK+f2wCnp7/mQnLrFYtejiez2
- FLcksF/f/05dez6yfKii5IdIPXZcSD06BSDE7iUv5D5eXLgvqcMsJGRz9
- TW/1n/W/UO7hlfNc7agjMJm521wlAHz3Xvc2j1T/BLQicy+6AMe32Brkg
- vYuIjzlQUOXmObuqE+uhU+wE6ppCgUSO8PA3Sn4Wh2jYXlWudMYh1AvFo A==;
-X-CSE-ConnectionGUID: DN99m+kWRbOYN34mX4ySMg==
-X-CSE-MsgGUID: /yf9QE1yTZ6ssEhZ8eu40w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="105657025"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="105657025"
+ bh=7ajbN7mhVe3kfPFETLojQMfhHatWjmgXUfWYKWjMCoM=;
+ b=hzD8XuTVXMSWiSqgKxFcW+GcOhXkQD3HlewcwPHjpwo2SLHwn3dfj70L
+ Ht27EEIBT/VV4JaQ4tiA+z3NcH0DOM0+OG7hPQE64Z9WNrJH7Ofeba1ID
+ 5zfyPO1bExXkx7PmV5mkHbIXgO/GKmKvK8bnowirPMH4EcPk8dkzJY6YM
+ JmC6HNPFlqY1QtPL9jeqKW+HzNBYJtibzPgy2atVh65LW2uX+7XEFCJgi
+ MRegj+0/MogCLkWqpK5rJZxBUTGXVZA0NtnjZodic/QL84XYtFDISEQYV
+ JuL87bTXuIlk2RtqW+YMZ9iKoi0JxixWOSftu9gmY0mQ/NcjfXuRsO+SO Q==;
+X-CSE-ConnectionGUID: 6Sil2TuwSsatwxdniUTG+A==
+X-CSE-MsgGUID: uh1DzeUxRwS75e9Ch2SnzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="105657016"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="105657016"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 08:50:02 -0700
-X-CSE-ConnectionGUID: L1PYz6+uRyifTD2EpqmVUw==
-X-CSE-MsgGUID: Grmm3FgFRACny7zEvW3CBg==
+ 20 May 2026 08:49:59 -0700
+X-CSE-ConnectionGUID: koRUVVYjT3qhLVVY+779cg==
+X-CSE-MsgGUID: 5ddJaiBETzGCrRg3t1KaSA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="237219154"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; d="scan'208";a="237219147"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.245.126])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2026 08:50:02 -0700
+ 20 May 2026 08:49:58 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v1 3/4] tests/intel/xe_exec_system_allocator: Lower
- dmesg size collected
-Date: Wed, 20 May 2026 17:49:45 +0200
-Message-ID: <20260520154947.116726-4-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 2/4] lib/igt_core: Create message for runner with
+ unlimiting dmesg size
+Date: Wed, 20 May 2026 17:49:44 +0200
+Message-ID: <20260520154947.116726-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520154947.116726-1-kamil.konieczny@linux.intel.com>
 References: <20260520154947.116726-1-kamil.konieczny@linux.intel.com>
@@ -69,27 +69,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Allow igt_runner to lower dmesg size collected during a run.
-This will drop lines matched with regex, also in success runs
-only small 4KB portion of beginning and end will be collected.
+Create a way to communicate to runner that test or subtest want
+to lift disk limit size collected in a run and delays size limit
+fitting to results processing.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_exec_system_allocator.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/igt_core.c | 31 +++++++++++++++++++++++++++++++
+ lib/igt_core.h |  1 +
+ 2 files changed, 32 insertions(+)
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 0f1d6ee9c..1f1482a97 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -2565,6 +2565,7 @@ int igt_main()
- 		va_bits = xe->va_bits;
- 		open_sync_file();
- 		dev_id = intel_get_drm_devid(fd);
-+		igt_emit_ulimit_dmesg(4096, 4096, "drm:drm_pagemap_migrate_to_devmem|Skipping madvise reset for vma");
- 	}
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 72b7d3449..e0f6eb969 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -3606,6 +3606,37 @@ void igt_emit_ignore_dmesg_regex(const char *ignore_dmesg_regex)
+ 	igt_kmsg(KMSG_INFO "%s%s\n", mark_ignore_dmesg, ignore_dmesg_regex);
+ }
  
- 	for (const struct section *s = sections; s->name; s++) {
++/**
++ * igt_emit_ulimit_dmesg:
++ * @begin_size: size of a beginning part
++ * @end_size: size of an ending part
++ * @ignore_dmesg_regex: string regex
++ *
++ * Emits a string '[IGT] ulimit' in demsg for igt_runner to ignore dmesg disk
++ * size limit for one test. Later on results will filter out matched regex to
++ * reduce its size in report.json. If that will not be enough, results will
++ * further reduce it under a desired disk limit. Regex parameter should be a
++ * last one emited. User could use begin and end sizes to reduce it more for
++ * this particular test (zero means no reduction).
++ */
++void igt_emit_ulimit_dmesg(const size_t begin_size, const size_t end_size, const char *ignore_dmesg_regex)
++{
++	static const char ulimit[] = "ulimit"; /* [IGT] ulimit ... params */
++	GError *err = NULL;
++	GRegex *re;
++
++	re = g_regex_new(ignore_dmesg_regex, G_REGEX_OPTIMIZE, 0, &err);
++	if (err) {
++		igt_debug("regexp: '%s'\n", err->message);
++		g_error_free(err);
++		igt_assert_f(re, "Error in regexp\n");
++	}
++
++	g_regex_unref(re);
++	igt_kmsg(KMSG_INFO "%s size_start=%ld size_end=%ld regex: %s\n", ulimit,
++		 begin_size, end_size, ignore_dmesg_regex);
++}
++
+ /**
+  * @igt_measured_usleep: Helper to model accurate sleep time for tests
+  * @usec: usec to sleep
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 9fe3997e7..d8e0249ee 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1643,6 +1643,7 @@ int igt_pci_system_reinit(void);
+ void igt_pci_system_cleanup(void);
+ 
+ void igt_emit_ignore_dmesg_regex(const char *ignore_dmesg_regex);
++void igt_emit_ulimit_dmesg(const size_t begin_size, const size_t end_size, const char *ignore_dmesg_regex);
+ 
+ unsigned int igt_measured_usleep(unsigned int usec);
+ 
 -- 
 2.54.0
 
