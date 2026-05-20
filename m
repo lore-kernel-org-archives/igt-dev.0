@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B176CD4F3D
-	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 15:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77AF5CD4F3C
+	for <igt-dev@archiver.kernel.org>; Wed, 20 May 2026 15:26:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB75410F0AB;
-	Wed, 20 May 2026 15:15:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 137CD10E14C;
+	Wed, 20 May 2026 15:26:37 +0000 (UTC)
 Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1240010F0AB;
- Wed, 20 May 2026 15:15:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E397210E14C;
+ Wed, 20 May 2026 15:26:16 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8665222074620618698=="
+ boundary="===============8865481433716884009=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Update_pre-Xe_large-buffer_?=
- =?utf-8?q?compute_support?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Update_pre-Xe_large-buffe?=
+ =?utf-8?q?r_compute_support?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 20 May 2026 15:15:19 -0000
-Message-ID: <177929011906.92071.14406529097994285346@5ab824fced77>
+Date: Wed, 20 May 2026 15:26:16 -0000
+Message-ID: <177929077692.92319.9039262315138820520@5ab824fced77>
 X-Patchwork-Hint: ignore
 References: <20260520090034.463367-4-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20260520090034.463367-4-zbigniew.kempczynski@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8665222074620618698==
+--===============8865481433716884009==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,45 +50,52 @@ Content-Transfer-Encoding: 7bit
 
 Series: Update pre-Xe large-buffer compute support
 URL   : https://patchwork.freedesktop.org/series/166926/
-State : failure
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8925_BAT -> XEIGTPW_15211_BAT
+CI Bug Log - changes from IGT_8925 -> IGTPW_15211
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_15211_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_15211_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html
 
-Participating hosts (13 -> 13)
+Participating hosts (42 -> 40)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
 
-Possible new issues
--------------------
+Known issues
+------------
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_15211_BAT:
+  Here are the changes found in IGTPW_15211 that come from known issues:
 
 ### IGT changes ###
 
-#### Possible regressions ####
+#### Issues hit ####
 
-  * igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race:
-    - bat-lnl-1:          [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8925/bat-lnl-1/igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15211/bat-lnl-1/igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race.html
+  * igt@dmabuf@all-tests:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-hsw-4770/igt@dmabuf@all-tests.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - fi-hsw-4770:        [INCOMPLETE][2] -> [PASS][3] +1 other test pass
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8925/fi-hsw-4770/igt@i915_selftest@live.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-hsw-4770/igt@i915_selftest@live.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - fi-bsw-n3050:       [DMESG-WARN][4] -> [PASS][5] +5 other tests pass
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8925/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-modeset.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-modeset.html
 
   
 
@@ -96,17 +103,19 @@ Possible new issues
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_8925 -> IGTPW_15211
 
+  CI-20190529: 20190529
+  CI_DRM_18526: 7d39df83e93eba14a23b1fb6ffff076eb191f27b @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15211: 15211
   IGT_8925: cae7174cb10736765bb930ad65b82788951f6ee4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5101-7d39df83e93eba14a23b1fb6ffff076eb191f27b: 7d39df83e93eba14a23b1fb6ffff076eb191f27b
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15211/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html
 
---===============8665222074620618698==
+--===============8865481433716884009==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -128,42 +137,56 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>Update pre-Xe large-buffer compute support</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166926/">https://patchwork.freedesktop.org/series/166926/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15211/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15211/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8925_BAT -&gt; XEIGTPW_15211_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8925 -&gt; IGTPW_15211</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_15211_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_15211_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_15211_BAT:</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15211 that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Possible regressions</h4>
+<h4>Issues hit</h4>
 <ul>
-<li>igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8925/bat-lnl-1/igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15211/bat-lnl-1/igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race.html">ABORT</a></li>
+<li>igt@dmabuf@all-tests:<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-hsw-4770/igt@dmabuf@all-tests.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8925/fi-hsw-4770/igt@i915_selftest@live.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-hsw-4770/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8925/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-modeset.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15211/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-modeset.html">PASS</a> +5 other tests pass</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8925 -&gt; IGTPW_15211</li>
 </ul>
-<p>IGTPW_15211: 15211<br />
-  IGT_8925: cae7174cb10736765bb930ad65b82788951f6ee4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5101-7d39df83e93eba14a23b1fb6ffff076eb191f27b: 7d39df83e93eba14a23b1fb6ffff076eb191f27b</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18526: 7d39df83e93eba14a23b1fb6ffff076eb191f27b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15211: 15211<br />
+  IGT_8925: cae7174cb10736765bb930ad65b82788951f6ee4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============8665222074620618698==--
+--===============8865481433716884009==--
