@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F26BCD5BAF
-	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 21:06:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51B7CCD5BAB
+	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 21:14:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D9E410F400;
-	Thu, 21 May 2026 21:06:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1044F10F400;
+	Thu, 21 May 2026 21:14:52 +0000 (UTC)
 Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A1B710F400;
- Thu, 21 May 2026 21:06:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA48A10F400;
+ Thu, 21 May 2026 21:14:32 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3848068896141791218=="
+ boundary="===============2118057721210011164=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_intel-ci=3A_Add_D3cold_test?=
- =?utf-8?q?list_to_meson=2Ebuild?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fs?=
+ =?utf-8?q?ystem=5Fallocator=3A_Test_madvise=28MADV=5FDONTNEED=29_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karthik Poosa" <karthik.poosa@intel.com>
+To: "Francois Dugast" <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 21 May 2026 21:06:17 -0000
-Message-ID: <177939757742.97952.10954248281800931429@5ab824fced77>
+Date: Thu, 21 May 2026 21:14:32 -0000
+Message-ID: <177939807275.97952.17636796329336862940@5ab824fced77>
 X-Patchwork-Hint: ignore
-References: <20260521110957.794644-1-karthik.poosa@intel.com>
-In-Reply-To: <20260521110957.794644-1-karthik.poosa@intel.com>
+References: <20260521101938.139350-1-francois.dugast@intel.com>
+In-Reply-To: <20260521101938.139350-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,59 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3848068896141791218==
+--===============2118057721210011164==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: intel-ci: Add D3cold testlist to meson.build
-URL   : https://patchwork.freedesktop.org/series/167011/
-State : failure
+Series: tests/intel/xe_exec_system_allocator: Test madvise(MADV_DONTNEED) (rev3)
+URL   : https://patchwork.freedesktop.org/series/165410/
+State : success
 
 == Summary ==
 
-Series 167011 revision 1 was fully merged or fully failed: no git log
+CI Bug Log - changes from IGT_8932 -> IGTPW_15217
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15217/index.html
+
+Participating hosts (42 -> 39)
+------------------------------
+
+  Missing    (3): bat-dg2-13 bat-arls-5 fi-snb-2520m 
 
 
+Changes
+-------
 
---===============3848068896141791218==
+  No changes found
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8932 -> IGTPW_15217
+
+  CI-20190529: 20190529
+  CI_DRM_18537: f103db97c610a41177720b08aa4a2a05f9b42d49 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15217: 15217
+  IGT_8932: 8932
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15217/index.html
+
+--===============2118057721210011164==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,16 +113,35 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>intel-ci: Add D3cold testlist to meson.build</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167011/">https://patchwork.freedesktop.org/series/167011/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_system_allocator: Test madvise(MADV_DONTNEED) (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165410/">https://patchwork.freedesktop.org/series/165410/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15217/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15217/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 167011 revision 1 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from IGT_8932 -&gt; IGTPW_15217</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15217/index.html</p>
+<h2>Participating hosts (42 -&gt; 39)</h2>
+<p>Missing    (3): bat-dg2-13 bat-arls-5 fi-snb-2520m </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8932 -&gt; IGTPW_15217</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18537: f103db97c610a41177720b08aa4a2a05f9b42d49 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15217: 15217<br />
+  IGT_8932: 8932</p>
 
 </body>
 </html>
 
---===============3848068896141791218==--
+--===============2118057721210011164==--
