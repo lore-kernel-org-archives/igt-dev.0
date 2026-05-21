@@ -4,73 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02A9CCD4F3D
-	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 13:43:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E102ACD4F3D
+	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 13:57:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A82D410E4CD;
-	Thu, 21 May 2026 13:43:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7494710E4E5;
+	Thu, 21 May 2026 13:57:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZE/BJ5yc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NIR2E1WP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAACA10E4CD
- for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 13:42:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 002A510F33A
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 13:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779370939; x=1810906939;
- h=from:date:subject:mime-version:content-transfer-encoding:
- message-id:references:in-reply-to:to:cc;
- bh=kE+wcuyM1Uxc4mEqxeG5jbdVwnQ9jwqojGNvefEEP9E=;
- b=ZE/BJ5yc2/ZOUbO/3X7W9z711f260EnD/dWfUKq1CT8a7HC04D/lgfoJ
- wa2uFRT6wdJkuST22+PYzhyw2vDFI79tHbr8+iY8BkIsP1OhkXTsv6vXZ
- UP3cXOTxYPdtSp4r876qzi6vRajtcNEc2Fr2YtBQKGO3x2DmNRg1QgaAP
- teVLEC9KoG62HZ2cnsaC8YJt4ICbY6q/CzrZDCYkoLl8Gg/vI9G/VIfR4
- M3iF2tJCvTeQLP6OEyGj6SiMhSv/GzhqX6SLx1WMHMvORXbEfPVXD1ELE
- dasCrQi/ArpIBI9t+oouw+8m5RLBnsCpYZTAjbJW4ya7OZ/HjjmC1fFcJ w==;
-X-CSE-ConnectionGUID: Bh2ROvWqRNq9x8TLbpigrg==
-X-CSE-MsgGUID: o/Mfaf3dTSuvTjE2lq/fHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80321882"
-X-IronPort-AV: E=Sophos;i="6.23,246,1770624000"; d="scan'208";a="80321882"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2026 06:42:17 -0700
-X-CSE-ConnectionGUID: tSGehno5SYyXp/aYzNeDVQ==
-X-CSE-MsgGUID: zuGBS778Sby5lJihwaQdoA==
+ t=1779371807; x=1810907807;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=I1NrHV3rcP/3y0dm9b7CYPIBadTSrf9woxL3lBUKawc=;
+ b=NIR2E1WPv1bxETL+0v9AVgbKjuHTJd/6dYuxwqDg0xM1G3fInb21KLmA
+ dTlFWrPQ9R2RdyrsVzPm6Rj6+17h1E7rmIBJ5mvfx4fzlypz8ERUsfZ6J
+ 6BRTSZ+ar8/Pxqcjg72bWg5zdxJyC5GVMqMvzYOnBgJZbwoiQKQ8StPSQ
+ 5IlmfLezbj9nzIIDCv2dioYGuaPIzozQvUgtw977BLl+nG+rYhTjR2WsK
+ +I7QqBD7f/q8igGlOxGTCl/i9arPhASWL3y/Bam4iwZQ4u21jJN2G7R4g
+ +lEd/FEVprKc6t91PeKU93qpveLHg5CALDmXSONKw1onRymRvQr+GzoV7 Q==;
+X-CSE-ConnectionGUID: o4ZoxwHXQeCD4JXC6sLgbA==
+X-CSE-MsgGUID: fx2Kzb7/Qla6JvCZNEPuKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="91397039"
+X-IronPort-AV: E=Sophos;i="6.23,246,1770624000"; d="scan'208";a="91397039"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2026 06:56:47 -0700
+X-CSE-ConnectionGUID: jgsfoGfBSZ+z/P57Iq1I/Q==
+X-CSE-MsgGUID: rLzXBnVdS3CB3LIjPJ1tXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,246,1770624000"; d="scan'208";a="239517296"
-Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2026 06:42:16 -0700
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 21 May 2026 15:40:46 +0200
-Subject: [PATCH v2 2/2] tests/intel/xe_exec_store: increase batchbuffer
- size
+X-IronPort-AV: E=Sophos;i="6.23,246,1770624000"; d="scan'208";a="270885392"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.106])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2026 06:56:45 -0700
+Date: Thu, 21 May 2026 15:56:42 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>, 
+ Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: Re: [PATCH i-g-t, v2] tests/intel/xe_exec_system_allocator: Test
+ madvise(MADV_DONTNEED)
+Message-ID: <kdtzxwzkca5sosldw6sktjprcmprkkqhdrk64pwmek77g5f6xx@vitujne2grzq>
+References: <20260521101938.139350-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-ibb_fixes2-v2-2-a36d7a9e71e5@intel.com>
-References: <20260521-ibb_fixes2-v2-0-a36d7a9e71e5@intel.com>
-In-Reply-To: <20260521-ibb_fixes2-v2-0-a36d7a9e71e5@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Jonathan Cavitt <jonathan.cavitt@intel.com>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=815;
- i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=kE+wcuyM1Uxc4mEqxeG5jbdVwnQ9jwqojGNvefEEP9E=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBqDwtrNbks8K0/MkuQTF6Nxcx3E7kPl6QD2PO19
- Y7DeLy88veJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCag8LawAKCRAjYrKT3hD9
- 168tC/4oKRaPcBlToCmT3BKMlql6fVZn312gYosj1r3Hp+CAuGpOLtlDdM6w1I2X4beovEgpwil
- 4ljPvxolwg5+pVmEkMgQY5zjzfrYYU26zsi8U7ydbs4eCQRlYoXQJYoeB/eyog6h5VjnNXkMvLZ
- UAZP28/a5LVwudLlx9+PRIpWxCGUQzyql22BTFXkjIlFIYwGBs1dXbwCoAg1qNPRAVLSGENSMnD
- frMeZiRpEKCihV3Px06kmH0HVST95JrewR7ix3ulu7eqsKq8QC5ONlT2rTTm7zDKKzVRoWfO+J/
- Es9n+aNirFDCcKGE1YUfXwGfC+mGBgap3VuQyDPED/YtvvskaRnkh/NbuySI9UBJOJzVreGOVZe
- NOOogvslFpZ3pUm1JLb//FF6h78T3g55GHR3+4uoawU8sk2UWMGg377vHVcCvf7/LebTKj0pGMB
- 283W9omgD+j05rxoIxORG0sd8jktkG9fz6gszkZoyslibaTaKkJtyvPqI7XrHNeLruMFY=
-X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
- fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260521101938.139350-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,28 +71,140 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In case of some platforms 32K is too small for the shader.
+On Thu, May 21, 2026 at 12:18:39PM +0200, Francois Dugast wrote:
+> Extend the compute test to make use of madvise(MADV_DONTNEED) on the
+> input array before reading from it on host, after running the compute
+> kernel. The GT stats are used to verify that no page migration happened
+> from device to host.
+> 
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> ---
+> v2: Only skip results check when not needed (Zbigniew)
+> ---
+>  tests/intel/xe_exec_system_allocator.c | 53 +++++++++++++++++++++++++-
+>  1 file changed, 52 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+> index 0f1d6ee9c..21973e95d 100644
+> --- a/tests/intel/xe_exec_system_allocator.c
+> +++ b/tests/intel/xe_exec_system_allocator.c
+> @@ -2250,6 +2250,9 @@ struct xe_gt_stats_snapshot {
+>  	int svm_4K_pagefault_us;
+>  	int svm_64K_pagefault_us;
+>  	int svm_2M_pagefault_us;
+> +	int svm_4K_cpu_copy_kb;
+> +	int svm_64K_cpu_copy_kb;
+> +	int svm_2M_cpu_copy_kb;
+>  };
+>  
+>  static void read_gt_stats_snapshot(int fd,
+> @@ -2262,11 +2265,18 @@ static void read_gt_stats_snapshot(int fd,
+>  		xe_gt_stats_get_count(fd, eci->gt_id, "svm_64K_pagefault_us");
+>  	snapshot->svm_2M_pagefault_us =
+>  		xe_gt_stats_get_count(fd, eci->gt_id, "svm_2M_pagefault_us");
+> +	snapshot->svm_4K_cpu_copy_kb =
+> +		xe_gt_stats_get_count(fd, eci->gt_id, "svm_4K_cpu_copy_kb");
+> +	snapshot->svm_64K_cpu_copy_kb =
+> +		xe_gt_stats_get_count(fd, eci->gt_id, "svm_64K_cpu_copy_kb");
+> +	snapshot->svm_2M_cpu_copy_kb =
+> +		xe_gt_stats_get_count(fd, eci->gt_id, "svm_2M_cpu_copy_kb");
+>  }
+>  
+>  /* compute flags */
+>  #define TOUCH_ONCE		(0x1 << 0)
+>  #define ACCESS_DEVICE_HOST	(0x1 << 1)
+> +#define USE_MADV_DONTNEED	(0x1 << 2)
+>  
+>  /**
+>   * SUBTEST: compute
+> @@ -2285,6 +2295,18 @@ static void read_gt_stats_snapshot(int fd,
+>   * Description: Run a simple compute kernel %arg[1] on a 2MB malloc'ed buffer
+>   * Test category: performance test
+>   *
+> + * SUBTEST: eu-fault-4k-range-device-host-madvise-dontneed
+> + * Description: Run a simple compute kernel %arg[1] on a 4KB malloc'ed buffer for which madvise(MADV_DONTNEED) is used
+> + * Test category: performance test
+> + *
+> + * SUBTEST: eu-fault-64k-range-device-host-madvise-dontneed
+> + * Description: Run a simple compute kernel %arg[1] on a 64KB malloc'ed buffer for which madvise(MADV_DONTNEED) is used
+> + * Test category: performance test
+> + *
+> + * SUBTEST: eu-fault-2m-range-device-host-madvise-dontneed
+> + * Description: Run a simple compute kernel %arg[1] on a 2MB malloc'ed buffer for which madvise(MADV_DONTNEED) is used
+> + * Test category: performance test
+> + *
+>   * arg[1]:
+>   *
+>   * @once-device:				touch the buffer only once, from the device
+> @@ -2321,7 +2343,7 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
+>  	xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
+>  
+>  	env.loop_count = (flags & TOUCH_ONCE) ? 1 : env.array_size;
+> -	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST);
+> +	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST) || (flags & MADV_DONTNEED);
+>  	env.vm = vm;
+>  
+>  	read_gt_stats_snapshot(fd, eci, &stats_before);
+> @@ -2344,6 +2366,22 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
+>  
+>  		xe_run_intel_compute_kernel_on_engine(fd, eci, &env, EXECENV_PREF_SYSTEM);
+>  
+> +		if (flags & ACCESS_DEVICE_HOST) {
+> +			float total = 0;
+> +
+> +			if (flags & USE_MADV_DONTNEED)
+> +				igt_assert_eq(madvise(compute_input, size, MADV_DONTNEED), 0);
+> +
+> +			/*
+> +			 * No functional purpose, just force a read on host
+> +			 */
+> +			for (int j = 0; j < env.array_size; j++)
+> +				total += compute_input[j];
+> +
+> +			if (!total)
+> +				igt_debug("compute_input is zeros\n");
+> +		}
+> +
+>  		free(compute_input);
+>  	}
+>  
+> @@ -2365,6 +2403,18 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
+>  		}
+>  	}
+>  
+> +	if ((flags & ACCESS_DEVICE_HOST) && (flags & USE_MADV_DONTNEED)) {
+> +		if (size == SZ_4K)
+> +			igt_assert_eq(stats_before.svm_4K_cpu_copy_kb,
+> +				      stats_after.svm_4K_cpu_copy_kb);
+> +		else if (size == SZ_64K)
+> +			igt_assert_eq(stats_before.svm_64K_cpu_copy_kb,
+> +				      stats_after.svm_64K_cpu_copy_kb);
+> +		else if (size == SZ_2M)
+> +			igt_assert_eq(stats_before.svm_2M_cpu_copy_kb,
+> +				      stats_after.svm_2M_cpu_copy_kb);
+> +	}
+> +
+>  	unbind_system_allocator();
+>  	xe_vm_destroy(fd, vm);
+>  }
+> @@ -2525,6 +2575,7 @@ int igt_main()
+>  		{ "once-device-host", TOUCH_ONCE | ACCESS_DEVICE_HOST },
+>  		{ "range-device", 0 },
+>  		{ "range-device-host", ACCESS_DEVICE_HOST },
+> +		{ "range-device-host-madvise-dontneed", ACCESS_DEVICE_HOST | USE_MADV_DONTNEED },
+>  		{ NULL },
+>  	};
+>  
+> -- 
+> 2.43.0
+>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
----
- tests/intel/xe_exec_store.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+For me this is fine, address what Kamil wants and from my:
 
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index faf2c7fa86ce..b9753dc22f9a 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -352,7 +352,7 @@ static void long_shader(int fd, struct drm_xe_engine_class_instance *hwe,
- {
- 	const uint64_t target_offset = 0x1a000000;
- 	const uint64_t bb_offset = 0x1b000000;
--	const size_t bb_size = 32768;
-+	const size_t bb_size = 65536;
- 	uint32_t vm_id;
- 	uint32_t exec_queue;
- 	const unsigned int instruction_count = 128;
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
--- 
-2.54.0
-
+--
+Zbigniew
