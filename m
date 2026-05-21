@@ -4,66 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEBA3CD4F3D
-	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 16:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38381CD5BAC
+	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 16:32:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B12810E531;
-	Thu, 21 May 2026 16:25:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB95910E4C3;
+	Thu, 21 May 2026 16:32:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OnPDW8ht";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bO3UCtg+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D272310E531
- for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 16:25:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8410C10E4C3
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 16:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779380728; x=1810916728;
+ t=1779381130; x=1810917130;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=GzeBe/ntpeIzo6e/gw9pydwuOE3qQK7paFjZUATw3I0=;
- b=OnPDW8htYIf1TQcZWFh+YU8pXb7BoK9eDW5oq2yrYTUw2YA0mIRAfSTj
- Cl2/EQmU5D63IfQp3hlpYLniUet0/6YZLK/W/Y/aKCQX5+FTb+jSAbrzY
- E/xcldKExZdL2LkiEdYnSCU31/3ejbdGZWyc8ALrn7zP57s62JXHAbTna
- qcjlrTPw4W3XDTKWuy7lOWNYGC1gaYjMUOnr9ODlGzif3f9VAuFgFPmjr
- GaVvJnoKG3xquwjYXM9zH06aAeqFhWPcmf52QbE51yMDCQ1MFzCtFX0T7
- aji4861r1qJOdyCg0vW6EnLRJXsZA4UYg6lLr/UIUUtXi35JfkQO7vbu7 A==;
-X-CSE-ConnectionGUID: 4xantrg6SM6IwAZv/Ldxaw==
-X-CSE-MsgGUID: KBmcl3BORkuQkJHg4krKPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80336414"
-X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; d="scan'208";a="80336414"
+ mime-version:in-reply-to;
+ bh=8STP86rqAfHAaXVN75Jer3SBmnYPJc/45CudmaBu6Ow=;
+ b=bO3UCtg+Qr8HiT4X+nWx03uN40pxWjXyp5IOp6G9nlUNA3+Lg0bD0Dpb
+ ok1gH1oCE0doA2kV2WGiFVl6uh0AxUL2/8mLrhh0ATE0zc9JScs7RJcGg
+ b6udSqrJvC0+Ne/X7VlRAXJs0ePl/OQIKNEx3/XUSp6hSbsqU1MzNv40b
+ TBGDHTiRn5tG+8/jIYbcQ8yi19B1SFyvcwydJCYrveaf7P+sFq7x2vMYJ
+ MaRq19Cr1fpcY9mfacq63rkdQhLkQFI5u/aVt9O+mePmf8w9RbRMK34om
+ 4PYzfLax98OI9D2W5XY2l7DGmYVxXap0xNnkkPVIMiCxy0f2w8kPEU0UA w==;
+X-CSE-ConnectionGUID: UoUtI2YfQn6IrXlz8eIo9w==
+X-CSE-MsgGUID: nJlwrATPS1KTgRgobmuWsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80337306"
+X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; d="scan'208";a="80337306"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2026 09:25:27 -0700
-X-CSE-ConnectionGUID: OMBBNXNxQQuR2cMdlUV0ww==
-X-CSE-MsgGUID: XzwqLZdDSUWZ/9Buf9TjCA==
+ 21 May 2026 09:32:10 -0700
+X-CSE-ConnectionGUID: Bzl0QAy0QAW+SsaO/YDCFw==
+X-CSE-MsgGUID: RVmL3N0iQUuKwrxQjCfXNQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; d="scan'208";a="242373062"
+X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; d="scan'208";a="242373992"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 09:25:26 -0700
-Date: Thu, 21 May 2026 18:25:08 +0200
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 09:32:09 -0700
+Date: Thu, 21 May 2026 18:32:07 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: Re: [PATCH i-g-t, v2] tests/intel/xe_exec_system_allocator: Test
- madvise(MADV_DONTNEED)
-Message-ID: <20260521162508.kz5w35pkdi43tkly@kamilkon-DESK.igk.intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking: Fix
+ duplicate documentation descriptions
+Message-ID: <20260521163207.frzshvwlk4fuenpy@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org,
- Matthew Brost <matthew.brost@intel.com>,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-References: <20260521101938.139350-1-francois.dugast@intel.com>
- <kdtzxwzkca5sosldw6sktjprcmprkkqhdrk64pwmek77g5f6xx@vitujne2grzq>
- <ag8SZjYT8V1TFflF@fdugast-desk>
+ "Sharma, Swati2" <swati2.sharma@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260520123010.2482801-1-swati2.sharma@intel.com>
+ <20260521104717.xt5nuw62uo4aijvi@kamilkon-DESK.igk.intel.com>
+ <799f0c4b-c399-42da-89c8-2d2cc7d7a361@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ag8SZjYT8V1TFflF@fdugast-desk>
+In-Reply-To: <799f0c4b-c399-42da-89c8-2d2cc7d7a361@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,153 +73,250 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Francois,
-On 2026-05-21 at 16:10:46 +0200, Francois Dugast wrote:
-> On Thu, May 21, 2026 at 03:56:42PM +0200, Zbigniew Kempczyński wrote:
-> > On Thu, May 21, 2026 at 12:18:39PM +0200, Francois Dugast wrote:
-> > > Extend the compute test to make use of madvise(MADV_DONTNEED) on the
-> > > input array before reading from it on host, after running the compute
-> > > kernel. The GT stats are used to verify that no page migration happened
-> > > from device to host.
-> > > 
-> > > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > > Cc: Matthew Brost <matthew.brost@intel.com>
-> > > Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> > > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> > > ---
-> > > v2: Only skip results check when not needed (Zbigniew)
-> > > ---
-> > >  tests/intel/xe_exec_system_allocator.c | 53 +++++++++++++++++++++++++-
-> > >  1 file changed, 52 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-> > > index 0f1d6ee9c..21973e95d 100644
-> > > --- a/tests/intel/xe_exec_system_allocator.c
-> > > +++ b/tests/intel/xe_exec_system_allocator.c
-> > > @@ -2250,6 +2250,9 @@ struct xe_gt_stats_snapshot {
-> > >  	int svm_4K_pagefault_us;
-> > >  	int svm_64K_pagefault_us;
-> > >  	int svm_2M_pagefault_us;
-> > > +	int svm_4K_cpu_copy_kb;
-> > > +	int svm_64K_cpu_copy_kb;
-> > > +	int svm_2M_cpu_copy_kb;
-> > >  };
-> > >  
-> > >  static void read_gt_stats_snapshot(int fd,
-> > > @@ -2262,11 +2265,18 @@ static void read_gt_stats_snapshot(int fd,
-> > >  		xe_gt_stats_get_count(fd, eci->gt_id, "svm_64K_pagefault_us");
-> > >  	snapshot->svm_2M_pagefault_us =
-> > >  		xe_gt_stats_get_count(fd, eci->gt_id, "svm_2M_pagefault_us");
-> > > +	snapshot->svm_4K_cpu_copy_kb =
-> > > +		xe_gt_stats_get_count(fd, eci->gt_id, "svm_4K_cpu_copy_kb");
-> > > +	snapshot->svm_64K_cpu_copy_kb =
-> > > +		xe_gt_stats_get_count(fd, eci->gt_id, "svm_64K_cpu_copy_kb");
-> > > +	snapshot->svm_2M_cpu_copy_kb =
-> > > +		xe_gt_stats_get_count(fd, eci->gt_id, "svm_2M_cpu_copy_kb");
-> > >  }
-> > >  
-> > >  /* compute flags */
-> > >  #define TOUCH_ONCE		(0x1 << 0)
-> > >  #define ACCESS_DEVICE_HOST	(0x1 << 1)
-> > > +#define USE_MADV_DONTNEED	(0x1 << 2)
-> > >  
-> > >  /**
-> > >   * SUBTEST: compute
-> > > @@ -2285,6 +2295,18 @@ static void read_gt_stats_snapshot(int fd,
-> > >   * Description: Run a simple compute kernel %arg[1] on a 2MB malloc'ed buffer
-> > >   * Test category: performance test
-> > >   *
-> > > + * SUBTEST: eu-fault-4k-range-device-host-madvise-dontneed
-> > > + * Description: Run a simple compute kernel %arg[1] on a 4KB malloc'ed buffer for which madvise(MADV_DONTNEED) is used
-> > > + * Test category: performance test
-> > > + *
-> > > + * SUBTEST: eu-fault-64k-range-device-host-madvise-dontneed
-> > > + * Description: Run a simple compute kernel %arg[1] on a 64KB malloc'ed buffer for which madvise(MADV_DONTNEED) is used
-> > > + * Test category: performance test
-> > > + *
-> > > + * SUBTEST: eu-fault-2m-range-device-host-madvise-dontneed
-> > > + * Description: Run a simple compute kernel %arg[1] on a 2MB malloc'ed buffer for which madvise(MADV_DONTNEED) is used
-> > > + * Test category: performance test
-> > > + *
-> > >   * arg[1]:
-> > >   *
-> > >   * @once-device:				touch the buffer only once, from the device
-> > > @@ -2321,7 +2343,7 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
-> > >  	xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-> > >  
-> > >  	env.loop_count = (flags & TOUCH_ONCE) ? 1 : env.array_size;
-> > > -	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST);
-> > > +	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST) || (flags & MADV_DONTNEED);
-> > >  	env.vm = vm;
-> > >  
-> > >  	read_gt_stats_snapshot(fd, eci, &stats_before);
-> > > @@ -2344,6 +2366,22 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
-> > >  
-> > >  		xe_run_intel_compute_kernel_on_engine(fd, eci, &env, EXECENV_PREF_SYSTEM);
-> > >  
-> > > +		if (flags & ACCESS_DEVICE_HOST) {
-> > > +			float total = 0;
-> > > +
-> > > +			if (flags & USE_MADV_DONTNEED)
-> > > +				igt_assert_eq(madvise(compute_input, size, MADV_DONTNEED), 0);
-> > > +
-> > > +			/*
-> > > +			 * No functional purpose, just force a read on host
-> > > +			 */
-> > > +			for (int j = 0; j < env.array_size; j++)
-> > > +				total += compute_input[j];
-> > > +
-> > > +			if (!total)
-> > > +				igt_debug("compute_input is zeros\n");
-> > > +		}
-> > > +
-> > >  		free(compute_input);
-> > >  	}
-> > >  
-> > > @@ -2365,6 +2403,18 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
-> > >  		}
-> > >  	}
-> > >  
-> > > +	if ((flags & ACCESS_DEVICE_HOST) && (flags & USE_MADV_DONTNEED)) {
-> > > +		if (size == SZ_4K)
-> > > +			igt_assert_eq(stats_before.svm_4K_cpu_copy_kb,
-> > > +				      stats_after.svm_4K_cpu_copy_kb);
-> > > +		else if (size == SZ_64K)
-> > > +			igt_assert_eq(stats_before.svm_64K_cpu_copy_kb,
-> > > +				      stats_after.svm_64K_cpu_copy_kb);
-> > > +		else if (size == SZ_2M)
-> > > +			igt_assert_eq(stats_before.svm_2M_cpu_copy_kb,
-> > > +				      stats_after.svm_2M_cpu_copy_kb);
-> > > +	}
-> > > +
-> > >  	unbind_system_allocator();
-> > >  	xe_vm_destroy(fd, vm);
-> > >  }
-> > > @@ -2525,6 +2575,7 @@ int igt_main()
-> > >  		{ "once-device-host", TOUCH_ONCE | ACCESS_DEVICE_HOST },
-> > >  		{ "range-device", 0 },
-> > >  		{ "range-device-host", ACCESS_DEVICE_HOST },
-> > > +		{ "range-device-host-madvise-dontneed", ACCESS_DEVICE_HOST | USE_MADV_DONTNEED },
-> > >  		{ NULL },
-> > >  	};
-> > >  
-> > > -- 
-> > > 2.43.0
-> > >
-> > 
-> > For me this is fine, address what Kamil wants and from my:
-> > 
-> > Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Hi Sharma,,
+On 2026-05-21 at 17:20:30 +0530, Sharma, Swati2 wrote:
+> Hi Kamil
 > 
-> Kamil, are you fine addressing what you suggested in a follow-up?
+> On 21-05-2026 04:17 pm, Kamil Konieczny wrote:
+> > Hi Swati,
+> > On 2026-05-20 at 18:00:10 +0530, Swati Sharma wrote:
+> > > Multiple SUBTEST entries shared identical descriptions across different
+> > > test scenarios (offscreen, primary screen, secondary screen).
+> > > 
+> > > Fix by consolidating feature variants into arg[] parameters and
+> > > updating descriptions to include scenario context (screen, plane,
+> > > fb type, panel count, draw method).
+> > > 
+> > > This reduces documentation SUBTEST entries from 315 to 33.
+> > I did a check with new and old, using:
+> > old-build/build/tests/kms_frontbuffer_tracking --l > aold
+> > new-build/build/tests/kms_frontbuffer_tracking --l > anew
+> > diff -u aold anew
+> > 
+> > and results looks correct.
+> > 
+> > imho you can reduce it even more, see below.
+> > 
+> > > v2: Addressed review comments - made descriptions shorter (Kamil)
+> > > 
+> > > Co-developed-by: Claude Opus 4.6
+> > > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> > > ---
+> > >   tests/intel/kms_frontbuffer_tracking.c | 1432 ++++++++----------------
+> > >   1 file changed, 468 insertions(+), 964 deletions(-)
+> > > 
+> > > diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> > > index e7bb3fa18..37706cab5 100644
+> > > --- a/tests/intel/kms_frontbuffer_tracking.c
+> > > +++ b/tests/intel/kms_frontbuffer_tracking.c
+> > > @@ -27,7 +27,7 @@
+> > >   /**
+> > >    * TEST: kms frontbuffer tracking
+> > >    * Category: Display
+> > > - * Description: Test the Kernel's frontbuffer tracking mechanism and its related features: FBC, PSR and DRRS
+> > > + * Description: Test the Kernel's frontbuffer tracking mechanism and its related features: FBC, PSR, HDR and DRRS
+> > >    * Driver requirement: i915, xe
+> > >    * Mega feature: General Display Features
+> > >    */
+> > > @@ -59,82 +59,51 @@
+> > >    * SUBTEST: pipe-fbc-rte
+> > >    * Description: Sanity test to enable FBC on each pipe.
+> > >    *
+> > > - * SUBTEST: drrs-%dp-rte
+> > > - * Description: Sanity test to enable DRRS with %arg[1] panels.
+> > > + * SUBTEST: %s-%dp-rte
+> > > + * Description: Sanity test to enable %arg[1] with %arg[2] panels.
+> > >    *
+> > > - * SUBTEST: fbc-%dp-rte
+> > > - * Description: Sanity test to enable FBC with %arg[1] panels.
+> > > - *
+> > > - * SUBTEST: psr-%dp-rte
+> > > - * Description: Sanity test to enable PSR with %arg[1] panels.
+> > > - *
+> > > - * SUBTEST: hdr-%dp-rte
+> > > - * Description: Sanity test to enable PSR with %arg[1] panels.
+> > > - *
+> > > - * SUBTEST: fbcdrrs-%dp-rte
+> > > - * Description: Sanity test to enable FBC & DRRS with %arg[1] panels.
+> > > - *
+> > > - * SUBTEST: fbcpsr-%dp-rte
+> > > - * Description: Sanity test to enable FBC & PSR with %arg[1] panels.
+> > > - *
+> > > - * SUBTEST: fbchdr-%dp-rte
+> > > - * Description: Sanity test to enable FBC & HDR with %arg[1] panels.
+> > > - *
+> > > - * SUBTEST: drrshdr-%dp-rte
+> > > - * Description: Sanity test to enable HDR & DRRS with %arg[1] panels.
+> > > - *
+> > > - * SUBTEST: psrhdr-%dp-rte
+> > > - * Description: Sanity test to enable HDR & PSR with %arg[1] panels.
+> > > - *
+> > > - * SUBTEST: fbcdrrshdr-%dp-rte
+> > > - * Description: Sanity test to enable HDR, FBC & DRRS with %arg[1] panels.
+> > > - *
+> > > - * SUBTEST: fbcpsrhdr-%dp-rte
+> > > - * Description: Sanity test to enable HDR, FBC & PSR with %arg[1] panels.
+> > > + * arg[1]:
+> > >    *
+> > > - * arg[1].values:   1, 2
+> > > + * @drrs:       DRRS
+> > > + * @fbc:        FBC
+> > > + * @psr:        PSR
+> > > + * @hdr:        HDR
+> > > + * @fbcdrrs:    FBC & DRRS
+> > > + * @fbcpsr:     FBC & PSR
+> > > + * @fbchdr:     FBC & HDR
+> > > + * @drrshdr:    DRRS & HDR
+> > > + * @psrhdr:     PSR & HDR
+> > > + * @fbcdrrshdr: FBC, DRRS & HDR
+> > > + * @fbcpsrhdr:  FBC, PSR & HDR
+> > > + *
+> > > + * arg[2].values:   1, 2
+> > >    */
+> > >   /**
+> > > - * SUBTEST: drrs-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: fbc-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: psr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > + * SUBTEST: %s-1p-offscreen-pri-%s-draw-%s
+> > > + * Description: Draw a set of rectangles targeting offscreen buffer using %arg[3] method
+> > > + * 		with %arg[1], using %arg[2]
+> > >    *
+> > > - * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: fbcpsr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > + * arg[1]:
+> > >    *
+> > > - * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > + * @drrs:       DRRS
+> > > + * @fbc:        FBC
+> > > + * @psr:        PSR
+> > > + * @hdr:        HDR
+> > > + * @fbcdrrs:    FBC & DRRS
+> > > + * @fbcpsr:     FBC & PSR
+> > > + * @fbchdr:     FBC & HDR
+> > > + * @drrshdr:    DRRS & HDR
+> > > + * @psrhdr:     PSR & HDR
+> > > + * @fbcdrrshdr: FBC, DRRS & HDR
+> > > + * @fbcpsrhdr:  FBC, PSR & HDR
+> > >    *
+> > > - * arg[1]:
+> > > + * arg[2]:
+> > >    *
+> > >    * @indfb:          Individual fb
+> > >    * @shrfb:          Shared fb
+> > >    *
+> > > - * arg[2]:
+> > > + * arg[3]:
+> > >    *
+> > >    * @blt:            Blitter
+> > >    * @mmap-wc:        MMAP-WC
+> > > @@ -142,51 +111,31 @@
+> > >    */
+> > >   /**
+> > > - * SUBTEST: drrs-1p-offscreen-pri-%s-draw-%s
+> > Note that name here is the same as in previous hunk:
+> > %s-1p-offscreen-pri-%s-draw-%s
+> 
+> Yes indeed, but check driver reqt too. Previous one is for i915/xe both.
+> 
+> This one only for i915. That's why splitting is required.
 > 
 
-Yes, you can, as the change could be bigger and touch also
-old tests documentation, not related to this patch.
+Right, I missed that, sorry for noise.
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - * Driver requirement: i915
+> > > - *
+> > > - * SUBTEST: fbc-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - * Driver requirement: i915
+> > > - *
+> > > - * SUBTEST: psr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - * Driver requirement: i915
+> > > - *
+> > > - * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - * Driver requirement: i915
+> > > - *
+> > > - * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - * Driver requirement: i915
+> > > - *
+> > > - * SUBTEST: fbcpsr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > + * SUBTEST: %s-1p-offscreen-pri-%s-draw-%s
+> > > + * Description: Draw a set of rectangles targeting offscreen buffer using %arg[3] method
+> > > + * 		with %arg[1], using %arg[2]
+> > >    * Driver requirement: i915
+> > >    *
+> > > - * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > - *
+> > > - * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > + * arg[1]:
+> > >    *
+> > > - * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
+> > > - * Description: Draw a set of rectangles on the screen using the provided method
+> > > + * @drrs:       DRRS
+> > > + * @fbc:        FBC
+> > > + * @psr:        PSR
+> > > + * @hdr:        HDR
+> > > + * @fbcdrrs:    FBC & DRRS
+> > > + * @fbcpsr:     FBC & PSR
+> > > + * @fbchdr:     FBC & HDR
+> > > + * @drrshdr:    DRRS & HDR
+> > > + * @psrhdr:     PSR & HDR
+> > > + * @fbcdrrshdr: FBC, DRRS & HDR
+> > > + * @fbcpsrhdr:  FBC, PSR & HDR
+> > >    *
+> > > - * arg[1]:
+> > > + * arg[2]:
+> > >    *
+> > >    * @indfb:          Individual fb
+> > >    * @shrfb:          Shared fb
+> > >    *
+> > > - * arg[2]:
+> > > + * arg[3]:
+> > >    *
+> > >    * @mmap-cpu:       MMAP-CPU
+> > >    * @mmap-gtt:       MMAP-GTT
+> > imho you can add these two lines to previous description
+> > and drop this hunk.
 > > 
-> > --
-> > Zbigniew
+[cut]
