@@ -4,63 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C35BDCD5BAC
-	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 16:44:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A1D2CD5BAC
+	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 16:49:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 35D6F10E4B6;
-	Thu, 21 May 2026 16:44:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C5F910E1CF;
+	Thu, 21 May 2026 16:49:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="ecq8hjwb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N+/FS52C";
 	dkim-atps=neutral
-Received: from mail-yx1-f74.google.com (mail-yx1-f74.google.com
- [74.125.224.74])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64FB210E4B6
- for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 16:44:07 +0000 (UTC)
-Received: by mail-yx1-f74.google.com with SMTP id
- 956f58d0204a3-651cc9f2261so12346579d50.3
- for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 09:44:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20251104; t=1779381846; x=1779986646;
- darn=lists.freedesktop.org; 
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Kw0q0F9VIZZUaXbeT8QS+CMbzXPUjPtdAApXiP8Jb9o=;
- b=ecq8hjwbWTzsJRr/VPvq4mtT1ksO0IeBnNUgUnNAe7prtQ3FVVfkR+lY0MJTSVU9Qx
- yV3tD74gSZOXSgwrCyLq3DFmUPIRwAuRNCxSyPJ2QXKzqBDCa3BiVYLS7ghTTVJiTBlI
- efwE6SYdKSgrYT5Z3pjafJhJpBgDYML0CM9boC4qgVNQvxJID7nrq5ffSCIs+wyGUJsk
- 18HacWZNocRIJbmwPLj8cEAmdaRi2jwiwcge1+jadZTCDfFoMZvFycuZWybg5jWEMjC8
- 8Pd8fMauX0zmCfqDqCg/Utr6yPOEcrJm22n47+7fE5O8glErr/8BT7rUyzX3WH2O++K8
- n9jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1779381846; x=1779986646;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Kw0q0F9VIZZUaXbeT8QS+CMbzXPUjPtdAApXiP8Jb9o=;
- b=aLfGyMUfvcebhHKAYLcWLr7DBN9C998kiGsF3wS2ueVN9x0qU1T+Y7RZ4sn0kYPo5Z
- pDrLUvs3Rr+DV4D57UwpNIiqxH0vb8bRNAiySXh4ieU9pEvlf3XmMX29xg9xj3Fnsjxs
- z39iFvyII0Gn4HXLk6WeEAg6VG+853VWHvSRLXvVRVOnmYuKMAc6ExffmRST+3XmJaUj
- RmQI77aVd/ePaa+9/3+oJy9YfYS6E5K18NpCbssq6SQJllVWzt5MJLJ2+zvILZlb8dZQ
- uEGiXViCvZhW0+Lo393A6jvjqereRWE2JNg2eqe1d8nDoXLTyFTxKbOcA+ly08hoa+A0
- uyAw==
-X-Gm-Message-State: AOJu0YyLf0yJLFrh+BOi0gp3i0AvjL4ZNlp866wNpLynj6sX8oDBKv9X
- Yenq2GIqrBXRbRpHx4dZzv1nIH7UN1NHEm6Fld0zAynxeP4kIUI0C9AwzmGGapg8UT7xM8W7TDn
- 142Xeau+4BbIWl+hv06uuFn/5qPS5/o3oxjRTSx/t3OKb0/Vk9VunKYRkUp/BzW30pu12EX32T6
- Yomylacs/uH82elhUYEI/selvB7tDadd1i6gF8ojMvluQjhKx4+KyY6FnNe0uEKLQepNk=
-X-Received: from yxbbq11.prod.google.com
- ([2002:a05:690e:21cb:b0:65c:6d11:c459])
- (user=markyacoub job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:690e:124e:b0:652:ddea:1679 with SMTP id
- 956f58d0204a3-65eae024bf1mr2962087d50.16.1779381845723; 
- Thu, 21 May 2026 09:44:05 -0700 (PDT)
-Date: Thu, 21 May 2026 12:43:53 -0400
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
-Message-ID: <20260521164353.1111422-1-markyacoub@google.com>
-Subject: [PATCH i-g-t] include/android: Add g_key_file_get_double stub
-From: Mark Yacoub <markyacoub@google.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mark Yacoub <markyacoub@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 838F110E1CF
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 16:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1779382139; x=1810918139;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=4XQEoi9LPlI4t5FwDv25mzgIpynl28k5ytP2duApyJ4=;
+ b=N+/FS52CW6bKDAQ1eRQ9C5ioQxabw7iXX7/KCDmi6IhSrpacy6Tnb90Z
+ sJFNwvOxjRgUfvDpaBychemRqGaX6wbKKPjdjvqZAPvFqxkkDitgI9+2k
+ dX5RTkiIBmgus3NCG6puaRHRtgFKSf57Zy+XM4qoayYB5cVmi7mLCmDoN
+ kHHhM0RSzu+auNLmH85LEbm4XOa6wBQACKB70KAVvPeqcGmu2tzTEbBg3
+ emu95wHdVm6ipPiKhZdxBJyAC7SqiP2B7K6gvjQZA/xXppwvEoWG8unnq
+ BJnx4PjvHRanaV+/crYNRoG5066WguHbGjVX3mETLI+oy5vhEc7UL0gii A==;
+X-CSE-ConnectionGUID: iJyTaefcT0OcEiY75Ni6pg==
+X-CSE-MsgGUID: /TsoP0j/QMCsSniZ8H1MJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80339380"
+X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; d="scan'208";a="80339380"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2026 09:48:58 -0700
+X-CSE-ConnectionGUID: VzI5NpVRTjOJ9+sxER/Ksw==
+X-CSE-MsgGUID: sIydTNEYT0mlzg1v/r5wng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; d="scan'208";a="236156886"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 09:48:57 -0700
+Date: Thu, 21 May 2026 18:48:54 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [PATCH i-g-t v2 1/2] tests/xe_compute: Skip SVM tests on
+ platforms without fault mode vm
+Message-ID: <20260521164854.v2vynilydtc7rh7b@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20260521072536.796712-4-zbigniew.kempczynski@intel.com>
+ <20260521072536.796712-5-zbigniew.kempczynski@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260521072536.796712-5-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,28 +74,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a stub for g_key_file_get_double to include/android/glib.h to
-fix build failures in the Android environment where glib is not
-available.
+Hi Zbigniew,
+On 2026-05-21 at 09:25:38 +0200, Zbigniew Kempczyński wrote:
+> Group SVM tests and skip them if platform on which they are executed
+> doesn't support fault mode vm.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+> ---
+>  tests/intel/xe_compute.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> index 406d708bcd..2f70f22910 100644
+> --- a/tests/intel/xe_compute.c
+> +++ b/tests/intel/xe_compute.c
+> @@ -688,14 +688,19 @@ int igt_main()
+>  	igt_subtest("compute-square-userenv-large-buffer")
+>  		test_compute_square_userenv(xe, LARGE_BUFFER);
+>  
+> -	igt_subtest("compute-square-userenv-isvm")
+> -		test_compute_square_userenv(xe, INPUT_IN_SVM);
+> +	igt_subtest_group() {
+> +		igt_fixture() {
+> +			igt_require(!xe_supports_faults(xe));
+> +		}
 
-Signed-off-by: Mark Yacoub <markyacoub@google.com>
----
- include/android/glib.h | 2 ++
- 1 file changed, 2 insertions(+)
+Fixture in a subtest groups, while possible, could create
+a noise when a failure happens outside this group. There
+could be then a message 'requirement failed', unrelated
+to failed subtest.
 
-diff --git a/include/android/glib.h b/include/android/glib.h
-index 660386ca4..0b6658287 100644
---- a/include/android/glib.h
-+++ b/include/android/glib.h
-@@ -51,6 +51,8 @@ static inline int g_key_file_get_integer(GKeyFile *key_file,
- 	const char *group_name, const char *key, GError **error) { return 0; }
- static inline char *g_key_file_get_string(GKeyFile *key_file,
- 	const char *group_name, const char *key, GError **error) { return NULL; }
-+static inline double g_key_file_get_double(GKeyFile *key_file,
-+	const char *group_name, const char *key, GError **error) { return 0.0; }
- static inline bool g_key_file_load_from_file(GKeyFile *key_file,
- 	const char *file, int flags, GError **error) { return false; }
- 
--- 
-2.54.0.746.g67dd491aae-goog
+Thats why in such cases it is better to have igt_require()
+repeated in each subtest.
 
+Regards,
+Kamil
+
+> +		igt_subtest("compute-square-userenv-isvm")
+> +			test_compute_square_userenv(xe, INPUT_IN_SVM);
+>  
+> -	igt_subtest("compute-square-userenv-osvm")
+> -		test_compute_square_userenv(xe, OUTPUT_IN_SVM);
+> +		igt_subtest("compute-square-userenv-osvm")
+> +			test_compute_square_userenv(xe, OUTPUT_IN_SVM);
+>  
+> -	igt_subtest("compute-square-userenv-iosvm")
+> -		test_compute_square_userenv(xe, INPUT_IN_SVM | OUTPUT_IN_SVM);
+> +		igt_subtest("compute-square-userenv-iosvm")
+> +			test_compute_square_userenv(xe, INPUT_IN_SVM | OUTPUT_IN_SVM);
+> +	}
+>  
+>  	igt_fixture()
+>  		drm_close_driver(xe);
+> -- 
+> 2.43.0
+> 
