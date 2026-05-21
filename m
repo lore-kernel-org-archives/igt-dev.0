@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7EE2CD5BAB
-	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 20:23:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE1A1CD5BAB
+	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 21:01:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8EDD910E20B;
-	Thu, 21 May 2026 20:23:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 583FD10F400;
+	Thu, 21 May 2026 21:01:44 +0000 (UTC)
 Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1079F10E20B;
- Thu, 21 May 2026 20:23:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9634710F400;
+ Thu, 21 May 2026 21:01:23 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============9071627282988996140=="
+ boundary="===============5237758718490732901=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tools/vmtb=3A_Adjust_BMG_vG?=
- =?utf-8?q?PU_profile?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fsys?=
+ =?utf-8?q?tem=5Fallocator=3A_Test_madvise=28MADV=5FDONTNEED=29_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Adam Miszczak" <adam.miszczak@linux.intel.com>
+To: "Francois Dugast" <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 21 May 2026 20:23:05 -0000
-Message-ID: <177939498506.97871.8287687084657441977@5ab824fced77>
+Date: Thu, 21 May 2026 21:01:23 -0000
+Message-ID: <177939728360.97952.12450980787139029842@5ab824fced77>
 X-Patchwork-Hint: ignore
-References: <20260521092256.619556-1-adam.miszczak@linux.intel.com>
-In-Reply-To: <20260521092256.619556-1-adam.miszczak@linux.intel.com>
+References: <20260521101938.139350-1-francois.dugast@intel.com>
+In-Reply-To: <20260521101938.139350-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,57 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9071627282988996140==
+--===============5237758718490732901==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tools/vmtb: Adjust BMG vGPU profile
-URL   : https://patchwork.freedesktop.org/series/167006/
-State : failure
+Series: tests/intel/xe_exec_system_allocator: Test madvise(MADV_DONTNEED) (rev3)
+URL   : https://patchwork.freedesktop.org/series/165410/
+State : success
 
 == Summary ==
 
-Series 167006 revision 1 was fully merged or fully failed: no git log
+CI Bug Log - changes from XEIGT_8932_BAT -> XEIGTPW_15217_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
 
 
+Changes
+-------
 
---===============9071627282988996140==
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8932 -> IGTPW_15217
+
+  IGTPW_15217: 15217
+  IGT_8932: 8932
+  xe-5113-f103db97c610a41177720b08aa4a2a05f9b42d49: f103db97c610a41177720b08aa4a2a05f9b42d49
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15217/index.html
+
+--===============5237758718490732901==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,16 +111,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tools/vmtb: Adjust BMG vGPU profile</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167006/">https://patchwork.freedesktop.org/series/167006/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_system_allocator: Test madvise(MADV_DONTNEED) (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165410/">https://patchwork.freedesktop.org/series/165410/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15217/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15217/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 167006 revision 1 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from XEIGT_8932_BAT -&gt; XEIGTPW_15217_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8932 -&gt; IGTPW_15217</li>
+</ul>
+<p>IGTPW_15217: 15217<br />
+  IGT_8932: 8932<br />
+  xe-5113-f103db97c610a41177720b08aa4a2a05f9b42d49: f103db97c610a41177720b08aa4a2a05f9b42d49</p>
 
 </body>
 </html>
 
---===============9071627282988996140==--
+--===============5237758718490732901==--
