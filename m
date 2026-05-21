@@ -4,60 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38381CD5BAC
-	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 16:32:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C35BDCD5BAC
+	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 16:44:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB95910E4C3;
-	Thu, 21 May 2026 16:32:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 35D6F10E4B6;
+	Thu, 21 May 2026 16:44:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bO3UCtg+";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="ecq8hjwb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8410C10E4C3
- for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 16:32:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779381130; x=1810917130;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8STP86rqAfHAaXVN75Jer3SBmnYPJc/45CudmaBu6Ow=;
- b=bO3UCtg+Qr8HiT4X+nWx03uN40pxWjXyp5IOp6G9nlUNA3+Lg0bD0Dpb
- ok1gH1oCE0doA2kV2WGiFVl6uh0AxUL2/8mLrhh0ATE0zc9JScs7RJcGg
- b6udSqrJvC0+Ne/X7VlRAXJs0ePl/OQIKNEx3/XUSp6hSbsqU1MzNv40b
- TBGDHTiRn5tG+8/jIYbcQ8yi19B1SFyvcwydJCYrveaf7P+sFq7x2vMYJ
- MaRq19Cr1fpcY9mfacq63rkdQhLkQFI5u/aVt9O+mePmf8w9RbRMK34om
- 4PYzfLax98OI9D2W5XY2l7DGmYVxXap0xNnkkPVIMiCxy0f2w8kPEU0UA w==;
-X-CSE-ConnectionGUID: UoUtI2YfQn6IrXlz8eIo9w==
-X-CSE-MsgGUID: nJlwrATPS1KTgRgobmuWsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80337306"
-X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; d="scan'208";a="80337306"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2026 09:32:10 -0700
-X-CSE-ConnectionGUID: Bzl0QAy0QAW+SsaO/YDCFw==
-X-CSE-MsgGUID: RVmL3N0iQUuKwrxQjCfXNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; d="scan'208";a="242373992"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 09:32:09 -0700
-Date: Thu, 21 May 2026 18:32:07 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking: Fix
- duplicate documentation descriptions
-Message-ID: <20260521163207.frzshvwlk4fuenpy@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Sharma, Swati2" <swati2.sharma@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20260520123010.2482801-1-swati2.sharma@intel.com>
- <20260521104717.xt5nuw62uo4aijvi@kamilkon-DESK.igk.intel.com>
- <799f0c4b-c399-42da-89c8-2d2cc7d7a361@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <799f0c4b-c399-42da-89c8-2d2cc7d7a361@intel.com>
+Received: from mail-yx1-f74.google.com (mail-yx1-f74.google.com
+ [74.125.224.74])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64FB210E4B6
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 16:44:07 +0000 (UTC)
+Received: by mail-yx1-f74.google.com with SMTP id
+ 956f58d0204a3-651cc9f2261so12346579d50.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2026 09:44:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20251104; t=1779381846; x=1779986646;
+ darn=lists.freedesktop.org; 
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Kw0q0F9VIZZUaXbeT8QS+CMbzXPUjPtdAApXiP8Jb9o=;
+ b=ecq8hjwbWTzsJRr/VPvq4mtT1ksO0IeBnNUgUnNAe7prtQ3FVVfkR+lY0MJTSVU9Qx
+ yV3tD74gSZOXSgwrCyLq3DFmUPIRwAuRNCxSyPJ2QXKzqBDCa3BiVYLS7ghTTVJiTBlI
+ efwE6SYdKSgrYT5Z3pjafJhJpBgDYML0CM9boC4qgVNQvxJID7nrq5ffSCIs+wyGUJsk
+ 18HacWZNocRIJbmwPLj8cEAmdaRi2jwiwcge1+jadZTCDfFoMZvFycuZWybg5jWEMjC8
+ 8Pd8fMauX0zmCfqDqCg/Utr6yPOEcrJm22n47+7fE5O8glErr/8BT7rUyzX3WH2O++K8
+ n9jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1779381846; x=1779986646;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Kw0q0F9VIZZUaXbeT8QS+CMbzXPUjPtdAApXiP8Jb9o=;
+ b=aLfGyMUfvcebhHKAYLcWLr7DBN9C998kiGsF3wS2ueVN9x0qU1T+Y7RZ4sn0kYPo5Z
+ pDrLUvs3Rr+DV4D57UwpNIiqxH0vb8bRNAiySXh4ieU9pEvlf3XmMX29xg9xj3Fnsjxs
+ z39iFvyII0Gn4HXLk6WeEAg6VG+853VWHvSRLXvVRVOnmYuKMAc6ExffmRST+3XmJaUj
+ RmQI77aVd/ePaa+9/3+oJy9YfYS6E5K18NpCbssq6SQJllVWzt5MJLJ2+zvILZlb8dZQ
+ uEGiXViCvZhW0+Lo393A6jvjqereRWE2JNg2eqe1d8nDoXLTyFTxKbOcA+ly08hoa+A0
+ uyAw==
+X-Gm-Message-State: AOJu0YyLf0yJLFrh+BOi0gp3i0AvjL4ZNlp866wNpLynj6sX8oDBKv9X
+ Yenq2GIqrBXRbRpHx4dZzv1nIH7UN1NHEm6Fld0zAynxeP4kIUI0C9AwzmGGapg8UT7xM8W7TDn
+ 142Xeau+4BbIWl+hv06uuFn/5qPS5/o3oxjRTSx/t3OKb0/Vk9VunKYRkUp/BzW30pu12EX32T6
+ Yomylacs/uH82elhUYEI/selvB7tDadd1i6gF8ojMvluQjhKx4+KyY6FnNe0uEKLQepNk=
+X-Received: from yxbbq11.prod.google.com
+ ([2002:a05:690e:21cb:b0:65c:6d11:c459])
+ (user=markyacoub job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690e:124e:b0:652:ddea:1679 with SMTP id
+ 956f58d0204a3-65eae024bf1mr2962087d50.16.1779381845723; 
+ Thu, 21 May 2026 09:44:05 -0700 (PDT)
+Date: Thu, 21 May 2026 12:43:53 -0400
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
+Message-ID: <20260521164353.1111422-1-markyacoub@google.com>
+Subject: [PATCH i-g-t] include/android: Add g_key_file_get_double stub
+From: Mark Yacoub <markyacoub@google.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mark Yacoub <markyacoub@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,250 +76,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sharma,,
-On 2026-05-21 at 17:20:30 +0530, Sharma, Swati2 wrote:
-> Hi Kamil
-> 
-> On 21-05-2026 04:17 pm, Kamil Konieczny wrote:
-> > Hi Swati,
-> > On 2026-05-20 at 18:00:10 +0530, Swati Sharma wrote:
-> > > Multiple SUBTEST entries shared identical descriptions across different
-> > > test scenarios (offscreen, primary screen, secondary screen).
-> > > 
-> > > Fix by consolidating feature variants into arg[] parameters and
-> > > updating descriptions to include scenario context (screen, plane,
-> > > fb type, panel count, draw method).
-> > > 
-> > > This reduces documentation SUBTEST entries from 315 to 33.
-> > I did a check with new and old, using:
-> > old-build/build/tests/kms_frontbuffer_tracking --l > aold
-> > new-build/build/tests/kms_frontbuffer_tracking --l > anew
-> > diff -u aold anew
-> > 
-> > and results looks correct.
-> > 
-> > imho you can reduce it even more, see below.
-> > 
-> > > v2: Addressed review comments - made descriptions shorter (Kamil)
-> > > 
-> > > Co-developed-by: Claude Opus 4.6
-> > > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> > > ---
-> > >   tests/intel/kms_frontbuffer_tracking.c | 1432 ++++++++----------------
-> > >   1 file changed, 468 insertions(+), 964 deletions(-)
-> > > 
-> > > diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-> > > index e7bb3fa18..37706cab5 100644
-> > > --- a/tests/intel/kms_frontbuffer_tracking.c
-> > > +++ b/tests/intel/kms_frontbuffer_tracking.c
-> > > @@ -27,7 +27,7 @@
-> > >   /**
-> > >    * TEST: kms frontbuffer tracking
-> > >    * Category: Display
-> > > - * Description: Test the Kernel's frontbuffer tracking mechanism and its related features: FBC, PSR and DRRS
-> > > + * Description: Test the Kernel's frontbuffer tracking mechanism and its related features: FBC, PSR, HDR and DRRS
-> > >    * Driver requirement: i915, xe
-> > >    * Mega feature: General Display Features
-> > >    */
-> > > @@ -59,82 +59,51 @@
-> > >    * SUBTEST: pipe-fbc-rte
-> > >    * Description: Sanity test to enable FBC on each pipe.
-> > >    *
-> > > - * SUBTEST: drrs-%dp-rte
-> > > - * Description: Sanity test to enable DRRS with %arg[1] panels.
-> > > + * SUBTEST: %s-%dp-rte
-> > > + * Description: Sanity test to enable %arg[1] with %arg[2] panels.
-> > >    *
-> > > - * SUBTEST: fbc-%dp-rte
-> > > - * Description: Sanity test to enable FBC with %arg[1] panels.
-> > > - *
-> > > - * SUBTEST: psr-%dp-rte
-> > > - * Description: Sanity test to enable PSR with %arg[1] panels.
-> > > - *
-> > > - * SUBTEST: hdr-%dp-rte
-> > > - * Description: Sanity test to enable PSR with %arg[1] panels.
-> > > - *
-> > > - * SUBTEST: fbcdrrs-%dp-rte
-> > > - * Description: Sanity test to enable FBC & DRRS with %arg[1] panels.
-> > > - *
-> > > - * SUBTEST: fbcpsr-%dp-rte
-> > > - * Description: Sanity test to enable FBC & PSR with %arg[1] panels.
-> > > - *
-> > > - * SUBTEST: fbchdr-%dp-rte
-> > > - * Description: Sanity test to enable FBC & HDR with %arg[1] panels.
-> > > - *
-> > > - * SUBTEST: drrshdr-%dp-rte
-> > > - * Description: Sanity test to enable HDR & DRRS with %arg[1] panels.
-> > > - *
-> > > - * SUBTEST: psrhdr-%dp-rte
-> > > - * Description: Sanity test to enable HDR & PSR with %arg[1] panels.
-> > > - *
-> > > - * SUBTEST: fbcdrrshdr-%dp-rte
-> > > - * Description: Sanity test to enable HDR, FBC & DRRS with %arg[1] panels.
-> > > - *
-> > > - * SUBTEST: fbcpsrhdr-%dp-rte
-> > > - * Description: Sanity test to enable HDR, FBC & PSR with %arg[1] panels.
-> > > + * arg[1]:
-> > >    *
-> > > - * arg[1].values:   1, 2
-> > > + * @drrs:       DRRS
-> > > + * @fbc:        FBC
-> > > + * @psr:        PSR
-> > > + * @hdr:        HDR
-> > > + * @fbcdrrs:    FBC & DRRS
-> > > + * @fbcpsr:     FBC & PSR
-> > > + * @fbchdr:     FBC & HDR
-> > > + * @drrshdr:    DRRS & HDR
-> > > + * @psrhdr:     PSR & HDR
-> > > + * @fbcdrrshdr: FBC, DRRS & HDR
-> > > + * @fbcpsrhdr:  FBC, PSR & HDR
-> > > + *
-> > > + * arg[2].values:   1, 2
-> > >    */
-> > >   /**
-> > > - * SUBTEST: drrs-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: fbc-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: psr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > + * SUBTEST: %s-1p-offscreen-pri-%s-draw-%s
-> > > + * Description: Draw a set of rectangles targeting offscreen buffer using %arg[3] method
-> > > + * 		with %arg[1], using %arg[2]
-> > >    *
-> > > - * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: fbcpsr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > + * arg[1]:
-> > >    *
-> > > - * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > + * @drrs:       DRRS
-> > > + * @fbc:        FBC
-> > > + * @psr:        PSR
-> > > + * @hdr:        HDR
-> > > + * @fbcdrrs:    FBC & DRRS
-> > > + * @fbcpsr:     FBC & PSR
-> > > + * @fbchdr:     FBC & HDR
-> > > + * @drrshdr:    DRRS & HDR
-> > > + * @psrhdr:     PSR & HDR
-> > > + * @fbcdrrshdr: FBC, DRRS & HDR
-> > > + * @fbcpsrhdr:  FBC, PSR & HDR
-> > >    *
-> > > - * arg[1]:
-> > > + * arg[2]:
-> > >    *
-> > >    * @indfb:          Individual fb
-> > >    * @shrfb:          Shared fb
-> > >    *
-> > > - * arg[2]:
-> > > + * arg[3]:
-> > >    *
-> > >    * @blt:            Blitter
-> > >    * @mmap-wc:        MMAP-WC
-> > > @@ -142,51 +111,31 @@
-> > >    */
-> > >   /**
-> > > - * SUBTEST: drrs-1p-offscreen-pri-%s-draw-%s
-> > Note that name here is the same as in previous hunk:
-> > %s-1p-offscreen-pri-%s-draw-%s
-> 
-> Yes indeed, but check driver reqt too. Previous one is for i915/xe both.
-> 
-> This one only for i915. That's why splitting is required.
-> 
+Add a stub for g_key_file_get_double to include/android/glib.h to
+fix build failures in the Android environment where glib is not
+available.
 
-Right, I missed that, sorry for noise.
+Signed-off-by: Mark Yacoub <markyacoub@google.com>
+---
+ include/android/glib.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+diff --git a/include/android/glib.h b/include/android/glib.h
+index 660386ca4..0b6658287 100644
+--- a/include/android/glib.h
++++ b/include/android/glib.h
+@@ -51,6 +51,8 @@ static inline int g_key_file_get_integer(GKeyFile *key_file,
+ 	const char *group_name, const char *key, GError **error) { return 0; }
+ static inline char *g_key_file_get_string(GKeyFile *key_file,
+ 	const char *group_name, const char *key, GError **error) { return NULL; }
++static inline double g_key_file_get_double(GKeyFile *key_file,
++	const char *group_name, const char *key, GError **error) { return 0.0; }
+ static inline bool g_key_file_load_from_file(GKeyFile *key_file,
+ 	const char *file, int flags, GError **error) { return false; }
+ 
+-- 
+2.54.0.746.g67dd491aae-goog
 
-Regards,
-Kamil
-
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - * Driver requirement: i915
-> > > - *
-> > > - * SUBTEST: fbc-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - * Driver requirement: i915
-> > > - *
-> > > - * SUBTEST: psr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - * Driver requirement: i915
-> > > - *
-> > > - * SUBTEST: hdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - * Driver requirement: i915
-> > > - *
-> > > - * SUBTEST: fbcdrrs-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - * Driver requirement: i915
-> > > - *
-> > > - * SUBTEST: fbcpsr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > + * SUBTEST: %s-1p-offscreen-pri-%s-draw-%s
-> > > + * Description: Draw a set of rectangles targeting offscreen buffer using %arg[3] method
-> > > + * 		with %arg[1], using %arg[2]
-> > >    * Driver requirement: i915
-> > >    *
-> > > - * SUBTEST: fbchdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: drrshdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: psrhdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > - *
-> > > - * SUBTEST: fbcdrrshdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > + * arg[1]:
-> > >    *
-> > > - * SUBTEST: fbcpsrhdr-1p-offscreen-pri-%s-draw-%s
-> > > - * Description: Draw a set of rectangles on the screen using the provided method
-> > > + * @drrs:       DRRS
-> > > + * @fbc:        FBC
-> > > + * @psr:        PSR
-> > > + * @hdr:        HDR
-> > > + * @fbcdrrs:    FBC & DRRS
-> > > + * @fbcpsr:     FBC & PSR
-> > > + * @fbchdr:     FBC & HDR
-> > > + * @drrshdr:    DRRS & HDR
-> > > + * @psrhdr:     PSR & HDR
-> > > + * @fbcdrrshdr: FBC, DRRS & HDR
-> > > + * @fbcpsrhdr:  FBC, PSR & HDR
-> > >    *
-> > > - * arg[1]:
-> > > + * arg[2]:
-> > >    *
-> > >    * @indfb:          Individual fb
-> > >    * @shrfb:          Shared fb
-> > >    *
-> > > - * arg[2]:
-> > > + * arg[3]:
-> > >    *
-> > >    * @mmap-cpu:       MMAP-CPU
-> > >    * @mmap-gtt:       MMAP-GTT
-> > imho you can add these two lines to previous description
-> > and drop this hunk.
-> > 
-[cut]
