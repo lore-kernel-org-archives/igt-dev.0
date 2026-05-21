@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15592CD5BAB
-	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 21:05:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F26BCD5BAF
+	for <igt-dev@archiver.kernel.org>; Thu, 21 May 2026 21:06:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B373810F400;
-	Thu, 21 May 2026 21:05:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4D9E410F400;
+	Thu, 21 May 2026 21:06:36 +0000 (UTC)
 Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5561110F400;
- Thu, 21 May 2026 21:05:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A1B710F400;
+ Thu, 21 May 2026 21:06:17 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2186233007948232738=="
+ boundary="===============3848068896141791218=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/xe=5Fexec=5Fmix=5Fmod?=
- =?utf-8?q?es=3A_Simplify_xe=5Fsupports=5Ffaults_requirement_check?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_intel-ci=3A_Add_D3cold_test?=
+ =?utf-8?q?list_to_meson=2Ebuild?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Francois Dugast" <francois.dugast@intel.com>
+To: "Karthik Poosa" <karthik.poosa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 21 May 2026 21:05:17 -0000
-Message-ID: <177939751734.97871.4924664977858381111@5ab824fced77>
+Date: Thu, 21 May 2026 21:06:17 -0000
+Message-ID: <177939757742.97952.10954248281800931429@5ab824fced77>
 X-Patchwork-Hint: ignore
-References: <20260521103428.140839-1-francois.dugast@intel.com>
-In-Reply-To: <20260521103428.140839-1-francois.dugast@intel.com>
+References: <20260521110957.794644-1-karthik.poosa@intel.com>
+In-Reply-To: <20260521110957.794644-1-karthik.poosa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,24 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2186233007948232738==
+--===============3848068896141791218==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/xe_exec_mix_modes: Simplify xe_supports_faults requirement check
-URL   : https://patchwork.freedesktop.org/series/167010/
+Series: intel-ci: Add D3cold testlist to meson.build
+URL   : https://patchwork.freedesktop.org/series/167011/
 State : failure
 
 == Summary ==
 
-Series 167010 revision 1 was fully merged or fully failed: no git log
+Series 167011 revision 1 was fully merged or fully failed: no git log
 
 
 
---===============2186233007948232738==
+--===============3848068896141791218==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,16 +78,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/xe_exec_mix_modes: Simplify xe_supports_faults requirement check</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167010/">https://patchwork.freedesktop.org/series/167010/</a></td></tr>
+<tr><td><b>Series:</b></td><td>intel-ci: Add D3cold testlist to meson.build</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167011/">https://patchwork.freedesktop.org/series/167011/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
 </table>
 
 
-    <p>Series 167010 revision 1 was fully merged or fully failed: no git log</p>
+    <p>Series 167011 revision 1 was fully merged or fully failed: no git log</p>
 
 </body>
 </html>
 
---===============2186233007948232738==--
+--===============3848068896141791218==--
