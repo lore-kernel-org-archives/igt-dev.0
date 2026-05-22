@@ -4,27 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6900ACD5BB0
-	for <igt-dev@archiver.kernel.org>; Fri, 22 May 2026 09:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47D45CD5BB0
+	for <igt-dev@archiver.kernel.org>; Fri, 22 May 2026 10:17:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 02B9810E191;
-	Fri, 22 May 2026 09:56:56 +0000 (UTC)
-Received: from 5ab824fced77 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB6F410E191;
- Fri, 22 May 2026 09:56:36 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1749403567680849436=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id CAD9110F540;
+	Fri, 22 May 2026 10:16:59 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VS4hELI2";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2AA5110F540
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 May 2026 10:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1779445000; x=1810981000;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0SaQpJPeeB+dNAX2QKtzwmlfcb0rlO9rRKNhVvawKxY=;
+ b=VS4hELI2DAqtm42fSZKEznAEEr7KGR6OUDMRhU73uQSce9hPX58fsqam
+ 4ar/gXyixkWLHv5VK20LDq7jDuFTO9wC2wpMWV3rcmu99iQe+cCzAvL3f
+ hl8LZldxGaXPcXYXsYTrM2PD9f/9j7aOMDHT5m/0Dq+WHszIdyrJAFttd
+ gBAA2sLGst0hBLulzPStuT+hteflrHZ+MvCrhSBfQn4NSOyYqGr0e1YJn
+ B7/C0XrYNW28vzdMmIPOxWw47Mll78lKbhqENZD9wSIx5GpLUvjnwn1no
+ 6xN+NoIdpBZ+CtmGF3WOWOhFM+L3Q6YP49H4zMPoE1qtfbU6ITtwRgqTu A==;
+X-CSE-ConnectionGUID: EiNwEU0zRkKYynwJxHWJdg==
+X-CSE-MsgGUID: g+hqMSKeRGKFF7T4J3elrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="91765747"
+X-IronPort-AV: E=Sophos;i="6.24,162,1774335600"; d="scan'208";a="91765747"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2026 03:16:40 -0700
+X-CSE-ConnectionGUID: gAisVdDoS5+ZD6ijgYLMvw==
+X-CSE-MsgGUID: SyXthF4TSjevdh1myBVFaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,162,1774335600"; d="scan'208";a="240926434"
+Received: from nakshtra-system-product-name.iind.intel.com ([10.190.238.69])
+ by orviesa009.jf.intel.com with ESMTP; 22 May 2026 03:16:39 -0700
+From: nakshtra.goyal@intel.com
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 0/1] Rename GEN_VER to GFX_VER
+Date: Fri, 22 May 2026 15:46:37 +0530
+Message-Id: <20260522101638.195739-1-nakshtra.goyal@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fs?=
- =?utf-8?q?ystem=5Fallocator=3A_Remove_copy-paste_in_eu-fault_doc?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Francois Dugast" <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 22 May 2026 09:56:36 -0000
-Message-ID: <177944379689.100039.13332080410766030004@5ab824fced77>
-X-Patchwork-Hint: ignore
-References: <20260522082955.28662-1-francois.dugast@intel.com>
-In-Reply-To: <20260522082955.28662-1-francois.dugast@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,130 +60,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1749403567680849436==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Nakshtra Goyal <nakshtra.goyal@intel.com>
 
-== Series Details ==
+New usages of GEN are not allowed in IGT. Replace all occurrences of
+GEN_VER/gen_ver with GFX_VER/gfx_ver across the IGA64 shader
+infrastructure and igt code bases
 
-Series: tests/intel/xe_exec_system_allocator: Remove copy-paste in eu-fault doc
-URL   : https://patchwork.freedesktop.org/series/167065/
-State : success
+The GEN_VER preprocessor define is passed by the generate_iga64_codes
+script during IGA64 GPU shader assembly compilation and used for
+conditional compilation in iga64_macros.h. Rename it to GFX_VER to
+align with the IGT naming convention.
 
-== Summary ==
+Changes:
+- scripts/generate_iga64_codes: Pass -DGFX_VER instead of -DGEN_VER
+  to the cpp preprocessor and rename the shell variable gen_ver to
+  gfx_ver. Update generated struct field from .gen_ver to .gfx_ver.
+- lib/iga64_macros.h: Replace all GEN_VER references with GFX_VER.
+- tests/intel/*.gen.iga64_codes.c: Update generated .gen_ver struct
+  fields to .gfx_ver.
 
-CI Bug Log - changes from IGT_8935 -> IGTPW_15226
-====================================================
+Nakshtra Goyal (1):
+  Rename GEN_VER to GFX_VER
 
-Summary
--------
+ lib/gpgpu_fill.c                              |   4 +-
+ lib/gpgpu_fill.c.gen.iga64_codes.c            |  14 +-
+ lib/gpgpu_shader.c                            |  30 +--
+ lib/gpgpu_shader.c.gen.iga64_codes.c          | 184 +++++++++---------
+ lib/gpgpu_shader.h                            |   4 +-
+ lib/iga64_macros.h                            |  10 +-
+ scripts/generate_iga64_codes                  |  16 +-
+ tests/intel/xe_eudebug_online.c               |   6 +-
+ .../xe_eudebug_online.c.gen.iga64_codes.c     |  14 +-
+ tests/intel/xe_prefetch_fault.c               |   2 +-
+ .../xe_prefetch_fault.c.gen.iga64_codes.c     |   4 +-
+ 11 files changed, 144 insertions(+), 144 deletions(-)
 
-  **SUCCESS**
+-- 
+2.34.1
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15226/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15226 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - fi-cfl-8109u:       [PASS][1] -> [DMESG-WARN][2] ([i915#15673]) +48 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8935/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15226/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-
-  
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8935 -> IGTPW_15226
-
-  CI-20190529: 20190529
-  CI_DRM_18538: 7e25390024f8a4a9fdd6ec50f000ee25c006c02f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15226: 9995b810e91f756dcc8ab2241a589f81a7c94be5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8935: 8935
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15226/index.html
-
---===============1749403567680849436==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_system_allocator: Remove copy-paste in eu-fault doc</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167065/">https://patchwork.freedesktop.org/series/167065/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15226/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15226/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8935 -&gt; IGTPW_15226</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15226/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15226 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@read-crc:<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8935/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15226/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) +48 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8935 -&gt; IGTPW_15226</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18538: 7e25390024f8a4a9fdd6ec50f000ee25c006c02f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15226: 9995b810e91f756dcc8ab2241a589f81a7c94be5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8935: 8935</p>
-
-</body>
-</html>
-
---===============1749403567680849436==--
