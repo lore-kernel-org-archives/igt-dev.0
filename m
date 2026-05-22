@@ -4,42 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23690CD5BB0
-	for <igt-dev@archiver.kernel.org>; Fri, 22 May 2026 15:57:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CC8FCD5BB3
+	for <igt-dev@archiver.kernel.org>; Fri, 22 May 2026 15:58:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C45F610E262;
-	Fri, 22 May 2026 15:57:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C25B10E262;
+	Fri, 22 May 2026 15:58:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=lankhorst.se header.i=@lankhorst.se header.b="FIfHF8vo";
+	dkim=pass (2048-bit key; unprotected) header.d=lankhorst.se header.i=@lankhorst.se header.b="E/IRHL+J";
 	dkim-atps=neutral
 Received: from lankhorst.se (unknown [141.105.120.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36A4A10F642
- for <igt-dev@lists.freedesktop.org>; Fri, 22 May 2026 15:57:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB6E010E262
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 May 2026 15:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
- s=default; t=1779465440;
- bh=yly3vWjZllRIW/3JjgNuBo/Eeb7CzuVqk1fI0nm0++c=;
- h=Date:Subject:To:References:From:In-Reply-To:From;
- b=FIfHF8vo9BA8ouKhjRONgo96HuVh75ZP40nlHtZxwsrJdn4AD898cx4ai6obspf6y
- BMz5TybgWad2UHty8pSYOA1bfBYVtYlTrAI0de/by8KLtUAngMzQcWUglWpxhsrIKj
- EPiwKV/82fMZOlNc80QBEuz5THT1I3wL2SMhapCq3XVIUeU9acdM/ekGqtwzaDsnyg
- 4Bncqt/ZdWr8ZDEJvN7JnpWGlZw156uNrpny3DpZFNu7GSQxdg07s3ybs6RGAZs2Dz
- qP8sOD7XEDBJR8bcz/ISB6MtljeL8LKkilHROtVQqlUKIV68qeHsErqEVbBKLIqyGR
- OrU49TnJGTB0A==
-Message-ID: <b97913b5-16d5-4a9e-8b21-d991e3b18528@lankhorst.se>
-Date: Fri, 22 May 2026 17:57:01 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/4] lib/igt_kms: Add support for the
- BACKGROUND_COLOR property.
-To: "Samala, Pranay" <pranay.samala@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20260505194419.500600-5-dev@lankhorst.se>
- <PH7PR11MB60537336D612475147EEC667E7002@PH7PR11MB6053.namprd11.prod.outlook.com>
-Content-Language: en-US
+ s=default; t=1779465419;
+ bh=dzq8yT6dH8zCERCPeffJGvTmKXFc8ipaI2rA+waHKCk=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=E/IRHL+JpiiXyWqJxyGddRckPHy8+NHgajItHA4n5oNddJuOD5ElbLhcHJOilD/ze
+ cFCq9EPAiUfoznNW+etYjENO/FJf9XDJjvxNE+0+BHM8qwBE6Abeu3feJsD4zq9N9D
+ FlbWcQNiJNlj1i3WH0fHDJfrqXryackjl/O9MiDJtoWerADj6sQpA6sjzM4kUjkFRW
+ Ld1+ex4A80cOuOh5QCo6HgBxW6/eSbpEgh/9CCDlQN9U/WhwNFRoPgQGFnp4mTQrbs
+ PIHUy/l1hIm+ScSV2NIfd4tG5nuj331IFiowqx5QXuwiy5VOmPF2W2N7s1XPR9fN/L
+ 1huf33cP+vKlg==
 From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <PH7PR11MB60537336D612475147EEC667E7002@PH7PR11MB6053.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: igt-dev@lists.freedesktop.org
+Cc: Maarten Lankhorst <dev@lankhorst.se>,
+ Pranay Samala <pranay.samala@intel.com>
+Subject: [PATCH v2 2/3] lib/igt_kms: Add support for the BACKGROUND_COLOR
+ property.
+Date: Fri, 22 May 2026 17:56:34 +0200
+Message-ID: <20260522155635.1215421-3-dev@lankhorst.se>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260522155635.1215421-1-dev@lankhorst.se>
+References: <20260522155635.1215421-1-dev@lankhorst.se>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,77 +53,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+The background color is a 64-bits property that contains the ARGB values
+of the background with 16 bits for each component.
 
+Add support for the BACKGROUND_COLOR property, and set to pitch black
+as the default.
 
-Den 2026-05-19 kl. 14:07, skrev Samala, Pranay:
-> Hi Maarten,
-> 
->> -----Original Message-----
->> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
->> Maarten Lankhorst
->> Sent: Wednesday, May 6, 2026 1:14 AM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Maarten Lankhorst <dev@lankhorst.se>
->> Subject: [PATCH i-g-t 1/4] lib/igt_kms: Add support for the
->> BACKGROUND_COLOR property.
->>
->> The background color is a 64-bits property that contains the ARGB values of
->> the background with 16 bits for each component.
->>
->> Add support for the BACKGROUND_COLOR property, and set to pitch black as
->> the default.
->>
->> Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
->> ---
->>  lib/igt_kms.c | 4 ++++
->>  lib/igt_kms.h | 1 +
->>  2 files changed, 5 insertions(+)
->>
->> diff --git a/lib/igt_kms.c b/lib/igt_kms.c index 99fc9fa05c..b70aefe697 100644
->> --- a/lib/igt_kms.c
->> +++ b/lib/igt_kms.c
->> @@ -731,6 +731,7 @@ const char * const
->> igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
->>  	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
->>  	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
->>  	[IGT_CRTC_SHARPNESS_STRENGTH] = "SHARPNESS_STRENGTH",
->> +	[IGT_CRTC_BACKGROUND_COLOR] = "BACKGROUND_COLOR",
->>  };
->>
->>  const char * const
->> igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = { @@ -2737,6
->> +2738,9 @@ static void igt_crtc_reset(igt_crtc_t *crtc)
->>  	if (igt_crtc_has_prop(crtc, IGT_CRTC_SHARPNESS_STRENGTH))
->>  		igt_crtc_set_prop_value(crtc,
->> IGT_CRTC_SHARPNESS_STRENGTH, 0);
->>
->> +	if (igt_crtc_has_prop(crtc, IGT_CRTC_BACKGROUND_COLOR))
->> +		igt_crtc_set_prop_value(crtc,
->> IGT_CRTC_BACKGROUND_COLOR,
->> +0xffff000000000000ULL);
-> 
-> Imho, add a short inline comment to clarify the channel packing.
-> /* BACKGROUND_COLOR is ARGB16161616; set opaque black (A=0xffff, RGB=0) */
-> 
-Using the DRM_ARGB64_PREP() macro directly is likely equally informative. I'll do that instead and reorder patch 1 and 3.
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+Reviewed-by: Pranay Samala <pranay.samala@intel.com>
+---
+ lib/igt_kms.c | 6 ++++++
+ lib/igt_kms.h | 1 +
+ 2 files changed, 7 insertions(+)
 
->> +
->>  	crtc->out_fence_fd = -1;
->>  }
->>
->> diff --git a/lib/igt_kms.h b/lib/igt_kms.h index a58cb5cd34..71f908d4f5
->> 100644
->> --- a/lib/igt_kms.h
->> +++ b/lib/igt_kms.h
->> @@ -165,6 +165,7 @@ enum igt_atomic_crtc_properties {
->>         IGT_CRTC_VRR_ENABLED,
->>         IGT_CRTC_SCALING_FILTER,
->>         IGT_CRTC_SHARPNESS_STRENGTH,
->> +       IGT_CRTC_BACKGROUND_COLOR,
-> 
-> Please use tab for indentation.
-> Along with Kamil's suggestion, changes LGTM.
-> 
-> Reviewed-by: Pranay Samala <pranay.samala@intel.com>
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index e203079235..8998ecbc3e 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -49,6 +49,7 @@
+ #include <time.h>
+ #include <ctype.h>
+ 
++#include "linux_scaffold.h"
+ #include <i915_drm.h>
+ 
+ #include "drmtest.h"
+@@ -739,6 +740,7 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+ 	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
+ 	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
+ 	[IGT_CRTC_SHARPNESS_STRENGTH] = "SHARPNESS_STRENGTH",
++	[IGT_CRTC_BACKGROUND_COLOR] = "BACKGROUND_COLOR",
+ };
+ 
+ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+@@ -2739,6 +2741,10 @@ static void igt_crtc_reset(igt_crtc_t *crtc)
+ 	if (igt_crtc_has_prop(crtc, IGT_CRTC_SHARPNESS_STRENGTH))
+ 		igt_crtc_set_prop_value(crtc, IGT_CRTC_SHARPNESS_STRENGTH, 0);
+ 
++	if (igt_crtc_has_prop(crtc, IGT_CRTC_BACKGROUND_COLOR))
++		igt_crtc_set_prop_value(crtc, IGT_CRTC_BACKGROUND_COLOR,
++					DRM_ARGB64_PREP(0xffff, 0, 0, 0));
++
+ 	crtc->out_fence_fd = -1;
+ }
+ 
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index c2a3099de4..2d9aacb304 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -166,6 +166,7 @@ enum igt_atomic_crtc_properties {
+        IGT_CRTC_VRR_ENABLED,
+        IGT_CRTC_SCALING_FILTER,
+        IGT_CRTC_SHARPNESS_STRENGTH,
++       IGT_CRTC_BACKGROUND_COLOR,
+        IGT_NUM_CRTC_PROPS
+ };
+ 
+-- 
+2.53.0
 
