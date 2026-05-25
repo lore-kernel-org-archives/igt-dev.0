@@ -4,156 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81362CD5BB1
-	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 19:16:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81554CD5BC9
+	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 19:20:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34A2A10E0E2;
-	Mon, 25 May 2026 19:16:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 138EB10E21F;
+	Mon, 25 May 2026 19:20:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MDhmekI2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nMEpxXR0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4739010E0E2
- for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 19:16:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB43710E21F
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 19:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779736568; x=1811272568;
+ t=1779736836; x=1811272836;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=0Mz8HdoPkDiT/moowOIRuF5MiHwCgd+GWuNMvSAI/dw=;
- b=MDhmekI2x3EK5Ly8M7zRdxNTtGdaxIU78GkoMF/zM0J3XbisKvmtSNHV
- Oj+KSVWBHDw4gZzG/oZq+vqp2Qq0PJ0mGCgfZYwWN8s8Chq2dBionsqSE
- 9kLWwXkirO7iv8a0f+/lyVsplLIC5DjLeh6hWfHIUpGlRFueogT6l3TYW
- 8+0g62vNmCff1YW2k2ce9HVSkK3AdcTD2IvaaloQ+J2k0w6opF874m8Ez
- /wtFitr2IerFHT3BbzIia8xrc5Gt8+kbngoGd7FdUOxfbHPeKiLcraJFi
- 6164qn6rhkBv/BAKvPG9U1iord6W3g9TeNwZg3sXCvyQG+whS7qujXD6u g==;
-X-CSE-ConnectionGUID: bo52BT1VTsivWu/N4MMhCA==
-X-CSE-MsgGUID: XWZq2EY/TGCfE/z7Z0+G0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="98133268"
-X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; d="scan'208";a="98133268"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 May 2026 12:16:07 -0700
-X-CSE-ConnectionGUID: 5yD74EsjT4SblakZpgYADQ==
-X-CSE-MsgGUID: YFIy6EmlTdugw2bpl1EjsQ==
+ bh=lFjzsVo2Zq17+P7nEjCaMe69LgiLPdH94gix2H9+pNU=;
+ b=nMEpxXR0NupnIpFXm5QG2MF5wvjBJIC3+CfhwNxeLEE5pfGIYLrk/478
+ Sb4bfpFS0X7nDJQ7tK7E7/vcD7HoN+zO86wHKeKs4wRFkZcPjfEOkdqwB
+ yHzN4/TR8IyNZhxIdxQI6HK021oEm74u47pVi6pw5xeDiEJc31jxIBoGR
+ geGomPaI4jFW7eq/OmKWOKnuNQILUB/D3eDXLDIfNQg0bLECcQqeGE7H1
+ +hGhYvHZOEHAiH6UgLb2/En0Ay1IQ8zfxfuuxjlOI/HE9jHmo3HfG5zhN
+ 2yOpmGc5Qjjs4K2Du2vsXFjbtAG/WLLsYeK1ELgCxDzMynhcGcO4RE/dX g==;
+X-CSE-ConnectionGUID: TEPnIj+qRamJYmHmxav5GQ==
+X-CSE-MsgGUID: 2Bb2xvETS8C54pSkrJT8bQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="103236032"
+X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; d="scan'208";a="103236032"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 May 2026 12:20:35 -0700
+X-CSE-ConnectionGUID: /ZYshDZ4QkePcXjqgS142Q==
+X-CSE-MsgGUID: +msoA944RXGGLhNU+Bo6gw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; d="scan'208";a="245713645"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 May 2026 12:16:08 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; d="scan'208";a="235321039"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 May 2026 12:20:35 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 25 May 2026 12:16:07 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.37; Mon, 25 May 2026 12:20:34 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 25 May 2026 12:16:07 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.8) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Mon, 25 May 2026 12:20:34 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.39)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 25 May 2026 12:16:06 -0700
+ 15.2.2562.37; Mon, 25 May 2026 12:20:33 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fj3W53p2Yud7OdxtajXY4qqrMl4BTY9qhmuzMbLHPVh65YgcTqzSIgBTXW5V+VuUWuWFTZSJyTsqeD1BdyXcGDTHLiroQDVONgvXBlnl+OLfyK6PIAH2/o3LxtICj3JmfpWSnGtk2Gf6YdCOnEK/zTjt8lBz1EtkF99LEj768V4HveATn1OL0YSyA2I0SKJ7HuBn6THbsLD8mhT5o2quDwRIh+2w9gQJBIyEF2qq1ownAAr8Ku3f+sxBqRd6opqFxZM7+Tm3Zmh1qqYYHxsPFJazD5SUALoqIurhJrkoRclM5KOiVdIY225X55u0+Y067Nv1IceNIRcx1VJQ3GOUKg==
+ b=E3Z2cDdDWx+DJG5FMn5lkfRL56Uz5GWVz9cfQV4LM7+UYZi16VzqLfnsyvY78iejK+N95SLEeZdYNrEmUyfxGJmu4UXlD7a1Qk2AqVKnA6sMUdHM2//87mGnnYgPLzStxxTeLRZ0WICUXXD5wS1tmlYFKeWzD6DwFbhVL27AUfGaGbkDHUf8NqsSIWjvq30H5J8ncGcyiC33GXUa7fKaIG6g+gW6DfVZwwC5MvQKsr4U/yjGznnPiR0oFbZaFL/jmYnDH09wVmHLWwL4CuxPO8WiHyNe4HrKdVfaxv8MVAvZ3ZDVSYdDyv4EotyqcMKuPbLrt09FGOTCsWXlQuddqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iqBoxMdPzHTYhEjr2OAV+7JGdZSoezhu/sVCvmeumr0=;
- b=DEzAnuogXyt/GF+BgqGl368zvAmmPLZmjV0H4fCFjYBiZgeAgZfjUuEpRhw8SrY6mVp030mnOwx1WRBPxQikGYvS/rGGeWmxlCvW3noQyfATtc6t6oTzXFAtww+FN3E52iZ8zMS23L0qtSX2WWO21MTKvRLTTHYsQ9DeR2QnHRAi+4zff42kugHDKxrX1UCX1P1YGNLcyxIqWPE23C4M0NrisK4wx7zRb6/mi9icOcIHgThXC0lXGbRa0ohN3VgedW3WHIM5VJj65+Jz6zz+gYwmCER+kIPt6ZZoMRhcq5UR4jaf188Baz6ar+NAid4mOkiOcrHXVfwWuaHL/8TnZw==
+ bh=A7x7wTvBpbNHNZFyPgCfHd/gsQGZ/gkSGuoDqp0a0fQ=;
+ b=HDQVDDzuHQysxmMcB5/kMWU5+SMnVIThGeFFZ1YHiXzbKVye3WJzlJx4eFuZ11yXLaJlhcUgVp96Gg7evP+UqCnZdf1x1hkW26BGA6OkhkNjhQqxLBjP43xzsE/zTe4QhQUAQTZ6jCgUnODkWWvlniV1LkkyoqWrhBbe8Crisb0AHphl72/c/Fk2vCrS80p7h45gsbmKVaerrRhaE2h8ND6NchoOd8sFzBWmbwV05L0uqfJIcTafLeEOs7bWudwgwnWn8GzpP/6qteZDpigK5wV7shDzBmVuRGQZUeZeMsvy0NK81H7Mb+Q4EPYe/R9GoynnqqE3IbiZwGWERjAjFg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB5880.namprd11.prod.outlook.com (2603:10b6:510:143::14)
- by MW4PR11MB7080.namprd11.prod.outlook.com (2603:10b6:303:21a::16)
+Received: from LV8PR11MB8485.namprd11.prod.outlook.com (2603:10b6:408:1e6::13)
+ by IA3PR11MB9373.namprd11.prod.outlook.com (2603:10b6:208:57f::8)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Mon, 25 May
- 2026 19:16:04 +0000
-Received: from PH0PR11MB5880.namprd11.prod.outlook.com
- ([fe80::b706:268e:9753:cdfd]) by PH0PR11MB5880.namprd11.prod.outlook.com
- ([fe80::b706:268e:9753:cdfd%5]) with mapi id 15.21.0048.019; Mon, 25 May 2026
- 19:16:04 +0000
-Message-ID: <58a258dd-2258-4fb0-8219-f8d8ef68e3ae@intel.com>
-Date: Tue, 26 May 2026 00:45:57 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Mon, 25 May
+ 2026 19:20:26 +0000
+Received: from LV8PR11MB8485.namprd11.prod.outlook.com
+ ([fe80::9ec6:998a:b515:890c]) by LV8PR11MB8485.namprd11.prod.outlook.com
+ ([fe80::9ec6:998a:b515:890c%4]) with mapi id 15.21.0048.019; Mon, 25 May 2026
+ 19:20:26 +0000
+Message-ID: <c6ffa302-8f50-4d7a-8f40-99314b21060b@intel.com>
+Date: Tue, 26 May 2026 00:50:18 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 2/2] lib/tests: make igt_get_output_max_bpc()
- return status and handle failures in callers
-To: Pranay Samala <pranay.samala@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <karthik.b.s@intel.com>, <sameer.lattannavar@intel.com>
-References: <20260525092621.668816-1-pranay.samala@intel.com>
- <20260525092621.668816-3-pranay.samala@intel.com>
-Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20260525092621.668816-3-pranay.samala@intel.com>
+Subject: Re: [PATCH i-g-t v6 6/7] tests/intel/kms_pm_dc: Add new test for
+ DC3CO recovery after DC6
+Content-Language: en-GB
+To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <animesh.manna@intel.com>, <dibin.moolakadan.subrahmanian@intel.com>,
+ <ramanaidu.naladala@intel.com>
+References: <20260515153838.841048-1-jeevan.b@intel.com>
+ <20260515153838.841048-7-jeevan.b@intel.com>
+From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+In-Reply-To: <20260515153838.841048-7-jeevan.b@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0118.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1a7::8) To PH0PR11MB5880.namprd11.prod.outlook.com
- (2603:10b6:510:143::14)
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0149.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d7::19) To LV8PR11MB8485.namprd11.prod.outlook.com
+ (2603:10b6:408:1e6::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5880:EE_|MW4PR11MB7080:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0f919e5-e31a-4da5-d3dc-08deba9210d5
+X-MS-TrafficTypeDiagnostic: LV8PR11MB8485:EE_|IA3PR11MB9373:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcab74b8-8194-4291-9c7f-08deba92acf3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|18002099003|22082099003|56012099003|11063799006|5023799004|3023799007|4143699003;
-X-Microsoft-Antispam-Message-Info: A6dWMe5E/FKbVlk5y5xUTp9WzkTSYNcW5r72oTMjj2mABsExG+tZSHJNaJGLilQTRhCwXPqfoSoSYWcSHjMiTse7FSWt2dPlnVFZJwPMu4z/VPdPlN/xnZBcNK8rSRoFsfw9ZP+UrqkAk/F9i16z5+KtdhsOwpl0VLzUvIHNwmQzYrdlXoPkrX/KU62ifIwMtXIyDZzgRnCwp0OwPFCfltP48tsrmJG+G4bYUr6Pmag+rv652OhvbUBrd+fHysiKVNV5PSdHUjldUMrO+Ee5AbhvcKUk9nCTD9g9yLn98vITnjPo1JejBe/sVCChiZZEBe6gRAL9YSqk0k5o8QMB7/oc1mYupbD8eMVICIhSOaekyZkPLtXz3HTuxweTBIg/RHc4PUmRWp8XCVQK6ab9DFKcV3Iw7WsnPMNxvj+QU4TtKuRk3UGj3ouHrTfHf/rBmvv67kRZEp0kSRnr18Ey9M4daOr/m13Xh6JWw5H7pjCoCsJTzrmy+NkRjlYX86zwOOq1GcGznenhwui7gyRUhL3rX3yml2pluhfDnq15ab5kiZnVrt9rQFWPb8j6A1pfcOrDuLLqNpmknKbL/493rzbeCTvNOL6ofCYLSDYxaHpyg5dLPclGggBeUEREm8dhgohxvkmjUvdCzjESRat5kEGwi28yYw+ThUc2AodnwHxSaDDahvj0RtbORVPLqYVt
+ ARA:13230040|376014|366016|1800799024|11063799006|6133799003|3023799007|4143699003|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info: f0xKAZ2PMfKuYJ/LiyCs3YeB/ID1CL1DIljZMRKxz6u/IYfHLeDN1Q0LhDs0zq683JPl9HTYHC2jvz6O0jOr0fl7X1hEds4QNdS1G97PvDmtR5HyoZxgHdr7i6c8a5FoXHL9eRTNW1tuYmyW+shNUTzhK51ABHbTVRJAcND8gUg1vUHxYIjq4DyhTZTouji5WsEuVi4pE8i15TWHOC7PfUKLeypA4ooPE31Xgb0/T7Ofe+vVOcyQVF13UlfVYKY4k/DEcW3iXMZIjo6Fk3mj5FzRNh5J/tZFMWM8ifXdUZXtun/Ou0KgrvwwPYRq1MWzXkyZJvcATburBHkkUE3BzO2bbhQyvMY6cg14gLjBcmwIqhSvKEJAW08uqrKooPdu+W3ev54ujHcDAv9qsVWHQvurIqc/b0useuyg/bxrHuBAZy1mmuA8anDZFhn/26/yrNtY0PApcBmuXIRti3fcCIQbAu9adbPBE7n1ILEdfeksuVLrp8RAmow+z/UUxCMGce+kb7zdKRgTfPMHNUdtoZ3NW6wjmqinUgM6QT1Amvnl4Bpb6y25UijLqtc1M8oMBPScNvu5Mc+/J8iPsHc9TThp5ly/HJ9EvciEqfK3cFVWE3AgYdI6yiq/7Ac9zp/+v1I9ydbgZ15uBAuzWPr+zC9lFUQEr5ACRBRNs+P1x5g01D6twDgUDJJHry+yiDSF
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR11MB5880.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(18002099003)(22082099003)(56012099003)(11063799006)(5023799004)(3023799007)(4143699003);
+ IPV:NLI; SFV:NSPM; H:LV8PR11MB8485.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(11063799006)(6133799003)(3023799007)(4143699003)(18002099003)(22082099003)(56012099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OUpxbWtHWlEza2p4S3p1V0xpeGp1cU5zRzZlSkJZbGZ2SmJoMkpPQ2FCNW9E?=
- =?utf-8?B?emd1Q1VMWmMvckY4QUVTZ3liVmFJczdqcGVOakNoZ1RXdzhpejE5elhGaEJq?=
- =?utf-8?B?SUFjckFnWVRjL1Vndm1IRlUxektRRFlJVEtXSUdjdE5QczBLVzJoTEhEYnox?=
- =?utf-8?B?QWV3RHkrU3UvMC9hQ2JrK1phRjFOVk9kS0JRUmY2c3lwQThiSWhKYkRjQnpB?=
- =?utf-8?B?c2UvZkxYZXN1Z2lURndEdDZuOUZudC8yc01pWVpWa0tCejR4eXFmMDZkSmNv?=
- =?utf-8?B?bmhFbFZ5NlRiVW9aZnlmanlsVldTZzMzVXBXNHFZekJKQ1phbTZmZzM3L1Jw?=
- =?utf-8?B?TGFoRWlRSkNRV0U5aTRPbXlIRndQSlJjUDArREVLOHZJS2RxZmRyUjY2eGFJ?=
- =?utf-8?B?MEQxdXZ1b3YvbUlpM1pnbGVWRzB0TkQ0R3N0UTBUOFVJQWV0dlRnM0ZKVVlW?=
- =?utf-8?B?alE3NE1iOThsc2Y0MVNtcEpYS09ieXJRZDd5aGI3OWEydmdidlo4bFdwS2xw?=
- =?utf-8?B?MjB0TmZacG1YSE5lNmEvR3VtWFlnVUZ6UjNwY3doeDhqaWpXaEdsT1RRL1RK?=
- =?utf-8?B?blRtdzRwTjY1UHdESFZwTFhZcE5nZ3hHdS8wM2RFSytYMnBGZ0tjMjFad1NF?=
- =?utf-8?B?eXQ1MVVJM1Y2UFljaGlIeWFEYVJ3ZHhYVnAxd1lnUHluUjZvQ3BWQVFFYlBq?=
- =?utf-8?B?REtWakx0YUZRMmFxSTlPNmxFc3dGU2I5Q3VFaXZxOTlMRnZweVJva1Z5dXpY?=
- =?utf-8?B?cVBRSzYvSitEWitRbTJKUE1jM0dEY29hTndzUVZSUUJxQzNOWHdBQ2F6TEZD?=
- =?utf-8?B?dE9oSDBQbEkySlNaY1FpRTd6a1JlUnZvd2JiUGlaU2R1ZkRGTmJ0WjlFVlJY?=
- =?utf-8?B?L0tRKyt0M1k2ZExoL3RJdVFUSCtDU01EdjA0ZHVoWFF2MDQ1RGpLVnVLWDdw?=
- =?utf-8?B?RXlxTkwvN09oKzdwVkl3elVJd003YnltdXdRbmJwTzAvT2F4cFdPZEdxdkh2?=
- =?utf-8?B?VFZObWxIeDAyMDlqZzlnN2hBWHRjclZuSjlGd3U3aE9DMktmQVkrbjgxME1Q?=
- =?utf-8?B?bythUE5ET1pNOFJXVGFNMC9scjU4OVVYVjFGdzVmYmZKUmVyVWR3RHlRK1dT?=
- =?utf-8?B?ZDhPVnptamZzWkRjdUtqT05vc0l5Zkt5TThidVZmbm1neGlRNDhjWFZRM3pO?=
- =?utf-8?B?dEdza2QvMitvcVZIMU1GVzJ2T1crME83aFFOT2I0TnRUTndJaHdIeHB1cFBN?=
- =?utf-8?B?QUE3MHRmcEtqK1pmMXpqNUtGZm16VXNJbk1oT0RlWERkU2VxUElmSlhkWVFz?=
- =?utf-8?B?N1BqSDhsTTNGV3QxbVUwTXJ5U2tCaE8yalVZVzdCSUw5UjNLTHd2SWRUcjhV?=
- =?utf-8?B?K0JJRFFkdzZhWDZvSjR1UkVWTmhCTG5FUFd4d3B2a2ttcXZ4SEY4TC9RVW5r?=
- =?utf-8?B?SGNtVDF4UTk2Rmo0elV2UmkyaDE1Ni9hNTdsTGx6QTV5L00yWVExcXF6bGRJ?=
- =?utf-8?B?Um0yZTVJKzJ2dmU5NWVQc2laT0p3NnhxYmt4QzREUjBFMVJtdTlGV05JNy9m?=
- =?utf-8?B?dmZXaGtiZENzdjdMR29wSjY4UkhsM3hSakpXc0lTd25QZjRiQWRLckxOVk1X?=
- =?utf-8?B?d2lXemlDRXJuTWdDdjRpZFFFQWJQZzcxd1pmQVR3TitMWWtRSG5JdlhFUUdK?=
- =?utf-8?B?dm5tN2ZkdnNWcURRSndGV3VnZmtPUTlYMmw4K3ExdEFNaVlEeDFaUjBSK29Z?=
- =?utf-8?B?NGZRL3V2bkpzUUxDWDd3VHFtN1JjYTBETk9IWkk0S2cyOURXK1lXVHQyVk53?=
- =?utf-8?B?a20wbE52d0lHU1JidUVKL1pEU2Y2WXJpR1lEZERNNkNKZFFWbDNhbnhMTjBr?=
- =?utf-8?B?ekUrMUFRZWNqUnlmZ2tNRDNBUlZSQzVBdjJjbXJkVzI2ZXZqblc4YU1yTVlM?=
- =?utf-8?B?WXA0Vmpnd2VuWXV3YWxpSGprbTdzWHd6bkpyNUkwa3lDNnllbW9XbFAvUHdo?=
- =?utf-8?B?WlpFU0c5Q21xdzUwRHF6Nm8vNnFGRWFQcDZMSVlyS1R3K1lPYjhGK1kweTd2?=
- =?utf-8?B?czVrREZGd0l3QkhmNHJoek1OdHJSMjd2dzdiMGRGZ041Rzd6RGtqSC82QzlC?=
- =?utf-8?B?UjdXa3VWOEdlQkczVkdBcnhvcEJwU2ZjSEpnVGJpT3dNOU1WVlhub3NDYU9V?=
- =?utf-8?B?dDhwV0FWaStFbllsL3puN1NadXF6NDgyRWg3TkN2OU9kWFBCdkpMNzNRa0JF?=
- =?utf-8?B?V25LcWxPNFRXQWhsMnlmWnpodU9NdHBNV2FRMDRlZ3U1YWN4bTZQY2NnV0pz?=
- =?utf-8?B?UlAyWkptSjYySW5GbmlJR2hZUTRnNmNnQldUOFRPTHNGelNSWlQ1QT09?=
-X-Exchange-RoutingPolicyChecked: JN9NEoGJN36QK1BJpcs6ah9yeeLbSMgEbljXCMZhyhLJDnEBrSDexx7zjOyeE9Tpwj5dwd0MYsCjNKSZCRsG51HHs/te3TIUzOflVZtkomKk2OWe9qBtaz43edvIzpQLKB42mvr9oVM6lmNpFWo3xCfcx4gr/QOVrtTF5rQvquSwWfDIqduS7IDBpRYRvzeVLMcVAt5zjoxQuwCYFM+uxjI+hH+XGDvuLuOBbnST4iVQMxVdaBlryIqxeduViUJ90KgXUfG5LnGmihbe2+qTSLvYPc9sGHNkGDHMrBz3jdS+yENfHu1gHrVfyZmS9X/roz66NR8R8cd+ofDE3BgHWA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0f919e5-e31a-4da5-d3dc-08deba9210d5
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5880.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QUZFYVVtUStobElnb0lNelNqb2hsZG5PRDVlaldzOTh5cW1WaFZ6T2xQYVAr?=
+ =?utf-8?B?N2E0WFNQYXEzRlJ6dG1jdXUveE5QeHVqOUdST1pWWHN4Mlgwd3ZNQ0xiczhN?=
+ =?utf-8?B?Z2pKRGVGV2FOTkRwZDRRZm5pN2kyVGcyZzBEa3JwOUJxcE1DaUo1REVHdFlW?=
+ =?utf-8?B?VmFkZEw5MGtoZVFLWjdBZFZiRFl0LzBrN1dXU28xblE2MjNqSnZRNm9RTTZt?=
+ =?utf-8?B?U2IwQTNPVHkyV29ZWnBVY2dMZ1loY09qY2ptUVFDRkhSZTNVcmVyWG44RHI3?=
+ =?utf-8?B?bjRHZnR0cDBORjZpblBsdlFwYWpYS1BxM2VUU0s5bFBZYUplLzVLWHhRV2Vo?=
+ =?utf-8?B?Vmg5b3ZEbDliTFI4dFhaUGZHalZ5R2ZEZ3gwaUlzNDRSdHIrVE0wRWVheVpD?=
+ =?utf-8?B?cFVaR1dVdVpYOU1yVFZ3YXNkbU9KUHhiMUN6eG1rNDhYOWd0MmM4V1NxOXJY?=
+ =?utf-8?B?NVU1azFPQ3JVR2c4UXNNRzI3L2Q0OGRnclltRktVelZGcXVRMkRBNWZQSFVx?=
+ =?utf-8?B?ZDJzd04wV2JMMWpoVDQ3MGg0TGZhbGlRNmE2dUZxd0FHamdwVUlNR3JzQkNS?=
+ =?utf-8?B?cW8zVWQ5K2plOGhtbVllZHZpWkFrOENRMGtiZWV0STV6UFBZNmJVVi9qVHBT?=
+ =?utf-8?B?RGhIdlpjd2JndEU0YUZ5cE9JQmM3TmpRdlg0KzhnREY5Ukd0YlMxR3o5N213?=
+ =?utf-8?B?dWozNFlqSC9qNHR5TWEzYmNXa282S1E0MlJZcUZQWlQyaWFkcTlGREVrcnVw?=
+ =?utf-8?B?VXkzcjFIZlVxMkJPZ1lLalByZXdybU94QlpxdXdCSGpwOGpMb0NtdXNha2Jo?=
+ =?utf-8?B?b0wwSXhpZ0hDRFh1Tk1xN2E5NXNFVm9SZS9jc1JKeDNhVFlVK1dtcHdETUFm?=
+ =?utf-8?B?TnJNZVNRdzlIZVJRVWlmN3BNK0xlTWZFck8xVkQxWC85b3oxUFRSczhYaTRu?=
+ =?utf-8?B?S2owRnJuR0VGYjZEcUU3L2toVWRFU2xsb0EwOTFYYVZySy9UNkhJbFV1OWtY?=
+ =?utf-8?B?WDFIQjVaT0J0M2VzcWY5ZFBMT2xkdUlmUno5NmJOLzg1WFBZMCsvSHJFVmRo?=
+ =?utf-8?B?VnExcW9MRmM1WUVMQlEzSWQ4MDIxb3lWdGRQVEVWSE44bVZOQ3B2ek5BdGVw?=
+ =?utf-8?B?NkljZWJobzVYM0htbC96Mk5ISS85NURNVTZiTjBlQmNmWUFNd2M3RUs2bWZG?=
+ =?utf-8?B?WUorUjRPdlF2RDF4cjFnWGdYUkRwU2YvcmJrNkhEM3Jybm11aE82cmdkRVlj?=
+ =?utf-8?B?Q2lQSnZ0cXlMRnUxcEJmKzFBRHg3M245Z1luN3FuTVZXMzRZYzU1ZUoxMDVx?=
+ =?utf-8?B?Y0ErZHpiTGc5SnA4clBZWnJWSTFDZmVVdU9GczcyNWtLeVVSaVVuM2VYeXk0?=
+ =?utf-8?B?U3ovcElxMXBCK3R2ZFlzbElPNUZHeUM2ZDYxREhuc2FBcDlEMkFodnVjaWVC?=
+ =?utf-8?B?WkZ5bndyVnk5R0tDVVdmQ3dzMllyUWZKeWF3YXpUVndmL1Nhbk1JWFhyRkZP?=
+ =?utf-8?B?QlBYUmlzcElEempLd2QyNFFPclRtUDNnQWNERk0vNUc3UlYzK2ZYUW5QZW9u?=
+ =?utf-8?B?RGtqeGIzR0N4aFVTZXNYV05xeWpLUkpsS3lBWnE3QjNOUG9uck5GSlpUZHVn?=
+ =?utf-8?B?d1pNNmZmY2RzUzNXYW5CaDZkYjUySVJKMHNpczZrMUZsTVp3bTVWU05JNWRq?=
+ =?utf-8?B?TGxsVEZoV2dzZkRtNW1iQUJ0TmxPWEZVYlBHTWZqY1ZtTjFkNHJSSjl3S0hu?=
+ =?utf-8?B?UHNsTHBIZ0xrSjZkdEpGR1crUmgrVEQ2RjJWTFBrRWlYL08rT2xMWXdnRHoz?=
+ =?utf-8?B?dUkyMGlzQ2xQbnhMQ0swSFFBejRxVUdvdHBXRVNFOGM1YnVzOFRzYjBJaWxv?=
+ =?utf-8?B?SjFGOUZVMENsbzlUYUNaeWZMZWl1SndSYUZrM0h2NklmL3pndXZXZTdldit1?=
+ =?utf-8?B?RlBIQTZkNWRWVXFjZkxkbEovMm1zbk1JQ0tqbU8wMEZFbzF3c3hraXI5S25v?=
+ =?utf-8?B?MFo5QlNSTDI0T0hNNGwwK1hkSmRPSytwcXFES1Zrc2doL09EdENIZVF0UTNG?=
+ =?utf-8?B?NEpHMWl6UDczTjl1QXFsQ3JlbXVuU2h2N1h1cU1zTTlqRU4xcWJkd0tHSDlt?=
+ =?utf-8?B?TnBTNDJ1dk8zK3JVTUJ5a3psSDZNTkJWV3cvemRTM0Ric21RR3J5WGdCVlUw?=
+ =?utf-8?B?YzI2emUzS1lXK3NMcG41YzRZWVJPZG91R3JobnR4T1pjeHlnTG9kakhRYmxm?=
+ =?utf-8?B?bFBzRU5HazgwaFo4Q09ubWo3cTZjVFJwNkxIZndPQ2tSaEJYdEtiWG8wYVVn?=
+ =?utf-8?B?L215dThWQnN1d0Y0RmtUZ1p5dDlxK2RnTWFFc1AxVEpIdDNmMVE5VFVBcUZC?=
+ =?utf-8?Q?/7yM6rYnRYwuSpdI=3D?=
+X-Exchange-RoutingPolicyChecked: Ku1CMgkhZI1dqP4FMacC2bi991y5/T+HNu59e7V3Wlpij+PSGUKBkvHc+Ij0fNtYFaiAHb80MK+PZYdQo9GCaj9LShx5l19JE+lxZgcuvkcYwKkftigkn1/J8fwMgHeTf/9G7muPsdmQiCldpHEHn9X36WgZRIJgOtyxhLbNwi0HqcUOrjK/E5M2km7sZJRk/UT8KE6VCMpDlgSex15iBLzxgzSF0jLJGVLGiPqjZNaQJQ3isNVHfynQxSo5LhdZEMsKMe7J7rk7hro6gZaLWQF0t5XVzYqQrNi7NNcqy0qCuIOegsaccJJOQE/XAtz196xjz5BYzhro7zV5EXRONA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcab74b8-8194-4291-9c7f-08deba92acf3
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR11MB8485.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 19:16:04.4658 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 19:20:26.4654 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dvLxoUdepisIdAOlpZIk+meYWccx8FLsYfyoDHd/muSGvF95ZGHxUVJjhNgCingjdJWi5yAmyae9S71nRznYLQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7080
+X-MS-Exchange-CrossTenant-UserPrincipalName: gPrVZcN/kIoo/ePlbKCLATarLMPtoKd9ZGNkBkm3pWF9ite5zcpuoIkQV52TNz1e1SOpEbZF8VnooRV1ANQb+W7TJJ9ZMmQhVvZpnzks1CM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9373
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -170,326 +172,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pranay
 
-On 25-05-2026 02:56 pm, Pranay Samala wrote:
-> Change igt_get_output_max_bpc() to return bool and fill an output parameter
-> instead of asserting/requiring internally. This lets callers handle debugfs
-> read/parse failures gracefully instead of failing inside the helper.
+On 15-05-2026 09:08 pm, Jeevan B wrote:
+> Adds a test to verify DC3CO continues to function properly
+> after a DC6 power cycle.
 >
-> Update test call sites to use the new boolean-return API so each test can
-> decide how to handle max-bpc read failures. This separates read/parsing
-> failures from capability checks and makes skip/continue decisions explicit
-> with clearer logging, while preserving normal capability validation when
-> max bpc is read successfully.
+> v2: Use test_dc_state_dpms for the DPMS/DC6 cycle.
+>      Drop redundant PSR re-enable after DPMS/DC6.
 >
-> v2:
-> - Combine lib & test changes into single patch (Karthik)
->
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->   lib/igt_kms.c                          | 38 ++++++++++++++++++--------
->   lib/igt_kms.h                          |  2 +-
->   tests/amdgpu/amd_bypass.c              |  6 +++-
->   tests/amdgpu/amd_dp_dsc.c              | 10 ++++++-
->   tests/intel/kms_dsc.c                  | 13 +++++++--
->   tests/intel/kms_frontbuffer_tracking.c | 10 ++++++-
->   tests/kms_color_helper.c               |  5 +++-
->   tests/kms_dither.c                     |  9 +++++-
->   tests/kms_hdr.c                        | 16 +++++++++--
->   9 files changed, 87 insertions(+), 22 deletions(-)
+>   tests/intel/kms_pm_dc.c | 51 +++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 51 insertions(+)
 >
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index e20307923..a3f8d6928 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6665,32 +6665,43 @@ bool igt_is_aux_less_alpm_enabled(int drmfd, char *connector_name)
->   
->   /**
->    * igt_get_output_max_bpc:
-> - * @drmfd: A drm file descriptor
-> - * @connector_name: Name of the libdrm connector we're going to use
-> + * @output: Output to query.
-> + * @maximum: Returned maximum bpc value.
-Also, this could be s/Returned/Return
-
-Please add what this function actually does?
-
-Something like "Read the maximum supported bits-per-component from the 
-connector's debugfs output_bpc file."
-
-Followed by
-
+> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+> index 4497cffb7..0f216d9eb 100644
+> --- a/tests/intel/kms_pm_dc.c
+> +++ b/tests/intel/kms_pm_dc.c
+> @@ -55,6 +55,11 @@
+>    * Description: Verify that DC3CO entry does not cause frame drops and successfully
+>    *              enters the power state
 >    *
-> - * Returns: The maximum bpc from the connector debugfs.
-> + * Returns: true on success, false on failure.
->    */
-> -unsigned int igt_get_output_max_bpc(igt_output_t *output)
-> +bool igt_get_output_max_bpc(igt_output_t *output, unsigned int *maximum)
->   {
->   	igt_display_t *display = output->display;
->   	int drmfd = display->drm_fd;
->   	char buf[24];
->   	char *start_loc;
->   	int fd, res;
-> -	unsigned int maximum;
-> +
-> +	if (!maximum)
-> +		return false;
-> +
-> +	*maximum = 0;
->   
->   	fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
-> -	igt_assert(fd >= 0);
-> +	if (fd < 0)
-> +		return false;
->   
->   	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
-> -	igt_require(res > 0);
-> -
->   	close(fd);
-> +	if (res <= 0)
-> +		return false;
-> +
-> +	buf[res < sizeof(buf) ? res : sizeof(buf) - 1] = '\0';
-> +
-> +	start_loc = strstr(buf, "Maximum: ");
-> +	if (!start_loc)
-> +		return false;
->   
-> -	igt_assert(start_loc = strstr(buf, "Maximum: "));
-> -	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &maximum), 1);
-> +	if (sscanf(start_loc, "Maximum: %u", maximum) != 1)
-> +		return false;
->   
-> -	return maximum;
-> +	return true;
+> + * SUBTEST: dc3co-after-dc6
+> + * Description: Verify DC3CO entry is still functional after a DC6 entry and
+> + *              exit cycle, ensuring DC3CO is not broken by deeper power state
+> + *              transitions.
+> + *
+>    * SUBTEST: dc5-dpms
+>    * Description: Validate display engine entry to DC5 state while all connectors's
+>    *              DPMS property set to OFF
+> @@ -628,6 +633,25 @@ static int has_panels_without_dc_support(igt_display_t *display)
+>   	return external_panel;
 >   }
 >   
->   /**
-> @@ -6734,9 +6745,12 @@ unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc)
->   static unsigned int get_current_bpc(igt_crtc_t *crtc, igt_output_t *output,
->   				    unsigned int bpc)
+> +static void test_dc3co_after_dc6(data_t *data)
+> +{
+> +	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
+> +	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC6);
+> +
+> +	setup_output(data);
+> +
+> +	/* Enable PSR2/PR */
+> +	setup_dc3co(data);
+> +
+> +	/* Trigger a DC6 cycle through DPMS */
+> +	test_dc_state_dpms(data, IGT_INTEL_CHECK_DC6);
+> +
+> +	/* Verify DC3CO still works after DC6 */
+> +	setup_videoplayback(data);
+> +	check_dc3co_with_videoplayback_like_load(data);
+> +	cleanup_dc3co_fbs(data);
+> +}
+> +
+>   static void test_deep_pkgc_state(data_t *data)
 >   {
-> -	unsigned int maximum = igt_get_output_max_bpc(output);
-> +	unsigned int maximum;
->   	unsigned int current = igt_get_crtc_current_bpc(crtc);
->   
-> +	igt_require_f(igt_get_output_max_bpc(output, &maximum),
-> +		      "Failed to read max bpc for %s\n", igt_output_name(output));
-> +
->   	igt_require_f(maximum >= bpc,
->   		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
->   		      maximum);
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index c2a3099de..0ff1ee688 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1246,7 +1246,7 @@ bool igt_fit_modes_in_bw(igt_display_t *display);
->   bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output);
->   bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
->   bool igt_is_aux_less_alpm_enabled(int drmfd, char *connector_name);
-> -unsigned int igt_get_output_max_bpc(igt_output_t *output);
-> +bool igt_get_output_max_bpc(igt_output_t *output, unsigned int *maximum);
->   unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc);
->   void igt_assert_output_bpc_equal(igt_crtc_t *crtc, igt_output_t *output,
->   				 unsigned int bpc);
-> diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
-> index 3c537ea9e..e59691f16 100644
-> --- a/tests/amdgpu/amd_bypass.c
-> +++ b/tests/amdgpu/amd_bypass.c
-> @@ -323,6 +323,7 @@ static void bypass_8bpc_test(data_t *data)
->   	igt_display_t *display = &data->display;
->   	igt_fb_t fb;
->   	enum pattern ptn;
-> +	unsigned int maximum;
->   
->   	test_init(data);
->   
-> @@ -345,7 +346,10 @@ static void bypass_8bpc_test(data_t *data)
->   	 * Rx supports only up to 6bpc, Rx-crc will different from crtc-crc
->   	 * with 8bpc.
->   	 */
-> -	igt_skip_on_f(igt_get_output_max_bpc(data->output) <= 6,
-> +	igt_skip_on_f(!igt_get_output_max_bpc(data->output, &maximum),
-> +		      "Failed to read max bpc for %s\n", igt_output_name(data->output));
-> +
-> +	igt_skip_on_f(maximum <= 6,
->   		      "check /sys/kernel/debug/dri/0/eDP-1 (connector)/output_bpc\n");
->   
->   	igt_create_fb(data->drm_fd, data->width, data->height,
-> diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
-> index 1742c7df4..dc71e903e 100644
-> --- a/tests/amdgpu/amd_dp_dsc.c
-> +++ b/tests/amdgpu/amd_dp_dsc.c
-> @@ -480,11 +480,19 @@ static void test_dsc_bpc(data_t *data)
->   
->   	/* Find max supported bpc */
->   	for_each_crtc(&data->display, crtc) {
-> +		unsigned int maximum;
-> +
->   		output = data->output[crtc->crtc_index];
->   		if (!output || !igt_output_is_connected(output))
->   			continue;
->   		igt_info("Checking bpc support of conn %s\n", output->name);
-> -		max_supported_bpc[crtc->crtc_index] = igt_get_output_max_bpc(output);
-> +		if (!igt_get_output_max_bpc(output, &maximum)) {
-> +			igt_info("Failed to read max bpc for conn %s\n", output->name);
-> +			max_supported_bpc[crtc->crtc_index] = 0;
-> +			continue;
-> +		}
-> +
-> +		max_supported_bpc[crtc->crtc_index] = maximum;
->   	}
->   
->   	/* Setup all outputs */
-> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-> index 4c41c6a3b..ee27f2630 100644
-> --- a/tests/intel/kms_dsc.c
-> +++ b/tests/intel/kms_dsc.c
-> @@ -265,6 +265,8 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
->   	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
->   
->   	for_each_crtc_with_valid_output(display, crtc, output) {
-> +		unsigned int maximum;
-> +
->   		data->output_format = output_format;
->   		data->plane_format = plane_format;
->   		data->input_bpc = bpc;
-> @@ -275,8 +277,15 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
->   		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->crtc))
->   			continue;
->   
-> -		if (igt_get_output_max_bpc(output) < MIN_DSC_BPC) {
-> -			igt_info("Output %s doesn't support min %d-bpc\n", igt_output_name(data->output), MIN_DSC_BPC);
-> +		if (!igt_get_output_max_bpc(output, &maximum)) {
-> +			igt_info("Output %s: Failed to read max bpc\n",
-> +				 igt_output_name(data->output));
-> +			continue;
-> +		}
-> +
-> +		if (maximum < MIN_DSC_BPC) {
-> +			igt_info("Output %s doesn't support min %d-bpc\n",
-> +				 igt_output_name(data->output), MIN_DSC_BPC);
->   			continue;
+>   	unsigned int pre_val = 0, cur_val = 0;
+> @@ -801,6 +825,33 @@ int igt_main()
 >   		}
->   
-> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-> index 37706cab5..3adf14bd7 100644
-> --- a/tests/intel/kms_frontbuffer_tracking.c
-> +++ b/tests/intel/kms_frontbuffer_tracking.c
-> @@ -2281,6 +2281,8 @@ static void setup_drrs(void)
->   
->   static void setup_hdr(void)
->   {
-> +	unsigned int maximum;
-> +
->   	if (!igt_output_has_prop(prim_mode_params.output, IGT_CONNECTOR_MAX_BPC) ||
->   	    !igt_output_get_prop(prim_mode_params.output, IGT_CONNECTOR_MAX_BPC) ||
->   	    !igt_output_supports_hdr(prim_mode_params.output)) {
-> @@ -2294,7 +2296,13 @@ static void setup_hdr(void)
->   		return;
 >   	}
 >   
-> -	if (igt_get_output_max_bpc(prim_mode_params.output) < 10) {
-> +	if (!igt_get_output_max_bpc(prim_mode_params.output, &maximum)) {
-> +		igt_info("Can't test HDR: Failed to read max bpc for %s.\n",
-> +			 igt_output_name(prim_mode_params.output));
-> +		return;
+> +	igt_describe("Verify DC3CO entry is still functional after a DC6 entry "
+> +		     "and exit cycle");
+> +	igt_subtest_with_dynamic("dc3co-after-dc6") {
+-->use common structure for both the tests, in a similar manner as you 
+did at patch 3
+> +		igt_dynamic("psr2") {
+> +			data.op_psr_mode = PSR_MODE_2;
+> +			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
+> +					     data.op_psr_mode, NULL));
+> +			igt_require_f(IS_TIGERLAKE(data.devid) ||
+> +				      intel_display_ver(data.devid) >= 35,
+> +				      "Platform does not support DC3CO with PSR2\n");
+> +			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+> +				      "PC8+ residencies not supported\n");
+
+-->igt_pm_pc8_plus_residencies_enabled is common across both tests so move it to common block to avoid repetition.
+
+> +			test_dc3co_after_dc6(&data);
+> +		}
+> +
+> +		igt_dynamic("pr") {
+> +			data.op_psr_mode = PR_MODE;
+> +			igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
+> +					     data.op_psr_mode, NULL));
+> +			igt_require_f(intel_display_ver(data.devid) >= 35,
+> +				      "Platform does not support DC3CO with Panel Replay\n");
+> +			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+> +				      "PC8+ residencies not supported\n");
+-->same comments as  given above
+> +			test_dc3co_after_dc6(&data);
+> +		}
 > +	}
 > +
-> +	if (maximum < 10) {
->   		igt_info("Can't test HDR: %s doesn't support 10 bpc.\n", igt_output_name(prim_mode_params.output));
->   		return;
->   	}
-> diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-> index 24663444a..a50ac3a37 100644
-> --- a/tests/kms_color_helper.c
-> +++ b/tests/kms_color_helper.c
-> @@ -40,7 +40,10 @@ bool crtc_output_combo_valid(data_t *data, igt_crtc_t *crtc)
->   bool
->   panel_supports_deep_color(igt_output_t *output)
->   {
-> -	unsigned int maximum = igt_get_output_max_bpc(output);
-> +	unsigned int maximum;
-> +
-> +	if (!igt_get_output_max_bpc(output, &maximum))
-> +		return false;
->   
->   	igt_info("Max supported bit depth: %d\n", maximum);
->   
-> diff --git a/tests/kms_dither.c b/tests/kms_dither.c
-> index ca367db61..236e5c7c0 100644
-> --- a/tests/kms_dither.c
-> +++ b/tests/kms_dither.c
-> @@ -206,6 +206,7 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
->   
->   	for_each_connected_output(display, output) {
->   		igt_crtc_t *crtc;
-> +		unsigned int maximum;
->   
->   		if (!is_supported(output)) {
->   			igt_info("Output %s: Doesn't support \"max bpc\" property.\n",
-> @@ -213,7 +214,13 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
->   			continue;
->   		}
->   
-> -		if (igt_get_output_max_bpc(output) < output_bpc) {
-> +		if (!igt_get_output_max_bpc(output, &maximum)) {
-> +			igt_info("Output %s: Failed to read max bpc.\n",
-> +				 igt_output_name(output));
-> +			continue;
-> +		}
-> +
-> +		if (maximum < output_bpc) {
->   			igt_info("Output %s: Doesn't support %d-bpc.\n",
->   				 igt_output_name(output), output_bpc);
->   			continue;
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index 32d8dfe14..d80dead6c 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -254,6 +254,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
->   
->   	for_each_connected_output(display, output) {
->   		igt_crtc_t *crtc;
-> +		unsigned int maximum;
->   
->   		if (!has_max_bpc(output)) {
->   			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC.\n",
-> @@ -261,7 +262,12 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
->   			continue;
->   		}
->   
-> -		if (igt_get_output_max_bpc(output) < 10) {
-> +		if (!igt_get_output_max_bpc(output, &maximum)) {
-> +			igt_info("%s: Failed to read max bpc.\n", igt_output_name(output));
-> +			continue;
-> +		}
-> +
-> +		if (maximum < 10) {
->   			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
->   			continue;
->   		}
-> @@ -536,6 +542,7 @@ static void test_hdr(data_t *data, uint32_t flags)
->   
->   	for_each_connected_output(display, output) {
->   		igt_crtc_t *crtc;
-> +		unsigned int maximum;
->   
->   		/* To test HDR, 10 bpc is required, so we need to
->   		 * set MAX_BPC property to 10bpc prior to setting
-> @@ -560,7 +567,12 @@ static void test_hdr(data_t *data, uint32_t flags)
->   			continue;
->   		}
->   
-> -		if (igt_get_output_max_bpc(output) < 10) {
-> +		if (!igt_get_output_max_bpc(output, &maximum)) {
-> +			igt_info("%s: Failed to read max bpc.\n", igt_output_name(output));
-> +			continue;
-> +		}
-> +
-> +		if (maximum < 10) {
->   			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
->   			continue;
->   		}
+>   	igt_describe("This test validates display engine entry to DC5 state "
+>   		     "while PSR is active");
+>   	igt_subtest("dc5-psr") {
