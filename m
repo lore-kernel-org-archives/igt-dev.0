@@ -4,27 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E05D3CD5BC0
-	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 06:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55490CD5BC0
+	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 07:10:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8E5A710E094;
-	Mon, 25 May 2026 06:32:12 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D07010E094;
- Mon, 25 May 2026 06:31:52 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7973519445924566744=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E593E10E02D;
+	Mon, 25 May 2026 07:10:20 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=lankhorst.se header.i=@lankhorst.se header.b="mqAG5VNV";
+	dkim-atps=neutral
+Received: from lankhorst.se (unknown [141.105.120.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C1D110E02D
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 07:10:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
+ s=default; t=1779692998;
+ bh=evWRlCNvN4iY5z6P+Paugdc+/B+BTwVRxDJe+xLjxH8=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=mqAG5VNVq8/aW9mmacoWQv11IKFPZsos80rK1UkOKn0EQzfYbJ3wpPDI7nq0+QRAE
+ Hb8EhDb0N9WPNvk954k04BZ9jUcEP5VlileS4Mpa+FEVIZ51dmdZVY2hSwQfGGzT2y
+ 1lA7qfKX9e0uUn77RAlZzPvFvfOx+gk050pv5jgWw+768gAhMN07V5/4gOEVOqepL+
+ TcQwvWOUdzxmpsr1eWJvDwqQ5FD3C4p2VPTV2K1/7wrbKNizHugDvx7RtZkRznMIcS
+ 88WXV94FE1ZHCDLsUuhKzWNtNXEymeUoFE3UaOzarHLUSMkKrDoB7LHndWnqYQ6PSu
+ XZU6ARmIxAR6A==
+Message-ID: <762b131c-0ed1-400e-a63c-db4d1a8cbe41@lankhorst.se>
+Date: Mon, 25 May 2026 09:09:57 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fsetmode=3A_Add_?=
- =?utf-8?q?HDMI_2=2E0_clock_limit_for_mode_selection_=28rev6=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "B, Jeevan" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 25 May 2026 06:31:52 -0000
-Message-ID: <177969071263.4244.17145031669530071670@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260521090048.1378306-1-jeevan.b@intel.com>
-In-Reply-To: <20260521090048.1378306-1-jeevan.b@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/4] lib/igt_kms: Add support for the
+ BACKGROUND_COLOR property.
+To: Daniel Stone <daniel@fooishbar.org>
+Cc: igt-dev@lists.freedesktop.org,
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+References: <20260505194419.500600-5-dev@lankhorst.se>
+ <CAPj87rNytB9RtK_k6xtm0tqz=+i_Yf-BEu9pA1ggPk-jLEh0=A@mail.gmail.com>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <CAPj87rNytB9RtK_k6xtm0tqz=+i_Yf-BEu9pA1ggPk-jLEh0=A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +53,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7973519445924566744==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hey,
 
-== Series Details ==
+Den 2026-05-22 kl. 21:54, skrev Daniel Stone:
+> Hi Maarten,
+> 
+> On Tue, 5 May 2026 at 20:44, Maarten Lankhorst <dev@lankhorst.se> wrote:
+>> The background color is a 64-bits property that contains the ARGB values
+>> of the background with 16 bits for each component.
+>>
+>> Add support for the BACKGROUND_COLOR property, and set to pitch black
+>> as the default.
+> 
+> Did you see the previous attempt at
+> https://lists.freedesktop.org/archives/igt-dev/2025-December/101222.html
+> ? It unfortunately passed without review.
+> 
+> I think we should take whichever series is best, but it would be great
+> if you could please look at the prior one to see if there's anything
+> your series could gain from that, and equally Cristi if you could
+> please check this one out on VOP2.
 
-Series: tests/kms_setmode: Add HDMI 2.0 clock limit for mode selection (rev6)
-URL   : https://patchwork.freedesktop.org/series/160881/
-State : success
+I checked, the test itself is similar in the big picture.
+A few differences I noted:
+- kms_crtc_background_color also checks a few more colors and creates a
+  subtest for each color.
+- kms_crtc_background_color should probably use igt_display_reset for cleanup.
+- kms_crtc_background_color should use igt_crtc_has_prop() in the igt_require
+- kms_color version sets the background color to something
+  else while the plane is shown to ensure background is not
+  visible.
+- kms_color uses the definitions from drm_mode.h instead of
+  defining them locally, so that's tested too.
 
-== Summary ==
+So perhaps I can use the extra colors, perhaps we should test some values other
+than 0xffff too, and perhaps use X2R10G10B10 if available. I intend not to
+create a subtest as debug logs will be enough to determine the value of the
+failing different color.
 
-CI Bug Log - changes from XEIGT_8936_BAT -> XEIGTPW_15231_BAT
-====================================================
+The changes I made here are a bit more generic as they will catch failures
+when header definitions are updated incorrectly too.
 
-Summary
--------
+I believe this version is slightly better, but both would work in theory.
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8936 -> IGTPW_15231
-  * Linux: xe-5115-8345929e243a7114bc17c48d0ff01923d2daae76 -> xe-5120-7ce39e849680d6c0bf2795bbb4d986ecd1649d88
-
-  IGTPW_15231: 5b866f367cba17a6f6802feca3d5e87888fd7625 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8936: 98b65acc4f6edf68cd52b30f27b83049c4c5c83b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5115-8345929e243a7114bc17c48d0ff01923d2daae76: 8345929e243a7114bc17c48d0ff01923d2daae76
-  xe-5120-7ce39e849680d6c0bf2795bbb4d986ecd1649d88: 7ce39e849680d6c0bf2795bbb4d986ecd1649d88
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15231/index.html
-
---===============7973519445924566744==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: Add HDMI 2.0 clock limit for mode selection (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160881/">https://patchwork.freedesktop.org/series/160881/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15231/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15231/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8936_BAT -&gt; XEIGTPW_15231_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8936 -&gt; IGTPW_15231</li>
-<li>Linux: xe-5115-8345929e243a7114bc17c48d0ff01923d2daae76 -&gt; xe-5120-7ce39e849680d6c0bf2795bbb4d986ecd1649d88</li>
-</ul>
-<p>IGTPW_15231: 5b866f367cba17a6f6802feca3d5e87888fd7625 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8936: 98b65acc4f6edf68cd52b30f27b83049c4c5c83b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5115-8345929e243a7114bc17c48d0ff01923d2daae76: 8345929e243a7114bc17c48d0ff01923d2daae76<br />
-  xe-5120-7ce39e849680d6c0bf2795bbb4d986ecd1649d88: 7ce39e849680d6c0bf2795bbb4d986ecd1649d88</p>
-
-</body>
-</html>
-
---===============7973519445924566744==--
+Kind regards,
+~Maarten Lankhorst
