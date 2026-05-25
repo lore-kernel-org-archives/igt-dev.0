@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D825CD5BBF
-	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 06:16:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E05D3CD5BC0
+	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 06:32:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A876A10E04A;
-	Mon, 25 May 2026 06:16:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E5A710E094;
+	Mon, 25 May 2026 06:32:12 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1835A10E04A;
- Mon, 25 May 2026 06:15:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D07010E094;
+ Mon, 25 May 2026 06:31:52 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6574695035633471331=="
+ boundary="===============7973519445924566744=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fsetmode=3A_Ad?=
- =?utf-8?q?d_HDMI_2=2E0_clock_limit_for_mode_selection_=28rev6=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fsetmode=3A_Add_?=
+ =?utf-8?q?HDMI_2=2E0_clock_limit_for_mode_selection_=28rev6=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "B, Jeevan" <jeevan.b@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 25 May 2026 06:15:47 -0000
-Message-ID: <177968974707.4243.7229729978119669913@6beec6c84f66>
+Date: Mon, 25 May 2026 06:31:52 -0000
+Message-ID: <177969071263.4244.17145031669530071670@6beec6c84f66>
 X-Patchwork-Hint: ignore
 References: <20260521090048.1378306-1-jeevan.b@intel.com>
 In-Reply-To: <20260521090048.1378306-1-jeevan.b@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6574695035633471331==
+--===============7973519445924566744==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8936 -> IGTPW_15231
+CI Bug Log - changes from XEIGT_8936_BAT -> XEIGTPW_15231_BAT
 ====================================================
 
 Summary
@@ -64,65 +64,36 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/index.html
+  
 
-Participating hosts (42 -> 40)
+Participating hosts (13 -> 13)
 ------------------------------
 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
+  No changes in participating hosts
 
-Known issues
-------------
 
-  Here are the changes found in IGTPW_15231 that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][1] +13 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/fi-cfl-8109u/igt@dmabuf@all-tests.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][2] ([i915#2190])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@load:
-    - fi-cfl-8109u:       [ABORT][4] -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8936/fi-cfl-8109u/igt@i915_module_load@load.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/fi-cfl-8109u/igt@i915_module_load@load.html
-
-  
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_8936 -> IGTPW_15231
-  * Linux: CI_DRM_18540 -> CI_DRM_18544
+  * Linux: xe-5115-8345929e243a7114bc17c48d0ff01923d2daae76 -> xe-5120-7ce39e849680d6c0bf2795bbb4d986ecd1649d88
 
-  CI-20190529: 20190529
-  CI_DRM_18540: 127c8434a6a018110189cdb654719a9844702ff7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18544: 7ce39e849680d6c0bf2795bbb4d986ecd1649d88 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15231: 5b866f367cba17a6f6802feca3d5e87888fd7625 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8936: 98b65acc4f6edf68cd52b30f27b83049c4c5c83b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5115-8345929e243a7114bc17c48d0ff01923d2daae76: 8345929e243a7114bc17c48d0ff01923d2daae76
+  xe-5120-7ce39e849680d6c0bf2795bbb4d986ecd1649d88: 7ce39e849680d6c0bf2795bbb4d986ecd1649d88
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15231/index.html
 
---===============6574695035633471331==
+--===============7973519445924566744==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -146,62 +117,30 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160881/">https://patchwork.freedesktop.org/series/160881/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15231/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15231/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8936 -&gt; IGTPW_15231</h1>
+    <h1>CI Bug Log - changes from XEIGT_8936_BAT -&gt; XEIGTPW_15231_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15231 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/fi-cfl-8109u/igt@dmabuf@all-tests.html">SKIP</a> +13 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_module_load@load:<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8936/fi-cfl-8109u/igt@i915_module_load@load.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15231/fi-cfl-8109u/igt@i915_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-</ul>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8936 -&gt; IGTPW_15231</li>
-<li>Linux: CI_DRM_18540 -&gt; CI_DRM_18544</li>
+<li>Linux: xe-5115-8345929e243a7114bc17c48d0ff01923d2daae76 -&gt; xe-5120-7ce39e849680d6c0bf2795bbb4d986ecd1649d88</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18540: 127c8434a6a018110189cdb654719a9844702ff7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18544: 7ce39e849680d6c0bf2795bbb4d986ecd1649d88 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15231: 5b866f367cba17a6f6802feca3d5e87888fd7625 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8936: 98b65acc4f6edf68cd52b30f27b83049c4c5c83b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_15231: 5b866f367cba17a6f6802feca3d5e87888fd7625 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8936: 98b65acc4f6edf68cd52b30f27b83049c4c5c83b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5115-8345929e243a7114bc17c48d0ff01923d2daae76: 8345929e243a7114bc17c48d0ff01923d2daae76<br />
+  xe-5120-7ce39e849680d6c0bf2795bbb4d986ecd1649d88: 7ce39e849680d6c0bf2795bbb4d986ecd1649d88</p>
 
 </body>
 </html>
 
---===============6574695035633471331==--
+--===============7973519445924566744==--
