@@ -4,17 +4,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB57ECD5BB1
-	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 20:40:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84F85CD5BB1
+	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 20:41:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2227D10E40F;
-	Mon, 25 May 2026 20:40:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1AD4110E40F;
+	Mon, 25 May 2026 20:41:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="n9i0rIEw";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="l2CKywth";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C51010E40B
- for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 20:39:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB65810E40B
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 20:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,22 +22,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=3OkJXTnC2smW5KFaGahDw442amO32ng7iTIIqB9sy8s=; b=n9i0rIEw9bno/7Oh/OQJS6lPq0
- 9ayzlM0z7IQmwaXrnJMyZoyoKuw46lPeIYv64w+90mcasPPrsc/ZL9fCddm5q2bP12KF9IuviYuHO
- UCNYZP1rCKgaIji1mQQQfYSjNSgDGoXdwn4J/oYH+rAT+xcHwilWccD93LJsYauVZUxM9+nFMkh15
- fUDF0/EPyLZIH02nAo6c3mEz9nRHszp9B6gPZRekMXVzP+bEknm3kIn/TmMncyw6048D7OAs30EBh
- jJnLn6M1E88kHD21F2YTQOLdY8Qohkj+fseGwFiJEClcG0gmc/A0JSQeDjffPVWSJUqtfHkqWQYKo
- /999sNgA==;
+ bh=pkVO9viPOnFFFnkj1B0f4qhimtiFFtUrhhFAvsqugGw=; b=l2CKywthP53xgMJG0xRJOPCV21
+ iE32TvwOvk3qgcOMCQIOZ+5S8VUUS7XU1WtESDi1XfKSw2KNmGvxV4PYUmMboEz9bjOT/6iICTI9G
+ mwsxH5nV+8MqWSaSXyuR0V2cO4qVqiqLhBOF5hs5mUA9LITKQqT4iX3SiGfIhR7RkfxuIrAyLmo8y
+ JILXGGyu3/agMEsfmwuyKnbN12pfZ2NA5PM3jv1hKTZf3DxlwD8IeJWyDD3jlZvVr1vplm1W4HnMn
+ tYvZKulDxxyh/+AeGAeBrWdDPhRrHEfod0H9kLqJCJwTgqBvcAWrIBqn5Qal+KgTF73dkvlboFxQW
+ Ofl97N/g==;
 Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
  helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wRc4q-0089fG-F5
- for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 22:39:08 +0200
+ id 1wRc4r-0089fG-Ln
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 22:39:10 +0200
 From: John Harrison <John.Harrison@Igalia.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 5/6] tests/kms_colorop: Add BGR pixel formats
-Date: Mon, 25 May 2026 13:38:26 -0700
-Message-ID: <20260525203827.3155622-6-John.Harrison@Igalia.com>
+Subject: [PATCH i-g-t 6/6] tests/kms_colorop: Intel platforms seems to have an
+ error range up to 8
+Date: Mon, 25 May 2026 13:38:27 -0700
+Message-ID: <20260525203827.3155622-7-John.Harrison@Igalia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260525203827.3155622-1-John.Harrison@Igalia.com>
 References: <20260525203827.3155622-1-John.Harrison@Igalia.com>
@@ -58,37 +59,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Intel platforms only support BGR pixel formats for writeback. So to
-run this test on Intel platforms requires enabling testing of those
-formats.
+Pretty much every test seems to see an out-by-one issue on the output
+data. E.g. what should be 0x74:15:A0 comes back as 0x74:14:9F.
+However, the plane-xb24-xb24-srgb_inv_eotf_lut subtest sees an error
+of 3 and the plane-xb30-xb30-srgb_inv_eotf_lut subtest sees an error
+of 8.
 
 Signed-off-by: John Harrison <John.Harrison@Igalia.com>
 ---
- tests/kms_colorop.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/kms_colorop.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index f0cfcf405..a9f2cdcb4 100644
+index a9f2cdcb4..ca9b69b17 100644
 --- a/tests/kms_colorop.c
 +++ b/tests/kms_colorop.c
-@@ -31,6 +31,8 @@
-  *
-  * @XR24-XR24:				XRGB8888 framebuffer and writeback buffer
-  * @XR30-XR30:				XRGB2101010 framebuffer and writeback buffer
-+ * @XB24-XB24:				XRGB8888 framebuffer and writeback buffer
-+ * @XB30-XB30:				XRGB2101010 framebuffer and writeback buffer
-  *
-  * arg[2]:
-  *
-@@ -419,6 +421,8 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
- 	} formats[] = {
- 		{ DRM_FORMAT_XRGB8888, DRM_FORMAT_XRGB8888, "XR24-XR24" },
- 		{ DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB2101010, "XR30-XR30" },
-+		{ DRM_FORMAT_XBGR8888, DRM_FORMAT_XBGR8888, "XB24-XB24" },
-+		{ DRM_FORMAT_XBGR2101010, DRM_FORMAT_XBGR2101010, "XB30-XB30" },
- 	};
+@@ -196,6 +196,9 @@ static bool compare_with_bracket(igt_fb_t *in, igt_fb_t *out)
+ 	if (is_amdgpu_device(in->fd))
+ 		return igt_cmp_fb_pixels(in, out, 13, 13);
  
- 	igt_display_t display;
++	if (is_intel_device(in->fd))
++		return igt_cmp_fb_pixels(in, out, 8, 8);
++
+ 	/*
+ 	 * By default we'll look for a [0, 0] bracket. We can then
+ 	 * define it for each driver that implements support for this
 -- 
 2.43.0
 
