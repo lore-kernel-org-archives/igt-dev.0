@@ -4,17 +4,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98FEECD5BC9
-	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 20:40:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7500ECD5BB1
+	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 20:40:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C53B10E40F;
-	Mon, 25 May 2026 20:40:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 255A110E413;
+	Mon, 25 May 2026 20:40:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="hPbpKZok";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="Y8TYMpwJ";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92F5A10E40B
- for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 20:39:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A372610E40B
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 20:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,23 +22,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=MASSdlEoHYDifDEYSehLzccXbTyLoXT/FdIrdhafZ6Y=; b=hPbpKZokYqVVmjRxtwBhZwJvGg
- Lhcz5m02lhYEfN9tTp2D4uadgYB2qQj+bQmbmwSpcrriBDYXKjsyOHwXKzE0vgh4Ud0DkFbjLGqSA
- sEidLGKvNA4OISwfRnCSaItGdIHxxnphsbCKMS6ymMiH9SrO3dKGCmcZoRTMQVr6LfC8F8z+LR/cQ
- 7qhSEJDENWtjPcf2YOtydR+Bj1NvdTIqjFTqEpFoe8xZ5aMTKLmcNf4sEGHXPgWD5gVTQ323ZRhig
- 4+mIUoH/JNin/zO6loackBGZ4CgLCuR8ObaY/g65q3UbAS7R+uyWweXLxZ1GW2fOdXqrwWr4VfWXG
- hkR5URuw==;
+ bh=K2FiosZt3Kl8Ec59LU8hq6vm8qDxpKYdDk9ltl9VHAY=; b=Y8TYMpwJKDzrb7mPXKQmmXymic
+ uoz02I/oF00G8kRIPowjGDwy9eVSjABriZCE0EJ/cKKSu3PnezGTXFejyC2W8ZrAb4df+wDi0L4B2
+ x+GttettGt9AW7rnx6utuXO5qEpm0WDrzrl2wKG/f+lTBhcQjTl0CpavqwOuJW0wGwuQ96RD835+C
+ 8CvnWXGeYork8zjCFOhwLobJ16zLK2AZQeDVqICaVsT8Cxg5eI7sRu4t6lVF0sryyGGLNh5u/1xFn
+ XZKaJIpfE204186JD/84Wt0yEsT17C/msMhaPPY1g1jT+zQYL76s5ritnrBFJjxEtrzIiWZyYwcNj
+ qHjrOSWA==;
 Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
  helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wRc4k-0089fG-Bb
- for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 22:39:03 +0200
+ id 1wRc4n-0089fG-Jy
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 22:39:06 +0200
 From: John Harrison <John.Harrison@Igalia.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/6] tests/kms_colorop: Add early skip if pipeline is
- not supported
-Date: Mon, 25 May 2026 13:38:22 -0700
-Message-ID: <20260525203827.3155622-2-John.Harrison@Igalia.com>
+Subject: [PATCH i-g-t 3/6] tests/kms_colorop: Add cleanup of writeback
+ connector
+Date: Mon, 25 May 2026 13:38:24 -0700
+Message-ID: <20260525203827.3155622-4-John.Harrison@Igalia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260525203827.3155622-1-John.Harrison@Igalia.com>
 References: <20260525203827.3155622-1-John.Harrison@Igalia.com>
@@ -59,33 +59,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The test will skip if the requested colorop pipeline is not supported
-by the current platform. However, that skip is halfway through the
-test. Optimise the test by making it skip immediately.
+The kms_writeback test has a particular sequence for disabling the
+writeback connector before exiting the test. On the other hand, the
+kms_colorop test just exits leaving the writeback connector still
+active. With the preliminary i915/Xe support for writeback, that leads
+to lots of timeouts and driver errors. So, add in the writeback
+connector cleanup to allow kms_colorop to be run on Intel platforms
+without killing the system.
+
+Presumably, the timeouts and errors are a bug in the preliminary
+i915/Xe implementation and need to be fixed. And therefore, having a
+test which deliberately does an unclean shutdown is a good thing.
+However, this is not the place for such a test, this being a test for
+colorops not a test for some random mechanism that happens to be used
+to test the colorops. See separate patch to add that shutdown test to
+kms_writeback instead.
 
 Signed-off-by: John Harrison <John.Harrison@Igalia.com>
 ---
- tests/kms_colorop.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/kms_colorop.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index 4db83470d..ecf33ae15 100644
+index 77d25cda6..f0cfcf405 100644
 --- a/tests/kms_colorop.c
 +++ b/tests/kms_colorop.c
-@@ -220,6 +220,13 @@ static void colorop_plane_test(igt_display_t *display,
- 	igt_crc_t input_crc, output_crc;
- 	int res;
+@@ -67,6 +67,16 @@
+  *
+  */
  
-+	if (!colorops[0]) {
-+		color_pipeline = get_color_pipeline(display, plane, colorops);
++static void cleanup_writeback(igt_display_t *display, igt_output_t *output)
++{
++	igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR,
++				  to_user_pointer(NULL));
++	igt_output_set_writeback_fb(output, NULL);
 +
-+		/* skip test if we can't find applicable pipeline */
-+		igt_skip_on(!color_pipeline);
-+	}
++	igt_output_set_crtc(output, NULL);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++}
 +
- 	igt_fb_get_fnv1a_crc(input_fb, &input_crc);
+ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
+ 				    drmModeModeInfo override_mode, __u32 fourcc_in,
+ 				    __u32 fourcc_out)
+@@ -493,6 +503,7 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
+ 			}
  
- 	/* reset color pipeline*/
+ 			igt_fixture() {
++				cleanup_writeback(&display, output);
+ 				igt_detach_crtc(&display, output);
+ 				igt_remove_fb(display.drm_fd, &input_fb);
+ 				igt_remove_fb(display.drm_fd, &output_fb);
 -- 
 2.43.0
 
