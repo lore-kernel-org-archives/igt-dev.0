@@ -4,69 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B27DCD5BC9
-	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 16:40:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCCA2CD5BC9
+	for <igt-dev@archiver.kernel.org>; Mon, 25 May 2026 16:41:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4418510E3BA;
-	Mon, 25 May 2026 16:40:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 663CB10E3BA;
+	Mon, 25 May 2026 16:41:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="klm3mo19";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="I0VuyzzL";
 	dkim-atps=neutral
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com
- [209.85.216.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C969D10E3B7
- for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 16:39:26 +0000 (UTC)
-Received: by mail-pj1-f41.google.com with SMTP id
- 98e67ed59e1d1-367d88b9940so6558513a91.1
- for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 09:39:26 -0700 (PDT)
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com
+ [209.85.210.170])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D94D10E3C1
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 16:39:04 +0000 (UTC)
+Received: by mail-pf1-f170.google.com with SMTP id
+ d2e1a72fcca58-83ea84df1d0so3211827b3a.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 May 2026 09:39:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1779727166; x=1780331966; darn=lists.freedesktop.org;
+ d=gmail.com; s=20251104; t=1779727144; x=1780331944; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eH27DzdkJggZrKgSHlbfkjfwYlrkaY40mnrbZFT/JU8=;
- b=klm3mo19mM0v3uKJkiIQtEzS4/yB1n2HCr+G49IR6ZlT0MFYhXB6k/w5cSbprbaZ0i
- MxUnGxDgJWvB3zdcxOxKoylOPeQWWjh5mfP2Xw1IBiwiF8V+P3GliBQN/tmbS0zJeWac
- +HUXYrMmhOTDSNf79UI4Nwo0JNn3WuBZmxoFr2mSTQVN8H/fDxjGZtsdugyOv2ouVW4R
- iC54Qkqf4luZPSuKNq+ZOFhY8rNLzg7fTvsbQwfBWe6O2yW9Mpk0dWaZZnPIssemLUan
- kjDbBwA/Yj3EWZRldcO74y2xy8p/d3D6LjR6enuzvk39IB8NZQGf2gCnQAGCa6yjc79J
- 5GFQ==
+ bh=gfqX5btUAgIQRqB/Ppk3u9cH6aVYq6CEx0KKTcINtDM=;
+ b=I0VuyzzLZzxmT4vDbESmzh/seUiG8qbuTXMq4mJt6SzUX3QVf28f1BEsjYLlnOU53e
+ KScRiQ6bVCZug7Aq+5KOroSs0YspPdxz+EcrKxWqJjKlO6VXVRmm3w+Y9rBgTM9L3UOm
+ s+QzQAAVV3YH/o3VYYFE2qINaglSVxRflnbxx11T/RhF1CNpIDtIskK8D8JBf8m0HAzg
+ szh4fxv/8+dhMLyFF69QxyofdsDJtHrYS7PJOQOPu/ZA464vK0RgRC13losTz1GeTFeS
+ 6vjgGIhYr7AjPIoHTGshzDlaJcOc8tXRE3v2e0YBFk8SfI6OVGud5GQ7SYi8DffXYzNr
+ NGnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1779727166; x=1780331966;
+ d=1e100.net; s=20251104; t=1779727144; x=1780331944;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=eH27DzdkJggZrKgSHlbfkjfwYlrkaY40mnrbZFT/JU8=;
- b=sYDVXa/CK52toEgm1R/I2sbJy77D8FA9aw3vVrs8opokKZ83VYi80JPUpnfFL0OHXJ
- jv23ghJbkyE+9TiHOIavEqUWZzd26hHrO3vhoEANd6VZDxLs/SBpIZX+5bqFvDmmZDaf
- wu/LRK6mOtZjSqEtdUJFIdv/77imYpg5GxYHtE2z+vlmc667USpE0gI+5BBwtIiRIN23
- FI9SPIexX6SmVQkMaCozXUz2OKlwPX3O3el7oL1V9r23g7PtNQy6iDLTbToLlqG9uEP3
- PnLExSsO0ljedugW0TxzLkLpz1gZmmsUHahXCc5rI4GE61ZhuMpi3fyRJh/+LUEl4uXP
- poOg==
-X-Gm-Message-State: AOJu0Yz+6DhXv5AxorTa35wVhj6JgZdH9HmzONOSLmcvmCNswxJRwix9
- YsMspW+ciWOZoBNQXZvD57XX60ppOTOrvfqNlFAgVsw2I966gPvcN4nRrzOGOg0u
-X-Gm-Gg: Acq92OFeIir/tdyyWeN2vPfss903PVn2jLo9AQyOSh2VCsLMPFmgghyrd94FfI9W9+8
- IqCmzA6gKdi4JgFUjCOnM36BvoghaeoYOHj4DzW0gZHR/Gbfq/6sFQXheMsldm71OUFWnnGkvhI
- EFDYE79DQ/rsO0kFaVl+824cZJ1fw5Pi7MgtYEzpwRbYuBF5Cs4gg686n66AFt7WRW9kqjtHY/H
- RxaJBKXgcqfhgeIvcU6lb9St+N7hw28JLuPapnRS7W6e/dCt5a2K/KAkGsDKAkzIPRq/wvFcITP
- mE6nwSsqLGoCh8+dwLxKzGFGTb9LkfcSpSPLrSrrW1zxBd8j4E78LxcRjh9lpYCA54AW2FMCtrw
- 7o23/NS1xE1KilyxGVT6fp7gQO0v1WX+UeYPbYX8y0HoajN3vvQnaUKfQ2P7pXKlKlNUoCchPGH
- s85gPALD43okw92vM0pMqQWRXB4vJz962SFDPRdLw+IqqlNfTdKEvitIjhoWogeA==
-X-Received: by 2002:a17:90a:d2c5:b0:36a:bfe7:e0c7 with SMTP id
- 98e67ed59e1d1-36abff7274bmr4499030a91.5.1779727166300; 
- Mon, 25 May 2026 09:39:26 -0700 (PDT)
+ bh=gfqX5btUAgIQRqB/Ppk3u9cH6aVYq6CEx0KKTcINtDM=;
+ b=HISxljn3ZelLjvNXYtoLkMddYKRmdYI1EzXJodnvAK+AZixvtl1VWL/WMrQ2uiWmeB
+ MHFkWbo1QoymJiNftDOv0AJQSmgbYcgnC243nFM/DNlUwngukECBB8doZhiixn46wmc1
+ z4wVCddUpTxXCDORVah1Dyms6Esr/ZknY7y8pq3pdteFCUtG4P2Ji4qTHbwYbB4Q/4fi
+ PwZ+ic7GTsM5k7cWVjkeF+ouyjv7mYO+c7OXRAnRAcYHFzmjALXM4n2SUQ5v/MKsoa+m
+ d2Oc/Ft8Z9eJYXwLEUMDBCJ7jwf5c2yuNspzd5nUynUC+jILxO/jMuHR9jcp4dHZ7Wkp
+ 42EQ==
+X-Gm-Message-State: AOJu0YyDU5pY/2+IFYI6cek1pGg33KauGTpxQiMU4TiTQrqBMCzsjjpS
+ Kj66AvmlqP9A1BngKYDKkzAPmOrFuC4Wf5XEphTWSDqFg0DhTJACaKprwqpWF+Mz
+X-Gm-Gg: Acq92OG+TIaiyophNbqanPxbUtjTzAfNgUn+oRlT2sn3o3lkOfPgb7rhACElK0tZEsj
+ J8Q659EiwS8mbF3wV+OozFCpEq4vyLAA+kdjjDmKJuF5i1X8JK3A+Zg+HP0o3hW71I/fdo11lG7
+ BoWv/8YgcDEpsArlBpsTkXxdN67OQLy88rkjwey48svCYR1l7L1qb54TmjSZDWnXdE+2d686SGv
+ KJxxVTZ+4QQCzsV63b9iX13RAfzZiXOuGjiN5ntv9Lc8PsBTZKh9lvwfIt4xQs0k6eHpYfSMYI+
+ NbROt03wRLdRz4xAM8UkCqXhxkxUHXpXFiiDjwgXQnJRs0YlTgD0OF6TeYGoW3/vVIyzo1yNzlK
+ NeXLIi+vIeGjFrXNA8U7FSazeEF2u4p/lIKhsNqkqyQLT5b5J415E+NXYk7asK2F//Av/grM14r
+ fIAg6VQrPdaHAeQUpRkGS8t9J0ViXnMZdY5NkXi9p51ycBpvEMRi+km2zzEpmi8A==
+X-Received: by 2002:a05:6a00:8c10:b0:82d:62ed:b01d with SMTP id
+ d2e1a72fcca58-8415f6e8fc0mr13943079b3a.45.1779727143648; 
+ Mon, 25 May 2026 09:39:03 -0700 (PDT)
 Received: from localhost ([134.134.137.76]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-36a72c4cd92sm10629959a91.10.2026.05.25.09.39.25
+ d2e1a72fcca58-84164af0506sm10041775b3a.16.2026.05.25.09.39.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 May 2026 09:39:25 -0700 (PDT)
+ Mon, 25 May 2026 09:39:03 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t 6/9] lib/intel_batchbuffer/xe: add bb exec path to use
- specific engine and gt
-Date: Mon, 25 May 2026 19:38:47 +0300
-Message-ID: <20260525163850.3493602-7-juhapekka.heikkila@gmail.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 1/9] lib: take out duplicate assert
+Date: Mon, 25 May 2026 19:38:42 +0300
+Message-ID: <20260525163850.3493602-2-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260525163850.3493602-1-juhapekka.heikkila@gmail.com>
 References: <20260525163850.3493602-1-juhapekka.heikkila@gmail.com>
@@ -87,37 +85,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add __xe_bb_exec path to use specific engine/class/gt
+in gen12_vebox_copyfunc there's the same assert few lines below
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Reviewed-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 ---
- lib/intel_batchbuffer.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ lib/veboxcopy_gen12.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 3f89ffd19..f0fef6bda 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2525,7 +2525,17 @@ int __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
- 	igt_assert_eq(ibb->num_relocs, 0);
- 	igt_assert_eq(ibb->xe_bound, false);
+diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c
+index 2193433a1..9d07ebb91 100644
+--- a/lib/veboxcopy_gen12.c
++++ b/lib/veboxcopy_gen12.c
+@@ -314,8 +314,6 @@ void gen12_vebox_copyfunc(struct intel_bb *ibb,
+ 	uint32_t aux_pgtable_state;
+ 	int format;
  
--	if (ibb->ctx) {
-+	if (ibb->gt_id) {
-+		unsigned short class = get_engine_class(ibb->fd, flags);
-+
-+		if (ibb->engine_id)
-+			xe_exec_queue_destroy(ibb->fd, ibb->engine_id);
-+
-+		ibb->engine_id = engine_id = xe_exec_queue_create_class_gt(ibb->fd,
-+									   ibb->vm_id,
-+									   class,
-+									   ibb->gt_id);
-+	} else if (ibb->ctx) {
- 		engine_id = ibb->ctx;
- 	} else if (ibb->last_engine != engine) {
- 		struct drm_xe_engine_class_instance inst = { };
+-	igt_assert(src->bpp == dst->bpp);
+-
+ 	intel_bb_flush(ibb, I915_EXEC_VEBOX);
+ 
+ 	intel_bb_add_intel_buf(ibb, dst, true);
 -- 
 2.43.0
 
