@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05FEACD5BB4
-	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 08:29:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28D0ACD5BB4
+	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 08:29:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A91A410E609;
-	Tue, 26 May 2026 08:29:33 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F16810E609;
- Tue, 26 May 2026 08:29:13 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0178551999122876129=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D1A3E10E609;
+	Tue, 26 May 2026 08:29:55 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zkfi3LPZ";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63BEB10E609
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 08:29:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1779784164; x=1811320164;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=XHHcrTtrOi3QGnRce0K5l95oxfIXrCXqPjRaghMVASQ=;
+ b=Zkfi3LPZR6X34mdTZ1S2s9ReEWj7l4UZ4d7Cd/NjFWp2CXUN++D/Ip3I
+ CyBVUA53aLZ3FwmYoKlEgaANW9PDjIoPUI0yCjVzvCDTp6YBl35emSYMO
+ K4djzsKc/h6UDYus5V/T9z8HsPS6WY3pTuLYyM+11PUGitS1ZzjwoFXna
+ yIu+yL9gie9GV8h/YH8YuFIwav7RObxluHnn9A4UHXciSJAy+/I5OcNzx
+ nDv4jLnktVNoj/a83NVs09Dn+CdaE7YMvusKGIfvFcjJDOs+8YJrW7DwN
+ 0HbTWgtf08f1ZXdcd2K5j6+jJjvzpf0r/XJZ0EyOVo5pQlR9csrrAIX3x A==;
+X-CSE-ConnectionGUID: rwbLHq3bQpKzANqwcUvBHQ==
+X-CSE-MsgGUID: 3nyXcB8eSQ6iDCPJHcHitw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="80776440"
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="80776440"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 May 2026 01:29:24 -0700
+X-CSE-ConnectionGUID: qAKF5ggrT2uYFnm7Z836Nw==
+X-CSE-MsgGUID: 9IKSzjoNTXWuIw3WwRWCrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="246944363"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 01:29:22 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ramanaidu.naladala@intel.com,
+	Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t] tests/kms_rotation_crc: Remove verbose debug logging
+ from rotation paths
+Date: Tue, 26 May 2026 13:57:51 +0530
+Message-ID: <20260526082751.1852524-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Enable_and_Add_new_tests_fo?=
- =?utf-8?q?r_DC3CO?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "B, Jeevan" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 26 May 2026 08:29:13 -0000
-Message-ID: <177978415318.9049.13635981157684613556@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260526064105.1818876-1-jeevan.b@intel.com>
-In-Reply-To: <20260526064105.1818876-1-jeevan.b@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +64,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0178551999122876129==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The multiplane rotation tests were emitting per-iteration debug
+output, which can grow logs quickly and hit runner limits.
 
-== Series Details ==
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/kms_rotation_crc.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
 
-Series: Enable and Add new tests for DC3CO
-URL   : https://patchwork.freedesktop.org/series/167247/
-State : success
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 4a249ed21..4a7bf3f4d 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -470,8 +470,6 @@ static void test_single_case(data_t *data, igt_crtc_t *crtc,
+ 	igt_crc_t crc_output;
+ 	int ret;
+ 
+-	igt_debug("Testing case %i on pipe %s, format %s\n", rect,
+-		  igt_crtc_name(crtc), igt_format_str(format));
+ 	prepare_fbs(data, output, plane, rect, format);
+ 
+ 	igt_plane_set_rotation(plane, data->rotation);
+@@ -918,7 +916,6 @@ static void test_multi_plane_rotation(data_t *data, igt_crtc_t *crtc)
+ 	drmModeModeInfo *mode;
+ 	bool have_crc; // flag if can use previously logged crc for comparison
+ 	igt_crc_t crclog[16] = {}; //4 * 4 rotation crc storage for packed formats
+-	char *str1, *str2; // for debug printouts
+ 	int logindex;
+ 
+ 	static planeconfigs_t planeconfigs[] = {
+@@ -1053,20 +1050,6 @@ static void test_multi_plane_rotation(data_t *data, igt_crtc_t *crtc)
+ 						}
+ 						igt_pipe_crc_get_for_frame(data->gfx_fd, data->pipe_crc, fliphw, &retcrc_hw);
+ 
+-						str1 = igt_crc_to_string(&retcrc_sw);
+-						str2 = igt_crc_to_string(&retcrc_hw);
+-
+-						igt_debug("crc %.8s vs %.8s -- %.4s - %.4s crc buffered:%s rot1 %d rot2 %d\n",
+-							str1, str2,
+-							(char *) &multiplaneformatlist[p[0].formatindex],
+-							(char *) &multiplaneformatlist[p[1].formatindex],
+-							have_crc ? "yes" : " no",
+-							(int[]) {0, 90, 180, 270} [ctz(planeconfigs[i].rotation)],
+-							(int[]) {0, 90, 180, 270} [ctz(planeconfigs[j].rotation)]);
+-
+-						free(str1);
+-						free(str2);
+-
+ 						igt_assert_crc_equal(&retcrc_sw, &retcrc_hw);
+ 
+ 						lastroundjformat = multiplaneformatlist[p[1].formatindex];
+-- 
+2.43.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8937_BAT -> XEIGTPW_15242_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8937 -> IGTPW_15242
-  * Linux: xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b -> xe-5127-6b6931ea69504481efd3df1cc99765141feb178c
-
-  IGTPW_15242: 2a6009d0f6455a5cfff84796621c34b8d21c8d89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8937: 8937
-  xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b: 04d475020800d0a1033ca89a0d6d5fc638ddc65b
-  xe-5127-6b6931ea69504481efd3df1cc99765141feb178c: 6b6931ea69504481efd3df1cc99765141feb178c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15242/index.html
-
---===============0178551999122876129==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Enable and Add new tests for DC3CO</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167247/">https://patchwork.freedesktop.org/series/167247/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15242/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15242/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8937_BAT -&gt; XEIGTPW_15242_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8937 -&gt; IGTPW_15242</li>
-<li>Linux: xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b -&gt; xe-5127-6b6931ea69504481efd3df1cc99765141feb178c</li>
-</ul>
-<p>IGTPW_15242: 2a6009d0f6455a5cfff84796621c34b8d21c8d89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8937: 8937<br />
-  xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b: 04d475020800d0a1033ca89a0d6d5fc638ddc65b<br />
-  xe-5127-6b6931ea69504481efd3df1cc99765141feb178c: 6b6931ea69504481efd3df1cc99765141feb178c</p>
-
-</body>
-</html>
-
---===============0178551999122876129==--
