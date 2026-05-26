@@ -4,54 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E69CFCD5BB1
-	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 14:32:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E43F6CD5BC8
+	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 14:44:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 661E310E6A2;
-	Tue, 26 May 2026 14:32:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8C54C10E6A7;
+	Tue, 26 May 2026 14:44:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c5f7HYY7";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="s3G078QM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 093AC10E4EB
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 14:31:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779805900; x=1811341900;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=BFgoDNzszBOHppoFyI6RbWswP9uzu/ibVDj5RWkbj7g=;
- b=c5f7HYY747Jtlgz8HHGQE/C8qAQ1yN73lsv/ksz97TVSMnNPSMCx2cpP
- slTwRFPFh39u9ky+vZ11qmlwwDZoAzxvdF7K11hBcZ0mBN6DgcG2uUiGS
- q7uoEEpCk1Sw4wi0a7FMR1TgMyOqR9Fp0CfXuZz2jCeNIQc3rX1goxen2
- +LZ0LYaLGwviI9BRfAtbJDHKZpae+fkwPNdUuNY4fK5TlZsUNMKlA4s7C
- NkNpwANcs0Ffxl5JDw9J55qAm5L6STkIFy1P9IaSsCcVlfXu6zIk8HrYp
- 4Wzo81AL9QRUK2aB/+yqi9i8cpHleugZF5dnHTnezBL1FZ6i+awSmLq+r A==;
-X-CSE-ConnectionGUID: v+fjUIrYSP+MQhcQecQvDQ==
-X-CSE-MsgGUID: gzFbUa3LRZGhj8cNPTfgKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="98196052"
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="98196052"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2026 07:31:40 -0700
-X-CSE-ConnectionGUID: H307hADiRzKc/4D5ZWbmhA==
-X-CSE-MsgGUID: BeIi1x//SGy8vQ6laDiNOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="246197989"
-Received: from jeevan24.iind.intel.com ([10.223.74.58])
- by orviesa004.jf.intel.com with ESMTP; 26 May 2026 07:31:39 -0700
-From: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E44CC10E685
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 14:43:54 +0000 (UTC)
+Received: by mail-dl1-f42.google.com with SMTP id
+ a92af1059eb24-135e88b8e55so2530732c88.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 07:43:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20251104; t=1779806634; x=1780411434; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=hzkeRf7dCKIk3kKlJ5GtjX8nBoDy8sgkrTOVcCg+GxI=;
+ b=s3G078QMlQ9QfPsbyKQ3rtVY2JKp1Ya55W9oqMfAMKIKJ3xeUkQF2rY2GC/ahw6fEw
+ 8XO6Am8r9dGY0ivHw6qlAHsbS0KE/zVdm8zxuCNnEJrh0yO+xiUjf+60fVcKM13WGtW5
+ zaYIKO6Jdacupt3wUyzad+5j3+pFxx9DUPous8JZdJDZ+7MuckuZAGbFaF0z2O7Hr2nY
+ qAr66PrcYiksUk8+0Mu0iOuEKqaAFkTYz+XFYmBjlPmrWMX6mSK2rvK7tjrKNynFvk/V
+ an5QBeRqtN4dL8MC3DQjfdK3NQ17iFpUeyusGhtbC9Kn2MpefZXbLBVx246VxIlZbmeD
+ xsCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1779806634; x=1780411434;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hzkeRf7dCKIk3kKlJ5GtjX8nBoDy8sgkrTOVcCg+GxI=;
+ b=Fohhz1ybo5kO539DtaJwyD1hsju4GVEWcb1MEIV+NiAxUfQQWQTPoY+IPSh6xfok0P
+ gwiY1NyqxJCzDeAzqFz0seAU1b+PM5d03k0iiXfgxZ6jDOyoOA5LBSqGSybNpN3Z8Nx9
+ f5I0FzyTESdfxR71oWIjv6XOibFatD3C6bFr5XY6qYLOyAXg9cqSucZfxwy5/OeEH1E5
+ Ig+aG5ZrG6tKawjs5q4UwAprkleAwIVTwahwTyyE7KJPCUQn0Mq/lFQlcjgzhHebqDBn
+ 8YvVXx4RnM4MQAE9DXW6Z1qGld9ZLBkzPHDbUswH7GXzFCfTDhwW07sqEB+fL/quRZUS
+ uCzw==
+X-Gm-Message-State: AOJu0YzW4gARBfRtQptOINNHAp38uOboEYh5cQ5U4zN2I8MU4UALR2Ot
+ sXT8Z3uhC7+/2bAoaxWkNAalCPhNTx9/77FXNYZ5bY1ovIBP0Ky+sODkSQD4lDMI
+X-Gm-Gg: Acq92OGuKx0yS9uqp17f+yS3dNCbpqPAOlLr72rEKNTrq0Z7W6phLjDoJkRKQfaisZq
+ zo+xPnnllr9GFwtz8JR4N6bHJItYS2bn8R/rdnyg0ZX4QDpdNrjlfBWNnA17EXZGDusS1CQgB7W
+ lLZwTGNMDzWCpbvptAc38OdbSE+8UCYeaYkeSaHP6iC4L5fkUWvn0jf3v1ddB0XEM1LWyDjvOI6
+ Z3/nfCGSD4l6mCxo3FqLDO2A7glu9mqJIbZCsNbBo1rro5pONdvX1BlpGiyt26Z4p5y/qSszowt
+ 35wKGLpkbeTOXWdNL2QfHDyfn/Q6tfdZd6Mr3zsz6hI4kF6VrR1QwJVKGwXTwLSoSmTwRd/S1F8
+ 9VEDlaoYsKMj0BrMfzcaNNFbTp/RmJPx0d06NpggiDEIm4p9axil9mgX9e5UbFJ3R4x1CB+Gf7Q
+ ASxmQ3Uf4i6lpI90hswQNNBzGebnHk35dvGNswRY2t78RVpmLlq12gR1Px9o8=
+X-Received: by 2002:a05:7300:bc97:b0:2ed:6f94:9d9d with SMTP id
+ 5a478bee46e88-304490264femr8248655eec.8.1779806633918; 
+ Tue, 26 May 2026 07:43:53 -0700 (PDT)
+Received: from localhost ([192.55.54.47]) by smtp.gmail.com with ESMTPSA id
+ 5a478bee46e88-30452230dddsm13653330eec.17.2026.05.26.07.43.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 May 2026 07:43:53 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v3 2/3] tests/intel/xe_ccs: Add fault-mode helper and VM_BIND
- decomp neg test
-Date: Tue, 26 May 2026 20:06:36 +0530
-Message-ID: <20260526143637.2143899-3-smitha.balasubramanyam@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 0/9] Enable Vebox engine copy on Intel Xe driver
+Date: Tue, 26 May 2026 17:43:34 +0300
+Message-ID: <20260526144343.2531299-1-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260526143637.2143899-1-smitha.balasubramanyam@intel.com>
-References: <20260420045724.1053946-1-smitha.balasubramanyam@intel.com>
- <20260526143637.2143899-1-smitha.balasubramanyam@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,414 +81,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a helper to trigger page-fault writes along with a negative
-testcase covering invalid UAPI handling in fault mode.
+Here enabled Vebox engine copy of framebuffers and force 4tiled yuv
+framebuffers on Vebox path. 
 
-Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
----
- tests/intel/xe_ccs.c | 361 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 361 insertions(+)
+Juha-Pekka Heikkila (9):
+  lib: take out duplicate assert
+  lib/intel_batchbuffer: make __intel_bb_create gt aware
+  lib/xe: add xe_exec_queue_create_class_gt
+  lib/intel_batchbuffer: add intel_bb_create_with_gt function
+  lib/intel_batchbuffer: move engine class selection to helper
+  lib/intel_batchbuffer/xe: add bb exec path to use specific engine and
+    gt
+  lib: Enable Vebox framebuffer copying on Intel Xe2
+  lib/igt_fb: on Intel Xe force Vebox copy on yuv formats
+  tests/intel/kms_flip_scaled_crc: add 4tiled p010 to 4tiled p016 test
 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index c3949fcd1..3bfb439b9 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -71,6 +71,10 @@
-  *
-  * SUBTEST: vm-bind-decompress-uapi-bad-params
-  * Description: UAPI negative test — attempt VM_BIND with a combination of invalid params
-+ *
-+ * SUBTEST: vm-bind-decompress-uapi-bad-params-fault-mode
-+ * Description: UAPI negative test attempt VM_BIND with a combination of
-+ *				invalid params - fault mode
-  */
- 
- IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flatccs compression on Xe");
-@@ -108,6 +112,7 @@ struct test_config {
- 	bool vm_bind_decompress;
- 	bool vm_bind_fault_mode_decompress;
- 	bool vm_bind_decompress_uapi_bad_params;
-+	bool vm_bind_decompress_uapi_bad_params_fault_mode;
- 	int width_increment;
- 	int width_steps;
- 	int overwrite_width;
-@@ -832,6 +837,343 @@ static void vm_bind_decompress_uapi_bad_params(int xe,
- 	vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
- }
- 
-+/* Helper: submit a tiny GPU batch that writes an immediate dword to the
-+ * provided VA. This forces the kernel to fault in / decompress pages
-+ * for that VA. Uses the provided `ctx` and `ahnd` (caller should have
-+ * created/validated these).
-+ */
-+static void trigger_page_fault_write(int xe, intel_ctx_t *ctx,
-+				     uint64_t vm_map_addr,
-+				     uint64_t map_size,
-+				     uint32_t region)
-+{
-+	struct drm_xe_exec exec = {};
-+	struct drm_xe_sync exec_sync = {};
-+	const u64 vm_alignment = xe_get_default_alignment(xe);
-+	const size_t ufence_bo_size = SZ_4K;
-+	u64 cmd_vm_addr = 0;
-+	u64 ufence_vm_addr = 0;
-+	u64 *ufence_map = MAP_FAILED;
-+	u32 cmd_bo = 0;
-+	u32 ufence_bo = 0;
-+	u32 *cmdp = MAP_FAILED;
-+	int ret;
-+
-+	/* Create command and fence BOs, then map them directly into the target VM. */
-+	cmd_bo = xe_bo_create(xe, 0, SZ_4K, region, 0);
-+	igt_assert_f(cmd_bo, "failed to create cmd_bo\n");
-+	ufence_bo = xe_bo_create_caching(xe, 0, ufence_bo_size,
-+					 system_memory(xe), 0,
-+					 DRM_XE_GEM_CPU_CACHING_WC);
-+	igt_assert_f(ufence_bo, "failed to create ufence_bo\n");
-+
-+	/* Map the BO to write the batch */
-+	cmdp = xe_bo_map(xe, cmd_bo, SZ_4K);
-+	igt_assert_f(cmdp != MAP_FAILED, "xe_bo_map cmd_bo failed\n");
-+	ufence_map = xe_bo_map(xe, ufence_bo, ufence_bo_size);
-+	igt_assert_f(ufence_map != MAP_FAILED, "xe_bo_map ufence_bo failed\n");
-+	memset(ufence_map, 0, ufence_bo_size);
-+
-+	cmd_vm_addr = ALIGN(vm_map_addr + map_size, vm_alignment);
-+	ufence_vm_addr = ALIGN(cmd_vm_addr + SZ_4K, vm_alignment);
-+
-+	ret = __xe_vm_bind(xe, ctx->vm, 0, cmd_bo, 0, cmd_vm_addr, SZ_4K,
-+			   DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
-+			   DEFAULT_PAT_INDEX, 0);
-+	igt_assert_eq(ret, 0);
-+	ret = __xe_vm_bind(xe, ctx->vm, 0, ufence_bo, 0, ufence_vm_addr, ufence_bo_size,
-+			   DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
-+			   DEFAULT_PAT_INDEX, 0);
-+	igt_assert_eq(ret, 0);
-+
-+	/* Build a tiny batch: MI_STORE_DWORD_IMM_GEN4 dst=vm_map_addr, value=0xDEADBEEF */
-+	cmdp[0] = MI_STORE_DWORD_IMM_GEN4;
-+	cmdp[1] = lower_32_bits(vm_map_addr);
-+	cmdp[2] = upper_32_bits(vm_map_addr);
-+	cmdp[3] = 0xDEADBEEF;
-+	cmdp[4] = MI_BATCH_BUFFER_END;
-+
-+	/* Debug dump of the first few dwords in the fault-trigger batch. */
-+	igt_debug("BB dump: cmd_bo=%u cmd_off=0x%llx region=%u vm=%u execq=%u",
-+		  cmd_bo, (unsigned long long)cmd_vm_addr, region,
-+		  ctx->vm, ctx->exec_queue);
-+	for (int i = 0; i < 8; i++)
-+		igt_debug(" bb[%02d]=0x%08x", i, cmdp[i]);
-+	igt_debug("\n");
-+
-+	/* Dump the first few dwords of the BB (do this BEFORE munmap) */
-+	igt_info("BB dump: cmd_bo=%u cmd_off=0x%llx region=%u vm=%u execq=%u",
-+		 cmd_bo, (unsigned long long)cmd_vm_addr, region,
-+		 ctx->vm, ctx->exec_queue);
-+	for (int i = 0; i < 8; i++)
-+		igt_info(" bb[%02d]=0x%08x", i, cmdp[i]);
-+
-+	/* Make CPU writes visible to GPU */
-+	munmap(cmdp, SZ_4K);
-+	cmdp = MAP_FAILED;
-+
-+	/* Submit the batch directly. */
-+	memset(&exec, 0, sizeof(exec));
-+	exec.exec_queue_id = ctx->exec_queue;
-+	exec.address = cmd_vm_addr;
-+	exec.num_batch_buffer = 1;
-+
-+	memset(&exec_sync, 0, sizeof(exec_sync));
-+	exec_sync.type = DRM_XE_SYNC_TYPE_USER_FENCE;
-+	exec_sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+	exec_sync.addr = ufence_vm_addr;
-+	exec_sync.timeline_value = 1ULL;
-+	exec.num_syncs = 1;
-+	exec.syncs = to_user_pointer(&exec_sync);
-+
-+	igt_info("Submitting faulting batch to write to VA 0x%llx\n",
-+		 (unsigned long long)vm_map_addr);
-+	igt_debug("Submitting faulting batch to write to VA 0x%llx\n",
-+		  (unsigned long long)vm_map_addr);
-+	ret = igt_ioctl(xe, DRM_IOCTL_XE_EXEC, &exec);
-+	igt_assert_f(ret == 0, "EXEC ioctl failed: %d (%s)\n", ret, strerror(errno));
-+
-+	xe_wait_ufence(xe, ufence_map, 1ULL, ctx->exec_queue, NSEC_PER_SEC);
-+	igt_assert_eq_u64(ufence_map[0], 1ULL);
-+
-+	/* Cleanup */
-+	ret = __xe_vm_bind(xe, ctx->vm, 0, 0, 0, cmd_vm_addr, SZ_4K,
-+			   DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0, 0);
-+	igt_assert_eq(ret, 0);
-+	ret = __xe_vm_bind(xe, ctx->vm, 0, 0, 0, ufence_vm_addr, ufence_bo_size,
-+			   DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0, 0);
-+	igt_assert_eq(ret, 0);
-+
-+	munmap(ufence_map, ufence_bo_size);
-+	gem_close(xe, cmd_bo);
-+	gem_close(xe, ufence_bo);
-+
-+	igt_info("Faulting write batch completed successfully\n");
-+}
-+
-+/* Fault-mode variant of vm_bind_decompress_uapi_bad_params.
-+ * It reuses your bad_cases but, for expected-success cases, triggers
-+ * a GPU write to the mapped VA to force the kernel page-fault/decompress path.
-+ */
-+static void vm_bind_decompress_uapi_bad_params_fault_mode(int xe,
-+							  intel_ctx_t *ctx,
-+							  u64 ahnd,
-+							  u32 region1,
-+							  u32 region2,
-+							  u32 width,
-+							  u32 height,
-+							  enum blt_tiling_type tiling,
-+							  const struct test_config *config)
-+{
-+	struct vm_bind_decomp_setup_resources allocated_resources = {};
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_RENDER,
-+	};
-+	intel_ctx_t *fault_ctx = NULL;
-+	u32 fault_exec_queue = 0;
-+	int ret = 0;
-+	bool pattern_matches;
-+	void *mapped_data = MAP_FAILED;
-+	u64 addr;
-+	u32 handle;
-+	u64 use_map_size;
-+	const uint64_t default_alignment = xe_get_default_alignment(xe);
-+	struct vm_bind_decomp_neg_test_case bad_cases[8] = {
-+	/* PAT-based accepts (DECOMPRESS + Default PAT) */
-+	{ "decompress-default-pat", DEFAULT_PAT_INDEX,
-+	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, false },
-+
-+	/* PAT-based accepts (DECOMPRESS + GPU WB PAT) */
-+	{ "decompress-gpu-wb-pat", 0,
-+	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, false },
-+
-+	/* PAT-based rejects (DECOMPRESS + Invalid PAT) */
-+	{ "decompress-invalid-pat", INVALID_PAT_INDEX,
-+	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
-+
-+	/* PAT-based rejects (DECOMPRESS + non-UC PAT) */
-+	{ "decompress-gpu-wt-pat", 0,
-+	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
-+
-+	/* PAT-based rejects (DECOMPRESS + compressed PAT) */
-+	{ "decompress-gpu-compressed-pat", 0,
-+	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
-+
-+	/* Range smaller than the uncompressed size (should be rejected for DECOMPRESS) */
-+	{ "decompress-small-range", 0,
-+	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
-+
-+	/* Misaligned virtual address for DECOMPRESS update */
-+	{ "decompress-misaligned-va", 0,
-+	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
-+
-+	/* Wrong BO handle supplied (invalid handle) */
-+	{ "decompress-wrong-bo-handle", 0,
-+	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
-+	};
-+	/* Setup (this asserts+cleans on failure) */
-+	ret = vm_bind_decomp_test_setup(xe, ctx, ahnd, region1, region2, width,
-+					height, tiling, config, false, true,
-+					&allocated_resources);
-+	igt_assert_eq(ret, 0);
-+	igt_assert_f(allocated_resources.vm != 0, "VM not created\n");
-+
-+	/* Fault-triggering writes must execute in the same VM used by VM_BIND. */
-+	fault_exec_queue = xe_exec_queue_create(xe, allocated_resources.vm, &inst, 0);
-+	fault_ctx = intel_ctx_xe(xe, allocated_resources.vm, fault_exec_queue, 0, 0, 0);
-+	igt_assert_f(fault_ctx, "failed to create fault-mode execution context\n");
-+
-+	addr = allocated_resources.vm_map_addr;
-+	handle = allocated_resources.handle;
-+	use_map_size = allocated_resources.map_size;
-+
-+	print_buffer_data(allocated_resources.src_obj->ptr,
-+			  min_t(size_t, 64, allocated_resources.size),
-+			  "ORIGINAL", 4);
-+	print_buffer_data(allocated_resources.comp_obj->ptr,
-+			  min_t(size_t, 64, allocated_resources.size),
-+			  "COMPRESSED", 4);
-+
-+	/* Fill PAT values before iterating through each case*/
-+	bad_cases[1].pat = intel_get_pat_idx_wb(xe);
-+	bad_cases[3].pat = intel_get_pat_idx_wt(xe);
-+	bad_cases[4].pat = intel_get_pat_idx_uc_comp(xe);
-+	bad_cases[5].pat = allocated_resources.uncompressed_pat;
-+	bad_cases[6].pat = allocated_resources.uncompressed_pat;
-+	bad_cases[7].pat = allocated_resources.uncompressed_pat;
-+
-+	/* Iterate cases */
-+	for (unsigned int i = 0; i < ARRAY_SIZE(bad_cases); i++) {
-+		const struct vm_bind_decomp_neg_test_case *test_variant = &bad_cases[i];
-+
-+		/* Reset per-case parameters */
-+		u32 use_pat = test_variant->pat;
-+		u32 flags = test_variant->flags;
-+
-+		addr = allocated_resources.vm_map_addr;
-+		handle = allocated_resources.handle;
-+		use_map_size = allocated_resources.map_size;
-+
-+		igt_info("\nVM_BIND variant: %s\n", test_variant->test_name);
-+
-+		/* Corrupt inputs or pass wrong params for a few special cases. */
-+		if (!strcmp(test_variant->test_name, "decompress-small-range")) {
-+			if (allocated_resources.map_size > default_alignment)
-+				use_map_size = allocated_resources.map_size - 1;
-+			igt_info("Using reduced map size: %llu\n",
-+				 (unsigned long long)use_map_size);
-+		} else if (!strcmp(test_variant->test_name, "decompress-misaligned-va")) {
-+			addr = allocated_resources.vm_map_addr + 1;
-+		} else if (!strcmp(test_variant->test_name, "decompress-wrong-bo-handle")) {
-+			handle = allocated_resources.handle ^ 0xdeadbeef;
-+		}
-+
-+		errno = 0;
-+		ret =
-+		__xe_vm_bind(xe, allocated_resources.vm, 0, handle, 0, addr,
-+			     use_map_size, DRM_XE_VM_BIND_OP_MAP, flags,
-+			     NULL, 0, 0, use_pat, 0);
-+		if (test_variant->expect_fail) {
-+			if (ret == 0) {
-+				/* Unexpected success — unmap and abort */
-+				igt_warn("VM_BIND unexpectedly SUCCEEDED for %s — cleaning up\n",
-+					 test_variant->test_name);
-+				__xe_vm_bind(xe, allocated_resources.vm, 0, 0, 0,
-+					     addr, use_map_size, DRM_XE_VM_BIND_OP_UNMAP, 0,
-+					     NULL, 0, 0, 0, 0);
-+				vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
-+				igt_assert_f(false,
-+					     "VM_BIND expected failure but succeeded for %s",
-+					     test_variant->test_name);
-+			} else {
-+				igt_info("VM_BIND rejected as expected for %s "
-+				"(ret=%d errno=%d %s)\n",
-+				test_variant->test_name, ret, errno, strerror(errno));
-+				igt_info("Success : VM_Bind rejected\n");
-+			}
-+		} else {
-+			/* Expected path: VM_BIND must succeed, then data integrity is verified. */
-+			if (ret != 0) {
-+				igt_warn("VM_BIND unexpectedly FAILED for %s: %d (%s)\n",
-+					 test_variant->test_name, ret, strerror(errno));
-+				vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
-+				igt_assert_f(false, "VM_BIND unexpected failure for %s",
-+					     test_variant->test_name);
-+			}
-+
-+			igt_info("VM_BIND succeeded for %s (as expected)\n",
-+				 test_variant->test_name);
-+			/* Trigger page-fault via GPU write to the mapped VA */
-+			trigger_page_fault_write(xe, fault_ctx, addr,
-+						 allocated_resources.map_size,
-+						 region1);
-+
-+			/* Compare destination buffer against source and print short dumps. */
-+			mapped_data = xe_bo_map(xe, allocated_resources.handle,
-+						allocated_resources.size);
-+			igt_assert_f(mapped_data != MAP_FAILED,
-+				     "Failed to map destination BO for %s\n",
-+				     test_variant->test_name);
-+
-+			print_buffer_data(allocated_resources.src_obj->ptr,
-+					  min_t(size_t, 64, allocated_resources.size),
-+					  "ORIGINAL", 4);
-+			print_buffer_data(mapped_data,
-+					  min_t(size_t, 64, allocated_resources.size),
-+					  "DECOMPRESSED", 4);
-+
-+			pattern_matches =
-+				verify_test_pattern(mapped_data,
-+						    allocated_resources.size,
-+						    "DECOMPRESSED");
-+			if (!pattern_matches)
-+				igt_info("Decompression pattern verification FAILED for %s\n",
-+					 test_variant->test_name);
-+
-+			if (memcmp(mapped_data,
-+				   allocated_resources.src_obj->ptr,
-+				   allocated_resources.size) != 0) {
-+				igt_info("Decompressed data does not match original for %s\n",
-+					 test_variant->test_name);
-+				print_buffer_data(mapped_data,
-+						  min_t(size_t, 256, allocated_resources.size),
-+						  "CURRENT_STATE", 4);
-+				print_buffer_data(allocated_resources.src_obj->ptr,
-+						  min_t(size_t, 256, allocated_resources.size),
-+						  "EXPECTED", 4);
-+
-+				munmap(mapped_data, allocated_resources.size);
-+				mapped_data = MAP_FAILED;
-+				vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
-+				igt_assert_f(false,
-+					     "Decompressed BO contents differ from original for %s",
-+					     test_variant->test_name);
-+			}
-+
-+			igt_info("Decompression content matches original for %s\n",
-+				 test_variant->test_name);
-+			munmap(mapped_data, allocated_resources.size);
-+			mapped_data = MAP_FAILED;
-+
-+			/* Unmap to keep state clean for next iteration */
-+			ret =
-+				__xe_vm_bind(xe, allocated_resources.vm, 0, 0, 0, addr,
-+					     use_map_size, DRM_XE_VM_BIND_OP_UNMAP,
-+					     0, NULL, 0, 0, 0, 0);
-+			if (ret != 0)
-+				igt_warn("Unmap after VM_BIND (fault-mode) failed: %d (%s)\n", ret,
-+					 strerror(errno));
-+		}
-+	}
-+
-+	if (fault_exec_queue)
-+		xe_exec_queue_destroy(xe, fault_exec_queue);
-+	free(fault_ctx);
-+
-+	/* Final cleanup */
-+	vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
-+}
-+
- struct blt_copy3_data {
- 	int xe;
- 	struct blt_copy_object src;
-@@ -1740,6 +2082,12 @@ static void single_copy(int xe, const struct test_config *config,
- 		vm_bind_decompress_uapi_bad_params(xe, ctx, ahnd, region1, region2,
- 						   width, height, tiling, config);
- 		put_ahnd(ahnd);
-+	} else if (config->vm_bind_decompress_uapi_bad_params_fault_mode) {
-+		ahnd = intel_allocator_open(xe, vm, INTEL_ALLOCATOR_RELOC);
-+		vm_bind_decompress_uapi_bad_params_fault_mode(xe,
-+							      ctx, ahnd, region1, region2,
-+							      width, height, tiling, config);
-+		put_ahnd(ahnd);
- 	} else {
- 		copyfns[copy_function].copyfn(xe, ctx,
- 					      region1, region2,
-@@ -2057,6 +2405,19 @@ int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		single_copy(xe, &config, region1, region2, width, height, tiling, BLOCK_COPY);
- 	}
- 
-+	igt_describe("Validate uAPI of VM_BIND with DECOMPRESS flag with bad params");
-+	igt_subtest("vm-bind-decompress-uapi-bad-params-fault-mode") {
-+		struct test_config config = { .compression = true,
-+			.vm_bind_decompress_uapi_bad_params_fault_mode = true };
-+		u32 region1 = system_memory(xe);
-+		u32 region2 = vram_if_possible(xe, 0);
-+		int tiling = T_LINEAR;
-+		int width = param.width;
-+		int height = param.height;
-+
-+		single_copy(xe, &config, region1, region2, width, height, tiling, BLOCK_COPY);
-+	}
-+
- 	igt_fixture() {
- 		xe_device_put(xe);
- 		close(xe);
+ lib/igt_fb.c                      |  53 +++++++++++----
+ lib/intel_batchbuffer.c           | 103 +++++++++++++++++++++---------
+ lib/intel_batchbuffer.h           |   3 +
+ lib/veboxcopy_gen12.c             |   2 -
+ lib/xe/xe_ioctl.c                 |  20 ++++++
+ lib/xe/xe_ioctl.h                 |   2 +
+ tests/intel/kms_flip_scaled_crc.c |  13 ++++
+ 7 files changed, 152 insertions(+), 44 deletions(-)
+
 -- 
 2.43.0
 
