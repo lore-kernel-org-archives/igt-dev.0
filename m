@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B5DCD5BCF
-	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 05:38:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D86ADCD5BCF
+	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 05:56:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 00EA010E203;
-	Tue, 26 May 2026 05:38:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 65E6710E46E;
+	Tue, 26 May 2026 05:56:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VD9L1RUc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NK+9J6cH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6C3210E203
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 05:38:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 726A810E46E
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 05:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779773903; x=1811309903;
+ t=1779774955; x=1811310955;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=yqTtj9o8J1zzxHrlaiiJuSqN5QoHi+tI54H/pU7qBOg=;
- b=VD9L1RUcaLZAA0Y7B7AtnNBRV+0XkTU/1akDz1/uSJAVaeswI2o9dh1t
- M/0kMGUPHwVsmkN1uNgwHjAIf4Cl2ImpAcWg+5s9N+BSfo8JHTnI7qVfA
- 2N0ihhrBCWGI31+o6WqEI9g5E9cKkVo3Mu8D/zMUuhYHrSvuoSnOeFwdp
- InyDhhCTGHCo6qZWvmL0zgSXwgu2ujw8skxZiY6qMZBnDayVadL0et+rb
- /0yy/mkJvL4jyeFkjkGD59Wy3MkYHDaYbX02bu7zshg6whODO7ICUBF8i
- c7Q63C7QMAZ6J7UZpLDNVOISwnDiil1f1ZqiJxHddzzof14+k/Y1C65r2 Q==;
-X-CSE-ConnectionGUID: qe/fGM5nSwGwNg9r2V5ujQ==
-X-CSE-MsgGUID: sC/hhRTIRgGc9wn/6xA5VQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="90880343"
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="90880343"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 May 2026 22:38:23 -0700
-X-CSE-ConnectionGUID: 9F1m5nZJR0+C5ixZev+szw==
-X-CSE-MsgGUID: 3scX+rEXTq+/MRgNzso/dQ==
+ bh=jt+331vxBxwFgVuEQlUhYms8BHR5ddMNDZ4mvx2zA8U=;
+ b=NK+9J6cH/HI3iADDl/x1FvasBwS82OuKsNM6ORW3NoejtbAI7MldA6hV
+ fZZtcYbkz+DJqXcEwMF8ekGW/Iim6EBxNvKLcdUBLIzoWr4YQ+9pZY4S7
+ ELvlfcNkbyh+KXrUmeL1LSGgligUHqLvm4qjGFgnWBP17W0UOdDmLtgC/
+ 2hPhH5FAb/PbEpo85nhPNBl8MuqwqU5ceMqcQjY6TbFnNmVSu8khyho3S
+ BPiCNZaH3GXxsNDJ7yjxYOhmbtj0cjILrmYtflpQt5Q7Gu2AVgNCKBoV6
+ ZEZdqfH+LQTj9dWfGYmaXJch9EGREQyM7N78m/r1mSc5WbD/QdQa0kvXS A==;
+X-CSE-ConnectionGUID: tU7SIwgHRIeKWil1fBsCCw==
+X-CSE-MsgGUID: fK7/BnipT9aOh10XNvCr3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="91688054"
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="91688054"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 May 2026 22:55:54 -0700
+X-CSE-ConnectionGUID: bCV0fNj7S3KGUu8U9ZKUBw==
+X-CSE-MsgGUID: SeLQmhe6QPq5BoG1WyAeww==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="245849238"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by orviesa003.jf.intel.com with ESMTP; 25 May 2026 22:38:22 -0700
-From: Pranay Samala <pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="246903954"
+Received: from nakshtra-system-product-name.iind.intel.com ([10.190.238.69])
+ by fmviesa005.fm.intel.com with ESMTP; 25 May 2026 22:55:52 -0700
+From: nakshtra.goyal@intel.com
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
- sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t v2] tests/kms_color: Add multi-format coverage for pipe
- color tests
-Date: Tue, 26 May 2026 11:19:09 +0530
-Message-Id: <20260526054909.688792-1-pranay.samala@intel.com>
+Cc: kamil.konieczny@intel.com, andrzej.hajda@intel.com,
+ zbigniew.kempczynski@intel.com
+Subject: [PATCH i-g-t 0/1] lib: s/GEN_VER/GFX_VER/ for Intel platform
+Date: Tue, 26 May 2026 11:25:50 +0530
+Message-Id: <20260526055551.207137-1-nakshtra.goyal@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -66,346 +65,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend kms_color tests to run across multiple pixel formats at dynamic
-subtest level instead of being limited to single format for gamma/degamma
-and CTM tests.
+From: Nakshtra Goyal <nakshtra.goyal@intel.com>
 
-For platforms where only a single format is relevant (e.g. 10-bit
-paths), limit the iteration accordingly to avoid redundant testing.
+Replace all occurrences of GEN_VER/gen_ver with GFX_VER/gfx_ver
+across the IGA64 shader infrastructure and igt code bases
 
-This improves coverage for format-dependent pipe color pipeline
-behavior.
+The GEN_VER preprocessor define is passed by the generate_iga64_codes
+script during IGA64 GPU shader assembly compilation and used for
+conditional compilation in iga64_macros.h. Rename it to GFX_VER to
+align with the IGT naming convention.
 
-v2:
-- Add DRM_FORMAT_P010 format
+Changes:
+- scripts/generate_iga64_codes: Pass -DGFX_VER instead of -DGEN_VER
+  to the cpp preprocessor and rename the shell variable gen_ver to
+  gfx_ver. Update generated struct field from .gen_ver to .gfx_ver.
+- lib/iga64_macros.h: Replace all GEN_VER references with GFX_VER.
+- tests/intel/*.gen.iga64_codes.c: Update generated .gen_ver struct
+  fields to .gfx_ver.
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/kms_color.c | 225 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 144 insertions(+), 81 deletions(-)
+This series is a continuation of the series sent earlier with slightly
+different subject https://patchwork.freedesktop.org/series/167076/
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 565edb2dc..b0adcd221 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -78,6 +78,16 @@
- 
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
- 
-+static const struct {
-+	const char *name;
-+	uint32_t format;
-+} formats[] = {
-+	{ "RGB", DRM_FORMAT_XRGB8888 },
-+	{ "YUYV", DRM_FORMAT_YUYV },
-+	{ "NV12", DRM_FORMAT_NV12 },
-+	{ "P010", DRM_FORMAT_P010 },
-+};
-+
- static bool test_pipe_degamma(data_t *data,
- 			      igt_plane_t *primary)
- {
-@@ -104,20 +114,28 @@ static bool test_pipe_degamma(data_t *data,
- 	igt_output_override_mode(output, mode);
- 
- 	/* Create a framebuffer at the size of the output. */
--	fb_id = igt_create_fb(data->drm_fd,
--			      mode->hdisplay,
--			      mode->vdisplay,
--			      data->drm_format,
--			      DRM_FORMAT_MOD_LINEAR,
--			      &fb);
-+	fb_id = igt_create_fb_with_bo_size(data->drm_fd,
-+					   mode->hdisplay,
-+					   mode->vdisplay,
-+					   data->drm_format,
-+					   DRM_FORMAT_MOD_LINEAR,
-+					   IGT_COLOR_YCBCR_BT709,
-+					   IGT_COLOR_YCBCR_FULL_RANGE,
-+					   &fb,
-+					   0,
-+					   0);
- 	igt_assert(fb_id);
- 
--	fb_modeset_id = igt_create_fb(data->drm_fd,
--				      mode->hdisplay,
--				      mode->vdisplay,
--				      data->drm_format,
--				      DRM_FORMAT_MOD_LINEAR,
--				      &fb_modeset);
-+	fb_modeset_id = igt_create_fb_with_bo_size(data->drm_fd,
-+						   mode->hdisplay,
-+						   mode->vdisplay,
-+						   data->drm_format,
-+						   DRM_FORMAT_MOD_LINEAR,
-+						   IGT_COLOR_YCBCR_BT709,
-+						   IGT_COLOR_YCBCR_FULL_RANGE,
-+						   &fb_modeset,
-+						   0,
-+						   0);
- 	igt_assert(fb_modeset_id);
- 
- 	igt_plane_set_fb(primary, &fb_modeset);
-@@ -191,20 +209,28 @@ static bool test_pipe_gamma(data_t *data,
- 	igt_output_override_mode(output, mode);
- 
- 	/* Create a framebuffer at the size of the output. */
--	fb_id = igt_create_fb(data->drm_fd,
--			      mode->hdisplay,
--			      mode->vdisplay,
--			      data->drm_format,
--			      DRM_FORMAT_MOD_LINEAR,
--			      &fb);
-+	fb_id = igt_create_fb_with_bo_size(data->drm_fd,
-+					   mode->hdisplay,
-+					   mode->vdisplay,
-+					   data->drm_format,
-+					   DRM_FORMAT_MOD_LINEAR,
-+					   IGT_COLOR_YCBCR_BT709,
-+					   IGT_COLOR_YCBCR_FULL_RANGE,
-+					   &fb,
-+					   0,
-+					   0);
- 	igt_assert(fb_id);
- 
--	fb_modeset_id = igt_create_fb(data->drm_fd,
--				      mode->hdisplay,
--				      mode->vdisplay,
--				      data->drm_format,
--				      DRM_FORMAT_MOD_LINEAR,
--				      &fb_modeset);
-+	fb_modeset_id = igt_create_fb_with_bo_size(data->drm_fd,
-+						   mode->hdisplay,
-+						   mode->vdisplay,
-+						   data->drm_format,
-+						   DRM_FORMAT_MOD_LINEAR,
-+						   IGT_COLOR_YCBCR_BT709,
-+						   IGT_COLOR_YCBCR_FULL_RANGE,
-+						   &fb_modeset,
-+						   0,
-+						   0);
- 	igt_assert(fb_modeset_id);
- 
- 	igt_plane_set_fb(primary, &fb_modeset);
-@@ -285,20 +311,28 @@ static bool test_pipe_legacy_gamma(data_t *data,
- 	igt_output_override_mode(output, mode);
- 
- 	/* Create a framebuffer at the size of the output. */
--	fb_id = igt_create_fb(data->drm_fd,
--			      mode->hdisplay,
--			      mode->vdisplay,
--			      DRM_FORMAT_XRGB8888,
--			      DRM_FORMAT_MOD_LINEAR,
--			      &fb);
-+	fb_id = igt_create_fb_with_bo_size(data->drm_fd,
-+					   mode->hdisplay,
-+					   mode->vdisplay,
-+					   DRM_FORMAT_XRGB8888,
-+					   DRM_FORMAT_MOD_LINEAR,
-+					   IGT_COLOR_YCBCR_BT709,
-+					   IGT_COLOR_YCBCR_FULL_RANGE,
-+					   &fb,
-+					   0,
-+					   0);
- 	igt_assert(fb_id);
- 
--	fb_modeset_id = igt_create_fb(data->drm_fd,
--				      mode->hdisplay,
--				      mode->vdisplay,
--				      DRM_FORMAT_XRGB8888,
--				      DRM_FORMAT_MOD_LINEAR,
--				      &fb_modeset);
-+	fb_modeset_id = igt_create_fb_with_bo_size(data->drm_fd,
-+						   mode->hdisplay,
-+						   mode->vdisplay,
-+						   DRM_FORMAT_XRGB8888,
-+						   DRM_FORMAT_MOD_LINEAR,
-+						   IGT_COLOR_YCBCR_BT709,
-+						   IGT_COLOR_YCBCR_FULL_RANGE,
-+						   &fb_modeset,
-+						   0,
-+						   0);
- 	igt_assert(fb_modeset_id);
- 
- 	igt_plane_set_fb(primary, &fb_modeset);
-@@ -520,20 +554,28 @@ static bool test_pipe_ctm(data_t *data,
- 	igt_output_override_mode(output, mode);
- 
- 	/* Create a framebuffer at the size of the output. */
--	fb_id = igt_create_fb(data->drm_fd,
--			      mode->hdisplay,
--			      mode->vdisplay,
--			      data->drm_format,
--			      DRM_FORMAT_MOD_LINEAR,
--			      &fb);
-+	fb_id = igt_create_fb_with_bo_size(data->drm_fd,
-+					   mode->hdisplay,
-+					   mode->vdisplay,
-+					   data->drm_format,
-+					   DRM_FORMAT_MOD_LINEAR,
-+					   IGT_COLOR_YCBCR_BT709,
-+					   IGT_COLOR_YCBCR_FULL_RANGE,
-+					   &fb,
-+					   0,
-+					   0);
- 	igt_assert(fb_id);
- 
--	fb_modeset_id = igt_create_fb(data->drm_fd,
--				      mode->hdisplay,
--				      mode->vdisplay,
--				      data->drm_format,
--				      DRM_FORMAT_MOD_LINEAR,
--				      &fb_modeset);
-+	fb_modeset_id = igt_create_fb_with_bo_size(data->drm_fd,
-+						   mode->hdisplay,
-+						   mode->vdisplay,
-+						   data->drm_format,
-+						   DRM_FORMAT_MOD_LINEAR,
-+						   IGT_COLOR_YCBCR_BT709,
-+						   IGT_COLOR_YCBCR_FULL_RANGE,
-+						   &fb_modeset,
-+						   0,
-+						   0);
- 	igt_assert(fb_modeset_id);
- 	igt_plane_set_fb(primary, &fb_modeset);
- 
-@@ -759,12 +801,23 @@ run_gamma_degamma_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 	 * for CRC checks with framebuffer references.
- 	 */
- 	data->color_depth = 8;
--	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
- 	igt_require(crtc_output_combo_valid(data, crtc));
- 
--	igt_assert(test_t(data, data->primary));
-+	for (int i = 0; i < ARRAY_SIZE(formats); i++) {
-+		igt_dynamic_f("pipe-%s-%s-%s", igt_crtc_name(crtc),
-+			      igt_output_name(data->output),
-+			      formats[i].name) {
-+			if (!igt_plane_has_format_mod(data->primary, formats[i].format,
-+						      DRM_FORMAT_MOD_LINEAR))
-+				continue;
-+			igt_info("Running on " IGT_FORMAT_FMT " format\n",
-+				 IGT_FORMAT_ARGS(formats[i].format));
-+			data->drm_format = formats[i].format;
-+			igt_assert(test_t(data, data->primary));
-+		}
-+	}
- 
- 	test_cleanup(data);
- }
-@@ -784,10 +837,10 @@ run_ctm_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 		       const double *ctm,
- 		       int iter)
- {
--	bool success = false;
-+	bool success;
- 	bool depth_10bit = false;
- 	double delta;
--	int i;
-+	int i, n_formats;
- 
- 	test_setup(data, crtc);
- 
-@@ -801,7 +854,6 @@ run_ctm_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 	 */
- 	data->color_depth = depth_10bit ? 10 : 8;
- 	delta = 1.0 / (1 << data->color_depth);
--	data->drm_format = depth_10bit ? DRM_FORMAT_XRGB2101010 : DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
- 	igt_require(crtc_output_combo_valid(data, crtc));
-@@ -815,24 +867,39 @@ run_ctm_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 	 * get clamped or rounded values and we also need to account
- 	 * for odd number of items in the LUTs.
- 	 */
--	for (i = 0; i < iter; i++) {
--		color_t expected_colors[3] = {
--			fb_colors[0],
--			fb_colors[1],
--			fb_colors[2],
--		};
--
--		transform_color(&expected_colors[0], ctm, delta * (i - (iter / 2)));
--		transform_color(&expected_colors[1], ctm, delta * (i - (iter / 2)));
--		transform_color(&expected_colors[2], ctm, delta * (i - (iter / 2)));
--
--		if (test_pipe_ctm(data, data->primary, fb_colors,
--				  expected_colors, ctm)) {
--			success = true;
--			break;
-+	n_formats = depth_10bit ? 1 : ARRAY_SIZE(formats);
-+
-+	for (int fi = 0; fi < n_formats; fi++) {
-+		igt_dynamic_f("pipe-%s-%s-%s", igt_crtc_name(crtc),
-+			      igt_output_name(data->output),
-+			      depth_10bit ? "XRGB2101010" : formats[fi].name) {
-+			success = false;
-+			data->drm_format = depth_10bit ? DRM_FORMAT_XRGB2101010 :
-+							formats[fi].format;
-+
-+			if (!igt_plane_has_format_mod(data->primary, data->drm_format,
-+						      DRM_FORMAT_MOD_LINEAR))
-+				continue;
-+			for (i = 0; i < iter; i++) {
-+				color_t expected_colors[3] = {
-+					fb_colors[0],
-+					fb_colors[1],
-+					fb_colors[2],
-+				};
-+
-+				transform_color(&expected_colors[0], ctm, delta * (i - (iter / 2)));
-+				transform_color(&expected_colors[1], ctm, delta * (i - (iter / 2)));
-+				transform_color(&expected_colors[2], ctm, delta * (i - (iter / 2)));
-+
-+				if (test_pipe_ctm(data, data->primary, fb_colors,
-+						  expected_colors, ctm)) {
-+					success = true;
-+					break;
-+				}
-+			}
-+			igt_assert(success);
- 		}
- 	}
--	igt_assert(success);
- 
- 	test_cleanup(data);
- }
-@@ -1126,11 +1193,9 @@ run_tests_for_pipe(data_t *data)
- 		igt_describe_f("%s", gamma_degamma_tests[i].desc);
- 		igt_subtest_with_dynamic_f("%s", gamma_degamma_tests[i].name) {
- 			for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
--				igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
--					      igt_output_name(data->output))
--					run_gamma_degamma_tests_for_crtc(data,
--									 crtc,
--									 gamma_degamma_tests[i].test_t);
-+				run_gamma_degamma_tests_for_crtc(data,
-+								 crtc,
-+								 gamma_degamma_tests[i].test_t);
- 			}
- 		}
- 	}
-@@ -1139,13 +1204,11 @@ run_tests_for_pipe(data_t *data)
- 		igt_describe_f("%s", ctm_tests[i].desc);
- 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
- 			for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
--				igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
--					      igt_output_name(data->output))
--					run_ctm_tests_for_crtc(data,
--							       crtc,
--							       ctm_tests[i].fb_colors,
--							       ctm_tests[i].ctm,
--							       ctm_tests[i].iter);
-+				run_ctm_tests_for_crtc(data,
-+						       crtc,
-+						       ctm_tests[i].fb_colors,
-+						       ctm_tests[i].ctm,
-+						       ctm_tests[i].iter);
- 				if (igt_run_in_simulation())
- 					break;
- 			}
+Nakshtra Goyal (1):
+  lib: s/GEN_VER/GFX_VER/ for Intel platform
+
+ lib/gpgpu_fill.c                              |   4 +-
+ lib/gpgpu_fill.c.gen.iga64_codes.c            |  14 +-
+ lib/gpgpu_shader.c                            |  30 +--
+ lib/gpgpu_shader.c.gen.iga64_codes.c          | 184 +++++++++---------
+ lib/gpgpu_shader.h                            |   4 +-
+ lib/iga64_macros.h                            |  10 +-
+ scripts/generate_iga64_codes                  |  16 +-
+ tests/intel/xe_eudebug_online.c               |   6 +-
+ .../xe_eudebug_online.c.gen.iga64_codes.c     |  14 +-
+ tests/intel/xe_prefetch_fault.c               |   2 +-
+ .../xe_prefetch_fault.c.gen.iga64_codes.c     |   4 +-
+ 11 files changed, 144 insertions(+), 144 deletions(-)
+
 -- 
 2.34.1
 
