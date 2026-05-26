@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31508CD5BC8
-	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 14:32:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E69CFCD5BB1
+	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 14:32:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D75C110E672;
-	Tue, 26 May 2026 14:32:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 661E310E6A2;
+	Tue, 26 May 2026 14:32:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="An7/ijCP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c5f7HYY7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82A2D10E4EB
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 14:31:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 093AC10E4EB
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 14:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779805902; x=1811341902;
+ t=1779805900; x=1811341900;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=XiTSEzAQguRJsYRs8oYOv6/zi7sg8065tuI2erEnfXc=;
- b=An7/ijCP8hUANucGzgTAG4tR1bau90sot+t/a6RSGmgHVlMvpfU2jiLL
- oy+6utX2tmcxsiCw57kTA5AMKiQEwVCCW/NyX/OoUN+4Q2wT2yMvj8BfO
- kGRHJ+VTzLzV/4exPRXsQf8vtcJFzGBmRtsPyFeQwo5y6KACcv1BXdJmT
- wsb/7kXwkBJp+aklMaV5ZHHeGQwwN+KIYNnrhqpfLA2UqnrQD2nhjS+dg
- tfPSfWdKKwcDq0D95Kk7kPE306LA1TfO9snoq4gHrfj/Tc/yrOBFX7+p0
- L9mwVBeaAU9MA//5PK8zUHRHNdFKDZDGZYko66rbV5nY3d5AumdVoSQKQ w==;
-X-CSE-ConnectionGUID: Io07bxW9R4OydbT2Y7qyqQ==
-X-CSE-MsgGUID: x6pmNYgZQfCqP0lC9SleBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="98196058"
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="98196058"
+ bh=BFgoDNzszBOHppoFyI6RbWswP9uzu/ibVDj5RWkbj7g=;
+ b=c5f7HYY747Jtlgz8HHGQE/C8qAQ1yN73lsv/ksz97TVSMnNPSMCx2cpP
+ slTwRFPFh39u9ky+vZ11qmlwwDZoAzxvdF7K11hBcZ0mBN6DgcG2uUiGS
+ q7uoEEpCk1Sw4wi0a7FMR1TgMyOqR9Fp0CfXuZz2jCeNIQc3rX1goxen2
+ +LZ0LYaLGwviI9BRfAtbJDHKZpae+fkwPNdUuNY4fK5TlZsUNMKlA4s7C
+ NkNpwANcs0Ffxl5JDw9J55qAm5L6STkIFy1P9IaSsCcVlfXu6zIk8HrYp
+ 4Wzo81AL9QRUK2aB/+yqi9i8cpHleugZF5dnHTnezBL1FZ6i+awSmLq+r A==;
+X-CSE-ConnectionGUID: v+fjUIrYSP+MQhcQecQvDQ==
+X-CSE-MsgGUID: gzFbUa3LRZGhj8cNPTfgKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="98196052"
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="98196052"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2026 07:31:41 -0700
-X-CSE-ConnectionGUID: FPJU2BgCS1aPP3ZUKj72xQ==
-X-CSE-MsgGUID: 4EJFsozoTW2/nngrdD2QOQ==
+ 26 May 2026 07:31:40 -0700
+X-CSE-ConnectionGUID: H307hADiRzKc/4D5ZWbmhA==
+X-CSE-MsgGUID: BeIi1x//SGy8vQ6laDiNOw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="246197996"
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="246197989"
 Received: from jeevan24.iind.intel.com ([10.223.74.58])
- by orviesa004.jf.intel.com with ESMTP; 26 May 2026 07:31:40 -0700
+ by orviesa004.jf.intel.com with ESMTP; 26 May 2026 07:31:39 -0700
 From: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v3 3/3] tests/intel/xe_ccs : Add CCS corruption neg test for
- VM_BIND decomp
-Date: Tue, 26 May 2026 20:06:37 +0530
-Message-ID: <20260526143637.2143899-4-smitha.balasubramanyam@intel.com>
+Subject: [PATCH v3 2/3] tests/intel/xe_ccs: Add fault-mode helper and VM_BIND
+ decomp neg test
+Date: Tue, 26 May 2026 20:06:36 +0530
+Message-ID: <20260526143637.2143899-3-smitha.balasubramanyam@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260526143637.2143899-1-smitha.balasubramanyam@intel.com>
 References: <20260420045724.1053946-1-smitha.balasubramanyam@intel.com>
@@ -68,373 +68,402 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a negative test covering VM_BIND decompression verification
-with corrupted CCS metadata.
-
-The test also exercises suspend and resume handling during the
-corruption scenario.
+Add a helper to trigger page-fault writes along with a negative
+testcase covering invalid UAPI handling in fault mode.
 
 Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
 ---
- tests/intel/xe_ccs.c | 345 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 345 insertions(+)
+ tests/intel/xe_ccs.c | 361 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 361 insertions(+)
 
 diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 3bfb439b9..e6875cfbf 100644
+index c3949fcd1..3bfb439b9 100644
 --- a/tests/intel/xe_ccs.c
 +++ b/tests/intel/xe_ccs.c
-@@ -75,6 +75,13 @@
-  * SUBTEST: vm-bind-decompress-uapi-bad-params-fault-mode
-  * Description: UAPI negative test attempt VM_BIND with a combination of
-  *				invalid params - fault mode
+@@ -71,6 +71,10 @@
+  *
+  * SUBTEST: vm-bind-decompress-uapi-bad-params
+  * Description: UAPI negative test — attempt VM_BIND with a combination of invalid params
 + *
-+ * SUBTEST: vm-bind-decompress-ccs-corruption
-+ * Description: Functional negative test — attempt VM_BIND after corrupting the CCS data;
-+ *				verify that decompression fails (data differs from original).
-+ *
-+ * SUBTEST: vm-bind-decompress-ccs-corruption-suspend-resume
-+ * Description: Validate VM_BIND with DECOMPRESS flag with corrupted CCS with suspend/resume (S0)
++ * SUBTEST: vm-bind-decompress-uapi-bad-params-fault-mode
++ * Description: UAPI negative test attempt VM_BIND with a combination of
++ *				invalid params - fault mode
   */
  
  IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flatccs compression on Xe");
-@@ -113,6 +120,7 @@ struct test_config {
+@@ -108,6 +112,7 @@ struct test_config {
+ 	bool vm_bind_decompress;
  	bool vm_bind_fault_mode_decompress;
  	bool vm_bind_decompress_uapi_bad_params;
- 	bool vm_bind_decompress_uapi_bad_params_fault_mode;
-+	bool vm_bind_decompress_ccs_corruption;
++	bool vm_bind_decompress_uapi_bad_params_fault_mode;
  	int width_increment;
  	int width_steps;
  	int overwrite_width;
-@@ -1174,6 +1182,307 @@ static void vm_bind_decompress_uapi_bad_params_fault_mode(int xe,
+@@ -832,6 +837,343 @@ static void vm_bind_decompress_uapi_bad_params(int xe,
  	vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
  }
  
-+/* Functional negative test that validates VM_BIND Decompress with CCS corruption.
-+ * It compresses src -> mid1/mid2, extracts CCS, corrupts mid1 CCS, writes back,
-+ * reissues VM_BIND with DECOMPRESS for both and verifies mid1 != src and mid2 == src.
++/* Helper: submit a tiny GPU batch that writes an immediate dword to the
++ * provided VA. This forces the kernel to fault in / decompress pages
++ * for that VA. Uses the provided `ctx` and `ahnd` (caller should have
++ * created/validated these).
 + */
-+static void vm_bind_decompress_ccs_corruption(int xe,
-+					      intel_ctx_t *ctx,
-+					      u64 ahnd,
-+					      u32 region1,
-+					      u32 region2,
-+					      u32 width,
-+					      u32 height,
-+					      const struct test_config *config)
++static void trigger_page_fault_write(int xe, intel_ctx_t *ctx,
++				     uint64_t vm_map_addr,
++				     uint64_t map_size,
++				     uint32_t region)
 +{
-+	struct drm_xe_gem_mmap_offset mmap_offset = {};
-+	struct blt_copy_data blt = {};
-+	struct blt_block_copy_data_ext ext = {};
-+	struct blt_ctrl_surf_copy_data surf = {};
++	struct drm_xe_exec exec = {};
++	struct drm_xe_sync exec_sync = {};
++	const u64 vm_alignment = xe_get_default_alignment(xe);
++	const size_t ufence_bo_size = SZ_4K;
++	u64 cmd_vm_addr = 0;
++	u64 ufence_vm_addr = 0;
++	u64 *ufence_map = MAP_FAILED;
++	u32 cmd_bo = 0;
++	u32 ufence_bo = 0;
++	u32 *cmdp = MAP_FAILED;
++	int ret;
++
++	/* Create command and fence BOs, then map them directly into the target VM. */
++	cmd_bo = xe_bo_create(xe, 0, SZ_4K, region, 0);
++	igt_assert_f(cmd_bo, "failed to create cmd_bo\n");
++	ufence_bo = xe_bo_create_caching(xe, 0, ufence_bo_size,
++					 system_memory(xe), 0,
++					 DRM_XE_GEM_CPU_CACHING_WC);
++	igt_assert_f(ufence_bo, "failed to create ufence_bo\n");
++
++	/* Map the BO to write the batch */
++	cmdp = xe_bo_map(xe, cmd_bo, SZ_4K);
++	igt_assert_f(cmdp != MAP_FAILED, "xe_bo_map cmd_bo failed\n");
++	ufence_map = xe_bo_map(xe, ufence_bo, ufence_bo_size);
++	igt_assert_f(ufence_map != MAP_FAILED, "xe_bo_map ufence_bo failed\n");
++	memset(ufence_map, 0, ufence_bo_size);
++
++	cmd_vm_addr = ALIGN(vm_map_addr + map_size, vm_alignment);
++	ufence_vm_addr = ALIGN(cmd_vm_addr + SZ_4K, vm_alignment);
++
++	ret = __xe_vm_bind(xe, ctx->vm, 0, cmd_bo, 0, cmd_vm_addr, SZ_4K,
++			   DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
++			   DEFAULT_PAT_INDEX, 0);
++	igt_assert_eq(ret, 0);
++	ret = __xe_vm_bind(xe, ctx->vm, 0, ufence_bo, 0, ufence_vm_addr, ufence_bo_size,
++			   DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
++			   DEFAULT_PAT_INDEX, 0);
++	igt_assert_eq(ret, 0);
++
++	/* Build a tiny batch: MI_STORE_DWORD_IMM_GEN4 dst=vm_map_addr, value=0xDEADBEEF */
++	cmdp[0] = MI_STORE_DWORD_IMM_GEN4;
++	cmdp[1] = lower_32_bits(vm_map_addr);
++	cmdp[2] = upper_32_bits(vm_map_addr);
++	cmdp[3] = 0xDEADBEEF;
++	cmdp[4] = MI_BATCH_BUFFER_END;
++
++	/* Debug dump of the first few dwords in the fault-trigger batch. */
++	igt_debug("BB dump: cmd_bo=%u cmd_off=0x%llx region=%u vm=%u execq=%u",
++		  cmd_bo, (unsigned long long)cmd_vm_addr, region,
++		  ctx->vm, ctx->exec_queue);
++	for (int i = 0; i < 8; i++)
++		igt_debug(" bb[%02d]=0x%08x", i, cmdp[i]);
++	igt_debug("\n");
++
++	/* Dump the first few dwords of the BB (do this BEFORE munmap) */
++	igt_info("BB dump: cmd_bo=%u cmd_off=0x%llx region=%u vm=%u execq=%u",
++		 cmd_bo, (unsigned long long)cmd_vm_addr, region,
++		 ctx->vm, ctx->exec_queue);
++	for (int i = 0; i < 8; i++)
++		igt_info(" bb[%02d]=0x%08x", i, cmdp[i]);
++
++	/* Make CPU writes visible to GPU */
++	munmap(cmdp, SZ_4K);
++	cmdp = MAP_FAILED;
++
++	/* Submit the batch directly. */
++	memset(&exec, 0, sizeof(exec));
++	exec.exec_queue_id = ctx->exec_queue;
++	exec.address = cmd_vm_addr;
++	exec.num_batch_buffer = 1;
++
++	memset(&exec_sync, 0, sizeof(exec_sync));
++	exec_sync.type = DRM_XE_SYNC_TYPE_USER_FENCE;
++	exec_sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
++	exec_sync.addr = ufence_vm_addr;
++	exec_sync.timeline_value = 1ULL;
++	exec.num_syncs = 1;
++	exec.syncs = to_user_pointer(&exec_sync);
++
++	igt_info("Submitting faulting batch to write to VA 0x%llx\n",
++		 (unsigned long long)vm_map_addr);
++	igt_debug("Submitting faulting batch to write to VA 0x%llx\n",
++		  (unsigned long long)vm_map_addr);
++	ret = igt_ioctl(xe, DRM_IOCTL_XE_EXEC, &exec);
++	igt_assert_f(ret == 0, "EXEC ioctl failed: %d (%s)\n", ret, strerror(errno));
++
++	xe_wait_ufence(xe, ufence_map, 1ULL, ctx->exec_queue, NSEC_PER_SEC);
++	igt_assert_eq_u64(ufence_map[0], 1ULL);
++
++	/* Cleanup */
++	ret = __xe_vm_bind(xe, ctx->vm, 0, 0, 0, cmd_vm_addr, SZ_4K,
++			   DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0, 0);
++	igt_assert_eq(ret, 0);
++	ret = __xe_vm_bind(xe, ctx->vm, 0, 0, 0, ufence_vm_addr, ufence_bo_size,
++			   DRM_XE_VM_BIND_OP_UNMAP, 0, NULL, 0, 0, 0, 0);
++	igt_assert_eq(ret, 0);
++
++	munmap(ufence_map, ufence_bo_size);
++	gem_close(xe, cmd_bo);
++	gem_close(xe, ufence_bo);
++
++	igt_info("Faulting write batch completed successfully\n");
++}
++
++/* Fault-mode variant of vm_bind_decompress_uapi_bad_params.
++ * It reuses your bad_cases but, for expected-success cases, triggers
++ * a GPU write to the mapped VA to force the kernel page-fault/decompress path.
++ */
++static void vm_bind_decompress_uapi_bad_params_fault_mode(int xe,
++							  intel_ctx_t *ctx,
++							  u64 ahnd,
++							  u32 region1,
++							  u32 region2,
++							  u32 width,
++							  u32 height,
++							  enum blt_tiling_type tiling,
++							  const struct test_config *config)
++{
 +	struct vm_bind_decomp_setup_resources allocated_resources = {};
-+	struct blt_copy_object *src, *mid1, *mid2;
-+	const u32 bpp = 32;
-+	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-+	u64 bb_size = xe_bb_size(xe, SZ_4K);
-+	u64 size = (u64)width * height * 4;
-+	u32 comp_pat = intel_get_pat_idx_uc_comp(xe);
-+	u32 ccs1, ccs2;
-+	uint32_t *ccsmap1 = NULL, *ccsmap2 = NULL;
-+	uint64_t ccssize = 0;
-+	uint64_t ccs_bo_size = 0;
-+	uint32_t *ccscopy = NULL;
-+	int result;
-+	void *mapped_mid1 = MAP_FAILED;
-+	void *mapped_mid2 = MAP_FAILED;
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_RENDER,
++	};
++	intel_ctx_t *fault_ctx = NULL;
++	u32 fault_exec_queue = 0;
++	int ret = 0;
++	bool pattern_matches;
++	void *mapped_data = MAP_FAILED;
++	u64 addr;
++	u32 handle;
++	u64 use_map_size;
++	const uint64_t default_alignment = xe_get_default_alignment(xe);
++	struct vm_bind_decomp_neg_test_case bad_cases[8] = {
++	/* PAT-based accepts (DECOMPRESS + Default PAT) */
++	{ "decompress-default-pat", DEFAULT_PAT_INDEX,
++	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, false },
 +
-+	/* Use vm_bind_decomp_test_setup to create a src (uncompressed) and a first
-+	 * compressed object (mid1). The helper also creates a VM and BB
-+	 * used for subsequent ctrl-surface operations.
-+	 */
-+	result = vm_bind_decomp_test_setup(xe, ctx, ahnd, region1, region2, width,
-+					   height, T_LINEAR, config, true, false,
-+					   &allocated_resources);
-+	igt_assert_eq(result, 0);
++	/* PAT-based accepts (DECOMPRESS + GPU WB PAT) */
++	{ "decompress-gpu-wb-pat", 0,
++	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, false },
 +
-+	/* Reuse helper-created objects */
-+	src = allocated_resources.src_obj;
-+	mid1 = allocated_resources.comp_obj;
++	/* PAT-based rejects (DECOMPRESS + Invalid PAT) */
++	{ "decompress-invalid-pat", INVALID_PAT_INDEX,
++	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
 +
-+	print_buffer_data(src->ptr, min_t(size_t, 64, size), "ORIGINAL", 4);
-+	print_buffer_data(mid1->ptr, min_t(size_t, 64, size),
-+			  "SURFACE1_COMPRESSED", 4);
++	/* PAT-based rejects (DECOMPRESS + non-UC PAT) */
++	{ "decompress-gpu-wt-pat", 0,
++	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
 +
-+	 /* Compute CCS sizes now that mid1 is valid */
-+	ccssize = mid1->size / CCS_RATIO(xe);
-+	ccs_bo_size = ALIGN(ccssize, xe_get_default_alignment(xe));
-+	ccscopy = malloc(ccssize);
++	/* PAT-based rejects (DECOMPRESS + compressed PAT) */
++	{ "decompress-gpu-compressed-pat", 0,
++	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
 +
-+	/* Create a second compressed object (mid2) and compress src->mid2 */
-+	/* Init blit + batch */
-+	blt_copy_init(xe, &blt);
-+	mid2 = blt_create_object(&blt, region2, width, height,
-+				 bpp, intel_get_uc_mocs_index(xe), T_LINEAR,
-+				 COMPRESSION_ENABLED, comp_type, true);
-+	igt_assert(mid2);
++	/* Range smaller than the uncompressed size (should be rejected for DECOMPRESS) */
++	{ "decompress-small-range", 0,
++	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
 +
-+	/* Use the BB provided by the helper */
-+	blt_set_batch(&blt.bb, allocated_resources.bb, bb_size, allocated_resources.region_src);
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.dst, mid2);
-+	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
-+	blt_set_object_ext(&ext.dst, param.compression_format, width, height, SURFACE_TYPE_2D);
++	/* Misaligned virtual address for DECOMPRESS update */
++	{ "decompress-misaligned-va", 0,
++	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
 +
-+	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
-+	intel_ctx_xe_sync(ctx, true);
++	/* Wrong BO handle supplied (invalid handle) */
++	{ "decompress-wrong-bo-handle", 0,
++	  DRM_XE_VM_BIND_FLAG_DECOMPRESS, true },
++	};
++	/* Setup (this asserts+cleans on failure) */
++	ret = vm_bind_decomp_test_setup(xe, ctx, ahnd, region1, region2, width,
++					height, tiling, config, false, true,
++					&allocated_resources);
++	igt_assert_eq(ret, 0);
++	igt_assert_f(allocated_resources.vm != 0, "VM not created\n");
 +
-+	/* Verify compression occurred when platform supports it */
-+	if (blt_platform_has_flat_ccs_enabled(xe)) {
-+		bool is_compressed = blt_surface_is_compressed(xe, ctx, NULL, ahnd, mid2);
++	/* Fault-triggering writes must execute in the same VM used by VM_BIND. */
++	fault_exec_queue = xe_exec_queue_create(xe, allocated_resources.vm, &inst, 0);
++	fault_ctx = intel_ctx_xe(xe, allocated_resources.vm, fault_exec_queue, 0, 0, 0);
++	igt_assert_f(fault_ctx, "failed to create fault-mode execution context\n");
 +
-+		if (!is_compressed) {
-+			vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
-+			igt_assert_f(false, "Surface compression failed - "
-+					" cannot test decompression\n");
++	addr = allocated_resources.vm_map_addr;
++	handle = allocated_resources.handle;
++	use_map_size = allocated_resources.map_size;
++
++	print_buffer_data(allocated_resources.src_obj->ptr,
++			  min_t(size_t, 64, allocated_resources.size),
++			  "ORIGINAL", 4);
++	print_buffer_data(allocated_resources.comp_obj->ptr,
++			  min_t(size_t, 64, allocated_resources.size),
++			  "COMPRESSED", 4);
++
++	/* Fill PAT values before iterating through each case*/
++	bad_cases[1].pat = intel_get_pat_idx_wb(xe);
++	bad_cases[3].pat = intel_get_pat_idx_wt(xe);
++	bad_cases[4].pat = intel_get_pat_idx_uc_comp(xe);
++	bad_cases[5].pat = allocated_resources.uncompressed_pat;
++	bad_cases[6].pat = allocated_resources.uncompressed_pat;
++	bad_cases[7].pat = allocated_resources.uncompressed_pat;
++
++	/* Iterate cases */
++	for (unsigned int i = 0; i < ARRAY_SIZE(bad_cases); i++) {
++		const struct vm_bind_decomp_neg_test_case *test_variant = &bad_cases[i];
++
++		/* Reset per-case parameters */
++		u32 use_pat = test_variant->pat;
++		u32 flags = test_variant->flags;
++
++		addr = allocated_resources.vm_map_addr;
++		handle = allocated_resources.handle;
++		use_map_size = allocated_resources.map_size;
++
++		igt_info("\nVM_BIND variant: %s\n", test_variant->test_name);
++
++		/* Corrupt inputs or pass wrong params for a few special cases. */
++		if (!strcmp(test_variant->test_name, "decompress-small-range")) {
++			if (allocated_resources.map_size > default_alignment)
++				use_map_size = allocated_resources.map_size - 1;
++			igt_info("Using reduced map size: %llu\n",
++				 (unsigned long long)use_map_size);
++		} else if (!strcmp(test_variant->test_name, "decompress-misaligned-va")) {
++			addr = allocated_resources.vm_map_addr + 1;
++		} else if (!strcmp(test_variant->test_name, "decompress-wrong-bo-handle")) {
++			handle = allocated_resources.handle ^ 0xdeadbeef;
++		}
++
++		errno = 0;
++		ret =
++		__xe_vm_bind(xe, allocated_resources.vm, 0, handle, 0, addr,
++			     use_map_size, DRM_XE_VM_BIND_OP_MAP, flags,
++			     NULL, 0, 0, use_pat, 0);
++		if (test_variant->expect_fail) {
++			if (ret == 0) {
++				/* Unexpected success — unmap and abort */
++				igt_warn("VM_BIND unexpectedly SUCCEEDED for %s — cleaning up\n",
++					 test_variant->test_name);
++				__xe_vm_bind(xe, allocated_resources.vm, 0, 0, 0,
++					     addr, use_map_size, DRM_XE_VM_BIND_OP_UNMAP, 0,
++					     NULL, 0, 0, 0, 0);
++				vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
++				igt_assert_f(false,
++					     "VM_BIND expected failure but succeeded for %s",
++					     test_variant->test_name);
++			} else {
++				igt_info("VM_BIND rejected as expected for %s "
++				"(ret=%d errno=%d %s)\n",
++				test_variant->test_name, ret, errno, strerror(errno));
++				igt_info("Success : VM_Bind rejected\n");
++			}
++		} else {
++			/* Expected path: VM_BIND must succeed, then data integrity is verified. */
++			if (ret != 0) {
++				igt_warn("VM_BIND unexpectedly FAILED for %s: %d (%s)\n",
++					 test_variant->test_name, ret, strerror(errno));
++				vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
++				igt_assert_f(false, "VM_BIND unexpected failure for %s",
++					     test_variant->test_name);
++			}
++
++			igt_info("VM_BIND succeeded for %s (as expected)\n",
++				 test_variant->test_name);
++			/* Trigger page-fault via GPU write to the mapped VA */
++			trigger_page_fault_write(xe, fault_ctx, addr,
++						 allocated_resources.map_size,
++						 region1);
++
++			/* Compare destination buffer against source and print short dumps. */
++			mapped_data = xe_bo_map(xe, allocated_resources.handle,
++						allocated_resources.size);
++			igt_assert_f(mapped_data != MAP_FAILED,
++				     "Failed to map destination BO for %s\n",
++				     test_variant->test_name);
++
++			print_buffer_data(allocated_resources.src_obj->ptr,
++					  min_t(size_t, 64, allocated_resources.size),
++					  "ORIGINAL", 4);
++			print_buffer_data(mapped_data,
++					  min_t(size_t, 64, allocated_resources.size),
++					  "DECOMPRESSED", 4);
++
++			pattern_matches =
++				verify_test_pattern(mapped_data,
++						    allocated_resources.size,
++						    "DECOMPRESSED");
++			if (!pattern_matches)
++				igt_info("Decompression pattern verification FAILED for %s\n",
++					 test_variant->test_name);
++
++			if (memcmp(mapped_data,
++				   allocated_resources.src_obj->ptr,
++				   allocated_resources.size) != 0) {
++				igt_info("Decompressed data does not match original for %s\n",
++					 test_variant->test_name);
++				print_buffer_data(mapped_data,
++						  min_t(size_t, 256, allocated_resources.size),
++						  "CURRENT_STATE", 4);
++				print_buffer_data(allocated_resources.src_obj->ptr,
++						  min_t(size_t, 256, allocated_resources.size),
++						  "EXPECTED", 4);
++
++				munmap(mapped_data, allocated_resources.size);
++				mapped_data = MAP_FAILED;
++				vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
++				igt_assert_f(false,
++					     "Decompressed BO contents differ from original for %s",
++					     test_variant->test_name);
++			}
++
++			igt_info("Decompression content matches original for %s\n",
++				 test_variant->test_name);
++			munmap(mapped_data, allocated_resources.size);
++			mapped_data = MAP_FAILED;
++
++			/* Unmap to keep state clean for next iteration */
++			ret =
++				__xe_vm_bind(xe, allocated_resources.vm, 0, 0, 0, addr,
++					     use_map_size, DRM_XE_VM_BIND_OP_UNMAP,
++					     0, NULL, 0, 0, 0, 0);
++			if (ret != 0)
++				igt_warn("Unmap after VM_BIND (fault-mode) failed: %d (%s)\n", ret,
++					 strerror(errno));
 +		}
 +	}
 +
-+	print_buffer_data(mid2->ptr, min_t(size_t, 64, size),
-+			  "SURFACE2_COMPRESSED", 4);
++	if (fault_exec_queue)
++		xe_exec_queue_destroy(xe, fault_exec_queue);
++	free(fault_ctx);
 +
-+	ccs1 = xe_bo_create_caching(xe, 0, ccs_bo_size, system_memory(xe), 0,
-+				    __xe_default_cpu_caching(xe,
-+							     system_memory(xe), 0));
-+	ccs2 = xe_bo_create_caching(xe, 0, ccs_bo_size, system_memory(xe), 0,
-+				    __xe_default_cpu_caching(xe,
-+							     system_memory(xe), 0));
-+	blt_ctrl_surf_copy_init(xe, &surf);
-+	surf.print_bb = param.print_bb;
-+
-+	/* mid1 -> ccs1 */
-+	blt_set_ctrl_surf_object(&surf.src, mid1->handle, mid1->region,
-+				 mid1->size, intel_get_uc_mocs_index(xe),
-+				 comp_pat, BLT_INDIRECT_ACCESS);
-+	blt_set_ctrl_surf_object(&surf.dst, ccs1, system_memory(xe), ccssize,
-+				 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
-+	blt_set_batch(&surf.bb, allocated_resources.bb, bb_size, allocated_resources.region_src);
-+
-+	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
-+	intel_ctx_xe_sync(ctx, true);
-+
-+	/* mid2 -> ccs2 */
-+	blt_set_ctrl_surf_object(&surf.src, mid2->handle, mid2->region,
-+				 mid2->size, intel_get_uc_mocs_index(xe),
-+				 comp_pat, BLT_INDIRECT_ACCESS);
-+	blt_set_ctrl_surf_object(&surf.dst, ccs2, system_memory(xe), ccssize,
-+				 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
-+	blt_set_batch(&surf.bb, allocated_resources.bb, bb_size, allocated_resources.region_src);
-+	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
-+	intel_ctx_xe_sync(ctx, true);
-+	igt_info("\nExtracted CCS for both compressed surfaces\n");
-+	igt_info("Proceeds to corrupt surface1 CCS and preserve surface2 CCS\n");
-+
-+	/* --- Map, corrupt mid1's CCS, then write corrupted CCS back into mid1 --- */
-+	/* Map ccs1 (the corrupted copy) */
-+	ccsmap1 = xe_bo_map(xe, ccs1, ccssize);
-+	// Verifying mapping
-+	igt_assert(ccsmap1 != MAP_FAILED);
-+
-+	igt_assert(ccscopy);
-+	memcpy(ccscopy, ccsmap1, ccssize);
-+
-+	/* Corrupt the CCS content (example corruption) */
-+	for (size_t i = 0; i < ccssize / sizeof(uint32_t); i++)
-+		ccsmap1[i] = (uint32_t)i ^ 0xdeadbeefu;
-+
-+	/* Ensure GPU sees the change by writing it back via ctrl-surf-copy:
-+	 * ccs1 -> mid1 (DIRECT_ACCESS -> BLT_INDIRECT_ACCESS)
-+	 */
-+	munmap(ccsmap1, ccssize);        /* unmap before submitting */
-+	blt_set_ctrl_surf_object(&surf.src, ccs1, system_memory(xe), ccssize,
-+				 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
-+	blt_set_ctrl_surf_object(&surf.dst, mid1->handle, mid1->region,
-+				 mid1->size, intel_get_uc_mocs_index(xe),
-+				 comp_pat, BLT_INDIRECT_ACCESS);
-+	blt_set_batch(&surf.bb, allocated_resources.bb, bb_size, allocated_resources.region_src);
-+	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
-+	intel_ctx_xe_sync(ctx, true);
-+
-+	/* --- Write clean/unaltered CCS back to mid2 (optional, restoration) --- */
-+	ccsmap2 = xe_bo_map(xe, ccs2, ccssize);
-+	igt_assert(ccsmap2 != MAP_FAILED);
-+	munmap(ccsmap2, ccssize);
-+	blt_set_ctrl_surf_object(&surf.src, ccs2, system_memory(xe), ccssize,
-+				 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
-+	blt_set_ctrl_surf_object(&surf.dst, mid2->handle, mid2->region,
-+				 mid2->size, intel_get_uc_mocs_index(xe),
-+				 comp_pat, BLT_INDIRECT_ACCESS);
-+	blt_set_batch(&surf.bb, allocated_resources.bb, bb_size, allocated_resources.region_src);
-+	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
-+	intel_ctx_xe_sync(ctx, true);
-+	igt_info("Applied corrupted CCS to surface1 and restored clean CCS to surface2\n");
-+
-+	/* --- Suspend/Resume test (optional) --- */
-+	if (config->suspend_resume) {
-+		char *ccs1_before = NULL, *ccs2_before = NULL;
-+		char *ccs1_after  = NULL, *ccs2_after  = NULL;
-+		void *map;
-+
-+		igt_info("Test Case has invoked a suspend-resume\n");
-+
-+		/* Compute checksums of CCS BOs before suspend */
-+		map = xe_bo_map(xe, ccs1, ccssize);
-+		igt_assert(map != MAP_FAILED);
-+		ccs1_before = g_compute_checksum_for_data(G_CHECKSUM_SHA1, map, ccssize);
-+		munmap(map, ccssize);
-+
-+		map = xe_bo_map(xe, ccs2, ccssize);
-+		igt_assert(map != MAP_FAILED);
-+		ccs2_before = g_compute_checksum_for_data(G_CHECKSUM_SHA1, map, ccssize);
-+		munmap(map, ccssize);
-+
-+		/* Ensure all GPU work is visible, then suspend/resume */
-+		intel_ctx_xe_sync(ctx, true);
-+		igt_info("Suspending system to test CCS persistence across S0 suspend/resume\n");
-+		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
-+		igt_info("System resume complete — continuing VM_BIND tests\n");
-+
-+		/* Re-read CCS BOs after resume and compute checksums */
-+		map = xe_bo_map(xe, ccs1, ccssize);
-+		igt_assert(map != MAP_FAILED);
-+		ccs1_after = g_compute_checksum_for_data(G_CHECKSUM_SHA1, map, ccssize);
-+		munmap(map, ccssize);
-+
-+		map = xe_bo_map(xe, ccs2, ccssize);
-+		igt_assert(map != MAP_FAILED);
-+		ccs2_after = g_compute_checksum_for_data(G_CHECKSUM_SHA1, map, ccssize);
-+		munmap(map, ccssize);
-+
-+		/* Expectations:
-+		 * - ccs1 (corrupted) should remain changed across suspend/resume
-+		 * - ccs2 (clean) should remain unchanged across suspend/resume
-+		 */
-+		if (ccs1_before && ccs1_after && !strcmp(ccs1_before, ccs1_after))
-+			igt_info("CCS1 (corrupted) persisted with same checksum (expected)\n");
-+		else if (ccs1_before && ccs1_after)
-+			igt_warn("CCS1 checksum changed across suspend/resume (unexpected)\n");
-+
-+		if (ccs2_before && ccs2_after && strcmp(ccs2_before, ccs2_after) == 0)
-+			igt_info("CCS2 (clean) persisted with identical checksum (expected)\n");
-+		else
-+			igt_warn("CCS2 checksum changed across suspend/resume (unexpected)\n");
-+
-+		g_free(ccs1_before);
-+		g_free(ccs1_after);
-+		g_free(ccs2_before);
-+		g_free(ccs2_after);
-+	}
-+
-+	/* Cleanup */
-+	free(ccscopy);
-+	/* ccsmap1 was unmapped before writeback; avoid double unmap here */
-+	gem_close(xe, ccs1);
-+	gem_close(xe, ccs2);
-+	put_offset(ahnd, ccs1);
-+	put_offset(ahnd, ccs2);
-+	igt_debug("Cleaned up CCS BOs\n");
-+
-+	/* Bind both mid1 and mid2 initially compressed */
-+	result = __xe_vm_bind(xe, allocated_resources.vm, 0, mid1->handle, 0,
-+			      allocated_resources.vm_map_addr,
-+			      allocated_resources.map_size,
-+			      DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
-+			      comp_pat, 0);
-+	igt_assert_eq(result, 0);
-+	result = __xe_vm_bind(xe, allocated_resources.vm, 0, mid2->handle, 0,
-+			      allocated_resources.vm_map_addr +
-+			      allocated_resources.map_size,
-+			      allocated_resources.map_size,
-+			      DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
-+			      comp_pat, 0);
-+	igt_assert_eq(result, 0);
-+	/* Update mappings to request DECOMPRESS (UC PAT) */
-+	result = __xe_vm_bind(xe, allocated_resources.vm, 0, mid1->handle, 0,
-+			      allocated_resources.vm_map_addr,
-+			      allocated_resources.map_size,
-+			      DRM_XE_VM_BIND_OP_MAP,
-+			      DRM_XE_VM_BIND_FLAG_DECOMPRESS, NULL, 0, 0,
-+			      allocated_resources.uncompressed_pat, 0);
-+	igt_assert_eq(result, 0);
-+	result = __xe_vm_bind(xe, allocated_resources.vm, 0, mid2->handle, 0,
-+			      allocated_resources.vm_map_addr +
-+			      allocated_resources.map_size,
-+			      allocated_resources.map_size,
-+			      DRM_XE_VM_BIND_OP_MAP,
-+			      DRM_XE_VM_BIND_FLAG_DECOMPRESS, NULL, 0, 0,
-+			      allocated_resources.uncompressed_pat, 0);
-+	igt_assert_eq(result, 0);
-+
-+	/* Map both for CPU access and compare */
-+	mmap_offset.handle = mid1->handle;
-+	mmap_offset.flags = 0;
-+	result = igt_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmap_offset);
-+
-+	igt_assert_eq(result, 0);
-+	mapped_mid1 = mmap(NULL, size, PROT_READ, MAP_SHARED, xe, mmap_offset.offset);
-+	igt_assert(mapped_mid1 != MAP_FAILED);
-+
-+	mmap_offset.handle = mid2->handle;
-+	mmap_offset.flags = 0;
-+	result = igt_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmap_offset);
-+	igt_assert_eq(result, 0);
-+	mapped_mid2 = mmap(NULL, size, PROT_READ, MAP_SHARED, xe, mmap_offset.offset);
-+	igt_assert(mapped_mid2 != MAP_FAILED);
-+	igt_info("Issued VM_BIND with DECOMPRESS for both surfaces and now verifying each surface against the original data\n");
-+	if (memcmp(mapped_mid1, src->ptr, size) == 0)
-+		igt_assert_f(false, "mid1 decompressed matches src "
-+				"(expected mismatch due to CCS corruption)");
-+	igt_info("VM_BIND decompression did not recover original data for corrupted surface (mid1), as expected\n");
-+
-+	print_buffer_data(mapped_mid1, min_t(size_t, 64, size),
-+			  "MID1_CORRUPTED", 4);
-+	print_buffer_data(src->ptr, min_t(size_t, 64, size), "SRC", 4);
-+
-+	if (memcmp(mapped_mid2, src->ptr, size) != 0)
-+		igt_assert_f(false, "Decompressed MID2 does not match src "
-+				"(expected match for clean CCS)");
-+	igt_info("VM_BIND decompression successful for clean surface (mid2)\n");
-+
-+	print_buffer_data(mapped_mid2, min_t(size_t, 64, size),
-+			  "MID2_DECOMPRESSED", 4);
-+	print_buffer_data(src->ptr, min_t(size_t, 64, size), "SRC", 4);
-+
-+	igt_info("CCS corruption decompression test completed successfully\n");
-+	munmap(mapped_mid1, size);
-+	munmap(mapped_mid2, size);
-+
-+	put_offset(ahnd, mid2->handle);
-+	blt_destroy_object(xe, mid2);
-+
++	/* Final cleanup */
 +	vm_bind_decomp_test_cleanup(xe, ahnd, &allocated_resources);
 +}
 +
  struct blt_copy3_data {
  	int xe;
  	struct blt_copy_object src;
-@@ -2088,6 +2397,12 @@ static void single_copy(int xe, const struct test_config *config,
- 							      ctx, ahnd, region1, region2,
- 							      width, height, tiling, config);
+@@ -1740,6 +2082,12 @@ static void single_copy(int xe, const struct test_config *config,
+ 		vm_bind_decompress_uapi_bad_params(xe, ctx, ahnd, region1, region2,
+ 						   width, height, tiling, config);
  		put_ahnd(ahnd);
-+	} else if (config->vm_bind_decompress_ccs_corruption) {
++	} else if (config->vm_bind_decompress_uapi_bad_params_fault_mode) {
 +		ahnd = intel_allocator_open(xe, vm, INTEL_ALLOCATOR_RELOC);
-+		vm_bind_decompress_ccs_corruption(xe, ctx, ahnd,
-+						  region1, region2, width,
-+						  height, config);
++		vm_bind_decompress_uapi_bad_params_fault_mode(xe,
++							      ctx, ahnd, region1, region2,
++							      width, height, tiling, config);
 +		put_ahnd(ahnd);
  	} else {
  		copyfns[copy_function].copyfn(xe, ctx,
  					      region1, region2,
-@@ -2418,6 +2733,36 @@ int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+@@ -2057,6 +2405,19 @@ int igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
  		single_copy(xe, &config, region1, region2, width, height, tiling, BLOCK_COPY);
  	}
  
-+	igt_describe("Validate VM_BIND with DECOMPRESS flag with corrupted CCS");
-+	igt_subtest("vm-bind-decompress-ccs-corruption") {
++	igt_describe("Validate uAPI of VM_BIND with DECOMPRESS flag with bad params");
++	igt_subtest("vm-bind-decompress-uapi-bad-params-fault-mode") {
 +		struct test_config config = { .compression = true,
-+			.vm_bind_decompress_ccs_corruption = true,
-+			.suspend_resume = false };
++			.vm_bind_decompress_uapi_bad_params_fault_mode = true };
 +		u32 region1 = system_memory(xe);
 +		u32 region2 = vram_if_possible(xe, 0);
 +		int tiling = T_LINEAR;
@@ -442,22 +471,6 @@ index 3bfb439b9..e6875cfbf 100644
 +		int height = param.height;
 +
 +		single_copy(xe, &config, region1, region2, width, height, tiling, BLOCK_COPY);
-+	}
-+
-+	igt_describe("Validate VM_BIND with DECOMPRESS flag "
-+		     "with corrupted CCS with suspend/resume");
-+	igt_subtest_with_dynamic("vm-bind-decompress-ccs-corruption-suspend-resume") {
-+		struct test_config config = { .compression = true,
-+			.vm_bind_decompress_ccs_corruption = true,
-+			.suspend_resume = true };
-+		u32 region1 = system_memory(xe);
-+		u32 region2 = vram_if_possible(xe, 0);
-+		int tiling = T_LINEAR;
-+		int width = param.width;
-+		int height = param.height;
-+
-+		single_copy(xe, &config, region1, region2, width, height, tiling,
-+			    BLOCK_COPY);
 +	}
 +
  	igt_fixture() {
