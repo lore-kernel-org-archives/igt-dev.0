@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5004FCD5BB4
-	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 06:37:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0002ECD5BB4
+	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 06:43:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 03DC810E1BB;
-	Tue, 26 May 2026 06:37:11 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A294910E1BB;
- Tue, 26 May 2026 06:36:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4126123158444118176=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A402A10E49A;
+	Tue, 26 May 2026 06:43:00 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DhxMFCyZ";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFA6A10E4A2
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 06:42:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1779777762; x=1811313762;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cg6lXpqFxDdAnPzeagc/9PoGvHvRKwb+f8yyFoh9lGI=;
+ b=DhxMFCyZbL5cnEh44kn8bYAgAKCYT8mespBGVwXXtgPEouCxO+VcoVNt
+ UU1rPuB4MDBaaFtbgOoCZQneRpW89RmysiasodrJz2cRG3mlOUUYFIjoz
+ Gzg/jhvlOn0KgShp0MhPcz7yjL0ccCsVgOzN6OWprN9d3eba1NgidlUCS
+ UG3Yp00+vDAbR4iZJc6VeYfOGd667Ti5MwHxy2T6yYnpOv8LpKwy/DkVx
+ RM93ClSNhKmHkoPcdkjhvD9qLCuAFK390Bhs4dmrW5Imw2a7IFBg36ScS
+ FVgdXf1vtQGDezQs6BwShMnOt55vrpYKemY0Q5b7z0hiikUZwtz9NtyAj A==;
+X-CSE-ConnectionGUID: 1RRphWrbQzmyUQbiUha/CA==
+X-CSE-MsgGUID: xb64GKEbTPGOkZRGPQ/bbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="80617980"
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="80617980"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 May 2026 23:42:41 -0700
+X-CSE-ConnectionGUID: uvQ/rYxmSeq90U6gc9vknA==
+X-CSE-MsgGUID: n5ZmzBFAS2Oi3esKHKGLeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="265689283"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 May 2026 23:42:38 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
+ mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
+ Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t v7 0/7] Enable and Add new tests for DC3CO
+Date: Tue, 26 May 2026 12:10:57 +0530
+Message-ID: <20260526064105.1818876-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fcolor=3A_Add_mu?=
- =?utf-8?q?lti-format_coverage_for_pipe_color_tests_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 26 May 2026 06:36:48 -0000
-Message-ID: <177977740864.8228.13290143132404941499@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260526054909.688792-1-pranay.samala@intel.com>
-In-Reply-To: <20260526054909.688792-1-pranay.samala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +64,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4126123158444118176==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Enable DC3CO tests for PSR/PR for display versions >= 35, add a new
+test for DC3CO to validate frame drops, and test DC3CO with LOBF.
 
-== Series Details ==
+v3: Adds a test to verify DC3CO continues to function properly
+    after a DC6 power cycle and rename function name in first patch.
+v4: Add a new test to verify DC3CO continues to funct
+v5: Addressed review comments, clarified platform support wording.
+    Simplified PSR mode handling and fixed output-aware PSR checks.
+    Cleaned up and aligned new DC3CO test flows and guards.
+v6: Addressed review comments.
+v7: Fix framedrop test logic and dynamic block.
 
-Series: tests/kms_color: Add multi-format coverage for pipe color tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/165178/
-State : success
+Jeevan B (7):
+  tests: s/check_dc_counter/assert_dc_counter
+  tests/intel/kms_pm_dc: Replace require with proper assertion
+  tests/intel/kms_pm_dc: Enable DC3CO test for PSR2/PR modes
+  tests/kms_vrr: Add new test for DC3CO validation with LOBF
+  tests/intel/kms_pm_dc: Add new test for dc3co framedrop validation
+  tests/intel/kms_pm_dc: Add new test for DC3CO recovery after DC6
+  tests/intel/kms_pm_dc: Add dc3co-vpb-framegap subtest
 
-== Summary ==
+ tests/intel/kms_pm_dc.c | 314 +++++++++++++++++++++++++++++++++++++---
+ tests/kms_vrr.c         |  34 +++++
+ 2 files changed, 330 insertions(+), 18 deletions(-)
 
-CI Bug Log - changes from XEIGT_8937_BAT -> XEIGTPW_15240_BAT
-====================================================
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8937 -> IGTPW_15240
-  * Linux: xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b -> xe-5127-6b6931ea69504481efd3df1cc99765141feb178c
-
-  IGTPW_15240: 15240
-  IGT_8937: 8937
-  xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b: 04d475020800d0a1033ca89a0d6d5fc638ddc65b
-  xe-5127-6b6931ea69504481efd3df1cc99765141feb178c: 6b6931ea69504481efd3df1cc99765141feb178c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15240/index.html
-
---===============4126123158444118176==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_color: Add multi-format coverage for pipe color tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165178/">https://patchwork.freedesktop.org/series/165178/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15240/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15240/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8937_BAT -&gt; XEIGTPW_15240_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8937 -&gt; IGTPW_15240</li>
-<li>Linux: xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b -&gt; xe-5127-6b6931ea69504481efd3df1cc99765141feb178c</li>
-</ul>
-<p>IGTPW_15240: 15240<br />
-  IGT_8937: 8937<br />
-  xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b: 04d475020800d0a1033ca89a0d6d5fc638ddc65b<br />
-  xe-5127-6b6931ea69504481efd3df1cc99765141feb178c: 6b6931ea69504481efd3df1cc99765141feb178c</p>
-
-</body>
-</html>
-
---===============4126123158444118176==--
