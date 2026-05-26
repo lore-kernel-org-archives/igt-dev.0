@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E71CD5BB1
-	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 12:08:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF8ABCD5BB1
+	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 12:16:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7589C10E195;
-	Tue, 26 May 2026 12:08:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 84D6F10E47A;
+	Tue, 26 May 2026 12:16:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gcIKJYIU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n0bmTzPM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F106110E195
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 12:08:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D686610E47A
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 12:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779797283; x=1811333283;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=4OYFgqD0+jHXtVt+uZUneGvlY0yI17QC0tEtPNV1els=;
- b=gcIKJYIU9lr6mtOmknOLi4J6xkh5gGtknRU7hGI3q8SlGBpt1nR4P8qF
- aEZSQx0E02yYxDcRnC85tA+nc2ly+2ihIhnEUDHVRGbtRgL+jtOvt/B83
- 9YaR0mq1F5nop/DwlBINGhhsI3zweZk4QsFZc5r3vNpmY9k904DmZZVKH
- jW4ZYJERIwinrncnJQ0t4Py9xK0jotCOwexWGBc76y7CGWF3rakBkLFLR
- Gc1xHI/EARd9bR7XMcH66q7bJMLqAPm1szB7SszKQLtdhsXZNbZqqXHSI
- dNbraMPZ9LZvKPAc/PuxVpYA64peO5ARAUiwxooaOvAIbH6R5njepWRwK Q==;
-X-CSE-ConnectionGUID: 4qvEUlWwTvapbsyY7o5+8g==
-X-CSE-MsgGUID: 8p3vWTCsQQuONwayvFu3wA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="68131026"
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="68131026"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2026 05:08:02 -0700
-X-CSE-ConnectionGUID: 1DDfPVEbQ9WKA1f72J3vOA==
-X-CSE-MsgGUID: rxPx6Z6cRWGja51Ntkb4RA==
+ t=1779797776; x=1811333776;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ukU38BqAtK/p6Gf5obJRM8fjtxmt63RYp7/9BcUxYcQ=;
+ b=n0bmTzPMOEoKXt1wYXpv0sdtSPR4aVRAPHWrXaRX1l06BC7NnJzp0/mq
+ ay7Lc73rWNfMbZI7Rt6SnN6W+DP9AsBDSQ96nRoRqVh2WypJoYOPC0KNu
+ slHuu6LHeE5PP+9Z7iIgZG2qRdkxVn9fcJb9G1zr1eFwrGTfPMx4IN7O4
+ K8g0HXcURA9cmd4Ehc+Iqtz/hqLd5p5dM6B9fP5oWt2QJm2y8sjwT4iUa
+ 8pT32vRqG9inRzKUAVIX/dabFvDyFUIsGXNxONB0VpgySvadPgLcH+oNF
+ Twx9AJlzp5/gkAjmwQKNL/S7Z/GsnrVFj96tniduiPHE7NKlPfAcJY9b7 g==;
+X-CSE-ConnectionGUID: OPKiLAf2RTa7E9HXBq4PRg==
+X-CSE-MsgGUID: mwkk5y3vQYy7igBt1b2eHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="79641889"
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="79641889"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 May 2026 05:16:16 -0700
+X-CSE-ConnectionGUID: WNR3NhBqTzCQBkVdlFft0w==
+X-CSE-MsgGUID: coCVxBfZTqqMiOfNsTqBjQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="241977188"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
- ([10.245.244.104])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2026 05:08:01 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>, Sebastian Brzezinka
- <sebastian.brzezinka@intel.com>, igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, krzysztof.karas@intel.com,
- zbigniew.kempczynski@intel.com, x.wang@intel.com
-Subject: Re: [PATCH v4 1/2] lib/drmtest: add __drm_open_driver_path()
-In-Reply-To: <DISLAJF1M2CM.34O1ZGNO7XPCJ@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <cover.1779793438.git.sebastian.brzezinka@intel.com>
- <ce36517d762c8e1f7e8988df446f12853f2fdda6.1779793676.git.sebastian.brzezinka@intel.com>
- <c7f64283b82bdbf091007180335a3eed6a56c4ba@intel.com>
- <DISLAJF1M2CM.34O1ZGNO7XPCJ@intel.com>
-Date: Tue, 26 May 2026 15:07:57 +0300
-Message-ID: <52f0ee9cddf9c1efdac53691c82f5a147afb8556@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="246990619"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 05:16:14 -0700
+Date: Tue, 26 May 2026 14:15:56 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 2/8] lib/intel_batchbuffer: make __intel_bb_create
+ gt aware
+Message-ID: <20260526121556.c6p647ummkfpwlv5@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260323162911.1912755-1-juhapekka.heikkila@gmail.com>
+ <20260323162911.1912755-3-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260323162911.1912755-3-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,40 +74,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 26 May 2026, "Sebastian Brzezinka" <sebastian.brzezinka@intel.com> wrote:
-> Hi Jani,
->
-> On Tue May 26, 2026 at 1:51 PM CEST, Jani Nikula wrote:
->> On Tue, 26 May 2026, Sebastian Brzezinka <sebastian.brzezinka@intel.com> wrote:
->>> Add __drm_open_driver_path() as a path-based DRM open helper. It opens
->>> the given path with O_RDWR, verifies the resulting fd is a DRM device by
->>> issuing DRM_IOCTL_VERSION via __get_drm_device_name() before proceeding
->>> (returning -1 and closing on failure), logs the opened device path, and
->>> populates the xe_device cache when the device is Xe.
->>>
->>> The __ prefix signals that the function does not throw assertions or
->>> igt_require() calls, consistent with the existing __drm_open_driver*
->>> family.
->>
->> FWIW, I think the __ prefix should indicate "implementation detail,
->> don't call directly" or something along those lines.
->>
->> I think it's problematic to encourage tests to call __ prefixed
->> functions.
-> In general I agree with you, but in v3 Kamil comment on this:
-> ```
->>>Could you rename it into __drm_open_driver_path?
->>>The idea is that all __functions should not throw asserts nor
->>>require.
-> ```
->
-> So I added an explanation in the comment.
+Hi Juha-Pekka,
+On 2026-03-23 at 18:29:05 +0200, Juha-Pekka Heikkila wrote:
+> add possibility to use gt id in __intel_bb_create
+> 
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  lib/intel_batchbuffer.c | 20 +++++++++++---------
+>  lib/intel_batchbuffer.h |  1 +
+>  2 files changed, 12 insertions(+), 9 deletions(-)
 
-I obviously disagree with all of that, but *shrug*.
+There is a build conflict, see CI report:
+CONFLICT (content): Merge conflict in lib/intel_batchbuffer.c
+Patch failed at 0002 lib/intel_batchbuffer: make __intel_bb_create gt aware
 
-BR,
-Jani.
+Regards,
+Kamil
 
-
--- 
-Jani Nikula, Intel
+> 
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index b09506574..802e771a4 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -905,7 +905,8 @@ static struct intel_bb *
+>  __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+>  		  uint32_t size, bool do_relocs,
+>  		  uint64_t start, uint64_t end, uint64_t alignment,
+> -		  uint8_t allocator_type, enum allocator_strategy strategy, uint64_t region)
+> +		  uint8_t allocator_type, enum allocator_strategy strategy,
+> +		  uint64_t region, uint16_t gt_id)
+>  {
+>  	struct drm_i915_gem_exec_object2 *object;
+>  	struct intel_bb *ibb = calloc(1, sizeof(*ibb));
+> @@ -915,6 +916,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+>  	ibb->devid = intel_get_drm_devid(fd);
+>  	ibb->gen = intel_gen(ibb->devid);
+>  	ibb->ctx = ctx;
+> +	ibb->gt_id = gt_id;
+>  
+>  	ibb->fd = fd;
+>  	ibb->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
+> @@ -1059,7 +1061,7 @@ struct intel_bb *intel_bb_create_full(int fd, uint32_t ctx, uint32_t vm,
+>  				      enum allocator_strategy strategy, uint64_t region)
+>  {
+>  	return __intel_bb_create(fd, ctx, vm, cfg, size, false, start, end,
+> -				 alignment, allocator_type, strategy, region);
+> +				 alignment, allocator_type, strategy, region, 0);
+>  }
+>  
+>  /**
+> @@ -1086,7 +1088,7 @@ struct intel_bb *intel_bb_create_with_allocator(int fd, uint32_t ctx, uint32_t v
+>  {
+>  	return __intel_bb_create(fd, ctx, vm, cfg, size, false, 0, 0, 0,
+>  				 allocator_type, ALLOC_STRATEGY_HIGH_TO_LOW,
+> -				 is_i915_device(fd) ? REGION_SMEM : vram_if_possible(fd, 0));
+> +				 is_i915_device(fd) ? REGION_SMEM : vram_if_possible(fd, 0), 0);
+>  }
+>  
+>  static bool aux_needs_softpin(int fd)
+> @@ -1128,7 +1130,7 @@ struct intel_bb *intel_bb_create(int fd, uint32_t size)
+>  				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
+>  				 INTEL_ALLOCATOR_SIMPLE,
+>  				 ALLOC_STRATEGY_HIGH_TO_LOW,
+> -				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0));
+> +				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0), 0);
+>  }
+>  
+>  /**
+> @@ -1157,7 +1159,7 @@ intel_bb_create_with_context(int fd, uint32_t ctx, uint32_t vm,
+>  				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
+>  				 INTEL_ALLOCATOR_SIMPLE,
+>  				 ALLOC_STRATEGY_HIGH_TO_LOW,
+> -				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0));
+> +				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0), 0);
+>  }
+>  
+>  /**
+> @@ -1184,7 +1186,7 @@ intel_bb_create_with_context_in_region(int fd, uint32_t ctx, uint32_t vm,
+>  	return __intel_bb_create(fd, ctx, vm, cfg, size,
+>  				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
+>  				 INTEL_ALLOCATOR_SIMPLE,
+> -				 ALLOC_STRATEGY_HIGH_TO_LOW, region);
+> +				 ALLOC_STRATEGY_HIGH_TO_LOW, region, 0);
+>  }
+>  
+>  /**
+> @@ -1205,7 +1207,7 @@ struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size)
+>  
+>  	return __intel_bb_create(fd, 0, 0, NULL, size, true, 0, 0, 0,
+>  				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE,
+> -				 REGION_SMEM);
+> +				 REGION_SMEM, 0);
+>  }
+>  
+>  /**
+> @@ -1231,7 +1233,7 @@ intel_bb_create_with_relocs_and_context(int fd, uint32_t ctx,
+>  
+>  	return __intel_bb_create(fd, ctx, 0, cfg, size, true, 0, 0, 0,
+>  				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE,
+> -				 REGION_SMEM);
+> +				 REGION_SMEM, 0);
+>  }
+>  
+>  /**
+> @@ -1256,7 +1258,7 @@ struct intel_bb *intel_bb_create_no_relocs(int fd, uint32_t size)
+>  	return __intel_bb_create(fd, 0, 0, NULL, size, false, 0, 0, 0,
+>  				 INTEL_ALLOCATOR_SIMPLE,
+>  				 ALLOC_STRATEGY_HIGH_TO_LOW,
+> -				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0));
+> +				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0), 0);
+>  }
+>  
+>  static void __intel_bb_destroy_relocations(struct intel_bb *ibb)
+> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+> index d0a7c8dc7..7049dd2d0 100644
+> --- a/lib/intel_batchbuffer.h
+> +++ b/lib/intel_batchbuffer.h
+> @@ -269,6 +269,7 @@ struct intel_bb {
+>  	struct igt_pxp pxp;
+>  	uint32_t ctx;
+>  	uint32_t vm_id;
+> +	uint16_t gt_id;
+>  
+>  	bool xe_bound;
+>  	uint32_t engine_syncobj;
+> -- 
+> 2.43.0
+> 
