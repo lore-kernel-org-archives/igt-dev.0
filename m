@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48F76CD5BC8
-	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 14:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57557CD5BD0
+	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 14:47:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E9B8810E6D6;
-	Tue, 26 May 2026 14:46:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 07D1B10E6BE;
+	Tue, 26 May 2026 14:47:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="RXKx/G7P";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="X4pGAT5o";
 	dkim-atps=neutral
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com
- [74.125.82.176])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F56210E012
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 14:44:31 +0000 (UTC)
-Received: by mail-dy1-f176.google.com with SMTP id
- 5a478bee46e88-2f0ad52830cso13557546eec.1
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 07:44:31 -0700 (PDT)
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
+ [209.85.214.169])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42AAB10E6B5
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 14:44:18 +0000 (UTC)
+Received: by mail-pl1-f169.google.com with SMTP id
+ d9443c01a7336-2b45cb89f7eso71591415ad.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 07:44:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1779806671; x=1780411471; darn=lists.freedesktop.org;
+ d=gmail.com; s=20251104; t=1779806658; x=1780411458; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NzY6OdIzFLoGEDR0Kye72CA1W4Q/GM2SM4qUAa4R+58=;
- b=RXKx/G7PHsrfuOQxxkGgk9h+oWflUOXFqiVVxxIzdxgRZ0IhvrtTD+98G3x3hvcCk6
- v9y19kO+FpLRlh9txCfHnT3YQIuWHmimZ1KZKtijxdt++FkkBR6o/HRrZasN9+uUCVb4
- CndPtHwPBSoGoeqcuG1KuQkoVvBgojHG6+WQ+j8/08+g+Wzls1soGxIjmpiujm/s1vST
- T6npV93JJAYf/KZZv20PlaKMl1s7kQkN7Q3lFBlFRrQhnDmlAIhGKTSI+/g4x5eR8KcG
- /FStv4PqHre2GNHRUS4LdYpIH2DIxMDhalsz01cc5XFCPsZDN8fPR7MvlwIfVEs3WywX
- IsIA==
+ bh=k17Mya1NtIEVcvmAyfvk2tDiCwA4C+Qz+QcQzNB3fnw=;
+ b=X4pGAT5oidGQZpUm+UyfW9oTaiMEjcErs0vQUg1oTE3eJbIZA+k02Ooce/ELTjmiSA
+ 44OjtSjBnT0sRRH0ibxzGPJR7l0HcWzVO8ISX2x+kZDe4Vj3NeQJdULPDU8ZfD+lkOKi
+ TaURJCQqh+SwzQF+85dgdScm6v4l6djSKWhMBgf4qMzBwYzo3w7zIHJpTjcceZRRKk+K
+ ieQJT0KqSbU0we3up+74tlrUYKKKcXguvohhZnMqC52Vgl8l4O1kuFtGBPZSHfp0dXO1
+ wkM0Bp6KqXEQ1LiHg8xEpDq71Oh0wXwi7tUho8M6bdtKrwb6+LfrhqRNbh2FOi8G5SYh
+ iypg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1779806671; x=1780411471;
+ d=1e100.net; s=20251104; t=1779806658; x=1780411458;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=NzY6OdIzFLoGEDR0Kye72CA1W4Q/GM2SM4qUAa4R+58=;
- b=OOOfPG6neUbspU/LXLPLfjifxMgDXfY2Za9cQvNHwxhHw3gps8qLjD+dM8sd17YWUl
- ZnpwIuiYKkCF2Wj7usEbOgOI3UqC3/CL0OAhhTWu7jJ2XNy39I3VXO5LthVoJ02Ao0Ym
- YQGLnePOHtUO3+tHfq6C7lydu5fq5yQ/oePOOLTzeylQdBMosjn00VnZ56BoEkfUz9l7
- DANdwGQpnoWe+toO7yWz/hpIwgZzq70o/5y2yU+Qczkwae/1RRUIG19PGLnWz8Y8PbA2
- VhNB8FqBOdogPhvyDxk2qWj1cb7T3OXT7qHst7j8G+6oZaa1pkmCFmDm+7d+7w9v/fLa
- SVcQ==
-X-Gm-Message-State: AOJu0Yyit+D3NrgZrn1nTSIkZb0IYmoPH1F81ENo5QJLKyuLeIr953Ro
- 4fPQVzxqtKDDmVJ3Qevv8iVce94Xg+HywImTRVUT8I/Ayi3niEc9ocGUSB2k1KWz
-X-Gm-Gg: Acq92OEDv1cWclvv9gGxXjIChmOJH5LInOkOhKOaCk36/KX4QkePtfxAkVtzOQOWMGb
- qw1DQgXhTacGTeEHCRjuK0bg0c+AzuJ50elgF9kIiRiYiuRLUXqm+X+c2AIHj+o/P02S4F5BoZJ
- LEdP628/uYHtrPHL23a+NccbVPfOK5Zy2k52UXeY2NZnq8SElmHUK4JRrMHs4YoNEToCZh3PFoR
- p3lhTvtbopCcvaGMJNYb98uTbTtQIltKMCCtQMLpbVQji933ts1o9dEwVsqrrMv9F9SzUvXa9iC
- 9SbmAxBWuTqJLR+sKVe2FPnJjRPN9er5XNhh7OPFFOZIZryhGw8nDvm5GsmO/SojnhLTT7qCOjz
- VQT7+2yh5xUlq7fRCTmXqupMhf9Lv//WpCq9N80FAaNxJkZs6d71TtZbs4u8ufZRh0sqG+/zqGK
- c9s7MKxrEx8CjXjlkFm59y1LJ/LK3XOKaIIGRwv+3yzn3U74TZUopC9QPCRfI=
-X-Received: by 2002:a05:7300:6d07:b0:304:9b48:53c8 with SMTP id
- 5a478bee46e88-3049b485794mr2340153eec.2.1779806670387; 
- Tue, 26 May 2026 07:44:30 -0700 (PDT)
-Received: from localhost ([192.55.54.47]) by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-304522547fesm10861893eec.21.2026.05.26.07.44.29
+ bh=k17Mya1NtIEVcvmAyfvk2tDiCwA4C+Qz+QcQzNB3fnw=;
+ b=QyGKaPjQy/vkWeZi9w9ow1ESOxDKnVYnFrYcpAYYAJozxOx1g3HkrVuLYMEUoSxJrd
+ BMYTAmgtgRhYX4O8ga/nMeWJSlByNJai2RF07wKXxyT43dc978I50UN4sOy1xBG0notZ
+ tNoJg2M3Rzpx3A6/hq5Zoa1a1n7nMA58KwiupRdvrFKVjJzyfGiirzClk77yR39rlWR9
+ YBcUSYG5H33MdFq9+NHa+cokcGMc9d1mdXxjVjFw57KgIooXrQeBjxbUaTeJYK2U1MBs
+ k6IteSTQ0jpsm7BVPmZPIGzffJR7+Vrg0e26q79i/Hy6t3v7T6xwbtiwetwLO/x8zw9w
+ q5tg==
+X-Gm-Message-State: AOJu0YwMJmVuCEillxCwmI+hL6CRBzPa2fZjaAmEqwgtrsdEmEZ6SmY1
+ B2BoF95N/yB1EhKd9lA9EyQS01+yx1KeQmYoqMVgn3UPRMqoKbyzIVDJTHqxZ8oK
+X-Gm-Gg: Acq92OFoemMmTVAqsnP8OMAYtY9aB4Y1lmbqO/xyLxOyhT9wisvGPb6xDL5UYC4CzQ5
+ CmqutPzT/Fb5bM2fQmpYOrmG6rTHtu+4YGEaFsOYSeENez+VvYPyC8CdAPRJHaE38NXoj9IpCPv
+ I69gN06KWVJZKBUsEkA/W9vek5CY1CiaU/9cl+bZ6ey2GenphlnzDxNn1b/HEaynii6UG5uXO9O
+ uqeQuFkv95Sy1GqWPguB9lQypzvQKmyRiW0uXC3CfFSg0BempwqGOoEWsz142xirUhkHw75zQvU
+ nwn5TsjlOzKeAPigpNMQW31ne6B/6Axtd4YpSplmToLQqXMU+Dup155JR9lECMKWz1f9fIo9soC
+ mWwXvw8/An+Gbm/P4GbkoQU5O3fNecUUayHPrPXfJCKhKp5ifmvgNSZZAU92KY7hazhg2RaCXm/
+ D0LjAvQ8yjujtw6scOlgR7FpBH4oZkb6FRrFpvZXyQJNQgIPikReCP8TuipaEXTQ==
+X-Received: by 2002:a17:902:fc4e:b0:2bd:2de3:51b1 with SMTP id
+ d9443c01a7336-2beb0624631mr204017155ad.32.1779806657653; 
+ Tue, 26 May 2026 07:44:17 -0700 (PDT)
+Received: from localhost ([134.134.137.76]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2beb58fd888sm131982805ad.73.2026.05.26.07.44.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 May 2026 07:44:29 -0700 (PDT)
+ Tue, 26 May 2026 07:44:17 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 8/9] lib/igt_fb: on Intel Xe force Vebox copy on yuv
- formats
-Date: Tue, 26 May 2026 17:43:42 +0300
-Message-ID: <20260526144343.2531299-9-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 5/9] lib/intel_batchbuffer: move engine class selection
+ to helper
+Date: Tue, 26 May 2026 17:43:39 +0300
+Message-ID: <20260526144343.2531299-6-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260526144343.2531299-1-juhapekka.heikkila@gmail.com>
 References: <20260526144343.2531299-1-juhapekka.heikkila@gmail.com>
@@ -86,84 +86,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is to test Vebox engine along with other engines. Vebox is
-forced to be used when use tile4 needing tile convert and pixel
-format is yuv.
+Move engine class selection to helper to avoid duplicate code
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_fb.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+ lib/intel_batchbuffer.c | 42 +++++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 44d2ff89e..e623b2f64 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2632,6 +2632,24 @@ static bool block_copy_ok(const struct igt_fb *fb)
- 					       fb_tile_to_blt_tile(fb->modifier));
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 94b0a99d7..79a4e357b 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -2472,6 +2472,26 @@ static void update_offsets(struct intel_bb *ibb,
+ 	}
  }
  
-+static bool use_vebox_copy(const struct igt_fb *src_fb,
-+			   const struct igt_fb *dst_fb)
++static unsigned short get_engine_class(int fd, uint64_t flags)
 +{
-+	/* TODO:
-+	 * X-Tile will need to be fixed for Vebox engine on
-+	 * Xe2+ devices
-+	 */
-+	bool vebox_fix = (is_xe_device(src_fb->fd) &&
-+		HAS_4TILE(intel_get_drm_devid(src_fb->fd))) ?
-+		(src_fb->modifier == I915_FORMAT_MOD_4_TILED ||
-+		 dst_fb->modifier == I915_FORMAT_MOD_4_TILED) : true;
-+
-+	return (igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
-+		igt_format_is_yuv(src_fb->drm_format) ||
-+		igt_format_is_yuv(dst_fb->drm_format)) &&
-+		vebox_fix;
++	switch (flags & I915_EXEC_RING_MASK) {
++	case I915_EXEC_DEFAULT:
++	case I915_EXEC_BLT:
++		return DRM_XE_ENGINE_CLASS_COPY;
++	case I915_EXEC_BSD:
++		return DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
++	case I915_EXEC_RENDER:
++		if (xe_has_engine_class(fd, DRM_XE_ENGINE_CLASS_RENDER))
++			return DRM_XE_ENGINE_CLASS_RENDER;
++		else
++			return DRM_XE_ENGINE_CLASS_COMPUTE;
++	case I915_EXEC_VEBOX:
++		return DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
++	default:
++		igt_assert_f(false, "Unknown engine: %x", (uint32_t)flags);
++	}
 +}
 +
- static bool ccs_needs_enginecopy(const struct igt_fb *fb)
- {
- 	if (igt_fb_is_gen12_rc_ccs_cc_modifier(fb->modifier))
-@@ -2660,8 +2678,9 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	    is_xe_device(fb->fd))
- 		return false;
+ #define LINELEN 76
  
-+	/* use blitter on xe device except 4tile yuv where utilize vebox */
- 	if (is_xe_device(fb->fd))
--		return true;
-+		return !use_vebox_copy(fb, fb);
+ /*
+@@ -2514,26 +2534,8 @@ int __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+ 		inst.engine_instance =
+ 			(flags & I915_EXEC_BSD_MASK) >> I915_EXEC_BSD_SHIFT;
  
- 	for (int i = 0; i < fb->num_planes; i++) {
- 		int width = fb->plane_width[i];
-@@ -2700,6 +2719,12 @@ static bool use_enginecopy(const struct igt_fb *fb)
- 	if (ccs_needs_enginecopy(fb))
- 		return true;
- 
-+	/*
-+	 * This is to utilize Vebox for testing
-+	 */
-+	if (use_vebox_copy(fb, fb))
-+		return true;
+-		switch (flags & I915_EXEC_RING_MASK) {
+-		case I915_EXEC_DEFAULT:
+-		case I915_EXEC_BLT:
+-			inst.engine_class = DRM_XE_ENGINE_CLASS_COPY;
+-			break;
+-		case I915_EXEC_BSD:
+-			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
+-			break;
+-		case I915_EXEC_RENDER:
+-			if (xe_has_engine_class(ibb->fd, DRM_XE_ENGINE_CLASS_RENDER))
+-				inst.engine_class = DRM_XE_ENGINE_CLASS_RENDER;
+-			else
+-				inst.engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
+-			break;
+-		case I915_EXEC_VEBOX:
+-			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
+-			break;
+-		default:
+-			igt_assert_f(false, "Unknown engine: %x", (uint32_t) flags);
+-		}
++		inst.engine_class = get_engine_class(ibb->fd, flags);
 +
- 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
- 		fb->modifier == I915_FORMAT_MOD_X_TILED;
- }
-@@ -2910,15 +2935,6 @@ static void fini_buf(struct intel_buf *buf)
- 	intel_buf_destroy(buf);
- }
+ 		igt_debug("Run on %s\n", xe_engine_class_string(inst.engine_class));
  
--static bool use_vebox_copy(const struct igt_fb *src_fb,
--			   const struct igt_fb *dst_fb)
--{
--
--	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
--	       igt_format_is_yuv(src_fb->drm_format) ||
--	       igt_format_is_yuv(dst_fb->drm_format);
--}
--
- /**
-  * copy_with_engine:
-  * @blit: context for the copy operation
+ 		if (ibb->engine_id)
 -- 
 2.43.0
 
