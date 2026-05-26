@@ -4,73 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70F74CD5BC8
-	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 08:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05FEACD5BB4
+	for <igt-dev@archiver.kernel.org>; Tue, 26 May 2026 08:29:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 284D810E1CA;
-	Tue, 26 May 2026 08:25:21 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UbPddJeH";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1F1B10E60B
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2026 08:24:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779783900; x=1811319900;
- h=from:date:subject:mime-version:content-transfer-encoding:
- message-id:to:cc;
- bh=xVvmIUVnm6EXWYAwW7I9ywnkJPPO/oYK5WRF5PBSS7Y=;
- b=UbPddJeH2PZgpu1fo1LyzmmdjEp+kOkD8VgWsyHDL8NaG+ceIJJlzLe7
- lzBxKj2un8708xw8LyFkXaZPUgTacPcUdk8F4bQgm9CguaYRBrb13R57T
- f5hZtVYQklW7Oql1GIzSPfskKGEBBMh3SjOeOPCu+24qtrQIlQepQHsrU
- rf5qj6IvaHBGaGpHui3Vf9ZLiU5iD+4Zx7tJ94FKuHkZhEj4oZuP4NDRy
- phd8ny6cG/zss/9yXKk1wFcgC0soR7x7iak0Jyqk9H74MZipYFvxzCzHK
- +DdLZh45LSxvx4EVKQCJdcvfsHpcafomNpHiUH8z49b8S9egIIjWMgy+D g==;
-X-CSE-ConnectionGUID: NvS+/9xMR/+ADRH7vbi1Vw==
-X-CSE-MsgGUID: ZgAknDa0Rc2pdXUDXfibwA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="91698123"
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="91698123"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2026 01:24:59 -0700
-X-CSE-ConnectionGUID: wTxHa4cjQLy7vkwhahLkRw==
-X-CSE-MsgGUID: p5bORdzfSuGdaO3iGYNq9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; d="scan'208";a="242017367"
-Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2026 01:24:57 -0700
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Tue, 26 May 2026 10:23:38 +0200
-Subject: [PATCH] lib/meson.build: add rebuild_iga64 target
+	by gabe.freedesktop.org (Postfix) with ESMTP id A91A410E609;
+	Tue, 26 May 2026 08:29:33 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F16810E609;
+ Tue, 26 May 2026 08:29:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0178551999122876129=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260526-rebuild_iga64-v1-1-531eff7e3e24@intel.com>
-X-B4-Tracking: v=1; b=H4sIAIlYFWoC/yWM2wrCMBAFf6Xss8GaXgj+iohs0rVdsbXsJiKU/
- ruJPs7hzGygJEwK52oDoTcrv5YMp0MFYcJlJMNDZrC17evO9kbIJ34ONx6xb01wTRew8a51HWR
- nFbrz59e7XP+syT8oxBIpD49KxgsuYSpTWjUK4XycUSMJ7PsXkWkfj5MAAAA=
-X-Change-ID: 20260526-rebuild_iga64-c835ca3b8485
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1013;
- i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=xVvmIUVnm6EXWYAwW7I9ywnkJPPO/oYK5WRF5PBSS7Y=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBqFViPJXGAU2aZKFln9mdN5JnqFgX1FBiJT0477
- SAS6zIhsX2JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCahVYjwAKCRAjYrKT3hD9
- 177VC/99K4Tb5XXD/v2i5PE3jgM3jwZq04B0kGJgCuKvDElhJp0l8J/H27XOdAbXmB5zbG+RWvM
- 9l1xwa0yB5UMRP49cHtScwQlem1SlvEiNfemNYmB/W9VgeeajEdRTzbY0oz0JPjl+6MULesKO2a
- wokc0AXOKc6agLc0qzRJJoZjdNqNZebeoTGd5LG94cOCIgY50pvxeZPo5sbAswBPWZ5cKp50Zpn
- QAXKG+A/eZt2Dv/525sbBXo42Q6Op/FHLYYNraojdUY8cV/Xt93PvXeSnEiovpaTj69a9o+Ir3G
- 0hFSC5wayzbmX3fN+E54hJlGnZkAZpgF9/pcRKbDA20PUFOovCvUcCVHJVBlBxY8vOIl40OadAp
- g2MLwuxMskRi9XbegPccT0OivtA2seoI3sqT0VGZPWRCSOQViJx6FRgr2CoCvogsxMW7wFh2X4P
- 56jeNe9+E8Wnf8RZHBZ7R1vE9RrruzC02PC3DKGKy1M/6aGEYpkL0oxwMJ1nuLlqONvTs=
-X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
- fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Enable_and_Add_new_tests_fo?=
+ =?utf-8?q?r_DC3CO?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "B, Jeevan" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 26 May 2026 08:29:13 -0000
+Message-ID: <177978415318.9049.13635981157684613556@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260526064105.1818876-1-jeevan.b@intel.com>
+In-Reply-To: <20260526064105.1818876-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,39 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In some circumstances rebuilding all GPU asms is desirable.
-There is already a way to do it, but it is complicated.
-rebuild_iga64 virtual target encapsulates it in single command:
-$ ninja rebuild_iga64
+--===============0178551999122876129==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
----
- lib/meson.build | 3 +++
- 1 file changed, 3 insertions(+)
+== Series Details ==
 
-diff --git a/lib/meson.build b/lib/meson.build
-index ce2c329fbbcd..a8d6566aecca 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -322,6 +322,9 @@ endforeach
- 
- lib_intermediates += static_library('iga64_gpu_codes', iga64_codes_targets)
- 
-+run_target('rebuild_iga64',
-+    command : [ 'bash', '-c', 'ninja -t clean lib/libiga64_asms.a && FORCE_IGA64_REBUILD=1 ninja lib/libiga64_gpu_codes.a' ])
-+
- lib_igt_build = shared_library('igt',
-     ['dummy.c'],
-     link_whole: lib_intermediates,
+Series: Enable and Add new tests for DC3CO
+URL   : https://patchwork.freedesktop.org/series/167247/
+State : success
 
----
-base-commit: d88ebc53b2e92095f8717f5bacd567becf7f0c1d
-change-id: 20260526-rebuild_iga64-c835ca3b8485
+== Summary ==
 
-Best regards,
---  
-Andrzej Hajda <andrzej.hajda@intel.com>
+CI Bug Log - changes from XEIGT_8937_BAT -> XEIGTPW_15242_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8937 -> IGTPW_15242
+  * Linux: xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b -> xe-5127-6b6931ea69504481efd3df1cc99765141feb178c
+
+  IGTPW_15242: 2a6009d0f6455a5cfff84796621c34b8d21c8d89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8937: 8937
+  xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b: 04d475020800d0a1033ca89a0d6d5fc638ddc65b
+  xe-5127-6b6931ea69504481efd3df1cc99765141feb178c: 6b6931ea69504481efd3df1cc99765141feb178c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15242/index.html
+
+--===============0178551999122876129==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Enable and Add new tests for DC3CO</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167247/">https://patchwork.freedesktop.org/series/167247/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15242/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15242/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8937_BAT -&gt; XEIGTPW_15242_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8937 -&gt; IGTPW_15242</li>
+<li>Linux: xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b -&gt; xe-5127-6b6931ea69504481efd3df1cc99765141feb178c</li>
+</ul>
+<p>IGTPW_15242: 2a6009d0f6455a5cfff84796621c34b8d21c8d89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8937: 8937<br />
+  xe-5124-04d475020800d0a1033ca89a0d6d5fc638ddc65b: 04d475020800d0a1033ca89a0d6d5fc638ddc65b<br />
+  xe-5127-6b6931ea69504481efd3df1cc99765141feb178c: 6b6931ea69504481efd3df1cc99765141feb178c</p>
+
+</body>
+</html>
+
+--===============0178551999122876129==--
