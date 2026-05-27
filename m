@@ -4,27 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCAA8CD5BD0
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 18:27:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 599F5CD5BD0
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 18:27:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7BA4F10E8E3;
-	Wed, 27 May 2026 18:27:03 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51A1610E8E3;
- Wed, 27 May 2026 18:26:42 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5255555339802183214=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8A3D10E8E7;
+	Wed, 27 May 2026 18:27:47 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="AndcOIZI";
+	dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EF1110E8E6
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 18:27:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=CJ2iwitJdaqp03uCkr2u3z1Wjw6OhCsmIKiwB1Go2/0=; b=AndcOIZI4HtWdIYjQC2Ucmp/Fz
+ bY9J2S0IvT2pocIjZbaFu0sY/RiGh9+wzUwsV/Y/i6vl9c6+gni2mlecJ+gn8PPNToWas25pFkH10
+ r4CU5Udeo5iYw94U6HxHKWJDWrOFjf/cfxLtd0mWQVT8HuFM++9pwQm7RANLzi8459Ir2dlp7cFNR
+ c9uU8tmULhzijPLJ+tGwngWz/8FgCiarwedOzDw7kSZXsrQXSinthJGzGFIGIVZa12Q8zlSPB6sa/
+ +IHnhYnNjHz+CAd8J8lAkJ2uhFhMBNZ/mtX8ybewMpKznLwxQXHPIvkftMSsLgVZ9mxQ3YkJ8xuYd
+ X7l/RGiA==;
+Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
+ helo=[192.168.1.133]) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1wSIyT-0091qp-G3; Wed, 27 May 2026 20:27:25 +0200
+Message-ID: <49ecba32-7389-44c4-a27b-559a1bd59cdf@Igalia.com>
+Date: Wed, 27 May 2026 11:27:20 -0700
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/gem=5Fsoftpin?=
- =?utf-8?q?=3A_Show_debug_info_also_on_success?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 27 May 2026 18:26:42 -0000
-Message-ID: <177990640232.15289.17532741201070534657@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260527120430.3323133-2-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20260527120430.3323133-2-janusz.krzysztofik@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] lib/igt_kms: Fix for closing incorrect file handles
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+References: <20260525183932.3139043-1-John.Harrison@Igalia.com>
+ <20260526093113.ggux52ik7ve6rcnx@kamilkon-DESK.igk.intel.com>
+Content-Language: en-GB
+From: John Harrison <John.Harrison@Igalia.com>
+In-Reply-To: <20260526093113.ggux52ik7ve6rcnx@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +59,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5255555339802183214==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 5/26/26 02:31, Kamil Konieczny wrote:
+> Hi John,
+> On 2026-05-25 at 11:39:32 -0700, John Harrison wrote:
+>> The writeback fence fd was only set to an invalid value if writeback
+>> was actually enabled. However, the cleanup code would close the handle
+>> if it was valid. As the uninitialised value is zero and zero is a
+>> valid handle, that meant that stdin was closed at cleanup!
+>>
+>> Generally not a problem if clean up only happens at test exit. But if
+>> a test wanted to close and re-open the driver, then closing random
+>> file handles could lead to problems.
+>>
+>> So make sure the handle is always invalid irrespective of the use of
+>> writeback.
+>>
+> +cc Karthik and Swati as this is KMS code
+>
+>> Signed-off-by: John Harrison <John.Harrison@Igalia.com>
+>> ---
+>>   lib/igt_kms.c | 5 ++---
+>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index e20307923..0f1ce03a9 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -2764,10 +2764,9 @@ static void igt_output_reset(igt_output_t *output)
+>>   
+>>   	if (igt_output_has_prop(output, IGT_CONNECTOR_WRITEBACK_FB_ID))
+>>   		igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_FB_ID, 0);
+>> -	if (igt_output_has_prop(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR)) {
+>> +	if (igt_output_has_prop(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR))
+>>   		igt_output_clear_prop_changed(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR);
+>> -		output->writeback_out_fence_fd = -1;
+>> -	}
+>> +	output->writeback_out_fence_fd = -1;
+> LGTM
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>
+> Regards,
+> Kamil
+>
+> PS. style looks strange, useally there should be a newline after if block.
+Yeah, that entire block is pretty dense. Not sure if that was 
+intentional and wanted. All I changed was to pull the fd assignment 
+outside of the if. I figured I would leave the style choice as is. I can 
+send a follow up patch to add a bunch of blank lines if you want.
 
-== Series Details ==
+John.
 
-Series: tests/intel/gem_softpin: Show debug info also on success
-URL   : https://patchwork.freedesktop.org/series/167375/
-State : success
+>
+>>   	if (igt_output_has_prop(output, IGT_CONNECTOR_DITHERING_MODE))
+>>   		igt_output_set_prop_enum(output, IGT_CONNECTOR_DITHERING_MODE,
+>>   					 "off");
+>> -- 
+>> 2.43.0
+>>
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8939_BAT -> XEIGTPW_15255_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8939 -> IGTPW_15255
-
-  IGTPW_15255: 8cb42c11570a5191d69a4a4f0217f12fe2c4fc5b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8939: 8939
-  xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15255/index.html
-
---===============5255555339802183214==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/gem_softpin: Show debug info also on success</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167375/">https://patchwork.freedesktop.org/series/167375/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15255/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15255/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8939_BAT -&gt; XEIGTPW_15255_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8939 -&gt; IGTPW_15255</li>
-</ul>
-<p>IGTPW_15255: 8cb42c11570a5191d69a4a4f0217f12fe2c4fc5b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8939: 8939<br />
-  xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb</p>
-
-</body>
-</html>
-
---===============5255555339802183214==--
