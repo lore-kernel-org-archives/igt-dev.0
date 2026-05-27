@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCC50CD4F54
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 22:00:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5FBDCD5BD0
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 22:16:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 87E2C10EA44;
-	Wed, 27 May 2026 22:00:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6341F10EA55;
+	Wed, 27 May 2026 22:16:57 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E16A10EA44;
- Wed, 27 May 2026 21:59:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A64F10EA55;
+ Wed, 27 May 2026 22:16:36 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0251968133380469999=="
+ boundary="===============7881073597284366324=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Revert_=22lib/intel=5Fwa=3A?=
- =?utf-8?q?_Assert_on_error_instead_of_returning_-1=22?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/kms=5Fcolorop=3A_Asso?=
+ =?utf-8?q?rted_fixes_/_tweaks?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: "John Harrison" <john.harrison@igalia.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 27 May 2026 21:59:52 -0000
-Message-ID: <177991919257.17308.11220982074834733017@6beec6c84f66>
+Date: Wed, 27 May 2026 22:16:36 -0000
+Message-ID: <177992019603.17308.2501558102556797863@6beec6c84f66>
 X-Patchwork-Hint: ignore
-References: <20260527170827.1963198-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20260527170827.1963198-1-ashutosh.dixit@intel.com>
+References: <20260527191839.639696-1-John.Harrison@Igalia.com>
+In-Reply-To: <20260527191839.639696-1-John.Harrison@Igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,28 +41,33 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0251968133380469999==
+--===============7881073597284366324==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Revert "lib/intel_wa: Assert on error instead of returning -1"
-URL   : https://patchwork.freedesktop.org/series/167401/
-State : success
+Series: tests/kms_colorop: Assorted fixes / tweaks
+URL   : https://patchwork.freedesktop.org/series/167408/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8939_BAT -> XEIGTPW_15261_BAT
+CI Bug Log - changes from XEIGT_8939_BAT -> XEIGTPW_15262_BAT
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with XEIGTPW_15262_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15262_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
   
 
@@ -71,29 +76,44 @@ Participating hosts (13 -> 13)
 
   No changes in participating hosts
 
+Possible new issues
+-------------------
 
-Changes
--------
+  Here are the unknown changes that may have been introduced in XEIGTPW_15262_BAT:
 
-  No changes found
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_gt_freq@freq_range_idle:
+    - bat-wcl-1:          [PASS][1] -> [SKIP][2] +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_gt_freq@freq_range_idle.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/bat-wcl-1/igt@xe_gt_freq@freq_range_idle.html
+
+  * igt@xe_pm_residency@gt-c6-on-idle:
+    - bat-wcl-1:          [PASS][3] -> [FAIL][4] +1 other test fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_pm_residency@gt-c6-on-idle.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/bat-wcl-1/igt@xe_pm_residency@gt-c6-on-idle.html
+
+  
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8939 -> IGTPW_15261
+  * IGT: IGT_8939 -> IGTPW_15262
   * Linux: xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb -> xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6
 
-  IGTPW_15261: 9c10abff30f25c23f79c0f51c4c7c536c7b13b38 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15262: 15262
   IGT_8939: 8939
   xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb
   xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6: 7570b524ddecbe5db4af0c493a047e21bab6b3d6
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15261/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/index.html
 
---===============0251968133380469999==
+--===============7881073597284366324==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,29 +133,49 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Revert &quot;lib/intel_wa: Assert on error instead of returning -1&quot;</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167401/">https://patchwork.freedesktop.org/series/167401/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_colorop: Assorted fixes / tweaks</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167408/">https://patchwork.freedesktop.org/series/167408/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15261/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15261/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8939_BAT -&gt; XEIGTPW_15261_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8939_BAT -&gt; XEIGTPW_15262_BAT</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_15262_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15262_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
 <h2>Participating hosts (13 -&gt; 13)</h2>
 <p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15262_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_gt_freq@freq_range_idle:</p>
+<ul>
+<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_gt_freq@freq_range_idle.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/bat-wcl-1/igt@xe_gt_freq@freq_range_idle.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-on-idle:</p>
+<ul>
+<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_pm_residency@gt-c6-on-idle.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/bat-wcl-1/igt@xe_pm_residency@gt-c6-on-idle.html">FAIL</a> +1 other test fail</li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8939 -&gt; IGTPW_15261</li>
+<li>IGT: IGT_8939 -&gt; IGTPW_15262</li>
 <li>Linux: xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb -&gt; xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6</li>
 </ul>
-<p>IGTPW_15261: 9c10abff30f25c23f79c0f51c4c7c536c7b13b38 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_15262: 15262<br />
   IGT_8939: 8939<br />
   xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb<br />
   xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6: 7570b524ddecbe5db4af0c493a047e21bab6b3d6</p>
@@ -143,4 +183,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============0251968133380469999==--
+--===============7881073597284366324==--
