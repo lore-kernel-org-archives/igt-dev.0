@@ -4,83 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97676CD4F54
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 18:28:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4616ACD4F54
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 18:43:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 487C610E8EB;
-	Wed, 27 May 2026 18:28:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bNAyUfxs";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F52610E8E9
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 18:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779906487; x=1811442487;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=JlnmaEf3MScBDQ1pMiXmDEn1u90IbANwU8DLA+Y6edA=;
- b=bNAyUfxsTu50Crkt7uJ4OwYs6Yt6tcE7pwEWp8UrXv2G3Y3qK948aDHz
- 8kyNCJiN1Wp6ebyCR4Qv+/8Qy35sjQIIXIvlXarKscXQicj7i8IPG2js/
- JlAANNz5+7kxITPgOk19lH2riMWShNIAQjiiGFy5aJDwBVCs0p8r7ZNQv
- NqHb/x0zpIKPCF1UTNFfDKvb7YJjTNIGZ4dUXPVgF4uyAVoMTIteEpdSk
- 6mKNRlt2kPGvf59bXUd6BUNjC08PXGTkE2xh7BHYTo7bCd/mlc6pRj7e4
- 7+BABFgMLCP3VoqypePp/0n+qT8apO1M9okCwYmmKOWJe82BfHIYf+jeF w==;
-X-CSE-ConnectionGUID: a0JgE10fSgmMA2sPNnhEew==
-X-CSE-MsgGUID: oPxi8E4RRcq3zW6QyK2ukw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="103422837"
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; d="scan'208";a="103422837"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2026 11:28:07 -0700
-X-CSE-ConnectionGUID: JYkXeipCR6eMlcbYgvLSUg==
-X-CSE-MsgGUID: SBfOsI7wQGCq6cRfojdJuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; d="scan'208";a="235951355"
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.245.80])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 11:28:02 -0700
-Date: Wed, 27 May 2026 21:27:58 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>
-Cc: "suresh.kumar.kurmi@intel.com" <suresh.kumar.kurmi@intel.com>,
- "jani.nikula@intel.com" <jani.nikula@intel.com>,
- "navaremanasi@google.com" <navaremanasi@google.com>,
- "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
- Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
- "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
- "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
- Project_Global_Chrome_Upstream_Group
- <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
- "bhanuprakash.modem@gmail.com" <bhanuprakash.modem@gmail.com>,
- Nancy Lin =?utf-8?B?KOael+aso+ieoik=?= <Nancy.Lin@mediatek.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>,
- Paul-pl Chen =?utf-8?B?KOmZs+afj+mclik=?= <Paul-pl.Chen@mediatek.com>,
- "gildekel@google.com" <gildekel@google.com>,
- "fshao@chromium.org" <fshao@chromium.org>,
- "markyacoub@chromium.org" <markyacoub@chromium.org>
-Subject: Re: [PATCH i-g-t] tests/kms_rotation_crc: Add MTK device support
-Message-ID: <ahc3rjW0MFg3LBAB@intel.com>
-References: <20260410100806.62906-1-jason-jh.lin@mediatek.com>
- <adjQJE8Ok5K_sNuc@intel.com>
- <7c20c056822e3bb860f48c23f3830a8ae93a67ef.camel@mediatek.com>
- <ad5De-s-yxyyTt7s@intel.com>
- <73567dcf64c48d1e02206839ce589809b1366d58.camel@mediatek.com>
- <CAMNLLoSF9xLz=2pUwcTULURdxZDn+NR1+Y-oGHBaOsre3Uz-cw@mail.gmail.com>
- <CAMNLLoSDZ5mGALP=vwuL245R+yZWf+adpCD3cFyeqv9k1bKzAw@mail.gmail.com>
- <CAMNLLoSNXHyLS7gftj4ofMFknnhP-tdKoYjG32W3j3kb4DZO2A@mail.gmail.com>
- <61f912e0d6a934afac8e2e978dae27314d27a23a@intel.com>
- <986ffe07650b69ac71c36b10bb6d5e18aa82106f.camel@mediatek.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id CBDE310E90D;
+	Wed, 27 May 2026 18:43:52 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 432D810E90D;
+ Wed, 27 May 2026 18:43:32 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4964741785733644161=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <986ffe07650b69ac71c36b10bb6d5e18aa82106f.camel@mediatek.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Update_VPE_blit_test_=28r?=
+ =?utf-8?q?ev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Caden Chien" <chih-wei.chien@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 27 May 2026 18:43:32 -0000
+Message-ID: <177990741226.15289.16589866442138783401@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260527120802.617332-1-chih-wei.chien@amd.com>
+In-Reply-To: <20260527120802.617332-1-chih-wei.chien@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,143 +37,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, May 27, 2026 at 05:04:36PM +0000, Jason-JH Lin (林睿祥) wrote:
-> On Wed, 2026-05-27 at 15:52 +0300, Jani Nikula wrote:
-> > On Tue, 26 May 2026, Manasi Navare <navaremanasi@google.com> wrote:
-> > > Hi @Ville Syrjälä <ville.syrjala@linux.intel.com> @Karthik B S
-> > > <karthik.b.s@intel.com>  @Kurmi, Suresh Kumar
-> > > <suresh.kumar.kurmi@intel.com>
-> > >  ,
-> > > 
-> > > Could we get some feedback on this upstream discussion, Ville has
-> > > suggested
-> > > to use the frame counter instead of adding an extra Vblank wait.
-> > > However since MTK hardware does not have a support for the frame
-> > > counter,
-> > > this patch adds an extra vblank wait before grabbing CRC only for
-> > > MTK hw.
-> > > We need this change to get the test passing on MTK HW and would
-> > > appreciate your feedback and Intel's help
-> > > in getting this landed.
-> > > 
-> > > @Jason-JH Lin <jason-jh.lin@mediatek.com>  has provided the
-> > > justification
-> > > on why Ville's approach will not work for MTK HW.
-> > 
-> > Not sure why the driver couldn't do the vblank waits itself before
-> > exposing the CRCs to the userspace. Maybe I'm missing something.
-> > 
-> > And that really makes it a non-upstream discussion, because the
-> > upstream
-> > Mediatek driver doesn't have a CRC implementation.
-> > 
-> > 
-> > BR,
-> > Jani.
-> > 
-> 
-> Hi Jani,
-> 
-> Thank you for taking a look at this discussion.
-> 
-> You raise a valid point — having the driver handle things internally
-> is indeed the cleaner approach. However, we would like to clarify
-> why this is not straightforward for MTK hardware.
-> 
-> Unlike Intel, MTK hardware does not have a HW frame counter
-> register, which means the driver cannot reliably associate each CRC
-> entry with the correct frame number when calling
-> drm_crtc_add_crc_entry(). A software frame counter would not help
-> here either, because the MTK driver calls drm_crtc_add_crc_entry()
-> on every Vblank, but the latency between atomic_commit() and the
-> correct CRC becoming available is variable (1~2 vblanks) depending
-> on asynchronous CMDQ execution timing.
+--===============4964741785733644161==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Why is the CRC even being added from the vblank if the CMDQ
-thing is the one that actually generates it? Sounds like you
-may need to handle more stuff from the CMDQ so that both the
-flips and CRCs know which order they happen in.
+== Series Details ==
 
-> 
-> It is also worth noting that in MTK's DRM driver, the page flip
-> completion event is fired in the CMDQ callback (i.e.
-> drm_crtc_send_vblank_event()), which is only called when the HW
-> configuration actually takes effect. However, this IGT test does not
-> wait for the page flip event before capturing the CRC — it captures
-> the CRC directly on every Vblank.
+Series: Update VPE blit test (rev3)
+URL   : https://patchwork.freedesktop.org/series/166844/
+State : success
 
-AFAICS the test either does a blocking commit or explicitly waits
-for the page flip event before calling igt_pipe_crc_get_current().
-If the CRC returned by that doesn't match the commit then the CRCs
-clearly have bogus frame numbers.
+== Summary ==
 
-I guess if you can't fix the CRC frame numbers to be accurate then
-maybe just stop telling drm_crtc_add_crc_entry() that you even have
-any frame numbers. That should make igt_pipe_crc_get_current() throw
-out all captured CRCs and wait for the next one to come in. Perhaps
-that is enough to get you through this.
+CI Bug Log - changes from IGT_8939 -> IGTPW_15256
+====================================================
 
-> 
-> As illustrated below, even if WaitPageFlip() were used, the correct 
-> CRC for MTK would still only be available one additional Vblank after
-> the page flip event is received:
-> 
-> atomic_commit()
->     |
->     v
->   EOF N -> CMDQ callback
->         -> HW config takes effect
->         -> drm_crtc_send_vblank_event() -> page flip event fired
-> 
->   Vblank N -> drm_crtc_handle_vblank() -> vblank counter++
->            -> CRC(old) reported via drm_crtc_add_crc_entry()
->              (CRC captured before EOF N, reflects old config)
-> 
->   EOF N+1 -> CRC(new) captured by HW
-> 
->   Vblank N+1 -> drm_crtc_handle_vblank() -> vblank counter++
->              -> CRC(new) reported via drm_crtc_add_crc_entry() ✅
-> 
-> Note that if atomic_commit() is issued after EOF N has already
-> passed, the CMDQ callback will not take effect until EOF N+2,
-> meaning the correct CRC would not be available until VBlank N+2.
-> This is why the latency to the correct CRC is variable (1~2
-> vblanks). However, by waiting one extra vblank at the userspace
-> level after atomic_commit(), this is effectively equivalent to
-> waiting for the page flip event (WaitPageFlip()) before capturing
-> the CRC, which ensures the correct CRC is always captured regardless
-> of when atomic_commit() was issued.
-> 
-> 
-> Regarding the upstream CRC implementation, we did submit a patch
-> previously:
-> https://patchwork.kernel.org/project/linux-mediatek/patch/20240614024620.19011-20-shawn.sung@mediatek.com/
-> 
-> 
-> However, it has not been rebased and resubmitted due to internal
-> scheduling constraints. Additionally, the MTK DRM driver is currently
-> undergoing significant expansion and refactoring to support the
-> latest generation hardware, which has further delayed the
-> prioritization of the CRC upstream patch.
-> 
-> In the short term, we are relying on the downstream CRC
-> implementation for IGT validation. We do intend to upstream the
-> complete CRC implementation once the ongoing driver refactoring
-> stabilizes.
-> 
-> In the meantime, we would appreciate any guidance on the preferred
-> approach for handling the CRC reporting delay within the driver, so
-> we can make sure the eventual upstream submission aligns with the
-> expected design.
-> 
-> Thanks again for your input.
-> 
-> Best regards,
-> Jason-JH Lin
+Summary
+-------
 
--- 
-Ville Syrjälä
-Intel
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/index.html
+
+Participating hosts (41 -> 40)
+------------------------------
+
+  Additional (1): bat-adls-6 
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15256 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@dmabuf@all-tests:
+    - bat-adls-6:         NOTRUN -> [SKIP][1] ([i915#15931])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@dmabuf@all-tests.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-adls-6:         NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_tiled_pread_basic@basic:
+    - bat-adls-6:         NOTRUN -> [SKIP][3] ([i915#15656])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@gem_tiled_pread_basic@basic.html
+
+  * igt@intel_hwmon@hwmon-read:
+    - bat-adls-6:         NOTRUN -> [SKIP][4] ([i915#7707]) +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@intel_hwmon@hwmon-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-adls-6:         NOTRUN -> [SKIP][5] ([i915#4103]) +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adls-6:         NOTRUN -> [SKIP][6] ([i915#3555] / [i915#3840])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-adls-6:         NOTRUN -> [SKIP][7]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-adls-6:         NOTRUN -> [SKIP][8] ([i915#5354])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-primary-mmap-gtt:
+    - bat-adls-6:         NOTRUN -> [SKIP][9] ([i915#1072] / [i915#9732]) +3 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-adls-6:         NOTRUN -> [SKIP][10] ([i915#3555])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-adls-6:         NOTRUN -> [SKIP][11] ([i915#3291]) +2 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@prime_vgem@basic-fence-read.html
+
+  
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#15656]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656
+  [i915#15931]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15931
+  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8939 -> IGTPW_15256
+
+  CI-20190529: 20190529
+  CI_DRM_18562: 11a8456527f00d86dc8b23035c324da194fbbadb @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15256: 8d195797c89b1e91db880f20f7a2e8aa1ed4b81d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8939: 8939
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/index.html
+
+--===============4964741785733644161==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Update VPE blit test (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166844/">https://patchwork.freedesktop.org/series/166844/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8939 -&gt; IGTPW_15256</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/index.html</p>
+<h2>Participating hosts (41 -&gt; 40)</h2>
+<p>Additional (1): bat-adls-6 <br />
+  Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15256 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@dmabuf@all-tests.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15931">i915#15931</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic@basic:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@gem_tiled_pread_basic@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656">i915#15656</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@intel_hwmon@hwmon-read:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840">i915#3840</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15256/bat-adls-6/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8939 -&gt; IGTPW_15256</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18562: 11a8456527f00d86dc8b23035c324da194fbbadb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15256: 8d195797c89b1e91db880f20f7a2e8aa1ed4b81d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8939: 8939</p>
+
+</body>
+</html>
+
+--===============4964741785733644161==--
