@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44D0DCD5BDE
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 08:52:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD3CCD4F54
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 08:52:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA53210E167;
-	Wed, 27 May 2026 08:52:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1572B10E167;
+	Wed, 27 May 2026 08:52:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YcPQMjZg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c3FrUzSC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3B0D10E167
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 08:50:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 71D5510E167
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 08:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779871858; x=1811407858;
+ t=1779871854; x=1811407854;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7KR356VUHv7B1YEvcMsqTOKP0Acf6NDw8c7I4WrDmsM=;
- b=YcPQMjZgaQEfSGl7pyvAFZaES24Ca7zvqlmaC982nwuAooEshJTHanDt
- O1NlEVuWsXg82OPBXc4rhp6b7K55z85XNIxkK5eYncDtjoDbcVvOASQpY
- XuyE+M3GxfdzcgKSyeSS7P6QBeuGE3bEMM1JnGU6wXdKppMVqjF861Syx
- RZo+rtfQdW99mdnMfTDF2j4fDkQ9Dbdrr99T28kEPSf9FMMNkLrCj00JV
- C12x3q/vUchxwdpF7TWPO6lpSts9F2sopKxP9NZJzT3DKgDsfbTWUQroj
- 9C1oOeUaOugB9SwqpIXmjJbjVd+V8tkYYCnllw3xsdO0xKiEZ6ScZ3fNd A==;
-X-CSE-ConnectionGUID: UpXJBAWSTlSXsHjSgW5KQg==
-X-CSE-MsgGUID: kNGvJ2jSSx+ij5f6Smr7LQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="91268724"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="91268724"
+ bh=ajZ9PVPFN4ROhwOaNFQQhEF9UrpYAM5zUIzdkLPUL/k=;
+ b=c3FrUzSCXwHd93Xu9K8Fd8zWlHFrBhLSsM2aOTA8sAfYLNC9ntOOxsR6
+ 7NnHbtd7V09HzPaUbahRVEcE8Y/BqXMou4WiKPpece17d3ZX68AoSqBsK
+ wA6oHvhHLAdJlx9CX+liF1ahrJqINjlWrUB9hLbna+75u9YoQKadqQM1Y
+ YU5FL6VzmdEB5XP1DgCIODfFwn7DBCWyEFEzL23Cmrc5VwSYVUgtOuU3d
+ t45mlOYDedOgmbCGV2Wap/DhlKLHVralpJK9YS6qSJ3QfPliEBviZrIbD
+ DRDZLZg7l38XSQlMnM74wyUEKyaMr1mFwv7S5NTs1YyhY+W9+jjax8rrs g==;
+X-CSE-ConnectionGUID: 8GPL+pJ+R+GZtvnwi63GPA==
+X-CSE-MsgGUID: 4reDGU31SUOIG4HArSh28Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="91268719"
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="91268719"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2026 01:50:58 -0700
-X-CSE-ConnectionGUID: iqTet0MoTgafCXFJ9ZULtg==
-X-CSE-MsgGUID: 406Rke8zRzSIQTdTE7sD5w==
+ 27 May 2026 01:50:53 -0700
+X-CSE-ConnectionGUID: y3MwkIggSjOdMkKJUnGg5Q==
+X-CSE-MsgGUID: 1lNW+jsaRC6bMD9iND5KtA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="244003685"
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="244003668"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 01:50:55 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 01:50:51 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: animesh.manna@intel.com, dibin.moolakadan.subrahmanian@intel.com,
  mohammed.thasleem@intel.com, ramanaidu.naladala@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t v8 4/7] tests/kms_vrr: Add new test for DC3CO validation
- with LOBF
-Date: Wed, 27 May 2026 14:19:12 +0530
-Message-ID: <20260527084915.1916365-5-jeevan.b@intel.com>
+Subject: [PATCH i-g-t v8 2/7] tests/intel/kms_pm_dc: Replace require with
+ proper assertion
+Date: Wed, 27 May 2026 14:19:10 +0530
+Message-ID: <20260527084915.1916365-3-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260527084915.1916365-1-jeevan.b@intel.com>
 References: <20260527084915.1916365-1-jeevan.b@intel.com>
@@ -70,83 +70,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add lobf-dc3co subtest to validate DC3CO entry during link-off
-between frames.
+The DC3CO video playback simulation test was incorrectly using require at
+the end to check if DC3CO state was entered. This causes the test to be
+marked as SKIP instead of FAIL when DC3CO doesn't work properly, hiding
+real issues. So changing the call from require to assert.
 
-v2: Fix the flow logic.
-
+Fixes: b89efa8048e58 ("tests/i915/i915_pm_dc: Check dc3co count to skip the test")
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_vrr.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ tests/intel/kms_pm_dc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 6043d40f1..82eb8554a 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -29,6 +29,7 @@
-  */
- 
- #include "igt.h"
-+#include "igt_pm.h"
- #include "igt_psr.h"
- #include "i915/intel_drrs.h"
- #include "sw_sync.h"
-@@ -76,6 +77,9 @@
-  *
-  * SUBTEST: negative-basic
-  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
-+ *
-+ * SUBTEST: lobf-dc3co
-+ * Description: Test DC3CO entry during LOBF.
-  */
- 
- #define NSECS_PER_SEC (1000000000ull)
-@@ -873,6 +877,25 @@ test_lobf(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
- 	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
- }
- 
-+static void test_lobf_dc3co(data_t *data, igt_crtc_t *crtc,
-+			    igt_output_t *output, uint32_t flags)
-+{
-+	unsigned long dc3co_count_before, dc3co_count_after;
-+
-+	dc3co_count_before = igt_read_dc_counter(data->debugfs_fd,
-+						 IGT_INTEL_CHECK_DC3CO);
-+
-+	test_lobf(data, crtc, output, flags);
-+
-+	dc3co_count_after = igt_read_dc_counter(data->debugfs_fd,
-+						IGT_INTEL_CHECK_DC3CO);
-+
-+	igt_assert_f(dc3co_count_after > dc3co_count_before,
-+		     "DC3CO should be entered during link-off periods. "
-+		     "Before: %lu, After: %lu\n",
-+		     dc3co_count_before, dc3co_count_after);
-+}
-+
- static void test_cleanup(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
- {
- 	igt_crtc_set_prop_value(crtc,
-@@ -1112,6 +1135,17 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
- 
- 			run_vrr_test(&data, test_lobf, TEST_LINK_OFF);
- 		}
-+
-+		igt_describe("This test validates DC3CO entry during LOBF (Link-Off Between "
-+			     "Frames) periods while VRR is active and PSR is disabled.");
-+
-+		igt_subtest_with_dynamic("lobf-dc3co") {
-+			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 35);
-+
-+			igt_require_dc_counter(data.debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+
-+			run_vrr_test(&data, test_lobf_dc3co, TEST_LINK_OFF);
-+		}
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index c8cfa300c..27fa5dc39 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -316,8 +316,7 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
+ 		usleep(delay);
  	}
  
- 	igt_fixture() {
+-	igt_require_f(igt_dc_state_wait_entry(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO,
+-					      dc3co_prev_cnt), "dc3co-vpb-simulation not enabled\n");
++	assert_dc_counter(data, IGT_INTEL_CHECK_DC3CO, dc3co_prev_cnt);
+ }
+ 
+ static void setup_dc3co(data_t *data)
 -- 
 2.43.0
 
