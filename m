@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10E10CD4F54
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 19:22:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B3CCD4F54
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 19:33:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDE0810E961;
-	Wed, 27 May 2026 19:22:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ILpK2vAu";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A00DE10E95F
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 19:22:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779909736; x=1811445736;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Vp5tR0O5jrPttUIJgpEPYdkAvID0uzWvb6ySv43YgNo=;
- b=ILpK2vAu4//zufkchwmX3x89Eva3RJNDXmqLJc+dq7Ngw08WLUP9S4QJ
- 4n/fTWbrtHjubJFouSbu7xAyJTqA89uyc7psTlY5MfIVy86j6opPTwnsX
- k4NOegS5uXglNApy4i90dQcNjkpjnJ2M4fGYa+If7MOIKQvSS+FOyL1Mf
- oHRHjErGBbIWeDsKqOD5lH9pLYcaaiLlDEBzE/vHAbNKMLOfC4Qa0sA6y
- mt3i0hg5kqBOfdta4ImmsHJtEFH0TVtBHMLhYqPcC/vvLmdM1wdwXO1d9
- yE6ic016wN0uQkj0NYQSM1kkK+yocYMax8/5WJSo8BDr+fjAJWat6+Yrn w==;
-X-CSE-ConnectionGUID: qIBijK9+RiCcyrBAsnhlGQ==
-X-CSE-MsgGUID: AI90XgFZR6yZM7BweeuTow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="91057306"
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; d="scan'208";a="91057306"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2026 12:22:16 -0700
-X-CSE-ConnectionGUID: 56yuPlZdQgGDBMwi4rzsGA==
-X-CSE-MsgGUID: xCrIYUQqTauh2/i/rvlX3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; d="scan'208";a="247280901"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 12:22:13 -0700
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] tests/kms_hdr: Use non-modeset commit for HDR metadata
- swaps
-Date: Thu, 28 May 2026 01:01:04 +0530
-Message-Id: <20260527193104.2533212-1-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 361EB10E967;
+	Wed, 27 May 2026 19:33:19 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 035D310E956;
+ Wed, 27 May 2026 19:32:58 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8892632563028449577=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_lib/genxml=3A_Introduce_Mes?=
+ =?utf-8?q?a_genxml_infrastructure_to_IGT_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jan Maslak" <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 27 May 2026 19:32:58 -0000
+Message-ID: <177991037800.17309.12938094177691464384@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260527131524.1649421-1-jan.maslak@intel.com>
+In-Reply-To: <20260527131524.1649421-1-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,71 +37,178 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-HDR metadata transitions (mastering info change within HDR, and
-HDR-to-SDR via metadata) should only update infoframe content and
-not require a full modeset. Remove the is_amdgpu_device() conditional
-and use flags=0 (no DRM_MODE_ATOMIC_ALLOW_MODESET) for both drivers.
+--===============8892632563028449577==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Known issue: static-swap subtest with TEST_NEEDS_DSC may fail on
-Intel when DSC is forced for the SDR transition. The forced DSC path
-computes a different compressed BPP compared to the natural DSC
-fallback path, causing DSC parameter mismatches that trigger
-'fastset requirement not met' in the kernel. This may require a KMD
-fix to ensure consistent DSC BPP computation between forced and
-natural DSC selection paths.
+== Series Details ==
 
-Co-developed-by: Claude Opus 4.6
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_hdr.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+Series: lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev4)
+URL   : https://patchwork.freedesktop.org/series/164446/
+State : failure
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index affd38887..3a38ae8e2 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -459,32 +459,24 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
- 
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
- 
--	/* Change the mastering information, no modeset allowed
--	 * for amd driver, whereas a modeset is required for intel
--	 * driver. */
-+	/* Change the mastering information, no modeset required
-+	 * as only infoframe content changes. */
- 	hdr.hdmi_metadata_type1.max_display_mastering_luminance = 200;
- 	hdr.hdmi_metadata_type1.max_fall = 200;
- 	hdr.hdmi_metadata_type1.max_cll = 100;
- 
- 	igt_hdr_set_metadata(data->output, &hdr);
--	if (is_amdgpu_device(data->fd))
--		igt_display_commit_atomic(display, 0, NULL);
--	else
--		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_display_commit_atomic(display, 0, NULL);
- 
- 	if (flags & TEST_NEEDS_DSC) {
- 		igt_force_dsc_enable(data->fd, data->output->name);
- 		igt_assert(igt_is_force_dsc_enabled(data->fd, data->output->name));
- 	}
--	/* Enter SDR via metadata, no modeset allowed for
--	 * amd driver, whereas a modeset is required for
--	 * intel driver. */
-+	/* Enter SDR via metadata, no modeset required as only
-+	 * infoframe content changes. */
- 	igt_hdr_fill_sdr(&hdr);
- 	igt_hdr_set_metadata(data->output, &hdr);
--	if (is_amdgpu_device(data->fd))
--		igt_display_commit_atomic(display, 0, NULL);
--	else
--		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_display_commit_atomic(display, 0, NULL);
- 	igt_debug_interactive_mode_check("traditional-sdr",
- 					 "SDR pattern displayed with traditional SDR metadata");
- 
--- 
-2.25.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8939_BAT -> XEIGTPW_15257_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_15257_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15257_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_15257_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-bmg-1:          [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-1/igt@xe_pat@pat-index-xe2.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-1/igt@xe_pat@pat-index-xe2.html
+    - bat-lnl-2:          [PASS][3] -> [INCOMPLETE][4] +1 other test incomplete
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-lnl-2/igt@xe_pat@pat-index-xe2.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-lnl-2/igt@xe_pat@pat-index-xe2.html
+    - bat-wcl-1:          [PASS][5] -> [INCOMPLETE][6] +1 other test incomplete
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_pat@pat-index-xe2.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-wcl-1/igt@xe_pat@pat-index-xe2.html
+    - bat-wcl-2:          [PASS][7] -> [INCOMPLETE][8] +1 other test incomplete
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-2/igt@xe_pat@pat-index-xe2.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-wcl-2/igt@xe_pat@pat-index-xe2.html
+    - bat-bmg-vm:         [PASS][9] -> [INCOMPLETE][10] +1 other test incomplete
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-vm/igt@xe_pat@pat-index-xe2.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-vm/igt@xe_pat@pat-index-xe2.html
+    - bat-ptl-2:          [PASS][11] -> [INCOMPLETE][12] +1 other test incomplete
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-2/igt@xe_pat@pat-index-xe2.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-ptl-1:          [PASS][13] -> [INCOMPLETE][14] +1 other test incomplete
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-1/igt@xe_pat@pat-index-xe2@render.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-1/igt@xe_pat@pat-index-xe2@render.html
+    - bat-ptl-vm:         [PASS][15] -> [INCOMPLETE][16] +1 other test incomplete
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html
+    - bat-lnl-1:          [PASS][17] -> [INCOMPLETE][18] +1 other test incomplete
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-lnl-1/igt@xe_pat@pat-index-xe2@render.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-lnl-1/igt@xe_pat@pat-index-xe2@render.html
+    - bat-bmg-2:          [PASS][19] -> [INCOMPLETE][20] +1 other test incomplete
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8939 -> IGTPW_15257
+
+  IGTPW_15257: 145439d385ab80ed835e87579702146ab155c123 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8939: 8939
+  xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/index.html
+
+--===============8892632563028449577==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164446/">https://patchwork.freedesktop.org/series/164446/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8939_BAT -&gt; XEIGTPW_15257_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_15257_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15257_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15257_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-1/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-1/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
+<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-lnl-2/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-lnl-2/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
+<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-wcl-1/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
+<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-2/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-wcl-2/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
+<li>bat-bmg-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-vm/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-vm/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
+<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-2/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-2/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2@render:</p>
+<ul>
+<li>bat-ptl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-1/igt@xe_pat@pat-index-xe2@render.html">INCOMPLETE</a> +1 other test incomplete</li>
+<li>bat-ptl-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html">INCOMPLETE</a> +1 other test incomplete</li>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-lnl-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-lnl-1/igt@xe_pat@pat-index-xe2@render.html">INCOMPLETE</a> +1 other test incomplete</li>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">INCOMPLETE</a> +1 other test incomplete</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8939 -&gt; IGTPW_15257</li>
+</ul>
+<p>IGTPW_15257: 145439d385ab80ed835e87579702146ab155c123 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8939: 8939<br />
+  xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb</p>
+
+</body>
+</html>
+
+--===============8892632563028449577==--
