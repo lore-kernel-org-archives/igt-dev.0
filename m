@@ -4,67 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 633EECD5BD0
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 13:23:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA166CD5BD5
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 13:30:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1697110E7D5;
-	Wed, 27 May 2026 13:23:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7E07F896E9;
+	Wed, 27 May 2026 13:30:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mpXF9o8O";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hlQe2H0s";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A8AD10E7D4
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 13:22:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 298C2896E9
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 13:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779888172; x=1811424172;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=EcxFfNKAs3hypNFuJeNQlW2x3BUAlfcHD04AmGegUA0=;
- b=mpXF9o8O8RGh7lNP6wO8BJPlkJ8JbjGYh/wT1ohi2g05Xir8HwifSEdS
- E7zksVoZ5xSztAT/B+ZTZwQQbV8bfRG80u6LSLMre0bSRK0HyIqi3hGrm
- zRh38SA4AlUDjjkv7klfEIOrCER97YxjVTuwKV/yTKl71jkCpxekOxRe7
- 9gBKFTxk2bYCRXHfuBS2Wx66XZlEmm3TvWWA69G8o8mNBHMSaaTQAzsM7
- PFBtkY/2lz7KonBsy6vlcwVAQFKf3xrZZE6xWB81dn9tOfpXNJOmlDg1e
- bJoSL1Jxbn8/CaCCV01yHKV0cQuk8qcLtBBe8NUXPrCgu4Nbfn2dAJg92 A==;
-X-CSE-ConnectionGUID: HS48YG44TDaURrG6LzQCaQ==
-X-CSE-MsgGUID: L+hks6w0ROmn0j7Dzp+7YQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="84342242"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="84342242"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2026 06:22:52 -0700
-X-CSE-ConnectionGUID: im0m/lKGSFqZG2PHxB1q0A==
-X-CSE-MsgGUID: bl+TEoqNR7KwEEn4wQDKug==
+ t=1779888585; x=1811424585;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=hZ4eWgakG/edU3jYsY7+H0cD7vXcBaA7W/Kz58zYTSA=;
+ b=hlQe2H0slQGdRr59CwhOaUytCdk+gTsJDPE8LvD7TIx57QXm/TRTRq5p
+ G04I4pNNfB5Dft2gUjaNlM0STB8RI7sJ6HAA/afI0QYDkRRv7XzL6wbhI
+ IUgCBu+n63xVk8XuLCImk+kmWY5hB+6iv92whGoyOJYQ56s2BigN6qzcJ
+ mKeJZpkjlGykTv4ipEinnSa0N/CHSDkAhAoqJY58rs2e8KVvcbYMEvfY1
+ V3MRcyg9cFAuMxEsOtMztG529D2ueJF8Jmz4HnW6V8vNDDt+dC7PQQnHy
+ J7BUVoORHCz4gHUG6KfnjqeXGiRnjk7vMGYfrATSNi91Nr85o4MPsc7hp g==;
+X-CSE-ConnectionGUID: VOtwDgQzQK6D25ywon9+MA==
+X-CSE-MsgGUID: ddz+lCeMRA+0dpaDHuWmGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80567409"
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="80567409"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2026 06:29:44 -0700
+X-CSE-ConnectionGUID: R7CLVj9oRdug8XmU+ow6Yg==
+X-CSE-MsgGUID: XCnOiDVrS+KFF8JMMbKsfw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="265845864"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 06:22:50 -0700
-Date: Wed, 27 May 2026 15:22:47 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
- zbigniew.kempczynski@intel.com, x.wang@intel.com,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH v4 1/2] lib/drmtest: add __drm_open_driver_path()
-Message-ID: <20260527132247.oqxnekctlpttxoyc@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
- zbigniew.kempczynski@intel.com, x.wang@intel.com,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-References: <cover.1779793438.git.sebastian.brzezinka@intel.com>
- <ce36517d762c8e1f7e8988df446f12853f2fdda6.1779793676.git.sebastian.brzezinka@intel.com>
- <c7f64283b82bdbf091007180335a3eed6a56c4ba@intel.com>
- <DISLAJF1M2CM.34O1ZGNO7XPCJ@intel.com>
- <52f0ee9cddf9c1efdac53691c82f5a147afb8556@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="242079798"
+Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2026 06:29:42 -0700
+From: Sowmiya S <sowmiya.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com, swati2.sharma@intel.com,
+ ramanaidu.naladala@intel.com, Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v3 0/3] Fix 2-display test for MST shared-link BW
+Date: Wed, 27 May 2026 19:21:05 +0530
+Message-ID: <20260527135109.3291120-1-sowmiya.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <52f0ee9cddf9c1efdac53691c82f5a147afb8556@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,61 +66,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2026-05-26 at 15:07:57 +0300, Jani Nikula wrote:
-> On Tue, 26 May 2026, "Sebastian Brzezinka" <sebastian.brzezinka@intel.com> wrote:
-> > Hi Jani,
-> >
-> > On Tue May 26, 2026 at 1:51 PM CEST, Jani Nikula wrote:
-> >> On Tue, 26 May 2026, Sebastian Brzezinka <sebastian.brzezinka@intel.com> wrote:
-> >>> Add __drm_open_driver_path() as a path-based DRM open helper. It opens
-> >>> the given path with O_RDWR, verifies the resulting fd is a DRM device by
-> >>> issuing DRM_IOCTL_VERSION via __get_drm_device_name() before proceeding
-> >>> (returning -1 and closing on failure), logs the opened device path, and
-> >>> populates the xe_device cache when the device is Xe.
-> >>>
-> >>> The __ prefix signals that the function does not throw assertions or
-> >>> igt_require() calls, consistent with the existing __drm_open_driver*
-> >>> family.
-> >>
-> >> FWIW, I think the __ prefix should indicate "implementation detail,
-> >> don't call directly" or something along those lines.
-> >>
-> >> I think it's problematic to encourage tests to call __ prefixed
-> >> functions.
+On MST hubs / daisy-chain setups two display streams
+share one DP link; a joint atomic commit can be rejected
+by the driver if the combined mode bandwidth exceeds the
+link capacity. The driver therefore adjusts per-pipe
+settings (for example reducing pipe bpp and enabling
+dithering) when both streams are committed together,
+so tests must pick a mode combination the driver will accept.
 
+Sowmiya S (1):
+  tests/intel/kms_pipe_stress: fit display modes to MST link budget
+  lib/igt_kms: Add MST bandwidth-fitting support and helpers
+  tests/kms_plane_multiple: Fix 2-display test for MST shared-link BW
 
-> > In general I agree with you, but in v3 Kamil comment on this:
-> > ```
-> >>>Could you rename it into __drm_open_driver_path?
-> >>>The idea is that all __functions should not throw asserts nor
-> >>>require.
-> > ```
-> >
-> > So I added an explanation in the comment.
-> 
-> I obviously disagree with all of that, but *shrug*.
+ lib/igt_kms.c                 | 37 +++++++++++++++
+ lib/igt_kms.h                 |  2 +
+ tests/intel/kms_pipe_stress.c | 51 +++++++++++++++++++++
+ tests/kms_plane_multiple.c    | 85 +++++++++++++++++++++++++++++------
+ 4 files changed, 161 insertions(+), 14 deletions(-)
 
-We could implement separete lib functions for tools but
-that will require duplicate effort.
+-- 
+2.48.1
 
-The idea with __function is that it should be implemented
-without any igt_assert nor igt_require so tools could use them.
-We could go with function() but then developers could
-later on change behaviour and break a tool.
-
-Or we could add some suffix to a name? function_safe()?
-
-Btw why tool/igt_power couldn't just read sysfs? Why does it
-needs to open /dev/dri/card* to get any info? +cc Ville
-
-Regards,
-Kamil
-
-> 
-> BR,
-> Jani.
-> 
-> 
-> -- 
-> Jani Nikula, Intel
