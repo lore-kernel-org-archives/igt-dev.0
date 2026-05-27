@@ -4,62 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E048CD5BD0
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 12:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 722BACD5BD0
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 13:16:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4DF8E8921E;
-	Wed, 27 May 2026 12:56:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F257510E7BE;
+	Wed, 27 May 2026 13:16:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ShgeGveO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h+N/NmMs";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D9EE10E266
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 12:55:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60D9610E7BE
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 13:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779886558; x=1811422558;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Tuwmu5pYhQM+Ma1SdbAEPzMAImAuMlrEEWCKEcovBb4=;
- b=ShgeGveO21vmPfa+HlfQY5gDBbaACPQBV0qxsev8fD0dSEeCbcLBCpjy
- bCmJVKzp3Q7l7QEojdNa2LAy2R6stUUfDjFkWFZxXKP42oZH5lSjkurwQ
- pv6V1NS4u2B6dJGtC3eQledmM7MI91AkLXALp4loHlYpsOfkoadc5gQlp
- 8Q/Ysx5B2wIfPJivaImt6RDOLbP87+7hKinvKPFF/IW6gpuoXqiegOiPf
- r15gnSdbzVxN1I8fh8LfenzVeyVYi7SnxVTpudzweR7okSYyplzc1P03I
- 2n99/8rXwgdPZk9deqCQiYZjWCnPvZ3XQa5SqKhQV5DxSaiiCnq9D03mh A==;
-X-CSE-ConnectionGUID: L1w95i8XS8mzHQnvFk3XbQ==
-X-CSE-MsgGUID: vBvxEG+XQ82sig/1wyxDUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="68237885"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="68237885"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2026 05:55:58 -0700
-X-CSE-ConnectionGUID: cMfswQHKTT+M39BMQoq2Jw==
-X-CSE-MsgGUID: qU+jEYJQQbSohl3mTNeL0A==
+ t=1779887781; x=1811423781;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=UF089LaAkGC0S8bSt1dbtUdrDSY2wYkEAPqYmek6jzk=;
+ b=h+N/NmMsd6Jrhov4cGqGE3U6ae/cCN7+L9N1dPB2RjZvPbxmAe+IfNMy
+ GGW3oNbnstpz9dFjvldDmL+YdL5HjRD0eQThUU+812PteOLdjxnpTBzHU
+ mCvJjya+sAGoTIJriVvCmH0z0xtxuDu1UWcWystiTbxVaztk4tXoB7x0b
+ OQGPvV2YivDM3iwWcaV9GOA9NfAswrxWuT6WxXfGSNh0pzvCW05BXGGaO
+ dlaxHJmgDXafuwmG5/eapiaFZCxYH4xuSdy63keHUFt9zeSWvlvYOGUQU
+ dOsDKOsbkaShXC2U7daD0PoawCfNQAJSu9XFL6AJc3dOHxg9NF7rNcswY g==;
+X-CSE-ConnectionGUID: i1H/T0AOS0WvxG5pdhqAtA==
+X-CSE-MsgGUID: j0c4O1vVRU2r9mDBuqp51Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80686824"
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="80686824"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2026 06:15:52 -0700
+X-CSE-ConnectionGUID: 30KfjtPVRdGNLFfHJnmu2A==
+X-CSE-MsgGUID: h/9xYcGkS4iRRl97PNeo5g==
 X-ExtLoop1: 1
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 05:55:57 -0700
-Date: Wed, 27 May 2026 14:55:39 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Maarten Lankhorst <dev@lankhorst.se>
-Cc: igt-dev@lists.freedesktop.org,
- =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
-Subject: Re: [PATCH v2 1/3] drm-uapi: Update drm_mode.h to linux upstream tag
- v7.1-rc4.
-Message-ID: <20260527125539.a3ozxfhw4tjiz75l@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Maarten Lankhorst <dev@lankhorst.se>, igt-dev@lists.freedesktop.org,
- =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
-References: <20260522155635.1215421-1-dev@lankhorst.se>
- <20260522155635.1215421-2-dev@lankhorst.se>
- <20260526161708.4lmrpp7fdtzdzlzo@kamilkon-DESK.igk.intel.com>
- <d32e8813-eacb-4320-9931-9fa4e82cf05c@lankhorst.se>
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="241201504"
+Received: from art-dev-395.igk.intel.com ([10.211.135.233])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2026 06:15:51 -0700
+From: Jan Maslak <jan.maslak@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: zbigniew.kempczynski@intel.com,
+	Jan Maslak <jan.maslak@intel.com>
+Subject: [PATCH 00/10] lib/genxml: Introduce Mesa genxml infrastructure to IGT
+Date: Wed, 27 May 2026 15:15:11 +0200
+Message-ID: <20260527131524.1649421-1-jan.maslak@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d32e8813-eacb-4320-9931-9fa4e82cf05c@lankhorst.se>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,380 +67,149 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Maarten,
-On 2026-05-26 at 19:47:18 +0200, Maarten Lankhorst wrote:
-> Hello,
-> 
-> Den 2026-05-26 kl. 18:17, skrev Kamil Konieczny:
-> > Hi Maarten,
-> > On 2026-05-22 at 17:56:33 +0200, Maarten Lankhorst wrote:
-> > 
-> > please sync with drm-next as is documented in README.md,
-> > so imho better:
-> > 
-> > [PATCH v2 1/3] drm-uapi/drm_mode: Sync with drm-next up to a1b6cf8e5e7e
-> > 
-> >> Take the drm_mode.h from commit 5200f5f493f7 ("Linux 7.1-rc4")
-> > 
-> > Please use drm-next here.
-> > 
-> >> to get all the background property macros:
-> > 
-> > Add newline here.
-> > 
-> >> a1b6cf8e5e7e ("drm: uapi: Use SPDX in DRM core uAPI headers")
-> >> 4c684596cde4 ("drm: Add CRTC background color property")
-> > 
-> > Imho there are missing more, see below.
-> drm-next should only be taken if the UAPI is not in -rc yet,
-> as an exception not as default.
-> 
-> In this case color management headers made it into a rc kernel,
-> so we should take linus' kernel instead.
+Currently IGT uses raw intel_bb_out() calls for setting up the render /
+compute pipelines. Fields are set by shifting and OR-ing hand-computed
+constants, with field names and bit positions hardcoded and sometimes
+explained in comments. A lot of code has branching based on generations,
+making pipeline setup more complex as the new generations come in.
 
-Why not drm-next? Both Linus' and drm-next have the same
-commits (with the same hashes also), so we can stick to
-drm-next.
+Meanwhile Mesa uses a system called genxml in which XML files describe GPU
+commands, state objects, enums, and registers - specifying the field layout
+down to individual bits. A Python generator then produces C headers with
+typed structs, pack functions, and named constants for each command/state.
 
-> 
-> > 
-> >>
-> >> Update linux_scaffold.h to take the new changes into account.
-> >>
-> >> Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-> >> Cc: Adrián Larumbe <adrian.larumbe@collabora.com>
-> >> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> >> ---
-> >>  include/drm-uapi/drm_mode.h | 193 ++++++++++++++++++++++++++++++++++--
-> >>  include/linux_scaffold.h    |   2 +
-> >>  2 files changed, 188 insertions(+), 7 deletions(-)
-> >>
-> >> diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-> >> index de10ce859f..8513ce24f3 100644
-> >> --- a/include/drm-uapi/drm_mode.h
-> >> +++ b/include/drm-uapi/drm_mode.h
-> > 
-> > There are missing changes into SPDX, I usually do 'make clean'
-> > before 'make INSTALL_HDR_PATH=/tmp/igtuapi headers_install'
-> > 
-> >> @@ -166,6 +166,10 @@ extern "C" {
-> >>  #define DRM_MODE_LINK_STATUS_GOOD	0
-> >>  #define DRM_MODE_LINK_STATUS_BAD	1
-> >>  
-> >> +/* Panel type property */
-> >> +#define DRM_MODE_PANEL_TYPE_UNKNOWN	0
-> >> +#define DRM_MODE_PANEL_TYPE_OLED	1
-> >> +
-> >>  /*
-> >>   * DRM_MODE_ROTATE_<degrees>
-> >>   *
-> >> @@ -895,31 +899,48 @@ enum drm_colorop_type {
-> >>  	/**
-> >>  	 * @DRM_COLOROP_1D_CURVE:
-> >>  	 *
-> >> +	 * enum string "1D Curve"
-> >> +	 *
-> >>  	 * A 1D curve that is being applied to all color channels. The
-> >> -	 * curve is specified via tha CURVE_1D_TYPE colorop property.
-> >> +	 * curve is specified via the CURVE_1D_TYPE colorop property.
-> >>  	 */
-> >>  	DRM_COLOROP_1D_CURVE,
-> >>  
-> >>  	/**
-> >>  	 * @DRM_COLOROP_1D_LUT:
-> >>  	 *
-> >> +	 * enum string "1D LUT"
-> >> +	 *
-> >>  	 * A simple 1D LUT of uniformly spaced &drm_color_lut32 entries,
-> >> -	 * packed into a blob via the DATA property. The driver's expected
-> >> -	 * LUT size is advertised via the SIZE property.
-> >> +	 * packed into a blob via the DATA property. The driver's
-> >> +	 * expected LUT size is advertised via the SIZE property.
-> >> +	 *
-> >> +	 * The DATA blob is an array of struct drm_color_lut32 with size
-> >> +	 * of "size".
-> >>  	 */
-> >>  	DRM_COLOROP_1D_LUT,
-> >>  
-> >>  	/**
-> >>  	 * @DRM_COLOROP_CTM_3X4:
-> >>  	 *
-> >> +	 * enum string "3x4 Matrix"
-> >> +	 *
-> >>  	 * A 3x4 matrix. Its values are specified via the
-> >>  	 * &drm_color_ctm_3x4 struct provided via the DATA property.
-> >> +	 *
-> >> +	 * The DATA blob is a float[12]:
-> >> +	 * out   matrix          in
-> >> +	 * | R |   | 0  1  2  3  |   | R |
-> >> +	 * | G | = | 4  5  6  7  | x | G |
-> >> +	 * | B |   | 8  9  10 12 |   | B |
-> >>  	 */
-> >>  	DRM_COLOROP_CTM_3X4,
-> >>  
-> >>  	/**
-> >>  	 * @DRM_COLOROP_MULTIPLIER:
-> >>  	 *
-> >> +	 * enum string "Multiplier"
-> >> +	 *
-> >>  	 * A simple multiplier, applied to all color values. The
-> >>  	 * multiplier is specified as a S31.32 via the MULTIPLIER
-> >>  	 * property.
-> >> @@ -929,16 +950,28 @@ enum drm_colorop_type {
-> >>  	/**
-> >>  	 * @DRM_COLOROP_3D_LUT:
-> >>  	 *
-> >> -	 * A 3D LUT of &drm_color_lut entries,
-> >> +	 * enum string "3D LUT"
-> >> +	 *
-> >> +	 * A 3D LUT of &drm_color_lut32 entries,
-> >>  	 * packed into a blob via the DATA property. The driver's expected
-> >> -	 * LUT size is advertised via the SIZE property.
-> >> +	 * LUT size is advertised via the SIZE property, i.e., a 3D LUT with
-> >> +	 * 17x17x17 entries will have SIZE set to 17.
-> >> +	 *
-> >> +	 * The DATA blob is a 3D array of struct drm_color_lut32 with dimension
-> >> +	 * length of "size".
-> >> +	 * The LUT elements are traversed like so:
-> >> +	 *
-> >> +	 *   for B in range 0..n
-> >> +	 *     for G in range 0..n
-> >> +	 *       for R in range 0..n
-> >> +	 *        index = R + n * (G + n * B)
-> >> +	 *         color = lut3d[index]
-> >>  	 */
-> >>  	DRM_COLOROP_3D_LUT,
-> >>  };
-> >>  
-> >>  /**
-> >>   * enum drm_colorop_lut3d_interpolation_type - type of 3DLUT interpolation
-> >> - *
-> >>   */
-> >>  enum drm_colorop_lut3d_interpolation_type {
-> >>  	/**
-> >> @@ -949,6 +982,19 @@ enum drm_colorop_lut3d_interpolation_type {
-> >>  	DRM_COLOROP_LUT3D_INTERPOLATION_TETRAHEDRAL,
-> >>  };
-> >>  
-> >> +/**
-> >> + * enum drm_colorop_lut1d_interpolation_type - type of interpolation for 1D LUTs
-> >> + */
-> >> +enum drm_colorop_lut1d_interpolation_type {
-> > 
-> > This comes from 7fa3ee8c0a79 drm/colorop: Define LUT_1D interpolation
-> > so commits delta is:
-> > 
-> > $ [drm-next] git lg -- include/uapi/drm/drm_mode.h
-> > 
-> > a1b6cf8e5e7e drm: uapi: Use SPDX in DRM core uAPI headers
-> > 4c684596cde4 drm: Add CRTC background color property
-> > 42dab3138176 drm/connector: Add a new 'panel_type' property
-> > db971856bbe0 drm/colorop: Add 3D LUT support to color pipeline
-> > 7fa3ee8c0a79 drm/colorop: Define LUT_1D interpolation
-> > 
-> Is it necessary to list all commits? The commit id should be enough
-> to determine that.
+By bringing genxml to IGT, we can achieve a more maintainable and less
+error-prone codebase. Instead of manually calculating bit positions and
+creating complex branching logic, we can fill out the structs generated
+from XML descriptions, and the packing functions will handle the bit
+manipulation automatically.
 
-This could show what new features needs to be tested, so I
-would prefer complete and explicit list here.
+This series brings Mesa's hardware XML command/state definitions and
+gen_pack_header.py code generator into IGT, adds a new IGT-written
+batch buffer decoder (gen_decode_header.py), and converts rendercopy_gen9
+to use the generated pack headers.
 
-Regards,
-Kamil
+Patches 1-4 import the generators, headers, and XML definitions.
+gen_pack_header.py is taken from Mesa with C90 compliance fixes and a
+new baseline deduplication mechanism - when a platform's command layout
+matches any older generation exactly, the item is omitted entirely.
+gen_decode_header.py is a new IGT-only file that generates per-platform
+decoders for instructions, structs, and registers. The XML files are
+imported from Mesa split by generation: gen4-gen8, gen9-gen12.5, and
+Xe2/Xe3/Xe3p.
 
-> 
-> ~Maarten
-> > Regards,
-> > Kamil
-> > 
-> >> +	/**
-> >> +	 * @DRM_COLOROP_LUT1D_INTERPOLATION_LINEAR:
-> >> +	 *
-> >> +	 * Linear interpolation. Values between points of the LUT will be
-> >> +	 * linearly interpolated.
-> >> +	 */
-> >> +	DRM_COLOROP_LUT1D_INTERPOLATION_LINEAR,
-> >> +};
-> >> +
-> >>  /**
-> >>   * struct drm_plane_size_hint - Plane size hints
-> >>   * @width: The width of the plane in pixel
-> >> @@ -1054,6 +1100,14 @@ struct hdr_output_metadata {
-> >>   * Request that the kernel sends back a vblank event (see
-> >>   * struct drm_event_vblank) with the &DRM_EVENT_FLIP_COMPLETE type when the
-> >>   * page-flip is done.
-> >> + *
-> >> + * When used with atomic uAPI, one event will be delivered per CRTC included in
-> >> + * the atomic commit. A CRTC is included in an atomic commit if one of its
-> >> + * properties is set, or if a property is set on a connector or plane linked
-> >> + * via the CRTC_ID property to the CRTC. At least one CRTC must be included,
-> >> + * and all pulled in CRTCs must be either previously or newly powered on (in
-> >> + * other words, a powered off CRTC which stays off cannot be included in the
-> >> + * atomic commit).
-> >>   */
-> >>  #define DRM_MODE_PAGE_FLIP_EVENT 0x01
-> >>  /**
-> >> @@ -1150,7 +1204,7 @@ struct drm_mode_crtc_page_flip_target {
-> >>   * struct drm_mode_create_dumb - Create a KMS dumb buffer for scanout.
-> >>   * @height: buffer height in pixels
-> >>   * @width: buffer width in pixels
-> >> - * @bpp: bits per pixel
-> >> + * @bpp: color mode
-> >>   * @flags: must be zero
-> >>   * @handle: buffer object handle
-> >>   * @pitch: number of bytes between two consecutive lines
-> >> @@ -1158,6 +1212,54 @@ struct drm_mode_crtc_page_flip_target {
-> >>   *
-> >>   * User-space fills @height, @width, @bpp and @flags. If the IOCTL succeeds,
-> >>   * the kernel fills @handle, @pitch and @size.
-> >> + *
-> >> + * The value of @bpp is a color-mode number describing a specific format
-> >> + * or a variant thereof. The value often corresponds to the number of bits
-> >> + * per pixel for most modes, although there are exceptions. Each color mode
-> >> + * maps to a DRM format plus a number of modes with similar pixel layout.
-> >> + * Framebuffer layout is always linear.
-> >> + *
-> >> + * Support for all modes and formats is optional. Even if dumb-buffer
-> >> + * creation with a certain color mode succeeds, it is not guaranteed that
-> >> + * the DRM driver supports any of the related formats. Most drivers support
-> >> + * a color mode of 32 with a format of DRM_FORMAT_XRGB8888 on their primary
-> >> + * plane.
-> >> + *
-> >> + * +------------+------------------------+------------------------+
-> >> + * | Color mode | Framebuffer format     | Compatible formats     |
-> >> + * +============+========================+========================+
-> >> + * |     32     |  * DRM_FORMAT_XRGB8888 |  * DRM_FORMAT_BGRX8888 |
-> >> + * |            |                        |  * DRM_FORMAT_RGBX8888 |
-> >> + * |            |                        |  * DRM_FORMAT_XBGR8888 |
-> >> + * +------------+------------------------+------------------------+
-> >> + * |     24     |  * DRM_FORMAT_RGB888   |  * DRM_FORMAT_BGR888   |
-> >> + * +------------+------------------------+------------------------+
-> >> + * |     16     |  * DRM_FORMAT_RGB565   |  * DRM_FORMAT_BGR565   |
-> >> + * +------------+------------------------+------------------------+
-> >> + * |     15     |  * DRM_FORMAT_XRGB1555 |  * DRM_FORMAT_BGRX1555 |
-> >> + * |            |                        |  * DRM_FORMAT_RGBX1555 |
-> >> + * |            |                        |  * DRM_FORMAT_XBGR1555 |
-> >> + * +------------+------------------------+------------------------+
-> >> + * |      8     |  * DRM_FORMAT_C8       |  * DRM_FORMAT_D8       |
-> >> + * |            |                        |  * DRM_FORMAT_R8       |
-> >> + * +------------+------------------------+------------------------+
-> >> + * |      4     |  * DRM_FORMAT_C4       |  * DRM_FORMAT_D4       |
-> >> + * |            |                        |  * DRM_FORMAT_R4       |
-> >> + * +------------+------------------------+------------------------+
-> >> + * |      2     |  * DRM_FORMAT_C2       |  * DRM_FORMAT_D2       |
-> >> + * |            |                        |  * DRM_FORMAT_R2       |
-> >> + * +------------+------------------------+------------------------+
-> >> + * |      1     |  * DRM_FORMAT_C1       |  * DRM_FORMAT_D1       |
-> >> + * |            |                        |  * DRM_FORMAT_R1       |
-> >> + * +------------+------------------------+------------------------+
-> >> + *
-> >> + * Color modes of 10, 12, 15, 30 and 64 are only supported for use by
-> >> + * legacy user space. Please don't use them in new code. Other modes
-> >> + * are not support.
-> >> + *
-> >> + * Do not attempt to allocate anything but linear framebuffer memory
-> >> + * with single-plane RGB data. Allocation of other framebuffer
-> >> + * layouts requires dedicated ioctls in the respective DRM driver.
-> >>   */
-> >>  struct drm_mode_create_dumb {
-> >>  	__u32 height;
-> >> @@ -1447,6 +1549,83 @@ struct drm_mode_closefb {
-> >>  	__u32 pad;
-> >>  };
-> >>  
-> >> +/*
-> >> + * Put 16-bit ARGB values into a standard 64-bit representation that can be
-> >> + * used for ioctl parameters, inter-driver communication, etc.
-> >> + *
-> >> + * If the component values being provided contain less than 16 bits of
-> >> + * precision, use a conversion ratio to get a better color approximation.
-> >> + * The ratio is computed as (2^16 - 1) / (2^bpc - 1), where bpc and 16 are
-> >> + * the input and output precision, respectively.
-> >> + * Also note bpc must be greater than 0.
-> >> + */
-> >> +#define __DRM_ARGB64_PREP(c, shift)					\
-> >> +	(((__u64)(c) & __GENMASK(15, 0)) << (shift))
-> >> +
-> >> +#define __DRM_ARGB64_PREP_BPC(c, shift, bpc)				\
-> >> +({									\
-> >> +	__u16 mask = __GENMASK((bpc) - 1, 0);				\
-> >> +	__u16 conv = __KERNEL_DIV_ROUND_CLOSEST((mask & (c)) *		\
-> >> +						__GENMASK(15, 0), mask);\
-> >> +	__DRM_ARGB64_PREP(conv, shift);					\
-> >> +})
-> >> +
-> >> +#define DRM_ARGB64_PREP(alpha, red, green, blue)			\
-> >> +(									\
-> >> +	__DRM_ARGB64_PREP(alpha, 48) |					\
-> >> +	__DRM_ARGB64_PREP(red,   32) |					\
-> >> +	__DRM_ARGB64_PREP(green, 16) |					\
-> >> +	__DRM_ARGB64_PREP(blue,   0)					\
-> >> +)
-> >> +
-> >> +#define DRM_ARGB64_PREP_BPC(alpha, red, green, blue, bpc)		\
-> >> +({									\
-> >> +	__typeof__(bpc) __bpc = bpc;					\
-> >> +	__DRM_ARGB64_PREP_BPC(alpha, 48, __bpc) |			\
-> >> +	__DRM_ARGB64_PREP_BPC(red,   32, __bpc) |			\
-> >> +	__DRM_ARGB64_PREP_BPC(green, 16, __bpc) |			\
-> >> +	__DRM_ARGB64_PREP_BPC(blue,   0, __bpc);			\
-> >> +})
-> >> +
-> >> +/*
-> >> + * Extract the specified color component from a standard 64-bit ARGB value.
-> >> + *
-> >> + * If the requested precision is less than 16 bits, make use of a conversion
-> >> + * ratio calculated as (2^bpc - 1) / (2^16 - 1), where bpc and 16 are the
-> >> + * output and input precision, respectively.
-> >> + *
-> >> + * If speed is more important than accuracy, use DRM_ARGB64_GET*_BPCS()
-> >> + * instead of DRM_ARGB64_GET*_BPC() in order to replace the expensive
-> >> + * division with a simple bit right-shift operation.
-> >> + */
-> >> +#define __DRM_ARGB64_GET(c, shift)					\
-> >> +	((__u16)(((__u64)(c) >> (shift)) & __GENMASK(15, 0)))
-> >> +
-> >> +#define __DRM_ARGB64_GET_BPC(c, shift, bpc)				\
-> >> +({									\
-> >> +	__u16 comp = __DRM_ARGB64_GET(c, shift);			\
-> >> +	__KERNEL_DIV_ROUND_CLOSEST(comp * __GENMASK((bpc) - 1, 0),	\
-> >> +				   __GENMASK(15, 0));			\
-> >> +})
-> >> +
-> >> +#define __DRM_ARGB64_GET_BPCS(c, shift, bpc)				\
-> >> +	(__DRM_ARGB64_GET(c, shift) >> (16 - (bpc)))
-> >> +
-> >> +#define DRM_ARGB64_GETA(c)		__DRM_ARGB64_GET(c, 48)
-> >> +#define DRM_ARGB64_GETR(c)		__DRM_ARGB64_GET(c, 32)
-> >> +#define DRM_ARGB64_GETG(c)		__DRM_ARGB64_GET(c, 16)
-> >> +#define DRM_ARGB64_GETB(c)		__DRM_ARGB64_GET(c, 0)
-> >> +
-> >> +#define DRM_ARGB64_GETA_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 48, bpc)
-> >> +#define DRM_ARGB64_GETR_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 32, bpc)
-> >> +#define DRM_ARGB64_GETG_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 16, bpc)
-> >> +#define DRM_ARGB64_GETB_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 0, bpc)
-> >> +
-> >> +#define DRM_ARGB64_GETA_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 48, bpc)
-> >> +#define DRM_ARGB64_GETR_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 32, bpc)
-> >> +#define DRM_ARGB64_GETG_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 16, bpc)
-> >> +#define DRM_ARGB64_GETB_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 0, bpc)
-> >> +
-> >>  #if defined(__cplusplus)
-> >>  }
-> >>  #endif
-> >> diff --git a/include/linux_scaffold.h b/include/linux_scaffold.h
-> >> index 0c970c8607..d5dba8e63e 100644
-> >> --- a/include/linux_scaffold.h
-> >> +++ b/include/linux_scaffold.h
-> >> @@ -47,6 +47,8 @@ static inline s64 sign_extend64(u64 value, int index)
-> >>  	(((~_ULL(0)) - (_ULL(1) << (l)) + 1) & \
-> >>  	(~_ULL(0) >> (BITS_PER_LONG_LONG - 1 - (h))))
-> >>  
-> >> +#define __GENMASK GENMASK
-> >> +
-> >>  #define BITS_PER_BYTE 8
-> >>  #define BITS_PER_TYPE(t) (sizeof(t) * BITS_PER_BYTE)
-> >>  #define BITS_PER_LONG BITS_PER_TYPE(long)
-> >> -- 
-> >> 2.53.0
-> >>
-> 
+Patch 5 adds intel_get_wb_mocs() and intel_buf_mocs() helpers that
+return the correct 7-bit genxml MOCS field value.
+
+Patches 6-9 convert rendercopy_gen9.c to use the generated pack headers,
+replacing hand-written intel_bb_out() calls with igt_genxml_emit and
+igt_genxml_pack_state, split by functional section.
+
+Patch 10 adds an opt-in annotated batch dump to intel_bb_dump(): when
+IGT_BB_ANNOTATE=1 is set a companion .annotated file is written alongside
+the raw hex dump, decoding each command's field names and values.
+
+Tested on LNL and DG2 (xe_render_copy render-square, render-full;
+xe_intel_bb render) and TGL (gem_render_copy_redux; api_intel_bb).
+
+v2:
+ - Move genxml files to lib/intel/genxml/ (was lib/genxml/ in v1)
+ - Split the single "import genxml" commit into infrastructure (patch 1)
+   plus three XML import commits split by generation (patches 2-4)
+ - Split the single rendercopy conversion into four commits by functional
+   section (patches 6-9)
+ - Fix MOCS bug: genxml packs a 7-bit field (index << 1 | pxp) but v1
+   was passing the raw 6-bit index; add intel_get_wb_mocs() and
+   intel_buf_mocs() helpers that return the correct 7-bit value (patch 5)
+ - Add "why?" motivation text to patch 1 and this cover letter
+
+v3:
+ - Refresh local IGT-owned genxml files to 2026 and switch the small
+   IGT-owned/Mesa-derived helper scripts to cleaner SPDX-style headers
+ - Add igt_genxml_decode_batch_lines() helper so callers can route decoded
+   output line-by-line to igt_info(), igt_warn(), igt_critical(), etc.
+ - Remove redundant XML name checks in the generator scripts
+ - Drop the NDEBUG guards from assertion-based validation in
+   igt_genxml_defs.h, since IGT builds do not define NDEBUG
+ - Make __gen_combine_address() merge low address bits with | instead of +
+ - Add the complementary intel_get_uc_mocs() helper alongside
+   intel_get_wb_mocs() in patch 5
+ - Clarify in patch 5 that helper _mocs() functions are only for packed MOCS
+   values
+ - Move the new genxml decode include in intel_batchbuffer.c to the proper
+   alphabetical position
+ - Generate full per-generation genxml decode headers instead of using
+   baseline-pruned delta tables, fixing mislabeled packets in decoded dumps
+ - Genxml batch decoder falls back across compatible older packet
+   definitions and expands variable-length payload groups, reducing UNKNOWN
+   commands and improving annotation coverage on newer platforms
+
+Jan Maslak (10):
+  lib/intel/genxml: Add genxml generators, headers, and build
+    integration
+  lib/intel/genxml: Import gen4-gen8 XML hardware definitions from Mesa
+  lib/intel/genxml: Import gen9-gen12.5 XML hardware definitions from
+    Mesa
+  lib/intel/genxml: Import Xe2/Xe3/Xe3p XML hardware definitions from
+    Mesa
+  lib/mocs: Add intel_get_wb_mocs() and intel_buf_mocs() for packed MOCS
+    fields
+  lib/rendercopy: Convert surface state and sampler setup to genxml
+  lib/rendercopy: Convert vertex data and CC state to genxml
+  lib/rendercopy: Convert pipeline emit commands to genxml
+  lib/rendercopy: Convert render op and entry points to genxml
+  lib: Add genxml annotated batch buffer decode
+
+ lib/intel/genxml/gen110.xml           | 3358 ++++++++++++++++++++
+ lib/intel/genxml/gen120.xml           | 2432 ++++++++++++++
+ lib/intel/genxml/gen125.xml           | 2628 ++++++++++++++++
+ lib/intel/genxml/gen40.xml            | 1012 ++++++
+ lib/intel/genxml/gen45.xml            |  507 +++
+ lib/intel/genxml/gen50.xml            |  648 ++++
+ lib/intel/genxml/gen60.xml            | 2606 +++++++++++++++
+ lib/intel/genxml/gen70.xml            | 3067 ++++++++++++++++++
+ lib/intel/genxml/gen75.xml            | 2424 ++++++++++++++
+ lib/intel/genxml/gen80.xml            | 2993 ++++++++++++++++++
+ lib/intel/genxml/gen90.xml            | 4192 +++++++++++++++++++++++++
+ lib/intel/genxml/gen_decode_header.py |  582 ++++
+ lib/intel/genxml/gen_pack_header.py   |  795 +++++
+ lib/intel/genxml/igt_genxml.h         |  112 +
+ lib/intel/genxml/igt_genxml_decode.h  |  177 ++
+ lib/intel/genxml/igt_genxml_defs.h    |  317 ++
+ lib/intel/genxml/intel_genxml.py      |  553 ++++
+ lib/intel/genxml/util.py              |   19 +
+ lib/intel/genxml/xe2.xml              | 1969 ++++++++++++
+ lib/intel/genxml/xe3.xml              |  816 +++++
+ lib/intel/genxml/xe3p.xml             |    4 +
+ lib/intel_batchbuffer.c               |   32 +-
+ lib/intel_bufops.h                    |   13 +
+ lib/intel_mocs.c                      |   28 +
+ lib/intel_mocs.h                      |    2 +
+ lib/meson.build                       |   62 +-
+ lib/rendercopy_gen9.c                 | 1114 ++++---
+ 27 files changed, 31894 insertions(+), 568 deletions(-)
+ create mode 100644 lib/intel/genxml/gen110.xml
+ create mode 100644 lib/intel/genxml/gen120.xml
+ create mode 100644 lib/intel/genxml/gen125.xml
+ create mode 100644 lib/intel/genxml/gen40.xml
+ create mode 100644 lib/intel/genxml/gen45.xml
+ create mode 100644 lib/intel/genxml/gen50.xml
+ create mode 100644 lib/intel/genxml/gen60.xml
+ create mode 100644 lib/intel/genxml/gen70.xml
+ create mode 100644 lib/intel/genxml/gen75.xml
+ create mode 100644 lib/intel/genxml/gen80.xml
+ create mode 100644 lib/intel/genxml/gen90.xml
+ create mode 100644 lib/intel/genxml/gen_decode_header.py
+ create mode 100644 lib/intel/genxml/gen_pack_header.py
+ create mode 100644 lib/intel/genxml/igt_genxml.h
+ create mode 100644 lib/intel/genxml/igt_genxml_decode.h
+ create mode 100644 lib/intel/genxml/igt_genxml_defs.h
+ create mode 100644 lib/intel/genxml/intel_genxml.py
+ create mode 100644 lib/intel/genxml/util.py
+ create mode 100644 lib/intel/genxml/xe2.xml
+ create mode 100644 lib/intel/genxml/xe3.xml
+ create mode 100644 lib/intel/genxml/xe3p.xml
+
+-- 
+2.43.0
+
