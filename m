@@ -4,44 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F9FFCD5BD0
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 19:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E707ACD5BD0
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 19:20:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A754D10E937;
-	Wed, 27 May 2026 19:20:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93C0A10E938;
+	Wed, 27 May 2026 19:20:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="JsyN3ann";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="nLrbLPks";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14B8F10E95F
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 19:19:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 090BE10E95F
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 19:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=K2FiosZt3Kl8Ec59LU8hq6vm8qDxpKYdDk9ltl9VHAY=; b=JsyN3annIzlk0Ad+oe7A2TRjPB
- t4vscSoWMOc8vq5DaIGD2Zxs7HYHLdjvSxELfv4oAqVd2ahiPfOhfVtFAm1s8Hrpmai4e94iR5HtN
- aM7adOlYBw/6FCNZ+DbehlPXdBJ1peg7R1ByX3GZzrrMXkvRXoRErBLmQRwL8jsqcU0zyWNPcerCf
- 2R0tGDQXMSaP0lak4oxqjokNFdHIdwA+rNqE+NxzwjjJeED4Clypqi4a/L/GS6LX2CPWzt9Vk9JXI
- 8L4OErMndPXZJ3JmDhEfXFMkhdYlBDDvAk3OIiT2q+eV9XtNms++BRouVuaoSlOInsyNi7BVJ06nr
- /fS5nlbw==;
+ bh=qujdaaTZ1AVzE3C3muLDITSvWyVQsW80W65L0bfZRcY=; b=nLrbLPksAqUZBY+DvN0de0R/KB
+ Kven9FkdSdET9WCBxAFWkM4+Ppu9Ee0fRaqdvYU+xcxapqaAp+ZDyF0Y6S7qv7BqQyzw8OA8IHHlB
+ Sf8WMJWzDlIsqc5ox3zNbdyPgJvio8GLxw1CCsOUHGzU3pz2Qrs8y36fkB2y1RvX1nwSiq8bgfQEn
+ VQT1nYe5xfJ9brAcSu1khj/4tCCeF13s56JqXl5hN94ZVM14lk5vqU2UlxMVzM3g03EQHzDtR6UIf
+ QFfOjvPUCIR333EF4PLrE+ynCh9jXPwhp3MEO6sPXaydGeRFjuRf1Vg2up/L12SeE2y4Oq9m1IBk/
+ xD14RR7Q==;
 Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
  helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wSJmc-0092ni-31
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 21:19:14 +0200
+ id 1wSJmY-0092ni-8l; Wed, 27 May 2026 21:19:10 +0200
 From: John Harrison <John.Harrison@Igalia.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 3/3] tests/kms_colorop: Add cleanup of writeback
- connector
-Date: Wed, 27 May 2026 12:18:39 -0700
-Message-ID: <20260527191839.639696-4-John.Harrison@Igalia.com>
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>, Sowmiya S <sowmiya.s@intel.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>, Alex Hung <alex.hung@amd.com>,
+ Harry Wentland <harry.wentland@amd.com>, kernel-dev@igalia.com
+Subject: [PATCH i-g-t 0/3] tests/kms_colorop: Assorted fixes / tweaks
+Date: Wed, 27 May 2026 12:18:36 -0700
+Message-ID: <20260527191839.639696-1-John.Harrison@Igalia.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260527191839.639696-1-John.Harrison@Igalia.com>
-References: <20260527191839.639696-1-John.Harrison@Igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -59,56 +60,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The kms_writeback test has a particular sequence for disabling the
-writeback connector before exiting the test. On the other hand, the
-kms_colorop test just exits leaving the writeback connector still
-active. With the preliminary i915/Xe support for writeback, that leads
-to lots of timeouts and driver errors. So, add in the writeback
-connector cleanup to allow kms_colorop to be run on Intel platforms
-without killing the system.
-
-Presumably, the timeouts and errors are a bug in the preliminary
-i915/Xe implementation and need to be fixed. And therefore, having a
-test which deliberately does an unclean shutdown is a good thing.
-However, this is not the place for such a test, this being a test for
-colorops not a test for some random mechanism that happens to be used
-to test the colorops. See separate patch to add that shutdown test to
-kms_writeback instead.
+Fixes some issues encountered while adding support for Intel platforms
+to the kms_colorop test. These are the generic changes that can be
+sent standalone. The Intel specific changes are in a separate set as
+they are dependent upon other in flight patch sets.
 
 Signed-off-by: John Harrison <John.Harrison@Igalia.com>
----
- tests/kms_colorop.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+CC: Suraj Kandpal <suraj.kandpal@intel.com>
+CC: Sowmiya S <sowmiya.s@intel.com>
+CC: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+CC: Karthik B S <karthik.b.s@intel.com>
+CC: Swati Sharma <swati2.sharma@intel.com>
+CC: Alex Hung <alex.hung@amd.com>
+CC: Harry Wentland <harry.wentland@amd.com>
+CC: kernel-dev@igalia.com
 
-diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index 77d25cda6..f0cfcf405 100644
---- a/tests/kms_colorop.c
-+++ b/tests/kms_colorop.c
-@@ -67,6 +67,16 @@
-  *
-  */
- 
-+static void cleanup_writeback(igt_display_t *display, igt_output_t *output)
-+{
-+	igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR,
-+				  to_user_pointer(NULL));
-+	igt_output_set_writeback_fb(output, NULL);
-+
-+	igt_output_set_crtc(output, NULL);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+}
-+
- static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
- 				    drmModeModeInfo override_mode, __u32 fourcc_in,
- 				    __u32 fourcc_out)
-@@ -493,6 +503,7 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
- 			}
- 
- 			igt_fixture() {
-+				cleanup_writeback(&display, output);
- 				igt_detach_crtc(&display, output);
- 				igt_remove_fb(display.drm_fd, &input_fb);
- 				igt_remove_fb(display.drm_fd, &output_fb);
+John Harrison (3):
+  tests/kms_colorop: Add early skip if pipeline is not supported
+  tests/kms_colorop: Assert that the CRC query succeeded
+  tests/kms_colorop: Add cleanup of writeback connector
+
+ tests/kms_colorop.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
 -- 
 2.43.0
 
