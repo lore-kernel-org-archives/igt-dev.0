@@ -4,52 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF35BCD5BDE
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 04:58:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A86A0CD5BDE
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 05:37:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A154010E72F;
-	Wed, 27 May 2026 04:58:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5AC9C10E236;
+	Wed, 27 May 2026 05:37:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ThRi1iey";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n7Hh/fbm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B4C910E23C
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 04:56:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0375D10E236
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 05:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779857790; x=1811393790;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=imx8x16uhv7k9Wbj+aQQhEY/npPHPt+mEJM+BoCJQVU=;
- b=ThRi1ieyHop8e02NlA/DpUolXB0acQf/P/fnPLPc+G4qclNjfWRKaYbg
- rlMz9SpRF7zY3MUPI19Z6SAXQb41VdqMK01a10q0v2JuEwJBu6BzL7Ow1
- KvAkwDj+Q4+UfQBZ78bCE8/rvEUoBuG/H5PlkysgkWlMpfOrgi1qq+x3G
- sVkLHZQ+R89e2y112IMPzCZAsriqY5+Y2ihweOXjLlK+9HDeTyqvDR/Yk
- czO1g77syeaSw/Z8Hfq5g+wWp/8+O8I6rOWgOg3bKkclmDe3ATzpklOBR
- bkk7WuZuU3E7TCZ0NvOgR7eLiQ58mBooI2QjB3d9eVRiaWizzhq3XZvX1 A==;
-X-CSE-ConnectionGUID: v+BSYMGCTtmZvygEMQfHtQ==
-X-CSE-MsgGUID: Ks2VacLXQOqej0liflF1fA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="79715752"
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; d="scan'208";a="79715752"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2026 21:56:30 -0700
-X-CSE-ConnectionGUID: wlM0I6vdTiGhhzfVeYfNOg==
-X-CSE-MsgGUID: 4t/k03lxTDiKiTbQ/FXHIA==
+ t=1779860228; x=1811396228;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=f1ovqeLUbsjOQStt+3cWjB1SXcl3kcKh7j8z41f2qqw=;
+ b=n7Hh/fbmu69HNBkw489P+RLjcCoBpHG0oIlR7Bbn7lgE3IUEDhd/PcP1
+ CWe2a5n1oCT2IlWsLDO3Ot99VouGY8veYpn6JsDXfq+9gpcgh6J8BkVvx
+ pXdJCyg0y52vfO1IyTV0kouSFv4c7PORWCpjsM+EMyvBe6HrNQ+Adeiy0
+ 2VYjSh1Otvae8I0Ky968XdCHQUkm6nvE2xFWoM/8XXvzRdePSsBC+2L++
+ ccStRLBkIbxihmJxpoLs3M1CxskhHS/9kOFrbdSUT2mvCSFwgEta2rLk9
+ jZqqtva3PFYvCmanEU8Yiw/2rqqiZbT6yfnMZUQCBrHUbHmP95HlV/xAt g==;
+X-CSE-ConnectionGUID: LzUA5sUSRfON0Zn4/vTYvQ==
+X-CSE-MsgGUID: UvICG0VBSE+xm1ULB4s+xQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80652230"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; d="scan'208";a="80652230"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 May 2026 22:37:07 -0700
+X-CSE-ConnectionGUID: ypWCn7i/QUODqcA/aGmy0g==
+X-CSE-MsgGUID: qg5qDz0eQvaMvYJXfhBtYw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; d="scan'208";a="265729271"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; d="scan'208";a="246154356"
 Received: from jeevan24.iind.intel.com ([10.223.74.58])
- by fmviesa002.fm.intel.com with ESMTP; 26 May 2026 21:56:29 -0700
+ by orviesa003.jf.intel.com with ESMTP; 26 May 2026 22:37:07 -0700
 From: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v2] tests/intel/xe_configfs: Fix ctx_restore BB path for post
- and mid variants
-Date: Wed, 27 May 2026 10:31:29 +0530
-Message-ID: <20260527050129.2147335-5-smitha.balasubramanyam@intel.com>
+Subject: [PATCH 0/3] Negative tests for VM_BIND decompression
+Date: Wed, 27 May 2026 11:12:07 +0530
+Message-ID: <20260527054210.2147520-1-smitha.balasubramanyam@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260527050129.2147335-1-smitha.balasubramanyam@intel.com>
-References: <20260420045724.1053946-1-smitha.balasubramanyam@intel.com>
- <20260527050129.2147335-1-smitha.balasubramanyam@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,31 +63,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fixed the hardcoded "ctx_restore_post_bb" write with the computed
-file name ("ctx_restore_%s_bb") in test_ctx_restore_invalid so the
-invalid-case tests work for both "post" and "mid" variants.
+This series adds negative test coverage for VM_BIND DECOMPRESS flows in
+xe_ccs.
 
-Changes since v1:
-- Fix commit message wording
+Patch 1 introduces resource management structures, helper utilities,
+and a negative uAPI parameter validation test for VM_BIND DECOMPRESS flows.
 
-Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
----
- tests/intel/xe_configfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Patch 2 adds a helper for fault-mode handling along with a
+negative test to validate VM_BIND DECOMPRESS uAPI parameters under fault-mode conditions.
 
-diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index f024235f2..39762e030 100644
---- a/tests/intel/xe_configfs.c
-+++ b/tests/intel/xe_configfs.c
-@@ -234,7 +234,7 @@ static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
- 	char file[64] = { };
- 
- 	snprintf(file, sizeof(file), "ctx_restore_%s_bb", type);
--	igt_sysfs_set(configfs_device_fd, "ctx_restore_post_bb", "");
-+	igt_sysfs_set(configfs_device_fd, file, "");
- 
- 	/*
- 	 * These only test if command parsing is correct,
+Patch 3 adds negative test coverage for VM_BIND DECOMPRESS
+with CCS corruption, including suspend-resume scenarios.
+
+Smitha Balasubramanyam (3):
+  tests/intel/xe_ccs : Add helpers and Negative test for VM_Bind Decomp
+  tests/intel/xe_ccs: Add fault-mode helper and VM_BIND decomp neg test
+  tests/intel/xe_ccs : Add CCS corruption neg test for VM_BIND decomp
+
+ tests/intel/xe_ccs.c | 1184 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 1184 insertions(+)
+
 -- 
 2.43.0
 
