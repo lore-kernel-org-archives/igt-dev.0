@@ -4,27 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B3CCD4F54
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 19:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE7F1CD4F54
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 19:36:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 361EB10E967;
-	Wed, 27 May 2026 19:33:19 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 035D310E956;
- Wed, 27 May 2026 19:32:58 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8892632563028449577=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 615C710E976;
+	Wed, 27 May 2026 19:36:59 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="EIXXgZD8";
+	dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E28CF10E975
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 19:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=Yw8sY+cu/unEeFh+/QiztS8PFfnuq/2x2kae7ws7qL0=; b=EIXXgZD8WK0fDzPmyAPKAWgOI7
+ Et3GNIfoP+zZ9sL7BcTXxdgZvEFXI12glA2umTI7vZP9i9TW8aUnYHL4NzPuIrOv+dvwnjKvRtM+A
+ IcCbDggbNUSps6VuMRCbltlqffk3TYAaZIiZL/hnw6RsaT3JACpbyh1pPpYKI/BNgqfEp1MckbUFx
+ oR7Z+VRRsh6KNU1oNAZs6mNaKrAykoVOvLDCTZ5i3InIhrr02VXlprbtQ35YgtQUTsyCIe+acTzQE
+ 7GuT3rQNc1Rwiw8/cm49jIpn4YDks+oTStOKHYez0UZh34i00lptK1SgHf7VCsIaO6XPGZolLToyi
+ fMQXJqhg==;
+Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
+ helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1wSK3P-00935c-Cs; Wed, 27 May 2026 21:36:35 +0200
+From: John Harrison <John.Harrison@Igalia.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>, Sowmiya S <sowmiya.s@intel.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>, kernel-dev@igalia.com
+Subject: [PATCH i-g-t 0/5] tests/kms_colorop: Assorted fixes and support for
+ i915/Xe
+Date: Wed, 27 May 2026 12:36:07 -0700
+Message-ID: <20260527193612.651624-1-John.Harrison@Igalia.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_lib/genxml=3A_Introduce_Mes?=
- =?utf-8?q?a_genxml_infrastructure_to_IGT_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jan Maslak" <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 27 May 2026 19:32:58 -0000
-Message-ID: <177991037800.17309.12938094177691464384@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260527131524.1649421-1-jan.maslak@intel.com>
-In-Reply-To: <20260527131524.1649421-1-jan.maslak@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,178 +57,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8892632563028449577==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+There seem to be two distinct colorop tests - kms_colorop and
+kms_color_pipeline. The former requires writeback and so does not run
+on Intel platforms, however the use of writeback means it can dump
+failing framebuffers out as PNGs to make debug easier. The latter uses
+hardware generated CRCs which have lots of caveats about how they can
+(or more accurately, cannot) be uesd.
 
-== Series Details ==
+The i915/Xe drivers are in the process of gaining writeback support
+(but BGR only, not RGB). That means they can start running the
+kms_colorop tests. So add in BGR support and add an expected error
+range for Intel platforms.
 
-Series: lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev4)
-URL   : https://patchwork.freedesktop.org/series/164446/
-State : failure
+Also, add an unclean writeback shutdown test to ensure that the
+current issues with the Intel work-in-progress implementation get
+fixed and stay fixed.
 
-== Summary ==
+Note that these patches are built on top of work by Sowmiya S. Those
+patches are included as a squash at the start of this set so that CI
+can apply my patches and test them.
 
-CI Bug Log - changes from XEIGT_8939_BAT -> XEIGTPW_15257_BAT
-====================================================
+Signed-off-by: John Harrison <John.Harrison@Igalia.com>
+CC: Suraj Kandpal <suraj.kandpal@intel.com>
+CC: Sowmiya S <sowmiya.s@intel.com>
+CC: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+CC: Karthik B S <karthik.b.s@intel.com>
+CC: Swati Sharma <swati2.sharma@intel.com>
+CC: kernel-dev@igalia.com
 
-Summary
--------
+John Harrison (4):
+  tests/kms_writeback: Add unclean shutdown test
+  lib/igt_color,igt_fb: Add more BGR support to various helpers
+  tests/kms_colorop: Add BGR pixel formats
+  tests/kms_colorop: Intel platforms seems to have an error range up to
+    8
 
-  **FAILURE**
+Sowmiya S (1):
+  [SQUASH] Add writeback changes for intel-supported formats
 
-  Serious unknown changes coming with XEIGTPW_15257_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_15257_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+ lib/igt_color.c       |  54 +++++-
+ lib/igt_fb.c          |  42 ++++-
+ lib/igt_fb.h          |   1 +
+ tests/kms_colorop.c   |   7 +
+ tests/kms_writeback.c | 382 +++++++++++++++++++++++++++---------------
+ 5 files changed, 345 insertions(+), 141 deletions(-)
 
-  
+-- 
+2.43.0
 
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_15257_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-bmg-1:          [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-1/igt@xe_pat@pat-index-xe2.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-1/igt@xe_pat@pat-index-xe2.html
-    - bat-lnl-2:          [PASS][3] -> [INCOMPLETE][4] +1 other test incomplete
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-lnl-2/igt@xe_pat@pat-index-xe2.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-lnl-2/igt@xe_pat@pat-index-xe2.html
-    - bat-wcl-1:          [PASS][5] -> [INCOMPLETE][6] +1 other test incomplete
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_pat@pat-index-xe2.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-wcl-1/igt@xe_pat@pat-index-xe2.html
-    - bat-wcl-2:          [PASS][7] -> [INCOMPLETE][8] +1 other test incomplete
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-2/igt@xe_pat@pat-index-xe2.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-wcl-2/igt@xe_pat@pat-index-xe2.html
-    - bat-bmg-vm:         [PASS][9] -> [INCOMPLETE][10] +1 other test incomplete
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-vm/igt@xe_pat@pat-index-xe2.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-vm/igt@xe_pat@pat-index-xe2.html
-    - bat-ptl-2:          [PASS][11] -> [INCOMPLETE][12] +1 other test incomplete
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-2/igt@xe_pat@pat-index-xe2.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-2/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xe2@render:
-    - bat-ptl-1:          [PASS][13] -> [INCOMPLETE][14] +1 other test incomplete
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-1/igt@xe_pat@pat-index-xe2@render.html
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-1/igt@xe_pat@pat-index-xe2@render.html
-    - bat-ptl-vm:         [PASS][15] -> [INCOMPLETE][16] +1 other test incomplete
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html
-    - bat-lnl-1:          [PASS][17] -> [INCOMPLETE][18] +1 other test incomplete
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-lnl-1/igt@xe_pat@pat-index-xe2@render.html
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-lnl-1/igt@xe_pat@pat-index-xe2@render.html
-    - bat-bmg-2:          [PASS][19] -> [INCOMPLETE][20] +1 other test incomplete
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
-   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
-
-  
-
-
-Build changes
--------------
-
-  * IGT: IGT_8939 -> IGTPW_15257
-
-  IGTPW_15257: 145439d385ab80ed835e87579702146ab155c123 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8939: 8939
-  xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/index.html
-
---===============8892632563028449577==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164446/">https://patchwork.freedesktop.org/series/164446/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8939_BAT -&gt; XEIGTPW_15257_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_15257_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_15257_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_15257_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-1/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-1/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
-<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-lnl-2/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-lnl-2/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
-<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-wcl-1/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
-<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-2/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-wcl-2/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
-<li>bat-bmg-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-vm/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-vm/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
-<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-2/igt@xe_pat@pat-index-xe2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-2/igt@xe_pat@pat-index-xe2.html">INCOMPLETE</a> +1 other test incomplete</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2@render:</p>
-<ul>
-<li>bat-ptl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-1/igt@xe_pat@pat-index-xe2@render.html">INCOMPLETE</a> +1 other test incomplete</li>
-<li>bat-ptl-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html">INCOMPLETE</a> +1 other test incomplete</li>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-lnl-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-lnl-1/igt@xe_pat@pat-index-xe2@render.html">INCOMPLETE</a> +1 other test incomplete</li>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15257/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">INCOMPLETE</a> +1 other test incomplete</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8939 -&gt; IGTPW_15257</li>
-</ul>
-<p>IGTPW_15257: 145439d385ab80ed835e87579702146ab155c123 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8939: 8939<br />
-  xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb</p>
-
-</body>
-</html>
-
---===============8892632563028449577==--
