@@ -4,27 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF69BCD5BDE
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 07:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9C28CD4F54
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 08:02:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B77010E0F8;
-	Wed, 27 May 2026 07:43:00 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2196410E0F8;
- Wed, 27 May 2026 07:42:40 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3071477509979847284=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9252310E077;
+	Wed, 27 May 2026 08:02:25 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="lQiVoM6y";
+	dkim-atps=neutral
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com
+ [74.125.82.175])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F20F310E077
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 08:02:05 +0000 (UTC)
+Received: by mail-dy1-f175.google.com with SMTP id
+ 5a478bee46e88-2f0ad52830cso14545572eec.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 01:02:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20251104; t=1779868925; x=1780473725; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3SaMjlW7RPVlJ06785xVRP4u/ScPJenAvpSCdCclV38=;
+ b=lQiVoM6yFnI0ENvTGf/XsSVdAErFgGjB20RdUPY2JGdt3hhOy2aX6O7rf++F86+5Sw
+ M/wbJetXyjxXLBkJI5ckbS8b2NKIfE75o1gCg0ypw516UwyWgV7aGCaoCRBh3V6BeP/f
+ SDxTISONALmleD10KspQD4+7O3jpBSbQ+D1+wcAAbp4eO+XxinQAwB8Epm22NtmFHH95
+ Y08JGnuTCjrvcxjKf4dTcurMY1Go0Tgmo5W+860N6A7xRP0crc7u4wAJLAPGGHXUx7DU
+ qb5d7URINzoV1KmA4WcRa/hnXH8n9ZSPo9kkfwaPvQY1oFdO2ei2dI0TOZarYCyM6Mtv
+ 28fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1779868925; x=1780473725;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3SaMjlW7RPVlJ06785xVRP4u/ScPJenAvpSCdCclV38=;
+ b=ssYDH+j3heCp611SlxJJlt6jqeThclV39vP1xZyymdGOq7EYUciQ2yat6vEq+TNMj4
+ mIN9sJkBLuX9cS59PiH3Yy3Uy/uHsS1pdUuufTLp++mD+09N7725eYQ7vqxOzqGTPoZj
+ HFdPW4PLiGxaYhMklQl7BQV3QDLPg/mSw+qls/xxMrbEvLlqTPafCAycwLJgJxzC8+lw
+ A1gl7YvzPIFytqK/EJgKKcdRAplzQCEGM9rcTGfrkUDBslS7Q21f2lPKE7LGP2UaRC2a
+ lsl/uzbxD3AQIGNpGAA7HR1IUrvqk6AG+ge3PV85LJuB/SEwh9i0VenIp8FkwOIVyM67
+ 0YPA==
+X-Forwarded-Encrypted: i=1;
+ AFNElJ/S1BdLPpqzC0nUvH7TegS5Ryfd9wo1OngdAEcHXLCsANwW31YhDKu6m+qOccUDj79z4a/Iv9us@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YyMFUEAUyaXbj8ORnj5tVJgLiPPzR433XzJxN3dRNxUEavK7FTq
+ 5n2V/yiXsJ9Vo0mGb3XzXjDiNXZHIiOF4qvjLw1c6hC5eWODI3g/RnLc
+X-Gm-Gg: Acq92OEBD7NhC1z/XD23gymkMgW071A3h9KZiWyzjdPlVRmQirlzOoT7mHMruu54A08
+ GwtGsByv1Q+JKO5HlFSuY0WFjRowRypzBLShgqcpelWGfyrP5dr+YgrGIWJLgGaGUSXFTOrpgar
+ 2Hfr/f02bjea1gFXMTRlg8HNqW9ToVuSEuFzwYRGDwrrIlc9BR8QkbIpMBhXf3C5BfqWOfWXX3c
+ xUhh7zY8g6r1soGP4OFOCKOz3Ro1pfEXZQqA3EgGNR8uB9CQcZB2wdrLk4vS/e51fEMBu6JQ0Ax
+ 4ARXmvLlBpPJ7KJnerWDoRHhtOSOVVW8AcOLgsuG66NiMgn5F0aqcoglZyyXiplRP5bxDGyQnjK
+ UR+Pp/Vhs2/zAA8xwLXYSY+cATFLesWxK9Vc90RZSGhRC7f3QAUX7w3a8JxjpU+cC3PjjB7m2mv
+ Wu+W+MJKnqdb6mbKTrraIYjTRRny2FqCKUbN6sI2r8ectOyTdv+JZ+UTV/jREFZCqxnQ==
+X-Received: by 2002:a05:7300:ef89:b0:2ed:23cd:babf with SMTP id
+ 5a478bee46e88-304490906d0mr9994439eec.12.1779868925014; 
+ Wed, 27 May 2026 01:02:05 -0700 (PDT)
+Received: from [192.55.54.43] ([192.55.54.43])
+ by smtp.gmail.com with ESMTPSA id
+ 5a478bee46e88-30451f20e71sm12129268eec.12.2026.05.27.01.02.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 May 2026 01:02:03 -0700 (PDT)
+Message-ID: <6a696e6c-351d-48cc-9134-7b0ee11148f6@gmail.com>
+Date: Wed, 27 May 2026 11:01:58 +0300
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpipe=5F?=
- =?utf-8?q?stress=3A_fix_plane_setup_and_cursor_handling?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sowmiya S" <sowmiya.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 27 May 2026 07:42:40 -0000
-Message-ID: <177986776013.14031.8022367875496123717@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260527071940.3285269-1-sowmiya.s@intel.com>
-In-Reply-To: <20260527071940.3285269-1-sowmiya.s@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v1] igt/kms_plane: fix NV12 Tile4 test to run on
+ i915 platforms
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: juha-pekka.heikkila@intel.com, swati2.sharma@intel.com
+References: <20260527061104.520609-1-ramanaidu.naladala@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20260527061104.520609-1-ramanaidu.naladala@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,148 +90,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3071477509979847284==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+test_nv12_tile4_src_y is testing feature which is found only on devices 
+where there is Xe driver. Trying to run this test on i915 would just 
+waste time on ci hence the restriction. There are other more generic odd 
+vertical pan tests that run also on i915.
 
-== Series Details ==
+On 27/05/2026 09.11, Naladala Ramanaidu wrote:
+> Tile4 is supported on MTL platforms, which are driven by the i915
+> driver. The existing igt_require_xe() check unnecessarily restricts
+> the test to xe platforms, causing it to be skipped on valid i915
+> configurations.
+> 
+> Remove this restriction to allow the test to run on all
+> platforms supporting NV12 Tile4, including i915.
+> 
+> Fixes: af4230819267 ("tests/kms_plane: Add test_nv12_tile4_src_y planar settings test")
+> 
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+> ---
+>   tests/kms_plane.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index f21006784..dca9e26ad 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1558,7 +1558,6 @@ test_nv12_tile4_src_y(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
+>   	const int fb_w = 1280, fb_h = 768;
+>   	int ret;
+>   
+> -	igt_require_xe(data->drm_fd);
+>   	igt_display_reset(&data->display);
+>   	igt_output_set_crtc(output, crtc);
+>   
 
-Series: tests/intel/kms_pipe_stress: fix plane setup and cursor handling
-URL   : https://patchwork.freedesktop.org/series/167348/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8938 -> IGTPW_15253
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15253/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15253 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [PASS][1] -> [DMESG-WARN][2] ([i915#13735]) +80 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8938/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15253/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - fi-cfl-8109u:       [PASS][3] -> [DMESG-WARN][4] ([i915#13735] / [i915#15673]) +49 other tests dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8938/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15253/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8938 -> IGTPW_15253
-  * Linux: CI_DRM_18556 -> CI_DRM_18558
-
-  CI-20190529: 20190529
-  CI_DRM_18556: 1e5fbf0d628cd02dced6cfb1ebe39717f121fb4c @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18558: 14d3e29c36bea707856f5c03dbf7b0ef73fdeb85 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15253: 15253
-  IGT_8938: b024a3b67372962ff6e643d3998c5cf5acc07081 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15253/index.html
-
---===============3071477509979847284==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_pipe_stress: fix plane setup and cursor handling</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167348/">https://patchwork.freedesktop.org/series/167348/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15253/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15253/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8938 -&gt; IGTPW_15253</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15253/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15253 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8938/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15253/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +80 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8938/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15253/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) +49 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8938 -&gt; IGTPW_15253</li>
-<li>Linux: CI_DRM_18556 -&gt; CI_DRM_18558</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18556: 1e5fbf0d628cd02dced6cfb1ebe39717f121fb4c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18558: 14d3e29c36bea707856f5c03dbf7b0ef73fdeb85 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15253: 15253<br />
-  IGT_8938: b024a3b67372962ff6e643d3998c5cf5acc07081 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3071477509979847284==--
