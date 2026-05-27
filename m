@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3739CD4F54
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 21:01:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AEB8CD5BD0
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 21:07:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 983ED10E34E;
-	Wed, 27 May 2026 21:01:57 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cKbY8MGh";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D714610E2A6
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 21:00:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779915655; x=1811451655;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=vcyWjul80t6yDaFhLCiFlpdNZrWicSHjqfxunnIplYQ=;
- b=cKbY8MGhZv87Tv/ZatQ4iLXlvxWgPVSRkD/h0Rfw5rvIIHOsyhAqcNDP
- Q3vHoH4FBTqeAMaqXSuG0RKQusMVDV2zRqtQMIsJC9rMcNgi4W5FL1BOJ
- iyKc2lucc7HC+/d8ZjtiyGFOS0idcaihn+FQe9770073hKggAhrVDo2+F
- vSV52fCpDCsNSA8clm5Au1ZLki6PaBvdey7xhK9NVDBJ4oBu/atzVq6f/
- N4CI6JQgfDv50LtaBfdcK+egmYbd7NwgoFzCJUBMxlspIGR0CU927sXxL
- S1UzxbKaCvL6i6kCdgAQq8srwngqP+WEWwW9cM2noM2jnRF90QkBsG4Hv g==;
-X-CSE-ConnectionGUID: OgngW0sNSwug6TUqR7R7fA==
-X-CSE-MsgGUID: S/mmHTHvTLm73UB4BgDUzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80869905"
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; d="scan'208";a="80869905"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2026 14:00:54 -0700
-X-CSE-ConnectionGUID: FmLBJV6RTBm0emB587H3kw==
-X-CSE-MsgGUID: tkNG5TIdQGeJ/oe1TEMoxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; d="scan'208";a="244172212"
-Received: from dut4072bmgfrd.fm.intel.com ([10.105.8.119])
- by fmviesa004.fm.intel.com with ESMTP; 27 May 2026 14:00:54 -0700
-From: Zongyao Bai <zongyao.bai@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jia.yao@intel.com, x.wang@intel.com, kamil.konieczny@linux.intel.com,
- Zongyao Bai <zongyao.bai@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_pat: Add dynamic PAT index selection
- for pat-index-auto
-Date: Wed, 27 May 2026 21:00:52 +0000
-Message-ID: <20260527210052.161768-3-zongyao.bai@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260527210052.161768-1-zongyao.bai@intel.com>
-References: <20260527210052.161768-1-zongyao.bai@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2CD810EA1D;
+	Wed, 27 May 2026 21:07:57 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67CA910EA1D;
+ Wed, 27 May 2026 21:07:38 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3549754589685982160=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_fault-injection_tests_f?=
+ =?utf-8?q?or_Freq_Throttle_Reasons_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ravi Kishore Koppuravuri" <ravi.kishore.koppuravuri@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 27 May 2026 21:07:38 -0000
+Message-ID: <177991605841.17308.8051843981784502947@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260527145355.1652727-1-ravi.kishore.koppuravuri@intel.com>
+In-Reply-To: <20260527145355.1652727-1-ravi.kishore.koppuravuri@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,227 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the `pat-index-auto` dynamic subtest to iteratively test
-PAT indices based on the hardware configuration, improving test
-coverage beyond hardcoded arrays.
+--===============3549754589685982160==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Build the test mode set by:
-    selecting a small common set first (WT, coherent, non-coherent)
-    adding all remaining valid entries (shuffled)
+== Series Details ==
 
-Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
----
- tests/intel/xe_pat.c | 159 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 158 insertions(+), 1 deletion(-)
+Series: Add fault-injection tests for Freq Throttle Reasons (rev2)
+URL   : https://patchwork.freedesktop.org/series/163889/
+State : success
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 79f9a87aa..cff40d6b6 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -35,6 +35,7 @@
- 
- #define XE_COH_NONE          1
- #define XE_COH_AT_LEAST_1WAY 2
-+#define PAT_NAME_MAX_LEN     64
- 
- /*
-  * PAT index 18: XA (eXclusive Access) + UC (Uncached).
-@@ -113,6 +114,7 @@ static void userptr_coh_none(int fd)
- 
- #define L3_CACHE_POLICY_WB	0
- #define L3_CACHE_POLICY_XD	1
-+#define L3_CACHE_POLICY_XA	2
- #define L3_CACHE_POLICY_UC	3
- 
- #define L4_CACHE_POLICY_WB	0
-@@ -448,7 +450,7 @@ static void xe2_blt_decompress_dst(int fd,
- 	memcpy(&blt->src, &blt->dst, sizeof(blt->dst));
- 	blt_set_object(&blt->dst, alias_handle, size, 0,
- 		       intel_get_uc_mocs_index(fd),
--		       intel_get_pat_idx_uc(fd), /* compression disabled */
-+		       intel_get_pat_idx_wb(fd), /* compression disabled */
- 		       T_LINEAR, 0, 0);
- 	blt_fast_copy(fd, ctx, NULL, ahnd, blt);
- 	memcpy(&blt->dst, &blt->src, sizeof(blt->dst));
-@@ -1345,6 +1347,146 @@ const struct pat_index_entry bmg_g21_pat_index_modes[] = {
- 	{ NULL, 27, false, "c2-2way",     XE_COH_AT_LEAST_1WAY       },
- };
- 
-+static void add_pat_mode(struct pat_index_entry *modes_arr, int idx,
-+			 uint32_t pat, bool has_comp_en, int pat_idx, bool cpu_wc)
-+{
-+	modes_arr[idx].get_pat_index = NULL;
-+	modes_arr[idx].pat_index = pat_idx;
-+	modes_arr[idx].compressed = has_comp_en && !!(pat & XE2_COMP_EN);
-+	modes_arr[idx].name = NULL;
-+	modes_arr[idx].coh_mode = REG_FIELD_GET(XE2_COH_MODE, pat) >= COH_MODE_1WAY ?
-+				  XE_COH_AT_LEAST_1WAY : XE_COH_NONE;
-+	modes_arr[idx].force_cpu_wc = cpu_wc;
-+}
-+
-+/*
-+ * Build pat_index_modes[] test table dynamically from hardware PAT table:
-+ * 1. Read PAT entries from hardware
-+ * 2. Pick common modes first (WT, Coherent, Non-coherent)
-+ * 3. Pick random modes (shuffled remaining entries)
-+ * 4. Return the modes array and count through output parameters
-+ */
-+static int init_pat_index_modes(int fd, struct pat_index_entry **modes)
-+{
-+	const int TEST_COMMON_MODE_MAX = 4;
-+
-+	/* Static storage for results - persists after function returns */
-+	static struct pat_index_entry pat_index_modes[XE_PAT_MAX_ENTRIES * 2];
-+	static struct intel_pat_cache pat_sw_config;
-+	static char name_storage[XE_PAT_MAX_ENTRIES * 2][PAT_NAME_MAX_LEN];
-+
-+	int n_entries;
-+	bool has_comp_en;
-+
-+	int test_cnt = igt_run_in_simulation() ? 5 : 16;
-+	struct pat_index_entry common_modes[TEST_COMMON_MODE_MAX];
-+	struct pat_index_entry random_modes[XE_PAT_MAX_ENTRIES * 2];
-+	struct pat_index_entry tmp;
-+	int n_common = 0;
-+	int n_random = 0;
-+	int n_picked = 0;
-+	int i, j;
-+
-+	bool ensure_picked_wt = true;
-+	bool ensure_picked_coh = true;
-+	bool ensure_picked_noncoh = true;
-+
-+	/* Fetch PAT config from hardware */
-+	n_entries = xe_fetch_pat_sw_config(fd, &pat_sw_config);
-+	has_comp_en = HAS_FLATCCS(intel_get_drm_devid(fd));
-+
-+	igt_assert(n_entries > 0);
-+
-+	/* Step 1: Split entries into common_modes and random_modes */
-+	for (i = 0; i < n_entries; i++) {
-+		uint32_t pat = pat_sw_config.entries[i].pat;
-+		uint8_t pat_clos = REG_FIELD_GET(XE2_L3_CLOS, pat);
-+		uint8_t l3_policy = REG_FIELD_GET(XE2_L3_POLICY, pat);
-+		uint8_t l4_policy = REG_FIELD_GET(XE2_L4_POLICY, pat);
-+		uint8_t coh_mode = REG_FIELD_GET(XE2_COH_MODE, pat);
-+
-+		if (pat_sw_config.entries[i].rsvd)
-+			continue;
-+
-+		/* Common pat index type 1: WT mode (l3=xd, l4=wt, coh=0) */
-+		if (ensure_picked_wt &&
-+		    pat_clos == 0 &&
-+		    l3_policy == L3_CACHE_POLICY_XD &&
-+		    l4_policy == L4_CACHE_POLICY_WT &&
-+		    coh_mode == 0) {
-+			add_pat_mode(common_modes, n_common, pat, has_comp_en, i, false);
-+			n_common++;
-+			ensure_picked_wt = false;
-+			continue;
-+		}
-+		/* Common pat index type 2: Coherent mode (l3=wb, l4=uc, coh>=1way) */
-+		if (ensure_picked_coh &&
-+		    pat_clos == 0 &&
-+		    l3_policy == L3_CACHE_POLICY_WB &&
-+		    l4_policy == L4_CACHE_POLICY_UC &&
-+		    coh_mode >= COH_MODE_1WAY) {
-+			add_pat_mode(common_modes, n_common, pat, has_comp_en, i, false);
-+			n_common++;
-+			add_pat_mode(common_modes, n_common, pat, has_comp_en, i, true);
-+			n_common++;
-+			ensure_picked_coh = false;
-+			continue;
-+		}
-+		/* Common pat index type 3: Non-coherent mode (l3=uc, l4=uc, coh=0) */
-+		if (ensure_picked_noncoh &&
-+		    pat_clos == 0 &&
-+		    l3_policy == L3_CACHE_POLICY_UC &&
-+		    l4_policy == L4_CACHE_POLICY_UC &&
-+		    coh_mode == 0) {
-+			add_pat_mode(common_modes, n_common, pat, has_comp_en, i, false);
-+			n_common++;
-+			ensure_picked_noncoh = false;
-+			continue;
-+		}
-+
-+		/* Add to random_modes */
-+		add_pat_mode(random_modes, n_random, pat, has_comp_en, i, false);
-+		n_random++;
-+		if (coh_mode >= COH_MODE_1WAY) {
-+			add_pat_mode(random_modes, n_random, pat, has_comp_en, i, true);
-+			n_random++;
-+		}
-+	}
-+	igt_assert(n_common + n_random > 0);
-+
-+	/* Step 2: Fisher-Yates shuffle on random_modes */
-+	for (i = n_random - 1; i > 0; i--) {
-+		j = random() % (i + 1);
-+		tmp = random_modes[i];
-+		random_modes[i] = random_modes[j];
-+		random_modes[j] = tmp;
-+	}
-+
-+	/* Step 3: Merge common_modes and random_modes into pat_index_modes (up to test_cnt) */
-+	for (i = 0; i < n_common && n_picked < test_cnt; i++)
-+		pat_index_modes[n_picked++] = common_modes[i];
-+	for (i = 0; i < n_random && n_picked < test_cnt; i++)
-+		pat_index_modes[n_picked++] = random_modes[i];
-+
-+	/* Step 4: Assign simple numeric names and print debug info */
-+	for (i = 0; i < n_picked; i++) {
-+		snprintf(name_storage[i], PAT_NAME_MAX_LEN, "PAT_INDEX_%u%s",
-+			 pat_index_modes[i].pat_index,
-+			 pat_index_modes[i].force_cpu_wc ? "-force_cpu_wc" : "");
-+
-+		pat_index_modes[i].name = name_storage[i];
-+
-+		igt_debug("  [%d] idx=%2u comp=%d coh=%u cpu_wc=%d name=%s%s\n",
-+			  i, pat_index_modes[i].pat_index, pat_index_modes[i].compressed,
-+			  pat_index_modes[i].coh_mode, pat_index_modes[i].force_cpu_wc,
-+			  pat_index_modes[i].name,
-+			  (i < n_common) ? " (common)" : " (random)");
-+	}
-+
-+	*modes = pat_index_modes;
-+	return n_picked;
-+}
-+
- const struct pat_index_entry xe3p_lpg_coherency_pat_index_modes[] = {
- 	{ NULL, 18, false, "xa-l3-uc",	 XE_COH_NONE          },
- 	{ NULL, 19, false, "xa-l3-1way", XE_COH_AT_LEAST_1WAY },
-@@ -1414,6 +1556,12 @@ static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
-  * Description: Check some of the xe2 pat_index modes.
-  */
- 
-+/**
-+ * SUBTEST: pat-index-auto
-+ * Test category: functionality test
-+ * Description: Dynamically generate and test PAT index modes from platform PAT configuration.
-+ */
-+
- /**
-  * SUBTEST: xa-app-transient-media-off
-  * Test category: functionality test
-@@ -2275,6 +2423,15 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
- 							     ARRAY_SIZE(xe2_pat_index_modes));
- 	}
- 
-+	igt_subtest_with_dynamic("pat-index-auto") {
-+		struct pat_index_entry *modes;
-+		int n_modes;
-+
-+		igt_require(intel_graphics_ver(dev_id) >= IP_VER(20, 0));
-+		n_modes = init_pat_index_modes(fd, &modes);
-+		subtest_pat_index_modes_with_regions(fd, modes, n_modes);
-+	}
-+
- 	igt_subtest("display-vs-wb-transient")
- 		display_vs_wb_transient(fd);
- 
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8939_BAT -> XEIGTPW_15259_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8939 -> IGTPW_15259
+  * Linux: xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb -> xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6
+
+  IGTPW_15259: 744434ef30d1ef67a31c0784bd7fefdf32c9cebd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8939: 8939
+  xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb
+  xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6: 7570b524ddecbe5db4af0c493a047e21bab6b3d6
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15259/index.html
+
+--===============3549754589685982160==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add fault-injection tests for Freq Throttle Reasons (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163889/">https://patchwork.freedesktop.org/series/163889/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15259/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15259/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8939_BAT -&gt; XEIGTPW_15259_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8939 -&gt; IGTPW_15259</li>
+<li>Linux: xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb -&gt; xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6</li>
+</ul>
+<p>IGTPW_15259: 744434ef30d1ef67a31c0784bd7fefdf32c9cebd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8939: 8939<br />
+  xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 11a8456527f00d86dc8b23035c324da194fbbadb<br />
+  xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6: 7570b524ddecbe5db4af0c493a047e21bab6b3d6</p>
+
+</body>
+</html>
+
+--===============3549754589685982160==--
