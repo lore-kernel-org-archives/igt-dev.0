@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74801CD5BC9
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 03:44:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63A71CD5BDE
+	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 04:03:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0184010E63F;
-	Wed, 27 May 2026 03:44:11 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XPZqRqsT";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE6CC10E63F
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 03:43:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779853431; x=1811389431;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=mS8F83vYuFOQvGo0rodhOdJEKiE2k/6KpRw+HXM1slg=;
- b=XPZqRqsTYjG0ZwvS46YEbcz3aXguqcgoRIJT3Nqcs6tXMs0XhJQY2tSq
- NPiYjtPHf7zl8xYxLIvVJAwgM3WXP4pVrvInN0t99Hqf66qI56PtkNq56
- +0QbrLxH1xQZUnRz9xI55IFXpoKvWoFEz92DIvnXJNyU91mrnAaYmy/wN
- /AfAVKYV2qKeyfXMiP7N+NCa8fu7cuz38t8zzCNOj40WmXk2mX2zlAoq2
- S8b8WvwJ4t8ulzZfTzK20RQclKKrOJYaNfr+gy8VBh+YFDZs2EBbyEaVk
- 59nj8UGyXgoBDkld1dnw267FxIDGey7UIraaeVkJD3JUL+qzyuzOnA5r+ g==;
-X-CSE-ConnectionGUID: KTm8+yTjTTqQ84X5DadNNA==
-X-CSE-MsgGUID: yL9QielfRzK5Zjg786FJsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="91782327"
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; d="scan'208";a="91782327"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2026 20:43:50 -0700
-X-CSE-ConnectionGUID: 2Sx6Gz3wSVa+YPS3y5SkNg==
-X-CSE-MsgGUID: 7YGVke52TemCyfXto0pX2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; d="scan'208";a="235748993"
-Received: from orsosgc001.jf.intel.com ([10.88.27.185])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2026 20:43:46 -0700
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: gustavo.sousa@intel.com,
-	ngai-mint.kwan@intel.com
-Subject: [PATCH i-g-t] lib/intel_wa: Return false for non-root users
-Date: Tue, 26 May 2026 20:43:42 -0700
-Message-ID: <20260527034342.1952153-1-ashutosh.dixit@intel.com>
-X-Mailer: git-send-email 2.54.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0642E10E645;
+	Wed, 27 May 2026 04:03:43 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F92A10E645;
+ Wed, 27 May 2026 04:03:23 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0805666227196129035=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_add_amd=5Fc?=
+ =?utf-8?q?lose=5Frace_GPU_submission_vs_fd_close_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 27 May 2026 04:03:23 -0000
+Message-ID: <177985460338.13678.8586611711742768495@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260527032438.137907-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20260527032438.137907-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,33 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Under some circurmstancs debugfs reads are initiated by non-root users. In
-these cases, just return false rather than asserting that debugfs could not
-be read.
+--===============0805666227196129035==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/intel_wa.c | 4 ++++
- 1 file changed, 4 insertions(+)
+== Series Details ==
 
-diff --git a/lib/intel_wa.c b/lib/intel_wa.c
-index a16ea62a4c..2d0d664f3c 100644
---- a/lib/intel_wa.c
-+++ b/lib/intel_wa.c
-@@ -47,6 +47,10 @@ bool igt_has_intel_wa(int drm_fd, const char *check_wa)
- 	unsigned int xe;
- 	char name[256];
- 
-+	/* If we are not root, we can't read debugfs, just return false */
-+	if (getuid() != 0)
-+		return false;
-+
- 	debugfs_fd = igt_debugfs_dir(drm_fd);
- 	igt_assert(debugfs_fd >= 0);
- 
--- 
-2.54.0
+Series: tests/amdgpu: add amd_close_race GPU submission vs fd close test
+URL   : https://patchwork.freedesktop.org/series/167337/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8938_BAT -> XEIGTPW_15248_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8938 -> IGTPW_15248
+  * Linux: xe-5131-ba2b29e3db52fcd75c2dc6d76d81f26eb59b7e33 -> xe-5134-14d3e29c36bea707856f5c03dbf7b0ef73fdeb85
+
+  IGTPW_15248: 15248
+  IGT_8938: b024a3b67372962ff6e643d3998c5cf5acc07081 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5131-ba2b29e3db52fcd75c2dc6d76d81f26eb59b7e33: ba2b29e3db52fcd75c2dc6d76d81f26eb59b7e33
+  xe-5134-14d3e29c36bea707856f5c03dbf7b0ef73fdeb85: 14d3e29c36bea707856f5c03dbf7b0ef73fdeb85
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15248/index.html
+
+--===============0805666227196129035==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: add amd_close_race GPU submission vs fd close test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167337/">https://patchwork.freedesktop.org/series/167337/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15248/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15248/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8938_BAT -&gt; XEIGTPW_15248_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8938 -&gt; IGTPW_15248</li>
+<li>Linux: xe-5131-ba2b29e3db52fcd75c2dc6d76d81f26eb59b7e33 -&gt; xe-5134-14d3e29c36bea707856f5c03dbf7b0ef73fdeb85</li>
+</ul>
+<p>IGTPW_15248: 15248<br />
+  IGT_8938: b024a3b67372962ff6e643d3998c5cf5acc07081 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5131-ba2b29e3db52fcd75c2dc6d76d81f26eb59b7e33: ba2b29e3db52fcd75c2dc6d76d81f26eb59b7e33<br />
+  xe-5134-14d3e29c36bea707856f5c03dbf7b0ef73fdeb85: 14d3e29c36bea707856f5c03dbf7b0ef73fdeb85</p>
+
+</body>
+</html>
+
+--===============0805666227196129035==--
