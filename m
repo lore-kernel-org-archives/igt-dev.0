@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE85CD6E44
-	for <igt-dev@archiver.kernel.org>; Thu, 28 May 2026 10:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CDD4CD6E44
+	for <igt-dev@archiver.kernel.org>; Thu, 28 May 2026 10:44:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6420610EFFC;
-	Thu, 28 May 2026 10:43:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B607B10EFFE;
+	Thu, 28 May 2026 10:44:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q0dsDtOK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Dd7GDEn/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BF3410EFFC
- for <igt-dev@lists.freedesktop.org>; Thu, 28 May 2026 10:43:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F6A610EFFC
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 May 2026 10:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779964990; x=1811500990;
+ t=1779965044; x=1811501044;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=nCdSePA0c43/rPUnUw7q637OC9pNosNKxWfKchh3cnE=;
- b=Q0dsDtOK5gkRAa1Y3czNcvsHrv2M22LmUgMxCorw2pImX6Tx3jxjt+wz
- 0dkbAu26DKMdyIOqsCV45FhWIj0OyBCzrsmt7kf0h+bLkeTnHJWGPgMz8
- 7HCk1S2xjm7voFnTLPwrxJpLz187y6KHDyyl1k2FReGBGzSKSQQTcGn05
- UqON/mevwjsQDH+BjwXPVfZIrOk4JdUy8fRaymnAUKSi2Bbu8ZGHkV8Bv
- 0QxhrNFU4udOA+Ge3OG1++kCwWqkrAUXRe4R4KwrJ2XD7u7nR4Br6RNai
- VmzNy6auDLMN/cEdQyLSSaZmfWg8AvLMoklqg3NzaopsixR4pj+e4WiS9 A==;
-X-CSE-ConnectionGUID: AvXm1wsARKagNtULQu7/EQ==
-X-CSE-MsgGUID: VRY6SlKOT7iT0BN/8LwYvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="98221838"
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; d="scan'208";a="98221838"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2026 03:43:10 -0700
-X-CSE-ConnectionGUID: WXiPNNgEQ8SVs/ZfgkfrEQ==
-X-CSE-MsgGUID: q41t/QmzSQuuN+Pd+xQ64g==
+ bh=CjML1sgHzQQHjaLQ3moMXCqt6l8h54C8v4m4jE4p4ck=;
+ b=Dd7GDEn/km9XwXVXCaVRzWigT5/fCFcnJf9bGeNzNf0rKOGPjBHpL9ki
+ jvI/M5mugWeDVTNJA8PYEkazycKx/Xgr3DPr0tsZ3GRKSgPeOZrdNCWVn
+ 0bvhLC65IhdKWswOWivmlDOYdV7Fb3TeXWdl25VOafBfqp98KGPPBwB7J
+ x4/A/zS3JuvHDqAknLcqjkyCiley4QZMO3Krz6BLMwvwhn9hw42ttS8Ha
+ 101ZkMV4b+lC8Ir30bWfFF9Rt7MGIb5hbK7RZzJJaUAlE5WDoYEpanybh
+ MawM0EmFPGng2ZoEdIy722lpFe1C8Atm/71ugTJH1c6lmQnSWsN4946my w==;
+X-CSE-ConnectionGUID: t4Ec2/fOTRmM2H7UoaP1/w==
+X-CSE-MsgGUID: tSQ8lMa9TLuhf9FHItTABg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="84693204"
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; d="scan'208";a="84693204"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2026 03:44:03 -0700
+X-CSE-ConnectionGUID: F+0FcmchRgCVUkvPTG+1pg==
+X-CSE-MsgGUID: H43QyP6mTN2JncwbUabnVA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; d="scan'208";a="241683957"
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; d="scan'208";a="247460165"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 03:43:07 -0700
-Date: Thu, 28 May 2026 12:43:06 +0200
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 03:44:02 -0700
+Date: Thu, 28 May 2026 12:43:59 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, adam.miszczak@linux.intel.com,
- jakub1.kolakowski@intel.com, lukasz.laguna@intel.com
-Subject: Re: [PATCH i-g-t 1/8] tests/intel/xe_sriov_scheduling: Use timestamp
- helper
-Message-ID: <20260528104306.acc4p5a5ggvqz2xr@kamilkon-DESK.igk.intel.com>
+To: Zongyao Bai <zongyao.bai@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jia.yao@intel.com, x.wang@intel.com
+Subject: Re: [PATCH i-g-t 1/2] intel-ci: Add pat-index-auto to Xe BAT testlist
+Message-ID: <20260528104359.nzk67w4wqt5w27n7@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org, adam.miszczak@linux.intel.com,
- jakub1.kolakowski@intel.com, lukasz.laguna@intel.com
-References: <20260527205644.2801165-1-marcin.bernatowicz@linux.intel.com>
- <20260527205644.2801165-2-marcin.bernatowicz@linux.intel.com>
+ Zongyao Bai <zongyao.bai@intel.com>, igt-dev@lists.freedesktop.org,
+ jia.yao@intel.com, x.wang@intel.com
+References: <20260527210052.161768-1-zongyao.bai@intel.com>
+ <20260527210052.161768-2-zongyao.bai@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260527205644.2801165-2-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260527210052.161768-2-zongyao.bai@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,100 +71,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Marcin,
-On 2026-05-27 at 22:56:34 +0200, Marcin Bernatowicz wrote:
-> Replace open-coded timestamp collection with current_timestamp_ns().
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->  tests/intel/xe_sriov_scheduling.c | 26 +++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
-> 
-> diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
-> index 4228eea2d..509d6fd00 100644
-> --- a/tests/intel/xe_sriov_scheduling.c
-> +++ b/tests/intel/xe_sriov_scheduling.c
-> @@ -85,6 +85,15 @@ struct subm_set {
->  	pthread_barrier_t barrier;
->  };
->  
-> +static uint64_t current_timestamp_ns(void)
-> +{
-> +	struct timespec tv;
-> +
-> +	igt_gettime(&tv);
+Hi Zongyao,
+On 2026-05-27 at 21:00:51 +0000, Zongyao Bai wrote:
+> Add igt@xe_pat@pat-index-auto to xe.fast-feedback.testlist so that
+> the new dynamic PAT index subtest is included in Xe BAT runs.
 
-Looks like a good candidate for a lib function:
-
-uint64_t igt_gettime_ns(void)
+This should be second patch, after a new test. With that
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-> +
-> +	return tv.tv_sec * (uint64_t)NSEC_PER_SEC + (uint64_t)tv.tv_nsec;
-> +}
-> +
->  static void subm_init(struct subm *s, int fd, int vf_num, uint64_t addr,
->  		      struct drm_xe_engine_class_instance hwe,
->  		      unsigned int inflight)
-> @@ -164,8 +173,6 @@ static void subm_wait_slot(struct subm *s, unsigned int slot, uint64_t abs_timeo
->  
->  static void subm_exec_slot(struct subm *s, unsigned int slot)
->  {
-> -	struct timespec tv;
-> -
->  	syncobj_reset(s->fd, &s->done_fence[slot], 1);
->  	memset(&s->sync[0], 0, sizeof(s->sync));
->  	s->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> @@ -174,8 +181,7 @@ static void subm_exec_slot(struct subm *s, unsigned int slot)
->  	s->exec.num_syncs = 1;
->  	s->exec.syncs = to_user_pointer(&s->sync[0]);
->  	s->exec.address = s->addr[slot];
-> -	igt_gettime(&tv);
-> -	s->submit_ts[slot] = (uint64_t)tv.tv_sec * (uint64_t)NSEC_PER_SEC + (uint64_t)tv.tv_nsec;
-> +	s->submit_ts[slot] = current_timestamp_ns();
->  	xe_exec(s->fd, &s->exec);
->  }
->  
-> @@ -200,12 +206,9 @@ static void subm_exec_loop(struct subm *s, struct subm_stats *stats,
->  {
->  	const unsigned int inflight = s->slots;
->  	unsigned int submitted = 0;
-> -	struct timespec tv;
->  	unsigned int i;
->  
-> -	igt_gettime(&tv);
-> -	stats->start_timestamp =
-> -		tv.tv_sec * (uint64_t)NSEC_PER_SEC + tv.tv_nsec;
-> +	stats->start_timestamp = current_timestamp_ns();
->  	igt_debug("[%s] start_timestamp: %f\n", s->id, stats->start_timestamp * 1e-9);
->  
->  	/* Prefill */
-> @@ -222,9 +225,7 @@ static void subm_exec_loop(struct subm *s, struct subm_stats *stats,
->  		unsigned int slot = i % inflight;
->  
->  		subm_wait_slot(s, slot, INT64_MAX);
-> -		igt_gettime(&tv);
-> -		stats->complete_ts[i] = (uint64_t)tv.tv_sec * (uint64_t)NSEC_PER_SEC +
-> -					(uint64_t)tv.tv_nsec;
-> +		stats->complete_ts[i] = current_timestamp_ns();
->  		igt_stats_push(&stats->samples, stats->complete_ts[i] - s->submit_ts[slot]);
->  
->  		if (!subm_is_work_complete(s, slot)) {
-> @@ -246,8 +247,7 @@ static void subm_exec_loop(struct subm *s, struct subm_stats *stats,
->  		}
->  	}
->  
-> -	igt_gettime(&tv);
-> -	stats->end_timestamp = tv.tv_sec * (uint64_t)NSEC_PER_SEC + tv.tv_nsec;
-> +	stats->end_timestamp = current_timestamp_ns();
->  	igt_debug("[%s] end_timestamp: %f\n", s->id, stats->end_timestamp * 1e-9);
->  }
->  
+> 
+> Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
+> ---
+>  tests/intel-ci/xe.fast-feedback.testlist | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
+> index acff025fa..6851c1f49 100644
+> --- a/tests/intel-ci/xe.fast-feedback.testlist
+> +++ b/tests/intel-ci/xe.fast-feedback.testlist
+> @@ -211,6 +211,7 @@ igt@xe_pat@pat-index-xelp
+>  igt@xe_pat@pat-index-xehpc
+>  igt@xe_pat@pat-index-xelpg
+>  igt@xe_pat@pat-index-xe2
+> +igt@xe_pat@pat-index-auto
+>  igt@xe_waitfence@abstime
+>  igt@xe_waitfence@engine
+>  igt@xe_waitfence@reltime
 > -- 
 > 2.43.0
 > 
