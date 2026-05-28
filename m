@@ -4,60 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 069ADCD6E44
-	for <igt-dev@archiver.kernel.org>; Thu, 28 May 2026 15:18:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B375CD5BD5
+	for <igt-dev@archiver.kernel.org>; Thu, 28 May 2026 17:19:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A768910F364;
-	Thu, 28 May 2026 15:18:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7ADBD10F4B7;
+	Thu, 28 May 2026 17:19:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NyLrqeSE";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="H6t41bcO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E71410F358
- for <igt-dev@lists.freedesktop.org>; Thu, 28 May 2026 15:17:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779981468; x=1811517468;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=JN7TZtOnzomlAiwXqiSks8r1fmiYOuFTzINhPiFRnpg=;
- b=NyLrqeSEnLZYTvynYTs/G9qMB+NGzqVHwejOdI/64Df3jvFhhjyv6efx
- at6lujMXa5mtq8ecpSQ4ISUts7ZVSQB2mpC0aCeoHoDdPo2KILrhMkLii
- 7xS4VTEhILtwrolF8VFlCBg5CcOB8F9fyat9yJi/Ze0WUGfI86Xq3epvj
- T76rzPOULr5AYjzXnWdKM1mmKH11w6TwSm50i77zZp3M2NmV1/6uW/8B4
- qpnqi3I4Halk08ZLCs7zMcQGQss3Nw6AUIBmSlkPCwLvKa+BxBYwtZKU8
- fWSxDlpVk3NxjmRk5P7i/JskoTIy1qV1A7+qbeGSLIuS7s0yotuxOEPEh w==;
-X-CSE-ConnectionGUID: tzBvQ2uYR7CKJ+Po/5Ngsw==
-X-CSE-MsgGUID: 5coMRsZaRrOjYdkvzztpGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80938818"
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; d="scan'208";a="80938818"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2026 08:17:47 -0700
-X-CSE-ConnectionGUID: sazg265tSBOvGmm/8Q7G2w==
-X-CSE-MsgGUID: zyrrpbsJQkOADYjB6PFCQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; d="scan'208";a="244398288"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 08:17:46 -0700
-Date: Thu, 28 May 2026 17:17:31 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
- zbigniew.kempczynski@intel.com, x.wang@intel.com
-Subject: Re: [PATCH v4 1/2] lib/drmtest: add __drm_open_driver_path()
-Message-ID: <20260528151731.2g6ttnrvvqtqcgbt@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
- zbigniew.kempczynski@intel.com, x.wang@intel.com
-References: <cover.1779793438.git.sebastian.brzezinka@intel.com>
- <ce36517d762c8e1f7e8988df446f12853f2fdda6.1779793676.git.sebastian.brzezinka@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8392E10F4B5
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 May 2026 17:18:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+ Message-ID:Content-Type:Sender:Reply-To:Cc:Content-Transfer-Encoding:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=yfqgonMqIUgfcZUYZywrFBQndw44qNoKQ8QpkmtRLnc=; b=H6t41bcOvhohWM4E9HnX44oeaY
+ JrLwj+PTyd5BEK/iRCn7mDgGqt7K+JYS026hKl+7R1HA7U728H4QuiKZPsmZNntATCCoMf13OJ2OT
+ vvCZ6CNVzUfpntfA/HGlMuL473izL1amuP6cpLCM2I7XBwq2jg84f3/S1/vaJw39A8Liqqe+zslpN
+ P1onieGde+jgbvVmZr4ynFgxmHbLhCClIPoYR07DWQOvmsBmPFgtkQnM+XudI6YvWXtWjzaBj2Pfn
+ 7vTawwGhQGEpgWLRfypGlFG3Wqn0fu6icci89eMY51o4PSP1QvzL/CjGkJzUtO5eTpeYLwlRBwkaP
+ LXEGDL+w==;
+Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
+ helo=[192.168.1.133]) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1wSeNc-009TEW-Bp
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 May 2026 19:18:48 +0200
+Content-Type: multipart/alternative;
+ boundary="------------lJlNg4Xo7fWVRXo0Pyeeo916"
+Message-ID: <b09e2ade-dfe0-4b26-af35-2e6fb6144e56@Igalia.com>
+Date: Thu, 28 May 2026 10:18:43 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ce36517d762c8e1f7e8988df446f12853f2fdda6.1779793676.git.sebastian.brzezinka@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?B?UmU6IOKclyBYZS5DSS5CQVQ6IGZhaWx1cmUgZm9yIHRlc3RzL2ttc19j?=
+ =?UTF-8?Q?olorop=3A_Assorted_fixes_/_tweaks?=
+To: igt-dev@lists.freedesktop.org
+References: <20260527191839.639696-1-John.Harrison@Igalia.com>
+ <177992019603.17308.2501558102556797863@6beec6c84f66>
+Content-Language: en-GB
+From: John Harrison <John.Harrison@Igalia.com>
+In-Reply-To: <177992019603.17308.2501558102556797863@6beec6c84f66>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,94 +62,205 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sebastian,
-On 2026-05-26 at 13:39:53 +0200, Sebastian Brzezinka wrote:
-> Add __drm_open_driver_path() as a path-based DRM open helper. It opens
-> the given path with O_RDWR, verifies the resulting fd is a DRM device by
-> issuing DRM_IOCTL_VERSION via __get_drm_device_name() before proceeding
-> (returning -1 and closing on failure), logs the opened device path, and
-> populates the xe_device cache when the device is Xe.
-> 
-> The __ prefix signals that the function does not throw assertions or
-> igt_require() calls, consistent with the existing __drm_open_driver*
-> family.
-> 
-> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-> ---
->  lib/drmtest.c | 30 ++++++++++++++++++++++++++++++
->  lib/drmtest.h |  1 +
->  2 files changed, 31 insertions(+)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 4a788ea7a..7007569d2 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -379,6 +379,36 @@ err:
->  	return -1;
->  }
->  
-> +/**
-> + * __drm_open_driver_path:
-> + * @path: DRM device node path
-> + *
-> + * Opens @path with O_RDWR and populates the xe_device cache for Xe fds.
-> + *
-> + * Returns: DRM file descriptor or -1 on error
-> + */
-> +int __drm_open_driver_path(const char *path)
+This is a multi-part message in MIME format.
+--------------lJlNg4Xo7fWVRXo0Pyeeo916
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This should be
+On 5/27/26 15:16, Patchwork wrote:
+> Project List - Patchwork *Patch Details*
+> *Series:* 	tests/kms_colorop: Assorted fixes / tweaks
+> *URL:* 	https://patchwork.freedesktop.org/series/167408/
+> *State:* 	failure
+> *Details:* 
+> https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/index.html
+>
+>
+>   CI Bug Log - changes from XEIGT_8939_BAT -> XEIGTPW_15262_BAT
+>
+>
+>     Summary
+>
+> *FAILURE*
+>
+> Serious unknown changes coming with XEIGTPW_15262_BAT absolutely need 
+> to be
+> verified manually.
+>
+> If you think the reported changes have nothing to do with the changes
+> introduced in XEIGTPW_15262_BAT, please notify your bug team 
+> (I915-ci-infra@lists.freedesktop.org) to allow them
+> to document this new failure mode, which will reduce false positives 
+> in CI.
+>
+>
+>     Participating hosts (13 -> 13)
+>
+> No changes in participating hosts
+>
+>
+>     Possible new issues
+>
+> Here are the unknown changes that may have been introduced in 
+> XEIGTPW_15262_BAT:
+>
+>
+>       IGT changes
+>
+>
+>         Possible regressions
+>
+>  *
+>
+>     igt@xe_gt_freq@freq_range_idle:
+>
+>       o bat-wcl-1: PASS
+>         <https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_gt_freq@freq_range_idle.html>
+>         -> SKIP
+>         <https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/bat-wcl-1/igt@xe_gt_freq@freq_range_idle.html>
+>         +1 other test skip
+>  *
+>
+>     igt@xe_pm_residency@gt-c6-on-idle:
+>
+>       o bat-wcl-1: PASS
+>         <https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_pm_residency@gt-c6-on-idle.html>
+>         -> FAIL
+>         <https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/bat-wcl-1/igt@xe_pm_residency@gt-c6-on-idle.html>
+>         +1 other test fail
+>
+My changes are entirely contained within the kms_colorop test and have 
+no bearing on power management. The above issues are about not being 
+able to enter (or just to detect entering?) C6 power state. So they are 
+not related to this patch set.
 
-int drm_open_driver_path(const char *path)
+John.
 
-see below.
 
-> +{
-> +	char name[12] = "";
-> +	int fd;
-> +
-> +	fd = open(path, O_RDWR);
-> +	if (fd < 0)
-> +		return -1;
-> +
-> +	if (__get_drm_device_name(fd, name, sizeof(name) - 1)) {
-> +		close(fd);
-> +		return -1;
-> +	}
-> +
+>     Build changes
+>
+>   * IGT: IGT_8939 -> IGTPW_15262
+>   * Linux: xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb ->
+>     xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6
+>
+> IGTPW_15262: 15262
+> IGT_8939: 8939
+> xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb: 
+> 11a8456527f00d86dc8b23035c324da194fbbadb
+> xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6: 
+> 7570b524ddecbe5db4af0c493a047e21bab6b3d6
+>
 
-Please verify here that name[0] != 0.
+--------------lJlNg4Xo7fWVRXo0Pyeeo916
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> +	log_opened_device_path(path);
-> +
-> +	if (is_xe_device(fd))
-> +		xe_device_get(fd);
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 5/27/26 15:16, Patchwork wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:177992019603.17308.2501558102556797863@6beec6c84f66">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Project List - Patchwork</title>
+      <style id="css-table-select" type="text/css">td { padding: 2pt; }</style>
+      <b>Patch Details</b>
+      <table>
+        <tbody>
+          <tr>
+            <td><b>Series:</b></td>
+            <td>tests/kms_colorop: Assorted fixes / tweaks</td>
+          </tr>
+          <tr>
+            <td><b>URL:</b></td>
+            <td><a
+                href="https://patchwork.freedesktop.org/series/167408/"
+                moz-do-not-send="true" class="moz-txt-link-freetext">https://patchwork.freedesktop.org/series/167408/</a></td>
+          </tr>
+          <tr>
+            <td><b>State:</b></td>
+            <td>failure</td>
+          </tr>
+          <tr>
+            <td><b>Details:</b></td>
+            <td><a
+href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/index.html"
+                moz-do-not-send="true" class="moz-txt-link-freetext">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/index.html</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <h1>CI Bug Log - changes from XEIGT_8939_BAT -&gt;
+        XEIGTPW_15262_BAT</h1>
+      <h2>Summary</h2>
+      <p><strong>FAILURE</strong></p>
+      <p>Serious unknown changes coming with XEIGTPW_15262_BAT
+        absolutely need to be<br>
+        verified manually.</p>
+      <p>If you think the reported changes have nothing to do with the
+        changes<br>
+        introduced in XEIGTPW_15262_BAT, please notify your bug team
+        (<a class="moz-txt-link-abbreviated" href="mailto:I915-ci-infra@lists.freedesktop.org">I915-ci-infra@lists.freedesktop.org</a>) to allow them<br>
+        to document this new failure mode, which will reduce false
+        positives in CI.</p>
+      <h2>Participating hosts (13 -&gt; 13)</h2>
+      <p>No changes in participating hosts</p>
+      <h2>Possible new issues</h2>
+      <p>Here are the unknown changes that may have been introduced in
+        XEIGTPW_15262_BAT:</p>
+      <h3>IGT changes</h3>
+      <h4>Possible regressions</h4>
+      <ul>
+        <li>
+          <p>igt@xe_gt_freq@freq_range_idle:</p>
+          <ul>
+            <li>bat-wcl-1: <a
+href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_gt_freq@freq_range_idle.html"
+                moz-do-not-send="true">PASS</a> -&gt; <a
+href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/bat-wcl-1/igt@xe_gt_freq@freq_range_idle.html"
+                moz-do-not-send="true">SKIP</a> +1 other test skip</li>
+          </ul>
+        </li>
+        <li>
+          <p>igt@xe_pm_residency@gt-c6-on-idle:</p>
+          <ul>
+            <li>bat-wcl-1: <a
+href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8939/bat-wcl-1/igt@xe_pm_residency@gt-c6-on-idle.html"
+                moz-do-not-send="true">PASS</a> -&gt; <a
+href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15262/bat-wcl-1/igt@xe_pm_residency@gt-c6-on-idle.html"
+                moz-do-not-send="true">FAIL</a> +1 other test fail</li>
+          </ul>
+        </li>
+      </ul>
+    </blockquote>
+    My changes are entirely contained within the kms_colorop test and
+    have no bearing on power management. The above issues are about not
+    being able to enter (or just to detect entering?) C6 power state. So
+    they are not related to this patch set.<br>
+    <br>
+    John.<br>
+    <br>
+    <br>
+    <blockquote type="cite"
+      cite="mid:177992019603.17308.2501558102556797863@6beec6c84f66">
+      <h2>Build changes</h2>
+      <ul>
+        <li>IGT: IGT_8939 -&gt; IGTPW_15262</li>
+        <li>Linux: xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb
+          -&gt; xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6</li>
+      </ul>
+      <p>IGTPW_15262: 15262<br>
+        IGT_8939: 8939<br>
+        xe-5138-11a8456527f00d86dc8b23035c324da194fbbadb:
+        11a8456527f00d86dc8b23035c324da194fbbadb<br>
+        xe-5139-7570b524ddecbe5db4af0c493a047e21bab6b3d6:
+        7570b524ddecbe5db4af0c493a047e21bab6b3d6</p>
+    </blockquote>
+    <br>
+  </body>
+</html>
 
-xe_device_get() uses igt_assert() so use drm_open_driver_path()
-as function name.
-
-Regards,
-Kamil
-
-> +
-> +	return fd;
-> +}
-> +
->  static struct {
->  	int fd;
->  	struct stat stat;
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 37874d729..305bbc86b 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -123,6 +123,7 @@ int drm_open_driver_another(int idx, int chipset);
->  int drm_open_driver(int chipset);
->  int drm_open_driver_master(int chipset);
->  int drm_open_driver_render(int chipset);
-> +int __drm_open_driver_path(const char *path);
->  int __drm_open_driver_another(int idx, int chipset);
->  int __drm_open_driver(int chipset);
->  int __drm_open_driver_render(int chipset);
-> -- 
-> 2.53.0
-> 
+--------------lJlNg4Xo7fWVRXo0Pyeeo916--
