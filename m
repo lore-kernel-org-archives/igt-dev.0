@@ -4,72 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 270CFCD4F54
-	for <igt-dev@archiver.kernel.org>; Fri, 29 May 2026 21:04:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13A19CD6E49
+	for <igt-dev@archiver.kernel.org>; Fri, 29 May 2026 21:07:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BF3E0112517;
-	Fri, 29 May 2026 21:04:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B403F112517;
+	Fri, 29 May 2026 21:07:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eBpOde/n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LEo8uPJ8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CE22112517
- for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 21:04:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 52541112517
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 21:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780088671; x=1811624671;
+ t=1780088848; x=1811624848;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=Yr5W4r6nHunaiLM+/dqEcuo6mK+NuttXlBQQI5QelsQ=;
- b=eBpOde/nipXKA8XVPXNMUd0gXrrUZStAcN3w8TFqzkQ2baTfOAy2IdNl
- Y/iJW6tFVCJNsmeFxjCw7ds+T90kxCyWndUfS/msF0InWDdwFSr1WNuSf
- VYjzLeW41+irVLurSmoQQGbTBpjk+E9kkD+hC6o1vzm2+s8b9YNnrMgvR
- nGAv1alCGLsXJjyo+sDs8NWbAx549T9mgM9Ii+7lwoaQaTAPBunGTR/+Z
- Y6iS6grMA8XWJqqoHJViO82JYYIFGRXDfIFa8yApFbUPkcaVqvIjBgh5u
- qb93kx56leKiJNiVlv5twZ++jhvJYq/6Ccx3jCPmpCQQeCAIcN6hVKb7X Q==;
-X-CSE-ConnectionGUID: keiCYGbeSEiE8AgqbGup2g==
-X-CSE-MsgGUID: OGXQcDdfSnCu0M2UD3/B/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11801"; a="80089906"
-X-IronPort-AV: E=Sophos;i="6.24,176,1774335600"; d="scan'208";a="80089906"
+ bh=uuSSpXHh3Sg5vanPRbFrOiUZqTPFUMheXojlvTAj/Io=;
+ b=LEo8uPJ8G8POoZMP7Z0n0SDMcm2pV8XXzN8Nwwrc8TljTkJLFbRZEOrt
+ CcKzNWOWsP8J4RWaz/l609wPphyF9zlxPbGl2Btt1nAFwAzDzxPaHLkZG
+ NT9eIGwQpDkzbviwkl1RyKEMFKoMgZfMWNSp+jZyuKsBVTC76WZpzzv9M
+ QtQN7w76+vXo76NNmnK7gcBybf+06egf9s1m5tsRGiy5AGTNhXAWLNPiv
+ 7Iob/BGwOPTACxBBVTh16gi7nE968KvtB26toVXDEQvVMrlYii/EQBNSU
+ 8GqNHUSxQtfxuLeJC0wlrDoZjx4/nXRhUqy7zzbpjMulxhCgrQv52lJRk Q==;
+X-CSE-ConnectionGUID: WUaluzpMT++SmnooOCqEIA==
+X-CSE-MsgGUID: KKwSVrkOSxSBMT+S2C3dgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11801"; a="80090073"
+X-IronPort-AV: E=Sophos;i="6.24,176,1774335600"; d="scan'208";a="80090073"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2026 14:04:31 -0700
-X-CSE-ConnectionGUID: 2EDFq+e8S2+tqEI/bqr5qw==
-X-CSE-MsgGUID: WKUHdBwXRViPCo11tIcqGA==
+ 29 May 2026 14:07:28 -0700
+X-CSE-ConnectionGUID: j9w8ln8pS/Cwa0/CV5xvBA==
+X-CSE-MsgGUID: rLiOcLBfREu84asnZQhnhg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,176,1774335600"; d="scan'208";a="236602931"
+X-IronPort-AV: E=Sophos;i="6.24,176,1774335600"; d="scan'208";a="236603532"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 14:04:29 -0700
-Date: Fri, 29 May 2026 23:04:06 +0200
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 14:07:26 -0700
+Date: Fri, 29 May 2026 23:07:24 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: "Knop, Ryszard" <ryszard.knop@intel.com>,
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>,
+ "Knop, Ryszard" <ryszard.knop@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
  "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
  "Thomas, Sobin" <sobin.thomas@intel.com>,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
  Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
 Subject: Re: [PATCH i-g-t v1 0/4] RFC: Create smaller dmesg reports for a test
-Message-ID: <20260529210406.r3hrmcywu3rlkeuh@kamilkon-DESK.igk.intel.com>
+Message-ID: <20260529210724.xk3qcglf62cox4we@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
  Jani Nikula <jani.nikula@intel.com>,
  "Knop, Ryszard" <ryszard.knop@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
  "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
  "Thomas, Sobin" <sobin.thomas@intel.com>,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
  Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
 References: <20260520154947.116726-1-kamil.konieczny@linux.intel.com>
  <5a9494611b1644f3113d6972e55103e3aeead1fa.camel@intel.com>
  <425e70c4ff7133d6101ed0e52902aa3d73dc3dc1@intel.com>
+ <ahmsKpVfFj3G8DP9@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <425e70c4ff7133d6101ed0e52902aa3d73dc3dc1@intel.com>
+In-Reply-To: <ahmsKpVfFj3G8DP9@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,100 +86,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2026-05-29 at 15:52:13 +0300, Jani Nikula wrote:
-> On Fri, 29 May 2026, "Knop, Ryszard" <ryszard.knop@intel.com> wrote:
-> > IMO this is going to end up either unused, and people will keep
-> > complaining they want a higher limit anyways, or overused, and people
-> > will complain why some of their logs are randomly missing from CI logs.
-> >
-> > In general it seems like this does not break the CI infra directly, so
-> > I won't say no to anything here, but it's one of those things that dial
-> > up the magic and we seem to have lots of that in disk limits recently.
-
-I also do not like this as this could depend on kernel
-and debug flags/env vars.
-
+Hi Ville,
+On 2026-05-29 at 18:09:30 +0300, Ville Syrjälä wrote:
+> On Fri, May 29, 2026 at 03:52:13PM +0300, Jani Nikula wrote:
+> > On Fri, 29 May 2026, "Knop, Ryszard" <ryszard.knop@intel.com> wrote:
+> > > IMO this is going to end up either unused, and people will keep
+> > > complaining they want a higher limit anyways, or overused, and people
+> > > will complain why some of their logs are randomly missing from CI logs.
+> > >
+> > > In general it seems like this does not break the CI infra directly, so
+> > > I won't say no to anything here, but it's one of those things that dial
+> > > up the magic and we seem to have lots of that in disk limits recently.
+> > 
+> > Overall seems like there are a number of hacky approaches being added,
+> > e.g. tweaking of the drm.debug parameter value, and filtering parts of
+> > the dmesg.
+> > 
+> > Debugging issues is often seriously difficult even with the full
+> > dmesg. Having an imcomplete dmesg makes everything more difficult. And
+> > it's the worst if you don't even know that when looking at the dmesg.
+> > 
+> > We could *maybe* discuss reducing the stored dmesgs for tests that
+> > passed. Or reduce the time the dmesgs are stored for passed dmesgs. But
+> > even then it's often useful to see the passed results when debugging
+> > failed results.
+> > 
+> > But no matter what, full dmesgs should be the standard for failed tests,
+> > and nothing less is acceptable.
 > 
-> Overall seems like there are a number of hacky approaches being added,
-> e.g. tweaking of the drm.debug parameter value, and filtering parts of
-> the dmesg.
+> If disk space is the issue then just compress the damn logs.
 > 
-> Debugging issues is often seriously difficult even with the full
-> dmesg. Having an imcomplete dmesg makes everything more difficult. And
-> it's the worst if you don't even know that when looking at the dmesg.
 
-Full logs are still there, at least for Intel CI, in full dmesg.
-
-The idea was to have a begin and end of dmesg for each test, so
-if needed a dmesg for particular test could be found from full
-one, where by full I mean one for whole run for all tests (link
-on results page to dmesgNN.txt) But that recently also have had
-its problems, when one from igt_runner was more complete than a
-full one. +cc J-P
-
-The problem is that igt_runner do not know about how much logs
-could appear in dmesg, so given a disk limit for all runs it
-kills a single test when it exceeds it. For some tests it should
-kill it sooner, for others it could allow bigger and see a
-success instead of incomplete.
-
-For the cases when it fails, it should be enough to have ten
-first bugs in dmesg then hundreds? Here also comes non-decidable
-dillema when to stop collecting a dmesg, when kernel could
-print it indefinitly.
+It was tried but failed in CI pipe, where plain text is
+expected. +J-P
 
 Regards,
 Kamil
 
-> 
-> We could *maybe* discuss reducing the stored dmesgs for tests that
-> passed. Or reduce the time the dmesgs are stored for passed dmesgs. But
-> even then it's often useful to see the passed results when debugging
-> failed results.
-> 
-> But no matter what, full dmesgs should be the standard for failed tests,
-> and nothing less is acceptable.
-> 
-> 
-> BR,
-> Jani.
-> 
-> 
-> >
-> > Ryszard
-> >
-> > On Wed, 2026-05-20 at 17:49 +0200, Kamil Konieczny wrote:
-> >>   Inform igt_runner about some lines in dmesg which could be
-> >> safely skipped during creating a results.json.
-> >> 
-> >>   With this, runner will also lift dmesg size limit for current
-> >> test and will postpone size fitting to last phase of a run when
-> >> it will generate json report.
-> >> 
-> >> TODO: This is draft which implements only lines skipping, without
-> >> any reporting what was done. Also, implementation for a fail path
-> >> when applied regex will not lower resulting demsg is left for
-> >> future.
-> >> 
-> >> Cc: Sobin Thomas <sobin.thomas@intel.com>
-> >> Cc: Ryszard Knop <ryszard.knop@intel.com>
-> >> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> >> 
-> >> Kamil Konieczny (4):
-> >>   runner/executor: Create temporary unlimited dmesg save
-> >>   lib/igt_core: Create message for runner with unlimiting dmesg size
-> >>   tests/intel/xe_exec_system_allocator: Lower dmesg size collected
-> >>   runner/resultgen: Create smaller dmesg report by dropping lines
-> >>     matched with skip regex
-> >> 
-> >>  lib/igt_core.c                         | 31 +++++++++++++++++++
-> >>  lib/igt_core.h                         |  1 +
-> >>  runner/executor.c                      | 43 ++++++++++++++++----------
-> >>  runner/output_strings.h                |  8 +++++
-> >>  runner/resultgen.c                     | 17 ++++++++--
-> >>  tests/intel/xe_exec_system_allocator.c |  1 +
-> >>  6 files changed, 83 insertions(+), 18 deletions(-)
-> 
 > -- 
-> Jani Nikula, Intel
+> Ville Syrjälä
+> Intel
