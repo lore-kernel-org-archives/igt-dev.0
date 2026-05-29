@@ -4,78 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74F8FCD6E4A
-	for <igt-dev@archiver.kernel.org>; Fri, 29 May 2026 12:16:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D2F0CD6E43
+	for <igt-dev@archiver.kernel.org>; Fri, 29 May 2026 12:18:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2AFC210FE34;
-	Fri, 29 May 2026 12:16:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2101610FE3A;
+	Fri, 29 May 2026 12:18:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="SWPjR5AO";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="TdSx0KAN";
 	dkim-atps=neutral
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C72C610FE33
- for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 12:16:06 +0000 (UTC)
-Received: by mail-dl1-f49.google.com with SMTP id
- a92af1059eb24-1370417c01cso6474568c88.1
- for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 05:16:06 -0700 (PDT)
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com
+ [74.125.82.180])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0177510FE39
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 12:17:44 +0000 (UTC)
+Received: by mail-dy1-f180.google.com with SMTP id
+ 5a478bee46e88-304545f5206so10643139eec.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 05:17:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1780056966; x=1780661766; darn=lists.freedesktop.org;
+ d=gmail.com; s=20251104; t=1780057063; x=1780661863; darn=lists.freedesktop.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=R1SjcvjcI0hbHADG9l8NOeXrmf1ZMJwhfLHaL6nyInE=;
- b=SWPjR5AOKCB/AA0AqZHKI+6hrXUXDb4mejBEk8965au0r+WH24X8SGPdoOApMS/n+L
- uxG99y7wA5eg0E1WI4Qe1KnCaI/kEzRqQH0Usg9z4LSQZZcx53EafuiAprQGceM3MJJ1
- zeLZjmcc2jiVlAA58zzBTNzKTbqvBSc6hl9Z+FjNeuxCvzX3rHClOUDclViXVwidiXXM
- VWLFDYvotPwGnbbj7OGSenA9APDroU5kx+EC2JsWG7SOWpu21GeKR2ztP+wC2/EbRVmR
- K6n1XAQhBRkrZBXl8+JiTWr5zsGxSNIDJC4SkbsIocTiEfJjfENe31pQ/Swmd7GCsO/v
- S69A==
+ bh=dum6UtpzCUQ34RkCrryGgDy/StQCfLauPWmvBqp80L4=;
+ b=TdSx0KAN0OvnS7NKWGL+tWb558Upmrn68D3r6/mN4cfh0DJB4MWgK07YUj8Gn9LFhN
+ vMjf9piLV1Ku2H3Bk+J5rSm2ymzCloYOMxBlbeqIwejjUx+48rYz8ivRwFEaNOAIlEAI
+ 8IQlDTzt+UopxELt2aODJEYWmP90FEld3AQEBQF5SXgvGHwG55G37wFgvSLB0eoPEH+7
+ GfYxHPf2ApWaIQbcQf1vcovBHa3vr2FMJgeRa94Zxl+qWp477S4OJH/uModwtu9aL+aT
+ 7a5FyXQPzD83wxpJlKephligO8fxt/Wee0oxNu9YpEAAAP2yOWUyLrf4ZNkX84tIsBvV
+ HEsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1780056966; x=1780661766;
+ d=1e100.net; s=20251104; t=1780057063; x=1780661863;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=R1SjcvjcI0hbHADG9l8NOeXrmf1ZMJwhfLHaL6nyInE=;
- b=X3JGH1pvjzsbTO6eO46ws0/tQulnQq/vk4vBT8CeW8SYz1gAuXkvtS49Zd5pv6aQQo
- E3nhK7C+7lc6TRAJ0hVxsvCj6E8WRiOgqGGFFpNgSMSDnYsHyzSBkXoWk0geNjVzQlb9
- QaPmGHMof3buhelsTmnI10Qsj9RAixl+gswhrylhKd+N2KxG6LdOaQ9Ayx8Ws+KLdizZ
- obXls99cg1m1/2mN96kwWcCr4N4u1z2IuvQrzw1yAfcFbL2UdCRsgkEPR2kN7EvrANvw
- ond3goUe22NdveISVppHilEzYxNQ0UjWTJzv8a11AP1MAU4km2QLDFDJM1vclslgXHPN
- HSpA==
+ bh=dum6UtpzCUQ34RkCrryGgDy/StQCfLauPWmvBqp80L4=;
+ b=G4RyMi9isKnaqr1JM8UK5hfifu2EBmPN/CQfoYUtvNR+mj2Xl1wk7SPqtt9oG749vC
+ 9AemipwjWLW8A1EBRbnn2ybJKJFfrT/DC75aDYLFHKIaA2OqPJ5VNgifAYAP32LMiGV2
+ B3XZXiNnbygrIXQQkYE4QR53oNR+lcZQhJJH7nrBySR2KcG5TeZsX7xoucFURQkYiFte
+ 3DKBTzpa0RltP0lcpgJOZZGuIQDLtY/NMp20AR5s9CU3MBJo+LGJ/wEziYOQiX+8ovf+
+ K7ZJFqp3Z17NfJTN+u5DuQ1mxwzjSY9qpiyKlPf04KNu/ntmPpXQQu6iXFVYwxWjYXya
+ yrYw==
 X-Forwarded-Encrypted: i=1;
- AFNElJ/qPTF4ObyGHmVumBJMKQsGaF1JcFGLp1UwpHNM4eFX9O8CPmZSI1nG6VGJKJNaG0CFYdP6qdk5@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YyZXBDa0y8IlN1eHpww2G/eq/3HfM6GOZByuriPEvYfzsnibKOo
- AmDx3jMvNtOzCUZ4fG6xSwh3AJdcIKh8f9EvDvOlnDrPIKKB6FdEUUPjglvM14Db
-X-Gm-Gg: Acq92OEfF+yAGQ5RFmnPVEJy/WdHkJAABb+tJOb+qDTKbdfFSiIEnocq7xbA+coYfof
- KYT7N4ei1RRSOJrnTmNoptFEXjK7oDqF9qZxZO7gyOEQDIa/XM3qk/skFkvOcnaYNWBqi5Tjs7+
- dztpES/IuZzi0jmU9fHR89J5PsdnLFcrKASPhBe88b53bGXmqowe2ufkPMopT35PrfsUdjpD61R
- wflt1muGENGtkVfUpG1gpfuYve7Vsb4LDDkPEz3Ij4oIZ8EIRAW4aRNmbvt67HvdnHrf5JjbOKx
- uebsUFyG/7qpkaMBji6di1S/ELTtnLrpOTUuZq5LCQND8PyRagDay6G318efJ3NqOcrfVKL9qwH
- hGNdfL50CvlejoSoliTpdHHPiLPwgKZu2rIixhaYCFHIffbgtK6FqMgL5Amnllnu6uCR9o1BhS9
- uRiek59t5X1loMsZPRx8ZszsqvhD4ZZ2TVvjLjv42hNsI0WzQ/629TGSkb6lE+3cvsw4buibR6A
- +aQ
-X-Received: by 2002:a05:7022:407:b0:136:7d65:4edc with SMTP id
- a92af1059eb24-137aeb9217emr1127989c88.8.1780056965832; 
- Fri, 29 May 2026 05:16:05 -0700 (PDT)
+ AFNElJ/AQFMN8loCYaQHHDxBfbniNHfK+5CQ7d+ZzYT990i3eXEfzSVI3KnPGGkafxFuoeMCJCv6QRzB@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YzO06v0KYJPqJo19hfPZ0zyIlmm7l8o+H/+VzIWZzhoch+BTUbn
+ WZGsIKzlPcT8hVNeFXYFwbusbVCOo9LOZneU6lk97E6pptzocOPnM6Zg1gqFS/6Q
+X-Gm-Gg: Acq92OF/j9SAUryZV/nZIfzHSXEOy7XTDnCm/P8fjPNPH2x95+bUnU0bN09FHghfHw7
+ TQsaJMwpxXRvRVEfE6/m46+t4MDFBVXNYm934GLrgej1JBdJeQnDedG2rH4JrKelJuL1quW8LWh
+ UGXS5BqRXzReCA2nqwuoggTA6ihrZ27Ol9WjGsiD3UFVaMMydkirSMJ34106JqlIympWBVGP2G3
+ 64KdR84ASkh7We9YV5ADu8c+37LX3TY+OiJDpqgS4pmF7hXetjpc489KyGj6QQ3zcQ/JDrxVuZI
+ nA4c+WlFBUIkZwAFII7cDqyNcYDpWk7DBBuNeurU80aREvHqI0VzqBvY+s9MhQtG9dI/e8mu7lv
+ ElwRtonRqO0EZmjNFO1BbMFjwOSgqbHuRAdV2J4sgQo0oXVxAaUj3f2aMarSPuUZtvBMNY/LAhT
+ Q8GGzht5Doe6PgUWlmkmGEYBO+q1l7OCP/PwICPwGJl1x+QJiaoyiacEL51NenEVJbIKvPiVvAX
+ ws9
+X-Received: by 2002:a05:7300:3242:b0:2da:a813:a5fd with SMTP id
+ 5a478bee46e88-304eb17ec9fmr1124150eec.22.1780057063197; 
+ Fri, 29 May 2026 05:17:43 -0700 (PDT)
 Received: from [192.55.54.47] ([192.55.54.47])
  by smtp.gmail.com with ESMTPSA id
- a92af1059eb24-137b36af6edsm1004480c88.5.2026.05.29.05.16.02
+ 5a478bee46e88-304ed2c10c1sm1261055eec.1.2026.05.29.05.17.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 May 2026 05:16:05 -0700 (PDT)
-Message-ID: <c949a702-e12a-45fb-968a-262416f7ff0b@gmail.com>
-Date: Fri, 29 May 2026 15:16:00 +0300
+ Fri, 29 May 2026 05:17:42 -0700 (PDT)
+Message-ID: <1ed1a2a5-beb5-4c3c-8968-2029c125029f@gmail.com>
+Date: Fri, 29 May 2026 15:17:39 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 24/25] tests/intel/kms_flip_tiling: Use
- for_each_modifier_with_format()
+Subject: Re: [PATCH i-g-t 25/25] tests/chamelium/kms_chamelium_frames: Use
+ for_each_format_with_modifier()
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
- <20260512122143.11013-25-ville.syrjala@linux.intel.com>
+ <20260512122143.11013-26-ville.syrjala@linux.intel.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20260512122143.11013-25-ville.syrjala@linux.intel.com>
+In-Reply-To: <20260512122143.11013-26-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -98,49 +99,82 @@ Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 On 12/05/2026 15.21, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Replace the nested open coded copies of for_each_modifier_with_format()
+> Replace the open coded copies of for_each_format_with_modifier()
 > with the real thing.
 > 
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > ---
->   tests/intel/kms_flip_tiling.c | 19 ++++---------------
->   1 file changed, 4 insertions(+), 15 deletions(-)
+>   tests/chamelium/kms_chamelium_frames.c | 22 ++++++----------------
+>   1 file changed, 6 insertions(+), 16 deletions(-)
 > 
-> diff --git a/tests/intel/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
-> index bccacfa7b229..ff79e1458ef2 100644
-> --- a/tests/intel/kms_flip_tiling.c
-> +++ b/tests/intel/kms_flip_tiling.c
-> @@ -230,7 +230,6 @@ int igt_main()
->   		bool run_in_simulation = igt_run_in_simulation();
+> diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
+> index d1d76f26d6a0..cdce7ee6b1d7 100644
+> --- a/tests/chamelium/kms_chamelium_frames.c
+> +++ b/tests/chamelium/kms_chamelium_frames.c
+> @@ -1032,9 +1032,9 @@ int igt_main()
+>   	igt_describe(test_display_one_mode_desc);
+>   	connector_dynamic_subtest("hdmi-crc-nonplanar-formats", HDMIA)
+>   	{
+> -			int k;
+>   			igt_output_t *output;
+>   			igt_plane_t *primary;
+> +			uint32_t format;
 >   
->   		for_each_crtc_with_valid_output(&data.display, crtc, output) {
-> -			uint32_t format[2];
->   			uint64_t modifier[2];
->   			igt_plane_t *plane;
+>   			output = chamelium_prepare_output(&data, port,
+>   							  IGT_CUSTOM_EDID_BASE);
+> @@ -1042,19 +1042,14 @@ int igt_main()
+>   				output, DRM_PLANE_TYPE_PRIMARY);
+>   			igt_assert(primary);
 >   
-> @@ -244,20 +243,10 @@ int igt_main()
->   
->   			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->   
-> -			for (int i = 0; i < plane->format_mods.count; i++) {
-> -				format[0] = plane->format_mods.formats[i];
-> -				modifier[0] = plane->format_mods.modifiers[i];
+> -			for (k = 0; k < primary->format_mods.count; k++) {
+> -				uint32_t format = primary->format_mods.formats[k];
+> -				uint64_t modifier = primary->format_mods.modifiers[k];
 > -
-> -				if (format[0] != data.testformat)
+> +			for_each_format_with_modifier(&primary->format_mods,
+> +						      format, DRM_FORMAT_MOD_LINEAR) {
+>   				if (!igt_fb_supported_format(format))
+>   					continue;
+>   
+>   				if (igt_format_is_yuv(format))
+>   					continue;
+>   
+> -				if (modifier != DRM_FORMAT_MOD_LINEAR)
 > -					continue;
 > -
-> -				for (int j = 0; j < plane->format_mods.count; j++) {
-> -					format[1] = plane->format_mods.formats[j];
-> -					modifier[1] = plane->format_mods.modifiers[j];
+>   				igt_dynamic_f(
+>   					"%s",
+>   					igt_format_str(format))
+> @@ -1071,9 +1066,9 @@ int igt_main()
+>   	igt_describe(test_display_one_mode_desc);
+>   	connector_dynamic_subtest("hdmi-cmp-planar-formats", HDMIA)
+>   	{
+> -			int k;
+>   			igt_output_t *output;
+>   			igt_plane_t *primary;
+> +			uint32_t format;
+>   
+>   			output = chamelium_prepare_output(&data, port,
+>   							  IGT_CUSTOM_EDID_BASE);
+> @@ -1081,19 +1076,14 @@ int igt_main()
+>   				output, DRM_PLANE_TYPE_PRIMARY);
+>   			igt_assert(primary);
+>   
+> -			for (k = 0; k < primary->format_mods.count; k++) {
+> -				uint32_t format = primary->format_mods.formats[k];
+> -				uint64_t modifier = primary->format_mods.modifiers[k];
 > -
-> -					if (format[1] != data.testformat)
-> -						continue;
+> +			for_each_format_with_modifier(&primary->format_mods,
+> +						      format, DRM_FORMAT_MOD_LINEAR) {
+>   				if (!igt_fb_supported_format(format))
+>   					continue;
+>   
+>   				if (!igt_format_is_yuv(format))
+>   					continue;
+>   
+> -				if (modifier != DRM_FORMAT_MOD_LINEAR)
+> -					continue;
 > -
-> +			for_each_modifier_with_format(&plane->format_mods,
-> +						      data.testformat, modifier[0]) {
-> +				for_each_modifier_with_format(&plane->format_mods,
-> +							      data.testformat, modifier[1]) {
->   					if (run_in_simulation &&
->   					    (!is_basic_tiling_modifier(modifier[0]) ||
->   					     !is_basic_tiling_modifier(modifier[1])))
+>   				igt_dynamic_f(
+>   					"%s",
+>   					igt_format_str(format))
 
