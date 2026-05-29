@@ -4,78 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CF25CD6E43
-	for <igt-dev@archiver.kernel.org>; Fri, 29 May 2026 11:35:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00731CD6E43
+	for <igt-dev@archiver.kernel.org>; Fri, 29 May 2026 11:38:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB16410FD69;
-	Fri, 29 May 2026 11:35:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D97510FD9B;
+	Fri, 29 May 2026 11:38:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="TmiUQl2w";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="nPwMjaNc";
 	dkim-atps=neutral
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com
- [74.125.82.179])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4ABE110FD60
- for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 11:35:24 +0000 (UTC)
-Received: by mail-dy1-f179.google.com with SMTP id
- 5a478bee46e88-304f590dd91so145957eec.0
- for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 04:35:24 -0700 (PDT)
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C37810FD85
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 11:38:23 +0000 (UTC)
+Received: by mail-dl1-f41.google.com with SMTP id
+ a92af1059eb24-133466cf955so241256c88.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2026 04:38:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1780054524; x=1780659324; darn=lists.freedesktop.org;
+ d=gmail.com; s=20251104; t=1780054702; x=1780659502; darn=lists.freedesktop.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=bWaW93sa54uqoeA1on+sHG4IiKrNsUgpawFBz2iPmFg=;
- b=TmiUQl2wVvD1fCXRLwzeWw6AjbpXz4rnifHO8VUG2unENXUGSYGzPWKFroqQjAf8Vs
- IwmUWNoO7J77sFjsK5iHAd2kcgHlyKEw48HGTzpYK6/aKcLaOx/ib9Wivnqy5i9wV4om
- 27z/1ZcEh9rX9Kr7F9L519ZlhmEhGtemwCrKQibiJA37ZdMBXlYUSyriQNDHY10w0wtz
- WvCJyRTCo0CkmKqj2DzKh3+3UBOE3dw+g+m5n+WAvBtaVfVGKZvATFvVDm3us/Kb9va7
- gg5ZA0PvKmxn1ing0ZPghKLPgx7PLM0gHOY9rN3ySWwC9l9q/WrcKPLM0MS73CI7Expt
- oOJg==
+ bh=IjS/y+Isnp7Ve7AYO5UHcnfON/8xGxfGrB5ii3HSn0I=;
+ b=nPwMjaNcf9k7HD2Z9flCMzWdlYK4i61WP9uNjLw9EFb6JsH0PzedwepJcx2QcCWW0o
+ jsr8A5plVF5GgIWF+a7E3gjbNiai33EROYR5UYXCBqA/kOVYVE+ndxJtPmn+WfzPA2/c
+ xzc3kma/OeYfWu9gEXMo7AyZVZff6Xkk6fs80ddqporcrajukgiAsGQq7beeFj+9uB3H
+ rbu/Zdc0jaxfgv9y3gQFKwohr/JoBqNc2l4asIeFM00wLlE/RmBafyh/TDzx6YEdu4Tn
+ GnYt6vSxu6ZEMhBiNJ/NI8Unf+wByrStKJi1rAP3nTyO91xE+jW2fHFbR2Kr8/FGtxg7
+ o93g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1780054524; x=1780659324;
+ d=1e100.net; s=20251104; t=1780054702; x=1780659502;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=bWaW93sa54uqoeA1on+sHG4IiKrNsUgpawFBz2iPmFg=;
- b=QCwGJXJ3+VHPxErweoh6RRGV97PWfzuTZ3v6QpTSNiIdvHQQ+/YButEYwz5j/Wtqzn
- lfL4wTpAoBM6iL1HdfSDdJDw77rs7JrsHfnSz94WPOL7do2zjTnb1f8w8iYHxF9BQHD7
- gk5k8GroC8ibUwKO3v+dnniElyTlVsMvzMcOKtHiOjYitPwQdQhaiuJykvFJwC++uFZA
- v3ANqAKQLj742FuOwbyldESXLktRV2oSazetKPZ2yIXG7DhOizAJ/p/xZ+NEHlPz0LJf
- niVIEZ/T3JYU2bKX2kfZlA2PZ477ogWkd93YoV0ho2BR8HI29jdBsBnexQjh+5FJT1GV
- 7uSg==
+ bh=IjS/y+Isnp7Ve7AYO5UHcnfON/8xGxfGrB5ii3HSn0I=;
+ b=d4UtQ9Ni2HRHT+vSsBRca5/3mA0lP9RBM6vyl+E0eX6+H7zWb006R87yjniK4Yb+3r
+ ZX2v0vJHFFZ94xNfRUbnfVM5+oiCZyLzYFyxqQQ8vXgo1uCP/dMfNDEK/Uuaa/4LHzN4
+ pt/W68ErkA3CzW6q5vaySQ03rvXTrGy5llGcM/zFII2kKagUgVzhRjjVr32o13dFFS0p
+ 40cRqnLzCSaxZAA0H5E+Z+X7Ijl2hM/ymx1J4xMiyuwytyUhlO2lpKpysAHo0auQE1fB
+ s/aCbpIWmSFNGcAeGXOHrO2MvEYCwUW2pzyukT9JnA9P1zWH5DcwQOk+9XpfcpJ/b7F2
+ fXdg==
 X-Forwarded-Encrypted: i=1;
- AFNElJ8O/8B1quHPtT1G+3iNEJgYUqUxJwEmW6JvHgQ8MiEDLF/MYWYqUg8le+jfLmvIN3L0E8k49c36@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yym9fst2fyXHp599CWSatYvH4cSzjwBwQjUBP/rltj2SXnltuYH
- PpJUrZ3aLz7ZYHPVXPxJcNXShbgvBr51eAsW9BxqX34nLiAYr/VMHS9u
-X-Gm-Gg: Acq92OEKoWGPwocumLoi1xwixOMlY4g03wRncI8TJZOKienpXiZyB1sVhDaYl9GF0MF
- QwouRKeWFWYliu4quhlii46q/0wKDryQodZ+mcIWLudOHi2QQQUYXnJruNt8awcMAxVWhHrfGeo
- Gs/0kn4AMzlLHkRfjJJqOdRKrs58gIeaYWUD0FqCj8kWhhj1KVTP/22BMsKRV4c6tazQoSvEyQy
- 2y5+P07zLLXBKk6rnbqURuQCS/TY6haJ3QFgoWDQ92LjNjM5fj7n3jZbMrd6ULMTWOA9kQTjUmY
- H3Kg+hTefo5jlk2RXUrkunwlLd1kAngi2uPFgR5CSKpg6VI7a2cXJVHHScyxvk6V+9q6Mof36na
- dZlivE7P8PQL0Ayt/pOfJaxtV+bkTzTZrUV8cIo7fRWd9hVlpwAElIPvqdwG8C4CztfYhcwyC1v
- sDQgrCQ3bHFmpR3LwBQ2VHH5N3XIRCx3V10so5uKLKqnBmIIx3WlJjkMdMbio+CFpz0c6oCxWCS
- lsY
-X-Received: by 2002:a05:7300:dc91:b0:2e0:1f09:d924 with SMTP id
- 5a478bee46e88-304eb0e2994mr1075326eec.5.1780054523584; 
- Fri, 29 May 2026 04:35:23 -0700 (PDT)
+ AFNElJ/Z4KtAz7DSYz2Qd8MHXY9F1cUpq02v6ruvUsztTl9CWD/43GcDdjFi2tcJWazY6+DeJmXiJTUb@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YwSCkTL+xDkdpNbJKfKMYjJOMwup+2XbUcXrDttb+6wCJPr5pUy
+ fp0aNtqUChAE1myDBt+k48iXRSr5cjhe6Hw4P7PjTbOEyasTy6JU3rnm
+X-Gm-Gg: Acq92OF3UpABh0uLtOUDQgJp4Otpn0MWtRmhIc1lwZLJ6MZNnb8VmhI8F7ERkuulA4P
+ 0U7/dnVoBgMfiJFmgnLfwbJ9AsktaJT4z3KvMAwNlOAMk3yx2TB5/P5tVdxooicrCr1MhTdjhBf
+ ovUy01xtdw8lNXNJB3UsTOqbvjpaqY/5mn53Z2xnC2qqgjIjmZyD3jc/qeS3IDIwKtMkTO9GH2q
+ Iu3TxjKOQNg0pSuIJlmWYHysKMV3Hn8WcT1M8ACAnB3MS8iY2DhF8KOEae0mqonijntac6aqJbO
+ wlYv3Ql8DmG34q7eKB4bwDO0Py8X5FtflLEZDSuG0suEoJQX9V5IUwGOnytADkDG7s/gBUedFD0
+ 2JZEUpnXgyt+geW4Iw73HNZ/XSlMKg3AeISOF9ao/qxssknLo/uW6bMa7jJzTuOFxdVvCwZ6esR
+ Ws864TLHykn8SiAeQ/n//94oJtndkIvODCVaFQb+Crajay/8ya2/GI6HTZnWTo8shDMjDMiscq/
+ NSo
+X-Received: by 2002:a05:7022:4590:b0:136:da48:a3e2 with SMTP id
+ a92af1059eb24-137aedcd4dbmr1039248c88.27.1780054702201; 
+ Fri, 29 May 2026 04:38:22 -0700 (PDT)
 Received: from [192.55.54.43] ([192.55.54.43])
  by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-304ed5cf1c7sm1160727eec.29.2026.05.29.04.35.22
+ a92af1059eb24-137b36af6edsm953596c88.5.2026.05.29.04.38.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 May 2026 04:35:23 -0700 (PDT)
-Message-ID: <06383e2a-be79-4984-bef9-d7eb3ca8086e@gmail.com>
-Date: Fri, 29 May 2026 14:35:19 +0300
+ Fri, 29 May 2026 04:38:21 -0700 (PDT)
+Message-ID: <eadf3625-0b41-46a6-ab55-ae0415171aca@gmail.com>
+Date: Fri, 29 May 2026 14:38:17 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 09/25] lib/kms: Extract format_mods_union()
+Subject: Re: [PATCH i-g-t 10/25] lib/kms: Extract display_format_mods_union()
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
- <20260512122143.11013-10-ville.syrjala@linux.intel.com>
+ <20260512122143.11013-11-ville.syrjala@linux.intel.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20260512122143.11013-10-ville.syrjala@linux.intel.com>
+In-Reply-To: <20260512122143.11013-11-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -98,57 +97,59 @@ Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 On 12/05/2026 15.21, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Extract format_mods_union() from inside igt_fill_display_format_mod()
-> to make the whole thing a bit more abstract and easier to understand.
-> 
-> Rename igt_add_display_format_mod() to format_mods_append() while
-> at it to keep things a bit shorted. This is all internal stuff to
-> lib/kms anyway so we don't the full namespace.
-> 
-> The assert needs to be moved out of the loop to avoid having to pass
-> the upper bound 'count' into format_mods_union(). That seems fine
-> as the assert will still catch any mistakes, assuming the didn't
-> already cause a segfault while filling the arrays.
+> Extract the loop over crtc+planes from igt_fill_display_format_mod()
+> into display_format_mods_union() that can be used to fill any
+> format_mods struct with the union of the planes' format_mods.
 > 
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > ---
->   lib/igt_kms.c | 18 ++++++++++++------
->   1 file changed, 12 insertions(+), 6 deletions(-)
+>   lib/igt_kms.c | 24 +++++++++++++++---------
+>   1 file changed, 15 insertions(+), 9 deletions(-)
 > 
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index f1a783aee6dd..2f23d988438d 100644
+> index 2f23d988438d..ac0917d907a0 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -6334,6 +6334,16 @@ format_mods_append(struct igt_format_mods *format_mods,
->   	format_mods->count++;
+> @@ -6344,10 +6344,22 @@ format_mods_union(struct igt_format_mods *format_mods_dst,
+>   				   format_mods_src->modifiers[i]);
 >   }
 >   
-> +static void
-> +format_mods_union(struct igt_format_mods *format_mods_dst,
-> +		  const struct igt_format_mods *format_mods_src)
+> +static void display_format_mods_union(igt_display_t *display,
+> +				      struct igt_format_mods *format_mods)
 > +{
-> +	for (int i = 0; i < format_mods_src->count; i++)
-> +		format_mods_append(format_mods_dst,
-> +				   format_mods_src->formats[i],
-> +				   format_mods_src->modifiers[i]);
+> +	igt_crtc_t *crtc;
+> +
+> +	for_each_crtc(display, crtc) {
+> +		igt_plane_t *plane;
+> +
+> +		for_each_plane_on_crtc(crtc, plane)
+> +			format_mods_union(format_mods, &plane->format_mods);
+> +	}
 > +}
 > +
 >   static void igt_fill_display_format_mod(igt_display_t *display)
 >   {
 >   	int count = igt_count_display_format_mod(display);
-> @@ -6356,12 +6366,8 @@ static void igt_fill_display_format_mod(igt_display_t *display)
+> -	igt_crtc_t *crtc;
 >   
->   		for_each_plane_on_crtc(crtc,
->   				       plane) {
-> -			for (int i = 0; i < plane->format_mods.count; i++) {
-> -				format_mods_append(&display->format_mods,
-> -						   plane->format_mods.formats[i],
-> -						   plane->format_mods.modifiers[i]);
-> -				igt_assert_lte(display->format_mods.count, count);
-> -			}
-> +			format_mods_union(&display->format_mods, &plane->format_mods);
-> +			igt_assert_lte(display->format_mods.count, count);
->   		}
->   	}
+>   	if (!count)
+>   		return;
+> @@ -6361,15 +6373,9 @@ static void igt_fill_display_format_mod(igt_display_t *display)
+>   	 */
+>   	display->format_mods.count = 0;
+>   
+> -	for_each_crtc(display, crtc) {
+> -		igt_plane_t *plane;
+> +	display_format_mods_union(display, &display->format_mods);
+>   
+> -		for_each_plane_on_crtc(crtc,
+> -				       plane) {
+> -			format_mods_union(&display->format_mods, &plane->format_mods);
+> -			igt_assert_lte(display->format_mods.count, count);
+> -		}
+> -	}
+> +	igt_assert_lte(display->format_mods.count, count);
 >   }
+>   
+>   /**
 
