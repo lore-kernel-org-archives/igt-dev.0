@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E456CD6E49
-	for <igt-dev@archiver.kernel.org>; Sat, 30 May 2026 19:28:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0D5ECD6E49
+	for <igt-dev@archiver.kernel.org>; Sat, 30 May 2026 19:28:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2028311298E;
-	Sat, 30 May 2026 19:28:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B82411298F;
+	Sat, 30 May 2026 19:28:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jOtKiwAU";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ki345d/Y";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C495112989
- for <igt-dev@lists.freedesktop.org>; Sat, 30 May 2026 19:27:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A189E112993
+ for <igt-dev@lists.freedesktop.org>; Sat, 30 May 2026 19:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780169276; x=1811705276;
+ t=1780169279; x=1811705279;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=v1n3HOsG2lqUJS6SBbGDQQlMhKNODZBYAVojvz2KitU=;
- b=jOtKiwAUQXN5PRE6uBABwjbB4KdVHgKD0ZOUv1Ww1zFSMWohnKn2CulY
- Toz1IdIjZvlL2QAQmaqQRiiRAXIazygN6QAqnCvhIQHI8kw4Im8fspl35
- THhWzFQmYfpBV3uuwJKSYcYgLnBXjzXAfSvWRSDSJraKftdCP5R3C43FX
- g2PKnsCyM2UoRORIVN67ypUlIMzyypojF8SsO5LyzrosrnpI9hfKXzZFu
- mbWKj1qvJLvEBP7zhMMzytU0cEPm75BPOnc2zpb8lPdrIbZDQ7V1QgFxb
- 1HHEGjgMM6WfU9KJ7J94M1Kr6BVY7q8Igk/5RGkjE00kUY11i6s8flOsC A==;
-X-CSE-ConnectionGUID: kexX8ZCXTxWF+pqwUeACWA==
-X-CSE-MsgGUID: ZO6KczDnSEyLh8XUw4UQWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11802"; a="103657573"
-X-IronPort-AV: E=Sophos;i="6.24,178,1774335600"; d="scan'208";a="103657573"
+ bh=Saw3fhMnlABG3Nzx4JDnPKE/eKn9/+egz6cQAbEDtc8=;
+ b=ki345d/YGoXWXjxKbhd03Jk7I1LJErB39fKkbc413Ubh5nuVvNJsXZYa
+ AdmS5vNGuudOru/X+5G/1ac+9ocKrL1AnghSLUG5KJUaWtofQI1BvzFfB
+ 3753ic+6HPzkdJDHfX3oN3PEhvQ3eQh2ursm7PRogYVuXczuBFWyu50R0
+ Yn3hcZJzjwQhFOYVZshqMjRv9XEnmmZU9SU5R/iXVa4Lvrehhun4Xhkbz
+ B9z4zig4EjiF/Iv4NGo63vox0lAYcRycoaM6qbx7/sQOT5cjsgWwG7Bzj
+ 5dn20K1658zmRZE3LVo09hhgbEJQrL2stR7pdWm6jYT3yqSPTCwfB5i79 g==;
+X-CSE-ConnectionGUID: U7c0hTeBTUGdBDp3RxuGbw==
+X-CSE-MsgGUID: 7V33f+DzRbaTu/p4ujzopQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11802"; a="103657576"
+X-IronPort-AV: E=Sophos;i="6.24,178,1774335600"; d="scan'208";a="103657576"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2026 12:27:55 -0700
-X-CSE-ConnectionGUID: mHQJ1/0xQ2uVT0tJa8CxxQ==
-X-CSE-MsgGUID: Hf/JGzFMRiSKWrXP6L8ckA==
+ 30 May 2026 12:27:58 -0700
+X-CSE-ConnectionGUID: 9voFqx0nTCmGiBhe/BxB1g==
+X-CSE-MsgGUID: fs8PznMjTHW3ALm/NcIw6Q==
 X-ExtLoop1: 1
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2026 12:27:54 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2026 12:27:57 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t,v7 1/5] tests/intel/kms_dsc: Store valid DSC outputs
-Date: Sun, 31 May 2026 01:06:36 +0530
-Message-Id: <20260530193640.2551688-2-swati2.sharma@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>, Karthik B S <karthik.b.s@intel.com>
+Subject: [PATCH i-g-t, v7 3/5] tests/kms_joiner_helper: Add
+ igt_is_joiner_supported_by_source()
+Date: Sun, 31 May 2026 01:06:38 +0530
+Message-Id: <20260530193640.2551688-4-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260530193640.2551688-1-swati2.sharma@intel.com>
 References: <20260530193640.2551688-1-swati2.sharma@intel.com>
@@ -66,143 +67,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Instead of repeatedly checking debugfs to determine if a panel
-supports DSC, perform the check once and store valid outputs (those
-that support DSC and meet the required constraints) in an array.
+Add func() returning true/false if platform supports big/ultra
+joiner and use corresponding func() in related binaries.
+
+v2: -Moved func() to joiner_helper (Jeevan)
+    -Use common func for ultra|big joiner (Ankit)
+v3: -Rename param type to joiner_type (Ankit)
+    -Fix ultra joiner condition logic (Karthik, Ankit)
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/intel/kms_dsc.c | 71 ++++++++++++++++++++++++-------------------
- 1 file changed, 39 insertions(+), 32 deletions(-)
+ tests/intel/kms_joiner.c        |  8 ++------
+ tests/intel/kms_joiner_helper.c | 33 +++++++++++++++++++++++++++++++++
+ tests/intel/kms_joiner_helper.h |  2 ++
+ 3 files changed, 37 insertions(+), 6 deletions(-)
 
-diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-index 4c41c6a3b..093a16151 100644
---- a/tests/intel/kms_dsc.c
-+++ b/tests/intel/kms_dsc.c
-@@ -71,12 +71,14 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
+index 86226a3ba..2cd0d7276 100644
+--- a/tests/intel/kms_joiner.c
++++ b/tests/intel/kms_joiner.c
+@@ -33,7 +33,6 @@
+  */
  
- typedef struct {
- 	int drm_fd;
-+	int count;
- 	uint32_t devid;
- 	igt_display_t display;
- 	struct igt_fb fb_test_pattern;
- 	enum dsc_output_format output_format;
- 	unsigned int plane_format;
- 	igt_output_t *output;
-+	igt_output_t *valid_output[IGT_MAX_PIPES];
- 	int input_bpc;
- 	int disp_ver;
- 	igt_crtc_t *crtc;
-@@ -254,7 +256,6 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 		     enum dsc_output_format output_format)
+ #include "igt.h"
+-#include "xe/xe_query.h"
+ #include "kms_dsc_helper.c"
+ #include "kms_joiner_helper.h"
+ 
+@@ -619,9 +618,8 @@ static void test_basic_max_non_joiner(data_t *data)
+ 
+ int igt_main()
  {
- 	igt_display_t *display = &data->display;
--	igt_output_t *output;
+-	bool is_dgfx;
  	igt_crtc_t *crtc;
- 	char name[3][LEN] = {
- 				{0},
-@@ -262,47 +263,44 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 				{0},
- 			    };
+-	int j, display_ver;
++	int j;
+ 	igt_output_t *output;
+ 	drmModeModeInfo mode;
+ 	data_t data;
+@@ -644,9 +642,7 @@ int igt_main()
+ 		igt_require(data.display.is_atomic);
+ 		max_dotclock = igt_get_max_dotclock(data.drm_fd);
  
-+	igt_require_f(data->count > 0, "No valid output found, either sink doesn't support dsc or min 8bpc\n");
- 	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
+-		is_dgfx = is_xe_device(data.drm_fd) ? xe_has_vram(data.drm_fd) : gem_has_lmem(data.drm_fd);
+-		display_ver = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+-		if (is_dgfx && display_ver == 14)
++		if (igt_is_joiner_supported_by_source(data.drm_fd, JOINED_PIPES_ULTRA_JOINER))
+ 			data.ultra_joiner_supported = true;
  
--	for_each_crtc_with_valid_output(display, crtc, output) {
--		data->output_format = output_format;
--		data->plane_format = plane_format;
--		data->input_bpc = bpc;
--		data->output = output;
--		data->crtc = crtc;
--
--		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
--		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->crtc))
--			continue;
-+	for_each_crtc(display, crtc) {
-+		for (int i = 0; i < data->count; i++) {
-+			data->output_format = output_format;
-+			data->plane_format = plane_format;
-+			data->input_bpc = bpc;
-+			data->output = data->valid_output[i];
-+			data->crtc = crtc;
- 
--		if (igt_get_output_max_bpc(output) < MIN_DSC_BPC) {
--			igt_info("Output %s doesn't support min %d-bpc\n", igt_output_name(data->output), MIN_DSC_BPC);
--			continue;
--		}
-+			if (!check_gen11_dp_constraint(data->drm_fd, data->output, data->crtc))
-+				continue;
- 
--		if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
--		    (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
-+			if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
-+			    (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
- 						     data->output, data->output_format)))
--			continue;
-+				continue;
- 
--		if ((test_type & TEST_DSC_FRACTIONAL_BPP) &&
--		    (!is_dsc_fractional_bpp_supported(data->disp_ver,
-+			if ((test_type & TEST_DSC_FRACTIONAL_BPP) &&
-+			    (!is_dsc_fractional_bpp_supported(data->disp_ver,
- 						      data->drm_fd, data->output)))
--			continue;
-+				continue;
- 
--		if (test_type & TEST_DSC_OUTPUT_FORMAT)
--			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
--		if (test_type & TEST_DSC_FORMAT)
--			snprintf(&name[1][0], LEN, "-%s", igt_format_str(data->plane_format));
--		if (test_type & TEST_DSC_BPC)
--			snprintf(&name[2][0], LEN, "-%dbpc", data->input_bpc);
-+			if (test_type & TEST_DSC_OUTPUT_FORMAT)
-+				snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
-+			if (test_type & TEST_DSC_FORMAT)
-+				snprintf(&name[1][0], LEN, "-%s", igt_format_str(data->plane_format));
-+			if (test_type & TEST_DSC_BPC)
-+				snprintf(&name[2][0], LEN, "-%dbpc", data->input_bpc);
- 
--		igt_dynamic_f("pipe-%s-%s%s%s%s",  igt_crtc_name(data->crtc), data->output->name,
--			      &name[0][0], &name[1][0], &name[2][0])
--			update_display(data, test_type);
-+			igt_dynamic_f("pipe-%s-%s%s%s%s", igt_crtc_name(data->crtc), data->output->name,
-+				      &name[0][0], &name[1][0], &name[2][0])
-+				update_display(data, test_type);
- 
--		if (data->limited)
--			break;
-+			if (data->limited)
-+				break;
-+		}
- 	}
+ 		for_each_connected_output(&data.display, output) {
+diff --git a/tests/intel/kms_joiner_helper.c b/tests/intel/kms_joiner_helper.c
+index 0aa409ac2..d51aa77e5 100644
+--- a/tests/intel/kms_joiner_helper.c
++++ b/tests/intel/kms_joiner_helper.c
+@@ -184,6 +184,39 @@ bool igt_assign_pipes_for_outputs(int drm_fd,
+ 	return true;
  }
  
-@@ -328,15 +326,24 @@ data_t data = {};
- 
- int igt_main_args("l", NULL, help_str, opt_handler, &data)
- {
-+	igt_output_t *output;
++/**
++ * igt_is_joiner_supported_by_source:
++ * @drm_fd: drm file descriptor
++ * @joiner_type: joiner type
++ *
++ * Returns: True if (ultra|big)joiner is supported by platform, false otherwise
++ */
++bool igt_is_joiner_supported_by_source(int drm_fd, enum joined_pipes joiner_type)
++{
++	int disp_ver;
++	bool is_dgfx;
 +
- 	igt_fixture() {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		data.devid = intel_get_drm_devid(data.drm_fd);
- 		data.disp_ver = intel_display_ver(data.devid);
-+		data.count = 0;
- 		kmstest_set_vt_graphics_mode();
- 		igt_install_exit_handler(kms_dsc_exit_handler);
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
- 		igt_require(is_dsc_supported_by_source(data.drm_fd));
++	is_dgfx = is_xe_device(drm_fd) ? xe_has_vram(drm_fd) : gem_has_lmem(drm_fd);
++	disp_ver = intel_display_ver(intel_get_drm_devid(drm_fd));
 +
-+		for_each_connected_output(&data.display, output) {
-+			if (is_dsc_supported_by_sink(data.drm_fd, output) &&
-+			    igt_get_output_max_bpc(output) >= MIN_DSC_BPC)
-+				data.valid_output[data.count++] = output;
++	switch (joiner_type) {
++	case JOINED_PIPES_BIG_JOINER:
++		if (disp_ver < 12) {
++			igt_info("Bigjoiner is not supported on D11 and older platforms.\n");
++			return false;
 +		}
- 	}
++		return true;
++	case JOINED_PIPES_ULTRA_JOINER:
++		if (!is_dgfx || disp_ver != 14) {
++			igt_info("Ultrajoiner is supported on dgfx with D14 only.\n");
++			return false;
++		}
++		return true;
++	default:
++		return false;
++	}
++}
++
+ /**
+  * igt_get_joined_pipes_name:
+  * @val: joined_pipes enum value
+diff --git a/tests/intel/kms_joiner_helper.h b/tests/intel/kms_joiner_helper.h
+index 1ea871a3b..7ede624c6 100644
+--- a/tests/intel/kms_joiner_helper.h
++++ b/tests/intel/kms_joiner_helper.h
+@@ -7,6 +7,7 @@
+ #define KMS_JOINER_HELPER_H
  
- 	igt_describe("Tests basic display stream compression functionality if supported "
+ #include "igt_kms.h"
++#include "xe/xe_query.h"
+ 
+ void igt_set_all_master_pipes_for_platform(igt_display_t *display,
+ 					   uint32_t *master_pipes);
+@@ -17,6 +18,7 @@ bool igt_assign_pipes_for_outputs(int drm_fd,
+ 				  uint32_t *used_pipes_mask,
+ 				  uint32_t master_pipes_mask,
+ 				  uint32_t valid_pipes_mask);
++bool igt_is_joiner_supported_by_source(int drm_fd, enum joined_pipes joiner_type);
+ const char *igt_get_joined_pipes_name(enum joined_pipes val);
+ 
+ enum force_joiner_mode {
 -- 
 2.25.1
 
