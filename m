@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0D5ECD6E49
-	for <igt-dev@archiver.kernel.org>; Sat, 30 May 2026 19:28:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E24B7CD5BD0
+	for <igt-dev@archiver.kernel.org>; Sat, 30 May 2026 19:29:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B82411298F;
-	Sat, 30 May 2026 19:28:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 95158112992;
+	Sat, 30 May 2026 19:29:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ki345d/Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RoC+iCMK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A189E112993
- for <igt-dev@lists.freedesktop.org>; Sat, 30 May 2026 19:27:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB94A112989
+ for <igt-dev@lists.freedesktop.org>; Sat, 30 May 2026 19:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780169279; x=1811705279;
+ t=1780169280; x=1811705280;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Saw3fhMnlABG3Nzx4JDnPKE/eKn9/+egz6cQAbEDtc8=;
- b=ki345d/YGoXWXjxKbhd03Jk7I1LJErB39fKkbc413Ubh5nuVvNJsXZYa
- AdmS5vNGuudOru/X+5G/1ac+9ocKrL1AnghSLUG5KJUaWtofQI1BvzFfB
- 3753ic+6HPzkdJDHfX3oN3PEhvQ3eQh2ursm7PRogYVuXczuBFWyu50R0
- Yn3hcZJzjwQhFOYVZshqMjRv9XEnmmZU9SU5R/iXVa4Lvrehhun4Xhkbz
- B9z4zig4EjiF/Iv4NGo63vox0lAYcRycoaM6qbx7/sQOT5cjsgWwG7Bzj
- 5dn20K1658zmRZE3LVo09hhgbEJQrL2stR7pdWm6jYT3yqSPTCwfB5i79 g==;
-X-CSE-ConnectionGUID: U7c0hTeBTUGdBDp3RxuGbw==
-X-CSE-MsgGUID: 7V33f+DzRbaTu/p4ujzopQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11802"; a="103657576"
-X-IronPort-AV: E=Sophos;i="6.24,178,1774335600"; d="scan'208";a="103657576"
+ bh=PnW9znJnD21xpsx3kcHmwvFHlisKVf5TfABFU1BGeTY=;
+ b=RoC+iCMKG9XD9ihvRYlFm+mqV76i5rlJJfMQbveks+My0Q7X1MDOUF2q
+ TwTGecf+Ghg9qpfjkrMWY+ruzyCAMhv0yf2wQ1es2+qG4frMunSdM5Nfx
+ GEwCMC06aFna99QLpb2zdNWig9Vl0hXwwKF5T54X9op+5EKbRBI3O720R
+ Ty7dARISH/G8SBSk9LI7hdlWRCT4+YIl9+fFblz1H/I3+60aLt2hHxdXL
+ oiMtqfDwWo15joqxWUS6VPWIpZXStVnGKpCgJ2HCVhUm9ZxySkwxCuDAl
+ WKVfpM9mGcmlvGXaEHJ343UGQpUP7n0Usz3TG0CzxVjAI+QcZd3DGtlr1 Q==;
+X-CSE-ConnectionGUID: 7/WfEI59QR2x+j43UwJZcA==
+X-CSE-MsgGUID: 3WZunfwQTxqmv/S+KKwRCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11802"; a="103657577"
+X-IronPort-AV: E=Sophos;i="6.24,178,1774335600"; d="scan'208";a="103657577"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2026 12:27:58 -0700
-X-CSE-ConnectionGUID: 9voFqx0nTCmGiBhe/BxB1g==
-X-CSE-MsgGUID: fs8PznMjTHW3ALm/NcIw6Q==
+ 30 May 2026 12:28:00 -0700
+X-CSE-ConnectionGUID: 1Zsg1RtpQReB2pnLhqD/XA==
+X-CSE-MsgGUID: i+ZMNz4yQMCKXh3SAKACww==
 X-ExtLoop1: 1
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2026 12:27:57 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2026 12:27:58 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>, Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t, v7 3/5] tests/kms_joiner_helper: Add
- igt_is_joiner_supported_by_source()
-Date: Sun, 31 May 2026 01:06:38 +0530
-Message-Id: <20260530193640.2551688-4-swati2.sharma@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t,v7 4/5] tests/intel/kms_dsc_helper: Add helper func()
+Date: Sun, 31 May 2026 01:06:39 +0530
+Message-Id: <20260530193640.2551688-5-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260530193640.2551688-1-swati2.sharma@intel.com>
 References: <20260530193640.2551688-1-swati2.sharma@intel.com>
@@ -67,120 +66,154 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add func() returning true/false if platform supports big/ultra
-joiner and use corresponding func() in related binaries.
+Introduce check_dsc_joiner_constraints() to validate minimum pipe
+count, consecutive HW pipe availability, DSC slice requirements, and
+joiner support for DSC joiner scenarios.
 
-v2: -Moved func() to joiner_helper (Jeevan)
-    -Use common func for ultra|big joiner (Ankit)
-v3: -Rename param type to joiner_type (Ankit)
-    -Fix ultra joiner condition logic (Karthik, Ankit)
+Update meson.build to link kms_joiner_helper.c into DSC-related
+tests so the new helper can call igt_is_joiner_supported_by_source().
 
+v2: -Avoid hardcoding min_pipes/min_slices, use enum values (Santhosh)
+v3: -Handle JOINED_PIPES_NONE/DEFAULT explicitly, return true (Karthik)
+    -Fix indentation/style issues (Karthik)
+v4: -Move consecutive pipe check (igt_crtc_for_pipe) into helper
+     rather than having it in the test (Karthik)
+
+Co-developed-by: Claude Opus 4.6
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/intel/kms_joiner.c        |  8 ++------
- tests/intel/kms_joiner_helper.c | 33 +++++++++++++++++++++++++++++++++
- tests/intel/kms_joiner_helper.h |  2 ++
- 3 files changed, 37 insertions(+), 6 deletions(-)
+ tests/intel/kms_dsc_helper.c | 67 ++++++++++++++++++++++++++++++++++++
+ tests/intel/kms_dsc_helper.h |  5 +++
+ tests/meson.build            | 17 +++++----
+ 3 files changed, 83 insertions(+), 6 deletions(-)
 
-diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
-index 86226a3ba..2cd0d7276 100644
---- a/tests/intel/kms_joiner.c
-+++ b/tests/intel/kms_joiner.c
-@@ -33,7 +33,6 @@
-  */
+diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
+index 29b998c2f..7856e33ef 100644
+--- a/tests/intel/kms_dsc_helper.c
++++ b/tests/intel/kms_dsc_helper.c
+@@ -203,3 +203,70 @@ bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *outp
  
- #include "igt.h"
--#include "xe/xe_query.h"
- #include "kms_dsc_helper.c"
- #include "kms_joiner_helper.h"
- 
-@@ -619,9 +618,8 @@ static void test_basic_max_non_joiner(data_t *data)
- 
- int igt_main()
- {
--	bool is_dgfx;
- 	igt_crtc_t *crtc;
--	int j, display_ver;
-+	int j;
- 	igt_output_t *output;
- 	drmModeModeInfo mode;
- 	data_t data;
-@@ -644,9 +642,7 @@ int igt_main()
- 		igt_require(data.display.is_atomic);
- 		max_dotclock = igt_get_max_dotclock(data.drm_fd);
- 
--		is_dgfx = is_xe_device(data.drm_fd) ? xe_has_vram(data.drm_fd) : gem_has_lmem(data.drm_fd);
--		display_ver = intel_display_ver(intel_get_drm_devid(data.drm_fd));
--		if (is_dgfx && display_ver == 14)
-+		if (igt_is_joiner_supported_by_source(data.drm_fd, JOINED_PIPES_ULTRA_JOINER))
- 			data.ultra_joiner_supported = true;
- 
- 		for_each_connected_output(&data.display, output) {
-diff --git a/tests/intel/kms_joiner_helper.c b/tests/intel/kms_joiner_helper.c
-index 0aa409ac2..d51aa77e5 100644
---- a/tests/intel/kms_joiner_helper.c
-+++ b/tests/intel/kms_joiner_helper.c
-@@ -184,6 +184,39 @@ bool igt_assign_pipes_for_outputs(int drm_fd,
  	return true;
  }
- 
-+/**
-+ * igt_is_joiner_supported_by_source:
-+ * @drm_fd: drm file descriptor
-+ * @joiner_type: joiner type
-+ *
-+ * Returns: True if (ultra|big)joiner is supported by platform, false otherwise
-+ */
-+bool igt_is_joiner_supported_by_source(int drm_fd, enum joined_pipes joiner_type)
++
++bool check_dsc_joiner_constraints(int drm_fd,
++				  igt_output_t *output,
++				  igt_display_t *display,
++				  enum pipe pipe,
++				  int num_pipes,
++				  enum joined_pipes type)
 +{
-+	int disp_ver;
-+	bool is_dgfx;
++	int min_pipes = 0, min_slices = 0;
 +
-+	is_dgfx = is_xe_device(drm_fd) ? xe_has_vram(drm_fd) : gem_has_lmem(drm_fd);
-+	disp_ver = intel_display_ver(intel_get_drm_devid(drm_fd));
++	if (!igt_is_joiner_supported_by_source(drm_fd, type))
++		return false;
 +
-+	switch (joiner_type) {
++	/*
++	 * For joiner, 2 slices per pipe is used
++	 * i.e. min_slices = 2 * min_pipes
++	 */
++	switch (type) {
 +	case JOINED_PIPES_BIG_JOINER:
-+		if (disp_ver < 12) {
-+			igt_info("Bigjoiner is not supported on D11 and older platforms.\n");
-+			return false;
-+		}
-+		return true;
++		min_pipes = JOINED_PIPES_BIG_JOINER;
++		min_slices = min_pipes * 2;
++		break;
 +	case JOINED_PIPES_ULTRA_JOINER:
-+		if (!is_dgfx || disp_ver != 14) {
-+			igt_info("Ultrajoiner is supported on dgfx with D14 only.\n");
-+			return false;
-+		}
++		min_pipes = JOINED_PIPES_ULTRA_JOINER;
++		min_slices = min_pipes * 2;
++		break;
++	case JOINED_PIPES_NONE:
++	case JOINED_PIPES_DEFAULT:
 +		return true;
 +	default:
++		igt_info("Unknown joiner type: %d\n", type);
 +		return false;
 +	}
-+}
 +
- /**
-  * igt_get_joined_pipes_name:
-  * @val: joined_pipes enum value
-diff --git a/tests/intel/kms_joiner_helper.h b/tests/intel/kms_joiner_helper.h
-index 1ea871a3b..7ede624c6 100644
---- a/tests/intel/kms_joiner_helper.h
-+++ b/tests/intel/kms_joiner_helper.h
-@@ -7,6 +7,7 @@
- #define KMS_JOINER_HELPER_H
++	if (num_pipes < min_pipes) {
++		igt_info("%s requires minimum %d pipes\n",
++			 igt_get_joined_pipes_name(type), min_pipes);
++		return false;
++	}
++
++	/* Verify consecutive HW pipes are available from this pipe */
++	if (type == JOINED_PIPES_BIG_JOINER &&
++	    !igt_crtc_for_pipe(display, pipe + 1))
++		return false;
++
++	if (type == JOINED_PIPES_ULTRA_JOINER &&
++	    (!igt_crtc_for_pipe(display, pipe + 1) ||
++	     !igt_crtc_for_pipe(display, pipe + 2) ||
++	     !igt_crtc_for_pipe(display, pipe + 3)))
++		return false;
++
++	if (igt_get_dsc_sink_max_slice_count(drm_fd, output->name) < min_slices) {
++		igt_info("Output %s doesn't support minimum %d slice count for %s\n",
++			 igt_output_name(output), min_slices,
++			 igt_get_joined_pipes_name(type));
++		return false;
++	}
++
++	if (!igt_has_force_joiner_debugfs(drm_fd, output->name)) {
++		igt_info("Output %s doesn't support force_joiner debugfs for %s\n",
++			 igt_output_name(output),
++			 igt_get_joined_pipes_name(type));
++		return false;
++	}
++
++	return true;
++}
+diff --git a/tests/intel/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
+index ee419c849..542fe46de 100644
+--- a/tests/intel/kms_dsc_helper.h
++++ b/tests/intel/kms_dsc_helper.h
+@@ -8,6 +8,7 @@
  
- #include "igt_kms.h"
-+#include "xe/xe_query.h"
+ #include "igt.h"
+ #include "igt_sysfs.h"
++#include "kms_joiner_helper.h"
+ #include <errno.h>
+ #include <getopt.h>
+ #include <math.h>
+@@ -39,5 +40,9 @@ void force_dsc_fractional_bpp_enable(int drmfd, igt_output_t *output);
+ void save_force_dsc_fractional_bpp_en(int drmfd, igt_output_t *output);
+ void restore_force_dsc_fractional_bpp_en(void);
+ bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *output);
++bool check_dsc_joiner_constraints(int drm_fd, igt_output_t *output,
++				  igt_display_t *display, enum pipe pipe,
++				  int num_pipes,
++				  enum joined_pipes type);
  
- void igt_set_all_master_pipes_for_platform(igt_display_t *display,
- 					   uint32_t *master_pipes);
-@@ -17,6 +18,7 @@ bool igt_assign_pipes_for_outputs(int drm_fd,
- 				  uint32_t *used_pipes_mask,
- 				  uint32_t master_pipes_mask,
- 				  uint32_t valid_pipes_mask);
-+bool igt_is_joiner_supported_by_source(int drm_fd, enum joined_pipes joiner_type);
- const char *igt_get_joined_pipes_name(enum joined_pipes val);
+ #endif
+diff --git a/tests/meson.build b/tests/meson.build
+index fe0818118..3255e9282 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -399,14 +399,19 @@ extra_sources = {
+ 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_sharpness_filter': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_dp_linktrain_fallback': [
+-           join_paths ('intel', 'kms_mst_helper.c'),
+-           join_paths ('intel', 'kms_dsc_helper.c') ],
++          join_paths ('intel', 'kms_mst_helper.c'),
++          join_paths ('intel', 'kms_dsc_helper.c'),
++          join_paths ('intel', 'kms_joiner_helper.c') ],
+ 	'kms_dp_link_training': [
+-           join_paths ('intel', 'kms_mst_helper.c'),
+-           join_paths ('intel', 'kms_joiner_helper.c') ],
+-	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
++          join_paths ('intel', 'kms_mst_helper.c'),
++          join_paths ('intel', 'kms_joiner_helper.c') ],
++	'kms_dsc': [
++          join_paths ('intel', 'kms_dsc_helper.c'),
++          join_paths ('intel', 'kms_joiner_helper.c') ],
+ 	'kms_joiner': [ join_paths ('intel', 'kms_joiner_helper.c') ],
+-	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
++	'kms_psr2_sf': [
++          join_paths ('intel', 'kms_dsc_helper.c'),
++          join_paths ('intel', 'kms_joiner_helper.c') ],
+ }
  
- enum force_joiner_mode {
+ # Extra dependencies used on core and Intel drivers
 -- 
 2.25.1
 
