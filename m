@@ -4,27 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5844CD6E49
-	for <igt-dev@archiver.kernel.org>; Sat, 30 May 2026 18:53:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 539DACD6E49
+	for <igt-dev@archiver.kernel.org>; Sat, 30 May 2026 19:28:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8FF31112980;
-	Sat, 30 May 2026 18:53:44 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 138BC11297F;
- Sat, 30 May 2026 18:53:24 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7244915823216338189=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id EAAC8112989;
+	Sat, 30 May 2026 19:28:16 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VwbWR0rf";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EDAF112989
+ for <igt-dev@lists.freedesktop.org>; Sat, 30 May 2026 19:27:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1780169275; x=1811705275;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=uQOtYln+hXx1G7HZQ115NqZoBh2EcrhafnL9Pw1g91k=;
+ b=VwbWR0rf6L77qIWrGBvsDHZNiRSWbMb0iK2pv9xkF2LpH9Cqto+IiX6Y
+ j7tOw7NEp8uHAr2OFykwKT+qKug79nKZO/OmWL9IbNo0pE1rw1i+gV87D
+ sSMJcUpN3/wJUXquY1EF2R8jLGMb70kYibUQlT4Bf2Cnhm1S0egftQ26Y
+ Tz0uRdgW6LzqUQmb5NWfH3NCRMwqzHA7OIJaToxKGusj8i/oG1afNUZCU
+ S4dKUaBTcitOG33V3bija3cqbVXTEhM6I0SHylNUxATes2wa6ZKB1k9EH
+ MkyFFNtSpr4S74nJfTiJ9VFsvkSFHd5BDn42sM8ZKS5Jr8vxgwaeAPI4j Q==;
+X-CSE-ConnectionGUID: xTk2TH2WT0SpzvABTtO3Zg==
+X-CSE-MsgGUID: H/xmvX1cQeKUFhKHgWLeZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11802"; a="103657572"
+X-IronPort-AV: E=Sophos;i="6.24,178,1774335600"; d="scan'208";a="103657572"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2026 12:27:54 -0700
+X-CSE-ConnectionGUID: jLUGA3GeSyGdiCLbgj/AWw==
+X-CSE-MsgGUID: QAbT8KafSEeNn43sPOEJJw==
+X-ExtLoop1: 1
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2026 12:27:53 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t,v7 0/5] Add dsc+bigjoiner subtest
+Date: Sun, 31 May 2026 01:06:35 +0530
+Message-Id: <20260530193640.2551688-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Feudebug?=
- =?utf-8?q?=3A_Add_basic-vm-bind-ufence-no-ack_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jan Maslak" <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Sat, 30 May 2026 18:53:24 -0000
-Message-ID: <178016720407.27385.2746065097909212541@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260530180502.1773222-1-jan.maslak@intel.com>
-In-Reply-To: <20260530180502.1773222-1-jan.maslak@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,134 +61,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7244915823216338189==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series adds big-joiner and ultra-joiner variants for all DSC
+subtests in kms_dsc, along with the necessary helper infrastructure.
 
-== Series Details ==
+The joiner force logic works as follows:
+- Non-joiner tests use igt_get_non_joiner_mode() to pick a mode that
+  does not require joiner.
+- Joiner tests use the highest-clock mode. If the mode naturally
+  triggers the desired joiner type (clock > max_dotclock), no force
+  is applied. If not, joiner is forced via debugfs.
+- Cleanup resets joiner force to DEFAULT so the kernel exposes all
+  modes naturally for subsequent subtests.
 
-Series: tests/intel/xe_eudebug: Add basic-vm-bind-ufence-no-ack test
-URL   : https://patchwork.freedesktop.org/series/167585/
-State : success
+Patch breakdown:
+1. Store valid DSC outputs in an array for reuse across pipe iterations
+2. Add igt_get_joined_pipes_name() helper to kms_joiner_helper
+3. Add igt_is_joiner_supported_by_source() helper
+4. Add check_dsc_joiner_constraints() to kms_dsc_helper
+5. Add DSC with joiner test cases using the above infrastructure
 
-== Summary ==
+Swati Sharma (5):
+  tests/intel/kms_dsc: Store valid DSC outputs
+  tests/intel/kms_joiner_helper: Add igt_get_joined_pipes_name()
+  tests/kms_joiner_helper: Add igt_is_joiner_supported_by_source()
+  tests/intel/kms_dsc_helper: Add helper func()
+  tests/intel/kms_dsc: Add DSC with joiner test cases
 
-CI Bug Log - changes from IGT_8943 -> IGTPW_15271
-====================================================
+ tests/intel/kms_dsc.c           | 318 ++++++++++++++++++++++----------
+ tests/intel/kms_dsc_helper.c    |  67 +++++++
+ tests/intel/kms_dsc_helper.h    |   5 +
+ tests/intel/kms_joiner.c        |   8 +-
+ tests/intel/kms_joiner_helper.c |  55 ++++++
+ tests/intel/kms_joiner_helper.h |   3 +
+ tests/meson.build               |  17 +-
+ 7 files changed, 361 insertions(+), 112 deletions(-)
 
-Summary
--------
+-- 
+2.25.1
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15271/index.html
-
-Participating hosts (42 -> 38)
-------------------------------
-
-  Missing    (4): bat-dg2-13 fi-bsw-n3050 fi-snb-2520m bat-adls-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15271 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-apl-1:          [DMESG-FAIL][1] ([i915#14808]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8943/bat-apl-1/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15271/bat-apl-1/igt@i915_selftest@live.html
-
-  
-  [i915#14808]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8943 -> IGTPW_15271
-  * Linux: CI_DRM_18580 -> CI_DRM_18592
-
-  CI-20190529: 20190529
-  CI_DRM_18580: 0b693fa10a961c6e08ade3a6f41069b18baf2a63 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18592: f4ba932abb4422a63c72a272b0386f745ce9a119 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15271: 15271
-  IGT_8943: 8943
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15271/index.html
-
---===============7244915823216338189==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_eudebug: Add basic-vm-bind-ufence-no-ack test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167585/">https://patchwork.freedesktop.org/series/167585/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15271/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15271/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8943 -&gt; IGTPW_15271</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15271/index.html</p>
-<h2>Participating hosts (42 -&gt; 38)</h2>
-<p>Missing    (4): bat-dg2-13 fi-bsw-n3050 fi-snb-2520m bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15271 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8943/bat-apl-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808">i915#14808</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15271/bat-apl-1/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8943 -&gt; IGTPW_15271</li>
-<li>Linux: CI_DRM_18580 -&gt; CI_DRM_18592</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18580: 0b693fa10a961c6e08ade3a6f41069b18baf2a63 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18592: f4ba932abb4422a63c72a272b0386f745ce9a119 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15271: 15271<br />
-  IGT_8943: 8943</p>
-
-</body>
-</html>
-
---===============7244915823216338189==--
