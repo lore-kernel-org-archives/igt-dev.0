@@ -4,39 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0767CD5BD0
-	for <igt-dev@archiver.kernel.org>; Sat, 30 May 2026 18:36:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E7F9CD6E53
+	for <igt-dev@archiver.kernel.org>; Sat, 30 May 2026 18:38:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 79B63112970;
-	Sat, 30 May 2026 18:36:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=emersion.fr header.i=@emersion.fr header.b="Mmlmsteo";
-	dkim-atps=neutral
-Received: from mail-244102.protonmail.ch (mail-244102.protonmail.ch
- [109.224.244.102])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F86111296F
- for <igt-dev@lists.freedesktop.org>; Sat, 30 May 2026 18:35:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=emersion.fr;
- s=protonmail; t=1780166136; x=1780425336;
- bh=RbyfmpZLu6txtgAUenon3SA97J+7j3WqSNJh3C/WGvA=;
- h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
- Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
- b=MmlmsteoQMB+bZBDQEawgw5EO6nEGxvYd2ejrZEW4G7IJzMNEuNa+pE5e3FKyM4tb
- RDE3xKUVjhrhpcRDjWZV7jifty0WjgNyCxe5lmIasWTm5kjIyOv/R0XkWC7MkggG27
- Hxopn3wuQvajYPCK8t4pN38RHQ54nafUrfPJxi/Eq8z9Z2D7MxIaOlZq1M2PHec3Qm
- vwR25oRgOaYP3KPcCff2xLYTFKdrCdlTgeeSrayoMuPKeywsIZE6JzvEC6AjQw6O5B
- tmAWWXTnQeNPhhkz9rjPqlYEP9CMVX+fINDeJi/YGr8IClQV4uJsbnJLxQi+LnXaxF
- HNO9SihR4F8fg==
-Date: Sat, 30 May 2026 18:35:30 +0000
-To: igt-dev@lists.freedesktop.org
-From: Simon Ser <contact@emersion.fr>
-Subject: [PATCH] tests/kms_vblank: add PAGE_FLIP_EVENT property test
-Message-ID: <20260530183521.5562-1-contact@emersion.fr>
-Feedback-ID: 1358184:user:proton
-X-Pm-Message-ID: 3ec51a00694548753ee236a43a28cb2e8d305a5f
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6919E11297A;
+	Sat, 30 May 2026 18:38:17 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AAB3112974;
+ Sat, 30 May 2026 18:37:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1905823093051925504=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Feudebug=3A?=
+ =?utf-8?q?_Add_basic-vm-bind-ufence-no-ack_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jan Maslak" <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sat, 30 May 2026 18:37:54 -0000
+Message-ID: <178016627403.27385.14488093802214622711@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260530180502.1773222-1-jan.maslak@intel.com>
+In-Reply-To: <20260530180502.1773222-1-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,112 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch introduces a test for the new PAGE_FLIP_EVENT CRTC
-property:
-https://lore.kernel.org/dri-devel/20260530171422.4615-1-contact@emersion.fr=
-/T/#u
+--===============1905823093051925504==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Simon Ser <contact@emersion.fr>
----
- lib/igt_kms.c      |  1 +
- lib/igt_kms.h      |  1 +
- tests/kms_vblank.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 47 insertions(+)
+== Series Details ==
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 0f1ce03a943b..b9f780445448 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -739,6 +739,7 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PRO=
-PS] =3D {
- =09[IGT_CRTC_VRR_ENABLED] =3D "VRR_ENABLED",
- =09[IGT_CRTC_SCALING_FILTER] =3D "SCALING_FILTER",
- =09[IGT_CRTC_SHARPNESS_STRENGTH] =3D "SHARPNESS_STRENGTH",
-+=09[IGT_CRTC_PAGE_FLIP_EVENT] =3D "PAGE_FLIP_EVENT",
- };
-=20
- const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] =3D {
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index c2a3099de40f..80f6508f3073 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -166,6 +166,7 @@ enum igt_atomic_crtc_properties {
-        IGT_CRTC_VRR_ENABLED,
-        IGT_CRTC_SCALING_FILTER,
-        IGT_CRTC_SHARPNESS_STRENGTH,
-+       IGT_CRTC_PAGE_FLIP_EVENT,
-        IGT_NUM_CRTC_PROPS
- };
-=20
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index 7fb7de0a70c1..a54db8a54d90 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -288,6 +288,30 @@ static void crtc_id_subtest(data_t *data, int fd)
- =09return;
- }
-=20
-+static void page_flip_event_prop_subtest(data_t *data, int fd) {
-+=09igt_display_t *display =3D &data->display;
-+=09igt_output_t *output =3D data->output;
-+=09igt_crtc_t *crtc =3D data->crtc;
-+=09struct drm_event_vblank buf;
-+=09igt_plane_t *primary;
-+
-+=09igt_require(display->is_atomic);
-+=09igt_require(igt_crtc_has_prop(crtc, IGT_CRTC_PAGE_FLIP_EVENT));
-+
-+=09prepare_crtc(data, fd, output);
-+
-+=09primary =3D igt_output_get_plane(output, 0);
-+
-+=09igt_plane_set_fb(primary, &data->primary_fb);
-+=09igt_crtc_set_prop_value(crtc, IGT_CRTC_PAGE_FLIP_EVENT, 1);
-+=09igt_display_commit_atomic(display, 0, NULL);
-+
-+=09igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-+=09igt_assert_eq(buf.crtc_id, crtc->crtc_id);
-+
-+=09cleanup_crtc(data, fd, output);
-+}
-+
- static void accuracy(data_t *data, int fd, int nchildren)
- {
- =09const uint32_t pipe_id_flag =3D igt_crtc_get_vbl_flag(data->crtc);
-@@ -692,6 +716,27 @@ int igt_main_args("e", NULL, help_str, opt_handler, NU=
-LL)
- =09=09}
- =09}
-=20
-+=09igt_describe("Check flip events works with the PAGE_FLIP_EVENT atomic p=
-roperty.");
-+=09igt_subtest_with_dynamic("page-flip-event-prop") {
-+=09=09for_each_crtc_with_valid_output(&data.display, crtc,
-+=09=09=09=09=09=09data.output) {
-+=09=09=09if (!crtc_output_combo_valid(&data.display, crtc, data.output))
-+=09=09=09=09continue;
-+
-+=09=09=09if (!all_pipes && crtc->crtc_index !=3D active_crtcs[0] &&
-+=09=09=09=09=09  crtc->crtc_index !=3D active_crtcs[last_crtc_index]) {
-+=09=09=09=09igt_info("Skipping pipe %s\n",
-+=09=09=09=09=09 igt_crtc_name(crtc));
-+=09=09=09=09continue;
-+=09=09=09}
-+
-+=09=09=09data.crtc =3D crtc;
-+=09=09=09igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
-+=09=09=09=09      data.output->name)
-+=09=09=09=09      page_flip_event_prop_subtest(&data, fd);
-+=09=09}
-+=09}
-+
- =09run_subtests(&data);
-=20
- =09igt_fixture() {
---=20
-2.54.0
+Series: tests/intel/xe_eudebug: Add basic-vm-bind-ufence-no-ack test
+URL   : https://patchwork.freedesktop.org/series/167585/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8943_BAT -> XEIGTPW_15271_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 12)
+------------------------------
+
+  Missing    (1): bat-atsm-2 
 
 
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8943 -> IGTPW_15271
+  * Linux: xe-5155-158de01c718ed9dd7cb123d0df59a6077be26579 -> xe-5168-f4ba932abb4422a63c72a272b0386f745ce9a119
+
+  IGTPW_15271: 15271
+  IGT_8943: 8943
+  xe-5155-158de01c718ed9dd7cb123d0df59a6077be26579: 158de01c718ed9dd7cb123d0df59a6077be26579
+  xe-5168-f4ba932abb4422a63c72a272b0386f745ce9a119: f4ba932abb4422a63c72a272b0386f745ce9a119
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15271/index.html
+
+--===============1905823093051925504==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_eudebug: Add basic-vm-bind-ufence-no-ack test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167585/">https://patchwork.freedesktop.org/series/167585/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15271/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15271/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8943_BAT -&gt; XEIGTPW_15271_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-atsm-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8943 -&gt; IGTPW_15271</li>
+<li>Linux: xe-5155-158de01c718ed9dd7cb123d0df59a6077be26579 -&gt; xe-5168-f4ba932abb4422a63c72a272b0386f745ce9a119</li>
+</ul>
+<p>IGTPW_15271: 15271<br />
+  IGT_8943: 8943<br />
+  xe-5155-158de01c718ed9dd7cb123d0df59a6077be26579: 158de01c718ed9dd7cb123d0df59a6077be26579<br />
+  xe-5168-f4ba932abb4422a63c72a272b0386f745ce9a119: f4ba932abb4422a63c72a272b0386f745ce9a119</p>
+
+</body>
+</html>
+
+--===============1905823093051925504==--
