@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D619CD5BD1
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 05:34:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29143CD5BD1
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 05:35:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E3679112DA1;
-	Mon,  1 Jun 2026 05:34:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BB7A1112DA1;
+	Mon,  1 Jun 2026 05:35:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MBGeVde3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gsxiy6L3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EEF1112DA1
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 05:34:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D231112DA1
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 05:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780292061; x=1811828061;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/wgooW58SaC9InWW+Xkbq3Lrd3vTggk++s5heLiS16g=;
- b=MBGeVde3g+KlP7TqPofgsF6NctLw7LYxdw2TGLpUV14JmDsUHyZL4WsX
- MPvJUYEA95z9D8UQt1kWzYYy3scaabqig6byXTAssHbQIoh5WBVkJszot
- wrP/ZxpepbGfwC9HMXSsYl1ULPpQNLWiRRanJh7j3M6ESgBbAfnCMp/NU
- MD6aDfFABkAz0NsmXGs9y+dDlYeS9RWKt5mOqWZ5o6lzNsUzZ8/ZdaI/Q
- xZEDHWungwlTztztqBau0HmdPss1Mv4pO967y6Bx/RvxZWij8QvNtD2rc
- KazXA6d+W94BKjEqw0Ek4HriMg34q9B3cfSCDIcuiXzCnFAVyYcXIfRcR w==;
-X-CSE-ConnectionGUID: lOq6OoIiRjW0kNv4sncizQ==
-X-CSE-MsgGUID: EUrcbR7wTOetMA0WSwvLug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="103712753"
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="103712753"
+ t=1780292063; x=1811828063;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=UOsKjXrRQtsrGWpvwfFN44BE5XpTTozEaovMiY8yeqY=;
+ b=gsxiy6L3gJxTU09VpbfZAJdfBgqokaUKQlGxOwvse9F85Vy1PQEcDMxe
+ qPlM/TKdqr1hEebFvH0K6BvnPO2YIEdCr3XZUp4kZjQK5D6anUfPhIk4/
+ V/uXSZDeBfMU5hwhcyk428+huSMQ/8tsYU/JNzpOi/i5c7/kwnp0280+Z
+ A5vTUnGz/7byQp3cmVs0gWN4t1m0wiCbomx9XNt4bqBgUesLGDYAyZeyv
+ FDh0A75zj2KMum5B6CMiAZZwW/EkJRgv0wWMTRUjZ7jsnyaTF8HB8lAAu
+ na5g+79hH7UkcL9kY2pmSiJU7Q58bY/L0JgX/lUM4Zdqsa/USr/FwjqfL A==;
+X-CSE-ConnectionGUID: jQuYlLmmTdm2hPggZ+cl4Q==
+X-CSE-MsgGUID: WBuFa/snR5qbotXvDe2Guw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="103712755"
+X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="103712755"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 May 2026 22:34:21 -0700
-X-CSE-ConnectionGUID: 56CMv7sWTp66Gq4IfwIpvQ==
-X-CSE-MsgGUID: IximFXZgSnOS1M9ev5uBUA==
+ 31 May 2026 22:34:22 -0700
+X-CSE-ConnectionGUID: ptQs3380QeSbkb0O+7rsrQ==
+X-CSE-MsgGUID: pYOnZejQS++DBODLYSSwKg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="243310125"
+X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="243310128"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2026 22:34:19 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2026 22:34:21 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 0/6] tests/kms_pipe_crc_basic: add mst suspend-resume
- test
-Date: Mon,  1 Jun 2026 11:25:39 +0530
-Message-Id: <20260601055545.1982351-1-kunal1.joshi@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t 1/6] tests/intel/kms_mst_helper: Add kernel-doc for
+ existing function
+Date: Mon,  1 Jun 2026 11:25:40 +0530
+Message-Id: <20260601055545.1982351-2-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260601055545.1982351-1-kunal1.joshi@intel.com>
+References: <20260601055545.1982351-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,37 +69,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch series introduces MST suspend-resume test
-to kms_mst. The MST test validates there
-is no corruption/blank out across suspend/resume cycles
-for all possible subsets.
+Convert the doc comment on igt_find_all_mst_output_in_topology
+to proper igt-doc.
+While at it fix typo (toplogy->topology)
 
-Note : Subtest is now part of new binary kms_mst
-       Didn't change subject to avoid new patch series
+v2:
+- Change to proper IGT doc (Kamil)
+- note about a typo fix (Kamil)
 
-Kunal Joshi (6):
-  tests/intel/kms_mst_helper: Add kernel-doc for existing function
-  tests/intel/kms_mst_helper: Add helper to check for MST outputs
-  lib/igt_kms: Rename max_non_joiner_mode_found to
-    intel_boundary_non_joiner_mode_found
-  tests/intel/kms_joiner_helper: Add
-    intel_max_hdisplay_non_joiner_mode_found
-  lib/igt_kms: Export get_max_pipe_hdisplay as
-    intel_get_max_pipe_hdisplay
-  tests/intel/kms_mst: Add MST suspend-resume test
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel/kms_mst_helper.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- lib/igt_kms.c                   |  25 ++-
- lib/igt_kms.h                   |   5 +-
- tests/intel/kms_joiner.c        |  10 +-
- tests/intel/kms_joiner_helper.c |  42 ++++
- tests/intel/kms_joiner_helper.h |   2 +
- tests/intel/kms_mst.c           | 349 ++++++++++++++++++++++++++++++++
- tests/intel/kms_mst_helper.c    |  24 ++-
- tests/intel/kms_mst_helper.h    |   1 +
- tests/meson.build               |   4 +
- 9 files changed, 442 insertions(+), 20 deletions(-)
- create mode 100644 tests/intel/kms_mst.c
-
+diff --git a/tests/intel/kms_mst_helper.c b/tests/intel/kms_mst_helper.c
+index aef74cd31..38859cffc 100644
+--- a/tests/intel/kms_mst_helper.c
++++ b/tests/intel/kms_mst_helper.c
+@@ -5,11 +5,12 @@
+ 
+ #include "kms_mst_helper.h"
+ 
+-/*
++/**
++ * igt_find_all_mst_output_in_topology:
+  * @drm_fd: DRM file descriptor
+  * @display: pointer to #igt_display_t structure
+  * @output: target output
+- * @mst_outputs: filled with mst output of same toplogy as @output
++ * @mst_outputs: filled with mst output of same topology as @output
+  * @num_mst_outputs: filled with count of mst outputs found in topology
+  *
+  * Iterates over all connected outputs and adds each DP MST
 -- 
 2.25.1
 
