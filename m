@@ -4,28 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8A89CD5BD1
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 14:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECB83CD5BD1
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 16:12:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 573A510E803;
-	Mon,  1 Jun 2026 14:26:47 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90ACE10E802;
- Mon,  1 Jun 2026 14:26:27 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8492183042371884649=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
- =?utf-8?q?-g-t=2Cv5=2C1/2=5D_lib/drmtest=3A_add_drm=5Fopen=5Fdriver=5Fpath?=
- =?utf-8?q?=28=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sebastian Brzezinka" <sebastian.brzezinka@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 01 Jun 2026 14:26:27 -0000
-Message-ID: <178032398758.29960.8176806898313906692@6beec6c84f66>
-X-Patchwork-Hint: ignore
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9D520113561;
+	Mon,  1 Jun 2026 16:12:03 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WArfj36f";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEC0811355F
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 16:11:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1780330301; x=1811866301;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=oTnwHNcmZMYcVP7JSrWUcE2x4FWWJoVJnZWm1DEKpOc=;
+ b=WArfj36fUXpBHgs1SerzcRDJmdGUwjpgJi0I1a7M84LWEYh4flm+6X8u
+ 6/dknlO/TbciNTHJKB3NVVhflIki9Ye349OgmLXU9/M/JH9BZXUg9xNYx
+ VpIHwkN9f80NnzHRi6nHa07BX8GpCUMsGfsL8t3B08/8Zgl20y3LGiV3A
+ TUI8SSwTISej6AiPEM0zYj62enqPx6r5OU/1s8wTlKCrSb9zZEwVySlEk
+ 179+njucGAeT1JZ5INIaik/2Kvefftj8OvXtq+6n99anrKd4EaovYfdWw
+ NeyM4qcK9UmvWqPiIVjVgFxkHbzybPE4D5maoS7IeS103j+iHtddY7bo+ g==;
+X-CSE-ConnectionGUID: ZfBFA+g4Rs+6zOiiMSVWVw==
+X-CSE-MsgGUID: ZxavJGhtT0ORFcjyQhnOgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="80824345"
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; d="scan'208";a="80824345"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jun 2026 09:11:40 -0700
+X-CSE-ConnectionGUID: +Unav2clSMOJTCWWR3Tz6Q==
+X-CSE-MsgGUID: 5xjD49QDQpi2qANmDBEgAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; d="scan'208";a="248531343"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 09:11:39 -0700
+Date: Mon, 1 Jun 2026 18:11:19 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Cc: igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
+ zbigniew.kempczynski@intel.com, x.wang@intel.com
+Subject: Re: [PATCH i-g-t v5 1/2] lib/drmtest: add drm_open_driver_path()
+Message-ID: <20260601161119.sclzsgm3pyxlh32o@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
+ zbigniew.kempczynski@intel.com, x.wang@intel.com
 References: <cover.1780317251.git.sebastian.brzezinka@intel.com>
-In-Reply-To: <cover.1780317251.git.sebastian.brzezinka@intel.com>
+ <74d549e21790c747367197e5d6e90f2e58c66bf8.1780317251.git.sebastian.brzezinka@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <74d549e21790c747367197e5d6e90f2e58c66bf8.1780317251.git.sebastian.brzezinka@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,150 +70,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8492183042371884649==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Sebastian,
+On 2026-06-01 at 14:46:19 +0200, Sebastian Brzezinka wrote:
+> Add drm_open_driver_path() as a path-based DRM open helper. It opens
+> the given path with O_RDWR, verifies the resulting fd is a DRM device by
+> issuing DRM_IOCTL_VERSION via __get_drm_device_name() and checking that
+> the returned name is non-empty before proceeding (returning -1 and
+> closing on failure), logs the opened device path, and populates the
+> xe_device cache when the device is Xe.
 
-== Series Details ==
+Please make a short description here, there is no need for
+translating C into english.
 
-Series: series starting with [i-g-t,v5,1/2] lib/drmtest: add drm_open_driver_path()
-URL   : https://patchwork.freedesktop.org/series/167656/
-State : success
+> 
+> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+> ---
+>  lib/drmtest.c | 30 ++++++++++++++++++++++++++++++
+>  lib/drmtest.h |  1 +
+>  2 files changed, 31 insertions(+)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 4a788ea7a..3d1d331f7 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -379,6 +379,36 @@ err:
+>  	return -1;
+>  }
+>  
+> +/**
+> + * drm_open_driver_path:
+> + * @path: DRM device node path
+> + *
+> + * Opens @path with O_RDWR and populates the xe_device cache for Xe fds.
 
-== Summary ==
+Rather than that write about one check for DRM ioctl,
+so it is realy a DRM device.
 
-CI Bug Log - changes from IGT_8943 -> IGTPW_15278
-====================================================
+> + *
+> + * Returns: DRM file descriptor or -1 on error
+> + */
+> +int drm_open_driver_path(const char *path)
+> +{
+> +	char name[12] = "";
+> +	int fd;
+> +
+> +	fd = open(path, O_RDWR);
+> +	if (fd < 0)
+> +		return -1;
+> +
+> +	if (__get_drm_device_name(fd, name, sizeof(name) - 1) || !name[0]) {
 
-Summary
--------
+I would prefer separate checks, even at cost of code duplication
+or using goto.
 
-  **SUCCESS**
+Regards,
+Kamil
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15278/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15278 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [PASS][1] -> [FAIL][2] ([i915#16115])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8943/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15278/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-apl-1:          [DMESG-FAIL][3] ([i915#14808]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8943/bat-apl-1/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15278/bat-apl-1/igt@i915_selftest@live.html
-
-  
-  [i915#14808]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808
-  [i915#16115]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16115
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8943 -> IGTPW_15278
-  * Linux: CI_DRM_18580 -> CI_DRM_18595
-
-  CI-20190529: 20190529
-  CI_DRM_18580: 0b693fa10a961c6e08ade3a6f41069b18baf2a63 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18595: 8133a9f4c4fd407e81df71530490836a1170bb2f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15278: 15278
-  IGT_8943: 8943
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15278/index.html
-
---===============8492183042371884649==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v5,1/2] lib/drmtest: add drm_open_driver_path()</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167656/">https://patchwork.freedesktop.org/series/167656/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15278/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15278/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8943 -&gt; IGTPW_15278</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15278/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15278 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_hdmi_inject@inject-audio:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8943/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15278/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16115">i915#16115</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8943/bat-apl-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808">i915#14808</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15278/bat-apl-1/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8943 -&gt; IGTPW_15278</li>
-<li>Linux: CI_DRM_18580 -&gt; CI_DRM_18595</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18580: 0b693fa10a961c6e08ade3a6f41069b18baf2a63 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18595: 8133a9f4c4fd407e81df71530490836a1170bb2f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15278: 15278<br />
-  IGT_8943: 8943</p>
-
-</body>
-</html>
-
---===============8492183042371884649==--
+> +		close(fd);
+> +		return -1;
+> +	}
+> +
+> +	log_opened_device_path(path);
+> +
+> +	if (is_xe_device(fd))
+> +		xe_device_get(fd);
+> +
+> +	return fd;
+> +}
+> +
+>  static struct {
+>  	int fd;
+>  	struct stat stat;
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index 37874d729..19d3d1e76 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -123,6 +123,7 @@ int drm_open_driver_another(int idx, int chipset);
+>  int drm_open_driver(int chipset);
+>  int drm_open_driver_master(int chipset);
+>  int drm_open_driver_render(int chipset);
+> +int drm_open_driver_path(const char *path);
+>  int __drm_open_driver_another(int idx, int chipset);
+>  int __drm_open_driver(int chipset);
+>  int __drm_open_driver_render(int chipset);
+> -- 
+> 2.53.0
+> 
