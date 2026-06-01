@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32955CD5BD1
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 05:36:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35FDDCD5BD1
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 05:36:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF552112DA1;
-	Mon,  1 Jun 2026 05:36:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2CAE112DA1;
+	Mon,  1 Jun 2026 05:36:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lNS0aThY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LfNyirdI";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E3CE112DA1
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 05:34:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 729C9112DA1
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 05:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780292070; x=1811828070;
+ t=1780292069; x=1811828069;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=wt0AC+h6k9hpgnbLcOczBm+sTZ6576w4IUf2s7CBtZs=;
- b=lNS0aThYRETzMDqnNvs5TbUusdYNbNZOG4prJZU87Ch8JFHlN7+47ERV
- +uiWRn99xOeC3Txm5RobWMNZFCot9OICwsC+xbECDMSaerTbiYy+WCIR2
- K+HfFvv9hXarONeH8P5Kj9oWhGvzZcd96GRR6nKiSjePrbSdU2gRUOmBl
- UqjNY0yP7MDI4nktnk2CzG3hREBBpS/VXrs2n26OPepZnjmXMO2o6Rp6+
- xV7vCTmuet+NgwTZG7sdfKj9wQWUTCSTjEQVyImclr//4AnNVanwMLZrR
- sj+hST0/uvROsAW+zW0luXYoHtqoO9h6Ex8NuFOgJnpY2EnPqmY/pMS0D w==;
-X-CSE-ConnectionGUID: KYzU0V0gSNixMvAX07xocw==
-X-CSE-MsgGUID: B4+woXIoS++RHq7WMxorbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="103712773"
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="103712773"
+ bh=jJkkD7A8vezpoekWBZTzhY7KIV4Oe6QK/XhNpLQFltY=;
+ b=LfNyirdIpmidQ25A210I7I/zZubNw2xaE0bgnS6gkjYNFVqZ36Fbtveq
+ QydU+6+fjSfBEhqbX21CF9Y+u2wUZ+WSVcbKJHUxbXRMFT1O/pMOHOoPR
+ +/lGgj0zu2LJb0g7KkgRI77UcUFHusKSqi2Tftb+c/uvq5bkYYUaaK4yx
+ keO84pUeuKH9FMQc8lv+pgiu0gTRqwtcHgRXq8XuEPz/qjL+UmGoc1APE
+ OcsabXFzj+jw+KI5ifYob+/PL3hzdg1KcKlhyplW1oXlCVTZloogq1U4E
+ tqohq40FiMysFeIgUJK9epxK4KrAR/Au9kERp+4TpKEDSAk+sHgcpc+Rv g==;
+X-CSE-ConnectionGUID: /NligeSiTGmTrCwkTBtRvw==
+X-CSE-MsgGUID: CwJwWPeLTKyudtrKOROHFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="103712767"
+X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="103712767"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 May 2026 22:34:30 -0700
-X-CSE-ConnectionGUID: X4NST847STahDCiopOeEWg==
-X-CSE-MsgGUID: 7/JB1PSiRx2Hx49NENR/qQ==
+ 31 May 2026 22:34:28 -0700
+X-CSE-ConnectionGUID: SlwliHkvSR+HrlXaitAvNA==
+X-CSE-MsgGUID: eFQxEbRNRJuX7sXUYpMihA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="243310156"
+X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="243310149"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2026 22:34:28 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2026 22:34:27 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>,
  Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH i-g-t 6/6] tests/intel/kms_mst: Add MST suspend-resume test
-Date: Mon,  1 Jun 2026 11:25:45 +0530
-Message-Id: <20260601055545.1982351-7-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 5/6] lib/igt_kms: Export get_max_pipe_hdisplay as
+ intel_get_max_pipe_hdisplay
+Date: Mon,  1 Jun 2026 11:25:44 +0530
+Message-Id: <20260601055545.1982351-6-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260601055545.1982351-1-kunal1.joshi@intel.com>
 References: <20260601055545.1982351-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,420 +69,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test for DP MST suspend-resume functionality. The test verifies that
-display content is preserved across S3 suspend/resume by comparing pipe
-CRC values before and after suspension.
+Rename the static get_max_pipe_hdisplay() to the public
+intel_get_max_pipe_hdisplay() and export it from the header. This is
+a public function for querying platform capabilities.
 
-v2:
-- Add error handling for igt_pipe_crc_new (Thasleem)
-- Improve log format with index for clarity (Thasleem)
-- Order declarations in decreasing line length (Thasleem)
-- Add print message when no MST found (Thasleem)
-- Add bounds check for idx in subset loop (Thasleem)
-- Use igt_crtc_crc_new() instead of igt_pipe_crc_new() (Ville)
+Update all call sites to use the new name.
 
-v3:
-- framebuffers missing in commit (Bilal)
-
-v4:
-- Drop cleanup framework
-
-v5:
-- Use igt_debug instead of igt_info for CRC logging (Thasleem)
-- Remove  comments (Suraj)
-- Remove double vblank waits before/after suspend (Suraj)
-- Rename variable (Thasleem)
-- Two-pass approach (Suraj)
-
-v6:
-- Create seperate test (Ville)
-- Move to tests/intel/ (Jani)
+v2: Use intel_ prefix (Jani)
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 ---
- tests/intel/kms_mst.c | 349 ++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build     |   4 +
- 2 files changed, 353 insertions(+)
- create mode 100644 tests/intel/kms_mst.c
+ lib/igt_kms.c | 13 ++++++++-----
+ lib/igt_kms.h |  1 +
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/kms_mst.c b/tests/intel/kms_mst.c
-new file mode 100644
-index 000000000..17af19899
---- /dev/null
-+++ b/tests/intel/kms_mst.c
-@@ -0,0 +1,349 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms mst
-+ * Category: Display
-+ * Description: Tests for DP MST (Multi-Stream Transport)
-+ * Driver requirement: i915, xe
-+ * Mega feature: General Display Features
-+ */
-+
-+#include "igt.h"
-+#include "igt_sysfs.h"
-+#include "kms_mst_helper.h"
-+#include "kms_joiner_helper.h"
-+#include <limits.h>
-+
-+/**
-+ * SUBTEST: mst-suspend-read-crc
-+ * Description: MST suspend test that verifies display content is preserved
-+ *              across S3 suspend/resume using pipe CRC comparison.
-+ */
-+
-+#define MAX_MST_OUTPUT	3
-+
-+struct mst_root_info {
-+	int root_id;
-+	igt_output_t *mst_outputs[IGT_MAX_PIPES];
-+	int num_mst;
-+};
-+
-+static void collect_single_crc(igt_crtc_t *crtc, igt_crc_t *crc)
-+{
-+	igt_pipe_crc_t *pipe_crc;
-+
-+	pipe_crc = igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
-+	igt_assert(pipe_crc);
-+	igt_pipe_crc_collect_crc(pipe_crc, crc);
-+	igt_pipe_crc_free(pipe_crc);
-+}
-+
-+static void collect_crc_for_active_outputs(igt_output_t **outputs,
-+					   int num_outputs,
-+					   igt_crc_t *crcs,
-+					   bool post_suspend)
-+{
-+	int i;
-+
-+	for (i = 0; i < num_outputs; i++) {
-+		igt_output_t *output = outputs[i];
-+		igt_crtc_t *crtc = igt_output_get_driving_crtc(output);
-+
-+		if (post_suspend)
-+			igt_require_f(crtc,
-+				      "POST-SUSPEND: no driving CRTC for %s (topology changed?)\n",
-+				      output->name);
-+		else
-+			igt_assert_f(crtc,
-+				     "PRE-SUSPEND: no driving CRTC for %s (bad pipe assignment?)\n",
-+				     output->name);
-+
-+		collect_single_crc(crtc, &crcs[i]);
-+	}
-+}
-+
-+static void wait_for_vblanks(igt_output_t **outputs, int num_outputs,
-+			     bool post_suspend)
-+{
-+	int i;
-+
-+	for (i = 0; i < num_outputs; i++) {
-+		igt_crtc_t *crtc = igt_output_get_driving_crtc(outputs[i]);
-+
-+		if (post_suspend)
-+			igt_require_f(crtc,
-+				      "POST-SUSPEND: no driving CRTC for %s during vblank wait (topology changed?)\n",
-+				      outputs[i]->name);
-+		else
-+			igt_assert_f(crtc,
-+				     "PRE-SUSPEND: no driving CRTC for %s during vblank wait (bad pipe assignment?)\n",
-+				     outputs[i]->name);
-+
-+		igt_wait_for_vblank(crtc);
-+	}
-+}
-+
-+static void log_crc_for_outputs(igt_output_t **outputs, int num_outputs,
-+				igt_crc_t *crcs, const char *stage)
-+{
-+	int i;
-+
-+	for (i = 0; i < num_outputs; i++) {
-+		igt_output_t *o = outputs[i];
-+		drmModeModeInfo *m = igt_output_get_mode(o);
-+		char *s = igt_crc_to_string(&crcs[i]);
-+		igt_crtc_t *crtc = igt_output_get_driving_crtc(o);
-+
-+		igt_debug("[%d] %s: output %s -> crtc %s, CRC %s, mode %dx%d@%d\n",
-+			  i, stage, o->name,
-+			  igt_crtc_name(crtc),
-+			  s,
-+			  m ? m->hdisplay : -1,
-+			  m ? m->vdisplay : -1,
-+			  m ? m->vrefresh : 0);
-+		free(s);
-+	}
-+}
-+
-+static void select_non_joiner_modes(int drm_fd, igt_output_t **outputs,
-+				    int num_outputs)
-+{
-+	int max_dotclock = igt_get_max_dotclock(drm_fd);
-+	int i;
-+
-+	if (max_dotclock <= 0)
-+		max_dotclock = INT_MAX;
-+
-+	for (i = 0; i < num_outputs; i++) {
-+		igt_output_t *output = outputs[i];
-+		drmModeModeInfo non_joiner_mode;
-+
-+		igt_require_f(intel_max_hdisplay_non_joiner_mode_found(drm_fd,
-+									       output->config.connector,
-+									       max_dotclock,
-+									       &non_joiner_mode),
-+			      "No non-joiner mode found for %s\n",
-+			      output->name);
-+		igt_output_override_mode(output, &non_joiner_mode);
-+	}
-+}
-+
-+static void create_fbs_for_outputs(int drm_fd, igt_output_t **outputs,
-+				   int num_outputs, struct igt_fb *fbs)
-+{
-+	int i;
-+
-+	for (i = 0; i < num_outputs; i++) {
-+		igt_output_t *output = outputs[i];
-+		drmModeModeInfo *mode = igt_output_get_mode(output);
-+		igt_plane_t *primary;
-+
-+		igt_require_f(mode, "No mode available for output %s\n", output->name);
-+
-+		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+		igt_create_color_fb(drm_fd,
-+				    mode->hdisplay, mode->vdisplay,
-+				    DRM_FORMAT_XRGB8888,
-+				    DRM_FORMAT_MOD_LINEAR,
-+				    0.0, 1.0, 0.0,
-+				    &fbs[i]);
-+		igt_plane_set_fb(primary, &fbs[i]);
-+	}
-+}
-+
-+static void run_mst_subset_and_verify(igt_display_t *display,
-+				      igt_output_t **active_outputs,
-+				      int num_active,
-+				      int n_crtcs,
-+				      uint32_t master_pipes_mask,
-+				      uint32_t valid_pipes_mask)
-+{
-+	igt_crc_t pre_crcs[MAX_MST_OUTPUT];
-+	igt_crc_t post_crcs[MAX_MST_OUTPUT];
-+	struct igt_fb fbs[MAX_MST_OUTPUT];
-+	uint32_t used_pipes_mask = 0;
-+	enum igt_suspend_test stest = SUSPEND_TEST_NONE;
-+	int drm_fd = display->drm_fd;
-+	int i;
-+
-+	igt_require_f(num_active <= n_crtcs,
-+		      "Not enough crtcs for MST subset\n");
-+
-+	igt_require(igt_assign_pipes_for_outputs(drm_fd,
-+						 active_outputs,
-+						 num_active,
-+						 n_crtcs,
-+						 &used_pipes_mask,
-+						 master_pipes_mask,
-+						 valid_pipes_mask));
-+
-+	select_non_joiner_modes(drm_fd, active_outputs, num_active);
-+
-+	igt_require_f(igt_fit_modes_in_bw(display),
-+		      "Unable to fit modes in bw\n");
-+
-+	create_fbs_for_outputs(drm_fd, active_outputs, num_active, fbs);
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	/* rtcwake cmd is not supported on MTK devices */
-+	if (is_mtk_device(drm_fd))
-+		stest = SUSPEND_TEST_DEVICES;
-+
-+	igt_info("MST subset: %d outputs, n_crtcs=%d\n",
-+		 num_active, n_crtcs);
-+
-+	wait_for_vblanks(active_outputs, num_active, false);
-+	collect_crc_for_active_outputs(active_outputs,
-+				       num_active,
-+				       pre_crcs, false);
-+	log_crc_for_outputs(active_outputs, num_active, pre_crcs, "PRE-SUSPEND");
-+
-+	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, stest);
-+	wait_for_vblanks(active_outputs, num_active, true);
-+	collect_crc_for_active_outputs(active_outputs,
-+				       num_active,
-+				       post_crcs, true);
-+	log_crc_for_outputs(active_outputs, num_active, post_crcs, "POST-SUSPEND");
-+
-+	for (i = 0; i < num_active; i++)
-+		igt_assert_crc_equal(&pre_crcs[i], &post_crcs[i]);
-+
-+	/* Detach FBs from planes and remove them to leave a clean state */
-+	for (i = 0; i < num_active; i++) {
-+		igt_plane_t *primary =
-+			igt_output_get_plane_type(active_outputs[i],
-+						  DRM_PLANE_TYPE_PRIMARY);
-+		igt_plane_set_fb(primary, NULL);
-+		igt_remove_fb(drm_fd, &fbs[i]);
-+	}
-+}
-+
-+static int discover_mst_roots(igt_display_t *display,
-+			      struct mst_root_info *roots)
-+{
-+	igt_output_t *output;
-+	int drm_fd = display->drm_fd;
-+	int num_roots = 0;
-+	int ret, i;
-+
-+	for_each_connected_output(display, output) {
-+		bool root_seen = false;
-+		int root_id;
-+
-+		root_id = igt_get_dp_mst_connector_id(output);
-+		if (root_id < 0)
-+			continue;
-+
-+		for (i = 0; i < num_roots; i++)
-+			if (roots[i].root_id == root_id)
-+				root_seen = true;
-+
-+		if (root_seen)
-+			continue;
-+
-+		if (num_roots >= IGT_MAX_PIPES)
-+			break;
-+
-+		roots[num_roots].root_id = root_id;
-+		roots[num_roots].num_mst = 0;
-+		ret = igt_find_all_mst_output_in_topology(drm_fd,
-+							  display, output,
-+							  roots[num_roots].mst_outputs,
-+							  &roots[num_roots].num_mst);
-+		igt_require(ret == 0);
-+
-+		if (roots[num_roots].num_mst == 0)
-+			continue;
-+
-+		if (roots[num_roots].num_mst > MAX_MST_OUTPUT)
-+			roots[num_roots].num_mst = MAX_MST_OUTPUT;
-+
-+		num_roots++;
-+	}
-+
-+	return num_roots;
-+}
-+
-+static void mst_suspend_read_crc(igt_display_t *display)
-+{
-+	struct mst_root_info roots[IGT_MAX_PIPES];
-+	igt_output_t *active_outputs[MAX_MST_OUTPUT];
-+	uint32_t valid_pipes_mask = 0;
-+	uint32_t master_pipes_mask;
-+	int n_crtcs = igt_display_n_crtcs(display);
-+	int num_roots, num_active, i;
-+	igt_crtc_t *crtc;
-+
-+	for_each_crtc(display, crtc)
-+		valid_pipes_mask |= BIT(crtc->pipe);
-+
-+	igt_set_all_master_pipes_for_platform(display, &master_pipes_mask);
-+
-+	num_roots = discover_mst_roots(display, roots);
-+	igt_require_f(num_roots > 0, "No MST roots found\n");
-+
-+	for (i = 0; i < num_roots; i++) {
-+		igt_dynamic_f("mst-root-%d", roots[i].root_id) {
-+			int mask;
-+
-+			for (mask = 1; mask < (1 << roots[i].num_mst); mask++) {
-+				int bit, idx = 0;
-+
-+				for (bit = 0; bit < roots[i].num_mst; bit++) {
-+					if (!(mask & (1 << bit)))
-+						continue;
-+
-+					if (idx >= MAX_MST_OUTPUT)
-+						break;
-+
-+					active_outputs[idx++] =
-+						roots[i].mst_outputs[bit];
-+				}
-+
-+				num_active = idx;
-+				if (!num_active)
-+					continue;
-+
-+				igt_display_reset(display);
-+
-+				run_mst_subset_and_verify(display,
-+							  active_outputs,
-+							  num_active,
-+							  n_crtcs,
-+							  master_pipes_mask,
-+							  valid_pipes_mask);
-+			}
-+		}
-+	}
-+}
-+
-+int igt_main()
-+{
-+	igt_display_t display;
-+	int drm_fd;
-+
-+	igt_fixture() {
-+		drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		kmstest_set_vt_graphics_mode();
-+		igt_require_pipe_crc(drm_fd);
-+		igt_display_require(&display, drm_fd);
-+		igt_display_require_output(&display);
-+	}
-+
-+	igt_describe("MST suspend test that verifies display content is preserved "
-+		     "across S3 suspend/resume using pipe CRC comparison.");
-+	igt_subtest_with_dynamic("mst-suspend-read-crc") {
-+		igt_require(igt_display_has_mst_output(&display));
-+		mst_suspend_read_crc(&display);
-+	}
-+
-+	igt_fixture() {
-+		igt_display_fini(&display);
-+		drm_close_driver(drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 811a36748..8fe775ccf 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -265,6 +265,7 @@ intel_kms_progs = [
- 	'kms_joiner',
- 	'kms_legacy_colorkey',
- 	'kms_mmap_write_crc',
-+	'kms_mst',
- 	'kms_pipe_b_c_ivb',
- 	'kms_pipe_stress',
- 	'kms_pm_backlight',
-@@ -407,6 +408,9 @@ extra_sources = {
-            join_paths ('intel', 'kms_joiner_helper.c') ],
- 	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
- 	'kms_joiner': [ join_paths ('intel', 'kms_joiner_helper.c') ],
-+	'kms_mst': [
-+           join_paths ('intel', 'kms_mst_helper.c'),
-+           join_paths ('intel', 'kms_joiner_helper.c') ],
- 	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index ef2d92812..ba7b7461d 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6920,12 +6920,15 @@ int igt_get_current_cdclk(int fd)
  }
  
+ /**
+- * get_max_hdisplay:
++ * intel_get_max_pipe_hdisplay:
+  * @drm_fd: drm file descriptor
+  *
++ * Get the maximum hdisplay (width) supported by a single pipe on the
++ * platform. This is a public function for querying platform capabilities.
++ *
+  * Returns: The maximum hdisplay supported per pipe.
+  */
+-static int get_max_pipe_hdisplay(int drm_fd)
++int intel_get_max_pipe_hdisplay(int drm_fd)
+ {
+ 	int dev_id = intel_get_drm_devid(drm_fd);
+ 
+@@ -6946,7 +6949,7 @@ static int get_max_pipe_hdisplay(int drm_fd)
+  */
+ bool igt_bigjoiner_possible(int drm_fd, drmModeModeInfo *mode, int max_dotclock)
+ {
+-	return (mode->hdisplay > get_max_pipe_hdisplay(drm_fd) ||
++	return (mode->hdisplay > intel_get_max_pipe_hdisplay(drm_fd) ||
+ 		mode->clock > max_dotclock);
+ }
+ 
+@@ -6994,7 +6997,7 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ bool intel_boundary_non_joiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 					  int max_dotclock, drmModeModeInfo *mode)
+ {
+-	int max_hdisplay = get_max_pipe_hdisplay(drm_fd);
++	int max_hdisplay = intel_get_max_pipe_hdisplay(drm_fd);
+ 
+ 	for (int i = 0; i < connector->count_modes; i++) {
+ 		drmModeModeInfo *current_mode = &connector->modes[i];
+@@ -7055,7 +7058,7 @@ bool igt_is_joiner_enabled_for_pipe(int drmfd, enum pipe pipe)
+  */
+ bool igt_ultrajoiner_possible(int drm_fd, drmModeModeInfo *mode, int max_dotclock)
+ {
+-	return (mode->hdisplay > 2 * get_max_pipe_hdisplay(drm_fd) ||
++	return (mode->hdisplay > 2 * intel_get_max_pipe_hdisplay(drm_fd) ||
+ 		mode->clock > 2 * max_dotclock);
+ }
+ 
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 01a7b0d4a..72d6f8f0c 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1263,6 +1263,7 @@ void igt_sort_connector_modes(drmModeConnector *connector,
+ bool igt_max_bpc_constraint(igt_display_t *display, igt_crtc_t *crtc,
+ 			    igt_output_t *output, int bpc);
+ int igt_get_max_dotclock(int fd);
++int intel_get_max_pipe_hdisplay(int drm_fd);
+ int igt_get_max_cdclk(int fd);
+ int igt_get_current_cdclk(int fd);
+ bool igt_bigjoiner_possible(int drm_fd, drmModeModeInfo *mode, int max_dotclock);
 -- 
 2.25.1
 
