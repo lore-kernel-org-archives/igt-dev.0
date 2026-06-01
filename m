@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DFBECD6E55
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 20:45:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAF92CD5BD1
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 20:45:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 348C510E97A;
-	Mon,  1 Jun 2026 20:45:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6625C10E97A;
+	Mon,  1 Jun 2026 20:45:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fxG8UF3N";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cAq5cTKP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7D2F10E977
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 20:44:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6263B899C7
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 20:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780346673; x=1811882673;
+ t=1780346675; x=1811882675;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ps/3r9nJWsfid2eYVWSECacHIYS8+VRm5v+QEgIC1kM=;
- b=fxG8UF3NNldK4aY8Zrb6mgNO6pwy75cIt+tWjAWcMypiAFCGwJECcvO2
- MA70ujXb0Jf4wzIF/6llsGlitStrItZUOniQDp4OqYMXJAyq/n/g8YNNd
- 0Z8Bh41pyoN/EW6D0tCsMgxlUpxStbUBAtXtv4ag1t9OpbmdY9C0SpyWX
- cyMYN8tQtR5iNPw19jtIee54EFzN/DMt3sSi7Dy06Q0TP4hCFO6wbigUu
- wQnlOpxYSQrpgUsDU3kjtBpDHH599S+QQXXLEt1tzEZBn12ylr5zkUHWa
- FYSW3McWWQ/dTf3cp0ijHrfpSaxtaq//Su2IldwmhrknOPYTb8jVWIR0b A==;
-X-CSE-ConnectionGUID: 3pigCgvxT5i8HInna4d13Q==
-X-CSE-MsgGUID: m4W0UqDrTt+o+WFVq6vjEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="68652859"
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; d="scan'208";a="68652859"
+ bh=fZ+IvX7FLvOoYfHd7WqFJB9POzUI528Es3RQ+n8adWg=;
+ b=cAq5cTKPFPx1LYxJi8ntGIT0znmycDqISIa58ftu7d5tvLztwMLixhDM
+ kWTlBXXSoirNi3HAP/hJ4eGwVzEwVmS4HlNMbHQvhIyE5K3rK0JdA1iWA
+ wGIso+VKzMX61vhz9YnnZ+aBM5ZaQ6vPIcKkpUYy6Xy7I1fZHcDW5Jkj0
+ 7QxGhk1CndcKUdqbwklEBu5Juln9qCinr7NdejgbwmdxIJL5SYDkVc87X
+ Nwhb0z9ifSyBha9eKostlDGugP0q/8bXqAUMdBULiLIXhJxK7eRWavFX8
+ ttl1ImBrmZIPGxm6p6ZxZMTaCXhr3wXLGM4Huf5x+nloSwuqmi5REW7PO w==;
+X-CSE-ConnectionGUID: ZVsFrkAJSb6Rck4pLG+9Bw==
+X-CSE-MsgGUID: qkDXfhU2RzSYER7IWkHiAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="68652866"
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; d="scan'208";a="68652866"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2026 13:44:33 -0700
-X-CSE-ConnectionGUID: DWmTkpX/RBuyH6FDKfYZxg==
-X-CSE-MsgGUID: yudUIaekR6m+l0oJGXh4Nw==
+ 01 Jun 2026 13:44:35 -0700
+X-CSE-ConnectionGUID: Ybw5fwBoTQmQVeGQbEQhNw==
+X-CSE-MsgGUID: TnmQ1tOBSGq7SVpl2mh5Kg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; d="scan'208";a="267331468"
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; d="scan'208";a="267331484"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO
  vgovind2-mobl4.intel.com) ([10.245.245.188])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2026 13:44:31 -0700
+ 01 Jun 2026 13:44:33 -0700
 From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
  swati2.sharma@intel.com
-Subject: [PATCH i-g-t v4 05/12] tests/intel/kms_frontbuffer_tracking: use a
- bigger buffer for fbc status
-Date: Mon,  1 Jun 2026 23:44:00 +0300
-Message-ID: <20260601204407.39934-6-vinod.govindapillai@intel.com>
+Subject: [PATCH i-g-t v4 06/12] tests/intel/kms_fbcon_fbt: use a bigger buffer
+ for fbc status
+Date: Mon,  1 Jun 2026 23:44:01 +0300
+Message-ID: <20260601204407.39934-7-vinod.govindapillai@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260601204407.39934-1-vinod.govindapillai@intel.com>
 References: <20260601204407.39934-1-vinod.govindapillai@intel.com>
@@ -73,75 +73,63 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 As the FBC status now include plane specific FBC status as well, we
-need a bigger buffer to capture the complete FBC status. Define the
-buffer length in a single place and use it across places where the
-test need to assess the FBC status
+need a bigger buffer to capture the complete FBC status. Use the
+already defined buffer length to assess the FBC status
 
 Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
 Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- lib/i915/intel_fbc.c                   | 2 --
- lib/i915/intel_fbc.h                   | 2 ++
- tests/intel/kms_frontbuffer_tracking.c | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ tests/intel/kms_fbcon_fbt.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index 5692c6af8..ccd7f411c 100644
---- a/lib/i915/intel_fbc.c
-+++ b/lib/i915/intel_fbc.c
-@@ -10,8 +10,6 @@
+diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
+index e44be15f6..b36582011 100644
+--- a/tests/intel/kms_fbcon_fbt.c
++++ b/tests/intel/kms_fbcon_fbt.c
+@@ -33,6 +33,7 @@
+  * Mega feature: General Display Features
+  */
  
- #include "intel_fbc.h"
- 
--#define FBC_STATUS_BUF_LEN 128
--
- void intel_fbc_enable(igt_display_t *display)
- {
- 	igt_set_module_param_int(display->drm_fd, "enable_fbc", 1);
-diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
-index 32126309e..a82a96d20 100644
---- a/lib/i915/intel_fbc.h
-+++ b/lib/i915/intel_fbc.h
-@@ -8,6 +8,8 @@
- 
++#include "i915/intel_fbc.h"
  #include "igt.h"
+ #include "igt_device.h"
+ #include "igt_psr.h"
+@@ -81,7 +82,7 @@ static void wait_user(const char *msg)
  
-+#define FBC_STATUS_BUF_LEN 512
-+
- enum psr_mode;
- 
- void intel_fbc_enable(igt_display_t *display);
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 4155939b6..a839833a3 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1633,7 +1633,7 @@ static void drrs_print_status(void)
- static struct timespec fbc_get_last_action(void)
+ static bool fbc_supported_on_chipset(int device, int debugfs_fd)
  {
- 	struct timespec ret = { 0, 0 };
--	char fbc_status[128];
-+	char fbc_status[FBC_STATUS_BUF_LEN];
- 	char *action;
- 	ssize_t n_read;
+-	char buf[128];
++	char buf[FBC_STATUS_BUF_LEN];
+ 	int ret;
  
-@@ -1683,7 +1683,7 @@ static void fbc_update_last_action(void)
- static void fbc_setup_last_action(void)
+ 	ret = igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status",
+@@ -100,7 +101,7 @@ static bool connector_can_fbc(drmModeConnectorPtr connector)
+ 
+ static void fbc_print_status(int debugfs_fd)
  {
- 	ssize_t n_read;
--	char fbc_status[128];
-+	char fbc_status[FBC_STATUS_BUF_LEN];
- 	char *action;
+-	static char buf[128];
++	static char buf[FBC_STATUS_BUF_LEN];
  
- 	intel_fbc_get_status(prim_mode_params.crtc, fbc_status, sizeof(fbc_status));
-@@ -1703,7 +1703,7 @@ static void fbc_setup_last_action(void)
+ 	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf,
+ 				sizeof(buf));
+@@ -109,7 +110,7 @@ static void fbc_print_status(int debugfs_fd)
  
- static bool fbc_is_compressing(void)
+ static bool fbc_check_status(int debugfs_fd, bool enabled)
  {
--	char fbc_status[128];
-+	char fbc_status[FBC_STATUS_BUF_LEN];
+-	char buf[128];
++	char buf[FBC_STATUS_BUF_LEN];
  
- 	intel_fbc_get_status(prim_mode_params.crtc, fbc_status, sizeof(fbc_status));
+ 	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf,
+ 				sizeof(buf));
+@@ -310,7 +311,7 @@ static void fbc_skips_on_fbcon(int debugfs_fd)
+ 		"plane height + offset is non-modulo of 4"
+ 	};
+ 	bool skip = false;
+-	char buf[128];
++	char buf[FBC_STATUS_BUF_LEN];
+ 	int i;
  
+ 	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf, sizeof(buf));
 -- 
 2.43.0
 
