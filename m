@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF5ECCD5BD1
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 07:52:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D365CCD6E4C
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 07:52:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBBB8112F26;
-	Mon,  1 Jun 2026 07:52:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 80D85112F27;
+	Mon,  1 Jun 2026 07:52:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M6LfeBuJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d8JkTNGA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C50FD112F20
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 07:52:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AE2C112F20
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 07:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780300323; x=1811836323;
+ t=1780300319; x=1811836319;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ngL+HkLxzCmzABt/M6X/v9gSahSZMrBoZeUMxwXfO9Y=;
- b=M6LfeBuJk0ls2dKqbt2wja24604bWVILUqeYTsYfAb04IFaFA/HkaWQQ
- +oeLKfOyQZyNKWDP2GtP/zAGi/U1LsX8g2uiAkFVZbgzFV2/OrBLUo4B3
- A0rqh1i9rQjtWH5tRYKCIZnr1uP0WfNXfzOi1MF5wvdS50l8JVRMXmUsT
- sX6SmpIvqPVDxP37Ho4VgkLnAzMI3xTRR93Te9afqfwjlVZUmUjYBScNn
- 9NMpawqGrU0bC1mr9bydflT4IoDc/tJFucQT8/Q4vT0psL1Jh9O/UT+Qo
- GRFVF5GfIGZut3gfVVcHlfFKQKe5h1Y2nU4UGlT0WujCHRQ6mplkNKR/4 A==;
-X-CSE-ConnectionGUID: lHGXbE7PQG+zcbb1hCYUgQ==
-X-CSE-MsgGUID: xzKjyo5FS0isazuwRAwnXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="98619030"
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="98619030"
+ bh=yaDl8ippJzh73ePjOIyifGhNzr3vVCy5St+Y9Je/5XI=;
+ b=d8JkTNGALXUmfKAt4Pt0b4HRNP65H0r4YgHDLSAjRjqjOVuF2bRfqcwR
+ 39ZJpDn9y/l1ts2QolwjURFrs9ETzeLnNMUAjmH4Fuh1z/dlPodwH2hPS
+ ZpCroTKFjyB5kwZsLuCsMD9r8RHRLOzIjA+p/rm6xc7KzCH1dkXezaEnB
+ 5/q2aqMv5gegm5jVBtb5FNG519ppeJsvTGzGC9XPFFRWjKVYOL3drif35
+ PgpjxGX11wkc9TuVmPIIfZjsFsBQi9R9gkpAyEdEgYiZ+OM9+VUbI8/pS
+ Rb5ek+8gx2PJ5KjWDUtOuDFQQsOwUwBEc3XGtTMZdcTq2Hk6ObuwrQSzh A==;
+X-CSE-ConnectionGUID: ZaIVhVIjQ+mWo7N7gR8sdg==
+X-CSE-MsgGUID: 7FfWEf8pS4yAxKyErYA1Vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="98619020"
+X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="98619020"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2026 00:52:03 -0700
-X-CSE-ConnectionGUID: vhHG2EXYRQWksyBP76tqUA==
-X-CSE-MsgGUID: i5dv6WWxR0a19nQPsLpbvw==
+ 01 Jun 2026 00:51:59 -0700
+X-CSE-ConnectionGUID: BlhpZZggQdW3Zi4naPXjXQ==
+X-CSE-MsgGUID: qiaQ+Z5cQEGWvgd7DhK9+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="243332044"
+X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="243331977"
 Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.64])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2026 00:52:02 -0700
+ 01 Jun 2026 00:51:57 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>,
  Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: [PATCH i-g-t v3 3/4] intel-ci/hooks: Add hooks-wrapper and aux
- scripts/allowlists
-Date: Mon,  1 Jun 2026 09:51:47 +0200
-Message-ID: <20260601075143.187633-9-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v3 2/4] runner: Create attachments directory to use by
+ hooks
+Date: Mon,  1 Jun 2026 09:51:46 +0200
+Message-ID: <20260601075143.187633-8-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260601075143.187633-6-zbigniew.kempczynski@intel.com>
 References: <20260601075143.187633-6-zbigniew.kempczynski@intel.com>
@@ -73,21 +73,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-CI currently lacks useful GuC logs when some tests are failing. For some
-failed executions (not all as copying guc-log is time consuming) using
-hook script which will copy it to attachments directory seems to be
-simplest solution.
+Results parsing is currently limited to few predefined files.
 
-Add copy_guc_log_on_fail.sh script which copies GuC log when test/subtest
-is failing. It requires an allowlist to specify for which tests hook
-will copy GuC log. It is time consuming process so doing this for all
-failed test would extend CI execution time too much.
-
-Apart of this introduce hooks-wrapper.sh which might be main script for
-executing hooks. Instead of adding --hook for each script separately it
-may be used as a central point of hooks execution. It assumes it will
-be executed after test/subtest completion - called hook scripts depends
-on the IGT_HOOK_RESULT env var.
+Create "attachments" directory and export full path of created directory
+to be used within hooks. From now on environment variable
+IGT_RUNNER_ATTACHMENTS_DIR become visible when igt_runner is used
+to execute tests. This env contains directory where subtests/dynsubtests
+may write auxiliary files which filenames will be included in results.json.
 
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Ryszard Knop <ryszard.knop@intel.com>
@@ -96,197 +88,178 @@ Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
 Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
-v2: copy guc_log and guc_info instead guc_log only
----
- tests/intel-ci/hooks/common.helper.sh         | 53 +++++++++++++++++++
- .../hooks/copy_guc_log_on_fail.allowlist      |  2 +
- tests/intel-ci/hooks/copy_guc_log_on_fail.sh  | 24 +++++++++
- tests/intel-ci/hooks/hook-date.allowlist      |  2 +
- tests/intel-ci/hooks/hook-date.sh             | 18 +++++++
- tests/intel-ci/hooks/hooks-wrapper.sh         | 15 ++++++
- tests/intel-ci/meson.build                    | 11 ++++
- 7 files changed, 125 insertions(+)
- create mode 100755 tests/intel-ci/hooks/common.helper.sh
- create mode 100644 tests/intel-ci/hooks/copy_guc_log_on_fail.allowlist
- create mode 100755 tests/intel-ci/hooks/copy_guc_log_on_fail.sh
- create mode 100644 tests/intel-ci/hooks/hook-date.allowlist
- create mode 100755 tests/intel-ci/hooks/hook-date.sh
- create mode 100755 tests/intel-ci/hooks/hooks-wrapper.sh
+ lib/igt_hook.c    |  4 +++
+ runner/executor.c | 76 +++++++++++++++++++++++++++++++++++++++--------
+ runner/executor.h |  2 ++
+ 3 files changed, 70 insertions(+), 12 deletions(-)
 
-diff --git a/tests/intel-ci/hooks/common.helper.sh b/tests/intel-ci/hooks/common.helper.sh
-new file mode 100755
-index 0000000000..1dbc0cbd2e
---- /dev/null
-+++ b/tests/intel-ci/hooks/common.helper.sh
-@@ -0,0 +1,53 @@
-+# Common helper for hooks executed from igt_runner
-+#
-+# Usually ALLOWLIST=<filename> is set in the hook, then this helper is
-+# sourced allowing arg parsing and being overwritten by --allowlist.
-+
-+for arg in "$@"; do
-+	case $arg in
-+	--help)
-+		echo "Usage: $0 [--help] [--allowlist <name.allowlist>]"
-+		echo
-+		echo "If name.allowlist is not passed default '${ALLOWLIST}' is used."
-+		exit 0
-+		;;
-+
-+	--allowlist)
-+		ALLOWLIST=$2
-+		shift 2
-+		;;
-+
-+		*)
-+		shift
-+		;;
-+	esac
-+done
-+
-+if [ "${ALLOWLIST}" == "" ]; then
-+	echo "No ALLOWLIST was provided. Exiting..."
-+	exit 0
-+fi
-+
-+if [ -z "${IGT_RUNNER_ATTACHMENTS_DIR}" ]; then
-+	echo "Missing IGT_RUNNER_ATTACHMENTS_DIR env"
-+	exit 0
-+fi
-+
-+# Look for allowlist in following places:
-+# 1. Try in IGT_HOOK_ALLOWLIST_DIR if this environment exists
-+# 2. Try in <SCRIPTDIR>
-+
-+if [ ! -z "${IGT_HOOK_ALLOWLIST_DIR}" ]; then
-+	ALLOWLIST_PATH="${IGT_HOOK_ALLOWLIST_DIR}/${ALLOWLIST}"
-+else
-+	ALLOWLIST_PATH="${SCRIPTDIR}/${ALLOWLIST}"
-+fi
-+
-+if [ ! -e "${ALLOWLIST_PATH}" ]; then
-+	echo "Missing ${ALLOWLIST_PATH}"
-+	exit 0
-+fi
-+
-+if ! echo "${IGT_HOOK_TEST_FULLNAME}" | grep -q -f "$ALLOWLIST_PATH"; then
-+	exit 0
-+fi
-diff --git a/tests/intel-ci/hooks/copy_guc_log_on_fail.allowlist b/tests/intel-ci/hooks/copy_guc_log_on_fail.allowlist
-new file mode 100644
-index 0000000000..04cb3f8298
---- /dev/null
-+++ b/tests/intel-ci/hooks/copy_guc_log_on_fail.allowlist
-@@ -0,0 +1,2 @@
-+igt@xe_compute@compute-square
-+igt@xe_exec_basic@once-basic@ccs0
-diff --git a/tests/intel-ci/hooks/copy_guc_log_on_fail.sh b/tests/intel-ci/hooks/copy_guc_log_on_fail.sh
-new file mode 100755
-index 0000000000..ce99db41d6
---- /dev/null
-+++ b/tests/intel-ci/hooks/copy_guc_log_on_fail.sh
-@@ -0,0 +1,24 @@
-+#!/bin/bash
-+
-+# Hook script for copying guc.log.
-+# Suggested usage with:
-+# --hook 'post-subtest:tests/intel-ci/hooks/copy_guc_log_on_fail.sh' \
-+# --hook 'post-dyn-subtest:tests/intel-ci/hooks/copy_guc_log_on_fail.sh'
-+# or within hooks-wrapper.sh
-+
-+# Copy only for failed subtests as this is time-consuming
-+if [ "${IGT_HOOK_RESULT:-FAIL}" != "FAIL" ]; then
-+	exit 0
-+fi
-+
-+ALLOWLIST="copy_guc_log_on_fail.allowlist"
-+SCRIPTDIR=$(dirname "$(realpath "$0")")
-+. "${SCRIPTDIR}/common.helper.sh"
-+
-+cd "${IGT_RUNNER_ATTACHMENTS_DIR}"
-+
-+for log in $(find /sys/kernel/debug/dri -regextype posix-egrep -iregex '.*(guc_log|guc_info)'); do
-+	attout=$(echo ${log:23} | sed -e 's/\//_/g')
-+	mkdir -p "${IGT_HOOK_TEST_FULLNAME}"
-+	cp "$log" "${IGT_HOOK_TEST_FULLNAME}/${attout}"
-+done
-diff --git a/tests/intel-ci/hooks/hook-date.allowlist b/tests/intel-ci/hooks/hook-date.allowlist
-new file mode 100644
-index 0000000000..54cbc0a1d4
---- /dev/null
-+++ b/tests/intel-ci/hooks/hook-date.allowlist
-@@ -0,0 +1,2 @@
-+igt@xe_exec_basic@once-basic@rcs0
-+igt@xe_exec_basic@once-basic@ccs0
-diff --git a/tests/intel-ci/hooks/hook-date.sh b/tests/intel-ci/hooks/hook-date.sh
-new file mode 100755
-index 0000000000..6b0049cea5
---- /dev/null
-+++ b/tests/intel-ci/hooks/hook-date.sh
-@@ -0,0 +1,18 @@
-+#!/bin/bash
-+
-+# Example hook which stores current date in <testname>/current-date.txt
-+# in attachments dir
-+#
-+# Suggested usage with:
-+# --hook 'post-subtest:tests/intel-ci/hooks/hook-date.sh' \
-+# --hook 'post-dyn-subtest:tests/intel-ci/hooks/hook-date.sh'
-+# or within hooks-wrapper.sh
-+
-+ALLOWLIST="hook-date.allowlist"
-+SCRIPTDIR=$(dirname "$(realpath "$0")")
-+. "${SCRIPTDIR}/common.helper.sh"
-+
-+cd "${IGT_RUNNER_ATTACHMENTS_DIR}"
-+
-+mkdir -p "${IGT_HOOK_TEST_FULLNAME}"
-+date > "${IGT_HOOK_TEST_FULLNAME}/current-date.txt"
-diff --git a/tests/intel-ci/hooks/hooks-wrapper.sh b/tests/intel-ci/hooks/hooks-wrapper.sh
-new file mode 100755
-index 0000000000..64512624ca
---- /dev/null
-+++ b/tests/intel-ci/hooks/hooks-wrapper.sh
-@@ -0,0 +1,15 @@
-+#!/bin/bash
-+
-+# Hooks wrapper
-+# Suggested usage with:
-+# --hook 'post-subtest:tests/intel-ci/hooks/hooks-wrapper.sh' \
-+# --hook 'post-dyn-subtest:tests/intel-ci/hooks/hooks-wrapper.sh'
-+
-+SCRIPTDIR=$(dirname "$(realpath "$0")")
-+cd "${SCRIPTDIR}"
-+
-+# Example hook which stores current date
-+#./hook-date.sh
-+
-+# Copy GuC logs for tests which are failing and are in the allowlist
-+./copy_guc_log_on_fail.sh
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index 91a29b734c..3dab41898e 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -35,8 +35,19 @@ intelci_files = [
-   'xe.wcl.core.blocklist.txt',
- ]
+diff --git a/lib/igt_hook.c b/lib/igt_hook.c
+index f86ed56f72..b8f25b6c7a 100644
+--- a/lib/igt_hook.c
++++ b/lib/igt_hook.c
+@@ -518,5 +518,9 @@ available to the command:\n\
+ \n\
+ Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
+ when matching events and running hook commands.\n\
++\n\
++When executed by the igt_runner, environment IGT_RUNNER_ATTACHMENTS_DIR\n\
++is passed additionally to the hook script. It contains directory where\n\
++script may write additional attachments like guc logs, etc.\n\
+ ", option_name);
+ }
+diff --git a/runner/executor.c b/runner/executor.c
+index 1485b59d1f..a8907c575a 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1,6 +1,7 @@
+ #include <ctype.h>
+ #include <errno.h>
+ #include <fcntl.h>
++#include <ftw.h>
+ #ifdef ANDROID
+ #include "android/glib.h"
+ #else
+@@ -1779,17 +1780,22 @@ static int execute_next_entry(struct execute_state *state,
+ 	int errpipe[2] = { -1, -1 };
+ 	int socket[2] = { -1, -1 };
+ 	int outfd, errfd, socketfd;
+-	char name[32];
++	char name[32], attname[32];
++	char attdirname[PATH_MAX];
+ 	pid_t child;
+ 	int result;
+ 	size_t idx = state->next;
  
-+hooks_files = [
-+  'hooks/common.helper.sh',
-+  'hooks/copy_guc_log_on_fail.sh',
-+  'hooks/copy_guc_log_on_fail.allowlist',
-+  'hooks/hook-date.sh',
-+  'hooks/hook-date.allowlist',
-+  'hooks/hooks-wrapper.sh',
-+]
+ 	snprintf(name, sizeof(name), "%zd", idx);
++	snprintf(attname, sizeof(attname), "%zd/%s", idx, DIR_ATTACHMENTS);
+ 	mkdirat(resdirfd, name, 0777);
++	mkdirat(resdirfd, attname, 0777);
+ 	if ((idirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
+ 		errf("Error accessing individual test result directory\n");
+ 		return -1;
+ 	}
++	snprintf(attdirname, sizeof(attdirname), "%s/%s",
++		 settings->results_path, attname);
+ 
+ 	if (!open_output_files(idirfd, outputs, true)) {
+ 		errf("Error opening output files\n");
+@@ -1870,6 +1876,7 @@ static int execute_next_entry(struct execute_state *state,
+ 			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
+ 		}
+ 		setenv("IGT_SENTINEL_ON_STDERR", "1", 1);
++		setenv("IGT_RUNNER_ATTACHMENTS_DIR", attdirname, 1);
+ 
+ 		execute_test_process(outfd, errfd, socketfd, settings, entry);
+ 		/* unreachable */
+@@ -1948,19 +1955,66 @@ static int remove_file(int dirfd, const char *name)
+ 	return unlinkat(dirfd, name, 0) && errno != ENOENT;
+ }
+ 
+-static bool clear_test_result_directory(int dirfd)
++static int ftw_attachment_removal(const char *fpath, const struct stat *sb,
++				  int typeflag, struct FTW *ftwbuf)
+ {
+-	int i;
++	(void)sb;
++	(void)ftwbuf;
 +
- if meson.version().version_compare('<1.3.0')
-   install_data(sources : intelci_files, install_dir : datadir)
-+  install_data(sources : hooks_files, install_dir : datadir + '/hooks')
- else
-   install_data(sources : intelci_files, install_dir : datadir, follow_symlinks : false)
-+  install_data(sources : hooks_files, install_dir : datadir + '/hooks', follow_symlinks : false)
- endif
++	switch (typeflag) {
++	case FTW_F:
++	case FTW_SL:
++		if (unlink(fpath)) {
++			errf("Error removing file %s: %s\n",
++			     fpath, strerror(errno));
++			return -1;
++		}
++		break;
++	case FTW_DP:
++		if (rmdir(fpath)) {
++			errf("Error removing directory %s: %s\n",
++			     fpath, strerror(errno));
++			return -1;
++		}
++		break;
++	default:
++		errf("Cannot remove %s (unsupported file type)\n", fpath);
++		return -1;
++	}
++
++	return 0;
++}
++
++static bool clear_test_result_directory(const char *name)
++{
++	char *attdirname;
++	int i, resdirfd;
++	int ret;
++
++	if ((resdirfd = open(name, O_DIRECTORY | O_RDONLY)) < 0)
++		return false;
+ 
+ 	for (i = 0; i < _F_LAST; i++) {
+-		if (remove_file(dirfd, filenames[i])) {
++		if (remove_file(resdirfd, filenames[i])) {
+ 			errf("Error deleting %s from test result directory: %m\n",
+ 			     filenames[i]);
++			close(resdirfd);
+ 			return false;
+ 		}
+ 	}
+ 
+-	return true;
++	close(resdirfd);
++
++	if (strlen(name) + strlen(DIR_ATTACHMENTS) + 1 >= PATH_MAX) {
++		errf("Attachments directory length exceeds PATH_MAX\n");
++		return false;
++	}
++
++	asprintf(&attdirname, "%s/%s", name, DIR_ATTACHMENTS);
++	ret = nftw(attdirname, ftw_attachment_removal, 4, FTW_PHYS | FTW_DEPTH);
++	free(attdirname);
++
++	return ret ? false : true;
+ }
+ 
+ static bool clear_old_results(char *path)
+@@ -1991,19 +2045,17 @@ static bool clear_old_results(char *path)
+ 	}
+ 
+ 	for (i = 0; true; i++) {
+-		int resdirfd;
++		struct stat st;
+ 
+-		snprintf(name, sizeof(name), "%zd", i);
+-		if ((resdirfd = openat(dirfd, name, O_DIRECTORY | O_RDONLY)) < 0)
++		snprintf(name, sizeof(name), "%s/%zd", path, i);
++		if (stat(name, &st))
+ 			break;
+ 
+-		if (!clear_test_result_directory(resdirfd)) {
+-			close(resdirfd);
++		if (!clear_test_result_directory(name)) {
+ 			close(dirfd);
+ 			return false;
+ 		}
+-		close(resdirfd);
+-		if (unlinkat(dirfd, name, AT_REMOVEDIR)) {
++		if (rmdir(name)) {
+ 			errf("Warning: Result directory %s contains extra files\n",
+ 			     name);
+ 		}
+diff --git a/runner/executor.h b/runner/executor.h
+index 3b1cabcf55..bc6ac80dc4 100644
+--- a/runner/executor.h
++++ b/runner/executor.h
+@@ -25,6 +25,8 @@ enum {
+ 	_F_LAST,
+ };
+ 
++#define DIR_ATTACHMENTS "attachments"
++
+ bool open_output_files(int dirfd, int *fds, bool write);
+ bool open_output_files_rdonly(int dirfd, int *fds);
+ void close_outputs(int *fds);
 -- 
 2.54.0
 
