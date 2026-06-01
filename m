@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A83CD6E55
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 20:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9311CD5BD1
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 21:03:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 58EDA10E987;
-	Mon,  1 Jun 2026 20:48:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AP/fOMFx";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DABB10E978
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 20:44:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780346688; x=1811882688;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=QBrQp3vatmcVcMRqrfO6x+jLCDR8ZPJIqKa56I5Xreo=;
- b=AP/fOMFxRw3uBsOhy74D+p25MuLVv1LGvFLd4BnLrW5LFht2S7ukH/wF
- eRo8KJJ4JiBXgTTGcr3JFMGiFoZduZbzCDD1F/AWciW2BoiLSS39XO0W/
- s4GOKUYKUjJLSddMDo7MZG7y6K9eLm/iWO2fHZFZWxLmRJUDWNTVKNHpb
- 0DmA9TqcghRzjcRr3mSiNiWVFlGc11GMwJbfNnMVssLp8siDNJmMxSJ+s
- YyzavrSt9OYwQzhM7oCfxDjyENP4zQFq9l4lx9XkcdTRwn51XVHqYRZW0
- o5g/i7FCJPQwB6SrtoICv6xzlGHy/3l4hJa5O1jfhvAZT/R5KL8+B3g93 g==;
-X-CSE-ConnectionGUID: aUT/aVKKQsiAxBMxQHoffA==
-X-CSE-MsgGUID: M2DBuucpTjGaKrKkLsR4LA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="68652880"
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; d="scan'208";a="68652880"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2026 13:44:47 -0700
-X-CSE-ConnectionGUID: Q9HvjtEyTXmqXQLBzNxWjg==
-X-CSE-MsgGUID: 9fJVIv2bR8adRZsSaZbqIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; d="scan'208";a="267331538"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO
- vgovind2-mobl4.intel.com) ([10.245.245.188])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2026 13:44:45 -0700
-From: Vinod Govindapillai <vinod.govindapillai@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
- swati2.sharma@intel.com
-Subject: [PATCH i-g-t v4 11/12] tests/intel/kms_fbcon_fbt: use common routine
- to skip tests on fbc status
-Date: Mon,  1 Jun 2026 23:44:06 +0300
-Message-ID: <20260601204407.39934-12-vinod.govindapillai@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260601204407.39934-1-vinod.govindapillai@intel.com>
-References: <20260601204407.39934-1-vinod.govindapillai@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9055310E9A8;
+	Mon,  1 Jun 2026 21:03:12 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D63510E9AA;
+ Mon,  1 Jun 2026 21:02:50 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3474098033471364046=="
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_test/intel/xe=5Fvm=3AAdd_ov?=
+ =?utf-8?q?ersubscribe_concurrent_bind_stress_subtest_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sobin Thomas" <sobin.thomas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 01 Jun 2026 21:02:50 -0000
+Message-ID: <178034777057.32237.15190186925517098441@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260601171848.10873-1-sobin.thomas@intel.com>
+In-Reply-To: <20260601171848.10873-1-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,82 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the common intel_fbc_found_skip_reason() defined as part of the fbc
-library functions to check and assess the fbc skip reasons. The "no fbc
-reasons" are appended based on the reasons defined in the kms_fbcon_fbt
-tests.
+--===============3474098033471364046==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: update the missing coma (Santhosh)
+== Series Details ==
 
-Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
----
- lib/i915/intel_fbc.c        |  9 ++++++++-
- tests/intel/kms_fbcon_fbt.c | 26 ++------------------------
- 2 files changed, 10 insertions(+), 25 deletions(-)
+Series: test/intel/xe_vm:Add oversubscribe concurrent bind stress subtest (rev4)
+URL   : https://patchwork.freedesktop.org/series/165481/
+State : success
 
-diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index ccd7f411c..45791a72b 100644
---- a/lib/i915/intel_fbc.c
-+++ b/lib/i915/intel_fbc.c
-@@ -77,10 +77,17 @@ bool intel_fbc_found_skip_reason(int device, int crtc_index)
- {
- 	const char *const no_fbc_reasons[] = {
- 		"FBC disabled: not enough stolen memory",
-+		"FBC disabled: pixel format not supported",
-+		"FBC disabled: tiling not supported",
-+		"FBC disabled: rotation not supported",
- 		"FBC disabled: stride not supported",
-+		"FBC disabled: per-pixel alpha not supported",
- 		"FBC disabled: plane size too big",
- 		"FBC disabled: surface size too big",
--		"FBC disabled: PSR1 enabled (Wa_14016291713)"
-+		"FBC disabled: PSR1 enabled (Wa_14016291713)",
-+		"FBC disabled: plane start Y offset misaligned",
-+		"FBC disabled: plane end Y offset misaligned",
-+		"FBC disabled: pixel rate too high"
- 	};
- 	bool found_reason = false;
- 	char fbc_status[FBC_STATUS_BUF_LEN];
-diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index fdd8515cc..378d0ea8a 100644
---- a/tests/intel/kms_fbcon_fbt.c
-+++ b/tests/intel/kms_fbcon_fbt.c
-@@ -297,30 +297,8 @@ static inline void psr_debugfs_enable(struct drm_info *drm)
- 
- static void fbc_skips_on_fbcon(struct drm_info *drm)
- {
--	const char *reasons[] = {
--		"pixel format not supported",
--		"tiling not supported",
--		"rotation not supported",
--		"stride not supported",
--		"per-pixel alpha not supported",
--		"plane size too big",
--		"surface size too big",
--		"plane start Y offset misaligned",
--		"plane end Y offset misaligned",
--		"pixel rate too high"
--	};
--	bool skip = false;
--	char buf[FBC_STATUS_BUF_LEN];
--	int i;
--
--	igt_debugfs_simple_read(drm->debugfs_fd, "i915_fbc_status", buf, sizeof(buf));
--	if (strstr(buf, "FBC enabled\n"))
--		return;
--
--	for (i = 0; skip == false && i < ARRAY_SIZE(reasons); i++)
--		skip = strstr(buf, reasons[i]);
--
--	igt_skip_on_f(skip, "fbcon modeset is not compatible with FBC\n");
-+	igt_skip_on_f(intel_fbc_found_skip_reason(drm->fd, drm->crtc_index),
-+		      "fbcon modeset is not compatible with FBC\n");
- }
- 
- static void psr_skips_on_fbcon(struct drm_info *drm)
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8944_BAT -> XEIGTPW_15279_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8944 -> IGTPW_15279
+  * Linux: xe-5174-47abf4fa0695738273172f938832dedf5a6960ca -> xe-5175-70cada764231ccb4582e920560a93edd210ace01
+
+  IGTPW_15279: 6f03be933ec6e8fd1579b77a44b530094f07d9f2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8944: 8944
+  xe-5174-47abf4fa0695738273172f938832dedf5a6960ca: 47abf4fa0695738273172f938832dedf5a6960ca
+  xe-5175-70cada764231ccb4582e920560a93edd210ace01: 70cada764231ccb4582e920560a93edd210ace01
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15279/index.html
+
+--===============3474098033471364046==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/intel/xe_vm:Add oversubscribe concurrent bind stress subtest (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165481/">https://patchwork.freedesktop.org/series/165481/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15279/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15279/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8944_BAT -&gt; XEIGTPW_15279_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8944 -&gt; IGTPW_15279</li>
+<li>Linux: xe-5174-47abf4fa0695738273172f938832dedf5a6960ca -&gt; xe-5175-70cada764231ccb4582e920560a93edd210ace01</li>
+</ul>
+<p>IGTPW_15279: 6f03be933ec6e8fd1579b77a44b530094f07d9f2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8944: 8944<br />
+  xe-5174-47abf4fa0695738273172f938832dedf5a6960ca: 47abf4fa0695738273172f938832dedf5a6960ca<br />
+  xe-5175-70cada764231ccb4582e920560a93edd210ace01: 70cada764231ccb4582e920560a93edd210ace01</p>
+
+</body>
+</html>
+
+--===============3474098033471364046==--
