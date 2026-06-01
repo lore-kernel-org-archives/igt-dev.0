@@ -4,59 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E10ECD5BD1
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 07:53:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCDC4CD6E4C
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jun 2026 08:13:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A1B9112F2A;
-	Mon,  1 Jun 2026 07:53:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 80BAB112F56;
+	Mon,  1 Jun 2026 08:13:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oJk7Answ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DoU926S8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4DE3112F21
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 07:52:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 050BB112F55
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2026 08:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780300328; x=1811836328;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=9NcBddlZlFEjRVeZ6MR2wxWy+/tQ0aHuSetQu9ENXbo=;
- b=oJk7AnswJ9j53WCH3Dzg8KxpmqDK9Ftyx30OqwUjX3YlvN/hA0fPAFkx
- Q7/gYXYBGcHSlm06WHAvNgU2EswpeZx1goqFDd0vw5ItkQ8oUs2EpFXVJ
- Ba5dhlIJB0hg6KqLhOxp+/BDzjDywGIgCagFj/OEZowQ7lRQj4jXngK3M
- BZU688PCuJBvwLpOEpGMMf/zT5IL6/D+r3OS0CXoCD4MEANtee133iza5
- JvTO/3W4EgAsdUKjC0R9ftlhfTqziuE3vfmgjbcouH29cgR7yHOjR6+pA
- 2JCWSI1JEY8vHbZFYTIvhnqYSU1H6ldq/kIHaJ062cLnzkpZBNwGHgjHU Q==;
-X-CSE-ConnectionGUID: 3JKuZIuERseK6OPjcdWm7g==
-X-CSE-MsgGUID: F2c9E+iCQMCWEn0uAUeUKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="98619038"
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="98619038"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2026 00:52:07 -0700
-X-CSE-ConnectionGUID: lVEHVd06T/qxI2LVtOorGg==
-X-CSE-MsgGUID: 27iHz8SYS8WynR47+o8Idw==
+ t=1780301594; x=1811837594;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=APdewfcYwwAqHcCdcX7c3HG7Z2T6RIckGMsNbGRgd94=;
+ b=DoU926S80PfIE4HQ1ptwFq9oc38x8r5HioLmzZJWj7c77zLIbG2MVRAs
+ n0+JSJADkaBjq6vbO+9gzn/Ij3255NitiO1dEnB4plw3c11aZ1swr5GYs
+ PNM2jZy6rh7j+iUD3aJwc2YxniTQuA8jwighmp1npGBs3anqK/L7FVAYF
+ Zp64YYm9KbYz5hvxg8/fVi/wJAevUJqYCldH/q043nmmunfdzUc8224HA
+ oavKYC7MKHsU+vgrXhjt1dYoyYEjhr3U8rFN8m0iTNfy0N62uHo5b4OXc
+ ks9elY+QLTlapD0ioIwekFgggq3x2kuAXA4rYaAURXArsibkr9qWecmcv w==;
+X-CSE-ConnectionGUID: oh3zaNbZQcKcQKuJHYO8Cg==
+X-CSE-MsgGUID: 2XF+br1fQLO6tWELnMAFig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="80906133"
+X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="80906133"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jun 2026 01:13:14 -0700
+X-CSE-ConnectionGUID: +02Fyw0/T0We6cUWcUIdCw==
+X-CSE-MsgGUID: +4iQBgnwQGe8/tbsNPs1Iw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="243332073"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.64])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2026 00:52:06 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; d="scan'208";a="245337454"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
+ by fmviesa004.fm.intel.com with ESMTP; 01 Jun 2026 01:13:12 -0700
+From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: [PATCH i-g-t v3 4/4] runner/resultgen: Insert attachments list into
- results.json
-Date: Mon,  1 Jun 2026 09:51:48 +0200
-Message-ID: <20260601075143.187633-10-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260601075143.187633-6-zbigniew.kempczynski@intel.com>
-References: <20260601075143.187633-6-zbigniew.kempczynski@intel.com>
+Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
+ sameer.lattannavar@intel.com, pranay.samala@intel.com
+Subject: [PATCH i-g-t v4 0/2] Enable multi-format testing for pipe color tests
+Date: Mon,  1 Jun 2026 13:54:08 +0530
+Message-Id: <20260601082410.798948-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -73,164 +65,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add list of filenames which were created by hooks in attachments directory
-(like GuC log copy) to results.json for allow presenting it in CI.
-Absolute path to attachment directory was added to results.json
-as this is necessary to build full path to attachment file related to
-test/subtest name.
+This series adds multi-format coverage to kms_color pipe color tests.
 
-Due to lack of userdata pointer in nftw() implementation main json
-object is passed via temporary static variable. It shouldn't be the
-problem because results.json is created in single thread. This change
-is not too elegant but allows to minimize the code change and is
-much easier to read comparing to recursive readdir().
+To ensure deterministic behavior across YUV formats, the first patch
+updates framebuffer creation to explicitly specify YCbCr encoding/range 
+instead of relying on implicit defaults.
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+The second patch extends gamma, degamma, and CTM tests to run across
+multiple pixel formats at the dynamic subtest level. This adds coverage
+for format-dependent color pipeline behavior while avoiding redundant
+testing on platforms where only a single format is applicable.
 
----
-v3: Comment nftw() processing
----
- runner/resultgen.c | 96 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 96 insertions(+)
+v2:
+- Add DRM_FORMAT_P010 format
 
-diff --git a/runner/resultgen.c b/runner/resultgen.c
-index 29fc5cbb15..a1938b3f65 100644
---- a/runner/resultgen.c
-+++ b/runner/resultgen.c
-@@ -1,11 +1,14 @@
- #include <assert.h>
- #include <ctype.h>
-+#include <dirent.h>
- #include <fcntl.h>
-+#include <ftw.h>
- #include <inttypes.h>
- #include <stdio.h>
- #include <string.h>
- #include <sys/mman.h>
- #include <sys/stat.h>
-+#include <sys/types.h>
- #include <unistd.h>
- 
- #include <jansson.h>
-@@ -271,6 +274,19 @@ static struct json_t *get_or_create_json_object(struct json_t *base, const char
- 	return ret;
- }
- 
-+static struct json_t *get_or_create_json_array(struct json_t *base, const char *key)
-+{
-+	struct json_t *ret = json_object_get(base, key);
-+
-+	if (ret)
-+		return ret;
-+
-+	ret = json_array();
-+	json_object_set_new(base, key, ret);
-+
-+	return ret;
-+}
-+
- static void set_result(struct json_t *obj, const char *result)
- {
- 	if (!result)
-@@ -1142,6 +1158,83 @@ static bool fill_from_dmesg(int fd,
- 	return true;
- }
- 
-+static struct json_t *tmp_tests;
-+static int ftw_attachments_list(const char *fpath, const struct stat *sb,
-+				int typeflag, struct FTW *ftwbuf)
-+{
-+	struct json_t *obj = NULL, *attobj = NULL;
-+
-+	(void)sb;
-+	(void)ftwbuf;
-+
-+	switch (typeflag) {
-+	/*
-+	 * There're two keys set/updated here:
-+	 * - attachments-dir - absolute path to results
-+	 * - attachments - list of files relative to attachments-dir
-+	 *
-+	 * nftw() call uses "." as traversed directory, so fpath looks like:
-+	 * ./igt@xe_exec_basic@once-basic@rcs0/current-date.txt
-+	 *
-+	 * To extract piglit test name (igt@xe_exec_basic@once-basic@rcs0
-+	 * in this case) we have to start from fpath + 2 and finish at the '/'.
-+	 * Instead of duplicating string we temporarily overwrite '/' with '\0'.
-+	 */
-+	case FTW_F:
-+		const char *attdirkey = "attachments-dir";
-+		char *p, *currpath = (char *) fpath + 2;
-+		char currdir[PATH_MAX];
-+
-+		p = strstr(currpath, "/");
-+		if (!p)
-+			return -1;
-+		*p = '\0'; /* temporary for acquiring the piglit name */
-+		obj = get_or_create_json_object(tmp_tests, currpath);
-+		attobj = get_or_create_json_array(obj, "attachments");
-+		*p = '/'; /* bring '/' back */
-+		json_array_append_new(attobj, escaped_json_stringn(currpath, strlen(currpath)));
-+		if (getcwd(currdir, PATH_MAX) && !json_object_get(obj, attdirkey))
-+			json_object_set_new(obj, attdirkey,
-+					    escaped_json_stringn(currdir, strlen(currdir)));
-+		break;
-+	case FTW_DP:
-+		break;
-+	default:
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
-+static bool fill_from_attachments(int idirfd, struct json_t *tests)
-+{
-+	char attname[32];
-+	int attdirfd;
-+	DIR *currdir;
-+	int ret;
-+
-+	snprintf(attname, sizeof(attname), "%s", DIR_ATTACHMENTS);
-+	if ((attdirfd = openat(idirfd, attname, O_DIRECTORY | O_RDONLY | O_CLOEXEC)) < 0) {
-+		fprintf(stderr, "Error opening '%s' dir\n", DIR_ATTACHMENTS);
-+		return false;
-+	}
-+
-+	currdir = opendir(".");
-+	fchdir(attdirfd);
-+
-+	/*
-+	 * ftw doesn't support passing user data so *tests has to be
-+	 * set to some global for being visible in callback function.
-+	 * As results.json is not processed in multiple threads it is
-+	 * not a big problem.
-+	 */
-+	tmp_tests = tests;
-+	ret = nftw(".", ftw_attachments_list, 4, FTW_PHYS | FTW_DEPTH);
-+	fchdir(dirfd(currdir));
-+
-+	return ret ? false : true;
-+}
-+
- static const char *result_from_exitcode(int exitcode)
- {
- 	switch (exitcode) {
-@@ -2230,6 +2323,9 @@ static bool parse_test_directory(int dirfd,
- 		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
- 	}
- 
-+	if (!fill_from_attachments(dirfd, results->tests))
-+		fprintf(stderr, "Error parsing attachments directory\n");
-+
- 	override_results(entry->binary, &subtests, results->tests);
- 	prune_subtests(settings, entry, &subtests, results->tests);
- 
+v3:
+- Update commit message (Swati)
+
+v4:
+- Split the patches (Swati)
+
+Pranay Samala (2):
+  tests/kms_color: Use explicit YCbCr encoding/range in FB creation
+  tests/kms_color: Add multi-format coverage for pipe color tests
+
+ tests/kms_color.c | 225 +++++++++++++++++++++++++++++-----------------
+ 1 file changed, 144 insertions(+), 81 deletions(-)
+
 -- 
-2.54.0
+2.34.1
 
