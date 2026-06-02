@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5290CCD6E57
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jun 2026 14:14:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F917CD6E57
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jun 2026 14:16:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 05E9910F20F;
-	Tue,  2 Jun 2026 14:14:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EF291113A5F;
+	Tue,  2 Jun 2026 14:16:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R7hhjUGs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YcGAcezj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5232810F207
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2026 14:14:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7D28113A5C
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2026 14:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780409673; x=1811945673;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=K4YYBvGbJwIa2Dywy84Xctf2MuTVa+6shZjUqUoOCb0=;
- b=R7hhjUGsmZXEWacev/Unew7SwzZh6EXuOVk7mMiru+tZv2mqvLhAiJwK
- ur2MLOO7mh2tvMyD3Z/KNptvp5VjXtShrRMT+1v0B+CnDPLfG5IqiPWPR
- 1KbJXEKnzKcaxPHzshKkj44Of3rSJq1v6NKuWVsp4aRsyFs5pxUeEE/PP
- Zi8IwiW4Gg0NjktAn5PnGo7fUjOKc5xwIAvr/tKtHf5V5ru3I+UqeD500
- y+y1F8n7DLDlcD8fUJl92Mzv9tIpZfvqJUoF76W/4D3tdnQC7ubYi0Oej
- w0sOOOdYEptVX9xSoyU0c3VRhElS4C5MEfCb7W4pOSZndD0ujqIDDrBaD Q==;
-X-CSE-ConnectionGUID: JI3qORzuREiIIvOIAWWFaA==
-X-CSE-MsgGUID: sujDhzy+TDO4vQ6+NseN2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="106642615"
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; d="scan'208";a="106642615"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2026 07:14:33 -0700
-X-CSE-ConnectionGUID: XAA5TQgFR3q5GJgCgNzrvQ==
-X-CSE-MsgGUID: oJlNGiHIQhWCy+435WxXhg==
+ t=1780409789; x=1811945789;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Tty5pdvOyMC2VCvFuQrY7zMLLE6bTFJOM3VrPtXEZDo=;
+ b=YcGAcezjtTDWX2XD6wlSDRhm6z5JEK07nZXb/4MYoNEWzHZPVQe1xKqr
+ g+fptmwQjasndWtgMIYXdN38XXzCi3RzoiwPG3y13GrjTJkECnh5prZfE
+ 0AzTiuYD7rV/gIpOp3TK0Vm5eWbfm/RYf5kXZKAVt3Xw/NrDfSYRje+nU
+ o3jdWPUURY9o2NwcqW49Kvz/d7HFleR3y9WaxdOWV2BHPhnpnXrIHyi2b
+ N/HY2rKicfK7Rrx4X8vN55mx6uRGo+KP6e2XbCDoYxqGium8c+ojeT9zG
+ T96bUcRCfngiEshDl3baC9XwEkOJJ10IymKMQ3kLjhEA/m1zByAwEwpWI Q==;
+X-CSE-ConnectionGUID: oLfL7LG4ScOL+CTmKw+KsQ==
+X-CSE-MsgGUID: +1wTEirHT/Cye3ZvSu6GVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="83778216"
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; d="scan'208";a="83778216"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2026 07:16:28 -0700
+X-CSE-ConnectionGUID: BRUAD1RJRmqHC+F0GcIL/Q==
+X-CSE-MsgGUID: aycLAOdmQZis3CwuvBnEQg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; d="scan'208";a="282026286"
-Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2026 07:14:31 -0700
-From: Sowmiya S <sowmiya.s@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; d="scan'208";a="247881265"
+Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
+ ([172.28.182.189])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2026 07:16:27 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, ramanaidu.naladala@intel.com,
- Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v2] tests/kms_bw: Fix connected output count when
- connectors exceed pipe count
-Date: Tue,  2 Jun 2026 20:06:10 +0530
-Message-ID: <20260602143610.3343318-1-sowmiya.s@intel.com>
+Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
+ lukasz.laguna@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 0/6] Add SR-IOV exit-handler-based cleanup
+Date: Tue,  2 Jun 2026 16:16:03 +0200
+Message-ID: <20260602141609.3941750-1-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260602052407.3326517-1-sowmiya.s@intel.com>
-References: <20260602052407.3326517-1-sowmiya.s@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,65 +68,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Decouple connected output counting from the pipe-capped loop in
-test_init(). The original single loop capped at max_pipes never
-iterates connectors at index >= max_pipes. On platforms where
-connectors outnumber pipes (e.g. eDP, DP-1, DP-2, DP-3, HDMI = 5
-connectors, 4 pipes), this causes connected_outputs to be
-undercounted, making connected-linear-tiling subtests skip even
-when enough displays are physically connected.
+This series adds SR-IOV exit-handler-based cleanup in SR-IOV test paths to
+improve recovery when a test exits unexpectedly (for example, via SIGQUIT
+from igt_runner), while preserving strict explicit teardown
+in normal fixture flow.
 
-v2: Fix potential overflow in connected_output array (Karthik)
+Goal: keep PF state restoration robust across failures:
+- disable VFs on exit
+- restore sriov_drivers_autoprobe state
+- restore XE SR-IOV admin scheduling defaults when modified by the test
+- keep explicit fixture teardown authoritative, and clear the exit handler
+  only after teardown succeeds
 
-Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_bw.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+Series is split by teardown pattern to keep review and maintenance simple:
+- no-callback users
+- XE admin callback users
+- FLR-specific callback users, plus helper refactor to reduce duplication
 
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index f695b25d8..42b7a0123 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -132,6 +132,19 @@ static void test_init(data_t *data, bool physical)
- 			igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
- 
-+	/*
-+	 * Scan ALL connectors to count connected outputs. Do not cap at
-+	 * max_pipes: the number of connectors can exceed the number of pipes
-+	 * and capping would silently drop connectors at indices >= max_pipes.
-+	 */
-+	for (i = 0; i < display->n_outputs; i++) {
-+		output = &display->outputs[i];
-+		if (!igt_output_is_connected(output))
-+			continue;
-+		if (data->connected_outputs < IGT_MAX_PIPES)
-+			data->connected_output[data->connected_outputs++] = output;
-+	}
-+
- 	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
- 		if (!data->crtc[i] && !physical)
- 			continue;
-@@ -139,10 +152,8 @@ static void test_init(data_t *data, bool physical)
- 		output = &display->outputs[i];
- 		data->output[i] = output;
- 
--		/* Only allow physically connected displays for the tests. */
- 		if (!igt_output_is_connected(output))
- 			continue;
--		data->connected_output[data->connected_outputs++] = output;
- 
- 		igt_assert(kmstest_get_connector_default_mode(
- 			data->fd, output->config.connector, &data->mode[i]));
-@@ -151,7 +162,6 @@ static void test_init(data_t *data, bool physical)
- 		data->h[i] = data->mode[i].vdisplay;
- 	}
- 
--
- 	igt_require(data->output[0]);
- 	igt_display_reset(display);
- }
+Marcin Bernatowicz (6):
+  lib/igt_device_sriov: Add generic SR-IOV exit cleanup helper
+  lib/xe/xe_sriov_admin: Add SR-IOV admin exit cleanup restore helper
+  tests/sriov_basic: Arm SR-IOV exit cleanup
+  tests/xe: Arm SR-IOV exit cleanup
+  tests/xe: Arm SR-IOV exit cleanup with callback
+  tests/intel/xe_sriov_flr: Arm SR-IOV exit cleanup
+
+ lib/igt_sriov_device.c                   | 96 ++++++++++++++++++++++++
+ lib/igt_sriov_device.h                   |  5 ++
+ lib/xe/xe_sriov_admin.c                  | 21 ++++++
+ lib/xe/xe_sriov_admin.h                  |  2 +
+ tests/intel/xe_pmu.c                     |  4 +
+ tests/intel/xe_sriov_admin.c             |  4 +
+ tests/intel/xe_sriov_auto_provisioning.c |  2 +
+ tests/intel/xe_sriov_flr.c               | 42 ++++++++---
+ tests/intel/xe_sriov_scheduling.c        |  4 +
+ tests/intel/xe_sriov_vram.c              |  2 +
+ tests/sriov_basic.c                      |  2 +
+ 11 files changed, 175 insertions(+), 9 deletions(-)
+
 -- 
 2.43.0
 
