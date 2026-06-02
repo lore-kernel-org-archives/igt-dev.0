@@ -2,54 +2,54 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F294ECD6E41
-	for <igt-dev@archiver.kernel.org>; Wed, 27 May 2026 13:19:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35BD4CD6E5D
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jun 2026 22:39:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 76C5610E7CF;
-	Wed, 27 May 2026 13:19:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D28ED10F639;
+	Tue,  2 Jun 2026 22:39:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nIcWEndM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hCZ/RwAT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE05510E7BE
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2026 13:16:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B52910F638
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2026 22:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1779887784; x=1811423784;
+ t=1780439892; x=1811975892;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=4mdxZ0CPqv4ElLq14daqeV+7MY0TzbcXOZzoTIkI7o4=;
- b=nIcWEndMfJ80Z0PVv2Q8BH9VgOQUc/Nt090mTOPwr4IS3tZ3sK8EqyZp
- bJXk0ppXM7fBLOpwCjkJZ3oM4/obSxQ1Cv24lkabYX3jXGAKTkmyHoWOJ
- Regc2HbrVuqO4mzAbwc9pngpLl15O4hircty7RTLLiprHCiUA4uFdzW/J
- 3aM97VLHWrlQ27kg5jcFaesUMerJT9/UaMeaKmwAMm8v4PZKRsDcZBkt9
- u1fuePopXbgzv3AjxjVKvSMK9dOkdJRJXTDCX3bR62DsBYlpER1xVTul9
- mLz/GT73KMz5dctyDnrGX/ban/j6CbSPoDn2QUyc6nF2JejDrTK1rloDj g==;
-X-CSE-ConnectionGUID: 2BBmuj5nTGuO/Zklf8iSJg==
-X-CSE-MsgGUID: Yb77J4aDR1ud5bDTwlGdTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80686831"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="80686831"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2026 06:15:55 -0700
-X-CSE-ConnectionGUID: LWSXEo8gSp2cOVK8WK+sOg==
-X-CSE-MsgGUID: vkKZEWr8S5OwwWPfzl1mJA==
+ b=hCZ/RwATd+S1/+3QNWbmzogpbZK5qGWPebHaXCZI/FhKU+X/jjUqJbRY
+ xM5RZFoDa1qirZ/rgbhM/PyWOgSB3qlnoIhSSPtY+Qo9RSJQ5c/nK1+9W
+ QFHYFwPTRLI/aLn13GdGtkSi7Xmp0FKDj1waD20j7gRCxw7MNu508l3xn
+ AQE5bxgz+TpTAauyLi5Y90fxvTYEPrmOJjjW2JpHqtM+DI/OjXXclmFF3
+ XK4jIcIMBlsG44IdiyB0j4H7Wo6mNi5OhxGFb2qSzK7HmEA+m74CY0DtQ
+ s6I4xaXdGOnda92i0C4DFAFYr9xjBiapEfJLDGWFJLENDqMS7IJLQ5IFy Q==;
+X-CSE-ConnectionGUID: TD/1eIx9S/S+KGp+stpjJg==
+X-CSE-MsgGUID: 5TGue26iSBGVC5WY47m7lA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81268339"
+X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; d="scan'208";a="81268339"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2026 15:38:12 -0700
+X-CSE-ConnectionGUID: TgbqZoOVRyWx4Zmfmhnocg==
+X-CSE-MsgGUID: qHBEz+Z4TAu+Y47L2qtYcA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; d="scan'208";a="241201537"
+X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; d="scan'208";a="249121607"
 Received: from art-dev-395.igk.intel.com ([10.211.135.233])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2026 06:15:54 -0700
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2026 15:38:09 -0700
 From: Jan Maslak <jan.maslak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com,
 	Jan Maslak <jan.maslak@intel.com>
 Subject: [PATCH 02/10] lib/intel/genxml: Import gen4-gen8 XML hardware
  definitions from Mesa
-Date: Wed, 27 May 2026 15:15:13 +0200
-Message-ID: <20260527131524.1649421-3-jan.maslak@intel.com>
+Date: Wed,  3 Jun 2026 00:37:35 +0200
+Message-ID: <20260602223756.2543404-3-jan.maslak@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260527131524.1649421-1-jan.maslak@intel.com>
-References: <20260527131524.1649421-1-jan.maslak@intel.com>
+In-Reply-To: <20260602223756.2543404-1-jan.maslak@intel.com>
+References: <20260602223756.2543404-1-jan.maslak@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
