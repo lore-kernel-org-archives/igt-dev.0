@@ -4,34 +4,34 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC45ACD5BD1
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jun 2026 21:16:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1D96CD5BD1
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jun 2026 21:17:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9586510E6A0;
-	Tue,  2 Jun 2026 21:16:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ADBF610E6A0;
+	Tue,  2 Jun 2026 21:17:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="RAvbuwxV";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="J2XxYyx3";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D1C210E681
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2026 21:15:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51F0B10E683
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2026 21:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=HbXIS7r06OaJxvmHeaXN6/Ik2Y0kIQuoAMsQcPDAVm0=; b=RAvbuwxVMpHz6RusFz7zdoIwkp
- A3gUIA7e23SJry1jIRnUDUFZvgbt+NU1sbHx7hbD1JuHo0i+FdX5dTzNiVrVIVS+3oDSQNkVs4/H/
- +DZYrzE1yrlHieFeTNWARg9+YQFU7KWwJynS6t2cvwEMNUjXFF7WpGCkABUOL30vgteoVWTGBZ0kX
- ax7w9auHNzSuWNro7jQxrjuF6ycNRzN2kDYU8/gKhuvgPQXwYIwFvrCwX6BiLZmtjLnFGavy6pd4Y
- J8fPwmnKNuu4un1FLovr8JNwkWQFwG4seRkBf1GS68UYptOjVAkZd1bSkaBinI+Wu5vK1J+7rIVI9
- 3vlXRe5w==;
+ bh=W2ZHEFKSkJ/pwUtVsbBMeU1kwX+XKq0AZjc2F8hM2JQ=; b=J2XxYyx3rQa15INh/dEKKhksSy
+ 8Y4+KP/m161Ss19Ca5xjlQhwLVaR9IDqbqVmk1bmLJI6APOU2FtmA1Rc1R8BFxWdMeHvboDTkHCzR
+ 2oyaPvLwk0Ww3RcUGC3QPXsuUbbcOxVE9wmYgQTtedBqe+KuirsiicnB1qy0n2VN1Bitf0r7237Nv
+ lr5d6Jd+1BjBz7dmtDPfqaipmUrkviclase2isyglH1DujTyGSlVI60YO+p6WtNGrJw+jmp+mgxKC
+ WFX1j0x7OauMP0r0PZTtvRCZvjnHRsV0CToNi4PbvtytTT+aSikgrVgso6xEGIq9/4WZ1Ze1hTtGj
+ Ud6ZDpHg==;
 Received: from [79.117.146.159] (helo=killbill.home)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wUWS8-00BtIm-Es; Tue, 02 Jun 2026 23:15:12 +0200
+ id 1wUWS3-00BtIm-Tv; Tue, 02 Jun 2026 23:15:08 +0200
 From: Melissa Wen <mwen@igalia.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -46,13 +46,11 @@ Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com,
  Rodrigo Siqueira <siqueira@igalia.com>, Simon Ser <contact@emersion.fr>,
  Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
  Uma Shankar <uma.shankar@intel.com>
-Subject: [PATCH i-g-t v2 4/4] tests/kms_color_pipeline: skip if not an intel
- device
-Date: Tue,  2 Jun 2026 23:06:45 +0200
-Message-ID: <20260602211259.898147-5-mwen@igalia.com>
+Subject: [PATCH i-g-t v2 0/4] test/kms_colorop_helper: don't request colorop
+ updates indefinitely
+Date: Tue,  2 Jun 2026 23:06:41 +0200
+Message-ID: <20260602211259.898147-1-mwen@igalia.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260602211259.898147-1-mwen@igalia.com>
-References: <20260602211259.898147-1-mwen@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,29 +68,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From documentation, the test requires i915 or xe driver, so make sure it
-only runs with intel devices. In addition, it's a CRC-based test, making
-kms_colorop with writeback more aligned with color testing and
-validation. Other drivers should work on adapting this test to their
-needs if they are looking for CRC validation.
+After committing colorop settings, colorops are still flagged as
+changed, even if there is no new request for updates. The first patch
+clear colorop flag after commit so that the next patch doesn't try to
+re-submit changes on inactive color pipeline. The second patch prevents
+colorop to be marked as changed just because it was checking if a
+property enum value is supported.
 
-Signed-off-by: Melissa Wen <mwen@igalia.com>
----
- tests/kms_color_pipeline.c | 1 +
- 1 file changed, 1 insertion(+)
+These changes are consistent with the current expecation of allowing
+property changes in colorop that are part of a current active color
+pipeline or a color pipeline that will be activated or deactived in the
+same atomic commit; but rejecting attempts to change inactive colorops.
 
-diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index 6119a830f..4ec483038 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/kms_color_pipeline.c
-@@ -367,6 +367,7 @@ int igt_main()
- 
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require(data.display.is_atomic);
-+		igt_require(is_intel_device(data.drm_fd));
- 	}
- 
- 	igt_subtest_group()
+There are two new patches: patch 3 fixes kms_properties to match colorop
+update requirements of an active plane color pipeline. Patch 4 just
+ensure that kms_color_pipeline expects an intel device and will not run
+otherwise. As color validation works better with writeback then CRC,
+other devices should prefer kms_colorop if they have writeback support.
+If not, they should work on adapting kms_color_pipeline
+according to their specs.
+
+Lemme know your thought!
+
+Melissa
+
+Melissa Wen (4):
+  lib/igt_kms: clear colorop-changed flag after commit
+  test/kms_colorop_helper: only check if a given enum value exist
+  tests/kms_properties: check colorop properties on active color
+    pipelines
+  tests/kms_color_pipeline: skip if not an intel device
+
+ lib/igt_kms.c              | 41 ++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h              |  4 ++++
+ tests/kms_color_pipeline.c |  1 +
+ tests/kms_colorop_helper.c |  4 +++-
+ tests/kms_properties.c     | 26 ++++++++++++++++++++++--
+ 5 files changed, 73 insertions(+), 3 deletions(-)
+
 -- 
 2.53.0
 
