@@ -4,127 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EB11C5DF71
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jun 2026 08:48:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C95BFCD6E4A
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jun 2026 08:51:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC5DB11396E;
-	Tue,  2 Jun 2026 08:48:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 72DCD10E2E2;
+	Tue,  2 Jun 2026 08:51:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="b9QceyIo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="flzsP4tm";
 	dkim-atps=neutral
-Received: from SN4PR2101CU001.outbound.protection.outlook.com
- (mail-southcentralusazon11012050.outbound.protection.outlook.com
- [40.93.195.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0042B113971
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2026 08:47:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3603A10E0EB
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2026 08:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1780390254; x=1811926254;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=qfrTXxXmPzB66YpRY77BBGs0qIyJH39MKlzu05A3JJg=;
+ b=flzsP4tmMUnqhg9RToAqpwSYPs0cLM5faTh86ZoiH7bHvCZA2KMQPy7I
+ 0BKzNpKgbTdVVDiL015sx2IjygjkSYNQ5yor0MdtWIGZcO/6EjDB+zDx/
+ h2Qq26CQUAmlezHiCWPmdb0fO408gukPI6wy9xiuaQjAbKgyYg8sFGpLR
+ FswA64tnjWulQoue/nTfn8DGpwu7pguCbNyJhsro2L24Wskz6t7npITt1
+ P+CaNBxB9cJ94HmKCEq3vI9BGyl7uwf3yVPol/FK0EjvxEVUMs43zIws9
+ APR4S/2GJ9Mkm57Itq5ZUYKSzZPWAZiArF2pp5dsDxVcW2Pri8m6VERfQ Q==;
+X-CSE-ConnectionGUID: pw/AmytwSy60eT4PSkwR8w==
+X-CSE-MsgGUID: O1iTmUp/T/OdCCY7z0G6Aw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="81197796"
+X-IronPort-AV: E=Sophos;i="6.24,182,1774335600"; d="scan'208";a="81197796"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2026 01:50:54 -0700
+X-CSE-ConnectionGUID: +Jo31gmBShm8BBOYZrsGwQ==
+X-CSE-MsgGUID: +5e7rzjoQVynO0te016vow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,182,1774335600"; d="scan'208";a="245654594"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2026 01:50:53 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 2 Jun 2026 01:50:53 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 2 Jun 2026 01:50:53 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.45)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 2 Jun 2026 01:50:53 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T7P5/TpMYVSzWtYoaAk6xRsXuXZ5LazFBJBjh5HcAHG6I0YnCwWfKKWbo9j0KzncF1kzYktFiKAbOUZtxKd3HxeXW4do8NTG9w2/QI+XjXVJ28YvwNGmJAlZJeBrawUD+c2lMrbbF/p/xC10azSAfXnfi6lEuTidCJdrPGVwUzrsJYUvcP0rpGAbAaJaE97lCz2+sPnGZ7ZEFx6lemcLMSypDjr8kInU5JbDcRVTzvNmHn4bAJ8u0sQPzgtxW3vqs2qOxAhglk8+sNzLU4ojuohbk45fQGjKnDOj2rlcfXXDArUQD4avlaG8aT5D72/d5c0czoYNY9Y+N6GTB8S8RA==
+ b=EcwoRP16cdtI7r0o4jJ5phwIboXrq9R0C/MyEJ9DdJJbehTPJb+5zDYJmSGVKMR0RisMo8wZPmBXaBNQ2vEn0EaMMOovWGo0PvngjN8E28CxnBa4neVBFUGYv+s0xtOgAcY+Hy8aw5dv4W4KW4YBxyWeKKhwZRf1Uw3ab/KWUG4oUh598z7ZmfaXejVCbI3AeHyBhmM7QZ9cl/sJMnehPeGR8hD3xdA8orekPtcr+viD/Z5eXxAGOgnkBZO1D4oQhJBjDRZfpjOVL02lGKOO9aHZTWs5cG3GeGjukqc+C+O/2NXyY8EmK88j8rkQb3ZMrv6AXVd5riyg3Xwqjc2O5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bSdq31RLQCRjaLkwcYFslx9J+0zSgcXc5GwsDybsAf4=;
- b=NTp0URXarwPURSn8Q2EmJAXRDi7CQ5Sl3Mi4VEZjhoDPOp/ag6Ewh6u2Y9HNXE5sOamQHimxJxcfdoXZ7x+OdxoUlPqYNTKw26RTKxxM00nwufiggglqTIUQXOQcVCgLumW/WomBIcrhMi8fQ1bA+B6cICj9sWbIHWpnSNaTx0IERFc3qDlcmb6lywMcQ3YlvF9fKa1miazz6//FoLdNYbMu/uq/iFP3d6A/cirZQDRWY+EdFKxMsDzHEQTIkXaEjY0dGfqKC6NbdQkqmXd6NB+uKutOn6Vfsx96vQgwvA5XTIiTrDY4vefLs/1mugLE3Nq/m9vg2sZspJsYOc/iTg==
+ bh=qfrTXxXmPzB66YpRY77BBGs0qIyJH39MKlzu05A3JJg=;
+ b=tCdzbo1r9z9eLtXkxbqIqX+JHF6jZq0SoBDLLuVqG6EtKMiJBMdAb9kd5BT4FWYxGmkr3MPiYtLNpwG2cDlLkk0aYug74U42rZKOIms6JeqM+wWKZaE88Nh42Cw4oV6GlXplxv9eNUwv+81QxeLtdYxhBskeVvwCQzlXraAYu5buHDUf71c6XKM2EvwsCdHAe8Gif8TRicjP/OqQ6CUujuwwqRwVBlvlZOd1JWUe3ylsj+RHGRJpLrhPxaohpjcpS7GB+uHQYWyjyDSeOIUoHlX4CQ2sbErTWfAqRn0mO98+7i4IPe0nG9Hqm82LCJr4EeW10hAfsIY8+whIgVOZSg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bSdq31RLQCRjaLkwcYFslx9J+0zSgcXc5GwsDybsAf4=;
- b=b9QceyIoRCWWKRxuSkSMMqMigum9WBXk2zK170kpI+XbRpH0hteCNDzmK9rmOQGyhiKDYwQ52/ufdPMfyZO7Yyuz+1T+RnJGSnVCp3mfkay8+hgqiZiO2f+TzxEZ6mWd7Y6DnWNddSNtuUK9sDH4FheF35pVXOobHm7ijX+VuKo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH0PR12MB5108.namprd12.prod.outlook.com (2603:10b6:610:bf::6)
- by MW6PR12MB9019.namprd12.prod.outlook.com (2603:10b6:303:23f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Tue, 2 Jun 2026
- 08:47:47 +0000
-Received: from CH0PR12MB5108.namprd12.prod.outlook.com
- ([fe80::8403:dbac:360:bc4c]) by CH0PR12MB5108.namprd12.prod.outlook.com
- ([fe80::8403:dbac:360:bc4c%6]) with mapi id 15.21.0092.006; Tue, 2 Jun 2026
- 08:47:47 +0000
-Message-ID: <58135255-0163-44f6-a182-e0af4ff528a3@amd.com>
-Date: Tue, 2 Jun 2026 16:46:58 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/3] tests/amdgpu/vpe: add VPE2 blit test
-To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org,
- vitaly.prosyak@amd.com, jesse.zhang@amd.com,
- Jani Nikula <jani.nikula@intel.com>
-Cc: Solomon.Chiu@amd.com, Peyton.Lee@amd.com, HaoPing.Liu@amd.com,
- Yu.Wang4@amd.com
-References: <20260527120802.617332-1-chih-wei.chien@amd.com>
- <20260527120802.617332-2-chih-wei.chien@amd.com>
- <1e86c221-a547-410b-853d-4c9b5b73738d@amd.com>
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6796.namprd11.prod.outlook.com (2603:10b6:510:1ba::6)
+ by SA2PR11MB5148.namprd11.prod.outlook.com (2603:10b6:806:11e::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Tue, 2 Jun 2026
+ 08:50:50 +0000
+Received: from PH7PR11MB6796.namprd11.prod.outlook.com
+ ([fe80::60ca:3168:fb41:7ae7]) by PH7PR11MB6796.namprd11.prod.outlook.com
+ ([fe80::60ca:3168:fb41:7ae7%5]) with mapi id 15.21.0092.006; Tue, 2 Jun 2026
+ 08:50:50 +0000
+From: "S, Sowmiya" <sowmiya.s@intel.com>
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "B S, Karthik" <karthik.b.s@intel.com>, "Sharma, Swati2"
+ <swati2.sharma@intel.com>, "Naladala, Ramanaidu"
+ <ramanaidu.naladala@intel.com>
+Subject: RE: [PATCH i-g-t v1 3/3] tests/intel/kms_pipe_stress: use
+ ARGB8888/LINEAR for cursor framebuffer
+Thread-Topic: [PATCH i-g-t v1 3/3] tests/intel/kms_pipe_stress: use
+ ARGB8888/LINEAR for cursor framebuffer
+Thread-Index: AQHc7aYyfIUh5S+LRkCsediBseimlbYq6RoAgAAUnwA=
+Date: Tue, 2 Jun 2026 08:50:50 +0000
+Message-ID: <PH7PR11MB6796EFC6242DBB614136D304E5122@PH7PR11MB6796.namprd11.prod.outlook.com>
+References: <20260527071940.3285269-1-sowmiya.s@intel.com>
+ <20260527071940.3285269-4-sowmiya.s@intel.com>
+ <111a1f1e-7ccf-4ec3-8831-9cd860cd9b55@intel.com>
+In-Reply-To: <111a1f1e-7ccf-4ec3-8831-9cd860cd9b55@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Caden Chien <chih-wei.chien@amd.com>
-In-Reply-To: <1e86c221-a547-410b-853d-4c9b5b73738d@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TPYP295CA0008.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:9::9)
- To CH0PR12MB5108.namprd12.prod.outlook.com
- (2603:10b6:610:bf::6)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR12MB5108:EE_|MW6PR12MB9019:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce907d6a-6e64-424b-3ea0-08dec0839e6c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|20052099010|22082099003|3023799007|6133799003|18002099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info: lDCboVQ5gQb/kwjVx7pDGwqA2VcsZunWVjq0gsxXug/J9XOH3IOX9sozS1DCa/LoX5XjvzMwiC/vVmfiSuAQdt3qWIYGd3/vSO9ciqdv7VYb9FkwDOtvl3iPkc5zpd33XlAHWkJ4vCrSzDyeMEukJbE7/8qBkQsAK3ve3dMux/2LsLb4im4N5fSqTrufXEEH7AUoSSgL1SUOdaNP0S9Pvn4pkn6Z2XkCswmqsKcTp5T9tsdIT2ghkzxTAmqQhWEHi2zzPhhq7Oo+9qlAD3+l6sOYLt5doZs1+I4dBE0EnzZKc6idMxydXpqGeeKzL3d43kKHKI+pYVvzSS4ehrLo8c7AnrwCuhtVkasZyH/GnMnI8HZYVW7vV5gbbYoJ0a5H2mAnWyljLJk1vtRDVFzCrt6VnpE26zvE0aan70J3YUmqNsT+eFxYJGB4bGZGpQ8oiMMiU6ZWukywtSvzlZea2uhWkGScMCyInzhVe3f3pVaM2yUghd5+5E/VCSgXSOWZ25iLDgLUfs0cbjhjO7V5RPyhQ5y+H8pCoj68YGfU7Lw0fAmOceUda+pxJDSgOT3EbzxLtMFevmN3QBUV0FWnTsWhMkq538fP/eBePXHnRQ8Bhv8THxQjzn12x8sOLJw1JBPLJlq42VPTW6qo8aa31Zjx4zBxOVfSka3q9MNBCOBT8ZGBOJsZIBvtPOMjinCq
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR12MB5108.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(20052099010)(22082099003)(3023799007)(6133799003)(18002099003)(56012099006)(4143699003)(11063799006);
+X-Mentions: chaitanya.kumar.borah@intel.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6796:EE_|SA2PR11MB5148:EE_
+x-ms-office365-filtering-correlation-id: 936854e9-9555-4355-c2c2-08dec0840c00
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|38070700021|18002099003|22082099003|56012099006|4143699003|11063799006;
+x-microsoft-antispam-message-info: WeiY0Qhw/X7NV7ixsrnluiFS5LrHPvMuM4Bt9IoydWRKDL+nlALk+DO5h7zFoX87cNJnQfYFWXU2gt1X6IqFqnojK1IncpkUflhlQWm7yZjQmYXcIUB5XMhh/uROXcP/GT0u5TEUuyQV/utQZKJSTwQSVcyVGvs45inDg/QTki0tuIktH75ynauJyxihf/4oPHJjCHCZTed0uGUJkNsL0nAUfKGUISfdE1+SlCLKvHfRR8eaLlhIjoO5wnke6+xAwObD3ooYQH0X0dC6rkglADOBjEFByaKb0TPZ0NUC/OR1mQLpAMn6R1t9WoYPG6J2CWbQyOoXfzO9k9BB0R1uTZJFATW6xfxaVfEWRIXBIStRVK7b8Lkljg5pTZICGUNnbF9vb/J10Hfz7VH0JtkZY2rrwk+eMLqVY+08cNUt9z7RWH+gjD6do3F/6Pl/mZ7Mjg2bLDizFaur7vohq7wV6psrNw/kpl8vFLiZvsC6wsFLzM+jHZkHmyqJ0J6f1LCcXfnePZc4qJBb5FCGrOlYNMpSiuUrWM+btfDCOCecGxhY+EG0iGQxw9JH6oHrceLk4Kg98aoEvYRoVTfplhkTjTEwUQ2ZC2lOMgpvkmXY+VqEIv97AMwUQ3jaeDKOSoCAkIqTFLZAgM3tLBrumdIvQRrvEjz2VmkG60Fhjy/XLz5tKKdWP2arYTgc/9yOstDjmHdJa/z27aeI3KpqXaXehzMlaOvvPt/D9lGgDhUIxyOVCU2zsdJvj/MeY1GOw+D6
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6796.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Mi9zSmRlQ2FsalFaVzlNcEs2dUZNVjhhOXNJZzFORkhtbkJNU3dLWWNmK0c0?=
- =?utf-8?B?ZkZubGFNQTk3VWk0UG4veWtPQWpZRjd1dUEwNGVhZ0ZhMkhNNlJRN3dnODFO?=
- =?utf-8?B?L3JiTmI2Tjk5cjBPbjhhMjIwSkhwUklWcjhXay9xQitiNDN4eXdmOGRmY3p3?=
- =?utf-8?B?UDYvd01WOW9xVzh4KzJ3N01jVU5hdVowTmN6THNic1J6eG5FK1BlN0FQNldE?=
- =?utf-8?B?amNBdTR4VnZQSU04UlJKbis3eG9NYUV2QkZmZElqbnpxOHZqZldHMjUxUDJ4?=
- =?utf-8?B?cVFOdTZXNGpIQ1JpWiswMVRHZEZzVE9hTW9XS1VzMGhqUGE1OXVkNjczdDZE?=
- =?utf-8?B?WmF2ckxFdGQ5enFtYzMzU2s0Ylo3cEMybVp2YTFYRUFaUm8wTDZ0V0dsTlRW?=
- =?utf-8?B?Q01rTkEzU1ZBck9DcTFNNDQ0dXF2NkJueENvSzFmbityNFJjSko4WlZwc0pq?=
- =?utf-8?B?SmNmVWJNQ1pPSXk4RHZ3MmEvTkZXd0xkc1ZPK2szYkRTa2FpU1AxbmlnaFRs?=
- =?utf-8?B?MEduRjBnbkMyVUhCMkRKSC9yME5mS3llU1U4ZmlFWXQ3M1Z4d2w5eW9Rbmc4?=
- =?utf-8?B?dmw2dFV5WHpYTWxnc0RZbUh0TWI1K1JLTFFKU0dJUVYzZnVFRFRubGJXcUx2?=
- =?utf-8?B?dVZjTUk4dmE3NS9ab1VobkRpMWc3Uk1qSW1TcXh4b3E5MW9nRXlMWjVxVkVI?=
- =?utf-8?B?MTRxVXBCdWZ1SXArQTlIV0xaQWdQODNDcG5WaXZjUVZUbHpFaVU3bzloM0Jt?=
- =?utf-8?B?K2l3V0NYUzdlTGk3MFYzR3dnZGYxQ1ZOZVU4QmdGUFRyMFNhbUpta1pHU0RC?=
- =?utf-8?B?bXBCUlgzdUMzK20reElrc0pudXRaSW50SjhRWHRHL09BY0hLVS82WWVDZzVx?=
- =?utf-8?B?dmorNU0vTnF6VEM2MmQySU9uM09ieS80bzN1VkJlUXI1ZlJqVkJMNUt2TW5M?=
- =?utf-8?B?di9TV1ZLcmNtb2ViT1VPcUl1MGFRcEEwSGdkYnlIY09tUTBEVGtyaUx4QnB6?=
- =?utf-8?B?SjFnSTRuZW1KUDF2Uk5zVGhmUDV0dWRGUWc4M0dCbWhGK2dnSXJramlBdjhT?=
- =?utf-8?B?SzdXUjZ2UGdQMTdhRnhDZm9SbnJGUnBRWjQxY0lLS1dEN0FzM0FpTWtDZkVk?=
- =?utf-8?B?Mm9CODR5MUFYdlcwc0YwdE5KWTBVL3VsNVZlZ2hFQW1MZ3BTdGlTbVc0MjVk?=
- =?utf-8?B?dDFSTElldlJ3UnhqaGpIK2NNVG9hb0JMbmpBTE9IbnpsUmEwQmxyV3d0V0c2?=
- =?utf-8?B?cmZzNUQyRk8wUU9rUktxL1RpNFVPZmdubG4vMWNGd1BBdkJaY05UdXZPWTNo?=
- =?utf-8?B?dkEvTzhDT2UyRkFNSEZ4bk9lbEdoKzlydmZZelFKWFRkYmV1NFBsd0NqUzNN?=
- =?utf-8?B?SkR1RlBHajk4bUVXVm1PT1gxQ0tJUUFITmNsS0d4bEc2dXpwUWhWR3VFcUlD?=
- =?utf-8?B?WmZXcndXWTdqUWcrRk14WVpjUWk1Z0pieGc3d2E2VmNKVGRqdk1pS3hkQlZq?=
- =?utf-8?B?SHJzYTBQWGtuSEI3NGhQRklyYXkwNmtVTDQrWmlaK2FZb1VPcFBvVmMzTVJ4?=
- =?utf-8?B?Vm1VcVhsYUptWHg2VGVYQzI5dFgzSjZ1RldRbTNaaHkyVlFMV1pjNHFvMElW?=
- =?utf-8?B?WXA0eFlPZUtJOGFnYlZVOFlnUlJDQ3dCL1Y4U2RqT1NseDFpeE55ZHFnYlNn?=
- =?utf-8?B?WU9JQU03Z3cvcGRsdm5KOXNPTDNCbkplUGo2cXdndHZGd3pGRDdITTVnWElx?=
- =?utf-8?B?WHdXOXFrSEhYK2x3QjZyYXZsMGRLTnlpcW5XWE9NNitUU2ZzdkNFVGw0RWdm?=
- =?utf-8?B?OCtkWUsyL1NJTXdFeFVseG1QeEVWajA5UzVQYmNSa2RZRU9VNXVGMThvWnR2?=
- =?utf-8?B?bk5RZjNzYXlzM1M5ODRmcDJNY01xb1RRU05razluai8zRXF0ZjA1UDFjd21S?=
- =?utf-8?B?cFc1UUhQNVpOcFVwUjlCQzZvdEIxcSs0ZU9ia0J2dzRiR0N6OVBtY0xPcEhl?=
- =?utf-8?B?c3JxNFRtam1xU0JZSXVadFZCT2ZNUzlnV0d5a2lrdVdwWmYwemxZUFp3SFly?=
- =?utf-8?B?UFJtdUppalZJd0h4RU9nczdUbHpkajZvRVVOVWVFRU9tQnByRm1kQWRMb2Vj?=
- =?utf-8?B?bXVmTlJnRnlpUDlCeks5R1F2U3EyVEIzNU5NbWdyYk95SHBvVUJidVR6aGpG?=
- =?utf-8?B?bkpLeG1lZnhUd1FuQXAyMlJtT3c0ekpIYzVUWDIvVVdFT2Z5WlVLdlRjN0hz?=
- =?utf-8?B?NjdOVDJsVGE3cGlxWXFUbGV2VnlzRm53eUIvR2ZZNGlVL096RlJIM0piVlFh?=
- =?utf-8?B?TVhFVDNSV09pbjNvZlROVktBVmYxWG9icHlnVVV4c1lmTVc4RVZHdz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce907d6a-6e64-424b-3ea0-08dec0839e6c
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR12MB5108.namprd12.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WlVqWXRyVGxaQ3RMSkhaWlJrYVA3OVBOQmZCVnVJYlplMXZKeVhBbGhmWW9Q?=
+ =?utf-8?B?VWRmZDhtNEtMcEt5VlBBeXhqdkVqek1EY000QlJMbnhxQjc1WU9ZNFRQakpC?=
+ =?utf-8?B?S1lCdytoZkJNZVhQd1oyVmJqUHJCQjBNL1NuSXh2UWd5WHhudGVoeDVmQUF6?=
+ =?utf-8?B?Tzg4VnJZVUdhNkhDdzhmak8vNnlnRlgwd3BKa1AzUjdnS3RXRDZocFQ0QXpn?=
+ =?utf-8?B?OHJMOFpNNkx0SzVIdmhhZDNnTTRsaWk5YlV0SGhQY1hSamN0UWxFaXNqOVk1?=
+ =?utf-8?B?Qllsb1BQRTYwQnhzZndqeU4yQ2EzclBGZVBZbzd1cmJDRlZla0QyblVvU1Jw?=
+ =?utf-8?B?YXp2aW5mTWJNVXNGdHBVem5EQ0FRaWFhVXUySDhrL3Y3UURHaXFoWXRPbWlP?=
+ =?utf-8?B?OXFBclRpeDdMcDd6MzNyM3JwYUhyejlPMi95eTYzM29rajJsWEhmSiszQWtU?=
+ =?utf-8?B?MlVMSjkyL2hPaDZiNHloVU8vaGd3eVFobmNlSmNHQm04akpjQ015VjNjeEZB?=
+ =?utf-8?B?NlhBNDNPWWs3czFEbDMxUC96aG9FeG5UckNVZmRPbmo5dTZYK3hBR3JsUCts?=
+ =?utf-8?B?Z05KRXBGSUlWMk53d2FxSGFxSHE2Z2FzL0swS1dETWNtZkppeTM2am0zaURx?=
+ =?utf-8?B?QVk4d1FtbFd6bllQZTkvV0dqS3VPVkhuWEVSbGc0SXhzaWJtYUl2enhtNXhr?=
+ =?utf-8?B?N0VrSHJpeHRmQW1JZVJKOFl2REcvT3BIenljSDFxQmp2WUJXVStaSEFZMGEw?=
+ =?utf-8?B?VTVkOXZnT1JtRnFRWUVWVldWKzJtQi9hVWtJeXRwSUlhenBFNWhOTGdtZmdK?=
+ =?utf-8?B?Qmp5NHMxREhRVmtTdkZMOTA3VWFwYXpFSCtUOWFieEIwZ2RCaGlnTENpZ2pG?=
+ =?utf-8?B?NkRNVVBwN0ZEZDRoWTdkeHRiOWpZT3BxU3hmcUkxRkFIU01FaUZqNmdsVE4y?=
+ =?utf-8?B?b3JDb2xkRVg3UGYzeUovc0E5TTVFb28zK2VxOHpxWmJpTXVMVG1UdXhqUldO?=
+ =?utf-8?B?bS9HckxnalBQVXVZelZ3NE9VVVA3WjVKUDc0cVlIVmFSWTc1alk2M1hCbXRC?=
+ =?utf-8?B?b0xFMm1sRks4dUJXbVUveWZMVXhQZDBJaHJSOXJzNkFDYjZHL05iZC9mcXJC?=
+ =?utf-8?B?QkxJaUY0ZWpzc0VGS0ZKY2hDeTA4Y2cwQXNGeGJIMWNvY3JDRFRWeFBNVldm?=
+ =?utf-8?B?K0laV2IyZHNzMkhRNmxhNnFsK2UxcmZHbHFXUFIrZ2RaTjNOS0xEMUx1UVNr?=
+ =?utf-8?B?cFJTMmNEL1hFODE0REs5Z1RtN3l2VlFEZXE1bVhmQTJlMVhvNnRFMmVRUzYx?=
+ =?utf-8?B?RjhqWVJnZ3B4d1lKTEt0bWZkcmUyN2N2K3VqWDE2akU2YXNUMjliZzdwTGs4?=
+ =?utf-8?B?MDRJTW83SmVWQlJJSHFDWmIwUUM0NHdIMHpNcmkySm92NzNIck9ubmhhNHVs?=
+ =?utf-8?B?am5NSGpSb3R2M1VHMW9IWUtxQ2pHMGVZc0JhVmQzMnVlbHFTUmRLcm1EaFpo?=
+ =?utf-8?B?aUQrYTZ3R1MrR1NyZ0hIRUhDNkVCWFJ4c2EvejlSZy9nTC9QN011MURSTTds?=
+ =?utf-8?B?VVB4TUx1NnhVSzVkTHQydW92VkVhYXNlL3RHODNMaDNqanVjb1VTd3ZwdXBO?=
+ =?utf-8?B?ZkFrYnBsR0wyZTk0eFd1YXA4Y0NpdkQ5WFhBaWQxb1IrN1dENWxWYnI2ZTFh?=
+ =?utf-8?B?TVlaMmtETGFWUWVPQ3FGOHg1N3R2S2hPQlNWdHArRXFhOXJ1MVVpNkxGQ3Z1?=
+ =?utf-8?B?cGszMzRNcXNKODhoMkJaODFzdGZ1eUhmb2ZQOS8vNG11RGxUWCtVM1ljUmhP?=
+ =?utf-8?B?NGpyUFhiZU1od0pZdHUwcjBzSXNyNkplZXdiSGVycWQ2c2dHOFNxSGFMMi9Y?=
+ =?utf-8?B?a0NkSTlXOTVlYlhnYU90TU9pOXM5dTNlR2ZsRGJPdjdGdklndVc4RHhJUGNI?=
+ =?utf-8?B?NDV3MkFpRWl3YnRkMnpwZFk4KzlVUzVQVHNmSmRydGJUZTg0RWhzUHlxOHhx?=
+ =?utf-8?B?TU9HaHdQL0pkd3VlMldjQVRPWEVLeGloRHcyREk2RlovUU1WdlNRcmxNcEp0?=
+ =?utf-8?B?cWJQdEF2MWpJYTVKLzdXOGdXNUxYUlMwcHV5eUtvZUs3SXBLZmxqUHdxSDYw?=
+ =?utf-8?B?M0tRVFVub2RKTkZZbWt0eG9GaWkzTHFDSDBqeHJxeC9EQnR2T1N4STJYYkpK?=
+ =?utf-8?B?c0wxM29rWnFEajBmL1MxUkNyRjViRXpRUG1PT1dtQ1pQOVNESzJIRW1zZE0w?=
+ =?utf-8?B?cFJiMCtiVW4xK09vdGpUNXc2U3ltSXFFVTVWaXlxckI2L2ZkS1NabFN5TTE2?=
+ =?utf-8?Q?+WhIcDD56/dYV6ohhZ?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: sat7Y7Oby4C1rvtvsVoJ75FijdmrBnDf0zfZuECdINajj40tofnZQFGBiEIQhPQ5Wr75/erpbrF9mnMFppq64p+Buk0HO28fKCWZ5bdjrFS5Z3H9aiAc1hVeftl8Rnc3Wsz0ucRzHKru8dSjMsGzSLsCjZBXUJSYMaS4sNMhwtAvIKB8T/ow0t1yyhsfA5loQ/YsQ/VGsosww+Bfs8U/nVRETjTKD45YqAWc5OKFgZg3Rkpr9HDCOteZBqjDmGqt3kWKsYRYOW7ppUM8rTeR52tHo268JuN1oId7yiTbHCIWfg70Pwi3KyoOSk3D5LEqLtLcQ07n8vHsq2LuyPHQBg==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 08:47:47.1226 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: G3+mN+fG9DcCVLzJJFWI0hQaBZQEyUMkgKJXEBiD0ruE6cUOTJ+G9iJP5mcipJxNv87G/GEN91NvHwgXM7IxJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB9019
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6796.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 936854e9-9555-4355-c2c2-08dec0840c00
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2026 08:50:50.2741 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JSm19EblrscCxNsbO5Dgsue+k+x596SLgcifllPL5QtAVFNtM3Ds30zzJsLj9vvtIdvoiKWc2gWzBOaPz105Hw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5148
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -140,752 +177,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 6/2/2026 1:08 AM, Alex Hung wrote:
-> 
-> 
-> On 5/27/26 06:08, Caden Chien wrote:
->> A new test case for horizontal mirroring feature on VPE2 is added as
->> blit test for VPE2.
->>
->> A new source file amd_vpe_cmd.c is added for stroring vpe commands in
->> separate object file, to declutter original source file. Commands are
->> accessed by calling the getter function to obtain a pointer pointing
->> to them. In this way, for future developemnt, the command object is
->> only get linked when used.
->>
->> A note to getter function: it takes no arguments, so `void` is used
->> explicitly as argument list. This makes any accidental argument passing
->> as compiler error, rather than warning and UB.
->>
->> meson.build file is modified for vpe executable to use extra source
->> files.
->>
->> Signed-off-by: Caden Chien <chih-wei.chien@amd.com>
->> Signed-off-by: Peyton Lee <Peyton.Lee@amd.com>
->> ---
->>   tests/amdgpu/amd_vpe.c     | 129 +++++++++++++++++++-
->>   tests/amdgpu/amd_vpe.h     |  27 +++++
->>   tests/amdgpu/amd_vpe_cmd.c | 233 +++++++++++++++++++++++++++++++++++++
->>   tests/amdgpu/meson.build   |  10 +-
->>   4 files changed, 397 insertions(+), 2 deletions(-)
->>   create mode 100644 tests/amdgpu/amd_vpe.h
->>   create mode 100644 tests/amdgpu/amd_vpe_cmd.c
->>
->> diff --git a/tests/amdgpu/amd_vpe.c b/tests/amdgpu/amd_vpe.c
->> index 072e521c9..809f22d17 100644
->> --- a/tests/amdgpu/amd_vpe.c
->> +++ b/tests/amdgpu/amd_vpe.c
->> @@ -3,8 +3,8 @@
->>    * Copyright 2023 Advanced Micro Devices, Inc.
->>    */
->> -#include <amdgpu.h>
->>   #include "amdgpu_drm.h"
->> +#include "amd_vpe.h"
->>   #include "igt.h"
->> @@ -125,6 +125,22 @@ static void create_rgba8888(void *addr, uint32_t 
->> width, uint32_t height)
->>           ptr += width;
->>       }
->>   }
->> +
->> +// a in byte 0, b in byte 1, g in byte 2, r in byte 3
-> Can you use /* */ comment style? Same applies to the below functions too.
-> 
-
-Got it. Will fix all the existing double slash comments.
-
->> +static void create_rgba8888_hmirror(void *addr, uint32_t width, 
->> uint32_t height)
->> +{
->> +    uint32_t *ptr = (uint32_t *)addr;
->> +
->> +    for (int i = 0; i < height; i++) {
->> +        for (int j = 0; j < width / 2; j++)
->> +            ptr[j] = LEFT_PLANE_PATTERN;
->> +        for (int j = width / 2; j < width; j++)
->> +            ptr[j] = RIGHT_PLANE_PATTERN;
->> +
->> +        ptr += width;
->> +    }
->> +}
->> +
->>   // b in byte 0, g in byte 1, r in byte 2, a in byte 3
->>   static int check_argb8888(void *addr, uint32_t width, uint32_t height)
->>   {
->> @@ -140,6 +156,26 @@ static int check_argb8888(void *addr, uint32_t 
->> width, uint32_t height)
->>       return 0;
->>   }
->> +// a in byte 0, b in byte 1, g in byte 2, r in byte 3
->> +static int check_rgba8888_hmirror(void *addr, uint32_t width, 
->> uint32_t height)
->> +{
->> +    uint32_t *ptr = (uint32_t *)addr;
->> +
->> +    ptr += width * (height / 2);
->> +
->> +    if (ptr[width / 4] != RIGHT_PLANE_PATTERN) {
->> +        igt_info("Unexpected left pattern: 0x%x", ptr[width / 4]);
->> +        return 1;
->> +    }
->> +
->> +    if (ptr[width * 3 / 4] != LEFT_PLANE_PATTERN) {
->> +        igt_info("Unexpected right pattern: 0x%x", ptr[width * 3 / 4]);
->> +        return 1;
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->>   static void amdgpu_cs_vpe_blit(amdgpu_device_handle device_handle,
->>                   struct mmd_context *context)
->>   {
->> @@ -214,6 +250,93 @@ static void 
->> amdgpu_cs_vpe_blit(amdgpu_device_handle device_handle,
->>       free_resource(&dst_plane_bo);
->>   }
->> +
->> +static void amdgpu_cs_vpe2_hmirror(amdgpu_device_handle 
->> device_handle, struct mmd_context *context)
->> +{
->> +    int i, r;
->> +    uint32_t frame_size;
->> +    struct amdgpu_mmd_bo vpep_cmd_bo, src_plane_bo, dst_plane_bo;
->> +    /* same height and pitch for input and output */
->> +    const uint32_t height = 256;
->> +    const uint32_t pitch = 1024;
->> +
->> +    const uint32_t patch_vpec_index[18] = {
->> +     1,  4,  6,  8, 10, 12, 14, 16,
->> +    18, 20, 22, 24, 26, 28, 30, 32,
->> +    34, 36, };
->> +    const uint32_t patch_vpec_offset[18] = {
->> +    0x0000, 0x0080, 0x00c0, 0x0100, 0x0140, 0x01c0, 0x0740, 0x0b80,
->> +    0x0c40, 0x0cc0, 0x0d40, 0x1280, 0x16c0, 0x1780, 0x1800, 0x18c0,
->> +    0x1900, 0x19c0, };
->> +    const uint32_t patch_src_luma[2] = { 2, 8, };
->> +    const uint32_t patch_dst_luma[2] = { 14, 20, };
->> +
->> +    uint32_t *vpec_hmirror_cmd = vpe_get_vpec_hmirror_cmd();
->> +    uint32_t *vpep_hmirror_cmd = vpe_get_vpep_hmirror_cmd();
->> +
->> +    frame_size = pitch * height * 4;
->> +    context->num_resources = 0;
->> +
->> +    /* prepare source image buffer and data */
->> +    alloc_resource(device_handle, &src_plane_bo, frame_size, 
->> AMDGPU_GEM_DOMAIN_GTT);
->> +    r = amdgpu_bo_cpu_map(src_plane_bo.handle, (void 
->> **)&src_plane_bo.ptr);
->> +    igt_assert_eq(r, 0);
->> +    create_rgba8888_hmirror(src_plane_bo.ptr, pitch, height);
->> +    r = amdgpu_bo_cpu_unmap(src_plane_bo.handle);
->> +    igt_assert_eq(r, 0);
->> +
->> +    /* prepare destination image buffer */
->> +    alloc_resource(device_handle, &dst_plane_bo, frame_size, 
->> AMDGPU_GEM_DOMAIN_GTT);
->> +    r = amdgpu_bo_cpu_map(dst_plane_bo.handle, (void 
->> **)&dst_plane_bo.ptr);
->> +    igt_assert_eq(r, 0);
->> +    memset(dst_plane_bo.ptr, 0, frame_size);
->> +    r = amdgpu_bo_cpu_unmap(dst_plane_bo.handle);
->> +    igt_assert_eq(r, 0);
->> +
->> +    /* prepare VPEP command buffer and setup command buffer data */
->> +    alloc_resource(device_handle, &vpep_cmd_bo, 
->> VPEP_HMIRROR_CMD_SIZE, AMDGPU_GEM_DOMAIN_GTT);
->> +    /* patch gpu addr of vpep cmd */
->> +    for (i = 0; i < sizeof(patch_vpec_index) / sizeof(uint32_t); i++) {
->> +        vpec_hmirror_cmd[patch_vpec_index[i] + 0] = (uint32_t) 
->> (vpep_cmd_bo.addr & 0xffffffff) + patch_vpec_offset[i];
->> +        vpec_hmirror_cmd[patch_vpec_index[i] + 1] = (uint32_t) 
->> ((vpep_cmd_bo.addr & 0xffffffff00000000) >> 32);
->> +    }
->> +    /* patch gpu addr of src/dst plane */
->> +    for (i = 0; i < sizeof(patch_dst_luma) / sizeof(uint32_t); i++) {
->> +        vpep_hmirror_cmd[patch_src_luma[i] + 0] =  (uint32_t) 
->> (src_plane_bo.addr & 0xffffffff);
->> +        vpep_hmirror_cmd[patch_src_luma[i] + 1] = (uint32_t) 
->> ((src_plane_bo.addr & 0xffffffff00000000) >> 32);
->> +
->> +        vpep_hmirror_cmd[patch_dst_luma[i] + 0] =  (uint32_t) 
->> (dst_plane_bo.addr & 0xffffffff);
->> +        vpep_hmirror_cmd[patch_dst_luma[i] + 1] = (uint32_t) 
->> ((dst_plane_bo.addr & 0xffffffff00000000) >> 32);
->> +    }
->> +    r = amdgpu_bo_cpu_map(vpep_cmd_bo.handle, (void 
->> **)&vpep_cmd_bo.ptr);
->> +    igt_assert_eq(r, 0);
->> +    memset(vpep_cmd_bo.ptr, 0, VPEP_HMIRROR_CMD_SIZE);
->> +    memcpy(vpep_cmd_bo.ptr, vpep_hmirror_cmd, VPEP_HMIRROR_CMD_SIZE);
->> +    r = amdgpu_bo_cpu_unmap(vpep_cmd_bo.handle);
->> +    igt_assert_eq(r, 0);
->> +
->> +    context->resources[context->num_resources++] = context->ib_handle;
->> +    context->resources[context->num_resources++] = vpep_cmd_bo.handle;
->> +    context->resources[context->num_resources++] = src_plane_bo.handle;
->> +    context->resources[context->num_resources++] = dst_plane_bo.handle;
->> +
->> +    memset(context->ib_cpu, 0, IB_SIZE);
->> +    memcpy(context->ib_cpu, vpec_hmirror_cmd, VPEC_HMIRROR_CMD_SIZE);
->> +    r = submit(device_handle, context, VPEC_HMIRROR_CMD_SIZE / 4, 
->> AMDGPU_HW_IP_VPE);
->> +    igt_assert_eq(r, 0);
->> +
->> +    r = amdgpu_bo_cpu_map(dst_plane_bo.handle, (void 
->> **)&dst_plane_bo.ptr);
->> +    igt_assert_eq(r, 0);
->> +    r = check_rgba8888_hmirror(dst_plane_bo.ptr, pitch, height);
->> +    igt_assert_eq(r, 0);
->> +    r = amdgpu_bo_cpu_unmap(dst_plane_bo.handle);
->> +    igt_assert_eq(r, 0);
->> +
->> +    free_resource(&vpep_cmd_bo);
->> +    free_resource(&src_plane_bo);
->> +    free_resource(&dst_plane_bo);
->> +}
->> +
->>   int igt_main()
->>   {
->>       struct mmd_context context = {};
->> @@ -249,6 +372,10 @@ int igt_main()
->>       igt_subtest("vpe-blit-test")
->>       amdgpu_cs_vpe_blit(device, &context);
->> +    igt_describe("Test VPE2 blit");
->> +    igt_subtest("vpe2-blit-test")
->> +    amdgpu_cs_vpe2_hmirror(device, &context);
-> Please add an indent
-> 
-
-Ok. Will fix this.
-
-
-thanks,
-Caden>> +
->>       igt_fixture() {
->>           amdgpu_device_deinitialize(device);
->>           drm_close_driver(fd);
->> diff --git a/tests/amdgpu/amd_vpe.h b/tests/amdgpu/amd_vpe.h
->> new file mode 100644
->> index 000000000..31015ccfb
->> --- /dev/null
->> +++ b/tests/amdgpu/amd_vpe.h
->> @@ -0,0 +1,27 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright 2026 Advanced Micro Devices, Inc.
->> + */
->> +
->> +#ifndef AMD_VPE_H
->> +#define AMD_VPE_H
->> +
->> +#include <amdgpu.h>
->> +
->> +/* horizontal mirror commands
->> + * source:      1024(pitch 1024) x 256 RGBA
->> + * destination: 1024(pitch 1024) x 256 RGBA
->> + */
->> +
->> +#define LEFT_PLANE_PATTERN    0xff123456
->> +#define RIGHT_PLANE_PATTERN    0xff654321
->> +
->> +#define VPEC_HMIRROR_CMD_LENGTH    38
->> +#define VPEP_HMIRROR_CMD_LENGTH    1661
->> +#define VPEC_HMIRROR_CMD_SIZE    (VPEC_HMIRROR_CMD_LENGTH * 
->> sizeof(uint32_t))
->> +#define VPEP_HMIRROR_CMD_SIZE    (VPEP_HMIRROR_CMD_LENGTH * 
->> sizeof(uint32_t))
->> +
->> +uint32_t *vpe_get_vpec_hmirror_cmd(void);
->> +uint32_t *vpe_get_vpep_hmirror_cmd(void);
->> +
->> +#endif /* AMD_VPE_H */
->> diff --git a/tests/amdgpu/amd_vpe_cmd.c b/tests/amdgpu/amd_vpe_cmd.c
->> new file mode 100644
-> 
-> Hi Jani,
-> 
-> Does adding a new amd_vpe_cmd.c solve your concerns of not defining 
-> arrays in header files but adding another .c file with the data, and 
-> provide functions for access?
-> 
->> index 000000000..b7849a5f8
->> --- /dev/null
->> +++ b/tests/amdgpu/amd_vpe_cmd.c
->> @@ -0,0 +1,233 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright 2026 Advanced Micro Devices, Inc.
->> + */
->> +
->> +#include "amd_vpe.h"
->> +
->> +static uint32_t vpec_hmirror_cmd[38] = {
->> +0x00000001, 0x00800000, 0xffff8001, 0x00000010, 0x00800080, 
->> 0xffff8001, 0x008000c0, 0xffff8001,
->> +0x00800100, 0xffff8001, 0x00800140, 0xffff8001, 0x008001c0, 
->> 0xffff8001, 0x00800740, 0xffff8001,
->> +0x00800b80, 0xffff8001, 0x00800c40, 0xffff8001, 0x00800cc0, 
->> 0xffff8001, 0x00800d40, 0xffff8001,
->> +0x00801280, 0xffff8001, 0x008016c0, 0xffff8001, 0x00801780, 
->> 0xffff8001, 0x00801800, 0xffff8001,
->> +0x008018c0, 0xffff8001, 0x00801900, 0xffff8001, 0x008019c0, 
->> 0xffff8001, };
->> +
->> +static uint32_t vpep_hmirror_cmd[1661] = {
->> +0x00000202, 0x00000004, 0x00400000, 0xffff8001, 0x400003ff, 
->> 0x00000200, 0x00ff01ff, 0x00000004,
->> +0x00400000, 0xffff8001, 0x400003ff, 0x00000000, 0x00ff01ff, 
->> 0x00000000, 0x00500000, 0xffff8001,
->> +0x400003ff, 0x00000000, 0x00ff01ff, 0x00000000, 0x00500000, 
->> 0xffff8001, 0x400003ff, 0x00000200,
->> +0x00ff01ff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00070003, 0x0004ab64, 0x00000000, 0x0004ab68, 0x00000000, 
->> 0x0004ab6c, 0x00000000, 0x0004ab70,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00070003, 0x0004ac70, 0x00000000, 0x0004ac74, 0x00000000, 
->> 0x0004ac78, 0x00000000, 0x0004ac7c,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00010003, 0x00049c88, 0x0000000f, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x001e0003, 0x00047808, 0x00003008, 0x0004780c, 0x000000b4, 
->> 0x00047d10, 0x00000008, 0x00047d14,
->> +0x00000101, 0x00047d30, 0x00000000, 0x00047d18, 0x00000000, 
->> 0x00047d1c, 0x00000000, 0x00047d20,
->> +0x00000000, 0x00047d24, 0x0001f010, 0x00047d28, 0x0001f010, 
->> 0x00047d2c, 0x0001f010, 0x00548079,
->> +0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 
->> 0x00002000, 0x00048074, 0x00000001,
->> +0x01510003, 0x00048070, 0x00000000, 0x00048138, 0x00000004, 
->> 0x000480a4, 0x00000007, 0x0004809c,
->> +0x00000000, 0x00048098, 0x00000002, 0x000480a8, 0x00016000, 
->> 0x000480ac, 0x00016000, 0x000480b0,
->> +0x00016000, 0x000480c8, 0x00000000, 0x000480c4, 0x00000000, 
->> 0x000480c0, 0x00000000, 0x000480ec,
->> +0x00000000, 0x000480e8, 0x00000000, 0x000480e4, 0x00000000, 
->> 0x000480b4, 0x0001b3d0, 0x000480b8,
->> +0x0001b3d0, 0x000480bc, 0x0001b3d0, 0x000480cc, 0x0001f000, 
->> 0x000480d4, 0x0001f000, 0x000480dc,
->> +0x0001f000, 0x000480d0, 0x00007c00, 0x000480d8, 0x00007c00, 
->> 0x000480e0, 0x00007c00, 0x010480f1,
->> +0x00010000, 0x20041002, 0x40103008, 0x60405020, 0x00007080, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x100480a0, 0x000123d0, 0x000133d0, 0x000143d0, 
->> 0x00014db8, 0x000153d0, 0x000158c4,
->> +0x00015db8, 0x00016156, 0x000163d0, 0x0001664a, 0x000168c4, 
->> 0x00016b4d, 0x00016dfc, 0x00017069,
->> +0x000171e7, 0x00017378, 0x0001751e, 0x000176d7, 0x000178a5, 
->> 0x00017a87, 0x00017c7e, 0x00017e8b,
->> +0x00018056, 0x00018172, 0x00018298, 0x000183ca, 0x00018506, 
->> 0x0001864e, 0x000187a2, 0x00018901,
->> +0x00018a6b, 0x00018be1, 0x00018d63, 0x00018ef1, 0x00019045, 
->> 0x00019118, 0x000191f1, 0x000192d0,
->> +0x000193b6, 0x000194a1, 0x00019593, 0x0001968c, 0x0001978a, 
->> 0x00019890, 0x0001999b, 0x00019aad,
->> +0x00019bc6, 0x00019ce6, 0x00019e0c, 0x00019f38, 0x0001a036, 
->> 0x0001a0d3, 0x0001a173, 0x0001a217,
->> +0x0001a2bf, 0x0001a36a, 0x0001a418, 0x0001a4ca, 0x0001a580, 
->> 0x0001a639, 0x0001a6f5, 0x0001a7b5,
->> +0x0001a879, 0x0001a941, 0x0001aa0c, 0x0001aadb, 0x0001abad, 
->> 0x0001ac83, 0x0001ad5d, 0x0001ae3b,
->> +0x0001af1d, 0x0001b001, 0x0001b075, 0x0001b0ec, 0x0001b164, 
->> 0x0001b1de, 0x0001b25b, 0x0001b2d9,
->> +0x0001b359, 0x0001b3db, 0x0001b45f, 0x0001b4e5, 0x0001b56d, 
->> 0x0001b5f7, 0x0001b683, 0x0001b711,
->> +0x0001b7a1, 0x0001b833, 0x0001b8c7, 0x0001b95e, 0x0001b9f6, 
->> 0x0001ba90, 0x0001bb2c, 0x0001bbcb,
->> +0x0001bc6b, 0x0001bd0e, 0x0001bdb3, 0x0001be5a, 0x0001bf02, 
->> 0x0001bfae, 0x0001c02d, 0x0001c085,
->> +0x0001c0de, 0x0001c137, 0x0001c192, 0x0001c1ee, 0x0001c24b, 
->> 0x0001c2a9, 0x0001c309, 0x0001c369,
->> +0x0001c3cb, 0x0001c42d, 0x0001c491, 0x0001c4f6, 0x0001c55b, 
->> 0x0001c5c2, 0x0001c62b, 0x0001c694,
->> +0x0001c6fe, 0x0001c76a, 0x0001c7d6, 0x0001c844, 0x0001c8b3, 
->> 0x0001c923, 0x0001c995, 0x0001ca07,
->> +0x0001ca7b, 0x0001caef, 0x0001cb65, 0x0001cbdc, 0x0001cc54, 
->> 0x0001ccce, 0x0001cd48, 0x0001cdc4,
->> +0x0001ce41, 0x0001cebf, 0x0001cf3f, 0x0001cfbf, 0x0001d020, 
->> 0x0001d062, 0x0001d0a4, 0x0001d0e6,
->> +0x0001d12a, 0x0001d16d, 0x0001d1b2, 0x0001d1f7, 0x0001d23d, 
->> 0x0001d283, 0x0001d2ca, 0x0001d312,
->> +0x0001d35a, 0x0001d3a2, 0x0001d3ec, 0x0001d436, 0x0001d481, 
->> 0x0001d4cc, 0x0001d518, 0x0001d564,
->> +0x0001d5b1, 0x0001d5ff, 0x0001d64d, 0x0001d69d, 0x0001d6ec, 
->> 0x0001d73d, 0x0001d78d, 0x0001d7df,
->> +0x0001d831, 0x0001d884, 0x0001d8d8, 0x0001d92c, 0x0001d981, 
->> 0x0001d9d6, 0x0001da2c, 0x0001da83,
->> +0x0001dada, 0x0001db32, 0x0001db8b, 0x0001dbe4, 0x0001dc3e, 
->> 0x0001dc99, 0x0001dcf4, 0x0001dd50,
->> +0x0001ddad, 0x0001de0a, 0x0001de68, 0x0001dec7, 0x0001df26, 
->> 0x0001df86, 0x0001dfe7, 0x0001e024,
->> +0x0001e055, 0x0001e086, 0x0001e0b8, 0x0001e0ea, 0x0001e11c, 
->> 0x0001e14f, 0x0001e182, 0x0001e1b5,
->> +0x0001e1e9, 0x0001e21d, 0x0001e252, 0x0001e286, 0x0001e2bc, 
->> 0x0001e2f1, 0x0001e327, 0x0001e35d,
->> +0x0001e393, 0x0001e3ca, 0x0001e401, 0x0001e439, 0x0001e471, 
->> 0x0001e4a9, 0x0001e4e2, 0x0001e51b,
->> +0x0001e554, 0x0001e58d, 0x0001e5c7, 0x0001e602, 0x0001e63c, 
->> 0x0001e678, 0x0001e6b3, 0x0001e6ef,
->> +0x0001e72b, 0x0001e767, 0x0001e7a4, 0x0001e7e1, 0x0001e81f, 
->> 0x0001e85d, 0x0001e89b, 0x0001e8da,
->> +0x0001e919, 0x0001e958, 0x0001e998, 0x0001e9d8, 0x0001ea18, 
->> 0x0001ea59, 0x0001ea9a, 0x0001eadc,
->> +0x0001eb1e, 0x0001eb60, 0x0001eba3, 0x0001ebe6, 0x0001ec29, 
->> 0x0001ec6d, 0x0001ecb1, 0x0001ecf5,
->> +0x0001ed3a, 0x0001ed80, 0x0001edc5, 0x0001ee0b, 0x0001ee51, 
->> 0x0001ee98, 0x0001eedf, 0x0001ef27,
->> +0x0001ef6f, 0x0001efb7, 0x0001f000, 0x00049c90, 0x00000000, 
->> 0x00049700, 0x00000000, 0x00049704,
->> +0x0000000f, 0x00049e24, 0x00000000, 0x00049708, 0x00000000, 
->> 0x0004970c, 0x00000062, 0x00049c68,
->> +0x00000000, 0x00049bc0, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x01030003, 0x0004a2e4, 0x00050001, 0x0004a214, 0x00000007, 
->> 0x0004a20c, 0x00000000, 0x0004a218,
->> +0x00013000, 0x0004a21c, 0x00013000, 0x0004a220, 0x00013000, 
->> 0x0004a238, 0x00000000, 0x0004a234,
->> +0x00000000, 0x0004a230, 0x00000000, 0x0004a25c, 0x00000000, 
->> 0x0004a258, 0x00000000, 0x0004a254,
->> +0x00000000, 0x0004a224, 0x000229d7, 0x0004a228, 0x000229d7, 
->> 0x0004a22c, 0x000229d7, 0x0004a23c,
->> +0x0001f000, 0x0004a244, 0x0001f000, 0x0004a24c, 0x0001f000, 
->> 0x0004a240, 0x00008000, 0x0004a248,
->> +0x00008000, 0x0004a250, 0x00008000, 0x0104a261, 0x40083000, 
->> 0x40284018, 0x40484038, 0x40684058,
->> +0x40884078, 0x40a84098, 0x00ba10b8, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x0ba4a210, 0x000169d7, 0x00016d11,
->> +0x00017026, 0x000171c3, 0x00017361, 0x000174fe, 0x0001769c, 
->> 0x00017839, 0x000179d7, 0x00017b74,
->> +0x00017d11, 0x00017eaf, 0x00018026, 0x000180f5, 0x000181c3, 
->> 0x00018292, 0x00018361, 0x00018430,
->> +0x000184fe, 0x000185cd, 0x0001869c, 0x0001876a, 0x00018839, 
->> 0x00018908, 0x000189d7, 0x00018b74,
->> +0x00018d11, 0x00018eaf, 0x00019026, 0x000190f5, 0x000191c3, 
->> 0x00019292, 0x00019361, 0x00019430,
->> +0x000194fe, 0x000195cd, 0x0001969c, 0x0001976a, 0x00019839, 
->> 0x00019908, 0x000199d7, 0x00019b74,
->> +0x00019d11, 0x00019eaf, 0x0001a026, 0x0001a0f5, 0x0001a1c3, 
->> 0x0001a292, 0x0001a361, 0x0001a430,
->> +0x0001a4fd, 0x0001a5c4, 0x0001a687, 0x0001a746, 0x0001a802, 
->> 0x0001a8b9, 0x0001a96e, 0x0001aacd,
->> +0x0001ac20, 0x0001ad68, 0x0001aea6, 0x0001afdc, 0x0001b084, 
->> 0x0001b116, 0x0001b1a5, 0x0001b230,
->> +0x0001b2b9, 0x0001b33e, 0x0001b3c0, 0x0001b440, 0x0001b4bd, 
->> 0x0001b537, 0x0001b5af, 0x0001b69a,
->> +0x0001b77c, 0x0001b857, 0x0001b92c, 0x0001b9fa, 0x0001bac3, 
->> 0x0001bb86, 0x0001bc45, 0x0001bcff,
->> +0x0001bdb4, 0x0001be66, 0x0001bf14, 0x0001bfbe, 0x0001c032, 
->> 0x0001c084, 0x0001c0d4, 0x0001c171,
->> +0x0001c208, 0x0001c29a, 0x0001c328, 0x0001c3b2, 0x0001c438, 
->> 0x0001c4ba, 0x0001c539, 0x0001c5b5,
->> +0x0001c62f, 0x0001c6a5, 0x0001c719, 0x0001c78b, 0x0001c7fa, 
->> 0x0001c868, 0x0001c8d3, 0x0001c9a3,
->> +0x0001ca6d, 0x0001cb30, 0x0001cbee, 0x0001cca5, 0x0001cd58, 
->> 0x0001ce06, 0x0001ceb0, 0x0001cf56,
->> +0x0001cff8, 0x0001d04b, 0x0001d098, 0x0001d0e4, 0x0001d12e, 
->> 0x0001d177, 0x0001d1bf, 0x0001d24a,
->> +0x0001d2d1, 0x0001d353, 0x0001d3d1, 0x0001d44c, 0x0001d4c3, 
->> 0x0001d538, 0x0001d5a9, 0x0001d618,
->> +0x0001d684, 0x0001d6ed, 0x0001d755, 0x0001d7ba, 0x0001d81d, 
->> 0x0001d87e, 0x0001d8de, 0x0001d998,
->> +0x0001da4b, 0x0001daf9, 0x0001dba2, 0x0001dc46, 0x0001dce5, 
->> 0x0001dd80, 0x0001de17, 0x0001deab,
->> +0x0001df3b, 0x0001dfc8, 0x0001e029, 0x0001e06c, 0x0001e0af, 
->> 0x0001e0f0, 0x0001e12f, 0x0001e1ab,
->> +0x0001e223, 0x0001e297, 0x0001e308, 0x0001e375, 0x0001e3e0, 
->> 0x0001e447, 0x0001e4ac, 0x0001e50f,
->> +0x0001e56f, 0x0001e5cd, 0x0001e629, 0x0001e683, 0x0001e6dc, 
->> 0x0001e732, 0x0001e788, 0x0001e82d,
->> +0x0001e8cd, 0x0001e968, 0x0001e9fe, 0x0001ea90, 0x0001eb1e, 
->> 0x0001eba8, 0x0001ec2f, 0x0001ecb3,
->> +0x0001ed33, 0x0001edb1, 0x0001ee2c, 0x0001eea4, 0x0001ef1a, 
->> 0x0001ef8e, 0x0001f000, 0x0001f000,
->> +0x0001f000, 0x0004a208, 0x00000002, 0x00049720, 0x00000000, 
->> 0x0004a2a8, 0x00000000, 0x0004a2c8,
->> +0x00000000, 0x000498f0, 0x00000000, 0x00048134, 0x0001f000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x002d0003, 0x00047da8, 0x00000000, 0x00047e18, 0x00000004, 
->> 0x00047e0c, 0x00000010, 0x00047e10,
->> +0x00000c00, 0x00047dbc, 0x01000000, 0x00047dcc, 0x01000000, 
->> 0x00047dc4, 0x01000000, 0x00047dd8,
->> +0x01000000, 0x00047dac, 0x00000000, 0x00047da8, 0x00000000, 
->> 0x00047e24, 0x00000100, 0x00047e20,
->> +0x00000100, 0x00047e28, 0x00000000, 0x00047e2c, 0x396d3434, 
->> 0x00047e30, 0x00002b97, 0x0004970c,
->> +0x00000022, 0x00049710, 0x0fff0fff, 0x00049714, 0x0001f000, 
->> 0x00049718, 0x0001f000, 0x0004971c,
->> +0x0001f000, 0x00049724, 0x00000000, 0x00049728, 0x00000000, 
->> 0x0004972c, 0x00000000, 0x00000000,
->> +0x001b0003, 0x00047810, 0x00000200, 0x00047814, 0x01000200, 
->> 0x00047818, 0x00000200, 0x0004781c,
->> +0x01000200, 0x00047e00, 0x00000000, 0x00047e04, 0x01000200, 
->> 0x00047e08, 0x01000200, 0x00047dc0,
->> +0x01800000, 0x00047dc8, 0x01800000, 0x00047dd0, 0x01800000, 
->> 0x00047dd4, 0x02800000, 0x00047ddc,
->> +0x01800000, 0x00047de0, 0x02800000, 0x00048350, 0x70000100, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x001e0003, 0x00047820, 0x00003008, 0x00047824, 0x000000b4, 
->> 0x00048380, 0x00000008, 0x00048384,
->> +0x00000101, 0x000483a0, 0x00000000, 0x00048388, 0x00000000, 
->> 0x0004838c, 0x00000000, 0x00048390,
->> +0x00000000, 0x00048394, 0x0001f010, 0x00048398, 0x0001f010, 
->> 0x0004839c, 0x0001f010, 0x005486e9,
->> +0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 
->> 0x00002000, 0x000486e4, 0x00000001,
->> +0x014b0003, 0x000486e0, 0x00000000, 0x000487a8, 0x00000004, 
->> 0x00048714, 0x00000007, 0x0004870c,
->> +0x00000000, 0x00048708, 0x00000002, 0x00048718, 0x00016000, 
->> 0x0004871c, 0x00016000, 0x00048720,
->> +0x00016000, 0x00048738, 0x00000000, 0x00048734, 0x00000000, 
->> 0x00048730, 0x00000000, 0x0004875c,
->> +0x00000000, 0x00048758, 0x00000000, 0x00048754, 0x00000000, 
->> 0x00048724, 0x0001b3d0, 0x00048728,
->> +0x0001b3d0, 0x0004872c, 0x0001b3d0, 0x0004873c, 0x0001f000, 
->> 0x00048744, 0x0001f000, 0x0004874c,
->> +0x0001f000, 0x00048740, 0x00007c00, 0x00048748, 0x00007c00, 
->> 0x00048750, 0x00007c00, 0x01048761,
->> +0x00010000, 0x20041002, 0x40103008, 0x60405020, 0x00007080, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x10048710, 0x000123d0, 0x000133d0, 0x000143d0, 
->> 0x00014db8, 0x000153d0, 0x000158c4,
->> +0x00015db8, 0x00016156, 0x000163d0, 0x0001664a, 0x000168c4, 
->> 0x00016b4d, 0x00016dfc, 0x00017069,
->> +0x000171e7, 0x00017378, 0x0001751e, 0x000176d7, 0x000178a5, 
->> 0x00017a87, 0x00017c7e, 0x00017e8b,
->> +0x00018056, 0x00018172, 0x00018298, 0x000183ca, 0x00018506, 
->> 0x0001864e, 0x000187a2, 0x00018901,
->> +0x00018a6b, 0x00018be1, 0x00018d63, 0x00018ef1, 0x00019045, 
->> 0x00019118, 0x000191f1, 0x000192d0,
->> +0x000193b6, 0x000194a1, 0x00019593, 0x0001968c, 0x0001978a, 
->> 0x00019890, 0x0001999b, 0x00019aad,
->> +0x00019bc6, 0x00019ce6, 0x00019e0c, 0x00019f38, 0x0001a036, 
->> 0x0001a0d3, 0x0001a173, 0x0001a217,
->> +0x0001a2bf, 0x0001a36a, 0x0001a418, 0x0001a4ca, 0x0001a580, 
->> 0x0001a639, 0x0001a6f5, 0x0001a7b5,
->> +0x0001a879, 0x0001a941, 0x0001aa0c, 0x0001aadb, 0x0001abad, 
->> 0x0001ac83, 0x0001ad5d, 0x0001ae3b,
->> +0x0001af1d, 0x0001b001, 0x0001b075, 0x0001b0ec, 0x0001b164, 
->> 0x0001b1de, 0x0001b25b, 0x0001b2d9,
->> +0x0001b359, 0x0001b3db, 0x0001b45f, 0x0001b4e5, 0x0001b56d, 
->> 0x0001b5f7, 0x0001b683, 0x0001b711,
->> +0x0001b7a1, 0x0001b833, 0x0001b8c7, 0x0001b95e, 0x0001b9f6, 
->> 0x0001ba90, 0x0001bb2c, 0x0001bbcb,
->> +0x0001bc6b, 0x0001bd0e, 0x0001bdb3, 0x0001be5a, 0x0001bf02, 
->> 0x0001bfae, 0x0001c02d, 0x0001c085,
->> +0x0001c0de, 0x0001c137, 0x0001c192, 0x0001c1ee, 0x0001c24b, 
->> 0x0001c2a9, 0x0001c309, 0x0001c369,
->> +0x0001c3cb, 0x0001c42d, 0x0001c491, 0x0001c4f6, 0x0001c55b, 
->> 0x0001c5c2, 0x0001c62b, 0x0001c694,
->> +0x0001c6fe, 0x0001c76a, 0x0001c7d6, 0x0001c844, 0x0001c8b3, 
->> 0x0001c923, 0x0001c995, 0x0001ca07,
->> +0x0001ca7b, 0x0001caef, 0x0001cb65, 0x0001cbdc, 0x0001cc54, 
->> 0x0001ccce, 0x0001cd48, 0x0001cdc4,
->> +0x0001ce41, 0x0001cebf, 0x0001cf3f, 0x0001cfbf, 0x0001d020, 
->> 0x0001d062, 0x0001d0a4, 0x0001d0e6,
->> +0x0001d12a, 0x0001d16d, 0x0001d1b2, 0x0001d1f7, 0x0001d23d, 
->> 0x0001d283, 0x0001d2ca, 0x0001d312,
->> +0x0001d35a, 0x0001d3a2, 0x0001d3ec, 0x0001d436, 0x0001d481, 
->> 0x0001d4cc, 0x0001d518, 0x0001d564,
->> +0x0001d5b1, 0x0001d5ff, 0x0001d64d, 0x0001d69d, 0x0001d6ec, 
->> 0x0001d73d, 0x0001d78d, 0x0001d7df,
->> +0x0001d831, 0x0001d884, 0x0001d8d8, 0x0001d92c, 0x0001d981, 
->> 0x0001d9d6, 0x0001da2c, 0x0001da83,
->> +0x0001dada, 0x0001db32, 0x0001db8b, 0x0001dbe4, 0x0001dc3e, 
->> 0x0001dc99, 0x0001dcf4, 0x0001dd50,
->> +0x0001ddad, 0x0001de0a, 0x0001de68, 0x0001dec7, 0x0001df26, 
->> 0x0001df86, 0x0001dfe7, 0x0001e024,
->> +0x0001e055, 0x0001e086, 0x0001e0b8, 0x0001e0ea, 0x0001e11c, 
->> 0x0001e14f, 0x0001e182, 0x0001e1b5,
->> +0x0001e1e9, 0x0001e21d, 0x0001e252, 0x0001e286, 0x0001e2bc, 
->> 0x0001e2f1, 0x0001e327, 0x0001e35d,
->> +0x0001e393, 0x0001e3ca, 0x0001e401, 0x0001e439, 0x0001e471, 
->> 0x0001e4a9, 0x0001e4e2, 0x0001e51b,
->> +0x0001e554, 0x0001e58d, 0x0001e5c7, 0x0001e602, 0x0001e63c, 
->> 0x0001e678, 0x0001e6b3, 0x0001e6ef,
->> +0x0001e72b, 0x0001e767, 0x0001e7a4, 0x0001e7e1, 0x0001e81f, 
->> 0x0001e85d, 0x0001e89b, 0x0001e8da,
->> +0x0001e919, 0x0001e958, 0x0001e998, 0x0001e9d8, 0x0001ea18, 
->> 0x0001ea59, 0x0001ea9a, 0x0001eadc,
->> +0x0001eb1e, 0x0001eb60, 0x0001eba3, 0x0001ebe6, 0x0001ec29, 
->> 0x0001ec6d, 0x0001ecb1, 0x0001ecf5,
->> +0x0001ed3a, 0x0001ed80, 0x0001edc5, 0x0001ee0b, 0x0001ee51, 
->> 0x0001ee98, 0x0001eedf, 0x0001ef27,
->> +0x0001ef6f, 0x0001efb7, 0x0001f000, 0x00049754, 0x00000001, 
->> 0x00049758, 0x0000000f, 0x00049e38,
->> +0x00000001, 0x0004975c, 0x00000001, 0x00049760, 0x00000062, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x01030003, 0x0004a524, 0x00050001, 0x0004a454, 0x00000007, 
->> 0x0004a44c, 0x00000000, 0x0004a458,
->> +0x00013000, 0x0004a45c, 0x00013000, 0x0004a460, 0x00013000, 
->> 0x0004a478, 0x00000000, 0x0004a474,
->> +0x00000000, 0x0004a470, 0x00000000, 0x0004a49c, 0x00000000, 
->> 0x0004a498, 0x00000000, 0x0004a494,
->> +0x00000000, 0x0004a464, 0x000229d7, 0x0004a468, 0x000229d7, 
->> 0x0004a46c, 0x000229d7, 0x0004a47c,
->> +0x0001f000, 0x0004a484, 0x0001f000, 0x0004a48c, 0x0001f000, 
->> 0x0004a480, 0x00008000, 0x0004a488,
->> +0x00008000, 0x0004a490, 0x00008000, 0x0104a4a1, 0x40083000, 
->> 0x40284018, 0x40484038, 0x40684058,
->> +0x40884078, 0x40a84098, 0x00ba10b8, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x0ba4a450, 0x000169d7, 0x00016d11,
->> +0x00017026, 0x000171c3, 0x00017361, 0x000174fe, 0x0001769c, 
->> 0x00017839, 0x000179d7, 0x00017b74,
->> +0x00017d11, 0x00017eaf, 0x00018026, 0x000180f5, 0x000181c3, 
->> 0x00018292, 0x00018361, 0x00018430,
->> +0x000184fe, 0x000185cd, 0x0001869c, 0x0001876a, 0x00018839, 
->> 0x00018908, 0x000189d7, 0x00018b74,
->> +0x00018d11, 0x00018eaf, 0x00019026, 0x000190f5, 0x000191c3, 
->> 0x00019292, 0x00019361, 0x00019430,
->> +0x000194fe, 0x000195cd, 0x0001969c, 0x0001976a, 0x00019839, 
->> 0x00019908, 0x000199d7, 0x00019b74,
->> +0x00019d11, 0x00019eaf, 0x0001a026, 0x0001a0f5, 0x0001a1c3, 
->> 0x0001a292, 0x0001a361, 0x0001a430,
->> +0x0001a4fd, 0x0001a5c4, 0x0001a687, 0x0001a746, 0x0001a802, 
->> 0x0001a8b9, 0x0001a96e, 0x0001aacd,
->> +0x0001ac20, 0x0001ad68, 0x0001aea6, 0x0001afdc, 0x0001b084, 
->> 0x0001b116, 0x0001b1a5, 0x0001b230,
->> +0x0001b2b9, 0x0001b33e, 0x0001b3c0, 0x0001b440, 0x0001b4bd, 
->> 0x0001b537, 0x0001b5af, 0x0001b69a,
->> +0x0001b77c, 0x0001b857, 0x0001b92c, 0x0001b9fa, 0x0001bac3, 
->> 0x0001bb86, 0x0001bc45, 0x0001bcff,
->> +0x0001bdb4, 0x0001be66, 0x0001bf14, 0x0001bfbe, 0x0001c032, 
->> 0x0001c084, 0x0001c0d4, 0x0001c171,
->> +0x0001c208, 0x0001c29a, 0x0001c328, 0x0001c3b2, 0x0001c438, 
->> 0x0001c4ba, 0x0001c539, 0x0001c5b5,
->> +0x0001c62f, 0x0001c6a5, 0x0001c719, 0x0001c78b, 0x0001c7fa, 
->> 0x0001c868, 0x0001c8d3, 0x0001c9a3,
->> +0x0001ca6d, 0x0001cb30, 0x0001cbee, 0x0001cca5, 0x0001cd58, 
->> 0x0001ce06, 0x0001ceb0, 0x0001cf56,
->> +0x0001cff8, 0x0001d04b, 0x0001d098, 0x0001d0e4, 0x0001d12e, 
->> 0x0001d177, 0x0001d1bf, 0x0001d24a,
->> +0x0001d2d1, 0x0001d353, 0x0001d3d1, 0x0001d44c, 0x0001d4c3, 
->> 0x0001d538, 0x0001d5a9, 0x0001d618,
->> +0x0001d684, 0x0001d6ed, 0x0001d755, 0x0001d7ba, 0x0001d81d, 
->> 0x0001d87e, 0x0001d8de, 0x0001d998,
->> +0x0001da4b, 0x0001daf9, 0x0001dba2, 0x0001dc46, 0x0001dce5, 
->> 0x0001dd80, 0x0001de17, 0x0001deab,
->> +0x0001df3b, 0x0001dfc8, 0x0001e029, 0x0001e06c, 0x0001e0af, 
->> 0x0001e0f0, 0x0001e12f, 0x0001e1ab,
->> +0x0001e223, 0x0001e297, 0x0001e308, 0x0001e375, 0x0001e3e0, 
->> 0x0001e447, 0x0001e4ac, 0x0001e50f,
->> +0x0001e56f, 0x0001e5cd, 0x0001e629, 0x0001e683, 0x0001e6dc, 
->> 0x0001e732, 0x0001e788, 0x0001e82d,
->> +0x0001e8cd, 0x0001e968, 0x0001e9fe, 0x0001ea90, 0x0001eb1e, 
->> 0x0001eba8, 0x0001ec2f, 0x0001ecb3,
->> +0x0001ed33, 0x0001edb1, 0x0001ee2c, 0x0001eea4, 0x0001ef1a, 
->> 0x0001ef8e, 0x0001f000, 0x0001f000,
->> +0x0001f000, 0x0004a448, 0x00000002, 0x00049774, 0x00000000, 
->> 0x0004a4e8, 0x00000000, 0x0004a508,
->> +0x00000000, 0x000499cc, 0x00000000, 0x000487a4, 0x0001f000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x002d0003, 0x00048418, 0x00000000, 0x00048488, 0x00000004, 
->> 0x0004847c, 0x00000010, 0x00048480,
->> +0x00000c00, 0x0004842c, 0x01000000, 0x0004843c, 0x01000000, 
->> 0x00048434, 0x01000000, 0x00048448,
->> +0x01000000, 0x0004841c, 0x00000000, 0x00048418, 0x00000000, 
->> 0x00048494, 0x00000100, 0x00048490,
->> +0x00000100, 0x00048498, 0x00000000, 0x0004849c, 0x396d3434, 
->> 0x000484a0, 0x00002b97, 0x00049760,
->> +0x00000022, 0x00049764, 0x0fff0fff, 0x00049768, 0x0001f000, 
->> 0x0004976c, 0x0001f000, 0x00049770,
->> +0x0001f000, 0x00049778, 0x00000000, 0x0004977c, 0x00000000, 
->> 0x00049780, 0x00000000, 0x00000000,
->> +0x001b0003, 0x00047828, 0x00000000, 0x0004782c, 0x01000200, 
->> 0x00047830, 0x00000000, 0x00047834,
->> +0x01000200, 0x00048470, 0x00000000, 0x00048474, 0x01000200, 
->> 0x00048478, 0x01000200, 0x00048430,
->> +0x01800000, 0x00048438, 0x01800000, 0x00048440, 0x01800000, 
->> 0x00048444, 0x02800000, 0x0004844c,
->> +0x01800000, 0x00048450, 0x02800000, 0x00048350, 0x70000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x002e0003, 0x0004783c, 0x0960f014, 0x0004789c, 0x00000000, 
->> 0x0004af1c, 0x00000000, 0x00049850,
->> +0x00000000, 0x00049e28, 0x00000000, 0x00049e2c, 0x02fff000, 
->> 0x00049e30, 0x00fff000, 0x00049e34,
->> +0x00fff000, 0x00049730, 0x00000014, 0x00049730, 0x00000014, 
->> 0x00049730, 0x00000014, 0x00049e74,
->> +0x00000000, 0x00049e78, 0x00000001, 0x00549e7d, 0x00002000, 
->> 0x00000000, 0x20000000, 0x00000000,
->> +0x00000000, 0x00002000, 0x0004ab60, 0xffff0000, 0x0004ab60, 
->> 0xffff0000, 0x0004ab60, 0xffff0000,
->> +0x0004aacc, 0x00000000, 0x0004aad4, 0x00000013, 0x0004aad4, 
->> 0x00000013, 0x0004aae4, 0x00000000,
->> +0x000b0003, 0x0004ab64, 0x00000000, 0x0004ab68, 0x00000000, 
->> 0x0004ab6c, 0x00000000, 0x0004ab70,
->> +0x00000000, 0x0004aad0, 0x00000000, 0x00047838, 0x00000827, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x002a0003, 0x00047844, 0x0960f014, 0x0004992c, 0x00000000, 
->> 0x00049e3c, 0x00000000, 0x00049e40,
->> +0x02fff000, 0x00049e44, 0x00fff000, 0x00049e48, 0x00fff000, 
->> 0x00049784, 0x00000014, 0x00049784,
->> +0x00000014, 0x00049784, 0x00000014, 0x00049e74, 0x00000000, 
->> 0x00049e94, 0x00000001, 0x00549e99,
->> +0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 
->> 0x00002000, 0x0004ac6c, 0xffff0000,
->> +0x0004ac6c, 0xffff0000, 0x0004ac6c, 0xffff0000, 0x0004abd8, 
->> 0x00000000, 0x0004abe0, 0x00000013,
->> +0x0004abe0, 0x00000013, 0x0004abf0, 0x00000000, 0x00000000, 
->> 0x00000000, 0x00000000, 0x00000000,
->> +0x000b0003, 0x0004ac70, 0x00000000, 0x0004ac74, 0x00000000, 
->> 0x0004ac78, 0x00000000, 0x0004ac7c,
->> +0x00000000, 0x0004abdc, 0x00000000, 0x00047840, 0x00000827, };
->> +
->> +uint32_t *vpe_get_vpec_hmirror_cmd(void)
->> +{
->> +    return vpec_hmirror_cmd;
->> +}
->> +
->> +uint32_t *vpe_get_vpep_hmirror_cmd(void)
->> +{
->> +    return vpep_hmirror_cmd;
->> +}
->> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
->> index 801239547..e85aef6e1 100644
->> --- a/tests/amdgpu/meson.build
->> +++ b/tests/amdgpu/meson.build
->> @@ -50,7 +50,6 @@ if libdrm_amdgpu.found()
->>                 'amd_mall',
->>                 'amd_odm',
->>                 'amd_subvp',
->> -              'amd_vpe',
->>                 'amd_mem',
->>                 'amd_remote_mem',
->>                             'amd_userptr_invalidation',
->> @@ -82,6 +81,15 @@ if libdrm_amdgpu.found()
->>                   warning('linux/kfd_ioctl.h not found, 
->> amd_kfd_dmabuf_unload test not applicable')
->>           endif
->>       amdgpu_deps += libdrm_amdgpu
->> +
->> +    # amd_vpe requires additional source file for data
->> +    test_executables += executable('amd_vpe',
->> +                       ['amd_vpe.c', 'amd_vpe_cmd.c'],
->> +                       dependencies : amdgpu_deps,
->> +                       install_dir : amdgpudir,
->> +                       install_rpath : amdgpudir_rpathdir,
->> +                       install : true)
->> +    test_list += join_paths('amdgpu', 'amd_vpe')
->>   endif
->>   foreach prog : amdgpu_progs
-> 
-
+SGkgQEJvcmFoLCBDaGFpdGFueWEgS3VtYXIsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
+LS0NCj4gRnJvbTogQm9yYWgsIENoYWl0YW55YSBLdW1hciA8Y2hhaXRhbnlhLmt1bWFyLmJvcmFo
+QGludGVsLmNvbT4NCj4gU2VudDogMDIgSnVuZSAyMDI2IDEzOjA0DQo+IFRvOiBTLCBTb3dtaXlh
+IDxzb3dtaXlhLnNAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
+Q2M6IEIgUywgS2FydGhpayA8a2FydGhpay5iLnNAaW50ZWwuY29tPjsgU2hhcm1hLCBTd2F0aTIN
+Cj4gPHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPjsgTmFsYWRhbGEsIFJhbWFuYWlkdQ0KPiA8cmFt
+YW5haWR1Lm5hbGFkYWxhQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdCB2
+MSAzLzNdIHRlc3RzL2ludGVsL2ttc19waXBlX3N0cmVzczogdXNlDQo+IEFSR0I4ODg4L0xJTkVB
+UiBmb3IgY3Vyc29yIGZyYW1lYnVmZmVyDQo+IA0KPiANCj4gDQo+IE9uIDUvMjcvMjAyNiAxMjo0
+OSBQTSwgU293bWl5YSBTIHdyb3RlOg0KPiA+IEN1cnNvciBwbGFuZXMgb24gSW50ZWwgaGFyZHdh
+cmUgYWNjZXB0IG1vc3RseSBEUk1fRk9STUFUX01PRF9MSU5FQVIsDQo+ID4gcmVnYXJkbGVzcyBv
+ZiB0aGUgb3ZlcmxheQ0KPiANCj4gd2hhdCBkb2VzIG1vc3RseSBtZWFuIGhlcmU/IERvZXMgaXQg
+c29tZXRpbWUgc3VwcG9ydCBvdGhlciBtb2RpZmllcnM/DQo+IA0KU29ycnkgZm9yIGNvbmZ1c2lv
+biwgY3Vyc29yIHdpbGwgc3VwcG9ydCBvbmx5IGxpbmVhciBhcyBwZXIgYnNwZWMgaHR0cHM6Ly9n
+ZnhzcGVjcy5pbnRlbC5jb20vUHJlZGF0b3IvSG9tZS9JbmRleC81MDM2OD9jdXN0RmlsdGVyPUlu
+dGVybmFsJm1vZGU9RmlsdGVyDQpSZWdhcmRzLA0KU293bWl5YSBTLg0KDQo+ID4gZm9ybWF0IGFu
+ZCBtb2RpZmllciB1c2VkIGJ5IHRoZSB0ZXN0IHZhcmlhbnQuIFVzaW5nDQo+ID4gZGF0YS0+bW9k
+aWZpZXIgKGUuZy4gNC10aWxlZCkgY2F1c2VkIC1FSU5WQUwgb24gdGhlDQo+ID4gY3Vyc29yIGNv
+bW1pdC4NCj4gPg0KPiANCj4gQ3Vyc29yIGFsc28gaGFzIElOX0ZPUk1BVFMgcHJvcGVydHkgc28g
+YmV0dGVyIHRvIGJhc2UgaXQgb24gdGhhdC4NCj4gDQpUaGlzIHNlZW1zIHRvIGJlIGEgZ29vZCB3
+YXkgdG8gaW1wbGVtZW50LiBJIHdpbGwgd29yayBvbiB0aGF0Lg0KUmVnYXJkcywNClNvd21peWEg
+Uy4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTb3dtaXlhIFMgPHNvd21peWEuc0BpbnRlbC5jb20+DQo+
+ID4gLS0tDQo+ID4gICB0ZXN0cy9pbnRlbC9rbXNfcGlwZV9zdHJlc3MuYyB8IDQgKystLQ0KPiA+
+ICAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gPg0K
+PiA+IGRpZmYgLS1naXQgYS90ZXN0cy9pbnRlbC9rbXNfcGlwZV9zdHJlc3MuYw0KPiA+IGIvdGVz
+dHMvaW50ZWwva21zX3BpcGVfc3RyZXNzLmMgaW5kZXggYTg0NDMzYjlkLi41MzYyZmU5ZjMgMTAw
+NjQ0DQo+ID4gLS0tIGEvdGVzdHMvaW50ZWwva21zX3BpcGVfc3RyZXNzLmMNCj4gPiArKysgYi90
+ZXN0cy9pbnRlbC9rbXNfcGlwZV9zdHJlc3MuYw0KPiA+IEBAIC03MzYsOCArNzM2LDggQEAgc3Rh
+dGljIHZvaWQgY3JlYXRlX2ZyYW1lYnVmZmVycyhzdHJ1Y3QgZGF0YSAqZGF0YSkNCj4gPiAgIAkJ
+aWYgKCFkYXRhLT5jdXJzb3JfZmJbaV0uZmJfaWQpIHsNCj4gPiAgIAkJCWlndF9jcmVhdGVfY29s
+b3JfZmIoZGF0YS0+ZHJtX2ZkLA0KPiA+ICAgCQkJCQkgICAgY3Vyc29yX3dpZHRoLCBjdXJzb3Jf
+aGVpZ2h0LA0KPiA+IC0JCQkJCSAgICBkYXRhLT5mb3JtYXQsDQo+ID4gLQkJCQkJICAgIGRhdGEt
+Pm1vZGlmaWVyLA0KPiA+ICsJCQkJCSAgICBEUk1fRk9STUFUX0FSR0I4ODg4LA0KPiA+ICsJCQkJ
+CSAgICBEUk1fRk9STUFUX01PRF9MSU5FQVIsDQo+ID4gICAJCQkJCSAgICAxLjAsIDAuMCwgMC4w
+LA0KPiA+ICAgCQkJCQkgICAgJmRhdGEtPmN1cnNvcl9mYltpXSk7DQo+ID4gICAJCX0NCg0K
