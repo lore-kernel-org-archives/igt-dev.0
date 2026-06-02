@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0A13CD5BD1
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jun 2026 22:42:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C10CD6E5D
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jun 2026 23:01:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 70E9C10F63A;
-	Tue,  2 Jun 2026 22:42:01 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BXCvQRWT";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D18710F638
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2026 22:38:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780439894; x=1811975894;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=BusWnoQmhCoVg3jS1o5KLXz+oYxxG3QiKMBFHXkLMUc=;
- b=BXCvQRWTBrqUKIuD4OpEOnUTFRolt3bhRU4aSvylU5BkKyBgVLH6Wt+y
- FoleeMtZ+LZwv7ThDVxyB3uv+LamMrPnDBXyLhKs6X143fJt2OqjPe0lW
- DnricvGVBo7CDkqYmW8/r/R0OBOk8Kv8J7W+Ol71DTLCI67uEE5+4hGHR
- OeEjM+UYZFbbxLcSRiA0Llmp9dthDByXeOsM/00cld+BkBGr3gGpQxO//
- 2B6vL9U+EzxKZ+wezG84zE/oM4E1DPV9zSBtPuMjgPR2bdkHQLYbsPh2d
- Y/RZqPjr84prX5WONGIXKjLKp0poSx0ZVRglBrwj2K+Subx323SkQ6ArG A==;
-X-CSE-ConnectionGUID: 76y3GyJPQd6O1wLZU51cXw==
-X-CSE-MsgGUID: TBrGOBtJS2q8sh+OdMbnSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81268341"
-X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; d="scan'208";a="81268341"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2026 15:38:14 -0700
-X-CSE-ConnectionGUID: dZuuhflsQLqAWAUw8ZzySw==
-X-CSE-MsgGUID: tGadWAJ4Tl6vaBGA/N3cfA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; d="scan'208";a="249121615"
-Received: from art-dev-395.igk.intel.com ([10.211.135.233])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2026 15:38:13 -0700
-From: Jan Maslak <jan.maslak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com,
-	Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH 04/10] lib/intel/genxml: Import Xe2/Xe3/Xe3p XML hardware
- definitions from Mesa
-Date: Wed,  3 Jun 2026 00:37:37 +0200
-Message-ID: <20260602223756.2543404-5-jan.maslak@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260602223756.2543404-1-jan.maslak@intel.com>
-References: <20260602223756.2543404-1-jan.maslak@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A1D8113B6D;
+	Tue,  2 Jun 2026 23:01:58 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE275113B6D;
+ Tue,  2 Jun 2026 23:01:37 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6978710355626110077=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_tools/igt=5Fpower=3A_fix_X?=
+ =?utf-8?q?e_crash_via_drmtest_path_helpers?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sebastian Brzezinka" <sebastian.brzezinka@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 02 Jun 2026 23:01:37 -0000
+Message-ID: <178044129776.36136.6785974111637637560@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <cover.1780397630.git.sebastian.brzezinka@intel.com>
+In-Reply-To: <cover.1780397630.git.sebastian.brzezinka@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,2858 +37,902 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Import xe2.xml, xe3.xml, and xe3p.xml from Mesa (MIT-licensed, Mesa commit
-3a62dc0218d3) unchanged.
+--===============6978710355626110077==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-These files define the hardware command, struct, and register layouts for
-Xe2 (LNL/BMG), Xe3 (PTL), and Xe3p (WHL) Intel graphics generations.
-xe3p.xml is a stub that imports xe3.xml; the Xe3p architecture shares its
-command encoding with Xe3.
+== Series Details ==
 
-Signed-off-by: Jan Maslak <jan.maslak@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/intel/genxml/xe2.xml  | 1969 +++++++++++++++++++++++++++++++++++++
- lib/intel/genxml/xe3.xml  |  816 +++++++++++++++
- lib/intel/genxml/xe3p.xml |    4 +
- lib/meson.build           |    5 +-
- 4 files changed, 2793 insertions(+), 1 deletion(-)
- create mode 100644 lib/intel/genxml/xe2.xml
- create mode 100644 lib/intel/genxml/xe3.xml
- create mode 100644 lib/intel/genxml/xe3p.xml
+Series: tools/igt_power: fix Xe crash via drmtest path helpers
+URL   : https://patchwork.freedesktop.org/series/167738/
+State : failure
 
-diff --git a/lib/intel/genxml/xe2.xml b/lib/intel/genxml/xe2.xml
-new file mode 100644
-index 0000000000..4c027995de
---- /dev/null
-+++ b/lib/intel/genxml/xe2.xml
-@@ -0,0 +1,1969 @@
-+<?xml version='1.0' encoding='utf-8'?>
-+<genxml name="XE2" gen="20">
-+  <import name="gen125.xml">
-+    <exclude name="3DSTATE_CLEAR_PARAMS" />
-+    <exclude name="CLEAR_COLOR" />
-+    <exclude name="L3ALLOC" />
-+  </import>
-+  <enum name="PREF_SLM_ALLOCATION_SIZE">
-+    <value name="SLM_ENCODES_0K" value="0" />
-+    <value name="SLM_ENCODES_16K" value="1" />
-+    <value name="SLM_ENCODES_32K" value="2" />
-+    <value name="SLM_ENCODES_64K" value="3" />
-+    <value name="SLM_ENCODES_96K" value="4" />
-+    <value name="SLM_ENCODES_128K" value="5" />
-+    <value name="SLM_ENCODES_160K" value="6" />
-+    <value name="SLM_ENCODES_192K" value="7" />
-+    <value name="SLM_ENCODES_224K" value="8" />
-+    <value name="SLM_ENCODES_256K" value="9" />
-+    <value name="SLM_ENCODES_384K" value="10" />
-+  </enum>
-+  <enum name="RESOURCE_BARRIER_STAGE" prefix="RESOURCE_BARRIER_STAGE">
-+    <value name="None" value="0" />
-+    <value name="TOP" value="1" />
-+    <value name="Color" value="2" />
-+    <value name="Gpgpu" value="4" />
-+    <value name="Color and Compute" value="6" />
-+    <value name="Geom" value="16" />
-+    <value name="Geometry and Compute" value="20" />
-+    <value name="Raster" value="32" />
-+    <value name="Depth" value="64" />
-+    <value name="Pixel" value="128" />
-+  </enum>
-+  <enum name="RESOURCE_BARRIER_TYPE" prefix="RESOURCE_BARRIER_TYPE">
-+    <value name="Immediate" value="0" />
-+    <value name="Signal" value="1" />
-+    <value name="Wait" value="2" />
-+    <value name="UAV" value="3" />
-+  </enum>
-+  <enum name="UNIFIED_COMPRESSION_FORMAT">
-+    <value name="CMF_R8" value="0" />
-+    <value name="CMF_R8_G8" value="1" />
-+    <value name="CMF_R8_G8_B8_A8" value="2" />
-+    <value name="CMF_R10_G10_B10_A2" value="3" />
-+    <value name="CMF_R11_G11_B10" value="4" />
-+    <value name="CMF_R16" value="5" />
-+    <value name="CMF_R16_G16" value="6" />
-+    <value name="CMF_R16_G16_B16_A16" value="7" />
-+    <value name="CMF_R32" value="8" />
-+    <value name="CMF_R32_G32" value="9" />
-+    <value name="CMF_R32_G32_B32_A32" value="10" />
-+    <value name="CMF_Y16_U16_Y16_V16" value="11" />
-+    <value name="CMF_ML8" value="15" />
-+  </enum>
-+  <struct name="INTERFACE_DESCRIPTOR_DATA" length="8">
-+    <field name="Kernel Start Pointer" dword="0" bits="31:6" type="offset" />
-+    <field name="Software Exception Enable" dword="2" bits="7:7" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="2" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="2" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Single Program Flow" dword="2" bits="18:18" type="bool" />
-+    <field name="Denorm Mode" dword="2" bits="19:19" type="uint">
-+      <value name="Ftz" value="0" />
-+      <value name="SetByKernel" value="1" />
-+    </field>
-+    <field name="Thread Preemption" dword="2" bits="20:20" type="bool" default="1" />
-+    <field name="Sampler Count" dword="3" bits="4:2" type="uint">
-+      <value name="No samplers used" value="0" />
-+      <value name="Between 1 and 4 samplers used" value="1" />
-+      <value name="Between 5 and 8 samplers used" value="2" />
-+      <value name="Between 9 and 12 samplers used" value="3" />
-+      <value name="Between 13 and 16 samplers used" value="4" />
-+    </field>
-+    <field name="Sampler State Pointer" dword="3" bits="31:5" type="offset" />
-+    <field name="Binding Table Entry Count" dword="4" bits="4:0" type="uint" />
-+    <field name="Binding Table Pointer" dword="4" bits="20:5" type="offset" />
-+    <field name="Number of Threads in GPGPU Thread Group" dword="5" bits="9:0" type="uint" />
-+    <field name="Thread group forward progress guarantee" dword="5" bits="13:13" type="bool" />
-+    <field name="Shared Local Memory Size" dword="5" bits="20:16" type="uint">
-+      <value name="Encodes 0K" value="0" />
-+      <value name="Encodes 1K" value="1" />
-+      <value name="Encodes 2K" value="2" />
-+      <value name="Encodes 4K" value="3" />
-+      <value name="Encodes 8K" value="4" />
-+      <value name="Encodes 16K" value="5" />
-+      <value name="Encodes 32K" value="6" />
-+      <value name="Encodes 64K" value="7" />
-+      <value name="Encodes 96K" value="10" />
-+      <value name="Encodes 128K" value="11" />
-+      <value name="Encodes 192K" value="12" />
-+      <value name="Encodes 256K" value="13" />
-+      <value name="Encodes 384K" value="14" />
-+    </field>
-+    <field name="Rounding Mode" dword="5" bits="23:22" type="uint">
-+      <value name="RTNE" value="0" />
-+      <value name="RU" value="1" />
-+      <value name="RD" value="2" />
-+      <value name="RTZ" value="3" />
-+    </field>
-+    <field name="Thread Group Dispatch Size" dword="5" bits="27:26" type="uint">
-+      <value name="TG size 8" value="0" />
-+      <value name="TG size 4" value="1" />
-+      <value name="TG size 2" value="2" />
-+      <value name="TG size 1" value="3" />
-+    </field>
-+    <field name="Number Of Barriers" dword="5" bits="30:28" type="uint" prefix="BARRIER_SIZE">
-+      <value name="NONE" value="0" />
-+      <value name="B1" value="1" />
-+      <value name="B2" value="2" />
-+      <value name="B4" value="3" />
-+      <value name="B8" value="4" />
-+      <value name="B16" value="5" />
-+      <value name="B24" value="6" />
-+      <value name="B32" value="7" />
-+    </field>
-+    <field name="BTD Mode" dword="5" bits="31:31" type="uint" />
-+    <field name="Preferred SLM Allocation Size" dword="7" bits="3:0" type="PREF_SLM_ALLOCATION_SIZE" />
-+  </struct>
-+  <struct name="POSTSYNC_DATA" length="5">
-+    <field name="Operation" dword="0" bits="1:0" type="uint" default="0">
-+      <value name="No Write" value="0" />
-+      <value name="Write Immediate Data" value="1" />
-+      <value name="Write Timestamp" value="3" />
-+    </field>
-+    <field name="HDC Pipeline Flush" dword="0" bits="2:2" type="bool" />
-+    <field name="MOCS" dword="0" bits="10:4" type="uint" nonzero="true" />
-+    <field name="System Memory Fence Request" dword="0" bits="11:11" type="bool" />
-+    <field name="Dataport Subslice Cache Flush" dword="0" bits="12:12" type="bool" />
-+    <field name="Destination Address" dword="1" bits="63:0" type="address" />
-+    <field name="Immediate Data" dword="3" bits="63:0" type="uint" />
-+  </struct>
-+  <struct name="COMPUTE_WALKER_BODY" length="39">
-+    <field name="Indirect Data Length" dword="1" bits="16:0" type="uint" />
-+    <field name="L3 prefetch disable" dword="1" bits="17:17" type="bool" />
-+    <field name="Partition Dispatch Parameter" dword="1" bits="29:18" type="uint" />
-+    <field name="Partition Type" dword="1" bits="31:30" type="uint">
-+      <value name="PartitionX" value="1" />
-+      <value name="PartitionY" value="2" />
-+      <value name="PartitionZ" value="3" />
-+    </field>
-+    <field name="Indirect Data Start Address" dword="2" bits="31:6" type="offset" />
-+    <field name="Compute Dispatch All walker Enable" dword="3" bits="0:0" type="uint">
-+      <value name="Disabled" value="0" />
-+      <value name="Enabled" value="1" />
-+    </field>
-+    <field name="Dispatch Walk Order" dword="3" bits="6:5" type="uint">
-+      <value name="Linear Walk" value="0" />
-+      <value name="Y order walk" value="1" />
-+    </field>
-+    <field name="Message SIMD" dword="3" bits="18:17" type="uint">
-+      <value name="SIMT16" value="1" />
-+      <value name="SIMT32" value="2" />
-+    </field>
-+    <field name="Tile Layout" dword="3" bits="21:19" type="uint">
-+      <value name="Linear" value="0" />
-+      <value name="TileY 32bpe" value="1" />
-+      <value name="TileY 64bpe" value="2" />
-+      <value name="TileY 128bpe" value="3" />
-+    </field>
-+    <field name="Walk Order" dword="3" bits="24:22" type="uint">
-+      <value name="Walk 012" value="0" />
-+      <value name="Walk 021" value="1" />
-+      <value name="Walk 102" value="2" />
-+      <value name="Walk 120" value="3" />
-+      <value name="Walk 201" value="4" />
-+      <value name="Walk 210" value="5" />
-+    </field>
-+    <field name="Emit Inline Parameter" dword="3" bits="25:25" type="bool" />
-+    <field name="Emit Local" dword="3" bits="28:26" type="uint">
-+      <value name="Emit None" value="0" />
-+      <value name="Emit X" value="1" />
-+      <value name="Emit XY" value="3" />
-+      <value name="Emit XYZ" value="7" />
-+    </field>
-+    <field name="Generate Local ID" dword="3" bits="29:29" type="bool" />
-+    <field name="SIMD Size" dword="3" bits="31:30" type="uint">
-+      <value name="SIMT16" value="1" />
-+      <value name="SIMT32" value="2" />
-+    </field>
-+    <field name="Execution Mask" dword="4" bits="31:0" type="uint" />
-+    <field name="Local X Maximum" dword="5" bits="9:0" type="uint" />
-+    <field name="Local Y Maximum" dword="5" bits="19:10" type="uint" />
-+    <field name="Local Z Maximum" dword="5" bits="29:20" type="uint" />
-+    <field name="Thread Group ID X Dimension" dword="6" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Y Dimension" dword="7" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Z Dimension" dword="8" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Starting X" dword="9" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Starting Y" dword="10" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Starting Z" dword="11" bits="31:0" type="uint" />
-+    <field name="Partition ID" dword="12" bits="31:0" type="uint" />
-+    <field name="Partition Size" dword="13" bits="31:0" type="uint" />
-+    <field name="Preempt X" dword="14" bits="31:0" type="uint" />
-+    <field name="Preempt Y" dword="15" bits="31:0" type="uint" />
-+    <field name="Preempt Z" dword="16" bits="31:0" type="uint" />
-+    <field name="Walker ID" dword="17" bits="3:0" type="uint" />
-+    <field name="Over dispatch TG count" dword="17" bits="23:8" type="uint" />
-+    <field name="Interface Descriptor" dword="18" bits="255:0" type="INTERFACE_DESCRIPTOR_DATA" />
-+    <field name="Post Sync" dword="26" bits="159:0" type="POSTSYNC_DATA" />
-+    <group count="8" dword="31" size="32">
-+      <field name="Inline Data" dword="0" bits="31:0" type="uint" />
-+    </group>
-+  </struct>
-+  <struct name="RENDER_SURFACE_STATE" length="16">
-+    <field name="Cube Face Enable - Positive Z" dword="0" bits="0:0" type="bool" />
-+    <field name="Cube Face Enable - Negative Z" dword="0" bits="1:1" type="bool" />
-+    <field name="Cube Face Enable - Positive Y" dword="0" bits="2:2" type="bool" />
-+    <field name="Cube Face Enable - Negative Y" dword="0" bits="3:3" type="bool" />
-+    <field name="Cube Face Enable - Positive X" dword="0" bits="4:4" type="bool" />
-+    <field name="Cube Face Enable - Negative X" dword="0" bits="5:5" type="bool" />
-+    <field name="Media Boundary Pixel Mode" dword="0" bits="7:6" type="uint">
-+      <value name="NORMAL_MODE" value="0" />
-+      <value name="PROGRESSIVE_FRAME" value="2" />
-+      <value name="INTERLACED_FRAME" value="3" />
-+    </field>
-+    <field name="Render Cache Read Write Mode" dword="0" bits="8:8" type="uint">
-+      <value name="Write-Only Cache" value="0" />
-+      <value name="Read-Write Cache" value="1" />
-+    </field>
-+    <field name="Enable Sampler Route to LSC" dword="0" bits="9:9" type="bool" />
-+    <field name="Vertical Line Stride Offset" dword="0" bits="10:10" type="uint" />
-+    <field name="Vertical Line Stride" dword="0" bits="11:11" type="uint" />
-+    <field name="Tile Mode" dword="0" bits="13:12" type="uint">
-+      <value name="LINEAR" value="0" />
-+      <value name="TILE64" value="1" />
-+      <value name="XMAJOR" value="2" />
-+      <value name="TILE4" value="3" />
-+    </field>
-+    <field name="Surface Horizontal Alignment" dword="0" bits="15:14" type="uint">
-+      <value name="HALIGN_16" value="0" />
-+      <value name="HALIGN_32" value="1" />
-+      <value name="HALIGN_64" value="2" />
-+      <value name="HALIGN_128" value="3" />
-+    </field>
-+    <field name="Surface Vertical Alignment" dword="0" bits="17:16" type="uint">
-+      <value name="VALIGN_4" value="1" />
-+      <value name="VALIGN_8" value="2" />
-+      <value name="VALIGN_16" value="3" />
-+    </field>
-+    <field name="Surface Format" dword="0" bits="26:18" type="uint" />
-+    <field name="Surface Array" dword="0" bits="28:28" type="bool" />
-+    <field name="Surface Type" dword="0" bits="31:29" type="STATE_SURFACE_TYPE" />
-+    <field name="Surface QPitch" dword="1" bits="14:0" type="uint" />
-+    <field name="Sample Tap Discard Disable" dword="1" bits="15:15" type="bool" />
-+    <field name="Corner Texel Mode" dword="1" bits="18:18" type="bool" />
-+    <field name="Base Mip Level" dword="1" bits="23:19" type="uint" />
-+    <field name="MOCS" dword="1" bits="30:24" type="uint" />
-+    <field name="Width" dword="2" bits="13:0" type="uint" />
-+    <field name="Height" dword="2" bits="29:16" type="uint" />
-+    <field name="Depth Stencil Resource" dword="2" bits="31:31" type="bool" />
-+    <field name="Surface Pitch" dword="3" bits="17:0" type="uint" />
-+    <field name="Depth" dword="3" bits="31:21" type="uint" />
-+    <field name="Multisample Position Palette Index" dword="4" bits="2:0" type="uint" />
-+    <field name="Number of Multisamples" dword="4" bits="5:3" type="uint">
-+      <value name="MULTISAMPLECOUNT_1" value="0" />
-+      <value name="MULTISAMPLECOUNT_2" value="1" />
-+      <value name="MULTISAMPLECOUNT_4" value="2" />
-+      <value name="MULTISAMPLECOUNT_8" value="3" />
-+      <value name="MULTISAMPLECOUNT_16" value="4" />
-+    </field>
-+    <field name="Multisampled Surface Storage Format" dword="4" bits="6:6" type="uint">
-+      <value name="MSFMT_MSS" value="0" />
-+      <value name="MSFMT_DEPTH_STENCIL" value="1" />
-+    </field>
-+    <field name="Render Target View Extent" dword="4" bits="17:7" type="uint" />
-+    <field name="Minimum Array Element" dword="4" bits="28:18" type="uint" />
-+    <field name="Render Target And Sample Unorm Rotation" dword="4" bits="30:29" type="uint">
-+      <value name="0DEG" value="0" />
-+      <value name="90DEG" value="1" />
-+      <value name="180DEG" value="2" />
-+      <value name="270DEG" value="3" />
-+    </field>
-+    <field name="MIP Count / LOD" dword="5" bits="3:0" type="uint" />
-+    <field name="Surface Min LOD" dword="5" bits="7:4" type="uint" />
-+    <field name="Mip Tail Start LOD" dword="5" bits="11:8" type="uint" />
-+    <field name="L1 Cache Control" dword="5" bits="18:16" type="L1_CACHE_CONTROL" />
-+    <field name="EWA Disable For Cube" dword="5" bits="20:20" type="bool" />
-+    <field name="Y Offset" dword="5" bits="23:21" type="uint" />
-+    <field name="X Offset" dword="5" bits="31:25" type="uint" />
-+    <field name="Auxiliary Surface Mode" dword="6" bits="2:0" type="uint">
-+      <value name="AUX_NONE" value="0" />
-+      <value name="AUX_APPEND" value="1" />
-+      <value name="AUX_MCS" value="2" />
-+    </field>
-+    <field name="Y Offset for U or UV Plane" dword="6" bits="13:0" type="uint" />
-+    <field name="Auxiliary Surface Pitch" dword="6" bits="12:3" type="uint" />
-+    <field name="YUV Interpolation Enable" dword="6" bits="15:15" type="bool" />
-+    <field name="X Offset for U or UV Plane" dword="6" bits="29:16" type="uint" />
-+    <field name="Auxiliary Surface QPitch" dword="6" bits="30:16" type="uint" />
-+    <field name="Resource Min LOD" dword="7" bits="11:0" type="u4.8" />
-+    <field name="Shader Channel Select Alpha" dword="7" bits="18:16" type="Shader Channel Select" />
-+    <field name="Shader Channel Select Blue" dword="7" bits="21:19" type="Shader Channel Select" />
-+    <field name="Shader Channel Select Green" dword="7" bits="24:22" type="Shader Channel Select" />
-+    <field name="Shader Channel Select Red" dword="7" bits="27:25" type="Shader Channel Select" />
-+    <field name="Surface Base Address" dword="8" bits="63:0" type="address" />
-+    <field name="Mip Region Width In Log2" dword="10" bits="3:0" type="uint" />
-+    <field name="Append Counter Address" dword="10" bits="63:2" type="address" />
-+    <field name="Mip Region Height In Log2" dword="10" bits="7:4" type="uint" />
-+    <field name="Procedural Texture" dword="10" bits="11:11" type="bool" />
-+    <field name="Auxiliary Surface Base Address" dword="10" bits="63:12" type="address" />
-+    <field name="Y Offset for V Plane" dword="11" bits="13:0" type="uint" />
-+    <field name="X Offset for V Plane" dword="11" bits="29:16" type="uint" />
-+    <field name="Compression Format" dword="12" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
-+    <field name="Mip Region Depth In Log2" dword="12" bits="7:4" type="uint" />
-+    <field name="Disallowlowqualityfiltering" dword="13" bits="31:31" type="bool" />
-+  </struct>
-+  <struct name="RESOURCE_BARRIER_BODY" length="4">
-+    <field name="Wait Stage" dword="0" bits="11:0" type="RESOURCE_BARRIER_STAGE" />
-+    <field name="Signal Stage" dword="0" bits="23:12" type="RESOURCE_BARRIER_STAGE" />
-+    <field name="Barrier Type" dword="0" bits="31:30" type="RESOURCE_BARRIER_TYPE" />
-+    <field name="L1 Dataport Cache Invalidate" dword="1" bits="21:21" type="bool" />
-+    <field name="Depth Cache" dword="1" bits="22:22" type="bool" />
-+    <field name="Color Cache" dword="1" bits="23:23" type="bool" />
-+    <field name="L1 Dataport UAV Flush" dword="1" bits="24:24" type="bool" />
-+    <field name="Texture (RO)" dword="1" bits="25:25" type="bool" />
-+    <field name="State (RO)" dword="1" bits="26:26" type="bool" />
-+    <field name="VF (RO)" dword="1" bits="27:27" type="bool" />
-+    <field name="AMFS" dword="1" bits="28:28" type="bool" />
-+    <field name="Constant Cache" dword="1" bits="29:29" type="bool" />
-+    <field name="Barrier ID Address" dword="2" bits="63:3" type="address" />
-+  </struct>
-+  <instruction name="3DSTATE_3D_MODE" bias="2" length="5" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="30" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Cross Slice Hashing Mode" dword="1" bits="1:0" type="uint">
-+      <value name="Normal Mode" value="0" />
-+      <value name="Disable" value="1" />
-+      <value name="hashing 32x32" value="3" />
-+    </field>
-+    <field name="3D Scoreboard Hashing Mode" dword="1" bits="4:4" type="bool" />
-+    <field name="Subslice Hashing Table Enable" dword="1" bits="5:5" type="bool" />
-+    <field name="Slice Hashing Table Enable" dword="1" bits="6:6" type="bool" />
-+    <field name="DX10 OGL Border Mode for YCRCB" dword="1" bits="10:10" type="bool" />
-+    <field name="Enable OOO reads in RCPB" dword="1" bits="11:11" type="bool" />
-+    <field name="Cross Slice Hashing Mode Mask" dword="1" bits="17:16" type="int" />
-+    <field name="3D Scoreboard Hashing Mode Mask" dword="1" bits="20:20" type="bool" />
-+    <field name="Subslice Hashing Table Enable Mask" dword="1" bits="21:21" type="bool" />
-+    <field name="Slice Hashing Table Enable Mask" dword="1" bits="22:22" type="bool" />
-+    <field name="DX10 OGL Border Mode for YCRCB Mask" dword="1" bits="26:26" type="bool" />
-+    <field name="Enable OOO reads in RCPB Mask" dword="1" bits="27:27" type="bool" />
-+    <field name="AMFS MOCS" dword="2" bits="6:0" type="uint" />
-+    <field name="State Cache redirect to CS section enable" dword="2" bits="9:9" type="bool" />
-+    <field name="AMFS MOCS Mask" dword="2" bits="22:16" type="uint" />
-+    <field name="State Cache redirect to CS section enable Mask" dword="2" bits="25:25" type="bool" />
-+    <field name="RCC RHWO Optimization Disable" dword="3" bits="15:15" type="bool" />
-+    <field name="RCC RHWO Optimization Disable Mask" dword="3" bits="31:31" type="bool" />
-+  </instruction>
-+  <instruction name="3DSTATE_BTD" bias="2" length="6" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="6" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Dispatch Timeout Counter" dword="1" bits="2:0" type="uint">
-+      <value name="64 clocks" value="0" />
-+      <value name="128 clocks" value="1" />
-+      <value name="192 clocks" value="2" />
-+      <value name="256 clocks" value="3" />
-+      <value name="512 clocks" value="4" />
-+      <value name="1024 clocks" value="5" />
-+      <value name="2048 clocks" value="6" />
-+      <value name="4096 clocks" value="7" />
-+    </field>
-+    <field name="Controls the maximum number of outstanding Ray Queries per SS" dword="1" bits="8:7" type="uint" prefix="RAYS_QUERIES_OUTSTANDING">
-+      <value name="128" value="0" />
-+      <value name="256" value="1" />
-+      <value name="512" value="2" />
-+      <value name="1024" value="3" />
-+    </field>
-+    <field name="BTD Mid thread preemption" dword="1" bits="31:31" type="bool" default="1" />
-+    <field name="Per DSS Memory Backed Buffer Size" dword="2" bits="2:0" type="uint" default="6">
-+      <value name="2KB" value="0" />
-+      <value name="4KB" value="1" />
-+      <value name="8KB" value="2" />
-+      <value name="16KB" value="3" />
-+      <value name="32KB" value="4" />
-+      <value name="64KB" value="5" />
-+      <value name="128KB" value="6" />
-+    </field>
-+    <field name="Memory Backed Buffer Base Pointer" dword="2" bits="63:10" type="address" />
-+    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_CLIP" bias="2" length="4" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="2" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="18" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="User Clip Distance Cull Test Enable Bitmask" dword="1" bits="7:0" type="uint" />
-+    <field name="Statistics Enable" dword="1" bits="10:10" type="bool" />
-+    <field name="Force Clip Mode" dword="1" bits="16:16" type="bool" />
-+    <field name="Force User Clip Distance Clip Test Enable Bitmask" dword="1" bits="17:17" type="bool" />
-+    <field name="Early Cull Enable" dword="1" bits="18:18" type="bool" />
-+    <field name="Vertex Sub Pixel Precision Select" dword="1" bits="19:19" type="uint">
-+      <value name="8 Bit" value="0" />
-+      <value name="4 Bit" value="1" />
-+    </field>
-+    <field name="Force User Clip Distance Cull Test Enable Bitmask" dword="1" bits="20:20" type="bool" />
-+    <field name="Triangle Fan Provoking Vertex Select" dword="2" bits="1:0" type="uint" />
-+    <field name="Line Strip/List Provoking Vertex Select" dword="2" bits="3:2" type="uint" />
-+    <field name="Triangle Strip/List Provoking Vertex Select" dword="2" bits="5:4" type="uint" />
-+    <field name="Triangle Strip Odd Provoking Vertex Select" dword="2" bits="7:6" type="uint" />
-+    <field name="Non-Perspective Barycentric Enable" dword="2" bits="8:8" type="bool" />
-+    <field name="Perspective Divide Disable" dword="2" bits="9:9" type="bool" />
-+    <field name="Clip Mode" dword="2" bits="15:13" type="uint">
-+      <value name="CLIPMODE_NORMAL" value="0" />
-+      <value name="CLIPMODE_REJECT_ALL" value="3" />
-+      <value name="CLIPMODE_ACCEPT_ALL" value="4" />
-+    </field>
-+    <field name="User Clip Distance Clip Test Enable Bitmask" dword="2" bits="23:16" type="uint" />
-+    <field name="Guardband Clip Test Enable" dword="2" bits="26:26" type="bool" />
-+    <field name="Viewport XY Clip Test Enable" dword="2" bits="28:28" type="bool" />
-+    <field name="API Mode" dword="2" bits="30:30" type="uint">
-+      <value name="APIMODE_OGL" value="0" />
-+      <value name="APIMODE_D3D" value="1" />
-+    </field>
-+    <field name="Clip Enable" dword="2" bits="31:31" type="bool" />
-+    <field name="Maximum VP Index" dword="3" bits="3:0" type="uint" />
-+    <field name="Force Zero RTA Index Enable" dword="3" bits="5:5" type="bool" />
-+    <field name="Maximum Point Width" dword="3" bits="16:6" type="u8.3" />
-+    <field name="Minimum Point Width" dword="3" bits="27:17" type="u8.3" />
-+  </instruction>
-+  <instruction name="3DSTATE_CPSIZE_CONTROL_BUFFER" bias="2" length="8" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="131" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Surface Pitch" dword="1" bits="16:0" type="uint" />
-+    <field name="Surface Type" dword="1" bits="31:29" type="uint" />
-+    <field name="Surface Base Address" dword="2" bits="63:0" type="address" />
-+    <field name="Width" dword="4" bits="14:1" type="uint" />
-+    <field name="Height" dword="4" bits="30:17" type="uint" />
-+    <field name="MOCS" dword="5" bits="6:0" type="uint" />
-+    <field name="Minimum Array Element" dword="5" bits="18:8" type="uint" />
-+    <field name="Depth" dword="5" bits="30:20" type="uint" />
-+    <field name="Compression Format" dword="6" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
-+    <field name="Mip Tail Start LOD" dword="6" bits="29:26" type="uint" />
-+    <field name="Tiled Mode" dword="6" bits="31:30" type="uint">
-+      <value name="TILE64" value="1" />
-+      <value name="TILE4" value="3" />
-+    </field>
-+    <field name="Surface QPitch" dword="7" bits="14:0" type="uint" />
-+    <field name="Surf LOD" dword="7" bits="19:16" type="uint" />
-+    <field name="Render Target View Extent" dword="7" bits="31:21" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_DEPTH_BUFFER" bias="2" length="8" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Surface Pitch" dword="1" bits="17:0" type="uint" />
-+    <field name="Hierarchical Depth Buffer Enable" dword="1" bits="22:22" type="bool" />
-+    <field name="Corner Texel Mode" dword="1" bits="23:23" type="bool" />
-+    <field name="Surface Format" dword="1" bits="26:24" type="uint">
-+      <value name="D32_FLOAT" value="1" />
-+      <value name="D24_UNORM_X8_UINT" value="3" />
-+      <value name="D16_UNORM" value="5" />
-+    </field>
-+    <field name="Null Page Coherency Enable" dword="1" bits="27:27" type="bool" />
-+    <field name="Depth Write Enable" dword="1" bits="28:28" type="bool" />
-+    <field name="Surface Type" dword="1" bits="31:29" type="uint">
-+      <value name="SURFTYPE_2D" value="1" />
-+      <value name="SURFTYPE_CUBE" value="3" />
-+      <value name="SURFTYPE_NULL" value="7" />
-+    </field>
-+    <field name="Surface Base Address" dword="2" bits="63:0" type="address" />
-+    <field name="Width" dword="4" bits="14:1" type="uint" />
-+    <field name="Height" dword="4" bits="30:17" type="uint" />
-+    <field name="MOCS" dword="5" bits="6:0" type="uint" nonzero="true" />
-+    <field name="Minimum Array Element" dword="5" bits="18:8" type="uint" />
-+    <field name="Depth" dword="5" bits="30:20" type="uint" />
-+    <field name="Render Compression Format" dword="6" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
-+    <field name="Mip Tail Start LOD" dword="6" bits="29:26" type="uint" />
-+    <field name="Tiled Mode" dword="6" bits="31:30" type="uint">
-+      <value name="TILE64" value="1" />
-+      <value name="TILE4" value="3" />
-+    </field>
-+    <field name="Surface QPitch" dword="7" bits="14:0" type="uint" />
-+    <field name="LOD" dword="7" bits="19:16" type="uint" />
-+    <field name="Render Target View Extent" dword="7" bits="31:21" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_DRAWING_RECTANGLE_FAST" bias="2" length="4" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="2" />
-+    <field name="Core Mode Select" dword="0" bits="15:14" type="uint">
-+      <value name="Legacy" value="0" />
-+      <value name="Core 0 Enabled" value="1" />
-+      <value name="Core 1 Enabled" value="2" />
-+    </field>
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="0" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Clipped Drawing Rectangle X Min" dword="1" bits="15:0" type="uint" />
-+    <field name="Clipped Drawing Rectangle Y Min" dword="1" bits="31:16" type="uint" />
-+    <field name="Clipped Drawing Rectangle X Max" dword="2" bits="15:0" type="uint" />
-+    <field name="Clipped Drawing Rectangle Y Max" dword="2" bits="31:16" type="uint" />
-+    <field name="Drawing Rectangle Origin X" dword="3" bits="15:0" type="int" />
-+    <field name="Drawing Rectangle Origin Y" dword="3" bits="31:16" type="int" />
-+  </instruction>
-+  <instruction name="3DSTATE_GS" bias="2" length="10" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="8" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="17" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-+    <field name="Expected Vertex Count" dword="3" bits="5:0" type="uint" />
-+    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-+    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-+    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-+      <value name="Normal" value="0" />
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-+    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-+      <value name="No Samplers" value="0" />
-+      <value name="1-4 Samplers" value="1" />
-+      <value name="5-8 Samplers" value="2" />
-+      <value name="9-12 Samplers" value="3" />
-+      <value name="13-16 Samplers" value="4" />
-+    </field>
-+    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-+      <value name="Dmask" value="0" />
-+    </field>
-+    <field name="Single Program Flow" dword="3" bits="31:31" type="bool" />
-+    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-+    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="3:0" type="uint" />
-+    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-+    <field name="Include Vertex Handles" dword="6" bits="10:10" type="bool" />
-+    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
-+    <field name="Output Topology" dword="6" bits="22:17" type="3D_Prim_Topo_Type" />
-+    <field name="Output Vertex Size" dword="6" bits="28:23" type="uint" />
-+    <field name="Dispatch GRF Start Register For URB Data [5:4]" dword="6" bits="30:29" type="uint" />
-+    <field name="Enable" dword="7" bits="0:0" type="bool" />
-+    <field name="Discard Adjacency" dword="7" bits="1:1" type="bool" />
-+    <field name="Reorder Mode" dword="7" bits="2:2" type="uint">
-+      <value name="LEADING" value="0" />
-+      <value name="TRAILING" value="1" />
-+    </field>
-+    <field name="Hint" dword="7" bits="3:3" type="bool" />
-+    <field name="Include Primitive ID" dword="7" bits="4:4" type="bool" />
-+    <field name="Invocations Increment Value" dword="7" bits="9:5" type="uint" />
-+    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-+    <field name="Default Stream Id" dword="7" bits="14:13" type="uint" />
-+    <field name="Instance Control" dword="7" bits="19:15" type="uint" />
-+    <field name="Control Data Header Size" dword="7" bits="23:20" type="uint" />
-+    <field name="Maximum Number of Threads" dword="8" bits="8:0" type="uint" />
-+    <field name="Static Output Vertex Count" dword="8" bits="26:16" type="uint" />
-+    <field name="Static Output" dword="8" bits="30:30" type="bool" />
-+    <field name="Control Data Format" dword="8" bits="31:31" type="uint">
-+      <value name="CUT" value="0" />
-+      <value name="SID" value="1" />
-+    </field>
-+    <field name="User Clip Distance Cull Test Enable Bitmask" dword="9" bits="7:0" type="uint" />
-+    <field name="User Clip Distance Clip Test Enable Bitmask" dword="9" bits="15:8" type="uint" />
-+    <field name="Vertex URB Entry Output Length" dword="9" bits="20:16" type="uint" />
-+    <field name="Vertex URB Entry Output Read Offset" dword="9" bits="26:21" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_HS" bias="2" length="8" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="27" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Patch Count Threshold" dword="1" bits="3:0" type="uint" />
-+    <field name="Software Exception Enable" dword="1" bits="12:12" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="1" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="1" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="alternate" value="1" />
-+    </field>
-+    <field name="Thread Dispatch Priority" dword="1" bits="17:17" type="uint">
-+      <value name="Normal" value="0" />
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Binding Table Entry Count" dword="1" bits="25:18" type="uint" />
-+    <field name="Sampler Count" dword="1" bits="29:27" type="uint">
-+      <value name="No Samplers" value="0" />
-+      <value name="1-4 Samplers" value="1" />
-+      <value name="5-8 Samplers" value="2" />
-+      <value name="9-12 Samplers" value="3" />
-+      <value name="13-16 Samplers" value="4" />
-+    </field>
-+    <field name="Instance Count" dword="2" bits="4:0" type="uint" />
-+    <field name="Maximum Number of Threads" dword="2" bits="16:8" type="uint" />
-+    <field name="Statistics Enable" dword="2" bits="29:29" type="bool" />
-+    <field name="Enable" dword="2" bits="31:31" type="bool" />
-+    <field name="Kernel Start Pointer" dword="3" bits="63:6" type="offset" />
-+    <field name="Scratch Space Buffer" dword="5" bits="31:10" type="uint" />
-+    <field name="Include Primitive ID" dword="7" bits="0:0" type="bool" />
-+    <field name="Vertex URB Entry Read Offset" dword="7" bits="9:4" type="uint" />
-+    <field name="Vertex URB Entry Read Length" dword="7" bits="16:11" type="uint" />
-+    <field name="Dispatch GRF Start Register For URB Data" dword="7" bits="23:19" type="uint" />
-+    <field name="Include Vertex Handles" dword="7" bits="24:24" type="bool" />
-+    <field name="Accesses UAV" dword="7" bits="25:25" type="bool" />
-+    <field name="Vector Mask Enable" dword="7" bits="26:26" type="uint">
-+      <value name="Dmask" value="0" />
-+    </field>
-+    <field name="Single Program Flow" dword="7" bits="27:27" type="bool" />
-+    <field name="Dispatch GRF Start Register For URB Data [5]" dword="7" bits="28:28" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_MESH_CONTROL" bias="2" length="3" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="119" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Maximum Number of ThreadGroups" dword="1" bits="8:0" type="uint" />
-+    <field name="VP and RTA Index Autostrip Enable" dword="1" bits="27:27" type="bool" />
-+    <field name="Thread Dispatch Priority" dword="1" bits="28:28" type="uint">
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Fused EU Dispatch" dword="1" bits="29:29" type="bool" />
-+    <field name="Statistics Enable" dword="1" bits="30:30" type="bool" />
-+    <field name="MeshShader Enable" dword="1" bits="31:31" type="uint" />
-+    <field name="Scratch Space Buffer" dword="2" bits="31:10" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_PS" bias="2" length="12" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="10" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="32" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Kernel 0 Enable" dword="1" bits="0:0" type="bool" />
-+    <field name="Kernel[0] : SIMD Width" dword="1" bits="1:1" type="uint" prefix="PS">
-+      <value name="SIMD16" value="0" />
-+      <value name="SIMD32" value="1" />
-+    </field>
-+    <field name="Kernel Start Pointer 0" dword="1" bits="63:6" type="offset" />
-+    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-+    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="Rounding Mode" dword="3" bits="15:14" type="uint">
-+      <value name="RTNE" value="0" />
-+      <value name="RU" value="1" />
-+      <value name="RD" value="2" />
-+      <value name="RTZ" value="3" />
-+    </field>
-+    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-+      <value name="Normal" value="0" />
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-+    <field name="Single Precision Denormal Mode" dword="3" bits="26:26" type="uint">
-+      <value name="Flushed to Zero" value="0" />
-+      <value name="Retained" value="1" />
-+    </field>
-+    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-+      <value name="No Samplers" value="0" />
-+      <value name="1-4 Samplers" value="1" />
-+      <value name="5-8 Samplers" value="2" />
-+      <value name="9-12 Samplers" value="3" />
-+      <value name="13-16 Samplers" value="4" />
-+    </field>
-+    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-+      <value name="Dmask" value="0" />
-+      <value name="Vmask" value="1" />
-+    </field>
-+    <field name="Single Program Flow" dword="3" bits="31:31" type="uint">
-+      <value name="Multiple" value="0" />
-+      <value name="Single" value="1" />
-+    </field>
-+    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-+    <field name="Position XY Offset Select" dword="6" bits="4:3" type="uint">
-+      <value name="POSOFFSET_NONE" value="0" />
-+      <value name="POSOFFSET_CENTROID" value="2" />
-+      <value name="POSOFFSET_SAMPLE" value="3" />
-+    </field>
-+    <field name="Render Target Resolve Type" dword="6" bits="7:6" type="uint">
-+      <value name="RESOLVE_DISABLED" value="0" />
-+    </field>
-+    <field name="Render Target Fast Clear Enable" dword="6" bits="8:8" type="bool" />
-+    <field name="Overlapping Subspans Enable" dword="6" bits="9:9" type="bool" />
-+    <field name="3D Scoreboard Address Size select" dword="6" bits="10:10" type="uint">
-+      <value name="2x2" value="0" />
-+      <value name="4x2" value="1" />
-+    </field>
-+    <field name="Clear/Resolve BTI for Render Target" dword="6" bits="19:12" type="uint" />
-+    <field name="Pixel Scoreboard Disable" dword="6" bits="21:21" type="bool" />
-+    <field name="Maximum Number of Threads Per PSD" dword="6" bits="31:23" type="uint" />
-+    <field name="Dispatch GRF Start Register For Constant/Setup Data 1" dword="7" bits="15:8" type="uint" />
-+    <field name="Dispatch GRF Start Register For Constant/Setup Data 0" dword="7" bits="23:16" type="uint" />
-+    <field name="Kernel[0] : Poly Packing Policy" dword="7" bits="26:24" type="uint">
-+      <value name="POLY_PACK4_DYNAMIC" value="0" />
-+      <value name="POLY_PACK8_DYNAMIC" value="1" />
-+      <value name="POLY_PACK16_DYNAMIC" value="2" />
-+      <value name="POLY_PACK16_FIXED" value="3" />
-+      <value name="POLY_PACK8_FIXED" value="4" />
-+    </field>
-+    <field name="Kernel[0] : Maximum Polys per Thread" dword="7" bits="29:27" type="uint" />
-+    <field name="Kernel 1 Selection Priority" dword="7" bits="31:31" type="uint">
-+      <value name="PRI_SIMD" value="0" />
-+      <value name="PRI_POLY" value="1" />
-+    </field>
-+    <field name="Kernel 1 Enable" dword="8" bits="0:0" type="bool" />
-+    <field name="Kernel[1] : SIMD Width" dword="8" bits="1:1" type="uint" prefix="PS">
-+      <value name="SIMD16" value="0" />
-+      <value name="SIMD32" value="1" />
-+    </field>
-+    <field name="Kernel Start Pointer 1" dword="8" bits="63:6" type="offset" />
-+  </instruction>
-+  <instruction name="3DSTATE_PS_EXTRA" bias="2" length="2" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="0" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="79" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Input Coverage Mask State" dword="1" bits="1:0" type="uint" prefix="ICMS">
-+      <value name="NONE" value="0" />
-+      <value name="NORMAL" value="1" />
-+      <value name="INNER_CONSERVATIVE" value="2" />
-+      <value name="DEPTH_COVERAGE" value="3" />
-+    </field>
-+    <field name="Pixel Shader Has UAV" dword="1" bits="2:2" type="bool" />
-+    <field name="Pixel Shader Is Per Coarse Pixel" dword="1" bits="4:4" type="bool" />
-+    <field name="Pixel Shader Computes Stencil" dword="1" bits="5:5" type="bool" />
-+    <field name="Pixel Shader Is Per Sample" dword="1" bits="6:6" type="bool" />
-+    <field name="Pixel Shader Disables Alpha To Coverage" dword="1" bits="7:7" type="bool" />
-+    <field name="Simple PS Hint" dword="1" bits="9:9" type="bool" />
-+    <field name="Pixel Shader Requires Centroid Offsets" dword="1" bits="16:16" type="bool" />
-+    <field name="Enable PS Dependency On CPsize Change" dword="1" bits="17:17" type="bool" />
-+    <field name="Pixel Shader Requires Subpixel Sample Offsets" dword="1" bits="18:18" type="bool" />
-+    <field name="Pixel Shader Requires Non-Perspective Bary Plane Coefficients" dword="1" bits="19:19" type="bool" />
-+    <field name="Pixel Shader Requires Perspective Bary Plane Coefficients" dword="1" bits="20:20" type="bool" />
-+    <field name="Pixel Shader Requires Source Depth and/or W Plane Coefficients" dword="1" bits="21:21" type="bool" />
-+    <field name="Pixel Shader Requires Requested Coarse Pixel Shading Size" dword="1" bits="22:22" type="bool" />
-+    <field name="Pixel Shader Uses Source W" dword="1" bits="23:23" type="bool" />
-+    <field name="Pixel Shader Uses Source Depth" dword="1" bits="24:24" type="bool" />
-+    <field name="Force Computed Depth" dword="1" bits="25:25" type="bool" />
-+    <field name="Pixel Shader Computed Depth Mode" dword="1" bits="27:26" type="uint">
-+      <value name="PSCDEPTH_OFF" value="0" />
-+      <value name="PSCDEPTH_ON" value="1" />
-+      <value name="PSCDEPTH_ON_GE" value="2" />
-+      <value name="PSCDEPTH_ON_LE" value="3" />
-+    </field>
-+    <field name="Pixel Shader Kills Pixel" dword="1" bits="28:28" type="bool" />
-+    <field name="oMask Present to Render Target" dword="1" bits="29:29" type="bool" />
-+    <field name="Pixel Shader Does not write to RT" dword="1" bits="30:30" type="mbz" />
-+    <field name="Pixel Shader Valid" dword="1" bits="31:31" type="bool" />
-+  </instruction>
-+  <instruction name="3DSTATE_RASTER" bias="2" length="5" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="80" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Viewport Z Near Clip Test Enable" dword="1" bits="0:0" type="bool" />
-+    <field name="Scissor Rectangle Enable" dword="1" bits="1:1" type="bool" />
-+    <field name="Antialiasing Enable" dword="1" bits="2:2" type="bool" />
-+    <field name="Back Face Fill Mode" dword="1" bits="4:3" type="uint" prefix="FILL_MODE">
-+      <value name="SOLID" value="0" />
-+      <value name="WIREFRAME" value="1" />
-+      <value name="POINT" value="2" />
-+    </field>
-+    <field name="Front Face Fill Mode" dword="1" bits="6:5" type="uint" prefix="FILL_MODE">
-+      <value name="SOLID" value="0" />
-+      <value name="WIREFRAME" value="1" />
-+      <value name="POINT" value="2" />
-+    </field>
-+    <field name="Global Depth Offset Enable Point" dword="1" bits="7:7" type="bool" />
-+    <field name="Global Depth Offset Enable Wireframe" dword="1" bits="8:8" type="bool" />
-+    <field name="Global Depth Offset Enable Solid" dword="1" bits="9:9" type="bool" />
-+    <field name="DX Multisample Rasterization Mode" dword="1" bits="11:10" type="uint">
-+      <value name="MSRASTMODE_ OFF_PIXEL" value="0" />
-+      <value name="MSRASTMODE_ OFF_PATTERN" value="1" />
-+      <value name="MSRASTMODE_ ON_PIXEL" value="2" />
-+      <value name="MSRASTMODE_ ON_PATTERN" value="3" />
-+    </field>
-+    <field name="DX Multisample Rasterization Enable" dword="1" bits="12:12" type="bool" />
-+    <field name="Smooth Point Enable" dword="1" bits="13:13" type="bool" />
-+    <field name="Force Multisampling" dword="1" bits="14:14" type="uint" />
-+    <field name="Cull Mode" dword="1" bits="17:16" type="uint" prefix="CULLMODE">
-+      <value name="BOTH" value="0" />
-+      <value name="NONE" value="1" />
-+      <value name="FRONT" value="2" />
-+      <value name="BACK" value="3" />
-+    </field>
-+    <field name="Forced Sample Count" dword="1" bits="20:18" type="uint" prefix="FSC">
-+      <value name="NUMRASTSAMPLES_0" value="0" />
-+      <value name="NUMRASTSAMPLES_1" value="1" />
-+      <value name="NUMRASTSAMPLES_2" value="2" />
-+      <value name="NUMRASTSAMPLES_4" value="3" />
-+      <value name="NUMRASTSAMPLES_8" value="4" />
-+      <value name="NUMRASTSAMPLES_16" value="5" />
-+    </field>
-+    <field name="Front Winding" dword="1" bits="21:21" type="uint">
-+      <value name="Clockwise" value="0" />
-+      <value name="Counter Clockwise" value="1" />
-+    </field>
-+    <field name="API Mode" dword="1" bits="23:22" type="uint">
-+      <value name="DX9/OGL" value="0" />
-+      <value name="DX10.0" value="1" />
-+      <value name="DX10.1+" value="2" />
-+    </field>
-+    <field name="Conservative Rasterization Enable" dword="1" bits="24:24" type="bool" />
-+    <field name="Viewport Z Far Clip Test Enable" dword="1" bits="26:26" type="bool" />
-+    <field name="Legacy Bary Assignment Disable=" dword="1" bits="27:27" type="bool" />
-+    <field name="Global Depth Offset Constant" dword="2" bits="31:0" type="float" />
-+    <field name="Global Depth Offset Scale" dword="3" bits="31:0" type="float" />
-+    <field name="Global Depth Offset Clamp" dword="4" bits="31:0" type="float" />
-+  </instruction>
-+  <instruction name="3DSTATE_SBE" bias="2" length="6" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="31" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Primitive ID Override Attribute Select" dword="1" bits="4:0" type="uint" />
-+    <field name="Vertex URB Entry Read Offset" dword="1" bits="10:5" type="uint" />
-+    <field name="Vertex URB Entry Read Length" dword="1" bits="15:11" type="uint" />
-+    <field name="Primitive ID Override Component X" dword="1" bits="16:16" type="bool" />
-+    <field name="Primitive ID Override Component Y" dword="1" bits="17:17" type="bool" />
-+    <field name="Primitive ID Override Component Z" dword="1" bits="18:18" type="bool" />
-+    <field name="Primitive ID Override Component W" dword="1" bits="19:19" type="bool" />
-+    <field name="Point Sprite Texture Coordinate Origin" dword="1" bits="20:20" type="uint">
-+      <value name="UPPERLEFT" value="0" />
-+      <value name="LOWERLEFT" value="1" />
-+    </field>
-+    <field name="Attribute Swizzle Enable" dword="1" bits="21:21" type="bool" />
-+    <field name="Number of SF Output Attributes" dword="1" bits="27:22" type="uint" />
-+    <field name="Force Vertex URB Entry Read Offset" dword="1" bits="28:28" type="bool" />
-+    <field name="Force Vertex URB Entry Read Length" dword="1" bits="29:29" type="bool" />
-+    <field name="Vertex Attributes Bypass" dword="1" bits="31:31" type="bool" />
-+    <field name="Point Sprite Texture Coordinate Enable" dword="2" bits="31:0" type="uint" />
-+    <field name="Constant Interpolation Enable" dword="3" bits="31:0" type="uint" />
-+    <group count="32" dword="4" size="2">
-+      <field name="Attribute Active Component Format" dword="0" bits="1:0" type="uint" prefix="ACTIVE_COMPONENT">
-+        <value name="DISABLED" value="0" />
-+        <value name="XY" value="1" />
-+        <value name="XYZ" value="2" />
-+        <value name="XYZW" value="3" />
-+      </field>
-+    </group>
-+  </instruction>
-+  <instruction name="3DSTATE_SF" bias="2" length="4" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="2" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="19" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Viewport Transform Enable" dword="1" bits="1:1" type="bool" />
-+    <field name="Statistics Enable" dword="1" bits="10:10" type="bool" />
-+    <field name="Legacy Global Depth Bias Enable" dword="1" bits="11:11" type="bool" />
-+    <field name="Line Width" dword="1" bits="29:12" type="u11.7" />
-+    <field name="Line End Cap Antialiasing Region Width" dword="2" bits="17:16" type="uint">
-+      <value name="0.5 pixels" value="0" />
-+      <value name="1.0 pixels" value="1" />
-+      <value name="2.0 pixels" value="2" />
-+      <value name="4.0 pixels" value="3" />
-+    </field>
-+    <field name="Deref Block Size" dword="2" bits="30:29" type="uint">
-+      <value name="Block Deref Size 32" value="0" />
-+      <value name="Per Poly Deref Mode" value="1" />
-+      <value name="Block Deref Size 8" value="2" />
-+      <value name="Mesh Shader EODB" value="3" />
-+    </field>
-+    <field name="Point Width" dword="3" bits="10:0" type="u8.3" />
-+    <field name="Point Width Source" dword="3" bits="11:11" type="uint">
-+      <value name="Vertex" value="0" />
-+      <value name="State" value="1" />
-+    </field>
-+    <field name="Vertex Sub Pixel Precision Select" dword="3" bits="12:12" type="uint">
-+      <value name="8 Bit" value="0" />
-+      <value name="4 Bit" value="1" />
-+    </field>
-+    <field name="Smooth Point Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="AA Line Distance Mode" dword="3" bits="14:14" type="uint">
-+      <value name="AALINEDISTANCE_TRUE" value="1" />
-+    </field>
-+    <field name="Triangle Strip Odd Provoking Vertex Select" dword="3" bits="24:23" type="uint" />
-+    <field name="Triangle Fan Provoking Vertex Select" dword="3" bits="26:25" type="uint" />
-+    <field name="Line Strip/List Provoking Vertex Select" dword="3" bits="28:27" type="uint" />
-+    <field name="Triangle Strip/List Provoking Vertex Select" dword="3" bits="30:29" type="uint" />
-+    <field name="Last Pixel Enable" dword="3" bits="31:31" type="bool" />
-+  </instruction>
-+  <instruction name="3DSTATE_STENCIL_BUFFER" bias="2" length="8" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="6" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Surface Pitch" dword="1" bits="16:0" type="uint" />
-+    <field name="Corner Texel Mode" dword="1" bits="23:23" type="bool" />
-+    <field name="Null Page Coherency Enable" dword="1" bits="27:27" type="bool" />
-+    <field name="Stencil Write Enable" dword="1" bits="28:28" type="bool" />
-+    <field name="Surface Type" dword="1" bits="31:29" type="uint">
-+      <value name="SURFTYPE_2D" value="1" />
-+      <value name="SURFTYPE_CUBE" value="3" />
-+      <value name="SURFTYPE_NULL" value="7" />
-+    </field>
-+    <field name="Surface Base Address" dword="2" bits="63:0" type="address" />
-+    <field name="Width" dword="4" bits="14:1" type="uint" />
-+    <field name="Height" dword="4" bits="30:17" type="uint" />
-+    <field name="MOCS" dword="5" bits="6:0" type="uint" nonzero="true" />
-+    <field name="Minimum Array Element" dword="5" bits="18:8" type="uint" />
-+    <field name="Depth" dword="5" bits="30:20" type="uint" />
-+    <field name="Compression Format" dword="6" bits="3:0" type="UNIFIED_COMPRESSION_FORMAT" />
-+    <field name="Mip Tail Start LOD" dword="6" bits="29:26" type="uint" />
-+    <field name="Tiled Mode" dword="6" bits="31:30" type="uint">
-+      <value name="TILE64" value="1" />
-+      <value name="TILE4" value="3" />
-+    </field>
-+    <field name="Surface QPitch" dword="7" bits="14:0" type="uint" />
-+    <field name="Surf LOD" dword="7" bits="19:16" type="uint" />
-+    <field name="Render Target View Extent" dword="7" bits="31:21" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_TE" bias="2" length="5" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="28" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="TE Enable" dword="1" bits="0:0" type="bool" />
-+    <field name="TE Mode" dword="1" bits="2:1" type="uint">
-+      <value name="HW_TESS" value="0" />
-+      <value name="FORCE_MIN" value="3" />
-+    </field>
-+    <field name="TE Domain" dword="1" bits="5:4" type="uint">
-+      <value name="QUAD" value="0" />
-+      <value name="TRI" value="1" />
-+      <value name="ISOLINE" value="2" />
-+    </field>
-+    <field name="Output Topology" dword="1" bits="9:8" type="uint" prefix="OUTPUT">
-+      <value name="POINT" value="0" />
-+      <value name="LINE" value="1" />
-+      <value name="TRI_CW" value="2" />
-+      <value name="TRI_CCW" value="3" />
-+    </field>
-+    <field name="Number Of Regions Per Patch" dword="1" bits="11:10" type="uint" />
-+    <field name="Partitioning" dword="1" bits="13:12" type="uint">
-+      <value name="INTEGER" value="0" />
-+      <value name="ODD_FRACTIONAL" value="1" />
-+      <value name="EVEN_FRACTIONAL" value="2" />
-+      <value name="POW2" value="3" />
-+    </field>
-+    <field name="Tessellation Distribution Mode" dword="1" bits="15:14" type="uint">
-+      <value name="TEDMODE_OFF" value="0" />
-+      <value name="TEDMODE_RR_STRICT" value="1" />
-+      <value name="TEDMODE_RR_FREE" value="2" />
-+    </field>
-+    <field name="Tessellation Distribution Level" dword="1" bits="18:17" type="uint">
-+      <value name="TEDLEVEL_PATCH" value="0" />
-+      <value name="TEDLEVEL_REGION" value="1" />
-+    </field>
-+    <field name="Tessellation Scale Factor Enable" dword="1" bits="19:19" type="bool" />
-+    <field name="Tessellation Factor Format" dword="1" bits="20:20" type="uint">
-+      <value name="FLOAT32" value="0" />
-+      <value name="FLOAT16" value="1" />
-+    </field>
-+    <field name="Patch Header Layout" dword="1" bits="23:22" type="uint">
-+      <value name="LEGACY" value="0" />
-+      <value name="REVERSED" value="2" />
-+      <value name="REVERSED_TRI_INSIDE_SEPARATE" value="3" />
-+    </field>
-+    <field name="Small Patch Threshold" dword="1" bits="25:24" type="uint" prefix="SPT">
-+      <value name="8_TRIANGLES" value="0" />
-+      <value name="16_TRIANGLES" value="1" />
-+      <value name="32_TRIANGLES" value="2" />
-+      <value name="64_TRIANGLES" value="3" />
-+    </field>
-+    <field name="Target Block Size" dword="1" bits="29:26" type="uint">
-+      <value name="64_TRIANGLES" value="0" />
-+      <value name="96_TRIANGLES" value="1" />
-+      <value name="128_TRIANGLES" value="2" />
-+      <value name="192_TRIANGLES" value="3" />
-+      <value name="256_TRIANGLES" value="4" />
-+      <value name="384_TRIANGLES" value="5" />
-+      <value name="512_TRIANGLES" value="6" />
-+      <value name="768_TRIANGLES" value="7" />
-+      <value name="1K_TRIANGLES" value="8" />
-+      <value name="1.5K_TRIANGLES" value="9" />
-+      <value name="2K_TRIANGLES" value="10" />
-+      <value name="3K_TRIANGLES" value="11" />
-+      <value name="4K_TRIANGLES" value="12" />
-+      <value name="6K_TRIANGLES" value="13" />
-+      <value name="8K_TRIANGLES" value="14" />
-+      <value name="12K_TRIANGLES" value="15" />
-+    </field>
-+    <field name="Local BOP Accumulator Threshold" dword="1" bits="31:30" type="uint">
-+      <value name="MULTIPLIER_0" value="0" />
-+      <value name="MULTIPLIER_1" value="1" />
-+      <value name="MULTIPLIER_2" value="2" />
-+      <value name="MULTIPLIER_4" value="3" />
-+    </field>
-+    <field name="Maximum Tessellation Factor Odd" dword="2" bits="31:0" type="float" />
-+    <field name="Maximum Tessellation Factor Not Odd" dword="3" bits="31:0" type="float" />
-+    <field name="Tessellation Scale Factor" dword="4" bits="31:0" type="float" />
-+  </instruction>
-+  <instruction name="3DSTATE_VS" bias="2" length="9" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="7" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="16" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-+    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-+    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-+      <value name="Normal" value="0" />
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-+    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-+      <value name="No Samplers" value="0" />
-+      <value name="1-4 Samplers" value="1" />
-+      <value name="5-8 Samplers" value="2" />
-+      <value name="9-12 Samplers" value="3" />
-+      <value name="13-16 Samplers" value="4" />
-+    </field>
-+    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-+      <value name="Dmask" value="0" />
-+    </field>
-+    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-+    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-+    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
-+    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="24:20" type="uint" />
-+    <field name="Enable" dword="7" bits="0:0" type="bool" />
-+    <field name="Vertex Cache Disable" dword="7" bits="1:1" type="bool" />
-+    <field name="SIMD8 Single Instance Dispatch Enable" dword="7" bits="9:9" type="bool" />
-+    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-+    <field name="Maximum Number of Threads" dword="7" bits="31:22" type="uint" />
-+    <field name="User Clip Distance Cull Test Enable Bitmask" dword="8" bits="7:0" type="uint" />
-+    <field name="User Clip Distance Clip Test Enable Bitmask" dword="8" bits="15:8" type="uint" />
-+    <field name="Vertex URB Entry Output Length" dword="8" bits="20:16" type="uint" />
-+    <field name="Vertex URB Entry Output Read Offset" dword="8" bits="26:21" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_WM_HZ_OP" bias="2" length="6" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-+    <field name="Predicate Enable" dword="0" bits="8:8" type="bool" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="82" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Depth Buffer Partial Resolve Enable" dword="1" bits="9:9" type="bool" />
-+    <field name="Number of Multisamples" dword="1" bits="15:13" type="uint" prefix="SAMPLES">
-+      <value name="1" value="0" />
-+      <value name="2" value="1" />
-+      <value name="4" value="2" />
-+      <value name="8" value="3" />
-+      <value name="16" value="4" />
-+    </field>
-+    <field name="Stencil Clear Value" dword="1" bits="23:16" type="uint" />
-+    <field name="Stencil Buffer Resolve Enable" dword="1" bits="24:24" type="bool" />
-+    <field name="Full Surface Depth and Stencil Clear" dword="1" bits="25:25" type="bool" />
-+    <field name="Pixel Position Offset Enable" dword="1" bits="26:26" type="bool" />
-+    <field name="Hierarchical Depth Buffer Resolve Enable" dword="1" bits="27:27" type="bool" />
-+    <field name="Depth Buffer Resolve Enable" dword="1" bits="28:28" type="bool" />
-+    <field name="Scissor Rectangle Enable" dword="1" bits="29:29" type="bool" />
-+    <field name="Depth Buffer Clear Enable" dword="1" bits="30:30" type="bool" />
-+    <field name="Stencil Buffer Clear Enable" dword="1" bits="31:31" type="bool" />
-+    <field name="Clear Rectangle X Min" dword="2" bits="15:0" type="uint" />
-+    <field name="Clear Rectangle Y Min" dword="2" bits="31:16" type="uint" />
-+    <field name="Clear Rectangle X Max" dword="3" bits="15:0" type="uint" />
-+    <field name="Clear Rectangle Y Max" dword="3" bits="31:16" type="uint" />
-+    <field name="Sample Mask" dword="4" bits="15:0" type="uint" />
-+    <field name="Depth Clear Value" dword="5" bits="31:0" type="float" />
-+  </instruction>
-+  <instruction name="AVP_FILM_GRAIN_STATE" bias="2" length="45" engine="video">
-+    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="43" />
-+    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="52" />
-+    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-+    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Grain Random Seed" dword="1" bits="15:0" type="uint" />
-+    <field name="MC Identity Flag" dword="1" bits="16:16" type="bool" />
-+    <field name="Clip To Restricted Range Flag" dword="1" bits="17:17" type="bool" />
-+    <field name="Number of Luma Points" dword="1" bits="23:20" type="uint" />
-+    <field name="Number of Chroma Cb Points" dword="1" bits="27:24" type="uint" />
-+    <field name="Number of Chroma Cr Points" dword="1" bits="31:28" type="uint" />
-+    <field name="Grain Scaling Minus8" dword="2" bits="1:0" type="uint" />
-+    <field name="AR Coeff Lag" dword="2" bits="3:2" type="uint" />
-+    <field name="AR Coeff Shift Minus6" dword="2" bits="5:4" type="uint" />
-+    <field name="Grain Scale Shift" dword="2" bits="7:6" type="uint" />
-+    <field name="Grain Noise Overlap Flag" dword="2" bits="8:8" type="bool" />
-+    <field name="Chroma Scaling From Luma Flag" dword="2" bits="31:31" type="bool" />
-+    <group count="14" dword="3" size="8">
-+      <field name="Point Luma Value" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <group count="14" dword="7" size="8">
-+      <field name="Point Luma Scaling" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <group count="10" dword="11" size="8">
-+      <field name="Point CB Value" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <group count="10" dword="14" size="8">
-+      <field name="Point CB Scaling" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <group count="10" dword="17" size="8">
-+      <field name="Point CR Value" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <group count="10" dword="20" size="8">
-+      <field name="Point CR Scaling" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <group count="24" dword="23" size="8">
-+      <field name="AR Coeff Luma Plus128" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <group count="25" dword="29" size="8">
-+      <field name="AR Coeff Chroma CB Plus128" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <group count="25" dword="36" size="8">
-+      <field name="AR Coeff Chroma CR Plus128" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <field name="CB Mult" dword="43" bits="7:0" type="uint" />
-+    <field name="CB Luma Mult" dword="43" bits="15:8" type="uint" />
-+    <field name="CB Offset" dword="43" bits="24:16" type="uint" />
-+    <field name="CR Mult" dword="44" bits="7:0" type="uint" />
-+    <field name="CR Luma Mult" dword="44" bits="15:8" type="uint" />
-+    <field name="CR Offset" dword="44" bits="24:16" type="uint" />
-+  </instruction>
-+  <instruction name="AVP_PIC_STATE" bias="2" length="76" engine="video">
-+    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="74" />
-+    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="48" />
-+    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-+    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Frame Width" dword="1" bits="13:0" type="uint" />
-+    <field name="Frame Height" dword="1" bits="29:16" type="uint" />
-+    <field name="Sequence Chroma SubSampling Format" dword="2" bits="1:0" type="uint" prefix="SS">
-+      <value name="Monochrome" value="0" />
-+      <value name="420" value="1" />
-+      <value name="422" value="2" />
-+      <value name="444" value="3" />
-+    </field>
-+    <field name="Sequence Pixel Bit-Depth Idc" dword="2" bits="4:3" type="uint" prefix="SeqPix">
-+      <value name="8-bit" value="0" />
-+      <value name="10-bit" value="1" />
-+      <value name="12-bit" value="2" />
-+    </field>
-+    <field name="Sequence Superblock Size Used" dword="2" bits="8:7" type="uint">
-+      <value name="64x64" value="0" />
-+      <value name="128x128" value="1" />
-+    </field>
-+    <field name="Sequence Enable Order Hint Flag" dword="2" bits="9:9" type="bool" />
-+    <field name="Sequence Order Hint Bits Minus 1" dword="2" bits="12:10" type="uint" />
-+    <field name="Sequence Enable Filter Intra Flag" dword="2" bits="16:16" type="bool" />
-+    <field name="Sequence Enable Intra Edge Filter Flag" dword="2" bits="17:17" type="bool" />
-+    <field name="Sequence Enable Dual Filter Flag" dword="2" bits="18:18" type="bool" />
-+    <field name="Sequence Enable Inter Intra Compound Flag" dword="2" bits="19:19" type="bool" />
-+    <field name="Sequence Enable Masked Compound Flag" dword="2" bits="20:20" type="bool" />
-+    <field name="Sequence Enable Joint Compound Flag" dword="2" bits="21:21" type="bool" />
-+    <field name="Allow Screen Content Tools Flag" dword="3" bits="0:0" type="bool" />
-+    <field name="Force Integer MV Flag" dword="3" bits="1:1" type="bool" />
-+    <field name="Allow Warped Motion Flag" dword="3" bits="2:2" type="bool" />
-+    <field name="Use CDEF Filter Flag" dword="3" bits="4:4" type="bool" />
-+    <field name="Use Super-Res Flag" dword="3" bits="5:5" type="bool" />
-+    <field name="Frame Level Loop Restoration Filter Enable" dword="3" bits="6:6" type="bool" />
-+    <field name="Apply Film Grain Flag" dword="3" bits="7:7" type="bool" />
-+    <field name="Large Scale Tile Enable Flag" dword="3" bits="8:8" type="bool" />
-+    <field name="Post CDEF Filtered Recon Pixels Writeout En" dword="3" bits="14:14" type="bool" />
-+    <field name="Frame Type" dword="3" bits="17:16" type="uint" />
-+    <field name="Intra Only Flag" dword="3" bits="19:19" type="bool" />
-+    <field name="Error Resilient Mode Flag" dword="3" bits="22:22" type="bool" />
-+    <field name="Allow IntraBC Flag" dword="3" bits="23:23" type="bool" />
-+    <field name="Primary Reference Frame Idx" dword="3" bits="30:28" type="uint" />
-+    <field name="Segmentation Enable Flag" dword="4" bits="0:0" type="bool" />
-+    <field name="Segmentation Update Map Flag" dword="4" bits="1:1" type="bool" />
-+    <field name="Segmentation Temporal Update Flag" dword="4" bits="2:2" type="bool" />
-+    <field name="Pre Skip Segment ID Flag" dword="4" bits="3:3" type="bool" />
-+    <field name="Last Active Segment Segment ID" dword="4" bits="6:4" type="uint" />
-+    <field name="Delta Q Present Flag" dword="4" bits="7:7" type="bool" />
-+    <field name="Delta Q Res" dword="4" bits="9:8" type="uint" />
-+    <field name="Frame Coded Lossless Mode" dword="4" bits="10:10" type="bool" />
-+    <field name="Segment Map is Zero Flag" dword="4" bits="11:11" type="bool" />
-+    <field name="Segment ID Buffer Stream In Enable Flag" dword="4" bits="12:12" type="bool" />
-+    <field name="Segment ID Buffer Stream Out Enable Flag" dword="4" bits="13:13" type="bool" />
-+    <field name="Base Qindex" dword="4" bits="23:16" type="uint" />
-+    <field name="Y dc delta Q" dword="4" bits="30:24" type="int" />
-+    <field name="U dc delta Q" dword="5" bits="6:0" type="int" />
-+    <field name="U ac delta Q" dword="5" bits="14:8" type="int" />
-+    <field name="V dc delta Q" dword="5" bits="22:16" type="int" />
-+    <field name="V ac delta Q" dword="5" bits="30:24" type="int" />
-+    <field name="Allow High Precision MV" dword="6" bits="0:0" type="bool" />
-+    <field name="Frame Level Reference Mode Select" dword="6" bits="1:1" type="bool" />
-+    <field name="Mcomp Filter Type" dword="6" bits="4:2" type="uint">
-+      <value name="Eight Tap" value="0" />
-+      <value name="Eight Tap Smooth" value="1" />
-+      <value name="Eight Tap Sharp" value="2" />
-+      <value name="Bilinear" value="3" />
-+      <value name="Switchable" value="4" />
-+    </field>
-+    <field name="Motion Mode Switchable Flag" dword="6" bits="6:6" type="bool" />
-+    <field name="Use Reference Frame MV Set Flag" dword="6" bits="7:7" type="bool" />
-+    <field name="Reference Frame Sign Bias" dword="6" bits="15:8" type="uint" />
-+    <field name="Current Frame Order Hint" dword="6" bits="23:16" type="uint" />
-+    <field name="Reduced Tx Set Used" dword="7" bits="0:0" type="bool" />
-+    <field name="Frame Transform Mode" dword="7" bits="2:1" type="uint" />
-+    <field name="Skip Mode Present Flag" dword="7" bits="4:4" type="bool" />
-+    <field name="Skip Mode Frame 0" dword="7" bits="7:5" type="uint" />
-+    <field name="Skip Mode Frame 1" dword="7" bits="11:9" type="uint" />
-+    <field name="Reference Frame Side" dword="7" bits="31:24" type="uint" />
-+    <field name="Global Motion Type 1" dword="8" bits="4:3" type="uint" />
-+    <field name="Global Motion Type 2" dword="8" bits="7:6" type="uint" />
-+    <field name="Global Motion Type 3" dword="8" bits="10:9" type="uint" />
-+    <field name="Global Motion Type 4" dword="8" bits="13:12" type="uint" />
-+    <field name="Global Motion Type 5" dword="8" bits="16:15" type="uint" />
-+    <field name="Global Motion Type 6" dword="8" bits="19:18" type="uint" />
-+    <field name="Global Motion Type 7" dword="8" bits="22:21" type="uint" />
-+    <field name="Frame Level Global Motion Invalid Flags" dword="8" bits="31:24" type="uint" />
-+    <group count="42" dword="9" size="16">
-+      <field name="Warp Parameters" dword="0" bits="15:0" type="uint" />
-+    </group>
-+    <field name="Reference Frame Idx 0" dword="30" bits="2:0" type="uint" />
-+    <field name="Reference Frame Idx 1" dword="30" bits="6:4" type="uint" />
-+    <field name="Reference Frame Idx 2" dword="30" bits="10:8" type="uint" />
-+    <field name="Reference Frame Idx 3" dword="30" bits="14:12" type="uint" />
-+    <field name="Reference Frame Idx 4" dword="30" bits="18:16" type="uint" />
-+    <field name="Reference Frame Idx 5" dword="30" bits="22:20" type="uint" />
-+    <field name="Reference Frame Idx 6" dword="30" bits="26:24" type="uint" />
-+    <field name="Reference Frame Idx 7" dword="30" bits="30:28" type="uint" />
-+    <field name="Intra Frame Width in Pixel Minus 1" dword="31" bits="15:0" type="uint" />
-+    <field name="Intra Frame Height in Pixel Minus 1" dword="31" bits="31:16" type="uint" />
-+    <field name="Last Frame Width in Pixel Minus 1" dword="32" bits="15:0" type="uint" />
-+    <field name="Last Frame Height in Pixel Minus 1" dword="32" bits="31:16" type="uint" />
-+    <field name="Last2 Frame Width in Pixel Minus 1" dword="33" bits="15:0" type="uint" />
-+    <field name="Last2 Frame Height in Pixel Minus 1" dword="33" bits="31:16" type="uint" />
-+    <field name="Last3 Frame Width in Pixel Minus 1" dword="34" bits="15:0" type="uint" />
-+    <field name="Last3 Frame Height in Pixel Minus 1" dword="34" bits="31:16" type="uint" />
-+    <field name="Golden Frame Width in Pixel Minus 1" dword="35" bits="15:0" type="uint" />
-+    <field name="Golden Frame Height in Pixel Minus 1" dword="35" bits="31:16" type="uint" />
-+    <field name="BWDREF Frame Width in Pixel Minus 1" dword="36" bits="15:0" type="uint" />
-+    <field name="BWDREF Frame Height in Pixel Minus 1" dword="36" bits="31:16" type="uint" />
-+    <field name="ALTREF2 Frame Width in Pixel Minus 1" dword="37" bits="15:0" type="uint" />
-+    <field name="ALTREF2 Frame Height in Pixel Minus 1" dword="37" bits="31:16" type="uint" />
-+    <field name="ALTREF Frame Width in Pixel Minus 1" dword="38" bits="15:0" type="uint" />
-+    <field name="ALTREF Frame Height in Pixel Minus 1" dword="38" bits="31:16" type="uint" />
-+    <field name="Vertical Scale Factor For Intra" dword="39" bits="15:0" type="uint" />
-+    <field name="Horizontal Scale Factor For Intra" dword="39" bits="31:16" type="uint" />
-+    <field name="Vertical Scale Factor For Last" dword="40" bits="15:0" type="uint" />
-+    <field name="Horizontal Scale Factor For Last" dword="40" bits="31:16" type="uint" />
-+    <field name="Vertical Scale Factor For Last2" dword="41" bits="15:0" type="uint" />
-+    <field name="Horizontal Scale Factor For Last2" dword="41" bits="31:16" type="uint" />
-+    <field name="Vertical Scale Factor For Last3" dword="42" bits="15:0" type="uint" />
-+    <field name="Horizontal Scale Factor For Last3" dword="42" bits="31:16" type="uint" />
-+    <field name="Vertical Scale Factor For Golden" dword="43" bits="15:0" type="uint" />
-+    <field name="Horizontal Scale Factor For Golden" dword="43" bits="31:16" type="uint" />
-+    <field name="Vertical Scale Factor For BWDREF" dword="44" bits="15:0" type="uint" />
-+    <field name="Horizontal Scale Factor For BWDREF" dword="44" bits="31:16" type="uint" />
-+    <field name="Vertical Scale Factor For ALTREF2" dword="45" bits="15:0" type="uint" />
-+    <field name="Horizontal Scale Factor For ALTREF2" dword="45" bits="31:16" type="uint" />
-+    <field name="Vertical Scale Factor For ALTREF" dword="46" bits="15:0" type="uint" />
-+    <field name="Horizontal Scale Factor For ALTREF" dword="46" bits="31:16" type="uint" />
-+    <group count="8" dword="47" size="8">
-+      <field name="Reference Frame Order Hint" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <field name="NonFirstPassFlag" dword="51" bits="16:16" type="bool" />
-+    <field name="VdencPakOnlyPass" dword="51" bits="17:17" type="bool" />
-+    <field name="FrameSzOverStatusEn - FrameBitRateMaxReportMask" dword="51" bits="25:25" type="bool" />
-+    <field name="FrameSzUnderStatusEn - FrameBitRateMinReportMask" dword="51" bits="26:26" type="bool" />
-+    <field name="FrameBitRateMax" dword="52" bits="13:0" type="uint" />
-+    <field name="FrameBitrateMaxUnit" dword="52" bits="31:31" type="FRAME_BITRATE_UNITS" />
-+    <field name="FrameBitRateMin" dword="53" bits="13:0" type="uint" />
-+    <field name="FrameBitrateMinUnit" dword="53" bits="31:31" type="FRAME_BITRATE_UNITS" />
-+    <field name="FrameDeltaQindexMax" dword="54" bits="63:0" type="uint" />
-+    <field name="FrameDeltaQindexMin" dword="56" bits="31:0" type="uint" />
-+    <field name="FrameDeltaLFMax" dword="57" bits="63:0" type="uint" />
-+    <field name="FrameDeltaLFMin" dword="59" bits="31:0" type="uint" />
-+    <field name="FrameDeltaQindexLFMaxRange" dword="60" bits="63:0" type="uint" />
-+    <field name="FrameDeltaQindexLFMinRange" dword="62" bits="31:0" type="uint" />
-+    <field name="MinFrameSize" dword="63" bits="15:0" type="uint" />
-+    <field name="MinFrameSizeUnits" dword="63" bits="31:30" type="uint">
-+      <value name="4K Byte Units" value="0" />
-+      <value name="16K Byte Units" value="1" />
-+      <value name="Compatibility Mode" value="2" />
-+      <value name="6 Byte Units" value="3" />
-+    </field>
-+    <field name="VDAQM enable" dword="64" bits="0:0" type="bool" />
-+    <field name="Class0 SSE Threshold0" dword="65" bits="15:0" type="uint" />
-+    <field name="Class0 SSE Threshold1" dword="65" bits="31:16" type="uint" />
-+    <group count="8" dword="66" size="8">
-+      <field name="SSE Thresholds For Class" dword="0" bits="7:0" type="uint" />
-+    </group>
-+    <field name="rdmult" dword="74" bits="31:0" type="uint" />
-+  </instruction>
-+  <instruction name="AVP_PIPE_BUF_ADDR_STATE" bias="2" length="215" engine="video">
-+    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="213" />
-+    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="2" />
-+    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-+    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <group count="8" dword="1" size="64">
-+      <field name="Reference Picture - Address" dword="0" bits="63:0" type="address" />
-+    </group>
-+    <field name="Reference Picture - Attributes" dword="17" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Decoded Output Frame Buffer Address" dword="18" bits="63:0" type="address" />
-+    <field name="Decoded Output Frame Buffer Address - Attributes" dword="20" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Film Grain Injected Output Frame Buffer Address" dword="21" bits="63:0" type="address" />
-+    <field name="Film Grain Injected Output Frame Buffer Address - Attributes" dword="23" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="IntraBC Decoded Output Frame Buffer Address" dword="24" bits="63:0" type="address" />
-+    <field name="IntraBC Decoded Output Frame Buffer Address - Attributes" dword="26" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="CDF Tables Initialization Buffer Address" dword="27" bits="63:0" type="address" />
-+    <field name="CDF Tables Initialization Buffer Address - Attributes" dword="29" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="CDF Tables Backward Adaptation Buffer Address" dword="30" bits="63:0" type="address" />
-+    <field name="CDF Tables Backward Adaptation Buffer Address - Attributes" dword="32" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="AV1 Segment ID Read Buffer Address" dword="33" bits="63:0" type="address" />
-+    <field name="AV1 Segment ID Read Buffer Address - Attributes" dword="35" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="AV1 Segment ID Write Buffer Address" dword="36" bits="63:0" type="address" />
-+    <field name="AV1 Segment ID Write Buffer Address - Attributes" dword="38" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <group count="8" dword="39" size="64">
-+      <field name="Collocated MV Temporal Buffer - Address" dword="0" bits="63:0" type="address" />
-+    </group>
-+    <field name="Collocated MV Temporal Buffer - Attributes" dword="55" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Current Frame MV Write Buffer Address" dword="56" bits="63:0" type="address" />
-+    <field name="Current Frame MV Write Buffer Address - Attributes" dword="58" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Film Grain Sample Template Address" dword="59" bits="63:0" type="address" />
-+    <field name="Film Grain Sample Template Address - Attributes" dword="61" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Bitstream Line Rowstore Buffer Address" dword="62" bits="63:0" type="address" />
-+    <field name="Bitstream Line Rowstore Buffer Address - Attributes" dword="64" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Bitstream Tile Line Rowstore Buffer Address" dword="65" bits="63:0" type="address" />
-+    <field name="Bitstream Tile Line Rowstore Buffer Address - Attributes" dword="67" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Intra Prediction Line Rowstore Buffer Address" dword="68" bits="63:0" type="address" />
-+    <field name="Intra Prediction Line Rowstore Buffer Address - Attributes" dword="70" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Intra Prediction Tile Line Rowstore Buffer Address" dword="71" bits="63:0" type="address" />
-+    <field name="Intra Prediction Tile Line Rowstore Buffer Address - Attributes" dword="73" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Spatial Motion Vector Line Buffer Address" dword="74" bits="63:0" type="address" />
-+    <field name="Spatial Motion Vector Line Buffer Address - Attributes" dword="76" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Spatial Motion Vector Tile Line Buffer Address" dword="77" bits="63:0" type="address" />
-+    <field name="Spatial Motion Vector Tile Line Buffer Address - Attributes" dword="79" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Loop Restoration Meta Tile Column Buffer Address" dword="80" bits="63:0" type="address" />
-+    <field name="Loop Restoration Meta Tile Column Buffer Address - Attributes" dword="82" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Loop Restoration Filter Tile Line Y Buffer Address" dword="83" bits="63:0" type="address" />
-+    <field name="Loop Restoration Filter Tile Line Y Buffer Address - Attributes" dword="85" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Loop Restoration Filter Tile Line U Buffer Address" dword="86" bits="63:0" type="address" />
-+    <field name="Loop Restoration Filter Tile Line U Buffer Address - Attributes" dword="88" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Loop Restoration Filter Tile Line V Buffer Address" dword="89" bits="63:0" type="address" />
-+    <field name="Loop Restoration Filter Tile Line V Buffer Address - Attributes" dword="91" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Deblocker Filter Line Y Buffer Address" dword="92" bits="63:0" type="address" />
-+    <field name="Deblocker Filter Line Y Buffer Address - Attributes" dword="94" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Deblocker Filter Line U Buffer Address" dword="95" bits="63:0" type="address" />
-+    <field name="Deblocker Filter Line U Buffer Address - Attributes" dword="97" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Deblocker Filter Line V Buffer Address" dword="98" bits="63:0" type="address" />
-+    <field name="Deblocker Filter Line V Buffer Address - Attributes" dword="100" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Deblocker Filter Tile Line Y Buffer Address" dword="101" bits="63:0" type="address" />
-+    <field name="Deblocker Filter Tile Line Y Buffer Address - Attributes" dword="103" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Deblocker Filter Tile Line U Buffer Address" dword="104" bits="63:0" type="address" />
-+    <field name="Deblocker Filter Tile Line U Buffer Address - Attributes" dword="106" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Deblocker Filter Tile Line V Buffer Address" dword="107" bits="63:0" type="address" />
-+    <field name="Deblocker Filter Tile Line V Buffer Address - Attributes" dword="109" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Deblocker Filter Tile Column Y Buffer Address" dword="110" bits="63:0" type="address" />
-+    <field name="Deblocker Filter Tile Column Y Buffer Address - Attributes" dword="112" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Deblocker Filter Tile Column U Buffer Address" dword="113" bits="63:0" type="address" />
-+    <field name="Deblocker Filter Tile Column U Buffer Address - Attributes" dword="115" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Deblocker Filter Tile Column V Buffer Address" dword="116" bits="63:0" type="address" />
-+    <field name="Deblocker Filter Tile Column V Buffer Address - Attributes" dword="118" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="CDEF Filter Line Buffer Address" dword="119" bits="63:0" type="address" />
-+    <field name="CDEF Filter Line Buffer Address - Attributes" dword="121" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="CDEF Filter Tile Line Buffer Address" dword="128" bits="63:0" type="address" />
-+    <field name="CDEF Filter Tile Line Buffer Address - Attributes" dword="130" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="CDEF Filter Tile Column Buffer Address" dword="137" bits="63:0" type="address" />
-+    <field name="CDEF Filter Tile Column Buffer Address - Attributes" dword="139" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="CDEF Filter Meta Tile Line Buffer Address" dword="140" bits="63:0" type="address" />
-+    <field name="CDEF Filter Meta Tile Line Buffer Address - Attributes" dword="142" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="CDEF Filter Meta Tile Column Buffer Address" dword="143" bits="63:0" type="address" />
-+    <field name="CDEF Filter Meta Tile Column Buffer Address - Attributes" dword="145" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="CDEF Filter Top Left Corner Buffer Address" dword="146" bits="63:0" type="address" />
-+    <field name="CDEF Filter Top Left Corner Buffer Address - Attributes" dword="148" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Super Res Tile Column Y Buffer Address" dword="149" bits="63:0" type="address" />
-+    <field name="Super Res Tile Column Y Buffer Address - Attributes" dword="151" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Super Res Tile Column U Buffer Address" dword="152" bits="63:0" type="address" />
-+    <field name="Super Res Tile Column U Buffer Address - Attributes" dword="154" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Super Res Tile Column V Buffer Address" dword="155" bits="63:0" type="address" />
-+    <field name="Super Res Tile Column V Buffer Address - Attributes" dword="157" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Loop Restoration Filter Tile Column Y Buffer Address" dword="158" bits="63:0" type="address" />
-+    <field name="Loop Restoration Filter Tile Column Y Buffer Address - Attributes" dword="160" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Loop Restoration Filter Tile Column U Buffer Address" dword="161" bits="63:0" type="address" />
-+    <field name="Loop Restoration Filter Tile Column U Buffer Address - Attributes" dword="163" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Loop Restoration Filter Tile Column V Buffer Address" dword="164" bits="63:0" type="address" />
-+    <field name="Loop Restoration Filter Tile Column V Buffer Address - Attributes" dword="166" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Loop Restoration Filter Tile Column Alignment Read Write Buffer Address" dword="170" bits="63:0" type="address" />
-+    <field name="Loop Restoration Filter Tile Column Alignment Read Write Buffer Address - Attributes" dword="172" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Film Grain Tile Column Data Read Write Buffer Address" dword="173" bits="63:0" type="address" />
-+    <field name="Film Grain Tile Column Data Read Write Buffer Address - Attributes" dword="175" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Decoded Frame Status Error Buffer Address" dword="176" bits="63:0" type="address" />
-+    <field name="Decoded Frame Status Error Buffer Address - Attributes" dword="178" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Decoded Block Data Streamout Buffer Address" dword="179" bits="63:0" type="address" />
-+    <field name="Decoded Block Data Streamout Buffer Address - Attributes" dword="181" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Original Uncompressed Picture Source Buffer Address" dword="188" bits="63:0" type="address" />
-+    <field name="Original Uncompressed Picture Source Buffer Address - Attributes" dword="190" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Downscaled Uncompressed Picture Source Buffer Address" dword="191" bits="63:0" type="address" />
-+    <field name="Downscaled Uncompressed Picture Source Buffer Address - Attributes" dword="193" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Tile Size Streamout Buffer Address" dword="194" bits="63:0" type="address" />
-+    <field name="Tile Size Streamout Buffer Address - Attributes" dword="196" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="Tile Statistics Streamout Buffer Address" dword="197" bits="63:0" type="address" />
-+    <field name="Tile Statistics Streamout Buffer Address - Attributes" dword="199" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="CU Streamout Buffer Address" dword="200" bits="63:0" type="address" />
-+    <field name="CU Streamout Buffer Address - Attributes" dword="202" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="SSE Line Read/Write Buffer Address" dword="203" bits="63:0" type="address" />
-+    <field name="SSE Line Read/Write Buffer Address - Attributes" dword="205" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="SSE Tile Line Read/Write Buffer Address" dword="206" bits="63:0" type="address" />
-+    <field name="SSE Tile Line Read/Write Buffer Address - Attributes" dword="208" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+    <field name="PostCDEF Pixels Buffer Address" dword="209" bits="63:0" type="address" />
-+    <field name="PostCDEF Pixels Buffer Address - Attributes" dword="211" bits="31:0" type="MEMORYADDRESSATTRIBUTES" />
-+  </instruction>
-+  <instruction name="AVP_PIPE_MODE_SELECT" bias="2" length="7" engine="video">
-+    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="5" />
-+    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="0" />
-+    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-+    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Codec Select" dword="1" bits="0:0" type="bool">
-+      <value name="Decode" value="0" />
-+      <value name="Encode" value="1" />
-+    </field>
-+    <field name="Pic Status/Error Report Enable" dword="1" bits="3:3" type="bool" />
-+    <field name="Frame Reconstruction Disable" dword="1" bits="4:4" type="bool" />
-+    <field name="Codec Standard Select" dword="1" bits="7:5" type="uint" default="2" />
-+    <field name="VDENC Mode" dword="1" bits="10:10" type="bool" />
-+    <field name="Tile Statistics Streamout Enable" dword="1" bits="12:12" type="bool" />
-+    <field name="Multi Engine Mode" dword="1" bits="14:13" type="uint">
-+      <value name="Single Engine Mode" value="0" />
-+      <value name="Left Engine Mode" value="1" />
-+      <value name="Right Engine Mode" value="2" />
-+      <value name="Middle Engine Mode" value="3" />
-+    </field>
-+    <field name="Pipe Working Mode" dword="1" bits="16:15" type="uint">
-+      <value name="Legacy Single Pipe" value="0" />
-+      <value name="Encode Mode" value="2" />
-+      <value name="Decode Scalable Mode" value="3" />
-+    </field>
-+    <field name="Tile Based Engine" dword="1" bits="17:17" type="bool" />
-+    <field name="Motion Comp Memory Tracker Counter Enable" dword="1" bits="23:23" type="bool" />
-+    <field name="Pic Status/Error Report ID" dword="3" bits="31:0" type="uint" />
-+    <field name="AlcChickenbitRestrictSingleTileGroupInAFrame" dword="4" bits="4:4" type="bool" />
-+    <field name="Phase Indicator" dword="5" bits="1:0" type="uint">
-+      <value name="First Phase" value="0" />
-+      <value name="Middle Phase" value="1" />
-+      <value name="Last Phase" value="2" />
-+    </field>
-+    <field name="Downscaled Source Pixel Prefetch Length" dword="6" bits="4:2" type="uint" />
-+    <field name="Downscaled Source Pixel Prefetch Enable" dword="6" bits="5:5" type="bool" />
-+    <field name="Original Source Pixel Prefetch Length" dword="6" bits="9:7" type="uint" />
-+    <field name="Original Source Pixel Prefetch Enable" dword="6" bits="10:10" type="bool" />
-+  </instruction>
-+  <instruction name="AVP_TILE_CODING" bias="2" length="7" engine="video">
-+    <field name="DWord Length" dword="0" bits="11:0" type="uint" default="5" />
-+    <field name="SubOpcode" dword="0" bits="22:16" type="uint" default="21" />
-+    <field name="Media Command Opcode" dword="0" bits="26:23" type="uint" default="3" />
-+    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Frame Tile ID" dword="1" bits="11:0" type="uint" />
-+    <field name="TG Tile Num" dword="1" bits="23:12" type="uint" />
-+    <field name="Tile Group ID" dword="1" bits="31:24" type="uint" />
-+    <field name="Tile Column Position in SB Unit" dword="2" bits="9:0" type="uint" />
-+    <field name="Tile Row Position in SB Unit" dword="2" bits="25:16" type="uint" />
-+    <field name="Tile Width in SB Minus 1" dword="3" bits="5:0" type="uint" />
-+    <field name="Tile Height in SB Minus 1" dword="3" bits="25:16" type="uint" />
-+    <field name="First Phase on Scalability Mode" dword="4" bits="0:0" type="bool" />
-+    <field name="Last Phase on Scalability Mode" dword="4" bits="1:1" type="bool" />
-+    <field name="AVP CRC Enable" dword="4" bits="2:2" type="bool" />
-+    <field name="First Tile in a Frame" dword="4" bits="23:23" type="bool" />
-+    <field name="Is Last Tile of Column Flag" dword="4" bits="25:25" type="bool" />
-+    <field name="Is Last Tile of Row Flag" dword="4" bits="26:26" type="bool" />
-+    <field name="Is Start Tile of Tile Group Flag" dword="4" bits="27:27" type="bool" />
-+    <field name="Is End Tile of Tile Group Flag" dword="4" bits="28:28" type="bool" />
-+    <field name="Is Last Tile of Frame Flag" dword="4" bits="29:29" type="bool" />
-+    <field name="Disable CDF Update Flag" dword="4" bits="30:30" type="bool" />
-+    <field name="Disable Frame Context Update Flag" dword="4" bits="31:31" type="bool" />
-+    <field name="Number of Active BE Pipes" dword="5" bits="7:0" type="uint" />
-+    <field name="Num of Tile Columns in Frame Minus 1" dword="5" bits="21:12" type="uint" />
-+    <field name="Num of Tile Rows in Frame Minus 1" dword="5" bits="31:22" type="uint" />
-+    <field name="Output Decoded Tile Column Position in SB Unit" dword="6" bits="9:0" type="uint" />
-+    <field name="Output Decoded Tile Row Position in SB Unit" dword="6" bits="25:16" type="uint" />
-+  </instruction>
-+  <instruction name="CFE_STATE" bias="2" length="6" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-+    <field name="CFE SubOpcode Variant" dword="0" bits="17:16" type="uint" default="0" />
-+    <field name="CFE SubOpcode" dword="0" bits="23:18" type="uint" default="0" />
-+    <field name="Compute Command Opcode" dword="0" bits="26:24" type="uint" default="2" />
-+    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Scratch Space Buffer" dword="1" bits="31:10" type="uint" />
-+    <field name="Stack ID Control" dword="3" bits="1:0" type="uint">
-+      <value name="StackIDs 2048" value="0" />
-+      <value name="StackIDs 1024" value="1" />
-+      <value name="StackIDs 512" value="2" />
-+      <value name="StackIDs 256" value="3" />
-+    </field>
-+    <field name="Compute Dispatch All walker Enable" dword="3" bits="12:12" type="bool" />
-+    <field name="Single Slice Dispatch CCS Mode" dword="3" bits="13:13" type="bool" />
-+    <field name="Over Dispatch Control" dword="3" bits="15:14" type="uint">
-+      <value name="Over Dispatch None" value="0" />
-+      <value name="Over Dispatch Low" value="1" />
-+      <value name="Over Dispatch Normal" value="2" />
-+      <value name="Over Dispatch High" value="3" />
-+    </field>
-+    <field name="Maximum Number of Threads" dword="3" bits="31:16" type="uint" />
-+  </instruction>
-+  <instruction name="COMPUTE_WALKER" bias="2" length="40" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="38" />
-+    <field name="Predicate Enable" dword="0" bits="8:8" type="bool" />
-+    <field name="Workload Partition Enable" dword="0" bits="9:9" type="bool" />
-+    <field name="Indirect Parameter Enable" dword="0" bits="10:10" type="bool" />
-+    <field name="Systolic Mode Enable" dword="0" bits="14:14" type="bool" />
-+    <field name="CFE SubOpcode Variant" dword="0" bits="17:15" type="uint" default="0" />
-+    <field name="CFE SubOpcode" dword="0" bits="23:18" type="uint" default="2" />
-+    <field name="Compute Command Opcode" dword="0" bits="26:24" type="uint" default="2" />
-+    <field name="Pipeline" dword="0" bits="28:27" type="uint" default="2" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="body" dword="1" bits="1248:0" type="COMPUTE_WALKER_BODY" />
-+  </instruction>
-+  <instruction name="EXECUTE_INDIRECT_DISPATCH" bias="2" length="45" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="43" />
-+    <field name="Predicate Enable" dword="0" bits="8:8" type="bool" />
-+    <field name="MOCS" dword="0" bits="15:12" type="uint" nonzero="true" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="1" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="4" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Max Count" dword="1" bits="31:0" type="uint" />
-+    <field name="Count Buffer Indirect Enable" dword="2" bits="0:0" type="bool" />
-+    <field name="Count Buffer Address" dword="2" bits="63:2" type="address" />
-+    <field name="Argument Buffer Start Address" dword="4" bits="63:2" type="address" />
-+    <field name="body" dword="6" bits="1247:0" type="COMPUTE_WALKER_BODY" />
-+  </instruction>
-+  <instruction name="MI_MEM_FENCE" bias="1" length="1">
-+    <field name="Fence Type" dword="0" bits="1:0" type="uint" prefix="FENCE_TYPE">
-+      <value name="RELEASE" value="0" />
-+      <value name="ACQUIRE" value="1" />
-+      <value name="MI_WRITE" value="3" />
-+    </field>
-+    <field name="MI Command Sub Opcode" dword="0" bits="22:17" type="uint" default="0" />
-+    <field name="MI Command Opcode" dword="0" bits="28:23" type="uint" default="9" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="0" />
-+  </instruction>
-+  <instruction name="MI_SEMAPHORE_WAIT" bias="2" length="5">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-+    <field name="Compare Operation" dword="0" bits="14:12" type="uint" prefix="COMPARE">
-+      <value name="SAD_GREATER_THAN_SDD" value="0" />
-+      <value name="SAD_GREATER_THAN_OR_EQUAL_SDD" value="1" />
-+      <value name="SAD_LESS_THAN_SDD" value="2" />
-+      <value name="SAD_LESS_THAN_OR_EQUAL_SDD" value="3" />
-+      <value name="SAD_EQUAL_SDD" value="4" />
-+      <value name="SAD_NOT_EQUAL_SDD" value="5" />
-+    </field>
-+    <field name="Wait Mode" dword="0" bits="15:15" type="uint">
-+      <value name="Polling Mode" value="1" />
-+      <value name="Signal Mode" value="0" />
-+    </field>
-+    <field name="Register Poll Mode" dword="0" bits="16:16" type="bool" />
-+    <field name="Indirect Semaphore Data Dword" dword="0" bits="17:17" type="bool" />
-+    <field name="Workload Partition ID Offset Enable" dword="0" bits="18:18" type="bool" />
-+    <field name="Memory Type" dword="0" bits="22:22" type="uint">
-+      <value name="Per Process Graphics Address" value="0" />
-+      <value name="Global Graphics Address" value="1" />
-+    </field>
-+    <field name="MI Command Opcode" dword="0" bits="28:23" type="uint" default="28" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="0" />
-+    <field name="Semaphore Data Dword" dword="1" bits="31:0" type="uint" />
-+    <field name="Semaphore Address" dword="2" bits="63:2" type="address" />
-+    <field name="Wait Token Number" dword="4" bits="9:2" type="uint" />
-+  </instruction>
-+  <instruction name="PIPELINE_SELECT" bias="1" length="1" engine="render">
-+    <field name="Pipeline Selection" dword="0" bits="1:0" type="uint">
-+      <value name="3D" value="0" />
-+      <value name="Media" value="1" />
-+      <value name="GPGPU" value="2" />
-+    </field>
-+    <field name="Mask Bits" dword="0" bits="15:8" type="uint" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="4" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="1" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+  </instruction>
-+  <instruction name="PIPE_CONTROL" bias="2" length="6" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-+    <field name="HDC Pipeline Flush Enable" dword="0" bits="9:9" type="bool" />
-+    <field name="L3 Read Only Cache Invalidation Enable" dword="0" bits="10:10" type="bool" />
-+    <field name="Untyped Data Port Cache Flush Enable" dword="0" bits="11:11" type="bool" />
-+    <field name="CCS Flush Enable" dword="0" bits="13:13" type="bool" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="0" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="2" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Depth Cache Flush Enable" dword="1" bits="0:0" type="bool" />
-+    <field name="Stall At Pixel Scoreboard" dword="1" bits="1:1" type="bool" />
-+    <field name="State Cache Invalidation Enable" dword="1" bits="2:2" type="bool" />
-+    <field name="Constant Cache Invalidation Enable" dword="1" bits="3:3" type="bool" />
-+    <field name="VF Cache Invalidation Enable" dword="1" bits="4:4" type="bool" />
-+    <field name="Force Device Coherency" dword="1" bits="5:5" type="bool" />
-+    <field name="Pipe Control Flush Enable" dword="1" bits="7:7" type="bool" />
-+    <field name="Notify Enable" dword="1" bits="8:8" type="bool" />
-+    <field name="Indirect State Pointers Disable" dword="1" bits="9:9" type="bool" />
-+    <field name="Texture Cache Invalidation Enable" dword="1" bits="10:10" type="bool" />
-+    <field name="Instruction Cache Invalidate Enable" dword="1" bits="11:11" type="bool" />
-+    <field name="Render Target Cache Flush Enable" dword="1" bits="12:12" type="bool" />
-+    <field name="Depth Stall Enable" dword="1" bits="13:13" type="bool" />
-+    <field name="Post Sync Operation" dword="1" bits="15:14" type="uint">
-+      <value name="No Write" value="0" />
-+      <value name="Write Immediate Data" value="1" />
-+      <value name="Write PS Depth Count" value="2" />
-+      <value name="Write Timestamp" value="3" />
-+    </field>
-+    <field name="PSS Stall Sync Enable" dword="1" bits="17:17" type="bool" />
-+    <field name="TLB Invalidate" dword="1" bits="18:18" type="bool" />
-+    <field name="Depth Stall Sync Enable" dword="1" bits="19:19" type="bool" />
-+    <field name="Command Streamer Stall Enable" dword="1" bits="20:20" type="bool" />
-+    <field name="Store Data Index" dword="1" bits="21:21" type="uint" />
-+    <field name="Protected Memory Enable" dword="1" bits="22:22" type="bool" />
-+    <field name="LRI Post Sync Operation" dword="1" bits="23:23" type="uint">
-+      <value name="No LRI Operation" value="0" />
-+      <value name="MMIO Write Immediate Data" value="1" />
-+    </field>
-+    <field name="Destination Address Type" dword="1" bits="24:24" type="uint" prefix="DAT">
-+      <value name="PPGTT" value="0" />
-+      <value name="GGTT" value="1" />
-+    </field>
-+    <field name="Flush LLC" dword="1" bits="26:26" type="bool" />
-+    <field name="Protected Memory Disable" dword="1" bits="27:27" type="bool" />
-+    <field name="Command Cache Invalidate Enable" dword="1" bits="29:29" type="bool" />
-+    <field name="Address" dword="2" bits="47:2" type="address" />
-+    <field name="Immediate Data" dword="4" bits="63:0" type="uint" />
-+  </instruction>
-+  <instruction name="RESOURCE_BARRIER" bias="2" length="5" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="3" />
-+    <field name="Predicate Enable" dword="0" bits="24:24" type="bool" />
-+    <field name="Opcode" dword="0" bits="28:26" type="uint" default="3">
-+      <value name="RESOURCE_BARRIER" value="3" />
-+    </field>
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="5" />
-+    <field name="Resource Barrier Body" dword="1" bits="127:0" type="RESOURCE_BARRIER_BODY" />
-+  </instruction>
-+  <instruction name="STATE_BYTE_STRIDE" bias="2" length="2" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="0" />
-+    <field name="Byte Stride Enable" dword="0" bits="8:8" type="bool" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Byte Stride" dword="1" bits="31:2" type="uint" />
-+  </instruction>
-+  <instruction name="STATE_COMPUTE_MODE" bias="2" length="3" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Z Pass Async Compute Thread Limit" dword="1" bits="2:0" type="uint" prefix="ZPACTL">
-+      <value name="Max 60" value="0" />
-+      <value name="Max 64" value="1" />
-+      <value name="Max 56" value="2" />
-+      <value name="Max 48" value="3" />
-+      <value name="Max 40" value="4" />
-+      <value name="Max 32" value="5" />
-+    </field>
-+    <field name="Z Async Throttle settings" dword="1" bits="4:3" type="uint" prefix="ZATS">
-+      <value name="Defer to Async Compute Thread Limit" value="0" />
-+      <value name="Max 32" value="1" />
-+      <value name="Max 40" value="2" />
-+      <value name="Max 48" value="3" />
-+    </field>
-+    <field name="Async Compute Thread Limit" dword="1" bits="9:7" type="uint" prefix="ACTL">
-+      <value name="Disabled" value="0" />
-+      <value name="Max 2" value="1" />
-+      <value name="Max 8" value="2" />
-+      <value name="Max 16" value="3" />
-+      <value name="Max 24" value="4" />
-+      <value name="Max 32" value="5" />
-+      <value name="Max 40" value="6" />
-+      <value name="Max 48" value="7" />
-+    </field>
-+    <field name="EU Thread Scheduling Mode Override" dword="1" bits="14:13" type="uint" />
-+    <field name="Large GRF Mode" dword="1" bits="15:15" type="bool" />
-+    <field name="Z Pass Async Compute Thread Limit Mask" dword="1" bits="18:16" type="uint" />
-+    <field name="Mask1" dword="1" bits="31:16" type="uint" />
-+    <field name="Z Async Throttle settings Mask" dword="1" bits="20:19" type="uint" />
-+    <field name="Async Compute Thread Limit Mask" dword="1" bits="25:23" type="uint" />
-+    <field name="EU Thread Scheduling Mode Override Mask" dword="1" bits="30:29" type="uint" />
-+    <field name="Large GRF Mode Mask" dword="1" bits="31:31" type="bool" />
-+    <field name="Midthread Preemption Delay Timer" dword="2" bits="2:0" type="uint">
-+      <value name="MTP_TIMER_VAL_0" value="0" />
-+      <value name="MTP_TIMER_VAL_50" value="1" />
-+      <value name="MTP_TIMER_VAL_100" value="2" />
-+      <value name="MTP_TIMER_VAL_150" value="3" />
-+    </field>
-+    <field name="Midthread Preemption Overdispatch Thread group count" dword="2" bits="4:3" type="uint">
-+      <value name="OD_TG_M2" value="0" />
-+      <value name="OD_TG_M4" value="1" />
-+      <value name="OD_TG_M8" value="2" />
-+      <value name="OD_TG_M16" value="3" />
-+    </field>
-+    <field name="Midthread Preemption Overdispatch Test mode" dword="2" bits="5:5" type="uint">
-+      <value name="Regular" value="0" />
-+      <value name="Test mode" value="1" />
-+    </field>
-+    <field name="UAV Coherency Mode" dword="2" bits="6:6" type="uint">
-+      <value name="Drain DataPort Mode" value="0" />
-+      <value name="Flush Dataport L1" value="1" />
-+    </field>
-+    <field name="Memory allocation for Scratch and Midthread Preemption buffers" dword="2" bits="11:11" type="uint">
-+      <value name="Full" value="0" />
-+      <value name="Min" value="1" />
-+    </field>
-+    <field name="Midthread Preemption Delay Timer Mask" dword="2" bits="18:16" type="uint" />
-+    <field name="Mask2" dword="2" bits="31:16" type="uint" />
-+    <field name="Midthread Preemption Overdispatch Thread group count Mask" dword="2" bits="20:19" type="uint" />
-+    <field name="Midthread Preemption Overdispatch Test mode Mask" dword="2" bits="21:21" type="uint" />
-+    <field name="UAV Coherency Mode Mask" dword="2" bits="22:22" type="uint" />
-+    <field name="Memory allocation for Scratch and Midthread Preemption buffers Mask" dword="2" bits="27:27" type="uint" />
-+  </instruction>
-+  <instruction name="STATE_SYSTEM_MEM_FENCE_ADDRESS" bias="2" length="3">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
-+    <field name="Context Restore Invalid" dword="0" bits="15:15" type="bool" default="0" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="9" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="System Memory Fence Address" dword="1" bits="63:12" type="address" />
-+  </instruction>
-+  <instruction name="XY_BLOCK_COPY_BLT" bias="2" length="22" engine="blitter">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="20" />
-+    <field name="Special Mode of Operation" dword="0" bits="13:12" type="uint">
-+      <value name="NONE" value="0" />
-+      <value name="FULL_RESOLVE" value="1" />
-+      <value name="PARTIAL_RESOLVE" value="2" />
-+    </field>
-+    <field name="Color Depth" dword="0" bits="21:19" type="uint" prefix="XY_BPP">
-+      <value name="8_BIT" value="0" />
-+      <value name="16_BIT" value="1" />
-+      <value name="32_BIT" value="2" />
-+      <value name="64_BIT" value="3" />
-+      <value name="96_BIT" value="4" />
-+      <value name="128_BIT" value="5" />
-+    </field>
-+    <field name="Opcode" dword="0" bits="28:22" type="uint" default="0x41" />
-+    <field name="Client" dword="0" bits="31:29" type="uint" default="2" />
-+    <field name="Destination Pitch" dword="1" bits="17:0" type="uint" />
-+    <field name="Destination Encrypt En" dword="1" bits="21:21" type="uint" />
-+    <field name="Destination MOCS index" dword="1" bits="27:24" type="uint" nonzero="true" />
-+    <field name="Destination Tiling" dword="1" bits="31:30" type="uint" prefix="XY_TILE">
-+      <value name="LINEAR" value="0" />
-+      <value name="X" value="1" />
-+      <value name="4" value="2" />
-+      <value name="64" value="3" />
-+    </field>
-+    <field name="Destination X1" dword="2" bits="15:0" type="int" />
-+    <field name="Destination Y1" dword="2" bits="31:16" type="int" />
-+    <field name="Destination X2" dword="3" bits="15:0" type="int" />
-+    <field name="Destination Y2" dword="3" bits="31:16" type="int" />
-+    <field name="Destination Base Address" dword="4" bits="63:0" type="address" />
-+    <field name="Destination X Offset" dword="6" bits="13:0" type="uint" />
-+    <field name="Destination Y Offset" dword="6" bits="29:16" type="uint" />
-+    <field name="Destination Target Memory" dword="6" bits="31:31" type="uint" prefix="XY_MEM">
-+      <value name="LOCAL" value="0" />
-+      <value name="SYSTEM" value="1" />
-+    </field>
-+    <field name="Source X1" dword="7" bits="15:0" type="int" />
-+    <field name="Source Y1" dword="7" bits="31:16" type="int" />
-+    <field name="Source Pitch" dword="8" bits="17:0" type="uint" />
-+    <field name="Source Encrypt En" dword="8" bits="21:21" type="bool" />
-+    <field name="Source MOCS index" dword="8" bits="27:24" type="uint" />
-+    <field name="Source Tiling" dword="8" bits="31:30" type="uint" prefix="XY_TILE">
-+      <value name="LINEAR" value="0" />
-+      <value name="X" value="1" />
-+      <value name="4" value="2" />
-+      <value name="64" value="3" />
-+    </field>
-+    <field name="Source Base Address" dword="9" bits="63:0" type="address" />
-+    <field name="Source X Offset" dword="11" bits="13:0" type="uint" />
-+    <field name="Source Y Offset" dword="11" bits="29:16" type="uint" />
-+    <field name="Source Target Memory" dword="11" bits="31:31" type="uint" prefix="XY_MEM">
-+      <value name="LOCAL" value="0" />
-+      <value name="SYSTEM" value="1" />
-+    </field>
-+    <field name="Source Compression Format" dword="12" bits="4:0" type="uint" />
-+    <field name="Source Clear Value Enable" dword="12" bits="5:5" type="bool" />
-+    <field name="Source Clear Address" dword="12" bits="47:6" type="address" />
-+    <field name="Destination Compression Format" dword="14" bits="4:0" type="uint" />
-+    <field name="Destination Clear Value Enable" dword="14" bits="5:5" type="bool" />
-+    <field name="Destination Clear Address" dword="14" bits="47:6" type="address" />
-+    <field name="Destination Surface Height" dword="16" bits="13:0" type="uint" />
-+    <field name="Destination Surface Width" dword="16" bits="27:14" type="uint" />
-+    <field name="Destination Surface Type" dword="16" bits="31:29" type="uint" prefix="XY_SURFTYPE">
-+      <value name="1D" value="0" />
-+      <value name="2D" value="1" />
-+      <value name="3D" value="2" />
-+      <value name="CUBE" value="3" />
-+    </field>
-+    <field name="Destination LOD" dword="17" bits="3:0" type="uint" />
-+    <field name="Destination Surface QPitch" dword="17" bits="18:4" type="uint" />
-+    <field name="Destination Surface Depth" dword="17" bits="31:21" type="uint" />
-+    <field name="Destination Horizontal Align" dword="18" bits="1:0" type="uint">
-+      <value name="HALIGN_16" value="0" />
-+      <value name="HALIGN_32" value="1" />
-+      <value name="HALIGN_64" value="2" />
-+      <value name="HALIGN_128" value="3" />
-+    </field>
-+    <field name="Destination Vertical Align" dword="18" bits="4:3" type="uint">
-+      <value name="VALIGN_4" value="1" />
-+      <value name="VALIGN_8" value="2" />
-+      <value name="VALIGN_16" value="3" />
-+    </field>
-+    <field name="Destination Mip Tail Start LOD" dword="18" bits="11:8" type="uint" />
-+    <field name="Destination Array Index" dword="18" bits="31:21" type="uint" />
-+    <field name="Source Surface Height" dword="19" bits="13:0" type="uint" />
-+    <field name="Source Surface Width" dword="19" bits="27:14" type="uint" />
-+    <field name="Source Surface Type" dword="19" bits="31:29" type="uint" prefix="XY_SURFTYPE">
-+      <value name="1D" value="0" />
-+      <value name="2D" value="1" />
-+      <value name="3D" value="2" />
-+      <value name="CUBE" value="3" />
-+    </field>
-+    <field name="Source LOD" dword="20" bits="3:0" type="uint" />
-+    <field name="Source Surface QPitch" dword="20" bits="18:4" type="uint" />
-+    <field name="Source Surface Depth" dword="20" bits="31:21" type="uint" />
-+    <field name="Source Horizontal Align" dword="21" bits="1:0" type="uint">
-+      <value name="HALIGN_16" value="0" />
-+      <value name="HALIGN_32" value="1" />
-+      <value name="HALIGN_64" value="2" />
-+      <value name="HALIGN_128" value="3" />
-+    </field>
-+    <field name="Source Vertical Align" dword="21" bits="4:3" type="uint">
-+      <value name="VALIGN_4" value="1" />
-+      <value name="VALIGN_8" value="2" />
-+      <value name="VALIGN_16" value="3" />
-+    </field>
-+    <field name="Source Mip Tail Start LOD" dword="21" bits="11:8" type="uint" />
-+    <field name="Source Array Index" dword="21" bits="31:21" type="uint" />
-+  </instruction>
-+  <instruction name="XY_FAST_COLOR_BLT" bias="2" length="16" engine="blitter">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="14" />
-+    <field name="Number of Multisamples" dword="0" bits="11:9" type="uint">
-+      <value name="MULTISAMPLECOUNT_1" value="0" />
-+      <value name="MULTISAMPLECOUNT_2" value="1" />
-+      <value name="MULTISAMPLECOUNT_4" value="2" />
-+      <value name="MULTISAMPLECOUNT_8" value="3" />
-+      <value name="MULTISAMPLECOUNT_16" value="4" />
-+    </field>
-+    <field name="Special Mode of Operation" dword="0" bits="13:12" type="uint">
-+      <value name="NONE" value="0" />
-+      <value name="USE_AUX_SPECIAL_OPERATIONS_MODE" value="1" />
-+    </field>
-+    <field name="Color Depth" dword="0" bits="21:19" type="uint" prefix="XY_BPP">
-+      <value name="8_BIT" value="0" />
-+      <value name="16_BIT" value="1" />
-+      <value name="32_BIT" value="2" />
-+      <value name="64_BIT" value="3" />
-+      <value name="96_BIT" value="4" />
-+      <value name="128_BIT" value="5" />
-+    </field>
-+    <field name="Instruction Target(Opcode)" dword="0" bits="28:22" type="uint" default="68">
-+      <value name="XY_FAST_COLOR_BLT" value="68" />
-+    </field>
-+    <field name="Client" dword="0" bits="31:29" type="uint" default="2">
-+      <value name="2D Processor" value="2" />
-+    </field>
-+    <field name="Destination Pitch" dword="1" bits="17:0" type="uint" />
-+    <field name="Destination Encrypt En" dword="1" bits="21:21" type="bool" />
-+    <field name="Destination MOCS index" dword="1" bits="27:24" type="uint" />
-+    <field name="Destination Tiling" dword="1" bits="31:30" type="uint" prefix="XY_TILE">
-+      <value name="LINEAR" value="0" />
-+      <value name="X" value="1" />
-+      <value name="4" value="2" />
-+      <value name="64" value="3" />
-+    </field>
-+    <field name="Destination X1" dword="2" bits="15:0" type="int" />
-+    <field name="Destination Y1" dword="2" bits="31:16" type="int" />
-+    <field name="Destination X2" dword="3" bits="15:0" type="int" />
-+    <field name="Destination Y2" dword="3" bits="31:16" type="int" />
-+    <field name="Destination Base Address" dword="4" bits="63:0" type="address" />
-+    <field name="Destination X Offset" dword="6" bits="13:0" type="uint" />
-+    <field name="Destination Y Offset" dword="6" bits="29:16" type="uint" />
-+    <field name="Destination Target Memory" dword="6" bits="31:31" type="uint">
-+      <value name="LOCAL_MEM" value="0" />
-+      <value name="SYSTEM_MEM" value="1" />
-+    </field>
-+    <group count="4" dword="7" size="32">
-+      <field name="Fill Color" dword="0" bits="31:0" type="uint" />
-+    </group>
-+    <field name="Destination Compression Format" dword="11" bits="3:0" type="uint" />
-+    <field name="Surface Format" dword="12" bits="8:0" type="uint" />
-+    <field name="AUX_SPECIAL_OPERATIONS_MODE" dword="12" bits="31:29" type="uint">
-+      <value name="FAST_CLEAR_HW_FORMAT_CONVERSION" value="0" />
-+      <value name="FAST_CLEAR_BYPASS_HW_FORMAT_CONVERSION" value="1" />
-+      <value name="FORCE_UNCOMPRESS" value="2" />
-+    </field>
-+    <field name="Destination Surface Height" dword="13" bits="13:0" type="uint" />
-+    <field name="Destination Surface Width" dword="13" bits="27:14" type="uint" />
-+    <field name="Destination Surface Type" dword="13" bits="31:29" type="uint" prefix="XY_SURFTYPE">
-+      <value name="1D" value="0" />
-+      <value name="2D" value="1" />
-+      <value name="3D" value="2" />
-+      <value name="CUBE" value="3" />
-+    </field>
-+    <field name="Destination LOD" dword="14" bits="3:0" type="uint" />
-+    <field name="Destination Surface QPitch" dword="14" bits="18:4" type="uint" />
-+    <field name="Destination Surface Depth" dword="14" bits="31:21" type="uint" />
-+    <field name="Destination Horizontal Align" dword="15" bits="1:0" type="uint">
-+      <value name="HALIGN_16" value="0" />
-+      <value name="HALIGN_32" value="1" />
-+      <value name="HALIGN_64" value="2" />
-+      <value name="HALIGN_128" value="3" />
-+    </field>
-+    <field name="Destination Vertical Align" dword="15" bits="4:3" type="uint">
-+      <value name="VALIGN_4" value="1" />
-+      <value name="VALIGN_8" value="2" />
-+      <value name="VALIGN_16" value="3" />
-+    </field>
-+    <field name="Destination Mip Tail Start LOD" dword="15" bits="11:8" type="uint" />
-+    <field name="Destination Depth/Stencil Resource" dword="15" bits="18:18" type="bool" />
-+    <field name="Destination Array Index" dword="15" bits="31:21" type="uint" />
-+  </instruction>
-+  <register name="BLT_TRTT_VA_RANGE" length="1" num="0x4484">
-+    <field name="TR-VA Base" dword="0" bits="12:0" type="uint" />
-+  </register>
-+  <register name="CACHE_MODE_0" length="1" num="0x7000">
-+    <field name="Hierarchical Z RAW Stall Optimization Disable" dword="0" bits="2:2" type="bool" />
-+    <field name="Hierarchical Z Disable" dword="0" bits="3:3" type="bool" />
-+    <field name="Late Z Alloc Disable" dword="0" bits="4:4" type="bool" />
-+    <field name="Msaa Fast Clear Enabled" dword="0" bits="5:5" type="bool" />
-+    <field name="Depth Related Cache Pipelined Flush Disable" dword="0" bits="8:8" type="bool" />
-+    <field name="Sampler L2 TLB Prefetch Enable" dword="0" bits="9:9" type="bool" />
-+    <field name="RCZ PMA Not-Promoted Allocation stall optimization Disable due to change in depth parameters" dword="0" bits="10:10" type="uint" />
-+    <field name="Disable Repacking for Compression" dword="0" bits="15:15" type="bool" />
-+    <field name="Hierarchical Z RAW Stall Optimization Disable Mask" dword="0" bits="18:18" type="bool" />
-+    <field name="Hierarchical Z Disable Mask" dword="0" bits="19:19" type="bool" />
-+    <field name="Late Z Alloc Disable Mask" dword="0" bits="20:20" type="bool" />
-+    <field name="Msaa Fast Clear Enabled Mask" dword="0" bits="21:21" type="bool" />
-+    <field name="Depth Related Cache Pipelined Flush Disable Mask" dword="0" bits="24:24" type="bool" />
-+    <field name="Sampler L2 TLB Prefetch Enable Mask" dword="0" bits="25:25" type="bool" />
-+    <field name="RCZ PMA Not-Promoted Allocation stall optimization Disable due to change in depth parameters Mask" dword="0" bits="26:26" type="bool" />
-+    <field name="Disable Repacking for Compression Mask" dword="0" bits="31:31" type="bool" />
-+  </register>
-+  <register name="COMP_CTX0_TRTT_VA_RANGE" length="1" num="0x4584">
-+    <field name="TR-VA Base" dword="0" bits="12:0" type="uint" />
-+  </register>
-+  <register name="CS_CHICKEN1" length="1" num="0x2580">
-+    <field name="Media And GPGPU Pre-emption Control" dword="0" bits="2:1" type="uint">
-+      <value name="Mid-thread Pre-emption" value="0" />
-+      <value name="Thread Group Pre-emption" value="1" />
-+      <value name="Command Level Pre-emption" value="2" />
-+    </field>
-+    <field name="Disable Preemption and High Priority Pausing due to 3DPRIMITIVE Command" dword="0" bits="10:10" type="bool" />
-+    <field name="Media And GPGPU Pre-emption Control Mask" dword="0" bits="18:17" type="uint" />
-+    <field name="Disable Preemption and High Priority Pausing due to 3DPRIMITIVE Command Mask" dword="0" bits="26:26" type="bool" />
-+  </register>
-+  <register name="FF_MODE" length="1" num="0x6210">
-+    <field name="Mesh Shader Autostrip Disable" dword="0" bits="15:15" type="bool" />
-+    <field name="Mesh Shader Partial Autostrip Disable" dword="0" bits="16:16" type="bool" />
-+    <field name="TE Autostrip Disable" dword="0" bits="31:31" type="bool" />
-+  </register>
-+  <register name="GFX_TRTT_VA_RANGE" length="1" num="0x4404">
-+    <field name="TR-VA Base" dword="0" bits="12:0" type="uint" />
-+  </register>
-+  <register name="VFL_SCRATCH_PAD" length="1" num="0x62a8">
-+    <field name="Autostrip Disable" dword="0" bits="6:6" type="uint" />
-+    <field name="Partial Autostrip Disable" dword="0" bits="9:9" type="uint" />
-+    <field name="Autostrip Disable Mask" dword="0" bits="22:22" type="bool" />
-+    <field name="Partial Autostrip Disable Mask" dword="0" bits="25:25" type="bool" />
-+  </register>
-+</genxml>
-diff --git a/lib/intel/genxml/xe3.xml b/lib/intel/genxml/xe3.xml
-new file mode 100644
-index 0000000000..9b2edcbbc5
---- /dev/null
-+++ b/lib/intel/genxml/xe3.xml
-@@ -0,0 +1,816 @@
-+<?xml version='1.0' encoding='utf-8'?>
-+<genxml name="XE3" gen="30">
-+  <import name="xe2.xml">
-+    <exclude name="CPS_STATE" />
-+    <exclude name="3DSTATE_CPS_POINTERS" />
-+  </import>
-+  <enum name="STATE_CPS_COMBINER_OPCODE" prefix="CPS_COMB_OP">
-+    <value name="PASSTHROUGH" value="0" />
-+    <value name="OVERRIDE" value="1" />
-+    <value name="HIGH_QUALITY" value="2" />
-+    <value name="LOW_QUALITY" value="3" />
-+    <value name="RELATIVE" value="4" />
-+  </enum>
-+  <enum name="STATE_CPS_SIZE">
-+    <value name="CPSIZE_1" value="0" />
-+    <value name="CPSIZE_2" value="1" />
-+    <value name="CPSIZE_4" value="2" />
-+  </enum>
-+  <struct name="BLEND_STATE_ENTRY" length="2">
-+    <field name="Write Disable Blue" dword="0" bits="0:0" type="bool" />
-+    <field name="Write Disable Green" dword="0" bits="1:1" type="bool" />
-+    <field name="Write Disable Red" dword="0" bits="2:2" type="bool" />
-+    <field name="Write Disable Alpha" dword="0" bits="3:3" type="bool" />
-+    <field name="Alpha Blend Function" dword="0" bits="7:5" type="3D_Color_Buffer_Blend_Function" />
-+    <field name="Destination Alpha Blend Factor" dword="0" bits="12:8" type="3D_Color_Buffer_Blend_Factor" />
-+    <field name="Source Alpha Blend Factor" dword="0" bits="17:13" type="3D_Color_Buffer_Blend_Factor" />
-+    <field name="Color Blend Function" dword="0" bits="20:18" type="3D_Color_Buffer_Blend_Function" />
-+    <field name="Destination Blend Factor" dword="0" bits="25:21" type="3D_Color_Buffer_Blend_Factor" />
-+    <field name="Source Blend Factor" dword="0" bits="30:26" type="3D_Color_Buffer_Blend_Factor" />
-+    <field name="Color Buffer Blend Enable" dword="0" bits="31:31" type="bool" />
-+    <field name="Post-Blend Color Clamp Enable" dword="1" bits="0:0" type="bool" />
-+    <field name="Pre-Blend Color Clamp Enable" dword="1" bits="1:1" type="bool" />
-+    <field name="Color Clamp Range" dword="1" bits="3:2" type="uint">
-+      <value name="COLORCLAMP_UNORM" value="0" />
-+      <value name="COLORCLAMP_SNORM" value="1" />
-+      <value name="COLORCLAMP_RTFORMAT" value="2" />
-+    </field>
-+    <field name="Pre-Blend Source Only Clamp Enable" dword="1" bits="4:4" type="bool" />
-+    <field name="Simple Float Blend Enable" dword="1" bits="5:5" type="bool" />
-+    <field name="Logic Op Function" dword="1" bits="30:27" type="3D_Logic_Op_Function" />
-+    <field name="Logic Op Enable" dword="1" bits="31:31" type="bool" />
-+  </struct>
-+  <struct name="INTERFACE_DESCRIPTOR_DATA" length="8">
-+    <field name="Kernel Start Pointer" dword="0" bits="31:6" type="offset" />
-+    <field name="Software Exception Enable" dword="2" bits="7:7" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="2" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="2" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Single Program Flow" dword="2" bits="18:18" type="bool" />
-+    <field name="Denorm Mode" dword="2" bits="19:19" type="uint">
-+      <value name="Ftz" value="0" />
-+      <value name="SetByKernel" value="1" />
-+    </field>
-+    <field name="Thread Preemption" dword="2" bits="20:20" type="bool" default="1" />
-+    <field name="Registers Per Thread" dword="2" bits="30:26" type="uint" />
-+    <field name="Sampler Count" dword="3" bits="4:2" type="uint">
-+      <value name="No samplers used" value="0" />
-+      <value name="Between 1 and 4 samplers used" value="1" />
-+      <value name="Between 5 and 8 samplers used" value="2" />
-+      <value name="Between 9 and 12 samplers used" value="3" />
-+      <value name="Between 13 and 16 samplers used" value="4" />
-+    </field>
-+    <field name="Sampler State Pointer" dword="3" bits="31:5" type="offset" />
-+    <field name="Binding Table Entry Count" dword="4" bits="4:0" type="uint" />
-+    <field name="Binding Table Pointer" dword="4" bits="20:5" type="offset" />
-+    <field name="Number of Threads in GPGPU Thread Group" dword="5" bits="9:0" type="uint" />
-+    <field name="Thread group forward progress guarantee" dword="5" bits="13:13" type="bool" />
-+    <field name="Shared Local Memory Size" dword="5" bits="20:16" type="uint">
-+      <value name="Encodes 0K" value="0" />
-+      <value name="Encodes 1K" value="1" />
-+      <value name="Encodes 2K" value="2" />
-+      <value name="Encodes 4K" value="3" />
-+      <value name="Encodes 8K" value="4" />
-+      <value name="Encodes 16K" value="5" />
-+      <value name="Encodes 32K" value="6" />
-+      <value name="Encodes 64K" value="7" />
-+      <value name="Encodes 96K" value="10" />
-+      <value name="Encodes 128K" value="11" />
-+      <value name="Encodes 192K" value="12" />
-+      <value name="Encodes 256K" value="13" />
-+      <value name="Encodes 384K" value="14" />
-+    </field>
-+    <field name="Rounding Mode" dword="5" bits="23:22" type="uint">
-+      <value name="RTNE" value="0" />
-+      <value name="RU" value="1" />
-+      <value name="RD" value="2" />
-+      <value name="RTZ" value="3" />
-+    </field>
-+    <field name="Thread Group Dispatch Size" dword="5" bits="27:26" type="uint">
-+      <value name="TG size 8" value="0" />
-+      <value name="TG size 4" value="1" />
-+      <value name="TG size 2" value="2" />
-+      <value name="TG size 1" value="3" />
-+    </field>
-+    <field name="Number Of Barriers" dword="5" bits="30:28" type="uint" prefix="BARRIER_SIZE">
-+      <value name="NONE" value="0" />
-+      <value name="B1" value="1" />
-+      <value name="B2" value="2" />
-+      <value name="B4" value="3" />
-+      <value name="B8" value="4" />
-+      <value name="B16" value="5" />
-+      <value name="B24" value="6" />
-+      <value name="B32" value="7" />
-+    </field>
-+    <field name="BTD Mode" dword="5" bits="31:31" type="uint" />
-+    <field name="Preferred SLM Allocation Size" dword="7" bits="3:0" type="PREF_SLM_ALLOCATION_SIZE" />
-+  </struct>
-+  <struct name="COMPUTE_WALKER_BODY" length="39">
-+    <field name="Indirect Data Length" dword="1" bits="16:0" type="uint" />
-+    <field name="L3 prefetch disable" dword="1" bits="17:17" type="bool" />
-+    <field name="Partition Dispatch Parameter" dword="1" bits="29:18" type="uint" />
-+    <field name="Partition Type" dword="1" bits="31:30" type="uint">
-+      <value name="PartitionX" value="1" />
-+      <value name="PartitionY" value="2" />
-+      <value name="PartitionZ" value="3" />
-+    </field>
-+    <field name="Indirect Data Start Address" dword="2" bits="31:6" type="offset" />
-+    <field name="Compute Dispatch All walker Enable" dword="3" bits="0:0" type="uint">
-+      <value name="Disabled" value="0" />
-+      <value name="Enabled" value="1" />
-+    </field>
-+    <field name="Thread Group Batch Size" dword="3" bits="4:3" type="uint">
-+      <value name="TG_BATCH_1" value="0" />
-+      <value name="TG_BATCH_2" value="1" />
-+      <value name="TG_BATCH_4" value="2" />
-+      <value name="TG_BATCH_8" value="3" />
-+    </field>
-+    <field name="Dispatch Walk Order" dword="3" bits="6:5" type="uint">
-+      <value name="Linear Walk" value="0" />
-+      <value name="Y order walk" value="1" />
-+      <value name="Morton Walk" value="2" />
-+    </field>
-+    <field name="Message SIMD" dword="3" bits="18:17" type="uint">
-+      <value name="SIMT16" value="1" />
-+      <value name="SIMT32" value="2" />
-+    </field>
-+    <field name="Tile Layout" dword="3" bits="21:19" type="uint">
-+      <value name="Linear" value="0" />
-+      <value name="TileY 32bpe" value="1" />
-+      <value name="TileY 64bpe" value="2" />
-+      <value name="TileY 128bpe" value="3" />
-+    </field>
-+    <field name="Walk Order" dword="3" bits="24:22" type="uint">
-+      <value name="Walk 012" value="0" />
-+      <value name="Walk 021" value="1" />
-+      <value name="Walk 102" value="2" />
-+      <value name="Walk 120" value="3" />
-+      <value name="Walk 201" value="4" />
-+      <value name="Walk 210" value="5" />
-+    </field>
-+    <field name="Emit Inline Parameter" dword="3" bits="25:25" type="bool" />
-+    <field name="Emit Local" dword="3" bits="28:26" type="uint">
-+      <value name="Emit None" value="0" />
-+      <value name="Emit X" value="1" />
-+      <value name="Emit XY" value="3" />
-+      <value name="Emit XYZ" value="7" />
-+    </field>
-+    <field name="Generate Local ID" dword="3" bits="29:29" type="bool" />
-+    <field name="SIMD Size" dword="3" bits="31:30" type="uint">
-+      <value name="SIMT16" value="1" />
-+      <value name="SIMT32" value="2" />
-+    </field>
-+    <field name="Execution Mask" dword="4" bits="31:0" type="uint" />
-+    <field name="Local X Maximum" dword="5" bits="9:0" type="uint" />
-+    <field name="Local Y Maximum" dword="5" bits="19:10" type="uint" />
-+    <field name="Local Z Maximum" dword="5" bits="29:20" type="uint" />
-+    <field name="Thread Group ID X Dimension" dword="6" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Y Dimension" dword="7" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Z Dimension" dword="8" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Starting X" dword="9" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Starting Y" dword="10" bits="31:0" type="uint" />
-+    <field name="Thread Group ID Starting Z" dword="11" bits="31:0" type="uint" />
-+    <field name="Partition ID" dword="12" bits="31:0" type="uint" />
-+    <field name="Partition Size" dword="13" bits="31:0" type="uint" />
-+    <field name="Preempt X" dword="14" bits="31:0" type="uint" />
-+    <field name="Preempt Y" dword="15" bits="31:0" type="uint" />
-+    <field name="Preempt Z" dword="16" bits="31:0" type="uint" />
-+    <field name="Walker ID" dword="17" bits="3:0" type="uint" />
-+    <field name="Over dispatch TG count" dword="17" bits="23:8" type="uint" />
-+    <field name="Interface Descriptor" dword="18" bits="255:0" type="INTERFACE_DESCRIPTOR_DATA" />
-+    <field name="Post Sync" dword="26" bits="159:0" type="POSTSYNC_DATA" />
-+    <group count="8" dword="31" size="32">
-+      <field name="Inline Data" dword="0" bits="31:0" type="uint" />
-+    </group>
-+  </struct>
-+  <struct name="SAMPLER_STATE" length="4">
-+    <field name="Anisotropic Algorithm" dword="0" bits="0:0" type="uint">
-+      <value name="LEGACY" value="0" />
-+      <value name="EWA Approximation" value="1" />
-+    </field>
-+    <field name="Texture LOD Bias" dword="0" bits="13:1" type="s4.8" />
-+    <field name="Min Mode Filter" dword="0" bits="16:14" type="uint" prefix="MAPFILTER">
-+      <value name="NEAREST" value="0" />
-+      <value name="LINEAR" value="1" />
-+      <value name="ANISOTROPIC" value="2" />
-+      <value name="ANISOTROPIC_FAST" value="3" />
-+      <value name="MONO" value="6" />
-+    </field>
-+    <field name="Mag Mode Filter" dword="0" bits="19:17" type="uint" prefix="MAPFILTER">
-+      <value name="NEAREST" value="0" />
-+      <value name="LINEAR" value="1" />
-+      <value name="ANISOTROPIC" value="2" />
-+      <value name="ANISOTROPIC_FAST" value="3" />
-+      <value name="MONO" value="6" />
-+    </field>
-+    <field name="Mip Mode Filter" dword="0" bits="21:20" type="uint" prefix="MIPFILTER">
-+      <value name="NONE" value="0" />
-+      <value name="NEAREST" value="1" />
-+      <value name="LINEAR" value="3" />
-+    </field>
-+    <field name="Coarse LOD Quality Mode" dword="0" bits="26:22" type="uint" />
-+    <field name="LOD PreClamp Mode" dword="0" bits="28:27" type="uint" prefix="CLAMP_MODE">
-+      <value name="NONE" value="0" />
-+      <value name="OGL" value="2" />
-+    </field>
-+    <field name="Texture Border Color Mode" dword="0" bits="29:29" type="uint">
-+      <value name="DX10/OGL" value="0" />
-+      <value name="DX9" value="1" />
-+    </field>
-+    <field name="CPS LOD Compensation Enable" dword="0" bits="30:30" type="bool" />
-+    <field name="Sampler Disable" dword="0" bits="31:31" type="bool" />
-+    <field name="Cube Surface Control Mode" dword="1" bits="0:0" type="uint">
-+      <value name="PROGRAMMED" value="0" />
-+      <value name="OVERRIDE" value="1" />
-+    </field>
-+    <field name="Shadow Function" dword="1" bits="3:1" type="uint" prefix="PREFILTEROP">
-+      <value name="ALWAYS" value="0" />
-+      <value name="NEVER" value="1" />
-+      <value name="LESS" value="2" />
-+      <value name="EQUAL" value="3" />
-+      <value name="LEQUAL" value="4" />
-+      <value name="GREATER" value="5" />
-+      <value name="NOTEQUAL" value="6" />
-+      <value name="GEQUAL" value="7" />
-+    </field>
-+    <field name="ChromaKey Mode" dword="1" bits="4:4" type="uint">
-+      <value name="KEYFILTER_KILL_ON_ANY_MATCH" value="0" />
-+      <value name="KEYFILTER_REPLACE_BLACK" value="1" />
-+    </field>
-+    <field name="ChromaKey Index" dword="1" bits="6:5" type="uint" />
-+    <field name="ChromaKey Enable" dword="1" bits="7:7" type="bool" />
-+    <field name="Max LOD" dword="1" bits="19:8" type="u4.8" />
-+    <field name="Min LOD" dword="1" bits="31:20" type="u4.8" />
-+    <field name="LOD Clamp Magnification Mode" dword="2" bits="0:0" type="uint">
-+      <value name="MIPNONE" value="0" />
-+      <value name="MIPFILTER" value="1" />
-+    </field>
-+    <field name="SRGB DECODE" dword="2" bits="1:1" type="uint">
-+      <value name="DECODE_EXT" value="0" />
-+      <value name="SKIP_DECODE_EXT" value="1" />
-+    </field>
-+    <field name="Return Filter Weight for Null Texels" dword="2" bits="2:2" type="uint" />
-+    <field name="Return Filter Weight for Border Texels" dword="2" bits="3:3" type="uint" />
-+    <field name="Force gather4 Behavior" dword="2" bits="5:5" type="bool" />
-+    <field name="Border Color Pointer" dword="2" bits="31:6" type="offset" />
-+    <field name="TCZ Address Control Mode" dword="3" bits="2:0" type="Texture Coordinate Mode" />
-+    <field name="TCY Address Control Mode" dword="3" bits="5:3" type="Texture Coordinate Mode" />
-+    <field name="TCX Address Control Mode" dword="3" bits="8:6" type="Texture Coordinate Mode" />
-+    <field name="Reduction Type Enable" dword="3" bits="9:9" type="bool" />
-+    <field name="Non-normalized Coordinate Enable" dword="3" bits="10:10" type="bool" />
-+    <field name="Trilinear Filter Quality" dword="3" bits="12:11" type="uint">
-+      <value name="FULL" value="0" />
-+      <value name="HIGH" value="1" />
-+      <value name="MED" value="2" />
-+      <value name="LOW" value="3" />
-+    </field>
-+    <field name="R Address Min Filter Rounding Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="R Address Mag Filter Rounding Enable" dword="3" bits="14:14" type="bool" />
-+    <field name="V Address Min Filter Rounding Enable" dword="3" bits="15:15" type="bool" />
-+    <field name="V Address Mag Filter Rounding Enable" dword="3" bits="16:16" type="bool" />
-+    <field name="U Address Min Filter Rounding Enable" dword="3" bits="17:17" type="bool" />
-+    <field name="U Address Mag Filter Rounding Enable" dword="3" bits="18:18" type="bool" />
-+    <field name="Maximum Anisotropy" dword="3" bits="21:19" type="uint">
-+      <value name="RATIO 2:1" value="0" />
-+      <value name="RATIO 4:1" value="1" />
-+      <value name="RATIO 6:1" value="2" />
-+      <value name="RATIO 8:1" value="3" />
-+      <value name="RATIO 10:1" value="4" />
-+      <value name="RATIO 12:1" value="5" />
-+      <value name="RATIO 14:1" value="6" />
-+      <value name="RATIO 16:1" value="7" />
-+    </field>
-+    <field name="Reduction Type" dword="3" bits="23:22" type="uint">
-+      <value name="STD_FILTER" value="0" />
-+      <value name="COMPARISON" value="1" />
-+      <value name="MINIMUM" value="2" />
-+      <value name="MAXIMUM" value="3" />
-+    </field>
-+    <field name="Allow Low Quality LOD Calculation" dword="3" bits="24:24" type="bool" />
-+    <field name="Low Quality Filter" dword="3" bits="26:26" type="bool" />
-+  </struct>
-+  <instruction name="3DSTATE_BTD" bias="2" length="6" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="4" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="6" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Dispatch Timeout Counter" dword="1" bits="2:0" type="uint">
-+      <value name="64 clocks" value="0" />
-+      <value name="128 clocks" value="1" />
-+      <value name="192 clocks" value="2" />
-+      <value name="256 clocks" value="3" />
-+      <value name="512 clocks" value="4" />
-+      <value name="1024 clocks" value="5" />
-+      <value name="2048 clocks" value="6" />
-+      <value name="4096 clocks" value="7" />
-+    </field>
-+    <field name="Controls the maximum number of outstanding Ray Queries per SS" dword="1" bits="8:7" type="uint" prefix="RAYS_QUERIES_OUTSTANDING">
-+      <value name="128" value="0" />
-+      <value name="256" value="1" />
-+      <value name="512" value="2" />
-+      <value name="1024" value="3" />
-+    </field>
-+    <field name="RT Mem Structures 64b Mode Enable" dword="1" bits="30:30" type="bool" />
-+    <field name="BTD Mid thread preemption" dword="1" bits="31:31" type="bool" />
-+    <field name="Per DSS Memory Backed Buffer Size" dword="2" bits="2:0" type="uint" default="6">
-+      <value name="2KB" value="0" />
-+      <value name="4KB" value="1" />
-+      <value name="8KB" value="2" />
-+      <value name="16KB" value="3" />
-+      <value name="32KB" value="4" />
-+      <value name="64KB" value="5" />
-+      <value name="128KB" value="6" />
-+    </field>
-+    <field name="Memory Backed Buffer Base Pointer" dword="2" bits="63:10" type="address" />
-+    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_COARSE_PIXEL" bias="2" length="2" engine="render">
-+    <field name="DWord Length" dword="0" bits="15:0" type="uint" default="0" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="137" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="CPSizeX" dword="1" bits="1:0" type="STATE_CPS_SIZE" />
-+    <field name="CPSizeY" dword="1" bits="3:2" type="STATE_CPS_SIZE" />
-+    <field name="CPSizeCombiner1Opcode" dword="1" bits="6:4" type="STATE_CPS_COMBINER_OPCODE" />
-+    <field name="CPSizeCombiner0Opcode" dword="1" bits="9:7" type="STATE_CPS_COMBINER_OPCODE" />
-+    <field name="Disable CPS Pointers" dword="1" bits="31:31" type="bool" />
-+  </instruction>
-+  <instruction name="3DSTATE_DS" bias="2" length="11" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="9" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="29" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-+    <field name="Registers Per Thread" dword="3" bits="5:0" type="uint" />
-+    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="Accesses UAV" dword="3" bits="14:14" type="bool" />
-+    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-+    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-+      <value name="No Samplers" value="0" />
-+      <value name="1-4 Samplers" value="1" />
-+      <value name="5-8 Samplers" value="2" />
-+      <value name="9-12 Samplers" value="3" />
-+      <value name="13-16 Samplers" value="4" />
-+    </field>
-+    <field name="Vector Mask Enable" dword="3" bits="30:30" type="bool" />
-+    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-+    <field name="Patch URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-+    <field name="Patch URB Entry Read Length" dword="6" bits="17:11" type="uint" />
-+    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="24:20" type="uint" />
-+    <field name="Enable" dword="7" bits="0:0" type="bool" />
-+    <field name="Cache Disable" dword="7" bits="1:1" type="bool" />
-+    <field name="Compute W Coordinate Enable" dword="7" bits="2:2" type="bool" />
-+    <field name="Dispatch Mode" dword="7" bits="4:3" type="uint" prefix="DISPATCH_MODE">
-+      <value name="SIMD8_SINGLE_PATCH" value="1" />
-+      <value name="SIMD8_SINGLE_OR_DUAL_PATCH" value="2" />
-+    </field>
-+    <field name="Primitive ID Not Required" dword="7" bits="9:9" type="bool" />
-+    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-+    <field name="Maximum Number of Threads" dword="7" bits="30:21" type="uint" />
-+    <field name="User Clip Distance Cull Test Enable Bitmask" dword="8" bits="7:0" type="uint" />
-+    <field name="User Clip Distance Clip Test Enable Bitmask" dword="8" bits="15:8" type="uint" />
-+    <field name="Vertex URB Entry Output Length" dword="8" bits="20:16" type="uint" />
-+    <field name="Vertex URB Entry Output Read Offset" dword="8" bits="26:21" type="uint" />
-+    <field name="QUAD_PATCH Kernel Start Pointer" dword="9" bits="63:6" type="offset" />
-+  </instruction>
-+  <instruction name="3DSTATE_GS" bias="2" length="10" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="8" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="17" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-+    <field name="Expected Vertex Count" dword="3" bits="5:0" type="uint" />
-+    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-+    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-+    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-+      <value name="Normal" value="0" />
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-+    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-+      <value name="No Samplers" value="0" />
-+      <value name="1-4 Samplers" value="1" />
-+      <value name="5-8 Samplers" value="2" />
-+      <value name="9-12 Samplers" value="3" />
-+      <value name="13-16 Samplers" value="4" />
-+    </field>
-+    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-+      <value name="Dmask" value="0" />
-+    </field>
-+    <field name="Single Program Flow" dword="3" bits="31:31" type="bool" />
-+    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-+    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="3:0" type="uint" />
-+    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-+    <field name="Include Vertex Handles" dword="6" bits="10:10" type="bool" />
-+    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
-+    <field name="Output Topology" dword="6" bits="22:17" type="3D_Prim_Topo_Type" />
-+    <field name="Output Vertex Size" dword="6" bits="28:23" type="uint" />
-+    <field name="Dispatch GRF Start Register For URB Data [5:4]" dword="6" bits="30:29" type="uint" />
-+    <field name="Enable" dword="7" bits="0:0" type="bool" />
-+    <field name="Discard Adjacency" dword="7" bits="1:1" type="bool" />
-+    <field name="Reorder Mode" dword="7" bits="2:2" type="uint">
-+      <value name="LEADING" value="0" />
-+      <value name="TRAILING" value="1" />
-+    </field>
-+    <field name="Hint" dword="7" bits="3:3" type="bool" />
-+    <field name="Include Primitive ID" dword="7" bits="4:4" type="bool" />
-+    <field name="Invocations Increment Value" dword="7" bits="9:5" type="uint" />
-+    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-+    <field name="Default Stream Id" dword="7" bits="14:13" type="uint" />
-+    <field name="Instance Control" dword="7" bits="19:15" type="uint" />
-+    <field name="Control Data Header Size" dword="7" bits="23:20" type="uint" />
-+    <field name="Registers Per Thread" dword="7" bits="31:26" type="uint" />
-+    <field name="Maximum Number of Threads" dword="8" bits="8:0" type="uint" />
-+    <field name="Static Output Vertex Count" dword="8" bits="26:16" type="uint" />
-+    <field name="Static Output" dword="8" bits="30:30" type="bool" />
-+    <field name="Control Data Format" dword="8" bits="31:31" type="uint">
-+      <value name="CUT" value="0" />
-+      <value name="SID" value="1" />
-+    </field>
-+    <field name="User Clip Distance Cull Test Enable Bitmask" dword="9" bits="7:0" type="uint" />
-+    <field name="User Clip Distance Clip Test Enable Bitmask" dword="9" bits="15:8" type="uint" />
-+    <field name="Vertex URB Entry Output Length" dword="9" bits="20:16" type="uint" />
-+    <field name="Vertex URB Entry Output Read Offset" dword="9" bits="26:21" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_HS" bias="2" length="8" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="27" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Patch Count Threshold" dword="1" bits="3:0" type="uint" />
-+    <field name="Registers Per Thread" dword="1" bits="9:4" type="uint" />
-+    <field name="Software Exception Enable" dword="1" bits="12:12" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="1" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="1" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="alternate" value="1" />
-+    </field>
-+    <field name="Thread Dispatch Priority" dword="1" bits="17:17" type="uint">
-+      <value name="Normal" value="0" />
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Binding Table Entry Count" dword="1" bits="25:18" type="uint" />
-+    <field name="Sampler Count" dword="1" bits="29:27" type="uint">
-+      <value name="No Samplers" value="0" />
-+      <value name="1-4 Samplers" value="1" />
-+      <value name="5-8 Samplers" value="2" />
-+      <value name="9-12 Samplers" value="3" />
-+      <value name="13-16 Samplers" value="4" />
-+    </field>
-+    <field name="Instance Count" dword="2" bits="4:0" type="uint" />
-+    <field name="Maximum Number of Threads" dword="2" bits="16:8" type="uint" />
-+    <field name="Statistics Enable" dword="2" bits="29:29" type="bool" />
-+    <field name="Enable" dword="2" bits="31:31" type="bool" />
-+    <field name="Kernel Start Pointer" dword="3" bits="63:6" type="offset" />
-+    <field name="Scratch Space Buffer" dword="5" bits="31:10" type="uint" />
-+    <field name="Include Primitive ID" dword="7" bits="0:0" type="bool" />
-+    <field name="Vertex URB Entry Read Offset" dword="7" bits="9:4" type="uint" />
-+    <field name="Vertex URB Entry Read Length" dword="7" bits="16:11" type="uint" />
-+    <field name="Dispatch GRF Start Register For URB Data" dword="7" bits="23:19" type="uint" />
-+    <field name="Include Vertex Handles" dword="7" bits="24:24" type="bool" />
-+    <field name="Accesses UAV" dword="7" bits="25:25" type="bool" />
-+    <field name="Vector Mask Enable" dword="7" bits="26:26" type="uint">
-+      <value name="Dmask" value="0" />
-+    </field>
-+    <field name="Single Program Flow" dword="7" bits="27:27" type="bool" />
-+    <field name="Dispatch GRF Start Register For URB Data [5]" dword="7" bits="28:28" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_MESH_SHADER" bias="2" length="8" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="6" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="122" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-+    <field name="Local X Maximum" dword="3" bits="9:0" type="uint" />
-+    <field name="Software Exception Enable" dword="3" bits="10:10" type="bool" />
-+    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Single Program Flow" dword="3" bits="18:18" type="uint" />
-+    <field name="Denorm Mode" dword="3" bits="19:19" type="uint">
-+      <value name="Ftz" value="0" />
-+      <value name="SetByKernel" value="1" />
-+    </field>
-+    <field name="Registers Per Thread" dword="3" bits="25:20" type="uint" />
-+    <field name="Number of Threads in GPGPU Thread Group" dword="4" bits="9:0" type="uint" />
-+    <field name="Shared Local Memory Size" dword="4" bits="20:16" type="uint" />
-+    <field name="Rounding Mode" dword="4" bits="23:22" type="uint">
-+      <value name="RTNE" value="0" />
-+      <value name="RU" value="1" />
-+      <value name="RD" value="2" />
-+      <value name="RTZ" value="3" />
-+    </field>
-+    <field name="Preferred SLM Allocation Size" dword="4" bits="27:24" type="PREF_SLM_ALLOCATION_SIZE" />
-+    <field name="Number of Barriers" dword="4" bits="30:28" type="uint" />
-+    <field name="Indirect Data Length" dword="5" bits="16:0" type="uint" />
-+    <field name="L3 Prefetch Disable" dword="5" bits="17:17" type="bool" />
-+    <field name="Emit Local ID X" dword="5" bits="18:18" type="bool" />
-+    <field name="Emit Inline Parameter" dword="5" bits="19:19" type="bool" />
-+    <field name="Systolic Mode Enable" dword="5" bits="20:20" type="bool" />
-+    <field name="Accesses UAV" dword="5" bits="21:21" type="bool" />
-+    <field name="XP0 Required" dword="5" bits="22:22" type="uint" />
-+    <field name="Message SIMD" dword="5" bits="29:28" type="uint">
-+      <value name="SIMD16" value="1" />
-+      <value name="SIMD32" value="2" />
-+    </field>
-+    <field name="SIMD Size" dword="5" bits="31:30" type="uint">
-+      <value name="SIMD16" value="1" />
-+      <value name="SIMD32" value="2" />
-+    </field>
-+    <field name="Execution Mask" dword="6" bits="31:0" type="uint" />
-+    <field name="Maximum Primitive Count" dword="7" bits="9:0" type="uint" />
-+    <field name="Per-Primitive Data Pitch" dword="7" bits="16:12" type="uint" />
-+    <field name="Per-Vertex Data Pitch" dword="7" bits="24:20" type="uint" />
-+    <field name="Index Format" dword="7" bits="27:25" type="uint" prefix="INDEX">
-+      <value name="U888X" value="0" />
-+      <value name="U101010X" value="1" />
-+      <value name="U8" value="4" />
-+      <value name="U16" value="5" />
-+      <value name="U32" value="3" />
-+    </field>
-+    <field name="Output Topology" dword="7" bits="29:28" type="uint" prefix="OUTPUT">
-+      <value name="POINT" value="0" />
-+      <value name="LINE" value="1" />
-+      <value name="TRI" value="2" />
-+    </field>
-+    <field name="Per-Primitive Data Present" dword="7" bits="31:31" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_PS" bias="2" length="12" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="10" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="32" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Kernel 0 Enable" dword="1" bits="0:0" type="bool" />
-+    <field name="Kernel[0] : SIMD Width" dword="1" bits="1:1" type="uint" prefix="PS">
-+      <value name="SIMD16" value="0" />
-+      <value name="SIMD32" value="1" />
-+    </field>
-+    <field name="Kernel Start Pointer 0" dword="1" bits="63:6" type="offset" />
-+    <field name="Registers Per Thread" dword="3" bits="5:0" type="uint" />
-+    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-+    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="Rounding Mode" dword="3" bits="15:14" type="uint">
-+      <value name="RTNE" value="0" />
-+      <value name="RU" value="1" />
-+      <value name="RD" value="2" />
-+      <value name="RTZ" value="3" />
-+    </field>
-+    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-+      <value name="Normal" value="0" />
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-+    <field name="Single Precision Denormal Mode" dword="3" bits="26:26" type="uint">
-+      <value name="Flushed to Zero" value="0" />
-+      <value name="Retained" value="1" />
-+    </field>
-+    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-+      <value name="No Samplers" value="0" />
-+      <value name="1-4 Samplers" value="1" />
-+      <value name="5-8 Samplers" value="2" />
-+      <value name="9-12 Samplers" value="3" />
-+      <value name="13-16 Samplers" value="4" />
-+    </field>
-+    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-+      <value name="Dmask" value="0" />
-+      <value name="Vmask" value="1" />
-+    </field>
-+    <field name="Single Program Flow" dword="3" bits="31:31" type="uint">
-+      <value name="Multiple" value="0" />
-+      <value name="Single" value="1" />
-+    </field>
-+    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-+    <field name="Position XY Offset Select" dword="6" bits="4:3" type="uint">
-+      <value name="POSOFFSET_NONE" value="0" />
-+      <value name="POSOFFSET_CENTROID" value="2" />
-+      <value name="POSOFFSET_SAMPLE" value="3" />
-+    </field>
-+    <field name="Render Target Resolve Type" dword="6" bits="7:6" type="uint">
-+      <value name="RESOLVE_DISABLED" value="0" />
-+    </field>
-+    <field name="Render Target Fast Clear Enable" dword="6" bits="8:8" type="bool" />
-+    <field name="Overlapping Subspans Enable" dword="6" bits="9:9" type="bool" />
-+    <field name="3D Scoreboard Address Size select" dword="6" bits="10:10" type="uint">
-+      <value name="2x2" value="0" />
-+      <value name="4x2" value="1" />
-+    </field>
-+    <field name="Clear/Resolve BTI for Render Target" dword="6" bits="19:12" type="uint" />
-+    <field name="Pixel Scoreboard Disable" dword="6" bits="21:21" type="bool" />
-+    <field name="Maximum Number of Threads Per PSD" dword="6" bits="31:23" type="uint" />
-+    <field name="Dispatch GRF Start Register For Constant/Setup Data 1" dword="7" bits="15:8" type="uint" />
-+    <field name="Dispatch GRF Start Register For Constant/Setup Data 0" dword="7" bits="23:16" type="uint" />
-+    <field name="Kernel[0] : Poly Packing Policy" dword="7" bits="26:24" type="uint">
-+      <value name="POLY_PACK4_DYNAMIC" value="0" />
-+      <value name="POLY_PACK8_DYNAMIC" value="1" />
-+      <value name="POLY_PACK16_DYNAMIC" value="2" />
-+      <value name="POLY_PACK16_FIXED" value="3" />
-+      <value name="POLY_PACK8_FIXED" value="4" />
-+    </field>
-+    <field name="Kernel[0] : Maximum Polys per Thread" dword="7" bits="29:27" type="uint" />
-+    <field name="Kernel 1 Selection Priority" dword="7" bits="31:31" type="uint">
-+      <value name="PRI_SIMD" value="0" />
-+      <value name="PRI_POLY" value="1" />
-+    </field>
-+    <field name="Kernel 1 Enable" dword="8" bits="0:0" type="bool" />
-+    <field name="Kernel[1] : SIMD Width" dword="8" bits="1:1" type="uint" prefix="PS">
-+      <value name="SIMD16" value="0" />
-+      <value name="SIMD32" value="1" />
-+    </field>
-+    <field name="Kernel Start Pointer 1" dword="8" bits="63:6" type="offset" />
-+  </instruction>
-+  <instruction name="3DSTATE_TASK_SHADER" bias="2" length="7" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="5" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="125" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-+    <field name="Local X Maximum" dword="3" bits="9:0" type="uint" />
-+    <field name="Software Exception Enable" dword="3" bits="10:10" type="bool" />
-+    <field name="Mask Stack Exception Enable" dword="3" bits="11:11" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Single Program Flow" dword="3" bits="18:18" type="uint" />
-+    <field name="Denorm Mode" dword="3" bits="19:19" type="uint">
-+      <value name="Ftz" value="0" />
-+      <value name="SetByKernel" value="1" />
-+    </field>
-+    <field name="Registers Per Thread" dword="3" bits="25:20" type="uint" />
-+    <field name="Number of Threads in GPGPU Thread Group" dword="4" bits="9:0" type="uint" />
-+    <field name="Shared Local Memory Size" dword="4" bits="20:16" type="uint" />
-+    <field name="Barrier Enable" dword="4" bits="21:21" type="bool" />
-+    <field name="Rounding Mode" dword="4" bits="23:22" type="uint">
-+      <value name="RTNE" value="0" />
-+      <value name="RU" value="1" />
-+      <value name="RD" value="2" />
-+      <value name="RTZ" value="3" />
-+    </field>
-+    <field name="Preferred SLM Allocation Size" dword="4" bits="27:24" type="uint" />
-+    <field name="Number of Barriers" dword="4" bits="30:28" type="uint" />
-+    <field name="Indirect Data Length" dword="5" bits="16:0" type="uint" />
-+    <field name="L3 Prefetch Disable" dword="5" bits="17:17" type="bool" />
-+    <field name="Emit Local ID X" dword="5" bits="18:18" type="bool" />
-+    <field name="Emit Inline Parameter" dword="5" bits="19:19" type="bool" />
-+    <field name="Systolic Mode Enable" dword="5" bits="20:20" type="bool" />
-+    <field name="Accesses UAV" dword="5" bits="21:21" type="bool" />
-+    <field name="XP0 Required" dword="5" bits="22:22" type="uint" />
-+    <field name="Message SIMD" dword="5" bits="29:28" type="uint">
-+      <value name="SIMD16" value="1" />
-+      <value name="SIMD32" value="2" />
-+    </field>
-+    <field name="SIMD Size" dword="5" bits="31:30" type="uint">
-+      <value name="SIMD16" value="1" />
-+      <value name="SIMD32" value="2" />
-+    </field>
-+    <field name="Execution Mask" dword="6" bits="31:0" type="uint" />
-+  </instruction>
-+  <instruction name="3DSTATE_VS" bias="2" length="9" engine="render">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="7" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="16" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="0" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="3" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Kernel Start Pointer" dword="1" bits="63:6" type="offset" />
-+    <field name="Registers Per Thread" dword="3" bits="5:0" type="uint" />
-+    <field name="Software Exception Enable" dword="3" bits="7:7" type="bool" />
-+    <field name="Accesses UAV" dword="3" bits="12:12" type="bool" />
-+    <field name="Illegal Opcode Exception Enable" dword="3" bits="13:13" type="bool" />
-+    <field name="Floating Point Mode" dword="3" bits="16:16" type="uint">
-+      <value name="IEEE-754" value="0" />
-+      <value name="Alternate" value="1" />
-+    </field>
-+    <field name="Thread Dispatch Priority" dword="3" bits="17:17" type="uint">
-+      <value name="Normal" value="0" />
-+      <value name="High" value="1" />
-+    </field>
-+    <field name="Binding Table Entry Count" dword="3" bits="25:18" type="uint" />
-+    <field name="Sampler Count" dword="3" bits="29:27" type="uint">
-+      <value name="No Samplers" value="0" />
-+      <value name="1-4 Samplers" value="1" />
-+      <value name="5-8 Samplers" value="2" />
-+      <value name="9-12 Samplers" value="3" />
-+      <value name="13-16 Samplers" value="4" />
-+    </field>
-+    <field name="Vector Mask Enable" dword="3" bits="30:30" type="uint">
-+      <value name="Dmask" value="0" />
-+    </field>
-+    <field name="Scratch Space Buffer" dword="4" bits="31:10" type="uint" />
-+    <field name="Vertex URB Entry Read Offset" dword="6" bits="9:4" type="uint" />
-+    <field name="Vertex URB Entry Read Length" dword="6" bits="16:11" type="uint" />
-+    <field name="Dispatch GRF Start Register For URB Data" dword="6" bits="24:20" type="uint" />
-+    <field name="Enable" dword="7" bits="0:0" type="bool" />
-+    <field name="Vertex Cache Disable" dword="7" bits="1:1" type="bool" />
-+    <field name="Single Instance Dispatch Enable" dword="7" bits="9:9" type="bool" />
-+    <field name="Statistics Enable" dword="7" bits="10:10" type="bool" />
-+    <field name="Maximum Number of Threads" dword="7" bits="31:22" type="uint" />
-+    <field name="User Clip Distance Cull Test Enable Bitmask" dword="8" bits="7:0" type="uint" />
-+    <field name="User Clip Distance Clip Test Enable Bitmask" dword="8" bits="15:8" type="uint" />
-+    <field name="Vertex URB Entry Output Length" dword="8" bits="20:16" type="uint" />
-+    <field name="Vertex URB Entry Output Read Offset" dword="8" bits="26:21" type="uint" />
-+  </instruction>
-+  <instruction name="STATE_COMPUTE_MODE" bias="2" length="3" engine="render|compute">
-+    <field name="DWord Length" dword="0" bits="7:0" type="uint" default="1" />
-+    <field name="3D Command Sub Opcode" dword="0" bits="23:16" type="uint" default="5" />
-+    <field name="3D Command Opcode" dword="0" bits="26:24" type="uint" default="1" />
-+    <field name="Command SubType" dword="0" bits="28:27" type="uint" default="0" />
-+    <field name="Command Type" dword="0" bits="31:29" type="uint" default="3" />
-+    <field name="Z Pass Async Compute Thread Limit" dword="1" bits="2:0" type="uint" prefix="ZPACTL">
-+      <value name="Max 60" value="0" />
-+      <value name="Max 64" value="1" />
-+      <value name="Max 56" value="2" />
-+      <value name="Max 48" value="3" />
-+      <value name="Max 40" value="4" />
-+      <value name="Max 32" value="5" />
-+    </field>
-+    <field name="Z Async Throttle settings" dword="1" bits="4:3" type="uint" prefix="ZATS">
-+      <value name="Defer to Async Compute Thread Limit" value="0" />
-+      <value name="Max 32" value="1" />
-+      <value name="Max 40" value="2" />
-+      <value name="Max 48" value="3" />
-+    </field>
-+    <field name="Async Compute Thread Limit" dword="1" bits="9:7" type="uint" prefix="ACTL">
-+      <value name="Disabled" value="0" />
-+      <value name="Max 2" value="1" />
-+      <value name="Max 8" value="2" />
-+      <value name="Max 16" value="3" />
-+      <value name="Max 24" value="4" />
-+      <value name="Max 32" value="5" />
-+      <value name="Max 40" value="6" />
-+      <value name="Max 48" value="7" />
-+    </field>
-+    <field name="Enable Variable Register Size Allocation" dword="1" bits="10:10" type="bool" />
-+    <field name="EU Thread Scheduling Mode Override" dword="1" bits="14:13" type="uint" />
-+    <field name="Large GRF Mode" dword="1" bits="15:15" type="bool" />
-+    <field name="Z Pass Async Compute Thread Limit Mask" dword="1" bits="18:16" type="uint" />
-+    <field name="Mask1" dword="1" bits="31:16" type="uint" />
-+    <field name="Z Async Throttle settings Mask" dword="1" bits="20:19" type="uint" />
-+    <field name="Async Compute Thread Limit Mask" dword="1" bits="25:23" type="uint" />
-+    <field name="Enable Variable Register Size Allocation Mask" dword="1" bits="26:26" type="uint" />
-+    <field name="EU Thread Scheduling Mode Override Mask" dword="1" bits="30:29" type="uint" />
-+    <field name="Large GRF Mode Mask" dword="1" bits="31:31" type="bool" />
-+    <field name="Midthread Preemption Delay Timer" dword="2" bits="2:0" type="uint">
-+      <value name="MTP_TIMER_VAL_0" value="0" />
-+      <value name="MTP_TIMER_VAL_50" value="1" />
-+      <value name="MTP_TIMER_VAL_100" value="2" />
-+      <value name="MTP_TIMER_VAL_150" value="3" />
-+    </field>
-+    <field name="Midthread Preemption Overdispatch Thread group count" dword="2" bits="4:3" type="uint">
-+      <value name="OD_TG_M2" value="0" />
-+      <value name="OD_TG_M4" value="1" />
-+      <value name="OD_TG_M8" value="2" />
-+      <value name="OD_TG_M16" value="3" />
-+    </field>
-+    <field name="Midthread Preemption Overdispatch Test mode" dword="2" bits="5:5" type="uint">
-+      <value name="Regular" value="0" />
-+      <value name="Test mode" value="1" />
-+    </field>
-+    <field name="UAV Coherency Mode" dword="2" bits="6:6" type="uint">
-+      <value name="Drain DataPort Mode" value="0" />
-+      <value name="Flush Dataport L1" value="1" />
-+    </field>
-+    <field name="Midthread Preemption Delay Timer Mask" dword="2" bits="18:16" type="uint" />
-+    <field name="Mask2" dword="2" bits="31:16" type="uint" />
-+    <field name="Midthread Preemption Overdispatch Thread group count Mask" dword="2" bits="20:19" type="uint" />
-+    <field name="Midthread Preemption Overdispatch Test mode Mask" dword="2" bits="21:21" type="uint" />
-+    <field name="UAV Coherency Mode Mask" dword="2" bits="22:22" type="uint" />
-+    <field name="Memory allocation for Scratch and Midthread Preemption buffers Mask" dword="2" bits="27:27" type="uint" />
-+  </instruction>
-+  <register name="CHICKEN_RASTER_2" length="1" num="0x6208">
-+    <field name="Disable Any MCTR response fix" dword="0" bits="5:5" type="bool" />
-+    <field name="Disable Any MCTR response fix Mask" dword="0" bits="21:21" type="bool" />
-+  </register>
-+</genxml>
-diff --git a/lib/intel/genxml/xe3p.xml b/lib/intel/genxml/xe3p.xml
-new file mode 100644
-index 0000000000..cfd51bb30b
---- /dev/null
-+++ b/lib/intel/genxml/xe3p.xml
-@@ -0,0 +1,4 @@
-+<?xml version='1.0' encoding='utf-8'?>
-+<genxml name="XE3P" gen="35">
-+  <import name="xe3.xml" />
-+</genxml>
-diff --git a/lib/meson.build b/lib/meson.build
-index a5c6042753..e2f1912767 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -299,13 +299,16 @@ genxml_gen_deps = files(
-     'intel/genxml/gen110.xml',
-     'intel/genxml/gen120.xml',
-     'intel/genxml/gen125.xml',
-+    'intel/genxml/xe2.xml',
-+    'intel/genxml/xe3.xml',
-+    'intel/genxml/xe3p.xml',
- )
- 
- # Ordered list of all gens, oldest first.  Pack headers use earlier
- # gens as baselines to omit unchanged inherited layouts.  Decode headers
- # stay complete for each gen because decode does not fall back to older
- # tables.
--genxml_gens = ['gen90', 'gen110', 'gen120', 'gen125']
-+genxml_gens = ['gen90', 'gen110', 'gen120', 'gen125', 'xe2', 'xe3', 'xe3p']
- 
- genxml_pack_headers = []
- genxml_decode_headers = []
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8946_FULL -> XEIGTPW_15285_FULL
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_15285_FULL absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15285_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (2 -> 2)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_15285_FULL:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_sriov_admin@exec-quantum-write-readback-vfs-disabled@pf-eq_ms-10:
+    - shard-bmg:          [PASS][1] -> [SKIP][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@xe_sriov_admin@exec-quantum-write-readback-vfs-disabled@pf-eq_ms-10.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@xe_sriov_admin@exec-quantum-write-readback-vfs-disabled@pf-eq_ms-10.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15285_FULL that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_async_flips@alternate-sync-async-flip:
+    - shard-bmg:          [PASS][3] -> [FAIL][4] ([Intel XE#3718] / [Intel XE#6078])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@kms_async_flips@alternate-sync-async-flip.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_async_flips@alternate-sync-async-flip.html
+
+  * igt@kms_async_flips@alternate-sync-async-flip@pipe-a-dp-2:
+    - shard-bmg:          [PASS][5] -> [FAIL][6] ([Intel XE#6078])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@kms_async_flips@alternate-sync-async-flip@pipe-a-dp-2.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_async_flips@alternate-sync-async-flip@pipe-a-dp-2.html
+
+  * igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-async-flip:
+    - shard-bmg:          NOTRUN -> [SKIP][7] ([Intel XE#1124]) +2 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-8/igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-async-flip.html
+
+  * igt@kms_big_fb@yf-tiled-64bpp-rotate-180:
+    - shard-lnl:          NOTRUN -> [SKIP][8] ([Intel XE#1124]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_big_fb@yf-tiled-64bpp-rotate-180.html
+
+  * igt@kms_bw@linear-tiling-2-displays-target-2160x1440p:
+    - shard-bmg:          NOTRUN -> [SKIP][9] ([Intel XE#367])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_bw@linear-tiling-2-displays-target-2160x1440p.html
+
+  * igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs:
+    - shard-lnl:          NOTRUN -> [SKIP][10] ([Intel XE#2887])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-1/igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs.html
+
+  * igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-mc-ccs:
+    - shard-bmg:          NOTRUN -> [SKIP][11] ([Intel XE#3432])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-mc-ccs.html
+
+  * igt@kms_ccs@missing-ccs-buffer-y-tiled-gen12-rc-ccs:
+    - shard-bmg:          NOTRUN -> [SKIP][12] ([Intel XE#2887]) +3 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@kms_ccs@missing-ccs-buffer-y-tiled-gen12-rc-ccs.html
+
+  * igt@kms_chamelium_color@ctm-blue-to-red:
+    - shard-lnl:          NOTRUN -> [SKIP][13] ([Intel XE#306] / [Intel XE#7358])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-7/igt@kms_chamelium_color@ctm-blue-to-red.html
+    - shard-bmg:          NOTRUN -> [SKIP][14] ([Intel XE#2325] / [Intel XE#7358]) +1 other test skip
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_chamelium_color@ctm-blue-to-red.html
+
+  * igt@kms_chamelium_hpd@dp-hpd-for-each-pipe:
+    - shard-bmg:          NOTRUN -> [SKIP][15] ([Intel XE#2252]) +1 other test skip
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_chamelium_hpd@dp-hpd-for-each-pipe.html
+
+  * igt@kms_content_protection@dp-mst-type-0-suspend-resume:
+    - shard-bmg:          NOTRUN -> [SKIP][16] ([Intel XE#6974])
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-1/igt@kms_content_protection@dp-mst-type-0-suspend-resume.html
+
+  * igt@kms_dp_link_training@non-uhbr-mst:
+    - shard-bmg:          NOTRUN -> [SKIP][17] ([Intel XE#4354] / [Intel XE#5882])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-7/igt@kms_dp_link_training@non-uhbr-mst.html
+
+  * igt@kms_feature_discovery@chamelium:
+    - shard-bmg:          NOTRUN -> [SKIP][18] ([Intel XE#2372] / [Intel XE#7359])
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_feature_discovery@chamelium.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-upscaling:
+    - shard-bmg:          NOTRUN -> [SKIP][19] ([Intel XE#7178] / [Intel XE#7351])
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-upscaling.html
+    - shard-lnl:          NOTRUN -> [SKIP][20] ([Intel XE#7178] / [Intel XE#7351])
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-5/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-upscaling.html
+
+  * igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling:
+    - shard-bmg:          NOTRUN -> [SKIP][21] ([Intel XE#7178] / [Intel XE#7349])
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling.html
+
+  * igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-shrfb-draw-blt:
+    - shard-bmg:          NOTRUN -> [SKIP][22] ([Intel XE#4141]) +3 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-8/igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-shrfb-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-blt:
+    - shard-lnl:          NOTRUN -> [SKIP][23] ([Intel XE#656] / [Intel XE#7905]) +1 other test skip
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-8/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-msflip-blt:
+    - shard-lnl:          NOTRUN -> [SKIP][24] ([Intel XE#6312] / [Intel XE#651])
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-msflip-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbcdrrshdr-1p-offscreen-pri-shrfb-draw-blt:
+    - shard-lnl:          NOTRUN -> [SKIP][25] ([Intel XE#6312])
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@kms_frontbuffer_tracking@fbcdrrshdr-1p-offscreen-pri-shrfb-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbcdrrshdr-2p-primscrn-shrfb-msflip-blt:
+    - shard-bmg:          NOTRUN -> [SKIP][26] ([Intel XE#2311]) +11 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@kms_frontbuffer_tracking@fbcdrrshdr-2p-primscrn-shrfb-msflip-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbchdr-2p-scndscrn-pri-shrfb-draw-blt:
+    - shard-lnl:          NOTRUN -> [SKIP][27] ([Intel XE#7905]) +4 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@kms_frontbuffer_tracking@fbchdr-2p-scndscrn-pri-shrfb-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-argb161616f-draw-mmap-wc:
+    - shard-bmg:          NOTRUN -> [SKIP][28] ([Intel XE#7061] / [Intel XE#7356])
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_frontbuffer_tracking@fbcpsr-argb161616f-draw-mmap-wc.html
+    - shard-lnl:          NOTRUN -> [SKIP][29] ([Intel XE#7061] / [Intel XE#7356])
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-7/igt@kms_frontbuffer_tracking@fbcpsr-argb161616f-draw-mmap-wc.html
+
+  * igt@kms_frontbuffer_tracking@hdr-argb161616f-draw-render:
+    - shard-bmg:          NOTRUN -> [SKIP][30] ([Intel XE#7061]) +1 other test skip
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_frontbuffer_tracking@hdr-argb161616f-draw-render.html
+
+  * igt@kms_frontbuffer_tracking@psrhdr-1p-primscrn-shrfb-plflip-blt:
+    - shard-bmg:          NOTRUN -> [SKIP][31] ([Intel XE#2313]) +11 other tests skip
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_frontbuffer_tracking@psrhdr-1p-primscrn-shrfb-plflip-blt.html
+
+  * igt@kms_frontbuffer_tracking@psrhdr-argb161616f-draw-blt:
+    - shard-lnl:          NOTRUN -> [SKIP][32] ([Intel XE#7061])
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_frontbuffer_tracking@psrhdr-argb161616f-draw-blt.html
+
+  * igt@kms_hdr@static-toggle-dpms@pipe-a-hdmi-a-3-xrgb2101010:
+    - shard-bmg:          [PASS][33] -> [SKIP][34] ([Intel XE#7915]) +1 other test skip
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-6/igt@kms_hdr@static-toggle-dpms@pipe-a-hdmi-a-3-xrgb2101010.html
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-8/igt@kms_hdr@static-toggle-dpms@pipe-a-hdmi-a-3-xrgb2101010.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a:
+    - shard-lnl:          NOTRUN -> [SKIP][35] ([Intel XE#2763] / [Intel XE#6886]) +3 other tests skip
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a.html
+
+  * igt@kms_pm_backlight@bad-brightness:
+    - shard-bmg:          NOTRUN -> [SKIP][36] ([Intel XE#7376] / [Intel XE#7760] / [Intel XE#870])
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_pm_backlight@bad-brightness.html
+
+  * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-sf:
+    - shard-bmg:          NOTRUN -> [SKIP][37] ([Intel XE#1489]) +1 other test skip
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-sf.html
+
+  * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area:
+    - shard-lnl:          NOTRUN -> [SKIP][38] ([Intel XE#2893] / [Intel XE#4608] / [Intel XE#7304])
+   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-8/igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area.html
+
+  * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-a-edp-1:
+    - shard-lnl:          NOTRUN -> [SKIP][39] ([Intel XE#4608])
+   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-8/igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-a-edp-1.html
+
+  * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-b-edp-1:
+    - shard-lnl:          NOTRUN -> [SKIP][40] ([Intel XE#4608] / [Intel XE#7304])
+   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-8/igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-b-edp-1.html
+
+  * igt@kms_psr@fbc-psr2-suspend:
+    - shard-bmg:          NOTRUN -> [SKIP][41] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
+   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-7/igt@kms_psr@fbc-psr2-suspend.html
+    - shard-lnl:          NOTRUN -> [SKIP][42] ([Intel XE#1406] / [Intel XE#7345])
+   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_psr@fbc-psr2-suspend.html
+
+  * igt@kms_psr@fbc-psr2-suspend@edp-1:
+    - shard-lnl:          NOTRUN -> [SKIP][43] ([Intel XE#1406] / [Intel XE#4609])
+   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_psr@fbc-psr2-suspend@edp-1.html
+
+  * igt@kms_setmode@basic@pipe-b-edp-1:
+    - shard-lnl:          [PASS][44] -> [FAIL][45] ([Intel XE#6361]) +2 other tests fail
+   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-7/igt@kms_setmode@basic@pipe-b-edp-1.html
+   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@kms_setmode@basic@pipe-b-edp-1.html
+
+  * igt@xe_eudebug@basic-connect:
+    - shard-lnl:          NOTRUN -> [SKIP][46] ([Intel XE#7636])
+   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-5/igt@xe_eudebug@basic-connect.html
+
+  * igt@xe_eudebug@discovery-empty:
+    - shard-bmg:          NOTRUN -> [SKIP][47] ([Intel XE#7636]) +3 other tests skip
+   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@xe_eudebug@discovery-empty.html
+
+  * igt@xe_evict@evict-small-multi-vm:
+    - shard-lnl:          NOTRUN -> [SKIP][48] ([Intel XE#6540] / [Intel XE#688])
+   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-5/igt@xe_evict@evict-small-multi-vm.html
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr:
+    - shard-bmg:          NOTRUN -> [SKIP][49] ([Intel XE#2322] / [Intel XE#7372]) +2 other tests skip
+   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-1/igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr.html
+
+  * igt@xe_exec_basic@multigpu-no-exec-null:
+    - shard-lnl:          NOTRUN -> [SKIP][50] ([Intel XE#1392])
+   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@xe_exec_basic@multigpu-no-exec-null.html
+
+  * igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-dyn-priority:
+    - shard-bmg:          NOTRUN -> [SKIP][51] ([Intel XE#6874]) +4 other tests skip
+   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-10/igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-dyn-priority.html
+    - shard-lnl:          NOTRUN -> [SKIP][52] ([Intel XE#6874]) +1 other test skip
+   [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-2/igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-dyn-priority.html
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:
+    - shard-lnl:          NOTRUN -> [SKIP][53] ([Intel XE#2229])
+   [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-5/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - shard-bmg:          NOTRUN -> [SKIP][54] ([Intel XE#2229])
+   [54]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-5/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_multigpu_svm@mgpu-pagefault-conflict:
+    - shard-bmg:          NOTRUN -> [SKIP][55] ([Intel XE#6964]) +2 other tests skip
+   [55]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-1/igt@xe_multigpu_svm@mgpu-pagefault-conflict.html
+    - shard-lnl:          NOTRUN -> [SKIP][56] ([Intel XE#6964])
+   [56]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@xe_multigpu_svm@mgpu-pagefault-conflict.html
+
+  * igt@xe_peer2peer@read:
+    - shard-bmg:          NOTRUN -> [SKIP][57] ([Intel XE#2427] / [Intel XE#6953] / [Intel XE#7326] / [Intel XE#7353])
+   [57]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@xe_peer2peer@read.html
+    - shard-lnl:          NOTRUN -> [SKIP][58] ([Intel XE#1061] / [Intel XE#7326] / [Intel XE#7353])
+   [58]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@xe_peer2peer@read.html
+
+  * igt@xe_pm@s4-d3cold-basic-exec:
+    - shard-bmg:          NOTRUN -> [SKIP][59] ([Intel XE#2284] / [Intel XE#7370])
+   [59]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-10/igt@xe_pm@s4-d3cold-basic-exec.html
+
+  * igt@xe_pmu@all-fn-engine-activity-load:
+    - shard-bmg:          [PASS][60] -> [FAIL][61] ([Intel XE#7992])
+   [60]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-3/igt@xe_pmu@all-fn-engine-activity-load.html
+   [61]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@xe_pmu@all-fn-engine-activity-load.html
+
+  * igt@xe_pxp@pxp-stale-bo-bind-post-termination-irq:
+    - shard-bmg:          NOTRUN -> [SKIP][62] ([Intel XE#4733] / [Intel XE#7417])
+   [62]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@xe_pxp@pxp-stale-bo-bind-post-termination-irq.html
+
+  * igt@xe_query@multigpu-query-topology:
+    - shard-bmg:          NOTRUN -> [SKIP][63] ([Intel XE#944])
+   [63]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-5/igt@xe_query@multigpu-query-topology.html
+
+  * igt@xe_sriov_flr@flr-vfs-parallel:
+    - shard-bmg:          [PASS][64] -> [FAIL][65] ([Intel XE#6569]) +1 other test fail
+   [64]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@xe_sriov_flr@flr-vfs-parallel.html
+   [65]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-1/igt@xe_sriov_flr@flr-vfs-parallel.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@flip-vs-cursor-legacy:
+    - shard-bmg:          [FAIL][66] ([Intel XE#7571]) -> [PASS][67]
+   [66]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@kms_cursor_legacy@flip-vs-cursor-legacy.html
+   [67]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-5/igt@kms_cursor_legacy@flip-vs-cursor-legacy.html
+
+  * igt@kms_flip@flip-vs-expired-vblank@a-edp1:
+    - shard-lnl:          [FAIL][68] ([Intel XE#301]) -> [PASS][69] +1 other test pass
+   [68]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-7/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
+   [69]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
+
+  * igt@kms_hdr@invalid-hdr:
+    - shard-bmg:          [SKIP][70] ([Intel XE#1503]) -> [PASS][71]
+   [70]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-9/igt@kms_hdr@invalid-hdr.html
+   [71]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_hdr@invalid-hdr.html
+
+  * igt@kms_hdr@invalid-hdr@pipe-a-hdmi-a-3-xrgb2101010:
+    - shard-bmg:          [SKIP][72] ([Intel XE#7922]) -> [PASS][73] +1 other test pass
+   [72]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-9/igt@kms_hdr@invalid-hdr@pipe-a-hdmi-a-3-xrgb2101010.html
+   [73]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_hdr@invalid-hdr@pipe-a-hdmi-a-3-xrgb2101010.html
+
+  * igt@kms_pipe_stress@stress-xrgb8888-4tiled:
+    - shard-bmg:          [INCOMPLETE][74] -> [PASS][75]
+   [74]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-10/igt@kms_pipe_stress@stress-xrgb8888-4tiled.html
+   [75]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_pipe_stress@stress-xrgb8888-4tiled.html
+
+  * igt@kms_pm_dc@dc5-dpms:
+    - shard-lnl:          [FAIL][76] ([Intel XE#7340] / [Intel XE#7504]) -> [PASS][77]
+   [76]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-7/igt@kms_pm_dc@dc5-dpms.html
+   [77]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@kms_pm_dc@dc5-dpms.html
+
+  * igt@kms_pm_dc@dc6-psr:
+    - shard-lnl:          [FAIL][78] ([Intel XE#7340]) -> [PASS][79]
+   [78]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-6/igt@kms_pm_dc@dc6-psr.html
+   [79]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-2/igt@kms_pm_dc@dc6-psr.html
+
+  * igt@xe_sriov_flr@flr-twice:
+    - shard-bmg:          [FAIL][80] ([Intel XE#6569]) -> [PASS][81]
+   [80]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-6/igt@xe_sriov_flr@flr-twice.html
+   [81]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-5/igt@xe_sriov_flr@flr-twice.html
+
+  * igt@xe_sriov_scheduling@nonpreempt-engine-resets:
+    - shard-bmg:          [FAIL][82] ([Intel XE#7992]) -> [PASS][83] +1 other test pass
+   [82]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-9/igt@xe_sriov_scheduling@nonpreempt-engine-resets.html
+   [83]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@xe_sriov_scheduling@nonpreempt-engine-resets.html
+
+  
+#### Warnings ####
+
+  * igt@kms_chamelium_audio@dp-audio:
+    - shard-lnl:          [ABORT][84] ([Intel XE#8007]) -> [SKIP][85] ([Intel XE#373])
+   [84]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-5/igt@kms_chamelium_audio@dp-audio.html
+   [85]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@kms_chamelium_audio@dp-audio.html
+
+  * igt@kms_tiled_display@basic-test-pattern:
+    - shard-bmg:          [SKIP][86] ([Intel XE#2426] / [Intel XE#5848]) -> [FAIL][87] ([Intel XE#1729] / [Intel XE#7424])
+   [86]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-8/igt@kms_tiled_display@basic-test-pattern.html
+   [87]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_tiled_display@basic-test-pattern.html
+
+  * igt@kms_tiled_display@basic-test-pattern-with-chamelium:
+    - shard-bmg:          [SKIP][88] ([Intel XE#2426] / [Intel XE#5848]) -> [SKIP][89] ([Intel XE#2509] / [Intel XE#7437])
+   [88]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-7/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html
+   [89]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html
+
+  
+  [Intel XE#1061]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1061
+  [Intel XE#1124]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124
+  [Intel XE#1392]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1392
+  [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
+  [Intel XE#1489]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1489
+  [Intel XE#1503]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1503
+  [Intel XE#1729]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1729
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
+  [Intel XE#2252]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252
+  [Intel XE#2284]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2284
+  [Intel XE#2311]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2311
+  [Intel XE#2313]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2313
+  [Intel XE#2322]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2322
+  [Intel XE#2325]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2325
+  [Intel XE#2372]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2372
+  [Intel XE#2426]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2426
+  [Intel XE#2427]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2427
+  [Intel XE#2509]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2509
+  [Intel XE#2763]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2763
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#2887]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887
+  [Intel XE#2893]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2893
+  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
+  [Intel XE#306]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/306
+  [Intel XE#3432]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3432
+  [Intel XE#367]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/367
+  [Intel XE#3718]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3718
+  [Intel XE#373]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/373
+  [Intel XE#4141]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4141
+  [Intel XE#4354]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4354
+  [Intel XE#4608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608
+  [Intel XE#4609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4609
+  [Intel XE#4733]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4733
+  [Intel XE#5848]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5848
+  [Intel XE#5882]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5882
+  [Intel XE#6078]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6078
+  [Intel XE#6312]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6312
+  [Intel XE#6361]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6361
+  [Intel XE#651]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/651
+  [Intel XE#6540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6540
+  [Intel XE#656]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/656
+  [Intel XE#6569]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6569
+  [Intel XE#6874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#6886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6886
+  [Intel XE#6953]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6953
+  [Intel XE#6964]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6964
+  [Intel XE#6974]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6974
+  [Intel XE#7061]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061
+  [Intel XE#7178]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7178
+  [Intel XE#7304]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7304
+  [Intel XE#7326]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7326
+  [Intel XE#7340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340
+  [Intel XE#7345]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7345
+  [Intel XE#7349]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7349
+  [Intel XE#7351]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7351
+  [Intel XE#7353]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7353
+  [Intel XE#7356]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7356
+  [Intel XE#7358]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7358
+  [Intel XE#7359]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7359
+  [Intel XE#7370]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7370
+  [Intel XE#7372]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7372
+  [Intel XE#7376]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7376
+  [Intel XE#7417]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7417
+  [Intel XE#7424]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7424
+  [Intel XE#7437]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7437
+  [Intel XE#7504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504
+  [Intel XE#7571]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7571
+  [Intel XE#7636]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7636
+  [Intel XE#7760]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7760
+  [Intel XE#7905]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7905
+  [Intel XE#7915]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7915
+  [Intel XE#7922]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7922
+  [Intel XE#7992]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7992
+  [Intel XE#8007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007
+  [Intel XE#870]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/870
+  [Intel XE#944]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/944
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8946 -> IGTPW_15285
+  * Linux: xe-5178-51691efbd097f015d1f412ed410d399f2d9b672f -> xe-5179-5ffc4d14699b2de05ebbaa8d838f83dcf5da2b6a
+
+  IGTPW_15285: 15285
+  IGT_8946: 8946
+  xe-5178-51691efbd097f015d1f412ed410d399f2d9b672f: 51691efbd097f015d1f412ed410d399f2d9b672f
+  xe-5179-5ffc4d14699b2de05ebbaa8d838f83dcf5da2b6a: 5ffc4d14699b2de05ebbaa8d838f83dcf5da2b6a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/index.html
+
+--===============6978710355626110077==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools/igt_power: fix Xe crash via drmtest path helpers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167738/">https://patchwork.freedesktop.org/series/167738/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8946_FULL -&gt; XEIGTPW_15285_FULL</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_15285_FULL absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15285_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15285_FULL:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_sriov_admin@exec-quantum-write-readback-vfs-disabled@pf-eq_ms-10:<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@xe_sriov_admin@exec-quantum-write-readback-vfs-disabled@pf-eq_ms-10.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@xe_sriov_admin@exec-quantum-write-readback-vfs-disabled@pf-eq_ms-10.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15285_FULL that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_async_flips@alternate-sync-async-flip:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@kms_async_flips@alternate-sync-async-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_async_flips@alternate-sync-async-flip.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3718">Intel XE#3718</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6078">Intel XE#6078</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flips@alternate-sync-async-flip@pipe-a-dp-2:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@kms_async_flips@alternate-sync-async-flip@pipe-a-dp-2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_async_flips@alternate-sync-async-flip@pipe-a-dp-2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6078">Intel XE#6078</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-async-flip:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-8/igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-async-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124">Intel XE#1124</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@yf-tiled-64bpp-rotate-180:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_big_fb@yf-tiled-64bpp-rotate-180.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124">Intel XE#1124</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@linear-tiling-2-displays-target-2160x1440p:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_bw@linear-tiling-2-displays-target-2160x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/367">Intel XE#367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-1/igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887">Intel XE#2887</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-mc-ccs:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-mc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3432">Intel XE#3432</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@missing-ccs-buffer-y-tiled-gen12-rc-ccs:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@kms_ccs@missing-ccs-buffer-y-tiled-gen12-rc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887">Intel XE#2887</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_color@ctm-blue-to-red:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-7/igt@kms_chamelium_color@ctm-blue-to-red.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/306">Intel XE#306</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7358">Intel XE#7358</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_chamelium_color@ctm-blue-to-red.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2325">Intel XE#2325</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7358">Intel XE#7358</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@dp-hpd-for-each-pipe:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_chamelium_hpd@dp-hpd-for-each-pipe.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252">Intel XE#2252</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-type-0-suspend-resume:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-1/igt@kms_content_protection@dp-mst-type-0-suspend-resume.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6974">Intel XE#6974</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dp_link_training@non-uhbr-mst:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-7/igt@kms_dp_link_training@non-uhbr-mst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4354">Intel XE#4354</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5882">Intel XE#5882</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_feature_discovery@chamelium:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_feature_discovery@chamelium.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2372">Intel XE#2372</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7359">Intel XE#7359</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-upscaling:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-upscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7178">Intel XE#7178</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7351">Intel XE#7351</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-5/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-upscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7178">Intel XE#7178</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7351">Intel XE#7351</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7178">Intel XE#7178</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7349">Intel XE#7349</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-shrfb-draw-blt:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-8/igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-shrfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4141">Intel XE#4141</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-blt:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-8/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-pri-shrfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/656">Intel XE#656</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7905">Intel XE#7905</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-msflip-blt:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-msflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6312">Intel XE#6312</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/651">Intel XE#651</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrshdr-1p-offscreen-pri-shrfb-draw-blt:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@kms_frontbuffer_tracking@fbcdrrshdr-1p-offscreen-pri-shrfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6312">Intel XE#6312</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrshdr-2p-primscrn-shrfb-msflip-blt:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@kms_frontbuffer_tracking@fbcdrrshdr-2p-primscrn-shrfb-msflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2311">Intel XE#2311</a>) +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbchdr-2p-scndscrn-pri-shrfb-draw-blt:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@kms_frontbuffer_tracking@fbchdr-2p-scndscrn-pri-shrfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7905">Intel XE#7905</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-argb161616f-draw-mmap-wc:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_frontbuffer_tracking@fbcpsr-argb161616f-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061">Intel XE#7061</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7356">Intel XE#7356</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-7/igt@kms_frontbuffer_tracking@fbcpsr-argb161616f-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061">Intel XE#7061</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7356">Intel XE#7356</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@hdr-argb161616f-draw-render:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_frontbuffer_tracking@hdr-argb161616f-draw-render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061">Intel XE#7061</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psrhdr-1p-primscrn-shrfb-plflip-blt:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_frontbuffer_tracking@psrhdr-1p-primscrn-shrfb-plflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2313">Intel XE#2313</a>) +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psrhdr-argb161616f-draw-blt:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_frontbuffer_tracking@psrhdr-argb161616f-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061">Intel XE#7061</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@static-toggle-dpms@pipe-a-hdmi-a-3-xrgb2101010:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-6/igt@kms_hdr@static-toggle-dpms@pipe-a-hdmi-a-3-xrgb2101010.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-8/igt@kms_hdr@static-toggle-dpms@pipe-a-hdmi-a-3-xrgb2101010.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7915">Intel XE#7915</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2763">Intel XE#2763</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6886">Intel XE#6886</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@bad-brightness:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_pm_backlight@bad-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7376">Intel XE#7376</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7760">Intel XE#7760</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/870">Intel XE#870</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-sf:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1489">Intel XE#1489</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-8/igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2893">Intel XE#2893</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608">Intel XE#4608</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7304">Intel XE#7304</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-a-edp-1:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-8/igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-a-edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608">Intel XE#4608</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-b-edp-1:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-8/igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-b-edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608">Intel XE#4608</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7304">Intel XE#7304</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@fbc-psr2-suspend:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-7/igt@kms_psr@fbc-psr2-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_psr@fbc-psr2-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7345">Intel XE#7345</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@fbc-psr2-suspend@edp-1:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-3/igt@kms_psr@fbc-psr2-suspend@edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4609">Intel XE#4609</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic@pipe-b-edp-1:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-7/igt@kms_setmode@basic@pipe-b-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@kms_setmode@basic@pipe-b-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6361">Intel XE#6361</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_eudebug@basic-connect:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-5/igt@xe_eudebug@basic-connect.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7636">Intel XE#7636</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_eudebug@discovery-empty:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@xe_eudebug@discovery-empty.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7636">Intel XE#7636</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-multi-vm:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-5/igt@xe_evict@evict-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6540">Intel XE#6540</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-1/igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2322">Intel XE#2322</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7372">Intel XE#7372</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@xe_exec_basic@multigpu-no-exec-null.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1392">Intel XE#1392</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-dyn-priority:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-10/igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-dyn-priority.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874">Intel XE#6874</a>) +4 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-2/igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-dyn-priority.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874">Intel XE#6874</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-5/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-5/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_multigpu_svm@mgpu-pagefault-conflict:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-1/igt@xe_multigpu_svm@mgpu-pagefault-conflict.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6964">Intel XE#6964</a>) +2 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@xe_multigpu_svm@mgpu-pagefault-conflict.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6964">Intel XE#6964</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_peer2peer@read:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@xe_peer2peer@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2427">Intel XE#2427</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6953">Intel XE#6953</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7326">Intel XE#7326</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7353">Intel XE#7353</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@xe_peer2peer@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1061">Intel XE#1061</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7326">Intel XE#7326</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7353">Intel XE#7353</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm@s4-d3cold-basic-exec:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-10/igt@xe_pm@s4-d3cold-basic-exec.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2284">Intel XE#2284</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7370">Intel XE#7370</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pmu@all-fn-engine-activity-load:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-3/igt@xe_pmu@all-fn-engine-activity-load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@xe_pmu@all-fn-engine-activity-load.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7992">Intel XE#7992</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pxp@pxp-stale-bo-bind-post-termination-irq:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@xe_pxp@pxp-stale-bo-bind-post-termination-irq.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4733">Intel XE#4733</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7417">Intel XE#7417</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_query@multigpu-query-topology:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-5/igt@xe_query@multigpu-query-topology.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/944">Intel XE#944</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vfs-parallel:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@xe_sriov_flr@flr-vfs-parallel.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-1/igt@xe_sriov_flr@flr-vfs-parallel.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6569">Intel XE#6569</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@flip-vs-cursor-legacy:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-5/igt@kms_cursor_legacy@flip-vs-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7571">Intel XE#7571</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-5/igt@kms_cursor_legacy@flip-vs-cursor-legacy.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank@a-edp1:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-7/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@invalid-hdr:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-9/igt@kms_hdr@invalid-hdr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1503">Intel XE#1503</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_hdr@invalid-hdr.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@invalid-hdr@pipe-a-hdmi-a-3-xrgb2101010:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-9/igt@kms_hdr@invalid-hdr@pipe-a-hdmi-a-3-xrgb2101010.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7922">Intel XE#7922</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-3/igt@kms_hdr@invalid-hdr@pipe-a-hdmi-a-3-xrgb2101010.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_stress@stress-xrgb8888-4tiled:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-10/igt@kms_pipe_stress@stress-xrgb8888-4tiled.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-9/igt@kms_pipe_stress@stress-xrgb8888-4tiled.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc5-dpms:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-7/igt@kms_pm_dc@dc5-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7504">Intel XE#7504</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-6/igt@kms_pm_dc@dc5-dpms.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc6-psr:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-6/igt@kms_pm_dc@dc6-psr.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7340">Intel XE#7340</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-2/igt@kms_pm_dc@dc6-psr.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-twice:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-6/igt@xe_sriov_flr@flr-twice.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6569">Intel XE#6569</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-5/igt@xe_sriov_flr@flr-twice.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_scheduling@nonpreempt-engine-resets:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-9/igt@xe_sriov_scheduling@nonpreempt-engine-resets.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7992">Intel XE#7992</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@xe_sriov_scheduling@nonpreempt-engine-resets.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_chamelium_audio@dp-audio:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-lnl-5/igt@kms_chamelium_audio@dp-audio.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007">Intel XE#8007</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-lnl-4/igt@kms_chamelium_audio@dp-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/373">Intel XE#373</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_tiled_display@basic-test-pattern:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-8/igt@kms_tiled_display@basic-test-pattern.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2426">Intel XE#2426</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5848">Intel XE#5848</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-6/igt@kms_tiled_display@basic-test-pattern.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1729">Intel XE#1729</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7424">Intel XE#7424</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_tiled_display@basic-test-pattern-with-chamelium:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8946/shard-bmg-7/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2426">Intel XE#2426</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5848">Intel XE#5848</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15285/shard-bmg-4/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2509">Intel XE#2509</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7437">Intel XE#7437</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8946 -&gt; IGTPW_15285</li>
+<li>Linux: xe-5178-51691efbd097f015d1f412ed410d399f2d9b672f -&gt; xe-5179-5ffc4d14699b2de05ebbaa8d838f83dcf5da2b6a</li>
+</ul>
+<p>IGTPW_15285: 15285<br />
+  IGT_8946: 8946<br />
+  xe-5178-51691efbd097f015d1f412ed410d399f2d9b672f: 51691efbd097f015d1f412ed410d399f2d9b672f<br />
+  xe-5179-5ffc4d14699b2de05ebbaa8d838f83dcf5da2b6a: 5ffc4d14699b2de05ebbaa8d838f83dcf5da2b6a</p>
+
+</body>
+</html>
+
+--===============6978710355626110077==--
