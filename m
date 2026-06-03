@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEB7CD6E64
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Jun 2026 08:58:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11508CD6E69
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Jun 2026 09:14:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EBDBD113C56;
-	Wed,  3 Jun 2026 08:58:47 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE01A113C56;
- Wed,  3 Jun 2026 08:58:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6607354764149597995=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 86083113C9A;
+	Wed,  3 Jun 2026 09:14:28 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XNvnNeCJ";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 753EF113C94
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Jun 2026 09:14:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1780478045; x=1812014045;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=56m9SW+ZCc2v2VgNuRlSHGIUuJ8y3kzw3ezUsfByes4=;
+ b=XNvnNeCJxOhim3T8LeXum1UVgftUJWuDI2TmTZkl/cG8eQMhpi+oAoGH
+ 88KExUeW0cFBEZ5Gk0WrViU6M/sgUba/3vCDHZfiPo1oK18V4/P+Xeien
+ cPf3bUwNla4uX5X7y4w95wr6fOx49r84OLCLkdUjAqVKS9gKuwPS1u66c
+ Zgt+Dt0sM0OmTncTBIPXpbKXWx44I+0+Fe2J/EFpnXnowIX3eYzYXJqc4
+ QbWiIaGnai68XTdNJNNyu7Ej6UDbFSHgEQ3z4VnpcjOoHn8oSUhYrmYLT
+ yTklOUUwlDJi9y3kkZYMDQOEBSaYqSC6HCHwrf5ri+wwbKbL15EwkYHgz A==;
+X-CSE-ConnectionGUID: lFOHzXe/Q0eIxsBxfa73fg==
+X-CSE-MsgGUID: 2Oa9wFEASjuuXqyWTIKwoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="92657869"
+X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; d="scan'208";a="92657869"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2026 02:14:05 -0700
+X-CSE-ConnectionGUID: s1wiOnElQBujL4Wtk/PPeg==
+X-CSE-MsgGUID: VjjxVB6CTZ2j9JT6IS5W6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; d="scan'208";a="239706035"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.189])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2026 02:14:03 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, Jeevan B <jeevan.b@intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_kms: treat equal limits as bigjoiner
+In-Reply-To: <20260603073606.2168574-1-jeevan.b@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260603073606.2168574-1-jeevan.b@intel.com>
+Date: Wed, 03 Jun 2026 12:14:01 +0300
+Message-ID: <1c24b284f0559a5ae985ddedc833c0db086f59b4@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/genxml=3A_Introduce_Mes?=
- =?utf-8?q?a_genxml_infrastructure_to_IGT_=28rev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jan Maslak" <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 03 Jun 2026 08:58:25 -0000
-Message-ID: <178047710577.38726.2767341812137446436@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260602223756.2543404-1-jan.maslak@intel.com>
-In-Reply-To: <20260602223756.2543404-1-jan.maslak@intel.com>
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +66,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6607354764149597995==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, 03 Jun 2026, Jeevan B <jeevan.b@intel.com> wrote:
+> Use '>=' instead of '>' so modes equal to max hdisplay or dotclock
+> are considered for bigjoiner.
 
-== Series Details ==
+I can see that from the code changes.
 
-Series: lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev5)
-URL   : https://patchwork.freedesktop.org/series/164446/
-State : success
+Why?
 
-== Summary ==
+>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  lib/igt_kms.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 0f1ce03a9..e5ffaeac1 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6946,8 +6946,8 @@ static int get_max_pipe_hdisplay(int drm_fd)
+>   */
+>  bool igt_bigjoiner_possible(int drm_fd, drmModeModeInfo *mode, int max_dotclock)
+>  {
+> -	return (mode->hdisplay > get_max_pipe_hdisplay(drm_fd) ||
+> -		mode->clock > max_dotclock);
+> +	return (mode->hdisplay >= get_max_pipe_hdisplay(drm_fd) ||
+> +		mode->clock >= max_dotclock);
+>  }
+>  
+>  /**
 
-CI Bug Log - changes from XEIGT_8947_BAT -> XEIGTPW_15294_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 11)
-------------------------------
-
-  Missing    (2): bat-bmg-vm bat-ptl-vm 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8947 -> IGTPW_15294
-  * Linux: xe-5186-dae47e6a1cce1d19d56c27b48b2670d4094ecbdc -> xe-5190-b391419dc37a62b41f8e1a2489a8ae868109abee
-
-  IGTPW_15294: 4c3b094ed26692ab11eaf2e229b9529820d19efe @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8947: e322bfd77da04314dd310da9a6cf0562b5751f1f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5186-dae47e6a1cce1d19d56c27b48b2670d4094ecbdc: dae47e6a1cce1d19d56c27b48b2670d4094ecbdc
-  xe-5190-b391419dc37a62b41f8e1a2489a8ae868109abee: b391419dc37a62b41f8e1a2489a8ae868109abee
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15294/index.html
-
---===============6607354764149597995==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164446/">https://patchwork.freedesktop.org/series/164446/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15294/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15294/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8947_BAT -&gt; XEIGTPW_15294_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 11)</h2>
-<p>Missing    (2): bat-bmg-vm bat-ptl-vm </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8947 -&gt; IGTPW_15294</li>
-<li>Linux: xe-5186-dae47e6a1cce1d19d56c27b48b2670d4094ecbdc -&gt; xe-5190-b391419dc37a62b41f8e1a2489a8ae868109abee</li>
-</ul>
-<p>IGTPW_15294: 4c3b094ed26692ab11eaf2e229b9529820d19efe @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8947: e322bfd77da04314dd310da9a6cf0562b5751f1f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5186-dae47e6a1cce1d19d56c27b48b2670d4094ecbdc: dae47e6a1cce1d19d56c27b48b2670d4094ecbdc<br />
-  xe-5190-b391419dc37a62b41f8e1a2489a8ae868109abee: b391419dc37a62b41f8e1a2489a8ae868109abee</p>
-
-</body>
-</html>
-
---===============6607354764149597995==--
+-- 
+Jani Nikula, Intel
