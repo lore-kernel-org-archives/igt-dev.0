@@ -4,54 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C700CD6E68
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Jun 2026 07:38:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A75CCCD6E4A
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Jun 2026 08:26:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C0029113D3D;
-	Thu,  4 Jun 2026 07:38:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A21D112738;
+	Thu,  4 Jun 2026 08:26:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b/qwyq4q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fQoUkFAI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8C03113D3D
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Jun 2026 07:37:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C462D112733
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Jun 2026 08:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780558677; x=1812094677;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Ttrk2BC8eaQpCIvNOPQreL/Ur9BbRGNRrb6sk82Xj7Y=;
- b=b/qwyq4qLG+lCZEswqbGFiXheXfuN80wYQuO2taYW4Kv/JLaOxk0NU2d
- 829ZfKV8rc9TdMt6sNWgB5py53sPS0PY4u2rr4ZW2BDmID6WT9AGsX4tu
- EMOKIYro/joT9CMHBfIQw/pluJdnqrPkLnW0yNHUgh3HYxLzeotXKt6LU
- mrugZprFjCSjzopxYB1ibfJqVJa+AEsWqm7XifDTvsH62z+cAUEZXM4Pl
- w7gpJ2//QAq8Ixtm4YWbQNRez5GcYYpFwHCVNh/sZa3cqM3mayQ/CqXmJ
- gUMnY8kMWXBF2wP56joDJhNMSu50+GxfUsO/Gencuej6a1xxBAcMCWAdS A==;
-X-CSE-ConnectionGUID: ztSAmf/FTim2yWkiRN/70w==
-X-CSE-MsgGUID: MXkM4IX+SxCCzE3CQWHj1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="81505974"
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; d="scan'208";a="81505974"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2026 00:37:46 -0700
-X-CSE-ConnectionGUID: +mMoCu5tQc+6SE6lLIoBbg==
-X-CSE-MsgGUID: 5JINzkwuQS25EnFOMjpLlQ==
+ t=1780561579; x=1812097579;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=MNKMaadps219awIGijcz+Huki00RYKfpuOcEwpcA9DA=;
+ b=fQoUkFAIG6rG5fSVlhjMX3IsCKbBE7uDP7coHj5ctRPc6y5dk3Ov8R+o
+ ab43QonYegluxjWEdh6LkkXt4d7wmV1kvzZuF04tpHmPuAAxSrqEeXVMN
+ KgXz8alclWKrD7D9Yo6bOySb/zJqTEgTWg0B1YyxuE7j7keKxKP6qXEk2
+ W0Qr/rVZKaOyWfxOwVuRCEFhqJX+HctRdVuhmZ3mxWajV9/Cdcq03UucN
+ BVww8ewokTf86tCV/R0BEqZDCfFGcrqJnozBOLcx0lXCJkGna6DouOv28
+ gURX5CKClW80AcnZVuUlXuibfbHFPDjefcDyp3Xex05ST+4foToVNU3YK w==;
+X-CSE-ConnectionGUID: F05YMz/dSPu/DKRV3EW4eg==
+X-CSE-MsgGUID: Foi1z6Z0TDa6KAUUSlOw5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="104045300"
+X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; d="scan'208";a="104045300"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2026 01:26:18 -0700
+X-CSE-ConnectionGUID: NNhRLIReSP+uqL7OjB9JWQ==
+X-CSE-MsgGUID: WJt4hUUCR229DOQ3A1m6FQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; d="scan'208";a="238133031"
-Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2026 00:37:46 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	piotr.piorkowski@intel.com
-Cc: Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v1] tests/xe_debugfs: Add debugfs entry read/write
- validation in root-dir
-Date: Thu,  4 Jun 2026 07:37:40 +0000
-Message-ID: <20260604073740.332572-1-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.52.0
+X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; d="scan'208";a="249402314"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2026 01:26:18 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 4 Jun 2026 01:26:17 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 4 Jun 2026 01:26:17 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.9) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 4 Jun 2026 01:26:15 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ix9yGh4xwhSCVrdu9iYtzFUMP66ce8eyMwNR3N6+SmqepOcgJEaPpXIDsyO1VP9ZoD7jNZVbUVNiLBeRjJlrhJ8wj4XU//rtczOoS3p7WB3/JiCP1ZE/ykVfySi5LLAkUF/uUf8lvFU5j6e0gjEedjT/iOJvrnbnPNlXyoniOu7qf64Dhe8w9kmEORkmPzoLnGBt3uQI8KzAH3JMQwNAfcVyEptxSRX20r1ESoCdvRORCaPorc5jsELM4g09oIc9rilvNRMt4zFpNuu3YPg2FQWpU532nRVYAjcHaAZhEKNAT6hsFGmP2HRhrYmLqq+kDIhHcQzLGbqKYH5bumw4/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VSzEOYpX70zwdO8YCP7HrrGu3IC1TaUvWtYcF89QneI=;
+ b=op+jlTkuCOvSafJ9v3KGaedPzLtlZEPvcKE9Zhb8GYHTjraEdCrIjB0S1JjqcM8/mgC/LaKGDw5umyxCHdOXfFW1HeqdwcODRBDMFPg4sLQLKK8lY9OztY1eqCOjZXdjjhjVWxDeqWMFoHA3NsO8zTOHPFc9E3fC9qq5CalX3uVcDgyUBCxVeJAyNLVNAYBnOwLsGybyLn5WLiEg1IE65KECX6VNzcs7KY5ztrnVlOHid5XX6Uol6v6RQ8IZc7dk1ZUTwATTS947dIk5ckihq8DDokZEEvDozBFJteq1ZjGt1WmSrYa4K2fjkNhB3n0QSFYNgn0ZCklppVCA2DXrWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
+ SJ0PR11MB6815.namprd11.prod.outlook.com (2603:10b6:a03:484::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
+ 08:26:13 +0000
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::9d51:565a:7572:5318]) by DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::9d51:565a:7572:5318%5]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
+ 08:26:12 +0000
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+Subject: RE: [PATCH v1 1/2] tests/intel/kms_pm_dc: Add DC5 DPMS suspend/resume
+ validation test
+Thread-Topic: [PATCH v1 1/2] tests/intel/kms_pm_dc: Add DC5 DPMS
+ suspend/resume validation test
+Thread-Index: AQHchJD0PmUvPVvJe06eRT8DEroE1LYu7Ksg
+Date: Thu, 4 Jun 2026 08:26:12 +0000
+Message-ID: <DM4PR11MB6312AF917153B5FB93531CE790102@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20260113132639.13411-1-mohammed.thasleem@intel.com>
+ <20260113132639.13411-2-mohammed.thasleem@intel.com>
+In-Reply-To: <20260113132639.13411-2-mohammed.thasleem@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|SJ0PR11MB6815:EE_
+x-ms-office365-filtering-correlation-id: 0fe4ae44-c961-451b-d350-08dec212f030
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|56012099006|4143699003|11063799006|22082099003|38070700021|6133799003|18002099003;
+x-microsoft-antispam-message-info: lHBS44gMHhHS9T7VYRXfO7o6a5aeW2zhiLiAL6E9iyjZZAvG/NoWL0z9J2SwVUifpsevYZ5f4lZVowYzJpfrCLhmVOyA9IIufh/Mom5SRv5Qq+I7gnpaVa8zTGUooehG7BoOjxXQTplPMmdHpapAzV/GprT8I5BC2iaW6F9MXfqhL6N5JMPCa19BYti1Ns31BDhv+jy2FHeMoPmEKwP7kbVr1a9t2ccD3RIbXtAT6aRr9CMwhzXiKSuETDesEMaW+IGrrYTx5ymZCQyW5nrFAiMbBViGy4MkFQcOC1lTSSgW/tR82NYhXp2jzpTSxyZ4ERDI3WMXhygqdK+8wB/WoT/ITPRNBuKBqiJUynAbqdxeRKRqOsPJxQ4z5ybkNysWk7ULAmRrzh7K4IXn7w75Q78FLJTb2jBB8iECY2/eGXlE2nM4ctL95fc3GugIh0hdnOFIWpC1O6TIXIFy0m2uPWPI55oqDgbJPpPR5AROXe7m1zmsLNcoQDr3ont1mMj4Vs2OXZO+cgtnU4dNuLhSrcXkFzoC+IVvcaBpg5kkrc3hSPV2rCxJZzBMETafBjWTd3MTMJZIsHNGwM5hzGH1UmBMYpua+X9OsevjSUDHXSuelLr4kytBpBJe3TIca6eG/9QAiuywASt4B3JU91KhfF9m/CRsKcDdMypAgi4KHVnx7Dw1nq40BBi5tertcOvrUYJrPtQ1oQ6kypeXCk+XhuXDuVua4LTU863Yemkz4nbjcYPo2Bk+oUiDS1EY/kRU
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(56012099006)(4143699003)(11063799006)(22082099003)(38070700021)(6133799003)(18002099003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?hCcehgiknRr43mXeEjRLUU1WiphW4cftssffdoospvT27Xjsw0i0+6u5637Q?=
+ =?us-ascii?Q?Aq3PyJJciFgvZM+/d9+6wrC7k8pGyfB1oDJ7D77tk0/y88pxO0UD1gHRNDJl?=
+ =?us-ascii?Q?seObZpSZsCpyKR5R76tbiwrwDrXRJNQt2KI+eG5bcEFRlcy8A1AhQRaD5KWT?=
+ =?us-ascii?Q?8BTrStBzr8wCPySVw39WD+gbgdjcpwc0cZZmRKeLp64LGweZyx8WI4Wbo7Ar?=
+ =?us-ascii?Q?IUKjT1H4i7Oxorz7cWagodkoq/dcpih36YgKsaTc5RXjg0pkCJuqAlTyIOG/?=
+ =?us-ascii?Q?tpHOT8a/jkrxyBiRUrqbgcUyXdaAqffLWREKgH2DK97/cujb4k6TQSIaFcT2?=
+ =?us-ascii?Q?r14H4cWdLD9T726mvnntXpOHC07tK/VDYk27aM4sN559BWgm/qK8nUxDaTSz?=
+ =?us-ascii?Q?fB7Fb/z5WYcG2XDHMvOXFQ2vw59szhXd8KnNSLIUYSauVVtty+HF7t/fHFJO?=
+ =?us-ascii?Q?ilz8wCOTrjywDw3gXNxM4KSwg8e2rhG1v9Swy4lk8GUsmv1k3ZlpJo+NiRO8?=
+ =?us-ascii?Q?1OHk/wiCJtGc9dxkPoMcU2UdfP2w0WnZcOsa/uXmR4ZIENsCjphaMfuiDLRd?=
+ =?us-ascii?Q?de5qClfQloFQqXrj0RzcYly5zH8a897uLcf/9OFemeK3mmOdloidex9SOvEI?=
+ =?us-ascii?Q?Y/D1NR3VgbobMQ78c/tm/iF7+BY/htLF0tPriaUZZpibo57k+T2qWEc//VGe?=
+ =?us-ascii?Q?MYr31hsLqWcPcNJhNOVY7boueXqU9qJBxqygmVfEPbeyZW4NBavTBikAXbPp?=
+ =?us-ascii?Q?mcsrqi3HeSuGMNQ8Z9aJY+/PgxE/M3La2sO7TKXmPwmIN6QSeTpvO8OmKtcH?=
+ =?us-ascii?Q?tSHVPjluohzG5LHBwqlLWq0nGvFs3atweRMYkFZibvHqd5W7RouaTfiCuCe0?=
+ =?us-ascii?Q?eE5KX4EnzxLg9kbwTtN3jrhW8Kj4U1kXdb32eE42p5hjUju/SPPFwE4VtmTm?=
+ =?us-ascii?Q?Z7+dGfdSmudg0Fd6Qp4HA2E5ayu3FMhX/3UJLPrBpb1e5bQwfhcaEOOGv7JF?=
+ =?us-ascii?Q?UCqnn/XE6UTomyAIrGt/RdEaE6c6qYSwreHRgcxTxocJmuzNI5V+kkNe7Ey5?=
+ =?us-ascii?Q?Yi+HDy9h7bUD4DTqT6ZYqj/Oicp9goZIzx7U1LKXmSMNrM4ScjhURGaBQ9LS?=
+ =?us-ascii?Q?EJZjv4JstdXvPUIhsJT4CY3LZj3QXY87sFj6RPlGwgZYatQEv4a+ggwV4tW1?=
+ =?us-ascii?Q?+1G4Kfdl48cOTTrKoAog2m0AczXeEHBimQs2FcZYX0SqoBu2zsEKeb+CGkj/?=
+ =?us-ascii?Q?iZHN05qlr5TV9L1mF/QQFBYo2iLEIT062W64h+ejI0M1mncI6wLR1NTf1kee?=
+ =?us-ascii?Q?OlWmcH5VNLBslVXbXDw52UUhHFldkW1XxxPaz81mXcHZvkDZ9RYMaE3Q4QJ7?=
+ =?us-ascii?Q?ZC2iVBSuwcY/BHP4bL0ZPexZW4/ZZ9YlqxiTuP01WusqMlx+6/kot9pVYVuL?=
+ =?us-ascii?Q?4YzV76h8PbGIqwF++fU8ulcvBhCVHMD8KZfnrKdJHVjqtzzy52Xn0+JVYRsu?=
+ =?us-ascii?Q?IVJyvjxCMapnNgC0LUwkkW+j8RAWIMjMoJTf+HP1QC4QEhJb9qMYsvqU33zZ?=
+ =?us-ascii?Q?tCWnw3191h7tKzRUYGWfy7qJF+0U8cmwLs2dVo3t0/8pUTfJTcxHRsS6n9qz?=
+ =?us-ascii?Q?Q7lT54vAhqgsPJBiQCad5Z1m6cyfgKfePb572EmSRGWAZduzSPRXPw5EqcTK?=
+ =?us-ascii?Q?cvxxbZFGKSHJOG6VpqWC956muCmkEv2F8ig37aQTOx0D3wZt?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: Jqd5wMyO+ByysL/cH9TpxWHg4hkC2C0jOX1gazWabZvcsbKMnjQu6DSpLC0/lCgx9YhE1T69u/Me8DUkSXiUoJuN0esZQLuqCdlqoMa7aQwPUN2zDThbdK6i0v0NHNu3toQu6fIoQkmpXeAqUweodE4ZU8IplQH2C4t1AI+uTxaX4jHXwCA2PVPfjbJg6jRV2zApCZCqxtjUorjq3EpwmbBPzVMWBsUBC69nZbuhzVbJOpotYmi6U5PT++P60EyDu+QTglkeYibDf0M28fqKSA1zi/a6RftNBHqbxZF71KtN04Trqh6xFg6kIRR8kEO+v7F85dDaZ1SFxiL7NUHn0A==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fe4ae44-c961-451b-d350-08dec212f030
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2026 08:26:12.7794 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: npQX5GanoHs3BvpLhY8itSoeIVpAg7i+JjII2PMDUUE0qVAr659YwI/lTGwVvdvpvySe2O0sAil0akHM49/rog==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6815
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,278 +163,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend the root-dir subtest to validate additional Xe debugfs entries:
 
-- dgfx_pkg_residencies: Validate counter reads (optional, non-empty)
-- dgfx_pcie_link_residencies: Validate PCIE LINK string content (optional)
-- sriov_info: Validate entry is non-empty (optional)
-- workarounds: Validate entry is non-empty (optional)
-- atomic_svm_timeslice_ms: Validate integer read/write (optional)
-- poor_man_system_atomic_support: Validate boolean read/write (optional)
-- disable_late_binding: Validate boolean read/write (optional)
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- tests/intel/xe_debugfs.c | 192 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 174 insertions(+), 18 deletions(-)
-
-diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-index 587e3e785..1c4a47ac6 100644
---- a/tests/intel/xe_debugfs.c
-+++ b/tests/intel/xe_debugfs.c
-@@ -39,11 +39,24 @@ IGT_TEST_DESCRIPTION("Validate Xe debugfs devnodes and their contents");
- 	__m && ((__i) = __builtin_ctz(__m), 1);	\
- 	__m &= __m - 1)
- 
-+/* Validation types for debugfs read tests */
-+enum debugfs_validate_type {
-+	VALIDATE_NONE,		/* Just check file exists */
-+	VALIDATE_NON_EMPTY,	/* Just check buffer is not empty */
-+	VALIDATE_CONTAINS_STR,	/* Check buffer contains expected string */
-+	VALIDATE_INT_GE_ZERO,	/* Parse as integer, verify >= 0 */
-+	VALIDATE_BOOL,		/* Check bool value (0 or 1) */
-+};
-+
- struct check_entry {
- 	const char *name_fmt;
- 	int mode;
--	bool (*condition)(struct xe_device *xe_dev);
-+	bool optional;
-+	bool (*condition)(struct xe_device *xe_dev, void *params);
-+	void *cond_params;
- 	unsigned int (*iter_mask)(struct xe_device *xe_dev);
-+	enum debugfs_validate_type validate;
-+	const char *expected_str;
- };
- 
- static unsigned int gt_iter_mask(struct xe_device *xe_dev)
-@@ -56,7 +69,7 @@ static unsigned int tile_iter_mask(struct xe_device *xe_dev)
- 	return xe_dev->tile_mask;
- }
- 
--static bool has_vram(struct xe_device *xe_dev)
-+static bool has_vram_region(struct xe_device *xe_dev, void *params)
- {
- 	return xe_dev->has_vram;
- }
-@@ -131,16 +144,140 @@ static bool find_not_tested_files(int dir_fd, struct igt_list_head *hit_entries)
- 	return found_not_tested;
- }
- 
--static bool file_in_dir_exists(int dirfd, const char *file_name, int mode)
-+/* Validate that debugfs buffer is non-empty or contains expected string */
-+static bool validate_string(int dirfd, const char *file_name, const char *expected_str)
-+{
-+	char buf[4096];
-+	int ret = 0;
-+
-+	ret = igt_sysfs_read(dirfd, file_name, buf, sizeof(buf) - 1);
-+	if (ret < 0)
-+		return false;
-+	buf[ret] = '\0';
-+
-+	/* Check for empty buffer */
-+	if (strlen(buf) == 0) {
-+		igt_warn("Empty output from %s\n", file_name);
-+		return false;
-+	}
-+
-+	/* If expecting specific string, verify it's present */
-+	if (expected_str && !strstr(buf, expected_str)) {
-+		igt_warn("Expected '%s' not found in %s\n", expected_str, file_name);
-+		return false;
-+	}
-+
-+	if (expected_str)
-+		igt_debug("Successfully read %s: found '%s'\n", file_name, expected_str);
-+	else
-+		igt_debug("Successfully read %s: %zd bytes\n%s\n", file_name, strlen(buf), buf);
-+
-+	return true;
-+}
-+
-+static const char *mode_to_str(int mode)
-+{
-+	switch (mode & O_ACCMODE) {
-+	case O_RDONLY: return "RO";
-+	case O_WRONLY: return "WO";
-+	case O_RDWR:   return "RW";
-+	default:       return "UNKNOWN";
-+	}
-+}
-+
-+static bool validate_bool_file(int dirfd, const char *file_name, int mode)
-+{
-+	int orig_val = 0, read_val = 0, test_val = 0;
-+
-+	if (igt_sysfs_scanf(dirfd, file_name, "%d", &orig_val) != 1 ||
-+	    (orig_val != 0 && orig_val != 1))
-+		return false;
-+
-+	if (mode == O_RDWR) {
-+		test_val = (orig_val == 0) ? 1 : 0;
-+
-+		if (igt_sysfs_printf(dirfd, file_name, "%d", test_val) < 0)
-+			return false;
-+
-+		if (igt_sysfs_scanf(dirfd, file_name, "%d", &read_val) != 1 || read_val != test_val)
-+			return false;
-+
-+		/* Restore original value */
-+		if (igt_sysfs_printf(dirfd, file_name, "%d", orig_val) < 0) {
-+			igt_warn("Failed to restore original value for %s\n", file_name);
-+			return false;
-+		}
-+	}
-+
-+	igt_info("Successfully validated %s bool %s\n", mode_to_str(mode), file_name);
-+	return true;
-+}
-+
-+static bool validate_int_file(int dirfd, const char *file_name, int mode)
- {
--	int fd = openat(dirfd, file_name, mode);
-+	long orig_val = 0, new_val = 0, read_val = 0;
-+
-+	if (igt_sysfs_scanf(dirfd, file_name, "%ld", &orig_val) != 1)
-+		return false;
-+
-+	if (orig_val < 0)
-+		return false;
-+
-+	if (mode == O_RDWR) {
-+		new_val = orig_val + 1;
-+		if (igt_sysfs_printf(dirfd, file_name, "%ld", new_val) < 0)
-+			return false;
-+		if (igt_sysfs_scanf(dirfd, file_name, "%ld", &read_val) != 1)
-+			return false;
-+		if (read_val != new_val)
-+			return false;
-+		/* Restore original value */
-+		if (igt_sysfs_printf(dirfd, file_name, "%ld", orig_val) < 0) {
-+			igt_warn("Failed to restore original value for %s\n", file_name);
-+			return false;
-+		}
- 
--	if (fd >= 0) {
--		close(fd);
-+		igt_debug("Successfully validated %s int %s: %ld -> %ld -> %ld\n",
-+			  mode_to_str(mode), file_name, orig_val, new_val, orig_val);
-+	} else {
-+		igt_debug("Successfully validated %s int %s: %ld\n",
-+			  mode_to_str(mode), file_name, orig_val);
-+	}
-+	return true;
-+}
-+
-+static bool validate_debugfs_file(int dirfd, const char *file_name, int mode,
-+				  enum debugfs_validate_type validate, const char *expected_str)
-+{
-+	bool result = true;
-+
-+	if (faccessat(dirfd, file_name, F_OK, 0) < 0) {
-+		igt_debug("%s does not exist\n", file_name);
-+		return false;
-+	}
-+	if (validate == VALIDATE_NONE)
- 		return true;
-+
-+	switch (validate) {
-+	case VALIDATE_NON_EMPTY:
-+		result = validate_string(dirfd, file_name, NULL);
-+		break;
-+	case VALIDATE_CONTAINS_STR:
-+		result = validate_string(dirfd, file_name, expected_str);
-+		break;
-+	case VALIDATE_INT_GE_ZERO:
-+		result = validate_int_file(dirfd, file_name, mode);
-+		break;
-+	case VALIDATE_BOOL:
-+		result = validate_bool_file(dirfd, file_name, mode);
-+		break;
-+	default:
-+		igt_warn("Unknown validate type %d for %s\n", validate, file_name);
-+		result = false;
-+		break;
- 	}
- 
--	return false;
-+	return result;
- }
- 
- /*
-@@ -160,7 +297,7 @@ static int debugfs_validate_entries(struct xe_device *xe_dev, int dir_fd,
- 		unsigned int mask;
- 		unsigned int j;
- 
--		if (check->condition && !check->condition(xe_dev))
-+		if (check->condition && !check->condition(xe_dev, check->cond_params))
- 			continue;
- 
- 		if (!check->iter_mask)
-@@ -209,10 +346,18 @@ static int debugfs_validate_entries(struct xe_device *xe_dev, int dir_fd,
- #pragma GCC diagnostic pop
- 			}
- 
--			if (!file_in_dir_exists(dir_fd, entry->name, check->mode)) {
--				igt_warn("Missing debugfs file: %s\n", entry->name);
--				missing_count++;
-+			if (!validate_debugfs_file(dir_fd, entry->name, check->mode,
-+						   check->validate, check->expected_str)) {
-+				if (check->optional) {
-+					igt_info("Optional entry %s not found/invalid (skipped)\n",
-+						 entry->name);
-+				} else {
-+					igt_warn("Missing or invalid debugfs file: %s\n",
-+						 entry->name);
-+					missing_count++;
-+				}
- 			}
-+
- 		}
- 	}
- 
-@@ -239,14 +384,25 @@ out:
- static void test_root_dir(struct xe_device *xe_dev)
- {
- 	const struct check_entry expected_files[] = {
--		{ "clients", O_RDONLY },
-+		{ "clients", O_RDONLY, .validate = VALIDATE_NON_EMPTY },
-+		{ "disable_late_binding", O_RDWR, .optional = true, .validate = VALIDATE_BOOL },
- 		{ "forcewake_all", O_WRONLY },
- 		{ "gem_names", O_RDONLY },
--		{ "gt%u", O_RDONLY, NULL, gt_iter_mask }, /* gt0, gt1, ... */
--		{ "gtt_mm", O_RDONLY },
--		{ "info", O_RDONLY },
--		{ "name", O_RDONLY },
--		{ "tile%u", O_RDONLY, NULL, tile_iter_mask }, /* tile0, tile1, ... */
-+		{ "gt%u", O_RDONLY, .iter_mask = gt_iter_mask },
-+		{ "gtt_mm", O_RDONLY, },
-+		{ "info", O_RDONLY, .validate = VALIDATE_NON_EMPTY },
-+		{ "name", O_RDONLY, .validate = VALIDATE_NON_EMPTY },
-+		{ "poor_man_system_atomic_support", O_RDWR, .optional = true,
-+		  .validate = VALIDATE_BOOL },
-+		{ "dgfx_pkg_residencies", O_RDONLY, .optional = true,
-+		  .validate = VALIDATE_NON_EMPTY },
-+		{ "dgfx_pcie_link_residencies", O_RDONLY, .optional = true,
-+		  .validate = VALIDATE_CONTAINS_STR, .expected_str = "PCIE LINK" },
-+		{ "sriov_info", O_RDONLY, .optional = true, .validate = VALIDATE_NON_EMPTY },
-+		{ "workarounds", O_RDONLY, .optional = true, .validate = VALIDATE_NON_EMPTY },
-+		{ "atomic_svm_timeslice_ms", O_RDWR, .optional = true,
-+		  .validate = VALIDATE_INT_GE_ZERO },
-+		{ "tile%u", O_RDONLY, .iter_mask = tile_iter_mask },
- 	};
- 	int debugfs_fd = igt_debugfs_dir(xe_dev->fd);
- 	int missing_count;
-@@ -276,7 +432,7 @@ static void test_tile_dir(struct xe_device *xe_dev, uint8_t tile)
- 	const struct check_entry expected_files[] = {
- 		{ "ggtt", O_RDONLY },
- 		{ "sa_info", O_RDONLY },
--		{ "vram_mm", O_RDONLY, has_vram },
-+		{ "vram_mm", O_RDONLY, .condition = has_vram_region, .cond_params = (void *)&tile },
- 	};
- 	int debugfs_fd = igt_debugfs_tile_dir(xe_dev->fd, tile);
- 	int missing_count;
--- 
-2.52.0
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> Mohammed Thasleem
+> Sent: Tuesday, January 13, 2026 6:57 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Thasleem, Mohammed <mohammed.thasleem@intel.com>
+> Subject: [PATCH v1 1/2] tests/intel/kms_pm_dc: Add DC5 DPMS
+> suspend/resume validation test
+>=20
+> Validate DC5 state entry before and after suspend/resume cycle using DPMS=
+.
+> Ensures DC5 functionality is preserved across system suspend/resume
+> operations.
+>=20
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>  tests/intel/kms_pm_dc.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+>=20
+> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c index
+> 5e59ba6e0..ba00fd96a 100644
+> --- a/tests/intel/kms_pm_dc.c
+> +++ b/tests/intel/kms_pm_dc.c
+> @@ -77,6 +77,9 @@
+>   *
+>   * SUBTEST: dc5-retention-flops
+>   * Description: This test validates display engine entry to DC5 state wh=
+ile PSR is
+> active on Pipe B
+> + *
+> + * SUBTEST: dc5-dpms-suspend-resume
+> + * Description: This test validate DC5 state entry before and after
+> + suspend/resume cycle using DPMS
+>   */
+Imho we can change it to : * Description: This test validates DC5 state ent=
+ry before and after a suspend/resume cycle using DPMS
+>=20
+>  /* DC State Flags */
+> @@ -721,6 +724,14 @@ static void test_deep_pkgc_state(data_t *data)
+>  	igt_assert_f(pkgc_flag, "PKGC10 is not achieved.\n");  }
+>=20
+> +static void test_dc5_dpms_suspend_resume(data_t *data, int dc_flag) {
+> +	test_dc_state_dpms(data, dc_flag);
+> +	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> SUSPEND_TEST_NONE);
+> +	test_dc_state_dpms(data, dc_flag);
+> +
+Extra blank line before closing brace
+> +}
+> +
+>  static void kms_poll_state_restore(int sig)  {
+>  	int sysfs_fd;
+> @@ -841,6 +852,12 @@ int igt_main()
+>  		test_dc9_dpms(&data);
+>  	}
+>=20
+> +	igt_describe("This test validates display engine entry to DC5 state "
+> +		      "entry before and after suspend/resume cycle using
+> DPMS");
+could align wording slightly with SUBTEST comment:
+igt_describe("Validate DC5 state entry before and after a suspend/resume cy=
+cle using DPMS");
+> +	igt_subtest("dc5-dpms-suspend-resume")
+> +		test_dc5_dpms_suspend_resume(&data, CHECK_DC5);
+> +
+> +
+>  	igt_fixture() {
+>  		free(data.debugfs_dump);
+>  		close(data.debugfs_fd);
+> --
+> 2.25.1
 
