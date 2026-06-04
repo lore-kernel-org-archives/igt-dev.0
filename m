@@ -4,158 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3B7ECD6E57
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Jun 2026 09:10:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 717F4CD6E4A
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Jun 2026 09:43:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 60705113E1A;
-	Thu,  4 Jun 2026 09:10:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E049D10E099;
+	Thu,  4 Jun 2026 09:43:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JPgWRch4";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="mxT3S3VO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F8F610E5E0
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Jun 2026 09:09:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780564190; x=1812100190;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=z8VAzavTO+G3j5G+fX0GpId6Mc7FIGbMcAyGLXsvjG4=;
- b=JPgWRch4/dIy2V2bBZv7QWC0q+79T1C80nEDytB32jgPhqlSUa4zrS0N
- 05tROBt7lYJE5aiXXgQBFsad6YRW906Pl150t9/efuiAGYlFgMFWXqFNG
- P3LzMAOAhR/xpy6gO45DE7c7Kur2zci6QLi6gKO8t8fUKxKm5Qed89SG7
- dgWzJwqE5JGjMzcs/C40mgERv51Gv+rQ9/7lJg8vv6zhifignEO33hrEk
- 4Sd6xHN0vPY7/imfFpIIg0n8S7R7p3efWrmRq7x7ydRLXqb0npVeloIRJ
- xQyxTg94iXxVVw2YAgDnGUlD2uJaEE8+G9QYbaIb/s7kM0nSz5a6nxhAc w==;
-X-CSE-ConnectionGUID: CpiWD2juQLeWuzU6rsLKvQ==
-X-CSE-MsgGUID: ORnmfukuRIGPUpM5kDyGpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="68926449"
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; d="scan'208,217";a="68926449"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2026 02:09:50 -0700
-X-CSE-ConnectionGUID: IcXRTLL1SZGRQ9g2NYUpDg==
-X-CSE-MsgGUID: GW7Mz0CkTimflililnaFoA==
-X-ExtLoop1: 1
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2026 02:09:50 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 4 Jun 2026 02:09:49 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 4 Jun 2026 02:09:49 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.61) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 4 Jun 2026 02:09:49 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com
+ (mail-westcentralusazon11013051.outbound.protection.outlook.com
+ [40.93.201.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9A7210E099
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Jun 2026 09:43:24 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WVXwxHGbC8QT02sQcDPqzOnz2bOrCY0Jpq2TNpelt9Fe+wivnO1O3px0A4gJhcN7qQxquPwCj77T7QtaACgZrosO4OP9F/blAeAreExXsQS/AoGF58VFkHsLuil1Ff1uRfr36ZgFgkMaBaGPrEOs1fEx5FLwb4MU/jG3hXNMYWTbvZehaupTrmuAFAexCeIT7ehWaejeJsNyKjMYPuQV/zHgo5dgGLm56Xflbj8RDn9bwunuBUETM8DHgy/uRs+/ANQTYNuUM1XWroBCF2rRoFyp5qDZnliJSxNzSGYyfNOog6MF7+XsdscmUFDFm1vZqI38lXtD44ja7t9phkE+Kw==
+ b=fKqb7QS1rH8NEDIb3SdTRN6I/+YEm3mNXt9mLiyjX1VlNcUAcKyB7paymaApavxT0zJDLyPZdOpBG1TRB19CmS576RboADARep19mBMSWvYFXVYT/oadFkHbONBzHnXA2UC9K5bdD9e0zycb7poW6NTnt1TYc2wuigCVer8guilD7o+wBP6gWcehs7i8aU+xkIPo/koIlWNDBjdltKuBPlYfoDmDzzwRSW1XxHVVAlBM/BlFZyhajC/cDr2ZfiXvJ+AV8GPkJhTkfqNXS0GiEeRXwtWy0eqlM4HUUVJ1YDG1YC8nSQTKdt0uhFaTokq+60owhogkEJIIALEdM24pHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+QTJbuMX7m09Qwox4U4TNGDADgT9v40v89zWMaDNkXE=;
- b=TClVn8OanX5XDhHKnOI8SAzOBxX52367KbNixwL7MAPpqM8DIdb9qB+6ee4Pj9FlaY701IvvhQfhLREAp9moDiydpb/bWSo+Q7nLSLezI0W37NT+A0ZuE4q34kIvKjJDf+aGRpBFuF+218GxYdZOxNSzIfTMSOiMBLqRvG0o7OIvfuhNPswgAJihHA91l0JtnV4zM0ANaWXjnvJNzu4Ek/tihxeE9yKV4/U91basDg1GuF3C6frY6nXMw4bpcDWf24sL41WsG8/DIqzt/ITukZLf2DrC9SxG0ZOQ7E5AH/ieWoWwQxUVJb9ldT6t+jkmfYA8hoy3MgABBwrM50TEzw==
+ bh=9iW41F5YiGjkw+wJ872t2q3RCa9iaFKSzf1skGNr48c=;
+ b=UnSAF8E+SWORw3X/DwEkL3T4Yil/gttrlHac2wvd7CokKj1O3S6nmHl0T3ZSrFeDmydHVYe1EvBfJ2zBIR9mYDoJaDQdDb4LiRWed4/f0ciUI4ww3uirUVkIPZA3yoP52QrBNbyXp+ubhnqHIj0dAURS6i/YOTcBk/Fh4PWBvglNsQL8OXFKarZdKvf8wqOAI+4mWOZln1r/v2vXuPlbfCf6VL6TYIbHnufVGg01nP5syhrxeNBXkzNqIbS3cgcseHc5wJb8QDEyAaRlnowi/g1GnqQPddpbfmr5E7NmKKayndcxa4177gYpG8VTwmrr6NvYUilr6VV1eTyTx29Q2w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9iW41F5YiGjkw+wJ872t2q3RCa9iaFKSzf1skGNr48c=;
+ b=mxT3S3VOi9aoFKvDqAdUtUgKAp8Z5MBYzxguSx/qhEzByCtmucmo742MV9KlpC31D5zi5YXZ7+nJKtxHb7XG3l4Lkgip968mpC+Pw+qgjxUOUIJJ9Wh2zz3vlNXVh1eZ5Xei0xZsuujT/lfSB76Jm9SPjsIMM7oRcirBZ3Vt13M=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB4913.namprd11.prod.outlook.com (2603:10b6:303:9f::20)
- by IA1PR11MB8197.namprd11.prod.outlook.com (2603:10b6:208:446::22)
- with Microsoft SMTP Server (version=TLS1_2,
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH0PR12MB5108.namprd12.prod.outlook.com (2603:10b6:610:bf::6)
+ by MN6PR12MB8490.namprd12.prod.outlook.com (2603:10b6:208:470::20) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 09:09:47 +0000
-Received: from CO1PR11MB4913.namprd11.prod.outlook.com
- ([fe80::938d:6d4c:e26f:ed03]) by CO1PR11MB4913.namprd11.prod.outlook.com
- ([fe80::938d:6d4c:e26f:ed03%7]) with mapi id 15.21.0092.007; Thu, 4 Jun 2026
- 09:09:47 +0000
-Content-Type: multipart/alternative;
- boundary="------------jGEZM4ArpQj53Dyv5AAcBzeG"
-Message-ID: <401a1dfa-1a53-4aba-a1d8-4ee7cf7914a3@intel.com>
-Date: Thu, 4 Jun 2026 14:39:41 +0530
+ 09:43:22 +0000
+Received: from CH0PR12MB5108.namprd12.prod.outlook.com
+ ([fe80::8403:dbac:360:bc4c]) by CH0PR12MB5108.namprd12.prod.outlook.com
+ ([fe80::8403:dbac:360:bc4c%6]) with mapi id 15.21.0092.007; Thu, 4 Jun 2026
+ 09:43:21 +0000
+Message-ID: <622ae186-586e-41ae-93d9-39b991b29ec9@amd.com>
+Date: Thu, 4 Jun 2026 17:43:12 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v8 5/7] tests/intel/kms_pm_dc: Add dc3co framedrop
- validation test
-Content-Language: en-GB
-To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <animesh.manna@intel.com>, <dibin.moolakadan.subrahmanian@intel.com>,
- <ramanaidu.naladala@intel.com>
-References: <20260527084915.1916365-1-jeevan.b@intel.com>
- <20260527084915.1916365-6-jeevan.b@intel.com>
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-In-Reply-To: <20260527084915.1916365-6-jeevan.b@intel.com>
-X-ClientProxiedBy: MA5P287CA0216.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ab::12) To CO1PR11MB4913.namprd11.prod.outlook.com
- (2603:10b6:303:9f::20)
+Subject: Re: [PATCH i-g-t 1/2] tests/amdgpu/vpe: add VPE2 blit test and
+ version based testing
+To: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
+Cc: Solomon.Chiu@amd.com, Peyton.Lee@amd.com, HaoPing.Liu@amd.com,
+ Yu.Wang4@amd.com, jesse.zhang@amd.com, vitaly.prosyak@amd.com,
+ Alex Hung <alex.hung@amd.com>
+References: <20260602114025.649389-1-chih-wei.chien@amd.com>
+ <20260602114025.649389-2-chih-wei.chien@amd.com>
+Content-Language: en-US
+From: Caden Chien <chih-wei.chien@amd.com>
+In-Reply-To: <20260602114025.649389-2-chih-wei.chien@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TP0P295CA0041.TWNP295.PROD.OUTLOOK.COM (2603:1096:910:4::7)
+ To CH0PR12MB5108.namprd12.prod.outlook.com
+ (2603:10b6:610:bf::6)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB4913:EE_|IA1PR11MB8197:EE_
-X-MS-Office365-Filtering-Correlation-Id: bcdb21ff-37ad-4e4d-7203-08dec219065e
+X-MS-TrafficTypeDiagnostic: CH0PR12MB5108:EE_|MN6PR12MB8490:EE_
+X-MS-Office365-Filtering-Correlation-Id: 262e9243-ff52-4006-acb4-08dec21db703
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|366016|1800799024|8096899003|3023799007|22082099003|6133799003|4143699003|18002099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: Di0vaPetoy1Cdo6c+E9anM+OZEah9E5fCbPHKtvnHlriDJulusqJJxTl96Bpkz/GlrMuNFYOXjFNIXpmuVdSn4l9rJXrpI2BqCtD21/eBp4O+LBKIxKuGMRup44VlQjRd6efyR1QD+zflDfUsYfUEQ6A+Ggy/UUDICex2rjaAVOvavsrxK4fGvwWTI7DVdRYGZxhNdJe0lJbKqz44gU8IvFwOOrZKOzsX7KgIiVcg/h+BZQqgygs5Xl0cGBOUCKrUyGrJgQP32OcjxAw1PkZrvCTXlcD1wRmJoiYLB1rNIAIJKsY+RrraP+GlhN4B0ynDsgfwviQQRunT2R3upB1vpbXCRfbTVqfRHzegJ03H/q5XXJZRAnDrrvCGU4njkA8lTSOq0Z3PGDhDlR/5FisluamXddN1cLCiJOEnw6T5Rtpk03HIId5Qu/+ttkJ+dLJQ5X1L/JiDnK8Uj2CqyBxqkCuPygWS1JjJAPN9XCcYODn1QesrCQGL5Q64idVpuqj6kGwjW7hGfBI9NULdUXduJr5hg0HR1VuY6s1V/n4XYqIzEEPUqbSR4SvPWwExPizUFy2Ylnb/viO4Ibwe2yE/5lFxJKDZzcCAk9gpGXiVwJeygWcjNahYwCCr6iIoKN/HwhcGTu8wRT+YRVgxCFSOwYydT0LzNULRbLmM8YVuP7eNXXYK4nRNjNpP6OJohSs
+ ARA:13230040|1800799024|376014|366016|6133799003|3023799007|56012099006|18002099003|22082099003|4143699003|11063799006|20052099010;
+X-Microsoft-Antispam-Message-Info: Cs4pCmvzsOPiLKsW63VeW/vLo1qAckats5iDH97mBB65Gz6cFOGsh0PoibCPcoxlcm8GFZHKDttX+rYgZkl2su8nHg6MEM1qmpDA2b+LA0m9td8JDSiTmqoxUXcjsv9ZrBe9UEe0EHbiKNobKPua5N+5nyRqGb8acNDsPd/XCxDBtLTlA4XfcqQ9RyHkGDZxs6itShA2HFfivb1X357CeMR/dZwutRknYDSdU+SRXsqWtpJPTcFo7iQ7bO3vOOOAFFninOVFtJif6mC6sVkRdERQ9JvdQCeAcwFYXVxpOMvqzalbBu0lxTS4T5qIxF5Tp32dZ0IjKtRciPg3mjeWpOiQfI2m8tGi/wvp+J6rsm5PnVM5upX8w8zKgfuyyTE3P1nWHT1SVJ5K7rjVLnyOra4fK2Yc4LZ+y7lAcPFF7MXtFJrInm+K+58ZG4hteBfw5kgn/1hObeGcjpMJ+6rZ2xRf9MGF2YK8yHdpbnFi2FGnTnJX6AKx+Ig6zGiHXf4QB5RxfpnDCZ17UFekiYXZIPb0noaHqA6zHHBiXmkbxlvpRRybwPKApPVx0/svhyPgWyowdwmzp6p4j+XVgNGPlal+f+0w1Ff5W5P3mLG7ioyV1BdgqnO2S/w3XL+krpK0OmAfQZ+KT7hPgQnIcGmqkHHudhNxJ8YGWF8hYHb+0f4MwMxaOk3J+3L2AkmbJAak
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CO1PR11MB4913.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(8096899003)(3023799007)(22082099003)(6133799003)(4143699003)(18002099003)(11063799006)(56012099006);
+ IPV:NLI; SFV:NSPM; H:CH0PR12MB5108.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(6133799003)(3023799007)(56012099006)(18002099003)(22082099003)(4143699003)(11063799006)(20052099010);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y3VlcTgxNUQxcC9kVUYzYm8xTEcxM2hBRXlSK21qZHl6SUEvMjNtWEdQRlFF?=
- =?utf-8?B?cW1YYXpOYklETm03OUptUVZCTmNacnVnTEpiUTB4L0lNTFJQMTZnSEIvT3Rl?=
- =?utf-8?B?S3QrVVlQeXBsS21mN2tUcE1WLzY2aFVjbWltWGZzU1ZMSG1jSXpJdDQ3c3NV?=
- =?utf-8?B?bVlYYUpaWWxhV0FNQWc2anpReGtmVnp1cFc2bHhBRFhoOGtUZytISHhTOHVX?=
- =?utf-8?B?S2JLQm0wVnZRb3liNm9hcDVaK1FHK1BoTHA3QkM1YUU3QVNEYW94cmRtUURm?=
- =?utf-8?B?bHRMV0VoT1FoYStYRnFjQWtGMmlPeWFNV2hmeTh3MzgwVksrTzJrZ1VWRUZX?=
- =?utf-8?B?V2dqS252Zk91NWxyVWtLVkc4dmFmbmFEb1V0QVNDZ0MwdVlCeEdBUXlpcVdr?=
- =?utf-8?B?SDRJKzJsSnpNOSsvd09PSW02WU44UDdqN0lpME5oaDFFK01pUnkvcUpGMkVk?=
- =?utf-8?B?VEhrQzZSWjQwaGJQRkZMbjJENWo2RXdRT3QvY1dFc3Z4K0NRTVFWNENPMTJm?=
- =?utf-8?B?bXdPQXl1ZU9PWjZvS2xXSTRXdDBpaEdzYnRtWWJMbUQxM2V3bndIMktVUFFM?=
- =?utf-8?B?ZlN4ZFNwU2I0SThKLzJKRkRtRytCWjdWbmgvZkg4TWRZZ050VS9pVkpkZGd3?=
- =?utf-8?B?SHVNYnk1dHArb1NGdUJhSXdtOEltODE3cHZOWDQ5OUovTzZiRzFjWFNmeUR1?=
- =?utf-8?B?RE8xbnBmUzBTMlhYV1dvMlJJMFdRNlpzVUUwZjIrK3BvVWNDc1VQYXRuY0pi?=
- =?utf-8?B?dXdqRTRtTmFTZXNrRlpxUWVnWTBzOU0zTU45elNCVWMyWFNZZDdhZmVZTDhX?=
- =?utf-8?B?YnVzSktCdENGMkJJenV1azlIamZHdVM4UjRqYURqZUN5dWpGamhlcEFTVGs2?=
- =?utf-8?B?UTZEamgyNEN1R2xIOGVmeTBPYVBpZDh3R1NFdmdOeTlySjFFMWx3NWlUZlov?=
- =?utf-8?B?OEs4WTZsOXIrcHpvTlhZNVRsQ21FQmVPRWtMd2t5VGhUQlVuMXg1UEFVV1h5?=
- =?utf-8?B?anJYNzR3VVkrdHl6TkNCWEVvL3padUJpNEVPcXY4R0wxeXh1MVRZTXplRDZ1?=
- =?utf-8?B?SzQ3cWlMR1d6L05YKy9PbzZvdXU0OTZIUWxkRW03eEo0b3ZkVW5VSUFKcjgr?=
- =?utf-8?B?Sm9DUllBaGlsOFVXUkswbVlaTk5lNDM1Z21xREtvaUd6cWlJblNHMmlZdWVF?=
- =?utf-8?B?QlA1aGRSTFZEZW5CQmtHK1FqUXpBa1lSeFY3Q2wrWmRRY0Jldis0QXJkdm1F?=
- =?utf-8?B?STJMdHRxaWxVZ3FzTWdtUzJGOE50dTNxRFdpcnZ3QlFkZDRLYU84UXo4Z0pn?=
- =?utf-8?B?SCsvQ1RFeFFsN2toZklxeVhzV2VKcTFSUjJPSTY5UGF1V3BpTzFQZnF3T0xY?=
- =?utf-8?B?MjAyTmNRdkJROUxKYm94R08xeFd5aTZiQ1JyV1BObHFyQmRoSWFjYXRNdW1E?=
- =?utf-8?B?aGlyRjE0WmtIaTkzTk93QklaUXI3N2dnR1I5dTRGUWhwSTQzU0pKWUxIV0M5?=
- =?utf-8?B?Z3dUdzA1ei9BTENJclg3WnpnZFZFd0pnNG9ienBzcTkzVWRaRGxydUNpOVZK?=
- =?utf-8?B?dmhFcnpUNWx0eG51Y281dUFGNWZmWENZVzFqSjUzK1RBRXFqWjJuKzdzZU1L?=
- =?utf-8?B?VEFnSFNoMzhKTHVQZEs1YkNURUU1VndhZ1kvR1BZRE9GL3NjY3h6RmRVcGRZ?=
- =?utf-8?B?ZjlzWFA2bFVGUXBqcENkb1RpbGtUZVRuQTRXaDI0b2hseC9Ma0hKMExNRkpY?=
- =?utf-8?B?ZDZpUWlNQWpQbW1zMndyazQ1bzJOTWlkZzZaU2U2SnVKdi9FT1pkZGJmRUEw?=
- =?utf-8?B?eWlraUJ1c3JNV2x1QVZzMnBlUDQ5VGM3aExNM1c5eXd1eWZrMVlldWN5VC9R?=
- =?utf-8?B?WWV1Rzh2cVBBaEY4VWZCcittTUZkYkhuQVduWlFNUG1BSXZZcWs4VkhaZlU1?=
- =?utf-8?B?MjVtaFVWeUdTckwzUFpDWXJNWURLYkV0NFdjbGNiUmpINHBYakhLQVF3TUox?=
- =?utf-8?B?Tis5L0dsL2dqeTFLZzJEMVFmaEd0YUF4ckdWUWFubVZ4Q2ZUbW9aTWJBN0hi?=
- =?utf-8?B?WEw0Q3dRTGhqREpWRmhrWHVRSmJHTlQyMnFUOUR0MW1Gd1BaNU1sbFova2dE?=
- =?utf-8?B?a0FCZ0lsOTBjNlcxMTJCUVo0SEhHalFOM2ZrRmk0R1hmajY2RElHa1BJNGZG?=
- =?utf-8?B?WVZLS3ZmNjhMMGc1dHA3SU9ycitlVFZkVGdIbSs0WllIMEhidWZvVTVGWHNB?=
- =?utf-8?B?OXJBWTJocncra0M2YUVyZ21XbHBhZ3J1WXF1ZndkSzdrdlExL0w5UHpXbnJP?=
- =?utf-8?B?ZDI5Wk84eDNlZk0xSWVSdmhrZnUrWkdGbjJiSWU5a0R4RnUrd2ZRSnlNOG9j?=
- =?utf-8?Q?3cL0TeSTHGpcWMdQ=3D?=
-X-Exchange-RoutingPolicyChecked: hKZtBZfdA7Ql/h+opM0VqV1Vq4nmRToiznkdEZKNe6IDKhi5XB9+3sj2aRYvW/ZEU2zDWDqvkiSf+/MecnNaiZVZiz3rTVmXDgamYQmq2gkm+MxyukwGTI0dtmBR5PMaFJNOu5vNmgNJg68Gq3qp/5X2RD/pBu4lEMQgxj0bhaGlnwpWdBrrn54zZfKQO7DK3ru7Tctxrp8r1TocYAWyUhZzmXE4lqRo5HdBZmdpMK7xaSpLudQxurg/xPCwWp4NsVQM9A4FIc0JBRuyxINSoAXS5lqGaas6XW0wL7u6oQkh/WoyC016RAEv8IrIG05UXdDVIeZUZ/nbkDW44jlFkg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: bcdb21ff-37ad-4e4d-7203-08dec219065e
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4913.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?elJUY1ZQNXNmWUlONTBaS1d0STEyWkxwTVJoS0Z2dmJjd3p0OGhJVGdPc0Y2?=
+ =?utf-8?B?enpjNHN4aWI4MVJQRnphN2lJNHYwOXBKWnJHZmJKRklwanc1REJKeVJ0QzAx?=
+ =?utf-8?B?bGtRTDRlZ3d3MVlBYmZ0ekdsM1Q2azZ5YXRJUTV3SDZpeGFFRUtvUHhQb3JF?=
+ =?utf-8?B?d2RIcDVpQlRsdkV0emlvanBBaXJFRW9yNGRwVSs5NXlpWktNek9HcVBldGJo?=
+ =?utf-8?B?QUVtM21DaWhMS25MbkMzeVBtRWVRbkVpcDJxczNXTDg1Y3V4TG9NblIxWWJo?=
+ =?utf-8?B?VHJ5bndVakhoK0hjTUZDSlRmTFMybFBySjVUNGxjRUxoT1NRTGZJMXExNEZu?=
+ =?utf-8?B?VDA3SFZ6RHZIT2hocnhPOWpnQ0JLRWRONmJFQ3VVWlZUUHdDM3hMWnBpc2pG?=
+ =?utf-8?B?dzBIdVZLYTJidlNLTVdINTFqZnp3cTFxaUJKVGh3K0FPd1oxKzZaYzBBVmtS?=
+ =?utf-8?B?cklnbC9UaVBYVng2Ni9OdFIyc1R2Y1lldzhReGsrbmorZElEcU1GODBMeGxl?=
+ =?utf-8?B?VUFmLytUcE4zRUZ6K21VRk1HUlZYRTRxb0hRUFFrN1RZditYWGI0Y3BUTW96?=
+ =?utf-8?B?d3c3UzNJbThwNnlOY0NxMUJ6Uk9oL1NDSHVPMVpOZWVydldVYk5YY2l0VGwz?=
+ =?utf-8?B?ZnUvRFN5UEpMSzR0aXd4VjFjM3NTb0E2QlNLUzN3Njk5bjRIYk5WZC9FK0Fk?=
+ =?utf-8?B?QkRMZHExRWppcGJtcENPMnNHUHNtSDdGNVUrTmE2bmxscVJBdHcxNVRmbERO?=
+ =?utf-8?B?TUNEUldUVWxNUHVNSHJ0ZkZOTzM1RElBNzVvRHFObS9IRHI2UG1uMzdzTndo?=
+ =?utf-8?B?RVNGWHJ6ZnE5K2VkZWwydVNndE9PZjhiOHRxT2M4YW1ocFBScmVnYzlXMGZs?=
+ =?utf-8?B?TEtQR1kyMVhTdzFhTHF1RDAzS2ZsUDltcnJ4eGg0NDNkUnc0VlQ5YlY3Ty9F?=
+ =?utf-8?B?OUliQ0ZwUlIxcjgxQ2doUHJLbnkvYnY5aFB5TFJiY3ZjQXlFODBMbWtIZThM?=
+ =?utf-8?B?YVFiWFErUVNrMnJWeHFPSlZzUGlFTmQyNkdwNWZJdG80ajh1NXRSTzN4ODJN?=
+ =?utf-8?B?b3B6bEpLdk90ajdnOTlsKzBmbVZpNFRpY0phOWtGTFh1ZFdFQUc1aDgxR3JI?=
+ =?utf-8?B?ZkRrZFNHd3JaelNNZWhYVXJZUVYzNXIvOGxPckkvNjlvTkh5MUttRzRva0Fk?=
+ =?utf-8?B?WUZFdXJsSHI1VEFyWitSRTJwN0xlRElmT2tVbGU1Q2FwdzRxN2o3emZHYW1m?=
+ =?utf-8?B?NXU4QXZsOTRrRnlhK2tCY3ZoSzNlc0NpMkI3WEJwRS9BWURGaXJlTUdBTGxS?=
+ =?utf-8?B?dzRHanpRUzhCNjR3RWRBRDBiVFN5d3dyVFRpU0tjS0VoUzBKemEwQm1sd0lU?=
+ =?utf-8?B?anRrOVJlVVdNRVRRVHZEcVlXTC9PUE9TMmFJbjk3dVNWOEpSd25CYityQlBn?=
+ =?utf-8?B?OWRBN2Fia29BNjZjVnZFeHlqc1paT2RDdi9mdlExWVJGNUEvRkxGVUIrYkM3?=
+ =?utf-8?B?TW9NNUQ3elNwNHFGMVJoQU13bG5xTjB3ejJNTmJ2Z1FGcC9SRFJKMXJQNDFo?=
+ =?utf-8?B?WDBkdTFZaUwzb1J4VE9BRkx6K2tQNGV5ck9rTE9na0V3akxkQUo0ZkY0RVF4?=
+ =?utf-8?B?VG8wMDNhcWFXVENaYzBzS1dnMU9pbktycHdMTzdHQkgyRmJjaElYZW05VkhZ?=
+ =?utf-8?B?b1NWRTRXeGU3dEJmWnNBbC80d0pUYXpBRWpDeENjQU1FenVKTk9wLzhwMUpD?=
+ =?utf-8?B?d3RkNEk5Y1hWc3IzUFUrK0lZY0FuNUpnamFWU3lGSHlUTGprQ2FLdzUvVjI0?=
+ =?utf-8?B?dzE0WFFHcitIbWJWOHJkcWxPNEIwZXM3YXVLS2toT3VDMkFFZ25EK01Lck5S?=
+ =?utf-8?B?OTUwUkpGc255eXlmU1VVTlhZOVFCUC8zRDloRTNhLzFnbGxjMUVyYUcrYnBr?=
+ =?utf-8?B?SW8zanY0ZmRXWDRjcGdJS0FiYWVpZ1NRMjBBbUhVNzZsWkI2UGVNSEl4WXBD?=
+ =?utf-8?B?dG5FUWFtUU1Yc2Jxdm1rU2Q3ei9pbk5zT1Y5ZjNRSEpiMkUwUGhwUitSMG5H?=
+ =?utf-8?B?N2lxbEZaT0lON1ZIMmtRWTZyb29scSs3SkhpZ0prai9ESzA2Y090SmZMWUN0?=
+ =?utf-8?B?QXkwcjF4YXJNTWJDYWhSNUdOR2FXZEE3b2IycFNQN2Z2eXBzdkgvYjI4K05p?=
+ =?utf-8?B?MVFmdlhiRW5OdFFlM0J5YW5xOXVvV3Job0ZKMUtPK01nYXZCM0o2blZESDBL?=
+ =?utf-8?B?bzhEbVRiY0kycE5wV3VwekEwYm9oN2hIaTh3R0tOUVV2K3BrbFBPVHk1WHZ1?=
+ =?utf-8?B?aTMvNWVVYlZUcmxJWlZNZnZGK2wrdWZTalZSdUJJR013ekwreTBXZz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 262e9243-ff52-4006-acb4-08dec21db703
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR12MB5108.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 09:09:47.1969 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 09:43:21.7295 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qXfZ/312McFwvhDCPbH4OW0s2PrJeN4JHjwtbUg2v/nG19TkUjvulS00EvHZTMnT6dq1NNgfwfX1qEUX2b9l6tusOh9bej8w9P760tEcJs8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8197
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: dSxaAAsC4TsJCq05gTa+DEy3UF2cZg30xh/EDouAssogldfR7XrvlO/8aTlrfOaBdEtg+3o16Fw4nOvWaKFbLg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8490
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -171,378 +139,547 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------jGEZM4ArpQj53Dyv5AAcBzeG
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-
-
-On 27-05-2026 02:19 pm, Jeevan B wrote:
-> Add a subtest to verify that DC3CO entry does not introduce frame
-> drops. The test alternates commits and waits for a kernel vblank
-> after each commit, ensuring the vblank sequence continues to
-> advance without stalls or dropped frames. Also verify that the
-> DC3CO counter increments, confirming that DC3CO is entered
-> successfully during the test.
->
-> Signed-off-by: Jeevan B<jeevan.b@intel.com>
+On 6/2/2026 7:40 PM, Caden Chien wrote:
+> A new test case for horizontal mirroring feature on VPE2 is added as
+> blit test for VPE2. A new switch case is added to execute the blit
+> test corresponding to IP version, in the single blit test entry, as
+> commands for new VPE version may not be compatible on older VPE HW
+> (e.g. VPE1 HW can not execute VPE2 commands). So that test runner can
+> run all tests without manually specifying which blit test to run.
+> 
+> A new source file amd_vpe_cmd.c is added for storing vpe commands in
+> separate object file, to declutter original source file. Commands are
+> accessed by calling the getter function to obtain a pointer pointing
+> to them. In this way, for future developemnt, the command object is
+> only get linked when used.
+> 
+> A note to getter function: it takes no arguments, so `void` is used
+> explicitly as argument list. This makes any accidental argument passing
+> as compiler error, rather than warning and UB.
+> 
+> meson.build file is modified for vpe executable to use extra source
+> files.
+> 
+> Signed-off-by: Caden Chien <chih-wei.chien@amd.com>
+> Signed-off-by: Peyton Lee <Peyton.Lee@amd.com>
 > ---
->   tests/intel/kms_pm_dc.c | 110 ++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 110 insertions(+)
->
-> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-> index 57dade47d..620ba9329 100644
-> --- a/tests/intel/kms_pm_dc.c
-> +++ b/tests/intel/kms_pm_dc.c
-> @@ -51,6 +51,10 @@
->    * Description: Make sure that system enters DC3CO when PSR2 or PR is active and
->    *              system is in SLEEP state
->    *
-> + * SUBTEST: dc3co-framedrop-check
-> + * Description: Verify that DC3CO entry does not cause frame drops and successfully
-> + *              enters the power state
-> + *
->    * SUBTEST: dc5-dpms
->    * Description: Validate display engine entry to DC5 state while all connectors's
->    *              DPMS property set to OFF
-> @@ -342,6 +346,82 @@ static void test_dc3co_vpb_simulation(data_t *data)
->   	cleanup_dc3co_fbs(data);
+>   tests/amdgpu/amd_vpe.c     | 151 +++++++++++++++++++++++-
+>   tests/amdgpu/amd_vpe.h     |  27 +++++
+>   tests/amdgpu/amd_vpe_cmd.c | 233 +++++++++++++++++++++++++++++++++++++
+>   tests/amdgpu/meson.build   |  10 +-
+>   4 files changed, 415 insertions(+), 6 deletions(-)
+>   create mode 100644 tests/amdgpu/amd_vpe.h
+>   create mode 100644 tests/amdgpu/amd_vpe_cmd.c
+> 
+> diff --git a/tests/amdgpu/amd_vpe.c b/tests/amdgpu/amd_vpe.c
+> index 072e521c9..80b96bc10 100644
+> --- a/tests/amdgpu/amd_vpe.c
+> +++ b/tests/amdgpu/amd_vpe.c
+> @@ -3,8 +3,8 @@
+>    * Copyright 2023 Advanced Micro Devices, Inc.
+>    */
+>   
+> -#include <amdgpu.h>
+>   #include "amdgpu_drm.h"
+> +#include "amd_vpe.h"
+>   
+>   #include "igt.h"
+>   
+> @@ -114,7 +114,7 @@ static void amdgpu_cs_vpe_fence(amdgpu_device_handle device_handle,
+>   	free_resource(&test_bo);
 >   }
 >   
-> +static uint32_t wait_for_next_vblank_seq(data_t *data)
-> +{
-> +	drmVBlank wait = {};
-> +	igt_crtc_t *crtc = data->output->pending_crtc;
-> +
-> +	igt_assert_f(crtc, "No CRTC bound to output for vblank wait\n");
-> +
-> +	wait.request.type = kmstest_get_vbl_flag(crtc->crtc_index) |
-> +						 DRM_VBLANK_RELATIVE |
-> +						 DRM_VBLANK_NEXTONMISS;
-> +	wait.request.sequence = 1;
-> +	igt_assert_eq(drmWaitVBlank(data->drm_fd, &wait), 0);
-> +
-> +	return wait.reply.sequence;
-> +}
-> +
-> +static void detect_dc3co_framedrop(data_t *data)
-> +{
-> +	igt_plane_t *primary;
-> +	uint32_t dc3co_prev_cnt;
-> +	uint32_t dc3co_cur_cnt;
-> +	uint32_t prev_vblank_seq = 0;
-> +	uint32_t vblank_seq;
-> +	int delay;
-> +	int dc3co_target_flips = 200;
-> +	int verify_commits = 300;
-
--->Any specific reason having above magic numbers?
-
--->Define them globally instead hard coding..
-
-> +	int committed = 0;
-> +	bool dc3co_after_target = false;
-> +	bool front = false;
-> +
-> +	igt_require_f(data->mode->vrefresh != 0, "Invalid vrefresh rate of 0\n");
-> +
-> +	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_display_commit(&data->display);
-> +
-> +	dc3co_prev_cnt = igt_read_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-> +
-> +	delay = (int)(1.5 * (1000000 / data->mode->vrefresh));
-> +
-> +	while (committed < verify_commits) {
-> +		front = !front;
-> +		igt_plane_set_fb(primary, front ? &data->fb_rgr : &data->fb_rgb);
-> +		igt_display_commit(&data->display);
-> +
-> +		vblank_seq = wait_for_next_vblank_seq(data);
-> +		if (prev_vblank_seq)
-
--->From above delay, (Say for 60hz =16.67ms) but current delay its 
-around 25ms there migh be chance of getting 2nd commit could be expected 
-2nd vblank
-IMO, gap of 1 or 2 would be fine,  becuase of 1.5x sleep time crossing 
-vblank time boundary.
--->read,  gab =  vblank seq -preve vblank seq;
-
--->and assert it like-->igt_assert_f(gab <=2 or gab>0 && gab<=2,
-			     "Vblank sequence did not advance after commit %d: vblank gap=%u\n",
-			     committed + 1, gab);
-
-> +			igt_assert_f(igt_vblank_after(vblank_seq, prev_vblank_seq),
-> +				     "Vblank sequence did not advance after commit %d\n",
-> +				     committed + 1);
-> +		prev_vblank_seq = vblank_seq;
-> +		committed++;
-> +		usleep(delay);
-> +
-> +		dc3co_cur_cnt = igt_read_dc_counter(data->debugfs_fd,
-> +						    IGT_INTEL_CHECK_DC3CO);
-> +		if (committed >= dc3co_target_flips && dc3co_cur_cnt > dc3co_prev_cnt)
-IMO: better to avoaid un-conditional read of debugfs --> 
-igt_read_dc_counter only if (committed >= dc3co_target_flips)
-like:         if (committed >= dc3co_target_flips) {
-dc3co_cur_cnt = igt_read_dc_counter(data->debugfs_fd, 
-IGT_INTEL_CHECK_DC3CO);
-
-		if (c3co_cur_cnt > dc3co_prev_cnt)
-
-			dc3co_after_target = true;
-	}
-
-> +			dc3co_after_target = true;
-> +	}
-> +
-> +	igt_assert_eq(committed, verify_commits);
-> +	igt_assert_f(dc3co_after_target,
-> +		     "DC3CO did not increment after %d flips while validating %d commits\n",
-> +		     dc3co_target_flips, verify_commits);
-> +}
-> +
-> +static void test_dc3co_framedrop(data_t *data)
-> +{
-> +	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-> +	setup_output(data);
-> +	setup_dc3co(data);
-> +	setup_videoplayback(data);
-> +	detect_dc3co_framedrop(data);
-> +	cleanup_dc3co_fbs(data);
-> +}
-> +
->   static void test_dc5_retention_flops(data_t *data, int dc_flag)
+> -// a in byte 0, b in byte 1, g in byte 2, r in byte 3
+> +/* a in byte 0, b in byte 1, g in byte 2, r in byte 3 */
+>   static void create_rgba8888(void *addr, uint32_t width, uint32_t height)
 >   {
->   	uint32_t dc_counter_before_psr;
-> @@ -693,6 +773,36 @@ int igt_main()
->   		}
+>   	uint32_t *ptr = (uint32_t *)addr;
+> @@ -125,7 +125,23 @@ static void create_rgba8888(void *addr, uint32_t width, uint32_t height)
+>   		ptr += width;
 >   	}
+>   }
+> -// b in byte 0, g in byte 1, r in byte 2, a in byte 3
+> +
+> +/* a in byte 0, b in byte 1, g in byte 2, r in byte 3 */
+> +static void create_rgba8888_hmirror(void *addr, uint32_t width, uint32_t height)
+> +{
+> +	uint32_t *ptr = (uint32_t *)addr;
+> +
+> +	for (int i = 0; i < height; i++) {
+> +		for (int j = 0; j < width / 2; j++)
+> +			ptr[j] = LEFT_PLANE_PATTERN;
+> +		for (int j = width / 2; j < width; j++)
+> +			ptr[j] = RIGHT_PLANE_PATTERN;
+> +
+> +		ptr += width;
+> +	}
+> +}
+> +
+> +/* b in byte 0, g in byte 1, r in byte 2, a in byte 3 */
+>   static int check_argb8888(void *addr, uint32_t width, uint32_t height)
+>   {
+>   	uint32_t *ptr = (uint32_t *)addr;
+> @@ -140,7 +156,27 @@ static int check_argb8888(void *addr, uint32_t width, uint32_t height)
+>   	return 0;
+>   }
 >   
-> +	igt_describe("Validate that no frame drops occur during DC3CO entry "
-> +			     "while alternating framebuffers with PSR2 or Panel Replay active");
-> +	igt_subtest_with_dynamic("dc3co-framedrop-check") {
-> +		static const struct dc3co_test_mode dc3co_modes[] = {
-> +			{ PSR_MODE_2, "psr2" },
-> +			{ PR_MODE,    "pr"   },
-> +		};
+> -static void amdgpu_cs_vpe_blit(amdgpu_device_handle device_handle,
+> +/* a in byte 0, b in byte 1, g in byte 2, r in byte 3 */
+> +static int check_rgba8888_hmirror(void *addr, uint32_t width, uint32_t height)
+> +{
+> +	uint32_t *ptr = (uint32_t *)addr;
 > +
-> +		for (int i = 0; i < ARRAY_SIZE(dc3co_modes); i++) {
-> +			const char *name = dc3co_modes[i].name;
-> +			data.op_psr_mode = dc3co_modes[i].mode;
+> +	ptr += width * (height / 2);
 > +
-> +			igt_dynamic_f("%s", name) {
-> +				igt_require(psr_sink_support(data.drm_fd,
-> +						     data.debugfs_fd,
-> +						     data.op_psr_mode, NULL));
-> +
-> +				if (data.op_psr_mode == PSR_MODE_2)
-> +					igt_require_f(IS_TIGERLAKE(data.devid) ||
-> +						      intel_display_ver(data.devid) >= 35,
-> +						      "Platform does not support DC3CO with PSR2\n");
-> +				else
-> +					igt_require_f(intel_display_ver(data.devid) >= 35,
-> +						      "Platform does not support DC3CO with Panel Replay\n");
-> +
-> +				test_dc3co_framedrop(&data);
-> +			}
-> +		}
+> +	if (ptr[width / 4] != RIGHT_PLANE_PATTERN) {
+> +		igt_info("Unexpected left pattern: 0x%x", ptr[width / 4]);
+> +		return 1;
 > +	}
 > +
->   	igt_describe("This test validates display engine entry to DC5 state "
->   		     "while PSR is active");
->   	igt_subtest("dc5-psr") {
---------------jGEZM4ArpQj53Dyv5AAcBzeG
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+> +	if (ptr[width * 3 / 4] != LEFT_PLANE_PATTERN) {
+> +		igt_info("Unexpected right pattern: 0x%x", ptr[width * 3 / 4]);
+> +		return 1;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void amdgpu_cs_vpe1_csc(amdgpu_device_handle device_handle,
+>   				struct mmd_context *context)
+>   {
+>   	const uint32_t vpep_config_offsets[] = {0x34, 0x128, 0x184, 0x1c0};
+> @@ -214,6 +250,111 @@ static void amdgpu_cs_vpe_blit(amdgpu_device_handle device_handle,
+>   	free_resource(&dst_plane_bo);
+>   }
+>   
+> +static void amdgpu_cs_vpe2_hmirror(amdgpu_device_handle device_handle, struct mmd_context *context)
+> +{
+> +	int i, r;
+> +	uint32_t frame_size;
+> +	struct amdgpu_mmd_bo vpep_cmd_bo, src_plane_bo, dst_plane_bo;
+> +	/* same height and pitch for input and output */
+> +	const uint32_t height = 256;
+> +	const uint32_t pitch = 1024;
+> +
+> +	const uint32_t patch_vpec_index[18] = {
+> +	 1,  4,  6,  8, 10, 12, 14, 16,
+> +	18, 20, 22, 24, 26, 28, 30, 32,
+> +	34, 36, };
+> +	const uint32_t patch_vpec_offset[18] = {
+> +	0x0000, 0x0080, 0x00c0, 0x0100, 0x0140, 0x01c0, 0x0740, 0x0b80,
+> +	0x0c40, 0x0cc0, 0x0d40, 0x1280, 0x16c0, 0x1780, 0x1800, 0x18c0,
+> +	0x1900, 0x19c0, };
+> +	const uint32_t patch_src_luma[2] = { 2, 8, };
+> +	const uint32_t patch_dst_luma[2] = { 14, 20, };
+> +
+> +	uint32_t *vpec_hmirror_cmd = vpe_get_vpec_hmirror_cmd();
+> +	uint32_t *vpep_hmirror_cmd = vpe_get_vpep_hmirror_cmd();
+> +
+> +	frame_size = pitch * height * 4;
+> +	context->num_resources = 0;
+> +
+> +	/* prepare source image buffer and data */
+> +	alloc_resource(device_handle, &src_plane_bo, frame_size, AMDGPU_GEM_DOMAIN_GTT);
+> +	r = amdgpu_bo_cpu_map(src_plane_bo.handle, (void **)&src_plane_bo.ptr);
+> +	igt_assert_eq(r, 0);
+> +	create_rgba8888_hmirror(src_plane_bo.ptr, pitch, height);
+> +	r = amdgpu_bo_cpu_unmap(src_plane_bo.handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	/* prepare destination image buffer */
+> +	alloc_resource(device_handle, &dst_plane_bo, frame_size, AMDGPU_GEM_DOMAIN_GTT);
+> +	r = amdgpu_bo_cpu_map(dst_plane_bo.handle, (void **)&dst_plane_bo.ptr);
+> +	igt_assert_eq(r, 0);
+> +	memset(dst_plane_bo.ptr, 0, frame_size);
+> +	r = amdgpu_bo_cpu_unmap(dst_plane_bo.handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	/* prepare VPEP command buffer and setup command buffer data */
+> +	alloc_resource(device_handle, &vpep_cmd_bo, VPEP_HMIRROR_CMD_SIZE, AMDGPU_GEM_DOMAIN_GTT);
+> +	/* patch gpu addr of vpep cmd */
+> +	for (i = 0; i < sizeof(patch_vpec_index) / sizeof(uint32_t); i++) {
+> +		vpec_hmirror_cmd[patch_vpec_index[i] + 0] = (uint32_t)(vpep_cmd_bo.addr & 0xffffffff) + patch_vpec_offset[i];
+> +		vpec_hmirror_cmd[patch_vpec_index[i] + 1] = (uint32_t)((vpep_cmd_bo.addr & 0xffffffff00000000) >> 32);
+> +	}
+> +	/* patch gpu addr of src/dst plane */
+> +	for (i = 0; i < sizeof(patch_dst_luma) / sizeof(uint32_t); i++) {
+> +		vpep_hmirror_cmd[patch_src_luma[i] + 0] =  (uint32_t)(src_plane_bo.addr & 0xffffffff);
+> +		vpep_hmirror_cmd[patch_src_luma[i] + 1] = (uint32_t)((src_plane_bo.addr & 0xffffffff00000000) >> 32);
+> +
+> +		vpep_hmirror_cmd[patch_dst_luma[i] + 0] =  (uint32_t)(dst_plane_bo.addr & 0xffffffff);
+> +		vpep_hmirror_cmd[patch_dst_luma[i] + 1] = (uint32_t)((dst_plane_bo.addr & 0xffffffff00000000) >> 32);
+> +	}
+> +	r = amdgpu_bo_cpu_map(vpep_cmd_bo.handle, (void **)&vpep_cmd_bo.ptr);
+> +	igt_assert_eq(r, 0);
+> +	memset(vpep_cmd_bo.ptr, 0, VPEP_HMIRROR_CMD_SIZE);
+> +	memcpy(vpep_cmd_bo.ptr, vpep_hmirror_cmd, VPEP_HMIRROR_CMD_SIZE);
+> +	r = amdgpu_bo_cpu_unmap(vpep_cmd_bo.handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	context->resources[context->num_resources++] = context->ib_handle;
+> +	context->resources[context->num_resources++] = vpep_cmd_bo.handle;
+> +	context->resources[context->num_resources++] = src_plane_bo.handle;
+> +	context->resources[context->num_resources++] = dst_plane_bo.handle;
+> +
+> +	memset(context->ib_cpu, 0, IB_SIZE);
+> +	memcpy(context->ib_cpu, vpec_hmirror_cmd, VPEC_HMIRROR_CMD_SIZE);
+> +	r = submit(device_handle, context, VPEC_HMIRROR_CMD_SIZE / 4, AMDGPU_HW_IP_VPE);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_cpu_map(dst_plane_bo.handle, (void **)&dst_plane_bo.ptr);
+> +	igt_assert_eq(r, 0);
+> +	r = check_rgba8888_hmirror(dst_plane_bo.ptr, pitch, height);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_bo_cpu_unmap(dst_plane_bo.handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	free_resource(&vpep_cmd_bo);
+> +	free_resource(&src_plane_bo);
+> +	free_resource(&dst_plane_bo);
+> +}
+> +
+> +static void amdgpu_cs_vpe_blit(amdgpu_device_handle device_handle,
+> +				struct mmd_context *context, struct mmd_shared_context *shared_context)
+> +{
+> +	switch (shared_context->vpe_ip_version_major) {
+> +	case 6:
+> +		/* VPE1 has major version as 6 */
+> +		amdgpu_cs_vpe1_csc(device_handle, context);
+> +		break;
+> +	case 2:
+> +		amdgpu_cs_vpe2_hmirror(device_handle, context);
+> +		break;
+> +	default:
+> +		igt_info("Unsupported VPE major version %d in blitting test",
+> +			 shared_context->vpe_ip_version_major);
+> +		igt_assert(false);
+> +		break;
+> +	}
+> +}
+> +
+>   int igt_main()
+>   {
+>   	struct mmd_context context = {};
+> @@ -247,7 +388,7 @@ int igt_main()
+>   
+>   	igt_describe("Test VPE blit");
+>   	igt_subtest("vpe-blit-test")
+> -	amdgpu_cs_vpe_blit(device, &context);
+> +		amdgpu_cs_vpe_blit(device, &context, &shared_context);
+>   
+>   	igt_fixture() {
+>   		amdgpu_device_deinitialize(device);
+> diff --git a/tests/amdgpu/amd_vpe.h b/tests/amdgpu/amd_vpe.h
+> new file mode 100644
+> index 000000000..31015ccfb
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_vpe.h
+> @@ -0,0 +1,27 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2026 Advanced Micro Devices, Inc.
+> + */
+> +
+> +#ifndef AMD_VPE_H
+> +#define AMD_VPE_H
+> +
+> +#include <amdgpu.h>
+> +
+> +/* horizontal mirror commands
+> + * source:      1024(pitch 1024) x 256 RGBA
+> + * destination: 1024(pitch 1024) x 256 RGBA
+> + */
+> +
+> +#define LEFT_PLANE_PATTERN	0xff123456
+> +#define RIGHT_PLANE_PATTERN	0xff654321
+> +
+> +#define VPEC_HMIRROR_CMD_LENGTH	38
+> +#define VPEP_HMIRROR_CMD_LENGTH	1661
+> +#define VPEC_HMIRROR_CMD_SIZE	(VPEC_HMIRROR_CMD_LENGTH * sizeof(uint32_t))
+> +#define VPEP_HMIRROR_CMD_SIZE	(VPEP_HMIRROR_CMD_LENGTH * sizeof(uint32_t))
+> +
+> +uint32_t *vpe_get_vpec_hmirror_cmd(void);
+> +uint32_t *vpe_get_vpep_hmirror_cmd(void);
+> +
+> +#endif /* AMD_VPE_H */
+> diff --git a/tests/amdgpu/amd_vpe_cmd.c b/tests/amdgpu/amd_vpe_cmd.c
+> new file mode 100644
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 27-05-2026 02:19 pm, Jeevan B wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20260527084915.1916365-6-jeevan.b@intel.com">
-      <pre wrap="" class="moz-quote-pre">Add a subtest to verify that DC3CO entry does not introduce frame
-drops. The test alternates commits and waits for a kernel vblank
-after each commit, ensuring the vblank sequence continues to
-advance without stalls or dropped frames. Also verify that the
-DC3CO counter increments, confirming that DC3CO is entered
-successfully during the test.
 
-Signed-off-by: Jeevan B <a class="moz-txt-link-rfc2396E" href="mailto:jeevan.b@intel.com">&lt;jeevan.b@intel.com&gt;</a>
----
- tests/intel/kms_pm_dc.c | 110 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 110 insertions(+)
+Hi Jani,
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 57dade47d..620ba9329 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -51,6 +51,10 @@
-  * Description: Make sure that system enters DC3CO when PSR2 or PR is active and
-  *              system is in SLEEP state
-  *
-+ * SUBTEST: dc3co-framedrop-check
-+ * Description: Verify that DC3CO entry does not cause frame drops and successfully
-+ *              enters the power state
-+ *
-  * SUBTEST: dc5-dpms
-  * Description: Validate display engine entry to DC5 state while all connectors's
-  *              DPMS property set to OFF
-@@ -342,6 +346,82 @@ static void test_dc3co_vpb_simulation(data_t *data)
- 	cleanup_dc3co_fbs(data);
- }
- 
-+static uint32_t wait_for_next_vblank_seq(data_t *data)
-+{
-+	drmVBlank wait = {};
-+	igt_crtc_t *crtc = data-&gt;output-&gt;pending_crtc;
-+
-+	igt_assert_f(crtc, &quot;No CRTC bound to output for vblank wait\n&quot;);
-+
-+	wait.request.type = kmstest_get_vbl_flag(crtc-&gt;crtc_index) |
-+						 DRM_VBLANK_RELATIVE |
-+						 DRM_VBLANK_NEXTONMISS;
-+	wait.request.sequence = 1;
-+	igt_assert_eq(drmWaitVBlank(data-&gt;drm_fd, &amp;wait), 0);
-+
-+	return wait.reply.sequence;
-+}
-+
-+static void detect_dc3co_framedrop(data_t *data)
-+{
-+	igt_plane_t *primary;
-+	uint32_t dc3co_prev_cnt;
-+	uint32_t dc3co_cur_cnt;
-+	uint32_t prev_vblank_seq = 0;
-+	uint32_t vblank_seq;
-+	int delay;
-+	int dc3co_target_flips = 200;
-+	int verify_commits = 300;</pre>
-    </blockquote>
-    <p>--&gt;Any specific reason having above magic numbers?</p>
-    <p>--&gt;Define them globally instead hard coding..</p>
-    <blockquote type="cite" cite="mid:20260527084915.1916365-6-jeevan.b@intel.com">
-      <pre wrap="" class="moz-quote-pre">
-+	int committed = 0;
-+	bool dc3co_after_target = false;
-+	bool front = false;
-+
-+	igt_require_f(data-&gt;mode-&gt;vrefresh != 0, &quot;Invalid vrefresh rate of 0\n&quot;);
-+
-+	primary = igt_output_get_plane_type(data-&gt;output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit(&amp;data-&gt;display);
-+
-+	dc3co_prev_cnt = igt_read_dc_counter(data-&gt;debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+
-+	delay = (int)(1.5 * (1000000 / data-&gt;mode-&gt;vrefresh));
-+
-+	while (committed &lt; verify_commits) {
-+		front = !front;
-+		igt_plane_set_fb(primary, front ? &amp;data-&gt;fb_rgr : &amp;data-&gt;fb_rgb);
-+		igt_display_commit(&amp;data-&gt;display);
-+
-+		vblank_seq = wait_for_next_vblank_seq(data);
-+		if (prev_vblank_seq)</pre>
-    </blockquote>
-    <p>--&gt;From above delay, (Say for 60hz =16.67ms) but current delay
-      its around 25ms there migh be chance of getting 2nd commit could
-      be expected 2nd vblank<br>
-      IMO, gap of 1 or 2 would be fine,&nbsp; becuase of 1.5x sleep time
-      crossing vblank time boundary.<br>
-      --&gt;read,&nbsp; gab =&nbsp; vblank seq -preve vblank seq;<br>
-    </p>
-    <pre wrap="" class="moz-quote-pre">--&gt;and assert it like--&gt;igt_assert_f(gab &lt;=2 or gab&gt;0 &amp;&amp; gab&lt;=2,
-			     &quot;Vblank sequence did not advance after commit %d: vblank gap=%u\n&quot;,
-			     committed + 1, gab);</pre>
-    <blockquote type="cite" cite="mid:20260527084915.1916365-6-jeevan.b@intel.com">
-      <pre wrap="" class="moz-quote-pre">
-+			igt_assert_f(igt_vblank_after(vblank_seq, prev_vblank_seq),
-+				     &quot;Vblank sequence did not advance after commit %d\n&quot;,
-+				     committed + 1);
-+		prev_vblank_seq = vblank_seq;
-+		committed++;
-+		usleep(delay);
-+
-+		dc3co_cur_cnt = igt_read_dc_counter(data-&gt;debugfs_fd,
-+						    IGT_INTEL_CHECK_DC3CO);
-+		if (committed &gt;= dc3co_target_flips &amp;&amp; dc3co_cur_cnt &gt; dc3co_prev_cnt)</pre>
-    </blockquote>
-    IMO: better to avoaid un-conditional read of debugfs --&gt;&nbsp;<span style="white-space: pre-wrap">igt_read_dc_counter only if (</span><span style="white-space: pre-wrap">committed &gt;= dc3co_target_flips</span>)&nbsp;<br>
-    like:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if&nbsp;<span style="white-space: pre-wrap"> (</span><span style="white-space: pre-wrap">committed &gt;= dc3co_target_flips</span>)
-    {&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>
-    <span style="white-space: pre-wrap">				dc3co_cur_cnt = igt_read_dc_counter(data-&gt;debugfs_fd, </span><span style="white-space: pre-wrap">IGT_INTEL_CHECK_DC3CO);</span>
-    <pre wrap="" class="moz-quote-pre">		if (c3co_cur_cnt &gt; dc3co_prev_cnt)</pre>
-    <pre wrap="" class="moz-quote-pre">			dc3co_after_target = true; 
-	}</pre>
-    <blockquote type="cite" cite="mid:20260527084915.1916365-6-jeevan.b@intel.com">
-      <pre wrap="" class="moz-quote-pre">
-+			dc3co_after_target = true;
-+	}
-+
-+	igt_assert_eq(committed, verify_commits);
-+	igt_assert_f(dc3co_after_target,
-+		     &quot;DC3CO did not increment after %d flips while validating %d commits\n&quot;,
-+		     dc3co_target_flips, verify_commits);
-+}
-+
-+static void test_dc3co_framedrop(data_t *data)
-+{
-+	igt_require_dc_counter(data-&gt;debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+	setup_output(data);
-+	setup_dc3co(data);
-+	setup_videoplayback(data);
-+	detect_dc3co_framedrop(data);
-+	cleanup_dc3co_fbs(data);
-+}
-+
- static void test_dc5_retention_flops(data_t *data, int dc_flag)
- {
- 	uint32_t dc_counter_before_psr;
-@@ -693,6 +773,36 @@ int igt_main()
- 		}
- 	}
- 
-+	igt_describe(&quot;Validate that no frame drops occur during DC3CO entry &quot;
-+			     &quot;while alternating framebuffers with PSR2 or Panel Replay active&quot;);
-+	igt_subtest_with_dynamic(&quot;dc3co-framedrop-check&quot;) {
-+		static const struct dc3co_test_mode dc3co_modes[] = {
-+			{ PSR_MODE_2, &quot;psr2&quot; },
-+			{ PR_MODE,    &quot;pr&quot;   },
-+		};
-+
-+		for (int i = 0; i &lt; ARRAY_SIZE(dc3co_modes); i++) {
-+			const char *name = dc3co_modes[i].name;
-+			data.op_psr_mode = dc3co_modes[i].mode;
-+
-+			igt_dynamic_f(&quot;%s&quot;, name) {
-+				igt_require(psr_sink_support(data.drm_fd,
-+						     data.debugfs_fd,
-+						     data.op_psr_mode, NULL));
-+
-+				if (data.op_psr_mode == PSR_MODE_2)
-+					igt_require_f(IS_TIGERLAKE(data.devid) ||
-+						      intel_display_ver(data.devid) &gt;= 35,
-+						      &quot;Platform does not support DC3CO with PSR2\n&quot;);
-+				else
-+					igt_require_f(intel_display_ver(data.devid) &gt;= 35,
-+						      &quot;Platform does not support DC3CO with Panel Replay\n&quot;);
-+
-+				test_dc3co_framedrop(&amp;data);
-+			}
-+		}
-+	}
-+
- 	igt_describe(&quot;This test validates display engine entry to DC5 state &quot;
- 		     &quot;while PSR is active&quot;);
- 	igt_subtest(&quot;dc5-psr&quot;) {
-</pre>
-    </blockquote>
-  </body>
-</html>
+amd_vpe_cmd.c here is added for command arrays, with functions providing 
+access to them.
 
---------------jGEZM4ArpQj53Dyv5AAcBzeG--
+Does this solve your concerns of not defining arrays in header files but 
+adding another .c file with the data, and provide functions for access?
+
+Thanks,
+Caden
+
+> index 000000000..b7849a5f8
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_vpe_cmd.c
+> @@ -0,0 +1,233 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2026 Advanced Micro Devices, Inc.
+> + */
+> +
+> +#include "amd_vpe.h"
+> +
+> +static uint32_t vpec_hmirror_cmd[38] = {
+> +0x00000001, 0x00800000, 0xffff8001, 0x00000010, 0x00800080, 0xffff8001, 0x008000c0, 0xffff8001,
+> +0x00800100, 0xffff8001, 0x00800140, 0xffff8001, 0x008001c0, 0xffff8001, 0x00800740, 0xffff8001,
+> +0x00800b80, 0xffff8001, 0x00800c40, 0xffff8001, 0x00800cc0, 0xffff8001, 0x00800d40, 0xffff8001,
+> +0x00801280, 0xffff8001, 0x008016c0, 0xffff8001, 0x00801780, 0xffff8001, 0x00801800, 0xffff8001,
+> +0x008018c0, 0xffff8001, 0x00801900, 0xffff8001, 0x008019c0, 0xffff8001, };
+> +
+> +static uint32_t vpep_hmirror_cmd[1661] = {
+> +0x00000202, 0x00000004, 0x00400000, 0xffff8001, 0x400003ff, 0x00000200, 0x00ff01ff, 0x00000004,
+> +0x00400000, 0xffff8001, 0x400003ff, 0x00000000, 0x00ff01ff, 0x00000000, 0x00500000, 0xffff8001,
+> +0x400003ff, 0x00000000, 0x00ff01ff, 0x00000000, 0x00500000, 0xffff8001, 0x400003ff, 0x00000200,
+> +0x00ff01ff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00070003, 0x0004ab64, 0x00000000, 0x0004ab68, 0x00000000, 0x0004ab6c, 0x00000000, 0x0004ab70,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00070003, 0x0004ac70, 0x00000000, 0x0004ac74, 0x00000000, 0x0004ac78, 0x00000000, 0x0004ac7c,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00010003, 0x00049c88, 0x0000000f, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x001e0003, 0x00047808, 0x00003008, 0x0004780c, 0x000000b4, 0x00047d10, 0x00000008, 0x00047d14,
+> +0x00000101, 0x00047d30, 0x00000000, 0x00047d18, 0x00000000, 0x00047d1c, 0x00000000, 0x00047d20,
+> +0x00000000, 0x00047d24, 0x0001f010, 0x00047d28, 0x0001f010, 0x00047d2c, 0x0001f010, 0x00548079,
+> +0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 0x00002000, 0x00048074, 0x00000001,
+> +0x01510003, 0x00048070, 0x00000000, 0x00048138, 0x00000004, 0x000480a4, 0x00000007, 0x0004809c,
+> +0x00000000, 0x00048098, 0x00000002, 0x000480a8, 0x00016000, 0x000480ac, 0x00016000, 0x000480b0,
+> +0x00016000, 0x000480c8, 0x00000000, 0x000480c4, 0x00000000, 0x000480c0, 0x00000000, 0x000480ec,
+> +0x00000000, 0x000480e8, 0x00000000, 0x000480e4, 0x00000000, 0x000480b4, 0x0001b3d0, 0x000480b8,
+> +0x0001b3d0, 0x000480bc, 0x0001b3d0, 0x000480cc, 0x0001f000, 0x000480d4, 0x0001f000, 0x000480dc,
+> +0x0001f000, 0x000480d0, 0x00007c00, 0x000480d8, 0x00007c00, 0x000480e0, 0x00007c00, 0x010480f1,
+> +0x00010000, 0x20041002, 0x40103008, 0x60405020, 0x00007080, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x100480a0, 0x000123d0, 0x000133d0, 0x000143d0, 0x00014db8, 0x000153d0, 0x000158c4,
+> +0x00015db8, 0x00016156, 0x000163d0, 0x0001664a, 0x000168c4, 0x00016b4d, 0x00016dfc, 0x00017069,
+> +0x000171e7, 0x00017378, 0x0001751e, 0x000176d7, 0x000178a5, 0x00017a87, 0x00017c7e, 0x00017e8b,
+> +0x00018056, 0x00018172, 0x00018298, 0x000183ca, 0x00018506, 0x0001864e, 0x000187a2, 0x00018901,
+> +0x00018a6b, 0x00018be1, 0x00018d63, 0x00018ef1, 0x00019045, 0x00019118, 0x000191f1, 0x000192d0,
+> +0x000193b6, 0x000194a1, 0x00019593, 0x0001968c, 0x0001978a, 0x00019890, 0x0001999b, 0x00019aad,
+> +0x00019bc6, 0x00019ce6, 0x00019e0c, 0x00019f38, 0x0001a036, 0x0001a0d3, 0x0001a173, 0x0001a217,
+> +0x0001a2bf, 0x0001a36a, 0x0001a418, 0x0001a4ca, 0x0001a580, 0x0001a639, 0x0001a6f5, 0x0001a7b5,
+> +0x0001a879, 0x0001a941, 0x0001aa0c, 0x0001aadb, 0x0001abad, 0x0001ac83, 0x0001ad5d, 0x0001ae3b,
+> +0x0001af1d, 0x0001b001, 0x0001b075, 0x0001b0ec, 0x0001b164, 0x0001b1de, 0x0001b25b, 0x0001b2d9,
+> +0x0001b359, 0x0001b3db, 0x0001b45f, 0x0001b4e5, 0x0001b56d, 0x0001b5f7, 0x0001b683, 0x0001b711,
+> +0x0001b7a1, 0x0001b833, 0x0001b8c7, 0x0001b95e, 0x0001b9f6, 0x0001ba90, 0x0001bb2c, 0x0001bbcb,
+> +0x0001bc6b, 0x0001bd0e, 0x0001bdb3, 0x0001be5a, 0x0001bf02, 0x0001bfae, 0x0001c02d, 0x0001c085,
+> +0x0001c0de, 0x0001c137, 0x0001c192, 0x0001c1ee, 0x0001c24b, 0x0001c2a9, 0x0001c309, 0x0001c369,
+> +0x0001c3cb, 0x0001c42d, 0x0001c491, 0x0001c4f6, 0x0001c55b, 0x0001c5c2, 0x0001c62b, 0x0001c694,
+> +0x0001c6fe, 0x0001c76a, 0x0001c7d6, 0x0001c844, 0x0001c8b3, 0x0001c923, 0x0001c995, 0x0001ca07,
+> +0x0001ca7b, 0x0001caef, 0x0001cb65, 0x0001cbdc, 0x0001cc54, 0x0001ccce, 0x0001cd48, 0x0001cdc4,
+> +0x0001ce41, 0x0001cebf, 0x0001cf3f, 0x0001cfbf, 0x0001d020, 0x0001d062, 0x0001d0a4, 0x0001d0e6,
+> +0x0001d12a, 0x0001d16d, 0x0001d1b2, 0x0001d1f7, 0x0001d23d, 0x0001d283, 0x0001d2ca, 0x0001d312,
+> +0x0001d35a, 0x0001d3a2, 0x0001d3ec, 0x0001d436, 0x0001d481, 0x0001d4cc, 0x0001d518, 0x0001d564,
+> +0x0001d5b1, 0x0001d5ff, 0x0001d64d, 0x0001d69d, 0x0001d6ec, 0x0001d73d, 0x0001d78d, 0x0001d7df,
+> +0x0001d831, 0x0001d884, 0x0001d8d8, 0x0001d92c, 0x0001d981, 0x0001d9d6, 0x0001da2c, 0x0001da83,
+> +0x0001dada, 0x0001db32, 0x0001db8b, 0x0001dbe4, 0x0001dc3e, 0x0001dc99, 0x0001dcf4, 0x0001dd50,
+> +0x0001ddad, 0x0001de0a, 0x0001de68, 0x0001dec7, 0x0001df26, 0x0001df86, 0x0001dfe7, 0x0001e024,
+> +0x0001e055, 0x0001e086, 0x0001e0b8, 0x0001e0ea, 0x0001e11c, 0x0001e14f, 0x0001e182, 0x0001e1b5,
+> +0x0001e1e9, 0x0001e21d, 0x0001e252, 0x0001e286, 0x0001e2bc, 0x0001e2f1, 0x0001e327, 0x0001e35d,
+> +0x0001e393, 0x0001e3ca, 0x0001e401, 0x0001e439, 0x0001e471, 0x0001e4a9, 0x0001e4e2, 0x0001e51b,
+> +0x0001e554, 0x0001e58d, 0x0001e5c7, 0x0001e602, 0x0001e63c, 0x0001e678, 0x0001e6b3, 0x0001e6ef,
+> +0x0001e72b, 0x0001e767, 0x0001e7a4, 0x0001e7e1, 0x0001e81f, 0x0001e85d, 0x0001e89b, 0x0001e8da,
+> +0x0001e919, 0x0001e958, 0x0001e998, 0x0001e9d8, 0x0001ea18, 0x0001ea59, 0x0001ea9a, 0x0001eadc,
+> +0x0001eb1e, 0x0001eb60, 0x0001eba3, 0x0001ebe6, 0x0001ec29, 0x0001ec6d, 0x0001ecb1, 0x0001ecf5,
+> +0x0001ed3a, 0x0001ed80, 0x0001edc5, 0x0001ee0b, 0x0001ee51, 0x0001ee98, 0x0001eedf, 0x0001ef27,
+> +0x0001ef6f, 0x0001efb7, 0x0001f000, 0x00049c90, 0x00000000, 0x00049700, 0x00000000, 0x00049704,
+> +0x0000000f, 0x00049e24, 0x00000000, 0x00049708, 0x00000000, 0x0004970c, 0x00000062, 0x00049c68,
+> +0x00000000, 0x00049bc0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x01030003, 0x0004a2e4, 0x00050001, 0x0004a214, 0x00000007, 0x0004a20c, 0x00000000, 0x0004a218,
+> +0x00013000, 0x0004a21c, 0x00013000, 0x0004a220, 0x00013000, 0x0004a238, 0x00000000, 0x0004a234,
+> +0x00000000, 0x0004a230, 0x00000000, 0x0004a25c, 0x00000000, 0x0004a258, 0x00000000, 0x0004a254,
+> +0x00000000, 0x0004a224, 0x000229d7, 0x0004a228, 0x000229d7, 0x0004a22c, 0x000229d7, 0x0004a23c,
+> +0x0001f000, 0x0004a244, 0x0001f000, 0x0004a24c, 0x0001f000, 0x0004a240, 0x00008000, 0x0004a248,
+> +0x00008000, 0x0004a250, 0x00008000, 0x0104a261, 0x40083000, 0x40284018, 0x40484038, 0x40684058,
+> +0x40884078, 0x40a84098, 0x00ba10b8, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0ba4a210, 0x000169d7, 0x00016d11,
+> +0x00017026, 0x000171c3, 0x00017361, 0x000174fe, 0x0001769c, 0x00017839, 0x000179d7, 0x00017b74,
+> +0x00017d11, 0x00017eaf, 0x00018026, 0x000180f5, 0x000181c3, 0x00018292, 0x00018361, 0x00018430,
+> +0x000184fe, 0x000185cd, 0x0001869c, 0x0001876a, 0x00018839, 0x00018908, 0x000189d7, 0x00018b74,
+> +0x00018d11, 0x00018eaf, 0x00019026, 0x000190f5, 0x000191c3, 0x00019292, 0x00019361, 0x00019430,
+> +0x000194fe, 0x000195cd, 0x0001969c, 0x0001976a, 0x00019839, 0x00019908, 0x000199d7, 0x00019b74,
+> +0x00019d11, 0x00019eaf, 0x0001a026, 0x0001a0f5, 0x0001a1c3, 0x0001a292, 0x0001a361, 0x0001a430,
+> +0x0001a4fd, 0x0001a5c4, 0x0001a687, 0x0001a746, 0x0001a802, 0x0001a8b9, 0x0001a96e, 0x0001aacd,
+> +0x0001ac20, 0x0001ad68, 0x0001aea6, 0x0001afdc, 0x0001b084, 0x0001b116, 0x0001b1a5, 0x0001b230,
+> +0x0001b2b9, 0x0001b33e, 0x0001b3c0, 0x0001b440, 0x0001b4bd, 0x0001b537, 0x0001b5af, 0x0001b69a,
+> +0x0001b77c, 0x0001b857, 0x0001b92c, 0x0001b9fa, 0x0001bac3, 0x0001bb86, 0x0001bc45, 0x0001bcff,
+> +0x0001bdb4, 0x0001be66, 0x0001bf14, 0x0001bfbe, 0x0001c032, 0x0001c084, 0x0001c0d4, 0x0001c171,
+> +0x0001c208, 0x0001c29a, 0x0001c328, 0x0001c3b2, 0x0001c438, 0x0001c4ba, 0x0001c539, 0x0001c5b5,
+> +0x0001c62f, 0x0001c6a5, 0x0001c719, 0x0001c78b, 0x0001c7fa, 0x0001c868, 0x0001c8d3, 0x0001c9a3,
+> +0x0001ca6d, 0x0001cb30, 0x0001cbee, 0x0001cca5, 0x0001cd58, 0x0001ce06, 0x0001ceb0, 0x0001cf56,
+> +0x0001cff8, 0x0001d04b, 0x0001d098, 0x0001d0e4, 0x0001d12e, 0x0001d177, 0x0001d1bf, 0x0001d24a,
+> +0x0001d2d1, 0x0001d353, 0x0001d3d1, 0x0001d44c, 0x0001d4c3, 0x0001d538, 0x0001d5a9, 0x0001d618,
+> +0x0001d684, 0x0001d6ed, 0x0001d755, 0x0001d7ba, 0x0001d81d, 0x0001d87e, 0x0001d8de, 0x0001d998,
+> +0x0001da4b, 0x0001daf9, 0x0001dba2, 0x0001dc46, 0x0001dce5, 0x0001dd80, 0x0001de17, 0x0001deab,
+> +0x0001df3b, 0x0001dfc8, 0x0001e029, 0x0001e06c, 0x0001e0af, 0x0001e0f0, 0x0001e12f, 0x0001e1ab,
+> +0x0001e223, 0x0001e297, 0x0001e308, 0x0001e375, 0x0001e3e0, 0x0001e447, 0x0001e4ac, 0x0001e50f,
+> +0x0001e56f, 0x0001e5cd, 0x0001e629, 0x0001e683, 0x0001e6dc, 0x0001e732, 0x0001e788, 0x0001e82d,
+> +0x0001e8cd, 0x0001e968, 0x0001e9fe, 0x0001ea90, 0x0001eb1e, 0x0001eba8, 0x0001ec2f, 0x0001ecb3,
+> +0x0001ed33, 0x0001edb1, 0x0001ee2c, 0x0001eea4, 0x0001ef1a, 0x0001ef8e, 0x0001f000, 0x0001f000,
+> +0x0001f000, 0x0004a208, 0x00000002, 0x00049720, 0x00000000, 0x0004a2a8, 0x00000000, 0x0004a2c8,
+> +0x00000000, 0x000498f0, 0x00000000, 0x00048134, 0x0001f000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x002d0003, 0x00047da8, 0x00000000, 0x00047e18, 0x00000004, 0x00047e0c, 0x00000010, 0x00047e10,
+> +0x00000c00, 0x00047dbc, 0x01000000, 0x00047dcc, 0x01000000, 0x00047dc4, 0x01000000, 0x00047dd8,
+> +0x01000000, 0x00047dac, 0x00000000, 0x00047da8, 0x00000000, 0x00047e24, 0x00000100, 0x00047e20,
+> +0x00000100, 0x00047e28, 0x00000000, 0x00047e2c, 0x396d3434, 0x00047e30, 0x00002b97, 0x0004970c,
+> +0x00000022, 0x00049710, 0x0fff0fff, 0x00049714, 0x0001f000, 0x00049718, 0x0001f000, 0x0004971c,
+> +0x0001f000, 0x00049724, 0x00000000, 0x00049728, 0x00000000, 0x0004972c, 0x00000000, 0x00000000,
+> +0x001b0003, 0x00047810, 0x00000200, 0x00047814, 0x01000200, 0x00047818, 0x00000200, 0x0004781c,
+> +0x01000200, 0x00047e00, 0x00000000, 0x00047e04, 0x01000200, 0x00047e08, 0x01000200, 0x00047dc0,
+> +0x01800000, 0x00047dc8, 0x01800000, 0x00047dd0, 0x01800000, 0x00047dd4, 0x02800000, 0x00047ddc,
+> +0x01800000, 0x00047de0, 0x02800000, 0x00048350, 0x70000100, 0x00000000, 0x00000000, 0x00000000,
+> +0x001e0003, 0x00047820, 0x00003008, 0x00047824, 0x000000b4, 0x00048380, 0x00000008, 0x00048384,
+> +0x00000101, 0x000483a0, 0x00000000, 0x00048388, 0x00000000, 0x0004838c, 0x00000000, 0x00048390,
+> +0x00000000, 0x00048394, 0x0001f010, 0x00048398, 0x0001f010, 0x0004839c, 0x0001f010, 0x005486e9,
+> +0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 0x00002000, 0x000486e4, 0x00000001,
+> +0x014b0003, 0x000486e0, 0x00000000, 0x000487a8, 0x00000004, 0x00048714, 0x00000007, 0x0004870c,
+> +0x00000000, 0x00048708, 0x00000002, 0x00048718, 0x00016000, 0x0004871c, 0x00016000, 0x00048720,
+> +0x00016000, 0x00048738, 0x00000000, 0x00048734, 0x00000000, 0x00048730, 0x00000000, 0x0004875c,
+> +0x00000000, 0x00048758, 0x00000000, 0x00048754, 0x00000000, 0x00048724, 0x0001b3d0, 0x00048728,
+> +0x0001b3d0, 0x0004872c, 0x0001b3d0, 0x0004873c, 0x0001f000, 0x00048744, 0x0001f000, 0x0004874c,
+> +0x0001f000, 0x00048740, 0x00007c00, 0x00048748, 0x00007c00, 0x00048750, 0x00007c00, 0x01048761,
+> +0x00010000, 0x20041002, 0x40103008, 0x60405020, 0x00007080, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x10048710, 0x000123d0, 0x000133d0, 0x000143d0, 0x00014db8, 0x000153d0, 0x000158c4,
+> +0x00015db8, 0x00016156, 0x000163d0, 0x0001664a, 0x000168c4, 0x00016b4d, 0x00016dfc, 0x00017069,
+> +0x000171e7, 0x00017378, 0x0001751e, 0x000176d7, 0x000178a5, 0x00017a87, 0x00017c7e, 0x00017e8b,
+> +0x00018056, 0x00018172, 0x00018298, 0x000183ca, 0x00018506, 0x0001864e, 0x000187a2, 0x00018901,
+> +0x00018a6b, 0x00018be1, 0x00018d63, 0x00018ef1, 0x00019045, 0x00019118, 0x000191f1, 0x000192d0,
+> +0x000193b6, 0x000194a1, 0x00019593, 0x0001968c, 0x0001978a, 0x00019890, 0x0001999b, 0x00019aad,
+> +0x00019bc6, 0x00019ce6, 0x00019e0c, 0x00019f38, 0x0001a036, 0x0001a0d3, 0x0001a173, 0x0001a217,
+> +0x0001a2bf, 0x0001a36a, 0x0001a418, 0x0001a4ca, 0x0001a580, 0x0001a639, 0x0001a6f5, 0x0001a7b5,
+> +0x0001a879, 0x0001a941, 0x0001aa0c, 0x0001aadb, 0x0001abad, 0x0001ac83, 0x0001ad5d, 0x0001ae3b,
+> +0x0001af1d, 0x0001b001, 0x0001b075, 0x0001b0ec, 0x0001b164, 0x0001b1de, 0x0001b25b, 0x0001b2d9,
+> +0x0001b359, 0x0001b3db, 0x0001b45f, 0x0001b4e5, 0x0001b56d, 0x0001b5f7, 0x0001b683, 0x0001b711,
+> +0x0001b7a1, 0x0001b833, 0x0001b8c7, 0x0001b95e, 0x0001b9f6, 0x0001ba90, 0x0001bb2c, 0x0001bbcb,
+> +0x0001bc6b, 0x0001bd0e, 0x0001bdb3, 0x0001be5a, 0x0001bf02, 0x0001bfae, 0x0001c02d, 0x0001c085,
+> +0x0001c0de, 0x0001c137, 0x0001c192, 0x0001c1ee, 0x0001c24b, 0x0001c2a9, 0x0001c309, 0x0001c369,
+> +0x0001c3cb, 0x0001c42d, 0x0001c491, 0x0001c4f6, 0x0001c55b, 0x0001c5c2, 0x0001c62b, 0x0001c694,
+> +0x0001c6fe, 0x0001c76a, 0x0001c7d6, 0x0001c844, 0x0001c8b3, 0x0001c923, 0x0001c995, 0x0001ca07,
+> +0x0001ca7b, 0x0001caef, 0x0001cb65, 0x0001cbdc, 0x0001cc54, 0x0001ccce, 0x0001cd48, 0x0001cdc4,
+> +0x0001ce41, 0x0001cebf, 0x0001cf3f, 0x0001cfbf, 0x0001d020, 0x0001d062, 0x0001d0a4, 0x0001d0e6,
+> +0x0001d12a, 0x0001d16d, 0x0001d1b2, 0x0001d1f7, 0x0001d23d, 0x0001d283, 0x0001d2ca, 0x0001d312,
+> +0x0001d35a, 0x0001d3a2, 0x0001d3ec, 0x0001d436, 0x0001d481, 0x0001d4cc, 0x0001d518, 0x0001d564,
+> +0x0001d5b1, 0x0001d5ff, 0x0001d64d, 0x0001d69d, 0x0001d6ec, 0x0001d73d, 0x0001d78d, 0x0001d7df,
+> +0x0001d831, 0x0001d884, 0x0001d8d8, 0x0001d92c, 0x0001d981, 0x0001d9d6, 0x0001da2c, 0x0001da83,
+> +0x0001dada, 0x0001db32, 0x0001db8b, 0x0001dbe4, 0x0001dc3e, 0x0001dc99, 0x0001dcf4, 0x0001dd50,
+> +0x0001ddad, 0x0001de0a, 0x0001de68, 0x0001dec7, 0x0001df26, 0x0001df86, 0x0001dfe7, 0x0001e024,
+> +0x0001e055, 0x0001e086, 0x0001e0b8, 0x0001e0ea, 0x0001e11c, 0x0001e14f, 0x0001e182, 0x0001e1b5,
+> +0x0001e1e9, 0x0001e21d, 0x0001e252, 0x0001e286, 0x0001e2bc, 0x0001e2f1, 0x0001e327, 0x0001e35d,
+> +0x0001e393, 0x0001e3ca, 0x0001e401, 0x0001e439, 0x0001e471, 0x0001e4a9, 0x0001e4e2, 0x0001e51b,
+> +0x0001e554, 0x0001e58d, 0x0001e5c7, 0x0001e602, 0x0001e63c, 0x0001e678, 0x0001e6b3, 0x0001e6ef,
+> +0x0001e72b, 0x0001e767, 0x0001e7a4, 0x0001e7e1, 0x0001e81f, 0x0001e85d, 0x0001e89b, 0x0001e8da,
+> +0x0001e919, 0x0001e958, 0x0001e998, 0x0001e9d8, 0x0001ea18, 0x0001ea59, 0x0001ea9a, 0x0001eadc,
+> +0x0001eb1e, 0x0001eb60, 0x0001eba3, 0x0001ebe6, 0x0001ec29, 0x0001ec6d, 0x0001ecb1, 0x0001ecf5,
+> +0x0001ed3a, 0x0001ed80, 0x0001edc5, 0x0001ee0b, 0x0001ee51, 0x0001ee98, 0x0001eedf, 0x0001ef27,
+> +0x0001ef6f, 0x0001efb7, 0x0001f000, 0x00049754, 0x00000001, 0x00049758, 0x0000000f, 0x00049e38,
+> +0x00000001, 0x0004975c, 0x00000001, 0x00049760, 0x00000062, 0x00000000, 0x00000000, 0x00000000,
+> +0x01030003, 0x0004a524, 0x00050001, 0x0004a454, 0x00000007, 0x0004a44c, 0x00000000, 0x0004a458,
+> +0x00013000, 0x0004a45c, 0x00013000, 0x0004a460, 0x00013000, 0x0004a478, 0x00000000, 0x0004a474,
+> +0x00000000, 0x0004a470, 0x00000000, 0x0004a49c, 0x00000000, 0x0004a498, 0x00000000, 0x0004a494,
+> +0x00000000, 0x0004a464, 0x000229d7, 0x0004a468, 0x000229d7, 0x0004a46c, 0x000229d7, 0x0004a47c,
+> +0x0001f000, 0x0004a484, 0x0001f000, 0x0004a48c, 0x0001f000, 0x0004a480, 0x00008000, 0x0004a488,
+> +0x00008000, 0x0004a490, 0x00008000, 0x0104a4a1, 0x40083000, 0x40284018, 0x40484038, 0x40684058,
+> +0x40884078, 0x40a84098, 0x00ba10b8, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0ba4a450, 0x000169d7, 0x00016d11,
+> +0x00017026, 0x000171c3, 0x00017361, 0x000174fe, 0x0001769c, 0x00017839, 0x000179d7, 0x00017b74,
+> +0x00017d11, 0x00017eaf, 0x00018026, 0x000180f5, 0x000181c3, 0x00018292, 0x00018361, 0x00018430,
+> +0x000184fe, 0x000185cd, 0x0001869c, 0x0001876a, 0x00018839, 0x00018908, 0x000189d7, 0x00018b74,
+> +0x00018d11, 0x00018eaf, 0x00019026, 0x000190f5, 0x000191c3, 0x00019292, 0x00019361, 0x00019430,
+> +0x000194fe, 0x000195cd, 0x0001969c, 0x0001976a, 0x00019839, 0x00019908, 0x000199d7, 0x00019b74,
+> +0x00019d11, 0x00019eaf, 0x0001a026, 0x0001a0f5, 0x0001a1c3, 0x0001a292, 0x0001a361, 0x0001a430,
+> +0x0001a4fd, 0x0001a5c4, 0x0001a687, 0x0001a746, 0x0001a802, 0x0001a8b9, 0x0001a96e, 0x0001aacd,
+> +0x0001ac20, 0x0001ad68, 0x0001aea6, 0x0001afdc, 0x0001b084, 0x0001b116, 0x0001b1a5, 0x0001b230,
+> +0x0001b2b9, 0x0001b33e, 0x0001b3c0, 0x0001b440, 0x0001b4bd, 0x0001b537, 0x0001b5af, 0x0001b69a,
+> +0x0001b77c, 0x0001b857, 0x0001b92c, 0x0001b9fa, 0x0001bac3, 0x0001bb86, 0x0001bc45, 0x0001bcff,
+> +0x0001bdb4, 0x0001be66, 0x0001bf14, 0x0001bfbe, 0x0001c032, 0x0001c084, 0x0001c0d4, 0x0001c171,
+> +0x0001c208, 0x0001c29a, 0x0001c328, 0x0001c3b2, 0x0001c438, 0x0001c4ba, 0x0001c539, 0x0001c5b5,
+> +0x0001c62f, 0x0001c6a5, 0x0001c719, 0x0001c78b, 0x0001c7fa, 0x0001c868, 0x0001c8d3, 0x0001c9a3,
+> +0x0001ca6d, 0x0001cb30, 0x0001cbee, 0x0001cca5, 0x0001cd58, 0x0001ce06, 0x0001ceb0, 0x0001cf56,
+> +0x0001cff8, 0x0001d04b, 0x0001d098, 0x0001d0e4, 0x0001d12e, 0x0001d177, 0x0001d1bf, 0x0001d24a,
+> +0x0001d2d1, 0x0001d353, 0x0001d3d1, 0x0001d44c, 0x0001d4c3, 0x0001d538, 0x0001d5a9, 0x0001d618,
+> +0x0001d684, 0x0001d6ed, 0x0001d755, 0x0001d7ba, 0x0001d81d, 0x0001d87e, 0x0001d8de, 0x0001d998,
+> +0x0001da4b, 0x0001daf9, 0x0001dba2, 0x0001dc46, 0x0001dce5, 0x0001dd80, 0x0001de17, 0x0001deab,
+> +0x0001df3b, 0x0001dfc8, 0x0001e029, 0x0001e06c, 0x0001e0af, 0x0001e0f0, 0x0001e12f, 0x0001e1ab,
+> +0x0001e223, 0x0001e297, 0x0001e308, 0x0001e375, 0x0001e3e0, 0x0001e447, 0x0001e4ac, 0x0001e50f,
+> +0x0001e56f, 0x0001e5cd, 0x0001e629, 0x0001e683, 0x0001e6dc, 0x0001e732, 0x0001e788, 0x0001e82d,
+> +0x0001e8cd, 0x0001e968, 0x0001e9fe, 0x0001ea90, 0x0001eb1e, 0x0001eba8, 0x0001ec2f, 0x0001ecb3,
+> +0x0001ed33, 0x0001edb1, 0x0001ee2c, 0x0001eea4, 0x0001ef1a, 0x0001ef8e, 0x0001f000, 0x0001f000,
+> +0x0001f000, 0x0004a448, 0x00000002, 0x00049774, 0x00000000, 0x0004a4e8, 0x00000000, 0x0004a508,
+> +0x00000000, 0x000499cc, 0x00000000, 0x000487a4, 0x0001f000, 0x00000000, 0x00000000, 0x00000000,
+> +0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x002d0003, 0x00048418, 0x00000000, 0x00048488, 0x00000004, 0x0004847c, 0x00000010, 0x00048480,
+> +0x00000c00, 0x0004842c, 0x01000000, 0x0004843c, 0x01000000, 0x00048434, 0x01000000, 0x00048448,
+> +0x01000000, 0x0004841c, 0x00000000, 0x00048418, 0x00000000, 0x00048494, 0x00000100, 0x00048490,
+> +0x00000100, 0x00048498, 0x00000000, 0x0004849c, 0x396d3434, 0x000484a0, 0x00002b97, 0x00049760,
+> +0x00000022, 0x00049764, 0x0fff0fff, 0x00049768, 0x0001f000, 0x0004976c, 0x0001f000, 0x00049770,
+> +0x0001f000, 0x00049778, 0x00000000, 0x0004977c, 0x00000000, 0x00049780, 0x00000000, 0x00000000,
+> +0x001b0003, 0x00047828, 0x00000000, 0x0004782c, 0x01000200, 0x00047830, 0x00000000, 0x00047834,
+> +0x01000200, 0x00048470, 0x00000000, 0x00048474, 0x01000200, 0x00048478, 0x01000200, 0x00048430,
+> +0x01800000, 0x00048438, 0x01800000, 0x00048440, 0x01800000, 0x00048444, 0x02800000, 0x0004844c,
+> +0x01800000, 0x00048450, 0x02800000, 0x00048350, 0x70000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x002e0003, 0x0004783c, 0x0960f014, 0x0004789c, 0x00000000, 0x0004af1c, 0x00000000, 0x00049850,
+> +0x00000000, 0x00049e28, 0x00000000, 0x00049e2c, 0x02fff000, 0x00049e30, 0x00fff000, 0x00049e34,
+> +0x00fff000, 0x00049730, 0x00000014, 0x00049730, 0x00000014, 0x00049730, 0x00000014, 0x00049e74,
+> +0x00000000, 0x00049e78, 0x00000001, 0x00549e7d, 0x00002000, 0x00000000, 0x20000000, 0x00000000,
+> +0x00000000, 0x00002000, 0x0004ab60, 0xffff0000, 0x0004ab60, 0xffff0000, 0x0004ab60, 0xffff0000,
+> +0x0004aacc, 0x00000000, 0x0004aad4, 0x00000013, 0x0004aad4, 0x00000013, 0x0004aae4, 0x00000000,
+> +0x000b0003, 0x0004ab64, 0x00000000, 0x0004ab68, 0x00000000, 0x0004ab6c, 0x00000000, 0x0004ab70,
+> +0x00000000, 0x0004aad0, 0x00000000, 0x00047838, 0x00000827, 0x00000000, 0x00000000, 0x00000000,
+> +0x002a0003, 0x00047844, 0x0960f014, 0x0004992c, 0x00000000, 0x00049e3c, 0x00000000, 0x00049e40,
+> +0x02fff000, 0x00049e44, 0x00fff000, 0x00049e48, 0x00fff000, 0x00049784, 0x00000014, 0x00049784,
+> +0x00000014, 0x00049784, 0x00000014, 0x00049e74, 0x00000000, 0x00049e94, 0x00000001, 0x00549e99,
+> +0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 0x00002000, 0x0004ac6c, 0xffff0000,
+> +0x0004ac6c, 0xffff0000, 0x0004ac6c, 0xffff0000, 0x0004abd8, 0x00000000, 0x0004abe0, 0x00000013,
+> +0x0004abe0, 0x00000013, 0x0004abf0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+> +0x000b0003, 0x0004ac70, 0x00000000, 0x0004ac74, 0x00000000, 0x0004ac78, 0x00000000, 0x0004ac7c,
+> +0x00000000, 0x0004abdc, 0x00000000, 0x00047840, 0x00000827, };
+> +
+> +uint32_t *vpe_get_vpec_hmirror_cmd(void)
+> +{
+> +	return vpec_hmirror_cmd;
+> +}
+> +
+> +uint32_t *vpe_get_vpep_hmirror_cmd(void)
+> +{
+> +	return vpep_hmirror_cmd;
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 801239547..e85aef6e1 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -50,7 +50,6 @@ if libdrm_amdgpu.found()
+>   			  'amd_mall',
+>   			  'amd_odm',
+>   			  'amd_subvp',
+> -			  'amd_vpe',
+>   			  'amd_mem',
+>   			  'amd_remote_mem',
+>                             'amd_userptr_invalidation',
+> @@ -82,6 +81,15 @@ if libdrm_amdgpu.found()
+>                   warning('linux/kfd_ioctl.h not found, amd_kfd_dmabuf_unload test not applicable')
+>           endif
+>   	amdgpu_deps += libdrm_amdgpu
+> +
+> +	# amd_vpe requires additional source file for data
+> +	test_executables += executable('amd_vpe',
+> +				       ['amd_vpe.c', 'amd_vpe_cmd.c'],
+> +				       dependencies : amdgpu_deps,
+> +				       install_dir : amdgpudir,
+> +				       install_rpath : amdgpudir_rpathdir,
+> +				       install : true)
+> +	test_list += join_paths('amdgpu', 'amd_vpe')
+>   endif
+>   
+>   foreach prog : amdgpu_progs
+
