@@ -4,156 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2C09CD6E74
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Jun 2026 04:13:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F593CD6E74
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Jun 2026 05:46:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 78C6111A421;
-	Fri,  5 Jun 2026 04:13:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7F39711A447;
+	Fri,  5 Jun 2026 05:46:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TaAI5t9M";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HaEgkiAG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AF5D11A421
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jun 2026 04:12:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6E6F11A445
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jun 2026 05:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780632761; x=1812168761;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=fYgCb6OEN4FM7ls/M5oYDNLaZnKMcCH97F3OuBlz/2Y=;
- b=TaAI5t9MnF9Rp9SjJz/wVTrvzvHwLPGtPT3bDN5Y6MV2Gy6sR4QIQ0eX
- /V5d7NrB1ISlwTeHDjTEgiEsFqQ/o/eauhMoePaExhsJSH2H/ssqv/nnm
- /XpxwqJ9qBPvk3rNV52Db28QrYziFtOcmyWjsfn1rw75HfQSSHEe1IlgP
- 22sgieYEW9tQGU+bjDXTyXQBywSAVhS+v0L28qKshDBxOXu4EYq7WA97P
- 7rjkMLShAF+MJ59+1K+UrLWSUN1Kgj5bw43uIQs6/XPGB0vFdUS8mwyBb
- Y4Sz00kkntdc5pphSKTYMhn/x5UNgTiEu7HoTgjYz5z+kAYM7rJtjYzFD Q==;
-X-CSE-ConnectionGUID: jAp446DLQzi1jPQhVZblMA==
-X-CSE-MsgGUID: 6XSgT9D2Twaf0pW0mQU7jQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="81498729"
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; d="scan'208";a="81498729"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2026 21:12:41 -0700
-X-CSE-ConnectionGUID: wxWbyNSdTWKhqtoqn+YRjQ==
-X-CSE-MsgGUID: nSoXY07oSEqXFoW2pKnvDg==
+ t=1780638358; x=1812174358;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=IL2hS3frDDVsaOyaJNrTUGY1774BXtc4pSm8r1Ss1xI=;
+ b=HaEgkiAGJBsGDNUAmd87CIzsqeN8mIQSieGBo4k019nBUdcDzmOtBFlA
+ 9lx7Cj3fvrT+nEXldSKYtwrs+q82eXGnQc3MSvkE8mLrjX2ubauIc2Ikh
+ i6/HHRsZRLcsXY1Lo0jliYslxjis3Cp1Z3+yu9FiRd/R9Yq+8Bg0780mr
+ xnrH6iVHRPrL6V64Kgp5V//faRV3WOCXHv/j/MY5KKa4YEaAK4nPBpESQ
+ ySSTzY79rg31LFpt/s6pTUbMSRZC6VHvCezbKW9xNGR5uuW/B77yPX20q
+ G8BUBaOsABmqTLTXEHsBpAL7xVItwMvV65fjeu6rC2jMxyClhHGgVyikb w==;
+X-CSE-ConnectionGUID: CGcaDup0Txu59qyvm6Tlwg==
+X-CSE-MsgGUID: y2efRa1CRLellQf8r3eBEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="92580388"
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; d="scan'208";a="92580388"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2026 22:45:57 -0700
+X-CSE-ConnectionGUID: FiO5LtJ/S1a9ThOyAEm6ag==
+X-CSE-MsgGUID: 6v9/V3w+Tc2Zb5xbRRKaKw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; d="scan'208";a="249066634"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2026 21:12:41 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; d="scan'208";a="249858455"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2026 22:45:57 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 4 Jun 2026 21:12:40 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.37; Thu, 4 Jun 2026 22:45:56 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 4 Jun 2026 21:12:40 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.58) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Thu, 4 Jun 2026 22:45:56 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.22) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 4 Jun 2026 21:12:40 -0700
+ 15.2.2562.37; Thu, 4 Jun 2026 22:45:56 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ttDxSnh8E1sA/PhfIJhPyZe0alXdazxfPvLiiQaOSDIDmSnUpNbH2f2ym9GlUP057G7qhhsBwMRjvGRirTFTYgx84DhnwsafEkTi6mRH0taaj0tOgJ8ipU+vMAMbJoo3d3pQiV6sjwmcMj7wSl/qtQ74Z5QFimF8+PFbiGRe7exWJMe4SB6ZZ+z5KGPnN0VvqOiYuZp2e3OYZJJhxdPI2x4k3/zLMqri+JruYlXzockmD+GDsxZk1o6YvK9KoEP7K8GSrq9e9sd7NW0Vt0ohgkyrNHC0wPrp1wx7a4NnEmN1FwYbM+D5+sZBxtYY7u8kGT7LmU1ZaGzziY227gcgQw==
+ b=y/nd7v2sFFHieDpd/II6sUgf+4/Cvo9nGxTebJswgJGz7O0lcol+54GVE68iZuyudOasrYlA63aamiVc1JbBs6KwWbJhxkQXmUXqKAvbpO+my8ofTYnnadpdklJrp0DK7wEvCHqhmmc2a9/90LfXvRtI2wBui5wEwetP5kLds6tuiyEi3fRARSJ0SqQ8+BeK4RRW52XSNauDHQPw5qT/AetXQauYEew+PrT9aODXU/EHidCQd5S/D+/JJJa+AblbGm2dQb0CadDVmRnSzoLEzujID61MeEwNeoPtyyFBcE+zl7MWygS2CvByXpIuUT+28pKCbXZBdQ+aGhz9LkJ64A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B8cWkqGSUTN6kloUVmf/T0sdvLuReB+EOWYsRrpFwBI=;
- b=ih5F11BGXyki6Xo0YqD8RJTEQIp41mgHhqlDl4QyglP1LqlC3omSgWWIYPOVzdMByutn/oHo/oBoiNYF2JgzBYIGtxiQ8iUrPsLK8oAoFjhvFun0uZsrzzKZZnopZ66Vl1L6TWpHs8GFmRs57b1XM4EkjGx0o4jV/jugkhkbvtPwcTeT5mGigHj+pIdGMZD8pxxBm4pJYJdKrDqjUMFSphXIosiOwRSnbQIn7UinBuEt0YSKt2HbGChc/mZQC30I/bkKwMWLj5ACugVbtWEwO5fKCcxGyiB0iCVSPYzac3/bhTub7AAD6kuU1d99hGRqQjOCR9Z/cnq68jQtTiSSxg==
+ bh=ID1ZEt6BbeGUrChHWbLoURkaQN+jhwHLZo5fPq6N7Z4=;
+ b=GBBsP5mYwMWpW5u6wC5DxLs1lU6aOLkG3L18xcA07x0Ree/rDjLNkMD2zBuxJs0YqX1X3zIjHXdjRfgb+FGkA8xgh1OT6ODJRcyXzknjqvCAaeb4drdoIss0z6qDXam1dGI1PZZ7DpWkg+Oz6qCj/YL+7vLY3Nq6SzyqLzSRZtPj+zlD4cRXhCPruHMhXIflSMhN2Jgtv78GK2QxW71e6mwPFMY6MtKkJBD3KdcQ/lYOgfFXIZvj6gca354/o7RM4lsU9mT7FmDGdrc1I+drReQWPna6jzOWCnn1w1vYmzf7cQzKGC5qheWuYVzJpe3uVoJiCTAymeMVePaQC5IZxw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
- by PH7PR11MB7516.namprd11.prod.outlook.com (2603:10b6:510:275::7) with
+Received: from SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12)
+ by DS7PR11MB7834.namprd11.prod.outlook.com (2603:10b6:8:ed::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Fri, 5 Jun 2026
- 04:12:33 +0000
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a]) by CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a%7]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
- 04:12:33 +0000
-Message-ID: <e2c76ae3-a99e-4843-932b-e956a37eb524@intel.com>
-Date: Fri, 5 Jun 2026 09:42:26 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Fri, 5 Jun 2026
+ 05:45:54 +0000
+Received: from SJ1PR11MB6129.namprd11.prod.outlook.com
+ ([fe80::45f:5907:efdb:cb5b]) by SJ1PR11MB6129.namprd11.prod.outlook.com
+ ([fe80::45f:5907:efdb:cb5b%3]) with mapi id 15.21.0092.006; Fri, 5 Jun 2026
+ 05:45:54 +0000
+Message-ID: <9fab6a09-84b1-42f4-9db5-b34ba2c29275@intel.com>
+Date: Fri, 5 Jun 2026 11:15:45 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] lib/igt_kms: add --connector option to filter
- outputs by name
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- <igt-dev@lists.freedesktop.org>
-CC: Vinod Govindapillai <vinod.govindapillai@intel.com>
-References: <20260603152140.3501317-1-juhapekka.heikkila@gmail.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20260603152140.3501317-1-juhapekka.heikkila@gmail.com>
+Subject: Re: [PATCH i-g-t, v2] tests/kms_chamelium_color_pipeline: Add plane
+ color pipeline validation
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20260604123356.2573037-1-swati2.sharma@intel.com>
+Content-Language: en-GB
+From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20260604123356.2573037-1-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA1PR01CA0179.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:d::22) To CH0PR11MB5690.namprd11.prod.outlook.com
- (2603:10b6:610:ed::9)
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0148.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d7::18) To SJ1PR11MB6129.namprd11.prod.outlook.com
+ (2603:10b6:a03:488::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|PH7PR11MB7516:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7c95ab72-8a23-404a-29c6-08dec2b8ab08
+X-MS-TrafficTypeDiagnostic: SJ1PR11MB6129:EE_|DS7PR11MB7834:EE_
+X-MS-Office365-Filtering-Correlation-Id: d26007b3-c7ea-4900-19a4-08dec2c5b484
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|42112799006|366016|376014|56012099006|3023799007|22082099003|18002099003|5023799004|11063799006;
-X-Microsoft-Antispam-Message-Info: 6lLfjNJLW5SkiTK5MTZERXRnyr/+TT+PEjV/3qH4pHNlaz9PqzxU4LVVwhUMLSh2SQpg+bE0LsaWW8owi6IKTn7n81MOUjOMFpQDt+3rclIPjGzR+xHY24sK3OLgnA40sFw8sh4s9uJ683JmGfZevqSVBFai5OASbW2zSB+l8GmKNKHK0iO+WBnjykTPizDURyvvy0xteqj0sREw2b0L1Ta4FQuvIvGpcxCgcFMN6ELG/aIC4tYkyRauTLl39jXTJ+9L1LaNFlfcbUaZ9yuKLerriQDaBE5lRI6Bv3Fx/CYr0Xp3FXUy+ZrAXVkbR64wGsxImrYs8alCyWk1I789zPmlI4YfY4cxqCm3PHhsXJCvMS7esuPgkOxdbdoDuJYi+Xc+zxLANe5FZCp4DGIoe5mvGNIN9wh/klsmgJUm5P1U28489hVl5ySI+flu082jyZWo+IXGwx9f7ALZxtFTJshl1ZsXRnobYAIrrL2CTZJZR9yQmFlZfvCxKHx2Peq7LP7gKAgrrobPr56YSoPl6ZXVTX3LhmxeI3bjwR0bF7whI/pJ+L421buG841nf2Rkfk/XldP6Wu24DF61I5ZO0IoHUquu1D6MQdsrGleya90jgZv/v9RHp3TVIvB7GDfPcyqsmn5HIbwfQnO2ehQa8BJ1QO6fI7IFpodfc8uaKI8q4gA/9r784Y/0tM7nW8eN
+ ARA:13230040|1800799024|366016|376014|22082099003|6133799003|18002099003|3023799007|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info: 9K+vSg9qis4OgAlA8GLbUOqnV5KlBlHlOcpdNnHm4iYaUrBbkwOKVkcP8sOi1Y+YhyLd7ewF83SH9ux3bdlpqcISnfTw8ulIGFj13DRyVJv38fbHdH0leWtphicKiCt3hnRx9BJ2H2L6UABo6ZKgnfAC4mk4zuqCvSXXIqUKo0NdpieF6fPGpP3IFIPqZqcziKrIljv9QS4lEmp5udpPFnvWtS/eWVTuZJhagFlQ6vg9N509nA3UBOJ/aYgILKCkMsEKblTuOTMyNgJHdXAu5AYWYKoB77XBV1q/ZFKZ0IhTDspq95v50q15L3ehq7Aodg3zqAYQFSvvcx2ydQTOd0H0wyRh7CY0HSKUISx72+JFnR45aZE3eCM9mZ3pvaXaDbu7GEl8jVjboAj/pj7b/9X0rLaWD3MenzLTvFaA6VzruiSdSHFgd1dcA6HYyOf5hvtpILCXzZGwBcTg3xLLKas3WcEACS5aY3TIwym88fz4Bki2WuQsfCsDoywf8Rw6ZD/GNFUCtl0RWnXeKXfcD1SBF/959ORbKhGVzutS086aBBLDgZHXz0OeNJQUueExWVIGgN9C6rZBlKe40LcIpS6WYb1HnD2EELWmc5HtH8bpHzSrZon+LnFS109Szgq+ebN9zzMCxFfhib4+jDljF1auFZJI5uGJhAEcN3ODOHBwd6105WHccy3TE6vcgPuI
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(42112799006)(366016)(376014)(56012099006)(3023799007)(22082099003)(18002099003)(5023799004)(11063799006);
+ IPV:NLI; SFV:NSPM; H:SJ1PR11MB6129.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(22082099003)(6133799003)(18002099003)(3023799007)(56012099006)(11063799006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VTBEYVJDNi9XcDNmVEJhK04wUXJBNk1iYkZpWEh0am5NeVd4dGY4WjM5aEFE?=
- =?utf-8?B?c09Yb2hHZHJyY0Q5dFYydWZoRkdOUDJ2dkphZFNpc1gvMVNNa051OG5MNkdL?=
- =?utf-8?B?VTgwdlpBQVNOK3c4bTkzb3Z0ZFpnOGlqL2VyUTBaODlFa1ZTRjRSU1NLeXc4?=
- =?utf-8?B?UHBYTlZMVUo0RlBJYkR2cWRpVDVxOUZ3ZUtqeWU5ZHBJNk9aclVQWWtGSzZq?=
- =?utf-8?B?SXNITDg1cUhwcE5CTDQ2dUx6VGtYWXZBR1RJSjNhc2U5dXE5Z25iUW00S05l?=
- =?utf-8?B?SWxqbnB2ZnZ6eGM2Q3lia3hxZW1lREY2OHQwNS93Wk5tajZJNGtvWmlMRU1C?=
- =?utf-8?B?VUVQbkJwZ0ppa3RLb0E0bCs0NmE4bFFNbFlRRmFnYm9HRGwvQitERSsrdlFo?=
- =?utf-8?B?RlVRME0vM20vSk1RaGd4K1hFK2dPVFMrNHZSZUticWRCd24waEMxcEkzYWp0?=
- =?utf-8?B?VnhJMEEwdlpqQ3JjU1ZuaXEyeGQwVDBHSDdLQUxFSnFxdExJTnhyT2R2SGFO?=
- =?utf-8?B?K085Z2tJK1FnNTFZQlowT1dla3NZRGg2Wlg1MUVPQVNRa2RuUk9KZFhUOVc1?=
- =?utf-8?B?cHFYdHljMTlHWEo0ZlJKZXloQmJ6Z21CRTBQMDlpMkVFWU9keEZySDByMkx4?=
- =?utf-8?B?K09hV2J6eGNHeUlkRTQ3UzdOYXd3aEtoelgyMG5aR2RyY0h5ZEtDcnIxL3R5?=
- =?utf-8?B?bjJKeGNOVDZmTHJXWnloRWlDdzdPTHFpcDRCdTBkVnZLaDc1amNPUS9qbisy?=
- =?utf-8?B?ZHpmMC9DRjJpWEh1SFU3aDkwVEo5a0t2ZndJM1NNeHkzdmsxa0Z3aG0xVVNV?=
- =?utf-8?B?U0tVUFo3UlVPSVIyaTl2YUlyV3ZaUVloenJLVjdZdS9OeEhrRmZ0a1dXdVcy?=
- =?utf-8?B?cS84U1pZVlMzV2VVdTlCSk5RT0pUcnZKY1E3YnEzcm43VDBzYWdyei9hNERv?=
- =?utf-8?B?OTJWeWJCYXI0UTBYRlRsUWM3VjFxczVJbzRiamVPOGdZV0JjZ24vNG9QWFhF?=
- =?utf-8?B?SndqZ3NuKzlxdmE2dTRGbEwwMTRlWnJWekRnczJYYXpMaG01ZG9xU0ltbERm?=
- =?utf-8?B?MGtyTGFEMm55ZVcrRlh2SjFUVEZDbFNGWTNDMTJ3WHZrWjJ1UWgwN0I1Qkh6?=
- =?utf-8?B?VEw4ejljYVRMNGpobUQ0ZlZ1dSsycXcySVVIa2kvbmJGWGloS3BWUXJacXZk?=
- =?utf-8?B?QjcrWUFYNXVHRUtZQXZDM3pCM2xSK0Z2ZllRakw3Tmp6RjFrTUNUTUFKdUFI?=
- =?utf-8?B?eW9QV0QveFcyQUVZN0R0WXh2YktxNmZzMng1aElDNGdJQ3Bib3FwWXR1clJa?=
- =?utf-8?B?SUpjQVl0MCswTS9EQzRHNEtjS3FUY1pQVzBJNVlzM1dOOXlldmx3dDU3ck9H?=
- =?utf-8?B?WWVjLzZUMXJJTkJhdEk5QzZnYVE5ZFJ5SjJmck01RGRYQ3dTS1JadXBybS9w?=
- =?utf-8?B?bXBqTU1VY2xJMS83OFZaV3l5Z3FQSWI5emlNdFhzZnk5dzB4SkVCSnBlR2s2?=
- =?utf-8?B?UzJkdVFPeEtVS0VtNThNMjRoT0lWT1ZzWXgxWjJSZEtEQjVUT0JDY0R5RHBO?=
- =?utf-8?B?M0lHNUsxbWx4clpQc3NtY25kQktqS2xDcEtUZ1JuWlBJQ3NCSTg3Z1ZZMlFW?=
- =?utf-8?B?VzdoS0RBNzRxMGhEcUdlM2pNOFZ6QzVpNGtRODYxdk5UQ2VrMWc4VHlQV1hE?=
- =?utf-8?B?clROSjlxRVU2UkEzSTRvd0cyNWxOSGV0U1JMTmhKZHg5ME9yNkZudm1IR0JC?=
- =?utf-8?B?RVh4cktyR25iaDBxTDIyazFxVUN3b0UxOVZ1OGliTmcvbWdPbEIwTlRwSGRB?=
- =?utf-8?B?Nk1vSkRvZkUxdTlGTWMvM1c4alAralpzRUtRVmFFcFV0UVQ5d3k1aXptNm5i?=
- =?utf-8?B?OXhKK1J5RVo0eFY5MmJ4YmtaOXZaVEhMTVE5anVlU0RCMWtlMFNqa2JQcUor?=
- =?utf-8?B?YWtLQkVTY29sRzBmNE9vZ2x4T0txaWJTNXBiQjJPQWYwUkxBcHVpM3Q1SUFa?=
- =?utf-8?B?Z2ppSVBTa0xlQVBFQ0V0MEdpSnR0bUxLMEF4d1lLV2xkVWthYXRXMnhGdVl0?=
- =?utf-8?B?MGE4VlpoK3FTdVk4TmpqZFZOZ0VHZzU3QWd3dzNVbHRhYUpQZjBDQjAwUmtS?=
- =?utf-8?B?REpVY1VNbW5XT2Y5TnluR0NkTVJ1V1lQaFZ3S2xRSFJrSkJ0aGp5NW1xMmFq?=
- =?utf-8?B?ZnI3WFZEY1ltYXFNc1VkcU9IRVV0MkhIZXh2RlIrbC9odVZ5aXQ1a25rNkxy?=
- =?utf-8?B?ZHgwYkFXaWc5T2VBeEdaSmZzbm80OUFXbjRrU2JpR2g2NlptaWZ1c01lOERr?=
- =?utf-8?B?bUdwMWxXTzNVVzAwOURmN2tJZDdwTCs2enVrSGVIWjRUR0dXWDNwQT09?=
-X-Exchange-RoutingPolicyChecked: l8EDfuAXlcvYycR22Asqu56uXDzVoC3ENvmizYQ9NyIhUq1C6hyp8Ok3qHnWoDl+hnK80GgTD0PskhlsZxo0FfrPb1/sACl15jZRuYA8ul4qneSxieVHJ7E1L4+7bMjpR2kK8OwD8w2lFvpWZKJQQBtfTH43ubNJIdIhnFBEXPN5qeUme3gLv9EH6nrOYTowsgM5j21nYFobn1GZb5/pDM2IDSt8FbEBUqrM8yzrv8YHEPv8ltQdE8d5CBrJ35S3TIFatOdlhVeeAEoQGyTXT4wbHKB2GJmxMn+9iDMhysUhVrGhlvGG0wRM92e84vr+YHFV6MnUZ7B8UN6yYCsGMA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c95ab72-8a23-404a-29c6-08dec2b8ab08
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ME93M2RIcDgwbEtRNWEyTmtQYUhBNDQ5bTFwNStXZzRhS1ZwSlk2eGU2L2U1?=
+ =?utf-8?B?aDVJbm9vNlhJT3pSOHl6UHdBbFViQUxRUVAvVnZ1TTl1WnI1YU10eDIxYXEy?=
+ =?utf-8?B?dzJsOURMMnRnUHBWMzJ0M3JaSW9WL2hSZEJ2QmczMTlZV21ZUGlwSU9zbFd6?=
+ =?utf-8?B?VmlhQUJmUkU0ekZVeld6SmxQc1JaRWpLaHRlZUZUZG5DUW5wZm83Q2NTSzA2?=
+ =?utf-8?B?VGYyRVVxQUZScVRxNDJBMFpJV2pLd3dUYklHRHhYV3hUb1hCOWdFWEFpNCsr?=
+ =?utf-8?B?VkR4QnFhOGJiSmZTZ3drSUNpQUtUQlZaS0kwUktUUEhCakRNSUNYOW51RzBD?=
+ =?utf-8?B?WkpzWGZlc1IzZXpDZ0ZsVnNhVytXSUhybVY1M3llL09adzRHc3B6VjhKWW5v?=
+ =?utf-8?B?S2lOQmx4ckJoS2F4cjVOUXNQMVZ6UnZNRHU2ajlkSWVNdkI4ZldHR1R1Z3Ri?=
+ =?utf-8?B?QWhGcklNdVh0MCtqQ2YvcjdJY0M0aDVUL1M0STMxYU9HNHBjbC9tYVFXNE9v?=
+ =?utf-8?B?OVpubHJOZENVeGVqSE0yOVNrZExkbUxpMldjNTZ1VEhabi8vZkNJUDJkUzgx?=
+ =?utf-8?B?NEl4R1gyN256YUliL2RaTjA2aXdqdFJNejN4MmZINXR0Z3VBdlVZN0NHOHcy?=
+ =?utf-8?B?Z0ExZGFLL0IwQS90M1ZIRFdJbkxSNkhmWmNNNVk2c2hpOFRCY0lTM2hlZm1v?=
+ =?utf-8?B?RnRXOXdtSExCTkVvZTN5bjhZUHhSMlNpMnMzc2hxWXpIcWJOc2ZybVU4R3RJ?=
+ =?utf-8?B?c21RdmtsOGNpd3dPYVE0cDkwelQ3d3JnTUs5SkJwSFZ1c2dWdkVLWW90L2tz?=
+ =?utf-8?B?bUJDemNFTVBtMGxiQVpYRmQ0RVpSeDMrNzl2RmxRUVJNcXlQMWhtZzQ5MWU3?=
+ =?utf-8?B?UERSTHl6VXNDQUZhZ2xyQlRPVGxvc1B1ZDQxejBydG5YeGpGTUZkSEg3cjU1?=
+ =?utf-8?B?Q0E3OWlyWWVFRWVGazBYajRSVTNqM3RaZEMvblA2SHhjWG5PK25Gbi8yWnhH?=
+ =?utf-8?B?ekJheXBDQ2UvemUyTm5MeDRCTWZLVDZQcG9UV2VSYkZsK0d1MURyTTZFQzNn?=
+ =?utf-8?B?dXdPL3dha3I5anllaVVqODM2UmxwT3lKemxkenRIblJOUHdzejlvSU5rejF3?=
+ =?utf-8?B?NVBQdDdKb2tOMVBwZERWbGIvNUZmR3dlcW1XRXpWY0RSOFJ6c3lVdWtrcURo?=
+ =?utf-8?B?dk43emxxRzZmQ3RqOExEMWQraTB6ZHRuMG4wd3BvTUdUTlhSQU1rWGNKSHhV?=
+ =?utf-8?B?aHJ6V0FQdG9GV0svMzN1T2xCU0JEZUNVSnNvZExjMWNZM3c2RVVjQzlBUkhQ?=
+ =?utf-8?B?NE9tMStkVVJLbjZGV1FnUytvZHJzZVdmN3dCZE5YaWNsNWhtY1JLbWIrTWVi?=
+ =?utf-8?B?R1B6TWd0bDIyZ09NTnBJYXVxTTFKalo3Y3A2VzZVbVVzRlJpWFB2T29PVDZM?=
+ =?utf-8?B?cC9pQ0J4eWVqUmt3NmtZYytwcWU1ZzRKeU9zdFNWMWdhd2QxQUROejlDYlJL?=
+ =?utf-8?B?MEFYU25velhGeTl6SGFrYUNGQTA0YU1ma09LMXZFQ1EyNUR0eFAzUU1XSk5l?=
+ =?utf-8?B?akdlaTdCRVF5TndkN01KcVRPaHNTNDdtVHJSY1paWU9oajVRWHJSMC95OFdu?=
+ =?utf-8?B?blZsUmxDcktMTHhUcEZhYzFRTnZBenBnZWlUb2FUSUU0LzQyOWlBWWE2TFR3?=
+ =?utf-8?B?ZTNrTHBEY0k5NldOcUlEc3JYWHlFYkJHcVlVbE1BYnBwQlhoZ3VJTGVVb0NO?=
+ =?utf-8?B?bFlSNFYvNnZWVE82WVRYcnFOdk5oTisrUm44WXZJR2tDaEh2ZHQ2a2RJMUty?=
+ =?utf-8?B?MCtablYxK3dCYXNUOFQ0UDhIeVlOQkFvaDVTREtVbk5LeGN1SnZ4OW53ek5K?=
+ =?utf-8?B?blVFSFUrT04rUW14WWtyNXRIWVdmYXpHTmNqbTRJSzhJUHBOTTVTMWFENTFm?=
+ =?utf-8?B?enNRUXp0L3liaDd6NG1uc3BJMGxUWjBwVmFBUFNGb2dySlFVM245Ui9Pb2w4?=
+ =?utf-8?B?dnpGZUNjZFFtTkJkczg2ZXFaL1lVdmRZd25Pa1UxYWhsTm5nU0kvTXFpbjAw?=
+ =?utf-8?B?S2FjOWdlM3pxUk1mWDlhY1R6V3JuZUFKRWNvMzNHU3hrMi9xRVF2K2dqNjZa?=
+ =?utf-8?B?RjI0c2luN3k4THRvM2VYQjVha2s3Qm5vU0tzWk9OOEkyeXBWNWREdDN2aSsz?=
+ =?utf-8?B?aXZVUStEdVlPTzlkNXJSa2c4T2VvVTFlM2lwYk9pK1pvaU9nYSs5eEoweHdp?=
+ =?utf-8?B?K0pOUkhpTW1JMU93Y2R6bjFiOUh0TkZCcWNCZWpUM2N3aTAxeXZzWWpoQ3dB?=
+ =?utf-8?B?VXJHZWs4VDNLbDhHUFN3aUpzT1FRcFNPOTBIWUVZc25zMjRnVWRPTWRQSmlC?=
+ =?utf-8?Q?Ngluw+aU1wOqqwXc=3D?=
+X-Exchange-RoutingPolicyChecked: HxSQ/c4ve1TNKVoC6LvIJxn6N5yfM7r9IY4dakOZV44x7EEhba784bxsFiPXL2j+5d+/CI8VWidS2r7IP58TY7IvwYGx9kRiM9CZ0zLfE52e2QXQkPO9z0j6LPwLs+SGoaueRbKtyk+IhnLx37a42ObZAci45/oxqvz8Hh8c1PBWYF18/hGyb+353vVi3VK/DNYKZkRylL+JFeWKMKMhrvqFvR1pllpFbSdV1uc6lWHDtS5ikDXJ0QPmxTl2/kZI6N/XJdgTfX9UM/U//t3xl9HmAFwU/Q2M7/guQ5A09nzAg6b+Ep+vNZEcdr40QKnEBldj5AS7uYr39W6PcOVEfQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d26007b3-c7ea-4900-19a4-08dec2c5b484
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6129.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 04:12:33.5776 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 05:45:53.6502 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8ShfHiO1sItX7v2aMov4hl0UJcClJIajJ0d07h4UQ+vSympPxDruXAAOqA6SXqduwaNuRgMgr2AhgFutL7hhlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7516
+X-MS-Exchange-CrossTenant-UserPrincipalName: dOJ6vtPUuZfBbe6HquYDxPBPgamBrsx1scFVTaGpGoCMQzdSN57mQAvuUHia6iAdJ7oTeVUBs2SRsM87U6Ncrakg16PnTpOHr/pA87E9LTo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7834
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -170,177 +169,497 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi JP,
 
-On 6/3/2026 8:51 PM, Juha-Pekka Heikkila wrote:
-> Add a global --connector command line option and IGT_CONNECTOR
-> environment variable which allow restrict KMS tests to subset
 
-Nit: 'allow restrict' -> 'allows restricting'
+On 6/4/2026 6:03 PM, Swati Sharma wrote:
+> Add a Chamelium-backed test to validate DRM plane colorops
+> using frame capture instead of pipe CRC comparison.
+> 
+> The test generates a software reference framebuffer by
+> applying the expected color transformation in bypass mode.
+> It then enables the plane color pipeline in hardware,
+> renders the input framebuffer, and captures the output
+> signal using Chamelium.
+> 
+> The test passes if the captured frame matches the
+> software reference framebuffer within the allowed tolerance.
+> 
+> The test fails if the captured frame differs from the
+> reference, indicating incorrect color transformation,
+> pipeline misconfiguration, or hardware output mismatch.
+> 
+> v2:
+>   - Fix build error: pipe_output_combo_valid() -> crtc_output_combo_valid()
+>   - Fix memory leak: add chamelium_destroy_frame_dump(frame) after use
+>   - Replace igt_require(port_idx >= 0) with continue to avoid skipping
+>     all crtc/output combos; add test_cleanup() before continue
+>   - Fix misleading indentation in test_setup() port matching loop
+>   - Remove unused data->primary assignment (planes iterated separately)
+>   - Remove unnecessary data.display.is_atomic assignment
+>     (igt_display_require() reinitializes it)
+>   - Add igt_require(has_plane_color_pipeline) for early fail-fast
+>   - Disable automatic FSM handling (igt_chamelium_allow_fsm_handling = false)
+>   - Prefer HDMI over DP in test_setup() to avoid DP FSM failures
+>     during chamelium capture; add chamelium_port_wait_video_input_stable()
+>     before capture
+>   - Fix test description
+> 
+> Co-developed-by: Claude Opus 4.6
 
-Can be updated during merge.
+Kernel seems to use "Assisted-by". What is the convention in IGT?
 
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-
-> of connectors by name. Matching is done with strstr(), so "HDMI"
-> selects all HDMI connectors, "DP" all DisplayPort connectors, and
-> "DP-1" only DP-1.
->
-> The filter is applied in the two core output-iteration primitives,
-> for_each_connected_output() and igt_crtc_connector_valid(), so all
-> higher-level macros (for_each_valid_output_on_crtc,
-> for_each_crtc_with_valid_output, for_each_crtc_with_single_output)
-> honor it automatically.
->
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->   lib/igt_core.c | 12 ++++++++++++
->   lib/igt_core.h | 12 ++++++++++++
->   lib/igt_kms.h  | 27 ++++++++++++++++++++++++++-
->   3 files changed, 50 insertions(+), 1 deletion(-)
->
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index dc3ac5304..5198d4ec5 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -358,6 +358,7 @@ enum {
->   	OPT_HOOK,
->   	OPT_HELP_HOOK,
->   	OPT_DEVICE,
-> +	OPT_CONNECTOR,
->   	OPT_VERSION,
->   	OPT_HELP = 'h'
->   };
-> @@ -951,6 +952,7 @@ static void print_usage(const char *help_str, bool output_on_stderr)
->   		   "  --help-description\n"
->   		   "  --describe\n"
->   		   "  --device filters\n"
-> +		   "  --connector <name>\n"
->   		   "  --version\n"
->   		   "  --help|-h\n");
->   	if (help_str)
-> @@ -1119,6 +1121,10 @@ static void common_init_env(void)
->   		igt_rc_device = strdup(env);
->   	}
->   
-> +	env = getenv("IGT_CONNECTOR");
-> +	if (env)
-> +		igt_connector_filter = strdup(env);
-> +
->   	env = getenv("IGT_RUNNER_SOCKET_FD");
->   	if (env) {
->   		set_runner_socket(atoi(env));
-> @@ -1147,6 +1153,7 @@ static int common_init(int *argc, char **argv,
->   		{"hook",              required_argument, NULL, OPT_HOOK},
->   		{"help-hook",         no_argument,       NULL, OPT_HELP_HOOK},
->   		{"device",            required_argument, NULL, OPT_DEVICE},
-> +		{"connector",         required_argument, NULL, OPT_CONNECTOR},
->   		{"version",           no_argument,       NULL, OPT_VERSION},
->   		{"help",              no_argument,       NULL, OPT_HELP},
->   		{0, 0, 0, 0}
-> @@ -1300,6 +1307,10 @@ static int common_init(int *argc, char **argv,
->   			}
->   			igt_device_filter_add(optarg);
->   			break;
-> +		case OPT_CONNECTOR:
-> +			assert(optarg);
-> +			igt_connector_filter = strdup(optarg);
-> +			break;
->   		case OPT_VERSION:
->   			print_version();
->   			ret = -1;
-> @@ -1440,6 +1451,7 @@ int igt_subtest_init_parse_opts(int *argc, char **argv,
->   }
->   
->   enum igt_log_level igt_log_level = IGT_LOG_INFO;
-> +char *igt_connector_filter;
->   
->   /**
->    * igt_simple_init_parse_opts:
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index 7ee9ceddd..8e468cc74 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -1354,6 +1354,18 @@ void igt_log_buffer_inspect(igt_buffer_log_handler_t check, void *data);
->   
->   extern enum igt_log_level igt_log_level;
->   
-> +/**
-> + * igt_connector_filter:
-> + *
-> + * Global connector name filter, set via the '--connector' command line option
-> + * or the 'IGT_CONNECTOR' environment variable. When non-NULL, KMS output
-> + * iteration macros (e.g. for_each_connected_output(),
-> + * for_each_valid_output_on_crtc()) only enumerate outputs whose name contains
-> + * this string (matched with strstr()). NULL means no filtering
-> + * (all outputs are enumerated).
+>   .../chamelium/kms_chamelium_color_pipeline.c  | 415 ++++++++++++++++++
+>   tests/meson.build                             |   2 +
+>   2 files changed, 417 insertions(+)
+>   create mode 100644 tests/chamelium/kms_chamelium_color_pipeline.c
+> 
+> diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
+> new file mode 100644
+> index 000000000..b2defa6c4
+> --- /dev/null
+> +++ b/tests/chamelium/kms_chamelium_color_pipeline.c
+> @@ -0,0 +1,415 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2026 Intel Corporation
 > + */
-> +extern char *igt_connector_filter;
 > +
->   /**
->    * igt_warn_on:
->    * @condition: condition to test
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index c2a3099de..3d59b0d93 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -32,11 +32,13 @@
->   #include <stdbool.h>
->   #include <stdint.h>
->   #include <stddef.h>
-> +#include <string.h>
->   #include <assert.h>
->   #include <limits.h>
->   
->   #include <xf86drmMode.h>
->   
-> +#include "igt_core.h"
->   #include "igt_fb.h"
->   #include "ioctl_wrappers.h"
->   
-> @@ -672,6 +674,27 @@ static inline bool igt_output_is_connected(igt_output_t *output)
->   	return false;
->   }
->   
 > +/**
-> + * igt_output_matches_connector_filter:
-> + * @output: #igt_output_t to check.
-> + *
-> + * Checks whether the given @output passes the global connector filter set via
-> + * the '--connector' command line option (or the 'IGT_CONNECTOR' environment
-> + * variable). The match is done with strstr(), so e.g. "HDMI" matches all HDMI
-> + * connectors.
-> + *
-> + * Returns: True if no filter is set or the @output's name contains the filter
-> + * string, otherwise False.
+> + * TEST: kms chamelium color pipeline
+> + * Category: Display
+> + * Description: Test to validate DRM plane color pipeline using Chamelium frame capture instead of pipe CRC
+> + * Driver requirement: i915, xe
+> + * Mega feature: Color Management
 > + */
-> +static inline bool igt_output_matches_connector_filter(igt_output_t *output)
+> +
+> +#include "kms_chamelium_helper.h"
+> +#include "kms_color_helper.h"
+> +#include "kms_colorop_helper.h"
+> +
+> +#define MAX_COLOROPS	5
+> +
+> +/**
+> + * SUBTEST: plane-%s
+> + * Description: Test plane color pipeline with colorops: %arg[1].
+> + *
+> + * arg[1]:
+> + *
+> + * @lut1d:			1D LUT
+> + * @lut1d-pre-ctm3x4:		1D LUT PRE CTM 3x4
+> + * @lut1d-post-ctm3x4:		1D LUT POST CTM 3x4
+> + * @ctm3x4:			3X4 CTM
+> + * @lut1d-ctm3x4:		1D LUT --> 3X4 CTM
+> + * @ctm3x4-lut1d:		3X4 CTM --> 1D LUT
+> + * @lut1d-lut1d:		1D LUT --> 1D LUT
+> + * @lut1d-ctm3x4-lut1d:		1D LUT --> 3X4 CTM --> 1D LUT
+> + * @lut3d-green-only:		3D LUT
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("Test to validate DRM plane color pipeline using Chamelium frame capture instead of pipe CRC");
+> +
+> +static void test_cleanup(data_t *data)
 > +{
-> +	if (!igt_connector_filter)
-> +		return true;
-> +
-> +	return output->name &&
-> +	       strstr(output->name, igt_connector_filter);
+> +	igt_output_set_crtc(data->output, NULL);
+> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
 > +}
 > +
->   /**
->    * igt_crtc_connector_valid:
->    * @crtc: CRTC to check.
-> @@ -682,6 +705,7 @@ static inline bool igt_output_is_connected(igt_output_t *output)
->   static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *output)
->   {
->   	return igt_output_is_connected(output) &&
-> +		igt_output_matches_connector_filter(output) &&
->   		output->config.valid_crtc_index_mask & (1 << crtc->crtc_index);
->   }
->   
-> @@ -708,7 +732,8 @@ static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *outp
->    */
->   #define for_each_connected_output(display, output)		\
->   	for_each_output((display), (output))	\
-> -		for_each_if ((igt_output_is_connected((output))))
-> +		for_each_if ((igt_output_is_connected((output))) && \
-> +			     igt_output_matches_connector_filter((output)))
->   
->   /**
->    * for_each_disconnected_output:
+> +static int test_setup(data_t *data, igt_crtc_t *crtc)
+> +{
+> +	int i;
+> +
+> +	igt_require(crtc);
+> +	igt_require(crtc->n_planes > 0);
+> +
+> +	igt_output_set_crtc(data->output, crtc);
+> +
+> +	data->mode = igt_output_get_mode(data->output);
+> +	igt_require(data->mode);
+> +
+> +	/* Disable pipe color props. */
+> +	disable_ctm(crtc);
+> +	disable_degamma(crtc);
+> +	disable_gamma(crtc);
+> +
+> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +
+> +	/*
+> +	 * Prefer HDMI over DP to avoid DP FSM issues
+> +	 * during chamelium capture.
+> +	 */
+> +	for (i = 0; i < data->port_count; i++) {
+> +		if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
+> +		     data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
+> +		    !strcmp(data->output->name,
+> +			    chamelium_port_get_name(data->ports[i])))
+> +			return i;
+> +	}
+> +
+> +	/* Fall back to any matching port */
+> +	for (i = 0; i < data->port_count; i++) {
+> +		if (!strcmp(data->output->name,
+> +			    chamelium_port_get_name(data->ports[i])))
+> +			return i;
+> +	}
+> +
+> +	return -1;
+> +}
+> +
+> +static bool ctm_colorop_only(kms_colorop_t *colorops[])
+> +{
+> +	int i;
+> +
+> +	if (!colorops[0])
+> +		return false;
+> +
+> +	for (i = 0; colorops[i]; i++) {
+> +		if (colorops[i]->type != KMS_COLOROP_CTM_3X4)
+> +			return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +static void _test_plane_colorops(data_t *data,
+> +				 igt_plane_t *plane,
+> +				 const color_t *fb_colors,
+> +				 const color_t *exp_colors,
+> +				 kms_colorop_t *colorops[],
+> +				 struct chamelium_port *port)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	drmModeModeInfo *mode = data->mode;
+> +	igt_colorop_t *color_pipeline;
+> +	struct igt_fb fb, fbref;
+> +	struct chamelium_frame_dump *frame;
+> +	bool ret;
+> +
+> +	color_pipeline = get_color_pipeline(display, plane, colorops);
+> +	igt_skip_on(!color_pipeline);
+> +
+> +	/* Create HW framebuffer */
+> +	igt_assert(igt_create_fb(data->drm_fd,
+> +				 mode->hdisplay,
+> +				 mode->vdisplay,
+> +				 DRM_FORMAT_XRGB8888,
+> +				 DRM_FORMAT_MOD_LINEAR,
+> +				 &fb));
+> +
+> +	/* Create reference framebuffer */
+> +	igt_assert(igt_create_fb(data->drm_fd,
+> +				 mode->hdisplay,
+> +				 mode->vdisplay,
+> +				 DRM_FORMAT_XRGB8888,
+> +				 DRM_FORMAT_MOD_LINEAR,
+> +				 &fbref));
+> +
+> +	/* ---- Software reference ---- */
+> +	set_color_pipeline_bypass(plane);
+
+As pointed out previously, it is a no-op so you can just drop it.
+
+> +	paint_rectangles(data, mode, exp_colors, &fbref);
+> +
+> +	/* ---- Hardware path ---- */
+> +	set_color_pipeline(display, plane, colorops, color_pipeline);
+> +
+> +	if (ctm_colorop_only(colorops))
+> +		paint_rectangles(data, mode, fb_colors, &fb);
+> +	else
+> +		paint_gradient_rectangles(data, mode, fb_colors, &fb);
+> +
+> +	igt_plane_set_fb(plane, &fb);
+> +	igt_display_commit_atomic(&data->display, 0, NULL);
+> +
+> +	chamelium_port_wait_video_input_stable(data->chamelium, port, 5);
+> +	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
+> +
+> +	frame = chamelium_read_captured_frame(data->chamelium, 0);
+> +
+> +	ret = chamelium_frame_match_or_dump(data->chamelium,
+> +					    port,
+> +					    frame,
+> +					    &fbref,
+> +					    CHAMELIUM_CHECK_ANALOG);
+> +
+> +	igt_assert(ret);
+> +
+> +	chamelium_destroy_frame_dump(frame);
+> +
+> +	/* Cleanup */
+> +	set_color_pipeline_bypass(plane);
+> +	reset_colorops(colorops);
+> +
+> +	igt_plane_set_fb(plane, NULL);
+> +	igt_display_commit_atomic(&data->display, 0, NULL);
+> +
+> +	igt_remove_fb(data->drm_fd, &fb);
+> +	igt_remove_fb(data->drm_fd, &fbref);
+> +}
+> +
+> +static void
+> +test_plane_colorops(data_t *data, igt_crtc_t *crtc,
+> +		    const color_t *fb_colors,
+> +		    const color_t *exp_colors,
+> +		    kms_colorop_t *colorops[],
+> +		    int port_idx)
+> +{
+> +	int n_planes = crtc->n_planes;
+> +	igt_output_t *output = data->output;
+> +	igt_plane_t *plane;
+> +
+> +	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
+> +		plane = igt_output_get_plane(output, plane_id);
+> +
+> +		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+> +			continue;
+> +
+> +		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(crtc->pipe), plane_id)
+> +			_test_plane_colorops(data, plane, fb_colors,
+> +					     exp_colors, colorops,
+> +					     data->ports[port_idx]);
+> +	}
+> +}
+> +
+> +static void
+> +run_tests_for_plane(data_t *data)
+> +{
+> +	igt_crtc_t *crtc;
+> +	igt_output_t *output = NULL;
+> +	int port_idx = 0;
+> +	static const color_t colors_rgb[] = {
+> +	        { 1.0, 0.0, 0.0 },
+> +	        { 0.0, 1.0, 0.0 },
+> +	        { 0.0, 0.0, 1.0 },
+> +	};
+> +	static const color_t colors_red_to_blue[] = {
+> +		{ 0.0, 0.0, 1.0 },
+> +		{ 0.0, 1.0, 0.0 },
+> +		{ 0.0, 0.0, 1.0 },
+> +	};
+> +	static const color_t colors_red_and_green[] = {
+> +		{ 1.0, 1.0, 0.0 },
+> +		{ 1.0, 1.0, 0.0 },
+> +		{ 1.0, 1.0, 0.0 }
+> +	};
+> +	static const color_t colors_only_green[] = {
+> +		{ 0.0, 1.0, 0.0 },
+> +		{ 0.0, 1.0, 0.0 },
+> +		{ 0.0, 1.0, 0.0 }
+> +	};
+> +	const igt_matrix_3x4_t ctm_red_to_blue = { {
+> +		0.0, 0.0, 0.0, 0.0,
+> +		0.0, 1.0, 0.0, 0.0,
+> +		1.0, 0.0, 1.0, 0.0,
+> +	} };
+> +	const igt_matrix_3x4_t ctm_linear = { {
+> +		1.0, 0.0, 0.0, 0.0,
+> +		0.0, 1.0, 0.0, 0.0,
+> +		0.0, 0.0, 1.0, 0.0,
+> +	} };
+> +	kms_colorop_t lut1d_linear = {
+> +		.type = KMS_COLOROP_CUSTOM_LUT1D,
+> +		.name = "Pre/Post CSC GAMMA (linear LUT)",
+> +		.lut1d = &igt_1dlut_linear,
+> +		.transform = &igt_color_linear,
+> +	};
+> +	kms_colorop_t lut1d_max = {
+> +		.type = KMS_COLOROP_CUSTOM_LUT1D,
+> +		.lut1d = &igt_1dlut_max,
+> +		.name = "Pre/Post CSC GAMMA (max LUT)",
+> +		.transform = &igt_color_max,
+> +	};
+> +	kms_colorop_t lut3d = {
+> +		.type = KMS_COLOROP_LUT3D,
+> +		.lut3d = &igt_3dlut_17_green_only,
+> +		.lut3d_info = {
+> +			.size = 17,
+> +			.interpolation = DRM_COLOROP_LUT3D_INTERPOLATION_TETRAHEDRAL,
+> +		},
+> +		.name = "3dlut passing only green channel (RGB order)",
+> +		.transform = NULL,
+> +	};
+> +	kms_colorop_t ctm_3x4 = {
+> +		.type = KMS_COLOROP_CTM_3X4,
+> +		.name = "CTM 3X4 (red to blue)",
+> +		.matrix_3x4 = &ctm_red_to_blue,
+> +	};
+> +	kms_colorop_t ctm_3x4_linear = {
+> +		.type = KMS_COLOROP_CTM_3X4,
+> +		.name = "CTM 3X4 (linear)",
+> +		.matrix_3x4 = &ctm_linear,
+> +	};
+> +
+> +	struct {
+> +		const char *name;
+> +		const color_t *fb_colors;
+> +		const color_t *exp_colors;
+> +		kms_colorop_t *colorops[MAX_COLOROPS];
+> +	} plane_colorops_tests[] = {
+> +		{ .name = "lut1d",
+> +		  .fb_colors = colors_rgb,
+> +		  .exp_colors = colors_rgb,
+> +		  .colorops = { &lut1d_max, NULL },
+> +		},
+> +		{ .name = "lut1d-pre-ctm3x4",
+> +		  .fb_colors = colors_rgb,
+> +		  .exp_colors = colors_rgb,
+> +		  .colorops = { &lut1d_max, &ctm_3x4_linear, NULL },
+> +		},
+> +		{ .name = "lut1d-post-ctm3x4",
+> +		  .fb_colors = colors_rgb,
+> +		  .exp_colors = colors_rgb,
+> +		  .colorops = { &ctm_3x4_linear, &lut1d_max, NULL },
+> +		},
+> +		{ .name = "ctm3x4",
+> +		  .fb_colors = colors_rgb,
+> +		  .exp_colors = colors_red_to_blue,
+> +		  .colorops = { &ctm_3x4, NULL },
+> +		},
+> +		{ .name = "lut1d-ctm3x4",
+> +		  .fb_colors = colors_rgb,
+> +		  .exp_colors = colors_red_to_blue,
+> +		  .colorops = { &lut1d_max, &ctm_3x4, NULL },
+> +		},
+> +		{ .name = "ctm3x4-lut1d",
+> +		  .fb_colors = colors_rgb,
+> +		  .exp_colors = colors_red_to_blue,
+> +		  .colorops = { &ctm_3x4, &lut1d_max, NULL },
+> +		},
+> +		{ .name = "lut1d-lut1d",
+> +		  .fb_colors = colors_rgb,
+> +		  .exp_colors = colors_rgb,
+> +		  .colorops = { &lut1d_linear, &lut1d_max, NULL },
+> +		},
+> +		{ .name = "lut1d-ctm3x4-lut1d",
+> +		  .fb_colors = colors_rgb,
+> +		  .exp_colors = colors_red_to_blue,
+> +		  .colorops = { &lut1d_linear, &ctm_3x4, &lut1d_max, NULL },
+> +		},
+> +		{ .name = "lut3d-green-only",
+> +		  .fb_colors = colors_red_and_green,
+> +		  .exp_colors = colors_only_green,
+> +		  .colorops = { &lut3d, NULL },
+> +		},
+> +	};
+> +
+> +	for (int i = 0; i < ARRAY_SIZE(plane_colorops_tests); i++) {
+> +		igt_describe_f("Test plane color pipeline with colorops: %s", plane_colorops_tests[i].name);
+> +		igt_subtest_with_dynamic_f("plane-%s", plane_colorops_tests[i].name) {
+> +			for_each_crtc_with_single_output(&data->display, crtc,
+> +							 output) {
+> +				data->output = output;
+> +
+> +				if (!crtc_output_combo_valid(data, crtc))
+> +					continue;
+> +
+> +				port_idx = test_setup(data, crtc);
+> +				if (port_idx < 0) {
+> +					test_cleanup(data);
+> +					continue;
+> +				}
+> +
+> +				data->color_depth = 8;
+> +				data->drm_format = DRM_FORMAT_XRGB8888;
+
+Never used?
+
+> +
+> +				test_plane_colorops(data, crtc,
+> +						    plane_colorops_tests[i].fb_colors,
+> +						    plane_colorops_tests[i].exp_colors,
+> +						    plane_colorops_tests[i].colorops,
+> +						    port_idx);
+> +
+> +				test_cleanup(data);
+> +			}
+> +		}
+> +	}
+> +}
+> +
+> +int igt_main()
+> +{
+> +	int i;
+> +	int has_plane_color_pipeline = 0;
+> +	data_t data = {};
+> +
+> +	igt_fixture() {
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +
+> +		drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1);
+> +
+> +		if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+> +			has_plane_color_pipeline = 1;
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&data.display, data.drm_fd);
+> +		data.display.has_plane_color_pipeline = has_plane_color_pipeline;
+> +		igt_require(data.display.is_atomic);
+> +		igt_require(has_plane_color_pipeline);
+> +
+> +		igt_chamelium_allow_fsm_handling = false;
+> +
+> +		/* Chamelium init */
+> +		data.chamelium = chamelium_init(data.drm_fd, &data.display);
+> +		igt_require(data.chamelium);
+> +
+> +		data.ports = chamelium_get_ports(data.chamelium,
+> +						 &data.port_count);
+> +
+> +		if (!data.port_count)
+> +			igt_skip("No ports connected\n");
+> +
+> +		/*
+> +		 * The behavior differs based on the availability of port mappings:
+> +		 * - When using port mappings (chamelium_read_port_mappings),
+> +		 *   ports are not plugged
+> +		 * - During autodiscovery, all ports are plugged at the end.
+> +		 *
+> +		 * This quick workaround (unplug, plug, and re-probe the connectors)
+> +		 * prevents any ports from being unintentionally skipped in test_setup.
+> +		 */
+> +		for (i = 0; i < data.port_count; i++) {
+> +			chamelium_unplug(data.chamelium, data.ports[i]);
+> +			chamelium_plug(data.chamelium, data.ports[i]);
+> +			chamelium_wait_for_conn_status_change(&data.display,
+> +							      data.chamelium,
+> +							      data.ports[i],
+> +							      DRM_MODE_CONNECTED);
+> +			igt_assert_f(chamelium_reprobe_connector(&data.display,
+> +								 data.chamelium,
+> +								 data.ports[i]) == DRM_MODE_CONNECTED,
+> +								 "Output not connected\n");
+> +		}
+> +	}
+> +
+> +	igt_subtest_group()
+> +		run_tests_for_plane(&data);
+> +
+> +	igt_fixture() {
+> +		igt_display_fini(&data.display);
+> +		drm_close_driver(data.drm_fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 811a36748..dceb5ff62 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -367,6 +367,7 @@ endif
+>   chamelium_progs = [
+>   	'kms_chamelium_audio',
+>   	'kms_chamelium_color',
+> +	'kms_chamelium_color_pipeline',
+>   	'kms_chamelium_edid',
+>   	'kms_chamelium_frames',
+>   	'kms_chamelium_hpd',
+> @@ -395,6 +396,7 @@ extra_sources = {
+>   	'kms_colorop':  [ 'kms_colorop_helper.c' ],
+>   	'kms_chamelium_audio': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+>   	'kms_chamelium_color':  [ 'kms_color_helper.c', join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+> +	'kms_chamelium_color_pipeline': [ 'kms_color_helper.c', 'kms_colorop_helper.c', join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+>   	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+>   	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+>   	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+
