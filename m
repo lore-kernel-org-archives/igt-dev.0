@@ -4,156 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E9CCCD6E5D
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Jun 2026 11:05:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73665CD6E74
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Jun 2026 11:21:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C299A10E625;
-	Fri,  5 Jun 2026 11:05:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A40910E169;
+	Fri,  5 Jun 2026 11:21:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="elJkrH1i";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V2/UHl+B";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47E3110E625
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jun 2026 11:04:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3369710E185
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jun 2026 11:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780657495; x=1812193495;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=HGuzJMhMwwf9KaD6LFOQ6Jw+p9fTs2eywCEpx1Fp6JI=;
- b=elJkrH1irZxDUHMCUkCEpFtF1Kad2jixKVmhljn0HRKCdKs9UfLilcHF
- CPRsoGsxzLP2Ndc1/2h45aQnnFU9rmIhMnA4p+ZBnRddCQLlhucNETOmi
- haW/W+h3hZdgYiO8JHehpAVJpr6GHGokIwEvGXKz4kIL4uf/u35yKG2k9
- KgW6e+U1mmArkUTa/jgWuVW8xYx59PdzvbFiERmga03/xWbG/9w2+tzSp
- qK8qcBjUUW9jh4QTKw1jh/eqh/fZUvNYMNVPG+0NfHMivltWbLiLDCGTH
- Dp0jznKeIyY1R2imHVRI+8YkWrgz9lidpaKG/IsYW4IjZijgZHMa1QZVQ g==;
-X-CSE-ConnectionGUID: R8IY6Ob0SoGi7TgJnSIwTg==
-X-CSE-MsgGUID: GCY+kdq0R5OhqbrvuIN4Gg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="92598891"
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; d="scan'208";a="92598891"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2026 04:04:54 -0700
-X-CSE-ConnectionGUID: GeAXe5xKQcGdSXau8z3J8g==
-X-CSE-MsgGUID: n779SbEBRb+0qB6rAfyZRQ==
+ t=1780658491; x=1812194491;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jWoKRVWnAYL+wEEWVijIqbHM2G+OMufuQYuBPS+ta7g=;
+ b=V2/UHl+BaeHb4he8qSR+FUe4NXLWjyYDzvqhaq0sfNafczVDj7kv7puS
+ s3Bdu++Y5pPeNlSlFCE5GI8zU1IXwd2kY5+mhQJI4DOh0gzIixuTB4CyE
+ 4lA7I9oES9GNX/rXwFbSUFTg6sbGedsg+O8ZkRb9k9LrEN0rgRqGCCGhc
+ m93c4ZjInalkmf5UxEfMSg+EFQ6PHtvYtfm8MVTIKXemTmQ8hhyLcrTtU
+ NLGBPEa1IS3CN6RcYbtYH+FY3aGYSpgS9uzrhqMQEC1r9uqliVN9KbIdW
+ F0ktPKHIvNOS4BiJURDLYWuU1o75gyKDMlnyPb70azcTm0GIbJF+CkO4K Q==;
+X-CSE-ConnectionGUID: hqfrL+uWQmyyWP6Bxzw5Aw==
+X-CSE-MsgGUID: MDNpc3GGTkihym6fzqR00g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="84070797"
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; d="scan'208";a="84070797"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2026 04:21:30 -0700
+X-CSE-ConnectionGUID: 8sf9/lX7T8SE0ga6eQEmug==
+X-CSE-MsgGUID: /5hzHTIeREqAxtBZmwj8mQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; d="scan'208";a="282898999"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2026 04:04:54 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 5 Jun 2026 04:04:43 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 5 Jun 2026 04:04:43 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.30) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 5 Jun 2026 04:03:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BRBxgMc30Gvd59nxAXE78laTGW4kVuqymTIU5Nh4FGYAVx9sMvpJs7vv8z1Q4ei4LBEeZW9IkTMT6cf2wayctowqgFhAFBuef2d5xGqBt+c4+OfUvv92Kk+rqxL0/t1P9+01xhFLZD4/pZxyuUS04yByBy8ni5X8TaqX9amnrvaDouqESu2/hOx+l3erS7uz2Yl8IRoJixVxAT40siXClrPMSGYOmw7XSu9hPwl74PFQIQ9zpjL1POocB3tnsgbT+nNz9+9Ehgu/JAWx7hQZe3Nz6TUg2l/5fbVaM75toIOIx8s45yGs+GmoimgMxh8lhzgcdYpyWQJQC19iPzC6Tw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZA2E8MM8O7V+RPshK3m7NS0xFB3HCt/GPeY4AFXvYNs=;
- b=mLq4Gln/PxQq78yq2t+UBDfnFksEXqndn2JYRX1D64s+3Jy6hJK9DJ+DWnDPXBi0sECvbBZ+1ErJexrtrYcWOozu5GlrcH26mEXHleXRaD2+k59rGGX5RLDIdoASdxDOFdBi472AHh+fLR1zm5qn+zkBKIM1dET34mOwYbEShZyL8wqXL5E/CNrhvR44tn2ncUuGHzutBYDpuyNTBEmrzV+g+PTg4ugtOoSnbVvRFtjJ0ITFsgSPwWa9QPlg2iUxggPXuAAlCF0+SUVwidBRu4vetC8zImQ7BJPji8d15FP7N2CeTot0J1TyLAJxWZ+iBHxHfeptNSUNwZiqvZeArQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB6266.namprd11.prod.outlook.com (2603:10b6:208:3e6::12)
- by DS7PR11MB7929.namprd11.prod.outlook.com (2603:10b6:8:e5::7) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.8; Fri, 5 Jun 2026 11:03:45 +0000
-Received: from IA1PR11MB6266.namprd11.prod.outlook.com
- ([fe80::eda2:e570:4314:8720]) by IA1PR11MB6266.namprd11.prod.outlook.com
- ([fe80::eda2:e570:4314:8720%5]) with mapi id 15.21.0092.006; Fri, 5 Jun 2026
- 11:03:45 +0000
-Message-ID: <26deeae4-ee56-4579-9425-f31e1714910b@intel.com>
-Date: Fri, 5 Jun 2026 16:33:37 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] Revert "lib/intel_wa: Assert on error instead of
- returning -1"
-To: <igt-dev@lists.freedesktop.org>
-References: <20260527170827.1963198-1-ashutosh.dixit@intel.com>
-Content-Language: en-US
-From: "Bhadane, Dnyaneshwar" <dnyaneshwar.bhadane@intel.com>
-In-Reply-To: <20260527170827.1963198-1-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MAXP287CA0002.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:49::23) To IA1PR11MB6266.namprd11.prod.outlook.com
- (2603:10b6:208:3e6::12)
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; d="scan'208";a="244886054"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 04:21:29 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t,
+ v3] tests/kms_chamelium_color_pipeline: Add plane color pipeline
+ validation
+Date: Fri,  5 Jun 2026 17:00:19 +0530
+Message-Id: <20260605113019.2597500-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB6266:EE_|DS7PR11MB7929:EE_
-X-MS-Office365-Filtering-Correlation-Id: d587fb5d-4528-4a21-0f2c-08dec2f21c6e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|22082099003|18002099003|6133799003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: JTtVYIusr/8zR8ijX8kCcsrAuySK2O4XmVxBN9G4AQGhOBcAxkTZkNxKohsVeG0mWjW4t9R3Ps+DURIO2pwmAfr/6ufne/2hFaFjq6uY0ke5/R4/m+nE7L85KhwKD2G+nklA8nI+P2QKT3hikTayAm89dh1mvqDpxm1tpqNjFScQu/zETrnN6n6S/cu+B0lCfoR34CMGxfcYyY9swfTRSWb7tBN4o0SfXLWqQ9MRrsihrTUZsXPTtrpsjtHV1iGz3LFee+wqU+UiixZAQRWtrqC/bRPh59zBntHkgU9AbvUfM8jNOgKIzl7oit71lcrD5ubDivbPxd9gi755kmy92LTmcjCWZpiZyKmv5GjhcCNjmMjGBrLHo4iZ5jHSeB59gT72kAQzHN/hx4GhCE5Xpyb9FZBJNbW1i3TW9Q3VP5J04sCVpUcle1e4PWDHBXkS6nXU4Ig9pVfOudmCVyAZxdknhScQKxtkDDrmPXw9Be9DTcSAftKxowmPaBcw2ih751R0aCfWGUKC25GSKqsB7Xd5boeiT0Ttc9v1wFb278nOCouij5Ie2dg/2SZHshr+uu+aTJaok8/NvVVUm0JPmOew2VJ8G7TcUtph1EVytGDnK6Rbx6r/SXYV4fJFF4OiqH9amPT+hV2G0sWM4FKfs9uQ9vKuje8h2iz1FfZC+drnnkw2/nRWXVd9GYCrjN+T
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR11MB6266.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(22082099003)(18002099003)(6133799003)(11063799006)(56012099006);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VVNNYVpwTStHcDg3eUc3bkNtTTZwL2lBcEpSaURFK0NKVEdWUmtTTmhIMDdE?=
- =?utf-8?B?dmgwL3RwRmRXbDYrT3NsTXpQUFh2bjJHVW92WnRqMWJKZE9ucHFFeUxFS29O?=
- =?utf-8?B?dFhOVkNxV3NvTDJDQk1ucnFxZ1htY01MQWlSZW9idjN2dmU0RlExN08yb1dF?=
- =?utf-8?B?WWFzNi9qdklqWkVvVG9xL2p0MEdINVdONkxxcnB0MjRzbHRVcy9xL3NKSnRL?=
- =?utf-8?B?THdjcnIyTWprakpJZms4amxCTHN5TU41aU13U1pQT2swa3dUeGw3Q3JGa3Ay?=
- =?utf-8?B?LzNjLzRGSUZYU20zcjYwUUJRL0tjdys1bkdaandDc0d5elZHQ09PK0VSQ1RP?=
- =?utf-8?B?azl4WENDd05uNmgrVWVBbDVEY083Wms1SjQrdGYzUEhlRjJtZU80cGozQnB6?=
- =?utf-8?B?bUFEQ1NRRU12V2ZpS0tXTWN1VEFpSTZaUzlBVHRKUHhlS0NMVzhOZldRYUxN?=
- =?utf-8?B?cFVNeTRuQlFUeVpKNk9GWXQyK1RWTy9aWVkvOGFsRHp4RVBQRVV6WTE4YURh?=
- =?utf-8?B?Z3JScVp4Z0gvS3dpcG51cHZ4QlRHUXFEcXNDQTFST2dIeUEyMWtKSFdKVUdD?=
- =?utf-8?B?czYxbU0zOHZweEcvcDJqRFpCMjBFbmh0OUxWY0RzQjVZbWQyeWtvSnJ1UDVG?=
- =?utf-8?B?QXRtYk5yNG04UEdkdEdGQ0hickhENm5yOG9NQklsb1BEQm1SVkNzZWFaY0ZY?=
- =?utf-8?B?ZXJtWkhwWVh2ODhaTWFFZWMxQiszOUJMTTkzRlJTNWNQZDhyTm54MmlmWDJi?=
- =?utf-8?B?TFdwblB6SDQ1cUJrYzNKWWFyUk5HQzhxbU81VXc4bXlWSTlIcWFJOGZmc05n?=
- =?utf-8?B?THR4TWt0RmxVdTF4bGQxb2RVUjBWM2M1elFCOWRBa3JpV1lINGVaNnkrdGcw?=
- =?utf-8?B?b3dPSkpZaVpKT0dSVEUzU2Z0dU1qVVVUWFo3N1paLzJtTmxJT1BVdHNoVzBX?=
- =?utf-8?B?aEt6OFhpUUxzUy9NN2ZocFc1TjJKa2RtKzEyM2tmRXFPTnpiVGd4c2VnalVl?=
- =?utf-8?B?N08xM0NHeWEvdXlBckNmc2I1SmpBdXVhZDN1V1RpeHRZTUw1ZDVIbFI3bE5C?=
- =?utf-8?B?ZGFTL0crV3MrOWhKU1FCbm9SZWlXanhGRFdOeWdZckdOb0tvWktiZFpKS2Zz?=
- =?utf-8?B?aTJuWW54WVg0bFI3NXZjTGNwemRZN3Z5KzkweStvdGR5OHF2cEhBTlVKN29K?=
- =?utf-8?B?eDU5VE82QWRGL3N0RTZxZnUxVDgza1FPVFpYdnh1SWd1NDdlaTlMeEhmSGwx?=
- =?utf-8?B?M0NPSWRTKytQbFBNQi92ZDBzWHR0eUllS1M0TUNabWtXbDJER2x4S0M4K1BD?=
- =?utf-8?B?NGhDUGxXekNoQjFHWko5cUNoVEJLdG9sOEZrRmNpL3cyQWJKUUdWVE5QcFpN?=
- =?utf-8?B?ek81L2IxVWNnV2RYVnpScFpVdFNyaXFNT1BmeHY3WTNRYkJZcjhINi9KYWxt?=
- =?utf-8?B?eG5sUjBZaDMyb0oyaFVtTVFjczFKa2VXMml6ZVVQNUpYaTBTeEorZkJ5bnFs?=
- =?utf-8?B?TkxiYVpqcGJSa04vMjF5aEJNaU9CMGVUZE1wMVlTU2JRemovZTRTVTMxb0s2?=
- =?utf-8?B?dTlTT1BnUzlqSXZ2STZKc3dLMHA1aG5pdE16MGhhVWlDNEQ5dFZTSEF4M2g2?=
- =?utf-8?B?bTdKYkhjM0VZMmJkdGoyYktVeFJMaDM2MkMwRjFUQ1VpZHdFbGVzQ3RNMjRB?=
- =?utf-8?B?OFpKVUtrd2JTVUdHeXRUQjZ0NVRsWVEzSTlWK2NTdXZQdCtSRHBpVU1tKzhO?=
- =?utf-8?B?R3A1bWdDVGk4V2tXQmZHengyNTJNOVpCblRFS3lqZ0ZLTFNNSGJhMmI5OHpQ?=
- =?utf-8?B?dWZqbTRKMXB5TjVxM3FCZE5EV3VMdklMcStXVUw1SFNQbjZVOVloMS9iaHlO?=
- =?utf-8?B?ZE1Rc0NjV1Ara1pkYmRPOUZJVEhPSzdFbmRRUDFmTER1aDBzM1J5V0szYjZP?=
- =?utf-8?B?Q1dQaUxXVFhKNmFuaDd1K2tsS1F5UXE1RWtpWTdRR0J5WDI3S3VhVHQ1M0Zs?=
- =?utf-8?B?b3ppOUN5UmM4cFY4VkcyU09MNXhKNWZkU21aTDQwVjVCQUM0S3ErSi9FdlFZ?=
- =?utf-8?B?YnRBRVBnb0E4QTNEUDZWWDZKdVozVnUxLzFqcmRvaXltWHBOOTRQTWs2S0Zn?=
- =?utf-8?B?bWtVQW51ajRHSTB3RGJyRFZsRmlGT05IK1hPUmxlQXptNDRKN2twTm9UTUVL?=
- =?utf-8?B?cmJuZzZBWk5pRTVucVJtNkFQRFhxZlBFQjNzR0dNRDNCUWFDT1lDaVU4VjJY?=
- =?utf-8?B?cGxHR1VWT2VrTm1sZUN3MzV0Y1VNdTlJVVZQNWgxdXF0Y0dSRWszeDZkTXho?=
- =?utf-8?B?aXJXNnoyY2NBMkVLa1o2MlZiZC81U0tDRERXeFQvMCtaZzJzSU01QkFtZnNa?=
- =?utf-8?Q?4jxldYTrxKxtgD+U=3D?=
-X-Exchange-RoutingPolicyChecked: Pd2mCFW7Bs0SJTfGF8WwyMDJFrX0MjbT7pOCR/M5gnIyNmnSwTQ+tbYMRbdfSUNaWPyGgdhF+hbMh4jLJUorbB0FKxhTRNnKbQ2C3tWS+DswSUXFK/amGfRP1lYO28JPsw2m0fZ7veRa0XyjpRg+Z9r0osKdD3W6uyvjMayh1vEBJOJRHMXrXT2tjz58+Xr6JuaMCtRcl0ZSnhlQoroKGmEWTBunaM0p4/n6tMNeEsZM9Lcs6T8+swVmqoh+0UazeEFOBdpAkKtxzKcpRvklOmq21Odjdh8KsrL3/zktQJcGel92ERWlZXqqveh1uOHh5xAFmklNs7wufE1+aMZ0OA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d587fb5d-4528-4a21-0f2c-08dec2f21c6e
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6266.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 11:03:45.1687 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oqpdUiQNpl0Wwm8sjzsKhnubbR0/mN/WtT39o6HN8DrJVtEN9jZ354bc0lLGSsClvEWfm/HpIy1L6T0LbGKrGRBHwLYo3K4+9eOU+3lxMBY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7929
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -169,116 +68,488 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Add a Chamelium-backed test to validate DRM plane colorops
+using frame capture instead of pipe CRC comparison.
 
+The test generates a software reference framebuffer by
+applying the expected color transformation in bypass mode.
+It then enables the plane color pipeline in hardware,
+renders the input framebuffer, and captures the output
+signal using Chamelium.
 
-On 27-May-26 10:38 PM, Ashutosh Dixit wrote:
-> This reverts commit b360115af75ac702b4f776aa3db0ac8a2a620657.
-> 
-> There are cases (e.g. igt@core_setmaster@master-drop-set-user) which drop
-> root before accessing debugfs, where we don't want to assert.
-> 
-> Also fix the igt_has_intel_wa() call in tests/intel/xe_oa.c.
-> 
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->   lib/intel_wa.c      | 19 ++++++++++---------
->   lib/intel_wa.h      |  2 +-
->   tests/intel/xe_oa.c |  2 +-
->   3 files changed, 12 insertions(+), 11 deletions(-)
-> 
-> diff --git a/lib/intel_wa.c b/lib/intel_wa.c
-> index a16ea62a4c..727dd6c988 100644
-> --- a/lib/intel_wa.c
-> +++ b/lib/intel_wa.c
-> @@ -7,18 +7,18 @@
->   #include <stdint.h>
->   #include <stdio.h>
->   
-> -#include "igt_core.h"
->   #include "igt_debugfs.h"
->   #include "igt_sysfs.h"
->   #include "intel_wa.h"
->   #include "xe/xe_query.h"
->   
-> -static bool debugfs_file_has_wa(int drm_fd, int debugfs_fd,
-> +static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
->   			       const char *debugfs_name, const char *wa)
->   {
->   	char *debugfs_dump;
->   
-> -	igt_assert(igt_debugfs_exists(drm_fd, debugfs_name, O_RDONLY));
-> +	if (!igt_debugfs_exists(drm_fd, debugfs_name, O_RDONLY))
-> +		return -1;
-Hello,
+The test passes if the captured frame matches the
+software reference framebuffer within the allowed tolerance.
 
-Suggestion: It might be worth handling the -1 return value 
-(igt_has_intel_wa() -> xe_for_each_gt()) as well, to avoid accidentally 
-breaking out of the GT iteration loop early. although there will be 
-always workaround file per gt.
+The test fails if the captured frame differs from the
+reference, indicating incorrect color transformation,
+pipeline misconfiguration, or hardware output mismatch.
 
+v2:
+ - Fix build error: pipe_output_combo_valid() -> crtc_output_combo_valid()
+ - Fix memory leak: add chamelium_destroy_frame_dump(frame) after use
+ - Replace igt_require(port_idx >= 0) with continue to avoid skipping
+   all crtc/output combos; add test_cleanup() before continue
+ - Fix misleading indentation in test_setup() port matching loop
+ - Remove unused data->primary assignment (planes iterated separately)
+ - Remove unnecessary data.display.is_atomic assignment
+   (igt_display_require() reinitializes it)
+ - Add igt_require(has_plane_color_pipeline) for early fail-fast
+ - Disable automatic FSM handling (igt_chamelium_allow_fsm_handling = false)
+ - Prefer HDMI over DP in test_setup() to avoid DP FSM failures
+   during chamelium capture; add chamelium_port_wait_video_input_stable()
+   before capture
+ - Fix test description
 
-Dnyaneshwar>
->   	debugfs_dump = igt_sysfs_get(debugfs_fd, debugfs_name);
->   	if (debugfs_dump) {
-> @@ -27,10 +27,10 @@ static bool debugfs_file_has_wa(int drm_fd, int debugfs_fd,
->   		free(debugfs_dump);
->   
->   		if (has_wa)
-> -			return true;
-> +			return 1;
->   	}
->   
-> -	return false;
-> +	return 0;
->   }
->   
->   /**
-> @@ -38,17 +38,18 @@ static bool debugfs_file_has_wa(int drm_fd, int debugfs_fd,
->    * @drm_fd:	A drm file descriptor
->    * @check_wa:	Workaround to be checked
->    *
-> - * Returns:	true if WA present, false otherwise
-> + * Returns:	0 if no WA, 1 if WA present, -1 on error
->    */
-> -bool igt_has_intel_wa(int drm_fd, const char *check_wa)
-> +int igt_has_intel_wa(int drm_fd, const char *check_wa)
->   {
-> -	bool ret = false;
-> +	int ret = 0;
->   	int debugfs_fd;
->   	unsigned int xe;
->   	char name[256];
->   
->   	debugfs_fd = igt_debugfs_dir(drm_fd);
-> -	igt_assert(debugfs_fd >= 0);
-> +	if (debugfs_fd == -1)
-> +		return -1;
->   
->   	xe_for_each_gt(drm_fd, xe) {
->   		sprintf(name, "gt%d/workarounds", xe);
-> diff --git a/lib/intel_wa.h b/lib/intel_wa.h
-> index 34cafecc41..765a5948ef 100644
-> --- a/lib/intel_wa.h
-> +++ b/lib/intel_wa.h
-> @@ -6,6 +6,6 @@
->   #ifndef __INTEL_WA_H__
->   #define __INTEL_WA_H__
->   
-> -bool igt_has_intel_wa(int drm_fd, const char *check_wa);
-> +int igt_has_intel_wa(int drm_fd, const char *check_wa);
->   
->   #endif /* __INTEL_WA_H__ */
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 56d818d860..e59fe953b0 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -2678,7 +2678,7 @@ test_non_zero_reason(const struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
->   	 * can result in buffer overflows.
->   	 */
->   	if (oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_MERT &&
-> -		igt_has_intel_wa(drm_fd, "14026633728")) {
-> +		igt_has_intel_wa(drm_fd, "14026633728") > 0) {
->   		oa_exponent = max(oa_exponent, 8);
->   		properties[9] = oa_exponent;
->   	}
+v3:
+ - Remove unused data->color_depth and data->drm_format assignments
+ - Remove no-op set_color_pipeline_bypass() call before painting
+   software reference (pipeline is already in bypass by default)
+
+Assisted-by: GitHub Copilot:Claude Opus 4.6
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ .../chamelium/kms_chamelium_color_pipeline.c  | 411 ++++++++++++++++++
+ tests/meson.build                             |   2 +
+ 2 files changed, 413 insertions(+)
+ create mode 100644 tests/chamelium/kms_chamelium_color_pipeline.c
+
+diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
+new file mode 100644
+index 000000000..db6107221
+--- /dev/null
++++ b/tests/chamelium/kms_chamelium_color_pipeline.c
+@@ -0,0 +1,411 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
++
++/**
++ * TEST: kms chamelium color pipeline
++ * Category: Display
++ * Description: Test to validate DRM plane color pipeline using Chamelium frame capture instead of pipe CRC
++ * Driver requirement: i915, xe
++ * Mega feature: Color Management
++ */
++
++#include "kms_chamelium_helper.h"
++#include "kms_color_helper.h"
++#include "kms_colorop_helper.h"
++
++#define MAX_COLOROPS	5
++
++/**
++ * SUBTEST: plane-%s
++ * Description: Test plane color pipeline with colorops: %arg[1].
++ *
++ * arg[1]:
++ *
++ * @lut1d:			1D LUT
++ * @lut1d-pre-ctm3x4:		1D LUT PRE CTM 3x4
++ * @lut1d-post-ctm3x4:		1D LUT POST CTM 3x4
++ * @ctm3x4:			3X4 CTM
++ * @lut1d-ctm3x4:		1D LUT --> 3X4 CTM
++ * @ctm3x4-lut1d:		3X4 CTM --> 1D LUT
++ * @lut1d-lut1d:		1D LUT --> 1D LUT
++ * @lut1d-ctm3x4-lut1d:		1D LUT --> 3X4 CTM --> 1D LUT
++ * @lut3d-green-only:		3D LUT
++ */
++
++IGT_TEST_DESCRIPTION("Test to validate DRM plane color pipeline using Chamelium frame capture instead of pipe CRC");
++
++static void test_cleanup(data_t *data)
++{
++	igt_output_set_crtc(data->output, NULL);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++}
++
++static int test_setup(data_t *data, igt_crtc_t *crtc)
++{
++	int i;
++
++	igt_require(crtc);
++	igt_require(crtc->n_planes > 0);
++
++	igt_output_set_crtc(data->output, crtc);
++
++	data->mode = igt_output_get_mode(data->output);
++	igt_require(data->mode);
++
++	/* Disable pipe color props. */
++	disable_ctm(crtc);
++	disable_degamma(crtc);
++	disable_gamma(crtc);
++
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	/*
++	 * Prefer HDMI over DP to avoid DP FSM issues
++	 * during chamelium capture.
++	 */
++	for (i = 0; i < data->port_count; i++) {
++		if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
++		     data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
++		    !strcmp(data->output->name,
++			    chamelium_port_get_name(data->ports[i])))
++			return i;
++	}
++
++	/* Fall back to any matching port */
++	for (i = 0; i < data->port_count; i++) {
++		if (!strcmp(data->output->name,
++			    chamelium_port_get_name(data->ports[i])))
++			return i;
++	}
++
++	return -1;
++}
++
++static bool ctm_colorop_only(kms_colorop_t *colorops[])
++{
++	int i;
++
++	if (!colorops[0])
++		return false;
++
++	for (i = 0; colorops[i]; i++) {
++		if (colorops[i]->type != KMS_COLOROP_CTM_3X4)
++			return false;
++	}
++
++	return true;
++}
++
++static void _test_plane_colorops(data_t *data,
++				 igt_plane_t *plane,
++				 const color_t *fb_colors,
++				 const color_t *exp_colors,
++				 kms_colorop_t *colorops[],
++				 struct chamelium_port *port)
++{
++	igt_display_t *display = &data->display;
++	drmModeModeInfo *mode = data->mode;
++	igt_colorop_t *color_pipeline;
++	struct igt_fb fb, fbref;
++	struct chamelium_frame_dump *frame;
++	bool ret;
++
++	color_pipeline = get_color_pipeline(display, plane, colorops);
++	igt_skip_on(!color_pipeline);
++
++	/* Create HW framebuffer */
++	igt_assert(igt_create_fb(data->drm_fd,
++				 mode->hdisplay,
++				 mode->vdisplay,
++				 DRM_FORMAT_XRGB8888,
++				 DRM_FORMAT_MOD_LINEAR,
++				 &fb));
++
++	/* Create reference framebuffer */
++	igt_assert(igt_create_fb(data->drm_fd,
++				 mode->hdisplay,
++				 mode->vdisplay,
++				 DRM_FORMAT_XRGB8888,
++				 DRM_FORMAT_MOD_LINEAR,
++				 &fbref));
++
++	/* ---- Software reference ---- */
++	paint_rectangles(data, mode, exp_colors, &fbref);
++
++	/* ---- Hardware path ---- */
++	set_color_pipeline(display, plane, colorops, color_pipeline);
++
++	if (ctm_colorop_only(colorops))
++		paint_rectangles(data, mode, fb_colors, &fb);
++	else
++		paint_gradient_rectangles(data, mode, fb_colors, &fb);
++
++	igt_plane_set_fb(plane, &fb);
++	igt_display_commit_atomic(&data->display, 0, NULL);
++
++	chamelium_port_wait_video_input_stable(data->chamelium, port, 5);
++	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
++
++	frame = chamelium_read_captured_frame(data->chamelium, 0);
++
++	ret = chamelium_frame_match_or_dump(data->chamelium,
++					    port,
++					    frame,
++					    &fbref,
++					    CHAMELIUM_CHECK_ANALOG);
++
++	igt_assert(ret);
++
++	chamelium_destroy_frame_dump(frame);
++
++	/* Cleanup */
++	set_color_pipeline_bypass(plane);
++	reset_colorops(colorops);
++
++	igt_plane_set_fb(plane, NULL);
++	igt_display_commit_atomic(&data->display, 0, NULL);
++
++	igt_remove_fb(data->drm_fd, &fb);
++	igt_remove_fb(data->drm_fd, &fbref);
++}
++
++static void
++test_plane_colorops(data_t *data, igt_crtc_t *crtc,
++		    const color_t *fb_colors,
++		    const color_t *exp_colors,
++		    kms_colorop_t *colorops[],
++		    int port_idx)
++{
++	int n_planes = crtc->n_planes;
++	igt_output_t *output = data->output;
++	igt_plane_t *plane;
++
++	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
++		plane = igt_output_get_plane(output, plane_id);
++
++		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
++			continue;
++
++		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(crtc->pipe), plane_id)
++			_test_plane_colorops(data, plane, fb_colors,
++					     exp_colors, colorops,
++					     data->ports[port_idx]);
++	}
++}
++
++static void
++run_tests_for_plane(data_t *data)
++{
++	igt_crtc_t *crtc;
++	igt_output_t *output = NULL;
++	int port_idx = 0;
++	static const color_t colors_rgb[] = {
++	        { 1.0, 0.0, 0.0 },
++	        { 0.0, 1.0, 0.0 },
++	        { 0.0, 0.0, 1.0 },
++	};
++	static const color_t colors_red_to_blue[] = {
++		{ 0.0, 0.0, 1.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 },
++	};
++	static const color_t colors_red_and_green[] = {
++		{ 1.0, 1.0, 0.0 },
++		{ 1.0, 1.0, 0.0 },
++		{ 1.0, 1.0, 0.0 }
++	};
++	static const color_t colors_only_green[] = {
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 1.0, 0.0 }
++	};
++	const igt_matrix_3x4_t ctm_red_to_blue = { {
++		0.0, 0.0, 0.0, 0.0,
++		0.0, 1.0, 0.0, 0.0,
++		1.0, 0.0, 1.0, 0.0,
++	} };
++	const igt_matrix_3x4_t ctm_linear = { {
++		1.0, 0.0, 0.0, 0.0,
++		0.0, 1.0, 0.0, 0.0,
++		0.0, 0.0, 1.0, 0.0,
++	} };
++	kms_colorop_t lut1d_linear = {
++		.type = KMS_COLOROP_CUSTOM_LUT1D,
++		.name = "Pre/Post CSC GAMMA (linear LUT)",
++		.lut1d = &igt_1dlut_linear,
++		.transform = &igt_color_linear,
++	};
++	kms_colorop_t lut1d_max = {
++		.type = KMS_COLOROP_CUSTOM_LUT1D,
++		.lut1d = &igt_1dlut_max,
++		.name = "Pre/Post CSC GAMMA (max LUT)",
++		.transform = &igt_color_max,
++	};
++	kms_colorop_t lut3d = {
++		.type = KMS_COLOROP_LUT3D,
++		.lut3d = &igt_3dlut_17_green_only,
++		.lut3d_info = {
++			.size = 17,
++			.interpolation = DRM_COLOROP_LUT3D_INTERPOLATION_TETRAHEDRAL,
++		},
++		.name = "3dlut passing only green channel (RGB order)",
++		.transform = NULL,
++	};
++	kms_colorop_t ctm_3x4 = {
++		.type = KMS_COLOROP_CTM_3X4,
++		.name = "CTM 3X4 (red to blue)",
++		.matrix_3x4 = &ctm_red_to_blue,
++	};
++	kms_colorop_t ctm_3x4_linear = {
++		.type = KMS_COLOROP_CTM_3X4,
++		.name = "CTM 3X4 (linear)",
++		.matrix_3x4 = &ctm_linear,
++	};
++
++	struct {
++		const char *name;
++		const color_t *fb_colors;
++		const color_t *exp_colors;
++		kms_colorop_t *colorops[MAX_COLOROPS];
++	} plane_colorops_tests[] = {
++		{ .name = "lut1d",
++		  .fb_colors = colors_rgb,
++		  .exp_colors = colors_rgb,
++		  .colorops = { &lut1d_max, NULL },
++		},
++		{ .name = "lut1d-pre-ctm3x4",
++		  .fb_colors = colors_rgb,
++		  .exp_colors = colors_rgb,
++		  .colorops = { &lut1d_max, &ctm_3x4_linear, NULL },
++		},
++		{ .name = "lut1d-post-ctm3x4",
++		  .fb_colors = colors_rgb,
++		  .exp_colors = colors_rgb,
++		  .colorops = { &ctm_3x4_linear, &lut1d_max, NULL },
++		},
++		{ .name = "ctm3x4",
++		  .fb_colors = colors_rgb,
++		  .exp_colors = colors_red_to_blue,
++		  .colorops = { &ctm_3x4, NULL },
++		},
++		{ .name = "lut1d-ctm3x4",
++		  .fb_colors = colors_rgb,
++		  .exp_colors = colors_red_to_blue,
++		  .colorops = { &lut1d_max, &ctm_3x4, NULL },
++		},
++		{ .name = "ctm3x4-lut1d",
++		  .fb_colors = colors_rgb,
++		  .exp_colors = colors_red_to_blue,
++		  .colorops = { &ctm_3x4, &lut1d_max, NULL },
++		},
++		{ .name = "lut1d-lut1d",
++		  .fb_colors = colors_rgb,
++		  .exp_colors = colors_rgb,
++		  .colorops = { &lut1d_linear, &lut1d_max, NULL },
++		},
++		{ .name = "lut1d-ctm3x4-lut1d",
++		  .fb_colors = colors_rgb,
++		  .exp_colors = colors_red_to_blue,
++		  .colorops = { &lut1d_linear, &ctm_3x4, &lut1d_max, NULL },
++		},
++		{ .name = "lut3d-green-only",
++		  .fb_colors = colors_red_and_green,
++		  .exp_colors = colors_only_green,
++		  .colorops = { &lut3d, NULL },
++		},
++	};
++
++	for (int i = 0; i < ARRAY_SIZE(plane_colorops_tests); i++) {
++		igt_describe_f("Test plane color pipeline with colorops: %s", plane_colorops_tests[i].name);
++		igt_subtest_with_dynamic_f("plane-%s", plane_colorops_tests[i].name) {
++			for_each_crtc_with_single_output(&data->display, crtc,
++							 output) {
++				data->output = output;
++
++				if (!crtc_output_combo_valid(data, crtc))
++					continue;
++
++				port_idx = test_setup(data, crtc);
++				if (port_idx < 0) {
++					test_cleanup(data);
++					continue;
++				}
++
++				test_plane_colorops(data, crtc,
++						    plane_colorops_tests[i].fb_colors,
++						    plane_colorops_tests[i].exp_colors,
++						    plane_colorops_tests[i].colorops,
++						    port_idx);
++
++				test_cleanup(data);
++			}
++		}
++	}
++}
++
++int igt_main()
++{
++	int i;
++	int has_plane_color_pipeline = 0;
++	data_t data = {};
++
++	igt_fixture() {
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++
++		drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1);
++
++		if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
++			has_plane_color_pipeline = 1;
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.drm_fd);
++		data.display.has_plane_color_pipeline = has_plane_color_pipeline;
++		igt_require(data.display.is_atomic);
++		igt_require(has_plane_color_pipeline);
++
++		igt_chamelium_allow_fsm_handling = false;
++
++		/* Chamelium init */
++		data.chamelium = chamelium_init(data.drm_fd, &data.display);
++		igt_require(data.chamelium);
++
++		data.ports = chamelium_get_ports(data.chamelium,
++						 &data.port_count);
++
++		if (!data.port_count)
++			igt_skip("No ports connected\n");
++
++		/*
++		 * The behavior differs based on the availability of port mappings:
++		 * - When using port mappings (chamelium_read_port_mappings),
++		 *   ports are not plugged
++		 * - During autodiscovery, all ports are plugged at the end.
++		 *
++		 * This quick workaround (unplug, plug, and re-probe the connectors)
++		 * prevents any ports from being unintentionally skipped in test_setup.
++		 */
++		for (i = 0; i < data.port_count; i++) {
++			chamelium_unplug(data.chamelium, data.ports[i]);
++			chamelium_plug(data.chamelium, data.ports[i]);
++			chamelium_wait_for_conn_status_change(&data.display,
++							      data.chamelium,
++							      data.ports[i],
++							      DRM_MODE_CONNECTED);
++			igt_assert_f(chamelium_reprobe_connector(&data.display,
++								 data.chamelium,
++								 data.ports[i]) == DRM_MODE_CONNECTED,
++								 "Output not connected\n");
++		}
++	}
++
++	igt_subtest_group()
++		run_tests_for_plane(&data);
++
++	igt_fixture() {
++		igt_display_fini(&data.display);
++		drm_close_driver(data.drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index deaa4ac5b..311a2b52f 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -367,6 +367,7 @@ endif
+ chamelium_progs = [
+ 	'kms_chamelium_audio',
+ 	'kms_chamelium_color',
++	'kms_chamelium_color_pipeline',
+ 	'kms_chamelium_edid',
+ 	'kms_chamelium_frames',
+ 	'kms_chamelium_hpd',
+@@ -395,6 +396,7 @@ extra_sources = {
+ 	'kms_colorop':  [ 'kms_colorop_helper.c' ],
+ 	'kms_chamelium_audio': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_color':  [ 'kms_color_helper.c', join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_color_pipeline': [ 'kms_color_helper.c', 'kms_colorop_helper.c', join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+-- 
+2.25.1
 
