@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F10F7CD6E7C
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Jun 2026 20:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59EF9CD6E7B
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Jun 2026 20:50:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A432711AB0A;
-	Fri,  5 Jun 2026 20:29:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 02B1610E536;
+	Fri,  5 Jun 2026 20:50:17 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E37BA11AB0A;
- Fri,  5 Jun 2026 20:29:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFD3010E499;
+ Fri,  5 Jun 2026 20:49:53 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0295597674808221287=="
+ boundary="===============8818800223624644000=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/kms=3A_Clean_up_forma?=
- =?utf-8?q?t+mod_stuff_=28rev7=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fhdr=3A_Use_non-?=
+ =?utf-8?q?modeset_commit_for_HDR_metadata_swaps_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: "Swati Sharma" <swati2.sharma@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 05 Jun 2026 20:29:00 -0000
-Message-ID: <178069134092.49962.5784685040098093615@6beec6c84f66>
+Date: Fri, 05 Jun 2026 20:49:53 -0000
+Message-ID: <178069259384.49942.765644207005175554@6beec6c84f66>
 X-Patchwork-Hint: ignore
-References: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20260512122143.11013-1-ville.syrjala@linux.intel.com>
+References: <20260605192149.2601366-1-swati2.sharma@intel.com>
+In-Reply-To: <20260605192149.2601366-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0295597674808221287==
+--===============8818800223624644000==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/kms: Clean up format+mod stuff (rev7)
-URL   : https://patchwork.freedesktop.org/series/166415/
+Series: tests/kms_hdr: Use non-modeset commit for HDR metadata swaps (rev2)
+URL   : https://patchwork.freedesktop.org/series/167409/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8950 -> IGTPW_15312
+CI Bug Log - changes from XEIGT_8950_BAT -> XEIGTPW_15313_BAT
 ====================================================
 
 Summary
@@ -64,55 +64,36 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15312/index.html
+  
 
-Participating hosts (42 -> 40)
+Participating hosts (13 -> 13)
 ------------------------------
 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
+  No changes in participating hosts
 
-Known issues
-------------
 
-  Here are the changes found in IGTPW_15312 that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-rpls-4:         [PASS][1] -> [DMESG-WARN][2] ([i915#13400])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8950/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15312/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@i915_selftest@live:
-    - bat-adlp-11:        [PASS][3] -> [DMESG-FAIL][4] ([i915#12964]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8950/bat-adlp-11/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15312/bat-adlp-11/igt@i915_selftest@live.html
-
-  
-  [i915#12964]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12964
-  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8950 -> IGTPW_15312
-  * Linux: CI_DRM_18634 -> CI_DRM_18638
+  * IGT: IGT_8950 -> IGTPW_15313
+  * Linux: xe-5209-6be5b7e4d84efd8d8d3fbf91fcacbcb6a0df055c -> xe-5213-0ecb0a41cb32dfc7620a903629a6951ef1aaea52
 
-  CI-20190529: 20190529
-  CI_DRM_18634: fe3f27ecb39e8357b0af59cfe9402fd5cc0c07b1 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18638: f5cb6d0bd86baaed2c093b772ddc3870429aba08 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15312: 15312
+  IGTPW_15313: 15313
   IGT_8950: 8950
+  xe-5209-6be5b7e4d84efd8d8d3fbf91fcacbcb6a0df055c: 6be5b7e4d84efd8d8d3fbf91fcacbcb6a0df055c
+  xe-5213-0ecb0a41cb32dfc7620a903629a6951ef1aaea52: 0ecb0a41cb32dfc7620a903629a6951ef1aaea52
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15312/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15313/index.html
 
---===============0295597674808221287==
+--===============8818800223624644000==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -132,53 +113,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/kms: Clean up format+mod stuff (rev7)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/166415/">https://patchwork.freedesktop.org/series/166415/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_hdr: Use non-modeset commit for HDR metadata swaps (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167409/">https://patchwork.freedesktop.org/series/167409/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15312/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15312/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15313/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15313/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8950 -&gt; IGTPW_15312</h1>
+    <h1>CI Bug Log - changes from XEIGT_8950_BAT -&gt; XEIGTPW_15313_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15312/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15312 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8950/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15312/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8950/bat-adlp-11/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15312/bat-adlp-11/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12964">i915#12964</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8950 -&gt; IGTPW_15312</li>
-<li>Linux: CI_DRM_18634 -&gt; CI_DRM_18638</li>
+<li>IGT: IGT_8950 -&gt; IGTPW_15313</li>
+<li>Linux: xe-5209-6be5b7e4d84efd8d8d3fbf91fcacbcb6a0df055c -&gt; xe-5213-0ecb0a41cb32dfc7620a903629a6951ef1aaea52</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18634: fe3f27ecb39e8357b0af59cfe9402fd5cc0c07b1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18638: f5cb6d0bd86baaed2c093b772ddc3870429aba08 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15312: 15312<br />
-  IGT_8950: 8950</p>
+<p>IGTPW_15313: 15313<br />
+  IGT_8950: 8950<br />
+  xe-5209-6be5b7e4d84efd8d8d3fbf91fcacbcb6a0df055c: 6be5b7e4d84efd8d8d3fbf91fcacbcb6a0df055c<br />
+  xe-5213-0ecb0a41cb32dfc7620a903629a6951ef1aaea52: 0ecb0a41cb32dfc7620a903629a6951ef1aaea52</p>
 
 </body>
 </html>
 
---===============0295597674808221287==--
+--===============8818800223624644000==--
