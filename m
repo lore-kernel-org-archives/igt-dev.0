@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B776ACD8C9D
-	for <igt-dev@archiver.kernel.org>; Mon,  8 Jun 2026 12:44:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D08E0CD8C9D
+	for <igt-dev@archiver.kernel.org>; Mon,  8 Jun 2026 12:44:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5F7F110E348;
-	Mon,  8 Jun 2026 12:44:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 842B510E358;
+	Mon,  8 Jun 2026 12:44:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GbD9NXMc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P07Tj3yy";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 02FA410E257
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2026 12:42:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B05E10E257
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2026 12:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780922572; x=1812458572;
+ t=1780922574; x=1812458574;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=EQtSwQC4YFZrL4T5h1RPtW70FSUTzTpy/FsjpyaGSsA=;
- b=GbD9NXMcbqjN17K3YiRJNNTFbt+OPkUD3qpc2d4z8jaPOd+wxpcf8kna
- LXEp1KqddBfrTDa3MwOnbb4382ZVA2x6APXUct8dgW92ZNYFioIgGjzxm
- GRzKVStWYEXIO9SPlsWnaoJd6RgBQ4EuE8F1npqJX2w4TTJEUhpeY+lXI
- wFi6/8yaNiihiHsbjluNTBJyCa51RpYoPNVXbwapmB+wvBroPneQd9tjG
- 5nidr4+teAG3yjsLNuQkR4WdsWXFu6rloljdUQKd+Z4WqzcnxtUVjm3dX
- 9jj+dzerqJskK9lyEaD32XzMiEnFfJYP0ahJI68tftx+bOIKpMRCsLJ38 A==;
-X-CSE-ConnectionGUID: 6i7E0CFwQwu19stz3WRQtg==
-X-CSE-MsgGUID: NRDiiFbfSVq9CNsRw56LBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="80683110"
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; d="scan'208";a="80683110"
+ bh=jL4utYAHJNFupQfKwexH5FQhhP867Qv1KIZ2wRXUDc4=;
+ b=P07Tj3yy1h+lRP1dTov/RbQLnok43jIX74P8np67A+UWeDA8zr44CTe5
+ fua8tf2NlwOuHBqupNF73pwFF4wDR7y5mtEl1jkhCpcyiJRIcYeDGIHDo
+ OIeBhQHB1Tz9tcq8H9BkiNMPexjlhLMWQZr30Fkt9r5UGRLSaK3SF1JMI
+ sQ2mPoV43FbdKP9jh3p6WURrUXz29N1SKHQr9b8lBozOJX7mcDWIb0f8D
+ yqLmbH9gEw1YUtwGVKzWDM5dfMWHPZRNdnF3GluuV/bzVhGM+VtJrKaaS
+ cc+qisUbKIbYu+pcSAJm5ifSyB1aiKYWkfHm4egKFFkj5LL7PhCyKbQO5 A==;
+X-CSE-ConnectionGUID: Zewxeth7S4SeCX/5rrvp1A==
+X-CSE-MsgGUID: BcD4yXeORnuJxY3/MSf35w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="80683114"
+X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; d="scan'208";a="80683114"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2026 05:42:52 -0700
-X-CSE-ConnectionGUID: tmBQpIaERcOu6bM5hOwUag==
-X-CSE-MsgGUID: /Br14ShyTyqcTdu51bhMDA==
+ 08 Jun 2026 05:42:54 -0700
+X-CSE-ConnectionGUID: Lt+PiPy+QUW51NKrB/B/Pg==
+X-CSE-MsgGUID: XD6IDqXjT9ea4yi+FsHhMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; d="scan'208";a="244688420"
+X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; d="scan'208";a="244688436"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by orviesa010.jf.intel.com with ESMTP; 08 Jun 2026 05:42:50 -0700
+ by orviesa010.jf.intel.com with ESMTP; 08 Jun 2026 05:42:53 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, suraj.kandpal@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v2 1/8] tools/vbt_decode: fix tables' offset reading
-Date: Mon,  8 Jun 2026 14:41:14 +0200
-Message-ID: <20260608124121.3131410-2-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v2 3/8] tools/vbt_decode: return 0 from get_device_id()
+Date: Mon,  8 Jun 2026 14:41:16 +0200
+Message-ID: <20260608124121.3131410-4-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260608124121.3131410-1-michal.grzelak@intel.com>
 References: <20260608124121.3131410-1-michal.grzelak@intel.com>
@@ -70,27 +70,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-During dumping of VBT #57, all rows are same because parser does not
-change offset read. Adjust the offset to change basing on the row used.
+This function returns -1 on errors and the caller checks for 0. This
+leads to -1 being used as the device id. Return 0 instead of -1.
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tools/intel_vbt_decode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/intel_vbt_decode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index cf7bcc5771..1d6bbc88a4 100644
+index 5b7a6a49e9..6a9c1de7b3 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -3478,7 +3478,7 @@ static void dump_vswing_preemphasis(struct context *context,
- 			printf("\t\t%s: ", vswing_preemph[i]);
+@@ -3700,13 +3700,13 @@ get_device_id(unsigned char *bios, int size)
+     int offset = (bios[0x19] << 8) + bios[0x18];
  
- 			for (int j = 0; j < vs->num_columns; j++)
--				printf(" 0x%08x", vs->tables[n * 10 * vs->num_columns + j]);
-+				printf(" 0x%08x", vs->tables[n * 10 * vs->num_columns + i * j]);
- 			printf("\n");
- 		}
- 	}
+     if (offset + 7 >= size)
+-	return -1;
++	return 0;
+ 
+     if (bios[offset] != 'P' ||
+ 	bios[offset+1] != 'C' ||
+ 	bios[offset+2] != 'I' ||
+ 	bios[offset+3] != 'R')
+-	return -1;
++	return 0;
+ 
+     device = (bios[offset+7] << 8) + bios[offset+6];
+ 
 -- 
 2.45.2
 
