@@ -4,56 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A6E7CD6E79
-	for <igt-dev@archiver.kernel.org>; Mon,  8 Jun 2026 19:58:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0F60CD6E79
+	for <igt-dev@archiver.kernel.org>; Mon,  8 Jun 2026 20:20:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 360D610F961;
-	Mon,  8 Jun 2026 19:58:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8BDBF10F9A9;
+	Mon,  8 Jun 2026 20:20:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PDoZZNeJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GuTECHYm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D545910F961
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2026 19:58:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CD4810F9A9
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2026 20:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780948689; x=1812484689;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=EIFUWDNqcrICzHQEbLnMe0SXnugokjsfdZWOVMdTIig=;
- b=PDoZZNeJp1UMcm/CcyUfR7RaeCQZmJ7dBHKnZcaOTSiEVM497n44KKty
- fiQmDuDLqnd/LjeMxS0RQ06flGms+OD92jQHL0RIB6NYkLchN2GUIKrlE
- EYepEEIjqUdt6EUs/dpfONmL4iiGVzHkWolBE/l3LpHrtW8XW0T8wko1D
- OQghi1SlpPi/fa9/yhRJo81HcCcbJOmWZTw0bjrya4v7L2b4B7XlkVaVo
- yjsjH2UeVyiKPQsYXdtRIio1HiiJ9BzqYji9PFl3oliuo1pmn8uOTK9Gc
- lrqTyo0uSWuFi5AQxzPu079tZHGb2/WHcP7u3ED8EEr4rKoVRKvvVd1U6 Q==;
-X-CSE-ConnectionGUID: DAwVidqDSe2mqvA82KrJmg==
-X-CSE-MsgGUID: zuaXxr96Rb6cfHWKdJuhhw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="81762759"
-X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="81762759"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2026 12:58:09 -0700
-X-CSE-ConnectionGUID: f4T7ejUzT/SszIVSsB2GcQ==
-X-CSE-MsgGUID: FhaQIAQwRIeSAM2tlf1qrw==
+ t=1780950020; x=1812486020;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=M8hdft2/1pY9nyPMsdWMdN5NwXaj3cDbB2TzY2VarOA=;
+ b=GuTECHYmHWEinNQ2g7jVTrKZUud7GAx7ACJF4O0hLz6JIG5zIA89qzlQ
+ PUDyN7FIGOgOdDUo4aKHvKsqvuEi0LCl+GZWp7CQg+ioHx62Yw3GaJKvx
+ p0LZq1D6KEMhUeVZb18CRY6WSt1S9s9GRohve6mvzGrD1KXQ7cVrdnkwn
+ b9lE1MxzYNAqnqAxmFm6ZViZAqlnL/YzVDwwSPGjCld9XMq+2CnPOs9J6
+ +Q/A3IVHTxVqOtlZ4lza+tPAZVnHl74bgs6bCPLRGlUKm6OoAwCzJsxqj
+ UnAeOT9hr2ksob4/SoBOkQ2LmdL5q1VsiMHNkysZ05aR7z2pKYtmfWlP8 g==;
+X-CSE-ConnectionGUID: ta2ZGOWGR2GqBjLqif4ehw==
+X-CSE-MsgGUID: nrknRhy1QVqFlussBiWPsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="80722828"
+X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="80722828"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jun 2026 13:20:20 -0700
+X-CSE-ConnectionGUID: HhC0dJucTSKDwyuT49AeHQ==
+X-CSE-MsgGUID: 58X06jOKRSaemHI7mw7D1g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="269344780"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.118])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2026 12:58:07 -0700
-Date: Mon, 8 Jun 2026 21:58:04 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Ryszard Knop <ryszard.knop@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH] docs/reference: Fix build on ancient Meson versions
-Message-ID: <wanpgqijmvmngyigj7jurvyijw3iafof6alm37odgyehlatc6d@6xvm3lcyalab>
-References: <20260608195124.32361-1-ryszard.knop@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="247515462"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 13:20:19 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_cdclk: Fix stale pending_crtc causing
+ false bigjoiner skips
+Date: Tue,  9 Jun 2026 01:58:05 +0530
+Message-Id: <20260608202805.2617965-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260608195124.32361-1-ryszard.knop@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,33 +66,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Jun 08, 2026 at 09:51:08PM +0200, Ryszard Knop wrote:
-> Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
-> ---
->  docs/reference/igt-gpu-tools/meson.build | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
-> index 2c65155b7f21..f52c2c2e6eb0 100644
-> --- a/docs/reference/igt-gpu-tools/meson.build
-> +++ b/docs/reference/igt-gpu-tools/meson.build
-> @@ -65,7 +65,7 @@ foreach group : test_groups
->  	generated_docs += custom_target(description_xml,
->  		      build_by_default : true,
->  		      output : description_xml,
-> -		      depends : test_executables + test_list_target,
-> +		      depends : test_executables + [ test_list_target ],
->  		      command : [ gen_description, '@OUTPUT@', group, test_list_target ])
->  endforeach
->  
-> -- 
-> 2.54.0
-> 
+When a dynamic subtest SKIPs via longjmp, pending_crtc remains set
+from the combo validation. Subsequent iterations then incorrectly
+see the pipe as occupied, causing valid combos to be skipped.
 
-Ubuntu 24.04 and 26.04 are still fine, I hope this will fix older meson
-issue.
+Fix by using a wrapper that clears pending_crtc before returning.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Assisted-by: GitHub Copilot:Claude Opus 4.6
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/intel/kms_cdclk.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
---
-Zbigniew
+diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
+index 070fba400..2c5949ff2 100644
+--- a/tests/intel/kms_cdclk.c
++++ b/tests/intel/kms_cdclk.c
+@@ -327,6 +327,22 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 	igt_remove_fb(data->drm_fd, &fb);
+ }
+ 
++static bool
++crtc_output_combo_valid(igt_display_t *display, igt_crtc_t *crtc,
++			igt_output_t *output)
++{
++	bool ret = true;
++
++	igt_display_reset(display);
++
++	igt_output_set_crtc(output, crtc);
++	if (!intel_pipe_output_combo_valid(display))
++		ret = false;
++	igt_output_set_crtc(output, NULL);
++
++	return ret;
++}
++
+ static void run_cdclk_test(data_t *data, uint32_t flags)
+ {
+ 	igt_display_t *display = &data->display;
+@@ -334,12 +350,8 @@ static void run_cdclk_test(data_t *data, uint32_t flags)
+ 	igt_crtc_t *crtc;
+ 
+ 	for_each_crtc_with_valid_output(display, crtc, output) {
+-		igt_output_set_crtc(output,
+-				    crtc);
+-		if (!intel_pipe_output_combo_valid(display)) {
+-			igt_output_set_crtc(output, NULL);
++		if (!crtc_output_combo_valid(display, crtc, output))
+ 			continue;
+-		}
+ 
+ 		igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc), output->name) {
+ 			if (flags & TEST_PLANESCALING)
+-- 
+2.25.1
+
