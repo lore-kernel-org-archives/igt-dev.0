@@ -4,54 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91016CD6E79
-	for <igt-dev@archiver.kernel.org>; Mon,  8 Jun 2026 22:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A64E8CD8CA7
+	for <igt-dev@archiver.kernel.org>; Mon,  8 Jun 2026 22:33:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BCBE10E0AE;
-	Mon,  8 Jun 2026 22:23:18 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="izBCn410";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBB8A10E0AE
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2026 22:22:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780957376; x=1812493376;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=dvKhOaYU8AWTFflff8irKcOZK/72Laja0iQPc6w7aKQ=;
- b=izBCn410WUXxe8ekvQK0mfiLDqYAo9JkKRTAtndhLiDcZdqrddzLmF8d
- LvCE4xPWsQq5CPQ4eU1ZeTQyPwOd+SUYdd7cugYT0HVWu5KD3T/Fc00H2
- FmeuLcqTSrcqxEzH99yaqDzn9dMvItP6dp/acOH2X0GkOiB8mu3uwqbrH
- RJBigt2h5skEWsOy/TUrPjTr+Jv1HbopfjFNYThgPR33RYkYJEOSY1oCe
- SIST5tkiDilkrGNYrv6Ul0Qz/LFS9aSXC5GWqqcaxC6BuJpIjspuNCyx/
- tLlv4fVoa5hZmsPIkzCHnZSPIh9diOVWLya+VeraF92nztl+nva5FdfRQ A==;
-X-CSE-ConnectionGUID: f7wv+gy3QIiC5LbE1nSytQ==
-X-CSE-MsgGUID: rL8dJwK+QimpDhB0rs5XuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="85597730"
-X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="85597730"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2026 15:22:54 -0700
-X-CSE-ConnectionGUID: rbX/n6jVTWerJ/kvqkCdug==
-X-CSE-MsgGUID: lDCtK5lOTieuOirwnYrDAQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="243237296"
-Received: from xwang-desk.fm.intel.com ([10.121.64.134])
- by fmviesa008.fm.intel.com with ESMTP; 08 Jun 2026 15:22:54 -0700
-From: Xin Wang <x.wang@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.brost@intel.com,
-	jia.yao@intel.com,
-	Xin Wang <x.wang@intel.com>
-Subject: [PATCH] tests/xe_exec_reset: Replace fixed usleep with dynamic GT
- idle wait
-Date: Mon,  8 Jun 2026 15:22:52 -0700
-Message-ID: <20260608222252.2060110-1-x.wang@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3B9F010E0AE;
+	Mon,  8 Jun 2026 22:33:32 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C054010E0AE;
+ Mon,  8 Jun 2026 22:33:08 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5207600986367755367=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpm=5Fdc?=
+ =?utf-8?q?=3A_Add_DC5_negative_test_for_continuous_page-flip_activity_=28re?=
+ =?utf-8?q?v2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 08 Jun 2026 22:33:08 -0000
+Message-ID: <178095798878.54354.17966397448278061823@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260316111517.24452-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20260316111517.24452-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,69 +38,126 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The CLOSE_FD subtests simulate a user abruptly closing the DRM file
-descriptor (e.g. via Ctrl+C) while GPU work is still in flight. After
-closing the fd, the kernel begins tearing down the VM and releasing
-resources including the ASID. If the next test starts before this
-cleanup completes, ASID reuse can cause hardware-level collisions and
-trigger a cascade of CAT errors, corrupting the subsequent test.
+--===============5207600986367755367==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The previous workaround of a fixed 150ms sleep was fragile: on some
-platforms or under varying system load, cleanup takes longer and the
-sleep is insufficient. Replace it with a dynamic poll that waits until
-the GT enters the C6 idle state, which is a reliable hardware signal
-that all GPU activity has ceased and resources have been reclaimed.
-The poll checks every 10ms with a 1 second timeout, adapting to actual
-hardware completion time rather than guessing.
+== Series Details ==
 
-Signed-off-by: Xin Wang <x.wang@intel.com>
----
- tests/intel/xe_exec_reset.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+Series: tests/intel/kms_pm_dc: Add DC5 negative test for continuous page-flip activity (rev2)
+URL   : https://patchwork.freedesktop.org/series/163277/
+State : success
 
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index dc1ae7e99c..12c2906800 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -157,6 +157,15 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
-  * @parallel:	parallel
-  */
- 
-+static void
-+wait_gt_idle(int gt_id)
-+{
-+	int fd = drm_open_driver(DRIVER_XE);
-+
-+	igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10);
-+	drm_close_driver(fd);
-+}
-+
- static void
- test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	      unsigned int flags)
-@@ -277,8 +286,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 				xe_exec_queue_destroy(fd, exec_queues[i]);
- 		}
- 		drm_close_driver(fd);
--		/* FIXME: wait for idle */
--		usleep(150000);
-+		wait_gt_idle(gt);
- 		return;
- 	}
- 
-@@ -542,8 +550,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 				xe_exec_queue_destroy(fd, exec_queues[i]);
- 		}
- 		drm_close_driver(fd);
--		/* FIXME: wait for idle */
--		usleep(150000);
-+		wait_gt_idle(eci->gt_id);
- 		return;
- 	}
- 
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8953_BAT -> XEIGTPW_15318_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15318_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_dma_buf:
+    - bat-bmg-vm:         [PASS][1] -> [ABORT][2] ([Intel XE#8007] / [Intel XE#8023]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8953/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15318/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html
+
+  
+  [Intel XE#8007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007
+  [Intel XE#8023]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8023
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8953 -> IGTPW_15318
+
+  IGTPW_15318: 15318
+  IGT_8953: 8953
+  xe-5218-0375ba98c1fdf69bc3a05ffa80591f9ffe910330: 0375ba98c1fdf69bc3a05ffa80591f9ffe910330
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15318/index.html
+
+--===============5207600986367755367==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_dc: Add DC5 negative test for continuous page-flip activity (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163277/">https://patchwork.freedesktop.org/series/163277/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15318/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15318/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8953_BAT -&gt; XEIGTPW_15318_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15318_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_dma_buf:<ul>
+<li>bat-bmg-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8953/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15318/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007">Intel XE#8007</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8023">Intel XE#8023</a>) +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8953 -&gt; IGTPW_15318</li>
+</ul>
+<p>IGTPW_15318: 15318<br />
+  IGT_8953: 8953<br />
+  xe-5218-0375ba98c1fdf69bc3a05ffa80591f9ffe910330: 0375ba98c1fdf69bc3a05ffa80591f9ffe910330</p>
+
+</body>
+</html>
+
+--===============5207600986367755367==--
