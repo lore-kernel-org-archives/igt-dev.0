@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0F60CD6E79
-	for <igt-dev@archiver.kernel.org>; Mon,  8 Jun 2026 20:20:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1127ACD6E79
+	for <igt-dev@archiver.kernel.org>; Mon,  8 Jun 2026 20:31:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8BDBF10F9A9;
-	Mon,  8 Jun 2026 20:20:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 926A210F9B1;
+	Mon,  8 Jun 2026 20:31:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GuTECHYm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lUTkYCTj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CD4810F9A9
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2026 20:20:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4E0010F9B1
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2026 20:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1780950020; x=1812486020;
+ t=1780950688; x=1812486688;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=M8hdft2/1pY9nyPMsdWMdN5NwXaj3cDbB2TzY2VarOA=;
- b=GuTECHYmHWEinNQ2g7jVTrKZUud7GAx7ACJF4O0hLz6JIG5zIA89qzlQ
- PUDyN7FIGOgOdDUo4aKHvKsqvuEi0LCl+GZWp7CQg+ioHx62Yw3GaJKvx
- p0LZq1D6KEMhUeVZb18CRY6WSt1S9s9GRohve6mvzGrD1KXQ7cVrdnkwn
- b9lE1MxzYNAqnqAxmFm6ZViZAqlnL/YzVDwwSPGjCld9XMq+2CnPOs9J6
- +Q/A3IVHTxVqOtlZ4lza+tPAZVnHl74bgs6bCPLRGlUKm6OoAwCzJsxqj
- UnAeOT9hr2ksob4/SoBOkQ2LmdL5q1VsiMHNkysZ05aR7z2pKYtmfWlP8 g==;
-X-CSE-ConnectionGUID: ta2ZGOWGR2GqBjLqif4ehw==
-X-CSE-MsgGUID: nrknRhy1QVqFlussBiWPsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="80722828"
-X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="80722828"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2026 13:20:20 -0700
-X-CSE-ConnectionGUID: HhC0dJucTSKDwyuT49AeHQ==
-X-CSE-MsgGUID: 58X06jOKRSaemHI7mw7D1g==
+ bh=iMrQ9CgCNLqBjU7xpcOW8/3RCb9v8j4hXMIoRH9kZUg=;
+ b=lUTkYCTj5vasdVT+ire52Eolg1LLdzwX/34L8N/3R9wKZizL5a/qtQok
+ BjqIAnpKJX5GVeQhoO2ErEEonwqqanFDz3fl4aWM0wEguy+S4eSSlc1yL
+ BBvPyI/ixIWYMyH7yEbWEQc6HaFnUPTxrVVoGhgueKrhzbrkRZuK7jl6X
+ dpHYW4/Ows7RW2A4aGpKAcvxasH7l1jiGYdEPSQnphJQQHIX7mQ3EfIQI
+ R+Js6i9mKZSZxtPsgJ0+vUYGY78x7X+nfpR1WohVgORFbu+kXfoqGrdwi
+ aZrXIITLTIZmLbQdjwH/G0oLCo90vW0v1tdEZXp3N5KC/pIcMdbpoVmsx Q==;
+X-CSE-ConnectionGUID: jdqDaZ8qSyO/j4K78SHDWQ==
+X-CSE-MsgGUID: NmvVm/8cQ1yaFcm0Pwz9rw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="81552100"
+X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="81552100"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jun 2026 13:31:28 -0700
+X-CSE-ConnectionGUID: ySwqZb7KSX6H57bpffmgeg==
+X-CSE-MsgGUID: Yi/3FyUASoWqpPS/FpoEGg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="247515462"
+X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="245518082"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 13:20:19 -0700
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 13:31:26 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_cdclk: Fix stale pending_crtc causing
- false bigjoiner skips
-Date: Tue,  9 Jun 2026 01:58:05 +0530
-Message-Id: <20260608202805.2617965-1-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tests/kms_hdr: Enable DRM KMS debug mask for
+ invalid-hdr subtest
+Date: Tue,  9 Jun 2026 02:10:19 +0530
+Message-Id: <20260608204019.2618145-1-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -66,59 +66,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When a dynamic subtest SKIPs via longjmp, pending_crtc remains set
-from the combo validation. Subsequent iterations then incorrectly
-see the pipe as occupied, causing valid combos to be skipped.
+The invalid-hdr subtest validates that HDR is not enabled on
+non-HDR panels by checking for "Unknown EOTF" messages in
+dmesg. These messages are emitted via drm_dbg_kms() which
+requires DRM_UT_KMS to be set in the debug mask.
 
-Fix by using a wrapper that clears pending_crtc before returning.
+Ensure DRM_UT_KMS is enabled at test startup so the subtest
+does not silently fail when the debug level is not already
+configured. Install an exit handler to restore the original
+debug mask on test completion.
 
 Assisted-by: GitHub Copilot:Claude Opus 4.6
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/intel/kms_cdclk.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ tests/kms_hdr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
-index 070fba400..2c5949ff2 100644
---- a/tests/intel/kms_cdclk.c
-+++ b/tests/intel/kms_cdclk.c
-@@ -327,6 +327,22 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	igt_remove_fb(data->drm_fd, &fb);
- }
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index affd38887..07e93270b 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -34,6 +34,7 @@
+ #include <unistd.h>
+ #include "igt_edid.h"
+ #include "igt_hdr.h"
++#include "igt_sysfs.h"
  
-+static bool
-+crtc_output_combo_valid(igt_display_t *display, igt_crtc_t *crtc,
-+			igt_output_t *output)
-+{
-+	bool ret = true;
-+
-+	igt_display_reset(display);
-+
-+	igt_output_set_crtc(output, crtc);
-+	if (!intel_pipe_output_combo_valid(display))
-+		ret = false;
-+	igt_output_set_crtc(output, NULL);
-+
-+	return ret;
-+}
-+
- static void run_cdclk_test(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
-@@ -334,12 +350,8 @@ static void run_cdclk_test(data_t *data, uint32_t flags)
- 	igt_crtc_t *crtc;
+ /**
+  * SUBTEST: bpc-switch
+@@ -647,6 +648,9 @@ int igt_main()
+ 		igt_require(data.display.is_atomic);
  
- 	for_each_crtc_with_valid_output(display, crtc, output) {
--		igt_output_set_crtc(output,
--				    crtc);
--		if (!intel_pipe_output_combo_valid(display)) {
--			igt_output_set_crtc(output, NULL);
-+		if (!crtc_output_combo_valid(display, crtc, output))
- 			continue;
--		}
+ 		igt_display_require_output(&data.display);
++
++		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
++		igt_drm_debug_mask_update(DRM_UT_KMS);
+ 	}
  
- 		igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc), output->name) {
- 			if (flags & TEST_PLANESCALING)
+ 	igt_describe("Tests switching between different display output bpc modes");
 -- 
 2.25.1
 
