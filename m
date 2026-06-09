@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B2FACD8C92
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Jun 2026 05:38:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C105CCD8CAE
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Jun 2026 05:46:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC9A710E08F;
-	Tue,  9 Jun 2026 05:38:12 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7888D10E08F;
- Tue,  9 Jun 2026 05:37:50 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6332084300236693358=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5320410E08F;
+	Tue,  9 Jun 2026 05:46:24 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ReeEDfTM";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DBAD10E08F
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jun 2026 05:46:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1780983962; x=1812519962;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=12XMTAfvV6f7L3m6zdwzHZrJnuWhF8m1YL6aupH4d1s=;
+ b=ReeEDfTM1JWanjOoOvBGXVytErolPkz25Q46WnznJzmiwLjZ/GXgnE3C
+ wJ0aBL6G32RB76uGb5K269Vz1HUvGA3dGWVksaZK+zqlhfucTmrE1chOk
+ ICWRCSS+IPXRuXBhT6zQn1EDHj9/Vmdg1so/+OiSARk7To4zZKqQDPuJo
+ YK5yf7Ir0Mrf0unSCeqzmrSo1cCMqnbjeE9fg7h3XGqnd481ZKr8FpqnV
+ Lvi0t2f2JAKG/4EK/OzrAQNk6gM9tyPeXlPvN2equ5WR+4CHh9evesttL
+ 7OywvZGaSJJviFfztORR2uwY6OXH8bKlwVun8/omszLX8H2KWIigg9rc6 A==;
+X-CSE-ConnectionGUID: HN4N9nOHQ5igPdGaWSlWRg==
+X-CSE-MsgGUID: CMooAXwVQeeH2cJfzilW6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="92057030"
+X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="92057030"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jun 2026 22:46:01 -0700
+X-CSE-ConnectionGUID: wL6WUll3SJWI8gBn3Y6SWg==
+X-CSE-MsgGUID: lQNYte0FST+5mGkglJIzJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; d="scan'208";a="269773717"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
+ by fmviesa001.fm.intel.com with ESMTP; 08 Jun 2026 22:45:59 -0700
+From: Pranay Samala <pranay.samala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
+ sameer.lattannavar@intel.com, pranay.samala@intel.com
+Subject: [PATCH i-g-t v4 0/2] Improve max-bpc query error handling
+Date: Tue,  9 Jun 2026 11:26:57 +0530
+Message-Id: <20260609055659.1025146-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/xe=5Fexec=5Freset?=
- =?utf-8?q?=3A_Replace_fixed_usleep_with_dynamic_GT_idle_wait?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Xin Wang" <x.wang@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 09 Jun 2026 05:37:50 -0000
-Message-ID: <178098347048.57587.16293822900554206856@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260608222252.2060110-1-x.wang@intel.com>
-In-Reply-To: <20260608222252.2060110-1-x.wang@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,111 +62,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6332084300236693358==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series moves max-bpc failure handling to the helper/API level.
 
-== Series Details ==
+The previous change modified kms_hdr dynamic-subtest flow to handle
+max-bpc read failures, but the real issue was that
+igt_get_output_max_bpc() handled read/parse failures internally.
 
-Series: tests/xe_exec_reset: Replace fixed usleep with dynamic GT idle wait
-URL   : https://patchwork.freedesktop.org/series/168132/
-State : success
+Restore the original kms_hdr flow and update
+igt_get_output_max_bpc() to return status so callers can explicitly
+handle failures with clearer skip/continue decisions and logging.
 
-== Summary ==
+Pranay Samala (2):
+  Revert "tests/kms_hdr: Move capability checks inside dynamic subtests"
+  lib/tests: make igt_get_output_max_bpc() return status and handle
+    failures in callers
 
-CI Bug Log - changes from IGT_8954 -> IGTPW_15328
-====================================================
+ lib/igt_kms.c                          |  41 ++++--
+ lib/igt_kms.h                          |   2 +-
+ tests/amdgpu/amd_bypass.c              |   6 +-
+ tests/amdgpu/amd_dp_dsc.c              |  10 +-
+ tests/intel/kms_dsc.c                  |   5 +-
+ tests/intel/kms_frontbuffer_tracking.c |  10 +-
+ tests/kms_color_helper.c               |   5 +-
+ tests/kms_dither.c                     |   9 +-
+ tests/kms_hdr.c                        | 187 +++++++++++++++----------
+ 9 files changed, 180 insertions(+), 95 deletions(-)
 
-Summary
--------
+-- 
+2.34.1
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15328/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8954 -> IGTPW_15328
-
-  CI-20190529: 20190529
-  CI_DRM_18645: cc6ecad1583df42f635269218c08a63e79218177 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15328: 15328
-  IGT_8954: 8954
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15328/index.html
-
---===============6332084300236693358==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe_exec_reset: Replace fixed usleep with dynamic GT idle wait</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168132/">https://patchwork.freedesktop.org/series/168132/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15328/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15328/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8954 -&gt; IGTPW_15328</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15328/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8954 -&gt; IGTPW_15328</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18645: cc6ecad1583df42f635269218c08a63e79218177 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15328: 15328<br />
-  IGT_8954: 8954</p>
-
-</body>
-</html>
-
---===============6332084300236693358==--
