@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E51C0CD8CB2
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Jun 2026 15:14:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D80CD98C6
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Jun 2026 15:24:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8DFD010E4AF;
-	Wed, 10 Jun 2026 15:14:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A2AC110EA21;
+	Wed, 10 Jun 2026 15:24:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wl51y7qD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LB1mEVZP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EF3F10E4D4
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jun 2026 15:13:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 641EC10EA11
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jun 2026 15:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781104429; x=1812640429;
+ t=1781105054; x=1812641054;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=KuMWY3WzrEenlVomSbILEAewRwj73+zsC0gN6pfeJUU=;
- b=Wl51y7qDDXTBEXL2LYg9VzJi01cA6LZUahTR/sxAli0/7ZgDIPmzxn8o
- 1yQ3acOWL73RnunkRg0Lpg/9yEB/FCHjJ88YHqj1Lhjb92JFclBzLMhZ6
- pI8rfkJr5r/395hxj10cobVkXmH9xciKc2zD2l0X8TWmAe4mHsUaVJp2l
- OXbq3X086CNv0WuCConQJZ2hDBuTYICQf4XdLtpgSWlz3rYCGSUbczG0X
- +bHPd2MkgIUXrINUH/ruZRYI9yadnssez2pPNXzj27Xa1nqHU4CZeMoTx
- 4YTarEATm/ren3wV8Dg9+5bQgyW0cUQbDuwmkDk6t2XXUI3rdSI+zP5Qz A==;
-X-CSE-ConnectionGUID: q5hpSw4kTQGzu5LGxzZjiQ==
-X-CSE-MsgGUID: xViEQoipTSGz864xeNI4TA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="93007521"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="93007521"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2026 08:13:48 -0700
-X-CSE-ConnectionGUID: 7i6g3al2SLehyqNZwBNyVA==
-X-CSE-MsgGUID: fYQ2m3LaSgytgLS6x96skw==
+ bh=Nl1pk/nxE6qnaBhY3q9MabVnf17e5x9EvzBOCr5KoiI=;
+ b=LB1mEVZP/m1PCLBw5SeVzNzAm8La9ldG66m/egbkO2NXC1O86XTd1D72
+ HYtDY1PPUo4fq6GJE4Lvv0rHC42S9aZR/lav2wyOR5xK40eTHvsElbMYu
+ mLpi+gfzsoiwCuLegHuYvAfNLjW/M3rTl5J6DY16kOJGev5fOU+iEv7a1
+ mmCpaU0qTDLR3BTvLOW5PiN+2f27RYEnjvD604+E6dIiHrQ9cZtboeNX1
+ vHYErZ4JoP1G7jiNFIf2c2i9iNFnl0D9Zr1LgEd3IF6eUqa+Lz/SMBmLH
+ 8P9z8DPTkobil+iuL7PWksnZAQgzqL9OltbiA9NBl9mIhwpdksJJvPbAx Q==;
+X-CSE-ConnectionGUID: bpZNiSmVQtuJ4AdiOr0jhA==
+X-CSE-MsgGUID: wDy7wmtkT5ONMeQB0DiZOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="84471740"
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="84471740"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2026 08:24:13 -0700
+X-CSE-ConnectionGUID: 87qJW1qqRuWMFDv7XqZKBw==
+X-CSE-MsgGUID: 4whGd6t+TByXihRnvB8YeQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="270202947"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.62])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2026 08:13:47 -0700
-Date: Wed, 10 Jun 2026 18:13:43 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: =?utf-8?Q?Micha=C5=82?= Grzelak <michal.grzelak@intel.com>,
- igt-dev@lists.freedesktop.org, suraj.kandpal@intel.com
-Subject: Re: [PATCH i-g-t v2 5/8] tools/vbt_decode: guess devid from VBT
- signature
-Message-ID: <ail_J2_jB238ws74@intel.com>
-References: <20260608124121.3131410-1-michal.grzelak@intel.com>
- <20260608124121.3131410-6-michal.grzelak@intel.com>
- <0996de35feb92695fa211aafb9adcdce7e770f50@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="243739263"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 08:24:13 -0700
+Date: Wed, 10 Jun 2026 17:24:10 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: enh <enh@google.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH] fix android/riscv64 build with linux 7.0 uapi headers
+Message-ID: <20260610152410.spwucqqsbqwtaygh@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>, enh <enh@google.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <CAJgzZorTqga=4+CnZ=1awR4A9YvV5Kq-Yw8QOS5PSvGoOkZBXw@mail.gmail.com>
+ <CAJgzZooGLKb2SM1PUXeaX1fV3JZ2pU_3THo7USp2RXhxZGdNjQ@mail.gmail.com>
+ <netazu42qvgnkmpd3yp6aftp72tp75oatonzcu5f3ilfkq56j5@6gbgzon56oyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0996de35feb92695fa211aafb9adcdce7e770f50@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+In-Reply-To: <netazu42qvgnkmpd3yp6aftp72tp75oatonzcu5f3ilfkq56j5@6gbgzon56oyz>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,166 +76,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jun 10, 2026 at 05:42:58PM +0300, Jani Nikula wrote:
-> On Mon, 08 Jun 2026, Michał Grzelak <michal.grzelak@intel.com> wrote:
-> > Nowadays Device ID needs to be passed to decode VBT precisely. VBT lacks
-> > it since VBT has been moved from PCI ROM into opregion.
-> >
-> > However we can narrow from which platform VBT originated basing on VBT
-> > signature.
-> >
-> > Add a command-line option to guess devid using VBT signature. Create an
-> > array of signatures and check if any of those is a substring of
-> > signature extracted from given VBT. Map each signature into first Device
-> > ID of a platform picked from include/drm/intel/pciids.h. Log that devid
-> > has not been matched if signature is not found.
-> >
-> > Note that the platform-specific name should appear after "$VBT ", hence
-> > the match.
-> >
-> > Suggested-by: Jani Nikula <jani.nikula@intel.com>
-> > Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
-> > ---
-> >  tools/intel_vbt_decode.c | 36 +++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 35 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-> > index 5681643f4b..ec82b00939 100644
-> > --- a/tools/intel_vbt_decode.c
-> > +++ b/tools/intel_vbt_decode.c
-> > @@ -77,6 +77,7 @@ struct context {
-> >  	uint32_t devid;
-> >  	int panel_type, panel_type2;
-> >  	int sdvo_panel_type;
-> > +	bool devid_from_signature;
-> >  	bool dump_all_panel_types;
-> >  	bool hexdump;
-> >  };
-> > @@ -3693,6 +3694,31 @@ static int get_sdvo_panel_type(struct context *context)
-> >  	return panel_type;
-> >  }
-> >  
-> > +static int
-> > +get_devid_from_signature(const char *vbt_signature)
-> > +{
-> > +	int i;
-> > +
-> > +	const char *signature[] = {"PANTHERLAKE",
-> > +				   "LUNARLAKE",
-> > +				   "METEORLAKE",
-> > +				   "JASPERLAKE",
+Hi Krzysztof,
+On 2026-06-10 at 06:08:43 +0000, Krzysztof Karas wrote:
+> Hi enh,
+> 
+> thanks for noting the differences between current igt and recent
+> linux changes. I'm adding Zbigniew and Kamil here, as they were
+> involved in the introduction of the patch you aim to fix below.
+> 
+> Zbigniew, Kamil anything against the proposed change?
+> 
+> On 2026-06-08 at 16:58:27 -0400, enh wrote:
+> > ping...
+> > 
+> > On Thu, May 21, 2026 at 1:21 PM enh <enh@google.com> wrote:
+> > >
 
-That's a somewhat weird selection of platforms.
+Change looks correct but cannot be apllied without proper s-o-b.
+See some nits below.
 
-> > +				   NULL};
-> > +
-> > +	int devid[] = {0xB080, /* PTL */
-> > +		       0x6420, /* LNL */
-> > +		       0x7D40, /* MTL */
-> > +		       0x4E51, /* JSL */
-> > +		       0x0};
-> 
-> Please use a struct, something along the lines of:
-> 
-> 	static const struct {
-> 		const char *signature;
-> 		uint16_t devid;
-> 	} devids[] = {
-> 		{ .signature = "PANTHERLAKE", .devid = 0xb080, },
-> 		...
-> 	};
-> 
-> Then you can also ditch the /* PTL */ etc. comments.
-> 
-> > +
-> > +	for (i = 0; signature[i]; i++)
-> > +		if (strstr(vbt_signature, signature[i]))
-> > +			return devid[i];
-> > +
-> > +	fprintf(stderr, "Warning: cannot find devid for signature %s\n", vbt_signature);
-> 
-> This should be a fallback, please don't warn anything here. Only one
-> warning for the whole devid thing.
-> 
-> > +	return 0;
-> > +}
-> > +
-> >  static int
-> >  get_device_id(unsigned char *bios, int size)
-> >  {
-> > @@ -4108,6 +4134,7 @@ enum opt {
-> >  	OPT_PANEL_TYPE2,
-> >  	OPT_PANEL_EDID,
-> >  	OPT_PANEL_EDID2,
-> > +	OPT_VBT_DEVID,
-> >  	OPT_ALL_PANELS,
-> >  	OPT_HEXDUMP,
-> >  	OPT_BLOCK,
-> > @@ -4162,6 +4189,8 @@ int main(int argc, char **argv)
-> >  		{ "panel-edid",	required_argument,	NULL,	OPT_PANEL_EDID },
-> >  		{ "panel-type2",	required_argument,	NULL,	OPT_PANEL_TYPE2 },
-> >  		{ "panel-edid2",	required_argument,	NULL,	OPT_PANEL_EDID2 },
-> > +		{ "devid-from-signature",
-> > +				no_argument,		NULL,	OPT_VBT_DEVID },
-> >  		{ "all-panels",	no_argument,		NULL,	OPT_ALL_PANELS },
-> >  		{ "hexdump",	no_argument,		NULL,	OPT_HEXDUMP },
-> >  		{ "block",	required_argument,	NULL,	OPT_BLOCK },
-> > @@ -4207,6 +4236,9 @@ int main(int argc, char **argv)
-> >  		case OPT_PANEL_EDID2:
-> >  			panel_edid2 = optarg;
-> >  			break;
-> > +		case OPT_VBT_DEVID:
-> > +			context.devid_from_signature = true;
-> > +			break;
-> >  		case OPT_ALL_PANELS:
-> >  			context.dump_all_panel_types = true;
-> >  			break;
-> > @@ -4313,6 +4345,8 @@ int main(int argc, char **argv)
-> >  	context.bdb = (const struct bdb_header *)(VBIOS + bdb_off);
-> >  	context.size = size;
-> >  
-> > +	if (!context.devid && context.devid_from_signature)
-> > +		context.devid = get_devid_from_signature((char *) vbt->signature);
-> 
-> This should be last. The priority should be:
-> 
-> 	1. command-line, if set
-> 	2. environment variable, if set
-> 	3. VBIOS, if available
-> 	4. deduce from signature, if requested
-> 
-> Come to think of it, not sure about the "if requested". Maybe just use
-> it if not otherwise specified. This is userspace decoding, not kernel,
-> after all.
-> 
-> Ville, thoughts?
+> > > linux 7.0 adds a #include <linux/const.h> to the uapi header
+> > > include/uapi/header asm-riscv/asm/ptrace.h that breaks the
+> > > igt-gpu-tools build for android (which uses the upstream uapi headers
+> > > directly).
+> > >
+> > > the obvious fix is to just remove the #error (and the already-dead
+> > > duplicate #ifndef below it).
+> > >
+> > > this fixes the build, so it's all the change _i_ need, but i will note
+> > > two things:
+> > >
+> > > 1. your backup _AC() differs from the kernel one in that the kernel
+> > > one in that the kernel uses the double-expansion trick so that if
+> > > _AC() is _applied_ to a macro, that macro is expanded first. this
+> > > doesn't matter for your current use case, but is potentially a sharp
+> > > edge if further uses are added in future.
+> > >
+> > > 2. you don't seem to _need_ the _AC() macro at all? unless i'm missing
+> > > something, it's only used later in this same file by the _UL() and
+> > > _ULL() macros, which are themselves only used later in this same file.
+> > > so you could drop _all_ the macros and just explicitly write 0UL or
+> > > whatever.
+> > >
+> > > so there's potentially more cleanup you could do here, if you're interested.
+> > >
+> > > (i don't have a gitlab account, so i'm assuming you also take patches
+> > > via the mailing list.)
 
-Yeah, could probably just take the fallback when we don't know
-any better.
+No need for gitlab account, just send patch with s-o-b
+e-mail to ML. Also, no nicks in s-o-b, it should be your name,
+or are you ok if someone would take over this change?
 
-But I'm thinking we should just add the devid to the VBT dump produced
-by the kernel. Would avoid having to guess, especially since vendors
-have been known to sometime reuse older VBTs across platforms. Perhaps
-just prepend the VBT image with a PCIR structure which can then be
-parsed by the code in get_device_id().
+> > >
+> > > --- a/include/linux_scaffold.h
+> > > +++ b/include/linux_scaffold.h
+> > > @@ -22,16 +22,12 @@ static inline s64 sign_extend64(u64 value, int index)
+> > >         return (s64)(value << shift) >> shift;
+> > >  }
+> > >
+> > > +/* May already be defined by <linux/const.h> */
+> > >  #ifndef _AC
+> > >  #  define _AC(X, Y)      X##Y
+> > > -#else
+> > > -#  error "_AC macro already defined"
+> > >  #endif
 
-> 
-> >  	if (!context.devid) {
-> >  		const char *devid_string = getenv("DEVICE");
-> >  		if (devid_string) {
-> > @@ -4326,7 +4360,7 @@ int main(int argc, char **argv)
-> >  	if (!context.devid)
-> >  		context.devid = get_device_id(VBIOS, size);
-> >  	if (!context.devid)
-> > -		fprintf(stderr, "Warning: could not find PCI device ID!\n");
-> > +		fprintf(stderr, "Warning: could not find PCI device ID! Use --devid or --devid-from-signature\n");
-> >  
-> >  	if (context.panel_type == -1)
-> >  		context.panel_type = get_panel_type(&context, false);
+This should be __AC, not _AC macro:
+
+#ifndef __AC
+#  define __AC(X, Y)      X##Y
+#else
+#  error "__AC macro already defined"
+#endif
+
+Then below code could stay as is. Btw not sure if __AC 
+error part still should be removed?
+
+Regards,
+Kamil
+
+> > >
+> > >  /* Make IGT build with Kernels < 4.17 */
+> > > -#ifndef _AC
+> > > -#  define _AC(X, Y)    __AC(X, Y)
+> > > -#endif
+> > >  #ifndef _UL
+> > >  #  define  _UL(x)              (_AC(x, UL))
+> > >  #endif
 > 
 > -- 
-> Jani Nikula, Intel
-
--- 
-Ville Syrjälä
-Intel
+> Best Regards,
+> Krzysztof
