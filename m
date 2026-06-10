@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5E24CD8CB9
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Jun 2026 09:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7D9CCD8CB9
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Jun 2026 09:32:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 953BC10E83B;
-	Wed, 10 Jun 2026 09:26:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 69C8710E83B;
+	Wed, 10 Jun 2026 09:32:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KoXLyB+h";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J8YpFdIE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8145710E83A
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jun 2026 09:25:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B8C110E844
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jun 2026 09:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781083536; x=1812619536;
+ t=1781083908; x=1812619908;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=ZfjdZZp5j4K2ogZZmyWhwCvP07JT4laJf3rl5/R0YVA=;
- b=KoXLyB+huK/1NAO50VhFwpngTjPlm2DGnW/D+UoGZvoJ3dGyrZUrCMhL
- 761iI4t7Z66K8cMyjM7xht2P1D1rsDqf8go4LJAvZTb2RgiDNbg8YVHtv
- H1o7rdTAIk4yOyJaherw//vqxmJYbkdXbYA9Au6Dp0E6GwJFoVkGr5pqC
- urrYrFBc7r2yjKlOOfEiDWzlS3NL3CnOuiB9+rqGPGQ9QpekRObOnWHls
- 9E57H2D9n8ytI2xvBuFJyi1kaR3al+vr5t/Jbbr+q6SH23HGBoEuWe5FS
- 3HwQ2df0SpsHRPUxT25Z94Z2QOAkwzTvTz+XX8IghJecwD/ERiNi+F9Cw w==;
-X-CSE-ConnectionGUID: rmle3hNNRPu8eO3ysxnd5w==
-X-CSE-MsgGUID: PmQ7ABiETVCgCh/LcsfVFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="81849595"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="81849595"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2026 02:25:36 -0700
-X-CSE-ConnectionGUID: s1YJMKzBSF6HvYYQfnQb3w==
-X-CSE-MsgGUID: Nd01NP2USQWS2JxiXoDLvw==
+ bh=WMtSw2JnzVYISfASiY5pwF/DKe6G2g8k0PCXXetPA5E=;
+ b=J8YpFdIEtbilZmTCmzOCM3EX0s47SJWaCJw4lIg+bhgyzuBIS8oDWeY0
+ Y1nAyyDCu4MVxKckNe8S0OjTg/Gkgox2kK5kO8acQkp8Y+iYXS8CjAjHL
+ 7igrR8c9hgKz5twaoq9yNKzZmLgsGZAFPIlXYAjx+kgImJOJnxTzrXyji
+ Tyn3jRYQLhu2TSXPpP6YB655jolSC9DYzvUs0hGJHZRrB+ZoW7wP/cVjY
+ i4xJGP0omHfWaqjBpM6m2PssnHYcEhnfg2ypqVCogjY274GtO3CryaJjt
+ SPj3sH0eUvZ5YMIiUkf0DZNDBsf0V2q3Aou3Yx+OLHg6Djdd7lnGUbII7 w==;
+X-CSE-ConnectionGUID: dngJI5h+QU688AgYIXx8bQ==
+X-CSE-MsgGUID: msyLtPMqSeq5ygNsE0iBLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="93359340"
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="93359340"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2026 02:31:47 -0700
+X-CSE-ConnectionGUID: kx03MnXaTg+OB5pva9SU8A==
+X-CSE-MsgGUID: TwAdbRmSQl+UjTF4gYxYFQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="243653716"
-Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2026 02:25:35 -0700
-From: Sowmiya S <sowmiya.s@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="246218966"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 02:31:46 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com,
-	Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v1] tests/kms_concurrent: Skip mode_lo if it requires
- bigjoiner
-Date: Wed, 10 Jun 2026 15:17:09 +0530
-Message-ID: <20260610094710.3410268-1-sowmiya.s@intel.com>
+Cc: jouni.hogander@intel.com, jeevan.b@intel.com,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1] tests/intel/kms_psr2_sf: Restrict ET validation to
+ eDP only
+Date: Wed, 10 Jun 2026 15:02:15 +0530
+Message-ID: <20260610093215.979237-1-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,41 +67,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-get_lowres_mode() may return a high-refresh mode
-(e.g. 1080p@480Hz) that requires bigjoiner, while
-the preferred mode (e.g. 2560x1440@60Hz) does not.
-Committing such a mode on pipe-D (last pipe, no pipe-E)
-causes a hard test failure. Fix this by calling
-igt_check_bigjoiner_support() after setting the
-mode_lo override, and skipping the iteration if
-the pipe cannot satisfy it.
+The current driver supports Early Transport (ET) only for eDP
+Panel Replay. Running this check on other connector types can
+lead to invalid results. Restrict the validation to eDP to keep
+the test aligned with current behavior and avoid unnecessary
+failures.
 
-Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240619062131.4021196-5-jouni.hogander@intel.com
+
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 ---
- tests/kms_concurrent.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/intel/kms_psr2_sf.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 158a13923..10e6b06ef 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -296,6 +296,16 @@ test_resolution_with_output(data_t *data, igt_crtc_t *crtc, int max_planes,
- 		/* switch to lower resolution */
- 		igt_output_override_mode(output, mode_lo);
- 		free(mode_lo);
-+		/*
-+		 * If mode_lo requires bigjoiner support that this pipe cannot
-+		 * satisfy (e.g. a high-refresh mode on pipe-D with no pipe-E
-+		 * available), skip this iteration.
-+		 */
-+		if (!igt_check_bigjoiner_support(&data->display)) {
-+			igt_output_override_mode(output, NULL);
-+			i++;
-+			continue;
-+		}
- 		if (is_amdgpu_device(data->drm_fd))
- 			igt_output_set_crtc(output, NULL);
- 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index 1cc57ad35..66166f3b1 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -238,6 +238,14 @@ typedef struct {
+ 
+ static bool is_et_check_needed(data_t *data)
+ {
++	/*
++	 * FIXME: Restrict ET validation to eDP until DP Panel Replay +
++	 * ALPM is stable.
++	 */
++	if (data->output->config.connector->connector_type !=
++	    DRM_MODE_CONNECTOR_eDP)
++		return false;
++
+ 	switch (data->psr_mode) {
+ 	case PR_MODE_SEL_FETCH:
+ 	case PR_MODE_SEL_FETCH_ET:
 -- 
 2.43.0
 
