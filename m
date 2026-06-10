@@ -4,156 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C0DACD8CB2
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Jun 2026 07:25:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 717B1CD98C7
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Jun 2026 07:46:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F9E810E77E;
-	Wed, 10 Jun 2026 07:25:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1C1AC10E782;
+	Wed, 10 Jun 2026 07:46:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Okah8mGU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dAC0TSxc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9329810E778
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jun 2026 07:25:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 799B410E6C6
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jun 2026 07:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781076312; x=1812612312;
+ t=1781077579; x=1812613579;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=WLoIOy/vR5CV/fvi6hlN0DUV+1+spXnkj3u4hMS5KfQ=;
- b=Okah8mGUFZt2oW1EeyjUs2eh7db9eA3geZV14y57ver0nGqbjDGhVCVY
- Ml6K24L1cyp0khFAZZk3C+hqll/1SzLzoGdWDhLyqCft6bG4CkrDqiqis
- EEV2p+e/x+NTBenuJmBkCDXZHVoV6vOifNd1PrJthifX8uRCzwkftN46L
- CsrdGDBTjUaBwxYZBlX7xXB7nj0MKE3p1RBOAhwiaLG0rajTozCG1Giz4
- zDVHRQ/F7LdF1M/UMRnGPUdORJuex/YYqEvmH1jMTVU+4Toxldb/0rt/E
- Pq/vvn06EpclSwTnweUM8S44GE2dHUiyYUx7Bvnpky7qfDY31MsdT3HVT A==;
-X-CSE-ConnectionGUID: lChUd1GySwCvnK7TtzzwAg==
-X-CSE-MsgGUID: 2glF8a2FSI6OvMUNoISS4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="99279731"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="99279731"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2026 00:25:12 -0700
-X-CSE-ConnectionGUID: 2I9tqmaaR0e0YckRmgA/hg==
-X-CSE-MsgGUID: dtriYsB+Rn+cdBjDjO40+Q==
+ bh=P8avO4J12ZqtIWQElYvLYsUFAGDUuRxhlUzWWJtt/CM=;
+ b=dAC0TSxc7OfUWOemk8ShEXJX/MVT8rrDBz512B4eHkLz3u2bKgkLmMWH
+ jHqS79AMmaAzv0DydixmFZu81c1P6+9zHGrs6CSiOKS4fCmtMtH5DfP1F
+ Nl0MBZAPYGQ/MAXtzJVIaoTocqcPMNoo/jRCw4k2uxMCA5PYu4XFXu46B
+ 9NZiznNrevvPFyp32DkvFYt4/u6daI3DnBDDqBZiEPxY33s++W4sFgeo1
+ Fsa+8kwb/PwsZysA4EMN8anGIu5Hue8M+GNKA8+8DUCIhowI4eI82yVIN
+ szIhAqL95uXzfFJrxkORClKKRnD/9vEGo2hXVYr/s3o3nKEMfeEo4TNZ1 Q==;
+X-CSE-ConnectionGUID: 6XyNyk1QSUaOryLaBPusQQ==
+X-CSE-MsgGUID: extEiur/RoyYmCpW3IenEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="99440471"
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="99440471"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2026 00:46:18 -0700
+X-CSE-ConnectionGUID: lXZ4XY/URHaHpC92/58u5g==
+X-CSE-MsgGUID: uoIiiasNS4iiI7EqkIFxrg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="251014007"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2026 00:25:12 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 10 Jun 2026 00:25:11 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="250031276"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2026 00:46:18 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 10 Jun 2026 00:25:11 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.18) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.37; Wed, 10 Jun 2026 00:46:16 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 10 Jun 2026 00:25:11 -0700
+ 15.2.2562.37 via Frontend Transport; Wed, 10 Jun 2026 00:46:16 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.55) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 10 Jun 2026 00:46:16 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tL5awRdvuzbKmJlFgKe7BL/XnNlHe4UdmyKOV5Bz5n3kG4m5BTPGy1To+RJlmy+DSArfjueza8JuC2LOmv3vCGloTCNJSa04kO1KG5r4pazhu4NEiOabzMz9JRoHiZBcIMtHljFTCkRJsV8DlJH+legP0mua6brnzU5LzbL23WjVemAjSyBSueaLoQwZrtn/Px06zzlu3kY4MlkTUH83SQfRiMDVmgQme/sk9FS09qlPvHLttqVPFv2GVyzNI0gMTUmFFR8hFXJYC4MkQqGnVDiYzpWgNEEn4NtYx9YNvsv2Itw+66d8pg+im5bW5w1qETJFpcn1N94eIJTD1lFIZA==
+ b=tLj7zlxPofQLkGxrA9/9D6I/zApyW2MJA+4FFFwjLhKD76qvy/uIJlFW74ZUq8gbCnZQcUtCxg9fwrjiDQIkjBhzpdzrdR9GQWzBQYW94uNNyQDVYUNoxOk0ERfl/Cv06Bc9ijJwvmEPGdK8Ii1Fn3oB0IZV9sHwIBRRO5koj8Vd2ZXt8xSQreaNjVSofidLCVkJuj15/xR35E+Hce5LmM58phZI0U5951k+O1ji/UIIVn+BggqwM744CW54rhM79XkFchjUV0GYrfam+CCXMy+2WGJCQDvZSaT18MCXLLT16o0qcUwvagZc4eFEsOSEntrf76WfKJZzBsVtDglPvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OirQL/qPzY+GJkiTrC6efW8GkuBO7Nk2bIm48tdoYS8=;
- b=sGBb2vZYZ3p5u/EOJRdcZnLVvaMSVSWbAHo9iaFZABLHQer7UObbgTukY69Q8LPudzY+KK8MDsTRNda7LMeyeBBqAZbhM2dtQHfetIefH0JsGEI1zKWEGYnI3v9fKP5adRRdnb+zbdgva1C5dOFTyChKTlzOzLEEFixMy68BbJi4MJm5CXRn6778/1Tim1pwWtDshiWDMrwJfum8/WkvECc8FlN47sXY3giKzZRByS6YjaCT+Dc6ov0KsVXQxTnDaRTnxRS2JzxlhuOKILVsFAyx+mlyYAJbKQMuOCv5mVP8io559BmpWf88iIMuCyvm1GkyXPkWgYu2iNd81Qu33A==
+ bh=+bkL0dDdgxlJlfz5r4kREBTHrV3OwZkFRgeYQSkj630=;
+ b=AdGmYOqqAOlSqXqoB6jYz3bzO0VrfgdxagxZdXjQdnABcpV5aPMaDRmnlCxWL7Hk/abBZMjFNi7PsCWTzQJZ6fAAfrWkyxi74nGWLyOayBZZQPdmSbFknfKryCxrBHXpD/bNtWHctGDYduC/+JZOtW0oPj5k1HoeBTl71IbP/pinVgYmXQsMLObcRgpMozCyNLnjvxRWpvDD10chrvFUvahem/bOMY6kL4MgoYNu1qaZF6F8wa4EIpLEsfn+n5ZWwF45qzsuHmkXtGdFT/v4GL6aqInixA3awANQNoymjT7BK1Via9/40PHBQqo26cEtNtVA0pcOZ3eQt1Rr5h1u4A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH0PR11MB5880.namprd11.prod.outlook.com (2603:10b6:510:143::14)
- by DS7PR11MB7929.namprd11.prod.outlook.com (2603:10b6:8:e5::7) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.13; Wed, 10 Jun 2026 07:25:09 +0000
+ by SA2PR11MB4908.namprd11.prod.outlook.com (2603:10b6:806:112::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.11; Wed, 10 Jun
+ 2026 07:46:14 +0000
 Received: from PH0PR11MB5880.namprd11.prod.outlook.com
  ([fe80::b706:268e:9753:cdfd]) by PH0PR11MB5880.namprd11.prod.outlook.com
  ([fe80::b706:268e:9753:cdfd%6]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
- 07:25:09 +0000
-Message-ID: <88e4f134-8417-4d18-8a8b-986a08b809cb@intel.com>
-Date: Wed, 10 Jun 2026 12:55:00 +0530
+ 07:46:14 +0000
+Message-ID: <133ca30c-f662-4d09-be29-edb90382c95b@intel.com>
+Date: Wed, 10 Jun 2026 13:16:04 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 2/2] lib/tests: make igt_get_output_max_bpc()
- return status and handle failures in callers
+Subject: Re: [PATCH i-g-t v5 1/2] tests/kms_color: Prepare FB creation for
+ explicit YUV color range handling
 To: Pranay Samala <pranay.samala@intel.com>, <igt-dev@lists.freedesktop.org>
 CC: <karthik.b.s@intel.com>, <sameer.lattannavar@intel.com>
-References: <20260609055659.1025146-1-pranay.samala@intel.com>
- <20260609055659.1025146-3-pranay.samala@intel.com>
+References: <20260605064103.855630-1-pranay.samala@intel.com>
+ <20260605064103.855630-2-pranay.samala@intel.com>
 Content-Language: en-US
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20260609055659.1025146-3-pranay.samala@intel.com>
+In-Reply-To: <20260605064103.855630-2-pranay.samala@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0251.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:223::12) To PH0PR11MB5880.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0017.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:80::12) To PH0PR11MB5880.namprd11.prod.outlook.com
  (2603:10b6:510:143::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5880:EE_|DS7PR11MB7929:EE_
-X-MS-Office365-Filtering-Correlation-Id: fabf9ae8-1254-458c-e513-08dec6c16706
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5880:EE_|SA2PR11MB4908:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4c8cebb-3679-4c5b-f03e-08dec6c458ff
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|23010399003|366016|1800799024|56012099006|3023799007|5023799004|11063799006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: pUmSoNma6qX3m+42/E91r6pDkXvf9sybJtEedfag7ttXjZmP/FG8lU0KTd/BFTMtMCrBw/4LZiy653RmXmKaYSx8lCvSfAb+rZTs+8bOtUYBWHIf5k1HB8/3euNkj/Zyco4e7x5UzsrKKa4YXvVMs9eN5fcYDJrarxhQ8Yg1yGqE0hKXzbITdTLflRO3RcZGL/OVEnTQielQT3aFPt2kvtyGvJTtYMzySMOyj/YTaPriKDz5FzlQLr8NPRIgNcjJA072iER+ytXXcNV7glXG5PeHC7X9+i2sc2rydAZoCsJBC+HFA8bIRz/OZdmsFoFinFrznh9Sm2dndCBD3QjfGitVPcuhYZzzZ+Xsg7ohAa8IOw8essGs1m/bTQFYRZNeE4SIozWCBElk2U+U35/UWhNmPm/g4OS0W1/o7ZobhQeiN4sZm3jS75EZi3wV8jjw1llHg0NtDbgiDz1x5qZi3pQ9V85VKP//CI/MZMrBGzeSuRTGqbQYrx+Wc3ix4X41senRe6vSuiQvSjXaGe05A2hSQ73KEDdXkINuMomHEx58p89oDJmUwgRf3IK9m/uPQWWPEHgmpmU5IxZjtuCxEXD/QOU44GqgJF14xFLEMgldhJB4zcSeHRkUDQVSOXZGaSaERACaM29mKCj/+ukpZejUHig016gVxSpQEKc6Jj8mZuqbMq2ZJ12DWxXOlB+Y
+ ARA:13230040|23010399003|1800799024|376014|366016|4143699003|11063799006|3023799007|22082099003|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info: xqOlIJ0Ls6re3rrUrNSmME+hz784Y1quz2evuOoUV+6JQ4O5tP49EbACna0vWp7rqaNnrWR77gStj74xh/mRGNo3mbdAbGSPXwob1Y7cu1AP0jI5CvGcsZeQM1AexalrJACX75eoXUBP8A4NduMuG8EPHOV8MU+6iwZsET0g+ShY2w6g4b/NotpV1dq5w3fk8I9Is4SnbDyzGydqNUvIgRa+PlOIo2U1kzIauzLQzgs/7wmUsTGwq+PBmfBtCNvjRzjyUsuJ8Lz5k+dJTelTiOslgTeVLesGthOJDg9kO8pETdQ9k6MYAuEO3wUA3RGPdkERmvnkWWjIEmfBztR0NyDIak9aT1XzWFkSZJw7+YuF7dyi8YzS5i6i6tbPpFA9S7YwiwvHMDbBNcbH6wmEk7VgIn0d6dZt9LRQl2U0FmEFQDEFON6KgIT7JLk3o4YqIYNZtBmxBqZESqHbYIq2Fo3UhMrHYNrNDN+BiKbGDIodczsEdbCjBXmjbtEXLf9RfXVS3ym8Cl+UkvF1mSJK79MbWV51r4jtvv4BJZN298OCa4OIK+ZQCC86URxSNJHx4dRBOwmDAyi6sVxRG7BkoPBDyoqJoPL2ihuVHroV6IdyYolzI7Sbzy96gnj7iPMm+J4r0f7KqHHmBDm3x1Qs6EM0GqaGLOcMsSL3cndWdOJ31gi5PlVc/83gk0gwQ9vt
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR11MB5880.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(56012099006)(3023799007)(5023799004)(11063799006)(4143699003)(18002099003)(22082099003);
+ SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(4143699003)(11063799006)(3023799007)(22082099003)(18002099003)(56012099006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dTV3ZklkeVhOSHM2Q2txell1OENtc2UvbmNJaDlvRDIyY3NMa3RFWngrdkY5?=
- =?utf-8?B?d1JKMFZmeXhBcGtBWEVodFZSNmJIWVZ4Y3QwRi91U1VqOVNMNSs4dXJ0bzJv?=
- =?utf-8?B?NzdpUW15U2Q5TTVkcVlVaElaS0todUx4bjI0SlZTdzJRQkZxaCtwaGRaakl1?=
- =?utf-8?B?ZzRKWERrYVN6MVRQY1B4WkxWRlVtR2VkamJFTWM1d3dwNk51Nm5yZEFETzZt?=
- =?utf-8?B?cVBHS01Vd0FQYkxRaTUxM1lITitjMXVVSEZ4UDhhMXQ5MFJnbHZicWNLeVdK?=
- =?utf-8?B?MFlQMFZpSW8rMmhxaGtnVTFTWjVLZkRxcXRDS0FHTVFSL2VmeGFqVFRIdk0r?=
- =?utf-8?B?VFlBYlp3VTIzUmFQS3NHQlg1c2JYRVJjNExkdGZaTU9kZGJjUlVuRXRsbmlI?=
- =?utf-8?B?U3NPRVJpem1qYVAzdmdVZzlJcmh3RUpaekVjTXZ6bXBMMS9ZYUJMUUNHU0Yy?=
- =?utf-8?B?SXhTU2ZYSVhhSlZ3MWliNTU0WXlPYU5uakxabmgvZGRockdoWlNmK0hzdmF2?=
- =?utf-8?B?c0VqSy9aMEoyOTg2R2luejF6WlY0cThCQUoyUi9UTmVla21rZjdpM3FoRTc5?=
- =?utf-8?B?dWR3VDB1bDlQUU1oai9DWDRPa2x4cVNPcmpHS281QlN0TkJVZEhTMnMyYjJS?=
- =?utf-8?B?cVdQMC9ia29ZNEgzRElEbHRicnFPZ0lRWE1HS2JET2RMeUN6Ty9XMzlPZzNU?=
- =?utf-8?B?eFlUUlc3bUViU1hVendGeFJPSkF4VG5pb2hUU0k5Z1RXTzRkTVh3K1dZa0Qy?=
- =?utf-8?B?c0N2YXVUQ3h0ajNxdGVBdGxnU0E3ZjU3WlpxUEVVMGx3dXh0enlyMW13NmNT?=
- =?utf-8?B?M1RpMHg4TElqVkZsVkNKeVQ4QjZ0NFNUekdTQm80SWdzbUNaZXlHblpabkRI?=
- =?utf-8?B?WFJzYU9oZkNGQlBtczNKSU9uZkFHc2VPNVFKRC80TEM5Y2p1bHpTU1R1bXFD?=
- =?utf-8?B?c2xBbWpuTStTdkZyMXFvak5BeGU3M2dXbkVMcE9IUjQwTFhFdVZPcXBCV1BD?=
- =?utf-8?B?bkM2QzBHZkYwMG16UGkySEtSdW05YlhVekpraDI4RUExcGV6eGtlb2Jha0o1?=
- =?utf-8?B?RWZSMEZKaGFJUE03V0IxRjRIV21oNWhsVENxbjlNQ2VFNTJ4R2VlSytBejRu?=
- =?utf-8?B?dXFnUkI1ZFFhVnEzUCtGVFZIRWY4UGFpUVd1UzU5VzBxd2laRjljNDlUZk56?=
- =?utf-8?B?Yk56VnA5SXd4MXlLU2U1c1BTclo2VFJEdzl0SFNBOG1FSVUvK2M5Z3VGUkxx?=
- =?utf-8?B?NExiNEJ3K2xoK01hdmx5YVRJVHVVY1BWNXYxTURnZFl3c3lUME4yYWZKMlFJ?=
- =?utf-8?B?eWRacDZtcURQRHVWejJHVTRNTlU3LzBVTExvNHp0a1dGd01LK3N5M1U4aFpr?=
- =?utf-8?B?MlE3dWlycTJCajd5eWMrVHFMSDdqc3IzZkR4eHJEZGtsOWNmNzUyM1hwdVRt?=
- =?utf-8?B?cVdVbVdTUW9janRWR1N0S3VjUHpZRVVmcmdZUjZJMURrSEpvSndJNnFyTUtk?=
- =?utf-8?B?Q2ZLaWljcmVqcGxwTzJnZ3lyenFvTEw5bS9JUnl3MEdVaVZMQWlNM3U2L0tT?=
- =?utf-8?B?MW90dlcrSnZlQU9ub2NkVVhuRWF6WENsMnZRMTZaejRwbXVTUmlTT0REQnY2?=
- =?utf-8?B?MkJpRlhhcmk0cndoRHpPUm1HWUZFSzI1VmdEYU9OM3J3TGJma3gweUhHcWsr?=
- =?utf-8?B?UVdCZmJvbU1TZGxwWDNSMFRvMDhtQzl4ODhycm15cWxaSGZCVmRlSGtrVXFI?=
- =?utf-8?B?R0ZKdDVCN0ZNTFF1Sk1kY0NYaS9KK090WFJvNjVGK3R0ZEZoZnN3TDlZTkMy?=
- =?utf-8?B?dkJLR3NKYVRzbmRvb2RMRzlpZHVDZFFWS2haQUJSZFRjYjJFZDJZKzlWbWdO?=
- =?utf-8?B?WE0zOWhQSTM4NHFtbC9ySjRsSjNvdXNhZS9ZZlBmem8xNytFemZ0MmdOSGV1?=
- =?utf-8?B?aEN3KzF4am9kdnovTkkrWi9vYkJDcGo0Y2lKb3ZDK1NZWlVRQVcrVjlkYWRM?=
- =?utf-8?B?TlVtRHlyRWVOZi91cVhncXJQQ3R0OWIwZ1VNR2ZXeU9EQ1g1akQ1NDV4QmJv?=
- =?utf-8?B?ZDgvdldOMnorWTZHZEN2QVRuNzFwMlEvOHFJNmtkWlBsUVB4dGxJWjFYc2wz?=
- =?utf-8?B?eURrSS9QNGRYOGEzOXBVK3VwOW1pOEdzT2VZZkhaa3dsRy91cEQwc2hlMDRr?=
- =?utf-8?B?bG1VYXpPMjEwZWVmZVBlTEN6d1VVaGtjZjhIZVhuZFFzTVVhTlF4MDhLK3Rp?=
- =?utf-8?B?Rkc0YkpZK0VEWGdyMEJNWDhWQWNlczdaUHplTytLcEliTFZjakxha0dnNmxt?=
- =?utf-8?B?TVA4bGxxbGVsSkZ2ODlHQkxSQ1RtTW40NnF6cFh4SEVvV0hFVy9Zdz09?=
-X-Exchange-RoutingPolicyChecked: n0qAUBqnj9dsjAZpJ8JxAUQWh0WlGsfuzT9mEtF3aVsq+9FVd5EFq7ixMElpCakj9BRbXlbIrPqfUkIfZjYeMqtQ23bDHZ+haMW8Fhd0HhAkBbRf1aCb/34vna6b2KEo6n7Y9gLX726PDr/8jdAPVBbdgTr5DsnHKCbt8qQlKv4choK65O34WN7aXABzu4CoS1uLrbYUa/j01zh2UNXc6gaCNFWjNaewsl/JTjmjdP+oSz2UyZsdq1SuFonqNtruraor4+VMux+gLWAc7jP2UEler24pmZ2c+In20bTRC2Akx28eKRVC4UIBfnWr+mYrTbpDAAZHJbS5VQP+dTAH1g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: fabf9ae8-1254-458c-e513-08dec6c16706
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NUhMK2RRMHkwajAvOFN5M2V1T0xSU0M1T0dOUDlSZTQyZExIZncyQlhlalNh?=
+ =?utf-8?B?K3hVZXRPcW0yeE1XdC9LTzgzaFZ2bzdzVzZsd2tOWnhQSEIvT0ZSUWVabjRt?=
+ =?utf-8?B?cGxaaG5sNHd1b2t1NGljTTdpd3lPQjRDVlFXK1NnTjVSaEVveUFsdFVGR1lr?=
+ =?utf-8?B?cUNUVE15THZLYUlJc3RESnJmc2puVDhpY3poQTNYQnhLYWtic2xOOENPelQz?=
+ =?utf-8?B?bHI0RFMwdVVsczVTY0t0K2VjUjVzU1VES1M1a2VzVTlpdXhQRE5uVjBub2RV?=
+ =?utf-8?B?bzdFdnNIZTI4VW9QM1JkK2RzOTV2QStIbmdNaVdHVkRqcUFMdElyaVRwSFNs?=
+ =?utf-8?B?ZnFMeXJtTGM4T0xaUGJMOHJtU0VYYjV3Z3N5WmJDTGhkZ1J4NXZUWHhuZEYx?=
+ =?utf-8?B?N21NaEh6cDk5c1cxZG8zSFdxV1VrZG4rSGUxSURHanhTNVZXbTRWcGg5YXNF?=
+ =?utf-8?B?YmM2WFluSERkeWs4UDhMNTYwZlpNZ3RiZU9zZ0MvQ0tsYlBvS3dnNWY1NCtK?=
+ =?utf-8?B?ZE9OK1J2Tjg4Y3ViMDlubitQWlpzcUVCYmdKMnlFbEVEcVFRd21EeWFBaWtM?=
+ =?utf-8?B?UTVaVWJNRTRRb1RHM0RwMTJmS05JYmhqbHVwOTRpT2E5RTZScHRUR0pTak1n?=
+ =?utf-8?B?UTAwcjdLN3dXem83eTlLa1AyZDVPQ3JQSWlyVHgzTTJ3R05kM0piMUU4OWww?=
+ =?utf-8?B?VmZVcFIzRElDcXhPWDZsT3BTUFRoNjdMdEhtOFJ3R21Ga3R5VCtlaGNidE9Z?=
+ =?utf-8?B?all5SzI1TlFFRWU1VFYzTHFKMjBqaW1PWG4yNFE5d2o4aWZaOUxXRGFvVTE1?=
+ =?utf-8?B?STV1czFzZk5PejhEQWtoc20zUnNadUd3MnlaZk54YkVQUGRLZGNPemxiVjYy?=
+ =?utf-8?B?aTRrUEVwMFRLNG5FMkdsME96VlJKeFNwbzhBTVo1MENqcnZnL0kwaWhZc2Z1?=
+ =?utf-8?B?ZUlncllOc2trL0IxS3RyVHQ1SUFWeE9oL2h2RnlqQkNaLzYzTVJoV2RhSlpp?=
+ =?utf-8?B?RElKdzYxSnRxaUttcmwrWUFaOFFpazcxSmpKN0FqekQzR2I5UFhRUFFhREJX?=
+ =?utf-8?B?cS9vU1RUZ2djS1NRRXRUTmhSZk1nbkh2cVhMaS80NkIrL1I5aVB1ZVhXa1VD?=
+ =?utf-8?B?dGpyVGprYXRqcVFTdUVRbG85TGhZOUZ2M2xCQ25RN0FtTmx0aGxkYktNQVFI?=
+ =?utf-8?B?ak9HMisvYzAvTVdwT2h4TlhhZ2pwa1c3d2orSjM4U1RTVjZjOUJMTkNBUVAz?=
+ =?utf-8?B?aFo2ckkwWWpnVHk0SFEyODVwL1NuUUp2NkxTb1ZVNVV5LzVweWZyRlB1dVpJ?=
+ =?utf-8?B?cG1VUVdDdWFESDRNZTVJM2hFS0JtTlA1K1BCcTBaaCt1bWY5R2hoQ2ROY3hK?=
+ =?utf-8?B?ajcvOEdJMk1tM1pTd2t6WHdsWjJ2TFZWY2VBQUFpN3dTeDdRTWZpWWMzN1Az?=
+ =?utf-8?B?YXFtMEdUSWk2c01FRUdjU29palhVL3ExOUwxdUd3bXVJbDg5SnRqT1BwbURp?=
+ =?utf-8?B?a1B1aW9PUTdENUVIMjZoRGZtbU9MZHVNbkdvRnY4Y0hoT3N1RjJsMzljUWtn?=
+ =?utf-8?B?SElteGNLMEJzUDB2cXNMRkl3QnNoUkhzV1cvU3hiQ2pOZ0xwUktnR0JGTmhT?=
+ =?utf-8?B?YVNnMmQvM3hLdCtlbUdxeGg4NlUrbmJYcmgxQzY3d01EWG15cFRPRnZCSlNP?=
+ =?utf-8?B?c21KMzZGSk51QXJYTG1WMVpCRkl5OURZRjNlRzVaTkVidzNiVGFaVnlCdUt3?=
+ =?utf-8?B?NldnRW9ENlh6ZHNqQkFvZGdlL0l4UDg1ZTFmbzRoeUtpZHhXYUI3YzY2dWpS?=
+ =?utf-8?B?QTFmNE5Kb2F3elQxaFIzYlhCRHRva1o3YzNSMS9GNlRHRVllODVxZ0IvTzZY?=
+ =?utf-8?B?THRSM3FQWWpRNkliYnNzWlZNTTFxd3lTeFMxUXNPOEYxVjBHUGdYM2ZGSVZF?=
+ =?utf-8?B?YjJGYjdsT1ZtOFFtb2xOUURqelRNdFVhS04vaGJVMTI1dXAxeGl5aER5NWxT?=
+ =?utf-8?B?WUtaQUt4RUZWc096VmkxLzFFMGFnc05VKzBjK0luZFpCakx1M0lSb0xtMUtS?=
+ =?utf-8?B?eld6UXZ4L3RRUjVuYmlvakswSUIvMXY2MDNWZGFzOHd4Z2ppN0dMcnU2Y0RU?=
+ =?utf-8?B?c0R4VVdCb2hJc1JxalBvWnFORnJzUjcwdXM5Mkl0L3pYdTVmNVpmRnpROGdi?=
+ =?utf-8?B?ZDVwb0dpdG1jRUpLS09vYkxZVmNidVJPbitjdVVGbVpyZllGZG5qQ0kyL3Y1?=
+ =?utf-8?B?Y3pvVVNFM1Uxa25HMHl0MFY0a2RjVGhrb0JFUXdvSC9OandtRjF0aSsrNXZj?=
+ =?utf-8?B?SDB5TjJvejFJb3RrZjNpb0NoTVNTWkFRUVBCSWdFYTMrQnF3MERaUT09?=
+X-Exchange-RoutingPolicyChecked: QKntHcaCtmWeRTnBBVT7OZrGjmHgEwPGFhr7JE2UO0+gYIedDts3yWw2VDyd/o3EjiJeQ1Vxuo53UqAIsykwB8petG2FM7xOQUOu/HaUj005t+VIqXAvDMqQdfvFauQ0jndxrXCBF8ntkewoQgjpfN/6rO0R80+v7jprk5EVZ2IFbVHehnnQCzoFughllmFWzAznWzcvqA5eYQQyonXbUY2Xh0rfnQ3Ho2PeUzdwuLUQIHtdKIxxF/q3kJa41OMXwzBGNmIRIXjy1JrslzY8Z8LIXqWn+UCKu6p/R7OidNIsSml+DdShoDaEoi2KyP60ukeKTnbLWFeKPVEV+/oG3Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4c8cebb-3679-4c5b-f03e-08dec6c458ff
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5880.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 07:25:09.4247 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 07:46:14.4885 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2sKFURKdJ1YpgYjWgTtSn8rGQkRviNrUrqnqczQtbL4cKCSYNR/ToTHo2ss6cKa+rhamBF4P1+utEJgppPtfUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7929
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9IKOo8s8fd9bxnDmg2FFJzNEJyj02C4psSF1Ch+zKj/VUuIH2Ydb7XaCXfdT2sFn/Ey+QUq2SwG09vFYZlbmIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4908
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -172,314 +172,184 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Pranay
 
-Patch LGTM
-
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-
-On 09-06-2026 11:26 am, Pranay Samala wrote:
-> Change igt_get_output_max_bpc() to return bool and fill an output parameter
-> instead of asserting/requiring internally. This lets callers handle debugfs
-> read/parse failures gracefully instead of failing inside the helper.
+On 05-06-2026 12:11 pm, Pranay Samala wrote:
+> Switch framebuffer creation from igt_create_fb() to a common path that can
+> use igt_create_fb_with_bo_size() when explicit YCbCr encoding/range is needed.
 >
-> Update test call sites to use the new boolean-return API so each test can
-> decide how to handle max-bpc read failures. This separates read/parsing
-> failures from capability checks and makes skip/continue decisions explicit
-> with clearer logging, while preserving normal capability validation when
-> max bpc is read successfully.
+> YUV formats may otherwise be interpreted with implicit limited-range defaults
+> (16-235) instead of full range (0-255), which can make color expectations
+> non-deterministic in YUV coverage.
 >
-> v2:
-> - Combine lib & test changes into single patch (Karthik)
+> This is a preparatory cleanup and does not fix a user-visible bug.
+> It refactors FB creation so YUV paths can carry explicit YCbCr parameters,
+> while RGB paths continue using the default framebuffer creation behavior.
 >
 > v3:
-> - Add description for the helper (Swati)
+> - Update commit message (Swati)
 >
 > v4:
-> - Rebase (Jason)
+> - Split the patches (Swati)
+>
+> v5:
+> - Add a common FB helper to centralize framebuffer creation (Swati)
+> - Keep RGB formats on the existing igt_create_fb() path (Swati)
+> - Use explicit range/encoding only for YUV formats (Swati)
+> - Update commit message (Swati)
 >
 > Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 > ---
->   lib/igt_kms.c                          | 41 ++++++++++++++++++--------
->   lib/igt_kms.h                          |  2 +-
->   tests/amdgpu/amd_bypass.c              |  6 +++-
->   tests/amdgpu/amd_dp_dsc.c              | 10 ++++++-
->   tests/intel/kms_dsc.c                  |  5 +++-
->   tests/intel/kms_frontbuffer_tracking.c | 10 ++++++-
->   tests/kms_color_helper.c               |  5 +++-
->   tests/kms_dither.c                     |  9 +++++-
->   tests/kms_hdr.c                        | 16 ++++++++--
->   9 files changed, 83 insertions(+), 21 deletions(-)
+>   tests/kms_color.c | 94 +++++++++++++++++------------------------------
+>   1 file changed, 34 insertions(+), 60 deletions(-)
 >
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 49bdbb358..244c24610 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6769,32 +6769,46 @@ bool igt_is_aux_less_alpm_enabled(int drmfd, char *connector_name)
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index 565edb2dc..f4b792fdd 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -78,6 +78,20 @@
 >   
->   /**
->    * igt_get_output_max_bpc:
-> - * @drmfd: A drm file descriptor
-> - * @connector_name: Name of the libdrm connector we're going to use
-> + * @output: Output to query.
-> + * @maximum: Pointer to store the maximum supported bpc value.
-> + *
-> + * Read and parse the connector's debugfs output_bpc entry to obtain the
-> + * maximum supported bits-per-component value.
->    *
-> - * Returns: The maximum bpc from the connector debugfs.
-> + * Returns: true on success, false on failure.
->    */
-> -unsigned int igt_get_output_max_bpc(igt_output_t *output)
-> +bool igt_get_output_max_bpc(igt_output_t *output, unsigned int *maximum)
+>   IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+>   
+> +static unsigned int create_color_test_fb(data_t *data, int w, int h,
+> +					 uint32_t format, struct igt_fb *fb)
+Nit: is create_test_fb better?
+> +{
+> +	if (igt_format_is_yuv(format))
+> +		return igt_create_fb_with_bo_size(data->drm_fd, w, h, format,
+> +						  DRM_FORMAT_MOD_LINEAR,
+> +						  IGT_COLOR_YCBCR_BT709,
+> +						  IGT_COLOR_YCBCR_FULL_RANGE,
+Should encoding and range be defined as parameters?
+> +						  fb, 0, 0);
+> +
+> +	return igt_create_fb(data->drm_fd, w, h, format,
+> +			     DRM_FORMAT_MOD_LINEAR, fb);
+> +}
+> +
+>   static bool test_pipe_degamma(data_t *data,
+>   			      igt_plane_t *primary)
 >   {
->   	igt_display_t *display = output->display;
->   	int drmfd = display->drm_fd;
->   	char buf[24];
->   	char *start_loc;
->   	int fd, res;
-> -	unsigned int maximum;
-> +
-> +	if (!maximum)
-> +		return false;
-> +
-> +	*maximum = 0;
+> @@ -104,20 +118,12 @@ static bool test_pipe_degamma(data_t *data,
+>   	igt_output_override_mode(output, mode);
 >   
->   	fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
-> -	igt_assert(fd >= 0);
-> +	if (fd < 0)
-> +		return false;
+>   	/* Create a framebuffer at the size of the output. */
+> -	fb_id = igt_create_fb(data->drm_fd,
+> -			      mode->hdisplay,
+> -			      mode->vdisplay,
+> -			      data->drm_format,
+> -			      DRM_FORMAT_MOD_LINEAR,
+> -			      &fb);
+> +	fb_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +				     data->drm_format, &fb);
+>   	igt_assert(fb_id);
 >   
->   	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
-> -	igt_require(res > 0);
-> -
->   	close(fd);
-> +	if (res <= 0)
-> +		return false;
+> -	fb_modeset_id = igt_create_fb(data->drm_fd,
+> -				      mode->hdisplay,
+> -				      mode->vdisplay,
+> -				      data->drm_format,
+> -				      DRM_FORMAT_MOD_LINEAR,
+> -				      &fb_modeset);
+> +	fb_modeset_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +					     data->drm_format, &fb_modeset);
+>   	igt_assert(fb_modeset_id);
 >   
-> -	igt_assert(start_loc = strstr(buf, "Maximum: "));
-> -	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &maximum), 1);
-> +	buf[res < sizeof(buf) ? res : sizeof(buf) - 1] = '\0';
-> +
-> +	start_loc = strstr(buf, "Maximum: ");
-> +	if (!start_loc)
-> +		return false;
+>   	igt_plane_set_fb(primary, &fb_modeset);
+> @@ -191,20 +197,12 @@ static bool test_pipe_gamma(data_t *data,
+>   	igt_output_override_mode(output, mode);
 >   
-> -	return maximum;
-> +	if (sscanf(start_loc, "Maximum: %u", maximum) != 1)
-> +		return false;
-> +
-> +	return true;
->   }
+>   	/* Create a framebuffer at the size of the output. */
+> -	fb_id = igt_create_fb(data->drm_fd,
+> -			      mode->hdisplay,
+> -			      mode->vdisplay,
+> -			      data->drm_format,
+> -			      DRM_FORMAT_MOD_LINEAR,
+> -			      &fb);
+> +	fb_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +				     data->drm_format, &fb);
+>   	igt_assert(fb_id);
 >   
->   /**
-> @@ -6838,9 +6852,12 @@ unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc)
->   static unsigned int get_current_bpc(igt_crtc_t *crtc, igt_output_t *output,
->   				    unsigned int bpc)
->   {
-> -	unsigned int maximum = igt_get_output_max_bpc(output);
-> +	unsigned int maximum;
->   	unsigned int current = igt_get_crtc_current_bpc(crtc);
+> -	fb_modeset_id = igt_create_fb(data->drm_fd,
+> -				      mode->hdisplay,
+> -				      mode->vdisplay,
+> -				      data->drm_format,
+> -				      DRM_FORMAT_MOD_LINEAR,
+> -				      &fb_modeset);
+> +	fb_modeset_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +					     data->drm_format, &fb_modeset);
+>   	igt_assert(fb_modeset_id);
 >   
-> +	igt_require_f(igt_get_output_max_bpc(output, &maximum),
-> +		      "Failed to read max bpc for %s\n", igt_output_name(output));
-> +
->   	igt_require_f(maximum >= bpc,
->   		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
->   		      maximum);
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index e89f1f3b6..4b90577fc 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1322,7 +1322,7 @@ bool igt_fit_modes_in_bw(igt_display_t *display);
->   bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output);
->   bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
->   bool igt_is_aux_less_alpm_enabled(int drmfd, char *connector_name);
-> -unsigned int igt_get_output_max_bpc(igt_output_t *output);
-> +bool igt_get_output_max_bpc(igt_output_t *output, unsigned int *maximum);
->   unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc);
->   void igt_assert_output_bpc_equal(igt_crtc_t *crtc, igt_output_t *output,
->   				 unsigned int bpc);
-> diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
-> index 3c537ea9e..e59691f16 100644
-> --- a/tests/amdgpu/amd_bypass.c
-> +++ b/tests/amdgpu/amd_bypass.c
-> @@ -323,6 +323,7 @@ static void bypass_8bpc_test(data_t *data)
->   	igt_display_t *display = &data->display;
->   	igt_fb_t fb;
->   	enum pattern ptn;
-> +	unsigned int maximum;
+>   	igt_plane_set_fb(primary, &fb_modeset);
+> @@ -285,20 +283,12 @@ static bool test_pipe_legacy_gamma(data_t *data,
+>   	igt_output_override_mode(output, mode);
 >   
->   	test_init(data);
+>   	/* Create a framebuffer at the size of the output. */
+> -	fb_id = igt_create_fb(data->drm_fd,
+> -			      mode->hdisplay,
+> -			      mode->vdisplay,
+> -			      DRM_FORMAT_XRGB8888,
+> -			      DRM_FORMAT_MOD_LINEAR,
+> -			      &fb);
+> +	fb_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +				     DRM_FORMAT_XRGB8888, &fb);
+>   	igt_assert(fb_id);
 >   
-> @@ -345,7 +346,10 @@ static void bypass_8bpc_test(data_t *data)
->   	 * Rx supports only up to 6bpc, Rx-crc will different from crtc-crc
->   	 * with 8bpc.
->   	 */
-> -	igt_skip_on_f(igt_get_output_max_bpc(data->output) <= 6,
-> +	igt_skip_on_f(!igt_get_output_max_bpc(data->output, &maximum),
-> +		      "Failed to read max bpc for %s\n", igt_output_name(data->output));
-> +
-> +	igt_skip_on_f(maximum <= 6,
->   		      "check /sys/kernel/debug/dri/0/eDP-1 (connector)/output_bpc\n");
+> -	fb_modeset_id = igt_create_fb(data->drm_fd,
+> -				      mode->hdisplay,
+> -				      mode->vdisplay,
+> -				      DRM_FORMAT_XRGB8888,
+> -				      DRM_FORMAT_MOD_LINEAR,
+> -				      &fb_modeset);
+> +	fb_modeset_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +					     DRM_FORMAT_XRGB8888, &fb_modeset);
+>   	igt_assert(fb_modeset_id);
 >   
->   	igt_create_fb(data->drm_fd, data->width, data->height,
-> diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
-> index 1742c7df4..dc71e903e 100644
-> --- a/tests/amdgpu/amd_dp_dsc.c
-> +++ b/tests/amdgpu/amd_dp_dsc.c
-> @@ -480,11 +480,19 @@ static void test_dsc_bpc(data_t *data)
+>   	igt_plane_set_fb(primary, &fb_modeset);
+> @@ -520,20 +510,12 @@ static bool test_pipe_ctm(data_t *data,
+>   	igt_output_override_mode(output, mode);
 >   
->   	/* Find max supported bpc */
->   	for_each_crtc(&data->display, crtc) {
-> +		unsigned int maximum;
-> +
->   		output = data->output[crtc->crtc_index];
->   		if (!output || !igt_output_is_connected(output))
->   			continue;
->   		igt_info("Checking bpc support of conn %s\n", output->name);
-> -		max_supported_bpc[crtc->crtc_index] = igt_get_output_max_bpc(output);
-> +		if (!igt_get_output_max_bpc(output, &maximum)) {
-> +			igt_info("Failed to read max bpc for conn %s\n", output->name);
-> +			max_supported_bpc[crtc->crtc_index] = 0;
-> +			continue;
-> +		}
-> +
-> +		max_supported_bpc[crtc->crtc_index] = maximum;
->   	}
+>   	/* Create a framebuffer at the size of the output. */
+> -	fb_id = igt_create_fb(data->drm_fd,
+> -			      mode->hdisplay,
+> -			      mode->vdisplay,
+> -			      data->drm_format,
+> -			      DRM_FORMAT_MOD_LINEAR,
+> -			      &fb);
+> +	fb_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +				     data->drm_format, &fb);
+>   	igt_assert(fb_id);
 >   
->   	/* Setup all outputs */
-> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-> index 3687e795d..056fd37ae 100644
-> --- a/tests/intel/kms_dsc.c
-> +++ b/tests/intel/kms_dsc.c
-> @@ -422,8 +422,11 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
->   		igt_require(is_dsc_supported_by_source(data.drm_fd));
+> -	fb_modeset_id = igt_create_fb(data->drm_fd,
+> -				      mode->hdisplay,
+> -				      mode->vdisplay,
+> -				      data->drm_format,
+> -				      DRM_FORMAT_MOD_LINEAR,
+> -				      &fb_modeset);
+> +	fb_modeset_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +					     data->drm_format, &fb_modeset);
+>   	igt_assert(fb_modeset_id);
+>   	igt_plane_set_fb(primary, &fb_modeset);
 >   
->   		for_each_connected_output(&data.display, output) {
-> +			unsigned int maximum;
-> +
->   			if (is_dsc_supported_by_sink(data.drm_fd, output) &&
-> -			    igt_get_output_max_bpc(output) >= MIN_DSC_BPC)
-> +			    igt_get_output_max_bpc(output, &maximum) &&
-> +			    maximum >= MIN_DSC_BPC)
->   				data.valid_output[data.count++] = output;
->   		}
->   	}
-> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-> index 37706cab5..3adf14bd7 100644
-> --- a/tests/intel/kms_frontbuffer_tracking.c
-> +++ b/tests/intel/kms_frontbuffer_tracking.c
-> @@ -2281,6 +2281,8 @@ static void setup_drrs(void)
+> @@ -654,20 +636,12 @@ static void test_pipe_limited_range_ctm(data_t *data,
+>   		mode = igt_output_get_mode(output);
 >   
->   static void setup_hdr(void)
->   {
-> +	unsigned int maximum;
-> +
->   	if (!igt_output_has_prop(prim_mode_params.output, IGT_CONNECTOR_MAX_BPC) ||
->   	    !igt_output_get_prop(prim_mode_params.output, IGT_CONNECTOR_MAX_BPC) ||
->   	    !igt_output_supports_hdr(prim_mode_params.output)) {
-> @@ -2294,7 +2296,13 @@ static void setup_hdr(void)
->   		return;
->   	}
+>   		/* Create a framebuffer at the size of the output. */
+> -		fb_id = igt_create_fb(data->drm_fd,
+> -				      mode->hdisplay,
+> -				      mode->vdisplay,
+> -				      DRM_FORMAT_XRGB8888,
+> -				      DRM_FORMAT_MOD_LINEAR,
+> -				      &fb);
+> +		fb_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +					     DRM_FORMAT_XRGB8888, &fb);
+>   		igt_assert(fb_id);
 >   
-> -	if (igt_get_output_max_bpc(prim_mode_params.output) < 10) {
-> +	if (!igt_get_output_max_bpc(prim_mode_params.output, &maximum)) {
-> +		igt_info("Can't test HDR: Failed to read max bpc for %s.\n",
-> +			 igt_output_name(prim_mode_params.output));
-> +		return;
-> +	}
-> +
-> +	if (maximum < 10) {
->   		igt_info("Can't test HDR: %s doesn't support 10 bpc.\n", igt_output_name(prim_mode_params.output));
->   		return;
->   	}
-> diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-> index 24663444a..a50ac3a37 100644
-> --- a/tests/kms_color_helper.c
-> +++ b/tests/kms_color_helper.c
-> @@ -40,7 +40,10 @@ bool crtc_output_combo_valid(data_t *data, igt_crtc_t *crtc)
->   bool
->   panel_supports_deep_color(igt_output_t *output)
->   {
-> -	unsigned int maximum = igt_get_output_max_bpc(output);
-> +	unsigned int maximum;
-> +
-> +	if (!igt_get_output_max_bpc(output, &maximum))
-> +		return false;
+> -		fb_modeset_id = igt_create_fb(data->drm_fd,
+> -					      mode->hdisplay,
+> -					      mode->vdisplay,
+> -					      DRM_FORMAT_XRGB8888,
+> -					      DRM_FORMAT_MOD_LINEAR,
+> -					      &fb_modeset);
+> +		fb_modeset_id = create_color_test_fb(data, mode->hdisplay, mode->vdisplay,
+> +						     DRM_FORMAT_XRGB8888, &fb_modeset);
+>   		igt_assert(fb_modeset_id);
+>   		igt_plane_set_fb(primary, &fb_modeset);
 >   
->   	igt_info("Max supported bit depth: %d\n", maximum);
->   
-> diff --git a/tests/kms_dither.c b/tests/kms_dither.c
-> index ca367db61..236e5c7c0 100644
-> --- a/tests/kms_dither.c
-> +++ b/tests/kms_dither.c
-> @@ -206,6 +206,7 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
->   
->   	for_each_connected_output(display, output) {
->   		igt_crtc_t *crtc;
-> +		unsigned int maximum;
->   
->   		if (!is_supported(output)) {
->   			igt_info("Output %s: Doesn't support \"max bpc\" property.\n",
-> @@ -213,7 +214,13 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
->   			continue;
->   		}
->   
-> -		if (igt_get_output_max_bpc(output) < output_bpc) {
-> +		if (!igt_get_output_max_bpc(output, &maximum)) {
-> +			igt_info("Output %s: Failed to read max bpc.\n",
-> +				 igt_output_name(output));
-> +			continue;
-> +		}
-> +
-> +		if (maximum < output_bpc) {
->   			igt_info("Output %s: Doesn't support %d-bpc.\n",
->   				 igt_output_name(output), output_bpc);
->   			continue;
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index 7127a56b3..ebf468e0d 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -254,6 +254,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
->   
->   	for_each_connected_output(display, output) {
->   		igt_crtc_t *crtc;
-> +		unsigned int maximum;
->   
->   		if (!has_max_bpc(output)) {
->   			igt_info("%s: Doesn't support IGT_CONNECTOR_MAX_BPC.\n",
-> @@ -261,7 +262,12 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
->   			continue;
->   		}
->   
-> -		if (igt_get_output_max_bpc(output) < 10) {
-> +		if (!igt_get_output_max_bpc(output, &maximum)) {
-> +			igt_info("%s: Failed to read max bpc.\n", igt_output_name(output));
-> +			continue;
-> +		}
-> +
-> +		if (maximum < 10) {
->   			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
->   			continue;
->   		}
-> @@ -535,6 +541,7 @@ static void test_hdr(data_t *data, uint32_t flags)
->   
->   	for_each_connected_output(display, output) {
->   		igt_crtc_t *crtc;
-> +		unsigned int maximum;
->   
->   		/* To test HDR, 10 bpc is required, so we need to
->   		 * set MAX_BPC property to 10bpc prior to setting
-> @@ -559,7 +566,12 @@ static void test_hdr(data_t *data, uint32_t flags)
->   			continue;
->   		}
->   
-> -		if (igt_get_output_max_bpc(output) < 10) {
-> +		if (!igt_get_output_max_bpc(output, &maximum)) {
-> +			igt_info("%s: Failed to read max bpc.\n", igt_output_name(output));
-> +			continue;
-> +		}
-> +
-> +		if (maximum < 10) {
->   			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
->   			continue;
->   		}
