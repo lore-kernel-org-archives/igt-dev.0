@@ -4,63 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA9C5CD8CB9
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Jun 2026 13:49:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37A5ECD8CB2
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Jun 2026 14:22:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 626C810E987;
-	Wed, 10 Jun 2026 13:49:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D922F10E9C8;
+	Wed, 10 Jun 2026 14:21:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MkS14td+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ug8xyMua";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9A7010E998
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jun 2026 13:49:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2342810E9C6
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jun 2026 14:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781099351; x=1812635351;
+ t=1781101297; x=1812637297;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=1ddRTBTOTd/TSmJSisiYIy5zqyvbXRByqCd/V1TXd+M=;
- b=MkS14td+efEuEiHr6wcagI4emNkbuj46SgRHlrK1hdPUcF6T7llcULme
- 0kVDX6+EOVmQ3djTTci2252s2x3LsvNUihyKQtavmqs03n0t/f9tZTOhq
- XmOjlJkMGmFXXhzKQ7jGNT6N8nzCTA1HZ6MiYfzopqM7hv5GZ2dME6id1
- R2/DrRDDKJ3re6HCofxFX+e9/FqwrbtdQonGNPgOxgsF8pg13JIgISSsV
- 5OLNWvk26lz4uDahh2+NZ1XAxWy4PHK/EZQFSKRmBNAXCwXtMaPKM/NJf
- e23hTHoKaLDMMstj+g9OFjvJVejn83cMDO5YLVfNO8J17yHwx4lyNDv15 Q==;
-X-CSE-ConnectionGUID: 4ILdLERDSPmFwE1ZphWeGw==
-X-CSE-MsgGUID: exctB8kcTjiX7Qt14Oakrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="69432029"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="69432029"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2026 06:49:10 -0700
-X-CSE-ConnectionGUID: 4BVbKKw4QoKishvPlx6r2A==
-X-CSE-MsgGUID: dSt75MExSBSPsWZEfHjrZw==
+ mime-version:in-reply-to;
+ bh=2eyLxfl8sceGOhgk0SE95HLl6LPHTMIiWF+AfTQK4aM=;
+ b=Ug8xyMuaGI9obYlvCJ2O88jyyzgOyIndnh39Er7+7Eri6X2Zyiuju/PS
+ z8AXQsfUkwcTO2AZ1oLWc9o8VUEqgd2Q1Sco1NyPYIydX1FjQTpj9Qv8R
+ PpCx0Oh4Xyh6h2aT8rZ9ej6rO5Hy/Dh7Mrbq51b9pvLwx7fpy380XppuE
+ IdKRIH2njqw1bcU49SrvRM8MEkKh+0/bardzc/fAdsLTL9l08B775zje8
+ 65cnozNq38HNl75M5FFNxY6jFv5NMGV2Efss4+2fbCgidtDOPcxkPGPYA
+ Y4IyA0MIK65Y++cgTAaz0bzrrHMBJMWr3gIl0O0PuHfHn9AgMrJ/vpnLo g==;
+X-CSE-ConnectionGUID: 1uiUSevlS7qAYC4HvRrZ0Q==
+X-CSE-MsgGUID: gPa1TNj1TzS/McPhgcNYdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="85737723"
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="85737723"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2026 07:21:34 -0700
+X-CSE-ConnectionGUID: vtx8RS2ARTqpTx8xr/kF5w==
+X-CSE-MsgGUID: JXrsGG3vTd2bKZMF75f3QQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="251260105"
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; d="scan'208";a="246044716"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 06:49:09 -0700
-Date: Wed, 10 Jun 2026 15:48:55 +0200
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 07:21:33 -0700
+Date: Wed, 10 Jun 2026 16:21:29 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: vitaly.prosyak@amd.com
-Cc: igt-dev@lists.freedesktop.org,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
+To: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
+Cc: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>
 Subject: Re: [PATCH] tests/amdgpu: Add amd_lockdep test for lock ordering
  validation
-Message-ID: <20260610134855.ucil2te4c5hlqti3@kamilkon-DESK.igk.intel.com>
+Message-ID: <20260610142129.log22brfpoxzxuip@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Jesse Zhang <jesse.zhang@amd.com>
+ "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>,
+ "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>
 References: <20260604005925.127581-1-vitaly.prosyak@amd.com>
+ <DM4PR12MB5152C2F5994FCF4154687214E3102@DM4PR12MB5152.namprd12.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260604005925.127581-1-vitaly.prosyak@amd.com>
+In-Reply-To: <DM4PR12MB5152C2F5994FCF4154687214E3102@DM4PR12MB5152.namprd12.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,110 +78,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi vitaly.prosyak,
-On 2026-06-03 at 20:58:53 -0400, vitaly.prosyak@amd.com wrote:
-> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Hi Zhang,,
+On 2026-06-04 at 01:02:30 +0000, Zhang, Jesse(Jie) wrote:
+> AMD General
 > 
-> Exercise lock-heavy GPU code paths concurrently to trigger lockdep
-> warnings when lock ordering is violated. Requires kernel built with
-> CONFIG_PROVE_LOCKING=y and amdgpu lockdep annotation patch.
-> 
-> Subtests:
-> - concurrent-reset-and-submit: GPU reset vs VRAM allocation
-> - concurrent-mmap-and-evict: mmap/munmap vs VRAM pressure
-> - concurrent-userptr-and-reset: USERPTR invalidation vs GPU reset
-> - stress-all-paths: All the above simultaneously
-> 
-> After running, check dmesg for circular locking dependency warnings.
+> Reviewd-by: " Jesse Zhang <jesse.zhang@amd.com>"
 
-I only glanced over beginning of this patch, also
-it was already merged so no need for any action,
-just few nits for future.
+s/Reviewd-by:/Reviewed-by:/
 
-> 
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Jesse Zhang <jesse.zhang@amd.com>
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> ---
->  tests/amdgpu/amd_lockdep.c | 528 +++++++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build   |   1 +
->  2 files changed, 529 insertions(+)
->  create mode 100644 tests/amdgpu/amd_lockdep.c
-> 
-> diff --git a/tests/amdgpu/amd_lockdep.c b/tests/amdgpu/amd_lockdep.c
-> new file mode 100644
-> index 000000000..d97c0747f
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_lockdep.c
-> @@ -0,0 +1,528 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright 2024 Advanced Micro Devices, Inc.
+Please do not use '"' this way, when you have only ascii chars
+you could ommit that, so:
 
-Generally a year should be same as a first year when you send
-a patch to upstream, so 2026. It could be 2024 if you sent it
-in 2024 and now resending with/or without/ any changes.
+Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
 
-> + *
-> + * Test: amd_lockdep - Exercise lock-heavy GPU paths for lockdep validation
-> + *
-> + * This IGT test exercises code paths that involve multiple kernel locks
-> + * simultaneously. When run on a kernel with CONFIG_LOCKDEP=y and the
-> + * amdgpu lockdep annotations patch, lockdep will warn if any code path
-> + * violates the lock ordering hierarchy.
-> + *
-> + * The test checks dmesg for lockdep violations and fails if any are found.
-> + * It also checks the kernel taint flags for TAINT_WARN.
-> + *
-> + * Usage:
-> + *   sudo ./build/tests/amdgpu/amd_lockdep --run-subtest <subtest>
-> + *
-> + * Subtests:
-> + *   concurrent-reset-and-submit  - Submit work while triggering reset
-> + *   concurrent-mmap-and-evict    - mmap/munmap while VRAM eviction runs
-> + *   concurrent-userptr-and-reset - USERPTR invalidation during reset
-> + *   stress-all-paths             - Combined stress of all paths
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_amd.h"
-> +#include "igt_taints.h"
-> +#include "lib/amdgpu/amd_memory.h"
-> +#include "lib/amdgpu/amd_command_submission.h"
-> +
-> +#include <amdgpu.h>
-> +#include <amdgpu_drm.h>
-> +#include <pthread.h>
-> +#include <sys/mman.h>
-> +#include <signal.h>
-> +#include <fcntl.h>
-> +#include <errno.h>
+There could be '"' in case someone name has UTF-8 chars or some
+other which could break tooling, like comma ','. In such cases,
+use '"' only for name, before e-mail, like
 
-Please keep include headers in alphabetical order,
-first system ones, one empty line, then igt headers.
+Reviewed-by: "Jesse Zhang" <jesse.zhang@amd.com>
 
-[cut]
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index d6fe7e909..87cc9c3ee 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -15,6 +15,7 @@ if libdrm_amdgpu.found()
->  			  'amd_cs_nop',
->  			  'amd_cursor_overlay',
->  			  'amd_deadlock',
-> +                          'amd_lockdep',
-
-Here also I would suggest to keep alphabetical order.
-Also looks like some spaces where used, instead of tabs
-+ two spaces?
+If you are in a hurry you could write 'You could add my r-b for
+this patch/series'.
 
 Regards,
 Kamil
 
->                            'amd_dmabuf_unload',
->  			  'amd_dp_dsc',
->  			  'amd_freesync_video_mode',
-> -- 
-> 2.54.0
 > 
+> > -----Original Message-----
+> > From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
+> > Sent: Thursday, June 4, 2026 8:59 AM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Koenig, Christian
+> > <Christian.Koenig@amd.com>; Deucher, Alexander
+> > <Alexander.Deucher@amd.com>; Zhang, Jesse(Jie) <Jesse.Zhang@amd.com>
+> > Subject: [PATCH] tests/amdgpu: Add amd_lockdep test for lock ordering validation
+> >
+> > From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> >
+> > Exercise lock-heavy GPU code paths concurrently to trigger lockdep warnings
+> > when lock ordering is violated. Requires kernel built with
+> > CONFIG_PROVE_LOCKING=y and amdgpu lockdep annotation patch.
+
+[cut]
