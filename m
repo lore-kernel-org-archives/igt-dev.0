@@ -4,98 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A108CD98D2
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 09:08:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28AF2CD98CC
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 09:43:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF98210EDA1;
-	Thu, 11 Jun 2026 09:08:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A0D0410EDA1;
+	Thu, 11 Jun 2026 09:43:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="iZ4f3Pw3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gsuAWIrN";
 	dkim-atps=neutral
-Received: from CY7PR03CU001.outbound.protection.outlook.com
- (mail-westcentralusazon11010019.outbound.protection.outlook.com
- [40.93.198.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC95210ED99
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2026 09:07:59 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AnsNomtBGZtscwBCLw+qr0F0R/ors5Y137RxfKl+EE/Ccqc1JD2texxbqobv9hGtATD5uJoRDcQBbwiigpLvAc05kitoE6tULVpxZI3At0+ZTXhYR/1wmswMonFQGK9FD+4J/B3kGZ68eW/A9j4qwfSPfs2hyrSbCSerDwKAT+Nynrsn6fFeeTxgaDJA1mySeYefcoUL5ZND2IaItdKH62K3jlWOiNAhLpU/TXnoBTqMauH5Eh844IuzalHNBqJp5y1qo1fTgH62IbOF7BGQNKadhdxtPIk+4jfgV4bGhkSXX+HOWOX6Jx53uhQzsUOlDYuTfN7qI9lcLMSK1hAwtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eVNBgcinpAKQTjHefM6RWDjl7lylJ14AedtDrkXir38=;
- b=r4TLM0mIbpQAs6zeZwcSZT+8fBHdOY3PHvMhaLf0SbPtyefe9I50iQJEufsf1jCwV4eAJ2BishDzOzvQ8NM2iou3fYIMjz61ZSrDKpkRr7rOkyiP0F+WKe5OkbJtYz+TJWN5yx8V/9NRwE5MlM0tIXJumyUTzX04vyr3No+nLXJW7DjRe1oUUFGluVzh/Xj4ahn9OgGHXSHdZKW0emBu554dlasm1d2DzjRWiUWIbTHhPGumEQmnDmmA4UAdXd//tQCwY4sPe8RlHzhtJljyjjCMWPJ7Ing+4oEsFmtvV0uz1NeveiBDwVQPNyv9oz3LK5hpfFOqtZ7+E4//rzneEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eVNBgcinpAKQTjHefM6RWDjl7lylJ14AedtDrkXir38=;
- b=iZ4f3Pw3BxwcfIibqnU1krm/YPt9ScthsjWRJ3hzZawEnskvyWSKiKJVrOkbjdbOiyS+9/JN2eBe7nhALk8SF+ZCJ+W2V0yw7QHO2PqkuZzXRUf6wY6MYnXOCqK2WLI7b4lcsDKi3Tc90wnOLqHo2Wp8Hd4GVQ5SJAo4AbX5Sa8=
-Received: from PH8PR05CA0001.namprd05.prod.outlook.com (2603:10b6:510:2cc::22)
- by CHXPR12MB999221.namprd12.prod.outlook.com (2603:10b6:610:2fa::7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.18; Thu, 11 Jun
- 2026 09:07:56 +0000
-Received: from MW1PEPF0001615B.namprd21.prod.outlook.com
- (2603:10b6:510:2cc:cafe::6d) by PH8PR05CA0001.outlook.office365.com
- (2603:10b6:510:2cc::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.10 via Frontend Transport; Thu,
- 11 Jun 2026 09:07:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- MW1PEPF0001615B.mail.protection.outlook.com (10.167.249.86) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.139.1 via Frontend Transport; Thu, 11 Jun 2026 09:07:55 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
- 2026 04:07:54 -0500
-Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 11 Jun 2026 04:07:48 -0500
-From: Jesse Zhang <Jesse.Zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Jesse Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH] lib/amdgpu: check hang slow guilt via QUERY_STATE2
-Date: Thu, 11 Jun 2026 17:07:17 +0800
-Message-ID: <20260611090747.947651-1-Jesse.Zhang@amd.com>
-X-Mailer: git-send-email 2.49.0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61DD310EDA1
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2026 09:43:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1781171010; x=1812707010;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=23Ww0HJYU/n5vjoLRmZCXaeRlxO5N/vip7meyRCU+Ps=;
+ b=gsuAWIrNJ8Qf52rUf/XDYIsyGiIKZN74nS76EW5oKjhirwk+MKcOTFBt
+ quULL9drHtUCAoxy0YGP++YHIJ/tXfWbrNN/xftMrM8H9magB7Z5er9+1
+ lPr3YdLEBrEpsZUrnDOk2MYEZHrgUEf0okpyfTO2tw4J7Y8rjs3aDT87t
+ 6HecE5Cw1GkWI9kdMCxkR0f1Vxo/O7x23bonU6ls8z1Pq4258HK6NZmHa
+ XoI1GPpWhOspsp6LICTPVHfZEfKyOgIiFq/0VgiYbqHRkvbOhdjmySo62
+ Gmt6bFYkSf7jI2RTDp2eSDwp5G1Lh9mADKC9LynWH89bl9IbvvwOEPpNS Q==;
+X-CSE-ConnectionGUID: ykbYxM4QR6mXc7hRulZlNQ==
+X-CSE-MsgGUID: TyK8z4jyRGmfqR4urdCCnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="82041106"
+X-IronPort-AV: E=Sophos;i="6.24,198,1774335600"; d="scan'208";a="82041106"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2026 02:43:29 -0700
+X-CSE-ConnectionGUID: hCj6G1WBRMeGhjIQpij4Uw==
+X-CSE-MsgGUID: J6dLgPUiQV+PjPYc85ehQQ==
+X-ExtLoop1: 1
+Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2026 02:43:29 -0700
+From: Sobin Thomas <sobin.thomas@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	piotr.piorkowski@intel.com
+Cc: kamil.konieczny@intel.com, nishit.sharma@intel.com,
+ Sobin Thomas <sobin.thomas@intel.com>
+Subject: [PATCH i-g-t] tests/xe_debugfs: Add debugfs entry read/write
+ validation in root-dir
+Date: Thu, 11 Jun 2026 09:43:21 +0000
+Message-ID: <20260611094321.367638-1-sobin.thomas@intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW1PEPF0001615B:EE_|CHXPR12MB999221:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3248a3f-348b-4f1a-b5c4-08dec798ece9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|36860700016|376014|82310400026|1800799024|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info: UCSrTh2uMLnXAz1K/yorA1xhwpBK5n6qmc6SoV9NZyVaVAUlZsP/M0mNCfg10UI71aHllNKFl0Uc6YdDs8XkC53qunofov/alkFxk4gx77Iazepgm08k2npwWttTm8v4DgfHFP5tfRlJdpAXlAG0j8EpdhR2JS4oZevtk4/cYVqIj6zM1cnXP/6N2f/nD9XgMa2YBg7S3tbi+4jNoVlaHsboLmA57/86/ytGnVyMm2aoc188CzMZkSs7Fm+ziioP2q7grqL+iD6ictbwR5p8OnBmxwOEXlb2IW3ZFFW0sv5HwHu68zQ6CFPXK4OKmD5LQfMukxz+YARMzvjAwjIEiwG6aX2zpKJM2Gc5Yb5xFBMiR9zX+Ybb8sNWtMZConKpIjiU87ixOHY7gPSJdhTOVkeaH9lsDTi0LPMdqwoBpGY6dsuDhsKrtqfGqCSm4K+ozMBGDOBgEt1Oe4I4CpxtoDZlYZKjSXyjO/EaOjO83AhpQfHZnbGucwO61p1f0Nd80aPsYwZHPi8DaOtbVZ9GK5ebDDSfSTxxKTelprDyTp4iqQaIt+avlwd+WFFlsw4xotobZB/TVidfIg9GzQ7AoXV/CXmfbVm5+uhOrIlM4IjKY5KrL2Oyq5gk+M2iu7vaU/sDtSZn9QxDiSco8cQ0Bwjv3FecpN5LkptDAYewt+/S1DF1d8Ns+zHYavv0wK83w5XjqmJgbx7GWW9k2qDQCj80KBmtxFYk60yYLuqDAZ8=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(23010399003)(36860700016)(376014)(82310400026)(1800799024)(56012099006)(11063799006)(18002099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: FR7o8faqTDNSVnrKqFhkC3rqTiU5z6VqWkPNbDnEkanyHd/WzS5kHdNrHsJIEyxg0ox5U0Nfx+ijdJQzMsawm0Mz3xwqS+ekohlsqZ83d7U0CiT2r5BoEc0aFb+3FiIkBYPdNFuXIDUhjJJ0czkGE7B07BHYkuR91eOqj4oojcVS2Qgjk3HFL2F8N2a40qctVJryeUFuzzfDp/R814N38oZOhH6iUFi5hMN7ZBJumJ8gc8wIp4OD6CTWQ6LW9YdA1tLbXm5MYW7frCn5FNW/iqMhLoFvLIB0ELr0zzMGjLTKWlQq/E98hCefKtDKv5iUqnBL0ZdKkyA2RExjzi3ctD4Yhjulugqn2o41aWaQQ2Xu6gu15YbCbVso3bIm8J3ZaWtf2p7pV4NElqyF0R40rSCxQCXxUqIqeqJ/MCAsd8+11aWyBBiIgRmvxJbl1qdk
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 09:07:55.5773 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3248a3f-348b-4f1a-b5c4-08dec798ece9
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: MW1PEPF0001615B.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHXPR12MB999221
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,65 +67,285 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-amdgpu_memcpy_dispatch_hang_slow_test() submits a hanging dispatch from
-its own context and then verified the reset via the legacy QUERY_STATE
-ioctl (hang_state). That interface is deprecated and cannot attribute a
-reset to a specific context -- it only ever reports UNKNOWN_RESET.
+Extend the root-dir subtest to validate additional Xe debugfs entries:
 
-Check guilt via QUERY_STATE2 instead: once the reset has completed (not
-still in progress), the context that owned the hanging dispatch must be
-flagged AMDGPU_CTX_QUERY2_FLAGS_GUILTY.
+- dgfx_pkg_residencies: Validate counter reads (optional, non-empty)
+- dgfx_pcie_link_residencies: Validate PCIE LINK string content (optional)
+- sriov_info: Validate entry is non-empty (optional)
+- workarounds: Validate entry is non-empty (optional)
+- atomic_svm_timeslice_ms: Validate integer read/write (optional)
+- poor_man_system_atomic_support: Validate boolean read/write (optional)
+- disable_late_binding: Validate boolean read/write (optional)
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
 ---
- lib/amdgpu/compute_utils/amd_dispatch.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ tests/intel/xe_debugfs.c | 198 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 180 insertions(+), 18 deletions(-)
 
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch.c b/lib/amdgpu/compute_utils/amd_dispatch.c
-index 138222cde..76a6c1f55 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch.c
-+++ b/lib/amdgpu/compute_utils/amd_dispatch.c
-@@ -489,8 +489,7 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
- static void
- amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
- 				      uint32_t ip_type, uint32_t priority,
--				      int version, uint32_t gpu_reset_status_equel,
--				      bool user_queue)
-+				      int version, bool user_queue)
+diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+index 587e3e785..5e59424fe 100644
+--- a/tests/intel/xe_debugfs.c
++++ b/tests/intel/xe_debugfs.c
+@@ -39,11 +39,24 @@ IGT_TEST_DESCRIPTION("Validate Xe debugfs devnodes and their contents");
+ 	__m && ((__i) = __builtin_ctz(__m), 1);	\
+ 	__m &= __m - 1)
+ 
++/* Validation types for debugfs read tests */
++enum debugfs_validate_type {
++	VALIDATE_NONE,		/* Just check file exists */
++	VALIDATE_NON_EMPTY,	/* Just check buffer is not empty */
++	VALIDATE_CONTAINS_STR,	/* Check buffer contains expected string */
++	VALIDATE_INT_GE_ZERO,	/* Parse as integer, verify >= 0 */
++	VALIDATE_BOOL,		/* Check bool value (0 or 1) */
++};
++
+ struct check_entry {
+ 	const char *name_fmt;
+ 	int mode;
+-	bool (*condition)(struct xe_device *xe_dev);
++	bool optional;
++	bool (*condition)(struct xe_device *xe_dev, void *params);
++	void *cond_params;
+ 	unsigned int (*iter_mask)(struct xe_device *xe_dev);
++	enum debugfs_validate_type validate;
++	const char *expected_str;
+ };
+ 
+ static unsigned int gt_iter_mask(struct xe_device *xe_dev)
+@@ -56,8 +69,13 @@ static unsigned int tile_iter_mask(struct xe_device *xe_dev)
+ 	return xe_dev->tile_mask;
+ }
+ 
+-static bool has_vram(struct xe_device *xe_dev)
++static bool has_vram_region(struct xe_device *xe_dev, void *params)
  {
- 	amdgpu_context_handle context_handle;
- 	amdgpu_bo_handle bo_src, bo_dst, bo_shader, bo_cmd, resources[4];
-@@ -677,13 +676,16 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
- 		r2 = amdgpu_cs_query_reset_state2(context_handle, &reset_flags);
- 		igt_assert_eq(r2, 0);
++	uint8_t tile = (uint8_t)(uintptr_t)params;
++
++	if (!(xe_dev->tile_mask & (1u << tile)))
++		return false;
++
+ 	return xe_dev->has_vram;
+ }
  
-+		/*
-+		 * The legacy QUERY_STATE ioctl cannot attribute a reset to a
-+		 * specific context, so check guilt via QUERY_STATE2 instead.
-+		 * Once a reset has completed (not still in progress), the
-+		 * context that owned the hanging dispatch must be flagged
-+		 * AMDGPU_CTX_QUERY2_FLAGS_GUILTY.
-+		 */
- 		if (!(reset_flags == 0 ||
- 			  reset_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS)) {
--			/* If we're in reset and reset hasn't occurred, then check
--			 * that the hang state is equal to the GPU reset status and
--			 * assert otherwise.
--			 */
--			igt_assert_eq(hang_state, gpu_reset_status_equel);
-+			igt_assert(reset_flags & AMDGPU_CTX_QUERY2_FLAGS_GUILTY);
+@@ -131,16 +149,140 @@ static bool find_not_tested_files(int dir_fd, struct igt_list_head *hit_entries)
+ 	return found_not_tested;
+ }
+ 
+-static bool file_in_dir_exists(int dirfd, const char *file_name, int mode)
++/* Validate that debugfs buffer is non-empty or contains expected string */
++static bool validate_string(int dirfd, const char *file_name, const char *expected_str)
++{
++	char buf[4096];
++	int ret = 0;
++
++	ret = igt_sysfs_read(dirfd, file_name, buf, sizeof(buf) - 1);
++	if (ret < 0)
++		return false;
++	buf[ret] = '\0';
++
++	/* Check for empty buffer */
++	if (strlen(buf) == 0) {
++		igt_warn("Empty output from %s\n", file_name);
++		return false;
++	}
++
++	/* If expecting specific string, verify it's present */
++	if (expected_str && !strstr(buf, expected_str)) {
++		igt_warn("Expected '%s' not found in %s\n", expected_str, file_name);
++		return false;
++	}
++
++	if (expected_str)
++		igt_debug("Successfully read %s: found '%s'\n", file_name, expected_str);
++	else
++		igt_debug("Successfully read %s: %zd bytes\n%s\n", file_name, strlen(buf), buf);
++
++	return true;
++}
++
++static const char *mode_to_str(int mode)
++{
++	switch (mode & O_ACCMODE) {
++	case O_RDONLY: return "RO";
++	case O_WRONLY: return "WO";
++	case O_RDWR:   return "RW";
++	default:       return "UNKNOWN";
++	}
++}
++
++static bool validate_bool_file(int dirfd, const char *file_name, int mode)
++{
++	int orig_val = 0, read_val = 0, test_val = 0;
++
++	if (igt_sysfs_scanf(dirfd, file_name, "%d", &orig_val) != 1 ||
++	    (orig_val != 0 && orig_val != 1))
++		return false;
++
++	if (mode == O_RDWR) {
++		test_val = (orig_val == 0) ? 1 : 0;
++
++		if (igt_sysfs_printf(dirfd, file_name, "%d", test_val) < 0)
++			return false;
++
++		if (igt_sysfs_scanf(dirfd, file_name, "%d", &read_val) != 1 || read_val != test_val)
++			return false;
++
++		/* Restore original value */
++		if (igt_sysfs_printf(dirfd, file_name, "%d", orig_val) < 0) {
++			igt_warn("Failed to restore original value for %s\n", file_name);
++			return false;
++		}
++	}
++
++	igt_info("Successfully validated %s bool %s\n", mode_to_str(mode), file_name);
++	return true;
++}
++
++static bool validate_int_file(int dirfd, const char *file_name, int mode)
++{
++	long orig_val = 0, new_val = 0, read_val = 0;
++
++	if (igt_sysfs_scanf(dirfd, file_name, "%ld", &orig_val) != 1)
++		return false;
++
++	if (orig_val < 0)
++		return false;
++
++	if (mode == O_RDWR) {
++		new_val = orig_val + 1;
++		if (igt_sysfs_printf(dirfd, file_name, "%ld", new_val) < 0)
++			return false;
++		if (igt_sysfs_scanf(dirfd, file_name, "%ld", &read_val) != 1)
++			return false;
++		if (read_val != new_val)
++			return false;
++		/* Restore original value */
++		if (igt_sysfs_printf(dirfd, file_name, "%ld", orig_val) < 0) {
++			igt_warn("Failed to restore original value for %s\n", file_name);
++			return false;
++		}
++
++		igt_debug("Successfully validated %s int %s: %ld -> %ld -> %ld\n",
++			  mode_to_str(mode), file_name, orig_val, new_val, orig_val);
++	} else {
++		igt_debug("Successfully validated %s int %s: %ld\n",
++			  mode_to_str(mode), file_name, orig_val);
++	}
++	return true;
++}
++
++static bool validate_debugfs_file(int dirfd, const char *file_name, int mode,
++				  enum debugfs_validate_type validate, const char *expected_str)
+ {
+-	int fd = openat(dirfd, file_name, mode);
++	bool result = true;
+ 
+-	if (fd >= 0) {
+-		close(fd);
++	if (faccessat(dirfd, file_name, F_OK, 0) < 0) {
++		igt_debug("%s does not exist\n", file_name);
++		return false;
++	}
++	if (validate == VALIDATE_NONE)
+ 		return true;
++
++	switch (validate) {
++	case VALIDATE_NON_EMPTY:
++		result = validate_string(dirfd, file_name, NULL);
++		break;
++	case VALIDATE_CONTAINS_STR:
++		result = validate_string(dirfd, file_name, expected_str);
++		break;
++	case VALIDATE_INT_GE_ZERO:
++		result = validate_int_file(dirfd, file_name, mode);
++		break;
++	case VALIDATE_BOOL:
++		result = validate_bool_file(dirfd, file_name, mode);
++		break;
++	default:
++		igt_warn("Unknown validate type %d for %s\n", validate, file_name);
++		result = false;
++		break;
+ 	}
+ 
+-	return false;
++	return result;
+ }
+ 
+ /*
+@@ -160,7 +302,7 @@ static int debugfs_validate_entries(struct xe_device *xe_dev, int dir_fd,
+ 		unsigned int mask;
+ 		unsigned int j;
+ 
+-		if (check->condition && !check->condition(xe_dev))
++		if (check->condition && !check->condition(xe_dev, check->cond_params))
+ 			continue;
+ 
+ 		if (!check->iter_mask)
+@@ -209,10 +351,18 @@ static int debugfs_validate_entries(struct xe_device *xe_dev, int dir_fd,
+ #pragma GCC diagnostic pop
+ 			}
+ 
+-			if (!file_in_dir_exists(dir_fd, entry->name, check->mode)) {
+-				igt_warn("Missing debugfs file: %s\n", entry->name);
+-				missing_count++;
++			if (!validate_debugfs_file(dir_fd, entry->name, check->mode,
++						   check->validate, check->expected_str)) {
++				if (check->optional) {
++					igt_info("Optional entry %s not found/invalid (skipped)\n",
++						 entry->name);
++				} else {
++					igt_warn("Missing or invalid debugfs file: %s\n",
++						 entry->name);
++					missing_count++;
++				}
+ 			}
++
  		}
+ 	}
  
- 		r = amdgpu_bo_list_destroy(bo_list);
-@@ -770,7 +772,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
- 					    ring_id, prio, version,
- 						BACKEND_SE_GC_SHADER_EXEC_SUCCESS, NULL, userq);
- 		amdgpu_memcpy_dispatch_hang_slow_test(device_handle, ip_type,
--						      prio, version, AMDGPU_CTX_UNKNOWN_RESET, userq);
-+						      prio, version, userq);
- 
- 		amdgpu_memcpy_dispatch_test(device_handle, NULL, ip_type, ring_id, prio,
- 					    version, BACKEND_SE_GC_SHADER_EXEC_SUCCESS, NULL, userq);
+@@ -239,14 +389,25 @@ out:
+ static void test_root_dir(struct xe_device *xe_dev)
+ {
+ 	const struct check_entry expected_files[] = {
+-		{ "clients", O_RDONLY },
++		{ "clients", O_RDONLY, .validate = VALIDATE_NON_EMPTY },
++		{ "disable_late_binding", O_RDWR, .optional = true, .validate = VALIDATE_BOOL },
+ 		{ "forcewake_all", O_WRONLY },
+ 		{ "gem_names", O_RDONLY },
+-		{ "gt%u", O_RDONLY, NULL, gt_iter_mask }, /* gt0, gt1, ... */
+-		{ "gtt_mm", O_RDONLY },
+-		{ "info", O_RDONLY },
+-		{ "name", O_RDONLY },
+-		{ "tile%u", O_RDONLY, NULL, tile_iter_mask }, /* tile0, tile1, ... */
++		{ "gt%u", O_RDONLY, .iter_mask = gt_iter_mask },
++		{ "gtt_mm", O_RDONLY, },
++		{ "info", O_RDONLY, .validate = VALIDATE_NON_EMPTY },
++		{ "name", O_RDONLY, .validate = VALIDATE_NON_EMPTY },
++		{ "poor_man_system_atomic_support", O_RDWR, .optional = true,
++		  .validate = VALIDATE_BOOL },
++		{ "dgfx_pkg_residencies", O_RDONLY, .optional = true,
++		  .validate = VALIDATE_NON_EMPTY },
++		{ "dgfx_pcie_link_residencies", O_RDONLY, .optional = true,
++		  .validate = VALIDATE_CONTAINS_STR, .expected_str = "PCIE LINK" },
++		{ "sriov_info", O_RDONLY, .optional = true, .validate = VALIDATE_NON_EMPTY },
++		{ "workarounds", O_RDONLY, .optional = true, .validate = VALIDATE_NON_EMPTY },
++		{ "atomic_svm_timeslice_ms", O_RDWR, .optional = true,
++		  .validate = VALIDATE_INT_GE_ZERO },
++		{ "tile%u", O_RDONLY, .iter_mask = tile_iter_mask },
+ 	};
+ 	int debugfs_fd = igt_debugfs_dir(xe_dev->fd);
+ 	int missing_count;
+@@ -276,7 +437,8 @@ static void test_tile_dir(struct xe_device *xe_dev, uint8_t tile)
+ 	const struct check_entry expected_files[] = {
+ 		{ "ggtt", O_RDONLY },
+ 		{ "sa_info", O_RDONLY },
+-		{ "vram_mm", O_RDONLY, has_vram },
++		{ "vram_mm", O_RDONLY, .condition = has_vram_region,
++		  .cond_params = (void *)(uintptr_t)tile },
+ 	};
+ 	int debugfs_fd = igt_debugfs_tile_dir(xe_dev->fd, tile);
+ 	int missing_count;
 -- 
-2.49.0
+2.43.0
 
