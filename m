@@ -4,27 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 962A9CD98CC
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 10:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECDABCD98D2
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 10:43:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 49C1110EE1D;
-	Thu, 11 Jun 2026 10:37:57 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 539BD10EE25;
- Thu, 11 Jun 2026 10:37:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8C8ED10EE2E;
+	Thu, 11 Jun 2026 10:43:27 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="w2N6qlsX";
+	dkim-atps=neutral
+Received: from BYAPR05CU005.outbound.protection.outlook.com
+ (mail-westusazon11010058.outbound.protection.outlook.com [52.101.85.58])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC59910EE2E
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2026 10:43:02 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Iobem+FsloVHZVAOirPPRV6miZHViI0P7aDojFgvAS9g5yCowxRVwWkARqwSysKHLyiOb9ohNUCSD9w6MnfP5X764MrN27Of87sLy4c8vyVNLFQCXh9nqFSF22lvf2/cDjUvjWP8TVans9fBehLY0V9u55fzM1uS1iaeZg8hhvetRzr+60i0e1WUfH3M7Hx7cfH5HFefITPIGnHf38oeloR7/UOhQ5xtkruePzh+eG1kxyCGcWbDSjBVKDjFec5NAnx1wYxOTvgxcF1eMJCrohS/+3OP/42kCfEFQj2W0x5b+Rcj3/fmUcLAz7WoDhqB0kEMRu+qDuE8RQzbLNnkBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2DH4tX0f+Yjl315Zj/C/TKfUuJkNU5z3v/zjpWYNlqY=;
+ b=U97H/ecjOil2PaLM5xttTpIqUYKhjxLrsVunehLpls0/OG2aiDQPQcakuTlms8mCNQYZGsc6b++vxFoA5JUrE0jdo3GPc6rkxrhbExv6z09IDjm+jOm3vgK71q5kMuk8oMLrt7/NeNesCbnAHiWCdd2AHocr/F6Mi3sK5GNsh5XS3RRRftaFo18hi0obsO1aZ//FfkIWheAvCyUW13nUPvfs7/9R6Qaf/GjeBTYLAdvITYj17QYp8OPTPMSeI1dbXeFFDFV8IlE0ZuU/bP5LVmLJZZIgZlpUgqhMe/P0kFEX/XXdc/KnOAx3EXTwWEzFPiq0x+z97h0pWGPhucJPFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2DH4tX0f+Yjl315Zj/C/TKfUuJkNU5z3v/zjpWYNlqY=;
+ b=w2N6qlsX5QaVNbKWErvz24nKbDz8wX6fnziaDH+6t6XIanu10TE1LJ2tkVRQuBFKy7CnLpiGzYp4HTEQu7h7h4J64On7GHn3I1i90Fj9EQnLXHvemy91y8phGMSo2iL1AyKxAdF1vVdelW6zW63QJVvQ3YOiL3BZbXPNXcglYgU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA1PR12MB8190.namprd12.prod.outlook.com (2603:10b6:208:3f2::7)
+ by IA1PR12MB9739.namprd12.prod.outlook.com (2603:10b6:208:465::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
+ 2026 10:43:00 +0000
+Received: from IA1PR12MB8190.namprd12.prod.outlook.com
+ ([fe80::c581:f5cc:c58f:c5de]) by IA1PR12MB8190.namprd12.prod.outlook.com
+ ([fe80::c581:f5cc:c58f:c5de%4]) with mapi id 15.21.0092.017; Thu, 11 Jun 2026
+ 10:43:00 +0000
 Content-Type: multipart/alternative;
- boundary="===============3909416401707909468=="
+ boundary="------------1DqvZFS0UHjArtzg9pXJgsL0"
+Message-ID: <9bade19e-74d4-4509-93bf-4e0d224f9da5@amd.com>
+Date: Thu, 11 Jun 2026 06:42:57 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] lib/amdgpu: check hang slow guilt via QUERY_STATE2
+To: Jesse Zhang <Jesse.Zhang@amd.com>, igt-dev@lists.freedesktop.org
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+References: <20260611090747.947651-1-Jesse.Zhang@amd.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20260611090747.947651-1-Jesse.Zhang@amd.com>
+X-ClientProxiedBy: YT4P288CA0079.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d0::9) To IA1PR12MB8190.namprd12.prod.outlook.com
+ (2603:10b6:208:3f2::7)
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/amdgpu=3A_accept_GUILTY?=
- =?utf-8?q?=5FRESET_from_compute/gfx_hang_slow_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse Zhang" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 11 Jun 2026 10:37:33 -0000
-Message-ID: <178117425333.68367.1656613006792671475@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260611082017.937760-1-Jesse.Zhang@amd.com>
-In-Reply-To: <20260611082017.937760-1-Jesse.Zhang@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB8190:EE_|IA1PR12MB9739:EE_
+X-MS-Office365-Filtering-Correlation-Id: aafbc881-c3d5-402a-28c7-08dec7a634be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|366016|1800799024|23010399003|376014|18002099003|22082099003|11063799006|56012099006|8096899003;
+X-Microsoft-Antispam-Message-Info: KcM45SJzjaLTARrf/deWlnDVDcHJbg7s1kBrwjKm/7oe0aDirlIZ5UIKK7SA2PMggZwuBDpv7Sft8nuxVDfcAydT2bsJbHswPFTTL4bY6nlzJVjtjXGYyMB5fjqvI5J5pbowwcN73kzVn5Lm7HnGDA1WJy/UK6vdw9voIGJPr1MH/+smLSFzllBiH9IEzYJckjLoY1GZZ+mqqyn6C9fLoQh2JaCrLJQM9ZxL+TXB1HxkRfw0LGxvQfyggX0g01CnwoCGjIZZD8YvcByPDZAWysr1yQqPPr049l1mNntCHvSnLVX+vZ8sndPqv1RVDY7Bkjd5vuvPolTAAdOkPV2QyysuOUcwWHr74qKJyvAwdm0i7Zc5L6L2gL8t4hMKKwxRZ95QZh2oK8zRvjfOXAAjvk78WH+28EnoGq/2cLZqA+QisxGCGXdh0opyy16hBNfVIj+RqPZ9tpInLQ2VtkRlSScdp6JwdFEZl2hfclM4sa24NKwMdiaJfvP9i8BM4/YJJIcPLg9uOofaL+y0RCkbgh0YlBY5jqiiOCJKlY8OhMFYBOJ0REPZAQDX8mJXkXla8uHxzyCKRkDaR/zEWCEz8BLqG9AViw0ZrP1mMy4OjsNsQddNkFxJi7OlnnARh8vnAJThD8eut4Fm4J18F0KWGT2sIrgubm+o/ZHZNwpNOG5xW7FvLei1q0daZ6Lh5EjZ
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR12MB8190.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(18002099003)(22082099003)(11063799006)(56012099006)(8096899003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZHo2eGhVdElpQUp1cS9SK2RERU1MNGNwSW5zTXllcDBESHI2d0tWV3F3RHQr?=
+ =?utf-8?B?WmhUS1ZvMElOZ0ViQzIvSEhId1lCUmxPSWZrU253WUFDYVM5Q3hiRVpYMENG?=
+ =?utf-8?B?dk1iQzRXTlBaY3p4RkhZWHJxdVd0WVA3dnRsdUNwVHkwa1FTbnhoTUZlVkdJ?=
+ =?utf-8?B?cGMvUVlzVkUvRXVydHZsM0NnTnhHQUk2Q1grNCtMT1d0cjdHN0dzSXhuVjk1?=
+ =?utf-8?B?aGw3cGNhby9FUHBqR1dEZTZiZzg5eW12UllRVjVoOS8wRVlSZEhqeTBUZVYy?=
+ =?utf-8?B?TkJXUGZTZ0hGVVFrZXQvS3hZVWZjaTA4Q0lhbXRuM2w4WmVqR1pUMkZlMDVM?=
+ =?utf-8?B?bU5VUHFtdkZ5MGE5ZHYzcWZaUVA5dDlIejNMZXhaREN2TmhtQ1hyRUtORXlP?=
+ =?utf-8?B?VFZ0L1A2UDBEK0xXS3pCQ1ViS1ZJWnE3eXJXQjhHT2MvQUxSSnZmVWprbWxP?=
+ =?utf-8?B?dkpuZEZJempCbFVxOU9jMVYvTytDK1kzaW5zNHM1elRWQ3AwTGM2WGVUcFdJ?=
+ =?utf-8?B?YXdUVGZveFB1VmlYdE9vU2ZHdG9CcFMybERmRjloVVppMkp4MU03ZHlSUURw?=
+ =?utf-8?B?MVltSVNUWGFCNkdnREExNnRUMDVrU21iYmlhTXBnTXlsVTZvMk5uK3FvY21u?=
+ =?utf-8?B?M2IxZVE3Z1cxZ0FwbFZjUnlWSnJOa0FRRjljcytkVXpHOGlRRGswUmJuZjcr?=
+ =?utf-8?B?cXVEbjg4dk91MDc3cTFUQ3kyajJGekNjbklSL3F0SmNQZ014VVlVUDR4bDAx?=
+ =?utf-8?B?eWtPL2htTDVJc1NodHE4K3pwcjI5VU9ZVW1tWjdURWxoZTVWV2RtSHFUZGxE?=
+ =?utf-8?B?dWsrdk5iUUpKWm0vZURkL0QzWlAvQWp0MVB5NzljN3RYTytXZkJOMGo2ajkv?=
+ =?utf-8?B?aHdNZjBiYUJyakNzTjdoVWtKeU1kY3R6b2d1OUJISkR0Zkp0RVRYa05ZZTZn?=
+ =?utf-8?B?eE5UZHBGbFNNVnU2ejN5cmJ2R05OS05ENGo3WWl4Uk1LL091eUhhZDNYcW1R?=
+ =?utf-8?B?TUNmejExYy9vTVpSSkVpVUhLZy9xeDM5SHRaSUsrS3o0L09jYi9sSUtDQlYw?=
+ =?utf-8?B?MnVwWWhnZndVc3FHblRLaUF4T2hnYXdtS3pxN0UzR1BQMFhRSWw5ZU1XMVMv?=
+ =?utf-8?B?aGt3TXBsOXNnWTVKZ3ZMYm1Ea1BOTytpU0FFczNsMzlMYS9BZ1V5UnFtMDVj?=
+ =?utf-8?B?QTJaVzZpOVZsNjU3SXlMSDlSdUhtRFZwTjNEOTM2S0NnK1puYWhnd1JxVkNx?=
+ =?utf-8?B?TGxERWYyZklPSUc3Zk4wN3BobEVERCs3Y2tEdi9qQVByVGFCNDhYaTJFMTEv?=
+ =?utf-8?B?eDQ2dndOQ2k5akxZWDhNSjVyMXI1cDJQMXo1SjNwZGVNbVJGb1hQcXo1NERq?=
+ =?utf-8?B?cVlSSFZFVklZQXkwUmtOQ2VtV1dDOWVTVlgxZVBsc3NDMElPWm8xYzZIamw3?=
+ =?utf-8?B?MXlMellPa0xYb0pob3hoeGpJdGx6THNXWFUxZDdBbVgvUGxoc1haeGc4Z0JF?=
+ =?utf-8?B?R25USUh0SFFnSW9QZExPL1JmSHNzWWV6cXYyZmp5WFhoQWEzcXRVVVBVOVNt?=
+ =?utf-8?B?Sm1POG9RYkZYSmJ6SEZyb3ZpQzYwM0FyeDFXbk5CMmZDU1hZTlQzd0dwZVF6?=
+ =?utf-8?B?TThuSk55bjN3KzYrZHU3V3ZGMmRreThXaWJ5cStYaWhnTWljRE1pZTRKNUtE?=
+ =?utf-8?B?Rkx6NjhRbS94NnBiUGNrbk85dDJ5a2pVVXlWNkJNbmZxOWZZei9EMFhnNjQ0?=
+ =?utf-8?B?MG1JS080NHN5WHFnenlTTmE5MzRTM1ZNVWF1S21qMHZkdllLYjdmVVlmK0VB?=
+ =?utf-8?B?NGtTc2g3S1BNcUQyRGMyYkl5c1dBT1VuSW5OeEY3VlN2YUJOZ1h2c0ZvSmlw?=
+ =?utf-8?B?a0RrR05SRmt3azk5elBQWHFUdTFoSE53UEcwWm1IdjdaRXgwQmRaUTFnRzA5?=
+ =?utf-8?B?RjVxOE1NdkM0YmtzQmV6RUE3RHpyU01xQWZLTkpUSDlyUytDNjcxWnduaHhx?=
+ =?utf-8?B?aWY1UmgyUXNiRWhRV1BsbDRVY282cGJZVnJ0ODI4bUZHYThpeVZRdStOWjhq?=
+ =?utf-8?B?eWcvbmlxajRuNXBqU3ZYRlRVYzBtcWhCM0lLTWdrTVZ0bUZZU1VBMDFIdThl?=
+ =?utf-8?B?dUZ1bUFaYTVQb3krSVFKejIyYWZlS3RGeE92akV3RHh6SFRTU3BWNWtKVTNa?=
+ =?utf-8?B?VWhvdGtJQU1pb0U1NnhYMis0dlRmdEZ3SGQwY2NkZ2QxNEdOdFdLYWtHaWF1?=
+ =?utf-8?B?QVNsYWVpR011Mi9XTUV5TFF0VFZwMUpHUmwxTUpEQVVmeGczbUJDSUNvRUlu?=
+ =?utf-8?B?MlFwUFdTTWRaMGtZYkZNZTJKWXphUHJyVEVQOVZrV2JrWEVraGtjUT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aafbc881-c3d5-402a-28c7-08dec7a634be
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8190.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 10:42:59.9631 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9kl94ahi3IiyJzv17XW7WEGnYkueaYUcK9OKroOYIp+KH+tZZrfIIVtBwTSY5mnr4KacRXIrEs80fWxX2Pv6Vg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9739
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,245 +133,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3909416401707909468==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--------------1DqvZFS0UHjArtzg9pXJgsL0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-== Series Details ==
+Please check the compilation with older versions of |libdrm| where |QUERY_STATE2| was not available. We need to add the appropriate |#define| guards and in meson.build  so that the test simply skips or does not run on these systems.
+LGTM, Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com
 
-Series: lib/amdgpu: accept GUILTY_RESET from compute/gfx hang slow test
-URL   : https://patchwork.freedesktop.org/series/168330/
-State : success
+On 2026-06-11 05:07, Jesse Zhang wrote:
+> amdgpu_memcpy_dispatch_hang_slow_test() submits a hanging dispatch from
+> its own context and then verified the reset via the legacy QUERY_STATE
+> ioctl (hang_state). That interface is deprecated and cannot attribute a
+> reset to a specific context -- it only ever reports UNKNOWN_RESET.
+>
+> Check guilt via QUERY_STATE2 instead: once the reset has completed (not
+> still in progress), the context that owned the hanging dispatch must be
+> flagged AMDGPU_CTX_QUERY2_FLAGS_GUILTY.
+>
+> Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+> ---
+>  lib/amdgpu/compute_utils/amd_dispatch.c | 18 ++++++++++--------
+>  1 file changed, 10 insertions(+), 8 deletions(-)
+>
+> diff --git a/lib/amdgpu/compute_utils/amd_dispatch.c b/lib/amdgpu/compute_utils/amd_dispatch.c
+> index 138222cde..76a6c1f55 100644
+> --- a/lib/amdgpu/compute_utils/amd_dispatch.c
+> +++ b/lib/amdgpu/compute_utils/amd_dispatch.c
+> @@ -489,8 +489,7 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+>  static void
+>  amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
+>  				      uint32_t ip_type, uint32_t priority,
+> -				      int version, uint32_t gpu_reset_status_equel,
+> -				      bool user_queue)
+> +				      int version, bool user_queue)
+>  {
+>  	amdgpu_context_handle context_handle;
+>  	amdgpu_bo_handle bo_src, bo_dst, bo_shader, bo_cmd, resources[4];
+> @@ -677,13 +676,16 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
+>  		r2 = amdgpu_cs_query_reset_state2(context_handle, &reset_flags);
+>  		igt_assert_eq(r2, 0);
+>  
+> +		/*
+> +		 * The legacy QUERY_STATE ioctl cannot attribute a reset to a
+> +		 * specific context, so check guilt via QUERY_STATE2 instead.
+> +		 * Once a reset has completed (not still in progress), the
+> +		 * context that owned the hanging dispatch must be flagged
+> +		 * AMDGPU_CTX_QUERY2_FLAGS_GUILTY.
+> +		 */
+>  		if (!(reset_flags == 0 ||
+>  			  reset_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS)) {
+> -			/* If we're in reset and reset hasn't occurred, then check
+> -			 * that the hang state is equal to the GPU reset status and
+> -			 * assert otherwise.
+> -			 */
+> -			igt_assert_eq(hang_state, gpu_reset_status_equel);
+> +			igt_assert(reset_flags & AMDGPU_CTX_QUERY2_FLAGS_GUILTY);
+>  		}
+>  
+>  		r = amdgpu_bo_list_destroy(bo_list);
+> @@ -770,7 +772,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
+>  					    ring_id, prio, version,
+>  						BACKEND_SE_GC_SHADER_EXEC_SUCCESS, NULL, userq);
+>  		amdgpu_memcpy_dispatch_hang_slow_test(device_handle, ip_type,
+> -						      prio, version, AMDGPU_CTX_UNKNOWN_RESET, userq);
+> +						      prio, version, userq);
+>  
+>  		amdgpu_memcpy_dispatch_test(device_handle, NULL, ip_type, ring_id, prio,
+>  					    version, BACKEND_SE_GC_SHADER_EXEC_SUCCESS, NULL, userq);
+--------------1DqvZFS0UHjArtzg9pXJgsL0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-== Summary ==
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="c" data-sfc-cb="" data-hveid="CAAIBBAB" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">Please
+      check the compilation with older versions of <code dir="ltr" class="KDcb0c" data-sfc-root="c" data-sfc-cb="" data-complete="true" style="font-family: monospace; font-size: 14px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0.916667px solid rgb(240, 242, 245);" data-sae="" data-copy-service-computed-style="font-family: monospace; font-size: 14px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0.916667px solid rgb(240, 242, 245);">libdrm</code>
+      where <code dir="ltr" class="KDcb0c" data-sfc-root="c" data-sfc-cb="" data-complete="true" style="font-family: monospace; font-size: 14px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0.916667px solid rgb(240, 242, 245);" data-sae="" data-copy-service-computed-style="font-family: monospace; font-size: 14px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0.916667px solid rgb(240, 242, 245);">QUERY_STATE2</code>
+      was not available. We need to add the appropriate <code dir="ltr" class="KDcb0c" data-sfc-root="c" data-sfc-cb="" data-complete="true" style="font-family: monospace; font-size: 14px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0.916667px solid rgb(240, 242, 245);" data-sae="" data-copy-service-computed-style="font-family: monospace; font-size: 14px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0.916667px solid rgb(240, 242, 245);">#define</code>
+      guards and in meson.build&nbsp; so that the test simply skips or does
+      not run on these systems.<span></span></div>
+    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="c" data-sfc-cb="" data-hveid="CAAIBBAE" data-complete="true" aria-owns="action-menu-parent-container" data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">LGTM,
+      Reviewed-by: Vitaly Prosyak <span class="T286Pc" data-sfc-cp="" data-sfc-root="c" data-sfc-cb="" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);"><a class="moz-txt-link-abbreviated" href="mailto:vitaly.prosyak@amd.com">vitaly.prosyak@amd.com</a></span></div>
+    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="c" data-sfc-cb="" data-hveid="CAAIBBAE" data-complete="true" aria-owns="action-menu-parent-container" data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);"><span class="T286Pc" data-sfc-cp="" data-sfc-root="c" data-sfc-cb="" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);"><br>
+      </span></div>
+    <div class="moz-cite-prefix">On 2026-06-11 05:07, Jesse Zhang wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20260611090747.947651-1-Jesse.Zhang@amd.com">
+      <pre wrap="" class="moz-quote-pre">amdgpu_memcpy_dispatch_hang_slow_test() submits a hanging dispatch from
+its own context and then verified the reset via the legacy QUERY_STATE
+ioctl (hang_state). That interface is deprecated and cannot attribute a
+reset to a specific context -- it only ever reports UNKNOWN_RESET.
 
-CI Bug Log - changes from XEIGT_8958_BAT -> XEIGTPW_15345_BAT
-====================================================
+Check guilt via QUERY_STATE2 instead: once the reset has completed (not
+still in progress), the context that owned the hanging dispatch must be
+flagged AMDGPU_CTX_QUERY2_FLAGS_GUILTY.
 
-Summary
--------
+Signed-off-by: Jesse Zhang <a class="moz-txt-link-rfc2396E" href="mailto:jesse.zhang@amd.com">&lt;jesse.zhang@amd.com&gt;</a>
+---
+ lib/amdgpu/compute_utils/amd_dispatch.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (11 -> 12)
-------------------------------
-
-  Additional (1): bat-adlp-7 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_15345_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#8265])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@kms_dsc@dsc-basic.html
-
-  * igt@xe_evict@evict-beng-small:
-    - bat-adlp-7:         NOTRUN -> [SKIP][2] ([Intel XE#261] / [Intel XE#5564] / [Intel XE#688]) +9 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_evict@evict-beng-small.html
-
-  * igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:
-    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#5563] / [Intel XE#688]) +1 other test skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html
-
-  * igt@xe_exec_balancer@twice-virtual-userptr-invalidate:
-    - bat-adlp-7:         NOTRUN -> [SKIP][4] ([Intel XE#7482]) +17 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_exec_balancer@twice-virtual-userptr-invalidate.html
-
-  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
-    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#288] / [Intel XE#5561]) +32 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:
-    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#2229] / [Intel XE#455]) +2 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#2229] / [Intel XE#5488])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  * igt@xe_mmap@vram:
-    - bat-adlp-7:         NOTRUN -> [SKIP][8] ([Intel XE#1008] / [Intel XE#5591])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_mmap@vram.html
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-adlp-7:         NOTRUN -> [SKIP][9] ([Intel XE#977])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-adlp-7:         NOTRUN -> [SKIP][10] ([Intel XE#2838] / [Intel XE#979])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-adlp-7:         NOTRUN -> [SKIP][11] ([Intel XE#979])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_pat@pat-index-xelpg.html
-
-  
-  [Intel XE#1008]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-  [Intel XE#5488]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5488
-  [Intel XE#5561]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5561
-  [Intel XE#5563]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5563
-  [Intel XE#5564]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5564
-  [Intel XE#5591]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5591
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#7482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482
-  [Intel XE#8265]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8265
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-
-
-Build changes
--------------
-
-  * IGT: IGT_8958 -> IGTPW_15345
-  * Linux: xe-5233-2bfaac2290b880c462bf89fae4fdb1559567af92 -> xe-5238-e9f46237d19eab8041730860e800d92007c3bc7b
-
-  IGTPW_15345: 15345
-  IGT_8958: 8958
-  xe-5233-2bfaac2290b880c462bf89fae4fdb1559567af92: 2bfaac2290b880c462bf89fae4fdb1559567af92
-  xe-5238-e9f46237d19eab8041730860e800d92007c3bc7b: e9f46237d19eab8041730860e800d92007c3bc7b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/index.html
-
---===============3909416401707909468==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/amdgpu: accept GUILTY_RESET from compute/gfx hang slow test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168330/">https://patchwork.freedesktop.org/series/168330/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8958_BAT -&gt; XEIGTPW_15345_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 12)</h2>
-<p>Additional (1): bat-adlp-7 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15345_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8265">Intel XE#8265</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-beng-small:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5564">Intel XE#5564</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5563">Intel XE#5563</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_balancer@twice-virtual-userptr-invalidate:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_exec_balancer@twice-virtual-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482">Intel XE#7482</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5561">Intel XE#5561</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5488">Intel XE#5488</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008">Intel XE#1008</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5591">Intel XE#5591</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15345/bat-adlp-7/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8958 -&gt; IGTPW_15345</li>
-<li>Linux: xe-5233-2bfaac2290b880c462bf89fae4fdb1559567af92 -&gt; xe-5238-e9f46237d19eab8041730860e800d92007c3bc7b</li>
-</ul>
-<p>IGTPW_15345: 15345<br />
-  IGT_8958: 8958<br />
-  xe-5233-2bfaac2290b880c462bf89fae4fdb1559567af92: 2bfaac2290b880c462bf89fae4fdb1559567af92<br />
-  xe-5238-e9f46237d19eab8041730860e800d92007c3bc7b: e9f46237d19eab8041730860e800d92007c3bc7b</p>
-
-</body>
+diff --git a/lib/amdgpu/compute_utils/amd_dispatch.c b/lib/amdgpu/compute_utils/amd_dispatch.c
+index 138222cde..76a6c1f55 100644
+--- a/lib/amdgpu/compute_utils/amd_dispatch.c
++++ b/lib/amdgpu/compute_utils/amd_dispatch.c
+@@ -489,8 +489,7 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+ static void
+ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
+ 				      uint32_t ip_type, uint32_t priority,
+-				      int version, uint32_t gpu_reset_status_equel,
+-				      bool user_queue)
++				      int version, bool user_queue)
+ {
+ 	amdgpu_context_handle context_handle;
+ 	amdgpu_bo_handle bo_src, bo_dst, bo_shader, bo_cmd, resources[4];
+@@ -677,13 +676,16 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
+ 		r2 = amdgpu_cs_query_reset_state2(context_handle, &amp;reset_flags);
+ 		igt_assert_eq(r2, 0);
+ 
++		/*
++		 * The legacy QUERY_STATE ioctl cannot attribute a reset to a
++		 * specific context, so check guilt via QUERY_STATE2 instead.
++		 * Once a reset has completed (not still in progress), the
++		 * context that owned the hanging dispatch must be flagged
++		 * AMDGPU_CTX_QUERY2_FLAGS_GUILTY.
++		 */
+ 		if (!(reset_flags == 0 ||
+ 			  reset_flags &amp; AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS)) {
+-			/* If we're in reset and reset hasn't occurred, then check
+-			 * that the hang state is equal to the GPU reset status and
+-			 * assert otherwise.
+-			 */
+-			igt_assert_eq(hang_state, gpu_reset_status_equel);
++			igt_assert(reset_flags &amp; AMDGPU_CTX_QUERY2_FLAGS_GUILTY);
+ 		}
+ 
+ 		r = amdgpu_bo_list_destroy(bo_list);
+@@ -770,7 +772,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
+ 					    ring_id, prio, version,
+ 						BACKEND_SE_GC_SHADER_EXEC_SUCCESS, NULL, userq);
+ 		amdgpu_memcpy_dispatch_hang_slow_test(device_handle, ip_type,
+-						      prio, version, AMDGPU_CTX_UNKNOWN_RESET, userq);
++						      prio, version, userq);
+ 
+ 		amdgpu_memcpy_dispatch_test(device_handle, NULL, ip_type, ring_id, prio,
+ 					    version, BACKEND_SE_GC_SHADER_EXEC_SUCCESS, NULL, userq);
+</pre>
+    </blockquote>
+  </body>
 </html>
 
---===============3909416401707909468==--
+--------------1DqvZFS0UHjArtzg9pXJgsL0--
