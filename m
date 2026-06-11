@@ -4,65 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2158CD98CC
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 15:27:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BA2FCD98CE
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 15:31:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A5A010E839;
-	Thu, 11 Jun 2026 15:27:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E509210EEEA;
+	Thu, 11 Jun 2026 15:31:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XSEEflFr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ELt/+Cnm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2EA110E839
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2026 15:26:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D279710E839
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2026 15:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781191617; x=1812727617;
+ t=1781191894; x=1812727894;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Osm+rqPVH+uHklMyN3uTWHn/mvPJsVwhscTFdgyX3jg=;
- b=XSEEflFrqP5YoHiBZ+qMZjuM1dcvdvLYypWH4paCoAJvC+EC69nY+ZIl
- MJnRfjnZWMpylK/60zPhOhRtj1Ay9iRzIx9iYelixS16DeoeWmkBVsbmf
- 32tguoG+1vstlcU5rUNvgiyFxwI0hTTpAHZ4Qbgo/lMLU5TWpuvx4CH3I
- gpoQxBEA8JxnyEyxa84GIeqTBsB0XBBCdCQ8kbPuNQgTk/3tgmsTdpgYT
- CHJvn8TRuQnSl8DA1W64cUVviqW0/bmimI0fzOUt8hDMTKcXLmihguITB
- jFK02ZqoaZIGSKSOkXZUmag6Y+Ano1O3DfSs4+2hE/r8ip6wm6cbKNvdv Q==;
-X-CSE-ConnectionGUID: T4ACPWELRsSie3/iDUqZzw==
-X-CSE-MsgGUID: EhIG/vOuQuWCyyLrTwB6HA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="99430335"
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="99430335"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2026 08:26:56 -0700
-X-CSE-ConnectionGUID: slSaBSfASmqxTN0tkXKaPQ==
-X-CSE-MsgGUID: dX27AdfiQRa4HJr2CfAkIQ==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=pY2UNZQzv0o1vYtP1eUvVeP2hhjMh85Em/2cxhB0lDQ=;
+ b=ELt/+Cnms2kI6DYW6vQmc3I4BDerMr5Af10UjYszkXMfSPU0Ar+soGrT
+ rjF+KPbGzuSfejPI5tDmemmrj+AHUMQ9Zz9NoI/hR58IuVOxHF+yBQj8f
+ PtwREhSjMh2tDjsmgpbEV/V7/Q+MGjG0uD1/Wh9/DhzuiXXwku0RDw0EJ
+ ijE0u3rgPFLITfW0PjEp6I6ooYrIDnmwDdtoq/HHriCRjWFMMEz2CJPHz
+ ibpmJCtOveOzSNfGyhWbFVPQZHcTnqBW4GbsMEjYqog31Jdp56Pc9Hmlu
+ 6L2unfRKvZtb9tAZ9t7wrANlsLk+a4R+74LQZ3Daharn7qsJvQeuoJxmN Q==;
+X-CSE-ConnectionGUID: bUBBvssHTVSTPGo7G6CpPQ==
+X-CSE-MsgGUID: It/hojyUTOeZ5OSGmb+ABQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="93494075"
+X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="93494075"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2026 08:31:33 -0700
+X-CSE-ConnectionGUID: hU9ycf40RJ++HRHqK0DVtA==
+X-CSE-MsgGUID: SQvrNz+xSOWecbM6gF9kvA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="244068678"
+X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="251452997"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 08:26:54 -0700
-Date: Thu, 11 Jun 2026 17:26:52 +0200
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 08:31:32 -0700
+Date: Thu, 11 Jun 2026 17:31:29 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Nitin Gote <nitin.r.gote@intel.com>, igt-dev@lists.freedesktop.org,
- janusz.krzysztofik@linux.intel.com, lukasz.laguna@intel.com,
- matthew.brost@intel.com, michal.wajdeczko@intel.com,
- stuart.summers@intel.com
-Subject: Re: [PATCH i-g-t 2/2] tests/core_hotunplug: Add
- exec-fork-unbind-rebind subtest
-Message-ID: <20260611152652.kbtmzajle6difmk7@kamilkon-DESK.igk.intel.com>
+To: vitaly.prosyak@amd.com
+Cc: igt-dev@lists.freedesktop.org,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
+Subject: Re: [PATCH] tests/amdgpu: amd_lockdep: fix include order, copyright
+ year and meson.build
+Message-ID: <20260611153129.c6xxsnau5bza2ioh@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Nitin Gote <nitin.r.gote@intel.com>, igt-dev@lists.freedesktop.org,
- janusz.krzysztofik@linux.intel.com, lukasz.laguna@intel.com,
- matthew.brost@intel.com, michal.wajdeczko@intel.com,
- stuart.summers@intel.com
-References: <20260611142438.260647-1-marcin.bernatowicz@linux.intel.com>
- <20260611142438.260647-3-marcin.bernatowicz@linux.intel.com>
+ vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Jesse Zhang <jesse.zhang@amd.com>
+References: <20260610180545.71343-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260611142438.260647-3-marcin.bernatowicz@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260610180545.71343-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,149 +76,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Marcin,
-On 2026-06-11 at 16:24:38 +0200, Marcin Bernatowicz wrote:
-> Add coverage for unbind/rebind with live child-process GPU handles.
+Hi Vitaly,
+On 2026-06-10 at 14:05:35 -0400, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > 
+> Address review feedback from Kamil Konieczny:
+> - Reorder includes: system headers first (alphabetical), then
+>   amdgpu headers, then IGT headers (alphabetical)
+> - Fix copyright year to 2026
+> - Fix meson.build alphabetical ordering (amd_lockdep after amd_dmabuf_unload)
 
-There is already a change proposed by Nitin here:
-https://patchwork.freedesktop.org/series/166744/
-tests/core_hotunplug: add *-with-load subtests exercising GPU workload during hotplug
-
-If there are bugs uncovered with it then it should be merged
-first.
-
-+cc Nitin Gote <nitin.r.gote@intel.com>
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-> Cc: Stuart Summers <stuart.summers@intel.com>
-> ---
->  tests/core_hotunplug.c | 98 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 98 insertions(+)
 > 
-> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> index 7c9dae1bf..2e5aa8d5c 100644
-> --- a/tests/core_hotunplug.c
-> +++ b/tests/core_hotunplug.c
-> @@ -605,6 +605,92 @@ static void hotunbind_rebind(struct hotunplug *priv)
->  	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
->  }
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Jesse Zhang <jesse.zhang@amd.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> ---
+>  tests/amdgpu/amd_lockdep.c | 21 +++++++++++----------
+>  tests/amdgpu/meson.build   |  2 +-
+>  2 files changed, 12 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tests/amdgpu/amd_lockdep.c b/tests/amdgpu/amd_lockdep.c
+> index d97c0747f..48d7ccafa 100644
+> --- a/tests/amdgpu/amd_lockdep.c
+> +++ b/tests/amdgpu/amd_lockdep.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: MIT
+>  /*
+> - * Copyright 2024 Advanced Micro Devices, Inc.
+> + * Copyright 2026 Advanced Micro Devices, Inc.
+>   *
+>   * Test: amd_lockdep - Exercise lock-heavy GPU paths for lockdep validation
+>   *
+> @@ -22,19 +22,20 @@
+>   *   stress-all-paths             - Combined stress of all paths
+>   */
 >  
-> +/*
-> + * Start a spinner in a child process, then end it while keeping child-side
-> + * handles alive. Verifies the parent can unbind and rebind the driver while
-> + * those child handles are still open.
-> + */
-> +static void exec_fork_unbind_rebind_run(struct hotunplug *priv)
-> +{
-> +	struct igt_helper_process child = {};
-> +	int ready_pipe[2], stop_pipe[2];
-> +	char msg = 0;
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <pthread.h>
+> +#include <signal.h>
+> +#include <sys/mman.h>
 > +
-> +	igt_assert_eq(pipe(ready_pipe), 0);
-> +	igt_assert_eq(pipe(stop_pipe), 0);
+> +#include <amdgpu.h>
+> +#include <amdgpu_drm.h>
 > +
-> +	igt_fork_helper(&child) {
-> +		const intel_ctx_t *ctx = NULL;
-> +		uint64_t ahnd = 0;
-> +		igt_spin_t *spin;
-> +		int fd;
-> +
-> +		close(ready_pipe[0]);
-> +		close(stop_pipe[1]);
-> +
-> +		fd = local_drm_open_driver(false, "", " for spinner workload child");
-> +
-> +		if (is_i915_device(fd)) {
-> +			ctx = intel_ctx_create_all_physical(fd);
-> +			ahnd = get_reloc_ahnd(fd, ctx->id);
-> +			spin = igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx,
-> +					    .flags = IGT_SPIN_POLL_RUN);
-> +		} else {
-> +			ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-> +			spin = igt_spin_new(fd, .ahnd = ahnd);
-> +		}
-> +
-> +		igt_spin_busywait_until_started(spin);
-> +		igt_spin_end(spin);
-> +
-> +		msg = 1;
-> +		igt_assert_eq(write(ready_pipe[1], &msg, sizeof(msg)), sizeof(msg));
-> +		close(ready_pipe[1]);
-> +
-> +		/*
-> +		 * Block until parent completes the driver unbind.
-> +		 * Intentionally skip spinner teardown: we want handles (ex. exec_queue) to
-> +		 * remain alive until fd close.
-> +		 */
-> +		read(stop_pipe[0], &msg, sizeof(msg));
-> +		close(stop_pipe[0]);
-> +
-> +		if (ahnd)
-> +			put_ahnd(ahnd);
-> +		fd = close_device(fd, "child late ", "rebound ");
-> +		igt_assert_eq(fd, -1);
-> +	}
-> +
-> +	close(ready_pipe[1]);
-> +	close(stop_pipe[0]);
-> +
-> +	igt_assert_eq(read(ready_pipe[0], &msg, sizeof(msg)), sizeof(msg));
-> +	close(ready_pipe[0]);
-> +
-> +	driver_unbind(priv, "", 0);
-> +
-> +	close(stop_pipe[1]);
-> +	igt_wait_helper(&child);
-> +
-> +	driver_bind(priv, 0);
-> +}
-> +
-> +/**
-> + * SUBTEST: exec-fork-unbind-rebind
-> + * Description: Check if the driver can be cleanly unbound and rebound while
-> + *		child-process handles remain open
-> + */
-> +static void exec_fork_unbind_rebind(struct hotunplug *priv)
-> +{
-> +	igt_require(priv->chipset == DRIVER_INTEL || priv->chipset == DRIVER_XE);
-> +
-> +	pre_check(priv);
-> +
-> +	exec_fork_unbind_rebind_run(priv);
-> +
-> +	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
-> +}
-> +
->  static void hotunplug_rescan(struct hotunplug *priv)
->  {
->  	pre_check(priv);
-> @@ -757,6 +843,18 @@ int igt_main()
->  			recover(&priv);
->  	}
+>  #include "igt.h"
+>  #include "igt_amd.h"
+>  #include "igt_taints.h"
+> -#include "lib/amdgpu/amd_memory.h"
+>  #include "lib/amdgpu/amd_command_submission.h"
+> -
+> -#include <amdgpu.h>
+> -#include <amdgpu_drm.h>
+> -#include <pthread.h>
+> -#include <sys/mman.h>
+> -#include <signal.h>
+> -#include <fcntl.h>
+> -#include <errno.h>
+> +#include "lib/amdgpu/amd_memory.h"
 >  
-> +	igt_fixture()
-> +		post_healthcheck(&priv);
-> +
-> +	igt_subtest_group() {
-> +		igt_describe("Check if the driver can be cleanly unbound and rebound while child-process handles remain open");
-> +		igt_subtest("exec-fork-unbind-rebind")
-> +			exec_fork_unbind_rebind(&priv);
-> +
-> +		igt_fixture()
-> +			recover(&priv);
-> +	}
-> +
->  	igt_fixture()
->  		post_healthcheck(&priv);
->  
+>  #define BO_SIZE (4 * 1024 * 1024)  /* 4MB */
+>  #define NUM_BOS 16
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index d7482318a..08206f8c8 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -15,7 +15,6 @@ if libdrm_amdgpu.found()
+>  			  'amd_cs_nop',
+>  			  'amd_cursor_overlay',
+>  			  'amd_deadlock',
+> -			  'amd_lockdep',
+>  			  'amd_dmabuf_unload',
+>  			  'amd_dp_dsc',
+>  			  'amd_freesync_video_mode',
+> @@ -29,6 +28,7 @@ if libdrm_amdgpu.found()
+>  			  'amd_jpeg_dec',
+>  			  'amd_jpeg_queue',
+>  			  'amd_link_settings',
+> +			  'amd_lockdep',
+>  			  'amd_max_bpc',
+>  			  'amd_mem_leak',
+>  			  'amd_mode_switch',
 > -- 
-> 2.43.0
+> 2.54.0
 > 
