@@ -4,65 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11C63CD98CE
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 14:01:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15B90CD98CC
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 14:21:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A9BFA10EF4D;
-	Thu, 11 Jun 2026 14:01:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A1F0410EF5E;
+	Thu, 11 Jun 2026 14:21:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q1datlE3";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="lWq6TTRj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4240810EF4D
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2026 14:00:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781186460; x=1812722460;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=2ZeK+qShK4A26oX322wHiDcs6qLohqF8yN/RvQpEG7E=;
- b=Q1datlE3soYE/gUaYRAvzhx55sqkrZJO2iVhpnZOTl7PtcBf6NAoRH0D
- 7J8pB1ETUSYk3Z2mo1gxT98h6EgIU+LdrF+bwOSwiq6suNDqGYHtmyR1H
- B+UYLxvspg2yD3OaHTZC2axO1s059b0Czo306RaaRD3PIR0AW4iiKcRyN
- TWx0YWjqeiv9OGFK/ZWStUFqenrjGFEsCq5bxXbRfV9dyPJe7ls95DgtA
- 5RGPc9Q1h9mbIw5Em5rkxscywQ2lMbmKStX8Nx0e243haAboZSmHr1LLf
- B7dOuEgAN4KoY8dqPExTv3rSHhqV57ozmobP5vkkpl3rZl8FBhA30f42+ A==;
-X-CSE-ConnectionGUID: wuIaM54gS1ulB/Y10IYkvQ==
-X-CSE-MsgGUID: 3itf+S/nR3iU2JBA1+fjbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="93484698"
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="93484698"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2026 07:00:50 -0700
-X-CSE-ConnectionGUID: A0bqUVKXTC+uJXw7IpG0lw==
-X-CSE-MsgGUID: NeeGvTWoQoyThpXsdnnO4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="270151859"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 07:00:47 -0700
-Date: Thu, 11 Jun 2026 16:00:45 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: vitaly.prosyak@amd.com
-Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: Re: [PATCH 4/4] tests/amdgpu: Integrate platform filtering into
- amd_basic
-Message-ID: <20260611140045.wwsgw4ld4ohmwygr@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org,
- Jani Nikula <jani.nikula@intel.com>,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Jesse Zhang <jesse.zhang@amd.com>
-References: <20260610192208.88992-1-vitaly.prosyak@amd.com>
- <20260610192208.88992-4-vitaly.prosyak@amd.com>
+Received: from CY3PR05CU001.outbound.protection.outlook.com
+ (mail-westcentralusazon11013000.outbound.protection.outlook.com
+ [40.93.201.0])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CCFD10EF69
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2026 14:21:14 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iz96ncY6nxxmfE3qHCLYREUpBZsltAYfcPVgdLsoVJibboPnwehMcPx1Lq7IheaUda9ioayoBS4jsF4OmxNbpJ3se9X5SmWKMpoTsNQC/WGyMXl/IWC2rCAvGwaGLarkn8Z86CEytKMBCppkqmeuIm7qzT1/U340PbT8rOZ/jSACZkHAdp8jFAMJB56v3VI+ZP0Y2jh8irZT5Hn/uQp1cLXxyEJlWGPtJlbVQ/U+oqNkKrjqBYb3uUSLkq5WOEwUS6677rf2n/13+OdTPiPpOS9qoE3uaodMlczhhbM4lm0k8GFYF72BoFJBokMbkfyJvnSGGovSJnEECqtkYQHGRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tK3XuhxNbzf3hZhpsrSPx3MChuGAokTHrOMFqOJct5A=;
+ b=uPrg6d5y9i4KMWEkgOrB4mX9MySeNbIy96HjZ6PdKnHgUDBKtNygWvAyfEJ/Lxy5CKyI+ILEh12W0uhw+PU9Tb/v5yWB+vxmdakLXZ06j7jwLNaNn+MoaRsdkApmwADi7t6NRjia4gtYEyhwsC2ldfm5RBji+YCf0003Y1ROoP9C0WsZjqXlssKPN0qEEltDCqB1+6JIPEhDMF2G47hTvFSyrPEYiD4YUlc+wwkKO9bJpUI5liAejXJqMBKbuoOPRcV002Moxwl01PEIj1UIRzi5lE2OCEfb3bwgUzFy7DnaaTHjSwC2jgC2gxSHAobOlu4353luk82FsREdOm4wFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tK3XuhxNbzf3hZhpsrSPx3MChuGAokTHrOMFqOJct5A=;
+ b=lWq6TTRjgs9jfABexGEnp9Sr8H6vyI2olY2jxTeoIe8K0SQTjXumnf3iiprPuFwJfmF0WBdBC9f2uNnM0iMbiJk0lbrHQ/r+CfQSLTeTjypurDapO1pyNNP+VhfpRJBGuRp+E2rYWh+WFMJHYIwbtGU/h6AXZ3u/2hQ6PgzEYnE=
+Received: from SJ0PR13CA0187.namprd13.prod.outlook.com (2603:10b6:a03:2c3::12)
+ by SA1PR12MB7197.namprd12.prod.outlook.com (2603:10b6:806:2bd::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
+ 2026 14:21:08 +0000
+Received: from SJ1PEPF00001CDF.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c3:cafe::83) by SJ0PR13CA0187.outlook.office365.com
+ (2603:10b6:a03:2c3::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.13 via Frontend Transport; Thu,
+ 11 Jun 2026 14:21:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ1PEPF00001CDF.mail.protection.outlook.com (10.167.242.7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.7 via Frontend Transport; Thu, 11 Jun 2026 14:21:07 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
+ 2026 09:21:05 -0500
+Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Thu, 11 Jun 2026 09:20:59 -0500
+From: Jesse Zhang <Jesse.Zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ Jesse Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
+Subject: [PATCH i-g-t v2] lib/amdgpu: poll reset state in hang slow test
+Date: Thu, 11 Jun 2026 22:20:38 +0800
+Message-ID: <20260611142058.1010795-1-Jesse.Zhang@amd.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260610192208.88992-4-vitaly.prosyak@amd.com>
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDF:EE_|SA1PR12MB7197:EE_
+X-MS-Office365-Filtering-Correlation-Id: f0692889-09c3-44c0-6938-08dec7c4ada9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700016|23010399003|376014|82310400026|1800799024|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info: 1HQV2+CHD9lI5RwsBPkGoS7n+jAaX9lKvc0XprLBjbpgl+DFyrt2+fQsqfqe4uflJ7+nTu+SoJE/XKfMyCCpyHZ2JQS/RJRVhxTjEj+WDS7XVLBWdPPGwfaoFb3FcQNegZIMRyCQHHy31/tuFgDk3vNpQY+9lRYoZ2W4vxR4K6zvvhfGT3zSjWpqwx8oEiAeKTXBbhUnkdfAE2AMcK0U2ZGhSybd6lcRywuypQolcTPvXIezB98uPQEgfcQymaSASw9fmXUBU2T9OVo87xt+G3LTVe9QvbJ84S/XmV03f2E/zgOOO/WQRYgtlyVWQvhwnGE5jIe21MKLYC6eUkXFE/0G0SOhf3R0ZIO6P5BX6nuAbLzl0IUuA1UKk4L+Jgn1ZsWN5c92V0wbE+WcLP0bTopZIHxP1FL+d3JVUXblm7KHh9G717F+/FnS7sVTZqCeCmno7Bu/bHwMr3WetcM5rCoiQMQvA8m/2lJYvQ6bFPWDzWGZkNFvOOSmoa3QM6Nx5d8KwLrQPB8YTMExCkcCdF3HCbcEVA1b0H4Y2HqabNKUKIc2xLtZu/Ha2m2HREvWbITzk3uOOPcnDvBXkOStm7WEyxeiMnKzv9k0VeHSdvsGVutgYxtrRrKWF9WRDiFKgEWP/gAAxJoJHcEmZMAqExG+mWEq37v3r8b4xz1lrF3PFZ26u2g6A4ZVU5XAGyRD6KDilH93sTJslCXfRZIwbmWnQcR4Wa9Vok833kvIEuo=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700016)(23010399003)(376014)(82310400026)(1800799024)(56012099006)(11063799006)(18002099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: Hjj1aZO2evRFa3KXcs4JxgOT1MQi+tmlPyoL1boKyvuu1NTX10c8TmDIjMRqaw3QhLYPImBDZxJH2a4ztLn4zsu7qv2EgdtuPckQIeSSq1+loElu8761A5jj8OowYlgkIcBL3vVGrpEar8E7YTT01Z9kpSDK1qBmDVEuDbXsshCkQhBii0z9kF8osskur7kw+0//Z5Ggj8J8lO67jR2IyzAarpK62mrEQBBY7LNR1RHe61SwZALPUcbLSyef9rX2EJNfCs1grz3y4/c3dFNLmpfSZkwfDWNsWN81a7Le4YuoB5k2E627BsF5nsvEp6Gj+kiJITspvZufi3wbLenSDDjhNnF1DDiVBqVHlTEfMEhK63EvbGUIMyYrctC0Yv/KUBgHASN5qjbByMfXl2g3guDxbFCnGv20fPX/GSdG5Q9GM1oXkX/CmOJDd2iQzpVY
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 14:21:07.2899 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0692889-09c3-44c0-6938-08dec7c4ada9
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00001CDF.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7197
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,211 +111,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vitaly,
-On 2026-06-10 at 15:21:27 -0400, vitaly.prosyak@amd.com wrote:
-> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> 
-> Add platform filtering integration to amd_basic test to enable
-> per-platform test skipping via the generic filtering framework.
-> 
-> Changes:
-> - Initialize platform filter in igt_fixture via amd_platform_filter_init()
-> - Add igt_platform_require() call at the start of each subtest
-> 
-> This allows tests to be skipped based on:
-> 1. Built-in production rules (requires rebuild)
-> 2. Config file /etc/igt/platform_skip.conf (no rebuild)
-> 3. Environment variable IGT_PLATFORM_SKIP_CONFIG (no rebuild)
-> 
-> Usage example (skip UMQ tests on Navi48):
->     export IGT_PLATFORM_SKIP_CONFIG=navi48:amd_basic:*-UMQ:Testing
->     ./build/tests/amdgpu/amd_basic
+amdgpu_memcpy_dispatch_hang_slow_test() asserts the hung context's
+reset status from QUERY_STATE right after the fence wait returns. On a
+per-queue reset the global reset counter that QUERY_STATE derives its
+status from is only bumped after the guilty fence is signalled, so the
+single query can still observe AMDGPU_CTX_NO_RESET and the assert
+fails.
 
-Add also example with config file as env vars are not convinient
-for large tests lists.
+Poll QUERY_STATE until the status reflects the reset before asserting,
+keeping the existing reset-in-progress guard.
 
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Jesse Zhang <jesse.zhang@amd.com>
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
-> ---
->  tests/amdgpu/amd_basic.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-> index 3ad023472..4149a0192 100644
-> --- a/tests/amdgpu/amd_basic.c
-> +++ b/tests/amdgpu/amd_basic.c
-> @@ -19,6 +19,7 @@
->  #include "lib/amdgpu/compute_utils/amd_dispatch.h"
->  #include "lib/amdgpu/amdgpu_asic_addr.h"
->  #include "lib/amdgpu/amd_utils.h"
-> +#include "lib/amdgpu/amd_platform.h"
->  
->  #define BUFFER_SIZE (8 * 1024)
->  
-> @@ -883,6 +884,9 @@ int igt_main()
->  		igt_assert_eq(r, 0);
->  		asic_rings_readness(device, 1, arr_cap);
->  		asic_userq_readiness(device, userq_arr_cap);
-> +
-> +		/* Initialize platform filtering */
-> +		amd_platform_filter_init(&gpu_info);
->  	}
->  	igt_describe("Check-alloc-free-VRAM-visible-non-visible-GART-write-combined-cached");
->  	igt_subtest("memory-alloc")
-> @@ -892,6 +896,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("userptr-with-IP-DMA") {
->  		if (arr_cap[AMD_IP_DMA]) {
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+---
+ lib/amdgpu/compute_utils/amd_dispatch.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-This if() looks redundant now that you have dynamic capability
-checks.
+diff --git a/lib/amdgpu/compute_utils/amd_dispatch.c b/lib/amdgpu/compute_utils/amd_dispatch.c
+index 138222cde..152ea0099 100644
+--- a/lib/amdgpu/compute_utils/amd_dispatch.c
++++ b/lib/amdgpu/compute_utils/amd_dispatch.c
+@@ -679,10 +679,20 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
+ 
+ 		if (!(reset_flags == 0 ||
+ 			  reset_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS)) {
+-			/* If we're in reset and reset hasn't occurred, then check
+-			 * that the hang state is equal to the GPU reset status and
+-			 * assert otherwise.
++			/*
++			 * Reset has completed; check the hang state. A per-queue
++			 * reset bumps the global reset counter only after the
++			 * guilty fence is signalled, so QUERY_STATE can briefly
++			 * still read NO_RESET here -- poll until the counter
++			 * catches up before asserting.
+ 			 */
++			for (int i = 0; i < 100 &&
++			     hang_state != gpu_reset_status_equel; i++) {
++				usleep(10000);
++				r = amdgpu_cs_query_reset_state(context_handle,
++								&hang_state, &hangs);
++				igt_assert_eq(r, 0);
++			}
+ 			igt_assert_eq(hang_state, gpu_reset_status_equel);
+ 		}
+ 
+-- 
+2.49.0
 
->  			igt_dynamic_f("userptr")
-> +			igt_platform_require(igt_test_name(), "userptr-with-IP-DMA");
-
-ok, so you make it really dynamic based on reading GPU
-properites during test execution. imho you need '{' and '}'
-here and in all cases below:
-
-  			igt_dynamic_f("userptr") {
-				igt_platform_require("userptr-with-IP-DMA");
-  				amdgpu_userptr_test(device);
-			}
-
-imho you can get test name in require, no need to repeat it in
-every call to igt_platform_require()
-One more question, will this require() skip only this dynamic
-subtests and will follow into testing next one? Or will it
-skip all subtests in igt_subtest_with_dynamic("userptr-with-IP-DMA")?
-So maybe it should be:
-
-  	igt_subtest_with_dynamic("userptr-with-IP-DMA") {
-		igt_platform_require("userptr-with-IP-DMA");
-		...rest follows...
-
-Regards,
-Kamil
-
->  			amdgpu_userptr_test(device);
->  		}
->  	}
-> @@ -900,6 +905,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX") {
->  		if (arr_cap[AMD_IP_GFX]) {
->  			igt_dynamic_f("cs-gfx")
-> +			igt_platform_require(igt_test_name(), "cs-gfx-with-IP-GFX");
->  			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, false);
->  		}
->  	}
-> @@ -908,6 +914,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE") {
->  		if (arr_cap[AMD_IP_COMPUTE]) {
->  			igt_dynamic_f("cs-compute")
-> +			igt_platform_require(igt_test_name(), "cs-compute-with-IP-COMPUTE");
->  			amdgpu_command_submission_compute(device, false);
->  		}
->  	}
-> @@ -916,6 +923,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("cs-multi-fence-with-IP-GFX") {
->  		if (arr_cap[AMD_IP_GFX] && info.hw_ip_version_major < 11) {
->  			igt_dynamic_f("cs-multi-fence")
-> +			igt_platform_require(igt_test_name(), "cs-multi-fence-with-IP-GFX");
->  			amdgpu_command_submission_multi_fence(device);
->  		} else {
->  			igt_info("cs-multi-fence-with-IP-GFX testes are skipped due to GFX11 or no GFX_IP\n");
-> @@ -926,6 +934,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("cs-sdma-with-IP-DMA") {
->  		if (arr_cap[AMD_IP_DMA]) {
->  			igt_dynamic_f("cs-sdma")
-> +			igt_platform_require(igt_test_name(), "cs-sdma-with-IP-DMA");
->  			amdgpu_command_submission_sdma(device, false);
->  		}
->  	}
-> @@ -934,6 +943,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("semaphore-with-IP-GFX-and-IP-DMA") {
->  		if (arr_cap[AMD_IP_GFX] && arr_cap[AMD_IP_DMA]) {
->  			igt_dynamic_f("semaphore")
-> +			igt_platform_require(igt_test_name(), "semaphore-with-IP-GFX-and-IP-DMA");
->  			amdgpu_semaphore_test(device);
->  		}
->  	}
-> @@ -942,6 +952,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("eviction-test-with-IP-DMA") {
->  		if (arr_cap[AMD_IP_DMA]) {
->  			igt_dynamic_f("eviction_test")
-> +			igt_platform_require(igt_test_name(), "eviction-test-with-IP-DMA");
->  			amdgpu_bo_eviction_test(device);
->  		}
->  	}
-> @@ -950,6 +961,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX") {
->  		if (arr_cap[AMD_IP_GFX]) {
->  			igt_dynamic_f("sync-dependency-test")
-> +			igt_platform_require(igt_test_name(), "sync-dependency-test-with-IP-GFX");
->  			amdgpu_sync_dependency_test(device, false);
->  		}
->  	}
-> @@ -958,6 +970,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX-UMQ") {
->  		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
->  			igt_dynamic_f("cs-gfx-with-umq")
-> +			igt_platform_require(igt_test_name(), "cs-gfx-with-IP-GFX-UMQ");
->  			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, true);
->  		}
->  	}
-> @@ -966,6 +979,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE-UMQ") {
->  		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
->  			igt_dynamic_f("cs-compute-with-umq")
-> +			igt_platform_require(igt_test_name(), "cs-compute-with-IP-COMPUTE-UMQ");
->  			amdgpu_command_submission_compute(device, true);
->  		}
->  	}
-> @@ -974,6 +988,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX-UMQ") {
->  		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
->  			igt_dynamic_f("sync-dependency-test-with-umq")
-> +			igt_platform_require(igt_test_name(), "sync-dependency-test-with-IP-GFX-UMQ");
->  			amdgpu_sync_dependency_test(device, true);
->  		}
->  	}
-> @@ -982,6 +997,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("cs-sdma-with-IP-DMA-UMQ") {
->  		if (enable_test && userq_arr_cap[AMD_IP_DMA]) {
->  			igt_dynamic_f("cs-sdma-with-umq")
-> +			igt_platform_require(igt_test_name(), "cs-sdma-with-IP-DMA-UMQ");
->  			amdgpu_command_submission_sdma(device, true);
->  		}
->  	}
-> @@ -992,6 +1008,7 @@ int igt_main()
->  				userq_arr_cap[AMD_IP_COMPUTE] &&
->  				userq_arr_cap[AMD_IP_DMA]) {
->  			igt_dynamic_f("all-queues-with-umq")
-> +			igt_platform_require(igt_test_name(), "all-queues-test-with-UMQ");
->  			amdgpu_test_all_queues(device, true);
->  		}
->  	}
-> @@ -1000,6 +1017,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("cs-gfx-fwm-UMQ") {
->  		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
->  			igt_dynamic_f("cs-gfx-fwm-umq")
-> +			igt_platform_require(igt_test_name(), "cs-gfx-fwm-UMQ");
->  				amdgpu_fwm_test(device, AMDGPU_HW_IP_GFX);
->  		}
->  	}
-> @@ -1008,6 +1026,7 @@ int igt_main()
->  	igt_subtest_with_dynamic("cs-compute-fwm-UMQ") {
->  		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
->  			igt_dynamic_f("cs-compute-fwm-umq")
-> +			igt_platform_require(igt_test_name(), "cs-compute-fwm-UMQ");
->  				amdgpu_fwm_test(device, AMDGPU_HW_IP_COMPUTE);
->  		}
->  	}
-> -- 
-> 2.54.0
-> 
