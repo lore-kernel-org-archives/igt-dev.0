@@ -4,60 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AAE7CD98CC
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 13:15:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C86CD98CC
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Jun 2026 13:19:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1D4610E7AD;
-	Thu, 11 Jun 2026 13:15:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5386910E7AD;
+	Thu, 11 Jun 2026 13:19:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cRJqqeFj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aTuo/hJ7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 714A410E7AD
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2026 13:15:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E3A410E7AD
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2026 13:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781183703; x=1812719703;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=UNxC8DeL10CgKsAQsqBG6a26fM1274Pcfd+H6hadoNU=;
- b=cRJqqeFj7BIl6DtLxq9AkKh5NSbEOSd+FXF0NPZt63LsUkcc594NseDQ
- IA0E++nXXlU6NxLSzKzuPWAYC3Sut5hbrXJWw/vTwPOsGw5g+iXNjOkbh
- 6BeyLijispV32pYoON1P2VR4Z7MvHr0Ngj4RJBu9iCpjbxFGT9Q3L5v1g
- UlePda/gISpE0OnbCjjgBuynfE3jnmowsIIQD4ueyfAADOqbykX1JI1/E
- cu78dAnEMF9SsaWexbGZRscspQOZ5Yf98fVQeRMsoMPy8OiCZODkH5JIE
- O7/oW/bff3h4sVQlB41duVT2k4zF6E6w/+E1aPEcs5WUwoyyWaa7fpu6n A==;
-X-CSE-ConnectionGUID: gr4+f1DPS/SFjJxIi1ICqg==
-X-CSE-MsgGUID: uHeVw1xxTHWK74DqgLASDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="92559930"
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="92559930"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2026 06:15:01 -0700
-X-CSE-ConnectionGUID: VDRMyZzDRsGKcQMwCQYjLw==
-X-CSE-MsgGUID: BlZowg3GQrWfg33sInRoYg==
+ t=1781183943; x=1812719943;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ZXMJPCahaW7k32+MlR5++NY+ZLiABBneoLKFxW4cu1Q=;
+ b=aTuo/hJ7b9yeetwdB7tnyhGh8Az1sMg16g4gF/UeJfFgG2mne9U90ph4
+ lFK9LW8h2/PD3lacy5EUQSJq3swKHWTWo+j/urqNuw1YdYmJ2Grg43sus
+ 7I817TfGf22MpGqeBJsn4E5k70kEB8xxGG+nIiXHhrvY1q0lPmqdLy4Yp
+ /kLxc6Ne6xg/npVnYkpL0rztlwuLf/dymRIG6osP9/8ucKacdpgFfTqR1
+ sF7iXzu7lEwx/h33UPRBlmv2Yp9lm8K6VacI62ArfU4PSDZSh17tat7dO
+ Jrnrd5cj21tabi4J07AXYL7PJjooA32lK6TGeB4/1yGTUbwiPPerEi2+e w==;
+X-CSE-ConnectionGUID: S2UP/T+dT5GaQ8goVKB/1A==
+X-CSE-MsgGUID: yw5kIaGgSdWFetLVpUr9RA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="92673991"
+X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="92673991"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2026 06:19:03 -0700
+X-CSE-ConnectionGUID: aG+/J+jpRkGwPr2/wY9GdA==
+X-CSE-MsgGUID: 4uRsq2ILTOm2huVSurFXSg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="276666623"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 06:15:00 -0700
-Date: Thu, 11 Jun 2026 15:14:42 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sobin Thomas <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, piotr.piorkowski@intel.com,
- kamil.konieczny@intel.com, nishit.sharma@intel.com
-Subject: Re: [PATCH i-g-t] tests/xe_debugfs: Add debugfs entry read/write
- validation in root-dir
-Message-ID: <20260611131442.s664iiyiecdaic4s@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sobin Thomas <sobin.thomas@intel.com>,
- igt-dev@lists.freedesktop.org, piotr.piorkowski@intel.com,
- kamil.konieczny@intel.com, nishit.sharma@intel.com
-References: <20260611094321.367638-1-sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; d="scan'208";a="250394725"
+Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2026 06:19:02 -0700
+From: Sobin Thomas <sobin.thomas@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
+ Sobin Thomas <sobin.thomas@intel.com>
+Subject: [PATCH i-g-t] RFC: Add disk usage quota carryover for igt_runner
+Date: Thu, 11 Jun 2026 13:18:55 +0000
+Message-ID: <20260611131855.368185-1-sobin.thomas@intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260611094321.367638-1-sobin.thomas@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,358 +66,268 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sobin,
-On 2026-06-11 at 09:43:21 +0000, Sobin Thomas wrote:
-> Extend the root-dir subtest to validate additional Xe debugfs entries:
-> 
+Add a quota carryover mechanism to the disk usage limit enforcement.
+Instead of applying a hard per-test limit, unused disk budget from
+frugal tests is accumulated in a quota pool and made available to
+subsequent tests that need more space.
 
-All of below are optional, so imho write it before and do not
-repeat it at every line. Something like:
+For each test:
+  B = MIN(quota, L)       -- borrow from pool, capped at L
+  effective_limit = L + B -- usable limit for this test
+  quota += (effective_limit - actual_used) -- return leftover
 
-Extend the root-dir subtest to validate additional optional Xe
-debugfs entries:
+This allows tests that write less than L bytes to subsidise tests
+that occasionally need more, without raising the global limit.
 
-- dgfx_pkg_residencies: Validate counter reads (non-empty)
-... rest follows ...
+The quota pool is seeded with L so the first test always receives
+exactly 2xL as its limit.
 
-Please also write down what you mean by optional.
+Suggested-by: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+---
+ runner/executor.c | 68 ++++++++++++++++++++++++++++++++++++++---------
+ runner/executor.h |  1 +
+ 2 files changed, 57 insertions(+), 12 deletions(-)
 
-> - dgfx_pkg_residencies: Validate counter reads (optional, non-empty)
-> - dgfx_pcie_link_residencies: Validate PCIE LINK string content (optional)
-> - sriov_info: Validate entry is non-empty (optional)
-> - workarounds: Validate entry is non-empty (optional)
-> - atomic_svm_timeslice_ms: Validate integer read/write (optional)
-> - poor_man_system_atomic_support: Validate boolean read/write (optional)
-> - disable_late_binding: Validate boolean read/write (optional)
-> 
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-> ---
->  tests/intel/xe_debugfs.c | 198 +++++++++++++++++++++++++++++++++++----
->  1 file changed, 180 insertions(+), 18 deletions(-)
-> 
-> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-> index 587e3e785..5e59424fe 100644
-> --- a/tests/intel/xe_debugfs.c
-> +++ b/tests/intel/xe_debugfs.c
-> @@ -39,11 +39,24 @@ IGT_TEST_DESCRIPTION("Validate Xe debugfs devnodes and their contents");
->  	__m && ((__i) = __builtin_ctz(__m), 1);	\
->  	__m &= __m - 1)
->  
-> +/* Validation types for debugfs read tests */
-> +enum debugfs_validate_type {
-> +	VALIDATE_NONE,		/* Just check file exists */
-
-Better name _EXIST but it could stay as is.
-
-> +	VALIDATE_NON_EMPTY,	/* Just check buffer is not empty */
-> +	VALIDATE_CONTAINS_STR,	/* Check buffer contains expected string */
-> +	VALIDATE_INT_GE_ZERO,	/* Parse as integer, verify >= 0 */
-> +	VALIDATE_BOOL,		/* Check bool value (0 or 1) */
-> +};
-> +
->  struct check_entry {
->  	const char *name_fmt;
->  	int mode;
-> -	bool (*condition)(struct xe_device *xe_dev);
-> +	bool optional;
-> +	bool (*condition)(struct xe_device *xe_dev, void *params);
-> +	void *cond_params;
->  	unsigned int (*iter_mask)(struct xe_device *xe_dev);
-> +	enum debugfs_validate_type validate;
-> +	const char *expected_str;
->  };
->  
->  static unsigned int gt_iter_mask(struct xe_device *xe_dev)
-> @@ -56,8 +69,13 @@ static unsigned int tile_iter_mask(struct xe_device *xe_dev)
->  	return xe_dev->tile_mask;
->  }
->  
-> -static bool has_vram(struct xe_device *xe_dev)
-> +static bool has_vram_region(struct xe_device *xe_dev, void *params)
->  {
-> +	uint8_t tile = (uint8_t)(uintptr_t)params;
-> +
-> +	if (!(xe_dev->tile_mask & (1u << tile)))
-> +		return false;
-> +
->  	return xe_dev->has_vram;
->  }
->  
-> @@ -131,16 +149,140 @@ static bool find_not_tested_files(int dir_fd, struct igt_list_head *hit_entries)
->  	return found_not_tested;
->  }
->  
-> -static bool file_in_dir_exists(int dirfd, const char *file_name, int mode)
-> +/* Validate that debugfs buffer is non-empty or contains expected string */
-> +static bool validate_string(int dirfd, const char *file_name, const char *expected_str)
-> +{
-> +	char buf[4096];
-> +	int ret = 0;
-> +
-> +	ret = igt_sysfs_read(dirfd, file_name, buf, sizeof(buf) - 1);
-> +	if (ret < 0)
-> +		return false;
-> +	buf[ret] = '\0';
-> +
-> +	/* Check for empty buffer */
-> +	if (strlen(buf) == 0) {
-> +		igt_warn("Empty output from %s\n", file_name);
-> +		return false;
-> +	}
-> +
-> +	/* If expecting specific string, verify it's present */
-> +	if (expected_str && !strstr(buf, expected_str)) {
-> +		igt_warn("Expected '%s' not found in %s\n", expected_str, file_name);
-> +		return false;
-> +	}
-> +
-> +	if (expected_str)
-> +		igt_debug("Successfully read %s: found '%s'\n", file_name, expected_str);
-> +	else
-> +		igt_debug("Successfully read %s: %zd bytes\n%s\n", file_name, strlen(buf), buf);
-> +
-> +	return true;
-> +}
-> +
-> +static const char *mode_to_str(int mode)
-> +{
-> +	switch (mode & O_ACCMODE) {
-> +	case O_RDONLY: return "RO";
-> +	case O_WRONLY: return "WO";
-> +	case O_RDWR:   return "RW";
-> +	default:       return "UNKNOWN";
-> +	}
-> +}
-> +
-> +static bool validate_bool_file(int dirfd, const char *file_name, int mode)
-> +{
-> +	int orig_val = 0, read_val = 0, test_val = 0;
-> +
-> +	if (igt_sysfs_scanf(dirfd, file_name, "%d", &orig_val) != 1 ||
-> +	    (orig_val != 0 && orig_val != 1))
-> +		return false;
-> +
-> +	if (mode == O_RDWR) {
-> +		test_val = (orig_val == 0) ? 1 : 0;
-> +
-> +		if (igt_sysfs_printf(dirfd, file_name, "%d", test_val) < 0)
-> +			return false;
-> +
-> +		if (igt_sysfs_scanf(dirfd, file_name, "%d", &read_val) != 1 || read_val != test_val)
-> +			return false;
-> +
-> +		/* Restore original value */
-> +		if (igt_sysfs_printf(dirfd, file_name, "%d", orig_val) < 0) {
-> +			igt_warn("Failed to restore original value for %s\n", file_name);
-> +			return false;
-> +		}
-> +	}
-> +
-> +	igt_info("Successfully validated %s bool %s\n", mode_to_str(mode), file_name);
-
-Note igt_info() here, see below.
-
-> +	return true;
-> +}
-> +
-> +static bool validate_int_file(int dirfd, const char *file_name, int mode)
-> +{
-> +	long orig_val = 0, new_val = 0, read_val = 0;
-> +
-> +	if (igt_sysfs_scanf(dirfd, file_name, "%ld", &orig_val) != 1)
-> +		return false;
-> +
-> +	if (orig_val < 0)
-> +		return false;
-> +
-> +	if (mode == O_RDWR) {
-> +		new_val = orig_val + 1;
-> +		if (igt_sysfs_printf(dirfd, file_name, "%ld", new_val) < 0)
-> +			return false;
-> +		if (igt_sysfs_scanf(dirfd, file_name, "%ld", &read_val) != 1)
-> +			return false;
-> +		if (read_val != new_val)
-> +			return false;
-> +		/* Restore original value */
-> +		if (igt_sysfs_printf(dirfd, file_name, "%ld", orig_val) < 0) {
-> +			igt_warn("Failed to restore original value for %s\n", file_name);
-> +			return false;
-> +		}
-> +
-> +		igt_debug("Successfully validated %s int %s: %ld -> %ld -> %ld\n",
-> +			  mode_to_str(mode), file_name, orig_val, new_val, orig_val);
-
-You have igt_info() above in bool check, why debug here?
-Please be consistent, use one.
-
-> +	} else {
-> +		igt_debug("Successfully validated %s int %s: %ld\n",
-> +			  mode_to_str(mode), file_name, orig_val);
-
-Same here. Btw why not using igt_info() in all places exept one
-warn at main function?
-
-> +	}
-> +	return true;
-> +}
-> +
-> +static bool validate_debugfs_file(int dirfd, const char *file_name, int mode,
-> +				  enum debugfs_validate_type validate, const char *expected_str)
->  {
-> -	int fd = openat(dirfd, file_name, mode);
-
-Keep this line.
-
-> +	bool result = true;
->  
-> -	if (fd >= 0) {
-> -		close(fd);
-> +	if (faccessat(dirfd, file_name, F_OK, 0) < 0) {
-> +		igt_debug("%s does not exist\n", file_name);
-> +		return false;
-> +	}
-
-Remove this check here.
-
-> +	if (validate == VALIDATE_NONE)
->  		return true;
-> +
-> +	switch (validate) {
-> +	case VALIDATE_NON_EMPTY:
-> +		result = validate_string(dirfd, file_name, NULL);
-> +		break;
-> +	case VALIDATE_CONTAINS_STR:
-> +		result = validate_string(dirfd, file_name, expected_str);
-> +		break;
-> +	case VALIDATE_INT_GE_ZERO:
-> +		result = validate_int_file(dirfd, file_name, mode);
-> +		break;
-> +	case VALIDATE_BOOL:
-> +		result = validate_bool_file(dirfd, file_name, mode);
-> +		break;
-> +	default:
-> +		igt_warn("Unknown validate type %d for %s\n", validate, file_name);
-> +		result = false;
-> +		break;
->  	}
->  
-> -	return false;
-> +	return result;
->  }
->  
->  /*
-> @@ -160,7 +302,7 @@ static int debugfs_validate_entries(struct xe_device *xe_dev, int dir_fd,
->  		unsigned int mask;
->  		unsigned int j;
->  
-> -		if (check->condition && !check->condition(xe_dev))
-> +		if (check->condition && !check->condition(xe_dev, check->cond_params))
->  			continue;
->  
->  		if (!check->iter_mask)
-> @@ -209,10 +351,18 @@ static int debugfs_validate_entries(struct xe_device *xe_dev, int dir_fd,
->  #pragma GCC diagnostic pop
->  			}
->  
-> -			if (!file_in_dir_exists(dir_fd, entry->name, check->mode)) {
-> -				igt_warn("Missing debugfs file: %s\n", entry->name);
-> -				missing_count++;
-> +			if (!validate_debugfs_file(dir_fd, entry->name, check->mode,
-> +						   check->validate, check->expected_str)) {
-> +				if (check->optional) {
-> +					igt_info("Optional entry %s not found/invalid (skipped)\n",
-> +						 entry->name);
-> +				} else {
-> +					igt_warn("Missing or invalid debugfs file: %s\n",
-> +						 entry->name);
-> +					missing_count++;
-> +				}
-
-This seems wrong, it looks that if you have optional debugfs file
-you will ignore error here. Imho you should keep original if():
-
-			if (!file_in_dir_exists(dir_fd, entry->name, check->mode)) {
-				if (check->optional) {
-					igt_info("Optional entry %s not found (skipped)\n",
-						 entry->name);
-				} else {
-					igt_info("Missing debugfs file: %s\n", entry->name);
-					missing_count++;
-				}
-			} else {
-				if (!validate_debugfs_file(dir_fd, entry->name, check->mode,
-						   check->validate, check->expected_str))
-					fail_count++;
+diff --git a/runner/executor.c b/runner/executor.c
+index a8907c575..c1775095a 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -821,14 +821,13 @@ static const char *show_kernel_task_state(const char *msg)
+ 	return msg;
+ }
+ 
+-static bool disk_usage_limit_exceeded(struct settings *settings,
+-				      size_t disk_usage)
++static bool disk_usage_limit_exceeded(size_t limit, size_t disk_usage)
+ {
+-	return settings->disk_usage_limit != 0 &&
+-		disk_usage > settings->disk_usage_limit;
++	return limit != 0 && disk_usage > limit;
+ }
+ 
+ static const char *need_to_timeout(struct settings *settings,
++				   size_t effective_limit,
+ 				   int killed,
+ 				   unsigned long taints,
+ 				   double time_since_activity,
+@@ -897,7 +896,7 @@ static const char *need_to_timeout(struct settings *settings,
+ 		return show_kernel_task_state("Inactivity timeout exceeded. Killing the current test with SIGQUIT.\n");
+ 	}
+ 
+-	if (disk_usage_limit_exceeded(settings, disk_usage))
++	if (disk_usage_limit_exceeded(effective_limit, disk_usage))
+ 		return "Disk usage limit exceeded.\n";
+ 
+ 	return NULL;
+@@ -961,6 +960,8 @@ static int monitor_output(pid_t child,
+ 			  int *outputs,
+ 			  double *time_spent,
+ 			  struct settings *settings,
++			  size_t effective_limit,
++			  size_t *total_disk_used,
+ 			  char **abortreason,
+ 			  bool *abort_already_written)
+ {
+@@ -981,6 +982,7 @@ static int monitor_output(pid_t child,
+ 	unsigned long taints = 0;
+ 	bool aborting = false;
+ 	size_t disk_usage = 0;
++	size_t total_disk_usage = 0;
+ 	size_t dmsg_chunk_size = 4096 * max_t(size_t, sysconf(_SC_NPROCESSORS_ONLN), 16);
+ 	long dmesgwritten;
+ 	bool socket_comms_used = false; /* whether the test actually uses comms */
+@@ -1070,6 +1072,7 @@ static int monitor_output(pid_t child,
+ 
+ 			write(outputs[_F_OUT], buf, s);
+ 			disk_usage += s;
++			total_disk_usage += s;
+ 			if (settings->sync) {
+ 				fdatasync(outputs[_F_OUT]);
  			}
+@@ -1162,6 +1165,7 @@ static int monitor_output(pid_t child,
+ 			} else {
+ 				write(outputs[_F_ERR], buf, s);
+ 				disk_usage += s;
++				total_disk_usage += s;
+ 				if (settings->sync) {
+ 					fdatasync(outputs[_F_ERR]);
+ 				}
+@@ -1253,6 +1257,7 @@ static int monitor_output(pid_t child,
+ 
+ 				write_packet_with_canary(outputs[_F_SOCKET], packet, settings->sync);
+ 				disk_usage += packet->size;
++				total_disk_usage += packet->size;
+ 
+ 				if (packet->type == PACKETTYPE_SUBTEST_RESULT ||
+ 				    packet->type == PACKETTYPE_DYNAMIC_SUBTEST_RESULT)
+@@ -1319,6 +1324,7 @@ static int monitor_output(pid_t child,
+ 				kmsgfd = -1;
+ 			} else {
+ 				disk_usage += dmesgwritten;
++				total_disk_usage += dmesgwritten;
+ 			}
+ 		}
+ 
+@@ -1463,7 +1469,8 @@ static int monitor_output(pid_t child,
+ 				 * Same goes for stopping because we
+ 				 * exceeded the disk usage limit.
+ 				 */
+-				if (killed && disk_usage_limit_exceeded(settings, disk_usage)) {
++				if (killed &&
++				    disk_usage_limit_exceeded(effective_limit, disk_usage)) {
+ 					timeoutresult = false;
+ 
+ 					if (socket_comms_used) {
+@@ -1474,7 +1481,7 @@ static int monitor_output(pid_t child,
+ 							 "runner: This test was killed due to exceeding disk usage limit. "
+ 							 "(Used %zd bytes, limit %zd)\n",
+ 							 disk_usage,
+-							 settings->disk_usage_limit);
++							 effective_limit);
+ 						message = runnerpacket_log(STDOUT_FILENO, killmsg);
+ 						write_packet_with_canary(outputs[_F_SOCKET], message, settings->sync);
+ 						free(message);
+@@ -1483,7 +1490,7 @@ static int monitor_output(pid_t child,
+ 							"\nrunner: This test was killed due to exceeding disk usage limit. "
+ 							"(Used %zd bytes, limit %zd)\n",
+ 							disk_usage,
+-							settings->disk_usage_limit);
++							effective_limit);
+ 						if (settings->sync)
+ 							fdatasync(outputs[_F_OUT]);
+ 					}
+@@ -1533,7 +1540,7 @@ static int monitor_output(pid_t child,
+ 		}
+ 
+ 		igt_kernel_tainted(&taints);
+-		timeout_reason = need_to_timeout(settings, killed,
++		timeout_reason = need_to_timeout(settings, effective_limit, killed,
+ 						 taints,
+ 						 igt_time_elapsed(&time_last_activity, &time_now),
+ 						 igt_time_elapsed(&time_last_subtest, &time_now),
+@@ -1553,7 +1560,8 @@ static int monitor_output(pid_t child,
+ 					asprintf(abortreason, "Child refuses to die, tainted 0x%lx.", taints);
+ 				}
+ 
+-				dmsg_chunk_size = calc_last_dmesg_chunk(settings->disk_usage_limit, disk_usage);
++				dmsg_chunk_size = calc_last_dmesg_chunk(effective_limit,
++									disk_usage);
+ 				dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
+ 				if (settings->sync)
+ 					fdatasync(outputs[_F_DMESG]);
+@@ -1590,10 +1598,13 @@ static int monitor_output(pid_t child,
+ 		fdatasync(outputs[_F_DMESG]);
+ 	if (dmesgwritten > 0) {
+ 		disk_usage += dmesgwritten;
+-		if (settings->disk_usage_limit && disk_usage > settings->disk_usage_limit) {
++		total_disk_usage += dmesgwritten;
++		if (effective_limit && disk_usage > effective_limit) {
+ 			char disk[1024];
+ 
+-			snprintf(disk, sizeof(disk), "igt_runner: disk limit exceeded at dmesg dump, %zu > %zu\n", disk_usage, settings->disk_usage_limit);
++			snprintf(disk, sizeof(disk),
++				 "igt_runner: disk limit exceeded at dmesg dump, %zu > %zu\n",
++				 disk_usage, effective_limit);
+ 			if (settings->log_level >= LOG_LEVEL_NORMAL) {
+ 				outf("%s", disk);
+ 				fflush(stdout);
+@@ -1610,6 +1621,8 @@ static int monitor_output(pid_t child,
+ 	close(socketfd);
+ 	close(kmsgfd);
+ 
++	*total_disk_used = total_disk_usage;
++
+ 	if (aborting)
+ 		return -1;
+ 
+@@ -1770,6 +1783,8 @@ static int execute_next_entry(struct execute_state *state,
+ 			      struct job_list_entry *entry,
+ 			      int testdirfd, int resdirfd,
+ 			      int sigfd, sigset_t *sigmask,
++			      size_t effective_limit,
++			      size_t *disk_used_out,
+ 			      char **abortreason,
+ 			      bool *abort_already_written)
+ {
+@@ -1893,6 +1908,7 @@ static int execute_next_entry(struct execute_state *state,
+ 	result = monitor_output(child, outfd, errfd, socketfd,
+ 				kmsgfd, sigfd,
+ 				outputs, time_spent, settings,
++				effective_limit, disk_used_out,
+ 				abortreason, abort_already_written);
+ 
+ out_kmsgfd:
+@@ -2134,6 +2150,8 @@ bool initialize_execute_state_from_resume(int dirfd,
+ 	}
+ 
+ 	init_time_left(state, settings);
++	/* Seed with one limit so first test can borrow. */
++	state->quota = settings->disk_usage_limit;
+ 
+ 	for (i = list->size; i >= 0; i--) {
+ 		char name[32];
+@@ -2214,6 +2232,8 @@ bool initialize_execute_state(struct execute_state *state,
+ 	init_time_left(state, settings);
+ 
+ 	state->dry = settings->dry_run;
++	/* Seed with one limit so first test can borrow. */
++	state->quota = settings->disk_usage_limit;
+ 
+ 	return true;
+ }
+@@ -2644,6 +2664,23 @@ bool execute(struct execute_state *state,
+ 		}
+ 
+ 		if (reason == NULL) {
++			size_t disk_used = 0;
++			size_t effective_limit = settings->disk_usage_limit;
++
++			/*
++			 * Quota carryover: borrow unused budget from previous
++			 * tests (up to L) so frugal tests subsidise heavy ones.
++			 *   B = MIN(Q, L)        -- borrow from quota
++			 *   U = L + B            -- usable limit for this test
++			 *   Q += (U - actual)    -- return leftover to quota
++			 */
++			if (settings->disk_usage_limit != 0) {
++				size_t borrow = min_t(size_t, state->quota,
++						       settings->disk_usage_limit);
++				state->quota -= borrow;
++				effective_limit = settings->disk_usage_limit + borrow;
++			}
++
+ 			result = execute_next_entry(state,
+ 						    job_list->size,
+ 						    &time_spent,
+@@ -2651,8 +2688,15 @@ bool execute(struct execute_state *state,
+ 						    &job_list->entries[state->next],
+ 						    testdirfd, resdirfd,
+ 						    sigfd, &sigmask,
++						    effective_limit, &disk_used,
+ 						    &reason, &already_written);
+ 
++			if (settings->disk_usage_limit != 0) {
++				size_t leftover = (disk_used < effective_limit) ?
++					effective_limit - disk_used : 0;
++				state->quota += leftover;
++			}
++
+ 			if (settings->cov_results_per_test) {
+ 				code_coverage_stop(settings, job_name, sigfd, &reason);
+ 				free(job_name);
+diff --git a/runner/executor.h b/runner/executor.h
+index bc6ac80dc..e2210dac9 100644
+--- a/runner/executor.h
++++ b/runner/executor.h
+@@ -14,6 +14,7 @@ struct execute_state
+ 	 */
+ 	double time_left;
+ 	bool dry;
++	size_t quota; /* accumulated unused disk budget from previous tests */
+ };
+ 
+ enum {
+-- 
+2.43.0
 
-  		}
-
-Then at the end warn about any error:
-
-	if (fail_count || missing_count) {
-		igt_warn("Fails: %d missing debugfs file(s): %d\n", fail_count, missing_count);
-
->  
-> @@ -239,14 +389,25 @@ out:
->  static void test_root_dir(struct xe_device *xe_dev)
->  {
->  	const struct check_entry expected_files[] = {
-> -		{ "clients", O_RDONLY },
-> +		{ "clients", O_RDONLY, .validate = VALIDATE_NON_EMPTY },
-> +		{ "disable_late_binding", O_RDWR, .optional = true, .validate = VALIDATE_BOOL },
->  		{ "forcewake_all", O_WRONLY },
->  		{ "gem_names", O_RDONLY },
-> -		{ "gt%u", O_RDONLY, NULL, gt_iter_mask }, /* gt0, gt1, ... */
-> -		{ "gtt_mm", O_RDONLY },
-> -		{ "info", O_RDONLY },
-> -		{ "name", O_RDONLY },
-> -		{ "tile%u", O_RDONLY, NULL, tile_iter_mask }, /* tile0, tile1, ... */
-> +		{ "gt%u", O_RDONLY, .iter_mask = gt_iter_mask },
-> +		{ "gtt_mm", O_RDONLY, },
-> +		{ "info", O_RDONLY, .validate = VALIDATE_NON_EMPTY },
-> +		{ "name", O_RDONLY, .validate = VALIDATE_NON_EMPTY },
-> +		{ "poor_man_system_atomic_support", O_RDWR, .optional = true,
-> +		  .validate = VALIDATE_BOOL },
-
-Keep it on one line.
-
-> +		{ "dgfx_pkg_residencies", O_RDONLY, .optional = true,
-> +		  .validate = VALIDATE_NON_EMPTY },
-
-Same here.
-
-> +		{ "dgfx_pcie_link_residencies", O_RDONLY, .optional = true,
-> +		  .validate = VALIDATE_CONTAINS_STR, .expected_str = "PCIE LINK" },
-
-Same here.
-
-> +		{ "sriov_info", O_RDONLY, .optional = true, .validate = VALIDATE_NON_EMPTY },
-> +		{ "workarounds", O_RDONLY, .optional = true, .validate = VALIDATE_NON_EMPTY },
-> +		{ "atomic_svm_timeslice_ms", O_RDWR, .optional = true,
-> +		  .validate = VALIDATE_INT_GE_ZERO },
-
-Same here.
-
-> +		{ "tile%u", O_RDONLY, .iter_mask = tile_iter_mask },
->  	};
->  	int debugfs_fd = igt_debugfs_dir(xe_dev->fd);
->  	int missing_count;
-> @@ -276,7 +437,8 @@ static void test_tile_dir(struct xe_device *xe_dev, uint8_t tile)
->  	const struct check_entry expected_files[] = {
->  		{ "ggtt", O_RDONLY },
->  		{ "sa_info", O_RDONLY },
-> -		{ "vram_mm", O_RDONLY, has_vram },
-> +		{ "vram_mm", O_RDONLY, .condition = has_vram_region,
-
-Same here.
-
-Regards,
-Kamil
-
-> +		  .cond_params = (void *)(uintptr_t)tile },
->  	};
->  	int debugfs_fd = igt_debugfs_tile_dir(xe_dev->fd, tile);
->  	int missing_count;
-> -- 
-> 2.43.0
-> 
