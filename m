@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C3FBCD8CA8
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:02:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70ABFCD98CE
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:02:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C68D210F439;
-	Fri, 12 Jun 2026 11:02:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2922B10F439;
+	Fri, 12 Jun 2026 11:02:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HYG9oTH9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VKEMIAn/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01BA610E9DA
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:01:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36D4A10E9DA
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781262064; x=1812798064;
+ t=1781262098; x=1812798098;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KLX1MripfqtdHpoUQmQceFKC022IpCLzaGbbdn+qhi8=;
- b=HYG9oTH922TXeV0uNef4FLCdOz1kC/cBM+IaTvM75dRS+nJlwgXBnlLP
- MRW+2vJt0sgPAGUqdgK0weUr3EBY6iYPbd7Vz8TnccgGSvp92oEFgzU9w
- L//w1cHSEAz4DXqAujDOh703EYrw+FR3iCcr1eSWmjm74XQ4V3Q7LMTrj
- pdccF2OmziHxEg0g0vvLqfn+Zh7g67so3wGI57K287DAoaEPozRx0odvY
- s5wPlwe781qu1aEZnDP3C528JkmwpOpqvOKY18uiYoRd/dcT9snBSUImc
- PKvoLS6tnuI0aj/WWd/ITLQmRo+EsLqOypNb2lIzEFKsn1oDsTlafCGMZ w==;
-X-CSE-ConnectionGUID: I2sGG/BURrqiyxnmnRBeNg==
-X-CSE-MsgGUID: OF5nJoLYQySpr6NHem0w7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="85932748"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="85932748"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 04:01:03 -0700
-X-CSE-ConnectionGUID: bH8iMma5SGuA8B+rtzHN5A==
-X-CSE-MsgGUID: NTH1smU9QA2zW+GhtS+WMg==
+ bh=EWJxfadIvmsUkLzeqZTxmRQTjQktyq8qs6qSFcQoDVc=;
+ b=VKEMIAn/FFIPfDXi8ZGe/RkvEL/a0L0ux8L6gE9/eMpwN+KHbab/Wwrp
+ FsD+1ztK7alTF7DMc1nDy+FAwn4thXfxwPFr0Tj5HK22qeo7TPqBMRaD5
+ najbEAyxhyG8eq4FkuwxYO/7oVrl4ZEPw9mwgJYmJI9f59NfGot1SMZPP
+ vw319+sEtWw0keIK0/x2cJpOu0AJfZT2jZ2leegm/DoAaqaoOT/iBbDk3
+ 0QdQHumz75FrxxGYaAGAW7tmmoum+Zq85UF3mRGQunbtu/tLb6O3Zmsab
+ duxDJLONNO0FCCw8Lz7Zo+idWtbNrz0HxnRNx3qjbTsYFrcIDySqH/ldp Q==;
+X-CSE-ConnectionGUID: 3VpjebUkTfycmoLn0Ktz0Q==
+X-CSE-MsgGUID: nzHl6vI6R2a3TjxaUDSaIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81226241"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="81226241"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2026 04:01:09 -0700
+X-CSE-ConnectionGUID: xQA5Li+MQx2rdLnkhdIG7w==
+X-CSE-MsgGUID: aJLDhgHJRbyl1KHqnWJj/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="251873514"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="246818252"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.71])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 04:01:02 -0700
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2026 04:01:07 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 Cc: ville.syrjala@linux.intel.com,
 	jani.nikula@intel.com
-Subject: [PATCH i-g-t 2/4] lib/intel_device_info: add a helper to guess the
- PCI ID for a codename
-Date: Fri, 12 Jun 2026 14:00:42 +0300
-Message-ID: <b02ca4e981b402b630810c017ce144f14d7626a8.1781261899.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 3/4] tools/vbt_decode: return 0 from get_device_id()
+Date: Fri, 12 Jun 2026 14:00:43 +0300
+Message-ID: <5f020e16d2604d820341ff2c476cca1dda3d9655.1781261899.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1781261899.git.jani.nikula@intel.com>
 References: <cover.1781261899.git.jani.nikula@intel.com>
@@ -74,132 +73,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The struct intel_device_info contains the codenames for the
-corresponding PCI device IDs. Add a reverse lookup to get a PCI ID for a
-codename.
+From: Michał Grzelak <michal.grzelak@intel.com>
 
-It's a bit fuzzy, though. The codenames aren't always spelled the same,
-there are suffixes sometimes omitted, and you can only pick one of the
-matching PCI IDs. Name the helper intel_guess_device_id() to emphasize
-the point, and try increasing fuzziness in the matching to find an
-appropriate struct intel_device_info.
+This function returns -1 on errors and the caller checks for 0. This
+leads to -1 being used as the device id. Return 0 instead of -1.
 
-There's nothing exact about this, and it should not be considered as
-such. But it will be useful in VBT parsing.
-
-Cc: Michał Grzelak <michal.grzelak@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/intel_chipset.h     |  1 +
- lib/intel_device_info.c | 75 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 76 insertions(+)
+ tools/intel_vbt_decode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 3fcc5b18d648..98a2a81fcffd 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -103,6 +103,7 @@ struct intel_device_info {
- };
+diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+index 5b39e0c1c33e..69961ce29e01 100644
+--- a/tools/intel_vbt_decode.c
++++ b/tools/intel_vbt_decode.c
+@@ -3702,13 +3702,13 @@ get_device_id(unsigned char *bios, int size)
+     int offset = (bios[0x19] << 8) + bios[0x18];
  
- const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
-+uint16_t intel_guess_device_id(const char *codenameish) __attribute__((pure));
- 
- const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid) __attribute__((pure));
- unsigned intel_gen(uint16_t devid) __attribute__((pure));
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index da0b9f398885..3b5373265000 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -3,6 +3,7 @@
- #include "i915_pciids_local.h"
- 
- #include <strings.h> /* ffs() */
-+#include <ctype.h>
- 
- static const struct intel_device_info intel_generic_info = {
- 	.graphics_ver = 0,
-@@ -746,6 +747,80 @@ out:
- 	return cache;
- }
- 
-+static bool char_eq(char c1, char c2)
-+{
-+	c1 = isalnum(c1) ? tolower(c1) : '-';
-+	c2 = isalnum(c2) ? tolower(c2) : '-';
-+
-+	return c1 == c2;
-+}
-+
-+/*
-+ * Return true if the codenames s1 and s2 match, with fuzziness.
-+ *
-+ * Case insensitive matching, ignoring differences in non-alnum characters. With
-+ * non-zero fuzziness, accept matches up to the first non-alnum character.
-+ */
-+static bool codename_match(const char *s1, const char *s2, int fuzziness)
-+{
-+	while (*s1 && *s2 && char_eq(*s1, *s2)) {
-+		s1++;
-+		s2++;
-+	}
-+
-+	/* full match */
-+	if (!*s1 && !*s2)
-+		return true;
-+
-+	/* sub-string match up to a non-alnum char */
-+	if (fuzziness >=1) {
-+		if (!*s1 && !isalnum(*s2))
-+			return true;
-+		if (!*s2 && !isalnum(*s1))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static uint16_t lookup_device_id(const char *codename, int fuzziness)
-+{
-+	int i;
-+
-+	for (i = 0; intel_device_match[i].device_id != PCI_MATCH_ANY; i++) {
-+		const struct intel_device_info *info = (void *)intel_device_match[i].match_data;
-+
-+		if (codename_match(info->codename, codename, fuzziness))
-+			return intel_device_match[i].device_id;
-+	}
-+
+     if (offset + 7 >= size)
+-	return -1;
 +	return 0;
-+}
-+
-+/**
-+ * intel_guess_device_id:
-+ * @codenameish: something resembling a codename
-+ *
-+ * Based on something resembling a codename, try to fuzzy find the first PCI
-+ * device ID matching the codename.
-+ *
-+ * Returns:
-+ * PCI device ID fuzzy matching the @codenameish, or 0 if no match was found.
-+ */
-+uint16_t intel_guess_device_id(const char *codenameish)
-+{
-+	uint16_t devid;
-+	int fuzziness;
-+
-+	for (fuzziness = 0; fuzziness < 2; fuzziness++) {
-+		devid = lookup_device_id(codenameish, fuzziness);
-+		if (devid)
-+			return devid;
-+	}
-+
+ 
+     if (bios[offset] != 'P' ||
+ 	bios[offset+1] != 'C' ||
+ 	bios[offset+2] != 'I' ||
+ 	bios[offset+3] != 'R')
+-	return -1;
 +	return 0;
-+}
-+
- /**
-  * intel_get_cmds_info:
-  * @devid: pci device id
+ 
+     device = (bios[offset+7] << 8) + bios[offset+6];
+ 
 -- 
 2.47.3
 
