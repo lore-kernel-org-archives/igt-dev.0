@@ -4,63 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AA41CD98CE
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 14:36:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E05DACD98CE
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 14:39:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF28E10EA4B;
-	Fri, 12 Jun 2026 14:36:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 911BD10EA4B;
+	Fri, 12 Jun 2026 14:39:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g3cW4lpb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fGVxUly2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D134410EA4B
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 14:36:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B19410EA4B
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 14:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781274978; x=1812810978;
+ t=1781275127; x=1812811127;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=RaLr+HqK38VHOFhYSLkBldpxD+agfu51XxOi5LCeE6c=;
- b=g3cW4lpbefenkAZiyJnM4ZqlJUpmIGXIpU2hSMjIKXt1nAOGNaOwbe4w
- R2+r9l9NqbXw9pOYtiUvtGTa5bR9hmzqrg1Qr0WCTuSkwed8XNGfqw3KU
- ArFl3AsE1djQQCmelXHWky1lzco3wsvBIZOUDe7jpVYU7O50zJh4i0AEr
- 2h0/aq441uCFxY4VXgMYbWqdKzOlsIdp23h0x6oxS+VhIFmIrTrafT071
- vsdk51/JKZEWJZB4Q27lxJg9NPV/ZrGIhYq8GzHxY0jKDOlsAjDmf+/3S
- 6YVcW4FNut+J1Rf3/p65B8hCRvj3DYblNTw3VH3CV992oNzQFkUHVRVHf w==;
-X-CSE-ConnectionGUID: wmaVrxCURl6hZSddaWQsDA==
-X-CSE-MsgGUID: 5nG7/ETaRGWjijzk3iejVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="85735664"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="85735664"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 07:36:17 -0700
-X-CSE-ConnectionGUID: Xn4unKnYRqWogCt4ssH6mg==
-X-CSE-MsgGUID: 7CWi7WrHTgaIKddkRh6yuw==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=/cRajFc3hOw+1XPPRc4zD2eUJUXjLHcC04dyKQhmEq4=;
+ b=fGVxUly2tezUSaXh/LaZqnAyc/Y1lI+0Tx9SVN6PWg/ebfBBcPacnlNu
+ E1fl/0WDvi+lBlec4Nm2DocBhkaZz9PQcNdE+uekjGc8nNhvQGYihZYAD
+ 36lY9A0OTGYnlv8HucztYiCzdCGa1AI+PWWReKESkA45miu7STDbJT9MP
+ znJtS+hz047r7SKX/6haDpABWWvyhesRkhRfdOso3bJmyH4CbVrkl/KZK
+ Cm/OSrWjm1RZrGAJ1Yz9RvENiJHb9FUBYn+g0yxI8A7rH8nZpa+VGXWHO
+ jFf232gO2+d6yjWFgyHJF9/mzdF+zOIbn0baYegGpmtrQBveQoA5Fdemp w==;
+X-CSE-ConnectionGUID: lelFEQBtT4uZmJYz2JHrmw==
+X-CSE-MsgGUID: YeemrMVKQRew/+AELYnn9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81948751"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="81948751"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2026 07:38:46 -0700
+X-CSE-ConnectionGUID: C9v8YCSHTeSqIUq1jg3EHw==
+X-CSE-MsgGUID: k9Gflt/+Rxu8mXB+TxSBzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="242457733"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="248725344"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 07:36:16 -0700
-Date: Fri, 12 Jun 2026 16:36:13 +0200
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 07:38:45 -0700
+Date: Fri, 12 Jun 2026 16:38:42 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Muppidi, Venkateswara Rao" <venkateswara.rao.muppidi@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>,
- igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com
-Subject: Re: [PATCH i-g-t] intel-ci: Add SVM, multi_queue tests to
- xe.fastfeedback.testlist.
-Message-ID: <20260612143613.7oh2br33phhhik6n@kamilkon-DESK.igk.intel.com>
+To: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Michal Mrozek <michal.mrozek@intel.com>,
+ John Falkowski <john.falkowski@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Lahtinen Joonas <joonas.lahtinen@intel.com>
+Subject: Re: [PATCH i-g-t 1/4] lib/xe: add xe_vm_restart ioctl helper
+Message-ID: <20260612143842.72qej4en7jfgj5qi@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Muppidi, Venkateswara Rao" <venkateswara.rao.muppidi@intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com
-References: <20260612130659.5129-1-venkateswara.rao.muppidi@intel.com>
- <aiwH5qdwccT780lH@fdugast-desk>
+ Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Matthew Brost <matthew.brost@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Michal Mrozek <michal.mrozek@intel.com>,
+ John Falkowski <john.falkowski@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Lahtinen Joonas <joonas.lahtinen@intel.com>
+References: <20260612110619.103198-1-thomas.hellstrom@linux.intel.com>
+ <20260612110619.103198-2-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aiwH5qdwccT780lH@fdugast-desk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260612110619.103198-2-thomas.hellstrom@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,34 +83,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Rao,
-On 2026-06-12 at 15:21:42 +0200, Francois Dugast wrote:
-> On Fri, Jun 12, 2026 at 06:36:59PM +0530, Muppidi, Venkateswara Rao wrote:
+Hi Thomas,
+On 2026-06-12 at 13:06:16 +0200, Thomas Hellström wrote:
+> Add DRM_XE_VM_RESTART (ioctl 0x10) and struct drm_xe_vm_restart to the
+> Xe DRM UAPI header, taken from the xe_event kernel branch.
+> 
+> Add DRM_XE_VM_CREATE_FLAG_RESTARTABLE (bit 4) to allow VMs to opt in to
+> the restart mechanism.
+> 
+> Add __xe_vm_restart() (failable, with bounded EAGAIN retry) and
+> xe_vm_restart() (asserting wrapper) to lib/xe/xe_ioctl.  Both take an
+> optional CLOCK_MONOTONIC timestamp_ns which is forwarded to the IOCTL so
+> the driver can log event-to-restart latency.
+> 
+> Assisted-by: GitHub Copilot:claude-sonnet-4.6
 
-please subscribe to igt-dev mailing list, you can do it here:
+You s-o-b is missing here.
 
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> ---
+>  include/drm-uapi/xe_drm.h | 40 +++++++++++++++++++++++++++++++++++
 
-This is also listed in CONTRIBUTING.md
-
-In subject, please do not add dot at end, also you could simplify
-it a little:
-
-[PATCH i-g-t] intel-ci: Add SVM, multi_queue tests to Xe fastfeedback
+This change should be in separate commit, syncing with drm-next.
+See git log.
 
 Regards,
 Kamil
 
-> > Add SVM,render copy,ccs,compute_preempt,exercise_blt,exec_mix_modes,
-> > access_counter,fault_mode,multi_queue tests to xe.fastfeedback.testlist
-> > 
-> > Signed-off-by: Muppidi, Venkateswara Rao <venkateswara.rao.muppidi@intel.com>
-> > ---
-> >  tests/intel-ci/xe.fast-feedback.testlist | 36 ++++++++++++++++++++++++
-> >  1 file changed, 36 insertions(+)
-> > 
-> > diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
-> > index acff025fa..de71cacef 100644
-> > --- a/tests/intel-ci/xe.fast-feedback.testlist
-> > +++ b/tests/intel-ci/xe.fast-feedback.testlist
+>  lib/xe/xe_ioctl.c         | 44 +++++++++++++++++++++++++++++++++++++++
+>  lib/xe/xe_ioctl.h         |  2 ++
+>  3 files changed, 86 insertions(+)
+> 
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index 5a96a7910..43b65b1d9 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -84,6 +84,7 @@ extern "C" {
+>   *  - &DRM_IOCTL_XE_MADVISE
+>   *  - &DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS
+>   *  - &DRM_IOCTL_XE_VM_GET_PROPERTY
+> + *  - &DRM_IOCTL_XE_VM_RESTART
+>   */
+>  
 [cut]
