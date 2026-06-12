@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43BF8CD8CA8
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 10:52:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 681DECD8CA8
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:01:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF77510E9CB;
-	Fri, 12 Jun 2026 10:52:50 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C604D10E9CB;
- Fri, 12 Jun 2026 10:52:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7229666753499337402=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0760A10E9DA;
+	Fri, 12 Jun 2026 11:01:22 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SxYmp6fH";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3501110E9DA
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:00:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1781262057; x=1812798057;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5qRLjOYGpirGDcuhZVrnlJ2t3YucnUlGgSp6386vMGo=;
+ b=SxYmp6fHQz2wnt+ipQe9oaMop6QKIL59hzB1B+z7i7LpKeaMfn6zO1UK
+ 7x3OAo8AFML6Fe4rbMl2EB/WyNO840vwHKq0ny+UD6TmeUAuGOwerw+Rp
+ aIIlgPzdPTfvjFTpfpgIL6gWA+dFfprJFKHNifoMYdVbg4ljBSlQI63W/
+ tkt8SbH7kDLxtGvmHVGWrx9NQBk3p07AQjjn7cs6sSXrjX529q8o50Ykm
+ gTXipTQ26edaB45AO18M1xnieTIHrVAIIReLgZFRhh93stTS0RCh56Ws8
+ 8CTNj4Y89GGLAopyPVrXQC6qC49lZltmi4zj4U07Ab5d3VWhQH6yq9fon Q==;
+X-CSE-ConnectionGUID: h2LSWFGeRviY6gzTRu3Sxg==
+X-CSE-MsgGUID: Ln9OkuyGQgW6VifazHvRPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="93580802"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="93580802"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2026 04:00:56 -0700
+X-CSE-ConnectionGUID: nCpd8eOzSn6MOX8lRY3aTA==
+X-CSE-MsgGUID: TmMV8g7FRdWRoIR6IN9Buw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="245902897"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.71])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2026 04:00:52 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: igt-dev@lists.freedesktop.org,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+Cc: ville.syrjala@linux.intel.com,
+	jani.nikula@intel.com
+Subject: [PATCH i-g-t 0/4] intel_vbt_decode: fall back to guessing PCI ID from
+ VBT signature
+Date: Fri, 12 Jun 2026 14:00:40 +0300
+Message-ID: <cover.1781261899.git.jani.nikula@intel.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fsharpne?=
- =?utf-8?q?ss=5Ffilter=3A_Fix_tap_filter_test_failures?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 12 Jun 2026 10:52:25 -0000
-Message-ID: <178126154580.73002.11029211517982016109@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260612093518.2657433-1-swati2.sharma@intel.com>
-In-Reply-To: <20260612093518.2657433-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,134 +69,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7229666753499337402==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This is inspired by Michał's patch [1], and I got kind of carried away
+trying to figure out how to infer the stuff from the existing codenames
+in intel_device_info.c. I didn't mean to do it, but here it is. :)
 
-== Series Details ==
-
-Series: tests/intel/kms_sharpness_filter: Fix tap filter test failures
-URL   : https://patchwork.freedesktop.org/series/168419/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8960 -> IGTPW_15356
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15356/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15356 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [FAIL][1] ([i915#16115]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8960/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15356/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#16115]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16115
+BR,
+Jani.
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8960 -> IGTPW_15356
-  * Linux: CI_DRM_18667 -> CI_DRM_18668
-
-  CI-20190529: 20190529
-  CI_DRM_18667: d931e7b381f9d86766f3a971a9376e4312745af8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18668: 9ce63e3d9903982c053b125686abcb7a84357ed4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15356: 15356
-  IGT_8960: 88bd725754990332efcd158b0429f6ac7fb63862 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15356/index.html
-
---===============7229666753499337402==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+[1] https://lore.kernel.org/r/20260608124121.3131410-6-michal.grzelak@intel.com
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+Jani Nikula (3):
+  tools/intel_vbt_decode: store codename from VBT signature to context
+  lib/intel_device_info: add a helper to guess the PCI ID for a codename
+  tools/intel_vbt_decode: fall back to guessing PCI ID from VBT
+    signature
 
+Michał Grzelak (1):
+  tools/vbt_decode: return 0 from get_device_id()
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_sharpness_filter: Fix tap filter test failures</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168419/">https://patchwork.freedesktop.org/series/168419/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+ lib/intel_chipset.h      |  1 +
+ lib/intel_device_info.c  | 75 ++++++++++++++++++++++++++++++++++++++++
+ tools/intel_vbt_decode.c | 35 +++++++++++++------
+ 3 files changed, 100 insertions(+), 11 deletions(-)
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15356/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15356/index.html</a></td></tr>
+-- 
+2.47.3
 
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8960 -&gt; IGTPW_15356</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15356/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15356 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_hdmi_inject@inject-audio:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8960/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16115">i915#16115</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15356/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8960 -&gt; IGTPW_15356</li>
-<li>Linux: CI_DRM_18667 -&gt; CI_DRM_18668</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18667: d931e7b381f9d86766f3a971a9376e4312745af8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18668: 9ce63e3d9903982c053b125686abcb7a84357ed4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15356: 15356<br />
-  IGT_8960: 88bd725754990332efcd158b0429f6ac7fb63862 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7229666753499337402==--
