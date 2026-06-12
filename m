@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF401CD8CA8
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A415CD8CA8
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:08:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 651B910E9E2;
-	Fri, 12 Jun 2026 11:08:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F3B0310F450;
+	Fri, 12 Jun 2026 11:08:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gF9uCq8h";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X1wSdG3e";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 021EE10E9E2
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:07:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E8E210E9E2
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781262426; x=1812798426;
+ t=1781262419; x=1812798419;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CzfJM/2wuOOg2EJjd4N6XUxfzsP8M2Wbux8NhA1kpQQ=;
- b=gF9uCq8hnetkmQiKG9EmIEX8/dcLQwQo23Y49kVmn+AQ2Y4eYhgIIr0h
- fmx9/Q8Wjg4IY/R3xufB6FVCt1R0BLO5KdFAHkuBcEm460x0RlY3eoKq+
- sjWE8RD667A/H5guuA6LowwQkxGv05XzX1T0R93Wess/Rn7BzN9SxfQjF
- Sa2zvdWEHZmf1ZwErwcbtEUwBG0nI08bO4a0NDyAXuGjvtOrG3e39mvvM
- LQGN2aTeuf8LNE1gZSZnQp98Vi7mJHFKYUAs+u/EEtpZSMRKWl7+1zRR8
- G7CMyCGJXj3dOd0QDlxe/HvEOhSw/B+N+X0xA6jjeYDvX9ujXyJ3a1ziD g==;
-X-CSE-ConnectionGUID: zCsSc52iQH+Akry3k4JD+w==
-X-CSE-MsgGUID: 2zud00OESku8Elbi7CaDPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81997615"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="81997615"
+ bh=IGL9T/QxifaaQmRKft7m+/WrsnCS+PO2BBr5Q9G8cHM=;
+ b=X1wSdG3ejKGKILiK40YHTqN204O8p9Y+SPUOxU5DOtZHwybIpqeBzqAN
+ wcR2DrjVv5JA4Ha/vjmxnwCZ2NZtMcxwI7rmLXxkV3qN9HWgsIXRVAg8u
+ yMIpZa1pguZBylfSIa4Uj7HtibLwcATxJerDysC+4I4kv7yb/212vsJKO
+ 43ywxNIIhFAUp9XGxR7Fr1dnzGOU4cHaHrrhNDKMphFnjqwSdgaQrQrPA
+ H9pLhmT+OLtLoDgBpIdA5hDxyu3yxd1tN4tSb1fDK8PQVaPrQZKXaMu4v
+ /i8VnuTkE0EfTVw6NwGZF6tdNdOJf5ljOAkYtQUvpimy6jFDUBqRWUU/1 Q==;
+X-CSE-ConnectionGUID: pTAWISoySIa4A2ZdLeL4xg==
+X-CSE-MsgGUID: ec6wtLg7ShWDJQhFV8oQbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81997604"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="81997604"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 04:07:05 -0700
-X-CSE-ConnectionGUID: /asHW8lQTl6EvFxHX7LN4Q==
-X-CSE-MsgGUID: 2fn4L9PrT06nRzGbW5odWA==
+ 12 Jun 2026 04:06:59 -0700
+X-CSE-ConnectionGUID: FUsb8aUkRWC6Qvnl5JMO3g==
+X-CSE-MsgGUID: weEqUlTIS+WI8O6gGdLqkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="250717767"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="250717735"
 Received: from slindbla-desk.ger.corp.intel.com (HELO fedora) ([10.245.245.68])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 04:07:03 -0700
+ 12 Jun 2026 04:06:56 -0700
 From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
@@ -50,10 +50,9 @@ Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
  John Falkowski <john.falkowski@intel.com>,
  Rodrigo Vivi <rodrigo.vivi@intel.com>,
  Lahtinen Joonas <joonas.lahtinen@intel.com>
-Subject: [PATCH i-g-t 4/4] tests/intel/xe_exec_compute_mode: Restart VM on
- ENOMEM/ENOSPC errors
-Date: Fri, 12 Jun 2026 13:06:19 +0200
-Message-ID: <20260612110619.103198-5-thomas.hellstrom@linux.intel.com>
+Subject: [PATCH i-g-t 1/4] lib/xe: add xe_vm_restart ioctl helper
+Date: Fri, 12 Jun 2026 13:06:16 +0200
+Message-ID: <20260612110619.103198-2-thomas.hellstrom@linux.intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260612110619.103198-1-thomas.hellstrom@linux.intel.com>
 References: <20260612110619.103198-1-thomas.hellstrom@linux.intel.com>
@@ -74,155 +73,171 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When a DRM_XE_EVENT_VM_ERR event is received with error code -ENOMEM or
--ENOSPC, call DRM_IOCTL_XE_VM_RESTART to attempt recovery via the
-preempt-rebind worker.
+Add DRM_XE_VM_RESTART (ioctl 0x10) and struct drm_xe_vm_restart to the
+Xe DRM UAPI header, taken from the xe_event kernel branch.
 
-To pass the file descriptor into the event callback, introduce struct
-xe_watch_ctx embedding the existing struct xe_watch_event alongside an
-fd field, following the container_of() pattern documented by the
-xe_watch library.
+Add DRM_XE_VM_CREATE_FLAG_RESTARTABLE (bit 4) to allow VMs to opt in to
+the restart mechanism.
 
-The restart uses __xe_vm_restart() (failable) rather than the asserting
-xe_vm_restart() since the callback runs on the background listener
-thread.  -ENOENT is treated as non-fatal (event arrived after VM
-destruction); other errors are logged as warnings.
-
-Alongside the test change, add the __xe_vm_restart() and xe_vm_restart()
-helpers to lib/xe/xe_ioctl and the DRM_XE_VM_RESTART UAPI to
-include/drm-uapi/xe_drm.h, taken from the xe_event kernel branch.
+Add __xe_vm_restart() (failable, with bounded EAGAIN retry) and
+xe_vm_restart() (asserting wrapper) to lib/xe/xe_ioctl.  Both take an
+optional CLOCK_MONOTONIC timestamp_ns which is forwarded to the IOCTL so
+the driver can log event-to-restart latency.
 
 Assisted-by: GitHub Copilot:claude-sonnet-4.6
 ---
- include/drm-uapi/xe_drm.h          |  6 ++---
- tests/intel/xe_exec_compute_mode.c | 37 +++++++++++++++++++++++++-----
- 2 files changed, 33 insertions(+), 10 deletions(-)
+ include/drm-uapi/xe_drm.h | 40 +++++++++++++++++++++++++++++++++++
+ lib/xe/xe_ioctl.c         | 44 +++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_ioctl.h         |  2 ++
+ 3 files changed, 86 insertions(+)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 1b7857a9f..f6ec85a02 100644
+index 5a96a7910..43b65b1d9 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -2624,8 +2624,8 @@ enum drm_xe_ras_error_component {
-  * been created with exec queues that use preempt fences).
-  *
-  * On return the rebind attempt has completed or a retriable error was
-- * encountered.  Any non-retriable error is surfaced through the event
-- * mechanism if the caller has subscribed to %DRM_XE_EVENT_MASK_VM_ERR.
-+ * encountered.  Any non-retriable error is surfaced through the watch queue
-+ * if the caller has subscribed via %DRM_IOCTL_XE_WATCH_QUEUE.
-  * The IOCTL may return -EAGAIN if userptr memory needs to be repinned;
-  * callers should retry in that case.
+@@ -84,6 +84,7 @@ extern "C" {
+  *  - &DRM_IOCTL_XE_MADVISE
+  *  - &DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS
+  *  - &DRM_IOCTL_XE_VM_GET_PROPERTY
++ *  - &DRM_IOCTL_XE_VM_RESTART
   */
-@@ -2654,8 +2654,6 @@ struct drm_xe_vm_restart {
+ 
+ /*
+@@ -109,6 +110,7 @@ extern "C" {
+ #define DRM_XE_VM_QUERY_MEM_RANGE_ATTRS	0x0d
+ #define DRM_XE_EXEC_QUEUE_SET_PROPERTY	0x0e
+ #define DRM_XE_VM_GET_PROPERTY		0x0f
++#define DRM_XE_VM_RESTART		0x10
+ 
+ /* Must be kept compact -- no holes */
+ 
+@@ -128,6 +130,7 @@ extern "C" {
+ #define DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_QUERY_MEM_RANGE_ATTRS, struct drm_xe_vm_query_mem_range_attr)
+ #define DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY	DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_SET_PROPERTY, struct drm_xe_exec_queue_set_property)
+ #define DRM_IOCTL_XE_VM_GET_PROPERTY		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_GET_PROPERTY, struct drm_xe_vm_get_property)
++#define DRM_IOCTL_XE_VM_RESTART			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_VM_RESTART, struct drm_xe_vm_restart)
  
  /**
-  * DOC: DRM_XE_WATCH_QUEUE
-- *
-- * Subscribe a notification pipe to receive device events for the calling
-  * process's DRM file handle.  Events are scoped to the subscribing file:
-  * only events that belong to that file (for example, VM error on a VM created
-  * through the same file) are delivered, preventing information leaks between
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index 5bab971b0..71b6110e2 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -11,7 +11,9 @@
-  * Functionality: compute test
-  */
+  * DOC: Xe IOCTL Extensions
+@@ -991,6 +994,7 @@ struct drm_xe_vm_create {
+ #define DRM_XE_VM_CREATE_FLAG_LR_MODE	        (1 << 1)
+ #define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(1 << 2)
+ #define DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT  (1 << 3)
++#define DRM_XE_VM_CREATE_FLAG_RESTARTABLE       (1 << 4)
+ 	/** @flags: Flags */
+ 	__u32 flags;
  
-+#include <errno.h>
- #include <fcntl.h>
-+#include <stdatomic.h>
+@@ -2609,6 +2613,42 @@ enum drm_xe_ras_error_component {
+ 	[DRM_XE_RAS_ERR_COMP_SOC_INTERNAL] = "soc-internal"		\
+ }
  
- #include "igt.h"
- #include "lib/igt_syncobj.h"
-@@ -40,11 +42,19 @@
- #define FREE_MAPPPING			(0x1 << 7)
- #define UNMAP_MAPPPING			(0x1 << 8)
- 
-+struct xe_watch_ctx {
-+	struct xe_watch_event base;
-+	int fd;
-+	atomic_uint restart_count;
++/**
++ * DOC: DRM_XE_VM_RESTART
++ *
++ * Synchronously restart a VM by running its preempt-rebind worker in the
++ * calling context.  The VM must be in preempt-fence mode (i.e. it must have
++ * been created with exec queues that use preempt fences).
++ *
++ * On return the rebind attempt has completed or a retriable error was
++ * encountered.  Any non-retriable error is surfaced through the event
++ * mechanism if the caller has subscribed to %DRM_XE_EVENT_MASK_VM_ERR.
++ * The IOCTL may return -EAGAIN if userptr memory needs to be repinned;
++ * callers should retry in that case.
++ */
++
++/**
++ * struct drm_xe_vm_restart - restart a VM's preempt-rebind worker
++ *
++ * Used with %DRM_IOCTL_XE_VM_RESTART.
++ */
++struct drm_xe_vm_restart {
++	/** @vm_id: ID of the VM to restart */
++	__u32 vm_id;
++	/** @pad: reserved, must be zero */
++	__u32 pad;
++	/**
++	 * @timestamp_ns: optional CLOCK_MONOTONIC timestamp in nanoseconds.
++	 * When non-zero, the driver logs the delay between this timestamp and
++	 * the point the rebind completes, which can be used to measure the
++	 * response latency from event delivery to VM restart.  Pass zero to
++	 * disable the logging.
++	 */
++	__u64 timestamp_ns;
++	/** @reserved: reserved, must be zero */
++	__u64 reserved;
 +};
 +
- static void xe_event_fn(struct xe_watch_event *event)
- {
-+	struct xe_watch_ctx *ctx = igt_container_of(event, ctx, base);
- 	const struct watch_notification *notif = event->notif;
- 	const struct drm_xe_watch_notification_vm_err *err_event =
- 		igt_container_of(notif, err_event, base);
-+	int err;
- 
- 	switch (notif->type) {
- 	case WATCH_TYPE_META:
-@@ -67,6 +77,16 @@ static void xe_event_fn(struct xe_watch_event *event)
- 			igt_info("VM with id %u saw an error: %d\n",
- 				 (unsigned int) err_event->vm_id,
- 				 (int) err_event->error_code);
-+			if (err_event->error_code == -ENOMEM ||
-+			    err_event->error_code == -ENOSPC) {
-+				err = __xe_vm_restart(ctx->fd, err_event->vm_id,
-+					      err_event->timestamp_ns);
-+				if (err && err != -ENOENT)
-+					igt_warn("VM %u restart failed: %d\n",
-+						 (unsigned int) err_event->vm_id, err);
-+				else if (!err)
-+					atomic_fetch_add(&ctx->restart_count, 1);
-+			}
- 			break;
- 		default:
- 			igt_warn("Unknown XE watch subtype %u\n",
-@@ -176,7 +196,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_debug("%s running on: %s\n", __func__, xe_engine_class_string(eci->engine_class));
- 	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+			  DRM_XE_VM_CREATE_FLAG_RESTARTABLE, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = xe_bb_size(fd, bo_size);
- 
-@@ -401,7 +422,8 @@ static void lr_mode_workload(int fd)
- 	uint32_t bo;
- 	uint32_t ts_1, ts_2;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+			  DRM_XE_VM_CREATE_FLAG_RESTARTABLE, 0);
- 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
- 	bo_size = xe_bb_size(fd, sizeof(*spin));
- 	engine = xe_find_engine_by_class(fd, DRM_XE_ENGINE_CLASS_COPY);
-@@ -481,14 +503,15 @@ int igt_main()
- 		{ NULL },
- 	};
- 	int fd;
--	struct xe_watch_event watch_event = {
--		.ops = &event_ops,
-+	struct xe_watch_ctx watch_ctx = {
-+		.base.ops = &event_ops,
- 	};
- 	struct xe_watch_listener *listener;
- 
- 	igt_fixture() {
- 		fd = drm_open_driver(DRIVER_XE);
--		listener = xe_watch_listener_create(fd, &watch_event);
-+		watch_ctx.fd = fd;
-+		listener = xe_watch_listener_create(fd, &watch_ctx.base);
- 	}
- 
- 	for (const struct section *s = sections; s->name; s++) {
-@@ -523,7 +546,9 @@ int igt_main()
- 
- 
- 	igt_fixture() {
--		drm_close_driver(fd);
- 		xe_watch_listener_destroy(listener);
-+		igt_info("VM restarts performed: %u\n",
-+			 atomic_load(&watch_ctx.restart_count));
-+		drm_close_driver(fd);
- 	}
+ #if defined(__cplusplus)
  }
+ #endif
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index c8ed99182..f102fe34e 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -337,6 +337,50 @@ void xe_vm_get_property(int fd, uint32_t vm, struct drm_xe_vm_get_property *quer
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, query), 0);
+ }
+ 
++/**
++ * __xe_vm_restart() - restart a VM's preempt-rebind worker (failable)
++ * @fd: open Xe DRM device file descriptor
++ * @vm: VM id to restart
++ * @timestamp_ns: CLOCK_MONOTONIC timestamp from the triggering event, or 0
++ *
++ * Calls %DRM_IOCTL_XE_VM_RESTART, retrying up to 10 times on -EAGAIN as
++ * required when userptr memory needs repinning.
++ *
++ * Return: 0 on success, negative errno on failure.
++ */
++int __xe_vm_restart(int fd, uint32_t vm, uint64_t timestamp_ns)
++{
++	struct drm_xe_vm_restart restart = {
++		.vm_id = vm,
++		.timestamp_ns = timestamp_ns,
++	};
++	int err, tries = 10;
++
++	do {
++		err = igt_ioctl(fd, DRM_IOCTL_XE_VM_RESTART, &restart);
++		if (err) {
++			err = -errno;
++			igt_assume(err);
++			errno = 0;
++		}
++	} while (err == -EAGAIN && --tries > 0);
++
++	return err;
++}
++
++/**
++ * xe_vm_restart() - restart a VM's preempt-rebind worker
++ * @fd: open Xe DRM device file descriptor
++ * @vm: VM id to restart
++ * @timestamp_ns: CLOCK_MONOTONIC timestamp from the triggering event, or 0
++ *
++ * Calls __xe_vm_restart() and asserts success.
++ */
++void xe_vm_restart(int fd, uint32_t vm, uint64_t timestamp_ns)
++{
++	igt_assert_eq(__xe_vm_restart(fd, vm, timestamp_ns), 0);
++}
++
+ void xe_vm_destroy(int fd, uint32_t vm)
+ {
+ 	struct drm_xe_vm_destroy destroy = {
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index bf40fb6bd..95f2ec3d8 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -66,6 +66,8 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t exec_queue,
+ 			    uint32_t bo, struct drm_xe_sync *sync,
+ 			    uint32_t num_syncs);
+ void xe_vm_get_property(int fd, uint32_t vm, struct drm_xe_vm_get_property *query);
++int __xe_vm_restart(int fd, uint32_t vm, uint64_t timestamp_ns);
++void xe_vm_restart(int fd, uint32_t vm, uint64_t timestamp_ns);
+ void xe_vm_destroy(int fd, uint32_t vm);
+ uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+ 			uint32_t flags, void *ext, uint32_t *handle);
 -- 
 2.54.0
 
