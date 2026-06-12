@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0198CD98CE
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:01:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5080ECD98CE
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:02:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 61A5610E9DA;
-	Fri, 12 Jun 2026 11:01:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0676A10E9DA;
+	Fri, 12 Jun 2026 11:02:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TifgHutB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="brOUN9GO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E5C710E9DA
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:01:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB32C10E9DA
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781262072; x=1812798072;
+ t=1781262074; x=1812798074;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=kWgJ3P4/Ll30bBYyLZwoQQAbuthV8qVdfd5KKkSDhHc=;
- b=TifgHutButfSUguWd/p7N6JCeb+JFwiRmD0FHKm/hLjGnc26dKAz6cM3
- CK66KAaL/D6vqjE8VID29Ue29v4mKSxpEhMydo8+MzfDlhwA6d2/lZ3Ha
- 7K5JxACtuO/wzs6T5niLVKIi7XVYWmFGMTnRjUiDKynZv+jlK0P97hthA
- 2AAo4bvNyczjpSRUdOR6BJvoJqLA/A29XG5dAW9J9ITf6cn7WEAxZl9BN
- xFkN6+E8BaiZEisvvgpAmWQfKltgwolBEb7/JQ40cESmXfQ2c5WXwazoK
- Lqr2bZjHAARnZ/TevOuzK1thP28bRcUeJkhuPeiXcOAUwj2t1TJJ0e8yB A==;
-X-CSE-ConnectionGUID: hBltI1nYSiactvtKugN6Mw==
-X-CSE-MsgGUID: bleDNIi/RpqrYSu+7fbEUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81226213"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="81226213"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 04:00:59 -0700
-X-CSE-ConnectionGUID: AsRBUy9OThmfpscbT2dR5w==
-X-CSE-MsgGUID: P1w6B887R5qAJoFrr7wD3w==
+ bh=l5KKGvxZICYTAoYYCkXu8xUrPizEzyNg6YBzu58uWHY=;
+ b=brOUN9GOe9RTetnVEL+OvGSJraJAIqsSu+LD6X+b2vchttPTDSQKzson
+ U5J921ca7I/dhmmA/dqtxsmioggpfQqMk0wU7XCnSTcoinAKQV8hkYtlq
+ Vv5T0Yp+gb6xsyOEchfWV2XlJA+kH+YXu2QKsskyQi9LpCIyZTK8ElKQv
+ E+We1DIFkgOqiX6GoEb33gpsloI4DaY+UN4GowhHcz/osZa34YCoX2HVb
+ MxCEbtGwixCsh67AG811o/mD17PHXavhIWz1fyTYCb/qs2QTdTszqn02q
+ 9WOW8i7tSFUenvRuNQWBGLjpZD1BCZdfvuJptOtfv8xtcG3p9dfrQplv1 Q==;
+X-CSE-ConnectionGUID: GbrlB+bgQpK8sPMKsm2PrA==
+X-CSE-MsgGUID: 8GiRjdsTQe+Eb183uSPltg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="82074275"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="82074275"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2026 04:01:14 -0700
+X-CSE-ConnectionGUID: OPWadSchSHOblR9cvjALsw==
+X-CSE-MsgGUID: bggQTwR1TXu7eX+pY6hRWQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="246818223"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="284902123"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.71])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 04:00:57 -0700
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2026 04:01:12 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 Cc: ville.syrjala@linux.intel.com,
 	jani.nikula@intel.com
-Subject: [PATCH i-g-t 1/4] tools/intel_vbt_decode: store codename from VBT
- signature to context
-Date: Fri, 12 Jun 2026 14:00:41 +0300
-Message-ID: <f2fbc2d33202efafa7afb6a01353ba0ce8146f52.1781261899.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 4/4] tools/intel_vbt_decode: fall back to guessing PCI
+ ID from VBT signature
+Date: Fri, 12 Jun 2026 14:00:44 +0300
+Message-ID: <0ff53a45d2067d0dbc8057723db45a91736a2df6.1781261899.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1781261899.git.jani.nikula@intel.com>
 References: <cover.1781261899.git.jani.nikula@intel.com>
@@ -74,87 +74,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The VBT often contains something resembling a codename in the
-signature. Currently, we only use it for printing a description of sorts
-(the --describe option). Store the codename-ish to context for more use.
+If the PCI ID wasn't passed on the command-line, DEVICE environment
+variable, or VBIOS, fall back to guessing the device ID from the VBT
+signature.
 
 Cc: Michał Grzelak <michal.grzelak@intel.com>
 Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tools/intel_vbt_decode.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ tools/intel_vbt_decode.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index cf7bcc5771a4..5b39e0c1c33e 100644
+index 69961ce29e01..9451a77318ae 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -74,6 +74,8 @@ struct context {
- 	const struct bdb_header *bdb;
- 	int size;
- 
-+	char codename[sizeof(((struct vbt_header *)0)->signature) + 1];
-+
- 	uint32_t devid;
- 	int panel_type, panel_type2;
- 	int sdvo_panel_type;
-@@ -4023,31 +4025,38 @@ static bool dump_section(struct context *context, int section_id)
- 	return true;
- }
- 
--/* print a description of the VBT of the form <bdb-version>-<vbt-signature> */
--static void print_description(struct context *context)
-+/* initialize something resembling a codename based on the signature */
-+static void init_codename(struct context *context)
- {
- 	const struct vbt_header *vbt = context->vbt;
--	const struct bdb_header *bdb = context->bdb;
--	char *desc = strndup((char *)vbt->signature, sizeof(vbt->signature));
-+	char signature[sizeof(vbt->signature) + 1] = {};
- 	char *p;
- 
--	for (p = desc + strlen(desc) - 1; p >= desc && isspace(*p); p--)
-+	memcpy(signature, vbt->signature, sizeof(vbt->signature));
-+
-+	for (p = signature + strlen(signature) - 1; p >= signature && isspace(*p); p--)
- 		*p = '\0';
- 
--	for (p = desc; *p; p++) {
-+	for (p = signature; *p; p++) {
- 		if (!isalnum(*p))
- 			*p = '-';
- 		else
- 			*p = tolower(*p);
+@@ -4331,6 +4331,8 @@ int main(int argc, char **argv)
  	}
+ 	if (!context.devid)
+ 		context.devid = get_device_id(VBIOS, size);
++	if (!context.devid)
++		context.devid = intel_guess_device_id(context.codename);
+ 	if (!context.devid)
+ 		fprintf(stderr, "Warning: could not find PCI device ID!\n");
  
--	p = desc;
-+	p = signature;
- 	if (strncmp(p, "-vbt-", 5) == 0)
- 		p += 5;
- 
--	printf("%d-%s\n", bdb->version, p);
-+	strncpy(context->codename, p, sizeof(context->codename));
-+}
-+
-+/* print a description of the VBT of the form <bdb-version>-<vbt-signature> */
-+static void print_description(struct context *context)
-+{
-+	const struct bdb_header *bdb = context->bdb;
- 
--	free (desc);
-+	printf("%d-%s\n", bdb->version, context->codename);
- }
- 
- static void dump_headers(struct context *context)
-@@ -4313,6 +4322,8 @@ int main(int argc, char **argv)
- 	context.bdb = (const struct bdb_header *)(VBIOS + bdb_off);
- 	context.size = size;
- 
-+	init_codename(&context);
-+
- 	if (!context.devid) {
- 		const char *devid_string = getenv("DEVICE");
- 		if (devid_string)
 -- 
 2.47.3
 
