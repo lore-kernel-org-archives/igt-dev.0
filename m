@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B2B8CD98CE
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:41:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 316F5CD8CA8
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:46:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A113910E9D9;
-	Fri, 12 Jun 2026 11:41:23 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UEajV5Q5";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14EA710F496
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:40:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781264459; x=1812800459;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=5fUqCZI2oTQ4I3q+gPC4XXY0V+L0snbBuTEKn3yQZv4=;
- b=UEajV5Q5soIps/Dv6adDiHQF1CfJnI5u+6I1f+YK/Jvs6+FJncYGjdQX
- iyi8tlabwpdFo3h1WceLLP+NSxvwGyVYbQD5qslcqGeGhSMFGrIDzDTzE
- Q9WY4CfEOdgKUYtEhqfrZT4kv0SoPYD6vjQRt85m12oo/5dfwp4G6yBRw
- e5q0pDaOlsQr4SXm3G3TPnX3QE8L2YCHrOlwFfA+o/OoDQ1w+AqNExrwl
- AO+mNfEY1CkL93thuW2NmcgqPDfU0q0SF93u1X+d+zI24aQNyQ30MAV4X
- USJlhlkM5M2Cw1eCqVdmO/kPIYBksyLiCs/U3KrwOshwndzgI7WuvUF64 A==;
-X-CSE-ConnectionGUID: aJlyWhZFRBKRZWfyeAmEvw==
-X-CSE-MsgGUID: 6dWQlSGKR0CYbedu20qAhw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="85935285"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="85935285"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 04:40:58 -0700
-X-CSE-ConnectionGUID: GmabcXxnSCu3abV4t0qR+g==
-X-CSE-MsgGUID: nGMxWoaFTdmVL4+jyLV0cQ==
-X-ExtLoop1: 1
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 04:40:57 -0700
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Skip downscale test
- on first commit failure
-Date: Fri, 12 Jun 2026 17:19:54 +0530
-Message-Id: <20260612114954.2668076-1-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id C9AE710E9F6;
+	Fri, 12 Jun 2026 11:46:02 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1305310EA0D;
+ Fri, 12 Jun 2026 11:45:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3432976814279281877=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel=5Fvbt=5Fdecode=3A_fal?=
+ =?utf-8?q?l_back_to_guessing_PCI_ID_from_VBT_signature?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jani Nikula" <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 12 Jun 2026 11:45:39 -0000
+Message-ID: <178126473907.73002.10087951797096095475@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <cover.1781261899.git.jani.nikula@intel.com>
+In-Reply-To: <cover.1781261899.git.jani.nikula@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,45 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The first igt_display_commit2() in test_sharpness_filter() can fail
-with -ERANGE/-EINVAL for TEST_FILTER_DOWNSCALE because set_planes()
-already configured an overlay plane with a 75% downscale before
-this commit. On high-resolution panels (e.g. eDP-1 at 2560x1600),
-the kernel rejects the scaling operation due to cdclk/scaler limits.
+--===============3432976814279281877==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Use igt_display_try_commit2() for the initial commit in the downscale
-case and skip gracefully, matching the existing skip logic for the
-second commit after the sharpness filter is applied.
+== Series Details ==
 
-Assisted-by: GitHub Copilot:Claude Opus 4.6
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel/kms_sharpness_filter.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Series: intel_vbt_decode: fall back to guessing PCI ID from VBT signature
+URL   : https://patchwork.freedesktop.org/series/168428/
+State : success
 
-diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
-index 353a9a292..ff7b4540c 100644
---- a/tests/intel/kms_sharpness_filter.c
-+++ b/tests/intel/kms_sharpness_filter.c
-@@ -464,7 +464,14 @@ static void test_sharpness_filter(data_t *data, enum test_type type)
- 	 * is enabled and committed, the resulting CRC must differ.
- 	 */
- 	if (!is_invalid_test(type)) {
--		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+		if (type == TEST_FILTER_DOWNSCALE) {
-+			ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+			igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
-+				      "Scaling op not supported, cdclk limits might be exceeded.\n");
-+			igt_assert_eq(ret, 0);
-+		} else {
-+			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+		}
- 		pipe_crc = igt_crtc_crc_new(data->crtc,
- 					    IGT_PIPE_CRC_SOURCE_AUTO);
- 		igt_pipe_crc_collect_crc(pipe_crc, &no_sharp_crc);
--- 
-2.25.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8960_BAT -> XEIGTPW_15357_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 12)
+------------------------------
+
+  Missing    (1): bat-lnl-2 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8960 -> IGTPW_15357
+  * Linux: xe-5244-311cbada9202146752938f54503d33980ee4f3f6 -> xe-5246-9ce63e3d9903982c053b125686abcb7a84357ed4
+
+  IGTPW_15357: 15357
+  IGT_8960: 88bd725754990332efcd158b0429f6ac7fb63862 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5244-311cbada9202146752938f54503d33980ee4f3f6: 311cbada9202146752938f54503d33980ee4f3f6
+  xe-5246-9ce63e3d9903982c053b125686abcb7a84357ed4: 9ce63e3d9903982c053b125686abcb7a84357ed4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15357/index.html
+
+--===============3432976814279281877==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel_vbt_decode: fall back to guessing PCI ID from VBT signature</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168428/">https://patchwork.freedesktop.org/series/168428/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15357/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15357/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8960_BAT -&gt; XEIGTPW_15357_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-lnl-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8960 -&gt; IGTPW_15357</li>
+<li>Linux: xe-5244-311cbada9202146752938f54503d33980ee4f3f6 -&gt; xe-5246-9ce63e3d9903982c053b125686abcb7a84357ed4</li>
+</ul>
+<p>IGTPW_15357: 15357<br />
+  IGT_8960: 88bd725754990332efcd158b0429f6ac7fb63862 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5244-311cbada9202146752938f54503d33980ee4f3f6: 311cbada9202146752938f54503d33980ee4f3f6<br />
+  xe-5246-9ce63e3d9903982c053b125686abcb7a84357ed4: 9ce63e3d9903982c053b125686abcb7a84357ed4</p>
+
+</body>
+</html>
+
+--===============3432976814279281877==--
