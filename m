@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F64CD8CA8
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 04:58:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C783DCD98CC
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 05:14:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 422C010E097;
-	Fri, 12 Jun 2026 04:58:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CAF710E56F;
+	Fri, 12 Jun 2026 05:14:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NsKL5V27";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mtXox2yS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3AD110E097
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 04:58:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FF6510E56F
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 05:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781240307; x=1812776307;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=jbvJFzVrn45UdREkjZcCniEJ+gktaiJzHKzNh3R11yA=;
- b=NsKL5V27qwHFgxdM5Yczkm/fh6DZbyn8C0gkaGvZrM4XA4SrEFSA0E/S
- g26AIPpdixpTtyJWxNY+DqBORMT30CpcMkYmizGL/jZlIIBayEPNUYoTY
- WDKxdi300S2gdrJkz5v+PlNFX4oSp15PvSr7I3mbpBJrtky6JKN2py3NU
- cgG5KEP/grWBnEvWKlnlSWsFjC8JtoKKCCUJaQZCdPT15YPKV1bjQ8zNu
- ljdEinBnzcORMk7q2bb84ofZpkg+zXBw71OVvBzEzSs7r+0SeJW6sCIYm
- lLFKc2B1KNRgyw27+U32Kr+sLtlmz97ju9EUg6IXUNjo5EItsHzM2d0i4 g==;
-X-CSE-ConnectionGUID: OrDyHMvPT0Krx0tP6F9Oig==
-X-CSE-MsgGUID: t+8ymVqKSZKwpDIBTuMy8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="92745864"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="92745864"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2026 21:58:26 -0700
-X-CSE-ConnectionGUID: ZujdbAkfSo+UAfFgkX30og==
-X-CSE-MsgGUID: QbFGJsSGQMaW0fYYI5W7IQ==
+ t=1781241255; x=1812777255;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=sCKRJv4GYlxMdR2CuHnXdV7mZWUXLwPv4CePWh7COMM=;
+ b=mtXox2ySFjPnvY7CsMNhwKYaf+yyYTk1HEKlLTdJEXWfo9PpW/F86Gl4
+ GmwMbRNo/ecOqjRAy6WvavLx95mU6xg0tTG8tqIpjnMJ+IkpXkaf2VkWj
+ SP1+rFjLtmvLuk7FVludUEIOUDrj6229io9XONm+rFqQP/RgTPv4IS6Uk
+ hMNxvYUI9ywwCIGMQprrLcYQlglKoBKUvzMwCqZ368oVr29qZv/IdNgdL
+ rW4Q3qKVOoGpHyU/+ED03rRJS77DiybSsgqb4KmrecwqPHoDeM65davMK
+ QcCpj7bIwy9JgZDTplBBhK90fhw9OhWoJAiLKjhXutFaOu43hhb1clKwz g==;
+X-CSE-ConnectionGUID: PuuD1xmNR8asYIiriIz5MQ==
+X-CSE-MsgGUID: Wshb/SjGQ4ebD1p65KxLTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="92388272"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="92388272"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2026 22:14:14 -0700
+X-CSE-ConnectionGUID: Z4Ji9F2ZSziykSA4xBkX5Q==
+X-CSE-MsgGUID: VgYq29niQBiObJYsVLvgvw==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="248610805"
 Received: from soc-dcgdq34.clients.intel.com (HELO [10.66.118.194])
  ([10.66.118.194])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2026 21:58:25 -0700
-Message-ID: <e5b0a42a-826f-49b4-a4f0-34bf447f1506@intel.com>
-Date: Fri, 12 Jun 2026 10:28:24 +0530
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2026 22:14:13 -0700
+Message-ID: <801eff6f-eb98-4179-ab5b-16c4222cc0c6@intel.com>
+Date: Fri, 12 Jun 2026 10:44:12 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t] tests/chamelium/kms_chamelium_audio: Add suspend/resume
- audio tests
-To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
-References: <20260611035200.2296907-1-jeevan.b@intel.com>
+Subject: Re: [i-g-t, v3,
+ 1/3] lib/igt_kms: Add MST bandwidth-fitting support and helpers
+To: Sowmiya S <sowmiya.s@intel.com>, igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com, ramanaidu.naladala@intel.com
+References: <20260527135109.3291120-2-sowmiya.s@intel.com>
 Content-Language: en-US
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20260611035200.2296907-1-jeevan.b@intel.com>
+In-Reply-To: <20260527135109.3291120-2-sowmiya.s@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,216 +71,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hello Jeevan,
+Hello Sowmiya,
 
-On 11-06-2026 09:22, Jeevan B wrote:
-> Add test to validate audio works before and after suspend/resume on
-> HDMI/DP connector.
+On 27-05-2026 19:21, Sowmiya S wrote:
+> Add helpers to handle shared-link DP bandwidth fitting for
+> MST/daisy-chain configurations.
 >
-> v2: Perform a single suspend/resume for all audio combinations.
->      Re-enable chamelium after suspend and separate pre-suspend
->      and post-resume validation paths for clearer failure diagnostics.
-> v3: Drop commit and use igt_assert_f with explicit messages to
->      distinguish failure in audio tests.
-> v4: Removed inner igt_assert, changed from tracking execution to
->      aggregating test results with success &=, so function now returns
->      actual pass/fail.
+> On MST hubs/daisy-chains multiple streams share one DP link
+> and a joint atomic commit can be rejected unless modes are
+> chosen to fit the link BW. This will centralizes MST detection
+> and fitting so tests can request fitting only when required.
 >
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> v2: Remove the flag used for caching values and update the
+> function name to better describe its functionality (Jani)
+>
+> Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 > ---
->   tests/chamelium/kms_chamelium_audio.c | 147 ++++++++++++++++++++++++++
->   1 file changed, 147 insertions(+)
+>   lib/igt_kms.c | 37 +++++++++++++++++++++++++++++++++++++
+>   lib/igt_kms.h |  2 ++
+>   2 files changed, 39 insertions(+)
 >
-> diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-> index df8d27c0c..bd121fa8d 100644
-> --- a/tests/chamelium/kms_chamelium_audio.c
-> +++ b/tests/chamelium/kms_chamelium_audio.c
-> @@ -52,6 +52,12 @@
->    * SUBTEST: hdmi-audio-edid
->    * Description: Plug a connector with an EDID suitable for audio, check ALSA's
->    *              EDID-Like Data reports the correct audio parameters
-> + *
-> + * SUBTEST: dp-audio-after-suspend
-> + * Description: Verify audio works before and after system suspend/resume
-> + *
-> + * SUBTEST: hdmi-audio-after-suspend
-> + * Description: Verify audio works before and after system suspend/resume
->    */
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index e20307923..639a5f80b 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -2746,6 +2746,7 @@ static void igt_output_reset(igt_output_t *output)
+>   {
+>   	output->pending_crtc = NULL;
+>   	output->use_override_mode = false;
+> +	output->bw_fit_applied = false;
+>   	memset(&output->override_mode, 0, sizeof(output->override_mode));
 >   
->   /* Playback parameters control the audio signal we synthesize and send */
-> @@ -695,6 +701,63 @@ static bool check_audio_configuration(struct alsa *alsa,
+>   	igt_output_set_prop_value(output, IGT_CONNECTOR_CRTC_ID, 0);
+> @@ -5384,6 +5385,7 @@ bool __override_all_active_output_modes_to_fit_bw(igt_display_t *display,
+>   		int ret;
+>   
+>   		igt_output_override_mode(output, mode);
+> +		output->bw_fit_applied = true;
+>   
+>   		if (__override_all_active_output_modes_to_fit_bw(display, outputs, n_outputs, base + 1))
+>   			return true;
+> @@ -5453,6 +5455,11 @@ bool igt_fit_modes_in_bw(igt_display_t *display)
+>   {
+>   	int ret;
+>   
+> +	igt_output_t *output;
+> +
+> +	for_each_output(display, output)
+> +		output->bw_fit_applied = false;
+> +
+>   	if (display->is_atomic)
+>   		ret = igt_display_try_commit_atomic(display,
+>   						    DRM_MODE_ATOMIC_TEST_ONLY |
+> @@ -5473,6 +5480,36 @@ bool igt_fit_modes_in_bw(igt_display_t *display)
 >   	return true;
 >   }
 >   
-> +static bool run_audio_test_once(chamelium_data_t *data,
-> +				struct alsa *alsa,
-> +				struct chamelium_port *port,
-> +				snd_pcm_format_t format,
-> +				int channels,
-> +				int sampling_rate)
+> +/**
+> + * igt_require_mst_link_bw:
+> + * @display: a pointer to an #igt_display_t structure
+> + *
+> + * When two or more DP-MST streams share the same upstream link, a joint
+> + * atomic commit may be rejected by the driver if the combined stream
+> + * bandwidth exceeds the link capacity.  This function detects that
+> + * situation and, when found, calls igt_fit_modes_in_bw() to select mode
+> + * overrides that satisfy the shared-link BW budget.  The test is skipped
+> + * if no valid combination can be found.  No-op when fewer than two active
+> + * MST streams are present.
+> + */
+> +void igt_require_mst_link_bw(igt_display_t *display)
 > +{
-> +	struct audio_state state;
-> +	bool success;
+> +	igt_output_t *output;
+> +	int active_mst = 0;
 > +
-> +	audio_state_init(&state, data, alsa, port, format, channels,
-> +			 sampling_rate);
-> +	success = test_audio_frequencies(&state);
-> +	success &= test_audio_flatline(&state);
-> +	audio_state_fini(&state);
-> +
-> +	return success;
-> +}
-> +
-> +static bool run_audio_tests(chamelium_data_t *data,
-> +			    struct alsa *alsa,
-> +			    struct chamelium_port *port,
-> +			    const char *audio_device)
-> +{
-> +	bool success = true;
-> +	int ret, i, j;
-> +	int channels, sampling_rate;
-> +	snd_pcm_format_t format;
-> +
-> +	for (i = 0; i < test_sampling_rates_count; i++) {
-> +		for (j = 0; j < test_formats_count; j++) {
-> +			ret = alsa_open_output(alsa, audio_device);
-> +			igt_assert_f(ret >= 0,
-> +				     "Failed to open ALSA output\n");
-> +
-> +			format = test_formats[j];
-> +			channels = PLAYBACK_CHANNELS;
-> +			sampling_rate = test_sampling_rates[i];
-> +
-> +			if (!check_audio_configuration(alsa, format,
-> +						       channels,
-> +						       sampling_rate)) {
-> +				alsa_close_output(alsa);
-> +				continue;
-> +			}
-> +
-> +			success &= run_audio_test_once(data, alsa, port,
-> +						       format, channels,
-> +						       sampling_rate);
-> +
-> +			alsa_close_output(alsa);
-> +		}
+> +	for_each_output(display, output) {
+> +		if (output->pending_crtc &&
+> +			igt_check_output_is_dp_mst(output))
+> +			active_mst++;
+Here we would need to find mst output which share's one root
+For below case we don't need to fit bw since neither link shares bw
+Platform -> Hub1 -> Display1
+Platform -> Hub2 -> Display1
+
+We need it for below cases
+Platform -> Hub1 -> Display1 -> Display2
+
+Also since we need to consider tunnels for fitting bw,
+As shared bandwidth for DP tunnel whether MST/SST shares the same link.
+Refer intel_dp_tunnel_atomic_check_link, 
+drm_dp_tunnel_atomic_check_group_bw
 > +	}
 > +
-> +	return success;
+> +	if (active_mst < 2)
+> +		return;
+> +
+> +	igt_require_f(igt_fit_modes_in_bw(display),
+> +			  "No valid mode combination fits available MST link BW\n");
 > +}
 > +
-Looks there can be some possibility here that we can return success even 
-though nothing ran,
->   static const char test_display_audio_desc[] =
->   	"Playback various audio signals with various audio formats/rates, "
->   	"capture them and check they are correct";
-> @@ -789,6 +852,80 @@ static void test_display_audio(chamelium_data_t *data,
->   	free(alsa);
->   }
+>   /**
+>    * igt_crtc_refresh:
+>    * @crtc: CRTC to refresh
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index c2a3099de..eab4dfded 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -508,6 +508,7 @@ typedef struct {
 >   
-> +static const char test_display_audio_suspend_resume_desc[] =
-> +	"Verify audio works before and after system suspend/resume";
-> +static void test_display_audio_suspend_resume(
-> +				chamelium_data_t *data,
-> +				struct chamelium_port *port,
-> +				const char *audio_device,
-> +				enum igt_custom_edid_type edid)
-> +{
-> +	struct alsa *alsa;
-> +	igt_output_t *output;
-> +	igt_plane_t *primary;
-> +	struct igt_fb fb;
-> +	drmModeModeInfo *mode;
-> +	drmModeConnector *connector;
-> +	int fb_id;
-> +
-> +	igt_require(alsa_has_exclusive_access());
-> +
-> +	igt_require(chamelium_has_audio_support(data->chamelium,
-> +						port));
-> +
-> +	alsa = alsa_init();
-> +	igt_assert(alsa);
-> +
-> +	igt_modeset_disable_all_outputs(&data->display);
-> +
-> +	chamelium_reset_state(&data->display, data->chamelium,
-> +			      port, data->ports,
-> +			      data->port_count);
-> +
-> +	output = chamelium_prepare_output(data, port, edid);
-> +
-> +	connector = chamelium_port_get_connector(data->chamelium,
-> +						 port, false);
-> +
-> +	primary = igt_output_get_plane_type(output,
-> +					    DRM_PLANE_TYPE_PRIMARY);
-> +	igt_assert(primary);
-> +
-> +	igt_assert(connector->count_modes > 0);
-> +
-> +	mode = &connector->modes[0];
-> +
-> +	fb_id = igt_create_color_pattern_fb(data->drm_fd,
-> +					    mode->hdisplay,
-> +					    mode->vdisplay,
-> +					    DRM_FORMAT_XRGB8888,
-> +					    DRM_FORMAT_MOD_LINEAR,
-> +					    0, 0, 0, &fb);
-> +
-> +	igt_assert(fb_id > 0);
-> +
-> +	chamelium_enable_output(data, port, output,
-> +				mode, &fb);
-> +
-> +	igt_assert_f(run_audio_tests(data, alsa, port, audio_device),
-> +		     "Audio test failed before suspend\n");
-> +
-> +	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> +				      SUSPEND_TEST_NONE);
-> +
-> +	chamelium_enable_output(data, port, output,
-> +				mode, &fb);
-Why are we re-enabling the output?
-We can just reprobe connectors to make sure they are in connected state.
+>   	/* bitmask of changed properties */
+>   	uint64_t changed;
+> +	bool bw_fit_applied;
+I see bw_fit_applied added and toggled but not used anywhere
+Please check if this is required.
 
 Thanks and Regards
 Kunal Joshi
-> +
-> +	igt_assert_f(run_audio_tests(data, alsa, port, audio_device),
-> +		     "Audio test failed after suspend\n");
-> +
-> +	igt_remove_fb(data->drm_fd, &fb);
-> +
-> +	drmModeFreeConnector(connector);
-> +
-> +	free(alsa);
-> +}
-> +
->   static const char test_display_audio_edid_desc[] =
->   	"Plug a connector with an EDID suitable for audio, check ALSA's "
->   	"EDID-Like Data reports the correct audio parameters";
-> @@ -866,6 +1003,11 @@ int igt_main()
->   	connector_subtest("dp-audio-edid", DisplayPort, &data, test_display_audio_edid,
->   			  IGT_CUSTOM_EDID_DP_AUDIO);
+
 >   
-> +	igt_describe(test_display_audio_suspend_resume_desc);
-> +	connector_subtest("dp-audio-after-suspend", DisplayPort, &data,
-> +			  test_display_audio_suspend_resume,
-> +			  "HDMI", IGT_CUSTOM_EDID_DP_AUDIO);
-> +
->   	igt_describe("HDMI tests");
+>   	uint32_t props[IGT_NUM_CONNECTOR_PROPS];
+>   	uint64_t values[IGT_NUM_CONNECTOR_PROPS];
+> @@ -1293,6 +1294,7 @@ drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output);
+>   uint64_t igt_get_writeback_fb_id(igt_output_t *output);
+>   void igt_detach_crtc(igt_display_t *display, igt_output_t *output);
+>   void igt_get_and_wait_out_fence(igt_output_t *output);
+> +void igt_require_mst_link_bw(igt_display_t *display);
 >   
->   	igt_describe(test_display_audio_desc);
-> @@ -876,6 +1018,11 @@ int igt_main()
->   	connector_subtest("hdmi-audio-edid", HDMIA, &data, test_display_audio_edid,
->   			  IGT_CUSTOM_EDID_HDMI_AUDIO);
+>   igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
 >   
-> +	igt_describe(test_display_audio_suspend_resume_desc);
-> +	connector_subtest("hdmi-audio-after-suspend", HDMIA, &data,
-> +			  test_display_audio_suspend_resume,
-> +			  "HDMI", IGT_CUSTOM_EDID_HDMI_AUDIO);
-> +
->   	igt_fixture() {
->   		igt_display_fini(&data.display);
->   		drm_close_driver(data.drm_fd);
