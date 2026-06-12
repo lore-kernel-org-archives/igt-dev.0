@@ -4,62 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E182CCD8CA8
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 14:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A024DCD98CE
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 14:17:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 94CE010F53B;
-	Fri, 12 Jun 2026 14:14:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D84D10F54F;
+	Fri, 12 Jun 2026 14:17:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pknuic86";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QwOwCt9M";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA2A210F53B
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 14:13:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5AA3810F543
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 14:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781273634; x=1812809634;
+ t=1781273800; x=1812809800;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=5oY4lvS03E7BzeeZP3M9i1gvBNYeSsYCbCnra4r3Kz4=;
- b=Pknuic861LQ4yYw/CIMyxWFA9/R5fgEHT85gWhf2jkwWxIoCcEFQlZ5K
- 47SRO39kzVaHUyEB7fxtXejw4uqIbNIc4H0KVjX74xwtanaWU5d7UAB3O
- 6iPQBoixe4Jy93xOGQi6xH0/eg77+qVT5I8+mdU1G2ukzFzImWONeGU8w
- 7mONzRMQUBxM3u4BiOhGX17EPPFtQeWmmqQYzthT9T75FyRckGATDrgoa
- Zqezgzg+BncpzDfcw0zSSEna9HjnELMrI1Dy9gDUGTxtqAiZ2hFo1tgMZ
- xXntP9kUeBVMbLhCMtYiY+2EsiIt5yjn+Lpl2+3Mj1imExwo8KltrjJC4 g==;
-X-CSE-ConnectionGUID: +ViZW79UQrqn2Zv8GaDz3g==
-X-CSE-MsgGUID: tZh3ITggQ6q5d02jQWOFKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="82147938"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="82147938"
+ bh=z5xLLejKxcEvs7Lw7YeqY4ZgJCZGRt6HnYaiO9qwvn8=;
+ b=QwOwCt9MsU19I+XfLT68szZa6+xuGMXlhRTFn88LoKZZktqp5+92VhyA
+ krDKVJB8V1Yy9816ao3E+nsOk6qO0qdvUIXgrwqL/63HOunTFHOJKvyYB
+ pcYDLQU4RKFejbtR64ZM+/vPZLhEqHRtKvM4nK9kVbppkWVCZEwO3Q1X5
+ 9U/2jGzL6emQAgfExN73UZTKh7qkMLv/CkhftReqDowyIeeGxNS+9dpbp
+ vY3hF0OOvzWlNi9Ee9skXJPnlK1ACzT/gg6BOZSF6HQ0z0b/CbQiowWIf
+ OpRvuawa4J8hv0kn4cTu+C2MoUk+l9UTF+ZbHT6qfSVG2Djo9sTfyScyJ w==;
+X-CSE-ConnectionGUID: QavfAlplQGiMZsA0RL/RvQ==
+X-CSE-MsgGUID: HawkWm4ZR7qIgJn/2PZEww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="82148102"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="82148102"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 07:13:54 -0700
-X-CSE-ConnectionGUID: VHy+ubmIRB2hrj6Ec7hx/w==
-X-CSE-MsgGUID: 88CAn4zgStmECN3LWNFV/g==
+ 12 Jun 2026 07:16:40 -0700
+X-CSE-ConnectionGUID: s5wghJmASV+M5x7zRLat2Q==
+X-CSE-MsgGUID: ee0CPkmgT2K/qtQgcEOvaQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="242453324"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="242453599"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 07:13:53 -0700
-Date: Fri, 12 Jun 2026 16:13:36 +0200
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 07:16:38 -0700
+Date: Fri, 12 Jun 2026 16:16:36 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Jani Nikula <jani.nikula@intel.com>
 Cc: igt-dev@lists.freedesktop.org,
  =?utf-8?Q?Micha=C5=82?= Grzelak <michal.grzelak@intel.com>,
  ville.syrjala@linux.intel.com
-Subject: Re: [PATCH i-g-t 3/4] tools/vbt_decode: return 0 from get_device_id()
-Message-ID: <20260612141336.sbb2u4pdn2j7pixu@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 2/4] lib/intel_device_info: add a helper to guess
+ the PCI ID for a codename
+Message-ID: <20260612141636.5zd4s75ietudsx6r@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
  =?utf-8?Q?Micha=C5=82?= Grzelak <michal.grzelak@intel.com>,
  ville.syrjala@linux.intel.com
 References: <cover.1781261899.git.jani.nikula@intel.com>
- <5f020e16d2604d820341ff2c476cca1dda3d9655.1781261899.git.jani.nikula@intel.com>
+ <b02ca4e981b402b630810c017ce144f14d7626a8.1781261899.git.jani.nikula@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5f020e16d2604d820341ff2c476cca1dda3d9655.1781261899.git.jani.nikula@intel.com>
+In-Reply-To: <b02ca4e981b402b630810c017ce144f14d7626a8.1781261899.git.jani.nikula@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,48 +77,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Jani,
-On 2026-06-12 at 14:00:43 +0300, Jani Nikula wrote:
-> From: Michał Grzelak <michal.grzelak@intel.com>
+On 2026-06-12 at 14:00:42 +0300, Jani Nikula wrote:
+> The struct intel_device_info contains the codenames for the
+> corresponding PCI device IDs. Add a reverse lookup to get a PCI ID for a
+> codename.
 > 
-> This function returns -1 on errors and the caller checks for 0. This
-> leads to -1 being used as the device id. Return 0 instead of -1.
+> It's a bit fuzzy, though. The codenames aren't always spelled the same,
+> there are suffixes sometimes omitted, and you can only pick one of the
+> matching PCI IDs. Name the helper intel_guess_device_id() to emphasize
+> the point, and try increasing fuzziness in the matching to find an
+> appropriate struct intel_device_info.
 > 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+> There's nothing exact about this, and it should not be considered as
+> such. But it will be useful in VBT parsing.
+> 
+> Cc: Michał Grzelak <michal.grzelak@intel.com>
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 > ---
->  tools/intel_vbt_decode.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  lib/intel_chipset.h     |  1 +
+>  lib/intel_device_info.c | 75 +++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 76 insertions(+)
 > 
-> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-> index 5b39e0c1c33e..69961ce29e01 100644
-> --- a/tools/intel_vbt_decode.c
-> +++ b/tools/intel_vbt_decode.c
-> @@ -3702,13 +3702,13 @@ get_device_id(unsigned char *bios, int size)
->      int offset = (bios[0x19] << 8) + bios[0x18];
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index 3fcc5b18d648..98a2a81fcffd 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -103,6 +103,7 @@ struct intel_device_info {
+>  };
+>  
+>  const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
+> +uint16_t intel_guess_device_id(const char *codenameish) __attribute__((pure));
+>  
+>  const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid) __attribute__((pure));
+>  unsigned intel_gen(uint16_t devid) __attribute__((pure));
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index da0b9f398885..3b5373265000 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -3,6 +3,7 @@
+>  #include "i915_pciids_local.h"
+>  
+>  #include <strings.h> /* ffs() */
+> +#include <ctype.h>
 
-btw do we need a function for this?
-like bios_u32(bios, offset) or lowend_u32(p, off)
+Move it before strings.h, keep alphabetical order.
+Also, all system headers should be before igt ones.
 
 Regards,
 Kamil
 
->  
->      if (offset + 7 >= size)
-> -	return -1;
-> +	return 0;
->  
->      if (bios[offset] != 'P' ||
->  	bios[offset+1] != 'C' ||
->  	bios[offset+2] != 'I' ||
->  	bios[offset+3] != 'R')
-> -	return -1;
-> +	return 0;
->  
->      device = (bios[offset+7] << 8) + bios[offset+6];
->  
-> -- 
-> 2.47.3
-> 
+[cut]
