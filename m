@@ -4,58 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A415CD8CA8
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:08:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B2B8CD98CE
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jun 2026 11:41:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F3B0310F450;
-	Fri, 12 Jun 2026 11:08:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A113910E9D9;
+	Fri, 12 Jun 2026 11:41:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X1wSdG3e";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UEajV5Q5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E8E210E9E2
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:06:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14EA710F496
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2026 11:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781262419; x=1812798419;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=IGL9T/QxifaaQmRKft7m+/WrsnCS+PO2BBr5Q9G8cHM=;
- b=X1wSdG3ejKGKILiK40YHTqN204O8p9Y+SPUOxU5DOtZHwybIpqeBzqAN
- wcR2DrjVv5JA4Ha/vjmxnwCZ2NZtMcxwI7rmLXxkV3qN9HWgsIXRVAg8u
- yMIpZa1pguZBylfSIa4Uj7HtibLwcATxJerDysC+4I4kv7yb/212vsJKO
- 43ywxNIIhFAUp9XGxR7Fr1dnzGOU4cHaHrrhNDKMphFnjqwSdgaQrQrPA
- H9pLhmT+OLtLoDgBpIdA5hDxyu3yxd1tN4tSb1fDK8PQVaPrQZKXaMu4v
- /i8VnuTkE0EfTVw6NwGZF6tdNdOJf5ljOAkYtQUvpimy6jFDUBqRWUU/1 Q==;
-X-CSE-ConnectionGUID: pTAWISoySIa4A2ZdLeL4xg==
-X-CSE-MsgGUID: ec6wtLg7ShWDJQhFV8oQbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81997604"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="81997604"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 04:06:59 -0700
-X-CSE-ConnectionGUID: FUsb8aUkRWC6Qvnl5JMO3g==
-X-CSE-MsgGUID: weEqUlTIS+WI8O6gGdLqkw==
+ t=1781264459; x=1812800459;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5fUqCZI2oTQ4I3q+gPC4XXY0V+L0snbBuTEKn3yQZv4=;
+ b=UEajV5Q5soIps/Dv6adDiHQF1CfJnI5u+6I1f+YK/Jvs6+FJncYGjdQX
+ iyi8tlabwpdFo3h1WceLLP+NSxvwGyVYbQD5qslcqGeGhSMFGrIDzDTzE
+ Q9WY4CfEOdgKUYtEhqfrZT4kv0SoPYD6vjQRt85m12oo/5dfwp4G6yBRw
+ e5q0pDaOlsQr4SXm3G3TPnX3QE8L2YCHrOlwFfA+o/OoDQ1w+AqNExrwl
+ AO+mNfEY1CkL93thuW2NmcgqPDfU0q0SF93u1X+d+zI24aQNyQ30MAV4X
+ USJlhlkM5M2Cw1eCqVdmO/kPIYBksyLiCs/U3KrwOshwndzgI7WuvUF64 A==;
+X-CSE-ConnectionGUID: aJlyWhZFRBKRZWfyeAmEvw==
+X-CSE-MsgGUID: 6dWQlSGKR0CYbedu20qAhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="85935285"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="85935285"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2026 04:40:58 -0700
+X-CSE-ConnectionGUID: GmabcXxnSCu3abV4t0qR+g==
+X-CSE-MsgGUID: nGMxWoaFTdmVL4+jyLV0cQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; d="scan'208";a="250717735"
-Received: from slindbla-desk.ger.corp.intel.com (HELO fedora) ([10.245.245.68])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2026 04:06:56 -0700
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 04:40:57 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Michal Mrozek <michal.mrozek@intel.com>,
- John Falkowski <john.falkowski@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Lahtinen Joonas <joonas.lahtinen@intel.com>
-Subject: [PATCH i-g-t 1/4] lib/xe: add xe_vm_restart ioctl helper
-Date: Fri, 12 Jun 2026 13:06:16 +0200
-Message-ID: <20260612110619.103198-2-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260612110619.103198-1-thomas.hellstrom@linux.intel.com>
-References: <20260612110619.103198-1-thomas.hellstrom@linux.intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Skip downscale test
+ on first commit failure
+Date: Fri, 12 Jun 2026 17:19:54 +0530
+Message-Id: <20260612114954.2668076-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,171 +65,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add DRM_XE_VM_RESTART (ioctl 0x10) and struct drm_xe_vm_restart to the
-Xe DRM UAPI header, taken from the xe_event kernel branch.
+The first igt_display_commit2() in test_sharpness_filter() can fail
+with -ERANGE/-EINVAL for TEST_FILTER_DOWNSCALE because set_planes()
+already configured an overlay plane with a 75% downscale before
+this commit. On high-resolution panels (e.g. eDP-1 at 2560x1600),
+the kernel rejects the scaling operation due to cdclk/scaler limits.
 
-Add DRM_XE_VM_CREATE_FLAG_RESTARTABLE (bit 4) to allow VMs to opt in to
-the restart mechanism.
+Use igt_display_try_commit2() for the initial commit in the downscale
+case and skip gracefully, matching the existing skip logic for the
+second commit after the sharpness filter is applied.
 
-Add __xe_vm_restart() (failable, with bounded EAGAIN retry) and
-xe_vm_restart() (asserting wrapper) to lib/xe/xe_ioctl.  Both take an
-optional CLOCK_MONOTONIC timestamp_ns which is forwarded to the IOCTL so
-the driver can log event-to-restart latency.
-
-Assisted-by: GitHub Copilot:claude-sonnet-4.6
+Assisted-by: GitHub Copilot:Claude Opus 4.6
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 40 +++++++++++++++++++++++++++++++++++
- lib/xe/xe_ioctl.c         | 44 +++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_ioctl.h         |  2 ++
- 3 files changed, 86 insertions(+)
+ tests/intel/kms_sharpness_filter.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 5a96a7910..43b65b1d9 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -84,6 +84,7 @@ extern "C" {
-  *  - &DRM_IOCTL_XE_MADVISE
-  *  - &DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS
-  *  - &DRM_IOCTL_XE_VM_GET_PROPERTY
-+ *  - &DRM_IOCTL_XE_VM_RESTART
-  */
- 
- /*
-@@ -109,6 +110,7 @@ extern "C" {
- #define DRM_XE_VM_QUERY_MEM_RANGE_ATTRS	0x0d
- #define DRM_XE_EXEC_QUEUE_SET_PROPERTY	0x0e
- #define DRM_XE_VM_GET_PROPERTY		0x0f
-+#define DRM_XE_VM_RESTART		0x10
- 
- /* Must be kept compact -- no holes */
- 
-@@ -128,6 +130,7 @@ extern "C" {
- #define DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_QUERY_MEM_RANGE_ATTRS, struct drm_xe_vm_query_mem_range_attr)
- #define DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY	DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_SET_PROPERTY, struct drm_xe_exec_queue_set_property)
- #define DRM_IOCTL_XE_VM_GET_PROPERTY		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_GET_PROPERTY, struct drm_xe_vm_get_property)
-+#define DRM_IOCTL_XE_VM_RESTART			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_VM_RESTART, struct drm_xe_vm_restart)
- 
- /**
-  * DOC: Xe IOCTL Extensions
-@@ -991,6 +994,7 @@ struct drm_xe_vm_create {
- #define DRM_XE_VM_CREATE_FLAG_LR_MODE	        (1 << 1)
- #define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(1 << 2)
- #define DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT  (1 << 3)
-+#define DRM_XE_VM_CREATE_FLAG_RESTARTABLE       (1 << 4)
- 	/** @flags: Flags */
- 	__u32 flags;
- 
-@@ -2609,6 +2613,42 @@ enum drm_xe_ras_error_component {
- 	[DRM_XE_RAS_ERR_COMP_SOC_INTERNAL] = "soc-internal"		\
- }
- 
-+/**
-+ * DOC: DRM_XE_VM_RESTART
-+ *
-+ * Synchronously restart a VM by running its preempt-rebind worker in the
-+ * calling context.  The VM must be in preempt-fence mode (i.e. it must have
-+ * been created with exec queues that use preempt fences).
-+ *
-+ * On return the rebind attempt has completed or a retriable error was
-+ * encountered.  Any non-retriable error is surfaced through the event
-+ * mechanism if the caller has subscribed to %DRM_XE_EVENT_MASK_VM_ERR.
-+ * The IOCTL may return -EAGAIN if userptr memory needs to be repinned;
-+ * callers should retry in that case.
-+ */
-+
-+/**
-+ * struct drm_xe_vm_restart - restart a VM's preempt-rebind worker
-+ *
-+ * Used with %DRM_IOCTL_XE_VM_RESTART.
-+ */
-+struct drm_xe_vm_restart {
-+	/** @vm_id: ID of the VM to restart */
-+	__u32 vm_id;
-+	/** @pad: reserved, must be zero */
-+	__u32 pad;
-+	/**
-+	 * @timestamp_ns: optional CLOCK_MONOTONIC timestamp in nanoseconds.
-+	 * When non-zero, the driver logs the delay between this timestamp and
-+	 * the point the rebind completes, which can be used to measure the
-+	 * response latency from event delivery to VM restart.  Pass zero to
-+	 * disable the logging.
-+	 */
-+	__u64 timestamp_ns;
-+	/** @reserved: reserved, must be zero */
-+	__u64 reserved;
-+};
-+
- #if defined(__cplusplus)
- }
- #endif
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index c8ed99182..f102fe34e 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -337,6 +337,50 @@ void xe_vm_get_property(int fd, uint32_t vm, struct drm_xe_vm_get_property *quer
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, query), 0);
- }
- 
-+/**
-+ * __xe_vm_restart() - restart a VM's preempt-rebind worker (failable)
-+ * @fd: open Xe DRM device file descriptor
-+ * @vm: VM id to restart
-+ * @timestamp_ns: CLOCK_MONOTONIC timestamp from the triggering event, or 0
-+ *
-+ * Calls %DRM_IOCTL_XE_VM_RESTART, retrying up to 10 times on -EAGAIN as
-+ * required when userptr memory needs repinning.
-+ *
-+ * Return: 0 on success, negative errno on failure.
-+ */
-+int __xe_vm_restart(int fd, uint32_t vm, uint64_t timestamp_ns)
-+{
-+	struct drm_xe_vm_restart restart = {
-+		.vm_id = vm,
-+		.timestamp_ns = timestamp_ns,
-+	};
-+	int err, tries = 10;
-+
-+	do {
-+		err = igt_ioctl(fd, DRM_IOCTL_XE_VM_RESTART, &restart);
-+		if (err) {
-+			err = -errno;
-+			igt_assume(err);
-+			errno = 0;
+diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
+index 353a9a292..ff7b4540c 100644
+--- a/tests/intel/kms_sharpness_filter.c
++++ b/tests/intel/kms_sharpness_filter.c
+@@ -464,7 +464,14 @@ static void test_sharpness_filter(data_t *data, enum test_type type)
+ 	 * is enabled and committed, the resulting CRC must differ.
+ 	 */
+ 	if (!is_invalid_test(type)) {
+-		igt_display_commit2(&data->display, COMMIT_ATOMIC);
++		if (type == TEST_FILTER_DOWNSCALE) {
++			ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
++			igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
++				      "Scaling op not supported, cdclk limits might be exceeded.\n");
++			igt_assert_eq(ret, 0);
++		} else {
++			igt_display_commit2(&data->display, COMMIT_ATOMIC);
 +		}
-+	} while (err == -EAGAIN && --tries > 0);
-+
-+	return err;
-+}
-+
-+/**
-+ * xe_vm_restart() - restart a VM's preempt-rebind worker
-+ * @fd: open Xe DRM device file descriptor
-+ * @vm: VM id to restart
-+ * @timestamp_ns: CLOCK_MONOTONIC timestamp from the triggering event, or 0
-+ *
-+ * Calls __xe_vm_restart() and asserts success.
-+ */
-+void xe_vm_restart(int fd, uint32_t vm, uint64_t timestamp_ns)
-+{
-+	igt_assert_eq(__xe_vm_restart(fd, vm, timestamp_ns), 0);
-+}
-+
- void xe_vm_destroy(int fd, uint32_t vm)
- {
- 	struct drm_xe_vm_destroy destroy = {
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index bf40fb6bd..95f2ec3d8 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -66,6 +66,8 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t exec_queue,
- 			    uint32_t bo, struct drm_xe_sync *sync,
- 			    uint32_t num_syncs);
- void xe_vm_get_property(int fd, uint32_t vm, struct drm_xe_vm_get_property *query);
-+int __xe_vm_restart(int fd, uint32_t vm, uint64_t timestamp_ns);
-+void xe_vm_restart(int fd, uint32_t vm, uint64_t timestamp_ns);
- void xe_vm_destroy(int fd, uint32_t vm);
- uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
- 			uint32_t flags, void *ext, uint32_t *handle);
+ 		pipe_crc = igt_crtc_crc_new(data->crtc,
+ 					    IGT_PIPE_CRC_SOURCE_AUTO);
+ 		igt_pipe_crc_collect_crc(pipe_crc, &no_sharp_crc);
 -- 
-2.54.0
+2.25.1
 
