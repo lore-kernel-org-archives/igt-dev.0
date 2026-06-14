@@ -4,58 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AC66CD98D2
-	for <igt-dev@archiver.kernel.org>; Sun, 14 Jun 2026 16:59:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5DB5CD98C5
+	for <igt-dev@archiver.kernel.org>; Sun, 14 Jun 2026 17:17:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6BA7410E0DE;
-	Sun, 14 Jun 2026 16:59:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4454010E0E1;
+	Sun, 14 Jun 2026 17:17:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n5mJZOL/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SzrwX/UM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6CF410E0DE
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Jun 2026 16:59:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8137910E0DE
+ for <igt-dev@lists.freedesktop.org>; Sun, 14 Jun 2026 17:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781456365; x=1812992365;
+ t=1781457406; x=1812993406;
  h=date:from:to:cc:subject:in-reply-to:message-id:
- references:mime-version:content-id;
- bh=m1zjb+bkNStyKJPcyzNhuQH4oPMItfUPC/Y/LNwctro=;
- b=n5mJZOL/ESvPO3qkc9bzZj5+tF7uADfyrui9LTZDMH6/a82iv+OwWS2j
- tKOkiFvnPQ5Q3gulMJf0B9h+NgImE9LcCu5InidkQlGLYtRkK9fa3/OAs
- 37TBQEe2/++sqjBL/b1WoUJLF5jPFvfxgMNa1I27vQw3V8Q1+75TpEDrl
- vX5z2NGyDR69QuovMQ6inkfYCG1qOofKlJtkRVqM+anE7eVxxfg8lKe2p
- qBSdGdVTVFxBanrfC8Squcs3iDxsRkKOED6CCiBIdAM9KkgFekpg0dNSk
- eH//ShalQsdU93yhixbbpvsmaOwf8CO5hLsDkff2V7j9VToZr/Rnbczo8 w==;
-X-CSE-ConnectionGUID: 0VdVe664QoejDhSYJ0GvrQ==
-X-CSE-MsgGUID: A3gpVEBuRHmVc9MwJ0xEJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82114300"
-X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; d="scan'208";a="82114300"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jun 2026 09:59:25 -0700
-X-CSE-ConnectionGUID: ceuIuh6CSuaJKSEX/KNh6w==
-X-CSE-MsgGUID: 31lYmedqSLKMYyJ90zzelw==
+ references:mime-version;
+ bh=DkWgiDpDKE7o5sN0lQBYersFu4c6yRP5t3Azj+Ak/jw=;
+ b=SzrwX/UMjDKx3wd89KfrcJFVlx1S/Bq/Fbu1+4em0X2mVIko4TRcIhm0
+ UvXfNc9Cj+Td2R1AgEdVJy+sYpUYgWBwpyoIHeR3/gtpZEMZcKR3fyCvB
+ 25zDqx0FXP/72yE/Mbw+eOs946yvtS53MSzjP0WkJ1x7OXhdZdcrYCOxT
+ 4PnJvWJN8OV5s9H1o74iASed/sOMAXXfPKOWqaQhyHZaxcB+6UcTs6Vch
+ D8pziBxA4XLEKRRngXYH+9Fm3GdL2jh5qAYbF1h18afNOiV1bfO+yBaKJ
+ YZ1qNihfbFlPZyQyfd3uuwGRrBVuSxVw1VpSFnGxXjYWrYtXPfdFnYLlF g==;
+X-CSE-ConnectionGUID: xttll22nQQyCd+Aq1dj0LA==
+X-CSE-MsgGUID: 1DO/e2U+Q4yqoxQFFP0rMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82058509"
+X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; d="scan'208";a="82058509"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jun 2026 10:16:45 -0700
+X-CSE-ConnectionGUID: +QWW98LDT8SlnVPcsTHeqA==
+X-CSE-MsgGUID: 4CRYYlMZTgetCaTp/itVqQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; d="scan'208";a="240920341"
+X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; d="scan'208";a="271346725"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jun 2026 09:59:23 -0700
-Date: Sun, 14 Jun 2026 18:59:21 +0200 (CEST)
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jun 2026 10:16:44 -0700
+Date: Sun, 14 Jun 2026 19:16:42 +0200 (CEST)
 From: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>
 To: Jani Nikula <jani.nikula@intel.com>
 cc: igt-dev@lists.freedesktop.org, 
  =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>, 
  ville.syrjala@linux.intel.com
-Subject: Re: [PATCH i-g-t 2/4] lib/intel_device_info: add a helper to guess
- the PCI ID for a codename
-In-Reply-To: <b02ca4e981b402b630810c017ce144f14d7626a8.1781261899.git.jani.nikula@intel.com>
-Message-ID: <0db1a2c0-0ab2-10b7-b2fa-3e685e86cef9@intel.com>
+Subject: Re: [PATCH i-g-t 0/4] intel_vbt_decode: fall back to guessing PCI
+ ID from VBT signature
+In-Reply-To: <cover.1781261899.git.jani.nikula@intel.com>
+Message-ID: <35ab2ef8-1da9-4295-9ab9-ebdc613a904c@intel.com>
 References: <cover.1781261899.git.jani.nikula@intel.com>
- <b02ca4e981b402b630810c017ce144f14d7626a8.1781261899.git.jani.nikula@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-401861515-1781455839=:2091376"
-Content-ID: <8605772d-de50-31f9-7142-7bb614473452@intel.com>
+Content-Type: multipart/mixed; boundary="8323329-1553971019-1781457404=:605841"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,172 +72,54 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-401861515-1781455839=:2091376
-Content-Type: text/plain; CHARSET=ISO-8859-2; format=flowed
+--8323329-1553971019-1781457404=:605841
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8BIT
-Content-ID: <f18859fc-3141-2640-ab10-1498c3727a49@intel.com>
 
 On Fri, 12 Jun 2026, Jani Nikula wrote:
-> The struct intel_device_info contains the codenames for the
-> corresponding PCI device IDs. Add a reverse lookup to get a PCI ID for a
-> codename.
->
-> It's a bit fuzzy, though. The codenames aren't always spelled the same,
-> there are suffixes sometimes omitted, and you can only pick one of the
-> matching PCI IDs. Name the helper intel_guess_device_id() to emphasize
-> the point, and try increasing fuzziness in the matching to find an
-> appropriate struct intel_device_info.
->
-> There's nothing exact about this, and it should not be considered as
-> such. But it will be useful in VBT parsing.
->
-> Cc: Micha³ Grzelak <michal.grzelak@intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
-> lib/intel_chipset.h     |  1 +
-> lib/intel_device_info.c | 75 +++++++++++++++++++++++++++++++++++++++++
-> 2 files changed, 76 insertions(+)
->
-> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-> index 3fcc5b18d648..98a2a81fcffd 100644
-> --- a/lib/intel_chipset.h
-> +++ b/lib/intel_chipset.h
-> @@ -103,6 +103,7 @@ struct intel_device_info {
-> };
->
-> const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
-> +uint16_t intel_guess_device_id(const char *codenameish) __attribute__((pure));
->
-> const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid) __attribute__((pure));
-> unsigned intel_gen(uint16_t devid) __attribute__((pure));
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index da0b9f398885..3b5373265000 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -3,6 +3,7 @@
-> #include "i915_pciids_local.h"
->
-> #include <strings.h> /* ffs() */
-> +#include <ctype.h>
->
-> static const struct intel_device_info intel_generic_info = {
-> 	.graphics_ver = 0,
-> @@ -746,6 +747,80 @@ out:
-> 	return cache;
-> }
->
-> +static bool char_eq(char c1, char c2)
-> +{
-> +	c1 = isalnum(c1) ? tolower(c1) : '-';
-> +	c2 = isalnum(c2) ? tolower(c2) : '-';
-> +
-> +	return c1 == c2;
-> +}
-> +
-> +/*
-> + * Return true if the codenames s1 and s2 match, with fuzziness.
-> + *
-> + * Case insensitive matching, ignoring differences in non-alnum characters. With
-> + * non-zero fuzziness, accept matches up to the first non-alnum character.
-> + */
-> +static bool codename_match(const char *s1, const char *s2, int fuzziness)
-> +{
-> +	while (*s1 && *s2 && char_eq(*s1, *s2)) {
-> +		s1++;
-> +		s2++;
-> +	}
-> +
-> +	/* full match */
-> +	if (!*s1 && !*s2)
-> +		return true;
-> +
-> +	/* sub-string match up to a non-alnum char */
-> +	if (fuzziness >=1) {
+> This is inspired by MichaÅ‚'s patch [1], and I got kind of carried away
+> trying to figure out how to infer the stuff from the existing codenames
+> in intel_device_info.c. I didn't mean to do it, but here it is. :)
 
-I'm genuinely wondering about fuzziness being declared as int while
-used as boolean. I like the idea though and what do you think about
-treating fuzziness as number of allowed errors, so something like this:
+Glad to hear and thanks for carrying it :) Wondering if we could measure
+dissimilarity between extracted codenameish and each codename using eg.
+Levenshtein distance and then pick the codename with minimal one. Or
+tweaking codename_match() to return fuzziness between two strings and do
+same. I guess that way even if we had eg. P%fjlAwNTH][ljphEf;R the
+closest would be PANTHERLAKE (I suppose at least).
 
-static bool codename_match(const char *ref, const char *sgn, int fuzziness)
-{
- 	if (fuzziness < 0)
- 		return false;
+Not entirely sure how such code should look like though, hence for the
+series:
 
- 	while (*ref && *sgn && char_eq(*ref, *sgn)) {
- 		ref++;
- 		sgn++;
- 	}
-
- 	/* full match */
- 	if (!*ref && !*sgn)
- 		return true;
-
- 	if (!*ref && !isalnum(*sgn))
- 		return true;
-
- 	if (!*sgn && !isalnum(*ref))
- 		return true;
-
- 	/* signature lacks letter? */
- 	return codename_match(ref+1, sgn+1, fuzziness-1);
-}
+Reviewed-by: MichaÅ‚ Grzelak <michal.grzelak@intel.com>
 
 BR,
-Micha³
+MichaÅ‚
 
-> +		if (!*s1 && !isalnum(*s2))
-> +			return true;
-> +		if (!*s2 && !isalnum(*s1))
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +static uint16_t lookup_device_id(const char *codename, int fuzziness)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; intel_device_match[i].device_id != PCI_MATCH_ANY; i++) {
-> +		const struct intel_device_info *info = (void *)intel_device_match[i].match_data;
-> +
-> +		if (codename_match(info->codename, codename, fuzziness))
-> +			return intel_device_match[i].device_id;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * intel_guess_device_id:
-> + * @codenameish: something resembling a codename
-> + *
-> + * Based on something resembling a codename, try to fuzzy find the first PCI
-> + * device ID matching the codename.
-> + *
-> + * Returns:
-> + * PCI device ID fuzzy matching the @codenameish, or 0 if no match was found.
-> + */
-> +uint16_t intel_guess_device_id(const char *codenameish)
-> +{
-> +	uint16_t devid;
-> +	int fuzziness;
-> +
-> +	for (fuzziness = 0; fuzziness < 2; fuzziness++) {
-> +		devid = lookup_device_id(codenameish, fuzziness);
-> +		if (devid)
-> +			return devid;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> /**
->  * intel_get_cmds_info:
->  * @devid: pci device id
+>
+> BR,
+> Jani.
+>
+>
+> [1] https://lore.kernel.org/r/20260608124121.3131410-6-michal.grzelak@intel.com
+>
+>
+> Jani Nikula (3):
+>  tools/intel_vbt_decode: store codename from VBT signature to context
+>  lib/intel_device_info: add a helper to guess the PCI ID for a codename
+>  tools/intel_vbt_decode: fall back to guessing PCI ID from VBT
+>    signature
+>
+> MichaÅ‚ Grzelak (1):
+>  tools/vbt_decode: return 0 from get_device_id()
+>
+> lib/intel_chipset.h      |  1 +
+> lib/intel_device_info.c  | 75 ++++++++++++++++++++++++++++++++++++++++
+> tools/intel_vbt_decode.c | 35 +++++++++++++------
+> 3 files changed, 100 insertions(+), 11 deletions(-)
+>
 > -- 
 > 2.47.3
 >
 >
---8323329-401861515-1781455839=:2091376--
+--8323329-1553971019-1781457404=:605841--
