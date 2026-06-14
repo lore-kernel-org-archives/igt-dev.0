@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E83EECD98D2
-	for <igt-dev@archiver.kernel.org>; Sun, 14 Jun 2026 08:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0057ACD98D6
+	for <igt-dev@archiver.kernel.org>; Sun, 14 Jun 2026 08:43:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D0C0B10E04B;
-	Sun, 14 Jun 2026 08:18:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6D5E610E05E;
+	Sun, 14 Jun 2026 08:43:04 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 871CB10E04B;
- Sun, 14 Jun 2026 08:18:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E96110E05C;
+ Sun, 14 Jun 2026 08:42:40 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3957624147960325309=="
+ boundary="===============1823979594014551722=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_DC5_DPMS/PSR_suspend/resume?=
- =?utf-8?q?_validation_test_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_DC5_DPMS/PSR_suspend/resu?=
+ =?utf-8?q?me_validation_test_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Jun 2026 08:18:30 -0000
-Message-ID: <178142511054.76606.7395588956847520700@6beec6c84f66>
+Date: Sun, 14 Jun 2026 08:42:40 -0000
+Message-ID: <178142656031.76606.8473753159231318527@6beec6c84f66>
 X-Patchwork-Hint: ignore
 References: <20260610070253.25329-1-mohammed.thasleem@intel.com>
 In-Reply-To: <20260610070253.25329-1-mohammed.thasleem@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3957624147960325309==
+--===============1823979594014551722==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8962_BAT -> XEIGTPW_15362_BAT
+CI Bug Log - changes from IGT_8962 -> IGTPW_15362
 ====================================================
 
 Summary
@@ -64,12 +64,12 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15362/index.html
 
-Participating hosts (12 -> 12)
+Participating hosts (42 -> 39)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m 
 
 
 Changes
@@ -81,19 +81,21 @@ Changes
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_8962 -> IGTPW_15362
-  * Linux: xe-5248-536f4e1338749a805ec4a7b82b1444dae2c6fe4d -> xe-5254-0739fda8b8a06a8397e98a3c68da956230bc742f
+  * Linux: CI_DRM_18670 -> CI_DRM_18676
 
+  CI-20190529: 20190529
+  CI_DRM_18670: 536f4e1338749a805ec4a7b82b1444dae2c6fe4d @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18676: 0739fda8b8a06a8397e98a3c68da956230bc742f @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15362: 15362
   IGT_8962: 8962
-  xe-5248-536f4e1338749a805ec4a7b82b1444dae2c6fe4d: 536f4e1338749a805ec4a7b82b1444dae2c6fe4d
-  xe-5254-0739fda8b8a06a8397e98a3c68da956230bc742f: 0739fda8b8a06a8397e98a3c68da956230bc742f
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15362/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15362/index.html
 
---===============3957624147960325309==
+--===============1823979594014551722==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -117,30 +119,33 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168218/">https://patchwork.freedesktop.org/series/168218/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15362/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15362/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15362/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15362/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8962_BAT -&gt; XEIGTPW_15362_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8962 -&gt; IGTPW_15362</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15362/index.html</p>
+<h2>Participating hosts (42 -&gt; 39)</h2>
+<p>Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8962 -&gt; IGTPW_15362</li>
-<li>Linux: xe-5248-536f4e1338749a805ec4a7b82b1444dae2c6fe4d -&gt; xe-5254-0739fda8b8a06a8397e98a3c68da956230bc742f</li>
+<li>Linux: CI_DRM_18670 -&gt; CI_DRM_18676</li>
 </ul>
-<p>IGTPW_15362: 15362<br />
-  IGT_8962: 8962<br />
-  xe-5248-536f4e1338749a805ec4a7b82b1444dae2c6fe4d: 536f4e1338749a805ec4a7b82b1444dae2c6fe4d<br />
-  xe-5254-0739fda8b8a06a8397e98a3c68da956230bc742f: 0739fda8b8a06a8397e98a3c68da956230bc742f</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18670: 536f4e1338749a805ec4a7b82b1444dae2c6fe4d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18676: 0739fda8b8a06a8397e98a3c68da956230bc742f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15362: 15362<br />
+  IGT_8962: 8962</p>
 
 </body>
 </html>
 
---===============3957624147960325309==--
+--===============1823979594014551722==--
