@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1255ACD98E0
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 20:49:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 058F6CD98E0
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 20:54:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B306D10E724;
-	Mon, 15 Jun 2026 20:49:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A6BD110E711;
+	Mon, 15 Jun 2026 20:54:20 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A69410E710;
- Mon, 15 Jun 2026 20:49:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D061110E70F;
+ Mon, 15 Jun 2026 20:53:55 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0173847189414270947=="
+ boundary="===============5910493688717037939=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel=3A_Skip_multi-q?=
- =?utf-8?q?ueue_tests_when_no_engine_supports_it_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_include/linux=5Fscaffold=3A?=
+ =?utf-8?q?_drop_=5FAC_macro?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Shuicheng Lin" <shuicheng.lin@intel.com>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 15 Jun 2026 20:49:22 -0000
-Message-ID: <178155656236.80982.7768091639048424201@6beec6c84f66>
+Date: Mon, 15 Jun 2026 20:53:55 -0000
+Message-ID: <178155683581.81567.2211257984171168320@6beec6c84f66>
 X-Patchwork-Hint: ignore
-References: <20260615153926.2094688-1-shuicheng.lin@intel.com>
-In-Reply-To: <20260615153926.2094688-1-shuicheng.lin@intel.com>
+References: <20260615174422.212996-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20260615174422.212996-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0173847189414270947==
+--===============5910493688717037939==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel: Skip multi-queue tests when no engine supports it (rev2)
-URL   : https://patchwork.freedesktop.org/series/168386/
+Series: include/linux_scaffold: drop _AC macro
+URL   : https://patchwork.freedesktop.org/series/168536/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8964_BAT -> XEIGTPW_15369_BAT
+CI Bug Log - changes from XEIGT_8964_BAT -> XEIGTPW_15370_BAT
 ====================================================
 
 Summary
@@ -81,17 +81,17 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8964 -> IGTPW_15369
+  * IGT: IGT_8964 -> IGTPW_15370
 
-  IGTPW_15369: 6a620d5478b436ab4f848f9c98f220ff8b8c6e83 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15370: 15370
   IGT_8964: 8964
   xe-5260-0984dfdee2a4f9e1922fe919a6b469e115e23360: 0984dfdee2a4f9e1922fe919a6b469e115e23360
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15369/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15370/index.html
 
---===============0173847189414270947==
+--===============5910493688717037939==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,16 +111,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel: Skip multi-queue tests when no engine supports it (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168386/">https://patchwork.freedesktop.org/series/168386/</a></td></tr>
+<tr><td><b>Series:</b></td><td>include/linux_scaffold: drop _AC macro</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168536/">https://patchwork.freedesktop.org/series/168536/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15369/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15369/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15370/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15370/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8964_BAT -&gt; XEIGTPW_15369_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8964_BAT -&gt; XEIGTPW_15370_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -130,13 +130,13 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8964 -&gt; IGTPW_15369</li>
+<li>IGT: IGT_8964 -&gt; IGTPW_15370</li>
 </ul>
-<p>IGTPW_15369: 6a620d5478b436ab4f848f9c98f220ff8b8c6e83 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_15370: 15370<br />
   IGT_8964: 8964<br />
   xe-5260-0984dfdee2a4f9e1922fe919a6b469e115e23360: 0984dfdee2a4f9e1922fe919a6b469e115e23360</p>
 
 </body>
 </html>
 
---===============0173847189414270947==--
+--===============5910493688717037939==--
