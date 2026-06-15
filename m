@@ -4,63 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF113CD98DA
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 12:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78DA9CD98E0
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 12:25:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B40410E3A7;
-	Mon, 15 Jun 2026 12:02:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2391210E3D2;
+	Mon, 15 Jun 2026 12:25:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZZzpcAxZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YzHalhAG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0E4410E3A7
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 12:02:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACDE610E3D2
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 12:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781524931; x=1813060931;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=/YA9MIMkzK23o4KkxBVT0SDyJGzGr+NebK4LmLf4XcA=;
- b=ZZzpcAxZ6UDzL7m9FPlhrw2oMP3A3y0L8cxRcJ8pO5rKGYxznQDnInA6
- KXwlutHAyzM4zQ20+a3BRqJlG7iuI75lfTmvhDF32Td6MrRK8MBrp+bG/
- S/amezUJhLRf95fTXMs6Ek7lk+Jmd3zidfG8T9C4uumIfouy0LzjdoCZy
- juOy2sYmCH5P0N3ntv+ooINiXQi0PvWfc/nURqBkvSr8ggBKO8f/0e72C
- 1QUunxlNc+MGUDx39cy+b99lWiSNZYDgAdSWVU6mShl39HoaDxfSgUUkR
- R/u00vNEbYQWw2bnfcWC0vLYmIpY33jUGZXy+bsH1F951XHNP4QhCF1D+ g==;
-X-CSE-ConnectionGUID: HGgTX22qRhqh7k/OziXbow==
-X-CSE-MsgGUID: i5B0SJxVQPSwmYxYO5TZbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82452797"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82452797"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2026 05:02:11 -0700
-X-CSE-ConnectionGUID: xVpAyrtESGabREFTlzSQVg==
-X-CSE-MsgGUID: uCg3bfmcTH+Jm7a9ZYilLw==
+ t=1781526302; x=1813062302;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=2SsNo5Y6cYRUgVrOYTNva3RrLqtMd1TFreW7SEVxvgo=;
+ b=YzHalhAGMFJkO+SkimiHUZh0oLHUrij4VrKeS7qbXtk+/BWcGqGXZ8QM
+ CHe12gaD/Pb6GJothGEpSOn76D5yxQtSwNsYXQ26wRfTIyiKThVruUzVr
+ 53UOSl0xwf104yxgZNoHsvMPJDCPA+z3iR21kBCOa3IFqDpzVg3FQIVNo
+ 8pAQ6QQPfNzEw4NBRhA2RKz7sz9J4iFVJjyM3I31u0xamDrlghnc+iuvW
+ VP8wk2MiTbmeTmvccKQ2aCzQPjjZejdLc/ns5JNEpOeJiG2i3gUOEgCAo
+ 4rAYh8JzBdkiWTjTOt6vSBfavj1C4OYuZxck1yEs1qts1jcKpl8mHs6Ie g==;
+X-CSE-ConnectionGUID: igqNv0L5TsW5LvGM44FKrA==
+X-CSE-MsgGUID: bzV5lMI7QcydL9QYYNfl8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82248709"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82248709"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2026 05:25:02 -0700
+X-CSE-ConnectionGUID: nGF1nHsyQHqjE9fn98KP7A==
+X-CSE-MsgGUID: 5bR+CW5XTi2GSrAbf08IIQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="245055607"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 05:02:09 -0700
-Date: Mon, 15 Jun 2026 14:02:06 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: Sobin Thomas <sobin.thomas@intel.com>, igt-dev@lists.freedesktop.org,
- piotr.piorkowski@intel.com, kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t v2] tests/xe_debugfs: Add debugfs entry read/write
- validation in root-dir
-Message-ID: <20260615120206.gier5oocmvhcmdi3@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Sobin Thomas <sobin.thomas@intel.com>,
- igt-dev@lists.freedesktop.org, piotr.piorkowski@intel.com,
- kamil.konieczny@intel.com
-References: <20260615043050.603026-1-sobin.thomas@intel.com>
- <5cb5116d1d72fae6d6bc5059d935f7bc8e448469@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="243299202"
+Received: from jeevan24.iind.intel.com ([10.223.74.58])
+ by fmviesa010.fm.intel.com with ESMTP; 15 Jun 2026 05:25:01 -0700
+From: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	zbigniew.kempczynski@intel.com
+Subject: [PATCH v2 0/3] Negative tests for VM_BIND decompression 
+Date: Mon, 15 Jun 2026 18:01:06 +0530
+Message-ID: <20260615123109.2286386-1-smitha.balasubramanyam@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260527054210.2147520-1-smitha.balasubramanyam@intel.com>
+References: <20260527054210.2147520-1-smitha.balasubramanyam@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5cb5116d1d72fae6d6bc5059d935f7bc8e448469@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,47 +66,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2026-06-15 at 14:10:22 +0300, Jani Nikula wrote:
-> On Mon, 15 Jun 2026, Sobin Thomas <sobin.thomas@intel.com> wrote:
-> > Extend the root-dir subtest to validate additional optional Xe debugfs
-> > entries. Optional entries are those that may not be present on all
-> > platforms or configurations — their absence is not treated as a failure.
-> >
-> > - dgfx_pkg_residencies: Validate counter reads (non-empty)
-> > - dgfx_pcie_link_residencies: Validate PCIE LINK string content
-> > - sriov_info: Validate entry is non-empty
-> > - workarounds: Validate entry is non-empty
-> > - atomic_svm_timeslice_ms: Validate integer read/write
-> > - poor_man_system_atomic_support: Validate boolean read/write
-> > - disable_late_binding: Validate boolean read/write
-> >
-> > v2: Fixed the optional file check and added fail count.
-> >     Replaced igt_debug with igt_info in few places  (kamil)
-> 
-> Why is the plumbing in this patch so xe focused? Looks like a lot of
-> this could be IGT generic and driver agnostic, with just the debugfs
-> hierarchy and filenames and requirements for each file described per
-> driver.
-> 
-> BR,
-> Jani.
-> 
+This series adds negative test coverage for VM_BIND DECOMPRESS flows in
+xe_ccs.
 
-imho we should keep core_debugfs free of driver-specific checks,
-as it do not know which entries are safe to write to. Also, it
-is good to have a simple read-all core tests for sysfs/debugs and
-keep them simple.
+Patch 1 introduces resource management structures, helper utilities,
+and a negative uAPI parameter validation test for VM_BIND DECOMPRESS flows.
 
-Thats why driver-specific checks should be done in
-driver-specific test.
+Patch 2 adds a helper for fault-mode handling along with a
+negative test to validate VM_BIND DECOMPRESS uAPI parameters under fault-mode conditions.
 
-Regards,
-Kamil
+Patch 3 adds negative test coverage for VM_BIND DECOMPRESS
+with CCS corruption, including suspend-resume scenarios.
 
-> 
-> >
-> > Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-> > ---
-> >  tests/intel/xe_debugfs.c | 198 ++++++++++++++++++++++++++++++++++++---
-[cut]
+Changes in v2:
+ - Patch 1: Add xe_has_vram() require in vm_bind_decomp_test_setup() so
+   the negative tests skip cleanly on integrated GPUs.
+ - Patch 3: Change igt_subtest_with_dynamic to igt_subtest for
+   vm-bind-decompress-ccs-corruption-suspend-resume. The subtest had no
+   igt_dynamic() body and was reporting a spurious SKIP
+   ("No dynamic tests executed") on BMG CI.
+
+Smitha Balasubramanyam (3):
+  tests/intel/xe_ccs : Add helpers and Negative test for VM_Bind Decomp
+  tests/intel/xe_ccs: Add fault-mode helper and VM_BIND decomp neg test
+  tests/intel/xe_ccs : Add CCS corruption neg test for VM_BIND decomp
+
+ tests/intel/xe_ccs.c | 1185 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 1185 insertions(+)
+
+-- 
+2.43.0
+
