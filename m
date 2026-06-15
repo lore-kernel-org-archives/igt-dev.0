@@ -4,63 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE2D5CD98CF
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 15:02:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12FEACD98CF
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 15:39:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 64C8310E4D7;
-	Mon, 15 Jun 2026 15:02:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B9EC810E526;
+	Mon, 15 Jun 2026 15:39:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VCtGH12n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LRyDfExt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CB8310E4D7
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 15:01:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D8DF10E42D
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 15:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781535692; x=1813071692;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version:content-transfer-encoding;
- bh=LthdMSYxGCO3675NLCpOTtIO32dVvhUpboyEUlDIgRI=;
- b=VCtGH12nXGb+08PSAkuR2/ogCLysHgJv7EpCK+GKQYP7cO32pnqUP300
- vjIcWduTlFE65Or6XpH2T8sETlptnLWkbwWeRr0EeDkKl/B7vMtHiQ+Qf
- hcXLHzRamDU2KdsXy/Wvk+2IuRAkgZ2l0nBWpmwQjtkYm2CH6AHSrt5Z1
- ouwa/lwRqa2syxC3snxbJHl8pq5vEyQeIPHz7QdZXhtqBlaTrHFmNYeVe
- EuP563meu1qK4kkq6OXJwh78fGaqRWhci43KVyYv+FBl4/J1/fGr01oBB
- u/C9Y9owsAUvQ4rNkAGPBhJ4lEH2MJI+i8W5bv0lzrN2+HYgc7a1SIgGG Q==;
-X-CSE-ConnectionGUID: O/GcTS/rRZuZXZTUdGn68w==
-X-CSE-MsgGUID: 4ozb8JG+Sn+xbTANM1JZBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82125263"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82125263"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ t=1781537974; x=1813073974;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=vF/4BdGe2XqVQJmscijKCscpv0G2tmnJ17UICaaKb6o=;
+ b=LRyDfExtji2jRJWXz7qLrWqiQIC+ncoAjBijKp0vI7OnIz2jNL/rnZkU
+ Zht4wT6dea+0vPgL9r52cHtvGMezDtQVZzNDpoUep2mdAXxdpQXvBXw9x
+ YVc8xrwQSvwBtBm66rL6mBLiqtRqmTsyAPxdG1BoD1YHKoreIf5isWX6l
+ uHvI1dqnameohfRUVA+lm902wd9XHq8PM/LHI3hepyPHAQGy89cq+Jme2
+ o6PxIIIjDwlUWG4q6nhYXoD0Tsh2fkBaF2UExs8CPDC2pqyT6cZM4bUA+
+ UNdjzcRCi8duRCbHfV5wlqw8BviPxway0K8vdIhWq4iLDsuioMQJ+kGeQ g==;
+X-CSE-ConnectionGUID: /1S6SAYfQkGVwKbkWT4Uhg==
+X-CSE-MsgGUID: /UJZgL01R4WHUMeSuJyrqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82128958"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82128958"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2026 08:01:32 -0700
-X-CSE-ConnectionGUID: hFyF1ZRETqKgpLhztR8stQ==
-X-CSE-MsgGUID: 0OtLOR02RmGUTHfunJgDlQ==
+ 15 Jun 2026 08:39:34 -0700
+X-CSE-ConnectionGUID: 6sZXKT2QQkavtn8GMzUjjw==
+X-CSE-MsgGUID: H3tImDWZTNmFm+fgdgcfTw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="243128219"
-Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.28])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2026 08:01:30 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Sobin Thomas <sobin.thomas@intel.com>, igt-dev@lists.freedesktop.org,
- piotr.piorkowski@intel.com, kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t v2] tests/xe_debugfs: Add debugfs entry read/write
- validation in root-dir
-In-Reply-To: <20260615132525.auyklbqr42ddg6tv@kamilkon-DESK.igk.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260615043050.603026-1-sobin.thomas@intel.com>
- <5cb5116d1d72fae6d6bc5059d935f7bc8e448469@intel.com>
- <20260615120206.gier5oocmvhcmdi3@kamilkon-DESK.igk.intel.com>
- <7c671909119e5ffb63f79f8b93ffde751eb873b9@intel.com>
- <20260615132525.auyklbqr42ddg6tv@kamilkon-DESK.igk.intel.com>
-Date: Mon, 15 Jun 2026 18:01:28 +0300
-Message-ID: <69131f4fca5ccc406b9f099eb739a49e985c7c2c@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="277706298"
+Received: from osgcshtiger.sh.intel.com ([10.239.81.49])
+ by orviesa002.jf.intel.com with ESMTP; 15 Jun 2026 08:39:30 -0700
+From: Shuicheng Lin <shuicheng.lin@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+ Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+ Priyanka Dandamudi <priyanka.dandamudi@intel.com>,
+ Jan Sokolowski <jan.sokolowski@intel.com>
+Subject: [PATCH i-g-t v2] tests/intel: Skip multi-queue tests when no engine
+ supports it
+Date: Mon, 15 Jun 2026 15:39:26 +0000
+Message-Id: <20260615153926.2094688-1-shuicheng.lin@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,99 +68,282 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 15 Jun 2026, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrot=
-e:
-> Hi Jani,
-> On 2026-06-15 at 15:58:24 +0300, Jani Nikula wrote:
->> On Mon, 15 Jun 2026, Kamil Konieczny <kamil.konieczny@linux.intel.com> w=
-rote:
->> > Hi Jani,
->> > On 2026-06-15 at 14:10:22 +0300, Jani Nikula wrote:
->> >> On Mon, 15 Jun 2026, Sobin Thomas <sobin.thomas@intel.com> wrote:
->> >> > Extend the root-dir subtest to validate additional optional Xe debu=
-gfs
->> >> > entries. Optional entries are those that may not be present on all
->> >> > platforms or configurations =E2=80=94 their absence is not treated =
-as a failure.
->> >> >
->> >> > - dgfx_pkg_residencies: Validate counter reads (non-empty)
->> >> > - dgfx_pcie_link_residencies: Validate PCIE LINK string content
->> >> > - sriov_info: Validate entry is non-empty
->> >> > - workarounds: Validate entry is non-empty
->> >> > - atomic_svm_timeslice_ms: Validate integer read/write
->> >> > - poor_man_system_atomic_support: Validate boolean read/write
->> >> > - disable_late_binding: Validate boolean read/write
->> >> >
->> >> > v2: Fixed the optional file check and added fail count.
->> >> >     Replaced igt_debug with igt_info in few places  (kamil)
->> >>=20
->> >> Why is the plumbing in this patch so xe focused? Looks like a lot of
->> >> this could be IGT generic and driver agnostic, with just the debugfs
->> >> hierarchy and filenames and requirements for each file described per
->> >> driver.
->> >>=20
->> >> BR,
->> >> Jani.
->> >>=20
->> >
->> > imho we should keep core_debugfs free of driver-specific checks,
->> > as it do not know which entries are safe to write to. Also, it
->> > is good to have a simple read-all core tests for sysfs/debugs and
->> > keep them simple.
->> >
->> > Thats why driver-specific checks should be done in
->> > driver-specific test.
->>=20
->> I don't think you understood what I meant at all.
->
-> Well, feel free to write quick and short rfc with your proposed
-> changes in code. I could comment on that.
+When no engine supports multi-queue, xe_for_each_multi_queue_engine()
+iterates zero times, causing subtests to report SUCCESS without
+executing any test logic.
 
-The point is, enum debugfs_validate_type, struct check_entry,
-validate_string(), mode_to_str(), validate_bool_file(),
-validate_int_file(), validate_debugfs_file(), etc, are all driver
-agnostic types and functions *already*, placed in driver specific code.
+Add xe_has_multi_queue_engine() helper and use it as an igt_require()
+guard in all multi-queue subtests so they properly report SKIP on
+hardware without multi-queue support.
 
-If anyone else wants to do similar validation for other drivers, they
-either need to reinvent the wheel or refactor this. Which is just wasted
-effort. If folks reinvent the wheel in other drivers, in subtly
-different ways, consolidating them later is exponential wasted effort.
+v2: combine 2 igt_require into 1.
 
-Which debugfs files a driver should have, or what they should contain,
-is driver specific. How to check those debugfs files is not.
+Suggested-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+---
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Cc: Jan Sokolowski <jan.sokolowski@intel.com>
+---
+ lib/xe/xe_query.c                 | 20 +++++++++++++++++++
+ lib/xe/xe_query.h                 |  1 +
+ tests/intel/xe_evict.c            |  6 +++---
+ tests/intel/xe_exec_fault_mode.c  |  2 +-
+ tests/intel/xe_exec_multi_queue.c |  2 +-
+ tests/intel/xe_exec_reset.c       | 32 +++++++++++++++++--------------
+ tests/intel/xe_exec_threads.c     |  2 +-
+ 7 files changed, 45 insertions(+), 20 deletions(-)
 
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 3286a3b37..f0799f268 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -346,6 +346,26 @@ bool xe_engine_class_supports_multi_queue(int fd, uint32_t engine_class)
+ 	}
+ }
+ 
++/**
++ * xe_has_multi_queue_engine:
++ * @fd: xe device fd
++ *
++ * Returns true if any engine supports multi queue, false otherwise.
++ */
++bool xe_has_multi_queue_engine(int fd)
++{
++	struct drm_xe_engine_class_instance *hwe;
++
++	/* Multi-queue is supported only on IP version 35 and above */
++	if (intel_graphics_ver(intel_get_drm_devid(fd)) < IP_VER(35, 0))
++		return false;
++
++	xe_for_each_multi_queue_engine(fd, hwe)
++		return true;
++
++	return false;
++}
++
+ static void xe_device_free(struct xe_device *xe_dev)
+ {
+ 	free(xe_dev->config);
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 8815c6c66..9f04a7422 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -163,6 +163,7 @@ uint16_t xe_dev_id(int fd);
+ int xe_supports_faults(int fd);
+ bool xe_engine_class_supports_multi_queue(int fd, uint32_t engine_class);
+ bool xe_engine_class_supports_multi_lrc(int fd, uint32_t engine_class);
++bool xe_has_multi_queue_engine(int fd);
+ const char *xe_engine_class_string(uint32_t engine_class);
+ const char *xe_engine_class_short_string(uint32_t engine_class);
+ bool xe_has_engine_class(int fd, uint16_t engine_class);
+diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+index 82a6cde0a..3f1d6cb9c 100644
+--- a/tests/intel/xe_evict.c
++++ b/tests/intel/xe_evict.c
+@@ -902,7 +902,7 @@ int igt_main()
+ 
+ 			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+ 			if (s->flags & MULTI_QUEUE) {
+-				igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++				igt_require(xe_has_multi_queue_engine(fd));
+ 				igt_require(multi_queue_hwe != NULL);
+ 				igt_assert_f(!(s->flags & MULTI_VM),
+ 					     "MULTI_QUEUE and MULTI_VM cannot be used together.\n");
+@@ -922,7 +922,7 @@ int igt_main()
+ 
+ 			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+ 			if (s->flags & MULTI_QUEUE) {
+-				igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++				igt_require(xe_has_multi_queue_engine(fd));
+ 				igt_require(multi_queue_hwe != NULL);
+ 				igt_assert_f(!(s->flags & MULTI_VM),
+ 					     "MULTI_QUEUE and MULTI_VM cannot be used together.\n");
+@@ -941,7 +941,7 @@ int igt_main()
+ 
+ 			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+ 			if (s->flags & MULTI_QUEUE) {
+-				igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++				igt_require(xe_has_multi_queue_engine(fd));
+ 				igt_require(multi_queue_hwe != NULL);
+ 				igt_assert_f(!(s->flags & MULTI_VM),
+ 					     "MULTI_QUEUE and MULTI_VM cannot be used together.\n");
+diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
+index 3e92dfbd9..4649c67de 100644
+--- a/tests/intel/xe_exec_fault_mode.c
++++ b/tests/intel/xe_exec_fault_mode.c
+@@ -444,7 +444,7 @@ test_exec_main(int fd, int n_exec_queues, int n_execs, unsigned int flags)
+ 	struct drm_xe_engine_class_instance *hwe;
+ 
+ 	if (flags & MULTI_QUEUE) {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			test_exec(fd, hwe, n_exec_queues, n_execs, flags);
+ 	} else {
+diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
+index d9d648b02..82c9aefcd 100644
+--- a/tests/intel/xe_exec_multi_queue.c
++++ b/tests/intel/xe_exec_multi_queue.c
+@@ -1093,7 +1093,7 @@ int igt_main()
+ 
+ 	igt_fixture() {
+ 		fd = drm_open_driver(DRIVER_XE);
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 	}
+ 
+ 	igt_subtest_f("sanity")
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 9f5fde1a7..4634c24d9 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -1105,7 +1105,7 @@ int igt_main()
+ 			gt_mocs_reset(fd, gt);
+ 
+ 	igt_subtest("multi-queue-cat-error") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			xe_legacy_test_mode(fd, hwe, 16, 16,
+ 					    CAT_ERROR | MULTI_QUEUE,
+@@ -1114,7 +1114,7 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("multi-queue-cat-error-on-secondary") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			xe_legacy_test_mode(fd, hwe, 16, 16,
+ 					    CAT_ERROR | MULTI_QUEUE |
+@@ -1124,7 +1124,7 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("multi-queue-gt-reset") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		ignore_gt_reset_warnings_in_dmesg();
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			xe_legacy_test_mode(fd, hwe, 16, 16,
+@@ -1134,7 +1134,7 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("multi-queue-cancel") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			xe_legacy_test_mode(fd, hwe, 16, 16,
+ 					    MULTI_QUEUE,
+@@ -1143,7 +1143,7 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("multi-queue-cancel-on-secondary") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			xe_legacy_test_mode(fd, hwe, 16, 16,
+ 					    MULTI_QUEUE | SECONDARY_QUEUE,
+@@ -1152,7 +1152,7 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("multi-queue-close-fd") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			xe_legacy_test_mode(-1, hwe, 16, 256,
+ 					    CLOSE_FD | MULTI_QUEUE,
+@@ -1161,7 +1161,7 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("multi-queue-close-execqueues") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			xe_legacy_test_mode(-1, hwe, 16, 256,
+ 					    CLOSE_EXEC_QUEUES | CLOSE_FD |
+@@ -1171,14 +1171,14 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("cm-multi-queue-cat-error") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			test_compute_mode(fd, hwe, 16, 16,
+ 					  CAT_ERROR | MULTI_QUEUE);
+ 	}
+ 
+ 	igt_subtest("cm-multi-queue-cat-error-on-secondary") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			test_compute_mode(fd, hwe, 16, 16,
+ 					  CAT_ERROR | MULTI_QUEUE |
+@@ -1186,7 +1186,7 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("cm-multi-queue-gt-reset") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		ignore_gt_reset_warnings_in_dmesg();
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			test_compute_mode(fd, hwe, 16, 16,
+@@ -1194,29 +1194,32 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("cm-multi-queue-close-fd") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			test_compute_mode(-1, hwe, 16, 256,
+ 					  CLOSE_FD | MULTI_QUEUE);
+ 	}
+ 
+ 	igt_subtest("cm-multi-queue-close-execqueues") {
+-		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe)
+ 			test_compute_mode(-1, hwe, 16, 256,
+ 					  CLOSE_EXEC_QUEUES | CLOSE_FD |
+ 					  MULTI_QUEUE);
+ 	}
+ 
+-	igt_subtest("multi-queue-long-spin-many-queue-switch")
++	igt_subtest("multi-queue-long-spin-many-queue-switch") {
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe) {
+ 			xe_legacy_test_mode(fd, hwe, 4, 8,
+ 					    LONG_SPIN | MULTI_QUEUE,
+ 					    LEGACY_MODE_ADDR, false);
+ 			break;
+ 		}
++	}
+ 
+-	igt_subtest("multi-queue-long-spin-reuse-many-queue-switch")
++	igt_subtest("multi-queue-long-spin-reuse-many-queue-switch") {
++		igt_require(xe_has_multi_queue_engine(fd));
+ 		xe_for_each_multi_queue_engine(fd, hwe) {
+ 			xe_legacy_test_mode(fd, hwe, 4, 8,
+ 					    LONG_SPIN | MULTI_QUEUE |
+@@ -1224,6 +1227,7 @@ int igt_main()
+ 					    LEGACY_MODE_ADDR, false);
+ 			break;
+ 		}
++	}
+ 
+ 	igt_fixture()
+ 		drm_close_driver(fd);
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 2f44d5555..24dae2b52 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -1721,7 +1721,7 @@ int igt_main()
+ 	for (const struct section *s = sections; s->name; s++) {
+ 		igt_subtest_f("threads-%s", s->name) {
+ 			if (s->flags & MULTI_QUEUE) {
+-				igt_skip_on_f(!(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0)),
++				igt_skip_on_f(!(xe_has_multi_queue_engine(fd)),
+ 						"multi_queue is supported on graphics version 35 and above");
+ 				/* Balancer can't be set with multi-queue at the same time */
+ 				igt_assert(!(s->flags & BALANCER));
+-- 
+2.43.0
 
-BR,
-Jani.
-
-
->
-> Btw did you mean that 'validate entry is non-empty' could be
-> dropped from this patch? Now as I look again, they are already
-> checked by core_debugsfs (or at least should be checked).
->
-> Regards,
-> Kamil
->
->
->>=20
->> BR,
->> Jani.
->>=20
->> >
->> > Regards,
->> > Kamil
->> >
->> >>=20
->> >> >
->> >> > Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
->> >> > ---
->> >> >  tests/intel/xe_debugfs.c | 198 +++++++++++++++++++++++++++++++++++=
-+---
->> > [cut]
->>=20
->> --=20
->> Jani Nikula, Intel
-
---=20
-Jani Nikula, Intel
