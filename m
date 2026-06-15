@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4247FCD98C5
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 04:42:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B37FCD98CE
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 04:53:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D25D610E18D;
-	Mon, 15 Jun 2026 04:42:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B4CFA10E18F;
+	Mon, 15 Jun 2026 04:53:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fwkCQWXM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CHIjrE7i";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C195810E18D
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 04:42:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB0E010E18F
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 04:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781498538; x=1813034538;
+ t=1781499194; x=1813035194;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=VPwN74bg4K9k+QsvRHt6Ujop/Ye5KGY7lStzhf8Tpt8=;
- b=fwkCQWXMraDqbjffspZGVyLcn4Ay+K0mxIIA+nl+6oAFK/E/Gc7gdbOA
- BLy1rgJVr4GKEXo1gkBSGgv59VPYo3zEtR/WzaC9HVUkA2YQfn4zcNRD6
- dfc3jSvDtm1Aj31MBvjYZkETNxq2vqCYL5ORDqNlE0ylCz4KKKT3WTRBC
- ePd9U/qQmO9qs7o6FY63G0dQ0IO/9dgZMW+EcRUMISYM21e7oDwjIHuru
- EsAuux/tVwhyafE/o2HRRKJWXaPOPdXxhXhsgKyM0dj8tm3kG3nZm7Wu7
- kvO4xYpmLgeOSwRZD89+li7oBrOBzeOmxO16FkFeARXGQ4Mg1C8P1+gzG w==;
-X-CSE-ConnectionGUID: V5sS08ZRSuac8/xJ3riHtg==
-X-CSE-MsgGUID: fxs9zKNmRFiuZRKrxSvVFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82215610"
-X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; d="scan'208";a="82215610"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jun 2026 21:42:17 -0700
-X-CSE-ConnectionGUID: 0tra+mIwQu2F/s0z//1NSg==
-X-CSE-MsgGUID: RfSahK5NSTGqwczOvg/hAA==
+ bh=fmON+Jp55KoMornX6G72KK9i/9gdDuGwxnY/Bn7dTZ4=;
+ b=CHIjrE7imyHNnZidhC5tLsv+OHZA4iiKR4yTIXJ3zMQa640p9a2JrPno
+ 9t8fk5CjLM4FCh/kcbrPCPfU5pZ4ZmpuFqqQJTMB3Cmknq9N92eyy0/uf
+ 4XGHpvE+IS1K/0vD6iPFrFQoSNAqPLKPAzN9AMDAXhZCQXFBKQq/fXRHl
+ lMAaNAXW0uuhydbstq1HVNuaqRc9IXS4SEd3YwQla4iS1QzRb9WOMTxfX
+ q2ANx8eW6gDrJ4seVX3Qj+SQffrK7ftWd7nmm6X5fhgri26Pk79iYlXCE
+ HROZAP7bSl6ET2qC/SRmnpY+ex0QN1d183lfUFZVe9ksVCIVkMu+rXVru Q==;
+X-CSE-ConnectionGUID: unedrOgWSb+Vip/n/uMvPw==
+X-CSE-MsgGUID: BTC0My9jQnqtB4w6dYvQYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82295794"
+X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; d="scan'208";a="82295794"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jun 2026 21:53:14 -0700
+X-CSE-ConnectionGUID: a9Ws+cbxQ9ScqgUWQcygCw==
+X-CSE-MsgGUID: I8Yarg2FQbaePEFwffaZEQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; d="scan'208";a="249260023"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jun 2026 21:42:17 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 14 Jun 2026 21:42:16 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; d="scan'208";a="243000009"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jun 2026 21:53:13 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Sun, 14 Jun 2026 21:42:16 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.61) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.37; Sun, 14 Jun 2026 21:53:12 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 14 Jun 2026 21:42:16 -0700
+ 15.2.2562.37 via Frontend Transport; Sun, 14 Jun 2026 21:53:12 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.12) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Sun, 14 Jun 2026 21:53:12 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Zm8rbM4dg2jbXmLHHa6UWUDBoSOb8/PI2UytDV1hh9xKdip1VW7zwhMzfbGKhfYvRx+vDByMnxhWCsYnUN/rniCSF+mhrulMHLrlF04leABiZQKcucZgDcoEa/tlvkb03XgdtKpRrSSQ0m0hOe5DO46nZV+3/G1yyNgtPrkYnsYsFBKmilDnd5j0CTgXzY/+1GWbLh2MRdT86aqrdYrmWMX8MfWI7oqDEp+HmA+mSkspIEwK14AsDfvIwAhBe4MYDfk6n/uYw4auG2q9Isama9ZCpPUPvTYS3nKIAiOGDEJSVGyNs0gQHT3hvZtsycfriunX/IhLjvrLHXZz/sJ3Xg==
+ b=DjHAc0RUDqXTYPg+uTxNBWNzbb3Hkn4izkZo9YqSu+keu3Ffsipg5pk/dC//qvc8fKVaA/QGFW0bGSKm+12+FFQ6g87LPd5ezLs8nBk4j7+rE8+63eDeAbiZEp8mdIKCyWaezXjWxo/EgH8w4nv1z/+qy/IOMOw+cPFsPAgPaJPoyEjKU6zrYQYD0RGjTMXzwcT0daVhHz+XzpDLqvJryPvZhDEZbnyleR/CGu5flmNbUf1Sx4gqAjR+OHqs+6ALdL2RAMMaSE3l4FldGYFOjzvacskYBCiOn5uktMljzkh/TlSuNOEruW1CjSTuwBgQWt8vzxWdW/+drC+9Q4YxzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gIjniG7wnVTQjQbRyTix9B+1qllfU6bEFuKJ9Y4W9QA=;
- b=TrB+/ISeZYKMAal6tT1z1iXWLyrTyWiJdpQcEqKPPER1cmyrYh31PWL1+ki+26Qru5BCJxNgTf+rgG/oxwxosx1zLnS6IgJsAxUGxOWQoEC833QEJiJ1f8C3yMjXq1zPkFhsQV5LqjxjDK0cyDKbqJzNdudCkEBReuJ5dfpgOCvAt0YpH9FFnkl4kmqYaAretZWqC3AsKXXoADDqElKCQ17Q8Z8fpGDR0JDPsv1ECo5YdRkB3DIUiuf0tmLvZ9yI0foGuUT0BW1v7u3rMzb+ZW3AGhB6R+mQWv0ePGJLu1Uy+iyvPbFovUKz51ry0QrzwsKmDOjDO8Eivvx7kZsdew==
+ bh=6Km+gXqQh+p5yo/WqU8wWHCLNvmK0BnKMedrR2e2Q/4=;
+ b=u3uKXsEaV1/M8fJHZwmJQGWLUcf3cyabcIZXMwoMeUzhXi14k5xSlJNjYArGx4ULCwnDRIJYDzcjxq54pnWMamcd0u4WorQHpy7Ljz0/YP3p/xX7ng3MFXVW/M4YodB7a3TlqMRwU27t7f5F6HbUgF0EVPIAGKE0ix3bbaH6Eoqb80Mgu0iZNGhoYibvS92gRpT8/JZmY9XslTZmEUFGoPCIECN3AaxL6RLUPzKRQQD4abbXSwbTMqVimufQKbE2Rzn5gvYgbBlvOLhB1MS8xuTucPeXmHvg09dJRC4myeboJbzjFVe//5fJkSfPtx9UMc2CQ8d8dMhlzYWl6oQkuA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from IA1PR11MB6467.namprd11.prod.outlook.com (2603:10b6:208:3a5::18)
- by SA3PR11MB7654.namprd11.prod.outlook.com (2603:10b6:806:305::19)
+ by SJ0PR11MB4864.namprd11.prod.outlook.com (2603:10b6:a03:2d4::21)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.16; Mon, 15 Jun
- 2026 04:42:14 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
+ 2026 04:53:09 +0000
 Received: from IA1PR11MB6467.namprd11.prod.outlook.com
  ([fe80::7aa6:c6db:3d15:8973]) by IA1PR11MB6467.namprd11.prod.outlook.com
  ([fe80::7aa6:c6db:3d15:8973%3]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
- 04:42:14 +0000
+ 04:53:09 +0000
 From: "Garg, Nemesa" <nemesa.garg@intel.com>
 To: "Sharma, Swati2" <swati2.sharma@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "Sharma, Swati2" <swati2.sharma@intel.com>
-Subject: RE: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Skip downscale
- test on first commit failure
-Thread-Topic: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Skip downscale
- test on first commit failure
-Thread-Index: AQHc+mBxg+/lZv0aDE6lyrNdGFKAKLY/DdBw
-Date: Mon, 15 Jun 2026 04:42:14 +0000
-Message-ID: <IA1PR11MB646755C9615223A0C5AC2FCEE3E62@IA1PR11MB6467.namprd11.prod.outlook.com>
-References: <20260612114954.2668076-1-swati2.sharma@intel.com>
-In-Reply-To: <20260612114954.2668076-1-swati2.sharma@intel.com>
+Subject: RE: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Fix tap filter
+ test failures
+Thread-Topic: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Fix tap filter
+ test failures
+Thread-Index: AQHc+k2rJ3l64BlGFkGU3QRZBCvQIbY/EOyQ
+Date: Mon, 15 Jun 2026 04:53:09 +0000
+Message-ID: <IA1PR11MB646740884662D716E1707B7EE3E62@IA1PR11MB6467.namprd11.prod.outlook.com>
+References: <20260612093518.2657433-1-swati2.sharma@intel.com>
+In-Reply-To: <20260612093518.2657433-1-swati2.sharma@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -92,61 +92,60 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6467:EE_|SA3PR11MB7654:EE_
-x-ms-office365-filtering-correlation-id: 17294177-a189-4d94-b521-08deca9878b2
+x-ms-traffictypediagnostic: IA1PR11MB6467:EE_|SJ0PR11MB4864:EE_
+x-ms-office365-filtering-correlation-id: 99cae5c2-e23c-4428-2d5d-08deca99ff47
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|23010399003|56012099006|11063799006|38070700021|22082099003|18002099003;
-x-microsoft-antispam-message-info: sO/ewySUmRgNVjf3XbCnCIHhjFS7A3Sr3N2kl2aJGQ0pkBbrormtONchsRf+a3TOuX7Xr5i/aMmhRFsSk92xIwOWGWPSsMeWg7ipLeOhbyAqomnPBmiDnH8WHt+DnPWaIRDaapOpHG7HmAo25sa0tmZD8s8oqtaYgVTA3oRQWccSuHsAWMOHlMMpZSxxtx3FIqDwVZRkaxNLr202m/vZ9y8FkulVpCzr+YX8yL5SUg1UrFTHkMXZfYubb8DW85nkvSBs4w2zFC34dGb3wFfLubLF18N3TNJP1GbSLbAMCKBJ/q8N4gvenhT01MgE9fyBZ4BT9cdSL0GSvPwd1Ilt33ijj3YyRuVUvpke10DWiJBPcFZtl0M5Q4NUN5HoptI3ovL+i1TzXD0Em+2GvugP62IYoYSg6HPAHsEYbtj75cFwAa1W0yALqNbYpaLCwSb4SZVpDR1BuX3h5PP1+rCIcVS1jNeSW/dSIR4ZcNSz64w7jgaIN3xyKcO0o/C12llDvxEeeoZtHI7cRaUv653D20+RH1nH/+RsEVKwjHv5Jf8MEiRhlsYB5coB5hbhK8GsXDhvzVGWO/r2OBZqbizU30gzmPVVNQSOhcv3THOM0IyXt9PNv4qtxd8bfNSwFSk0BELeTX2+ZB8HbN4P82jliqLpLfbDlt5UI4HB/hGJFfYmcFsNbsTrDzQ/ewH1oRsGM447PuDmSaCq9kXOMtzqvM9UbtWNXtjk8xQmjkEdn2JknZxNzQx0/OrRZXsEDJm+
+ ARA:13230040|1800799024|366016|376014|23010399003|38070700021|3023799007|18002099003|22082099003|11063799006|56012099006;
+x-microsoft-antispam-message-info: YdHd8kntlokUGsEXWXt3qjcl1MAOuuGMOzgHAjWWZYF8VHcRj0LjQvR4O7ppiSqNB9c9KzVMjjtjxwEKNTGdZT5lrMYGalJD6PqagwsL/7cgXGRgHwm1O9qMWbf+TTWOHh92kPNDeATUOol66aE4x1otoeA4PIc8FGMmgT5VQyXLbGctCAG4cJfFDE94XMSBzLWIzJafy5N9+PHSkeap0NTvQjvxN0qqJAYUglS8jWzEiVXbCB2YusbB4Zu+4p59RUapdlA5fL5JBT0yOpYcDYMSeXUVfZPHWR/VXxY0N6pKRicjIshMQ24iCgZvoZ3bFdNzaa9XsMZgeNLV3eKCepU59/3ii/GE3H/ahSj73t0IA3OOLoe25zmVS/xgdHJa3ZJd2gd0PF/whLiU7vekPf4uKnNdzZwhT49QDqREJp9iKne+g+wmozKPHP9EWp9Rkv5KPB2cUfhza5pGsBRPCBZE+N2DL1xgvzrqgsfvrjIM17dOxa2pWORWsd68abSMUWN8Pe5n98tQ1b4zRqrqPtCDJJb07TSK6if8uRbyaTvdHsxT6jKxI8pV+LKTCgNjXar3dcmzs1gQnG+e8tPeLxVcCguLJDORWq+KJpIJ8lchoUTUZxtQpY7uzgzP7NXvho9b7SlX5idP0+HckdiwkRPQXtpvkr5dVwUiokuZBavjEzQ3ocVMY4WjfjhXKSaXME07FjR1uh/lnlKTEYJSOpXEEmWsAyc2vqI8uCSsfNMAwwJOF+mCUrUEYQXlukIy
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA1PR11MB6467.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(56012099006)(11063799006)(38070700021)(22082099003)(18002099003);
+ SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(38070700021)(3023799007)(18002099003)(22082099003)(11063799006)(56012099006);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?YfWcF3OjXzM7yr99nJtrmH7jzQxzHxC9wfw4WR5j7H1ouU2RmOSxBAARkMYb?=
- =?us-ascii?Q?9HiZdQGyt42pxDmtlR6RszEOJw1QakIbCPJrJqdFC7lfeseBdHFBC7r1C/mt?=
- =?us-ascii?Q?5MoF4UYT8uo7MvfxRQ/jnLuU87tSvGOLlgGg5QAj5Yk0VJ2v+6tvpMk5ijOx?=
- =?us-ascii?Q?/abJ9i/h4k9gzIUg4nQ+IfcytGcHK6ICcufLF7c68uPlKHxxKANf7j860UEj?=
- =?us-ascii?Q?6I7QpTx9sMAmjs7HYQ4cgf/DRmlAS42rEBNhXDacMWhzRtTUODvzQJhFjWjn?=
- =?us-ascii?Q?h3iFN6pcp6mziwbpFBwKfUulBJnC6Q5BeylvbgBzVJxsSvdwUAHoKUoFioqN?=
- =?us-ascii?Q?cTdniCBslUOGcri/ZNSjIayvP7ZbDCE9JE0JmW2AEEYCtNxm0+TxkrVpJtdK?=
- =?us-ascii?Q?Uba0RKaxJcJu1CFETJUxrdve/hVFZQH/l4J/eXhl3Uty/eX+WVZ2OPkxFENu?=
- =?us-ascii?Q?Po9Hk0WP847qI9LAo8/WPcem15Tnsv5joi/xf8BOdEjn5wKzqplBXRCu+z7E?=
- =?us-ascii?Q?4g7sFCeaEkiaDifAf55ys1YVkPd/xlvaniHbbtWCpNK/mZAqN+fAT1ajBfjQ?=
- =?us-ascii?Q?7T+G5OdXx/VKLBht/+mtzYYJ+YMyw22n8kq/4wcCShUeKeGtZsq2A9BUrNsb?=
- =?us-ascii?Q?kTmMI0HC58+ENepau/kt5C58cn8o4mXWe+XCMKuzlmo4pBgnbyOUllX3tcMk?=
- =?us-ascii?Q?ePuX6s6xFP54yTsjUVwPdvUvLUg7fK4NB1A64sn6mTNCvNXlObhh6ALEVN8D?=
- =?us-ascii?Q?1Ns+Phx3YNAEyyNAz3AQiDCZG3ydOIzSGIwx3gN/0pxLk0YJ0du9rbvCY+ar?=
- =?us-ascii?Q?IgRJ4fGAMj0gfW8dOH6dgw1O+qumcsw+/A2IN39SMkYb+kOMOvHPdjIOCgDT?=
- =?us-ascii?Q?T35xE7kyD9sJPkT5YsyBnfgxRhfgWv5p8i0EHYI6GZGvBuWPPELLK8lvXWIZ?=
- =?us-ascii?Q?XJuk85mU1KwxoKnVOA+OCV1vO2yIq1H2pgVVM34nYVMUsZAvZ5TE/TwDgRMR?=
- =?us-ascii?Q?uug8TA3C7EePw6rhScyGjRveE5Vl9tM2HOTPSSOaN4rTh5GUDTYS4H3GnPx2?=
- =?us-ascii?Q?5Ngfxi48HC+uW7LoMotdLQJm/cbDeTDlG8RfykbeY/PKEqs16F2UtTR2mdl7?=
- =?us-ascii?Q?dYwS32HG817pl9WxP0KhDqPo9AM5ukL4X7Yc/2l1y3xxBM05JVCvOqWYSeHn?=
- =?us-ascii?Q?qoGF4w2A4lo/VbfE75TOdJSNXvTTy6Bs2N3wdKG01BeoHJwyQ5za2wp/cuPN?=
- =?us-ascii?Q?kvpRberZw3OhVFS6wPJ0/CINQ3QLkTpFLUp17iD/juipHdzp4XQtdUgAYsXL?=
- =?us-ascii?Q?mobCy0kmjfZLCO3YVPzPcpGEG94v24ohW/Td/BvZ6gyklEmr+bvDJohsespA?=
- =?us-ascii?Q?CWj//GdVfM+/Zax6s79R/BYI8flqaDqjEDxjPcfzXJj/lS7mJ8R1bNCrPSa2?=
- =?us-ascii?Q?vTQX+W/UvagkdcIAyNTkSMCYeK7kgmGrcpEpNmPv/q4SUX5LiNsOj7JgxH2E?=
- =?us-ascii?Q?nTBYvVNt/QeDwwuRpEJpqS8QbE1e81wAa33wGWWp8XwzSvSh6dftUpdO/iDb?=
- =?us-ascii?Q?m5a0bxoNnvUv2lYSgjn1K93VPxIwj9YuwfLY4Q92qjHWCg9MxOkeMkaA4XE9?=
- =?us-ascii?Q?Ojq6e7h4kxACw70e5NGWYeS/hjVw1irg4iZx+e33y/kX1xZZ2ohYoAGi+DgQ?=
- =?us-ascii?Q?xUzrhPtDkVvwhkaXC0Io4zdSpw/7jb2WvMqiai4cdwQUOlTA0uTARKO15Iqg?=
- =?us-ascii?Q?dsE+tYSW8g=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?eZ2liuY0kl0NcHgZkt2SvGDsuZLbMk0uuqd68sIPnXgZiPhFasJ9m5aedgm4?=
+ =?us-ascii?Q?cFlPwlgS7gskVLp/i8ZZeQfswWwkP2MliKVXK3/qKR2+nc5xBZyfgTj3eAw9?=
+ =?us-ascii?Q?PwoyY7KtfN1ZSMgMy38la9tcPd4izyv+8TyAlR6hA5mMwxf1JXvBA3IfJ6la?=
+ =?us-ascii?Q?+UhOieHa9KFfGa3l/kVxNl0a9+fbEi3Q6boA365ilbujKKRae85+D26cZ16N?=
+ =?us-ascii?Q?vPcjXpuuJWmUUnNmnzyA/ilg587n3CTqllj+siH3+YE7NiUgHywz48g2jIpm?=
+ =?us-ascii?Q?A05EUgdknjR7inVcwCMJ3lP03O85/loh2bbkVZYFOdmWKUGpmvwZcoI0d4yQ?=
+ =?us-ascii?Q?FK/Yg7wq7opzHsP6EOrw0dR8Kamukz+XPwUarRoNuM8+/f1Xnuii9YVo2iy+?=
+ =?us-ascii?Q?9yRW0rCg77nISaMq6Dza0RNJe+6+7RA3XOKWgURqgv992ODh2o2kf+gi8Awe?=
+ =?us-ascii?Q?JuNWjIVzV/wkE0IE/xGxXnGen0ZQw7MuqLf9DqC9rbiSMpRSQcD3BgM5T5kb?=
+ =?us-ascii?Q?8AcJYGg8B1ss1LfdtRM6qHKG1vijX0XKLB60jMB3XuVCvM/170f0FAssld77?=
+ =?us-ascii?Q?9WPP6qSJ6rcmweeVKcPwOk1j2bDtz/TmqzB4AlZuXVtqfcJ7xopDn7ZAT90t?=
+ =?us-ascii?Q?/CXG6gtR6x2gsQcI9I6FQNxyQo/n1NyUjYN7pI7iqHhKSt0q/XBwm/D4BT48?=
+ =?us-ascii?Q?LzSURFTTn0NaW+Odb5aYxuc1VBYExu5dSUx5hq0eTKypQnYJqbCiB0NxMaAC?=
+ =?us-ascii?Q?7zWC5Jl43UcYPPSDTnWVtfv649AnfF2wzjPcBpK++b5fweMYZ6UNNNSYxmEn?=
+ =?us-ascii?Q?idMbGvfHVYqdTd2b4usC77oq7Dvp485j7iphwYa0khFrARrC7/QhU/xdlKvJ?=
+ =?us-ascii?Q?a7E8yM3wVpxJEHb6oB0N4Iat5iLXz53YA2jOM8VQUzqlSbkn2UU/Y6u3xdUu?=
+ =?us-ascii?Q?1sCSJnviwfwtRHS2SSpJOi0jXXXBQrULiu33yJXVwJdACgToTtp8CtmMgaX4?=
+ =?us-ascii?Q?o6V+GtC3PQvbvdBstRqv2KIzKJZzrYZbQLnM79R8Pt/nE2QRvRBRH76hcT+Y?=
+ =?us-ascii?Q?f3/+0DBhUTSULk0BUIHzAUmXjXzzUthBDuCo7euk1lO4ejYyp9OJXw1qQmar?=
+ =?us-ascii?Q?5swElXlnFzDzYnDxmRrjDcZlPbwQFaO2xYu8G+98Zrdw+wHgsHS+B0v4a/TT?=
+ =?us-ascii?Q?QEcVRanD7+47MdNDFJ5+n7Royv3ezWf9kgvN8+LoQa7KYbhwPBp/NWnyp3vy?=
+ =?us-ascii?Q?CFnOtV0eSUW7d3K6xcXZtcbghEbspbwkJrQbiXqn+AQnXLS+sGa5H+E/JV7B?=
+ =?us-ascii?Q?LL9HLj5rQNcVrJDWkGN4HxvsNWDj2twO4Pkg5kSEnUJgZpLGR4wUb9aSCtMx?=
+ =?us-ascii?Q?jyW95phCGXsVTWY73UrrMI8w5qOb+RffvM+AP8WwgVl/VujbIH2ZuHyjtQuB?=
+ =?us-ascii?Q?bBW9nXiYgRcyqfNBX0iyQVWYQ51NVrDqRsj8hj6kxErNmjzm17DwNgYR/75d?=
+ =?us-ascii?Q?NQ3e6QyXpZzMXJ1yad6WFkQ7CpgYVc+CZ/SPIkgjB7tDlaWA4bohmRDjGC/+?=
+ =?us-ascii?Q?+bDy5FJ13sNdcOZEbuWFUJv9xdyjqpSc1wNEsRuIdktlFYWt3+VYEtIOEkDf?=
+ =?us-ascii?Q?+3mfdNVXJFDMBNHMCtL16r4SVjv7+o4cbSLAXsQQ61mHku4b/Jd9HV0FGbni?=
+ =?us-ascii?Q?jEuvejGSiAabK5kEgIH6elQLSP8ICtRLGHTCXyTs+TpIctzw?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: Xx6Hdu6aHVIF2K+Ow4hDdbjycbdw+jVAwDKd9TE5pv3mX4ZnJUquv1HBRYVXWkH+7iY7n8Yef+7G7CzyhGhk/9c9QQp643Y7c8mHGbIfCRxYlL/LemLKdZJnSVfwVdDF4IidSzljLCBwfdcI7B/TSfyNVtYphxdASnztiadtTVRyoCewreSpfrJSwdXRjVBGJztDMlhm+9w/0x6KtC+/8KzyZakvqOoTBNAQeLwjnBx7zELHyzdfhljn+/BJ2zt7Jvyx4CTgS4Lk5dcb2ITsvZusk8RC/FNkg0OZWrzQWQ6hM2h7zyk7IAokoIJKNH2nPdZDfxwCPDAtYpzuPI0VZg==
+X-Exchange-RoutingPolicyChecked: OnHf5SPThaxPmpNuiM8EXvNbwY6YvrTW/uS6qn+4Xj12aRq7VfRczHKNadcAXSENXinnil5kekC6cnS/gOc2Iysw+HVaFwvqSmNkdk/t57us5uKurGdYwkJhgJ2x6SpXztweTNZik7UqP2ogj4vqOJeuJjw8o6bnIap2/EP2gfqS9atQPs2t23ONrhM1s3Xm1ewdWC7nCBUrXEt9X+tct0KaneYWPP9WIImXvKn8tCDO1CJzw0Cma1soHbXiQ2rqZRB0QZegsSPyLm5cTO9Pb2M6QWQFxc4EJFOkfVo+iraOpOm2IYomKGA6CbKd8KUf6AWX781wqrcKOVlu6DpBTA==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6467.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17294177-a189-4d94-b521-08deca9878b2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2026 04:42:14.1423 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99cae5c2-e23c-4428-2d5d-08deca99ff47
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2026 04:53:09.4469 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: GRRMDcGUXZCPPmDEpq0YFmwU3g41CHzDp3PWyz8a9GIZoKxq5LTdU/pFIqH/XxL0dAgebZNUbBNNDpsjzyeuRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7654
+X-MS-Exchange-CrossTenant-userprincipalname: 8DbRg2EmrpMLGIjQcnL4AWvPMCMWU9wH9+RtmjnKOnXdEXBcE6DuxmkGIz24cf/i3EGByFhDoIysFzdftO7WDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4864
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -168,61 +167,114 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 > -----Original Message-----
 > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
 > Sharma
-> Sent: Friday, June 12, 2026 5:20 PM
+> Sent: Friday, June 12, 2026 3:05 PM
 > To: igt-dev@lists.freedesktop.org
 > Cc: Sharma, Swati2 <swati2.sharma@intel.com>
-> Subject: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Skip downscale t=
-est on
-> first commit failure
+> Subject: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Fix tap filter t=
+est
+> failures
 >=20
-> The first igt_display_commit2() in test_sharpness_filter() can fail with =
--
-> ERANGE/-EINVAL for TEST_FILTER_DOWNSCALE because set_planes() already
-> configured an overlay plane with a 75% downscale before this commit. On
-> high-resolution panels (e.g. eDP-1 at 2560x1600), the kernel rejects the =
-scaling
-> operation due to cdclk/scaler limits.
+> Fix two issues in the filter-tap subtest:
 >=20
-> Use igt_display_try_commit2() for the initial commit in the downscale cas=
-e
-> and skip gracefully, matching the existing skip logic for the second comm=
-it
-> after the sharpness filter is applied.
+> 1. get_modes_for_filter_taps() could select modes requiring bigjoiner (e.=
+g.
+> 7680x2160@60) for tap filter testing, but joiner + CASF is currently
+> unsupported. Filter out such modes using
+> igt_bigjoiner_possible() against the platform's max dotclock.
+>=20
+> 2. After each tap iteration, cleanup() calls igt_display_reset() which cl=
+ears the
+> output's pending_crtc binding. Subsequent tap iterations (e.g. tap-5 afte=
+r tap-
+> 3) then fail with EIO during pipe CRC collection because the output has n=
+o
+> CRTC assigned. Fix by conditionally restoring the CRTC binding via
+> igt_output_set_crtc() when pending_crtc is NULL.
 >=20
 > Assisted-by: GitHub Copilot:Claude Opus 4.6
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/intel/kms_sharpness_filter.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+>  tests/intel/kms_sharpness_filter.c | 21 ++++++++++++++++++---
+>  1 file changed, 18 insertions(+), 3 deletions(-)
 >=20
 > diff --git a/tests/intel/kms_sharpness_filter.c
 > b/tests/intel/kms_sharpness_filter.c
-> index 353a9a292..ff7b4540c 100644
+> index 353a9a292..63848dd49 100644
 > --- a/tests/intel/kms_sharpness_filter.c
 > +++ b/tests/intel/kms_sharpness_filter.c
-> @@ -464,7 +464,14 @@ static void test_sharpness_filter(data_t *data, enum
-> test_type type)
->  	 * is enabled and committed, the resulting CRC must differ.
+> @@ -358,9 +358,11 @@ static void cleanup(data_t *data)
+>  	cleanup_fbs(data);
+>  }
+>=20
+> -static void get_modes_for_filter_taps(igt_output_t *output,
+> drmModeModeInfo *mode[3])
+> +static void get_modes_for_filter_taps(int drm_fd, igt_output_t *output,
+> +				      drmModeModeInfo *mode[3])
+>  {
+>  	drmModeConnector *connector =3D output->config.connector;
+> +	int max_dotclock =3D igt_get_max_dotclock(drm_fd);
+>  	int total_pixels =3D 0;
+>=20
+>  	/*
+> @@ -368,8 +370,14 @@ static void get_modes_for_filter_taps(igt_output_t
+> *output, drmModeModeInfo *mod
+>  	 * TAP 5: (mode->hdisplay > 1920 && mode->hdisplay < 3840) &&
+>  	 * 	  (mode->vdisplay > 1080 && mode->vdisplay < 2160)
+>  	 * TAP 7: mode->hdisplay >=3D 3840 && mode->vdisplay >=3D 2160
+> +	 *
+> +	 * Skip modes requiring joiner since joiner + CASF is unsupported.
 >  	 */
->  	if (!is_invalid_test(type)) {
-> -		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +		if (type =3D=3D TEST_FILTER_DOWNSCALE) {
-> +			ret =3D igt_display_try_commit2(&data->display,
-> COMMIT_ATOMIC);
-> +			igt_skip_on_f(ret =3D=3D -ERANGE || ret =3D=3D -EINVAL,
-> +				      "Scaling op not supported, cdclk limits
-> might be exceeded.\n");
-> +			igt_assert_eq(ret, 0);
-> +		} else {
-> +			igt_display_commit2(&data->display,
-> COMMIT_ATOMIC);
-> +		}
+>  	for (int i =3D 0; i < connector->count_modes; i++) {
+> +		if (igt_bigjoiner_possible(drm_fd, &connector->modes[i],
+> +					   max_dotclock))
+> +			continue;
+> +
+>  		total_pixels =3D connector->modes[i].hdisplay * connector-
+> >modes[i].vdisplay;
+>=20
+>  		if (total_pixels <=3D MAX_PIXELS_FOR_3_TAP_FILTER) @@ -
+> 663,11 +671,15 @@ run_sharpness_filter_test(data_t *data, enum test_type
+> type)
+>  			if (type =3D=3D TEST_FILTER_TAP) {
+>  				drmModeModeInfo *modes[3] =3D { NULL,
+> NULL, NULL };
+>=20
+> -				get_modes_for_filter_taps(output, modes);
+> +				get_modes_for_filter_taps(data->drm_fd,
+> output, modes);
+>  				for (int i =3D 0; i < 3; i++) {
+>  					data->filter_tap =3D filter_tap_list[i];
+> -					if (!modes[i])
+> +					if (!modes[i]) {
+> +						igt_info("No valid non-joiner
+> mode for tap-%d on %s\n",
+> +							 data->filter_tap,
+> +
+> igt_output_name(data->output));
+>  						continue;
+> +					}
+>  					data->mode =3D modes[i];
+>  					igt_info("Mode %dx%d@%d on
+> output %s\n",
+>  						 data->mode->hdisplay,
+> @@ -676,6 +688,9 @@ run_sharpness_filter_test(data_t *data, enum
+> test_type type)
+>  						 igt_output_name(data-
+> >output));
+>  					igt_output_override_mode(data-
+> >output,
+>  								 data->mode);
+> +					if (!data->output->pending_crtc)
+> +						igt_output_set_crtc(data-
+> >output,
+> +								    data->crtc);
+>=20
 LGTM,
 Reviewed-by: Nemesa Garg <nemesa.garg@intel.com>
 
->  		pipe_crc =3D igt_crtc_crc_new(data->crtc,
->  					    IGT_PIPE_CRC_SOURCE_AUTO);
->  		igt_pipe_crc_collect_crc(pipe_crc, &no_sharp_crc);
+>  					snprintf(name, sizeof(name), "-tap-
+> %d",
+>  						 data->filter_tap);
 > --
 > 2.25.1
 
