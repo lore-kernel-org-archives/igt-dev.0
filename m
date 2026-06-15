@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21F9FCD98E2
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 20:43:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D695ECD98E0
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 20:47:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C41E010E70F;
-	Mon, 15 Jun 2026 20:43:09 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A82A10E70F;
- Mon, 15 Jun 2026 20:42:44 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7901809321167140362=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8551D10E6ED;
+	Mon, 15 Jun 2026 20:47:54 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CxeXHNnE";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBE1D10E6ED
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 20:47:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1781556449; x=1813092449;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=o4O+LvVTWpP8fkYDbGoDVgRgQ8enHGNQh+ecJvVWw4U=;
+ b=CxeXHNnEj85xeS/EuAuXqAt2VzDiTkunV+pJFGqsstUSqqafECxF43eQ
+ NYcztRhDn1HM+aszbxjdZdF84v61s7XmkZLStTnG58uriDLb9mJIL+t04
+ fqL4mBdyUfSH7lW+/g4DF0/UYj5VBRS76uGVSQqMfb9aeailjheErsnut
+ hDIiUUxjPzqmY4JGoMRkPTBWKXkKFZ1/+Q/L4kLA0PZBdW+U+tNh1E3zO
+ 79SDnScnISABs+k8HAakhNh1/6TLVWJR1yf0ge4CtGnnYJBVkj8WBRFSl
+ 7PhU+GkRKqprER2AtWyJrrIxMbPOOoUI0A3jqQ3mlbm4GVHytzHY3SdK4 A==;
+X-CSE-ConnectionGUID: PlN4XZXLTietzVWNfEWYfw==
+X-CSE-MsgGUID: B8o+5qMVQlyUrTWCUh4sJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="92869589"
+X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; d="scan'208";a="92869589"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2026 13:47:28 -0700
+X-CSE-ConnectionGUID: 6i1LpURwRZeF4/RMx6xRcg==
+X-CSE-MsgGUID: zY70XB21Q02/QQoNCswNLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; d="scan'208";a="241201532"
+Received: from orsosgc001.jf.intel.com ([10.88.27.185])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2026 13:47:28 -0700
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
+ janusz.krzysztofik@linux.intel.com, lukasz.laguna@intel.com
+Subject: [PATCH i-g-t v2] lib/intel_chipset: Extend intel_get_pci_device to
+ PCI accelerator class
+Date: Mon, 15 Jun 2026 13:47:23 -0700
+Message-ID: <20260615204723.18187-1-ashutosh.dixit@intel.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel=3A_Skip_multi?=
- =?utf-8?q?-queue_tests_when_no_engine_supports_it_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Shuicheng Lin" <shuicheng.lin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 15 Jun 2026 20:42:44 -0000
-Message-ID: <178155616456.81567.13523728207262006816@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260615153926.2094688-1-shuicheng.lin@intel.com>
-In-Reply-To: <20260615153926.2094688-1-shuicheng.lin@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,243 +65,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7901809321167140362==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In addition to PCI display class devices, Intel devices can also be PCI
+accelerator class devices. Extend intel_get_pci_device() to also find these
+devices.
 
-== Series Details ==
+v2: Introduce intel_get_pci_device_disp for those tools who specifically
+    want only display class devices (Kamiil)
 
-Series: tests/intel: Skip multi-queue tests when no engine supports it (rev2)
-URL   : https://patchwork.freedesktop.org/series/168386/
-State : success
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/intel_chipset.c             | 82 +++++++++++++++++++++++----------
+ lib/intel_chipset.h             |  1 +
+ tools/intel_audio_dump.c        |  2 +-
+ tools/intel_backlight.c         |  2 +-
+ tools/intel_display_bandwidth.c |  4 +-
+ tools/intel_display_poller.c    |  4 +-
+ tools/intel_panel_fitter.c      |  2 +-
+ tools/intel_watermark.c         |  2 +-
+ 8 files changed, 66 insertions(+), 33 deletions(-)
 
-== Summary ==
+diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
+index 760faede24..ff5f6c0313 100644
+--- a/lib/intel_chipset.c
++++ b/lib/intel_chipset.c
+@@ -63,16 +63,34 @@
+  */
+ enum pch_type intel_pch;
+ 
+-/**
+- * intel_get_pci_device:
+- *
+- * Looks up the main graphics pci device using libpciaccess.
+- *
+- * Returns:
+- * The pci_device, exits the program on any failures.
+- */
+-struct pci_device *
+-intel_get_pci_device(void)
++static struct pci_device *intel_pci_device_by_class(uint8_t class)
++{
++	struct pci_device *pci_dev;
++	struct pci_device_iterator *iter;
++	struct pci_id_match match;
++	int error;
++
++	error = igt_pci_system_init();
++	igt_fail_on_f(error != 0, "Couldn't initialize PCI system\n");
++
++	match.vendor_id = 0x8086; /* Intel */
++	match.device_id = PCI_MATCH_ANY;
++	match.subvendor_id = PCI_MATCH_ANY;
++	match.subdevice_id = PCI_MATCH_ANY;
++
++	match.device_class = class << 16;
++	match.device_class_mask = 0xff << 16;
++
++	match.match_data = 0;
++
++	iter = pci_id_match_iterator_create(&match);
++	pci_dev = pci_device_next(iter);
++	pci_iterator_destroy(iter);
++
++	return pci_dev;
++}
++
++static struct pci_device *__intel_get_pci_device(bool accel)
+ {
+ 	struct pci_device *pci_dev;
+ 	int error;
+@@ -85,22 +103,12 @@ intel_get_pci_device(void)
+ 	 * walk the entire PCI bus for a matching device. */
+ 	pci_dev = pci_device_find_by_slot(0, 0, 2, 0);
+ 	if (pci_dev == NULL || pci_dev->vendor_id != 0x8086) {
+-		struct pci_device_iterator *iter;
+-		struct pci_id_match match;
++		/* PCI display class (0x3) devices */
++		pci_dev = intel_pci_device_by_class(0x3);
+ 
+-		match.vendor_id = 0x8086; /* Intel */
+-		match.device_id = PCI_MATCH_ANY;
+-		match.subvendor_id = PCI_MATCH_ANY;
+-		match.subdevice_id = PCI_MATCH_ANY;
+-
+-		match.device_class = 0x3 << 16;
+-		match.device_class_mask = 0xff << 16;
+-
+-		match.match_data = 0;
+-
+-		iter = pci_id_match_iterator_create(&match);
+-		pci_dev = pci_device_next(iter);
+-		pci_iterator_destroy(iter);
++		if (!pci_dev && accel)
++			/* PCI accelerator class (0x12) devices */
++			pci_dev = intel_pci_device_by_class(0x12);
+ 	}
+ 	igt_require_f(pci_dev, "Couldn't find Intel graphics card\n");
+ 
+@@ -114,6 +122,30 @@ intel_get_pci_device(void)
+ 	return pci_dev;
+ }
+ 
++/**
++ * intel_get_pci_device:
++ *
++ * Looks up display and accelerator class pci devices using libpciaccess
++ *
++ * Returns: The pci_device, exits the program on any failures
++ */
++struct pci_device *intel_get_pci_device(void)
++{
++	return __intel_get_pci_device(true);
++}
++
++/**
++ * intel_get_pci_device_disp:
++ *
++ * Looks up display class pci device using libpciaccess
++ *
++ * Returns: The pci_device, exits the program on any failures
++ */
++struct pci_device *intel_get_pci_device_disp(void)
++{
++	return __intel_get_pci_device(false);
++}
++
+ static uint32_t __i915_get_drm_devid(int fd)
+ {
+ 	struct drm_i915_getparam gp;
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 3fcc5b18d6..ddacbb72b4 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -36,6 +36,7 @@
+ #define BIT(x) (1ul <<(x))
+ 
+ struct pci_device *intel_get_pci_device(void);
++struct pci_device *intel_get_pci_device_disp(void);
+ uint32_t intel_get_drm_devid(int fd);
+ 
+ struct intel_device_info {
+diff --git a/tools/intel_audio_dump.c b/tools/intel_audio_dump.c
+index 287dbd4759..1ecac37a21 100644
+--- a/tools/intel_audio_dump.c
++++ b/tools/intel_audio_dump.c
+@@ -2468,7 +2468,7 @@ int main(int argc, char **argv)
+ 	struct pci_device *pci_dev;
+ 	struct intel_mmio_data mmio_data;
+ 
+-	pci_dev = intel_get_pci_device();
++	pci_dev = intel_get_pci_device_disp();
+ 	devid = pci_dev->device_id; /* XXX not true when mapping! */
+ 
+ 	do_self_tests();
+diff --git a/tools/intel_backlight.c b/tools/intel_backlight.c
+index edf060224f..c71862f3c2 100644
+--- a/tools/intel_backlight.c
++++ b/tools/intel_backlight.c
+@@ -41,7 +41,7 @@ int main(int argc, char** argv)
+ 	struct intel_mmio_data mmio_data;
+ 	uint32_t current, max;
+ 
+-	intel_mmio_use_pci_bar(&mmio_data, intel_get_pci_device());
++	intel_mmio_use_pci_bar(&mmio_data, intel_get_pci_device_disp());
+ 
+ 	current = INREG(BLC_PWM_CPU_CTL) & BACKLIGHT_DUTY_CYCLE_MASK;
+ 	max = INREG(BLC_PWM_PCH_CTL2) >> 16;
+diff --git a/tools/intel_display_bandwidth.c b/tools/intel_display_bandwidth.c
+index b798f8b652..204b71e810 100644
+--- a/tools/intel_display_bandwidth.c
++++ b/tools/intel_display_bandwidth.c
+@@ -152,14 +152,14 @@ int main(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	devid = intel_get_pci_device()->device_id;
++	devid = intel_get_pci_device_disp()->device_id;
+ 
+ 	if (!has_de_power2(devid)) {
+ 		fprintf(stderr, "Display bandwidth counter not available\n");
+ 		return 2;
+ 	}
+ 
+-	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
++	intel_register_access_init(&mmio_data, intel_get_pci_device_disp(), 0);
+ 
+ 	if (has_de_power2_abox0_abox1(devid))
+ 		measure_de_power2_abox0_abox1(devid, sleep_duration);
+diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
+index 6338f22223..c2b85667ec 100644
+--- a/tools/intel_display_poller.c
++++ b/tools/intel_display_poller.c
+@@ -1508,7 +1508,7 @@ int main(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	devid = intel_get_pci_device()->device_id;
++	devid = intel_get_pci_device_disp()->device_id;
+ 
+ 	/*
+ 	 * check if the requires registers are
+@@ -1677,7 +1677,7 @@ int main(int argc, char *argv[])
+ 		break;
+ 	}
+ 
+-	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
++	intel_register_access_init(&mmio_data, intel_get_pci_device_disp(), 0);
+ 
+ 	if (auto_scanline_offset)
+ 		scanline_offset = default_scanline_offset(devid, pipe);
+diff --git a/tools/intel_panel_fitter.c b/tools/intel_panel_fitter.c
+index d9555d5c67..175b4fbd53 100644
+--- a/tools/intel_panel_fitter.c
++++ b/tools/intel_panel_fitter.c
+@@ -280,7 +280,7 @@ int main (int argc, char *argv[])
+ 	       "with overscan compensation properties: it is just a temporary "
+ 	       "solution that may or may not work. Use it at your own risk.\n");
+ 
+-	pci_dev = intel_get_pci_device();
++	pci_dev = intel_get_pci_device_disp();
+ 	intel_register_access_init(&mmio_data, pci_dev, 0);
+ 	devid = pci_dev->device_id;
+ 
+diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
+index 4ebd6eb930..d0678e6e16 100644
+--- a/tools/intel_watermark.c
++++ b/tools/intel_watermark.c
+@@ -328,7 +328,7 @@ static void skl_wm_dump(void)
+ 	uint32_t wm_linetime[num_pipes];
+ 	uint32_t arb_ctl, arb_ctl2, wm_dbg;
+ 
+-	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
++	intel_register_access_init(&mmio_data, intel_get_pci_device_disp(), 0);
+ 
+ 	arb_ctl = read_reg(0x45000);
+ 	arb_ctl2 = read_reg(0x45004);
+-- 
+2.54.0
 
-CI Bug Log - changes from IGT_8964 -> IGTPW_15369
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/index.html
-
-Participating hosts (41 -> 40)
-------------------------------
-
-  Additional (1): bat-adls-6 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15369 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - bat-adls-6:         NOTRUN -> [SKIP][1] ([i915#15931])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@dmabuf@all-tests.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-adls-6:         NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_tiled_pread_basic@basic:
-    - bat-adls-6:         NOTRUN -> [SKIP][3] ([i915#15656])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@gem_tiled_pread_basic@basic.html
-
-  * igt@intel_hwmon@hwmon-read:
-    - bat-adls-6:         NOTRUN -> [SKIP][4] ([i915#7707]) +1 other test skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@intel_hwmon@hwmon-read.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-adls-6:         NOTRUN -> [SKIP][5] ([i915#4103]) +1 other test skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-adls-6:         NOTRUN -> [SKIP][6] ([i915#16361])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-adls-6:         NOTRUN -> [SKIP][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - bat-adls-6:         NOTRUN -> [SKIP][8] ([i915#5354])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_psr@psr-primary-mmap-gtt:
-    - bat-adls-6:         NOTRUN -> [SKIP][9] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-adls-6:         NOTRUN -> [SKIP][10] ([i915#3555])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-read:
-    - bat-adls-6:         NOTRUN -> [SKIP][11] ([i915#3291]) +2 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@prime_vgem@basic-fence-read.html
-
-  
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#15656]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656
-  [i915#15931]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15931
-  [i915#16361]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16361
-  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
-  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
-  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8964 -> IGTPW_15369
-
-  CI-20190529: 20190529
-  CI_DRM_18682: 0984dfdee2a4f9e1922fe919a6b469e115e23360 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15369: 6a620d5478b436ab4f848f9c98f220ff8b8c6e83 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8964: 8964
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/index.html
-
---===============7901809321167140362==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel: Skip multi-queue tests when no engine supports it (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168386/">https://patchwork.freedesktop.org/series/168386/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8964 -&gt; IGTPW_15369</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/index.html</p>
-<h2>Participating hosts (41 -&gt; 40)</h2>
-<p>Additional (1): bat-adls-6 <br />
-  Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15369 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@dmabuf@all-tests.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15931">i915#15931</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic@basic:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@gem_tiled_pread_basic@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656">i915#15656</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@intel_hwmon@hwmon-read:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16361">i915#16361</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-read:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15369/bat-adls-6/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8964 -&gt; IGTPW_15369</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18682: 0984dfdee2a4f9e1922fe919a6b469e115e23360 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15369: 6a620d5478b436ab4f848f9c98f220ff8b8c6e83 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8964: 8964</p>
-
-</body>
-</html>
-
---===============7901809321167140362==--
