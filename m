@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8D68CD98DA
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 09:35:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62CD6CD98DA
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 09:36:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 75C6A10E317;
-	Mon, 15 Jun 2026 09:35:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E02A910E317;
+	Mon, 15 Jun 2026 09:36:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CXj7ng/W";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fZN1UxWD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E63710E30B
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 09:31:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D54B10E30B
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 09:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781515911; x=1813051911;
+ t=1781515915; x=1813051915;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=YfAEliKF2A6GfZG0uGcDkIt7o6cD2nYFUusz/D6fHow=;
- b=CXj7ng/WIBmMwRkz+meFabD2p55jQSeTnHT+cvfxpZhfLln3RrD2Xg+w
- TNHWbtsgeQRKjLddoX9Zdc6/c+bUN7s+58LOpJVekFNyQI1w/wAdE6GT3
- +ufgPVG4/PqUZEUacJeLFVkaNtgS1Q+y35B/hET8lVucFv1IDPtKsKFAW
- 2AAF8rSTP0HdtTPAU3FmrTr1PxGeCt2OewXGsBbxxFhoTkd76N5R884r2
- mwf5VfG3rpp8UZeQgv4TyoJprwRVyljAUke3LJKr6al4xmLXgNVNIlZBb
- kVcv5rHUGUc9LwalI8tdK7hGJcHzHamQ9fM/LxgQk5hj/X2Q9xXn6CllA g==;
-X-CSE-ConnectionGUID: AwAFhhMORo+cOo84QlkSYQ==
-X-CSE-MsgGUID: irkg267fQqmpEXhgYRTcaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82235894"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82235894"
+ bh=wE06f5gI7ZzTZ7NtSzX0yfvEvxs7tWLj2IFKw29s24I=;
+ b=fZN1UxWDvZkdiwT7proHYFHBryr+G/ajuQG10qwM7jHlbzhTh25a9MVf
+ lVpCYtSR0i2gGrYRoqSqcuFcqgKnhBxBhrrosl4gAsMw4ax7LTzbJF/8g
+ 6MJPSkmFjF10HOH4FBxebMvRfiIir7TSMe0kDq8q+kvBS1pRAdZXFh5Mn
+ ZE3EDIg/x6LYqKyjgIruEXDh01wLH8pXGhDL9/lTPjvs1pTPD8IGbU/C7
+ 2MqOUj5VqIcM7cu0kJOsYIFX8DoZekBfOCRKXkLMYWNk0sXlm0XRkl3bN
+ B/RzYDDvr1IE+/jFCw17Hf/Q6DqUiUtm0+9t7BfWvdIGSEfbmFX5ZQfXo g==;
+X-CSE-ConnectionGUID: SQkoX7lRRVia8uJmo2yp7g==
+X-CSE-MsgGUID: /Z5jhu0fRm+YNMexVy7qqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82235900"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82235900"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2026 02:31:51 -0700
-X-CSE-ConnectionGUID: VlA5mos+Re63553LU1CHvg==
-X-CSE-MsgGUID: v+arp6suRtiJqk3t016POg==
+ 15 Jun 2026 02:31:55 -0700
+X-CSE-ConnectionGUID: rH/a5HBMTkyOxAAPaHcJlQ==
+X-CSE-MsgGUID: 6G59p8hzQ1mBfmtF6w7WXg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="247465288"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="247465298"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by orviesa009.jf.intel.com with ESMTP; 15 Jun 2026 02:31:50 -0700
+ by orviesa009.jf.intel.com with ESMTP; 15 Jun 2026 02:31:54 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jani Nikula <jani.nikula@intel.com>,
  Suraj Kandpal <suraj.kandpal@intel.com>,
- =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
- =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH i-g-t v3 06/10] tools/intel_vbt_decode: fall back to guessing
- PCI ID from VBT signature
-Date: Mon, 15 Jun 2026 11:31:33 +0200
-Message-ID: <20260615093137.681050-7-michal.grzelak@intel.com>
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v3 09/10] tools/vbt_decode: parse & dump VS/PE-O tables
+ for Snps
+Date: Mon, 15 Jun 2026 11:31:36 +0200
+Message-ID: <20260615093137.681050-10-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260615093137.681050-1-michal.grzelak@intel.com>
 References: <20260615093137.681050-1-michal.grzelak@intel.com>
@@ -73,34 +72,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Jani Nikula <jani.nikula@intel.com>
+Dump VBT #57 tables for Snps. Add a table of strings to store each table
+purpose. Show the affected modes on dumping.
 
-From: Jani Nikula <jani.nikula@intel.com>
+v2->v3
+- use Cx0 for Snps
 
-If the PCI ID wasn't passed on the command-line, DEVICE environment
-variable, or VBIOS, fall back to guessing the device ID from the VBT
-signature.
+v1->v2
+- check platform basing on devid not VBT signature (Jani)
 
-Cc: Michał Grzelak <michal.grzelak@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tools/intel_vbt_decode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/intel_vbt_decode.c | 42 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 0956d34dc2..a2e57206d6 100644
+index 2f3f720573..8d54b113ad 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -4331,6 +4331,8 @@ int main(int argc, char **argv)
- 	}
- 	if (!context.devid)
- 		context.devid = get_device_id(VBIOS, size);
-+	if (!context.devid)
-+		context.devid = intel_guess_device_id(context.codename);
- 	if (!context.devid)
- 		fprintf(stderr, "Warning: could not find PCI device ID!\n");
+@@ -3474,6 +3474,15 @@ static const char * const vspeo_lt_tables[6] = {
+ 	"DP 2.1",
+ };
  
++static const char * const vspeo_cx0_tables[6] = {
++	"C10: DP 1.4 RBR/HBR; C20: UNUSED",
++	"C10: DP 1.4 HBR2/HBR3; C20: UNUSED",
++	"C10: eDP non-HBR3; C20: UNUSED",
++	"C10: eDP HBR3; C20: UNUSED",
++	"C10: UNUSED; C20: DP 1.4",
++	"C10: UNUSED; C20: DP 2.X",
++};
++
+ static void dump_lt_vspeo(const struct bdb_vswing_preemph *vspeo,
+ 			  int num_rows)
+ {
+@@ -3503,6 +3512,34 @@ static void dump_lt_vspeo(const struct bdb_vswing_preemph *vspeo,
+ 	}
+ }
+ 
++static void dump_cx0_vspeo(const struct bdb_vswing_preemph *vspeo,
++			   int num_rows)
++{
++	const unsigned int *tables = vspeo->tables;
++	size_t offset = 0;
++
++	printf("\tNumber of vswing tables: %d\n", vspeo->num_tables);
++	printf("\tNumber of columns: %d\n", vspeo->num_columns);
++	printf("\tNumber of rows: %d\n", num_rows);
++
++	printf("\tPHY type: Cx0\n");
++	for (int idx = 0; idx < vspeo->num_tables; idx++) {
++		printf("\tVswing Table #%d (%s):\n", idx+1, vspeo_cx0_tables[idx]);
++		for (int row = 0; row < num_rows; row++) {
++			int vswing = tables[offset];
++			int pre_cursor = tables[offset + 1];
++			int post_cursor = tables[offset + 2];
++
++			printf("\t\tPreset #%02d: ", row+1);
++			printf("vswing: 0x%08x, ", vswing);
++			printf("pre-cursor: 0x%08x, ", pre_cursor);
++			printf("post-cursor: 0x%08x\n", post_cursor);
++
++			offset += vspeo->num_columns;
++		}
++	}
++}
++
+ static int
+ vswing_preemph_num_rows(int devid)
+ {
+@@ -3525,6 +3562,11 @@ static void dump_vswing_preemphasis(struct context *context,
+ 
+ 	if (IS_NOVALAKE_P(devid) || IS_NOVALAKE_S(devid)) {
+ 		dump_lt_vspeo(vspeo, num_rows);
++	} else if (IS_PANTHERLAKE(devid) ||
++		   IS_BATTLEMAGE(devid) ||
++		   IS_LUNARLAKE(devid) ||
++		   IS_METEORLAKE(devid)) {
++		dump_cx0_vspeo(vspeo, num_rows);
+ 	} else {
+ 		printf("Warning: deparsing VS/PE-O from devid %x not supported\n", devid);
+ 	}
 -- 
 2.45.2
 
