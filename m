@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7347CD98DA
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 10:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28C78CD98C7
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 10:35:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9BDB310E34F;
-	Mon, 15 Jun 2026 10:35:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D5A2410E353;
+	Mon, 15 Jun 2026 10:35:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WwhZqLpe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JYiehGW4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F378D10E350
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 10:32:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7DF810E33C
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 10:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781519573; x=1813055573;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=WEVDXk7CfMxc774QMEYy/pbfkirKmMrtcixEssiWoaY=;
- b=WwhZqLpeeGamfJlQ4980hGekTxoKK7Fj5v7zk+5hhlyVpbA6r9C4iEQO
- 766UaB7r83BCG1+SRnFnslosSmAX21vNa4ylGO+kgF0DTg5TAa3M9Vktz
- xdGcYewO8jqZdPn74FF+kX64dFYJH23joGv/daTOG7OcQwN2cFEoRB6qa
- CexDusSJKJ7Ym+sNhE9JeglXqPJIGchFdkz7NpIaGlueLdd7znY0rYjtM
- 3y2WBc0rXQ1b73F8wtTgthveSQBhxfdSahpn3ZkktmVKUkK2m3YPaRXyu
- 54Obzdycz27DiYEf1FnnC7EtRF18qBW64BSCAO/MSYqN90A/8thUrStVr A==;
-X-CSE-ConnectionGUID: o+FgQvWDTrq+Y/L0aydm1w==
-X-CSE-MsgGUID: D9XaokafQWCOcbwVevH3KQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82319489"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82319489"
+ t=1781519620; x=1813055620;
+ h=date:from:to:cc:subject:in-reply-to:message-id:
+ references:mime-version;
+ bh=zxzysUuN+oJmvCxefKU3hhYs9h8jc8blB/zvahFB61w=;
+ b=JYiehGW4L4xFaw2BbOb8eD+XgHWisuHM3h/Km+AYvMd0Gj40Q+ErEb8l
+ 39qxHJDbuOKCAkR8FAhyhbmZ05CgJtb856YE2uXH74+FH/Q8f0edMTwPf
+ YXH3/GnVSx8xQuY+AVahoIEVPzwpukNNeDingWHu6heP7a6ZtkI+oud7X
+ gSbMs11yEKjgpiTmmNppgYs7O2XnOMIwxojOp93pv3oLJEaR+nxncig4F
+ RWBIsflb+HBtafwH13HlRqsB0l43G9aGZxYZxDjedjWC2NYL6kgauWxPZ
+ aP+sMP+4cwq8hx5ULkUME4qKzyJIVWB2IVQ6/4GDqQqB77x5EXe1/3U1+ w==;
+X-CSE-ConnectionGUID: tmn4EKJ1SGCN+mykLqGzKw==
+X-CSE-MsgGUID: O90asDq4RdKi5xbZsNA5VA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82319563"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82319563"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2026 03:32:52 -0700
-X-CSE-ConnectionGUID: F6Lc33VpRMK3j2kNOqUbRQ==
-X-CSE-MsgGUID: IPJCzhzrQvuQnKyw6N+Rgg==
+ 15 Jun 2026 03:33:40 -0700
+X-CSE-ConnectionGUID: 5PWfyqn8TxmJ5ENuD+K/fA==
+X-CSE-MsgGUID: KoEM5iihQnuEx/nJ+Uy1Zw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="252391531"
-Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
- ([172.28.182.80])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2026 03:32:51 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
- lukasz.laguna@intel.com,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH v2 i-g-t 6/6] tests/intel/xe_sriov_flr: Arm SR-IOV exit cleanup
-Date: Mon, 15 Jun 2026 12:32:20 +0200
-Message-ID: <20260615103220.281656-7-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260615103220.281656-1-marcin.bernatowicz@linux.intel.com>
-References: <20260615103220.281656-1-marcin.bernatowicz@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="252391787"
+Received: from dev-417.igk.intel.com ([10.91.214.181])
+ by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2026 03:33:38 -0700
+Date: Mon, 15 Jun 2026 12:33:35 +0200 (CEST)
+From: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>
+To: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>
+cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>, 
+ Suraj Kandpal <suraj.kandpal@intel.com>, 
+ =?ISO-8859-15?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t v3 06/10] tools/intel_vbt_decode: fall back to
+ guessing PCI ID from VBT signature
+In-Reply-To: <20260615093137.681050-7-michal.grzelak@intel.com>
+Message-ID: <03d110cf-ebf6-39bf-2303-082652159d93@intel.com>
+References: <20260615093137.681050-1-michal.grzelak@intel.com>
+ <20260615093137.681050-7-michal.grzelak@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-974073440-1781519619=:605841"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,103 +70,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Install SR-IOV exit handler in xe_sriov_flr.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Refactor xe_vfio_pci module restore helper into shared core with two
-wrappers: strict teardown path (abort on failure) and best-effort exit
-cleanup callback (warn on failure). Clear exit handler after explicit
-teardown succeeds.
+--8323329-974073440-1781519619=:605841
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
- tests/intel/xe_sriov_flr.c | 42 ++++++++++++++++++++++++++++++--------
- 1 file changed, 33 insertions(+), 9 deletions(-)
+On Mon, 15 Jun 2026, Michał Grzelak wrote:
+> From: Jani Nikula <jani.nikula@intel.com>
+>
+> From: Jani Nikula <jani.nikula@intel.com>
+>
+> If the PCI ID wasn't passed on the command-line, DEVICE environment
+> variable, or VBIOS, fall back to guessing the device ID from the VBT
+> signature.
+>
+> Cc: Michał Grzelak <michal.grzelak@intel.com>
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-index 861e647e4..bb702d354 100644
---- a/tests/intel/xe_sriov_flr.c
-+++ b/tests/intel/xe_sriov_flr.c
-@@ -334,28 +334,50 @@ static void vf_unbind_driver_override(int pf_fd, unsigned int vf_id)
- 	free(slot);
- }
- 
--static void restore_xe_vfio_module(void)
-+static bool __restore_xe_vfio_module_state(void)
- {
- 	bool loaded = igt_kmod_is_loaded(XE_VFIO_PCI_MODULE);
- 	int ret;
- 
- 	if (loaded == g_xe_vfio_loaded_initially)
--		return;
-+		return true;
- 
- 	ret = g_xe_vfio_loaded_initially ?
- 		igt_kmod_load(XE_VFIO_PCI_MODULE, NULL) :
- 		igt_kmod_unload(XE_VFIO_PCI_MODULE);
--	igt_abort_on_f(ret,
--		       "Failed to %s %s during cleanup\n",
--		       g_xe_vfio_loaded_initially ? "load" : "unload",
--		       XE_VFIO_PCI_MODULE);
-+	if (ret)
-+		return false;
- 
- 	loaded = igt_kmod_is_loaded(XE_VFIO_PCI_MODULE);
--	igt_abort_on_f(loaded != g_xe_vfio_loaded_initially,
--		       "%s should be %s after cleanup\n",
-+
-+	return loaded == g_xe_vfio_loaded_initially;
-+}
-+
-+static void restore_xe_vfio_module_or_abort(void)
-+{
-+	igt_abort_on_f(!__restore_xe_vfio_module_state(),
-+		       "Failed to restore %s to %s during cleanup\n",
- 		       XE_VFIO_PCI_MODULE,
- 		       g_xe_vfio_loaded_initially ? "loaded" : "unloaded");
- }
-+
-+static void restore_xe_vfio_module_best_effort(void)
-+{
-+	igt_warn_on_f(!__restore_xe_vfio_module_state(),
-+		      "Failed to restore %s to %s during exit cleanup\n",
-+		      XE_VFIO_PCI_MODULE,
-+		      g_xe_vfio_loaded_initially ? "loaded" : "unloaded");
-+}
-+
-+static void exit_cleanup(int pf_fd, int sig, void *data)
-+{
-+	(void)pf_fd;
-+	(void)sig;
-+	(void)data;
-+
-+	restore_xe_vfio_module_best_effort();
-+}
-+
- /**
-  * flr_exec_strategy - Function pointer for FLR execution strategy
-  * @pf_fd: File descriptor for the Physical Function (PF).
-@@ -1230,6 +1252,7 @@ int igt_main_args("evw:", long_options, help_str, opt_handler, NULL)
- 		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
- 		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
- 		g_xe_vfio_loaded_initially = igt_kmod_is_loaded(XE_VFIO_PCI_MODULE);
-+		igt_sriov_install_exit_handler(pf_fd, exit_cleanup, NULL);
- 	}
- 
- 	igt_describe("Initiate FLR without any additional state checks.");
-@@ -1279,7 +1302,8 @@ int igt_main_args("evw:", long_options, help_str, opt_handler, NULL)
- 			    igt_sriov_disable_driver_autoprobe(pf_fd);
- 		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
- 			       "Failed to restore sriov_drivers_autoprobe value\n");
--		restore_xe_vfio_module();
-+		restore_xe_vfio_module_or_abort();
-+		igt_sriov_clear_exit_handler();
- 		close(pf_fd);
- 	}
- }
--- 
-2.43.0
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 
+> ---
+> tools/intel_vbt_decode.c | 2 ++
+> 1 file changed, 2 insertions(+)
+>
+> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+> index 0956d34dc2..a2e57206d6 100644
+> --- a/tools/intel_vbt_decode.c
+> +++ b/tools/intel_vbt_decode.c
+> @@ -4331,6 +4331,8 @@ int main(int argc, char **argv)
+> 	}
+> 	if (!context.devid)
+> 		context.devid = get_device_id(VBIOS, size);
+> +	if (!context.devid)
+> +		context.devid = intel_guess_device_id(context.codename);
+> 	if (!context.devid)
+> 		fprintf(stderr, "Warning: could not find PCI device ID!\n");
+>
+> -- 
+> 2.45.2
+>
+>
+--8323329-974073440-1781519619=:605841--
