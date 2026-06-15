@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ADE8CD98DA
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 09:33:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74942CD98C5
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 09:34:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 120A910E317;
-	Mon, 15 Jun 2026 09:33:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2780A10E317;
+	Mon, 15 Jun 2026 09:34:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aFUWUQQW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TA3t4dfu";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8479310E30B
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 09:31:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B2B910E30B
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 09:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781515909; x=1813051909;
+ t=1781515912; x=1813051912;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=mNeisA0tcRMf5uZ1MP4QD7zEsTBLv54EHDgR2bsNvn4=;
- b=aFUWUQQWAuNWhxkwGZHEWniD/3oqMY3DEuqfN0bvgRrHyBykCGk475mV
- KUh6x/SRMeqT1pMYS5YAAZXk9FhYW+FCqoLtTfgHWeWJu4AhOBWGSV/IO
- rgMYfjX4rRzJQQIhbzUecJAb29w74+7DBz/7Xbo/nkGt6EHvonh0t4rCr
- LSV/tT+LIR9aviddAcxXM5imBR8bGwoD16v4f3XSABN4+QQGOUxyYwN8D
- sM0HaM7vLytGoz4sorrNMsgxcpWbwSJg/lerV214U6hOTqjyRXPqm7QIg
- lAB2MEy8dDTvycTQTOiIN9L6j/R4HSfNZDeZfpDIv291/1yg0b6DdBqjR Q==;
-X-CSE-ConnectionGUID: dO+dag5NRVOyMpmI6bq80w==
-X-CSE-MsgGUID: jbw14IDkRuCDbfbKQJedjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82235889"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82235889"
+ bh=HpfTXMtzRcPa6tU6dLxXZm5qR9KQbce7+ZDQd1h/XD8=;
+ b=TA3t4dfuc9cnAQcQu9ce2W4ChGB++lpGEF8pb9CYcEx64VHbrVhyr1UN
+ FkvTgbKaUztra3VPuknfqiV+yOqceTF6EwqWihDbtXBumR+A5X1UH15ik
+ V/qqb5Ek6yBCAJK6ARJ2Ny4UzI4Tfu2hTNJHinMb4aPS9a1k/5+noYm+K
+ YkIltCo1L5X6PywR5VO3XJgf63Q//MwIuQkBFlsOnt8aghTzyfI2z8fRa
+ z9HpjNc1/651cP5UD6bL9b2XC/voUj0X8HeDlx/RhPTgz4dvKEbxyu0fH
+ lxDEu0RCjL0oLdMFDZg+rK9COFyo7pXPCLSgSrV2sSMcDsxZwB/j4zl3D g==;
+X-CSE-ConnectionGUID: xGVDQUQ3SjCIBQXPdV33rQ==
+X-CSE-MsgGUID: ylJt0u6QQxKKNbKCJhWrLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82235898"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82235898"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2026 02:31:49 -0700
-X-CSE-ConnectionGUID: u+LnY8EFQAKpX5ve2Dce6Q==
-X-CSE-MsgGUID: tuDxoyoKQzqCUAmx5jxEaA==
+ 15 Jun 2026 02:31:52 -0700
+X-CSE-ConnectionGUID: tLZ1ifgSQTae9CV/FyG6IQ==
+X-CSE-MsgGUID: ENaaeWNjRK6+JDhrOpyyBg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="247465285"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="247465292"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by orviesa009.jf.intel.com with ESMTP; 15 Jun 2026 02:31:49 -0700
+ by orviesa009.jf.intel.com with ESMTP; 15 Jun 2026 02:31:52 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jani Nikula <jani.nikula@intel.com>,
  Suraj Kandpal <suraj.kandpal@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v3 05/10] tools/vbt_decode: return 0 from get_device_id()
-Date: Mon, 15 Jun 2026 11:31:32 +0200
-Message-ID: <20260615093137.681050-6-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v3 07/10] tools/vbt_decode: validate DEVICE env var
+Date: Mon, 15 Jun 2026 11:31:34 +0200
+Message-ID: <20260615093137.681050-8-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260615093137.681050-1-michal.grzelak@intel.com>
 References: <20260615093137.681050-1-michal.grzelak@intel.com>
@@ -71,35 +71,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This function returns -1 on errors and the caller checks for 0. This
-leads to -1 being used as the device id. Return 0 instead of -1.
+On error, strotoul() returns converted value of longest substring
+spanning from beginning. Check if device ID input via DEVICE env var is
+valid. Show it and return if it is not.
+
+v2->v3
+- show whole invalid DEVICE env var (Jani)
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tools/intel_vbt_decode.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/intel_vbt_decode.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index ab0ad5ada6..0956d34dc2 100644
+index a2e57206d6..33f8598e5f 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -3702,13 +3702,13 @@ get_device_id(unsigned char *bios, int size)
-     int offset = (bios[0x19] << 8) + bios[0x18];
+@@ -4326,8 +4326,14 @@ int main(int argc, char **argv)
  
-     if (offset + 7 >= size)
--	return -1;
-+	return 0;
- 
-     if (bios[offset] != 'P' ||
- 	bios[offset+1] != 'C' ||
- 	bios[offset+2] != 'I' ||
- 	bios[offset+3] != 'R')
--	return -1;
-+	return 0;
- 
-     device = (bios[offset+7] << 8) + bios[offset+6];
- 
+ 	if (!context.devid) {
+ 		const char *devid_string = getenv("DEVICE");
+-		if (devid_string)
+-			context.devid = strtoul(devid_string, NULL, 16);
++		if (devid_string) {
++			context.devid = strtoul(devid_string, &endp, 16);
++			if (!context.devid || *endp) {
++				fprintf(stderr, "invalid devid '%s' in DEVICE environment variable\n",
++					devid_string);
++				return EXIT_FAILURE;
++			}
++		}
+ 	}
+ 	if (!context.devid)
+ 		context.devid = get_device_id(VBIOS, size);
 -- 
 2.45.2
 
