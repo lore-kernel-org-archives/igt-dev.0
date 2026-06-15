@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9518CD98DA
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 17:37:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13DD3CD98DA
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 17:44:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B92910E4C1;
-	Mon, 15 Jun 2026 17:37:17 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E52F010E50A;
- Mon, 15 Jun 2026 17:36:39 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6177319162805472747=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A208710E4C1;
+	Mon, 15 Jun 2026 17:44:52 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aRP7sB/Y";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5058F10E4C1
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 17:44:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1781545470; x=1813081470;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=06TMXeUcqqNsU5m2iz5LMfqXuZv6UA2IP4NOgb5nINw=;
+ b=aRP7sB/Y0OOBykkcuku+e2ZaZLXY/RA7L2jjtcrq2VxysU18cRxS7Ikm
+ kOZacK5+dwrmwHpLI3oKee3h0AHr9Wu4BlT1W+YlT+jqclWxqVaeUjAHJ
+ l/PPgpn2rkXRhz7+iMoRTJNZHQ6cWK4iODaPgsbRNmTceLSgIqkimeNk7
+ hbsG1x0Se/eh5ENYk858cytQB1/AQkNypVogq5DhtB96bb4enYWIEnHJM
+ x3kvfVnQvnkhLkLyjIrHNhuoApI4qwYwdloOnBqLwZDW7RQbPBHnfhMJF
+ tAT6r2xuZTCbA6lrEtiLqwQ7ESd4VdzT07Udr2PYYPyicLdFrdfgqcONY Q==;
+X-CSE-ConnectionGUID: HZGCljXJRzW8RWIQ4uS56Q==
+X-CSE-MsgGUID: 1phirW61SxSyZKSLw1bfnw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82035418"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82035418"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2026 10:44:29 -0700
+X-CSE-ConnectionGUID: md8rCqxdSkWrUM8zwEV1mg==
+X-CSE-MsgGUID: Ci8xRezgRmG2d4FG4M391g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="251451861"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.51])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2026 10:44:28 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, enh <enh@google.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v1] include/linux_scaffold: drop _AC macro
+Date: Mon, 15 Jun 2026 19:44:22 +0200
+Message-ID: <20260615174422.212996-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_SR-IOV_exit-handler-bas?=
- =?utf-8?q?ed_cleanup_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 15 Jun 2026 17:36:39 -0000
-Message-ID: <178154499993.79279.12420719700456827659@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260615103220.281656-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260615103220.281656-1-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +64,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6177319162805472747==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The macro _AC is causing a compilation error on current android
+using linux 7.0 uapi headers on RISCV. It seems the macro is not
+really needed as it is encoding only two constants, 0UL/0ULL and
+1UL/1ULL. Drop _AC macro and write out directly these numbers.
 
-== Series Details ==
+Cc: enh <enh@google.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ include/linux_scaffold.h | 24 ++++--------------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
 
-Series: Add SR-IOV exit-handler-based cleanup (rev2)
-URL   : https://patchwork.freedesktop.org/series/167745/
-State : success
+diff --git a/include/linux_scaffold.h b/include/linux_scaffold.h
+index 0c970c860..39f68b8d2 100644
+--- a/include/linux_scaffold.h
++++ b/include/linux_scaffold.h
+@@ -22,30 +22,14 @@ static inline s64 sign_extend64(u64 value, int index)
+ 	return (s64)(value << shift) >> shift;
+ }
+ 
+-#ifndef _AC
+-#  define _AC(X, Y)      X##Y
+-#else
+-#  error "_AC macro already defined"
+-#endif
+-
+ /* Make IGT build with Kernels < 4.17 */
+-#ifndef _AC
+-#  define _AC(X, Y)	__AC(X, Y)
+-#endif
+-#ifndef _UL
+-#  define  _UL(x)		(_AC(x, UL))
+-#endif
+-#ifndef _ULL
+-#  define _ULL(x)		(_AC(x, ULL))
+-#endif
+-
+ #define GENMASK(h, l) \
+-	(((~_UL(0)) - (_UL(1) << (l)) + 1) & \
+-	(~_UL(0) >> (BITS_PER_LONG - 1 - (h))))
++	((~0UL - (1UL << (l)) + 1) & \
++	(~0UL >> (BITS_PER_LONG - 1 - (h))))
+ 
+ #define GENMASK_ULL(h, l) \
+-	(((~_ULL(0)) - (_ULL(1) << (l)) + 1) & \
+-	(~_ULL(0) >> (BITS_PER_LONG_LONG - 1 - (h))))
++	((~0ULL - (1ULL << (l)) + 1) & \
++	(~0ULL >> (BITS_PER_LONG_LONG - 1 - (h))))
+ 
+ #define BITS_PER_BYTE 8
+ #define BITS_PER_TYPE(t) (sizeof(t) * BITS_PER_BYTE)
+-- 
+2.54.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8964_BAT -> XEIGTPW_15367_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8964 -> IGTPW_15367
-
-  IGTPW_15367: f648cf6e8b6ee80f755e901bd50bc9a4381ac584 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8964: 8964
-  xe-5260-0984dfdee2a4f9e1922fe919a6b469e115e23360: 0984dfdee2a4f9e1922fe919a6b469e115e23360
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15367/index.html
-
---===============6177319162805472747==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add SR-IOV exit-handler-based cleanup (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167745/">https://patchwork.freedesktop.org/series/167745/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15367/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15367/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8964_BAT -&gt; XEIGTPW_15367_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8964 -&gt; IGTPW_15367</li>
-</ul>
-<p>IGTPW_15367: f648cf6e8b6ee80f755e901bd50bc9a4381ac584 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8964: 8964<br />
-  xe-5260-0984dfdee2a4f9e1922fe919a6b469e115e23360: 0984dfdee2a4f9e1922fe919a6b469e115e23360</p>
-
-</body>
-</html>
-
---===============6177319162805472747==--
