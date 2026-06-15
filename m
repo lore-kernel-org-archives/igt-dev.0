@@ -4,58 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62CD6CD98DA
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 09:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B13CD98C5
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jun 2026 09:41:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E02A910E317;
-	Mon, 15 Jun 2026 09:36:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D17E210E30B;
+	Mon, 15 Jun 2026 09:41:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fZN1UxWD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ev2otN6z";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D54B10E30B
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 09:31:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ADC010E30B
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2026 09:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781515915; x=1813051915;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=wE06f5gI7ZzTZ7NtSzX0yfvEvxs7tWLj2IFKw29s24I=;
- b=fZN1UxWDvZkdiwT7proHYFHBryr+G/ajuQG10qwM7jHlbzhTh25a9MVf
- lVpCYtSR0i2gGrYRoqSqcuFcqgKnhBxBhrrosl4gAsMw4ax7LTzbJF/8g
- 6MJPSkmFjF10HOH4FBxebMvRfiIir7TSMe0kDq8q+kvBS1pRAdZXFh5Mn
- ZE3EDIg/x6LYqKyjgIruEXDh01wLH8pXGhDL9/lTPjvs1pTPD8IGbU/C7
- 2MqOUj5VqIcM7cu0kJOsYIFX8DoZekBfOCRKXkLMYWNk0sXlm0XRkl3bN
- B/RzYDDvr1IE+/jFCw17Hf/Q6DqUiUtm0+9t7BfWvdIGSEfbmFX5ZQfXo g==;
-X-CSE-ConnectionGUID: SQkoX7lRRVia8uJmo2yp7g==
-X-CSE-MsgGUID: /Z5jhu0fRm+YNMexVy7qqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82235900"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82235900"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2026 02:31:55 -0700
-X-CSE-ConnectionGUID: rH/a5HBMTkyOxAAPaHcJlQ==
-X-CSE-MsgGUID: 6G59p8hzQ1mBfmtF6w7WXg==
+ t=1781516446; x=1813052446;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zauGoo73xmmqZ47XRP2GIdj9Ye64XmCp9g6yoKgOUjE=;
+ b=ev2otN6zdxfd2ls3jc91/7GuGBVxDZat7v9aD3NFUOPjwB4vJjVb9Qne
+ 4XJp2+mQMtgsjAhysqkvij/qZ/LVktcPeocJQLw4MpQgmpIwVvdqRYVVT
+ zc4kz/oDIbzV4EKdc/SGJT5wk7vpGYVm4X1JeA/typa76rNLSUicEn0bM
+ N438q4s1vsQr6upR8NYbplbLGM1BCzPGmCoIHQRZJyj9YX/2lF4n5Cpyh
+ rSQiij1bva/ZmYth6jKVWHvbl2SwjD3vSsozEuXzwO6i4Zfi2S7gDHPbN
+ fMz5XtsGT6NijCPO0OwNB0R7KLKzmOUdlsze0cai7gu8Vy9fxX9CzVxgI A==;
+X-CSE-ConnectionGUID: tD6dVz4gS4qYjlcP107Kvw==
+X-CSE-MsgGUID: 2HAmPk9WTAuwI5CCFNdwpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82264808"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="82264808"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2026 02:40:46 -0700
+X-CSE-ConnectionGUID: 4/DHZE42SUai7znfE8qZuQ==
+X-CSE-MsgGUID: Hp209M17TYiAYoCVS8I98Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="247465298"
-Received: from dev-417.igk.intel.com ([10.91.214.181])
- by orviesa009.jf.intel.com with ESMTP; 15 Jun 2026 02:31:54 -0700
-From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
- Suraj Kandpal <suraj.kandpal@intel.com>,
- =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v3 09/10] tools/vbt_decode: parse & dump VS/PE-O tables
- for Snps
-Date: Mon, 15 Jun 2026 11:31:36 +0200
-Message-ID: <20260615093137.681050-10-michal.grzelak@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260615093137.681050-1-michal.grzelak@intel.com>
-References: <20260615093137.681050-1-michal.grzelak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; d="scan'208";a="244514833"
+Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.21])
+ by fmviesa007.fm.intel.com with ESMTP; 15 Jun 2026 02:40:45 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org,
+	himal.prasad.ghimiray@intel.com
+Subject: [PATCH i-g-t] tests/intel/xe_exec_system_allocator: Rename subtest to
+ preffered-loc-atomic-device
+Date: Mon, 15 Jun 2026 09:40:43 +0000
+Message-ID: <20260615094043.3925465-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -72,87 +65,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Dump VBT #57 tables for Snps. Add a table of strings to store each table
-purpose. Show the affected modes on dumping.
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-v2->v3
-- use Cx0 for Snps
+The subtest name "preffered-loc-atomic-vram" is misleading because
+it exercises the DRM_XE_ATOMIC_DEVICE preferred-location atomic
+attribute path, which applies to both dGPU (VRAM) and iGPU (SMEM)
+configurations. Running a subtest labelled "-vram" on an iGPU where
+no VRAM is present causes unnecessary confusion.
 
-v1->v2
-- check platform basing on devid not VBT signature (Jani)
-
-Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 ---
- tools/intel_vbt_decode.c | 42 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ tests/intel/xe_exec_system_allocator.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 2f3f720573..8d54b113ad 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -3474,6 +3474,15 @@ static const char * const vspeo_lt_tables[6] = {
- 	"DP 2.1",
- };
- 
-+static const char * const vspeo_cx0_tables[6] = {
-+	"C10: DP 1.4 RBR/HBR; C20: UNUSED",
-+	"C10: DP 1.4 HBR2/HBR3; C20: UNUSED",
-+	"C10: eDP non-HBR3; C20: UNUSED",
-+	"C10: eDP HBR3; C20: UNUSED",
-+	"C10: UNUSED; C20: DP 1.4",
-+	"C10: UNUSED; C20: DP 2.X",
-+};
-+
- static void dump_lt_vspeo(const struct bdb_vswing_preemph *vspeo,
- 			  int num_rows)
- {
-@@ -3503,6 +3512,34 @@ static void dump_lt_vspeo(const struct bdb_vswing_preemph *vspeo,
- 	}
- }
- 
-+static void dump_cx0_vspeo(const struct bdb_vswing_preemph *vspeo,
-+			   int num_rows)
-+{
-+	const unsigned int *tables = vspeo->tables;
-+	size_t offset = 0;
-+
-+	printf("\tNumber of vswing tables: %d\n", vspeo->num_tables);
-+	printf("\tNumber of columns: %d\n", vspeo->num_columns);
-+	printf("\tNumber of rows: %d\n", num_rows);
-+
-+	printf("\tPHY type: Cx0\n");
-+	for (int idx = 0; idx < vspeo->num_tables; idx++) {
-+		printf("\tVswing Table #%d (%s):\n", idx+1, vspeo_cx0_tables[idx]);
-+		for (int row = 0; row < num_rows; row++) {
-+			int vswing = tables[offset];
-+			int pre_cursor = tables[offset + 1];
-+			int post_cursor = tables[offset + 2];
-+
-+			printf("\t\tPreset #%02d: ", row+1);
-+			printf("vswing: 0x%08x, ", vswing);
-+			printf("pre-cursor: 0x%08x, ", pre_cursor);
-+			printf("post-cursor: 0x%08x\n", post_cursor);
-+
-+			offset += vspeo->num_columns;
-+		}
-+	}
-+}
-+
- static int
- vswing_preemph_num_rows(int devid)
- {
-@@ -3525,6 +3562,11 @@ static void dump_vswing_preemphasis(struct context *context,
- 
- 	if (IS_NOVALAKE_P(devid) || IS_NOVALAKE_S(devid)) {
- 		dump_lt_vspeo(vspeo, num_rows);
-+	} else if (IS_PANTHERLAKE(devid) ||
-+		   IS_BATTLEMAGE(devid) ||
-+		   IS_LUNARLAKE(devid) ||
-+		   IS_METEORLAKE(devid)) {
-+		dump_cx0_vspeo(vspeo, num_rows);
- 	} else {
- 		printf("Warning: deparsing VS/PE-O from devid %x not supported\n", devid);
- 	}
+diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+index 8fafb503e..48ae738ec 100644
+--- a/tests/intel/xe_exec_system_allocator.c
++++ b/tests/intel/xe_exec_system_allocator.c
+@@ -508,7 +508,7 @@ static void __aligned_partial_free(struct aligned_alloc_type  *aligned_alloc_typ
+  * Description: performs prefetch and page migration
+  * Test category: functionality test
+  *
+- * SUBTEST: madvise-preffered-loc-atomic-vram
++ * SUBTEST: madvise-preffered-loc-atomic-device
+  * Description: performs both atomic and preferred loc madvise operations atomic device attributes set
+  * Test category: functionality test
+  *
+@@ -2538,7 +2538,7 @@ int igt_main()
+ 		{ "atomic-inc", MADVISE_OP | MADVISE_ATOMIC_DEVICE | ATOMIC_BATCH },
+ 		{ "preffered-loc-sram-migrate-pages",
+ 		  MADVISE_OP | MADVISE_SWIZZLE | MIGRATE_ALL_PAGES | ATOMIC_BATCH },
+-		{ "preffered-loc-atomic-vram",
++		{ "preffered-loc-atomic-device",
+ 		  MADVISE_OP | PREFERRED_LOC_ATOMIC_DEVICE | ATOMIC_BATCH },
+ 		{ "preffered-loc-atomic-gl",
+ 		  MADVISE_OP | PREFERRED_LOC_ATOMIC_GL | ATOMIC_BATCH },
 -- 
-2.45.2
+2.43.0
 
