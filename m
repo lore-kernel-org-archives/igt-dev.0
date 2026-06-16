@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DCA9CD98D2
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 20:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C64AECD98D2
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 21:11:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2722210E846;
-	Tue, 16 Jun 2026 20:56:51 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 301A710E83E;
- Tue, 16 Jun 2026 20:56:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5851551710754646551=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5BFD010E83E;
+	Tue, 16 Jun 2026 21:11:45 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NJbUl+dL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E33810E83E
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 21:11:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1781644280; x=1813180280;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ZNfd6CMTSRvd8GVYq7XSI9GAYiHA5B7zL8/3dVFxC/g=;
+ b=NJbUl+dL4OJzZGA0Wo8DDl3fselt2uoSzwLDUuHqckWVPP18ukBxvC60
+ Sv5Pta0fyr8X6qQ6pMrM1Acw3CjZ2fOJMnxG8EQbP7Bf7Btes581VkdS2
+ zm8aMMIFCFbyyybdsRw+AcB2Y1yDubKAKF45sNK5bKUmIj8um8m75osUQ
+ XvMm9q4pEsCeVKUKkSKa3xwffOu+Q8aBgvUhgZd37POnpuCLkAqIEL0u8
+ +mELYZNv97Q/u+BVSn+ZUv2AmtXbUmzCUBqx3rGD05zbwbSnU8eCuBlem
+ r/9h9HXMkyp0Xo4eS6PM3cpSAL9yleOcqUosJvxi0Ahe+hEtfSYQtAjsL w==;
+X-CSE-ConnectionGUID: e7Lw684RRZuL/XN3LF/hZg==
+X-CSE-MsgGUID: mqRwLZUPRnCC7MGWlfr6kQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="107867833"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="107867833"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2026 14:11:20 -0700
+X-CSE-ConnectionGUID: 9DQ6QgiGRfCoEU4uCC8Iaw==
+X-CSE-MsgGUID: 9y2sJgkVT4Oa5RaFEwEN0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="243720602"
+Received: from linux-meteor-lake-client-platform.iind.intel.com
+ ([10.223.55.75])
+ by fmviesa010.fm.intel.com with ESMTP; 16 Jun 2026 14:11:18 -0700
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: uma.shankar@intel.com,
+	Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_pm_rpm: Test video playback across
+ suspend/resume cycle
+Date: Wed, 17 Jun 2026 02:31:08 +0530
+Message-ID: <20260616210109.21172-1-mohammed.thasleem@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_test/intel/xe=5Fvm=3A_Add?=
- =?utf-8?q?_oversubscribe_concurrent_bind_stress_subtest_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 16 Jun 2026 20:56:25 -0000
-Message-ID: <178164338518.86684.15595097409015864602@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260616124029.619373-1-sobin.thomas@intel.com>
-In-Reply-To: <20260616124029.619373-1-sobin.thomas@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,180 +64,236 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5851551710754646551==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This test simulate video playback using multiple-buffer page-flip rotation,
+suspend to idle (S0ix/FREEZE), resume, and verify that the display pipeline
+and frame flipping are correctly restored.
 
-== Series Details ==
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/intel/kms_pm_rpm.c | 179 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 179 insertions(+)
 
-Series: test/intel/xe_vm: Add oversubscribe concurrent bind stress subtest (rev3)
-URL   : https://patchwork.freedesktop.org/series/162866/
-State : success
+diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
+index 60d0b2792..a4015516b 100644
+--- a/tests/intel/kms_pm_rpm.c
++++ b/tests/intel/kms_pm_rpm.c
+@@ -132,6 +132,11 @@
+  * SUBTEST: system-suspend-idle
+  * Description: Validate suspend-to-idle (S0ix) functionality.
+  *
++ * SUBTEST: system_suspend_idle_vpb_simulation
++ * Description: Simulate video playback using multiple-buffer page-flip rotation,
++ *              suspend to idle (S0ix/FREEZE), resume, and verify that the
++ *              display pipeline and frame flipping are correctly restored.
++ *
+  * SUBTEST: package-g7
+  * Description: Validate the package-g7 residency.
+  */
+@@ -176,6 +181,10 @@ static const struct {
+ 	{3840, 2160, 144, "4K@144"},
+ };
+ 
++typedef struct {
++	double r, g, b;
++} color_t;
++
+ /* Wait flags */
+ #define DONT_WAIT	0
+ #define WAIT_STATUS	1
+@@ -198,6 +207,7 @@ struct mode_set_data {
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+ 	struct igt_fb fb_white;
++	struct igt_fb fb_frame[3];
+ 	uint32_t devid;
+ 	int fw_fd;
+ };
+@@ -1720,6 +1730,172 @@ static void test_package_g7(void)
+ 	cleanup();
+ }
+ 
++static void paint_rectangles(drmModeModeInfo *mode,
++			     color_t *colors,
++			     igt_fb_t *fb)
++{
++	cairo_t *cr = igt_get_cairo_ctx(drm_fd, fb);
++	int i, l = mode->hdisplay / 3;
++	int rows_remaining = mode->hdisplay % 3;
++
++	/* Paint 3 rectangles. */
++	for (i = 0; i < 3; i++) {
++		igt_paint_color(cr, i * l, 0, l, mode->vdisplay,
++				colors[i].r, colors[i].g, colors[i].b);
++	}
++
++	if (rows_remaining > 0)
++		igt_paint_color(cr, i * l, 0, rows_remaining, mode->vdisplay,
++				colors[i - 1].r, colors[i - 1].g,
++				colors[i - 1].b);
++
++	igt_put_cairo_ctx(cr);
++}
++
++static void create_color_fb(struct mode_set_data *data,
++			    igt_fb_t *fb,
++			    color_t *fb_color)
++{
++	int fb_id;
++
++	fb_id = igt_create_fb(drm_fd,
++			      data->mode->hdisplay,
++			      data->mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      DRM_FORMAT_MOD_LINEAR,
++			      fb);
++	igt_assert(fb_id);
++	paint_rectangles(data->mode, fb_color, fb);
++}
++
++static void setup_videoplayback(struct mode_set_data *data)
++{
++	color_t red_green_blue[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 },
++	};
++	color_t red_green_red[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 1.0, 0.0, 0.0 },
++	};
++	color_t blue_red_green[] = {
++		{ 0.0, 0.0, 1.0 },
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++	};
++
++	create_color_fb(data, &data->fb_frame[0], red_green_blue);
++	create_color_fb(data, &data->fb_frame[1], red_green_red);
++	create_color_fb(data, &data->fb_frame[2], blue_red_green);
++}
++
++static void cleanup_videoplayback(struct mode_set_data *data)
++{
++	int i;
++
++	igt_plane_set_fb(data->primary, NULL);
++	igt_output_set_crtc(data->output, NULL);
++	igt_display_commit(&data->display);
++
++	for (i = 0; i < 3; i++) {
++		if (data->fb_frame[i].fb_id)
++			igt_remove_fb(drm_fd, &data->fb_frame[i]);
++	}
++}
++
++static void run_videoplayback_loop(struct mode_set_data *data)
++{
++	int delay;
++	int frame = 0;
++	time_t secs = 6;
++	time_t start = time(NULL);
++
++	igt_require(data->primary);
++	igt_require(data->mode);
++
++	/* One frame period in microseconds convention */
++	delay = (1000 * 1000) / data->mode->vrefresh;
++
++	while (time(NULL) - start < secs) {
++		igt_plane_set_fb(data->primary, &data->fb_frame[frame % 3]);
++		igt_display_commit(&data->display);
++		usleep(delay);
++		frame++;
++	}
++}
++
++static void configure_output(struct mode_set_data *data)
++{
++	igt_display_t *display = &data->display;
++	igt_output_t *output;
++	bool found = false;
++	igt_crtc_t *crtc;
++
++	/* If output is already configured, use it */
++	if (data->output && data->mode && data->primary)
++		return;
++
++	for_each_crtc_with_valid_output(display, crtc, output) {
++		drmModeConnectorPtr c = output->config.connector;
++
++		if (c->connector_type == DRM_MODE_CONNECTOR_eDP) {
++			igt_output_set_crtc(output, crtc);
++			if (!intel_pipe_output_combo_valid(display))
++				continue;
++
++			found = true;
++			break;
++		}
++	}
++
++	/* Fallback to any connected output */
++	if (!found) {
++		for_each_crtc_with_valid_output(display, crtc, output) {
++			igt_output_set_crtc(output, crtc);
++			if (!intel_pipe_output_combo_valid(display))
++				continue;
++
++			found = true;
++			break;
++		}
++	}
++
++	if (found) {
++		data->output = output;
++		data->mode = igt_output_get_mode(output);
++		data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	}
++}
++
++static void system_suspend_idle_vpb_simulation(int suspend_state,
++					       int suspend_test)
++{
++	igt_require_f(default_mode_params,
++		      "No connected output available for video-playback-suspend-idle\n");
++
++	configure_output(&ms_data);
++	setup_output_fb();
++
++	/* Create video playback framebuffers */
++	setup_videoplayback(&ms_data);
++
++	/* Pre-suspend video playback simulation */
++	igt_info("Running pre-suspend video playback...\n");
++	run_videoplayback_loop(&ms_data);
++
++	/* Suspend/resume cycle */
++	igt_info("Performing suspend/resume cycle...\n");
++	igt_system_suspend_autoresume(suspend_state, suspend_test);
++
++	/* Post-resume video playback simulation */
++	igt_info("Running post-resume video playback...\n");
++	run_videoplayback_loop(&ms_data);
++
++	cleanup_videoplayback(&ms_data);
++}
++
+ int rounds = 10;
+ bool stay = false;
+ 
+@@ -1835,6 +2011,9 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	igt_subtest("system-suspend-idle")
+ 		system_suspend_modeset_subtest(SUSPEND_STATE_FREEZE,
+ 					       SUSPEND_TEST_NONE);
++	igt_subtest("system_suspend_idle_vpb_simulation")
++		 system_suspend_idle_vpb_simulation(SUSPEND_STATE_FREEZE,
++						    SUSPEND_TEST_NONE);
+ 
+ 	/* power-wake reference tests */
+ 	igt_subtest("pm-tiling") {
+-- 
+2.43.0
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8966 -> IGTPW_15379
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15379 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-arlh-2:         [PASS][1] -> [INCOMPLETE][2] ([i915#16126])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/bat-arlh-2/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/bat-arlh-2/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [PASS][3] -> [DMESG-WARN][4] ([i915#13735]) +79 other tests dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-    - bat-apl-1:          [PASS][5] -> [DMESG-WARN][6] ([i915#13735]) +77 other tests dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [PASS][7] -> [DMESG-WARN][8] ([i915#13735] / [i915#180])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [PASS][9] -> [DMESG-WARN][10] ([i915#13735] / [i915#15673] / [i915#180]) +52 other tests dmesg-warn
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-    - bat-apl-1:          [PASS][11] -> [DMESG-WARN][12] ([i915#13735] / [i915#180]) +49 other tests dmesg-warn
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#16126]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16126
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8966 -> IGTPW_15379
-  * Linux: CI_DRM_18686 -> CI_DRM_18689
-
-  CI-20190529: 20190529
-  CI_DRM_18686: 70646d7ea3ac559ed269c0a38cd3699fea4e1eeb @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18689: 5447491819dcc3d10fd362c7bfbf877d343f6526 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15379: 71ab7b843bca190606a8bf717191e6a8c44b95fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8966: 9b33225c761bfe8c8c266bc56558d75c700029fb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/index.html
-
---===============5851551710754646551==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>test/intel/xe_vm: Add oversubscribe concurrent bind stress subtest (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162866/">https://patchwork.freedesktop.org/series/162866/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8966 -&gt; IGTPW_15379</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15379 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/bat-arlh-2/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/bat-arlh-2/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16126">i915#16126</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +79 other tests dmesg-warn</li>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/bat-apl-1/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/bat-apl-1/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +77 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +52 other tests dmesg-warn</li>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8966/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15379/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +49 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8966 -&gt; IGTPW_15379</li>
-<li>Linux: CI_DRM_18686 -&gt; CI_DRM_18689</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18686: 70646d7ea3ac559ed269c0a38cd3699fea4e1eeb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18689: 5447491819dcc3d10fd362c7bfbf877d343f6526 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15379: 71ab7b843bca190606a8bf717191e6a8c44b95fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8966: 9b33225c761bfe8c8c266bc56558d75c700029fb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5851551710754646551==--
