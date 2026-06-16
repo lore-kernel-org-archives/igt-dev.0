@@ -4,56 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B01CD98CF
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 09:07:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2791FCD98DA
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 09:35:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A34E110E944;
-	Tue, 16 Jun 2026 09:07:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AE88110E750;
+	Tue, 16 Jun 2026 09:35:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P9VOMtSA";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pe/rS+mL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D63E010E944
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 09:06:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65D3310E750
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 09:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781600785; x=1813136785;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=OmM8ok2Py9tckDM6RyAjftdAF/kNPuy6wXTEb3mNDEc=;
- b=P9VOMtSANggNN5qt+QgG64yMktPncBk5CxoHxKDR3fE5rHxF4TsGdiQs
- 2f+ulVohQG7BSmf1IMBleevB65bFskwDKez8Wiu/aDR7WbhnIyRwpUIVV
- EqWZK/HDjhjZIZCPGqzgd2gq3rGvzJcUUhY3MZJsHwPtXAXoiLLEa333l
- vgH19FUdp00pSAHcnGE/j2q6E/gDxeiPTyLKiV1Ow+lFpZohTCZvkCu86
- vDVd7KjNke48u110FsPqtE+x9LiUNLBqKwzsE04nEZXlT2H1Zj2pnJ6Y1
- ZQ84qORYp899g0e/O9n1LvzetZDA3aJZlJz0NjmJl6XU3m0QFxdw1Y/j7 g==;
-X-CSE-ConnectionGUID: s+zev/sQRbmPkp1cplUaRw==
-X-CSE-MsgGUID: yepLjCAVQa+PeH7rqXqBug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82558821"
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="82558821"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2026 02:06:25 -0700
-X-CSE-ConnectionGUID: xGXpUdLQQvSkkgkdtnJ3fA==
-X-CSE-MsgGUID: aQ378ABFQfKAfQkeNe4DGg==
+ t=1781602477; x=1813138477;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=QQHNu3OoX/S/C2aMkMIx6xa+ZVVg30tYHTd3tC3AmXE=;
+ b=Pe/rS+mLSKXMZYkDpe8/3JyORDT1A8x8ky4k2VVJljaKOIf0j884L9Yt
+ YBLRbF9UFWoioWMAcmGPJPFuEB9I+Nhq8Aal/ZQcoVx8RJ09HU5hxEeEY
+ Wv9Ni53bVrmpw+gsaxXvdMfkqR3ghfKqagstNzjs1mScPBJxdre0R6EmW
+ h/8iG7mNSk/DQJeaOqWoXVeGEH+i0gIrteNstkRoZq1RO4Yt5/VJq2ANf
+ LOl6z09wEMTFcNdqT8t415u9AXbkccdSf4LqbrRvNyLGsvBvThbvVHiBI
+ Uu7AEV0H9iRVQUD2WaFK3nj4xzN8w9T5jbsQsrfOXtJdazLWIBiDS9NVa g==;
+X-CSE-ConnectionGUID: lrxo8ng1ShS2NyKAFeD8XA==
+X-CSE-MsgGUID: VeRgyGpTSwO3bbD5XCnJrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="92923798"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="92923798"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2026 02:34:37 -0700
+X-CSE-ConnectionGUID: zO4he5vLRlSAtKsajUIa9w==
+X-CSE-MsgGUID: OnS47uZJTl6c+pyI4eJJRA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="246832317"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.244.167])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2026 02:06:23 -0700
-From: Jani Nikula <jani.nikula@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="245349209"
+Received: from vmuppidi-nuc8i7beh.iind.intel.com ([10.223.55.63])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2026 02:34:29 -0700
+From: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 3/3] tests/kms_content_protection: remove unused max_pipe
-Date: Tue, 16 Jun 2026 12:06:10 +0300
-Message-ID: <20260616090610.2106378-3-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260616090610.2106378-1-jani.nikula@intel.com>
-References: <20260616090610.2106378-1-jani.nikula@intel.com>
+Cc: francois.dugast@intel.com, zbigniew.kempczynski@intel.com,
+ priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com
+Subject: [PATCH i-g-t v3] intel-ci: Add SVM,
+ multi_queue tests to Xe fastfeedback
+Date: Tue, 16 Jun 2026 15:05:42 +0530
+Message-ID: <20260616093542.2510-1-venkateswara.rao.muppidi@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,35 +67,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The test is counting the number of CRTCs (which is nowadays available
-direcly with igt_display_n_crtcs()) but it's also not using the result
-for anything. Remove unused max_pipe.
+Add  SVM, render copy,ccs,compute_preempt,exercise_blt,exec_mix_modes,
+access_counter, fault_mode,multi_queue tests to fastfeedback list
 
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+V2: add eu-fault-2m-range-device-host test (Francois)
+v3: corrected s-o-b and From
+
+Signed-off-by: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
 ---
- tests/kms_content_protection.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ tests/intel-ci/xe.fast-feedback.testlist | 35 ++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index d1b7c5863255..d931ce7682be 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -917,14 +917,11 @@ test_content_protection_mst(int content_type)
- {
- 	igt_display_t *display = &data.display;
- 	igt_output_t *output;
--	int valid_outputs = 0, dp_mst_outputs = 0, ret, count, max_pipe = 0, i;
-+	int valid_outputs = 0, dp_mst_outputs = 0, ret, count, i;
- 	igt_crtc_t *crtc;
- 	bool pipe_found;
- 	igt_output_t *hdcp_mst_output[IGT_MAX_PIPES];
+diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
+index acff025fa..e3b3f21cc 100644
+--- a/tests/intel-ci/xe.fast-feedback.testlist
++++ b/tests/intel-ci/xe.fast-feedback.testlist
+@@ -215,6 +215,41 @@ igt@xe_waitfence@abstime
+ igt@xe_waitfence@engine
+ igt@xe_waitfence@reltime
  
--	for_each_crtc(display, crtc)
--		max_pipe++;
--
- 	for_each_connected_output(display, output) {
- 		if (!output_is_dp_mst(output, dp_mst_outputs))
- 			continue;
++igt@xe_exec_system_allocator@eu-fault-2m-range-device-host
++igt@xe_exec_system_allocator@many-execqueues-free
++igt@xe_exec_system_allocator@many-execqueues-free-race
++igt@xe_exec_system_allocator@once-free-race
++igt@xe_exec_system_allocator@process-many-execqueues-free-race
++igt@xe_exec_system_allocator@twice-free
++igt@xe_exec_system_allocator@twice-free-race
++igt@xe_render_copy@render-square
++igt@xe_ccs@block-copy-compressed
++igt@xe_ccs@ctrl-surf-copy
++igt@xe_compute_preempt@compute-preempt
++igt@xe_compute_preempt@compute-threadgroup-preempt
++igt@xe_exercise_blt@fast-copy
++igt@xe_exec_mix_modes@exec-simple-batch-store-dma-fence
++igt@xe_exec_mix_modes@exec-simple-batch-store-lr
++igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence
++igt@xe_exec_mix_modes@exec-spinner-interrupted-lr
++igt@xe_exec_fault_mode@invalid-va
++igt@xe_exec_multi_queue@sanity
++igt@xe_exec_multi_queue@exec-sanity
++igt@xe_exec_multi_queue@few-execs-dyn-priority
++igt@xe_exec_multi_queue@many-queues-basic
++igt@xe_exec_multi_queue@many-queues-basic-smem
++igt@xe_exec_multi_queue@many-queues-userptr
++igt@xe_exec_multi_queue@many-queues-userptr-invalidate
++igt@xe_exec_multi_queue@many-queues-priority
++igt@xe_exec_multi_queue@many-queues-close-fd
++igt@xe_exec_multi_queue@many-queues-preempt-mode-basic
++igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr
++igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr-invalidate
++igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd
++igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-basic
++igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-userptr-invalidate
++
++
+ # All tests that do module unloading and reloading are executed last.
+ # They will sometimes reveal issues of earlier tests leaving the
+ # driver in a broken state that is not otherwise noticed in that test.
 -- 
-2.47.3
+2.43.0
 
