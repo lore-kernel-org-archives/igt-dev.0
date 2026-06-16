@@ -4,62 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6E18CD98E3
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 15:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E98BCCD98E1
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 15:44:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 66FDA10E595;
-	Tue, 16 Jun 2026 15:22:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 90AEC10EC23;
+	Tue, 16 Jun 2026 15:44:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aMZJRiyZ";
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=adrian.larumbe@collabora.com header.b="YsPV9wMC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD8A410E595
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 15:21:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781623320; x=1813159320;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=oSJZ+Sr1LXrrQhJprsy4ih5wEtaSN0+zjdhcQAr2SXA=;
- b=aMZJRiyZuMcGhMP7dYkXH4dqebMoCzI6MOWZaS7iiVoLpBmkzYUmVLUy
- MevTWsOb8hatc+CsaYBdSKDuz48cI5fSMzT7t7bjKrUSJ9aovMMfiKJlx
- b9NpcAahdMOj/4uarq4TsFbHRh0iLb9QE9wTrsaq2+uV9Flplr/ExQCFa
- uy7esf0OsgeRpnfUVn/rNbcourWXsC9xdHUGU1T6rO9vAi/IMXfuPT6Vl
- HbtO5S0h/z4h4eE8qFbMF4BOI6ZK1jomecps7+vSbEySUiZCPcBNj+auH
- OhhRPn27a6uqQos+Sq0OQ0u5AbYCvkPY5Q5zLreGwOdubTKL4aBd9wLDE A==;
-X-CSE-ConnectionGUID: AjsEohJYSUS0PpJsGMdB6Q==
-X-CSE-MsgGUID: 9nOFFC8mR8asTUj0jDB7EA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82295117"
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="82295117"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2026 08:21:59 -0700
-X-CSE-ConnectionGUID: S3jqIlHZRZipIHP1L0mTXg==
-X-CSE-MsgGUID: wvmyaeW3QOScMKQUkgCExg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="251722176"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 08:21:58 -0700
-Date: Tue, 16 Jun 2026 17:21:55 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, francois.dugast@intel.com,
- zbigniew.kempczynski@intel.com, priyanka.dandamudi@intel.com,
- niranjana.vishwanathapura@intel.com
-Subject: Re: [PATCH i-g-t v3] intel-ci: Add SVM, multi_queue tests to Xe
- fastfeedback
-Message-ID: <20260616152155.54hlofblt3c3hl4p@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>,
- igt-dev@lists.freedesktop.org, francois.dugast@intel.com,
- zbigniew.kempczynski@intel.com, priyanka.dandamudi@intel.com,
- niranjana.vishwanathapura@intel.com
-References: <20260616093542.2510-1-venkateswara.rao.muppidi@intel.com>
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com
+ [136.143.188.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4C2D10EC23
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 15:43:37 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1781624610; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=Tv6dQLTPulMhsgBqR+X/W2Gxy5S8kFjxtDxIfqzQ8xNv1OpYmA7bn6VI0EjKU2zgoFiJzlKOZEejbC4fgHkP6ta+adRJ6Xn3c+S875ZGtsitfbX+Te+Ok4W1a/IREKgW+UM6fsJMkTSvwlnn0WFfJovHUj2vvqNDUgLRSLJISbA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1781624610;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=gBuJ2qoqMubvGBewtx6p701Fm/40jROdKsogPdKtlR4=; 
+ b=dasOJUdOK+ILjmLqpsoe8oUbelZqXpggeQ5tmIMEiv020M2G/RcAK6sUg0GIbsuPFMCsn1tVik2e4t3VVUZGu+DfEUy3sOVp6LUc+/SE/p4Av9m1gNuj7fK97nDXIdY8o4XYh7bn/U0TlcRSj1mn/WaCLQMuLwgr/2XBX0/DAEM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=adrian.larumbe@collabora.com;
+ dmarc=pass header.from=<adrian.larumbe@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781624610; 
+ s=zohomail; d=collabora.com; i=adrian.larumbe@collabora.com;
+ h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+ bh=gBuJ2qoqMubvGBewtx6p701Fm/40jROdKsogPdKtlR4=;
+ b=YsPV9wMCkCY9KymUzDo32ccJZToIk+7ROg5bt/drJp64AFw/VDLFztmY19R/QrwL
+ 8M+bB3l9WnaEIQexDcoinoiv+iUxIJot5aE2MlQ7Zkxx5IgCm3dfbqqs5jb2/w5s2+a
+ q/+VvVwzOoSWzFHkxhj0H7Gu1iBrHwIq/9E4CAQs=
+Received: by mx.zohomail.com with SMTPS id 1781624609580200.47300957458094;
+ Tue, 16 Jun 2026 08:43:29 -0700 (PDT)
+From: =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>
+Subject: [PATCH 0/2] panthor: Test for checking vm_bind address range is
+ legitimate
+Date: Tue, 16 Jun 2026 16:43:21 +0100
+Message-Id: <20260616-panthor-vmbind-checkaddr-v1-0-f35b1b067f7c@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260616093542.2510-1-venkateswara.rao.muppidi@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBCF4avIrDugQYP0KqWLJDM2Y2mUiYog3
+ t205a2+xfsPyKzCGe7VAcqbZJlSQXOrIESXXoxCxWBqY2vbWJxdWuKkuH28JMIQObwdkaKnrsy
+ 0fUceyn1WHmT/pR/Pv/PqRw7LtwfneQGb5HmOfAAAAA==
+X-Change-ID: 20260616-panthor-vmbind-checkaddr-bd5d5d2485db
+To: Boris Brezillon <boris.brezillon@collabora.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>, 
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>
+Cc: igt-dev@lists.freedesktop.org, kernel@collabora.com, 
+ =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=779;
+ i=adrian.larumbe@collabora.com; h=from:subject:message-id;
+ bh=qp3EbQIwoGuYFhguJDdCV8esm60iQUM+keBsKJiouSM=;
+ b=owEB7QES/pANAwAKAQ4mfkzuU0M9AcsmYgBqMW8eO5L/XCC7prvieQ09s2yun1rnCuaPrrMAs
+ pDXcsHQ/SiJAbMEAAEKAB0WIQQyQDDowAUXXfk3B6QOJn5M7lNDPQUCajFvHgAKCRAOJn5M7lND
+ PQY+C/sHqbjD3muZSfYArlqlzG/dKflkDUsw9zPmepn81ejfoVb5a6df7Rq7S6VAmewBRVpZ7W3
+ Sbeg7kdwCVkGNJfuFIQsUr37cpcGLX/LtQ6poRQLsNslMEy3hKIywQ7ZyBeyXD3eySCZyphTi54
+ WRF92MmTiGrVo1/7eAXy9NPJ5iOxXAJTGuC+nYXeHtcHBv13aJo0uNTeaElRbtayTPIRiLUrLAp
+ rs7HvIFgfdH4DdxCUnIUICebf0dsrQO7GX8lrpSvwH+xmOGNjbAFn5ogGf1qa0kjh33X4US+Et9
+ uK8a7e7w5S9ccyfBAx20WJdOvGkRrEDzpjHCQA8Gfs93Vf99sp/Ei7WQ6guOUJbYDVZX2AQBbOb
+ 0vTZp4HaMf3i1a6nyL9mG8RfIoO8MQvnrTNPEmS/rI5RDVxVm31tAlB5ZciDGME6sqRIQhaz+jM
+ BJbbA6gfyE4599mPPGHFeVcyQ21ccuoLm2Rx+UbBEzjjzbs1659fXmW5v89AepFrFPcIU=
+X-Developer-Key: i=adrian.larumbe@collabora.com; a=openpgp;
+ fpr=324030E8C005175DF93707A40E267E4CEE53433D
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,75 +88,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Venkateswara,
-On 2026-06-16 at 15:05:42 +0530, Venkateswara Rao Muppidi wrote:
-> Add  SVM, render copy,ccs,compute_preempt,exercise_blt,exec_mix_modes,
-> access_counter, fault_mode,multi_queue tests to fastfeedback list
-> 
-> V2: add eu-fault-2m-range-device-host test (Francois)
-> v3: corrected s-o-b and From
+Kernel changes needed for the test to make sense are available at
+https://lore.kernel.org/dri-devel/20260616-vm_bind_checks-v1-0-956198602ae3@collabora.com/
 
-This v3 change bring nothing to description, should be removed at merge.
+Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
 
-> 
-> Signed-off-by: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-> ---
->  tests/intel-ci/xe.fast-feedback.testlist | 35 ++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
-> 
-> diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
-> index acff025fa..e3b3f21cc 100644
-> --- a/tests/intel-ci/xe.fast-feedback.testlist
-> +++ b/tests/intel-ci/xe.fast-feedback.testlist
-> @@ -215,6 +215,41 @@ igt@xe_waitfence@abstime
->  igt@xe_waitfence@engine
->  igt@xe_waitfence@reltime
->  
-> +igt@xe_exec_system_allocator@eu-fault-2m-range-device-host
-> +igt@xe_exec_system_allocator@many-execqueues-free
-> +igt@xe_exec_system_allocator@many-execqueues-free-race
-> +igt@xe_exec_system_allocator@once-free-race
-> +igt@xe_exec_system_allocator@process-many-execqueues-free-race
-> +igt@xe_exec_system_allocator@twice-free
-> +igt@xe_exec_system_allocator@twice-free-race
-> +igt@xe_render_copy@render-square
-> +igt@xe_ccs@block-copy-compressed
-> +igt@xe_ccs@ctrl-surf-copy
-> +igt@xe_compute_preempt@compute-preempt
-> +igt@xe_compute_preempt@compute-threadgroup-preempt
-> +igt@xe_exercise_blt@fast-copy
-> +igt@xe_exec_mix_modes@exec-simple-batch-store-dma-fence
-> +igt@xe_exec_mix_modes@exec-simple-batch-store-lr
-> +igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence
-> +igt@xe_exec_mix_modes@exec-spinner-interrupted-lr
-> +igt@xe_exec_fault_mode@invalid-va
-> +igt@xe_exec_multi_queue@sanity
-> +igt@xe_exec_multi_queue@exec-sanity
-> +igt@xe_exec_multi_queue@few-execs-dyn-priority
-> +igt@xe_exec_multi_queue@many-queues-basic
-> +igt@xe_exec_multi_queue@many-queues-basic-smem
-> +igt@xe_exec_multi_queue@many-queues-userptr
-> +igt@xe_exec_multi_queue@many-queues-userptr-invalidate
-> +igt@xe_exec_multi_queue@many-queues-priority
-> +igt@xe_exec_multi_queue@many-queues-close-fd
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-basic
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr-invalidate
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-basic
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-userptr-invalidate
+---
+Adrián Larumbe (2):
+      panthor: Provide a way to access user VA range when creating a VM
+      tests/panthor/panthor_vm: Add vm_bind intersect-with-kbo-range test
 
-Please move these tests to proper place so list will be sorted
-alphabetically.
+ lib/igt_panthor.c          |  5 ++++-
+ lib/igt_panthor.h          |  7 ++++++-
+ tests/panthor/panthor_vm.c | 17 +++++++++++++++++
+ 3 files changed, 27 insertions(+), 2 deletions(-)
+---
+base-commit: 8d2d82db00ea4c2c8c5904520323067607e5d75b
+change-id: 20260616-panthor-vmbind-checkaddr-bd5d5d2485db
 
-Regards,
-Kamil
+Best regards,
+--  
+Adrián Larumbe <adrian.larumbe@collabora.com>
 
-> +
-> +
->  # All tests that do module unloading and reloading are executed last.
->  # They will sometimes reveal issues of earlier tests leaving the
->  # driver in a broken state that is not otherwise noticed in that test.
-> -- 
-> 2.43.0
-> 
