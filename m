@@ -4,54 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8B51CD98E1
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 16:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3551CD98E1
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 16:36:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D00E10E7C8;
-	Tue, 16 Jun 2026 16:17:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FB1210E7F7;
+	Tue, 16 Jun 2026 16:36:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SKITXBqV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zn7UYudc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6708810E7C8
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 16:17:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE6D510E7F7
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 16:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781626623; x=1813162623;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=b2xQ92qctYuGmfV2gYOLEJDRk/tEq7TxelkJ8TWRJNg=;
- b=SKITXBqV+JzS2YfCXgbuM/bm41t/Z/w2/Ax7b/kvdx0rBrISvYERpTG3
- v0roAy9DZrMvIJZrgABYnpvg5IdIclb3hldZ/9tHPrC6oHepu/H68Q5Fc
- OANQoR6T8SQUxFX4c3guwndtlyp7ccEdmbfU9Tv7M+6JuobTUoG9swrIB
- b0FVdfBXXQ706OB8MAdKYxQIRM9D7m8rMNyFNFUgnhsw2kvziLnhsUcvS
- RwiVTAvwOAqKaOs1h9QOqX3jxBpbpfv2mXOH1Dtc8zKtjjlnl9uHeDUMM
- yATxGHr1fTyFHv9xkX3Oa++7ce/WwgfbkJspMNKdV/lEloes3kAgcUkpm w==;
-X-CSE-ConnectionGUID: AwuXiuYyTTiUhkxo2SDFxQ==
-X-CSE-MsgGUID: HWhl2DZPS9anFWuwyoUDDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="82301131"
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="82301131"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2026 09:17:03 -0700
-X-CSE-ConnectionGUID: NCiGLys3RTCB8nzOC1rRRg==
-X-CSE-MsgGUID: blzmZerPSwOcWU2oKkvkaw==
+ t=1781627734; x=1813163734;
+ h=date:message-id:from:to:subject:in-reply-to:references:
+ mime-version; bh=Nh6jH0EqG5V9Ou9AFCxaei+6wiy0k4JTJ6ZeHQt04I4=;
+ b=Zn7UYudc2yYqMRXb6o1vyS2l4P/hYv93O4P1P4bjf3A56FZc5C+H9V7Z
+ hcmgrss5ZLS7L85XbrkjHMOnwGNY79sCox0AXnFzl17fzJzzb9pVXJc8O
+ hUdtzcz1sVBfUntVxgYEk0aBnVciww9WvN2VtMYySrAhRTfUtpVEIF/NT
+ LjA7G5TtTSiFMDgHlvaYI6dhJ3caW71Yzuwzpy+NcuvsBC9mXovGlqxps
+ VsrpD5bu35sAPfUVpZ/6QnHJk59uXdbQQbei8Q8d7VaeylqV9H1dyxKMx
+ K6l1ccYXYnAQS6DarGC9mVNr2UgI5+XMOhbvx6lgQfxcSuSHqzGTu3B7J Q==;
+X-CSE-ConnectionGUID: e/y+5cjhR3O3wG4jflRZAw==
+X-CSE-MsgGUID: R2EjazlsRSa/BkCdLIQNXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="99817632"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="99817632"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2026 09:35:33 -0700
+X-CSE-ConnectionGUID: mDG6AcxsSyacSwO+naDlzg==
+X-CSE-MsgGUID: i/OPmIRWQ8+2iCynKi6wvw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="247884380"
-Received: from vmuppidi-nuc8i7beh.iind.intel.com ([10.223.55.63])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2026 09:17:02 -0700
-From: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: francois.dugast@intel.com, zbigniew.kempczynski@intel.com,
- priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com
-Subject: [PATCH i-g-t v4] intel-ci: Add SVM,
- multi_queue tests to Xe fastfeedback
-Date: Tue, 16 Jun 2026 21:48:15 +0530
-Message-ID: <20260616161815.3120-1-venkateswara.rao.muppidi@intel.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="241451854"
+Received: from yujinche-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.133.82])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2026 09:35:32 -0700
+Date: Tue, 16 Jun 2026 09:35:31 -0700
+Message-ID: <87wlvyzbn0.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, 
+ Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
+ Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
+ janusz.krzysztofik@linux.intel.com, lukasz.laguna@intel.com
+Subject: Re: [PATCH i-g-t v2] lib/intel_chipset: Extend intel_get_pci_device
+ to PCI accelerator class
+In-Reply-To: <20260616151546.mcdw6lqo4rb2pdwx@kamilkon-DESK.igk.intel.com>
+References: <20260615204723.18187-1-ashutosh.dixit@intel.com>	<20260616151546.mcdw6lqo4rb2pdwx@kamilkon-DESK.igk.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,94 +73,345 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add  SVM, render copy,ccs,compute_preempt,exercise_blt,exec_mix_modes,
-access_counter, fault_mode,multi_queue tests to fastfeedback list
+On Tue, 16 Jun 2026 08:15:46 -0700, Kamil Konieczny wrote:
+>
 
-v2: add eu-fault-2m-range-device-host test (Francois)
-v3: corrected s-o-b and From
-v4: Refine SVM tests by removing the race test, adding remaining SVM tests,
-and organizing all entries in alphabetical order.
+Hi Kamil,
 
-Signed-off-by: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
----
- tests/intel-ci/xe.fast-feedback.testlist | 37 ++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+> On 2026-06-15 at 13:47:23 -0700, Ashutosh Dixit wrote:
+> > In addition to PCI display class devices, Intel devices can also be PCI
+> > accelerator class devices. Extend intel_get_pci_device() to also find these
+> > devices.
+>
+> Please also write about which tool needs it.
 
-diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
-index acff025fa..7d74f2ab6 100644
---- a/tests/intel-ci/xe.fast-feedback.testlist
-+++ b/tests/intel-ci/xe.fast-feedback.testlist
-@@ -69,7 +69,11 @@ igt@kms_psr@psr-cursor-plane-move
- igt@kms_psr@psr-sprite-plane-onoff
- igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-all
- igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-1
-+igt@xe_ccs@block-copy-compressed
-+igt@xe_ccs@ctrl-surf-copy
- igt@xe_compute@compute-square
-+igt@xe_compute_preempt@compute-preempt
-+igt@xe_compute_preempt@compute-threadgroup-preempt
- igt@xe_create@create-execqueues-noleak
- igt@xe_create@create-execqueues-leak
- igt@xe_create@create-invalid-mbz
-@@ -129,11 +133,42 @@ igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
- igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
- igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
- igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
-+igt@xe_exec_fault_mode@invalid-va
-+igt@xe_exec_mix_modes@exec-simple-batch-store-dma-fence
-+igt@xe_exec_mix_modes@exec-simple-batch-store-lr
-+igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence
-+igt@xe_exec_mix_modes@exec-spinner-interrupted-lr
-+igt@xe_exec_multi_queue@sanity
-+igt@xe_exec_multi_queue@exec-sanity
-+igt@xe_exec_multi_queue@few-execs-dyn-priority
-+igt@xe_exec_multi_queue@many-queues-basic
-+igt@xe_exec_multi_queue@many-queues-basic-smem
-+igt@xe_exec_multi_queue@many-queues-userptr
-+igt@xe_exec_multi_queue@many-queues-userptr-invalidate
-+igt@xe_exec_multi_queue@many-queues-priority
-+igt@xe_exec_multi_queue@many-queues-close-fd
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-basic
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-basic
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-userptr-invalidate
- igt@xe_exec_queue_property@invalid-property
- igt@xe_exec_reset@close-fd-no-exec
- igt@xe_exec_reset@cm-close-fd-no-exec
- igt@xe_exec_reset@virtual-close-fd-no-exec
- igt@xe_exec_store@basic-store
-+igt@xe_exec_system_allocator@eu-fault-2m-range-device-host
-+igt@xe_exec_system_allocator@many-execqueues-free
-+igt@xe_exec_system_allocator@twice-free
-+igt@xe_exec_system_allocator@twice-malloc-fork-read
-+igt@xe_exec_system_allocator@twice-malloc-mlock
-+igt@xe_exec_system_allocator@twice-malloc-prefetch
-+igt@xe_exec_system_allocator@twice-mmap-new-nomemset
-+igt@xe_exec_system_allocator@twice-mmap-remap-dontunmap-eocheck
-+igt@xe_exec_system_allocator@twice-mmap-shared-remap-dontunmap-eochec
-+igt@xe_exec_system_allocator@twice-mmap-free-madvise
-+igt@xe_exec_system_allocator@twice-new-bo-map-nomemset
-+igt@xe_exercise_blt@fast-copy
- igt@xe_gpgpu_fill@basic
- igt@xe_gt_freq@freq_basic_api
- igt@xe_gt_freq@freq_fixed_idle
-@@ -176,6 +211,7 @@ igt@xe_query@query-topology
- igt@xe_query@query-invalid-extension
- igt@xe_query@query-invalid-query
- igt@xe_query@query-invalid-size
-+igt@xe_render_copy@render-square
- igt@xe_spin_batch@spin-basic
- igt@xe_spin_batch@spin-batch
- igt@xe_sriov_flr@flr-vf1-clear
-@@ -215,6 +251,7 @@ igt@xe_waitfence@abstime
- igt@xe_waitfence@engine
- igt@xe_waitfence@reltime
- 
-+
- # All tests that do module unloading and reloading are executed last.
- # They will sometimes reveal issues of earlier tests leaving the
- # driver in a broken state that is not otherwise noticed in that test.
--- 
-2.43.0
+Why? Reviewers can cscope and find which tools are using
+intel_get_pci_device(). There are many tools in tools/ directory using that
+function, it's not just intel_reg, though that is the main reason this
+patch is being floated.
 
+>
+> Btw intel_reg should work with --bdf option, did you checked
+> that it will work with your case without this patch?
+
+Yes, it works with "--pci-slot' option. This patch is to make intel_reg to
+work even without that option. Just as it does today with discrete display
+class PCI devices (discrete gpu's), so we want to make it work the same way
+even for accelerator class PCI devices.
+
+>
+> >
+> > v2: Introduce intel_get_pci_device_disp for those tools who specifically
+> >     want only display class devices (Kamiil)
+
+This function is renamed to intel_get_pci_device_display() in v3.
+
+> >
+> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> >  lib/intel_chipset.c             | 82 +++++++++++++++++++++++----------
+> >  lib/intel_chipset.h             |  1 +
+> >  tools/intel_audio_dump.c        |  2 +-
+> >  tools/intel_backlight.c         |  2 +-
+> >  tools/intel_display_bandwidth.c |  4 +-
+> >  tools/intel_display_poller.c    |  4 +-
+> >  tools/intel_panel_fitter.c      |  2 +-
+> >  tools/intel_watermark.c         |  2 +-
+> >  8 files changed, 66 insertions(+), 33 deletions(-)
+>
+> Why there are changes to all tools but not to intel_reg?
+
+Because in this patch, intel_get_pci_device() searches over all relevant
+Intel devices, which means display devices (which was done previously) and
+accelerator devices (which is new).
+
+So intel_reg just calls intel_get_pci_device() as before and is
+unchanged. See below.
+
+>
+> >
+> > diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
+> > index 760faede24..ff5f6c0313 100644
+> > --- a/lib/intel_chipset.c
+> > +++ b/lib/intel_chipset.c
+> > @@ -63,16 +63,34 @@
+> >   */
+> >  enum pch_type intel_pch;
+> >
+> > -/**
+> > - * intel_get_pci_device:
+> > - *
+> > - * Looks up the main graphics pci device using libpciaccess.
+> > - *
+> > - * Returns:
+> > - * The pci_device, exits the program on any failures.
+> > - */
+> > -struct pci_device *
+> > -intel_get_pci_device(void)
+> > +static struct pci_device *intel_pci_device_by_class(uint8_t class)
+>
+> Maybe use two params? So this will be more flexible,
+> provided that class zero is non-device.
+
+Which two params?
+
+>
+> > +{
+> > +	struct pci_device *pci_dev;
+> > +	struct pci_device_iterator *iter;
+> > +	struct pci_id_match match;
+> > +	int error;
+> > +
+> > +	error = igt_pci_system_init();
+> > +	igt_fail_on_f(error != 0, "Couldn't initialize PCI system\n");
+> > +
+> > +	match.vendor_id = 0x8086; /* Intel */
+> > +	match.device_id = PCI_MATCH_ANY;
+> > +	match.subvendor_id = PCI_MATCH_ANY;
+> > +	match.subdevice_id = PCI_MATCH_ANY;
+> > +
+> > +	match.device_class = class << 16;
+> > +	match.device_class_mask = 0xff << 16;
+> > +
+> > +	match.match_data = 0;
+> > +
+> > +	iter = pci_id_match_iterator_create(&match);
+> > +	pci_dev = pci_device_next(iter);
+> > +	pci_iterator_destroy(iter);
+> > +
+> > +	return pci_dev;
+> > +}
+> > +
+> > +static struct pci_device *__intel_get_pci_device(bool accel)
+>
+> Please do not add bool params, they are confusing.
+
+But that is the use case this patch implements? If not bool then what do
+we want?
+
+>
+> >  {
+> >	struct pci_device *pci_dev;
+> >	int error;
+> > @@ -85,22 +103,12 @@ intel_get_pci_device(void)
+> >	 * walk the entire PCI bus for a matching device. */
+> >	pci_dev = pci_device_find_by_slot(0, 0, 2, 0);
+> >	if (pci_dev == NULL || pci_dev->vendor_id != 0x8086) {
+> > -		struct pci_device_iterator *iter;
+> > -		struct pci_id_match match;
+> > +		/* PCI display class (0x3) devices */
+> > +		pci_dev = intel_pci_device_by_class(0x3);
+> >
+> > -		match.vendor_id = 0x8086; /* Intel */
+> > -		match.device_id = PCI_MATCH_ANY;
+> > -		match.subvendor_id = PCI_MATCH_ANY;
+> > -		match.subdevice_id = PCI_MATCH_ANY;
+> > -
+> > -		match.device_class = 0x3 << 16;
+> > -		match.device_class_mask = 0xff << 16;
+> > -
+> > -		match.match_data = 0;
+> > -
+> > -		iter = pci_id_match_iterator_create(&match);
+> > -		pci_dev = pci_device_next(iter);
+> > -		pci_iterator_destroy(iter);
+> > +		if (!pci_dev && accel)
+> > +			/* PCI accelerator class (0x12) devices */
+> > +			pci_dev = intel_pci_device_by_class(0x12);
+> >	}
+> >	igt_require_f(pci_dev, "Couldn't find Intel graphics card\n");
+> >
+> > @@ -114,6 +122,30 @@ intel_get_pci_device(void)
+> >	return pci_dev;
+> >  }
+> >
+> > +/**
+> > + * intel_get_pci_device:
+> > + *
+> > + * Looks up display and accelerator class pci devices using libpciaccess
+> > + *
+> > + * Returns: The pci_device, exits the program on any failures
+> > + */
+> > +struct pci_device *intel_get_pci_device(void)
+>
+> Please do not change this function, or remove it, your choice.
+> Imho better to add:
+>
+> struct pci_device *intel_get_pci_device_display(void)
+> struct pci_device *intel_get_pci_device_accelerator(void)
+>
+> or
+>
+> struct pci_device *intel_get_pci_display(void)
+> struct pci_device *intel_get_pci_accelerator(void)
+>
+> +cc Jani
+>
+> and a helper, which will get display, and if not available,
+> tries to get accelerator.
+
+Current need is as follows:
+
+Some tools (e.g. intel_reg) need to work with all relevant Intel
+devices. They can just use intel_get_pci_device(). Or we can rename
+intel_get_pci_device() to intel_get_pci_device_all().
+
+If for some reason, some tools want to specifically not work with
+accelerator devices (i.e. they only want to work with display devices),
+they use intel_get_pci_device_display().
+
+We want either (a) all (accelerator + display), which is implemented by
+intel_get_pci_device(), or we want (b) display, which is implemented by
+intel_get_pci_device_display().
+
+Therefore there is no use case today for
+intel_get_pci_device_accelerator(). If such a need arises in the future,
+this should be implemented at that time. Linux kernel practice is not
+implement cases till they are actually needed, because what needs will
+arise in the future cannot be predicted. So the same practice is followed
+here also for IGT.
+
+I actually prefer v1 of the patch which doesn't even add
+intel_get_pci_device_display(). (And therefore there are no changes to the
+tools there). Everybody just uses intel_get_pci_device() as before and the
+function supports all valid Intel devices. The display tools will just not
+work as expected on accelerator class devices, but the tools are not run
+automatically in CI and people running the display tools manually will know
+not to run them on accelerator class devices. But anyway, we can have
+intel_get_pci_device_display() if we are picky and that is done in v2 and
+v3 of the patch.
+
+Thanks.
+--
+Ashutosh
+
+>
+> > +{
+> > +	return __intel_get_pci_device(true);
+> > +}
+> > +
+> > +/**
+> > + * intel_get_pci_device_disp:
+> > + *
+> > + * Looks up display class pci device using libpciaccess
+> > + *
+> > + * Returns: The pci_device, exits the program on any failures
+> > + */
+> > +struct pci_device *intel_get_pci_device_disp(void)
+> > +{
+> > +	return __intel_get_pci_device(false);
+> > +}
+> > +
+> >  static uint32_t __i915_get_drm_devid(int fd)
+> >  {
+> >	struct drm_i915_getparam gp;
+> > diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> > index 3fcc5b18d6..ddacbb72b4 100644
+> > --- a/lib/intel_chipset.h
+> > +++ b/lib/intel_chipset.h
+> > @@ -36,6 +36,7 @@
+> >  #define BIT(x) (1ul <<(x))
+> >
+> >  struct pci_device *intel_get_pci_device(void);
+> > +struct pci_device *intel_get_pci_device_disp(void);
+> >  uint32_t intel_get_drm_devid(int fd);
+> >
+> >  struct intel_device_info {
+> > diff --git a/tools/intel_audio_dump.c b/tools/intel_audio_dump.c
+> > index 287dbd4759..1ecac37a21 100644
+> > --- a/tools/intel_audio_dump.c
+> > +++ b/tools/intel_audio_dump.c
+> > @@ -2468,7 +2468,7 @@ int main(int argc, char **argv)
+> >	struct pci_device *pci_dev;
+> >	struct intel_mmio_data mmio_data;
+> >
+> > -	pci_dev = intel_get_pci_device();
+> > +	pci_dev = intel_get_pci_device_disp();
+> >	devid = pci_dev->device_id; /* XXX not true when mapping! */
+> >
+> >	do_self_tests();
+> > diff --git a/tools/intel_backlight.c b/tools/intel_backlight.c
+> > index edf060224f..c71862f3c2 100644
+> > --- a/tools/intel_backlight.c
+> > +++ b/tools/intel_backlight.c
+> > @@ -41,7 +41,7 @@ int main(int argc, char** argv)
+> >	struct intel_mmio_data mmio_data;
+> >	uint32_t current, max;
+> >
+> > -	intel_mmio_use_pci_bar(&mmio_data, intel_get_pci_device());
+> > +	intel_mmio_use_pci_bar(&mmio_data, intel_get_pci_device_disp());
+> >
+> >	current = INREG(BLC_PWM_CPU_CTL) & BACKLIGHT_DUTY_CYCLE_MASK;
+> >	max = INREG(BLC_PWM_PCH_CTL2) >> 16;
+> > diff --git a/tools/intel_display_bandwidth.c b/tools/intel_display_bandwidth.c
+> > index b798f8b652..204b71e810 100644
+> > --- a/tools/intel_display_bandwidth.c
+> > +++ b/tools/intel_display_bandwidth.c
+> > @@ -152,14 +152,14 @@ int main(int argc, char *argv[])
+> >		}
+> >	}
+> >
+> > -	devid = intel_get_pci_device()->device_id;
+> > +	devid = intel_get_pci_device_disp()->device_id;
+> >
+> >	if (!has_de_power2(devid)) {
+> >		fprintf(stderr, "Display bandwidth counter not available\n");
+> >		return 2;
+> >	}
+> >
+> > -	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
+> > +	intel_register_access_init(&mmio_data, intel_get_pci_device_disp(), 0);
+> >
+> >	if (has_de_power2_abox0_abox1(devid))
+> >		measure_de_power2_abox0_abox1(devid, sleep_duration);
+> > diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
+> > index 6338f22223..c2b85667ec 100644
+> > --- a/tools/intel_display_poller.c
+> > +++ b/tools/intel_display_poller.c
+> > @@ -1508,7 +1508,7 @@ int main(int argc, char *argv[])
+> >		}
+> >	}
+> >
+> > -	devid = intel_get_pci_device()->device_id;
+> > +	devid = intel_get_pci_device_disp()->device_id;
+> >
+> >	/*
+> >	 * check if the requires registers are
+> > @@ -1677,7 +1677,7 @@ int main(int argc, char *argv[])
+> >		break;
+> >	}
+> >
+> > -	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
+> > +	intel_register_access_init(&mmio_data, intel_get_pci_device_disp(), 0);
+> >
+> >	if (auto_scanline_offset)
+> >		scanline_offset = default_scanline_offset(devid, pipe);
+> > diff --git a/tools/intel_panel_fitter.c b/tools/intel_panel_fitter.c
+> > index d9555d5c67..175b4fbd53 100644
+> > --- a/tools/intel_panel_fitter.c
+> > +++ b/tools/intel_panel_fitter.c
+> > @@ -280,7 +280,7 @@ int main (int argc, char *argv[])
+> >	       "with overscan compensation properties: it is just a temporary "
+> >	       "solution that may or may not work. Use it at your own risk.\n");
+> >
+> > -	pci_dev = intel_get_pci_device();
+> > +	pci_dev = intel_get_pci_device_disp();
+> >	intel_register_access_init(&mmio_data, pci_dev, 0);
+> >	devid = pci_dev->device_id;
+> >
+> > diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
+> > index 4ebd6eb930..d0678e6e16 100644
+> > --- a/tools/intel_watermark.c
+> > +++ b/tools/intel_watermark.c
+> > @@ -328,7 +328,7 @@ static void skl_wm_dump(void)
+> >	uint32_t wm_linetime[num_pipes];
+> >	uint32_t arb_ctl, arb_ctl2, wm_dbg;
+> >
+> > -	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
+> > +	intel_register_access_init(&mmio_data, intel_get_pci_device_disp(), 0);
+> >
+> >	arb_ctl = read_reg(0x45000);
+> >	arb_ctl2 = read_reg(0x45004);
+> > --
+> > 2.54.0
+> >
