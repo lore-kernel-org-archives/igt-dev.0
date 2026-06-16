@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B3EACD98CF
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 09:06:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5C88CD98DA
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 09:07:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2548E10E944;
-	Tue, 16 Jun 2026 09:06:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 68AC610E944;
+	Tue, 16 Jun 2026 09:07:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M+8XHYS8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uy9FZXXf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6809410E944
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 09:06:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31D0D10E944
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 09:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781600777; x=1813136777;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=osZgEDzJkD2Y6pRXe3M5UrHODRO8Q33vXWJuV8VE/iI=;
- b=M+8XHYS8lochAZLPe2+GHkn7hrWShrusOjYpTkb0p7x4AmC6pPyvi/TC
- EyehuhMf4m3O4AsCYPo8jsoRNmFD9eZoaan6Gx+Ba/GDfxSjPPdP1XnIJ
- tD8kOOXa29lgzykX33ubQ4vNbLZ3IKU+Vemmuz1V2SD4q8KJ/9G/NvGiG
- XJ+DbQJBNWgP33MzgnIdSyEJPJRerv2aQrHGOEQD7KMhWKrJer46AusH3
- AbjxxrD2Kc2ZcvNgkqTE2O8GoeTL/qYyW4NjR6E4cgnnebmQeevhEu/m5
- hYZYwFWxWF/TEfkfBHXaj7fefpAEL5ycciPHJ0IhaEwRJKddrLUodDXZi A==;
-X-CSE-ConnectionGUID: HkTb9TzgS8CDke0991EIHw==
-X-CSE-MsgGUID: fJSDly4KSjW7KJy4D2NUow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="107790249"
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="107790249"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2026 02:06:17 -0700
-X-CSE-ConnectionGUID: cssj+55bSH+eUM+EELiwyQ==
-X-CSE-MsgGUID: Z3JFHo2AT5ujomv7IHWq3Q==
+ t=1781600782; x=1813136782;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=etujBQRHYSg4TsNkx4Ag2JiXMh86yY3H1sshLd0nFWg=;
+ b=Uy9FZXXf1y0nx6MilhL1dL6325j7SKOqZBEcyh89doE3XYMhYO1gFnxC
+ S4tOnIKpZ7AWEuQy90CUj15gJM3nVoGbpCKqnpCQI3Q/H4wE+fVGpp2Nt
+ e6quUAJJQTGyvUaYw48pjm5F2eYC2iuvfNpjnQdqnbTf4jr1V3x29Qkmd
+ 2Qp1G8wZESNVld2rRiD7HwfIBU+DH5pqv8HQBCgrY3HW7GZFDOPvHVeb5
+ 1K8EyClffj9ebkgMIjLS1buR+I1KMXdZEdHrXIsfj2cmCnUKnNxEvnabv
+ 3EdAOZ62M9u5VnBOEb8ZFSZswnVn4mVUOA9EzmU8120nMP39LV2CK+i3Y Q==;
+X-CSE-ConnectionGUID: gix1KG63RWS/N/ov9ML3FA==
+X-CSE-MsgGUID: N+lnt3T1TaGnBsTGww+Evw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82558817"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="82558817"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2026 02:06:21 -0700
+X-CSE-ConnectionGUID: bKUcVC2XRWSLr+XQ+D37fA==
+X-CSE-MsgGUID: zCEY13NfQIysAOdxx9IMkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="243556897"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; d="scan'208";a="246832290"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.244.167])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2026 02:06:15 -0700
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2026 02:06:20 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 1/3] tests/kms_bw: use igt_display_n_crtcs()
-Date: Tue, 16 Jun 2026 12:06:08 +0300
-Message-ID: <20260616090610.2106378-1-jani.nikula@intel.com>
+Subject: [PATCH i-g-t 2/3] lib/kms: fix last pipe check in
+ igt_check_bigjoiner_support()
+Date: Tue, 16 Jun 2026 12:06:09 +0300
+Message-ID: <20260616090610.2106378-2-jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260616090610.2106378-1-jani.nikula@intel.com>
+References: <20260616090610.2106378-1-jani.nikula@intel.com>
 MIME-Version: 1.0
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
@@ -68,36 +71,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Now that igt_display_n_crtcs() returns the actual number of CRTCs again,
-use it instead of iterating and counting separately.
+Fix last pipe check for non-consecutive pipes. In theory the check could
+be too restrictive for fused off pipes, but it's unlikely we've hit the
+issue in practise. It's better to be pedantically correct here though.
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tests/kms_bw.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ lib/igt_kms.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index 42b7a0123575..ea7cf7bacde8 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -240,15 +240,11 @@ static void run_test_linear_tiling(data_t *data, int n_crtcs, const drmModeModeI
- 	drmModeModeInfo fb_mode;
- 	struct igt_fb buffer[IGT_MAX_PIPES];
- 	igt_crc_t zero, captured[IGT_MAX_PIPES];
--	int i = 0, num_pipes = 0;
-+	int i = 0;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index c289d76d16e2..e82d32130666 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -7344,9 +7344,10 @@ bool igt_check_force_joiner_status(int drmfd, char *connector_name)
+  */
+ bool igt_check_bigjoiner_support(igt_display_t *display)
+ {
+-	uint8_t i, total_pipes = 0, pipes_in_use = 0;
++	uint8_t i, pipes_in_use = 0;
  	igt_crtc_t *crtc;
- 	int ret;
+ 	igt_output_t *output;
++	enum pipe last_pipe = PIPE_NONE;
+ 	struct {
+ 		enum pipe idx;
+ 		drmModeModeInfo *mode;
+@@ -7355,9 +7356,11 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
+ 	} pipes[IGT_MAX_PIPES];
+ 	int max_dotclock;
  
--	/* Cannot use igt_display_n_crtcs() due to fused pipes on i915 where they do
--	 * not give the numver of valid crtcs and always return IGT_MAX_PIPES */
--	for_each_crtc(display, crtc) num_pipes++;
--
--	igt_skip_on_f(n_crtcs > num_pipes,
-+	igt_skip_on_f(n_crtcs > igt_display_n_crtcs(display),
-                       "ASIC does not have %d pipes\n", n_crtcs);
+-	/* Get total enabled pipes. */
+-	for_each_crtc(display, crtc)
+-		total_pipes++;
++	/* Get last pipe */
++	for_each_crtc(display, crtc) {
++		if (crtc->pipe > last_pipe)
++			last_pipe = crtc->pipe;
++	}
  
- 	test_init(data, physical);
+ 	/*
+ 	 * Get list of CRTCs in use those were set by igt_output_set_crtc()
+@@ -7401,7 +7404,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
+ 				 max_dotclock, pipes[i].force_joiner ? "Yes" : "No");
+ 			kmstest_dump_mode(pipes[i].mode);
+ 
+-			if (pipes[i].idx >= (total_pipes - 1)) {
++			if (pipes[i].idx >= last_pipe) {
+ 				igt_info("pipe-%s: Last pipe couldn't be used as a Bigjoiner Primary.\n",
+ 					 kmstest_pipe_name(pipes[i].idx));
+ 				return false;
 -- 
 2.47.3
 
