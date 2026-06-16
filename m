@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B59CD98DA
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 15:44:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65840CD98DA
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Jun 2026 15:44:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C6A1A10E7C3;
-	Tue, 16 Jun 2026 15:44:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1726110E7C3;
+	Tue, 16 Jun 2026 15:44:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=adrian.larumbe@collabora.com header.b="NMkq4ZII";
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=adrian.larumbe@collabora.com header.b="CCWtHLTO";
 	dkim-atps=neutral
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com
  [136.143.188.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 342D110EC23
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 15:43:47 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; t=1781624618; cv=none; 
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9139410EC23
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2026 15:43:43 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1781624614; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=Y/vaXv3L/kUM6JLVjCwnC8dr3auTj0Gj694o6z6740l1IOE2RrKGD1OU8zxXnNh0qEgwOYjo7AN5ONlR8obtlbKenNInws/nqbo9CAN5XkUtr3W4URu7WOxt4PAvqlHVF8AaVWVfDk312wDBuYZVVf9WGuHBgXZuMcMEYbX0Fpo=
+ b=P3f1dyHuhxtXIghp7g0dUs5+yBYEBhIDVS/uYziDlesJ0GTvigDD7WcxNLtXG9b5VR8yTRb62XJ4Vfvbrqza1Y+k7kX4KZNvOfsCzI4P2gCDXnoX1ObHo2inD9gTbtOq+Pyw3O+WlmAyKPzY7hgSen3WBWw1wka4ByM02xm/e+I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1781624618;
+ s=zohoarc; t=1781624614;
  h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=Cd4FJjwd0I9k88lj65YR+wgEfL15faKAg/uoF+bs+/0=; 
- b=MUFKnxBBsYodyZSyZzTy5ywNcWV8VsnmMAJwRqCFS7zdOWClFnZZuartfYhJGA5dXsnIWWyooEkoBE70QA6W6BrlH2H4EmYA5EtoT1v7gU1uAmBXo7wF9wSpj1pzETS73qVAAi2uUzZ7kHUJM2o9GuHF0RrT+ICXFy6/EMXArmo=
+ bh=hXwtkbm8RIG7CRnhStkZ8NjGVrMfrWjSDLp0tu5TEK0=; 
+ b=byskb6HsV8XK9Lueobh05u6Dm+jkpuyRUmOkVlX9bgqv5Zc4DcbcdMxF1Hr6JvXxWu14rNKusQ2JxF4a4wDgCg77AmoLn5RGwvIuXKSxjjUJ09KBojUx6In1VZ0FDyL4u8niFfUb55HzgqKGf1LDz+eY0527jlrikuWDIEkDrcw=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=adrian.larumbe@collabora.com;
  dmarc=pass header.from=<adrian.larumbe@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781624618; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781624614; 
  s=zohomail; d=collabora.com; i=adrian.larumbe@collabora.com;
  h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
- bh=Cd4FJjwd0I9k88lj65YR+wgEfL15faKAg/uoF+bs+/0=;
- b=NMkq4ZIIOnMURwJcY1Qk+5m/vRMdVXqkUMPjzC7NDsSi21ryZhEu7ckNMXFFvOC7
- pmsDBax6WtFNOOjSqPD7dAYUS2BBpOiB+TaJSZ8lvf+bBMW1XWCfFOsY64UPllK077H
- jP94WenfM0xf42P8dxkgiX3DE2Qm2HoRULeGpLa0=
-Received: by mx.zohomail.com with SMTPS id 1781624616544594.0131679849018;
- Tue, 16 Jun 2026 08:43:36 -0700 (PDT)
+ bh=hXwtkbm8RIG7CRnhStkZ8NjGVrMfrWjSDLp0tu5TEK0=;
+ b=CCWtHLTOzqr1lLYZLW1mc5Kfvy0xhPokLChftKLfQGcljoLqMWqQb/jpCbTX4IaC
+ wcmI2Fo5O6sttiE/avFc+IGPWJFM5bDbWnVknPT4DS9Q7/MkZ/Vdpwf5uyY8w1bvMq9
+ 8zcxgWfrlwes5pSIdzUUQMXP7P384kVRkvadzafw=
+Received: by mx.zohomail.com with SMTPS id 1781624613485474.98531880301516;
+ Tue, 16 Jun 2026 08:43:33 -0700 (PDT)
 From: =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>
-Date: Tue, 16 Jun 2026 16:43:23 +0100
-Subject: [PATCH 2/2] tests/panthor/panthor_vm: Add vm_bind
- intersect-with-kbo-range test
+Date: Tue, 16 Jun 2026 16:43:22 +0100
+Subject: [PATCH 1/2] panthor: Provide a way to access user VA range when
+ creating a VM
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260616-panthor-vmbind-checkaddr-v1-2-f35b1b067f7c@collabora.com>
+Message-Id: <20260616-panthor-vmbind-checkaddr-v1-1-f35b1b067f7c@collabora.com>
 References: <20260616-panthor-vmbind-checkaddr-v1-0-f35b1b067f7c@collabora.com>
 In-Reply-To: <20260616-panthor-vmbind-checkaddr-v1-0-f35b1b067f7c@collabora.com>
 To: Boris Brezillon <boris.brezillon@collabora.com>, 
@@ -57,18 +57,18 @@ To: Boris Brezillon <boris.brezillon@collabora.com>,
 Cc: igt-dev@lists.freedesktop.org, kernel@collabora.com, 
  =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1175;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2130;
  i=adrian.larumbe@collabora.com; h=from:subject:message-id;
- bh=t5QX+M4qvTqfHMgEGE4RA0ZuuCY0O6qSBeB+isxfjx0=;
- b=owEB7QES/pANAwAKAQ4mfkzuU0M9AcsmYgBqMW8fb3zcbWq/MJnOX5gps5MxrAmNVBpOW1vQp
- vwGsK5T5oKJAbMEAAEKAB0WIQQyQDDowAUXXfk3B6QOJn5M7lNDPQUCajFvHwAKCRAOJn5M7lND
- PU5dDACOjFm0+2Wn68tcZ2iKH71tnNCFuq5tNeHui7iAGIaRbcJSLhrRT9H4vJ3W4jH30PrrbCu
- VR50xkX03KE4cgMcdZwCWgzMszh0fmrToeKjtFyM/bJvGWOb543LdHRQjZGSsqbBA1A1ruTj0zB
- 5272whafJHDWRW+ELix7N/uSHob+mlAN24cUKRcLwPf3xfgkUx7a+7P3917x44uq8p7WelZj9pk
- 9uBEP8z3wRWnpkSxJPAoAq5ChYbejY0q3JAfEvjR3b+6+sWZR6CweAa12e3KhkWFRpBzq2gSH7i
- Xhyxc7ze6xGlIYlPejFVT4bRPsXO+BFPvOE7pRyaqY6A6Fk4/nWRwFK1kgZ5WbPhXohRyuoYULW
- zcSWf9ulJ4JZyI10+3i4rDZuTVc+6OG3LthvxvJg2IT1lmX9tQqDYeUjTatOqIvQBpvwITMUozO
- DUJACHCM14Thq6GME3jfFmXwd7QxijzQhKZ7fPOknhyGnbAKd9/boosUsHNpL5Rb8zs3o=
+ bh=8UWK16ZLupt1eGznrpY7zGH4Z0UT/H2cfuPkTiTwa1I=;
+ b=owEB7QES/pANAwAKAQ4mfkzuU0M9AcsmYgBqMW8eNv3E6zSA0A/+uZ4BXoWVjqpcIta1raP8Z
+ PLFxyYU8oiJAbMEAAEKAB0WIQQyQDDowAUXXfk3B6QOJn5M7lNDPQUCajFvHgAKCRAOJn5M7lND
+ PVqmDACvNH+SaamGKCkWuP/yh5IKR3npEjMXso4nxzf83YUunTJCzJzxEtH9XLUvsmuiU7WWFnK
+ rhmIlb8u6403gfYThcoXBh22vxe0gzqyJOAWcOgUFL0I+tmz5fCr+FKpjGsCNiAVeorMuBLqmly
+ SXAudopY1yI3A2AXfRpjNEawyMCq5ozpxMKpRYVQzd3aP0BCJkLAiwvm2QPw6iWczwD1+z64s++
+ +7eL9nISPkZYmSbYfOFD9EjE93EI5GTQ7DMGPtwtsmNux5eG1H17l54d0BGpb4gDH+KoLloGMji
+ 8kE4EyVESTlImWsHDkQfR7NGrcsunvd5tvLTinF8kfAGNENP0Lhb7Qn4tz1E6/60YIPp2brVzc5
+ 0CfMDGFW247Ow4n4rWl4XW7lehYb3M6D/Eg9LPgRiDzuXrTnuaKR4yzpoEcVuYgctGp2qUWNXfM
+ rHRpk9xVf6nOg1+qIGk0rcrc/O1HsXKbaQ+hg0YykKLRJOu8DxbFXLIlZHR2HL4LHudoc=
 X-Developer-Key: i=adrian.larumbe@collabora.com; a=openpgp;
  fpr=324030E8C005175DF93707A40E267E4CEE53433D
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -86,42 +86,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Users of vm_bind ioctl() should never specify a VA region that intersects
-with that reserved for internal kernel BOs.
+This will be used in a future test that will check VM_BIND map range
+does not intersect with the range reserved for internal BO's.
 
 Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
 ---
- tests/panthor/panthor_vm.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ lib/igt_panthor.c | 5 ++++-
+ lib/igt_panthor.h | 7 ++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
-index 92b105b9e83a..9548dbcbaa45 100644
---- a/tests/panthor/panthor_vm.c
-+++ b/tests/panthor/panthor_vm.c
-@@ -270,6 +270,23 @@ int igt_main() {
- 		igt_panthor_vm_destroy(fd, vm_id, 0);
- 	}
+diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
+index 7ffb61eb38e9..11d8ec342f0b 100644
+--- a/lib/igt_panthor.c
++++ b/lib/igt_panthor.c
+@@ -201,7 +201,7 @@ void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err)
+  *
+  * Creates a VM.
+  */
+-void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err)
++void igt_panthor_vm_create_userva_range(int fd, uint32_t *vm_id, int err, uint64_t *uva_range)
+ {
+ 	struct drm_panthor_vm_create vm_create = {};
  
-+	igt_describe("Perform a vm_bind in the VM's kernel BOs reserved range");
-+	igt_subtest("vm_bind_intersect_kbo_range") {
-+		uint32_t vm_id;
-+		struct panthor_bo bo;
-+		uint64_t bo_size = SZ_2M;
-+		uint64_t uva_range;
+@@ -210,6 +210,9 @@ void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err)
+ 	} else {
+ 		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create);
+ 		*vm_id = vm_create.id;
 +
-+		igt_panthor_vm_create_userva_range(fd, &vm_id, 0, &uva_range);
-+		igt_assert(vm_id != 0);
-+
-+		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-+		igt_panthor_vm_bind(fd, vm_id, bo.handle, ALIGN(uva_range, bo_size),
-+				    bo_size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, EINVAL);
-+
-+		igt_panthor_vm_destroy(fd, vm_id, 0);
-+	}
-+
- 	igt_fixture() {
- 		drm_close_driver(fd);
++		if (uva_range)
++			*uva_range = vm_create.user_va_range;
  	}
+ }
+ 
+diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
+index be8490840f3a..64b0e687eef1 100644
+--- a/lib/igt_panthor.h
++++ b/lib/igt_panthor.h
+@@ -17,7 +17,7 @@ struct panthor_bo {
+ };
+ 
+ void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err);
+-void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err);
++void igt_panthor_vm_create_userva_range(int fd, uint32_t *vm_id, int err, uint64_t *uva_range);
+ void igt_panthor_vm_destroy(int fd, uint32_t vm_id, int err);
+ void igt_panthor_vm_bind_offset(int fd, uint32_t vm_id, uint32_t bo_handle, uint64_t va,
+ 				uint64_t size, uint64_t ofsfet, uint32_t flags, int err);
+@@ -44,6 +44,11 @@ static inline void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handl
+ 	igt_panthor_vm_bind_offset(fd, vm_id, bo_handle, va, size, 0, flags, err);
+ }
+ 
++static inline void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err)
++{
++	igt_panthor_vm_create_userva_range(fd, vm_id, err, 0);
++}
++
+ enum cs_opcode {
+ 	CS_OPCODE_NOP = 0,
+ 	CS_OPCODE_MOVE48 = 1,
 
 -- 
 2.54.0
