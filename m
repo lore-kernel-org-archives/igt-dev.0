@@ -4,58 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ADA2CD98E4
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Jun 2026 10:04:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44316CD98E4
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Jun 2026 10:54:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B08889304;
-	Wed, 17 Jun 2026 10:04:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECF5E10EFA8;
+	Wed, 17 Jun 2026 10:54:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SFmlT6id";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eqBGzvS1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C587E10EF0B
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jun 2026 10:03:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A82E10EFA8
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jun 2026 10:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781690623; x=1813226623;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=l0/PL8Td6dHGPO2JCR3KjVR9O1BxcoQF5bT9k6cBMmc=;
- b=SFmlT6id18nWTfCiQw0bN6RVx3wk0Tixv+1g8OmK7B1YTVHw1za9XV7V
- UpplogUDzuvnxCcZT4QdBgYdVijavT2S1IQHZahy5nrTx5rqQHUygDtED
- qP5f1Qicb5im8/OUzQCfLBc/rJNP6MrJyjm8OCMpgo0HDL6nYxbEhrCw+
- 2b9ObZ9bNB5KWZDrt/4AI61j2o3rNDA1jd9iN5YYZ3VZZNXT7MaAoLUZI
- p4KvYfaxFuvCeIWxAZEMqyeKgL/SN0H1UcbD3VM3wKfr1Mv14BKWNca6r
- WlSvvJwYcvFBamAXOFBp7ZQRpBb4A0Z+ix6qYqt54xS3FHNcRgkqc4R+I w==;
-X-CSE-ConnectionGUID: r9SgtoUzSLCJqJundgtEew==
-X-CSE-MsgGUID: P+SwM81TTPybQQ3BxAZTCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="82377679"
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; d="scan'208";a="82377679"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2026 03:03:43 -0700
-X-CSE-ConnectionGUID: LduNkNOpRzG3zbGdsUjh9Q==
-X-CSE-MsgGUID: cxR3bJ+KRWOiYv8S/EPAoQ==
+ t=1781693619; x=1813229619;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ mime-version; bh=XrrtChOnTYUHmZXDOgbvbmQqL4aYCo6fvP3auvJW7Eg=;
+ b=eqBGzvS1d/J73ZWNMJ5Du91E2MNFoc+GBhua94E3SoKYkaN9cs7r4DrK
+ AlgOlnefdGzFfaS3KSJ399rqNxST53mHwrukoh2VclVD87we/muX6z2gt
+ ofgRC1vwEJO3ueyploPqjYxKXPqrPOGa28Qt6PhsOs0hdVsSLmrNqjy0D
+ n8nTV8JuzE0mrqFEhB+UN7mXc7odeMr4LjHJKCMd62BI9ZvNqnBF1pXCD
+ 2hu2ux+7eN2jOt8PssPwR47ZzxouVab5mZwuiB8jYgKgpLNtaorPo0upX
+ vQlxdDlZHMR12nbdu7azQTol8q2c0x87CmUWUw1uW1M8ElzAga4gtT6Fs A==;
+X-CSE-ConnectionGUID: dTPEFceFRayrAuBR5/2SIg==
+X-CSE-MsgGUID: LA7u7TX6Qp64Ig8exXex4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="82573578"
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; d="scan'208";a="82573578"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2026 03:53:38 -0700
+X-CSE-ConnectionGUID: TmDADnvyRpueEmNI28fFKg==
+X-CSE-MsgGUID: EktzetFCR+209yuvwEMH/g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; d="scan'208";a="246890760"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.245.43])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2026 03:03:41 -0700
-Date: Wed, 17 Jun 2026 12:03:39 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, francois.dugast@intel.com, 
- priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com
-Subject: Re: [PATCH i-g-t v6] intel-ci: Add SVM,multi_queue tests to Xe
- fastfeedback
-Message-ID: <cirge2ijncdh6ieeqpzazb5zr6ljx7btkzux2qdbc6at5efr5l@2znsrse5ztxl>
-References: <20260617094235.3017-1-venkateswara.rao.muppidi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; d="scan'208";a="272098909"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.158])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2026 03:53:37 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 2/3] lib/kms: fix last pipe check in
+ igt_check_bigjoiner_support()
+In-Reply-To: <a6015949-ee58-4b7d-bc71-d4b5cf175d12@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260616090610.2106378-1-jani.nikula@intel.com>
+ <20260616090610.2106378-2-jani.nikula@intel.com>
+ <a6015949-ee58-4b7d-bc71-d4b5cf175d12@intel.com>
+Date: Wed, 17 Jun 2026 13:53:34 +0300
+Message-ID: <a774811b46ca923a4b52e25443514f0b1d8748ae@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260617094235.3017-1-venkateswara.rao.muppidi@intel.com>
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,112 +70,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jun 17, 2026 at 03:12:35PM +0530, Venkateswara Rao Muppidi wrote:
-> Add  SVM, render copy,ccs,compute_preempt,exercise_blt,exec_mix_modes,
-> access_counter, fault_mode,multi_queue tests to fastfeedback list
-> 
-> v2: add eu-fault-2m-range-device-host test (Francois)
-> v3: corrected s-o-b and From
-> v4: Refine SVM tests by removing the race test, adding remaining SVM tests,
-> and organizing all entries in alphabetical order.
-> v6: Remove twice.* tests and add a new set of SVM tests (Francois)
-> 
-> Signed-off-by: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-> ---
->  tests/intel-ci/xe.fast-feedback.testlist | 38 ++++++++++++++++++++++++
->  1 file changed, 38 insertions(+)
-> 
-> diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
-> index acff025fa..c3a400bf8 100644
-> --- a/tests/intel-ci/xe.fast-feedback.testlist
-> +++ b/tests/intel-ci/xe.fast-feedback.testlist
-> @@ -69,7 +69,11 @@ igt@kms_psr@psr-cursor-plane-move
->  igt@kms_psr@psr-sprite-plane-onoff
->  igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-all
->  igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-1
-> +igt@xe_ccs@block-copy-compressed
-> +igt@xe_ccs@ctrl-surf-copy
->  igt@xe_compute@compute-square
-> +igt@xe_compute_preempt@compute-preempt
-> +igt@xe_compute_preempt@compute-threadgroup-preempt
+On Wed, 17 Jun 2026, Karthik B S <karthik.b.s@intel.com> wrote:
+> On 6/16/2026 2:36 PM, Jani Nikula wrote:
+>> Fix last pipe check for non-consecutive pipes. In theory the check could
+>> be too restrictive for fused off pipes, but it's unlikely we've hit the
+>> issue in practise. It's better to be pedantically correct here though.
+> Typo: practise -> practice
 
-Above 4 are fine.
+Thanks for the review, pushed the lot with the typo fixed.
 
->  igt@xe_create@create-execqueues-noleak
->  igt@xe_create@create-execqueues-leak
->  igt@xe_create@create-invalid-mbz
-> @@ -129,11 +133,43 @@ igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
->  igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
->  igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
->  igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
-> +igt@xe_exec_fault_mode@invalid-va
-> +igt@xe_exec_mix_modes@exec-simple-batch-store-dma-fence
-> +igt@xe_exec_mix_modes@exec-simple-batch-store-lr
-> +igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence
-> +igt@xe_exec_mix_modes@exec-spinner-interrupted-lr
-> +igt@xe_exec_multi_queue@sanity
-> +igt@xe_exec_multi_queue@exec-sanity
-> +igt@xe_exec_multi_queue@few-execs-dyn-priority
-> +igt@xe_exec_multi_queue@many-queues-basic
-> +igt@xe_exec_multi_queue@many-queues-basic-smem
-> +igt@xe_exec_multi_queue@many-queues-userptr
-> +igt@xe_exec_multi_queue@many-queues-userptr-invalidate
-> +igt@xe_exec_multi_queue@many-queues-priority
-> +igt@xe_exec_multi_queue@many-queues-close-fd
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-basic
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-basic
-> +igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-userptr-invalidate
->  igt@xe_exec_queue_property@invalid-property
->  igt@xe_exec_reset@close-fd-no-exec
->  igt@xe_exec_reset@cm-close-fd-no-exec
->  igt@xe_exec_reset@virtual-close-fd-no-exec
->  igt@xe_exec_store@basic-store
-> +igt@xe_exec_system_allocator@eu-fault-2m-range-device-host
-> +igt@xe_exec_system_allocator@fault
-> +igt@xe_exec_system_allocator@madvise-atomic-inc
-> +igt@xe_exec_system_allocator@many-execqueues-free
-> +igt@xe_exec_system_allocator@many-execqueues-malloc
-> +igt@xe_exec_system_allocator@once-malloc
-> +igt@xe_exec_system_allocator@once-mmap
-> +igt@xe_exec_system_allocator@partial-munmap-cpu-fault
-> +igt@xe_exec_system_allocator@process-many-malloc
-> +igt@xe_exec_system_allocator@threads-many-malloc
-> +igt@xe_exec_system_allocator@threads-shared-vm-many-malloc
-> +igt@xe_exec_system_allocator@twice-free
-> +igt@xe_exercise_blt@fast-copy
->  igt@xe_gpgpu_fill@basic
->  igt@xe_gt_freq@freq_basic_api
->  igt@xe_gt_freq@freq_fixed_idle
-> @@ -176,6 +212,7 @@ igt@xe_query@query-topology
->  igt@xe_query@query-invalid-extension
->  igt@xe_query@query-invalid-query
->  igt@xe_query@query-invalid-size
-> +igt@xe_render_copy@render-square
+BR,
+Jani.
 
-And above 2 (xe_exercise_blt + xe_render_copy) are fine.
 
-Collect more than my r-b from interested parties.
+>>
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+>> ---
+>>   lib/igt_kms.c | 13 ++++++++-----
+>>   1 file changed, 8 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index c289d76d16e2..e82d32130666 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -7344,9 +7344,10 @@ bool igt_check_force_joiner_status(int drmfd, char *connector_name)
+>>    */
+>>   bool igt_check_bigjoiner_support(igt_display_t *display)
+>>   {
+>> -	uint8_t i, total_pipes = 0, pipes_in_use = 0;
+>> +	uint8_t i, pipes_in_use = 0;
+>>   	igt_crtc_t *crtc;
+>>   	igt_output_t *output;
+>> +	enum pipe last_pipe = PIPE_NONE;
+>>   	struct {
+>>   		enum pipe idx;
+>>   		drmModeModeInfo *mode;
+>> @@ -7355,9 +7356,11 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
+>>   	} pipes[IGT_MAX_PIPES];
+>>   	int max_dotclock;
+>>   
+>> -	/* Get total enabled pipes. */
+>> -	for_each_crtc(display, crtc)
+>> -		total_pipes++;
+>> +	/* Get last pipe */
+>> +	for_each_crtc(display, crtc) {
+>> +		if (crtc->pipe > last_pipe)
+>> +			last_pipe = crtc->pipe;
+>> +	}
+>>   
+>>   	/*
+>>   	 * Get list of CRTCs in use those were set by igt_output_set_crtc()
+>> @@ -7401,7 +7404,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
+>>   				 max_dotclock, pipes[i].force_joiner ? "Yes" : "No");
+>>   			kmstest_dump_mode(pipes[i].mode);
+>>   
+>> -			if (pipes[i].idx >= (total_pipes - 1)) {
+>> +			if (pipes[i].idx >= last_pipe) {
+>>   				igt_info("pipe-%s: Last pipe couldn't be used as a Bigjoiner Primary.\n",
+>>   					 kmstest_pipe_name(pipes[i].idx));
+>>   				return false;
 
-But for these 6 tests:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
->  igt@xe_spin_batch@spin-basic
->  igt@xe_spin_batch@spin-batch
->  igt@xe_sriov_flr@flr-vf1-clear
-> @@ -215,6 +252,7 @@ igt@xe_waitfence@abstime
->  igt@xe_waitfence@engine
->  igt@xe_waitfence@reltime
->  
-> +
->  # All tests that do module unloading and reloading are executed last.
->  # They will sometimes reveal issues of earlier tests leaving the
->  # driver in a broken state that is not otherwise noticed in that test.
-> -- 
-> 2.43.0
-> 
+-- 
+Jani Nikula, Intel
