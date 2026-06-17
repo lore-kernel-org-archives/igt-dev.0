@@ -4,43 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C7ACD98E4
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Jun 2026 12:47:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A865CCD98F0
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Jun 2026 12:50:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 498FD10E338;
-	Wed, 17 Jun 2026 12:47:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3F63E10E713;
+	Wed, 17 Jun 2026 12:50:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jk2S/Mub";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IPaAGqpx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCFEF10E338
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jun 2026 12:46:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2825310E713
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jun 2026 12:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781700415; x=1813236415;
+ t=1781700595; x=1813236595;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=5lZ5/POeTzYzHWEQLwm+jJVEjAMjYKHue6tByjLvY6Q=;
- b=jk2S/Mubjq4i/AW3+3f0VA2bq5oLWAlVb8+YPbCnogjM34X7jGhQRiHN
- INEftHcEQ31DMVFj3zAuWfCOhiLPCxEBpTjhfiI5MeaKIadNEuREQ3EG0
- 3Lribi8mBycb4q4nklNBxgoiSonzcRohCxzbAZvXGxGQ4uxBPCcN7GJQf
- lAfmPFjlg1xamg1LNUVPjLA9Cdt0tWcvpF8N7H0oQP6qqP0CalMRl09cw
- GrP1AzwTnowNC8hmBsR2fqdWhRyrrfsNBudf3loMVpOls7pJU3V/hHgUd
- raeKlyjuTebv4DPv7b7K5thsbBpn/0YghrKaxlHavd6sV3KfI3ikRk23F Q==;
-X-CSE-ConnectionGUID: khXjuZDXTFSMuvK4afupiw==
-X-CSE-MsgGUID: Spnut2MIS1a8sMeJMzQxiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="86147821"
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; d="scan'208";a="86147821"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2026 05:46:54 -0700
-X-CSE-ConnectionGUID: BLGd+0RsS2estQGdZJRkDQ==
-X-CSE-MsgGUID: JYjuPZMNTdC0KPcpObUdRA==
+ bh=pLp4ON2kCaoKKgG8/8ZD0X4IfKBsFDzOj1Cz7HzcoQQ=;
+ b=IPaAGqpxEeor9WGoWIfpZi8XQtU6EcZEoKU6QZz8VWBo1hgcsP/JgrTy
+ yPb2a1POYQQWYQD6Fcd3LiFs/orAXMY6R0RS3R6pMm9AoLHj3Cm5uqa/2
+ 2D+x9uuczpBxeD56SjWhGnlDmb3xNvyx8EUPS9766YourUy3y3K9pTESn
+ zByyJOHHCyFYzt0uVWHY/0I0Y1m/DKuyqvv55AlJ6tOIqTNoxza3Emj/F
+ nDcYmyR0hsE0uzDL+qd49PWE+Q0QsrZuYvOxj/1ataEte4fNM1uZ96vta
+ J/XvvrMk+liv2lJl3KLAi0fvcBN8sHO4YHkmkxft/nX5Oq8qqAxKG9C37 Q==;
+X-CSE-ConnectionGUID: GOWQtFQ1QtKQpyYKnyO0dA==
+X-CSE-MsgGUID: ysQeyiGhQ6aoStsLKFE/AQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="82499132"
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; d="scan'208";a="82499132"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2026 05:49:54 -0700
+X-CSE-ConnectionGUID: jRdZCdSTTder8oE+HBNTnQ==
+X-CSE-MsgGUID: MpWxsvHAQE+IBEjVHhgqQw==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; d="scan'208";a="252363153"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 05:46:51 -0700
-Date: Wed, 17 Jun 2026 14:46:49 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 05:49:52 -0700
+Date: Wed, 17 Jun 2026 14:49:48 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
 Cc: Boris Brezillon <boris.brezillon@collabora.com>,
@@ -51,9 +52,9 @@ Cc: Boris Brezillon <boris.brezillon@collabora.com>,
  Steven Price <steven.price@arm.com>,
  Liviu Dudau <liviu.dudau@arm.com>, igt-dev@lists.freedesktop.org,
  kernel@collabora.com
-Subject: Re: [PATCH 1/2] panthor: Provide a way to access user VA range when
- creating a VM
-Message-ID: <20260617124649.hpabgrl7zg43o4oi@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH 2/2] tests/panthor/panthor_vm: Add vm_bind
+ intersect-with-kbo-range test
+Message-ID: <20260617124948.buvoihk3cnxltx5e@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
  Boris Brezillon <boris.brezillon@collabora.com>,
@@ -66,12 +67,12 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Liviu Dudau <liviu.dudau@arm.com>, igt-dev@lists.freedesktop.org,
  kernel@collabora.com
 References: <20260616-panthor-vmbind-checkaddr-v1-0-f35b1b067f7c@collabora.com>
- <20260616-panthor-vmbind-checkaddr-v1-1-f35b1b067f7c@collabora.com>
+ <20260616-panthor-vmbind-checkaddr-v1-2-f35b1b067f7c@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260616-panthor-vmbind-checkaddr-v1-1-f35b1b067f7c@collabora.com>
+In-Reply-To: <20260616-panthor-vmbind-checkaddr-v1-2-f35b1b067f7c@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,70 +89,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Adrián,
-On 2026-06-16 at 16:43:22 +0100, Adrián Larumbe wrote:
-> This will be used in a future test that will check VM_BIND map range
-> does not intersect with the range reserved for internal BO's.
+On 2026-06-16 at 16:43:23 +0100, Adrián Larumbe wrote:
+> Users of vm_bind ioctl() should never specify a VA region that intersects
+> with that reserved for internal kernel BOs.
 > 
 > Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+> ---
+>  tests/panthor/panthor_vm.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
+> index 92b105b9e83a..9548dbcbaa45 100644
+> --- a/tests/panthor/panthor_vm.c
+> +++ b/tests/panthor/panthor_vm.c
+> @@ -270,6 +270,23 @@ int igt_main() {
+>  		igt_panthor_vm_destroy(fd, vm_id, 0);
+>  	}
+>  
+> +	igt_describe("Perform a vm_bind in the VM's kernel BOs reserved range");
+> +	igt_subtest("vm_bind_intersect_kbo_range") {
+
+In our Intel tests we use '-' as word separator, so there is
+igt@this_is_test_name@and-this-is-subtest-name
+
+But it is only out naming convention, yours can differ.
+
 LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-> ---
->  lib/igt_panthor.c | 5 ++++-
->  lib/igt_panthor.h | 7 ++++++-
->  2 files changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
-> index 7ffb61eb38e9..11d8ec342f0b 100644
-> --- a/lib/igt_panthor.c
-> +++ b/lib/igt_panthor.c
-> @@ -201,7 +201,7 @@ void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err)
->   *
->   * Creates a VM.
->   */
-> -void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err)
-> +void igt_panthor_vm_create_userva_range(int fd, uint32_t *vm_id, int err, uint64_t *uva_range)
->  {
->  	struct drm_panthor_vm_create vm_create = {};
->  
-> @@ -210,6 +210,9 @@ void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err)
->  	} else {
->  		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create);
->  		*vm_id = vm_create.id;
+PS. I could merge it now or should I wait for others to review?
+
+> +		uint32_t vm_id;
+> +		struct panthor_bo bo;
+> +		uint64_t bo_size = SZ_2M;
+> +		uint64_t uva_range;
 > +
-> +		if (uva_range)
-> +			*uva_range = vm_create.user_va_range;
+> +		igt_panthor_vm_create_userva_range(fd, &vm_id, 0, &uva_range);
+> +		igt_assert(vm_id != 0);
+> +
+> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
+> +		igt_panthor_vm_bind(fd, vm_id, bo.handle, ALIGN(uva_range, bo_size),
+> +				    bo_size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, EINVAL);
+> +
+> +		igt_panthor_vm_destroy(fd, vm_id, 0);
+> +	}
+> +
+>  	igt_fixture() {
+>  		drm_close_driver(fd);
 >  	}
->  }
->  
-> diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
-> index be8490840f3a..64b0e687eef1 100644
-> --- a/lib/igt_panthor.h
-> +++ b/lib/igt_panthor.h
-> @@ -17,7 +17,7 @@ struct panthor_bo {
->  };
->  
->  void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err);
-> -void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err);
-> +void igt_panthor_vm_create_userva_range(int fd, uint32_t *vm_id, int err, uint64_t *uva_range);
->  void igt_panthor_vm_destroy(int fd, uint32_t vm_id, int err);
->  void igt_panthor_vm_bind_offset(int fd, uint32_t vm_id, uint32_t bo_handle, uint64_t va,
->  				uint64_t size, uint64_t ofsfet, uint32_t flags, int err);
-> @@ -44,6 +44,11 @@ static inline void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handl
->  	igt_panthor_vm_bind_offset(fd, vm_id, bo_handle, va, size, 0, flags, err);
->  }
->  
-> +static inline void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err)
-> +{
-> +	igt_panthor_vm_create_userva_range(fd, vm_id, err, 0);
-> +}
-> +
->  enum cs_opcode {
->  	CS_OPCODE_NOP = 0,
->  	CS_OPCODE_MOVE48 = 1,
 > 
 > -- 
 > 2.54.0
