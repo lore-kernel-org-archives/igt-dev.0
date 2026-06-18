@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9A9DCD98DE
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 05:57:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12ABCD98DE
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 06:03:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6025E10EC3E;
-	Thu, 18 Jun 2026 05:57:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6CE0610EC3E;
+	Thu, 18 Jun 2026 06:03:57 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6100610EC3E;
- Thu, 18 Jun 2026 05:56:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9243A10EC3E;
+ Thu, 18 Jun 2026 06:03:30 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7457370514124951915=="
+ boundary="===============0902380592493064764=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_intel-ci=3A_Add_SVM=2C_mu?=
- =?utf-8?q?lti=5Fqueue_tests_to_Xe_fastfeedback_=28rev8=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_intel-ci=3A_Add_SVM=2C_mult?=
+ =?utf-8?q?i=5Fqueue_tests_to_Xe_fastfeedback_=28rev8=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Venkateswara Rao Muppidi" <venkateswara.rao.muppidi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 18 Jun 2026 05:56:58 -0000
-Message-ID: <178176221839.92169.11112560901438214849@6beec6c84f66>
+Date: Thu, 18 Jun 2026 06:03:30 -0000
+Message-ID: <178176261059.92208.16309373096721680762@6beec6c84f66>
 X-Patchwork-Hint: ignore
 References: <20260618051522.7910-1-venkateswara.rao.muppidi@intel.com>
 In-Reply-To: <20260618051522.7910-1-venkateswara.rao.muppidi@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7457370514124951915==
+--===============0902380592493064764==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,83 +50,135 @@ Content-Transfer-Encoding: 7bit
 
 Series: intel-ci: Add SVM, multi_queue tests to Xe fastfeedback (rev8)
 URL   : https://patchwork.freedesktop.org/series/168562/
-State : success
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8972 -> IGTPW_15395
+CI Bug Log - changes from XEIGT_8972_BAT -> XEIGTPW_15395_BAT
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with XEIGTPW_15395_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15395_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/index.html
+  
 
-Participating hosts (41 -> 39)
+Participating hosts (13 -> 13)
 ------------------------------
 
-  Additional (1): fi-glk-j4005 
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
+  No changes in participating hosts
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_15395_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence:
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] +17 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence.html
+
+  * igt@xe_exec_multi_queue@exec-sanity:
+    - bat-bmg-1:          NOTRUN -> [SKIP][2] +13 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-bmg-1/igt@xe_exec_multi_queue@exec-sanity.html
+
+  * igt@xe_exec_multi_queue@many-queues-basic:
+    - bat-ptl-1:          NOTRUN -> [SKIP][3] +13 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-ptl-1/igt@xe_exec_multi_queue@many-queues-basic.html
+
+  * igt@xe_exec_multi_queue@many-queues-basic-smem:
+    - bat-lnl-2:          NOTRUN -> [SKIP][4] +13 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-lnl-2/igt@xe_exec_multi_queue@many-queues-basic-smem.html
+
+  * igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][5] +13 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-ptl-vm/igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd.html
+
+  * igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr:
+    - bat-atsm-2:         NOTRUN -> [SKIP][6] +32 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-atsm-2/igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr.html
+
+  * igt@xe_exec_multi_queue@many-queues-priority:
+    - bat-ptl-2:          NOTRUN -> [SKIP][7] +13 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-ptl-2/igt@xe_exec_multi_queue@many-queues-priority.html
+    - bat-wcl-1:          NOTRUN -> [SKIP][8] +13 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-wcl-1/igt@xe_exec_multi_queue@many-queues-priority.html
+
+  * igt@xe_exec_multi_queue@many-queues-userptr-invalidate:
+    - bat-wcl-2:          NOTRUN -> [SKIP][9] +13 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-wcl-2/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html
+    - bat-bmg-vm:         NOTRUN -> [SKIP][10] +13 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-bmg-vm/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html
+
+  * igt@xe_exec_multi_queue@priority:
+    - bat-lnl-1:          NOTRUN -> [SKIP][11] +13 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-lnl-1/igt@xe_exec_multi_queue@priority.html
+    - bat-bmg-2:          NOTRUN -> [SKIP][12] +13 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-bmg-2/igt@xe_exec_multi_queue@priority.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_15395 that come from known issues:
+  Here are the changes found in XEIGTPW_15395_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@fbdev@info:
-    - fi-ivb-3770:        [PASS][1] -> [SKIP][2] ([i915#1849])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8972/fi-ivb-3770/igt@fbdev@info.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-ivb-3770/igt@fbdev@info.html
+  * igt@xe_ccs@block-copy-compressed:
+    - bat-adlp-7:         NOTRUN -> [SKIP][13] ([Intel XE#455] / [Intel XE#488] / [Intel XE#5607]) +1 other test skip
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_ccs@block-copy-compressed.html
 
-  * igt@fbdev@read:
-    - fi-ivb-3770:        [PASS][3] -> [SKIP][4] +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8972/fi-ivb-3770/igt@fbdev@read.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-ivb-3770/igt@fbdev@read.html
+  * igt@xe_compute_preempt@compute-preempt:
+    - bat-adlp-7:         NOTRUN -> [SKIP][14] ([Intel XE#6360]) +1 other test skip
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_compute_preempt@compute-preempt.html
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][5] ([i915#2190])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
+  * igt@xe_exec_fault_mode@invalid-va:
+    - bat-adlp-7:         NOTRUN -> [SKIP][15] ([Intel XE#288] / [Intel XE#5561])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_exec_fault_mode@invalid-va.html
 
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][6] ([i915#4613]) +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][7] +12 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
+  * igt@xe_exec_system_allocator@eu-fault-2m-range-device-host:
+    - bat-adlp-7:         NOTRUN -> [SKIP][16] ([Intel XE#4915]) +11 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_exec_system_allocator@eu-fault-2m-range-device-host.html
 
   
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#488]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/488
+  [Intel XE#4915]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4915
+  [Intel XE#5561]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5561
+  [Intel XE#5607]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5607
+  [Intel XE#6360]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6360
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_8972 -> IGTPW_15395
-  * Linux: CI_DRM_18698 -> CI_DRM_18699
+  * Linux: xe-5276-909e0a88ba7edb191c7d3d3bf23b768a5c2407c3 -> xe-5277-8530e8b67c8dba3eb5b4c025c060a5b3b78262c6
 
-  CI-20190529: 20190529
-  CI_DRM_18698: 909e0a88ba7edb191c7d3d3bf23b768a5c2407c3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18699: 8530e8b67c8dba3eb5b4c025c060a5b3b78262c6 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15395: 60bda4a3a1da4beffbd39d70af735a5703900bac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8972: 8972
+  xe-5276-909e0a88ba7edb191c7d3d3bf23b768a5c2407c3: 909e0a88ba7edb191c7d3d3bf23b768a5c2407c3
+  xe-5277-8530e8b67c8dba3eb5b4c025c060a5b3b78262c6: 8530e8b67c8dba3eb5b4c025c060a5b3b78262c6
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/index.html
 
---===============7457370514124951915==
+--===============0902380592493064764==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -148,70 +200,127 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>intel-ci: Add SVM, multi_queue tests to Xe fastfeedback (rev8)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168562/">https://patchwork.freedesktop.org/series/168562/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8972 -&gt; IGTPW_15395</h1>
+    <h1>CI Bug Log - changes from XEIGT_8972_BAT -&gt; XEIGTPW_15395_BAT</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Additional (1): fi-glk-j4005 <br />
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_15395_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15395_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15395_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence.html">SKIP</a> +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@exec-sanity:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-bmg-1/igt@xe_exec_multi_queue@exec-sanity.html">SKIP</a> +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@many-queues-basic:</p>
+<ul>
+<li>bat-ptl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-ptl-1/igt@xe_exec_multi_queue@many-queues-basic.html">SKIP</a> +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@many-queues-basic-smem:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-lnl-2/igt@xe_exec_multi_queue@many-queues-basic-smem.html">SKIP</a> +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd:</p>
+<ul>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-ptl-vm/igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd.html">SKIP</a> +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-atsm-2/igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr.html">SKIP</a> +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@many-queues-priority:</p>
+<ul>
+<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-ptl-2/igt@xe_exec_multi_queue@many-queues-priority.html">SKIP</a> +13 other tests skip</li>
+<li>bat-wcl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-wcl-1/igt@xe_exec_multi_queue@many-queues-priority.html">SKIP</a> +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@many-queues-userptr-invalidate:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-wcl-2/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html">SKIP</a> +13 other tests skip</li>
+<li>bat-bmg-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-bmg-vm/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html">SKIP</a> +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@priority:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-lnl-1/igt@xe_exec_multi_queue@priority.html">SKIP</a> +13 other tests skip</li>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-bmg-2/igt@xe_exec_multi_queue@priority.html">SKIP</a> +13 other tests skip</li>
+</ul>
+</li>
+</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15395 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_15395_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@fbdev@info:</p>
+<p>igt@xe_ccs@block-copy-compressed:</p>
 <ul>
-<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8972/fi-ivb-3770/igt@fbdev@info.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-ivb-3770/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_ccs@block-copy-compressed.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/488">Intel XE#488</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5607">Intel XE#5607</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
-<p>igt@fbdev@read:</p>
+<p>igt@xe_compute_preempt@compute-preempt:</p>
 <ul>
-<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8972/fi-ivb-3770/igt@fbdev@read.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-ivb-3770/igt@fbdev@read.html">SKIP</a> +3 other tests skip</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_compute_preempt@compute-preempt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6360">Intel XE#6360</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_huc_copy@huc-copy:</p>
+<p>igt@xe_exec_fault_mode@invalid-va:</p>
 <ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_exec_fault_mode@invalid-va.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5561">Intel XE#5561</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<p>igt@xe_exec_system_allocator@eu-fault-2m-range-device-host:</p>
 <ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15395/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +12 other tests skip</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_exec_system_allocator@eu-fault-2m-range-device-host.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4915">Intel XE#4915</a>) +11 other tests skip</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8972 -&gt; IGTPW_15395</li>
-<li>Linux: CI_DRM_18698 -&gt; CI_DRM_18699</li>
+<li>Linux: xe-5276-909e0a88ba7edb191c7d3d3bf23b768a5c2407c3 -&gt; xe-5277-8530e8b67c8dba3eb5b4c025c060a5b3b78262c6</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18698: 909e0a88ba7edb191c7d3d3bf23b768a5c2407c3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18699: 8530e8b67c8dba3eb5b4c025c060a5b3b78262c6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15395: 60bda4a3a1da4beffbd39d70af735a5703900bac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8972: 8972</p>
+<p>IGTPW_15395: 60bda4a3a1da4beffbd39d70af735a5703900bac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8972: 8972<br />
+  xe-5276-909e0a88ba7edb191c7d3d3bf23b768a5c2407c3: 909e0a88ba7edb191c7d3d3bf23b768a5c2407c3<br />
+  xe-5277-8530e8b67c8dba3eb5b4c025c060a5b3b78262c6: 8530e8b67c8dba3eb5b4c025c060a5b3b78262c6</p>
 
 </body>
 </html>
 
---===============7457370514124951915==--
+--===============0902380592493064764==--
