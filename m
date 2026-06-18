@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 309B4CD98DE
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 05:14:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83FD6CD98ED
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 05:24:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A48E610EC89;
-	Thu, 18 Jun 2026 05:14:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BKfFRGl4";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB84810EC82
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 05:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781759649; x=1813295649;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=KhLrnmN5JUfY0TaFvsDQvqwCnG2oQn7QSAb9AIi3hzg=;
- b=BKfFRGl4JsxCPzXHGYKnmgbRl0ukxvtPhGsey8LLwGTISpGKXLLg85oY
- CUZazIxksPHY1Mu/0QioPoRdmwPvQZoKOMWcpb9DpSbX/WoHHSHWLfmmI
- pdksnc+QjT8PV8Atr0VxICj6djmLH4gaVzm5Rq9mM6PWTbeGm+lLYKBoy
- SpAd/d/YR0MP5hor3LXP3yDwcAd1pBJ/KeeuXppoU78tgcUb5e+4r1R4A
- tHVsfTMnE0C1fjHzXx670y6MlZMq3XL36lF9Ey4E92iIZUVWjNLZxplVb
- WUeMFg5r6cCx5iz9Dy4WzJP0tyeuZd8Kc/GCmdS6C1f0ZYjEls8ZUiIQh w==;
-X-CSE-ConnectionGUID: aqfcnn4cQV2wY6ME1bjquw==
-X-CSE-MsgGUID: cW7hlQ1LQkawEr+2q2yrZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="85140469"
-X-IronPort-AV: E=Sophos;i="6.24,210,1774335600"; d="scan'208";a="85140469"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2026 22:14:08 -0700
-X-CSE-ConnectionGUID: OGXJO6qmSNiLXzGXCmt4gA==
-X-CSE-MsgGUID: RoJUjO0UTKG3hoGhhaQOUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,210,1774335600"; d="scan'208";a="241893831"
-Received: from vmuppidi-nuc8i7beh.iind.intel.com ([10.223.55.63])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2026 22:14:07 -0700
-From: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: francois.dugast@intel.com, zbigniew.kempczynski@intel.com,
- priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com
-Subject: [PATCH i-g-t v8] intel-ci: Add SVM,
- multi_queue tests to Xe fastfeedback
-Date: Thu, 18 Jun 2026 10:45:22 +0530
-Message-ID: <20260618051522.7910-1-venkateswara.rao.muppidi@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 34F6D10EC8E;
+	Thu, 18 Jun 2026 05:24:48 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5511610EC8E;
+ Thu, 18 Jun 2026 05:24:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8953698400700385893=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fdsc=3A_Ensure?=
+ =?utf-8?q?_non-joiner_modes_on_non-joiner_subtests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik B S" <karthik.b.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 18 Jun 2026 05:24:22 -0000
+Message-ID: <178176026234.92016.6989403201258754468@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260618043055.2998900-1-karthik.b.s@intel.com>
+In-Reply-To: <20260618043055.2998900-1-karthik.b.s@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,93 +37,158 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add  SVM, render copy,ccs,compute_preempt,exercise_blt,exec_mix_modes,
-access_counter, fault_mode,multi_queue tests to fastfeedback list
+--===============8953698400700385893==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: add eu-fault-2m-range-device-host test (Francois)
-v3: corrected s-o-b and From
-v4: Refine SVM tests by removing the race test, adding remaining SVM tests,
-and organizing all entries in alphabetical order.
-v6: Remove twice.* tests and add a new set of SVM tests (Francois)
-v8: Remove few-execs-dyn-priority and add priority tests for
-multi_queue (Niranjana)
+== Series Details ==
 
-Signed-off-by: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
----
- tests/intel-ci/xe.fast-feedback.testlist | 37 ++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+Series: tests/kms_dsc: Ensure non-joiner modes on non-joiner subtests
+URL   : https://patchwork.freedesktop.org/series/168744/
+State : success
 
-diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
-index acff025fa..c47db8c43 100644
---- a/tests/intel-ci/xe.fast-feedback.testlist
-+++ b/tests/intel-ci/xe.fast-feedback.testlist
-@@ -69,7 +69,11 @@ igt@kms_psr@psr-cursor-plane-move
- igt@kms_psr@psr-sprite-plane-onoff
- igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-all
- igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-1
-+igt@xe_ccs@block-copy-compressed
-+igt@xe_ccs@ctrl-surf-copy
- igt@xe_compute@compute-square
-+igt@xe_compute_preempt@compute-preempt
-+igt@xe_compute_preempt@compute-threadgroup-preempt
- igt@xe_create@create-execqueues-noleak
- igt@xe_create@create-execqueues-leak
- igt@xe_create@create-invalid-mbz
-@@ -129,11 +133,43 @@ igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
- igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
- igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
- igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
-+igt@xe_exec_fault_mode@invalid-va
-+igt@xe_exec_mix_modes@exec-simple-batch-store-dma-fence
-+igt@xe_exec_mix_modes@exec-simple-batch-store-lr
-+igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence
-+igt@xe_exec_mix_modes@exec-spinner-interrupted-lr
-+igt@xe_exec_multi_queue@sanity
-+igt@xe_exec_multi_queue@exec-sanity
-+igt@xe_exec_multi_queue@many-queues-basic
-+igt@xe_exec_multi_queue@many-queues-basic-smem
-+igt@xe_exec_multi_queue@many-queues-userptr
-+igt@xe_exec_multi_queue@many-queues-userptr-invalidate
-+igt@xe_exec_multi_queue@many-queues-priority
-+igt@xe_exec_multi_queue@many-queues-close-fd
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-basic
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-basic
-+igt@xe_exec_multi_queue@many-queues-preempt-mode-fault-userptr-invalidate
-+igt@xe_exec_multi_queue@priority
- igt@xe_exec_queue_property@invalid-property
- igt@xe_exec_reset@close-fd-no-exec
- igt@xe_exec_reset@cm-close-fd-no-exec
- igt@xe_exec_reset@virtual-close-fd-no-exec
- igt@xe_exec_store@basic-store
-+igt@xe_exec_system_allocator@eu-fault-2m-range-device-host
-+igt@xe_exec_system_allocator@fault
-+igt@xe_exec_system_allocator@madvise-atomic-inc
-+igt@xe_exec_system_allocator@many-execqueues-free
-+igt@xe_exec_system_allocator@many-execqueues-malloc
-+igt@xe_exec_system_allocator@once-malloc
-+igt@xe_exec_system_allocator@once-mmap
-+igt@xe_exec_system_allocator@partial-munmap-cpu-fault
-+igt@xe_exec_system_allocator@process-many-malloc
-+igt@xe_exec_system_allocator@threads-many-malloc
-+igt@xe_exec_system_allocator@threads-shared-vm-many-malloc
-+igt@xe_exec_system_allocator@twice-free
-+igt@xe_exercise_blt@fast-copy
- igt@xe_gpgpu_fill@basic
- igt@xe_gt_freq@freq_basic_api
- igt@xe_gt_freq@freq_fixed_idle
-@@ -176,6 +212,7 @@ igt@xe_query@query-topology
- igt@xe_query@query-invalid-extension
- igt@xe_query@query-invalid-query
- igt@xe_query@query-invalid-size
-+igt@xe_render_copy@render-square
- igt@xe_spin_batch@spin-basic
- igt@xe_spin_batch@spin-batch
- igt@xe_sriov_flr@flr-vf1-clear
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from IGT_8972 -> IGTPW_15394
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/index.html
+
+Participating hosts (41 -> 40)
+------------------------------
+
+  Additional (1): fi-glk-j4005 
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15394 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@kms_psr@psr-primary-page-flip:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][3] +12 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
+
+  
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8972 -> IGTPW_15394
+  * Linux: CI_DRM_18698 -> CI_DRM_18699
+
+  CI-20190529: 20190529
+  CI_DRM_18698: 909e0a88ba7edb191c7d3d3bf23b768a5c2407c3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18699: 8530e8b67c8dba3eb5b4c025c060a5b3b78262c6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15394: dd233c24850565bc5ded754724a21a879ac9269d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8972: 8972
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/index.html
+
+--===============8953698400700385893==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_dsc: Ensure non-joiner modes on non-joiner subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168744/">https://patchwork.freedesktop.org/series/168744/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8972 -&gt; IGTPW_15394</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/index.html</p>
+<h2>Participating hosts (41 -&gt; 40)</h2>
+<p>Additional (1): fi-glk-j4005 <br />
+  Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15394 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-page-flip:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15394/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +12 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8972 -&gt; IGTPW_15394</li>
+<li>Linux: CI_DRM_18698 -&gt; CI_DRM_18699</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18698: 909e0a88ba7edb191c7d3d3bf23b768a5c2407c3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18699: 8530e8b67c8dba3eb5b4c025c060a5b3b78262c6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15394: dd233c24850565bc5ded754724a21a879ac9269d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8972: 8972</p>
+
+</body>
+</html>
+
+--===============8953698400700385893==--
