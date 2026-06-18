@@ -4,54 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE0B7CD98F0
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 23:54:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83A73CD98F0
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 23:57:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4CD1010E365;
-	Thu, 18 Jun 2026 23:54:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2FEBD10E365;
+	Thu, 18 Jun 2026 23:57:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CSoCz9Jl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H7oKmocr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4588710E365
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 23:54:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65D6910E365
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 23:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781826848; x=1813362848;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=v1UIb+vN8y6tYL6ohEy+MchINHIQWck70DWGo+uNm5E=;
- b=CSoCz9Jljc5/4M4L4cfIMcu1fbCOtuojV0hP2f0ew2N/FdtwlJdMKdX8
- FDEw8jKFaYKyQt9JzcWsSy+qZ29XbgFk6KMirFzo8YV8vUEAg5sCE50AZ
- c4BK6CCZqxS/zPg/br3bxAT5W8OPa+sV16Z0WBHtiY5kdJgSo8L9B80b3
- Fhs0EDNFvQzIQnNj+UHNTW4tIGyqcZSKkxd20ciIzgtGhZ9vATj8wFlNJ
- hSii5VZ5uz1HgpJvPzPGPvbUSowKxq6xpMBGfNUvEKNxrhoePceEWaG8o
- im5JKtprzUSSMxJcgoNtEeLROh+pTj/mijbAFChMyz+XXCEuMeGaxkPgX Q==;
-X-CSE-ConnectionGUID: tPqbvnrWRZG/DyB+/6PBcQ==
-X-CSE-MsgGUID: ML6341ilRlaLt1ayhNWwyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="105480627"
-X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; d="scan'208";a="105480627"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2026 16:54:07 -0700
-X-CSE-ConnectionGUID: NL5PfnvwQ4qYmRxnLVRZ2Q==
-X-CSE-MsgGUID: NDu2IHCLRKWJpeyb1BUEaQ==
+ t=1781826998; x=1813362998;
+ h=date:message-id:from:to:subject:in-reply-to:references:
+ mime-version; bh=W1JgROIDnUuEjRI3cisMq2iZpBSSTdMVeCnVCmj5EsI=;
+ b=H7oKmocrvw8PnUy82yK+hMATYMQ2myJVtxlWqdX+nTEeE+NeRi5yJu6U
+ g/yRTbAzU8VFy4w/LNds6BkoU+BVgpQJ6VrSzXeWJ2x0u/ZmNxwICCeaq
+ FdvAGKSZDaHv8LZc7iQ9ak1lqkclOePhxQCg05ahDI6UE+02YM84dF/vD
+ 7J1FgyVB8swSX4gYTrbTnaLfc4AesF84etOlXItdtrBeKYXXoas+TWBWj
+ I4TJJr0MHB7d3ZbN/cqUZgMfqJQ9MPofDuv7qFhEe6KPMJrB9/nM/Tv3A
+ oZOjxb0qRH41pYbcZDhE83dahS31jeZgrjIuH2CjJjF4q/ZBvvB9MXRJY A==;
+X-CSE-ConnectionGUID: oSMrBn2wTYeHYbSV/aQobw==
+X-CSE-MsgGUID: QIJZlpYRSHuT47vlEI8G+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="93796849"
+X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; d="scan'208";a="93796849"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2026 16:56:37 -0700
+X-CSE-ConnectionGUID: WSuOc3yvT5OC1oOigajvWA==
+X-CSE-MsgGUID: et/7mtALRIKZG3WOQylHmg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; d="scan'208";a="252819668"
-Received: from orsosgc001.jf.intel.com ([10.88.27.185])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2026 16:54:06 -0700
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; d="scan'208";a="278680077"
+Received: from klopezam-mobl3.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.36.114])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2026 16:56:37 -0700
+Date: Thu, 18 Jun 2026 16:56:36 -0700
+Message-ID: <871pe3pfm3.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org,
+ Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
+ janusz.krzysztofik@linux.intel.com, lukasz.laguna@intel.com,
  Jani Nikula <jani.nikula@linux.intel.com>
-Subject: [PATCH i-g-t v5] lib/intel_chipset: Extend intel_get_pci_device to
- PCI accelerator class
-Date: Thu, 18 Jun 2026 16:54:03 -0700
-Message-ID: <20260618235403.396430-1-ashutosh.dixit@intel.com>
-X-Mailer: git-send-email 2.54.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH i-g-t v3] lib/intel_chipset: Extend intel_get_pci_device
+ to PCI accelerator class
+In-Reply-To: <20260618203049.myzmhjuxgbobubms@kamilkon-DESK.igk.intel.com>
+References: <20260616145458.181427-1-ashutosh.dixit@intel.com>
+ <20260618203049.myzmhjuxgbobubms@kamilkon-DESK.igk.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,219 +74,276 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In addition to PCI display class devices, Intel devices can also be PCI
-accelerator class devices. Extend intel_get_pci_device() to also find these
-devices.
+On Thu, 18 Jun 2026 13:30:49 -0700, Kamil Konieczny wrote:
+>
 
-v2: Introduce intel_get_pci_device_disp for those tools who specifically
-    want only display class devices (Kamil)
-v3: Same as v2
-v4: s/intel_get_pci_device_disp/intel_get_pci_device_display/
-v5: More code refactor (Kamil)
+Hi Kamil,
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/intel_chipset.c             | 56 +++++++++++++++++++++++++++------
- lib/intel_chipset.h             |  1 +
- tools/intel_audio_dump.c        |  2 +-
- tools/intel_backlight.c         |  2 +-
- tools/intel_display_bandwidth.c |  4 +--
- tools/intel_display_poller.c    |  4 +--
- tools/intel_panel_fitter.c      |  2 +-
- 7 files changed, 55 insertions(+), 16 deletions(-)
+In v5 I have basically done what you've suggested below. Please check.
 
-diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
-index 760faede24..c0a350588e 100644
---- a/lib/intel_chipset.c
-+++ b/lib/intel_chipset.c
-@@ -64,15 +64,14 @@
- enum pch_type intel_pch;
- 
- /**
-- * intel_get_pci_device:
-+ * intel_pci_device_by_class:
-  *
-  * Looks up the main graphics pci device using libpciaccess.
-  *
-  * Returns:
-  * The pci_device, exits the program on any failures.
-  */
--struct pci_device *
--intel_get_pci_device(void)
-+static struct pci_device *intel_pci_device_by_class(uint8_t class)
- {
- 	struct pci_device *pci_dev;
- 	int error;
-@@ -81,7 +80,7 @@ intel_get_pci_device(void)
- 	igt_fail_on_f(error != 0,
- 		      "Couldn't initialize PCI system\n");
- 
--	/* Grab the graphics card. Try the canonical slot first, then
-+	/* Grab the Intel device. Try the canonical slot first, then
- 	 * walk the entire PCI bus for a matching device. */
- 	pci_dev = pci_device_find_by_slot(0, 0, 2, 0);
- 	if (pci_dev == NULL || pci_dev->vendor_id != 0x8086) {
-@@ -93,7 +92,7 @@ intel_get_pci_device(void)
- 		match.subvendor_id = PCI_MATCH_ANY;
- 		match.subdevice_id = PCI_MATCH_ANY;
- 
--		match.device_class = 0x3 << 16;
-+		match.device_class = class << 16;
- 		match.device_class_mask = 0xff << 16;
- 
- 		match.match_data = 0;
-@@ -102,14 +101,53 @@ intel_get_pci_device(void)
- 		pci_dev = pci_device_next(iter);
- 		pci_iterator_destroy(iter);
- 	}
--	igt_require_f(pci_dev, "Couldn't find Intel graphics card\n");
-+	if (!pci_dev)
-+		return NULL;
- 
- 	error = pci_device_probe(pci_dev);
--	igt_fail_on_f(error != 0,
--		      "Couldn't probe graphics card\n");
-+	igt_fail_on_f(error != 0, "Couldn't probe the device\n");
- 
- 	if (pci_dev->vendor_id != 0x8086)
--		errx(1, "Graphics card is non-intel");
-+		errx(1, "PCI device 0x%02x card is non-intel", class);
-+
-+	return pci_dev;
-+}
-+
-+/**
-+ * intel_get_pci_device_display:
-+ *
-+ * Looks up display class pci device using libpciaccess
-+ *
-+ * Returns: The pci_device, exits the program on any failures
-+ */
-+struct pci_device *intel_get_pci_device_display(void)
-+{
-+	/* PCI display class (0x3) device */
-+	struct pci_device *pci_dev = intel_pci_device_by_class(0x3);
-+
-+	igt_require_f(pci_dev, "Couldn't find Intel graphics device\n");
-+
-+	return pci_dev;
-+}
-+
-+
-+/**
-+ * intel_get_pci_device:
-+ *
-+ * Looks up display and accelerator class pci devices using libpciaccess
-+ *
-+ * Returns: The pci_device, exits the program on any failures
-+ */
-+struct pci_device *intel_get_pci_device(void)
-+{
-+	/* PCI display class (0x3) device */
-+	struct pci_device *pci_dev = intel_pci_device_by_class(0x3);
-+
-+	/* PCI accelerator class (0x12) device */
-+	if (!pci_dev)
-+		pci_dev = intel_pci_device_by_class(0x12);
-+
-+	igt_require_f(pci_dev, "Couldn't find Intel graphics or accelerator device\n");
- 
- 	return pci_dev;
- }
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 98a2a81fcf..1f02932e4a 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -36,6 +36,7 @@
- #define BIT(x) (1ul <<(x))
- 
- struct pci_device *intel_get_pci_device(void);
-+struct pci_device *intel_get_pci_device_display(void);
- uint32_t intel_get_drm_devid(int fd);
- 
- struct intel_device_info {
-diff --git a/tools/intel_audio_dump.c b/tools/intel_audio_dump.c
-index 287dbd4759..5761fc1bbc 100644
---- a/tools/intel_audio_dump.c
-+++ b/tools/intel_audio_dump.c
-@@ -2468,7 +2468,7 @@ int main(int argc, char **argv)
- 	struct pci_device *pci_dev;
- 	struct intel_mmio_data mmio_data;
- 
--	pci_dev = intel_get_pci_device();
-+	pci_dev = intel_get_pci_device_display();
- 	devid = pci_dev->device_id; /* XXX not true when mapping! */
- 
- 	do_self_tests();
-diff --git a/tools/intel_backlight.c b/tools/intel_backlight.c
-index edf060224f..1478583e97 100644
---- a/tools/intel_backlight.c
-+++ b/tools/intel_backlight.c
-@@ -41,7 +41,7 @@ int main(int argc, char** argv)
- 	struct intel_mmio_data mmio_data;
- 	uint32_t current, max;
- 
--	intel_mmio_use_pci_bar(&mmio_data, intel_get_pci_device());
-+	intel_mmio_use_pci_bar(&mmio_data, intel_get_pci_device_display());
- 
- 	current = INREG(BLC_PWM_CPU_CTL) & BACKLIGHT_DUTY_CYCLE_MASK;
- 	max = INREG(BLC_PWM_PCH_CTL2) >> 16;
-diff --git a/tools/intel_display_bandwidth.c b/tools/intel_display_bandwidth.c
-index b798f8b652..193f309d39 100644
---- a/tools/intel_display_bandwidth.c
-+++ b/tools/intel_display_bandwidth.c
-@@ -152,14 +152,14 @@ int main(int argc, char *argv[])
- 		}
- 	}
- 
--	devid = intel_get_pci_device()->device_id;
-+	devid = intel_get_pci_device_display()->device_id;
- 
- 	if (!has_de_power2(devid)) {
- 		fprintf(stderr, "Display bandwidth counter not available\n");
- 		return 2;
- 	}
- 
--	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
-+	intel_register_access_init(&mmio_data, intel_get_pci_device_display(), 0);
- 
- 	if (has_de_power2_abox0_abox1(devid))
- 		measure_de_power2_abox0_abox1(devid, sleep_duration);
-diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
-index 6338f22223..df333597e7 100644
---- a/tools/intel_display_poller.c
-+++ b/tools/intel_display_poller.c
-@@ -1508,7 +1508,7 @@ int main(int argc, char *argv[])
- 		}
- 	}
- 
--	devid = intel_get_pci_device()->device_id;
-+	devid = intel_get_pci_device_display()->device_id;
- 
- 	/*
- 	 * check if the requires registers are
-@@ -1677,7 +1677,7 @@ int main(int argc, char *argv[])
- 		break;
- 	}
- 
--	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
-+	intel_register_access_init(&mmio_data, intel_get_pci_device_display(), 0);
- 
- 	if (auto_scanline_offset)
- 		scanline_offset = default_scanline_offset(devid, pipe);
-diff --git a/tools/intel_panel_fitter.c b/tools/intel_panel_fitter.c
-index d9555d5c67..2234eac6c4 100644
---- a/tools/intel_panel_fitter.c
-+++ b/tools/intel_panel_fitter.c
-@@ -280,7 +280,7 @@ int main (int argc, char *argv[])
- 	       "with overscan compensation properties: it is just a temporary "
- 	       "solution that may or may not work. Use it at your own risk.\n");
- 
--	pci_dev = intel_get_pci_device();
-+	pci_dev = intel_get_pci_device_display();
- 	intel_register_access_init(&mmio_data, pci_dev, 0);
- 	devid = pci_dev->device_id;
- 
--- 
-2.54.0
+Thanks.
+--
+Ashutosh
 
+
+> On 2026-06-16 at 07:54:58 -0700, Ashutosh Dixit wrote:
+> > In addition to PCI display class devices, Intel devices can also be PCI
+> > accelerator class devices. Extend intel_get_pci_device() to also find these
+> > devices.
+> >
+> > v2: Introduce intel_get_pci_device_disp for those tools who specifically
+> >     want only display class devices (Kamiil)
+> > v3: s/intel_get_pci_device_disp/intel_get_pci_device_display/
+> >
+> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> >  lib/intel_chipset.c             | 82 +++++++++++++++++++++++----------
+> >  lib/intel_chipset.h             |  1 +
+> >  tools/intel_audio_dump.c        |  2 +-
+> >  tools/intel_backlight.c         |  2 +-
+> >  tools/intel_display_bandwidth.c |  4 +-
+> >  tools/intel_display_poller.c    |  4 +-
+> >  tools/intel_panel_fitter.c      |  2 +-
+> >  7 files changed, 65 insertions(+), 32 deletions(-)
+> >
+> > diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
+> > index 760faede24..8bf3d52b77 100644
+> > --- a/lib/intel_chipset.c
+> > +++ b/lib/intel_chipset.c
+> > @@ -63,16 +63,34 @@
+> >   */
+> >  enum pch_type intel_pch;
+> >
+> > -/**
+> > - * intel_get_pci_device:
+> > - *
+> > - * Looks up the main graphics pci device using libpciaccess.
+> > - *
+> > - * Returns:
+> > - * The pci_device, exits the program on any failures.
+> > - */
+> > -struct pci_device *
+> > -intel_get_pci_device(void)
+> > +static struct pci_device *intel_pci_device_by_class(uint8_t class)
+> > +{
+> > +	struct pci_device *pci_dev;
+> > +	struct pci_device_iterator *iter;
+> > +	struct pci_id_match match;
+> > +	int error;
+> > +
+> > +	error = igt_pci_system_init();
+> > +	igt_fail_on_f(error != 0, "Couldn't initialize PCI system\n");
+> > +
+> > +	match.vendor_id = 0x8086; /* Intel */
+> > +	match.device_id = PCI_MATCH_ANY;
+> > +	match.subvendor_id = PCI_MATCH_ANY;
+> > +	match.subdevice_id = PCI_MATCH_ANY;
+> > +
+> > +	match.device_class = class << 16;
+> > +	match.device_class_mask = 0xff << 16;
+> > +
+> > +	match.match_data = 0;
+> > +
+> > +	iter = pci_id_match_iterator_create(&match);
+> > +	pci_dev = pci_device_next(iter);
+> > +	pci_iterator_destroy(iter);
+>
+> Also there was a device probe, you need it here when
+> pci_dev != NULL
+>
+> Add a check for vendor id, just like in previous implementation,
+>	if (pci_dev && pci_dev->vendor_id != 0x8086)
+>		err here
+>
+>
+> > +
+> > +	return pci_dev;
+> > +}
+> > +
+> > +static struct pci_device *__intel_get_pci_device(bool accel)
+>
+> Please remove this function, see below.
+>
+> >  {
+> >	struct pci_device *pci_dev;
+> >	int error;
+> > @@ -85,22 +103,12 @@ intel_get_pci_device(void)
+> >	 * walk the entire PCI bus for a matching device. */
+> >	pci_dev = pci_device_find_by_slot(0, 0, 2, 0);
+> >	if (pci_dev == NULL || pci_dev->vendor_id != 0x8086) {
+> > -		struct pci_device_iterator *iter;
+> > -		struct pci_id_match match;
+> > +		/* PCI display class (0x3) devices */
+> > +		pci_dev = intel_pci_device_by_class(0x3);
+> >
+> > -		match.vendor_id = 0x8086; /* Intel */
+> > -		match.device_id = PCI_MATCH_ANY;
+> > -		match.subvendor_id = PCI_MATCH_ANY;
+> > -		match.subdevice_id = PCI_MATCH_ANY;
+> > -
+> > -		match.device_class = 0x3 << 16;
+> > -		match.device_class_mask = 0xff << 16;
+> > -
+> > -		match.match_data = 0;
+> > -
+> > -		iter = pci_id_match_iterator_create(&match);
+> > -		pci_dev = pci_device_next(iter);
+> > -		pci_iterator_destroy(iter);
+> > +		if (!pci_dev && accel)
+> > +			/* PCI accelerator class (0x12) devices */
+> > +			pci_dev = intel_pci_device_by_class(0x12);
+> >	}
+> >	igt_require_f(pci_dev, "Couldn't find Intel graphics card\n");
+> >
+> > @@ -114,6 +122,30 @@ intel_get_pci_device(void)
+> >	return pci_dev;
+> >  }
+> >
+> > +/**
+> > + * intel_get_pci_device:
+> > + *
+> > + * Looks up display and accelerator class pci devices using libpciaccess
+> > + *
+> > + * Returns: The pci_device, exits the program on any failures
+> > + */
+> > +struct pci_device *intel_get_pci_device(void)
+> > +{
+>
+> Just encode it here:
+>	struct pci_device *pci_dev = intel_pci_device_by_class(0x3);
+>
+>	if (!pci_dev)
+>		pci_dev = intel_pci_device_by_class(0x12);
+>
+>	if (!pci_dev) {
+>		drop error here just like in previous implementation
+>	}
+>
+>	return pci_dev;
+> > +}
+> > +
+> > +/**
+> > + * intel_get_pci_device_disp:
+>
+> s/disp/display/
+>
+> > + *
+> > + * Looks up display class pci device using libpciaccess
+> > + *
+> > + * Returns: The pci_device, exits the program on any failures
+> > + */
+> > +struct pci_device *intel_get_pci_device_display(void)
+> > +{
+> > +	return __intel_get_pci_device(false);
+>
+> Here use helper directly:
+>
+>	pci_dev = intel_pci_device_by_class(0x3);
+>
+> and add error check igt_require(...)
+>
+> Regards,
+> Kamil
+>
+> > +}
+> > +
+> >  static uint32_t __i915_get_drm_devid(int fd)
+> >  {
+> >	struct drm_i915_getparam gp;
+> > diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> > index 3fcc5b18d6..018cfaba5e 100644
+> > --- a/lib/intel_chipset.h
+> > +++ b/lib/intel_chipset.h
+> > @@ -36,6 +36,7 @@
+> >  #define BIT(x) (1ul <<(x))
+> >
+> >  struct pci_device *intel_get_pci_device(void);
+> > +struct pci_device *intel_get_pci_device_display(void);
+> >  uint32_t intel_get_drm_devid(int fd);
+> >
+> >  struct intel_device_info {
+> > diff --git a/tools/intel_audio_dump.c b/tools/intel_audio_dump.c
+> > index 287dbd4759..5761fc1bbc 100644
+> > --- a/tools/intel_audio_dump.c
+> > +++ b/tools/intel_audio_dump.c
+> > @@ -2468,7 +2468,7 @@ int main(int argc, char **argv)
+> >	struct pci_device *pci_dev;
+> >	struct intel_mmio_data mmio_data;
+> >
+> > -	pci_dev = intel_get_pci_device();
+> > +	pci_dev = intel_get_pci_device_display();
+> >	devid = pci_dev->device_id; /* XXX not true when mapping! */
+> >
+> >	do_self_tests();
+> > diff --git a/tools/intel_backlight.c b/tools/intel_backlight.c
+> > index edf060224f..1478583e97 100644
+> > --- a/tools/intel_backlight.c
+> > +++ b/tools/intel_backlight.c
+> > @@ -41,7 +41,7 @@ int main(int argc, char** argv)
+> >	struct intel_mmio_data mmio_data;
+> >	uint32_t current, max;
+> >
+> > -	intel_mmio_use_pci_bar(&mmio_data, intel_get_pci_device());
+> > +	intel_mmio_use_pci_bar(&mmio_data, intel_get_pci_device_display());
+> >
+> >	current = INREG(BLC_PWM_CPU_CTL) & BACKLIGHT_DUTY_CYCLE_MASK;
+> >	max = INREG(BLC_PWM_PCH_CTL2) >> 16;
+> > diff --git a/tools/intel_display_bandwidth.c b/tools/intel_display_bandwidth.c
+> > index b798f8b652..193f309d39 100644
+> > --- a/tools/intel_display_bandwidth.c
+> > +++ b/tools/intel_display_bandwidth.c
+> > @@ -152,14 +152,14 @@ int main(int argc, char *argv[])
+> >		}
+> >	}
+> >
+> > -	devid = intel_get_pci_device()->device_id;
+> > +	devid = intel_get_pci_device_display()->device_id;
+> >
+> >	if (!has_de_power2(devid)) {
+> >		fprintf(stderr, "Display bandwidth counter not available\n");
+> >		return 2;
+> >	}
+> >
+> > -	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
+> > +	intel_register_access_init(&mmio_data, intel_get_pci_device_display(), 0);
+> >
+> >	if (has_de_power2_abox0_abox1(devid))
+> >		measure_de_power2_abox0_abox1(devid, sleep_duration);
+> > diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
+> > index 6338f22223..df333597e7 100644
+> > --- a/tools/intel_display_poller.c
+> > +++ b/tools/intel_display_poller.c
+> > @@ -1508,7 +1508,7 @@ int main(int argc, char *argv[])
+> >		}
+> >	}
+> >
+> > -	devid = intel_get_pci_device()->device_id;
+> > +	devid = intel_get_pci_device_display()->device_id;
+> >
+> >	/*
+> >	 * check if the requires registers are
+> > @@ -1677,7 +1677,7 @@ int main(int argc, char *argv[])
+> >		break;
+> >	}
+> >
+> > -	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
+> > +	intel_register_access_init(&mmio_data, intel_get_pci_device_display(), 0);
+> >
+> >	if (auto_scanline_offset)
+> >		scanline_offset = default_scanline_offset(devid, pipe);
+> > diff --git a/tools/intel_panel_fitter.c b/tools/intel_panel_fitter.c
+> > index d9555d5c67..2234eac6c4 100644
+> > --- a/tools/intel_panel_fitter.c
+> > +++ b/tools/intel_panel_fitter.c
+> > @@ -280,7 +280,7 @@ int main (int argc, char *argv[])
+> >	       "with overscan compensation properties: it is just a temporary "
+> >	       "solution that may or may not work. Use it at your own risk.\n");
+> >
+> > -	pci_dev = intel_get_pci_device();
+> > +	pci_dev = intel_get_pci_device_display();
+> >	intel_register_access_init(&mmio_data, pci_dev, 0);
+> >	devid = pci_dev->device_id;
+> >
+> > --
+> > 2.54.0
+> >
