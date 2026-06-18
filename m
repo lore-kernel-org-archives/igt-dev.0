@@ -4,59 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C9B2CD98F2
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 12:37:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06844CD98ED
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 12:37:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1732810E476;
-	Thu, 18 Jun 2026 12:37:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A797810EE15;
+	Thu, 18 Jun 2026 12:37:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WFJW1TZT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NK7/Lvpu";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8842910E476
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 12:36:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96C6D10E476
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 12:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781786194; x=1813322194;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=S0nsz87BXygltH874fC6MCRLEhtzACom5l6Un6SOOnw=;
- b=WFJW1TZTExSvtXj0xi2PGeLugnw4Y89rqh7QMSDIGL0Di1hdFztmBXTn
- 80OiML49RgojF20hFfx1mSWJEaEg4r1r15uyN1V2b+uk4OquyAbeh+XcQ
- BExg1YkEi5rRVspK882llMYSGYqKSsMWJADoyGZlflc37DZRVJpH85mX1
- OU76RwfuGezlsjm55cwVc//apel3yCAW3CfP4sJbVO2JYMASseFAJdb1M
- iCEqEcvfl2yTZzZ+OY63easuL5f3AUo/1RviWPgMsUTbv4AkHdunYmXH3
- arqBRz+Vn8SeQGnPuQ8jmjxZRkhVU5oK+fKCiXvzezG514zFczl17bjoN Q==;
-X-CSE-ConnectionGUID: vpRLXOCUQP22Bwd0MvD9LA==
-X-CSE-MsgGUID: 2pvIkt/BR46txZWazo4WVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="92955800"
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="92955800"
+ t=1781786203; x=1813322203;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=AOeDatZzMNSDfvaCTStQeIf8B+6RR1Z77s9S/sfSevA=;
+ b=NK7/Lvpuxg7F7rNIXobO2UWmBrO3BUet3kqd/pxOgZZ8SFjuiusy6T5g
+ KMGpnoTycKEc5rw32wQDPC3d9WpiswJVVZaEKBE5mh+pt5dO9BFd79Bjv
+ Xj+cGcD74IHAp0YCJgXif2ftPijs/fJvuHckN2Izh+Dpa0SpGEhX4ToKN
+ vJXNvfep0nqWO3jLea7/GiSRLDZjfexI2xCmFMrXWhrwkrk1DhE/4iTAX
+ zowFTtw0q27KBcEb4BEbl6ZmOcxvpry2x7OgzhRzy8FP92cuTENSZST8d
+ zQgw5Q16kw22ragjxSDz1OGNHW9UtY1x+ybOGXi+kgc1/Kva6W8WCioSP Q==;
+X-CSE-ConnectionGUID: ViMcCZ2HS1uH/uLYYV+gEQ==
+X-CSE-MsgGUID: i+uJqOkTTrq1VayHtgEv7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="92955867"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="92955867"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2026 05:36:30 -0700
-X-CSE-ConnectionGUID: 7K6QFiUUTimPEak+/UieJA==
-X-CSE-MsgGUID: J8iQrdXEQpG0rThK1E15Ig==
+ 18 Jun 2026 05:36:37 -0700
+X-CSE-ConnectionGUID: i85ZA9eJTEqnXoMWCtjDFA==
+X-CSE-MsgGUID: j7X7vFgSTLiVgge8ug+UWQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="286479104"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="286479129"
 Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.106])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2026 05:36:28 -0700
+ 18 Jun 2026 05:36:36 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v2 0/2] Allow intel_reg tool to work also with
- accelerators
-Date: Thu, 18 Jun 2026 14:36:20 +0200
-Message-ID: <20260618123623.68006-1-kamil.konieczny@linux.intel.com>
+ Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH i-g-t v2 2/2] tools/intel_reg: Create default accelerator
+ access
+Date: Thu, 18 Jun 2026 14:36:22 +0200
+Message-ID: <20260618123623.68006-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260618123623.68006-1-kamil.konieczny@linux.intel.com>
+References: <20260618123623.68006-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -73,33 +71,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-An Intel tool for register access could also be used for
-accelerators. While the device could be accesed by BDF address
-with the help of --pci-slot option, allow a tool to work with
-default device found on PCI bus. When no Intel display device
-is present then intel_reg will search for Intel accelerator and
-it will use it for operations on registers.
-
-For reference please look into https://patchwork.freedesktop.org/series/168385/
-lib/intel_chipset: Extend intel_get_pci_device to PCI accelerator class
+Among computing devices there are GPU and accelerators and the
+intel_reg tool worked only with former ones. Create new way for
+finding a compute device and when no Intel GPU is found, then
+search for Intel accelerator.
 
 v2: removed printing info on success (Jani)
 
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tools/intel_reg.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Kamil Konieczny (2):
-  lib/intel_chipset: Create intel_get_pci_accelerator_device() function
-  tools/intel_reg: Create default accelerator access
-
- lib/intel_chipset.c | 47 ++++++++++++++++++++++++++++++++++++---------
- lib/intel_chipset.h |  1 +
- tools/intel_reg.c   |  7 +++++++
- 3 files changed, 46 insertions(+), 9 deletions(-)
-
+diff --git a/tools/intel_reg.c b/tools/intel_reg.c
+index 49afe91c0..d08fa14f5 100644
+--- a/tools/intel_reg.c
++++ b/tools/intel_reg.c
+@@ -1382,6 +1382,13 @@ int main(int argc, char *argv[])
+ 				return EXIT_FAILURE;
+ 		} else {
+ 			config.pci_dev = intel_get_pci_device();
++			if (!config.pci_dev)
++				config.pci_dev = intel_get_pci_accelerator_device();
++
++			if (!config.pci_dev) {
++				fprintf(stderr, "Cannot find Intel GPU nor accelerator device\n");
++				return EXIT_FAILURE;
++			}
+ 		}
+ 
+ 		config.devid = config.pci_dev->device_id;
 -- 
 2.54.0
 
