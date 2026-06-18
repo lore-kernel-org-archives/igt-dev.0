@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B094ECD98DE
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 05:07:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 309B4CD98DE
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 05:14:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2855F10EC77;
-	Thu, 18 Jun 2026 05:07:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A48E610EC89;
+	Thu, 18 Jun 2026 05:14:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NPV5oOz0";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BKfFRGl4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40DCC10EC01
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 05:07:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB84810EC82
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 05:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781759235; x=1813295235;
+ t=1781759649; x=1813295649;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=FkNyNNfEQcz2hRI57dwFAFWoOwK9bs1pdtldxJj2LK4=;
- b=NPV5oOz0MWXJCX39jKAy1MkAMI8ggn4RWU6SFKX/Xa2WsKxZbSKGCG9n
- aQeVPW+pXF2hjyvk4h+HJVqTHlj8/VKTVgecPvlZDmfSJe2rE2Azsta8x
- HOlF2kD3TvpTEIuvnU3Y8e4A1mA0oLNo7BS5sK5R9gFM9+01zlXFOWIXQ
- b2Wt5Foqix2FnoVKQD3dhZ+mU2qUW1FNHdQFo+rCLJ/irlyflQgVoOnko
- d2ffFeC74QyIcHW+58OP3gHKEh2VJWhzooS0TSX4Bn+R1vLdLZEdHGxjA
- jr2mY1g/qp21qJla5BwL0KsSd99uRigDcUdRVL1mSBa/VRfUL/88Qwbhy g==;
-X-CSE-ConnectionGUID: YQ0iFaQ/Tr6QBQw/VT2iBg==
-X-CSE-MsgGUID: g8JINNwBTGe6TfW4pX4uZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="82479293"
-X-IronPort-AV: E=Sophos;i="6.24,210,1774335600"; d="scan'208";a="82479293"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2026 22:07:14 -0700
-X-CSE-ConnectionGUID: SokTvd8LS8mPnSx1Kf0qOw==
-X-CSE-MsgGUID: tQ6qHVGcTQ+ZqI3Y3ES6gQ==
+ bh=KhLrnmN5JUfY0TaFvsDQvqwCnG2oQn7QSAb9AIi3hzg=;
+ b=BKfFRGl4JsxCPzXHGYKnmgbRl0ukxvtPhGsey8LLwGTISpGKXLLg85oY
+ CUZazIxksPHY1Mu/0QioPoRdmwPvQZoKOMWcpb9DpSbX/WoHHSHWLfmmI
+ pdksnc+QjT8PV8Atr0VxICj6djmLH4gaVzm5Rq9mM6PWTbeGm+lLYKBoy
+ SpAd/d/YR0MP5hor3LXP3yDwcAd1pBJ/KeeuXppoU78tgcUb5e+4r1R4A
+ tHVsfTMnE0C1fjHzXx670y6MlZMq3XL36lF9Ey4E92iIZUVWjNLZxplVb
+ WUeMFg5r6cCx5iz9Dy4WzJP0tyeuZd8Kc/GCmdS6C1f0ZYjEls8ZUiIQh w==;
+X-CSE-ConnectionGUID: aqfcnn4cQV2wY6ME1bjquw==
+X-CSE-MsgGUID: cW7hlQ1LQkawEr+2q2yrZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="85140469"
+X-IronPort-AV: E=Sophos;i="6.24,210,1774335600"; d="scan'208";a="85140469"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2026 22:14:08 -0700
+X-CSE-ConnectionGUID: OGXJO6qmSNiLXzGXCmt4gA==
+X-CSE-MsgGUID: RoJUjO0UTKG3hoGhhaQOUA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,210,1774335600"; d="scan'208";a="248327504"
+X-IronPort-AV: E=Sophos;i="6.24,210,1774335600"; d="scan'208";a="241893831"
 Received: from vmuppidi-nuc8i7beh.iind.intel.com ([10.223.55.63])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2026 22:07:12 -0700
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2026 22:14:07 -0700
 From: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: francois.dugast@intel.com, zbigniew.kempczynski@intel.com,
  priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com
-Subject: [PATCH i-g-t v7] intel-ci: Add SVM,
+Subject: [PATCH i-g-t v8] intel-ci: Add SVM,
  multi_queue tests to Xe fastfeedback
-Date: Thu, 18 Jun 2026 10:38:25 +0530
-Message-ID: <20260618050825.7775-1-venkateswara.rao.muppidi@intel.com>
+Date: Thu, 18 Jun 2026 10:45:22 +0530
+Message-ID: <20260618051522.7910-1-venkateswara.rao.muppidi@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -75,7 +75,7 @@ v3: corrected s-o-b and From
 v4: Refine SVM tests by removing the race test, adding remaining SVM tests,
 and organizing all entries in alphabetical order.
 v6: Remove twice.* tests and add a new set of SVM tests (Francois)
-v7: Remove few-execs-dyn-priority and priority tests for
+v8: Remove few-execs-dyn-priority and add priority tests for
 multi_queue (Niranjana)
 
 Signed-off-by: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
