@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA61CD98F2
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 06:30:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3CB2CD98F2
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 06:31:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E9F5310EC4A;
-	Thu, 18 Jun 2026 06:30:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A70FD10EC4A;
+	Thu, 18 Jun 2026 06:31:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EOz2C7OV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YOt0rPeL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBA2F10EC4A
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 06:29:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4EE0410EC4A
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 06:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781764157; x=1813300157;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=O3l/OLbe5K+LufADZi74LvF5cWHgg8ynJvhV30EdPQI=;
- b=EOz2C7OVWKqk899NnxoP6R1bMs6/GLZnztJLD8xxdQxfC/uDOgTPPa2y
- ZBTTUE9T3V4jcZrFxgvdQFTkRmSq55K8dw8bcAiCYft7CUiYVIc2FEojc
- dS6DDgfXQ6Fek1XmEi1eHbY9znvfPVg+kxqsumuW6K7g1dSTrl0wU4upb
- llwBt4M6gVhl/grMHj2l8yNW9vP7/fQmfY2YRYC9ZyDBu3TO1aBRf9jfr
- dNgpk+L2yC/ojCSl+cuCanZAOXqydVF4Ix4EIfkCQxgn6HMKGcPL8Ii1u
- S3Vls5s4ElKLgRc/aGHyE9od0KZhRp/ULJUrnTqg8pEIHM4tp/mBpWq4Y g==;
-X-CSE-ConnectionGUID: a4N2/j8TQ32jceR90oQAXA==
-X-CSE-MsgGUID: L/9JD4sLTZ+7D3kbcwP51Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="82485872"
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="82485872"
+ t=1781764155; x=1813300155;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1MXqaKjhUkVEgzCBi65qqjev8hy5oIwnBNehu+TSe6o=;
+ b=YOt0rPeLs6xII2qHMwm1MgX12PurMXQT8CbcUgxuz2jaxFl9WaWk+qle
+ ah7aml50MXUCtZOXkkMN6G1bRothkmgZpDygeBqZAcyBMNE6Twr7AWyie
+ Z4fX3tMn1z0rQWvDFg5Rr8VXHkY8k07Nr7SVnGY+K6y1QIDWIW95Gz9zb
+ AoEQ5rwQCiEqXuyaMMnLl0rCV7xoMEMnJdCd5GjxwiLZ0rw2gjYByjpMy
+ 3H/LTIjcQalc6tHjlYx4i72So6MUQPvpnzjzGNENgdRRfUT4HiNDUEKDU
+ FWWIi2PaqlHfBgfT5GyFyM8SwN3u8e3SvVFeHDTsFu3mUU4kw58cH2bjr w==;
+X-CSE-ConnectionGUID: RvMSjwtHTKaqJwqgVT0YyA==
+X-CSE-MsgGUID: d1XUXhgrSTe8vPmr4yRKAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="82485865"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="82485865"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2026 23:29:17 -0700
-X-CSE-ConnectionGUID: lcL1L3csRo6v0ncTHws+xg==
-X-CSE-MsgGUID: gwv96vG5QNaexuasqv9CSQ==
+ 17 Jun 2026 23:29:15 -0700
+X-CSE-ConnectionGUID: roZPjAzTRC64lWvgaRw7uw==
+X-CSE-MsgGUID: XoeuEdrAR4Cwiv3SBo28Eg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="245342992"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="245342986"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 23:29:15 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 23:29:13 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jeevan B <jeevan.b@intel.com>,
- Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t v10 1/7] tests/intel/kms_pm_dc:
- s/check_dc_counter/assert_dc_counter
-Date: Thu, 18 Jun 2026 11:58:58 +0530
-Message-ID: <20260618062904.2789476-2-jeevan.b@intel.com>
+Cc: Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t v10 0/7] Enable and Add new tests for DC3CO
+Date: Thu, 18 Jun 2026 11:58:57 +0530
+Message-ID: <20260618062904.2789476-1-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260618062904.2789476-1-jeevan.b@intel.com>
-References: <20260618062904.2789476-1-jeevan.b@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,81 +66,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rename function name.
+Enable DC3CO tests for PSR/PR for display versions >= 35, add a new
+test for DC3CO to validate frame drops, and test DC3CO with LOBF.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel/kms_pm_dc.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+v3: Adds a test to verify DC3CO continues to function properly
+    after a DC6 power cycle and rename function name in first patch.
+v4: Add a new test to verify DC3CO continues to funct
+v5: Addressed review comments, clarified platform support wording.
+    Simplified PSR mode handling and fixed output-aware PSR checks.
+    Cleaned up and aligned new DC3CO test flows and guards.
+v6: Addressed review comments.
+v7: Fix framedrop test logic and dynamic block.
+v8: Update commit message and test description.
+v9: Replaced hardcoded values with global constants and updated
+    logic for framedrop test.
+v10: Remove TGL check for PSR2. 
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 90df8ee37..4e8720c6e 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -113,7 +113,7 @@ typedef struct {
- 	bool runtime_suspend_disabled;
- } data_t;
- 
--static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count);
-+static void assert_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count);
- 
- static void set_output_on_pipe_b(data_t *data)
- {
-@@ -260,7 +260,7 @@ static void create_color_fb(data_t *data, igt_fb_t *fb, color_t *fb_color)
- 	paint_rectangles(data, data->mode, fb_color, fb);
- }
- 
--static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
-+static void assert_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
- {
- 	igt_assert_f(igt_dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
- 		     "%s state is not achieved\n%s:\n%s\n", igt_dc_state_name(dc_flag),
-@@ -268,7 +268,7 @@ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
- 		     PWR_DOMAIN_INFO));
- }
- 
--static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
-+static void assert_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
- {
- 	igt_assert_f(!igt_dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
- 		     "%s state is achieved\n%s:\n%s\n", igt_dc_state_name(dc_flag),
-@@ -349,7 +349,7 @@ static void test_dc5_retention_flops(data_t *data, int dc_flag)
- 	set_output_on_pipe_b(data);
- 	setup_primary(data);
- 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output));
--	check_dc_counter(data, dc_flag, dc_counter_before_psr);
-+	assert_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	cleanup_dc_psr(data);
- }
- 
-@@ -363,7 +363,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
- 	setup_primary(data);
- 	igt_require(!psr_disabled_check(data->debugfs_fd));
- 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output));
--	check_dc_counter(data, dc_flag, dc_counter_before_psr);
-+	assert_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data->output);
- 	cleanup_dc_psr(data);
- }
-@@ -442,7 +442,7 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
- 	setup_dc_dpms(data);
- 	dc_counter = igt_read_dc_counter(data->debugfs_fd, dc_flag);
- 	dpms_off(data);
--	check_dc_counter(data, dc_flag, dc_counter);
-+	assert_dc_counter(data, dc_flag, dc_counter);
- 	dpms_on(data);
- 	cleanup_dc_dpms(data);
- }
-@@ -455,7 +455,7 @@ static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
- 	setup_dc_dpms(data);
- 	dc_counter = igt_read_dc_counter(data->debugfs_fd, dc_flag);
- 	dpms_on(data);
--	check_dc_counter_negative(data, dc_flag, dc_counter);
-+	assert_dc_counter_negative(data, dc_flag, dc_counter);
- 	cleanup_dc_dpms(data);
- }
- 
+Jeevan B (7):
+  tests/intel/kms_pm_dc: s/check_dc_counter/assert_dc_counter
+  tests/intel/kms_pm_dc: Replace require with proper assertion
+  tests/intel/kms_pm_dc: Enable DC3CO test for PSR2/PR modes
+  tests/kms_vrr: Add new test for DC3CO validation with LOBF
+  tests/intel/kms_pm_dc: Add dc3co framedrop validation test
+  tests/intel/kms_pm_dc: Add new test for DC3CO recovery after DC6
+  tests/intel/kms_pm_dc: Add dc3co-vpb-framegap subtest
+
+ tests/intel/kms_pm_dc.c | 310 +++++++++++++++++++++++++++++++++++++---
+ tests/kms_vrr.c         |  34 +++++
+ 2 files changed, 326 insertions(+), 18 deletions(-)
+
 -- 
 2.43.0
 
