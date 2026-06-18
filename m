@@ -4,51 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52867CD98F2
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 16:43:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB4C8CD98ED
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jun 2026 17:00:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D16BC10EDF7;
-	Thu, 18 Jun 2026 16:43:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CDDC10EDF9;
+	Thu, 18 Jun 2026 17:00:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VNWFK2ge";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BmAxLZDK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 067CC10EDF7
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 16:42:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE6B510EDF9
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2026 16:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781800969; x=1813336969;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=9Q+6zjpmMym8+FizHRwyMeeJqrpBnymSc4EhXka7h3c=;
- b=VNWFK2geV0lwfJky2X4RnIiEBJqSBpSMYOTkDd+c9WF7Tx5BMYeut+8g
- Mmxe9stVuGcKSy9IJ0k5uoCrA6vVc8TtGQQzkAkNfrzvWc8/xNGYJMDcr
- 0R+sQMbg2QkFAxyi2uKntO0ruLgVbmX0Jce5Cd0cIgh06eTH2AD+5iUFB
- NRkWjbPH8O3M4y0ZXlcZ7RWB/8ClkLxO/SpcnnRZpbRduQNOuPdrySOEw
- p5NhXZxiMpElqz6ovv6ZLFbE77NdoQLmKaKy+jFxKirYmORmnKVaY02cT
- 7va24zdLfj7dzoKb3OPftJU6X1HBBe6p7MqxsNDcFaUKsUVL5Saj73wGu Q==;
-X-CSE-ConnectionGUID: bBCj0tXKTqKv97lPIrbiBg==
-X-CSE-MsgGUID: 1MFzVaWtTjmDUWeFeHZ3aA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="108192272"
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="108192272"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2026 09:42:48 -0700
-X-CSE-ConnectionGUID: B2cQzo5lTGSLJqtVQ+Y4WQ==
-X-CSE-MsgGUID: maQ4OOkLTFi0GgFrZZglZA==
+ t=1781801983; x=1813337983;
+ h=date:message-id:from:to:subject:in-reply-to:references:
+ mime-version; bh=/J/HQpSi6AKI3wYikDqXC4AE5YRTTHWOgTlbxmLO0IE=;
+ b=BmAxLZDKeRquL2/FIVYDRa54cNefr1dPt3Lhv6SHlgOsR6enBQYQwcDD
+ 1vcycar/SivWJXchCE1BJMkzsSnsHOhuK45tKsRwaXqQRAgzUjCZR6cJu
+ 55LSEfml61J7I6OG+0gnhDIOdp566Ord2i6kf44wz7m5967NxVfwJmESU
+ BXkI5sy5fZv+DTPne6wrmFpRbc2NhRNmsRhtc+nuPbLSMduI3ZGJHnFnR
+ brW0QMRioptcOp8xwy9VbfvpTjZ6JSodiCKn1ahfeD/9v0a77rHCfDJId
+ 35og2oTaAVv9tUHAOZ9s6896ylFPtNUAAEt0f7NJKUMg4D9Je8D2TivSn A==;
+X-CSE-ConnectionGUID: TRyMWZOERESp6FgWMxZ79Q==
+X-CSE-MsgGUID: Wov05OzoQHiAsYdFMdc1qw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="82649102"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="82649102"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2026 09:59:43 -0700
+X-CSE-ConnectionGUID: DdlhL1zsRmeqdUugAyALIw==
+X-CSE-MsgGUID: 8LAiHm4wRk6tEyW/iF3xLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="248481335"
-Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
- by orviesa007.jf.intel.com with ESMTP; 18 Jun 2026 09:42:47 -0700
-From: himanshu.girotra@intel.com
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com, jani.nikula@intel.com
-Subject: [PATCH v2 i-g-t] tests/intel: Enable survivability tests on discrete
- platforms >= BMG
-Date: Thu, 18 Jun 2026 22:12:45 +0530
-Message-ID: <20260618164245.20139-1-himanshu.girotra@intel.com>
-X-Mailer: git-send-email 2.50.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; d="scan'208";a="247292565"
+Received: from wchiang-mobl.gar.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.26.234])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2026 09:59:43 -0700
+Date: Thu, 18 Jun 2026 09:59:41 -0700
+Message-ID: <8733yjpywy.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, "Dixit,
+ Ashutosh" <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v1 2/2] tools/intel_reg: Create default accelerator
+ access
+In-Reply-To: <20260618115036.j477gmgx7loowtah@kamilkon-DESK.igk.intel.com>
+References: <20260617202600.251889-1-kamil.konieczny@linux.intel.com>	<20260617202600.251889-3-kamil.konieczny@linux.intel.com>	<874ij0q0ni.wl-ashutosh.dixit@intel.com>	<20260618115036.j477gmgx7loowtah@kamilkon-DESK.igk.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,84 +70,131 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Himanshu Girotra <himanshu.girotra@intel.com>
+On Thu, 18 Jun 2026 04:50:36 -0700, Kamil Konieczny wrote:
+>
+> Hi Dixit,,
+> On 2026-06-17 at 15:09:53 -0700, Dixit, Ashutosh wrote:
+> > On Wed, 17 Jun 2026 13:25:58 -0700, Kamil Konieczny wrote:
+> > >
+> > > Among computing devices there are GPU and accelerators and the
+> > > intel_reg tool worked only with former ones. Create new way for
+> > > finding a compute device and when no Intel GPU is found, then
+> > > search for Intel accelerator. Also, inform user about which type
+> > > of device will be accessed.
+> > >
+> > > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > ---
+> > >  tools/intel_reg.c | 12 ++++++++++++
+> > >  1 file changed, 12 insertions(+)
+> > >
+> > > diff --git a/tools/intel_reg.c b/tools/intel_reg.c
+> > > index 49afe91c0..b4f8cd0fd 100644
+> > > --- a/tools/intel_reg.c
+> > > +++ b/tools/intel_reg.c
+> > > @@ -1382,6 +1382,18 @@ int main(int argc, char *argv[])
+> > >				return EXIT_FAILURE;
+> > >		} else {
+> > >			config.pci_dev = intel_get_pci_device();
+> > > +			if (config.pci_dev) {
+> > > +				fprintf(stderr, "Found Intel GPU PCI device 0x%x\n", config.pci_dev->device_id);
+> > > +			} else {
+> > > +				config.pci_dev = intel_get_pci_accelerator_device();
+> > > +				if (config.pci_dev)
+> > > +					fprintf(stderr, "Found Intel accelerator PCI device 0x%x\n", config.pci_dev->device_id);
+> > > +			}
+> > > +
+> > > +			if (!config.pci_dev) {
+> > > +				fprintf(stderr, "Cannot find Intel GPU nor accelerator device\n");
+> > > +				return EXIT_FAILURE;
+> > > +			}
+> >
+> > So what I am not following is why you want to preserve
+> > intel_get_pci_device() to just display class devices? In
+> > https://patchwork.freedesktop.org/series/168385/ intel_get_pci_device() is
+> > extended to both display and acceleretor class devices. So this kind of
+> > modification to the individual tools is not needed at all.
+>
+> But existing tools willl not work for accelerators?
+> They are meant for display/GPU only.
+> cd tools
+> grep -l intel_get_pci_device *c
+> intel_audio_dump.c
+> intel_backlight.c
+> intel_display_bandwidth.c
+> intel_display_poller.c
+> intel_forcewaked.c
+> intel_gpu_time.c
+> intel_gtt.c
+> intel_infoframes.c
+> intel_lid.c
+> intel_panel_fitter.c
+> intel_reg.c
+> intel_reg_checker.c
+> intel_watermark.c
 
-The survivability mode tests in xe_survivability and xe_configfs were
-initially developed for Battlemage (BMG) and gated with IS_BATTLEMAGE.
-Survivability mode is, however, supported by the KMD on all discrete
-platforms from BMG onwards.
+https://patchwork.freedesktop.org/patch/733334/?series=168385&rev=4
 
-Mirror this on the IGT side by replacing the BMG-only check with a
-runtime discrete check combined with a graphics version check
-of at least BMG (IP_VER(20, 1)).
+According to me only the tools calling intel_get_pci_device_display() work
+only with display/gpu.
 
-v2: use is_intel_dgfx() (Jani Nikula)
+See also my comments here:
+https://lore.kernel.org/igt-dev/87wlvyzbn0.wl-ashutosh.dixit@intel.com/
 
-Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
----
- tests/intel/xe_configfs.c      | 5 ++++-
- tests/intel/xe_survivability.c | 4 +++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+> Which ones from above could work? Or can you add to cc few devs
+> from Intel accelerators drivers and ask him/her for opinion?
 
-diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index e7c797eb7..9ba8f94ec 100644
---- a/tests/intel/xe_configfs.c
-+++ b/tests/intel/xe_configfs.c
-@@ -11,6 +11,7 @@
- #include "igt_kmod.h"
- #include "igt_sriov_device.h"
- #include "igt_sysfs.h"
-+#include "intel_common.h"
- #include "xe/xe_query.h"
- 
- /**
-@@ -379,6 +380,7 @@ int igt_main()
- 	int fd, configfs_fd, configfs_device_fd;
- 	uint32_t devid;
- 	bool is_vf_device;
-+	bool is_dgfx;
- 	const char *engine = NULL;
- 
- 	igt_fixture() {
-@@ -387,6 +389,7 @@ int igt_main()
- 		fd = drm_open_driver(DRIVER_XE);
- 		devid = intel_get_drm_devid(fd);
- 		is_vf_device = intel_is_vf_device(fd);
-+		is_dgfx = is_intel_dgfx(fd);
- 		set_bus_addr(fd);
- 
- 		xe_for_each_engine(fd, hwe) {
-@@ -410,7 +413,7 @@ int igt_main()
- 
- 	igt_describe("Validate survivability mode");
- 	igt_subtest("survivability-mode") {
--		igt_require(IS_BATTLEMAGE(devid));
-+		igt_require(is_dgfx && intel_graphics_ver(devid) >= IP_VER(20, 1));
- 		igt_require_f(!is_vf_device, "survivability mode not supported in VF\n");
- 		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		test_survivability_mode(configfs_device_fd);
-diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
-index d5d7e048c..0b3121a08 100644
---- a/tests/intel/xe_survivability.c
-+++ b/tests/intel/xe_survivability.c
-@@ -16,6 +16,7 @@
- #include "igt_sriov_device.h"
- #include "igt_sysfs.h"
- #include "intel_allocator.h"
-+#include "intel_common.h"
- #include "xe/xe_gt.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-@@ -217,7 +218,8 @@ int igt_main()
- 
- 	igt_fixture() {
- 		fd = drm_open_driver(DRIVER_XE);
--		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
-+		igt_require(is_intel_dgfx(fd) &&
-+			    intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(20, 1));
- 		vf_device = intel_is_vf_device(fd);
- 		igt_require_f(!vf_device, "survivability mode not supported in VF\n");
- 		pci_xe = igt_device_get_pci_device(fd);
--- 
-2.50.1
+I don't think we should be spending time refining this at this time. If
+something is not completely right it can be fixed later. We just need to
+provide the correct lib functions in lib/ at this time.
 
+> >
+> > Note that it is not just intel_reg. Similar modification will need to all
+> > tools which currently call intel_get_pci_device(). They will now all have
+> > to be changed to add the intel_get_pci_accelerator_device() calls,
+> > something which is not needed with
+> > https://patchwork.freedesktop.org/series/168385/ (especially rev1 of that
+> > series). Because we would want most of these tools to "just work" with any
+> > intel device (display or accelerator).
+> >
+> > See also my comments here:
+> > https://lore.kernel.org/igt-dev/87wlvyzbn0.wl-ashutosh.dixit@intel.com/
+> >
+> > Anyway, let's see what other reviewers have to say about this.
+>
+> Well, I just do not like indeterminancy of that function, it was
+> returning whatever a first device was on PCI bus. When it
+> searched for display only it was ok, now you never know which
+> one will be.
+> Second no-go is that accelerators could be non-GPU based and
+> then almost all of our tools will not work.
+
+Note that accelerators are mostly the same as GPU, except maybe for display
+part, so your assumption "almost all of our tools will not work" is wrong.
+
+In any case, if you want to keep intel_get_pci_device() for display, you
+need to provide a function, such as intel_get_pci_device_any(), which will
+work for both display and accelerator. We can't have each tool modified to
+add this code, this should be provided as a function in lib/.
+
+I prefer this naming scheme:
+
+- intel_get_pci_device() or intel_get_pci_device_any(): for both display and
+  accelerator
+
+- intel_get_pci_device_display() for display.
+
+- intel_get_pci_device_accelerator() for accelerator (according to me there
+  is no use cases for only accelerator at this time).
+
+> >
+> > Thanks.
+> > --
+> > Ashutosh
+> >
+> > >		}
+> > >
+> > >		config.devid = config.pci_dev->device_id;
+> > > --
+> > > 2.54.0
+> > >
