@@ -4,64 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D75ECCD4F26
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 12:10:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57ECCCD98F2
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 12:26:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5685E10F543;
-	Fri, 19 Jun 2026 12:10:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA43210F592;
+	Fri, 19 Jun 2026 12:26:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="REbqKPbf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UdbypAYA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CDD010F543
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 12:09:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5FA910F585
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 12:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781870985; x=1813406985;
+ t=1781871968; x=1813407968;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=bqrIht3kHGPAGbKuvmnenFEeedxQf2qyUyRF4AEywiA=;
- b=REbqKPbfexfOIo5XrgExbP73JUmI0FUg3h7s2XYxK+L0wI0rGzGAVFLV
- CUxcmk0hTFaPec7/mpGO3Trl7OtkHqmAnxDykYGT5DgTP/AegDphvMnU8
- oEmhEiIJsXVQVo5ITlekTw6UeN6VLHFS9UStg/gl2BJ8o6bs3Hki8p32O
- ME4vHs3G2D8gyyg/H/Ri6RUI2pGZif3VU49XpMeZxguEGEAoMRlRSWQkc
- IKo8daxjGVgI2MIaAIXHScsZuai9HE8StLQgwUZWdGkB5VnlxhW4TkyFr
- eMCpG9L3fa46t3S9xix6Ybn6Mgo5ysKirxkJNG4o2QuEiiGfA1UwHHsbI w==;
-X-CSE-ConnectionGUID: nUxsxRuXTDePlsWykfKpkA==
-X-CSE-MsgGUID: kjVJH3wnQDqtNKP2xlOJdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="82825947"
-X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="82825947"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2026 05:09:45 -0700
-X-CSE-ConnectionGUID: dtHvFmJvSpeQiSNMhOWGeg==
-X-CSE-MsgGUID: DRwTtPSMSwu3jHfx4pVkIw==
+ bh=fLDtlOibKbA/ztl3v1u0dBDsrjAyzP1Q+m4TW6iglWs=;
+ b=UdbypAYA6vitwpp8o0ZtQm38TIbVZmCLFsVeeZpm1szbCkN19u0klzsB
+ FQM1pkIl0kE/LORfTIZJU7kgH4O4wBESrYs2XrYNXXYzLL+Earxn+6Qpu
+ m0p5JYOs9t9Q0m6e2VIDilhiyQrjU+9MfGjQeRWPiVU9mN0fURbh8B+5O
+ TCYzc3Yp2i8vdOK2RPfa68bC3meuz8+J8dpPX58lZv4LO1aQVZ1P+8Fm4
+ AumpqiZWnOJkaPhsBgTuzPGSDbiTegGYkfj8XvARxHj4XS6+jmkImhRF0
+ r+dEaq1pg8V5EQvqRgg3ZNDVXa3nSpKMgWO38AEdBFxaSwkoJm6KjsMyr Q==;
+X-CSE-ConnectionGUID: 2BdPAGOSRq+tNaQprDq91Q==
+X-CSE-MsgGUID: Vh70eWBpSU2IA6nxT23IUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="93372591"
+X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="93372591"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jun 2026 05:26:07 -0700
+X-CSE-ConnectionGUID: fj62uPDeQ4WUYWOjD3jUXg==
+X-CSE-MsgGUID: /uz4pe8ASpCMKZV/vrLSgg==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="248676767"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2026 05:09:42 -0700
-Date: Fri, 19 Jun 2026 14:09:40 +0200
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2026 05:26:05 -0700
+Date: Fri, 19 Jun 2026 14:26:03 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sk Anirban <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com,
- soham.purkait@intel.com, mallesh.koujalagi@intel.com,
- vinay.belgaumkar@intel.com
-Subject: Re: [PATCH] tests/xe_pmu: Fix gt-frequency failure with raised min
- freq
-Message-ID: <20260619120940.h7r5xgjcs4i4vjin@kamilkon-DESK.igk.intel.com>
+To: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, francois.dugast@intel.com,
+ zbigniew.kempczynski@intel.com, priyanka.dandamudi@intel.com,
+ niranjana.vishwanathapura@intel.com
+Subject: Re: =?utf-8?Q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_intel-ci?=
+ =?utf-8?Q?=3A?= Add SVM, multi_queue tests to Xe fastfeedback (rev8)
+Message-ID: <20260619122603.wqy3qvtmhox5b6kq@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sk Anirban <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, badal.nilawar@intel.com,
- riana.tauro@intel.com, karthik.poosa@intel.com,
- raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, vinay.belgaumkar@intel.com
-References: <20260616193656.2131881-2-sk.anirban@intel.com>
+ Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>,
+ igt-dev@lists.freedesktop.org, francois.dugast@intel.com,
+ zbigniew.kempczynski@intel.com, priyanka.dandamudi@intel.com,
+ niranjana.vishwanathapura@intel.com
+References: <20260618051522.7910-1-venkateswara.rao.muppidi@intel.com>
+ <178176261059.92208.16309373096721680762@6beec6c84f66>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260616193656.2131881-2-sk.anirban@intel.com>
+In-Reply-To: <178176261059.92208.16309373096721680762@6beec6c84f66>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,61 +76,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sk,
-On 2026-06-17 at 01:06:57 +0530, Sk Anirban wrote:
+Hi Rao,
+On 2026-06-18 at 06:03:30 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: intel-ci: Add SVM, multi_queue tests to Xe fastfeedback (rev8)
+> URL   : https://patchwork.freedesktop.org/series/168562/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8972_BAT -> XEIGTPW_15395_BAT
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_15395_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_15395_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
 
-small nit about subject, add 'intel/' in prefix:
+Please look into those failures (skips) and if they are expected
+please add them to blocklists for each platform.
 
-[PATCH] tests/intel/xe_pmu: Fix gt-frequency failure with raised min
-
-
++cc other devs
 
 Regards,
 Kamil
 
-> The gt-frequency subtest can fail when the min frequency has
-> already been raised above RPn before the test begins. Using that
-> value as the original minimum prevents the later min_freq write
-> from enabling the GuC ignore_efficient_freq parameter, so min_freq
-> can keep moving toward RPe.
+>   
 > 
-> Save RPn as the minimum baseline instead, ensuring the min_freq
-> write enables ignore_efficient_freq and the final restore check
-> returns min_freq to RPn.
+> Participating hosts (13 -> 13)
+> ------------------------------
 > 
-> Closes:https://gitlab.freedesktop.org/drm/xe/kernel/issues/8344
-> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-> ---
->  tests/intel/xe_pmu.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
+>   No changes in participating hosts
 > 
-> diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-> index fb4b871e7..4bbc801a1 100644
-> --- a/tests/intel/xe_pmu.c
-> +++ b/tests/intel/xe_pmu.c
-> @@ -903,10 +903,8 @@ static void test_gt_frequency(int fd, struct drm_xe_engine_class_instance *eci)
->  	unsigned long config_rq_freq, config_act_freq;
->  	double min[2], max[2];
->  	uint32_t gt = eci->gt_id;
-> -	uint32_t orig_min = xe_gt_get_freq(fd, eci->gt_id, "min");
-> +	uint32_t orig_min = xe_gt_get_freq(fd, eci->gt_id, "rpn");
->  	uint32_t orig_max = xe_gt_get_freq(fd, eci->gt_id, "max");
-> -	uint32_t current_min;
-> -	uint32_t orig_rpe;
->  	uint32_t vm;
->  	int pmu_fd[2];
->  
-> @@ -956,9 +954,7 @@ static void test_gt_frequency(int fd, struct drm_xe_engine_class_instance *eci)
->  	 * Restore min/max.
->  	 */
->  	igt_assert(xe_gt_set_freq(fd, gt, "min", orig_min) > 0);
-> -	orig_rpe = xe_gt_get_freq(fd, gt, "rpe");
-> -	current_min = xe_gt_get_freq(fd, gt, "min");
-> -	igt_assert(current_min == orig_min || current_min == orig_rpe);
-> +	igt_assert(xe_gt_get_freq(fd, gt, "min") == orig_min);
->  
->  	igt_info("Minimum frequency: requested %.1f, actual %.1f\n",
->  		 min[0], min[1]);
-> -- 
-> 2.43.0
+> Possible new issues
+> -------------------
 > 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_15395_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence:
+>     - bat-adlp-7:         NOTRUN -> [SKIP][1] +17 other tests skip
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-adlp-7/igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence.html
+> 
+>   * igt@xe_exec_multi_queue@exec-sanity:
+>     - bat-bmg-1:          NOTRUN -> [SKIP][2] +13 other tests skip
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-bmg-1/igt@xe_exec_multi_queue@exec-sanity.html
+> 
+>   * igt@xe_exec_multi_queue@many-queues-basic:
+>     - bat-ptl-1:          NOTRUN -> [SKIP][3] +13 other tests skip
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-ptl-1/igt@xe_exec_multi_queue@many-queues-basic.html
+> 
+>   * igt@xe_exec_multi_queue@many-queues-basic-smem:
+>     - bat-lnl-2:          NOTRUN -> [SKIP][4] +13 other tests skip
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-lnl-2/igt@xe_exec_multi_queue@many-queues-basic-smem.html
+> 
+>   * igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd:
+>     - bat-ptl-vm:         NOTRUN -> [SKIP][5] +13 other tests skip
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-ptl-vm/igt@xe_exec_multi_queue@many-queues-preempt-mode-close-fd.html
+> 
+>   * igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][6] +32 other tests skip
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-atsm-2/igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr.html
+> 
+>   * igt@xe_exec_multi_queue@many-queues-priority:
+>     - bat-ptl-2:          NOTRUN -> [SKIP][7] +13 other tests skip
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-ptl-2/igt@xe_exec_multi_queue@many-queues-priority.html
+>     - bat-wcl-1:          NOTRUN -> [SKIP][8] +13 other tests skip
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-wcl-1/igt@xe_exec_multi_queue@many-queues-priority.html
+> 
+>   * igt@xe_exec_multi_queue@many-queues-userptr-invalidate:
+>     - bat-wcl-2:          NOTRUN -> [SKIP][9] +13 other tests skip
+>    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-wcl-2/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html
+>     - bat-bmg-vm:         NOTRUN -> [SKIP][10] +13 other tests skip
+>    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-bmg-vm/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html
+> 
+>   * igt@xe_exec_multi_queue@priority:
+>     - bat-lnl-1:          NOTRUN -> [SKIP][11] +13 other tests skip
+>    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-lnl-1/igt@xe_exec_multi_queue@priority.html
+>     - bat-bmg-2:          NOTRUN -> [SKIP][12] +13 other tests skip
+>    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15395/bat-bmg-2/igt@xe_exec_multi_queue@priority.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_15395_BAT that come from known issues:
+[cut]
