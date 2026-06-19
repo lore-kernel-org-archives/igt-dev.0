@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 900E6CD98F6
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 04:58:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01BD9CD98F6
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 05:03:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2670C10E021;
-	Fri, 19 Jun 2026 04:58:07 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8793510E021;
- Fri, 19 Jun 2026 04:57:41 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6991553781887183499=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 75A7110E021;
+	Fri, 19 Jun 2026 05:03:02 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ilKcZCaH";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8410710E021
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 05:02:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1781845356; x=1813381356;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=kWDHwq2tzq/RP4itcYd524wcb/Cy07C00DkLzFbuMNw=;
+ b=ilKcZCaHFbkscwSInKOo+D9PtaYJ5Co/OB494SoIysT1q+KenHMunPHr
+ IWi2RjJOqPnw1m+LYAcli5QPxgS/bJHotLkyVg8F3WRHSNlEUTDbScNSk
+ xTCNNlmu8v7gO3wiCiNde0JhOQro4N+zs6xvBzQETOzg/VzgjopYhoTcm
+ OstmoSEpfNXHWShoW3aZLxs8St3vd0fmxxtRSXi5MLkPIYU4/AMPVacc7
+ GaMu28ZoiteoTMrz6eT4WypKgN+pT8EAHCPViknP2ZV3eRQYwOXgXBXyX
+ s6qaLRBk6HhBWkJXQRN61vuSHFWZoeP1H+pBom22FLy+nSo90bzOcFkf4 w==;
+X-CSE-ConnectionGUID: pjtlAA5DT8Ov40Exrqcnfg==
+X-CSE-MsgGUID: wZRY9T+bQFqFLaQZ3VJAAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="108242222"
+X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; d="scan'208";a="108242222"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2026 22:02:36 -0700
+X-CSE-ConnectionGUID: MfvPotQJS7OM24pPhOmmzA==
+X-CSE-MsgGUID: JRqzSCMmQwOi8lvoLtPXXg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; d="scan'208";a="248612534"
+Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2026 22:02:35 -0700
+From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ashutosh.dixit@intel.com,
+	shekhar.chauhan@intel.com
+Subject: [PATCH] tools/xe-perf-recorder: Add mmio-trigger support
+Date: Fri, 19 Jun 2026 10:32:17 +0530
+Message-ID: <20260619050217.2112851-1-shekhar.chauhan@intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Frotation=5Fcrc?=
- =?utf-8?q?=3A_concurrent_cursor_movement_with_rotation_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 19 Jun 2026 04:57:41 -0000
-Message-ID: <178184506154.95126.14340747141143945702@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260619041903.999144-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20260619041903.999144-1-santhosh.reddy.guddati@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,130 +63,178 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6991553781887183499==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add mmio-trigger support to xe-perf-recorder, to justify the
+whitelisting of OA MMIO Trigger Registers in XeKMD.
 
-== Series Details ==
+Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+---
+ tools/xe-perf/xe_perf_recorder.c | 83 ++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
-Series: tests/kms_rotation_crc: concurrent cursor movement with rotation (rev3)
-URL   : https://patchwork.freedesktop.org/series/164593/
-State : success
+diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+index f200fe9c9..48a7d55d4 100644
+--- a/tools/xe-perf/xe_perf_recorder.c
++++ b/tools/xe-perf/xe_perf_recorder.c
+@@ -27,8 +27,11 @@
+ 
+ #include "igt_core.h"
+ #include "intel_chipset.h"
++#include "intel_batchbuffer.h"
++#include "intel_reg.h"
+ #include "ioctl_wrappers.h"
+ #include "linux_scaffold.h"
++#include "xe/xe_ioctl.h"
+ #include "xe/xe_oa.h"
+ #include "xe/xe_oa_data.h"
+ #include "xe/xe_query.h"
+@@ -39,6 +42,10 @@
+ #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
+ #define MAX(a,b) ((a) > (b) ? (a) : (b))
+ #define MIN(a,b) ((a) < (b) ? (a) : (b))
++#define OAG_MMIOTRIGGER 0xdb1c
++#define TRIGGER_BB_SIZE 4096
++#define OAREPORT_REASON_MASK 0x3f
++#define OAREPORT_REASON_SHIFT 19
+ 
+ struct circular_buffer {
+ 	char   *data;
+@@ -354,8 +361,21 @@ struct recording_context {
+ 	int oa_unit_id;
+ 	struct drm_xe_oa_unit *oa_unit;
+ 	struct drm_xe_engine_class_instance *hwe;
++
++	uint32_t vm;
++	uint32_t exec_queue;
++	struct intel_bb *ibb;
+ };
+ 
++static uint32_t oa_unit_mmio_trigger_reg(struct recording_context *ctx)
++{
++	switch (ctx->oa_unit->oa_unit_type) {
++	case DRM_XE_OA_UNIT_TYPE_OAG:
++	default:
++		return OAG_MMIOTRIGGER;
++	}
++}
++
+ static void set_fd_flags(int fd, int flags)
+ {
+ 	int old = fcntl(fd, F_GETFL, 0);
+@@ -569,6 +589,23 @@ static bool write_stream_status(struct recording_context *ctx, FILE *output)
+ 	return true;
+ }
+ 
++static void
++check_mmio_trigger_report(struct recording_context *ctx, const void *report)
++{
++	const struct xe_oa_format *fmt = &oa_formats[ctx->metric_set->perf_oa_format];
++	const uint32_t *report_32 = report;
++	uint32_t reason = (report_32[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
++	uint64_t value;
++
++	if (reason)
++		return;
++
++	value = (fmt->header == HDR_64_BIT) ? ((const uint64_t *)report)[2] : report_32[2];
++
++	if (value == 0xc0ffee01  || value == 0xc0ffee02)
++		fprintf(stdout, "Received trigger report with value 0x%" PRIx64 "\n", value);
++}
++
+ static bool write_stream_data(struct recording_context *ctx,
+ 			      char *data, ssize_t size, FILE *output)
+ {
+@@ -582,6 +619,8 @@ static bool write_stream_data(struct recording_context *ctx,
+ 			.size = sizeof(header) + format_size,
+ 		};
+ 
++		check_mmio_trigger_report(ctx, data + i * format_size);
++
+ 		if (fwrite(&header, sizeof(header), 1, output) != 1)
+ 			return false;
+ 
+@@ -697,6 +736,22 @@ write_correlation_timestamps(struct recording_context *ctx, FILE *output)
+ 	return write_saved_correlation_timestamps(output, &corr);
+ }
+ 
++static void emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t reg, uint32_t value)
++{
++	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
++	intel_bb_out(ibb, reg);
++	intel_bb_out(ibb, value);
++}
++
++static void emit_oa_trigger(struct recording_context *ctx, uint32_t value)
++{
++	emit_mmio_triggered_report(ctx->ibb, oa_unit_mmio_trigger_reg(ctx), value);
++
++	intel_bb_flush_render(ctx->ibb);
++	intel_bb_sync(ctx->ibb);
++	intel_bb_reset(ctx->ibb, false);
++}
++
+ static void
+ read_command_file(struct recording_context *ctx)
+ {
+@@ -726,6 +781,9 @@ read_command_file(struct recording_context *ctx)
+ 		if (file) {
+ 			struct chunk chunks[2];
+ 
++			emit_oa_trigger(ctx, 0xc0ffee02);
++			write_perf_data(ctx->output_stream, ctx);
++
+ 			fflush(ctx->output_stream);
+ 			get_chunks(chunks, &ctx->circular_buffer,
+ 				   false, ctx->circular_buffer.size);
+@@ -835,6 +893,13 @@ usage(const char *name)
+ static void
+ teardown_recording_context(struct recording_context *ctx)
+ {
++	if (ctx->ibb)
++		intel_bb_destroy(ctx->ibb);
++	if (ctx->exec_queue)
++		xe_exec_queue_destroy(ctx->drm_fd, ctx->exec_queue);
++	if (ctx->vm)
++		xe_vm_destroy(ctx->drm_fd, ctx->vm);
++
+ 	if (ctx->topology)
+ 		free(ctx->topology);
+ 
+@@ -912,6 +977,18 @@ static int assign_oa_unit(int fd, struct recording_context *ctx)
+ 	return -1;
+ }
+ 
++static int init_trigger_ctx(struct recording_context *ctx)
++{
++	ctx->vm = xe_vm_create(ctx->drm_fd, 0, 0);
++	ctx->exec_queue = xe_exec_queue_create(ctx->drm_fd, ctx->vm, ctx->hwe, 0);
++	ctx->ibb = intel_bb_create_with_context(ctx->drm_fd, ctx->exec_queue, ctx->vm,
++				 NULL, TRIGGER_BB_SIZE);
++	if (!ctx->ibb)
++		return -1;
++
++	return 0;
++}
++
+ int
+ main(int argc, char *argv[])
+ {
+@@ -1180,6 +1257,12 @@ main(int argc, char *argv[])
+ 		goto fail;
+ 	}
+ 
++	if (init_trigger_ctx(&ctx) < 0) {
++		fprintf(stderr, "Unable to initialize trigger context\n");
++		goto fail;
++	}
++	emit_oa_trigger(&ctx, 0xc0ffee01);
++
+ 	corr_period_ns = corr_period * 1000000000ul;
+ 	poll_time_ns = corr_period_ns;
+ 
+-- 
+2.53.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8974_BAT -> XEIGTPW_15404_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_15404_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@xe_dma_buf:
-    - bat-bmg-vm:         [PASS][1] -> [ABORT][2] ([Intel XE#8007] / [Intel XE#8023]) +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8974/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15404/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html
-
-  
-  [Intel XE#8007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007
-  [Intel XE#8023]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8023
-
-
-Build changes
--------------
-
-  * IGT: IGT_8974 -> IGTPW_15404
-  * Linux: xe-5280-24209d838338d162bb25aadfd637b11747a357ca -> xe-5281-1f50384666a6193297d506b8df628ca428a48d42
-
-  IGTPW_15404: 15404
-  IGT_8974: 8974
-  xe-5280-24209d838338d162bb25aadfd637b11747a357ca: 24209d838338d162bb25aadfd637b11747a357ca
-  xe-5281-1f50384666a6193297d506b8df628ca428a48d42: 1f50384666a6193297d506b8df628ca428a48d42
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15404/index.html
-
---===============6991553781887183499==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_rotation_crc: concurrent cursor movement with rotation (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164593/">https://patchwork.freedesktop.org/series/164593/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15404/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15404/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8974_BAT -&gt; XEIGTPW_15404_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15404_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_dma_buf:<ul>
-<li>bat-bmg-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8974/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15404/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007">Intel XE#8007</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8023">Intel XE#8023</a>) +1 other test abort</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8974 -&gt; IGTPW_15404</li>
-<li>Linux: xe-5280-24209d838338d162bb25aadfd637b11747a357ca -&gt; xe-5281-1f50384666a6193297d506b8df628ca428a48d42</li>
-</ul>
-<p>IGTPW_15404: 15404<br />
-  IGT_8974: 8974<br />
-  xe-5280-24209d838338d162bb25aadfd637b11747a357ca: 24209d838338d162bb25aadfd637b11747a357ca<br />
-  xe-5281-1f50384666a6193297d506b8df628ca428a48d42: 1f50384666a6193297d506b8df628ca428a48d42</p>
-
-</body>
-</html>
-
---===============6991553781887183499==--
