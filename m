@@ -4,27 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C675CD98F2
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 14:19:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8839CD4F26
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 15:07:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D77DE10F632;
-	Fri, 19 Jun 2026 14:19:45 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04A0310F631;
- Fri, 19 Jun 2026 14:19:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46F4210E057;
+	Fri, 19 Jun 2026 15:07:03 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N34jiTWx";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1773510E057
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 15:06:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1781881595; x=1813417595;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=DK/FtiMFHYaMwZkX2UFM9P8+DJ08KL2rqIIMNzttHgE=;
+ b=N34jiTWx5UD4SN6a5UAj8t0pwN6rLdv1Zk2YwWZakbOxqp9AIXkSNTzR
+ pJkKGV5itZ+vHS1uQfqB21cvmcey6xjaFrt7yOEX/Bp8eRvOpMuSqlqTY
+ E3MTyRVrXC7cZlY9TacusQBsj9rYa+NGHkofPLC9ML6SWHwVLFM6FyZHK
+ MUnwnFTJHYL47/zbiBBWYBbfLRmQ2sQKWUgpLh8WQa9ispBsa+89wKAS3
+ NLxqozWhCyT6XcwYQBbmVZRewC9WdnQ/GiL09zZfIdnYoIdmlGm55MSPs
+ 6bW+nD5XTvla8F+XkCq+chIJTXP2tHqhz3frFOhaKkQvdw5IgmtaRfvtt Q==;
+X-CSE-ConnectionGUID: hKIGOZE2QBSyIfP9LguqSA==
+X-CSE-MsgGUID: 7HgMRmzwQKa3IMrC5+jfmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="94122289"
+X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="94122289"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jun 2026 08:06:34 -0700
+X-CSE-ConnectionGUID: x4mKQql+TLmVJfXRHUb6eg==
+X-CSE-MsgGUID: qs+1YI+DTgCPY6lW/fwUgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="242278544"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2026 08:06:11 -0700
+Date: Fri, 19 Jun 2026 17:05:52 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org,
+ zbigniew.kempczynski@intel.com, Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: Re: [PATCH i-g-t] lib/igt_core: Distinguish dynamic subtest in
+ finished messages
+Message-ID: <20260619150552.zgfdrjrewd6prjcz@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+References: <20260608193807.2616777-1-swati2.sharma@intel.com>
+ <20260610152928.yauflzchk2uf7szw@kamilkon-DESK.igk.intel.com>
+ <cf3517458599630f209ddd247d8183bb74f509e1.camel@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Test_panthor_sparse_mappi?=
- =?utf-8?q?ngs_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 19 Jun 2026 14:19:20 -0000
-Message-ID: <178187876001.96724.10559100857577766119@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260619-panthor-sparse-mappings-v3-0-cb6c230b6bc0@collabora.com>
-In-Reply-To: <20260619-panthor-sparse-mappings-v3-0-cb6c230b6bc0@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <cf3517458599630f209ddd247d8183bb74f509e1.camel@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,28 +73,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Hi Janusz,
+On 2026-06-11 at 10:42:31 +0200, Janusz Krzysztofik wrote:
+> On Wed, 2026-06-10 at 17:29 +0200, Kamil Konieczny wrote:
+> > Hi Swati,
+> > On 2026-06-09 at 01:08:07 +0530, Swati Sharma wrote:
+> > > The exit_subtest() function always printed 'finished subtest' in kmsg
+> > > and trace output regardless of whether it was a regular subtest or a
+> > > dynamic subtest finishing. The 'starting' messages already correctly
+> > > distinguish between the two ('starting subtest' vs 'starting dynamic
+> > > subtest').
+> > > 
+> > > Fix the 'finished' messages to print 'finished dynamic subtest' for
+> > > dynamic subtests, matching the starting message convention. This makes
+> > > syslog parsing and test hang detection more accurate.
+> > 
+> > Should you add Closes tag here? See
+> > https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/198
+> > Fix multiple results from one (dynamic) subtest reported
+> > 
+> > +cc Janusz
+> > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > 
+> > > 
+> > > Assisted-by: GitHub Copilot:Claude Opus 4.6
+> > > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> > > ---
+> > >  lib/igt_core.c | 10 ++++++----
+> > >  1 file changed, 6 insertions(+), 4 deletions(-)
+> > 
+> > This could potentailly affect other CI pipelines, so
+> > +cc Vitaly.
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > > 
+> > > diff --git a/lib/igt_core.c b/lib/igt_core.c
+> > > index dc3ac5304..a0d9c9d7d 100644
+> > > --- a/lib/igt_core.c
+> > > +++ b/lib/igt_core.c
+> > > @@ -1733,10 +1733,12 @@ __noreturn static void exit_subtest(const char *result)
+> > >  				*subtest_name,
+> > >  				result,
+> > >  				igt_time_elapsed(thentime, &now));
+> > > -	igt_kmsg(KMSG_INFO "%s: finished subtest %s, %s\n",
+> > > -		 command_str, *subtest_name, result);
+> > > -	igt_trace("%s: finished subtest %s, %s\n",
+> > > -		  command_str, *subtest_name, result);
+> > > +	igt_kmsg(KMSG_INFO "%s: finished %s %s, %s\n",
+> > > +		 command_str, in_dynamic_subtest ? "dynamic subtest" : "subtest",
+> > > +		 *subtest_name, result);
+> > > +	igt_trace("%s: finished %s %s, %s\n",
+> > > +		  command_str, in_dynamic_subtest ? "dynamic subtest" : "subtest",
+> > > +		  *subtest_name, result);
+> 
+> Isn't igt_runner watching those messages?  Won't it be confused if not
+> adjusted to the new message content?
 
-Series: Test panthor sparse mappings (rev2)
-URL   : https://patchwork.freedesktop.org/series/166234/
-State : failure
+There is no reference in runner to 'finished subtest' nor
+'finished':
 
-== Summary ==
+cd runner
+grep finished *
+executor.c:      * got an exit, also consider the test fully finished.
+grep: json_tests_data: Is a directory
+grep: testdata: Is a directory
 
-Applying: drm-uapi/panthor: sync with kernel 12cf826bf1dd
-Applying: panthor: Add IGT library helper for Panthor sparse mappings
-Using index info to reconstruct a base tree...
-M	lib/igt_panthor.h
-Falling back to patching base and 3-way merge...
-Auto-merging lib/igt_panthor.h
-CONFLICT (content): Merge conflict in lib/igt_panthor.h
-Patch failed at 0002 panthor: Add IGT library helper for Panthor sparse mappings
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+So imho this is safe, at least from our CI perspective.
 
+Regards,
+Kamil
 
+> 
+> Thanks,
+> Janusz
+> 
+> > >  
+> > >  	igt_terminate_spins();
+> > >  
+> > > -- 
+> > > 2.25.1
+> > > 
