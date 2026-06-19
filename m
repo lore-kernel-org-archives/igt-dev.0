@@ -4,63 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8839CD4F26
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 15:07:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45541CD98F2
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 15:09:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 46F4210E057;
-	Fri, 19 Jun 2026 15:07:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CDE4F10E0AD;
+	Fri, 19 Jun 2026 15:09:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N34jiTWx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="THdOHazL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1773510E057
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 15:06:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 881D710E0A4
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 15:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781881595; x=1813417595;
+ t=1781881720; x=1813417720;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=DK/FtiMFHYaMwZkX2UFM9P8+DJ08KL2rqIIMNzttHgE=;
- b=N34jiTWx5UD4SN6a5UAj8t0pwN6rLdv1Zk2YwWZakbOxqp9AIXkSNTzR
- pJkKGV5itZ+vHS1uQfqB21cvmcey6xjaFrt7yOEX/Bp8eRvOpMuSqlqTY
- E3MTyRVrXC7cZlY9TacusQBsj9rYa+NGHkofPLC9ML6SWHwVLFM6FyZHK
- MUnwnFTJHYL47/zbiBBWYBbfLRmQ2sQKWUgpLh8WQa9ispBsa+89wKAS3
- NLxqozWhCyT6XcwYQBbmVZRewC9WdnQ/GiL09zZfIdnYoIdmlGm55MSPs
- 6bW+nD5XTvla8F+XkCq+chIJTXP2tHqhz3frFOhaKkQvdw5IgmtaRfvtt Q==;
-X-CSE-ConnectionGUID: hKIGOZE2QBSyIfP9LguqSA==
-X-CSE-MsgGUID: 7HgMRmzwQKa3IMrC5+jfmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="94122289"
-X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="94122289"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2026 08:06:34 -0700
-X-CSE-ConnectionGUID: x4mKQql+TLmVJfXRHUb6eg==
-X-CSE-MsgGUID: qs+1YI+DTgCPY6lW/fwUgg==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=vpQwWfHqprbGTAD/fqCCZrvS252iZyJZPbQO/O0ZUt8=;
+ b=THdOHazLYN0b7tGT5Gso2NLuFVZB3a6Qe5yZuDePdVmpxVqxs7YUG500
+ SSbuKXDfDH3WmT2CqzDFekIsiYepKGCspjZp5QKnDdICzAPCvIeFr1C/i
+ 3CCv5A4liv4Uirx+zUBHjrf0asOm3HvGCcfOS9Ao2rRdyCn0joYo6fXwS
+ 3O1CIxA+7VYeuXQGnIqxaPLjXto2Lhww4wjzpBQIBxnDAveDuEcZjFp1y
+ LsMIx65qVEVFm82RaQ8iN6Joqkild7NP0qO+b2gXKzDZLzs0xJwNlahqi
+ zk/3vLQQZCRiDfNofo4rpmpp3+zofpnGxmepf3sieOHwqdZgUBuXU5mEO A==;
+X-CSE-ConnectionGUID: lPzpGuupQACfcfaBxjo9TA==
+X-CSE-MsgGUID: 05Smp9EXS7K5mrlD3wfYOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="93382708"
+X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="93382708"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jun 2026 08:08:40 -0700
+X-CSE-ConnectionGUID: BKLd5ksrSwGRwKuu71tAlw==
+X-CSE-MsgGUID: fDbCoEtkSkqn2EMQvBB9vA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="242278544"
+X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="272342088"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2026 08:06:11 -0700
-Date: Fri, 19 Jun 2026 17:05:52 +0200
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2026 08:08:37 -0700
+Date: Fri, 19 Jun 2026 17:08:34 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org,
- zbigniew.kempczynski@intel.com, Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: Re: [PATCH i-g-t] lib/igt_core: Distinguish dynamic subtest in
- finished messages
-Message-ID: <20260619150552.zgfdrjrewd6prjcz@kamilkon-DESK.igk.intel.com>
+To: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Steven Price <steven.price@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, igt-dev@lists.freedesktop.org,
+ kernel@collabora.com
+Subject: Re: [PATCH 2/2] tests/panthor/panthor_vm: Add vm_bind
+ intersect-with-kbo-range test
+Message-ID: <20260619150834.s7vl4cezhpu5vdit@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-References: <20260608193807.2616777-1-swati2.sharma@intel.com>
- <20260610152928.yauflzchk2uf7szw@kamilkon-DESK.igk.intel.com>
- <cf3517458599630f209ddd247d8183bb74f509e1.camel@linux.intel.com>
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Steven Price <steven.price@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, igt-dev@lists.freedesktop.org,
+ kernel@collabora.com
+References: <20260616-panthor-vmbind-checkaddr-v1-0-f35b1b067f7c@collabora.com>
+ <20260616-panthor-vmbind-checkaddr-v1-2-f35b1b067f7c@collabora.com>
+ <20260617124948.buvoihk3cnxltx5e@kamilkon-DESK.igk.intel.com>
+ <178187573439.1919959.16101885483682467264.b4-reply@b4>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cf3517458599630f209ddd247d8183bb74f509e1.camel@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178187573439.1919959.16101885483682467264.b4-reply@b4>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,85 +90,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2026-06-11 at 10:42:31 +0200, Janusz Krzysztofik wrote:
-> On Wed, 2026-06-10 at 17:29 +0200, Kamil Konieczny wrote:
-> > Hi Swati,
-> > On 2026-06-09 at 01:08:07 +0530, Swati Sharma wrote:
-> > > The exit_subtest() function always printed 'finished subtest' in kmsg
-> > > and trace output regardless of whether it was a regular subtest or a
-> > > dynamic subtest finishing. The 'starting' messages already correctly
-> > > distinguish between the two ('starting subtest' vs 'starting dynamic
-> > > subtest').
+Hi Adrián,
+On 2026-06-19 at 14:28:54 +0100, Adrián Larumbe wrote:
+> On 2026-06-17 14:49:48+02:00, Kamil Konieczny wrote:
+> > Hi Adrián,
+> > On 2026-06-16 at 16:43:23 +0100, Adrián Larumbe wrote:
+> > 
+> > > Users of vm_bind ioctl() should never specify a VA region that intersects
+> > > with that reserved for internal kernel BOs.
 > > > 
-> > > Fix the 'finished' messages to print 'finished dynamic subtest' for
-> > > dynamic subtests, matching the starting message convention. This makes
-> > > syslog parsing and test hang detection more accurate.
-> > 
-> > Should you add Closes tag here? See
-> > https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/198
-> > Fix multiple results from one (dynamic) subtest reported
-> > 
-> > +cc Janusz
-> > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > 
-> > > 
-> > > Assisted-by: GitHub Copilot:Claude Opus 4.6
-> > > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> > > Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
 > > > ---
-> > >  lib/igt_core.c | 10 ++++++----
-> > >  1 file changed, 6 insertions(+), 4 deletions(-)
-> > 
-> > This could potentailly affect other CI pipelines, so
-> > +cc Vitaly.
-> > 
-> > Regards,
-> > Kamil
-> > 
+> > >  tests/panthor/panthor_vm.c | 17 +++++++++++++++++
+> > >  1 file changed, 17 insertions(+)
 > > > 
-> > > diff --git a/lib/igt_core.c b/lib/igt_core.c
-> > > index dc3ac5304..a0d9c9d7d 100644
-> > > --- a/lib/igt_core.c
-> > > +++ b/lib/igt_core.c
-> > > @@ -1733,10 +1733,12 @@ __noreturn static void exit_subtest(const char *result)
-> > >  				*subtest_name,
-> > >  				result,
-> > >  				igt_time_elapsed(thentime, &now));
-> > > -	igt_kmsg(KMSG_INFO "%s: finished subtest %s, %s\n",
-> > > -		 command_str, *subtest_name, result);
-> > > -	igt_trace("%s: finished subtest %s, %s\n",
-> > > -		  command_str, *subtest_name, result);
-> > > +	igt_kmsg(KMSG_INFO "%s: finished %s %s, %s\n",
-> > > +		 command_str, in_dynamic_subtest ? "dynamic subtest" : "subtest",
-> > > +		 *subtest_name, result);
-> > > +	igt_trace("%s: finished %s %s, %s\n",
-> > > +		  command_str, in_dynamic_subtest ? "dynamic subtest" : "subtest",
-> > > +		  *subtest_name, result);
+> > > diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
+> > > index 92b105b9e83a..9548dbcbaa45 100644
+> > > --- a/tests/panthor/panthor_vm.c
+> > > +++ b/tests/panthor/panthor_vm.c
+> > > @@ -270,6 +270,23 @@ int igt_main() {
+> > >  		igt_panthor_vm_destroy(fd, vm_id, 0);
+> > >  	}
+> > >  
+> > > +	igt_describe("Perform a vm_bind in the VM's kernel BOs reserved range");
+> > > +	igt_subtest("vm_bind_intersect_kbo_range") {
+> > 
+> > In our Intel tests we use '-' as word separator, so there is
+> > igt@this_is_test_name@and-this-is-subtest-name
+> > 
+> > But it is only out naming convention, yours can differ.
+
+s/out/ours/
+
 > 
-> Isn't igt_runner watching those messages?  Won't it be confused if not
-> adjusted to the new message content?
+> It seems all existing Panthor tests follow the 'all underscores' naming model.
+> If you want I could change them all to fit the Intel pattern, but I guess that's
+> best done in a separate patch series.
 
-There is no reference in runner to 'finished subtest' nor
-'finished':
-
-cd runner
-grep finished *
-executor.c:      * got an exit, also consider the test fully finished.
-grep: json_tests_data: Is a directory
-grep: testdata: Is a directory
-
-So imho this is safe, at least from our CI perspective.
+No need for change, just be consitent in your naming.
 
 Regards,
 Kamil
 
 > 
-> Thanks,
-> Janusz
+> > LGTM
+> > Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > PS. I could merge it now or should I wait for others to review?
 > 
-> > >  
-> > >  	igt_terminate_spins();
-> > >  
-> > > -- 
-> > > 2.25.1
-> > > 
+> 
