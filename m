@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39CF8CD4F26
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 16:43:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B237ACD4F26
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 16:43:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B2AD10E0BA;
-	Fri, 19 Jun 2026 16:43:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2764310E0BA;
+	Fri, 19 Jun 2026 16:43:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HNAKVGkc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FT/X9VmK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 179E210E0BA
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 16:42:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3EC810E0BA
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 16:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1781887377; x=1813423377;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=015evuXYgEIH3ziaVOKX4zmHWvBtsXGLyHecm16QNyM=;
- b=HNAKVGkc0JJCAgO8Zv0U7ih/mJw9gXw1zfLELFwMcB6alYQq8bwD37qP
- Rs/Wr2ezC2gYAx34mb+HxKTGbC+GFpCQpVp0tEUbBlkHkZz62YcL8wuYF
- i4j2sk8EWc0CeXE4l1mZT7XfPp/493fAwRwi/ek+7iaOHPcfNSltjtKMn
- kIjxKliBCcoLud4p3e6sYO455UWjDHIAsb2/i0CUf5SIXRbkL6FnjvvlU
- Qwoggj6bwr34cm8ZlCALDiixogI16C9Bv55Y3LJ4+gxbNQQ1CruTwA6M3
- u76PmSBJgL0KlRk2QEEFzz7DpyO3nQoxCEzRBsDe59VWzH+ZzvjOQ/fp5 A==;
-X-CSE-ConnectionGUID: xJ96gklkSG+bqDrn4Ynf7g==
-X-CSE-MsgGUID: 9cqXEcszT2aAmEjgEMqmxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11822"; a="94127854"
-X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="94127854"
+ t=1781887381; x=1813423381;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Icy3X91RtwV+qXpeiYIC0OXEJ/NPeN4k8k0gdxtncHE=;
+ b=FT/X9VmKfSSJli8uCOGfiy6Ewe62blwGE6gyUMPjCL/60zcTQB8SIMo7
+ L6lD5+MRUYPi20kaBgNT8pYvgUp800lqkHjvlaIYnL98uI77MvMEahx0k
+ Jo3DT1e5uk0keJYkn1PvRz8NAxpv9CMUWDOqBKxvFkuw9P6qONiWd8DFs
+ wBIaC8WXbYS6Y3PKKD5pXh21D/sI/J0AwHzslkJ9au6IB+1XC0BNVedAi
+ EbyKvqRKalkLDxRIF+bdPkUsJJOThFy5jetyD7qIiYxcBxY2yK0R0MYye
+ TcsR+DeREGeF0iSPQh8EpHMgpHEC+w0DCx+j6xHEZCuossTuWDXCk+FqP g==;
+X-CSE-ConnectionGUID: omMHtSJQRAqdmOyMumaC3g==
+X-CSE-MsgGUID: TmRm2hbLQqyXaNHOgaolNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11822"; a="94127869"
+X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="94127869"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2026 09:42:57 -0700
-X-CSE-ConnectionGUID: X9OY7wyQRgqgJk2A1RWpfQ==
-X-CSE-MsgGUID: HUYDz8H+QnexKaEcKxCidg==
+ 19 Jun 2026 09:43:01 -0700
+X-CSE-ConnectionGUID: 24jLW0QdSmGMzuDXX4X/DQ==
+X-CSE-MsgGUID: FInFo0syQxWOddFCJ+pIoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="248728000"
+X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; d="scan'208";a="248728009"
 Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2026 09:42:56 -0700
+ 19 Jun 2026 09:43:00 -0700
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kamil.konieczny@intel.com
-Cc: piotr.piorkowski@intel.com,
-	Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v5 0/2] Add debugfs entry
-Date: Fri, 19 Jun 2026 16:42:27 +0000
-Message-ID: <20260619164229.639186-1-sobin.thomas@intel.com>
+Cc: piotr.piorkowski@intel.com, Sobin Thomas <sobin.thomas@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v5 1/2] tests/intel/xe_debugfs: Add debugfs optional
+ entry validation
+Date: Fri, 19 Jun 2026 16:42:28 +0000
+Message-ID: <20260619164229.639186-2-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260619164229.639186-1-sobin.thomas@intel.com>
+References: <20260619164229.639186-1-sobin.thomas@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,23 +71,290 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend the root-dir subtest to validate additional Xe debugfs
+Extend the root-dir subtest to validate additional optional Xe debugfs
 entries. Optional entries are those that may not be present on all
 platforms or configurations — their absence is not treated as a failure.
 Validate:
 
-Patch 1 adds validation for optional debugfs entries
+- dgfx_pkg_residencies: Counter reads are non empty
+- dgfx_pcie_link_residencies: PCIE LINK string content
+- sriov_info: entry is non-empty
+- workarounds: entry is non-empty
+- atomic_svm_timeslice_ms: integer read/write
+- poor_man_system_atomic_support: boolean read/write
+- disable_late_binding: boolean read/write
 
-Patch 2 adds non-empty validation for existing entries that
-are expected to always provide content.
+v2: Fixed the optional file check and added fail count.
+    Replaced igt_debug with igt_info in few places  (Kamil)
+v3: Removed uniused condition params and restored has_vram() usage.
+    Used igt_info() for validation failure logs.
+    Kept only new optional debugfs entries in this patch. (Kamil)
+v4: Split scanf and check for the negative value. (Kamil)
+v5: Add validation failure for write/readback errors.
+    Improve negative value check message. (Kamil)
 
-Sobin Thomas (2):
-  tests/intel/xe_debugfs: Add debugfs optional entry validation
-  tests/intel/xe_debugfs: Add checks for existing root dir entries
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel/xe_debugfs.c | 190 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 187 insertions(+), 3 deletions(-)
 
- tests/intel/xe_debugfs.c | 198 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 191 insertions(+), 7 deletions(-)
-
+diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+index 587e3e785..0fe92f9fb 100644
+--- a/tests/intel/xe_debugfs.c
++++ b/tests/intel/xe_debugfs.c
+@@ -39,11 +39,23 @@ IGT_TEST_DESCRIPTION("Validate Xe debugfs devnodes and their contents");
+ 	__m && ((__i) = __builtin_ctz(__m), 1);	\
+ 	__m &= __m - 1)
+ 
++/* Validation types for debugfs read tests */
++enum debugfs_validate_type {
++	VALIDATE_NONE,		/* Just check file exists */
++	VALIDATE_NON_EMPTY,	/* Just check buffer is not empty */
++	VALIDATE_CONTAINS_STR,	/* Check buffer contains expected string */
++	VALIDATE_INT_GE_ZERO,	/* Parse as integer, verify >= 0 */
++	VALIDATE_BOOL,		/* Check bool value (0 or 1) */
++};
++
+ struct check_entry {
+ 	const char *name_fmt;
+ 	int mode;
+ 	bool (*condition)(struct xe_device *xe_dev);
+ 	unsigned int (*iter_mask)(struct xe_device *xe_dev);
++	bool optional;
++	enum debugfs_validate_type validate;
++	const char *expected_str;
+ };
+ 
+ static unsigned int gt_iter_mask(struct xe_device *xe_dev)
+@@ -131,6 +143,124 @@ static bool find_not_tested_files(int dir_fd, struct igt_list_head *hit_entries)
+ 	return found_not_tested;
+ }
+ 
++/* Validate that debugfs buffer is non-empty or contains expected string */
++static bool validate_string(int dirfd, const char *file_name, const char *expected_str)
++{
++	char buf[4096];
++	int ret = 0;
++
++	ret = igt_sysfs_read(dirfd, file_name, buf, sizeof(buf) - 1);
++	if (ret < 0)
++		return false;
++	buf[ret] = '\0';
++
++	/* Check for empty buffer */
++	if (strlen(buf) == 0) {
++		igt_info("Empty output from %s\n", file_name);
++		return false;
++	}
++
++	/* If expecting specific string, verify it's present */
++	if (expected_str && !strstr(buf, expected_str)) {
++		igt_info("Expected '%s' not found in %s\n", expected_str, file_name);
++		return false;
++	}
++
++	if (expected_str)
++		igt_info("Successfully read %s: found '%s'\n", file_name, expected_str);
++	else
++		igt_info("Successfully read %s: %zd bytes\n%s\n", file_name, strlen(buf), buf);
++
++	return true;
++}
++
++static const char *mode_to_str(int mode)
++{
++	switch (mode & O_ACCMODE) {
++	case O_RDONLY: return "RO";
++	case O_WRONLY: return "WO";
++	case O_RDWR:   return "RW";
++	default:       return "UNKNOWN";
++	}
++}
++
++static bool validate_bool_file(int dirfd, const char *file_name, int mode)
++{
++	int orig_val = 0, read_val = 0, test_val = 0;
++
++	if (igt_sysfs_scanf(dirfd, file_name, "%d", &orig_val) != 1) {
++		return false;
++	}
++
++	if (orig_val != 0 && orig_val != 1) {
++		igt_info("Unexpected bool value: %d\n", orig_val);
++		return false;
++	}
++
++	if (mode == O_RDWR) {
++		test_val = orig_val ? 0 : 1;
++
++		if (igt_sysfs_printf(dirfd, file_name, "%d", test_val) < 0) {
++			igt_info("Failed to write %d to %s\n",test_val, file_name);
++			return false;
++		}
++
++		if (igt_sysfs_scanf(dirfd, file_name, "%d", &read_val) != 1 || read_val != test_val)
++			return false;
++
++		/* Restore original value */
++		if (igt_sysfs_printf(dirfd, file_name, "%d", orig_val) < 0) {
++			igt_warn("Failed to restore original value for %s\n", file_name);
++			return false;
++		}
++	}
++
++	igt_info("Successfully validated %s bool %s\n", mode_to_str(mode), file_name);
++	return true;
++}
++
++static bool validate_int_file(int dirfd, const char *file_name, int mode)
++{
++	int orig_val = 0, new_val = 0, read_val = 0;
++
++	if (igt_sysfs_scanf(dirfd, file_name, "%d", &orig_val) != 1)
++		return false;
++
++	if (orig_val < 0) {
++		igt_info("Unexpected negative value %d in %s\n",orig_val, file_name);
++		return false;
++	}
++
++	if (mode == O_RDWR) {
++		new_val = orig_val + 1;
++		if (new_val < 0)
++			new_val = orig_val - 1;
++		if (igt_sysfs_printf(dirfd, file_name, "%d", new_val) < 0) {
++			igt_info("Failed to write %d to %s\n", new_val, file_name);
++			return false;
++		}
++		if (igt_sysfs_scanf(dirfd, file_name, "%d", &read_val) != 1)
++			return false;
++		if (read_val != new_val) {
++			igt_info("Unexpected value in %s: expected %d, got %d\n",file_name,
++				 new_val, read_val);
++			return false;
++		}
++		/* Restore original value */
++		if (igt_sysfs_printf(dirfd, file_name, "%d", orig_val) < 0) {
++			igt_warn("Failed to restore original value for %s\n", file_name);
++			return false;
++		}
++
++		igt_info("Successfully validated writing int %s: %d\n",
++			  file_name, new_val);
++	} else {
++		igt_info("Successfully validated reading int %s: %d\n",
++			  file_name, orig_val);
++	}
++	return true;
++}
++
+ static bool file_in_dir_exists(int dirfd, const char *file_name, int mode)
+ {
+ 	int fd = openat(dirfd, file_name, mode);
+@@ -143,6 +273,36 @@ static bool file_in_dir_exists(int dirfd, const char *file_name, int mode)
+ 	return false;
+ }
+ 
++static bool validate_debugfs_file(int dirfd, const char *file_name, int mode,
++				  enum debugfs_validate_type validate, const char *expected_str)
++{
++	bool result = true;
++
++	if (validate == VALIDATE_NONE)
++		return true;
++
++	switch (validate) {
++	case VALIDATE_NON_EMPTY:
++		result = validate_string(dirfd, file_name, NULL);
++		break;
++	case VALIDATE_CONTAINS_STR:
++		result = validate_string(dirfd, file_name, expected_str);
++		break;
++	case VALIDATE_INT_GE_ZERO:
++		result = validate_int_file(dirfd, file_name, mode);
++		break;
++	case VALIDATE_BOOL:
++		result = validate_bool_file(dirfd, file_name, mode);
++		break;
++	default:
++		igt_warn("Unknown validate type %d for %s\n", validate, file_name);
++		result = false;
++		break;
++	}
++
++	return result;
++}
++
+ /*
+  * Return: negative error code on failure, or number of missing files
+  */
+@@ -151,6 +311,7 @@ static int debugfs_validate_entries(struct xe_device *xe_dev, int dir_fd,
+ {
+ 	struct igt_list_head hit_entries;
+ 	int missing_count = 0;
++	int fail_count = 0;
+ 	int err = 0;
+ 
+ 	IGT_INIT_LIST_HEAD(&hit_entries);
+@@ -210,9 +371,22 @@ static int debugfs_validate_entries(struct xe_device *xe_dev, int dir_fd,
+ 			}
+ 
+ 			if (!file_in_dir_exists(dir_fd, entry->name, check->mode)) {
+-				igt_warn("Missing debugfs file: %s\n", entry->name);
+-				missing_count++;
++				if (check->optional) {
++					igt_info("Optional entry %s not found (skipped)\n",
++						 entry->name);
++				} else {
++					igt_info("Missing debugfs file: %s\n",
++						 entry->name);
++					missing_count++;
++				}
++			} else {
++				if (!validate_debugfs_file(dir_fd, entry->name, check->mode,
++							   check->validate, check->expected_str)) {
++					igt_info("Fail at debugfs file: %s\n", entry->name);
++					fail_count++;
++				}
+ 			}
++
+ 		}
+ 	}
+ 
+@@ -229,7 +403,10 @@ out:
+ 		}
+ 	}
+ 
+-	return (err < 0) ? err : missing_count;
++	if (fail_count || missing_count)
++		igt_warn("Fails: %d missing debugfs file(s): %d\n", fail_count, missing_count);
++
++	return (err < 0) ? err : (missing_count + fail_count);
+ }
+ 
+ /**
+@@ -240,6 +417,7 @@ static void test_root_dir(struct xe_device *xe_dev)
+ {
+ 	const struct check_entry expected_files[] = {
+ 		{ "clients", O_RDONLY },
++		{ "disable_late_binding", O_RDWR, .optional = true, .validate = VALIDATE_BOOL },
+ 		{ "forcewake_all", O_WRONLY },
+ 		{ "gem_names", O_RDONLY },
+ 		{ "gt%u", O_RDONLY, NULL, gt_iter_mask }, /* gt0, gt1, ... */
+@@ -247,6 +425,12 @@ static void test_root_dir(struct xe_device *xe_dev)
+ 		{ "info", O_RDONLY },
+ 		{ "name", O_RDONLY },
+ 		{ "tile%u", O_RDONLY, NULL, tile_iter_mask }, /* tile0, tile1, ... */
++		{ "poor_man_system_atomic_support", O_RDWR, .optional = true, .validate = VALIDATE_BOOL },
++		{ "dgfx_pkg_residencies", O_RDONLY, .optional = true, .validate = VALIDATE_NON_EMPTY },
++		{ "dgfx_pcie_link_residencies", O_RDONLY, .optional = true, .validate = VALIDATE_CONTAINS_STR, .expected_str = "PCIE LINK" },
++		{ "sriov_info", O_RDONLY, .optional = true, .validate = VALIDATE_NON_EMPTY },
++		{ "workarounds", O_RDONLY, .optional = true, .validate = VALIDATE_NON_EMPTY },
++		{ "atomic_svm_timeslice_ms", O_RDWR, .optional = true, .validate = VALIDATE_INT_GE_ZERO },
+ 	};
+ 	int debugfs_fd = igt_debugfs_dir(xe_dev->fd);
+ 	int missing_count;
 -- 
 2.52.0
 
