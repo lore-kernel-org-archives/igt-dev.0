@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 000C8CD4F26
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 13:56:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31C97CD4F26
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 13:56:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B09D10E0BD;
-	Fri, 19 Jun 2026 13:56:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D75D510E0BD;
+	Fri, 19 Jun 2026 13:56:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=adrian.larumbe@collabora.com header.b="hYcQmhgI";
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=adrian.larumbe@collabora.com header.b="U3zloyjB";
 	dkim-atps=neutral
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com
  [136.143.188.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A71B10E084
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 13:54:48 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; t=1781877281; cv=none; 
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 660A710E084
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 13:54:54 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1781877287; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=d7Py2Fv63UEDl1JIIO9UAgRxqJR2LS1ZzUmjoLValOlFXRsPpQjQT7uInbo98gn8svAiSUHuGQoqlpTLo3BBs/gXGfs9pvvgHRpFtwZcRRmWbBPU4jc96nsKKzRCCSnUXC55UeuOtVE/oOaXkoEP6/tlJ8HMBGU16Li09wOcvdk=
+ b=H0dP8eWaOHHjs8ilIlvgSrj+qp29UfmAhPO64KCoCqXzdesJH/056CrgUZ+T6SnnKIS1lDbyiSHsPwOY7AOdJ04aCrMEqVhtYFJvGycf1h1jRPOvqze2feX/Usq6cBac49zT7UOBu80zIaVzG0Eg59a154jJRpOIRIVTeWCjRYA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1781877281;
+ s=zohoarc; t=1781877287;
  h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=q2h0h3VMZZzG580rtwPTRynaDJkXTzOh65L15uyzZdY=; 
- b=OhUIMSMlK8kELBQLhmXL6qqxYqhxxFMoi20nhQlRqqdQ+0phgxxV+EWiDFbAVn0yoIWqswJaCgciHaVDnoxvFNI8U00Mc7j76/Iur4tBu3bCPwHFAqz6ujBklKIqiDaP6DlfNiLDHBPeFQJFRecAZk1IKDlqJzQNlT+mCJWj+zE=
+ bh=vUUKbt9W6InLjRL4JsCrE8AgCDe1lAkFx2fDBX1Rm5E=; 
+ b=eTOnDxq6vjWw5hns6GXTThJ16lSUzCamtHXDqkPhj7RpLRFq25sNxu/7MHJ4OEIxOPfCq+Z8Ta8UEN8KRfPpLOWHP7tFpdW1PwPYLL1wkvbu+5yUtGhha7oAqVw+JI84XVs5a+ERZdN8uB3XDAHgg50oX5yfKA9uPEAQBf7duoM=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=adrian.larumbe@collabora.com;
  dmarc=pass header.from=<adrian.larumbe@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781877280; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781877286; 
  s=zohomail; d=collabora.com; i=adrian.larumbe@collabora.com;
  h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
- bh=q2h0h3VMZZzG580rtwPTRynaDJkXTzOh65L15uyzZdY=;
- b=hYcQmhgIBJGJTFPNaf+kexY1DGAfG+IJvgLaRmtgLjm7T2xSV3NUWiPodUnbflYZ
- qGY+2qT3XTPV8AlJqLLkmFd8fldzMvA+ARKE5viE+hJeG4X4qAlI5oDXhf2Z0Q2F91a
- PNUKfNX1nnBqokGf+yP2jKyZc6WEn386SdQ6a+6c=
-Received: by mx.zohomail.com with SMTPS id 1781877279341397.7071579968457;
- Fri, 19 Jun 2026 06:54:39 -0700 (PDT)
+ bh=vUUKbt9W6InLjRL4JsCrE8AgCDe1lAkFx2fDBX1Rm5E=;
+ b=U3zloyjBSxbVYfgWw/Kl0aTn6jVWEcyQZ0H10jU4nr094FPxFymGAQDG4W6/iq/w
+ O1yJ7KOJ58Z+pK5UbIedzm0D0sOMlRlZ2vruSY8mnikAGIvoRuaFBpmrIZ+MiGv+vzS
+ mHx8HKA1mrRl0Q/aHJchScxe7p689wKVhe9ypRBU=
+Received: by mx.zohomail.com with SMTPS id 1781877284487231.07152977696808;
+ Fri, 19 Jun 2026 06:54:44 -0700 (PDT)
 From: =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>
-Date: Fri, 19 Jun 2026 14:54:28 +0100
-Subject: [PATCH v3 1/3] drm-uapi/panthor: sync with kernel 12cf826bf1dd
+Date: Fri, 19 Jun 2026 14:54:30 +0100
+Subject: [PATCH v3 3/3] tests/panthor: Add Panthor sparse VM_BIND tests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260619-panthor-sparse-mappings-v3-1-cb6c230b6bc0@collabora.com>
+Message-Id: <20260619-panthor-sparse-mappings-v3-3-cb6c230b6bc0@collabora.com>
 References: <20260619-panthor-sparse-mappings-v3-0-cb6c230b6bc0@collabora.com>
 In-Reply-To: <20260619-panthor-sparse-mappings-v3-0-cb6c230b6bc0@collabora.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
@@ -56,18 +56,18 @@ To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
 Cc: igt-dev@lists.freedesktop.org, kernel@collabora.com, 
  =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11291;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11076;
  i=adrian.larumbe@collabora.com; h=from:subject:message-id;
- bh=LYAeUkw4ueeVpYzhMAvTbBjU41ne51I5mMNwiJTsCSM=;
- b=owEB7QES/pANAwAKAQ4mfkzuU0M9AcsmYgBqNUoZID6ZAJ4JLGldh2z4DuznA9Fx9Mfq6uGRo
- bkaQ0NlzEOJAbMEAAEKAB0WIQQyQDDowAUXXfk3B6QOJn5M7lNDPQUCajVKGQAKCRAOJn5M7lND
- PZy8C/9CPClJKjNGQCBwQt9uvps369BY0ct0KtooWeRfGtw7FOdCQGOzK+6a9MGpR6rCFtf4aiG
- CGsb2L1uXYsFr5T42AwhVwqc+eovifBTO1nRz90F2ScWkprj8hiKaUVtTntalugR+XWUg5RUC0I
- cWssxb3gAVksMXZi96nrQ1hsTEKnomT/QMXwTGOIsjz0CtYuSXVWP2i4OXuNQHojTekz7DF5POg
- wFomkRCLQ+BZ8sefTby3olmkuWL9yFHDrGEr09kK5KQ2NbPwhwjCsgpm/oLXB1fKv8m7M2/kmGk
- RQCdNfvDDU+WSsiAXYADjh/52UdiQFWsmvXvYfkX1zhFpi72UAsPLq54FkcRo10XllzPvbSFZ7W
- 8bCMhHq2D8xz7VwTV5xvocPhSNPcTZGJ5JozedYTWB33UPUM/gilLdPK+EhRCxshCOz7HZVsPoR
- yju0QdsfEfdcDp+IAX+B/0OpRzsSvrxENFw//AueqpHbnQ/gpkHXESIrPECFXPpqHfX6g=
+ bh=RQOUbLLMYsbhIKBWbs5aM/FyK3upBw+OGqHU4PQykcA=;
+ b=owEB7QES/pANAwAKAQ4mfkzuU0M9AcsmYgBqNUoawSRFLzTF65aLR7ec2lOCsQ31Pj61ox8iQ
+ WQ4s8xKsheJAbMEAAEKAB0WIQQyQDDowAUXXfk3B6QOJn5M7lNDPQUCajVKGgAKCRAOJn5M7lND
+ PXuwC/9brGYnHsg5Zcy3Bfjng6b6o/WMdeUAStvrbV2jfRCz2T+v9O64L5fXUU8PlcPwKGNpeiO
+ cKj482Jip5LnmDpaxm6yVXFTNNdPHGaKHIh7BULM9cu6Cpm9dCsjD1NCpAfpXAl8Dxk4KzooITB
+ 12x0fukIPt5n9GIjZkZmSn52NWwwAv99SQHZx7xWlQ2fWojQAGfd6PubYU6RpZbu8fyiBhxYyUI
+ sovMLg7FD4fOvCf7ZnrGEHFP2gE4G2i1vsYJ2MV8wObuFGFpNExVHKkSNMo99ZMzzcU0rxNeqn/
+ wFiOdXVNRUDGfFEwBu09zcr/vpoQJsBf/+Mc8r9SAzyGEKWr8U/NRW5ojcBJA8+Vob9W6SZcxgO
+ I8zvpalTEjKfOXww+s5K8VOq8N0IaAhVxmlF0IiQ8csAdgpJlIzaYTTSgYyIdhfwOnThw+o82SO
+ DQadH87OdSAhj19X4uyrcuwDDiUQN647jCTqawqze0j16f7fyxBlhncob90qoYJSgGohQ=
 X-Developer-Key: i=adrian.larumbe@collabora.com; a=openpgp;
  fpr=324030E8C005175DF93707A40E267E4CEE53433D
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -85,354 +85,317 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sync Panthor drm uapi with drm-next up to commit 5731bca6a656, this
-will bring following changes:
+New batch of vm_bind tests that validate KMD's sparse binding
+functionality, available since driver revision 1.9.
 
-commit 12cf826bf1dd ("drm/panthor: Support sparse mappings")
-commit 8e54aac5af6a ("drm/panthor: Delete spurious whitespace from uAPI header")
-commit 6c1427fd03d8 ("drm/panthor: Expose GPU page sizes to UM")
-commit 1dfa2fd98f17 ("drm/panthor: extend timestamp query with flags")
-commit 5c3c3e7b654d ("drm/panthor: Fix kerneldoc in uAPI header")
-commit cd2c9c3015e6 ("drm/panthor: Add flag to map GEM object Write-Back Cacheable")
-commit c146c82f862e ("drm/panthor: Add an ioctl to query BO flags")
-commit e06177ec7a36 ("drm/panthor: Add a PANTHOR_BO_SYNC ioctl")
-commit ea78ec982653 ("drm/panthor: Expose the selected coherency protocol to the UMD")
-
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
 ---
- include/drm-uapi/panthor_drm.h | 246 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 240 insertions(+), 6 deletions(-)
+ tests/panthor/panthor_vm.c | 291 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 291 insertions(+)
 
-diff --git a/include/drm-uapi/panthor_drm.h b/include/drm-uapi/panthor_drm.h
-index 467d365ed7ba..a2ff0f4ec691 100644
---- a/include/drm-uapi/panthor_drm.h
-+++ b/include/drm-uapi/panthor_drm.h
-@@ -144,6 +144,16 @@ enum drm_panthor_ioctl_id {
- 	 * pgoff_t size.
- 	 */
- 	DRM_PANTHOR_SET_USER_MMIO_OFFSET,
-+
-+	/** @DRM_PANTHOR_BO_SYNC: Sync BO data to/from the device */
-+	DRM_PANTHOR_BO_SYNC,
-+
-+	/**
-+	 * @DRM_PANTHOR_BO_QUERY_INFO: Query information about a BO.
-+	 *
-+	 * This is useful for imported BOs.
-+	 */
-+	DRM_PANTHOR_BO_QUERY_INFO,
- };
+diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
+index 92b105b9e83a..9c2d7f7f9f89 100644
+--- a/tests/panthor/panthor_vm.c
++++ b/tests/panthor/panthor_vm.c
+@@ -270,6 +270,297 @@ int igt_main() {
+ 		igt_panthor_vm_destroy(fd, vm_id, 0);
+ 	}
  
- /**
-@@ -243,6 +253,29 @@ enum drm_panthor_dev_query_type {
- 	 * @DRM_PANTHOR_DEV_QUERY_GROUP_PRIORITIES_INFO: Query allowed group priorities information.
- 	 */
- 	DRM_PANTHOR_DEV_QUERY_GROUP_PRIORITIES_INFO,
++	igt_describe("Perform a simple sparse vm_bind operation");
++	igt_subtest("vm_bind_sparse") {
++		uint32_t vm_id;
++		uint64_t map_size = SZ_4K * 4;
 +
-+	/** @DRM_PANTHOR_DEV_QUERY_MMU_INFO: Query MMU information. */
-+	DRM_PANTHOR_DEV_QUERY_MMU_INFO,
-+};
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
 +
-+/**
-+ * enum drm_panthor_gpu_coherency: Type of GPU coherency
-+ */
-+enum drm_panthor_gpu_coherency {
-+	/**
-+	 * @DRM_PANTHOR_GPU_COHERENCY_ACE_LITE: ACE Lite coherency.
-+	 */
-+	DRM_PANTHOR_GPU_COHERENCY_ACE_LITE = 0,
++		igt_panthor_vm_bind_sparse(fd, vm_id, SZ_2M, map_size, 0);
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
 +
-+	/**
-+	 * @DRM_PANTHOR_GPU_COHERENCY_ACE: ACE coherency.
-+	 */
-+	DRM_PANTHOR_GPU_COHERENCY_ACE = 1,
++	igt_describe("Perform a partial hugepage-unaligned unmap of a sparsely bound region");
++	igt_subtest("vm_bind_sparse_partial_unmap_start_size_unaligned") {
++		uint32_t vm_id;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
 +
-+	/**
-+	 * @DRM_PANTHOR_GPU_COHERENCY_NONE: No coherency.
-+	 */
-+	DRM_PANTHOR_GPU_COHERENCY_NONE = 31,
- };
- 
- /**
-@@ -301,7 +334,16 @@ struct drm_panthor_gpu_info {
- 	 */
- 	__u32 thread_max_barrier_size;
- 
--	/** @coherency_features: Coherency features. */
-+	/**
-+	 * @coherency_features: Coherency features.
-+	 *
-+	 * Combination of drm_panthor_gpu_coherency flags.
-+	 *
-+	 * Note that this is just what the coherency protocols supported by the
-+	 * GPU, but the actual coherency in place depends on the SoC
-+	 * integration and is reflected by
-+	 * drm_panthor_gpu_info::selected_coherency.
-+	 */
- 	__u32 coherency_features;
- 
- 	/** @texture_features: Texture features. */
-@@ -310,8 +352,12 @@ struct drm_panthor_gpu_info {
- 	/** @as_present: Bitmask encoding the number of address-space exposed by the MMU. */
- 	__u32 as_present;
- 
--	/** @pad0: MBZ. */
--	__u32 pad0;
-+	/**
-+	 * @selected_coherency: Coherency selected for this device.
-+	 *
-+	 * One of drm_panthor_gpu_coherency.
-+	 */
-+	__u32 selected_coherency;
- 
- 	/** @shader_present: Bitmask encoding the shader cores exposed by the GPU. */
- 	__u64 shader_present;
-@@ -366,6 +412,38 @@ struct drm_panthor_csif_info {
- 	__u32 pad;
- };
- 
-+/**
-+ * enum drm_panthor_timestamp_info_flags - drm_panthor_timestamp_info.flags
-+ */
-+enum drm_panthor_timestamp_info_flags {
-+	/** @DRM_PANTHOR_TIMESTAMP_GPU: Query GPU time. */
-+	DRM_PANTHOR_TIMESTAMP_GPU = 1 << 0,
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
 +
-+	/** @DRM_PANTHOR_TIMESTAMP_CPU_NONE: Don't query CPU time. */
-+	DRM_PANTHOR_TIMESTAMP_CPU_NONE = 0 << 1,
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++		igt_panthor_vm_bind(fd, vm_id, 0, INITIAL_VA, SZ_4K * 2,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
 +
-+	/** @DRM_PANTHOR_TIMESTAMP_CPU_MONOTONIC: Query CPU time using CLOCK_MONOTONIC. */
-+	DRM_PANTHOR_TIMESTAMP_CPU_MONOTONIC = 1 << 1,
++	igt_describe("Do a partial hugeapge-aligned unmap from start of sparsely-bound region");
++	igt_subtest("vm_bind_sparse_partial_unmap_start_size_aligned") {
++		uint32_t vm_id;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
 +
-+	/** @DRM_PANTHOR_TIMESTAMP_CPU_MONOTONIC_RAW: Query CPU time using CLOCK_MONOTONIC_RAW. */
-+	DRM_PANTHOR_TIMESTAMP_CPU_MONOTONIC_RAW = 2 << 1,
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
 +
-+	/** @DRM_PANTHOR_TIMESTAMP_CPU_TYPE_MASK: Space reserved for CPU clock type. */
-+	DRM_PANTHOR_TIMESTAMP_CPU_TYPE_MASK = 7 << 1,
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++		igt_panthor_vm_bind(fd, vm_id, 0, INITIAL_VA, SZ_2M,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
 +
-+	/** @DRM_PANTHOR_TIMESTAMP_GPU_OFFSET: Query GPU offset. */
-+	DRM_PANTHOR_TIMESTAMP_GPU_OFFSET = 1 << 4,
++	igt_describe("Do a partial hugeapge-unaligned unmap from start of sparsely-bound region");
++	igt_subtest("vm_bind_sparse_partial_unmap_start_aligned_no_hugepage_multiple") {
++		uint32_t vm_id;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
 +
-+	/** @DRM_PANTHOR_TIMESTAMP_GPU_CYCLE_COUNT: Query GPU cycle count. */
-+	DRM_PANTHOR_TIMESTAMP_GPU_CYCLE_COUNT = 1 << 5,
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
 +
-+	/** @DRM_PANTHOR_TIMESTAMP_FREQ: Query timestamp frequency. */
-+	DRM_PANTHOR_TIMESTAMP_FREQ = 1 << 6,
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++		igt_panthor_vm_bind(fd, vm_id, 0, INITIAL_VA, 4 * SZ_64K,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
 +
-+	/** @DRM_PANTHOR_TIMESTAMP_DURATION: Return duration of time query. */
-+	DRM_PANTHOR_TIMESTAMP_DURATION = 1 << 7,
-+};
++	igt_describe("Do partial hugeapge-aligned unmap that left-intersects with sparse region");
++	igt_subtest("vm_bind_sparse_partial_unmap_below_start") {
++		uint32_t vm_id;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
 +
- /**
-  * struct drm_panthor_timestamp_info - Timestamp information
-  *
-@@ -378,11 +456,48 @@ struct drm_panthor_timestamp_info {
- 	 */
- 	__u64 timestamp_frequency;
- 
--	/** @current_timestamp: The current timestamp. */
-+	/** @current_timestamp: The current GPU timestamp. */
- 	__u64 current_timestamp;
- 
--	/** @timestamp_offset: The offset of the timestamp timer. */
-+	/** @timestamp_offset: The offset of the GPU timestamp timer. */
- 	__u64 timestamp_offset;
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
 +
-+	/**
-+	 * @flags: Bitmask of drm_panthor_timestamp_info_flags.
-+	 *
-+	 * If set to 0, then it is interpreted as:
-+	 *  DRM_PANTHOR_TIMESTAMP_GPU |
-+	 *  DRM_PANTHOR_TIMESTAMP_GPU_OFFSET |
-+	 *  DRM_PANTHOR_TIMESTAMP_FREQ
-+	 *
-+	 * Note: these flags are exclusive to each other (only one can be used):
-+	 * - DRM_PANTHOR_TIMESTAMP_CPU_NONE
-+	 * - DRM_PANTHOR_TIMESTAMP_CPU_MONOTONIC
-+	 * - DRM_PANTHOR_TIMESTAMP_CPU_MONOTONIC_RAW
-+	 */
-+	__u32 flags;
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++		igt_panthor_vm_bind(fd, vm_id, 0, INITIAL_VA - SZ_2M, SZ_2M * 3,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
 +
-+	/** @duration_nsec: Duration of time query. */
-+	__u32 duration_nsec;
++	igt_describe("Do partial hugepage-aligned unmap that is proper subset of sparse region");
++	igt_subtest("vm_bind_sparse_partial_unmap_above_start") {
++		uint32_t vm_id;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
 +
-+	/** @cycle_count: Value of GPU_CYCLE_COUNT. */
-+	__u64 cycle_count;
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
 +
-+	/** @cpu_timestamp_sec: Seconds part of CPU timestamp. */
-+	__u64 cpu_timestamp_sec;
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++		igt_panthor_vm_bind(fd, vm_id, 0, INITIAL_VA + SZ_2M, SZ_2M,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
 +
-+	/** @cpu_timestamp_nsec: Nanseconds part of CPU timestamp. */
-+	__u64 cpu_timestamp_nsec;
-+};
++	igt_describe("Do normal hugepage-aligned bind that intersects with sparsely-mapped region");
++	igt_subtest("vm_bind_sparse_remap") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
 +
-+/**
-+ * struct drm_panthor_mmu_info - MMU information
-+ *
-+ * Structure grouping all queryable information relating to the MMU.
-+ */
-+struct drm_panthor_mmu_info {
-+	/** @page_size_bitmap: Allowed page sizes */
-+	__u64 page_size_bitmap;
- };
- 
- /**
-@@ -499,6 +614,18 @@ enum drm_panthor_vm_bind_op_flags {
- 	 */
- 	DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED = 1 << 2,
- 
-+	/**
-+	 * @DRM_PANTHOR_VM_BIND_OP_MAP_SPARSE: Sparsely map a virtual memory range
-+	 *
-+	 * Only valid with DRM_PANTHOR_VM_BIND_OP_TYPE_MAP.
-+	 *
-+	 * When this flag is set, the whole vm_bind range is mapped over a dummy object in a cyclic
-+	 * fashion, and all GPU reads from addresses in the range return undefined values. This flag
-+	 * being set means drm_panthor_vm_bind_op::bo_offset and drm_panthor_vm_bind_op::bo_handle
-+	 * must both be set to 0. DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC must also be set.
-+	 */
-+	DRM_PANTHOR_VM_BIND_OP_MAP_SPARSE = 1 << 3,
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
 +
- 	/**
- 	 * @DRM_PANTHOR_VM_BIND_OP_TYPE_MASK: Mask used to determine the type of operation.
- 	 */
-@@ -562,7 +689,6 @@ struct drm_panthor_vm_bind_op {
- 	 * This array shall not be empty for sync-only operations.
- 	 */
- 	struct drm_panthor_obj_array syncs;
--
- };
- 
- /**
-@@ -638,6 +764,15 @@ struct drm_panthor_vm_get_state {
- enum drm_panthor_bo_flags {
- 	/** @DRM_PANTHOR_BO_NO_MMAP: The buffer object will never be CPU-mapped in userspace. */
- 	DRM_PANTHOR_BO_NO_MMAP = (1 << 0),
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
 +
-+	/**
-+	 * @DRM_PANTHOR_BO_WB_MMAP: Force "Write-Back Cacheable" CPU mapping.
-+	 *
-+	 * CPU map the buffer object in userspace by forcing the "Write-Back
-+	 * Cacheable" cacheability attribute. The mapping otherwise uses the
-+	 * "Non-Cacheable" attribute if the GPU is not IO coherent.
-+	 */
-+	DRM_PANTHOR_BO_WB_MMAP = (1 << 1),
- };
- 
- /**
-@@ -1040,6 +1175,101 @@ struct drm_panthor_set_user_mmio_offset {
- 	__u64 offset;
- };
- 
-+/**
-+ * enum drm_panthor_bo_sync_op_type - BO sync type
-+ */
-+enum drm_panthor_bo_sync_op_type {
-+	/** @DRM_PANTHOR_BO_SYNC_CPU_CACHE_FLUSH: Flush CPU caches. */
-+	DRM_PANTHOR_BO_SYNC_CPU_CACHE_FLUSH = 0,
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle, INITIAL_VA + SZ_2M, SZ_2M * 2,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
 +
-+	/** @DRM_PANTHOR_BO_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE: Flush and invalidate CPU caches. */
-+	DRM_PANTHOR_BO_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE = 1,
-+};
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
 +
-+/**
-+ * struct drm_panthor_bo_sync_op - BO map sync op
-+ */
-+struct drm_panthor_bo_sync_op {
-+	/** @handle: Handle of the buffer object to sync. */
-+	__u32 handle;
++	igt_describe("Do normal hugepage-unaligned bind that intersects with sparsely-mapped region");
++	igt_subtest("vm_bind_sparse_remap_start_unaligned") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
 +
-+	/** @type: Type of operation. */
-+	__u32 type;
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
 +
-+	/**
-+	 * @offset: Offset into the BO at which the sync range starts.
-+	 *
-+	 * This will be rounded down to the nearest cache line as needed.
-+	 */
-+	__u64 offset;
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
 +
-+	/**
-+	 * @size: Size of the range to sync
-+	 *
-+	 * @size + @offset will be rounded up to the nearest cache line as
-+	 * needed.
-+	 */
-+	__u64 size;
-+};
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle, INITIAL_VA + map_size - SZ_1M,
++				    SZ_4M, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
 +
-+/**
-+ * struct drm_panthor_bo_sync - BO map sync request
-+ */
-+struct drm_panthor_bo_sync {
-+	/**
-+	 * @ops: Array of struct drm_panthor_bo_sync_op sync operations.
-+	 */
-+	struct drm_panthor_obj_array ops;
-+};
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
 +
-+/**
-+ * enum drm_panthor_bo_extra_flags - Set of flags returned on a BO_QUERY_INFO request
-+ *
-+ * Those are flags reflecting BO properties that are not directly coming from the flags
-+ * passed are creation time, or information on BOs that were imported from other drivers.
-+ */
-+enum drm_panthor_bo_extra_flags {
-+	/**
-+	 * @DRM_PANTHOR_BO_IS_IMPORTED: BO has been imported from an external driver.
-+	 *
-+	 * Note that imported dma-buf handles are not flagged as imported if they
-+	 * where exported by panthor. Only buffers that are coming from other drivers
-+	 * (dma heaps, other GPUs, display controllers, V4L, ...).
-+	 *
-+	 * It's also important to note that all imported BOs are mapped cached and can't
-+	 * be considered IO-coherent even if the GPU is. This means they require explicit
-+	 * syncs that must go through the DRM_PANTHOR_BO_SYNC ioctl (userland cache
-+	 * maintenance is not allowed in that case, because extra operations might be
-+	 * needed to make changes visible to the CPU/device, like buffer migration when the
-+	 * exporter is a GPU with its own VRAM).
-+	 */
-+	DRM_PANTHOR_BO_IS_IMPORTED = (1 << 0),
-+};
++	igt_describe("Do normal hugepage-unaligned bind that intersects with sparsely-mapped region");
++	igt_subtest("vm_bind_sparse_remap_start_size_unaligned") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
 +
-+/**
-+ * struct drm_panthor_bo_query_info - Query BO info
-+ */
-+struct drm_panthor_bo_query_info {
-+	/** @handle: Handle of the buffer object to query flags on. */
-+	__u32 handle;
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
 +
-+	/**
-+	 * @extra_flags: Combination of enum drm_panthor_bo_extra_flags flags.
-+	 */
-+	__u32 extra_flags;
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
 +
-+	/**
-+	 * @create_flags: Flags passed at creation time.
-+	 *
-+	 * Combination of enum drm_panthor_bo_flags flags.
-+	 * Will be zero if the buffer comes from a different driver.
-+	 */
-+	__u32 create_flags;
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle, INITIAL_VA + map_size - SZ_1M,
++				    SZ_1M, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
 +
-+	/** @pad: Will be zero on return. */
-+	__u32 pad;
-+};
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
 +
- /**
-  * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
-  * @__access: Access type. Must be R, W or RW.
-@@ -1086,6 +1316,10 @@ enum {
- 		DRM_IOCTL_PANTHOR(WR, BO_SET_LABEL, bo_set_label),
- 	DRM_IOCTL_PANTHOR_SET_USER_MMIO_OFFSET =
- 		DRM_IOCTL_PANTHOR(WR, SET_USER_MMIO_OFFSET, set_user_mmio_offset),
-+	DRM_IOCTL_PANTHOR_BO_SYNC =
-+		DRM_IOCTL_PANTHOR(WR, BO_SYNC, bo_sync),
-+	DRM_IOCTL_PANTHOR_BO_QUERY_INFO =
-+		DRM_IOCTL_PANTHOR(WR, BO_QUERY_INFO, bo_query_info),
- };
- 
- #if defined(__cplusplus)
++	igt_describe("Do normal hugepage-aligned bind that intersects with sparsely-mapped region");
++	igt_subtest("vm_bind_sparse_remap_start_size_aligned") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
++
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
++
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle,
++				    INITIAL_VA + map_size - SZ_2M, SZ_4M,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
++
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
++
++	igt_describe("Do normal hugepage-aligned bind that splits original region in two");
++	igt_subtest("vm_bind_sparse_remap_aligned_split_original_va") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
++
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
++
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle, INITIAL_VA + SZ_2M,
++				    SZ_2M, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
++
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
++
++	igt_describe("Do normal 2MiB aligned hugepage-size-unaligned bind over sparse region");
++	igt_subtest("vm_bind_sparse_remap_start_aligned_size_unaligned") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
++
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
++
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle, INITIAL_VA + SZ_2M,
++				    SZ_1M, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
++
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
++
++	igt_describe("Do normal hugepage-aligned bind over left end of sparse region");
++	igt_subtest("vm_bind_sparse_remap_aligned_intersect_left") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
++
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
++
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle,
++				    INITIAL_VA - SZ_2M, SZ_2M * 2,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
++
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
++
++	igt_describe("Do normal hugepage-unaligned bind over left end of sparse region");
++	igt_subtest("vm_bind_sparse_remap_size_unaligned_intersect_left") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
++
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
++
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle,
++				    INITIAL_VA - SZ_2M, SZ_1M * 3,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
++
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
++
++	igt_describe("Do normal hugepage-unaligned bind over right end of sparse region");
++	igt_subtest("vm_bind_sparse_remap_start_aligned_intersect_right") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
++
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
++
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle,
++				    INITIAL_VA + map_size - SZ_2M, SZ_2M + SZ_4K * 6,
++				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
++
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
++
++	igt_describe("Do normal hugepage-aligned bind that envelopes whole sparse region");
++	igt_subtest("vm_bind_sparse_remap_wrap_around_va") {
++		uint32_t vm_id;
++		struct panthor_bo bo;
++		uint64_t map_size = SZ_2M * 3;
++		const int INITIAL_VA = SZ_4M;
++
++		igt_panthor_vm_create(fd, &vm_id, 0);
++		igt_assert(vm_id != 0);
++
++		igt_panthor_vm_bind_sparse(fd, vm_id, INITIAL_VA, map_size, 0);
++
++		/* Now attempt normal VM_BIND's that intersect with the previous chunk */
++		igt_panthor_bo_create(fd, &bo, SZ_8M, 0, 0);
++		igt_panthor_vm_bind(fd, vm_id, bo.handle, INITIAL_VA - SZ_2M,
++				    SZ_8M, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
++
++		igt_panthor_vm_destroy(fd, vm_id, 0);
++	}
++
+ 	igt_fixture() {
+ 		drm_close_driver(fd);
+ 	}
 
 -- 
 2.54.0
