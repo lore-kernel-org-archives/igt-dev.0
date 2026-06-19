@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44D6CCD98F6
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 05:11:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC6A3CD98E6
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jun 2026 05:17:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CCB3110E021;
-	Fri, 19 Jun 2026 05:11:48 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 771C910E021;
- Fri, 19 Jun 2026 05:11:21 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3669889393912081317=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Frotation=5Fcr?=
- =?utf-8?q?c=3A_concurrent_cursor_movement_with_rotation_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A5E5A10E021;
+	Fri, 19 Jun 2026 05:17:47 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HoiKtzEF";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AAB7E10E021
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jun 2026 05:17:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1781846239; x=1813382239;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=qExZZ09U3cMkYoF3Fc68w5KQLDmO8IsPNxs2Irbpvco=;
+ b=HoiKtzEFnDGBnDRnc9UH5AvaD9yZCIVDN4W+ThZkwcojFTU/l+aWD1i8
+ GJyyvLaXVal3mfIbQ7WvEuRdCOkMwYjhZLYNBLhmvPLynprBeGmrEnbCb
+ PDUlm4tL3+3Fi7Nsbqbsw0tjG8jCTjnq0kaudGTbNafLzatjPcHFnbYdU
+ drQ9sY8p35ZWuHLgVBzmcetnnlycchDvxreqfwF+IhPSzcDWCQqSa0G8P
+ lt7hR0xYodn0M4B1kEWboj/F/t6OmX50a8Zeoj1TDp8nKLd+oLqE0DfYj
+ gteU1dJt/MtAxkBSEKxZeOKAXBRgtsbwmCSq5tP5v6Att2HapNCTct1/7 g==;
+X-CSE-ConnectionGUID: nFGSyjKzTUyWNVtiG+FFTg==
+X-CSE-MsgGUID: oSOPbJmsQxmv+jfLkMS8nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="82586072"
+X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; d="scan'208";a="82586072"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2026 22:17:19 -0700
+X-CSE-ConnectionGUID: 35LRYUHBQAmHLwHmJLmmaw==
+X-CSE-MsgGUID: jWUJ2lcLT3yY00tjhMDYrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; d="scan'208";a="248409279"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.156])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2026 22:17:19 -0700
+Date: Fri, 19 Jun 2026 07:17:17 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 19 Jun 2026 05:11:21 -0000
-Message-ID: <178184588148.95126.17182945406046089430@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260619041903.999144-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20260619041903.999144-1-santhosh.reddy.guddati@intel.com>
+Subject: Re: [PATCH i-g-t 4/5] benchmarks/gem_exec_trace: use
+ hars_petruska_f54_1_random() from lib/rand
+Message-ID: <f4zbjx4zch4c5c3m6ihqwkkw4ysm6rjkyjb24qkeoc6644lnhj@vk5kpqt4kljl>
+References: <cover.1781791747.git.jani.nikula@intel.com>
+ <c78b332ceeaa0c00b80e99f4e49765bc22abd0ab.1781791747.git.jani.nikula@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c78b332ceeaa0c00b80e99f4e49765bc22abd0ab.1781791747.git.jani.nikula@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,186 +67,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3669889393912081317==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Jun 18, 2026 at 05:09:52PM +0300, Jani Nikula wrote:
+> Remove the local duplicate of hars_petruska_f54_1_random() by switching
+> to use lib/rand.
+> 
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> ---
+>  benchmarks/gem_exec_trace.c | 12 +++---------
+>  1 file changed, 3 insertions(+), 9 deletions(-)
+> 
+> diff --git a/benchmarks/gem_exec_trace.c b/benchmarks/gem_exec_trace.c
+> index 4263ccb03dbd..c27639105903 100644
+> --- a/benchmarks/gem_exec_trace.c
+> +++ b/benchmarks/gem_exec_trace.c
+> @@ -42,6 +42,7 @@
+>  #include "drm.h"
+>  #include "drmtest.h"
+>  #include "i915/gem_create.h"
+> +#include "igt_rand.h"
+>  #include "igt_stats.h"
+>  #include "intel_io.h"
+>  #include "ioctl_wrappers.h"
+> @@ -92,14 +93,7 @@ struct trace_wait {
+>  	uint32_t handle;
+>  } __attribute__((packed));
+>  
+> -static uint32_t hars_petruska_f54_1_random(void)
+> -{
+> -	static uint32_t state = 0x12345678;
+> -
+> -#define rol(x,k) ((x << k) | (x >> (32-k)))
+> -	return state = (state ^ rol (state, 5) ^ rol (state, 24)) + 0x37798849;
+> -#undef rol
+> -}
+> +static uint32_t random_state = 0x12345678;
+>  
+>  static double elapsed(const struct timespec *start, const struct timespec *end)
+>  {
+> @@ -277,7 +271,7 @@ static double replay(const char *filename, long nop, long range)
+>  				sizeof(*exec_objects)))->handle = bo[0];
+>  
+>  			if (nop > 0) {
+> -				eb.batch_start_offset = hars_petruska_f54_1_random();
+> +				eb.batch_start_offset = hars_petruska_f54_1_random(&random_state);
 
-== Series Details ==
+With random_state as above this offset is not random. I think adding nop
+to random_state would do this.
 
-Series: tests/kms_rotation_crc: concurrent cursor movement with rotation (rev3)
-URL   : https://patchwork.freedesktop.org/series/164593/
-State : success
+--
+Zbigniew
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8974 -> IGTPW_15404
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/index.html
-
-Participating hosts (41 -> 40)
-------------------------------
-
-  Additional (1): fi-glk-j4005 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15404 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@kms_pm_rpm@basic-rte:
-    - bat-rpls-4:         [PASS][3] -> [DMESG-WARN][4] ([i915#13400])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8974/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][5] +12 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-adlp-6:         [DMESG-WARN][6] ([i915#15673]) -> [PASS][7] +78 other tests pass
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8974/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-
-  
-  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8974 -> IGTPW_15404
-  * Linux: CI_DRM_18702 -> CI_DRM_18703
-
-  CI-20190529: 20190529
-  CI_DRM_18702: 24209d838338d162bb25aadfd637b11747a357ca @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18703: 1f50384666a6193297d506b8df628ca428a48d42 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15404: 15404
-  IGT_8974: 8974
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/index.html
-
---===============3669889393912081317==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_rotation_crc: concurrent cursor movement with rotation (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164593/">https://patchwork.freedesktop.org/series/164593/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8974 -&gt; IGTPW_15404</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/index.html</p>
-<h2>Participating hosts (41 -&gt; 40)</h2>
-<p>Additional (1): fi-glk-j4005 <br />
-  Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15404 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-rte:</p>
-<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8974/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +12 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8974/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15404/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> +78 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8974 -&gt; IGTPW_15404</li>
-<li>Linux: CI_DRM_18702 -&gt; CI_DRM_18703</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18702: 24209d838338d162bb25aadfd637b11747a357ca @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18703: 1f50384666a6193297d506b8df628ca428a48d42 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15404: 15404<br />
-  IGT_8974: 8974</p>
-
-</body>
-</html>
-
---===============3669889393912081317==--
+>  				eb.batch_start_offset =
+>  					((uint64_t)eb.batch_start_offset * range) >> 32;
+>  				eb.batch_start_offset = ALIGN(eb.batch_start_offset, 64);
+> -- 
+> 2.47.3
+> 
