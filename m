@@ -4,63 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18DDDCDB46F
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 12:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 514ECCDB46F
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 12:20:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B37C010E661;
-	Mon, 22 Jun 2026 12:02:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D117B10E67D;
+	Mon, 22 Jun 2026 12:20:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z5W0x97n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lq/2jYRD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0036D10E661
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 12:01:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CAB610E67D
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 12:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782129711; x=1813665711;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=2x/w9yQNLWtxC3CQd8XGy6iw49LK5Gi6eabSES4CxeE=;
- b=Z5W0x97nepg/d2dWcY1OdjTU+Dw4XkMt1E4WcPM7zvJ7peHAWYSwNH4v
- 7mFWcX8QzoJeJcjFWiv2ieU1kJqBRQgo3c+NrzV5rXYeLIbHvva37Qs/C
- nqBn5z33SPM+TUL10rXWMnFCU8FlAPPNc7yTKsezEJFefbHMdiBLxgQOH
- 4JQAT08yXiJkeMljRnpXFCDHEW3SgOaO+Y19VByi9J7p+i6iHtNaZd3mU
- xCQDg4AzsXqZD4EMB8r6eHhHuHUkmDFvz19kQ37kwiCPtvIpCJbAkClWT
- S9etuiIn7mAtdl3LI48eOtGnAoOf0BdU1I5hDQ2cE9Y4ZnRS7DyvlBLLy A==;
-X-CSE-ConnectionGUID: O3vMNcWlQSm6apEvjPP0uA==
-X-CSE-MsgGUID: dgM99OCWRoGHXwSLwSm0eg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="93511303"
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="93511303"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2026 05:01:50 -0700
-X-CSE-ConnectionGUID: dCaEZSx7TiGSOQ+5Q1Uy2A==
-X-CSE-MsgGUID: 3fNMbx+oSYKLumW8QqxLOA==
+ t=1782130823; x=1813666823;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=NelZmPeVzUiFVMlMUUKJKt6otnZUdsjWccM0LGyc+dY=;
+ b=lq/2jYRDUh12ATvDFVt557MfUNbEm0nMeMfYIirq9FeNjfgUPO6lOhvc
+ F354+qOpaJDOuBNj4T3Ft1DL/UTXBmRWBcHrSyUN6jjvrv6bnC6HURMgq
+ 7cG5Q4t6Hb+hJFcEhFfhKHPs0zrnVlnb+aQll+BIHQpn6J5aL6o26qGRu
+ RtMs35TQx1b8LEdGc+fmaDKCI8T0VuiIyHCPXDTVZ5zPx0wAyVkVpez/d
+ iYjxmpx313FZ4KHWIEkyHBGrzha/2Z83sPZmMBgNf/mNmdvStd5tFKEDt
+ IiCWxD+gXB3NCF3h9Mra1GYfXstdRQXMcPVyTz2rNHSHViwhDtW7JHknJ A==;
+X-CSE-ConnectionGUID: 0mtOTYdJSCS1pF9OXJLlGQ==
+X-CSE-MsgGUID: TqsoJQvuRc2nAP45cz2uRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82967181"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="82967181"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jun 2026 05:20:23 -0700
+X-CSE-ConnectionGUID: PpF25vF8SfW4CF3QJ/D+wQ==
+X-CSE-MsgGUID: NV1waNiaT9Wjt++FLHGbiA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="272912057"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 05:01:49 -0700
-Date: Mon, 22 Jun 2026 14:01:33 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org,
- zbigniew.kempczynski@intel.com, Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: Re: [PATCH i-g-t] lib/igt_core: Distinguish dynamic subtest in
- finished messages
-Message-ID: <20260622120133.zgaxa2fvyjc6ex7r@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-References: <20260608193807.2616777-1-swati2.sharma@intel.com>
- <20260610152928.yauflzchk2uf7szw@kamilkon-DESK.igk.intel.com>
- <cf3517458599630f209ddd247d8183bb74f509e1.camel@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="245063638"
+Received: from art-dev-395.igk.intel.com ([10.211.135.233])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jun 2026 05:20:22 -0700
+From: Jan Maslak <jan.maslak@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: matthew.brost@intel.com,
+	Jan Maslak <jan.maslak@intel.com>
+Subject: [PATCH v2 1/2] tests/intel/xe_exec_basic: Add timeline syncobj exec
+ tests
+Date: Mon, 22 Jun 2026 14:20:08 +0200
+Message-ID: <20260622122009.3350724-2-jan.maslak@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260622122009.3350724-1-jan.maslak@intel.com>
+References: <20260622122009.3350724-1-jan.maslak@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cf3517458599630f209ddd247d8183bb74f509e1.camel@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,78 +69,265 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2026-06-11 at 10:42:31 +0200, Janusz Krzysztofik wrote:
-> On Wed, 2026-06-10 at 17:29 +0200, Kamil Konieczny wrote:
-> > Hi Swati,
-> > On 2026-06-09 at 01:08:07 +0530, Swati Sharma wrote:
-> > > The exit_subtest() function always printed 'finished subtest' in kmsg
-> > > and trace output regardless of whether it was a regular subtest or a
-> > > dynamic subtest finishing. The 'starting' messages already correctly
-> > > distinguish between the two ('starting subtest' vs 'starting dynamic
-> > > subtest').
-> > > 
-> > > Fix the 'finished' messages to print 'finished dynamic subtest' for
-> > > dynamic subtests, matching the starting message convention. This makes
-> > > syslog parsing and test hang detection more accurate.
-> > 
-> > Should you add Closes tag here? See
-> > https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/198
-> > Fix multiple results from one (dynamic) subtest reported
-> > 
-> > +cc Janusz
-> > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > 
-> > > 
-> > > Assisted-by: GitHub Copilot:Claude Opus 4.6
-> > > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> > > ---
-> > >  lib/igt_core.c | 10 ++++++----
-> > >  1 file changed, 6 insertions(+), 4 deletions(-)
-> > 
-> > This could potentailly affect other CI pipelines, so
-> > +cc Vitaly.
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > > 
-> > > diff --git a/lib/igt_core.c b/lib/igt_core.c
-> > > index dc3ac5304..a0d9c9d7d 100644
-> > > --- a/lib/igt_core.c
-> > > +++ b/lib/igt_core.c
-> > > @@ -1733,10 +1733,12 @@ __noreturn static void exit_subtest(const char *result)
-> > >  				*subtest_name,
-> > >  				result,
-> > >  				igt_time_elapsed(thentime, &now));
-> > > -	igt_kmsg(KMSG_INFO "%s: finished subtest %s, %s\n",
-> > > -		 command_str, *subtest_name, result);
-> > > -	igt_trace("%s: finished subtest %s, %s\n",
-> > > -		  command_str, *subtest_name, result);
-> > > +	igt_kmsg(KMSG_INFO "%s: finished %s %s, %s\n",
-> > > +		 command_str, in_dynamic_subtest ? "dynamic subtest" : "subtest",
-> > > +		 *subtest_name, result);
-> > > +	igt_trace("%s: finished %s %s, %s\n",
-> > > +		  command_str, in_dynamic_subtest ? "dynamic subtest" : "subtest",
-> > > +		  *subtest_name, result);
-> 
-> Isn't igt_runner watching those messages?  Won't it be confused if not
-> adjusted to the new message content?
+Add Xe-specific timeline syncobj coverage for xe_exec.
 
-I checked it once again, dmesg processing is done in function
-fill_from_dmesg() and it only checks for start of (dyn)subtest,
-so I will merge it. Thank you all for review.
+The input test covers waiting on an older completed timeline point
+after the same syncobj has already advanced to a later point. This is
+the shape that exposed the historical xe_exec regression when exec
+parsing reached an input timeline sync with no backing fence.
 
-Regards,
-Kamil
+Also add a timeline syncobj output test to verify Xe signals the
+requested timeline point when execution completes.
 
-> 
-> Thanks,
-> Janusz
-> 
-> > >  
-> > >  	igt_terminate_spins();
-> > >  
-> > > -- 
-> > > 2.25.1
-> > > 
+Keep the coverage in xe_exec_basic so the test exercises the Xe exec
+uAPI directly instead of only the generic syncobj timeline helpers.
+
+Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+---
+ tests/intel/xe_exec_basic.c | 223 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 223 insertions(+)
+
+diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
+index 5335bffc41..7b5318919f 100644
+--- a/tests/intel/xe_exec_basic.c
++++ b/tests/intel/xe_exec_basic.c
+@@ -31,6 +31,209 @@
+ #define DEFER_BIND		(0x1 << 6)
+ #define SPARSE			(0x1 << 7)
+ 
++static void write_store_dword_batch(uint32_t *batch, size_t batch_size,
++				    uint64_t addr, uint32_t value)
++{
++	int b = 0;
++
++	/* Build a minimal batch that stores one dword and then terminates. */
++	batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++	batch[b++] = addr;
++	batch[b++] = addr >> 32;
++	batch[b++] = value;
++	batch[b++] = MI_BATCH_BUFFER_END;
++	igt_assert_lte(b, batch_size);
++	igt_assert_eq(b, 5);
++}
++
++struct timeline_exec_data {
++	uint32_t batch[16];
++	uint64_t pad;
++	uint32_t data;
++};
++
++struct timeline_exec_ctx {
++	struct timeline_exec_data *data;
++	struct drm_xe_exec exec;
++	uint64_t addr;
++	uint64_t batch_addr;
++	uint64_t sdi_addr;
++	uint32_t vm;
++	uint32_t exec_queue;
++	uint32_t bo;
++	size_t bo_size;
++};
++
++static void timeline_exec_ctx_init(int fd,
++				   struct drm_xe_engine_class_instance *eci,
++				   struct timeline_exec_ctx *ctx)
++{
++	uint64_t batch_offset;
++	uint64_t sdi_offset;
++
++	memset(ctx, 0, sizeof(*ctx));
++	ctx->addr = 0x1a0000;
++	ctx->vm = xe_vm_create(fd, 0, 0);
++	ctx->bo_size = xe_bb_size(fd, sizeof(*ctx->data));
++	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
++			       vram_if_possible(fd, eci->gt_id),
++			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	ctx->data = xe_bo_map(fd, ctx->bo, ctx->bo_size);
++	ctx->exec_queue = xe_exec_queue_create(fd, ctx->vm, eci, 0);
++
++	batch_offset = (char *)&ctx->data->batch - (char *)ctx->data;
++	ctx->batch_addr = ctx->addr + batch_offset;
++	sdi_offset = (char *)&ctx->data->data - (char *)ctx->data;
++	ctx->sdi_addr = ctx->addr + sdi_offset;
++
++	ctx->exec = (struct drm_xe_exec) {
++		.num_batch_buffer = 1,
++		.exec_queue_id = ctx->exec_queue,
++		.address = ctx->batch_addr,
++	};
++	xe_vm_bind_sync(fd, ctx->vm, ctx->bo, 0, ctx->addr, ctx->bo_size);
++}
++
++static void timeline_exec_ctx_fini(int fd, struct timeline_exec_ctx *ctx)
++{
++	xe_vm_unbind_sync(fd, ctx->vm, 0, ctx->addr, ctx->bo_size);
++	xe_exec_queue_destroy(fd, ctx->exec_queue);
++	munmap(ctx->data, ctx->bo_size);
++	gem_close(fd, ctx->bo);
++	xe_vm_destroy(fd, ctx->vm);
++}
++
++/**
++ * SUBTEST: timeline-syncobj-exec-completed-point-in
++ * Description: Submit xe_exec with an input dependency on an older completed
++ *              timeline point after the same syncobj has already advanced to a
++ *              later point, and verify Xe still accepts the completed
++ *              dependency and runs the batch.
++ * Test category: functionality test
++ */
++
++static void
++test_timeline_syncobj_exec_completed_point_in(int fd,
++					      struct drm_xe_engine_class_instance *eci)
++{
++	struct timeline_exec_ctx ctx;
++	struct drm_xe_exec exec;
++	uint64_t input_wait_point = 1;
++	uint64_t input_signal_point = 2;
++	uint32_t input_syncobj;
++	uint32_t completion_syncobj;
++	struct drm_xe_sync prime_sync;
++	struct drm_xe_sync input_sync;
++	struct drm_xe_sync completion_sync;
++	const uint32_t prime_value = 0x1234abcd;
++	const uint32_t expected = 0xc0ffee;
++
++	timeline_exec_ctx_init(fd, eci, &ctx);
++	exec = ctx.exec;
++	input_syncobj = syncobj_create(fd, 0);
++
++	/* Step 1: signal point 1 on this timeline from Xe work. */
++	write_store_dword_batch(ctx.data->batch, ARRAY_SIZE(ctx.data->batch),
++				ctx.sdi_addr, prime_value);
++	ctx.data->data = 0;
++	prime_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = input_syncobj,
++		.timeline_value = input_wait_point,
++	};
++	exec.syncs = to_user_pointer(&prime_sync);
++	exec.num_syncs = 1;
++	xe_exec(fd, &exec);
++	igt_assert(syncobj_timeline_wait(fd, &input_syncobj,
++					 &input_wait_point, 1,
++					 INT64_MAX, 0, NULL));
++	igt_assert_eq(ctx.data->data, prime_value);
++
++	/* Step 2: signal point 2 on the same timeline so point 1 becomes older. */
++	ctx.data->data = 0;
++	prime_sync.timeline_value = input_signal_point;
++	xe_exec(fd, &exec);
++	igt_assert(syncobj_timeline_wait(fd, &input_syncobj,
++					 &input_signal_point, 1,
++					 INT64_MAX, 0, NULL));
++	igt_assert_eq(ctx.data->data, prime_value);
++
++	/* Step 3: submit the real exec with point 1 as the input dependency. */
++	write_store_dword_batch(ctx.data->batch, ARRAY_SIZE(ctx.data->batch),
++				ctx.sdi_addr, expected);
++	ctx.data->data = 0;
++	input_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
++		.flags = 0,
++		.handle = input_syncobj,
++		.timeline_value = input_wait_point,
++	};
++	completion_syncobj = syncobj_create(fd, 0);
++
++	/* Use a binary completion fence so the input-only case stays input-only. */
++	completion_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = completion_syncobj,
++	};
++	{
++		struct drm_xe_sync exec_syncs[] = { input_sync, completion_sync };
++
++		/* Wait for timeline point 1, then signal the binary completion syncobj. */
++		exec.syncs = to_user_pointer(exec_syncs);
++		exec.num_syncs = ARRAY_SIZE(exec_syncs);
++		xe_exec(fd, &exec);
++	}
++	igt_assert(syncobj_wait(fd, &completion_syncobj, 1, INT64_MAX, 0, NULL));
++	igt_assert_eq(ctx.data->data, expected);
++
++	syncobj_destroy(fd, completion_syncobj);
++	syncobj_destroy(fd, input_syncobj);
++	timeline_exec_ctx_fini(fd, &ctx);
++}
++
++/**
++ * SUBTEST: timeline-syncobj-exec-out
++ * Description: Submit xe_exec with a timeline syncobj output and verify Xe
++ *              signals the requested timeline point when execution completes.
++ * Test category: functionality test
++ */
++
++static void test_timeline_syncobj_exec_out(int fd,
++					   struct drm_xe_engine_class_instance *eci)
++{
++	struct timeline_exec_ctx ctx;
++	struct drm_xe_exec exec;
++	uint64_t output_point = 2;
++	uint32_t output_syncobj;
++	struct drm_xe_sync output_sync;
++	const uint32_t expected = 0xc0ffee;
++
++	timeline_exec_ctx_init(fd, eci, &ctx);
++	exec = ctx.exec;
++	output_syncobj = syncobj_create(fd, 0);
++
++	write_store_dword_batch(ctx.data->batch, ARRAY_SIZE(ctx.data->batch),
++				ctx.sdi_addr, expected);
++	ctx.data->data = 0;
++	output_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = output_syncobj,
++		.timeline_value = output_point,
++	};
++	exec.syncs = to_user_pointer(&output_sync);
++	exec.num_syncs = 1;
++	xe_exec(fd, &exec);
++	igt_assert(syncobj_timeline_wait(fd, &output_syncobj, &output_point, 1,
++					 INT64_MAX, 0, NULL));
++	igt_assert_eq(ctx.data->data, expected);
++
++	syncobj_destroy(fd, output_syncobj);
++	timeline_exec_ctx_fini(fd, &ctx);
++}
++
+ /**
+  * SUBTEST: once-%s
+  * Description: Run %arg[1] test only once
+@@ -348,6 +551,26 @@ int igt_main()
+ 	igt_fixture()
+ 		fd = drm_open_driver(DRIVER_XE);
+ 
++	igt_subtest_with_dynamic("timeline-syncobj-exec-completed-point-in") {
++		igt_require(igt_has_drm_cap(fd, DRM_CAP_SYNCOBJ_TIMELINE));
++
++		xe_for_each_engine(fd, hwe)
++			igt_dynamic_f("%s%d",
++				      xe_engine_class_short_string(hwe->engine_class),
++				      hwe->engine_instance)
++				test_timeline_syncobj_exec_completed_point_in(fd, hwe);
++	}
++
++	igt_subtest_with_dynamic("timeline-syncobj-exec-out") {
++		igt_require(igt_has_drm_cap(fd, DRM_CAP_SYNCOBJ_TIMELINE));
++
++		xe_for_each_engine(fd, hwe)
++			igt_dynamic_f("%s%d",
++				      xe_engine_class_short_string(hwe->engine_class),
++				      hwe->engine_instance)
++				test_timeline_syncobj_exec_out(fd, hwe);
++	}
++
+ 	for (const struct section *s = sections; s->name; s++) {
+ 		igt_subtest_with_dynamic_f("once-%s", s->name)
+ 			xe_for_each_engine(fd, hwe)
+-- 
+2.43.0
+
