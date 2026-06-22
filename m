@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1084CD98E4
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 03:55:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C2E7CD98F6
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 03:55:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 94A1C10E442;
-	Mon, 22 Jun 2026 03:55:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D48F210E453;
+	Mon, 22 Jun 2026 03:55:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VtKm0uP1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="INNI9A0/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A1E910E43D
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 03:51:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C79610E43D
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 03:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782100290; x=1813636290;
+ t=1782100298; x=1813636298;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0JrGImLCqZJ6UD8iDqV+BFAGTin2tpvdRBO0oS9/yAE=;
- b=VtKm0uP1VrGER5bKmjjjEYcK0+At/YHfgNDWnQ9wo2z/ev+rlHyhYSTC
- D8ggr6mOUuv87fJUpEAA/7d2RxiaE4Gy8cvQ3gjsbsCyRt2/ZXKH4u+G9
- bTk0wWFecFc+ciTYM17fX3bjP4LhtgdVuRUHrFQGI7QzihjVY/5IfSapw
- 9ItDFlK+TCS8lso2A93HQl08c0mjX+r2bEqZpzlXrvsJCUziSz5AvE1zA
- clcoVOq4EwxqUOG3VSg0Z0dRpCpZ9FnYWEAFxJUk3kmMh1IODInUYPVEk
- rHALng6K4fUSIydFDDvOwql8g5oi5UsxpgbO8enrAhOe6G3rL3yvSQZkI w==;
-X-CSE-ConnectionGUID: bPVHTzhZRzqo9qyyR+BaLA==
-X-CSE-MsgGUID: 1Ayxud5ERSS3/5Sz0Z37sA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82596518"
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="82596518"
+ bh=OEKpDHTJY/Crm9lT6lWtORumvzEaRrzmgBmXLbfgqJQ=;
+ b=INNI9A0/kWRbqD7qz4DPw7kMx5kezSOHcwakTdcNwYMuHVd1Tmorr0I/
+ kIaEVwNAYJv2BB5pBHp2cjl8jjcVrYqP9Ygc3tN3EvAp0zIRekIM3Syb4
+ +nEj/iB+RLtuntbw/Is1fLqCoR3645iiFthfBu/Mj9njOAsU3rVVjPAm+
+ DB1Z7QQ8Aa8USRzQRi2V4s7oSkE5vR/M0VlEy4HV30tQpfoXxsSRUXQLj
+ 2ArII/GOFEodMqe7bCRA1n14VjGulxqvupgv8iLKuMQN1x3Qa1ZvkaZQE
+ wiUOOFQhc/wNf5IYhQ7XjaLTQT1BBzvl/RLMtHrnwtQkJyxvrQ0rlN6bW Q==;
+X-CSE-ConnectionGUID: iR0uWWjNR86vLHi3+Z9zYw==
+X-CSE-MsgGUID: A92LDV+bTCie8YogY60YzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82596526"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="82596526"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2026 20:51:30 -0700
-X-CSE-ConnectionGUID: V1UT0dAARNmhwqNeLlBMUw==
-X-CSE-MsgGUID: Fip2fR1CQmGKm5GiN5CAtw==
+ 21 Jun 2026 20:51:37 -0700
+X-CSE-ConnectionGUID: ld5oJzLMRIC0ysgYyQcgsw==
+X-CSE-MsgGUID: ufaa0/JkSvCQ476y1Nq+xA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="248964530"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="248964556"
 Received: from art-dev-395.igk.intel.com ([10.211.135.233])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2026 20:51:28 -0700
+ 21 Jun 2026 20:51:36 -0700
 From: Jan Maslak <jan.maslak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com,
 	Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH 05/11] lib/intel_bufops: Add intel_buf_mocs() helper
-Date: Mon, 22 Jun 2026 05:51:00 +0200
-Message-ID: <20260622035106.3023047-6-jan.maslak@intel.com>
+Subject: [PATCH 11/11] lib: Add genxml annotated batch buffer decode
+Date: Mon, 22 Jun 2026 05:51:06 +0200
+Message-ID: <20260622035106.3023047-12-jan.maslak@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260622035106.3023047-1-jan.maslak@intel.com>
 References: <20260622035106.3023047-1-jan.maslak@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,51 +68,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some genxml-generated pack headers represent MOCS as a single 7-bit
-field encoding both the 6-bit MOCS table index at bits 6:1 and the PXP
-protected-content bit at bit 0.
+When IGT_BB_ANNOTATE=1 is set, intel_bb_dump() writes a companion
+<filename>.annotated file alongside the raw hex dump.  The annotated file
+identifies each command and prints its field names and values, decoded via
+the genxml *_decode.h headers.
 
-intel_buf already carries both pieces of information, but callers would
-otherwise have to open-code the packing each time they assign to a
-genxml .MOCS field.
-
-Add intel_buf_mocs(buf) to return the packed 7-bit value:
-
-  (buf->mocs_index << 1) | intel_buf_pxp(buf)
-
-This keeps the encoding logic in one place and makes genxml call sites
-use the same packing convention consistently.
+The opt-in environment variable avoids file I/O overhead in normal test runs.
+A disclaimer in the file header notes that the decode is best-effort and may
+lag hardware on newer platforms.
 
 Signed-off-by: Jan Maslak <jan.maslak@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_bufops.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ lib/intel_batchbuffer.c | 32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index d111346aaa..ead2c53e3f 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -210,6 +210,19 @@ static inline bool intel_buf_pxp(const struct intel_buf *buf)
- 	return buf->is_protected;
- }
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 912b936e0c..1dacfdc6c7 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -42,6 +42,7 @@
+ #include "intel_batchbuffer.h"
+ #include "intel_bufops.h"
+ #include "intel_chipset.h"
++#include "intel/genxml/igt_genxml_decode.h"
+ #include "intel_pat.h"
+ #include "media_fill.h"
+ #include "media_spin.h"
+@@ -1611,7 +1612,9 @@ void intel_bb_print(struct intel_bb *ibb)
+  * @filename: name to which write bb
+  * @in_hex: dump bb in hex form
+  *
+- * Dump batch bo to file.
++ * Dump batch bo to file.  When IGT_BB_ANNOTATE=1 is set, also writes
++ * a companion annotated file (filename + ".annotated") with
++ * genxml-decoded field names and values.
+  */
+ void intel_bb_dump(struct intel_bb *ibb, const char *filename, bool in_hex)
+ {
+@@ -1641,6 +1644,33 @@ void intel_bb_dump(struct intel_bb *ibb, const char *filename, bool in_hex)
+ 	}
+ 	fclose(out);
  
-+/**
-+ * intel_buf_mocs:
-+ * @buf: the intel_buf
-+ *
-+ * Returns the full 7-bit MOCS field value for @buf, encoding the 6-bit
-+ * table index at bits 6:1 and the PXP protected-content bit at bit 0.
-+ * Use this when assigning to a genxml-generated MOCS field.
-+ */
-+static inline uint8_t intel_buf_mocs(const struct intel_buf *buf)
-+{
-+	return (buf->mocs_index << 1) | (intel_buf_pxp(buf) ? 1 : 0);
-+}
++	/* Write a companion annotated decode alongside the raw dump,
++	 * but only when explicitly requested via IGT_BB_ANNOTATE=1.
++	 */
++	if (getenv("IGT_BB_ANNOTATE")) {
++		char *ann_filename;
++		unsigned batch_dwords;
 +
- void *intel_buf_cpu_map(struct intel_buf *buf, bool write);
- void *intel_buf_device_map(struct intel_buf *buf, bool write);
- void intel_buf_unmap(struct intel_buf *buf);
++		igt_assert(asprintf(&ann_filename, "%s.annotated", filename) > 0);
++		batch_dwords = intel_bb_offset(ibb) / sizeof(uint32_t);
++
++		out = fopen(ann_filename, "w");
++		if (out) {
++			fprintf(out,
++				"# Batch buffer annotated decode\n"
++				"# Decoded using IGT's genxml definitions.\n"
++				"# This is a best-effort annotation and may be inaccurate,\n"
++				"# especially on newer platforms where the XML definitions\n"
++				"# may not yet reflect the latest hardware changes.\n"
++				"\n");
++			igt_genxml_decode_batch(out, ibb->devid,
++						(const uint32_t *)ptr,
++						batch_dwords);
++			fclose(out);
++		}
++		free(ann_filename);
++	}
++
+ 	if (ptr != ibb->batch)
+ 		munmap(ptr, ibb->size);
+ }
 -- 
 2.43.0
 
