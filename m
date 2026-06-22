@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B182CD98F2
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 20:07:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12A58CDB466
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 20:08:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C90C910E852;
-	Mon, 22 Jun 2026 20:07:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B808910E852;
+	Mon, 22 Jun 2026 20:08:42 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6F7910E852;
- Mon, 22 Jun 2026 20:06:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2AEB610E852;
+ Mon, 22 Jun 2026 20:08:16 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0332652422602403204=="
+ boundary="===============8680063748635091701=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_intel-ci=3A_Add_dc3co_tests?=
- =?utf-8?q?_to_LNL=2C_PTL=2C_BMG_and_I915_blocklist?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Improve_max-bpc_query_error?=
+ =?utf-8?q?_handling_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
+To: "Pranay Samala" <pranay.samala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 22 Jun 2026 20:06:51 -0000
-Message-ID: <178215881193.102902.2189695782556373040@6beec6c84f66>
+Date: Mon, 22 Jun 2026 20:08:16 -0000
+Message-ID: <178215889617.103462.17261121745705013672@6beec6c84f66>
 X-Patchwork-Hint: ignore
-References: <20260622051641.3007639-1-jeevan.b@intel.com>
-In-Reply-To: <20260622051641.3007639-1-jeevan.b@intel.com>
+References: <20260618063347.2940031-1-pranay.samala@intel.com>
+In-Reply-To: <20260618063347.2940031-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,57 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0332652422602403204==
+--===============8680063748635091701==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: intel-ci: Add dc3co tests to LNL, PTL, BMG and I915 blocklist
-URL   : https://patchwork.freedesktop.org/series/168900/
-State : failure
+Series: Improve max-bpc query error handling (rev2)
+URL   : https://patchwork.freedesktop.org/series/168759/
+State : success
 
 == Summary ==
 
-Series 168900 revision 1 was fully merged or fully failed: no git log
+CI Bug Log - changes from XEIGT_8977_BAT -> XEIGTPW_15416_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
 
 
+Changes
+-------
 
---===============0332652422602403204==
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8977 -> IGTPW_15416
+
+  IGTPW_15416: 15416
+  IGT_8977: c8bdb0bc2140e337e1d79969430c3d7a5c088c9e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5286-6583dd200482a34bb17e5dc54551f91f53b79798: 6583dd200482a34bb17e5dc54551f91f53b79798
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15416/index.html
+
+--===============8680063748635091701==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,16 +111,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>intel-ci: Add dc3co tests to LNL, PTL, BMG and I915 blocklist</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168900/">https://patchwork.freedesktop.org/series/168900/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>Improve max-bpc query error handling (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168759/">https://patchwork.freedesktop.org/series/168759/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15416/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15416/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 168900 revision 1 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from XEIGT_8977_BAT -&gt; XEIGTPW_15416_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8977 -&gt; IGTPW_15416</li>
+</ul>
+<p>IGTPW_15416: 15416<br />
+  IGT_8977: c8bdb0bc2140e337e1d79969430c3d7a5c088c9e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5286-6583dd200482a34bb17e5dc54551f91f53b79798: 6583dd200482a34bb17e5dc54551f91f53b79798</p>
 
 </body>
 </html>
 
---===============0332652422602403204==--
+--===============8680063748635091701==--
