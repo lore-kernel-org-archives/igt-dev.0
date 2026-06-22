@@ -4,123 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47915CDB46B
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 08:39:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D395ECDB471
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 08:54:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F13FC10E2CC;
-	Mon, 22 Jun 2026 08:39:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6E6F110E58A;
+	Mon, 22 Jun 2026 08:54:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="W1wyOBPy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KNqI+PCC";
 	dkim-atps=neutral
-Received: from DM5PR21CU001.outbound.protection.outlook.com
- (mail-centralusazon11011019.outbound.protection.outlook.com [52.101.62.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9064610E2CC
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 08:39:31 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jgIVzP1311xnuBvJHKMER5UhBKDhbU/I+s/W4XTtHUkM8W6OePJ64tgiGdHKIqtm0GIy1vhVEN/HVRQFRV+0MVU/DeCgRfmN79i/8DBrBsihPpTwwEMZIfKKeV+AfoZu6NvbiuNaZPTDjqBGTb+CFxXrtJGjZCQuIFz5/0vb9UoA/41vaQw3clZrlaGswLFykZpExTzKSSTFFvsw6eoJjt9MSx2EHLxZvmGdAbfZF5ez3pF75/o2mu/My4WyMp1vm3/pOvAJ13DQqN7oV2gdNIkXXvyR37Gm5DiNebOLq0BqIXgtbgmSKtiFF39NWvryadCt+rSRz/VOLTBgJYgBcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=03ObKH8Vch8v6qPMceJz7x89mJjXRZrXskd8hCepRb0=;
- b=vZoQKteJppomQtiUUYkLme/AK47wKQhI8UOsrQe+05/+8vXqbsOllLhs44Tm5sjWBxLi34yfm0/DZmEC8aH5CT22ewCF/fejGa51Ce0Z4484Wmaau6YbODBBzjxkW3SSOtzpPQHL5RItGax/UNZGC7ensQJK5dU2LibRUIAuCHv2oz6lAJJqm3awdXvcYJ3N+aWLMq7Dj3ylN0Ih5enMQDriZjWvDaRCn69NYS30ht5ireb7MXof82MVGERzPWyovpMC2ZLHKZpSrb9jvQSPs1sujvGHiFmEqqE2ChVgcR5UicfK9N4Bs0heVRsihEWW2nbL0IrhvAW1CauZ/Gg6Dg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=03ObKH8Vch8v6qPMceJz7x89mJjXRZrXskd8hCepRb0=;
- b=W1wyOBPyViHKZTaP4ofZ6MWHJ9mfOtPJQrbltZYDH4zgGuOaqhf5Pw7OwO6NDSQ5ogmZHySl42LfbBhM4fsJOtwinl18r3BWqP8CfD1l1KR4iTLy0xGz6pS436sBtuXEH7sQ/8iyxqlu+Do+IQ4nmQENC2Cl7LbItACZZ0XbGug=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DS2PR12MB9566.namprd12.prod.outlook.com (2603:10b6:8:279::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Mon, 22 Jun
- 2026 08:39:26 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0113.015; Mon, 22 Jun 2026
- 08:39:26 +0000
-Message-ID: <32325265-fda4-42eb-a27f-d8785287c728@amd.com>
-Date: Mon, 22 Jun 2026 10:39:21 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/amdgpu/amd_security: Skip secure bounce test for
- APUs
-To: "Ramalingeswara Reddy, Kanala" <Kanala.RamalingeswaraReddy@amd.com>,
- igt-dev@lists.freedesktop.org, Vitaly.Prosyak@amd.com,
- Pratik.Vishwakarma@amd.com
-References: <20260622040418.454076-1-Kanala.RamalingeswaraReddy@amd.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260622040418.454076-1-Kanala.RamalingeswaraReddy@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0071.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ce::6) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2B1C10E545
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 08:53:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1782118414; x=1813654414;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=dqNp9bDbcSmi9n8ln65AirgyybNKURaKhrmtwew+W0c=;
+ b=KNqI+PCCBYLsIsd/qJxYL//K3Vt69TZyg95YZhJSuJzj/q4qzOtF+Rmg
+ AR/DbKKuZb/wI6cHd4ucH6c5x8FaUicqN3+nD8DHVwFB0GOvPmQSZbMpE
+ f/pnac+JPU4sFM70fs6odHvVWlHXgZp9Xb7Lx7+Tlo4Xj9SQFyH7kc3PR
+ QG+/dQiWRSenw5mNeOOCOlOpzLt69oa9NzR2EElo+Q1PZQoBVjUj1ZaTF
+ qQ9Uv6oVjJ2OuUsBKP4L8yB8yioPYku/6IIGT8wRcDZrG5YcFj7yqQqtV
+ JehWossr73JDgc8+/QPx9TvM39F6ujkZpKN/CD1CxrTFf98y2z+bTika2 w==;
+X-CSE-ConnectionGUID: KqDgYXwsR/mN4IBYGDdwNA==
+X-CSE-MsgGUID: lvA3mmQPSQOUduJkrzbbZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="85396580"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="85396580"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jun 2026 01:53:34 -0700
+X-CSE-ConnectionGUID: jL93BikQTvK/EEfOAKLO6A==
+X-CSE-MsgGUID: 863zD2JVRQeHpnixRAKGJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="253505532"
+Received: from art-dev-395.igk.intel.com ([10.211.135.233])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jun 2026 01:53:32 -0700
+From: Jan Maslak <jan.maslak@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: matthew.brost@intel.com,
+	Jan Maslak <jan.maslak@intel.com>
+Subject: [PATCH 1/2] tests/intel/xe_exec_basic: Add timeline syncobj exec tests
+Date: Mon, 22 Jun 2026 10:51:58 +0200
+Message-ID: <20260622085159.3318909-2-jan.maslak@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260622085159.3318909-1-jan.maslak@intel.com>
+References: <20260622085159.3318909-1-jan.maslak@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS2PR12MB9566:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e02a796-c927-4e51-5aa1-08ded039c458
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|366016|376014|1800799024|56012099006|18002099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info: /eIPLp0E3n+f/XSecuSguLFlCInTSxJwAgLN2V00+iMbsdfc0DrAkz3HRfSdvr1qpuJkQIskqwYMLWz04i4oORWj3X5SjnbstFpj3GDPja8KW9kvihtLU5DvoibFvvpILJJrV/g222MgO4QXFd/xpes7YwieNUdnAh700N1Ip1wyM94c0ggF3Af4Mjr0OhZg3PMJ9hEwj1Op09SymSIOwBIh/OjbyQCZKU4kATgwsCjL/6GK+opmVKfCkCcISmZQLM20H62vnl8/sRQjlMSg38jBif/SS9XZPc0FIwC3onQbC+q9tr1XoFMqTzIrPovYgbLq1OpjzW7j286SUN5RMlv8UX3hucXDIAeAFDqqiXzbWEXbOtdRQlsMOxXmlXYKfTreZhTMq4Ba8iuEuGRjIZjn0qyqboj+0c7R+JfJBAfvzo7Dz6glvuU4oyil90YPBnnU7liUl0U8BFycd0iDVQFudYDUQ+6RPqj51/9wjNoD8OPexJ8hPsGBwFFeJH7yas0pcrRQEcRSFzqLnYCJzTEhkGZQq4Za+34YcMrmAsWQ0X1x1YJ+8J7dtaZ5gebP1wG04lr3LzszFdv1k/TUBJlLDImXPT33/dAOT2dgOYIqo3Rtd3ZTfmd2tcw0HtFlQ5jm4rZji4gqmgQVEf/LsImTh+B1JlEqxRVtVrxPzLU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR12MB5685.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(56012099006)(18002099003)(22082099003)(11063799006);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M3Y3Mk85NkMrOE1nTVBVZFlUWjVnMHlwSHhIWFlNMzR4b2VTWHBEMnA4ejlx?=
- =?utf-8?B?VEhHVHc1U2RZVHAyYS83ZWNqdjdITWJEOUx6Z1dzMHltOUdaaS9mZjNtdkFO?=
- =?utf-8?B?TU51dFJ1ZzIweFoyZkdJWHVtYkFqa1VPSVhOaUdTTmJhQXBGR2lBS3lnNDdm?=
- =?utf-8?B?TE1iakhVRHE0QVYwY0o4L2pRZFl6ZDhYQ3BkQ3M0SmtNU1pQL0JPc3VnUmp0?=
- =?utf-8?B?Mm9Gbk5kS25lU0JqemtRMUVoREFVOGx6Z2ZJcDM4RitIUnBCMGJVZkU0R2Mr?=
- =?utf-8?B?VWlYRTlhYVUrRGxyQWR6RldhVy9ZS1RZd3N6dnM3Y1lmQ01CZVhXT2M1MzRG?=
- =?utf-8?B?TkUyZlBFUm8rRjRZc2g3My9pd2hSc1VJcFBMYU1NMXI5aXczRmxNMGZKZUNP?=
- =?utf-8?B?eTFKOEdabTZaekdKcktob29ESW53alRvOHBkK094TFFNWEd4MGh6cXZicm1x?=
- =?utf-8?B?YjlIemVDbGIvTS9ZVC9HY3QrWm5mWkZWbUdtVmJjRExzRVZ2ckdjaGw4Umcx?=
- =?utf-8?B?WnVMeDgvam1wRDU1Mng2VTNPUjhFK1JVZnI3Y0t5Vmhmd2xjWFRCaEJ3eXNI?=
- =?utf-8?B?bWpwSEZDR2NwZGhtNVBoNy9TQkw3OHlMa2ZqR1lWZjRTRHpCRjQyUUVvNGhu?=
- =?utf-8?B?djlvZXNkRGtPTkR4cmlWNUlLWUQ1ODhkSjJXSlVtRW1rSjg5L2tJdHdxaFVj?=
- =?utf-8?B?Wnl6NWMyZE1aN3dVaW9YeEd0bTZsNlJIMHNMdEtWMDhlWlY1WnN1RkNON3V0?=
- =?utf-8?B?anJwQ0R3MzgrREtocTFCcXhoUGdxdFZJSlRJdGo2MUtxL2RqMGc3QTEvVm0v?=
- =?utf-8?B?eDJlUFB0ejZGY0YzWCtYdFhZNEZQbGRDb0lXM0ZMSWR4YXZPNlhaN2E3SlFF?=
- =?utf-8?B?MXRRdFJhQnkrS3MwcSs4VHg2QkVQcitpVmIvejZGSUJlNUV0V1B2c0xkZzhB?=
- =?utf-8?B?QVh2d0VtK0lydmw0UnVtR1RiRzR5bDAzRTBIV05vL09LL3JLVjgzRHUvZ2R3?=
- =?utf-8?B?alRFZTczWCt6aGc0TTh3UUk0aU0zWVB1RlA0WFNKc1NzcGtOSkFJbzRxTjFZ?=
- =?utf-8?B?U0FwQUF3RzBtM3BFdlczM05iN3JWUmZQS1l2My9EbFJaSzJtQ2MxWDF0TTVY?=
- =?utf-8?B?ZStiMDZnNzVjR2xPMUg2SXlDeWx6eGFzZVE5QzdmRDRMcUlTTFFNSjNUUkdU?=
- =?utf-8?B?TXpQdC9KdkFVNk9RVlNRZW1WNjZWRHUraTRwSFdZTC9WMHd2cFMvd0hmMWda?=
- =?utf-8?B?VjB0L1luSGl1RldFWHZTNGVjZlFaSXhHVVNaZzRHUm5HL2RQM2UydFBaTVlY?=
- =?utf-8?B?Ui9xR2M5ZW1iVTRFNmREcE81TjAvblRBS0Y1b2hLaS9JUzBZWmJVSWtSQ0RR?=
- =?utf-8?B?WFdNQXo2TUpDYlJad3liNnhONmlkOS9xa3VLOGFkYVhjS0tQZ2ErYUMwZy84?=
- =?utf-8?B?SHMrWUdZQTZ2WHhMTUFxRU5ZMisyOXdtR29hM2RJTW5tNHN1Y0xaL2N5UFZB?=
- =?utf-8?B?VUdEMEZWVExHdVhMRi83TGtuZHBMSm82cmVwbU1tbGxjb0hFRDJaR3hFYmxt?=
- =?utf-8?B?MU5SdXNlU2ZRdWZheVFzbk5la090aVJyWkt5L2dSamVOMFNUNHdtR1FldkZj?=
- =?utf-8?B?dUl5bzB0TkQ3ZkpDRmFaYU9FZDFJaTlLYmVia3BBU3BLUXBTTVFZcVU2ZnRu?=
- =?utf-8?B?OE51RWZBbXo1aU8zT0VvMzNwNWYyRmk4aGNZdkFtQlRzTWdIN2JBNmhORG1G?=
- =?utf-8?B?UE4ySTFybndrUThlQThUSTVrbkxwajQxUjdQYXA3TC9WN2hIdm11Z1gzL3U0?=
- =?utf-8?B?ajNSdFdsam1XUWROM2NBWW9TcTRNMGF3MHkxaW0zb2Qzdk5Uejh3SEVZbTBP?=
- =?utf-8?B?SkhhSHkzck54SW82NTlQVHQ4bG5PdkhLK01jcjJDcWRob21BVC81dkVua1J2?=
- =?utf-8?B?c3IvOW84bnphQURRUUt6M1FMRkpBcnhJRkhKSVdBNWwyL0xBNVd6Nkwvd0VE?=
- =?utf-8?B?WmhSMHZJZmltMjdVQ2pEWmVhQ0h0aW5yK0ZadUcxQ2w1ZElRUFo2c1BSWHVG?=
- =?utf-8?B?ZC9NNXNiSmNrbmY2NWJtbzZaQ0ROWXh3OXRTZlk0M1NmZS9YZ0JiKzRTbUFT?=
- =?utf-8?B?WlArRlNCZVVhUVVPeCsrMFJjR2Q1UVdDb3J2LzZYU1FlUVhkdUNYeVFXTi90?=
- =?utf-8?B?U2FkRFFXQVZIdXBQanlGUFRkVjRRd2k4MlJpZzRtL1pXSDVpaDlORU5JRFFG?=
- =?utf-8?B?NmNtRUJzUmhValNmLytJNlpjVUI1WlM3bk9LRTNodm5oRUg4QVNBWmpKVVAw?=
- =?utf-8?Q?6uMxenFORvojQoGMmA?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e02a796-c927-4e51-5aa1-08ded039c458
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 08:39:26.1947 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A9w8reFB72IpdaP1xUjgBEimavWucXX+liA+tsF1V1GzyVyh3aR0LJUlugaZGynz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9566
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,45 +68,275 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 6/22/26 06:04, Ramalingeswara Reddy, Kanala wrote:
-> Secure bounce test is not supported for APUs.
-> 
-> On dGPUs, TMZ works only on VRAM (local memory) but not on
-> GTT (system memory) due to HW limitations, so this test validates bounce
-> operation from VRAM to GTT and back to VRAM works on dGPUs.
-> 
-> Since APUs do not support this functionality, skip the test for APUs.
-> 
-> Signed-off-by: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
+Add Xe-specific timeline syncobj coverage for xe_exec.
 
-@Vitaly I suggested this change but I'm not familiar enough with the IGT code to review this.
+The input test covers waiting on an older completed timeline point
+after the same syncobj has already advanced to a later point. This is
+the shape that exposed the historical xe_exec regression when exec
+parsing reached an input timeline sync with no backing fence.
 
-I'm not 100% sure what igt_skip_on_f() does but it looks a bit fishy to me.
+Also add a timeline syncobj output test to verify Xe signals the
+requested timeline point when execution completes.
 
-Thanks,
-Christian.
+Keep the coverage in xe_exec_basic so the test exercises the Xe exec
+uAPI directly instead of only the generic syncobj timeline helpers.
 
-> ---
->  tests/amdgpu/amd_security.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
-> index 9ebb3fa83..2a8ae4a23 100644
-> --- a/tests/amdgpu/amd_security.c
-> +++ b/tests/amdgpu/amd_security.c
-> @@ -360,8 +360,12 @@ int igt_main()
->  	/* dynamic test based on sdma_info.available rings */
->  	igt_describe("amdgpu secure bounce");
->  	igt_subtest("amdgpu-secure-bounce")
-> -	amdgpu_secure_bounce(device, fd, &sdma_info, get_ip_block(device,
-> -			AMDGPU_HW_IP_DMA), is_secure);
-> +	{
-> +		igt_skip_on_f(is_apu(&gpu_info) == 1,
-> +				"Secure bounce test is not supported in APU's.\n");
-> +		amdgpu_secure_bounce(device, fd, &sdma_info, get_ip_block(device,
-> +				AMDGPU_HW_IP_DMA), is_secure);
-> +	}
->  
->  #ifdef AMDGPU_USERQ_ENABLED
->  	igt_describe("amdgpu gfx command submission write linear helper with user queue");
+Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+---
+ tests/intel/xe_exec_basic.c | 233 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 233 insertions(+)
+
+diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
+index 5335bffc41..98d44484c4 100644
+--- a/tests/intel/xe_exec_basic.c
++++ b/tests/intel/xe_exec_basic.c
+@@ -31,6 +31,219 @@
+ #define DEFER_BIND		(0x1 << 6)
+ #define SPARSE			(0x1 << 7)
+ 
++static bool has_syncobj_timeline(int fd)
++{
++	uint64_t value;
++
++	if (drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &value))
++		return false;
++
++	return value;
++}
++
++static void write_store_dword_batch(uint32_t *batch, size_t batch_size,
++				    uint64_t addr, uint32_t value)
++{
++	int b = 0;
++
++	/* Build a minimal batch that stores one dword and then terminates. */
++	batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++	batch[b++] = addr;
++	batch[b++] = addr >> 32;
++	batch[b++] = value;
++	batch[b++] = MI_BATCH_BUFFER_END;
++	igt_assert_lte(b, batch_size);
++	igt_assert_eq(b, 5);
++}
++
++struct timeline_exec_data {
++	uint32_t batch[16];
++	uint64_t pad;
++	uint32_t data;
++};
++
++struct timeline_exec_ctx {
++	struct timeline_exec_data *data;
++	struct drm_xe_exec exec;
++	uint64_t addr;
++	uint64_t batch_addr;
++	uint64_t sdi_addr;
++	uint32_t vm;
++	uint32_t exec_queue;
++	uint32_t bo;
++	size_t bo_size;
++};
++
++static void timeline_exec_ctx_init(int fd,
++				   struct drm_xe_engine_class_instance *eci,
++				   struct timeline_exec_ctx *ctx)
++{
++	uint64_t batch_offset;
++	uint64_t sdi_offset;
++
++	memset(ctx, 0, sizeof(*ctx));
++	ctx->addr = 0x1a0000;
++	ctx->vm = xe_vm_create(fd, 0, 0);
++	ctx->bo_size = xe_bb_size(fd, sizeof(*ctx->data));
++	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
++			       vram_if_possible(fd, eci->gt_id),
++			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	ctx->data = xe_bo_map(fd, ctx->bo, ctx->bo_size);
++	ctx->exec_queue = xe_exec_queue_create(fd, ctx->vm, eci, 0);
++
++	batch_offset = (char *)&ctx->data->batch - (char *)ctx->data;
++	ctx->batch_addr = ctx->addr + batch_offset;
++	sdi_offset = (char *)&ctx->data->data - (char *)ctx->data;
++	ctx->sdi_addr = ctx->addr + sdi_offset;
++
++	ctx->exec = (struct drm_xe_exec) {
++		.num_batch_buffer = 1,
++		.exec_queue_id = ctx->exec_queue,
++		.address = ctx->batch_addr,
++	};
++	xe_vm_bind_sync(fd, ctx->vm, ctx->bo, 0, ctx->addr, ctx->bo_size);
++}
++
++static void timeline_exec_ctx_fini(int fd, struct timeline_exec_ctx *ctx)
++{
++	xe_vm_unbind_sync(fd, ctx->vm, 0, ctx->addr, ctx->bo_size);
++	xe_exec_queue_destroy(fd, ctx->exec_queue);
++	munmap(ctx->data, ctx->bo_size);
++	gem_close(fd, ctx->bo);
++	xe_vm_destroy(fd, ctx->vm);
++}
++
++/**
++ * SUBTEST: timeline-syncobj-exec-completed-point-in
++ * Description: Submit xe_exec with an input dependency on an older completed
++ *              timeline point after the same syncobj has already advanced to a
++ *              later point, and verify Xe still accepts the completed
++ *              dependency and runs the batch.
++ * Test category: functionality test
++ */
++
++static void
++test_timeline_syncobj_exec_completed_point_in(int fd,
++					      struct drm_xe_engine_class_instance *eci)
++{
++	struct timeline_exec_ctx ctx;
++	struct drm_xe_exec exec;
++	uint64_t input_wait_point = 1;
++	uint64_t input_signal_point = 2;
++	uint32_t input_syncobj;
++	uint32_t completion_syncobj;
++	struct drm_xe_sync prime_sync;
++	struct drm_xe_sync input_sync;
++	struct drm_xe_sync completion_sync;
++	const uint32_t prime_value = 0x1234abcd;
++	const uint32_t expected = 0xc0ffee;
++
++	timeline_exec_ctx_init(fd, eci, &ctx);
++	exec = ctx.exec;
++	input_syncobj = syncobj_create(fd, 0);
++
++	/* Step 1: signal point 1 on this timeline from Xe work. */
++	write_store_dword_batch(ctx.data->batch, ARRAY_SIZE(ctx.data->batch),
++				ctx.sdi_addr, prime_value);
++	ctx.data->data = 0;
++	prime_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = input_syncobj,
++		.timeline_value = input_wait_point,
++	};
++	exec.syncs = to_user_pointer(&prime_sync);
++	exec.num_syncs = 1;
++	xe_exec(fd, &exec);
++	igt_assert(syncobj_timeline_wait(fd, &input_syncobj,
++					 &input_wait_point, 1,
++					 INT64_MAX, 0, NULL));
++	igt_assert_eq(ctx.data->data, prime_value);
++
++	/* Step 2: signal point 2 on the same timeline so point 1 becomes older. */
++	ctx.data->data = 0;
++	prime_sync.timeline_value = input_signal_point;
++	xe_exec(fd, &exec);
++	igt_assert(syncobj_timeline_wait(fd, &input_syncobj,
++					 &input_signal_point, 1,
++					 INT64_MAX, 0, NULL));
++	igt_assert_eq(ctx.data->data, prime_value);
++
++	/* Step 3: submit the real exec with point 1 as the input dependency. */
++	write_store_dword_batch(ctx.data->batch, ARRAY_SIZE(ctx.data->batch),
++				ctx.sdi_addr, expected);
++	ctx.data->data = 0;
++	input_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
++		.flags = 0,
++		.handle = input_syncobj,
++		.timeline_value = input_wait_point,
++	};
++	completion_syncobj = syncobj_create(fd, 0);
++
++	/* Use a binary completion fence so the input-only case stays input-only. */
++	completion_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = completion_syncobj,
++	};
++	{
++		struct drm_xe_sync exec_syncs[] = { input_sync, completion_sync };
++
++		/* Wait for timeline point 1, then signal the binary completion syncobj. */
++		exec.syncs = to_user_pointer(exec_syncs);
++		exec.num_syncs = ARRAY_SIZE(exec_syncs);
++		xe_exec(fd, &exec);
++	}
++	igt_assert(syncobj_wait(fd, &completion_syncobj, 1, INT64_MAX, 0, NULL));
++	igt_assert_eq(ctx.data->data, expected);
++
++	syncobj_destroy(fd, completion_syncobj);
++	syncobj_destroy(fd, input_syncobj);
++	timeline_exec_ctx_fini(fd, &ctx);
++}
++
++/**
++ * SUBTEST: timeline-syncobj-exec-out
++ * Description: Submit xe_exec with a timeline syncobj output and verify Xe
++ *              signals the requested timeline point when execution completes.
++ * Test category: functionality test
++ */
++
++static void test_timeline_syncobj_exec_out(int fd,
++					   struct drm_xe_engine_class_instance *eci)
++{
++	struct timeline_exec_ctx ctx;
++	struct drm_xe_exec exec;
++	uint64_t output_point = 2;
++	uint32_t output_syncobj;
++	struct drm_xe_sync output_sync;
++	const uint32_t expected = 0xc0ffee;
++
++	timeline_exec_ctx_init(fd, eci, &ctx);
++	exec = ctx.exec;
++	output_syncobj = syncobj_create(fd, 0);
++
++	write_store_dword_batch(ctx.data->batch, ARRAY_SIZE(ctx.data->batch),
++				ctx.sdi_addr, expected);
++	ctx.data->data = 0;
++	output_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = output_syncobj,
++		.timeline_value = output_point,
++	};
++	exec.syncs = to_user_pointer(&output_sync);
++	exec.num_syncs = 1;
++	xe_exec(fd, &exec);
++	igt_assert(syncobj_timeline_wait(fd, &output_syncobj, &output_point, 1,
++					 INT64_MAX, 0, NULL));
++	igt_assert_eq(ctx.data->data, expected);
++
++	syncobj_destroy(fd, output_syncobj);
++	timeline_exec_ctx_fini(fd, &ctx);
++}
++
+ /**
+  * SUBTEST: once-%s
+  * Description: Run %arg[1] test only once
+@@ -348,6 +561,26 @@ int igt_main()
+ 	igt_fixture()
+ 		fd = drm_open_driver(DRIVER_XE);
+ 
++	igt_subtest_with_dynamic("timeline-syncobj-exec-completed-point-in") {
++		igt_require(has_syncobj_timeline(fd));
++
++		xe_for_each_engine(fd, hwe)
++			igt_dynamic_f("%s%d",
++				      xe_engine_class_short_string(hwe->engine_class),
++				      hwe->engine_instance)
++				test_timeline_syncobj_exec_completed_point_in(fd, hwe);
++	}
++
++	igt_subtest_with_dynamic("timeline-syncobj-exec-out") {
++		igt_require(has_syncobj_timeline(fd));
++
++		xe_for_each_engine(fd, hwe)
++			igt_dynamic_f("%s%d",
++				      xe_engine_class_short_string(hwe->engine_class),
++				      hwe->engine_instance)
++				test_timeline_syncobj_exec_out(fd, hwe);
++	}
++
+ 	for (const struct section *s = sections; s->name; s++) {
+ 		igt_subtest_with_dynamic_f("once-%s", s->name)
+ 			xe_for_each_engine(fd, hwe)
+-- 
+2.43.0
 
