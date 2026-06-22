@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65714CDB46B
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 10:12:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D386CD98F2
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 10:35:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D30C310E5ED;
-	Mon, 22 Jun 2026 10:12:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C722B89220;
+	Mon, 22 Jun 2026 10:35:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RRe3sjij";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iyUx+pur";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CCFC10E5D2
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 10:12:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4762489C0A
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 10:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782123129; x=1813659129;
+ t=1782124530; x=1813660530;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=AitnuIxBU1mki18qmcEQXJz8qxQvsmaFt7io04VhicE=;
- b=RRe3sjijA/tWJ9/7FU+hc5ceZvB7rfom02aRtdMKWzOzMPE1QBdEZQ1V
- ezeBCx9s1A2l3YSkXGbaQCOo1TuJFSZhbyIN6lNMvS+Z4ojc9kim1zlSt
- 0ByY9k7hYPUeUYK0Crp4TkJVSf9Cg6oxUASsOPjEKS8bzkFUEo5189FGk
- U9dufOStO60Enr676RhU9rlWqf/taZmeYYDLqD06x/+IYzDN92ZOgI6Ge
- TDbuFxRPFZdhgjfw7p83ZgMX4/GnEujzqP/cOxHa1etndo/sAd/1VeZhu
- qYxsLySl2Os31oDo4znDNOJpfGvKG9+2AcFXt1N5Qd0Gq63v6+xFf40uX A==;
-X-CSE-ConnectionGUID: gYGdIvY1Q+G/lb3PPfsJdQ==
-X-CSE-MsgGUID: /aCk7ZExQuSvry4EcesLug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="94349412"
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="94349412"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2026 03:12:09 -0700
-X-CSE-ConnectionGUID: aTVXJB5QScK0jBbeJ8RNOg==
-X-CSE-MsgGUID: VlTaroTuRLGcTaRBT4YC6Q==
+ bh=ceQSPLhSp/8uuZXBmC7giZWKhNJHisfbAcJU8UqtmoE=;
+ b=iyUx+purVuK6RPGtHG3TRxOhDw+7HPFloSgbIvI1PNAf6mR6VRfiZFat
+ hiw73xHiX+qVxZHb1OgNwqt0gCVxTznOyqbN2ZQbAVbkUkEl9N7OApKS/
+ I+Yi2k8PxQLiQTRDnvlRuP+fP8uRPmxS7j7e+kiGlzTuQQaha1aA5Yi9O
+ Gv8FeBHQKj2/DawMGxMEc/sQ7Op6Vfr7XRiDd4LFpeecWUgS1mbCYpSud
+ XKXzIWX6BQzWTsbwE5JChvSZ31bLWGsG6QKhLA2cnusdJftDOnFVXg10T
+ qierQKJWNmQ9gyuVKsgt6KS1Ukvx7b3bmuwuSK0qvxdq31JfL57HoVjMw w==;
+X-CSE-ConnectionGUID: NYVIyX62SACp3gnS0B4WBg==
+X-CSE-MsgGUID: UtdHDHAuTCSHCwIj3+AAKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="108394978"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="108394978"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jun 2026 03:35:30 -0700
+X-CSE-ConnectionGUID: WuaisYqSQUeOILutgVwKPg==
+X-CSE-MsgGUID: 3j9NHXdjQxWOZKuIbKWZog==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="248043102"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="249045819"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 03:12:06 -0700
-Date: Mon, 22 Jun 2026 12:12:04 +0200
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 03:35:28 -0700
+Date: Mon, 22 Jun 2026 12:35:26 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: himanshu.girotra@intel.com
-Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com, jani.nikula@intel.com
-Subject: Re: [PATCH v2 i-g-t] tests/intel: Enable survivability tests on
- discrete platforms >= BMG
-Message-ID: <20260622101204.f5d6o3uiodrf4qh6@kamilkon-DESK.igk.intel.com>
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com
+Subject: Re: [PATCH i-g-t] intel-ci: Add dc3co tests to LNL, PTL, BMG and
+ I915 blocklist
+Message-ID: <20260622103526.vujlegjon5otl2k7@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- himanshu.girotra@intel.com, igt-dev@lists.freedesktop.org,
- riana.tauro@intel.com, jani.nikula@intel.com
-References: <20260618164245.20139-1-himanshu.girotra@intel.com>
+ Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org,
+ karthik.b.s@intel.com
+References: <20260622051641.3007639-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260618164245.20139-1-himanshu.girotra@intel.com>
+In-Reply-To: <20260622051641.3007639-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,94 +71,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi himanshu.girotra,
-On 2026-06-18 at 22:12:45 +0530, himanshu.girotra@intel.com wrote:
-> From: Himanshu Girotra <himanshu.girotra@intel.com>
+Hi Jeevan,
+On 2026-06-22 at 10:46:41 +0530, Jeevan B wrote:
+> dc3co tests are only valid on display ver 35 and above. Block these
+> subtest on older platforms.
 > 
-> The survivability mode tests in xe_survivability and xe_configfs were
-> initially developed for Battlemage (BMG) and gated with IS_BATTLEMAGE.
-> Survivability mode is, however, supported by the KMD on all discrete
-> platforms from BMG onwards.
-> 
-> Mirror this on the IGT side by replacing the BMG-only check with a
-> runtime discrete check combined with a graphics version check
-> of at least BMG (IP_VER(20, 1)).
-> 
-> v2: use is_intel_dgfx() (Jani Nikula)
-> 
-> Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
-> ---
->  tests/intel/xe_configfs.c      | 5 ++++-
->  tests/intel/xe_survivability.c | 4 +++-
->  2 files changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-> index e7c797eb7..9ba8f94ec 100644
-> --- a/tests/intel/xe_configfs.c
-> +++ b/tests/intel/xe_configfs.c
-> @@ -11,6 +11,7 @@
->  #include "igt_kmod.h"
->  #include "igt_sriov_device.h"
->  #include "igt_sysfs.h"
-> +#include "intel_common.h"
->  #include "xe/xe_query.h"
->  
->  /**
-> @@ -379,6 +380,7 @@ int igt_main()
->  	int fd, configfs_fd, configfs_device_fd;
->  	uint32_t devid;
->  	bool is_vf_device;
-> +	bool is_dgfx;
->  	const char *engine = NULL;
->  
->  	igt_fixture() {
-> @@ -387,6 +389,7 @@ int igt_main()
->  		fd = drm_open_driver(DRIVER_XE);
->  		devid = intel_get_drm_devid(fd);
->  		is_vf_device = intel_is_vf_device(fd);
-> +		is_dgfx = is_intel_dgfx(fd);
->  		set_bus_addr(fd);
->  
->  		xe_for_each_engine(fd, hwe) {
-> @@ -410,7 +413,7 @@ int igt_main()
->  
->  	igt_describe("Validate survivability mode");
->  	igt_subtest("survivability-mode") {
-> -		igt_require(IS_BATTLEMAGE(devid));
-> +		igt_require(is_dgfx && intel_graphics_ver(devid) >= IP_VER(20, 1));
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 
-Can you create a function xe_has_survivabilty(fd) in lib/xe_quer.h
-and use it in both places?
+Thank you all, merged with corrected subject and description.
+
+
 
 Regards,
 Kamil
 
-
->  		igt_require_f(!is_vf_device, "survivability mode not supported in VF\n");
->  		configfs_device_fd = create_device_configfs_group(configfs_fd);
->  		test_survivability_mode(configfs_device_fd);
-> diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
-> index d5d7e048c..0b3121a08 100644
-> --- a/tests/intel/xe_survivability.c
-> +++ b/tests/intel/xe_survivability.c
-> @@ -16,6 +16,7 @@
->  #include "igt_sriov_device.h"
->  #include "igt_sysfs.h"
->  #include "intel_allocator.h"
-> +#include "intel_common.h"
->  #include "xe/xe_gt.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
-> @@ -217,7 +218,8 @@ int igt_main()
->  
->  	igt_fixture() {
->  		fd = drm_open_driver(DRIVER_XE);
-> -		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
-> +		igt_require(is_intel_dgfx(fd) &&
-> +			    intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(20, 1));
->  		vf_device = intel_is_vf_device(fd);
->  		igt_require_f(!vf_device, "survivability mode not supported in VF\n");
->  		pci_xe = igt_device_get_pci_device(fd);
+> ---
+>  tests/intel-ci/i915.blocklist.txt           | 2 ++
+>  tests/intel-ci/xe.bmg.display.blocklist.txt | 3 ++-
+>  tests/intel-ci/xe.lnl.display.blocklist.txt | 3 ++-
+>  tests/intel-ci/xe.ptl.display.blocklist.txt | 6 ++----
+>  4 files changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/intel-ci/i915.blocklist.txt b/tests/intel-ci/i915.blocklist.txt
+> index 1068e2e15..17b2f1f3f 100644
+> --- a/tests/intel-ci/i915.blocklist.txt
+> +++ b/tests/intel-ci/i915.blocklist.txt
+> @@ -206,4 +206,6 @@ igt@kms_color_pipeline@plane-lut3d-green-only
+>  ##################################################################
+>  igt@kms_frontbuffer_tracking@.*a(bgr|rgb)161616f.*
+>  igt@kms_flip_scaled_crc@.*linear-reflect-x
+> +igt@kms_pm_dc@dc3co-.*
+> +igt@kms_vrr@lobf-dc3co
+>  ##################################################################
+> diff --git a/tests/intel-ci/xe.bmg.display.blocklist.txt b/tests/intel-ci/xe.bmg.display.blocklist.txt
+> index 04f23af28..4c2a7390a 100644
+> --- a/tests/intel-ci/xe.bmg.display.blocklist.txt
+> +++ b/tests/intel-ci/xe.bmg.display.blocklist.txt
+> @@ -121,7 +121,6 @@ igt@kms_plane@pixel-format.*(mtl|dg2).*
+>  ##########################################
+>  # Valid skip :- Simulation specific
+>  ##########################################
+> -igt@kms_pm_dc@dc3co-vpb-simulation
+>  igt@kms_simulation_hpd@sim-hpd
+>  #########################################
+>  #########################################
+> @@ -179,4 +178,6 @@ igt@kms_color_pipeline@plane-lut3d-green-only
+>  ########################################
+>  igt@kms_frontbuffer_tracking@.*a(bgr|rgb)161616f.*
+>  igt@kms_flip_scaled_crc@.*linear-reflect-x
+> +igt@kms_pm_dc@dc3co-.*
+> +igt@kms_vrr@lobf-dc3co
+>  ########################################
+> diff --git a/tests/intel-ci/xe.lnl.display.blocklist.txt b/tests/intel-ci/xe.lnl.display.blocklist.txt
+> index 5f918a003..1dbb24ae3 100644
+> --- a/tests/intel-ci/xe.lnl.display.blocklist.txt
+> +++ b/tests/intel-ci/xe.lnl.display.blocklist.txt
+> @@ -91,7 +91,6 @@ igt@kms_plane@pixel-format.*(mtl|dg2).*
+>  ##########################################
+>  # Valid skip :- Simulation specific
+>  ##########################################
+> -igt@kms_pm_dc@dc3co-vpb-simulation
+>  igt@kms_simulation_hpd@sim-hpd
+>  #########################################
+>  # HDMI/VGA subtests on chamelium are
+> @@ -189,4 +188,6 @@ igt@kms_color_pipeline@plane-lut3d-green-only
+>  ########################################
+>  igt@kms_frontbuffer_tracking@.*a(bgr|rgb)161616f.*
+>  igt@kms_flip_scaled_crc@.*linear-reflect-x
+> +igt@kms_pm_dc@dc3co-.*
+> +igt@kms_vrr@lobf-dc3co
+>  ########################################
+> diff --git a/tests/intel-ci/xe.ptl.display.blocklist.txt b/tests/intel-ci/xe.ptl.display.blocklist.txt
+> index c897f3c69..1041931a1 100644
+> --- a/tests/intel-ci/xe.ptl.display.blocklist.txt
+> +++ b/tests/intel-ci/xe.ptl.display.blocklist.txt
+> @@ -88,10 +88,6 @@ igt@kms_plane_scaling@.*downscale-factor-0-25.*
+>  igt@kms_plane_scaling@planes-downscale-factor-0-(5|75)$
+>  igt@kms_plane_scaling@planes-.*upscale-.*downscale.*
+>  ##############################################################################
+> -# Valid skip: Simulation specific
+> -##############################################################################
+> -igt@kms_pm_dc@dc3co-vpb-simulation
+> -##############################################################################
+>  # Feature Currently not supported
+>  ##############################################################################
+>  igt@kms_pm_power_saving@.*
+> @@ -183,4 +179,6 @@ igt@kms_color_pipeline@plane-lut3d-green-only
+>  ########################################
+>  igt@kms_frontbuffer_tracking@.*a(bgr|rgb)161616f.*
+>  igt@kms_flip_scaled_crc@.*linear-reflect-x
+> +igt@kms_pm_dc@dc3co-.*
+> +igt@kms_vrr@lobf-dc3co
+>  ########################################
 > -- 
-> 2.50.1
+> 2.43.0
 > 
