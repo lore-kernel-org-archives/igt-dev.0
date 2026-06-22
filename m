@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58414CD98F2
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 12:21:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4DF5CDB46F
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 12:25:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 092D210E68C;
-	Mon, 22 Jun 2026 12:21:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9278910E67D;
+	Mon, 22 Jun 2026 12:25:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b0sLLKGp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wlu1hhH/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D73910E67D
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 12:20:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78DBB10E67D
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 12:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782130822; x=1813666822;
- h=from:to:cc:subject:date:message-id:mime-version:
+ t=1782131075; x=1813667075;
+ h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=TOznKqkZx6WWCUTIeAok3BHzhRFuolm50ZYFI2Ox0Aw=;
- b=b0sLLKGpvYMrx7KVRU3eOZLRSNzMUu2WXkJ7QqEwVmJT6BqGYENuGtqV
- JjschSmd+vH8JaXvp2wkdscRhvdJEKpIQBh63Yvtjh25ylOcFvF4PpBWF
- wMJVIrC99oWec2APdGDJZ6/RLTPflhVo/NWqtWdWDB8OGR0ZuQsgbYy4Y
- x/XcsoxsYzjsesaGQUXK2Hor4fBlmTT/0S3sfAGCec2rD+ccaW8qRsQgI
- Ro/3b7l5+mWajFP1tojZSkzqwUsMlhx4zRBJ34cnpmcQea96ScCrrczoL
- HVBU9HgwnZqgCGfg7H6v00/DTYlm8JVKmsNNNg8Ctz0ziQfjaTlbX20WW w==;
-X-CSE-ConnectionGUID: XJHvcCpGRVCLpw11UC7CuA==
-X-CSE-MsgGUID: S5c3P4ceQlyn79M6l5pZRw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82967180"
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="82967180"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2026 05:20:22 -0700
-X-CSE-ConnectionGUID: ZUT/Z+bQQsi77QnLDIPLnQ==
-X-CSE-MsgGUID: p/OtFK1VRoep6xZr034jWg==
+ bh=6NJBQtgQyhLASHpAlJOwsbJnV4QAfEGDx9SPg4mwmoA=;
+ b=Wlu1hhH/aC95wnhYOGuDmvCzA8L6PpYqe4sJlLJRj7GRg7w3KI4LjxVi
+ l4E7UcFtaOYslcNcjOOlX2Ly8DWhoFxHWiqMgg/0/aXbnHpZRlb9L1QLB
+ i9ijEKeGwcLZLYCVhp5niaMwpnCzDAFQHHoxzSqBSvLW3urHJyGjrw5Xn
+ CoAueNpYcfvvYUf+UcP+C1/5aEmuYPnWEfR8CQg/nnTyOkBoR04XYJqb3
+ Xl446b3+vnUkAOUczzovtLFjJ0lg4YYjYlBh5oVwsBFeUcSNmsE0xo79u
+ pdrW6pjA0PmXrBueZXUC0nm+5aIYLD8uJYJZDYM2dUzNjjI50ANPeyOj5 w==;
+X-CSE-ConnectionGUID: DJGgKuQ/QfC0uDEu6E2X3Q==
+X-CSE-MsgGUID: 1VVIhpb4QoSRv6SwhPnXdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="93972802"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="93972802"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jun 2026 05:24:35 -0700
+X-CSE-ConnectionGUID: UloGxbuCQxqRzqJzjg1x5A==
+X-CSE-MsgGUID: XBvidRReRUm4B+Q/dsFPQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="245063632"
-Received: from art-dev-395.igk.intel.com ([10.211.135.233])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2026 05:20:21 -0700
-From: Jan Maslak <jan.maslak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.brost@intel.com,
-	Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH v2 0/2] tests/intel: Add Xe timeline syncobj coverage
-Date: Mon, 22 Jun 2026 14:20:07 +0200
-Message-ID: <20260622122009.3350724-1-jan.maslak@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="246896916"
+Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
+ by fmviesa008.fm.intel.com with ESMTP; 22 Jun 2026 05:24:33 -0700
+From: himanshu.girotra@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ kamil.konieczny@intel.com, riana.tauro@intel.com, sk.anirban@intel.com,
+ jani.nikula@intel.com
+Subject: [PATCH v3 i-g-t] tests/intel: Enable survivability tests on discrete
+ platforms >= BMG
+Date: Mon, 22 Jun 2026 17:54:31 +0530
+Message-ID: <20260622122431.11139-1-himanshu.girotra@intel.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,40 +66,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series adds Xe-specific timeline syncobj coverage for both
-xe_exec and xe_vm_bind.
+From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-The main motivation is the xe_exec input case: waiting on an older
-completed timeline point after the same syncobj has already advanced to
-a later point. That is the shape that exposed the historical xe_exec
-NULL-fence regression.
+The survivability mode tests in xe_survivability and xe_configfs were
+initially developed for Battlemage (BMG) and gated with IS_BATTLEMAGE.
+Survivability mode is, however, supported by the KMD on all discrete
+platforms from BMG onwards.
 
-The series is split by interface:
+Mirror this on the IGT side by replacing the BMG-only check with a
+runtime discrete check combined with a graphics version check
+of at least BMG (IP_VER(20, 1)).
 
- - patch 1 adds the exec coverage, including the regression-oriented
-   completed-point input case and a timeline output case
- - patch 2 adds matching vm_bind coverage for the same timeline syncobj
-   behavior
+v2: use is_intel_dgfx() (Jani Nikula)
+v3: add xe_has_survivability() helper in lib/xe/xe_query (Kamil Konieczny)
 
-Validation summary:
+Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
+---
+ lib/xe/xe_query.c              | 14 ++++++++++++++
+ lib/xe/xe_query.h              |  1 +
+ tests/intel/xe_configfs.c      |  6 +++---
+ tests/intel/xe_survivability.c |  2 +-
+ 4 files changed, 19 insertions(+), 4 deletions(-)
 
- - on a fixed kernel, all four subtests pass
- - on an intentionally faulty kernel matching the old behavior, both
-   vm_bind subtests pass, xe_exec output passes, and only the xe_exec
-   completed-point input subtest fails
-
-v2:
- - Switch from drmGetCap() to igt_has_drm_cap() as per Kamil Konieczny's
-   review feedback
-
-Jan Maslak (2):
-  tests/intel/xe_exec_basic: Add timeline syncobj exec tests
-  tests/intel/xe_vm: Add timeline syncobj vm_bind tests
-
- tests/intel/xe_exec_basic.c | 223 ++++++++++++++++++++++++++++++++++++
- tests/intel/xe_vm.c         | 142 +++++++++++++++++++++++
- 2 files changed, 365 insertions(+)
-
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index f0799f268..68e60ddc7 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -23,6 +23,7 @@
+ #include "igt_debugfs.h"
+ #include "ioctl_wrappers.h"
+ #include "igt_map.h"
++#include "intel_common.h"
+ #include "intel_pat.h"
+ 
+ #include "xe_query.h"
+@@ -813,6 +814,19 @@ xe_dev_FN(xe_number_engines, engines->num_engines, unsigned int);
+  */
+ xe_dev_FN(xe_has_vram, has_vram, bool);
+ 
++/**
++ * xe_has_survivability:
++ * @fd: xe device fd
++ *
++ * Returns true if xe device @fd supports survivability mode. Survivability
++ * mode is supported on discrete platforms from Battlemage (BMG) onwards.
++ */
++bool xe_has_survivability(int fd)
++{
++	return is_intel_dgfx(fd) &&
++	       intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(20, 1);
++}
++
+ /**
+  * xe_vram_size:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 9f04a7422..59330d80f 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -153,6 +153,7 @@ struct drm_xe_query_gt_list *xe_gt_list(int fd);
+ struct drm_xe_query_oa_units *xe_oa_units(int fd);
+ unsigned int xe_number_engines(int fd);
+ bool xe_has_vram(int fd);
++bool xe_has_survivability(int fd);
+ uint64_t xe_vram_size(int fd, int gt);
+ uint64_t xe_visible_vram_size(int fd, int gt);
+ uint64_t xe_available_vram_size(int fd, int gt);
+diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+index e7c797eb7..450c0a119 100644
+--- a/tests/intel/xe_configfs.c
++++ b/tests/intel/xe_configfs.c
+@@ -377,16 +377,16 @@ static void close_configfs_group(int configfs_fd, int configfs_device_fd)
+ int igt_main()
+ {
+ 	int fd, configfs_fd, configfs_device_fd;
+-	uint32_t devid;
+ 	bool is_vf_device;
++	bool has_survivability;
+ 	const char *engine = NULL;
+ 
+ 	igt_fixture() {
+ 		struct drm_xe_engine_class_instance *hwe;
+ 
+ 		fd = drm_open_driver(DRIVER_XE);
+-		devid = intel_get_drm_devid(fd);
+ 		is_vf_device = intel_is_vf_device(fd);
++		has_survivability = xe_has_survivability(fd);
+ 		set_bus_addr(fd);
+ 
+ 		xe_for_each_engine(fd, hwe) {
+@@ -410,7 +410,7 @@ int igt_main()
+ 
+ 	igt_describe("Validate survivability mode");
+ 	igt_subtest("survivability-mode") {
+-		igt_require(IS_BATTLEMAGE(devid));
++		igt_require(has_survivability);
+ 		igt_require_f(!is_vf_device, "survivability mode not supported in VF\n");
+ 		configfs_device_fd = create_device_configfs_group(configfs_fd);
+ 		test_survivability_mode(configfs_device_fd);
+diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
+index d5d7e048c..74488bbea 100644
+--- a/tests/intel/xe_survivability.c
++++ b/tests/intel/xe_survivability.c
+@@ -217,7 +217,7 @@ int igt_main()
+ 
+ 	igt_fixture() {
+ 		fd = drm_open_driver(DRIVER_XE);
+-		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
++		igt_require(xe_has_survivability(fd));
+ 		vf_device = intel_is_vf_device(fd);
+ 		igt_require_f(!vf_device, "survivability mode not supported in VF\n");
+ 		pci_xe = igt_device_get_pci_device(fd);
 -- 
-2.43.0
+2.50.1
 
