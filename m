@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A466CD98F2
-	for <igt-dev@archiver.kernel.org>; Sun, 21 Jun 2026 18:15:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED4ACCD98F6
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 03:51:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA5CF10E27C;
-	Sun, 21 Jun 2026 18:15:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 758A410E43D;
+	Mon, 22 Jun 2026 03:51:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="STkEFtXl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b1UdpjTL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB81C10E27C
- for <igt-dev@lists.freedesktop.org>; Sun, 21 Jun 2026 18:14:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BC8F10E43D
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 03:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782065651; x=1813601651;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=1aR/NdDAkdefbPMUbG5m76+u0hp1jbupgtp0V3Jx/Qw=;
- b=STkEFtXlHwt44pTWj2G0X55weTCJ6vLlHCEu+HkKByUOf+vBRw8Ur9hx
- KMv2SPSiDV2QKisVKTSS9Gvh8MAo1Hwu+7m7RlPYNrozUKwrpptkFnFQk
- W7ij6P7IQ9galqwG1krWnd4x2f0NkYmDI3YqaD2A62BMfbrU8+A8SY12Y
- trSXWEGWEWgQLKm6q0tiEBem+Yxp3YBBKoGPkLf6wFdp9DT+yIZd9XMAq
- 0Bhic2vBVJSywE/2quDv09fMg3bqQVNvdxnbSCEVdROy/obf/wKERCAGC
- kZQXMGldqXiLbmZFKs18oZxVfptTbrxYq6s4ENY2/jOguLy2uBNCcMG3D Q==;
-X-CSE-ConnectionGUID: YePLW8ZtSpuz0xtEc3j1fg==
-X-CSE-MsgGUID: 0tRpHm/vTvKOAN4Mc1DzFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="94200609"
-X-IronPort-AV: E=Sophos;i="6.24,217,1774335600"; d="scan'208";a="94200609"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2026 11:14:11 -0700
-X-CSE-ConnectionGUID: yloIeCRETx6I8uPYabBEWw==
-X-CSE-MsgGUID: xMNfKmk3S+yYqj83cygAzA==
+ t=1782100284; x=1813636284;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=HRiJNGgZC6gvf6m2AcgE3KyHo0CjexVjgem/f9w8Iis=;
+ b=b1UdpjTLp1UXu1RmmEUXSe9+tmxI2R0hH/QKvkuJ6P20gklcosOh9C3C
+ Xl3qKI22QWihkQkwi1Zr/X2qBbfoRSHP3++udCAP69Oi/CWxplGU7eow8
+ rxO4dk6rXlxCL3KO1fnFh7ysohdMSeyX9tVHDBGWz71QODn28cAnOZwmL
+ otdR/vUqyJWlsSAz6p97PkAarKY6A4vOi5kV5LBU9ImVty1ojdxRE1APU
+ GZqAWvUMQTyQCGQkodat5sE8Yjxo7qz6K7ZWRvC01jtVv/V+nTp4TCqMF
+ yjdIH1AIzx5npGLyopJxblhnIlhPykcfLmsCjNnnrGSU2IDU6FvuZvqrp g==;
+X-CSE-ConnectionGUID: 55KdHyz/QsSUE2AW0A6KKg==
+X-CSE-MsgGUID: tZ2Mxu1ERFOgMGgwbPqemQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82596512"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="82596512"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jun 2026 20:51:23 -0700
+X-CSE-ConnectionGUID: 2kbouv/pS6WFJXifeeefWg==
+X-CSE-MsgGUID: 5zTv5Mi/TMK8mUyGcREYIA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,217,1774335600"; d="scan'208";a="244695306"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by fmviesa006.fm.intel.com with ESMTP; 21 Jun 2026 11:14:09 -0700
-From: Pranay Samala <pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="248964512"
+Received: from art-dev-395.igk.intel.com ([10.211.135.233])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jun 2026 20:51:20 -0700
+From: Jan Maslak <jan.maslak@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
- sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t v6 2/2] tests/kms_color: Add multi-format coverage for
- pipe color tests
-Date: Sun, 21 Jun 2026 23:55:06 +0530
-Message-Id: <20260621182506.2970102-3-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260621182506.2970102-1-pranay.samala@intel.com>
-References: <20260621182506.2970102-1-pranay.samala@intel.com>
+Cc: zbigniew.kempczynski@intel.com,
+	Jan Maslak <jan.maslak@intel.com>
+Subject: [PATCH 00/11] lib/genxml: Introduce Mesa genxml infrastructure to IGT
+Date: Mon, 22 Jun 2026 05:50:55 +0200
+Message-ID: <20260622035106.3023047-1-jan.maslak@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,234 +67,161 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend kms_color tests to run across multiple pixel formats at dynamic
-subtest level instead of being limited to single format for gamma/degamma
-and CTM tests.
-For platforms where only a single format is relevant (e.g. 10-bit
-paths), limit the iteration accordingly to avoid redundant testing.
+Currently IGT uses raw intel_bb_out() calls for setting up the render /
+compute pipelines. Fields are set by shifting and OR-ing hand-computed
+constants, with field names and bit positions hardcoded and sometimes
+explained in comments. A lot of code has branching based on generations,
+making pipeline setup more complex as the new generations come in.
 
-This improves coverage for format-dependent pipe color pipeline
-behavior.
+Meanwhile Mesa uses a system called genxml in which XML files describe GPU
+commands, state objects, enums, and registers - specifying the field layout
+down to individual bits. A Python generator then produces C headers with
+typed structs, pack functions, and named constants for each command/state.
+
+By bringing genxml to IGT, we can achieve a more maintainable and less
+error-prone codebase. Instead of manually calculating bit positions and
+creating complex branching logic, we can fill out the structs generated
+from XML descriptions, and the packing functions will handle the bit
+manipulation automatically.
+
+This series brings Mesa's hardware XML command/state definitions and
+gen_pack_header.py code generator into IGT, adds a new IGT-written
+batch buffer decoder (gen_decode_header.py), and converts rendercopy_gen9
+to use the generated pack headers.
+
+Patches 1-4 import the generators, headers, and XML definitions.
+gen_pack_header.py is taken from Mesa with C90 compliance fixes and a
+new baseline deduplication mechanism - when a platform's command layout
+matches any older generation exactly, the item is omitted entirely.
+gen_decode_header.py is a new IGT-only file that generates per-platform
+decoders for instructions, structs, and registers. The XML files are
+imported from Mesa split by generation: gen4-gen8, gen9-gen12.5, and
+Xe2/Xe3/Xe3p.
+
+Patch 5 adds intel_buf_mocs() for packing an intel_buf's MOCS index and
+PXP state into the 7-bit encoding expected by genxml MOCS fields.
+Patch 6 adds intel_get_wb_mocs() and intel_get_uc_mocs() helpers for
+callers that need packed write-back or uncached MOCS values directly.
+
+Patches 7-10 convert rendercopy_gen9.c to use the generated pack headers,
+replacing hand-written intel_bb_out() calls with igt_genxml_emit and
+igt_genxml_pack_state, split by functional section.
+
+Patch 11 adds an opt-in annotated batch dump to intel_bb_dump(): when
+IGT_BB_ANNOTATE=1 is set a companion .annotated file is written alongside
+the raw hex dump, decoding each command's field names and values.
+
+Tested on LNL and DG2 (xe_render_copy render-square, render-full;
+xe_intel_bb render) and TGL (gem_render_copy_redux; api_intel_bb).
 
 v2:
-- Add DRM_FORMAT_P010 format
+ - Move genxml files to lib/intel/genxml/ (was lib/genxml/ in v1)
+ - Split the single "import genxml" commit into infrastructure (patch 1)
+   plus three XML import commits split by generation (patches 2-4)
+ - Split the single rendercopy conversion into four commits by functional
+   section (patches 6-9)
+ - Fix MOCS bug: genxml packs a 7-bit field (index << 1 | pxp) but v1
+   was passing the raw 6-bit index; add intel_get_wb_mocs() and
+   intel_buf_mocs() helpers that return the correct 7-bit value (patch 5)
+ - Add "why?" motivation text to patch 1 and this cover letter
+
+v3:
+ - Refresh local IGT-owned genxml files to 2026 and switch the small
+   IGT-owned/Mesa-derived helper scripts to cleaner SPDX-style headers
+ - Add igt_genxml_decode_batch_lines() helper so callers can route decoded
+   output line-by-line to igt_info(), igt_warn(), igt_critical(), etc.
+ - Remove redundant XML name checks in the generator scripts
+ - Drop the NDEBUG guards from assertion-based validation in
+   igt_genxml_defs.h, since IGT builds do not define NDEBUG
+ - Make __gen_combine_address() merge low address bits with | instead of +
+ - Add the complementary intel_get_uc_mocs() helper alongside
+   intel_get_wb_mocs() in patch 5
+ - Clarify in patch 5 that helper _mocs() functions are only for packed MOCS
+   values
+ - Move the new genxml decode include in intel_batchbuffer.c to the proper
+   alphabetical position
+ - Generate full per-generation genxml decode headers instead of using
+   baseline-pruned delta tables, fixing mislabeled packets in decoded dumps
+ - Genxml batch decoder falls back across compatible older packet
+   definitions and expands variable-length payload groups, reducing UNKNOWN
+   commands and improving annotation coverage on newer platforms
 
 v4:
-- Split the patches (Swati)
+ - Relax the nonzero constraint on Xe2 RENDER_SURFACE_STATE.MOCS, since
+   Defer-to-PAT uses MOCS index 0. This fixes the xe_pat render regression on
+   BMG and LNL.
 
 v5:
-- Consolidate format structure with bpc info (Swati)
-- Move format support check out of dynamic subtest scope (Swati)
+ - Split the old patch 5 into separate lib/intel_bufops and lib/mocs patches
+ - Fix rendercopy conversion patches so that they build independently by 
+   retaining gen9_render.h and xe2_render.h until no longer needed
 
-v6:
-- Add FP16 format to the format list
-- Combine declaration and assignment for mtk_10bpc_only (Swati)
-- Use per-format depth in gamma/degamma tests for 10-bit accuracy (Swati)
-- Improve comment placement and clarity (Swati)
+Jan Maslak (11):
+  lib/intel/genxml: Add genxml generators, headers, and build
+    integration
+  lib/intel/genxml: Import gen4-gen8 XML hardware definitions from Mesa
+  lib/intel/genxml: Import gen9-gen12.5 XML hardware definitions from
+    Mesa
+  lib/intel/genxml: Import Xe2/Xe3/Xe3p XML hardware definitions from
+    Mesa
+  lib/intel_bufops: Add intel_buf_mocs() helper
+  lib/mocs: Add packed MOCS helpers
+  lib/rendercopy: Convert surface state and sampler setup to genxml
+  lib/rendercopy: Convert vertex data and CC state to genxml
+  lib/rendercopy: Convert pipeline emit commands to genxml
+  lib/rendercopy: Convert render op and entry points to genxml
+  lib: Add genxml annotated batch buffer decode
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/kms_color.c | 139 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 88 insertions(+), 51 deletions(-)
+ lib/intel/genxml/gen110.xml           | 3358 ++++++++++++++++++++
+ lib/intel/genxml/gen120.xml           | 2432 ++++++++++++++
+ lib/intel/genxml/gen125.xml           | 2628 ++++++++++++++++
+ lib/intel/genxml/gen40.xml            | 1012 ++++++
+ lib/intel/genxml/gen45.xml            |  507 +++
+ lib/intel/genxml/gen50.xml            |  648 ++++
+ lib/intel/genxml/gen60.xml            | 2606 +++++++++++++++
+ lib/intel/genxml/gen70.xml            | 3067 ++++++++++++++++++
+ lib/intel/genxml/gen75.xml            | 2424 ++++++++++++++
+ lib/intel/genxml/gen80.xml            | 2993 ++++++++++++++++++
+ lib/intel/genxml/gen90.xml            | 4192 +++++++++++++++++++++++++
+ lib/intel/genxml/gen_decode_header.py |  582 ++++
+ lib/intel/genxml/gen_pack_header.py   |  795 +++++
+ lib/intel/genxml/igt_genxml.h         |  112 +
+ lib/intel/genxml/igt_genxml_decode.h  |  177 ++
+ lib/intel/genxml/igt_genxml_defs.h    |  317 ++
+ lib/intel/genxml/intel_genxml.py      |  553 ++++
+ lib/intel/genxml/util.py              |   19 +
+ lib/intel/genxml/xe2.xml              | 1969 ++++++++++++
+ lib/intel/genxml/xe3.xml              |  816 +++++
+ lib/intel/genxml/xe3p.xml             |    4 +
+ lib/intel_batchbuffer.c               |   32 +-
+ lib/intel_bufops.h                    |   13 +
+ lib/intel_mocs.c                      |   28 +
+ lib/intel_mocs.h                      |    2 +
+ lib/meson.build                       |   62 +-
+ lib/rendercopy_gen9.c                 | 1115 ++++---
+ 27 files changed, 31894 insertions(+), 569 deletions(-)
+ create mode 100644 lib/intel/genxml/gen110.xml
+ create mode 100644 lib/intel/genxml/gen120.xml
+ create mode 100644 lib/intel/genxml/gen125.xml
+ create mode 100644 lib/intel/genxml/gen40.xml
+ create mode 100644 lib/intel/genxml/gen45.xml
+ create mode 100644 lib/intel/genxml/gen50.xml
+ create mode 100644 lib/intel/genxml/gen60.xml
+ create mode 100644 lib/intel/genxml/gen70.xml
+ create mode 100644 lib/intel/genxml/gen75.xml
+ create mode 100644 lib/intel/genxml/gen80.xml
+ create mode 100644 lib/intel/genxml/gen90.xml
+ create mode 100644 lib/intel/genxml/gen_decode_header.py
+ create mode 100644 lib/intel/genxml/gen_pack_header.py
+ create mode 100644 lib/intel/genxml/igt_genxml.h
+ create mode 100644 lib/intel/genxml/igt_genxml_decode.h
+ create mode 100644 lib/intel/genxml/igt_genxml_defs.h
+ create mode 100644 lib/intel/genxml/intel_genxml.py
+ create mode 100644 lib/intel/genxml/util.py
+ create mode 100644 lib/intel/genxml/xe2.xml
+ create mode 100644 lib/intel/genxml/xe3.xml
+ create mode 100644 lib/intel/genxml/xe3p.xml
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index d98be46f0..6caff7dbb 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -78,6 +78,19 @@
- 
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
- 
-+static const struct {
-+	const char *name;
-+	uint32_t format;
-+	int bpc;
-+} formats[] = {
-+	{ "XRGB8888", DRM_FORMAT_XRGB8888, 8 },
-+	{ "YUYV", DRM_FORMAT_YUYV, 8 },
-+	{ "NV12", DRM_FORMAT_NV12, 8 },
-+	{ "XRGB2101010", DRM_FORMAT_XRGB2101010, 10 },
-+	{ "P010", DRM_FORMAT_P010, 10 },
-+	{ "FP16", DRM_FORMAT_XRGB16161616F, 16 },
-+};
-+
- static unsigned int create_test_fb(data_t *data, int w, int h,
- 				   uint32_t format,
- 				   enum igt_color_encoding encoding,
-@@ -760,16 +773,37 @@ run_gamma_degamma_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 	test_setup(data, crtc);
- 
- 	/*
--	 * We assume an 8bits depth per color for degamma/gamma LUTs
-+	 * We assume an 8bits or 10bits depth per color for degamma/gamma LUTs
- 	 * for CRC checks with framebuffer references.
- 	 */
--	data->color_depth = 8;
--	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
- 	igt_require(crtc_output_combo_valid(data, crtc));
- 
--	igt_assert(test_t(data, data->primary));
-+	for (int i = 0; i < ARRAY_SIZE(formats); i++) {
-+		/*
-+		 * legacy gamma path internally uses XRGB8888; avoid misleading
-+		 * dynamic names for non-RGB formats.
-+		 */
-+		if ((test_t == test_pipe_legacy_gamma ||
-+		     test_t == test_pipe_legacy_gamma_reset) &&
-+		    formats[i].format != DRM_FORMAT_XRGB8888)
-+			continue;
-+
-+		if (!igt_plane_has_format_mod(data->primary, formats[i].format,
-+					      DRM_FORMAT_MOD_LINEAR))
-+			continue;
-+
-+		igt_dynamic_f("pipe-%s-%s-%s", igt_crtc_name(crtc),
-+			      igt_output_name(data->output),
-+			      formats[i].name) {
-+			igt_info("Running on " IGT_FORMAT_FMT " format\n",
-+				 IGT_FORMAT_ARGS(formats[i].format));
-+			data->color_depth = formats[i].bpc;
-+			data->drm_format = formats[i].format;
-+			igt_assert(test_t(data, data->primary));
-+		}
-+	}
- 
- 	test_cleanup(data);
- }
-@@ -789,24 +823,13 @@ run_ctm_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 		       const double *ctm,
- 		       int iter)
- {
--	bool success = false;
--	bool depth_10bit = false;
-+	bool success;
-+	bool mtk_10bpc_only = is_mtk_device(data->drm_fd);
- 	double delta;
- 	int i;
- 
- 	test_setup(data, crtc);
- 
--	/* MediaTek can only support bit-ture in 10-bit depth pre color */
--	if (is_mtk_device(data->drm_fd))
--		depth_10bit = true;
--
--	/*
--	 * We assume an 8bits or 10bits depth per color for degamma/gamma LUTs
--	 * for CRC checks with framebuffer references.
--	 */
--	data->color_depth = depth_10bit ? 10 : 8;
--	delta = 1.0 / (1 << data->color_depth);
--	data->drm_format = depth_10bit ? DRM_FORMAT_XRGB2101010 : DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
- 	igt_require(crtc_output_combo_valid(data, crtc));
-@@ -814,30 +837,48 @@ run_ctm_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 	if (!iter)
- 		iter = 1;
- 
--	/*
--	 * We tests a few values around the expected result because
--	 * it depends on the hardware we're dealing with, we can either
--	 * get clamped or rounded values and we also need to account
--	 * for odd number of items in the LUTs.
--	 */
--	for (i = 0; i < iter; i++) {
--		color_t expected_colors[3] = {
--			fb_colors[0],
--			fb_colors[1],
--			fb_colors[2],
--		};
--
--		transform_color(&expected_colors[0], ctm, delta * (i - (iter / 2)));
--		transform_color(&expected_colors[1], ctm, delta * (i - (iter / 2)));
--		transform_color(&expected_colors[2], ctm, delta * (i - (iter / 2)));
--
--		if (test_pipe_ctm(data, data->primary, fb_colors,
--				  expected_colors, ctm)) {
--			success = true;
--			break;
-+	for (int fi = 0; fi < ARRAY_SIZE(formats); fi++) {
-+		if (mtk_10bpc_only && formats[fi].bpc != 10)
-+			continue;
-+
-+		if (!igt_plane_has_format_mod(data->primary, formats[fi].format,
-+					      DRM_FORMAT_MOD_LINEAR))
-+			continue;
-+
-+		igt_dynamic_f("pipe-%s-%s-%s", igt_crtc_name(crtc),
-+			      igt_output_name(data->output),
-+			      formats[fi].name) {
-+			data->color_depth = formats[fi].bpc;
-+			delta = 1.0 / (1 << data->color_depth);
-+			data->drm_format = formats[fi].format;
-+			success = false;
-+
-+			/*
-+			 * We tests a few values around the expected result because
-+			 * it depends on the hardware we're dealing with, we can either
-+			 * get clamped or rounded values and we also need to account
-+			 * for odd number of items in the LUTs.
-+			 */
-+			for (i = 0; i < iter; i++) {
-+				color_t expected_colors[3] = {
-+					fb_colors[0],
-+					fb_colors[1],
-+					fb_colors[2],
-+				};
-+
-+				transform_color(&expected_colors[0], ctm, delta * (i - (iter / 2)));
-+				transform_color(&expected_colors[1], ctm, delta * (i - (iter / 2)));
-+				transform_color(&expected_colors[2], ctm, delta * (i - (iter / 2)));
-+
-+				if (test_pipe_ctm(data, data->primary, fb_colors,
-+						  expected_colors, ctm)) {
-+					success = true;
-+					break;
-+				}
-+			}
-+			igt_assert(success);
- 		}
- 	}
--	igt_assert(success);
- 
- 	test_cleanup(data);
- }
-@@ -1131,11 +1172,9 @@ run_tests_for_pipe(data_t *data)
- 		igt_describe_f("%s", gamma_degamma_tests[i].desc);
- 		igt_subtest_with_dynamic_f("%s", gamma_degamma_tests[i].name) {
- 			for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
--				igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
--					      igt_output_name(data->output))
--					run_gamma_degamma_tests_for_crtc(data,
--									 crtc,
--									 gamma_degamma_tests[i].test_t);
-+				run_gamma_degamma_tests_for_crtc(data,
-+								 crtc,
-+								 gamma_degamma_tests[i].test_t);
- 			}
- 		}
- 	}
-@@ -1144,13 +1183,11 @@ run_tests_for_pipe(data_t *data)
- 		igt_describe_f("%s", ctm_tests[i].desc);
- 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
- 			for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
--				igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
--					      igt_output_name(data->output))
--					run_ctm_tests_for_crtc(data,
--							       crtc,
--							       ctm_tests[i].fb_colors,
--							       ctm_tests[i].ctm,
--							       ctm_tests[i].iter);
-+				run_ctm_tests_for_crtc(data,
-+						       crtc,
-+						       ctm_tests[i].fb_colors,
-+						       ctm_tests[i].ctm,
-+						       ctm_tests[i].iter);
- 				if (igt_run_in_simulation())
- 					break;
- 			}
 -- 
-2.34.1
+2.43.0
 
