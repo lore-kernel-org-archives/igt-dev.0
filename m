@@ -4,55 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1245CD98E4
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 03:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D997ACDB46B
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 05:09:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C2E210E44E;
-	Mon, 22 Jun 2026 03:56:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6A5A110E498;
+	Mon, 22 Jun 2026 05:09:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QF7PCPTt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VBqcAvfE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78FD810E43D
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 03:51:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C340B10E498
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 05:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782100295; x=1813636295;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=9FGjoHe2QyDJuFxTzNhGodvuFcNvPZnje8T+H1mfFU0=;
- b=QF7PCPTt+Fx3EB5cURzarVEH7kuxWPAVGf8kcd4Tu8JEtWt1EMaFfO/G
- uHPzZuz92L+tNxAPUMGfsPmuA4T3AkojMO7KmRWPvV9Zc82NNU5stIbJz
- mFvn2PNvLz1zxPDfF0JLZotivxgqQXE3kbeW6B3e8yyGYueo8aJQ0cm0p
- nrO57GYd9DJMiR3+X2VdXDkrU4a33qKlDLgqkPOFRstUjC+lkphZtFUcP
- +OZ7XjGRnoWuOy2xbOUZZgN2FFxHAmHyxUP6O9nxsShgfQxbm4ople/2l
- bhv1adoquLE5KB5IRs2OVvayQ3agbiLAmS7efL7cpwzbaaDeEcCIHhYvw Q==;
-X-CSE-ConnectionGUID: gIrxqcvASP+f12G03Uxx0A==
-X-CSE-MsgGUID: Wb+n1fjPQWq4gi6jFLyQng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82596523"
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="82596523"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2026 20:51:35 -0700
-X-CSE-ConnectionGUID: qq1gM5puSQ6zOCkfMS1Mwg==
-X-CSE-MsgGUID: 5QChPP8DRqqvvo0s01Dpqw==
+ t=1782104958; x=1813640958;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=f2igeuy9fcgM9IfWblp03b7VjDMWxdHAPUWcO94OB6o=;
+ b=VBqcAvfE9KfYuCQm1gGLMdVV2NcINKNpyhRaPgF3ZzKJcFBtPIzD3paC
+ SPmazO+jsu8tCFM6uvz4riRNsA6hT/OjRSI20xNc+Cz46eH/PGLUP1rfT
+ fKBdbwxAh6vhJlb1crq4XWSDM1ZcQQxjPgQmjUdaMP7jsD8oqsXcwFddY
+ iVE2l6naEPZc9Zm9nP0sXAvJWdzPYIaapT186pM5XqT5wKW355MZaXVu6
+ 6Z320BaS5S/sz/qD1mgi3E6Dyh8/fGXJms7x0oUNjWVDHPuy9iG0QZHkE
+ IqEfGPj0mxeNseLFLl3gaU0B3JfuaxPs8P1cWOVc1en8LFqx8nxIV6Odh w==;
+X-CSE-ConnectionGUID: 2hZRHzenT0avw4xtUeurvQ==
+X-CSE-MsgGUID: 7a7dyJppTjC9FyrrJNQb2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="70341167"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="70341167"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jun 2026 22:09:18 -0700
+X-CSE-ConnectionGUID: PWwAwmUsRJyj+5cDTuxpPg==
+X-CSE-MsgGUID: Yx1iq0kuTByrrfVxA2ymUQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="248964545"
-Received: from art-dev-395.igk.intel.com ([10.211.135.233])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2026 20:51:33 -0700
-From: Jan Maslak <jan.maslak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com,
-	Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH 09/11] lib/rendercopy: Convert pipeline emit commands to genxml
-Date: Mon, 22 Jun 2026 05:51:04 +0200
-Message-ID: <20260622035106.3023047-10-jan.maslak@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260622035106.3023047-1-jan.maslak@intel.com>
-References: <20260622035106.3023047-1-jan.maslak@intel.com>
-MIME-Version: 1.0
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; d="scan'208";a="246199715"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jun 2026 22:08:08 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Sun, 21 Jun 2026 22:08:07 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Sun, 21 Jun 2026 22:08:07 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.48)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Sun, 21 Jun 2026 22:08:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UgVu9SyuKMMLU+3Wt9sZ+nJLpJ4oSFNHn7OLPs6S6iLRf00BhQZOiBIxie+ssdlo0cRglnRkDEp7Jvgt26Sfehg1ETCsP/wUzVyaufU51PrzeFOfToWMVitKIPggq9JZwTIGAyaUWOID8wt3PU5zjMsWy8JMHs1TPAHH7VkuwBak22LAZHtYCHqCMGodmwUEd2xtxEzAAu5BaOzbnegawPbHmcypOO8h4kzZNhr1uMPZUR16ynCRssTR5HXnGd6AooIP8+ewgL0ozzc1T0zP/6CHj/3Be50J35wWAzTM1Gz5K8vePd4zWQaYUE0HWcyppV2EcqZRpfmu0KqLNKFHCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z+PPMQdvbNAeAzVU14CtZDianWvJA2ux3vwkQknKsJo=;
+ b=OqP+Fs13W/hjyJBe7h+TRlwLOnT7ZgsJPpQaVpN0SE4Nm16NXznDV6F2bPJj7ZVCL2lVyGSaXp5Zt3OWVQsU6zu11/CxQiTV4dMjoP4ge72JrdbkRYMyEiBZ3CY4v3PjgUd7cuNOses3/mQ6EXn1eVGnj9FqXh/EwAyp8GnTE+IIN/iK0S1i0v6NoKXRROk8fqtsBm/71hrypeUJQ8iWiEQpVHX33r6u5QILEhnoLu4cTEQ3KcrlIdx7Gi1x3p3M0qtrYl2IVbIgIl4SxUSqjQuuVZqHgv0Cc8EcT7AmZT0Ak3PwvjogoIVKn7vabcjuFi9V5h7wp02CIkQrSRdz+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
+ by MW4PR11MB6764.namprd11.prod.outlook.com (2603:10b6:303:209::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 22 Jun
+ 2026 05:08:04 +0000
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::d0b2:7271:ad7e:cb1a]) by CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::d0b2:7271:ad7e:cb1a%7]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
+ 05:08:03 +0000
+Message-ID: <0db601a9-2a7c-4936-9b8b-334754c466e4@intel.com>
+Date: Mon, 22 Jun 2026 10:37:57 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/kms_dsc: Ensure non-joiner modes on
+ non-joiner subtests
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20260618043055.2998900-1-karthik.b.s@intel.com>
+ <b16bd582-c1bd-47a1-a23e-5ca06d29be2e@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <b16bd582-c1bd-47a1-a23e-5ca06d29be2e@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5PR01CA0016.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:177::14) To CH0PR11MB5690.namprd11.prod.outlook.com
+ (2603:10b6:610:ed::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|MW4PR11MB6764:EE_
+X-MS-Office365-Filtering-Correlation-Id: f476592e-0505-4871-ace7-08ded01c3cec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|23010399003|376014|1800799024|42112799006|366016|11063799006|56012099006|3023799007|5023799004|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: ErU5/45LWrJ/cp0zmesVZOpQRNqoCpXAxU0AQLaKk72K/r8BjuQi4dha/5ceoWCmxTjpBhkvqJ1t5wSvw/CorDlCmxwRCtCcMiPlwYQMN7tQhlZX/WT5kYw7Zen5b4/rWtipqoVbVPwrc0v8V8+HYPhdNpziDuqzLHwVaHazW5rT+A1qtrpbjU1dwKS0wFXH11AvHsLOVqbfnxh9P7ek9qXzphliaNFBbBFBYNQsSmCIGNGUsJK6ULUOm8yZiGwi9c8cLkTY4npcw9o8vC1fkYIA93eqW6/mtJIAzkCGWNXFgfMFoA8YHER9HnO7Jfmm+/LtPIz7t36mL3vSFqU4n6G0H+Vai9Ell9uBUbrDySXzhwjQTy4A2gdjKv7VnVAJm7uIMQpLZNcC9UwH2eHVHgRMiO0+W+5mdec7JWTANsZtzUgPhBzLZmJSf1Uurn5+A0bt84MPZqa/0kd94gi/ZCNr9zJUnKch2Cz4nfZwKSLWklkLDSBo2sfA/z3CEDCkNSxP0ZLarmJ6HpO+lCBfZ6apvFDL1VnZt7oI0qsI53kFVymPSinO4ZecG1Izm9I6dEf5flQC2BfzQae72y5Sgnqc5KDnJVQ+Kfie3eVa/Br/MXVHEih17BuzDDI8MFLt
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(376014)(1800799024)(42112799006)(366016)(11063799006)(56012099006)(3023799007)(5023799004)(4143699003)(22082099003)(18002099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RzRSOVU0RS94YVpHRnRzVm9pSlltNk9SOUVFRGFMTU9Td2p2VEp3N3hZaHRE?=
+ =?utf-8?B?eVZ1RkRNaFNIYVhlc09weDI4OXJYU2hyRllSeHZzVkpkeUVtSXdnWDJ6Y1Zy?=
+ =?utf-8?B?MDc2LzZZSlpNbERpOU8zNGdnYWl6YWcwRzI0ODdnTHk1NzRjQndndVBGd0Fl?=
+ =?utf-8?B?a09RSDVIMUx6S044N2RNMW9GcGJDTFZlRXdiaHRzdldtL3J2aW84RDNlQjBO?=
+ =?utf-8?B?MHZPQk5pcEtSYVA5SjZUSXRBKzZhdDNtdzI0Z0hVSXVYWEl4MmRVaGxkOUVY?=
+ =?utf-8?B?RXZXd2N0MStsc0dva2RVejR4dUlSZjhzT2R3b2I2dUtiblBkV043TDV2d0g3?=
+ =?utf-8?B?a3hqOEpXSW80THVMVVIya1BscTN4cURUK0xrT1FUMlBoTXhBTDdaY25VeG0z?=
+ =?utf-8?B?NjBnTjRCMTVxU0E3MjVGK0s0MUJhaUxNTGhySlIwalUzL0RWS1Y2MVJrVkFW?=
+ =?utf-8?B?bHRDUkl5bFNXV0ErR0FLbndYeXVyQ1VoL21BM3pvNTd2R2UySmRUZlBobDRH?=
+ =?utf-8?B?d0FqTThCaHdHc3c4WnJRd1ZEY3Z3bExGQXpWM0hTU1QxZCtEZVhzaTJPVGZZ?=
+ =?utf-8?B?UnRhQzQwSmEyeHJzRlFNcUVSeG8rZ3gwbVdhcWhaYW5UYndXR3VPcWZNbTJ2?=
+ =?utf-8?B?ekFXZkVHdDBBcXovVW5oU0lqTTE3R0xWY2xrNnVSNFFjQW9WRXBNbVNpMkxo?=
+ =?utf-8?B?c3NrZ24xa09oYmdFT1BGQ0xHdDQ1emlXQzgrRWpsSUUwUjlVbDg1cnBVUjQ3?=
+ =?utf-8?B?ZGlLT0ZrRUtsTk1CbHh3TkdDOTRQaXZRZHVyWjBOT0x3WndkeGgyL25LLzhP?=
+ =?utf-8?B?N3orOElweVRLT09waDBnbUt0cXY1ai9XdTNNYXVxdy8rRzNWOFBpdjRIK0Ex?=
+ =?utf-8?B?ZkdWL2lLOXo4OWJxVGIwMjdjaG1FTHVOak9kaWhWSnkwMmJqQUdEWndnM1Zx?=
+ =?utf-8?B?ZFltNHVhTDZZQm1kcktZNEpvTW5pS3BPcG1aRXBDWndQNGliTE95NGJhN28y?=
+ =?utf-8?B?U0NaSmI4M1JqRU1JNVB2blh3RVJ3VVRpaUhKQ3o4aXl0aFcvYzkzbjdtc1Rk?=
+ =?utf-8?B?enMwYXFRWmZnTWg0ZnlheHZEZ3FwdU1OdmxlcnNPWTdJVGtoVlZZVnlOZXBo?=
+ =?utf-8?B?NjdRRjBZZHdVQThXTUZlNFpiNHpLWUlTQUhST25wTEc5NGhHT2luL2E1YS9k?=
+ =?utf-8?B?aTE5b2tvOTdUR2pnWEl4STNtQjNwcXMzNEFLaWZZTzA5WDBQcjZJL2RuU2JD?=
+ =?utf-8?B?UXF5aSszVndvUW9OSEVnL2cwcVBIN0RtbWR0V2hQRTZ6VnUxaUs5TVhtV1hB?=
+ =?utf-8?B?SHZJcG1DQWt2L3R2RU9IdG8wQW5xZ3c5TXU4YkNhOGpNeHhmQ1RBR2pYZ0dS?=
+ =?utf-8?B?MTBFOU9YcmhKZHpVeHBQcE10RUpGa25aQTV0WjhOL1ZwZWJEMFduRThsM1JV?=
+ =?utf-8?B?Y3VGWFY5S05MdGJlY2xVaERpbzhOeVdkTmRHbXY0Tkc2VVE2ZlhHZkpJVDlD?=
+ =?utf-8?B?Qzd0R2k2bzZKdXphcHNYYk5HRWxPcnRqNjVoMnM4Wlp4ZHhnVXNRUjFLaXBV?=
+ =?utf-8?B?bnFhTVpXSTBVeXdKVlB4RHpSZE9kSno1R2Z6b1NBMWppZi95bzFGRzJlVFpP?=
+ =?utf-8?B?MWRQZERzOTZ4WndYTXQ4NE9jUDA0T0FCTnl2Q3Z4d2lFamQ5UWpzTW5HL3RJ?=
+ =?utf-8?B?T3RNdFVkQW43bG9RbDJpVzZYdFNaYWFVVXlXdFo1Q3lvU2l5UU85MGo1dVZS?=
+ =?utf-8?B?SVZ1L2Y0K3RZSTBOTHBYQjJha1c0dEJnY2ZNc25kd2NKMWRpdi9uaGZCT05p?=
+ =?utf-8?B?azVxR084eGFUQVhNd1RHN3BHbllMaHptaEdsa3orYmNhcTU5R0c2SituMDAx?=
+ =?utf-8?B?bjJ3VjNnbGd3bzY4anc5ZEVNQTFXYWs5T2V0VmxNVHpISjM3U3d1anN1Yy81?=
+ =?utf-8?B?bXlkTGtGUnIxcStKWjE0a3haUEcra0R6WlEyZWJwL2J5ZWRQY1o1WWdwMEVU?=
+ =?utf-8?B?bFkvbTNIODBhcTBZRkV1NWJwN2VtR1MzanQ5QmxEekgrSHlQYXRJUDR5cEp5?=
+ =?utf-8?B?UGtWZHM3d0V6RHNUM1AzaU03MmpGSVA1QmMxS3FtQk9wWS9SUVg3QmlZaEJy?=
+ =?utf-8?B?ckJQMXBXK2FuaDJQNzg1aks4OGNtQ0Nac3JDYkFDUUxLclNGZ0NDS3M1N1pl?=
+ =?utf-8?B?a1ZVRGZwajc2a1A3RjNkb0dwZ2F1cFNUaWF2bWRrUFdvRnJNWXMyMmxmVlJt?=
+ =?utf-8?B?dXN2MHNxcm1KQndKVjZEa1YzVTEyVDAxdm51UXF1cENGZmF6eS9XODJSZEJv?=
+ =?utf-8?B?d0pkaWlRNDd4OFI2RDM5aUVqOGNWNHUxbzVDSElUMzlzazdOOXZFUT09?=
+X-Exchange-RoutingPolicyChecked: H7UYKnFxiVsc7QECoxx3UQt2pUd1PtBc4v8pR+Oy9rIX1LLcRyZKZwuD3IR5w51CKZjwup7c2J8g0H3s0hTFqpeGIkHihO/0F/7GYFMqS2BuE2S0tEKddzPDyS6pKkdXLaPPb6ILx8TecshVCUg+zHkN2W1DJRahfNA392Q65UKKB6Cp8Iim11ROc7JqrdGimleSHBv2mKypbI20axVzSCVb6ENQfeQPTfMaPLITSkyZeT4Qlkvcv0OXdZP5AXqjnXoE+f242NOIuKG+vVxhWxhrhtsSTNYrasKc+n71BQurRc4YmUgltU+3XYKzFID/7sM/Ss5lnIDDH44MfiI1Fg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: f476592e-0505-4871-ace7-08ded01c3cec
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 05:08:03.7517 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: V+COspeCreVgveVzUrlwaVnYmKe/BLPrcmE2Fn06zx5pE3AYyzL79dvz1u6wTAUUTVn0pMnzpo9yHbUKYYvcmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6764
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,702 +169,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replace intel_bb_out() calls in state-base-address, URB, shader stage,
-and draw-state emit functions with igt_genxml_emit macros backed by the
-genxml pack headers.
+Hi Swati,
 
-Signed-off-by: Jan Maslak <jan.maslak@intel.com>
----
- lib/rendercopy_gen9.c | 542 +++++++++++++++++-------------------------
- 1 file changed, 223 insertions(+), 319 deletions(-)
+On 6/18/2026 11:32 PM, Sharma, Swati2 wrote:
+> Hi Karthik,
+>
+> Please fix the subject.
+>
+> It should be tests/intel/kms_dsc
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index 8b56b826d9..fb487cb67e 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -22,7 +22,6 @@
- #include "intel_mocs.h"
- #include "rendercopy.h"
- #include "surfaceformat.h"
--#include "xe2_render.h"
- #include "intel_reg.h"
- #include "igt_aux.h"
- #include "intel_chipset.h"
-@@ -735,81 +734,80 @@ gen6_create_scissor_rect(struct intel_bb *ibb)
- 
- static void
- gen8_emit_sip(struct intel_bb *ibb) {
--	intel_bb_out(ibb, GEN4_STATE_SIP | (3 - 2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_STATE_SIP, sip) {
-+		/* SystemInstructionPointer left as zero */
-+	}
- }
- 
- static void
- gen7_emit_push_constants(struct intel_bb *ibb) {
--	intel_bb_out(ibb, GEN7_3DSTATE_PUSH_CONSTANT_ALLOC_VS);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, GEN8_3DSTATE_PUSH_CONSTANT_ALLOC_HS);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, GEN8_3DSTATE_PUSH_CONSTANT_ALLOC_DS);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, GEN8_3DSTATE_PUSH_CONSTANT_ALLOC_GS);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, GEN7_3DSTATE_PUSH_CONSTANT_ALLOC_PS);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_VS, vs) { }
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_HS, hs) { }
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_DS, ds) { }
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_GS, gs) { }
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_PS, ps) { }
- }
- 
-+/*
-+ * IGT_SBA_COMMON - shared STATE_BASE_ADDRESS fields across gen9/gen11/gen125.
-+ * All three variants have identical field names for the fields we set.
-+ */
-+#define IGT_SBA_COMMON(sba, mocs_val, surf, dyn, inst)                     \
-+	do {                                                               \
-+		sba.GeneralStateBaseAddressModifyEnable = true;            \
-+		sba.GeneralStateMOCS = (mocs_val);                         \
-+		sba.StatelessDataPortAccessMOCS = (mocs_val);              \
-+		sba.SurfaceStateBaseAddressModifyEnable = true;            \
-+		sba.SurfaceStateMOCS = (mocs_val);                         \
-+		sba.SurfaceStateBaseAddress = (surf);                      \
-+		sba.DynamicStateBaseAddressModifyEnable = true;            \
-+		sba.DynamicStateMOCS = (mocs_val);                         \
-+		sba.DynamicStateBaseAddress = (dyn);                       \
-+		sba.IndirectObjectMOCS = (mocs_val);                       \
-+		sba.InstructionBaseAddressModifyEnable = true;             \
-+		sba.InstructionMOCS = (mocs_val);                          \
-+		sba.InstructionBaseAddress = (inst);                       \
-+		sba.GeneralStateBufferSizeModifyEnable = true;             \
-+		sba.GeneralStateBufferSize = 0xfffff;                      \
-+		sba.DynamicStateBufferSizeModifyEnable = true;             \
-+		sba.DynamicStateBufferSize = 1;                            \
-+		sba.IndirectObjectBufferSizeModifyEnable = true;           \
-+		sba.IndirectObjectBufferSize = 0xfffff;                    \
-+		sba.InstructionBuffersizeModifyEnable = true;              \
-+		sba.InstructionBufferSize = 1;                             \
-+		sba.BindlessSurfaceStateMOCS = (mocs_val);                 \
-+	} while (0)
-+
- static void
- gen9_emit_state_base_address(struct intel_bb *ibb) {
-+	uint8_t mocs = intel_get_wb_mocs(ibb->fd);
- 
--	/* WaBindlessSurfaceStateModifyEnable:skl,bxt */
--	/* The length has to be one less if we dont modify
--	   bindless state */
--	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
--		intel_bb_out(ibb, GEN4_STATE_BASE_ADDRESS | 20);
--	else
--		intel_bb_out(ibb, GEN4_STATE_BASE_ADDRESS | (19 - 1 - 2));
--
--	/* general */
--	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);
--	intel_bb_out(ibb, 0);
--
--	/* stateless data port */
--	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);
--
--	/* surface */
--	intel_bb_emit_reloc(ibb, ibb->handle,
--			    I915_GEM_DOMAIN_SAMPLER, 0,
--			    BASE_ADDRESS_MODIFY, ibb->batch_offset);
--
--	/* dynamic */
--	intel_bb_emit_reloc(ibb, ibb->handle,
--			    I915_GEM_DOMAIN_RENDER | I915_GEM_DOMAIN_INSTRUCTION, 0,
--			    BASE_ADDRESS_MODIFY, ibb->batch_offset);
--
--	/* indirect */
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	struct igt_address surf_base =
-+		igt_address_of_batch(ibb, I915_GEM_DOMAIN_SAMPLER, 0);
-+	struct igt_address dyn_base =
-+		igt_address_of_batch(ibb,
-+				     I915_GEM_DOMAIN_RENDER | I915_GEM_DOMAIN_INSTRUCTION, 0);
-+	struct igt_address inst_base =
-+		igt_address_of_batch(ibb, I915_GEM_DOMAIN_INSTRUCTION, 0);
- 
--	/* instruction */
--	intel_bb_emit_reloc(ibb, ibb->handle,
--			    I915_GEM_DOMAIN_INSTRUCTION, 0,
--			    BASE_ADDRESS_MODIFY, ibb->batch_offset);
--
--	/* general state buffer size */
--	intel_bb_out(ibb, 0xfffff000 | 1);
--	/* dynamic state buffer size */
--	intel_bb_out(ibb, 1 << 12 | 1);
--	/* indirect object buffer size */
--	intel_bb_out(ibb, 0xfffff000 | 1);
--	/* intruction buffer size */
--	intel_bb_out(ibb, 1 << 12 | 1);
--
--	/* Bindless surface state base address */
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--
--	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
--		/* Bindless sampler */
--		intel_bb_out(ibb, 0);
--		intel_bb_out(ibb, 0);
--		intel_bb_out(ibb, 0);
-+	if (HAS_4TILE(ibb->devid) || intel_gen(ibb->devid) > 12) {
-+		igt_genxml_emit(ibb, GFX125_STATE_BASE_ADDRESS, sba) {
-+			IGT_SBA_COMMON(sba, mocs, surf_base, dyn_base, inst_base);
-+			/* WBP (0) and UC (1) are marked dont_use in the XML for this field. */
-+			sba.L1CacheControl = GFX125_L1CC_WB;
-+			sba.BindlessSamplerStateBaseAddressModifyEnable = true;
-+			sba.BindlessSamplerStateMOCS = mocs;
-+		}
-+	} else if (intel_gen(ibb->devid) >= 11) {
-+		igt_genxml_emit(ibb, GFX11_STATE_BASE_ADDRESS, sba) {
-+			IGT_SBA_COMMON(sba, mocs, surf_base, dyn_base, inst_base);
-+			sba.BindlessSamplerStateBaseAddressModifyEnable = true;
-+			sba.BindlessSamplerStateMOCS = mocs;
-+		}
-+	} else {
-+		igt_genxml_emit(ibb, GFX9_STATE_BASE_ADDRESS, sba) {
-+			IGT_SBA_COMMON(sba, mocs, surf_base, dyn_base, inst_base);
-+		}
- 	}
- }
- 
-@@ -820,184 +818,119 @@ gen7_emit_urb(struct intel_bb *ibb) {
- 	const int vs_size = 2;
- 	const int vs_start = 4;
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_URB_VS);
--	intel_bb_out(ibb, vs_entries | ((vs_size - 1) << 16) | (vs_start << 25));
--	intel_bb_out(ibb, GEN7_3DSTATE_URB_GS);
--	intel_bb_out(ibb, vs_start << 25);
--	intel_bb_out(ibb, GEN7_3DSTATE_URB_HS);
--	intel_bb_out(ibb, vs_start << 25);
--	intel_bb_out(ibb, GEN7_3DSTATE_URB_DS);
--	intel_bb_out(ibb, vs_start << 25);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_URB_VS, urb) {
-+		urb.VSNumberofURBEntries = vs_entries;
-+		urb.VSURBEntryAllocationSize = vs_size - 1;
-+		urb.VSURBStartingAddress = vs_start;
-+	}
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_URB_GS, urb) {
-+		urb.GSURBStartingAddress = vs_start;
-+	}
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_URB_HS, urb) {
-+		urb.HSURBStartingAddress = vs_start;
-+	}
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_URB_DS, urb) {
-+		urb.DSURBStartingAddress = vs_start;
-+	}
- }
- 
- static void
- gen8_emit_cc(struct intel_bb *ibb) {
--	intel_bb_out(ibb, GEN7_3DSTATE_BLEND_STATE_POINTERS);
--	intel_bb_out(ibb, cc.blend_state | 1);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_BLEND_STATE_POINTERS, bsp) {
-+		bsp.BlendStatePointer = cc.blend_state;
-+		bsp.BlendStatePointerValid = true;
-+	}
- 
--	intel_bb_out(ibb, GEN6_3DSTATE_CC_STATE_POINTERS);
--	intel_bb_out(ibb, cc.cc_state | 1);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_CC_STATE_POINTERS, ccp) {
-+		ccp.ColorCalcStatePointer = cc.cc_state;
-+		ccp.ColorCalcStatePointerValid = true;
-+	}
- }
- 
- static void
- gen8_emit_multisample(struct intel_bb *ibb) {
--	intel_bb_out(ibb, GEN8_3DSTATE_MULTISAMPLE | 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_MULTISAMPLE, ms) { }
- 
--	intel_bb_out(ibb, GEN6_3DSTATE_SAMPLE_MASK);
--	intel_bb_out(ibb, 1);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLE_MASK, sm) {
-+		sm.SampleMask = 1;
-+	}
- }
- 
- static void
- gen8_emit_vs(struct intel_bb *ibb) {
--	intel_bb_out(ibb, GEN6_3DSTATE_CONSTANT_VS | (11-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_VS, cvs) {
-+		cvs.MOCS = intel_get_wb_mocs(ibb->fd);
-+	}
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_BINDING_TABLE_POINTERS_VS);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_BINDING_TABLE_POINTERS_VS, bt) { }
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_SAMPLER_STATE_POINTERS_VS);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLER_STATE_POINTERS_VS, sp) { }
- 
--	intel_bb_out(ibb, GEN6_3DSTATE_VS | (9-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_VS, vs) { }
- }
- 
- static void
- gen8_emit_hs(struct intel_bb *ibb) {
--	intel_bb_out(ibb, GEN7_3DSTATE_CONSTANT_HS | (11-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_HS, chs) {
-+		chs.MOCS = intel_get_wb_mocs(ibb->fd);
-+	}
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_HS | (9-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	if (intel_gen(ibb->devid) >= 20)
-+		igt_genxml_emit(ibb, GFX20_3DSTATE_HS, hs) { }
-+	else
-+		igt_genxml_emit(ibb, GFX9_3DSTATE_HS, hs) { }
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_BINDING_TABLE_POINTERS_HS);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_BINDING_TABLE_POINTERS_HS, bt) { }
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_SAMPLER_STATE_POINTERS_HS);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLER_STATE_POINTERS_HS, sp) { }
- }
- 
- static void
- gen8_emit_gs(struct intel_bb *ibb) {
--	intel_bb_out(ibb, GEN6_3DSTATE_CONSTANT_GS | (11-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_GS, cgs) {
-+		cgs.MOCS = intel_get_wb_mocs(ibb->fd);
-+	}
- 
--	intel_bb_out(ibb, GEN6_3DSTATE_GS | (10-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_GS, gs) { }
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_BINDING_TABLE_POINTERS_GS);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_BINDING_TABLE_POINTERS_GS, bt) { }
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_SAMPLER_STATE_POINTERS_GS);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLER_STATE_POINTERS_GS, sp) { }
- }
- 
- static void
- gen9_emit_ds(struct intel_bb *ibb) {
--	intel_bb_out(ibb, GEN7_3DSTATE_CONSTANT_DS | (11-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_DS, cds) {
-+		cds.MOCS = intel_get_wb_mocs(ibb->fd);
-+	}
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_DS | (11-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_DS, ds) { }
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_BINDING_TABLE_POINTERS_DS);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_BINDING_TABLE_POINTERS_DS, bt) { }
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_SAMPLER_STATE_POINTERS_DS);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLER_STATE_POINTERS_DS, sp) { }
- }
- 
- 
- static void
- gen8_emit_wm_hz_op(struct intel_bb *ibb) {
- 	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
--		intel_bb_out(ibb, GEN8_3DSTATE_WM_HZ_OP | (6-2));
--		intel_bb_out(ibb, 0);
-+		igt_genxml_emit(ibb, GFX20_3DSTATE_WM_HZ_OP, hz) { }
- 	} else {
--		intel_bb_out(ibb, GEN8_3DSTATE_WM_HZ_OP | (5-2));
-+		igt_genxml_emit(ibb, GFX9_3DSTATE_WM_HZ_OP, hz) { }
- 	}
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
- }
- 
- static void
- gen8_emit_null_state(struct intel_bb *ibb) {
- 	gen8_emit_wm_hz_op(ibb);
- 	gen8_emit_hs(ibb);
--	intel_bb_out(ibb, GEN7_3DSTATE_TE | (4-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+
-+	if (intel_gen(ibb->devid) >= 12)
-+		igt_genxml_emit(ibb, GFX12_3DSTATE_TE, te) { }
-+	else
-+		igt_genxml_emit(ibb, GFX9_3DSTATE_TE, te) { }
-+
- 	gen8_emit_gs(ibb);
- 	gen9_emit_ds(ibb);
- 	gen8_emit_vs(ibb);
-@@ -1005,137 +938,109 @@ gen8_emit_null_state(struct intel_bb *ibb) {
- 
- static void
- gen7_emit_clip(struct intel_bb *ibb) {
--	intel_bb_out(ibb, GEN6_3DSTATE_CLIP | (4 - 2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0); /*  pass-through */
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_CLIP, clip) {
-+		/* All fields zero = pass-through */
-+	}
- }
- 
- static void
- gen8_emit_sf(struct intel_bb *ibb)
- {
--	int i;
--
--	intel_bb_out(ibb, GEN7_3DSTATE_SBE | (6 - 2));
--	intel_bb_out(ibb, 1 << GEN7_SBE_NUM_OUTPUTS_SHIFT |
--		     GEN8_SBE_FORCE_URB_ENTRY_READ_LENGTH |
--		     GEN8_SBE_FORCE_URB_ENTRY_READ_OFFSET |
--		     1 << GEN7_SBE_URB_ENTRY_READ_LENGTH_SHIFT |
--		     1 << GEN8_SBE_URB_ENTRY_READ_OFFSET_SHIFT);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, GEN9_SBE_ACTIVE_COMPONENT_XYZW << 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_SBE, sbe) {
-+		sbe.NumberofSFOutputAttributes = 1;
-+		sbe.ForceVertexURBEntryReadLength = true;
-+		sbe.ForceVertexURBEntryReadOffset = true;
-+		sbe.VertexURBEntryReadLength = 1;
-+		sbe.VertexURBEntryReadOffset = 1;
-+		sbe.AttributeActiveComponentFormat[0] = GFX9_ACTIVE_COMPONENT_XYZW;
-+	}
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_SBE_SWIZ | (11 - 2));
--	for (i = 0; i < 8; i++)
--		intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_SBE_SWIZ, swiz) { }
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_RASTER | (5 - 2));
--	intel_bb_out(ibb, GEN8_RASTER_FRONT_WINDING_CCW | GEN8_RASTER_CULL_NONE);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_RASTER, raster) {
-+		raster.FrontWinding = 1; /* CCW */
-+		raster.CullMode = GFX9_CULLMODE_NONE;
-+	}
- 
--	intel_bb_out(ibb, GEN6_3DSTATE_SF | (4 - 2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_SF, sf) { }
- }
- 
- static void
- gen8_emit_ps(struct intel_bb *ibb, uint32_t kernel, bool fast_clear) {
- 	const int max_threads = 63;
- 
--	intel_bb_out(ibb, GEN6_3DSTATE_WM | (2 - 2));
--	intel_bb_out(ibb, /* XXX: I don't understand the BARYCENTRIC stuff, but it
--		   * appears we need it to put our setup data in the place we
--		   * expect (g6, see below) */
--		     GEN8_3DSTATE_PS_PERSPECTIVE_PIXEL_BARYCENTRIC);
--
--	intel_bb_out(ibb, GEN6_3DSTATE_CONSTANT_PS | (11-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_WM, wm) {
-+		wm.BarycentricInterpolationMode = GFX9_BIM_PERSPECTIVE_PIXEL;
-+	}
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_PS | (12-2));
--	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
--		intel_bb_out(ibb, kernel | 1);
--	else
--		intel_bb_out(ibb, kernel);
--	intel_bb_out(ibb, 0); /* kernel hi */
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_PS, cps) {
-+		cps.MOCS = intel_get_wb_mocs(ibb->fd);
-+	}
- 
--	if (fast_clear)
--		intel_bb_out(ibb, 1 <<  GEN6_3DSTATE_WM_BINDING_TABLE_ENTRY_COUNT_SHIFT);
--	else
--		intel_bb_out(ibb, 1 << GEN6_3DSTATE_WM_SAMPLER_COUNT_SHIFT |
--		             2 << GEN6_3DSTATE_WM_BINDING_TABLE_ENTRY_COUNT_SHIFT);
--
--	intel_bb_out(ibb, 0); /* scratch space stuff */
--	intel_bb_out(ibb, 0); /* scratch hi */
--	intel_bb_out(ibb, (max_threads - 1) << GEN8_3DSTATE_PS_MAX_THREADS_SHIFT |
--	             GEN6_3DSTATE_WM_16_DISPATCH_ENABLE |
--	             (fast_clear ? GEN8_3DSTATE_FAST_CLEAR_ENABLE : 0));
--	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
--		intel_bb_out(ibb, 6 << GEN6_3DSTATE_WM_DISPATCH_START_GRF_0_SHIFT |
--			     GENXE_KERNEL0_POLY_PACK16_FIXED << GENXE_KERNEL0_PACKING_POLICY);
--	else
--		intel_bb_out(ibb, 6 << GEN6_3DSTATE_WM_DISPATCH_START_GRF_0_SHIFT);
--	intel_bb_out(ibb, 0); // kernel 1
--	intel_bb_out(ibb, 0); /* kernel 1 hi */
--	intel_bb_out(ibb, 0); // kernel 2
--	intel_bb_out(ibb, 0); /* kernel 2 hi */
-+	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
-+		igt_genxml_emit(ibb, GFX20_3DSTATE_PS, ps) {
-+			ps.KernelStartPointer0 = kernel;
-+			ps.Kernel0Enable = true;
-+			ps.BindingTableEntryCount = fast_clear ? 1 : 2;
-+			ps.SamplerCount = fast_clear ? 0 : 1;
-+			ps.Kernel0SIMDWidth = GFX20_PS_SIMD16;
-+			ps.RenderTargetFastClearEnable = fast_clear;
-+			ps.MaximumNumberofThreadsPerPSD = max_threads - 1;
-+			ps.DispatchGRFStartRegisterForConstantSetupData0 = 6;
-+			ps.Kernel0PolyPackingPolicy = GFX20_POLY_PACK16_FIXED;
-+		}
-+	} else {
-+		igt_genxml_emit(ibb, GFX9_3DSTATE_PS, ps) {
-+			ps.KernelStartPointer0 = kernel;
-+			ps.BindingTableEntryCount = fast_clear ? 1 : 2;
-+			ps.SamplerCount = fast_clear ? 0 : 1;
-+			ps._16PixelDispatchEnable = true;
-+			ps.RenderTargetFastClearEnable = fast_clear;
-+			ps.MaximumNumberofThreadsPerPSD = max_threads - 1;
-+			ps.DispatchGRFStartRegisterForConstantSetupData0 = 6;
-+		}
-+	}
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_PS_BLEND | (2 - 2));
--	intel_bb_out(ibb, GEN8_PS_BLEND_HAS_WRITEABLE_RT);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_PS_BLEND, blend) {
-+		blend.HasWriteableRT = true;
-+	}
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_PS_EXTRA | (2 - 2));
--	intel_bb_out(ibb, GEN8_PSX_PIXEL_SHADER_VALID | GEN8_PSX_ATTRIBUTE_ENABLE);
-+	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
-+		igt_genxml_emit(ibb, GFX20_3DSTATE_PS_EXTRA, extra) {
-+			extra.PixelShaderValid = true;
-+		}
-+	} else {
-+		igt_genxml_emit(ibb, GFX9_3DSTATE_PS_EXTRA, extra) {
-+			extra.PixelShaderValid = true;
-+			extra.AttributeEnable = true;
-+		}
-+	}
- }
- 
- static void
- gen9_emit_depth(struct intel_bb *ibb)
- {
--	bool need_10dw = HAS_4TILE(ibb->devid);
-+	uint8_t mocs = intel_get_wb_mocs(ibb->fd);
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_WM_DEPTH_STENCIL | (4 - 2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_WM_DEPTH_STENCIL, wds) { }
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_DEPTH_BUFFER | (need_10dw ? (10-2) : (8-2)));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	if (need_10dw) {
--		intel_bb_out(ibb, 0);
--		intel_bb_out(ibb, 0);
-+	if (HAS_4TILE(ibb->devid)) {
-+		igt_genxml_emit(ibb, GFX125_3DSTATE_DEPTH_BUFFER, db) {
-+			db.MOCS = mocs;
-+		}
-+	} else {
-+		igt_genxml_emit(ibb, GFX9_3DSTATE_DEPTH_BUFFER, db) {
-+			db.MOCS = mocs;
-+		}
- 	}
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_HIER_DEPTH_BUFFER | (5-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_HIER_DEPTH_BUFFER, hdb) {
-+		hdb.MOCS = mocs;
-+	}
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_STENCIL_BUFFER | (5-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_STENCIL_BUFFER, sb) {
-+		sb.MOCS = mocs;
-+	}
- }
- 
- static void
-@@ -1143,46 +1048,45 @@ gen7_emit_clear(struct intel_bb *ibb) {
- 	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
- 		return;
- 
--	intel_bb_out(ibb, GEN7_3DSTATE_CLEAR_PARAMS | (3-2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 1); // clear valid
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_CLEAR_PARAMS, cp) {
-+		cp.DepthClearValueValid = true;
-+	}
- }
- 
- static void
- gen6_emit_drawing_rectangle(struct intel_bb *ibb, const struct intel_buf *dst)
- {
--	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
--		intel_bb_out(ibb, GENXE2_3DSTATE_DRAWING_RECTANGLE_FAST | (4 - 2));
--	else
--		intel_bb_out(ibb, GEN4_3DSTATE_DRAWING_RECTANGLE | (4 - 2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, (intel_buf_height(dst) - 1) << 16 | (intel_buf_width(dst) - 1));
--	intel_bb_out(ibb, 0);
-+	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
-+		igt_genxml_emit(ibb, GFX20_3DSTATE_DRAWING_RECTANGLE_FAST, dr) {
-+			dr.ClippedDrawingRectangleXMax = intel_buf_width(dst) - 1;
-+			dr.ClippedDrawingRectangleYMax = intel_buf_height(dst) - 1;
-+		}
-+	} else {
-+		igt_genxml_emit(ibb, GFX9_3DSTATE_DRAWING_RECTANGLE, dr) {
-+			dr.ClippedDrawingRectangleXMax = intel_buf_width(dst) - 1;
-+			dr.ClippedDrawingRectangleYMax = intel_buf_height(dst) - 1;
-+		}
-+	}
- }
- 
- static void gen8_emit_vf_topology(struct intel_bb *ibb)
- {
--	intel_bb_out(ibb, GEN8_3DSTATE_VF_TOPOLOGY);
--	intel_bb_out(ibb, _3DPRIM_RECTLIST);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_VF_TOPOLOGY, vft) {
-+		vft.PrimitiveTopologyType = GFX9_3DPRIM_RECTLIST;
-+	}
- }
- 
- /* Vertex elements MUST be defined before this according to spec */
- static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
- {
--	intel_bb_out(ibb, GEN8_3DSTATE_VF | (2 - 2));
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_VF, vf) { }
- 
--	intel_bb_out(ibb, GEN8_3DSTATE_VF_INSTANCING | (3 - 2));
--	intel_bb_out(ibb, 0);
--	intel_bb_out(ibb, 0);
-+	igt_genxml_emit(ibb, GFX9_3DSTATE_VF_INSTANCING, vfi) { }
- 
--	intel_bb_out(ibb, GEN4_3DPRIMITIVE | (7-2));
--	intel_bb_out(ibb, 0);	/* gen8+ ignore the topology type field */
--	intel_bb_out(ibb, 3);	/* vertex count */
--	intel_bb_out(ibb, 0);	/*  We're specifying this instead with offset in GEN6_3DSTATE_VERTEX_BUFFERS */
--	intel_bb_out(ibb, 1);	/* single instance */
--	intel_bb_out(ibb, 0);	/* start instance location */
--	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
-+	igt_genxml_emit(ibb, GFX9_3DPRIMITIVE, prim) {
-+		prim.VertexCountPerInstance = 3;
-+		prim.InstanceCount = 1;
-+	}
- }
- 
- #define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
--- 
-2.43.0
+Thank you for the review. Will fix this during merge.
 
+Thanks and Regards,
+Karthik.B.S
+>
+> Apart from this patch LGTM
+>
+> Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+>
+> On 18-06-2026 10:00 am, Karthik B S wrote:
+>
+>> Ensure non-joiner subtests always pick non-joiner modes while iterating
+>> output-format modes. This prevents accidental natural joiner selection
+>> and avoids failures on the last pipe.
+>>
+>> Closes: 
+>> https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/16368
+>> Fixes: 86679142531b ("tests/intel/kms_dsc: Add force dsc and joiner 
+>> variants")
+>>
+>> Cc: Swati Sharma <swati2.sharma@intel.com>
+>> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+>> ---
+>>   tests/intel/kms_dsc.c           | 4 ++++
+>>   tests/intel/kms_joiner_helper.c | 8 ++++++++
+>>   tests/intel/kms_joiner_helper.h | 1 +
+>>   3 files changed, 13 insertions(+)
+>>
+>> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+>> index 3687e795d..8161bf7da 100644
+>> --- a/tests/intel/kms_dsc.c
+>> +++ b/tests/intel/kms_dsc.c
+>> @@ -251,6 +251,10 @@ static void update_display(data_t *data, 
+>> uint32_t test_type)
+>>           if (data->output_format != DSC_FORMAT_RGB)
+>>               mode = get_next_mode(output, index++);
+>>   +        if (mode && data->force_joined_pipes == 
+>> JOINED_PIPES_DEFAULT &&
+>> +            intel_mode_needs_joiner(data->drm_fd, mode))
+>> +            continue;
+>> +
+>>           if (mode == NULL)
+>>               goto reset;
+>>   diff --git a/tests/intel/kms_joiner_helper.c 
+>> b/tests/intel/kms_joiner_helper.c
+>> index cd7fe86bf..da0ac7f62 100644
+>> --- a/tests/intel/kms_joiner_helper.c
+>> +++ b/tests/intel/kms_joiner_helper.c
+>> @@ -225,6 +225,14 @@ bool 
+>> intel_max_hdisplay_non_joiner_mode_found(int drm_fd, drmModeConnector 
+>> *conn
+>>       return found;
+>>   }
+>>   +bool intel_mode_needs_joiner(int drm_fd, drmModeModeInfo *mode)
+>> +{
+>> +    int max_dotclock = igt_get_max_dotclock(drm_fd);
+>> +
+>> +    return igt_bigjoiner_possible(drm_fd, mode, max_dotclock) ||
+>> +           igt_ultrajoiner_possible(drm_fd, mode, max_dotclock);
+>> +}
+>> +
+>>   /**
+>>    * igt_is_joiner_supported_by_source:
+>>    * @drm_fd: drm file descriptor
+>> diff --git a/tests/intel/kms_joiner_helper.h 
+>> b/tests/intel/kms_joiner_helper.h
+>> index 692dab022..a0ab75b2c 100644
+>> --- a/tests/intel/kms_joiner_helper.h
+>> +++ b/tests/intel/kms_joiner_helper.h
+>> @@ -20,6 +20,7 @@ bool igt_assign_pipes_for_outputs(int drm_fd,
+>>                     uint32_t valid_pipes_mask);
+>>   bool intel_max_hdisplay_non_joiner_mode_found(int drm_fd, 
+>> drmModeConnector *connector,
+>>                             int max_dotclock, drmModeModeInfo *mode);
+>> +bool intel_mode_needs_joiner(int drm_fd, drmModeModeInfo *mode);
+>>   bool igt_is_joiner_supported_by_source(int drm_fd, enum 
+>> joined_pipes joiner_type);
+>>   const char *igt_get_joined_pipes_name(enum joined_pipes val);
