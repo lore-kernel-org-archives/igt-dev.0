@@ -4,53 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F7DBCD98F2
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 11:16:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CED75CDB46F
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 12:00:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0682410EA9A;
-	Tue, 23 Jun 2026 11:16:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 776A010EAD9;
+	Tue, 23 Jun 2026 12:00:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j//2uu6r";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="3wOZvnxh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4A8310EA9A
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 11:15:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782213333; x=1813749333;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=otQDI2cs4CC28LNPUpr7VT6jZ0rRfxHGDoBpq01bG6I=;
- b=j//2uu6rjd7qK83W4Xa+8e400Ehn9jKWfrOmlPGwtjB7th8iJphfR8DF
- fz4w3XK2BG55y8vY5ZsGrxKShkIsNodArLhD+/VXoD3sORyqrrwxM62Pc
- kweQPw9N/uc56RAkyzOIQQ3JsKT9gJ2G9BO6/moJ0qFBXkgLJmwfcA85A
- 4e0uGYjHlePw/EklpdQd7+jjpVCT1fgkQ1parbGN+AKBE5mScFzRsKbPz
- TI65Kob/PQoPfwk8aqgpU0I+3ytRgbsXeBAg+TxyuxA+xmYCIUeb5cU+f
- Ej/avQMWtFlRRIEJDtWjTK2GZaePiKCA+nYtLT1uJbDjuzEA9Zj4WY6JR g==;
-X-CSE-ConnectionGUID: wi0d/YhCQMKgPkGmTyN34A==
-X-CSE-MsgGUID: Ko5qaAUJRYyUnFzSEUqkww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="85507705"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="85507705"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2026 04:04:05 -0700
-X-CSE-ConnectionGUID: 8u83WMOUSRKznt+P6qhFDA==
-X-CSE-MsgGUID: G1a0FMTKS6idXjDXCP2jqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="273542629"
-Received: from jeevan24.iind.intel.com ([10.223.74.58])
- by fmviesa001.fm.intel.com with ESMTP; 23 Jun 2026 04:04:05 -0700
-From: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v4] tests/intel/xe_configfs: Improve coverage of show/store
- paths
-Date: Tue, 23 Jun 2026 16:28:55 +0530
-Message-ID: <20260623105855.171040-1-smitha.balasubramanyam@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260416090755.1025223-1-smitha.balasubramanyam@intel.com>
-References: <20260416090755.1025223-1-smitha.balasubramanyam@intel.com>
+Received: from DM1PR04CU001.outbound.protection.outlook.com
+ (mail-centralusazon11010050.outbound.protection.outlook.com [52.101.61.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1AAC10E545
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 08:56:03 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jkkSXl3+JNlAGA5fu67W30J2pKnU0DYMkn5LnKZ5SCZdMNiCNVgDg2GDzbV5px+45mbVnXL6E3TezVgeNxIILjBVSmTlWNCBpAC+NJk9LPoCJuEVTuqAAa5+83bPzMXOv0+tGbXZu/51u0bcuVHeUppTagOZjB5SLnbqTaDa31JWddc+dnuMlHYFcyBWmcAJH+/HB5aqdH1LII0kxXqhWVro/skLlKtxSSVbMfZRqWZe2hd5/z6sRvGGmWLOWxpYS+vmAkcVJRxVxbpkin9RwUjKKy1DVLo6u9VRtrLNUgHyrj9+c/rnArSmFWMwlQJS6xWLpN783ckFxt7g0qFxMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=D4C6B1G69gk1DY3Ku9+/hca8BQ2ay/lDIw9ZBbocPyY=;
+ b=nEnvXVO6vW5KY0orVC3OUDRjP7ol80ZISnWxOP3/o0mcMyHGRX9HpnbJIAv0+0P6uLMtKSvfm78pnMXqz8Gtv5Hd8N6IwuEVSZZC/aTJlNQVzCem+kuj7cQMV3rhkXGj5znbOYPSNcirRfl/D+aXq1vhqpj+5N/wEFTnfdyiEuueIX/IE/70+o9qne3Saa0VRBQowfWc5p+Ak2i29rjpgPsZLvpV8yepGd7W8ohEMrArOcut6UOgmT7FQrq5N4kniZMlJ8xOUkfY41AWdbIK0SkO/NJZJvZE7q8sSlQH8Y9mEsReOgcvYCzdr3nZh8uleWS8Z6B5128YP7PSk+G7bg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D4C6B1G69gk1DY3Ku9+/hca8BQ2ay/lDIw9ZBbocPyY=;
+ b=3wOZvnxhkGeL19jwKN4tBHD3cunAxCpBJwexm9VIdhesfn8fNkHzavvk8fnVf113TGu1VoB5uEzLKDYvfVE3T+NVJSYNvc5oYnqepP+FZmwqHep4d6iGdeBW4hQlGlASnVQbOEmF49LH/i/hIEvuff8GlAuZqdwn1LY0nwBULWI=
+Received: from DM4PR12MB7646.namprd12.prod.outlook.com (2603:10b6:8:106::10)
+ by CH3PR12MB7594.namprd12.prod.outlook.com (2603:10b6:610:140::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Mon, 22 Jun
+ 2026 08:55:59 +0000
+Received: from DM4PR12MB7646.namprd12.prod.outlook.com
+ ([fe80::71b5:d9dc:6686:a45d]) by DM4PR12MB7646.namprd12.prod.outlook.com
+ ([fe80::71b5:d9dc:6686:a45d%6]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
+ 08:55:59 +0000
+From: "Ramalingeswara Reddy, Kanala" <Kanala.RamalingeswaraReddy@amd.com>
+To: "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Prosyak,
+ Vitaly" <Vitaly.Prosyak@amd.com>, "Vishwakarma, Pratik"
+ <Pratik.Vishwakarma@amd.com>
+Subject: RE: [PATCH] tests/amdgpu/amd_security: Skip secure bounce test for
+ APUs
+Thread-Topic: [PATCH] tests/amdgpu/amd_security: Skip secure bounce test for
+ APUs
+Thread-Index: AQHdAfxFW+XUGArPKkaktSR1TPlIfLZKQUWAgAACjkA=
+Date: Mon, 22 Jun 2026 08:55:59 +0000
+Message-ID: <DM4PR12MB7646C0D5F1FC73E8412CAFAC95EF2@DM4PR12MB7646.namprd12.prod.outlook.com>
+References: <20260622040418.454076-1-Kanala.RamalingeswaraReddy@amd.com>
+ <32325265-fda4-42eb-a27f-d8785287c728@amd.com>
+In-Reply-To: <32325265-fda4-42eb-a27f-d8785287c728@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-Mentions: Christian.Koenig@amd.com,Vitaly.Prosyak@amd.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Enabled=True;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SetDate=2026-06-22T08:48:29.0000000Z;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Name=AMD General
+ v26; MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_ContentBits=3;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Method=Standard
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR12MB7646:EE_|CH3PR12MB7594:EE_
+x-ms-office365-filtering-correlation-id: 019bf69b-a0f8-4338-d7d7-08ded03c146a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|23010399003|376014|1800799024|366016|8096899003|6133799003|18002099003|22082099003|4143699003|56012099006|11063799006|38070700021;
+x-microsoft-antispam-message-info: FtLAyHxIOonKrJJBKF5s8xqJUqm3jWmo2JpRBmoAa4Ldvb6EoKZlDwwT99l3sEeUBQ5R/jpOV1vEPFOYitJ4GRXMpFiAy/SP/1hpy/brDGt/haIIs4PmTRvqQ/3JyfeH+UiU9LtleMW/kWyGmKx7Xu288JBTIW1bnDvulM85Puc7Lb47YLc6rTg3YZBPqps33wvyXuHDC0+/bvA0FjqVYbrv1DzAzr7sEJZ9XiN0/S2PRt5wARWm+3/QFZcfwrhOZ/0M54kZbTaktdlBs51r0COkumrJVZgf/uDm+2M6qrIkFi2ytJJ41XTAYDWE2kMQV0VlJUeApwErdlugDIzuaZgnvrv9PW5hKHGofM+MVwSKBKdd04FbiFDEZ3HXOE0WLRP6ugX2xJbrdhnqnt/3igacGYLjbcLzKGWbrEC+eLuc4Hrov04ygwrGsGqh5MsSC6KIzTcoLY9jQZchIWI8XfEKQstQxTPeU+j1bVfG0w98EO2IxJZz8XV5R+qXn66FYHBBxuEGtMYGycevH6eCOwxrtbpiDMHdtpKhBfAaj01OQa0RsKg9/e1KWrsMpKlU/KX5un0PZp7lAwIqvLaIfq62Uez2G+fJlz7sIMpPI0HWrUAMMSiC3Y/4Tlu7X5sKPmqjaeCjdR+v/yxsXZ7jpSAKC64rJO4eg2KyK4o89DzgnYNCNFiDRJVc26cDqcj06WgDNApzoYS8ZTJwh8Z37/Ac42Vne1lqH/Hqo+ZgArk=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB7646.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(8096899003)(6133799003)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006)(38070700021);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TG5kWFg2QTA0M2RkYzNCTmlMWlBTR0k3UHVmVjh1b1pJZjJUUisrbmg2b0Ra?=
+ =?utf-8?B?Z2lZZGMxV1V1WFpWbDhKNWQzZktOTjd3Mm9QWW52UnQ1YXh6ckVyTE9CMnps?=
+ =?utf-8?B?NEF0c2tiRHpaYmVuK1NPcjdGLy9qTmpyQW5YeWcycStBckwvTlJNcnl1bW03?=
+ =?utf-8?B?eEoxcWZ3V01wWS9HdTdIOEs3U0pKYlduN3d4ek5UWisvNjlBUGwzSXlMbEJ5?=
+ =?utf-8?B?OXJSRHRTY1ZKbEx2aTl0UTd1d1BxTzMzQnN0ZFpWV3lueXBQdjgzVTRSM0RD?=
+ =?utf-8?B?N1hkOUhuWkc5UkRMZjAwR1poRUM5NzVMaWpQOXBUK0E4MU45MzcxWlNhd3Vi?=
+ =?utf-8?B?ek1rRnB5Q2E2MzlrcFd3Vi9oRG9ybXQrRGlIUngrZERRODdrSklQWXVlZXFK?=
+ =?utf-8?B?MzB3eDBHTGU0U2xNNzYrQTFhZTFVMTRPUTQ5L3dBYnROUkphSWcyTTV3USs0?=
+ =?utf-8?B?S0JITktWRlpRV3ZFTXBCd2VFbXkzS0tuaDNZS1hwL2dQcGQwRS96b3p4c0NH?=
+ =?utf-8?B?UUpOaEJzemcwY25WNXJnTDNUcWFBNnUzb1RtMnVhQUtFOFVPN2dxVVYxMzlh?=
+ =?utf-8?B?ZWw0T0tmbWEzTmpkSUVVQXI0eU8vdFFtR3pTWnhCbGxsSW8rS0R0TWdOdHlQ?=
+ =?utf-8?B?NHg0UXBwNXREMkt5RDhDd1R0b3dSSy90ZnIwWC82QzdGUndXZTRzMlNoOXUz?=
+ =?utf-8?B?bHp3V1JSNFBKY1JrUnYzdXBJUzFCVUYxbnJKMjIyOEo2MkNMcDdDZytYbDhx?=
+ =?utf-8?B?Y0gwekpMSStnQmd6SVBncGpkL0NuYkdLNmxPNWR2cGhmbHNHdVZIelpadXN4?=
+ =?utf-8?B?eEFXNE9MZWw0Q0pCK21aQmU0d2JJRllHeVQ0SFJTNG5Ta2srMEdzVHNBa2cz?=
+ =?utf-8?B?QkVPRk9UNy9DU2Q0dWFnOEkybHNueE9mbnc5a1pYcm5WQUh2MUtiTWE5T1Uy?=
+ =?utf-8?B?VFNhQ3g1M1ZwRnFDYkZybUtWc0tjM2RrTC8zT0VUWFpORnAxWlhhQ0NFeERS?=
+ =?utf-8?B?ejI0RG1uSVByQnR1QWZYOFdMR2JaeEQyWVdYcm9PNzhiTUhIWlZ2YTdTNVhm?=
+ =?utf-8?B?UC92TmpvT3Nud0xtc0pCUmJaZWxZbUd1U1lDNTJENXl2dGt2Q3F4Qi9HODdn?=
+ =?utf-8?B?U24wQUo4bDBwT21BT2p1SEVPcUxNVzlJRENnZmM4RnM2TWdDeXN1bjJvcXZZ?=
+ =?utf-8?B?RlZwZVkvb2FjT3RRNUQrWkZLQThXZ1g2eVhqa1lEZ2VzOVRqYWMyeS84MFIv?=
+ =?utf-8?B?eEhKRGFLcHQrelh0cXJZbnR1ZHlYUTk4aFFxWVFSaklUdDNXdDFMVGVyUUVU?=
+ =?utf-8?B?K251U0YwOVZueWoxN1l0QWppQUQvOUpoeXZKZ1VCbkpONUJLT05BVnRPSTRE?=
+ =?utf-8?B?VEtJRXQ1c0FzUm9KLzlJRXgwaENOZlpJazR3ZVJpYWxTYnpNRE5PL3JnaVBv?=
+ =?utf-8?B?MEcvYmdHd1ozL1BscWxsUE5RcEt4Y2ZYZDFNMkVTNUV1eFlWNDYvK3QyWHhO?=
+ =?utf-8?B?NUdLd3ludDlteWIzVnlIcGc4WFZTcmdqNUNzT29sd3Zpb0lkdlFRNXQ4eEhy?=
+ =?utf-8?B?ZHhLcUN5YXlSa3pCc21iaVNHKzcwaVJyS2FVNlFObldlbHpxNWYzK2xNL2dr?=
+ =?utf-8?B?SGNXSGNLaVNXSU0xZ05ZK2ZMOVg2UUJoNG9JbnNIMy81WUI5K0dTcDF1NG9V?=
+ =?utf-8?B?c0dxeDdxWnRFOGJHS3hNdzVnWHdSY2hSOTMwYVhaN0g4TTAwdzdtL3A2aGpv?=
+ =?utf-8?B?RzJRNXF5Myt2d0pLWGdEMGErbTZxS3Vtak44c09IZER5c0lmRnREV3JKRGMv?=
+ =?utf-8?B?YXBPTXM1WmF3MHI0WEl1dHhKYjB3YzRvMjdQM0VlYU1MYVprR0xNcmthNm9D?=
+ =?utf-8?B?N3BzZkNKOE0rRjlzM1A5NFZxWlhCUUZEc0hPa1RPUVpYUWc0eC9XTjFPOGlW?=
+ =?utf-8?B?NjRpSVZEVWdjRXNtQU8yanhCNHYxUmhpL2ZLL3hpTmdwU0QrOVVZQ0Z4Wlpp?=
+ =?utf-8?B?aU1yOEhUak90ZDREcU03eFdNUnZhRzN6bjVMQVMvNXRFZ21HeE4wTVhWT0lQ?=
+ =?utf-8?B?MGd6WVl4cFI1a0tlR0dZVmtvdkxxSUQ3dHdjQzNFN3Y3QjZaV3Q1aDVVWDRN?=
+ =?utf-8?B?dGxxbmpHUGI0RGhWb3hsSHNHeTY2SWI3ZitoVGNYS1pia2U1Nkp5WFB2R0NI?=
+ =?utf-8?B?SzZiQVdSeStHNlFCaUR5a082WW92U1JydjNjSy85VmZzY2hpdFR6TzQ2R2xq?=
+ =?utf-8?B?TUEydms5WUJ1L1JlT1I3OUg1S01SalZPbVdrU0tuYzA3a0RJSU5lMExTdjhr?=
+ =?utf-8?Q?xh3MFHc3OxinYwo8VK?=
+Content-Type: multipart/alternative;
+ boundary="_000_DM4PR12MB7646C0D5F1FC73E8412CAFAC95EF2DM4PR12MB7646namp_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB7646.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 019bf69b-a0f8-4338-d7d7-08ded03c146a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2026 08:55:59.1313 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: NYsWDCifHV/q1P72iqUiPWDjN8adRPw0MrKLz+kTNjk2bxYUc8KJNirvJeuJDaT8yz1z4r78w07Iz/90iC3v2A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7594
+X-Mailman-Approved-At: Tue, 23 Jun 2026 12:00:27 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,194 +148,234 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add two new subtests that exercise both the store and show paths of
-the enable_psmi and sriov/max_vfs configfs attributes:
+--_000_DM4PR12MB7646C0D5F1FC73E8412CAFAC95EF2DM4PR12MB7646namp_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-  - psmi-enable-disable
-  - sriov-max-vfs-store-show
+QU1EIEdlbmVyYWwNCg0KDQpIaSBAS29lbmlnLCBDaHJpc3RpYW48bWFpbHRvOkNocmlzdGlhbi5L
+b2VuaWdAYW1kLmNvbT4vQFByb3N5YWssIFZpdGFseTxtYWlsdG86Vml0YWx5LlByb3N5YWtAYW1k
+LmNvbT4NCg0KUGxlYXNlIGZpbmQgYmVsb3cgdmFsaWRhdGlvbiBvZiBjb2RlIGNoYW5nZXMgZm9y
+IHRoaXMgc2tpcCB0ZXN0Lg0KDQpydGdAcnRnLWp1bmlwZXI6fi9pZ3QtZ3B1LXRvb2xzJCBzdWRv
+IC4vYnVpbGQvdGVzdHMvYW1kZ3B1L2FtZF9zZWN1cml0eSAtLXJ1bi1zdWJ0ZXN0IGFtZGdwdS1z
+ZWN1cmUtYm91bmNlDQoNCklHVC1WZXJzaW9uOiAyLjQtZ2UxZWUwYzA0MyAoeDg2XzY0KSAoTGlu
+dXg6IDYuMTkuMC0yMzUyMzYwLjI0LjA0LmFtZGdwdS5hbWQ2NCB4ODZfNjQpIFVzaW5nIElHVF9T
+UkFORE9NPTE3ODEyNzMxNTEgZm9yIHJhbmRvbWlzYXRpb24gT3BlbmVkIGRldmljZTogL2Rldi9k
+cmkvY2FyZDAgSW5pdGlhbGl6ZWQgYW1kZ3B1LCBkcml2ZXIgdmVyc2lvbiAzLjY0DQoNCmFtZGdw
+dTogR0ZYMTE1MCAoZmFtaWx5X2lkLCBjaGlwX2V4dGVybmFsX3Jldik6ICgxNTAsIDEpDQoNCmFt
+ZGdwdTogY2hpcF9jbGFzcyBHRlgxMQ0KDQpTdGFydGluZyBzdWJ0ZXN0OiBhbWRncHUtc2VjdXJl
+LWJvdW5jZQ0KDQpUZXN0IHJlcXVpcmVtZW50IG5vdCBtZXQgaW4gZnVuY3Rpb24gX19pZ3RfdW5p
+cXVlX19fX3JlYWxfbWFpbjMxMSwgZmlsZSAuLi90ZXN0cy9hbWRncHUvYW1kX3NlY3VyaXR5LmM6
+MzY0Og0KDQpUZXN0IHJlcXVpcmVtZW50OiAhKGlzX2FwdSgmZ3B1X2luZm8pID09IDEpIFNlY3Vy
+ZSBib3VuY2UgdGVzdCBpcyBub3Qgc3VwcG9ydGVkIGluIEFQVSdzLg0KDQpMYXN0IGVycm5vOiAy
+LCBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5IFN1YnRlc3QgYW1kZ3B1LXNlY3VyZS1ib3VuY2U6
+IFNLSVAgKDAuMDAwcykNCg0KcnRnQHJ0Zy1qdW5pcGVyOn4vaWd0LWdwdS10b29scyQNCg0KDQpU
+aGFua3MsDQoNClJhbS4NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IEtvZW5p
+ZywgQ2hyaXN0aWFuIDxDaHJpc3RpYW4uS29lbmlnQGFtZC5jb20+DQpTZW50OiBNb25kYXksIEp1
+bmUgMjIsIDIwMjYgMjowOSBQTQ0KVG86IFJhbWFsaW5nZXN3YXJhIFJlZGR5LCBLYW5hbGEgPEth
+bmFsYS5SYW1hbGluZ2Vzd2FyYVJlZGR5QGFtZC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
+dG9wLm9yZzsgUHJvc3lhaywgVml0YWx5IDxWaXRhbHkuUHJvc3lha0BhbWQuY29tPjsgVmlzaHdh
+a2FybWEsIFByYXRpayA8UHJhdGlrLlZpc2h3YWthcm1hQGFtZC5jb20+DQpTdWJqZWN0OiBSZTog
+W1BBVENIXSB0ZXN0cy9hbWRncHUvYW1kX3NlY3VyaXR5OiBTa2lwIHNlY3VyZSBib3VuY2UgdGVz
+dCBmb3IgQVBVcw0KDQoNCg0KT24gNi8yMi8yNiAwNjowNCwgUmFtYWxpbmdlc3dhcmEgUmVkZHks
+IEthbmFsYSB3cm90ZToNCg0KPiBTZWN1cmUgYm91bmNlIHRlc3QgaXMgbm90IHN1cHBvcnRlZCBm
+b3IgQVBVcy4NCg0KPg0KDQo+IE9uIGRHUFVzLCBUTVogd29ya3Mgb25seSBvbiBWUkFNIChsb2Nh
+bCBtZW1vcnkpIGJ1dCBub3Qgb24gR1RUIChzeXN0ZW0NCg0KPiBtZW1vcnkpIGR1ZSB0byBIVyBs
+aW1pdGF0aW9ucywgc28gdGhpcyB0ZXN0IHZhbGlkYXRlcyBib3VuY2Ugb3BlcmF0aW9uDQoNCj4g
+ZnJvbSBWUkFNIHRvIEdUVCBhbmQgYmFjayB0byBWUkFNIHdvcmtzIG9uIGRHUFVzLg0KDQo+DQoN
+Cj4gU2luY2UgQVBVcyBkbyBub3Qgc3VwcG9ydCB0aGlzIGZ1bmN0aW9uYWxpdHksIHNraXAgdGhl
+IHRlc3QgZm9yIEFQVXMuDQoNCj4NCg0KPiBTaWduZWQtb2ZmLWJ5OiBSYW1hbGluZ2Vzd2FyYSBS
+ZWRkeSwgS2FuYWxhDQoNCj4gPEthbmFsYS5SYW1hbGluZ2Vzd2FyYVJlZGR5QGFtZC5jb208bWFp
+bHRvOkthbmFsYS5SYW1hbGluZ2Vzd2FyYVJlZGR5QGFtZC5jb20+Pg0KDQoNCg0KQFZpdGFseSBJ
+IHN1Z2dlc3RlZCB0aGlzIGNoYW5nZSBidXQgSSdtIG5vdCBmYW1pbGlhciBlbm91Z2ggd2l0aCB0
+aGUgSUdUIGNvZGUgdG8gcmV2aWV3IHRoaXMuDQoNCg0KDQpJJ20gbm90IDEwMCUgc3VyZSB3aGF0
+IGlndF9za2lwX29uX2YoKSBkb2VzIGJ1dCBpdCBsb29rcyBhIGJpdCBmaXNoeSB0byBtZS4NCg0K
+DQoNClRoYW5rcywNCg0KQ2hyaXN0aWFuLg0KDQoNCg0KPiAtLS0NCg0KPiAgdGVzdHMvYW1kZ3B1
+L2FtZF9zZWN1cml0eS5jIHwgOCArKysrKystLQ0KDQo+ICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNl
+cnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KDQo+DQoNCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2Ft
+ZGdwdS9hbWRfc2VjdXJpdHkuYyBiL3Rlc3RzL2FtZGdwdS9hbWRfc2VjdXJpdHkuYw0KDQo+IGlu
+ZGV4IDllYmIzZmE4My4uMmE4YWU0YTIzIDEwMDY0NA0KDQo+IC0tLSBhL3Rlc3RzL2FtZGdwdS9h
+bWRfc2VjdXJpdHkuYw0KDQo+ICsrKyBiL3Rlc3RzL2FtZGdwdS9hbWRfc2VjdXJpdHkuYw0KDQo+
+IEBAIC0zNjAsOCArMzYwLDEyIEBAIGludCBpZ3RfbWFpbigpDQoNCj4gICAgICAgICAgICAvKiBk
+eW5hbWljIHRlc3QgYmFzZWQgb24gc2RtYV9pbmZvLmF2YWlsYWJsZSByaW5ncyAqLw0KDQo+ICAg
+ICAgICAgICAgaWd0X2Rlc2NyaWJlKCJhbWRncHUgc2VjdXJlIGJvdW5jZSIpOw0KDQo+ICAgICAg
+ICAgICAgaWd0X3N1YnRlc3QoImFtZGdwdS1zZWN1cmUtYm91bmNlIikNCg0KPiAtICAgICAgICAg
+IGFtZGdwdV9zZWN1cmVfYm91bmNlKGRldmljZSwgZmQsICZzZG1hX2luZm8sIGdldF9pcF9ibG9j
+ayhkZXZpY2UsDQoNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEFN
+REdQVV9IV19JUF9ETUEpLCBpc19zZWN1cmUpOw0KDQo+ICsgICAgICAgICB7DQoNCj4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgaWd0X3NraXBfb25fZihpc19hcHUoJmdwdV9pbmZvKSA9PSAxLA0K
+DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IlNlY3VyZSBib3VuY2UgdGVzdCBpcyBub3Qgc3VwcG9ydGVkIGluIEFQVSdzLlxuIik7DQoNCj4g
+KyAgICAgICAgICAgICAgICAgICAgICAgYW1kZ3B1X3NlY3VyZV9ib3VuY2UoZGV2aWNlLCBmZCwg
+JnNkbWFfaW5mbywgZ2V0X2lwX2Jsb2NrKGRldmljZSwNCg0KPiArICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEFNREdQVV9IV19JUF9ETUEpLCBpc19z
+ZWN1cmUpOw0KDQo+ICsgICAgICAgICB9DQoNCj4NCg0KPiAgI2lmZGVmIEFNREdQVV9VU0VSUV9F
+TkFCTEVEDQoNCj4gICAgICAgICAgICBpZ3RfZGVzY3JpYmUoImFtZGdwdSBnZnggY29tbWFuZCBz
+dWJtaXNzaW9uIHdyaXRlIGxpbmVhciBoZWxwZXIgd2l0aA0KDQo+IHVzZXIgcXVldWUiKTsNCg0K
+DQo=
 
-Each writes a value with the driver unbound and reads it back to
-confirm the stored value is reported correctly.
+--_000_DM4PR12MB7646C0D5F1FC73E8412CAFAC95EF2DM4PR12MB7646namp_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Also enhance the existing subtests to additionally cover the show
-path of their respective attributes:
+PGh0bWwgeG1sbnM6dj0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTp2bWwiIHhtbG5zOm89InVy
+bjpzY2hlbWFzLW1pY3Jvc29mdC1jb206b2ZmaWNlOm9mZmljZSIgeG1sbnM6dz0idXJuOnNjaGVt
+YXMtbWljcm9zb2Z0LWNvbTpvZmZpY2U6d29yZCIgeG1sbnM6bT0iaHR0cDovL3NjaGVtYXMubWlj
+cm9zb2Z0LmNvbS9vZmZpY2UvMjAwNC8xMi9vbW1sIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv
+VFIvUkVDLWh0bWw0MCI+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIg
+Y29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRv
+ciIgY29udGVudD0iTWljcm9zb2Z0IFdvcmQgMTUgKGZpbHRlcmVkIG1lZGl1bSkiPg0KPHN0eWxl
+PjwhLS0NCi8qIEZvbnQgRGVmaW5pdGlvbnMgKi8NCkBmb250LWZhY2UNCgl7Zm9udC1mYW1pbHk6
+IkNhbWJyaWEgTWF0aCI7DQoJcGFub3NlLTE6MiA0IDUgMyA1IDQgNiAzIDIgNDt9DQpAZm9udC1m
+YWNlDQoJe2ZvbnQtZmFtaWx5OkNhbGlicmk7DQoJcGFub3NlLTE6MiAxNSA1IDIgMiAyIDQgMyAy
+IDQ7fQ0KLyogU3R5bGUgRGVmaW5pdGlvbnMgKi8NCnAuTXNvUGxhaW5UZXh0LCBsaS5Nc29QbGFp
+blRleHQsIGRpdi5Nc29QbGFpblRleHQNCgl7bXNvLXN0eWxlLXByaW9yaXR5Ojk5Ow0KCW1zby1z
+dHlsZS1saW5rOiJQbGFpbiBUZXh0IENoYXIiOw0KCW1hcmdpbjowaW47DQoJZm9udC1zaXplOjEx
+LjBwdDsNCglmb250LWZhbWlseToiQ2FsaWJyaSIsc2Fucy1zZXJpZjsNCgltc28tbGlnYXR1cmVz
+OnN0YW5kYXJkY29udGV4dHVhbDt9DQpzcGFuLlBsYWluVGV4dENoYXINCgl7bXNvLXN0eWxlLW5h
+bWU6IlBsYWluIFRleHQgQ2hhciI7DQoJbXNvLXN0eWxlLXByaW9yaXR5Ojk5Ow0KCW1zby1zdHls
+ZS1saW5rOiJQbGFpbiBUZXh0IjsNCglmb250LWZhbWlseToiQ2FsaWJyaSIsc2Fucy1zZXJpZjt9
+DQouTXNvQ2hwRGVmYXVsdA0KCXttc28tc3R5bGUtdHlwZTpleHBvcnQtb25seTt9DQpAcGFnZSBX
+b3JkU2VjdGlvbjENCgl7c2l6ZTo4LjVpbiAxMS4waW47DQoJbWFyZ2luOjEuMGluIDEuMGluIDEu
+MGluIDEuMGluO30NCmRpdi5Xb3JkU2VjdGlvbjENCgl7cGFnZTpXb3JkU2VjdGlvbjE7fQ0KLS0+
+PC9zdHlsZT48IS0tW2lmIGd0ZSBtc28gOV0+PHhtbD4NCjxvOnNoYXBlZGVmYXVsdHMgdjpleHQ9
+ImVkaXQiIHNwaWRtYXg9IjEwMjYiIC8+DQo8L3htbD48IVtlbmRpZl0tLT48IS0tW2lmIGd0ZSBt
+c28gOV0+PHhtbD4NCjxvOnNoYXBlbGF5b3V0IHY6ZXh0PSJlZGl0Ij4NCjxvOmlkbWFwIHY6ZXh0
+PSJlZGl0IiBkYXRhPSIxIiAvPg0KPC9vOnNoYXBlbGF5b3V0PjwveG1sPjwhW2VuZGlmXS0tPg0K
+PC9oZWFkPg0KPGJvZHkgbGFuZz0iRU4tVVMiIGxpbms9IiM0Njc4ODYiIHZsaW5rPSIjOTY2MDdE
+IiBzdHlsZT0id29yZC13cmFwOmJyZWFrLXdvcmQiPg0KPHAgc3R5bGU9ImZvbnQtZmFtaWx5OkNh
+bGlicmk7Zm9udC1zaXplOjEwcHQ7Y29sb3I6IzAwMDBGRjttYXJnaW46NXB0O2ZvbnQtc3R5bGU6
+bm9ybWFsO2ZvbnQtd2VpZ2h0Om5vcm1hbDt0ZXh0LWRlY29yYXRpb246bm9uZTsiIGFsaWduPSJM
+ZWZ0Ij4NCkFNRCBHZW5lcmFsPGJyPg0KPC9wPg0KPGJyPg0KPGRpdj4NCjxkaXYgY2xhc3M9Ildv
+cmRTZWN0aW9uMSI+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij5IaSA8YSBpZD0iT1dBQU1GQUQy
+Rjc1MUQ4RkQ0QTlGODZBQkNEOTE1NThERjZERiIgaHJlZj0ibWFpbHRvOkNocmlzdGlhbi5Lb2Vu
+aWdAYW1kLmNvbSI+DQo8c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6JnF1b3Q7Q2FsaWJyaSZxdW90
+OyxzYW5zLXNlcmlmO3RleHQtZGVjb3JhdGlvbjpub25lIj5AS29lbmlnLCBDaHJpc3RpYW48L3Nw
+YW4+PC9hPi88YSBpZD0iT1dBQU1BRUU5N0IxMzY3RjQ0QTI4QjYyQUZBQzcyQjc3RkFCRSIgaHJl
+Zj0ibWFpbHRvOlZpdGFseS5Qcm9zeWFrQGFtZC5jb20iPjxzcGFuIHN0eWxlPSJmb250LWZhbWls
+eTomcXVvdDtDYWxpYnJpJnF1b3Q7LHNhbnMtc2VyaWY7dGV4dC1kZWNvcmF0aW9uOm5vbmUiPkBQ
+cm9zeWFrLA0KIFZpdGFseTwvc3Bhbj48L2E+PGJyPg0KPGJyPg0KUGxlYXNlIGZpbmQgYmVsb3cg
+dmFsaWRhdGlvbiBvZiBjb2RlIGNoYW5nZXMgZm9yIHRoaXMgc2tpcCB0ZXN0Ljxicj4NCjxicj4N
+CnJ0Z0BydGctanVuaXBlcjp+L2lndC1ncHUtdG9vbHMkIDxiPnN1ZG8gLi9idWlsZC90ZXN0cy9h
+bWRncHUvYW1kX3NlY3VyaXR5IC0tcnVuLXN1YnRlc3QgYW1kZ3B1LXNlY3VyZS1ib3VuY2U8L2I+
+PG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij5JR1QtVmVyc2lvbjogMi40
+LWdlMWVlMGMwNDMgKHg4Nl82NCkgKExpbnV4OiA2LjE5LjAtMjM1MjM2MC4yNC4wNC5hbWRncHUu
+YW1kNjQgeDg2XzY0KSBVc2luZyBJR1RfU1JBTkRPTT0xNzgxMjczMTUxIGZvciByYW5kb21pc2F0
+aW9uIE9wZW5lZCBkZXZpY2U6IC9kZXYvZHJpL2NhcmQwIEluaXRpYWxpemVkIGFtZGdwdSwgZHJp
+dmVyIHZlcnNpb24gMy42NDxvOnA+PC9vOnA+PC9wPg0KPHAgY2xhc3M9Ik1zb1BsYWluVGV4dCI+
+YW1kZ3B1OiBHRlgxMTUwIChmYW1pbHlfaWQsIGNoaXBfZXh0ZXJuYWxfcmV2KTogKDE1MCwgMSk8
+bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPmFtZGdwdTogY2hpcF9jbGFz
+cyBHRlgxMTxvOnA+PC9vOnA+PC9wPg0KPHAgY2xhc3M9Ik1zb1BsYWluVGV4dCI+U3RhcnRpbmcg
+c3VidGVzdDogYW1kZ3B1LXNlY3VyZS1ib3VuY2U8bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJN
+c29QbGFpblRleHQiPlRlc3QgcmVxdWlyZW1lbnQgbm90IG1ldCBpbiBmdW5jdGlvbiBfX2lndF91
+bmlxdWVfX19fcmVhbF9tYWluMzExLCBmaWxlIC4uL3Rlc3RzL2FtZGdwdS9hbWRfc2VjdXJpdHku
+YzozNjQ6PG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij48Yj5UZXN0IHJl
+cXVpcmVtZW50OiAhKGlzX2FwdSgmYW1wO2dwdV9pbmZvKSA9PSAxKSBTZWN1cmUgYm91bmNlIHRl
+c3QgaXMgbm90IHN1cHBvcnRlZCBpbiBBUFUncy48bzpwPjwvbzpwPjwvYj48L3A+DQo8cCBjbGFz
+cz0iTXNvUGxhaW5UZXh0Ij48Yj5MYXN0IGVycm5vOiAyLCBObyBzdWNoIGZpbGUgb3IgZGlyZWN0
+b3J5IFN1YnRlc3QgYW1kZ3B1LXNlY3VyZS1ib3VuY2U6IFNLSVAgKDAuMDAwcykNCjxvOnA+PC9v
+OnA+PC9iPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPnJ0Z0BydGctanVuaXBlcjp+L2ln
+dC1ncHUtdG9vbHMkPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij48YnI+
+DQo8YnI+DQpUaGFua3MsPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij5S
+YW0uPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4tLS0tLU9yaWdpbmFs
+IE1lc3NhZ2UtLS0tLTxicj4NCkZyb206IEtvZW5pZywgQ2hyaXN0aWFuICZsdDtDaHJpc3RpYW4u
+S29lbmlnQGFtZC5jb20mZ3Q7IDxicj4NClNlbnQ6IE1vbmRheSwgSnVuZSAyMiwgMjAyNiAyOjA5
+IFBNPGJyPg0KVG86IFJhbWFsaW5nZXN3YXJhIFJlZGR5LCBLYW5hbGEgJmx0O0thbmFsYS5SYW1h
+bGluZ2Vzd2FyYVJlZGR5QGFtZC5jb20mZ3Q7OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
+ZzsgUHJvc3lhaywgVml0YWx5ICZsdDtWaXRhbHkuUHJvc3lha0BhbWQuY29tJmd0OzsgVmlzaHdh
+a2FybWEsIFByYXRpayAmbHQ7UHJhdGlrLlZpc2h3YWthcm1hQGFtZC5jb20mZ3Q7PGJyPg0KU3Vi
+amVjdDogUmU6IFtQQVRDSF0gdGVzdHMvYW1kZ3B1L2FtZF9zZWN1cml0eTogU2tpcCBzZWN1cmUg
+Ym91bmNlIHRlc3QgZm9yIEFQVXM8L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij48bzpwPiZu
+YnNwOzwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPk9uIDYvMjIvMjYgMDY6MDQs
+IFJhbWFsaW5nZXN3YXJhIFJlZGR5LCBLYW5hbGEgd3JvdGU6PG86cD48L286cD48L3A+DQo8cCBj
+bGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7IFNlY3VyZSBib3VuY2UgdGVzdCBpcyBub3Qgc3VwcG9y
+dGVkIGZvciBBUFVzLjxvOnA+PC9vOnA+PC9wPg0KPHAgY2xhc3M9Ik1zb1BsYWluVGV4dCI+Jmd0
+OyA8bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPiZndDsgT24gZEdQVXMs
+IFRNWiB3b3JrcyBvbmx5IG9uIFZSQU0gKGxvY2FsIG1lbW9yeSkgYnV0IG5vdCBvbiBHVFQgKHN5
+c3RlbQ0KPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7IG1lbW9y
+eSkgZHVlIHRvIEhXIGxpbWl0YXRpb25zLCBzbyB0aGlzIHRlc3QgdmFsaWRhdGVzIGJvdW5jZSBv
+cGVyYXRpb24NCjxvOnA+PC9vOnA+PC9wPg0KPHAgY2xhc3M9Ik1zb1BsYWluVGV4dCI+Jmd0OyBm
+cm9tIFZSQU0gdG8gR1RUIGFuZCBiYWNrIHRvIFZSQU0gd29ya3Mgb24gZEdQVXMuPG86cD48L286
+cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7IDxvOnA+PC9vOnA+PC9wPg0KPHAg
+Y2xhc3M9Ik1zb1BsYWluVGV4dCI+Jmd0OyBTaW5jZSBBUFVzIGRvIG5vdCBzdXBwb3J0IHRoaXMg
+ZnVuY3Rpb25hbGl0eSwgc2tpcCB0aGUgdGVzdCBmb3IgQVBVcy48bzpwPjwvbzpwPjwvcD4NCjxw
+IGNsYXNzPSJNc29QbGFpblRleHQiPiZndDsgPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNv
+UGxhaW5UZXh0Ij4mZ3Q7IFNpZ25lZC1vZmYtYnk6IFJhbWFsaW5nZXN3YXJhIFJlZGR5LCBLYW5h
+bGEgPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7ICZsdDs8YSBo
+cmVmPSJtYWlsdG86S2FuYWxhLlJhbWFsaW5nZXN3YXJhUmVkZHlAYW1kLmNvbSI+PHNwYW4gc3R5
+bGU9ImNvbG9yOndpbmRvd3RleHQ7dGV4dC1kZWNvcmF0aW9uOm5vbmUiPkthbmFsYS5SYW1hbGlu
+Z2Vzd2FyYVJlZGR5QGFtZC5jb208L3NwYW4+PC9hPiZndDs8bzpwPjwvbzpwPjwvcD4NCjxwIGNs
+YXNzPSJNc29QbGFpblRleHQiPjxvOnA+Jm5ic3A7PC9vOnA+PC9wPg0KPHAgY2xhc3M9Ik1zb1Bs
+YWluVGV4dCI+QFZpdGFseSBJIHN1Z2dlc3RlZCB0aGlzIGNoYW5nZSBidXQgSSdtIG5vdCBmYW1p
+bGlhciBlbm91Z2ggd2l0aCB0aGUgSUdUIGNvZGUgdG8gcmV2aWV3IHRoaXMuPG86cD48L286cD48
+L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjxwIGNs
+YXNzPSJNc29QbGFpblRleHQiPkknbSBub3QgMTAwJSBzdXJlIHdoYXQgaWd0X3NraXBfb25fZigp
+IGRvZXMgYnV0IGl0IGxvb2tzIGEgYml0IGZpc2h5IHRvIG1lLjxvOnA+PC9vOnA+PC9wPg0KPHAg
+Y2xhc3M9Ik1zb1BsYWluVGV4dCI+PG86cD4mbmJzcDs8L286cD48L3A+DQo8cCBjbGFzcz0iTXNv
+UGxhaW5UZXh0Ij5UaGFua3MsPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0
+Ij5DaHJpc3RpYW4uPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij48bzpw
+PiZuYnNwOzwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPiZndDsgLS0tPG86cD48
+L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7Jm5ic3A7IHRlc3RzL2FtZGdw
+dS9hbWRfc2VjdXJpdHkuYyB8IDggKysrKysrLS08bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJN
+c29QbGFpblRleHQiPiZndDsmbmJzcDsgMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwg
+MiBkZWxldGlvbnMoLSk8bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPiZn
+dDsgPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7IGRpZmYgLS1n
+aXQgYS90ZXN0cy9hbWRncHUvYW1kX3NlY3VyaXR5LmMgYi90ZXN0cy9hbWRncHUvYW1kX3NlY3Vy
+aXR5LmMNCjxvOnA+PC9vOnA+PC9wPg0KPHAgY2xhc3M9Ik1zb1BsYWluVGV4dCI+Jmd0OyBpbmRl
+eCA5ZWJiM2ZhODMuLjJhOGFlNGEyMyAxMDA2NDQ8bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJN
+c29QbGFpblRleHQiPiZndDsgLS0tIGEvdGVzdHMvYW1kZ3B1L2FtZF9zZWN1cml0eS5jPG86cD48
+L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7ICsrKyBiL3Rlc3RzL2FtZGdw
+dS9hbWRfc2VjdXJpdHkuYzxvOnA+PC9vOnA+PC9wPg0KPHAgY2xhc3M9Ik1zb1BsYWluVGV4dCI+
+Jmd0OyBAQCAtMzYwLDggKzM2MCwxMiBAQCBpbnQgaWd0X21haW4oKTxvOnA+PC9vOnA+PC9wPg0K
+PHAgY2xhc3M9Ik1zb1BsYWluVGV4dCI+Jmd0OyZuYnNwOyAmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsgLyogZHluYW1pYyB0ZXN0IGJhc2VkIG9u
+IHNkbWFfaW5mby5hdmFpbGFibGUgcmluZ3MgKi88bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJN
+c29QbGFpblRleHQiPiZndDsmbmJzcDsgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IGlndF9kZXNjcmliZSgmcXVvdDthbWRncHUgc2VjdXJlIGJv
+dW5jZSZxdW90Oyk7PG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7
+Jm5ic3A7ICZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyBpZ3Rfc3VidGVzdCgmcXVvdDthbWRncHUtc2VjdXJlLWJvdW5jZSZxdW90Oyk8bzpwPjwv
+bzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPiZndDsgLSZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyBhbWRncHVfc2VjdXJlX2JvdW5j
+ZShkZXZpY2UsIGZkLCAmYW1wO3NkbWFfaW5mbywgZ2V0X2lwX2Jsb2NrKGRldmljZSw8bzpwPjwv
+bzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPiZndDsgLSZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyBBTURHUFVfSFdfSVBfRE1B
+KSwgaXNfc2VjdXJlKTs8bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPiZn
+dDsgKyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyB7PG86
+cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7ICsmbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDsgaWd0X3NraXBfb25fZihpc19hcHUoJmFtcDtncHVfaW5mbykgPT0gMSw8bzpwPjwvbzpw
+PjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPiZndDsgKyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyAmcXVvdDtTZWN1cmUgYm91bmNlIHRlc3QgaXMgbm90IHN1cHBvcnRlZCBpbiBBUFUncy5cbiZx
+dW90Oyk7PG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7ICsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsgYW1kZ3B1X3NlY3VyZV9ib3VuY2UoZGV2aWNlLCBmZCwgJmFtcDtzZG1h
+X2luZm8sIGdldF9pcF9ibG9jayhkZXZpY2UsPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNv
+UGxhaW5UZXh0Ij4mZ3Q7ICsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsgQU1ER1BVX0hXX0lQX0RNQSks
+IGlzX3NlY3VyZSk7PG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7
+ICsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsgfTxvOnA+
+PC9vOnA+PC9wPg0KPHAgY2xhc3M9Ik1zb1BsYWluVGV4dCI+Jmd0OyZuYnNwOyA8bzpwPjwvbzpw
+PjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPiZndDsmbmJzcDsgI2lmZGVmIEFNREdQVV9V
+U0VSUV9FTkFCTEVEPG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij4mZ3Q7
+Jm5ic3A7ICZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyBpZ3RfZGVzY3JpYmUoJnF1b3Q7YW1kZ3B1IGdmeCBjb21tYW5kIHN1Ym1pc3Npb24gd3Jp
+dGUgbGluZWFyIGhlbHBlciB3aXRoDQo8bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFp
+blRleHQiPiZndDsgdXNlciBxdWV1ZSZxdW90Oyk7PG86cD48L286cD48L3A+DQo8cCBjbGFzcz0i
+TXNvUGxhaW5UZXh0Ij48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjwvZGl2Pg0KPC9kaXY+DQo8L2Jv
+ZHk+DQo8L2h0bWw+DQo=
 
-  - survivability-mode: read survivability_mode back after enabling
-    it, confirming the configfs value reflects what was stored.
-  - engines-allowed: read engines_allowed back after each write.
-  - gt-types-allowed: read gt_types_allowed back after each write,
-    requiring a non-empty readback when the input was non-empty.
-
-Changes since v3:
- Fixed the rebase issue
-
-Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
----
- tests/intel/xe_configfs.c | 103 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 102 insertions(+), 1 deletion(-)
-
-diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index 450c0a119..0f3e3ef27 100644
---- a/tests/intel/xe_configfs.c
-+++ b/tests/intel/xe_configfs.c
-@@ -94,6 +94,10 @@ static void test_survivability_mode(int configfs_device_fd)
- 	fd = open(path, O_RDONLY);
- 	igt_assert_f(fd >= 0, "Survivability mode not set\n");
- 	close(fd);
-+
-+	/* Verify survivability_mode was applied and persists in configfs */
-+	igt_assert_f(igt_sysfs_get_boolean(configfs_device_fd, "survivability_mode"),
-+		     "survivability_mode read back false after enabling\n");
- }
- 
- /**
-@@ -147,9 +151,16 @@ static void test_engines_allowed(int configfs_device_fd)
- 
- 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
- 		const char *v = values[i];
-+		char *readback;
- 
- 		igt_debug("Writing '%s' to engines_allowed\n", v);
- 		igt_assert(igt_sysfs_set(configfs_device_fd, "engines_allowed", v));
-+
-+		readback = igt_sysfs_get(configfs_device_fd, "engines_allowed");
-+		igt_assert_f(readback, "Failed to read engines_allowed after writing '%s'\n", v);
-+		igt_debug("engines_allowed: wrote '%s' -> read back '%s'\n",
-+			  v, readback);
-+		free(readback);
- 	}
- }
- 
-@@ -178,9 +189,23 @@ static void test_gt_types_allowed(int configfs_device_fd)
- 
- 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
- 		const char *v = values[i];
-+		char *readback;
- 
- 		igt_debug("Writing '%s' to gt_types_allowed\n", v);
- 		igt_assert(igt_sysfs_set(configfs_device_fd, "gt_types_allowed", v));
-+
-+		/*
-+		 * Read the gt_types_allowed attr back. Writing "" clears
-+		 * the typemask, so allow an empty readback only when the
-+		 * input was empty.
-+		 */
-+		readback = igt_sysfs_get(configfs_device_fd, "gt_types_allowed");
-+		igt_assert_f(readback,
-+			     "Failed to read gt_types_allowed after writing '%s'\n", v);
-+		igt_assert_f(*v == '\0' || *readback != '\0',
-+			     "gt_types_allowed read back empty after writing non-empty '%s'\n", v);
-+		igt_debug("gt_types_allowed read back: '%s'\n", readback);
-+		free(readback);
- 	}
- 
- 	for (size_t i = 0; i < ARRAY_SIZE(invalid_values); i++) {
-@@ -350,6 +375,54 @@ static void test_ctx_restore(int configfs_device_fd, const char *type,
- 	}
- }
- 
-+/**
-+ * SUBTEST: psmi-enable-disable
-+ * Description: Validate enable_psmi attribute by round-tripping enable/disable
-+ */
-+static void test_psmi_enable_disable(int configfs_device_fd)
-+{
-+	/* Check presence of the enable_psmi configfs attribute */
-+	igt_assert(!igt_sysfs_get_boolean(configfs_device_fd, "enable_psmi"));
-+
-+	/* Unbind the driver so the attribute becomes writable */
-+	igt_audio_driver_unload(NULL);
-+	igt_kmod_unbind("xe", bus_addr);
-+
-+	/* Enable: write "1" and read it back */
-+	igt_assert(igt_sysfs_set(configfs_device_fd, "enable_psmi", "1"));
-+	igt_assert_f(igt_sysfs_get_boolean(configfs_device_fd, "enable_psmi"),
-+		     "Failed to read enable_psmi after writing 1\n");
-+
-+	/* Disable: write "0" and read it back */
-+	igt_assert(igt_sysfs_set(configfs_device_fd, "enable_psmi", "0"));
-+	igt_assert_f(!igt_sysfs_get_boolean(configfs_device_fd, "enable_psmi"),
-+		     "Failed to read enable_psmi after writing 0\n");
-+}
-+
-+/**
-+ * SUBTEST: sriov-max-vfs-store-show
-+ * Description: Validate SRIOV Max VFs store and show functionality
-+ */
-+static void test_sriov_max_vfs_store_show(int configfs_device_fd)
-+{
-+	uint32_t max_vfs = 0;
-+	const uint32_t requested_max_vfs = 1;
-+
-+	/* Unbind the driver so the attribute becomes writable */
-+	igt_audio_driver_unload(NULL);
-+	igt_kmod_unbind("xe", bus_addr);
-+
-+	/* Perform sriov/max_vfs store/show operations. */
-+	igt_require_f(igt_sysfs_set(configfs_device_fd, "sriov/max_vfs", "1"),
-+		      "Failed to write sriov/max_vfs\n");
-+	igt_debug("sriov/max_vfs wrote value: %u\n", requested_max_vfs);
-+
-+	igt_require_f(__igt_sysfs_get_u32(configfs_device_fd, "sriov/max_vfs", &max_vfs),
-+		      "Failed to read sriov/max_vfs after writing 1\n");
-+	igt_debug("sriov/max_vfs read back value: %u\n", max_vfs);
-+	igt_assert_eq_u32(max_vfs, requested_max_vfs);
-+}
-+
- static void set_bus_addr(int fd)
- {
- 	pci_dev = igt_device_get_pci_device(fd);
-@@ -377,7 +450,8 @@ static void close_configfs_group(int configfs_fd, int configfs_device_fd)
- int igt_main()
- {
- 	int fd, configfs_fd, configfs_device_fd;
--	bool is_vf_device;
-+	bool is_vf_device, is_pf_device;
-+	unsigned int enabled_vfs = 0;
- 	bool has_survivability;
- 	const char *engine = NULL;
- 
-@@ -386,6 +460,9 @@ int igt_main()
- 
- 		fd = drm_open_driver(DRIVER_XE);
- 		is_vf_device = intel_is_vf_device(fd);
-+		is_pf_device = igt_sriov_is_pf(fd);
-+		if (is_pf_device)
-+			enabled_vfs = igt_sriov_get_enabled_vfs(fd);
- 		has_survivability = xe_has_survivability(fd);
- 		set_bus_addr(fd);
- 
-@@ -470,6 +547,30 @@ int igt_main()
- 		close_configfs_group(configfs_fd, configfs_device_fd);
- 	}
- 
-+	igt_describe("Validate enable_psmi enable/disable round-trip");
-+	igt_subtest("psmi-enable-disable") {
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		test_psmi_enable_disable(configfs_device_fd);
-+		close_configfs_group(configfs_fd, configfs_device_fd);
-+	}
-+
-+	igt_describe("Validate SRIOV Max Vfs Store and Show functionality");
-+	igt_subtest("sriov-max-vfs-store-show") {
-+		if (!is_pf_device)
-+			igt_skip("sriov-max-vfs-store-show requires an SR-IOV PF device\n");
-+
-+		if (enabled_vfs != 0)
-+			igt_skip("sriov-max-vfs-store-show requires no enabled VFs (found %u)\n",
-+				 enabled_vfs);
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		if (!igt_sysfs_has_attr(configfs_device_fd, "sriov/max_vfs")) {
-+			close_configfs_group(configfs_fd, configfs_device_fd);
-+			igt_skip("configfs sriov/max_vfs attribute is not available on this platform\n");
-+		}
-+		test_sriov_max_vfs_store_show(configfs_device_fd);
-+		close_configfs_group(configfs_fd, configfs_device_fd);
-+	}
-+
- 	igt_fixture() {
- 		close(configfs_fd);
- 	}
--- 
-2.43.0
-
+--_000_DM4PR12MB7646C0D5F1FC73E8412CAFAC95EF2DM4PR12MB7646namp_--
