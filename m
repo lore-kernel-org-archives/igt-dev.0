@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A0C5CDB46F
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 23:00:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10C1CCDB466
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jun 2026 23:40:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 05A9110E2A4;
-	Mon, 22 Jun 2026 23:00:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="beiULqwS";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7CE910E2A4
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2026 22:58:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782169105; x=1813705105;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Nl8UpkSiZI+ElasS6pL+QkPMHIxd7mPBHg5ldU2Z++o=;
- b=beiULqwSa9EuiLoCnI/bumTZ3QSkGZP9TDDywKjtm2jUqYNGhY/M7dXA
- hz7dNU1mElEQyuMRfyeEzKT1r7IC7vqtco1Qk7nfQznLezWZfCzffLvb5
- 7hQCslfio1vQEHXsAJoy6Ce2gNEap7pQfvtXkjsF4eXkZzCFCilyU+KtE
- eQyrqVBmLsLUAmsLfguTaJhgRxxUqjOPt3xHH8PzZA01tB9iEJ9kCdj2h
- UYgOeKhpGzV5AVHgoYmx4q+5hKxSniRdKDcIdL6v7rsvo+OlydiIff1Xt
- VesGBwpkacDPhafx4q7eweXQJlYpZ3Zncv4tsG82OXDSHHgVLUbUPgRCg g==;
-X-CSE-ConnectionGUID: tR2GX8iOR4+EWxu4vh1qbg==
-X-CSE-MsgGUID: 1iBntUD/Q6ez7ITkqbCyyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82010420"
-X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; d="scan'208";a="82010420"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2026 15:58:25 -0700
-X-CSE-ConnectionGUID: hkigKLdJS6qw/RC8jXDlPQ==
-X-CSE-MsgGUID: CN1HYPtGQmu67NqeEh/7Tw==
-X-ExtLoop1: 1
-Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa003.fm.intel.com with ESMTP; 22 Jun 2026 15:58:24 -0700
-From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v1 2/3] tests/kms_ccs: split outer test loop into two
-Date: Tue, 23 Jun 2026 00:58:10 +0200
-Message-ID: <20260622225811.1703400-3-michal.grzelak@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260622225811.1703400-1-michal.grzelak@intel.com>
-References: <20260622225811.1703400-1-michal.grzelak@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2871D10E16A;
+	Mon, 22 Jun 2026 23:40:38 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE95C10E16A;
+ Mon, 22 Jun 2026 23:40:12 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8279139058440331941=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_kms=5Fccs=3A_limit_number_o?=
+ =?utf-8?q?f_suspend_tests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 22 Jun 2026 23:40:12 -0000
+Message-ID: <178217161276.103840.10502858922517465397@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260622225811.1703400-1-michal.grzelak@intel.com>
+In-Reply-To: <20260622225811.1703400-1-michal.grzelak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,111 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-for_each_crtc_with_valid_output() iterates over every crtc with
-connected output. Split it into two loops. This will be needed to handle
-per crtc cases.
+--===============8279139058440331941==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
----
- tests/intel/kms_ccs.c | 79 ++++++++++++++++++++++---------------------
- 1 file changed, 41 insertions(+), 38 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index 4d0bda6a78..ba0789f29b 100644
---- a/tests/intel/kms_ccs.c
-+++ b/tests/intel/kms_ccs.c
-@@ -1152,47 +1152,50 @@ static void test_output(data_t *data, const int testnum)
- 					      "Older than Xe2 platform needed.\n");
- 			}
- 
--			for_each_crtc_with_valid_output(&data->display, crtc,
--							data->output) {
--				data->crtc = crtc;
--				igt_display_reset(&data->display);
--
--				igt_output_set_crtc(data->output,
--						    crtc);
--				if (!intel_pipe_output_combo_valid(&data->display))
--					continue;
--
--				igt_dynamic_f("pipe-%s-%s",
--							    igt_crtc_name(crtc),
--							    data->output->name) {
--					int valid_tests = 0;
--
--					if (data->flags == TEST_RANDOM)
--						igt_info("Testing with seed %d\n", data->seed);
--
--					if (data->flags & TEST_ALL_PLANES) {
--						igt_display_require_output_on_crtc(crtc);
--
--						for_each_plane_on_crtc(crtc,
--								       data->plane) {
--							if (skip_plane(data, data->plane))
--								continue;
--
--							for (int j = 0; j < ARRAY_SIZE(formats); j++) {
--								data->format = formats[j];
--								valid_tests += test_ccs(data);
-+			for_each_connected_output(&data->display, data->output) {
-+				for_each_crtc(&data->display, crtc) {
-+					if (igt_crtc_connector_valid(crtc, data->output)) {
-+						data->crtc = crtc;
-+						igt_display_reset(&data->display);
-+
-+						igt_output_set_crtc(data->output,
-+								    crtc);
-+						if (!intel_pipe_output_combo_valid(&data->display))
-+							continue;
-+
-+						igt_dynamic_f("pipe-%s-%s",
-+									    igt_crtc_name(crtc),
-+									    data->output->name) {
-+							int valid_tests = 0;
-+
-+							if (data->flags == TEST_RANDOM)
-+								igt_info("Testing with seed %d\n", data->seed);
-+
-+							if (data->flags & TEST_ALL_PLANES) {
-+								igt_display_require_output_on_crtc(crtc);
-+
-+								for_each_plane_on_crtc(crtc,
-+										       data->plane) {
-+									if (skip_plane(data, data->plane))
-+										continue;
-+
-+									for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+										data->format = formats[j];
-+										valid_tests += test_ccs(data);
-+									}
-+								}
-+							} else {
-+								for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+									data->format = formats[j];
-+									valid_tests += test_ccs(data);
-+								}
- 							}
--						}
--					} else {
--						for (int j = 0; j < ARRAY_SIZE(formats); j++) {
--							data->format = formats[j];
--							valid_tests += test_ccs(data);
-+							igt_require_f(valid_tests > 0,
-+								      "no valid tests for %s on pipe %s\n",
-+								      ccs_modifiers[i].str,
-+								      igt_crtc_name(crtc));
- 						}
- 					}
--					igt_require_f(valid_tests > 0,
--						      "no valid tests for %s on pipe %s\n",
--						      ccs_modifiers[i].str,
--						      igt_crtc_name(crtc));
- 				}
- 			}
- 		}
--- 
-2.45.2
+Series: kms_ccs: limit number of suspend tests
+URL   : https://patchwork.freedesktop.org/series/168967/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8977_BAT -> XEIGTPW_15421_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8977 -> IGTPW_15421
+
+  IGTPW_15421: 15421
+  IGT_8977: c8bdb0bc2140e337e1d79969430c3d7a5c088c9e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5286-6583dd200482a34bb17e5dc54551f91f53b79798: 6583dd200482a34bb17e5dc54551f91f53b79798
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15421/index.html
+
+--===============8279139058440331941==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>kms_ccs: limit number of suspend tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168967/">https://patchwork.freedesktop.org/series/168967/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15421/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15421/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8977_BAT -&gt; XEIGTPW_15421_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8977 -&gt; IGTPW_15421</li>
+</ul>
+<p>IGTPW_15421: 15421<br />
+  IGT_8977: c8bdb0bc2140e337e1d79969430c3d7a5c088c9e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5286-6583dd200482a34bb17e5dc54551f91f53b79798: 6583dd200482a34bb17e5dc54551f91f53b79798</p>
+
+</body>
+</html>
+
+--===============8279139058440331941==--
