@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC17BCD98F2
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 12:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 520A5CD98F2
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 12:18:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B59310EAEA;
-	Tue, 23 Jun 2026 12:15:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE47510EAEC;
+	Tue, 23 Jun 2026 12:18:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MBcVVQXH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aLoBaFNA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C69E410EAEA
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 12:15:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F72F10EAEC
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 12:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782216924; x=1813752924;
+ t=1782217089; x=1813753089;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=p5lGM13aeFz002i2fJ45+WMFhiPHztn31/SOL+KuI9Y=;
- b=MBcVVQXH05aLG26TXPggbSv/yZ2hIZ49k3scLIF9IYbMin9kg9o2SywA
- 0o7Ez0dPsGYSv4BgKSvN3cBQG5iOst5N7ouAlgMBOd5AsqFm5h6Z9MQ/z
- 3SepElKPNEPyPpXCKSyZCQxwAs8PrMngJwF5e5Kwz0VxPsfLeWk4oGwrw
- VF9Fm866jgigSheCLRoMQfZsFkSaaT0G+Td7YrMcZiY1KsWTD8h8B0iyy
- 6pb/0ETM2GlxVc5wzZEfzgSpYDvi2A3nXK1gn1973tvhftdstIBgrjgZs
- y+sxSb1CgXYqMP3Xmcf1JNr2ZgdGjHUkDYrxwY5QxT5i0WHkg+cWdkZsg g==;
-X-CSE-ConnectionGUID: ItxNGUrAQyyeIJmY6dJyqw==
-X-CSE-MsgGUID: onLV4mZIT9Ss5DfeX0Ohhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82961028"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="82961028"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2026 05:15:23 -0700
-X-CSE-ConnectionGUID: 1t3k08ydRyCqwwmOE9JOoA==
-X-CSE-MsgGUID: 9O1u4Yz7QziTnoVVgoetQA==
+ bh=fSiC8lf3478V/li5X5qbPsHa+jmOfNO5PAYmAC6GTg8=;
+ b=aLoBaFNAtLrzov6QzyRT30ZwLbLgwErL4ttaMrtxB4Wbco9D8QLPfxdL
+ zKrv9irk/yrV+IyMvAbj5nzV3xpBvK96GJWG7P6rPqhnzjd5SFGSTMWAB
+ ZxDyfNAh0xrNPChd7Ade4i5y3fP/2LEFJl53o+22imm7F8pOrWoJxXGEK
+ 4zpAQ8K9uWb0KM8ha5ICeE8rgmrggTJ16FRS5nyTBXlT4iMIYFOyfnnBJ
+ DJZeF2J5rS/Gpg9ykMA4XqVRDIPwMi4Y4gpA0F/u2qz/Pzg2NSdAsXIcj
+ CBNunFYd2E4H3rvUVKgpqo+ZE2vB92Kad7kR6y0cwDtZRUuOFnk1vHqAL A==;
+X-CSE-ConnectionGUID: +phI/xnqTpOz7OXM4zLw1Q==
+X-CSE-MsgGUID: 8LFnvx4EQnKNm0GHTOHrXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93547227"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="93547227"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jun 2026 05:18:07 -0700
+X-CSE-ConnectionGUID: Ldo2MHgUQbOd2wUpP/MJfg==
+X-CSE-MsgGUID: x/Re0ZdTT3WcnVmwphk3CA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="249541228"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="251435635"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 05:15:22 -0700
-Date: Tue, 23 Jun 2026 14:15:19 +0200
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 05:18:06 -0700
+Date: Tue, 23 Jun 2026 14:18:03 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: priyanka.dandamudi@intel.com
 Cc: igt-dev@lists.freedesktop.org, niranjana.vishwanathapura@intel.com,
  ramadevi.gandi@intel.com, dwarakanath.ramadeva@intel.com
 Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe*.c: Add documentation to
  multi-queue tests and subtests.
-Message-ID: <20260623121519.ksaj35g7w52axu74@kamilkon-DESK.igk.intel.com>
+Message-ID: <20260623121803.ygmvm4hngowgohro@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org,
  niranjana.vishwanathapura@intel.com, ramadevi.gandi@intel.com,
@@ -74,9 +74,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi priyanka.dandamudi,
+Hi Priyanka,
 On 2026-06-23 at 16:45:13 +0530, priyanka.dandamudi@intel.com wrote:
 > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+
+I forgot about small nit for subject, imho better
+
+[PATCH i-g-t 2/2] tests/intel/xe*: Add documentation to multi-queue tests and subtests
+
+that is, s/.c:// and drop dot at end.
+
+This could be corrected at merge time so you can keep my r-b.
+
+
+
+Regards,
+Kamil
+
 > 
 > Add Mega feature and Sub-category fields to multi-queue tests and subtests.
 > 
@@ -497,9 +511,3 @@ On 2026-06-23 at 16:45:13 +0530, priyanka.dandamudi@intel.com wrote:
 > -- 
 > 2.43.0
 > 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
