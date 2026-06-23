@@ -4,147 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B03DCD4F26
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 06:11:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B86E8CD4F26
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 06:36:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD13C10E957;
-	Tue, 23 Jun 2026 06:11:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6493010E495;
+	Tue, 23 Jun 2026 06:36:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dcRIkZG4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nliegYlv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E807910E957
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 06:11:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64D1310E495
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 06:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782195092; x=1813731092;
- h=from:to:subject:date:message-id:references:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=ALLSQ4509UMhBGx4IKFdaQSY3IgFEgUu0MAjgcQCL3I=;
- b=dcRIkZG4kbgN5puaWUY6KRKc/DV2MN2EnsaV68yfyAQk9wWWIFhoMI2k
- GUrKTV5MpUVC5zzl/86K5EllzwtMpw5iysU34635Y6gWbfeIXaW8Ujk+J
- wB0GJFTgdJUye8DNqBlz5Nuqs6W9FIw/UG4BjTI9rrqJczw+u8A4g0qoQ
- RJoIzClYmAEUFJ/zpZWBHODjumV44viELSvgizeW/FGSwn5bQ3XWPb4vw
- QVayRT7eU99x+UfNHagoMZsFkQ82D0+BQ+iB6brnVMF79z9l2RYUyAWiB
- dEeKFbBNzwdJYEhfXLEVLERfxE/1UYp9wdPEhmo7sx6MM1Ts29NfWnz7v g==;
-X-CSE-ConnectionGUID: IZwfLqOsROCEZzwzMbzgxw==
-X-CSE-MsgGUID: muybSVZZR7C09tNwyZN7sw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="94319499"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="94319499"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2026 23:11:31 -0700
-X-CSE-ConnectionGUID: I4QZT2ruSMOufylp+LK3Dg==
-X-CSE-MsgGUID: EBV8BA35QWGOYnW6LylBNQ==
+ t=1782196570; x=1813732570;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Jlp2WbbmEPICqKwTdy38y7YfI6Pn40uc+mfalZxmg6s=;
+ b=nliegYlvYL4/kCWFGA3Tk4g2LsDw9VCCSibnf+Xxkd/yX/5o++WXGA2L
+ IjK4Hkqx1F97mdeOuxwMEEpkUzo6HEGQXnFZ4rrxGVbH9OF5SJEbdoIRg
+ O2ERxvHPTsynvJHCf21WscqnHpxUwkLHOq1WGctQqEsEuMPLSNbyH2FAz
+ Mluby5Exxfis4uKb8holUGABqIu0RaX/y3zetaDx8CPprEmCysb4jIoXs
+ XJcTTmf3N5UEeiPioVYXLdK3OwmD763etvWsh44cyGluk8CG7S5B7oF8r
+ 6vnZpBtJnHGwKeUD6ZaEE0j3xJXt4w5uc8QLGwSqsDkR6pjkF/7iQcSn3 g==;
+X-CSE-ConnectionGUID: DRkKnOdOSTiynPTfmIoCrg==
+X-CSE-MsgGUID: rM2tSN9wTqOi5o9L6+27tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93295373"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="93295373"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jun 2026 23:36:10 -0700
+X-CSE-ConnectionGUID: XkACX+MyRE2p7TG4JYHXJQ==
+X-CSE-MsgGUID: l6iHV3kbT0GX1ib1/S5eLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="273120401"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2026 23:11:31 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 22 Jun 2026 23:11:30 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 22 Jun 2026 23:11:30 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.34) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 22 Jun 2026 23:11:30 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v4DtciyBpnZBDHZ98RL+jqZYfZ70lcXIBDWatCjhmYQez9qfz5GlHxDRv4EqldnJsuERg7HwYz34j3oXjQJZH0IGOV3E6wfv78ULYlRKiRHdy7TtKiaB9Gj0j8WaG8DBg94f6yqTExlN29AGfJDZljOoR8GFg2XOXy7acZ57FPst+/qLPWn/pLJOA/aSkg3M5iQ1ppiB2BqLPrNUMkUj8NB5FQttoCJLqis9ZnrBJXtzQkMIERBraXJ0giaJbcNYsMO1cm2Y2MiMSpzBccvDAcbMX8evo+RHTrkekaAZwfLXh8aQUu7h1VqlI9zaVM+Bw9PavOmDFLih1reVnSCVtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dibjtSRmu/QLP9WbNF0/orFyHZsfGogMlIXBFRnE/ZU=;
- b=oQDuCGeqPxGD/iMGNvwiRMABrQzTEJnPKAoDkDPh4NLXFcxLoidZ0JGAGb/gyCSPqPyRowyE+4K1tiQbqbt46dsqrQwN5FApg/BlEjdwi2wW0N3iKFnLUGLnsEH99v9L42Yb34V9b8/ucXK8WePh/eOJPmq5apAgXzATD9KV4sOUzPYVHJvivGjlxhhV+Ji3/jRHPDQAIUyegqzFOfGHJBbprUiW9SezV3XQJwEiSV1hvP42E/IQ1Sr0D766xpBy1Ss5jVUbA25IqiT3fSOioLV/xFN3cDUSDmLX4lLB+WTO7+pPfhYZD7HWUxFz7H3z5SFVzbWPVkJWqN1nBAp1Tg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB9013.namprd11.prod.outlook.com (2603:10b6:208:57c::9)
- by SJ5PPF1611BC49E.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::812) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 23 Jun
- 2026 06:11:28 +0000
-Received: from IA3PR11MB9013.namprd11.prod.outlook.com
- ([fe80::218c:773:922e:7d82]) by IA3PR11MB9013.namprd11.prod.outlook.com
- ([fe80::218c:773:922e:7d82%4]) with mapi id 15.21.0139.009; Tue, 23 Jun 2026
- 06:11:22 +0000
-From: "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
-To: "Muppidi, Venkateswara Rao" <venkateswara.rao.muppidi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH i-g-t] intel-ci: Blocklist multi-queue subtests for PTL
-Thread-Topic: [PATCH i-g-t] intel-ci: Blocklist multi-queue subtests for PTL
-Thread-Index: AQHdAs3rTa0gc6OD+0++YvfKHEGMxrZLqJEA
-Date: Tue, 23 Jun 2026 06:11:22 +0000
-Message-ID: <IA3PR11MB901369CE7FE16BCA0D8CBE2385EE2@IA3PR11MB9013.namprd11.prod.outlook.com>
-References: <20260623050633.9620-1-venkateswara.rao.muppidi@intel.com>
-In-Reply-To: <20260623050633.9620-1-venkateswara.rao.muppidi@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB9013:EE_|SJ5PPF1611BC49E:EE_
-x-ms-office365-filtering-correlation-id: d9eae76a-d1b4-4113-6b53-08ded0ee3f95
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|23010399003|366016|376014|1800799024|11063799006|56012099006|38070700021|18002099003|22082099003;
-x-microsoft-antispam-message-info: ELfdhG7O9/AocIShMto2d+5DGYTJVDtOsGUVvcRnE1oNe6/EnCOfimB263J1Em1PIVS0rzB9mXvfqM0cUrJ3IipjXKgCI05o7GcHyCs0mC5w4UCZXZoJiOghsbNYtrgaozwNVJ+gHdJkbY7d1MLC7A6paPM2Ebx2sEfQRbHyrl3ClyIKMzDQnzPLXgnngY6hc4HOWR8gBQJTawU7SIxOfOO2ZhXQ+MeQ25NGWHqlJrG0HwyNtp9P70JSoRe9w0gLAsT5nHvAW5kHbNbjACBs+nAVUqv4uf4G/jr+/tw+8qLZjzQggL02LuGhpGk4OJkmLZ+UGWiKtUEHxcILoF9gp0wVNKX+q/YuKM7FS8Hp47BZ37qGIFFVTJOwghfDEED3bTuHr8jS6ur5KasT4IGpqCi48m7RprD8rI9Qoo0FCGjbQEJi+SD9+jPDxzxu2MU20W9u0gZ6DR5WGkjGwWNjUjAVxQAUfT0+5tTVKIgVP4dVqk8IO7isFlF3U5vEecS/mD49WZ0Ix6b6X0hA901cEcXmvmZ+b07MCg9/9hFijrlo4l3Cbpln5RFLUMipoTSgebHhG5gVFXC5/8KWFxdrb4Y4BFDKNgzTVrX+xI+96hegOf5fvKC+qerqEJ4D+Hff6H2vEZHcZocGa0UUtwINS6FJtRVmx+DVIx2IbRWZ1A5iq8WjfEDXMdaqDKvLJUVck6+/0TdGaZhv7WVP0zSJZGANn9578IRc01vI3ROXSmk=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA3PR11MB9013.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(11063799006)(56012099006)(38070700021)(18002099003)(22082099003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?50qcsaGBQ7KDU+NDF7XUihbHyZtq3iYnLpze/4bO2uEf1ZNUiNzb4f+zbdqd?=
- =?us-ascii?Q?Bkug5GjREPO3BzSp73RnncijhdxaLPocW66SuzNj0BPHZv5ctbKjhzNrTnfU?=
- =?us-ascii?Q?LkgjxQrVJCWCXRWWp82nL6S7AVGoa4Tj6PiJdVhKd8m5jIz4aqVDEETg/4ju?=
- =?us-ascii?Q?0mEoXqJAPhATHSwnQKuDg/+LC5jF8reF1S2CCtYbYbOmYCKJ5Y27d7eISE+H?=
- =?us-ascii?Q?XOjyd49K3DywpaGlE4mXQZ88KCeE5knO0IyWTyeTDhX1DpHi1vJQlUua1oHn?=
- =?us-ascii?Q?duhGIHpYpmLfqX9QuDqgoe8zeSMPROLESzT4YLTP2R5QOxfJgr/Y/dQJCkeI?=
- =?us-ascii?Q?eDkB6mG8IeUpImaGtjQKT1m/68YLxMI4MvsQjor1npT4fzaTojD4jmvF/SKv?=
- =?us-ascii?Q?ShX/sg5Vnmc7cY94lAxHq/UoRX1rWJt69zxphNqeUpYs2ugaqwRwbBySGY5i?=
- =?us-ascii?Q?BUKvbV4V/7K82EtLQU1iMDqp7p0xRZGwWG5XhBvOia5tQbE0Cj0ufbdcG62x?=
- =?us-ascii?Q?DQSNb1kJTtPLJR6wcE4BKSeT/8KvddSORKLz9u98qjtSFrnE1LjUq/NP6Pus?=
- =?us-ascii?Q?ww3R92wui4QnNjunMo+Hi1iLb/TsZEXNDiIwTqZ5Xzx9QSz3o8jnwlgfKfX9?=
- =?us-ascii?Q?oKpu8UxPy6xO1leq0h2v2rQOqbvbW3DDkIgaPQEjos0EEzLGVchBqoHmZjY2?=
- =?us-ascii?Q?jyP2bC2qCCEPWUa/wacHfmFuHLH+126c8SBy3o0h9OnYmjATKwxDtEQOSWWY?=
- =?us-ascii?Q?sKMLnXojyQAZpX+j4xXk4ZC2SnpzuZGlBTNpwmD/OhCudA135IoClZz1SbXB?=
- =?us-ascii?Q?op9U5iwKXWd5Ipu/ooik+awMplrq92v0JmyPHMPvGZ7HYdkVmVRqoULdp5bg?=
- =?us-ascii?Q?8dfIVkHlqfJ+QmAC5/zTyaXT6LZOZWJwOupZN864bNiG4nL2QWVl1z7ggT8+?=
- =?us-ascii?Q?FiSeq8CLPkj82/+irJNQsHFmGYByuzyEDnIXneYNS8ZTlYzoD+1jVzmuqVVr?=
- =?us-ascii?Q?dky+/tihRGN3G1rGWbPnT4v17TfhtUQDude6JSq6dUBaUkPmKW2PTYcQl3hG?=
- =?us-ascii?Q?2j/pemAaEtfjE166Tdai+QEPig9Lf3kXhuRUf6XOGe7W1PFof0/SQkv6+rRU?=
- =?us-ascii?Q?YCVXVlnInkQ305VTkMC6VDqtjVD1CHEsy8aCH9KEqFpemyR8+ilZvO3/E3B3?=
- =?us-ascii?Q?bDgSozJH0hlzDpAaY1HdWxk+6GHc7kqTOpLzC4KJu2bFiqx93wWX//s9Fmvx?=
- =?us-ascii?Q?0To3pipui1nQ9uQlfULu3+SeeHSPk88ffZU/GTalh30657icS5ha0zF2uClU?=
- =?us-ascii?Q?LVRq0MduJH7/zV6ZkiH88I5IzCiBlwWY8POmtlKFii8xbZGoTjwkgS8/q+yD?=
- =?us-ascii?Q?3IgG6zg+yl4wszFxwbWs/NCzFmjwdAneEWx9wAKB46lyDXzBaKt7puGWACYA?=
- =?us-ascii?Q?jlmkauD3317Whby530zYsMNDpeFsXTgHZdOh3nwz7KaMY2bJ1VwgrXX+WaPt?=
- =?us-ascii?Q?gQivMl+ecEjLGn9giTQHEs3mKJ85rHsRgUyy9lVYfKl8Csx5AZuslyQqIXy9?=
- =?us-ascii?Q?faSPDy42GS6wRGf+tYE1MGgewoDszjaw4ablhn85AhiHXOwtgnofvB1E6w09?=
- =?us-ascii?Q?+vCoDgwITeMnqPpPCnH+oM4gwoxtD0Qd0bTQZekqDsn9XCc1ghZ4URFZ1Bg9?=
- =?us-ascii?Q?Iwvj2rZ2bcU3Nt3pEMEoJAJIuWrAsz5/640sBYSJot+lYrFJXCkej8pYzilB?=
- =?us-ascii?Q?wYBuUD/7mg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="245295984"
+Received: from soc-5cg5233szh.clients.intel.com ([10.66.72.118])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jun 2026 23:36:08 -0700
+From: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
+To: riana.tauro@intel.com, mallesh.koujalagi@intel.com,
+ igt-dev@lists.freedesktop.org
+Cc: dwarakanath.ramadeva@intel.com,
+ Gajendra Uttamchand <gajendra.uttamchand@intel.com>
+Subject: [PATCH i-g-t] tests/intel: ensure stable GT C6 for residency
+ measurement
+Date: Tue, 23 Jun 2026 06:36:00 +0000
+Message-ID: <20260623063559.223470-2-gajendra.uttamchand@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: M7xXhHS4Ak6slZn9BV2VKZ0OfqJazdquJa/jykGY1U9HH/PxFMZRjh4jn2GUFngi55nifoZ0zPVqQ3YHhdfGg1aORqVOE35fmNyKnmhH+a3M55XHKbFgzj7yGgaDpL8Rn22N12lSTg63hKXWI2cQvNYs0TAlIsfMWreqYzt2JUwCgA9QM4Ab14436hXf7MJiBstGWLP4+cMpkJdUx/XLue+wE8YsN/4uGkwsAtGslQ+VvAbrOdt7WF5m77NjO8LwahW7HeRSaY71VWZ8jCiF7fmyf/GT7NPUNXzDTNqsFmM31oP2SWHB7DP/DY3BHxd9VkIfGLvK0zV/X9IPOgU/cQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9013.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9eae76a-d1b4-4113-6b53-08ded0ee3f95
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2026 06:11:22.0367 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Y4aQDNUBoAJgQcJMPkkr/gP6JLrDINP6cP17kCEfXMkvf+UFoE/3AnyQL5h5DoaLX2XkS0S1WCUHTtLMqPTzDqVQPYYyN8M216nQ5ZuGFso=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF1611BC49E
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -160,43 +68,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM
-Reviewed-by: Gandi Ramadevi <ramadevi.gandi@intel.com>
+Wait for the GT to remain in C6 continuously before taking idle
+residency measurements to avoid capturing transient C6 entries caused by
+asynchronous register accesses (for example, from in-flight modeset
+commits). Add a helper `xe_gt_wait_stable_c6(fd, gt, stable_ms, timeout_ms)`
+that polls the GT and requires `stable_ms` of continuous C6 within the
+`timeout_ms` window.
 
-> -----Original Message-----
-> From: Muppidi, Venkateswara Rao <venkateswara.rao.muppidi@intel.com>
-> Sent: Tuesday, June 23, 2026 10:37 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Gandi, Ramadevi <ramadevi.gandi@intel.com>
-> Subject: [PATCH i-g-t] intel-ci: Blocklist multi-queue subtests for PTL
->=20
-> Blocklist multi-queue subtests in xe.ptl.core.blocklist since multi-queue=
- tests
-> are not supported on PTL
->=20
-> Signed-off-by: Venkateswara Rao Muppidi
-> <venkateswara.rao.muppidi@intel.com>
-> ---
->  tests/intel-ci/xe.ptl.core.blocklist.txt | 5 +++++
->  1 file changed, 5 insertions(+)
->=20
-> diff --git a/tests/intel-ci/xe.ptl.core.blocklist.txt b/tests/intel-
-> ci/xe.ptl.core.blocklist.txt
-> index abaa1284f..8752e92cd 100644
-> --- a/tests/intel-ci/xe.ptl.core.blocklist.txt
-> +++ b/tests/intel-ci/xe.ptl.core.blocklist.txt
-> @@ -53,6 +53,11 @@ igt@xe_pm@d3hot-i2c
->  ##################################################################
->  igt@xe_compute@ccs-mode-basic
->  igt@xe_compute@ccs-mode-compute-kernel
-> +#################################################################
-> +# Tests not applicable for the platform
-> +##################################################################
-> +igt@xe_exec_multi_queue@.*
-> +igt@.*@.*multi-queue.*
->  ##################################################################
->  # Expected skips as the tests are not supported on PTL
-> ##################################################################
-> --
-> 2.43.0
+Update `test_idle_residency()` to use the new helper and require 300ms
+continuous C6 (2s timeout) before starting the residency baseline. This
+reduces flaky/residual measurements and makes the test more robust.
+
+Signed-off-by: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
+---
+ tests/intel/xe_pm_residency.c | 41 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
+
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index bfae1f844..7a8e11eae 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -212,12 +212,51 @@ static unsigned long read_idle_residency(int fd, int gt)
+ 	return residency;
+ }
+
++/*
++ * xe_gt_wait_stable_c6 - wait until the GT is stable in C6
++ *
++ * Waits for the GT to stay in C6 continuously for @stable_ms to ensure
++ * genuine idle state before capturing residency baseline. This filters
++ * out brief C6 entries that occur during register accesses from async
++ * operations like modeset commits.
++ *
++ * Returns true if GT stayed in C6 for @stable_ms, false if timeout reached.
++ */
++
++static bool xe_gt_wait_stable_c6(int fd, int gt, int stable_ms, int timeout_ms)
++{
++	int stable = 0;
++	int elapsed = 0;
++	const int step = 10; /* ms */
++
++	while (elapsed < timeout_ms) {
++		usleep(step * USEC_PER_MSEC);
++		elapsed += step;
++		if (xe_gt_is_in_c6(fd, gt)) {
++			stable += step;
++			if (stable >= stable_ms)
++				return true;
++		} else {
++			stable = 0;
++		}
++	}
++	return false;
++}
++
+ static void test_idle_residency(int fd, int gt, enum test_type flag)
+ {
+ 	unsigned long elapsed_ms, residency_start, residency_end;
+ 	struct timespec ts_start, ts_end;
+
+-	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
++	/*
++	 * Wait for stable C6 state before measurement. Previous test cleanup
++	 * can trigger async modeset commits that access GT registers for
++	 * extended periods, causing brief C6 entries. Requiring 300ms continuous
++	 * C6 ensures any in-flight operations complete first.
++	 */
++
++	igt_assert_f(xe_gt_wait_stable_c6(fd, gt, 300, 2000),
++		     "GT %d did not reach stable C6 within 2s\n", gt);
+
+ 	if (flag == TEST_S2IDLE) {
+ 		clock_gettime(CLOCK_BOOTTIME, &ts_start);
+--
+2.43.0
 
