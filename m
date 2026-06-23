@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78503CDB46F
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 10:56:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 524D3CDB46F
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 11:08:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 29FA110EA97;
-	Tue, 23 Jun 2026 10:56:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E951210EA89;
+	Tue, 23 Jun 2026 11:08:58 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F2D410EA95;
- Tue, 23 Jun 2026 10:56:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F2B2010E2E7;
+ Tue, 23 Jun 2026 11:08:30 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1993416172330799057=="
+ boundary="===============5739984649407469019=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_tests/amdgpu=3A_Resolve_DR?=
  =?utf-8?q?M_card_index_dynamically_instead_of_hardcoding_card0?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "James Lin" <pinglei.lin@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 23 Jun 2026 10:56:01 -0000
-Message-ID: <178221216157.105421.5217142482407116963@6beec6c84f66>
+Date: Tue, 23 Jun 2026 11:08:30 -0000
+Message-ID: <178221291096.105421.14508677465057695703@6beec6c84f66>
 X-Patchwork-Hint: ignore
 References: <20260623074749.13734-1-PingLei.Lin@amd.com>
 In-Reply-To: <20260623074749.13734-1-PingLei.Lin@amd.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1993416172330799057==
+--===============5739984649407469019==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -501,7 +501,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15425/index.html
 
---===============1993416172330799057==
+--===============5739984649407469019==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -924,4 +924,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1993416172330799057==--
+--===============5739984649407469019==--
