@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BD5FCD98F2
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 17:19:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8736CDB47F
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 17:44:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1DB9D10EC1E;
-	Tue, 23 Jun 2026 17:19:54 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D817589D30;
- Tue, 23 Jun 2026 17:19:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8856513545884080848=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 59D2110EC2E;
+	Tue, 23 Jun 2026 17:44:03 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="ItjX+I8J";
+	dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E5ED10E1F5;
+ Tue, 23 Jun 2026 17:43:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+ Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=a5Ly8geR1oWprQ4p41w/ISJHm3yE4aBgqiuOQnF2jfY=; b=ItjX+I8JgOR4L4+aK2jMH1WigB
+ ucnCBu9+QPQHFfIuoWPfqaNg5PzCw+yDRz9Y0j/j8V62upD2Uv6WLH/MMVr+RZLEZ3CX3mgM23bHZ
+ BUK5sbEJxZjZYFIuyKu4Zq9gGJ90cJIkK3aYBplIZBUmn+NwhHKfmU2OK4wfLu2eDobd9QIOtn/b8
+ IjlqCGkWTItVpwqmVLjr14ISQ9hrnbmA2gGHPySH6jJ8ClFKWp7wyRrogAqV3ujxHhpDc3plSj6VU
+ cggC2RSrlE3kGcZ6H7E2/S/nib/R6NkokSayaUAzyJnSGaMi0XqLXqrmRfDQNh7wkBDjjyRXqOpT4
+ DePmqqMw==;
+Received: from 179-125-64-254-dinamico.pombonet.net.br ([179.125.64.254]
+ helo=quatroqueijos.lan) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1wc59o-004HEi-TG; Tue, 23 Jun 2026 19:43:33 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: igt-dev@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org,
+ Christian Koenig <christian.koenig@amd.com>,
+ maarten.lankhorst@linux.intel.com,
+ =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Natalie Vock <natalie.vock@gmx.de>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com,
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH i-g-t 0/7] add dmem_cgroups test
+Date: Tue, 23 Jun 2026 14:43:12 -0300
+Message-ID: <20260623174319.4138648-1-cascardo@igalia.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/igt=5Famd=3A_don=27t_?=
- =?utf-8?q?rely_on_NUL_separators_parsing_link=5Fsettings?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Harry Wentland" <harry.wentland@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 23 Jun 2026 17:19:25 -0000
-Message-ID: <178223516587.106801.9988605816718313209@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260623155541.32145-1-harry.wentland@amd.com>
-In-Reply-To: <20260623155541.32145-1-harry.wentland@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,323 +64,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8856513545884080848==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This patchset is based on the work of Thomas Hellström at [1] and a
+followup I have submitted at [2].
 
-== Series Details ==
+With this version, I reverted the order in which to apply the patchsets, as
+this one adds the infrastructure and the drivers mechanisms, and a test for
+dmem.current and its behavior around dmem.max that is currently supported
+in the kernel.
 
-Series: lib/igt_amd: don't rely on NUL separators parsing link_settings
-URL   : https://patchwork.freedesktop.org/series/169032/
-State : success
+As for the new dmem.max eviction behavior, introduced by [3], it has been
+pushed to a branch at [4]. If preferred, I can submit the two patches
+independently.
 
-== Summary ==
+I have run the tests, including the ones that test dmem.max eviction
+behavior on a system with a 1GiB VRAM amdgpu card. I have not been able to
+run it on a Xe system so far. I would appreciate if people can do it. I
+have applied the patchset at [3] on top of current linux origin/master [5],
+with a fixup for the amdgpu driver.
 
-CI Bug Log - changes from IGT_8980 -> IGTPW_15431
-====================================================
+Now, for the changes since v1 [2]:
+- Changed the test name from drv_dmem_cgroups to dmem_cgroups.
+- Have system includes before igt ones.
+- Documented the current SUBTEST.
+- Changed free_vram driver hook to only release a given BO. This allows for
+  the eviction trigger by a new allocation added by write_eviction_nonblock
+  subtest.
+- Changed allocate_vram to keep more state necessary for releasing a single BO.
+- Added a global free_vram helper to free all allocated VRAM.
 
-Summary
--------
+Compared to v3 of [1]:
+- I have kept wait_for_usage_drop as release can be lazy and we test for it
+  on test_current SUBTEST, but had USAGE_DROP_TIMEOUT_MS be a little
+  longer.
+- Changed BO_SIZE and EVICT_STEP to allow for more than two eviction steps
+  on a 1GiB VRAM system.
+- Reduced USAGE_SLACK to avoid false positives, but still allow for some
+  page table accounting.
 
-  **SUCCESS**
+[1] https://patchwork.freedesktop.org/series/163935/#rev3
+[2] https://patchwork.freedesktop.org/series/166496/
+[3] https://lore.kernel.org/dri-devel/20260611173301.17473-1-thomas.hellstrom@linux.intel.com/
+[4] https://gitlab.freedesktop.org/cascardo/igt-gpu-tools/-/commits/dmem_max?ref_type=heads
+[5] 502d801f0ab0 ("Merge tag 'erofs-for-7.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs")
 
-  No regressions found.
+Thadeu Lima de Souza Cascardo (4):
+  lib/xe: Introduce dmem driver and implement Xe support
+  lib/amdgpu: add amdgpu_cgroup_region_name
+  lib/amdgpu: add amdgpu support to igt_dmem_driver
+  tests/dmem_cgroups: add test for dmem.current
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/index.html
+Thomas Hellström (3):
+  lib/igt_cgroup: add cgroup v2 and dmem controller helpers
+  tests/cgroup_dmem: add dmem cgroup controller test
+  lib/xe: add xe_cgroup_region_name() helper
 
-Participating hosts (41 -> 39)
-------------------------------
+ lib/amdgpu/amd_dmem.c   |  99 +++++++
+ lib/amdgpu/amd_memory.c |  25 ++
+ lib/amdgpu/amd_memory.h |   2 +
+ lib/igt.h               |   1 +
+ lib/igt_cgroup.c        | 638 ++++++++++++++++++++++++++++++++++++++++
+ lib/igt_cgroup.h        |  56 ++++
+ lib/igt_dmem_driver.h   |  25 ++
+ lib/meson.build         |   3 +
+ lib/xe/xe_dmem.c        | 159 ++++++++++
+ lib/xe/xe_query.c       |  32 ++
+ lib/xe/xe_query.h       |   2 +
+ tests/cgroup_dmem.c     |  92 ++++++
+ tests/dmem_cgroups.c    | 241 +++++++++++++++
+ tests/meson.build       |   2 +
+ 14 files changed, 1377 insertions(+)
+ create mode 100644 lib/amdgpu/amd_dmem.c
+ create mode 100644 lib/igt_cgroup.c
+ create mode 100644 lib/igt_cgroup.h
+ create mode 100644 lib/igt_dmem_driver.h
+ create mode 100644 lib/xe/xe_dmem.c
+ create mode 100644 tests/cgroup_dmem.c
+ create mode 100644 tests/dmem_cgroups.c
 
-  Additional (1): bat-adls-6 
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-dg1-6 
+-- 
+2.47.3
 
-New tests
----------
-
-  New tests have been introduced between IGT_8980 and IGTPW_15431:
-
-### New IGT tests (6) ###
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-2:
-    - Statuses : 2 pass(s)
-    - Exec time: [1.19, 1.36] s
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-2:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.63, 0.70] s
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-edp-1:
-    - Statuses : 3 pass(s)
-    - Exec time: [1.50, 1.51] s
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-2:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.63, 0.68] s
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-2:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.56, 0.59] s
-
-  * igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-2:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.56, 0.63] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15431 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - bat-adls-6:         NOTRUN -> [SKIP][1] ([i915#15931])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@dmabuf@all-tests.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-adls-6:         NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_tiled_pread_basic@basic:
-    - bat-adls-6:         NOTRUN -> [SKIP][3] ([i915#15656])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@gem_tiled_pread_basic@basic.html
-
-  * igt@intel_hwmon@hwmon-read:
-    - bat-adls-6:         NOTRUN -> [SKIP][4] ([i915#7707]) +1 other test skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@intel_hwmon@hwmon-read.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-adls-6:         NOTRUN -> [SKIP][5] ([i915#4103]) +1 other test skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-adls-6:         NOTRUN -> [SKIP][6] ([i915#16361])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-adls-6:         NOTRUN -> [SKIP][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - bat-adls-6:         NOTRUN -> [SKIP][8] ([i915#5354])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_psr@psr-primary-mmap-gtt:
-    - bat-adls-6:         NOTRUN -> [SKIP][9] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-adls-6:         NOTRUN -> [SKIP][10] ([i915#3555])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-read:
-    - bat-adls-6:         NOTRUN -> [SKIP][11] ([i915#3291]) +2 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@prime_vgem@basic-fence-read.html
-
-  
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#15656]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656
-  [i915#15931]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15931
-  [i915#16361]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16361
-  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
-  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
-  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8980 -> IGTPW_15431
-
-  CI-20190529: 20190529
-  CI_DRM_18709: 60326b17f877e12846167bf8ef83680b9875218a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15431: 15431
-  IGT_8980: 65d820119e86b017bf801c8f2bb500e557b29d1c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/index.html
-
---===============8856513545884080848==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_amd: don&#x27;t rely on NUL separators parsing link_settings</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/169032/">https://patchwork.freedesktop.org/series/169032/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8980 -&gt; IGTPW_15431</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Additional (1): bat-adls-6 <br />
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-dg1-6 </p>
-<h2>New tests</h2>
-<p>New tests have been introduced between IGT_8980 and IGTPW_15431:</p>
-<h3>New IGT tests (6)</h3>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-2:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [1.19, 1.36] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-2:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.63, 0.70] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>Statuses : 3 pass(s)</li>
-<li>Exec time: [1.50, 1.51] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-2:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.63, 0.68] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-2:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.56, 0.59] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-2:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.56, 0.63] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15431 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@dmabuf@all-tests.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15931">i915#15931</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic@basic:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@gem_tiled_pread_basic@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656">i915#15656</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@intel_hwmon@hwmon-read:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16361">i915#16361</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-read:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15431/bat-adls-6/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8980 -&gt; IGTPW_15431</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18709: 60326b17f877e12846167bf8ef83680b9875218a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15431: 15431<br />
-  IGT_8980: 65d820119e86b017bf801c8f2bb500e557b29d1c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8856513545884080848==--
