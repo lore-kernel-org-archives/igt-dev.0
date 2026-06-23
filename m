@@ -4,54 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 973ACCDB470
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 08:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB786CD4F26
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 08:32:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4AE7510E9FF;
-	Tue, 23 Jun 2026 08:27:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 709E610E0FA;
+	Tue, 23 Jun 2026 08:32:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OIvepFxv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G280lZIH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6609B10E9FE
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 08:27:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABBD710E0FA
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 08:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782203242; x=1813739242;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Rus5bk67q95BJ12AXdrDl1Q9j70UVwXqLSKOASryWaM=;
- b=OIvepFxvxDLAPj4V2XWeukhZ0nXZduGcS7p8nE8m+wtBIDq/76uQQ1eV
- Df04fftsBPqqlE+kUJk2IzH9bV9nyFZptEse245OSoH3/JE/DsMDhQB72
- 8NC1hHrZLwK3A0SYLKrFwEGWKQYQwBSP3KTr7Za2mS9taFDQ8YAOtArWQ
- 24Gnt8j7esaUhC0PthSXsy/FWa0Zon97fiA5E+dO51qLCxsdZCCBDIqqG
- 9O4c0hQQHlNVOROvFadPY5LEuXOQrzKEKmo6VZJzz9O32UHAG3CPz6eNP
- FcudxowWh4fEOluVveikKotsORnVzmfZQUbXwLUdGLqtkkXqAPH8/PPa/ w==;
-X-CSE-ConnectionGUID: 0YQWTNK3QF2KTD7bOnRbSw==
-X-CSE-MsgGUID: EIgCLx5QQjORN5j18BkLpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="83055076"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="83055076"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2026 01:27:22 -0700
-X-CSE-ConnectionGUID: Q2lzLf48ShOyqbuEp0zlcw==
-X-CSE-MsgGUID: hRfU1zogTq6E88CpX/qU5g==
+ t=1782203519; x=1813739519;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=JkYcj57H1ovILlb2E/TpyO7bG4Hb27JmwzRULfjU2YU=;
+ b=G280lZIHppGZUbYLHV/b6HylJYCG4v4RUe5PeO6cOHzm5DNY1IxWUj9y
+ K9Q/PrRM6GymsNnhG1C58JZWvKQbbaBi9hwZU9otZa8WDwT32igQf7IXD
+ q7eOMyyHOGYwZAt3m0PHsjBdJsQkelVyJ7F5etxyeR7e2IuuPvS5Kh2z4
+ suLvLWC7cRu8uLCeNhOYXyL1xJGNh+tnY/9C9YeaN7dSCvkAHo/g9DZhc
+ RAtDOwNTngA8KoNWVbZucyw4bbvEQ6OiLFnR6jCKJw8CG/BjrsA3fgXZQ
+ iq00yl2RWFZjGQjEhD4FKObT5/ycg5jMna3N1o4fUOM9tUYXEzZZTP3XN g==;
+X-CSE-ConnectionGUID: HoG5i+LqQfWXG4qOg5p25A==
+X-CSE-MsgGUID: 74bRIEmpQImaxP7KMwhq9A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82044838"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="82044838"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jun 2026 01:31:59 -0700
+X-CSE-ConnectionGUID: VRPT5L8STMa9PCz9nmTKmg==
+X-CSE-MsgGUID: 01FwGt50T7abqiqI8reXzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="243100921"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 01:27:21 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, pranay.samala@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/chamelium/kms_chamelium_audio: Add suspend/resume
- audio tests
-Date: Tue, 23 Jun 2026 13:57:14 +0530
-Message-ID: <20260623082714.3223393-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="249317289"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.35])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jun 2026 01:31:58 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Jeevan B <jeevan.b@intel.com>
+Subject: Re: [PATCH i-g-t v2 3/3] tests/kms_setmode: Use public igt_display
+ helper APIs
+In-Reply-To: <20260623080927.3216500-4-jeevan.b@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260623080927.3216500-1-jeevan.b@intel.com>
+ <20260623080927.3216500-4-jeevan.b@intel.com>
+Date: Tue, 23 Jun 2026 11:31:55 +0300
+Message-ID: <2bb1c45a9f509bbb17ba72de436cf0e7e563b2fc@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,222 +71,249 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test to validate audio works before and after suspend/resume on
-HDMI/DP connector.
+On Tue, 23 Jun 2026, Jeevan B <jeevan.b@intel.com> wrote:
+> Replace all direct access to igt_display_t internals with public
+> helper APIs to maintain proper encapsulation and improve forward
+> compatibility with IGT. This refactoring updates code to use
+> igt_display and igt_crtc accessors, adjusts function signatures
+> to pass objects instead of indices, and removes reliance on internal
+> struct fields, ensuring cleaner, more robust, and idiomatic
+> usage without changing functionality.
 
-v2: Perform a single suspend/resume for all audio combinations.
-    Re-enable chamelium after suspend and separate pre-suspend
-    and post-resume validation paths for clearer failure diagnostics.
-v3: Drop commit and use igt_assert_f with explicit messages to
-    distinguish failure in audio tests.
-v4: Updated test to avoid false-pass on zero executed configs.
-    Replace post-suspend forced re-enable with connector
-    re-probe/connected checks.
-v5: Remove unused variable and add chamelium_assert_reachable check.
-v6: Skip suspend/resume subtest when pre-suspend audio validation fails,
-    and update suspend subtest descriptions.
+These changes need to be folded into the previous patch instead of
+adding a broken intermediate step.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/chamelium/kms_chamelium_audio.c | 149 +++++++++++++++++++++++++-
- 1 file changed, 148 insertions(+), 1 deletion(-)
+>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  tests/kms_setmode.c | 68 ++++++++++++++++++++++++++++-----------------
+>  1 file changed, 43 insertions(+), 25 deletions(-)
+>
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index 419f5b518..1d5c4dfb0 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -334,12 +334,14 @@ static int get_encoder_idx(drmModeRes *resources, drmModeEncoder *encoder)
+>  }
+>  
+>  static void get_crtc_config_str(struct crtc_config *crtc, char *buf,
+> -				size_t buf_size)
+> +				size_t buf_size, igt_display_t *disp)
+>  {
+> -	igt_crtc_t *igt_crtc = &display.crtcs[crtc->crtc_idx];
+> +	igt_crtc_t *igt_crtc = igt_crtc_for_crtc_index(disp, crtc->crtc_idx);
+>  	int pos;
+>  	int i;
+>  
+> +	igt_assert(igt_crtc);
+> +
+>  	pos = snprintf(buf, buf_size,
+>  		       "CRTC[%d] [Pipe %s] Mode: %s@%dHz Connectors: ",
+>  		       igt_crtc->crtc_id, kmstest_pipe_name(igt_crtc->pipe),
+> @@ -374,7 +376,6 @@ static void setup_crtcs(const struct test_config *tconf,
+>  	/* Fetch resources locally only for encoder clone validity checks */
+>  	resources = drmModeGetResources(drm_fd);
+>  	igt_assert(resources);
+> -
+>  	encoder_usage_count = calloc(resources->count_encoders,
+>  				     sizeof(*encoder_usage_count));
+>  	igt_assert(encoder_usage_count);
+> @@ -409,15 +410,16 @@ static void setup_crtcs(const struct test_config *tconf,
+>  			igt_output_t *output;
+>  			drmModeConnector *connector;
+>  			drmModeEncoder *encoder;
+> -			igt_crtc_t *igt_crtc;
+> +			igt_crtc_t *crtc_obj;
 
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index df8d27c0c..1539286c9 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -52,6 +52,12 @@
-  * SUBTEST: hdmi-audio-edid
-  * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-  *              EDID-Like Data reports the correct audio parameters
-+ *
-+ * SUBTEST: dp-audio-after-suspend
-+ * Description: Verify audio works after system suspend/resume
-+ *
-+ * SUBTEST: hdmi-audio-after-suspend
-+ * Description: Verify audio works after system suspend/resume
-  */
- 
- /* Playback parameters control the audio signal we synthesize and send */
-@@ -695,6 +701,66 @@ static bool check_audio_configuration(struct alsa *alsa,
- 	return true;
- }
- 
-+static bool run_audio_test_once(chamelium_data_t *data,
-+				struct alsa *alsa,
-+				struct chamelium_port *port,
-+				snd_pcm_format_t format,
-+				int channels,
-+				int sampling_rate)
-+{
-+	struct audio_state state;
-+	bool success;
-+
-+	audio_state_init(&state, data, alsa, port, format, channels,
-+			 sampling_rate);
-+	success = test_audio_frequencies(&state);
-+	success &= test_audio_flatline(&state);
-+	audio_state_fini(&state);
-+
-+	return success;
-+}
-+
-+static bool run_audio_tests(chamelium_data_t *data,
-+			    struct alsa *alsa,
-+			    struct chamelium_port *port,
-+			    const char *audio_device)
-+{
-+	bool run = false;
-+	bool success = true;
-+	int ret, i, j;
-+	int channels, sampling_rate;
-+	snd_pcm_format_t format;
-+
-+	for (i = 0; i < test_sampling_rates_count; i++) {
-+		for (j = 0; j < test_formats_count; j++) {
-+			ret = alsa_open_output(alsa, audio_device);
-+			igt_assert_f(ret >= 0,
-+				     "Failed to open ALSA output\n");
-+
-+			format = test_formats[j];
-+			channels = PLAYBACK_CHANNELS;
-+			sampling_rate = test_sampling_rates[i];
-+
-+			if (!check_audio_configuration(alsa, format,
-+						       channels,
-+						       sampling_rate)) {
-+				alsa_close_output(alsa);
-+				continue;
-+			}
-+
-+			run = true;
-+
-+			success &= run_audio_test_once(data, alsa, port,
-+					      format, channels,
-+					      sampling_rate);
-+
-+			alsa_close_output(alsa);
-+		}
-+	}
-+
-+	return run && success;
-+}
-+
- static const char test_display_audio_desc[] =
- 	"Playback various audio signals with various audio formats/rates, "
- 	"capture them and check they are correct";
-@@ -762,8 +828,10 @@ static void test_display_audio(chamelium_data_t *data,
- 			sampling_rate = test_sampling_rates[i];
- 
- 			if (!check_audio_configuration(alsa, format, channels,
--						       sampling_rate))
-+					       sampling_rate)) {
-+				alsa_close_output(alsa);
- 				continue;
-+			}
- 
- 			run = true;
- 
-@@ -789,6 +857,75 @@ static void test_display_audio(chamelium_data_t *data,
- 	free(alsa);
- }
- 
-+static const char test_display_audio_suspend_resume_desc[] =
-+	"Verify audio works after system suspend/resume";
-+static void test_display_audio_suspend_resume(
-+				chamelium_data_t *data,
-+				struct chamelium_port *port,
-+				const char *audio_device,
-+				enum igt_custom_edid_type edid)
-+{
-+	struct alsa *alsa;
-+	igt_output_t *output;
-+	struct igt_fb fb;
-+	drmModeModeInfo *mode;
-+	drmModeConnector *connector;
-+	int fb_id;
-+
-+	igt_require(alsa_has_exclusive_access());
-+
-+	igt_require(chamelium_has_audio_support(data->chamelium,
-+						port));
-+
-+	alsa = alsa_init();
-+	igt_assert(alsa);
-+
-+	igt_modeset_disable_all_outputs(&data->display);
-+	chamelium_reset_state(&data->display, data->chamelium,
-+			      port, data->ports,
-+			      data->port_count);
-+	output = chamelium_prepare_output(data, port, edid);
-+
-+	connector = chamelium_port_get_connector(data->chamelium,
-+						 port, false);
-+	igt_assert(connector->count_modes > 0);
-+
-+	mode = &connector->modes[0];
-+
-+	fb_id = igt_create_color_pattern_fb(data->drm_fd,
-+					    mode->hdisplay,
-+					    mode->vdisplay,
-+					    DRM_FORMAT_XRGB8888,
-+					    DRM_FORMAT_MOD_LINEAR,
-+					    0, 0, 0, &fb);
-+	igt_assert(fb_id > 0);
-+
-+	chamelium_enable_output(data, port, output,
-+				mode, &fb);
-+
-+	igt_skip_on_f(!run_audio_tests(data, alsa, port, audio_device),
-+		      "Audio test setup failed, skipping suspend/resume audio test\n");
-+
-+	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+				      SUSPEND_TEST_NONE);
-+	chamelium_assert_reachable(data->chamelium, ONLINE_TIMEOUT);
-+
-+	/* Re-probe connector state after resume instead of forcing a re-enable. */
-+	drmModeFreeConnector(connector);
-+	connector = chamelium_port_get_connector(data->chamelium, port, true);
-+	igt_assert_f(connector->connection == DRM_MODE_CONNECTED,
-+		     "Connector disconnected after suspend/resume\n");
-+	igt_assert_f(connector->count_modes > 0,
-+		     "No modes available after suspend/resume\n");
-+
-+	igt_assert_f(run_audio_tests(data, alsa, port, audio_device),
-+		     "Audio test failed after suspend\n");
-+
-+	igt_remove_fb(data->drm_fd, &fb);
-+	drmModeFreeConnector(connector);
-+	free(alsa);
-+}
-+
- static const char test_display_audio_edid_desc[] =
- 	"Plug a connector with an EDID suitable for audio, check ALSA's "
- 	"EDID-Like Data reports the correct audio parameters";
-@@ -866,6 +1003,11 @@ int igt_main()
- 	connector_subtest("dp-audio-edid", DisplayPort, &data, test_display_audio_edid,
- 			  IGT_CUSTOM_EDID_DP_AUDIO);
- 
-+	igt_describe(test_display_audio_suspend_resume_desc);
-+	connector_subtest("dp-audio-after-suspend", DisplayPort, &data,
-+			  test_display_audio_suspend_resume,
-+			  "HDMI", IGT_CUSTOM_EDID_DP_AUDIO);
-+
- 	igt_describe("HDMI tests");
- 
- 	igt_describe(test_display_audio_desc);
-@@ -876,6 +1018,11 @@ int igt_main()
- 	connector_subtest("hdmi-audio-edid", HDMIA, &data, test_display_audio_edid,
- 			  IGT_CUSTOM_EDID_HDMI_AUDIO);
- 
-+	igt_describe(test_display_audio_suspend_resume_desc);
-+	connector_subtest("hdmi-audio-after-suspend", HDMIA, &data,
-+			  test_display_audio_suspend_resume,
-+			  "HDMI", IGT_CUSTOM_EDID_HDMI_AUDIO);
-+
- 	igt_fixture() {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
+Please no. The convention everywhere is igt_crtc_t *crtc. Use
+it. Everywhere.
+
+>  
+>  			crtc->cconfs[j] = cconf[i + j];
+>  			output = cconf[i + j].output;
+>  			connector = output->config.connector;
+> -			igt_crtc = &disp->crtcs[crtc->crtc_idx];
+> +			crtc_obj = igt_crtc_for_crtc_index(disp, crtc->crtc_idx);
+> +			igt_assert(crtc_obj);
+>  
+>  			/* Check CRTC/output compatibility using IGT helper */
+> -			config_valid &= igt_crtc_connector_valid(igt_crtc, output);
+> +			config_valid &= igt_crtc_connector_valid(crtc_obj, output);
+>  
+>  			/* Intel connectors have only a single encoder */
+>  			if (connector->count_encoders == 1) {
+> @@ -491,7 +493,7 @@ static void cleanup_crtcs(struct crtc_config *crtcs, int crtc_count)
+>  #define frame_time(km) (1000.0 * (km)->htotal * (km)->vtotal / (km)->clock)
+>  #define line_time(km) (1000.0 * (km)->htotal / (km)->clock)
+>  
+> -static bool check_timings(int crtc_idx, const drmModeModeInfo *kmode)
+> +static bool check_timings(igt_crtc_t *crtc, const drmModeModeInfo *kmode)
+>  {
+>  #define CALIBRATE_TS_STEPS 120 /* ~2s has to be less than 128! */
+>  	drmVBlank wait;
+> @@ -503,10 +505,9 @@ static bool check_timings(int crtc_idx, const drmModeModeInfo *kmode)
+>  	double mean;
+>  	double stddev;
+>  	int n;
+> -	int pipe_crtc_index = display.crtcs[crtc_idx].crtc_index;
+>  
+>  	memset(&wait, 0, sizeof(wait));
+> -	wait.request.type = kmstest_get_vbl_flag(pipe_crtc_index);
+> +	wait.request.type = igt_crtc_get_vbl_flag(crtc);
+>  	wait.request.type |= DRM_VBLANK_RELATIVE | DRM_VBLANK_NEXTONMISS;
+>  	do_or_die(drmWaitVBlank(drm_fd, &wait));
+>  
+> @@ -516,7 +517,7 @@ static bool check_timings(int crtc_idx, const drmModeModeInfo *kmode)
+>  	last_timestamp += wait.reply.tval_usec;
+>  
+>  	memset(&wait, 0, sizeof(wait));
+> -	wait.request.type = kmstest_get_vbl_flag(pipe_crtc_index);
+> +	wait.request.type = igt_crtc_get_vbl_flag(crtc);
+>  	wait.request.type |= DRM_VBLANK_ABSOLUTE | DRM_VBLANK_EVENT;
+>  	wait.request.sequence = last_seq;
+>  	for (n = 0; n < CALIBRATE_TS_STEPS; n++) {
+> @@ -526,7 +527,7 @@ static bool check_timings(int crtc_idx, const drmModeModeInfo *kmode)
+>  		do_or_die(drmWaitVBlank(drm_fd, &wait));
+>  
+>  		/* Double check that haven't already missed the vblank */
+> -		check.request.type = kmstest_get_vbl_flag(pipe_crtc_index);
+> +		check.request.type = igt_crtc_get_vbl_flag(crtc);
+>  		check.request.type |= DRM_VBLANK_RELATIVE;
+>  		do_or_die(drmWaitVBlank(drm_fd, &check));
+>  
+> @@ -649,7 +650,7 @@ retry:
+>  	}
+>  
+>  	for (i = 0; i < crtc_count; i++) {
+> -		get_crtc_config_str(&crtcs[i], str_buf[i], sizeof(str_buf[i]));
+> +		get_crtc_config_str(&crtcs[i], str_buf[i], sizeof(str_buf[i]), tconf->display);
+>  		crtc_strs[i] = &str_buf[i][0];
+>  	}
+>  
+> @@ -661,12 +662,13 @@ retry:
+>  
+>  	for (i = 0; i < crtc_count; i++) {
+>  		igt_plane_t *primary;
+> -		igt_crtc_t *igt_crtc;
+> +		igt_crtc_t *crtc_obj;
+>  		bool invalid_clone;
+>  		int j;
+>  
+>  		crtc = &crtcs[i];
+> -		igt_crtc = &display.crtcs[crtc->crtc_idx];
+> +		crtc_obj = igt_crtc_for_crtc_index(tconf->display, crtc->crtc_idx);
+> +		igt_assert(crtc_obj);
+>  
+>  		/* Treat this as expected failure for invalid tests.*/
+>  		invalid_clone = (tconf->flags & TEST_INVALID) &&
+> @@ -686,11 +688,11 @@ retry:
+>  		for (j = 0; j < crtc->connector_count; j++) {
+>  			igt_output_t *output = crtc->cconfs[j].output;
+>  
+> -			igt_output_set_crtc(output, igt_crtc);
+> +			igt_output_set_crtc(output, crtc_obj);
+>  			igt_output_override_mode(output, &crtc->mode);
+>  		}
+>  
+> -		primary = igt_crtc_get_plane_type(igt_crtc, DRM_PLANE_TYPE_PRIMARY);
+> +		primary = igt_crtc_get_plane_type(crtc_obj, DRM_PLANE_TYPE_PRIMARY);
+>  		igt_plane_set_fb(primary, &crtc->fb_info);
+>  	}
+>  
+> @@ -698,8 +700,13 @@ retry:
+>  					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>  
+>  	if (is_intel_device(drm_fd) && ret == 0) {
+> -		for (i = 0; i < crtc_count; i++)
+> -			intel_drrs_disable(&display.crtcs[crtcs[i].crtc_idx]);
+> +		for (i = 0; i < crtc_count; i++) {
+> +			igt_crtc_t *crtc_obj = igt_crtc_for_crtc_index(tconf->display,
+> +							       crtcs[i].crtc_idx);
+> +
+> +			igt_assert(crtc_obj);
+> +			intel_drrs_disable(crtc_obj);
+> +		}
+>  	}
+>  
+>  	if (ret < 0) {
+> @@ -721,9 +728,12 @@ retry:
+>  
+>  	if (ret == 0 && tconf->flags & TEST_TIMINGS) {
+>  		bool status = false;
+> +		igt_crtc_t *crtc_obj = igt_crtc_for_crtc_index(tconf->display,
+> +						       crtcs[0].crtc_idx);
+> +		igt_assert(crtc_obj);
+>  
+>  		for (int attempt = 1; attempt <= 2; attempt++) {
+> -			status = check_timings(crtcs[0].crtc_idx, &crtcs[0].mode);
+> +			status = check_timings(crtc_obj, &crtcs[0].mode);
+>  			if (status)
+>  				break;
+>  			igt_info("Timing check failed on attempt %d, retrying...\n", attempt);
+> @@ -736,13 +746,16 @@ retry:
+>  }
+>  
+>  static int get_test_name_str(struct crtc_config *crtc, char *buf,
+> -				size_t buf_size)
+> +				size_t buf_size, igt_display_t *disp)
+
+Parameters should be ordered from the highest level context to the
+lowest level. igt_display_t *display should be first.
+
+>  {
+> +	igt_crtc_t *crtc_obj = igt_crtc_for_crtc_index(disp, crtc->crtc_idx);
+>  	int pos;
+>  	int i;
+>  
+> +	igt_assert(crtc_obj);
+> +
+>  	pos = snprintf(buf, buf_size, "pipe-%s-",
+> -		       kmstest_pipe_name(display.crtcs[crtc->crtc_idx].pipe));
+> +		       kmstest_pipe_name(crtc_obj->pipe));
+>  
+>  	for (i = 0; i < crtc->connector_count; i++) {
+>  		drmModeConnector *connector = crtc->cconfs[i].output->config.connector;
+> @@ -774,7 +787,9 @@ static void test_one_combination(const struct test_config *tconf,
+>  		for (i = 0; i < crtc_count; i++) {
+>  			if (i > 0)
+>  				pos += snprintf(&test_name[pos], ARRAY_SIZE(test_name) - pos, "-");
+> -			pos += get_test_name_str(&crtcs[i], &test_name[pos], ARRAY_SIZE(test_name) - pos);
+> +			pos += get_test_name_str(&crtcs[i], &test_name[pos],
+> +						 ARRAY_SIZE(test_name) - pos,
+> +						 tconf->display);
+>  		}
+>  
+>  		if (!is_intel_device(drm_fd))
+> @@ -783,7 +798,8 @@ static void test_one_combination(const struct test_config *tconf,
+>  		for (i = 0; i < crtc_count; i++) {
+>  			struct crtc_config *crtc = &crtcs[i];
+>  			char conn_name[64], prev_conn_name[64];
+> -			int n_valid_crtcs = get_crtc_count(tconf->display->n_crtcs, extended);
+> +			int n_valid_crtcs = get_crtc_count(igt_display_n_crtcs(tconf->display),
+> +							  extended);
+>  
+>  			snprintf(conn_name, sizeof(conn_name), "%s",
+>  				 igt_output_name(crtc->cconfs->output));
+> @@ -933,7 +949,8 @@ static void test_combinations(const struct test_config *tconf,
+>  	struct combination_set crtc_combs;
+>  	struct connector_config *cconfs;
+>  	int i;
+> -	int crtc_count = get_crtc_count(tconf->display->n_crtcs, extended);
+> +	int crtc_count = get_crtc_count(igt_display_n_crtcs(tconf->display),
+> +					  extended);
+>  
+>  	igt_assert(tconf->display);
+>  
+> @@ -986,7 +1003,8 @@ free_cconfs:
+>  static void run_test(const struct test_config *tconf)
+>  {
+>  	int connector_num;
+> -	int crtc_count = get_crtc_count(tconf->display->n_crtcs, extended);
+> +	int crtc_count = get_crtc_count(igt_display_n_crtcs(tconf->display),
+> +					  extended);
+>  
+>  	connector_num = tconf->flags & TEST_CLONE ? 2 : 1;
+>  	for (; connector_num <= crtc_count; connector_num++)
+
 -- 
-2.43.0
-
+Jani Nikula, Intel
