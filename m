@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63271CDB46F
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 11:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F7DBCD98F2
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 11:16:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 173D310EAA7;
-	Tue, 23 Jun 2026 11:16:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0682410EA9A;
+	Tue, 23 Jun 2026 11:16:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YNiZGEox";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j//2uu6r";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2301B10EA9A
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 11:15:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4A8310EA9A
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 11:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782213318; x=1813749318;
+ t=1782213333; x=1813749333;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=5BojPd5f8DnIvZbFo+o0gIRqFFq47sKzGGadHQw8t24=;
- b=YNiZGEoxLtmuGbpMNWBc7JwTjevCJ6xVM1uKZzKdt9zZuUjH1XiwkTY6
- 5S23fyYgwv1TeqB1x9pVgUvKePeHqVtBNChgfyiuLxadG9mVQQPPvDnpq
- 3qSioPCevz/eq4v6BOvJi3r4EbI5FQFiy4ZF/iIaoPrT9p158CCRFeMQv
- 5advhZUwh/wSDQu9a6tsveYjQo8GH0CElfL9T7GDqG2nKiQL03oid/eXa
- JFT9RgHuqLnh8/rbTesV49uqEDjauaxYlrwjokbEtZ5zNdkJEonldoQ1b
- FNBT29ZqwwOZe+L/mpaoSdzsfjrzZYFQmkGPO5aE1y4IqCLDZQyjnFtKC g==;
-X-CSE-ConnectionGUID: g0w9/GjOSxO8zgmpyipsMw==
-X-CSE-MsgGUID: 0i2lZpreSSeOfGW4PWZbyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="108496958"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="108496958"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2026 04:15:18 -0700
-X-CSE-ConnectionGUID: JnuNfJvTQ2ewvOT7Z3jU1w==
-X-CSE-MsgGUID: 9lIFkvK6Q4aPrjw9XBuXiQ==
+ bh=otQDI2cs4CC28LNPUpr7VT6jZ0rRfxHGDoBpq01bG6I=;
+ b=j//2uu6rjd7qK83W4Xa+8e400Ehn9jKWfrOmlPGwtjB7th8iJphfR8DF
+ fz4w3XK2BG55y8vY5ZsGrxKShkIsNodArLhD+/VXoD3sORyqrrwxM62Pc
+ kweQPw9N/uc56RAkyzOIQQ3JsKT9gJ2G9BO6/moJ0qFBXkgLJmwfcA85A
+ 4e0uGYjHlePw/EklpdQd7+jjpVCT1fgkQ1parbGN+AKBE5mScFzRsKbPz
+ TI65Kob/PQoPfwk8aqgpU0I+3ytRgbsXeBAg+TxyuxA+xmYCIUeb5cU+f
+ Ej/avQMWtFlRRIEJDtWjTK2GZaePiKCA+nYtLT1uJbDjuzEA9Zj4WY6JR g==;
+X-CSE-ConnectionGUID: wi0d/YhCQMKgPkGmTyN34A==
+X-CSE-MsgGUID: Ko5qaAUJRYyUnFzSEUqkww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="85507705"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="85507705"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jun 2026 04:04:05 -0700
+X-CSE-ConnectionGUID: 8u83WMOUSRKznt+P6qhFDA==
+X-CSE-MsgGUID: G1a0FMTKS6idXjDXCP2jqQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="249610557"
-Received: from priyanka.iind.intel.com ([10.190.216.153])
- by orviesa009.jf.intel.com with ESMTP; 23 Jun 2026 04:15:16 -0700
-From: priyanka.dandamudi@intel.com
-To: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org,
- niranjana.vishwanathapura@intel.com, ramadevi.gandi@intel.com,
- dwarakanath.ramadeva@intel.com, kamil.konieczny@linux.intel.com
-Subject: [PATCH i-g-t 2/2] tests/intel/xe*.c: Add documentation to multi-queue
- tests and subtests.
-Date: Tue, 23 Jun 2026 16:45:13 +0530
-Message-ID: <20260623111510.1651747-6-priyanka.dandamudi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="273542629"
+Received: from jeevan24.iind.intel.com ([10.223.74.58])
+ by fmviesa001.fm.intel.com with ESMTP; 23 Jun 2026 04:04:05 -0700
+From: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH v4] tests/intel/xe_configfs: Improve coverage of show/store
+ paths
+Date: Tue, 23 Jun 2026 16:28:55 +0530
+Message-ID: <20260623105855.171040-1-smitha.balasubramanyam@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260623111510.1651747-4-priyanka.dandamudi@intel.com>
-References: <20260623111510.1651747-4-priyanka.dandamudi@intel.com>
+In-Reply-To: <20260416090755.1025223-1-smitha.balasubramanyam@intel.com>
+References: <20260416090755.1025223-1-smitha.balasubramanyam@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,424 +66,194 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Add two new subtests that exercise both the store and show paths of
+the enable_psmi and sriov/max_vfs configfs attributes:
 
-Add Mega feature and Sub-category fields to multi-queue tests and subtests.
+  - psmi-enable-disable
+  - sriov-max-vfs-store-show
 
-v2: Do not make single params, instead directly code it in evict
-documentation and some nits in reset test.
+Each writes a value with the driver unbound and reads it back to
+confirm the stored value is reported correctly.
 
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Also enhance the existing subtests to additionally cover the show
+path of their respective attributes:
+
+  - survivability-mode: read survivability_mode back after enabling
+    it, confirming the configfs value reflects what was stored.
+  - engines-allowed: read engines_allowed back after each write.
+  - gt-types-allowed: read gt_types_allowed back after each write,
+    requiring a non-empty readback when the input was non-empty.
+
+Changes since v3:
+ Fixed the rebase issue
+
+Signed-off-by: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
 ---
- tests/intel/xe_evict.c           | 62 ++++++++++++++++++------
- tests/intel/xe_exec_fault_mode.c | 81 ++++++++++++++++++++++----------
- tests/intel/xe_exec_reset.c      | 52 +++++++++++++++-----
- tests/intel/xe_exec_threads.c    | 44 ++++++++++-------
- 4 files changed, 169 insertions(+), 70 deletions(-)
+ tests/intel/xe_configfs.c | 103 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 102 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-index 3f1d6cb9ce..5a7298db04 100644
---- a/tests/intel/xe_evict.c
-+++ b/tests/intel/xe_evict.c
-@@ -559,11 +559,7 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  * arg[1]:
-  *
-  * @small:			small
-- * @small-multi-queue:		small multi queue
-- * @small-multi-queue-priority:
-- * 				small multi queue priority
-  * @small-external:		small external
-- * @small-external-multi-queue: small external multi queue
-  * @small-multi-vm:		small multi VM
-  * @beng-small:			small bind exec_queue
-  * @beng-small-external:	small external bind exec_queue
-@@ -593,12 +589,7 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  * arg[1]:
-  *
-  * @small-cm:			small compute machine
-- * @small-multi-queue-cm:	small multi queue compute machine
-- * @small-multi-queue-priority-cm:
-- * 				small multi queue priority compute machine
-  * @small-external-cm:		small external compute machine
-- * @small-external-multi-queue-cm:
-- * 				small external compute machine multi queue
-  * @small-multi-vm-cm:		small multi VM compute machine
-  * @beng-small-cm:		small bind exec_queue compute machine
-  * @beng-small-external-cm:	small external bind exec_queue compute machine
-@@ -629,8 +620,6 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  * arg[1]:
-  *
-  * @mixed-threads-small:	mixed threads small
-- * @mixed-threads-small-multi-queue:
-- * 				mixed threads small multi queue
-  * @mixed-many-threads-small:	mixed many threads small
-  * @mixed-threads-small-multi-vm:
-  * 				mixed threads small multi vm
-@@ -668,8 +657,6 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  *
-  * arg[1]:
-  * @cm-threads-small:		compute mode threads small
-- * @cm-threads-small-multi-queue:
-- * 				compute mode threads small multi queue
-  * @cm-threads-small-multi-vm:	compute mode threads small multi vm
-  * @beng-cm-threads-small:	bind exec_queue compute mode threads small
-  * @beng-cm-threads-small-multi-vm:
-@@ -700,7 +687,6 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  *
-  * @threads-small:		threads small
-  * @beng-threads-small:		bind exec_queue threads small
-- * @threads-small-multi-queue:	threads small multi queue
-  * @threads-small-multi-vm:	threads small multi vm
-  * @beng-threads-small-multi-vm:
-  *				bind exec_queue threads small multi vm
-@@ -722,6 +708,54 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  * @beng-threads-large:		bind exec_queue threads large
-  *
-  */
-+/**
-+ * SUBTEST: evict-%s
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description:  %arg[1] evict test.
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @small-multi-queue:		small multi queue
-+ * @small-multi-queue-priority:	small multi queue priority
-+ * @small-external-multi-queue: small external multi queue
-+ *
-+ * SUBTEST: evict-%s
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description:  %arg[1] evict test.
-+ * Feature: compute machine
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @small-multi-queue-cm:	small multi queue compute machine
-+ * @small-multi-queue-priority-cm:	small multi queue priority compute machine
-+ * @small-external-multi-queue-cm:	small external compute machine multi queue
-+ *
-+ * SUBTEST: evict-mixed-threads-small-multi-queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description:  mixed threads small multi queue evict test.
-+ * Feature: mixed threads
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: evict-cm-threads-small-multi-queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description:  compute mode threads small multi queue evict test.
-+ * Feature: compute mode threads
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: evict-threads-small-multi-queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description:  threads small multi queue evict test.
-+ * Feature: threads
-+ * Test category: functionality test
-+ *
-+ */
+diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+index 450c0a119..0f3e3ef27 100644
+--- a/tests/intel/xe_configfs.c
++++ b/tests/intel/xe_configfs.c
+@@ -94,6 +94,10 @@ static void test_survivability_mode(int configfs_device_fd)
+ 	fd = open(path, O_RDONLY);
+ 	igt_assert_f(fd >= 0, "Survivability mode not set\n");
+ 	close(fd);
++
++	/* Verify survivability_mode was applied and persists in configfs */
++	igt_assert_f(igt_sysfs_get_boolean(configfs_device_fd, "survivability_mode"),
++		     "survivability_mode read back false after enabling\n");
+ }
  
- /*
-  * Table driven test that attempts to cover all possible scenarios of eviction
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 4649c67de7..7277eb007c 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -78,14 +78,6 @@
-  *					bindexecqueue userptr invalidate
-  * @bindexecqueue-userptr-invalidate-race:
-  *					bindexecqueue userptr invalidate race
-- * @multi-queue:			multi-queue
-- * @multi-queue-userptr:		multi-queue userptr
-- * @multi-queue-rebind:			multi-queue rebind
-- * @multi-queue-userptr-rebind:		multi-queue userptr rebind
-- * @multi-queue-userptr-invalidate:
-- *					multi-queue userptr invalidate
-- * @multi-queue-userptr-invalidate-race:
-- *					multi-queue userptr invalidate race
-  * @basic-imm:				basic imm
-  * @userptr-imm:			userptr imm
-  * @rebind-imm:				rebind imm
-@@ -101,15 +93,6 @@
-  *					bindexecqueue userptr invalidate imm
-  * @bindexecqueue-userptr-invalidate-race-imm:
-  *					bindexecqueue userptr invalidate race imm
-- * @multi-queue-imm:			multi-queue imm
-- * @multi-queue-userptr-imm:		multi-queue userptr imm
-- * @multi-queue-rebind-imm:		multi-queue rebind imm
-- * @multi-queue-userptr-rebind-imm:
-- *					multi-queue userptr rebind imm
-- * @multi-queue-userptr-invalidate-imm:
-- *					multi-queue userptr invalidate imm
-- * @multi-queue-userptr-invalidate-race-imm:
-- *					multi-queue userptr invalidate race imm
-  * @basic-prefetch:			basic prefetch
-  * @userptr-prefetch:			userptr prefetch
-  * @rebind-prefetch:			rebind prefetch
-@@ -124,17 +107,63 @@
-  *					bindexecqueue userptr invalidate prefetch
-  * @bindexecqueue-userptr-invalidate-race-prefetch:
-  *					bindexecqueue userptr invalidate race prefetch
-- * @multi-queue-prefetch:		multi-queue prefetch
-- * @multi-queue-userptr-prefetch:	multi-queue userptr prefetch
-- * @multi-queue-rebind-prefetch:	multi-queue rebind prefetch
-- * @multi-queue-userptr-rebind-prefetch:	multi-queue userptr rebind prefetch
-- * @multi-queue-userptr-invalidate-prefetch:
-- *					multi-queue userptr invalidate prefetch
-- * @multi-queue-userptr-invalidate-race-prefetch:
-- *					multi-queue userptr invalidate race prefetch
-  * @invalid-fault:			invalid fault
-  * @invalid-userptr-fault:		invalid userptr fault
-- * @multi-queue-invalid-fault:		multi-queue invalid fault
-+ */
-+/**
-+ * SUBTEST: once-%s
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Run %arg[1] fault mode test only once
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: twice-%s
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Run %arg[1] fault mode test twice
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: many-%s
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Run %arg[1] fault mode test many times
-+ * Test category: stress test
-+ *
-+ * SUBTEST: many-execqueues-%s
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Run %arg[1] fault mode test on many exec_queues
-+ * Test category: stress test
-+ *
-+ * arg[1]:
-+ *
-+ * @multi-queue:                        multi-queue
-+ * @multi-queue-userptr:                multi-queue userptr
-+ * @multi-queue-rebind:                 multi-queue rebind
-+ * @multi-queue-userptr-rebind:         multi-queue userptr rebind
-+ * @multi-queue-userptr-invalidate:
-+ *                                      multi-queue userptr invalidate
-+ * @multi-queue-userptr-invalidate-race:
-+ *                                      multi-queue userptr invalidate race
-+ * @multi-queue-imm:                    multi-queue imm
-+ * @multi-queue-userptr-imm:            multi-queue userptr imm
-+ * @multi-queue-rebind-imm:             multi-queue rebind imm
-+ * @multi-queue-userptr-rebind-imm:
-+ *                                      multi-queue userptr rebind imm
-+ * @multi-queue-userptr-invalidate-imm:
-+ *                                      multi-queue userptr invalidate imm
-+ * @multi-queue-userptr-invalidate-race-imm:
-+ *                                      multi-queue userptr invalidate race imm
-+ * @multi-queue-prefetch:               multi-queue prefetch
-+ * @multi-queue-userptr-prefetch:       multi-queue userptr prefetch
-+ * @multi-queue-rebind-prefetch:        multi-queue rebind prefetch
-+ * @multi-queue-userptr-rebind-prefetch:
-+ *                                      multi-queue userptr rebind prefetch
-+ * @multi-queue-userptr-invalidate-prefetch:
-+ *                                      multi-queue userptr invalidate prefetch
-+ * @multi-queue-userptr-invalidate-race-prefetch:
-+ *                                      multi-queue userptr invalidate race prefetch
-+ * @multi-queue-invalid-fault:          multi-queue invalid fault
-  * @multi-queue-invalid-userptr-fault:  multi-queue invalid userptr fault
-  */
+ /**
+@@ -147,9 +151,16 @@ static void test_engines_allowed(int configfs_device_fd)
  
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 4634c24d94..044d8f007e 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -350,9 +350,13 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
-  * Description: Test long spinners with many preemptable jobs, use queues again spinners complete on media GT
-  *
-  * SUBTEST: multi-queue-long-spin-many-queue-switch
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-  * Description: Test long spinners with many jobs with multi-queue switching
-  *
-  * SUBTEST: multi-queue-long-spin-reuse-many-queue-switch
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-  * Description: Test long spinners with many jobs with multi-queue switching, use queues again once spinners complete
-  *
-  * SUBTEST: gt-reset
-@@ -383,43 +387,67 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
-  * Description: Test compute mode close exec_queues close fd
-  *
-  * SUBTEST: multi-queue-cat-error
-- * Description: Test cat error with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test cat error with Multi-Queue
-  *
-  * SUBTEST: multi-queue-cat-error-on-secondary
-- * Description: Test cat error with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test cat error with Multi-Queue
-  *              on a secondary queue
-  *
-  * SUBTEST: multi-queue-gt-reset
-- * Description: Test GT reset with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test GT reset with Multi-Queue
-  *
-  * SUBTEST: multi-queue-cancel
-- * Description: Test engine reset with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test engine reset with Multi-Queue
-  *
-  * SUBTEST: multi-queue-cancel-on-secondary
-- * Description: Test engine reset with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test engine reset with Multi-Queue
-  *              on a secondary queue
-  *
-  * SUBTEST: multi-queue-close-fd
-- * Description: Test close fd with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test close fd with Multi-Queue
-  *
-  * SUBTEST: multi-queue-close-execqueues
-- * Description: Test close execqueues with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test close execqueues with Multi-Queue
-  *
-  * SUBTEST: cm-multi-queue-cat-error
-- * Description: Test compute mode cat error with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test compute mode cat error with Multi-Queue
-  *
-  * SUBTEST: cm-multi-queue-cat-error-on-secondary
-- * Description: Test compute mode cat error with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test compute mode cat error with Multi-Queue
-  *              on a secondary queue
-  *
-  * SUBTEST: cm-multi-queue-gt-reset
-- * Description: Test compute mode GT reset with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test compute mode GT reset with Multi-Queue
-  *
-  * SUBTEST: cm-multi-queue-close-fd
-- * Description: Test compute mode close fd with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test compute mode close fd with Multi-Queue
-  *
-  * SUBTEST: cm-multi-queue-close-execqueues
-- * Description: Test compute mode close execqueues with multi_queue
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Test compute mode close execqueues with Multi-Queue
-  */
+ 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
+ 		const char *v = values[i];
++		char *readback;
  
- static void
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 24dae2b52b..0480df779e 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -1203,6 +1203,14 @@ static void *thread(void *data)
-  *	balancer mixed fd userptr invalidate
-  * @bal-mixed-fd-userptr-invalidate-race:
-  *	balancer mixed fd userptr invalidate race
-+ */
+ 		igt_debug("Writing '%s' to engines_allowed\n", v);
+ 		igt_assert(igt_sysfs_set(configfs_device_fd, "engines_allowed", v));
++
++		readback = igt_sysfs_get(configfs_device_fd, "engines_allowed");
++		igt_assert_f(readback, "Failed to read engines_allowed after writing '%s'\n", v);
++		igt_debug("engines_allowed: wrote '%s' -> read back '%s'\n",
++			  v, readback);
++		free(readback);
+ 	}
+ }
+ 
+@@ -178,9 +189,23 @@ static void test_gt_types_allowed(int configfs_device_fd)
+ 
+ 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
+ 		const char *v = values[i];
++		char *readback;
+ 
+ 		igt_debug("Writing '%s' to gt_types_allowed\n", v);
+ 		igt_assert(igt_sysfs_set(configfs_device_fd, "gt_types_allowed", v));
++
++		/*
++		 * Read the gt_types_allowed attr back. Writing "" clears
++		 * the typemask, so allow an empty readback only when the
++		 * input was empty.
++		 */
++		readback = igt_sysfs_get(configfs_device_fd, "gt_types_allowed");
++		igt_assert_f(readback,
++			     "Failed to read gt_types_allowed after writing '%s'\n", v);
++		igt_assert_f(*v == '\0' || *readback != '\0',
++			     "gt_types_allowed read back empty after writing non-empty '%s'\n", v);
++		igt_debug("gt_types_allowed read back: '%s'\n", readback);
++		free(readback);
+ 	}
+ 
+ 	for (size_t i = 0; i < ARRAY_SIZE(invalid_values); i++) {
+@@ -350,6 +375,54 @@ static void test_ctx_restore(int configfs_device_fd, const char *type,
+ 	}
+ }
+ 
 +/**
-+ * SUBTEST: threads-%s
-+ * Mega feature: Multi-Queue
-+ * Sub-category: Multi-Queue tests
-+ * Description: Run threads %arg[1] test with multi threads
-+ *
-+ * arg[1]:
-  * @multi-queue-basic:
-  *	multi-queue basic
-  * @multi-queue-userptr:
-@@ -1244,49 +1252,49 @@ static void *thread(void *data)
-  * @multi-queue-fd-userptr-invalidate-race:
-  *	multi-queue fd userptr invalidate race
-  * @multi-queue-hang-basic:
-- *     multi-queue hang basic
-+ *	multi-queue hang basic
-  * @multi-queue-hang-fd-userptr-invalidate-race:
-  *	multi-queue hang fd userptr invalidate race
-  * @multi-queue-mixed-basic:
-  *	multi-queue mixed basic
-  * @multi-queue-mixed-userptr:
-- *	multi-queue-mixed userptr
-+ *	multi-queue mixed userptr
-  * @multi-queue-mixed-rebind:
-- *	multi-queue-mixed rebind
-+ *	multi-queue mixed rebind
-  * @multi-queue-mixed-userptr-rebind:
-- *	multi-queue-mixed userptr rebind
-+ *	multi-queue mixed userptr rebind
-  * @multi-queue-mixed-userptr-invalidate:
-- *	multi-queue-mixed userptr invalidate
-+ *	multi-queue mixed userptr invalidate
-  * @multi-queue-mixed-userptr-invalidate-race:
-- *	multi-queue-mixed userptr invalidate race
-+ *	multi-queue mixed userptr invalidate race
-  * @multi-queue-mixed-shared-vm-basic:
-  *	multi-queue mixed shared vm basic
-  * @multi-queue-mixed-shared-vm-userptr:
-- *	multi-queue-mixed shared vm userptr
-+ *	multi-queue mixed shared vm userptr
-  * @multi-queue-mixed-shared-vm-rebind:
-- *	multi-queue-mixed shared vm rebind
-+ *	multi-queue mixed shared vm rebind
-  * @multi-queue-mixed-shared-vm-userptr-rebind:
-- *	multi-queue-mixed shared vm userptr rebind
-+ *	multi-queue mixed shared vm userptr rebind
-  * @multi-queue-mixed-shared-vm-userptr-invalidate:
-- *	multi-queue-mixed shared vm userptr invalidate
-+ *	multi-queue mixed shared vm userptr invalidate
-  * @multi-queue-mixed-shared-vm-userptr-invalidate-race:
-- *	multi-queue-mixed shared vm userptr invalidate race
-+ *	multi-queue mixed shared vm userptr invalidate race
-  * @multi-queue-mixed-fd-basic:
-  *	multi-queue mixed fd basic
-  * @multi-queue-mixed-fd-userptr:
-- *	multi-queue-mixed fd userptr
-+ *	multi-queue mixed fd userptr
-  * @multi-queue-mixed-fd-rebind:
-- *	multi-queue-mixed fd rebind
-+ *	multi-queue mixed fd rebind
-  * @multi-queue-mixed-fd-userptr-rebind:
-- *	multi-queue-mixed fd userptr rebind
-+ *	multi-queue mixed fd userptr rebind
-  * @multi-queue-mixed-fd-userptr-invalidate:
-- *	multi-queue-mixed fd userptr invalidate
-+ *	multi-queue mixed fd userptr invalidate
-  * @multi-queue-mixed-fd-userptr-invalidate-race:
-- *	multi-queue-mixed fd userptr invalidate race
-+ *	multi-queue mixed fd userptr invalidate race
-  * @multi-queue-cm-basic:
-- * 	multi-queue cm basic
-+ *	multi-queue cm basic
-  * @multi-queue-cm-fd-basic:
-- * 	multi-queue cm fd basic
-+ *	multi-queue cm fd basic
-  * @multi-queue-cm-userptr:
-  *	multi-queue compute mode userptr
-  * @multi-queue-cm-rebind:
++ * SUBTEST: psmi-enable-disable
++ * Description: Validate enable_psmi attribute by round-tripping enable/disable
++ */
++static void test_psmi_enable_disable(int configfs_device_fd)
++{
++	/* Check presence of the enable_psmi configfs attribute */
++	igt_assert(!igt_sysfs_get_boolean(configfs_device_fd, "enable_psmi"));
++
++	/* Unbind the driver so the attribute becomes writable */
++	igt_audio_driver_unload(NULL);
++	igt_kmod_unbind("xe", bus_addr);
++
++	/* Enable: write "1" and read it back */
++	igt_assert(igt_sysfs_set(configfs_device_fd, "enable_psmi", "1"));
++	igt_assert_f(igt_sysfs_get_boolean(configfs_device_fd, "enable_psmi"),
++		     "Failed to read enable_psmi after writing 1\n");
++
++	/* Disable: write "0" and read it back */
++	igt_assert(igt_sysfs_set(configfs_device_fd, "enable_psmi", "0"));
++	igt_assert_f(!igt_sysfs_get_boolean(configfs_device_fd, "enable_psmi"),
++		     "Failed to read enable_psmi after writing 0\n");
++}
++
++/**
++ * SUBTEST: sriov-max-vfs-store-show
++ * Description: Validate SRIOV Max VFs store and show functionality
++ */
++static void test_sriov_max_vfs_store_show(int configfs_device_fd)
++{
++	uint32_t max_vfs = 0;
++	const uint32_t requested_max_vfs = 1;
++
++	/* Unbind the driver so the attribute becomes writable */
++	igt_audio_driver_unload(NULL);
++	igt_kmod_unbind("xe", bus_addr);
++
++	/* Perform sriov/max_vfs store/show operations. */
++	igt_require_f(igt_sysfs_set(configfs_device_fd, "sriov/max_vfs", "1"),
++		      "Failed to write sriov/max_vfs\n");
++	igt_debug("sriov/max_vfs wrote value: %u\n", requested_max_vfs);
++
++	igt_require_f(__igt_sysfs_get_u32(configfs_device_fd, "sriov/max_vfs", &max_vfs),
++		      "Failed to read sriov/max_vfs after writing 1\n");
++	igt_debug("sriov/max_vfs read back value: %u\n", max_vfs);
++	igt_assert_eq_u32(max_vfs, requested_max_vfs);
++}
++
+ static void set_bus_addr(int fd)
+ {
+ 	pci_dev = igt_device_get_pci_device(fd);
+@@ -377,7 +450,8 @@ static void close_configfs_group(int configfs_fd, int configfs_device_fd)
+ int igt_main()
+ {
+ 	int fd, configfs_fd, configfs_device_fd;
+-	bool is_vf_device;
++	bool is_vf_device, is_pf_device;
++	unsigned int enabled_vfs = 0;
+ 	bool has_survivability;
+ 	const char *engine = NULL;
+ 
+@@ -386,6 +460,9 @@ int igt_main()
+ 
+ 		fd = drm_open_driver(DRIVER_XE);
+ 		is_vf_device = intel_is_vf_device(fd);
++		is_pf_device = igt_sriov_is_pf(fd);
++		if (is_pf_device)
++			enabled_vfs = igt_sriov_get_enabled_vfs(fd);
+ 		has_survivability = xe_has_survivability(fd);
+ 		set_bus_addr(fd);
+ 
+@@ -470,6 +547,30 @@ int igt_main()
+ 		close_configfs_group(configfs_fd, configfs_device_fd);
+ 	}
+ 
++	igt_describe("Validate enable_psmi enable/disable round-trip");
++	igt_subtest("psmi-enable-disable") {
++		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		test_psmi_enable_disable(configfs_device_fd);
++		close_configfs_group(configfs_fd, configfs_device_fd);
++	}
++
++	igt_describe("Validate SRIOV Max Vfs Store and Show functionality");
++	igt_subtest("sriov-max-vfs-store-show") {
++		if (!is_pf_device)
++			igt_skip("sriov-max-vfs-store-show requires an SR-IOV PF device\n");
++
++		if (enabled_vfs != 0)
++			igt_skip("sriov-max-vfs-store-show requires no enabled VFs (found %u)\n",
++				 enabled_vfs);
++		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		if (!igt_sysfs_has_attr(configfs_device_fd, "sriov/max_vfs")) {
++			close_configfs_group(configfs_fd, configfs_device_fd);
++			igt_skip("configfs sriov/max_vfs attribute is not available on this platform\n");
++		}
++		test_sriov_max_vfs_store_show(configfs_device_fd);
++		close_configfs_group(configfs_fd, configfs_device_fd);
++	}
++
+ 	igt_fixture() {
+ 		close(configfs_fd);
+ 	}
 -- 
 2.43.0
 
