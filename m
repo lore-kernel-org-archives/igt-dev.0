@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71775CDB46F
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 12:05:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC17BCD98F2
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jun 2026 12:15:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 22BD010E94E;
-	Tue, 23 Jun 2026 12:05:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B59310EAEA;
+	Tue, 23 Jun 2026 12:15:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EhAVWSqt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MBcVVQXH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9513110EAE6
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 12:05:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C69E410EAEA
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2026 12:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782216326; x=1813752326;
+ t=1782216924; x=1813752924;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=DD/DRHWFKGMjjHZVwP9nsS0XJ4lLZhkT9aVCw2BIn3c=;
- b=EhAVWSqthIP5JfHIWxZYj8eusX4znbZ+3/pwtl9tyfrfS68MPvip8TFV
- F7DBWuFh/wwbWZWr3C5tEk7e1QtDEeApra/qbswTmb0X/ZClAqk0pP2TH
- HUxVNdOHX3+brsn0kckzLmGbA10HixPnDVADYoSR/h2ymhfUfeulY7CcW
- o3kJeP+viFE/PNTcFSKHNBcQPCubIohfMPvzeWPa04oe2UDEBBP/3rFHN
- ESUQl3ghiQRJU0nrtHQy4TdVLkplD7VMNg8jO9jZri0ahW7DcO1PPYiXy
- lDW7g6qhUEVmi2GlXpFoZOtVA3nAYxrSpmTY3zRlWJ9dAfrZAwqUB7NHH A==;
-X-CSE-ConnectionGUID: /56Cf6PxRDa/O7J6A+5Ccg==
-X-CSE-MsgGUID: P2/WtyKlQWqK43SxgGRnxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="83146604"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="83146604"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2026 05:05:26 -0700
-X-CSE-ConnectionGUID: iKl+wj11SxaUHAqe0ZmDoQ==
-X-CSE-MsgGUID: oAeU05aOTu6VIv7RxZc8gA==
+ bh=p5lGM13aeFz002i2fJ45+WMFhiPHztn31/SOL+KuI9Y=;
+ b=MBcVVQXH05aLG26TXPggbSv/yZ2hIZ49k3scLIF9IYbMin9kg9o2SywA
+ 0o7Ez0dPsGYSv4BgKSvN3cBQG5iOst5N7ouAlgMBOd5AsqFm5h6Z9MQ/z
+ 3SepElKPNEPyPpXCKSyZCQxwAs8PrMngJwF5e5Kwz0VxPsfLeWk4oGwrw
+ VF9Fm866jgigSheCLRoMQfZsFkSaaT0G+Td7YrMcZiY1KsWTD8h8B0iyy
+ 6pb/0ETM2GlxVc5wzZEfzgSpYDvi2A3nXK1gn1973tvhftdstIBgrjgZs
+ y+sxSb1CgXYqMP3Xmcf1JNr2ZgdGjHUkDYrxwY5QxT5i0WHkg+cWdkZsg g==;
+X-CSE-ConnectionGUID: ItxNGUrAQyyeIJmY6dJyqw==
+X-CSE-MsgGUID: onLV4mZIT9Ss5DfeX0Ohhg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82961028"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="82961028"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jun 2026 05:15:23 -0700
+X-CSE-ConnectionGUID: 1t3k08ydRyCqwwmOE9JOoA==
+X-CSE-MsgGUID: 9O1u4Yz7QziTnoVVgoetQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="254484021"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; d="scan'208";a="249541228"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 05:05:24 -0700
-Date: Tue, 23 Jun 2026 14:05:21 +0200
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 05:15:22 -0700
+Date: Tue, 23 Jun 2026 14:15:19 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Ramalingeswara Reddy, Kanala" <Kanala.RamalingeswaraReddy@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Vitaly.Prosyak@amd.com,
- Christian.Koenig@amd.com, Pratik.Vishwakarma@amd.com
-Subject: Re: [PATCH] tests/amdgpu/amd_security: Skip secure bounce test for
- APUs
-Message-ID: <20260623120521.b7xs4ec5eecvvm4g@kamilkon-DESK.igk.intel.com>
+To: priyanka.dandamudi@intel.com
+Cc: igt-dev@lists.freedesktop.org, niranjana.vishwanathapura@intel.com,
+ ramadevi.gandi@intel.com, dwarakanath.ramadeva@intel.com
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe*.c: Add documentation to
+ multi-queue tests and subtests.
+Message-ID: <20260623121519.ksaj35g7w52axu74@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Ramalingeswara Reddy, Kanala" <Kanala.RamalingeswaraReddy@amd.com>,
- igt-dev@lists.freedesktop.org, Vitaly.Prosyak@amd.com,
- Christian.Koenig@amd.com, Pratik.Vishwakarma@amd.com
-References: <20260622040418.454076-1-Kanala.RamalingeswaraReddy@amd.com>
+ priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org,
+ niranjana.vishwanathapura@intel.com, ramadevi.gandi@intel.com,
+ dwarakanath.ramadeva@intel.com
+References: <20260623111510.1651747-4-priyanka.dandamudi@intel.com>
+ <20260623111510.1651747-6-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260622040418.454076-1-Kanala.RamalingeswaraReddy@amd.com>
+In-Reply-To: <20260623111510.1651747-6-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,49 +74,432 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
-On 2026-06-22 at 09:34:18 +0530, Ramalingeswara Reddy, Kanala wrote:
-
-one more nit, please subscribe to igt-dev mailing list
-at fdo MLs page
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Hi priyanka.dandamudi,
+On 2026-06-23 at 16:45:13 +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> Add Mega feature and Sub-category fields to multi-queue tests and subtests.
+> 
+> v2: Do not make single params, instead directly code it in evict
+> documentation and some nits in reset test.
+> 
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/intel/xe_evict.c           | 62 ++++++++++++++++++------
+>  tests/intel/xe_exec_fault_mode.c | 81 ++++++++++++++++++++++----------
+>  tests/intel/xe_exec_reset.c      | 52 +++++++++++++++-----
+>  tests/intel/xe_exec_threads.c    | 44 ++++++++++-------
+>  4 files changed, 169 insertions(+), 70 deletions(-)
+> 
+> diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+> index 3f1d6cb9ce..5a7298db04 100644
+> --- a/tests/intel/xe_evict.c
+> +++ b/tests/intel/xe_evict.c
+> @@ -559,11 +559,7 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+>   * arg[1]:
+>   *
+>   * @small:			small
+> - * @small-multi-queue:		small multi queue
+> - * @small-multi-queue-priority:
+> - * 				small multi queue priority
+>   * @small-external:		small external
+> - * @small-external-multi-queue: small external multi queue
+>   * @small-multi-vm:		small multi VM
+>   * @beng-small:			small bind exec_queue
+>   * @beng-small-external:	small external bind exec_queue
+> @@ -593,12 +589,7 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+>   * arg[1]:
+>   *
+>   * @small-cm:			small compute machine
+> - * @small-multi-queue-cm:	small multi queue compute machine
+> - * @small-multi-queue-priority-cm:
+> - * 				small multi queue priority compute machine
+>   * @small-external-cm:		small external compute machine
+> - * @small-external-multi-queue-cm:
+> - * 				small external compute machine multi queue
+>   * @small-multi-vm-cm:		small multi VM compute machine
+>   * @beng-small-cm:		small bind exec_queue compute machine
+>   * @beng-small-external-cm:	small external bind exec_queue compute machine
+> @@ -629,8 +620,6 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+>   * arg[1]:
+>   *
+>   * @mixed-threads-small:	mixed threads small
+> - * @mixed-threads-small-multi-queue:
+> - * 				mixed threads small multi queue
+>   * @mixed-many-threads-small:	mixed many threads small
+>   * @mixed-threads-small-multi-vm:
+>   * 				mixed threads small multi vm
+> @@ -668,8 +657,6 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+>   *
+>   * arg[1]:
+>   * @cm-threads-small:		compute mode threads small
+> - * @cm-threads-small-multi-queue:
+> - * 				compute mode threads small multi queue
+>   * @cm-threads-small-multi-vm:	compute mode threads small multi vm
+>   * @beng-cm-threads-small:	bind exec_queue compute mode threads small
+>   * @beng-cm-threads-small-multi-vm:
+> @@ -700,7 +687,6 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+>   *
+>   * @threads-small:		threads small
+>   * @beng-threads-small:		bind exec_queue threads small
+> - * @threads-small-multi-queue:	threads small multi queue
+>   * @threads-small-multi-vm:	threads small multi vm
+>   * @beng-threads-small-multi-vm:
+>   *				bind exec_queue threads small multi vm
+> @@ -722,6 +708,54 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+>   * @beng-threads-large:		bind exec_queue threads large
+>   *
+>   */
+> +/**
+> + * SUBTEST: evict-%s
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description:  %arg[1] evict test.
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @small-multi-queue:		small multi queue
+> + * @small-multi-queue-priority:	small multi queue priority
+> + * @small-external-multi-queue: small external multi queue
+> + *
+> + * SUBTEST: evict-%s
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description:  %arg[1] evict test.
+> + * Feature: compute machine
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @small-multi-queue-cm:	small multi queue compute machine
+> + * @small-multi-queue-priority-cm:	small multi queue priority compute machine
+> + * @small-external-multi-queue-cm:	small external compute machine multi queue
+> + *
+> + * SUBTEST: evict-mixed-threads-small-multi-queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description:  mixed threads small multi queue evict test.
+> + * Feature: mixed threads
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: evict-cm-threads-small-multi-queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description:  compute mode threads small multi queue evict test.
+> + * Feature: compute mode threads
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: evict-threads-small-multi-queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description:  threads small multi queue evict test.
+> + * Feature: threads
+> + * Test category: functionality test
+> + *
+> + */
+>  
+>  /*
+>   * Table driven test that attempts to cover all possible scenarios of eviction
+> diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
+> index 4649c67de7..7277eb007c 100644
+> --- a/tests/intel/xe_exec_fault_mode.c
+> +++ b/tests/intel/xe_exec_fault_mode.c
+> @@ -78,14 +78,6 @@
+>   *					bindexecqueue userptr invalidate
+>   * @bindexecqueue-userptr-invalidate-race:
+>   *					bindexecqueue userptr invalidate race
+> - * @multi-queue:			multi-queue
+> - * @multi-queue-userptr:		multi-queue userptr
+> - * @multi-queue-rebind:			multi-queue rebind
+> - * @multi-queue-userptr-rebind:		multi-queue userptr rebind
+> - * @multi-queue-userptr-invalidate:
+> - *					multi-queue userptr invalidate
+> - * @multi-queue-userptr-invalidate-race:
+> - *					multi-queue userptr invalidate race
+>   * @basic-imm:				basic imm
+>   * @userptr-imm:			userptr imm
+>   * @rebind-imm:				rebind imm
+> @@ -101,15 +93,6 @@
+>   *					bindexecqueue userptr invalidate imm
+>   * @bindexecqueue-userptr-invalidate-race-imm:
+>   *					bindexecqueue userptr invalidate race imm
+> - * @multi-queue-imm:			multi-queue imm
+> - * @multi-queue-userptr-imm:		multi-queue userptr imm
+> - * @multi-queue-rebind-imm:		multi-queue rebind imm
+> - * @multi-queue-userptr-rebind-imm:
+> - *					multi-queue userptr rebind imm
+> - * @multi-queue-userptr-invalidate-imm:
+> - *					multi-queue userptr invalidate imm
+> - * @multi-queue-userptr-invalidate-race-imm:
+> - *					multi-queue userptr invalidate race imm
+>   * @basic-prefetch:			basic prefetch
+>   * @userptr-prefetch:			userptr prefetch
+>   * @rebind-prefetch:			rebind prefetch
+> @@ -124,17 +107,63 @@
+>   *					bindexecqueue userptr invalidate prefetch
+>   * @bindexecqueue-userptr-invalidate-race-prefetch:
+>   *					bindexecqueue userptr invalidate race prefetch
+> - * @multi-queue-prefetch:		multi-queue prefetch
+> - * @multi-queue-userptr-prefetch:	multi-queue userptr prefetch
+> - * @multi-queue-rebind-prefetch:	multi-queue rebind prefetch
+> - * @multi-queue-userptr-rebind-prefetch:	multi-queue userptr rebind prefetch
+> - * @multi-queue-userptr-invalidate-prefetch:
+> - *					multi-queue userptr invalidate prefetch
+> - * @multi-queue-userptr-invalidate-race-prefetch:
+> - *					multi-queue userptr invalidate race prefetch
+>   * @invalid-fault:			invalid fault
+>   * @invalid-userptr-fault:		invalid userptr fault
+> - * @multi-queue-invalid-fault:		multi-queue invalid fault
+> + */
+> +/**
+> + * SUBTEST: once-%s
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Run %arg[1] fault mode test only once
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: twice-%s
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Run %arg[1] fault mode test twice
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: many-%s
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Run %arg[1] fault mode test many times
+> + * Test category: stress test
+> + *
+> + * SUBTEST: many-execqueues-%s
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Run %arg[1] fault mode test on many exec_queues
+> + * Test category: stress test
+> + *
+> + * arg[1]:
+> + *
+> + * @multi-queue:                        multi-queue
+> + * @multi-queue-userptr:                multi-queue userptr
+> + * @multi-queue-rebind:                 multi-queue rebind
+> + * @multi-queue-userptr-rebind:         multi-queue userptr rebind
+> + * @multi-queue-userptr-invalidate:
+> + *                                      multi-queue userptr invalidate
+> + * @multi-queue-userptr-invalidate-race:
+> + *                                      multi-queue userptr invalidate race
+> + * @multi-queue-imm:                    multi-queue imm
+> + * @multi-queue-userptr-imm:            multi-queue userptr imm
+> + * @multi-queue-rebind-imm:             multi-queue rebind imm
+> + * @multi-queue-userptr-rebind-imm:
+> + *                                      multi-queue userptr rebind imm
+> + * @multi-queue-userptr-invalidate-imm:
+> + *                                      multi-queue userptr invalidate imm
+> + * @multi-queue-userptr-invalidate-race-imm:
+> + *                                      multi-queue userptr invalidate race imm
+> + * @multi-queue-prefetch:               multi-queue prefetch
+> + * @multi-queue-userptr-prefetch:       multi-queue userptr prefetch
+> + * @multi-queue-rebind-prefetch:        multi-queue rebind prefetch
+> + * @multi-queue-userptr-rebind-prefetch:
+> + *                                      multi-queue userptr rebind prefetch
+> + * @multi-queue-userptr-invalidate-prefetch:
+> + *                                      multi-queue userptr invalidate prefetch
+> + * @multi-queue-userptr-invalidate-race-prefetch:
+> + *                                      multi-queue userptr invalidate race prefetch
+> + * @multi-queue-invalid-fault:          multi-queue invalid fault
+>   * @multi-queue-invalid-userptr-fault:  multi-queue invalid userptr fault
+>   */
+>  
+> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+> index 4634c24d94..044d8f007e 100644
+> --- a/tests/intel/xe_exec_reset.c
+> +++ b/tests/intel/xe_exec_reset.c
+> @@ -350,9 +350,13 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>   * Description: Test long spinners with many preemptable jobs, use queues again spinners complete on media GT
+>   *
+>   * SUBTEST: multi-queue-long-spin-many-queue-switch
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+>   * Description: Test long spinners with many jobs with multi-queue switching
+>   *
+>   * SUBTEST: multi-queue-long-spin-reuse-many-queue-switch
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+>   * Description: Test long spinners with many jobs with multi-queue switching, use queues again once spinners complete
+>   *
+>   * SUBTEST: gt-reset
+> @@ -383,43 +387,67 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>   * Description: Test compute mode close exec_queues close fd
+>   *
+>   * SUBTEST: multi-queue-cat-error
+> - * Description: Test cat error with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test cat error with Multi-Queue
+>   *
+>   * SUBTEST: multi-queue-cat-error-on-secondary
+> - * Description: Test cat error with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test cat error with Multi-Queue
+>   *              on a secondary queue
+>   *
+>   * SUBTEST: multi-queue-gt-reset
+> - * Description: Test GT reset with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test GT reset with Multi-Queue
+>   *
+>   * SUBTEST: multi-queue-cancel
+> - * Description: Test engine reset with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test engine reset with Multi-Queue
+>   *
+>   * SUBTEST: multi-queue-cancel-on-secondary
+> - * Description: Test engine reset with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test engine reset with Multi-Queue
+>   *              on a secondary queue
+>   *
+>   * SUBTEST: multi-queue-close-fd
+> - * Description: Test close fd with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test close fd with Multi-Queue
+>   *
+>   * SUBTEST: multi-queue-close-execqueues
+> - * Description: Test close execqueues with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test close execqueues with Multi-Queue
+>   *
+>   * SUBTEST: cm-multi-queue-cat-error
+> - * Description: Test compute mode cat error with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test compute mode cat error with Multi-Queue
+>   *
+>   * SUBTEST: cm-multi-queue-cat-error-on-secondary
+> - * Description: Test compute mode cat error with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test compute mode cat error with Multi-Queue
+>   *              on a secondary queue
+>   *
+>   * SUBTEST: cm-multi-queue-gt-reset
+> - * Description: Test compute mode GT reset with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test compute mode GT reset with Multi-Queue
+>   *
+>   * SUBTEST: cm-multi-queue-close-fd
+> - * Description: Test compute mode close fd with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test compute mode close fd with Multi-Queue
+>   *
+>   * SUBTEST: cm-multi-queue-close-execqueues
+> - * Description: Test compute mode close execqueues with multi_queue
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Test compute mode close execqueues with Multi-Queue
+>   */
+>  
+>  static void
+> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+> index 24dae2b52b..0480df779e 100644
+> --- a/tests/intel/xe_exec_threads.c
+> +++ b/tests/intel/xe_exec_threads.c
+> @@ -1203,6 +1203,14 @@ static void *thread(void *data)
+>   *	balancer mixed fd userptr invalidate
+>   * @bal-mixed-fd-userptr-invalidate-race:
+>   *	balancer mixed fd userptr invalidate race
+> + */
+> +/**
+> + * SUBTEST: threads-%s
+> + * Mega feature: Multi-Queue
+> + * Sub-category: Multi-Queue tests
+> + * Description: Run threads %arg[1] test with multi threads
+> + *
+> + * arg[1]:
+>   * @multi-queue-basic:
+>   *	multi-queue basic
+>   * @multi-queue-userptr:
+> @@ -1244,49 +1252,49 @@ static void *thread(void *data)
+>   * @multi-queue-fd-userptr-invalidate-race:
+>   *	multi-queue fd userptr invalidate race
+>   * @multi-queue-hang-basic:
+> - *     multi-queue hang basic
+> + *	multi-queue hang basic
+>   * @multi-queue-hang-fd-userptr-invalidate-race:
+>   *	multi-queue hang fd userptr invalidate race
+>   * @multi-queue-mixed-basic:
+>   *	multi-queue mixed basic
+>   * @multi-queue-mixed-userptr:
+> - *	multi-queue-mixed userptr
+> + *	multi-queue mixed userptr
+>   * @multi-queue-mixed-rebind:
+> - *	multi-queue-mixed rebind
+> + *	multi-queue mixed rebind
+>   * @multi-queue-mixed-userptr-rebind:
+> - *	multi-queue-mixed userptr rebind
+> + *	multi-queue mixed userptr rebind
+>   * @multi-queue-mixed-userptr-invalidate:
+> - *	multi-queue-mixed userptr invalidate
+> + *	multi-queue mixed userptr invalidate
+>   * @multi-queue-mixed-userptr-invalidate-race:
+> - *	multi-queue-mixed userptr invalidate race
+> + *	multi-queue mixed userptr invalidate race
+>   * @multi-queue-mixed-shared-vm-basic:
+>   *	multi-queue mixed shared vm basic
+>   * @multi-queue-mixed-shared-vm-userptr:
+> - *	multi-queue-mixed shared vm userptr
+> + *	multi-queue mixed shared vm userptr
+>   * @multi-queue-mixed-shared-vm-rebind:
+> - *	multi-queue-mixed shared vm rebind
+> + *	multi-queue mixed shared vm rebind
+>   * @multi-queue-mixed-shared-vm-userptr-rebind:
+> - *	multi-queue-mixed shared vm userptr rebind
+> + *	multi-queue mixed shared vm userptr rebind
+>   * @multi-queue-mixed-shared-vm-userptr-invalidate:
+> - *	multi-queue-mixed shared vm userptr invalidate
+> + *	multi-queue mixed shared vm userptr invalidate
+>   * @multi-queue-mixed-shared-vm-userptr-invalidate-race:
+> - *	multi-queue-mixed shared vm userptr invalidate race
+> + *	multi-queue mixed shared vm userptr invalidate race
+>   * @multi-queue-mixed-fd-basic:
+>   *	multi-queue mixed fd basic
+>   * @multi-queue-mixed-fd-userptr:
+> - *	multi-queue-mixed fd userptr
+> + *	multi-queue mixed fd userptr
+>   * @multi-queue-mixed-fd-rebind:
+> - *	multi-queue-mixed fd rebind
+> + *	multi-queue mixed fd rebind
+>   * @multi-queue-mixed-fd-userptr-rebind:
+> - *	multi-queue-mixed fd userptr rebind
+> + *	multi-queue mixed fd userptr rebind
+>   * @multi-queue-mixed-fd-userptr-invalidate:
+> - *	multi-queue-mixed fd userptr invalidate
+> + *	multi-queue mixed fd userptr invalidate
+>   * @multi-queue-mixed-fd-userptr-invalidate-race:
+> - *	multi-queue-mixed fd userptr invalidate race
+> + *	multi-queue mixed fd userptr invalidate race
+>   * @multi-queue-cm-basic:
+> - * 	multi-queue cm basic
+> + *	multi-queue cm basic
+>   * @multi-queue-cm-fd-basic:
+> - * 	multi-queue cm fd basic
+> + *	multi-queue cm fd basic
+>   * @multi-queue-cm-userptr:
+>   *	multi-queue compute mode userptr
+>   * @multi-queue-cm-rebind:
+> -- 
+> 2.43.0
+> 
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-
-> Secure bounce test is not supported for APUs.
-> 
-> On dGPUs, TMZ works only on VRAM (local memory) but not on
-> GTT (system memory) due to HW limitations, so this test validates bounce
-> operation from VRAM to GTT and back to VRAM works on dGPUs.
-> 
-> Since APUs do not support this functionality, skip the test for APUs.
-> 
-> Signed-off-by: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
-> ---
->  tests/amdgpu/amd_security.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
-> index 9ebb3fa83..2a8ae4a23 100644
-> --- a/tests/amdgpu/amd_security.c
-> +++ b/tests/amdgpu/amd_security.c
-> @@ -360,8 +360,12 @@ int igt_main()
->  	/* dynamic test based on sdma_info.available rings */
->  	igt_describe("amdgpu secure bounce");
->  	igt_subtest("amdgpu-secure-bounce")
-> -	amdgpu_secure_bounce(device, fd, &sdma_info, get_ip_block(device,
-> -			AMDGPU_HW_IP_DMA), is_secure);
-> +	{
-> +		igt_skip_on_f(is_apu(&gpu_info) == 1,
-> +				"Secure bounce test is not supported in APU's.\n");
-> +		amdgpu_secure_bounce(device, fd, &sdma_info, get_ip_block(device,
-> +				AMDGPU_HW_IP_DMA), is_secure);
-> +	}
->  
->  #ifdef AMDGPU_USERQ_ENABLED
->  	igt_describe("amdgpu gfx command submission write linear helper with user queue");
-> -- 
-> 2.53.0
-> 
