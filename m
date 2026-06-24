@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8941FCDB470
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Jun 2026 06:41:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42FEECDB479
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Jun 2026 07:04:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 375F610E049;
-	Wed, 24 Jun 2026 06:41:54 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aJVz75i8";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5481510E049
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Jun 2026 06:41:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782283287; x=1813819287;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=at6bUx9vA/t4gTrRpBECZfEzx8lHFDWJ+H1xjfHgDHI=;
- b=aJVz75i8bzuS87rJW4izVL28j+lAB6oDQY5sw+IW9+90iJz0VznM0inM
- +Q0YIyQ3uayJ32hFZ2D8fLqW+zXFYYiqBx0kH3bJpklNueMaEjnQIrHN4
- 5PWWNb13dp7pEO7liPF9bQMihO95nBj8v3t8Q8O1BCJULmAEs9Efye/NR
- oyr2Gx1v5UbmhKLQ08WcPtQUL4bFbqG5c2PLnPMY+yRQnlxotooStRDum
- EBm7F6pVRkJKZI7WF7EXHUih7aX73FOhZzNlKvj43wReuD0y1VTMUVNF5
- kMUwkDhMsUmtXqAGaievdRSilOru5IPl73aADPdfKy8b9kt/3Ko/yGSkQ A==;
-X-CSE-ConnectionGUID: 5+rKKulARwCa23Ev321ktQ==
-X-CSE-MsgGUID: vhcXrnqbT4Ku1z8bwrfOcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="86940109"
-X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; d="scan'208";a="86940109"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2026 23:41:27 -0700
-X-CSE-ConnectionGUID: aS/XAg4ERAKxdIJzuooXdQ==
-X-CSE-MsgGUID: kNBiSrjiRmK/OTqlBiFH5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; d="scan'208";a="279908823"
-Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2026 23:41:24 -0700
-From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Subject: [PATCH] tests/intel/xe_pat: Fix semaphore_wait instruction
-Date: Wed, 24 Jun 2026 12:17:52 +0530
-Message-ID: <20260624064751.2271122-2-balasubramani.vivekanandan@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id DED0710E049;
+	Wed, 24 Jun 2026 07:04:05 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFD4810E049;
+ Wed, 24 Jun 2026 07:03:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4650391859369472969=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Ffau?=
+ =?utf-8?q?lt=5Fmode=3A_Revive_atomic_tests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Gajendra Uttamchand" <gajendra.uttamchand@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 24 Jun 2026 07:03:39 -0000
+Message-ID: <178228461984.109608.15582772439796405598@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260624062022.34659-2-gajendra.uttamchand@intel.com>
+In-Reply-To: <20260624062022.34659-2-gajendra.uttamchand@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,34 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Length of the instruction was set incorrectly and one of the operands
-was not updated. Fixed it.
+--===============4650391859369472969==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
----
- tests/intel/xe_pat.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index dc682b1acb..38341ec28d 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -1698,10 +1698,11 @@ static void __false_sharing(int fd, const struct fs_pat_entry *fs_entry)
- 
- 	/* Unblock after cpu started to spin */
- 	batch[i++] = MI_SEMAPHORE_WAIT_CMD | MI_SEMAPHORE_POLL |
--		     MI_SEMAPHORE_SAD_NEQ_SDD | (4 - 2);
-+		     MI_SEMAPHORE_SAD_NEQ_SDD | 3;
- 	batch[i++] = 0;
- 	batch[i++] = addr + CPUDW_INC;
- 	batch[i++] = addr >> 32;
-+	batch[i++] = 0;
- 
- 	loop_addr = i;
- 	batch[i++] = MI_STORE_DWORD_IMM_GEN4;
--- 
-2.43.0
+Series: tests/intel/xe_exec_fault_mode: Revive atomic tests
+URL   : https://patchwork.freedesktop.org/series/169064/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8982_BAT -> XEIGTPW_15436_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8982 -> IGTPW_15436
+  * Linux: xe-5292-e7cd62086ec5a70cefb8b8b00964096692bfab36 -> xe-5293-640edd13412b0be5556c337d1dfc2439ba45d4d0
+
+  IGTPW_15436: 15436
+  IGT_8982: 48befce9e6b0c0d371c4812bfff34a61319f68f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5292-e7cd62086ec5a70cefb8b8b00964096692bfab36: e7cd62086ec5a70cefb8b8b00964096692bfab36
+  xe-5293-640edd13412b0be5556c337d1dfc2439ba45d4d0: 640edd13412b0be5556c337d1dfc2439ba45d4d0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15436/index.html
+
+--===============4650391859369472969==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_fault_mode: Revive atomic tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/169064/">https://patchwork.freedesktop.org/series/169064/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15436/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15436/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8982_BAT -&gt; XEIGTPW_15436_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8982 -&gt; IGTPW_15436</li>
+<li>Linux: xe-5292-e7cd62086ec5a70cefb8b8b00964096692bfab36 -&gt; xe-5293-640edd13412b0be5556c337d1dfc2439ba45d4d0</li>
+</ul>
+<p>IGTPW_15436: 15436<br />
+  IGT_8982: 48befce9e6b0c0d371c4812bfff34a61319f68f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5292-e7cd62086ec5a70cefb8b8b00964096692bfab36: e7cd62086ec5a70cefb8b8b00964096692bfab36<br />
+  xe-5293-640edd13412b0be5556c337d1dfc2439ba45d4d0: 640edd13412b0be5556c337d1dfc2439ba45d4d0</p>
+
+</body>
+</html>
+
+--===============4650391859369472969==--
