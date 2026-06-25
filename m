@@ -4,56 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3306ECDB466
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jun 2026 09:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ED9DCDB466
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jun 2026 09:34:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF1AF10F1E2;
-	Thu, 25 Jun 2026 09:32:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4627910E1B1;
+	Thu, 25 Jun 2026 09:34:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="brgbDL6Z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d5/H4DLm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2B0410F1D4
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jun 2026 09:32:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2237410E1B1
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jun 2026 09:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782379949; x=1813915949;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=NyJXdTGCAqmrWj52lf0+OwQ1ecVOJ41k58Aot+dNTYA=;
- b=brgbDL6Z2mKJolLjjZbtU1V2JQJnc09EPE+tzd0Kp0LyyKNwBRUx/2+4
- glwzeialJdd1P3IZsMWdxCXpznDcPywWUlQRMFmyArGWDGX23ERpOvnCr
- ogKZDjL29cTD/2KMNP6BqwEUHJ53n0foVsUD0ESm+EdmRFV5BOET7Ln/1
- RCkFidpUfTq6SHDNcPpj4zimmMjuv30chqPo5BlTnm9/qcHeqEbmhD6tR
- vuXa/I9diyoKpB8Vll+s9sMU+pHcm+dGsSe9H64LW9AJ8+dnDS7ALNIdg
- xhTRAXw2R4bZVO8Dew2caKsxIv8PPziWxggynTnwU/Qnvx3BfsCuik/0r Q==;
-X-CSE-ConnectionGUID: c+Fn+DLuSgOwDZCjWpUE5Q==
-X-CSE-MsgGUID: ao/uNWO5T+q96JS12Qf9RA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="82137433"
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; d="scan'208";a="82137433"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2026 02:32:29 -0700
-X-CSE-ConnectionGUID: mZF80B+wQ1OimfdguAVh3Q==
-X-CSE-MsgGUID: t8lnsybSS5CijZ2c22icZA==
+ t=1782380059; x=1813916059;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=3U8btHvoJYg9WsdXr1G6WglOk3rJtDghGXABPEjd/jE=;
+ b=d5/H4DLmHlgHTq3F8HhFisQTcLJAFOTpA1kgQJJ2gzxoyKLYc8j+OISW
+ +MJjidINgZ7Lxo2GzaOety0pc+F0XtgURXcUsJlLJxXGEY0H2S+NrJhdS
+ HFpYj0Rr5CR1lbSFXhxM9eUp+Jne3VUViciFrF8+U46DImALSWYKTVXbL
+ kdebT3YjgFelksLNc/J/m4TgbCEA7+owKEsqM9TJ1uNxQPUCLy+yqt6G0
+ 1qqHZuZrva1uMDfcxc15eq4Va4g3NDQwetVJODQHw6JmYTH7jhD0zOa18
+ vRpuc1WQCObPVA4zV/xs+fGHuz0jDNLD4ad7JzIRz3klNCj9xH5gjxyfd g==;
+X-CSE-ConnectionGUID: g5SrZKQdQQalqcBC6fR3pQ==
+X-CSE-MsgGUID: fXICxIldTSGn/kHdMRr6Gg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="83156385"
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; d="scan'208";a="83156385"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jun 2026 02:34:19 -0700
+X-CSE-ConnectionGUID: 9Vn6xglLQ0icooNwH7C6zw==
+X-CSE-MsgGUID: 9qsg+rZURhe0ZtlbmbD66w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; d="scan'208";a="249095143"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.94])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2026 02:32:28 -0700
-Date: Thu, 25 Jun 2026 11:32:26 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; d="scan'208";a="244141434"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.126])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jun 2026 02:34:17 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH] tests/intel/xe_pat: Fix semaphore_wait instruction
-Message-ID: <kmhtc4swueyldbrvq2l6hpn4ptf6pvbold67fiudvj67ce6zsm@b4lgp2cduztp>
-References: <20260624064751.2271122-2-balasubramani.vivekanandan@intel.com>
+Subject: Re: [PATCH i-g-t 4/5] benchmarks/gem_exec_trace: use
+ hars_petruska_f54_1_random() from lib/rand
+In-Reply-To: <3apgkow66ofonucapgl5ex55vjcjdbeofqktlrnzxavfexkldf@uorihbgw66oi>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <cover.1781791747.git.jani.nikula@intel.com>
+ <c78b332ceeaa0c00b80e99f4e49765bc22abd0ab.1781791747.git.jani.nikula@intel.com>
+ <f4zbjx4zch4c5c3m6ihqwkkw4ysm6rjkyjb24qkeoc6644lnhj@vk5kpqt4kljl>
+ <af243a66da77bb294c3c985233f3decbf1b86b89@intel.com>
+ <4ee63ffce8504cd794430e1cad3da6205b134cd0@intel.com>
+ <3apgkow66ofonucapgl5ex55vjcjdbeofqktlrnzxavfexkldf@uorihbgw66oi>
+Date: Thu, 25 Jun 2026 12:34:14 +0300
+Message-ID: <79e99fc4f138d3287683749b83225822f2406f21@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260624064751.2271122-2-balasubramani.vivekanandan@intel.com>
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,40 +76,113 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jun 24, 2026 at 12:17:52PM +0530, Balasubramani Vivekanandan wrote:
-> Length of the instruction was set incorrectly and one of the operands
-> was not updated. Fixed it.
-> 
-> Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-> ---
->  tests/intel/xe_pat.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-> index dc682b1acb..38341ec28d 100644
-> --- a/tests/intel/xe_pat.c
-> +++ b/tests/intel/xe_pat.c
-> @@ -1698,10 +1698,11 @@ static void __false_sharing(int fd, const struct fs_pat_entry *fs_entry)
->  
->  	/* Unblock after cpu started to spin */
->  	batch[i++] = MI_SEMAPHORE_WAIT_CMD | MI_SEMAPHORE_POLL |
-> -		     MI_SEMAPHORE_SAD_NEQ_SDD | (4 - 2);
-> +		     MI_SEMAPHORE_SAD_NEQ_SDD | 3;
+On Thu, 25 Jun 2026, Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.=
+com> wrote:
+> On Wed, Jun 24, 2026 at 11:03:51AM +0300, Jani Nikula wrote:
+>> On Mon, 22 Jun 2026, Jani Nikula <jani.nikula@intel.com> wrote:
+>> > On Fri, 19 Jun 2026, Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@i=
+ntel.com> wrote:
+>> >> On Thu, Jun 18, 2026 at 05:09:52PM +0300, Jani Nikula wrote:
+>> >>> Remove the local duplicate of hars_petruska_f54_1_random() by switch=
+ing
+>> >>> to use lib/rand.
+>> >>>=20
+>> >>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>> >>> ---
+>> >>>  benchmarks/gem_exec_trace.c | 12 +++---------
+>> >>>  1 file changed, 3 insertions(+), 9 deletions(-)
+>> >>>=20
+>> >>> diff --git a/benchmarks/gem_exec_trace.c b/benchmarks/gem_exec_trace=
+.c
+>> >>> index 4263ccb03dbd..c27639105903 100644
+>> >>> --- a/benchmarks/gem_exec_trace.c
+>> >>> +++ b/benchmarks/gem_exec_trace.c
+>> >>> @@ -42,6 +42,7 @@
+>> >>>  #include "drm.h"
+>> >>>  #include "drmtest.h"
+>> >>>  #include "i915/gem_create.h"
+>> >>> +#include "igt_rand.h"
+>> >>>  #include "igt_stats.h"
+>> >>>  #include "intel_io.h"
+>> >>>  #include "ioctl_wrappers.h"
+>> >>> @@ -92,14 +93,7 @@ struct trace_wait {
+>> >>>  	uint32_t handle;
+>> >>>  } __attribute__((packed));
+>> >>>=20=20
+>> >>> -static uint32_t hars_petruska_f54_1_random(void)
+>> >>> -{
+>> >>> -	static uint32_t state =3D 0x12345678;
+>> >>> -
+>> >>> -#define rol(x,k) ((x << k) | (x >> (32-k)))
+>> >>> -	return state =3D (state ^ rol (state, 5) ^ rol (state, 24)) + 0x37=
+798849;
+>> >>> -#undef rol
+>> >>> -}
+>> >>> +static uint32_t random_state =3D 0x12345678;
+>> >>>=20=20
+>> >>>  static double elapsed(const struct timespec *start, const struct ti=
+mespec *end)
+>> >>>  {
+>> >>> @@ -277,7 +271,7 @@ static double replay(const char *filename, long =
+nop, long range)
+>> >>>  				sizeof(*exec_objects)))->handle =3D bo[0];
+>> >>>=20=20
+>> >>>  			if (nop > 0) {
+>> >>> -				eb.batch_start_offset =3D hars_petruska_f54_1_random();
+>> >>> +				eb.batch_start_offset =3D hars_petruska_f54_1_random(&random_st=
+ate);
+>> >>
+>> >> With random_state as above this offset is not random. I think adding =
+nop
+>> >> to random_state would do this.
+>> >
+>> > I'm only aiming to do a non-functional conversion to existing library
+>> > functions. Please explain how this patch changes behaviour; I don't see
+>> > it.
+>>=20
+>> Zbigniew, ping?
+>
+> I'm sorry for the delay.
+>
+> I wondered to change offsets for each run, with same random_state on the
+> beginning we use same offsets sequence.
+>
+> But it's fine to me, I mean your change doesn't change functionality
+> but code placement.
+>
+> Pick my r-b for this:
+>
+> Reviewed-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
 
-Good catch, thanks for fixing this.
+Thanks for the reviews, pushed to igt.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+BR,
+Jani.
 
---
-Zbigniew
 
->  	batch[i++] = 0;
->  	batch[i++] = addr + CPUDW_INC;
->  	batch[i++] = addr >> 32;
-> +	batch[i++] = 0;
->  
->  	loop_addr = i;
->  	batch[i++] = MI_STORE_DWORD_IMM_GEN4;
-> -- 
-> 2.43.0
-> 
+>
+> --
+> Zbigniew
+>
+>>=20
+>> >
+>> >
+>> > BR,
+>> > Jani.
+>> >
+>> >>
+>> >> --
+>> >> Zbigniew
+>> >>
+>> >>>  				eb.batch_start_offset =3D
+>> >>>  					((uint64_t)eb.batch_start_offset * range) >> 32;
+>> >>>  				eb.batch_start_offset =3D ALIGN(eb.batch_start_offset, 64);
+>> >>> --=20
+>> >>> 2.47.3
+>> >>>=20
+>>=20
+>> --=20
+>> Jani Nikula, Intel
+
+--=20
+Jani Nikula, Intel
