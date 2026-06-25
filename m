@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54B09CDE009
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jun 2026 19:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3764CDE000
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jun 2026 19:30:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B59A10E260;
-	Thu, 25 Jun 2026 19:29:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6651210E260;
+	Thu, 25 Jun 2026 19:30:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZZPNWG6L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gZ1yyVQi";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B4C110E260
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jun 2026 19:29:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7805410E260
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jun 2026 19:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782415762; x=1813951762;
+ t=1782415756; x=1813951756;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XUzLyrLB+YB+HBrIkU+1xbGG1ZGJgWtIDSj+6mWnlkk=;
- b=ZZPNWG6Lz49eUfHdtlVaOBkbLAZjBD1FNRshzJevdTpyuztKRSy54Gct
- VRwUFehDiodWREMssFKQzHVrFl4JMc1bIedawStj6qfg8Cxh5IxnmsDdj
- BTvdiv6D/lIQff7WVdK/JlfSWhrZcdFgfAmwJ1N2+GD7I6w0qpj1NYDuU
- K2zmt4phV8JFGgxnfyCTyugDv9F6ZWIXVZH7WV2C8LIkHOSybj8HHUWQX
- UwGzYNvhaiL1T+Ek6W5XvScL7NYvCfLKjka2CDKFBojUCK11QhLHueqTK
- Maj+WXZPEf+8R3HNXE9IXoesAAe7SI+nxE00e3qEZJI6THxcMdhuOXfqE g==;
-X-CSE-ConnectionGUID: aeLOx6E5TAytRU80YV9fQg==
-X-CSE-MsgGUID: kzuyAdeIS1qx/kzDvTKamQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="93859258"
-X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; d="scan'208";a="93859258"
+ bh=MxCCJ79LGvVqaW9O4FiF65YakLIpr2JnN/QpHhgusZI=;
+ b=gZ1yyVQiWXa9mUECTTLwx46BbONIY3z1636MTfFeUOVYhwF196KQwCF8
+ Bc6EJ17J8aiXQbHvp4vqrPXHUfg/2AWD1yBy5mAM6FJfhshRM13bRkkC3
+ 0/2VYQBRUm93pA8ID1Cwb5VCn3ffK5MQOjd3M3CZOr/YzNFQDkcylPAAM
+ 2E714//FGriWhYisyt+5Nt8FLvw5qwhJYGtD3MY0CaAlIzaEJo/Q3KR0w
+ m+CltDRSnG8USC/IVt2rhofZgHh9ZIILTwIO9nIaNXvj61inMZuZk+XZP
+ 15AuzdHPg9k579XB/f4hj2skjI9AmX7bf7mbYaGgATR7TjGnR2AVbGHJg Q==;
+X-CSE-ConnectionGUID: DcMsYXoETS2cMIRwB8m8sw==
+X-CSE-MsgGUID: JnFvPymxTmm5kVBXVME2Pw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="93859246"
+X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; d="scan'208";a="93859246"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2026 12:29:22 -0700
-X-CSE-ConnectionGUID: OvK4nJKpTuKPKuDBuGsMjQ==
-X-CSE-MsgGUID: W4NBtHhQT/KVAbU/i03sIQ==
+ 25 Jun 2026 12:29:15 -0700
+X-CSE-ConnectionGUID: vU5+uaxsRgGo2dmUTqGoUQ==
+X-CSE-MsgGUID: IO24wJTEQUePRZNsB+sF8g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; d="scan'208";a="252912758"
+X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; d="scan'208";a="252912693"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
  ([10.245.245.210])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2026 12:29:19 -0700
+ 25 Jun 2026 12:29:12 -0700
 From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Andi Shyti <andi.shyti@linux.intel.com>,
@@ -50,10 +50,9 @@ Cc: Andi Shyti <andi.shyti@linux.intel.com>,
  Krzysztof Karas <krzysztof.karas@intel.com>,
  Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
  Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH i-g-t v2 3/3] tests/gpu_buddy: Rename the KUnit buddy
- allocator test
-Date: Thu, 25 Jun 2026 21:28:50 +0200
-Message-ID: <20260625192850.56004-4-krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t v2 2/3] tests/dmabuf: Port dmabuf tests to KUnit
+Date: Thu, 25 Jun 2026 21:28:49 +0200
+Message-ID: <20260625192850.56004-3-krzysztof.niemiec@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260625192850.56004-1-krzysztof.niemiec@intel.com>
 References: <20260625192850.56004-1-krzysztof.niemiec@intel.com>
@@ -74,59 +73,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The DRM buddy allocator has been moved one level up, and is now renamed
-to just the GPU buddy allocator. This means that the .ko object used to
-run the KUnit test has been renamed, so IGT tries to run a test that
-doesn't exist anymore.
+The dmabuf tests have been moved out of the selftest mechanism into
+KUnit in these commits in the kernel:
 
-Rename the drm_buddy.c file to gpu_buddy.c to reflect the kernel change,
-and update the igt_kunit() call to invoke the proper tests.
+126c50bc2fb6 dma-buf: Remove the old selftest
+6055c9e333cf dma-buf: Change st-dma-fence-chain.c to use kunit
+465f3934381c dma-buf: Change st-dma-fence-unwrap.c to use kunit
+9baa35a39939 dma-buf: Change st-dma-fence.c to use kunit
+15b9bde78bad dma-buf: Change st-dma-resv.c to use kunit
+
+Launch dmabuf tests as KUnit tests instead of selftests from IGT's side
+to reflect the kernel changes.
 
 Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
 ---
- tests/{drm_buddy.c => gpu_buddy.c} | 4 ++--
- tests/meson.build                  | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
- rename tests/{drm_buddy.c => gpu_buddy.c} (51%)
+ tests/dmabuf.c | 35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/tests/drm_buddy.c b/tests/gpu_buddy.c
-similarity index 51%
-rename from tests/drm_buddy.c
-rename to tests/gpu_buddy.c
-index dbc7c957d..4cea2e124 100644
---- a/tests/drm_buddy.c
-+++ b/tests/gpu_buddy.c
-@@ -6,9 +6,9 @@
- #include "igt.h"
+diff --git a/tests/dmabuf.c b/tests/dmabuf.c
+index 322981473..1baefb299 100644
+--- a/tests/dmabuf.c
++++ b/tests/dmabuf.c
+@@ -25,7 +25,7 @@
  #include "igt_kmod.h"
+ /**
+  * TEST: dmabuf
+- * Description: Kernel selftests for the dmabuf API
++ * Description: KUnit tests for the dmabuf API
+  * Category: Core
+  * Mega feature: General Core features
+  * Functionality: drm_mm
+@@ -33,14 +33,16 @@
+  * Feature: mapping, prime
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: all-tests
++ * SUBTEST: dma-buf-resv
+  *
+- * SUBTEST: all-tests@dma_fence
++ * SUBTEST: dma-buf-fence
+  *
+- * SUBTEST: all-tests@sanitycheck
++ * SUBTEST: dma-buf-fence-unwrap
++ *
++ * SUBTEST: dma-buf-fence-chain
+  */
  
--IGT_TEST_DESCRIPTION("Basic sanity check of DRM's buddy allocator (struct drm_buddy)");
-+IGT_TEST_DESCRIPTION("Basic sanity check of the GPU buddy allocator (struct gpu_buddy)");
+-IGT_TEST_DESCRIPTION("Kernel selftests for the dmabuf API");
++IGT_TEST_DESCRIPTION("KUnit tests for the dmabuf API");
  
- int igt_main()
+ static unsigned int bogomips(void)
  {
--	igt_kunit("drm_buddy_test", NULL, NULL);
-+	igt_kunit("gpu_buddy_tests", NULL, NULL);
+@@ -76,23 +78,24 @@ static unsigned int bogomips(void)
+ 	return igt_debug_on(!bogomips) ? UINT_MAX : ret;
  }
-diff --git a/tests/meson.build b/tests/meson.build
-index 4c1a39e9e..0d9008bbd 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -12,11 +12,11 @@ test_progs = [
- 	'dmabuf_sync_file',
- 	'device_reset',
- 	'dumb_buffer',
--	'drm_buddy',
- 	'drm_mm',
- 	'drm_read',
- 	'drm_virtgpu',
- 	'fbdev',
-+	'gpu_buddy',
- 	'kms_3d',
- 	'kms_addfb_basic',
- 	'kms_async_flips',
+ 
+-static int wrapper(const char *dynamic_name,
+-		   struct igt_ktest *tst,
+-		   struct igt_kselftest_list *tl)
++int igt_main()
+ {
++	igt_kunit("dmabuf_kunit", "dma-buf-resv", NULL);
++	igt_kunit("dmabuf_kunit", "dma-buf-fence", NULL);
++
+ 	/*
+-	 * Test case wait-backward of dma_fence_chain selftest can trigger soft
++	 * Test case wait-backward of dma_fence_chain test can trigger soft
+ 	 * lockups on slow machines.  Since that slowness is not recognized as
+ 	 * a bug on the kernel side, the issue is not going to be fixed.  Based
+-	 * on analysis of CI results, skip that selftest on machines slower than
++	 * on analysis of CI results, skip that test on machines slower than
+ 	 * 25000 BogoMIPS to avoid ever returning CI reports on that failure.
+ 	 */
+-	igt_skip_on(!strcmp(dynamic_name, "dma_fence_chain") && bogomips() < 25000);
+ 
+-	return igt_kselftest_execute(tst, tl, NULL, NULL);
+-}
++	if (bogomips() >= 25000)
++		igt_kunit("dmabuf_kunit", "dma-buf-fence-chain", NULL);
++	else
++		igt_subtest("dma-buf-fence-chain")
++			igt_skip("BogoMips < 25000 - test is not supported\n");
+ 
+-int igt_main()
+-{
+-	igt_kselftests("dmabuf_selftests", NULL, NULL, NULL, wrapper);
++	igt_kunit("dmabuf_kunit", "dma-buf-fence-unwrap", NULL);
+ }
 -- 
 2.45.2
 
