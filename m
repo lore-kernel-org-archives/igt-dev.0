@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18E5ECDE008
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Jun 2026 08:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73B48CD4F26
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Jun 2026 09:00:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BA54710F4F6;
-	Fri, 26 Jun 2026 08:34:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0742D10F3E1;
+	Fri, 26 Jun 2026 09:00:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fNHgJpGl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JalMFyv+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CD2610F4F4
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Jun 2026 08:34:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C675510F3E1
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Jun 2026 08:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782462845; x=1813998845;
+ t=1782464395; x=1814000395;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=zt2Zq2YmD6Gm+u3X9A7Ki/D2Rx0zpA3pHrfcHJi52Mc=;
- b=fNHgJpGlKWkD6rFRNJBMAw0oV0CSaW4NucE/0M8I9n0WAS60AjAR7xVJ
- XZYoqJstyKZYUxw/4iR8F1AKTkzh9chs+r5BTK3vZepqbWPodFQ5G/Gt6
- imfu/XdXHXR6fCPSRJK1klAnqcU9Xi3Dpg50RlyLxn2y3gzUT2+fkgJtk
- hlYu5UKqnFTk/DKXJZxFqosjUP5xrNhBgzwZ5fM0b84URtHtIuT7x5Lbs
- RTzq6a1iL4mx47uZWcC0D1T99Gy2yhCH0/JV9GLi1MgolFsLPica4Pz1i
- lJWJt+RPv32C6fidEPvabp9xlUn3L8x9NBblMwaXfC4y5pZzFws7slhJg g==;
-X-CSE-ConnectionGUID: FYI7GLrfQKeoM4MUb9ksYQ==
-X-CSE-MsgGUID: ZBsx/1wITZCqs59aQre3iw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="93842970"
-X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; d="scan'208";a="93842970"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2026 01:34:05 -0700
-X-CSE-ConnectionGUID: S6MkYonMS1SQrWKDvyJhOw==
-X-CSE-MsgGUID: CuAW+gteRQyZMv0UXumOng==
+ bh=NWZ3hV5g0EtWps6GWY4WEU2/iBAsqJBKnLfnRz5tpPg=;
+ b=JalMFyv+ibZ23/M/q0B2s10hpO2Dv2th0AdGDI5VacRcFtPt96vV0axk
+ UOhFTkc5lWm0+aRUcpVG5tDaBxErYDGZixMV2LZzDq53MuXizcTAejsBS
+ su3nDPFQdYOohWKG3QDZpTGa/d4RZq9r+5QTphVmWwpBxx1rSFdrAC5fV
+ 1to9FPDvG8kHgjaJbtmWAkFUJEsY2UF+BF1QY2s3/bQ/Cq6wPxKFLpdtx
+ Y3z7c8xPqEMm1SqfKUWh/s6G0yMXSfo8rHEfGNsmrcVSsPqxsYCc4b5du
+ tz24Koi5azySR6FbXfeu2/xD02xHi9FSaCy9VLFK/ypsVZtH+TAofUdZQ Q==;
+X-CSE-ConnectionGUID: XcglJy0tTRKvNf5PJzbnIA==
+X-CSE-MsgGUID: FX0NHJ2YQhS99S/2xpvD8Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="83273352"
+X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; d="scan'208";a="83273352"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2026 01:59:55 -0700
+X-CSE-ConnectionGUID: SredxFZpQQiu+Mgk13IedQ==
+X-CSE-MsgGUID: JJJh8Z15ROOdZK1ADyAwNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; d="scan'208";a="255267936"
+X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; d="scan'208";a="251435523"
 Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.232])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2026 01:34:04 -0700
-Date: Fri, 26 Jun 2026 10:34:00 +0200
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2026 01:59:54 -0700
+Date: Fri, 26 Jun 2026 10:59:50 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Jan Maslak <jan.maslak@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH 07/11] lib/rendercopy: Convert surface state and sampler
- setup to genxml
-Message-ID: <gcwvhesnda723fow2fk6orzgzgucgig7ikengcrjyzwgqvph3w@ewgui6ggx7zs>
+Subject: Re: [PATCH 08/11] lib/rendercopy: Convert vertex data and CC state
+ to genxml
+Message-ID: <j3y7jcqhmacpq65m3xocpdwoy6zfzszzazxpsewqkkaivko3oi@zhaxlt2uvryi>
 References: <20260622035106.3023047-1-jan.maslak@intel.com>
- <20260622035106.3023047-8-jan.maslak@intel.com>
+ <20260622035106.3023047-9-jan.maslak@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260622035106.3023047-8-jan.maslak@intel.com>
+In-Reply-To: <20260622035106.3023047-9-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,382 +71,280 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Jun 22, 2026 at 05:51:02AM +0200, Jan Maslak wrote:
-> Replace intel_bb_out() calls in gen9_bind_buf(), gen8_bind_surfaces(),
-> and gen8_create_sampler() with igt_genxml_pack_state macros backed by
+On Mon, Jun 22, 2026 at 05:51:03AM +0200, Jan Maslak wrote:
+> Replace intel_bb_out() calls in vertex buffer, vertex element, and
+> color-calc state functions with igt_genxml_pack_state macros backed by
 > the genxml pack headers.
 > 
 > Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->  lib/rendercopy_gen9.c | 285 +++++++++++++++++++++++-------------------
->  1 file changed, 159 insertions(+), 126 deletions(-)
+>  lib/rendercopy_gen9.c | 193 +++++++++++++++++++++++++-----------------
+>  1 file changed, 115 insertions(+), 78 deletions(-)
 > 
 > diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index d44988010a..c57f7b5d5a 100644
+> index c57f7b5d5a..8b56b826d9 100644
 > --- a/lib/rendercopy_gen9.c
 > +++ b/lib/rendercopy_gen9.c
-> @@ -21,11 +21,18 @@
->  #include "intel_io.h"
->  #include "intel_mocs.h"
->  #include "rendercopy.h"
-> -#include "gen9_render.h"
-> +#include "surfaceformat.h"
->  #include "xe2_render.h"
->  #include "intel_reg.h"
->  #include "igt_aux.h"
->  #include "intel_chipset.h"
-> +#include "intel/genxml/igt_genxml.h"
-> +#include "gen9_render.h"
-> +#include "gen90_pack.h"
-> +#include "gen110_pack.h"
-> +#include "gen120_pack.h"
-> +#include "gen125_pack.h"
-> +#include "xe2_pack.h"
+> @@ -564,50 +564,62 @@ gen7_fill_vertex_buffer_data(struct intel_bb *ibb,
+>   */
+>  static void
+>  gen6_emit_vertex_elements(struct intel_bb *ibb) {
+> +	void *ve_ptr;
+> +
+>  	/*
+>  	 * The VUE layout
+>  	 *    dword 0-3: pad (0, 0, 0. 0)
+>  	 *    dword 4-7: position (x, y, 0, 1.0),
+>  	 *    dword 8-11: texture coordinate 0 (u0, v0, 0, 1.0)
+>  	 */
+> -	intel_bb_out(ibb, GEN4_3DSTATE_VERTEX_ELEMENTS | (3 * 2 + 1 - 2));
+> +	{
+> +		struct GFX9_3DSTATE_VERTEX_ELEMENTS ves = { GFX9_3DSTATE_VERTEX_ELEMENTS_header };
+> +		ves.DWordLength = 3 * GFX9_VERTEX_ELEMENT_STATE_length - 1;
+> +		GFX9_3DSTATE_VERTEX_ELEMENTS_pack(ibb, intel_bb_ptr(ibb), &ves);
+> +		intel_bb_ptr_add(ibb, 4);
+> +	}
 >  
->  #define VERTEX_SIZE (3*4)
->  
-> @@ -187,13 +194,60 @@ static uint32_t dg2_compression_format(const struct intel_buf *buf)
->  	}
+> -	/* Element state 0. These are 4 dwords of 0 required for the VUE format.
+> -	 * We don't really know or care what they do.
+> -	 */
+> -	intel_bb_out(ibb, 0 << GEN6_VE0_VERTEX_BUFFER_INDEX_SHIFT | GEN6_VE0_VALID |
+> -		     SURFACEFORMAT_R32G32B32A32_FLOAT << VE0_FORMAT_SHIFT |
+> -		     0 << VE0_OFFSET_SHIFT); /* we specify 0, but it's really does not exist */
+> -	intel_bb_out(ibb, GEN4_VFCOMPONENT_STORE_0 << VE1_VFCOMPONENT_0_SHIFT |
+> -		     GEN4_VFCOMPONENT_STORE_0 << VE1_VFCOMPONENT_1_SHIFT |
+> -		     GEN4_VFCOMPONENT_STORE_0 << VE1_VFCOMPONENT_2_SHIFT |
+> -		     GEN4_VFCOMPONENT_STORE_0 << VE1_VFCOMPONENT_3_SHIFT);
+> -
+> -	/* Element state 1 - Our "destination" vertices. These are passed down
+> -	 * through the pipeline, and eventually make it to the pixel shader as
+> -	 * the offsets in the destination surface. It's packed as the 16
+> -	 * signed/scaled because of gen6 rendercopy. I see no particular reason
+> -	 * for doing this though.
+> -	 */
+> -	intel_bb_out(ibb, 0 << GEN6_VE0_VERTEX_BUFFER_INDEX_SHIFT | GEN6_VE0_VALID |
+> -		     SURFACEFORMAT_R16G16_SSCALED << VE0_FORMAT_SHIFT |
+> -		     0 << VE0_OFFSET_SHIFT); /* offsets vb in bytes */
+> -	intel_bb_out(ibb, GEN4_VFCOMPONENT_STORE_SRC << VE1_VFCOMPONENT_0_SHIFT |
+> -		     GEN4_VFCOMPONENT_STORE_SRC << VE1_VFCOMPONENT_1_SHIFT |
+> -		     GEN4_VFCOMPONENT_STORE_0 << VE1_VFCOMPONENT_2_SHIFT |
+> -		     GEN4_VFCOMPONENT_STORE_1_FLT << VE1_VFCOMPONENT_3_SHIFT);
+> -
+> -	/* Element state 2. Last but not least we store the U,V components as
+> -	 * normalized floats. These will be used in the pixel shader to sample
+> -	 * from the source buffer.
+> -	 */
+> -	intel_bb_out(ibb, 0 << GEN6_VE0_VERTEX_BUFFER_INDEX_SHIFT | GEN6_VE0_VALID |
+> -		     SURFACEFORMAT_R32G32_FLOAT << VE0_FORMAT_SHIFT |
+> -		     4 << VE0_OFFSET_SHIFT);	/* offset vb in bytes */
+> -	intel_bb_out(ibb, GEN4_VFCOMPONENT_STORE_SRC << VE1_VFCOMPONENT_0_SHIFT |
+> -		     GEN4_VFCOMPONENT_STORE_SRC << VE1_VFCOMPONENT_1_SHIFT |
+> -		     GEN4_VFCOMPONENT_STORE_0 << VE1_VFCOMPONENT_2_SHIFT |
+> -		     GEN4_VFCOMPONENT_STORE_1_FLT << VE1_VFCOMPONENT_3_SHIFT);
+> +	/* Element state 0. These are 4 dwords of 0 required for the VUE format. */
+> +	ve_ptr = intel_bb_ptr(ibb);
+> +	igt_genxml_pack_state(ibb, GFX9_VERTEX_ELEMENT_STATE, ve_ptr, ve0) {
+> +		ve0.VertexBufferIndex = 0;
+> +		ve0.Valid = true;
+> +		ve0.SourceElementFormat = SURFACEFORMAT_R32G32B32A32_FLOAT;
+> +		ve0.SourceElementOffset = 0;
+> +		ve0.Component0Control = GFX9_VFCOMP_STORE_0;
+> +		ve0.Component1Control = GFX9_VFCOMP_STORE_0;
+> +		ve0.Component2Control = GFX9_VFCOMP_STORE_0;
+> +		ve0.Component3Control = GFX9_VFCOMP_STORE_0;
+> +	}
+> +	intel_bb_ptr_add(ibb, GFX9_VERTEX_ELEMENT_STATE_length * 4);
+> +
+> +	/* Element state 1 - destination vertices (16-bit signed/scaled). */
+> +	ve_ptr = intel_bb_ptr(ibb);
+> +	igt_genxml_pack_state(ibb, GFX9_VERTEX_ELEMENT_STATE, ve_ptr, ve1) {
+> +		ve1.VertexBufferIndex = 0;
+> +		ve1.Valid = true;
+> +		ve1.SourceElementFormat = SURFACEFORMAT_R16G16_SSCALED;
+> +		ve1.SourceElementOffset = 0;
+> +		ve1.Component0Control = GFX9_VFCOMP_STORE_SRC;
+> +		ve1.Component1Control = GFX9_VFCOMP_STORE_SRC;
+> +		ve1.Component2Control = GFX9_VFCOMP_STORE_0;
+> +		ve1.Component3Control = GFX9_VFCOMP_STORE_1_FP;
+> +	}
+> +	intel_bb_ptr_add(ibb, GFX9_VERTEX_ELEMENT_STATE_length * 4);
+> +
+> +	/* Element state 2 - texture coordinates (normalized floats). */
+> +	ve_ptr = intel_bb_ptr(ibb);
+> +	igt_genxml_pack_state(ibb, GFX9_VERTEX_ELEMENT_STATE, ve_ptr, ve2) {
+> +		ve2.VertexBufferIndex = 0;
+> +		ve2.Valid = true;
+> +		ve2.SourceElementFormat = SURFACEFORMAT_R32G32_FLOAT;
+> +		ve2.SourceElementOffset = 4;
+> +		ve2.Component0Control = GFX9_VFCOMP_STORE_SRC;
+> +		ve2.Component1Control = GFX9_VFCOMP_STORE_SRC;
+> +		ve2.Component2Control = GFX9_VFCOMP_STORE_0;
+> +		ve2.Component3Control = GFX9_VFCOMP_STORE_1_FP;
+> +	}
+> +	intel_bb_ptr_add(ibb, GFX9_VERTEX_ELEMENT_STATE_length * 4);
 >  }
 >  
-> -/* Mostly copy+paste from gen6, except height, width, pitch moved */
-> +/*
-> + * IGT_RSS_COMMON - set RENDER_SURFACE_STATE fields shared across all gens.
-> + * Works via C preprocessor structural typing: all gen-specific structs
-> + * have identical field names for these members.
-> + */
-> +#define IGT_RSS_COMMON(ss, buf, mocs_val, rd, wd)                          \
-> +	do {                                                               \
-> +		ss.SurfaceType = GFX9_SURFTYPE_2D;                        \
-> +		ss.SurfaceFormat = gen4_surface_format((buf)->bpp,         \
-> +					       (buf)->depth);      \
-> +		ss.SurfaceVerticalAlignment = GFX9_VALIGN_4;              \
-> +		ss.MOCS = (mocs_val);                                      \
-> +		ss.Width = intel_buf_width(buf) - 1;                       \
-> +		ss.Height = intel_buf_height(buf) - 1;                     \
-> +		ss.SurfacePitch = (buf)->surface[0].stride - 1;            \
-> +		ss.ShaderChannelSelectRed = (int)GFX9_SCS_RED;                 \
-> +		ss.ShaderChannelSelectGreen = (int)GFX9_SCS_GREEN;             \
-> +		ss.ShaderChannelSelectBlue = (int)GFX9_SCS_BLUE;               \
-> +		ss.ShaderChannelSelectAlpha = (int)GFX9_SCS_ALPHA;             \
-> +		ss.SurfaceBaseAddress =                                    \
-> +			igt_address_of((buf), (buf)->surface[0].offset,    \
-> +				       (rd), (wd));                        \
-> +	} while (0)
+>  /*
+> @@ -618,82 +630,107 @@ gen6_emit_vertex_elements(struct intel_bb *ibb) {
+>   */
+>  static void gen7_emit_vertex_buffer(struct intel_bb *ibb, uint32_t offset)
+>  {
+> -	intel_bb_out(ibb, GEN4_3DSTATE_VERTEX_BUFFERS | (1 + (4 * 1) - 2));
+> -	intel_bb_out(ibb, 0 << GEN6_VB0_BUFFER_INDEX_SHIFT | /* VB 0th index */
+> -		     GEN8_VB0_BUFFER_ADDR_MOD_EN | /* Address Modify Enable */
+> -		     VERTEX_SIZE << VB0_BUFFER_PITCH_SHIFT);
+> -	intel_bb_emit_reloc(ibb, ibb->handle,
+> -			    I915_GEM_DOMAIN_VERTEX, 0,
+> -			    offset, ibb->batch_offset);
+> -	intel_bb_out(ibb, 3 * VERTEX_SIZE);
+> +	void *vb_ptr;
 > +
-> +/*
-> + * IGT_RSS_TILING - set TileMode from buf->tiling.  The numeric encoding is
-> + * identical across gen9/gen12/gen12.5/xe2, but the enum names differ per gen.
-> + * We use xe2 (GFX20) names as they best reflect the modern tile semantics;
-> + * (int) casts suppress -Wenum-conversion when used with older-gen structs.
-> + */
-> +#define IGT_RSS_TILING(ss, buf)                                            \
-> +	do {                                                               \
-> +		switch ((buf)->tiling) {                                    \
-> +		case I915_TILING_NONE:                                     \
-> +			ss.TileMode = (int)GFX20_LINEAR;                  \
-> +			break;                                             \
-> +		case I915_TILING_X:                                        \
-> +			ss.TileMode = (int)GFX20_XMAJOR;                  \
-> +			break;                                             \
-> +		case I915_TILING_64:                                       \
-> +			ss.TileMode = (int)GFX20_TILE64;                  \
-> +			ss.MipTailStartLOD = 0xf;                          \
-> +			break;                                             \
-> +		default:                                                   \
-> +			ss.TileMode = (int)GFX20_TILE4;                   \
-> +		}                                                          \
-> +	} while (0)
-> +
->  static uint32_t
-> -gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
-> -	      bool fast_clear) {
-> -	struct gen9_surface_state *ss;
-> +gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
->  	uint32_t write_domain, read_domain;
-> -	uint64_t address;
-> +	unsigned int gen = intel_gen(ibb->devid);
-> +	uint32_t mocs;
-> +	void *ss_ptr;
->  
->  	igt_assert_lte(buf->surface[0].stride, 256*1024);
->  	igt_assert_lte(intel_buf_width(buf), 16384);
-> @@ -206,120 +260,103 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->  		read_domain = I915_GEM_DOMAIN_SAMPLER;
->  	}
->  
-> -	ss = intel_bb_ptr_align(ibb, 64);
-> +	mocs = intel_buf_mocs(buf);
->  
-> -	ss->ss0.surface_type = SURFACE_2D;
-> -	ss->ss0.surface_format = gen4_surface_format(buf->bpp, buf->depth);
-> -	ss->ss0.vertical_alignment = 1; /* align 4 */
-> -	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
-> +	ss_ptr = intel_bb_ptr_align(ibb, 64);
->  
-> -	ss->ss1.mocs_index = buf->mocs_index;
-> +	if (gen >= 20) {
-> +		/* -- Xe2 (LNL+) -- */
-> +		igt_genxml_pack_state(ibb, GFX20_RENDER_SURFACE_STATE, ss_ptr, ss) {
-> +			IGT_RSS_COMMON(ss, buf, mocs, read_domain, write_domain);
-> +			IGT_RSS_TILING(ss, buf);
-> +			ss.SurfaceHorizontalAlignment = GFX20_HALIGN_32;
->  
-> -	if (HAS_4TILE(ibb->devid)) {
-> -		ss->ss5.mip_tail_start_lod = 0;
-> -	} else {
-> -		ss->ss0.render_cache_read_write = 1;
-> -		ss->ss5.mip_tail_start_lod = 1; /* needed with trmode */
-> -	}
-> -
-> -	switch (buf->tiling) {
-> -	case I915_TILING_NONE:
-> -		ss->ss0.tiled_mode = 0;
-> -		break;
-> -	case I915_TILING_X:
-> -		ss->ss0.tiled_mode = 2;
-> -		break;
-> -	case I915_TILING_64:
-> -		ss->ss0.tiled_mode = 1;
-> -		ss->ss5.mip_tail_start_lod = 0xf;
-> -		break;
-> -	default:
-> -		ss->ss0.tiled_mode = 3;
-> -		if (buf->tiling == I915_TILING_Yf)
-> -			ss->ss5.trmode = 1;
-> -		else if (buf->tiling == I915_TILING_Ys)
-> -			ss->ss5.trmode = 2;
-> -		break;
-> -	}
-> -
-> -	if (intel_buf_pxp(buf))
-> -		ss->ss1.pxp = 1;
-> -
-> -	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> -						   read_domain, write_domain,
-> -						   buf->surface[0].offset,
-> -						   intel_bb_offset(ibb) + 4 * 8,
-> -						   buf->addr.offset);
-> -	ss->ss8.base_addr = (address + buf->surface[0].offset);
-> -	ss->ss9.base_addr_hi = (address + buf->surface[0].offset) >> 32;
-> -
-> -	ss->ss2.height = intel_buf_height(buf) - 1;
-> -	ss->ss2.width  = intel_buf_width(buf) - 1;
-> -	ss->ss3.pitch  = buf->surface[0].stride - 1;
-> -
-> -	ss->ss7.skl.shader_chanel_select_r = 4;
-> -	ss->ss7.skl.shader_chanel_select_g = 5;
-> -	ss->ss7.skl.shader_chanel_select_b = 6;
-> -	ss->ss7.skl.shader_chanel_select_a = 7;
-> -
-> -	if (buf->compression == I915_COMPRESSION_MEDIA)
-> -		ss->ss7.tgl.media_compression = 1;
-> -	else if (buf->compression == I915_COMPRESSION_RENDER) {
-> -		if (intel_gen(ibb->devid) >= 20)
-> -			ss->ss6.aux_mode = 0x0; /* AUX_NONE, unified compression */
-> -		else
-> -			ss->ss6.aux_mode = 0x5; /* AUX_CCS_E */
-> -
-> -		if (intel_gen(ibb->devid) < 12 && buf->ccs[0].stride) {
-> -			ss->ss6.aux_pitch = (buf->ccs[0].stride / 128) - 1;
-> -
-> -			address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> -								   read_domain, write_domain,
-> -								   (buf->cc.offset ? (1 << 10) : 0)
-> -								   | buf->ccs[0].offset,
-> -								   intel_bb_offset(ibb) + 4 * 10,
-> -								   buf->addr.offset);
-> -			ss->ss10.aux_base_addr = (address + buf->ccs[0].offset) >> 12;
-> -			ss->ss11.aux_base_addr_hi = (address + buf->ccs[0].offset) >> 32;
-> +			if (buf->compression == I915_COMPRESSION_RENDER) {
-> +				ss.AuxiliarySurfaceMode = GFX20_AUX_NONE;
-> +				ss.CompressionFormat = lnl_compression_format(buf);
-> +			}
->  		}
->  
-> -		if (buf->cc.offset) {
-> -			igt_assert(buf->compression == I915_COMPRESSION_RENDER);
-> -
-> -			ss->ss10.clearvalue_addr_enable = 1;
-> -
-> -			address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> -								   read_domain, write_domain,
-> -								   buf->cc.offset,
-> -								   intel_bb_offset(ibb) + 4 * 12,
-> -								   buf->addr.offset);
-> -
-> -			/*
-> -			 * If this assert doesn't hold below clear address will be
-> -			 * written wrong.
-> -			 */
-> -
-> -			igt_assert(__builtin_ctzl(address + buf->cc.offset) >= 6 &&
-> -				   (__builtin_clzl(address + buf->cc.offset) >= 16));
+> +	/* Variable-length: 1 header dword + VERTEX_BUFFER_STATE element */
+> +	{
 
-I see this assert is gone. I'm not sure how much is necessary but I
-guess Ville didn't introduce this without reason. I think adding it
-for address taken from igt_address_of() shouldn't be the problem.
+This { } block is not necessary.
 
-
-> -
-> -			ss->ss12.dg2.clear_address = (address + buf->cc.offset) >> 6;
-> -			ss->ss13.clear_address_hi = (address + buf->cc.offset) >> 32;
-> +	} else if (HAS_4TILE(ibb->devid)) {
-> +		/* -- Gen12.5 / DG2 -- */
-> +		igt_genxml_pack_state(ibb, GFX125_RENDER_SURFACE_STATE, ss_ptr, ss) {
-> +			IGT_RSS_COMMON(ss, buf, mocs, read_domain, write_domain);
-> +			IGT_RSS_TILING(ss, buf);
-> +			ss.SurfaceHorizontalAlignment = GFX125_HALIGN_32;
-> +
-> +			if (buf->compression == I915_COMPRESSION_MEDIA) {
-> +				ss.MemoryCompressionEnable = true;
-> +				ss.MemoryCompressionMode = GFX125_MEDIACOMPRESSION;
-> +			} else if (buf->compression == I915_COMPRESSION_RENDER) {
-> +				ss.AuxiliarySurfaceMode = GFX125_AUX_CCS_E;
-> +				ss.CompressionFormat = dg2_compression_format(buf);
-> +
-> +				if (buf->cc.offset) {
-> +					ss.ClearValueAddressEnable = true;
-> +					ss.ClearValueAddress =
-> +						igt_address_of(buf, buf->cc.offset,
-> +							       read_domain, write_domain);
-
-What I like here is how the pack functions handle relocations. When
-I started reviewing I was thinking it's missing piece, but its not.
-
-With the above nit addressed:
+With this nit addressed,
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
-
-> +				}
-> +			}
->  		}
+> +		struct GFX9_3DSTATE_VERTEX_BUFFERS vbs = { GFX9_3DSTATE_VERTEX_BUFFERS_header };
+> +		/* Default DWordLength=3 is correct for 1 element (1 + 4 - 2 = 3) */
+> +		GFX9_3DSTATE_VERTEX_BUFFERS_pack(ibb, intel_bb_ptr(ibb), &vbs);
+> +		intel_bb_ptr_add(ibb, 4);
+> +	}
+> +
+> +	vb_ptr = intel_bb_ptr(ibb);
+> +	igt_genxml_pack_state(ibb, GFX9_VERTEX_BUFFER_STATE, vb_ptr, vb) {
+> +		vb.VertexBufferIndex = 0;
+> +		vb.AddressModifyEnable = true;
+> +		vb.MOCS = intel_get_wb_mocs(ibb->fd);
+> +		vb.BufferPitch = VERTEX_SIZE;
+> +		vb.BufferStartingAddress = (struct igt_address){
+> +			.offset = ibb->batch_offset + offset,
+> +			.handle = ibb->handle,
+> +			.read_domains = I915_GEM_DOMAIN_VERTEX,
+> +			.write_domain = 0,
+> +			.presumed_offset = ibb->batch_offset,
+> +		};
+> +		vb.BufferSize = 3 * VERTEX_SIZE;
+> +	}
+> +	intel_bb_ptr_add(ibb, GFX9_VERTEX_BUFFER_STATE_length * 4);
+>  }
 >  
-> -		if (HAS_4TILE(ibb->devid)) {
-> -			ss->ss7.dg2.memory_compression_type = 0;
-> -			ss->ss7.dg2.memory_compression_enable = 0;
-> -			ss->ss7.dg2.disable_support_for_multi_gpu_partial_writes = 1;
-> -			ss->ss7.dg2.disable_support_for_multi_gpu_atomics = 1;
-> +	} else if (gen >= 12) {
-> +		/* -- Gen12 / TGL -- */
-> +		igt_genxml_pack_state(ibb, GFX12_RENDER_SURFACE_STATE, ss_ptr, ss) {
-> +			IGT_RSS_COMMON(ss, buf, mocs, read_domain, write_domain);
-> +			IGT_RSS_TILING(ss, buf);
-> +			ss.SurfaceHorizontalAlignment = GFX12_HALIGN_4;
-> +			ss.RenderCacheReadWriteMode = GFX12_READWRITECACHE;
-> +			ss.MipTailStartLOD = 1;
+>  static uint32_t
+>  gen6_create_cc_state(struct intel_bb *ibb)
+>  {
+> -	struct gen6_color_calc_state *cc_state;
+> +	void *ptr = intel_bb_ptr_align(ibb, 64);
+>  
+> -	cc_state = intel_bb_ptr_align(ibb, 64);
+> +	igt_genxml_pack_state(ibb, GFX9_COLOR_CALC_STATE, ptr, cc_state) { }
+>  
+> -	return intel_bb_ptr_add_return_prev_offset(ibb, sizeof(*cc_state));
+> +	return intel_bb_ptr_add_return_prev_offset(ibb,
+> +						   GFX9_COLOR_CALC_STATE_length * 4);
+>  }
+>  
+>  static uint32_t
+>  gen8_create_blend_state(struct intel_bb *ibb)
+>  {
+> -	struct gen8_blend_state *blend;
+> -	int i;
+> -
+> -	blend = intel_bb_ptr_align(ibb, 64);
+> +	void *ptr = intel_bb_ptr_align(ibb, 64);
+>  
+> -	for (i = 0; i < 16; i++) {
+> -		blend->bs[i].dest_blend_factor = GEN6_BLENDFACTOR_ZERO;
+> -		blend->bs[i].source_blend_factor = GEN6_BLENDFACTOR_ONE;
+> -		blend->bs[i].color_blend_func = GEN6_BLENDFUNCTION_ADD;
+> -		blend->bs[i].pre_blend_color_clamp = 1;
+> -		blend->bs[i].color_buffer_blend = 0;
+> +	/* Blend state header (1 dword) - all defaults (zeros) */
+> +	igt_genxml_pack_state(ibb, GFX9_BLEND_STATE, ptr, bs) { }
+> +	ptr += GFX9_BLEND_STATE_length * 4;
 > +
-> +			if (buf->compression == I915_COMPRESSION_MEDIA) {
-> +				ss.MemoryCompressionEnable = true;
-> +				ss.MemoryCompressionMode = GFX12_HORIZONTAL;
-> +			} else if (buf->compression == I915_COMPRESSION_RENDER) {
-> +				ss.AuxiliarySurfaceMode = GFX12_AUX_CCS_E;
-> +
-> +				if (buf->cc.offset) {
-> +					ss.ClearValueAddressEnable = true;
-> +					ss.ClearValueAddress =
-> +						igt_address_of(buf, buf->cc.offset,
-> +							       read_domain, write_domain);
-> +				}
-> +			}
+> +	/* 16 per-RT blend state entries */
+> +	for (int i = 0; i < 16; i++) {
+> +		igt_genxml_pack_state(ibb, GFX9_BLEND_STATE_ENTRY, ptr, entry) {
+> +			entry.DestinationBlendFactor = GFX9_BLENDFACTOR_ZERO;
+> +			entry.SourceBlendFactor = GFX9_BLENDFACTOR_ONE;
+> +			entry.ColorBlendFunction = GFX9_BLENDFUNCTION_ADD;
+> +			entry.PreBlendColorClampEnable = true;
 > +		}
->  
-> -			if (intel_gen(ibb->devid) >= 20)
-> -				ss->ss12.lnl.compression_format = lnl_compression_format(buf);
-> -			else
-> -				ss->ss12.dg2.compression_format = dg2_compression_format(buf);
-> +	} else {
-> +		/* -- Gen9 / Gen11 -- */
-> +		igt_genxml_pack_state(ibb, GFX9_RENDER_SURFACE_STATE, ss_ptr, ss) {
-> +			IGT_RSS_COMMON(ss, buf, mocs, read_domain, write_domain);
-> +			IGT_RSS_TILING(ss, buf);
-> +			ss.SurfaceHorizontalAlignment = GFX9_HALIGN_4;
-> +			ss.RenderCacheReadWriteMode = GFX9_READWRITECACHE;
-> +			ss.MipTailStartLOD = 1;
-> +
-> +			if (buf->tiling == I915_TILING_Yf)
-> +				ss.TiledResourceMode = GFX9_TILEYF;
-> +			else if (buf->tiling == I915_TILING_Ys)
-> +				ss.TiledResourceMode = GFX9_TILEYS;
-> +
-> +			if (buf->compression == I915_COMPRESSION_MEDIA) {
-> +				ss.MemoryCompressionEnable = true;
-> +				ss.MemoryCompressionMode = GFX9_HORIZONTAL;
-> +			} else if (buf->compression == I915_COMPRESSION_RENDER) {
-> +				ss.AuxiliarySurfaceMode = GFX9_AUX_CCS_E;
-> +
-> +				if (buf->ccs[0].stride) {
-> +					ss.AuxiliarySurfacePitch =
-> +						(buf->ccs[0].stride / 128) - 1;
-> +					ss.AuxiliarySurfaceBaseAddress =
-> +						igt_address_of(buf, buf->ccs[0].offset,
-> +							       read_domain, write_domain);
-> +				}
-> +			}
->  		}
+> +		ptr += GFX9_BLEND_STATE_ENTRY_length * 4;
 >  	}
 >  
-> -	return intel_bb_ptr_add_return_prev_offset(ibb, sizeof(*ss));
+> -	return intel_bb_ptr_add_return_prev_offset(ibb, sizeof(*blend));
 > +	return intel_bb_ptr_add_return_prev_offset(ibb,
-> +		GFX9_RENDER_SURFACE_STATE_length * 4);
+> +		(GFX9_BLEND_STATE_length + 16 * GFX9_BLEND_STATE_ENTRY_length) * 4);
 >  }
 >  
 >  static uint32_t
-> @@ -328,15 +365,14 @@ gen8_bind_surfaces(struct intel_bb *ibb,
->  		   const struct intel_buf *dst)
+>  gen6_create_cc_viewport(struct intel_bb *ibb)
 >  {
->  	uint32_t *binding_table, binding_table_offset;
-> -	bool fast_clear = !src;
->  
->  	binding_table = intel_bb_ptr_align(ibb, 32);
->  	binding_table_offset = intel_bb_ptr_add_return_prev_offset(ibb, 32);
->  
-> -	binding_table[0] = gen9_bind_buf(ibb, dst, 1, fast_clear);
-> +	binding_table[0] = gen9_bind_buf(ibb, dst, 1);
->  
->  	if (src != NULL)
-> -		binding_table[1] = gen9_bind_buf(ibb, src, 0, false);
-> +		binding_table[1] = gen9_bind_buf(ibb, src, 0);
->  
->  	return binding_table_offset;
->  }
-> @@ -344,21 +380,18 @@ gen8_bind_surfaces(struct intel_bb *ibb,
->  /* Mostly copy+paste from gen6, except wrap modes moved */
->  static uint32_t
->  gen8_create_sampler(struct intel_bb *ibb) {
-> -	struct gen8_sampler_state *ss;
+> -	struct gen4_cc_viewport *vp;
 > -
-> -	ss = intel_bb_ptr_align(ibb, 64);
-> -
-> -	ss->ss0.min_filter = GEN4_MAPFILTER_NEAREST;
-> -	ss->ss0.mag_filter = GEN4_MAPFILTER_NEAREST;
-> -	ss->ss3.r_wrap_mode = GEN4_TEXCOORDMODE_CLAMP;
-> -	ss->ss3.s_wrap_mode = GEN4_TEXCOORDMODE_CLAMP;
-> -	ss->ss3.t_wrap_mode = GEN4_TEXCOORDMODE_CLAMP;
-> -
-> -	/* I've experimented with non-normalized coordinates and using the LD
-> -	 * sampler fetch, but couldn't make it work. */
-> -	ss->ss3.non_normalized_coord = 0;
-> +	void *ptr = intel_bb_ptr_align(ibb, 64);
-> +
-> +	igt_genxml_pack_state(ibb, GFX9_SAMPLER_STATE, ptr, ss) {
-> +		ss.MinModeFilter = GFX9_MAPFILTER_NEAREST;
-> +		ss.MagModeFilter = GFX9_MAPFILTER_NEAREST;
-> +		ss.TCZAddressControlMode = GFX9_TCM_CLAMP;
-> +		ss.TCYAddressControlMode = GFX9_TCM_CLAMP;
-> +		ss.TCXAddressControlMode = GFX9_TCM_CLAMP;
+> -	vp = intel_bb_ptr_align(ibb, 32);
+> +	void *ptr = intel_bb_ptr_align(ibb, 32);
+>  
+> -	/* XXX I don't understand this */
+> -	vp->min_depth = -1.e35;
+> -	vp->max_depth = 1.e35;
+> +	igt_genxml_pack_state(ibb, GFX9_CC_VIEWPORT, ptr, vp) {
+> +		vp.MinimumDepth = -1.e35;
+> +		vp.MaximumDepth = 1.e35;
 > +	}
 >  
-> -	return intel_bb_ptr_add_return_prev_offset(ibb, sizeof(*ss));
+> -	return intel_bb_ptr_add_return_prev_offset(ibb, sizeof(*vp));
 > +	return intel_bb_ptr_add_return_prev_offset(ibb,
-> +						   GFX9_SAMPLER_STATE_length * 4);
+> +						   GFX9_CC_VIEWPORT_length * 4);
 >  }
 >  
 >  static uint32_t
+>  gen7_create_sf_clip_viewport(struct intel_bb *ibb) {
+> -	/* XXX these are likely not needed */
+> -	struct gen7_sf_clip_viewport *scv_state;
+> -
+> -	scv_state = intel_bb_ptr_align(ibb, 64);
+> +	void *ptr = intel_bb_ptr_align(ibb, 64);
+>  
+> -	scv_state->guardband.xmin = 0;
+> -	scv_state->guardband.xmax = 1.0f;
+> -	scv_state->guardband.ymin = 0;
+> -	scv_state->guardband.ymax = 1.0f;
+> +	igt_genxml_pack_state(ibb, GFX9_SF_CLIP_VIEWPORT, ptr, scv) {
+> +		scv.XMinClipGuardband = 0;
+> +		scv.XMaxClipGuardband = 1.0f;
+> +		scv.YMinClipGuardband = 0;
+> +		scv.YMaxClipGuardband = 1.0f;
+> +	}
+>  
+> -	return intel_bb_ptr_add_return_prev_offset(ibb, sizeof(*scv_state));
+> +	return intel_bb_ptr_add_return_prev_offset(ibb,
+> +						   GFX9_SF_CLIP_VIEWPORT_length * 4);
+>  }
+>  
+>  static uint32_t
+>  gen6_create_scissor_rect(struct intel_bb *ibb)
+>  {
+> -	struct gen6_scissor_rect *scissor;
+> +	void *ptr = intel_bb_ptr_align(ibb, 64);
+>  
+> -	scissor = intel_bb_ptr_align(ibb, 64);
+> +	igt_genxml_pack_state(ibb, GFX9_SCISSOR_RECT, ptr, sr) { }
+>  
+> -	return intel_bb_ptr_add_return_prev_offset(ibb, sizeof(*scissor));
+> +	return intel_bb_ptr_add_return_prev_offset(ibb,
+> +						   GFX9_SCISSOR_RECT_length * 4);
+>  }
+>  
+>  static void
 > -- 
 > 2.43.0
 > 
