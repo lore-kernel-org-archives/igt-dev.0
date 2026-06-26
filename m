@@ -4,62 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E781BCDE008
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Jun 2026 09:17:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACB63CDE008
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Jun 2026 09:19:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 844F510F4BF;
-	Fri, 26 Jun 2026 09:17:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 55A8210F52C;
+	Fri, 26 Jun 2026 09:19:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FgnQAjmz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l+0ltBOY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B609210E347
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Jun 2026 09:17:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEDB810E327
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Jun 2026 09:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782465442; x=1814001442;
- h=message-id:subject:from:to:cc:date:in-reply-to:
- references:content-transfer-encoding:mime-version;
- bh=AsTE4UsLXPGekRHUVKooTqYAdIK7E7mobfXiKWyhRCo=;
- b=FgnQAjmzDPv8Rr5HMqReSfeAU9FmPNaAKV9MV+N3YcQpuM9tKK0Alnfr
- 55OoJuAfttEeR32F0IJYKUMOdkIT9pdkLD1Lrixi+Pi5gnhQ2iP0Vqvrm
- q59PjoZzs56QEkZjm5xK/sZap0vnDp+VccnpN4TDkpgVauKpSW4mQatWT
- 0LqbETk8fxqzwEFxl3YB2LcBKKKz8kWlmohMupnYhTLCPuqUToslD9D9I
- lsmhICr47hI78q6a71mCOW+gefAkCpru/e/wQ96TOXLHZkui/sgxlpSoN
- KezHtUD9Sqmu77FZ4iYsqmykDgbz5IHwQWnXWyVRJRWSFMyvuPZxC0w25 Q==;
-X-CSE-ConnectionGUID: S3kanOLwRZ6+RgPbzhPGmQ==
-X-CSE-MsgGUID: IkGmrsjAR/WBXL59tuH9xQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="94743621"
-X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; d="scan'208";a="94743621"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2026 02:17:22 -0700
-X-CSE-ConnectionGUID: s4jHRQYVQjCUDCziPTdMPQ==
-X-CSE-MsgGUID: I3Xj9ctwQQ2SiEhQ9HTcYg==
+ t=1782465569; x=1814001569;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=p6v0aK1Flenbu69P5NGPYa9uMWtC2Ar0k8ApJbfid0A=;
+ b=l+0ltBOYm/KZeYnLWKTN80H8JuNYVKbEu2bNpUiJd0axnOBD+VPTiLaB
+ vdmEQKKnMBwALFFa6nxGiji2nXTQZCKD1s+wS4K+7euzh+gYBCmnEBYcG
+ RmjazBudZMX2eO0k94JHAcobeP767Rmzd0IC2mFDosJL3B+vOn8gt1hpp
+ b22Q1oiHSg6uCCYm+WIEAaimUi1A9yolPJScbMjS4cucE6vynnu3RtNjX
+ PSH9Ih0/dg9hM58BfjXu/KfsbmqPC63facj6BHDwCzNsDNV26lJn+mlNy
+ Ky5JjTmjxB2FaM7q30OXjt71J+zr8HwZuarwcj0YuRDsU3Y1eleDWUBzA g==;
+X-CSE-ConnectionGUID: Z95NggM6SHu4zNdy175Okg==
+X-CSE-MsgGUID: kIdvNJ3KQK+9RCUv9IN2Yw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="93915387"
+X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; d="scan'208";a="93915387"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2026 02:19:29 -0700
+X-CSE-ConnectionGUID: GASvALoAQk+8K39VcStTpA==
+X-CSE-MsgGUID: QBkgVQDoRcC1XQmGhgffaA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; d="scan'208";a="289380254"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.21])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2026 02:17:21 -0700
-Message-ID: <0d62d104e73668fcb972a39b86b0879968f43e05.camel@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2 2/3] tests/dmabuf: Port dmabuf tests to KUnit
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>, 
- igt-dev@lists.freedesktop.org
-Cc: Andi Shyti <andi.shyti@linux.intel.com>, Kamil Konieczny	
- <kamil.konieczny@linux.intel.com>, Krzysztof Karas
- <krzysztof.karas@intel.com>,  Sebastian Brzezinka
- <sebastian.brzezinka@intel.com>
-Date: Fri, 26 Jun 2026 11:17:18 +0200
-In-Reply-To: <20260625192850.56004-3-krzysztof.niemiec@intel.com>
-References: <20260625192850.56004-1-krzysztof.niemiec@intel.com>
- <20260625192850.56004-3-krzysztof.niemiec@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 
+X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; d="scan'208";a="248645497"
+Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.232])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2026 02:19:28 -0700
+Date: Fri, 26 Jun 2026 11:19:25 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Jan Maslak <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH 11/11] lib: Add genxml annotated batch buffer decode
+Message-ID: <2tgsw7tfa24k37nzs3mdp424sp47uwcrn4c5j6vgvw6minji2c@5hkdkhng5e75>
+References: <20260622035106.3023047-1-jan.maslak@intel.com>
+ <20260622035106.3023047-12-jan.maslak@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260622035106.3023047-12-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,97 +70,96 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 2026-06-25 at 21:28 +0200, Krzysztof Niemiec wrote:
-> The dmabuf tests have been moved out of the selftest mechanism into
-> KUnit in these commits in the kernel:
->=20
-> 126c50bc2fb6 dma-buf: Remove the old selftest
-> 6055c9e333cf dma-buf: Change st-dma-fence-chain.c to use kunit
-> 465f3934381c dma-buf: Change st-dma-fence-unwrap.c to use kunit
-> 9baa35a39939 dma-buf: Change st-dma-fence.c to use kunit
-> 15b9bde78bad dma-buf: Change st-dma-resv.c to use kunit
->=20
-> Launch dmabuf tests as KUnit tests instead of selftests from IGT's side
-> to reflect the kernel changes.
->=20
-> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+On Mon, Jun 22, 2026 at 05:51:06AM +0200, Jan Maslak wrote:
+> When IGT_BB_ANNOTATE=1 is set, intel_bb_dump() writes a companion
+> <filename>.annotated file alongside the raw hex dump.  The annotated file
+> identifies each command and prints its field names and values, decoded via
+> the genxml *_decode.h headers.
+> 
+> The opt-in environment variable avoids file I/O overhead in normal test runs.
+> A disclaimer in the file header notes that the decode is best-effort and may
+> lag hardware on newer platforms.
 
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+This one also looks good to me.
 
+Amazing work Janek, it's new quality in IGT render code. Definitely
+will help us to faster add render code for future platforms. Annotating
+is also great, it's much easier now to see structures fields meaning
+during debugging.
+
+
+For this patch:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+Address my minor nits and we can merge it.
+
+--
+Zbigniew
+
+> 
+> Signed-off-by: Jan Maslak <jan.maslak@intel.com>
 > ---
->  tests/dmabuf.c | 35 +++++++++++++++++++----------------
->  1 file changed, 19 insertions(+), 16 deletions(-)
->=20
-> diff --git a/tests/dmabuf.c b/tests/dmabuf.c
-> index 322981473..1baefb299 100644
-> --- a/tests/dmabuf.c
-> +++ b/tests/dmabuf.c
-> @@ -25,7 +25,7 @@
->  #include "igt_kmod.h"
->  /**
->   * TEST: dmabuf
-> - * Description: Kernel selftests for the dmabuf API
-> + * Description: KUnit tests for the dmabuf API
->   * Category: Core
->   * Mega feature: General Core features
->   * Functionality: drm_mm
-> @@ -33,14 +33,16 @@
->   * Feature: mapping, prime
->   * Test category: GEM_Legacy
+>  lib/intel_batchbuffer.c | 32 +++++++++++++++++++++++++++++++-
+>  1 file changed, 31 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 912b936e0c..1dacfdc6c7 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -42,6 +42,7 @@
+>  #include "intel_batchbuffer.h"
+>  #include "intel_bufops.h"
+>  #include "intel_chipset.h"
+> +#include "intel/genxml/igt_genxml_decode.h"
+>  #include "intel_pat.h"
+>  #include "media_fill.h"
+>  #include "media_spin.h"
+> @@ -1611,7 +1612,9 @@ void intel_bb_print(struct intel_bb *ibb)
+>   * @filename: name to which write bb
+>   * @in_hex: dump bb in hex form
 >   *
-> - * SUBTEST: all-tests
-> + * SUBTEST: dma-buf-resv
->   *
-> - * SUBTEST: all-tests@dma_fence
-> + * SUBTEST: dma-buf-fence
->   *
-> - * SUBTEST: all-tests@sanitycheck
-> + * SUBTEST: dma-buf-fence-unwrap
-> + *
-> + * SUBTEST: dma-buf-fence-chain
+> - * Dump batch bo to file.
+> + * Dump batch bo to file.  When IGT_BB_ANNOTATE=1 is set, also writes
+> + * a companion annotated file (filename + ".annotated") with
+> + * genxml-decoded field names and values.
 >   */
-> =20
-> -IGT_TEST_DESCRIPTION("Kernel selftests for the dmabuf API");
-> +IGT_TEST_DESCRIPTION("KUnit tests for the dmabuf API");
-> =20
->  static unsigned int bogomips(void)
+>  void intel_bb_dump(struct intel_bb *ibb, const char *filename, bool in_hex)
 >  {
-> @@ -76,23 +78,24 @@ static unsigned int bogomips(void)
->  	return igt_debug_on(!bogomips) ? UINT_MAX : ret;
->  }
-> =20
-> -static int wrapper(const char *dynamic_name,
-> -		   struct igt_ktest *tst,
-> -		   struct igt_kselftest_list *tl)
-> +int igt_main()
->  {
-> +	igt_kunit("dmabuf_kunit", "dma-buf-resv", NULL);
-> +	igt_kunit("dmabuf_kunit", "dma-buf-fence", NULL);
+> @@ -1641,6 +1644,33 @@ void intel_bb_dump(struct intel_bb *ibb, const char *filename, bool in_hex)
+>  	}
+>  	fclose(out);
+>  
+> +	/* Write a companion annotated decode alongside the raw dump,
+> +	 * but only when explicitly requested via IGT_BB_ANNOTATE=1.
+> +	 */
+> +	if (getenv("IGT_BB_ANNOTATE")) {
+> +		char *ann_filename;
+> +		unsigned batch_dwords;
 > +
->  	/*
-> -	 * Test case wait-backward of dma_fence_chain selftest can trigger soft
-> +	 * Test case wait-backward of dma_fence_chain test can trigger soft
->  	 * lockups on slow machines.  Since that slowness is not recognized as
->  	 * a bug on the kernel side, the issue is not going to be fixed.  Based
-> -	 * on analysis of CI results, skip that selftest on machines slower tha=
-n
-> +	 * on analysis of CI results, skip that test on machines slower than
->  	 * 25000 BogoMIPS to avoid ever returning CI reports on that failure.
->  	 */
-> -	igt_skip_on(!strcmp(dynamic_name, "dma_fence_chain") && bogomips() < 25=
-000);
-> =20
-> -	return igt_kselftest_execute(tst, tl, NULL, NULL);
-> -}
-> +	if (bogomips() >=3D 25000)
-> +		igt_kunit("dmabuf_kunit", "dma-buf-fence-chain", NULL);
-> +	else
-> +		igt_subtest("dma-buf-fence-chain")
-> +			igt_skip("BogoMips < 25000 - test is not supported\n");
-> =20
-> -int igt_main()
-> -{
-> -	igt_kselftests("dmabuf_selftests", NULL, NULL, NULL, wrapper);
-> +	igt_kunit("dmabuf_kunit", "dma-buf-fence-unwrap", NULL);
+> +		igt_assert(asprintf(&ann_filename, "%s.annotated", filename) > 0);
+> +		batch_dwords = intel_bb_offset(ibb) / sizeof(uint32_t);
+> +
+> +		out = fopen(ann_filename, "w");
+> +		if (out) {
+> +			fprintf(out,
+> +				"# Batch buffer annotated decode\n"
+> +				"# Decoded using IGT's genxml definitions.\n"
+> +				"# This is a best-effort annotation and may be inaccurate,\n"
+> +				"# especially on newer platforms where the XML definitions\n"
+> +				"# may not yet reflect the latest hardware changes.\n"
+> +				"\n");
+> +			igt_genxml_decode_batch(out, ibb->devid,
+> +						(const uint32_t *)ptr,
+> +						batch_dwords);
+> +			fclose(out);
+> +		}
+> +		free(ann_filename);
+> +	}
+> +
+>  	if (ptr != ibb->batch)
+>  		munmap(ptr, ibb->size);
 >  }
+> -- 
+> 2.43.0
+> 
