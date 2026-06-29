@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1535C43458
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 18:01:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EE2BC43458
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 18:01:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B48610E0C7;
-	Mon, 29 Jun 2026 18:01:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E65FD10E0C7;
+	Mon, 29 Jun 2026 18:01:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="J9uLxU3x";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="qc/WovXT";
 	dkim-atps=neutral
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com
- [209.85.210.174])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D3E610E0CE
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 18:00:34 +0000 (UTC)
-Received: by mail-pf1-f174.google.com with SMTP id
- d2e1a72fcca58-845e363246aso1604825b3a.1
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 11:00:34 -0700 (PDT)
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com
+ [74.125.82.178])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46AFD10E0C7
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 18:00:44 +0000 (UTC)
+Received: by mail-dy1-f178.google.com with SMTP id
+ 5a478bee46e88-30b9e755555so6265326eec.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 11:00:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1782756034; x=1783360834; darn=lists.freedesktop.org;
+ d=gmail.com; s=20251104; t=1782756043; x=1783360843; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t95nATqkdrJkX6eZ9nYVm0zeVZVpa1KTv5C2qxZC014=;
- b=J9uLxU3xT8lJ92VHJSWzmMRlPODbWZLfof0jsWGPv5BF1mt9/RVJknFYBj5fhevKih
- 36qOb8prm6XPIWbzNWaoItMHV4/XAEI1xzqdpjoJnyrYr/SmrbjKfOtJoINxoMtXFcON
- +ekODlFgLTnRFZ6wi76RmQMTtnjl9yQYEF1bmNphLG4wXTxvqsGuYKgnBB0lRNzGbCpQ
- XqhdJ7YZEBo7i7ypzgegefmOeQphdJmyCPGjjMp1gs/6evylNz4GY1METQ3idgO/GGKa
- sKZjEmwPX+/XryT/1ari7U04UeUi19sJ23ExbzZ7AyEAp9QYTcSXC8BqVCv3lJFjPBx6
- PprA==
+ bh=5M1ZkL1K57o8fy0y7BH71wmqdDpOhOWrfX7+5QNOpMY=;
+ b=qc/WovXT0NVw9aep9oB6aea2Ofyw2inUnepQcA6lFqfXLnEr39NyzGGcNRpl4J+fKI
+ 5oPSOSxt1eP6slLAE5JWJDudHXNDnUBEyvkpdhPZkmcBo4n5wftX6n5ZBNguhPctSbwR
+ qQH2PyO3V/VBuzlYpjR7i8ytbnx0LLnu5fzHlVXvgWGIjFrAgFIvXuWAqQYVNgzTc3Vx
+ w/+37VqbeLPbr6RCAXTzmvN9u4yVXdf4efT0oWUzYYQi8iz6wJ3AulSWqm8R/9u8JOkl
+ d8u1MMXESyp65CjwES3EcyE86S6MLVP57BxAALFpPH8BnWZJJ5UZy5oO3CajtnSUwCc5
+ MkGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1782756034; x=1783360834;
+ d=1e100.net; s=20251104; t=1782756043; x=1783360843;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=t95nATqkdrJkX6eZ9nYVm0zeVZVpa1KTv5C2qxZC014=;
- b=X/ZUCgazatgRRiM732wX7YD+qglX3L0fZCJSdvUwLmb7NO7yz/9hEsKvzNbos5dsb4
- 4mYZMr7zZAbmMmhkfStymcWTgD3YqYr9oJbhsdwoBagvrlW5677y0KWndP7fXUafavGT
- 2JOHyTkwV8cizhp4mOcmt00VSckQEQDW1tuBVXcUadcJwtW4q2LxQKV1UzXMYh450BRb
- oCBf6kvYLJp9Ga9rUdSv5CbvFXeT/VDswbROse+d6KAk1Wjw3B77l9KgN9KwJI7EbGh+
- JLC6v5rkVNO90T7hZXk4c+ZBQvr0TStkTVa5s4RVjwLeEvuDIojQaeyjR1v98wXow8Ia
- ZdXA==
-X-Gm-Message-State: AOJu0Yz21bNXeN4s9nIvTFwJ6yyFDl5DiVG0YOFR38iON7QFxfPqrPQq
- SG3+xNwyX7+WvzOE/XhYsb6JCXA01Kyqgma17l04xHNY/v5QWCRAKC4M+w//ppAN8ME=
-X-Gm-Gg: AfdE7cmFpg6X04dzonw2ZyibCViDy1yTocDYqF3V9f5U1OIPIYddT7+Uy0fGMI6E7nN
- xmGahvLZLfTOmC5pDLmwEyOiYI17GW8FOSpFagPEPYpueJzWPfoOq3JZHAsqQRHT0FMnht/QdrO
- taZADXkPkoPISMV33ChVvYTGv8GuCkWEs8jGMyhuMxyxEKy7IxgRZzhZGHeN8leCpAsyM792Al/
- lw6EHKFE60+kMQlIdq9XSAX78RfCo5QX2nP50qMrYLUSa+ukLA2t4O9W92wL7yVMlRXfTSeFHYm
- oC0M9BHSRhWIng8B7C+VezgRgl4qD43rZRo04KnJ5zO0OnNfi3dFZl58Dn45JZ9trOdfs3AGmiJ
- lKVLCHqkWCBt5avcIKd+sMXWLNKVgBx19U7v8wGMKBocnFnM8R2pcYTUsYm6fOAEE24Ycz/fdza
- GBcGXybDHv6J27hEsQAefLkzO5nZrSBD2Givyu5pdfLIglOTyVyG4=
-X-Received: by 2002:a05:6a00:8cb:b0:847:8048:be94 with SMTP id
- d2e1a72fcca58-8479f27b2admr374326b3a.33.1782756033599; 
- Mon, 29 Jun 2026 11:00:33 -0700 (PDT)
-Received: from localhost ([134.134.139.77]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-847a0076439sm139173b3a.26.2026.06.29.11.00.32
+ bh=5M1ZkL1K57o8fy0y7BH71wmqdDpOhOWrfX7+5QNOpMY=;
+ b=iEWla4TAjjDuQqNhYn1INHHqW/KSVJyLSWe1g+pIvUmIUpgP9Tijq5Svd9RdELXbTb
+ eawpJm2BhulJzjN0GeRcbcossDTgUcRMTDomcYYIxLk8Uv/VYz9mfdmGrpfJiMf8lKwm
+ RmM6l2iM9U1OJGhExP67ZgrxoDX5gSbNFUjZAi0+ZdAzwYtd3RSwf8Sc8zGCunKeJ0nE
+ l6jLl+1JNHG7YBqo/if5rPZcDfnrWlZok+PrvAna7mYYX3RKfst6+B+1Fr+AUWsPwhV6
+ u+sV4nTO9jm2v9WSSDZPkKtEFu7R+LurwId+GHK8fJu168EtRZ3Idxz8lp+s+Nh6D7l/
+ P1kA==
+X-Gm-Message-State: AOJu0YyNrK8by62JP9xJlOQNDqkzgIz+27++mFWh1ZTjo8k4TGJ6thdK
+ 6jkuyECLLVyvx+QTOVHiB/8xwHEr5ch+bHn9s7YRpSKZeyQJcaorzB3WPdd71LC1u2w=
+X-Gm-Gg: AfdE7cmEBIqrmqoZgM24lkz7Tz8P4NhuHUu6z5U9DEpsrzYxuRcq63/3S7owRs62V8x
+ jiCF1WatEiZKQ5FektSEAjemR/kjfi2UjZDJOftQnr9PUZ2B0XoVwbIu+n/q4JyLVzY4HCRyDAC
+ T85iJef5WL6MGU9N6Pn+f/k4bVx34/Gs3i+ohby93dOxrXETk9QjE++fS1Fuc9Fj/pPucqDKobd
+ o9nJDUhE10dbUuY09w8vk98QsTCL/6qC8B62L+9OmBXvb225q06srNNo8d+4pXK91/1pRv4YR6y
+ p5vYyPIDA8IiqW5w1amsSa6arp8hEaTCGb50RekMkTlIjN6RU/R2qs2dOaf3Vnh23Lvj17P3IGn
+ +tM1capm8wWvfMqPwwIa5fgLDS7GBdZ6nKMH1Qn75ERxIbJBc9AqkoZ1FcW9HpONwixYvdwWks2
+ mKqtBYqyXD+PYMZ0j19wa4fRGVk4zV55govBvkRDRM8VinDCoR
+X-Received: by 2002:a05:7301:5795:b0:30c:536e:3a95 with SMTP id
+ 5a478bee46e88-30ee11d6118mr334077eec.2.1782756043269; 
+ Mon, 29 Jun 2026 11:00:43 -0700 (PDT)
+Received: from localhost ([192.55.54.47]) by smtp.gmail.com with ESMTPSA id
+ 5a478bee46e88-30c7c52d669sm48886175eec.11.2026.06.29.11.00.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jun 2026 11:00:33 -0700 (PDT)
+ Mon, 29 Jun 2026 11:00:42 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 1/4] lib/igt_fb: add igt_format_get_subsampling()
- function
-Date: Mon, 29 Jun 2026 21:00:00 +0300
-Message-ID: <20260629180003.3215052-2-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 3/4] tests/kms_plane_scaling: add
+ plane-downscale-max-crc subtest
+Date: Mon, 29 Jun 2026 21:00:02 +0300
+Message-ID: <20260629180003.3215052-4-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260629180003.3215052-1-juhapekka.heikkila@gmail.com>
 References: <20260629180003.3215052-1-juhapekka.heikkila@gmail.com>
@@ -86,60 +86,192 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-add function to query given pixel format hsub and vsub
-parameters.
+Probe the maximum horizontal and vertical plane downscaling
+factor and verify the downscaled framebuffer render correctly
+by verifying via crc.
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_fb.c | 22 ++++++++++++++++++++++
- lib/igt_fb.h |  1 +
- 2 files changed, 23 insertions(+)
+ tests/kms_plane_scaling.c | 145 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 145 insertions(+)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index e623b2f64..a7b5247bf 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -5259,6 +5259,28 @@ int igt_format_plane_bpp(uint32_t drm_format, int plane)
- 	return format->plane_bpp[plane];
- }
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index b7980d6f8..59ec309ba 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -189,6 +189,13 @@
+  * Description: Test for validating max source size.
+  */
  
 +/**
-+ * igt_format_get_subsampling:
-+ * @drm_format: drm fourcc
-+ * @hsub: chroma subsampling factor in the horizontal direction (out)
-+ * @vsub: chroma subsampling factor in the vertical direction (out)
-+ *
-+ * This function returns the chroma subsampling factors of the @drm_format.
-+ * For non-subsampled (e.g. RGB or 4:4:4 YUV) formats both factors are 1.
++ * SUBTEST: plane-downscale-max-crc
++ * Description: Probe the maximum horizontal and vertical plane downscaling
++ *              factor and verify the downscaled framebuffer render correctly
++ *              by verifying via crc.
 + */
-+void igt_format_get_subsampling(uint32_t drm_format, int *hsub, int *vsub)
++
+ IGT_TEST_DESCRIPTION("Test display plane scaling");
+ 
+ enum scaler_combo_test_type {
+@@ -709,6 +716,35 @@ static const uint64_t modifiers[] = {
+ 	I915_FORMAT_MOD_4_TILED
+ };
+ 
++static void yuv_src_alignment(data_t *d, uint32_t format, igt_rotation_t rot,
++			      int *halign, int *valign)
 +{
-+	const struct format_desc_struct *format =
-+		lookup_drm_format(drm_format);
++	bool intel = is_intel_device(d->drm_fd);
++	int disp_ver = intel ? intel_display_ver(d->devid) : 0;
++	int hsub, vsub;
 +
-+	igt_assert(format);
++	*halign = 1;
++	*valign = 1;
 +
-+	if (hsub)
-+		*hsub = format->hsub;
-+	if (vsub)
-+		*vsub = format->vsub;
++	if (!igt_format_is_yuv(format))
++		return;
++
++	igt_format_get_subsampling(format, &hsub, &vsub);
++
++	/*
++	 * these must match to intel_plane_check_src_coordinates() in
++	 * i915/Xe driver
++	 */
++	if (intel && disp_ver >= 20 && igt_format_is_yuv_semiplanar(format)) {
++		*halign = 1;
++		*valign = (disp_ver == 35) ? 2 : 1;
++		return;
++	}
++
++	*halign = hsub;
++	*valign = vsub;
 +}
 +
- /**
-  * igt_format_array_fill:
-  * @formats_array: a pointer to the formats array pointer to be allocated
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index 8e5907dab..e019d7428 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -231,6 +231,7 @@ uint32_t igt_drm_format_str_to_format(const char *drm_format);
+ static int
+ find_max_downscale_src_size(data_t *d, igt_plane_t *plane,
+ 			    uint32_t format, uint64_t modifier,
+@@ -790,6 +826,95 @@ find_max_downscale_src_size(data_t *d, igt_plane_t *plane,
+ 	return best;
+ }
  
- bool igt_format_is_fp16(uint32_t drm_format);
- int igt_format_plane_bpp(uint32_t drm_format, int plane);
-+void igt_format_get_subsampling(uint32_t drm_format, int *hsub, int *vsub);
- void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
- 			   bool allow_yuv);
- int igt_fill_cts_color_ramp_framebuffer(uint32_t *pixmap, uint32_t video_width,
++static void
++test_downscale_max_crc(data_t *d, igt_crtc_t *crtc, igt_output_t *output,
++		       bool scale_width)
++{
++	igt_display_t *display = &d->display;
++	const uint32_t format = DRM_FORMAT_XRGB8888;
++	const uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
++	const int band = 64;
++	igt_pipe_crc_t *pipe_crc;
++	igt_crc_t ref_crc, scaled_crc;
++	drmModeModeInfo *mode;
++	struct igt_fb ref_fb = {}, src_fb = {};
++	igt_plane_t *plane;
++	int dst_w, dst_h, dst_scaled, max_src;
++	int halign, valign, align;
++
++	cleanup_crtc(d);
++
++	igt_require_pipe_crc(d->drm_fd);
++
++	igt_output_set_crtc(output, crtc);
++
++	mode = igt_output_get_highres_mode(output);
++	igt_require(mode);
++	igt_output_override_mode(output, mode);
++
++	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_require(plane);
++
++	yuv_src_alignment(d, format, IGT_ROTATION_0, &halign, &valign);
++	align = scale_width ? halign : valign;
++
++	/* dst is a thin band spanning the full extent of the scaled axis */
++	dst_w = ALIGN(scale_width ? mode->hdisplay : band, halign);
++	dst_h = ALIGN(scale_width ? band : mode->vdisplay, valign);
++	dst_scaled = scale_width ? dst_w : dst_h;
++
++	max_src = find_max_downscale_src_size(d, plane, format, modifier,
++					      scale_width, dst_w, dst_h, align);
++	skip_if_erange_or_einval(max_src);
++	igt_require_f(max_src > dst_scaled,
++		      "No %s downscaling headroom (max src %d, dst %d)\n",
++		      scale_width ? "horizontal" : "vertical",
++		      max_src, dst_scaled);
++
++	igt_info("Max %s downscale: src %d -> dst %d (band %d)\n",
++		 scale_width ? "horizontal" : "vertical",
++		 max_src, dst_scaled, band);
++
++	pipe_crc = igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
++
++	/* Reference: unscaled solid-green framebuffer of the destination size. */
++	igt_create_color_fb(display->drm_fd, dst_w, dst_h, format, modifier,
++			    0.0, 1.0, 0.0, &ref_fb);
++	igt_plane_set_fb(plane, &ref_fb);
++	igt_fb_set_position(&ref_fb, plane, 0, 0);
++	igt_fb_set_size(&ref_fb, plane, dst_w, dst_h);
++	igt_plane_set_position(plane, 0, 0);
++	igt_plane_set_size(plane, dst_w, dst_h);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
++
++	/* Test: larger solid-green source downscaled into dst rectangle. */
++	igt_create_color_fb(display->drm_fd,
++			    scale_width ? max_src : dst_w,
++			    scale_width ? dst_h : max_src,
++			    format, modifier, 0.0, 1.0, 0.0, &src_fb);
++	igt_plane_set_fb(plane, &src_fb);
++	igt_fb_set_position(&src_fb, plane, 0, 0);
++	igt_fb_set_size(&src_fb, plane,
++			scale_width ? max_src : dst_w,
++			scale_width ? dst_h : max_src);
++	igt_plane_set_position(plane, 0, 0);
++	igt_plane_set_size(plane, dst_w, dst_h);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_pipe_crc_collect_crc(pipe_crc, &scaled_crc);
++
++	igt_plane_set_fb(plane, NULL);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	igt_reset_fifo_underrun_reporting(display->drm_fd);
++
++	igt_pipe_crc_free(pipe_crc);
++	igt_remove_fb(display->drm_fd, &ref_fb);
++	igt_remove_fb(display->drm_fd, &src_fb);
++
++	igt_assert_crc_equal(&ref_crc, &scaled_crc);
++}
++
+ static uint32_t
+ test_scaler_with_modifier_crtc(data_t *d,
+ 			       double sf_plane,
+@@ -1702,6 +1827,26 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 								 output);
+ 			}
+ 		}
++
++		igt_describe("Probe the maximum horizontal and vertical plane "
++			     "downscaling factor and verify the downscaled output "
++			     "matches an unscaled reference using CRCs.");
++		igt_subtest_with_dynamic("plane-downscale-max-crc") {
++			for_each_crtc_with_valid_output(&data.display, crtc, output) {
++				if (!crtc_output_combo_valid(&data.display, crtc, output))
++					continue;
++				if (igt_crtc_num_scalers(crtc) < 1)
++					continue;
++
++				igt_dynamic_f("pipe-%s-%s-horizontal",
++					      igt_crtc_name(crtc), igt_output_name(output))
++					test_downscale_max_crc(&data, crtc, output, true);
++
++				igt_dynamic_f("pipe-%s-%s-vertical",
++					      igt_crtc_name(crtc), igt_output_name(output))
++					test_downscale_max_crc(&data, crtc, output, false);
++			}
++		}
+ 	}
+ 
+ 	igt_subtest_group()
 -- 
 2.43.0
 
