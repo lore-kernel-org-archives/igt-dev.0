@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46CA3C43458
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 09:17:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B9CC43458
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 09:17:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E34DD10E7D5;
-	Mon, 29 Jun 2026 09:17:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 27DCD10E7CE;
+	Mon, 29 Jun 2026 09:17:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ztc3l6F7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AM0BQ6WK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6A9D10E7CE
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 09:16:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B54A210E7D5
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 09:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782724566; x=1814260566;
+ t=1782724567; x=1814260567;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dtCh+ijP8cUWrMXWzOdajawj8xRB+o9KOeeHUkToqZ0=;
- b=Ztc3l6F7recWHb4257N7i3ELDCEgweXMWNvd7MJVJuiwcV7cNHjZ2STW
- DJy5LV6FFZM3qHFAjsFlTUQUIkJZpicOFfoO/yJsakmYCLZ6S+fIeilZ3
- IQx0GgZGcHIwqoF3qijpGtQ/EXixgrTinaHJ/gXOwcdV7NyZKKrJGsb5/
- P1+6EF5645Q/3kPgz152P3snkHOhioEOpvmnzGZp/FL9uHrVIVAbhwcaP
- pzwx6BN0XjA2Xphckyb/tAstb+9I7uwSouIi6iT9FXMmBDXDViUJPXm33
- YHg7essgmDqfr8+sp2fjHxZLDqX7fCKto1C9jOes12Vw4+irNyVqDsrMr g==;
-X-CSE-ConnectionGUID: xVjcLgydRBuYPrDcDRXUGQ==
-X-CSE-MsgGUID: 8cSNYfLoTUG9M/hmtt1G+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="94894165"
-X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; d="scan'208";a="94894165"
+ bh=0NU5E0mzRfqQaaFgxU6rQZ1kwZ2lsr2PAWLv6Zqgnc0=;
+ b=AM0BQ6WKI6Jqx2UdVzXh8PUM5vgTeP74UsKWnNGWC7//XtUXlrqJA0Sc
+ tdrGY7DtsFML62YKLIHPrKKGXfSIfmxcUzxh2UxWOoh/URDjkCtX9ye7J
+ DDAx4HFveWoyu/MnX38TdN+az9u2LFx+uPiQALlHBQkGrPPyV0+ivqE1X
+ WTf/1nf4HJOoiR9C7de05RlYimkttb3Tk15y5dtS2PZTGddz35Ss5QeJw
+ l9A6JSvfQkk/TKRAz8idLL0lRWTJI/6fbQUT4pF7/HsZDbuacHzN/oKei
+ iHeCRnlEKF70urOFdWXqSwY0qhKuADF1Hc++C9idPPzZ5OGJfLKqpDQAw A==;
+X-CSE-ConnectionGUID: ocU6NHLGSbuh8zS0TbPyVA==
+X-CSE-MsgGUID: fQu8+97RT060eHtX1HeT+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="94894171"
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; d="scan'208";a="94894171"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2026 02:16:06 -0700
-X-CSE-ConnectionGUID: jvsaOpaHQ8ao/PNsLG7Bkw==
-X-CSE-MsgGUID: tWCLakWFRCyh5619HxUr+w==
+ 29 Jun 2026 02:16:07 -0700
+X-CSE-ConnectionGUID: 4bzj+0ifSGmll1jf/EOvAw==
+X-CSE-MsgGUID: h8jC63srT2mIA57xj65Bww==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; d="scan'208";a="247451962"
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; d="scan'208";a="247451967"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa006.fm.intel.com with ESMTP; 29 Jun 2026 02:16:05 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 29 Jun 2026 02:16:06 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: juhapekka.heikkila@gmail.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v1 1/2] tests/kms_frontbuffer_tracking: remove typos
-Date: Mon, 29 Jun 2026 11:15:58 +0200
-Message-ID: <20260629091559.2706720-2-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v1 2/2] tests/kms_frontbuffer_tracking: iterate over
+ suspend with `for`
+Date: Mon, 29 Jun 2026 11:15:59 +0200
+Message-ID: <20260629091559.2706720-3-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260629091559.2706720-1-michal.grzelak@intel.com>
 References: <20260629091559.2706720-1-michal.grzelak@intel.com>
@@ -70,41 +71,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fix typos found in comments.
+igt@kms_frontbuffer_tracking introduces TEST_MODE_ITER_BEGIN(t) which
+consists of nested for loops. However, most of loops is skipped during
+continue statement, thus can be omitted. Thus obfuscates following the
+execution of any given codepath. Replace TEST_MODE_ITER_BEGIN(t) for
+suspend tests with macro definition and remove skipped for loops.
 
 Cc: Juha-Pekka Heikkilä <juhapekka.heikkila@gmail.com>
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- lib/igt_aux.c                          | 2 +-
- tests/intel/kms_frontbuffer_tracking.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tests/intel/kms_frontbuffer_tracking.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index 0d250ae2fe..90efb8a135 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -978,7 +978,7 @@ static void igt_aux_enable_pm_suspend_dbg(int power_dir)
-  *	  cycle
-  *
-  * Execute a system suspend cycle targeting the given @state optionally
-- * completing the cycle at the given @test point and automaically wake up
-+ * completing the cycle at the given @test point and automatically wake up
-  * again. Waking up is either achieved using the RTC wake-up alarm for a full
-  * suspend cycle or a kernel timer for a suspend test cycle. The kernel timer
-  * delay for a test cycle can be configured by the suspend.pm_test_delay
 diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 37706cab58..d38c3969d0 100644
+index d38c3969d0..e1f0412ecb 100644
 --- a/tests/intel/kms_frontbuffer_tracking.c
 +++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -3845,7 +3845,7 @@ static void suspend_subtest(const struct test_mode *t)
-  *   Everything succeeds.
-  *
-  * FAILURES
-- *   If you're getting wrong CRC calulations, then the hardware tracking might
-+ *   If you're getting wrong CRC calculations, then the hardware tracking might
-  *   be misconfigured and needs to be checked. If we're failing because FBC is
-  *   disabled and the reason is that there's not enough stolen memory, then the
-  *   Kernel might be calculating the amount of stolen memory needed based on the
+@@ -4647,12 +4647,20 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		}
+ 	TEST_MODE_ITER_END
+ 
+-	TEST_MODE_ITER_BEGIN(t)
+-		if (t.pipes != PIPE_SINGLE ||
+-		    t.screen != SCREEN_PRIM ||
+-		    t.plane != PLANE_PRI ||
+-		    t.fbs != FBS_INDIVIDUAL ||
+-		    t.method != IGT_DRAW_BLT)
++	t.format = FORMAT_DEFAULT;
++	t.flip = FLIP_PAGEFLIP;
++	t.tiling = opt.tiling;
++	t.pipes = PIPE_SINGLE;
++	t.screen = SCREEN_PRIM;
++	t.plane = PLANE_PRI;
++	t.fbs = FBS_INDIVIDUAL;
++	t.method = IGT_DRAW_BLT;
++
++	for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {
++
++		if (!opt.show_hidden && t.feature == FEATURE_NONE)
++			continue;
++		if ((t.feature & FEATURE_PSR) && (t.feature & FEATURE_DRRS))
+ 			continue;
+ 
+ 		igt_subtest_f("%s-modesetfrombusy", feature_str(t.feature))
+@@ -4713,7 +4721,7 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			suspend_subtest(&t);
+ 		}
+-	TEST_MODE_ITER_END
++	}
+ 
+ 	t.pipes = PIPE_SINGLE;
+ 	t.screen = SCREEN_PRIM;
 -- 
 2.45.2
 
