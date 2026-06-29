@@ -4,58 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8187BC43327
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 15:38:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71AD5C43458
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 15:41:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C8F2B10E970;
-	Mon, 29 Jun 2026 15:38:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2674410E977;
+	Mon, 29 Jun 2026 15:41:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YNrIQ3ug";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S/ftX7tc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59B5C10E970
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 15:38:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B437310E977
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 15:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782747487; x=1814283487;
+ t=1782747661; x=1814283661;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=nLuSkj3lMFeEV5iqC8U4Zj6JyR3KPbjhswrmjvGVlys=;
- b=YNrIQ3ug9x6pqyI6JtKWIuSEIGRSz0zgMN+7JHnbWn9MuINhIIEgMUio
- N2YZgkss8xlpPjFj+hNKmaTul95ouqJ+OiH2Q2y4HA4xlhyI+rgNgr5Nb
- i+/RWpSFBr9stdAbGdj/Rh55DfZkiSLCaWRMBwj+1TPiRxVhRoyueJdd0
- RxsS2L/gTxuGbRPPX/dcekTtyJEUhOosVlAY/OpvTOh1aRG6aBjs3udnq
- RFLCNER9CpCTW9yZhQH1FqT25lwSiIpaX6yGAqf2BpirvY5E5s5/Hn3NC
- kW6mF3wn2ESOM1aiVtyVt/F84yxgmNpmOSXNuLWmpdmoeuiC8IOqY+WDi g==;
-X-CSE-ConnectionGUID: iEkQLj1ARCW5ImVOyMYjzg==
-X-CSE-MsgGUID: uWVDPGqiTeCthwpvCka5ug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="83446308"
-X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; d="scan'208";a="83446308"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2026 08:38:07 -0700
-X-CSE-ConnectionGUID: 9BX7+Fe9SmWxWCD/6x/PnA==
-X-CSE-MsgGUID: hgepJQewQMyGIeaVu7BkVg==
+ bh=5ZMW0qsOd1Av4tRE1xovmsFXdMk2JWfwm7Ei2m5iGK0=;
+ b=S/ftX7tca9CwTli0yedXikYN1Z9LtJRjUyK6bOPZK2dYbSa5wY4w070j
+ Lxtq055ppeOws2u1kUIR81vS2Ya6F2RYJKwI/dA7zZOaJZFYvTM+ZzrE5
+ fKyS2gnyXqY8WwkhGs+CqzB5MvN2ZSpnon5hGgMxZS4bc2SkoPkU57V3e
+ 6A6Z0dmoVuSJ1z/bI/mdnf+6p3SYVU4aAz7t7Bk5Wp/t7mIoI1Sc6zdme
+ 6oIljtByZP1Gl/VtsqSr7ZGf1I6vJfgcE8Q8Qjmh+QeNXRVRTEvB3hc8l
+ 9kwsnpSHMl+mOWEJutP0pqFEsvpPVL7Ufqj07UGv2GjCiXkh2FKNNI57r g==;
+X-CSE-ConnectionGUID: hHKh3BT4RUWNmkSCn6vemA==
+X-CSE-MsgGUID: SZCaTAWOS56DCDUJy9YRGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="83490765"
+X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; d="scan'208";a="83490765"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jun 2026 08:41:00 -0700
+X-CSE-ConnectionGUID: 7IXhIfjbQxazx5T0oMmjtg==
+X-CSE-MsgGUID: YQLV5yZHQ8y02jO5JosfZw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; d="scan'208";a="250934427"
+X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; d="scan'208";a="282063297"
 Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.245.40])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2026 08:38:05 -0700
-Date: Mon, 29 Jun 2026 17:38:03 +0200
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jun 2026 08:40:58 -0700
+Date: Mon, 29 Jun 2026 17:40:56 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Gustavo Sousa <gustavo.sousa@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Ryszard Knop <ryszard.knop@intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Gustavo Sousa <gustavo.sousa@intel.com>, 
+ Ryszard Knop <ryszard.knop@intel.com>
 Subject: Re: [PATCH i-g-t] lib/igt_hook: Fix realloc size to avoid memory
  overwriting
-Message-ID: <ffl74blq4ga2uhv6ku4pxc2usgicwb724udynzgl6wrepcoxu5@tvk6724rdsop>
+Message-ID: <ch5p37bjvo35nux5azdtlb2d2qmr2ft7ccsbcau2vsv6k6xxx5@3ia72mvxaaer>
 References: <20260629115408.158220-2-zbigniew.kempczynski@intel.com>
- <877bnhtua6.fsf@intel.com>
+ <8839c171056ebba69ab979bb3b43dbacc0c76a0e@intel.com>
+ <c896ffe0caa582ca186f60d825ee6df8984e83ab@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <877bnhtua6.fsf@intel.com>
+In-Reply-To: <c896ffe0caa582ca186f60d825ee6df8984e83ab@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,49 +73,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Jun 29, 2026 at 09:17:53AM -0300, Gustavo Sousa wrote:
-> Zbigniew Kempczyński <zbigniew.kempczynski@intel.com> writes:
-> 
-> > Doubling test name size might be not enough for realloc if target name
-> > length is larger than test/subtest name size.
+On Mon, Jun 29, 2026 at 03:37:38PM +0300, Jani Nikula wrote:
+> On Mon, 29 Jun 2026, Jani Nikula <jani.nikula@intel.com> wrote:
+> > On Mon, 29 Jun 2026, Zbigniew Kempczyński <zbigniew.kempczynski@intel.com> wrote:
+> >> Doubling test name size might be not enough for realloc if target name
+> >> length is larger than test/subtest name size.
 > >
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-> > Cc: Ryszard Knop <ryszard.knop@intel.com>
-> > ---
-> >  lib/igt_hook.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/lib/igt_hook.c b/lib/igt_hook.c
-> > index b8f25b6c7a..a44b852da1 100644
-> > --- a/lib/igt_hook.c
-> > +++ b/lib/igt_hook.c
-> > @@ -300,7 +300,7 @@ static void igt_hook_update_test_name_pre_call(struct igt_hook *igt_hook, struct
-> >  	if (len + 1 > *size_ptr) {
-> >  		size_t fullname_size;
-> >  
-> > -		*size_ptr *= 2;
-> > +		*size_ptr += len + 1;
+> > Might one to point out (if) this is the cause for the segfaults we've
+> > been seeing in CI.
 > 
-> Oops. My bad. Thanks for finding this!
-> 
-> Do we need to use "+=" instead of "=" above, though?
-> 
-> Also, perhaps we could use roundup_power_of_two(len + 1) to reduce the
-> number of follow-up reallocs?
+> Also, Fixes: ?
 
-Yes, that was my intention, maybe I should to add a comment but
-that was quickfix and didn't think about it.
+I'm sorry, I wasn't aware of this issue id, just got link to failing
+job so I wanted to fix it quickly. I promise I'll behave decent in
+the future and will check this id before sending the patch.
 
 --
 Zbigniew
 
 > 
-> --
-> Gustavo Sousa
+> >
+> > BR,
+> > Jani.
+> >
+> >>
+> >> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> >> Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+> >> Cc: Ryszard Knop <ryszard.knop@intel.com>
+> >> ---
+> >>  lib/igt_hook.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/lib/igt_hook.c b/lib/igt_hook.c
+> >> index b8f25b6c7a..a44b852da1 100644
+> >> --- a/lib/igt_hook.c
+> >> +++ b/lib/igt_hook.c
+> >> @@ -300,7 +300,7 @@ static void igt_hook_update_test_name_pre_call(struct igt_hook *igt_hook, struct
+> >>  	if (len + 1 > *size_ptr) {
+> >>  		size_t fullname_size;
+> >>  
+> >> -		*size_ptr *= 2;
+> >> +		*size_ptr += len + 1;
+> >>  		*name_ptr = realloc(*name_ptr, *size_ptr);
+> >>  
+> >>  		fullname_size = igt_hook_calc_test_fullname_size(igt_hook);
 > 
-> >  		*name_ptr = realloc(*name_ptr, *size_ptr);
-> >  
-> >  		fullname_size = igt_hook_calc_test_fullname_size(igt_hook);
-> > -- 
-> > 2.54.0
+> -- 
+> Jani Nikula, Intel
