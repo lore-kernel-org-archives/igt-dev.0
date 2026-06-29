@@ -4,67 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2C25C43458
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 18:00:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1535C43458
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 18:01:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B4BA10E0CE;
-	Mon, 29 Jun 2026 18:00:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B48610E0C7;
+	Mon, 29 Jun 2026 18:01:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Jo2c1KLk";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="J9uLxU3x";
 	dkim-atps=neutral
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
- [209.85.214.169])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDC4010E0CE
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 18:00:29 +0000 (UTC)
-Received: by mail-pl1-f169.google.com with SMTP id
- d9443c01a7336-2c9e8a1d256so14893855ad.1
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 11:00:29 -0700 (PDT)
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com
+ [209.85.210.174])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D3E610E0CE
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 18:00:34 +0000 (UTC)
+Received: by mail-pf1-f174.google.com with SMTP id
+ d2e1a72fcca58-845e363246aso1604825b3a.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 11:00:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1782756029; x=1783360829; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zjrwFDzPBYkOX/sXhZPxsoWBKqYGq9guak0KvHYtr0s=;
- b=Jo2c1KLktJTgLa1BX/5MvZaYdgRBUXYmuAm7wvaVqFTQ+eA4lMWNAafrfIeCge3Q6Z
- 8yeMUAVPRVx17kUBDS3xlxPwZv3A+5x+YhzB3+gGNxu4rv3tBTRXATfK5CCbHlIdxPcL
- dZI9n3DInzZ8k5400l81Y/7FfSAAgXlVU6r0+/vuxPecKRkgoo+E28jIGeH1qmdusSyE
- fMpfEPzQU/JEfXUM32xkRRvDD74jp1dNoWy2n3V/ioxH778GkkFLDWdTnbKw2XVUeetM
- yXwSlQR4FClJjMxBdOnNUoiSoBkU+v/+UAapd7KBAu7C44PBYHVcVp+j0U8i2JtfgLN2
- 1Yag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1782756029; x=1783360829;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20251104; t=1782756034; x=1783360834; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zjrwFDzPBYkOX/sXhZPxsoWBKqYGq9guak0KvHYtr0s=;
- b=Qncpd+QAshjHCPpUsHMzb/7OWaWqJQlSPMVIliHQ+lNu4z9XN7KJiMt7tXISIN00lm
- uiOcu1/h+Bq9oAhsrEOVwVTiJQ+pyfxFzhY4eVPbVHuV83zPYtFV9/+UoxJmoD292E1P
- PTUckmxCcmNk9BbURzCYqubd+iQ0dWIAuk1FjdBysLHRw31F6MVgDp2mNn78IyfqVBG7
- qw17JAcRX4rs6H2XyzfRfNaJB7GyRb0PEQjzQgcKhLHrOwglHig1nnUWfQoaZOmp0Pfo
- GxSX/b9lCYIZ5NrbJMR0x/HjFpaIfAE9ednTQ6boUZXVhuemWXKXeU8sbqj+df3LgK+/
- Ggkg==
-X-Gm-Message-State: AOJu0YyWjGQosUzbdhDNX1jg14KyS9TR7B5tHjEKSfkPpu9PMHj2P8zb
- Em6akQ7TSEtyJaFpv7YZ8YyWxEJrYVya5rx+4hVuHbiXWUfBF5t7uAfjtqcVIww2Gvo=
-X-Gm-Gg: AfdE7cm2yT8luOA7C/bznu4Nh6G01MSWSRVXaEQbMxmQpcB4jDYYG/BYKakBPCgxB7G
- HKFEfurgidadq4KXXYmwNUQk9rSxL+5lN+s5y0V77fo4+aDn+KBDZwOH1b57chVFznBZIbL594K
- AThVzj/UAPkZM1ji19dDD49mzEJw7GgIidO5OoTU23Xb26PEU8eolON74m0PTk3atVT4e2VKUTZ
- W2vP1IUuoQ9Ki8Su/dr6Ei1LQNmAvE7hfK+8jcsv6MHE2KskLFajF9WEzRyonC/Mth6mS4P9au8
- mrb8FlXKGvapixsk15n5+aUV+n/UJYjjkNwI+xrWJTkwdj3ozHRnAyUaeZFrd3uzoaZw4iDusSl
- BaI0fOGtuQjrsaH8zlp/1wbZbfAp6O3XTPuMDH/JhTHRAjjQB6VvPZfgX2z8FmXkNToRCRV74T2
- n0jHsFwQYfJdmzpTT29+Tz7wB6Ksma+olW7Hn0yQ6Na7wevKZxELoFpiz4hyAPjw==
-X-Received: by 2002:a17:903:15cf:b0:2ba:924b:3948 with SMTP id
- d9443c01a7336-2ca2d56494cmr3097665ad.15.1782756029218; 
- Mon, 29 Jun 2026 11:00:29 -0700 (PDT)
+ bh=t95nATqkdrJkX6eZ9nYVm0zeVZVpa1KTv5C2qxZC014=;
+ b=J9uLxU3xT8lJ92VHJSWzmMRlPODbWZLfof0jsWGPv5BF1mt9/RVJknFYBj5fhevKih
+ 36qOb8prm6XPIWbzNWaoItMHV4/XAEI1xzqdpjoJnyrYr/SmrbjKfOtJoINxoMtXFcON
+ +ekODlFgLTnRFZ6wi76RmQMTtnjl9yQYEF1bmNphLG4wXTxvqsGuYKgnBB0lRNzGbCpQ
+ XqhdJ7YZEBo7i7ypzgegefmOeQphdJmyCPGjjMp1gs/6evylNz4GY1METQ3idgO/GGKa
+ sKZjEmwPX+/XryT/1ari7U04UeUi19sJ23ExbzZ7AyEAp9QYTcSXC8BqVCv3lJFjPBx6
+ PprA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1782756034; x=1783360834;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=t95nATqkdrJkX6eZ9nYVm0zeVZVpa1KTv5C2qxZC014=;
+ b=X/ZUCgazatgRRiM732wX7YD+qglX3L0fZCJSdvUwLmb7NO7yz/9hEsKvzNbos5dsb4
+ 4mYZMr7zZAbmMmhkfStymcWTgD3YqYr9oJbhsdwoBagvrlW5677y0KWndP7fXUafavGT
+ 2JOHyTkwV8cizhp4mOcmt00VSckQEQDW1tuBVXcUadcJwtW4q2LxQKV1UzXMYh450BRb
+ oCBf6kvYLJp9Ga9rUdSv5CbvFXeT/VDswbROse+d6KAk1Wjw3B77l9KgN9KwJI7EbGh+
+ JLC6v5rkVNO90T7hZXk4c+ZBQvr0TStkTVa5s4RVjwLeEvuDIojQaeyjR1v98wXow8Ia
+ ZdXA==
+X-Gm-Message-State: AOJu0Yz21bNXeN4s9nIvTFwJ6yyFDl5DiVG0YOFR38iON7QFxfPqrPQq
+ SG3+xNwyX7+WvzOE/XhYsb6JCXA01Kyqgma17l04xHNY/v5QWCRAKC4M+w//ppAN8ME=
+X-Gm-Gg: AfdE7cmFpg6X04dzonw2ZyibCViDy1yTocDYqF3V9f5U1OIPIYddT7+Uy0fGMI6E7nN
+ xmGahvLZLfTOmC5pDLmwEyOiYI17GW8FOSpFagPEPYpueJzWPfoOq3JZHAsqQRHT0FMnht/QdrO
+ taZADXkPkoPISMV33ChVvYTGv8GuCkWEs8jGMyhuMxyxEKy7IxgRZzhZGHeN8leCpAsyM792Al/
+ lw6EHKFE60+kMQlIdq9XSAX78RfCo5QX2nP50qMrYLUSa+ukLA2t4O9W92wL7yVMlRXfTSeFHYm
+ oC0M9BHSRhWIng8B7C+VezgRgl4qD43rZRo04KnJ5zO0OnNfi3dFZl58Dn45JZ9trOdfs3AGmiJ
+ lKVLCHqkWCBt5avcIKd+sMXWLNKVgBx19U7v8wGMKBocnFnM8R2pcYTUsYm6fOAEE24Ycz/fdza
+ GBcGXybDHv6J27hEsQAefLkzO5nZrSBD2Givyu5pdfLIglOTyVyG4=
+X-Received: by 2002:a05:6a00:8cb:b0:847:8048:be94 with SMTP id
+ d2e1a72fcca58-8479f27b2admr374326b3a.33.1782756033599; 
+ Mon, 29 Jun 2026 11:00:33 -0700 (PDT)
 Received: from localhost ([134.134.139.77]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2c9b43af119sm49682655ad.48.2026.06.29.11.00.27
+ d2e1a72fcca58-847a0076439sm139173b3a.26.2026.06.29.11.00.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jun 2026 11:00:28 -0700 (PDT)
+ Mon, 29 Jun 2026 11:00:33 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 0/4] Add maximum downscaling test on kms_plane_scaling
-Date: Mon, 29 Jun 2026 20:59:59 +0300
-Message-ID: <20260629180003.3215052-1-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 1/4] lib/igt_fb: add igt_format_get_subsampling()
+ function
+Date: Mon, 29 Jun 2026 21:00:00 +0300
+Message-ID: <20260629180003.3215052-2-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260629180003.3215052-1-juhapekka.heikkila@gmail.com>
+References: <20260629180003.3215052-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -82,35 +86,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-These patches add maximum downscaling test to kms_plane_scaling. Idea
-with these tests is to find maximum available downscaling via binary search
-on given configuration. Once maximum usable downscaling ratio is known screen
-correctness is verifiead using crc.
+add function to query given pixel format hsub and vsub
+parameters.
 
-These patches add a lot of (dynamic) subtests due to testing against
-horizontal/vertical/modifier/pixelformat. Have to see if pixelformats
-should be inside same subtest.
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ lib/igt_fb.c | 22 ++++++++++++++++++++++
+ lib/igt_fb.h |  1 +
+ 2 files changed, 23 insertions(+)
 
-This set still leave same binary search not done for upscaling tests which will
-need to be added at a later time.
-
-Also still missing from this set is special conditions like odd coordinates
-for planar surfaces.
-
-/Juha-Pekka
-
-Juha-Pekka Heikkila (4):
-  lib/igt_fb: add igt_format_get_subsampling() function
-  tests/kms_plane_scaling: add search for scaling limit
-  tests/kms_plane_scaling: add plane-downscale-max-crc subtest
-  tests/kms_plane_scaling: change plane-downscale-max-crc to do
-    variations
-
- lib/igt_fb.c              |  22 +++
- lib/igt_fb.h              |   1 +
- tests/kms_plane_scaling.c | 337 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 360 insertions(+)
-
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index e623b2f64..a7b5247bf 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -5259,6 +5259,28 @@ int igt_format_plane_bpp(uint32_t drm_format, int plane)
+ 	return format->plane_bpp[plane];
+ }
+ 
++/**
++ * igt_format_get_subsampling:
++ * @drm_format: drm fourcc
++ * @hsub: chroma subsampling factor in the horizontal direction (out)
++ * @vsub: chroma subsampling factor in the vertical direction (out)
++ *
++ * This function returns the chroma subsampling factors of the @drm_format.
++ * For non-subsampled (e.g. RGB or 4:4:4 YUV) formats both factors are 1.
++ */
++void igt_format_get_subsampling(uint32_t drm_format, int *hsub, int *vsub)
++{
++	const struct format_desc_struct *format =
++		lookup_drm_format(drm_format);
++
++	igt_assert(format);
++
++	if (hsub)
++		*hsub = format->hsub;
++	if (vsub)
++		*vsub = format->vsub;
++}
++
+ /**
+  * igt_format_array_fill:
+  * @formats_array: a pointer to the formats array pointer to be allocated
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 8e5907dab..e019d7428 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -231,6 +231,7 @@ uint32_t igt_drm_format_str_to_format(const char *drm_format);
+ 
+ bool igt_format_is_fp16(uint32_t drm_format);
+ int igt_format_plane_bpp(uint32_t drm_format, int plane);
++void igt_format_get_subsampling(uint32_t drm_format, int *hsub, int *vsub);
+ void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
+ 			   bool allow_yuv);
+ int igt_fill_cts_color_ramp_framebuffer(uint32_t *pixmap, uint32_t video_width,
 -- 
 2.43.0
 
