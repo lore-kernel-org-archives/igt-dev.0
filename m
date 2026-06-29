@@ -4,161 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86411C43602
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 12:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12B35C43458
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jun 2026 12:02:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A1FE10E081;
-	Mon, 29 Jun 2026 12:00:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7F92710E840;
+	Mon, 29 Jun 2026 12:02:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iIQNJWnz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R/bNMC8E";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76DED10E081
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 11:59:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6541410E840
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2026 12:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782734395; x=1814270395;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=FcRwmhqNW/RiPWZKuPZSq5AiaRRDXLA4t0F9lfnKc4I=;
- b=iIQNJWnzUyiIu0NlhgW9uWTL3hx7zX8fbLI5qAYkK381PzccEkX38at+
- mggLSDHCudmI6Y1K2DIvZKRURdVDg1fQHHbpUPL37sxHiBh2/fK6v6qaa
- 5H90UE+eDTW+0jdFz+se9vN4gd9Q1YBXMgnksqFxRUaDYyCab6+B0fcG7
- qZyjB2QwUdD2jcB8aOwv/XZDRGHc9hBo0hQhLaWzOg0/IOdf4xbH4i/i9
- IAB954oQAt2OFBGOtC2/LJtPrvC5A28D2QFIxnNxp5dACL4He25St//So
- 7lc8azT3dDJx4L34yMEcu2RRPN4Ua2F/TI8Sqhl3s2Iaveeu8Vd5C0wM1 Q==;
-X-CSE-ConnectionGUID: Wfiy0Wb/RS2C4KwNmiF6lw==
-X-CSE-MsgGUID: FTFPdui+SCmEEAAAP0vByQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="94806593"
-X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; d="scan'208";a="94806593"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2026 04:59:55 -0700
-X-CSE-ConnectionGUID: Noeks2nDSt21bkm/lik77A==
-X-CSE-MsgGUID: LOEPrGsoQTKBWHsRoaCR6Q==
+ t=1782734498; x=1814270498;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=VJ9Km3cA68V9Ue77ZD5a6i1t0JpAbCEx3SOlui5wuxA=;
+ b=R/bNMC8ESHnaLJVIeCGU+7H9E/qUBe2QFwWq0mZ1T9RUlrH6Y1Q001ST
+ fx+FxlbUiSXuhNuqEw1FN3gONJiUFyVSaBi2vPbjG9rjuL78+mUD7/ySf
+ HtGc8Qzq0Ts33wH3B4JX+ysApp1Im6xSvEZRRRLx5GfE6896g1xMhlfc0
+ rNfVESRQbA7jAwGb6khocwoBz7V6ylm9J619Vtid0meY+hanoOLmLjqwk
+ fCVTSH8BI3rVTdSF7Qd8IiKsrbmPoa3OqyrdMHH63NbmTb1lU+A/6tsYf
+ +UArn6dii2qBeWMD5IWqC4TZZ9Rx6Nl3EpmJDK6Qo3//nMPf8Gmn+KX3t A==;
+X-CSE-ConnectionGUID: XgC0HaRaRCyyA3dP2bFiGg==
+X-CSE-MsgGUID: ZaOeJ0R5TU2B7ZsP4bvcmA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="94075768"
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; d="scan'208";a="94075768"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jun 2026 05:01:38 -0700
+X-CSE-ConnectionGUID: LLee1bCRROaszUiOWzHEJg==
+X-CSE-MsgGUID: MhPMhFXtSca74+ik3q/u3Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; d="scan'208";a="250246029"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2026 04:59:55 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 29 Jun 2026 04:59:54 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 29 Jun 2026 04:59:54 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.34) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 29 Jun 2026 04:59:54 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W+fwggs5ZxOBhLlpAA7lBrDxNzp85s8LFUXlDQ3voOuAdjcioCPRdOffpM16Zgaa//4OiWkcvQJMdxP9KCdi5UVUn5us1zC40wr0QEiMWUJthI96Dx5gxXDO/lvNk4auQQEXgKutIrqo7odskygAA5D0ehdyn52KswZ6DirXiwiFgOJwYlEzmAXLIBrHTBgFfImXFxuOWUBNsMXSIU7CRCO2YYmDTJzInSn2Fyt4wm58Ys2LUCRJ6DvfxWyZ1j++E+69mrHcMleYAxuRHYOq/gIqAWLxsP+jQTDz1bcZb/Syb/2YRauGcT2HrwLL5A4K4UHtvff03j7BOy3jzUbinQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FcRwmhqNW/RiPWZKuPZSq5AiaRRDXLA4t0F9lfnKc4I=;
- b=OdkscCgRxceqCpboYLRcz236XCFHqsi84wkshTxqmkd6GPSeEFaQdS++nbCzNPbxCamqARaFrl+LtkiTqN/4XjvjYZy0qM9/z5V5fPuAW/PUuZPJjb4xIvVDdNNDFXa8gCD51E+O4LWSE9pDQjLYcKvgVHmoXfLYL5K9M1qxa9nH46fJPmEwAoHaP+uQcnt6IMAJuVG7CYh/PTWHwlax/+OPkJXmRa6w3yfZQtkTyo0OMn9MNXduON6mn7GvuwTVHUI6SWFzUauznDp1Wo8oFi7hGsBEDCLRBDz81iNnEcJmrH4B+3l4IT2Jnp1wp3mzUtvb52HIVhOykwyxNB8NTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB5663.namprd11.prod.outlook.com (2603:10b6:a03:3bc::9)
- by DS0PR11MB7558.namprd11.prod.outlook.com (2603:10b6:8:148::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Mon, 29 Jun
- 2026 11:59:51 +0000
-Received: from SJ0PR11MB5663.namprd11.prod.outlook.com
- ([fe80::e4cb:d003:6475:26bd]) by SJ0PR11MB5663.namprd11.prod.outlook.com
- ([fe80::e4cb:d003:6475:26bd%3]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 11:59:51 +0000
-From: "Knop, Ryszard" <ryszard.knop@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Sousa, Gustavo" <gustavo.sousa@intel.com>
-Subject: Re: [PATCH i-g-t] lib/igt_hook: Fix realloc size to avoid memory
- overwriting
-Thread-Topic: [PATCH i-g-t] lib/igt_hook: Fix realloc size to avoid memory
- overwriting
-Thread-Index: AQHdB74NUB6WJS1WEEuoyThVpHevELZVbhcA
-Date: Mon, 29 Jun 2026 11:59:50 +0000
-Message-ID: <d328c5bf13290b9747f9b51f4e5d423967413b94.camel@intel.com>
-References: <20260629115408.158220-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20260629115408.158220-2-zbigniew.kempczynski@intel.com>
-Accept-Language: en-US, pl-PL
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB5663:EE_|DS0PR11MB7558:EE_
-x-ms-office365-filtering-correlation-id: 8e786451-2704-4055-4805-08ded5d5ecde
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|23010399003|376014|1800799024|11063799006|56012099006|38070700021|22082099003|18002099003;
-x-microsoft-antispam-message-info: GVE0FEbdIe2bdPegl6HjyGbZaAVSQdIX+FDsYUvAqymVuWpVB6/4uKPBI4UjmnJNyQd6nPqMPssQzRqwfqr3udGxhDvhs8t2srCBrpcQjxbpA5clg9RtZ3pfVINW9CezMuW4lZnzZZt03EMXEvOXKEVRRY0GKRkCMCE8aJSZZJ5yRF7FI8Nuu9AGB/wHaNL5x39pWey97TOLVpA7dmVFEDdWeEm33ZWy0O6DrEqz8IOTcYiMebnk1SA9aZXHtLcj8tux1wuojqlSFhq0nwns522qjuPZwHOpJC8a4L+/ISMtev/cua9c8sP54KbHg3TYOWOSOR/0aNjpNaJApUVOIONaVv+m46OwOyrYzOZf1YlYhzubox1HOUSIhatI8MZQkjVefOZQdsSkhMVEFOqsSJNmADHVUD0XpuV7p2UP/jxIkCBfP/+NlLcl/H2t4jKlc8me2ev/Os0XtrJ5egoaXw6Zyerqa04TQk1D5U9pXwfoYOdTn+2xFGc/GQY1/Qg4X0umE1bYbZNPss153apfRzSdElBAIVghxKTfuWoQGTUXw06YVOvRAUYbGyxPO4rwhufq63DWErJQYznoUFXapj6UFqmthW7J6O+kBV72726QS6DyVZ1ahCE7PRKhDNvznWERUtrbpmH4pIuYIFGsLVI1rUgFcEbnw2gDto2H+4WDkiiZIARRadDZmIcm/Byt8Kre5WjtcM0EN9liz9DI0RG9vZYXBAceZ34r1vHaA5c=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB5663.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(11063799006)(56012099006)(38070700021)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OUptL3Fla1huaXQ3V3hWSUZiZGhtK3o1TVVQcHB1bkN0NUVBS056OE1zdXF3?=
- =?utf-8?B?ZlgrdFNSWXdZVFZsQ1Btb0MzMWJGaXY2ZGZDVlFjbk03K1kzS1YzOHd4d0tv?=
- =?utf-8?B?am1LaXdGdlNieVpFUFJ4UjBWeGl1aWEwTnNPRW1oQWFINUdyMWRTV2JWVk9S?=
- =?utf-8?B?dTJDYVFqdjUwaDZSU0R3ZFNUakhFWHFEcytnc09sVjlmWS9ydDJHVUVPZXVH?=
- =?utf-8?B?d25KTVJVTTVHWEx4U0U3R3EzUUE2RXpXWTE3UFBIWSt6RVlVVURYM1cvL1pN?=
- =?utf-8?B?NGRBMk45a1h6Q0RBdERrM2pPQmtPR3NHSmRTbUQ5RlNDSVgrRXVTK2FwYWdl?=
- =?utf-8?B?WW1hanE4QitscTBkYXg5NjN1bExpSGNOZ1Fzc1ZqTWdiWnRhQW1UVlhKK0Ez?=
- =?utf-8?B?U0t1NmpyUjA3Q245M2UyZFZSRGEzdWlDNzhDTUJ4VUxSaTZzTHBVQTNMZTVB?=
- =?utf-8?B?czJHYWhiMExwMURVaU16eGw5S01maFFMbEpBTE54SFI4QU1XMXpoK0dma0FG?=
- =?utf-8?B?TUFJd2EyM091eDRtYlFpWmMzMGNGakh5OVRBWjNZK2FwS1ZtZit1TUhjWENN?=
- =?utf-8?B?Y0grek1MMWlRMVRYN2k3aSt5SDVqSi9UMldaM0FZZStJZlBpTGVZanpWZ21M?=
- =?utf-8?B?Nk9lZVBFSnl1QjQycFVaMnQ2UklrcEJOMUo0dldVK0lmRXc2Z3FaYzhaUlMr?=
- =?utf-8?B?eGQ2K3JiM2hNVDgvckt1cWgzcWFWRFJrQVZ2d0JkNFhuQWZqY1UyM0V4N0R5?=
- =?utf-8?B?OXA3U1phNzJuK1ZHMmpQc3pRZGtTdkYrNklTVGZkcGI1QWlaMEFQN2NnTnY1?=
- =?utf-8?B?aHRqWDB3dWdRV29JSW5wN1VvTUpjRUxvZGxKMjFIYk9qd0s5dHFRbFpWcytQ?=
- =?utf-8?B?L2JvdW1uaDJkdU1jOGdzdmVSaGovTUJFSDUrMGlOemI4REpFb3pDTmp2eE92?=
- =?utf-8?B?T2JPMjdpV0dDeUY3T1BoUXBQS0JJSXRNVzNib1M3ZGQyckZTT2RYaXVRaTNq?=
- =?utf-8?B?NllyRlA3YUR0TWIrQzRKa1RBMnlqd1ZRWkpOVlc1UVRROUphQW1WM1N3RzJM?=
- =?utf-8?B?enNTWUk3Y0NJMlRlRzlHUjBDVmtMWERka3g0R2w2NXU0aVg4WWlGMUVzMTdD?=
- =?utf-8?B?bE1JQThvR0h4by9tSzJaWDlSMXN2Qkt0WWhBdGtGakNBTzJkU0hIMEdLTkdw?=
- =?utf-8?B?cUdJcjhoMi8xSEdGTmFFNnpMMGdWbDd2VVFJRXFxUmNjZmJ1RTh3dDA2akpB?=
- =?utf-8?B?dWx3MFdRaDNuMHkxQUJRWjJ3ek9lbDYwTWRxdUJuS2o4UDcrOVFNOVNOYmJE?=
- =?utf-8?B?cjR0UENORE9aUS9vZVhpQXl3Qm9VS0F6Sks5dW9WNnJ1d2lUSWlrMjNwU3lq?=
- =?utf-8?B?d2twRDZZRDNEdGlGU0ZmajJQM3QrRlliRFphRk5sYmhVNEJtcXU2cnJSVjF6?=
- =?utf-8?B?V2h1Nncwd0RyNk9jbVNrTXFCa2tyTEpGcGpRcWZpQm02NkFCaGdXY1BOanRF?=
- =?utf-8?B?dDVNeFZMVDRQems1WnRKV0ZQcmx4K0RuZzhla2dSS0o2YTFHOG9XTEJIdENV?=
- =?utf-8?B?MTJhYzRQalUwZFJ2MGJXTXg4TjU5SWpmYzAyZTM1SDZaS21BZ3l2WExCQ05z?=
- =?utf-8?B?Y21saDU3OVcxMklNK3gvV0Z4UGw0TllpZXpCREh4bm1qeUFOV3k5eHZ2SUx2?=
- =?utf-8?B?c3crWmpJbDA0SkdIQ0w1Sk55OGdCRXBLUnB3Ymx5ekRTUGVxQmpDZWpFUEhz?=
- =?utf-8?B?b0U1L3c4eWNDMTR4U0hNUW41MGRwaUZoMlhmV24va0FjL1RaNVdEclZMekhQ?=
- =?utf-8?B?WDR5ZXArNTdtVjFFNFBrZmJWYUFhVGZNcEZZVHliM1UvUTdsS2hESHJLcnJK?=
- =?utf-8?B?ZllJYUpjbUJUZGZuK0JvSnd3QlFWN0RMM1JrMkUrTjU3OFdOZWJKS2s3ZTRW?=
- =?utf-8?B?eGdBZXZXRUtSeHAvUHdVNElTd0d6N3Z2UlFCZUdhOEhEZHAvaDgvQklEUzRx?=
- =?utf-8?B?enhmSEZrRFZWc3BRQUlwN3FwUWtsWXN1VFU5Uk5jS2tpZFZWZ3NoZnVVVWtI?=
- =?utf-8?B?MW8yaldUUFMxbDhsODRLckJ3SHlWaWppMmlwRW1veXM1eWtrWDBUUzE0K0xB?=
- =?utf-8?B?TTg1emF1c3RMYmh5Yy9lQktpYklRUEJaODBHK1NtT1JzTFQ2UFZYVTdSQ0ZR?=
- =?utf-8?B?YUlVbzB6ZFpoalZZQlA5bTI5VEJQek5lVVlXMHZ6MTJ4Rjd5MEVpUTJncFFS?=
- =?utf-8?B?VG5yOW11K0RHZzRWK0JkeU1adWsrdGhOSnlCdHpER2o1N3ZuMHVYUG1lbXh3?=
- =?utf-8?B?OGNqOXp5VGNYNHhUUHhQQWg5MEpmOUxkaThxRCt5dzJ5T3N3Mkl2amxDa1lB?=
- =?utf-8?Q?jK8O4oi5URWweI9I=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <76B14332897D4446B64DD80233F52FC9@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; d="scan'208";a="252071646"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 05:01:37 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, pranay.samala@intel.com,
+ Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t] tests/chamelium/kms_chamelium_audio: Add suspend/resume
+ audio tests
+Date: Mon, 29 Jun 2026 17:31:29 +0530
+Message-ID: <20260629120129.3412130-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: lvY/5z42pqJaSsxOidmykfsXAnfsFiqJJaxlCRL95MhgTvFrcLUT/4aXWc5FisSuoqIGhu0zxiv4sOXXHiuYQmTTYhwxMRsPEqJd5+XqX7jrl9dTD7Fyn7VhJfmAnz2HdGn5Cf+AzZV19k4DimMBUMpatPUVlqG58SC4X/kaN3PxxrFf74+hMy4PdWJLLztjtgy1OfubbfXqlYvjklmJ2HVv9qklreBXNTbbw7d7NI+4aLZ+9jQqzSlcwZUsPrZj6OBGJ8rSiSD8j3MHTlOU9qf4wDW7NLAigdPOtz2YV+14I/umDXfi4ITUxfoBGox2WaEpATiE9lNOUQKPmGXcxg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5663.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e786451-2704-4055-4805-08ded5d5ecde
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jun 2026 11:59:51.1624 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5J3P/TuVkoDtWMOQU3/B8A307DCpIlZKHlJK2sbvB8jJL67AReJNBbf2wtc7rzR2q/ukcEXnxgapQ2X1VxV0+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7558
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -174,21 +67,256 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-UmV2aWV3ZWQtYnk6IFJ5c3phcmQgS25vcCA8cnlzemFyZC5rbm9wQGludGVsLmNvbT4NCg0KT24g
-TW9uLCAyMDI2LTA2LTI5IGF0IDEzOjU0ICswMjAwLCBaYmlnbmlldyBLZW1wY3p5xYRza2kgd3Jv
-dGU6DQo+IERvdWJsaW5nIHRlc3QgbmFtZSBzaXplIG1pZ2h0IGJlIG5vdCBlbm91Z2ggZm9yIHJl
-YWxsb2MgaWYgdGFyZ2V0IG5hbWUNCj4gbGVuZ3RoIGlzIGxhcmdlciB0aGFuIHRlc3Qvc3VidGVz
-dCBuYW1lIHNpemUuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kg
-PHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4NCj4gQ2M6IEd1c3Rhdm8gU291c2EgPGd1
-c3Rhdm8uc291c2FAaW50ZWwuY29tPg0KPiBDYzogUnlzemFyZCBLbm9wIDxyeXN6YXJkLmtub3BA
-aW50ZWwuY29tPg0KPiAtLS0NCj4gIGxpYi9pZ3RfaG9vay5jIHwgMiArLQ0KPiAgMSBmaWxlIGNo
-YW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
-bGliL2lndF9ob29rLmMgYi9saWIvaWd0X2hvb2suYw0KPiBpbmRleCBiOGYyNWI2YzdhLi5hNDRi
-ODUyZGExIDEwMDY0NA0KPiAtLS0gYS9saWIvaWd0X2hvb2suYw0KPiArKysgYi9saWIvaWd0X2hv
-b2suYw0KPiBAQCAtMzAwLDcgKzMwMCw3IEBAIHN0YXRpYyB2b2lkIGlndF9ob29rX3VwZGF0ZV90
-ZXN0X25hbWVfcHJlX2NhbGwoc3RydWN0IGlndF9ob29rICppZ3RfaG9vaywgc3RydWN0DQo+ICAJ
-aWYgKGxlbiArIDEgPiAqc2l6ZV9wdHIpIHsNCj4gIAkJc2l6ZV90IGZ1bGxuYW1lX3NpemU7DQo+
-ICANCj4gLQkJKnNpemVfcHRyICo9IDI7DQo+ICsJCSpzaXplX3B0ciArPSBsZW4gKyAxOw0KPiAg
-CQkqbmFtZV9wdHIgPSByZWFsbG9jKCpuYW1lX3B0ciwgKnNpemVfcHRyKTsNCj4gIA0KPiAgCQlm
-dWxsbmFtZV9zaXplID0gaWd0X2hvb2tfY2FsY190ZXN0X2Z1bGxuYW1lX3NpemUoaWd0X2hvb2sp
-Ow0K
+Add test to validate audio works after suspend/resume on HDMI/DP
+connector.
+
+v2: Perform a single suspend/resume for all audio combinations.
+    Re-enable chamelium after suspend and separate pre-suspend
+    and post-resume validation paths for clearer failure diagnostics.
+v3: Drop commit and use igt_assert_f with explicit messages to
+    distinguish failure in audio tests.
+v4: Updated test to avoid false-pass on zero executed configs.
+    Replace post-suspend forced re-enable with connector
+    re-probe/connected checks.
+v5: Remove unused variable and add chamelium_assert_reachable check.
+v6: Skip suspend/resume subtest when pre-suspend audio validation fails,
+    and update suspend subtest descriptions.
+v7: Update fixture handles cleanup regardless of skip/assert.
+
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Pranay Samala <pranay.samala@intel.com>
+---
+ tests/chamelium/kms_chamelium_audio.c  | 158 ++++++++++++++++++++++++-
+ tests/chamelium/kms_chamelium_helper.h |   3 +
+ 2 files changed, 160 insertions(+), 1 deletion(-)
+
+diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
+index df8d27c0c..e3c0e4b86 100644
+--- a/tests/chamelium/kms_chamelium_audio.c
++++ b/tests/chamelium/kms_chamelium_audio.c
+@@ -52,6 +52,12 @@
+  * SUBTEST: hdmi-audio-edid
+  * Description: Plug a connector with an EDID suitable for audio, check ALSA's
+  *              EDID-Like Data reports the correct audio parameters
++ *
++ * SUBTEST: dp-audio-after-suspend
++ * Description: Verify audio works after system suspend/resume
++ *
++ * SUBTEST: hdmi-audio-after-suspend
++ * Description: Verify audio works after system suspend/resume
+  */
+ 
+ /* Playback parameters control the audio signal we synthesize and send */
+@@ -695,6 +701,66 @@ static bool check_audio_configuration(struct alsa *alsa,
+ 	return true;
+ }
+ 
++static bool run_audio_test_once(chamelium_data_t *data,
++				struct alsa *alsa,
++				struct chamelium_port *port,
++				snd_pcm_format_t format,
++				int channels,
++				int sampling_rate)
++{
++	struct audio_state state;
++	bool success;
++
++	audio_state_init(&state, data, alsa, port, format, channels,
++			 sampling_rate);
++	success = test_audio_frequencies(&state);
++	success &= test_audio_flatline(&state);
++	audio_state_fini(&state);
++
++	return success;
++}
++
++static bool run_audio_tests(chamelium_data_t *data,
++			    struct alsa *alsa,
++			    struct chamelium_port *port,
++			    const char *audio_device)
++{
++	bool run = false;
++	bool success = true;
++	int ret, i, j;
++	int channels, sampling_rate;
++	snd_pcm_format_t format;
++
++	for (i = 0; i < test_sampling_rates_count; i++) {
++		for (j = 0; j < test_formats_count; j++) {
++			ret = alsa_open_output(alsa, audio_device);
++			igt_assert_f(ret >= 0,
++				     "Failed to open ALSA output\n");
++
++			format = test_formats[j];
++			channels = PLAYBACK_CHANNELS;
++			sampling_rate = test_sampling_rates[i];
++
++			if (!check_audio_configuration(alsa, format,
++						       channels,
++						       sampling_rate)) {
++				alsa_close_output(alsa);
++				continue;
++			}
++
++			run = true;
++
++			success &= run_audio_test_once(data, alsa, port,
++					      format, channels,
++					      sampling_rate);
++
++			alsa_close_output(alsa);
++		}
++	}
++
++	return run && success;
++}
++
+ static const char test_display_audio_desc[] =
+ 	"Playback various audio signals with various audio formats/rates, "
+ 	"capture them and check they are correct";
+@@ -762,8 +828,10 @@ static void test_display_audio(chamelium_data_t *data,
+ 			sampling_rate = test_sampling_rates[i];
+ 
+ 			if (!check_audio_configuration(alsa, format, channels,
+-						       sampling_rate))
++						       sampling_rate)) {
++				alsa_close_output(alsa);
+ 				continue;
++			}
+ 
+ 			run = true;
+ 
+@@ -789,6 +857,75 @@ static void test_display_audio(chamelium_data_t *data,
+ 	free(alsa);
+ }
+ 
++static const char test_display_audio_suspend_resume_desc[] =
++	"Verify audio works after system suspend/resume";
++static void test_display_audio_suspend_resume(
++				chamelium_data_t *data,
++				struct chamelium_port *port,
++				const char *audio_device,
++				enum igt_custom_edid_type edid)
++{
++	struct alsa *alsa;
++	igt_output_t *output;
++	struct igt_fb fb;
++	drmModeModeInfo *mode;
++	drmModeConnector *connector;
++	int fb_id;
++
++	igt_require(alsa_has_exclusive_access());
++
++	igt_require(chamelium_has_audio_support(data->chamelium,
++						port));
++
++	alsa = alsa_init();
++	igt_assert(alsa);
++	data->audio_alsa = alsa;
++
++	igt_modeset_disable_all_outputs(&data->display);
++	chamelium_reset_state(&data->display, data->chamelium,
++			      port, data->ports,
++			      data->port_count);
++	output = chamelium_prepare_output(data, port, edid);
++
++	connector = chamelium_port_get_connector(data->chamelium,
++						 port, false);
++	data->audio_connector = connector;
++	igt_assert(connector->count_modes > 0);
++
++	mode = &connector->modes[0];
++
++	fb_id = igt_create_color_pattern_fb(data->drm_fd,
++					    mode->hdisplay,
++					    mode->vdisplay,
++					    DRM_FORMAT_XRGB8888,
++					    DRM_FORMAT_MOD_LINEAR,
++					    0, 0, 0, &fb);
++	igt_assert(fb_id > 0);
++	data->audio_fb = fb;
++
++	chamelium_enable_output(data, port, output,
++				mode, &fb);
++
++	igt_skip_on_f(!run_audio_tests(data, alsa, port, audio_device),
++		      "Audio test setup failed, skipping suspend/resume audio test\n");
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++				      SUSPEND_TEST_NONE);
++	chamelium_assert_reachable(data->chamelium, ONLINE_TIMEOUT);
++
++	/* Re-probe connector state after resume instead of forcing a re-enable. */
++	drmModeFreeConnector(connector);
++	connector = chamelium_port_get_connector(data->chamelium, port, true);
++	data->audio_connector = connector;
++	igt_assert_f(connector->connection == DRM_MODE_CONNECTED,
++		     "Connector disconnected after suspend/resume\n");
++	igt_assert_f(connector->count_modes > 0,
++		     "No modes available after suspend/resume\n");
++
++	igt_assert_f(run_audio_tests(data, alsa, port, audio_device),
++		     "Audio test failed after suspend\n");
++}
++
+ static const char test_display_audio_edid_desc[] =
+ 	"Plug a connector with an EDID suitable for audio, check ALSA's "
+ 	"EDID-Like Data reports the correct audio parameters";
+@@ -854,6 +991,9 @@ int igt_main()
+ 
+ 	igt_fixture() {
+ 		chamelium_init_test(&data);
++		data.audio_alsa = NULL;
++		data.audio_connector = NULL;
++		data.audio_fb.fb_id = 0;
+ 	}
+ 
+ 	igt_describe("DisplayPort tests");
+@@ -866,6 +1006,11 @@ int igt_main()
+ 	connector_subtest("dp-audio-edid", DisplayPort, &data, test_display_audio_edid,
+ 			  IGT_CUSTOM_EDID_DP_AUDIO);
+ 
++	igt_describe(test_display_audio_suspend_resume_desc);
++	connector_subtest("dp-audio-after-suspend", DisplayPort, &data,
++			  test_display_audio_suspend_resume,
++			  "HDMI", IGT_CUSTOM_EDID_DP_AUDIO);
++
+ 	igt_describe("HDMI tests");
+ 
+ 	igt_describe(test_display_audio_desc);
+@@ -876,7 +1021,18 @@ int igt_main()
+ 	connector_subtest("hdmi-audio-edid", HDMIA, &data, test_display_audio_edid,
+ 			  IGT_CUSTOM_EDID_HDMI_AUDIO);
+ 
++	igt_describe(test_display_audio_suspend_resume_desc);
++	connector_subtest("hdmi-audio-after-suspend", HDMIA, &data,
++			  test_display_audio_suspend_resume,
++			  "HDMI", IGT_CUSTOM_EDID_HDMI_AUDIO);
++
+ 	igt_fixture() {
++		if (data.audio_fb.fb_id)
++			igt_remove_fb(data.drm_fd, &data.audio_fb);
++		if (data.audio_connector)
++			drmModeFreeConnector(data.audio_connector);
++		free(data.audio_alsa);
++
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
+ 	}
+diff --git a/tests/chamelium/kms_chamelium_helper.h b/tests/chamelium/kms_chamelium_helper.h
+index 606079666..65c6067db 100644
+--- a/tests/chamelium/kms_chamelium_helper.h
++++ b/tests/chamelium/kms_chamelium_helper.h
+@@ -81,6 +81,9 @@ typedef struct {
+ 	int drm_fd;
+ 
+ 	struct chamelium_edid *edids[IGT_CUSTOM_EDID_COUNT];
++	struct alsa *audio_alsa;
++	struct igt_fb audio_fb;
++	drmModeConnector *audio_connector;
+ } chamelium_data_t;
+ 
+ void chamelium_init_test(chamelium_data_t *data);
+-- 
+2.43.0
+
