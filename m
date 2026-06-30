@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B21FC43327
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jun 2026 12:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3F6BC43458
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jun 2026 12:00:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 276AE10EBFB;
-	Tue, 30 Jun 2026 12:00:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8AD7710E1DB;
+	Tue, 30 Jun 2026 12:00:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g66b2Lnm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kItwAFr/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2EA210E1DB
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2026 11:59:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B6F210E1DB
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2026 11:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782820787; x=1814356787;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=uQYoxiehPWlmfZFW+bMxS2LXD6YDGj764V7SK3kLRNU=;
- b=g66b2Lnm7dE5ZeU9k2c+aRNnZxzzrQWK3Ko0lFbi+4GFo5Bi8Ihe6o6G
- oBcHvPKRz+bPsfY7JDcoQKD09RnQMlMVYvnBGLZjgrdjiPCgxqF96ZTYd
- +ePUIWXcsILs78wjsuIc9Tx2xVJZ/mO37n7JG+vCMj94zYA0knR08f4la
- wHZpNmtoDtECXY7+5nLqMv4cYyyMlBw0I/rbF+kIF/y4FGlAt6IiqGtTy
- c9YXQV7nlyyCutDy1rYoqaPCcsHYLyzXPqtTngPx0iRamxH5gx8vJNvme
- 7DfhmSFNyOG6Ga9in/9eZwrmji28d3RgkQHuDhxi6HtvowdJJCh/6bKiN g==;
-X-CSE-ConnectionGUID: OeyYwHeTQmO7PQyiWR4xuw==
-X-CSE-MsgGUID: hS+yFmgKQbqBIMDofUCIBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="109080767"
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; d="scan'208";a="109080767"
+ t=1782820791; x=1814356791;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=gLGYUrHdr6lS6jk8Y72OcAGzU2NTSSdjWB/Ar/pPpEU=;
+ b=kItwAFr/nZHugqROFdlShZPmdoq5qekKn9M/aB2KpZhdbTTXehluNvUa
+ 7zXOvMSMat0mxIZU15yvveZWeQfBjZPnlumyuuRzxdY2qj8qfFTbl5gDJ
+ IP+Q5/kWVcksm/BlGmCOQ8GY90csGyUNUefHTj3KrXUbvJTm1gOiW70gl
+ TV9lEzVHTUd4NqK0cZFep2gb+oZIp91E6ESBduQdJdkKBgbIVyYO/9unA
+ n1RIradlkDssOwxj4uPh4jjKs+MtxBcfDe7LKoRa8/opsbZJvlGVd1eS4
+ +Uu7YjimXeu+CfPzRzkEELkysHmb1q+fjcrekc+Q/t4gOgDG36bpgoZWR w==;
+X-CSE-ConnectionGUID: 73bZyNVyQS2Fh7oeI4sDew==
+X-CSE-MsgGUID: uGD7UZQsRDaFtxTJKY9LTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="109080775"
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; d="scan'208";a="109080775"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2026 04:59:46 -0700
-X-CSE-ConnectionGUID: RQFkQIkFT3WBqJTutfIFDg==
-X-CSE-MsgGUID: OxYLnCeATM6A4UUZkfIq7w==
+ 30 Jun 2026 04:59:51 -0700
+X-CSE-ConnectionGUID: pj94KJDaTjSsrEh52qiaXQ==
+X-CSE-MsgGUID: WyYtM61uSoOYmxqbGKGq3Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; d="scan'208";a="250556987"
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; d="scan'208";a="250557007"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.245.186])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2026 04:59:45 -0700
+ 30 Jun 2026 04:59:49 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -50,11 +50,14 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Swati Sharma <swati2.sharma@intel.com>,
  Petri Latvala <adrinael@adrinael.net>,
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 0/1] IGT release version 2.5
-Date: Tue, 30 Jun 2026 13:59:37 +0200
-Message-ID: <20260630115940.51167-1-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t 1/1] Update NEWS, bump version to 2.5
+Date: Tue, 30 Jun 2026 13:59:38 +0200
+Message-ID: <20260630115940.51167-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260630115940.51167-1-kamil.konieczny@linux.intel.com>
+References: <20260630115940.51167-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,29 +74,131 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some statistics for new release (suggested by Swati Sharma).
-
-Compared to previous version 2.4 number of tests files increased
-from 440 to 455 (+15) and subtests from 495121 to 496253 (+1132).
-Above are checked with the help of:
-
-find build/tests -type f -executable -print |wc -l
-find build/tests -type f -executable -exec \{\} --list-subtests \; |wc -l
-
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net> #irc
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-Kamil Konieczny (1):
-  Update NEWS, bump version to 2.5
-
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Acked-by: Karthik B S <karthik.b.s@intel.com>
+Acked-by: Swati Sharma <swati2.sharma@intel.com>
+Acked-by: Petri Latvala <adrinael@adrinael.net> #irc
+Acked-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
  NEWS        | 95 +++++++++++++++++++++++++++++++++++++++++++++++++++++
  meson.build |  2 +-
  2 files changed, 96 insertions(+), 1 deletion(-)
 
+diff --git a/NEWS b/NEWS
+index 1ae1690ae..adb794151 100644
+--- a/NEWS
++++ b/NEWS
+@@ -1,3 +1,98 @@
++Release 2.5 (2026-06-30)
++------------------------
++
++General changes:
++
++- Intel Xe tests are no longer experimental. (Kamil Konieczny)
++
++- Improved documentation builds of XMLs. (Ryszard Knop)
++
++Runner changes:
++
++- Results can attach files generated by runner hooks. (Zbigniew Kempczyński)
++
++Library changes:
++
++- Continued refactor of display library code. (Jani Nikula, Ville Syrjälä)
++
++- Print dynamic sub-subtest end in dmesg/trace. (Swati Sharma)
++
++- Removed libprocps/libproc2 dependencies. (Jia Yao)
++
++- Added Vebox framebuffer copying on Intel Xe2. (Juha-Pekka Heikkila)
++
++- Added support for Unigraf display testing devices. (Louis Chauvet)
++
++- Added timestamps to error logs. (Andrzej Hajda)
++
++- Added support for Intel xe3p gpgpu fill. (Zbigniew Kempczyński)
++
++- Added CRI metrics for Xe OA (Observability Architecture). (Ashutosh Dixit)
++
++
++Test changes:
++
++- New tests for asahi driver. (Janne Grunau)
++
++- New display subtests for Intel DC3C0. (Jeevan B)
++
++- Improved panthor VM testing. (Adrián Larumbe)
++
++- New plane color pipeline validation for chamelium. (Swati Sharma)
++
++- New MST suspend-resume test for Intel. (Kunal Joshi)
++
++- Added subtest for VPE2 blits on amdgpu. (Caden Chien and Peyton Lee)
++
++- New amdgpu test for lock-heavy GPU paths. (Vitaly Prosyak)
++
++- New userptr pressure test for Xe. (Jan Maslak)
++
++- New amdgpu close race test. (Vitaly Prosyak)
++
++- Allow custom modes for external panels in kms_bw. (Karthik B S)
++
++- Improved HDR display test for amdgpu. (Alex Hung)
++
++- Added global perfmon and counter isolation subtests for v3d. (Maíra Canal)
++
++- New test for amdgpu userptr PTE invalidation after unmap. (Vitaly Prosyak)
++
++- Add subtest for xe_madvise which validate that ATOMIC_GLOBAL permits both
++  CPU and GPU atomic access on SVM memory in Xe test. (Varun Gupta)
++
++- Improved display testing for MediaTek platform. (Jason-JH Lin)
++
++- Added multi-queue long spin subtests. (Niranjana Vishwanathapura)
++
++- New fuzzing tests for amdgpu KFD IOCTL and sysfs/debugfs. (Vitaly Prosyak)
++
++- New page reclaim test for Xe. (Brian Nguyen)
++
++- New madvise test for Xe. (Arvind Yadav)
++
++- New KFD DMA-BUF fence-outlives-module unload test for amdgpu. (Vitaly Prosyak)
++
++- New VFIO module un/load test for SRIOV. (Marcin Bernatowicz)
++
++- Added concurrent user queue fuzzing. (Jesse Zhang)
++
++
++Tools changes:
++
++- Improved intel_vbt_decode (Ankit Nautiyal, Jani Nikula and Michał Grzelak)
++
++- Improved intel_hdcp tool. (John Harrison)
++
++- Added VF migration in vmtb. (Adam Miszczak)
++
++Scripts changes:
++
++- New bash autocomplete for tests names. (Jan Sokolowski)
++
++And many other bug fixes, improvements, cleanups and new tests.
++
++
+ Release 2.4 (2026-03-31)
+ ------------------------
+ 
+diff --git a/meson.build b/meson.build
+index d9d6227aa..e09122a09 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,5 +1,5 @@
+ project('igt-gpu-tools', 'c',
+-	version : '2.4',
++	version : '2.5',
+         default_options: [
+           'warning_level=2',
+           'c_std=gnu11',
 -- 
 2.54.0
 
