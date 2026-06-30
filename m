@@ -4,49 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B172C43458
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jun 2026 13:32:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B750C43458
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jun 2026 15:17:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A908810EAD0;
-	Tue, 30 Jun 2026 13:32:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3385D10E9B4;
+	Tue, 30 Jun 2026 15:17:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YOt1ii0j";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FxsqfeZc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3FFB410E1D9
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2026 13:31:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3D4E10E9B4
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2026 15:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782826297; x=1814362297;
- h=from:date:message-id:to:cc:subject;
- bh=0LSZ4FPV2DtGCl/mdlleBsqaW9JzAYY/SGcECtWcVds=;
- b=YOt1ii0jS3JXAXIWXgPY0Bed5gL3URd2sV9So9dCef7woxp9IyXMZgBT
- zDpmFYxVra/v6WpHpGHIPfRF0/8kKbjZrBkBmPBGNBxI/p3uoQWxMQP6B
- EKFkdUa10MjaAKNQ74C6+vFk41Q3kONYQY0PPPI5zCziro5rS4YY5z87i
- R9QECZgycTDO28D1C+m3S9FAJymxDMTw1RJJ+eytaCvwR5chiV6GNbYgU
- K79Rit/hPwReuzRkI5XTSdwhglYTwA+LlZ53eREHECSkWpjrc8hEUkNfu
- p6mqORkNWXz8vITdwIwqFsoqQLSYQD3vjCmbvE4OP4VjYplBbwp8shJuD g==;
-X-CSE-ConnectionGUID: 89AjFm8DSUWQAflZ0z9xHw==
-X-CSE-MsgGUID: uuBvDWesSRql3R8RnvNMVw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="83566306"
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; d="scan'208";a="83566306"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2026 06:31:37 -0700
-X-CSE-ConnectionGUID: fWz0hdcASEOPcMqS+HsPAQ==
-X-CSE-MsgGUID: LQ9dshBnSfuxFMXWv9XSQA==
+ t=1782832599; x=1814368599;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:mime-version;
+ bh=4WjejjFe+zixQ+I+zuclh2/v7SXT3MgS2A1HOIupe3w=;
+ b=FxsqfeZc53N/HSChbMHtlkP+0NWtSZ47wnViBLa9Ilhah+ZEHYiQiWfE
+ Kn3F5tuFqVDMzR3lpnkjZomxQQdZbWq1Y07HGb/NIQy+zfrf5WVbLioWC
+ SXEqBzdIEkXMVCHrme2MpAm093Xe0oMBer1aWVrdl9k/vRjHQRo8lTdjP
+ +ysUD4x4ZmDV7rpl/KNEv45CoAWO8FERj/Q5jEswSQy5vmVh9MXsIhJ+k
+ NJhFSC9sNNp00+7IfZtK5epgV4jS0GAfjH4hxOMYQchHBywxrmJHYS0E7
+ 8fxsmN0bIg1O6siq5iYeELR/QQ1te8e3+viwKW+qv1xd6tNSJUn+2rqkf w==;
+X-CSE-ConnectionGUID: a+fJJPuoSRKSbBDo+h3Gzg==
+X-CSE-MsgGUID: 4u0dVXTMSP6l/3uI+65TKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="87386423"
+X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; d="scan'208,217";a="87386423"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2026 08:16:38 -0700
+X-CSE-ConnectionGUID: w722t2VdSQiUUJCrrN5gYQ==
+X-CSE-MsgGUID: /bQQZF5ATAyi4JM3+GBXvw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; d="scan'208";a="282331941"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.245.186])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2026 06:31:35 -0700
-From: kamil.konieczny@linux.intel.com
-Date: Tue, 30 Jun 2026 15:31:32 +0200
-Message-ID: <ff067f81aedd9f6929a1181557d39fc0.kamil.konieczny@linux.intel.com>
-To: xorg-announce@lists.x.org
-Cc: xorg@lists.x.org, igt-dev@lists.freedesktop.org
-Subject: [ANNOUNCE] igt-gpu-tools 2.5
+X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
+ d="scan'208,217";a="247821196"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2026 08:16:38 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 30 Jun 2026 08:16:37 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Tue, 30 Jun 2026 08:16:37 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.24) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 30 Jun 2026 08:16:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rHM072jMNRvzgoiVCe4zpVnX2vWRqKUIum4AaayGTuf5pGNlHFDfPZzEHv3477UAU+CYq7Vy8Ba4dT1rd1HY6CnQCFP52BL1jJq38UpBV/3TiZn1QqL5Fzdl9myGS2RRd29cSlpebMR8ZFZQHGSuP7SWBzUo2AKGliOnuC1JCzSL6y18Nf1yoP+NFUbwUVJ91JlIGMHDTgE1A4XoN3M4niyV+h77P5kXbBeG6i+T5MTZYgDK6WUImF9YefcEnYVrG5y2wwtj2LswedgcmOhjtaZmooHAsGKbSogqsnk+d8OQpr7jdnT7CB3gfx2np78OaUn7BcMEhS1bYIqszEMClw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rw3EWCFSdJ/gauRUku5blYETYI+OsmZwf0Iq/c1azK4=;
+ b=gdLwqac5whKjoPxJpKNhFWPIroFV7a6yo3i5ldnQU4J94iZDHSabsy3wyFcY0QWeFDE6H2Lxfd0bMnBnZMhDesIltPgrfW3ik2R/Vh+8UMpVyRbd/mJuB+QQy9DDbPl/oYiOYQgJaw+/IXiFLVHYGiP8x61ItgDLxUliGUXqbiux8kAFPE5421S3MAX1Ys1GkHBiWdMIw7Lunl0YY3JJAqjeUuIohbKTZonT0tsQcLL6F4bSgQhXxrNEIw4mhSF2Hyumv9rUE6a/efL4K+I3KaIOxcKQIrRo4zdWusGzhSIo0JcHSBPdMMKBjF7t5/OopJTaB23JVhrfUGhoC41q4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA4PR11MB9036.namprd11.prod.outlook.com (2603:10b6:208:565::13)
+ by MW4PR11MB7164.namprd11.prod.outlook.com (2603:10b6:303:212::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Tue, 30 Jun
+ 2026 15:16:28 +0000
+Received: from IA4PR11MB9036.namprd11.prod.outlook.com
+ ([fe80::c54e:ecc9:6d54:8c6a]) by IA4PR11MB9036.namprd11.prod.outlook.com
+ ([fe80::c54e:ecc9:6d54:8c6a%4]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
+ 15:16:28 +0000
+Content-Type: multipart/alternative;
+ boundary="------------sSkNzZnvvDwrh4gmo0MVxS5Z"
+Message-ID: <f0a071d8-2f43-4303-8c38-4b21025a1d88@intel.com>
+Date: Tue, 30 Jun 2026 20:46:20 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] test/intel/xe_vm: Add oversubscribe concurrent bind
+ stress subtest
+To: "Sharma, Nishit" <nishit.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <thomas.hellstrom@intel.com>, <kamil.konieczny@intel.com>
+References: <20260616124029.619373-1-sobin.thomas@intel.com>
+ <ed68269b-cf51-40ee-86c0-a94b4612ffed@intel.com>
+Content-Language: en-US
+From: "Thomas, Sobin" <sobin.thomas@intel.com>
+In-Reply-To: <ed68269b-cf51-40ee-86c0-a94b4612ffed@intel.com>
+X-ClientProxiedBy: MA0PR01CA0028.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:b8::16) To IA4PR11MB9036.namprd11.prod.outlook.com
+ (2603:10b6:208:565::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA4PR11MB9036:EE_|MW4PR11MB7164:EE_
+X-MS-Office365-Filtering-Correlation-Id: 061e33a3-3868-4a18-087d-08ded6ba8e26
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|23010399003|56012099006|11063799006|4143699003|22082099003|18002099003|8096899003;
+X-Microsoft-Antispam-Message-Info: r2dSR2dp5rEvnjj2uNpjFSc7K4RL/hh8KgMEUH8fLd4VlLzY3NIqKi3I7d1qj+eUVJfezHmaI9RzrwZspBFvT5aAgTEKluOloQG5SSJITc3SFLyvwdXhtxN7ltqcfbxPY6xu/WrTGXsNJTaG8W75pQNrBTJtgP0heWCXjZmSxB4qh2nlGQwdb9Hx2ea840s//zIsKefu1+rhFC7mAE507aiRqimjpw/DyXS3HY7luckth2vqdd8uSt+a0bqWnOXnO64NGqZY+q//lEhckImLSP2lVm94NJe0BxslyuzZ8LlT8vRhbkO3NO7temtYUdeBpWqEWp/6gX4xHvsaMo5T6RcHt5a6Vb9NGuOwB4JN1B1Wl/GhYdZBWDsfiJyUxmzmsyk8GkvNnKYddAbAHbkaKQ0P4R6G44nGtA3EKD/HB14arBo7sbIMdYQb/xn0tQ74eSuHr6AB2PkZRYts9Cv0ZpYuyo/yQ+sbqHL08G9gyPSgg4l64JQB6zOiR+Y7d5u9GyAFkRvb3lzn0BOBTKzB10GxUFRh0qa43s1IF9iaQZJZYsAXbweOgX/gxyZgxOCujTf5uJsBUrEMXyotNQ3769lrFYQPLTSF1m/Z+h2ZArikehT9zaAMi7UxCBOYCkjaI95yLLnjgMsvD5/SHeyOKWiwzA8cPM406+ygZENE9P4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA4PR11MB9036.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003)(8096899003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VlBsZFE3Z0dEaGVVZ3ZXZzBxeE1sOC9yQ2VwQ1IvdkJldWhEd21ZZkUxeTJj?=
+ =?utf-8?B?d3JkSTJrVThZODlaK0RJUlNPU1NCYjdtVDRQdWFDOXlHbCtiVFdYczVaSHRB?=
+ =?utf-8?B?Q0R2UUxPTlB6Um5CTWsyNS9lVDhmeHQvMkNrUllOOVBua1hRTEtZOFJKRGlT?=
+ =?utf-8?B?d3FDcjZRUk5NTlUyTGJpbW9iQjM5aFhHNnduUXc3NW41bEIzc0ZIZHVhdW8y?=
+ =?utf-8?B?cGlPOU9qalRBWFg2YzRBSmxKbnFPbkVHZGlmWEpQMXFiKzIwZnM2cU42aW80?=
+ =?utf-8?B?YVVSbEQ4Q25xei9qLzRMQmFXS0gwSDVxZUt6VG9OTzlublBoZDVFcVZhSXds?=
+ =?utf-8?B?QkYxRE9JcWRPY3ArRDd0eXl5TS9sT1B1MFNXQnU5TGFtdTJkUXNSbEtVOHBk?=
+ =?utf-8?B?WUZzMFp0UmlOcHRTZXE5U3ZvdVU1QXRIUUhERVV6RHNDSnFBdVcrU2pBV2J3?=
+ =?utf-8?B?K1U2UFBJaVZNMVYvWm5SM043TTRsc0JwUmEyKzBFVTJ1cmQ1RHBDZzRBSHpo?=
+ =?utf-8?B?eGMzNlJ2UUVoYTZHMzZTSXY1SXRIbGZCbHp2WHlibzJUa3RheVNuMWxaTS9j?=
+ =?utf-8?B?c3JiMUkyOWZvbDBLbTBUdGJiQXB0WVpxL0RFaGtGdVpIMVNtTFpIUlVaeFM3?=
+ =?utf-8?B?YW9iV1JZelNIVDhleWFtUVoxbDkzaUhqM241TEpVZ3F4M0JmWWgxejg3ajZ2?=
+ =?utf-8?B?cWN4anh5c3M0QVpPWjYrdDlhRVZCUHdPQVUxaXQzYmdhWTJweHNSQ1VUbnBL?=
+ =?utf-8?B?QTBVUHJWbUVVdzVLdUJiTFE1cFExVi80aGlCMzBvMG9ySzFXek91RHZDMVRN?=
+ =?utf-8?B?ZElDdGpiNkJkNmhnRnkzK21lUFdxWjJXblhmZDVkNVd4ZW9STG9TTi9jZExV?=
+ =?utf-8?B?bFpwUkpOYitjZHpOU2YybENnRGh0SkYyUURKNlJtTVRsTVcvUXRxenFmbDZx?=
+ =?utf-8?B?Ti9tM1gwakFmUmxsbVhEQkhSeVNWdVBqc0ExWlo1TEFkNjR0MG96YllEaHcw?=
+ =?utf-8?B?d0hnVFc0eHBNZnhZRlVaWXFYendpQmU3bXpseUdCdzJXYTJwWmNSUlpEcTla?=
+ =?utf-8?B?WFFlaVY4N1dSbEJwZjFVRjFtQ2hEeVdGdVI5NjhRcVdNSHdoMDJoVTkySjNH?=
+ =?utf-8?B?VisrMHM0TW1FZlJTK3dHOGRFaHNrSmtHcFZPSldNd0d5bTRlWnNtNmZsNEZj?=
+ =?utf-8?B?UW9lRW45b0poZzFzc3lUVXJmTFhCcXJHNzBLSnZDQk43OVVEQkFpREhkUWUz?=
+ =?utf-8?B?Um42bHFrWThLVFREekhZWlNmQjhSQmxmbEtOSU1SWWpvaUxSNmxJOFAxR3dr?=
+ =?utf-8?B?Rkg5S1dwUlpJYlB4Ump2cGh6bko0ZjBPa1k2VFpIeU95NVA1YlFVeWxjajVp?=
+ =?utf-8?B?aURnM2lVKzZ2UzFKUHB3OVZzdmQ4T0xTUEt2WUU1aWZLdlgvL0x6NU1mc0I2?=
+ =?utf-8?B?UEl0OTJNQWt0T2U0T3FlQmk3cVNwTGhuN3Y0SXdadUdPT2RVRWx2OFBHa2dn?=
+ =?utf-8?B?ZVNwV3pQVVpSWVM5ZHpOcGIySnBUZFI4blZEeG5MejArTDlTNE96RkJ3YWx2?=
+ =?utf-8?B?RnJPb2lGUjRoaG9WUGFpTUNjZXdMa3lDVlN1WWI3SGxNRDg2WW5FVWVPL1Zh?=
+ =?utf-8?B?akkwR3IxUnY4NERlUWx3bTM1QkdQa216TkVmMngxYWcxT2dtTGlRVUtoUmR6?=
+ =?utf-8?B?NU1lMmtXZjF0ejliZGFqM1ZDQ1BEK1BkODRnOGtHWis2cUVma2VxZVYzUHZp?=
+ =?utf-8?B?OU5DdjhrTFdhekpMbXBKVHQvZWhkaDdnRXpEQTJZQlQ4K3A5R0l5Mjl2aGo2?=
+ =?utf-8?B?dkd0bHRCaG5INXE0MzJlZlM5RWxCQTZLSGk4UGlQdnpCa2NIOVI1VHhaOVNH?=
+ =?utf-8?B?SzkyRzZNSERXMEVrZ3JPTVYrN2VrTzR5ZTRJa3haRFpqMDErVWNidUZvUm9U?=
+ =?utf-8?B?Q2dVM0VhQmRIbk13NmpUUDcxbXluWkRZTGZkWm82WE1lb0p6MUxsY29BYVBQ?=
+ =?utf-8?B?eHR5RjdCczExTHFnbmdLczVNVTgyVlNodkxMK3NnNXFkaWNiMUZBR0t3cVNu?=
+ =?utf-8?B?WlJNV3kwYWtkNkpBOE1GaVJaenRYb2laU3VDTUpFMThJVVV5bVFnQWdrUG9x?=
+ =?utf-8?B?bVN1NkJjWWovY3RlcEFpNDR3bmw0S0ttYndaeXRHZDk2Q1dJajdBdFhxSFJw?=
+ =?utf-8?B?dCt0dmM2R2JYWXNGYTc2SDMzV3FiT2pwYW9yUHRibWxyV1FiRnJyNG1ZMEtm?=
+ =?utf-8?B?UzNzRlorcU9uUk5jb0IxZGx0dS83cjJybEZpYVE1QVR3ZkVGK2NlRncxaHVP?=
+ =?utf-8?B?TVBDbk42dkN2eitzbXo3bklIZGMyQkNBL2REWE1wWGMvb3pneVR2Zz09?=
+X-Exchange-RoutingPolicyChecked: Z7CLVW3jmiavB0d7UZbEZ8OuNfnb5vTPdmw8+sA4Fq7dU3l09YGlYgXKAgbJoe421lWhOL+zjInooC9DSao9C7yid76ipO4xW1grYhw2/NnZ3QDHI7VE1RfsrED7kpe5J+p5XbCTBtUffcGubzgzXlFeqCaAAG4MViw0RPCON8s4yhiAMd/ediiopzTl8WFUrwxpOLte6YfYrtGatpuoqhyGqnKXgpYr4IRZF3QlqXZd75Vur9QYzXLFpAMv+FbI1e0pZ1sBgggQLVlrBBRo1Vw9LzqIy7Y66wTpQU+wlx486jGeCJhtRcV4x4TWN50H6FYRIgQIxNnSGg+INCwrLQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 061e33a3-3868-4a18-087d-08ded6ba8e26
+X-MS-Exchange-CrossTenant-AuthSource: IA4PR11MB9036.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 15:16:27.9144 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZrHRIuHgXhPNp4omgEqUW38PzvmswJq3CTtCHOPBcui2g+pnsw2BkiMZ0HVJA1y67VYsm8W/lzgZ9W72HUBeaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7164
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,760 +171,4429 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA512
-
-A new igt-gpu-tools release is available with the following changes:
-
-Release 2.5 (2026-06-30)
-- ------------------------
-
-General changes:
-
-- - Intel Xe tests are no longer experimental. (Kamil Konieczny)
-
-- - Improved documentation builds of XMLs. (Ryszard Knop)
-
-Runner changes:
-
-- - Results can attach files generated by runner hooks. (Zbigniew Kempczyński)
-
-Library changes:
-
-- - Continued refactor of display library code. (Jani Nikula, Ville Syrjälä)
-
-- - Print dynamic sub-subtest end in dmesg/trace. (Swati Sharma)
-
-- - Removed libprocps/libproc2 dependencies. (Jia Yao)
-
-- - Added Vebox framebuffer copying on Intel Xe2. (Juha-Pekka Heikkila)
-
-- - Added support for Unigraf display testing devices. (Louis Chauvet)
-
-- - Added timestamps to error logs. (Andrzej Hajda)
-
-- - Added support for Intel xe3p gpgpu fill. (Zbigniew Kempczyński)
-
-- - Added CRI metrics for Xe OA (Observability Architecture). (Ashutosh Dixit)
-
-
-Test changes:
-
-- - New tests for asahi driver. (Janne Grunau)
-
-- - New display subtests for Intel DC3C0. (Jeevan B)
-
-- - Improved panthor VM testing. (Adrián Larumbe)
-
-- - New plane color pipeline validation for chamelium. (Swati Sharma)
-
-- - New MST suspend-resume test for Intel. (Kunal Joshi)
-
-- - Added subtest for VPE2 blits on amdgpu. (Caden Chien and Peyton Lee)
-
-- - New amdgpu test for lock-heavy GPU paths. (Vitaly Prosyak)
-
-- - New userptr pressure test for Xe. (Jan Maslak)
-
-- - New amdgpu close race test. (Vitaly Prosyak)
-
-- - Allow custom modes for external panels in kms_bw. (Karthik B S)
-
-- - Improved HDR display test for amdgpu. (Alex Hung)
-
-- - Added global perfmon and counter isolation subtests for v3d. (Maíra Canal)
-
-- - New test for amdgpu userptr PTE invalidation after unmap. (Vitaly Prosyak)
-
-- - Add subtest for xe_madvise which validate that ATOMIC_GLOBAL permits both
-  CPU and GPU atomic access on SVM memory in Xe test. (Varun Gupta)
-
-- - Improved display testing for MediaTek platform. (Jason-JH Lin)
-
-- - Added multi-queue long spin subtests. (Niranjana Vishwanathapura)
-
-- - New fuzzing tests for amdgpu KFD IOCTL and sysfs/debugfs. (Vitaly Prosyak)
-
-- - New page reclaim test for Xe. (Brian Nguyen)
-
-- - New madvise test for Xe. (Arvind Yadav)
-
-- - New KFD DMA-BUF fence-outlives-module unload test for amdgpu. (Vitaly Prosyak)
-
-- - New VFIO module un/load test for SRIOV. (Marcin Bernatowicz)
-
-- - Added concurrent user queue fuzzing. (Jesse Zhang)
-
-
-Tools changes:
-
-- - Improved intel_vbt_decode (Ankit Nautiyal, Jani Nikula and Michał Grzelak)
-
-- - Improved intel_hdcp tool. (John Harrison)
-
-- - Added VF migration in vmtb. (Adam Miszczak)
-
-Scripts changes:
-
-- - New bash autocomplete for tests names. (Jan Sokolowski)
-
-And many other bug fixes, improvements, cleanups and new tests.
-
-
-Adam Miszczak (5):
-      tools/vmtb: Add VMTB fast-feedback testlist
-      tools/vmtb: Define IGT tests used as VF migration workloads
-      tools/vmtb: Provide VF busy migration IGT/gem_wsim workloads
-      tools/vmtb: Add VF migration tests
-      tools/vmtb: Adjust BMG vGPU profile
-
-Aditya Chauhan (2):
-      intel-ci: Unblock svm tests from Core blocklists
-      tests/intel/xe_exec_reset: suppress expected CGP_SYNC dmesg warning
-
-Adrián Larumbe (2):
-      panthor: Provide a way to access user VA range when creating a VM
-      tests/panthor/panthor_vm: Add vm_bind intersect-with-kbo-range test
-
-Alex Hung (7):
-      tests/kms_writeback: fix coding style issues
-      tests/kms_flip: Fix regression on non-Intel devices in event_loop
-      tests/amdgpu: Fix typos and grammar in comments
-      tests/amdgpu: Fix typos and grammar in test files
-      tests/amdgpu/amd_plane: Remove unused parameters from test_plane()
-      tests/kms_hdr: Fix HDR metadata probe in test_hdr
-      tests/kms_hdr: Add interactive HDR verification to static-swap
-
-Andrzej Hajda (10):
-      scripts/generate_iga64_codes: add env variable to force asm rebuild
-      lib/gpgpu_shader: use raw strings in all asms
-      lib/igt_core: do not reset errno in igt_gettime
-      lib/igt_core: add timestamps to error logs
-      lib/gpu_cmds: replace open coded ibb data copy with helper
-      lib/gpgpu_shader: replace open coded ibb data copy with helper
-      lib/intel_batchbuffer: log overflow size in case there is no place in ibb
-      lib/intel_batchbuffer: assert on accessing prefetch area
-      tests/intel/xe_exec_store: increase batchbuffer size
-      lib/meson.build: add rebuild_iga64 target
-
-Ankit Nautiyal (6):
-      include/linux_scaffold: Add BIT_U{8,16,32} macros
-      tools/intel_vbt_decode.c: Include linux_scaffold.h
-      tools/intel_vbt_defs: sync intel_vbt_defs.h up to commit 1b85a9b04681
-      tools/intel_vbt_decode: dump eDP data rate override field
-      tools/intel_vbt_decode: dump eDP joiner enable field
-      tools/intel_vbt_decode: Dump dedicated_external and dyn_port_over_tc fields
-
-Arvind Yadav (10):
-      lib/xe: Add purgeable memory ioctl support
-      tests/intel/xe_madvise: Add dontneed-before-mmap subtest
-      tests/intel/xe_madvise: Add purged-mmap-blocked subtest
-      tests/intel/xe_madvise: Add dontneed-after-mmap subtest
-      tests/intel/xe_madvise: Add dontneed-before-exec subtest
-      tests/intel/xe_madvise: Add dontneed-after-exec subtest
-      tests/intel/xe_madvise: Add per-vma-tracking subtest
-      tests/intel/xe_madvise: Add per-vma-protection subtest
-      tests/intel/xe_madvise: Add partial-unbind-dontneed subtest
-      tests/intel/xe_madvise: Skip purge tests under low RAM
-
-Ashutosh Dixit (8):
-      tests/intel/xe_oa: Use MAP_FAILED for mmap failures
-      lib/xe/oa: Add CRI metrics XML
-      tests/intel/xe_oa: more CRI changes
-      tests/intel/xe_oa: Extend enable-disable to read after disabling stream
-      lib/xe/oa: Add support for 192B_MPEC8LL_NOA16 OAM format
-      Revert "lib/intel_wa: Assert on error instead of returning -1"
-      tests/intel/xe_oa: Fix checks for whitlisted oa registers
-      lib/intel_chipset: Extend intel_get_pci_device to PCI accelerator class
-
-Balasubramani Vivekanandan (1):
-      tests/intel/xe_pat: Fix semaphore_wait instruction
-
-Brian Nguyen (4):
-      tests/intel/xe_page_reclaim: Add page reclaim test
-      tests/intel/xe_page_reclaim: Add random page reclaim subtest
-      tests/intel/xe_page_reclaim: Add transient display PRL skip
-      tests/intel/xe_page_reclaim: Add large VMA range tests for better coverage
-
-Caden Chien (2):
-      tests/amdgpu/vpe: add VPE2 blit test and version based testing
-      tests/amdgpu/vpe: refactor VPE1 blit test
-
-Chaitanya Kumar Borah (1):
-      tests/kms_chamelium_color: Free captured frame dumps after use
-
-Dnyaneshwar Bhadane (1):
-      lib/intel_blt: Use xe_canonical_va() for Xe driver
-
-Francois Dugast (3):
-      tests/intel/xe_exec_mix_modes: Simplify faults requirement check
-      tests/intel/xe_exec_system_allocator: Test madvise(MADV_DONTNEED)
-      tests/intel/xe_exec_system_allocator: Remove copy-paste in eu-fault doc
-
-Himanshu Girotra (3):
-      tests/intel: Adjust IGT documentation to fix testlist warnings
-      lib/pciids: sync with kernel commit e68a60f9e6a6
-      tests/intel: Enable survivability tests on discrete platforms >= BMG
-
-Jakub Kolakowski (1):
-      lib/igt_sriov_device: Update igt_sriov_enable_vfs helper
-
-James Lin (2):
-      tests/amdgpu: Resolve DRM card index dynamically instead of hardcoding card0
-      tests/amdgpu: Discover amdgpu backlight device dynamically instead of hardcoding amdgpu_bl0
-
-Jan Maslak (1):
-      tests/intel/xe_userptr_pressure: Add rebind-under-compaction test
-
-Jan Sokolowski (3):
-      lib/xe/xe_eudebug: Remove unnecessary debug message
-      lib/igt_core: flush output on each line
-      scripts/bash-autocomplete: Create autocompletion for tests
-
-Jani Nikula (34):
-      lib/kms: pass mode parameter to for_each_connector_mode()
-      tests/intel/kms_dp_linktrain_fallback: remove mode from data
-      tests/intel/kms_flip_scaled_crc: use for_each_connector_mode()
-      tests/intel/kms_pm_rpm: use for_each_connector_mode()
-      tests/kms_plane_lowres: use for_each_connector_mode()
-      tests/kms_plane_scaling: use for_each_connector_mode()
-      tests/kms_writeback: use for_each_connector_mode()
-      tests: prefer igt_plane_t over struct igt_plane
-      lib/kms: rename struct igt_plane to _igt_plane
-      tests: prefer igt_display_t over struct igt_display
-      lib/kms: rename struct igt_display to _igt_display
-      lib/kms: rename struct igt_crtc to _igt_crtc
-      lib/kms: drop struct igt_colorop definition
-      tests/amdgpu/amd_abm: use for_each_output()
-      tests/amdgpu/amd_hotplug: use for_each_output()
-      tests/amdgpu/amd_subvp: use for_each_output()
-      tests/amdgpu/amd_dp_dsc: use for_each_output()
-      tests/amdgpu/amd_plane: use for_each_output()
-      tests/kms_atomic_transition: use for_each_output()
-      tests/kms_colorop: use for_each_output()
-      tests/kms_content_protection: use for_each_output()
-      tests/kms_getfb: use for_each_output()
-      tests/kms_writeback: use for_each_output()
-      tools/intel_vbt_decode: store codename from VBT signature to context
-      lib/intel_device_info: add a helper to guess the PCI ID for a codename
-      tools/intel_vbt_decode: fall back to guessing PCI ID from VBT signature
-      tests/kms_bw: use igt_display_n_crtcs()
-      lib/kms: fix last pipe check in igt_check_bigjoiner_support()
-      tests/kms_content_protection: remove unused max_pipe
-      lib/kms: simplify igt_random_crtc()
-      lib/rand: move static inlines to proper functions
-      benchmarks/gem_exec_reloc: use hars_petruska_f54_1_random() from lib/rand
-      benchmarks/gem_exec_trace: use hars_petruska_f54_1_random() from lib/rand
-      tests/gem_exec_lut_handle: use hars_petruska_f54_1_random() from lib/rand
-
-Janne Grunau (3):
-      drm-uapi/asahi: Initial import of asahi_drm.h
-      asahi: Add test infrastruture for asahi DRM render driver
-      tests/asahi: Add test for DRM_IOCTL_ASAHI_GET_TIME
-
-Janusz Krzysztofik (1):
-      tests/intel/gem_softpin: Show debug info also on success
-
-Jason-JH Lin (6):
-      tests/kms_invalid_mode: Allow clock-too-high test on non-Intel platforms
-      tests/kms_content_protection: Add per-CRTC framebuffer infrastructure
-      tests/kms_content_protection: Pass crtc parameter and use per-CRTC FBs
-      tests/kms_content_protection: Add FB cleanup for MST tests
-      tests/kms_cursor_crc: Add extra vblank to support MediaTek platform
-      tests/kms_cursor_crc: Use SUSPEND_TEST_DEVICES for MediaTek devices
-
-Jay Liu (1):
-      tests/kms_color: Add 10-bit color depth support to gamma test for MediaTek
-
-Jeevan B (16):
-      tests/intel/kms_fbc_dirty_rect: Use per-output PSR check before disabling
-      tests/kms_vrr: Avoid unnecessary PSR disable
-      tests/intel/kms_psr_stress_test: Select PSR-capable output
-      tests/intel/kms_pm_dc: Scope PSR handling to output
-      tests/kms_hdmi_inject: Retry ELD check to avoid transient audio races
-      tests/kms_setmode: Add HDMI 2.0 clock limit for mode selection
-      tests/intel/kms_pm_dc: s/check_dc_counter/assert_dc_counter
-      tests/intel/kms_pm_dc: Replace require with proper assertion
-      tests/intel/kms_pm_dc: Enable DC3CO test for PSR2/PR modes
-      tests/kms_vrr: Add new test for DC3CO validation with LOBF
-      tests/intel/kms_pm_dc: Add dc3co framedrop validation test
-      tests/intel/kms_pm_dc: Add new test for DC3CO recovery after DC6
-      tests/intel/kms_pm_dc: Add dc3co-vpb-framegap subtest
-      intel-ci: Block dc3co on older platforms
-      lib/igt_kms: Update joiner comments for clarity
-      tests/chamelium/kms_chamelium_audio: Add suspend/resume audio tests
-
-Jesse Zhang (7):
-      tests/amdgpu: add concurrent user queue fuzzing tests
-      lib/amdgpu: add oversized invalid packet length error handling
-      tests/amdgpu: add string mapping for oversized packet length error
-      lib/amdgpu: restore sched_mask after abnormal subtest exits
-      tests/amdgpu/queue_reset: Add test for oversize packet length
-      lib/amdgpu: Use correct SDMA doorbell offset for userqueues
-      lib/amdgpu: Use correct GFX doorbell offset for userqueues
-
-Jesse.Zhang (1):
-      tests/amdgpu: add field-level negative ioctl fuzzing tests
-
-Jia Yao (3):
-      tests/intel/xe_exec_system_allocator: Expect UC PAT madvise rejection
-      xe_exec_system_allocator: fix PREFETCH_SPLIT_VMA bo_size for PVC
-      lib: replace libprocps/libproc2 with /proc-based process enumeration
-
-Jing-Ping Jan (1):
-      tests/kms: correct index validation logic
-
-John Harrison (6):
-      tools/intel_hdcp: Fix status rendering
-      tools/intel_hdcp: Move text rendering into helper function
-      tools/intel_hdcp: Show actual HDCP status
-      tools/intel_hdcp: Fix flickering when changing HDCP state
-      lib/kms: Set display->has_plane_color_pipeline automatically
-      lib/igt_kms: Fix for closing incorrect file handles
-
-Jonathan Cavitt (4):
-      lib/xe/xe_ioctl: Add xe_vm_get_property helper function
-      tests/intel/xe_vm: Add DRM_IOCTL_XE_VM_GET_PROPERTY validation tests
-      tests/intel/xe_vm: Test DRM_IOCTL_XE_VM_GET_PROPERTY fault reporting
-      tests/intel/xe_vm: Add fault reserved MBZ assert
-
-Juha-Pekka Heikkila (16):
-      tests/intel/kms_sharpness_filter: sanitize subtest init
-      tests/intel/kms_sharpness_filter: refactor test_sharpness_filter function
-      tests/intel/kms_sharpness_filter: restructure igt_main
-      tests/intel/kms_sharpness_filter: Find mode with lowest bw requirement for test
-      tests/kms_plane: Restructure planar-pixel-format-settings test and make it Intel only
-      tests/kms_plane: Add test_nv12_tile4_src_y planar settings test
-      lib: take out duplicate assert
-      lib/intel_batchbuffer: make __intel_bb_create gt aware
-      lib/xe: add xe_exec_queue_create_class_gt
-      lib/intel_batchbuffer: add intel_bb_create_with_gt function
-      lib/intel_batchbuffer: move engine class selection to helper
-      lib/intel_batchbuffer/xe: add bb exec path to use specific engine and gt
-      lib: Enable Vebox framebuffer copying on Intel Xe2
-      lib/igt_fb: on Intel Xe force Vebox copy on yuv formats
-      tests/intel/kms_flip_scaled_crc: add 4tiled p010 to 4tiled p016 test
-      lib/igt_kms: add --connector option to filter outputs by name
-
-Kamil Konieczny (16):
-      drm-uapi/xe: sync with kernel f99a05cc0b85
-      lib/igt_core: Create asserts for pointer comparision
-      tests/intel/xe_madvise: Fix armhf compilation
-      tests/meson: Move Xe experimental build info to Xe EUdebug
-      tests/intel/kms_pwrite_crc: Create basic subtest
-      Revert "tests/kms: correct index validation logic"
-      lib/igt_kms: Fix assert in igt_display_reset_outputs()
-      lib/igt_kms: Fix cleanup in igt_display_reset_outputs()
-      runner/resultgen: Fix fd leakage
-      tests/prime_udl: Fix opening
-      tests/prime_udl: Create subtests
-      tests/prime_udl: Fix error handling
-      tests/prime_udl: Fix i915 device opening
-      tests/prime_udl: Move into intel/ and add documentation
-      include/linux_scaffold: drop _AC macro
-      Update NEWS, bump version to 2.5
-
-Kanala Ramalingeswara Reddy (1):
-      tests/amdgpu/amd_security: Skip secure bounce test for APUs
-
-Karthik B S (8):
-      tests/amdgpu/amd_fuzzing: Remove unused variable
-      tests/amd/amd_fuzzing: Fix compilation error on fedora
-      tests/kms_bw: Allow custom modes for external panels
-      tests/kms_explicit_fence: Rescue pending IN_FENCE waits on test failures
-      tests/kms_explicit_fence: Replace fixed sleep with vblank wait
-      tests/intel/kms_dsc: Fix retry loop for non-RGB case
-      intel-ci: Blocklist kms_dsc ultrajoiner tests
-      tests/intel/kms_dsc: Ensure non-joiner modes on non-joiner subtests
-
-Karthik Poosa (4):
-      intel-ci: Add a testlist for D3cold tests
-      tests/intel/xe_survivability: Update category and mega feature
-      intel-ci: Add D3cold testlist to meson.build
-      tests/intel/xe_pm: Have high VRAM usage during system suspend
-
-Krzysztof Karas (2):
-      tests/intel/i915_selftest: Add current IGT PID to driver options
-      intel-ci: Block asahi in i915 and Xe
-
-Krzysztof Niemiec (1):
-      tests/intel/gem_exec_endless: Use the per-gt interface to set frequencies
-
-Kunal Joshi (6):
-      tests/intel/kms_mst_helper: Add igt-doc for existing function
-      tests/intel/kms_mst_helper: Add helper to check for MST outputs
-      lib/igt_kms: Rename max_non_joiner_mode_found to intel_boundary_non_joiner_mode_found
-      tests/intel/kms_joiner_helper: Add intel_max_hdisplay_non_joiner_mode_found
-      lib/igt_kms: Export get_max_pipe_hdisplay as intel_get_max_pipe_hdisplay
-      tests/intel/kms_mst: Add MST suspend-resume test
-
-Louis Chauvet (49):
-      lib/igt_kms: Add a detect timeout value
-      lib/igt_kms: Add helper to wait for a specific status on a connector
-      lib/igt_kms: Add function to list connected connectors
-      lib/igt_kms: Add helper to obtain a connector by its name or MST path
-      lib/igt_kms: Add helper to wait for new connectors
-      lib/tests: Add tests for array manipulations
-      lib/igt_kms: Add helper to get a pipe from a connector
-      lib/igt_kms: Expose dump_connector_attrs
-      lib/igt_kms: Expose reset_connectors_at_exit
-      lib/igt_kms: Expose connector_attr_set and igt_connector_attr_set
-      lib/igt_debugfs: Move debugfs helpers to the proper location
-      lib/igt_debugfs: Add const when make sense
-      lib/igt_amd: Add const when make sense
-      lib/igt_kms: Add const when make sense
-      lib/monitor_edids: Add helper functions for using monitor_edid objects
-      lib/monitor_edids: Add helper to get an EDID by its name
-      lib/monitor_edids: Add helper to print all available EDID names
-      lib/unigraf: Add used defines for TSI_Types
-      lib/unigraf: Add TSI.h
-      lib/unigraf: Initial Unigraf support
-      lib/igt_kms: Automatically connect unigraf on display require
-      lib/unigraf: Introduce device configuration
-      lib/unigraf: Introduce role configuration
-      lib/unigraf: Introduce input configuration
-      lib/unigraf: Add reset function
-      lib/unigraf: Add unigraf assert and deassert helpers
-      lib/unigraf: Add plug/unplug helpers
-      lib/unigraf: Allows sst/mst configuration
-      lib/unigraf: Add helpers to read and write edid
-      lib/unigraf: Add connector and EDID configuration
-      tests/unigraf: Add basic unigraf tests
-      lib/unigraf: Add unigraf CRC capture
-      lib/unigraf: Add configuration for CRC usage
-      lib/unigraf: add unigraf_get_connector_by_stream
-      lib/unigraf: Add helper to check timings received by unigraf
-      lib/igt_pipe_crc: Add unigraf crc calculation
-      lib/i915/dp: Move DP-related function for i915 to proper folder
-      lib/i915/dp: Rename functions to avoid confusion
-      lib/i915/dp: Add helper to get maximum supported rate
-      lib/i915/dp: Properly check sscanf results
-      lib/i915/dp: Use igt_output_name instead of private field
-      lib/igt_dp: Create generic helpers for DP information
-      lib/igt_kms: Add asserts to avoid null pointer dereference
-      lib/igt_kms: Add helper to get a CRTC from an output
-      lib/unigraf: Add lane count configuration
-      docs/unigraf: Add unigraf documentation
-      lib/unigraf: Add helpers to set maximum link rate
-      lib/unigraf: Add helpers to get the current LT status
-      tests/unigraf/unigraf_lt: Add test for link training
-
-Lukasz Laguna (3):
-      tests/intel/xe_sriov_vfio: Query only BAR regions in region-info
-      tests/intel/xe_sriov_vfio: Ensure VFIO fds are closed in fixture
-      tests/intel/xe_sriov_auto_provisioning: Require total_vfs > 1 for fair-allocation
-
-Maarten Lankhorst (1):
-      includes: Remove DRM_XE_VM_BIND_FLAG_DECOMPRESS
-
-Maciej Patelczyk (1):
-      drm-uapi-experimental/xe_drm_eudebug: Adjust definition in xe_drm_eudebug.h
-
-Marcin Bernatowicz (19):
-      tests/intel/xe_sriov_vfio: Add VFIO module load/unload subtest
-      tests/intel/xe_sriov_vfio: Add dynamic bind-unbind-vfs subtest
-      tests/intel/xe_sriov_vfio: Add open-basic subtest
-      tests/intel/xe_sriov_vfio: Add region-info subtest
-      tests/intel/xe_sriov_flr: Restore xe_vfio_pci module state
-      tests/intel/xe_sriov_scheduling: Use timestamp helper
-      tests/intel/xe_sriov_scheduling: Add scheduling priority support
-      tests/intel/xe_sriov_scheduling: Make sysfs_get_job_timeout_ms take const eci
-      tests/intel/xe_sriov_scheduling: Add PMU-based verification helpers
-      tests/intel/xe_sriov_scheduling: Raise min exec quantum to 2ms
-      tests/intel/xe_sriov_scheduling: Refactor throughput_ratio and nonpreempt-engine-resets test
-      tests/intel/xe_sriov_scheduling: Remove unused log_sample_values helper
-      tests/intel/xe_sriov_scheduling: Add default fair scheduling test
-      lib/igt_device_sriov: Add generic SR-IOV exit cleanup helper
-      lib/xe/xe_sriov_admin: Add SR-IOV admin exit cleanup restore helper
-      tests/sriov_basic: Arm SR-IOV exit cleanup
-      tests/xe: Arm SR-IOV exit cleanup
-      tests/xe: Arm SR-IOV exit cleanup with callback
-      tests/intel/xe_sriov_flr: Arm SR-IOV exit cleanup
-
-Mark Yacoub (1):
-      include/android: Add g_key_file_get_double stub
-
-Maíra Canal (5):
-      tests/v3d_perfmon: Don't use the deprecated V3D_PERFCNT_NUM
-      drm-uapi/v3d: Sync v3d UAPI with drm-next commit 769c153cfc3c
-      lib/v3d: Allow callers to retrieve perfmon counter values
-      lib/v3d: Add helper to query the V3D hardware version
-      tests/v3d_perfmon: Add global perfmon and counter isolation tests
-
-Michał Grzelak (7):
-      tests/kms_flip: test suspend on one pair of pipes
-      tests/kms_flip: run suspend tests on one pipe per output
-      tests/kms_flip: limit output pairs when testing suspend
-      tests/kms_flip: limit number of outputs wrt suspend
-      tests/kms_flip: staticize & remove unused global vars
-      tests/kms_flip: test suspend at most twice on SNB && BMG
-      tools/vbt_decode: return 0 from get_device_id()
-
-Mohammed Thasleem (2):
-      tests/intel/kms_pm_dc: Skip runtime PM active check on headless systems
-      tests/intel/kms_pm_dc: Add DC5 negative test for continuous page-flip activity
-
-Nakshtra Goyal (1):
-      lib: s/GEN_VER/GFX_VER/ for Intel platform
-
-Naladala Ramanaidu (1):
-      Revert "tests/kms_vrr: New subtest for CMRR"
-
-Niranjana Vishwanathapura (6):
-      tests/intel/xe_exec_multi_queue: use timestamp to check job start
-      tests/intel/xe_exec_multi_queue: replace sleep with barrier queue
-      lib/xe/xe_spin: Enhance multi-queue switch option
-      lib/xe/xe_spin: Add option for QUEUE_TIMESTAMP
-      tests/intel/xe_exec_reset: Add multi-queue long spin tests
-      tests/intel/xe_exec_multi_queue: Always re-mmap userptr on INVALIDATE
-
-Nishit Sharma (1):
-      tests/intel/xe_exec_system_allocator: Rename subtest to preffered-loc-atomic-device
-
-Nitin Gote (1):
-      tests/intel/xe_configfs: Use available engine for ctx-restore subtests
-
-Pranay Samala (9):
-      tests/intel/kms_sharpness_filter: Fix redundant mode override
-      tests/kms_hdr: Move framebuffer into data_t for centralized cleanup
-      tests/kms_hdr: Move test_fini() for proper cleanup
-      tests/kms_hdr: Move capability checks inside dynamic subtests
-      tests/kms_atomic_transition: Add newline to assert message
-      Revert "tests/kms_hdr: Move capability checks inside dynamic subtests"
-      tests/kms_hdr: Simplify flag check and continue with next format on failure
-      lib/tests: make igt_get_output_max_bpc() return status and handle failures in callers
-      tests/kms_atomic_transition: Fix retry-path resources in modeset tests
-
-Priyanka Dandamudi (2):
-      tests/intel/xe_exec_multi_queue: Rename MultiQ to Multi-Queue in docs
-      tests/intel/xe*: Add documentation to multi-queue tests and subtests
-
-Ray Wu (2):
-      lib/igt_amd: add helper to disable Panel Replay on all eDPs
-      tests/kms_cursor_legacy: disable AMD Panel Replay during test
-
-Ryszard Knop (2):
-      docs/reference: Build generated XMLs by default, depend on testlists
-      docs/reference: Fix build on ancient Meson versions
-
-S Sebinraj (1):
-      tests/intel/xe_exec_threads: Add VM rebind stress test with cpumask cycling
-
-Santhosh Reddy Guddati (4):
-      tests/kms_async_flips: Fix timestamp print format
-      Revert "tests/kms_content_protection: Add FB cleanup for MST tests"
-      Revert "tests/kms_content_protection: Pass crtc parameter and use per-CRTC FBs"
-      Revert "tests/kms_content_protection: Add per-CRTC framebuffer infrastructure"
-
-Sebastian Brzezinka (2):
-      lib/drmtest: add drm_open_driver_path()
-      tools/igt_power: initialize xe_device cache
-
-Shekhar Chauhan (3):
-      lib/intel_wa: Check for device workarounds
-      tests/intel/xe_oa: Wa_14026633728
-      lib/intel_wa: Assert on error instead of returning -1
-
-Shuicheng Lin (2):
-      tests/intel/xe_exec_reset: skip compression subtests early in main thread
-      tests/intel: Skip multi-queue tests when no engine supports it
-
-Sk Anirban (5):
-      tests/intel/xe_pm_residency: Fix suspend duration calculation
-      tests/intel/xe_pm_residency: ensure C6 GT before cpg-gt-toggle
-      tests/intel/perf_pmu: Ignore SLPC efficient freq during test
-      tests/intel/xe_pm_residency: skip cpg-gt-toggle if GT not in C6
-      tests/intel/xe_pmu: Fix gt-frequency failure with raised min freq
-
-Smitha Balasubramanyam (2):
-      tests/intel/xe_configfs: Fix ctx_restore BB path for post and mid variants
-      tests/intel/xe_configfs: Add malformed multi-line BB
-
-Sobin Thomas (4):
-      lib/xe: Add failable variant of xe_vm_bind_lr_sync()
-      tests/intel/xe_vm: Add support for overcommit tests
-      tests/intel/xe_debugfs: Add optional entries validation
-      tests/intel/xe_debugfs: Add non-empty checks for existing entries
-
-Sowmiya S (2):
-      tests/kms_bw: Fix connected output count when connectors exceed pipe count
-      tests/kms_concurrent: Skip subtest if mode_lo requires bigjoiner
-
-Stuart Summers (4):
-      tests/intel/xe_exec_reset: Remove CANCEL logic for CM variants
-      tests/intel/xe_exec_reset: Add a comment about return for syncobj wait
-      tests/intel/xe_exec_reset: Add checks for hanging queue wait_ufence return
-      tests/intel/xe_exec_reset: Add multi queue subtests
-
-Sumit Kishore (1):
-      tests/kms_plane_alpha_blend: Skip test when no display is connected
-
-Suraj Kandpal (4):
-      tests/intel/kms_pm_backlight: Set up output before reading/writing backlight
-      tests/kms_content_protection: Group all force_hdcp14 tests together
-      tests/kms_content_protection: Group all MST force_hdcp14 tests together
-      tests/kms_content_protection: clamp plane src/dst to output mode
-
-Swati Sharma (21):
-      tests/intel/kms_cdclk: Skip CDCLK bump validation when dotclocks match
-      tests/kms_invalid_mode: Remove outdated fixed mode check
-      tests/kms_hdr: add FP16 format coverage
-      lib/igt_hdr: Move HDR helpers from kms_hdr into shared library
-      lib/igt_hdr: Add helpers to enable and disable HDR on an output
-      tests/intel/kms_frontbuffer_tracking: Add HDR feature support
-      tests/intel/kms_frontbuffer_tracking: Enable HDR in feature tests
-      tests/intel/kms_cdclk: Skip non-4K outputs instead of skipping the test
-      tests/intel/kms_dsc: Sort modes by clock to pick highest bandwidth mode
-      tests/intel/kms_sharpness_filter: Remove plane-scaler subtests
-      tests/intel/kms_sharpness_filter: Add CRC comparison for positive tests
-      tests/intel/kms_sharpness_filter: Add invalid-filter-with-nearest-neighbor
-      tests/intel/kms_frontbuffer_tracking: Fix duplicate documentation descriptions
-      tests/intel/kms_dsc: Store valid DSC outputs
-      tests/intel/kms_joiner_helper: Add igt_get_joined_pipes_name()
-      tests/kms_joiner_helper: Add igt_is_joiner_supported_by_source()
-      tests/intel/kms_dsc_helper: Add dsc_joiner helper func()
-      tests/intel/kms_dsc: Add force dsc and joiner variants
-      tests/kms_chamelium_color_pipeline: Add plane color pipeline validation
-      tests/kms_hdr: Use non-modeset commit for HDR metadata swaps
-      lib/igt_core: Distinguish dynamic subtest in finished messages
-
-Varun Gupta (5):
-      tests/intel/xe_madvise: Generalize metadata and group purgeable subtests
-      tests/intel/xe_madvise: Add atomic-device subtest
-      tests/intel/xe_madvise: Add atomic-global subtest
-      tests/intel/xe_madvise: Add atomic-cpu subtest
-      tests/intel/xe_madvise: Drop assert on cleanup unbind in atomic subtests
-
-Venkateswara Rao Muppidi (2):
-      intel-ci: Add SVM, multi_queue tests to Xe fastfeedback
-      intel-ci: Blocklist multi-queue subtests for PTL
-
-Vidya Srinivas (1):
-      tools/gputop: Fix zero output when stdout is not a terminal
-
-Ville Syrjälä (33):
-      tests/intel/kms_sharpness_filter: Remove the "center" scaling mode test
-      lib/kms: Avoid local iterator variable in for_each_output()
-      tests/kms: Nuke local copies of for_each_valid_output_on_crtc()
-      tests/kms: Use for_each_crtc_with_valid_output()
-      tests/intel/kms_busy: Verify display reset happened
-      lib/kms: Introduce for_each_plane_format()
-      lib/kms: Use for_each_plane_format() for the msm scaler counting
-      tests/kms: Use for_each_plane_format()
-      tests/kms_async_flips: Use correct format_mod list
-      test/kms: Introduce a few extra format/modifier variables
-      lib/kms: Introduce struct igt_format_mods
-      lib/kms: Pass struct igt_format_mods to igt_parse_format_mod_blob()
-      lib/kms: Extract format_mods_alloc()
-      lib/kms: Extract fill_plane_default_format_mods()
-      lib/kms: Extract igt_format_mods_has_format_with_modifier()
-      lib/kms: Pass target format_mods to igt_add_display_format_mod()
-      lib/kms: Extract format_mods_union()
-      lib/kms: Extract display_format_mods_union()
-      lib/kms: Move and rename igt_count_display_format_mod()
-      lib/kms: Make igt_fill_display_format_mod() more flexible
-      lib/kms: Add display->format_mods_async
-      lib/kms: Fill plane->format_mods_async for planes without IN_FORMATS
-      lib/kms: Encourage drivers to expose IN_FORMATS_ASYNC
-      lib/kms: Introduce igt_format_mods iterators
-      lib/kms: Add helpers to query igt_format_mods
-      tests/chamelium/kms_chamelium_frames: Use for_each_format_and_modifier()
-      tests/kms_plane: Use igt_format_mods_has_modifier()
-      tests/kms_plane: Use for_each_format_and_modifier()
-      tests/kms_async_flips: Remove the IN_FORMAT_ASYNC check
-      tests/kms_async_flips: Use igt_format_mods_has_modifier()
-      tests/kms_async_flips: Use for_each_format_and_modifier() and  for_each_modifier_with_format()
-      tests/intel/kms_flip_tiling: Use for_each_modifier_with_format()
-      tests/chamelium/kms_chamelium_frames: Use for_each_format_with_modifier()
-
-Vinod Govindapillai (1):
-      tests/intel/kms_fbc_dirty_rect: check the plane size before fbc dirty rect tests
-
-Vitaly Prosyak (21):
-      tests/amdgpu: add boundary and edge-case ioctl fuzzing
-      tests/amdgpu: add lifecycle/sequence ioctl fuzzing
-      lib/amdgpu: fix sched_mask leak on igt_assert failure in dispatch tests
-      tests/amdgpu: add KFD DMA-BUF fence-outlives-module unload test
-      tests/amdgpu: Add SysFS fuzzing test
-      tests/amdgpu: Add DebugFS fuzzing test
-      tests/amdgpu: Add KFD IOCTL fuzzing test
-      tests/amdgpu: Fix amd_fuzzing_kfd build on systems without drm headers in standard paths
-      tests/amdgpu: Fix amd_fuzzing_kfd ARM cross-compilation with incomplete KFD structs
-      tests/amdgpu: Restrict KFD tests to x86/x86_64 architectures only
-      tests/amdgpu: Fix amd_fuzzing_kfd runtime skip when KFD device unavailable
-      tests/amdgpu: temporarily skip amd_fuzzing_sysfs on Polaris and Vega20
-      tests/amdgpu/amd_fuzzing_sysfs: use local include for amdgpu_drm.h
-      tests/amdgpu: add USERPTR PTE invalidation regression test
-      tests/amdgpu: Fix queue reset monitor logic and allow -ETIME in CS helper
-      tests/amdgpu: Fix heap buffer overflow in OVERSIZE queue reset test
-      tests/amdgpu: add amd_close_race GPU submission vs fd close test
-      tests/amdgpu/amd_close_race: set VM_PAGE_EXECUTABLE unconditionally
-      tests/amdgpu: Add amd_lockdep test for lock ordering validation
-      lib/amdgpu: poll reset state in hang slow test
-      tests/amdgpu: amd_lockdep: fix include order, copyright year and meson.build
-
-Xiandong Wang (1):
-      tests/kms_cursor_legacy: relax checks on MTK
-
-Xin Wang (7):
-      lib/xe: cache engine class masks from debugfs info
-      lib/xe: add xe_engine_class_supports_multi_lrc()
-      lib/xe: use debugfs info to implement xe_engine_class_supports_multi_queue()
-      tests/intel: skip or adjust tests for non-multi-LRC engine classes
-      tests/intel: only check multi-LRC support for parallel submission paths
-      tests/intel/xe_exec_threads: relax data check in multi-queue hang mode
-      tests/xe_exec_reset: Replace fixed usleep with dynamic GT idle wait
-
-Zbigniew Kempczyński (20):
-      lib/intel_pat: Support other than gt0 during parsing debugfs PAT
-      lib/intel_pat: Expose getter of PAT registers
-      lib/intel_pat: Set PTA + ATS PAT entries to invalid value
-      tests/xe_pat: Verify PAT entries contain expected values
-      lib/intel_compute: Print handle in list of bindings
-      tests/xe_compute: Don't use FAULT_MODE flag when not needed
-      tests/xe_compute: Exercise larger buffers passed from the user
-      lib/intel_compute: Fix localgroup size passed in indirect data for Xe3p
-      tests/xe_exec_system_allocator: Don't use NaN in an input buffer
-      lib/gpgpu_fill: Add support for xe3p gpgpu fill
-      tests/xe_gpgpu_fill: Add subtest with 4x4 position for XE3P
-      tests/intel/xe_pat: Use S3 instead of standby
-      tests/intel/xe_compute: Skip SVM tests on platforms without fault mode vm
-      lib/intel_compute: Improve executing large-buffer compute on pre-Xe
-      runner: Rename dirfd to avoid clash with dirfd()
-      runner: Create attachments directory to use by hooks
-      intel-ci/hooks: Add hooks-wrapper and aux scripts/allowlists
-      runner/resultgen: Insert attachments list into results.json
-      runner: Fix compilation failure on c17 and earlier
-      lib/igt_hook: Fix realloc size to avoid memory overwriting
-
-Zongyao Bai (4):
-      tests/intel/xe_pat: fix typo in r2 wc debug print
-      tests/intel/xe_pat: drop redundant manual srand initialization
-      tests/intel/xe_pat: Add dynamic PAT index selection for pat-index-auto
-      intel-ci: Add pat-index-auto to Xe BAT testlist
-
-git tag: v2.5
-
-https://xorg.freedesktop.org/archive/individual/app/igt-gpu-tools-2.5.tar.xz
-MD5:  68895667fd9f0ea1ffdf7cbc2aa6d42f  igt-gpu-tools-2.5.tar.xz
-SHA1: ab1bf7fdbf359d20b895d92ee0350159bfe5e90b  igt-gpu-tools-2.5.tar.xz
-SHA256: bf5ee5cc1e2b92c456d626b7986be9e2d18b4765cd06c28c1ab449200c1ce5e2  igt-gpu-tools-2.5.tar.xz
-SHA512: 0da8f56a76bb79186da95545be63b8fa82c93edfe9b5fe6ffe43017deb792601545bba292c516b525e1e29087e9b048751df4875d8a7a64e265bac943bf6be81  igt-gpu-tools-2.5.tar.xz
-PGP:  https://xorg.freedesktop.org/archive/individual/app/igt-gpu-tools-2.5.tar.xz.sig
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEETPf8JI3Czo80u+SPwwTEoxBABekFAmpDuZUACgkQwwTEoxBA
-BelXUA/+O4H/0mCf3TDMQ+oZftglwNWsStMt8Y2j53lZ2YHmVEQzh2bF/W/TsgDl
-6dv4pgYFg3puXljf3mYenUjV3cfxB64KMbeFNAAsgOqOy1ahaQpPBso4I7ppvzxb
-g3YxrVNtGQ/LFhc2Q4ebVMa4y95PeOgD/Le7SEgrCPOQGQE7tz1QSEc+w8lHj7YL
-66n9LCzIb6Ayp4ZgxI5OW5HOOVk8nAsZOrEnRCrHLlLyzZw2JWOmRjAlv72YSD4F
-Jr+qfVo1oCm0BrH0JT7tRSstkcRzAmWISJwmTFv4VxBx6hOmLbncRrGdivj6Ep6w
-adeYCxLvKU7xL/62eFzdAf5uGGIAPEurYxLM/K1JlFunLOgKeZn3pFVDcFG8Hvbx
-OjDUvPHHbWe+RyOEdiv09BTBPUVADCj/hZCwst6TmHzfnw5c87l1weA/FZCIrHNO
-XNBxKW8qSW0BJa/e/SJLShEdd0IZhCLEPAwqOIw5BVZAZJ3pDzBl1qp28JukTWK2
-r4q8IkalfNlQNgHWMzbJby6ntgv8i6j1IMlgdokjdqQfw5TLlAnlgW8YRgqI+8QS
-A9uBe0ei+8BB/LyfGUEkhQz1VNrQsZx50q9LwymfG2wzOi56swF3kcZ3V7aEIgkc
-bxx/bcevHWuW6tBWxTlCkfni+hUUnYa2BCRGh6K8Rk/nunDnBDc=
-=8WVx
------END PGP SIGNATURE-----
+--------------sSkNzZnvvDwrh4gmo0MVxS5Z
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+
+HI Nishit,
+
+Thanks for review.
+
+Please find comments inline
+
+On 6/30/2026 11:48 AM, Sharma, Nishit wrote:
+>
+>
+> On 6/16/2026 6:10 PM, Sobin Thomas wrote:
+>> Previous coverage lacked a scenario combining multi-process bind
+>> with VRAM oversubscription. This generates memory pressure with
+>> multi-process VM Bind activity and concurrent submission, exercising
+>> the bind pipeline under eviction pressure.
+>>
+>> v7:  Save errno immediately in create_test_bos before it can be clobbered.
+>>       Handle non-ENOMEM/ENOSPC failures in create_test_bos.
+>>       Remove dead code (retries == 0 check) in xe_exec_with_retry.
+>>       Add igt_skip when both vram and sram n_bufs are 0.
+>>       Add MAP_FAILED check on result_bo.ptr after xe_bo_map. (Nishit)
+>> v8: Add error check while performing vmbind.
+>> v9: Assert if vmbind fails for VRAM/ SRAM.
+>>      Moved wait fence for vm bind immediately after call.
+>>
+>> Signed-off-by: Sobin Thomas<sobin.thomas@intel.com>
+>> ---
+>>   tests/intel/xe_vm.c | 456 ++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 456 insertions(+)
+>>
+>> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+>> index 408bfdb71..198ae1b99 100644
+>> --- a/tests/intel/xe_vm.c
+>> +++ b/tests/intel/xe_vm.c
+>> @@ -21,6 +21,8 @@
+>>   #include "xe/xe_spin.h"
+>>   #include <string.h>
+>>   #define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
+>> +#define GB(x) (1024ULL * 1024ULL * 1024ULL * (x))
+>> +#define TIMEOUT_NS (30ULL * 1000000000ULL)
+>>   
+>>   enum overcommit_stage {
+>>   	EXPECT_NONE,
+>> @@ -29,6 +31,93 @@ enum overcommit_stage {
+>>   	EXPECT_EXEC,
+>>   };
+>>   
+>> +struct gem_bo {
+>> +	uint32_t handle;
+>> +	uint64_t size;
+>> +	int *ptr;
+>> +	uint64_t addr;
+>> +};
+>> +
+>> +struct xe_test_ctx {
+>> +	uint32_t vm_id;
+>> +	uint32_t exec_queue_id;
+>> +};
+>> +
+>> +struct mem_bind_sync {
+>> +	struct gem_bo *bufs;
+>> +	int n_bufs;
+>> +	uint64_t *binds_ufence;
+>> +};
+>> +
+>> +static void create_exec_queue(int fd, struct xe_test_ctx *ctx)
+>> +{
+>> +	struct drm_xe_engine_class_instance *hwe;
+>> +	struct drm_xe_engine_class_instance eci = { 0 };
+>> +
+>> +	/* Use first available engine */
+>> +	xe_for_each_engine(fd, hwe) {
+>> +		eci = *hwe;
+>> +		break;
+>> +	}
+>> +	ctx->exec_queue_id = xe_exec_queue_create(fd, ctx->vm_id, &eci, 0);
+>> +}
+>> +
+>> +static int xe_vm_bind_array_get_err(int fd, uint32_t vm,
+>> +				    struct drm_xe_vm_bind_op *bind_ops,
+>> +				    uint32_t num_bind, struct drm_xe_sync *sync,
+>> +				    uint32_t num_syncs)
+>> +{
+>> +	struct drm_xe_vm_bind bind = {
+>> +		.vm_id = vm,
+>> +		.num_binds = num_bind,
+>> +		.vector_of_binds = (uintptr_t)bind_ops,
+>> +		.num_syncs = num_syncs,
+>> +		.syncs = (uintptr_t)sync,
+>> +		.exec_queue_id = 0,
+>> +	};
+>> +
+>> +	igt_assert(num_bind > 0);
+>> +
+>> +	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
+>> +		return -errno;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static uint64_t *
+>> +vm_bind_bo_batch(int fd, struct xe_test_ctx *ctx, struct gem_bo *bos, int size, int *out_err)
+>> +{
+>> +	uint64_t *ufence;
+>> +	struct drm_xe_sync bind_sync;
+>> +	struct drm_xe_vm_bind_op binds[size];
+>> +	int i, ret;
+>> +
+>> +	ufence = calloc(1, sizeof(uint64_t));
+>> +	igt_assert(ufence);
+>> +	*ufence = 0;
+>> +	bind_sync = (struct drm_xe_sync) {
+>> +		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+>> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+>> +		.addr = to_user_pointer(ufence),
+>> +		.timeline_value = 1,
+>> +	};
+>> +
+>> +	for (i = 0; i < size; i++) {
+>> +		binds[i] = (struct drm_xe_vm_bind_op) {
+>> +			.obj = bos[i].handle,
+>> +			.obj_offset = 0,
+>> +			.range = bos[i].size,
+>> +			.addr = bos[i].addr,
+>> +			.op = DRM_XE_VM_BIND_OP_MAP,
+>> +			.flags = 0,
+>> +		};
+>> +	}
+>> +	ret = xe_vm_bind_array_get_err(fd, ctx->vm_id, binds, size, &bind_sync, 1);
+> if bind fails it should return ENOMEM/ENOSPC and that should be 
+> handled gracefully. Idea is if bind() fails in memory pressure it 
+> should be handled gravefully.
+
+
+Will take care, so that the ENOSPC/ENOMEM will be taken care and test 
+will be skipped.
+
+>> +	if (out_err)
+>> +		*out_err = ret;
+>> +	return ufence;
+>> +}
+>> +
+>>   static uint32_t
+>>   addr_low(uint64_t addr)
+>>   {
+>> @@ -3073,6 +3162,368 @@ static void test_get_property(int fd, void (*func)(int fd, uint32_t vm))
+>>   	xe_vm_destroy(fd, vm);
+>>   }
+>>   
+>> +static int build_add_batch(struct gem_bo *batch_bo, struct gem_bo *integers_bo,
+>> +			   struct gem_bo *result_bo, int ints_to_add)
+>> +{
+>> +	int pos = 0;
+>> +	uint64_t tmp_addr;
+>> +	#define GPR_RX_ADDR(x)		(0x600 + (x) * 8)
+>> +
+>> +	batch_bo->ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
+>> +	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
+>> +	tmp_addr = integers_bo->addr + 0 * sizeof(uint32_t);
+>> +	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
+>> +	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
+>> +	for (int i = 1; i < ints_to_add; i++) {
+>> +		/* r1 = integers_bo[i] */
+>> +		batch_bo->ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
+>> +		batch_bo->ptr[pos++] = GPR_RX_ADDR(1);
+>> +		tmp_addr = integers_bo->addr + i * sizeof(uint32_t);
+>> +		batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
+>> +		batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
+>> +		/* r0 = r0 + r1 */
+>> +		batch_bo->ptr[pos++] = MI_MATH(4);
+>> +		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
+>> +		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
+>> +		batch_bo->ptr[pos++] = MI_MATH_ADD;
+>> +		batch_bo->ptr[pos++] = MI_MATH_STORE(MI_MATH_REG(0), MI_MATH_REG_ACCU);
+>> +	}
+>> +	/* result_bo[0] = r0 */
+>> +	batch_bo->ptr[pos++] = MI_STORE_REGISTER_MEM_GEN8 | MI_LRI_LRM_CS_MMIO;
+>> +	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
+>> +	tmp_addr = result_bo->addr + 0 * sizeof(uint32_t);
+>> +	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
+>> +	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
+>> +
+>> +	batch_bo->ptr[pos++] = MI_BATCH_BUFFER_END;
+>> +	while (pos % 4 != 0)
+>> +		batch_bo->ptr[pos++] = MI_NOOP;
+>> +	return pos;
+>> +}
+>> +
+>> +static void create_test_bos(int fd, struct xe_test_ctx *ctx, struct mem_bind_sync *bind,
+>> +			    uint32_t  placement, uint64_t *addr)
+>> +{
+>> +	const char *mem_type = (placement & vram_memory(fd, 0)) ? "VRAM" : "SRAM";
+>> +	uint32_t ret;
+>> +
+>> +	for (int i = 0; i < bind->n_bufs; i++) {
+>> +		struct gem_bo *bo = &bind->bufs[i];
+>> +
+>> +		bo->size = GB(1);
+>> +		ret = __xe_bo_create_caching(fd, ctx->vm_id, bo->size, placement, 0,
+>> +					     DRM_XE_GEM_CPU_CACHING_WC, &bo->handle);
+>> +		if (ret) {
+>> +			int saved_errno = errno; /* capture before anything can clobber it */
+>> +
+>> +			bind->n_bufs = i;
+>> +			if (saved_errno == ENOMEM || saved_errno == ENOSPC)
+>> +				igt_debug("%s allocation failed at buffer %d (OOM)\n", mem_type, i);
+>> +			else
+>> +				igt_assert_f(false, "%s allocation failed at buffer %d: %s",
+>> +					     mem_type, i, strerror(saved_errno));
+>> +			break;
+>> +		}
+>> +		bo->ptr = NULL;
+>> +		bo->addr = *addr;
+>> +		*addr += bo->size;
+>> +		igt_debug("%s buffer %d created at 0x%016lx\n", mem_type, i, bo->addr);
+>> +	}
+>> +}
+>> +
+>> +static int fill_random_integers(struct gem_bo *int_bo, int ints_to_add)
+>> +{
+>> +	uint32_t expected_result = 0;
+>> +
+>> +	for (int i = 0; i < ints_to_add; i++) {
+>> +		int random_int = rand() % 8;
+>> +
+>> +		int_bo->ptr[i] = random_int;
+>> +		expected_result += random_int;
+>> +
+>> +		igt_debug("%d", random_int);
+>> +		if (i + 1 != ints_to_add)
+>> +			igt_debug(" + ");
+>> +		else
+>> +			igt_debug(" = ");
+>> +	}
+>> +	igt_debug("%d\n", expected_result);
+>> +	return expected_result;
+>> +}
+>> +
+>> +/*
+>> + * In concurrent VM bind stress tests, multiple threads simultaneously bind
+>> + * buffers to GPU virtual address space and submit batch operations. This
+>> + * creates significant GPU memory pressure where the kernel may transiently
+>> + * fail batch submission when:
+>> + *   - GPU page tables are being updated across multiple bindings
+>> + *   - GPU memory is fragmented across many concurrent buffer mappings
+>> + *   - Multiple processes compete for finite GPU resources
+>> + *
+>> + * Without retries, transient ENOMEM/ENOSPC failures cause false test failures.
+>> + * Retrying lets us distinguish temporary resource exhaustion from actual
+>> + * driver bugs. Non ENOMEM/ENOSPC errors still fail immediately and are properly
+>> + * reported with full errno context for debugging.
+>> + */
+>> +static int xe_exec_with_retry(int fd, struct drm_xe_exec *exec, int max_retries)
+>> +{
+>> +	int rc = 0, retries;
+>> +
+>> +	for (retries = 1; retries < max_retries; retries++) {
+>> +		rc = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, exec);
+>> +
+>> +		if (!(rc && (errno == ENOMEM || errno == ENOSPC)))
+>
+> This condition should be in bind arrays as per requirement. For the 
+> graceful-failure requirement, expected ENOMEM/ENOSPC
+>
+>
+> from bind path must be explicitly accepted and handled gracefully, not 
+> retried away at exec
+>
+=> will remove the multi retires.
+>> +			break;
+>> +
+>> +		igt_warn("got %s, retrying (%d/%d)\n", strerror(errno), retries, max_retries);
+>> +		usleep(100 * retries);
+>> +	}
+>> +
+>> +	if (retries == max_retries)
+>> +		igt_warn("gave up after %d retries\n", retries);
+>> +
+>> +	if (rc)
+>> +		igt_warn("errno: %d (%s)\n", errno, strerror(errno));
+>> +
+>> +	return rc;
+>> +}
+>> +
+>> +static void cleanup_bo_resources(int fd, struct gem_bo *bo)
+>> +{
+>> +	if (bo->ptr) {
+>> +		igt_assert_eq(munmap(bo->ptr, bo->size), 0);
+>> +		bo->ptr = NULL;
+>> +	}
+>> +	if (bo->handle)
+>> +		gem_close(fd, bo->handle);
+>> +}
+>> +
+>> +static void cleanup_sram_vram_objs(int fd, struct mem_bind_sync *vram_bind,
+>> +				   struct mem_bind_sync *sram_bind)
+>> +{
+>> +	for (int i = 0; i < vram_bind->n_bufs; i++)
+>> +		gem_close(fd, vram_bind->bufs[i].handle);
+>> +	for (int i = 0; i < sram_bind->n_bufs; i++)
+>> +		gem_close(fd, sram_bind->bufs[i].handle);
+>> +	free(vram_bind->bufs);
+>> +	free(sram_bind->bufs);
+>> +	if (vram_bind->n_bufs)
+>> +		free(vram_bind->binds_ufence);
+>> +	if (sram_bind->n_bufs)
+>> +		free(sram_bind->binds_ufence);
+>> +}
+>> +
+>> +/**
+>> + * SUBTEST: oversubscribe-concurrent-bind
+>> + * Description: Test for oversubscribing the VM with multiple processes
+>> + * doing binds at the same time, and ensure they all complete successfully.
+>> + * Functionality: This check is for a specific bug where if multiple processes
+>> + * oversubscribe the VM, some of the binds may fail with  ENOMEM due to
+>> + * deadlock in the bind code.
+>> + * Test category: stress test
+>> + */
+>> +static void test_vm_oversubscribe_concurrent_bind(int fd)
+>> +{
+>> +	#define MIN_BUFS_PER_PROC 2
+>> +	#define MAX_THREADS 20
+>> +	/*
+>> +	 * Cap SRAM test usage on large-RAM platforms (e.g. PVC). On small-RAM
+>> +	 * platforms (e.g. BMG with ~32 GB RAM) 50% of RAM is ~16 GB which is
+>> +	 * below this cap, so behavior is unchanged. On large-RAM platforms
+>> +	 * 50% can be hundreds of GB; cap it to a bounded value that still
+>> +	 * provides meaningful memory pressure for the concurrent bind test.
+>> +	 */
+>> +	#define MAX_SRAM_TEST_SIZE GB(32)
+>
+> Make macros as global for better readability.
+>
+>> +	int n_proc = 0, n_vram_bufs = 0, n_sram_bufs = 0;
+>> +	uint32_t max_by_mem;
+>> +	uint64_t total_vram_demand = 0;
+>> +	uint64_t vram_size = xe_visible_available_vram_size(fd, 0);
+>> +	uint64_t sram_avail = (uint64_t)igt_get_avail_ram_mb() << 20;
+>> +	uint64_t target_vram = vram_size * 2;
+>> +	uint64_t target_sram, total_vram_bufs, total_sram_bufs;
+>> +	pthread_barrier_t *barrier;
+>> +	pthread_barrierattr_t attr;
+>> +	/*
+>> +	 * Dynamically cap VRAM oversubscription so the overflow into system
+>> +	 * RAM stays within 25% of available RAM. On small-VRAM platforms
+>> +	 * (e.g. BMG) the 2x target fits within the cap and behavior is
+>> +	 * unchanged; on large-VRAM platforms (e.g. PVC) this prevents OOM.
+>> +	 */
+>> +	target_vram = min(target_vram, vram_size + sram_avail / 4);
+>> +	target_sram = min_t(uint64_t, sram_avail * 50 / 100,
+>> +			    MAX_SRAM_TEST_SIZE);
+>> +
+>> +	total_vram_bufs = target_vram / GB(1);
+>> +	total_sram_bufs = target_sram / GB(1);
+>> +
+>> +	/* determine concurrency from memory pressure */
+>> +
+>> +	max_by_mem = min(total_vram_bufs / MIN_BUFS_PER_PROC,
+>> +			 total_sram_bufs / MIN_BUFS_PER_PROC);
+>> +	n_proc = min_t(uint32_t, max_by_mem, MAX_THREADS);
+>> +	igt_require_f(n_proc > 0, "Not enough VRAM/RAM for oversubscription test\n");
+>> +
+>> +	n_vram_bufs = max_t(int, 2, total_vram_bufs / n_proc);
+>> +	n_sram_bufs = max_t(int, 2, total_sram_bufs / n_proc);
+>> +	total_vram_demand = (uint64_t)n_proc * n_vram_bufs * GB(1);
+>> +
+>> +	igt_debug("VRAM size: %" PRIu64 "MB, System RAM available: %" PRIu64 "MB\n",
+>> +		  vram_size >> 20, sram_avail >> 20);
+>> +
+>> +	igt_debug(" n_proc = %d\n", n_proc);
+>> +	igt_debug("VRAM: %" PRIu64 "GB\n", vram_size >> 30);
+>> +	igt_debug("VRAM demand: %" PRIu64 "MB (%.2fx oversubscription)\n",
+>> +		  total_vram_demand >> 20, (double)total_vram_demand / vram_size);
+>> +	igt_debug("Processes=%d VRAM_bufs=%d SRAM_bufs=%d\n", n_proc,
+>> +		  n_vram_bufs, n_sram_bufs);
+>> +
+>> +	barrier = mmap(NULL, sizeof(pthread_barrier_t),
+>> +		       PROT_READ | PROT_WRITE,
+>> +		       MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+> No need of mmap here. MMAP required if need to write something from 
+> CPU on address
+
+
+=> We need to keep the mmap since the pthread barrier is created at 
+process level. So each child process gets a
+
+private copy, making stack allocated barrier invisible across processes. 
+Using |mmap(MAP_SHARED | MAP_ANONYMOUS)|together with +
+
+|PTHREAD_PROCESS_SHARED|places the barrier in shared memory, allowing 
+all forked processes to synchronize correctly.
+
+>> +	igt_assert(barrier != MAP_FAILED);
+>> +	pthread_barrierattr_init(&attr);
+>> +	pthread_barrierattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
+>> +	pthread_barrier_init(barrier, &attr, n_proc);
+> Simple  pthread_barrier_t barrier and pthread_barrier_init(&barrier, 
+> Arg2, Arg3); can serve
+>> +
+>> +	igt_fork(child, n_proc) {
+>> +		struct xe_test_ctx ctx = {0};
+>> +		int rc;
+>> +		uint64_t addr = 0x40000000;
+>> +		int expected_result = 0, ints_to_add = 4;
+>> +		int max_retries = 1024;
+>> +		struct gem_bo integers_bo, result_bo, batch_bo, *vram_bufs, *sram_bufs;
+>> +		int pos = 0;
+>> +		struct mem_bind_sync vram_bind = {0};
+>> +		struct mem_bind_sync sram_bind = {0};
+>> +		struct drm_xe_sync batch_syncs[1];
+>> +		struct drm_xe_exec exec;
+>> +		struct gem_bo ufence_bo = {0};
+>> +		int vram_bind_err = 0, sram_bind_err = 0;
+>> +
+>> +		vram_bufs = (struct gem_bo *)calloc(n_vram_bufs, sizeof(struct gem_bo));
+>> +		sram_bufs = (struct gem_bo *)calloc(n_sram_bufs, sizeof(struct gem_bo));
+>> +		srand(child);
+>> +
+>> +		igt_assert(vram_bufs && sram_bufs);
+>> +
+>> +		ctx.vm_id = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
+>> +		create_exec_queue(fd, &ctx);
+>> +		vram_bind.bufs = vram_bufs;
+>> +		vram_bind.n_bufs = n_vram_bufs;
+>> +		sram_bind.bufs = sram_bufs;
+>> +		sram_bind.n_bufs = n_sram_bufs;
+>> +
+>> +		create_test_bos(fd, &ctx, &vram_bind, vram_memory(fd, 0), &addr);
+>> +		create_test_bos(fd, &ctx, &sram_bind, system_memory(fd), &addr);
+>> +
+>> +		if (!vram_bind.n_bufs && !sram_bind.n_bufs)
+>> +			igt_skip("No BOs allocated; VRAM/SRAM unavailable, skipping\n");
+>
+> if vram_bind.n_bufs = 0 and sram_bind.n_bufs = 1 then igt_skip() will 
+> not be called which is not expected, right? If either of them is 0
+>
+> =>  Agreed
+>
+> then igt_skip() should be called. if (!vram_bind.n_bufs ||
+>
+> !sram_bind.n_bufs) should be checked, If either is 0 igt_skip() will 
+> be called
+>
+>
+>> +
+>> +		pthread_barrier_wait(barrier);
+>> +
+>> +		if (vram_bind.n_bufs) {
+>> +			vram_bind.binds_ufence =
+>> +				vm_bind_bo_batch(fd, &ctx, vram_bufs,
+>> +						 vram_bind.n_bufs, &vram_bind_err);
+>> +			xe_wait_ufence(fd, vram_bind.binds_ufence, 1, 0, TIMEOUT_NS);
+>> +		}
+>> +		if (vram_bind_err)
+>> +			igt_assert_f(0, "Unexpected VRAM bind error: %d", vram_bind_err);
+>> +
+>> +		if (sram_bind.n_bufs) {
+>> +			sram_bind.binds_ufence =
+>> +				vm_bind_bo_batch(fd, &ctx, sram_bufs,
+>> +						 sram_bind.n_bufs, &sram_bind_err);
+>> +			xe_wait_ufence(fd, sram_bind.binds_ufence, 1, 0, TIMEOUT_NS);
+>> +		}
+>> +
+>> +		/* Assert if there is any bind error in SRAM */
+>> +		if (sram_bind_err)
+>> +			igt_assert_f(0, "Unexpected SRAM bind error: %d", sram_bind_err);
+>> +
+>> +		integers_bo.size = ALIGN(sizeof(int) * ints_to_add, 4096);
+>
+> What's the significance of ints_to_add here? If it's required then it 
+> should be in MACRO. Otherwise
+>
+> => ints_to_add  tells number of test values to be added.
+>
+Will keep it in macro.
+>
+> #define INT_SIZE 16
+>
+> ALIGN(INT_SIZE, 4096) can serve.
+>
+>
+>> +		integers_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, integers_bo.size,
+>> +							  system_memory(fd), 0,
+>> +							  DRM_XE_GEM_CPU_CACHING_WC);
+>> +		integers_bo.ptr = (int *)xe_bo_map(fd, integers_bo.handle, integers_bo.size);
+>> +		integers_bo.addr = 0x100000;
+>> +
+>> +		expected_result = fill_random_integers(&integers_bo, ints_to_add);
+>> +		igt_debug("%d\n", expected_result);
+>> +
+>> +		result_bo.size = ALIGN(sizeof(int), 4096);
+>> +		result_bo.handle  = xe_bo_create_caching(fd, ctx.vm_id, result_bo.size,
+>> +							 system_memory(fd), 0,
+>> +							 DRM_XE_GEM_CPU_CACHING_WC);
+>> +		result_bo.ptr = NULL;
+>> +		result_bo.addr = 0x200000;
+>> +
+>> +		batch_bo.size = 4096;
+>> +		batch_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, batch_bo.size,
+>> +						       system_memory(fd), 0,
+>> +						       DRM_XE_GEM_CPU_CACHING_WC);
+>> +
+>> +		batch_bo.ptr = (int *)xe_bo_map(fd, batch_bo.handle, batch_bo.size);
+>> +		batch_bo.addr = 0x300000;
+>> +
+>> +		pos = build_add_batch(&batch_bo, &integers_bo, &result_bo, ints_to_add);
+>> +
+>> +		igt_assert(pos * sizeof(int) <= batch_bo.size);
+>> +
+>> +
+>> +		xe_vm_bind_lr_sync(fd, ctx.vm_id, integers_bo.handle, 0, integers_bo.addr,
+>> +				   integers_bo.size, 0);
+>> +		xe_vm_bind_lr_sync(fd, ctx.vm_id, result_bo.handle, 0, result_bo.addr,
+>> +				   result_bo.size, 0);
+>> +		xe_vm_bind_lr_sync(fd, ctx.vm_id, batch_bo.handle, 0, batch_bo.addr,
+>> +				   batch_bo.size, 0);
+>> +
+>> +		ufence_bo.size = 4096;
+>> +		ufence_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, ufence_bo.size,
+>> +							system_memory(fd), 0,
+>> +							DRM_XE_GEM_CPU_CACHING_WB);
+>> +		ufence_bo.ptr = (int *)xe_bo_map(fd, ufence_bo.handle, ufence_bo.size);
+>> +		ufence_bo.addr = 0x400000;
+>> +		memset(ufence_bo.ptr, 0, ufence_bo.size);
+>> +		xe_vm_bind_lr_sync(fd, ctx.vm_id, ufence_bo.handle, 0, ufence_bo.addr,
+>> +				   ufence_bo.size, 0);
+>> +
+>> +		batch_syncs[0] = (struct drm_xe_sync){
+>> +			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+>> +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+>> +			.addr = ufence_bo.addr,
+>> +			.timeline_value = 1,
+>> +		};
+>> +
+>> +		exec = (struct drm_xe_exec) {
+>> +			.exec_queue_id = ctx.exec_queue_id,
+>> +			.num_syncs = 1,
+>> +			.syncs = (uintptr_t)batch_syncs,
+>> +			.address = batch_bo.addr,
+>> +			.num_batch_buffer = 1,
+>> +		};
+>> +
+>> +		rc = xe_exec_with_retry(fd, &exec, max_retries);
+>> +		igt_assert_eq(rc, 0);
+>> +		xe_wait_ufence(fd, (uint64_t *)ufence_bo.ptr, 1, ctx.exec_queue_id, TIMEOUT_NS);
+>> +		result_bo.ptr = (int *)xe_bo_map(fd, result_bo.handle, result_bo.size);
+>> +		igt_assert(result_bo.ptr != MAP_FAILED);
+>> +		igt_assert_eq(result_bo.ptr[0], expected_result);
+>> +		cleanup_bo_resources(fd, &ufence_bo);
+>> +		cleanup_bo_resources(fd, &result_bo);
+>> +		cleanup_bo_resources(fd, &batch_bo);
+>> +		cleanup_bo_resources(fd, &integers_bo);
+>> +		cleanup_sram_vram_objs(fd, &vram_bind, &sram_bind);
+>> +		xe_exec_queue_destroy(fd, ctx.exec_queue_id);
+>> +		xe_vm_destroy(fd, ctx.vm_id);
+>> +		close(fd);
+>> +	}
+>> +	igt_waitchildren();
+>> +	pthread_barrier_destroy(barrier);
+>> +	pthread_barrierattr_destroy(&attr);
+>> +	igt_assert_eq(munmap(barrier, sizeof(pthread_barrier_t)), 0);
+>> +}
+>> +
+>>   int igt_main()
+>>   {
+>>   	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
+>> @@ -3486,6 +3937,11 @@ int igt_main()
+>>   		igt_assert(xe_visible_vram_size(fd, 0));
+>>   		test_oom(fd);
+>>   	}
+> add one space and the call subtest
+=> Agreed.
+>> +	igt_subtest("oversubscribe-concurrent-bind")
+>> +	{
+>> +		igt_require(xe_has_vram(fd));
+>> +		test_vm_oversubscribe_concurrent_bind(fd);
+>> +	}
+>>   
+>>   	for (const struct vm_get_property *f = xe_vm_get_property_tests; f->name; f++) {
+>>   		igt_subtest_f("vm-get-property-%s", f->name)
+--------------sSkNzZnvvDwrh4gmo0MVxS5Z
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p>HI Nishit,</p>
+    <p>Thanks for review.</p>
+    <p>Please find comments inline</p>
+    <div class="moz-cite-prefix">On 6/30/2026 11:48 AM, Sharma, Nishit
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:ed68269b-cf51-40ee-86c0-a94b4612ffed@intel.com">
+      
+      <p><br>
+      </p>
+      <div class="moz-cite-prefix">On 6/16/2026 6:10 PM, Sobin Thomas
+        wrote:<br>
+      </div>
+      <blockquote type="cite" cite="mid:20260616124029.619373-1-sobin.thomas@intel.com">
+        <pre wrap="" class="moz-quote-pre">Previous coverage lacked a scenario combining multi-process bind
+with VRAM oversubscription. This generates memory pressure with
+multi-process VM Bind activity and concurrent submission, exercising
+the bind pipeline under eviction pressure.
+
+v7:  Save errno immediately in create_test_bos before it can be clobbered.
+     Handle non-ENOMEM/ENOSPC failures in create_test_bos.
+     Remove dead code (retries == 0 check) in xe_exec_with_retry.
+     Add igt_skip when both vram and sram n_bufs are 0.
+     Add MAP_FAILED check on result_bo.ptr after xe_bo_map. (Nishit)
+v8: Add error check while performing vmbind.
+v9: Assert if vmbind fails for VRAM/ SRAM.
+    Moved wait fence for vm bind immediately after call.
+
+Signed-off-by: Sobin Thomas <a class="moz-txt-link-rfc2396E" href="mailto:sobin.thomas@intel.com" moz-do-not-send="true">&lt;sobin.thomas@intel.com&gt;</a>
+---
+ tests/intel/xe_vm.c | 456 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 456 insertions(+)
+
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 408bfdb71..198ae1b99 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -21,6 +21,8 @@
+ #include &quot;xe/xe_spin.h&quot;
+ #include &lt;string.h&gt;
+ #define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
++#define GB(x) (1024ULL * 1024ULL * 1024ULL * (x))
++#define TIMEOUT_NS (30ULL * 1000000000ULL)
+ 
+ enum overcommit_stage {
+ 	EXPECT_NONE,
+@@ -29,6 +31,93 @@ enum overcommit_stage {
+ 	EXPECT_EXEC,
+ };
+ 
++struct gem_bo {
++	uint32_t handle;
++	uint64_t size;
++	int *ptr;
++	uint64_t addr;
++};
++
++struct xe_test_ctx {
++	uint32_t vm_id;
++	uint32_t exec_queue_id;
++};
++
++struct mem_bind_sync {
++	struct gem_bo *bufs;
++	int n_bufs;
++	uint64_t *binds_ufence;
++};
++
++static void create_exec_queue(int fd, struct xe_test_ctx *ctx)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	struct drm_xe_engine_class_instance eci = { 0 };
++
++	/* Use first available engine */
++	xe_for_each_engine(fd, hwe) {
++		eci = *hwe;
++		break;
++	}
++	ctx-&gt;exec_queue_id = xe_exec_queue_create(fd, ctx-&gt;vm_id, &amp;eci, 0);
++}
++
++static int xe_vm_bind_array_get_err(int fd, uint32_t vm,
++				    struct drm_xe_vm_bind_op *bind_ops,
++				    uint32_t num_bind, struct drm_xe_sync *sync,
++				    uint32_t num_syncs)
++{
++	struct drm_xe_vm_bind bind = {
++		.vm_id = vm,
++		.num_binds = num_bind,
++		.vector_of_binds = (uintptr_t)bind_ops,
++		.num_syncs = num_syncs,
++		.syncs = (uintptr_t)sync,
++		.exec_queue_id = 0,
++	};
++
++	igt_assert(num_bind &gt; 0);
++
++	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &amp;bind))
++		return -errno;
++
++	return 0;
++}
++
++static uint64_t *
++vm_bind_bo_batch(int fd, struct xe_test_ctx *ctx, struct gem_bo *bos, int size, int *out_err)
++{
++	uint64_t *ufence;
++	struct drm_xe_sync bind_sync;
++	struct drm_xe_vm_bind_op binds[size];
++	int i, ret;
++
++	ufence = calloc(1, sizeof(uint64_t));
++	igt_assert(ufence);
++	*ufence = 0;
++	bind_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.addr = to_user_pointer(ufence),
++		.timeline_value = 1,
++	};
++
++	for (i = 0; i &lt; size; i++) {
++		binds[i] = (struct drm_xe_vm_bind_op) {
++			.obj = bos[i].handle,
++			.obj_offset = 0,
++			.range = bos[i].size,
++			.addr = bos[i].addr,
++			.op = DRM_XE_VM_BIND_OP_MAP,
++			.flags = 0,
++		};
++	}
++	ret = xe_vm_bind_array_get_err(fd, ctx-&gt;vm_id, binds, size, &amp;bind_sync, 1);</pre>
+      </blockquote>
+      if bind fails it should return ENOMEM/ENOSPC and that should be
+      handled gracefully. Idea is if bind() fails in memory pressure it
+      should be handled gravefully.</blockquote>
+    <p><br>
+    </p>
+    <p>Will take care, so that the ENOSPC/ENOMEM will be taken care and
+      test will be skipped.</p>
+    <blockquote type="cite" cite="mid:ed68269b-cf51-40ee-86c0-a94b4612ffed@intel.com">
+      <blockquote type="cite" cite="mid:20260616124029.619373-1-sobin.thomas@intel.com">
+        <pre wrap="" class="moz-quote-pre">+	if (out_err)
++		*out_err = ret;
++	return ufence;
++}
++
+ static uint32_t
+ addr_low(uint64_t addr)
+ {
+@@ -3073,6 +3162,368 @@ static void test_get_property(int fd, void (*func)(int fd, uint32_t vm))
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++static int build_add_batch(struct gem_bo *batch_bo, struct gem_bo *integers_bo,
++			   struct gem_bo *result_bo, int ints_to_add)
++{
++	int pos = 0;
++	uint64_t tmp_addr;
++	#define GPR_RX_ADDR(x)		(0x600 + (x) * 8)
++
++	batch_bo-&gt;ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
++	batch_bo-&gt;ptr[pos++] = GPR_RX_ADDR(0);
++	tmp_addr = integers_bo-&gt;addr + 0 * sizeof(uint32_t);
++	batch_bo-&gt;ptr[pos++] = tmp_addr &amp; 0xFFFFFFFF;
++	batch_bo-&gt;ptr[pos++] = (tmp_addr &gt;&gt; 32) &amp; 0xFFFFFFFF;
++	for (int i = 1; i &lt; ints_to_add; i++) {
++		/* r1 = integers_bo[i] */
++		batch_bo-&gt;ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
++		batch_bo-&gt;ptr[pos++] = GPR_RX_ADDR(1);
++		tmp_addr = integers_bo-&gt;addr + i * sizeof(uint32_t);
++		batch_bo-&gt;ptr[pos++] = tmp_addr &amp; 0xFFFFFFFF;
++		batch_bo-&gt;ptr[pos++] = (tmp_addr &gt;&gt; 32) &amp; 0xFFFFFFFF;
++		/* r0 = r0 + r1 */
++		batch_bo-&gt;ptr[pos++] = MI_MATH(4);
++		batch_bo-&gt;ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
++		batch_bo-&gt;ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
++		batch_bo-&gt;ptr[pos++] = MI_MATH_ADD;
++		batch_bo-&gt;ptr[pos++] = MI_MATH_STORE(MI_MATH_REG(0), MI_MATH_REG_ACCU);
++	}
++	/* result_bo[0] = r0 */
++	batch_bo-&gt;ptr[pos++] = MI_STORE_REGISTER_MEM_GEN8 | MI_LRI_LRM_CS_MMIO;
++	batch_bo-&gt;ptr[pos++] = GPR_RX_ADDR(0);
++	tmp_addr = result_bo-&gt;addr + 0 * sizeof(uint32_t);
++	batch_bo-&gt;ptr[pos++] = tmp_addr &amp; 0xFFFFFFFF;
++	batch_bo-&gt;ptr[pos++] = (tmp_addr &gt;&gt; 32) &amp; 0xFFFFFFFF;
++
++	batch_bo-&gt;ptr[pos++] = MI_BATCH_BUFFER_END;
++	while (pos % 4 != 0)
++		batch_bo-&gt;ptr[pos++] = MI_NOOP;
++	return pos;
++}
++
++static void create_test_bos(int fd, struct xe_test_ctx *ctx, struct mem_bind_sync *bind,
++			    uint32_t  placement, uint64_t *addr)
++{
++	const char *mem_type = (placement &amp; vram_memory(fd, 0)) ? &quot;VRAM&quot; : &quot;SRAM&quot;;
++	uint32_t ret;
++
++	for (int i = 0; i &lt; bind-&gt;n_bufs; i++) {
++		struct gem_bo *bo = &amp;bind-&gt;bufs[i];
++
++		bo-&gt;size = GB(1);
++		ret = __xe_bo_create_caching(fd, ctx-&gt;vm_id, bo-&gt;size, placement, 0,
++					     DRM_XE_GEM_CPU_CACHING_WC, &amp;bo-&gt;handle);
++		if (ret) {
++			int saved_errno = errno; /* capture before anything can clobber it */
++
++			bind-&gt;n_bufs = i;
++			if (saved_errno == ENOMEM || saved_errno == ENOSPC)
++				igt_debug(&quot;%s allocation failed at buffer %d (OOM)\n&quot;, mem_type, i);
++			else
++				igt_assert_f(false, &quot;%s allocation failed at buffer %d: %s&quot;,
++					     mem_type, i, strerror(saved_errno));
++			break;
++		}
++		bo-&gt;ptr = NULL;
++		bo-&gt;addr = *addr;
++		*addr += bo-&gt;size;
++		igt_debug(&quot;%s buffer %d created at 0x%016lx\n&quot;, mem_type, i, bo-&gt;addr);
++	}
++}
++
++static int fill_random_integers(struct gem_bo *int_bo, int ints_to_add)
++{
++	uint32_t expected_result = 0;
++
++	for (int i = 0; i &lt; ints_to_add; i++) {
++		int random_int = rand() % 8;
++
++		int_bo-&gt;ptr[i] = random_int;
++		expected_result += random_int;
++
++		igt_debug(&quot;%d&quot;, random_int);
++		if (i + 1 != ints_to_add)
++			igt_debug(&quot; + &quot;);
++		else
++			igt_debug(&quot; = &quot;);
++	}
++	igt_debug(&quot;%d\n&quot;, expected_result);
++	return expected_result;
++}
++
++/*
++ * In concurrent VM bind stress tests, multiple threads simultaneously bind
++ * buffers to GPU virtual address space and submit batch operations. This
++ * creates significant GPU memory pressure where the kernel may transiently
++ * fail batch submission when:
++ *   - GPU page tables are being updated across multiple bindings
++ *   - GPU memory is fragmented across many concurrent buffer mappings
++ *   - Multiple processes compete for finite GPU resources
++ *
++ * Without retries, transient ENOMEM/ENOSPC failures cause false test failures.
++ * Retrying lets us distinguish temporary resource exhaustion from actual
++ * driver bugs. Non ENOMEM/ENOSPC errors still fail immediately and are properly
++ * reported with full errno context for debugging.
++ */
++static int xe_exec_with_retry(int fd, struct drm_xe_exec *exec, int max_retries)
++{
++	int rc = 0, retries;
++
++	for (retries = 1; retries &lt; max_retries; retries++) {
++		rc = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, exec);
++
++		if (!(rc &amp;&amp; (errno == ENOMEM || errno == ENOSPC)))</pre>
+      </blockquote>
+      <!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:AllowPNG/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:TrackMoves/>
+  <w:TrackFormatting/>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>EN-US</w:LidThemeOther>
+  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:EnableOpenTypeKerning/>
+   <w:DontFlipMirrorIndents/>
+   <w:OverrideTableStyleHps/>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser/>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="false"
+  DefSemiHidden="false" DefQFormat="false" DefPriority="99"
+  LatentStyleCount="376">
+  <w:LsdException Locked="false" Priority="0" QFormat="true" Name="Normal"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 1"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 2"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 3"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 4"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 5"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 6"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 7"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 8"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 9"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 1"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 2"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 3"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 4"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 5"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 6"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 7"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 8"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="header"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footer"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index heading"/>
+  <w:LsdException Locked="false" Priority="35" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="caption"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of figures"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope return"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="line number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="page number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of authorities"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="macro"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="toa heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 5"/>
+  <w:LsdException Locked="false" Priority="10" QFormat="true" Name="Title"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Closing"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Signature"/>
+  <w:LsdException Locked="false" Priority="1" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Default Paragraph Font"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Message Header"/>
+  <w:LsdException Locked="false" Priority="11" QFormat="true" Name="Subtitle"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Salutation"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Date"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Note Heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Block Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="FollowedHyperlink"/>
+  <w:LsdException Locked="false" Priority="22" QFormat="true" Name="Strong"/>
+  <w:LsdException Locked="false" Priority="20" QFormat="true" Name="Emphasis"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Document Map"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Plain Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="E-mail Signature"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Top of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Bottom of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal (Web)"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Acronym"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Cite"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Code"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Definition"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Keyboard"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Preformatted"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Sample"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Typewriter"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Variable"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Table"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation subject"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="No List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Contemporary"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Elegant"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Professional"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Balloon Text"/>
+  <w:LsdException Locked="false" Priority="39" Name="Table Grid"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Theme"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Placeholder Text"/>
+  <w:LsdException Locked="false" Priority="1" QFormat="true" Name="No Spacing"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 1"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Revision"/>
+  <w:LsdException Locked="false" Priority="34" QFormat="true"
+   Name="List Paragraph"/>
+  <w:LsdException Locked="false" Priority="29" QFormat="true" Name="Quote"/>
+  <w:LsdException Locked="false" Priority="30" QFormat="true"
+   Name="Intense Quote"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 1"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 1"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 2"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 2"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 2"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 3"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 3"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 3"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 4"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 4"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 4"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 5"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 5"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 5"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 6"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 6"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 6"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="19" QFormat="true"
+   Name="Subtle Emphasis"/>
+  <w:LsdException Locked="false" Priority="21" QFormat="true"
+   Name="Intense Emphasis"/>
+  <w:LsdException Locked="false" Priority="31" QFormat="true"
+   Name="Subtle Reference"/>
+  <w:LsdException Locked="false" Priority="32" QFormat="true"
+   Name="Intense Reference"/>
+  <w:LsdException Locked="false" Priority="33" QFormat="true" Name="Book Title"/>
+  <w:LsdException Locked="false" Priority="37" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Bibliography"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="TOC Heading"/>
+  <w:LsdException Locked="false" Priority="41" Name="Plain Table 1"/>
+  <w:LsdException Locked="false" Priority="42" Name="Plain Table 2"/>
+  <w:LsdException Locked="false" Priority="43" Name="Plain Table 3"/>
+  <w:LsdException Locked="false" Priority="44" Name="Plain Table 4"/>
+  <w:LsdException Locked="false" Priority="45" Name="Plain Table 5"/>
+  <w:LsdException Locked="false" Priority="40" Name="Grid Table Light"/>
+  <w:LsdException Locked="false" Priority="46" Name="Grid Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="Grid Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="Grid Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="46" Name="List Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="List Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="List Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hashtag"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Unresolved Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Link"/>
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ascii-font-family:Aptos;
+	mso-ascii-theme-font:minor-latin;
+	mso-hansi-font-family:Aptos;
+	mso-hansi-theme-font:minor-latin;
+	mso-font-kerning:1.0pt;
+	mso-ligatures:standardcontextual;}
+</style>
+<![endif]-->
+      <p class="MsoPlainText">This condition should be in bind arrays as
+        per requirement. For the graceful-failure requirement, expected
+        ENOMEM/ENOSPC</p>
+      <p><br>
+      </p>
+      <p><!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:AllowPNG/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:TrackMoves/>
+  <w:TrackFormatting/>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>EN-US</w:LidThemeOther>
+  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:EnableOpenTypeKerning/>
+   <w:DontFlipMirrorIndents/>
+   <w:OverrideTableStyleHps/>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser/>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="false"
+  DefSemiHidden="false" DefQFormat="false" DefPriority="99"
+  LatentStyleCount="376">
+  <w:LsdException Locked="false" Priority="0" QFormat="true" Name="Normal"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 1"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 2"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 3"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 4"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 5"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 6"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 7"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 8"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 9"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 1"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 2"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 3"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 4"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 5"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 6"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 7"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 8"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="header"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footer"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index heading"/>
+  <w:LsdException Locked="false" Priority="35" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="caption"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of figures"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope return"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="line number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="page number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of authorities"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="macro"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="toa heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 5"/>
+  <w:LsdException Locked="false" Priority="10" QFormat="true" Name="Title"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Closing"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Signature"/>
+  <w:LsdException Locked="false" Priority="1" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Default Paragraph Font"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Message Header"/>
+  <w:LsdException Locked="false" Priority="11" QFormat="true" Name="Subtitle"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Salutation"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Date"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Note Heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Block Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="FollowedHyperlink"/>
+  <w:LsdException Locked="false" Priority="22" QFormat="true" Name="Strong"/>
+  <w:LsdException Locked="false" Priority="20" QFormat="true" Name="Emphasis"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Document Map"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Plain Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="E-mail Signature"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Top of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Bottom of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal (Web)"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Acronym"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Cite"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Code"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Definition"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Keyboard"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Preformatted"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Sample"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Typewriter"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Variable"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Table"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation subject"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="No List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Contemporary"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Elegant"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Professional"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Balloon Text"/>
+  <w:LsdException Locked="false" Priority="39" Name="Table Grid"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Theme"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Placeholder Text"/>
+  <w:LsdException Locked="false" Priority="1" QFormat="true" Name="No Spacing"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 1"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Revision"/>
+  <w:LsdException Locked="false" Priority="34" QFormat="true"
+   Name="List Paragraph"/>
+  <w:LsdException Locked="false" Priority="29" QFormat="true" Name="Quote"/>
+  <w:LsdException Locked="false" Priority="30" QFormat="true"
+   Name="Intense Quote"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 1"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 1"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 2"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 2"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 2"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 3"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 3"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 3"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 4"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 4"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 4"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 5"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 5"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 5"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 6"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 6"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 6"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="19" QFormat="true"
+   Name="Subtle Emphasis"/>
+  <w:LsdException Locked="false" Priority="21" QFormat="true"
+   Name="Intense Emphasis"/>
+  <w:LsdException Locked="false" Priority="31" QFormat="true"
+   Name="Subtle Reference"/>
+  <w:LsdException Locked="false" Priority="32" QFormat="true"
+   Name="Intense Reference"/>
+  <w:LsdException Locked="false" Priority="33" QFormat="true" Name="Book Title"/>
+  <w:LsdException Locked="false" Priority="37" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Bibliography"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="TOC Heading"/>
+  <w:LsdException Locked="false" Priority="41" Name="Plain Table 1"/>
+  <w:LsdException Locked="false" Priority="42" Name="Plain Table 2"/>
+  <w:LsdException Locked="false" Priority="43" Name="Plain Table 3"/>
+  <w:LsdException Locked="false" Priority="44" Name="Plain Table 4"/>
+  <w:LsdException Locked="false" Priority="45" Name="Plain Table 5"/>
+  <w:LsdException Locked="false" Priority="40" Name="Grid Table Light"/>
+  <w:LsdException Locked="false" Priority="46" Name="Grid Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="Grid Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="Grid Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="46" Name="List Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="List Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="List Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hashtag"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Unresolved Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Link"/>
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ascii-font-family:Aptos;
+	mso-ascii-theme-font:minor-latin;
+	mso-hansi-font-family:Aptos;
+	mso-hansi-theme-font:minor-latin;
+	mso-font-kerning:1.0pt;
+	mso-ligatures:standardcontextual;}
+</style>
+<![endif]--> </p>
+      <p class="MsoPlainText">from bind path must be explicitly accepted
+        and handled gracefully, not retried away at exec</p>
+    </blockquote>
+    =&gt; will remove the multi retires.
+    <blockquote type="cite" cite="mid:ed68269b-cf51-40ee-86c0-a94b4612ffed@intel.com">
+      <blockquote type="cite" cite="mid:20260616124029.619373-1-sobin.thomas@intel.com">
+        <pre wrap="" class="moz-quote-pre">+			break;
++
++		igt_warn(&quot;got %s, retrying (%d/%d)\n&quot;, strerror(errno), retries, max_retries);
++		usleep(100 * retries);
++	}
++
++	if (retries == max_retries)
++		igt_warn(&quot;gave up after %d retries\n&quot;, retries);
++
++	if (rc)
++		igt_warn(&quot;errno: %d (%s)\n&quot;, errno, strerror(errno));
++
++	return rc;
++}
++
++static void cleanup_bo_resources(int fd, struct gem_bo *bo)
++{
++	if (bo-&gt;ptr) {
++		igt_assert_eq(munmap(bo-&gt;ptr, bo-&gt;size), 0);
++		bo-&gt;ptr = NULL;
++	}
++	if (bo-&gt;handle)
++		gem_close(fd, bo-&gt;handle);
++}
++
++static void cleanup_sram_vram_objs(int fd, struct mem_bind_sync *vram_bind,
++				   struct mem_bind_sync *sram_bind)
++{
++	for (int i = 0; i &lt; vram_bind-&gt;n_bufs; i++)
++		gem_close(fd, vram_bind-&gt;bufs[i].handle);
++	for (int i = 0; i &lt; sram_bind-&gt;n_bufs; i++)
++		gem_close(fd, sram_bind-&gt;bufs[i].handle);
++	free(vram_bind-&gt;bufs);
++	free(sram_bind-&gt;bufs);
++	if (vram_bind-&gt;n_bufs)
++		free(vram_bind-&gt;binds_ufence);
++	if (sram_bind-&gt;n_bufs)
++		free(sram_bind-&gt;binds_ufence);
++}
++
++/**
++ * SUBTEST: oversubscribe-concurrent-bind
++ * Description: Test for oversubscribing the VM with multiple processes
++ * doing binds at the same time, and ensure they all complete successfully.
++ * Functionality: This check is for a specific bug where if multiple processes
++ * oversubscribe the VM, some of the binds may fail with  ENOMEM due to
++ * deadlock in the bind code.
++ * Test category: stress test
++ */
++static void test_vm_oversubscribe_concurrent_bind(int fd)
++{
++	#define MIN_BUFS_PER_PROC 2
++	#define MAX_THREADS 20
++	/*
++	 * Cap SRAM test usage on large-RAM platforms (e.g. PVC). On small-RAM
++	 * platforms (e.g. BMG with ~32 GB RAM) 50% of RAM is ~16 GB which is
++	 * below this cap, so behavior is unchanged. On large-RAM platforms
++	 * 50% can be hundreds of GB; cap it to a bounded value that still
++	 * provides meaningful memory pressure for the concurrent bind test.
++	 */
++	#define MAX_SRAM_TEST_SIZE GB(32)</pre>
+      </blockquote>
+      <p class="MsoPlainText">Make macros as global for better
+        readability.</p>
+      <blockquote type="cite" cite="mid:20260616124029.619373-1-sobin.thomas@intel.com">
+        <pre wrap="" class="moz-quote-pre">+	int n_proc = 0, n_vram_bufs = 0, n_sram_bufs = 0;
++	uint32_t max_by_mem;
++	uint64_t total_vram_demand = 0;
++	uint64_t vram_size = xe_visible_available_vram_size(fd, 0);
++	uint64_t sram_avail = (uint64_t)igt_get_avail_ram_mb() &lt;&lt; 20;
++	uint64_t target_vram = vram_size * 2;
++	uint64_t target_sram, total_vram_bufs, total_sram_bufs;
++	pthread_barrier_t *barrier;
++	pthread_barrierattr_t attr;
++	/*
++	 * Dynamically cap VRAM oversubscription so the overflow into system
++	 * RAM stays within 25% of available RAM. On small-VRAM platforms
++	 * (e.g. BMG) the 2x target fits within the cap and behavior is
++	 * unchanged; on large-VRAM platforms (e.g. PVC) this prevents OOM.
++	 */
++	target_vram = min(target_vram, vram_size + sram_avail / 4);
++	target_sram = min_t(uint64_t, sram_avail * 50 / 100,
++			    MAX_SRAM_TEST_SIZE);
++
++	total_vram_bufs = target_vram / GB(1);
++	total_sram_bufs = target_sram / GB(1);
++
++	/* determine concurrency from memory pressure */
++
++	max_by_mem = min(total_vram_bufs / MIN_BUFS_PER_PROC,
++			 total_sram_bufs / MIN_BUFS_PER_PROC);
++	n_proc = min_t(uint32_t, max_by_mem, MAX_THREADS);
++	igt_require_f(n_proc &gt; 0, &quot;Not enough VRAM/RAM for oversubscription test\n&quot;);
++
++	n_vram_bufs = max_t(int, 2, total_vram_bufs / n_proc);
++	n_sram_bufs = max_t(int, 2, total_sram_bufs / n_proc);
++	total_vram_demand = (uint64_t)n_proc * n_vram_bufs * GB(1);
++
++	igt_debug(&quot;VRAM size: %&quot; PRIu64 &quot;MB, System RAM available: %&quot; PRIu64 &quot;MB\n&quot;,
++		  vram_size &gt;&gt; 20, sram_avail &gt;&gt; 20);
++
++	igt_debug(&quot; n_proc = %d\n&quot;, n_proc);
++	igt_debug(&quot;VRAM: %&quot; PRIu64 &quot;GB\n&quot;, vram_size &gt;&gt; 30);
++	igt_debug(&quot;VRAM demand: %&quot; PRIu64 &quot;MB (%.2fx oversubscription)\n&quot;,
++		  total_vram_demand &gt;&gt; 20, (double)total_vram_demand / vram_size);
++	igt_debug(&quot;Processes=%d VRAM_bufs=%d SRAM_bufs=%d\n&quot;, n_proc,
++		  n_vram_bufs, n_sram_bufs);
++
++	barrier = mmap(NULL, sizeof(pthread_barrier_t),
++		       PROT_READ | PROT_WRITE,
++		       MAP_SHARED | MAP_ANONYMOUS, -1, 0);</pre>
+      </blockquote>
+      No need of mmap here. MMAP required if need to write something
+      from CPU on address</blockquote>
+    <p><br>
+    </p>
+    <p>=&gt; We need to keep the mmap since the pthread barrier is
+      created at process level. So each child process gets a&nbsp;</p>
+    <p>private copy, making stack allocated barrier invisible across
+      processes.&nbsp; &nbsp;<span>Using </span><code dir="ltr"><span>mmap(MAP_SHARED
+          | MAP_ANONYMOUS)</span></code><span> together with +</span></p>
+    <p><code dir="ltr"><span>PTHREAD_PROCESS_SHARED</span></code><span>
+        places the barrier in shared memory, allowing all forked
+        processes to synchronize correctly.</span></p>
+    <blockquote type="cite" cite="mid:ed68269b-cf51-40ee-86c0-a94b4612ffed@intel.com">
+      <blockquote type="cite" cite="mid:20260616124029.619373-1-sobin.thomas@intel.com">
+        <pre wrap="" class="moz-quote-pre">+	igt_assert(barrier != MAP_FAILED);
++	pthread_barrierattr_init(&amp;attr);
++	pthread_barrierattr_setpshared(&amp;attr, PTHREAD_PROCESS_SHARED);
++	pthread_barrier_init(barrier, &amp;attr, n_proc);</pre>
+      </blockquote>
+      <!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:AllowPNG/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:TrackMoves/>
+  <w:TrackFormatting/>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>EN-US</w:LidThemeOther>
+  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:EnableOpenTypeKerning/>
+   <w:DontFlipMirrorIndents/>
+   <w:OverrideTableStyleHps/>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser/>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="false"
+  DefSemiHidden="false" DefQFormat="false" DefPriority="99"
+  LatentStyleCount="376">
+  <w:LsdException Locked="false" Priority="0" QFormat="true" Name="Normal"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 1"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 2"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 3"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 4"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 5"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 6"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 7"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 8"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 9"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 1"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 2"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 3"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 4"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 5"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 6"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 7"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 8"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="header"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footer"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index heading"/>
+  <w:LsdException Locked="false" Priority="35" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="caption"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of figures"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope return"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="line number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="page number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of authorities"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="macro"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="toa heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 5"/>
+  <w:LsdException Locked="false" Priority="10" QFormat="true" Name="Title"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Closing"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Signature"/>
+  <w:LsdException Locked="false" Priority="1" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Default Paragraph Font"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Message Header"/>
+  <w:LsdException Locked="false" Priority="11" QFormat="true" Name="Subtitle"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Salutation"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Date"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Note Heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Block Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="FollowedHyperlink"/>
+  <w:LsdException Locked="false" Priority="22" QFormat="true" Name="Strong"/>
+  <w:LsdException Locked="false" Priority="20" QFormat="true" Name="Emphasis"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Document Map"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Plain Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="E-mail Signature"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Top of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Bottom of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal (Web)"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Acronym"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Cite"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Code"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Definition"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Keyboard"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Preformatted"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Sample"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Typewriter"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Variable"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Table"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation subject"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="No List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Contemporary"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Elegant"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Professional"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Balloon Text"/>
+  <w:LsdException Locked="false" Priority="39" Name="Table Grid"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Theme"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Placeholder Text"/>
+  <w:LsdException Locked="false" Priority="1" QFormat="true" Name="No Spacing"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 1"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Revision"/>
+  <w:LsdException Locked="false" Priority="34" QFormat="true"
+   Name="List Paragraph"/>
+  <w:LsdException Locked="false" Priority="29" QFormat="true" Name="Quote"/>
+  <w:LsdException Locked="false" Priority="30" QFormat="true"
+   Name="Intense Quote"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 1"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 1"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 2"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 2"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 2"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 3"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 3"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 3"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 4"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 4"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 4"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 5"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 5"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 5"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 6"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 6"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 6"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="19" QFormat="true"
+   Name="Subtle Emphasis"/>
+  <w:LsdException Locked="false" Priority="21" QFormat="true"
+   Name="Intense Emphasis"/>
+  <w:LsdException Locked="false" Priority="31" QFormat="true"
+   Name="Subtle Reference"/>
+  <w:LsdException Locked="false" Priority="32" QFormat="true"
+   Name="Intense Reference"/>
+  <w:LsdException Locked="false" Priority="33" QFormat="true" Name="Book Title"/>
+  <w:LsdException Locked="false" Priority="37" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Bibliography"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="TOC Heading"/>
+  <w:LsdException Locked="false" Priority="41" Name="Plain Table 1"/>
+  <w:LsdException Locked="false" Priority="42" Name="Plain Table 2"/>
+  <w:LsdException Locked="false" Priority="43" Name="Plain Table 3"/>
+  <w:LsdException Locked="false" Priority="44" Name="Plain Table 4"/>
+  <w:LsdException Locked="false" Priority="45" Name="Plain Table 5"/>
+  <w:LsdException Locked="false" Priority="40" Name="Grid Table Light"/>
+  <w:LsdException Locked="false" Priority="46" Name="Grid Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="Grid Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="Grid Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="46" Name="List Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="List Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="List Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hashtag"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Unresolved Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Link"/>
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ascii-font-family:Aptos;
+	mso-ascii-theme-font:minor-latin;
+	mso-hansi-font-family:Aptos;
+	mso-hansi-theme-font:minor-latin;
+	mso-font-kerning:1.0pt;
+	mso-ligatures:standardcontextual;}
+</style>
+<![endif]--><span style="font-size:12.0pt;font-family:&quot;Aptos&quot;,sans-serif;
+mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Aptos;mso-fareast-theme-font:
+minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA">Simple&nbsp; pthread_barrier_t barrier and
+        pthread_barrier_init(&amp;barrier, Arg2, Arg3); can serve</span>
+      <blockquote type="cite" cite="mid:20260616124029.619373-1-sobin.thomas@intel.com">
+        <pre wrap="" class="moz-quote-pre">+
++	igt_fork(child, n_proc) {
++		struct xe_test_ctx ctx = {0};
++		int rc;
++		uint64_t addr = 0x40000000;
++		int expected_result = 0, ints_to_add = 4;
++		int max_retries = 1024;
++		struct gem_bo integers_bo, result_bo, batch_bo, *vram_bufs, *sram_bufs;
++		int pos = 0;
++		struct mem_bind_sync vram_bind = {0};
++		struct mem_bind_sync sram_bind = {0};
++		struct drm_xe_sync batch_syncs[1];
++		struct drm_xe_exec exec;
++		struct gem_bo ufence_bo = {0};
++		int vram_bind_err = 0, sram_bind_err = 0;
++
++		vram_bufs = (struct gem_bo *)calloc(n_vram_bufs, sizeof(struct gem_bo));
++		sram_bufs = (struct gem_bo *)calloc(n_sram_bufs, sizeof(struct gem_bo));
++		srand(child);
++
++		igt_assert(vram_bufs &amp;&amp; sram_bufs);
++
++		ctx.vm_id = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
++		create_exec_queue(fd, &amp;ctx);
++		vram_bind.bufs = vram_bufs;
++		vram_bind.n_bufs = n_vram_bufs;
++		sram_bind.bufs = sram_bufs;
++		sram_bind.n_bufs = n_sram_bufs;
++
++		create_test_bos(fd, &amp;ctx, &amp;vram_bind, vram_memory(fd, 0), &amp;addr);
++		create_test_bos(fd, &amp;ctx, &amp;sram_bind, system_memory(fd), &amp;addr);
++
++		if (!vram_bind.n_bufs &amp;&amp; !sram_bind.n_bufs)
++			igt_skip(&quot;No BOs allocated; VRAM/SRAM unavailable, skipping\n&quot;);</pre>
+      </blockquote>
+      <!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:AllowPNG/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:TrackMoves/>
+  <w:TrackFormatting/>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>EN-US</w:LidThemeOther>
+  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:EnableOpenTypeKerning/>
+   <w:DontFlipMirrorIndents/>
+   <w:OverrideTableStyleHps/>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser/>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="false"
+  DefSemiHidden="false" DefQFormat="false" DefPriority="99"
+  LatentStyleCount="376">
+  <w:LsdException Locked="false" Priority="0" QFormat="true" Name="Normal"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 1"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 2"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 3"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 4"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 5"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 6"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 7"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 8"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 9"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 1"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 2"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 3"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 4"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 5"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 6"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 7"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 8"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="header"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footer"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index heading"/>
+  <w:LsdException Locked="false" Priority="35" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="caption"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of figures"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope return"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="line number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="page number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of authorities"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="macro"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="toa heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 5"/>
+  <w:LsdException Locked="false" Priority="10" QFormat="true" Name="Title"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Closing"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Signature"/>
+  <w:LsdException Locked="false" Priority="1" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Default Paragraph Font"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Message Header"/>
+  <w:LsdException Locked="false" Priority="11" QFormat="true" Name="Subtitle"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Salutation"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Date"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Note Heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Block Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="FollowedHyperlink"/>
+  <w:LsdException Locked="false" Priority="22" QFormat="true" Name="Strong"/>
+  <w:LsdException Locked="false" Priority="20" QFormat="true" Name="Emphasis"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Document Map"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Plain Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="E-mail Signature"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Top of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Bottom of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal (Web)"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Acronym"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Cite"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Code"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Definition"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Keyboard"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Preformatted"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Sample"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Typewriter"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Variable"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Table"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation subject"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="No List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Contemporary"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Elegant"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Professional"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Balloon Text"/>
+  <w:LsdException Locked="false" Priority="39" Name="Table Grid"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Theme"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Placeholder Text"/>
+  <w:LsdException Locked="false" Priority="1" QFormat="true" Name="No Spacing"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 1"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Revision"/>
+  <w:LsdException Locked="false" Priority="34" QFormat="true"
+   Name="List Paragraph"/>
+  <w:LsdException Locked="false" Priority="29" QFormat="true" Name="Quote"/>
+  <w:LsdException Locked="false" Priority="30" QFormat="true"
+   Name="Intense Quote"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 1"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 1"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 2"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 2"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 2"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 3"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 3"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 3"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 4"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 4"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 4"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 5"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 5"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 5"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 6"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 6"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 6"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="19" QFormat="true"
+   Name="Subtle Emphasis"/>
+  <w:LsdException Locked="false" Priority="21" QFormat="true"
+   Name="Intense Emphasis"/>
+  <w:LsdException Locked="false" Priority="31" QFormat="true"
+   Name="Subtle Reference"/>
+  <w:LsdException Locked="false" Priority="32" QFormat="true"
+   Name="Intense Reference"/>
+  <w:LsdException Locked="false" Priority="33" QFormat="true" Name="Book Title"/>
+  <w:LsdException Locked="false" Priority="37" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Bibliography"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="TOC Heading"/>
+  <w:LsdException Locked="false" Priority="41" Name="Plain Table 1"/>
+  <w:LsdException Locked="false" Priority="42" Name="Plain Table 2"/>
+  <w:LsdException Locked="false" Priority="43" Name="Plain Table 3"/>
+  <w:LsdException Locked="false" Priority="44" Name="Plain Table 4"/>
+  <w:LsdException Locked="false" Priority="45" Name="Plain Table 5"/>
+  <w:LsdException Locked="false" Priority="40" Name="Grid Table Light"/>
+  <w:LsdException Locked="false" Priority="46" Name="Grid Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="Grid Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="Grid Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="46" Name="List Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="List Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="List Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hashtag"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Unresolved Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Link"/>
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ascii-font-family:Aptos;
+	mso-ascii-theme-font:minor-latin;
+	mso-hansi-font-family:Aptos;
+	mso-hansi-theme-font:minor-latin;
+	mso-font-kerning:1.0pt;
+	mso-ligatures:standardcontextual;}
+</style>
+<![endif]-->
+      <p class="MsoPlainText">if vram_bind.n_bufs = 0 and
+        sram_bind.n_bufs = 1 then igt_skip() will not be called which is
+        not expected, right? If either of them is 0</p>
+      <p class="MsoPlainText">=&gt;&nbsp; Agreed&nbsp;</p>
+      <p class="MsoPlainText">then igt_skip() should be called. if
+        (!vram_bind.n_bufs ||</p>
+      <p class="MsoPlainText">!sram_bind.n_bufs) should be checked, If
+        either is 0 igt_skip() will be called</p>
+      <br>
+      <blockquote type="cite" cite="mid:20260616124029.619373-1-sobin.thomas@intel.com">
+        <pre wrap="" class="moz-quote-pre">+
++		pthread_barrier_wait(barrier);
++
++		if (vram_bind.n_bufs) {
++			vram_bind.binds_ufence =
++				vm_bind_bo_batch(fd, &amp;ctx, vram_bufs,
++						 vram_bind.n_bufs, &amp;vram_bind_err);
++			xe_wait_ufence(fd, vram_bind.binds_ufence, 1, 0, TIMEOUT_NS);
++		}
++		if (vram_bind_err)
++			igt_assert_f(0, &quot;Unexpected VRAM bind error: %d&quot;, vram_bind_err);
++
++		if (sram_bind.n_bufs) {
++			sram_bind.binds_ufence =
++				vm_bind_bo_batch(fd, &amp;ctx, sram_bufs,
++						 sram_bind.n_bufs, &amp;sram_bind_err);
++			xe_wait_ufence(fd, sram_bind.binds_ufence, 1, 0, TIMEOUT_NS);
++		}
++
++		/* Assert if there is any bind error in SRAM */
++		if (sram_bind_err)
++			igt_assert_f(0, &quot;Unexpected SRAM bind error: %d&quot;, sram_bind_err);
++
++		integers_bo.size = ALIGN(sizeof(int) * ints_to_add, 4096);</pre>
+      </blockquote>
+      <!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:AllowPNG/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:TrackMoves/>
+  <w:TrackFormatting/>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>EN-US</w:LidThemeOther>
+  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:EnableOpenTypeKerning/>
+   <w:DontFlipMirrorIndents/>
+   <w:OverrideTableStyleHps/>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser/>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="false"
+  DefSemiHidden="false" DefQFormat="false" DefPriority="99"
+  LatentStyleCount="376">
+  <w:LsdException Locked="false" Priority="0" QFormat="true" Name="Normal"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 1"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 2"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 3"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 4"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 5"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 6"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 7"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 8"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 9"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 1"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 2"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 3"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 4"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 5"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 6"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 7"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 8"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="header"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footer"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index heading"/>
+  <w:LsdException Locked="false" Priority="35" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="caption"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of figures"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope return"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="line number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="page number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of authorities"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="macro"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="toa heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 5"/>
+  <w:LsdException Locked="false" Priority="10" QFormat="true" Name="Title"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Closing"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Signature"/>
+  <w:LsdException Locked="false" Priority="1" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Default Paragraph Font"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Message Header"/>
+  <w:LsdException Locked="false" Priority="11" QFormat="true" Name="Subtitle"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Salutation"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Date"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Note Heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Block Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="FollowedHyperlink"/>
+  <w:LsdException Locked="false" Priority="22" QFormat="true" Name="Strong"/>
+  <w:LsdException Locked="false" Priority="20" QFormat="true" Name="Emphasis"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Document Map"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Plain Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="E-mail Signature"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Top of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Bottom of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal (Web)"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Acronym"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Cite"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Code"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Definition"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Keyboard"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Preformatted"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Sample"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Typewriter"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Variable"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Table"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation subject"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="No List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Contemporary"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Elegant"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Professional"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Balloon Text"/>
+  <w:LsdException Locked="false" Priority="39" Name="Table Grid"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Theme"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Placeholder Text"/>
+  <w:LsdException Locked="false" Priority="1" QFormat="true" Name="No Spacing"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 1"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Revision"/>
+  <w:LsdException Locked="false" Priority="34" QFormat="true"
+   Name="List Paragraph"/>
+  <w:LsdException Locked="false" Priority="29" QFormat="true" Name="Quote"/>
+  <w:LsdException Locked="false" Priority="30" QFormat="true"
+   Name="Intense Quote"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 1"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 1"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 2"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 2"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 2"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 3"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 3"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 3"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 4"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 4"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 4"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 5"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 5"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 5"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 6"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 6"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 6"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="19" QFormat="true"
+   Name="Subtle Emphasis"/>
+  <w:LsdException Locked="false" Priority="21" QFormat="true"
+   Name="Intense Emphasis"/>
+  <w:LsdException Locked="false" Priority="31" QFormat="true"
+   Name="Subtle Reference"/>
+  <w:LsdException Locked="false" Priority="32" QFormat="true"
+   Name="Intense Reference"/>
+  <w:LsdException Locked="false" Priority="33" QFormat="true" Name="Book Title"/>
+  <w:LsdException Locked="false" Priority="37" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Bibliography"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="TOC Heading"/>
+  <w:LsdException Locked="false" Priority="41" Name="Plain Table 1"/>
+  <w:LsdException Locked="false" Priority="42" Name="Plain Table 2"/>
+  <w:LsdException Locked="false" Priority="43" Name="Plain Table 3"/>
+  <w:LsdException Locked="false" Priority="44" Name="Plain Table 4"/>
+  <w:LsdException Locked="false" Priority="45" Name="Plain Table 5"/>
+  <w:LsdException Locked="false" Priority="40" Name="Grid Table Light"/>
+  <w:LsdException Locked="false" Priority="46" Name="Grid Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="Grid Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="Grid Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="46" Name="List Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="List Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="List Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hashtag"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Unresolved Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Link"/>
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ascii-font-family:Aptos;
+	mso-ascii-theme-font:minor-latin;
+	mso-hansi-font-family:Aptos;
+	mso-hansi-theme-font:minor-latin;
+	mso-font-kerning:1.0pt;
+	mso-ligatures:standardcontextual;}
+</style>
+<![endif]-->
+      <p class="MsoPlainText">What's the significance of ints_to_add
+        here? If it's required then it should be in MACRO. Otherwise</p>
+      <p class="MsoPlainText">=&gt; ints_to_add&nbsp; tells number of test
+        values to be added.&nbsp;</p>
+    </blockquote>
+    Will keep it in macro.
+    <blockquote type="cite" cite="mid:ed68269b-cf51-40ee-86c0-a94b4612ffed@intel.com">
+      <p class="MsoPlainText">#define INT_SIZE 16</p>
+      <p class="MsoPlainText">&nbsp;</p>
+      <p class="MsoPlainText">ALIGN(INT_SIZE, 4096) can serve.</p>
+      <br>
+      <blockquote type="cite" cite="mid:20260616124029.619373-1-sobin.thomas@intel.com">
+        <pre wrap="" class="moz-quote-pre">+		integers_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, integers_bo.size,
++							  system_memory(fd), 0,
++							  DRM_XE_GEM_CPU_CACHING_WC);
++		integers_bo.ptr = (int *)xe_bo_map(fd, integers_bo.handle, integers_bo.size);
++		integers_bo.addr = 0x100000;
++
++		expected_result = fill_random_integers(&amp;integers_bo, ints_to_add);
++		igt_debug(&quot;%d\n&quot;, expected_result);
++
++		result_bo.size = ALIGN(sizeof(int), 4096);
++		result_bo.handle  = xe_bo_create_caching(fd, ctx.vm_id, result_bo.size,
++							 system_memory(fd), 0,
++							 DRM_XE_GEM_CPU_CACHING_WC);
++		result_bo.ptr = NULL;
++		result_bo.addr = 0x200000;
++
++		batch_bo.size = 4096;
++		batch_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, batch_bo.size,
++						       system_memory(fd), 0,
++						       DRM_XE_GEM_CPU_CACHING_WC);
++
++		batch_bo.ptr = (int *)xe_bo_map(fd, batch_bo.handle, batch_bo.size);
++		batch_bo.addr = 0x300000;
++
++		pos = build_add_batch(&amp;batch_bo, &amp;integers_bo, &amp;result_bo, ints_to_add);
++
++		igt_assert(pos * sizeof(int) &lt;= batch_bo.size);
++
++
++		xe_vm_bind_lr_sync(fd, ctx.vm_id, integers_bo.handle, 0, integers_bo.addr,
++				   integers_bo.size, 0);
++		xe_vm_bind_lr_sync(fd, ctx.vm_id, result_bo.handle, 0, result_bo.addr,
++				   result_bo.size, 0);
++		xe_vm_bind_lr_sync(fd, ctx.vm_id, batch_bo.handle, 0, batch_bo.addr,
++				   batch_bo.size, 0);
++
++		ufence_bo.size = 4096;
++		ufence_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, ufence_bo.size,
++							system_memory(fd), 0,
++							DRM_XE_GEM_CPU_CACHING_WB);
++		ufence_bo.ptr = (int *)xe_bo_map(fd, ufence_bo.handle, ufence_bo.size);
++		ufence_bo.addr = 0x400000;
++		memset(ufence_bo.ptr, 0, ufence_bo.size);
++		xe_vm_bind_lr_sync(fd, ctx.vm_id, ufence_bo.handle, 0, ufence_bo.addr,
++				   ufence_bo.size, 0);
++
++		batch_syncs[0] = (struct drm_xe_sync){
++			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.addr = ufence_bo.addr,
++			.timeline_value = 1,
++		};
++
++		exec = (struct drm_xe_exec) {
++			.exec_queue_id = ctx.exec_queue_id,
++			.num_syncs = 1,
++			.syncs = (uintptr_t)batch_syncs,
++			.address = batch_bo.addr,
++			.num_batch_buffer = 1,
++		};
++
++		rc = xe_exec_with_retry(fd, &amp;exec, max_retries);
++		igt_assert_eq(rc, 0);
++		xe_wait_ufence(fd, (uint64_t *)ufence_bo.ptr, 1, ctx.exec_queue_id, TIMEOUT_NS);
++		result_bo.ptr = (int *)xe_bo_map(fd, result_bo.handle, result_bo.size);
++		igt_assert(result_bo.ptr != MAP_FAILED);
++		igt_assert_eq(result_bo.ptr[0], expected_result);
++		cleanup_bo_resources(fd, &amp;ufence_bo);
++		cleanup_bo_resources(fd, &amp;result_bo);
++		cleanup_bo_resources(fd, &amp;batch_bo);
++		cleanup_bo_resources(fd, &amp;integers_bo);
++		cleanup_sram_vram_objs(fd, &amp;vram_bind, &amp;sram_bind);
++		xe_exec_queue_destroy(fd, ctx.exec_queue_id);
++		xe_vm_destroy(fd, ctx.vm_id);
++		close(fd);
++	}
++	igt_waitchildren();
++	pthread_barrier_destroy(barrier);
++	pthread_barrierattr_destroy(&amp;attr);
++	igt_assert_eq(munmap(barrier, sizeof(pthread_barrier_t)), 0);
++}
++
+ int igt_main()
+ {
+ 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
+@@ -3486,6 +3937,11 @@ int igt_main()
+ 		igt_assert(xe_visible_vram_size(fd, 0));
+ 		test_oom(fd);
+ 	}</pre>
+      </blockquote>
+      add one space and the call subtest</blockquote>
+    =&gt; Agreed.
+    <blockquote type="cite" cite="mid:ed68269b-cf51-40ee-86c0-a94b4612ffed@intel.com">
+      <blockquote type="cite" cite="mid:20260616124029.619373-1-sobin.thomas@intel.com">
+        <pre wrap="" class="moz-quote-pre">+	igt_subtest(&quot;oversubscribe-concurrent-bind&quot;)
++	{
++		igt_require(xe_has_vram(fd));
++		test_vm_oversubscribe_concurrent_bind(fd);
++	}
+ 
+ 	for (const struct vm_get_property *f = xe_vm_get_property_tests; f-&gt;name; f++) {
+ 		igt_subtest_f(&quot;vm-get-property-%s&quot;, f-&gt;name)
+</pre>
+      </blockquote>
+    </blockquote>
+  </body>
+</html>
+
+--------------sSkNzZnvvDwrh4gmo0MVxS5Z--
