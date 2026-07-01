@@ -4,55 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C19AEC43458
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Jul 2026 13:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43DB1C43602
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Jul 2026 14:39:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6ECD510E241;
-	Wed,  1 Jul 2026 13:24:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD42510E391;
+	Wed,  1 Jul 2026 14:39:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SdbOHIE8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FzIiN6wS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 206DA10E303
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2026 13:24:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0592088BE3
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2026 14:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782912249; x=1814448249;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=4NINzO6jXM7uFF4PF1Im71NFpgrgpFRfizyEsg7Iecw=;
- b=SdbOHIE8qX7AL0I+SjLvUV0nYCXMfCGWEvZU0D2G1LFtF0ZPzsA7p4SV
- 8GP0bJ7V+XMqJCGGGa4o6B8O7j36urNOdjIVg9pzRgP+/aemUzTa+Xh4Y
- rpnGlkRgM7K6206ukkzfcLLqBunAaAG2+9fd0ysT/m/9dwvnfnJIoPUX7
- Nr3xRR6lKFl71Zfqha1ezahEJJaikj8//nIUGnj0O7Uwnszct0K6WWVet
- PIMtWiV31Z6T+RwjllYfsZGbuRsyUTrRpc2hXb8Cy+T9qjLSyMpDzCy/p
- W+SD5RnKHe97jxedKB4TGUYT08sHcbKGHZIXiC11LPF5eTHgoEs8TL6FU w==;
-X-CSE-ConnectionGUID: lpPw9I6wRB+DwHw31c0+cQ==
-X-CSE-MsgGUID: QSPh8BkbQhODqsNdGbKAdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="86190714"
-X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; d="scan'208";a="86190714"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2026 06:24:09 -0700
-X-CSE-ConnectionGUID: kxpYLUWcTMOw/YSzc9HeLg==
-X-CSE-MsgGUID: d3KERiczSwmWWAL/vVJbEw==
+ t=1782916756; x=1814452756;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=+tAlzKkYmt4+UiSfnZ7YbuCtQk6+LoiUiB477ALE/Mc=;
+ b=FzIiN6wSHBsPHsGgaaUyFyC7C5azXclEo4k5QQFk44I7XeRlLIhTrn2z
+ aa/nXw01MyG8P3Gj762Mb6OLmgYWB2E7DWHdzPnOe1XdjnQ9vSTEDmriu
+ GXJ+4lYWC66K+VvuwkFQqcfp58xp7Z4mZqpYl14mw6hJ7yeMfnvtFQs92
+ LsWs+SUQ558HmZjaJmudJXqabKeW+B9bIhwyHEV0t6ucXPwqYCdKSQ0kF
+ eVmdMMzj0Kb0UjcPV+kLvbTHD7SR7DdtaZ3XFhOZHIpSyUlwEbxhE9Xjh
+ wtRRoVGaQhznIkt2b6BRXow3ErZmfKfDn17RW9bIa2UZNrGpZyBCCtJUO g==;
+X-CSE-ConnectionGUID: 2fki8+bITzevPbFe8ptuIA==
+X-CSE-MsgGUID: Lh3IQfC7TheMNcl5jw42SQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="83681786"
+X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; d="scan'208";a="83681786"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2026 07:39:08 -0700
+X-CSE-ConnectionGUID: zfxAeXqMSKC1ZZyMaEE8vQ==
+X-CSE-MsgGUID: imZC/6PYTzKA6Q/lkYOUnQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; d="scan'208";a="251526912"
-Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2026 06:24:09 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	nishit.sharma@intel.com
-Cc: thomas.hellstrom@intel.com, kamil.konieczny@intel.com,
- Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v10] test/intel/xe_vm: Add oversubscribe concurrent bind
- stress subtest
-Date: Wed,  1 Jul 2026 13:23:55 +0000
-Message-ID: <20260701132355.1058604-1-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.52.0
-MIME-Version: 1.0
+X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; d="scan'208";a="248603599"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2026 07:39:08 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 1 Jul 2026 07:39:07 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Wed, 1 Jul 2026 07:39:07 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.55)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 1 Jul 2026 07:39:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rn3PE4Gv9XxP6uxAJ97oaCcWsEMu8YLLdaE4pacAWWwzTFjp+3+jQeJ/pFGYZOD7hVOasGaJx+/eJPmOD3UyDK6npII5Evje9bG0ycCnbJuEil8PZcSYovIn6KF3zzgt9IuxpBKhkBmF4I9W/H/FzgieP/2mCtHk5+Fjm+asG0D7CSDls+ukCqXO4xWQZyJbYNmYv+wZn5ZHWAvDZAzY3T1mPY87pwVShOQTpILGNoIWSp9yVa41kyfqgGOZS/ejPx607oF+/bYyVp3VC1unO/XylWk6fCi9973KUNaGVi8uXpGmUyChF0fK/UPPnXzI8zNGAI6Mbg+5czzTruv2vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2B184EfRosVIAzI9yKOdk68/1wuex3lTNJ9y6AJTf4s=;
+ b=D2DSb3H/zMdnpSsmQ/bK12qzi9JMmsg5OqHQhQ6y+dTuJHCgxEODi0NRkPMiOxzwdHJf36/laVzQJ0pAz9RKrJMmRek2hyusyYQG4SyAZj+T94z1EmlJQINB+OqzJz26ZP0OopVducTuCO09JYdjhAXswdShvlxofu2sltJt0ekkOEF3WkEJXdPY0dSDmvffi24MLif9cwUs58AIjaOA268oZYx9hHc+Crimgh7av6i0IdhfQ1vsPmF+aoM3Bjn626dJpqsj9L34ZnQmrVBlXkR1IkYkt3pDv4m8lKnDLfZBWLgdrmLIzJunCvl9iO2xZPVZToj8fLVB6JjvlYZ/Hw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7424.namprd11.prod.outlook.com (2603:10b6:510:287::7)
+ by IA0PR11MB7750.namprd11.prod.outlook.com (2603:10b6:208:442::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
+ 14:39:04 +0000
+Received: from PH0PR11MB7424.namprd11.prod.outlook.com
+ ([fe80::c448:1138:6981:52e2]) by PH0PR11MB7424.namprd11.prod.outlook.com
+ ([fe80::c448:1138:6981:52e2%5]) with mapi id 15.21.0181.008; Wed, 1 Jul 2026
+ 14:38:59 +0000
+Date: Wed, 1 Jul 2026 14:38:48 +0000
+From: Krzysztof Karas <krzysztof.karas@intel.com>
+To: <vitaly.prosyak@amd.com>
+CC: <igt-dev@lists.freedesktop.org>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+ Jesse Zhang <jesse.zhang@amd.com>, Christian =?utf-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Alex Deucher <alexander.deucher@amd.com>
+Subject: Re: [PATCH 2/7] lib: Implement generic platform filtering framework
+Message-ID: <sltn2sovlc526c6y3cnnclgt3w4xrzocfp5k33sx75msitcmne@tk3moippuwve>
+"Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316"
+References: <20260630032442.200729-1-vitaly.prosyak@amd.com>
+ <20260630032442.200729-2-vitaly.prosyak@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260630032442.200729-2-vitaly.prosyak@amd.com>
+X-ClientProxiedBy: DU7P191CA0018.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:10:54e::11) To PH0PR11MB7424.namprd11.prod.outlook.com
+ (2603:10b6:510:287::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7424:EE_|IA0PR11MB7750:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a554acc-78ee-47d4-cfe9-08ded77e7c93
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|23010399003|1800799024|376014|366016|18002099003|22082099003|3023799007|4143699003|56012099006|11063799006|5023799004|6133799003;
+X-Microsoft-Antispam-Message-Info: PDUbACYI4kvLF2owHeuspQCuuiOQ/ADhkuw9t44AQfOA0F78Ix3A2/uygkh7ZrzPQxtsraEERtm4UN5x9g8Cw+MEBfrt65T0Z7LeA20qyr9mW19hwDNNLvKY3+CxGmWZlp9DO/MSzzjvmXGs5BPIWt8UijtIPEzbV+VAoeG647YjiwTbqw+LFlCo5bt1pe3yNhCex9cs0eXI6dXO2iMXkeUZHrdhcWK8BXZb7vQX7tn3GyPChzIfx70IYiMsPPYvXqTxcc4uKrATkdAU2AHxWMsu0qyCYhBMpI1SFXcZRkYz7MUBKqjsecTo+JXm9uH+nZfimFKtUdmuK2vOUlQQPs5zuH/vQdkYAYasog3ix+JORk5gK4QN5O8slvefCSaRfaTVr3QA9+nCl/CEKNBN9uM3hKo4HfjwkaEdzDNrPq4AHEzc3IDSmlKgGUWhOGOiRqYL2pq60nh7Fam4VyoAyVohzIdruKxETZpedvlRiYnnMulJHGNgHhw5jc0RLveNiiX+aBYxYzGje6ltHIMzS40XSWiEDBqurHUuqcb27y1LJqvL9l4eVI5qoZqSOgx8mCFWRfNuOh2nUxfQuGwNLCl1xu8xps5ofyfSL5rbbxu4jL2VJ4yNkt/VcChzJjOguT1CHtBAGmpXJMLxsnpTLf82zm9P7vNdJKD1EQD3Hjw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR11MB7424.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(18002099003)(22082099003)(3023799007)(4143699003)(56012099006)(11063799006)(5023799004)(6133799003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MFRXZzFhc0hqVytxbjMySVlMNE9rdlovNTlmK3NGVlR3SG02RDNMeUllOGFF?=
+ =?utf-8?B?MDJKYnpsekJOQ0VhbHRvNU0xaWl2TXNIdnBUeUlmZnRIRnFqb0VwSzlmRlNR?=
+ =?utf-8?B?ZE55MkFRbkU3amF0NkdwUnFJVzFia3FKMVQzQmk4R21mVWZHS0doZWpWY3VL?=
+ =?utf-8?B?WHpXckRkN3pGZ200RUJ1YjJTazl5MitCN2tWZldBTFpySTN1V05WY0ViZmpj?=
+ =?utf-8?B?VDU5Vlc2dmdKK3YrMXVzK3JjWnVxdkc2c1NNamdEM09lUUgwcEFVM3RaYWlY?=
+ =?utf-8?B?VktRMmRaK3pwNG83UGFxZGMzTUJhZytLb29pWlZ1Mjg3NG8wV0lwY1ZBbFVJ?=
+ =?utf-8?B?dFQ2Z3Z0MEN0TFNJV21KTzdTWGRFUzBDTks3ZWxDNTFaeWNVS3VFeWErQ0c1?=
+ =?utf-8?B?V3p5MFVKMUR0K29sMHZnNnpoTmVkRWtwYjN0N0h2dTlJYm4raDZyM093Qkh3?=
+ =?utf-8?B?Y3BybFhSODF6SHJwK0toNXFnV3ltZE5jZFRXUnhHN01wWHhFaTlqY0hSTUM4?=
+ =?utf-8?B?ZXlLUkxzOU9na1hPNGlhYTVxOFFveHpsMDIrNHNnVFBQdDBvYjg5ek5kVDNS?=
+ =?utf-8?B?WW0ySGVSd3lIN1BiSUZRaUVxa2o0MjVVb0Z1SnJRK01RQndMRk05cEFXemty?=
+ =?utf-8?B?R0tMdWIvczlMeEoreHh6VHNsV3YzemJldjJCOWhyNXNITXhGTFRYQlBZQU9w?=
+ =?utf-8?B?TTJramFRZGFlckMzTzNQNnA3M3dXRUFkUzFCUnByeHArZmpOcWhEQlBMbFFE?=
+ =?utf-8?B?bDlkVk9IVnNwZ3Q1OEgyUE5HSW9FZXh5ZkNDbVVkSVdhM3VjSHhMR1pUWmRU?=
+ =?utf-8?B?NU5Ya2VYenBaTmU2KzNVSGRyZTJWYm5vZG5IKzhJajhWcEJVKzZ0Qnl2ejUy?=
+ =?utf-8?B?QnZVQVlyNDd4WHd2WXRIN0hMWTlXcC9EVUIwd1YxekRYc2lzd3hoVm44eVJk?=
+ =?utf-8?B?M1FSYlZudmwwQUp6U2hjdE03dHdrVTJ0QnFqTkJmaCt6bXN6aWUwUzRoNlEy?=
+ =?utf-8?B?LzNBSnNKN3Zpbi9iQTlHdG9NSEloTmZxYzAzR2dXaGZnUkNjVkFFd3crSng0?=
+ =?utf-8?B?ajNCSHkxMjcvQXJsU2xqOVY0L3J3L3dzb3RZQjRJMWRNYVAwSzYvcmpsU1N3?=
+ =?utf-8?B?bVYxd25XWm8yTFJBZFJJRnV4cUhLUlM2UXY1QklXN0lxSjJlR1h0ODJvcUpa?=
+ =?utf-8?B?VXhSSUw3OTNHSDE2KzFHUG5sUTNHbERZNjhLUEh6SEtSUFF1SWpJTHAwUjJK?=
+ =?utf-8?B?WEoxOFJ2MW4xdnFmWFVraXY4dDl6aEw0ZS9wdlR2L2ZleCtVdXUxYmVFalVm?=
+ =?utf-8?B?bWJNUEZJYXA1MXdGaEZ2QnlRL1BpMEdranhCSXhCbGw3d1ZLRnhRTVIybHdS?=
+ =?utf-8?B?akVURm9xZVJSZmtOL1Fna2NkOTRmUXQ5aldGVzkrSlJHYTd2OUxSbUgyTlQr?=
+ =?utf-8?B?RTd3cWNWbEZmdkRvbmJQeVE5bnJHbHhKaTVLQkl1MzFCWDJqeVRML3FMZG5p?=
+ =?utf-8?B?QWE2RnhBbWNMMUpZYWNqSEtianVJU3N5V1NEdlZqeXdnMmpLbzI3eHRGL0ZY?=
+ =?utf-8?B?b3JwUWJlRkNsTUw3cTQ2YkhiTlJLN1lFTDlxL24xYzlVRmZWL01SSzNJR2hV?=
+ =?utf-8?B?K1VkMXZMWWZuU0cwUE5BdC95YTNSYmpKUFB5WnpKUEMxWWpqU3dLY2NUVzdv?=
+ =?utf-8?B?WnpEV2JBVlF4dllTQTRaZ21JaW1Bd3Y2K3paYXdaNEQrem9UcVdoRmliTFZH?=
+ =?utf-8?B?cUtZVnB6NHQyZnIxWEpLUmc1eEZKNTFTV1VmTDA5RFk1UkNyNUhUZmFmT21l?=
+ =?utf-8?B?ZWNZSHNmMi9NbnY5UzI0L0l4QUdiZGRIcUpWRGhlQVFJTys1SWFINlF4TTV4?=
+ =?utf-8?B?STdKZng3dm51NnJCWUxySFIybmZmaExhVHQ4RDBZNHlJTTlNVlFhTVM3VUJ2?=
+ =?utf-8?B?K3RaR25YTGdxd090UU1TQldsWGhmMDd4d3ZBalhLN3VnV01TVzVYNFpiN1gv?=
+ =?utf-8?B?T29uelF4cG5RUnpUK1R3dThKRFZsWVEyRXBJR0lNNDNkb2VBOEJocHg2MW5y?=
+ =?utf-8?B?a2VwOEpuVDdoTTExQTB1QkpjdDI4dnV0SHZES0NlTGk2YVFqMXBiNjVBa1VJ?=
+ =?utf-8?B?Uy9KcUl1OEtDMHAvVEhDWmZ0UVZvVEVObXJnamQwK0wrTXIzYmt2TnZ4MS8w?=
+ =?utf-8?B?aEhybCtFVFB4VzJEUDlDbFBpbDJvcXh2ZFN5blNvc1FTVWRTYWVXV1BDbng2?=
+ =?utf-8?B?Sit2QzNBWlJicXZRdWp1ckpFekZqR0ZCNExmdzlOWFR2MXZxdW95b05iTUN6?=
+ =?utf-8?B?akYrMEowdDM1QmJYRjg2czh5c2gvWndCcCtXalZmZXoyekh1Ty84ZkQ5Ym10?=
+ =?utf-8?Q?qPAWb32JZ4GeLLXc=3D?=
+X-Exchange-RoutingPolicyChecked: LGColrkM+ody4AMllIl+42lNUZb4rTJxzWPGslv57h2Ybr84aHBK2mljFfjWGm2thMgQnTGWkPmCthdYrGK+E2AUw74xo6BVfkRwvixm+hfqaFwsBGZsdTteimk9D3hhh2dkS2kuqjykiFLxfgmp7I5tFTNyZEwgL4mKPRkTowYpnwK3VIPOP80n4zNBww6v1W00lbJtfY2mjgzBc/F7B3Zr6DZuoOZC5h/z7WJOgJe2Dt6VWA1dIJNK11b50cwehVbcehNrH5yHQkxEeplTG0DWBJ8aRwIxIVMwdX6R/o3Hn+mzViB+tK5w7WiLLGZ8WGcaXb5ZMSu4AGxq4SCrTg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a554acc-78ee-47d4-cfe9-08ded77e7c93
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7424.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 14:38:59.1369 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U1DnCeCoUouj68DzQJTm/T7t3vAYzFIZn8JKCMHP0I5+k0bEDMHJM+1Wsd4pHl5s6BI3oGydJyNt8xxh9YMYr+W7d18lVXZ+5h4ZUbh2QV0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7750
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,483 +174,431 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Previous coverage lacked a scenario combining multi-process bind
-with VRAM oversubscription. This generates memory pressure with
-multi-process VM Bind activity and concurrent submission, exercising
-the bind pipeline under eviction pressure.
+Hi Vitaly,
 
-v7:  Save errno immediately in create_test_bos before it can be clobbered.
-     Handle non-ENOMEM/ENOSPC failures in create_test_bos.
-     Remove dead code (retries == 0 check) in xe_exec_with_retry.
-     Add igt_skip when both vram and sram n_bufs are 0.
-     Add MAP_FAILED check on result_bo.ptr after xe_bo_map. (Nishit)
-v8: Add error check while performing vmbind.
-v9: Assert if vmbind fails for VRAM/ SRAM.
-    Moved wait fence for vm bind immediately after call.
-v10:Add igt_debug() message when batch_bo bind fails with ENOMEM/ENOSPC
-    Added check for failed bind aganist ENOMEM/ENOSPC.
-    Removed xe_exec_with_retry() (Nishit)
+I left some comments below, mostly nits and questions.
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- tests/intel/xe_vm.c | 416 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 416 insertions(+)
+On 2026-06-29 at 23:23:21 -0400, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> 
+> Implement the vendor-agnostic platform filtering core that provides:
+> 
+> - Three-tier priority system:
+>   1. Built-in rules (highest, vendor-specific, requires rebuild)
+>   2. Config file /etc/igt/platform_skip.conf (no rebuild needed)
+>   3. Environment variable IGT_PLATFORM_SKIP_CONFIG (runtime)
+> 
+> - Config file parsing with format: platform:test:subtest:reason
+> - Environment variable parsing (semicolon-separated entries)
+> - Wildcard/glob matching for test and subtest names
+> - igt_platform_require() integration with igt_skip()
+> - Dump functionality for debugging filter state
+> 
+> All state is held in struct platform_filter_context (no globals).
+> Vendor backends are accessed exclusively through platform_filter_ops
+> callbacks, keeping this code completely vendor-neutral.
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> Cc: Jesse Zhang <jesse.zhang@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
+> Change-Id: I0a6ce532c2ef9913e68c9a23c8b9e642443a367e
+> ---
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 386a0981a..9cbce285f 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -21,6 +21,20 @@
- #include "xe/xe_spin.h"
- #include <string.h>
- #define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
-+#define GB(x) (1024ULL * 1024ULL * 1024ULL * (x))
-+#define MIN_BUFS_PER_PROC 2
-+#define MAX_THREADS 20
-+/*
-+ * Cap SRAM test usage on large-RAM platforms (e.g. PVC). On small-RAM
-+ * platforms (e.g. BMG with ~32 GB RAM) 50% of RAM is ~16 GB which is
-+ * below this cap, so behavior is unchanged. On large-RAM platforms
-+ * 50% can be hundreds of GB; cap it to a bounded value that still
-+ * provides meaningful memory pressure for the concurrent bind test.
-+ */
-+#define MAX_SRAM_TEST_SIZE GB(32)
-+#define TIMEOUT_NS (30ULL * 1000000000ULL)
-+#define INT_ADD_CNT 4
-+#define GPR_RX_ADDR(x)		(0x600 + (x) * 8)
- 
- enum overcommit_stage {
- 	EXPECT_NONE,
-@@ -29,6 +43,83 @@ enum overcommit_stage {
- 	EXPECT_EXEC,
- };
- 
-+struct gem_bo {
-+	uint32_t handle;
-+	uint64_t size;
-+	int *ptr;
-+	uint64_t addr;
-+};
-+
-+struct xe_test_ctx {
-+	uint32_t vm_id;
-+	uint32_t exec_queue_id;
-+};
-+
-+struct mem_bind_sync {
-+	struct gem_bo *bufs;
-+	int n_bufs;
-+	uint64_t *binds_ufence;
-+};
-+
-+static void create_exec_queue(int fd, struct xe_test_ctx *ctx)
-+{
-+	ctx->exec_queue_id = xe_exec_queue_create(fd, ctx->vm_id,
-+					      &xe_engine(fd, 0)->instance, 0);
-+}
-+
-+static int xe_vm_bind_array_get_err(int fd, uint32_t vm,
-+				    struct drm_xe_vm_bind_op *bind_ops,
-+				    uint32_t num_bind, struct drm_xe_sync *sync,
-+				    uint32_t num_syncs)
-+{
-+	struct drm_xe_vm_bind bind = {
-+		.vm_id = vm,
-+		.num_binds = num_bind,
-+		.vector_of_binds = (uintptr_t)bind_ops,
-+		.num_syncs = num_syncs,
-+		.syncs = (uintptr_t)sync,
-+		.exec_queue_id = 0,
-+	};
-+
-+	igt_assert(num_bind > 0);
-+
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
-+		return -errno;
-+
-+	return 0;
-+}
-+
-+static uint64_t *
-+vm_bind_bo_batch(int fd, struct xe_test_ctx *ctx, struct gem_bo *bos, int size, int *out_err)
-+{
-+	uint64_t *ufence;
-+	struct drm_xe_sync bind_sync;
-+	struct drm_xe_vm_bind_op binds[size];
-+	int i;
-+
-+	ufence = calloc(1, sizeof(uint64_t));
-+	igt_assert(ufence);
-+	bind_sync = (struct drm_xe_sync) {
-+		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.addr = to_user_pointer(ufence),
-+		.timeline_value = 1,
-+	};
-+
-+	for (i = 0; i < size; i++) {
-+		binds[i] = (struct drm_xe_vm_bind_op) {
-+			.obj = bos[i].handle,
-+			.obj_offset = 0,
-+			.range = bos[i].size,
-+			.addr = bos[i].addr,
-+			.op = DRM_XE_VM_BIND_OP_MAP,
-+			.flags = 0,
-+		};
-+	}
-+	*out_err = xe_vm_bind_array_get_err(fd, ctx->vm_id, binds, size, &bind_sync, 1);
-+	return ufence;
-+}
-+
- static uint32_t
- addr_low(uint64_t addr)
- {
-@@ -2664,6 +2755,8 @@ test_vm_overcommit(int fd, struct drm_xe_engine_class_instance *eci,
- 	bind_err = __xe_vm_bind_lr_sync(fd, vm, batch_bo, 0, batch_addr, 0x1000, 0);
- 	if (bind_err) {
- 		if (errno == ENOMEM || errno == ENOSPC) {
-+			igt_debug("batch_bo bind failed with %s, treating as expected bind failure\n",
-+				  strerror(errno));
- 			actual_stage = EXPECT_BIND;
- 			goto check_and_cleanup;
- 		} else { /* Assert on any unexpected bind error */
-@@ -3075,6 +3168,324 @@ static void test_get_property(int fd, void (*func)(int fd, uint32_t vm))
- 	xe_vm_destroy(fd, vm);
- }
- 
-+static int build_add_batch(struct gem_bo *batch_bo, struct gem_bo *integers_bo,
-+			   struct gem_bo *result_bo, int ints_to_add)
-+{
-+	int pos = 0;
-+	uint64_t tmp_addr;
-+
-+	batch_bo->ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
-+	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
-+	tmp_addr = integers_bo->addr + 0 * sizeof(uint32_t);
-+	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+	for (int i = 1; i < ints_to_add; i++) {
-+		/* r1 = integers_bo[i] */
-+		batch_bo->ptr[pos++] =  MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
-+		batch_bo->ptr[pos++] = GPR_RX_ADDR(1);
-+		tmp_addr = integers_bo->addr + i * sizeof(uint32_t);
-+		batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+		batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+		/* r0 = r0 + r1 */
-+		batch_bo->ptr[pos++] = MI_MATH(4);
-+		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
-+		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
-+		batch_bo->ptr[pos++] = MI_MATH_ADD;
-+		batch_bo->ptr[pos++] = MI_MATH_STORE(MI_MATH_REG(0), MI_MATH_REG_ACCU);
-+	}
-+	/* result_bo[0] = r0 */
-+	batch_bo->ptr[pos++] = MI_STORE_REGISTER_MEM_GEN8 | MI_LRI_LRM_CS_MMIO;
-+	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
-+	tmp_addr = result_bo->addr + 0 * sizeof(uint32_t);
-+	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
-+	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
-+
-+	batch_bo->ptr[pos++] = MI_BATCH_BUFFER_END;
-+	while (pos % 4 != 0)
-+		batch_bo->ptr[pos++] = MI_NOOP;
-+	return pos;
-+}
-+
-+static void create_test_bos(int fd, struct xe_test_ctx *ctx, struct mem_bind_sync *bind,
-+			    uint32_t  placement, uint64_t *addr)
-+{
-+	const char *mem_type = (placement & vram_memory(fd, 0)) ? "VRAM" : "SRAM";
-+	uint32_t ret;
-+
-+	for (int i = 0; i < bind->n_bufs; i++) {
-+		struct gem_bo *bo = &bind->bufs[i];
-+
-+		bo->size = GB(1);
-+		ret = __xe_bo_create_caching(fd, ctx->vm_id, bo->size, placement, 0,
-+					     DRM_XE_GEM_CPU_CACHING_WC, &bo->handle);
-+		if (ret) {
-+			int saved_errno = errno; /* capture before anything can clobber it */
-+
-+			bind->n_bufs = i;
-+			if (saved_errno == ENOMEM || saved_errno == ENOSPC)
-+				igt_debug("%s allocation failed at buffer %d (OOM)\n", mem_type, i);
-+			else
-+				igt_assert_f(false, "%s allocation failed at buffer %d: %s",
-+					     mem_type, i, strerror(saved_errno));
-+			break;
-+		}
-+		bo->ptr = NULL;
-+		bo->addr = *addr;
-+		*addr += bo->size;
-+		igt_debug("%s buffer %d created at 0x%016lx\n", mem_type, i, bo->addr);
-+	}
-+}
-+
-+static int fill_random_integers(struct gem_bo *int_bo, int ints_to_add)
-+{
-+	uint32_t expected_result = 0;
-+
-+	for (int i = 0; i < ints_to_add; i++) {
-+		int random_int = rand() % 8;
-+
-+		int_bo->ptr[i] = random_int;
-+		expected_result += random_int;
-+
-+		igt_debug("%d", random_int);
-+		if (i + 1 != ints_to_add)
-+			igt_debug(" + ");
-+		else
-+			igt_debug(" = ");
-+	}
-+	igt_debug("%d\n", expected_result);
-+	return expected_result;
-+}
-+
-+static void cleanup_bo_resources(int fd, struct gem_bo *bo)
-+{
-+	if (bo->ptr) {
-+		igt_assert_eq(munmap(bo->ptr, bo->size), 0);
-+		bo->ptr = NULL;
-+	}
-+	if (bo->handle)
-+		gem_close(fd, bo->handle);
-+}
-+
-+static void cleanup_sram_vram_objs(int fd, struct mem_bind_sync *vram_bind,
-+				   struct mem_bind_sync *sram_bind)
-+{
-+	for (int i = 0; i < vram_bind->n_bufs; i++)
-+		gem_close(fd, vram_bind->bufs[i].handle);
-+	for (int i = 0; i < sram_bind->n_bufs; i++)
-+		gem_close(fd, sram_bind->bufs[i].handle);
-+	free(vram_bind->bufs);
-+	free(sram_bind->bufs);
-+	if (vram_bind->n_bufs)
-+		free(vram_bind->binds_ufence);
-+	if (sram_bind->n_bufs)
-+		free(sram_bind->binds_ufence);
-+}
-+
-+/**
-+ * SUBTEST: oversubscribe-concurrent-bind
-+ * Description: Test for oversubscribing the VM with multiple processes
-+ * doing binds at the same time, and ensure they all complete successfully.
-+ * Functionality: This check is for a specific bug where if multiple processes
-+ * oversubscribe the VM, some of the binds may fail with  ENOMEM due to
-+ * deadlock in the bind code.
-+ * Test category: stress test
-+ */
-+static void test_vm_oversubscribe_concurrent_bind(int fd)
-+{
-+	int n_proc = 0, n_vram_bufs = 0, n_sram_bufs = 0;
-+	uint32_t max_by_mem;
-+	uint64_t total_vram_demand = 0;
-+	uint64_t vram_size = xe_visible_available_vram_size(fd, 0);
-+	uint64_t sram_avail = (uint64_t)igt_get_avail_ram_mb() << 20;
-+	uint64_t target_vram = vram_size * 2;
-+	uint64_t target_sram, total_vram_bufs, total_sram_bufs;
-+	pthread_barrier_t *barrier;
-+	pthread_barrierattr_t attr;
-+	/*
-+	 * Dynamically cap VRAM oversubscription so the overflow into system
-+	 * RAM stays within 25% of available RAM. On small-VRAM platforms
-+	 * (e.g. BMG) the 2x target fits within the cap and behavior is
-+	 * unchanged; on large-VRAM platforms (e.g. PVC) this prevents OOM.
-+	 */
-+	target_vram = min(target_vram, vram_size + sram_avail / 4);
-+	target_sram = min_t(uint64_t, sram_avail * 50 / 100,
-+			    MAX_SRAM_TEST_SIZE);
-+
-+	total_vram_bufs = target_vram / GB(1);
-+	total_sram_bufs = target_sram / GB(1);
-+
-+	/* determine concurrency from memory pressure */
-+
-+	max_by_mem = min(total_vram_bufs / MIN_BUFS_PER_PROC,
-+			 total_sram_bufs / MIN_BUFS_PER_PROC);
-+	n_proc = min_t(uint32_t, max_by_mem, MAX_THREADS);
-+	igt_require_f(n_proc > 0, "Not enough VRAM/RAM for oversubscription test\n");
-+
-+	n_vram_bufs = max_t(int, 2, total_vram_bufs / n_proc);
-+	n_sram_bufs = max_t(int, 2, total_sram_bufs / n_proc);
-+	total_vram_demand = (uint64_t)n_proc * n_vram_bufs * GB(1);
-+
-+	igt_debug("VRAM size: %" PRIu64 "MB, System RAM available: %" PRIu64 "MB\n",
-+		  vram_size >> 20, sram_avail >> 20);
-+
-+	igt_debug(" n_proc = %d\n", n_proc);
-+	igt_debug("VRAM: %" PRIu64 "GB\n", vram_size >> 30);
-+	igt_debug("VRAM demand: %" PRIu64 "MB (%.2fx oversubscription)\n",
-+		  total_vram_demand >> 20, (double)total_vram_demand / vram_size);
-+	igt_debug("Processes=%d VRAM_bufs=%d SRAM_bufs=%d\n", n_proc,
-+		  n_vram_bufs, n_sram_bufs);
-+
-+	barrier = mmap(NULL, sizeof(pthread_barrier_t), PROT_READ | PROT_WRITE,
-+	               MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(barrier != MAP_FAILED);
-+	pthread_barrierattr_init(&attr);
-+	pthread_barrierattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
-+	pthread_barrier_init(barrier, &attr, n_proc);
-+
-+	igt_fork(child, n_proc) {
-+		struct xe_test_ctx ctx = {0};
-+		int rc;
-+		uint64_t addr = 0x40000000;
-+		int expected_result = 0, ints_to_add = 4;
-+		struct gem_bo integers_bo, result_bo, batch_bo, *vram_bufs, *sram_bufs;
-+		int pos = 0;
-+		struct mem_bind_sync vram_bind = {0};
-+		struct mem_bind_sync sram_bind = {0};
-+		struct drm_xe_sync batch_syncs[1];
-+		struct drm_xe_exec exec;
-+		struct gem_bo ufence_bo = {0};
-+		int vram_bind_err = 0, sram_bind_err = 0;
-+
-+		vram_bufs = (struct gem_bo *)calloc(n_vram_bufs, sizeof(struct gem_bo));
-+		sram_bufs = (struct gem_bo *)calloc(n_sram_bufs, sizeof(struct gem_bo));
-+		srand(child);
-+
-+		igt_assert(vram_bufs && sram_bufs);
-+
-+		ctx.vm_id = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
-+		create_exec_queue(fd, &ctx);
-+		vram_bind.bufs = vram_bufs;
-+		vram_bind.n_bufs = n_vram_bufs;
-+		sram_bind.bufs = sram_bufs;
-+		sram_bind.n_bufs = n_sram_bufs;
-+
-+		create_test_bos(fd, &ctx, &vram_bind, vram_memory(fd, 0), &addr);
-+		create_test_bos(fd, &ctx, &sram_bind, system_memory(fd), &addr);
-+
-+		if (!vram_bind.n_bufs || !sram_bind.n_bufs)
-+			igt_skip("No BOs allocated; VRAM/SRAM unavailable, skipping\n");
-+
-+		pthread_barrier_wait(barrier);
-+
-+		if (vram_bind.n_bufs) {
-+			vram_bind.binds_ufence =
-+				vm_bind_bo_batch(fd, &ctx, vram_bufs,
-+						 vram_bind.n_bufs, &vram_bind_err);
-+			if (vram_bind_err) {
-+				igt_assert_f(vram_bind_err == -ENOMEM || vram_bind_err == -ENOSPC,
-+					     "Unexpected VRAM bind error: %d (%s)\n",
-+					     vram_bind_err, strerror(-vram_bind_err));
-+				igt_debug("VRAM bind failed with expected OOM (%s), skipping exec\n",
-+					  strerror(-vram_bind_err));
-+				goto cleanup;
-+			}
-+			xe_wait_ufence(fd, vram_bind.binds_ufence, 1, 0, TIMEOUT_NS);
-+		}
-+
-+		if (sram_bind.n_bufs) {
-+			sram_bind.binds_ufence =
-+				vm_bind_bo_batch(fd, &ctx, sram_bufs,
-+						 sram_bind.n_bufs, &sram_bind_err);
-+			/* Assert if there is any bind error in SRAM */
-+			if (sram_bind_err)
-+				igt_assert_f(0, "Unexpected SRAM bind error: %d", sram_bind_err);
-+			xe_wait_ufence(fd, sram_bind.binds_ufence, 1, 0, TIMEOUT_NS);
-+		}
-+
-+		integers_bo.size = ALIGN(sizeof(int) * INT_ADD_CNT, 4096);
-+		integers_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, integers_bo.size,
-+							  system_memory(fd), 0,
-+							  DRM_XE_GEM_CPU_CACHING_WC);
-+		integers_bo.ptr = (int *)xe_bo_map(fd, integers_bo.handle, integers_bo.size);
-+		integers_bo.addr = 0x100000;
-+
-+		expected_result = fill_random_integers(&integers_bo, ints_to_add);
-+		igt_debug("%d\n", expected_result);
-+
-+		result_bo.size = ALIGN(sizeof(int), 4096);
-+		result_bo.handle  = xe_bo_create_caching(fd, ctx.vm_id, result_bo.size,
-+							 system_memory(fd), 0,
-+							 DRM_XE_GEM_CPU_CACHING_WC);
-+		result_bo.ptr = NULL;
-+		result_bo.addr = 0x200000;
-+
-+		batch_bo.size = 4096;
-+		batch_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, batch_bo.size,
-+						       system_memory(fd), 0,
-+						       DRM_XE_GEM_CPU_CACHING_WC);
-+
-+		batch_bo.ptr = (int *)xe_bo_map(fd, batch_bo.handle, batch_bo.size);
-+		batch_bo.addr = 0x300000;
-+
-+		pos = build_add_batch(&batch_bo, &integers_bo, &result_bo, ints_to_add);
-+
-+		igt_assert(pos * sizeof(int) <= batch_bo.size);
-+
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, integers_bo.handle, 0, integers_bo.addr,
-+				   integers_bo.size, 0);
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, result_bo.handle, 0, result_bo.addr,
-+				   result_bo.size, 0);
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, batch_bo.handle, 0, batch_bo.addr,
-+				   batch_bo.size, 0);
-+
-+		ufence_bo.size = 4096;
-+		ufence_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, ufence_bo.size,
-+							system_memory(fd), 0,
-+							DRM_XE_GEM_CPU_CACHING_WB);
-+		ufence_bo.ptr = (int *)xe_bo_map(fd, ufence_bo.handle, ufence_bo.size);
-+		ufence_bo.addr = 0x400000;
-+		memset(ufence_bo.ptr, 0, ufence_bo.size);
-+		xe_vm_bind_lr_sync(fd, ctx.vm_id, ufence_bo.handle, 0, ufence_bo.addr,
-+				   ufence_bo.size, 0);
-+
-+		batch_syncs[0] = (struct drm_xe_sync){
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.addr = ufence_bo.addr,
-+			.timeline_value = 1,
-+		};
-+
-+		exec = (struct drm_xe_exec) {
-+			.exec_queue_id = ctx.exec_queue_id,
-+			.num_syncs = 1,
-+			.syncs = (uintptr_t)batch_syncs,
-+			.address = batch_bo.addr,
-+			.num_batch_buffer = 1,
-+		};
-+
-+		rc = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec);
-+		igt_assert_f(rc == 0, "xe_exec failed unexpectedly: %s (errno = %d\n",
-+			     strerror(errno), errno);
-+		xe_wait_ufence(fd, (uint64_t *)ufence_bo.ptr, 1, ctx.exec_queue_id, TIMEOUT_NS);
-+		result_bo.ptr = (int *)xe_bo_map(fd, result_bo.handle, result_bo.size);
-+		igt_assert(result_bo.ptr != MAP_FAILED);
-+		igt_assert_eq(result_bo.ptr[0], expected_result);
-+cleanup:
-+		cleanup_bo_resources(fd, &ufence_bo);
-+		cleanup_bo_resources(fd, &result_bo);
-+		cleanup_bo_resources(fd, &batch_bo);
-+		cleanup_bo_resources(fd, &integers_bo);
-+		cleanup_sram_vram_objs(fd, &vram_bind, &sram_bind);
-+		xe_exec_queue_destroy(fd, ctx.exec_queue_id);
-+		xe_vm_destroy(fd, ctx.vm_id);
-+		close(fd);
-+	}
-+	igt_waitchildren();
-+	pthread_barrier_destroy(barrier);
-+	pthread_barrierattr_destroy(&attr);
-+	igt_assert_eq(munmap(barrier, sizeof(pthread_barrier_t)), 0);
-+}
-+
- int igt_main()
- {
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
-@@ -3489,6 +3900,11 @@ int igt_main()
- 		test_oom(fd);
- 	}
- 
-+	igt_subtest("oversubscribe-concurrent-bind") {
-+		igt_require(xe_has_vram(fd));
-+		test_vm_oversubscribe_concurrent_bind(fd);
-+	}
-+
- 	for (const struct vm_get_property *f = xe_vm_get_property_tests; f->name; f++) {
- 		igt_subtest_f("vm-get-property-%s", f->name)
- 			test_get_property(fd, f->test);
+[...]
+
+> +/* Helper: Check if entry matches platform/test/subtest */
+> +static bool entry_matches(const struct platform_filter_context *ctx,
+> +                          const struct platform_skip_entry *entry,
+> +                          const char *test_name,
+> +                          const char *subtest_name)
+> +{
+> +	/* Check platform match using vendor callback */
+I think comments in this function are superfluous, the matching
+is self explanatory.
+
+> +	if (entry->platform_data && ctx->ops->match_platform) {
+> +		if (!ctx->ops->match_platform(ctx->platform_info, entry->platform_data))
+> +			return false;
+> +	}
+> +
+> +	/* Check test name match */
+> +	if (entry->test_name && strcmp(entry->test_name, "*") != 0) {
+> +		if (!test_name || !match_string(entry->test_name, test_name))
+> +			return false;
+> +	}
+> +
+> +	/* Check subtest glob match */
+> +	if (entry->subtest_glob && strcmp(entry->subtest_glob, "*") != 0) {
+> +		if (!subtest_name || !match_string(entry->subtest_glob, subtest_name))
+> +			return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +/* ================================================================
+> + * CONFIG FILE PARSER (/etc/igt/platform_skip.conf)
+> + * ================================================================ */
+> +
+> +/* Parse one line from config file */
+> +static bool parse_config_line(struct platform_filter_context *ctx,
+> +                               char *line,
+> +                               struct platform_skip_entry *entry)
+> +{
+> +	char *platform, *test, *subtest, *reason;
+> +
+> +	/* Skip comments and empty lines */
+> +	line = trim(line);
+> +	if (line[0] == '#' || line[0] == 0)
+> +		return false;
+> +
+> +	/* Format: platform:test:subtest:reason */
+> +	platform = strtok(line, ":");
+> +	test = strtok(NULL, ":");
+> +	subtest = strtok(NULL, ":");
+> +	reason = strtok(NULL, "\n");
+> +
+> +	if (!platform || !test || !subtest) {\
+In previous patch "*reason" was annotated with "(required), but
+just below you insert "No reason" yourself and it is a bit
+confusing to me - is the reason required from whoever fills the
+skip entry or rather "this field cannot be NULL/empty" at the
+end?
+If former is the intended way, then here you should probably
+check for !reason as well (especially when you explicitly state
+the expected format in the igt_warn below).
+
+> +		igt_warn("Invalid config line format (expected platform:test:subtest:reason)\n");
+> +		return false;
+> +	}
+> +
+> +	/* Allocate and copy strings */
+> +	entry->test_name = strdup(trim(test));
+> +	entry->subtest_glob = strdup(trim(subtest));
+> +	entry->reason = reason ? strdup(trim(reason)) : strdup("No reason");
+> +
+> +	/* Parse platform using vendor callback */
+> +	platform = trim(platform);
+> +	if (strcmp(platform, "*") == 0) {
+> +		/* Wildcard - no platform restriction */
+> +		entry->platform_data = NULL;
+You could avoid a bit of code duplication and skip this first if:
+platform_data == NULL with current logic means that a wildcard
+was used or there was no parse_platform_config available anyway.
+It'd be something like this:
+
+if (ctx->ops->parse_platform_config) {
+	...
+} else {
+	/* Wildcard or no parsing function */
+	entry->platform_data = NULL;
+}
+
+> +	} else if (ctx->ops->parse_platform_config) {
+> +		if (!ctx->ops->parse_platform_config(platform, &entry->platform_data)) {
+> +			igt_warn("Failed to parse platform: %s\n", platform);
+> +			free((void *)entry->test_name);
+> +			free((void *)entry->subtest_glob);
+> +			free((void *)entry->reason);
+Are these casts needed?
+
+> +			return false;
+> +		}
+> +	} else {
+> +		entry->platform_data = NULL;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +/* Load config file */
+> +static void load_config_file(struct platform_filter_context *ctx, const char *filename)
+> +{
+> +	FILE *f;
+> +	char line[MAX_LINE_LENGTH];
+> +
+> +	f = fopen(filename, "r");
+> +	if (!f) {
+> +		igt_debug("Config file not found: %s\n", filename);
+I wonder if this is going to confuse folks, because usually
+"file not found" is associated with some kind of error. I think
+you could skip silently here.
+
+> +		return;
+> +	}
+> +
+> +	igt_info("Loading platform skip config from: %s\n", filename);
+> +
+> +	while (fgets(line, sizeof(line), f)) {
+> +		if (ctx->config_entry_count >= MAX_CONFIG_ENTRIES) {
+> +			igt_warn("Config file has too many entries (max %d)\n",
+> +			         MAX_CONFIG_ENTRIES);
+> +			break;
+> +		}
+> +
+> +		if (parse_config_line(ctx, line, &ctx->config_entries[ctx->config_entry_count])) {
+> +			ctx->config_entry_count++;
+> +		}
+> +	}
+> +
+> +	fclose(f);
+> +	igt_info("Loaded %d skip rules from config file\n", ctx->config_entry_count);
+> +}
+> +
+> +/* ================================================================
+> + * ENVIRONMENT VARIABLE PARSER (IGT_PLATFORM_SKIP_CONFIG)
+> + * ================================================================ */
+> +
+> +/* Parse environment variable entries (semicolon-separated) */
+> +static void load_env_variable(struct platform_filter_context *ctx)
+> +{
+> +	char *env, *env_copy, *entry_str, *saveptr;
+> +	const char *env_value;
+> +
+> +	env_value = getenv("IGT_PLATFORM_SKIP_CONFIG");
+> +	if (!env_value || env_value[0] == 0) {
+> +		igt_debug("IGT_PLATFORM_SKIP_CONFIG not set\n");
+Here too, if it is expected that this env variable may be unset,
+then maybe skip this log entirely or reword it to be more
+informative and less error-like.
+
+> +		return;
+> +	}
+> +
+> +	igt_info("Loading platform skip config from IGT_PLATFORM_SKIP_CONFIG\n");
+> +
+> +	env_copy = strdup(env_value);
+> +	env = env_copy;
+> +
+> +	/* Parse semicolon-separated entries */
+> +	while ((entry_str = strtok_r(env, ";", &saveptr)) != NULL) {
+> +		env = NULL; /* For subsequent strtok_r calls */
+> +
+> +		if (ctx->env_entry_count >= MAX_ENV_ENTRIES) {
+> +			igt_warn("Too many env variable entries (max %d)\n",
+> +			         MAX_ENV_ENTRIES);
+> +			break;
+> +		}
+> +
+> +		if (parse_config_line(ctx, entry_str, &ctx->env_entries[ctx->env_entry_count])) {
+> +			ctx->env_entry_count++;
+> +		}
+> +	}
+> +
+> +	free(env_copy);
+> +	igt_info("Loaded %d skip rules from environment variable\n", ctx->env_entry_count);
+> +}
+> +
+> +/* ================================================================
+> + * PUBLIC API IMPLEMENTATION
+> + * ================================================================ */
+> +
+> +void igt_platform_filter_init(const struct platform_filter_ops *ops,
+> +                               const void *platform_info)
+> +{
+> +	struct platform_filter_context *ctx = get_filter_context();
+> +
+> +	if (ctx->initialized)
+> +		return;
+> +
+> +	if (!ops) {
+> +		igt_warn("Platform filter ops is NULL, filtering disabled\n");
+> +		return;
+> +	}
+> +
+> +	ctx->ops = ops;
+> +	ctx->platform_info = platform_info;
+> +
+> +	igt_info("Initializing platform filter system (3-tier priority) for vendor: %s\n",
+> +	         ops->name ? ops->name : "unknown");
+> +
+> +	/* Get current platform name */
+> +	if (ops->get_platform_name) {
+> +		const char *pname = ops->get_platform_name(platform_info);
+> +		snprintf(ctx->current_platform_name, sizeof(ctx->current_platform_name),
+> +		         "%s", pname ? pname : "unknown");
+> +	}
+> +
+> +	/* Priority 1: Built-in array (vendor-specific) */
+> +	igt_debug("  Priority 1: Built-in array (vendor-specific)\n");
+> +
+> +	/* Priority 2: Config file */
+> +	igt_debug("  Priority 2: Config file /etc/igt/platform_skip.conf\n");
+> +	load_config_file(ctx, "/etc/igt/platform_skip.conf");
+I wonder: why this location for file? Wouldn't putting it
+inside IGT work as well? Or letting users pass their own conf
+files?
+
+> +
+> +	/* Priority 3: Environment variable */
+> +	igt_debug("  Priority 3: Environment variable IGT_PLATFORM_SKIP_CONFIG\n");
+> +	load_env_variable(ctx);
+> +
+> +	ctx->initialized = true;
+> +	igt_info("Platform filter initialization complete\n");
+> +}
+> +
+
+[...]
+
+> +void igt_platform_filter_dump(void)
+> +{
+> +	struct platform_filter_context *ctx = get_filter_context();
+> +	const struct platform_skip_entry *entry;
+> +	int i, total_count, count;
+> +
+> +	if (!ctx->initialized) {
+> +		igt_info("Platform filter not initialized\n");
+I wonder if the change in severity is deliberate: in
+igt_platform_should_skip this message was a warning.
+
+> +		return;
+> +	}
+> +
+> +	igt_info("\n");
+> +	igt_info("═══════════════════════════════════════════════════════════════════\n");
+> +	igt_info(" PLATFORM SKIP FILTER CONFIGURATION - THREE-TIER PRIORITY SYSTEM\n");
+> +	igt_info("═══════════════════════════════════════════════════════════════════\n\n");
+> +
+> +	igt_info("Vendor: %s\n", ctx->ops->name ? ctx->ops->name : "unknown");
+> +	if (ctx->current_platform_name[0]) {
+> +		igt_info("Current Platform: %s\n\n", ctx->current_platform_name);
+> +	}
+> +
+> +	/* Priority 1: Built-in array */
+> +	igt_info("───────────────────────────────────────────────────────────────────\n");
+> +	igt_info(" PRIORITY 1: BUILT-IN PRODUCTION ARRAY (VENDOR-SPECIFIC)\n");
+> +	igt_info(" Source: Vendor implementation\n");
+> +	igt_info("───────────────────────────────────────────────────────────────────\n");
+> +
+> +	total_count = 0;
+> +	if (ctx->ops->get_builtin_rules) {
+> +		const struct platform_skip_entry *builtin = ctx->ops->get_builtin_rules(&count);
+> +		for (i = 0; i < count; i++) {
+> +			entry = &builtin[i];
+> +			total_count++;
+> +			igt_info("  %2d. %s : %s\n",
+> +			       total_count,
+> +			       entry->test_name ? entry->test_name : "*",
+> +			       entry->subtest_glob ? entry->subtest_glob : "*");
+> +			igt_info("      Reason: %s\n", entry->reason ? entry->reason : "no reason");
+> +
+> +			/* Print platform data if vendor provides dump callback */
+> +			if (entry->platform_data && ctx->ops->dump_platform_data) {
+> +				igt_info("      Platform: ");
+> +				ctx->ops->dump_platform_data(entry->platform_data);
+> +				igt_info("\n");
+> +			}
+> +			igt_info("\n");
+> +		}
+> +	}
+> +	if (total_count == 0) {
+> +		igt_info("  (No built-in rules)\n\n");
+This could be a debug log.
+
+> +	}
+> +
+> +	/* Priority 2: Config file */
+> +	igt_info("───────────────────────────────────────────────────────────────────\n");
+> +	igt_info(" PRIORITY 2: DEVELOPMENT CONFIG FILE\n");
+> +	igt_info(" Source: /etc/igt/platform_skip.conf\n");
+> +	igt_info("───────────────────────────────────────────────────────────────────\n");
+> +
+> +	if (ctx->config_entry_count > 0) {
+> +		for (i = 0; i < ctx->config_entry_count; i++) {
+> +			entry = &ctx->config_entries[i];
+> +			igt_info("  %2d. %s : %s\n",
+> +			       i + 1,
+> +			       entry->test_name,
+> +			       entry->subtest_glob);
+> +			igt_info("      Reason: %s\n\n", entry->reason);
+> +		}
+> +	} else {
+> +		igt_info("  (No config file rules loaded)\n\n");
+This could be a debug log or no log at all, it will spam the
+output. User should be aware if they used a conf file or not.
+
+> +	}
+> +
+> +	/* Priority 3: Environment variable */
+> +	igt_info("───────────────────────────────────────────────────────────────────\n");
+> +	igt_info(" PRIORITY 3: RUNTIME ENVIRONMENT VARIABLE\n");
+> +	igt_info(" Source: IGT_PLATFORM_SKIP_CONFIG\n");
+> +	igt_info("───────────────────────────────────────────────────────────────────\n");
+> +
+> +	if (ctx->env_entry_count > 0) {
+> +		for (i = 0; i < ctx->env_entry_count; i++) {
+> +			entry = &ctx->env_entries[i];
+> +			igt_info("  %2d. %s : %s\n",
+> +			       i + 1,
+> +			       entry->test_name,
+> +			       entry->subtest_glob);
+> +			igt_info("      Reason: %s\n\n", entry->reason);
+> +		}
+> +	} else {
+> +		igt_info("  (No environment variable rules)\n\n");
+This could be a debug log or no log at all, it will spam the
+output. User should be aware if they used env variable or not.
+
+> +	}
+> +
+> +	igt_info("───────────────────────────────────────────────────────────────────\n");
+> +	igt_info(" SUMMARY\n");
+> +	igt_info("───────────────────────────────────────────────────────────────────\n");
+> +	igt_info("  Built-in rules:     %d\n", total_count);
+> +	igt_info("  Config file rules:  %d\n", ctx->config_entry_count);
+> +	igt_info("  Environment rules:  %d\n", ctx->env_entry_count);
+> +	igt_info("  Total skip rules:   %d\n", total_count + ctx->config_entry_count + ctx->env_entry_count);
+> +	igt_info("\n");
+> +	igt_info("═══════════════════════════════════════════════════════════════════\n\n");
+> +}
+> +
+> +int igt_platform_filter_dump_to_file(const char *filename)
+> +{
+> +	FILE *old_stdout;
+> +	FILE *f;
+> +
+> +	f = fopen(filename, "w");
+> +	if (!f) {
+> +		igt_warn("Failed to open %s for writing\n", filename);
+You are returning an error here, so igt_err would fit better.
+
+> +		return -1;
+> +	}
+> +
+> +	/* Redirect stdout to file */
+> +	old_stdout = stdout;
+> +	stdout = f;
+> +
+> +	igt_platform_filter_dump();
+> +
+> +	/* Restore stdout */
+> +	stdout = old_stdout;
+> +	fclose(f);
+> +
+> +	igt_info("Platform filter configuration dumped to: %s\n", filename);
+> +	return 0;
+> +}
+> diff --git a/lib/meson.build b/lib/meson.build
+> index d1289a5e0..ba0683995 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -38,6 +38,7 @@ lib_sources = [
+>  	'igt_params.c',
+>  	'igt_perf.c',
+>  	'igt_pipe_crc.c',
+> +	'igt_platform_filter.c',
+>  	'igt_power.c',
+>  	'igt_primes.c',
+>  	'igt_pci.c',
+> -- 
+> 2.54.0
+> 
+
 -- 
-2.52.0
-
+Best Regards,
+Krzysztof
