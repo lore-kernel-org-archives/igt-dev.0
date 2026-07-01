@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E95C43458
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Jul 2026 12:13:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C0F0C43458
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Jul 2026 12:13:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2BA5F10EEC3;
-	Wed,  1 Jul 2026 12:13:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C77B010EEC5;
+	Wed,  1 Jul 2026 12:13:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C5z7qZIW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fUTrpmUn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1E2610E9EE
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2026 12:12:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A13910E9EE
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2026 12:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782907934; x=1814443934;
+ t=1782907935; x=1814443935;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0nQ/XKYZ/WP4LS3TQ4Yyk2zLMNIRxqLLs1SMUvl7y2s=;
- b=C5z7qZIW8O6nFLytHkmTmDJyX7fbodU2hgAuGBZEfZob86+wCQOdQHRA
- ii56IPC9jvDoDuWdWLlrW7SdUYp7T1b0WhDSZmFKF5MgtVI9QGIE73459
- oHi4RTP1SwELVYgFH4LfUNMSjwt/H4bSgNIDGZJQE5WG1QHjgxlEvxhi7
- Z97NUXoxKItvtoTI+NjMfuORL63dlJjx75V1WlrmAJy3aV6zOYoHgKCEz
- 58d1ey7ilPDsHUFcm8LLoLzICxu8Rmhf2SB8khCudUPdvbhGjZFwxzU0X
- W6DzPJhwxT+2i9I172e0irB58ZpYUK/wuRZBuHJKF0BLRkQqn5SqdRvnJ w==;
-X-CSE-ConnectionGUID: 60WS/rhdQl+1GC2IK1lUZQ==
-X-CSE-MsgGUID: UYhD1GQ5Qqqdx+DdFrEJag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="83414376"
-X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; d="scan'208";a="83414376"
+ bh=8G7WllHquQLDwEKRQRyb4t3fT53cz4AbfqsxtWGZZsM=;
+ b=fUTrpmUnuRGXjxQDKs7jCNFKw9oIIUYoFeXO00ImKvHjWkIo7hjYw/Jk
+ JMhw1LL99xxDaDtW0KzCFlfGCtgiHxX9KQdcDFDWcdUy4Ejkcz204Wq80
+ zBCJzez5Oy3cln2zmIv0GCeazlwWKQ4vE3CPad8xudFdnXEdTGeg/kW0O
+ J0DKxDUEJfsAjXn+Pzjzzca5wMppAL16gvyRzWCOfvwZw9Zobt3GMlCof
+ XCsLxptM6I6UR2Guac0wJ7Q8Ar2O2u6iWbMQfGOhtgEGRaTMuSiCjPzL4
+ B9pRMVce4KSnrSFptueOOnldySc22Z6EtgBAk0AhWjMaTVyN79h+YZJTy w==;
+X-CSE-ConnectionGUID: +iAEnDoPTd+nNWnHflxyDw==
+X-CSE-MsgGUID: 38TcPgYwRCOKKUMoiD9tWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="83414377"
+X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; d="scan'208";a="83414377"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2026 05:12:13 -0700
-X-CSE-ConnectionGUID: ZcA82Tw0QPax3jLA8MsCLQ==
-X-CSE-MsgGUID: UCOmO3EIQmCt++0UBgFklg==
+ 01 Jul 2026 05:12:15 -0700
+X-CSE-ConnectionGUID: u/mfzl+WQ/G4zg5nejE0xQ==
+X-CSE-MsgGUID: YNSJhYFhTfOJP5EAV4polA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; d="scan'208";a="254477265"
+X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; d="scan'208";a="254477281"
 Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.244.55])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2026 05:12:12 -0700
+ 01 Jul 2026 05:12:14 -0700
 From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -49,10 +49,9 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH v4 i-g-t 7/8] drm-uapi-experimental/xe_drm_eudebug: Remove
- EUdebug uapi
-Date: Wed,  1 Jul 2026 14:11:48 +0200
-Message-Id: <20260701121149.16639-8-dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v4 i-g-t 8/8] meson: Remove Xe EUdebug
+Date: Wed,  1 Jul 2026 14:11:49 +0200
+Message-Id: <20260701121149.16639-9-dominik.karol.piatkowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260701121149.16639-1-dominik.karol.piatkowski@intel.com>
 References: <20260701121149.16639-1-dominik.karol.piatkowski@intel.com>
@@ -74,375 +73,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Remove EUdebug uapi header, as there is no existing code using it.
+Remove Xe EUdebug from meson and meson_options, as there are no EUdebug
+files present.
 
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 ---
- .../drm-uapi-experimental/xe_drm_eudebug.h    | 355 ------------------
- 1 file changed, 355 deletions(-)
- delete mode 100644 include/drm-uapi-experimental/xe_drm_eudebug.h
+ meson.build       | 2 --
+ meson_options.txt | 5 -----
+ 2 files changed, 7 deletions(-)
 
-diff --git a/include/drm-uapi-experimental/xe_drm_eudebug.h b/include/drm-uapi-experimental/xe_drm_eudebug.h
-deleted file mode 100644
-index a1733f543..000000000
---- a/include/drm-uapi-experimental/xe_drm_eudebug.h
-+++ /dev/null
-@@ -1,355 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Copyright © 2023 Intel Corporation
-- */
--
--#ifndef _XE_DRM_EUDEBUG_H_
--#define _XE_DRM_EUDEBUG_H_
--
--#if defined(__cplusplus)
--extern "C" {
--#endif
--
--/*
-- * The Xe EU debugger extends the uapi by both extending the api for the Xe device as well as
-- * adding an api to use with a separate debugger handle. Currently the KMD part adds the former to
-- * 'xe_drm.h' and the latter to 'xe_drm_eudebug.h'. Since the KMD part is not yet merged upstream,
-- * let's put all eudebug specific uapi here to keep the 'xe_drm.h' file synced with the upstream
-- * kernel.
-- */
--
--/* XXX: BEGIN section moved from xe_drm.h as temporary solution */
--#define DRM_XE_EUDEBUG_CONNECT		0x10
--#define DRM_XE_DEBUG_METADATA_CREATE	0x11
--#define DRM_XE_DEBUG_METADATA_DESTROY	0x12
--
--/* ... */
--
--#define DRM_IOCTL_XE_EUDEBUG_CONNECT		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EUDEBUG_CONNECT, struct drm_xe_eudebug_connect)
--#define DRM_IOCTL_XE_DEBUG_METADATA_CREATE	 DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEBUG_METADATA_CREATE, struct drm_xe_debug_metadata_create)
--#define DRM_IOCTL_XE_DEBUG_METADATA_DESTROY	 DRM_IOW(DRM_COMMAND_BASE + DRM_XE_DEBUG_METADATA_DESTROY, struct drm_xe_debug_metadata_destroy)
--
--/* ... */
--
--struct drm_xe_vm_bind_op_ext_attach_debug {
--	/** @base: base user extension */
--	struct drm_xe_user_extension base;
--
--	/** @id: Debug object id from create metadata */
--	__u64 metadata_id;
--
--	/** @flags: Flags */
--	__u64 flags;
--
--	/** @cookie: Cookie */
--	__u64 cookie;
--
--	/** @reserved: Reserved */
--	__u64 reserved;
--};
--
--/* ... */
--
--#define XE_VM_BIND_OP_EXTENSIONS_ATTACH_DEBUG 0
--
--/* ... */
--
--#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG		7
--#define     DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE		(1 << 0)
--
--/* ... */
--
--/*
-- * Debugger ABI (ioctl and events) Version History:
-- * 0 - No debugger available
-- * 1 - Initial version
-- */
--#define DRM_XE_EUDEBUG_VERSION 1
--
--struct drm_xe_eudebug_connect {
--	/** @extensions: Pointer to the first extension struct, if any */
--	__u64 extensions;
--
--	__u64 pid; /* input: Target process ID */
--	__u32 flags; /* MBZ */
--
--	__u32 version; /* output: current ABI (ioctl / events) version */
--};
--
--/*
-- * struct drm_xe_debug_metadata_create - Create debug metadata
-- *
-- * Add a region of user memory to be marked as debug metadata.
-- * When the debugger attaches, the metadata regions will be delivered
-- * for debugger. Debugger can then map these regions to help decode
-- * the program state.
-- *
-- * Returns handle to created metadata entry.
-- */
--struct drm_xe_debug_metadata_create {
--	/** @extensions: Pointer to the first extension struct, if any */
--	__u64 extensions;
--
--#define DRM_XE_DEBUG_METADATA_ELF_BINARY     0
--#define DRM_XE_DEBUG_METADATA_PROGRAM_MODULE 1
--#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_MODULE_AREA 2
--#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SBA_AREA 3
--#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA 4
--#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM (1 + \
--	  WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA)
--
--	/** @type: Type of metadata */
--	__u64 type;
--
--	/** @user_addr: pointer to start of the metadata */
--	__u64 user_addr;
--
--	/** @len: length, in bytes of the medata */
--	__u64 len;
--
--	/** @metadata_id: created metadata handle (out) */
--	__u32 metadata_id;
--};
--
--/**
-- * struct drm_xe_debug_metadata_destroy - Destroy debug metadata
-- *
-- * Destroy debug metadata.
-- */
--struct drm_xe_debug_metadata_destroy {
--	/** @extensions: Pointer to the first extension struct, if any */
--	__u64 extensions;
--
--	/** @metadata_id: metadata handle to destroy */
--	__u32 metadata_id;
--};
--
--/* XXX: END section moved from xe_drm.h as temporary solution */
--
--/**
-- * Do a eudebug event read for a debugger connection.
-- *
-- * This ioctl is available in debug version 1.
-- */
--#define DRM_XE_EUDEBUG_IOCTL_READ_EVENT		_IO('j', 0x0)
--#define DRM_XE_EUDEBUG_IOCTL_EU_CONTROL		_IOWR('j', 0x2, struct drm_xe_eudebug_eu_control)
--#define DRM_XE_EUDEBUG_IOCTL_ACK_EVENT		_IOW('j', 0x4, struct drm_xe_eudebug_ack_event)
--#define DRM_XE_EUDEBUG_IOCTL_VM_OPEN		_IOW('j', 0x1, struct drm_xe_eudebug_vm_open)
--#define DRM_XE_EUDEBUG_IOCTL_READ_METADATA	_IOWR('j', 0x3, struct drm_xe_eudebug_read_metadata)
--
--/* XXX: Document events to match their internal counterparts when moved to xe_drm.h */
--struct drm_xe_eudebug_event {
--	__u32 len;
--
--	__u16 type;
--#define DRM_XE_EUDEBUG_EVENT_NONE		0
--#define DRM_XE_EUDEBUG_EVENT_READ		1
--#define DRM_XE_EUDEBUG_EVENT_OPEN		2
--#define DRM_XE_EUDEBUG_EVENT_VM			3
--#define DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE		4
--#define DRM_XE_EUDEBUG_EVENT_EU_ATTENTION	5
--#define DRM_XE_EUDEBUG_EVENT_VM_BIND		6
--#define DRM_XE_EUDEBUG_EVENT_VM_BIND_OP		7
--#define DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE	8
--#define DRM_XE_EUDEBUG_EVENT_METADATA		9
--#define DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA 10
--#define DRM_XE_EUDEBUG_EVENT_PAGEFAULT		11
--
--	__u16 flags;
--#define DRM_XE_EUDEBUG_EVENT_CREATE		(1 << 0)
--#define DRM_XE_EUDEBUG_EVENT_DESTROY		(1 << 1)
--#define DRM_XE_EUDEBUG_EVENT_STATE_CHANGE	(1 << 2)
--#define DRM_XE_EUDEBUG_EVENT_NEED_ACK		(1 << 3)
--
--	__u64 seqno;
--	__u64 reserved;
--};
--
--struct drm_xe_eudebug_event_client {
--	struct drm_xe_eudebug_event base;
--
--	__u64 client_handle; /* This is unique per debug connection */
--};
--
--struct drm_xe_eudebug_event_vm {
--	struct drm_xe_eudebug_event base;
--
--	__u64 client_handle;
--	__u64 vm_handle;
--};
--
--struct drm_xe_eudebug_event_exec_queue {
--	struct drm_xe_eudebug_event base;
--
--	__u64 client_handle;
--	__u64 vm_handle;
--	__u64 exec_queue_handle;
--	__u32 engine_class;
--	__u32 width;
--	__u64 lrc_handle[];
--};
--
--struct drm_xe_eudebug_event_eu_attention {
--	struct drm_xe_eudebug_event base;
--
--	__u64 client_handle;
--	__u64 exec_queue_handle;
--	__u64 lrc_handle;
--	__u32 flags;
--	__u32 bitmask_size;
--	__u8 bitmask[];
--};
--
--struct drm_xe_eudebug_eu_control {
--	__u64 client_handle;
--
--#define DRM_XE_EUDEBUG_EU_CONTROL_CMD_INTERRUPT_ALL	0
--#define DRM_XE_EUDEBUG_EU_CONTROL_CMD_STOPPED		1
--#define DRM_XE_EUDEBUG_EU_CONTROL_CMD_RESUME		2
--	__u32 cmd;
--	__u32 flags;
--
--	__u64 seqno;
--
--	__u64 exec_queue_handle;
--	__u64 lrc_handle;
--	__u32 reserved;
--	__u32 bitmask_size;
--	__u64 bitmask_ptr;
--};
--
--/*
-- *  When client (debuggee) does vm_bind_ioctl() following event
-- *  sequence will be created (for the debugger):
-- *
-- *  ┌───────────────────────┐
-- *  │  EVENT_VM_BIND        ├───────┬─┬─┐
-- *  └───────────────────────┘       │ │ │
-- *      ┌───────────────────────┐   │ │ │
-- *      │ EVENT_VM_BIND_OP #1   ├───┘ │ │
-- *      └───────────────────────┘     │ │
-- *                 ...                │ │
-- *      ┌───────────────────────┐     │ │
-- *      │ EVENT_VM_BIND_OP #n   ├─────┘ │
-- *      └───────────────────────┘       │
-- *                                      │
-- *      ┌───────────────────────┐       │
-- *      │ EVENT_UFENCE          ├───────┘
-- *      └───────────────────────┘
-- *
-- * All the events below VM_BIND will reference the VM_BIND
-- * they associate with, by field .vm_bind_ref_seqno.
-- * event_ufence will only be included if the client did
-- * attach sync of type UFENCE into its vm_bind_ioctl().
-- *
-- * When EVENT_UFENCE is sent by the driver, all the OPs of
-- * the original VM_BIND are completed and the [addr,range]
-- * contained in them are present and modifiable through the
-- * vm accessors. Accessing [addr, range] before related ufence
-- * event will lead to undefined results as the actual bind
-- * operations are async and the backing storage might not
-- * be there on a moment of receiving the event.
-- *
-- * Client's UFENCE sync will be held by the driver: client's
-- * drm_xe_wait_ufence will not complete and the value of the ufence
-- * won't appear until ufence is acked by the debugger process calling
-- * DRM_XE_EUDEBUG_IOCTL_ACK_EVENT with the event_ufence.base.seqno.
-- * This will signal the fence, .value will update and the wait will
-- * complete allowing the client to continue.
-- *
-- */
--
--struct drm_xe_eudebug_event_vm_bind {
--	struct drm_xe_eudebug_event base;
--
--	__u64 client_handle;
--	__u64 vm_handle;
--
--	__u32 flags;
--#define DRM_XE_EUDEBUG_EVENT_VM_BIND_FLAG_UFENCE (1 << 0)
--
--	__u32 num_binds;
--};
--
--struct drm_xe_eudebug_event_vm_bind_op {
--	struct drm_xe_eudebug_event base;
--	__u64 vm_bind_ref_seqno; /* *_event_vm_bind.base.seqno */
--	__u64 num_extensions;
--
--	__u64 addr; /* XXX: Zero for unmap all? */
--	__u64 range; /* XXX: Zero for unmap all? */
--};
--
--struct drm_xe_eudebug_event_vm_bind_ufence {
--	struct drm_xe_eudebug_event base;
--	__u64 vm_bind_ref_seqno; /* *_event_vm_bind.base.seqno */
--};
--
--struct drm_xe_eudebug_ack_event {
--	__u32 type;
--	__u32 flags; /* MBZ */
--	__u64 seqno;
--};
--
--struct drm_xe_eudebug_vm_open {
--	/** @extensions: Pointer to the first extension struct, if any */
--	__u64 extensions;
--
--	/** @client_handle: id of client */
--	__u64 client_handle;
--
--	/** @vm_handle: id of vm */
--	__u64 vm_handle;
--
--	/** @flags: flags */
--	__u64 flags;
--
--#define DRM_XE_EUDEBUG_VM_SYNC_MAX_TIMEOUT_NSECS (10ULL * NSEC_PER_SEC)
--	/** @timeout_ns: Timeout value in nanoseconds operations (fsync) */
--	__u64 timeout_ns;
--};
--
--struct drm_xe_eudebug_read_metadata {
--	__u64 client_handle;
--	__u64 metadata_handle;
--	__u32 flags;
--	__u32 reserved;
--	__u64 ptr;
--	__u64 size;
--};
--
--struct drm_xe_eudebug_event_metadata {
--	struct drm_xe_eudebug_event base;
--
--	__u64 client_handle;
--	__u64 metadata_handle;
--	/* XXX: Refer to xe_drm.h for fields */
--	__u64 type;
--	__u64 len;
--};
--
--struct drm_xe_eudebug_event_vm_bind_op_metadata {
--	struct drm_xe_eudebug_event base;
--	__u64 vm_bind_op_ref_seqno; /* *_event_vm_bind_op.base.seqno */
--
--	__u64 metadata_handle;
--	__u64 metadata_cookie;
--};
--
--struct drm_xe_eudebug_event_pagefault {
--	struct drm_xe_eudebug_event base;
--
--	__u64 client_handle;
--	__u64 exec_queue_handle;
--	__u64 lrc_handle;
--	__u32 flags;
--	__u32 bitmask_size;
--	__u64 pagefault_address;
--	__u8 bitmask[];
--};
--
--#if defined(__cplusplus)
--}
--#endif
--
--#endif
+diff --git a/meson.build b/meson.build
+index e09122a09..cb6dea30e 100644
+--- a/meson.build
++++ b/meson.build
+@@ -90,12 +90,10 @@ build_chamelium = get_option('chamelium')
+ build_docs = get_option('docs')
+ build_tests = not get_option('tests').disabled()
+ build_xe = not get_option('xe_driver').disabled()
+-build_xe_eudebug = get_option('xe_eudebug').enabled()
+ build_vmtb = get_option('vmtb').enabled()
+ with_libdrm = get_option('libdrm_drivers')
+ 
+ build_info = ['Build type: ' + get_option('buildtype')]
+-build_info += 'Build Xe EU debugger test framework: @0@'.format(build_xe_eudebug)
+ build_info += 'Build VM Test Bench: @0@'.format(build_vmtb)
+ 
+ inc = include_directories('include', 'include/drm-uapi', 'include/drm-uapi-experimental', 'include/linux-uapi', 'lib', 'lib/stubs/syscalls', '.')
+diff --git a/meson_options.txt b/meson_options.txt
+index e23402b36..fc824dda9 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -42,11 +42,6 @@ option('xe_driver',
+        value : 'enabled',
+        description : 'Build tests for Xe driver')
+ 
+-option('xe_eudebug',
+-       type : 'feature',
+-       value : 'disabled',
+-       description : 'Build library and tests for Xe EU debugger')
+-
+ option('vmtb',
+        type : 'feature',
+        value : 'disabled',
 -- 
 2.34.1
 
