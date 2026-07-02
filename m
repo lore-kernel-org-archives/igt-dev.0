@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F50C43458
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 18:27:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7287CC43327
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 18:27:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 981A910F55E;
-	Thu,  2 Jul 2026 18:27:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0DA6D10F562;
+	Thu,  2 Jul 2026 18:27:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N5SEwlEz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eha+Eo8Z";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A2FD10F55E
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2026 18:26:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 149B810F55E
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2026 18:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783016799; x=1814552799;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=L0/pij3RGdWf9KdBVupopfHP67RoRkT9NC5LMhUxLLk=;
- b=N5SEwlEzW3gMbbKwCSOLIqIIFUxgYGjQkSYYA6EmAK7AiBNHGtsR7YWu
- 8v5wHt6W1XDMyUo4bsrnn/vAiMsS2sJwiuoELaT8AHOCeN2H4eUyZVwwB
- nxIPITXQXmGxR+8ot8UkUDS1ZjAfpZi1wMnp+Xtr8piUEPNoiDOdfXNvg
- vueBJHtILhUSaOgDOGfTUKyVoFp3gbKUHGZHUZiDYZo0pd3x8Y8j02dog
- Dw2D1bnaPEUR+4fYtEFHUa/oA1jlckEy6hNg8xOccReUy7rKjXGYiOUsj
- DynFx08ptUMLgC46uFVm9pAelO6lLK5uC345Y9/FkGqiG7JIwlRDtsOE4 w==;
-X-CSE-ConnectionGUID: 7BP6LZlrQKGtdk4PRGSIJQ==
-X-CSE-MsgGUID: gWvEhOAbQwiRbGXrBDw6fQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="95154699"
-X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="95154699"
+ t=1783016804; x=1814552804;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=6tLPbAak4cflCKSHQJorExHzJ63TPTWaHWJdUxr3sPM=;
+ b=eha+Eo8ZIcBAvRBrFniYwu3vF7Phi20nYI/m8sfGGSi3uTT9vCB7zYOq
+ jDTqe6B5sIc9AWz/4tKqPAMyL/rxROCm5930rGvgfPOYS7WP9CLSrgMcg
+ c1WaVWqf8XbQGjp0gUZryjytaCPGOKTzx3Qqu6xQjkyzNHu+bB2/HsS1+
+ RC4wAvj6zj8E6AWBv+cFu5EDARjtHmHkfZ5lSZ4Ooo6JFsSuB//JpESKk
+ hJQ136JzLn/rytO6rzakp9J2WEX1CA7CN247FH/bJ5PjcF/9eCMXyr5V8
+ sJ+XNQSPrtgJcoKPdrhiZZG4uBjVemHJVk3g+TV41rAEbfRI+w7XCIne+ A==;
+X-CSE-ConnectionGUID: QnvYw1CERHWdfniB+1JzCg==
+X-CSE-MsgGUID: XDiaKQ5YQe2cr6orD2QEew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="95154704"
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="95154704"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2026 11:26:38 -0700
-X-CSE-ConnectionGUID: PXkoQhekReiDngH30uFIAA==
-X-CSE-MsgGUID: aTxIUBBmQ2aRmnfPY7ukdA==
+ 02 Jul 2026 11:26:44 -0700
+X-CSE-ConnectionGUID: 1TDWvaV5RsacwUyEi2ljWA==
+X-CSE-MsgGUID: u/fTBTgdRr2SgHxe0E37+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="253577091"
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="253577106"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by orviesa009.jf.intel.com with ESMTP; 02 Jul 2026 11:26:38 -0700
+ by orviesa009.jf.intel.com with ESMTP; 02 Jul 2026 11:26:43 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, suraj.kandpal@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v5 0/7] Vswing / Pre-emphasis Override decoding
-Date: Thu,  2 Jul 2026 20:26:12 +0200
-Message-ID: <20260702182619.3973788-1-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v5 4/7] tools/vbt_decode: parse & dump VS/PE-O tables
+ for LT
+Date: Thu,  2 Jul 2026 20:26:16 +0200
+Message-ID: <20260702182619.3973788-5-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20260702182619.3973788-1-michal.grzelak@intel.com>
+References: <20260702182619.3973788-1-michal.grzelak@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
@@ -68,44 +71,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Next version of [1]. v9 of kernel part is at [2].
+Dump VBT #57 tables for LT. Add a table of strings to store each table
+purpose. Show the affected modes on dumping.
 
-[1] https://lore.kernel.org/igt-dev/20260616111202.1254067-1-michal.grzelak@intel.com/
-[2] https://lore.kernel.org/intel-gfx/20260626234246.2446451-1-michal.grzelak@intel.com/
-
-BR,
-Michał
-
----
-Changelog:
-v4->v5
-- show all Combo's columns
-- change shown format of Combo's tables
-
-v3->v4
-- rebase onto master
+Currently Vswing / Pre-emphasis Override is not supported by kernel on
+LT, but it doesn't harm to add decoding into IGT.
 
 v2->v3
-- show whole invalid DEVICE env var (Jani)
 - return 16 rows on MTL instead of 10
-- use Cx0 for Snps
 
 v1->v2
 - check platform basing on devid not VBT signature (Jani)
 
-Michał Grzelak (7):
-  tools/vbt_decode: fix tables' offset reading
-  tools/vbt_decode: rename VBT#57 related vars
-  tools/vbt_decode: validate DEVICE env var
-  tools/vbt_decode: parse & dump VS/PE-O tables for LT
-  tools/vbt_decode: parse & dump VS/PE-O tables for Snps
-  tools/vbt_decode: parse & dump VS/PE-O tables for Combo
-  tools/vbt_decode: change VBT#57 Combo's layout
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+---
+ tools/intel_vbt_decode.c | 64 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 54 insertions(+), 10 deletions(-)
 
- lib/intel_chipset.h      |   2 +
- tools/intel_vbt_decode.c | 179 +++++++++++++++++++++++++++++++++++----
- 2 files changed, 166 insertions(+), 15 deletions(-)
-
+diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+index 33f8598e5f..2f3f720573 100644
+--- a/tools/intel_vbt_decode.c
++++ b/tools/intel_vbt_decode.c
+@@ -3465,24 +3465,68 @@ static const char * const vspeo_dp14_levels[10] = {
+ 	"V3-P0",
+ };
+ 
+-static void dump_vswing_preemphasis(struct context *context,
+-				    const struct bdb_block *block)
++static const char * const vspeo_lt_tables[6] = {
++	"UNUSED",
++	"UNUSED",
++	"UNUSED",
++	"UNUSED",
++	"DP 1.4",
++	"DP 2.1",
++};
++
++static void dump_lt_vspeo(const struct bdb_vswing_preemph *vspeo,
++			  int num_rows)
+ {
+-	const struct bdb_vswing_preemph *vspeo = block_data(block);
++	const unsigned int *tables = vspeo->tables;
++	size_t offset = 0;
+ 
+ 	printf("\tNumber of vswing tables: %d\n", vspeo->num_tables);
+ 	printf("\tNumber of columns: %d\n", vspeo->num_columns);
++	printf("\tNumber of rows: %d\n", num_rows);
++
++	printf("\tPHY type: LT\n");
+ 
+ 	for (int idx = 0; idx < vspeo->num_tables; idx++) {
+-		printf("\tVswing Table #%d:\n", idx+1);
++		printf("\tVswing Table #%d (%s):\n", idx+1, vspeo_lt_tables[idx]);
++		for (int row = 0; row < num_rows; row++) {
++			int main_cursor = tables[offset];
++			int pre_cursor = tables[offset + 1];
++			int post_cursor = tables[offset + 2];
++
++			printf("\t\tPreset #%02d: ", row+1);
++			printf("main-cursor: 0x%08x, ", main_cursor);
++			printf("pre-cursor: 0x%08x, ", pre_cursor);
++			printf("post-cursor: 0x%08x\n", post_cursor);
++
++			offset += vspeo->num_columns;
++		}
++	}
++}
+ 
+-		for (int row = 0; row < 10; row++) {
+-			printf("\t\t%s: ", vspeo_levels[row]);
++static int
++vswing_preemph_num_rows(int devid)
++{
++	return intel_display_ver(devid) >= 14 ? 16 : 10;
++}
+ 
+-			for (int col = 0; col < vspeo->num_columns; col++)
+-				printf(" 0x%08x", vspeo->tables[idx * 10 * vspeo->num_columns + row * col]);
+-			printf("\n");
+-		}
++static void dump_vswing_preemphasis(struct context *context,
++				    const struct bdb_block *block)
++{
++	const struct bdb_vswing_preemph *vspeo = block_data(block);
++	int devid = context->devid;
++	int num_rows;
++
++	if (!devid) {
++		fprintf(stderr, "Error: cannot parse VS/PE-O without devid\n");
++		return;
++	}
++
++	num_rows = vswing_preemph_num_rows(devid);
++
++	if (IS_NOVALAKE_P(devid) || IS_NOVALAKE_S(devid)) {
++		dump_lt_vspeo(vspeo, num_rows);
++	} else {
++		printf("Warning: deparsing VS/PE-O from devid %x not supported\n", devid);
+ 	}
+ }
+ 
 -- 
 2.45.2
 
