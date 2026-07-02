@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65D36C43458
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 06:41:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03117C43458
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 08:12:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F19EB10E471;
-	Thu,  2 Jul 2026 06:41:05 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF17210E471;
- Thu,  2 Jul 2026 06:40:35 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4267246310363537688=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B1FA910F206;
+	Thu,  2 Jul 2026 08:12:51 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SOVJYRVJ";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D596C10F1FE
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2026 08:12:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1782979942; x=1814515942;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=9hMinEFHx0CwX1Gk4NKV0DisjNLWcoB8X6zENa0h+t0=;
+ b=SOVJYRVJXYtkIDDa5+1J2HKzLQqIGhVbGIUsuXiBIVzG+FIVRZ9FspEw
+ VkPvbL/BSEEI2zinCH4QnIFohHDe9MVMoO+YbcmClWH8Qn4OG6HGv8H8U
+ xfaO6kZR4+fk29V0qCw0e4sCBsR7T1+jyOot/VgHuO4n0y+CeBoNBPUws
+ 0M1f+1KLlwdIRJCV1Jzct2A0XaNYO920QLHBRRes15WkIjkYon6K6RbcA
+ 3XbK1ENneEXIWny5aMAFG4t1h7c708jPdPqdYJHqzYrguvMWyF9/UWVAt
+ BHlsIJmMtBWkBv3HvNg2WY8ftTx4ycJL+YaVMdYlz6cHqXueIX7ZETM/y Q==;
+X-CSE-ConnectionGUID: n4T6DysfQwC5WBjop7sX4A==
+X-CSE-MsgGUID: kLvnPwHwS2msfPTHSq7ujg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="83504785"
+X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; d="scan'208";a="83504785"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2026 01:12:21 -0700
+X-CSE-ConnectionGUID: NL35BpXxTJ+uK9Ox8wCi8w==
+X-CSE-MsgGUID: w3teu3QzRaiC5q+ZVL7iOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; d="scan'208";a="257132327"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
+ by orviesa005.jf.intel.com with ESMTP; 02 Jul 2026 01:12:19 -0700
+From: Pranay Samala <pranay.samala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
+ sameer.lattannavar@intel.com, pranay.samala@intel.com
+Subject: [PATCH i-g-t v7 0/2] Enable multi-format testing for pipe color tests
+Date: Thu,  2 Jul 2026 13:53:21 +0530
+Message-Id: <20260702082323.3398022-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tools/xe-perf-recorder=3A?=
- =?utf-8?q?_Add_mmio-trigger_support_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Shekhar Chauhan" <shekhar.chauhan@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 02 Jul 2026 06:40:35 -0000
-Message-ID: <178297443584.141365.9432326047431578416@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260702052315.3740840-1-shekhar.chauhan@intel.com>
-In-Reply-To: <20260702052315.3740840-1-shekhar.chauhan@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,182 +62,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4267246310363537688==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series adds multi-format coverage to kms_color pipe color tests.
 
-== Series Details ==
+To ensure deterministic behavior across YUV formats, the first patch
+updates framebuffer creation to explicitly specify YCbCr encoding/range
+instead of relying on implicit defaults.
 
-Series: tools/xe-perf-recorder: Add mmio-trigger support (rev2)
-URL   : https://patchwork.freedesktop.org/series/168824/
-State : success
+The second patch extends gamma, degamma, and CTM tests to run across
+multiple pixel formats at the dynamic subtest level. This adds coverage
+for format-dependent color pipeline behavior while avoiding redundant
+testing on platforms where only a single format is applicable.
 
-== Summary ==
+v2:
+- Add DRM_FORMAT_P010 format
 
-CI Bug Log - changes from IGT_8989 -> IGTPW_15459
-====================================================
+v3:
+- Update commit message (Swati)
 
-Summary
--------
+v4:
+- Split the patches (Swati)
 
-  **SUCCESS**
+v5:
+- Consolidate format structure with bpc info (Swati)
+- Move format support check out of dynamic subtest scope (Swati)
+- Add a common FB helper to centralize framebuffer creation (Swati)
+- Keep RGB formats on the existing igt_create_fb() path (Swati)
+- Use explicit range/encoding only for YUV formats (Swati)
 
-  No regressions found.
+v6:
+- Add FP16 format to the format list
+- Combine declaration and assignment for mtk_10bpc_only (Swati)
+- Use per-format depth in gamma/degamma tests for 10-bit accuracy (Swati)
+- Rename fb creation helper name (Swati)
+- Make YCbCr encoding and range explicit helper parameters (Swati)
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/index.html
+v7:
+- Rebase
 
-Participating hosts (42 -> 40)
-------------------------------
+Pranay Samala (2):
+  tests/kms_color: Prepare FB creation for explicit YUV color range
+    handling
+  tests/kms_color: Add multi-format coverage for pipe color tests
 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
+ tests/kms_color.c | 274 +++++++++++++++++++++++++++-------------------
+ 1 file changed, 161 insertions(+), 113 deletions(-)
 
-Known issues
-------------
+-- 
+2.34.1
 
-  Here are the changes found in IGTPW_15459 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][1] ([i915#13735]) -> [PASS][2] +80 other tests pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [DMESG-WARN][3] ([i915#13735]) -> [PASS][4] +79 other tests pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [DMESG-WARN][5] ([i915#13735] / [i915#180]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - fi-cfl-8109u:       [DMESG-WARN][7] ([i915#13735] / [i915#15673]) -> [PASS][8] +49 other tests pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [DMESG-WARN][9] ([i915#13735] / [i915#15673] / [i915#180]) -> [PASS][10] +52 other tests pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8989 -> IGTPW_15459
-  * Linux: CI_DRM_18736 -> CI_DRM_18748
-
-  CI-20190529: 20190529
-  CI_DRM_18736: 7100870965845da8c31005c07fd1b390bbe96b20 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18748: fa669b282e875afd49a387644ad4d47767fe2e0a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15459: 15459
-  IGT_8989: a8e2cbd2854d7980a9eccecc6e0c801d0824b88f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/index.html
-
---===============4267246310363537688==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tools/xe-perf-recorder: Add mmio-trigger support (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168824/">https://patchwork.freedesktop.org/series/168824/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8989 -&gt; IGTPW_15459</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15459 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +80 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +79 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> +49 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15459/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +52 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8989 -&gt; IGTPW_15459</li>
-<li>Linux: CI_DRM_18736 -&gt; CI_DRM_18748</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18736: 7100870965845da8c31005c07fd1b390bbe96b20 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18748: fa669b282e875afd49a387644ad4d47767fe2e0a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15459: 15459<br />
-  IGT_8989: a8e2cbd2854d7980a9eccecc6e0c801d0824b88f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4267246310363537688==--
