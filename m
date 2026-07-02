@@ -4,156 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2412C43458
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 05:25:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D92FC43458
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 05:30:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5921E10E43E;
-	Thu,  2 Jul 2026 05:25:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B274C10E43D;
+	Thu,  2 Jul 2026 05:30:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UdwBQTA4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TlJqLLvU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 353B910E43E
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2026 05:24:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40EF610E43D
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2026 05:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1782969895; x=1814505895;
+ t=1782970198; x=1814506198;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=oxc8O+iJ2vGDZr7hJ0AqBY5PVK/9NPLn231slOJEnNI=;
- b=UdwBQTA4dH9jwmhUXjG5X/P7Wk62SXSx184rTwVAVoL48Up2CPjVmFfX
- i0AjMOhXXWlfT7mGjOdWnUV02kdrbUjK0mlhiAJPlCn08UpO9KYDQO8SY
- S9R/hdqS3WY7JPx+Rv/BCnw4McJXbK0MjbotDp+rBMtDFGLwy42bmqS9k
- 80Dcp/SjHAtrUqQQTi4seSqOTzUa1fC9Zpppbj6w568e8IYPaSFjflZIq
- uMZkNCQS3sdlnGkxtD5LMURY8muqb5jHzWQ7emj5XrH59tMYdziqAtSil
- EkuKOFySWie2y5rlppRCg/VUWaHHyRRK/rpesNypSabBreP+mHFsZFsrN g==;
-X-CSE-ConnectionGUID: Z7sJscq4RtiMUkjm0RxyFg==
-X-CSE-MsgGUID: UHy7n+4bQRmyfqr+miBvJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="87624748"
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; d="scan'208";a="87624748"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2026 22:24:55 -0700
-X-CSE-ConnectionGUID: nlKRxaYlSzezTbX5PxezIQ==
-X-CSE-MsgGUID: yOVQrIXMSSqViH7EMoInqw==
+ bh=NVpEOQjj+FwqQiwtVOehFDqukD9iCQWRXQWE3vjnRb4=;
+ b=TlJqLLvUC85pxWNJMitsaIuxea9+i/kSfQcMjsSbgej82SG4fgRPwXa0
+ d8ptyRa1rGbQUb5TzZm6CZ+N5xho8MzDYi4G/5DCXkHODMK4eNRrAKNSn
+ ArSKepubl3Cvk7/j/4zzKseDh7R8Tx6Kyai/MgKjxa41Kl3gpCa1vr5aJ
+ RgnCVnEdldx40vrZbG685T5iOC26Q12wXz/xQLSItFxkJDBja7vIzHwbs
+ mgCUjtJP4oBwWkxEa+V6aGH+FYqAYqJ0S7m8P2K+e2m0Tj1KKWGFJ2L6L
+ SRRUoI21kGVjWbD4Q33OZZdqs1zzDv3n6HRKdJZDEDf1Nb192x7fOb8X8 w==;
+X-CSE-ConnectionGUID: RKB9UCMFSbiyjiVwAZQLlw==
+X-CSE-MsgGUID: hZWAVlo6Rw+ChT15eVuxuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="94066710"
+X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; d="scan'208";a="94066710"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2026 22:29:57 -0700
+X-CSE-ConnectionGUID: bAteloK/SBiCHeBDFCsnwA==
+X-CSE-MsgGUID: Kk/PkmQPTfyu2sfgcRtWYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; d="scan'208";a="248303383"
+X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; d="scan'208";a="277074449"
 Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2026 22:24:54 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2026 22:29:57 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
  fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 1 Jul 2026 22:24:54 -0700
+ 15.2.2562.43; Wed, 1 Jul 2026 22:29:56 -0700
 Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Wed, 1 Jul 2026 22:24:54 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.27) by
+ 15.2.2562.43 via Frontend Transport; Wed, 1 Jul 2026 22:29:56 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.2) by
  edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 1 Jul 2026 22:24:53 -0700
+ 15.2.2562.43; Wed, 1 Jul 2026 22:29:56 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GnEBQ0OUjKYBpvkf2PZuc/AbfMJ7fWi1C05my1yBvp1sIBasdd0N2f5Slrrz+A5iJVmSHQJ3Jmpo1Lx5oNymiuVgvPKrocAFhPJ2sTUTPMIy+0pHq9exEHeFiWGRVhDffH2C3Ib7EcOhfHHnmqVJIUloIHM7I9XMkttg4KUQxNTO5Y3Pvq31W5cSvu6cp2k1zRszc+lHNUAAIFpDbrMI6MUj35U1K7ZMad+9cBY61XN/nPV0xE6hoS6/Hx+tgDmT4FkkhD5SSa6lQhNycbf1BSABYEX1GC5RtMiUdcWW9FSkYbnLcPSjZ6dDfnZVh/sb2uDnieoZlA023LNivN1ftA==
+ b=HKyzrfmheAYEtY3I4zo0EkBJxBbSw+osx9wjCeClaDabGJODQrz0FoLva45ggFungo59WhAez0YBf+9eVL6mGiA7YTAotRvU3GkS0Tg22cOwttuQGCUoBC6s09cfuBUxXKfQ3i/+6GtJla0AAWA1o58jtPMO+xySC1qgO52tpj6iYCeVvzvZ53dxF8lBbNFhwLf9c8PhXhLm1AdAc4TcV4Qz4QtUoYqT1N+PNbjMUqDzlCtjWm+VwR9hykjiBptmPGzN0BYZbqQuezo9G7NpDQr/CS9yE8JZSz0va3FjyzNmcxUnFHXZuHQiUt29WWPsJPkhrWB4Wb5KbZdAy+xJjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PzvMJ4B3DCltYQwKRicOlMDi+ntkii9S7b/JQDHAbx4=;
- b=Am28yTOAtpjVdkUeBrTaEygtJRAqsdesZMNuBvhk9N9hfQW3vmGMwbUdHo9A7/rhVzL+/xx24/2ldvryxmNbkdCbow/m2M0qNrkaL/DEvrXmwBbKYai08vRNvp3q/cVuTHm5b/sriBhhdEVgdAQeFhMDMF4gkyzDK9ISPZ11TiOc8j2WlH6myYSjvUugzdKSHxuk16GaSvOhHqeD+lJCx5lkD+kyQ9PXtb1HNg5MEFGTTTnzAkycgrfQEFVivPRNU+ER1NFLoyvAUjXTprOMEs+K4fCN2G+sud8FWjyYcqrOqXEONW973Ru4dF6bcmMsvkUmZL0GubQ1cfU6itP4LA==
+ bh=sYEhuH31ykqKEqJa8ZvWeRDWvct2CgM8SBVAu9yFJzM=;
+ b=V6IFSOgpmayge/qK+rYblYvz3FGUuvqPFyqDHo8v6b2xih6i3ctJmCK8lB14vtsVR3QB8dQstqgYx/qos8oQLmN1pu3lP3kTST+fEYi6AGwLoiOvtCkY/orCqXsCrYxYofBjmdYRc/Khe1t2g1nY2NGWOcRxO+ucwugY7vv6caXeBw9WnzqwJYMqPFix1czP1hDaz7RjwmOTMl/mVs1I9PcrMJ9kNuscHgH7krg/lmZ37iWN8atqXbzDvmotdQVpNrnWXeYaXEn3k8bE1PhEsDwwqg98THpCe231OZjGusrE6xOkH8amhiODU2fIvpad7uByduWj/wrfFEcsmHMQfA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH7PR11MB8600.namprd11.prod.outlook.com (2603:10b6:510:30a::18)
- by DM3PPFD5EE188BF.namprd11.prod.outlook.com (2603:10b6:f:fc00::f53)
+ by SA1PR11MB9876.namprd11.prod.outlook.com (2603:10b6:806:4d8::24)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Thu, 2 Jul 2026
- 05:24:45 +0000
+ 05:29:48 +0000
 Received: from PH7PR11MB8600.namprd11.prod.outlook.com
  ([fe80::b93:cb17:6e06:2580]) by PH7PR11MB8600.namprd11.prod.outlook.com
  ([fe80::b93:cb17:6e06:2580%6]) with mapi id 15.21.0181.008; Thu, 2 Jul 2026
- 05:24:45 +0000
-Message-ID: <e91e3d44-645d-4704-a7f2-c510390d6f3a@intel.com>
-Date: Thu, 2 Jul 2026 10:54:39 +0530
+ 05:29:48 +0000
+Message-ID: <cc332bf0-5b42-4f13-a157-ba491ffca15b@intel.com>
+Date: Thu, 2 Jul 2026 10:59:43 +0530
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] tools/xe-perf-recorder: Add mmio-trigger support
 To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 CC: <igt-dev@lists.freedesktop.org>
 References: <20260619050217.2112851-1-shekhar.chauhan@intel.com>
- <87bjctj9qy.wl-ashutosh.dixit@intel.com>
+ <87a4sckd9v.wl-ashutosh.dixit@intel.com>
 Content-Language: en-US
 From: Shekhar Chauhan <shekhar.chauhan@intel.com>
-In-Reply-To: <87bjctj9qy.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <87a4sckd9v.wl-ashutosh.dixit@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0022.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:177::6) To PH7PR11MB8600.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5PR01CA0024.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:177::10) To PH7PR11MB8600.namprd11.prod.outlook.com
  (2603:10b6:510:30a::18)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB8600:EE_|DM3PPFD5EE188BF:EE_
-X-MS-Office365-Filtering-Correlation-Id: 710fa6b1-fd3c-4778-0670-08ded7fa3a1d
+X-MS-TrafficTypeDiagnostic: PH7PR11MB8600:EE_|SA1PR11MB9876:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d2a0529-b333-4e38-8e1f-08ded7faeeea
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|23010399003|366016|376014|56012099006|11063799006|4143699003|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: IaxRuREJ6LTiyS+lwfmE+f/xmkUZHxvHbu3LNK6io+HKKdw/tFjJV9YNTvdQloNptR8GEmTfGM7NDczK8re1ga8mcGtX/cRVL589zAe60G8kQnArioZYoJNgnb7yQrNVuMSMR3Rh2/OTpk5rLDd6qmwQ2e2lirEtqaHx80RL/nXP43krL+FSr5IKBlYh2VIegtQQklZM6nDfck9A2KuxldRt6WmdyrbbSuTMaZzSNQj0ZLB+4ftbOlWX1aI2dgSm2c1jJIPI48wTgUlDxKlHWM4xOXzSh7Ss68KWzADOVg7K4BeWqgf3oRfL535tgqawbNjemW1Hji5qBGGOe7CGEZhLP2gVPf20qrUXAcZ5yAQ8zo7SUn8HoSX0T5AcshfYDT6zCD0VYBuEuKBJb9gqNTNUvVN9GmafYPm3AbR1AYzkSo1MwDb68Cm5IvrxzqNFgBVZ9MXsLoaNh466elni8N61O29qQFTqZ7E/fgr9BNkPWuYzsbAH5oLJTdHrQt2ZB30SoMbENmcQdBDNBbKlwmq8YaghMdiwgfkfj1TqktUHjkdZzgpy9d03mTy4j17BT56m2Mxk5Jk+PFnTDKQ6Sd8JRztH4qDhzcy9E9tUOKgWmXl3dizwFiWdKA0+cXi9YU+u6WJherbmcxFxYJF3yPW4kYYU6AuTWqGnoVddA2M=
+ ARA:13230040|376014|366016|1800799024|23010399003|22082099003|18002099003|3023799007|6133799003|4143699003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info: N6U5AYESQP0+ZeiXkfr5JA1RxYnSGScYraBRdAr77dWBV+fL1zHvt4vSGDCMWAH6cUQbT2e0hmcj4NflIt3eyTHS0clp9H3rxQq3dLmn5BgIGyLIuRsG52XfHRtwv5RzmV1NxwxL3sbpFPySEqskqz/jRGNSflxdPQSugbdhdJ64yBb5sqieb7GHphpi6ZWW/5oAJ0eULtGsiJWdPTlW1G4Zaa664S+MYmcoRpeDW0JYuhsI9j6lDFPCpoYRmJ7kHAU5I6kI//bq24/epQZaLQJGkwhVMT27UVM50zLzofWta1OOrfNrrfVM+f6k7PQGizp7Iub4rnhM9f3z2F/HAKv+WaH58HTipYeI7M40ErMoKOcoUOkcIwe7E0OuRMjrBEgjbt3pDI035puJAFM5ZroOHasBh9C5rVF1N53CkgpH133SZH2RsPCjvFjJlr4Bl0q22DaBjgHBdP4a31IiGrzamfh/+9x7F40w+OQS1A7u2CQGAUZLIwGbhH7J7rjs21LTLnHwQ0PNADKvZJfX7b+WobNnPw96YLrdbi2o8AQm0RvUN0F2lzBM56xgcpUkqgT7zdAeFBj0kK7O4Vlah23jV7HysP3PBK9SP3rIv7yobzpciitdXYyXdPrxJyqAWIKByUpwm/5diFBJRD6r6m7EqF88qkrxEShQo2y3tiw=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH7PR11MB8600.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(56012099006)(11063799006)(4143699003)(6133799003)(18002099003)(22082099003);
+ SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(22082099003)(18002099003)(3023799007)(6133799003)(4143699003)(56012099006)(11063799006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eUs3ZW02aE96bHpMc3h4cVM5SldpQnR5YjRiSnIvU1hSUitOUm5MZ1J5bWJI?=
- =?utf-8?B?WGw4NjVHM2tML3FieFREWEpIaFhJNWFxYlNvZzV5RElBTml4NlhrK0xSOUdk?=
- =?utf-8?B?cEJDNHNhTVRQekRDaFJhQUFJZHlHWGtrdlhyS0ZLYWM1azFXNzBqWXc5eWM5?=
- =?utf-8?B?blRXeTF3enRlVUd5OTJRaG9vck4vY0J4NmN1UzNjRVUrR2tzTngxODA3WEFm?=
- =?utf-8?B?RGZERTlTcm5VbVk2MTZhN1VuVC9DbjM1anZBTXkxaFhPNVAyK1dydTFuTjFa?=
- =?utf-8?B?YjZiOXFuRk5HclZqb3VrOWlLcDN5T3hqTjl2bjZLQVk5cnJsUmxGSjNVQ2dW?=
- =?utf-8?B?N2Q1UTdGZzF6L2VLa3I4czdleEZpQ2x4QjVLWjZIOUlUS0xZUXpkeWlPV3pq?=
- =?utf-8?B?bGxxcGVpMWIyaTlNNEc2TURDS2JETTNwYlRNSUdhenVCQlBYQ1dZZEdPejVU?=
- =?utf-8?B?bGJkYlhLSnloRkpPYzRqWnlZMWExOGJURDdRSFVzdjYrd3FSWTF4ZnJoVXlx?=
- =?utf-8?B?aW9mbkxYOHB1OWNjanlYeFMxYjdkallOR01nQ2ZkajZCUzkxaWU1ODl0NTRS?=
- =?utf-8?B?RUpXOXkvVWpObFczekJVbUVELzRibnlaVElCNzJsdkhCQmZRck5aWXJ6bnI0?=
- =?utf-8?B?dW5iSFl1cnhTN2ltTGlldGlzM0VzV1NsdEtCcWhzU3NhZDVkeGxySUJaK1Bs?=
- =?utf-8?B?VUFzaE1iM3BBY0E3dDFMckdEK2h6dzFRd2kyakRlNXUxVExaTHBFRTVyMGU2?=
- =?utf-8?B?TS8xT0x6Y3ZPcEIzeXZRSTRaSFZIY3IraXVQcHgzekZaVGc3anhDUHgzaWtD?=
- =?utf-8?B?ckZ3cC84eXI2TEk5V0c0ZHViQ3JqeFZCKzRGS25MS05WR0FmN3YvUGVKUVI5?=
- =?utf-8?B?cWdVN2FQTDFwMFFITmJ6WllpckUvajAvNGc1cEphWXlWNFk5RmJjRzBzRFRU?=
- =?utf-8?B?NXNwc09zUHNxZ2drazFTdEV4UjVqK045U2JRbEs0Sk5ubEdOcEtmemd5TkZP?=
- =?utf-8?B?Zm5EYkF4YXJUbjM2d2Vhald4cnV0SDVmQ0dsWW11cHFhTnlIMStBOUd5Tmhn?=
- =?utf-8?B?dEZtdDhCNWVCaUpIOEVqNkFxeUQ0bk9WZy9UZkZpdGJWYzltMXIyazBSeTBz?=
- =?utf-8?B?Uk82MytSc2Ewd2FSdzQrRHl1N3QwVHBPQnlBQlpSd2tYM2dWdUVib0hDYVR4?=
- =?utf-8?B?dUUyK3NNMzREbFBhZWtGM0oybEFnU3BsNHVJWTllYldOYk1yOFVZMk9pdFZC?=
- =?utf-8?B?bTRlZXRVb1JReWhlOEE2TkhXS0dQZk5mdm1XcUpTUVRPTFB5VnI0SkhQb0lv?=
- =?utf-8?B?WHMvdytpOUViMmFvREdYOWhOU1NuL3NhY1lvd2VqR3YySmVQUUxiYzJMeldl?=
- =?utf-8?B?dm1ZWWR4K0xzYzhZbjVBY1hSMEtpSWlRbmZ1NkhaRFdqaHZzUFhYQnkxTGhs?=
- =?utf-8?B?aXZwTmFtYUljbEpBS2UreGI4djJNWEhBS3lWaWg3TkcvTG5BUnJqcjBXOUJN?=
- =?utf-8?B?SklZcCtKSytORjFmR1B3U0VzSVZlTFB3Q1BBdjZSVGtNNDBQd3BVQWdqelNs?=
- =?utf-8?B?ZUhPREVhMkIyczdtcUtmUTlRV3RSemJrdVpPZ0JvU0JTa0JVVmdHTnpUVnJO?=
- =?utf-8?B?OVF2ckFxdkJ1S1NWVzVZOUQ2cnl0YUF1WTIwSkhLQ1BvNXZ0bHQvUW1DemFw?=
- =?utf-8?B?Z05oQ2Z2NWprRXI4QmIxd3dQSXU3NVlXTGZ0QVhPQkQwSVFJdHJSa2JTY1di?=
- =?utf-8?B?RnppWGtxaDVKOG1XOG9ZVGJtYnNJVG5DaW9qV3BVN3BYRE1tNm5pSm52aFdw?=
- =?utf-8?B?TTRuc0ZsdEN3THlpTXBkNjRHQVdMYm8wa2dQSmRhcXBqQVRWZTRzUGJwbzNL?=
- =?utf-8?B?a0ltWE1hMU5tblFUZ0doQmdVdUNQZ3JZQkJxdCs4UXY0aHd5M2VOWmJyTFpJ?=
- =?utf-8?B?TWJPMXpyVmZEMVBwUS9PdThwY1V2ZGJqM0MwTlQ3OXJoUTRRdTJMUFI4N21Y?=
- =?utf-8?B?K3ZzYWp4ZXdrcXBoZldPRjV6MkZwS253cVRLYWlLenhWdG95dHNKQzNTUW1i?=
- =?utf-8?B?TXl0NGV1WEhNSXVRSHJUZGU3QzhjU0h4SlBIbkhvUHA2QTVrcmkzRVhORysx?=
- =?utf-8?B?ejlXeERaR08zNDdra1JMSm12OWlGSHE1RDAxZ3dVTXlNb3gvRmNDa1lROEIv?=
- =?utf-8?B?N3NPbkZFRGV0Y1JFK2Z0OW5iYVBPbVhlOHZyVW5lRGV4dUM1ZUZ0ajhDMkdO?=
- =?utf-8?B?SFVXQW04K3ZQWG1KOCtWOEhuVGdteWVsVGJPb0NDY2Z6ZFhvMFd6Y29XVEV1?=
- =?utf-8?B?eVZic3Bub1YyQitrdWoxenhDUnBRbml6K3FIOHp4RFIxYXEzZ2RjK1l5NGxZ?=
- =?utf-8?Q?HM+952jnnGmIVE9E=3D?=
-X-Exchange-RoutingPolicyChecked: kP3jnpMk90O4Tg9wLVLQmn1bIm2fAEitcS1ZTbRrz2wJla/bqadT7ViJKa91zQhrUMpAW1GRgzrN2HpBRsqr6plDYgVKckwYhi3FDT21Fj0jpr6JyBCwnG5sWRr5zIxE++QcFWGDDnkh3ULQm2FCs46jWA9HLEpisQLDTGo1nM9HgwS7yS31atnzQA5XN9/k2BocTXxNA035Mq8SseJPtFvkI2HOHqlXLvkG1RyWBV1YSXrzypqKgFPe1CZ37OAg4QkZbCjh8PNFk9IzcaTzxxDWsZPup37u93zhn07pdZESZc76h1RI/Xn5mmV1q0t5BUPmRU+hU7jD1cqya5pt1g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 710fa6b1-fd3c-4778-0670-08ded7fa3a1d
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Wms4Ym5lbXpNejhjM2lad0hIQ2RlUFZ2eHZKMkp3ZVN2d3FYa3UyQXliNnh6?=
+ =?utf-8?B?SDF1Q213eXRQalVqT1Y5K2QxakdxY0RrSVR0RW1QZkU1L2piM2FNdUk3VmVh?=
+ =?utf-8?B?RFQ4WG9COTZkR0FwbzR6bzFTc05JSENjYTMvUTYzQS96S2VQWjdVWExQN2J5?=
+ =?utf-8?B?dFZsczRTYTh6cUhsbnNsM1FpcEdmWVY5UlpQTVRGbFg3bUt0dW1hYXRaWXhX?=
+ =?utf-8?B?bGcweFFLdlhkNUZRYXR1czNmTm5LZVRVcU1sWmNLTHFWUFF2Y0tKL3cyKzd1?=
+ =?utf-8?B?VDdLVFBjZThiRlo4bDhjeVUzNlVqYUJrNXRJMVFlMlI5cEtDOW03NHk2Q01a?=
+ =?utf-8?B?WW02NkN2VkZPZ1Z6NnByUkVSWVdGbVpHUCtkNG5aYkFtT2NXaUdpQWIxOHFv?=
+ =?utf-8?B?WmszNmVRNUhDUXg1S1ErMnE1SWsxRXZ6eC9kdWpBYTZtZ2lEZVNyWlhZQUVm?=
+ =?utf-8?B?c1FQLzJ1REFnb25ieHpnay84Ulp2dXFCMGFvVDlOMThuK21SNmtTU1ZJVzhW?=
+ =?utf-8?B?K1gwTW5IQzFjZHJldDR2WkcvcmlZV2FpN05BNHFObVRTQnlMR3lGc24xRDdu?=
+ =?utf-8?B?c2dldzJBRCsyL1V2V2FJSDR6QmdnUlNEeDRiZHRGek1oNzA1Q3NINUdNT2M2?=
+ =?utf-8?B?TzJ1T3J0dDEvWTRidnBsRjA0WWhnY0V1eE1ZbklsbmVHUFp5Tmc0RkZSYlUr?=
+ =?utf-8?B?TS8zSUlMUkpSZk4zekZ1RW43L3VYcHhUVGFlV2NCU1VQMVh4YUV5OUtHUnJ6?=
+ =?utf-8?B?Y1BaNDZkLzAwOXFJeTdENDNvL1VPN2VPYVNUZmw4VlNObmFiT2l4QXYxaWVM?=
+ =?utf-8?B?aEtMVWFib2NKNEFqUnRFSEtRTkxHZTZvZGxHWW9WamU4QkxQdFI5NWQvR2xD?=
+ =?utf-8?B?Zlh6T2dXK1hWWkhnMklSeU9IQk1RQWJCTWlRYWlGQWdxd2dRTzdqZ1lSS2Nw?=
+ =?utf-8?B?V05XTmFWZEJjSmJ0R0hXTDJHenFJRSsyRU9JeDZXa0taN2RhR3BjUmgzcW1x?=
+ =?utf-8?B?SjZwWTJmZ2NKYmtNemo5eHNaZnhDdHF4S0ZpOS9rWjNDT1B4TG9MVndnVHp0?=
+ =?utf-8?B?OHVyaW1RcHJ6TVQyMk4zMnNObWdVdGQzcC84S0JEMHNrWVZBOTdIQkNwQ3FM?=
+ =?utf-8?B?d3BETzFDWjdHZGZHZkoxZVRzK2JZUmpiWTJVUTMyeFBKeEpqcSt3RVc4aE1R?=
+ =?utf-8?B?TGRhVEQzM1RGR25aMGU4bEEwOXpKd3ZoOW41aHlkTzNiYXNIQ0xJS25nd1Iw?=
+ =?utf-8?B?NHF5NWc3QUQ5QzdaZ0ZrMGZZdGxraDJUK09oeWJiQXViK2xPT3FvN2ZnaTRX?=
+ =?utf-8?B?TGZkaTdid3Bld2dxdU83Q3NhRlROWjdYVktDQWJ1SmZVdEJMd1RMRjNTbE11?=
+ =?utf-8?B?eVl0dEh1NzFRaDdsb1hRN3M5ampSSXJpc09JSlNucWVKQVZUR2tKUWFlTzVI?=
+ =?utf-8?B?a1hmNnJFaVNtdGhZd2NrbjVPT3dIZjZLZ0x6czNSWjkzYk5LRWlvL2Z6M0Vy?=
+ =?utf-8?B?TndQVXFvMVQrZURmNlQ0WTJnTzBIVFYzMGllVC91d1NmZE9MTXhCWllYOC9H?=
+ =?utf-8?B?dzBtcWhwQzhxbEVGTi9OVWRwTWw0OTZpeDhST2xlMlZrQWpDcC9wM2JHbm5Z?=
+ =?utf-8?B?ZXQ0RUNMSmNTZHl2eFBNT2Q2OXZvZVRNbU1rVFhRQ2pBOSs5UXhtMU0vaXpt?=
+ =?utf-8?B?WVA1QXRDa3Z2NFpnUzN2aXMyb3FWckIzMy9hWkVuOXh5TzRmZy91cXdoOW8r?=
+ =?utf-8?B?d2tmMWpsZGZlb1pSZy92WU4rZVZ3VENwckxZbzhDSUNManBWeGFubm5qWE10?=
+ =?utf-8?B?RWFGQVZUZER0OUYrSEpqOEpGN2JWbzZGT1BOM1RpemQrR2lGeit6bytTeDBS?=
+ =?utf-8?B?eFF1cS9oWDNlMXlXbVJlUjR6UXpqTzZJQUtuZE1vVWh5VHU4SnhYcktMaGV3?=
+ =?utf-8?B?Mjlyd09iTDZZS1B4UWZlT3Z6L1JUb2sxUEo4MU80SytLMkxrSzZmQlloVWpv?=
+ =?utf-8?B?SmU1TXhLaEwzQmVCWXhDSjhYSDNjRUdrc29jaTlYMG41V0RrZ1FpWURBdmVC?=
+ =?utf-8?B?cisxdVJPcWQ5dkNFUzlwR1pteVQ2c2ppT1lkUmJGYVVJeGZxZVg4a3hnTG54?=
+ =?utf-8?B?bVVkOG5ZZ2I2NXBnWm5ZamZKVkwxeCtTNXN2dGhyR0d1K2wrT0h0VFR5T2F3?=
+ =?utf-8?B?N2w2blAwNXMzSXJYa1FyYitNK1I5RHNJVWY5UDU1d0gxL0Y2Vy9odGYraUo0?=
+ =?utf-8?B?SW1yazhKZ1BESVhGNmpkOWZxQzY2YktibzRWSDJkRWtCQmcyaWFVM0kwc3RG?=
+ =?utf-8?B?ZFFqYS9EMnpPbkRGVEdnZWV0STBSeTIxNUtPVVhweEZsdXk5cXgrOUdWWVVz?=
+ =?utf-8?Q?V70EFo+aF1i6RGQY=3D?=
+X-Exchange-RoutingPolicyChecked: HfggwTD8Zz+GkLeNH5lN9KPyl2gVxdfqoiaQrXuRCS4fb6avsd7S780dCDeN/nbIlw3XkMf9EpBZnLCKE5Yj/HmfIBadI+dfCii3Gp5l7c5e3a7qq/R0WJ1Pp/vox1h6MQh8f1yEyk/Fn2k/o3dQjLLgc/TA8Jf55dc9uioWX7JZrHrY3hMUOu+gQc+R+pQPWv5IoBTt0NORBG66G17Dc2lM2i9xE6fIwnAyKClekTmnzuhIkKWt6gaAo1WrKOuPGqWJ30Ac5Qs3hZUasABAGzvpY2IKuHK146UG1ijrIrAhN9cZbtOyo86a+qkH+coZP81AkKFesr1kx+qJArUVSA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d2a0529-b333-4e38-8e1f-08ded7faeeea
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8600.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 05:24:45.3698 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 05:29:48.4959 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +3ax22ZvVcswE5GzU/5w+lgVnD+M/dP+aVkI9oq4FTIqQ6VqTdbNdyBr9Ora09wRmKN7OiBbwjKmYF7BvnnwXNolWMKKOLktDXh94lN+J+I=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPFD5EE188BF
+X-MS-Exchange-CrossTenant-UserPrincipalName: kuj1JVCkO8ZBP0DuEfha7YQMU0jZt1fIHOW0B0cz8SGdIWPnpyxD+KCIlAGMcY7uWhblNf8yr40+UtqNsee4XJtdohWhEdS9f04YIL+HczY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB9876
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -171,35 +171,239 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 6/30/2026 3:21, Dixit, Ashutosh wrote:
+On 6/30/2026 7:20, Dixit, Ashutosh wrote:
 > On Thu, 18 Jun 2026 22:02:17 -0700, Shekhar Chauhan wrote:
 >> Add mmio-trigger support to xe-perf-recorder, to justify the
 >> whitelisting of OA MMIO Trigger Registers in XeKMD.
-> We can't have these compile warnings:
+> Good description!
 >
-> $ ninja -C build
-> ninja: Entering directory `build'
-> [4/952] Compiling C object tools/xe-perf/xe-perf-recorder.p/xe_perf_recorder.c.o
-> ../tools/xe-perf/xe_perf_recorder.c:41:9: warning: ‘ALIGN’ redefined
->     41 | #define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
->        |         ^~~~~
-> In file included from ../lib/intel_batchbuffer.h:10,
->                   from ../tools/xe-perf/xe_perf_recorder.c:30:
-> ../lib/drmtest.h:100:9: note: this is the location of the previous definition
->    100 | #define ALIGN(v, a) ALIGN_MASK(v, (typeof(v))(a) - 1)
->        |         ^~~~~
-> ../tools/xe-perf/xe_perf_recorder.c:42:9: warning: ‘ARRAY_SIZE’ redefined
->     42 | #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
->        |         ^~~~~~~~~~
-> ../lib/drmtest.h:91:9: note: this is the location of the previous definition
->     91 | #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
->        |         ^~~~~~~~~~
-
+>> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+>> ---
+>>   tools/xe-perf/xe_perf_recorder.c | 83 ++++++++++++++++++++++++++++++++
+>>   1 file changed, 83 insertions(+)
+>>
+>> diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+>> index f200fe9c9..48a7d55d4 100644
+>> --- a/tools/xe-perf/xe_perf_recorder.c
+>> +++ b/tools/xe-perf/xe_perf_recorder.c
+>> @@ -27,8 +27,11 @@
+>>
+>>   #include "igt_core.h"
+>>   #include "intel_chipset.h"
+>> +#include "intel_batchbuffer.h"
+>> +#include "intel_reg.h"
+>>   #include "ioctl_wrappers.h"
+>>   #include "linux_scaffold.h"
+>> +#include "xe/xe_ioctl.h"
+>>   #include "xe/xe_oa.h"
+>>   #include "xe/xe_oa_data.h"
+>>   #include "xe/xe_query.h"
+> Could you fix these includes (even previous includes) to be in alphabetical
+> order, which is the convention we generally follow.
 Fixed in the new revision.
+>
+>> @@ -39,6 +42,10 @@
+>>   #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
+>>   #define MAX(a,b) ((a) > (b) ? (a) : (b))
+>>   #define MIN(a,b) ((a) < (b) ? (a) : (b))
+>> +#define OAG_MMIOTRIGGER 0xdb1c
+>> +#define TRIGGER_BB_SIZE 4096
+> Just use BATCH_SZ.
+Fixed in the new revision.
+>
+>> +#define OAREPORT_REASON_MASK 0x3f
+>> +#define OAREPORT_REASON_SHIFT 19
+>>
+>>   struct circular_buffer {
+>> 	char   *data;
+>> @@ -354,8 +361,21 @@ struct recording_context {
+>> 	int oa_unit_id;
+>> 	struct drm_xe_oa_unit *oa_unit;
+>> 	struct drm_xe_engine_class_instance *hwe;
+>> +
+>> +	uint32_t vm;
+>> +	uint32_t exec_queue;
+>> +	struct intel_bb *ibb;
+>>   };
+>>
+>> +static uint32_t oa_unit_mmio_trigger_reg(struct recording_context *ctx)
+>> +{
+>> +	switch (ctx->oa_unit->oa_unit_type) {
+>> +	case DRM_XE_OA_UNIT_TYPE_OAG:
+>> +	default:
+>> +		return OAG_MMIOTRIGGER;
+>> +	}
+> This is not sufficient. The recorder currently supports all OA unit
+> types. Can we do similar to:
+>
+> 	struct xe_oa_regs regs = oa_unit_regs(oau);
+>
+> as is done in __test_mmio_triggered_reports() in the IGT and initialize the
+> register(s) in the beginning. Different is also ok, but at least let us try
+> to cover all OA units.
+>
+> Also, please test these changes with OAG and one of the
+> DRM_XE_OA_UNIT_TYPE_OAM OA unit.
+Added this in the new revision. Borrowed some code from assign_oa_unit() 
+and assign_hwe().
+>
+>> +}
+>> +
+>>   static void set_fd_flags(int fd, int flags)
+>>   {
+>> 	int old = fcntl(fd, F_GETFL, 0);
+>> @@ -569,6 +589,23 @@ static bool write_stream_status(struct recording_context *ctx, FILE *output)
+>> 	return true;
+>>   }
+>>
+>> +static void
+>> +check_mmio_trigger_report(struct recording_context *ctx, const void *report)
+>> +{
+>> +	const struct xe_oa_format *fmt = &oa_formats[ctx->metric_set->perf_oa_format];
+>> +	const uint32_t *report_32 = report;
+>> +	uint32_t reason = (report_32[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
+> Let's copy report_reason() function from the IGT too.
+Done.
+>
+>> +	uint64_t value;
+>> +
+>> +	if (reason)
+>> +		return;
+>> +
+>> +	value = (fmt->header == HDR_64_BIT) ? ((const uint64_t *)report)[2] : report_32[2];
+>> +
+>> +	if (value == 0xc0ffee01  || value == 0xc0ffee02)
+>> +		fprintf(stdout, "Received trigger report with value 0x%" PRIx64 "\n", value);
+> When you test this, do you see both these values?
+
+Yes, tried it on a PTL device with both OAG and OAM units. I opened two 
+terminals, once for recording and other for sending a trigger, I could 
+see that it was getting dumped. I also tried with a single terminal and 
+then stopping it (via CTRL+C) and since the new revision is supposed to 
+add a new trigger at the end, it showed me c0ffee02 when I stopped 
+recording. Hence, I believe it works fine.
+
+>
+>> +}
+>> +
+>>   static bool write_stream_data(struct recording_context *ctx,
+>> 			      char *data, ssize_t size, FILE *output)
+>>   {
+>> @@ -582,6 +619,8 @@ static bool write_stream_data(struct recording_context *ctx,
+>> 			.size = sizeof(header) + format_size,
+>> 		};
+>>
+>> +		check_mmio_trigger_report(ctx, data + i * format_size);
+>> +
+>> 		if (fwrite(&header, sizeof(header), 1, output) != 1)
+>> 			return false;
+>>
+>> @@ -697,6 +736,22 @@ write_correlation_timestamps(struct recording_context *ctx, FILE *output)
+>> 	return write_saved_correlation_timestamps(output, &corr);
+>>   }
+>>
+>> +static void emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t reg, uint32_t value)
+>> +{
+>> +	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
+>> +	intel_bb_out(ibb, reg);
+>> +	intel_bb_out(ibb, value);
+>> +}
+>> +
+>> +static void emit_oa_trigger(struct recording_context *ctx, uint32_t value)
+>> +{
+>> +	emit_mmio_triggered_report(ctx->ibb, oa_unit_mmio_trigger_reg(ctx), value);
+>> +
+>> +	intel_bb_flush_render(ctx->ibb);
+>> +	intel_bb_sync(ctx->ibb);
+>> +	intel_bb_reset(ctx->ibb, false);
+>> +}
+>> +
+>>   static void
+>>   read_command_file(struct recording_context *ctx)
+>>   {
+>> @@ -726,6 +781,9 @@ read_command_file(struct recording_context *ctx)
+>> 		if (file) {
+>> 			struct chunk chunks[2];
+>>
+>> +			emit_oa_trigger(ctx, 0xc0ffee02);
+>> +			write_perf_data(ctx->output_stream, ctx);
+>> +
+> Looks correct to me, but I am still wondering if we should move these two
+> lines slightly above, just before the line:
+Done this as well, makes sense, dump/write the triggers as soon as we 
+get it and not wait for any other process.
+>
+> 		while (offset < len &&
+>
+>> 			fflush(ctx->output_stream);
+>> 			get_chunks(chunks, &ctx->circular_buffer,
+>> 				   false, ctx->circular_buffer.size);
+>> @@ -835,6 +893,13 @@ usage(const char *name)
+>>   static void
+>>   teardown_recording_context(struct recording_context *ctx)
+>>   {
+>> +	if (ctx->ibb)
+>> +		intel_bb_destroy(ctx->ibb);
+>> +	if (ctx->exec_queue)
+>> +		xe_exec_queue_destroy(ctx->drm_fd, ctx->exec_queue);
+>> +	if (ctx->vm)
+>> +		xe_vm_destroy(ctx->drm_fd, ctx->vm);
+>> +
+>> 	if (ctx->topology)
+>> 		free(ctx->topology);
+>>
+>> @@ -912,6 +977,18 @@ static int assign_oa_unit(int fd, struct recording_context *ctx)
+>> 	return -1;
+>>   }
+>>
+>> +static int init_trigger_ctx(struct recording_context *ctx)
+>> +{
+>> +	ctx->vm = xe_vm_create(ctx->drm_fd, 0, 0);
+>> +	ctx->exec_queue = xe_exec_queue_create(ctx->drm_fd, ctx->vm, ctx->hwe, 0);
+>> +	ctx->ibb = intel_bb_create_with_context(ctx->drm_fd, ctx->exec_queue, ctx->vm,
+>> +				 NULL, TRIGGER_BB_SIZE);
+>> +	if (!ctx->ibb)
+>> +		return -1;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   int
+>>   main(int argc, char *argv[])
+>>   {
+>> @@ -1180,6 +1257,12 @@ main(int argc, char *argv[])
+>> 		goto fail;
+>> 	}
+>>
+>> +	if (init_trigger_ctx(&ctx) < 0) {
+>> +		fprintf(stderr, "Unable to initialize trigger context\n");
+>> +		goto fail;
+>> +	}
+>> +	emit_oa_trigger(&ctx, 0xc0ffee01);
+>> +
+>> 	corr_period_ns = corr_period * 1000000000ul;
+>> 	poll_time_ns = corr_period_ns;
+> Also, I think we need another emit_oa_trigger() just before the following
+> line:
+>
+> 	fprintf(stdout, "Exiting...\n");
+>
+> Because this is the other case where data is directly written to an output
+> file, not to the circular buffer. For gpuvis we use the circular buffer, so
+> that is why likely you don't see an issue.
+
+Done this as well, explained this in the above comment on how it appears 
+in testing.
 
 -shekhar
 
->> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+>
+>> --
+>> 2.53.0
+>>
+> Thanks.
+> --
+> Ashutosh
 
 -- 
 Shekhar Chauhan
