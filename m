@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94814C43458
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 17:43:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F50C43458
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 18:27:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3F4B010E516;
-	Thu,  2 Jul 2026 17:43:03 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0B0510E51B;
- Thu,  2 Jul 2026 17:42:33 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7015313269417288817=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 981A910F55E;
+	Thu,  2 Jul 2026 18:27:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N5SEwlEz";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A2FD10F55E
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2026 18:26:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1783016799; x=1814552799;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=L0/pij3RGdWf9KdBVupopfHP67RoRkT9NC5LMhUxLLk=;
+ b=N5SEwlEzW3gMbbKwCSOLIqIIFUxgYGjQkSYYA6EmAK7AiBNHGtsR7YWu
+ 8v5wHt6W1XDMyUo4bsrnn/vAiMsS2sJwiuoELaT8AHOCeN2H4eUyZVwwB
+ nxIPITXQXmGxR+8ot8UkUDS1ZjAfpZi1wMnp+Xtr8piUEPNoiDOdfXNvg
+ vueBJHtILhUSaOgDOGfTUKyVoFp3gbKUHGZHUZiDYZo0pd3x8Y8j02dog
+ Dw2D1bnaPEUR+4fYtEFHUa/oA1jlckEy6hNg8xOccReUy7rKjXGYiOUsj
+ DynFx08ptUMLgC46uFVm9pAelO6lLK5uC345Y9/FkGqiG7JIwlRDtsOE4 w==;
+X-CSE-ConnectionGUID: 7BP6LZlrQKGtdk4PRGSIJQ==
+X-CSE-MsgGUID: gWvEhOAbQwiRbGXrBDw6fQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="95154699"
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="95154699"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2026 11:26:38 -0700
+X-CSE-ConnectionGUID: PXkoQhekReiDngH30uFIAA==
+X-CSE-MsgGUID: aTxIUBBmQ2aRmnfPY7ukdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="253577091"
+Received: from dev-417.igk.intel.com ([10.91.214.181])
+ by orviesa009.jf.intel.com with ESMTP; 02 Jul 2026 11:26:38 -0700
+From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jani.nikula@intel.com, suraj.kandpal@intel.com,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v5 0/7] Vswing / Pre-emphasis Override decoding
+Date: Thu,  2 Jul 2026 20:26:12 +0200
+Message-ID: <20260702182619.3973788-1-michal.grzelak@intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Enable_multi-format_testing?=
- =?utf-8?q?_for_pipe_color_tests_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 02 Jul 2026 17:42:33 -0000
-Message-ID: <178301415391.145556.16863856190373524547@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260702082323.3398022-1-pranay.samala@intel.com>
-In-Reply-To: <20260702082323.3398022-1-pranay.samala@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +65,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7015313269417288817==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Next version of [1]. v9 of kernel part is at [2].
 
-== Series Details ==
+[1] https://lore.kernel.org/igt-dev/20260616111202.1254067-1-michal.grzelak@intel.com/
+[2] https://lore.kernel.org/intel-gfx/20260626234246.2446451-1-michal.grzelak@intel.com/
 
-Series: Enable multi-format testing for pipe color tests (rev4)
-URL   : https://patchwork.freedesktop.org/series/167634/
-State : success
+BR,
+Michał
 
-== Summary ==
+---
+Changelog:
+v4->v5
+- show all Combo's columns
+- change shown format of Combo's tables
 
-CI Bug Log - changes from XEIGT_8990_BAT -> XEIGTPW_15460_BAT
-====================================================
+v3->v4
+- rebase onto master
 
-Summary
--------
+v2->v3
+- show whole invalid DEVICE env var (Jani)
+- return 16 rows on MTL instead of 10
+- use Cx0 for Snps
 
-  **SUCCESS**
+v1->v2
+- check platform basing on devid not VBT signature (Jani)
 
-  No regressions found.
+Michał Grzelak (7):
+  tools/vbt_decode: fix tables' offset reading
+  tools/vbt_decode: rename VBT#57 related vars
+  tools/vbt_decode: validate DEVICE env var
+  tools/vbt_decode: parse & dump VS/PE-O tables for LT
+  tools/vbt_decode: parse & dump VS/PE-O tables for Snps
+  tools/vbt_decode: parse & dump VS/PE-O tables for Combo
+  tools/vbt_decode: change VBT#57 Combo's layout
 
-  
+ lib/intel_chipset.h      |   2 +
+ tools/intel_vbt_decode.c | 179 +++++++++++++++++++++++++++++++++++----
+ 2 files changed, 166 insertions(+), 15 deletions(-)
 
-Participating hosts (13 -> 11)
-------------------------------
+-- 
+2.45.2
 
-  Missing    (2): bat-wcl-1 bat-bmg-2 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8990 -> IGTPW_15460
-  * Linux: xe-5331-4343c63c6acc14ed4d48dddaa56057663651d9e3 -> xe-5332-6c22844c120534560afc258f95a774245b4ef7e3
-
-  IGTPW_15460: 64165c674d05378af8132bcd518534fbc43fd05f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8990: 8990
-  xe-5331-4343c63c6acc14ed4d48dddaa56057663651d9e3: 4343c63c6acc14ed4d48dddaa56057663651d9e3
-  xe-5332-6c22844c120534560afc258f95a774245b4ef7e3: 6c22844c120534560afc258f95a774245b4ef7e3
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15460/index.html
-
---===============7015313269417288817==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Enable multi-format testing for pipe color tests (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167634/">https://patchwork.freedesktop.org/series/167634/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15460/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15460/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8990_BAT -&gt; XEIGTPW_15460_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 11)</h2>
-<p>Missing    (2): bat-wcl-1 bat-bmg-2 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8990 -&gt; IGTPW_15460</li>
-<li>Linux: xe-5331-4343c63c6acc14ed4d48dddaa56057663651d9e3 -&gt; xe-5332-6c22844c120534560afc258f95a774245b4ef7e3</li>
-</ul>
-<p>IGTPW_15460: 64165c674d05378af8132bcd518534fbc43fd05f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8990: 8990<br />
-  xe-5331-4343c63c6acc14ed4d48dddaa56057663651d9e3: 4343c63c6acc14ed4d48dddaa56057663651d9e3<br />
-  xe-5332-6c22844c120534560afc258f95a774245b4ef7e3: 6c22844c120534560afc258f95a774245b4ef7e3</p>
-
-</body>
-</html>
-
---===============7015313269417288817==--
