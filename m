@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16CA7C43458
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 18:29:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59B61C43458
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 18:29:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C240110F56C;
-	Thu,  2 Jul 2026 18:28:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0AFE510F56E;
+	Thu,  2 Jul 2026 18:29:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IbywR/gk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jx1s+9P3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AFB9410F55E
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2026 18:26:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 287D510F55E
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2026 18:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783016803; x=1814552803;
+ t=1783016801; x=1814552801;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=wwbxHglyqa/a9xxUqlPpxS976rraQI24Xum5vyg1iio=;
- b=IbywR/gkFkGDE3C07Ya1xGsCtlb+CQjGP9aOQoI5I9dZ7p4SJjDx/16T
- NyBHxI+rvq7ZP09J57zvwfdh1nqwoPkCG1vPWSaNI9jZTkuKcefXIEnMn
- 9gqBqhvkjuM96tgyWQB2wCDn8ZpROO7aXTlo1kxOkb1zekQWMo12BRaqg
- re2KIs2SiKGRclagq72tUI8Q6cs+KJfQ0eRZReFglcrQt4czs99yWMoOB
- TRjMzESs8KlA6Z+tjo6kUKm2AmmZuv+PAXISvHc75z2q9QvLYQ27wlQ+O
- nvoVN+ZZl1Qhlujgqqe7m1nfNzxntyznuVK5KV6M2c/0pESE3WRLXN7AX Q==;
-X-CSE-ConnectionGUID: kuzUnE1XT3WOSRM6IhpovQ==
-X-CSE-MsgGUID: 9byo4iptSues5SEiXBC1Uw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="95154702"
-X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="95154702"
+ bh=CdasVP9jfbPp66pl/ocRw/J2AZ1Q5xlnmyh0JEoiPIc=;
+ b=Jx1s+9P3tJ2ZgnbN6ik7QGAHMe1C+wXQxMIMzzpzHuvsqP1Tzyb9ao98
+ /9vS2kJrzPnAj+758F777cZz9JbU2aGAq+BgkS8A0xqjp3JggC30QkRjY
+ j+8jumaBvaWDHt/Rg6UeLMIvFYNfrE8T+Ghg5hz904RnGeZRjspsmAU6g
+ vOVLeHBQ1TW1YlKnmHdNYgciTWHpP/s1ssNYX+n1fKvfhDvz800q1TxQh
+ 4Esot0/qCko3KEvbcy08P5Stu65wAivRlrqrmo5OqAuEZCMwBKRC8pMAx
+ 36h0KL4y8fnvX7qOLs59PYOa/ePP1hc2ni997+dcehLh/303JVXZ3WQEz g==;
+X-CSE-ConnectionGUID: xYb5pmJAR9aCCYotfDi4bg==
+X-CSE-MsgGUID: Lv8cXnCTR26Cn8KyfqR25Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="95154701"
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="95154701"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2026 11:26:42 -0700
-X-CSE-ConnectionGUID: +lv3X+ewSiyGiK7BlyVukg==
-X-CSE-MsgGUID: NXkC8/JLQSqOfP7YoX+yjw==
+ 02 Jul 2026 11:26:41 -0700
+X-CSE-ConnectionGUID: Z0Uikiz/Sm25QORiGzIMUg==
+X-CSE-MsgGUID: lNJdbZoPSxe0NVto2gvesA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="253577103"
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; d="scan'208";a="253577100"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by orviesa009.jf.intel.com with ESMTP; 02 Jul 2026 11:26:42 -0700
+ by orviesa009.jf.intel.com with ESMTP; 02 Jul 2026 11:26:40 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, suraj.kandpal@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v5 3/7] tools/vbt_decode: validate DEVICE env var
-Date: Thu,  2 Jul 2026 20:26:15 +0200
-Message-ID: <20260702182619.3973788-4-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v5 2/7] tools/vbt_decode: rename VBT#57 related vars
+Date: Thu,  2 Jul 2026 20:26:14 +0200
+Message-ID: <20260702182619.3973788-3-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260702182619.3973788-1-michal.grzelak@intel.com>
 References: <20260702182619.3973788-1-michal.grzelak@intel.com>
@@ -70,40 +70,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On error, strotoul() returns converted value of longest substring
-spanning from beginning. Check if device ID input via DEVICE env var is
-valid. Show it and return if it is not.
-
-v2->v3
-- show whole invalid DEVICE env var (Jani)
+Rename loop iterators n, i, j into idx, row and col. Rename
+vswing_preemph[] into vspeo_dp14_levels[] since vswing_preemph is an
+already overloaded name. Rename vs into vspeo, which stands for VS/PE-O,
+which in turn expands to VSwing / Pre-Emphasis Override.
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tools/intel_vbt_decode.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tools/intel_vbt_decode.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index a2e57206d6..33f8598e5f 100644
+index 16f1c96fee..a2e57206d6 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -4326,8 +4326,14 @@ int main(int argc, char **argv)
- 
- 	if (!context.devid) {
- 		const char *devid_string = getenv("DEVICE");
--		if (devid_string)
--			context.devid = strtoul(devid_string, NULL, 16);
-+		if (devid_string) {
-+			context.devid = strtoul(devid_string, &endp, 16);
-+			if (!context.devid || *endp) {
-+				fprintf(stderr, "invalid devid '%s' in DEVICE environment variable\n",
-+					devid_string);
-+				return EXIT_FAILURE;
-+			}
-+		}
+@@ -3452,7 +3452,7 @@ static void dump_compression_parameters(struct context *context,
  	}
- 	if (!context.devid)
- 		context.devid = get_device_id(VBIOS, size);
+ }
+ 
+-static const char * const vswing_preemph[10] = {
++static const char * const vspeo_dp14_levels[10] = {
+ 	"V0-P0",
+ 	"V0-P1",
+ 	"V0-P2",
+@@ -3468,19 +3468,19 @@ static const char * const vswing_preemph[10] = {
+ static void dump_vswing_preemphasis(struct context *context,
+ 				    const struct bdb_block *block)
+ {
+-	const struct bdb_vswing_preemph *vs = block_data(block);
++	const struct bdb_vswing_preemph *vspeo = block_data(block);
+ 
+-	printf("\tNumber of vswing tables: %d\n", vs->num_tables);
+-	printf("\tNumber of columns: %d\n", vs->num_columns);
++	printf("\tNumber of vswing tables: %d\n", vspeo->num_tables);
++	printf("\tNumber of columns: %d\n", vspeo->num_columns);
+ 
+-	for (int n = 0; n < vs->num_tables; n++) {
+-		printf("\tVswing Table #%d:\n", n+1);
++	for (int idx = 0; idx < vspeo->num_tables; idx++) {
++		printf("\tVswing Table #%d:\n", idx+1);
+ 
+-		for (int i = 0; i < 10; i++) {
+-			printf("\t\t%s: ", vswing_preemph[i]);
++		for (int row = 0; row < 10; row++) {
++			printf("\t\t%s: ", vspeo_levels[row]);
+ 
+-			for (int j = 0; j < vs->num_columns; j++)
+-				printf(" 0x%08x", vs->tables[n * 10 * vs->num_columns + i * j]);
++			for (int col = 0; col < vspeo->num_columns; col++)
++				printf(" 0x%08x", vspeo->tables[idx * 10 * vspeo->num_columns + row * col]);
+ 			printf("\n");
+ 		}
+ 	}
 -- 
 2.45.2
 
