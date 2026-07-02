@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 299CFC43458
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Jul 2026 21:24:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78C3C43458
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Jul 2026 05:23:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C381C10E354;
-	Wed,  1 Jul 2026 21:24:22 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B91DB10E3D3;
- Wed,  1 Jul 2026 21:23:51 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0697877267331705098=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C9EA10E43E;
+	Thu,  2 Jul 2026 05:23:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DUYlv+B+";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C15F110E43E
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2026 05:23:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1782969803; x=1814505803;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=b8+0nTemjK2oGFkrDjsSCrxxGrhpsylgieHRQK37i0Y=;
+ b=DUYlv+B+/CiAja4LIWAaZoDaytYfj39RhrELTljvc95xy2AfKzvVKEWN
+ Kx/XfloOj9bPw1U/cSxDqpvjpJPGNNHRwPvxQn1zh7u8/xGSCdXTbrdN8
+ Pimpzkb7VD+D/KioF8/fDvo6uI6TlBkE/8w1/emT1blKK5UqdBj3flzp6
+ 09DE201hwXyik2DYF7TI3PVO6D0USeKjUGCqaA2DDkF0WNpknl7Ybc7VV
+ Dl6as8JWgohP8lmESow/LiQvMEK6edB0HYVGagkkpbS0WVXZHUjAKe1VF
+ P6HuWUbth5N7g7YKCTmFkIqUZ2+A8DDGoJaEEs4dso+kjCpNfML0ar/cy Q==;
+X-CSE-ConnectionGUID: 4C3HuRyrTPWExQtnU0iTpA==
+X-CSE-MsgGUID: VV1dURiKTum5dZi55GyKAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="82700160"
+X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; d="scan'208";a="82700160"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2026 22:23:23 -0700
+X-CSE-ConnectionGUID: mO5NociFSxW7ih74e/2X7A==
+X-CSE-MsgGUID: tq93IfYtQfmHxGkxsfIERw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; d="scan'208";a="252322941"
+Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2026 22:23:22 -0700
+From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ashutosh.dixit@intel.com,
+	shekhar.chauhan@intel.com
+Subject: [PATCH v2] tools/xe-perf-recorder: Add mmio-trigger support
+Date: Thu,  2 Jul 2026 10:53:15 +0530
+Message-ID: <20260702052315.3740840-1-shekhar.chauhan@intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_test/intel/xe=5Fvm=3A_Add?=
- =?utf-8?q?_oversubscribe_concurrent_bind_stress_subtest_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 01 Jul 2026 21:23:51 -0000
-Message-ID: <178294103175.140837.2236386744563366176@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260701132355.1058604-1-sobin.thomas@intel.com>
-In-Reply-To: <20260701132355.1058604-1-sobin.thomas@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,198 +63,229 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0697877267331705098==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add mmio-trigger support to xe-perf-recorder, to justify the
+whitelisting of OA MMIO Trigger Registers in XeKMD.
 
-== Series Details ==
+v2: Add all OA unit types, fix includes, compile warnings and adding
+extra triggger for file mode.
 
-Series: test/intel/xe_vm: Add oversubscribe concurrent bind stress subtest (rev4)
-URL   : https://patchwork.freedesktop.org/series/162866/
-State : success
+Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+---
+ tools/xe-perf/xe_perf_recorder.c | 122 ++++++++++++++++++++++++++++++-
+ 1 file changed, 120 insertions(+), 2 deletions(-)
 
-== Summary ==
+diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+index f200fe9c9..ecf1c7c27 100644
+--- a/tools/xe-perf/xe_perf_recorder.c
++++ b/tools/xe-perf/xe_perf_recorder.c
+@@ -26,19 +26,29 @@
+ #include <unistd.h>
+ 
+ #include "igt_core.h"
++#include "intel_batchbuffer.h"
+ #include "intel_chipset.h"
++#include "intel_reg.h"
+ #include "ioctl_wrappers.h"
+ #include "linux_scaffold.h"
++#include "xe/xe_ioctl.h"
+ #include "xe/xe_oa.h"
+ #include "xe/xe_oa_data.h"
+ #include "xe/xe_query.h"
+ 
+ #include "xe_perf_recorder_commands.h"
+ 
+-#define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
+-#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
+ #define MAX(a,b) ((a) > (b) ? (a) : (b))
+ #define MIN(a,b) ((a) < (b) ? (a) : (b))
++#define OAG_MMIOTRIGGER 0xdb1c
++#define OAMERT_MMIOTRIGGER 0x1453cc
++#define OAM_MMIOTRIGGER_OFFSET 0x1d0
++#define MEDIA_GT_GSI_OFFSET 0x380000
++#define XE_OAM_SAG_BASE_ADJ (MEDIA_GT_GSI_OFFSET + 0x13000)
++#define XE_OAM_SCMI_0_BASE_ADJ (MEDIA_GT_GSI_OFFSET + 0x14000)
++#define XE_OAM_SCMI_1_BASE_ADJ (MEDIA_GT_GSI_OFFSET + 0x14800)
++#define OAREPORT_REASON_MASK 0x3f
++#define OAREPORT_REASON_SHIFT 19
+ 
+ struct circular_buffer {
+ 	char   *data;
+@@ -354,8 +364,47 @@ struct recording_context {
+ 	int oa_unit_id;
+ 	struct drm_xe_oa_unit *oa_unit;
+ 	struct drm_xe_engine_class_instance *hwe;
++
++	uint32_t vm;
++	uint32_t exec_queue;
++	struct intel_bb *ibb;
+ };
+ 
++static uint32_t oa_unit_mmio_trigger_reg(struct recording_context *ctx)
++{
++	const struct drm_xe_oa_unit *oau = ctx->oa_unit;
++
++	switch (oau->oa_unit_type) {
++	case DRM_XE_OA_UNIT_TYPE_OAM: {
++		struct drm_xe_query_oa_units *qoa = xe_oa_units(ctx->drm_fd);
++		uint8_t *poau = (uint8_t *)&qoa->oa_units[0];
++		int first_oam_id = -1;
++
++		/* Find the first OAM unit, like oa_unit_by_type() in the IGT */
++		for (int i = 0; i < qoa->num_oa_units; i++) {
++			struct drm_xe_oa_unit *u = (struct drm_xe_oa_unit *)poau;
++
++			if (u->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAM) {
++				first_oam_id = u->oa_unit_id;
++				break;
++			}
++			poau += sizeof(*u) + u->num_engines * sizeof(u->eci[0]);
++		}
++
++		if ((int)oau->oa_unit_id == first_oam_id)
++			return XE_OAM_SCMI_0_BASE_ADJ + OAM_MMIOTRIGGER_OFFSET;
++		return XE_OAM_SCMI_1_BASE_ADJ + OAM_MMIOTRIGGER_OFFSET;
++	}
++	case DRM_XE_OA_UNIT_TYPE_OAM_SAG:
++		return XE_OAM_SAG_BASE_ADJ + OAM_MMIOTRIGGER_OFFSET;
++	case DRM_XE_OA_UNIT_TYPE_MERT:
++		return OAMERT_MMIOTRIGGER;
++	case DRM_XE_OA_UNIT_TYPE_OAG:
++	default:
++		return OAG_MMIOTRIGGER;
++	}
++}
++
+ static void set_fd_flags(int fd, int flags)
+ {
+ 	int old = fcntl(fd, F_GETFL, 0);
+@@ -569,6 +618,28 @@ static bool write_stream_status(struct recording_context *ctx, FILE *output)
+ 	return true;
+ }
+ 
++static uint32_t
++report_reason(const uint32_t *report)
++{
++	return (report[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
++}
++
++static void
++check_mmio_trigger_report(struct recording_context *ctx, const void *report)
++{
++	const struct xe_oa_format *fmt = &oa_formats[ctx->metric_set->perf_oa_format];
++	const uint32_t *report_32 = report;
++	uint64_t value;
++
++	if (report_reason(report_32))
++		return;
++
++	value = (fmt->header == HDR_64_BIT) ? ((const uint64_t *)report)[2] : report_32[2];
++
++	if (value == 0xc0ffee01 || value == 0xc0ffee02)
++		fprintf(stdout, "Received trigger report with value 0x%" PRIx64 "\n", value);
++}
++
+ static bool write_stream_data(struct recording_context *ctx,
+ 			      char *data, ssize_t size, FILE *output)
+ {
+@@ -582,6 +653,8 @@ static bool write_stream_data(struct recording_context *ctx,
+ 			.size = sizeof(header) + format_size,
+ 		};
+ 
++		check_mmio_trigger_report(ctx, data + i * format_size);
++
+ 		if (fwrite(&header, sizeof(header), 1, output) != 1)
+ 			return false;
+ 
+@@ -697,6 +770,22 @@ write_correlation_timestamps(struct recording_context *ctx, FILE *output)
+ 	return write_saved_correlation_timestamps(output, &corr);
+ }
+ 
++static void emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t reg, uint32_t value)
++{
++	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
++	intel_bb_out(ibb, reg);
++	intel_bb_out(ibb, value);
++}
++
++static void emit_oa_trigger(struct recording_context *ctx, uint32_t value)
++{
++	emit_mmio_triggered_report(ctx->ibb, oa_unit_mmio_trigger_reg(ctx), value);
++
++	intel_bb_flush_render(ctx->ibb);
++	intel_bb_sync(ctx->ibb);
++	intel_bb_reset(ctx->ibb, false);
++}
++
+ static void
+ read_command_file(struct recording_context *ctx)
+ {
+@@ -712,6 +801,9 @@ read_command_file(struct recording_context *ctx)
+ 		uint8_t *dump = malloc(len);
+ 		FILE *file;
+ 
++		emit_oa_trigger(ctx, 0xc0ffee02);
++		write_perf_data(ctx->output_stream, ctx);
++
+ 		while (offset < len &&
+ 		       ((ret = read(ctx->command_fifo_fd,
+ 				    (void *) dump + offset, len - offset)) > 0
+@@ -835,6 +927,13 @@ usage(const char *name)
+ static void
+ teardown_recording_context(struct recording_context *ctx)
+ {
++	if (ctx->ibb)
++		intel_bb_destroy(ctx->ibb);
++	if (ctx->exec_queue)
++		xe_exec_queue_destroy(ctx->drm_fd, ctx->exec_queue);
++	if (ctx->vm)
++		xe_vm_destroy(ctx->drm_fd, ctx->vm);
++
+ 	if (ctx->topology)
+ 		free(ctx->topology);
+ 
+@@ -912,6 +1011,18 @@ static int assign_oa_unit(int fd, struct recording_context *ctx)
+ 	return -1;
+ }
+ 
++static int init_trigger_ctx(struct recording_context *ctx)
++{
++	ctx->vm = xe_vm_create(ctx->drm_fd, 0, 0);
++	ctx->exec_queue = xe_exec_queue_create(ctx->drm_fd, ctx->vm, ctx->hwe, 0);
++	ctx->ibb = intel_bb_create_with_context(ctx->drm_fd, ctx->exec_queue, ctx->vm,
++				 NULL, BATCH_SZ);
++	if (!ctx->ibb)
++		return -1;
++
++	return 0;
++}
++
+ int
+ main(int argc, char *argv[])
+ {
+@@ -1180,6 +1291,12 @@ main(int argc, char *argv[])
+ 		goto fail;
+ 	}
+ 
++	if (init_trigger_ctx(&ctx) < 0) {
++		fprintf(stderr, "Unable to initialize trigger context\n");
++		goto fail;
++	}
++	emit_oa_trigger(&ctx, 0xc0ffee01);
++
+ 	corr_period_ns = corr_period * 1000000000ul;
+ 	poll_time_ns = corr_period_ns;
+ 
+@@ -1227,6 +1344,7 @@ main(int argc, char *argv[])
+ 		}
+ 	}
+ 
++	emit_oa_trigger(&ctx, 0xc0ffee02);
+ 	fprintf(stdout, "Exiting...\n");
+ 
+ 	if (!write_perf_data(ctx.output_stream, &ctx)) {
+-- 
+2.53.0
 
-CI Bug Log - changes from IGT_8989 -> IGTPW_15458
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15458 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] ([i915#16404]) +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/bat-adlp-6/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/bat-adlp-6/igt@i915_selftest@live.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][3] ([i915#13735]) -> [PASS][4] +80 other tests pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [DMESG-WARN][5] ([i915#13735]) -> [PASS][6] +79 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [DMESG-WARN][7] ([i915#13735] / [i915#180]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - fi-cfl-8109u:       [DMESG-WARN][9] ([i915#13735] / [i915#15673]) -> [PASS][10] +49 other tests pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [DMESG-WARN][11] ([i915#13735] / [i915#15673] / [i915#180]) -> [PASS][12] +52 other tests pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#16404]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16404
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8989 -> IGTPW_15458
-  * Linux: CI_DRM_18736 -> CI_DRM_18745
-
-  CI-20190529: 20190529
-  CI_DRM_18736: 7100870965845da8c31005c07fd1b390bbe96b20 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18745: 0cafeac0ca1baa5846a52337c6b7cd94f830da72 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15458: 15458
-  IGT_8989: a8e2cbd2854d7980a9eccecc6e0c801d0824b88f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/index.html
-
---===============0697877267331705098==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>test/intel/xe_vm: Add oversubscribe concurrent bind stress subtest (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162866/">https://patchwork.freedesktop.org/series/162866/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8989 -&gt; IGTPW_15458</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15458 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/bat-adlp-6/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/bat-adlp-6/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16404">i915#16404</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +80 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +79 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> +49 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8989/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15458/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +52 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8989 -&gt; IGTPW_15458</li>
-<li>Linux: CI_DRM_18736 -&gt; CI_DRM_18745</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18736: 7100870965845da8c31005c07fd1b390bbe96b20 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18745: 0cafeac0ca1baa5846a52337c6b7cd94f830da72 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15458: 15458<br />
-  IGT_8989: a8e2cbd2854d7980a9eccecc6e0c801d0824b88f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0697877267331705098==--
