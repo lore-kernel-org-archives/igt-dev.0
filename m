@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BFDEC43458
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Jul 2026 07:05:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F2EC43458
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Jul 2026 07:40:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E122A10F671;
-	Fri,  3 Jul 2026 07:05:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C932F10F6AD;
+	Fri,  3 Jul 2026 07:40:11 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1739110F671;
- Fri,  3 Jul 2026 07:05:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 760B510F6AD;
+ Fri,  3 Jul 2026 07:39:41 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8150991979173406437=="
+ boundary="===============7397084275364322501=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fvm=3A_Ad?=
- =?utf-8?q?d_oversubscribe_concurrent_bind_stress_subtest?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Remove_EUdebug_tests_=28rev?=
+ =?utf-8?q?5=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
+To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 03 Jul 2026 07:05:26 -0000
-Message-ID: <178306232608.146722.3480743952573831548@6beec6c84f66>
+Date: Fri, 03 Jul 2026 07:39:41 -0000
+Message-ID: <178306438147.146722.2249631073026236297@6beec6c84f66>
 X-Patchwork-Hint: ignore
-References: <20260703060843.1137197-1-sobin.thomas@intel.com>
-In-Reply-To: <20260703060843.1137197-1-sobin.thomas@intel.com>
+References: <20260703063821.11560-1-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20260703063821.11560-1-dominik.karol.piatkowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,76 +42,59 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8150991979173406437==
+--===============7397084275364322501==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_vm: Add oversubscribe concurrent bind stress subtest
-URL   : https://patchwork.freedesktop.org/series/169728/
-State : failure
+Series: Remove EUdebug tests (rev5)
+URL   : https://patchwork.freedesktop.org/series/168778/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8990 -> IGTPW_15465
+CI Bug Log - changes from XEIGT_8990_BAT -> XEIGTPW_15466_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_15465 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_15465, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15465/index.html
-
-Participating hosts (42 -> 39)
+Participating hosts (13 -> 12)
 ------------------------------
 
-  Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m 
+  Missing    (1): bat-bmg-vm 
 
-Possible new issues
--------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_15465:
+Changes
+-------
 
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlp-6:         [PASS][1] -> [FAIL][2] +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8990/bat-adlp-6/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15465/bat-adlp-6/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8990 -> IGTPW_15465
-  * Linux: CI_DRM_18751 -> CI_DRM_18755
+  * IGT: IGT_8990 -> IGTPW_15466
+  * Linux: xe-5331-4343c63c6acc14ed4d48dddaa56057663651d9e3 -> xe-5335-2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5
 
-  CI-20190529: 20190529
-  CI_DRM_18751: 4343c63c6acc14ed4d48dddaa56057663651d9e3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18755: 2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15465: 15465
+  IGTPW_15466: 11ae1beda9570ad30350e6a33bcf0b25ecaf2f3a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8990: 8990
+  xe-5331-4343c63c6acc14ed4d48dddaa56057663651d9e3: 4343c63c6acc14ed4d48dddaa56057663651d9e3
+  xe-5335-2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5: 2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15465/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15466/index.html
 
---===============8150991979173406437==
+--===============7397084275364322501==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,49 +114,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Add oversubscribe concurrent bind stress subtest</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/169728/">https://patchwork.freedesktop.org/series/169728/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>Remove EUdebug tests (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168778/">https://patchwork.freedesktop.org/series/168778/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15465/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15465/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15466/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15466/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8990 -&gt; IGTPW_15465</h1>
+    <h1>CI Bug Log - changes from XEIGT_8990_BAT -&gt; XEIGTPW_15466_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_15465 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_15465, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15465/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_15465:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8990/bat-adlp-6/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15465/bat-adlp-6/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> +1 other test fail</li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-bmg-vm </p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8990 -&gt; IGTPW_15465</li>
-<li>Linux: CI_DRM_18751 -&gt; CI_DRM_18755</li>
+<li>IGT: IGT_8990 -&gt; IGTPW_15466</li>
+<li>Linux: xe-5331-4343c63c6acc14ed4d48dddaa56057663651d9e3 -&gt; xe-5335-2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18751: 4343c63c6acc14ed4d48dddaa56057663651d9e3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18755: 2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15465: 15465<br />
-  IGT_8990: 8990</p>
+<p>IGTPW_15466: 11ae1beda9570ad30350e6a33bcf0b25ecaf2f3a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8990: 8990<br />
+  xe-5331-4343c63c6acc14ed4d48dddaa56057663651d9e3: 4343c63c6acc14ed4d48dddaa56057663651d9e3<br />
+  xe-5335-2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5: 2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5</p>
 
 </body>
 </html>
 
---===============8150991979173406437==--
+--===============7397084275364322501==--
