@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AF9CC43458
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Jul 2026 07:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E13FEC43458
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Jul 2026 08:15:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C4EC610F6AD;
-	Fri,  3 Jul 2026 07:40:40 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD57410F6AD;
- Fri,  3 Jul 2026 07:40:02 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2630301825951626086=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Remove_EUdebug_tests_=28r?=
- =?utf-8?q?ev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A4F210E5B3;
+	Fri,  3 Jul 2026 08:15:30 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nDRl38mz";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B830410F6F0
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Jul 2026 08:15:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1783066502; x=1814602502;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=vlScUM6p6Nfp12jkAaxZEEJ2QM2PzsWvZqbhLAPriWM=;
+ b=nDRl38mzYiW2drhxsgWUGG8AalsSsKALBphKT8xjp9n0+IyqMhcFLWnj
+ ZQju4SXvVhOBr4RMR1RSjbS15LSKWAnx29CfKiJh4rk325DIBrY/lmbcL
+ Cja6LedGMByxsJ/PaKqY1DBSjGyLM8qUl0c1Q7YfcdR8cVB9Dp8fOThLJ
+ t5AnrImzzuFJgX792NVM0aN7DzQUEc8eEFR0FCzQd9EuLMqe+XhCkq/Si
+ v7eAez6kX2PDod0jEs0iN3vlcRAtRtZQO2FAbNsjsRKCRyoAvA+pQ19dN
+ Ecyb0/Ml4FEmUbee3TkXZqcALK2BEFnpxeA/mKCMoBctcK+y4LJuM9JdI A==;
+X-CSE-ConnectionGUID: LNe4SHdtRCGgiinxvBkEXQ==
+X-CSE-MsgGUID: a+McMg8IRVOomEyGt9G8XA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="84008273"
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; d="scan'208";a="84008273"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2026 01:15:02 -0700
+X-CSE-ConnectionGUID: Naiy8YJLQMuN2SneiYCoMw==
+X-CSE-MsgGUID: XFZcosWjS1+B1HM96c9h8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; d="scan'208";a="251331549"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.71])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2026 01:15:01 -0700
+Date: Fri, 3 Jul 2026 10:14:59 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 03 Jul 2026 07:40:02 -0000
-Message-ID: <178306440290.146722.3394075115712614214@6beec6c84f66>
-X-Patchwork-Hint: ignore
+Cc: igt-dev@lists.freedesktop.org, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH v5 i-g-t 0/7] Remove EUdebug tests
+Message-ID: <p32e3o7a5xq5cmpwwbt5jqjbuoia6267mwvux6w35gnqlo3kcu@5lcugvvdaj4a>
 References: <20260703063821.11560-1-dominik.karol.piatkowski@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <20260703063821.11560-1-dominik.karol.piatkowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -38,134 +68,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2630301825951626086==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Jul 03, 2026 at 08:38:14AM +0200, Dominik Karol Piątkowski wrote:
+> Remove EUdebug tests due to lack of upstream kernel with EUdebug
+> feature to be supported by them.
+> 
+> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+> 
+> v2: Rebase on upstream
+> v3: Remove xe_eudebug_sriov test and EUdebug section from tests/meson
+> v4: Remove EUdebug library, experimental uapi and EUdebug section from meson
+> v5: Don't remove xe_eudebug meson option yet - breaks CI pipelines' build
 
-== Series Details ==
+Ok, lets keep this option until CI will update these pipelines.
 
-Series: Remove EUdebug tests (rev5)
-URL   : https://patchwork.freedesktop.org/series/168778/
-State : success
+--
+Zbigniew
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8990 -> IGTPW_15466
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15466/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15466 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_fence@basic-await@bcs0:
-    - bat-mtlp-8:         [PASS][1] -> [FAIL][2] ([i915#15263]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8990/bat-mtlp-8/igt@gem_exec_fence@basic-await@bcs0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15466/bat-mtlp-8/igt@gem_exec_fence@basic-await@bcs0.html
-
-  
-  [i915#15263]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15263
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8990 -> IGTPW_15466
-  * Linux: CI_DRM_18751 -> CI_DRM_18755
-
-  CI-20190529: 20190529
-  CI_DRM_18751: 4343c63c6acc14ed4d48dddaa56057663651d9e3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18755: 2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15466: 11ae1beda9570ad30350e6a33bcf0b25ecaf2f3a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8990: 8990
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15466/index.html
-
---===============2630301825951626086==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Remove EUdebug tests (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/168778/">https://patchwork.freedesktop.org/series/168778/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15466/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15466/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8990 -&gt; IGTPW_15466</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15466/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15466 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@gem_exec_fence@basic-await@bcs0:<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8990/bat-mtlp-8/igt@gem_exec_fence@basic-await@bcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15466/bat-mtlp-8/igt@gem_exec_fence@basic-await@bcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15263">i915#15263</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8990 -&gt; IGTPW_15466</li>
-<li>Linux: CI_DRM_18751 -&gt; CI_DRM_18755</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18751: 4343c63c6acc14ed4d48dddaa56057663651d9e3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18755: 2bdb7ee737dfd4d699e9994ef8aec5c92ec2d4e5 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15466: 11ae1beda9570ad30350e6a33bcf0b25ecaf2f3a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8990: 8990</p>
-
-</body>
-</html>
-
---===============2630301825951626086==--
+> 
+> Dominik Karol Piątkowski (7):
+>   tests/xe_eudebug: Remove xe_eudebug test
+>   tests/xe_exec_sip_eudebug: Remove xe_exec_sip_eudebug test
+>   tests/xe_eudebug_online: Remove xe_eudebug_online test
+>   tests/xe_eudebug_sriov: Remove xe_eudebug_sriov test
+>   tests/meson: Remove Xe EUdebug
+>   lib/xe_eudebug: Remove EUdebug library
+>   drm-uapi-experimental/xe_drm_eudebug: Remove EUdebug uapi
+> 
+>  .../drm-uapi-experimental/xe_drm_eudebug.h    |  355 --
+>  lib/meson.build                               |    7 +-
+>  lib/xe/xe_eudebug.c                           | 2566 --------------
+>  lib/xe/xe_eudebug.h                           |  273 --
+>  tests/intel/xe_eudebug.c                      | 2986 -----------------
+>  tests/intel/xe_eudebug_online.c               | 2819 ----------------
+>  .../xe_eudebug_online.c.gen.iga64_codes.c     |   86 -
+>  tests/intel/xe_eudebug_sriov.c                |  154 -
+>  tests/intel/xe_exec_sip_eudebug.c             |  367 --
+>  tests/meson.build                             |   12 -
+>  10 files changed, 1 insertion(+), 9624 deletions(-)
+>  delete mode 100644 include/drm-uapi-experimental/xe_drm_eudebug.h
+>  delete mode 100644 lib/xe/xe_eudebug.c
+>  delete mode 100644 lib/xe/xe_eudebug.h
+>  delete mode 100644 tests/intel/xe_eudebug.c
+>  delete mode 100644 tests/intel/xe_eudebug_online.c
+>  delete mode 100644 tests/intel/xe_eudebug_online.c.gen.iga64_codes.c
+>  delete mode 100644 tests/intel/xe_eudebug_sriov.c
+>  delete mode 100644 tests/intel/xe_exec_sip_eudebug.c
+> 
+> -- 
+> 2.34.1
+> 
