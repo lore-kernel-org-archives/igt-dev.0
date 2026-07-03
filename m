@@ -4,158 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24219C43458
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Jul 2026 20:32:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8609BC43458
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Jul 2026 20:56:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 865B210F8F4;
-	Fri,  3 Jul 2026 20:32:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 28CF610F924;
+	Fri,  3 Jul 2026 20:56:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ew3vH1vk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ph3esLOo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBD6E10F8F4
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Jul 2026 20:31:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19EF710F924
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Jul 2026 20:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783110714; x=1814646714;
+ t=1783112129; x=1814648129;
  h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=2irCV2ZVr4agBXorAMq52Ja+cxCDe1TwSP/eajW1tkM=;
- b=Ew3vH1vkCpVS0+RH+hcnVUAHcnAKWW1Fyrplif2fvfRyqR/J1OZivGRZ
- byyld7CKBfom2bWoUROnKSCPRbW0KqaJjXRak5IRcxgNxI++VZBJwD1OC
- iYavQMpurzVKCiov+74iSPKyltB8n7YYci56kMK1ktV+ASHsBh0RepVhj
- sYCaqPtRfrCRUVmmhdFzNFI2fvjC8gFKWuio0dTSfOniwxF7/5h/iW+yv
- aZHs+c4jEj7fz1ythpPyb/+tF5yHQKlpnyRQ2udeon2+Fbjm46R6bWkFW
- IGLnWNMMirnkHwoH5jSjAZokTtps97luvjlYAkbVJAFQF3xrpRtlauhfD A==;
-X-CSE-ConnectionGUID: ORud1pSUTeOfWCe3+fQurg==
-X-CSE-MsgGUID: 1EGf2jA5QECxMnnNnESZZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11836"; a="83988124"
-X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; d="scan'208";a="83988124"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2026 13:31:52 -0700
-X-CSE-ConnectionGUID: 4nl8qmlHQF+eK5ysuG+WKA==
-X-CSE-MsgGUID: 8ANO6fZpS+uVz+U0QkCJxg==
+ in-reply-to:mime-version;
+ bh=XwJOaJ7jqP0WfNyq2G02G98CUhll3DNYGSILlu5wYLA=;
+ b=Ph3esLOogF6khQyy9IG3VxDLf26h5H10xlYnqphsFgHzvoCF88WM2BYZ
+ hilqBCOTmdPHhfbJqWwrYY3MaKleEpLSX8ddIWErDtukOo6bVoD7Jp6Xc
+ xCZUXr/z6+jfHKRWufMCo6x3yLOyRNYi0wrREBlQDp9xPMqMqJHKsC6nw
+ Jh+cKfgfDnmAyXAXrx7T0nFKSAmnlwMD/6xHhIBX4aVhdSnhyFLpJs622
+ Ebl597boF4CPtjRZaW274c76gGIpAlOywoLR8qFOrrCoORrLXKyAZ3Md6
+ t9eDEDfIaAMZwB0fgQ5er/brjFGlR+O7kjteRhIVw+fqJLko1/hIqIjs0 Q==;
+X-CSE-ConnectionGUID: cjEDrNWoQPCNgjyNgXRX1Q==
+X-CSE-MsgGUID: H80FFHr9RkWTOxRhexaQ9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11836"; a="83893924"
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; d="scan'208";a="83893924"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2026 13:55:28 -0700
+X-CSE-ConnectionGUID: nk+oG28iSTmmtsF1WodqgA==
+X-CSE-MsgGUID: rZg3DXm1R0mSKdVsjO/wpw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; d="scan'208";a="257076245"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2026 13:31:51 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; d="scan'208";a="252125249"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2026 13:55:28 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 3 Jul 2026 13:31:50 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ 15.2.2562.43; Fri, 3 Jul 2026 13:55:27 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Fri, 3 Jul 2026 13:31:50 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.71) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.43 via Frontend Transport; Fri, 3 Jul 2026 13:55:27 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.12) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 3 Jul 2026 13:31:50 -0700
+ 15.2.2562.43; Fri, 3 Jul 2026 13:55:27 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lQw1f7HGfTPuJ4zmaanqpJUS3LdZ1J30fJdSu/s9WjawZkg94bBn10OgKG22YXe/5X1iMingk//0h2f4i6EQQe0bvchqDgFqLfSEh0rQV75GdHKqxRqRN85N2kTi+wKHzXFL9rI6lLRyoQbZuWWIxJc8v6xrnWCe7b0WzthdC6T3ryhY/xBSbvM3LQQA30qRIjlGEAcyl6wkQZ4kuXagkHnevEWHn994hWANJGo4byba0vXZB6xrbb7gz4/T9KshxOnLZEuw/EUGkCiGITHbK1GCJnnphys4R2RBcCAzmWXsrT69BvK4Tniqhgou0qt6auIL7ex40zeE37KME/rTgw==
+ b=KB8O1yFh/mAM1yDX5O/FZ1GKwvVPRJhlF/HNZ47uDDgtQVHqkTj0LGo/Z0E9CyCXUtHtD074VsflT3JbwJxAnKpAR5RxrJjIHP67Vj+VZGaMwKVDmdACx1M//2hJrsTTA56Q4f1kIu6r+nb5ZgjQqnEj5Lv2SMFbe9hjU1XAJ7RxG8xUE78FRCG3vXOe12BZ8E6zC3E+jv/A4gxzDnLLh6PHYVmQBg6XxKkwrmRkwYiB8vemPRMEGGhhy1YsWOWLLeN92PyEhtnHBa8fAXvONZ94dYkr6o4WLldDn9L2HHxhaHVu0UBNnNsbAclrEpPYIUfHx2MfNB1g5xqwXEKlxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q8RozOKwmdNSf/33gwZgEQSlFej/wgIv6d52OpS2fE0=;
- b=YOQSrm8vAb5YbNDYK2oxmI8HaYDHRzgGRKFo9vBwigP6GH6lEbeevx09HDYBPIuyARWejW7aEqd9qMq7Wl26eZ5UqTojbV0sP8UnMN3zpbb70JPmZDReFuSYLhlsP1c6gljIfC1pBOE1Gy22uLIvA8/rKhfY9gkEb8b9AV1+hTgOjzaLyJ10JetgD4J/qWDsO9+qH6Hbyy42+lYa7hvcq9sD1B4eORC+UHr0plTNB9qbDgq2m7usFTDya38Xk+3SdOG5DMEggsuZ5VoatAZjG9XuV+wcxSgpRnHCRyTIdabqWXBbjO+k4VKSrj0m+bP2tRbilRmKJThSSH5P4GoElw==
+ bh=KWezOpy+Ya5lpAwSRNo/0jBzuAGS6+OIA9Gsbwt2yQk=;
+ b=rv5Hw4Hyab1pfhhRg1s5LUiGLV5kh6E7IoAKofyyMUKXkrxR5WIaRXRAJOGPCwli9bUNnoocNceLwGYewWlH3YwsJwXgGCw9HdF5lTFAX1S6XZVAxsbqAvE39U3DBS1QVQP2FDEOXC0kM4DEbrgwG+0O1gc1htN7eRsrPlbACXtaUa59qkjfC0Nh/KyHfW1xzl+T+/mHnhBAhNBvcUKpOdcTM+KsaA9XHHYDpLrBY6UfAhFnX1uvfM7BpbtL+9wBWZynMKXBAv//pzq2bCyn8hFylI/IGevsYDwWcLCzlclOHH5MDCrzxpsUrE97brPcN0FKRCLQkbUCwRzXTvO1Lw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS0PR11MB8019.namprd11.prod.outlook.com (2603:10b6:8:12e::18)
- by CH2PR11MB8868.namprd11.prod.outlook.com (2603:10b6:610:284::20) with
+ by PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Fri, 3 Jul 2026
- 20:31:45 +0000
+ 20:55:24 +0000
 Received: from DS0PR11MB8019.namprd11.prod.outlook.com
  ([fe80::fce1:3bde:b383:e801]) by DS0PR11MB8019.namprd11.prod.outlook.com
  ([fe80::fce1:3bde:b383:e801%6]) with mapi id 15.21.0181.010; Fri, 3 Jul 2026
- 20:31:45 +0000
-Date: Fri, 3 Jul 2026 22:31:35 +0200
+ 20:55:24 +0000
+Date: Fri, 3 Jul 2026 22:55:15 +0200
 From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 CC: <igt-dev@lists.freedesktop.org>, <kamil.konieczny@linux.intel.com>,
- <krzysztof.karas@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t v2 06/31] lib/igt_drm_stub: introduce for tools
- needing driver detection
-Message-ID: <ffpvyotibdubvshsdzyy4s6hd3y6anmb5o2jxys7lhgmt4y37w@ztidpg4we3rp>
+ <krzysztof.karas@intel.com>
+Subject: Re: [PATCH i-g-t v2 00/31] tools: remove unnecessary shared library
+Message-ID: <szepo6g5enossqmt2b7piszdj4xjgfwqyyu7h3mxgrdkbssvrw@ryu72tf2idtt>
 References: <cover.1783088106.git.sebastian.brzezinka@intel.com>
- <a7b3a59cfb110b0d7f94552207b2d6b9faae02aa.1783088106.git.sebastian.brzezinka@intel.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a7b3a59cfb110b0d7f94552207b2d6b9faae02aa.1783088106.git.sebastian.brzezinka@intel.com>
-X-ClientProxiedBy: DUZPR01CA0031.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:468::16) To DS0PR11MB8019.namprd11.prod.outlook.com
+In-Reply-To: <cover.1783088106.git.sebastian.brzezinka@intel.com>
+X-ClientProxiedBy: DUZPR01CA0191.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b6::20) To DS0PR11MB8019.namprd11.prod.outlook.com
  (2603:10b6:8:12e::18)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8019:EE_|CH2PR11MB8868:EE_
-X-MS-Office365-Filtering-Correlation-Id: c1ee3179-9988-47e7-d22c-08ded942196a
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8019:EE_|PH8PR11MB8107:EE_
+X-MS-Office365-Filtering-Correlation-Id: 898a6bb5-cf14-4a49-ecc7-08ded9456732
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|23010399003|10070799003|376014|3023799007|56012099006|4143699003|11063799006|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info: pKoN7WWyA3NDw6e/AftOp0jqY0NJkFAvPG5MarpQFviGzLVIkPYlpACXQpVkBElrFthuoFTRxXsDQlDLN7pQR7LApNAVgg7fJLuNW3viAuswLiFhIT5fWQZpxZNOyeZxFShokWC0zRoIPxGDc7tNe2VcH9Ku7FBMkyOXtrQZRS9zJyqa+cTvYWW6OiY+9WK8gK0TixsySmxqBcFrFccUBt5/MVwJmTvUeTMlg4PrJrUMU6s26b6Wa60GMAGennCGLrTnZDzqWY+inAMmfRVJCj/UGwragJENeJ0hIMY8mxmBuH74OHjkUQ8OLhU1VIljR9OJ7u+Mv1Ws6Dxw2eXhoMQ5HGoJUXISKMimEd4UuIXGxQfVHTlLqt10N0Gs5gwPJBqMuFlr4pTxEa7Y/nz4SqZPrWsQqog6+DrV+ClbUMh+O4JcAfH+dqYBeKKBiedu4Z7wvQfIPLWTBAxi3cq7o7miUIu6R/YEdN817etjV/Ek3TIPg+KddMMEZyJDgzEXOf3ubouTI8vGxfCglbx63PKHu2rpjx2Ew1dE5eqMjEHkKd6wc72j8wCmh20aKYyukDUhoizP693yq1SWW84+YewHkHyKuT5i/D/qsJkvzfnOswpfC6WA4qUdN+voG6dpaCnVaTMJ8RrLUfZf5iqJPabf9So0sqXLzfVTw3gPF3M=
+ ARA:13230040|366016|1800799024|10070799003|23010399003|376014|18002099003|22082099003|11063799006|6133799003|56012099006;
+X-Microsoft-Antispam-Message-Info: QvyyJPQGVfItchJyeR31WLAfDEJKy+6DI/owRpLinpuwVz8ta/Nqlq3g44GORU3gLuP+BCJ1qgBqfQhaUGRJkQQ0yG7lQDDBFuoyXIkA2xdr4L4O/DIGDsa0lAtSrKSbtwFzEyJ2cU05zDGfmJPLQOqx91V+yPzhMnbgbNUN9bxlqUd3gte0Yd1XRCSdckxzB0LjNTfLve1bU6AowFI/6mriEwEL/aR5UsaZFXWh16LDwUNQQEHEvxyArDmP5f3K8OsjhcSvDAn1WxLmH4xeVSmFCl914VvCL4T36AWvZqAnAsN708z2SQwakFDubOaxWgaYPAHoJaxd/swURWY0SorwrZNLkIR3ECNnGLmhZufd8y56nugZ5Ll3H/M9C5PIFEjAWZWQYX8VbD5482PfTFekdigZkiz4RcYd8ityIdeb6Lp1wdivKLSAuLY41oMrkXy6BKchijT/iukMgoPnRuSZiUY1dRqutlmigXtzwuAGOVl6MFZUaKckgXoGYIQNf/oZDLAcClcFL8sTHTGljXSq7jzl5N+KyCYu7a4Zw/+3la/mm299mMfcgierFrx+C758b14zUee5Gu2GJqR412hwTl15i1lN6SZK4+zVxOBg9YzdGCJEZxPS5h8NOM+L
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB8019.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(376014)(3023799007)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003)(6133799003);
+ SFS:(13230040)(366016)(1800799024)(10070799003)(23010399003)(376014)(18002099003)(22082099003)(11063799006)(6133799003)(56012099006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z1N0N0Z5RHRITFJKSzJUR1N0VUhyRVBEdWxKRGgySjUxN2wzTExRY1dMVzFH?=
- =?utf-8?B?ZU5jaUYwVFBGYVZaNHdzZmo2VXNKWm5nOUNBcGx4RFNrN0lKK3lxaVQ0RXVx?=
- =?utf-8?B?R2k0SmNLc0FtNStyZWR0MUx1TGNHRU9NaXMyREhab1lOdm8xMUdicUJJWWNS?=
- =?utf-8?B?dlhNY2ZXclFlWDhRUVJjNnB5a3pIV21Jc0dVYXF2eXBsYzhERlM5V2ZwaS8v?=
- =?utf-8?B?eDVadVc3RjFTM1VMaFdITlJkMHBSWTZPMWcyZmp2a2ptUGd6VEFjakFyWU9Y?=
- =?utf-8?B?OHM3dWljTmUrR2lLR3VyYTBaRVFkaGdXN0RZNGtSOUVkMVRwQVJVVVBqeTc3?=
- =?utf-8?B?b1UweHpqeVA5bmJkaWYrOVpQODZMRzRwTzJibVkwVy90cXlxeTFVWWI2YzZF?=
- =?utf-8?B?U1VDSDZkOTR2bGowU3Bxek56M0xtSjg4VnFuaExmT293UHA2L2hzNmtjbXpn?=
- =?utf-8?B?Vyt6NGFWbm45Z0hLV0FvN0lvT09HZTJBR0tiUm5kUG95RWZCSWkvT3BnSTJP?=
- =?utf-8?B?Yy80by9iNW9WZWFYb3V0VVRGWUJubzJRbWl4bXk5SEZsUEZmS3htWGY2Y0x1?=
- =?utf-8?B?M3NHUFlYeDBweDRRUGNQdEdYbjdMcGVtNVJsSnhkMmxWaTh3eFRkdGFvcjVM?=
- =?utf-8?B?TUd1aVIxUS90VWRuQXZralpzSzNLdUtJWEJsZXd0WW9FZXFoMUM2b2d6SWpj?=
- =?utf-8?B?MXZUbDhTMjlrcitWYkVNTHJpRVpRNjhqY3pUem1RWDNvWlkxNkJLaE9vb3RB?=
- =?utf-8?B?TlEzdWd5Skwxb0RqWTBWSmF6YzduTDlUYVF1QjFrVnpHR2ZDd1A2empod1hm?=
- =?utf-8?B?ZXdFbExmRmcybjM2VjNqUFpZZ0F1dUJQRCtlMWY3TzRkNVhERkhNN3RvRTB3?=
- =?utf-8?B?NFBuUHBjUkVyL0srRlhHUzJ2TEY4cml1VURDTE15SmtpQ0VWWXhsNUsrdlJV?=
- =?utf-8?B?ZkZYNDJBb3BlWWNmZjZScGFRa1ZsdXNzanFnMEZreTJmcGtaZ0NXcG5NRTQ3?=
- =?utf-8?B?R1ZyQ2pqUXNPam5sK3FVSGRJd1p6dDJ6L3JRTEdWZ01qSmx6N21WOVdwZDNG?=
- =?utf-8?B?TS93WHplbXBIUWhUYU42STFKdWc4M2Zxdm9tVjJ0ejM3TzNnN0hISWdWZWUx?=
- =?utf-8?B?eGNPcWNEcWlvWnJjZTQ3WkdadGNKWWtSa2NpdVJ6dlh2ZmJtaWhtQVlualRO?=
- =?utf-8?B?em9WK3BNcllMYnFVcVc3bGo3R05vQjY3Si91WEkrVzBYdG44YzJJL0Nvd0Rm?=
- =?utf-8?B?c2JSOGVlSngxeHkvRFdPUlk0SXRBSDRxRWNTRlZrZUJ3dVJMeEJPWU54ZWJH?=
- =?utf-8?B?WndaOURZbkpkV3FGK09lbkRBUng4N3VINHdaMXIzS1hRVlIvNFJRRWxPdnJz?=
- =?utf-8?B?RHA1R1VIdm1BcWJJNm5hR1FVcVFXdUs1UzhhSWVJS0I3Sks2TWh6SFFCNFR1?=
- =?utf-8?B?QlhJb2lIR210S25MMkRaU0hwNG9HZFlROGhwNTFtY2FqaFZyUUR4dVVEUk0r?=
- =?utf-8?B?WElWVXNqb3VrQnpvdTNvZ01kMUJhMmRJb2tGWldWSnNlaTlsOWU0Q0Y0c051?=
- =?utf-8?B?dmpHTU5WOHdlUjN3cjBYbkJWeHE2VXZQZitiNFY3cC90YkVWTURXMk5jMHgr?=
- =?utf-8?B?eWhEV1h3ZjRUTXJXYS9OdklJcGdmcVAxRkc2VHQ4ZVNoRmcxSHdrM0laM3Iz?=
- =?utf-8?B?cW1HamxxVjR1MEppWS84ejlaMjJ4emhMbHdoWXdVOEpjWDNHUENuVnYwallx?=
- =?utf-8?B?YWNzSjJzRTF3MWFhTWtYZmhQeHN6TUtvSG10Q3BNMExjTXV6U2dCVzRSUHJO?=
- =?utf-8?B?TUgzeFRtVXJwYUhnb1VxYmhwMVE4WGh4ZWRVemRNbDg1VS9aV0R2YkpXRmZU?=
- =?utf-8?B?eHV5c2ZYK0FqNVVmU2h1M1Y0NFpWU0czb2NRY0tqSGhnSEVPTm1Zcms4ZTdU?=
- =?utf-8?B?MHMwZzd4bXgxTk1tc1Zic21IeFllU1c4MTdpS2dxYU1ySEdLNnJWVlNDNnBv?=
- =?utf-8?B?RlBvQTdiU3NIcGRXSW1CQk5ubXR2Qnc5T1NaUVlDekFkaXZvQ2FYaVovQjBl?=
- =?utf-8?B?cUtsOUFwSjdjZ3BqSjVTY3pUK3Z4QThYekNnS3lhdXM2eGJmNkhvYVRUTC9x?=
- =?utf-8?B?UjdVYkNJZWkweVhRT1lCTEhGd1RWaW5jeURuSGpnNkFzM1JlMURBTGZlaHlZ?=
- =?utf-8?B?UXRsRTNXMGZTYk42OU5yb2ZJZlA4WHdwSVVuR2E1T3d0OWxESDgrWUpGaTNp?=
- =?utf-8?B?d2tMWitVaFY4d3dYWnpGd0phM2piOUZDcGJRRDBMVFBCMDBvQ1hpblJ5cEEr?=
- =?utf-8?B?SjRnZmIwbXlHby9PSW11cHBpd1lNMVVGTG9BelBTRzFrSTlDUWRuR3FwQnVX?=
- =?utf-8?Q?nO+RWOjBuFhbXkIImw7QDNpfASaqfc4iV0mkzfzDeCjGI?=
-X-MS-Exchange-AntiSpam-MessageData-1: J3yzvmnOAtw81fSShs/yLhtgEM59K+dkpyg=
-X-Exchange-RoutingPolicyChecked: RZVcn6s4ljhw8icOF42sWi+i6rAakfU/sap7yTlz0/JMfk7FrvESYKrwLLPm9ZXRxqCCJ/QTQVJOhEnV7sCVLyOi/Mb4KfnCQC29xEcHGr6f8ZjK8I8sPf+/1SlOWFLUI4RFwmw+Z03JY6m9TfbqpuUqj25OxJRVY6ipUb3Eck2+z36+/0NrQWQ2nI/X3LtJclXcX1o+1EoaH5Yb3WuqGccww7eEIj2Emo25orGLobup8Z/8SbCHnSQLz/lPgrH9N2VynhfY/rOpM9FfwtSAa8VZeAvydKTxupx51RsH/kAjgVfm/ioTMUBWdSJ9SlMXNXvHBGqTDPm7bbcTaRsCLQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1ee3179-9988-47e7-d22c-08ded942196a
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TWZ0NytLV01wTktqdXBVbWtHbUxUOWxsQ0JIME0rMVk1Ukg1SUU5TzZ0cjZt?=
+ =?utf-8?B?U21FRnk1U0FxLzBYekNKamhBeDFCYUpUYTQxT1VENFRDMjRicDNKcHpvTmZQ?=
+ =?utf-8?B?RkhTVUlIZXczVFBUV3IxWFBUcGpKOExyZVlHZkYyRHBIUnVPVk5LWGx4NEJt?=
+ =?utf-8?B?Q2FSMGYvclBmeGdzUThTR3I2OWdwaWo2MmxhODFrQ1o2RVVBNVJGZWFhaFAz?=
+ =?utf-8?B?VFhXWnpvdTZWeUk5b3FjYTRIdnNocGl5cXNHNUJXWi81RFdmM0R3emNKSzlT?=
+ =?utf-8?B?dzBhSTlPcUtYczFhSUpzMDZ2aDh3RS9aR294RHlLcWpXZk1qYVhBWmtzK2dX?=
+ =?utf-8?B?OWpmYTFQRHRQb08xV3NtaEh0ajZSN2tIcFhzNnhKNEpJc1dkUFhCc0dBaHhN?=
+ =?utf-8?B?UExpNkZLcXdWcUhHaUNnSE1TMVhSZmtPeU9hM1loUXVGcmxuZHFWZ0ZPbFdz?=
+ =?utf-8?B?ZWVhVnE5bFdMYTZCTnZEREpwSTlGeVFnd0RJeXhEdjMxYmVWSGUyQ1haQitl?=
+ =?utf-8?B?MWIveVdiWE5HajY4YWdJNmo0ejRwRXZIdzdPMndtd0lkL0N0UmZKQzdJb0RY?=
+ =?utf-8?B?T2hSTUV1dXp0SHMyUnVkSStEOTQrdXpxaHUxR0ZWUUJBcFdGdVQydGYrRk1U?=
+ =?utf-8?B?YmlXTm5GNk50WGJRcXZVRXFWc0xJK1FYVW56M2czYUQ4NmJBanZuVmgrU2hV?=
+ =?utf-8?B?dWpaZTNoNUs0bUdHVjltUlFQMWdFOUtQSjVXK1IycmhpclhLSXFXK2tNQ041?=
+ =?utf-8?B?UFVVZ0dYWS9SUzIwQXU3MFl4aWVGVkRmWm9sV1U3UmMzczBNSkRQMmxTVURX?=
+ =?utf-8?B?TjVnRHIyOTBPTWswME9KRGxzWThLRGUvcndOODZvNm9zR24xUVhNK1NwNEx6?=
+ =?utf-8?B?VUQybHkwMkVwTE12UzVoeEt5SWZGaWxIVTZ0VHoyYS9vV2NlYVRYYkYwdzlS?=
+ =?utf-8?B?K01GV3M5V29icnBtNjFPTU9pOWF5UGFWbTc4dW1RRG1qQ1JwSmZibmp1ckdY?=
+ =?utf-8?B?Rkxxb0NUWG5sL0d3T09oTTF0Q21mQkdzMXliQk5pM1VxNTh5MDV5MXl6dTVa?=
+ =?utf-8?B?cTlEVFVkb2JPeWZmdjE4N2J2NjVnNVdiN0ZhWDVtWG1jMFphSGZYM1ZhNStL?=
+ =?utf-8?B?MkMxNm1GSjdJdzdaWFM2VzFkSEcvY2NkdGpUWUNZUlNEY2o4Q2x4eHJOanhh?=
+ =?utf-8?B?andobWd2cHV0RGVRTHZicnpGcDRETzRFeS82dTZ6cWF4YzV4S3JJaW5DNmdP?=
+ =?utf-8?B?Z1RFbTVYTXRYeXJFY0x3N2RQVjlGcHIrV0xDQ1pMUTRwWXRRdUZSSkE0Tis5?=
+ =?utf-8?B?bCtvbHJvL1RRYy9SKzZVMUZXejZIcmJwSFoxdFhrK2lodk9SOStTTGVYbFVv?=
+ =?utf-8?B?RHo0MTlVNnhudkdqenNQWXk4aXhXcUxMRklpazFlWU8rZzcrYWtTcGhzUk1J?=
+ =?utf-8?B?WlFoT21EQjdHRnlaUWUxQ2RrUzZWYWJzSUg5dEtYeW92ZHJIZHdLM1NyNjVK?=
+ =?utf-8?B?aTBESEJQNmk0cVRWbnNlSXdienVlRVk2d3FpbUdpb1hpTGtGam80OU1RQVRI?=
+ =?utf-8?B?QXdwYkgyRnQ4TXlUWTVZYmVrOW9BaFV4ZUR1bG45YkN3NkV1NjVxV1NUd0Vw?=
+ =?utf-8?B?YnZlVEgrZVUwbHNab1R0cm1MMS83TFlhWkxOb2p2N2FlKy9FTGxGMHA4Sm8r?=
+ =?utf-8?B?dXN5c05wZEJnRFArRy9xeTdIdEVkK1UxSTlQaFp4Zzd5SnhvNG85YWtJWkox?=
+ =?utf-8?B?QXNvdnhJUFhFbEQ3MGpMZWk2SjFrWEs2MnVHMzhLZU5lNnk0Y0IxTjZpK0Mr?=
+ =?utf-8?B?blRHaVBIR2xYMHZCaEdhak9TNDNqUXdrZ05xSi9mK09DaVhibUhCZHhoMVpm?=
+ =?utf-8?B?WmVJMm9jQ2lTTDVGZ2FWR0txelUwR21mU3BEQ1p3WWlXMm1EdkQ2WGRNVCtN?=
+ =?utf-8?B?bEtUTzVhMVNBWHIzazhnTk9WTm5YaEhtK25QN01jMjZzVUYyMkp4SkN3TC9B?=
+ =?utf-8?B?NG5QdGxhSXJFd0ZxVHQ0c2ZoOXkzRm9acGMzWmIvTm1pOER1c2JPTXVjK2p0?=
+ =?utf-8?B?TnE0Z1ZGSk85ZmJwQkg4Q3BxaHdjUDhyTlFidVRQTjR2TVZoTVVvQ0JCUk9Y?=
+ =?utf-8?B?cThWamQ2UGRzbWVWd0lrNU9NM054eU1HQ1VISG85SDFUamNSRDZsakRLTURD?=
+ =?utf-8?B?VnUwSkw0eGJrRitHYVlYbXRRSmErZVFkdEo4cjJvU1pCMmR3OTZMQ0pVaHFw?=
+ =?utf-8?B?MndsajBZRjJBWjVBcUFES3VqT0FRVm0vb3V3YmMveThwVDhjTE9KcEJPVEJI?=
+ =?utf-8?B?cHg0dHRSN0pqNmt2MEEwN2VPbnBnZE16QXoyTkFPMEhKMDE1Rm1vS0k3QlEx?=
+ =?utf-8?Q?tUIIWg54IjiADRkim4/rRiCBBCkYkbUd26xIoJK5noYld?=
+X-MS-Exchange-AntiSpam-MessageData-1: Igzm7fJiy/9w8T/jJYLMvLMiGbQ8VdNqF1U=
+X-Exchange-RoutingPolicyChecked: ak4zM0W6Ip7SGOvJmc6Ha2VsD4dFyNkDzzV4qSAwji0D7GjPzzfnfioguYjCNyOKTH+QAnCAubGzbhBeP2InqwMMjCuwP1t6iS4bAAbPZW+76ZNUYntwwIc9b+aZ90kGOqNYe8+M9fbjvDVBdqxws+uWrIIi7ZwUMRSBB/45pcR9c8M5ST7a4dplSpOZsyFoP7WF6Xw8xRBCiQ+lQww7Zv8hEphVXl+BsYgI8UoXQO2VO3nUGzQL9gGkw7Dt2Z6b6fVAHN1zg96emWNxuGPQcIqmKGqY9poU01tlrVnbXrcRflEBqd7zFQlGTbO6O3jTpDh9dpyTDzkfVPxpuRS8GQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 898a6bb5-cf14-4a49-ecc7-08ded9456732
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8019.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 20:31:45.3740 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 20:55:24.3041 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x8U6mm3jvWwOsFXzQPSMERQReJFOAH+Pcvj2WypYw9hHpFCObOZnC6DlYi2gPciVUQu21ei+lAeF+3a+/Of/91KnTsZGqo7eoJCrll3j9p4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR11MB8868
+X-MS-Exchange-CrossTenant-UserPrincipalName: YKTxaaFbIKOcha54EpmKyVjejftYxZFg/Bp49lNzKSp5G0udeXZOCdI25VzO7/XFiOU8cyqffi1/XfsjkiTp6C8ZdnWtXG4Uaqm676C9mM8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8107
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -172,198 +169,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 2026-07-03 at 16:28:40 GMT, Sebastian Brzezinka wrote:
-> Add drm/pciaccess-dependent stubs into a new igt_drm_stub.c.  This avoids
-> pulling libdrm into tools that only need dep-free logging and exit stubs.
+Hi Sebastian,
+
+On 2026-07-03 at 16:28:34 GMT, Sebastian Brzezinka wrote:
+> This issue was raised by the community back in 2019: 
+> https://bugs.freedesktop.org/show_bug.cgi?id=110249
 > 
-> The new lib_igt_drm_stub static sub-library provides: igt_pci_system_init,
-> is_i915_device, is_intel_device, xe_dev_id and __drm_open_driver.
+> Standalone tools linked libigt.so as a side effect, pulling in cairo,
+> pixman and libX11 even without framebuffer use.
 > 
-> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-> Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  lib/igt_drm_stub.c | 132 +++++++++++++++++++++++++++++++++++++++++++++
->  lib/meson.build    |   9 ++++
->  2 files changed, 141 insertions(+)
->  create mode 100644 lib/igt_drm_stub.c
+> Following intel_gpu_top's approach, each tool now links only the static
+> sub-libraries it needs. Five new ones are introduced:
 > 
-> diff --git a/lib/igt_drm_stub.c b/lib/igt_drm_stub.c
-> new file mode 100644
-> index 000000000..f8ac3a992
-> --- /dev/null
-> +++ b/lib/igt_drm_stub.c
-> @@ -0,0 +1,132 @@
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
-> + */
-> +
-> +/*
-> + * Minimal DRM/PCI stubs for tools that need driver detection and device
-> + * opening but do not link the full libigt.so.  Requires libdrm and pciaccess.
-> + */
-> +
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <limits.h>
-> +#include <pciaccess.h>
-> +#include <stdbool.h>
-> +#include <stdint.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/stat.h>
-> +#include <sys/sysmacros.h>
-> +#include <unistd.h>
-> +#include <xf86drm.h>
-> +
-> +#include "drmtest.h"
-> +
-> +int igt_pci_system_init(void)
-> +{
-> +	return pci_system_init();
-> +}
-> +
-> +static bool driver_name_matches(int fd, const char *name)
-> +{
-> +	drmVersionPtr version;
-> +	bool match = false;
-> +
-> +	version = drmGetVersion(fd);
-> +	if (!version)
-> +		return false;
-> +
-> +	match = version->name_len > 0 && !strcmp(version->name, name);
-> +	drmFreeVersion(version);
-> +
-> +	return match;
-> +}
-> +
-> +bool is_i915_device(int fd)
-> +{
-> +	return driver_name_matches(fd, "i915");
-> +}
-> +
-> +bool is_intel_device(int fd)
-> +{
-> +	return is_i915_device(fd) || driver_name_matches(fd, "xe");
-> +}
-> +
-> +static uint16_t read_pci_device_id(int fd)
-> +{
-> +	char path[PATH_MAX], buf[32];
-> +	struct stat st;
-> +	int sysfs, len;
-> +	unsigned int devid;
-> +
-> +	if (fstat(fd, &st) || !S_ISCHR(st.st_mode))
-> +		return 0;
-> +
-> +	snprintf(path, sizeof(path), "/sys/dev/char/%d:%d/device/device",
-> +		 major(st.st_rdev), minor(st.st_rdev));
-> +	sysfs = open(path, O_RDONLY);
-> +	if (sysfs < 0)
-> +		return 0;
-> +
-> +	len = read(sysfs, buf, sizeof(buf) - 1);
-> +	close(sysfs);
-> +	if (len <= 0)
-> +		return 0;
-> +
-> +	buf[len] = '\0';
-> +	if (sscanf(buf, "0x%x", &devid) != 1)
-> +		return 0;
-> +
-> +	return devid;
-> +}
-> +
-> +/* Matches the declaration in lib/xe/xe_query.h declared here to satisfy
-> + * -Wmissing-prototypes without pulling in the heavy xe_query.h header.
-> + */
+> lib_igt_tools_stub, lib_igt_drm_stub, lib_igt_halffloat,
+> lib_i915_decode, lib_igt_reg_tools.
+> 
+> igt_load_igtrc() is moved to igt_device_scan.c so lsgpu can use
+> lib_igt_device_scan without pulling in libigt.so.
+> 
+> All 20 tools: 35 shared libs -> 3-8.
+> 
+> Behavioural differences vs original binaries (no-hardware runs):
+> 
+> intel_backlight, intel_lid, intel_gpu_time, intel_audio_dump,
+> intel_infoframes, intel_panel_fitter, intel_firmware_decode:
+> assertion failure format: IGT CRITICAL block -> single-line message;
+> exit code: 98 (IGT_EXIT_FAILURE) -> 1.
+> 
+> intel_gtt, intel_display_poller, intel_watermark:
+> same as above; additionally print an extra "Test requirement passed:
+> pci_dev" line on stderr (previously suppressed by IGT log layer).
+> 
+> intel_guc_logger:
+> same exit code change (98->1); --help drops IGT framework options
+> (--list-subtests, --run-subtest, --device, etc.) which had no effect
+> on guc_logger since it opens debugfs directly, not via IGT device
+> selection; --version, --debug, --hook also removed.
+> Unknown option exit code: 79 (IGT_EXIT_INVALID) -> 1.
+> 
+> intel_gvtg_test:
+> skip message: IGT skip block -> single-line; exit code unchanged (77).
+> 
 
-Same thing with comments as in the previous patch; I'll omit pointing
-out any other places in the rest of the series - but just for the sake
-of brevity, the comments should be unified everywhere.
+I'm halfway through reading your series, and I can't help but think that
+this series is only remedying the real problem of building almost
+everything in the lib/ folder as one big shared library. We're putting
+literally everything in libigt.so, even though at the source level
+everything is split nicely into .c and .h files. Correct me if I'm
+understanding the build system wrong but it looks like we're already
+even building static libraries for all the little files in lib/, and
+linking them into libigt.so at the end.
 
-> +uint16_t xe_dev_id(int fd);
-> +uint16_t xe_dev_id(int fd)
-> +{
-> +	return read_pci_device_id(fd);
-> +}
-> +
+I guess at this point this is a matter of a tradeoff, because all tests
+depend on libigt.so; after splitting its contents into smaller shared
+objects it would be almost a herculean task to isolate the correct
+dependencies in all the tests. If it was done from the start it would be
+very much feasible, because tests and its build files would be written
+with that in mind, but you know, benefit of hindsight.
 
-Why can't the users of this function just use read_pci_device_id()
-directly? It's not i915-specific. The function declaration looks very hacky.
-But I guess it's kind of unavoidable if you don't want a separate .h file.
-Ack from me on this if there's not a cleaner way to do this.
+And then if the core libs would have been split more properly, this
+series wouldn't be really needed - the tools would just include and link
+what they need.
 
-> +int __drm_open_driver(int chipset)
-> +{
-> +	char path[PATH_MAX];
-> +	int fd;
-> +
-> +	for (int i = 0; i < 16; i++) {
-> +		snprintf(path, sizeof(path), "/dev/dri/card%d", i);
-> +		fd = open(path, O_RDWR | O_CLOEXEC);
-> +		if (fd < 0)
-> +			continue;
-> +
-> +		if ((chipset == DRIVER_INTEL && is_i915_device(fd)) ||
-> +		    (chipset == DRIVER_XE && driver_name_matches(fd, "xe")) ||
-> +		    (chipset == DRIVER_ANY && is_intel_device(fd)))
-> +			return fd;
-> +
-> +		close(fd);
-> +	}
-> +
-> +	errno = ENODEV;
-> +	return -1;
-> +}
-> diff --git a/lib/meson.build b/lib/meson.build
-> index a57c1eb8d..484a912d7 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -356,6 +356,15 @@ lib_igt_tools_stub_build = static_library('igt_tools_stub',
->  lib_igt_tools_stub = declare_dependency(link_with : lib_igt_tools_stub_build,
->  					include_directories : inc)
->  
-> +lib_igt_drm_stub_build = static_library('igt_drm_stub',
-> +	['igt_drm_stub.c'],
-> +	dependencies : [libdrm, pciaccess],
-> +	include_directories : inc)
-> +
-> +lib_igt_drm_stub = declare_dependency(link_with : lib_igt_drm_stub_build,
-> +				      dependencies : [libdrm, pciaccess],
-> +				      include_directories : inc)
-> +
->  scan_dep = [
->  	glib,
->  	libpci,
-> -- 
-
-With the comments fixed:
-
-Reviewed-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+So this series is solving the problem very pragmatically in my opinion,
+to my mind it should absolutely go in. However, I think we should assess
+whether it's worth leaving at least a "TODO: modularize libigt.so"
+somewhere, so it could be addressed at some point in the future.
 
 Thanks
 Krzysztof
-
-> 2.53.0
-> 
