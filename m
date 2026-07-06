@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8425CC43458
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jul 2026 06:28:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 831EBC43458
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jul 2026 06:29:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EBAE810E758;
-	Mon,  6 Jul 2026 06:28:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 34C5B10E75D;
+	Mon,  6 Jul 2026 06:29:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R+wEqRZe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LF9B0Xfa";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7882810E2F3
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2026 06:27:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE1FD10E2F3
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2026 06:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783319248; x=1814855248;
+ t=1783319251; x=1814855251;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=py+vp9dguRWNuxSEdCegY+vscmkEuaNCw+aFiv47XVM=;
- b=R+wEqRZePXjqp3EdV+9fNCkYCyZuCCwaRcvHQTtyxLkQz7KgpE6Sd9dd
- mkiTF4RjnVpf4dc+eZYV3iXfPW9laU/F2SoxcBCHiGGIikL6M/7VXQ8WU
- XBNv4rjVdUjkxeV4dx3kRBRCCm3hV7IxO8e2t6uz8w4eAk3DVfFAbKMVo
- /2nQFJ8YhBA7l9kdB6xKNLzHrlW+yIg1l/MQiI8HaHRXo+vaianj+/KlU
- nVv3LZtwFYrVDCK5nUYnP5a754rgRPDP/jEiJPvn8ZyP6kCp581gcCUm9
- UDOU9bc0LMCjrlKaiVVDiJvCXuayHbBm2YcHAAl7LKP0JkW9UoLDzYcCD w==;
-X-CSE-ConnectionGUID: R+3q1heRRcSFTgS3du09rA==
-X-CSE-MsgGUID: v37v6B9FTrOs5VPRZh/8DQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="94303446"
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; d="scan'208";a="94303446"
+ bh=/dGp676I+fFwRv1OJoYFLN20euzNPc/NUGsUnXRdayc=;
+ b=LF9B0XfaNbgf1pneoEiJWnj6NImJgnQSM8pRRzgPBsL4AHsfXheRzLzx
+ 43PqA/zQNocD1kZYVxUazHGMW27i9981dVouh4LCPk/ltNEEEUH7jyU0f
+ k7anzVZGYK9ABpEA8pZR3BidW04GrSVlOs8uffj6AKvzqF2TyggWJbYR6
+ REqlmLHcGL86nLVgVyWkf/yh/NlOK8pVryuxYXSCjF57dp77DOpvHHvUH
+ lIY13z90Cqc1QIU6j/H0/tQAEtDIjQvGJjju4EJg88lKHj1Cz1F8oPJLd
+ EKq2RScINXrHeE9r+yZcZEsSzzNIoJ9h+PMVJ1HnKKOxAeMqlp7E+lc1L w==;
+X-CSE-ConnectionGUID: xvSLv5qMSfuvd+aI/nS2wQ==
+X-CSE-MsgGUID: 3vN4B+ilSESCz+SGSd3Chw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="94303450"
+X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; d="scan'208";a="94303450"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jul 2026 23:27:28 -0700
-X-CSE-ConnectionGUID: u/k0RRN0QHWJA6/DxtljJA==
-X-CSE-MsgGUID: kkP/qpV6QpGR7HIfK4u2Iw==
+ 05 Jul 2026 23:27:30 -0700
+X-CSE-ConnectionGUID: 3oMGsv/hQzqjaPquqhdLLA==
+X-CSE-MsgGUID: BouexRgKTqu2OGbSKOjI1A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; d="scan'208";a="250267067"
+X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; d="scan'208";a="250267073"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jul 2026 23:27:26 -0700
+ 05 Jul 2026 23:27:28 -0700
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, Sowmiya S <sowmiya.s@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v3 2/3] tests/intel/kms_pipe_stress: fix plane source
- crop and separate cursor loop
-Date: Mon,  6 Jul 2026 12:20:08 +0530
-Message-ID: <20260706065019.416906-3-sowmiya.s@intel.com>
+ Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Subject: [PATCH i-g-t v3 3/3] tests/intel/kms_pipe_stress: use ARGB8888/LINEAR
+ for cursor framebuffer
+Date: Mon,  6 Jul 2026 12:20:09 +0530
+Message-ID: <20260706065019.416906-4-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260706065019.416906-1-sowmiya.s@intel.com>
 References: <20260706065019.416906-1-sowmiya.s@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,157 +69,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Pass 3/4 destination size as initial source crop to
-universal_plane_set_fb() to avoid an immediate
-downscale. Keep source in sync with igt_fb_set_size()
-in the reduction loop so the downscale ratio never
-exceeds the hardware limit (~3x).
+Cursor planes on Intel hardware accept only
+DRM_FORMAT_MOD_LINEAR, regardless of the overlay
+format and modifier used by the test variant. Using
+data->modifier (e.g. 4-tiled) caused -EINVAL on the
+cursor commit.
+Bspec: 69833
 
-Move cursor handling out of the overlay loop into a
-dedicated second for_each_plane_on_crtc loop with a
-DRM_MODE_ATOMIC_TEST_ONLY commit. If the test commit
-rejects the cursor (e.g. unsupported format or modifier),
-disable it gracefully so the final commit with only overlay
-planes can succeed.
-
+v2: Add bspec reference in commit message (Swati)
 v3: Rebase to latest (Swati)
 
 Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 ---
- tests/intel/kms_pipe_stress.c | 110 +++++++++++++++++++++-------------
- 1 file changed, 68 insertions(+), 42 deletions(-)
+ tests/intel/kms_pipe_stress.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/kms_pipe_stress.c b/tests/intel/kms_pipe_stress.c
-index 8724a674c..a84433b9d 100644
+index a84433b9d..5362fe9f3 100644
 --- a/tests/intel/kms_pipe_stress.c
 +++ b/tests/intel/kms_pipe_stress.c
-@@ -425,57 +425,83 @@ static int crtc_stress(struct data *data, igt_output_t *output,
- 	if (!data->num_planes[crtc->pipe] || !new_mode)
- 		return 0;
- 
--	for_each_plane_on_crtc(crtc,
--			       plane) {
-+	/* Set up overlay/primary planes up to the configured limit. */
-+	for_each_plane_on_crtc(crtc, plane) {
- 		int plane_width, plane_height;
--		if (plane->type == DRM_PLANE_TYPE_CURSOR) {
--			cursor_plane_set_fb(plane,
--					    &data->cursor_fb[crtc->pipe],
--					    cursor_width, cursor_height);
--			plane_width = cursor_width;
--			plane_height = cursor_height;
--		} else {
--			universal_plane_set_fb(plane,
--					       &data->fb[crtc->pipe * MAX_PLANES + i],
--					       mode->hdisplay, mode->vdisplay);
- 
--			plane_width = (mode->hdisplay * 3) / 4;
--			plane_height = (mode->vdisplay * 3) / 4;
-+		if (plane->type == DRM_PLANE_TYPE_CURSOR)
-+			continue;
- 
--			ret = try_plane_scaling(data, plane, plane_width, plane_height);
-+		plane_width = (mode->hdisplay * 3) / 4;
-+		plane_height = (mode->vdisplay * 3) / 4;
- 
--			while (ret) {
--				if (plane_width <= cursor_width || plane_height <= cursor_height)
--					break;
-+		/*
-+		 * Set the source crop to match the initial destination
-+		 * size (no upscaling).  Keeping source == destination
-+		 * prevents the downscale ratio from exceeding the
-+		 * hardware limit (~3×) when the destination is halved
-+		 * in the reduction loop below.
-+		 */
-+		universal_plane_set_fb(plane,
-+				       &data->fb[crtc->pipe * MAX_PLANES + i],
-+				       plane_width, plane_height);
- 
--				plane_width /= 2;
--				plane_height /= 2;
-+		ret = try_plane_scaling(data, plane, plane_width, plane_height);
- 
--				ret = try_plane_scaling(data, plane, plane_width, plane_height);
-+		while (ret) {
-+			if (plane_width <= cursor_width || plane_height <= cursor_height)
-+				break;
- 
--				igt_info("Reduced plane %d size to %dx%d\n",
--					 plane->index, plane_width, plane_height);
--			}
--			if (ret) {
--				igt_info("Plane %d pipe %d try commit failed, exiting\n", i,
--					 crtc->pipe);
--				data->num_planes[crtc->pipe] = i;
--				igt_info("Max num planes for pipe %d set to %d\n",
--					 crtc->pipe, i);
--				/*
--				 * We have now determined max amount of full sized planes, we will just
--				 * keep it in mind and be smarter next time. Also lets remove unneeded fbs.
--				 * Don't destroy cursor_fb as will take care about it at the end.
--				 */
-+			plane_width /= 2;
-+			plane_height /= 2;
-+
-+			/* Keep source crop in sync with the reduced destination. */
-+			igt_fb_set_size(&data->fb[crtc->pipe * MAX_PLANES + i],
-+					plane, plane_width, plane_height);
-+
-+			ret = try_plane_scaling(data, plane, plane_width, plane_height);
-+
-+			igt_info("Reduced plane %d size to %dx%d\n",
-+				 plane->index, plane_width, plane_height);
-+		}
-+		if (ret) {
-+			igt_info("Plane %d pipe %d try commit failed, exiting\n", i,
-+				 crtc->pipe);
-+			data->num_planes[crtc->pipe] = i;
-+			igt_info("Max num planes for pipe %d set to %d\n",
-+				 crtc->pipe, i);
-+			/*
-+			 * We have now determined max amount of full sized planes, we will just
-+			 * keep it in mind and be smarter next time. Also lets remove unneeded fbs.
-+			 * Don't destroy cursor_fb as will take care about it at the end.
-+			 */
-+			igt_plane_set_fb(plane, NULL);
-+			cleanup_plane_fbs(data, crtc, i, MAX_PLANES);
-+		}
-+
-+		if (++i >= data->num_planes[crtc->pipe])
-+			break;
-+	}
-+
-+	/*
-+	 * Always attempt to enable the cursor plane.  First validate it with
-+	 * a TEST_ONLY commit: some format/modifier combinations (e.g.
-+	 * XRGB8888, 4-tiled) are not accepted by the cursor hardware.
-+	 * If the test commit rejects the cursor, gracefully disable it so
-+	 * the final actual commit with only overlay planes can succeed.
-+	 */
-+	for_each_plane_on_crtc(crtc, plane) {
-+		if (plane->type == DRM_PLANE_TYPE_CURSOR) {
-+			cursor_plane_set_fb(plane,
-+					    &data->cursor_fb[crtc->pipe],
-+					    cursor_width, cursor_height);
-+			if (igt_display_try_commit_atomic(&data->display,
-+							  DRM_MODE_ATOMIC_TEST_ONLY |
-+							  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL)) {
- 				igt_plane_set_fb(plane, NULL);
--				cleanup_plane_fbs(data,
--						  crtc,
--						  i,
--						  MAX_PLANES);
-+				igt_info("Cursor fb not supported by hw (format/modifier), disabling\n");
- 			}
--
--			if (++i >= data->num_planes[crtc->pipe])
--				break;
-+			break;
+@@ -736,8 +736,8 @@ static void create_framebuffers(struct data *data)
+ 		if (!data->cursor_fb[i].fb_id) {
+ 			igt_create_color_fb(data->drm_fd,
+ 					    cursor_width, cursor_height,
+-					    data->format,
+-					    data->modifier,
++					    DRM_FORMAT_ARGB8888,
++					    DRM_FORMAT_MOD_LINEAR,
+ 					    1.0, 0.0, 0.0,
+ 					    &data->cursor_fb[i]);
  		}
- 	}
- 
 -- 
 2.51.0
 
