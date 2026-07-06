@@ -4,44 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53251C43458
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jul 2026 23:53:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D361AC43458
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jul 2026 23:54:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2C7210E28C;
-	Mon,  6 Jul 2026 23:53:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 77A4B10E28C;
+	Mon,  6 Jul 2026 23:54:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="rDjXRjT8";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="O+cg7Ciq";
 	dkim-atps=neutral
-Received: from SA9PR02CU001.outbound.protection.outlook.com
- (mail-southcentralusazon11013004.outbound.protection.outlook.com
- [40.93.196.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EA5110E28C
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2026 23:51:45 +0000 (UTC)
+Received: from BN8PR05CU002.outbound.protection.outlook.com
+ (mail-eastus2azon11011053.outbound.protection.outlook.com [52.101.57.53])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 37F7510E3E2
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2026 23:51:41 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pXlmLBVF42JSJfUwaS0q8TWAMiW0DvCH2WsSu8Kky1BbKsJAmnAfZKdhI73an7GOojH5OsXW6fdZ91Tp9xNURY80d1umv+IDDmwHBjK3rOeg+yxRRAiHgthOHha6w43fsQuw8I9QdporCkbXN2wqBL97Ge8wRkaqsNHUWFn7Jbb5CgnCXRhAZlGd7mh2Era6qMX0Km6TNcpowEp/Tjk4iKi88w7M6SgSUZaFpcySfDB9fFbp9ANLpyWOt0/e71XrreDKgtTFPEmiq5dvny+/1KrEUBvHLNCkpfv+tZd6w7OttSj45YdeD20Lnw22dsUkb+BAnlivHTovqfxqaRSpqg==
+ b=wMc2RT4fTLtMWw9OjmfOZpwpJjP7BhTcI0XccEAsznsKnqvl3JLBnbv0Ccv1RmYHEeVCtBDjYL+7R083mTg+ygwmtl4zUUbZa93GWNy2di7xSJXzirzwuwGHSbhantsURKhxCWWEJAgcUQDJnFC9mh9dQRGXQDwD2oTS3LZ/rGTgqDsN+qkvSsGZsebANmCReK+Nn3VGv+Smysby/205msq5t9+F5/4/Kd13vC9WxPDeLFxCv2ULyUpQyEWHla1guM+MttSv+B99sgJ30jTiWpt5DrL1VLNLX01lKToSOEEmWjgwHOKZKjlY5OcwpNmXmUgvZofNkSDqThNDbJRqpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4VF818HtTSBqB82ofqjqMAdBI6q8JEPvDWGv8zE1KIk=;
- b=ZsWRbssMgIM8LaSi2IcOqGG4av+7CkC9dp1Tfw4Oc7qPCjfY+ULDcckDxqlDBATnP7DwRvlBog7e7Smkz90TxI7c25odDA6I+aJ3b2AP2cqYvOU98k6Mt5cnmzTozNchO1+DnBPqmHXG/ntl1dbC9uCKpSjcZb0VGBfflRa3EBsyuXnEhGaFJCiTuFtg4BdJ7uIYT2t14sxV+Z92LSWMd/7HIeh/c2aJf08o+482dXWoDg6pKwHnzSM9Q1/jBIRRBo/AwMDg7MixFg9Wl5CY0DckbQ3l5pNqSfAGTvcGyDDR0iyywjuZ2JLevMLhk4Zl4VXyYXkHcg4NlkX5Z8a6AA==
+ bh=+JoG00GWQEl+LaT1mOkdNoZP/lX1hqYcd460Kpd8+cs=;
+ b=SfFpeMDWLyDWDkUnqcFr86c4f3yUbx2f8gHNyzeH/p0fWYhUUDkrrID+MHBVGkL7cf3/8t1SQHG6Q2fxG2n+3Y8VedEQKiXwWWTs1eufsUVa3zjjJsXLntp6QTSRZxfmQ5axSrAeGWPD/tXCfbISwnppqTFCOoVkeJYZYCVsEzj0pnvq8aWVT6l/D5v0h8B7DzzhNWsfEfMokFpbOARV1qGhSu7L7toTNWb3Nt1mqyujcuieFPK8q8pEnDfMpS5zSZSxCN0Qr8iyvqzZF43QZouWDFVcLr6jbn/otcpM2ME3ANyZQnCkBX9q2gxglFK65HPHlvn8ieML6T/jD7zYeg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4VF818HtTSBqB82ofqjqMAdBI6q8JEPvDWGv8zE1KIk=;
- b=rDjXRjT8VSBCiL8ntSiSoqvAhML7ileC3Og2+RntON4CP4qsk5At6GngQTQWyOdnqwlR9UUv9+qLxnaHN1zla4LPFa2xl3VFa7ep0YPuWZ0i0W7U2rN1P57RKzqa7YywNmm/K0Obw/z6mCh0DEFW7nlDcmhJ0eS1bg46rvnfGsg=
-Received: from BL1PR13CA0368.namprd13.prod.outlook.com (2603:10b6:208:2c0::13)
- by SJ2PR12MB8882.namprd12.prod.outlook.com (2603:10b6:a03:537::17)
+ bh=+JoG00GWQEl+LaT1mOkdNoZP/lX1hqYcd460Kpd8+cs=;
+ b=O+cg7Ciqmr4fUx1+wpiOvK2oNgw+InLPUIsNow6KkGJsnLyYqJIWN1qPQ3cXhqTq/BW1in4veJTSDbbRnH0CBYCMjKhyIx+7hweag8ftTKeMyofmpS8C+JVuSlhUc5PeZT+m9FpPplsjzQOjPvozDvce6zSER3ZanOKcgI57PKI=
+Received: from BL1PR13CA0217.namprd13.prod.outlook.com (2603:10b6:208:2bf::12)
+ by SN7PR12MB8145.namprd12.prod.outlook.com (2603:10b6:806:350::17)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Mon, 6 Jul 2026
- 23:51:39 +0000
-Received: from BN2PEPF00004FBB.namprd04.prod.outlook.com
- (2603:10b6:208:2c0:cafe::77) by BL1PR13CA0368.outlook.office365.com
- (2603:10b6:208:2c0::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Mon, 6
- Jul 2026 23:51:39 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Mon, 6 Jul
+ 2026 23:51:36 +0000
+Received: from BN2PEPF00004FC1.namprd04.prod.outlook.com
+ (2603:10b6:208:2bf:cafe::aa) by BL1PR13CA0217.outlook.office365.com
+ (2603:10b6:208:2bf::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.9 via Frontend Transport; Mon, 6
+ Jul 2026 23:51:36 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -49,29 +48,30 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- BN2PEPF00004FBB.mail.protection.outlook.com (10.167.243.181) with Microsoft
+ BN2PEPF00004FC1.mail.protection.outlook.com (10.167.243.187) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Mon, 6 Jul 2026 23:51:37 +0000
+ 15.21.181.6 via Frontend Transport; Mon, 6 Jul 2026 23:51:36 +0000
 Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 6 Jul
- 2026 18:51:37 -0500
+ 2026 18:51:35 -0500
 Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
  (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 6 Jul
- 2026 18:51:37 -0500
+ 2026 18:51:35 -0500
 Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Mon, 6 Jul 2026 18:51:36 -0500
+ Transport; Mon, 6 Jul 2026 18:51:35 -0500
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Kamil Konieczny
  <kamil.konieczny@linux.intel.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
  Jesse Zhang <jesse.zhang@amd.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
  <christian.koenig@amd.com>, Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6/6] tests/amdgpu: Integrate platform filtering into amd_basic
-Date: Mon, 6 Jul 2026 19:50:18 -0400
-Message-ID: <20260706235130.157557-6-vitaly.prosyak@amd.com>
+Subject: [PATCH 4/6] lib/igt_core: Enable automatic platform filtering in
+ subtest execution
+Date: Mon, 6 Jul 2026 19:50:16 -0400
+Message-ID: <20260706235130.157557-4-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260706235130.157557-1-vitaly.prosyak@amd.com>
 References: <20260706235130.157557-1-vitaly.prosyak@amd.com>
@@ -80,29 +80,29 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBB:EE_|SJ2PR12MB8882:EE_
-X-MS-Office365-Filtering-Correlation-Id: a192007c-e6bc-48a1-8fb7-08dedbb984ff
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FC1:EE_|SN7PR12MB8145:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12321280-6475-4870-cbd1-08dedbb983eb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700016|1800799024|23010399003|82310400026|376014|18002099003|22082099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: 2YzDBP8KVop3j6YCKzTPjdYPCA9FwhuZm/YUDdXUuW22JRo6e5TlSWIMN0AJ9Kly9Mmba6o5QSPKjiBCn2XB7XzUf0vxtt0IRRh5D1glZf+KT3dGgfbkAuZ8wPQFV7d5jG93s7mEG1g+X5lImGSooIezYiUCjFk+PX+sHTU+eMEdBE7IBF/lAL+rztERdWPjs3L8AdkYxIK13/eodkfuHVYrnnqlgn65apTcJOJxx7D6oTzNmR2b1xR8/v0GpTV1Pr7TpjjHCGr9cHgLl8MzfoOPjzKCfMSVsk/yxXhyJWnFqaMC5n5YFE9oHyaAvBiXWLZr4EBznElNvzbPMidRz6gAe+6OsslOmUt+hsFQX5k27xgWPTiWRROVPx4+WrfAxTBou53F9OEOSOI6PeHoT3fdtY+U7bAAMCE6yjE15m5hda+uIfIj3DtZf4I3j8v/75nrvD+pIf6TUXF5qVNM9oT4n9uzVK1KwId0AWf0mEXHnGs9rVpEuOk1MNM1PCkLu+Lepz4BE7BA5/bnpF7v6u8yGyhXCmzKHee1iZ6SE7UzYaoe2N9qFM0AJ/QYBdBs+DFRkRisBjSh+GM86lAfq4z6bZYSPXl8lPnU5A6rG2GO1YVK/MUWq3EsG9aZfMurbosQXMRIY0Vuj9EKKEYEeSMkBEBJVQwz8+vfaFTQ8H/lsGCX+OON95CJV92rspDTq7yvw6CaTKVRgmwjCYXvow==
+ ARA:13230040|376014|36860700016|1800799024|82310400026|23010399003|11063799006|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: zFq+Yv1cQcxHi2taI3+jTiFdMMnh2pollWIlzq6oVpRnAjOl43wh54k47Stprie30bnn+M+6GO9FInrcQ8KAr5VYOYoN1GrgXKjiYr5RGYPL5VWAQfDqPrg8u3B2gYzn+AGu5uoab2vyhJwtIwGJuMPoI5JauMYSYObJs687zFO+dmFMyNFnh8imMpAarmypwYIzh6bpqrCyOLDKC6OotQb+k1IHWPgBceYcv2EjVMabvne92Cct7sgUCpt3cwaNoqHhoHgY2nqrvml3R5kD4qpg3FR4VHr6CJhuNzqjV/e6S1jYoaf9bfp1ZplzBOP43ZxNaYAinSkDihkWSEgBQDLKqQUOMzs/lKe01zg27cSCxaCxSNEKKgf1ik1MuV+vNQUX5G+MUX66kp4+GyV3pr5atwASy1mSvHgRqQFtY3pwLLNz8NU0bNHAJgY5JY6H7he+Jqwxy+tRMl3DTV9Q8SSnITGLWH0bWlf3hTDyfbtvU8O72Ix9b98ABJUoiFz4My1TnXVWVQPCvrQyeTJ7epSad4HoTnlzIL0Pv65KpV6k4ZDKUR7gplp3V4vzwejkybjgVS5hzuXYjn780Nh0TM+i2XfuCKjcmTDhaGEE5u3j5FiyIsjvDwy0ofZOB4XVOtd3wX7K6awjLOr0zTRAbeb3w6/dl5se2UdzLmViw75zoQYwzVHxOXjGoa49HR0gVh5e1MKKvCHZQzj5xXkj1A==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700016)(1800799024)(23010399003)(82310400026)(376014)(18002099003)(22082099003)(56012099006)(11063799006);
+ SFS:(13230040)(376014)(36860700016)(1800799024)(82310400026)(23010399003)(11063799006)(56012099006)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: jodSk4GH5irLEFLE8Zb4E9Nelx7wd7NbOYiulpKKSFAHPky2JTh3s+um+L8RpkXQET/ehi68SlH26V3ARYQqju2+/VTns/69PlFm8YRv2GbSxzI8fU2YmWDY+RjNUkB4etiF9N5um3pok1Yauo35H2wBNuX507ObAhKMBcCZ1imeipVV1Ji6aMn7IVbaDxks7mCJA0RD0plPXRHlOVd9pz84oOD7X84XZsdkg4oQsCSWnpVY8BFrqlQ2nIhzvE3NywfhZhM7Evw04SHxHXoCtsTdr16dYfDLxgx3adlneiamlC3bJH68R9NN3WjAg2Wbyee2rH+4sLqn4uh7lp0jqTa/vQdtcpOuhy6PxV7068VQMqYvMF1PWwZDumAC+0+URrGpXnXwuYEE2kbGxgQB+qdYbfhuKA1PckyOsQiXoaoaqFM0PWGtXMGecZ21wC54
+X-MS-Exchange-AntiSpam-MessageData-0: C4mnPzAGdRwuz+xkD/DI3+c4WUsd5xDEHaeGgtu5wLAe0kzBaTcJDYn9WpF8aWqQQ5OhRbaZFem2Lm2YDyH87Lv5eaAnmzLcmMPQgXKwGArr0dXU0yti1wqlDONcSam2q+H+tWP+eEsxoZr4e6cLog/wn/ZGQ2f/RmJ2cYC92N49mKnv+5bH1Hf4eSSuqTzeJf/i9va1uG36MmywmggbeJRqoqPhFVEJ7M4OjDkk/GBhvqkLmYVqlv7OXXXY2W9HQ36vhd6b/aKlR37OukO0Mwymu5oia0wC+u1z7OoGiOUEidHdCTRwR6KTTtdzdaLJlKxseXG5ua2Tm+mSjSGhFFz6SQc4TN/ZkEdQbYR8JSSRc6kncN95zY+USiyAtLTB9hrOM11onwQwQ1ZKSzdFT7HmKT1fd/IdcS1+MFCVwB2YvJyT20md+kYE2jKkYRtw
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 23:51:37.9585 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a192007c-e6bc-48a1-8fb7-08dedbb984ff
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 23:51:36.1461 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12321280-6475-4870-cbd1-08dedbb983eb
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF00004FBB.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF00004FC1.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8882
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8145
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,27 +120,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Demonstrate platform filtering integration in amd_basic test by calling
-amd_platform_filter_init() in the test fixture.
+Hook platform filtering into __igt_run_subtest() so tests automatically
+skip subtests based on platform rules without requiring manual
+igt_platform_require() calls in each subtest.
 
-This single call enables automatic filtering for all subtests - no
-manual igt_platform_require() calls are needed in individual subtests.
+This means tests only need to call platform_filter_init() once in their
+igt_fixture, and all subtests are automatically checked against the
+platform filtering rules before execution.
 
-The framework automatically checks each subtest against platform rules
-before execution via the __igt_run_subtest() hook.
-
-Usage example from this patch:
+Example test code:
   igt_fixture {
       amd_platform_filter_init(&gpu_info);
   }
 
-  igt_subtest(memory-alloc) {
-      // Automatic skip if platform rules match!
-      test_memory_alloc();
+  igt_subtest(my-test) {
+      // Automatic skip if platform rules match - no manual call needed!
+      test_code();
   }
 
 v3 changes:
- - This is now patch 6/6 (was 7/7 in v2) due to squashing of patches 1+2
+ - This is now patch 4/6 (was 5/7 in v2) due to squashing of patches 1+2
    per Kamil Konieczny's review feedback
  - No code changes from v2
 
@@ -150,33 +149,47 @@ Cc: Jesse Zhang <jesse.zhang@amd.com>
 Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Change-Id: I4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2u3v
+Change-Id: I2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t
 ---
- tests/amdgpu/amd_basic.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ lib/igt_core.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 3ad023472..ef83a53d6 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -19,6 +19,7 @@
- #include "lib/amdgpu/compute_utils/amd_dispatch.h"
- #include "lib/amdgpu/amdgpu_asic_addr.h"
- #include "lib/amdgpu/amd_utils.h"
-+#include "lib/amdgpu/amd_platform.h"
- 
- #define BUFFER_SIZE (8 * 1024)
- 
-@@ -883,6 +884,9 @@ int igt_main()
- 		igt_assert_eq(r, 0);
- 		asic_rings_readness(device, 1, arr_cap);
- 		asic_userq_readiness(device, userq_arr_cap);
-+
-+		/* Initialize platform filtering for automatic subtest filtering */
-+		amd_platform_filter_init(&gpu_info);
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index a7c097d9e..d2a6d79f5 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -80,6 +80,7 @@
+ #include "igt_rc.h"
+ #include "igt_list.h"
+ #include "igt_map.h"
++#include "igt_platform_filter.h"
+ #include "igt_device_scan.h"
+ #include "igt_thread.h"
+ #include "igt_vec.h"
+@@ -1580,6 +1581,23 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
+ 		return false;
  	}
- 	igt_describe("Check-alloc-free-VRAM-visible-non-visible-GART-write-combined-cached");
- 	igt_subtest("memory-alloc")
+ 
++
++	/* Automatic platform filtering - if initialized, check if subtest should be skipped */
++	if (igt_platform_filter_is_initialized()) {
++		enum skip_source source;
++		const char *reason;
++
++		if (igt_platform_should_skip(igt_test_name(), subtest_name,
++					      &source, &reason)) {
++			_subtest_result_message(_SUBTEST_TYPE_NORMAL, subtest_name,
++						"SKIP", 0.0);
++			igt_info("Platform filtering (%s): %s\n",
++				 source == SKIP_SOURCE_BUILTIN ? "built-in" :
++				 source == SKIP_SOURCE_CONFIG ? "config" : "env",
++				 reason);
++			return false;
++		}
++	}
+ 	igt_kmsg(KMSG_INFO "%s: starting subtest %s\n",
+ 		 command_str, subtest_name);
+ 	igt_trace("%s: starting subtest %s\n", command_str, subtest_name);
 -- 
 2.54.0
 
