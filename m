@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01AC3C43458
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jul 2026 23:53:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53251C43458
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jul 2026 23:53:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A67D410E28C;
-	Mon,  6 Jul 2026 23:53:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F2C7210E28C;
+	Mon,  6 Jul 2026 23:53:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="zMOPEZaU";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="rDjXRjT8";
 	dkim-atps=neutral
-Received: from MW6PR02CU001.outbound.protection.outlook.com
- (mail-westus2azon11012019.outbound.protection.outlook.com [52.101.48.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FBBB10E28C
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2026 23:51:43 +0000 (UTC)
+Received: from SA9PR02CU001.outbound.protection.outlook.com
+ (mail-southcentralusazon11013004.outbound.protection.outlook.com
+ [40.93.196.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EA5110E28C
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2026 23:51:45 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v+ldTAfRjUFQt05Trk9CasFnC0A/YWoJGqDDi7UWC0s49BXBjKZBPgutT3yr4wH966mwVck6o1uEPAFPqbA0K4DoCC+fs4jFwjBIe+7FMD+iKeZNO1jPnjZj5bkGgfL+/WlR+H5DWI1q7PfP26IzndDGLfPdN/tq5aXoZZYhQM3INvmYT97iiVmHDlRO4MGxRyFdTHJMMUiOiQ2RJzqr3pSL17Y8pNdvbPIvjKRmSN/5WmXNJpgSmprvbXQbXYL/Iy5ZHA/qmqt9/F4y3nBhHbLbXEvyifitR5qWaETv23QR5FlCp8/Kp5lkjc0QT3/qvZfc3JeUtgIZSyQ/S2kBhw==
+ b=pXlmLBVF42JSJfUwaS0q8TWAMiW0DvCH2WsSu8Kky1BbKsJAmnAfZKdhI73an7GOojH5OsXW6fdZ91Tp9xNURY80d1umv+IDDmwHBjK3rOeg+yxRRAiHgthOHha6w43fsQuw8I9QdporCkbXN2wqBL97Ge8wRkaqsNHUWFn7Jbb5CgnCXRhAZlGd7mh2Era6qMX0Km6TNcpowEp/Tjk4iKi88w7M6SgSUZaFpcySfDB9fFbp9ANLpyWOt0/e71XrreDKgtTFPEmiq5dvny+/1KrEUBvHLNCkpfv+tZd6w7OttSj45YdeD20Lnw22dsUkb+BAnlivHTovqfxqaRSpqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NZWvScIw0yHiYADXkLX9T3OqBiVmEdD8PVDIItyqj40=;
- b=VSQTCK3Mx4zhoJBv6igR31p+3SX9kqkAGlH0rH47OMxM0c9RO8bdN3lzdA6xNKiDYoEQ5jQPcVzJHpz8OoJNp0Wgsj7URJdx4wQl8gdjGWhaxl+9RTC0UQ1NSUEsFXv/eJvbnP7SlzxB9M4rNFAAafizC7rwO8oXBtyqx7+4B9voyA/kJMS76obSTniHBSILOWMI62IyTu7shXbIbTN+aGtLno9iCl7lfPQCfKFw6MYNLdzWCuEexUeCDctOHhgxp63wVEeb+0t6ATamm6OhBzoW4n6XcENWJArMrm7MuJx+p0yi7LoQM2v3gHbPefX8ZY99xWo7E3bx+pTTg+t4Jw==
+ bh=4VF818HtTSBqB82ofqjqMAdBI6q8JEPvDWGv8zE1KIk=;
+ b=ZsWRbssMgIM8LaSi2IcOqGG4av+7CkC9dp1Tfw4Oc7qPCjfY+ULDcckDxqlDBATnP7DwRvlBog7e7Smkz90TxI7c25odDA6I+aJ3b2AP2cqYvOU98k6Mt5cnmzTozNchO1+DnBPqmHXG/ntl1dbC9uCKpSjcZb0VGBfflRa3EBsyuXnEhGaFJCiTuFtg4BdJ7uIYT2t14sxV+Z92LSWMd/7HIeh/c2aJf08o+482dXWoDg6pKwHnzSM9Q1/jBIRRBo/AwMDg7MixFg9Wl5CY0DckbQ3l5pNqSfAGTvcGyDDR0iyywjuZ2JLevMLhk4Zl4VXyYXkHcg4NlkX5Z8a6AA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NZWvScIw0yHiYADXkLX9T3OqBiVmEdD8PVDIItyqj40=;
- b=zMOPEZaUAxzd2I090rJX2QkqgDplHtFP7ZD0S5cUeK3Ukg5wzzMbsm9GRxCmS90unmgPBKwKj47KC0Bi0hmgq3ncuo34TPes9nTLvBT6rJmddybGdZD5QGFapQHlq0WVC9XCHoFVkezXdnhFq1n/4Mg5+vIRxBQCe5PECwGh3LM=
-Received: from CY5PR19CA0050.namprd19.prod.outlook.com (2603:10b6:930:1a::34)
- by PH7PR12MB6785.namprd12.prod.outlook.com (2603:10b6:510:1ab::19)
+ bh=4VF818HtTSBqB82ofqjqMAdBI6q8JEPvDWGv8zE1KIk=;
+ b=rDjXRjT8VSBCiL8ntSiSoqvAhML7ileC3Og2+RntON4CP4qsk5At6GngQTQWyOdnqwlR9UUv9+qLxnaHN1zla4LPFa2xl3VFa7ep0YPuWZ0i0W7U2rN1P57RKzqa7YywNmm/K0Obw/z6mCh0DEFW7nlDcmhJ0eS1bg46rvnfGsg=
+Received: from BL1PR13CA0368.namprd13.prod.outlook.com (2603:10b6:208:2c0::13)
+ by SJ2PR12MB8882.namprd12.prod.outlook.com (2603:10b6:a03:537::17)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Mon, 6 Jul 2026
- 23:51:36 +0000
-Received: from CY4PEPF0000E9CD.namprd03.prod.outlook.com
- (2603:10b6:930:1a:cafe::24) by CY5PR19CA0050.outlook.office365.com
- (2603:10b6:930:1a::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.13 via Frontend Transport; Mon, 6
- Jul 2026 23:51:36 +0000
+ 23:51:39 +0000
+Received: from BN2PEPF00004FBB.namprd04.prod.outlook.com
+ (2603:10b6:208:2c0:cafe::77) by BL1PR13CA0368.outlook.office365.com
+ (2603:10b6:208:2c0::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Mon, 6
+ Jul 2026 23:51:39 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CY4PEPF0000E9CD.mail.protection.outlook.com (10.167.241.132) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BN2PEPF00004FBB.mail.protection.outlook.com (10.167.243.181) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Mon, 6 Jul 2026 23:51:35 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.181.6 via Frontend Transport; Mon, 6 Jul 2026 23:51:37 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 6 Jul
- 2026 18:51:35 -0500
+ 2026 18:51:37 -0500
 Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
  (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 6 Jul
- 2026 18:51:34 -0500
+ 2026 18:51:37 -0500
 Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Mon, 6 Jul 2026 18:51:34 -0500
+ Transport; Mon, 6 Jul 2026 18:51:36 -0500
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Kamil Konieczny
  <kamil.konieczny@linux.intel.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
  Jesse Zhang <jesse.zhang@amd.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
  <christian.koenig@amd.com>, Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 3/6] lib: Add platform filter initialization check for
- automatic filtering
-Date: Mon, 6 Jul 2026 19:50:15 -0400
-Message-ID: <20260706235130.157557-3-vitaly.prosyak@amd.com>
+Subject: [PATCH 6/6] tests/amdgpu: Integrate platform filtering into amd_basic
+Date: Mon, 6 Jul 2026 19:50:18 -0400
+Message-ID: <20260706235130.157557-6-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260706235130.157557-1-vitaly.prosyak@amd.com>
 References: <20260706235130.157557-1-vitaly.prosyak@amd.com>
@@ -80,29 +80,29 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9CD:EE_|PH7PR12MB6785:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9cf2533-b510-4e26-4b64-08dedbb983ad
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBB:EE_|SJ2PR12MB8882:EE_
+X-MS-Office365-Filtering-Correlation-Id: a192007c-e6bc-48a1-8fb7-08dedbb984ff
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|36860700016|23010399003|82310400026|18002099003|22082099003|11063799006|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info: o+YSoafNWdXxakc0ciSAGYmAJEGStXavJjLnk2ehVigKClDJM5cOY6nJbsap0VRlb3ZERh+Rfk0rcUYjSOW8uoezjmkj4AJZgIh9XiEemDF1STnB+F/jWes84K8dAIv0DylOQuIwSXiGyhED8O2B9UIAHsgEllldK/WLuxV4lQ75RFJ6WuiqX+Rq417PqIhPVRq8BNVKvAk8KGM+p1j/NTlmuEC71WDqF3TzvVtjN7WfFQl7IDPXesw5ewb4v3xFyl25rdeTmvKbjEll1kKsYu5GFDp0J21Ci2x0E67O6Y0elw9pbNrSl3/pLDr7PY7J+pjbFzwBaT8HJH+IZpj/nSbRVUas+jYxdJe1PCTPgAtVYNtJ1iVg3chIjiXbWUo6r8w2RkEDShtamJrpc4JWV2AxG/eZE/gdeE3TCTxsWA4a3x/sk+l14bZJ+1bVBF3SMm3/kzP2oI6Tai9d9ZbnrvbV4YRSJDueZYgg+YAj5NUk4xVkUGvidrXkLyX/iYKxTLorJ7IffphbHN+hTw5EB3FI2GKjqyZ5k8Y7VwzvmcUyrd5jD8ypA3nSTy/RFUw+uX8ZiKsxZerbaJ233bB8Fr3FfJXJLU60M/lft3Jr4N9O6X+IfTrUePbYBOjNrkR68cJllrGbhLTaVOo4gTwHa8n8vvUOF2cdw2F+S9Yj15oX7+SGp8iET+1XM/oaU/Os9aMB/OTsCE+PAMclRbAJzw==
+ ARA:13230040|36860700016|1800799024|23010399003|82310400026|376014|18002099003|22082099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info: 2YzDBP8KVop3j6YCKzTPjdYPCA9FwhuZm/YUDdXUuW22JRo6e5TlSWIMN0AJ9Kly9Mmba6o5QSPKjiBCn2XB7XzUf0vxtt0IRRh5D1glZf+KT3dGgfbkAuZ8wPQFV7d5jG93s7mEG1g+X5lImGSooIezYiUCjFk+PX+sHTU+eMEdBE7IBF/lAL+rztERdWPjs3L8AdkYxIK13/eodkfuHVYrnnqlgn65apTcJOJxx7D6oTzNmR2b1xR8/v0GpTV1Pr7TpjjHCGr9cHgLl8MzfoOPjzKCfMSVsk/yxXhyJWnFqaMC5n5YFE9oHyaAvBiXWLZr4EBznElNvzbPMidRz6gAe+6OsslOmUt+hsFQX5k27xgWPTiWRROVPx4+WrfAxTBou53F9OEOSOI6PeHoT3fdtY+U7bAAMCE6yjE15m5hda+uIfIj3DtZf4I3j8v/75nrvD+pIf6TUXF5qVNM9oT4n9uzVK1KwId0AWf0mEXHnGs9rVpEuOk1MNM1PCkLu+Lepz4BE7BA5/bnpF7v6u8yGyhXCmzKHee1iZ6SE7UzYaoe2N9qFM0AJ/QYBdBs+DFRkRisBjSh+GM86lAfq4z6bZYSPXl8lPnU5A6rG2GO1YVK/MUWq3EsG9aZfMurbosQXMRIY0Vuj9EKKEYEeSMkBEBJVQwz8+vfaFTQ8H/lsGCX+OON95CJV92rspDTq7yvw6CaTKVRgmwjCYXvow==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(36860700016)(23010399003)(82310400026)(18002099003)(22082099003)(11063799006)(56012099006)(6133799003);
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700016)(1800799024)(23010399003)(82310400026)(376014)(18002099003)(22082099003)(56012099006)(11063799006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: xrEOp8PdT5A4FxJ0zGq5PvRLxxIGWpXV/hGo7ZVAsQFHgiWwPW5tunbq0dYmIbQJN3dkWETCvh3CFgSVnv7GO6fky5MoB3qP8pF0bbpPcYDX5tRjze6fZVG9SMH15mairh4ywbigZpRQ344LKy90oaVwiMqHiwzofqVEAfP5GmeGSMNJZnaLr++Oi2yqt4wanutx32EBRdTfOjDbsLOusQ81TNEE05VM2ykA0Y7ziiAwcVu5MlacjMAovw49WDif0s6Y3ROeE4fRbpPKpLeHh1roYsdDjyh+jCTq0RgrmSUPZ3WGfCtTokBGmESm9nPGqDf4i2bYNW6EqoCBpPinADvfH2lno02b03At7wMgybgFoBwY6ONzdMf1d0Wgt7wAeOC1zIWplgcNCfKeB+AgX+/RzMn2e3NnPuVQKyOVO11az0PtH0ZDOoO27W6npaEp
+X-MS-Exchange-AntiSpam-MessageData-0: jodSk4GH5irLEFLE8Zb4E9Nelx7wd7NbOYiulpKKSFAHPky2JTh3s+um+L8RpkXQET/ehi68SlH26V3ARYQqju2+/VTns/69PlFm8YRv2GbSxzI8fU2YmWDY+RjNUkB4etiF9N5um3pok1Yauo35H2wBNuX507ObAhKMBcCZ1imeipVV1Ji6aMn7IVbaDxks7mCJA0RD0plPXRHlOVd9pz84oOD7X84XZsdkg4oQsCSWnpVY8BFrqlQ2nIhzvE3NywfhZhM7Evw04SHxHXoCtsTdr16dYfDLxgx3adlneiamlC3bJH68R9NN3WjAg2Wbyee2rH+4sLqn4uh7lp0jqTa/vQdtcpOuhy6PxV7068VQMqYvMF1PWwZDumAC+0+URrGpXnXwuYEE2kbGxgQB+qdYbfhuKA1PckyOsQiXoaoaqFM0PWGtXMGecZ21wC54
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 23:51:35.7410 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9cf2533-b510-4e26-4b64-08dedbb983ad
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 23:51:37.9585 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a192007c-e6bc-48a1-8fb7-08dedbb984ff
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9CD.namprd03.prod.outlook.com
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF00004FBB.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6785
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8882
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,19 +120,27 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Provide igt_platform_filter_is_initialized() helper function to allow
-the IGT core to check if platform filtering has been enabled for the
-current test before attempting automatic filtering.
+Demonstrate platform filtering integration in amd_basic test by calling
+amd_platform_filter_init() in the test fixture.
 
-This enables the __igt_run_subtest() hook (in next commit) to
-conditionally apply platform filtering only when tests have opted in
-via platform_filter_init().
+This single call enables automatic filtering for all subtests - no
+manual igt_platform_require() calls are needed in individual subtests.
 
-Without this check, tests that haven't called platform_filter_init()
-would fail when the framework tries to call igt_platform_should_skip().
+The framework automatically checks each subtest against platform rules
+before execution via the __igt_run_subtest() hook.
+
+Usage example from this patch:
+  igt_fixture {
+      amd_platform_filter_init(&gpu_info);
+  }
+
+  igt_subtest(memory-alloc) {
+      // Automatic skip if platform rules match!
+      test_memory_alloc();
+  }
 
 v3 changes:
- - This is now patch 3/6 (was 4/7 in v2) due to squashing of patches 1+2
+ - This is now patch 6/6 (was 7/7 in v2) due to squashing of patches 1+2
    per Kamil Konieczny's review feedback
  - No code changes from v2
 
@@ -142,44 +150,33 @@ Cc: Jesse Zhang <jesse.zhang@amd.com>
 Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Change-Id: I1f8d7c1b76d8a2e3d5f6c4b9e0a7d8e9f0a1b2c3
+Change-Id: I4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2u3v
 ---
- lib/igt_platform_filter.c | 13 +++++++++++++
- lib/igt_platform_filter.h |  2 ++
- 2 files changed, 15 insertions(+)
+ tests/amdgpu/amd_basic.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/lib/igt_platform_filter.c b/lib/igt_platform_filter.c
-index 5e2e7c744..7ebdeb419 100644
---- a/lib/igt_platform_filter.c
-+++ b/lib/igt_platform_filter.c
-@@ -577,3 +577,16 @@ int igt_platform_filter_dump_to_file(const char *filename)
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 3ad023472..ef83a53d6 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -19,6 +19,7 @@
+ #include "lib/amdgpu/compute_utils/amd_dispatch.h"
+ #include "lib/amdgpu/amdgpu_asic_addr.h"
+ #include "lib/amdgpu/amd_utils.h"
++#include "lib/amdgpu/amd_platform.h"
  
- 	return 0;
- }
+ #define BUFFER_SIZE (8 * 1024)
+ 
+@@ -883,6 +884,9 @@ int igt_main()
+ 		igt_assert_eq(r, 0);
+ 		asic_rings_readness(device, 1, arr_cap);
+ 		asic_userq_readiness(device, userq_arr_cap);
 +
-+/**
-+ * igt_platform_filter_is_initialized:
-+ *
-+ * Check if platform filtering has been initialized.
-+ *
-+ * Returns: true if initialized, false otherwise
-+ */
-+bool igt_platform_filter_is_initialized(void)
-+{
-+	struct platform_filter_context *ctx = get_filter_context();
-+	return ctx && ctx->initialized;
-+}
-diff --git a/lib/igt_platform_filter.h b/lib/igt_platform_filter.h
-index d64450489..b4639e610 100644
---- a/lib/igt_platform_filter.h
-+++ b/lib/igt_platform_filter.h
-@@ -119,4 +119,6 @@ void igt_platform_filter_dump(void);
- 
- int igt_platform_filter_dump_to_file(const char *filename);
- 
-+bool igt_platform_filter_is_initialized(void);
-+
- #endif /* IGT_PLATFORM_FILTER_H */
++		/* Initialize platform filtering for automatic subtest filtering */
++		amd_platform_filter_init(&gpu_info);
+ 	}
+ 	igt_describe("Check-alloc-free-VRAM-visible-non-visible-GART-write-combined-cached");
+ 	igt_subtest("memory-alloc")
 -- 
 2.54.0
 
