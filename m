@@ -4,63 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03C00C43458
-	for <igt-dev@archiver.kernel.org>; Mon,  6 Jul 2026 11:18:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69CC3C43458
+	for <igt-dev@archiver.kernel.org>; Mon,  6 Jul 2026 12:24:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 91A8F10E8CB;
-	Mon,  6 Jul 2026 11:18:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D2D010E34E;
+	Mon,  6 Jul 2026 12:24:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fySpTSaM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GjyHSzk/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3915810E349
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2026 11:18:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C39E910E919;
+ Mon,  6 Jul 2026 12:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783336706; x=1814872706;
+ t=1783340647; x=1814876647;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Aj15rSd7ABrNuqrh4toqIWo2qkoJ/bgBQkkXrQtYUiQ=;
- b=fySpTSaMk7VSQfWCo6K9765jZ7gMEGXTdzpvxcpnfCBD/IaAYnWoWiX2
- lfLGmzFXNlZ6m1Y4DKdfdfUznlhcYwX8pGV7OiLWY80FZG4wyOOjpa6BI
- +Q9i7F+mZ3x7rk5WXKi5HfZ+c0pd7gaMUL0TV6/XIb54AJH39dDQMrVlh
- 3KZ4BCSweUk3+5Xkv1qcFKr9zDYwFriI19AJvLKLdla9j6v5n2yTUqsEQ
- VZWDsXNJsocpWDsEO5hY6qy4F86X1eVyf/cQjCm9UC/SHoD3Z94h8fQk6
- QLLB5LzLsZ1sWtExLRlNnWRAu9Tv/04Qs60O5a+jdzmO2Kun7X4wMSTL6 w==;
-X-CSE-ConnectionGUID: DhjJ2WrgRxKF53Xm+pf/bw==
-X-CSE-MsgGUID: RbF1IO+3RUyORwC8iDupNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="84018588"
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; d="scan'208";a="84018588"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jul 2026 04:18:16 -0700
-X-CSE-ConnectionGUID: OcbTTKX3ScizcN3bkkF4fg==
-X-CSE-MsgGUID: 1MB82fMBQ3CdsOjnw3/7jg==
+ bh=YeRMELNz/4Kydr00LlNFirooQBB6tSZlh8zXoyDZVF0=;
+ b=GjyHSzk/8Mr96XSiQfVAPERCwwr6+qRBNLv5Y2anKHWWnoibeHnnjL58
+ y0tacvdlCMjcVXkw39x/tZYPpDIkCkznKGzMW3HkpE4mZz9YY7mQpSb42
+ rNElNsMxw3mQ57wE/hAtV+nprW0mJ1Ed6j3ZoDhXhq+HzI0i618zQbyjm
+ oslcZuVScMZvJ4O1pkm3q/7puz3hys3l9hM6j8nwi/4gKH01Nd2jv4WJB
+ nFtVHLMHKiFiCe+e3jJRngp0bOi9dkkLT/YrpZ2a4BJVGMvMy7v5rU7a3
+ 5kF8lic4maluArLHThps0T9zI5RKPrmITeWNHJcpqP4iK4ftV1uhb8eRz A==;
+X-CSE-ConnectionGUID: xIxTjtK2Rxuz5IqIDmZJww==
+X-CSE-MsgGUID: kr347KmxSgWL1Xuep8r+EQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="94577155"
+X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; d="scan'208";a="94577155"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jul 2026 05:24:06 -0700
+X-CSE-ConnectionGUID: tFM1EqNzTa6IiRRS00vf4A==
+X-CSE-MsgGUID: br4OnNvFSaqOLTwAAxYEYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; d="scan'208";a="258591881"
+X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; d="scan'208";a="257571795"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 04:18:15 -0700
-Date: Mon, 6 Jul 2026 13:18:13 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 05:24:05 -0700
+Date: Mon, 6 Jul 2026 14:23:39 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2 00/31] tools: remove unnecessary shared library
-Message-ID: <20260706111813.xndppu33h2deud3a@kamilkon-DESK.igk.intel.com>
+To: Rob Clark <rob.clark@oss.qualcomm.com>
+Cc: igt-dev@lists.freedesktop.org, freedreno@lists.freedesktop.org
+Subject: Re: [PATCH 2/2] tests/msm: Add perfcntrs test
+Message-ID: <20260706122339.3ljtwoudncez6k2p@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <cover.1783088106.git.sebastian.brzezinka@intel.com>
- <szepo6g5enossqmt2b7piszdj4xjgfwqyyu7h3mxgrdkbssvrw@ryu72tf2idtt>
- <rr6lkrcttkkhluky5qmtdelho2ze3gaqz6ipadgij7ekydowgt@dbqquv42dzng>
+ Rob Clark <rob.clark@oss.qualcomm.com>,
+ igt-dev@lists.freedesktop.org, freedreno@lists.freedesktop.org
+References: <20260703143949.280272-1-rob.clark@oss.qualcomm.com>
+ <20260703143949.280272-3-rob.clark@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <rr6lkrcttkkhluky5qmtdelho2ze3gaqz6ipadgij7ekydowgt@dbqquv42dzng>
+In-Reply-To: <20260703143949.280272-3-rob.clark@oss.qualcomm.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,97 +71,247 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
-On 2026-07-06 at 08:37:59 +0000, Krzysztof Karas wrote:
-> Hi,
+Hi Rob,
+On 2026-07-03 at 07:39:49 -0700, Rob Clark wrote:
+> Add tests for new PERFCNTR_CONFIG ioctl.
 > 
-> On 2026-07-03 at 22:55:15 +0200, Krzysztof Niemiec wrote:
-> > Hi Sebastian,
-> > 
-> > On 2026-07-03 at 16:28:34 GMT, Sebastian Brzezinka wrote:
-> > > This issue was raised by the community back in 2019: 
-> > > https://bugs.freedesktop.org/show_bug.cgi?id=110249
-> > > 
-> > > Standalone tools linked libigt.so as a side effect, pulling in cairo,
-> > > pixman and libX11 even without framebuffer use.
-> > > 
-> > > Following intel_gpu_top's approach, each tool now links only the static
-> > > sub-libraries it needs. Five new ones are introduced:
-> > > 
-> > > lib_igt_tools_stub, lib_igt_drm_stub, lib_igt_halffloat,
-> > > lib_i915_decode, lib_igt_reg_tools.
-> > > 
-> > > igt_load_igtrc() is moved to igt_device_scan.c so lsgpu can use
-> > > lib_igt_device_scan without pulling in libigt.so.
-> > > 
-> > > All 20 tools: 35 shared libs -> 3-8.
-> > > 
-> > > Behavioural differences vs original binaries (no-hardware runs):
-> > > 
-> > > intel_backlight, intel_lid, intel_gpu_time, intel_audio_dump,
-> > > intel_infoframes, intel_panel_fitter, intel_firmware_decode:
-> > > assertion failure format: IGT CRITICAL block -> single-line message;
-> > > exit code: 98 (IGT_EXIT_FAILURE) -> 1.
-> > > 
-> > > intel_gtt, intel_display_poller, intel_watermark:
-> > > same as above; additionally print an extra "Test requirement passed:
-> > > pci_dev" line on stderr (previously suppressed by IGT log layer).
-> > > 
-> > > intel_guc_logger:
-> > > same exit code change (98->1); --help drops IGT framework options
-> > > (--list-subtests, --run-subtest, --device, etc.) which had no effect
-> > > on guc_logger since it opens debugfs directly, not via IGT device
-> > > selection; --version, --debug, --hook also removed.
-> > > Unknown option exit code: 79 (IGT_EXIT_INVALID) -> 1.
-> > > 
-> > > intel_gvtg_test:
-> > > skip message: IGT skip block -> single-line; exit code unchanged (77).
-> > > 
-> > 
-> > I'm halfway through reading your series, and I can't help but think that
-> > this series is only remedying the real problem of building almost
-> > everything in the lib/ folder as one big shared library. We're putting
-> > literally everything in libigt.so, even though at the source level
-> > everything is split nicely into .c and .h files. Correct me if I'm
-> > understanding the build system wrong but it looks like we're already
-> > even building static libraries for all the little files in lib/, and
-> > linking them into libigt.so at the end.
-> +1
-> 
-> > 
-> > I guess at this point this is a matter of a tradeoff, because all tests
-> > depend on libigt.so; after splitting its contents into smaller shared
-> > objects it would be almost a herculean task to isolate the correct
-> > dependencies in all the tests. If it was done from the start it would be
-> > very much feasible, because tests and its build files would be written
-> > with that in mind, but you know, benefit of hindsight.
-> > 
-> > And then if the core libs would have been split more properly, this
-> > series wouldn't be really needed - the tools would just include and link
-> > what they need.
-> > 
-> > So this series is solving the problem very pragmatically in my opinion,
-> > to my mind it should absolutely go in. However, I think we should assess
-> > whether it's worth leaving at least a "TODO: modularize libigt.so"
-> > somewhere, so it could be addressed at some point in the future.
-> It might be worth figuring out why we are where we are. Was
-> "build everything into a library and suff as much into it as
-> possible" a conscious decision or a design oversight?
-> 
-> I imagine this might have never came up as a point before, so it
-> would be worth checking with the maintainers.
+> Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
 
-Or git logs?
+Your series do not compile on arm64 docker image.
 
-That was when igt project moved from autotools to meson. I guess
-it was ok for developers to have just one big linked lib. Later
-users filed ticket(s) on GitLab.
+[1451/1760] Compiling C object tests/msm/msm_perfcntrs.p/msm_perfcntrs.c.o
+FAILED: tests/msm/msm_perfcntrs.p/msm_perfcntrs.c.o
+...
+msm_perfcntrs.p/msm_perfcntrs.c.o.d -o tests/msm/msm_perfcntrs.p/msm_perfcntrs.c.o -c ../tests/msm/msm_perfcntrs.c
+../tests/msm/msm_perfcntrs.c: In function '__configure_counters':
+../tests/msm/msm_perfcntrs.c:17:2: error: variable-sized object may not be initialized
+   17 |  uint32_t countables[count] = {};   /* selecting countable 0 for each counter is fine */
+         |  ^~~~~~~~
+	 ninja: build stopped: subcommand failed.
+
+
 
 Regards,
 Kamil
 
-
+> ---
+>  tests/msm/meson.build     |   1 +
+>  tests/msm/msm_perfcntrs.c | 194 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 195 insertions(+)
+>  create mode 100644 tests/msm/msm_perfcntrs.c
 > 
+> diff --git a/tests/msm/meson.build b/tests/msm/meson.build
+> index 2ba5b4db2279..0a7f35662c03 100644
+> --- a/tests/msm/meson.build
+> +++ b/tests/msm/meson.build
+> @@ -1,6 +1,7 @@
+>  msm_progs = [
+>  	'msm_bo',
+>  	'msm_mapping',
+> +	'msm_perfcntrs',
+>  	'msm_recovery',
+>  	'msm_shrink',
+>  	'msm_submit',
+> diff --git a/tests/msm/msm_perfcntrs.c b/tests/msm/msm_perfcntrs.c
+> new file mode 100644
+> index 000000000000..7dab92b5c6bc
+> --- /dev/null
+> +++ b/tests/msm/msm_perfcntrs.c
+> @@ -0,0 +1,194 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+> + */
+> +
+> +#include <errno.h>
+> +
+> +#include "igt.h"
+> +#include "igt_core.h"
+> +#include "igt_msm.h"
+> +#include "msm_drm.h"
+> +
+> +static int
+> +__configure_counters(struct msm_device *dev, bool global, unsigned nr_groups,
+> +		     const char **groups, unsigned count)
+> +{
+> +	uint32_t countables[count] = {};   /* selecting countable 0 for each counter is fine */
+> +	struct drm_msm_perfcntr_group group[nr_groups];
+> +	struct drm_msm_perfcntr_config req = {
+> +		.flags = global ? MSM_PERFCNTR_STREAM : 0,
+> +		.nr_groups = nr_groups,
+> +		.groups = VOID2U64(group),
+> +		.period = global ? NSEC_PER_SEC : 0,
+> +		.bufsz_shift = global ? 10 : 0,
+> +		.group_stride = sizeof(struct drm_msm_perfcntr_group),
+> +	};
+> +
+> +	memset(group, 0, sizeof(group));
+> +
+> +	for (unsigned i = 0; i < nr_groups; i++) {
+> +		strcpy(group[i].group_name, groups[i]);
+> +		group[i].nr_countables = count;
+> +		group[i].countables = global ? VOID2U64(countables) : 0;
+> +	}
+> +
+> +	return drmIoctl(dev->fd, DRM_IOCTL_MSM_PERFCNTR_CONFIG, &req);
+> +}
+> +
+> +static int
+> +configure_counters(struct msm_device *dev, bool global, unsigned count)
+> +{
+> +	/* CP group is present on all gens.. SP would be another good candidate */
+> +	const char *groups[] = {"CP"};
+> +	return __configure_counters(dev, global, 1, groups, count);
+> +}
+> +
+> +static unsigned
+> +get_available_counters(struct msm_device *dev, bool global)
+> +{
+> +	for (unsigned i = 0; ; i++) {
+> +		int ret = configure_counters(dev, global, i + 1);
+> +		igt_warn("%u: ret=%d\n", i, ret);
+> +		if (ret < 0)
+> +			return i;
+> +		if (global)
+> +			close(ret);
+> +	}
+> +}
+> +
+> +
+> +int igt_main()
+> +{
+> +	/* device instance for global counter collection: */
+> +	struct msm_device *dev_global = NULL;
+> +	/* device instances for local counter reservation: */
+> +	struct msm_device *dev_local_1 = NULL;
+> +	struct msm_device *dev_local_2 = NULL;
+> +	unsigned num_counters;
+> +
+> +	igt_fixture() {
+> +		dev_global = igt_msm_dev_open();
+> +		dev_local_1 = igt_msm_dev_open();
+> +		dev_local_2 = igt_msm_dev_open();
+> +
+> +		num_counters = get_available_counters(dev_global, true);
+> +		igt_info("num_counters=%u\n", num_counters);
+> +	}
+> +
+> +	igt_describe("Multiple process should be able to reserve the same "
+> +		     "counters for local counter collection");
+> +	igt_subtest("perfcntrs-local-coexist") {
+> +		igt_require(num_counters > 0);
+> +
+> +		igt_assert_eq(0, configure_counters(dev_local_1, false, num_counters));
+> +		igt_assert_eq(0, configure_counters(dev_local_2, false, num_counters));
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +		configure_counters(dev_local_2, false, 0);
+> +	}
+> +
+> +	igt_describe("non-conflict global and local counters");
+> +	igt_subtest("perfcntrs-non-conflict-global-local") {
+> +		int num_local = num_counters - 2;
+> +		int stream_fd;
+> +
+> +		igt_require(num_counters > 2);
+> +
+> +		igt_assert_eq(0, configure_counters(dev_local_1, false, num_local));
+> +		igt_assert_eq(0, configure_counters(dev_local_2, false, num_local));
+> +
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lte(0, stream_fd);
+> +		close(stream_fd);
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +		configure_counters(dev_local_2, false, 0);
+> +	}
+> +
+> +	igt_describe("conflict, local first");
+> +	igt_subtest("conflict-local-first") {
+> +		int num_local = num_counters - 1;
+> +		int stream_fd;
+> +
+> +		igt_require(num_counters > 2);
+> +
+> +		igt_assert_eq(0, configure_counters(dev_local_1, false, num_local));
+> +		igt_assert_eq(0, configure_counters(dev_local_2, false, num_local));
+> +
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lt(stream_fd, 0);
+> +
+> +		/* release the reservation for dev_local_1: */
+> +		configure_counters(dev_local_1, false, 0);
+> +
+> +		/* should still fail: */
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lt(stream_fd, 0);
+> +
+> +		/* release the reservation for dev_local_2: */
+> +		configure_counters(dev_local_2, false, 0);
+> +
+> +		/* now should succeed: */
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lte(0, stream_fd);
+> +		close(stream_fd);
+> +	}
+> +
+> +	igt_describe("conflict, global first");
+> +	igt_subtest("conflict-global-first") {
+> +		int num_local = num_counters - 1;
+> +		int stream_fd;
+> +
+> +		igt_require(num_counters > 2);
+> +
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lte(0, stream_fd);
+> +
+> +		/* Should fail because two counters already allocated for global collection: */
+> +		igt_assert_neq(0, configure_counters(dev_local_1, false, num_local));
+> +
+> +		/* release global counters: */
+> +		close(stream_fd);
+> +
+> +		/* Now reservation should succeed: */
+> +		igt_assert_eq(0, configure_counters(dev_local_1, false, num_local));
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +	}
+> +
+> +	igt_describe("multiple groups");
+> +	igt_subtest("multiple-groups") {
+> +		const char *groups[] = {"CP", "SP"};
+> +
+> +		igt_require(num_counters > 0);
+> +
+> +		igt_assert_eq(0,
+> +			__configure_counters(dev_local_1, false, ARRAY_SIZE(groups), groups, 1));
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +	}
+> +
+> +	igt_describe("duplicate groups");
+> +	igt_subtest("duplicate-groups") {
+> +		const char *groups[] = {"CP", "CP"};
+> +
+> +		igt_require(num_counters > 0);
+> +
+> +		igt_assert_neq(0,
+> +			__configure_counters(dev_local_1, false, ARRAY_SIZE(groups), groups, 1));
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +	}
+> +
+> +	igt_fixture() {
+> +		igt_msm_dev_close(dev_global);
+> +		igt_msm_dev_close(dev_local_1);
+> +		igt_msm_dev_close(dev_local_2);
+> +	}
+> +}
 > -- 
-> Best Regards,
-> Krzysztof
+> 2.54.0
+> 
