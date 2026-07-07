@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EC68C43458
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Jul 2026 09:39:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B23EC43458
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Jul 2026 09:45:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C879B10E483;
-	Tue,  7 Jul 2026 09:39:35 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB6A210EC28;
- Tue,  7 Jul 2026 09:39:07 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1398530117252117575=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fdisplay=5Fmod?=
- =?utf-8?q?es=3A_Skip_mirrored_pipe_combinations_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B13D910E0CA;
+	Tue,  7 Jul 2026 09:45:43 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ga0UNkXu";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 941FF10E0CA
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jul 2026 09:45:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1783417513; x=1814953513;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=j8o9WBhKR1TweUqLCOdtSESjqqQOyWN5mq6udKxl+u4=;
+ b=Ga0UNkXuRlXYgsqBIm/Vf7bc/HTZUbEaYd/X1Sl4TXIu7J8JVjjzVtpT
+ UkvNO97KiJS3iqS8WU0arIoQHuMS8ip5UHBj/uzVB16ilKSXw+F7BDBLT
+ t2U+0+gfUfgFIBgfJBtnH7rAP4hw/xiEnkAZghXqYK7qAQ4jiDoP2ofx9
+ gn0Lh2kYMSlkdmZZvuN1TjCi0NCvwYMx3kZC2PDjhGuXTXBMz/J3bwYln
+ mGt9aGNCcGOTIJ5nBWcCAeHilZVkfMBAXtQYY0ivEdNO1hLB3xxT+ultY
+ vAXyQbp7lAiAoUnWYzDgXYHfacGpIrjMhqdmfOBhusWgg/rTExdN3MYvS g==;
+X-CSE-ConnectionGUID: Dze2N0y7R8axBjtAuB1pLg==
+X-CSE-MsgGUID: 0+4WiCmGTo2IhgJrIGQ5cQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="109602139"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; d="scan'208";a="109602139"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jul 2026 02:45:13 -0700
+X-CSE-ConnectionGUID: FsA+5RJcR9y2unlCHqLKYA==
+X-CSE-MsgGUID: AWFf8mT1TF2qKrWgVqcWEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; d="scan'208";a="251284330"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 02:45:12 -0700
+Date: Tue, 7 Jul 2026 11:44:52 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Shuicheng Lin <shuicheng.lin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 07 Jul 2026 09:39:07 -0000
-Message-ID: <178341714769.159280.17953771565190296691@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260707041113.3997991-1-jeevan.b@intel.com>
-In-Reply-To: <20260707041113.3997991-1-jeevan.b@intel.com>
+Subject: Re: [PATCH] tests/intel/xe_exec_system_allocator: Ignore expected
+ CAT error in fault subtest
+Message-ID: <20260707094452.iw7libztvxnfvydy@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Shuicheng Lin <shuicheng.lin@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260706181752.3039184-1-shuicheng.lin@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260706181752.3039184-1-shuicheng.lin@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,134 +68,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1398530117252117575==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Shuicheng,
+On 2026-07-06 at 18:17:52 +0000, Shuicheng Lin wrote:
+> The 'fault' subtest submits an exec with a bogus batch address. The
+> kernel nacks the unresolvable pagefault, which the GuC escalates to a
+> memory CAT error and engine reset. The resulting 'CAT error' dmesg
+> messages are expected, not a real failure.
+> 
+> Emit an ignore-dmesg regex to suppress them in CI. It matches both
+> 'Memory CAT error reported by GuC!' and 'Engine memory CAT error'
 
-== Series Details ==
+Can you move this 'It matches...' (or repeat it) in comment in code?
 
-Series: tests/kms_display_modes: Skip mirrored pipe combinations (rev2)
-URL   : https://patchwork.freedesktop.org/series/169829/
-State : success
+> messages.
+> 
+> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+> ---
+>  tests/intel/xe_exec_system_allocator.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+> index 24fc5b708d..fd7520e519 100644
+> --- a/tests/intel/xe_exec_system_allocator.c
+> +++ b/tests/intel/xe_exec_system_allocator.c
+> @@ -2752,10 +2752,12 @@ int igt_main()
+>  	igt_subtest("threads-shared-alloc-many-stride-malloc-race")
+>  		threads(fd, 1, 128, 0, 256, RACE | SHARED_ALLOC, false);
+>  
+> -	igt_subtest_f("fault")
+> +	igt_subtest_f("fault") {
 
-== Summary ==
+Please add a comment here and cite messages you want to skip.
 
-CI Bug Log - changes from IGT_8991 -> IGTPW_15477
-====================================================
+> +		igt_emit_ignore_dmesg_regex("CAT error");
 
-Summary
--------
+Can it be a little longer?  [Mm]emory CAT error
+Or if you do not like [Mm] you could drop first letter 
+and get "emory CAT error".
 
-  **SUCCESS**
+As these are cosmetic changes you can keep r-b from Matthew.
 
-  No regressions found.
+Regards,
+Kamil
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15477/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15477 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-adls-6:         [DMESG-FAIL][1] ([i915#14808]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8991/bat-adls-6/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15477/bat-adls-6/igt@i915_selftest@live.html
-
-  
-  [i915#14808]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8991 -> IGTPW_15477
-  * Linux: CI_DRM_18772 -> CI_DRM_18774
-
-  CI-20190529: 20190529
-  CI_DRM_18772: 6085bbba363b5c5b1f0e0420a9d7ecfd8ccea907 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18774: 96e9ac36699d58791b67aea5e1d258074ea63165 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15477: 15477
-  IGT_8991: c5721520bb6611ab8fcbe27db0c120b72d25b99e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15477/index.html
-
---===============1398530117252117575==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_display_modes: Skip mirrored pipe combinations (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/169829/">https://patchwork.freedesktop.org/series/169829/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15477/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15477/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8991 -&gt; IGTPW_15477</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15477/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15477 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-adls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8991/bat-adls-6/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14808">i915#14808</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15477/bat-adls-6/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8991 -&gt; IGTPW_15477</li>
-<li>Linux: CI_DRM_18772 -&gt; CI_DRM_18774</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18772: 6085bbba363b5c5b1f0e0420a9d7ecfd8ccea907 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18774: 96e9ac36699d58791b67aea5e1d258074ea63165 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15477: 15477<br />
-  IGT_8991: c5721520bb6611ab8fcbe27db0c120b72d25b99e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1398530117252117575==--
+>  		xe_for_each_engine(fd, hwe)
+>  			test_exec(fd, hwe, 4, 1, SZ_2M, 0, 0, NULL, NULL,
+>  				  FAULT, NULL);
+> +	}
+>  
+>  	for (const struct section *s = psections; s->name; s++) {
+>  		igt_subtest_f("partial-%s", s->name)
+> -- 
+> 2.43.0
+> 
