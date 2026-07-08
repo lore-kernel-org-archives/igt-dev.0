@@ -4,126 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 625C5C43602
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Jul 2026 16:14:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC507C43458
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Jul 2026 17:02:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 155A910F1BB;
-	Wed,  8 Jul 2026 16:14:03 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.b="JFPsZbk1";
-	dkim=pass (2048-bit key; unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LOOdKOBU";
-	dkim-atps=neutral
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6EBDB10F1C4
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Jul 2026 16:12:33 +0000 (UTC)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 668D7rxH2677971
- for <igt-dev@lists.freedesktop.org>; Wed, 8 Jul 2026 16:12:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=2Br03ngdQOh
- p4qWvZC4lrt6hROOBO1XKAnkTgjwsB3M=; b=JFPsZbk1p2iiazqNg1aWkBMYLW/
- 0GVZ7jHodQP5J0O8ibac5gwCzsb/7I56yq/x57JJKDZ0SpgKcfKGJ0D6Ux45SjY0
- HbMLrLLFIjSqolr8iFyNS1jVFt7NQqyg63SzRsOxMe1GvJzphnLIBcmC9v1m59BS
- p58H2ZwGsk41vv/x8I6H7x1n+0Lsc4Q+pr1XW5vnu2iqVKahY9Odo6j+x8dYQDkM
- qBel4p1hC/erfPuuaRuCcBpUIIUJffc7lw43O43U+v2+q9wrVamk9L4LiC7zRhCd
- 10j9V3W/sxsQj0PtvDRSnVCVZKjDeLaPWOyZYJgoZ+JqoDd8qil3ZDRyztw==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9q5s8wmm-1
- (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Wed, 08 Jul 2026 16:12:32 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-2c804e38c65so20634645ad.2
- for <igt-dev@lists.freedesktop.org>; Wed, 08 Jul 2026 09:12:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oss.qualcomm.com; s=google; t=1783527152; x=1784131952;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to:content-type;
- bh=2Br03ngdQOhp4qWvZC4lrt6hROOBO1XKAnkTgjwsB3M=;
- b=LOOdKOBU4QISXfhGHmokeQWhlZPyXFY04UIDFXDUjvKCnshcATWAFe0V47hNZZRz21
- E4b6ZxFY9bJ5ldQ/z/Hv3VxFg7hMPIvN1NgHD+A7/9cccpqKWXEehmWL+/dfHPRFW+hs
- UaIo8H92CwGPNA1YZTAxJ8b6Kz7kEhi5IlnYTQETLC+EuYHAP3Gref25biwtRcg8VFam
- nUV57QXi/UiGI5HPJHK26qzaQZ94vkDIGwFJMOhWhRcSQ6Me6FmF7yC0cta8hOxGTf8Y
- Ft5hgK64emr8NBVc1Fexz//FayU7t5TkCfH0A+CzmqIzmeSMZzBI21iZZfI9VPjT1PjI
- pFRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1783527152; x=1784131952;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to:content-type;
- bh=2Br03ngdQOhp4qWvZC4lrt6hROOBO1XKAnkTgjwsB3M=;
- b=V7y+NBQSOVYKZLniHUfj9vqskFq+Mkd3ywiwmKsVU4LHiQlGHp88OJmxu23fnSKy4w
- I1LqETWCtS6VQf5SK7xSpUq4w9eqnAJZRVrIAcF0qWPpPCXNmPQw4eNLzRg83NKwY180
- 12iZvabuW342NmbmWLUaFPXmdMWIOZjkOS++0/JylkeWnX7ChIXW6znAVuWrTfe65od+
- jm9kNgWAaDVHobNOBIpYWIuXoYrgdkrLklaK2zCW1Je9uJQ7WTm6nLkXA8X1tfWA65dW
- /UHIBGGScM7o3VTAxfqaSK/HUPQ4Dj5FAVPPbhdYbldAUEKnXFYQfVUo1CDPOk0QAZa9
- pSyQ==
-X-Gm-Message-State: AOJu0YyGSYJemgYVfKJZmSO5kW02IAmnIin/M3OxjKeObD6vLHpcq0LM
- Sdq9v2uydx1DPnm3cej8haw5l4ZC/QIOeTiWsK7dLnbwflENWIHcK+IFD+dnIhjLGziYXZXJ7m1
- 3xtl+qIoMLGTRPklQxs1VCUpovOCIjbWzVifdRfT/IFA/xCsmLrkSQl0+Cu8zVtQx9eBjom14Zh
- tA
-X-Gm-Gg: AfdE7cmDX83oPG2BJ04ukvyp3cQhOqzG0Cxw8E4QTRabb0gohrNncSmH6Pihcgg3GkH
- pjJqZ2TEnM/wp6XWwZMngTsm0O5Uk5WRwUNYFu8o8AWKi0zpGcxLZct5E/F3C9d4d09btMDKswX
- fNfNrkQxfWkUPApYbOglIJcrt6NOW45mD7st14UM592Nsw35w4k661LxpbxCvfFU+OUC/h3pb6t
- ESEkUTOUXLQxcQnjx8qJcNSL0+KUh/um0x6K8u2BbB+/coFaY4UD5UvaldOuEcNOSUFmZ8uf+cb
- 2/uQwPmLPbLZuVm0/xoTacCFvjlo4SJXQBrbOKzSy+kz+x6uPlaeDkooel/6BoJMb1L9lYZI8g+
- UUbBJNjtLRAcsgfovufdmWA/4EAtQWm9WnzEezHGwHUmOTSf8DkqEcQnjuw==
-X-Received: by 2002:a17:903:41d1:b0:2ca:f425:4d44 with SMTP id
- d9443c01a7336-2ccea36913fmr31545385ad.4.1783527151709; 
- Wed, 08 Jul 2026 09:12:31 -0700 (PDT)
-X-Received: by 2002:a17:903:41d1:b0:2ca:f425:4d44 with SMTP id
- d9443c01a7336-2ccea36913fmr31544945ad.4.1783527151106; 
- Wed, 08 Jul 2026 09:12:31 -0700 (PDT)
-Received: from localhost (c-73-37-105-206.hsd1.or.comcast.net. [73.37.105.206])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2ccc99cc5aasm30704985ad.0.2026.07.08.09.12.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jul 2026 09:12:30 -0700 (PDT)
-From: Rob Clark <rob.clark@oss.qualcomm.com>
-To: igt-dev@lists.freedesktop.org
-Cc: freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- Rob Clark <rob.clark@oss.qualcomm.com>
-Subject: [PATCH v2 1/2] drm-uapi: Sync msm_drm.h
-Date: Wed,  8 Jul 2026 09:12:23 -0700
-Message-ID: <20260708161224.507091-2-rob.clark@oss.qualcomm.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260708161224.507091-1-rob.clark@oss.qualcomm.com>
-References: <20260708161224.507091-1-rob.clark@oss.qualcomm.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1DBB910E61A;
+	Wed,  8 Jul 2026 17:02:02 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E463B10E076;
+ Wed,  8 Jul 2026 17:01:33 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5688821869941772190=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDE1OCBTYWx0ZWRfX93gXJ6ojOXdJ
- fZJk5O8Q8s4hTtRDeGNAwu5IrR+hGuiD4MWmFswEXXr1ROjOnBGZHanImv9ppOi13OYp4q6hAZW
- dcYb/lL2Hfnc22JxQ1dZq65mVxE9RGOeM8sjU+32oZYXLl2mCiDP3beSK4bA+k+ql5ks0L8sTeT
- a0NhmXIXqOQ/cFaNMqzqKXbr4q9iRa1K7iwPiJpQlSmNK2bGis1Yxk60DzOi3cfzNlL/HUfq6b8
- N6th26jacK8ivJGp2SPdg8VWRXun+N9iu5um7EzXCzJeaVNqg3QjyktiL8OAVQ9xgfdq97di4b1
- vzktnw0tTn1jiW95nlCSzwVPjsCwbujn34qkyfcHjJFXvOYLv8JCmOuwIgXob5w6qslcIlzWyIB
- jkp6oftvDIvKk0FOP61Pt/cRSLuVGKyYksWMZMsm0zyCsdhWAOZGn5XUIUB1qcXlH17eJYR1gv8
- sXAcbbOdZYVDwOn8pqg==
-X-Proofpoint-ORIG-GUID: Nb6WhbKRiUcmR5W24IAzicEf2QW5l8hN
-X-Authority-Analysis: v=2.4 cv=NfTWEWD4 c=1 sm=1 tr=0 ts=6a4e76f0 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=19Wyn7e3V/0aNffMjNCMQw==:17
- a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=e5mUnYsNAAAA:8
- a=20KFwNOVAAAA:8 a=EUspDBNiAAAA:8 a=Nei9H0Qy7Mr5T7KAPYEA:9
- a=GvdueXVYPmCkWapjIL-Q:22 a=Vxmtnl_E_bksehYqCbjh:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDE1OCBTYWx0ZWRfX8bWw1xRQdPL3
- 0izRw1bEUduXi7mmZpd6Up8cgyy86Prh2qP7w1A8MeDjTmr87uI/b8ssPIN/aZyGxUUYbJAYRTP
- QVRfcncZEYpnQrJmzl8JrHvzua5fxYc=
-X-Proofpoint-GUID: Nb6WhbKRiUcmR5W24IAzicEf2QW5l8hN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-08_02,2026-07-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 phishscore=0 bulkscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 malwarescore=0 adultscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607080158
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Add_?=
+ =?utf-8?q?oversubscribe_concurrent_bind_stress_subtest_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sobin Thomas" <sobin.thomas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 08 Jul 2026 17:01:33 -0000
+Message-ID: <178353009392.165379.17943684936328422926@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260708121553.1649438-1-sobin.thomas@intel.com>
+In-Reply-To: <20260708121553.1649438-1-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,315 +37,271 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Pull in updated UABI header with PERFCNTR_CONFIG ioctl.  Sync with:
+--===============5688821869941772190==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-   commit 44c460d2cc8b87c08360fe60f861660c8045ef90
-   Merge: 9bb8af2770b7 9a967125427e
-   Author: Dave Airlie <airlied@redhat.com>
+== Series Details ==
 
-       Merge tag 'drm-msm-next-2026-05-30' of https://gitlab.freedesktop.org/drm/msm into drm-next
+Series: tests/intel/xe_vm: Add oversubscribe concurrent bind stress subtest (rev2)
+URL   : https://patchwork.freedesktop.org/series/169728/
+State : success
 
-Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
-Part-of: <https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/41158>
----
- include/drm-uapi/msm_drm.h | 204 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 188 insertions(+), 16 deletions(-)
+== Summary ==
 
-diff --git a/include/drm-uapi/msm_drm.h b/include/drm-uapi/msm_drm.h
-index 2377147b6af0..7f2e594be4eb 100644
---- a/include/drm-uapi/msm_drm.h
-+++ b/include/drm-uapi/msm_drm.h
-@@ -90,6 +90,34 @@ struct drm_msm_timespec {
- #define MSM_PARAM_RAYTRACING 0x11 /* RO */
- #define MSM_PARAM_UBWC_SWIZZLE 0x12 /* RO */
- #define MSM_PARAM_MACROTILE_MODE 0x13 /* RO */
-+#define MSM_PARAM_UCHE_TRAP_BASE 0x14 /* RO */
-+/* PRR (Partially Resident Region) is required for sparse residency: */
-+#define MSM_PARAM_HAS_PRR    0x15  /* RO */
-+/* MSM_PARAM_EN_VM_BIND is set to 1 to enable VM_BIND ops.
-+ *
-+ * With VM_BIND enabled, userspace is required to allocate iova and use the
-+ * VM_BIND ops for map/unmap ioctls.  MSM_INFO_SET_IOVA and MSM_INFO_GET_IOVA
-+ * will be rejected.  (The latter does not have a sensible meaning when a BO
-+ * can have multiple and/or partial mappings.)
-+ *
-+ * With VM_BIND enabled, userspace does not include a submit_bo table in the
-+ * SUBMIT ioctl (this will be rejected), the resident set is determined by
-+ * the the VM_BIND ops.
-+ *
-+ * Enabling VM_BIND will fail on devices which do not have per-process pgtables.
-+ * And it is not allowed to disable VM_BIND once it has been enabled.
-+ *
-+ * Enabling VM_BIND should be done (attempted) prior to allocating any BOs or
-+ * submitqueues of type MSM_SUBMITQUEUE_VM_BIND.
-+ *
-+ * Relatedly, when VM_BIND mode is enabled, the kernel will not try to recover
-+ * from GPU faults or failed async VM_BIND ops, in particular because it is
-+ * difficult to communicate to userspace which op failed so that userspace
-+ * could rewind and try again.  When the VM is marked unusable, the SUBMIT
-+ * ioctl will throw -EPIPE.
-+ */
-+#define MSM_PARAM_EN_VM_BIND 0x16  /* WO, once */
-+#define MSM_PARAM_AQE	     0x17  /* RO */
- 
- /* For backwards compat.  The original support for preemption was based on
-  * a single ring per priority level so # of priority levels equals the #
-@@ -113,6 +141,19 @@ struct drm_msm_param {
- 
- #define MSM_BO_SCANOUT       0x00000001     /* scanout capable */
- #define MSM_BO_GPU_READONLY  0x00000002
-+/* Private buffers do not need to be explicitly listed in the SUBMIT
-+ * ioctl, unless referenced by a drm_msm_gem_submit_cmd.  Private
-+ * buffers may NOT be imported/exported or used for scanout (or any
-+ * other situation where buffers can be indefinitely pinned, but
-+ * cases other than scanout are all kernel owned BOs which are not
-+ * visible to userspace).
-+ *
-+ * In exchange for those constraints, all private BOs associated with
-+ * a single context (drm_file) share a single dma_resv, and if there
-+ * has been no eviction since the last submit, there are no per-BO
-+ * bookeeping to do, significantly cutting the SUBMIT overhead.
-+ */
-+#define MSM_BO_NO_SHARE      0x00000004
- #define MSM_BO_CACHE_MASK    0x000f0000
- /* cache modes */
- #define MSM_BO_CACHED        0x00010000
-@@ -122,6 +163,7 @@ struct drm_msm_param {
- 
- #define MSM_BO_FLAGS         (MSM_BO_SCANOUT | \
-                               MSM_BO_GPU_READONLY | \
-+                              MSM_BO_NO_SHARE | \
-                               MSM_BO_CACHE_MASK)
- 
- struct drm_msm_gem_new {
-@@ -179,6 +221,17 @@ struct drm_msm_gem_cpu_fini {
-  * Cmdstream Submission:
-  */
- 
-+#define MSM_SYNCOBJ_RESET 0x00000001 /* Reset syncobj after wait. */
-+#define MSM_SYNCOBJ_FLAGS ( \
-+		MSM_SYNCOBJ_RESET | \
-+		0)
-+
-+struct drm_msm_syncobj {
-+	__u32 handle;     /* in, syncobj handle. */
-+	__u32 flags;      /* in, from MSM_SUBMIT_SYNCOBJ_FLAGS */
-+	__u64 point;      /* in, timepoint for timeline syncobjs. */
-+};
-+
- /* The value written into the cmdstream is logically:
-  *
-  *   ((relocbuf->gpuaddr + reloc_offset) << shift) | or
-@@ -220,7 +273,10 @@ struct drm_msm_gem_submit_cmd {
- 	__u32 size;           /* in, cmdstream size */
- 	__u32 pad;
- 	__u32 nr_relocs;      /* in, number of submit_reloc's */
--	__u64 relocs;         /* in, ptr to array of submit_reloc's */
-+	union {
-+		__u64 relocs; /* in, ptr to array of submit_reloc's */
-+		__u64 iova;   /* cmdstream address (for VM_BIND contexts) */
-+	};
- };
- 
- /* Each buffer referenced elsewhere in the cmdstream submit (ie. the
-@@ -268,17 +324,6 @@ struct drm_msm_gem_submit_bo {
- 		MSM_SUBMIT_FENCE_SN_IN   | \
- 		0)
- 
--#define MSM_SUBMIT_SYNCOBJ_RESET 0x00000001 /* Reset syncobj after wait. */
--#define MSM_SUBMIT_SYNCOBJ_FLAGS        ( \
--		MSM_SUBMIT_SYNCOBJ_RESET | \
--		0)
--
--struct drm_msm_gem_submit_syncobj {
--	__u32 handle;     /* in, syncobj handle. */
--	__u32 flags;      /* in, from MSM_SUBMIT_SYNCOBJ_FLAGS */
--	__u64 point;      /* in, timepoint for timeline syncobjs. */
--};
--
- /* Each cmdstream submit consists of a table of buffers involved, and
-  * one or more cmdstream buffers.  This allows for conditional execution
-  * (context-restore), and IB buffers needed for per tile/bin draw cmds.
-@@ -292,13 +337,80 @@ struct drm_msm_gem_submit {
- 	__u64 cmds;           /* in, ptr to array of submit_cmd's */
- 	__s32 fence_fd;       /* in/out fence fd (see MSM_SUBMIT_FENCE_FD_IN/OUT) */
- 	__u32 queueid;        /* in, submitqueue id */
--	__u64 in_syncobjs;    /* in, ptr to array of drm_msm_gem_submit_syncobj */
--	__u64 out_syncobjs;   /* in, ptr to array of drm_msm_gem_submit_syncobj */
-+	__u64 in_syncobjs;    /* in, ptr to array of drm_msm_syncobj */
-+	__u64 out_syncobjs;   /* in, ptr to array of drm_msm_syncobj */
- 	__u32 nr_in_syncobjs; /* in, number of entries in in_syncobj */
- 	__u32 nr_out_syncobjs; /* in, number of entries in out_syncobj. */
- 	__u32 syncobj_stride; /* in, stride of syncobj arrays. */
- 	__u32 pad;            /*in, reserved for future use, always 0. */
-+};
-+
-+#define MSM_VM_BIND_OP_UNMAP	0
-+#define MSM_VM_BIND_OP_MAP	1
-+#define MSM_VM_BIND_OP_MAP_NULL	2
- 
-+#define MSM_VM_BIND_OP_DUMP	1
-+#define MSM_VM_BIND_OP_FLAGS ( \
-+		MSM_VM_BIND_OP_DUMP | \
-+		0)
-+
-+/**
-+ * struct drm_msm_vm_bind_op - bind/unbind op to run
-+ */
-+struct drm_msm_vm_bind_op {
-+	/** @op: one of MSM_VM_BIND_OP_x */
-+	__u32 op;
-+	/** @handle: GEM object handle, MBZ for UNMAP or MAP_NULL */
-+	__u32 handle;
-+	/** @obj_offset: Offset into GEM object, MBZ for UNMAP or MAP_NULL */
-+	__u64 obj_offset;
-+	/** @iova: Address to operate on */
-+	__u64 iova;
-+	/** @range: Number of bites to to map/unmap */
-+	__u64 range;
-+	/** @flags: Bitmask of MSM_VM_BIND_OP_FLAG_x */
-+	__u32 flags;
-+	/** @pad: MBZ */
-+	__u32 pad;
-+};
-+
-+#define MSM_VM_BIND_FENCE_FD_IN		0x00000001
-+#define MSM_VM_BIND_FENCE_FD_OUT	0x00000002
-+#define MSM_VM_BIND_FLAGS ( \
-+		MSM_VM_BIND_FENCE_FD_IN | \
-+		MSM_VM_BIND_FENCE_FD_OUT | \
-+		0)
-+
-+/**
-+ * struct drm_msm_vm_bind - Input of &DRM_IOCTL_MSM_VM_BIND
-+ */
-+struct drm_msm_vm_bind {
-+	/** @flags: in, bitmask of MSM_VM_BIND_x */
-+	__u32 flags;
-+	/** @nr_ops: the number of bind ops in this ioctl */
-+	__u32 nr_ops;
-+	/** @fence_fd: in/out fence fd (see MSM_VM_BIND_FENCE_FD_IN/OUT) */
-+	__s32 fence_fd;
-+	/** @queue_id: in, submitqueue id */
-+	__u32 queue_id;
-+	/** @in_syncobjs: in, ptr to array of drm_msm_gem_syncobj */
-+	__u64 in_syncobjs;
-+	/** @out_syncobjs: in, ptr to array of drm_msm_gem_syncobj */
-+	__u64 out_syncobjs;
-+	/** @nr_in_syncobjs: in, number of entries in in_syncobj */
-+	__u32 nr_in_syncobjs;
-+	/** @nr_out_syncobjs: in, number of entries in out_syncobj */
-+	__u32 nr_out_syncobjs;
-+	/** @syncobj_stride: in, stride of syncobj arrays */
-+	__u32 syncobj_stride;
-+	/** @op_stride: sizeof each struct drm_msm_vm_bind_op in @ops */
-+	__u32 op_stride;
-+	union {
-+		/** @op: used if num_ops == 1 */
-+		struct drm_msm_vm_bind_op op;
-+		/** @ops: userptr to array of drm_msm_vm_bind_op if num_ops > 1 */
-+		__u64 ops;
-+	};
- };
- 
- #define MSM_WAIT_FENCE_BOOST	0x00000001
-@@ -344,10 +456,20 @@ struct drm_msm_gem_madvise {
- /*
-  * Draw queues allow the user to set specific submission parameter. Command
-  * submissions specify a specific submitqueue to use.  ID 0 is reserved for
-- * backwards compatibility as a "default" submitqueue
-+ * backwards compatibility as a "default" submitqueue.
-+ *
-+ * Because VM_BIND async updates happen on the CPU, they must run on a
-+ * virtual queue created with the flag MSM_SUBMITQUEUE_VM_BIND.  If we had
-+ * a way to do pgtable updates on the GPU, we could drop this restriction.
-  */
- 
--#define MSM_SUBMITQUEUE_FLAGS (0)
-+#define MSM_SUBMITQUEUE_ALLOW_PREEMPT	0x00000001
-+#define MSM_SUBMITQUEUE_VM_BIND	0x00000002  /* virtual queue for VM_BIND ops */
-+
-+#define MSM_SUBMITQUEUE_FLAGS		    ( \
-+		MSM_SUBMITQUEUE_ALLOW_PREEMPT | \
-+		MSM_SUBMITQUEUE_VM_BIND | \
-+		0)
- 
- /*
-  * The submitqueue priority should be between 0 and MSM_PARAM_PRIORITIES-1,
-@@ -369,6 +491,52 @@ struct drm_msm_submitqueue_query {
- 	__u32 pad;
- };
- 
-+#define MSM_PERFCNTR_STREAM	0x00000001
-+#define MSM_PERFCNTR_UPDATE	0x00000002
-+#define MSM_PERFCNTR_FLAGS	( \
-+		MSM_PERFCNTR_STREAM | \
-+		MSM_PERFCNTR_UPDATE | \
-+		0)
-+
-+struct drm_msm_perfcntr_group {
-+	char group_name[16];
-+	__u32 nr_countables;
-+	__u32 pad;         /* mbz */
-+	__u64 countables;  /* pointer to an array of nr_countables u32 */
-+};
-+
-+/*
-+ * Note, for MSM_PERFCNTR_STREAM, the ioctl returns an fd to read recorded
-+ * counters.  This only works because the ioctl is DRM_IOW(), if we returned
-+ * a out param in the ioctl struct the copy_to_user() (in drm_ioctl())
-+ * could fault, causing us to leak the fd.
-+ *
-+ * If the ioctl returns with error E2BIG, that means more counters/countables
-+ * are requested than are currently available.  If MSM_PERFCNTR_UPDATE flag
-+ * is set, drm_msm_perfcntr_group::nr_countables will be updated to return
-+ * the actual # of counters available.
-+ *
-+ * The data read from the has the following format for each sampling period:
-+ *
-+ *     uint64_t timestamp;  // CP_ALWAYS_ON_COUNTER captured at sample time
-+ *     uint32_t seqno;      // increments by 1 each period, reset to 0 on discontinuity
-+ *     uint32_t mbz;        // pad out counters to 64b
-+ *     struct {
-+ *        uint64_t counter[nr_countables];
-+ *     } groups[nr_groups];
-+ *
-+ * The ordering of groups and counters matches the order in PERFCNTR_CONFIG
-+ * ioctl.
-+ */
-+struct drm_msm_perfcntr_config {
-+	__u32 flags;         /* bitmask of MSM_PERFCNTR_x */
-+	__u32 nr_groups;     /* # of entries in groups array */
-+	__u64 groups;        /* pointer to array of drm_msm_perfcntr_group */
-+	__u64 period;        /* sampling period in ns */
-+	__u32 bufsz_shift;   /* sample buffer size in bytes is 1<<bufsz_shift */
-+	__u32 group_stride;  /* sizeof(struct drm_msm_perfcntr_group) */
-+};
-+
- #define DRM_MSM_GET_PARAM              0x00
- #define DRM_MSM_SET_PARAM              0x01
- #define DRM_MSM_GEM_NEW                0x02
-@@ -384,6 +552,8 @@ struct drm_msm_submitqueue_query {
- #define DRM_MSM_SUBMITQUEUE_NEW        0x0A
- #define DRM_MSM_SUBMITQUEUE_CLOSE      0x0B
- #define DRM_MSM_SUBMITQUEUE_QUERY      0x0C
-+#define DRM_MSM_VM_BIND                0x0D
-+#define DRM_MSM_PERFCNTR_CONFIG        0x0E
- 
- #define DRM_IOCTL_MSM_GET_PARAM        DRM_IOWR(DRM_COMMAND_BASE + DRM_MSM_GET_PARAM, struct drm_msm_param)
- #define DRM_IOCTL_MSM_SET_PARAM        DRM_IOW (DRM_COMMAND_BASE + DRM_MSM_SET_PARAM, struct drm_msm_param)
-@@ -397,6 +567,8 @@ struct drm_msm_submitqueue_query {
- #define DRM_IOCTL_MSM_SUBMITQUEUE_NEW    DRM_IOWR(DRM_COMMAND_BASE + DRM_MSM_SUBMITQUEUE_NEW, struct drm_msm_submitqueue)
- #define DRM_IOCTL_MSM_SUBMITQUEUE_CLOSE  DRM_IOW (DRM_COMMAND_BASE + DRM_MSM_SUBMITQUEUE_CLOSE, __u32)
- #define DRM_IOCTL_MSM_SUBMITQUEUE_QUERY  DRM_IOW (DRM_COMMAND_BASE + DRM_MSM_SUBMITQUEUE_QUERY, struct drm_msm_submitqueue_query)
-+#define DRM_IOCTL_MSM_VM_BIND          DRM_IOWR(DRM_COMMAND_BASE + DRM_MSM_VM_BIND, struct drm_msm_vm_bind)
-+#define DRM_IOCTL_MSM_PERFCNTR_CONFIG  DRM_IOW (DRM_COMMAND_BASE + DRM_MSM_PERFCNTR_CONFIG, struct drm_msm_perfcntr_config)
- 
- #if defined(__cplusplus)
- }
--- 
-2.55.0
+CI Bug Log - changes from XEIGT_8993_BAT -> XEIGTPW_15490_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  Additional (1): bat-bmg-2 
+  Missing    (1): bat-bmg-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15490_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@write:
+    - bat-bmg-2:          NOTRUN -> [SKIP][1] ([Intel XE#2134]) +4 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@fbdev@write.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-bmg-2:          NOTRUN -> [SKIP][2] ([Intel XE#2233])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-bmg-2:          NOTRUN -> [SKIP][3] ([Intel XE#2489] / [Intel XE#3419]) +13 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-bmg-2:          NOTRUN -> [SKIP][4] ([Intel XE#2482]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-bmg-2:          NOTRUN -> [SKIP][5] ([Intel XE#2434] / [Intel XE#2548] / [Intel XE#6314])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-bmg-2:          NOTRUN -> [SKIP][6] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@xe_exec_multi_queue@priority:
+    - bat-bmg-2:          NOTRUN -> [SKIP][7] ([Intel XE#8364]) +13 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_exec_multi_queue@priority.html
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-bmg-2:          NOTRUN -> [SKIP][8] ([Intel XE#2229])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_live_ktest@xe_dma_buf:
+    - bat-bmg-vm:         [PASS][9] -> [ABORT][10] ([Intel XE#8007] / [Intel XE#8023]) +1 other test abort
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8993/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-bmg-2:          NOTRUN -> [SKIP][11] ([Intel XE#1420] / [Intel XE#7590])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-bmg-2:          NOTRUN -> [SKIP][12] ([Intel XE#2245] / [Intel XE#7590])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-bmg-2:          NOTRUN -> [SKIP][13] ([Intel XE#2236] / [Intel XE#7590])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_waitfence@engine:
+    - bat-ptl-2:          [FAIL][14] -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8993/bat-ptl-2/igt@xe_waitfence@engine.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-ptl-2/igt@xe_waitfence@engine.html
+
+  
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2233]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233
+  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
+  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
+  [Intel XE#2245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245
+  [Intel XE#2434]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434
+  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
+  [Intel XE#2489]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489
+  [Intel XE#2548]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
+  [Intel XE#6314]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6314
+  [Intel XE#7590]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590
+  [Intel XE#8007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007
+  [Intel XE#8023]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8023
+  [Intel XE#8364]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8993 -> IGTPW_15490
+
+  IGTPW_15490: 34e41718ec5ef4cc9e08defbb87ba3c193ae9bfd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8993: 8993
+  xe-5368-d2b771941e0c8aec7b6648b0c47d81161136944d: d2b771941e0c8aec7b6648b0c47d81161136944d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/index.html
+
+--===============5688821869941772190==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Add oversubscribe concurrent bind stress subtest (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/169728/">https://patchwork.freedesktop.org/series/169728/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8993_BAT -&gt; XEIGTPW_15490_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>Additional (1): bat-bmg-2 <br />
+  Missing    (1): bat-bmg-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15490_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@write:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233">Intel XE#2233</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489">Intel XE#2489</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434">Intel XE#2434</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548">Intel XE#2548</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6314">Intel XE#6314</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@priority:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_exec_multi_queue@priority.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364">Intel XE#8364</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_dma_buf:</p>
+<ul>
+<li>bat-bmg-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8993/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-vm/igt@xe_live_ktest@xe_dma_buf.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007">Intel XE#8007</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8023">Intel XE#8023</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_waitfence@engine:<ul>
+<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8993/bat-ptl-2/igt@xe_waitfence@engine.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15490/bat-ptl-2/igt@xe_waitfence@engine.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8993 -&gt; IGTPW_15490</li>
+</ul>
+<p>IGTPW_15490: 34e41718ec5ef4cc9e08defbb87ba3c193ae9bfd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8993: 8993<br />
+  xe-5368-d2b771941e0c8aec7b6648b0c47d81161136944d: d2b771941e0c8aec7b6648b0c47d81161136944d</p>
+
+</body>
+</html>
+
+--===============5688821869941772190==--
