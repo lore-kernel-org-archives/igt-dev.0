@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0671C43458
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Jul 2026 15:02:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 737E0C43458
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Jul 2026 15:04:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7F42410E2E7;
-	Wed,  8 Jul 2026 15:02:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 205B810E2E7;
+	Wed,  8 Jul 2026 15:04:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="E4JPweEm";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="QFdpnnYS";
 	dkim-atps=neutral
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com
- [209.85.214.202])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B61EB10F160
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Jul 2026 15:01:32 +0000 (UTC)
-Received: by mail-pl1-f202.google.com with SMTP id
- d9443c01a7336-2c9a700dc0eso8909595ad.1
- for <igt-dev@lists.freedesktop.org>; Wed, 08 Jul 2026 08:01:32 -0700 (PDT)
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com
+ [209.85.215.201])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EACE210E2E7
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Jul 2026 15:04:05 +0000 (UTC)
+Received: by mail-pg1-f201.google.com with SMTP id
+ 41be03b00d2f7-c88da04b719so775643a12.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 08 Jul 2026 08:04:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20251104; t=1783522892; x=1784127692;
+ d=google.com; s=20251104; t=1783523045; x=1784127845;
  darn=lists.freedesktop.org; 
  h=content-transfer-encoding:content-type:cc:to:from:subject
  :message-id:references:mime-version:in-reply-to:date:from:to:cc
  :subject:date:message-id:reply-to:content-type;
  bh=8MMFy1KCzh/XJIbuLgy7H7YGRrhZBF/gc/rgfjK0IYs=;
- b=E4JPweEmldwdfczeANO5L1B1qrtZFbMWleqVKyFp6Va2DwQXG4KUJF/r3PNqeRLWGY
- RKfVhi8f5wbV1CT3yLason/8h1Y0rRIomnp6ROFrWCQvnyqy58ni5VGsHMxaiui45GPY
- NizuUWvmDrMfhvmdm2metio03RUATK+GFOK6t2gDmhutBaN7Oyz9fRRf1cM5irKXq+Ou
- CGPljsoNAouUv6clpi0r5xp1UhzWPC+UPA9U1fmxPIPEWSlj+eP2QmiGNG4m7FaLq3Wj
- jXvgpaZ8fB3ui+sUXL3DqX6/z0Qh3cZNvpvdrWGgZLPPXz4YKcHSgHgLrjb5+AmF4KJ0
- 2iiw==
+ b=QFdpnnYSdgAORVrjxg9tYWz14BW2Qr/9KdKd5jl/SoVIoIMiShBAQ1i5GIaijrCvCs
+ Ifq2aaYPMgnUDXe2JOiLpBlE613fi8s2oYjRjpB5XS2vJe0uLiagSNcknXvxYSQNDqPW
+ vGWR1BND17aZRw8dwH4g6P1WrhJzqS1/C5jtqbwYAgwp4TEw6HYmRnYEC9hu8ybZtEBm
+ uGb2HtuR0DpL7dz4xIE59+D3q2gGk+aqTYL7WerwFoHfH6AV5psus8pQg2czRwdPoE/u
+ nTG0+ZBPQ+tElsF9pgjXxoEPLAGiwYTlP2ylIhZm1kHcAdG/x/hjYeGm1SlsbyvqE36y
+ DlUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1783522892; x=1784127692;
+ d=1e100.net; s=20251104; t=1783523045; x=1784127845;
  h=content-transfer-encoding:content-type:cc:to:from:subject
  :message-id:references:mime-version:in-reply-to:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
  :content-type;
  bh=8MMFy1KCzh/XJIbuLgy7H7YGRrhZBF/gc/rgfjK0IYs=;
- b=cfOfvXh5IjZLEkBq3zOk4hlIzZ8bbA6gCtG1iLLm8me98Dp06GVquAw7y7fYRzaVAL
- Vbjk/UCvImcPMLGwLoNDAQb8IBXqZBD/iy31K/ZEVpvUvtTsclh1ZhOAiRKfiU+e7LCh
- kQ2JbfkHOzWOd0Wr/fOGYYjcW2B2F3WcQXwajpOOyiqH8Bn41X3WS+YPgCs7oKbEf5aV
- hW+CjATAR3OooOfrhHPqdxqeqyKvaNipU/LDdMvYzqq99JfCUfJ6g1g7Ap0wav0MIA7i
- bTiYGu9KC/t8as1k6qBQrmRTFJiORLmGvZrsCR9lionK4VdQa1vXUgx/wfRXhVzC2FPQ
- MVdA==
-X-Gm-Message-State: AOJu0YyXZvY/HP2gs2CTZwE1nIeqD0aUXbWop8o9XOq938ooVhfU/KaK
- Negf/gPGErN7pbrBB+fYv+p14hNHRTg9FRkMgBKTCrjAxEPseAYd5Ui0E32qoN6YRcz7QJyj6aT
- jx8iNHGH8Fpe7ir98qGDRilyf2Nzlku6vACRozVB+9qZ2qmYXw1s/WNa1hCH9CgdsFdURRBtJRf
- S+8dNNMNnW1DQcZkafT45nSWyQTYPi+dfbNQnhOP4FEAoUhcVznLUrZ/Nh+ImSTLabHr9aylmJ
-X-Received: from plbv22.prod.google.com ([2002:a17:903:44d6:b0:2ca:cb8d:7da7])
+ b=JctpZGHTFgTAVBkcU01Mfh3N5lrvScCYZ0q0tnLy2ICNSfl4n9B0WiQpmKOLtMiWpQ
+ e5D6/YJmfQNLFYGQbT1MZTafjDITejrJdKZ29ZT6b1q1Tu1obuOmzjK/GZfbAtF5TdQt
+ g8tlTAXVokd5arc0Q0P01w/ufo1K/FBBTnmOI9nUgF3mAEmptkQiOQ+MH8j9YBglA0Y8
+ gBva98xevYdKIi/qmHL+sVIMWeZlZ+ILNDpTq3CorzEyW1M+4RU9VpEM424DiG0imcB5
+ 85pGVC+TrmkL5LJI+I9OSj6V1zBecwGDSrUMNgCXSwHlNR2tULq3VCErBRpnQdUjOfng
+ pnFg==
+X-Gm-Message-State: AOJu0Yx2xt3g3e3HKjXlZLZStCHFeqtgMF2mtfdxCvtF91BlY6LiFIfF
+ staJk4320u0WJ6sp2c+ORqDoN5lV5txhQcOkMtGfqZXBl/V64DV9laxWz2O8BQHpyLSN6q5k9PH
+ jjsOpqM4KGCK150Lqw1ZwbZUlMQxY3yZvYc3TFMrzbDFKfuXedTJh6SFWUJGvSyrSLptNviJccI
+ 1JhZy0DsO45dKckImKODPDdoFHkxEVwLsDtsdrJinDcLzJWm5Ln4+/5Ggi5vUDq8CxrmsXk79t
+X-Received: from pggi5.prod.google.com ([2002:a63:cd05:0:b0:c86:2164:967d])
  (user=jingpingjan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:da2d:b0:2ca:e62c:9e96 with SMTP id
- d9443c01a7336-2ccea38490cmr29538445ad.5.1783522891645; 
- Wed, 08 Jul 2026 08:01:31 -0700 (PDT)
-Date: Wed,  8 Jul 2026 23:00:55 +0800
+ 2002:a05:6a20:c996:b0:3bf:65b7:22d9 with SMTP id
+ adf61e73a8af0-3c0bcb7e30bmr4020070637.41.1783523045109; 
+ Wed, 08 Jul 2026 08:04:05 -0700 (PDT)
+Date: Wed,  8 Jul 2026 23:02:24 +0800
 In-Reply-To: <20260707102711.qjparlbi7zedneon@kamilkon-DESK.igk.intel.com>
 Mime-Version: 1.0
 References: <20260707102711.qjparlbi7zedneon@kamilkon-DESK.igk.intel.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260708150054.2146786-2-jingpingjan@google.com>
-Subject: [PATCH i-g-t v2] Subject: [PATCH i-g-t] lib/igt_kms: Fix plane type
- check in igt_crtc_get_plane_type
+Message-ID: <20260708150223.2148857-2-jingpingjan@google.com>
+Subject: [PATCH i-g-t v2] lib/igt_kms: Fix plane type check in
+ igt_crtc_get_plane_type
 From: Jing-Ping Jan <jingpingjan@google.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
 Cc: Jing-Ping Jan <jingpingjan@google.com>,
