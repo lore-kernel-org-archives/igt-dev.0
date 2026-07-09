@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99FAFC44501
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 07:17:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E63B0C43458
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 07:17:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D1F710F3F1;
-	Thu,  9 Jul 2026 07:17:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 951F710F3DC;
+	Thu,  9 Jul 2026 07:17:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DU/OyW1Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c0+rQWaV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 605DB10F3D9
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 07:16:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 192A710E02E
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 07:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783581405; x=1815117405;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=h5fg6yf3QYjLh+y6UhNKNk0UQRLTkmBscbwxcSEuIFA=;
- b=DU/OyW1YyK7ri0lVeDYs2lK18oRRFye41fAKB/H25zeQpukf7tgtZj8s
- 8ww1PMPWhANlp4U9fzN9qg39JgY8odKdoIB/jhJMFwEM2/CXcHv6JRP2F
- SP8DZkkcM1znQrClBZKSvyziAY+BOOpFSjT+NmOFOAOI1LYSlkOGisJfg
- IB8cxu00voEmjh6J2JUDDCCCTR0PTBCqbREoXBt3amxxfxuwUgK0DTioc
- B8NcPiMYUwLtxPttvLiJz6zUZ8JqZAr1UyME8QlvxGSs5dZB67RFJVT5i
- lcEnxpABuJBUPptjLoiny4vhJN3vr3nj3Bsf4dmpyavnWhVzwOFoA2/0r A==;
-X-CSE-ConnectionGUID: i1XHkdzdRYSqVcujvfWiAw==
-X-CSE-MsgGUID: ZNIU+3v0S1uRRJPf2lg91Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="83229035"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="83229035"
+ t=1783581411; x=1815117411;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=LiJnnvxMieZfMWS0RoXHpnSLioi+cdSPS2Yb/w6HuAY=;
+ b=c0+rQWaVublrQbusL/yFlihuBmNNZuYDrQqvwCtqFTMpyo4UGlpD8q1F
+ nahkwvdgqcPNyZMstOvajMO3NQfaFvlS64cAwYRYyf0uM3Brwo+gg/Ux7
+ womXCeMx2J4T/wgA6UAFZKHeYOESREnaOmRhz1UF0TXhtubbqDCFVqpNY
+ Dup4ZGrhSwQVI3EiBmfHWxLYpzQPRX8mxCnHUm4Q+JQfjI4GowdMT073T
+ qVO8UqerHk+IY7UbZGHTjqWNH6HXBfDKkTHLvWVXsi7orvB/OS0+sWYsE
+ hShAb5E+w0CapMWHWc6rPbc2OcL9Di238PgPw51iMJsmSBTQtnZrTihNY Q==;
+X-CSE-ConnectionGUID: zDo2jNBNQvenIYPV3zedSw==
+X-CSE-MsgGUID: /QIJNbRZQxWgfx1eEz9ctQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="83229043"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="83229043"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2026 00:16:44 -0700
-X-CSE-ConnectionGUID: iGZG+BwtSRyoDQ5wiS9lqw==
-X-CSE-MsgGUID: WyYSNMzTQE21pVi/6T9j7g==
+ 09 Jul 2026 00:16:50 -0700
+X-CSE-ConnectionGUID: 3QXzLjHgTCKUaKOWfQU0pQ==
+X-CSE-MsgGUID: KTjiXyvYQeKUKO/3pzT6Fg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="254020959"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="254020974"
 Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2026 00:16:42 -0700
+ 09 Jul 2026 00:16:48 -0700
 From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
  karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH 0/2] tests/intel/xe_survivability: update ignored dmesg regex
-Date: Thu,  9 Jul 2026 12:39:06 +0530
-Message-ID: <20260709070905.405108-4-sk.anirban@intel.com>
+Subject: [PATCH 2/2] Add xe_survivability to xe-fast-feedback
+Date: Thu,  9 Jul 2026 12:39:08 +0530
+Message-ID: <20260709070905.405108-6-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260709070905.405108-4-sk.anirban@intel.com>
+References: <20260709070905.405108-4-sk.anirban@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,24 +69,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The kernel now reports -ENOTRECOVERABLE when the device is wedged.
-As runtime-survivability deliberately wedges the device, update
-dmesg regex so igt_runner does not treat the expected error logs
-as failures.
-
-kernel implementation:
-https://patchwork.freedesktop.org/series/168780/
-
 Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-
-Sk Anirban (2):
-  tests/intel/xe_survivability: update ignored dmesg regex
-  Add xe_survivability to xe-fast-feedback
-
+---
  tests/intel-ci/xe.fast-feedback.testlist | 1 +
- tests/intel/xe_survivability.c           | 7 ++++---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ 1 file changed, 1 insertion(+)
 
+diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
+index 64587cce1..716c7c5d7 100644
+--- a/tests/intel-ci/xe.fast-feedback.testlist
++++ b/tests/intel-ci/xe.fast-feedback.testlist
+@@ -223,6 +223,7 @@ igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
+ igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
+ igt@xe_sysfs_scheduler@job_timeout_ms-invalid
+ igt@xe_sysfs_scheduler@job_timeout_ms-min-max
++igt@xe_survivability@runtime-survivability
+ #igt@xe_vm@bind-once
+ #igt@xe_vm@scratch
+ igt@xe_vm@shared-pte-page
 -- 
 2.43.0
 
