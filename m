@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FBD5C43458
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 05:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47C43C43458
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 05:41:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BA4310E02B;
-	Thu,  9 Jul 2026 05:41:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E03E910E2A2;
+	Thu,  9 Jul 2026 05:41:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jpb2I/7u";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RMwpoSUq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A78A010E02B
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 05:40:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FAEC10E02B
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 05:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783575640; x=1815111640;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=SDsB9/eLTA9P6LVxZ2lUF0ledrr4h9zyQ4ipBGF6PBs=;
- b=Jpb2I/7uwVh0LCrm+YyEA3iHdY3/qtwroXA0j7RISvoYe/edDtmTuW44
- hg8Lr5h2Ve1G8kho/hr/odL4pKBsNj35yTg+tj8BNA1OQ3dKifpVKBKp7
- iOvCuhHcRHpNlLiSP5p2mehRoXbp3vYS5keihx1EL56gfE+DaZOXoV2A+
- H1Tgm9dQTSdDJxNxJ3PdZAuDWM+wrw9HoY8YkPs8LyV6IQuEgxctx5/0o
- Vxoc2IZF2rYkQx8BjKQheBrzxRzBWmS+wIRLwkO+KXHD/P+6MXToXBcJZ
- NAdFiFNwrJ5IDqT6Q4+fZuZf8dfnzIMkSKpFMiqLJaiMVjT3uVqdFceJ5 Q==;
-X-CSE-ConnectionGUID: QSumkzPWTzKxWOJ6kXE0ag==
-X-CSE-MsgGUID: l+aKvyE1SaeExGJsY/QqKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88162267"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="88162267"
+ t=1783575641; x=1815111641;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=wR7Tr+TnJ/y55Xc4CML39f1mNbhPAKklF17+O8uTAeQ=;
+ b=RMwpoSUq9ifdh8P3EzqfBQ7M0U0Co0YwPAsO38rWDzX/W7KZrHUR7nPJ
+ xbdJwzk9YJpZ1Z0M/3xp9j26HPYXm8oGB1QEH0qrD4Wac3B1icN+29zmO
+ Mttpxw2L6EUmsoRKW8WQ9Ro0JYE9WsrJV44nhXUqeLuWgJQ3km2xBKvDR
+ SaLuNUXx1zzpJLT1pEiphah3hqPQQ4Y5Y01oDSNrqvxnls3UFSzA94/70
+ TUHQ2joyvq0W3rEbt2UbzV1bLXLk+qTH53RKOAphU6Th6GZAw3XZfY4ZQ
+ BKYPng7+bZ8xtD8Wro4h5kzWjR7LE1MHsAu0QP4eM7fvxhOsAchQjSlQf w==;
+X-CSE-ConnectionGUID: LSONgyVyTpaUTUXEjtqU5g==
+X-CSE-MsgGUID: pLG37adHQmGEL2vYxB6J4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88162271"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="88162271"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2026 22:40:39 -0700
-X-CSE-ConnectionGUID: O/Bnf4yyRlCyt0gmTujUzQ==
-X-CSE-MsgGUID: 8HrkZfnLTnCsVDXJVbX2tw==
+ 08 Jul 2026 22:40:41 -0700
+X-CSE-ConnectionGUID: C2QYebvQQ/2CaaqraLdojA==
+X-CSE-MsgGUID: 3HxnXJ9lRY2wq725Qn0ztA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="284576067"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="284576071"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
  by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 22:40:37 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 22:40:39 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [PATCH i-g-t v3 1/2] tests/intel-ci/chamelium-only.testlist: Add
- chamelium tests
-Date: Thu,  9 Jul 2026 11:23:48 +0530
-Message-ID: <20260709055349.66437-1-pranay.samala@intel.com>
+Subject: [PATCH i-g-t v3 2/2] tests/intel-ci/: Blocklist chamelium tests
+Date: Thu,  9 Jul 2026 11:23:49 +0530
+Message-ID: <20260709055349.66437-2-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260709055349.66437-1-pranay.samala@intel.com>
+References: <20260709055349.66437-1-pranay.samala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,51 +68,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend chamelium-only testlist with audio-after-suspend tests for
-DP/HDMI and kms_chamelium_color_pipeline tests.
+Add chamelium test to BMG, LNL, PTL blocklists.
+This is a valid skip for display version <= 35.
 
 v2:
-- Update commit message (Kathik)
+- Add NVL specific test in other blocklists (Swati)
 
 v3:
-- Update the subject (Kamil)
-- Split the pacthes (Kamil)
-- Move suspend tests at the end (Swati)
+- Split the patches (Kamil)
 
 Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- tests/intel-ci/chamelium-only.testlist | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/intel-ci/xe.bmg.display.blocklist.txt | 4 ++++
+ tests/intel-ci/xe.lnl.display.blocklist.txt | 4 ++++
+ tests/intel-ci/xe.ptl.display.blocklist.txt | 4 ++++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
-index d627ad414..898c53134 100644
---- a/tests/intel-ci/chamelium-only.testlist
-+++ b/tests/intel-ci/chamelium-only.testlist
-@@ -14,6 +14,15 @@ igt@kms_chamelium_color@ctm-negative
- igt@kms_chamelium_color@ctm-red-to-blue
- igt@kms_chamelium_color@degamma
- igt@kms_chamelium_color@gamma
-+igt@kms_chamelium_color_pipeline@plane-ctm3x4
-+igt@kms_chamelium_color_pipeline@plane-ctm3x4-lut1d
-+igt@kms_chamelium_color_pipeline@plane-lut1d
-+igt@kms_chamelium_color_pipeline@plane-lut1d-ctm3x4
-+igt@kms_chamelium_color_pipeline@plane-lut1d-ctm3x4-lut1d
-+igt@kms_chamelium_color_pipeline@plane-lut1d-lut1d
-+igt@kms_chamelium_color_pipeline@plane-lut1d-post-ctm3x4
-+igt@kms_chamelium_color_pipeline@plane-lut1d-pre-ctm3x4
+diff --git a/tests/intel-ci/xe.bmg.display.blocklist.txt b/tests/intel-ci/xe.bmg.display.blocklist.txt
+index 4c2a7390a..18712fb86 100644
+--- a/tests/intel-ci/xe.bmg.display.blocklist.txt
++++ b/tests/intel-ci/xe.bmg.display.blocklist.txt
+@@ -181,3 +181,7 @@ igt@kms_flip_scaled_crc@.*linear-reflect-x
+ igt@kms_pm_dc@dc3co-.*
+ igt@kms_vrr@lobf-dc3co
+ ########################################
++# Valid skip :- For display ver <= 35
++########################################
 +igt@kms_chamelium_color_pipeline@plane-lut3d-green-only
- igt@kms_chamelium_edid@dp-edid-read
- igt@kms_chamelium_edid@dp-edid-resolution-list
- igt@kms_chamelium_edid@dp-edid-stress-resolution-4k
-@@ -71,6 +80,8 @@ igt@kms_chamelium_hpd@hdmi-hpd-after-hibernate
- # Suspend operations can cause system hangs or connection timeouts,
- # so isolating them at the tail ensures stability of main test
- # execution.
-+igt@kms_chamelium_audio@dp-audio-after-suspend
-+igt@kms_chamelium_audio@hdmi-audio-after-suspend
- igt@kms_chamelium_edid@dp-edid-change-during-suspend
- igt@kms_chamelium_edid@hdmi-edid-change-during-suspend
- igt@kms_chamelium_hpd@common-hpd-after-suspend
++########################################
+diff --git a/tests/intel-ci/xe.lnl.display.blocklist.txt b/tests/intel-ci/xe.lnl.display.blocklist.txt
+index 1dbb24ae3..491d2b512 100644
+--- a/tests/intel-ci/xe.lnl.display.blocklist.txt
++++ b/tests/intel-ci/xe.lnl.display.blocklist.txt
+@@ -191,3 +191,7 @@ igt@kms_flip_scaled_crc@.*linear-reflect-x
+ igt@kms_pm_dc@dc3co-.*
+ igt@kms_vrr@lobf-dc3co
+ ########################################
++# Valid skip :- For display ver <= 35
++########################################
++igt@kms_chamelium_color_pipeline@plane-lut3d-green-only
++########################################
+diff --git a/tests/intel-ci/xe.ptl.display.blocklist.txt b/tests/intel-ci/xe.ptl.display.blocklist.txt
+index 1041931a1..584114ff6 100644
+--- a/tests/intel-ci/xe.ptl.display.blocklist.txt
++++ b/tests/intel-ci/xe.ptl.display.blocklist.txt
+@@ -182,3 +182,7 @@ igt@kms_flip_scaled_crc@.*linear-reflect-x
+ igt@kms_pm_dc@dc3co-.*
+ igt@kms_vrr@lobf-dc3co
+ ########################################
++# Valid skip :- For display ver <= 35
++########################################
++igt@kms_chamelium_color_pipeline@plane-lut3d-green-only
++########################################
 -- 
 2.53.0
 
