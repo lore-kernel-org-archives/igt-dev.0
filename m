@@ -4,72 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005A8C43458
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 23:41:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EECA6C43458
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 23:41:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AC3A110E0A4;
-	Thu,  9 Jul 2026 23:41:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9FE1B10E104;
+	Thu,  9 Jul 2026 23:41:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="3wZcY5XF";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="mJj3K1nj";
 	dkim-atps=neutral
-Received: from CH1PR05CU001.outbound.protection.outlook.com
- (mail-northcentralusazon11010033.outbound.protection.outlook.com
- [52.101.193.33])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2244110E104
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 23:39:52 +0000 (UTC)
+Received: from CY7PR03CU001.outbound.protection.outlook.com
+ (mail-westcentralusazon11010055.outbound.protection.outlook.com
+ [40.93.198.55])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1BB710E0A4
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 23:39:56 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WYvwwUjg0TLXqtzp2exOtkhZSojmdhL/L1URzsi2tSaP7UPR/N+IU3WJ7iPr+7AfvevDm5LqiHwhmZO8dnIiWoaLjh341Uu4mK/B62j2CexTQiA2JgcC1VxXhXiEzFBqi30cRY/iRXrzo7r5ZWu7e73/yFrgjhDBzPIOiPseu5k3zWi5LGmH73KNq4uYy+58Qgr9ueB3QdkHKsgvJSxvtIFHXWY6TWYa7qFE82cwWDcfCtnKcp33wM7LxQPbKjEo6kDYJqTQRjV0PQp8sZELFkKcl8QFjKezj288RVinReCsJtinA3m0+A0U77oPXnAKZdbmbC/5wu31c7fIH8svDw==
+ b=y6snnuy5Idi/pL+l6HW4BzVOwncWESECHB9vsm0lDDWf9M8IHsmy6oQpNi+CqLpu2DoV1M+0PqLgEVcHVL8LnWaSaVFYrW2wjbXtkvZ+3ngdkJFlD0gXqTKCs5zGp96LhtgGO1MdgKQrlGZm1BKF+nfEnOEEXoXCWnSDl8nXR+zQCInKNqRZpiKUmMHp7PHiClOwDUyVP6H6/OQliBHcIndNi/ftXillgkq4HWEnG2O5qf/zCKarOCWIm8SDTOPWMx7HcBxvMUZJZGYM1Hjak7duv138FJHJMZZBy3Juz0aTnfWdhW5lXVu5A/8o9mymARtX6K6r0Q/qjwAdC7KRMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JlX+zqt7286+IoD2zBCFsC93qE0wLX3i5fgj4aDBdJ0=;
- b=NnSJZvEfsVWFcp9fd11KiEKlbnT3QCFUXAwM84+7ADj2e4b5uWo8Nci5TLCEwWWZBST+rVvTjK6/T9eBpRIKj9SJeo7mjNHlelshXTkx0JM1ISIswNw4r8NEHF/e9p+pIRMGUIrGj5kIMiBqSEtxtJ8uzBXNX2G3TviQbHLDuS2ht0YK/YLXGSReTH8b96nvhxQ3GR0qvLadOgz16A3T9hvXWB2GusBMNn8HocYCaDX/4qCAGYOo4LesV1msGdII5xN2MmI6OAkQvbuDD86yzMzjAURiq9HaauHvKSCPEVnqPiMKE102mzkuQr4jXhe9f5wxf1V1tY5ysR93WtulCQ==
+ bh=4VF818HtTSBqB82ofqjqMAdBI6q8JEPvDWGv8zE1KIk=;
+ b=PReItTXlEvXhqn1qHTItoBIlnbWrEadnPQUTZLsj6+UUI6kfg5BoFvhwlnXnABUiobzRHt7Dm09iH7YcljfcnyyQqtuos1gNAZqeAXjvhixda/BOQXaHffRb2rKOlKwL5e0VPreEsMk/UU0SaXDnN4/L1rRLwbcgvcP6IwOOEp449LRdTylyOvNUnQpEPiK9YDddY19/PdCE0r44sEHHfCcA7P8Nl6cTflEoPDcWrnqDBRXgLfjWB+D7+qyravEveotJOjGSMLw7EpiZQYt0No/cXWuCtnV402rZOs1gncJWZr2I8Je0KiZiuflwNFZb8TeGNXVSWCWtTf7oOEmrWg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JlX+zqt7286+IoD2zBCFsC93qE0wLX3i5fgj4aDBdJ0=;
- b=3wZcY5XFuQKSBxQY9XNyjanzUY/tMoQElAjEo+KrzEP10sKlZHR0xtiEGjkuB6fAlFkRtwUkX9liwWPtOMbUJhYzDlXloTfUmvgBC4GHDrTt6YpFn84Ue7GtRDoAs93f90Iooa0ZCg2MiAQMPjrqHJCaHX/+sXv7oxC2Wul3sbY=
-Received: from SN7PR04CA0109.namprd04.prod.outlook.com (2603:10b6:806:122::24)
- by MN0PR12MB6126.namprd12.prod.outlook.com (2603:10b6:208:3c6::5)
+ bh=4VF818HtTSBqB82ofqjqMAdBI6q8JEPvDWGv8zE1KIk=;
+ b=mJj3K1njytHp3DVLJp+QDyNZw4Z7RuHamLOSq8ZfRfFCmCBGbq1Tx2wmSbByHg/ik+tthKu0On7yO3wPPtPDvGdhH0QfenufsTrZZd9xw8eJF3K2Y1EwKcoTtkDTv1rfa9NW8Uh5IaOyiw00YGxBeNRt74+RPohTP8T/YoCpE+k=
+Received: from CYZPR05CA0028.namprd05.prod.outlook.com (2603:10b6:930:a3::12)
+ by DS5PPFBABE93B01.namprd12.prod.outlook.com (2603:10b6:f:fc00::65f)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Thu, 9 Jul
- 2026 23:39:47 +0000
-Received: from SA2PEPF00003AE9.namprd02.prod.outlook.com
- (2603:10b6:806:122:cafe::80) by SN7PR04CA0109.outlook.office365.com
- (2603:10b6:806:122::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.11 via Frontend Transport; Thu, 9
- Jul 2026 23:39:47 +0000
+ 2026 23:39:52 +0000
+Received: from CY4PEPF0000E9D9.namprd05.prod.outlook.com
+ (2603:10b6:930:a3:cafe::2a) by CYZPR05CA0028.outlook.office365.com
+ (2603:10b6:930:a3::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.5 via Frontend Transport; Thu, 9
+ Jul 2026 23:39:50 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF00003AE9.mail.protection.outlook.com (10.167.248.9) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CY4PEPF0000E9D9.mail.protection.outlook.com (10.167.241.72) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Thu, 9 Jul 2026 23:39:46 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.181.6 via Frontend Transport; Thu, 9 Jul 2026 23:39:49 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 9 Jul
- 2026 18:39:46 -0500
+ 2026 18:39:47 -0500
 Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 9 Jul 2026 18:39:45 -0500
+ Transport; Thu, 9 Jul 2026 18:39:46 -0500
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Krzysztof Kozlowski
- <krzysztof.kozlowski@canonical.com>, Kamil Konieczny
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Kamil Konieczny
  <kamil.konieczny@linux.intel.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
  Jesse Zhang <jesse.zhang@amd.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
  <christian.koenig@amd.com>, Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5/6] docs: Update platform filtering documentation per review
- feedback
-Date: Thu, 9 Jul 2026 19:39:13 -0400
-Message-ID: <20260709233940.160424-5-vitaly.prosyak@amd.com>
+Subject: [PATCH 6/6] tests/amdgpu: Integrate platform filtering into amd_basic
+Date: Thu, 9 Jul 2026 19:39:14 -0400
+Message-ID: <20260709233940.160424-6-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260709233940.160424-1-vitaly.prosyak@amd.com>
 References: <20260709233940.160424-1-vitaly.prosyak@amd.com>
@@ -78,29 +76,29 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE9:EE_|MN0PR12MB6126:EE_
-X-MS-Office365-Filtering-Correlation-Id: 57b742a9-a79e-4749-a18a-08dede135c76
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D9:EE_|DS5PPFBABE93B01:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4e78c14-c2fa-4706-d9e4-08dede135e13
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|36860700016|82310400026|1800799024|376014|22082099003|18002099003|56012099006|5023799004|11063799006|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info: hyw/JdJ7CpWsynN/tLwXd2dybQEo6iaPL1MlgjP5GXpIuXOlpZGQ9wIc4HZnUjaLwftlW+P5Vd06iP/Sm2kJVjfD+9GTQ+o8rL0M6fp/BkQdoi9rSd4kjxi4f/23ibxKkSnQHQMJ9ZVDLV2XoGAMbYUtveIMD/OCZqqAR+dL3a+MiFcUsdfrts/gmvGfOdytTtI3gF0uNbO6nkDkJFgP9JFOidFTdi6W2MsrGNhzZ51MfEuGhzpOWJ+GrjhiHkM5u65fqCwQSakog1Y+Cz8JS0vmJGD98lhu/DNfwR555OBZL1gm2bxw2tFlwRTzPJYw9GpDa6ph7RKad+Gz7qLOMR8aiI7i+833fMaAVeCTGkc3ZK+wxbMRy6Pf7Y5Jq52NLRVd9bg8Q2ZREbyNM0vp/1KxNwc5ISkk+NlitrjITEWzNyghydveLkH943IgAGsSdAtT6pqIEDCud9vrA4eq349QK4gmwFcA4kH+i3fcfNA/5RLbRa7T3jiK3/AeLJXeRaG5W/peXZOiXL7ulaOoJlshLltEBQiG5BJo9w/s/UnvplOoHIpBsmFxnpeL21eRoffyaw0L7XOpz31357/Zqvge6pS1e36h3jk75FteUnRYnga85RswsaU7+I8Rj3+IgaYDO/3pjAhFWQUL+WL6CuW+AOECaRvwDelBu+kJc5JU2LzU4GFisO2Qnguol766IbgY5eJcEWRNd/WuKVvqkA==
+ ARA:13230040|376014|1800799024|36860700016|82310400026|23010399003|18002099003|22082099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info: Pi842pf3zjqS4KUFoEQkqXipOUyfAEFKjddkEXQiIGnLtpdzbpS8drkkLO9jKV4tPPqGnsPLexen11ThOVdAkQM8JYn/K/f0aGalNlb+68pypDMyABhB2DxHqnKcCxDv0C1AlN+igGB5OFggVZ/opXhT9tY4DFX6OcUr1i3Q3g15doZ4CxKsKYuen0GKZ0l85bONKfFpHVLr3X7tnZvSx1BZAAX3S7lPNiJCzqgvB7VIttegoI5OucXPNrNvEoPA+jgCmX7ILsfpJDVlJ9p/1HgqlDzj43p5gs7WEVMGmyFrlYkCLDJEqKg6qFZL0jiaB9xr1KLs4HfX25PZbxowDdlnKAGQuuBMY7yAfzKE81yShAORDst3B470oExpkskrR1mjf0FPoCUVKBjhD+Djfq2Oa/ZJxufD22zeIGzEzCKR95z3kFcjDTbunGwfHUUx22Zdgw3znmXTCsdqD1SVrvxHIqrIk3RaBl36WNlcPmT0ml1e8SYndOdSMS67WPXp3GHMkYQlGV5iA/GjUkE8JTrWfcLXnuWTx8AB+fDk91HuPwHdANhoQaLHOwIGhuiVodneVkbvj3cW/HeB0pgSxgtg+xvgfmZiJ0N9o/ocqORfqKQXXuCWeIgkFT8BzQCc+80CCuvSjPG4bX9tFcxGK27M5qGVKtjWIaPiF9sV6pzDDtGmilRTzp8B1PdRzmL2rAU4mqv8DOwruZDt2tp9MA==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(23010399003)(36860700016)(82310400026)(1800799024)(376014)(22082099003)(18002099003)(56012099006)(5023799004)(11063799006)(6133799003)(3023799007);
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(36860700016)(82310400026)(23010399003)(18002099003)(22082099003)(56012099006)(11063799006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: Ff0VIY5Ir+PKLFAlnLcPq8xiZ7Dal1QYB3uVjkfOT8kmhVEru7XhXQ+VBT156vuBsZSt2EcNojIH8m2ooQ8HI40O7PydhLR22EA1rIgv6/ClZiEMh/NS9S13tHwoa6N+ubcQ2MolO+gHCRtJWeZvmMVtzqr00nkOwz5u4NdTmFt2Fw3nPPtNPdQTT9shi1NOypPEY64chFf1x+rCgOz7KGfmoWn4QjwZ5edckbNj2KJ+XQxW9NYCqEn99cbfDSs0/z44dHA8D3SvWR7aVXU4OaTRWIHpxZKF3KWwho1tC+L2ZDvhE7GLqh08CqIIZBVQJ2dUCiExqDuL4WZOPXouhFpBSvn/oEziC4pEBxj3pvRi8RhIhyPKJiR03BXs10xMueyyq9aC3RhjYixsiC53w/iYQoGB65lyB+1n/TAo3LkZpJgJWtyzJQO7PeWTnVrl
+X-MS-Exchange-AntiSpam-MessageData-0: NU+eX6YUcEuzTFj4UwdUVvCrnZEqlJWFaoiyZETlvpUwvkhx69xtqrtQO9tT431bwmyqNCRg2VoRv/dTvnMptf1wtkEn9Pa4ISIv5MlFmTfCu389QHSF0UaCaL5z74BIIo7Nx9SOykGYq0dYStQPKlswomdG/6z2umg+m5uUq4MSSpwPi3NzzE7L15KMT9Rd1vJlD2Ox8UJxOy0AVA/GxWfg+c5KFI7tID/O+/9mVWzaCj1l4u7QVnJvt/a7Zla4bwi3hiBxWzJa4KBr5JGkXuyxgE647649XoTEJbbtcujpx1BfVsc1yW5xFvvxsLCcB7+vFK4erUhvksjEAf9HBVp/mtPFRRJBOxZ/EZvtaoeBIcobGc28LcMxCumBS2oOXF+Nud9uNl8i7KUr083nFjNffCD6IZcV+6GdRmoR/dH5NbLdNs1s7KRrkrZG68TL
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 23:39:46.9581 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57b742a9-a79e-4749-a18a-08dede135c76
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 23:39:49.6649 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4e78c14-c2fa-4706-d9e4-08dede135e13
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00003AE9.namprd02.prod.outlook.com
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D9.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6126
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFBABE93B01
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,423 +116,63 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Address review comments from Krzysztof Kozlowski:
+Demonstrate platform filtering integration in amd_basic test by calling
+amd_platform_filter_init() in the test fixture.
 
-1. Reordered documentation methods to match priority order:
-   - Method 1: Built-in Rules (highest priority) - was listed last
-   - Method 2: Config File (recommended)
-   - Method 3: Environment Variable (lowest priority)
+This single call enables automatic filtering for all subtests - no
+manual igt_platform_require() calls are needed in individual subtests.
 
-2. Replaced "Advantages/Disadvantages" sections with "When to Use" and
-   "Trade-offs" to better reflect that each method has valid use cases
-   rather than suggesting one is universally better
+The framework automatically checks each subtest against platform rules
+before execution via the __igt_run_subtest() hook.
 
-3. Added positive use cases for environment variable method:
-   - Quick one-off testing without editing files
-   - Temporary overrides during debugging
-   - Testing filter patterns before committing to config
-   - Was showing only disadvantages before
+Usage example from this patch:
+  igt_fixture {
+      amd_platform_filter_init(&gpu_info);
+  }
 
-4. Made platform names list generic with code reference:
-   - Changed from hardcoded exhaustive list to examples
-   - Added reference to lib/amdgpu/amd_platform.c for complete list
-   - Added methods to discover platform name at runtime
-   - Noted that list may change with new hardware generations
+  igt_subtest(memory-alloc) {
+      // Automatic skip if platform rules match!
+      test_memory_alloc();
+  }
 
-5. Removed redundant checkmark (?) from summary table next to
-   "Config file" entry
+v3 changes:
+ - This is now patch 6/6 (was 7/7 in v2) due to squashing of patches 1+2
+   per Kamil Konieczny's review feedback
+ - No code changes from v2
 
-6. Updated mkdocs.yml title from "How to filter platforms" to
-   "How to filter tests per platform" to match "How to" style
-   of other documentation entries
-
-v4 changes:
- - Addressed all review comments from Krzysztof Kozlowski
- - No functional code changes from v3
-
-Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Jani Nikula <jani.nikula@linux.intel.com>
 Cc: Jesse Zhang <jesse.zhang@amd.com>
 Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Change-Id: I5a618ef84b09f57c5c06136bde01a7df77424720
+Change-Id: I4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2u3v
 ---
- docs/platform_filtering.md | 351 +++++++++++++++++++++++++++++++++++++
- mkdocs.yml                 |   1 +
- 2 files changed, 352 insertions(+)
- create mode 100644 docs/platform_filtering.md
+ tests/amdgpu/amd_basic.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/docs/platform_filtering.md b/docs/platform_filtering.md
-new file mode 100644
-index 000000000..ab4fc9cd9
---- /dev/null
-+++ b/docs/platform_filtering.md
-@@ -0,0 +1,351 @@
-+# IGT Platform Filtering - Usage Guide
-+
-+## Overview
-+
-+The IGT platform filtering framework allows tests to be skipped based on
-+platform characteristics without modifying test source code.
-+
-+**Key Feature**: **Automatic Filtering** - No manual calls needed in subtests!
-+
-+Tests only need to initialize platform filtering once in `igt_fixture`,
-+and the IGT framework automatically checks each subtest before execution.
-+
-+## Quick Start
-+
-+### 1. Initialize in Test (One Time)
-+
-+```c
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 3ad023472..ef83a53d6 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -19,6 +19,7 @@
+ #include "lib/amdgpu/compute_utils/amd_dispatch.h"
+ #include "lib/amdgpu/amdgpu_asic_addr.h"
+ #include "lib/amdgpu/amd_utils.h"
 +#include "lib/amdgpu/amd_platform.h"
-+
-+int igt_main(void)
-+{
-+    struct amdgpu_gpu_info gpu_info;
-+
-+    igt_fixture {
-+        fd = drm_open_driver(DRIVER_AMDGPU);
-+        amdgpu_query_gpu_info(device, &gpu_info);
-+
-+        /* Initialize platform filtering - enables automatic filtering */
-+        amd_platform_filter_init(&gpu_info);
-+    }
-+
-+    igt_subtest("my-test") {
-+        /* No manual filtering call needed - automatic! */
-+        test_code();
-+    }
-+}
-+```
-+
-+### 2. Configure Filtering Rules
-+
-+Use one of three methods (checked in priority order):
-+
-+1. **Built-in rules** (highest priority) - Compiled into test
-+2. **Config file** (recommended) - `/etc/igt/platform_skip.conf`
-+3. **Environment variable** (lowest priority) - `IGT_PLATFORM_SKIP_CONFIG`
-+
-+---
-+
-+## Method 1: Built-in Rules (Highest Priority)
-+
-+**Location**: Vendor implementation (e.g., `lib/amdgpu/amd_platform.c`)
-+
-+### Example
-+
-+```c
-+static const struct platform_skip_entry amd_builtin_rules[] = {
-+    {
-+        .test_name = "amd_security",
-+        .subtest_glob = "secure-bounce",
-+        .reason = "Not supported on APUs",
-+        .platform_data = &apu_platforms,
-+    },
-+};
-+```
-+
-+### When to Use Built-in Rules
-+
-+- Permanent production exclusions that should never run
-+- Platform limitations known at development time
-+- Tests that fundamentally cannot work on certain hardware
-+- Vendor-specific restrictions that apply globally
-+
-+**Trade-offs:**
-+- ✅ Fast (no file I/O at runtime)
-+- ✅ Guaranteed to be applied
-+- ✅ Version controlled with code
-+- ❌ Requires rebuild to change
-+- ❌ Not flexible for temporary exclusions
-+
-+---
-+
-+## Method 2: Config File (RECOMMENDED)
-+
-+**Location**: `/etc/igt/platform_skip.conf`
-+
-+**Format**: `platform:test:subtest:reason`
-+
-+**Note**: The reason field is recommended but can be empty. If omitted, "No reason" is automatically inserted.
-+
-+### Example Config File
-+
-+```bash
-+cat > /etc/igt/platform_skip.conf << 'EOF'
-+# Platform filtering configuration
-+# Format: platform:test:subtest:reason
-+# Use * as wildcard
-+
-+# Skip all UMQ tests on Navi48 during platform bringup
-+navi48:amd_basic:*-UMQ:SWDEV-88888 - UMQ stabilization in progress
-+
-+# Skip specific tests with ticket references
-+navi31:amd_basic:cs-gfx-with-IP-GFX-UMQ:SWDEV-12345
-+navi31:amd_basic:cs-compute-with-IP-COMPUTE-UMQ:SWDEV-12345
-+navi31:amd_basic:cs-sdma-with-IP-DMA-UMQ:SWDEV-12346
-+
-+# Skip tests on early samples
-+strix_halo:amd_basic:*:Platform not ready - ES samples
-+
-+# Skip known flaky test across all platforms
-+*:amd_basic:eviction-test-with-IP-DMA:SWDEV-99999 - Intermittent failure
-+
-+# Skip entire test binary on specific platform
-+navi10:amd_vcn:*:VCN encoding issues on Navi10 A0
-+
-+# Skip all tests on discontinued platform
-+vega10:*:*:Platform no longer supported
-+EOF
-+```
-+
-+### Run Tests
-+
-+```bash
-+# Config file is loaded automatically - no environment variable needed
-+./build/tests/amdgpu/amd_basic
-+
-+# Output shows:
-+# Subtest cs-gfx-with-IP-GFX-UMQ: SKIP
-+# Platform filtering (config): SWDEV-12345
-+```
-+
-+### When to Use Config File
-+
-+- Managing multiple test exclusions
-+- Team-wide or CI/CD configurations
-+- Persistent filtering rules across sessions
-+- Easy add/remove/edit without rebuilding
-+- No need to remember environment variables
-+- Sharing skip rules across test infrastructure
-+
-+---
-+
-+## Method 3: Environment Variable (Lowest Priority)
-+
-+**Variable**: `IGT_PLATFORM_SKIP_CONFIG`
-+
-+**Format**: Same as config file, semicolon-separated
-+
-+### Example - Skip Single Test
-+
-+```bash
-+export IGT_PLATFORM_SKIP_CONFIG="navi48:amd_basic:cs-compute-with-IP-COMPUTE-UMQ:Testing"
-+./build/tests/amdgpu/amd_basic
-+```
-+
-+### Example - Skip Multiple Tests
-+
-+```bash
-+export IGT_PLATFORM_SKIP_CONFIG="navi48:amd_basic:*-UMQ:Testing;navi31:amd_basic:cs-gfx-*:Known issue"
-+./build/tests/amdgpu/amd_basic
-+```
-+
-+### When to Use Environment Variable
-+
-+- Quick one-off testing without editing files
-+- Temporary overrides during debugging sessions
-+- Testing filter patterns before adding to config file
-+- Single test runs where config file would be overkill
-+- Overriding config file rules for specific test runs
-+- CI pipeline job-specific overrides
-+
-+**Trade-offs:**
-+- ✅ No file editing required
-+- ✅ Quick to set and unset
-+- ✅ Can override config file for testing
-+- ❌ Not persistent (lost when session ends)
-+- ❌ Easy to forget it's set
-+- ❌ Inconvenient for large test lists
-+
-+---
-+
-+## Wildcard Patterns
-+
-+All methods support wildcards (`*`) for flexible matching:
-+
-+```
-+# Platform wildcards
-+*:amd_basic:my-test:Reason           # All platforms
-+navi*:amd_basic:my-test:Reason       # All Navi (navi10, navi31, navi48, etc.)
-+
-+# Test wildcards
-+navi48:amd_*:my-test:Reason          # All amd_* tests
-+
-+# Subtest wildcards
-+navi48:amd_basic:*-UMQ:Reason        # All subtests ending with -UMQ
-+navi48:amd_basic:cs-*:Reason         # All subtests starting with cs-
-+
-+# Combined wildcards
-+*:*:*-UMQ:Reason                     # All UMQ tests on all platforms
-+```
-+
-+### Wildcard Examples
-+
-+```bash
-+# Skip all user queue tests during bringup
-+navi48:*:*-UMQ:Platform bringup - UMQ not ready
-+
-+# Skip all VCN tests on specific platform
-+navi10:amd_vcn:*:Known VCN issues
-+
-+# Skip specific test pattern across all platforms
-+*:amd_basic:eviction-*:Intermittent failures
-+
-+# Skip all tests on EOL platform
-+vega10:*:*:Platform no longer supported
-+```
-+
-+### Pattern Matching Rules
-+
-+- `*` matches zero or more characters
-+- Patterns are case-sensitive
-+- Empty field is NOT a wildcard (use `*` explicitly)
-+- Priority order: Built-in > Config file > Environment variable
-+
-+### Example Subtest Matching
-+
-+Given config: `navi48:amd_basic:*-UMQ:Testing`
-+
-+- cs-gfx-with-IP-GFX-UMQ → **Skipped** (matches)
-+- cs-compute-with-IP-COMPUTE-UMQ → **Skipped** (matches)
-+- cs-sdma-with-IP-DMA → Runs normally (doesn't match)
-+
-+---
-+
-+## Skip Message Format
-+
-+Automatic filtering shows the source in skip messages:
-+
-+```
-+Subtest cs-gfx-with-IP-GFX-UMQ: SKIP
-+Platform filtering (config): SWDEV-12345 - UMQ unstable on Navi48
-+```
-+
-+Source indicators:
-+- `(built-in)` - From vendor's compiled rules
-+- `(config)` - From config file
-+- `(env)` - From environment variable
-+
-+---
-+
-+## Platform Names
-+
-+Platform names are vendor-specific and defined in vendor backend code.
-+
-+**For AMD platforms**, see `lib/amdgpu/amd_platform.c` for the complete list.
-+
-+**Examples:**
-+- RDNA2/3 discrete GPUs: `navi21`, `navi31`, `navi33`
-+- RDNA4: `navi48`, `navi44`
-+- APUs: `strix_halo`, `phoenix`
-+- Data center: `aldebaran` (MI250)
-+
-+**To find your platform name:**
-+
-+```bash
-+# Method 1: Run any test with debug output
-+./build/tests/amdgpu/amd_basic --debug
-+# Look for: "Platform detected: <name>"
-+
-+# Method 2: Check dmesg for GPU info
-+dmesg | grep -i amdgpu | grep -i asic
-+
-+# Method 3: Check /sys
-+cat /sys/class/drm/card0/device/asic_name  # If available
-+```
-+
-+**Note:** Platform names may change with new hardware generations. Check vendor backend code for current platform definitions. The list above is provided as examples only.
-+
-+---
-+
-+## Best Practices
-+
-+### For Development - Quick Testing
-+
-+Use environment variable:
-+```bash
-+# Temporarily skip broken test
-+export IGT_PLATFORM_SKIP_CONFIG="*:amd_basic:broken-test:WIP"
-+./build/tests/amdgpu/amd_basic
-+unset IGT_PLATFORM_SKIP_CONFIG
-+```
-+
-+### For Teams - Shared Exclusions
-+
-+Use config file with ticket references:
-+```
-+# /etc/igt/platform_skip.conf
-+# Updated: 2026-07-09
-+
-+# Navi48 bringup exclusions
-+navi48:amd_basic:*-UMQ:SWDEV-88888 - UMQ stabilization
-+navi48:amd_vcn:vcn-encoder-*:SWDEV-88889 - VCN bringup
-+
-+# Cross-platform known issues
-+*:amd_basic:eviction-test-with-IP-DMA:SWDEV-77777 - Flaky
-+```
-+
-+### For CI/CD
-+
-+Deploy config file with test infrastructure:
-+```bash
-+#!/bin/bash
-+# CI pipeline setup
-+echo "Deploying test exclusions..."
-+scp ci-skip-rules.conf test-machine:/etc/igt/platform_skip.conf
-+ssh test-machine "./run-igt-suite.sh"
-+```
-+
-+### For Production
-+
-+Use built-in rules for permanent exclusions:
-+```c
-+// In lib/amdgpu/amd_platform.c
-+static const struct platform_skip_entry amd_builtin_rules[] = {
-+    {
-+        .test_name = "amd_basic",
-+        .subtest_glob = "*-UMQ",
-+        .reason = "User queues not supported in production",
-+        .platform_data = &all_platforms,
-+    },
-+};
-+```
-+
-+---
-+
-+## Summary
-+
-+| Method | Use Case | Persistent | Rebuild Required |
-+|--------|----------|------------|------------------|
-+| **Built-in** | Production rules | Yes | Yes |
-+| **Config file** | Team/CI exclusions | Yes | No |
-+| **Environment** | Quick testing | No | No |
-+
-+**Recommendation**: Use **config file** for managing test exclusions at scale.
-+
-+---
-+
-+## See Also
-+
-+- `lib/igt_platform_filter.h` - API documentation
-+- `lib/igt_platform_filter.c` - Framework implementation
-+- `lib/amdgpu/amd_platform.c` - AMD backend reference
-diff --git a/mkdocs.yml b/mkdocs.yml
-index 0abb76704..1819b7b6c 100644
---- a/mkdocs.yml
-+++ b/mkdocs.yml
-@@ -29,6 +29,7 @@ nav:
-     - How to document tests: 'test_documentation.md'
-     - How to categorize tests: 'test_categories.md'
-     - How to blocklist tests: 'blocklists.md'
-+    - How to filter tests per platform: 'platform_filtering.md'
-     - How to get code coverage: 'code_coverage.md'
-     - How to port new IGT driver: 'new_driver.md'
-     - How to plan a new test: 'test_plan.md'
+ 
+ #define BUFFER_SIZE (8 * 1024)
+ 
+@@ -883,6 +884,9 @@ int igt_main()
+ 		igt_assert_eq(r, 0);
+ 		asic_rings_readness(device, 1, arr_cap);
+ 		asic_userq_readiness(device, userq_arr_cap);
++
++		/* Initialize platform filtering for automatic subtest filtering */
++		amd_platform_filter_init(&gpu_info);
+ 	}
+ 	igt_describe("Check-alloc-free-VRAM-visible-non-visible-GART-write-combined-cached");
+ 	igt_subtest("memory-alloc")
 -- 
 2.54.0
 
