@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4ADAC43458
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 06:51:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99FAFC44501
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 07:17:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8BCBE10F3A9;
-	Thu,  9 Jul 2026 06:51:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4D1F710F3F1;
+	Thu,  9 Jul 2026 07:17:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iyflV6di";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DU/OyW1Y";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5360810F3A9
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 06:49:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 605DB10F3D9
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 07:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783579799; x=1815115799;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=GYwvl6XmXrvnM4hJBlhPCw4ZAkawxwFqgO+KuSAewUk=;
- b=iyflV6diqS6GdQuzd+Ls8VU7+UdvyyluccTIcQ1kQDCfnZDzK02Jp3bp
- 5LdgExctBr6NgxaZQ1FSwywMgr7SJl9M33v8or+NtEr+AZsFPCyXsMxwe
- +lZg6QOS8pZ3YaCpiE+QwnSwJVI1q6P0+n8Qtlpsq2VYlcG+NuWgjQ0w3
- aDUIDHkPM2Qs4K4J+zY3jloZiPv7QjxGTNgdPY+MyAf+0JIYxUAJVShpk
- aIyUfVQtbWU+HKkiMI92uTxCJx1mxvsvQShh4w7p652J7Dk+yvSEad6yv
- Dhk4aMGzn7kkBpz2kPi8xnl0hUcHz2rxCHvQoouQHylj/LOhzHdyw6+UH Q==;
-X-CSE-ConnectionGUID: xRa1g8IuQje7TT7dL01UIA==
-X-CSE-MsgGUID: jrW4rRaETkmqPxPmGrEc0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84129886"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="84129886"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2026 23:49:59 -0700
-X-CSE-ConnectionGUID: k+qJz1pTRAGjAbA0lca+ng==
-X-CSE-MsgGUID: pELaBTpjTxe7PI6MmIfGIg==
+ t=1783581405; x=1815117405;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=h5fg6yf3QYjLh+y6UhNKNk0UQRLTkmBscbwxcSEuIFA=;
+ b=DU/OyW1YyK7ri0lVeDYs2lK18oRRFye41fAKB/H25zeQpukf7tgtZj8s
+ 8ww1PMPWhANlp4U9fzN9qg39JgY8odKdoIB/jhJMFwEM2/CXcHv6JRP2F
+ SP8DZkkcM1znQrClBZKSvyziAY+BOOpFSjT+NmOFOAOI1LYSlkOGisJfg
+ IB8cxu00voEmjh6J2JUDDCCCTR0PTBCqbREoXBt3amxxfxuwUgK0DTioc
+ B8NcPiMYUwLtxPttvLiJz6zUZ8JqZAr1UyME8QlvxGSs5dZB67RFJVT5i
+ lcEnxpABuJBUPptjLoiny4vhJN3vr3nj3Bsf4dmpyavnWhVzwOFoA2/0r A==;
+X-CSE-ConnectionGUID: i1XHkdzdRYSqVcujvfWiAw==
+X-CSE-MsgGUID: ZNIU+3v0S1uRRJPf2lg91Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="83229035"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="83229035"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2026 00:16:44 -0700
+X-CSE-ConnectionGUID: iGZG+BwtSRyoDQ5wiS9lqw==
+X-CSE-MsgGUID: WyYSNMzTQE21pVi/6T9j7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="258089731"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 23:49:59 -0700
-From: Swati Sharma <swati2.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="254020959"
+Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2026 00:16:42 -0700
+From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com,
-	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/kms_feature_discovery: Log output count on
- skip
-Date: Thu,  9 Jul 2026 12:28:52 +0530
-Message-Id: <20260709065852.3000382-3-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260709065852.3000382-1-swati2.sharma@intel.com>
-References: <20260709065852.3000382-1-swati2.sharma@intel.com>
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
+Subject: [PATCH 0/2] tests/intel/xe_survivability: update ignored dmesg regex
+Date: Thu,  9 Jul 2026 12:39:06 +0530
+Message-ID: <20260709070905.405108-4-sk.anirban@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,108 +67,24 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a num_outputs counter to feature discovery subtests
-that iterate connected outputs (dp-mst, hdr, vrr, dsc).
-Print the count in the igt_require_f message so it's clear
-how many outputs were checked when a feature is not found.
+The kernel now reports -ENOTRECOVERABLE when the device is wedged.
+As runtime-survivability deliberately wedges the device, update
+dmesg regex so igt_runner does not treat the expected error logs
+as failures.
 
-Suggested-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Assisted-by: GitHub Copilot:Claude Opus 4.6
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_feature_discovery.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+kernel implementation:
+https://patchwork.freedesktop.org/series/168780/
 
-diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
-index 4ad2e6a74..97bb25360 100644
---- a/tests/kms_feature_discovery.c
-+++ b/tests/kms_feature_discovery.c
-@@ -175,9 +175,11 @@ int igt_main() {
- 			struct kmstest_connector_config config;
- 			igt_output_t *output;
- 			const char *encoder;
-+			int num_outputs = 0;
- 			int ret = -1;
- 
- 			for_each_connected_output(&display, output) {
-+				num_outputs++;
- 				kmstest_get_connector_config(fd, output->config.connector->connector_id, -1, &config);
- 				encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
- 
-@@ -185,16 +187,20 @@ int igt_main() {
- 				if (ret == 0)
- 					break;
- 			}
--			igt_require_f(ret == 0, "No DP-MST configuration found.\n");
-+			igt_require_f(ret == 0,
-+				      "No DP-MST config found (checked %d outputs).\n",
-+				      num_outputs);
- 		}
- 
- 		igt_describe("Make sure that we have at least one HDR-capable panel.");
- 		igt_subtest("hdr") {
- 			igt_output_t *output;
- 			unsigned int max_bpc;
-+			int num_outputs = 0;
- 			bool found = false;
- 
- 			for_each_connected_output(&display, output) {
-+				num_outputs++;
- 				if (!igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC))
- 					continue;
- 
-@@ -214,15 +220,18 @@ int igt_main() {
- 			}
- 
- 			igt_require_f(found,
--				      "No HDR-capable panel found with max bpc, HDR metadata, and EDID HDR support.\n");
-+				      "No HDR-capable panel found (checked %d outputs).\n",
-+				      num_outputs);
- 		}
- 
- 		igt_describe("Make sure that we have at least one VRR-capable panel.");
- 		igt_subtest("vrr") {
- 			igt_output_t *output;
-+			int num_outputs = 0;
- 			bool found = false;
- 
- 			for_each_connected_output(&display, output) {
-+				num_outputs++;
- 				if (!igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE))
- 					continue;
- 
-@@ -233,15 +242,19 @@ int igt_main() {
- 				break;
- 			}
- 
--			igt_require_f(found, "No VRR-capable panel found.\n");
-+			igt_require_f(found,
-+				      "No VRR-capable panel found (checked %d outputs).\n",
-+				      num_outputs);
- 		}
- 
- 		igt_describe("Make sure that we have at least one DSC-capable sink.");
- 		igt_subtest("dsc") {
- 			igt_output_t *output;
-+			int num_outputs = 0;
- 			bool found = false;
- 
- 			for_each_connected_output(&display, output) {
-+				num_outputs++;
- 				if (!igt_is_dsc_supported_by_sink(fd, output->name))
- 					continue;
- 
-@@ -249,7 +262,9 @@ int igt_main() {
- 				break;
- 			}
- 
--			igt_require_f(found, "No DSC-capable sink found.\n");
-+			igt_require_f(found,
-+				      "No DSC-capable sink found (checked %d outputs).\n",
-+				      num_outputs);
- 		}
- 	}
- }
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+
+Sk Anirban (2):
+  tests/intel/xe_survivability: update ignored dmesg regex
+  Add xe_survivability to xe-fast-feedback
+
+ tests/intel-ci/xe.fast-feedback.testlist | 1 +
+ tests/intel/xe_survivability.c           | 7 ++++---
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
 -- 
-2.25.1
+2.43.0
 
