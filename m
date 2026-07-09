@@ -4,59 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F955C43458
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 14:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20A4CC43458
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Jul 2026 14:05:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE95B10E050;
-	Thu,  9 Jul 2026 14:00:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A902110E050;
+	Thu,  9 Jul 2026 14:05:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nrXedt55";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BnlX1ACA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24CF310F5EF
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 14:00:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A66010F521
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2026 14:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783605628; x=1815141628;
+ t=1783605924; x=1815141924;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=60us+oVOXH5vq6d3qeHUvKIme4hiLRKtEsnYMwuVQgg=;
- b=nrXedt55eVI2KheBPDffmKpDYEpZ77gajzusk9nFRWFEbTdP1ukPCfE6
- coGt0z4cO8sFIyn6McVMtHkHmwtqd1H+LSfF+Bn4EFV+sscwxyAxJIZu2
- 4Y31QpOaNrJDBoLnzbg31bh7kF7rJqhTdW2pUhIeQAtS4rv63OgfBjwF5
- LRDB7mMH3GANVcM2ypLHDZdPYXVOsBWgEsDyHy2HmUd3OKICPYBWcw44u
- oEP2Vbshw7z6iEgZTPZQeqjm5u0She6mUe4AGyHFhhIcKKEX94glfylMK
- F+weuv9p9ycOtZYUu7DC6RAeLbDyH/SimaIO2d9UVxhL1VW1fIiv/gOoH A==;
-X-CSE-ConnectionGUID: Hv1grUfVT4aZ+SZIEBGQ3w==
-X-CSE-MsgGUID: TR4NWN38TtatXes2jZkr0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84068177"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="84068177"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2026 07:00:27 -0700
-X-CSE-ConnectionGUID: lOeFq0mQTHWtiTrA9QkIWg==
-X-CSE-MsgGUID: RiTGsTBgSoOUNI95PX71Zw==
+ bh=PXzYw2nE8WXeDrl+9xtCUxAcIBwSNIdZW5HPySqvzdA=;
+ b=BnlX1ACAyAqAgEyBGMFGaHPlJ/KDT/9EQr8rvXntMRPbu6F/37KHhzdC
+ lgxTWpsADsGx29IvXHlCfgKmGz9vQrYDPrhE44jVMrYxVBKNLfQN7AkmE
+ tcNodE4+hipLvbBtHPqD35pR7uhAKyeJDxclz/kTNKPtNhjSG2eI6HjCZ
+ uKWyeRbrG19ijIwiMPDLP0uvp8LCtGeT0inkkDz/FgHvswlMjWGHXzbN/
+ LzyzhW91JcdKxFgECig5dQP5n1L5nGVccEdZFcGo46/on6eBrpPTe0MTg
+ HJwHCbaq8Ku6QSaMec70LJWNZK2R7naoN7p9Vjt5XXy2I4c7OGBzoerTS g==;
+X-CSE-ConnectionGUID: RRmKfgTYR0uP0VskdkdX3A==
+X-CSE-MsgGUID: V0aXUZSWRrGoymByN6zwqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84305029"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="84305029"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2026 07:05:15 -0700
+X-CSE-ConnectionGUID: pciUbqYwQCONUIqqwItlvQ==
+X-CSE-MsgGUID: DzEFlVKHSVi7+Loqv3adDw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="254102327"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 07:00:26 -0700
-Date: Thu, 9 Jul 2026 16:00:23 +0200
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 07:05:11 -0700
+Date: Thu, 9 Jul 2026 16:05:09 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Swati Sharma <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/2] tests/kms_feature_discovery: Log output count
- on skip
-Message-ID: <20260709140023.dwzgfw7nwegz2k4r@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+To: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
  Swati Sharma <swati2.sharma@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20260709065852.3000382-1-swati2.sharma@intel.com>
- <20260709065852.3000382-3-swati2.sharma@intel.com>
+ Ville Syrjala <ville.syrjala@linux.intel.com>,
+ Fei Shao <fshao@chromium.org>, Jani <jani.nikula@intel.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Lancelot Wu <Lancelot.Wu@mediatek.com>,
+ Manasi Navare <navaremanasi@google.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH i-g-t v2 2/2] tests/kms_setmode: Add basic-no-cpu-idle
+ subtest
+Message-ID: <20260709140509.4utfunjpn4uaejup@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Ville Syrjala <ville.syrjala@linux.intel.com>,
+ Fei Shao <fshao@chromium.org>, Jani <jani.nikula@intel.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Lancelot Wu <Lancelot.Wu@mediatek.com>,
+ Manasi Navare <navaremanasi@google.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+References: <20260621084445.614024-1-jason-jh.lin@mediatek.com>
+ <20260621084445.614024-3-jason-jh.lin@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260709065852.3000382-3-swati2.sharma@intel.com>
+In-Reply-To: <20260621084445.614024-3-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,117 +87,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Swati,
-On 2026-07-09 at 12:28:52 +0530, Swati Sharma wrote:
-> Add a num_outputs counter to feature discovery subtests
-> that iterate connected outputs (dp-mst, hdr, vrr, dsc).
-> Print the count in the igt_require_f message so it's clear
-> how many outputs were checked when a feature is not found.
+Hi Jason-JH,
+On 2026-06-21 at 16:43:28 +0800, Jason-JH Lin wrote:
+> Add a new subtest that disables CPU deep sleep to eliminate wakeup
+> latency interference during vblank timestamp verification.
 > 
-> Suggested-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Assisted-by: GitHub Copilot:Claude Opus 4.6
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> This allows platforms without get_scanout_position() to verify their
+> timestamp accuracy is correct, separate from CPU idle interference.
+> 
+> The original "basic" test remains unchanged to detect any timestamp
+> issues including CPU idle interference, while "basic-no-cpu-idle"
+> specifically tests timestamp accuracy without external interference.
+> 
+> Once get_scanout_position() is implemented, the vblank timestamp
+> will be accurately compensated regardless of CPU idle states.
+> 
+> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
 > ---
->  tests/kms_feature_discovery.c | 23 +++++++++++++++++++----
->  1 file changed, 19 insertions(+), 4 deletions(-)
+>  tests/kms_setmode.c | 32 ++++++++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
 > 
-> diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
-> index 4ad2e6a74..97bb25360 100644
-> --- a/tests/kms_feature_discovery.c
-> +++ b/tests/kms_feature_discovery.c
-> @@ -175,9 +175,11 @@ int igt_main() {
->  			struct kmstest_connector_config config;
->  			igt_output_t *output;
->  			const char *encoder;
-> +			int num_outputs = 0;
->  			int ret = -1;
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index 3adc4534ce88..e5f2c4fee141 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -42,6 +42,7 @@
+>  #include <math.h>
 >  
->  			for_each_connected_output(&display, output) {
-> +				num_outputs++;
->  				kmstest_get_connector_config(fd, output->config.connector->connector_id, -1, &config);
->  				encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
+>  #include "i915/intel_drrs.h"
+> +#include "igt_pm.h"
+>  #include "xe/xe_query.h"
 >  
-> @@ -185,16 +187,20 @@ int igt_main() {
->  				if (ret == 0)
->  					break;
->  			}
-> -			igt_require_f(ret == 0, "No DP-MST configuration found.\n");
-> +			igt_require_f(ret == 0,
-> +				      "No DP-MST config found (checked %d outputs).\n",
-> +				      num_outputs);
+>  /**
+> @@ -49,6 +50,13 @@
+>   * Description: Tests the vblank timing by iterating through all valid crtc/connector
+>   *              combinations
+>   *
+> + * SUBTEST: basic-no-cpu-idle
+> + * Description: Tests vblank timing with CPU deep sleep disabled to verify
+> + *              timestamp accuracy without CPU idle interference. This test
+> + *              is for platforms lacking HW/SW get_scanout_position() support,
+> + *              allowing them to verify vblank timestamp correctness without
+> + *              external CPU wakeup latency interference.
+> + *
+>   * SUBTEST: basic-clone-single-crtc
+>   * Description: Test allows the use of a single CRTC for two connectors, such as VGA/HDMI,
+>   *		VGA/DP, and HDMI/HDMI
+> @@ -1106,6 +1114,30 @@ int igt_main_args("det:", NULL, help_str, opt_handler, NULL)
 >  		}
+>  	}
 >  
->  		igt_describe("Make sure that we have at least one HDR-capable panel.");
->  		igt_subtest("hdr") {
->  			igt_output_t *output;
->  			unsigned int max_bpc;
-> +			int num_outputs = 0;
->  			bool found = false;
->  
->  			for_each_connected_output(&display, output) {
-> +				num_outputs++;
->  				if (!igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC))
->  					continue;
->  
-> @@ -214,15 +220,18 @@ int igt_main() {
->  			}
->  
->  			igt_require_f(found,
-> -				      "No HDR-capable panel found with max bpc, HDR metadata, and EDID HDR support.\n");
-> +				      "No HDR-capable panel found (checked %d outputs).\n",
-> +				      num_outputs);
->  		}
->  
->  		igt_describe("Make sure that we have at least one VRR-capable panel.");
->  		igt_subtest("vrr") {
->  			igt_output_t *output;
-> +			int num_outputs = 0;
->  			bool found = false;
->  
->  			for_each_connected_output(&display, output) {
-> +				num_outputs++;
->  				if (!igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE))
->  					continue;
->  
-> @@ -233,15 +242,19 @@ int igt_main() {
->  				break;
->  			}
->  
-> -			igt_require_f(found, "No VRR-capable panel found.\n");
-> +			igt_require_f(found,
-> +				      "No VRR-capable panel found (checked %d outputs).\n",
-> +				      num_outputs);
->  		}
->  
->  		igt_describe("Make sure that we have at least one DSC-capable sink.");
->  		igt_subtest("dsc") {
->  			igt_output_t *output;
-> +			int num_outputs = 0;
->  			bool found = false;
->  
->  			for_each_connected_output(&display, output) {
-> +				num_outputs++;
->  				if (!igt_is_dsc_supported_by_sink(fd, output->name))
->  					continue;
->  
-> @@ -249,7 +262,9 @@ int igt_main() {
->  				break;
->  			}
->  
-> -			igt_require_f(found, "No DSC-capable sink found.\n");
-> +			igt_require_f(found,
-> +				      "No DSC-capable sink found (checked %d outputs).\n",
-> +				      num_outputs);
+> +	/*
+> +	 * This subtest disables CPU deep sleep to eliminate wakeup latency
+> +	 * interference during vblank timestamp verification.
+> +	 *
+> +	 * NOTE: This is for platforms that have not yet implemented
+> +	 * get_scanout_position(). Once get_scanout_position() is properly
+> +	 * implemented, the vblank timestamp will be accurately compensated
+> +	 * regardless of CPU idle states, and this test becomes redundant
+> +	 * with the standard "basic" test.
+> +	 */
+> +	igt_describe("Tests vblank timing with CPU deep sleep disabled");
+> +	igt_subtest_with_dynamic("basic-no-cpu-idle") {
+> +		struct test_config tconf = {
+> +			.flags		= TEST_TIMINGS,
+> +			.name		= "basic-no-cpu-idle",
+> +			.resources	= drm_resources,
+> +		};
+> +
+> +		igt_require_f(igt_pm_disable_cpu_deep_sleep(),
+> +			      "Platform does not support CPU idle control\n");
+> +		run_test(&tconf);
+> +		igt_pm_enable_cpu_deep_sleep();
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Seems ok but this enable will be skipped in case of test fail.
+imho you should add enabling to at_exit path.
 
 Regards,
 Kamil
 
->  		}
->  	}
->  }
+> +	}
+> +
+>  	igt_fixture() {
+>  		drmModeFreeResources(drm_resources);
+>  		drm_close_driver(drm_fd);
 > -- 
-> 2.25.1
+> 2.43.0
 > 
