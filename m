@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 786EBC43458
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Jul 2026 23:35:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1ADDC43458
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Jul 2026 23:39:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0677A10E253;
-	Fri, 10 Jul 2026 23:35:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 81A6910E253;
+	Fri, 10 Jul 2026 23:39:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QS8lfHqK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iAyExsqz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD44210E253
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jul 2026 23:35:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46F0410E253
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jul 2026 23:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783726504; x=1815262504;
+ t=1783726744; x=1815262744;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=3q/wIaAMJj5ez/nq5tc8V3x7oaha64eWZ+B41Y5DZ74=;
- b=QS8lfHqKGHTNbJq93fH9LDOALcRqVN+mhh1K3nU804ouRuHJFR23W3Hl
- nYvYibbKW3ZTgsyntT4G24tYc3gv7X5gE1VMTkZhb5UxtJvxY+B1kBvfi
- KItNoo0Pf004eeX5FLwSRqVCh+1lOaZxlOfnMbDyDRJoR1cMXDQO8R/Iy
- 6TthWnUKIE0/BYmuPH+1Vs41XDsqjYXFl0rfIaydIAfTzSibmv715bpDs
- Ia6iQkSax9SQp6090IgJ+GLEawtK/RRqlvXEFbTDtgKoX6lKZyenKhamJ
- TUiH6fRyMAmeuaGcKtoVvJCgFIOa268fN5Axpg6vXOkK6WddfgSH2/clv w==;
-X-CSE-ConnectionGUID: ZfUcJKCaRiCqC8XRbVRS2Q==
-X-CSE-MsgGUID: OvetYB4URCCDhxb5dYeFhw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="101977754"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="101977754"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2026 16:35:03 -0700
-X-CSE-ConnectionGUID: XFwO0n2rSp2FteZ1NiOvkA==
-X-CSE-MsgGUID: +QiU/6zbR/2uDKUfttXr+A==
+ bh=bBDiMgKCqowg/8Ajlv2VZMKACHZlvkYk6nWBGL1qn3E=;
+ b=iAyExsqziEBh9XmvbxIwpCx524ip5qTAaYY58xZoZ6qwyA8AHBMe4GTp
+ HDxQoXzNRAXc1/CynE9+Ps+G+3dG29ohPU/2CUhYVkTKw9UHKYoX6sO2E
+ RKvtaEAZKw/0j1MF0J/+u4RpTPYdv8X6XvDsD5nmmW+IUyvsq1Hwt+P6q
+ n+U1atFvcyUPJ392xiA8HqVoCmcFnnyknx855WbplGvAKFrHS/tjX+Orn
+ fAZixiLRNJ9LlObRNYB8EZ+sBBtyF4zso40Tcxz5Bri6UfdjZ/bGx+djq
+ HU6U3O3Jl9Frp429aK1nEqTOglHFig7sxZn5cIxF6YuK6AsRA/EHO4kMl g==;
+X-CSE-ConnectionGUID: RwTAR7MhS32bq2ay5ZZmOw==
+X-CSE-MsgGUID: xI160YNOQCO/EKmiu34AtQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88339684"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="88339684"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2026 16:39:04 -0700
+X-CSE-ConnectionGUID: Q8undCdgRLyLl42MWJ4DFw==
+X-CSE-MsgGUID: g8Q5PrpoSb6WYkaqWYUz7w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="248630405"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="255099242"
 Received: from rbgeiger-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.27.179])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2026 16:35:02 -0700
-Date: Fri, 10 Jul 2026 16:34:55 -0700
-Message-ID: <87pl0uctb4.wl-ashutosh.dixit@intel.com>
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2026 16:39:04 -0700
+Date: Fri, 10 Jul 2026 16:39:03 -0700
+Message-ID: <87o6gect48.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Shekhar Chauhan <shekhar.chauhan@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
 Subject: Re: [PATCH v2] tools/xe-perf-recorder: Add mmio-trigger support
-In-Reply-To: <20260702052315.3740840-1-shekhar.chauhan@intel.com>
+In-Reply-To: <87pl0uctb4.wl-ashutosh.dixit@intel.com>
 References: <20260702052315.3740840-1-shekhar.chauhan@intel.com>
+ <87pl0uctb4.wl-ashutosh.dixit@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -70,284 +71,293 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 01 Jul 2026 22:23:15 -0700, Shekhar Chauhan wrote:
+On Fri, 10 Jul 2026 16:34:55 -0700, Dixit, Ashutosh wrote:
 >
-> Add mmio-trigger support to xe-perf-recorder, to justify the
-> whitelisting of OA MMIO Trigger Registers in XeKMD.
+> On Wed, 01 Jul 2026 22:23:15 -0700, Shekhar Chauhan wrote:
+> >
+> > Add mmio-trigger support to xe-perf-recorder, to justify the
+> > whitelisting of OA MMIO Trigger Registers in XeKMD.
+> >
+> > v2: Add all OA unit types, fix includes, compile warnings and adding
+> > extra triggger for file mode.
+> >
+> > Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+> > ---
+> >  tools/xe-perf/xe_perf_recorder.c | 122 ++++++++++++++++++++++++++++++-
+> >  1 file changed, 120 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+> > index f200fe9c9..ecf1c7c27 100644
+> > --- a/tools/xe-perf/xe_perf_recorder.c
+> > +++ b/tools/xe-perf/xe_perf_recorder.c
+> > @@ -26,19 +26,29 @@
+> >  #include <unistd.h>
+> >
+> >  #include "igt_core.h"
+> > +#include "intel_batchbuffer.h"
+> >  #include "intel_chipset.h"
+> > +#include "intel_reg.h"
+> >  #include "ioctl_wrappers.h"
+> >  #include "linux_scaffold.h"
+> > +#include "xe/xe_ioctl.h"
+> >  #include "xe/xe_oa.h"
+> >  #include "xe/xe_oa_data.h"
+> >  #include "xe/xe_query.h"
+> >
+> >  #include "xe_perf_recorder_commands.h"
+> >
+> > -#define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
+> > -#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
+> >  #define MAX(a,b) ((a) > (b) ? (a) : (b))
+> >  #define MIN(a,b) ((a) < (b) ? (a) : (b))
+> > +#define OAG_MMIOTRIGGER 0xdb1c
+> > +#define OAMERT_MMIOTRIGGER 0x1453cc
+> > +#define OAM_MMIOTRIGGER_OFFSET 0x1d0
+> > +#define MEDIA_GT_GSI_OFFSET 0x380000
+> > +#define XE_OAM_SAG_BASE_ADJ (MEDIA_GT_GSI_OFFSET + 0x13000)
+> > +#define XE_OAM_SCMI_0_BASE_ADJ (MEDIA_GT_GSI_OFFSET + 0x14000)
+> > +#define XE_OAM_SCMI_1_BASE_ADJ (MEDIA_GT_GSI_OFFSET + 0x14800)
+> > +#define OAREPORT_REASON_MASK 0x3f
+> > +#define OAREPORT_REASON_SHIFT 19
+> >
+> >  struct circular_buffer {
+> >	char   *data;
+> > @@ -354,8 +364,47 @@ struct recording_context {
+> >	int oa_unit_id;
+> >	struct drm_xe_oa_unit *oa_unit;
+> >	struct drm_xe_engine_class_instance *hwe;
+> > +
+> > +	uint32_t vm;
+> > +	uint32_t exec_queue;
+> > +	struct intel_bb *ibb;
+> >  };
+> >
+> > +static uint32_t oa_unit_mmio_trigger_reg(struct recording_context *ctx)
+> > +{
+> > +	const struct drm_xe_oa_unit *oau = ctx->oa_unit;
+> > +
+> > +	switch (oau->oa_unit_type) {
+> > +	case DRM_XE_OA_UNIT_TYPE_OAM: {
+> > +		struct drm_xe_query_oa_units *qoa = xe_oa_units(ctx->drm_fd);
+> > +		uint8_t *poau = (uint8_t *)&qoa->oa_units[0];
+> > +		int first_oam_id = -1;
+> > +
+> > +		/* Find the first OAM unit, like oa_unit_by_type() in the IGT */
 >
-> v2: Add all OA unit types, fix includes, compile warnings and adding
-> extra triggger for file mode.
+> Let's change the comment to: "Find the first OAM unit, as in oa_unit_by_type()".
 >
-> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-> ---
->  tools/xe-perf/xe_perf_recorder.c | 122 ++++++++++++++++++++++++++++++-
->  1 file changed, 120 insertions(+), 2 deletions(-)
+> > +		for (int i = 0; i < qoa->num_oa_units; i++) {
+> > +			struct drm_xe_oa_unit *u = (struct drm_xe_oa_unit *)poau;
+> > +
+> > +			if (u->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAM) {
+> > +				first_oam_id = u->oa_unit_id;
+> > +				break;
+> > +			}
+> > +			poau += sizeof(*u) + u->num_engines * sizeof(u->eci[0]);
+> > +		}
+> > +
 >
-> diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
-> index f200fe9c9..ecf1c7c27 100644
-> --- a/tools/xe-perf/xe_perf_recorder.c
-> +++ b/tools/xe-perf/xe_perf_recorder.c
-> @@ -26,19 +26,29 @@
->  #include <unistd.h>
+> assert here that first_oam_id is not -1.
 >
->  #include "igt_core.h"
-> +#include "intel_batchbuffer.h"
->  #include "intel_chipset.h"
-> +#include "intel_reg.h"
->  #include "ioctl_wrappers.h"
->  #include "linux_scaffold.h"
-> +#include "xe/xe_ioctl.h"
->  #include "xe/xe_oa.h"
->  #include "xe/xe_oa_data.h"
->  #include "xe/xe_query.h"
 >
->  #include "xe_perf_recorder_commands.h"
+> > +		if ((int)oau->oa_unit_id == first_oam_id)
 >
-> -#define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
-> -#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
->  #define MAX(a,b) ((a) > (b) ? (a) : (b))
->  #define MIN(a,b) ((a) < (b) ? (a) : (b))
-> +#define OAG_MMIOTRIGGER 0xdb1c
-> +#define OAMERT_MMIOTRIGGER 0x1453cc
-> +#define OAM_MMIOTRIGGER_OFFSET 0x1d0
-> +#define MEDIA_GT_GSI_OFFSET 0x380000
-> +#define XE_OAM_SAG_BASE_ADJ (MEDIA_GT_GSI_OFFSET + 0x13000)
-> +#define XE_OAM_SCMI_0_BASE_ADJ (MEDIA_GT_GSI_OFFSET + 0x14000)
-> +#define XE_OAM_SCMI_1_BASE_ADJ (MEDIA_GT_GSI_OFFSET + 0x14800)
-> +#define OAREPORT_REASON_MASK 0x3f
-> +#define OAREPORT_REASON_SHIFT 19
+> (int) cast is not needed, can you check.
 >
->  struct circular_buffer {
->	char   *data;
-> @@ -354,8 +364,47 @@ struct recording_context {
->	int oa_unit_id;
->	struct drm_xe_oa_unit *oa_unit;
->	struct drm_xe_engine_class_instance *hwe;
-> +
-> +	uint32_t vm;
-> +	uint32_t exec_queue;
-> +	struct intel_bb *ibb;
->  };
+> > +			return XE_OAM_SCMI_0_BASE_ADJ + OAM_MMIOTRIGGER_OFFSET;
+> > +		return XE_OAM_SCMI_1_BASE_ADJ + OAM_MMIOTRIGGER_OFFSET;
+> > +	}
+> > +	case DRM_XE_OA_UNIT_TYPE_OAM_SAG:
+> > +		return XE_OAM_SAG_BASE_ADJ + OAM_MMIOTRIGGER_OFFSET;
+> > +	case DRM_XE_OA_UNIT_TYPE_MERT:
+> > +		return OAMERT_MMIOTRIGGER;
+> > +	case DRM_XE_OA_UNIT_TYPE_OAG:
+> > +	default:
+> > +		return OAG_MMIOTRIGGER;
 >
-> +static uint32_t oa_unit_mmio_trigger_reg(struct recording_context *ctx)
-> +{
-> +	const struct drm_xe_oa_unit *oau = ctx->oa_unit;
-> +
-> +	switch (oau->oa_unit_type) {
-> +	case DRM_XE_OA_UNIT_TYPE_OAM: {
-> +		struct drm_xe_query_oa_units *qoa = xe_oa_units(ctx->drm_fd);
-> +		uint8_t *poau = (uint8_t *)&qoa->oa_units[0];
-> +		int first_oam_id = -1;
-> +
-> +		/* Find the first OAM unit, like oa_unit_by_type() in the IGT */
-
-Let's change the comment to: "Find the first OAM unit, as in oa_unit_by_type()".
-
-> +		for (int i = 0; i < qoa->num_oa_units; i++) {
-> +			struct drm_xe_oa_unit *u = (struct drm_xe_oa_unit *)poau;
-> +
-> +			if (u->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAM) {
-> +				first_oam_id = u->oa_unit_id;
-> +				break;
-> +			}
-> +			poau += sizeof(*u) + u->num_engines * sizeof(u->eci[0]);
-> +		}
-> +
-
-assert here that first_oam_id is not -1.
-
-
-> +		if ((int)oau->oa_unit_id == first_oam_id)
-
-(int) cast is not needed, can you check.
-
-> +			return XE_OAM_SCMI_0_BASE_ADJ + OAM_MMIOTRIGGER_OFFSET;
-> +		return XE_OAM_SCMI_1_BASE_ADJ + OAM_MMIOTRIGGER_OFFSET;
-> +	}
-> +	case DRM_XE_OA_UNIT_TYPE_OAM_SAG:
-> +		return XE_OAM_SAG_BASE_ADJ + OAM_MMIOTRIGGER_OFFSET;
-> +	case DRM_XE_OA_UNIT_TYPE_MERT:
-> +		return OAMERT_MMIOTRIGGER;
-> +	case DRM_XE_OA_UNIT_TYPE_OAG:
-> +	default:
-> +		return OAG_MMIOTRIGGER;
-
-Let's do 'assert(0)' for the default case.
-
-> +	}
-> +}
-> +
->  static void set_fd_flags(int fd, int flags)
->  {
->	int old = fcntl(fd, F_GETFL, 0);
-> @@ -569,6 +618,28 @@ static bool write_stream_status(struct recording_context *ctx, FILE *output)
->	return true;
->  }
+> Let's do 'assert(0)' for the default case.
 >
-> +static uint32_t
-> +report_reason(const uint32_t *report)
-> +{
-> +	return (report[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
-> +}
-> +
-> +static void
-> +check_mmio_trigger_report(struct recording_context *ctx, const void *report)
-> +{
-> +	const struct xe_oa_format *fmt = &oa_formats[ctx->metric_set->perf_oa_format];
-> +	const uint32_t *report_32 = report;
-> +	uint64_t value;
-> +
-> +	if (report_reason(report_32))
-> +		return;
-> +
-> +	value = (fmt->header == HDR_64_BIT) ? ((const uint64_t *)report)[2] : report_32[2];
-> +
-> +	if (value == 0xc0ffee01 || value == 0xc0ffee02)
-> +		fprintf(stdout, "Received trigger report with value 0x%" PRIx64 "\n", value);
-> +}
-> +
->  static bool write_stream_data(struct recording_context *ctx,
->			      char *data, ssize_t size, FILE *output)
->  {
-> @@ -582,6 +653,8 @@ static bool write_stream_data(struct recording_context *ctx,
->			.size = sizeof(header) + format_size,
->		};
+> > +	}
+> > +}
+> > +
+> >  static void set_fd_flags(int fd, int flags)
+> >  {
+> >	int old = fcntl(fd, F_GETFL, 0);
+> > @@ -569,6 +618,28 @@ static bool write_stream_status(struct recording_context *ctx, FILE *output)
+> >	return true;
+> >  }
+> >
+> > +static uint32_t
+> > +report_reason(const uint32_t *report)
+> > +{
+> > +	return (report[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
+> > +}
+> > +
+> > +static void
+> > +check_mmio_trigger_report(struct recording_context *ctx, const void *report)
+> > +{
+> > +	const struct xe_oa_format *fmt = &oa_formats[ctx->metric_set->perf_oa_format];
+> > +	const uint32_t *report_32 = report;
+> > +	uint64_t value;
+> > +
+> > +	if (report_reason(report_32))
+> > +		return;
+> > +
+> > +	value = (fmt->header == HDR_64_BIT) ? ((const uint64_t *)report)[2] : report_32[2];
+> > +
+> > +	if (value == 0xc0ffee01 || value == 0xc0ffee02)
+> > +		fprintf(stdout, "Received trigger report with value 0x%" PRIx64 "\n", value);
+> > +}
+> > +
+> >  static bool write_stream_data(struct recording_context *ctx,
+> >			      char *data, ssize_t size, FILE *output)
+> >  {
+> > @@ -582,6 +653,8 @@ static bool write_stream_data(struct recording_context *ctx,
+> >			.size = sizeof(header) + format_size,
+> >		};
+> >
+> > +		check_mmio_trigger_report(ctx, data + i * format_size);
+> > +
 >
-> +		check_mmio_trigger_report(ctx, data + i * format_size);
-> +
-
-I don't like adding check_mmio_trigger_report() here in the middle randomly when
-mmio triggers are not happening (since the two mmio triggers happen only once in
-the beginning and once in the end). Checking should be coupled with
-emit_mmio_triggered_report(). See below.
-
->		if (fwrite(&header, sizeof(header), 1, output) != 1)
->			return false;
+> I don't like adding check_mmio_trigger_report() here in the middle randomly when
+> mmio triggers are not happening (since the two mmio triggers happen only once in
+> the beginning and once in the end). Checking should be coupled with
+> emit_mmio_triggered_report(). See below.
 >
-> @@ -697,6 +770,22 @@ write_correlation_timestamps(struct recording_context *ctx, FILE *output)
->	return write_saved_correlation_timestamps(output, &corr);
->  }
+> >		if (fwrite(&header, sizeof(header), 1, output) != 1)
+> >			return false;
+> >
+> > @@ -697,6 +770,22 @@ write_correlation_timestamps(struct recording_context *ctx, FILE *output)
+> >	return write_saved_correlation_timestamps(output, &corr);
+> >  }
+> >
+> > +static void emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t reg, uint32_t value)
+> > +{
+> > +	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
+> > +	intel_bb_out(ibb, reg);
+> > +	intel_bb_out(ibb, value);
+> > +}
+> > +
+> > +static void emit_oa_trigger(struct recording_context *ctx, uint32_t value)
+> > +{
+> > +	emit_mmio_triggered_report(ctx->ibb, oa_unit_mmio_trigger_reg(ctx), value);
+> > +
+> > +	intel_bb_flush_render(ctx->ibb);
+> > +	intel_bb_sync(ctx->ibb);
+> > +	intel_bb_reset(ctx->ibb, false);
+> > +}
+> > +
+> >  static void
+> >  read_command_file(struct recording_context *ctx)
+> >  {
+> > @@ -712,6 +801,9 @@ read_command_file(struct recording_context *ctx)
+> >		uint8_t *dump = malloc(len);
+> >		FILE *file;
+> >
+> > +		emit_oa_trigger(ctx, 0xc0ffee02);
+> > +		write_perf_data(ctx->output_stream, ctx);
+> > +
 >
-> +static void emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t reg, uint32_t value)
-> +{
-> +	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
-> +	intel_bb_out(ibb, reg);
-> +	intel_bb_out(ibb, value);
-> +}
-> +
-> +static void emit_oa_trigger(struct recording_context *ctx, uint32_t value)
-> +{
-> +	emit_mmio_triggered_report(ctx->ibb, oa_unit_mmio_trigger_reg(ctx), value);
-> +
-> +	intel_bb_flush_render(ctx->ibb);
-> +	intel_bb_sync(ctx->ibb);
-> +	intel_bb_reset(ctx->ibb, false);
-> +}
-> +
->  static void
->  read_command_file(struct recording_context *ctx)
->  {
-> @@ -712,6 +801,9 @@ read_command_file(struct recording_context *ctx)
->		uint8_t *dump = malloc(len);
->		FILE *file;
+> So thinking about this, since we are doing this right at the end, because
+> of timing, write_perf_data() may or may not capture the mmio triggered
+> report. There are all sorts of reasons why this mmio triggered report might
+> be delayed (due to caching in the GPU etc.) and so not available in the OA
+> buffer and therefore not read by write_perf_data().
 >
-> +		emit_oa_trigger(ctx, 0xc0ffee02);
-> +		write_perf_data(ctx->output_stream, ctx);
-> +
-
-So thinking about this, since we are doing this right at the end, because
-of timing, write_perf_data() may or may not capture the mmio triggered
-report. There are all sorts of reasons why this mmio triggered report might
-be delayed (due to caching in the GPU etc.) and so not available in the OA
-buffer and therefore not read by write_perf_data().
-
-The way to confirm that the mmio triggered report has been captured would
-be to keep reading from perf_fd till we have verified that ctx_id in
-captured reports matches what we are inserting via emit_oa_trigger()
-(0xc0ffeexx).
-
-To me it looks like the best place to do this would be to modify
-write_perf_data() (which reads and writes out the data). We can do this in
-a future patch, if needed.
-
-So I want to remove check_mmio_trigger_report() from this patch. As I see
-it, it is added incorrectly to write_stream_data(). Instead, after
-inserting the mmio trigger, we should read repeatedly till we see the
-inserted ctx_id. Let's do this in another future patch, we can merge this
-patch first without check_mmio_trigger_report() and taking care of the
-other review comments. So let's make the initial problem a little bit
-simpler and then solve the second problem in a separate patch.
-
->		while (offset < len &&
->		       ((ret = read(ctx->command_fifo_fd,
->				    (void *) dump + offset, len - offset)) > 0
-> @@ -835,6 +927,13 @@ usage(const char *name)
->  static void
->  teardown_recording_context(struct recording_context *ctx)
->  {
-> +	if (ctx->ibb)
-> +		intel_bb_destroy(ctx->ibb);
-> +	if (ctx->exec_queue)
-> +		xe_exec_queue_destroy(ctx->drm_fd, ctx->exec_queue);
-> +	if (ctx->vm)
-> +		xe_vm_destroy(ctx->drm_fd, ctx->vm);
-
-So if we make init_trigger_ctx() void (see below), I think all these 3 if
-statements can also be dropped.
-
-> +
->	if (ctx->topology)
->		free(ctx->topology);
+> The way to confirm that the mmio triggered report has been captured would
+> be to keep reading from perf_fd till we have verified that ctx_id in
+> captured reports matches what we are inserting via emit_oa_trigger()
+> (0xc0ffeexx).
 >
-> @@ -912,6 +1011,18 @@ static int assign_oa_unit(int fd, struct recording_context *ctx)
->	return -1;
->  }
+> To me it looks like the best place to do this would be to modify
+> write_perf_data() (which reads and writes out the data). We can do this in
+> a future patch, if needed.
 >
-> +static int init_trigger_ctx(struct recording_context *ctx)
-> +{
-> +	ctx->vm = xe_vm_create(ctx->drm_fd, 0, 0);
-> +	ctx->exec_queue = xe_exec_queue_create(ctx->drm_fd, ctx->vm, ctx->hwe, 0);
-> +	ctx->ibb = intel_bb_create_with_context(ctx->drm_fd, ctx->exec_queue, ctx->vm,
-> +				 NULL, BATCH_SZ);
-> +	if (!ctx->ibb)
-> +		return -1;
+> So I want to remove check_mmio_trigger_report() from this patch. As I see
+> it, it is added incorrectly to write_stream_data(). Instead, after
+> inserting the mmio trigger, we should read repeatedly till we see the
+> inserted ctx_id. Let's do this in another future patch, we can merge this
+> patch first without check_mmio_trigger_report() and taking care of the
+> other review comments. So let's make the initial problem a little bit
+> simpler and then solve the second problem in a separate patch.
 
-Looks like all the functions called here just assert, so to me there is no
-point checking for NULL etc. We can just make this function void?
+On second thoughts, let us leave check_mmio_trigger_report() in (as is) for
+now, so we will at least have some indication and my guess is we will
+occasionally see the second mmio triggered report missing.
 
-> +
-> +	return 0;
-> +}
-> +
->  int
->  main(int argc, char *argv[])
->  {
-> @@ -1180,6 +1291,12 @@ main(int argc, char *argv[])
->		goto fail;
->	}
->
-> +	if (init_trigger_ctx(&ctx) < 0) {
-> +		fprintf(stderr, "Unable to initialize trigger context\n");
-> +		goto fail;
-> +	}
-> +	emit_oa_trigger(&ctx, 0xc0ffee01);
-> +
->	corr_period_ns = corr_period * 1000000000ul;
->	poll_time_ns = corr_period_ns;
->
-> @@ -1227,6 +1344,7 @@ main(int argc, char *argv[])
->		}
->	}
->
-> +	emit_oa_trigger(&ctx, 0xc0ffee02);
+So let us leave it in for now and later fix it by a future patch.
 
-Let's add this comment just above this line:
-
-	/* Emit second OA trigger for the case where circular buffer is not used */
-
->	fprintf(stdout, "Exiting...\n");
 >
->	if (!write_perf_data(ctx.output_stream, &ctx)) {
-> --
-> 2.53.0
+> >		while (offset < len &&
+> >		       ((ret = read(ctx->command_fifo_fd,
+> >				    (void *) dump + offset, len - offset)) > 0
+> > @@ -835,6 +927,13 @@ usage(const char *name)
+> >  static void
+> >  teardown_recording_context(struct recording_context *ctx)
+> >  {
+> > +	if (ctx->ibb)
+> > +		intel_bb_destroy(ctx->ibb);
+> > +	if (ctx->exec_queue)
+> > +		xe_exec_queue_destroy(ctx->drm_fd, ctx->exec_queue);
+> > +	if (ctx->vm)
+> > +		xe_vm_destroy(ctx->drm_fd, ctx->vm);
 >
+> So if we make init_trigger_ctx() void (see below), I think all these 3 if
+> statements can also be dropped.
+>
+> > +
+> >	if (ctx->topology)
+> >		free(ctx->topology);
+> >
+> > @@ -912,6 +1011,18 @@ static int assign_oa_unit(int fd, struct recording_context *ctx)
+> >	return -1;
+> >  }
+> >
+> > +static int init_trigger_ctx(struct recording_context *ctx)
+> > +{
+> > +	ctx->vm = xe_vm_create(ctx->drm_fd, 0, 0);
+> > +	ctx->exec_queue = xe_exec_queue_create(ctx->drm_fd, ctx->vm, ctx->hwe, 0);
+> > +	ctx->ibb = intel_bb_create_with_context(ctx->drm_fd, ctx->exec_queue, ctx->vm,
+> > +				 NULL, BATCH_SZ);
+> > +	if (!ctx->ibb)
+> > +		return -1;
+>
+> Looks like all the functions called here just assert, so to me there is no
+> point checking for NULL etc. We can just make this function void?
+>
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  int
+> >  main(int argc, char *argv[])
+> >  {
+> > @@ -1180,6 +1291,12 @@ main(int argc, char *argv[])
+> >		goto fail;
+> >	}
+> >
+> > +	if (init_trigger_ctx(&ctx) < 0) {
+> > +		fprintf(stderr, "Unable to initialize trigger context\n");
+> > +		goto fail;
+> > +	}
+> > +	emit_oa_trigger(&ctx, 0xc0ffee01);
+> > +
+> >	corr_period_ns = corr_period * 1000000000ul;
+> >	poll_time_ns = corr_period_ns;
+> >
+> > @@ -1227,6 +1344,7 @@ main(int argc, char *argv[])
+> >		}
+> >	}
+> >
+> > +	emit_oa_trigger(&ctx, 0xc0ffee02);
+>
+> Let's add this comment just above this line:
+>
+>	/* Emit second OA trigger for the case where circular buffer is not used */
+>
+> >	fprintf(stdout, "Exiting...\n");
+> >
+> >	if (!write_perf_data(ctx.output_stream, &ctx)) {
+> > --
+> > 2.53.0
+> >
