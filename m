@@ -4,54 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD6CDC44501
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Jul 2026 09:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BCC6C44501
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Jul 2026 10:07:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6306C10F7E6;
-	Fri, 10 Jul 2026 09:56:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D391810F7E6;
+	Fri, 10 Jul 2026 10:07:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uu2Gl7Dw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E5301W6t";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D89910F7E6
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jul 2026 09:56:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC75910F7E6;
+ Fri, 10 Jul 2026 10:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783677377; x=1815213377;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=x3grSskQTEjIIu3SbxkHcT6Rnt8WYzQsL7ceAhQA+bI=;
- b=Uu2Gl7DwMh/TsRiKrQUtj0bkoSrNhe9SB2qZUKIPDTKivhx32WYJ+S6e
- FCBBQVqCGmLjVaia//YN6o/J8F33aY6GmMR7NvW+9v4Eq+g0J77qh9yqz
- GmZ+r7qrfnilxBh3KbXujYqpIzKiE+vYMObPFZlHSBkZl3zlYguajlgNs
- uylH5ujQP87svZhN6qoOLsjMajvKUIyYFE/hZgyanugmaSao6bpIbTYpo
- PTwLFNarLAHNIdQDuNo/cpM8RLMZd9Q4SvOBBwU3iykpYl53ZH9htyaMD
- FdivelU/EhJfXcld/OCQfzREOktmY2j2q1d7xFQga2UgC/8KO7RX3wkp/ Q==;
-X-CSE-ConnectionGUID: P6M35JLgQNimG+KR/QY87g==
-X-CSE-MsgGUID: qTVHFfQQQ4i0wmcrh7bbNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84232228"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="84232228"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2026 02:56:17 -0700
-X-CSE-ConnectionGUID: /BPDovK6QoiYPuOda0aiHw==
-X-CSE-MsgGUID: ATpcyi5iTpStrM173FZhUw==
+ t=1783678004; x=1815214004;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=OHeQBKLU7Wl5dB7AgxWq3rCkCzuqCpatvDXPwhLwL/I=;
+ b=E5301W6tm1BontTAqh9ty/wSwvi9u9fetBzWY6QNzCnSacamgTrXjCFW
+ 4fhSYRKkAU0vyaUwivmcWJw0/Fbfz3w0+cPmfulrFv8xTMf9ya4IJ+FUs
+ 6JIPcv/wr4OTpdx7U/2uJGrAlf7HjNpcsJd08pEA6/N6C8zYrVP+aQGNA
+ nrF5o21A23cWgyAA91nu1gAUfLP141730OVACV5GUse3Rl1ijCierJ0bY
+ aU8oqLaFau305jfwJL1iDnV3yv0i6+U6gowZyG6WU99CQuhevqHrofBb1
+ QsenyqeqNsHBPiKD51b0qQtC9bVdJsFA/OKia6K8MVO2rqn84jKjlca9p Q==;
+X-CSE-ConnectionGUID: Sf1rj2EgSLu558M7VLIePQ==
+X-CSE-MsgGUID: h3GrEmw6RQu2cNgVtvhnjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95528814"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="95528814"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2026 03:06:44 -0700
+X-CSE-ConnectionGUID: jlXg6/e7RcuVIcN7IqqIbQ==
+X-CSE-MsgGUID: h0dHgIYnR5KU3F4t8zjQiQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="279253614"
-Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2026 02:56:14 -0700
-From: Sowmiya S <sowmiya.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com, suraj.kandpal@intel.com,
- Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v1] tests/kms_force_connector_basic: fix
- force-connector-state for HDMI 2.1
-Date: Fri, 10 Jul 2026 15:49:24 +0530
-Message-ID: <20260710101924.2741256-1-sowmiya.s@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="251487830"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 03:06:42 -0700
+Date: Fri, 10 Jul 2026 12:06:39 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Rob Clark <rob.clark@oss.qualcomm.com>
+Cc: igt-dev@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] tests/msm: Add perfcntrs test
+Message-ID: <20260710100639.xrdyl6lbiidsgvjj@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Rob Clark <rob.clark@oss.qualcomm.com>,
+ igt-dev@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org
+References: <20260708161224.507091-1-rob.clark@oss.qualcomm.com>
+ <20260708161224.507091-3-rob.clark@oss.qualcomm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260708161224.507091-3-rob.clark@oss.qualcomm.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,43 +73,258 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Remove igt_display_reset() before igt_display_commit() in
-force_connector_state(). The reset disables all CRTCs, causing the
-display engine to transition to a lower DC state (DC6/DC9), which
-cuts power to the HDMI PHY. HDMI 2.1 monitors de-assert HPD when
-the PHY loses power, so FORCE_CONNECTOR_UNSPECIFIED reads HPD=LOW
-and reports disconnected, failing the state-restore assertion.
+Hi Rob,
+On 2026-07-08 at 09:12:24 -0700, Rob Clark wrote:
+> Add tests for new PERFCNTR_CONFIG ioctl.
+> 
+> Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
+> ---
+>  tests/msm/meson.build     |   1 +
+>  tests/msm/msm_perfcntrs.c | 196 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 197 insertions(+)
+>  create mode 100644 tests/msm/msm_perfcntrs.c
+> 
+> diff --git a/tests/msm/meson.build b/tests/msm/meson.build
+> index 2ba5b4db2279..0a7f35662c03 100644
+> --- a/tests/msm/meson.build
+> +++ b/tests/msm/meson.build
+> @@ -1,6 +1,7 @@
+>  msm_progs = [
+>  	'msm_bo',
+>  	'msm_mapping',
+> +	'msm_perfcntrs',
+>  	'msm_recovery',
+>  	'msm_shrink',
+>  	'msm_submit',
+> diff --git a/tests/msm/msm_perfcntrs.c b/tests/msm/msm_perfcntrs.c
+> new file mode 100644
+> index 000000000000..42f77456939e
+> --- /dev/null
+> +++ b/tests/msm/msm_perfcntrs.c
+> @@ -0,0 +1,196 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+> + */
+> +
+> +#include <errno.h>
+> +
+> +#include "igt.h"
+> +#include "igt_core.h"
+> +#include "igt_msm.h"
+> +#include "msm_drm.h"
+> +
+> +static int
+> +__configure_counters(struct msm_device *dev, bool global, unsigned nr_groups,
+> +		     const char **groups, unsigned count)
+> +{
+> +	uint32_t countables[count];
+> +	struct drm_msm_perfcntr_group group[nr_groups];
+> +	struct drm_msm_perfcntr_config req = {
+> +		.flags = global ? MSM_PERFCNTR_STREAM : 0,
+> +		.nr_groups = nr_groups,
+> +		.groups = VOID2U64(group),
+> +		.period = global ? NSEC_PER_SEC : 0,
+> +		.bufsz_shift = global ? 10 : 0,
+> +		.group_stride = sizeof(struct drm_msm_perfcntr_group),
+> +	};
+> +
+> +	memset(group, 0, sizeof(group));
+> +	/* selecting countable 0 for each counter is fine: */
+> +	memset(countables, 0, sizeof(countables));
+> +
+> +	for (unsigned i = 0; i < nr_groups; i++) {
 
-Re-probe the connector after the commit to capture its accurate
-natural state as the baseline for the FORCE_CONNECTOR_UNSPECIFIED
-check.
+checkpatch suggest using 'unsigned int'.
 
-Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
----
- tests/kms_force_connector_basic.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+> +		strcpy(group[i].group_name, groups[i]);
+> +		group[i].nr_countables = count;
+> +		group[i].countables = global ? VOID2U64(countables) : 0;
+> +	}
+> +
+> +	return drmIoctl(dev->fd, DRM_IOCTL_MSM_PERFCNTR_CONFIG, &req);
+> +}
+> +
+> +static int
+> +configure_counters(struct msm_device *dev, bool global, unsigned count)
+> +{
+> +	/* CP group is present on all gens.. SP would be another good candidate */
+> +	const char *groups[] = {"CP"};
+> +	return __configure_counters(dev, global, 1, groups, count);
+> +}
+> +
+> +static unsigned
+> +get_available_counters(struct msm_device *dev, bool global)
+> +{
+> +	for (unsigned i = 0; ; i++) {
+> +		int ret = configure_counters(dev, global, i + 1);
+> +		igt_warn("%u: ret=%d\n", i, ret);
 
-diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
-index 4ea6b0e8c..ec8b0e25f 100644
---- a/tests/kms_force_connector_basic.c
-+++ b/tests/kms_force_connector_basic.c
-@@ -181,10 +181,14 @@ static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
- 
- 	igt_display_require(&display, drm_fd);
- 
--	/* Reset display before attempt to use it. */
--	igt_display_reset(&display);
- 	igt_display_commit(&display);
- 
-+	/* Re-probe to get the connector's original state with HPD accurate. */
-+	temp = drmModeGetConnector(drm_fd, connector->connector_id);
-+	igt_require(temp);
-+	connector->connection = temp->connection;
-+	drmModeFreeConnector(temp);
-+
- 	/* Force the connector on and check the reported values. */
- 	kmstest_force_connector(drm_fd, connector, FORCE_CONNECTOR_ON);
- 	temp = drmModeGetConnectorCurrent(drm_fd,
--- 
-2.43.0
+Why warn here? It will make your test fail, imho you should use
+igt_info() instead.
 
+> +		if (ret < 0)
+> +			return i;
+
+and this imho:
+		if (ret < 0) {
+			igt_warn("Unexpected error\n");
+			return i;
+		}
+
+> +		if (global)
+> +			close(ret);
+> +	}
+> +}
+> +
+> +
+
+One newline is enough.
+
+I will merge this as is with whitespace/style fixes with the help
+of checkpatch.pl --fix-inplace. If you want improve test with
+above s/warn/info/ please send a fix.
+
+LGTM
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Regards,
+Kamil
+
+> +int igt_main()
+> +{
+> +	/* device instance for global counter collection: */
+> +	struct msm_device *dev_global = NULL;
+> +	/* device instances for local counter reservation: */
+> +	struct msm_device *dev_local_1 = NULL;
+> +	struct msm_device *dev_local_2 = NULL;
+> +	unsigned num_counters;
+> +
+> +	igt_fixture() {
+> +		dev_global = igt_msm_dev_open();
+> +		dev_local_1 = igt_msm_dev_open();
+> +		dev_local_2 = igt_msm_dev_open();
+> +
+> +		num_counters = get_available_counters(dev_global, true);
+> +		igt_info("num_counters=%u\n", num_counters);
+> +	}
+> +
+> +	igt_describe("Multiple process should be able to reserve the same "
+> +		     "counters for local counter collection");
+> +	igt_subtest("perfcntrs-local-coexist") {
+> +		igt_require(num_counters > 0);
+> +
+> +		igt_assert_eq(0, configure_counters(dev_local_1, false, num_counters));
+> +		igt_assert_eq(0, configure_counters(dev_local_2, false, num_counters));
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +		configure_counters(dev_local_2, false, 0);
+> +	}
+> +
+> +	igt_describe("non-conflict global and local counters");
+> +	igt_subtest("perfcntrs-non-conflict-global-local") {
+> +		int num_local = num_counters - 2;
+> +		int stream_fd;
+> +
+> +		igt_require(num_counters > 2);
+> +
+> +		igt_assert_eq(0, configure_counters(dev_local_1, false, num_local));
+> +		igt_assert_eq(0, configure_counters(dev_local_2, false, num_local));
+> +
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lte(0, stream_fd);
+> +		close(stream_fd);
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +		configure_counters(dev_local_2, false, 0);
+> +	}
+> +
+> +	igt_describe("conflict, local first");
+> +	igt_subtest("conflict-local-first") {
+> +		int num_local = num_counters - 1;
+> +		int stream_fd;
+> +
+> +		igt_require(num_counters > 2);
+> +
+> +		igt_assert_eq(0, configure_counters(dev_local_1, false, num_local));
+> +		igt_assert_eq(0, configure_counters(dev_local_2, false, num_local));
+> +
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lt(stream_fd, 0);
+> +
+> +		/* release the reservation for dev_local_1: */
+> +		configure_counters(dev_local_1, false, 0);
+> +
+> +		/* should still fail: */
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lt(stream_fd, 0);
+> +
+> +		/* release the reservation for dev_local_2: */
+> +		configure_counters(dev_local_2, false, 0);
+> +
+> +		/* now should succeed: */
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lte(0, stream_fd);
+> +		close(stream_fd);
+> +	}
+> +
+> +	igt_describe("conflict, global first");
+> +	igt_subtest("conflict-global-first") {
+> +		int num_local = num_counters - 1;
+> +		int stream_fd;
+> +
+> +		igt_require(num_counters > 2);
+> +
+> +		stream_fd = configure_counters(dev_global, true, 2);
+> +		igt_assert_lte(0, stream_fd);
+> +
+> +		/* Should fail because two counters already allocated for global collection: */
+> +		igt_assert_neq(0, configure_counters(dev_local_1, false, num_local));
+> +
+> +		/* release global counters: */
+> +		close(stream_fd);
+> +
+> +		/* Now reservation should succeed: */
+> +		igt_assert_eq(0, configure_counters(dev_local_1, false, num_local));
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +	}
+> +
+> +	igt_describe("multiple groups");
+> +	igt_subtest("multiple-groups") {
+> +		const char *groups[] = {"CP", "SP"};
+> +
+> +		igt_require(num_counters > 0);
+> +
+> +		igt_assert_eq(0,
+> +			__configure_counters(dev_local_1, false, ARRAY_SIZE(groups), groups, 1));
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +	}
+> +
+> +	igt_describe("duplicate groups");
+> +	igt_subtest("duplicate-groups") {
+> +		const char *groups[] = {"CP", "CP"};
+> +
+> +		igt_require(num_counters > 0);
+> +
+> +		igt_assert_neq(0,
+> +			__configure_counters(dev_local_1, false, ARRAY_SIZE(groups), groups, 1));
+> +
+> +		/* release the reservations: */
+> +		configure_counters(dev_local_1, false, 0);
+> +	}
+> +
+> +	igt_fixture() {
+> +		igt_msm_dev_close(dev_global);
+> +		igt_msm_dev_close(dev_local_1);
+> +		igt_msm_dev_close(dev_local_2);
+> +	}
+> +}
+> -- 
+> 2.55.0
+> 
