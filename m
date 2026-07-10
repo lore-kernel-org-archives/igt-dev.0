@@ -4,68 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25A07C43458
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Jul 2026 09:55:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD6CDC44501
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Jul 2026 09:56:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE1F110F7E6;
-	Fri, 10 Jul 2026 09:55:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6306C10F7E6;
+	Fri, 10 Jul 2026 09:56:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="UVqE/llr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uu2Gl7Dw";
 	dkim-atps=neutral
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A26DF10F7E6
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jul 2026 09:54:06 +0000 (UTC)
-X-UUID: 46f1bbc07c4511f18dc8c9802ae25ab1-20260710
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
- s=dk; 
- h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From;
- bh=Ga6cyCygPOTzionQi05e8NaCOd07RMZMHndmpv60TLs=; 
- b=UVqE/llrA8gV1GLhkDjSgLtdNRhcC9AM1wrE3sMqLvxUgZZWx7+DgYQgztIphIHZdU1GKlCi6vK0j6SrkaoUBzjjo6gl7VPd1OituLDSNTmAd8Zp0AhM6EzBeGWnOCzd73KJwQ+jzQtCIFeGsdKgdumvekpO+X1ZRjb7B+fDIEQ=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.17, REQID:2cc56c20-8cc1-4e83-a062-092a6dd8fd8f, IP:0,
- U
- RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
- :release,TS:-5
-X-CID-META: VersionHash:d497b38, CLOUDID:c853fa14-ea64-44d4-98db-4e1fb89955a3,
- B
- ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
- DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
- AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 46f1bbc07c4511f18dc8c9802ae25ab1-20260710
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by
- mailgw02.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
- (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
- with ESMTP id 1230254076; Fri, 10 Jul 2026 17:54:01 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 10 Jul 2026 17:53:59 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Fri, 10 Jul 2026 17:53:59 +0800
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
-To: <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Ville Syrjala
- <ville.syrjala@linux.intel.com>, Fei Shao <fshao@chromium.org>
-CC: Jani <jani.nikula@intel.com>, Jason-JH Lin <jason-jh.lin@mediatek.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>, Lancelot Wu
- <Lancelot.Wu@mediatek.com>, Manasi Navare <navaremanasi@google.com>, Gil
- Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Subject: [PATCH i-g-t v3 0/2] Add CPU idle state control for accurate vblank
- timing
-Date: Fri, 10 Jul 2026 17:52:46 +0800
-Message-ID: <20260710095358.2518446-1-jason-jh.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D89910F7E6
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jul 2026 09:56:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1783677377; x=1815213377;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=x3grSskQTEjIIu3SbxkHcT6Rnt8WYzQsL7ceAhQA+bI=;
+ b=Uu2Gl7DwMh/TsRiKrQUtj0bkoSrNhe9SB2qZUKIPDTKivhx32WYJ+S6e
+ FCBBQVqCGmLjVaia//YN6o/J8F33aY6GmMR7NvW+9v4Eq+g0J77qh9yqz
+ GmZ+r7qrfnilxBh3KbXujYqpIzKiE+vYMObPFZlHSBkZl3zlYguajlgNs
+ uylH5ujQP87svZhN6qoOLsjMajvKUIyYFE/hZgyanugmaSao6bpIbTYpo
+ PTwLFNarLAHNIdQDuNo/cpM8RLMZd9Q4SvOBBwU3iykpYl53ZH9htyaMD
+ FdivelU/EhJfXcld/OCQfzREOktmY2j2q1d7xFQga2UgC/8KO7RX3wkp/ Q==;
+X-CSE-ConnectionGUID: P6M35JLgQNimG+KR/QY87g==
+X-CSE-MsgGUID: qTVHFfQQQ4i0wmcrh7bbNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84232228"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="84232228"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2026 02:56:17 -0700
+X-CSE-ConnectionGUID: /BPDovK6QoiYPuOda0aiHw==
+X-CSE-MsgGUID: ATpcyi5iTpStrM173FZhUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="279253614"
+Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2026 02:56:14 -0700
+From: Sowmiya S <sowmiya.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com, suraj.kandpal@intel.com,
+ Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v1] tests/kms_force_connector_basic: fix
+ force-connector-state for HDMI 2.1
+Date: Fri, 10 Jul 2026 15:49:24 +0530
+Message-ID: <20260710101924.2741256-1-sowmiya.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,60 +67,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series adds a new subtest "basic-no-cpu-idle" to kms_setmode for
-platforms that lack get_scanout_position() implementation.
+Remove igt_display_reset() before igt_display_commit() in
+force_connector_state(). The reset disables all CRTCs, causing the
+display engine to transition to a lower DC state (DC6/DC9), which
+cuts power to the HDMI PHY. HDMI 2.1 monitors de-assert HPD when
+the PHY loses power, so FORCE_CONNECTOR_UNSPECIFIED reads HPD=LOW
+and reports disconnected, failing the state-restore assertion.
 
-Background:
-On platforms without get_scanout_position() support, vblank timestamps
-are captured at IRQ handler entry time without scanline-based correction.
-When CPU enters deep sleep states (C2+), the wakeup latency (~150us) can
-cause timestamp jitter that exceeds the 1-scanline accuracy threshold,
-resulting in test failures.
-This issue was observed on MediaTek platforms where single-CRTC tests
-had high failure rates (~50-80%) due to CPU entering deep sleep between
-vblank IRQs, while dual-CRTC tests passed consistently because the
-staggered IRQs kept CPU more active.
+Re-probe the connector after the commit to capture its accurate
+natural state as the baseline for the FORCE_CONNECTOR_UNSPECIFIED
+check.
 
-Solution:
-Rather than modifying the existing "basic" test (which would hide a real
-issue), this series adds:
-
-1. A general API in lib/igt_pm to control CPU idle states
-2. A new "basic-no-cpu-idle" subtest that:
-   - Disables deep CPU sleep before running timing verification
-   - Gracefully skips on platforms without CPU idle control support
-   - Allows platforms to verify timestamp implementation correctness,
-     separate from CPU idle interference
-
-This approach will not hide bugs by modifying existing tests, but instead
-provide separate test results:
-- "basic": Shows real-world behavior (may fail due to CPU idle)
-- "basic-no-cpu-idle": Verifies timestamp accuracy without interference
-
-Once get_scanout_position() is implemented, timestamps will be accurately
-compensated regardless of CPU idle states, making both tests pass.
-
+Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 ---
+ tests/kms_force_connector_basic.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Change in V3:
-1. Add igt_install_exit_handler for restoring cpu deep sleep in the midway
-   of run_test().
-
-Change in V2:
-1. Move CPU idle control APIs from lib/igt_kms to lib/igt_pm
-2. Add a new subtest instead of modifying existing tests
-
----
-
-Jason-JH Lin (2):
-  lib/igt_pm: Add CPU idle state control for vblank timing stability
-  tests/kms_setmode: Add basic-no-cpu-idle subtest
-
- lib/igt_pm.c        | 75 +++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_pm.h        |  2 ++
- tests/kms_setmode.c | 37 ++++++++++++++++++++++
- 3 files changed, 114 insertions(+)
-
+diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
+index 4ea6b0e8c..ec8b0e25f 100644
+--- a/tests/kms_force_connector_basic.c
++++ b/tests/kms_force_connector_basic.c
+@@ -181,10 +181,14 @@ static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
+ 
+ 	igt_display_require(&display, drm_fd);
+ 
+-	/* Reset display before attempt to use it. */
+-	igt_display_reset(&display);
+ 	igt_display_commit(&display);
+ 
++	/* Re-probe to get the connector's original state with HPD accurate. */
++	temp = drmModeGetConnector(drm_fd, connector->connector_id);
++	igt_require(temp);
++	connector->connection = temp->connection;
++	drmModeFreeConnector(temp);
++
+ 	/* Force the connector on and check the reported values. */
+ 	kmstest_force_connector(drm_fd, connector, FORCE_CONNECTOR_ON);
+ 	temp = drmModeGetConnectorCurrent(drm_fd,
 -- 
 2.43.0
 
