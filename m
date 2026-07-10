@@ -4,47 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 298F5C43458
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Jul 2026 18:56:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62327C44501
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Jul 2026 20:04:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDF1F10E21C;
-	Fri, 10 Jul 2026 18:56:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 05EB810E1C6;
+	Fri, 10 Jul 2026 20:04:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kuhls.net header.i=@kuhls.net header.b="tIS4dJeB";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="VlASjWqz";
 	dkim-atps=neutral
-Received: from dd20012.kasserver.com (dd20012.kasserver.com [85.13.140.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D74A010E1AA
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jul 2026 18:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kuhls.net;
- s=kas202605290044; t=1783709198;
- bh=SBg3Duj5lHxVgnar8iXaGtXwdRAtl/ZFwUwzT1t9nYs=;
- h=From:To:Subject:Date:In-Reply-To:From;
- b=tIS4dJeBsGVkoH/6ghE4efQUG/7DBbbKqTDUmzP3wl6N1lRyIdl7e+qHkPkmVCh1l
- wffqVlR4redqxsV1RrRreti1DkJJAQkhrVbBwYfix8npXaqDRDTiJMhprK09izOLtD
- luNhYA0eHuZHVoSkRf8+HBuhoeLGaSm+jFmqoXP4mRrz+6JE/q6tIqO4wUoX9iq8Ho
- R1s4ukDC6GMR+fYh4CU6rq132xle+lyXy9vVbZsBM3rJvSZIUR0wpoDqwJoZ7TFda5
- zxljAGCZ0yCZ2B0jrS0bwpDwmlFJNXSh58vzJilT73sMGX1Lrx1+7M8NzF1d9p4cPm
- 4x+c5h64HP3WQ==
-Received: from fli4l.lan.fli4l (p4fd6c4f9.dip0.t-ipconnect.de [79.214.196.249])
- by dd20012.kasserver.com (Postfix) with ESMTPSA id 40967A4C37E5
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jul 2026 20:46:38 +0200 (CEST)
-Received: from bruckner.lan.fli4l ([192.168.1.1]:51242)
- by fli4l.lan.fli4l with esmtp (Exim 4.99.4)
- (envelope-from <bernd@kuhls.net>) id 1wiGF2-0000000044Y-1MYD
- for igt-dev@lists.freedesktop.org; Fri, 10 Jul 2026 18:46:37 +0000
-From: Bernd Kuhls <bernd@kuhls.net>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_madvise: Fix the type for
- sighandler_t
-Date: Fri, 10 Jul 2026 20:46:19 +0200
-Message-ID: <20260710184619.2347456-2-bernd@kuhls.net>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260710184619.2347456-1-bernd@kuhls.net>
-References: <20260710184619.2347456-1-bernd@kuhls.net>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E39F910E50F;
+ Fri, 10 Jul 2026 20:03:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
+ :References:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=mbKc1/cSnSEV/apgsx5ozNRioLCTdX2qVb6//I9wooI=; b=VlASjWqzgcw0QONm2VCn9BzIJk
+ mn2RdSSUjEIO5JzWmm0NECkI5oCnjfmSMQXC0ltkXJbkRdgysaJK3+O0Hj1BAFTmqQuyc96+CQijd
+ ImJPaq1+68QSTSe4CVZr1+6vewHd8GF/6SfFcgMiBiKwHx49XRSSrKhVQHZ+Fup2D0lUv2libGRjO
+ sgaRQmB46aZF6mbROIzJ5fwRcgCXmLJXY6cl1iWO7nMzmdx6LPQbRuV5OEesW1Pz+r4QaKiIJ9ZTa
+ D+PM8H77iOfgAsWThzGhnupIr3Gcw1XxgpwacXiYkBYB4AQcIu0g/I5ob7R5PpPKivZmvq7s8sLdf
+ D//CRstQ==;
+Received: from 179-125-92-221-dinamico.pombonet.net.br ([179.125.92.221]
+ helo=quatroqueijos.cascardo.eti.br)
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1wiHRt-00D7nu-Ma; Fri, 10 Jul 2026 22:03:50 +0200
+Date: Fri, 10 Jul 2026 17:03:40 -0300
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "Sokolowski, Jan" <jan.sokolowski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "siqueira@igalia.com" <siqueira@igalia.com>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+ Christian Koenig <christian.koenig@amd.com>,
+ "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+ Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Natalie Vock <natalie.vock@gmx.de>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ "kernel-dev@igalia.com" <kernel-dev@igalia.com>
+Subject: Re: [PATCH i-g-t v3 0/7] add dmem_cgroups test
+Message-ID: <alFQHEiMqY2QUs4n@quatroqueijos.cascardo.eti.br>
+References: <20260702130108.1397444-1-cascardo@igalia.com>
+ <IA4PR11MB9251D24975F81CFD242F88F299F42@IA4PR11MB9251.namprd11.prod.outlook.com>
+ <akeamIYrRSTph5St@quatroqueijos.cascardo.eti.br>
+ <20260707104242.teljyquxek3hdppm@kamilkon-DESK.igk.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: -
+In-Reply-To: <20260707104242.teljyquxek3hdppm@kamilkon-DESK.igk.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,39 +76,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-__sighandler_t is private interface in glibc so its
-better to not use it, as an aside fixes build with musl
+On Tue, Jul 07, 2026 at 12:42:42PM +0200, Kamil Konieczny wrote:
+> Hi Thadeu,
+> On 2026-07-03 at 08:18:48 -0300, Thadeu Lima de Souza Cascardo wrote:
+> > On Fri, Jul 03, 2026 at 09:54:14AM +0000, Sokolowski, Jan wrote:
+> > > I don't know if that's a problem or not, but your patches in patch series are titled as v2 instead of v3, at least that's how I see them.
+> > > 
+> > > Jan
+> > > 
+> > 
+> > I decided to name this one v3, though I did not call the previous one v2,
+> > because I have submitted a patchset earlier that was on top of Thomas
+> > Hellstr�m patchset.
+> > 
+> > I think it tracks the history of the patchset better. I am sorry if this
+> > got confusing.
+> > 
+> > Cascardo.
+> > 
+> 
+> Please keep versioning the same across series, if your cover letter
+> has v3, all patches in series should also have v3.
+> 
+> Regards,
+> Kamil
 
-Patch was inspired by
-https://lists.gnu.org/r/bug-time/2025-03/msg00000.html
+Ah, I missed that and didn't notice when sending. I will make sure
+everything is v4 when I send the next version.
 
-Fixes build error seen with musl-based toolchains:
-
-../tests/intel/xe_madvise.c: In function ‘test_dontneed_after_mmap’:
-../tests/intel/xe_madvise.c:400:48: error: ‘__sighandler_t’ undeclared
- (first use in this function); did you mean ‘sighandler_t’?
-  400 |          old_sigsegv = signal(SIGSEGV, (__sighandler_t)sigtrap);
-
-Signed-off-by: Bernd Kuhls <bernd@kuhls.net>
----
- tests/intel/xe_madvise.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
-index 3d36be941..a33a08630 100644
---- a/tests/intel/xe_madvise.c
-+++ b/tests/intel/xe_madvise.c
-@@ -397,8 +397,8 @@ static void test_dontneed_after_mmap(int fd)
- 		char *ptr = (char *)map;
- 		int sig;
- 
--		old_sigsegv = signal(SIGSEGV, (__sighandler_t)sigtrap);
--		old_sigbus = signal(SIGBUS, (__sighandler_t)sigtrap);
-+		old_sigsegv = signal(SIGSEGV, (sighandler_t)sigtrap);
-+		old_sigbus = signal(SIGBUS, (sighandler_t)sigtrap);
- 
- 		sig = sigsetjmp(jmp, 1); /* savemask=1: save/restore signal mask */
- 		switch (sig) {
--- 
-2.47.3
-
+Cascardo.
