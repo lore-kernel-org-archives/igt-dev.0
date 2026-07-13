@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2BFCC43458
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 08:59:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26442C43458
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 08:59:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 96C2310E346;
-	Mon, 13 Jul 2026 08:59:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D109A10E414;
+	Mon, 13 Jul 2026 08:59:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GG54CG5G";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cX813JeM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7745C10E5B3
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 08:56:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FC7B10E5B3
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 08:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783932982; x=1815468982;
+ t=1783932969; x=1815468969;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8YycD+UD5u9zks1jj1ITMjXgte9swArvTnuJdarYcGs=;
- b=GG54CG5G5loQ/IyMa4f7jrS6m2c+UmzAxZhePChEma8/pNTnfJrVGTt0
- WlxTJIUwPY0y2FEJ9cwmhYyKmNrZTl2Kb1/ct6ZWYE9V8P0VC8hpOxHn5
- mKC4VwfCukidA0B92q/DNIEij6e3Y1JhBaM4u6cjBEgrwRPgfMKjZ1OvR
- Wmg2GuAoJwhfmI7UHFXXYJ9kdA03ZMx8/9kAXY7TzCElgkW+s+apFwMvs
- kGA9kyBNZE203wAxcaWM+5DylP8ICzoeAGRoJJI3SvG7FbLLebOtd4rnk
- X3uMLb2L9ZbGARvjOdLFUqilk3DlfAnRM65DdC8ezAzgdWS7IzDNQAgX3 Q==;
-X-CSE-ConnectionGUID: fs/wvUPGSbqjqblDAW2mpg==
-X-CSE-MsgGUID: WGsPuElxQAK8NSCVEhVhhw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="87081336"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="87081336"
+ bh=7FH2La8ljDjJKjut7X/tGYV5LPNlFfJ2EVMNYJdAeTc=;
+ b=cX813JeMQ05LBPxFfAT7sxhN50LkcljRBM0CH4Yc/fw9XlAFWFclm0wV
+ LakWPluZHQdpOB/RoTY/5WfkVjO5kf3dCH3pZYY3Belv/TLiEbiwLBIbr
+ o9UqHl/lsUyXZV1SVgRzbS1R0lfnpVs2FIh50H7KSWNUM9tFksC9hFWt4
+ ipR8A7qsaazNXuhG1cJWadLAr8MtqBlKMwrirEAKchcMyqDS6ZyijnXL2
+ X9BaUCOGpuxbrqBJBUHBV4EB7QSNWpPrQN3T7YYdOrZ+DSqrT+XoeG1k6
+ jeo7HLyj00y8W5qFMNEEssMh8YJWH5HyObE310ci2W9Lrw4XPHvSOZsQu g==;
+X-CSE-ConnectionGUID: tVn5CYMRTZS6P9BC1dm1yQ==
+X-CSE-MsgGUID: oY/VBlILQ6aCOoZZX386cQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="87081320"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="87081320"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jul 2026 01:56:22 -0700
-X-CSE-ConnectionGUID: 4wpkMHkWQYisfK/hT77AcQ==
-X-CSE-MsgGUID: O2QgPxeETAe1/c6OWtiT5Q==
+ 13 Jul 2026 01:56:09 -0700
+X-CSE-ConnectionGUID: gS+EDCzXRcav64Kb+DbL0w==
+X-CSE-MsgGUID: AaOrOfSUTRqi+9G2gyIloQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="260385961"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="260385856"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa005.fm.intel.com with ESMTP; 13 Jul 2026 01:56:20 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 13 Jul 2026 01:56:08 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v1 14/16] tests/kms_ccs: split outer test loop into two
-Date: Mon, 13 Jul 2026 10:55:13 +0200
-Message-ID: <20260713085515.463575-15-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v1 03/16] tests/kms_async_flips: split outer test loop
+ into two
+Date: Mon, 13 Jul 2026 10:55:02 +0200
+Message-ID: <20260713085515.463575-4-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260713085515.463575-1-michal.grzelak@intel.com>
 References: <20260713085515.463575-1-michal.grzelak@intel.com>
@@ -71,105 +72,92 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 for_each_crtc_with_valid_output() iterates over every crtc with
-connected output. Split it into two loops. This is needed to handle per
-output and per crtc cases.
+connected output. Split it into two loops. This is needed to handle
+cases per output.
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tests/intel/kms_ccs.c | 74 +++++++++++++++++++++++--------------------
- 1 file changed, 39 insertions(+), 35 deletions(-)
+ tests/kms_async_flips.c | 63 ++++++++++++++++++++++-------------------
+ 1 file changed, 34 insertions(+), 29 deletions(-)
 
-diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index 4d0bda6a78..9ac0ac8e2b 100644
---- a/tests/intel/kms_ccs.c
-+++ b/tests/intel/kms_ccs.c
-@@ -1152,47 +1152,51 @@ static void test_output(data_t *data, const int testnum)
- 					      "Older than Xe2 platform needed.\n");
- 			}
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index ef4b28eb52..03348d958d 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -877,39 +877,44 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 	if (data->atomic_path)
+ 		require_atomic_async_cap(data);
  
--			for_each_crtc_with_valid_output(&data->display, crtc,
--							data->output) {
--				data->crtc = crtc;
--				igt_display_reset(&data->display);
+-	for_each_crtc_with_valid_output(display, crtc, data->output) {
+-		data->crtc = crtc;
+-		igt_display_reset(display);
++	for_each_connected_output(display, data->output) {
++		for_each_crtc(&data->display, crtc) {
++			if(!igt_crtc_connector_valid(crtc, data->output))
++				continue;
+ 
+-		igt_output_set_crtc(data->output,
+-				    crtc);
+-		if (!intel_pipe_output_combo_valid(display))
+-			continue;
++			data->crtc = crtc;
++			igt_display_reset(display);
+ 
+-		test_init(data);
++			igt_output_set_crtc(data->output,
++					    crtc);
++			if (!intel_pipe_output_combo_valid(display))
++				continue;
+ 
+-		if (data->linear_modifier)
+-			data->modifier = DRM_FORMAT_MOD_LINEAR;
+-		else
+-			data->modifier = default_modifier(data);
 -
--				igt_output_set_crtc(data->output,
--						    crtc);
--				if (!intel_pipe_output_combo_valid(&data->display))
--					continue;
+-		igt_require(igt_format_mods_has_modifier(&data->plane->format_mods_async,
+-							 data->modifier));
 -
--				igt_dynamic_f("pipe-%s-%s",
--							    igt_crtc_name(crtc),
--							    data->output->name) {
--					int valid_tests = 0;
--
--					if (data->flags == TEST_RANDOM)
--						igt_info("Testing with seed %d\n", data->seed);
--
--					if (data->flags & TEST_ALL_PLANES) {
--						igt_display_require_output_on_crtc(crtc);
--
--						for_each_plane_on_crtc(crtc,
--								       data->plane) {
--							if (skip_plane(data, data->plane))
--								continue;
--
-+			for_each_connected_output(&data->display, data->output) {
-+				for_each_crtc(&data->display, crtc) {
-+					if (!igt_crtc_connector_valid(crtc, data->output))
-+						continue;
+-		igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+-			      data->output->name) {
+-			/*
+-			 * FIXME: joiner+async flip is busted currently in KMD.
+-			 * Remove this check once the issues are fixed in KMD.
+-			 */
+-			igt_skip_on_f(is_joiner_mode(data->drm_fd, data->output),
+-				      "Skipping, async flip not supported on joiner mode\n");
+-			test_init_fbs(data);
+-			test(data);
++			test_init(data);
 +
-+					data->crtc = crtc;
-+					igt_display_reset(&data->display);
++			if (data->linear_modifier)
++				data->modifier = DRM_FORMAT_MOD_LINEAR;
++			else
++				data->modifier = default_modifier(data);
 +
-+					igt_output_set_crtc(data->output,
-+							    crtc);
-+					if (!intel_pipe_output_combo_valid(&data->display))
-+						continue;
++			igt_require(igt_format_mods_has_modifier(&data->plane->format_mods_async,
++								 data->modifier));
 +
-+					igt_dynamic_f("pipe-%s-%s",
-+								    igt_crtc_name(crtc),
-+								    data->output->name) {
-+						int valid_tests = 0;
-+
-+						if (data->flags == TEST_RANDOM)
-+							igt_info("Testing with seed %d\n", data->seed);
-+
-+						if (data->flags & TEST_ALL_PLANES) {
-+							igt_display_require_output_on_crtc(crtc);
-+
-+							for_each_plane_on_crtc(crtc,
-+									       data->plane) {
-+								if (skip_plane(data, data->plane))
-+									continue;
-+
-+								for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+									data->format = formats[j];
-+									valid_tests += test_ccs(data);
-+								}
-+							}
-+						} else {
- 							for (int j = 0; j < ARRAY_SIZE(formats); j++) {
- 								data->format = formats[j];
- 								valid_tests += test_ccs(data);
- 							}
- 						}
--					} else {
--						for (int j = 0; j < ARRAY_SIZE(formats); j++) {
--							data->format = formats[j];
--							valid_tests += test_ccs(data);
--						}
-+						igt_require_f(valid_tests > 0,
-+							      "no valid tests for %s on pipe %s\n",
-+							      ccs_modifiers[i].str,
-+							      igt_crtc_name(crtc));
- 					}
--					igt_require_f(valid_tests > 0,
--						      "no valid tests for %s on pipe %s\n",
--						      ccs_modifiers[i].str,
--						      igt_crtc_name(crtc));
- 				}
- 			}
++			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
++				      data->output->name) {
++				/*
++				 * FIXME: joiner+async flip is busted currently in KMD.
++				 * Remove this check once the issues are fixed in KMD.
++				 */
++				igt_skip_on_f(is_joiner_mode(data->drm_fd, data->output),
++					      "Skipping, async flip not supported on joiner mode\n");
++				test_init_fbs(data);
++				test(data);
++			}
++			/* Restrict to single pipe in simulation */
++			if (data->single_pipe)
++				break;
  		}
+-		/* Restrict to single pipe in simulation */
+-		if (data->single_pipe)
+-			break;
+ 	}
+ }
+ 
 -- 
 2.45.2
 
