@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93FCDC44507
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 19:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F6FC43458
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 19:53:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1512B10E642;
-	Mon, 13 Jul 2026 19:31:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1087C10E653;
+	Mon, 13 Jul 2026 19:53:29 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C97B310E642;
- Mon, 13 Jul 2026 19:31:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C1C510E653;
+ Mon, 13 Jul 2026 19:52:59 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6807768995506595203=="
+ boundary="===============8765992694057025955=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/genxml=3A_Introduce_M?=
- =?utf-8?q?esa_genxml_infrastructure_to_IGT_=28rev7=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel-ci=3A_Block_EUd?=
+ =?utf-8?q?ebug-related_tests_on_VF/VM_runs?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jan Maslak" <jan.maslak@intel.com>
+To: "Jakub Kolakowski" <jakub1.kolakowski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 13 Jul 2026 19:31:19 -0000
-Message-ID: <178397107981.185203.7034377332809891300@6beec6c84f66>
+Date: Mon, 13 Jul 2026 19:52:59 -0000
+Message-ID: <178397237956.185203.14736784844450745074@6beec6c84f66>
 X-Patchwork-Hint: ignore
-References: <20260713133746.453051-1-jan.maslak@intel.com>
-In-Reply-To: <20260713133746.453051-1-jan.maslak@intel.com>
+References: <20260713165312.413941-1-jakub1.kolakowski@intel.com>
+In-Reply-To: <20260713165312.413941-1-jakub1.kolakowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6807768995506595203==
+--===============8765992694057025955==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev7)
-URL   : https://patchwork.freedesktop.org/series/164446/
+Series: tests/intel-ci: Block EUdebug-related tests on VF/VM runs
+URL   : https://patchwork.freedesktop.org/series/170330/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9005 -> IGTPW_15521
+CI Bug Log - changes from XEIGT_9005_BAT -> XEIGTPW_15522_BAT
 ====================================================
 
 Summary
@@ -64,12 +64,12 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15521/index.html
+  
 
-Participating hosts (42 -> 40)
+Participating hosts (13 -> 12)
 ------------------------------
 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
+  Missing    (1): bat-bmg-2 
 
 
 Changes
@@ -81,21 +81,19 @@ Changes
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9005 -> IGTPW_15521
-  * Linux: CI_DRM_18810 -> CI_DRM_18814
+  * IGT: IGT_9005 -> IGTPW_15522
+  * Linux: xe-5391-83d782d98f4ebb4a10b8ee107e3a389917e0b218 -> xe-5395-b4ff3505d3eacce720d43e24651ce84f2a0d7f56
 
-  CI-20190529: 20190529
-  CI_DRM_18810: 83d782d98f4ebb4a10b8ee107e3a389917e0b218 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18814: b4ff3505d3eacce720d43e24651ce84f2a0d7f56 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15521: 15521
+  IGTPW_15522: 15522
   IGT_9005: 5d0cdd6f2f5d3ad4992da1edf67f22622a8bb153 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5391-83d782d98f4ebb4a10b8ee107e3a389917e0b218: 83d782d98f4ebb4a10b8ee107e3a389917e0b218
+  xe-5395-b4ff3505d3eacce720d43e24651ce84f2a0d7f56: b4ff3505d3eacce720d43e24651ce84f2a0d7f56
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15521/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15522/index.html
 
---===============6807768995506595203==
+--===============8765992694057025955==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -115,37 +113,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev7)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164446/">https://patchwork.freedesktop.org/series/164446/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel-ci: Block EUdebug-related tests on VF/VM runs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170330/">https://patchwork.freedesktop.org/series/170330/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15521/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15521/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15522/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15522/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9005 -&gt; IGTPW_15521</h1>
+    <h1>CI Bug Log - changes from XEIGT_9005_BAT -&gt; XEIGTPW_15522_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15521/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-bmg-2 </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9005 -&gt; IGTPW_15521</li>
-<li>Linux: CI_DRM_18810 -&gt; CI_DRM_18814</li>
+<li>IGT: IGT_9005 -&gt; IGTPW_15522</li>
+<li>Linux: xe-5391-83d782d98f4ebb4a10b8ee107e3a389917e0b218 -&gt; xe-5395-b4ff3505d3eacce720d43e24651ce84f2a0d7f56</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18810: 83d782d98f4ebb4a10b8ee107e3a389917e0b218 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18814: b4ff3505d3eacce720d43e24651ce84f2a0d7f56 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15521: 15521<br />
-  IGT_9005: 5d0cdd6f2f5d3ad4992da1edf67f22622a8bb153 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_15522: 15522<br />
+  IGT_9005: 5d0cdd6f2f5d3ad4992da1edf67f22622a8bb153 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5391-83d782d98f4ebb4a10b8ee107e3a389917e0b218: 83d782d98f4ebb4a10b8ee107e3a389917e0b218<br />
+  xe-5395-b4ff3505d3eacce720d43e24651ce84f2a0d7f56: b4ff3505d3eacce720d43e24651ce84f2a0d7f56</p>
 
 </body>
 </html>
 
---===============6807768995506595203==--
+--===============8765992694057025955==--
