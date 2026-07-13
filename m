@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6769C43458
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 19:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB95DC43458
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 19:15:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7205210E662;
-	Mon, 13 Jul 2026 19:06:24 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IzeMYR2y";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41A2210E642
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 19:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783969556; x=1815505556;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=kA1920VWSLAiepE4ydaFl8svlq7S69jQtm5vNC2vafU=;
- b=IzeMYR2y4jkbnP/qwhD8ftd1TSE9o5JgVeuFFTNwmdE6aArwJz3arKri
- 53cLVQplzBv6VjI7KlTUM2bWf2igvMvp2QRpu4mQbQyN/xd6sQwm2gFt/
- LiaPHcyAd9HQPRpDfo0ELRNEfKxHjHYCMpvau8aJJjACAbZJmt6GYcpB9
- vh2SFSQc14hJeiiEcY/ox9idHM6ps1AYOhtt31TKRnfkWdfSzaSnVutId
- sEyx50f1eveLeCHXdmBdP2LD6WMvaj+8zb8mrJ2Q+quqYQITUbYuven8+
- v5W5bg7sjI1VhCvf4q753QcPKGYXDkRJR+b7S3qBtCmmRton6tovdfMGp g==;
-X-CSE-ConnectionGUID: v5B/3tAhTmWjFQPzdNRWpw==
-X-CSE-MsgGUID: YkXZLdJ8SHySD0fw97i3Fg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="107381833"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="107381833"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jul 2026 12:05:55 -0700
-X-CSE-ConnectionGUID: zPuoSuxwRj+wzKrAJScayg==
-X-CSE-MsgGUID: 9b/32mClRo+kdmWICQmcGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="259211595"
-Received: from osgc-sh-dragon.sh.intel.com ([10.239.81.44])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jul 2026 12:05:53 -0700
-From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-To: 
-Cc: igt-dev@lists.freedesktop.org, niranjana.vishwanathapura@intel.com,
- Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-Subject: [i-g-t, v2] tests/intel/xe_exec_multi_queue: Check PXP is rejected on
- multi-queue
-Date: Tue, 14 Jul 2026 03:05:37 +0800
-Message-ID: <a5d7b699ffcbd7b590f824f67a7ca162eb59bf37.1783969453.git.jagmeet.randhawa@intel.com>
-X-Mailer: git-send-email 2.53.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 539EF10E64F;
+	Mon, 13 Jul 2026 19:15:25 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B92A10E64F;
+ Mon, 13 Jul 2026 19:14:55 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8843802069200238593=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/genxml=3A_Introduce_Mes?=
+ =?utf-8?q?a_genxml_infrastructure_to_IGT_=28rev7=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jan Maslak" <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 13 Jul 2026 19:14:55 -0000
+Message-ID: <178397009549.185203.5755218750414465715@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260713133746.453051-1-jan.maslak@intel.com>
+In-Reply-To: <20260713133746.453051-1-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,59 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-HWDRM is the only supported PXP type and is display related, so it
-cannot be combined with a multi-queue exec queue group. Extend the
-sanity subtest to create a multi-queue exec queue with the PXP HWDRM
-property chained and verify the kernel rejects the combination.
+--===============8843802069200238593==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-When PXP is supported the combination must fail with -EINVAL; when
-PXP is unsupported the PXP extension fails first with -ENODEV.
-The expected error is selected based on xe_wait_for_pxp_init(),
-so the test passes on platforms with and without PXP.
+== Series Details ==
 
-Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
----
- tests/intel/xe_exec_multi_queue.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Series: lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev7)
+URL   : https://patchwork.freedesktop.org/series/164446/
+State : success
 
-diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
-index 9b41f87c7..6aa1fd5e4 100644
---- a/tests/intel/xe_exec_multi_queue.c
-+++ b/tests/intel/xe_exec_multi_queue.c
-@@ -65,6 +65,11 @@ __test_sanity(int fd, int gt, int class, bool preempt_mode)
- 		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
- 		.value = XE_EXEC_QUEUE_PRIORITY_NORMAL,
- 	};
-+	struct drm_xe_ext_set_property pxp_hwdrm = {
-+		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE,
-+		.value = DRM_XE_PXP_TYPE_HWDRM,
-+	};
- 	struct drm_xe_engine_class_instance vm_bind_eci = {
- 		.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
- 	};
-@@ -119,6 +124,18 @@ __test_sanity(int fd, int gt, int class, bool preempt_mode)
- 	multi_queue.base.next_extension = to_user_pointer(&multi_queue);
- 	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
- 
-+	/*
-+	 * HWDRM is the only supported PXP type and is display-related, so it
-+	 * cannot be combined with multi-queue. When PXP is supported the combo
-+	 * must be rejected with -EINVAL; when unsupported the PXP extension
-+	 * fails first with -ENODEV.
-+	 */
-+	multi_queue.base.next_extension = to_user_pointer(&pxp_hwdrm);
-+	if (xe_wait_for_pxp_init(fd) == 0)
-+		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+	else
-+		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -ENODEV);
-+
- 	/* Setting other queue properties are valid for Q0 */
- 	multi_queue.base.next_extension = to_user_pointer(&priority);
- 	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
--- 
-2.53.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_9005_BAT -> XEIGTPW_15521_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9005 -> IGTPW_15521
+  * Linux: xe-5391-83d782d98f4ebb4a10b8ee107e3a389917e0b218 -> xe-5394-a1ff15d0974b121088ce31c0ef4b69a2e1e2e881
+
+  IGTPW_15521: 15521
+  IGT_9005: 5d0cdd6f2f5d3ad4992da1edf67f22622a8bb153 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5391-83d782d98f4ebb4a10b8ee107e3a389917e0b218: 83d782d98f4ebb4a10b8ee107e3a389917e0b218
+  xe-5394-a1ff15d0974b121088ce31c0ef4b69a2e1e2e881: a1ff15d0974b121088ce31c0ef4b69a2e1e2e881
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15521/index.html
+
+--===============8843802069200238593==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/genxml: Introduce Mesa genxml infrastructure to IGT (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164446/">https://patchwork.freedesktop.org/series/164446/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15521/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15521/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9005_BAT -&gt; XEIGTPW_15521_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9005 -&gt; IGTPW_15521</li>
+<li>Linux: xe-5391-83d782d98f4ebb4a10b8ee107e3a389917e0b218 -&gt; xe-5394-a1ff15d0974b121088ce31c0ef4b69a2e1e2e881</li>
+</ul>
+<p>IGTPW_15521: 15521<br />
+  IGT_9005: 5d0cdd6f2f5d3ad4992da1edf67f22622a8bb153 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5391-83d782d98f4ebb4a10b8ee107e3a389917e0b218: 83d782d98f4ebb4a10b8ee107e3a389917e0b218<br />
+  xe-5394-a1ff15d0974b121088ce31c0ef4b69a2e1e2e881: a1ff15d0974b121088ce31c0ef4b69a2e1e2e881</p>
+
+</body>
+</html>
+
+--===============8843802069200238593==--
