@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3407CC43458
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 08:57:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF0A4C43458
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 08:58:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE8D910E5B3;
-	Mon, 13 Jul 2026 08:57:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A201110E879;
+	Mon, 13 Jul 2026 08:58:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FG2hBcUp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TiPuY8OE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81EC010E5B3
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 08:56:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D82310E5B3
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 08:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783932983; x=1815468983;
+ t=1783932970; x=1815468970;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yJMWbL+Yb6W6Nk7o5ePb0H5b9qJ2vewkaBNfFnI7SbM=;
- b=FG2hBcUpl7GZu/35keIJ0taF6P9HVCi26szecEsZ4W6wE0L7ocI4HNRl
- zvXRdHrDzp2fY9y/s0X2R0yx6jBMElO4RDA9DMJSRcs3aZjqjjR/APdiQ
- yQJWQ1v+YWjGq0SKXFch3l5B/zQYLbYeDAHlZ8BjI8BRc/Z9lUEh/tHZQ
- hQgi65UxVZ5mt/Jb1M8znGB1gavtHy5PyvRstTmKddW41AV920osyDBAH
- l/e6qqMA87S7hEo3tzZJD8W89e3huATb7M0zcrjoJKJipATWwIIAFTMXh
- zpQz8zLhxHseR91ZDNCRFjUwO91cfIOeoWYrZ/ZJAH86Ns/FZ/rEBzz8K w==;
-X-CSE-ConnectionGUID: y9gleK3rQ/eRa/nA/iVbzQ==
-X-CSE-MsgGUID: gt0iwi0VQkq++QV7ikmcpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="87081337"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="87081337"
+ bh=MIz2+MVE4SckNJolDdAppMAe4+HjAVGV4Uypx36xeTE=;
+ b=TiPuY8OEe7RuO39By7FowiNxVTrk1vqrlbk+0pWd4+sSmJ9dn3ovkRs3
+ igUwUNMLZeyglDg3akJhXVUlph/HOlknR0inO3yQ603vO/c3ADyS0aGLE
+ 6uPfuotHjkcQkiETwJSqcdVn8+Q5wgKjYteQohWPPkVsgZauQIpJTox7s
+ VtTO1IOkmMsBC6a1WPFiTvqTRn99Xa/LfrPlNu/IBnsGrAXUminEPtRVC
+ Cu2VmzgplZ2H2JR+TZgjwfIQR4LzL3QQ2N/osYfSIbUXAcSnyNGuyHTTX
+ 8ZLb/+mnWVzgx+rvmon7PNZH7uST+cPY1Ub5HmNmPewmMauBconOnVRdw Q==;
+X-CSE-ConnectionGUID: xQJTQg5FR3i/XwbugMkAkg==
+X-CSE-MsgGUID: USiGsZY9SA2/AJzHondYAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="87081323"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="87081323"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jul 2026 01:56:23 -0700
-X-CSE-ConnectionGUID: uu2SVuNRTJGrNtF3rfU3RQ==
-X-CSE-MsgGUID: kf3tbsGwQvSMVeT/LWYe3w==
+ 13 Jul 2026 01:56:10 -0700
+X-CSE-ConnectionGUID: 9+Ylctn1T8Cr6PD7SCxJKQ==
+X-CSE-MsgGUID: T39IVMuESuar7HJpUizsYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="260385968"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="260385862"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa005.fm.intel.com with ESMTP; 13 Jul 2026 01:56:21 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 13 Jul 2026 01:56:09 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v1 15/16] tests/kms_ccs: limit #outputs tested during
- suspend
-Date: Mon, 13 Jul 2026 10:55:14 +0200
-Message-ID: <20260713085515.463575-16-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v1 04/16] tests/kms_async_flips: limit #outputs tested
+ during suspend
+Date: Mon, 13 Jul 2026 10:55:03 +0200
+Message-ID: <20260713085515.463575-5-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260713085515.463575-1-michal.grzelak@intel.com>
 References: <20260713085515.463575-1-michal.grzelak@intel.com>
@@ -71,79 +71,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Each suspend test is executed per output. Limit number of outputs tested
-to 3 by default. Add command-line option enabling execution on every
-output.
+We are iterating through each output while testing suspend. This results
+in extended execution time. In turn this leads to hitting CI enforced
+timeout.
+
+By default limit number of tested outputs to 2. Test each connected
+output when passing command-line parameter.
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tests/intel/kms_ccs.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ tests/kms_async_flips.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index 9ac0ac8e2b..0c57b0cd5c 100644
---- a/tests/intel/kms_ccs.c
-+++ b/tests/intel/kms_ccs.c
-@@ -141,6 +141,8 @@
-  * @yf-tiled-ccs:              YF tiled ccs
-  */
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 03348d958d..7ef31a8ea5 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -119,6 +119,8 @@
+ #define MIN_FLIPS_PER_FRAME_60HZ 5
+ #define NUM_FBS 4
  
-+#define OUTPUT_LIMIT 3
++#define OUTPUT_LIMIT 2
 +
- #define SDR_PLANE_BASE	3
+ IGT_TEST_DESCRIPTION("Test asynchronous page flips.");
  
- IGT_TEST_DESCRIPTION("Test render compression (RC), in which the main surface "
-@@ -188,6 +190,7 @@ typedef struct {
- 	enum igt_commit_style commit;
- 	int fb_list_length;
- 	bool do_hibernate;
+ typedef struct {
+@@ -150,6 +152,7 @@ typedef struct {
+ 	unsigned int plane_format;
+ 	bool async_mod_formats;
+ 	bool single_pipe;
 +	bool all_outputs;
- 	struct {
- 		struct igt_fb fb;
- 		int width, height;
-@@ -1128,6 +1131,7 @@ static void test_output(data_t *data, const int testnum)
+ } data_t;
+ 
+ struct format_mod {
+@@ -873,11 +876,16 @@ static void run_test(data_t *data, void (*test)(data_t *))
  {
  	igt_crtc_t *crtc;
- 	uint16_t dev_id;
+ 	igt_display_t *display = &data->display;
 +	int output_count = 0;
  
- 	igt_fixture()
- 		dev_id = intel_get_drm_devid(data->drm_fd);
-@@ -1153,6 +1157,12 @@ static void test_output(data_t *data, const int testnum)
- 			}
+ 	if (data->atomic_path)
+ 		require_atomic_async_cap(data);
  
- 			for_each_connected_output(&data->display, data->output) {
-+				if (!data->all_outputs && (data->flags & TEST_SUSPEND) &&
-+				    output_count > OUTPUT_LIMIT)
-+					continue;
+ 	for_each_connected_output(display, data->output) {
++		if (!data->all_outputs && data->suspend_resume && output_count > OUTPUT_LIMIT)
++			continue;
 +
-+				output_count++;
-+
- 				for_each_crtc(&data->display, crtc) {
- 					if (!igt_crtc_connector_valid(crtc, data->output))
- 						continue;
-@@ -1221,6 +1231,9 @@ static int opt_handler(int opt, int opt_index, void *opt_data)
- 	case 'r':
- 		data->do_hibernate = true;
- 		break;
-+	case 'n':
-+		data->all_outputs = true;
-+		break;
- 	default:
- 		return IGT_OPT_HANDLER_ERROR;
++		output_count++;
+ 		for_each_crtc(&data->display, crtc) {
+ 			if(!igt_crtc_connector_valid(crtc, data->output))
+ 				continue;
+@@ -1039,9 +1047,27 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
  	}
-@@ -1234,9 +1247,10 @@ static const char *help_str =
- "  -c\t\tCheck the presence of compression meta-data\n"
- "  -s <seed>\tSeed for random number generator\n"
- "  -r\t\tOn suspend test do full hibernate with reboot\n"
-+"  -n\t\tRun on all connectors. (By default suspend subtests will run on 2 connectors)\n"
- ;
+ }
  
--int igt_main_args("csr:", NULL, help_str, opt_handler, &data)
-+int igt_main_args("csrn:", NULL, help_str, opt_handler, &data)
++static int opt_handler(int opt, int opt_index, void *opt_data)
++{
++	data_t *data = opt_data;
++
++	switch (opt) {
++		case 'o':
++			data->all_outputs = true;
++			break;
++		default:
++			return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
+ static data_t data;
+ 
+-int igt_main()
++const char *help_str =
++	"  -o \tRun on all outputs. (By default subtests will run on two outputs)\n";
++
++int igt_main_args("o", NULL, help_str, opt_handler, &data)
  {
- 	igt_fixture() {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 	int i;
+ 
 -- 
 2.45.2
 
