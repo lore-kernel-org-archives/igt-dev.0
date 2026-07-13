@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 457D6C43458
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 08:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2A4CC43458
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 08:56:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE49710E80E;
-	Mon, 13 Jul 2026 08:49:43 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27A1410E874;
- Mon, 13 Jul 2026 08:49:13 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8910031986023968317=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2F5B010E5B3;
+	Mon, 13 Jul 2026 08:56:35 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ONtnwfBK";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE14D10E5B3
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 08:56:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1783932967; x=1815468967;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=y48gaaVBVqk1vw3DaF/DHqMou4AxFTPYXukBgDfGh3Y=;
+ b=ONtnwfBKKtw6lXBLYk7nQ7E1AZ4oQ/XPzdPEKrWPRV/aCgr01CHRadPJ
+ 1eNTZ/Gr/kapeOY/k0rp3faZ71ky1Uuea/el/AVzwBT2a94UGq0hVg27V
+ fb1RBgssjhikoP3LkLt73VVzin8moxJlU9nTofaw9XpagCw9Sc6Xguvkp
+ wyzEBjrZEaKzlsJEAHcc8vn3hEa3X14UJblmWsoepQcWGa0gewlX7pCoa
+ J8Xhn0cl/fQnxIRCbltwvGQ6XdViEmMa7sQR/Ihyt+oYN40sPJj0jyTrE
+ xTZnVLt+9dMiYNG/GplCFYGFGc8uZuYFNUTcUeVd/f5I5r3SthcvMYLg0 w==;
+X-CSE-ConnectionGUID: 6pMSRx1yTMGyuir8w/u25w==
+X-CSE-MsgGUID: /9hM5fRrQXyA4eDlhk1BTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="87081318"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="87081318"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jul 2026 01:56:07 -0700
+X-CSE-ConnectionGUID: XVUXCbEHToKBRuzdDH6i7Q==
+X-CSE-MsgGUID: glEHBhKHTwOd18u5oFwMmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="260385836"
+Received: from dev-417.igk.intel.com ([10.91.214.181])
+ by fmviesa005.fm.intel.com with ESMTP; 13 Jul 2026 01:56:05 -0700
+From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v2 01/16] lib/igt_aux: remove typos
+Date: Mon, 13 Jul 2026 10:55:00 +0200
+Message-ID: <20260713085515.463575-2-michal.grzelak@intel.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20260713085515.463575-1-michal.grzelak@intel.com>
+References: <20260713085515.463575-1-michal.grzelak@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/kms=5Fforce=5Fconnect?=
- =?utf-8?q?or=5Fbasic=3A_re-baseline_connector_state_before_comparing?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Suraj Kandpal" <suraj.kandpal@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 13 Jul 2026 08:49:13 -0000
-Message-ID: <178393255315.182092.14237945573066929822@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260713080227.3989038-1-suraj.kandpal@intel.com>
-In-Reply-To: <20260713080227.3989038-1-suraj.kandpal@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,149 +67,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8910031986023968317==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Fix typos found in comments.
 
-== Series Details ==
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+---
+ lib/igt_aux.c                          | 2 +-
+ tests/intel/kms_frontbuffer_tracking.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Series: tests/kms_force_connector_basic: re-baseline connector state before comparing
-URL   : https://patchwork.freedesktop.org/series/170294/
-State : failure
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 0d250ae2fe..90efb8a135 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -978,7 +978,7 @@ static void igt_aux_enable_pm_suspend_dbg(int power_dir)
+  *	  cycle
+  *
+  * Execute a system suspend cycle targeting the given @state optionally
+- * completing the cycle at the given @test point and automaically wake up
++ * completing the cycle at the given @test point and automatically wake up
+  * again. Waking up is either achieved using the RTC wake-up alarm for a full
+  * suspend cycle or a kernel timer for a suspend test cycle. The kernel timer
+  * delay for a test cycle can be configured by the suspend.pm_test_delay
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 3adf14bd70..f619f77e72 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -3853,7 +3853,7 @@ static void suspend_subtest(const struct test_mode *t)
+  *   Everything succeeds.
+  *
+  * FAILURES
+- *   If you're getting wrong CRC calulations, then the hardware tracking might
++ *   If you're getting wrong CRC calculations, then the hardware tracking might
+  *   be misconfigured and needs to be checked. If we're failing because FBC is
+  *   disabled and the reason is that there's not enough stolen memory, then the
+  *   Kernel might be calculating the amount of stolen memory needed based on the
+-- 
+2.45.2
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_9003_BAT -> XEIGTPW_15517_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_15517_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_15517_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (13 -> 11)
-------------------------------
-
-  Missing    (2): bat-bmg-2 bat-ptl-1 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_15517_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_force_connector_basic@force-edid:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-adlp-7/igt@kms_force_connector_basic@force-edid.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-adlp-7/igt@kms_force_connector_basic@force-edid.html
-    - bat-bmg-1:          [PASS][3] -> [FAIL][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-bmg-1/igt@kms_force_connector_basic@force-edid.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-bmg-1/igt@kms_force_connector_basic@force-edid.html
-    - bat-wcl-2:          [PASS][5] -> [FAIL][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-wcl-2/igt@kms_force_connector_basic@force-edid.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-wcl-2/igt@kms_force_connector_basic@force-edid.html
-    - bat-ptl-2:          [PASS][7] -> [FAIL][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-ptl-2/igt@kms_force_connector_basic@force-edid.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-ptl-2/igt@kms_force_connector_basic@force-edid.html
-    - bat-wcl-1:          [PASS][9] -> [FAIL][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-wcl-1/igt@kms_force_connector_basic@force-edid.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-wcl-1/igt@kms_force_connector_basic@force-edid.html
-
-  
-
-
-Build changes
--------------
-
-  * IGT: IGT_9003 -> IGTPW_15517
-
-  IGTPW_15517: 15517
-  IGT_9003: 9003
-  xe-5390-f8ed2f7559466d59169b7a840c2403a0d4614f88: f8ed2f7559466d59169b7a840c2403a0d4614f88
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/index.html
-
---===============8910031986023968317==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_force_connector_basic: re-baseline connector state before comparing</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170294/">https://patchwork.freedesktop.org/series/170294/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9003_BAT -&gt; XEIGTPW_15517_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_15517_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_15517_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (13 -&gt; 11)</h2>
-<p>Missing    (2): bat-bmg-2 bat-ptl-1 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_15517_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_force_connector_basic@force-edid:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-adlp-7/igt@kms_force_connector_basic@force-edid.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-adlp-7/igt@kms_force_connector_basic@force-edid.html">FAIL</a></li>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-bmg-1/igt@kms_force_connector_basic@force-edid.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-bmg-1/igt@kms_force_connector_basic@force-edid.html">FAIL</a></li>
-<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-wcl-2/igt@kms_force_connector_basic@force-edid.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-wcl-2/igt@kms_force_connector_basic@force-edid.html">FAIL</a></li>
-<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-ptl-2/igt@kms_force_connector_basic@force-edid.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-ptl-2/igt@kms_force_connector_basic@force-edid.html">FAIL</a></li>
-<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9003/bat-wcl-1/igt@kms_force_connector_basic@force-edid.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15517/bat-wcl-1/igt@kms_force_connector_basic@force-edid.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9003 -&gt; IGTPW_15517</li>
-</ul>
-<p>IGTPW_15517: 15517<br />
-  IGT_9003: 9003<br />
-  xe-5390-f8ed2f7559466d59169b7a840c2403a0d4614f88: f8ed2f7559466d59169b7a840c2403a0d4614f88</p>
-
-</body>
-</html>
-
---===============8910031986023968317==--
