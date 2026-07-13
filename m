@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 541D6C44501
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 12:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F48CC43458
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 12:12:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6CF010E94B;
-	Mon, 13 Jul 2026 12:09:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E1EE610E963;
+	Mon, 13 Jul 2026 12:12:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MxL4Og8p";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LWSM+5UI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1871710E94A
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 12:08:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFA2C10E95F
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 12:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783944514; x=1815480514;
+ t=1783944724; x=1815480724;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=+oUivkXl5KsN6s0qFUOIWz5I86F9RbmhQUaeuL4OmdU=;
- b=MxL4Og8pXxZuDh2ULYgWaHmJh97cXqDiVsyNGvorzQDvWACprR1dyy75
- jBe8RwUgZxFBcERmg5VtL1I4miP6jKDqXmPraIhmFbW4dVV04xkktJtAr
- JmFKIe/IsrQSdOle4qRYZIr/qZ4/aV3v9WpP/6trwruvZz7KxIEk2UBOo
- Ffy/8ZpZzdA0VaguTDluaaAToz/1Qq3r7XLzM6WSIFEQnl4bwIYEO2ef6
- wqFF/ljtDeS3/JeSd2a7n8PadS94ilb1rPsletNadn/9ivCDBZUhKLrml
- k79s4jOEtNtCXS4mBSGfCnwNvbKwvsYi+K03K+Do9ECLPZ1Kxs3nQtmTv Q==;
-X-CSE-ConnectionGUID: 8cKYGRf1Spihf4muSlyzjA==
-X-CSE-MsgGUID: K829WfIUTpWB845ROMpThg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84667324"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="84667324"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jul 2026 05:08:34 -0700
-X-CSE-ConnectionGUID: aHxi3X+VQ1aQnCo3YQ1E1g==
-X-CSE-MsgGUID: J/WZPdwHSkiT7sXaiAJO9A==
+ bh=NRS9FLSwGXOCXf4JehF7GTteXcIMtSq2tf3VEQ7jfNY=;
+ b=LWSM+5UIsT0l1mhs6AdwStnjNk8lB0XuBbNan/fnkv+GvjuUGKMZONr1
+ 1c1lascUVcIlg5RoZTE4Qi+byY2LJ40Ew59X8IXosAtVyzDGwIKPzXm3m
+ A3xiasZ9s0FIh9wZdUCtUDjeonxvTMG+491v/2wQKhvm/+yMJf3OUA7l5
+ BC0yeH5EG7HiMO/ykjAzZmTkTJ7hrotNSIGIGmHePc99RTO877aGFWjhO
+ UeIF3DSog0xWB0Bej2FL/gEpvia5qGHdtkZ39irgP2pcyu9pBPb+uj3SP
+ K9aU78fUYbJXemEPlgkUIP9FhZQfNaEe2Xjz5bx9hK5mr4vNoEJ7tq058 g==;
+X-CSE-ConnectionGUID: 4ixiR/2BRVCMsw3y2OhBmA==
+X-CSE-MsgGUID: UxPT3/4RRkynxLPLiZ/Dhg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84746205"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="84746205"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jul 2026 05:12:04 -0700
+X-CSE-ConnectionGUID: vEgaW3bcQmWAdxZxKWvfKA==
+X-CSE-MsgGUID: kjSHfxUwSMKjeHT0VHT2Nw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="256172436"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="257497500"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 05:08:31 -0700
-Date: Mon, 13 Jul 2026 14:08:28 +0200
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 05:12:01 -0700
+Date: Mon, 13 Jul 2026 14:11:59 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Jason-JH Lin <jason-jh.lin@mediatek.com>
 Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
@@ -53,9 +53,9 @@ Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
  Manasi Navare <navaremanasi@google.com>,
  Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
  Project_Global_Chrome_Upstream_Group@mediatek.com
-Subject: Re: [PATCH i-g-t v3 1/2] lib/igt_pm: Add CPU idle state control for
- vblank timing stability
-Message-ID: <20260713120828.afnxibf3ct4hteea@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t v3 2/2] tests/kms_setmode: Add basic-no-cpu-idle
+ subtest
+Message-ID: <20260713121159.dyctydohvvtmyrfn@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jason-JH Lin <jason-jh.lin@mediatek.com>,
  igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
@@ -68,11 +68,11 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
  Project_Global_Chrome_Upstream_Group@mediatek.com
 References: <20260710095358.2518446-1-jason-jh.lin@mediatek.com>
- <20260710095358.2518446-2-jason-jh.lin@mediatek.com>
+ <20260710095358.2518446-3-jason-jh.lin@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260710095358.2518446-2-jason-jh.lin@mediatek.com>
+In-Reply-To: <20260710095358.2518446-3-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,148 +89,103 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Jason-JH,
-On 2026-07-10 at 17:52:47 +0800, Jason-JH Lin wrote:
-> Add igt_pm_disable_cpu_deep_sleep() and igt_pm_enable_cpu_deep_sleep()
-> APIs to control deep CPU idle states (C-states) via sysfs. This prevents
-> IRQ latency spikes that affect vblank timestamp acquisition.
+On 2026-07-10 at 17:52:48 +0800, Jason-JH Lin wrote:
+> Add a new subtest that disables CPU deep sleep to eliminate wakeup
+> latency interference during vblank timestamp verification.
 > 
-> The functions control state1 and deeper states on all CPUs while keeping
-> state0 (WFI) unchanged, providing a balance between timing accuracy and
-> power efficiency.
+> This allows platforms without get_scanout_position() to verify their
+> timestamp accuracy is correct, separate from CPU idle interference.
+> 
+> The original "basic" test remains unchanged to detect any timestamp
+> issues including CPU idle interference, while "basic-no-cpu-idle"
+> specifically tests timestamp accuracy without external interference.
+> 
+> Once get_scanout_position() is implemented, the vblank timestamp
+> will be accurately compensated regardless of CPU idle states.
 > 
 > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
 > ---
->  lib/igt_pm.c | 75 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_pm.h |  2 ++
->  2 files changed, 77 insertions(+)
+>  tests/kms_setmode.c | 37 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
 > 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index 64b15dd08302..7a8ad8ae3dea 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -1713,3 +1713,78 @@ unsigned int igt_read_pkgc_counter(int debugfs_root_fd)
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index ef0082dbf70b..a65ea8b232fc 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -42,6 +42,7 @@
+>  #include <math.h>
 >  
->  	return igt_get_dc_counter(str);
+>  #include "i915/intel_drrs.h"
+> +#include "igt_pm.h"
+>  #include "xe/xe_query.h"
+>  
+>  /**
+> @@ -49,6 +50,13 @@
+>   * Description: Tests the vblank timing by iterating through all valid crtc/connector
+>   *              combinations
+>   *
+> + * SUBTEST: basic-no-cpu-idle
+> + * Description: Tests vblank timing with CPU deep sleep disabled to verify
+> + *              timestamp accuracy without CPU idle interference. This test
+> + *              is for platforms lacking HW/SW get_scanout_position() support,
+> + *              allowing them to verify vblank timestamp correctness without
+> + *              external CPU wakeup latency interference.
+> + *
+>   * SUBTEST: basic-clone-single-crtc
+>   * Description: Test allows the use of a single CRTC for two connectors, such as VGA/HDMI,
+>   *		VGA/DP, and HDMI/HDMI
+> @@ -1034,6 +1042,11 @@ static void run_test(const struct test_config *tconf)
+>  		test_combinations(tconf, connector_num);
 >  }
-> +
-> +static bool igt_pm_cpu_deep_sleep_control(bool disable)
-
-Please do not use bool params. See below.
-
+>  
+> +static void restore_cpu_deep_sleep_at_exit(int sig)
 > +{
-> +	char cpu_path[256];
-> +	char state_path[512];
-> +	int cpu, state;
-> +	int count = 0;
-> +	FILE *fp;
-> +	const char *value = disable ? "1" : "0";
-
-Pass it as param.
-
-> +	const char *action = disable ? "Disabled" : "Restored";
-
-Same here:
-
-static bool igt_pm_cpu_deep_sleep_control(char *val, char *msg)
-
-> +
-> +	/* Control state1 and deeper for all CPUs */
-> +	for (cpu = 0; cpu < 256; cpu++) {
-
-Should you read this '256' dynamically? Or make it a define or
-const int. Another idea below.
-
-> +		snprintf(cpu_path, sizeof(cpu_path),
-> +			 "/sys/devices/system/cpu/cpu%d", cpu);
-> +
-> +		/* Check if CPU exists */
-> +		if (access(cpu_path, F_OK) != 0)
-> +			break;
-
-Why not just readdir and match files starting with "cpu%d"?
-
-> +
-> +		/* Control state1 and deeper (keep state0 WFI unchanged) */
-> +		for (state = 1; state < 10; state++) {
-> +			snprintf(state_path, sizeof(state_path),
-> +				 "%s/cpuidle/state%d/disable", cpu_path, state);
-> +
-> +			if (access(state_path, W_OK) != 0)
-> +				break;
-> +
-> +			/* Write '1' to disable, '0' to enable */
-> +			fp = fopen(state_path, "w");
-> +			if (fp) {
-> +				fprintf(fp, "%s", value);
-> +				fclose(fp);
-> +				count++;
-> +			}
-> +		}
-> +	}
-> +
-> +	if (count > 0)
-> +		igt_info("%s deep CPU idle states for %d CPU/state combinations\n",
-> +			 action, count);
-> +	else
-> +		igt_warn("No CPU idle states found to control\n");
-
-Why warning here? What if by default idle states are turned off?
-Btw when you run this in exit proc, any warn is unexpected and
-useless.
-
-> +
-> +	return count > 0;
+> +	igt_pm_enable_cpu_deep_sleep();
 > +}
 > +
-> +/**
-> + * igt_pm_disable_cpu_deep_sleep:
-> + *
-> + * Disables deep CPU idle states (C-states) to prevent IRQ latency spikes
-> + * during vblank events. This is a system-wide operation that affects all CPUs.
-> + *
-> + * Disables state1 and deeper states while keeping state0 (WFI) unchanged
-> + * to ensure stable vblank timing.
-> + *
-> + * Returns: true on success, false on failure
-> + */
-> +bool igt_pm_disable_cpu_deep_sleep(void)
-> +{
-> +	return igt_pm_cpu_deep_sleep_control(true);
-
-igt_pm_cpu_deep_sleep_control("1", "Disabled")
-
-> +}
+>  static int opt_handler(int opt, int opt_index, void *data)
+>  {
+>  	switch (opt) {
+> @@ -1105,6 +1118,30 @@ int igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+>  		}
+>  	}
+>  
+> +	/*
+> +	 * This subtest disables CPU deep sleep to eliminate wakeup latency
+> +	 * interference during vblank timestamp verification.
+> +	 *
+> +	 * NOTE: This is for platforms that have not yet implemented
+> +	 * get_scanout_position(). Once get_scanout_position() is properly
+> +	 * implemented, the vblank timestamp will be accurately compensated
+> +	 * regardless of CPU idle states, and this test becomes redundant
+> +	 * with the standard "basic" test.
+> +	 */
+> +	igt_describe("Tests vblank timing with CPU deep sleep disabled");
+> +	igt_subtest_with_dynamic("basic-no-cpu-idle") {
+> +		struct test_config tconf = {
+> +			.flags		= TEST_TIMINGS,
+> +			.name		= "basic-no-cpu-idle",
+> +			.resources	= drm_resources,
+> +		};
 > +
-> +/**
-> + * igt_pm_enable_cpu_deep_sleep:
-> + *
-> + * Re-enables deep CPU idle states (C-states) that were previously disabled
-> + * by igt_pm_disable_cpu_deep_sleep(). This restores power-saving idle states.
-> + *
-> + * Returns: true on success, false on failure
-> + */
-> +bool igt_pm_enable_cpu_deep_sleep(void)
-> +{
-> +	return igt_pm_cpu_deep_sleep_control(false);
+> +		igt_require_f(igt_pm_disable_cpu_deep_sleep(),
+> +			      "Platform does not support CPU idle control\n");
 
-igt_pm_cpu_deep_sleep_control("0", "Enabled")
+Maybe return an int idicating how many CPUs entered non-idle
+state. This require also shows that igt_warn() in lib is not
+needed, imho remove any igt_info()/igt_warn() from a lib
+function.
 
 Regards,
 Kamil
 
-> +}
-> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-> index 6a33c6db22fb..c0e35dbe721e 100644
-> --- a/lib/igt_pm.h
-> +++ b/lib/igt_pm.h
-> @@ -114,5 +114,7 @@ bool igt_dc_state_wait_entry(int debugfs_fd, int dc_flag, int prev_dc_count);
->  const char *igt_dc_state_name(int dc_flag);
->  void igt_require_dc_counter(int debugfs_fd, int dc_flag);
->  unsigned int igt_read_pkgc_counter(int debugfs_root_fd);
-> +bool igt_pm_disable_cpu_deep_sleep(void);
-> +bool igt_pm_enable_cpu_deep_sleep(void);
->  
->  #endif /* IGT_PM_H */
+> +		igt_install_exit_handler(restore_cpu_deep_sleep_at_exit);
+> +		run_test(&tconf);
+> +	}
+> +
+>  	igt_fixture() {
+>  		drmModeFreeResources(drm_resources);
+>  		drm_close_driver(drm_fd);
 > -- 
 > 2.43.0
 > 
