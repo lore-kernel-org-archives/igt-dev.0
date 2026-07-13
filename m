@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A805C44501
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 09:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C048C43458
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Jul 2026 09:04:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB3C210E885;
-	Mon, 13 Jul 2026 09:03:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8DE910E5AB;
+	Mon, 13 Jul 2026 09:04:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BQNVQoMS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a9ebmvOn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F5DD10E5B3
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 08:56:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D52410E5B3
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Jul 2026 08:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1783932984; x=1815468984;
+ t=1783932979; x=1815468979;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MUYekZr7A9TGSKusvyh84DlhJ3iusJ5ZLIGWvIHcltw=;
- b=BQNVQoMSlUKhglWX7DSRe1VbGHN7sF5ecdz92DRDp/o980lL2HzAQpu2
- pLvB6NOqsyKTsBFQITBBDVhJIYkJK+JKE/D2NvQ83iXlkjBMBA21Q4t8/
- Ndlun8FAsO+N5elsNCghE5zXhAswENULT7Ml68kBA8EmnVqVdUgSMP5Fa
- EhCVyyLj6cB3+GpKVgwdoRZH1GQDR3wsyvI8pg0Or0CXtLxkKu1UN5KJU
- 2MyVoVKeqs65h9vhw1oAwt31zSCwTLSyyAVdRPWTzXpgv0CONtkfmcVNT
- dKPoP5qG2tCbxVpC1sKdFKc+8nDFMhzozt5acRqy11jA3NVSh0A/n0hRa A==;
-X-CSE-ConnectionGUID: Qy+qns3JSb6jZw8VoOFnBA==
-X-CSE-MsgGUID: d47mgcJ6T0eDgfZUhBpktw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="87081339"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="87081339"
+ bh=aAmAPTsH2+dQ1rGZqeb8i3YIX8gfe4wSu0JNalO2enY=;
+ b=a9ebmvOnk5IaBmwk8TBbmw+AJnbgVS/5nmUnsn0ZScV8RtFnYs6ERXLh
+ WQMkjHuWWoDvKBi8hAss5uJfgCDzPyCi4w/4hkVpOW3/M3zT8JnlUgbe0
+ gnInwin7U6IUcsv7vhe+bm32qs/Y+qGAAtiY80FojUqgiq9AlxxdOSE0x
+ UmRIp6zFtYT5ZzuCI2/YjDZy4/ifSwIbjCYU/vn4VqZBI2hX3Jer9y0m6
+ l/bDWRtut7A5IuJZNXH8WByDexied43xqbzeJ8eHjLXVozPhttQThrBm/
+ Vh/A1L2Pj2yfOZm1PA2ybj8KQNl3GlZZtpTjZLky+i9JZ6Qd0XwYV4WUH A==;
+X-CSE-ConnectionGUID: ewS5e07MTT6YJwiRm/4YxA==
+X-CSE-MsgGUID: ZAI/5K9VRVCxaye8n/M8CA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="87081334"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="87081334"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jul 2026 01:56:24 -0700
-X-CSE-ConnectionGUID: GQbMg74yTW2+TUcezNZTag==
-X-CSE-MsgGUID: qftB0TWCRcWc6GQkKEvKkg==
+ 13 Jul 2026 01:56:19 -0700
+X-CSE-ConnectionGUID: 1q8QIyEUSn2Hc8X9TmMiNQ==
+X-CSE-MsgGUID: Suo2NKBiThS5eVYR7PzGOQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="260385978"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; d="scan'208";a="260385941"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa005.fm.intel.com with ESMTP; 13 Jul 2026 01:56:22 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 13 Jul 2026 01:56:18 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v1 16/16] tests/kms_ccs: limit #crtcs tested during
- suspend
-Date: Mon, 13 Jul 2026 10:55:15 +0200
-Message-ID: <20260713085515.463575-17-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v1 12/16] tests/kms_sharpness_filter: limit #outputs
+ tested during suspend
+Date: Mon, 13 Jul 2026 10:55:11 +0200
+Message-ID: <20260713085515.463575-13-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260713085515.463575-1-michal.grzelak@intel.com>
 References: <20260713085515.463575-1-michal.grzelak@intel.com>
@@ -71,70 +71,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Limit execution of suspend tests to first and last active CRTC unless
-using `extended` flag. This reduces default execution time of the test.
-In turn this can lower chances of hitting CI timeout.
+We are iterating through each output while testing suspend. This results
+in extended execution time. In turn this leads to hitting CI enforced
+timeout.
+
+By default limit number of tested outputs to 3. Test each connected
+output when passing command-line parameter.
+
+v1->v2
+- remove abbreviations (Jani)
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tests/intel/kms_ccs.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tests/intel/kms_sharpness_filter.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index 0c57b0cd5c..fd55fd8683 100644
---- a/tests/intel/kms_ccs.c
-+++ b/tests/intel/kms_ccs.c
-@@ -191,6 +191,7 @@ typedef struct {
- 	int fb_list_length;
- 	bool do_hibernate;
- 	bool all_outputs;
-+	bool all_crtcs;
- 	struct {
- 		struct igt_fb fb;
- 		int width, height;
-@@ -1157,6 +1158,9 @@ static void test_output(data_t *data, const int testnum)
- 			}
+diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
+index f2e3fc9494..adec4a60c5 100644
+--- a/tests/intel/kms_sharpness_filter.c
++++ b/tests/intel/kms_sharpness_filter.c
+@@ -74,6 +74,8 @@ IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
+  * is seen without corruption for each subtest.
+  */
  
- 			for_each_connected_output(&data->display, data->output) {
-+				int first = data->display.crtcs[0].crtc_index;
-+				int last = data->display.crtcs[data->display.n_crtcs-1].crtc_index;
++#define OUTPUT_LIMIT 			3
 +
- 				if (!data->all_outputs && (data->flags & TEST_SUSPEND) &&
- 				    output_count > OUTPUT_LIMIT)
- 					continue;
-@@ -1175,6 +1179,10 @@ static void test_output(data_t *data, const int testnum)
- 					if (!intel_pipe_output_combo_valid(&data->display))
- 						continue;
+ #define TAP_3				3
+ #define TAP_5				5
+ #define TAP_7				7
+@@ -231,6 +233,7 @@ static const struct subtest_entry {
+ typedef struct {
+ 	int drm_fd;
+ 	bool limited;
++	bool all_outputs;
+ 	struct igt_fb fb[4];
+ 	igt_crtc_t *crtc;
+ 	igt_display_t display;
+@@ -614,9 +617,16 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+ 	igt_crtc_t *crtc;
++	int output_counter = 0;
+ 	char name[40];
  
-+					if (!data->all_crtcs && (data->flags & TEST_SUSPEND) &&
-+					    crtc->crtc_index != first && crtc->crtc_index != last)
-+						continue;
+ 	for_each_connected_output(display, output) {
++		if (type == TEST_FILTER_SUSPEND && !data->all_outputs &&
++		    output_counter > OUTPUT_LIMIT)
++			continue;
 +
- 					igt_dynamic_f("pipe-%s-%s",
- 								    igt_crtc_name(crtc),
- 								    data->output->name) {
-@@ -1234,6 +1242,9 @@ static int opt_handler(int opt, int opt_index, void *opt_data)
- 	case 'n':
- 		data->all_outputs = true;
++		output_counter++;
++
+ 		for_each_crtc(display, crtc) {
+ 			igt_display_reset(display);
+ 
+@@ -766,6 +776,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ 	case 'l':
+ 		data->limited = true;
  		break;
-+	case 'e':
-+		data->all_crtcs = true;
++	case 'o':
++		data->all_outputs = true;
 +		break;
  	default:
  		return IGT_OPT_HANDLER_ERROR;
  	}
-@@ -1248,9 +1259,10 @@ static const char *help_str =
- "  -s <seed>\tSeed for random number generator\n"
- "  -r\t\tOn suspend test do full hibernate with reboot\n"
- "  -n\t\tRun on all connectors. (By default suspend subtests will run on 2 connectors)\n"
-+"  -e\t\tRun on all CRTCs. (By default subtests will run on two CRTCs)\n"
- ;
+@@ -774,11 +787,12 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ }
  
--int igt_main_args("csrn:", NULL, help_str, opt_handler, &data)
-+int igt_main_args("csrne:", NULL, help_str, opt_handler, &data)
+ static const char help_str[] =
+-	"  --limited|-l\t\tLimit execution to 1 valid pipe-output combo\n";
++	"  --limited|-l\t\tLimit execution to 1 valid pipe-output combo\n"
++	"  --all-outputs|-o\t\tExtend suspend tests for all outputs\n";
+ 
+ data_t data = {};
+ 
+-int igt_main_args("l", NULL, help_str, opt_handler, &data)
++int igt_main_args("lo", NULL, help_str, opt_handler, &data)
  {
  	igt_fixture() {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
 -- 
 2.45.2
 
