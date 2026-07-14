@@ -4,56 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 391E7C44508
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Jul 2026 15:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32CE7C44508
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Jul 2026 15:13:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB44E10E355;
-	Tue, 14 Jul 2026 15:10:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF94710ED92;
+	Tue, 14 Jul 2026 15:13:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KLWSMK0v";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QRe95QRT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3278E10E355
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jul 2026 15:09:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB9C510ED92
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jul 2026 15:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784041774; x=1815577774;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ZnQdaLS4szDENiYAvukFFK8yTIuNEy6XvzkqNXFWRU4=;
- b=KLWSMK0vB1j8r6+CM4gAJqXoXOzUcG3QGd9h+mggKoZjm8WPbFpqx1sX
- lnnr7tOvwA+2GYXmxLtxD+DyNdE9JQcKR1lz0f1Hx+YL/1A0mghJcHwL/
- 9X3nqETIiWr5eJfCO193wNCdD4DPNjl1p7cxi0TdsC1is4Basb0PhL5UU
- QMLhY4aJ2RtUB5ndHvPnDccib1Mq5/+ZoZM2sAgt35DkEGPUPv7ABmbeV
- +JKeyeCz4OnWSRf/ShLlleom06VSePrgS0U819Vl52Y4NW6+H7By+DLKr
- FmbEP7VgkQqK6BoTfo6G2nHTcHAXNslPk53V8kowAHVde7ZlljvP0U/lK w==;
-X-CSE-ConnectionGUID: ElFKXacsTyaThzg0pMzpeQ==
-X-CSE-MsgGUID: arGUfLmdTRyfrMR/FYlmnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="88488862"
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; d="scan'208";a="88488862"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2026 08:09:34 -0700
-X-CSE-ConnectionGUID: Y8trIMIaSYqWDQX0tL1pAw==
-X-CSE-MsgGUID: Ww0NEiRST0mwHIbxOe1opA==
+ t=1784042009; x=1815578009;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=DHjJu5qGJUfc1Ia9/yGletmIBcCN94tJ2jfbJdx0nkI=;
+ b=QRe95QRTKJ4+1XRy3PSYqncJDBojTTvlscb30YfsbDAGsgHv6o8eHl+D
+ XtcEcbSzRUovOWqknWeDhhT9qLDvE42/iuZdP2c1Fl7wUebFA3KpXLexF
+ kLUSWzkRDV2cxKxUyLrBBiJXnMmTqanoLmpII+yYHfs1V8emDMekOJX11
+ vzE29yo234KLxQiw379e8MUvP/pYifDN16bVBgDOf03lc4PhhN1eLTwdx
+ Lyr6DmN8STl2V5Bau8PemwbfNnm1GuteSZSuCa0ZZZJ4O0xLoAiTIQZJ1
+ zPCxNIH/QcbAJQzi/2H/W7OJD8SKh8wr5qjMUGrNZ0f3NhqzOhuV2Y4yf w==;
+X-CSE-ConnectionGUID: vdrZyFZUSLy0fBvahviJHw==
+X-CSE-MsgGUID: M90qqAM/SU+aH20Yj4Xu9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84451975"
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; d="scan'208";a="84451975"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2026 08:13:28 -0700
+X-CSE-ConnectionGUID: PRiMMnf/SXieaf6R9oQw7Q==
+X-CSE-MsgGUID: s4YUguytSq6l2c+K6Mz5Fg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; d="scan'208";a="257839057"
-Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by fmviesa004.fm.intel.com with ESMTP; 14 Jul 2026 08:09:32 -0700
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; d="scan'208";a="255936320"
+Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
+ ([172.28.182.80])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2026 08:13:28 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- John Harrison <John.Harrison@Igalia.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Harry Wentland <harry.wentland@amd.com>
-Subject: [PATCH i-g-t 2/2] tests/kms_properties: set client cap for color
- pipeline
-Date: Tue, 14 Jul 2026 20:15:32 +0530
-Message-Id: <20260714144532.351294-2-chaitanya.kumar.borah@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260714144532.351294-1-chaitanya.kumar.borah@intel.com>
-References: <20260714144532.351294-1-chaitanya.kumar.borah@intel.com>
+Cc: adam.miszczak@linux.intel.com, lukasz.laguna@intel.com,
+ tvrtko.ursulin@igalia.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 0/2] benchmarks/gem_wsim: explicit VM create/assign + LR
+ mode
+Date: Tue, 14 Jul 2026 17:12:33 +0200
+Message-ID: <20260714151235.1246608-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,54 +69,22 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Set DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE for colorop subtests.
-Unset it when done.
+This series extends gem_wsim VM management for Xe.
 
-Cc: John Harrison <John.Harrison@Igalia.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
----
- tests/kms_properties.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Patch 1 adds explicit VM create/assign steps in workload descriptors:
+V.N to create VM N and v.N.M to bind context M to VM N.
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index f735839da..93bf1ea26 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -340,10 +340,18 @@ static void colorop_properties(igt_display_t *display, bool atomic)
- 	bool found_any = false, found;
- 	igt_output_t *output;
- 	igt_crtc_t *crtc;
-+	int ret;
- 
- 	/* colorops are only available with atomic */
- 	igt_skip_on(!display->is_atomic);
- 
-+	ret = drmSetClientCap(display->drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1);
-+	igt_skip_on_f(ret, "DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE not supported\n");
-+
-+	igt_display_fini(display);
-+	igt_display_require(display, display->drm_fd);
-+	display->has_plane_color_pipeline = true;
-+
- 	for_each_crtc(display, crtc) {
- 		found = false;
- 
-@@ -369,6 +377,12 @@ static void colorop_properties(igt_display_t *display, bool atomic)
- 		}
- 	}
- 
-+	ret = drmSetClientCap(display->drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 0);
-+	igt_assert_eq(ret, 0);
-+
-+	igt_display_fini(display);
-+	igt_display_require(display, display->drm_fd);
-+
- 	igt_skip_on(!found_any);
- }
- 
+Patch 2 adds c.N to enable compute/LR mode on selected VMs.
+README is updated with syntax and VM usage examples.
+
+Marcin Bernatowicz (2):
+  benchmarks/gem_wsim: add explicit VM create/assign steps
+  benchmarks/gem_wsim: add compute/LR mode support for Xe VMs
+
+ benchmarks/gem_wsim.c  | 310 ++++++++++++++++++++++++++++++++++++-----
+ benchmarks/wsim/README |  32 +++++
+ 2 files changed, 311 insertions(+), 31 deletions(-)
+
 -- 
-2.25.1
+2.43.0
 
