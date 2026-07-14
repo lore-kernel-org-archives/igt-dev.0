@@ -4,67 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F2FAC43458
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Jul 2026 11:11:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 021EDC44501
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Jul 2026 11:23:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E9FEE10E060;
-	Tue, 14 Jul 2026 11:11:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9FA6910E03F;
+	Tue, 14 Jul 2026 11:23:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BVgXVE6/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ND5UhYcj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A75710E060
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jul 2026 11:10:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E95A10E03F
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jul 2026 11:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784027433; x=1815563433;
+ t=1784028188; x=1815564188;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=jXhi0A2xyRSVaR3k+qXixkLdPKsT27DPy6bfpjF1YOw=;
- b=BVgXVE6/i5BMZyAbF1vT4C+PLxFPos+EYGAkSL4Lgg38W5GE8UEU+eI8
- 5HaMDEa17tOSOmwPk23x8/IRtlnSn6UI9p/P795nRpeUEFIurvFgxfzRf
- QhokIKM8Ec5257udrC7qlIdIwHcu64LBLoTdjtiwKSb1XtqOr1Cdl3r8P
- B2MuFU24kGVpdoNLujwdKzJiO+qTUM7zego3VXqxBUQVDtvsPOTcFvbmQ
- WzaBw1vU5sk9qndhWCBdWRQ6mBFr2+AkePl7NKggIxROWNdiOm/v5KyTe
- c7C09QcfylrlL3bOnq7PeQbaBfZlHb5BC4ThaN1gH8l3moBwOHzkXRuSx g==;
-X-CSE-ConnectionGUID: rnClEBNATs28X3W7Z1L2fA==
-X-CSE-MsgGUID: Wa581tAcS5mvNkvXFZAZog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84841182"
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; d="scan'208";a="84841182"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2026 04:10:32 -0700
-X-CSE-ConnectionGUID: hgXywpROSQil4nPb87fjWA==
-X-CSE-MsgGUID: oZZj29j9S/eVeJ0DUZxbpw==
+ bh=jB3oaJoQGS3vmnmXH/dy1PAXsegE8Y3YcZPONL32nZI=;
+ b=ND5UhYcjNAhNZ7EfK/R5j3fIdN0Q++rXECHbuSTIZKK6ke7KhtEDzz+Q
+ phFaqscTmHJOHdceG6RGvFMds79T8lQ0ldolUJ17pooBShHVoj9YYqTnT
+ YYetYjQpNxSlkuXZJApPSpnaJQ4R8Vr1XFirhQ1+5t+EJSD5YehhPP+57
+ mcHJEZWsIk3psthJnFuj1hoPWPd2erHjfQygzpXaZnHJu5hmlUxkpEL0j
+ pxSq6A5GHnXN0ESnPfP/0jrK/Xi6JT0zYxMbTRtE0wVaex+HySsgen3HU
+ cVH5Ja/GvFPeys0u2IXythsZGK6xXwrHiQ+Ux/RkT9SNT2kKpHUs+TEJw Q==;
+X-CSE-ConnectionGUID: 6wP6C7cQRQuWb3FxVNUzlg==
+X-CSE-MsgGUID: YXxVGT2YQnmfDsWot+VCbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="83768457"
+X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; d="scan'208";a="83768457"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2026 04:23:07 -0700
+X-CSE-ConnectionGUID: vKlI9t+lR/WQve9/upnQEg==
+X-CSE-MsgGUID: FqhHSp9rSvChVnQeCaCc0Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; d="scan'208";a="255879039"
+X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; d="scan'208";a="252446851"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 04:10:30 -0700
-Date: Tue, 14 Jul 2026 13:10:10 +0200
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 04:23:06 -0700
+Date: Tue, 14 Jul 2026 13:23:04 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Anirban, Sk" <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com,
- soham.purkait@intel.com, mallesh.koujalagi@intel.com
-Subject: Re: [PATCH 1/2] tests/intel/xe_survivability: update ignored dmesg
- regex
-Message-ID: <20260714111010.ql7aaowfcyaicf35@kamilkon-DESK.igk.intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: Shekhar Chauhan <shekhar.chauhan@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH v2] tools/xe-perf-recorder: Add mmio-trigger support
+Message-ID: <20260714112304.rtb5vtsuamsz62sp@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Anirban, Sk" <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, badal.nilawar@intel.com,
- riana.tauro@intel.com, karthik.poosa@intel.com,
- raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com
-References: <20260709070905.405108-4-sk.anirban@intel.com>
- <20260709070905.405108-5-sk.anirban@intel.com>
- <20260709151204.fzvhu4voxtu3wv7e@kamilkon-DESK.igk.intel.com>
- <e563df48-ab6b-465e-9ca1-c2841976931f@intel.com>
+ "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
+ Shekhar Chauhan <shekhar.chauhan@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260702052315.3740840-1-shekhar.chauhan@intel.com>
+ <87pl0uctb4.wl-ashutosh.dixit@intel.com>
+ <87o6gect48.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e563df48-ab6b-465e-9ca1-c2841976931f@intel.com>
+In-Reply-To: <87o6gect48.wl-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,83 +73,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Anirban,,
-On 2026-07-13 at 22:59:04 +0530, Anirban, Sk wrote:
-> Hi,
-> 
-> On 09-07-2026 08:42 pm, Kamil Konieczny wrote:
-> > Hi Sk,
-> > On 2026-07-09 at 12:39:07 +0530, Sk Anirban wrote:
-> > > The kernel now reports -ENOTRECOVERABLE when the device is wedged.
-> > > As runtime-survivability deliberately wedges the device, update
-> > > dmesg regex so igt_runner does not treat the expected error logs
-> > > as failures.
-> > > 
-> > > kernel implementation:
-> > > https://patchwork.freedesktop.org/series/168780/
-> > > 
-> > > Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+Hi all,
+On 2026-07-10 at 16:39:03 -0700, Dixit, Ashutosh wrote:
+> On Fri, 10 Jul 2026 16:34:55 -0700, Dixit, Ashutosh wrote:
+> >
+> > On Wed, 01 Jul 2026 22:23:15 -0700, Shekhar Chauhan wrote:
+> > >
+> > > Add mmio-trigger support to xe-perf-recorder, to justify the
+> > > whitelisting of OA MMIO Trigger Registers in XeKMD.
+> > >
+> > > v2: Add all OA unit types, fix includes, compile warnings and adding
+> > > extra triggger for file mode.
+> > >
+> > > Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
 > > > ---
-> > >   tests/intel/xe_survivability.c | 7 ++++---
-> > >   1 file changed, 4 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
-> > > index 74488bbea..cc54b37ad 100644
-> > > --- a/tests/intel/xe_survivability.c
-> > > +++ b/tests/intel/xe_survivability.c
-> > > @@ -43,12 +43,13 @@ static char bus_addr[NAME_MAX];
-> > >   static void ignore_wedged_in_dmesg(void)
-> > >   {
-> > >   	/* this is needed for igt_runner so it will ignore it */
-> > > -	igt_emit_ignore_dmesg_regex("GT[0-9A-Fa-f]*: failed to enable GuC scheduling policies: -ECANCELED"
-> > Please keep old value for some time (a year?).
-> 
-> As kernel changes are merged, we may no longer receive the same error code
-> (ECANCELED) in wedge scenarios.
-> Additionally, if there are any gaps in the kernel patches that still result
-> in ECANCELED being returned, we won't be able to detect that issue using IGT
-> if we keep the old error codes here.
+> > >  tools/xe-perf/xe_perf_recorder.c | 122 ++++++++++++++++++++++++++++++-
+> > >  1 file changed, 120 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+> > > index f200fe9c9..ecf1c7c27 100644
+> > > --- a/tools/xe-perf/xe_perf_recorder.c
+> > > +++ b/tools/xe-perf/xe_perf_recorder.c
+[cut]
 
-Hmm, up to you but it could make testing for older kernels hard,
-e.g. those which will not backport kernel changes yet. So up to
-you, both this on one below is acceptable.
-
+> > > +static void
+> > > +check_mmio_trigger_report(struct recording_context *ctx, const void *report)
+> > > +{
+> > > +	const struct xe_oa_format *fmt = &oa_formats[ctx->metric_set->perf_oa_format];
+> > > +	const uint32_t *report_32 = report;
+> > > +	uint64_t value;
+> > > +
+> > > +	if (report_reason(report_32))
+> > > +		return;
+> > > +
+> > > +	value = (fmt->header == HDR_64_BIT) ? ((const uint64_t *)report)[2] : report_32[2];
+> > > +
+> > > +	if (value == 0xc0ffee01 || value == 0xc0ffee02)
+> > > +		fprintf(stdout, "Received trigger report with value 0x%" PRIx64 "\n", value);
+> > > +}
+> > > +
+> > >  static bool write_stream_data(struct recording_context *ctx,
+> > >			      char *data, ssize_t size, FILE *output)
+> > >  {
+> > > @@ -582,6 +653,8 @@ static bool write_stream_data(struct recording_context *ctx,
+> > >			.size = sizeof(header) + format_size,
+> > >		};
+> > >
+> > > +		check_mmio_trigger_report(ctx, data + i * format_size);
+> > > +
+> >
+> > I don't like adding check_mmio_trigger_report() here in the middle randomly when
+> > mmio triggers are not happening (since the two mmio triggers happen only once in
+> > the beginning and once in the end). Checking should be coupled with
+> > emit_mmio_triggered_report(). See below.
+> >
+[cut]
+> >
+> > So thinking about this, since we are doing this right at the end, because
+> > of timing, write_perf_data() may or may not capture the mmio triggered
+> > report. There are all sorts of reasons why this mmio triggered report might
+> > be delayed (due to caching in the GPU etc.) and so not available in the OA
+> > buffer and therefore not read by write_perf_data().
+> >
+> > The way to confirm that the mmio triggered report has been captured would
+> > be to keep reading from perf_fd till we have verified that ctx_id in
+> > captured reports matches what we are inserting via emit_oa_trigger()
+> > (0xc0ffeexx).
+> >
+> > To me it looks like the best place to do this would be to modify
+> > write_perf_data() (which reads and writes out the data). We can do this in
+> > a future patch, if needed.
+> >
+> > So I want to remove check_mmio_trigger_report() from this patch. As I see
+> > it, it is added incorrectly to write_stream_data(). Instead, after
+> > inserting the mmio trigger, we should read repeatedly till we see the
+> > inserted ctx_id. Let's do this in another future patch, we can merge this
+> > patch first without check_mmio_trigger_report() and taking care of the
+> > other review comments. So let's make the initial problem a little bit
+> > simpler and then solve the second problem in a separate patch.
 > 
-> > > +	igt_emit_ignore_dmesg_regex("GT[0-9A-Fa-f]*: failed to enable GuC scheduling policies: -ENOTRECOVERABLE"
-> > >   				    "|CRITICAL: Xe has declared device [0-9A-Fa-f:.]* as wedged"
-> > > -				    "|GT[0-9A-Fa-f]*: reset failed .-ECANCELED"
-> > > +				    "|GT[0-9A-Fa-f]*: reset failed .-ENOTRECOVERABLE"
-> > Same here, keep both.
-> > 
-> > >   				    "|GT[0-9A-Fa-f]*: Failed to submit"
-> > >   				    "|Modules linked in:"
-> > > -				    "|__pfx___drm_");
-> > > +				    "|__pfx___drm_"
-> > > +				    "|-ENOTRECOVERABLE");
-> > Do not add such, it could made to ignore errors in unrelated context.
+> On second thoughts, let us leave check_mmio_trigger_report() in (as is) for
+> now, so we will at least have some indication and my guess is we will
+> occasionally see the second mmio triggered report missing.
 > 
-> ENOTRECOVERABLE is intended to be returned only for wedged-state scenarios
-> by the kernel. I think the test should ignore any failures that return this
-> error code.
+> So let us leave it in for now and later fix it by a future patch.
+> 
 
-The problem is that this regex is applied to kernel error and
-you do not know if it will be dropped from other contexts,
-outside of your test. So it is better to make sure it was from
-xe driver. As it is now it is too generic.
+imho function should be renamed. As Jani wrote: "Please don't
+add functions named "check something". It's one of the most
+ambiguous verbs you could use in a function name."
 
 Regards,
 Kamil
 
-> 
-> Thanks
-> Anirban
-> 
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > >   }
-> > >   static bool check_survivability_mode_sysfs(void)
-> > > -- 
-> > > 2.43.0
-> > > 
+[cut]
