@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84A1BC4450A
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 03:57:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33757C4450A
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 04:09:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CB12710E115;
-	Wed, 15 Jul 2026 03:57:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 679ED10E6F7;
+	Wed, 15 Jul 2026 04:09:58 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6139510E115;
- Wed, 15 Jul 2026 03:56:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DA4610E6F7;
+ Wed, 15 Jul 2026 04:09:29 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8116107332717697424=="
+ boundary="===============2288752564963164046=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Add_CPU_idle_state_contro?=
- =?utf-8?q?l_for_accurate_vblank_timing?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Add_CPU_idle_state_control_?=
+ =?utf-8?q?for_accurate_vblank_timing?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Jason-JH Lin" <jason-jh.lin@mediatek.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jul 2026 03:56:59 -0000
-Message-ID: <178408781939.190770.9054602576728071885@6beec6c84f66>
+Date: Wed, 15 Jul 2026 04:09:29 -0000
+Message-ID: <178408856904.190771.2876384062453376794@6beec6c84f66>
 X-Patchwork-Hint: ignore
 References: <20260715030534.1209206-1-jason-jh.lin@mediatek.com>
 In-Reply-To: <20260715030534.1209206-1-jason-jh.lin@mediatek.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8116107332717697424==
+--===============2288752564963164046==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9006 -> IGTPW_15529
+CI Bug Log - changes from XEIGT_9006_BAT -> XEIGTPW_15529_BAT
 ====================================================
 
 Summary
@@ -62,144 +62,59 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with IGTPW_15529 absolutely need to be
+  Serious unknown changes coming with XEIGTPW_15529_BAT absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_15529, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  introduced in XEIGTPW_15529_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/index.html
+  
 
-Participating hosts (42 -> 39)
+Participating hosts (12 -> 13)
 ------------------------------
 
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
+  Additional (1): bat-bmg-2 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_15529:
+  Here are the unknown changes that may have been introduced in XEIGTPW_15529_BAT:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@i915_module_load@load:
-    - fi-ilk-650:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-ilk-650/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-ilk-650/igt@i915_module_load@load.html
-    - fi-bsw-n3050:       [PASS][3] -> [ABORT][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-bsw-n3050/igt@i915_module_load@load.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-bsw-n3050/igt@i915_module_load@load.html
-    - bat-adlp-6:         [PASS][5] -> [ABORT][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-adlp-6/igt@i915_module_load@load.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-adlp-6/igt@i915_module_load@load.html
-    - bat-arlh-2:         [PASS][7] -> [ABORT][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-arlh-2/igt@i915_module_load@load.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-arlh-2/igt@i915_module_load@load.html
-    - fi-rkl-11600:       [PASS][9] -> [ABORT][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-rkl-11600/igt@i915_module_load@load.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-rkl-11600/igt@i915_module_load@load.html
-    - fi-skl-6600u:       [PASS][11] -> [ABORT][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-skl-6600u/igt@i915_module_load@load.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-skl-6600u/igt@i915_module_load@load.html
-    - bat-arlh-3:         [PASS][13] -> [ABORT][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-arlh-3/igt@i915_module_load@load.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-arlh-3/igt@i915_module_load@load.html
-    - fi-pnv-d510:        [PASS][15] -> [ABORT][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-pnv-d510/igt@i915_module_load@load.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-pnv-d510/igt@i915_module_load@load.html
-    - bat-dg1-7:          [PASS][17] -> [ABORT][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg1-7/igt@i915_module_load@load.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg1-7/igt@i915_module_load@load.html
-    - fi-glk-j4005:       [PASS][19] -> [ABORT][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-glk-j4005/igt@i915_module_load@load.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-glk-j4005/igt@i915_module_load@load.html
-    - bat-adlp-9:         [PASS][21] -> [ABORT][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-adlp-9/igt@i915_module_load@load.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-adlp-9/igt@i915_module_load@load.html
-    - bat-twl-2:          [PASS][23] -> [ABORT][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-twl-2/igt@i915_module_load@load.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-twl-2/igt@i915_module_load@load.html
-    - bat-rpls-4:         [PASS][25] -> [ABORT][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-rpls-4/igt@i915_module_load@load.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-rpls-4/igt@i915_module_load@load.html
-    - fi-kbl-7567u:       [PASS][27] -> [ABORT][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-kbl-7567u/igt@i915_module_load@load.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-kbl-7567u/igt@i915_module_load@load.html
-    - fi-cfl-8700k:       [PASS][29] -> [ABORT][30]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-cfl-8700k/igt@i915_module_load@load.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-cfl-8700k/igt@i915_module_load@load.html
-    - bat-twl-1:          [PASS][31] -> [ABORT][32]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-twl-1/igt@i915_module_load@load.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-twl-1/igt@i915_module_load@load.html
-    - fi-kbl-8809g:       [PASS][33] -> [ABORT][34]
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-kbl-8809g/igt@i915_module_load@load.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-kbl-8809g/igt@i915_module_load@load.html
-    - bat-jsl-5:          [PASS][35] -> [ABORT][36]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-jsl-5/igt@i915_module_load@load.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-jsl-5/igt@i915_module_load@load.html
-    - bat-apl-1:          [PASS][37] -> [ABORT][38]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-apl-1/igt@i915_module_load@load.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-apl-1/igt@i915_module_load@load.html
-    - bat-dg2-14:         [PASS][39] -> [ABORT][40]
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg2-14/igt@i915_module_load@load.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg2-14/igt@i915_module_load@load.html
-    - fi-elk-e7500:       [PASS][41] -> [ABORT][42]
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-elk-e7500/igt@i915_module_load@load.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-elk-e7500/igt@i915_module_load@load.html
-    - fi-bsw-nick:        [PASS][43] -> [ABORT][44]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-bsw-nick/igt@i915_module_load@load.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-bsw-nick/igt@i915_module_load@load.html
-    - bat-kbl-2:          [PASS][45] -> [ABORT][46]
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-kbl-2/igt@i915_module_load@load.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-kbl-2/igt@i915_module_load@load.html
-    - bat-arls-5:         [PASS][47] -> [ABORT][48]
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-arls-5/igt@i915_module_load@load.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-arls-5/igt@i915_module_load@load.html
-    - bat-rplp-1:         [PASS][49] -> [ABORT][50]
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-rplp-1/igt@i915_module_load@load.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-rplp-1/igt@i915_module_load@load.html
-    - fi-tgl-1115g4:      [PASS][51] -> [ABORT][52]
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-tgl-1115g4/igt@i915_module_load@load.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-tgl-1115g4/igt@i915_module_load@load.html
-    - fi-cfl-guc:         [PASS][53] -> [ABORT][54]
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-cfl-guc/igt@i915_module_load@load.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-cfl-guc/igt@i915_module_load@load.html
-    - bat-mtlp-9:         [PASS][55] -> [ABORT][56]
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-mtlp-9/igt@i915_module_load@load.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-mtlp-9/igt@i915_module_load@load.html
-    - bat-arls-6:         [PASS][57] -> [ABORT][58]
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-arls-6/igt@i915_module_load@load.html
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-arls-6/igt@i915_module_load@load.html
-    - bat-dg2-9:          [PASS][59] -> [ABORT][60]
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg2-9/igt@i915_module_load@load.html
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg2-9/igt@i915_module_load@load.html
-    - fi-kbl-x1275:       [PASS][61] -> [ABORT][62]
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-kbl-x1275/igt@i915_module_load@load.html
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-kbl-x1275/igt@i915_module_load@load.html
-    - bat-adlp-11:        [PASS][63] -> [ABORT][64]
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-adlp-11/igt@i915_module_load@load.html
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-adlp-11/igt@i915_module_load@load.html
-    - fi-hsw-4770:        [PASS][65] -> [ABORT][66]
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-hsw-4770/igt@i915_module_load@load.html
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-hsw-4770/igt@i915_module_load@load.html
-    - fi-cfl-8109u:       [PASS][67] -> [ABORT][68]
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-cfl-8109u/igt@i915_module_load@load.html
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-cfl-8109u/igt@i915_module_load@load.html
-    - fi-ivb-3770:        [PASS][69] -> [ABORT][70]
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-ivb-3770/igt@i915_module_load@load.html
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-ivb-3770/igt@i915_module_load@load.html
-    - bat-mtlp-8:         [PASS][71] -> [ABORT][72]
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-mtlp-8/igt@i915_module_load@load.html
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-mtlp-8/igt@i915_module_load@load.html
-    - bat-dg1-6:          [PASS][73] -> [ABORT][74]
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg1-6/igt@i915_module_load@load.html
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg1-6/igt@i915_module_load@load.html
-    - bat-dg2-8:          [PASS][75] -> [ABORT][76]
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg2-8/igt@i915_module_load@load.html
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg2-8/igt@i915_module_load@load.html
+  * igt@xe_module_load@load:
+    - bat-ptl-2:          [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-ptl-2/igt@xe_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-ptl-2/igt@xe_module_load@load.html
+    - bat-wcl-1:          [PASS][3] -> [ABORT][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-wcl-1/igt@xe_module_load@load.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-wcl-1/igt@xe_module_load@load.html
+    - bat-ptl-1:          [PASS][5] -> [ABORT][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-ptl-1/igt@xe_module_load@load.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-ptl-1/igt@xe_module_load@load.html
+    - bat-wcl-2:          [PASS][7] -> [ABORT][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-wcl-2/igt@xe_module_load@load.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-wcl-2/igt@xe_module_load@load.html
+    - bat-lnl-1:          [PASS][9] -> [ABORT][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-lnl-1/igt@xe_module_load@load.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-lnl-1/igt@xe_module_load@load.html
+    - bat-bmg-2:          NOTRUN -> [ABORT][11]
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-bmg-2/igt@xe_module_load@load.html
+    - bat-bmg-3:          [PASS][12] -> [ABORT][13]
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-bmg-3/igt@xe_module_load@load.html
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-bmg-3/igt@xe_module_load@load.html
+    - bat-bmg-1:          [PASS][14] -> [ABORT][15]
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-bmg-1/igt@xe_module_load@load.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-bmg-1/igt@xe_module_load@load.html
+    - bat-adlp-7:         [PASS][16] -> [ABORT][17]
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-adlp-7/igt@xe_module_load@load.html
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-adlp-7/igt@xe_module_load@load.html
+    - bat-lnl-2:          [PASS][18] -> [ABORT][19]
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-lnl-2/igt@xe_module_load@load.html
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-lnl-2/igt@xe_module_load@load.html
 
   
 
@@ -207,21 +122,19 @@ Possible new issues
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_9006 -> IGTPW_15529
-  * Linux: CI_DRM_18816 -> CI_DRM_18823
+  * Linux: xe-5397-4df02bb6acd1307de4de001699112cbdaf5afdfc -> xe-5405-cf54bcae91390d166aed4b7e3222bee13912c306
 
-  CI-20190529: 20190529
-  CI_DRM_18816: 4df02bb6acd1307de4de001699112cbdaf5afdfc @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18823: cf54bcae91390d166aed4b7e3222bee13912c306 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15529: 828b60037302ce4ae914d9ab148a466f51fd0aa0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9006: 6380a8af26359dd222e22679442272ded836c463 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5397-4df02bb6acd1307de4de001699112cbdaf5afdfc: 4df02bb6acd1307de4de001699112cbdaf5afdfc
+  xe-5405-cf54bcae91390d166aed4b7e3222bee13912c306: cf54bcae91390d166aed4b7e3222bee13912c306
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/index.html
 
---===============8116107332717697424==
+--===============2288752564963164046==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -245,82 +158,51 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170451/">https://patchwork.freedesktop.org/series/170451/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9006 -&gt; IGTPW_15529</h1>
+    <h1>CI Bug Log - changes from XEIGT_9006_BAT -&gt; XEIGTPW_15529_BAT</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_15529 absolutely need to be<br />
+<p>Serious unknown changes coming with XEIGTPW_15529_BAT absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_15529, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  introduced in XEIGTPW_15529_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
+<h2>Participating hosts (12 -&gt; 13)</h2>
+<p>Additional (1): bat-bmg-2 </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_15529:</p>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15529_BAT:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>igt@i915_module_load@load:<ul>
-<li>fi-ilk-650:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-ilk-650/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-ilk-650/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-bsw-n3050/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-bsw-n3050/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-adlp-6/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-adlp-6/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-arlh-2/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-arlh-2/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-rkl-11600/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-rkl-11600/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-skl-6600u/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-skl-6600u/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-arlh-3/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-arlh-3/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-pnv-d510/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-pnv-d510/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg1-7/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg1-7/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-glk-j4005/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-glk-j4005/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-adlp-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-adlp-9/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-twl-2/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-twl-2/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-rpls-4/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-rpls-4/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-kbl-7567u/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-kbl-7567u/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-cfl-8700k/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-cfl-8700k/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-twl-1/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-twl-1/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-kbl-8809g/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-kbl-8809g/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-jsl-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-jsl-5/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-jsl-5/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-apl-1/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-apl-1/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg2-14/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg2-14/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-elk-e7500/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-elk-e7500/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-bsw-nick/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-bsw-nick/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-kbl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-kbl-2/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-kbl-2/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-arls-5/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-arls-5/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-rplp-1/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-rplp-1/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-tgl-1115g4/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-tgl-1115g4/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-cfl-guc/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-cfl-guc/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-mtlp-9/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-arls-6/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-arls-6/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg2-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg2-9/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-kbl-x1275/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-kbl-x1275/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-adlp-11/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-adlp-11/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-hsw-4770/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-hsw-4770/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-cfl-8109u/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-cfl-8109u/igt@i915_module_load@load.html">ABORT</a></li>
-<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/fi-ivb-3770/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/fi-ivb-3770/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-mtlp-8/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-mtlp-8/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg1-6/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg1-6/igt@i915_module_load@load.html">ABORT</a></li>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9006/bat-dg2-8/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15529/bat-dg2-8/igt@i915_module_load@load.html">ABORT</a></li>
+<li>igt@xe_module_load@load:<ul>
+<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-ptl-2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-ptl-2/igt@xe_module_load@load.html">ABORT</a></li>
+<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-wcl-1/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-wcl-1/igt@xe_module_load@load.html">ABORT</a></li>
+<li>bat-ptl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-ptl-1/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-ptl-1/igt@xe_module_load@load.html">ABORT</a></li>
+<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-wcl-2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-wcl-2/igt@xe_module_load@load.html">ABORT</a></li>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-lnl-1/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-lnl-1/igt@xe_module_load@load.html">ABORT</a></li>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-bmg-2/igt@xe_module_load@load.html">ABORT</a></li>
+<li>bat-bmg-3:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-bmg-3/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-bmg-3/igt@xe_module_load@load.html">ABORT</a></li>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-bmg-1/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-bmg-1/igt@xe_module_load@load.html">ABORT</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-adlp-7/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-adlp-7/igt@xe_module_load@load.html">ABORT</a></li>
+<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/bat-lnl-2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/bat-lnl-2/igt@xe_module_load@load.html">ABORT</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9006 -&gt; IGTPW_15529</li>
-<li>Linux: CI_DRM_18816 -&gt; CI_DRM_18823</li>
+<li>Linux: xe-5397-4df02bb6acd1307de4de001699112cbdaf5afdfc -&gt; xe-5405-cf54bcae91390d166aed4b7e3222bee13912c306</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18816: 4df02bb6acd1307de4de001699112cbdaf5afdfc @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18823: cf54bcae91390d166aed4b7e3222bee13912c306 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15529: 828b60037302ce4ae914d9ab148a466f51fd0aa0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9006: 6380a8af26359dd222e22679442272ded836c463 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_15529: 828b60037302ce4ae914d9ab148a466f51fd0aa0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9006: 6380a8af26359dd222e22679442272ded836c463 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5397-4df02bb6acd1307de4de001699112cbdaf5afdfc: 4df02bb6acd1307de4de001699112cbdaf5afdfc<br />
+  xe-5405-cf54bcae91390d166aed4b7e3222bee13912c306: cf54bcae91390d166aed4b7e3222bee13912c306</p>
 
 </body>
 </html>
 
---===============8116107332717697424==--
+--===============2288752564963164046==--
