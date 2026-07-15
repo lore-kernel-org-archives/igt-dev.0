@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15C9FC44501
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 09:16:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D19BC44501
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 09:24:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BCB8510E15C;
-	Wed, 15 Jul 2026 09:16:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AED8510E127;
+	Wed, 15 Jul 2026 09:24:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="uWlbZtYc";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="lIzFFfKB";
 	dkim-atps=neutral
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com
- [209.85.214.201])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9675B10E15C
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 09:16:16 +0000 (UTC)
-Received: by mail-pl1-f201.google.com with SMTP id
- d9443c01a7336-2cefa1a2be6so16389095ad.0
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 02:16:16 -0700 (PDT)
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com
+ [209.85.216.74])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 35A1110E127
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 09:24:24 +0000 (UTC)
+Received: by mail-pj1-f74.google.com with SMTP id
+ 98e67ed59e1d1-38e2f61c09dso329202a91.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 02:24:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20251104; t=1784106976; x=1784711776;
+ d=google.com; s=20251104; t=1784107464; x=1784712264;
  darn=lists.freedesktop.org; 
  h=content-transfer-encoding:content-type:cc:to:from:subject
  :message-id:references:mime-version:in-reply-to:date:from:to:cc
  :subject:date:message-id:reply-to:content-type;
- bh=ysHLGsVlQvx0Sr3ObDE4KQLg+ohZmKzx48hRIgYcTmc=;
- b=uWlbZtYcusNyn6we5ZgX+HtIxf/eLSx7m/tow5BMvJzbQzpDQhW6lAJ5mW5tNCsecS
- zVltqCj6wiYFk2q/5cOBHCDh8xxk+9YxoJAf2+dY4v+twuoPcLErLlQ53yTpmpLw/mER
- WqDG1E9JtrfrWwcENxNAdal5MkB2yD9ryEVe09hhnVoHVrb+umCHA9eebJhSe0/n+XxA
- muPFA6jscXtc3CtVBc+rirZX4UjXl3Zmauw6/JddnZGExKkNqUwkvTTdEdVObVQ2vsYE
- bxpNtr1pOoMq6dzdKf7JzxmyZB+9EVaZ0lXDQXS7436sWsWBzVhIKPKyNRGF621UGp5b
- os0Q==
+ bh=w4o4n8kJCb6EpiER1uXZrSWOigLjd8BJjO0vbdOa3pE=;
+ b=lIzFFfKB9+7jRdHtXs5A0t5LpbSSZTHnAL2TkZNSYWHFDkWbkvstKgQxhmj4BCkHGA
+ Q1q+xxzRAe0+jU9yLHuOgu7X0cYygQ7NCxqdWdVqD/479ygh8z4cBCtFgBBbpq6cHBmE
+ mu10VTIkxWqCMHNPY5z31r1BXnepNPpHZrbSxcisY+EYltBH60AE4/yT2YUQ5m7vPMV+
+ NkV0t2LadfhciaNMd65pvSa+XOS69x791Gq1pC2n2HCgO9aEe3wb2yuEzpwX8yNW6Svy
+ QfsRUR2878x5xNKCBFwcwyheoMTp9cDJ1CfxmIPEJDd2wSdeObbgc1XzVU2aRYUwxFUX
+ YMPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1784106976; x=1784711776;
+ d=1e100.net; s=20251104; t=1784107464; x=1784712264;
  h=content-transfer-encoding:content-type:cc:to:from:subject
  :message-id:references:mime-version:in-reply-to:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
  :content-type;
- bh=ysHLGsVlQvx0Sr3ObDE4KQLg+ohZmKzx48hRIgYcTmc=;
- b=of4A1Xjc66xjra1fvdhU/2p1MjYbhNhC9c8NZT4CjAqVUS1Z4ldCoME4QmBEDGUkra
- efTZ8JphREufYkXRHu+/lD8FGYoXTK++KkeUTx/voN2bFTZB6HDrINitIEpcJsS1uPio
- TSOzBI4JuKXibhSkDd2oF3xrlmy6ZG68vIQOFhOKqB4N8Wb5jUih41Jic3R+46nDwit1
- 7nW6AhR78vNwyyhkktPUGM+057vcNIPqZTdjb925yxcs0M63cI5CUDxakKkZuDHC9ZoA
- cEy9OqDGhwYYY5YIQeqs3/wL0hSjUfzFDI2IcXWQWknuSdRUjM4rlcN+u85LvAs4Av7r
- JItQ==
-X-Gm-Message-State: AOJu0Yyc0/wX1BOsxRcEjLIEAFTu/id3LUVg52nAsajMedihY6tq5/lU
- LbKZOoerpjIdQ4gHJ2FRanpG4yW+afQjSHP02Y7Xdf15SEMiThpaGmV5rsJCP/5fE/7qPl4vt6P
- 7GGETJGx5Z3Vw3gchLPI/q9XeKWUL0o+wsDZZFA0ASC0MS/fLj85zzay3g8W5mXor82Oi/HYKQG
- RZCbhqneDUP5jGb3SHbilz4WxOACDOM6JfKuLQ1oeR0ypA20V8LHfZ/aN5JB2L8WFCdkRxUXW9
-X-Received: from plbmn4.prod.google.com ([2002:a17:903:a44:b0:2ce:83ec:5961])
+ bh=w4o4n8kJCb6EpiER1uXZrSWOigLjd8BJjO0vbdOa3pE=;
+ b=srMvDTvYvkRehKDeMg7qfykRVdN0nIqEov4uMPN4uelbOrtTtoG4mEqGSNKcVXxanH
+ rGdv8Eaiapf3qsb91BJPPYEQ7akMmSwlWWyEkMiEH+P/4H154cbliP7PTKEbIWEeuz/H
+ OYKxdukMIUE8RLXVANWWvNhweMqGGR5hASl4jL/FUbgzGziIK/moyWuAQPq6YSXDAoe7
+ 2UXNSpPtSJ7sbr8XXc3YgZQZM9et4i9C8VskGHeo+tUub4L7+8l+cBKMfGNV3fkfGx8y
+ pAtwFm1LB0WWLpJyqvQIy/aC5UKEC+defY4StJj1tpifex4MZZhWWShVHYs+fTUOpQL4
+ VeQA==
+X-Gm-Message-State: AOJu0Yyu5T4ZDej3+cYfN0M9EdkYzCCgs9kZyH7kvFRK4CKkRv+Nrytj
+ mB2rLBwe1RRwsb7moQFgwJ+r4fN+AXRzm9ZD6oKYO2edg7EFaSKOxL7L94nxk6cFjmwhJyHAfZH
+ mVXvkPH2ypdzMjCFgU5ixabhhyAmg+xuUQp8Jo4zEWUQEddwzBLKGt1xyjc7E1p1x8vnmkXBnD1
+ LdL/+LYl3Gqfr0wGw97JaB1bEo0qwo339TbXE1kWGAjQ/OCZqcaUPGDfu3chTE3LIb0FjTCqHq
+X-Received: from plbkk14.prod.google.com ([2002:a17:903:70e:b0:2c9:bf2d:8df])
  (user=jingpingjan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:32c2:b0:2c9:b48c:fdde with SMTP id
- d9443c01a7336-2ce9f285258mr176058305ad.26.1784106975720; 
- Wed, 15 Jul 2026 02:16:15 -0700 (PDT)
-Date: Wed, 15 Jul 2026 17:15:40 +0800
-In-Reply-To: <20260714164357.ntqp5zmpqhozqw4p@kamilkon-DESK.igk.intel.com>
+ 2002:a17:903:2383:b0:2cc:670d:9b1f with SMTP id
+ d9443c01a7336-2cee9b58fb6mr71244195ad.28.1784107463430; 
+ Wed, 15 Jul 2026 02:24:23 -0700 (PDT)
+Date: Wed, 15 Jul 2026 17:24:13 +0800
+In-Reply-To: <20260715091541.1010895-2-jingpingjan@google.com>
 Mime-Version: 1.0
-References: <20260714164357.ntqp5zmpqhozqw4p@kamilkon-DESK.igk.intel.com>
+References: <20260715091541.1010895-2-jingpingjan@google.com>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <20260715091541.1010895-2-jingpingjan@google.com>
-Subject: [PATCH i-g-t v3] lib/igt_kms: Fix plane type check in
+Message-ID: <20260715092413.1355785-2-jingpingjan@google.com>
+Subject: [PATCH i-g-t v4] lib/igt_kms: Fix plane type check in
  igt_crtc_get_plane_type
 From: Jing-Ping Jan <jingpingjan@google.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
@@ -97,6 +97,8 @@ Cc: Swati Sharma <swati2.sharma@intel.com>
 Cc: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Jing-Ping Jan <jingpingjan@google.com>
 ---
+v4:
+ - Remove unintended changes
 v3:
  - Moving condition after old one
  - print type string instead of enum value
@@ -104,42 +106,30 @@ v2:
  - Cc Swati and Karthik.
  - split condition with additional branch
 
- lib/igt_kms.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ lib/igt_kms.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e20307923..2c425df08 100644
+index e20307923..65bb556bf 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -3534,11 +3529,19 @@ igt_plane_t *igt_crtc_get_plane_type(igt_crtc_t *cr=
-tc, int plane_type)
- 		}
- 	}
+@@ -3538,6 +3538,13 @@ igt_plane_t *igt_crtc_get_plane_type(igt_crtc_t *crt=
+c, int plane_type)
+ 		      "Valid pipe->planes idx not found. plane_idx=3D%d plane_type=3D%d =
+n_planes=3D%d\n",
+ 		      plane_idx, plane_type, crtc->n_planes);
 =20
--	igt_require_f(plane_idx >=3D 0 && plane_idx < crtc->n_planes,
--		      "Valid pipe->planes idx not found. plane_idx=3D%d plane_type=3D%d =
-n_planes=3D%d\n",
--		      plane_idx, plane_type, crtc->n_planes);
--
--	return &crtc->planes[plane_idx];
-+	igt_require_f(plane_idx >=3D 0 && plane_idx < crtc->n_planes,
-+		      "Valid pipe->planes idx not found. plane_idx=3D%d plane_type=3D%d =
-n_planes=3D%d\n",
-+		      plane_idx, plane_type, crtc->n_planes);
-+
 +	igt_require_f(crtc->planes[plane_idx].type =3D=3D plane_type,
-+		      "Valid pipe->planes idx not found. found plane_idx=3D%d, type=3D%s=
-, requested plane_type=3D%s\n",
-+		      plane_idx,
++		      "Valid pipe->planes idx not found. found plane_idx=3D%d, "
++		      "type=3D%s, requested plane_type=3D%s\n", plane_idx,
 +		      crtc->planes[plane_idx].type =3D=3D DRM_PLANE_TYPE_PRIMARY ? "PRIM=
 ARY"
 +									     : "CURSOR",
 +		      plane_type =3D=3D DRM_PLANE_TYPE_PRIMARY ? "PRIMARY" : "CURSOR");
 +
-+	return &crtc->planes[plane_idx];
+ 	return &crtc->planes[plane_idx];
  }
 =20
- /**
 --=20
 2.55.0.141.g00534a21ce-goog
 
