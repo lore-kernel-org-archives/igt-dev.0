@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F04F9C44501
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 17:33:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA2D3C44508
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 18:21:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 71A6C10E1F4;
-	Wed, 15 Jul 2026 17:33:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6ADF110E207;
+	Wed, 15 Jul 2026 18:21:10 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC39110E1F4;
- Wed, 15 Jul 2026 17:32:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDC3110E207;
+ Wed, 15 Jul 2026 18:20:38 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1826961920971344809=="
+ boundary="===============8448631176031973592=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fsurvivabil?=
- =?utf-8?q?ity=3A_update_ignored_dmesg_regex_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsurvivab?=
+ =?utf-8?q?ility=3A_update_ignored_dmesg_regex_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Sk Anirban" <sk.anirban@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jul 2026 17:32:44 -0000
-Message-ID: <178413676482.192534.506481898470629494@6beec6c84f66>
+Date: Wed, 15 Jul 2026 18:20:38 -0000
+Message-ID: <178413963876.193149.2350911121021249999@6beec6c84f66>
 X-Patchwork-Hint: ignore
 References: <20260714205747.119025-4-sk.anirban@intel.com>
 In-Reply-To: <20260714205747.119025-4-sk.anirban@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1826961920971344809==
+--===============8448631176031973592==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,94 +50,67 @@ Content-Transfer-Encoding: 7bit
 
 Series: tests/intel/xe_survivability: update ignored dmesg regex (rev3)
 URL   : https://patchwork.freedesktop.org/series/170062/
-State : failure
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9007_BAT -> XEIGTPW_15536_BAT
+CI Bug Log - changes from IGT_9007 -> IGTPW_15536
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_15536_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_15536_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15536/index.html
 
-Participating hosts (13 -> 13)
+Participating hosts (41 -> 38)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (3): bat-dg2-13 bat-adlp-11 fi-snb-2520m 
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_15536_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_survivability@runtime-survivability:
-    - bat-adlp-7:         NOTRUN -> [SKIP][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-adlp-7/igt@xe_survivability@runtime-survivability.html
-    - bat-atsm-2:         NOTRUN -> [SKIP][2]
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-atsm-2/igt@xe_survivability@runtime-survivability.html
-    - bat-bmg-vm:         NOTRUN -> [SKIP][3]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-bmg-vm/igt@xe_survivability@runtime-survivability.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_15536_BAT that come from known issues:
+  Here are the changes found in IGTPW_15536 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@xe_survivability@runtime-survivability:
-    - bat-lnl-2:          NOTRUN -> [SKIP][4] ([Intel XE#8415])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-lnl-2/igt@xe_survivability@runtime-survivability.html
-    - bat-wcl-2:          NOTRUN -> [SKIP][5] ([Intel XE#8415])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-wcl-2/igt@xe_survivability@runtime-survivability.html
-    - bat-ptl-2:          NOTRUN -> [SKIP][6] ([Intel XE#8415] / [Intel XE#8432])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-ptl-2/igt@xe_survivability@runtime-survivability.html
-    - bat-wcl-1:          NOTRUN -> [SKIP][7] ([Intel XE#8415])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-wcl-1/igt@xe_survivability@runtime-survivability.html
-    - bat-ptl-1:          NOTRUN -> [SKIP][8] ([Intel XE#8415] / [Intel XE#8432])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-ptl-1/igt@xe_survivability@runtime-survivability.html
-    - bat-ptl-vm:         NOTRUN -> [SKIP][9] ([Intel XE#8415] / [Intel XE#8432])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-ptl-vm/igt@xe_survivability@runtime-survivability.html
-    - bat-lnl-1:          NOTRUN -> [SKIP][10] ([Intel XE#8415])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-lnl-1/igt@xe_survivability@runtime-survivability.html
+  * igt@kms_addfb_basic@too-high:
+    - bat-apl-1:          [PASS][1] -> [DMESG-WARN][2] ([i915#13735]) +38 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9007/bat-apl-1/igt@kms_addfb_basic@too-high.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15536/bat-apl-1/igt@kms_addfb_basic@too-high.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-1:
+    - bat-apl-1:          [PASS][3] -> [DMESG-WARN][4] ([i915#13735] / [i915#180]) +38 other tests dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9007/bat-apl-1/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-1.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15536/bat-apl-1/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-1.html
 
   
-  [Intel XE#8415]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8415
-  [Intel XE#8432]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8432
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_9007 -> IGTPW_15536
 
+  CI-20190529: 20190529
+  CI_DRM_18830: 116ce94f4e028e50e3523c46a8ce1e665ce47cb9 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15536: 15536
   IGT_9007: 9007
-  xe-5412-116ce94f4e028e50e3523c46a8ce1e665ce47cb9: 116ce94f4e028e50e3523c46a8ce1e665ce47cb9
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15536/index.html
 
---===============1826961920971344809==
+--===============8448631176031973592==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -159,60 +132,49 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>tests/intel/xe_survivability: update ignored dmesg regex (rev3)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170062/">https://patchwork.freedesktop.org/series/170062/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15536/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15536/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9007_BAT -&gt; XEIGTPW_15536_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9007 -&gt; IGTPW_15536</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_15536_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_15536_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_15536_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_survivability@runtime-survivability:<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-adlp-7/igt@xe_survivability@runtime-survivability.html">SKIP</a></li>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-atsm-2/igt@xe_survivability@runtime-survivability.html">SKIP</a></li>
-<li>bat-bmg-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-bmg-vm/igt@xe_survivability@runtime-survivability.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15536/index.html</p>
+<h2>Participating hosts (41 -&gt; 38)</h2>
+<p>Missing    (3): bat-dg2-13 bat-adlp-11 fi-snb-2520m </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15536_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_15536 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>igt@xe_survivability@runtime-survivability:<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-lnl-2/igt@xe_survivability@runtime-survivability.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8415">Intel XE#8415</a>)</li>
-<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-wcl-2/igt@xe_survivability@runtime-survivability.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8415">Intel XE#8415</a>)</li>
-<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-ptl-2/igt@xe_survivability@runtime-survivability.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8415">Intel XE#8415</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8432">Intel XE#8432</a>)</li>
-<li>bat-wcl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-wcl-1/igt@xe_survivability@runtime-survivability.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8415">Intel XE#8415</a>)</li>
-<li>bat-ptl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-ptl-1/igt@xe_survivability@runtime-survivability.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8415">Intel XE#8415</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8432">Intel XE#8432</a>)</li>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-ptl-vm/igt@xe_survivability@runtime-survivability.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8415">Intel XE#8415</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8432">Intel XE#8432</a>)</li>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15536/bat-lnl-1/igt@xe_survivability@runtime-survivability.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8415">Intel XE#8415</a>)</li>
+<li>
+<p>igt@kms_addfb_basic@too-high:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9007/bat-apl-1/igt@kms_addfb_basic@too-high.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15536/bat-apl-1/igt@kms_addfb_basic@too-high.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +38 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-1:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9007/bat-apl-1/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15536/bat-apl-1/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +38 other tests dmesg-warn</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9007 -&gt; IGTPW_15536</li>
 </ul>
-<p>IGTPW_15536: 15536<br />
-  IGT_9007: 9007<br />
-  xe-5412-116ce94f4e028e50e3523c46a8ce1e665ce47cb9: 116ce94f4e028e50e3523c46a8ce1e665ce47cb9</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18830: 116ce94f4e028e50e3523c46a8ce1e665ce47cb9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15536: 15536<br />
+  IGT_9007: 9007</p>
 
 </body>
 </html>
 
---===============1826961920971344809==--
+--===============8448631176031973592==--
