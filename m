@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40607C44501
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 06:45:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45A83C44501
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 06:53:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E3DB510E131;
-	Wed, 15 Jul 2026 06:45:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C2DED10E132;
+	Wed, 15 Jul 2026 06:53:45 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D120A10E131;
- Wed, 15 Jul 2026 06:45:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E971B10E132;
+ Wed, 15 Jul 2026 06:53:15 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7802956735125570385=="
+ boundary="===============7525632016959332850=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_Add_CPU_idle_state_control?=
- =?utf-8?q?_for_accurate_vblank_timing?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_Enable_multi-format_testin?=
+ =?utf-8?q?g_for_chamelium_color_tests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jason-JH Lin" <jason-jh.lin@mediatek.com>
+To: "Pranay Samala" <pranay.samala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jul 2026 06:45:03 -0000
-Message-ID: <178409790384.190770.3677054299374762607@6beec6c84f66>
+Date: Wed, 15 Jul 2026 06:53:15 -0000
+Message-ID: <178409839594.190771.14361088013778077000@6beec6c84f66>
 X-Patchwork-Hint: ignore
-References: <20260715030534.1209206-1-jason-jh.lin@mediatek.com>
-In-Reply-To: <20260715030534.1209206-1-jason-jh.lin@mediatek.com>
+References: <20260715043226.169521-1-pranay.samala@intel.com>
+In-Reply-To: <20260715043226.169521-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7802956735125570385==
+--===============7525632016959332850==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add CPU idle state control for accurate vblank timing
-URL   : https://patchwork.freedesktop.org/series/170451/
+Series: Enable multi-format testing for chamelium color tests
+URL   : https://patchwork.freedesktop.org/series/170452/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9006_FULL -> XEIGTPW_15529_FULL
+CI Bug Log - changes from XEIGT_9006_FULL -> XEIGTPW_15530_FULL
 ====================================================
 
 Summary
@@ -74,7 +74,7 @@ Participating hosts (2 -> 2)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_15529_FULL that come from known issues:
+  Here are the changes found in XEIGTPW_15530_FULL that come from known issues:
 
 ### IGT changes ###
 
@@ -108,31 +108,31 @@ Known issues
    [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/shard-lnl-1/igt@xe_module_load@load.html
    [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/shard-lnl-1/igt@xe_module_load@load.html
    [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/shard-lnl-4/igt@xe_module_load@load.html
-   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-1/igt@xe_module_load@load.html
-   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-1/igt@xe_module_load@load.html
-   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-1/igt@xe_module_load@load.html
-   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-8/igt@xe_module_load@load.html
-   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-8/igt@xe_module_load@load.html
-   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-8/igt@xe_module_load@load.html
-   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-4/igt@xe_module_load@load.html
-   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-4/igt@xe_module_load@load.html
-   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-4/igt@xe_module_load@load.html
-   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-6/igt@xe_module_load@load.html
-   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-6/igt@xe_module_load@load.html
-   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-6/igt@xe_module_load@load.html
-   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-3/igt@xe_module_load@load.html
-   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-3/igt@xe_module_load@load.html
-   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-3/igt@xe_module_load@load.html
-   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-2/igt@xe_module_load@load.html
-   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-2/igt@xe_module_load@load.html
-   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-2/igt@xe_module_load@load.html
-   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-7/igt@xe_module_load@load.html
-   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-7/igt@xe_module_load@load.html
-   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-7/igt@xe_module_load@load.html
-   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-5/igt@xe_module_load@load.html
-   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-5/igt@xe_module_load@load.html
-   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-5/igt@xe_module_load@load.html
-   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-5/igt@xe_module_load@load.html
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-1/igt@xe_module_load@load.html
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-1/igt@xe_module_load@load.html
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-1/igt@xe_module_load@load.html
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-1/igt@xe_module_load@load.html
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-8/igt@xe_module_load@load.html
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-8/igt@xe_module_load@load.html
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-8/igt@xe_module_load@load.html
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-4/igt@xe_module_load@load.html
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-4/igt@xe_module_load@load.html
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-4/igt@xe_module_load@load.html
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-6/igt@xe_module_load@load.html
+   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-6/igt@xe_module_load@load.html
+   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-6/igt@xe_module_load@load.html
+   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-3/igt@xe_module_load@load.html
+   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-3/igt@xe_module_load@load.html
+   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-3/igt@xe_module_load@load.html
+   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-2/igt@xe_module_load@load.html
+   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-2/igt@xe_module_load@load.html
+   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-2/igt@xe_module_load@load.html
+   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-7/igt@xe_module_load@load.html
+   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-7/igt@xe_module_load@load.html
+   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-7/igt@xe_module_load@load.html
+   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-5/igt@xe_module_load@load.html
+   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-5/igt@xe_module_load@load.html
+   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-5/igt@xe_module_load@load.html
     - shard-bmg:          ([PASS][52], [PASS][53], [PASS][54], [PASS][55], [PASS][56], [PASS][57], [PASS][58], [PASS][59], [PASS][60], [PASS][61], [PASS][62], [PASS][63], [SKIP][64], [PASS][65], [PASS][66], [PASS][67], [PASS][68], [PASS][69], [PASS][70], [PASS][71], [PASS][72], [PASS][73], [PASS][74], [PASS][75], [PASS][76], [PASS][77]) ([Intel XE#2457] / [Intel XE#7405]) -> ([DMESG-WARN][78], [DMESG-WARN][79], [DMESG-WARN][80], [DMESG-WARN][81], [DMESG-WARN][82], [DMESG-WARN][83], [DMESG-WARN][84], [DMESG-WARN][85], [DMESG-WARN][86], [DMESG-WARN][87], [DMESG-WARN][88], [DMESG-WARN][89], [DMESG-WARN][90], [DMESG-WARN][91], [DMESG-WARN][92], [DMESG-WARN][93], [DMESG-WARN][94], [DMESG-WARN][95], [DMESG-WARN][96], [DMESG-WARN][97], [DMESG-WARN][98], [DMESG-WARN][99], [DMESG-WARN][100], [DMESG-WARN][101], [DMESG-WARN][102]) ([Intel XE#8607])
    [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/shard-bmg-4/igt@xe_module_load@load.html
    [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/shard-bmg-4/igt@xe_module_load@load.html
@@ -160,31 +160,31 @@ Known issues
    [75]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/shard-bmg-1/igt@xe_module_load@load.html
    [76]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/shard-bmg-1/igt@xe_module_load@load.html
    [77]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9006/shard-bmg-10/igt@xe_module_load@load.html
-   [78]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-4/igt@xe_module_load@load.html
-   [79]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-4/igt@xe_module_load@load.html
-   [80]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-8/igt@xe_module_load@load.html
-   [81]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-8/igt@xe_module_load@load.html
-   [82]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-10/igt@xe_module_load@load.html
-   [83]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-10/igt@xe_module_load@load.html
-   [84]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-10/igt@xe_module_load@load.html
-   [85]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-1/igt@xe_module_load@load.html
-   [86]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-1/igt@xe_module_load@load.html
-   [87]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-7/igt@xe_module_load@load.html
-   [88]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-7/igt@xe_module_load@load.html
-   [89]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-7/igt@xe_module_load@load.html
-   [90]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-9/igt@xe_module_load@load.html
-   [91]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-9/igt@xe_module_load@load.html
-   [92]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-9/igt@xe_module_load@load.html
-   [93]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-2/igt@xe_module_load@load.html
-   [94]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-2/igt@xe_module_load@load.html
-   [95]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-2/igt@xe_module_load@load.html
-   [96]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-6/igt@xe_module_load@load.html
-   [97]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-6/igt@xe_module_load@load.html
-   [98]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-3/igt@xe_module_load@load.html
-   [99]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-3/igt@xe_module_load@load.html
-   [100]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-3/igt@xe_module_load@load.html
-   [101]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-5/igt@xe_module_load@load.html
-   [102]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-5/igt@xe_module_load@load.html
+   [78]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-4/igt@xe_module_load@load.html
+   [79]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-4/igt@xe_module_load@load.html
+   [80]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-4/igt@xe_module_load@load.html
+   [81]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-8/igt@xe_module_load@load.html
+   [82]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-8/igt@xe_module_load@load.html
+   [83]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-10/igt@xe_module_load@load.html
+   [84]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-10/igt@xe_module_load@load.html
+   [85]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-1/igt@xe_module_load@load.html
+   [86]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-1/igt@xe_module_load@load.html
+   [87]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-7/igt@xe_module_load@load.html
+   [88]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-7/igt@xe_module_load@load.html
+   [89]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-9/igt@xe_module_load@load.html
+   [90]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-9/igt@xe_module_load@load.html
+   [91]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-9/igt@xe_module_load@load.html
+   [92]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-2/igt@xe_module_load@load.html
+   [93]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-2/igt@xe_module_load@load.html
+   [94]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-2/igt@xe_module_load@load.html
+   [95]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-6/igt@xe_module_load@load.html
+   [96]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-6/igt@xe_module_load@load.html
+   [97]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-3/igt@xe_module_load@load.html
+   [98]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-3/igt@xe_module_load@load.html
+   [99]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-3/igt@xe_module_load@load.html
+   [100]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-5/igt@xe_module_load@load.html
+   [101]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-5/igt@xe_module_load@load.html
+   [102]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-5/igt@xe_module_load@load.html
 
   
   [Intel XE#2457]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2457
@@ -196,19 +196,19 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_9006 -> IGTPW_15529
+  * IGT: IGT_9006 -> IGTPW_15530
   * Linux: xe-5397-4df02bb6acd1307de4de001699112cbdaf5afdfc -> xe-5405-cf54bcae91390d166aed4b7e3222bee13912c306
 
-  IGTPW_15529: 828b60037302ce4ae914d9ab148a466f51fd0aa0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15530: 6fb84fc62fa7937af5b83613654bdbada7d5501f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9006: 6380a8af26359dd222e22679442272ded836c463 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-5397-4df02bb6acd1307de4de001699112cbdaf5afdfc: 4df02bb6acd1307de4de001699112cbdaf5afdfc
   xe-5405-cf54bcae91390d166aed4b7e3222bee13912c306: cf54bcae91390d166aed4b7e3222bee13912c306
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/index.html
 
---===============7802956735125570385==
+--===============7525632016959332850==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -228,20 +228,20 @@ Content-Transfer-Encoding: quoted-printable
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add CPU idle state control for accurate vbla=
-nk timing</td></tr>
+<tr><td><b>Series:</b></td><td>Enable multi-format testing for chamelium co=
+lor tests</td></tr>
 <tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
-ries/170451/">https://patchwork.freedesktop.org/series/170451/</a></td></tr>
+ries/170452/">https://patchwork.freedesktop.org/series/170452/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
-tree/intel-xe/IGTPW_15529/index.html">https://intel-gfx-ci.01.org/tree/inte=
-l-xe/IGTPW_15529/index.html</a></td></tr>
+tree/intel-xe/IGTPW_15530/index.html">https://intel-gfx-ci.01.org/tree/inte=
+l-xe/IGTPW_15530/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9006_FULL -&gt; XEIGTPW_15529_FULL<=
+    <h1>CI Bug Log - changes from XEIGT_9006_FULL -&gt; XEIGTPW_15530_FULL<=
 /h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
@@ -249,7 +249,7 @@ l-xe/IGTPW_15529/index.html</a></td></tr>
 <h2>Participating hosts (2 -&gt; 2)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15529_FULL that come from known is=
+<p>Here are the changes found in XEIGTPW_15530_FULL that come from known is=
 sues:</p>
 <h3>IGT changes</h3>
 <h4>Warnings</h4>
@@ -298,46 +298,46 @@ load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel=
 =3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/378">Intel XE#378</=
 a> / <a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/7405">I=
 ntel XE#7405</a>) -&gt; (<a href=3D"https://intel-gfx-ci.01.org/tree/intel-=
-xe/IGTPW_15529/shard-lnl-1/igt@xe_module_load@load.html">DMESG-WARN</a>, <a=
- href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-1/=
+xe/IGTPW_15530/shard-lnl-1/igt@xe_module_load@load.html">DMESG-WARN</a>, <a=
+ href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-1/=
 igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-=
-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-1/igt@xe_module_load@load.htm=
+ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-1/igt@xe_module_load@load.htm=
 l">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT=
-PW_15529/shard-lnl-8/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=
-=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-8/igt@x=
+PW_15530/shard-lnl-1/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-8/igt@x=
 e_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01=
-.org/tree/intel-xe/IGTPW_15529/shard-lnl-8/igt@xe_module_load@load.html">DM=
+.org/tree/intel-xe/IGTPW_15530/shard-lnl-8/igt@xe_module_load@load.html">DM=
 ESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15=
-529/shard-lnl-4/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"ht=
-tps://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-4/igt@xe_modu=
+530/shard-lnl-8/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"ht=
+tps://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-4/igt@xe_modu=
 le_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/t=
-ree/intel-xe/IGTPW_15529/shard-lnl-4/igt@xe_module_load@load.html">DMESG-WA=
-RN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/sh=
-ard-lnl-6/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://=
-intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-6/igt@xe_module_loa=
+ree/intel-xe/IGTPW_15530/shard-lnl-4/igt@xe_module_load@load.html">DMESG-WA=
+RN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/sh=
+ard-lnl-4/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://=
+intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-6/igt@xe_module_loa=
 d@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/in=
-tel-xe/IGTPW_15529/shard-lnl-6/igt@xe_module_load@load.html">DMESG-WARN</a>=
-, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-ln=
-l-3/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-=
-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-3/igt@xe_module_load@load=
+tel-xe/IGTPW_15530/shard-lnl-6/igt@xe_module_load@load.html">DMESG-WARN</a>=
+, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-ln=
+l-6/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-=
+gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-3/igt@xe_module_load@load=
 .html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe=
-/IGTPW_15529/shard-lnl-3/igt@xe_module_load@load.html">DMESG-WARN</a>, <a h=
-ref=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-2/ig=
+/IGTPW_15530/shard-lnl-3/igt@xe_module_load@load.html">DMESG-WARN</a>, <a h=
+ref=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-3/ig=
 t@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci=
-.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-2/igt@xe_module_load@load.html"=
+.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-2/igt@xe_module_load@load.html"=
 >DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW=
-_15529/shard-lnl-2/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D=
-"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-7/igt@xe_m=
+_15530/shard-lnl-2/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D=
+"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-2/igt@xe_m=
 odule_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.or=
-g/tree/intel-xe/IGTPW_15529/shard-lnl-7/igt@xe_module_load@load.html">DMESG=
--WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529=
+g/tree/intel-xe/IGTPW_15530/shard-lnl-7/igt@xe_module_load@load.html">DMESG=
+-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530=
 /shard-lnl-7/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https=
-://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-5/igt@xe_module_=
+://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-7/igt@xe_module_=
 load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
-/intel-xe/IGTPW_15529/shard-lnl-5/igt@xe_module_load@load.html">DMESG-WARN<=
-/a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard=
+/intel-xe/IGTPW_15530/shard-lnl-5/igt@xe_module_load@load.html">DMESG-WARN<=
+/a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard=
 -lnl-5/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://int=
-el-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-lnl-5/igt@xe_module_load@l=
+el-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-lnl-5/igt@xe_module_load@l=
 oad.html">DMESG-WARN</a>) (<a href=3D"https://gitlab.freedesktop.org/drm/xe=
 /kernel/issues/8607">Intel XE#8607</a>)</li>
 <li>shard-bmg:          (<a href=3D"https://intel-gfx-ci.01.org/tree/intel-=
@@ -383,58 +383,58 @@ l-xe/IGT_9006/shard-bmg-10/igt@xe_module_load@load.html">PASS</a>) (<a href=
 =3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/2457">Intel XE#2457=
 </a> / <a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/7405"=
 >Intel XE#7405</a>) -&gt; (<a href=3D"https://intel-gfx-ci.01.org/tree/inte=
-l-xe/IGTPW_15529/shard-bmg-4/igt@xe_module_load@load.html">DMESG-WARN</a>, =
-<a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-=
+l-xe/IGTPW_15530/shard-bmg-4/igt@xe_module_load@load.html">DMESG-WARN</a>, =
+<a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-=
 4/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gf=
-x-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-8/igt@xe_module_load@load.h=
+x-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-4/igt@xe_module_load@load.h=
 tml">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/I=
-GTPW_15529/shard-bmg-8/igt@xe_module_load@load.html">DMESG-WARN</a>, <a hre=
-f=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-10/igt=
-@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.=
-01.org/tree/intel-xe/IGTPW_15529/shard-bmg-10/igt@xe_module_load@load.html"=
->DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW=
-_15529/shard-bmg-10/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=
-=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-1/igt@x=
-e_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01=
-.org/tree/intel-xe/IGTPW_15529/shard-bmg-1/igt@xe_module_load@load.html">DM=
-ESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15=
-529/shard-bmg-7/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"ht=
-tps://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-7/igt@xe_modu=
-le_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/t=
-ree/intel-xe/IGTPW_15529/shard-bmg-7/igt@xe_module_load@load.html">DMESG-WA=
-RN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/sh=
-ard-bmg-9/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://=
-intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-9/igt@xe_module_loa=
-d@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/in=
-tel-xe/IGTPW_15529/shard-bmg-9/igt@xe_module_load@load.html">DMESG-WARN</a>=
-, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bm=
-g-2/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-=
-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-2/igt@xe_module_load@load=
-.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe=
-/IGTPW_15529/shard-bmg-2/igt@xe_module_load@load.html">DMESG-WARN</a>, <a h=
-ref=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-6/ig=
-t@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci=
-.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-6/igt@xe_module_load@load.html"=
->DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW=
-_15529/shard-bmg-3/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D=
-"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-3/igt@xe_m=
+GTPW_15530/shard-bmg-8/igt@xe_module_load@load.html">DMESG-WARN</a>, <a hre=
+f=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-8/igt@=
+xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.0=
+1.org/tree/intel-xe/IGTPW_15530/shard-bmg-10/igt@xe_module_load@load.html">=
+DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_=
+15530/shard-bmg-10/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D=
+"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-1/igt@xe_m=
 odule_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.or=
-g/tree/intel-xe/IGTPW_15529/shard-bmg-3/igt@xe_module_load@load.html">DMESG=
--WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529=
-/shard-bmg-5/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https=
-://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15529/shard-bmg-5/igt@xe_module_=
-load@load.html">DMESG-WARN</a>) (<a href=3D"https://gitlab.freedesktop.org/=
-drm/xe/kernel/issues/8607">Intel XE#8607</a>)</li>
+g/tree/intel-xe/IGTPW_15530/shard-bmg-1/igt@xe_module_load@load.html">DMESG=
+-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530=
+/shard-bmg-7/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https=
+://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-7/igt@xe_module_=
+load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
+/intel-xe/IGTPW_15530/shard-bmg-9/igt@xe_module_load@load.html">DMESG-WARN<=
+/a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard=
+-bmg-9/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://int=
+el-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-9/igt@xe_module_load@l=
+oad.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel=
+-xe/IGTPW_15530/shard-bmg-2/igt@xe_module_load@load.html">DMESG-WARN</a>, <=
+a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-2=
+/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx=
+-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-2/igt@xe_module_load@load.ht=
+ml">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IG=
+TPW_15530/shard-bmg-6/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-6/igt@x=
+e_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01=
+.org/tree/intel-xe/IGTPW_15530/shard-bmg-3/igt@xe_module_load@load.html">DM=
+ESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15=
+530/shard-bmg-3/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"ht=
+tps://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-3/igt@xe_modu=
+le_load@load.html">DMESG-WARN</a>, <a href=3D"https://intel-gfx-ci.01.org/t=
+ree/intel-xe/IGTPW_15530/shard-bmg-5/igt@xe_module_load@load.html">DMESG-WA=
+RN</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/sh=
+ard-bmg-5/igt@xe_module_load@load.html">DMESG-WARN</a>, <a href=3D"https://=
+intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15530/shard-bmg-5/igt@xe_module_loa=
+d@load.html">DMESG-WARN</a>) (<a href=3D"https://gitlab.freedesktop.org/drm=
+/xe/kernel/issues/8607">Intel XE#8607</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_9006 -&gt; IGTPW_15529</li>
+<li>IGT: IGT_9006 -&gt; IGTPW_15530</li>
 <li>Linux: xe-5397-4df02bb6acd1307de4de001699112cbdaf5afdfc -&gt; xe-5405-c=
 f54bcae91390d166aed4b7e3222bee13912c306</li>
 </ul>
-<p>IGTPW_15529: 828b60037302ce4ae914d9ab148a466f51fd0aa0 @ https://gitlab.f=
+<p>IGTPW_15530: 6fb84fc62fa7937af5b83613654bdbada7d5501f @ https://gitlab.f=
 reedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_9006: 6380a8af26359dd222e22679442272ded836c463 @ https://gitlab.freed=
 esktop.org/drm/igt-gpu-tools.git<br />
@@ -446,4 +446,4 @@ e3222bee13912c306</p>
 </body>
 </html>
 
---===============7802956735125570385==--
+--===============7525632016959332850==--
